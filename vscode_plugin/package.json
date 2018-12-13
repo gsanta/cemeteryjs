@@ -1,0 +1,32 @@
+{
+    "name": "game-worldmap-colorizer",
+    "displayName": "Game Worldmap Colorizer",
+    "description": "",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.29.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "gameworldmap",
+            "aliases": ["Game World Map", "gameworldmap"],
+            "extensions": [".gwm"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "gamemap",
+            "scopeName": "source.gwm",
+            "path": "./syntaxes/gamemap.tmLanguage.json"
+        }],
+        "themes": [
+            {
+                "label": "Game World Map",
+                "uiTheme": "vs-dark",
+                "path": "./themes/mytheme.json"
+            }
+        ]
+    }
+}
