@@ -1,6 +1,6 @@
 {
 	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-	"name": "Game map",
+	"name": "Game World Map",
 	"patterns": [
 		{
 			"include": "#keywords"
@@ -12,10 +12,10 @@
 	"repository": {
 		"keywords": {
 			"patterns": [{
-				"name": "keyword.W.gamemap",
+				"name": "keyword.W.gameworldmap",
 				"match": "W"
 			},{
-				"name": "keyword.L.gamemap",
+				"name": "keyword.L.gameworldmap",
 				"match": "L"
 			}]
 		}

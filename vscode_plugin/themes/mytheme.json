@@ -624,13 +624,13 @@
 			}
 		},
 		{
-			"scope": "keyword.W.gamemap",
+			"scope": "keyword.W.gameworldmap",
 			"settings": {
 				"foreground": "#FF0000"
 			}
 		},
 		{
-			"scope": "keyword.L.gamemap",
+			"scope": "keyword.L.gameworldmap",
 			"settings": {
 				"foreground": "#00FF00"
 			}
