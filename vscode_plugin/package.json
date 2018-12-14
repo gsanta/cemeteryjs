@@ -1,8 +1,9 @@
 {
     "name": "game-worldmap-colorizer",
+    "publisher": "santagergely90",
     "displayName": "Game Worldmap Colorizer",
     "description": "",
-    "version": "0.0.1",
+    "version": "0.5.0",
     "engines": {
         "vscode": "^1.29.0"
     },
@@ -10,23 +11,35 @@
         "Programming Languages"
     ],
     "contributes": {
-        "languages": [{
-            "id": "gameworldmap",
-            "aliases": ["Game World Map", "gameworldmap"],
-            "extensions": [".gwm"],
-            "configuration": "./language-configuration.json"
-        }],
-        "grammars": [{
-            "language": "gameworldmap",
-            "scopeName": "source.gwm",
-            "path": "./syntaxes/gamemap.tmLanguage.json"
-        }],
+        "languages": [
+            {
+                "id": "gameworldmap",
+                "aliases": [
+                    "Game World Map",
+                    "gameworldmap"
+                ],
+                "extensions": [
+                    ".gwm"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "gameworldmap",
+                "scopeName": "source.gwm",
+                "path": "./syntaxes/gamemap.tmLanguage.json"
+            }
+        ],
         "themes": [
             {
                 "label": "Game World Map",
-                "uiTheme": "vs-dark",
-                "path": "./themes/mytheme.json"
+                "path": "./themes/gamemapTheme.json"
             }
         ]
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/gsanta/game-worldmap-generator"
     }
 }
