@@ -626,13 +626,25 @@
 		{
 			"scope": "keyword.W.gameworldmap",
 			"settings": {
-				"foreground": "#FF0000"
+				"foreground": "#FFFFFF"
 			}
 		},
 		{
-			"scope": "keyword.L.gameworldmap",
+			"scope": "keyword.hash.gameworldmap",
 			"settings": {
-				"foreground": "#00FF00"
+				"foreground": "#373737"
+			}
+		},
+		{
+			"scope": "keyword.D.gameworldmap",
+			"settings": {
+				"foreground": "#81430C"
+			}
+		},
+		{
+			"scope": "keyword.I.gameworldmap",
+			"settings": {
+				"foreground": "#4687FE"
 			}
 		}
 	]
