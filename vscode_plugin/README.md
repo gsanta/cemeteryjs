@@ -5,7 +5,7 @@ It can be used as a visual aid for designing world maps for games.
 
 The extension can interpret the .gwm file format for the [game-worldmap-generator](https://github.com/gsanta/game-worldmap-generator) npm module.
 
-![Worldmap image](img/worldmap.png)
+![Worldmap image](https://github.com/gsanta/game-worldmap-generator/raw/master/vscode_plugin/img/worldmap.png)
 
 ## About the file format
 
