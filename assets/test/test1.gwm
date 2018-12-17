@@ -1,0 +1,17 @@
+map {
+
+##########
+#WWWIIWWW#
+#W######W#
+#WWWWWWWW#
+##########
+
+}
+
+definitions {
+
+W = wall
+# = empty
+I = window
+
+}

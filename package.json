@@ -5,7 +5,7 @@
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
-    "test": "./node_modules/.bin/mocha -r ts-node/register src/**/*.test.ts",
+    "test": "./node_modules/.bin/mocha -r ts-node/register 'src/**/*.test.ts'",
     "build": "tsc --declaration"
   },
   "author": "Gergely Santa",

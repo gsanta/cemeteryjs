@@ -1,9 +1,14 @@
 import * as _ from 'lodash';
 
+export interface MatrixGraphVertexValue {
+    character: string;
+    name: string;
+}
+
 export class MatrixGraph {
     private numberOfVertices = 0;
     private adjacencyList: { [key: number]: number[] } = {};
-    private vertexValues: { [key: number]: string } = {};
+    private vertexValues: { [key: number]: MatrixGraphVertexValue } = {};
     private edges: [number, number][] = [];
     private vertices: number[] = [];
     private columns: number;
@@ -34,16 +39,16 @@ export class MatrixGraph {
         };
     }
 
-    public getVertexValue(vertex: number): string {
+    public getVertexValue(vertex: number): MatrixGraphVertexValue {
         return this.vertexValues[vertex];
     }
 
-    public addNextVertex(vertex: number, vertexValue: string) {
+    public addNextVertex(vertex: number, vertexValue: MatrixGraphVertexValue) {
         this.adjacencyList[vertex] = [];
         this.vertexValues[vertex] = vertexValue;
         this.numberOfVertices += 1;
         this.vertices.push(vertex);
-        this.characters.add(vertexValue);
+        this.characters.add(vertexValue.character);
     }
 
     public addEdge(v, w) {
@@ -116,7 +121,7 @@ export class MatrixGraph {
     public getGraphForVertexValue(val: string): MatrixGraph {
         const graph = new MatrixGraph(this.columns, this.rows);
         this.getAllVertices()
-            .filter(vertex => this.getVertexValue(vertex) === val)
+            .filter(vertex => this.getVertexValue(vertex).character === val)
             .forEach(vertex => graph.addNextVertex(vertex, this.getVertexValue(vertex)));
 
         graph.getAllVertices().forEach(vertex => {
@@ -124,7 +129,7 @@ export class MatrixGraph {
             const neighbours = this.getAjacentEdges(vertex);
 
             neighbours.forEach(neighbour => {
-                if (this.getVertexValue(neighbour) === val && !graph.hasEdgeBetween(vertex, neighbour)) {
+                if (this.getVertexValue(neighbour).character === val && !graph.hasEdgeBetween(vertex, neighbour)) {
                     graph.addEdge(vertex, neighbour);
                 }
             });

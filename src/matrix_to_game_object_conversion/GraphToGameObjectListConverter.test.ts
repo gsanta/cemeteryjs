@@ -8,12 +8,18 @@ describe('GraphToGameObjectListConverter', () => {
     describe('convert', () => {
         it('creates game objects from the graph (test case with one connected component)', () => {
             const linesToGraphConverter = new LinesToGraphConverter();
-            const graph = linesToGraphConverter.parse([
-                '######',
-                '#WWWWW',
-                '#W#W##',
-                '######'
-            ]);
+            const graph = linesToGraphConverter.parse(
+                [
+                    '######',
+                    '#WWWWW',
+                    '#W#W##',
+                    '######'
+                ],
+                {
+                    W: 'wall',
+                    '#': 'empty'
+                }
+            );
 
 
             const graphToGrameMapConverter = new GraphToGameObjectListConverter();
@@ -29,12 +35,18 @@ describe('GraphToGameObjectListConverter', () => {
 
         it('creates game objects from the graph (test case with multiple connected components)', () => {
             const linesToGraphConverter = new LinesToGraphConverter();
-            const graph = linesToGraphConverter.parse([
-                '######',
-                '#WWWW#',
-                '#W####',
-                '##WW##'
-            ]);
+            const graph = linesToGraphConverter.parse(
+                [
+                    '######',
+                    '#WWWW#',
+                    '#W####',
+                    '##WW##'
+                ],
+                {
+                    W: 'wall',
+                    '#': 'empty'
+                }
+            );
 
 
             const graphToGrameMapConverter = new GraphToGameObjectListConverter();

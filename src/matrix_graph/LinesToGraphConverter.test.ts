@@ -5,13 +5,19 @@ describe('LinesToGraphConverter', () => {
     describe('parse', () => {
         it('creates a graph which describes the map represented by the input string', () => {
             const linesToGraphConverter = new LinesToGraphConverter();
-            const graph = linesToGraphConverter.parse([
-                '######',
-                '#WWWW#',
-                '#W####',
-                '######'
-            ]);
-
+            debugger;
+            const graph = linesToGraphConverter.parse(
+                [
+                    '######',
+                    '#WWWW#',
+                    '#W####',
+                    '######'
+                ],
+                {
+                    W: 'wall',
+                    '#': 'empty'
+                }
+            );
             expect(graph.size()).to.equal(24);
             expect(graph.getAjacentEdges(0)).to.have.members([1, 6]);
             expect(graph.getAjacentEdges(1)).to.have.members([0, 2]);

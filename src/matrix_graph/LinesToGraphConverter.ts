@@ -6,9 +6,11 @@ export class LinesToGraphConverter {
     private lines: string[];
     private columns: number;
     private rows: number;
+    private charachterToNameMap: {[key: string]: string};
 
-    public parse(lines: string[]): MatrixGraph {
+    public parse(lines: string[], charachterToNameMap: {[key: string]: string}): MatrixGraph {
         this.lines = lines;
+        this.charachterToNameMap = charachterToNameMap;
         this.columns = this.lines[0].length;
         this.rows = this.lines.length;
         this.graph = new MatrixGraph(this.columns, this.rows);
@@ -27,7 +29,14 @@ export class LinesToGraphConverter {
             return this.lines[row][column];
         };
 
-        _.range(0, vertices).forEach(val => this.graph.addNextVertex(val, findCharacter(val)));
+        _.range(0, vertices).forEach(val => {
+            const character = findCharacter(val);
+            const name = this.charachterToNameMap[character];
+            this.graph.addNextVertex(val, {
+                character,
+                name
+            })
+        });
 
         this.parseLines(this.lines);
     }
@@ -63,7 +72,7 @@ export class LinesToGraphConverter {
         if (
             this.hasNeighbourOnTheBottom(vertex) &&
             !this.graph.hasEdgeBetween(vertex, adjacentVertex) &&
-            this.graph.getVertexValue(vertex) === this.graph.getVertexValue(adjacentVertex)
+            this.graph.getVertexValue(vertex).character === this.graph.getVertexValue(adjacentVertex).character
         ) {
             this.graph.addEdge(vertex, adjacentVertex);
         }
@@ -78,7 +87,7 @@ export class LinesToGraphConverter {
         if (
             this.hasNeighbourOnTheTop(vertex) &&
             !this.graph.hasEdgeBetween(vertex, adjacentVertex) &&
-            this.graph.getVertexValue(vertex) === this.graph.getVertexValue(adjacentVertex)
+            this.graph.getVertexValue(vertex).character === this.graph.getVertexValue(adjacentVertex).character
         ) {
             this.graph.addEdge(vertex, adjacentVertex);
         }
@@ -93,7 +102,7 @@ export class LinesToGraphConverter {
         if (
             this.hasNeighbourOnTheRight(vertex) &&
             !this.graph.hasEdgeBetween(vertex, adjacentVertex) &&
-            this.graph.getVertexValue(vertex) === this.graph.getVertexValue(adjacentVertex)
+            this.graph.getVertexValue(vertex).character === this.graph.getVertexValue(adjacentVertex).character
         ) {
             this.graph.addEdge(vertex, adjacentVertex);
         }

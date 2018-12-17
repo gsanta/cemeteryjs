@@ -15,7 +15,13 @@ describe('MatrixGraph', () => {
             ];
 
             const linesToGraphConverter = new LinesToGraphConverter();
-            const graph = linesToGraphConverter.parse(input);
+            const graph = linesToGraphConverter.parse(
+                input,
+                {
+                    W: 'wall',
+                    '#': 'empty'
+                }
+            );
 
             const reducedGraph = graph.getGraphForVertexValue('W');
 
