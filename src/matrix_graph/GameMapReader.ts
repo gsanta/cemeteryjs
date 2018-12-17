@@ -70,7 +70,6 @@ export class GameMapReader {
         })
         .then((lines: string[]) => {
             this.categorizeLines(lines);
-            debugger;
             return this.linesToGraphConverter.parse(this.worldMapLines, this.charachterToNameMap)
         });
     }

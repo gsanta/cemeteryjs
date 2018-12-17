@@ -5,8 +5,9 @@ export class GameObject {
     public name: string;
     public dimensions: Rectangle;
 
-    constructor(type: string, dimensions: Rectangle) {
+    constructor(type: string, dimensions: Rectangle, name: string) {
         this.type = type;
         this.dimensions = dimensions;
+        this.name = name;
     }
 }

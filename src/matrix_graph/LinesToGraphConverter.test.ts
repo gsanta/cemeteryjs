@@ -5,7 +5,6 @@ describe('LinesToGraphConverter', () => {
     describe('parse', () => {
         it('creates a graph which describes the map represented by the input string', () => {
             const linesToGraphConverter = new LinesToGraphConverter();
-            debugger;
             const graph = linesToGraphConverter.parse(
                 [
                     '######',

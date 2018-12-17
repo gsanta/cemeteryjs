@@ -25,12 +25,18 @@ export class GraphToGameObjectListConverter {
 
         const verticalGameObjects = verticalSubComponents
             .map(slice => this.createRectangleFromVerticalVertices(componentGraph.getGraphForVertices(slice)))
-            .map(rect => new GameObject(componentGraph.getCharacters()[0], rect));
+            .map(rect => {
+                const oneVertex = componentGraph.getAllVertices()[0];
+                return new GameObject(componentGraph.getCharacters()[0], rect, componentGraph.getVertexValue(oneVertex).name)
+            });
 
         const horizontalGameObjects = componentGraphMinusVerticalSubComponents
             .findConnectedComponentsForCharacter(componentGraphMinusVerticalSubComponents.getCharacters()[0])
             .map(comp => this.createRectangleFromHorizontalVertices(componentGraph.getGraphForVertices(comp)))
-            .map(rect => new GameObject(componentGraph.getCharacters()[0], rect));
+            .map(rect => {
+                const oneVertex = componentGraph.getAllVertices()[0];
+                return new GameObject(componentGraph.getCharacters()[0], rect, componentGraph.getVertexValue(oneVertex).name);
+            });
 
         return [...verticalGameObjects, ...horizontalGameObjects];
     }
