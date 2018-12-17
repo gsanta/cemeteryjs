@@ -14,19 +14,7 @@ export class GameObjectParser {
         this.graphToGameObjectListConverter = graphToGameObjectListConverter;
     }
 
-    public parse(gameMap: string): Promise<GameObject[]> {
-        return this.gameMapReader
-            .read(GameObjectParser.stringToReadableStream(gameMap))
-            .then(graph => this.graphToGameObjectListConverter.convert(graph));
-    }
-
-    private static stringToReadableStream(map: string) {
-        const Readable = require('stream').Readable;
-        const s = new Readable();
-        s._read = () => {}; // redundant? see update below
-        s.push(map);
-        s.push(null);
-
-        return s;
+    public parse(gameMap: string): GameObject[] {
+        return this.graphToGameObjectListConverter.convert(this.gameMapReader.read(gameMap));
     }
 }
