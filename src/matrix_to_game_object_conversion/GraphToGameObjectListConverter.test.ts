@@ -29,7 +29,8 @@ describe('GraphToGameObjectListConverter', () => {
                 new GameObject('W', new Rectangle(1, 1, 1, 2), 'wall'),
                 new GameObject('W', new Rectangle(3, 1, 1, 2), 'wall'),
                 new GameObject('W', new Rectangle(2, 1, 1, 1), 'wall'),
-                new GameObject('W', new Rectangle(4, 1, 2, 1), 'wall')
+                new GameObject('W', new Rectangle(4, 1, 2, 1), 'wall'),
+                new GameObject('F', new Rectangle(0, 0, 6, 4), 'floor')
             ]);
         });
 
@@ -55,7 +56,8 @@ describe('GraphToGameObjectListConverter', () => {
             expect(gameMap).to.eql([
                 new GameObject('W', new Rectangle(1, 1, 1, 2), 'wall'),
                 new GameObject('W', new Rectangle(2, 1, 3, 1), 'wall'),
-                new GameObject('W', new Rectangle(2, 3, 2, 1), 'wall')
+                new GameObject('W', new Rectangle(2, 3, 2, 1), 'wall'),
+                new GameObject('F', new Rectangle(0, 0, 6, 4), 'floor')
             ]);
         });
     });

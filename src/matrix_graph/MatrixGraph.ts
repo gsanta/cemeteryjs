@@ -29,6 +29,15 @@ export class MatrixGraph {
         return this.numberOfVertices;
     }
 
+    public getRows(): number {
+        return this.rows;
+    }
+
+    public getColumns(): number {
+        return this.columns;
+    }
+
+
     public getVertexPositionInMatrix(vertex: number): {x: number, y: number} {
         const row = Math.floor(vertex / this.columns);
         const column = vertex % this.columns;
