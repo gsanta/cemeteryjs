@@ -14,8 +14,8 @@
 			"patterns": [
 				{
 					"name": "keyword.map.gameworldmap",
-					"begin": "map {",
-					"end": "}",
+					"begin": "map `",
+					"end": "`",
 					"patterns": [
 						{
 							"name": "keyword.W.gameworldmap",
@@ -37,8 +37,8 @@
 				},
 				{
 					"name": "keyword.definitions.gameworldmap",
-					"begin": "definitions {",
-					"end": "}",
+					"begin": "definitions `",
+					"end": "`",
 					"patterns": [
 						{
 							"name": "keyword.W.gameworldmap",
