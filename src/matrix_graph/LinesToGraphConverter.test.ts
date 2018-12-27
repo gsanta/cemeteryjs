@@ -15,7 +15,8 @@ describe('LinesToGraphConverter', () => {
                 {
                     W: 'wall',
                     '#': 'empty'
-                }
+                },
+                {}
             );
             expect(graph.size()).to.equal(24);
             expect(graph.getAjacentEdges(0)).to.have.members([1, 6]);

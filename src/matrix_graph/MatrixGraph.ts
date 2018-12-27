@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 export interface MatrixGraphVertexValue {
     character: string;
     name: string;
+    additionalData?: any;
 }
 
 export class MatrixGraph {

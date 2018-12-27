@@ -18,7 +18,8 @@ describe('GraphToGameObjectListConverter', () => {
                 {
                     W: 'wall',
                     '#': 'empty'
-                }
+                },
+                {}
             );
 
 
@@ -46,7 +47,8 @@ describe('GraphToGameObjectListConverter', () => {
                 {
                     W: 'wall',
                     '#': 'empty'
-                }
+                },
+                {}
             );
 
 

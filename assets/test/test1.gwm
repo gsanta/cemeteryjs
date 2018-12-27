@@ -1,4 +1,4 @@
-map {
+map `
 
 ##########
 #WWWIIWWW#
@@ -6,12 +6,28 @@ map {
 #WWWWWWWW#
 ##########
 
-}
+`
 
-definitions {
+definitions `
 
 W = wall
 # = empty
 I = window
 
-}
+`
+
+details `
+    "attributes": [
+        {
+            "pos": {
+                "x": 4,
+                "y": 1
+            },
+            "axis": {
+                "x": 4,
+                "y": 1
+            },
+            "angle": 90
+        }
+    ]
+`

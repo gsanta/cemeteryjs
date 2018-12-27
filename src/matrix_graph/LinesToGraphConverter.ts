@@ -7,10 +7,12 @@ export class LinesToGraphConverter {
     private columns: number;
     private rows: number;
     private charachterToNameMap: {[key: string]: string};
+    private vertexAdditinalData: {[key: number]: any};
 
-    public parse(lines: string[], charachterToNameMap: {[key: string]: string}): MatrixGraph {
+    public parse(lines: string[], charachterToNameMap: {[key: string]: string}, vertexAdditinalData: {[key: number]: any}): MatrixGraph {
         this.lines = lines;
         this.charachterToNameMap = charachterToNameMap;
+        this.vertexAdditinalData = vertexAdditinalData;
         this.columns = this.lines[0].length;
         this.rows = this.lines.length;
         this.graph = new MatrixGraph(this.columns, this.rows);
@@ -34,7 +36,8 @@ export class LinesToGraphConverter {
             const name = this.charachterToNameMap[character];
             this.graph.addNextVertex(val, {
                 character,
-                name
+                name,
+                additionalData: this.vertexAdditinalData[val]
             })
         });
 

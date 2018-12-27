@@ -31,3 +31,19 @@ D = door
 I = window
 
 }
+
+details {
+    attributes: [
+        {
+            pos: {
+                x: 4,
+                y: 7
+            },
+            axis: {
+                x: 4,
+                y: 7
+            },
+            angle: 90
+        }
+    ]
+}

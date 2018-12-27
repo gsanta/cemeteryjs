@@ -20,7 +20,8 @@ describe('MatrixGraph', () => {
                 {
                     W: 'wall',
                     '#': 'empty'
-                }
+                },
+                {}
             );
 
             const reducedGraph = graph.getGraphForVertexValue('W');

@@ -29,6 +29,7 @@ export class GraphToGameObjectListConverter {
         const verticalGameObjects = verticalSubComponents
             .map(slice => this.createRectangleFromVerticalVertices(componentGraph.getGraphForVertices(slice)))
             .map(rect => {
+                debugger;
                 const oneVertex = componentGraph.getAllVertices()[0];
                 return new GameObject(componentGraph.getCharacters()[0], rect, componentGraph.getVertexValue(oneVertex).name)
             });
