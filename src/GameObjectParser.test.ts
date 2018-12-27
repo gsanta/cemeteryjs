@@ -7,7 +7,7 @@ import { GameObject } from './GameObject';
 
 describe('GameObjectParser', () => {
     describe('parse', () => {
-        it.only('creates GameObjects from a GameMap string', () => {
+        it('creates GameObjects from a GameMap string', () => {
             const file = fs.readFileSync(__dirname + '/../assets/test/test1.gwm', 'utf8');
             const gameObjectParser = new GameObjectParser();
 
@@ -22,10 +22,20 @@ describe('GameObjectParser', () => {
         });
 
         it('attaches the additional data to vertices, if present', () => {
-            const file = fs.readFileSync(__dirname + '/../assets/test/test1.gwm', 'utf8');
+            const file = fs.readFileSync(__dirname + '/../assets/test/testAdditionalData.gwm', 'utf8');
             const gameObjectParser = new GameObjectParser();
 
             const gameObjects = gameObjectParser.parse(file)
+
+            expect(gameObjects[0].additionalData).to.eql({
+                angle: 90,
+                axis: {
+                    x: 4, y: 1
+                },
+                pos: {
+                    x: 4, y: 1
+                }
+            })
         });
     });
 });

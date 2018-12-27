@@ -27,19 +27,33 @@ export class GraphToGameObjectListConverter {
         const componentGraphMinusVerticalSubComponents = componentGraph.getGraphForVertices(verticesMinusVerticalSubComponents);
 
         const verticalGameObjects = verticalSubComponents
-            .map(slice => this.createRectangleFromVerticalVertices(componentGraph.getGraphForVertices(slice)))
-            .map(rect => {
-                debugger;
+            .map(slice => {
+                const gameObjectGraph = componentGraph.getGraphForVertices(slice);
+                const rect = this.createRectangleFromVerticalVertices(gameObjectGraph)
+                const additionalData = this.getAdditionalDataFromGameObjectGraph(gameObjectGraph);
                 const oneVertex = componentGraph.getAllVertices()[0];
-                return new GameObject(componentGraph.getCharacters()[0], rect, componentGraph.getVertexValue(oneVertex).name)
+                return new GameObject(
+                    componentGraph.getCharacters()[0],
+                    rect,
+                    componentGraph.getVertexValue(oneVertex).name,
+                    additionalData
+                );
             });
 
         const horizontalGameObjects = componentGraphMinusVerticalSubComponents
             .findConnectedComponentsForCharacter(componentGraphMinusVerticalSubComponents.getCharacters()[0])
-            .map(comp => this.createRectangleFromHorizontalVertices(componentGraph.getGraphForVertices(comp)))
-            .map(rect => {
+            .map(comp => {
+                const gameObjectGraph = componentGraph.getGraphForVertices(comp);
+                const additionalData = this.getAdditionalDataFromGameObjectGraph(gameObjectGraph);
+                const rect = this.createRectangleFromHorizontalVertices(gameObjectGraph);
                 const oneVertex = componentGraph.getAllVertices()[0];
-                return new GameObject(componentGraph.getCharacters()[0], rect, componentGraph.getVertexValue(oneVertex).name);
+
+                return new GameObject(
+                    gameObjectGraph.getCharacters()[0],
+                    rect,
+                    componentGraph.getVertexValue(oneVertex).name,
+                    additionalData
+                );
             });
 
         return [...verticalGameObjects, ...horizontalGameObjects];
@@ -101,5 +115,11 @@ export class GraphToGameObjectListConverter {
         const startCoord = graph.getVertexPositionInMatrix(vertices[0]);
         const endCoord = graph.getVertexPositionInMatrix(_.last(vertices));
         return new Rectangle(startCoord.x, startCoord.y, endCoord.x - startCoord.x + 1, 1);
+    }
+
+    private getAdditionalDataFromGameObjectGraph(graph: MatrixGraph): any {
+        return graph.getAllVertices().reduce((additionalData, vertex) => {
+            return graph.getVertexValue(vertex).additionalData ? graph.getVertexValue(vertex).additionalData : additionalData
+        }, null);
     }
 }

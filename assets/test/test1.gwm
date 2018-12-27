@@ -15,19 +15,3 @@ W = wall
 I = window
 
 `
-
-details `
-    "attributes": [
-        {
-            "pos": {
-                "x": 4,
-                "y": 1
-            },
-            "axis": {
-                "x": 4,
-                "y": 1
-            },
-            "angle": 90
-        }
-    ]
-`

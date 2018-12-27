@@ -103,7 +103,9 @@ export class GameMapReader {
         });
 
 
-        (<DetailsJsonSchema> JSON.parse(`{${this.detailsSectionStr}}`)).attributes.forEach(attribute => {
+        const attributes = (<DetailsJsonSchema> JSON.parse(`{${this.detailsSectionStr}}`)).attributes || [];
+
+        attributes.forEach(attribute => {
             const vertex = this.worldMapLines[0].length * attribute.pos.y + attribute.pos.x;
             this.vertexAdditinalData[vertex] = attribute
         });
