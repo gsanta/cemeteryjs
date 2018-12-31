@@ -42,6 +42,7 @@ export class GraphToGameObjectListConverter {
 
         const horizontalGameObjects = componentGraphMinusVerticalSubComponents
             .findConnectedComponentsForCharacter(componentGraphMinusVerticalSubComponents.getCharacters()[0])
+            .filter(comp => comp.length > 0)
             .map(comp => {
                 const gameObjectGraph = componentGraph.getGraphForVertices(comp);
                 const additionalData = this.getAdditionalDataFromGameObjectGraph(gameObjectGraph);

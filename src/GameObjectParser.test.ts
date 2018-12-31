@@ -21,12 +21,26 @@ describe('GameObjectParser', () => {
             expect(gameObjects[5]).to.eql(new GameObject('I', new Rectangle(4, 1, 2, 1), 'window'), 'gameObject[5] is not correct');
         });
 
-        it('attaches the additional data to vertices, if present', () => {
+        it('attaches the additional data to vertices, if present TEST CASE 1', () => {
             const file = fs.readFileSync(__dirname + '/../assets/test/testAdditionalData.gwm', 'utf8');
             const gameObjectParser = new GameObjectParser();
 
             const gameObjects = gameObjectParser.parse(file)
+            expect(gameObjects[0].additionalData).to.eql({
+                angle: 90,
+                axis: {
+                    x: 4, y: 1
+                },
+                pos: {
+                    x: 4, y: 1
+                }
+            })
+        });
 
+        it('attaches the additional data to vertices, if present TEST CASE 2', () => {
+            const file = fs.readFileSync(__dirname + '/../assets/test/testAdditionalData2.gwm', 'utf8');
+            const gameObjectParser = new GameObjectParser();
+            const gameObjects = gameObjectParser.parse(file)
             expect(gameObjects[0].additionalData).to.eql({
                 angle: 90,
                 axis: {

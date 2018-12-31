@@ -3,7 +3,7 @@
     "publisher": "santagergely90",
     "displayName": "Game Worldmap Colorizer",
     "description": "",
-    "version": "0.10.0",
+    "version": "0.11.0",
     "icon": "img/vscode_extension_icon.png",
     "engines": {
         "vscode": "^1.29.0"
