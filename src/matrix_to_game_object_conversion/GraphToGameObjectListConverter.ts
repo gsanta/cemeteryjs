@@ -4,6 +4,8 @@ import * as _ from 'lodash';
 import { Rectangle } from '../model/Rectangle';
 
 export class GraphToGameObjectListConverter {
+    private static Y_UNIT_LENGTH = 2;
+    private static X_UNIT_LENGTH = 1;
 
     public convert(graph: MatrixGraph): GameObject[] {
 
@@ -15,7 +17,16 @@ export class GraphToGameObjectListConverter {
             })
             .flattenDeep()
             .concat([
-                new GameObject('F', new Rectangle(0, 0, graph.getColumns(), graph.getRows()), 'floor')
+                new GameObject(
+                    'F',
+                    new Rectangle(
+                        0,
+                        0,
+                        graph.getColumns() * GraphToGameObjectListConverter.X_UNIT_LENGTH,
+                        graph.getRows() * GraphToGameObjectListConverter.Y_UNIT_LENGTH,
+                    ),
+                    'floor'
+                )
             ])
             .value();
 
@@ -106,7 +117,13 @@ export class GraphToGameObjectListConverter {
 
         const startCoord = graph.getVertexPositionInMatrix(vertices[0]);
         const endCoord = graph.getVertexPositionInMatrix(_.last(vertices));
-        return new Rectangle(startCoord.x, startCoord.y, 1, endCoord.y - startCoord.y + 1);
+
+        const x = startCoord.x * GraphToGameObjectListConverter.X_UNIT_LENGTH;
+        const y = startCoord.y * GraphToGameObjectListConverter.Y_UNIT_LENGTH;
+        const width = GraphToGameObjectListConverter.X_UNIT_LENGTH;
+        const height = endCoord.y * GraphToGameObjectListConverter.Y_UNIT_LENGTH - y + GraphToGameObjectListConverter.Y_UNIT_LENGTH;
+
+        return new Rectangle(x, y, width, height);
     }
 
     private createRectangleFromHorizontalVertices(graph: MatrixGraph) {
@@ -115,7 +132,13 @@ export class GraphToGameObjectListConverter {
 
         const startCoord = graph.getVertexPositionInMatrix(vertices[0]);
         const endCoord = graph.getVertexPositionInMatrix(_.last(vertices));
-        return new Rectangle(startCoord.x, startCoord.y, endCoord.x - startCoord.x + 1, 1);
+
+        const x = startCoord.x * GraphToGameObjectListConverter.X_UNIT_LENGTH;
+        const y = startCoord.y * GraphToGameObjectListConverter.Y_UNIT_LENGTH;
+        const width = endCoord.x * GraphToGameObjectListConverter.X_UNIT_LENGTH - x + GraphToGameObjectListConverter.X_UNIT_LENGTH;
+        const height = GraphToGameObjectListConverter.Y_UNIT_LENGTH;
+
+        return new Rectangle(x, y, width, height);
     }
 
     private getAdditionalDataFromGameObjectGraph(graph: MatrixGraph): any {

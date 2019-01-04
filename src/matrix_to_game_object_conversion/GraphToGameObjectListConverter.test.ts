@@ -26,13 +26,9 @@ describe('GraphToGameObjectListConverter', () => {
             const graphToGrameMapConverter = new GraphToGameObjectListConverter();
             const gameMap = graphToGrameMapConverter.convert(graph);
 
-            expect(gameMap).to.eql([
-                new GameObject('W', new Rectangle(1, 1, 1, 2), 'wall'),
-                new GameObject('W', new Rectangle(3, 1, 1, 2), 'wall'),
-                new GameObject('W', new Rectangle(2, 1, 1, 1), 'wall'),
-                new GameObject('W', new Rectangle(4, 1, 2, 1), 'wall'),
-                new GameObject('F', new Rectangle(0, 0, 6, 4), 'floor')
-            ]);
+            expect(gameMap[0]).to.eql(new GameObject('W', new Rectangle(1, 2, 1, 4), 'wall'));
+            expect(gameMap[1]).to.eql(new GameObject('W', new Rectangle(3, 2, 1, 4), 'wall'));
+            expect(gameMap[4]).to.eql(new GameObject('F', new Rectangle(0, 0, 6, 8), 'floor'));
         });
 
         it('creates game objects from the graph (test case with multiple connected components)', () => {
@@ -55,12 +51,9 @@ describe('GraphToGameObjectListConverter', () => {
             const graphToGrameMapConverter = new GraphToGameObjectListConverter();
             const gameMap = graphToGrameMapConverter.convert(graph);
 
-            expect(gameMap).to.eql([
-                new GameObject('W', new Rectangle(1, 1, 1, 2), 'wall'),
-                new GameObject('W', new Rectangle(2, 1, 3, 1), 'wall'),
-                new GameObject('W', new Rectangle(2, 3, 2, 1), 'wall'),
-                new GameObject('F', new Rectangle(0, 0, 6, 4), 'floor')
-            ]);
+            expect(gameMap[0]).to.eql(new GameObject('W', new Rectangle(1, 2, 1, 4), 'wall'));
+            expect(gameMap[2]).to.eql(new GameObject('W', new Rectangle(2, 6, 2, 2), 'wall'));
+            expect(gameMap[3]).to.eql(new GameObject('F', new Rectangle(0, 0, 6, 8), 'floor'));
         });
     });
 });
