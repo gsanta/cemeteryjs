@@ -49,6 +49,16 @@ export class MatrixGraph {
         };
     }
 
+    public getVertexAtPosition(pos: {x: number, y: number}): number {
+        const vertex = pos.y * this.columns + pos.x;
+        
+        if (this.hasVertex(vertex)) {
+            return vertex;
+        }
+
+        return null;
+    }
+
     public getVertexValue(vertex: number): MatrixGraphVertexValue {
         return this.vertexValues[vertex];
     }

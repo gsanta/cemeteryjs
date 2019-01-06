@@ -33,6 +33,28 @@ export class GraphToGameObjectListConverter {
     }
 
     private createGameObjectsForConnectedComponent(componentGraph: MatrixGraph): GameObject[] {
+        if (this.areConnectedComponentsRectangular(componentGraph)) {
+            return [this.createRectangularGameObject(componentGraph)];
+        } else {
+            return this.createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph);
+        }
+    }
+
+    private createRectangularGameObject(componentGraph): GameObject {
+        const minX = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).x).min().value();
+        const maxX = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).x).max().value();
+        const minY = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).y).min().value();
+        const maxY = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).y).max().value();
+
+        const oneVertex = componentGraph.getAllVertices()[0];
+        return new GameObject(
+            componentGraph.getCharacters()[0],
+            new Rectangle(minX, minY, maxX - minX + 1, maxY - minY + 1),
+            componentGraph.getVertexValue(oneVertex).name
+        );
+    }
+
+    private createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph: MatrixGraph): GameObject[] {
         const verticalSubComponents = this.findVerticalSlices(componentGraph);
         const verticesMinusVerticalSubComponents = _.without(componentGraph.getAllVertices(), ..._.flatten(verticalSubComponents));
         const componentGraphMinusVerticalSubComponents = componentGraph.getGraphForVertices(verticesMinusVerticalSubComponents);
@@ -69,6 +91,31 @@ export class GraphToGameObjectListConverter {
             });
 
         return [...verticalGameObjects, ...horizontalGameObjects];
+    }
+
+    private areConnectedComponentsRectangular(componentGraph: MatrixGraph) {
+        const minX = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).x).min().value();
+        const maxX = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).x).max().value();
+        const minY = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).y).min().value();
+        const maxY = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).y).max().value();
+
+        const checkedVertices = [];
+
+        if (maxX > minX && maxY > minY) {
+            for (let x = minX; x <= maxX; x++) {
+                for (let y = minY; y <= maxY; y++) {
+                    const vertex = componentGraph.getVertexAtPosition({x, y});
+
+                    if (vertex === null) {
+                        return false;
+                    }
+
+                    checkedVertices.push(vertex);
+                }
+            }
+        }
+
+        return _.without(componentGraph.getAllVertices(), ...checkedVertices).length === 0;
     }
 
     private findVerticalSlices(reducedGraph: MatrixGraph): number[][] {
