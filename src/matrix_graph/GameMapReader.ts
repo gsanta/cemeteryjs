@@ -92,7 +92,7 @@ export class GameMapReader {
 
             if (this.section === prevSection) {
                 if (this.section === ParseSections.MAP) {
-                    this.worldMapLines.push(line)
+                    this.worldMapLines.push(line.trim())
                 } else if (this.section === ParseSections.DEFINITION) {
                     const match = line.match(GameMapReader.DEFINITION_SECTION_LINE_TEST);
                     this.charachterToNameMap[match[1]] = match[2];

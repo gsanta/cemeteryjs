@@ -50,7 +50,8 @@ export class GraphToGameObjectListConverter {
         return new GameObject(
             componentGraph.getCharacters()[0],
             new Rectangle(minX, minY, maxX - minX + 1, maxY - minY + 1),
-            componentGraph.getVertexValue(oneVertex).name
+            componentGraph.getVertexValue(oneVertex).name,
+            this.getAdditionalDataFromGameObjectGraph(componentGraph)
         );
     }
 

@@ -51,5 +51,48 @@ describe('GameObjectParser', () => {
                 }
             })
         });
+
+        it('attaches the additional data to vertices for rectangular GameObjects', () => {
+            const map = `
+                map \`
+
+                ##########
+                ####II####
+                ####II####
+                ####II####
+                ##########
+
+                \`
+
+                definitions \`
+
+                # = empty
+                I = window
+
+                \`
+
+                details \`
+                    "attributes": [
+                        {
+                            "pos": {
+                                "x": 4,
+                                "y": 1
+                            },
+                            "orientation": "EAST"
+                        }
+                    ]
+                \`
+            `;
+
+            const gameObjectParser = new GameObjectParser();
+            const gameObjects = gameObjectParser.parse(map)
+            expect(gameObjects[0].additionalData).to.eql(                        {
+                "pos": {
+                    "x": 4,
+                    "y": 1
+                },
+                "orientation": "EAST"
+            });
+        });
     });
 });
