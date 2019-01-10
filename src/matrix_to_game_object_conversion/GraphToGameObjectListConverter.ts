@@ -47,9 +47,14 @@ export class GraphToGameObjectListConverter {
         const maxY = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).y).max().value();
 
         const oneVertex = componentGraph.getAllVertices()[0];
+
+        const x = minX * GraphToGameObjectListConverter.X_UNIT_LENGTH;
+        const y = minY * GraphToGameObjectListConverter.Y_UNIT_LENGTH;
+        const width = (maxX - minX + 1) * GraphToGameObjectListConverter.X_UNIT_LENGTH;
+        const height = (maxY - minY + 1) * GraphToGameObjectListConverter.Y_UNIT_LENGTH;
         return new GameObject(
             componentGraph.getCharacters()[0],
-            new Rectangle(minX, minY, maxX - minX + 1, maxY - minY + 1),
+            new Rectangle(x, y, width, height),
             componentGraph.getVertexValue(oneVertex).name,
             this.getAdditionalDataFromGameObjectGraph(componentGraph)
         );

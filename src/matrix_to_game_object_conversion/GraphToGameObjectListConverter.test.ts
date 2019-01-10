@@ -102,7 +102,7 @@ describe('GraphToGameObjectListConverter', () => {
             const graphToGrameMapConverter = new GraphToGameObjectListConverter();
             const gameMap = graphToGrameMapConverter.convert(graph);
             expect(gameMap.length).to.equal(2);
-            expect(gameMap[0]).to.eql(new GameObject('D', new Rectangle(1, 0, 2, 3), 'door'));
+            expect(gameMap[0]).to.eql(new GameObject('D', new Rectangle(1, 0, 2, 6), 'door'));
         });
     });
 });
