@@ -94,5 +94,45 @@ describe('GameObjectParser', () => {
                 "orientation": "EAST"
             });
         });
+
+        it('converts the additional data if conversion function provided', () => {
+            const map = `
+                map \`
+
+                ##
+                #I
+
+                \`
+
+                definitions \`
+
+                # = empty
+                I = window
+
+                \`
+
+                details \`
+                    "attributes": [
+                        {
+                            "pos": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "orientation": "EAST"
+                        }
+                    ]
+                \`
+            `;
+
+            const conversionFunction = (additionalData) => ({
+                orientation: `${additionalData.orientation}_CONVERTED`
+            });
+
+            const gameObjectParser = new GameObjectParser();
+            const gameObjects = gameObjectParser.parse(map, conversionFunction)
+            expect(gameObjects[0].additionalData).to.eql(                        {
+                "orientation": "EAST_CONVERTED"
+            });
+        });
     });
 });
