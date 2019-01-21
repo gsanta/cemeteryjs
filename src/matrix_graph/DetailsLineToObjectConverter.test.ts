@@ -9,7 +9,7 @@ describe('DetailsLineToObjectConverter', () => {
             const detailsLineToObjectConverter = new DetailsLineToObjectConverter({
                 pos: DetailsLineDataTypes.COORDINATE,
                 axis: DetailsLineDataTypes.COORDINATE,
-                angle: DetailsLineDataTypes.DEFAULT
+                angle: DetailsLineDataTypes.STRING
             });
             const obj = detailsLineToObjectConverter.convert(line);
             

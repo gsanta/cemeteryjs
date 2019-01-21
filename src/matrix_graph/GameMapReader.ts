@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import { MatrixGraph } from './MatrixGraph';
 import { LinesToGraphConverter } from './LinesToGraphConverter';
+import { DetailsLineToObjectConverter, DetailsLineDataTypes } from './DetailsLineToObjectConverter';
 
 export const defaultMap = `
 map {
@@ -70,12 +71,20 @@ export class GameMapReader {
     private charachterToNameMap: {[key: string]: string};
     private detailsSectionStr: string = '';
     private vertexAdditinalData: {[key: number]: any} = {};
+    private detailsLineToObjectConverter: DetailsLineToObjectConverter;
 
     public read(worldmap: string): MatrixGraph {
         this.worldMapLines = [];
         this.charachterToNameMap = {};
 
         this.linesToGraphConverter = new LinesToGraphConverter();
+        this.detailsLineToObjectConverter = new DetailsLineToObjectConverter({
+            pos: DetailsLineDataTypes.COORDINATE,
+            axis: DetailsLineDataTypes.COORDINATE,
+            axis1: DetailsLineDataTypes.COORDINATE,
+            axis2: DetailsLineDataTypes.COORDINATE,
+            angle: DetailsLineDataTypes.NUMBER
+        });
         return this.stringToGraph(worldmap);
     }
 
@@ -110,7 +119,11 @@ export class GameMapReader {
         });
 
 
-        const attributes = (<DetailsJsonSchema> JSON.parse(`{${this.detailsSectionStr}}`)).attributes || [];
+        let attributes = (<DetailsJsonSchema> JSON.parse(`{${this.detailsSectionStr}}`)).attributes || [];
+
+        const newAttributes = this.detailsLines.map(line => this.convertDetailsLineToAdditionalData(line));
+
+        attributes = [...attributes, ...newAttributes ]
 
         attributes.forEach(attribute => {
             const vertex = this.worldMapLines[0].length * attribute.pos.y + attribute.pos.x;
@@ -119,7 +132,7 @@ export class GameMapReader {
     }
 
     private convertDetailsLineToAdditionalData(line: string): any {
-
+        return this.detailsLineToObjectConverter.convert(line);
     }
 
     private checkParseState(line: string) {

@@ -1,7 +1,7 @@
 
 
 export enum DetailsLineDataTypes {
-    COORDINATE, DEFAULT
+    COORDINATE, STRING, NUMBER
 }
 
 export class DetailsLineToObjectConverter {
@@ -24,6 +24,9 @@ export class DetailsLineToObjectConverter {
             switch(this.keyToTypeMap[key]) {
                 case DetailsLineDataTypes.COORDINATE: 
                     value = this.convertCoordinateValue(value);
+                break;
+                case DetailsLineDataTypes.NUMBER:
+                    value = this.convertDefaultValue(value);
                 break;
                 default:
                     value = `"${this.convertDefaultValue(value)}"`;
@@ -51,8 +54,8 @@ export class DetailsLineToObjectConverter {
 
         return JSON.stringify(
             {
-                x,
-                y
+                x: parseInt(x, 10),
+                y: parseInt(y, 10)
             }
         );
     }
