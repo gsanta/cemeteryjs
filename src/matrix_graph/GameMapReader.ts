@@ -41,7 +41,8 @@ details {
 enum ParseSections {
     MAP,
     DEFINITION,
-    DETAILS
+    DETAILS,
+    DETAILS2
 }
 
 interface DetailsJsonSchema {
@@ -62,8 +63,10 @@ export class GameMapReader {
     private static SECTION_CLOSING_TEST = /^\s*\`\s*$/;
     private static DEFINITION_SECTION_LINE_TEST = /^\s*(\S)\s*\=\s*(\S*)\s*$/;
     private static DETAILS_SECTION_START_TEST =  /\s*details\s*`\s*/;
+    private static DETAILS2_SECTION_START_TEST =  /\s*details2\s*`\s*/;
 
     private worldMapLines: string[];
+    private detailsLines: string[] = [];
     private charachterToNameMap: {[key: string]: string};
     private detailsSectionStr: string = '';
     private vertexAdditinalData: {[key: number]: any} = {};
@@ -98,6 +101,10 @@ export class GameMapReader {
                     this.charachterToNameMap[match[1]] = match[2];
                 } else if (this.section === ParseSections.DETAILS) {
                     this.detailsSectionStr += line;
+                } else if (this.section === ParseSections.DETAILS2) {
+                    if (line.trim() !== '') {
+                        this.detailsLines.push(line.trim());
+                    }
                 }
             }
         });
@@ -111,6 +118,10 @@ export class GameMapReader {
         });
     }
 
+    private convertDetailsLineToAdditionalData(line: string): any {
+
+    }
+
     private checkParseState(line: string) {
         if (GameMapReader.MAP_SECTION_START_TEST.test(line)) {
             this.section = ParseSections.MAP;
@@ -118,6 +129,8 @@ export class GameMapReader {
             this.section = ParseSections.DEFINITION;
         } else if (GameMapReader.DETAILS_SECTION_START_TEST.test(line)) {
             this.section = ParseSections.DETAILS;
+        } else if (GameMapReader.DETAILS2_SECTION_START_TEST.test(line)) {
+            this.section = ParseSections.DETAILS2;
         } else if (GameMapReader.SECTION_CLOSING_TEST.test(line)) {
             this.section = null;
         }

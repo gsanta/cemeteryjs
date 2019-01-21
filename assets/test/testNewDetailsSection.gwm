@@ -1,0 +1,22 @@
+map `
+
+##########
+####II####
+##########
+##########
+##########
+
+`
+
+definitions `
+
+# = empty
+I = window
+
+`
+
+details2 `
+
+W = pos(5, 1) axis1(5, 1) axis2(13, 1) angle(-90)
+
+`
