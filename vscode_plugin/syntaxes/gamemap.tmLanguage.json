@@ -32,6 +32,22 @@
 						{
 							"name": "keyword.I.gameworldmap",
 							"match": "I"
+						},
+						{
+							"name": "keyword.C.gameworldmap",
+							"match": "C[\\s\\S]*"
+						},
+						{
+							"name": "keyword.T.gameworldmap",
+							"match": "T[\\s\\S]*"
+						},
+						{
+							"name": "keyword.B.gameworldmap",
+							"match": "B[\\s\\S]*"
+						},
+						{
+							"name": "keyword.S.gameworldmap",
+							"match": "S[\\s\\S]*"
 						}
 					]
 				},
@@ -55,6 +71,61 @@
 						{
 							"name": "keyword.I.gameworldmap",
 							"match": "I[\\s\\S]*"
+						},
+						{
+							"name": "keyword.C.gameworldmap",
+							"match": "C[\\s\\S]*"
+						},
+						{
+							"name": "keyword.T.gameworldmap",
+							"match": "T[\\s\\S]*"
+						},
+						{
+							"name": "keyword.B.gameworldmap",
+							"match": "B[\\s\\S]*"
+						},
+						{
+							"name": "keyword.S.gameworldmap",
+							"match": "S[\\s\\S]*"
+						}
+					]
+				},
+				{
+					"name": "keyword.definitions.gameworldmap",
+					"begin": "details2 `",
+					"end": "`",
+					"patterns": [
+						{
+							"name": "keyword.W.gameworldmap",
+							"match": "W[\\s\\S]*"
+						},
+						{
+							"name": "keyword.hash.gameworldmap",
+							"match": "#[\\s\\S]*"
+						},
+						{
+							"name": "keyword.D.gameworldmap",
+							"match": "D[\\s\\S]*"
+						},
+						{
+							"name": "keyword.I.gameworldmap",
+							"match": "I[\\s\\S]*"
+						},
+						{
+							"name": "keyword.C.gameworldmap",
+							"match": "C[\\s\\S]*"
+						},
+						{
+							"name": "keyword.T.gameworldmap",
+							"match": "T[\\s\\S]*"
+						},
+						{
+							"name": "keyword.B.gameworldmap",
+							"match": "B[\\s\\S]*"
+						},
+						{
+							"name": "keyword.S.gameworldmap",
+							"match": "S[\\s\\S]*"
 						}
 					]
 				}

@@ -646,6 +646,30 @@
 			"settings": {
 				"foreground": "#4687FE"
 			}
+		},
+		{
+			"scope": "keyword.C.gameworldmap",
+			"settings": {
+				"foreground": "#FF7F50"
+			}
+		},
+		{
+			"scope": "keyword.T.gameworldmap",
+			"settings": {
+				"foreground": "#00FF00"
+			}
+		},
+		{
+			"scope": "keyword.B.gameworldmap",
+			"settings": {
+				"foreground": "#808000"
+			}
+		},
+		{
+			"scope": "keyword.S.gameworldmap",
+			"settings": {
+				"foreground": "#DDA0DD"
+			}
 		}
 	]
 }
