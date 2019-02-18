@@ -35,19 +35,19 @@
 						},
 						{
 							"name": "keyword.C.gameworldmap",
-							"match": "C[\\s\\S]*"
+							"match": "C"
 						},
 						{
 							"name": "keyword.T.gameworldmap",
-							"match": "T[\\s\\S]*"
+							"match": "T"
 						},
 						{
 							"name": "keyword.B.gameworldmap",
-							"match": "B[\\s\\S]*"
+							"match": "B"
 						},
 						{
 							"name": "keyword.S.gameworldmap",
-							"match": "S[\\s\\S]*"
+							"match": "S"
 						}
 					]
 				},

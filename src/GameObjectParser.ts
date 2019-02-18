@@ -1,4 +1,4 @@
-import { GameMapReader } from './matrix_graph/GameMapReader';
+import { WorldMapToMatrixGraphConverter } from './matrix_graph/WorldMapToMatrixGraphConverter';
 import { GraphToGameObjectListConverter } from './matrix_to_game_object_conversion/GraphToGameObjectListConverter';
 import { GameObject } from './GameObject';
 import _ = require('lodash');
@@ -8,19 +8,19 @@ export interface AdditionalDataConverter<T> {
 }
 
 export class GameObjectParser {
-    private gameMapReader: GameMapReader;
+    private worldMapConverter: WorldMapToMatrixGraphConverter;
     private graphToGameObjectListConverter: GraphToGameObjectListConverter;
 
     constructor(
-        gameMapReader: GameMapReader = new GameMapReader(),
+        worldMapConverter: WorldMapToMatrixGraphConverter = new WorldMapToMatrixGraphConverter(),
         graphToGameObjectListConverter: GraphToGameObjectListConverter = new GraphToGameObjectListConverter()
     ) {
-        this.gameMapReader = gameMapReader;
+        this.worldMapConverter = worldMapConverter;
         this.graphToGameObjectListConverter = graphToGameObjectListConverter;
     }
 
     public parse<T>(worldMap: string, additionalDataConverter: AdditionalDataConverter<T> = _.identity): GameObject[] {
-        const graph = this.gameMapReader.read(worldMap);
+        const graph = this.worldMapConverter.convert(worldMap);
         const gameObjects = this.graphToGameObjectListConverter.convert(graph);
 
         gameObjects.forEach(gameObject => {

@@ -89,7 +89,7 @@ export class GameMapReader {
     }
 
     private stringToGraph(worldmap: string): MatrixGraph {
-        const lines = worldmap.split(/\r?\n/)
+        const lines = worldmap.split(/\r?\n/);
 
         this.categorizeLines(lines);
         return this.linesToGraphConverter.parse(this.worldMapLines, this.charachterToNameMap, this.vertexAdditinalData);

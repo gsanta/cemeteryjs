@@ -135,10 +135,9 @@ describe('GameObjectParser', () => {
             });
         });
 
-        it.only('combines correctly together the old and new details api', () => {
+        it.only ('combines correctly together the old and new details api', () => {
             const file = fs.readFileSync(__dirname + '/../assets/test/testNewDetailsSection.gwm', 'utf8');
             const gameObjectParser = new GameObjectParser();
-            debugger;
             const gameObjects = gameObjectParser.parse(file)
             expect(gameObjects[0].additionalData).to.eql({
                 angle: 90,
