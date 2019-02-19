@@ -211,4 +211,39 @@ export class MatrixGraph {
 
         return connectedComps.map(set => Array.from(set));
     }
+
+    /*
+     * Reduces the graph into subgraphs, where each graph has only vetices with value of `character`
+     * and where each graph is a `connected-component`.
+     */
+    public createConnectedComponentGraphsForCharacter(character: string): MatrixGraph[] {
+        const reducedGraph = this.getGraphForVertexValue(character);
+        const connectedComponents = reducedGraph.findConnectedComponentsForCharacter(character);
+
+        return connectedComponents.map(component => this.getReducedGraphForVertices(component));
+    }
+
+    /*
+     * returns with a graph of the same extent (same column and row number), but
+     * containing only the vertices passed as the `vertices` parameter and the edges between
+     * those vertices.
+     */
+    private getReducedGraphForVertices(vertices: number[]): MatrixGraph {
+        const graph = new MatrixGraph(this.columns, this.rows);
+
+        vertices.forEach(vertex => graph.addNextVertex(vertex, this.getVertexValue(vertex)));
+
+        graph.getAllVertices().forEach(vertex => {
+
+            const neighbours = this.getAjacentEdges(vertex);
+
+            neighbours.forEach(neighbour => {
+                if (vertices.indexOf(neighbour) !== -1 && !graph.hasEdgeBetween(vertex, neighbour)) {
+                    graph.addEdge(vertex, neighbour);
+                }
+            });
+        });
+
+        return graph;
+    }
 }

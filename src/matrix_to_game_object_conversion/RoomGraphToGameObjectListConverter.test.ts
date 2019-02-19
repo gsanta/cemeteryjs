@@ -4,7 +4,7 @@ import { RoomGraphToGameObjectListConverter } from './RoomGraphToGameObjectListC
 
 describe('RoomGraphToGameObjectListConverter', () => {
     describe('convert', () => {
-        it.only ('detects the separated rooms in the world map and returns with the corresponding game objects', () => {
+        it ('detects the separated rooms in the world map and returns with the corresponding game objects', () => {
             const map = `
                 map \`
 
