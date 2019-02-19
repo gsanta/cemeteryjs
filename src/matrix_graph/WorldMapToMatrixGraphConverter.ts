@@ -1,7 +1,7 @@
 import { WorldMapLineListener, WorldMapReader } from '../matrix_graph/WorldMapReader';
 import { LinesToGraphConverter } from './LinesToGraphConverter';
-import { DetailsLineToObjectConverter, DetailsLineDataTypes } from './DetailsLineToObjectConverter';
 import { MatrixGraph } from './MatrixGraph';
+import { DetailsLineToObjectConverter, DetailsLineDataTypes } from './DetailsLineToObjectConverter';
 
 interface DetailsJsonSchema {
     attributes: {
@@ -19,7 +19,6 @@ export class WorldMapToMatrixGraphConverter implements WorldMapLineListener {
     private worldMapLines: string[];
     private detailsLines: string[] = [];
     private charachterToNameMap: {[key: string]: string};
-    private detailsSectionStr: string = '';
     private vertexAdditinalData: {[key: number]: any} = {};
     private detailsLineToObjectConverter: DetailsLineToObjectConverter;
 
@@ -47,11 +46,7 @@ export class WorldMapToMatrixGraphConverter implements WorldMapLineListener {
     private stringToGraph(worldmap: string): MatrixGraph {
         this.worldMapReader.read(worldmap);
 
-        let attributes = (<DetailsJsonSchema> JSON.parse(`{${this.detailsSectionStr}}`)).attributes || [];
-
-        const newAttributes = this.detailsLines.map(line => this.convertDetailsLineToAdditionalData(line));
-
-        attributes = [...attributes, ...newAttributes ]
+        const attributes = this.detailsLines.map(line => this.convertDetailsLineToAdditionalData(line));
 
         attributes.forEach(attribute => {
             const vertex = this.worldMapLines[0].length * attribute.pos.y + attribute.pos.x;
@@ -71,10 +66,11 @@ export class WorldMapToMatrixGraphConverter implements WorldMapLineListener {
 
     public addDefinitionSectionLine(line: string) {
         const match = line.match(WorldMapToMatrixGraphConverter.DEFINITION_SECTION_LINE_TEST);
-        this.charachterToNameMap[match[1]] = match[2];    }
+        this.charachterToNameMap[match[1]] = match[2];
+    }
 
     public addDetailsSectionLine(line: string) {
-        this.detailsSectionStr += line;
+        this.detailsLines.push(line);
     }
 
     public addSeparator() {}

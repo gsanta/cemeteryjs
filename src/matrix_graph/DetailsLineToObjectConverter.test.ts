@@ -12,16 +12,16 @@ describe('DetailsLineToObjectConverter', () => {
                 angle: DetailsLineDataTypes.STRING
             });
             const obj = detailsLineToObjectConverter.convert(line);
-            
+
             expect(obj).to.eql({
                 angle: '-90',
                 axis: {
-                    x: "5",
-                    y: "1"
+                    x: 5,
+                    y: 1
                 },
                 pos: {
-                    x: "5",
-                    y: "1"
+                    x: 5,
+                    y: 1
                 }
             })
         });

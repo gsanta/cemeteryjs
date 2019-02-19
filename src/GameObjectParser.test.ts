@@ -21,6 +21,25 @@ describe('GameObjectParser', () => {
             expect(gameObjects[5]).to.eql(new GameObject('I', new Rectangle(4, 2, 2, 2), 'window'), 'gameObject[5] is not correct');
         });
 
+        it ('can parse the additional data for a GameObject.', () => {
+            const file = fs.readFileSync(__dirname + '/../assets/test/testNewDetailsSection.gwm', 'utf8');
+            const gameObjectParser = new GameObjectParser();
+            const gameObjects = gameObjectParser.parse(file)
+
+            expect(gameObjects[1].additionalData).to.eql({
+                angle: -90,
+                axis1: {
+                    x: 4, y: 2
+                },
+                axis2: {
+                    x: 13, y: 2
+                },
+                pos: {
+                    x: 4, y: 2
+                }
+            });
+        });
+
         it('attaches the additional data to vertices, if present TEST CASE 1', () => {
             const file = fs.readFileSync(__dirname + '/../assets/test/testAdditionalData.gwm', 'utf8');
             const gameObjectParser = new GameObjectParser();
@@ -71,22 +90,16 @@ describe('GameObjectParser', () => {
 
                 \`
 
-                details \`
-                    "attributes": [
-                        {
-                            "pos": {
-                                "x": 4,
-                                "y": 1
-                            },
-                            "orientation": "EAST"
-                        }
-                    ]
+                details2 \`
+
+                I = pos(4,1) orientation(EAST)
+
                 \`
             `;
 
             const gameObjectParser = new GameObjectParser();
             const gameObjects = gameObjectParser.parse(map)
-            expect(gameObjects[0].additionalData).to.eql(                        {
+            expect(gameObjects[0].additionalData).to.eql({
                 "pos": {
                     "x": 4,
                     "y": 1
@@ -111,16 +124,10 @@ describe('GameObjectParser', () => {
 
                 \`
 
-                details \`
-                    "attributes": [
-                        {
-                            "pos": {
-                                "x": 1,
-                                "y": 1
-                            },
-                            "orientation": "EAST"
-                        }
-                    ]
+                details2 \`
+
+                I = pos(1,1) orientation(EAST)
+
                 \`
             `;
 
@@ -132,34 +139,6 @@ describe('GameObjectParser', () => {
             const gameObjects = gameObjectParser.parse(map, conversionFunction)
             expect(gameObjects[0].additionalData).to.eql(                        {
                 "orientation": "EAST_CONVERTED"
-            });
-        });
-
-        it.only ('combines correctly together the old and new details api', () => {
-            const file = fs.readFileSync(__dirname + '/../assets/test/testNewDetailsSection.gwm', 'utf8');
-            const gameObjectParser = new GameObjectParser();
-            const gameObjects = gameObjectParser.parse(file)
-            expect(gameObjects[0].additionalData).to.eql({
-                angle: 90,
-                axis: {
-                    x: 4, y: 1
-                },
-                pos: {
-                    x: 4, y: 1
-                }
-            });
-
-            expect(gameObjects[1].additionalData).to.eql({
-                angle: -90,
-                axis1: {
-                    x: 4, y: 2
-                },
-                axis2: {
-                    x: 13, y: 2
-                },
-                pos: {
-                    x: 4, y: 2
-                }
             });
         });
     });

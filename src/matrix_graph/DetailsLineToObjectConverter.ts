@@ -14,7 +14,6 @@ export class DetailsLineToObjectConverter {
 
     public convert(line: string): any {
         const dataSection = line.split('=')[1];
-
         const dataElements = dataSection.trim().split(' ');
 
         const objectElements = dataElements.map(dataElement => {
@@ -22,7 +21,7 @@ export class DetailsLineToObjectConverter {
             let value = dataElement.substr(key.length);
 
             switch(this.keyToTypeMap[key]) {
-                case DetailsLineDataTypes.COORDINATE: 
+                case DetailsLineDataTypes.COORDINATE:
                     value = this.convertCoordinateValue(value);
                 break;
                 case DetailsLineDataTypes.NUMBER:

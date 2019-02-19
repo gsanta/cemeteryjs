@@ -44,16 +44,10 @@ describe('GameMapReader', () => {
 
                 \`
 
-                details \`
-                    "attributes": [
-                        {
-                            "pos": {
-                                "x": 1,
-                                "y": 1
-                            },
-                            "orientation": "EAST"
-                        }
-                    ]
+                details2 \`
+
+                W = pos(1,1) orientation(EAST)
+
                 \`
             `
 

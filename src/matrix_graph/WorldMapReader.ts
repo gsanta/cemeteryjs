@@ -20,7 +20,7 @@ export class WorldMapReader {
     private static MAP_SECTION_START_TEST = /\s*map\s*`\s*/;
     private static DEFINITIONS_SECTION_START_TEST = /\s*definitions\s*`\s*/;
     private static SECTION_CLOSING_TEST = /^\s*\`\s*$/;
-    private static DETAILS_SECTION_START_TEST =  /\s*details\s*`\s*/;
+    private static DETAILS_SECTION_START_TEST =  /\s*details2\s*`\s*/;
 
     constructor(listener: WorldMapLineListener) {
         this.listener = listener;

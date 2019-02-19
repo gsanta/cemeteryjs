@@ -15,18 +15,8 @@ I = window
 
 `
 
-details `
-    "attributes": [
-        {
-            "pos": {
-                "x": 4,
-                "y": 1
-            },
-            "axis": {
-                "x": 4,
-                "y": 1
-            },
-            "angle": 90
-        }
-    ]
+details2 `
+
+I = pos(4,1) axis(4,1) angle(90)
+
 `

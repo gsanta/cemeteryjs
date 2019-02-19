@@ -63,13 +63,11 @@ export class GameMapReader {
     private static DEFINITIONS_SECTION_START_TEST = /\s*definitions\s*`\s*/;
     private static SECTION_CLOSING_TEST = /^\s*\`\s*$/;
     private static DEFINITION_SECTION_LINE_TEST = /^\s*(\S)\s*\=\s*(\S*)\s*$/;
-    private static DETAILS_SECTION_START_TEST =  /\s*details\s*`\s*/;
     private static DETAILS2_SECTION_START_TEST =  /\s*details2\s*`\s*/;
 
     private worldMapLines: string[];
     private detailsLines: string[] = [];
     private charachterToNameMap: {[key: string]: string};
-    private detailsSectionStr: string = '';
     private vertexAdditinalData: {[key: number]: any} = {};
     private detailsLineToObjectConverter: DetailsLineToObjectConverter;
 
@@ -108,8 +106,6 @@ export class GameMapReader {
                 } else if (this.section === ParseSections.DEFINITION) {
                     const match = line.match(GameMapReader.DEFINITION_SECTION_LINE_TEST);
                     this.charachterToNameMap[match[1]] = match[2];
-                } else if (this.section === ParseSections.DETAILS) {
-                    this.detailsSectionStr += line;
                 } else if (this.section === ParseSections.DETAILS2) {
                     if (line.trim() !== '') {
                         this.detailsLines.push(line.trim());
@@ -119,11 +115,7 @@ export class GameMapReader {
         });
 
 
-        let attributes = (<DetailsJsonSchema> JSON.parse(`{${this.detailsSectionStr}}`)).attributes || [];
-
-        const newAttributes = this.detailsLines.map(line => this.convertDetailsLineToAdditionalData(line));
-
-        attributes = [...attributes, ...newAttributes ]
+        const attributes = this.detailsLines.map(line => this.convertDetailsLineToAdditionalData(line));
 
         attributes.forEach(attribute => {
             const vertex = this.worldMapLines[0].length * attribute.pos.y + attribute.pos.x;
@@ -140,8 +132,6 @@ export class GameMapReader {
             this.section = ParseSections.MAP;
         } else if (GameMapReader.DEFINITIONS_SECTION_START_TEST.test(line)) {
             this.section = ParseSections.DEFINITION;
-        } else if (GameMapReader.DETAILS_SECTION_START_TEST.test(line)) {
-            this.section = ParseSections.DETAILS;
         } else if (GameMapReader.DETAILS2_SECTION_START_TEST.test(line)) {
             this.section = ParseSections.DETAILS2;
         } else if (GameMapReader.SECTION_CLOSING_TEST.test(line)) {
