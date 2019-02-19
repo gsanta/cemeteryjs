@@ -4,15 +4,15 @@ import { RoomGraphToGameObjectListConverter } from './RoomGraphToGameObjectListC
 
 describe('RoomGraphToGameObjectListConverter', () => {
     describe('convert', () => {
-        it.only('detects the separated rooms in the world map and returns with the corresponding game objects', () => {
+        it.only ('detects the separated rooms in the world map and returns with the corresponding game objects', () => {
             const map = `
                 map \`
 
-                ##########
-                #-----####
-                #-###-####
-                #-###-####
-                #-----####
+                ----------
+                -#####-##-
+                -#####-##-
+                -#####----
+                ----------
 
                 \`
 
@@ -22,19 +22,13 @@ describe('RoomGraphToGameObjectListConverter', () => {
                 I = window
 
                 \`
-
-                details2 \`
-
-                I = pos(4,1) orientation(EAST)
-
-                \`
             `;
 
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
             const roomGraphToGameObjectListConverter = new RoomGraphToGameObjectListConverter();
-            roomGraphToGameObjectListConverter.convert(matrixGraph, '-');
+            roomGraphToGameObjectListConverter.convert(matrixGraph, '#');
         });
     });
 });

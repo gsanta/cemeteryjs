@@ -51,7 +51,7 @@ export class MatrixGraph {
 
     public getVertexAtPosition(pos: {x: number, y: number}): number {
         const vertex = pos.y * this.columns + pos.x;
-        
+
         if (this.hasVertex(vertex)) {
             return vertex;
         }
@@ -196,19 +196,19 @@ export class MatrixGraph {
     public findConnectedComponentsForCharacter(character: string): number[][] {
         const reducedGraph = this.getGraphForVertexValue(character);
 
-        const connectedComps: number[][] = [];
+        const connectedComps: Set<number>[] = [];
 
-        let actComp = [];
+        let actComp = new Set();
         reducedGraph.BFS((vertex, newRoot) => {
             if (newRoot) {
                 connectedComps.push(actComp);
-                actComp = [];
+                actComp = new Set();
             }
-            actComp.push(vertex);
+            actComp.add(vertex);
         });
 
         connectedComps.push(actComp);
 
-        return connectedComps;
+        return connectedComps.map(set => Array.from(set));
     }
 }

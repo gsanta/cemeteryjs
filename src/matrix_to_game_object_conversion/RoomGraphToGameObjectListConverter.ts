@@ -9,6 +9,7 @@ export class RoomGraphToGameObjectListConverter {
 
     public convert(graph: MatrixGraph, roomCharacter: string): GameObject[] {
         debugger;
+        graph.findConnectedComponentsForCharacter(roomCharacter)
         return graph.getCharacters()
             .map((character) => {
                 debugger;

@@ -3,12 +3,14 @@ import { WorldMapLineListener, WorldMapReader } from '../matrix_graph/WorldMapRe
 export class WorldMapToRoomMapConverter implements WorldMapLineListener {
     private roomSeparatorCharacters: string[];
     private wallChar: string;
+    private roomChar: string;
     private worldMapReader: WorldMapReader;
 
     private lines: string[] = [];
 
-    constructor(wallChar: string, roomSeparatorCharacters: string[]) {
+    constructor(wallChar: string, roomChar: string, roomSeparatorCharacters: string[]) {
         this.wallChar = wallChar;
+        this.roomChar = roomChar;
         this.roomSeparatorCharacters = roomSeparatorCharacters;
         this.worldMapReader = new WorldMapReader(this);
     }
@@ -23,6 +25,8 @@ export class WorldMapToRoomMapConverter implements WorldMapLineListener {
         this.roomSeparatorCharacters.forEach(char => {
             line = line.replace(new RegExp(char, 'g'), this.wallChar);
         });
+
+        line = line.replace(new RegExp(`[^${this.wallChar}\\s]`, 'g'), this.roomChar);
 
         this.lines.push(line);
     }

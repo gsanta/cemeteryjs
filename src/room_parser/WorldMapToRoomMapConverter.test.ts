@@ -28,11 +28,11 @@ describe('WorldMapToRoomMapConverter', () => {
         const output = `
             map \`
 
-            ##########
-            #WWWWWWWW#
-            #W######W#
-            #WWWWWWWW#
-            ##########
+            ----------
+            -WWWWWWWW-
+            -W------W-
+            -WWWWWWWW-
+            ----------
 
             \`
 
@@ -47,7 +47,7 @@ describe('WorldMapToRoomMapConverter', () => {
         `;
 
 
-            const worldMapToRoomMapConverter = new WorldMapToRoomMapConverter('W', ['D', 'I']);
+            const worldMapToRoomMapConverter = new WorldMapToRoomMapConverter('W', '-', ['D', 'I']);
 
             expect(worldMapToRoomMapConverter.convert(input)).to.eq(output);
         });
