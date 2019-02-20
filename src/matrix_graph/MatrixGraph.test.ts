@@ -31,7 +31,7 @@ describe('MatrixGraph', () => {
     });
 
     describe('createConnectedComponentGraphsForCharacter', () => {
-        it.only ('separates the graph into multiple sub-graphs where each graph contains only' +
+        it ('separates the graph into multiple sub-graphs where each graph contains only' +
          'the given characters, and are all `connected-component`s', () => {
             const input = [
                 '--------',
