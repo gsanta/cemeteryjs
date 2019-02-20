@@ -1,7 +1,7 @@
 import { Rectangle } from './model/Rectangle';
 import { Polygon } from './model/Polygon';
 
-export class GameObject<T = any, E = Rectangle> {
+export class WorldItem<T = any, E = Rectangle> {
     public type: string;
     public name: string;
     public dimensions: E;

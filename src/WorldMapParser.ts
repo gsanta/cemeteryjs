@@ -1,6 +1,6 @@
 import { WorldMapToMatrixGraphConverter } from './matrix_graph/WorldMapToMatrixGraphConverter';
 import { GraphToGameObjectListConverter } from './matrix_to_game_object_conversion/GraphToGameObjectListConverter';
-import { GameObject } from './GameObject';
+import { WorldItem } from './WorldItem';
 import { Rectangle } from './model/Rectangle';
 import { Polygon } from './model/Polygon';
 import _ = require('lodash');
@@ -12,11 +12,11 @@ export interface AdditionalDataConverter<T> {
 }
 
 export interface WorldParsingResult {
-    furnishing: GameObject<any, Rectangle>[];
-    rooms: GameObject<any, Polygon>[];
+    items: WorldItem<any, Rectangle>[];
+    rooms: WorldItem<any, Polygon>[];
 }
 
-export class GameObjectParser {
+export class WorldMapParser {
     private worldMapConverter: WorldMapToMatrixGraphConverter;
     private graphToGameObjectListConverter: GraphToGameObjectListConverter;
     private roomGraphToGameObjectListConverter: RoomGraphToGameObjectListConverter;
@@ -52,7 +52,7 @@ export class GameObjectParser {
         );
 
         return {
-            furnishing,
+            items: furnishing,
             rooms
         }
     }

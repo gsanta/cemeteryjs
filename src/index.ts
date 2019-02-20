@@ -1,3 +1,3 @@
-export {GameObjectParser} from './GameObjectParser';
-export {GameObject} from './GameObject';
+export {WorldMapParser as GameObjectParser} from './WorldMapParser';
+export {WorldItem as GameObject} from './WorldItem';
 export {Rectangle} from './model/Rectangle';

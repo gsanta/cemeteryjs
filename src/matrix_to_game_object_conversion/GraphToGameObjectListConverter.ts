@@ -1,5 +1,5 @@
 import { MatrixGraph } from '../matrix_graph/MatrixGraph';
-import { GameObject } from '../GameObject';
+import { WorldItem } from '../WorldItem';
 import * as _ from 'lodash';
 import { Rectangle } from '../model/Rectangle';
 
@@ -7,7 +7,7 @@ export class GraphToGameObjectListConverter {
     private static Y_UNIT_LENGTH = 2;
     private static X_UNIT_LENGTH = 1;
 
-    public convert(graph: MatrixGraph): GameObject[] {
+    public convert(graph: MatrixGraph): WorldItem[] {
 
         return <any> _.chain(graph.getCharacters())
             .without('#')
@@ -17,7 +17,7 @@ export class GraphToGameObjectListConverter {
             })
             .flattenDeep()
             .concat([
-                new GameObject(
+                new WorldItem(
                     'F',
                     new Rectangle(
                         0,
@@ -32,7 +32,7 @@ export class GraphToGameObjectListConverter {
 
     }
 
-    private createGameObjectsForConnectedComponent(componentGraph: MatrixGraph): GameObject[] {
+    private createGameObjectsForConnectedComponent(componentGraph: MatrixGraph): WorldItem[] {
         if (this.areConnectedComponentsRectangular(componentGraph)) {
             return [this.createRectangularGameObject(componentGraph)];
         } else {
@@ -40,7 +40,7 @@ export class GraphToGameObjectListConverter {
         }
     }
 
-    private createRectangularGameObject(componentGraph): GameObject {
+    private createRectangularGameObject(componentGraph): WorldItem {
         const minX = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).x).min().value();
         const maxX = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).x).max().value();
         const minY = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).y).min().value();
@@ -52,7 +52,7 @@ export class GraphToGameObjectListConverter {
         const y = minY * GraphToGameObjectListConverter.Y_UNIT_LENGTH;
         const width = (maxX - minX + 1) * GraphToGameObjectListConverter.X_UNIT_LENGTH;
         const height = (maxY - minY + 1) * GraphToGameObjectListConverter.Y_UNIT_LENGTH;
-        return new GameObject(
+        return new WorldItem(
             componentGraph.getCharacters()[0],
             new Rectangle(x, y, width, height),
             componentGraph.getVertexValue(oneVertex).name,
@@ -60,7 +60,7 @@ export class GraphToGameObjectListConverter {
         );
     }
 
-    private createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph: MatrixGraph): GameObject[] {
+    private createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph: MatrixGraph): WorldItem[] {
         const verticalSubComponents = this.findVerticalSlices(componentGraph);
         const verticesMinusVerticalSubComponents = _.without(componentGraph.getAllVertices(), ..._.flatten(verticalSubComponents));
         const componentGraphMinusVerticalSubComponents = componentGraph.getGraphForVertices(verticesMinusVerticalSubComponents);
@@ -71,7 +71,7 @@ export class GraphToGameObjectListConverter {
                 const rect = this.createRectangleFromVerticalVertices(gameObjectGraph)
                 const additionalData = this.getAdditionalDataFromGameObjectGraph(gameObjectGraph);
                 const oneVertex = componentGraph.getAllVertices()[0];
-                return new GameObject(
+                return new WorldItem(
                     componentGraph.getCharacters()[0],
                     rect,
                     componentGraph.getVertexValue(oneVertex).name,
@@ -88,7 +88,7 @@ export class GraphToGameObjectListConverter {
                 const rect = this.createRectangleFromHorizontalVertices(gameObjectGraph);
                 const oneVertex = componentGraph.getAllVertices()[0];
 
-                return new GameObject(
+                return new WorldItem(
                     gameObjectGraph.getCharacters()[0],
                     rect,
                     componentGraph.getVertexValue(oneVertex).name,
