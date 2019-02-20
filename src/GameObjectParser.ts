@@ -1,34 +1,59 @@
 import { WorldMapToMatrixGraphConverter } from './matrix_graph/WorldMapToMatrixGraphConverter';
 import { GraphToGameObjectListConverter } from './matrix_to_game_object_conversion/GraphToGameObjectListConverter';
 import { GameObject } from './GameObject';
+import { Rectangle } from './model/Rectangle';
+import { Polygon } from './model/Polygon';
 import _ = require('lodash');
+import { RoomGraphToGameObjectListConverter } from './matrix_to_game_object_conversion/RoomGraphToGameObjectListConverter';
+import { WorldMapToRoomMapConverter } from './room_parser/WorldMapToRoomMapConverter';
 
 export interface AdditionalDataConverter<T> {
     (additionalData: any): T;
 }
 
+export interface WorldParsingResult {
+    furnishing: GameObject<any, Rectangle>[];
+    rooms: GameObject<any, Polygon>[];
+}
+
 export class GameObjectParser {
     private worldMapConverter: WorldMapToMatrixGraphConverter;
     private graphToGameObjectListConverter: GraphToGameObjectListConverter;
+    private roomGraphToGameObjectListConverter: RoomGraphToGameObjectListConverter;
+    private worldMapToRoomMapConverter: WorldMapToRoomMapConverter;
 
     constructor(
         worldMapConverter: WorldMapToMatrixGraphConverter = new WorldMapToMatrixGraphConverter(),
-        graphToGameObjectListConverter: GraphToGameObjectListConverter = new GraphToGameObjectListConverter()
+        graphToGameObjectListConverter: GraphToGameObjectListConverter = new GraphToGameObjectListConverter(),
+        roomGraphToGameObjectListConverter: RoomGraphToGameObjectListConverter = new RoomGraphToGameObjectListConverter(),
+        worldMapToRoomMapConverter: WorldMapToRoomMapConverter = new WorldMapToRoomMapConverter('W', '-', ['W', 'D', 'I'])
     ) {
         this.worldMapConverter = worldMapConverter;
         this.graphToGameObjectListConverter = graphToGameObjectListConverter;
+        this.roomGraphToGameObjectListConverter = roomGraphToGameObjectListConverter;
+        this.worldMapToRoomMapConverter = worldMapToRoomMapConverter;
     }
 
-    public parse<T>(worldMap: string, additionalDataConverter: AdditionalDataConverter<T> = _.identity): GameObject[] {
+    public parse<T>(worldMap: string, additionalDataConverter: AdditionalDataConverter<T> = _.identity): WorldParsingResult {
         const graph = this.worldMapConverter.convert(worldMap);
-        const gameObjects = this.graphToGameObjectListConverter.convert(graph);
+        const furnishing = this.graphToGameObjectListConverter.convert(graph);
 
-        gameObjects.forEach(gameObject => {
+        furnishing.forEach(gameObject => {
             if (gameObject.additionalData) {
                 gameObject.additionalData = additionalDataConverter(gameObject.additionalData);
             }
         });
 
-        return gameObjects;
+        const rooms = this.roomGraphToGameObjectListConverter.convert(
+            this.worldMapConverter.convert(
+                this.worldMapToRoomMapConverter.convert(worldMap)
+            ),
+            '-'
+        );
+
+        return {
+            furnishing,
+            rooms
+        }
     }
 }

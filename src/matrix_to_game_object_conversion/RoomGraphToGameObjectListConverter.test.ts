@@ -29,9 +29,11 @@ describe('RoomGraphToGameObjectListConverter', () => {
             expect(gameObjects.length).to.eql(1);
             expect(gameObjects[0].dimensions.points).to.eql([
                 new Point(1, 1),
-                new Point(5, 1),
-                new Point(5, 2),
-                new Point(5, 3),
+                new Point(6, 1),
+                new Point(6, 2),
+                new Point(6, 3),
+                new Point(6, 4),
+                new Point(1, 4),
                 new Point(1, 3),
                 new Point(1, 2)
             ]);
@@ -60,20 +62,24 @@ describe('RoomGraphToGameObjectListConverter', () => {
             expect(gameObjects.length).to.eql(2);
             expect(gameObjects[0].dimensions.points).to.eql([
                 new Point(7, 1),
-                new Point(8, 1),
-                new Point(8, 2),
+                new Point(9, 1),
+                new Point(9, 2),
+                new Point(9, 3),
+                new Point(7, 3),
                 new Point(7, 2)
             ]);
 
             expect(gameObjects[1].dimensions.points).to.eql([
                 new Point(1, 2),
-                new Point(3, 2),
-                new Point(3, 3),
+                new Point(4, 2),
+                new Point(4, 3),
+                new Point(4, 4),
+                new Point(1, 4),
                 new Point(1, 3)
             ]);
         });
 
-        it.only ('converts a more complicated room shape correctly.', () => {
+        it ('converts a more complicated room shape correctly.', () => {
             const map = `
                 map \`
 
