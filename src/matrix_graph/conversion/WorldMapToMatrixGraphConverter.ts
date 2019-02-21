@@ -1,7 +1,7 @@
-import { WorldMapLineListener, WorldMapReader } from '../matrix_graph/WorldMapReader';
 import { LinesToGraphConverter } from './LinesToGraphConverter';
-import { MatrixGraph } from './MatrixGraph';
+import { MatrixGraph } from '../MatrixGraph';
 import { DetailsLineToObjectConverter, DetailsLineDataTypes } from './DetailsLineToObjectConverter';
+import { WorldMapLineListener, WorldMapReader } from './WorldMapReader';
 
 interface DetailsJsonSchema {
     attributes: {

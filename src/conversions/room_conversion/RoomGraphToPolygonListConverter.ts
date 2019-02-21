@@ -1,22 +1,17 @@
-import { MatrixGraph } from "../matrix_graph/MatrixGraph";
-import { GameObject } from "..";
+import { MatrixGraph } from "../../matrix_graph/MatrixGraph";
 import _ = require("lodash");
-import { Line } from "../model/Line";
-import { Point } from "../model/Point";
-import { Polygon } from "../model/Polygon";
+import { Line } from "../../model/Line";
+import { Point } from "../../model/Point";
+import { Polygon } from "../../model/Polygon";
 
 
-export class RoomGraphToGameObjectListConverter {
-    private static Y_UNIT_LENGTH = 2;
-    private static X_UNIT_LENGTH = 1;
-
-    public convert(graph: MatrixGraph, roomCharacter: string): GameObject<any, Polygon>[] {
+export class RoomGraphToPolygonListConverter {
+    public convert(graph: MatrixGraph, roomCharacter: string): Polygon[] {
         return graph.createConnectedComponentGraphsForCharacter(roomCharacter)
             .map(componentGraph => {
                 const lines = this.segmentGraphToHorizontalLines(componentGraph);
 
-                const polygon = this.createPolygonFromHorizontalLines(lines);
-                return new GameObject<any, Polygon>('room', polygon, 'abc');
+                return this.createPolygonFromHorizontalLines(lines);
             });
     }
 
@@ -41,7 +36,7 @@ export class RoomGraphToGameObjectListConverter {
         const lines: Line[] = [];
 
         map.forEach((xList: number[], yPos: number) => {
-            xList.sort(RoomGraphToGameObjectListConverter.sortByNumber);
+            xList.sort(RoomGraphToPolygonListConverter.sortByNumber);
 
             const xStart = xList[0];
             const xEnd = _.last(xList);

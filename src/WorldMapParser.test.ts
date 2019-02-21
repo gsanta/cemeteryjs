@@ -2,7 +2,7 @@ import { WorldMapParser } from './WorldMapParser';
 import { expect } from 'chai';
 import * as fs from 'fs';
 import { Rectangle } from './model/Rectangle';
-import { WorldItem } from './WorldItem';
+import { WorldItem } from './model/WorldItem';
 
 
 describe('WorldMapParser', () => {

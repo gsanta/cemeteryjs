@@ -1,9 +1,9 @@
-import { MatrixGraph } from '../matrix_graph/MatrixGraph';
-import { WorldItem } from '../WorldItem';
+import { MatrixGraph } from '../../matrix_graph/MatrixGraph';
+import { WorldItem } from '../../model/WorldItem';
 import * as _ from 'lodash';
-import { Rectangle } from '../model/Rectangle';
+import { Rectangle } from '../../model/Rectangle';
 
-export class GraphToGameObjectListConverter {
+export class GraphToWorldItemListConverter {
     private static Y_UNIT_LENGTH = 2;
     private static X_UNIT_LENGTH = 1;
 
@@ -22,8 +22,8 @@ export class GraphToGameObjectListConverter {
                     new Rectangle(
                         0,
                         0,
-                        graph.getColumns() * GraphToGameObjectListConverter.X_UNIT_LENGTH,
-                        graph.getRows() * GraphToGameObjectListConverter.Y_UNIT_LENGTH,
+                        graph.getColumns() * GraphToWorldItemListConverter.X_UNIT_LENGTH,
+                        graph.getRows() * GraphToWorldItemListConverter.Y_UNIT_LENGTH,
                     ),
                     'floor'
                 )
@@ -48,10 +48,10 @@ export class GraphToGameObjectListConverter {
 
         const oneVertex = componentGraph.getAllVertices()[0];
 
-        const x = minX * GraphToGameObjectListConverter.X_UNIT_LENGTH;
-        const y = minY * GraphToGameObjectListConverter.Y_UNIT_LENGTH;
-        const width = (maxX - minX + 1) * GraphToGameObjectListConverter.X_UNIT_LENGTH;
-        const height = (maxY - minY + 1) * GraphToGameObjectListConverter.Y_UNIT_LENGTH;
+        const x = minX * GraphToWorldItemListConverter.X_UNIT_LENGTH;
+        const y = minY * GraphToWorldItemListConverter.Y_UNIT_LENGTH;
+        const width = (maxX - minX + 1) * GraphToWorldItemListConverter.X_UNIT_LENGTH;
+        const height = (maxY - minY + 1) * GraphToWorldItemListConverter.Y_UNIT_LENGTH;
         return new WorldItem(
             componentGraph.getCharacters()[0],
             new Rectangle(x, y, width, height),
@@ -171,10 +171,10 @@ export class GraphToGameObjectListConverter {
         const startCoord = graph.getVertexPositionInMatrix(vertices[0]);
         const endCoord = graph.getVertexPositionInMatrix(_.last(vertices));
 
-        const x = startCoord.x * GraphToGameObjectListConverter.X_UNIT_LENGTH;
-        const y = startCoord.y * GraphToGameObjectListConverter.Y_UNIT_LENGTH;
-        const width = GraphToGameObjectListConverter.X_UNIT_LENGTH;
-        const height = endCoord.y * GraphToGameObjectListConverter.Y_UNIT_LENGTH - y + GraphToGameObjectListConverter.Y_UNIT_LENGTH;
+        const x = startCoord.x * GraphToWorldItemListConverter.X_UNIT_LENGTH;
+        const y = startCoord.y * GraphToWorldItemListConverter.Y_UNIT_LENGTH;
+        const width = GraphToWorldItemListConverter.X_UNIT_LENGTH;
+        const height = endCoord.y * GraphToWorldItemListConverter.Y_UNIT_LENGTH - y + GraphToWorldItemListConverter.Y_UNIT_LENGTH;
 
         return new Rectangle(x, y, width, height);
     }
@@ -186,10 +186,10 @@ export class GraphToGameObjectListConverter {
         const startCoord = graph.getVertexPositionInMatrix(vertices[0]);
         const endCoord = graph.getVertexPositionInMatrix(_.last(vertices));
 
-        const x = startCoord.x * GraphToGameObjectListConverter.X_UNIT_LENGTH;
-        const y = startCoord.y * GraphToGameObjectListConverter.Y_UNIT_LENGTH;
-        const width = endCoord.x * GraphToGameObjectListConverter.X_UNIT_LENGTH - x + GraphToGameObjectListConverter.X_UNIT_LENGTH;
-        const height = GraphToGameObjectListConverter.Y_UNIT_LENGTH;
+        const x = startCoord.x * GraphToWorldItemListConverter.X_UNIT_LENGTH;
+        const y = startCoord.y * GraphToWorldItemListConverter.Y_UNIT_LENGTH;
+        const width = endCoord.x * GraphToWorldItemListConverter.X_UNIT_LENGTH - x + GraphToWorldItemListConverter.X_UNIT_LENGTH;
+        const height = GraphToWorldItemListConverter.Y_UNIT_LENGTH;
 
         return new Rectangle(x, y, width, height);
     }

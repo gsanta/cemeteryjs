@@ -1,5 +1,5 @@
-import { Rectangle } from './model/Rectangle';
-import { Polygon } from './model/Polygon';
+import { Rectangle } from './Rectangle';
+import { Polygon } from './Polygon';
 
 export class WorldItem<T = any, E = Rectangle> {
     public type: string;

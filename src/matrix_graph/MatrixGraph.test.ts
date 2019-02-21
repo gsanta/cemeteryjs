@@ -1,4 +1,4 @@
-import { LinesToGraphConverter } from './LinesToGraphConverter';
+import { LinesToGraphConverter } from './conversion/LinesToGraphConverter';
 import { expect } from 'chai';
 
 

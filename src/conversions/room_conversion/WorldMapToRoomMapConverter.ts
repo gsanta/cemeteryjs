@@ -1,5 +1,23 @@
-import { WorldMapLineListener, WorldMapReader } from '../matrix_graph/WorldMapReader';
+import { WorldMapLineListener, WorldMapReader } from '../../matrix_graph/conversion/WorldMapReader';
 
+/*
+ * Takes a world map (gwm string) and converts the characters inside the map to contain only
+ * two characters which represent the walls and the rooms.
+ *
+ * e.g
+ *
+ * input:
+ *
+ * WIIIW
+ * W###W
+ * WDDWW
+ *
+ * output:
+ *
+ * -----
+ * -###-
+ * -----
+ */
 export class WorldMapToRoomMapConverter implements WorldMapLineListener {
     private roomSeparatorCharacters: string[];
     private wallChar: string;

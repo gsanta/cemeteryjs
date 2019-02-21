@@ -1,8 +1,7 @@
-import { WorldMapToMatrixGraphConverter } from "../matrix_graph/WorldMapToMatrixGraphConverter";
-import { RoomGraphToGameObjectListConverter } from './RoomGraphToGameObjectListConverter';
+import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
+import { RoomGraphToPolygonListConverter } from './RoomGraphToPolygonListConverter';
 import { expect } from 'chai';
-import { Point } from "../model/Point";
-
+import { Point } from "../../model/Point";
 
 describe('RoomGraphToGameObjectListConverter', () => {
     describe('convert', () => {
@@ -22,12 +21,12 @@ describe('RoomGraphToGameObjectListConverter', () => {
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const roomGraphToGameObjectListConverter = new RoomGraphToGameObjectListConverter();
+            const roomGraphToPolygonListConverter = new RoomGraphToPolygonListConverter();
 
-            const gameObjects = roomGraphToGameObjectListConverter.convert(matrixGraph, '#');
+            const polygons = roomGraphToPolygonListConverter.convert(matrixGraph, '#');
 
-            expect(gameObjects.length).to.eql(1);
-            expect(gameObjects[0].dimensions.points).to.eql([
+            expect(polygons.length).to.eql(1);
+            expect(polygons[0].points).to.eql([
                 new Point(1, 1),
                 new Point(6, 1),
                 new Point(6, 2),
@@ -55,12 +54,12 @@ describe('RoomGraphToGameObjectListConverter', () => {
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const roomGraphToGameObjectListConverter = new RoomGraphToGameObjectListConverter();
+            const roomGraphToPolygonListConverter = new RoomGraphToPolygonListConverter();
 
-            const gameObjects = roomGraphToGameObjectListConverter.convert(matrixGraph, '#');
+            const polygons = roomGraphToPolygonListConverter.convert(matrixGraph, '#');
 
-            expect(gameObjects.length).to.eql(2);
-            expect(gameObjects[0].dimensions.points).to.eql([
+            expect(polygons.length).to.eql(2);
+            expect(polygons[0].points).to.eql([
                 new Point(7, 1),
                 new Point(9, 1),
                 new Point(9, 2),
@@ -69,7 +68,7 @@ describe('RoomGraphToGameObjectListConverter', () => {
                 new Point(7, 2)
             ]);
 
-            expect(gameObjects[1].dimensions.points).to.eql([
+            expect(polygons[1].points).to.eql([
                 new Point(1, 2),
                 new Point(4, 2),
                 new Point(4, 3),
@@ -95,12 +94,12 @@ describe('RoomGraphToGameObjectListConverter', () => {
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const roomGraphToGameObjectListConverter = new RoomGraphToGameObjectListConverter();
+            const roomGraphToPolygonListConverter = new RoomGraphToPolygonListConverter();
 
-            const gameObjects = roomGraphToGameObjectListConverter.convert(matrixGraph, '#');
+            const polygons = roomGraphToPolygonListConverter.convert(matrixGraph, '#');
 
-            expect(gameObjects.length).to.eql(1);
-            expect(gameObjects[0].dimensions.points).to.eql([
+            expect(polygons.length).to.eql(1);
+            expect(polygons[0].points).to.eql([
                 new Point(1, 1),
                 new Point(4, 1),
                 new Point(4, 2),

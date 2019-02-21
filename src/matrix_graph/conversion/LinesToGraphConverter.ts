@@ -1,4 +1,4 @@
-import { MatrixGraph } from './MatrixGraph';
+import { MatrixGraph } from '../MatrixGraph';
 import * as _ from 'lodash';
 
 export class LinesToGraphConverter {

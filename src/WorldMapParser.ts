@@ -1,11 +1,11 @@
-import { WorldMapToMatrixGraphConverter } from './matrix_graph/WorldMapToMatrixGraphConverter';
-import { GraphToGameObjectListConverter } from './matrix_to_game_object_conversion/GraphToGameObjectListConverter';
-import { WorldItem } from './WorldItem';
+import { WorldMapToMatrixGraphConverter } from './matrix_graph/conversion/WorldMapToMatrixGraphConverter';
+import { GraphToWorldItemListConverter } from './conversions/world_item_conversion/GraphToWorldItemListConverter';
+import { WorldItem } from './model/WorldItem';
 import { Rectangle } from './model/Rectangle';
 import { Polygon } from './model/Polygon';
 import _ = require('lodash');
-import { RoomGraphToGameObjectListConverter } from './matrix_to_game_object_conversion/RoomGraphToGameObjectListConverter';
-import { WorldMapToRoomMapConverter } from './room_parser/WorldMapToRoomMapConverter';
+import { RoomGraphToPolygonListConverter } from './conversions/room_conversion/RoomGraphToPolygonListConverter';
+import { WorldMapToRoomMapConverter } from './conversions/room_conversion/WorldMapToRoomMapConverter';
 
 export interface AdditionalDataConverter<T> {
     (additionalData: any): T;
@@ -13,19 +13,19 @@ export interface AdditionalDataConverter<T> {
 
 export interface WorldParsingResult {
     items: WorldItem<any, Rectangle>[];
-    rooms: WorldItem<any, Polygon>[];
+    rooms: Polygon[];
 }
 
 export class WorldMapParser {
     private worldMapConverter: WorldMapToMatrixGraphConverter;
-    private graphToGameObjectListConverter: GraphToGameObjectListConverter;
-    private roomGraphToGameObjectListConverter: RoomGraphToGameObjectListConverter;
+    private graphToGameObjectListConverter: GraphToWorldItemListConverter;
+    private roomGraphToGameObjectListConverter: RoomGraphToPolygonListConverter;
     private worldMapToRoomMapConverter: WorldMapToRoomMapConverter;
 
     constructor(
         worldMapConverter: WorldMapToMatrixGraphConverter = new WorldMapToMatrixGraphConverter(),
-        graphToGameObjectListConverter: GraphToGameObjectListConverter = new GraphToGameObjectListConverter(),
-        roomGraphToGameObjectListConverter: RoomGraphToGameObjectListConverter = new RoomGraphToGameObjectListConverter(),
+        graphToGameObjectListConverter: GraphToWorldItemListConverter = new GraphToWorldItemListConverter(),
+        roomGraphToGameObjectListConverter: RoomGraphToPolygonListConverter = new RoomGraphToPolygonListConverter(),
         worldMapToRoomMapConverter: WorldMapToRoomMapConverter = new WorldMapToRoomMapConverter('W', '-', ['W', 'D', 'I'])
     ) {
         this.worldMapConverter = worldMapConverter;
