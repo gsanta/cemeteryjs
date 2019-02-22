@@ -2,6 +2,8 @@ import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/Wo
 import { RoomGraphToPolygonListConverter } from './RoomGraphToPolygonListConverter';
 import { expect } from 'chai';
 import { Point } from "../../model/Point";
+import * as fs from 'fs';
+import { WorldMapToRoomMapConverter } from "./WorldMapToRoomMapConverter";
 
 describe('RoomGraphToGameObjectListConverter', () => {
     describe('convert', () => {
@@ -113,6 +115,29 @@ describe('RoomGraphToGameObjectListConverter', () => {
                 new Point(1, 3),
                 new Point(1, 2)
             ]);
+        });
+
+        it ('converts a complicated real-world example to the correct room Polygons.', () => {
+            const worldMapStr = fs.readFileSync(__dirname + '/../../../assets/test/big_world.gwm', 'utf8');
+
+            const worldMapToRoomMapConverter = new WorldMapToRoomMapConverter('-', '#', ['W', 'D', 'I']);
+
+            const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
+
+            fs.writeFileSync(__dirname + '/../../../assets/test/big_world2.gwm', worldMapToRoomMapConverter.convert(worldMapStr));
+
+            const matrixGraph = worldMapToGraphConverter.convert(worldMapToRoomMapConverter.convert(worldMapStr));
+
+            const roomGraphToPolygonListConverter = new RoomGraphToPolygonListConverter();
+
+            const polygons = roomGraphToPolygonListConverter.convert(matrixGraph, '#');
+
+            expect(polygons[0].points[0]).to.eql(new Point(1, 1), 'point 1 is not correct');
+            expect(polygons[0].points[1]).to.eql(new Point(37, 1), 'point 2 is not correct');
+            expect(polygons[0].points[26]).to.eql(new Point(37, 26), 'point 3 is not correct');
+            expect(polygons[0].points[27]).to.eql(new Point(26, 26), 'point 4 is not correct');
+
+            expect(polygons.length).to.eql(34);
         });
     });
 });

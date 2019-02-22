@@ -161,27 +161,30 @@ export class MatrixGraph {
     public BFS(callback: (vertex: number, isNewRoot: boolean) => void) {
         let allVertices = this.getAllVertices();
         const queue = [allVertices[0]];
-        const visited: number[] = [];
+        const visited: {[key: number]: boolean} = {
+            [allVertices[0]]: true
+        };
 
         let isNewRoot = false;
-
         while (allVertices.length > 0) {
             while (queue.length > 0) {
 
                 const vertex = queue.shift();
-                visited.push(vertex);
+
                 allVertices = _.without(allVertices, vertex);
                 callback(vertex, isNewRoot);
                 isNewRoot = false;
 
-                let notVisitedNeighbours = this.getAjacentEdges(vertex);
-                notVisitedNeighbours = _.without(notVisitedNeighbours, ...visited);
-                if (notVisitedNeighbours.length === 0) {
+                const adjacentEdges = this.getAjacentEdges(vertex);
+
+                const notVisitedAdjacentEdges = adjacentEdges.filter(edge =>  visited[edge] !== true);
+                if (notVisitedAdjacentEdges.length === 0) {
                     continue;
                 }
 
-                for (let i = 0; i < notVisitedNeighbours.length; i++) {
-                    queue.push(notVisitedNeighbours[i]);
+                for (let i = 0; i < notVisitedAdjacentEdges.length; i++) {
+                    queue.push(notVisitedAdjacentEdges[i]);
+                    visited[notVisitedAdjacentEdges[i]] = true;
                 }
             }
 

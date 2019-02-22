@@ -1,5 +1,6 @@
 import { WorldMapToRoomMapConverter } from './WorldMapToRoomMapConverter';
 import { expect } from 'chai';
+import * as fs from 'fs';
 
 describe('WorldMapToRoomMapConverter', () => {
     describe('convert', () => {
@@ -51,5 +52,15 @@ describe('WorldMapToRoomMapConverter', () => {
 
             expect(worldMapToRoomMapConverter.convert(input)).to.eq(output);
         });
+    });
+
+    it ('converts a complicated real-world example correctly.', () => {
+        const worldMapStr = fs.readFileSync(__dirname + '/../../../assets/test/big_world.gwm', 'utf8');
+
+        const worldMapToRoomMapConverter = new WorldMapToRoomMapConverter('W', '-', ['D', 'I']);
+        const actualConvertedWorldMapStr = worldMapToRoomMapConverter.convert(worldMapStr);
+
+        const expectedConvertedWorldMap = fs.readFileSync(__dirname + '/../../../assets/test/big_world_rooms.gwm', 'utf8');
+        expect(actualConvertedWorldMapStr).to.eq(expectedConvertedWorldMap);
     });
 });

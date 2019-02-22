@@ -44,12 +44,12 @@ export class WorldMapParser {
             }
         });
 
-        // const rooms = this.roomGraphToGameObjectListConverter.convert(
-        //     this.worldMapConverter.convert(
-        //         this.worldMapToRoomMapConverter.convert(worldMap)
-        //     ),
-        //     '-'
-        // );
+        const rooms = this.roomGraphToGameObjectListConverter.convert(
+            this.worldMapConverter.convert(
+                this.worldMapToRoomMapConverter.convert(worldMap)
+            ),
+            '-'
+        );
 
         return {
             items: furnishing,
