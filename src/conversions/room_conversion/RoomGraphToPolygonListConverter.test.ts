@@ -31,12 +31,8 @@ describe('RoomGraphToGameObjectListConverter', () => {
             expect(polygons[0].points).to.eql([
                 new Point(1, 1),
                 new Point(6, 1),
-                new Point(6, 2),
-                new Point(6, 3),
                 new Point(6, 4),
-                new Point(1, 4),
-                new Point(1, 3),
-                new Point(1, 2)
+                new Point(1, 4)
             ]);
         });
 
@@ -64,19 +60,15 @@ describe('RoomGraphToGameObjectListConverter', () => {
             expect(polygons[0].points).to.eql([
                 new Point(7, 1),
                 new Point(9, 1),
-                new Point(9, 2),
                 new Point(9, 3),
-                new Point(7, 3),
-                new Point(7, 2)
+                new Point(7, 3)
             ]);
 
             expect(polygons[1].points).to.eql([
                 new Point(1, 2),
                 new Point(4, 2),
-                new Point(4, 3),
                 new Point(4, 4),
-                new Point(1, 4),
-                new Point(1, 3)
+                new Point(1, 4)
             ]);
         });
 
@@ -106,14 +98,10 @@ describe('RoomGraphToGameObjectListConverter', () => {
                 new Point(4, 1),
                 new Point(4, 2),
                 new Point(5, 2),
-                new Point(5, 3),
                 new Point(5, 4),
                 new Point(7, 4),
                 new Point(7, 5),
-                new Point(1, 5),
-                new Point(1, 4),
-                new Point(1, 3),
-                new Point(1, 2)
+                new Point(1, 5)
             ]);
         });
 
@@ -124,20 +112,20 @@ describe('RoomGraphToGameObjectListConverter', () => {
 
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
 
-            fs.writeFileSync(__dirname + '/../../../assets/test/big_world2.gwm', worldMapToRoomMapConverter.convert(worldMapStr));
-
             const matrixGraph = worldMapToGraphConverter.convert(worldMapToRoomMapConverter.convert(worldMapStr));
 
             const roomGraphToPolygonListConverter = new RoomGraphToPolygonListConverter();
 
             const polygons = roomGraphToPolygonListConverter.convert(matrixGraph, '#');
 
-            expect(polygons[0].points[0]).to.eql(new Point(1, 1), 'point 1 is not correct');
-            expect(polygons[0].points[1]).to.eql(new Point(37, 1), 'point 2 is not correct');
-            expect(polygons[0].points[26]).to.eql(new Point(37, 26), 'point 3 is not correct');
-            expect(polygons[0].points[27]).to.eql(new Point(26, 26), 'point 4 is not correct');
-
-            expect(polygons.length).to.eql(34);
+            expect(polygons[0].points).to.eql([
+                new Point(1, 1),
+                new Point(37, 1),
+                new Point(37, 26),
+                new Point(26, 26),
+                new Point(26, 16),
+                new Point(1, 16)
+            ]);
         });
     });
 });

@@ -3,15 +3,26 @@ import _ = require("lodash");
 import { Line } from "../../model/Line";
 import { Point } from "../../model/Point";
 import { Polygon } from "../../model/Polygon";
+import { PolygonRedundantPointReducer } from './PolygonRedundantPointReducer';
 
 
 export class RoomGraphToPolygonListConverter {
+    private polygonRedundantPointReducer: PolygonRedundantPointReducer;
+
+    constructor() {
+        this.polygonRedundantPointReducer = new PolygonRedundantPointReducer();
+    }
+
     public convert(graph: MatrixGraph, roomCharacter: string): Polygon[] {
         return graph.createConnectedComponentGraphsForCharacter(roomCharacter)
             .map(componentGraph => {
                 const lines = this.segmentGraphToHorizontalLines(componentGraph);
 
-                return this.createPolygonFromHorizontalLines(lines);
+                const points = this.polygonRedundantPointReducer.reduce(
+                    this.createPolygonPointsFromHorizontalLines(lines)
+                );
+
+                return new Polygon(points);
             });
     }
 
@@ -47,7 +58,7 @@ export class RoomGraphToPolygonListConverter {
         return lines;
     }
 
-    private createPolygonFromHorizontalLines(lines: Line[]): Polygon {
+    private createPolygonPointsFromHorizontalLines(lines: Line[]): Point[] {
         lines.sort((a: Line, b: Line) => a.start.y - b.start.y);
 
         const topPoints = [lines[0].start, lines[0].end.addX(1)];
@@ -85,9 +96,7 @@ export class RoomGraphToPolygonListConverter {
             .value();
 
 
-        const points = [...topPoints, ...rightPoints, ...bottomPoints, ...leftPoints];
-
-        return new Polygon(points);
+        return [...topPoints, ...rightPoints, ...bottomPoints, ...leftPoints];
     }
 
     private processNextPoint(actPoint: Point, prevPoint: Point): Point[] {

@@ -16,7 +16,12 @@ describe('PolygonRedundantPointReducer', () => {
             const polygonRedundantPointReducer = new PolygonRedundantPointReducer();
             const reducedPoints = polygonRedundantPointReducer.reduce(points);
 
-            expect(reducedPoints.length).to.eq(4);
+            expect(reducedPoints).to.eql([
+                new Point(1, 1),
+                new Point(3, 1),
+                new Point(3, 3),
+                new Point(1, 3)
+            ]);
         });
     });
 });
