@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import * as fs from 'fs';
 import { Rectangle } from './model/Rectangle';
 import { WorldItem } from './model/WorldItem';
+import { Point } from './model/Point';
 
 
 describe('WorldMapParser', () => {
@@ -140,6 +141,29 @@ describe('WorldMapParser', () => {
             expect(items[0].additionalData).to.eql(                        {
                 "orientation": "EAST_CONVERTED"
             });
+        });
+
+        it('creates a polygon for every room', () => {
+            const map = `
+                map \`
+
+                WIIWW
+                W---W
+                W---W
+                WWDDW
+
+                \`
+            `;
+
+            const worldMapParser = new WorldMapParser();
+            const {rooms} = worldMapParser.parse(map)
+            expect(rooms.length).to.eq(1);
+            expect(rooms[0].points).to.eql([
+                new Point(1, 1),
+                new Point(4, 1),
+                new Point(4, 3),
+                new Point(1, 3),
+            ]);
         });
     });
 });

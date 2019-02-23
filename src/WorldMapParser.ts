@@ -53,7 +53,7 @@ export class WorldMapParser {
 
         return {
             items: furnishing,
-            rooms: []
+            rooms: rooms
         }
     }
 }
