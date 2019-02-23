@@ -22,7 +22,7 @@ export interface ParseConfig<T> {
     additionalDataConverter: AdditionalDataConverter<T>;
 }
 
-export const defaultParseOptions: ParseConfig<any> = {
+export const defaultParseConfig: ParseConfig<any> = {
     xScale: 1,
     yScale: 1,
     additionalDataConverter: _.identity
@@ -46,7 +46,7 @@ export class WorldMapParser {
         this.worldMapToRoomMapConverter = worldMapToRoomMapConverter;
     }
 
-    public parse<T>(worldMap: string, config: ParseConfig<T> = defaultParseOptions): WorldParsingResult {
+    public parse<T>(worldMap: string, config: ParseConfig<T> = defaultParseConfig): WorldParsingResult {
         const graph = this.worldMapConverter.convert(worldMap);
         const furnishing = this.graphToGameObjectListConverter.convert(graph);
 

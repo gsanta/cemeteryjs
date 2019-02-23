@@ -1,4 +1,4 @@
-import { WorldMapParser, defaultParseOptions as defaultParseConfig } from './WorldMapParser';
+import { WorldMapParser, defaultParseConfig } from './WorldMapParser';
 import { expect } from 'chai';
 import * as fs from 'fs';
 import { Rectangle } from './model/Rectangle';
