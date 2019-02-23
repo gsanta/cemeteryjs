@@ -16,6 +16,18 @@ export interface WorldParsingResult {
     rooms: Polygon[];
 }
 
+export interface ParseConfig<T> {
+    xScale: number;
+    yScale: number;
+    additionalDataConverter: AdditionalDataConverter<T>;
+}
+
+export const defaultParseOptions: ParseConfig<any> = {
+    xScale: 1,
+    yScale: 1,
+    additionalDataConverter: _.identity
+}
+
 export class WorldMapParser {
     private worldMapConverter: WorldMapToMatrixGraphConverter;
     private graphToGameObjectListConverter: GraphToWorldItemListConverter;
@@ -34,13 +46,13 @@ export class WorldMapParser {
         this.worldMapToRoomMapConverter = worldMapToRoomMapConverter;
     }
 
-    public parse<T>(worldMap: string, additionalDataConverter: AdditionalDataConverter<T> = _.identity): WorldParsingResult {
+    public parse<T>(worldMap: string, config: ParseConfig<T> = defaultParseOptions): WorldParsingResult {
         const graph = this.worldMapConverter.convert(worldMap);
         const furnishing = this.graphToGameObjectListConverter.convert(graph);
 
         furnishing.forEach(gameObject => {
             if (gameObject.additionalData) {
-                gameObject.additionalData = additionalDataConverter(gameObject.additionalData);
+                gameObject.additionalData = config.additionalDataConverter(gameObject.additionalData);
             }
         });
 
@@ -53,7 +65,15 @@ export class WorldMapParser {
 
         return {
             items: furnishing,
-            rooms: rooms
+            rooms: this.scalePolygons(rooms, config.xScale, config.yScale)
         }
+    }
+
+    private scalePolygons(polygons: Polygon[], scaleX: number, scaleY: number): Polygon[] {
+        return polygons.map(polygon => {
+            const points = polygon.points.map(point => point.scaleX(scaleX).scaleY(scaleY));
+
+            return new Polygon(points);
+        })
     }
 }

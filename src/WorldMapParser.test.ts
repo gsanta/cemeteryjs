@@ -1,4 +1,4 @@
-import { WorldMapParser } from './WorldMapParser';
+import { WorldMapParser, defaultParseOptions as defaultParseConfig } from './WorldMapParser';
 import { expect } from 'chai';
 import * as fs from 'fs';
 import { Rectangle } from './model/Rectangle';
@@ -132,13 +132,14 @@ describe('WorldMapParser', () => {
                 \`
             `;
 
-            const conversionFunction = (additionalData) => ({
+            const additionalDataConverter = (additionalData) => ({
                 orientation: `${additionalData.orientation}_CONVERTED`
             });
 
             const worldMapParser = new WorldMapParser();
-            const {items} = worldMapParser.parse(map, conversionFunction)
-            expect(items[0].additionalData).to.eql(                        {
+            const {items} = worldMapParser.parse(map, {...defaultParseConfig, ...{additionalDataConverter}});
+
+            expect(items[0].additionalData).to.eql({
                 "orientation": "EAST_CONVERTED"
             });
         });
@@ -163,6 +164,30 @@ describe('WorldMapParser', () => {
                 new Point(4, 1),
                 new Point(4, 3),
                 new Point(1, 3),
+            ]);
+        });
+
+
+        it('scales the polygons if scale option is changed.', () => {
+            const map = `
+                map \`
+
+                WIIWW
+                W---W
+                W---W
+                WWDDW
+
+                \`
+            `;
+
+            const worldMapParser = new WorldMapParser();
+            const {rooms} = worldMapParser.parse(map, {...defaultParseConfig, ...{xScale: 2, yScale: 3}});
+            expect(rooms.length).to.eq(1);
+            expect(rooms[0].points).to.eql([
+                new Point(2, 3),
+                new Point(8, 3),
+                new Point(8, 9),
+                new Point(2, 9)
             ]);
         });
     });
