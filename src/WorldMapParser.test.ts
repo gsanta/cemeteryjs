@@ -12,8 +12,8 @@ describe('WorldMapParser', () => {
             const file = fs.readFileSync(__dirname + '/../assets/test/test1.gwm', 'utf8');
             const gameObjectParser = new WorldMapParser();
 
-            const {items} = gameObjectParser.parse(file)
-            expect(items.length).to.equal(7);
+            const items = gameObjectParser.parse(file)
+            expect(items.length).to.equal(9);
             expect(items[0]).to.eql(new WorldItem('W', new Rectangle(1, 2, 1, 6), 'wall'), 'gameObject[0] is not correct');
             expect(items[1]).to.eql(new WorldItem('W', new Rectangle(8, 2, 1, 6), 'wall'), 'gameObject[1] is not correct');
             expect(items[2]).to.eql(new WorldItem('W', new Rectangle(2, 2, 2, 2), 'wall'), 'gameObject[2] is not correct');
@@ -25,9 +25,9 @@ describe('WorldMapParser', () => {
         it ('can parse the additional data for a WorldItem.', () => {
             const file = fs.readFileSync(__dirname + '/../assets/test/testNewDetailsSection.gwm', 'utf8');
             const gameObjectParser = new WorldMapParser();
-            const {items: furnishing} = gameObjectParser.parse(file)
+            const items = gameObjectParser.parse(file)
 
-            expect(furnishing[1].additionalData).to.eql({
+            expect(items[1].additionalData).to.eql({
                 angle: -90,
                 axis1: {
                     x: 4, y: 2
@@ -45,7 +45,7 @@ describe('WorldMapParser', () => {
             const file = fs.readFileSync(__dirname + '/../assets/test/testAdditionalData.gwm', 'utf8');
             const worldMapParser = new WorldMapParser();
 
-            const {items} = worldMapParser.parse(file)
+            const items = worldMapParser.parse(file)
             expect(items[0].additionalData).to.eql({
                 angle: 90,
                 axis: {
@@ -60,7 +60,7 @@ describe('WorldMapParser', () => {
         it('attaches the additional data to vertices, if present TEST CASE 2', () => {
             const file = fs.readFileSync(__dirname + '/../assets/test/testAdditionalData2.gwm', 'utf8');
             const worldMapParser = new WorldMapParser();
-            const {items} = worldMapParser.parse(file)
+            const items = worldMapParser.parse(file)
             expect(items[0].additionalData).to.eql({
                 angle: 90,
                 axis: {
@@ -99,7 +99,7 @@ describe('WorldMapParser', () => {
             `;
 
             const worldMapParser = new WorldMapParser();
-            const {items} = worldMapParser.parse(map)
+            const items = worldMapParser.parse(map)
             expect(items[0].additionalData).to.eql({
                 "pos": {
                     "x": 4,
@@ -137,7 +137,7 @@ describe('WorldMapParser', () => {
             });
 
             const worldMapParser = new WorldMapParser();
-            const {items} = worldMapParser.parse(map, {...defaultParseConfig, ...{additionalDataConverter}});
+            const items = worldMapParser.parse(map, {...defaultParseConfig, ...{additionalDataConverter}});
 
             expect(items[0].additionalData).to.eql({
                 "orientation": "EAST_CONVERTED"
@@ -157,9 +157,10 @@ describe('WorldMapParser', () => {
             `;
 
             const worldMapParser = new WorldMapParser();
-            const {rooms} = worldMapParser.parse(map)
+            const items = worldMapParser.parse(map)
+            const rooms = items.filter(item => item.name === 'room');
             expect(rooms.length).to.eq(1);
-            expect(rooms[0].points).to.eql([
+            expect(rooms[0].dimensions.points).to.eql([
                 new Point(1, 1),
                 new Point(4, 1),
                 new Point(4, 3),
@@ -181,9 +182,11 @@ describe('WorldMapParser', () => {
             `;
 
             const worldMapParser = new WorldMapParser();
-            const {rooms} = worldMapParser.parse(map, {...defaultParseConfig, ...{xScale: 2, yScale: 3}});
+            const items = worldMapParser.parse(map, {...defaultParseConfig, ...{xScale: 2, yScale: 3}});
+            const rooms = items.filter(item => item.name === 'room');
+
             expect(rooms.length).to.eq(1);
-            expect(rooms[0].points).to.eql([
+            expect(rooms[0].dimensions.points).to.eql([
                 new Point(2, 3),
                 new Point(8, 3),
                 new Point(8, 9),

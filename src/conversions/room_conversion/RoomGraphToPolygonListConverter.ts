@@ -4,6 +4,7 @@ import { Line } from "../../model/Line";
 import { Point } from "../../model/Point";
 import { Polygon } from "../../model/Polygon";
 import { PolygonRedundantPointReducer } from './PolygonRedundantPointReducer';
+import { WorldItem } from '../../model/WorldItem';
 
 
 export class RoomGraphToPolygonListConverter {
@@ -13,7 +14,7 @@ export class RoomGraphToPolygonListConverter {
         this.polygonRedundantPointReducer = new PolygonRedundantPointReducer();
     }
 
-    public convert(graph: MatrixGraph, roomCharacter: string): Polygon[] {
+    public convert(graph: MatrixGraph, roomCharacter: string): WorldItem[] {
         return graph.createConnectedComponentGraphsForCharacter(roomCharacter)
             .map(componentGraph => {
                 const lines = this.segmentGraphToHorizontalLines(componentGraph);
@@ -22,7 +23,7 @@ export class RoomGraphToPolygonListConverter {
                     this.createPolygonPointsFromHorizontalLines(lines)
                 );
 
-                return new Polygon(points);
+                return new WorldItem(null, new Polygon(points), 'room');
             });
     }
 

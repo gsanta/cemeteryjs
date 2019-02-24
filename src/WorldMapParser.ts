@@ -11,11 +11,6 @@ export interface AdditionalDataConverter<T> {
     (additionalData: any): T;
 }
 
-export interface WorldParsingResult {
-    items: WorldItem<any, Rectangle>[];
-    rooms: Polygon[];
-}
-
 export interface ParseConfig<T> {
     xScale: number;
     yScale: number;
@@ -46,7 +41,7 @@ export class WorldMapParser {
         this.worldMapToRoomMapConverter = worldMapToRoomMapConverter;
     }
 
-    public parse<T>(worldMap: string, config: ParseConfig<T> = defaultParseConfig): WorldParsingResult {
+    public parse<T>(worldMap: string, config: ParseConfig<T> = defaultParseConfig): WorldItem[] {
         const graph = this.worldMapConverter.convert(worldMap);
         const furnishing = this.graphToGameObjectListConverter.convert(graph);
 
@@ -63,17 +58,16 @@ export class WorldMapParser {
             '-'
         );
 
-        return {
-            items: furnishing,
-            rooms: this.scalePolygons(rooms, config.xScale, config.yScale)
-        }
+        rooms.forEach(room => {
+            room.dimensions = this.scalePolygon(room.dimensions, config.xScale, config.yScale);
+        })
+
+        return [...furnishing, ...rooms];
     }
 
-    private scalePolygons(polygons: Polygon[], scaleX: number, scaleY: number): Polygon[] {
-        return polygons.map(polygon => {
-            const points = polygon.points.map(point => point.scaleX(scaleX).scaleY(scaleY));
+    private scalePolygon(polygon: Polygon, scaleX: number, scaleY: number): Polygon {
+        const points = polygon.points.map(point => point.scaleX(scaleX).scaleY(scaleY));
 
-            return new Polygon(points);
-        })
+        return new Polygon(points);
     }
 }

@@ -1,13 +1,12 @@
-import { Rectangle } from './Rectangle';
 import { Polygon } from './Polygon';
 
-export class WorldItem<T = any, E = Rectangle> {
+export class WorldItem<T = any> {
     public type: string;
     public name: string;
-    public dimensions: E;
+    public dimensions: Polygon;
     public additionalData: T;
 
-    constructor(type: string, dimensions: E, name: string, additionalData: T = null) {
+    constructor(type: string, dimensions: Polygon, name: string, additionalData: T = null) {
         this.type = type;
         this.dimensions = dimensions;
         this.name = name;

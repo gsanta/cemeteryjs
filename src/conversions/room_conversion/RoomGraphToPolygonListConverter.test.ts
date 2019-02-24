@@ -25,10 +25,10 @@ describe('RoomGraphToGameObjectListConverter', () => {
 
             const roomGraphToPolygonListConverter = new RoomGraphToPolygonListConverter();
 
-            const polygons = roomGraphToPolygonListConverter.convert(matrixGraph, '#');
+            const worldItem = roomGraphToPolygonListConverter.convert(matrixGraph, '#');
 
-            expect(polygons.length).to.eql(1);
-            expect(polygons[0].points).to.eql([
+            expect(worldItem.length).to.eql(1);
+            expect(worldItem[0].dimensions.points).to.eql([
                 new Point(1, 1),
                 new Point(6, 1),
                 new Point(6, 4),
@@ -54,17 +54,17 @@ describe('RoomGraphToGameObjectListConverter', () => {
 
             const roomGraphToPolygonListConverter = new RoomGraphToPolygonListConverter();
 
-            const polygons = roomGraphToPolygonListConverter.convert(matrixGraph, '#');
+            const worldItem = roomGraphToPolygonListConverter.convert(matrixGraph, '#');
 
-            expect(polygons.length).to.eql(2);
-            expect(polygons[0].points).to.eql([
+            expect(worldItem.length).to.eql(2);
+            expect(worldItem[0].dimensions.points).to.eql([
                 new Point(7, 1),
                 new Point(9, 1),
                 new Point(9, 3),
                 new Point(7, 3)
             ]);
 
-            expect(polygons[1].points).to.eql([
+            expect(worldItem[1].dimensions.points).to.eql([
                 new Point(1, 2),
                 new Point(4, 2),
                 new Point(4, 4),
@@ -90,10 +90,10 @@ describe('RoomGraphToGameObjectListConverter', () => {
 
             const roomGraphToPolygonListConverter = new RoomGraphToPolygonListConverter();
 
-            const polygons = roomGraphToPolygonListConverter.convert(matrixGraph, '#');
+            const worldItem = roomGraphToPolygonListConverter.convert(matrixGraph, '#');
 
-            expect(polygons.length).to.eql(1);
-            expect(polygons[0].points).to.eql([
+            expect(worldItem.length).to.eql(1);
+            expect(worldItem[0].dimensions.points).to.eql([
                 new Point(1, 1),
                 new Point(4, 1),
                 new Point(4, 2),
@@ -116,9 +116,9 @@ describe('RoomGraphToGameObjectListConverter', () => {
 
             const roomGraphToPolygonListConverter = new RoomGraphToPolygonListConverter();
 
-            const polygons = roomGraphToPolygonListConverter.convert(matrixGraph, '#');
+            const worldItem = roomGraphToPolygonListConverter.convert(matrixGraph, '#');
 
-            expect(polygons[0].points).to.eql([
+            expect(worldItem[0].dimensions.points).to.eql([
                 new Point(1, 1),
                 new Point(37, 1),
                 new Point(37, 26),
