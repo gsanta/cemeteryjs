@@ -2,11 +2,6 @@ import { Polygon } from './Polygon';
 import { Point } from './Point';
 
 export class Rectangle extends Polygon {
-    left: number;
-    top: number;
-    width: number;
-    height: number;
-
     constructor(left: number, top: number, width: number, height: number) {
         super([
             new Point(left, top),
