@@ -1,6 +1,5 @@
 import { Point } from './Point';
 import * as turf from '@turf/turf';
-import intersect from '@turf/intersect';
 
 export class Polygon {
     public points: Point[];
@@ -23,8 +22,7 @@ export class Polygon {
         const poly1 = turf.polygon([this.toLinearRing().toTwoDimensionalArray()]);
         const poly2 = turf.polygon([other.toLinearRing().toTwoDimensionalArray()]);
 
-        const intersection = turf.intersect(poly1, poly2);
-        return !!intersection && intersection.geometry.coordinates[0].length !== 2;
+        return turf.booleanContains(poly1, poly2);
     }
 
     private toTwoDimensionalArray(): number[][] {

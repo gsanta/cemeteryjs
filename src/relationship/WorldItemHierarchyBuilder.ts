@@ -5,7 +5,7 @@ import * as _ from 'lodash';
  * Creates relationship between `WorldItem`'s via adding a `WorldItem` to another as
  * a child based on wheter one fully contains the other.
  */
-export class ByContainmentRelationShipBuilder {
+export class WorldItemHierarchyBuilder {
     /**
      * Restricts search for parents only these types
      */
@@ -35,7 +35,8 @@ export class ByContainmentRelationShipBuilder {
                         parentItem.addChild(childItem);
                         childrenAlreadyCategorized.push(childItem);
                     }
-                });
+                })
+                .value();
         });
     }
 }

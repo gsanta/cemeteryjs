@@ -6,6 +6,7 @@ import _ = require('lodash');
 import { RoomGraphToPolygonListConverter } from './conversions/room_conversion/RoomGraphToPolygonListConverter';
 import { WorldMapToRoomMapConverter } from './conversions/room_conversion/WorldMapToRoomMapConverter';
 import turfIntersect from '@turf/intersect';
+import { WorldItemHierarchyBuilder } from './relationship/WorldItemHierarchyBuilder';
 
 export interface AdditionalDataConverter<T> {
     (additionalData: any): T;
@@ -20,7 +21,7 @@ export interface ParseConfig<T> {
 export const defaultParseConfig: ParseConfig<any> = {
     xScale: 1,
     yScale: 1,
-    additionalDataConverter: _.identity
+    additionalDataConverter: _.identity,
 }
 
 export class WorldMapParser {
@@ -48,7 +49,7 @@ export class WorldMapParser {
         furnishing.forEach(gameObject => {
             if (gameObject.additionalData) {
                 gameObject.additionalData = config.additionalDataConverter(gameObject.additionalData);
-            }turfIntersect
+            }
         });
 
         const rooms = this.roomGraphToGameObjectListConverter.convert(
@@ -61,6 +62,9 @@ export class WorldMapParser {
         rooms.forEach(room => {
             room.dimensions = this.scalePolygon(room.dimensions, config.xScale, config.yScale);
         });
+
+        const worldItemHierarchyBuilder = new WorldItemHierarchyBuilder(['room'], ['cupboard', 'bed']);
+        // worldItemHierarchyBuilder.build(items);
 
         return [...furnishing, ...rooms];
     }
