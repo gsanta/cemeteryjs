@@ -1,12 +1,12 @@
 import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
-import { RoomGraphToPolygonListConverter } from './RoomGraphToPolygonListConverter';
+import { RoomInfoGenerator } from './RoomInfoGenerator';
 import { expect } from 'chai';
 import { Point } from "../../model/Point";
 import * as fs from 'fs';
 import { WorldMapToRoomMapConverter } from "./WorldMapToRoomMapConverter";
 
-describe('RoomGraphToGameObjectListConverter', () => {
-    describe('convert', () => {
+describe('RoomInfoGenerator', () => {
+    describe('generate', () => {
         it ('returns with a Polygon per room, the points in the Polygon representing the room\'s edges.', () => {
             const map = `
                 map \`
@@ -23,9 +23,9 @@ describe('RoomGraphToGameObjectListConverter', () => {
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const roomGraphToPolygonListConverter = new RoomGraphToPolygonListConverter();
+            const roomGraphToPolygonListConverter = new RoomInfoGenerator('#');
 
-            const worldItem = roomGraphToPolygonListConverter.convert(matrixGraph, '#');
+            const worldItem = roomGraphToPolygonListConverter.generate(matrixGraph);
 
             expect(worldItem.length).to.eql(1);
             expect(worldItem[0].dimensions.points).to.eql([
@@ -52,9 +52,9 @@ describe('RoomGraphToGameObjectListConverter', () => {
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const roomGraphToPolygonListConverter = new RoomGraphToPolygonListConverter();
+            const roomGraphToPolygonListConverter = new RoomInfoGenerator('#');
 
-            const worldItem = roomGraphToPolygonListConverter.convert(matrixGraph, '#');
+            const worldItem = roomGraphToPolygonListConverter.generate(matrixGraph);
 
             expect(worldItem.length).to.eql(2);
             expect(worldItem[0].dimensions.points).to.eql([
@@ -88,9 +88,9 @@ describe('RoomGraphToGameObjectListConverter', () => {
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const roomGraphToPolygonListConverter = new RoomGraphToPolygonListConverter();
+            const roomGraphToPolygonListConverter = new RoomInfoGenerator('#');
 
-            const worldItem = roomGraphToPolygonListConverter.convert(matrixGraph, '#');
+            const worldItem = roomGraphToPolygonListConverter.generate(matrixGraph);
 
             expect(worldItem.length).to.eql(1);
             expect(worldItem[0].dimensions.points).to.eql([
@@ -114,9 +114,9 @@ describe('RoomGraphToGameObjectListConverter', () => {
 
             const matrixGraph = worldMapToGraphConverter.convert(worldMapToRoomMapConverter.convert(worldMapStr));
 
-            const roomGraphToPolygonListConverter = new RoomGraphToPolygonListConverter();
+            const roomGraphToPolygonListConverter = new RoomInfoGenerator('#');
 
-            const worldItem = roomGraphToPolygonListConverter.convert(matrixGraph, '#');
+            const worldItem = roomGraphToPolygonListConverter.generate(matrixGraph);
 
             expect(worldItem[0].dimensions.points).to.eql([
                 new Point(1, 1),

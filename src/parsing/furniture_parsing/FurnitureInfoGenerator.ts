@@ -2,12 +2,13 @@ import { MatrixGraph } from '../../matrix_graph/MatrixGraph';
 import { WorldItem } from '../../model/WorldItem';
 import * as _ from 'lodash';
 import { Rectangle } from '../../model/Rectangle';
+import { WorldItemGenerator } from '../WorldItemGenerator';
 
-export class GraphToWorldItemListConverter {
+export class FurnitureInfoGenerator implements WorldItemGenerator {
     private static Y_UNIT_LENGTH = 2;
     private static X_UNIT_LENGTH = 1;
 
-    public convert(graph: MatrixGraph): WorldItem[] {
+    public generate(graph: MatrixGraph): WorldItem[] {
 
         return <any> _.chain(graph.getCharacters())
             .without('#')
@@ -22,8 +23,8 @@ export class GraphToWorldItemListConverter {
                     new Rectangle(
                         0,
                         0,
-                        graph.getColumns() * GraphToWorldItemListConverter.X_UNIT_LENGTH,
-                        graph.getRows() * GraphToWorldItemListConverter.Y_UNIT_LENGTH,
+                        graph.getColumns() * FurnitureInfoGenerator.X_UNIT_LENGTH,
+                        graph.getRows() * FurnitureInfoGenerator.Y_UNIT_LENGTH,
                     ),
                     'floor'
                 )
@@ -48,10 +49,10 @@ export class GraphToWorldItemListConverter {
 
         const oneVertex = componentGraph.getAllVertices()[0];
 
-        const x = minX * GraphToWorldItemListConverter.X_UNIT_LENGTH;
-        const y = minY * GraphToWorldItemListConverter.Y_UNIT_LENGTH;
-        const width = (maxX - minX + 1) * GraphToWorldItemListConverter.X_UNIT_LENGTH;
-        const height = (maxY - minY + 1) * GraphToWorldItemListConverter.Y_UNIT_LENGTH;
+        const x = minX * FurnitureInfoGenerator.X_UNIT_LENGTH;
+        const y = minY * FurnitureInfoGenerator.Y_UNIT_LENGTH;
+        const width = (maxX - minX + 1) * FurnitureInfoGenerator.X_UNIT_LENGTH;
+        const height = (maxY - minY + 1) * FurnitureInfoGenerator.Y_UNIT_LENGTH;
         return new WorldItem(
             componentGraph.getCharacters()[0],
             new Rectangle(x, y, width, height),
@@ -171,10 +172,10 @@ export class GraphToWorldItemListConverter {
         const startCoord = graph.getVertexPositionInMatrix(vertices[0]);
         const endCoord = graph.getVertexPositionInMatrix(_.last(vertices));
 
-        const x = startCoord.x * GraphToWorldItemListConverter.X_UNIT_LENGTH;
-        const y = startCoord.y * GraphToWorldItemListConverter.Y_UNIT_LENGTH;
-        const width = GraphToWorldItemListConverter.X_UNIT_LENGTH;
-        const height = endCoord.y * GraphToWorldItemListConverter.Y_UNIT_LENGTH - y + GraphToWorldItemListConverter.Y_UNIT_LENGTH;
+        const x = startCoord.x * FurnitureInfoGenerator.X_UNIT_LENGTH;
+        const y = startCoord.y * FurnitureInfoGenerator.Y_UNIT_LENGTH;
+        const width = FurnitureInfoGenerator.X_UNIT_LENGTH;
+        const height = endCoord.y * FurnitureInfoGenerator.Y_UNIT_LENGTH - y + FurnitureInfoGenerator.Y_UNIT_LENGTH;
 
         return new Rectangle(x, y, width, height);
     }
@@ -186,10 +187,10 @@ export class GraphToWorldItemListConverter {
         const startCoord = graph.getVertexPositionInMatrix(vertices[0]);
         const endCoord = graph.getVertexPositionInMatrix(_.last(vertices));
 
-        const x = startCoord.x * GraphToWorldItemListConverter.X_UNIT_LENGTH;
-        const y = startCoord.y * GraphToWorldItemListConverter.Y_UNIT_LENGTH;
-        const width = endCoord.x * GraphToWorldItemListConverter.X_UNIT_LENGTH - x + GraphToWorldItemListConverter.X_UNIT_LENGTH;
-        const height = GraphToWorldItemListConverter.Y_UNIT_LENGTH;
+        const x = startCoord.x * FurnitureInfoGenerator.X_UNIT_LENGTH;
+        const y = startCoord.y * FurnitureInfoGenerator.Y_UNIT_LENGTH;
+        const width = endCoord.x * FurnitureInfoGenerator.X_UNIT_LENGTH - x + FurnitureInfoGenerator.X_UNIT_LENGTH;
+        const height = FurnitureInfoGenerator.Y_UNIT_LENGTH;
 
         return new Rectangle(x, y, width, height);
     }

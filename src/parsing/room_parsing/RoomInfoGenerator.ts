@@ -5,17 +5,19 @@ import { Point } from "../../model/Point";
 import { Polygon } from "../../model/Polygon";
 import { PolygonRedundantPointReducer } from './PolygonRedundantPointReducer';
 import { WorldItem } from '../../model/WorldItem';
+import { WorldItemGenerator } from "../WorldItemGenerator";
 
-
-export class RoomGraphToPolygonListConverter {
+export class RoomInfoGenerator implements WorldItemGenerator {
     private polygonRedundantPointReducer: PolygonRedundantPointReducer;
+    private roomCharacter: string;
 
-    constructor() {
+    constructor(roomCharacter: string) {
+        this.roomCharacter = roomCharacter;
         this.polygonRedundantPointReducer = new PolygonRedundantPointReducer();
     }
 
-    public convert(graph: MatrixGraph, roomCharacter: string): WorldItem[] {
-        return graph.createConnectedComponentGraphsForCharacter(roomCharacter)
+    public generate(graph: MatrixGraph): WorldItem[] {
+        return graph.createConnectedComponentGraphsForCharacter(this.roomCharacter)
             .map(componentGraph => {
                 const lines = this.segmentGraphToHorizontalLines(componentGraph);
 
@@ -48,7 +50,7 @@ export class RoomGraphToPolygonListConverter {
         const lines: Line[] = [];
 
         map.forEach((xList: number[], yPos: number) => {
-            xList.sort(RoomGraphToPolygonListConverter.sortByNumber);
+            xList.sort(RoomInfoGenerator.sortByNumber);
 
             const xStart = xList[0];
             const xEnd = _.last(xList);

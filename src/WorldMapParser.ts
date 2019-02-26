@@ -1,12 +1,10 @@
 import { WorldMapToMatrixGraphConverter } from './matrix_graph/conversion/WorldMapToMatrixGraphConverter';
-import { GraphToWorldItemListConverter } from './conversions/world_item_conversion/GraphToWorldItemListConverter';
+import { FurnitureInfoGenerator } from './parsing/furniture_parsing/FurnitureInfoGenerator';
 import { WorldItem } from './model/WorldItem';
 import { Polygon } from './model/Polygon';
 import _ = require('lodash');
-import { RoomGraphToPolygonListConverter } from './conversions/room_conversion/RoomGraphToPolygonListConverter';
-import { WorldMapToRoomMapConverter } from './conversions/room_conversion/WorldMapToRoomMapConverter';
-import turfIntersect from '@turf/intersect';
-import { WorldItemHierarchyBuilder } from './relationship/WorldItemHierarchyBuilder';
+import { RoomInfoGenerator } from './parsing/room_parsing/RoomInfoGenerator';
+import { WorldMapToRoomMapConverter } from './parsing/room_parsing/WorldMapToRoomMapConverter';
 
 export interface AdditionalDataConverter<T> {
     (additionalData: any): T;
@@ -26,14 +24,14 @@ export const defaultParseConfig: ParseConfig<any> = {
 
 export class WorldMapParser {
     private worldMapConverter: WorldMapToMatrixGraphConverter;
-    private graphToGameObjectListConverter: GraphToWorldItemListConverter;
-    private roomGraphToGameObjectListConverter: RoomGraphToPolygonListConverter;
+    private graphToGameObjectListConverter: FurnitureInfoGenerator;
+    private roomGraphToGameObjectListConverter: RoomInfoGenerator;
     private worldMapToRoomMapConverter: WorldMapToRoomMapConverter;
 
     constructor(
         worldMapConverter: WorldMapToMatrixGraphConverter = new WorldMapToMatrixGraphConverter(),
-        graphToGameObjectListConverter: GraphToWorldItemListConverter = new GraphToWorldItemListConverter(),
-        roomGraphToGameObjectListConverter: RoomGraphToPolygonListConverter = new RoomGraphToPolygonListConverter(),
+        graphToGameObjectListConverter: FurnitureInfoGenerator = new FurnitureInfoGenerator(),
+        roomGraphToGameObjectListConverter: RoomInfoGenerator = new RoomInfoGenerator('-'),
         worldMapToRoomMapConverter: WorldMapToRoomMapConverter = new WorldMapToRoomMapConverter('W', '-', ['W', 'D', 'I'])
     ) {
         this.worldMapConverter = worldMapConverter;
@@ -44,7 +42,7 @@ export class WorldMapParser {
 
     public parse<T>(worldMap: string, config: ParseConfig<T> = defaultParseConfig): WorldItem[] {
         const graph = this.worldMapConverter.convert(worldMap);
-        const furnishing = this.graphToGameObjectListConverter.convert(graph);
+        const furnishing = this.graphToGameObjectListConverter.generate(graph);
 
         furnishing.forEach(gameObject => {
             if (gameObject.additionalData) {
@@ -52,21 +50,22 @@ export class WorldMapParser {
             }
         });
 
-        const rooms = this.roomGraphToGameObjectListConverter.convert(
+        const rooms = this.roomGraphToGameObjectListConverter.generate(
             this.worldMapConverter.convert(
                 this.worldMapToRoomMapConverter.convert(worldMap)
             ),
-            '-'
         );
 
         rooms.forEach(room => {
             room.dimensions = this.scalePolygon(room.dimensions, config.xScale, config.yScale);
         });
 
-        const worldItemHierarchyBuilder = new WorldItemHierarchyBuilder(['room'], ['cupboard', 'bed']);
+        const items = [...furnishing, ...rooms];
+
+        // const worldItemHierarchyBuilder = new WorldItemHierarchyBuilder(['room'], ['cupboard', 'bed']);
         // worldItemHierarchyBuilder.build(items);
 
-        return [...furnishing, ...rooms];
+        return items;
     }
 
     private scalePolygon(polygon: Polygon, scaleX: number, scaleY: number): Polygon {

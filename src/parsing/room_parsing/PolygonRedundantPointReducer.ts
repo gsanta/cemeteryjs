@@ -1,4 +1,3 @@
-import { Polygon } from '../../model/Polygon';
 import { Point } from '../../model/Point';
 import _ = require('lodash');
 

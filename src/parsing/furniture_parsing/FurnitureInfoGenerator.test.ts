@@ -1,11 +1,11 @@
 import { LinesToGraphConverter } from '../../matrix_graph/conversion/LinesToGraphConverter';
-import { GraphToWorldItemListConverter } from './GraphToWorldItemListConverter';
+import { FurnitureInfoGenerator } from './FurnitureInfoGenerator';
 import { expect } from 'chai';
 import { WorldItem } from '../../model/WorldItem';
 import { Rectangle } from '../../model/Rectangle';
 
-describe('GraphToWorldItemListConverter', () => {
-    describe('convert', () => {
+describe('FurnitureInfoGenerator', () => {
+    describe('generate', () => {
         it('creates world items from the graph (test case with one connected component)', () => {
             const linesToGraphConverter = new LinesToGraphConverter();
             const graph = linesToGraphConverter.parse(
@@ -23,8 +23,8 @@ describe('GraphToWorldItemListConverter', () => {
             );
 
 
-            const graphToWorldItemListConverter = new GraphToWorldItemListConverter();
-            const worldItems = graphToWorldItemListConverter.convert(graph);
+            const graphToWorldItemListConverter = new FurnitureInfoGenerator();
+            const worldItems = graphToWorldItemListConverter.generate(graph);
 
             expect(worldItems[0]).to.eql(new WorldItem('W', new Rectangle(1, 2, 1, 4), 'wall'));
             expect(worldItems[1]).to.eql(new WorldItem('W', new Rectangle(3, 2, 1, 4), 'wall'));
@@ -48,8 +48,8 @@ describe('GraphToWorldItemListConverter', () => {
             );
 
 
-            const graphToWorldItemListConverter = new GraphToWorldItemListConverter();
-            const worldItems = graphToWorldItemListConverter.convert(graph);
+            const graphToWorldItemListConverter = new FurnitureInfoGenerator();
+            const worldItems = graphToWorldItemListConverter.generate(graph);
 
             expect(worldItems[0]).to.eql(new WorldItem('W', new Rectangle(1, 2, 1, 4), 'wall'));
             expect(worldItems[2]).to.eql(new WorldItem('W', new Rectangle(2, 6, 2, 2), 'wall'));
@@ -73,8 +73,8 @@ describe('GraphToWorldItemListConverter', () => {
             );
 
 
-            const graphToWorldItemListConverter = new GraphToWorldItemListConverter();
-            const worldItems = graphToWorldItemListConverter.convert(graph);
+            const graphToWorldItemListConverter = new FurnitureInfoGenerator();
+            const worldItems = graphToWorldItemListConverter.generate(graph);
             expect(worldItems.length).to.equal(2);
             expect(worldItems[0]).to.eql(new WorldItem('D', new Rectangle(1, 0, 2, 6), 'door'));
         });
