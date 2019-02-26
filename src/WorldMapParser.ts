@@ -1,11 +1,11 @@
 import { WorldMapToMatrixGraphConverter } from './matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 import { GraphToWorldItemListConverter } from './conversions/world_item_conversion/GraphToWorldItemListConverter';
 import { WorldItem } from './model/WorldItem';
-import { Rectangle } from './model/Rectangle';
 import { Polygon } from './model/Polygon';
 import _ = require('lodash');
 import { RoomGraphToPolygonListConverter } from './conversions/room_conversion/RoomGraphToPolygonListConverter';
 import { WorldMapToRoomMapConverter } from './conversions/room_conversion/WorldMapToRoomMapConverter';
+import turfIntersect from '@turf/intersect';
 
 export interface AdditionalDataConverter<T> {
     (additionalData: any): T;
@@ -48,7 +48,7 @@ export class WorldMapParser {
         furnishing.forEach(gameObject => {
             if (gameObject.additionalData) {
                 gameObject.additionalData = config.additionalDataConverter(gameObject.additionalData);
-            }
+            }turfIntersect
         });
 
         const rooms = this.roomGraphToGameObjectListConverter.convert(
@@ -60,7 +60,7 @@ export class WorldMapParser {
 
         rooms.forEach(room => {
             room.dimensions = this.scalePolygon(room.dimensions, config.xScale, config.yScale);
-        })
+        });
 
         return [...furnishing, ...rooms];
     }
