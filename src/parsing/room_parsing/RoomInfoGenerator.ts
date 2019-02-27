@@ -6,13 +6,23 @@ import { Polygon } from "../../model/Polygon";
 import { PolygonRedundantPointReducer } from './PolygonRedundantPointReducer';
 import { WorldItem } from '../../model/WorldItem';
 import { WorldItemGenerator } from "../WorldItemGenerator";
+import { WorldMapToRoomMapConverter } from './WorldMapToRoomMapConverter';
+import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
 
 export class RoomInfoGenerator implements WorldItemGenerator {
     private polygonRedundantPointReducer: PolygonRedundantPointReducer;
     private roomCharacter: string;
+    private worldMapToRoomMapConverter: WorldMapToRoomMapConverter;
+    private worldMapConverter: WorldMapToMatrixGraphConverter;
 
-    constructor(roomCharacter: string) {
+    constructor(
+        roomCharacter = '-',
+        worldMapConverter = new WorldMapToMatrixGraphConverter(),
+        worldMapToRoomMapConverter = new WorldMapToRoomMapConverter('W', '-', ['W', 'D', 'I']),
+    ) {
         this.roomCharacter = roomCharacter;
+        this.worldMapConverter = worldMapConverter;
+        this.worldMapToRoomMapConverter = worldMapToRoomMapConverter;
         this.polygonRedundantPointReducer = new PolygonRedundantPointReducer();
     }
 
@@ -27,6 +37,16 @@ export class RoomInfoGenerator implements WorldItemGenerator {
 
                 return new WorldItem(null, new Polygon(points), 'room');
             });
+    }
+
+    public generateFromStringMap(strMap: string): WorldItem[] {
+        return this.generate(this.getMatrixGraphForStringMap(strMap));
+    }
+
+    public getMatrixGraphForStringMap(strMap: string): MatrixGraph {
+        return this.worldMapConverter.convert(
+            this.worldMapToRoomMapConverter.convert(strMap)
+        );
     }
 
     /*

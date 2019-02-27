@@ -3,10 +3,16 @@ import { WorldItem } from '../../model/WorldItem';
 import * as _ from 'lodash';
 import { Rectangle } from '../../model/Rectangle';
 import { WorldItemGenerator } from '../WorldItemGenerator';
+import { WorldMapToMatrixGraphConverter } from '../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 
 export class FurnitureInfoGenerator implements WorldItemGenerator {
     private static Y_UNIT_LENGTH = 2;
     private static X_UNIT_LENGTH = 1;
+    private worldMapConverter: WorldMapToMatrixGraphConverter;
+
+    constructor(worldMapConverter = new WorldMapToMatrixGraphConverter()) {
+        this.worldMapConverter = worldMapConverter;
+    }
 
     public generate(graph: MatrixGraph): WorldItem[] {
 
@@ -31,6 +37,14 @@ export class FurnitureInfoGenerator implements WorldItemGenerator {
             ])
             .value();
 
+    }
+
+    public generateFromStringMap(strMap: string): WorldItem[] {
+        return this.generate(this.getMatrixGraphForStringMap(strMap));
+    }
+
+    public getMatrixGraphForStringMap(strMap: string): MatrixGraph {
+        return this.worldMapConverter.convert(strMap);
     }
 
     private createGameObjectsForConnectedComponent(componentGraph: MatrixGraph): WorldItem[] {
