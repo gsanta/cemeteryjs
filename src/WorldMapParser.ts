@@ -6,6 +6,7 @@ import _ = require('lodash');
 import { RoomInfoGenerator } from './parsing/room_parsing/RoomInfoGenerator';
 import { WorldMapToRoomMapConverter } from './parsing/room_parsing/WorldMapToRoomMapConverter';
 import { WorldItemGenerator } from './parsing/WorldItemGenerator';
+import { CombinedWorldItemGenerator } from './parsing/CombinedWorldItemGenerator';
 
 export interface AdditionalDataConverter<T> {
     (additionalData: any): T;
@@ -26,7 +27,7 @@ export const defaultParseConfig: ParseConfig<any> = {
 export class WorldMapParser {
     private worldItemGenerator: WorldItemGenerator;
 
-    constructor(worldItemGenerator: WorldItemGenerator) {
+    constructor(worldItemGenerator: WorldItemGenerator = new CombinedWorldItemGenerator()) {
         this.worldItemGenerator = worldItemGenerator;
     }
 

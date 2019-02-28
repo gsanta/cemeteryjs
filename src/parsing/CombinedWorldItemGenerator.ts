@@ -5,11 +5,14 @@ import { RoomInfoGenerator } from './room_parsing/RoomInfoGenerator';
 import { FurnitureInfoGenerator } from './furniture_parsing/FurnitureInfoGenerator';
 import _ = require('lodash');
 
-
+/**
+ * The goal of this generator is to combine multiple generators together each of which parses the input worldmap string
+ * from a different aspect, and emits all of the `WorldItem`s merged together.
+ */
 export class CombinedWorldItemGenerator implements WorldItemGenerator {
     private worldItemGenerators: WorldItemGenerator[];
 
-    constructor(worldItemGenerators: WorldItemGenerator[] = [new RoomInfoGenerator(), new FurnitureInfoGenerator()]) {
+    constructor(worldItemGenerators: WorldItemGenerator[] = [new FurnitureInfoGenerator(), new RoomInfoGenerator()]) {
         this.worldItemGenerators = worldItemGenerators;
     }
 

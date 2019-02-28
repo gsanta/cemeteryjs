@@ -1,6 +1,7 @@
 import { Polygon } from './Polygon';
 import { Point } from './Point';
 import { expect } from 'chai';
+import { Rectangle } from './Rectangle';
 
 
 describe('Polygon', () => {
@@ -57,6 +58,20 @@ describe('Polygon', () => {
             ]);
 
             expect(poly1.overlaps(poly2)).to.eql(false);
+        });
+    });
+
+    describe('scaleX', () => {
+        it ('scales the polygon on the x axis', () => {
+            const polygon = new Rectangle(1, 2, 3, 2);
+            expect(polygon.scaleX(3)).to.eql(new Rectangle(3, 2, 9, 2));
+        });
+    });
+
+    describe('scaleY', () => {
+        it ('scales the polygon on the y axis', () => {
+            const polygon = new Rectangle(1, 2, 1, 3);
+            expect(polygon.scaleY(3)).to.eql(new Rectangle(1, 6, 1, 9));
         });
     });
 });

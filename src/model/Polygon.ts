@@ -15,7 +15,13 @@ export class Polygon {
     public clone(): Polygon {
         const points = this.points.map(point => point.clone());
 
-        return new Polygon(points);
+        const clone = new Polygon(points);
+        clone.left = this.left;
+        clone.top = this.top;
+        clone.width = this.width;
+        clone.height = this.height;
+
+        return clone;
     }
 
     public overlaps(other: Polygon): boolean {
@@ -23,6 +29,34 @@ export class Polygon {
         const poly2 = turf.polygon([other.toLinearRing().toTwoDimensionalArray()]);
 
         return turf.booleanContains(poly1, poly2);
+    }
+
+    public scaleX(times: number): Polygon {
+        const points = this.points.map(point => point.scaleX(times));
+        const left = this.left ? this.left * times : this.left;
+        const width = this.width ? this.width * times : this.width;
+
+        const newPolygon = this.clone();
+        newPolygon.points = points;
+        newPolygon.left = left;
+        newPolygon.width = width;
+
+        return newPolygon;
+    }
+
+    public scaleY(times: number) {
+        const points = this.points.map(point => point.scaleY(times));
+
+        const top = this.top ? this.top * times : this.top;
+        const height = this.height ? this.height * times : this.height;
+
+        const newPolygon = this.clone();
+        newPolygon.points = points;
+
+        newPolygon.top = top;
+        newPolygon.height = height;
+
+        return newPolygon;
     }
 
     private toTwoDimensionalArray(): number[][] {

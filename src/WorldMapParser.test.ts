@@ -9,6 +9,7 @@ import { Point } from './model/Point';
 describe('WorldMapParser', () => {
     describe('parse', () => {
         it('creates a WorldItem for every distinguishable item in the input map', () => {
+            debugger;
             const file = fs.readFileSync(__dirname + '/../assets/test/test1.gwm', 'utf8');
             const gameObjectParser = new WorldMapParser();
 
