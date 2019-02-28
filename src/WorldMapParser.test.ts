@@ -9,23 +9,22 @@ import { Point } from './model/Point';
 describe('WorldMapParser', () => {
     describe('parse', () => {
         it('creates a WorldItem for every distinguishable item in the input map', () => {
-            debugger;
             const file = fs.readFileSync(__dirname + '/../assets/test/test1.gwm', 'utf8');
-            const gameObjectParser = new WorldMapParser();
+            const gameObjectParser = WorldMapParser.createWithOptions();
 
             const items = gameObjectParser.parse(file)
             expect(items.length).to.equal(9);
-            expect(items[0]).to.eql(new WorldItem('W', new Rectangle(1, 2, 1, 6), 'wall'), 'gameObject[0] is not correct');
-            expect(items[1]).to.eql(new WorldItem('W', new Rectangle(8, 2, 1, 6), 'wall'), 'gameObject[1] is not correct');
-            expect(items[2]).to.eql(new WorldItem('W', new Rectangle(2, 2, 2, 2), 'wall'), 'gameObject[2] is not correct');
-            expect(items[3]).to.eql(new WorldItem('W', new Rectangle(2, 6, 6, 2), 'wall'), 'gameObject[3] is not correct');
-            expect(items[4]).to.eql(new WorldItem('W', new Rectangle(6, 2, 2, 2), 'wall'), 'gameObject[4] is not correct');
-            expect(items[5]).to.eql(new WorldItem('I', new Rectangle(4, 2, 2, 2), 'window'), 'gameObject[5] is not correct');
+            expect(items[0]).to.eql(new WorldItem('W', new Rectangle(1, 1, 1, 3), 'wall'), 'gameObject[0] is not correct');
+            expect(items[1]).to.eql(new WorldItem('W', new Rectangle(8, 1, 1, 3), 'wall'), 'gameObject[1] is not correct');
+            expect(items[2]).to.eql(new WorldItem('W', new Rectangle(2, 1, 2, 1), 'wall'), 'gameObject[2] is not correct');
+            expect(items[3]).to.eql(new WorldItem('W', new Rectangle(2, 3, 6, 1), 'wall'), 'gameObject[3] is not correct');
+            expect(items[4]).to.eql(new WorldItem('W', new Rectangle(6, 1, 2, 1), 'wall'), 'gameObject[4] is not correct');
+            expect(items[5]).to.eql(new WorldItem('I', new Rectangle(4, 1, 2, 1), 'window'), 'gameObject[5] is not correct');
         });
 
         it ('can parse the additional data for a WorldItem.', () => {
             const file = fs.readFileSync(__dirname + '/../assets/test/testNewDetailsSection.gwm', 'utf8');
-            const gameObjectParser = new WorldMapParser();
+            const gameObjectParser = WorldMapParser.createWithOptions();
             const items = gameObjectParser.parse(file)
 
             expect(items[1].additionalData).to.eql({
@@ -44,7 +43,7 @@ describe('WorldMapParser', () => {
 
         it('attaches the additional data to vertices, if present TEST CASE 1', () => {
             const file = fs.readFileSync(__dirname + '/../assets/test/testAdditionalData.gwm', 'utf8');
-            const worldMapParser = new WorldMapParser();
+            const worldMapParser = WorldMapParser.createWithOptions();
 
             const items = worldMapParser.parse(file)
             expect(items[0].additionalData).to.eql({
@@ -60,7 +59,7 @@ describe('WorldMapParser', () => {
 
         it('attaches the additional data to vertices, if present TEST CASE 2', () => {
             const file = fs.readFileSync(__dirname + '/../assets/test/testAdditionalData2.gwm', 'utf8');
-            const worldMapParser = new WorldMapParser();
+            const worldMapParser = WorldMapParser.createWithOptions();
             const items = worldMapParser.parse(file)
             expect(items[0].additionalData).to.eql({
                 angle: 90,
@@ -99,7 +98,7 @@ describe('WorldMapParser', () => {
                 \`
             `;
 
-            const worldMapParser = new WorldMapParser();
+            const worldMapParser = WorldMapParser.createWithOptions();
             const items = worldMapParser.parse(map)
             expect(items[0].additionalData).to.eql({
                 "pos": {
@@ -133,12 +132,14 @@ describe('WorldMapParser', () => {
                 \`
             `;
 
-            const additionalDataConverter = (additionalData) => ({
-                orientation: `${additionalData.orientation}_CONVERTED`
-            });
+            const additionalDataConverter = (additionalData?) => {
+                return additionalData ?
+                    { orientation: `${additionalData.orientation}_CONVERTED` } :
+                    null
+            };
 
-            const worldMapParser = new WorldMapParser();
-            const items = worldMapParser.parse(map, {...defaultParseConfig, ...{additionalDataConverter}});
+            const worldMapParser = WorldMapParser.createWithOptions({...defaultParseConfig, ...{additionalDataConverter}});
+            const items = worldMapParser.parse(map);
 
             expect(items[0].additionalData).to.eql({
                 "orientation": "EAST_CONVERTED"
@@ -157,7 +158,7 @@ describe('WorldMapParser', () => {
                 \`
             `;
 
-            const worldMapParser = new WorldMapParser();
+            const worldMapParser = WorldMapParser.createWithOptions();
             const items = worldMapParser.parse(map)
             const rooms = items.filter(item => item.name === 'room');
             expect(rooms.length).to.eq(1);
@@ -182,8 +183,8 @@ describe('WorldMapParser', () => {
                 \`
             `;
 
-            const worldMapParser = new WorldMapParser();
-            const items = worldMapParser.parse(map, {...defaultParseConfig, ...{xScale: 2, yScale: 3}});
+            const worldMapParser = WorldMapParser.createWithOptions({...defaultParseConfig, ...{xScale: 2, yScale: 3}});
+            const items = worldMapParser.parse(map);
             const rooms = items.filter(item => item.name === 'room');
 
             expect(rooms.length).to.eq(1);

@@ -6,8 +6,6 @@ import { WorldItemGenerator } from '../WorldItemGenerator';
 import { WorldMapToMatrixGraphConverter } from '../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 
 export class FurnitureInfoGenerator implements WorldItemGenerator {
-    private static Y_UNIT_LENGTH = 2;
-    private static X_UNIT_LENGTH = 1;
     private worldMapConverter: WorldMapToMatrixGraphConverter;
 
     constructor(worldMapConverter = new WorldMapToMatrixGraphConverter()) {
@@ -29,8 +27,8 @@ export class FurnitureInfoGenerator implements WorldItemGenerator {
                     new Rectangle(
                         0,
                         0,
-                        graph.getColumns() * FurnitureInfoGenerator.X_UNIT_LENGTH,
-                        graph.getRows() * FurnitureInfoGenerator.Y_UNIT_LENGTH,
+                        graph.getColumns(),
+                        graph.getRows(),
                     ),
                     'floor'
                 )
@@ -63,10 +61,10 @@ export class FurnitureInfoGenerator implements WorldItemGenerator {
 
         const oneVertex = componentGraph.getAllVertices()[0];
 
-        const x = minX * FurnitureInfoGenerator.X_UNIT_LENGTH;
-        const y = minY * FurnitureInfoGenerator.Y_UNIT_LENGTH;
-        const width = (maxX - minX + 1) * FurnitureInfoGenerator.X_UNIT_LENGTH;
-        const height = (maxY - minY + 1) * FurnitureInfoGenerator.Y_UNIT_LENGTH;
+        const x = minX;
+        const y = minY;
+        const width = (maxX - minX + 1);
+        const height = (maxY - minY + 1);
         return new WorldItem(
             componentGraph.getCharacters()[0],
             new Rectangle(x, y, width, height),
@@ -186,10 +184,10 @@ export class FurnitureInfoGenerator implements WorldItemGenerator {
         const startCoord = graph.getVertexPositionInMatrix(vertices[0]);
         const endCoord = graph.getVertexPositionInMatrix(_.last(vertices));
 
-        const x = startCoord.x * FurnitureInfoGenerator.X_UNIT_LENGTH;
-        const y = startCoord.y * FurnitureInfoGenerator.Y_UNIT_LENGTH;
-        const width = FurnitureInfoGenerator.X_UNIT_LENGTH;
-        const height = endCoord.y * FurnitureInfoGenerator.Y_UNIT_LENGTH - y + FurnitureInfoGenerator.Y_UNIT_LENGTH;
+        const x = startCoord.x;
+        const y = startCoord.y;
+        const width = 1;
+        const height = endCoord.y - y + 1;
 
         return new Rectangle(x, y, width, height);
     }
@@ -201,10 +199,10 @@ export class FurnitureInfoGenerator implements WorldItemGenerator {
         const startCoord = graph.getVertexPositionInMatrix(vertices[0]);
         const endCoord = graph.getVertexPositionInMatrix(_.last(vertices));
 
-        const x = startCoord.x * FurnitureInfoGenerator.X_UNIT_LENGTH;
-        const y = startCoord.y * FurnitureInfoGenerator.Y_UNIT_LENGTH;
-        const width = endCoord.x * FurnitureInfoGenerator.X_UNIT_LENGTH - x + FurnitureInfoGenerator.X_UNIT_LENGTH;
-        const height = FurnitureInfoGenerator.Y_UNIT_LENGTH;
+        const x = startCoord.x;
+        const y = startCoord.y;
+        const width = endCoord.x - x + 1;
+        const height = 1;
 
         return new Rectangle(x, y, width, height);
     }

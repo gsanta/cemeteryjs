@@ -92,8 +92,8 @@ describe('WorldItemHierarchyBuilder', () => {
                 \`
             `;
 
-            const worldMapParser = new WorldMapParser();
-            const items = worldMapParser.parse(map, {...defaultParseConfig, ...{xScale: 1, yScale: 2}});
+            const worldMapParser = WorldMapParser.createWithOptions({...defaultParseConfig, ...{xScale: 1, yScale: 2}});
+            const items = worldMapParser.parse(map);
 
             const worldItemHierarchyBuilder = new WorldItemHierarchyBuilder(['room'], ['cupboard', 'bed']);
             worldItemHierarchyBuilder.build(items);

@@ -1,24 +1,19 @@
 import { WorldMapToMatrixGraphConverter } from './matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 import { FurnitureInfoGenerator } from './parsing/furniture_parsing/FurnitureInfoGenerator';
 import { WorldItem } from './model/WorldItem';
-import { Polygon } from './model/Polygon';
 import _ = require('lodash');
-import { RoomInfoGenerator } from './parsing/room_parsing/RoomInfoGenerator';
-import { WorldMapToRoomMapConverter } from './parsing/room_parsing/WorldMapToRoomMapConverter';
 import { WorldItemGenerator } from './parsing/WorldItemGenerator';
 import { CombinedWorldItemGenerator } from './parsing/CombinedWorldItemGenerator';
+import { AdditionalDataConverter, AdditionalDataConvertingWorldItemDecorator } from './parsing/decorators/AdditionalDataConvertingWorldItemDecorator';
+import { ScalingWorldItemGeneratorDecorator } from './parsing/ScalingWorldItemGeneratorDecorator';
 
-export interface AdditionalDataConverter<T> {
-    (additionalData: any): T;
-}
-
-export interface ParseConfig<T> {
+export interface ParseOptions<T> {
     xScale: number;
     yScale: number;
     additionalDataConverter: AdditionalDataConverter<T>;
 }
 
-export const defaultParseConfig: ParseConfig<any> = {
+export const defaultParseConfig: ParseOptions<any> = {
     xScale: 1,
     yScale: 1,
     additionalDataConverter: _.identity,
@@ -27,19 +22,33 @@ export const defaultParseConfig: ParseConfig<any> = {
 export class WorldMapParser {
     private worldItemGenerator: WorldItemGenerator;
 
-    constructor(worldItemGenerator: WorldItemGenerator = new CombinedWorldItemGenerator()) {
+    private constructor(worldItemGenerator: WorldItemGenerator =
+            new AdditionalDataConvertingWorldItemDecorator(
+                new ScalingWorldItemGeneratorDecorator(
+                    new CombinedWorldItemGenerator()
+                )
+            )
+        ) {
         this.worldItemGenerator = worldItemGenerator;
     }
 
-    public parse<T>(worldMap: string, config: ParseConfig<T> = defaultParseConfig): WorldItem[] {
-        const worldItems = this.worldItemGenerator.generateFromStringMap(worldMap);
+    public parse(worldMap: string): WorldItem[] {
+        return this.worldItemGenerator.generateFromStringMap(worldMap);
+    }
 
-        worldItems.forEach(gameObject => {
-            if (gameObject.additionalData) {
-                gameObject.additionalData = config.additionalDataConverter(gameObject.additionalData);
-            }
-        });
+    public static createWithOptions<T>(options: ParseOptions<T> = defaultParseConfig): WorldMapParser {
+        return new WorldMapParser(
+            new AdditionalDataConvertingWorldItemDecorator<T>(
+                new ScalingWorldItemGeneratorDecorator(
+                    new CombinedWorldItemGenerator(),
+                    { x: options.xScale, y: options.yScale }
+                ),
+                options.additionalDataConverter
+            )
+        )
+    }
 
-        return worldItems;
+    public static createWithCustomWorldItemGenerator(worldItemGenerator: WorldItemGenerator): WorldMapParser {
+        return new WorldMapParser(worldItemGenerator);
     }
 }
