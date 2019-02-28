@@ -1,4 +1,4 @@
-import { WorldMapParser, defaultParseConfig } from './WorldMapParser';
+import { WorldMapParser, defaultParseOptions } from './WorldMapParser';
 import { expect } from 'chai';
 import * as fs from 'fs';
 import { Rectangle } from './model/Rectangle';
@@ -138,7 +138,7 @@ describe('WorldMapParser', () => {
                     null
             };
 
-            const worldMapParser = WorldMapParser.createWithOptions({...defaultParseConfig, ...{additionalDataConverter}});
+            const worldMapParser = WorldMapParser.createWithOptions({...defaultParseOptions, ...{additionalDataConverter}});
             const items = worldMapParser.parse(map);
 
             expect(items[0].additionalData).to.eql({
@@ -183,7 +183,7 @@ describe('WorldMapParser', () => {
                 \`
             `;
 
-            const worldMapParser = WorldMapParser.createWithOptions({...defaultParseConfig, ...{xScale: 2, yScale: 3}});
+            const worldMapParser = WorldMapParser.createWithOptions({...defaultParseOptions, ...{xScale: 2, yScale: 3}});
             const items = worldMapParser.parse(map);
             const rooms = items.filter(item => item.name === 'room');
 

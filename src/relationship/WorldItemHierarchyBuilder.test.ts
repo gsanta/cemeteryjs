@@ -3,7 +3,7 @@ import { WorldItem } from '../model/WorldItem';
 import { Point } from '../model/Point';
 import { Polygon, WorldMapParser } from '..';
 import { expect } from 'chai';
-import { defaultParseConfig } from '../WorldMapParser';
+import { defaultParseOptions } from '../WorldMapParser';
 
 
 describe('WorldItemHierarchyBuilder', () => {
@@ -92,7 +92,7 @@ describe('WorldItemHierarchyBuilder', () => {
                 \`
             `;
 
-            const worldMapParser = WorldMapParser.createWithOptions({...defaultParseConfig, ...{xScale: 1, yScale: 2}});
+            const worldMapParser = WorldMapParser.createWithOptions({...defaultParseOptions, ...{xScale: 1, yScale: 2}});
             const items = worldMapParser.parse(map);
 
             const worldItemHierarchyBuilder = new WorldItemHierarchyBuilder(['room'], ['cupboard', 'bed']);

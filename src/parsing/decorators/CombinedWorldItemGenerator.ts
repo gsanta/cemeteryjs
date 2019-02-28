@@ -1,8 +1,8 @@
-import { WorldItemGenerator } from './WorldItemGenerator';
-import { MatrixGraph } from '../matrix_graph/MatrixGraph';
-import { WorldItem } from '..';
-import { RoomInfoGenerator } from './room_parsing/RoomInfoGenerator';
-import { FurnitureInfoGenerator } from './furniture_parsing/FurnitureInfoGenerator';
+import { WorldItemGenerator } from '../WorldItemGenerator';
+import { MatrixGraph } from '../../matrix_graph/MatrixGraph';
+import { WorldItem } from '../..';
+import { RoomInfoGenerator } from '../room_parsing/RoomInfoGenerator';
+import { FurnitureInfoGenerator } from '../furniture_parsing/FurnitureInfoGenerator';
 import _ = require('lodash');
 
 /**

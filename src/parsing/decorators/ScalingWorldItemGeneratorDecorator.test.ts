@@ -1,9 +1,9 @@
 import * as sinon from 'sinon';
-import { WorldItemGenerator } from './WorldItemGenerator';
-import { Rectangle } from '../model/Rectangle';
-import { WorldItem } from '..';
+import { WorldItemGenerator } from '../WorldItemGenerator';
+import { Rectangle } from '../../model/Rectangle';
+import { WorldItem } from '../..';
 import { ScalingWorldItemGeneratorDecorator } from './ScalingWorldItemGeneratorDecorator';
-import { MatrixGraph } from '../matrix_graph/MatrixGraph';
+import { MatrixGraph } from '../../matrix_graph/MatrixGraph';
 import { expect } from 'chai';
 
 describe ('ScalingWorldItemGeneratorDecorator', () => {

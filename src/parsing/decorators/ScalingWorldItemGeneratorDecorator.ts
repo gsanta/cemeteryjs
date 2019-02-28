@@ -1,6 +1,6 @@
-import { WorldItemGenerator } from './WorldItemGenerator';
-import { MatrixGraph } from '../matrix_graph/MatrixGraph';
-import { WorldItem } from '..';
+import { WorldItemGenerator } from '../WorldItemGenerator';
+import { MatrixGraph } from '../../matrix_graph/MatrixGraph';
+import { WorldItem } from '../..';
 
 type Scaling = {
     x: number,

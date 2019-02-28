@@ -3,9 +3,9 @@ import { FurnitureInfoGenerator } from './parsing/furniture_parsing/FurnitureInf
 import { WorldItem } from './model/WorldItem';
 import _ = require('lodash');
 import { WorldItemGenerator } from './parsing/WorldItemGenerator';
-import { CombinedWorldItemGenerator } from './parsing/CombinedWorldItemGenerator';
+import { CombinedWorldItemGenerator } from './parsing/decorators/CombinedWorldItemGenerator';
 import { AdditionalDataConverter, AdditionalDataConvertingWorldItemDecorator } from './parsing/decorators/AdditionalDataConvertingWorldItemDecorator';
-import { ScalingWorldItemGeneratorDecorator } from './parsing/ScalingWorldItemGeneratorDecorator';
+import { ScalingWorldItemGeneratorDecorator } from './parsing/decorators/ScalingWorldItemGeneratorDecorator';
 
 export interface ParseOptions<T> {
     xScale: number;
@@ -13,12 +13,16 @@ export interface ParseOptions<T> {
     additionalDataConverter: AdditionalDataConverter<T>;
 }
 
-export const defaultParseConfig: ParseOptions<any> = {
+export const defaultParseOptions: ParseOptions<any> = {
     xScale: 1,
     yScale: 1,
     additionalDataConverter: _.identity,
 }
 
+/*
+ * Generates a list of `WorldItem` objects, which describe your world, based on a `gwm (game world map)` format
+ * string.
+ */
 export class WorldMapParser {
     private worldItemGenerator: WorldItemGenerator;
 
@@ -36,7 +40,7 @@ export class WorldMapParser {
         return this.worldItemGenerator.generateFromStringMap(worldMap);
     }
 
-    public static createWithOptions<T>(options: ParseOptions<T> = defaultParseConfig): WorldMapParser {
+    public static createWithOptions<T>(options: ParseOptions<T> = defaultParseOptions): WorldMapParser {
         return new WorldMapParser(
             new AdditionalDataConvertingWorldItemDecorator<T>(
                 new ScalingWorldItemGeneratorDecorator(
