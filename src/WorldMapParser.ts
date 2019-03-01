@@ -19,7 +19,7 @@ export const defaultParseOptions: ParseOptions<any> = {
     additionalDataConverter: _.identity,
 }
 
-/*
+/**
  * Generates a list of `WorldItem` objects, which describe your world, based on a `gwm (game world map)` format
  * string.
  */

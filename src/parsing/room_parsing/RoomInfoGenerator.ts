@@ -9,6 +9,11 @@ import { WorldItemGenerator } from "../WorldItemGenerator";
 import { WorldMapToRoomMapConverter } from './WorldMapToRoomMapConverter';
 import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
 
+/**
+ * @hidden
+ *
+ * Generates room info
+ */
 export class RoomInfoGenerator implements WorldItemGenerator {
     private polygonRedundantPointReducer: PolygonRedundantPointReducer;
     private roomCharacter: string;

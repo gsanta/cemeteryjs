@@ -1,5 +1,8 @@
 
 
+/**
+ * @hidden
+ */
 export enum DetailsLineDataTypes {
     COORDINATE, STRING, NUMBER
 }
