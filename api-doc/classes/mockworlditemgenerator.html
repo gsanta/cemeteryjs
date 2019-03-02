@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Point | game-worldmap-generator</title>
+	<title>MockWorldItemGenerator | game-worldmap-generator</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="point.html">Point</a>
+					<a href="mockworlditemgenerator.html">MockWorldItemGenerator</a>
 				</li>
 			</ul>
-			<h1>Class Point</h1>
+			<h1>Class MockWorldItemGenerator</h1>
 		</div>
 	</div>
 </header>
@@ -68,8 +68,14 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Point</span>
+						<span class="target">MockWorldItemGenerator</span>
 					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel">
+				<h3>Implements</h3>
+				<ul class="tsd-hierarchy">
+					<li><a href="../interfaces/gwmworlditemgenerator.html" class="tsd-signature-type">GwmWorldItemGenerator</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -79,25 +85,21 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="point.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="mockworlditemgenerator.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="point.html#x" class="tsd-kind-icon">x</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="point.html#y" class="tsd-kind-icon">y</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="mockworlditemgenerator.html#worlditems" class="tsd-kind-icon">world<wbr>Items</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="point.html#addx" class="tsd-kind-icon">addX</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="point.html#addy" class="tsd-kind-icon">addY</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="point.html#clone" class="tsd-kind-icon">clone</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="point.html#isdiagonalto" class="tsd-kind-icon">is<wbr>Diagonal<wbr>To</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="point.html#scalex" class="tsd-kind-icon">scaleX</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="point.html#scaley" class="tsd-kind-icon">scaleY</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mockworlditemgenerator.html#generate" class="tsd-kind-icon">generate</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mockworlditemgenerator.html#generatefromstringmap" class="tsd-kind-icon">generate<wbr>From<wbr>String<wbr>Map</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mockworlditemgenerator.html#getmatrixgraphforstringmap" class="tsd-kind-icon">get<wbr>Matrix<wbr>Graph<wbr>For<wbr>String<wbr>Map</a></li>
 							</ul>
 						</section>
 					</div>
@@ -109,48 +111,35 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Point<span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="point.html" class="tsd-signature-type">Point</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Mock<wbr>World<wbr>Item<wbr>Generator<span class="tsd-signature-symbol">(</span>worldItems<span class="tsd-signature-symbol">: </span><a href="gwmworlditem.html" class="tsd-signature-type">GwmWorldItem</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="mockworlditemgenerator.html" class="tsd-signature-type">MockWorldItemGenerator</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/25eda05/src/model/Point.ts#L4">model/Point.ts:4</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/25eda05/src/parsing/decorators/MockWorldItemGenerator.ts#L7">parsing/decorators/MockWorldItemGenerator.ts:7</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>x: <span class="tsd-signature-type">number</span></h5>
-								</li>
-								<li>
-									<h5>y: <span class="tsd-signature-type">number</span></h5>
+									<h5>worldItems: <a href="gwmworlditem.html" class="tsd-signature-type">GwmWorldItem</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="point.html" class="tsd-signature-type">Point</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="mockworlditemgenerator.html" class="tsd-signature-type">MockWorldItemGenerator</a></h4>
 						</li>
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="x" class="tsd-anchor"></a>
-					<h3>x</h3>
-					<div class="tsd-signature tsd-kind-icon">x<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="worlditems" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> world<wbr>Items</h3>
+					<div class="tsd-signature tsd-kind-icon">world<wbr>Items<span class="tsd-signature-symbol">:</span> <a href="gwmworlditem.html" class="tsd-signature-type">GwmWorldItem</a><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/25eda05/src/model/Point.ts#L3">model/Point.ts:3</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="y" class="tsd-anchor"></a>
-					<h3>y</h3>
-					<div class="tsd-signature tsd-kind-icon">y<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/25eda05/src/model/Point.ts#L4">model/Point.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/25eda05/src/parsing/decorators/MockWorldItemGenerator.ts#L7">parsing/decorators/MockWorldItemGenerator.ts:7</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -158,134 +147,74 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="addx" class="tsd-anchor"></a>
-					<h3>addX</h3>
+					<a name="generate" class="tsd-anchor"></a>
+					<h3>generate</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">addX<span class="tsd-signature-symbol">(</span>amount<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="point.html" class="tsd-signature-type">Point</a></li>
+						<li class="tsd-signature tsd-kind-icon">generate<span class="tsd-signature-symbol">(</span>graph<span class="tsd-signature-symbol">: </span><a href="matrixgraph.html" class="tsd-signature-type">MatrixGraph</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="gwmworlditem.html" class="tsd-signature-type">GwmWorldItem</a><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/gwmworlditemgenerator.html">GwmWorldItemGenerator</a>.<a href="../interfaces/gwmworlditemgenerator.html#generate">generate</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/25eda05/src/model/Point.ts#L11">model/Point.ts:11</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/25eda05/src/parsing/decorators/MockWorldItemGenerator.ts#L13">parsing/decorators/MockWorldItemGenerator.ts:13</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>amount: <span class="tsd-signature-type">number</span></h5>
+									<h5>graph: <a href="matrixgraph.html" class="tsd-signature-type">MatrixGraph</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="point.html" class="tsd-signature-type">Point</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="gwmworlditem.html" class="tsd-signature-type">GwmWorldItem</a><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="addy" class="tsd-anchor"></a>
-					<h3>addY</h3>
+					<a name="generatefromstringmap" class="tsd-anchor"></a>
+					<h3>generate<wbr>From<wbr>String<wbr>Map</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">addY<span class="tsd-signature-symbol">(</span>amount<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="point.html" class="tsd-signature-type">Point</a></li>
+						<li class="tsd-signature tsd-kind-icon">generate<wbr>From<wbr>String<wbr>Map<span class="tsd-signature-symbol">(</span>strMap<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="gwmworlditem.html" class="tsd-signature-type">GwmWorldItem</a><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/gwmworlditemgenerator.html">GwmWorldItemGenerator</a>.<a href="../interfaces/gwmworlditemgenerator.html#generatefromstringmap">generateFromStringMap</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/25eda05/src/model/Point.ts#L15">model/Point.ts:15</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/25eda05/src/parsing/decorators/MockWorldItemGenerator.ts#L17">parsing/decorators/MockWorldItemGenerator.ts:17</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>amount: <span class="tsd-signature-type">number</span></h5>
+									<h5>strMap: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="point.html" class="tsd-signature-type">Point</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="gwmworlditem.html" class="tsd-signature-type">GwmWorldItem</a><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="clone" class="tsd-anchor"></a>
-					<h3>clone</h3>
+					<a name="getmatrixgraphforstringmap" class="tsd-anchor"></a>
+					<h3>get<wbr>Matrix<wbr>Graph<wbr>For<wbr>String<wbr>Map</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">clone<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="point.html" class="tsd-signature-type">Point</a></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Matrix<wbr>Graph<wbr>For<wbr>String<wbr>Map<span class="tsd-signature-symbol">(</span>strMap<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrixgraph.html" class="tsd-signature-type">MatrixGraph</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/gwmworlditemgenerator.html">GwmWorldItemGenerator</a>.<a href="../interfaces/gwmworlditemgenerator.html#getmatrixgraphforstringmap">getMatrixGraphForStringMap</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/25eda05/src/model/Point.ts#L35">model/Point.ts:35</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="point.html" class="tsd-signature-type">Point</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="isdiagonalto" class="tsd-anchor"></a>
-					<h3>is<wbr>Diagonal<wbr>To</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Diagonal<wbr>To<span class="tsd-signature-symbol">(</span>otherPoint<span class="tsd-signature-symbol">: </span><a href="point.html" class="tsd-signature-type">Point</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/25eda05/src/model/Point.ts#L31">model/Point.ts:31</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/25eda05/src/parsing/decorators/MockWorldItemGenerator.ts#L21">parsing/decorators/MockWorldItemGenerator.ts:21</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>otherPoint: <a href="point.html" class="tsd-signature-type">Point</a></h5>
+									<h5>strMap: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="scalex" class="tsd-anchor"></a>
-					<h3>scaleX</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">scaleX<span class="tsd-signature-symbol">(</span>times<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="point.html" class="tsd-signature-type">Point</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/25eda05/src/model/Point.ts#L19">model/Point.ts:19</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>times: <span class="tsd-signature-type">number</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="point.html" class="tsd-signature-type">Point</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="scaley" class="tsd-anchor"></a>
-					<h3>scaleY</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">scaleY<span class="tsd-signature-symbol">(</span>times<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="point.html" class="tsd-signature-type">Point</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/25eda05/src/model/Point.ts#L23">model/Point.ts:23</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>times: <span class="tsd-signature-type">number</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="point.html" class="tsd-signature-type">Point</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="matrixgraph.html" class="tsd-signature-type">MatrixGraph</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -331,45 +260,33 @@
 					<li class=" tsd-kind-class">
 						<a href="matrixgraph.html" class="tsd-kind-icon">Matrix<wbr>Graph</a>
 					</li>
-					<li class=" tsd-kind-class">
-						<a href="mockworlditemgenerator.html" class="tsd-kind-icon">Mock<wbr>World<wbr>Item<wbr>Generator</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
-						<a href="point.html" class="tsd-kind-icon">Point</a>
+						<a href="mockworlditemgenerator.html" class="tsd-kind-icon">Mock<wbr>World<wbr>Item<wbr>Generator</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="point.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="mockworlditemgenerator.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="point.html#x" class="tsd-kind-icon">x</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="point.html#y" class="tsd-kind-icon">y</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="mockworlditemgenerator.html#worlditems" class="tsd-kind-icon">world<wbr>Items</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="point.html#addx" class="tsd-kind-icon">addX</a>
+								<a href="mockworlditemgenerator.html#generate" class="tsd-kind-icon">generate</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="point.html#addy" class="tsd-kind-icon">addY</a>
+								<a href="mockworlditemgenerator.html#generatefromstringmap" class="tsd-kind-icon">generate<wbr>From<wbr>String<wbr>Map</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="point.html#clone" class="tsd-kind-icon">clone</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="point.html#isdiagonalto" class="tsd-kind-icon">is<wbr>Diagonal<wbr>To</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="point.html#scalex" class="tsd-kind-icon">scaleX</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="point.html#scaley" class="tsd-kind-icon">scaleY</a>
+								<a href="mockworlditemgenerator.html#getmatrixgraphforstringmap" class="tsd-kind-icon">get<wbr>Matrix<wbr>Graph<wbr>For<wbr>String<wbr>Map</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-class">
+						<a href="point.html" class="tsd-kind-icon">Point</a>
+					</li>
 					<li class=" tsd-kind-class">
 						<a href="polygon.html" class="tsd-kind-icon">Polygon</a>
 					</li>

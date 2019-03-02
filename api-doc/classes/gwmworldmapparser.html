@@ -119,13 +119,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/cd17bb6/src/GwmWorldMapParser.ts#L25">GwmWorldMapParser.ts:25</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/25eda05/src/GwmWorldMapParser.ts#L26">GwmWorldMapParser.ts:26</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> worldItemGenerator: <a href="../interfaces/gwmworlditemgenerator.html" class="tsd-signature-type">GwmWorldItemGenerator</a><span class="tsd-signature-symbol"> =&nbsp;new AdditionalDataConvertingWorldItemDecorator(new ScalingWorldItemGeneratorDecorator(new CombinedWorldItemGenerator()))</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> worldItemGenerator: <a href="../interfaces/gwmworlditemgenerator.html" class="tsd-signature-type">GwmWorldItemGenerator</a><span class="tsd-signature-symbol"> =&nbsp;new AdditionalDataConvertingWorldItemDecorator(new HierarchyBuildingWorldItemGeneratorDecorator(new ScalingWorldItemGeneratorDecorator(new CombinedWorldItemGenerator()),[&#x27;room&#x27;],[&#x27;bed&#x27;, &#x27;cupboard&#x27;]),)</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="gwmworldmapparser.html" class="tsd-signature-type">GwmWorldMapParser</a></h4>
@@ -141,7 +141,7 @@
 					<div class="tsd-signature tsd-kind-icon">world<wbr>Item<wbr>Generator<span class="tsd-signature-symbol">:</span> <a href="../interfaces/gwmworlditemgenerator.html" class="tsd-signature-type">GwmWorldItemGenerator</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/cd17bb6/src/GwmWorldMapParser.ts#L25">GwmWorldMapParser.ts:25</a></li>
+							<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/25eda05/src/GwmWorldMapParser.ts#L26">GwmWorldMapParser.ts:26</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -158,7 +158,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/cd17bb6/src/GwmWorldMapParser.ts#L37">GwmWorldMapParser.ts:37</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/25eda05/src/GwmWorldMapParser.ts#L42">GwmWorldMapParser.ts:42</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -181,7 +181,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/cd17bb6/src/GwmWorldMapParser.ts#L53">GwmWorldMapParser.ts:53</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/25eda05/src/GwmWorldMapParser.ts#L62">GwmWorldMapParser.ts:62</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -204,7 +204,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/cd17bb6/src/GwmWorldMapParser.ts#L41">GwmWorldMapParser.ts:41</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/25eda05/src/GwmWorldMapParser.ts#L46">GwmWorldMapParser.ts:46</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -275,6 +275,9 @@
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-class">
+						<a href="hierarchybuildingworlditemgeneratordecorator.html" class="tsd-kind-icon">Hierarchy<wbr>Building<wbr>World<wbr>Item<wbr>Generator<wbr>Decorator</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="line.html" class="tsd-kind-icon">Line</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -282,6 +285,9 @@
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="matrixgraph.html" class="tsd-kind-icon">Matrix<wbr>Graph</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="mockworlditemgenerator.html" class="tsd-kind-icon">Mock<wbr>World<wbr>Item<wbr>Generator</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="point.html" class="tsd-kind-icon">Point</a>
@@ -297,9 +303,6 @@
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="scalingworlditemgeneratordecorator.html" class="tsd-kind-icon">Scaling<wbr>World<wbr>Item<wbr>Generator<wbr>Decorator</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="worlditemhierarchybuilder.html" class="tsd-kind-icon">World<wbr>Item<wbr>Hierarchy<wbr>Builder</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="worldmapreader.html" class="tsd-kind-icon">World<wbr>Map<wbr>Reader</a>
