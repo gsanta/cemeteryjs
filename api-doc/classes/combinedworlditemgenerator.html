@@ -68,7 +68,7 @@
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
 						<p>The goal of this generator is to combine multiple generators together each of which parses the input worldmap string
-						from a different aspect, and emits all of the <code>WorldItem</code>s merged together.</p>
+						from a different aspect, and emits all of the <code>GwmWorldItem</code>s merged together.</p>
 					</div>
 				</div>
 			</section>
@@ -83,7 +83,7 @@
 			<section class="tsd-panel">
 				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
-					<li><a href="../interfaces/worlditemgenerator.html" class="tsd-signature-type">WorldItemGenerator</a></li>
+					<li><a href="../interfaces/gwmworlditemgenerator.html" class="tsd-signature-type">GwmWorldItemGenerator</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -119,19 +119,19 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Combined<wbr>World<wbr>Item<wbr>Generator<span class="tsd-signature-symbol">(</span>worldItemGenerators<span class="tsd-signature-symbol">?: </span><a href="../interfaces/worlditemgenerator.html" class="tsd-signature-type">WorldItemGenerator</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="combinedworlditemgenerator.html" class="tsd-signature-type">CombinedWorldItemGenerator</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Combined<wbr>World<wbr>Item<wbr>Generator<span class="tsd-signature-symbol">(</span>worldItemGenerators<span class="tsd-signature-symbol">?: </span><a href="../interfaces/gwmworlditemgenerator.html" class="tsd-signature-type">GwmWorldItemGenerator</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="combinedworlditemgenerator.html" class="tsd-signature-type">CombinedWorldItemGenerator</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/991b300/src/parsing/decorators/CombinedWorldItemGenerator.ts#L13">parsing/decorators/CombinedWorldItemGenerator.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/cd17bb6/src/parsing/decorators/CombinedWorldItemGenerator.ts#L13">parsing/decorators/CombinedWorldItemGenerator.ts:13</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> worldItemGenerators: <a href="../interfaces/worlditemgenerator.html" class="tsd-signature-type">WorldItemGenerator</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[new FurnitureInfoGenerator(), new RoomInfoGenerator()]</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> worldItemGenerators: <a href="../interfaces/gwmworlditemgenerator.html" class="tsd-signature-type">GwmWorldItemGenerator</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[new FurnitureInfoGenerator(), new RoomInfoGenerator()]</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="combinedworlditemgenerator.html" class="tsd-signature-type">CombinedWorldItemGenerator</a></h4>
@@ -144,10 +144,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="worlditemgenerators" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> world<wbr>Item<wbr>Generators</h3>
-					<div class="tsd-signature tsd-kind-icon">world<wbr>Item<wbr>Generators<span class="tsd-signature-symbol">:</span> <a href="../interfaces/worlditemgenerator.html" class="tsd-signature-type">WorldItemGenerator</a><span class="tsd-signature-symbol">[]</span></div>
+					<div class="tsd-signature tsd-kind-icon">world<wbr>Item<wbr>Generators<span class="tsd-signature-symbol">:</span> <a href="../interfaces/gwmworlditemgenerator.html" class="tsd-signature-type">GwmWorldItemGenerator</a><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/991b300/src/parsing/decorators/CombinedWorldItemGenerator.ts#L13">parsing/decorators/CombinedWorldItemGenerator.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/cd17bb6/src/parsing/decorators/CombinedWorldItemGenerator.ts#L13">parsing/decorators/CombinedWorldItemGenerator.ts:13</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -158,14 +158,14 @@
 					<a name="generate" class="tsd-anchor"></a>
 					<h3>generate</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">generate<span class="tsd-signature-symbol">(</span>graph<span class="tsd-signature-symbol">: </span><a href="matrixgraph.html" class="tsd-signature-type">MatrixGraph</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="worlditem.html" class="tsd-signature-type">WorldItem</a><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">generate<span class="tsd-signature-symbol">(</span>graph<span class="tsd-signature-symbol">: </span><a href="matrixgraph.html" class="tsd-signature-type">MatrixGraph</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="gwmworlditem.html" class="tsd-signature-type">GwmWorldItem</a><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/worlditemgenerator.html">WorldItemGenerator</a>.<a href="../interfaces/worlditemgenerator.html#generate">generate</a></p>
+								<p>Implementation of <a href="../interfaces/gwmworlditemgenerator.html">GwmWorldItemGenerator</a>.<a href="../interfaces/gwmworlditemgenerator.html#generate">generate</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/991b300/src/parsing/decorators/CombinedWorldItemGenerator.ts#L19">parsing/decorators/CombinedWorldItemGenerator.ts:19</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/cd17bb6/src/parsing/decorators/CombinedWorldItemGenerator.ts#L19">parsing/decorators/CombinedWorldItemGenerator.ts:19</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -174,7 +174,7 @@
 									<h5>graph: <a href="matrixgraph.html" class="tsd-signature-type">MatrixGraph</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="worlditem.html" class="tsd-signature-type">WorldItem</a><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="gwmworlditem.html" class="tsd-signature-type">GwmWorldItem</a><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -182,14 +182,14 @@
 					<a name="generatefromstringmap" class="tsd-anchor"></a>
 					<h3>generate<wbr>From<wbr>String<wbr>Map</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">generate<wbr>From<wbr>String<wbr>Map<span class="tsd-signature-symbol">(</span>strMap<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="worlditem.html" class="tsd-signature-type">WorldItem</a><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">generate<wbr>From<wbr>String<wbr>Map<span class="tsd-signature-symbol">(</span>strMap<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="gwmworlditem.html" class="tsd-signature-type">GwmWorldItem</a><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/worlditemgenerator.html">WorldItemGenerator</a>.<a href="../interfaces/worlditemgenerator.html#generatefromstringmap">generateFromStringMap</a></p>
+								<p>Implementation of <a href="../interfaces/gwmworlditemgenerator.html">GwmWorldItemGenerator</a>.<a href="../interfaces/gwmworlditemgenerator.html#generatefromstringmap">generateFromStringMap</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/991b300/src/parsing/decorators/CombinedWorldItemGenerator.ts#L23">parsing/decorators/CombinedWorldItemGenerator.ts:23</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/cd17bb6/src/parsing/decorators/CombinedWorldItemGenerator.ts#L23">parsing/decorators/CombinedWorldItemGenerator.ts:23</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -198,7 +198,7 @@
 									<h5>strMap: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="worlditem.html" class="tsd-signature-type">WorldItem</a><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="gwmworlditem.html" class="tsd-signature-type">GwmWorldItem</a><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -211,9 +211,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/worlditemgenerator.html">WorldItemGenerator</a>.<a href="../interfaces/worlditemgenerator.html#getmatrixgraphforstringmap">getMatrixGraphForStringMap</a></p>
+								<p>Implementation of <a href="../interfaces/gwmworlditemgenerator.html">GwmWorldItemGenerator</a>.<a href="../interfaces/gwmworlditemgenerator.html#getmatrixgraphforstringmap">getMatrixGraphForStringMap</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/991b300/src/parsing/decorators/CombinedWorldItemGenerator.ts#L30">parsing/decorators/CombinedWorldItemGenerator.ts:30</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/cd17bb6/src/parsing/decorators/CombinedWorldItemGenerator.ts#L30">parsing/decorators/CombinedWorldItemGenerator.ts:30</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -271,6 +271,12 @@
 					<li class=" tsd-kind-class">
 						<a href="furnitureinfogenerator.html" class="tsd-kind-icon">Furniture<wbr>Info<wbr>Generator</a>
 					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="gwmworlditem.html" class="tsd-kind-icon">Gwm<wbr>World<wbr>Item</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="gwmworldmapparser.html" class="tsd-kind-icon">Gwm<wbr>World<wbr>Map<wbr>Parser</a>
+					</li>
 					<li class=" tsd-kind-class">
 						<a href="line.html" class="tsd-kind-icon">Line</a>
 					</li>
@@ -295,14 +301,8 @@
 					<li class=" tsd-kind-class">
 						<a href="scalingworlditemgeneratordecorator.html" class="tsd-kind-icon">Scaling<wbr>World<wbr>Item<wbr>Generator<wbr>Decorator</a>
 					</li>
-					<li class=" tsd-kind-class tsd-has-type-parameter">
-						<a href="worlditem.html" class="tsd-kind-icon">World<wbr>Item</a>
-					</li>
 					<li class=" tsd-kind-class">
 						<a href="worlditemhierarchybuilder.html" class="tsd-kind-icon">World<wbr>Item<wbr>Hierarchy<wbr>Builder</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="worldmapparser.html" class="tsd-kind-icon">World<wbr>Map<wbr>Parser</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="worldmapreader.html" class="tsd-kind-icon">World<wbr>Map<wbr>Reader</a>
@@ -317,13 +317,13 @@
 						<a href="../interfaces/additionaldataconverter.html" class="tsd-kind-icon">Additional<wbr>Data<wbr>Converter</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="../interfaces/gwmworlditemgenerator.html" class="tsd-kind-icon">Gwm<wbr>World<wbr>Item<wbr>Generator</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="../interfaces/matrixgraphvertexvalue.html" class="tsd-kind-icon">Matrix<wbr>Graph<wbr>Vertex<wbr>Value</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="../interfaces/parseoptions.html" class="tsd-kind-icon">Parse<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/worlditemgenerator.html" class="tsd-kind-icon">World<wbr>Item<wbr>Generator</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/worldmaplinelistener.html" class="tsd-kind-icon">World<wbr>Map<wbr>Line<wbr>Listener</a>
