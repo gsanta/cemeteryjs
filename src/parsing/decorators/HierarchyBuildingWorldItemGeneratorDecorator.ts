@@ -1,11 +1,15 @@
-import { GwmWorldItem } from '../model/GwmWorldItem';
-import * as _ from 'lodash';
+import { GwmWorldItemGenerator } from "../GwmWorldItemGenerator";
+import { MatrixGraph } from "../../matrix_graph/MatrixGraph";
+import { GwmWorldItem } from "../../model/GwmWorldItem";
+import _ = require("lodash");
 
 /**
  * Creates relationship between `GwmWorldItem`'s via adding a `GwmWorldItem` to another as
  * a child based on wheter one fully contains the other.
  */
-export class WorldItemHierarchyBuilder {
+
+export class HierarchyBuildingWorldItemGeneratorDecorator implements GwmWorldItemGenerator {
+    private decoratedWorldItemGenerator: GwmWorldItemGenerator;
     /**
      * Restricts search for parents only these types
      */
@@ -15,13 +19,25 @@ export class WorldItemHierarchyBuilder {
      */
     private childTypes: string[];
 
-    constructor(parentTypes: string[], childTypes: string[]) {
+    constructor(decoratedWorldItemGenerator: GwmWorldItemGenerator, parentTypes: string[], childTypes: string[]) {
+        this.decoratedWorldItemGenerator = decoratedWorldItemGenerator;
         this.parentTypes = parentTypes;
         this.childTypes = childTypes;
     }
 
+    public generate(graph: MatrixGraph): GwmWorldItem[] {
+        return this.buildHierarchy(this.decoratedWorldItemGenerator.generate(graph));
+    }
 
-    public build(worldItems: GwmWorldItem[]) {
+    public generateFromStringMap(strMap: string): GwmWorldItem[] {
+        return this.buildHierarchy(this.decoratedWorldItemGenerator.generateFromStringMap(strMap));
+    }
+
+    public getMatrixGraphForStringMap(strMap: string): MatrixGraph {
+        return this.decoratedWorldItemGenerator.getMatrixGraphForStringMap(strMap);
+    }
+
+    public buildHierarchy(worldItems: GwmWorldItem[]) {
         const parentWorldItems = worldItems.filter(worldItem => this.parentTypes.indexOf(worldItem.name) !== -1);
         const childWorldItems = worldItems.filter(worldItem => this.childTypes.indexOf(worldItem.name) !== -1);
 
@@ -38,5 +54,7 @@ export class WorldItemHierarchyBuilder {
                 })
                 .value();
         });
+
+        return worldItems;
     }
 }

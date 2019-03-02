@@ -195,5 +195,37 @@ describe('GwmWorldMapParser', () => {
                 new Point(2, 9)
             ]);
         });
+
+        it ('builds a hierarchy between rooms and the furnitures inside the rooms', () => {
+            const map = `
+                map \`
+
+                WWDDWWWDDWWW
+                WCCC##WBB##W
+                WCCC##W####W
+                W#####WBB##W
+                WWWWWWWWWWWW
+
+                \`
+
+                definitions \`
+
+                # = empty
+                D = door
+                C = cupboard
+                B = bed
+                W = wall
+
+                \`
+            `;
+
+            const worldMapParser = GwmWorldMapParser.createWithOptions({...defaultParseOptions, ...{xScale: 1, yScale: 2}});
+            const items = worldMapParser.parse(map);
+
+            const [room1, room2] = items.filter(item => item.name === 'room');
+
+            expect(room1.childWorldItems.length).to.eql(1);
+            expect(room2.childWorldItems.length).to.eql(2);
+        });
     });
 });

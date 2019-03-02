@@ -4,6 +4,7 @@ import { GwmWorldItemGenerator } from './parsing/GwmWorldItemGenerator';
 import { CombinedWorldItemGenerator } from './parsing/decorators/CombinedWorldItemGenerator';
 import { AdditionalDataConverter, AdditionalDataConvertingWorldItemDecorator } from './parsing/decorators/AdditionalDataConvertingWorldItemDecorator';
 import { ScalingWorldItemGeneratorDecorator } from './parsing/decorators/ScalingWorldItemGeneratorDecorator';
+import { HierarchyBuildingWorldItemGeneratorDecorator } from './parsing/decorators/HierarchyBuildingWorldItemGeneratorDecorator';
 
 export interface ParseOptions<T> {
     xScale: number;
@@ -26,9 +27,13 @@ export class GwmWorldMapParser {
 
     private constructor(worldItemGenerator: GwmWorldItemGenerator =
             new AdditionalDataConvertingWorldItemDecorator(
-                new ScalingWorldItemGeneratorDecorator(
-                    new CombinedWorldItemGenerator()
-                )
+                new HierarchyBuildingWorldItemGeneratorDecorator(
+                    new ScalingWorldItemGeneratorDecorator(
+                        new CombinedWorldItemGenerator()
+                    ),
+                    ['room'],
+                    ['bed', 'cupboard']
+                ),
             )
         ) {
         this.worldItemGenerator = worldItemGenerator;
@@ -41,9 +46,13 @@ export class GwmWorldMapParser {
     public static createWithOptions<T>(options: ParseOptions<T> = defaultParseOptions): GwmWorldMapParser {
         return new GwmWorldMapParser(
             new AdditionalDataConvertingWorldItemDecorator<T>(
-                new ScalingWorldItemGeneratorDecorator(
-                    new CombinedWorldItemGenerator(),
-                    { x: options.xScale, y: options.yScale }
+                new HierarchyBuildingWorldItemGeneratorDecorator(
+                    new ScalingWorldItemGeneratorDecorator(
+                        new CombinedWorldItemGenerator(),
+                        { x: options.xScale, y: options.yScale }
+                    ),
+                    ['room'],
+                    ['bed', 'cupboard']
                 ),
                 options.additionalDataConverter
             )
