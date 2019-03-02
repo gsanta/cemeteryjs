@@ -1,11 +1,14 @@
 import { Polygon } from './Polygon';
 
-export class WorldItem<T = any> {
+/**
+ * `GwmWorldItem` represents any distinguishable item in the parsed world (think of it as a mesh, e.g walls, rooms, creatures).
+ */
+export class GwmWorldItem<T = any> {
     public type: string;
     public name: string;
     public dimensions: Polygon;
     public additionalData: T;
-    public childWorldItems: WorldItem[] = [];
+    public childWorldItems: GwmWorldItem[] = [];
 
     constructor(type: string, dimensions: Polygon, name: string, additionalData: T = null) {
         this.type = type;
@@ -14,7 +17,7 @@ export class WorldItem<T = any> {
         this.additionalData = additionalData;
     }
 
-    public addChild(worldItem: WorldItem) {
+    public addChild(worldItem: GwmWorldItem) {
         this.childWorldItems.push(worldItem);
     }
 }

@@ -4,11 +4,11 @@ import { CombinedWorldItemGenerator } from './parsing/decorators/CombinedWorldIt
 import { ScalingWorldItemGeneratorDecorator } from './parsing/decorators/ScalingWorldItemGeneratorDecorator';
 import { AdditionalDataConvertingWorldItemDecorator } from './parsing/decorators/AdditionalDataConvertingWorldItemDecorator';
 
-export {WorldMapParser, ParseOptions, defaultParseOptions} from './WorldMapParser';
-export {WorldItem} from './model/WorldItem';
+export {GwmWorldMapParser, ParseOptions, defaultParseOptions} from './GwmWorldMapParser';
+export {GwmWorldItem} from './model/GwmWorldItem';
 export {Rectangle} from './model/Rectangle';
 export {Polygon} from './model/Polygon';
-export {WorldItemGenerator} from './parsing/WorldItemGenerator';
+export {GwmWorldItemGenerator} from './parsing/GwmWorldItemGenerator';
 
 export const generators = {
     RoomInfoGenerator,

@@ -1,6 +1,6 @@
-import { WorldItemGenerator } from '../WorldItemGenerator';
+import { GwmWorldItemGenerator } from '../GwmWorldItemGenerator';
 import { MatrixGraph } from '../../matrix_graph/MatrixGraph';
-import { WorldItem } from '../..';
+import { GwmWorldItem } from '../../model/GwmWorldItem';
 
 type Scaling = {
     x: number,
@@ -8,19 +8,19 @@ type Scaling = {
 }
 
 export class ScalingWorldItemGeneratorDecorator {
-    private decoratedWorldItemGenerator: WorldItemGenerator;
+    private decoratedWorldItemGenerator: GwmWorldItemGenerator;
     private scaling: Scaling;
 
-    constructor(decoratedWorldItemGenerator: WorldItemGenerator, scaling: Scaling = { x: 1, y: 1}) {
+    constructor(decoratedWorldItemGenerator: GwmWorldItemGenerator, scaling: Scaling = { x: 1, y: 1}) {
         this.decoratedWorldItemGenerator = decoratedWorldItemGenerator;
         this.scaling = scaling;
     }
 
-    public generate(graph: MatrixGraph): WorldItem[] {
+    public generate(graph: MatrixGraph): GwmWorldItem[] {
         return this.scaleItems(this.decoratedWorldItemGenerator.generate(graph));
     }
 
-    public generateFromStringMap(strMap: string): WorldItem[] {
+    public generateFromStringMap(strMap: string): GwmWorldItem[] {
         return this.scaleItems(this.decoratedWorldItemGenerator.generateFromStringMap(strMap));
     }
 
@@ -28,7 +28,7 @@ export class ScalingWorldItemGeneratorDecorator {
         return this.decoratedWorldItemGenerator.getMatrixGraphForStringMap(strMap);
     }
 
-    private scaleItems(worldItems: WorldItem[]): WorldItem[] {
+    private scaleItems(worldItems: GwmWorldItem[]): GwmWorldItem[] {
         worldItems.forEach(worldItem => worldItem.dimensions = worldItem.dimensions.scaleX(this.scaling.x).scaleY(this.scaling.y));
 
         return worldItems;

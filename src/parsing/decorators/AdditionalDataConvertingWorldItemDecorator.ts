@@ -1,26 +1,26 @@
-import { WorldItemGenerator } from "../WorldItemGenerator";
+import { GwmWorldItemGenerator } from "../GwmWorldItemGenerator";
 import _ = require("lodash");
 import { MatrixGraph } from "../../matrix_graph/MatrixGraph";
-import { WorldItem } from "../..";
+import { GwmWorldItem } from '../../model/GwmWorldItem';
 
 export interface AdditionalDataConverter<T> {
     (additionalData: any): T;
 }
 
 export class AdditionalDataConvertingWorldItemDecorator<T> {
-    private decoratedWorldItemGenerator: WorldItemGenerator;
+    private decoratedWorldItemGenerator: GwmWorldItemGenerator;
     private conversionFunction: AdditionalDataConverter<T>;
 
-    constructor(decoratedWorldItemGenerator: WorldItemGenerator, conversionFunction: AdditionalDataConverter<T> = _.identity) {
+    constructor(decoratedWorldItemGenerator: GwmWorldItemGenerator, conversionFunction: AdditionalDataConverter<T> = _.identity) {
         this.decoratedWorldItemGenerator = decoratedWorldItemGenerator;
         this.conversionFunction = conversionFunction;
     }
 
-    public generate(graph: MatrixGraph): WorldItem[] {
+    public generate(graph: MatrixGraph): GwmWorldItem[] {
         return this.applyConversionFunction(this.decoratedWorldItemGenerator.generate(graph));
     }
 
-    public generateFromStringMap(strMap: string): WorldItem[] {
+    public generateFromStringMap(strMap: string): GwmWorldItem[] {
         return this.applyConversionFunction(this.decoratedWorldItemGenerator.generateFromStringMap(strMap));
     }
 
@@ -28,7 +28,7 @@ export class AdditionalDataConvertingWorldItemDecorator<T> {
         return this.decoratedWorldItemGenerator.getMatrixGraphForStringMap(strMap);
     }
 
-    private applyConversionFunction(worldItems: WorldItem[]): WorldItem[] {
+    private applyConversionFunction(worldItems: GwmWorldItem[]): GwmWorldItem[] {
         worldItems.forEach(worldItem => worldItem.additionalData = this.conversionFunction(worldItem.additionalData));
 
         return worldItems;

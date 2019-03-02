@@ -1,9 +1,9 @@
 import { WorldItemHierarchyBuilder } from './WorldItemHierarchyBuilder';
-import { WorldItem } from '../model/WorldItem';
+import { GwmWorldItem } from '../model/GwmWorldItem';
 import { Point } from '../model/Point';
-import { Polygon, WorldMapParser } from '..';
+import { Polygon, GwmWorldMapParser } from '..';
 import { expect } from 'chai';
-import { defaultParseOptions } from '../WorldMapParser';
+import { defaultParseOptions } from '../GwmWorldMapParser';
 
 
 describe('WorldItemHierarchyBuilder', () => {
@@ -11,7 +11,7 @@ describe('WorldItemHierarchyBuilder', () => {
         it ('creates a parent-child relationship between two WorldItems, if one contains the other', () => {
             const worldItemHierarchyBuilder = new WorldItemHierarchyBuilder(['room'], ['cupboard']);
 
-            const worldItemParentMock = new WorldItem(
+            const worldItemParentMock = new GwmWorldItem(
                 '',
                 new Polygon([
                         new Point(1, 1),
@@ -22,7 +22,7 @@ describe('WorldItemHierarchyBuilder', () => {
                 'room'
             );
 
-            const worldItemChildMock = new WorldItem(
+            const worldItemChildMock = new GwmWorldItem(
                 '',
                 new Polygon([
                     new Point(1, 1),
@@ -33,7 +33,7 @@ describe('WorldItemHierarchyBuilder', () => {
                 'cupboard'
             );
 
-            worldItemHierarchyBuilder.build([<WorldItem> worldItemParentMock, <WorldItem> worldItemChildMock]);
+            worldItemHierarchyBuilder.build([<GwmWorldItem> worldItemParentMock, <GwmWorldItem> worldItemChildMock]);
 
             expect(worldItemParentMock.childWorldItems.length).to.eq(1);
             expect(worldItemParentMock.childWorldItems[0]).to.eq(worldItemChildMock);
@@ -42,7 +42,7 @@ describe('WorldItemHierarchyBuilder', () => {
         it ('does not create a parent-child relationship if one does not contain the other', () => {
             const worldItemHierarchyBuilder = new WorldItemHierarchyBuilder(['room'], ['cupboard']);
 
-            const worldItemParentMock = new WorldItem(
+            const worldItemParentMock = new GwmWorldItem(
                 '',
                 new Polygon([
                         new Point(1, 1),
@@ -53,7 +53,7 @@ describe('WorldItemHierarchyBuilder', () => {
                 'room'
             );
 
-            const worldItemChildMock = new WorldItem(
+            const worldItemChildMock = new GwmWorldItem(
                 '',
                 new Polygon([
                     new Point(5, 1),
@@ -64,7 +64,7 @@ describe('WorldItemHierarchyBuilder', () => {
                 'cupboard'
             );
 
-            worldItemHierarchyBuilder.build([<WorldItem> worldItemParentMock, <WorldItem> worldItemChildMock]);
+            worldItemHierarchyBuilder.build([<GwmWorldItem> worldItemParentMock, <GwmWorldItem> worldItemChildMock]);
 
             expect(worldItemParentMock.childWorldItems.length).to.eq(0);
         });
@@ -92,7 +92,7 @@ describe('WorldItemHierarchyBuilder', () => {
                 \`
             `;
 
-            const worldMapParser = WorldMapParser.createWithOptions({...defaultParseOptions, ...{xScale: 1, yScale: 2}});
+            const worldMapParser = GwmWorldMapParser.createWithOptions({...defaultParseOptions, ...{xScale: 1, yScale: 2}});
             const items = worldMapParser.parse(map);
 
             const worldItemHierarchyBuilder = new WorldItemHierarchyBuilder(['room'], ['cupboard', 'bed']);

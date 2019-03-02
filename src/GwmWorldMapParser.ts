@@ -1,8 +1,6 @@
-import { WorldMapToMatrixGraphConverter } from './matrix_graph/conversion/WorldMapToMatrixGraphConverter';
-import { FurnitureInfoGenerator } from './parsing/furniture_parsing/FurnitureInfoGenerator';
-import { WorldItem } from './model/WorldItem';
+import { GwmWorldItem } from './model/GwmWorldItem';
 import _ = require('lodash');
-import { WorldItemGenerator } from './parsing/WorldItemGenerator';
+import { GwmWorldItemGenerator } from './parsing/GwmWorldItemGenerator';
 import { CombinedWorldItemGenerator } from './parsing/decorators/CombinedWorldItemGenerator';
 import { AdditionalDataConverter, AdditionalDataConvertingWorldItemDecorator } from './parsing/decorators/AdditionalDataConvertingWorldItemDecorator';
 import { ScalingWorldItemGeneratorDecorator } from './parsing/decorators/ScalingWorldItemGeneratorDecorator';
@@ -20,13 +18,13 @@ export const defaultParseOptions: ParseOptions<any> = {
 }
 
 /**
- * Generates a list of `WorldItem` objects, which describe your world, based on a `gwm (game world map)` format
+ * Generates a list of `GwmWorldItem` objects, which describe your world, based on a `gwm (game world map)` format
  * string.
  */
-export class WorldMapParser {
-    private worldItemGenerator: WorldItemGenerator;
+export class GwmWorldMapParser {
+    private worldItemGenerator: GwmWorldItemGenerator;
 
-    private constructor(worldItemGenerator: WorldItemGenerator =
+    private constructor(worldItemGenerator: GwmWorldItemGenerator =
             new AdditionalDataConvertingWorldItemDecorator(
                 new ScalingWorldItemGeneratorDecorator(
                     new CombinedWorldItemGenerator()
@@ -36,12 +34,12 @@ export class WorldMapParser {
         this.worldItemGenerator = worldItemGenerator;
     }
 
-    public parse(worldMap: string): WorldItem[] {
+    public parse(worldMap: string): GwmWorldItem[] {
         return this.worldItemGenerator.generateFromStringMap(worldMap);
     }
 
-    public static createWithOptions<T>(options: ParseOptions<T> = defaultParseOptions): WorldMapParser {
-        return new WorldMapParser(
+    public static createWithOptions<T>(options: ParseOptions<T> = defaultParseOptions): GwmWorldMapParser {
+        return new GwmWorldMapParser(
             new AdditionalDataConvertingWorldItemDecorator<T>(
                 new ScalingWorldItemGeneratorDecorator(
                     new CombinedWorldItemGenerator(),
@@ -52,7 +50,7 @@ export class WorldMapParser {
         )
     }
 
-    public static createWithCustomWorldItemGenerator(worldItemGenerator: WorldItemGenerator): WorldMapParser {
-        return new WorldMapParser(worldItemGenerator);
+    public static createWithCustomWorldItemGenerator(worldItemGenerator: GwmWorldItemGenerator): GwmWorldMapParser {
+        return new GwmWorldMapParser(worldItemGenerator);
     }
 }

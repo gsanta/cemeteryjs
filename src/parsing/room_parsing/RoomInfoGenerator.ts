@@ -4,8 +4,8 @@ import { Line } from "../../model/Line";
 import { Point } from "../../model/Point";
 import { Polygon } from "../../model/Polygon";
 import { PolygonRedundantPointReducer } from './PolygonRedundantPointReducer';
-import { WorldItem } from '../../model/WorldItem';
-import { WorldItemGenerator } from "../WorldItemGenerator";
+import { GwmWorldItem } from '../../model/GwmWorldItem';
+import { GwmWorldItemGenerator } from "../GwmWorldItemGenerator";
 import { WorldMapToRoomMapConverter } from './WorldMapToRoomMapConverter';
 import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
 
@@ -14,7 +14,7 @@ import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/Wo
  *
  * Generates room info
  */
-export class RoomInfoGenerator implements WorldItemGenerator {
+export class RoomInfoGenerator implements GwmWorldItemGenerator {
     private polygonRedundantPointReducer: PolygonRedundantPointReducer;
     private roomCharacter: string;
     private worldMapToRoomMapConverter: WorldMapToRoomMapConverter;
@@ -31,7 +31,7 @@ export class RoomInfoGenerator implements WorldItemGenerator {
         this.polygonRedundantPointReducer = new PolygonRedundantPointReducer();
     }
 
-    public generate(graph: MatrixGraph): WorldItem[] {
+    public generate(graph: MatrixGraph): GwmWorldItem[] {
         return graph.createConnectedComponentGraphsForCharacter(this.roomCharacter)
             .map(componentGraph => {
                 const lines = this.segmentGraphToHorizontalLines(componentGraph);
@@ -40,11 +40,11 @@ export class RoomInfoGenerator implements WorldItemGenerator {
                     this.createPolygonPointsFromHorizontalLines(lines)
                 );
 
-                return new WorldItem(null, new Polygon(points), 'room');
+                return new GwmWorldItem(null, new Polygon(points), 'room');
             });
     }
 
-    public generateFromStringMap(strMap: string): WorldItem[] {
+    public generateFromStringMap(strMap: string): GwmWorldItem[] {
         return this.generate(this.getMatrixGraphForStringMap(strMap));
     }
 
