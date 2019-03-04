@@ -13,7 +13,7 @@ describe('GwmWorldMapParser', () => {
             const gameObjectParser = GwmWorldMapParser.createWithOptions();
 
             const items = gameObjectParser.parse(file)
-            expect(items.length).to.equal(9);
+            expect(items.length).to.equal(10);
             expect(items[0]).to.eql(new GwmWorldItem('W', new Rectangle(1, 1, 1, 3), 'wall'), 'gameObject[0] is not correct');
             expect(items[1]).to.eql(new GwmWorldItem('W', new Rectangle(8, 1, 1, 3), 'wall'), 'gameObject[1] is not correct');
             expect(items[2]).to.eql(new GwmWorldItem('W', new Rectangle(2, 1, 2, 1), 'wall'), 'gameObject[2] is not correct');
@@ -146,7 +146,7 @@ describe('GwmWorldMapParser', () => {
             });
         });
 
-        it('creates a polygon for every room', () => {
+        it.only ('creates a polygon for every room', () => {
             const map = `
                 map \`
 
@@ -223,9 +223,11 @@ describe('GwmWorldMapParser', () => {
             const items = worldMapParser.parse(map);
 
             const [room1, room2] = items.filter(item => item.name === 'room');
+            const [root] = items.filter(item => item.name === 'root');
 
             expect(room1.childWorldItems.length).to.eql(1);
             expect(room2.childWorldItems.length).to.eql(2);
+            expect(root.childWorldItems.length).to.eq(2);
         });
     });
 });

@@ -21,18 +21,6 @@ export class FurnitureInfoGenerator implements GwmWorldItemGenerator {
                     .map(connectedComp => this.createGameObjectsForConnectedComponent(graph.getGraphForVertices(connectedComp)));
             })
             .flattenDeep()
-            .concat([
-                new GwmWorldItem(
-                    'F',
-                    new Rectangle(
-                        0,
-                        0,
-                        graph.getColumns(),
-                        graph.getRows(),
-                    ),
-                    'floor'
-                )
-            ])
             .value();
 
     }

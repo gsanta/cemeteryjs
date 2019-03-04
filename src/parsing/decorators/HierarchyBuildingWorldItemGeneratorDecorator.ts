@@ -38,23 +38,27 @@ export class HierarchyBuildingWorldItemGeneratorDecorator implements GwmWorldIte
     }
 
     public buildHierarchy(worldItems: GwmWorldItem[]) {
-        const parentWorldItems = worldItems.filter(worldItem => this.parentTypes.indexOf(worldItem.name) !== -1);
-        const childWorldItems = worldItems.filter(worldItem => this.childTypes.indexOf(worldItem.name) !== -1);
+        const parentWorldItems = worldItems//.filter(worldItem => this.parentTypes.indexOf(worldItem.name) !== -1);
+        const childWorldItems = worldItems//.filter(worldItem => this.childTypes.indexOf(worldItem.name) !== -1);
 
         const childrenAlreadyCategorized = [];
 
-        parentWorldItems.forEach(parentItem => {
+        let rootWorldItems = worldItems;
+
+        parentWorldItems.forEach(currentItem => {
             _.chain(childWorldItems)
                 .without(...childrenAlreadyCategorized)
+                .without(currentItem)
                 .forEach((childItem: GwmWorldItem) => {
-                    if (parentItem.dimensions.overlaps(childItem.dimensions)) {
-                        parentItem.addChild(childItem);
+                    if (currentItem.dimensions.overlaps(childItem.dimensions)) {
+                        currentItem.addChild(childItem);
                         childrenAlreadyCategorized.push(childItem);
+                        rootWorldItems = _.without(rootWorldItems, childItem);
                     }
                 })
                 .value();
         });
 
-        return worldItems;
+        return rootWorldItems;
     }
 }

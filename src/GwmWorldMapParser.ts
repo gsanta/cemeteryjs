@@ -51,8 +51,8 @@ export class GwmWorldMapParser {
                         new CombinedWorldItemGenerator(),
                         { x: options.xScale, y: options.yScale }
                     ),
-                    ['room'],
-                    ['bed', 'cupboard']
+                    ['room', 'root'],
+                    ['bed', 'cupboard', 'room', 'wall']
                 ),
                 options.additionalDataConverter
             )

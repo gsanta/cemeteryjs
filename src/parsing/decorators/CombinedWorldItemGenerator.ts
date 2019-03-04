@@ -4,6 +4,7 @@ import { RoomInfoGenerator } from '../room_parsing/RoomInfoGenerator';
 import { FurnitureInfoGenerator } from '../furniture_parsing/FurnitureInfoGenerator';
 import { GwmWorldItem } from '../../model/GwmWorldItem';
 import _ = require('lodash');
+import { RootWorldItemGenerator } from '../RootWorldItemGenerator';
 
 /**
  * The goal of this generator is to combine multiple generators together each of which parses the input worldmap string
@@ -12,7 +13,7 @@ import _ = require('lodash');
 export class CombinedWorldItemGenerator implements GwmWorldItemGenerator {
     private worldItemGenerators: GwmWorldItemGenerator[];
 
-    constructor(worldItemGenerators: GwmWorldItemGenerator[] = [new FurnitureInfoGenerator(), new RoomInfoGenerator()]) {
+    constructor(worldItemGenerators: GwmWorldItemGenerator[] = CombinedWorldItemGenerator.getDefaultWorldItemGenerators()) {
         this.worldItemGenerators = worldItemGenerators;
     }
 
@@ -21,13 +22,18 @@ export class CombinedWorldItemGenerator implements GwmWorldItemGenerator {
     }
 
     public generateFromStringMap(strMap: string): GwmWorldItem[] {
-        return _.chain(this.worldItemGenerators)
+        const generatorResults = _.chain(this.worldItemGenerators)
             .map(generator => generator.generate(generator.getMatrixGraphForStringMap(strMap)))
-            .flatten()
-            .value()
+            .value();
+
+        return _.flatten(generatorResults);
     }
 
     public getMatrixGraphForStringMap(strMap: string): MatrixGraph {
         throw new Error('`getMatrixGraphForStringMap` not supported for `CombinedWorldItemGenerator`');
+    }
+
+    private static getDefaultWorldItemGenerators(): GwmWorldItemGenerator[] {
+        return [new FurnitureInfoGenerator(), new RoomInfoGenerator(), new RootWorldItemGenerator()];
     }
 }
