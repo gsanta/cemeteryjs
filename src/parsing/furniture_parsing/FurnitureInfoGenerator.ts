@@ -7,14 +7,17 @@ import { WorldMapToMatrixGraphConverter } from '../../matrix_graph/conversion/Wo
 
 export class FurnitureInfoGenerator implements GwmWorldItemGenerator {
     private worldMapConverter: WorldMapToMatrixGraphConverter;
+    private charactersToInclude: string[];
 
-    constructor(worldMapConverter = new WorldMapToMatrixGraphConverter()) {
+    constructor(worldMapConverter = new WorldMapToMatrixGraphConverter(), charactersToInclude?: string[]) {
         this.worldMapConverter = worldMapConverter;
+        this.charactersToInclude = charactersToInclude;
     }
 
     public generate(graph: MatrixGraph): GwmWorldItem[] {
 
         return <any> _.chain(graph.getCharacters())
+            .intersection(this.charactersToInclude ? this.charactersToInclude : graph.getCharacters())
             .without('#')
             .map((character) => {
                 return graph.findConnectedComponentsForCharacter(character)

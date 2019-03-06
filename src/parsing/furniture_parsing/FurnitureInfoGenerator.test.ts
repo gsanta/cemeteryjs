@@ -26,12 +26,14 @@ describe('FurnitureInfoGenerator', () => {
             const graphToWorldItemListConverter = new FurnitureInfoGenerator();
             const worldItems = graphToWorldItemListConverter.generate(graph);
 
-            expect(worldItems[0]).to.eql(new GwmWorldItem('W', new Rectangle(1, 1, 1, 2), 'wall'));
-            expect(worldItems[1]).to.eql(new GwmWorldItem('W', new Rectangle(3, 1, 1, 2), 'wall'));
-            expect(worldItems[4]).to.eql(new GwmWorldItem('F', new Rectangle(0, 0, 6, 4), 'floor'));
+            expect(worldItems.length).to.eql(4);
+            const firstItem = worldItems[0];
+            expect(firstItem).to.eql(new GwmWorldItem('W', new Rectangle(1, 1, 1, 2), 'wall'));
+            const secondItem = worldItems[1];
+            expect(secondItem).to.eql(new GwmWorldItem('W', new Rectangle(3, 1, 1, 2), 'wall'));
         });
 
-        it('creates world items from the graph (test case with multiple connected components)', () => {
+        it ('creates world items from the graph (test case with multiple connected components)', () => {
             const linesToGraphConverter = new LinesToGraphConverter();
             const graph = linesToGraphConverter.parse(
                 [
@@ -51,12 +53,14 @@ describe('FurnitureInfoGenerator', () => {
             const graphToWorldItemListConverter = new FurnitureInfoGenerator();
             const worldItems = graphToWorldItemListConverter.generate(graph);
 
-            expect(worldItems[0]).to.eql(new GwmWorldItem('W', new Rectangle(1, 1, 1, 2), 'wall'));
-            expect(worldItems[2]).to.eql(new GwmWorldItem('W', new Rectangle(2, 3, 2, 1), 'wall'));
-            expect(worldItems[3]).to.eql(new GwmWorldItem('F', new Rectangle(0, 0, 6, 4), 'floor'));
+            expect(worldItems.length).to.eql(3);
+            const firstItem = worldItems[0];
+            expect(firstItem).to.eql(new GwmWorldItem('W', new Rectangle(1, 1, 1, 2), 'wall'));
+            const thirdItem = worldItems[2];
+            expect(thirdItem).to.eql(new GwmWorldItem('W', new Rectangle(2, 3, 2, 1), 'wall'));
         });
 
-        it('creates one world item for a rectangular connected component', () => {
+        it ('creates one world item for a rectangular connected component', () => {
             const linesToGraphConverter = new LinesToGraphConverter();
             const graph = linesToGraphConverter.parse(
                 [
@@ -75,7 +79,7 @@ describe('FurnitureInfoGenerator', () => {
 
             const graphToWorldItemListConverter = new FurnitureInfoGenerator();
             const worldItems = graphToWorldItemListConverter.generate(graph);
-            expect(worldItems.length).to.equal(2);
+            expect(worldItems.length).to.equal(1);
             expect(worldItems[0]).to.eql(new GwmWorldItem('D', new Rectangle(1, 0, 2, 3), 'door'));
         });
     });

@@ -2,6 +2,7 @@ import { GwmWorldItemGenerator } from "../GwmWorldItemGenerator";
 import _ = require("lodash");
 import { MatrixGraph } from "../../matrix_graph/MatrixGraph";
 import { GwmWorldItem } from '../../model/GwmWorldItem';
+import { TreeIteratorGenerator } from '../../gwm_world_item/iterator/TreeIteratorGenerator';
 
 export interface AdditionalDataConverter<T> {
     (additionalData: any): T;
@@ -29,7 +30,11 @@ export class AdditionalDataConvertingWorldItemDecorator<T> {
     }
 
     private applyConversionFunction(worldItems: GwmWorldItem[]): GwmWorldItem[] {
-        worldItems.forEach(worldItem => worldItem.additionalData = this.conversionFunction(worldItem.additionalData));
+        worldItems.forEach(rootItem => {
+            for (const item of TreeIteratorGenerator(rootItem)) {
+                item.additionalData = this.conversionFunction(item.additionalData)
+            }
+        })
 
         return worldItems;
     }

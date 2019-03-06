@@ -8,7 +8,7 @@ export class GwmWorldItem<T = any> {
     public name: string;
     public dimensions: Polygon;
     public additionalData: T;
-    public childWorldItems: GwmWorldItem[] = [];
+    public children: GwmWorldItem[] = [];
 
     constructor(type: string, dimensions: Polygon, name: string, additionalData: T = null) {
         this.type = type;
@@ -18,6 +18,6 @@ export class GwmWorldItem<T = any> {
     }
 
     public addChild(worldItem: GwmWorldItem) {
-        this.childWorldItems.push(worldItem);
+        this.children.push(worldItem);
     }
 }

@@ -40,8 +40,8 @@ describe('HierarchyBuildingWorldItemGeneratorDecorator', () => {
 
             hierarchyBuildingWorldItemGeneratorDecorator.generate(null);
 
-            expect(worldItemParentMock.childWorldItems.length).to.eq(1);
-            expect(worldItemParentMock.childWorldItems[0]).to.eq(worldItemChildMock);
+            expect(worldItemParentMock.children.length).to.eq(1);
+            expect(worldItemParentMock.children[0]).to.eq(worldItemChildMock);
         });
 
         it ('does not create a parent-child relationship if one does not contain the other', () => {
@@ -75,7 +75,7 @@ describe('HierarchyBuildingWorldItemGeneratorDecorator', () => {
 
             hierarchyBuildingWorldItemGeneratorDecorator.generate(null);
 
-            expect(worldItemParentMock.childWorldItems.length).to.eq(0);
+            expect(worldItemParentMock.children.length).to.eq(0);
         });
     });
 });

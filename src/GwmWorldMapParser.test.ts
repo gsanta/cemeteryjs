@@ -8,26 +8,30 @@ import { Point } from './model/Point';
 
 describe('GwmWorldMapParser', () => {
     describe('parse', () => {
-        it('creates a WorldItem for every distinguishable item in the input map', () => {
+        it ('creates a WorldItem for every distinguishable item in the input map', () => {
             const file = fs.readFileSync(__dirname + '/../assets/test/test1.gwm', 'utf8');
             const gameObjectParser = GwmWorldMapParser.createWithOptions();
 
-            const items = gameObjectParser.parse(file)
-            expect(items.length).to.equal(10);
-            expect(items[0]).to.eql(new GwmWorldItem('W', new Rectangle(1, 1, 1, 3), 'wall'), 'gameObject[0] is not correct');
-            expect(items[1]).to.eql(new GwmWorldItem('W', new Rectangle(8, 1, 1, 3), 'wall'), 'gameObject[1] is not correct');
-            expect(items[2]).to.eql(new GwmWorldItem('W', new Rectangle(2, 1, 2, 1), 'wall'), 'gameObject[2] is not correct');
-            expect(items[3]).to.eql(new GwmWorldItem('W', new Rectangle(2, 3, 6, 1), 'wall'), 'gameObject[3] is not correct');
-            expect(items[4]).to.eql(new GwmWorldItem('W', new Rectangle(6, 1, 2, 1), 'wall'), 'gameObject[4] is not correct');
-            expect(items[5]).to.eql(new GwmWorldItem('I', new Rectangle(4, 1, 2, 1), 'window'), 'gameObject[5] is not correct');
+            const [root] = gameObjectParser.parse(file);
+            const children = root.children;
+            expect(children.length).to.equal(7);
+            expect(children[0]).to.eql(new GwmWorldItem('W', new Rectangle(0, 0, 1, 3), 'wall'), 'children[0] is not correct');
+            expect(children[1]).to.eql(new GwmWorldItem('W', new Rectangle(7, 0, 1, 3), 'wall'), 'children[1] is not correct');
+            expect(children[2]).to.eql(new GwmWorldItem('W', new Rectangle(1, 0, 2, 1), 'wall'), 'children[2] is not correct');
+            expect(children[3]).to.eql(new GwmWorldItem('W', new Rectangle(1, 2, 6, 1), 'wall'), 'children[3] is not correct');
+            expect(children[4]).to.eql(new GwmWorldItem('W', new Rectangle(5, 0, 2, 1), 'wall'), 'children[4] is not correct');
+            expect(children[5]).to.eql(new GwmWorldItem('I', new Rectangle(3, 0, 2, 1), 'window'), 'children[5] is not correct');
+            expect(children[6].name).to.eql('room', 'children[6] is not correct');
         });
 
         it ('can parse the additional data for a WorldItem.', () => {
             const file = fs.readFileSync(__dirname + '/../assets/test/testNewDetailsSection.gwm', 'utf8');
-            const gameObjectParser = GwmWorldMapParser.createWithOptions();
-            const items = gameObjectParser.parse(file)
+            const worldMapParser = GwmWorldMapParser.createWithOptions();
 
-            expect(items[1].additionalData).to.eql({
+            const [root] = worldMapParser.parse(file);
+            const room = root.children.filter(item => item.name === 'room')[0];
+
+            expect(room.children[0].additionalData).to.eql({
                 angle: -90,
                 axis1: {
                     x: 4, y: 2
@@ -45,8 +49,9 @@ describe('GwmWorldMapParser', () => {
             const file = fs.readFileSync(__dirname + '/../assets/test/testAdditionalData.gwm', 'utf8');
             const worldMapParser = GwmWorldMapParser.createWithOptions();
 
-            const items = worldMapParser.parse(file)
-            expect(items[0].additionalData).to.eql({
+            const [root] = worldMapParser.parse(file);
+            const room = root.children.filter(item => item.name === 'room')[0];
+            expect(room.children[0].additionalData).to.eql({
                 angle: 90,
                 axis: {
                     x: 4, y: 1
@@ -57,11 +62,14 @@ describe('GwmWorldMapParser', () => {
             })
         });
 
-        it('attaches the additional data to vertices, if present TEST CASE 2', () => {
+        it ('attaches the additional data to vertices, if present TEST CASE 2', () => {
             const file = fs.readFileSync(__dirname + '/../assets/test/testAdditionalData2.gwm', 'utf8');
             const worldMapParser = GwmWorldMapParser.createWithOptions();
-            const items = worldMapParser.parse(file)
-            expect(items[0].additionalData).to.eql({
+
+            const [root] = worldMapParser.parse(file);
+            const room = root.children.filter(item => item.name === 'room')[0];
+
+            expect(room.children[0].additionalData).to.eql({
                 angle: 90,
                 axis: {
                     x: 4, y: 1
@@ -72,15 +80,15 @@ describe('GwmWorldMapParser', () => {
             });
         });
 
-        it('attaches the additional data to vertices for rectangular GameObjects', () => {
+        it ('attaches the additional data to vertices for rectangular GameObjects', () => {
             const map = `
                 map \`
 
-                ##########
-                ####II####
-                ####II####
-                ####II####
-                ##########
+                WWWWWWWWWW
+                W###II###W
+                W###II###W
+                W########W
+                WWWWWWWWWW
 
                 \`
 
@@ -99,8 +107,10 @@ describe('GwmWorldMapParser', () => {
             `;
 
             const worldMapParser = GwmWorldMapParser.createWithOptions();
-            const items = worldMapParser.parse(map)
-            expect(items[0].additionalData).to.eql({
+            const [root] = worldMapParser.parse(map);
+            const room = root.children.filter(item => item.name === 'room')[0];
+
+            expect(room.children[0].additionalData).to.eql({
                 "pos": {
                     "x": 4,
                     "y": 1
@@ -109,19 +119,19 @@ describe('GwmWorldMapParser', () => {
             });
         });
 
-        it('converts the additional data if conversion function provided', () => {
+        it ('converts the additional data if conversion function provided', () => {
             const map = `
                 map \`
 
-                ##
-                #I
-
+                WWWW
+                WC#W
+                WWWW
                 \`
 
                 definitions \`
 
                 # = empty
-                I = window
+                C = cupboard
 
                 \`
 
@@ -139,14 +149,16 @@ describe('GwmWorldMapParser', () => {
             };
 
             const worldMapParser = GwmWorldMapParser.createWithOptions({...defaultParseOptions, ...{additionalDataConverter}});
-            const items = worldMapParser.parse(map);
+            const [root] = worldMapParser.parse(map);
 
-            expect(items[0].additionalData).to.eql({
+            const room = root.children.filter(item => item.name === 'room')[0];
+
+            expect(room.children[0].additionalData).to.eql({
                 "orientation": "EAST_CONVERTED"
             });
         });
 
-        it.only ('creates a polygon for every room', () => {
+        it ('creates a polygon for every room', () => {
             const map = `
                 map \`
 
@@ -158,9 +170,14 @@ describe('GwmWorldMapParser', () => {
                 \`
             `;
 
-            const worldMapParser = GwmWorldMapParser.createWithOptions();
-            const items = worldMapParser.parse(map)
-            const rooms = items.filter(item => item.name === 'room');
+            const worldMapParser = GwmWorldMapParser.createWithOptions({
+                ...defaultParseOptions,
+                ...{
+                    charactersToInclude: ['W', 'I', 'D']
+                }
+            });
+            const items = worldMapParser.parse(map);
+            const rooms = items[0].children.filter(item => item.name === 'room');
             expect(rooms.length).to.eq(1);
             expect(rooms[0].dimensions.points).to.eql([
                 new Point(1, 1),
@@ -171,21 +188,21 @@ describe('GwmWorldMapParser', () => {
         });
 
 
-        it('scales the polygons if scale option is changed.', () => {
+        it ('scales the polygons if scale option is changed.', () => {
             const map = `
                 map \`
 
                 WIIWW
-                W---W
-                W---W
+                W###W
+                W###W
                 WWDDW
 
                 \`
             `;
 
             const worldMapParser = GwmWorldMapParser.createWithOptions({...defaultParseOptions, ...{xScale: 2, yScale: 3}});
-            const items = worldMapParser.parse(map);
-            const rooms = items.filter(item => item.name === 'room');
+            const [root] = worldMapParser.parse(map);
+            const rooms = root.children.filter(item => item.name === 'room');
 
             expect(rooms.length).to.eq(1);
             expect(rooms[0].dimensions.points).to.eql([
@@ -222,12 +239,12 @@ describe('GwmWorldMapParser', () => {
             const worldMapParser = GwmWorldMapParser.createWithOptions({...defaultParseOptions, ...{xScale: 1, yScale: 2}});
             const items = worldMapParser.parse(map);
 
-            const [room1, room2] = items.filter(item => item.name === 'room');
             const [root] = items.filter(item => item.name === 'root');
+            const [room1, room2] = root.children.filter(item => item.name === 'room');
 
-            expect(room1.childWorldItems.length).to.eql(1);
-            expect(room2.childWorldItems.length).to.eql(2);
-            expect(root.childWorldItems.length).to.eq(2);
+            expect(room1.children.length).to.eql(1);
+            expect(room2.children.length).to.eql(2);
+            expect(root.children.length).to.eq(12);
         });
     });
 });

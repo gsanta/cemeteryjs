@@ -5,17 +5,23 @@ import { CombinedWorldItemGenerator } from './parsing/decorators/CombinedWorldIt
 import { AdditionalDataConverter, AdditionalDataConvertingWorldItemDecorator } from './parsing/decorators/AdditionalDataConvertingWorldItemDecorator';
 import { ScalingWorldItemGeneratorDecorator } from './parsing/decorators/ScalingWorldItemGeneratorDecorator';
 import { HierarchyBuildingWorldItemGeneratorDecorator } from './parsing/decorators/HierarchyBuildingWorldItemGeneratorDecorator';
+import { FurnitureInfoGenerator } from './parsing/furniture_parsing/FurnitureInfoGenerator';
+import { RoomInfoGenerator } from './parsing/room_parsing/RoomInfoGenerator';
+import { RootWorldItemGenerator } from './parsing/RootWorldItemGenerator';
+import { WorldMapToMatrixGraphConverter } from './matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 
 export interface ParseOptions<T> {
     xScale: number;
     yScale: number;
     additionalDataConverter: AdditionalDataConverter<T>;
+    charactersToInclude?: string[];
+    charactersToExclude?: string[];
 }
 
 export const defaultParseOptions: ParseOptions<any> = {
     xScale: 1,
     yScale: 1,
-    additionalDataConverter: _.identity,
+    additionalDataConverter: _.identity
 }
 
 /**
@@ -48,7 +54,13 @@ export class GwmWorldMapParser {
             new AdditionalDataConvertingWorldItemDecorator<T>(
                 new HierarchyBuildingWorldItemGeneratorDecorator(
                     new ScalingWorldItemGeneratorDecorator(
-                        new CombinedWorldItemGenerator(),
+                        new CombinedWorldItemGenerator(
+                            [
+                                new FurnitureInfoGenerator(new WorldMapToMatrixGraphConverter(), options.charactersToInclude),
+                                new RoomInfoGenerator(),
+                                new RootWorldItemGenerator()
+                            ]
+                        ),
                         { x: options.xScale, y: options.yScale }
                     ),
                     ['room', 'root'],
