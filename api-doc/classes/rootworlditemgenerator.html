@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>WorldMapReader | game-worldmap-generator</title>
+	<title>RootWorldItemGenerator | game-worldmap-generator</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="worldmapreader.html">WorldMapReader</a>
+					<a href="rootworlditemgenerator.html">RootWorldItemGenerator</a>
 				</li>
 			</ul>
-			<h1>Class WorldMapReader</h1>
+			<h1>Class RootWorldItemGenerator</h1>
 		</div>
 	</div>
 </header>
@@ -68,8 +68,14 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">WorldMapReader</span>
+						<span class="target">RootWorldItemGenerator</span>
 					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel">
+				<h3>Implements</h3>
+				<ul class="tsd-hierarchy">
+					<li><a href="../interfaces/gwmworlditemgenerator.html" class="tsd-signature-type">GwmWorldItemGenerator</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -79,26 +85,22 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="worldmapreader.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="rootworlditemgenerator.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="worldmapreader.html#listener" class="tsd-kind-icon">listener</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="worldmapreader.html#section" class="tsd-kind-icon">section</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="worldmapreader.html#definitions_section_start_test" class="tsd-kind-icon">DEFINITIONS_<wbr>SECTION_<wbr>START_<wbr>TEST</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="worldmapreader.html#details_section_start_test" class="tsd-kind-icon">DETAILS_<wbr>SECTION_<wbr>START_<wbr>TEST</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="worldmapreader.html#map_section_start_test" class="tsd-kind-icon">MAP_<wbr>SECTION_<wbr>START_<wbr>TEST</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="worldmapreader.html#section_closing_test" class="tsd-kind-icon">SECTION_<wbr>CLOSING_<wbr>TEST</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="rootworlditemgenerator.html#worldmapconverter" class="tsd-kind-icon">world<wbr>Map<wbr>Converter</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="worldmapreader.html#categorizelines" class="tsd-kind-icon">categorize<wbr>Lines</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="worldmapreader.html#checkparsestate" class="tsd-kind-icon">check<wbr>Parse<wbr>State</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="worldmapreader.html#read" class="tsd-kind-icon">read</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="rootworlditemgenerator.html#createrootworlditem" class="tsd-kind-icon">create<wbr>Root<wbr>World<wbr>Item</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="rootworlditemgenerator.html#generate" class="tsd-kind-icon">generate</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="rootworlditemgenerator.html#generatefromstringmap" class="tsd-kind-icon">generate<wbr>From<wbr>String<wbr>Map</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="rootworlditemgenerator.html#getmatrixgraphforstringmap" class="tsd-kind-icon">get<wbr>Matrix<wbr>Graph<wbr>For<wbr>String<wbr>Map</a></li>
 							</ul>
 						</section>
 					</div>
@@ -110,22 +112,22 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>World<wbr>Map<wbr>Reader<span class="tsd-signature-symbol">(</span>listener<span class="tsd-signature-symbol">: </span><a href="../interfaces/worldmaplinelistener.html" class="tsd-signature-type">WorldMapLineListener</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="worldmapreader.html" class="tsd-signature-type">WorldMapReader</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Root<wbr>World<wbr>Item<wbr>Generator<span class="tsd-signature-symbol">(</span>worldMapConverter<span class="tsd-signature-symbol">?: </span><a href="worldmaptomatrixgraphconverter.html" class="tsd-signature-type">WorldMapToMatrixGraphConverter</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="rootworlditemgenerator.html" class="tsd-signature-type">RootWorldItemGenerator</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/a66012c/src/matrix_graph/conversion/WorldMapReader.ts#L23">matrix_graph/conversion/WorldMapReader.ts:23</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/a66012c/src/parsing/RootWorldItemGenerator.ts#L7">parsing/RootWorldItemGenerator.ts:7</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>listener: <a href="../interfaces/worldmaplinelistener.html" class="tsd-signature-type">WorldMapLineListener</a></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> worldMapConverter: <a href="worldmaptomatrixgraphconverter.html" class="tsd-signature-type">WorldMapToMatrixGraphConverter</a><span class="tsd-signature-symbol"> =&nbsp;new WorldMapToMatrixGraphConverter()</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="worldmapreader.html" class="tsd-signature-type">WorldMapReader</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="rootworlditemgenerator.html" class="tsd-signature-type">RootWorldItemGenerator</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -133,134 +135,110 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="listener" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> listener</h3>
-					<div class="tsd-signature tsd-kind-icon">listener<span class="tsd-signature-symbol">:</span> <a href="../interfaces/worldmaplinelistener.html" class="tsd-signature-type">WorldMapLineListener</a></div>
+					<a name="worldmapconverter" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> world<wbr>Map<wbr>Converter</h3>
+					<div class="tsd-signature tsd-kind-icon">world<wbr>Map<wbr>Converter<span class="tsd-signature-symbol">:</span> <a href="worldmaptomatrixgraphconverter.html" class="tsd-signature-type">WorldMapToMatrixGraphConverter</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/a66012c/src/matrix_graph/conversion/WorldMapReader.ts#L17">matrix_graph/conversion/WorldMapReader.ts:17</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="section" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> section</h3>
-					<div class="tsd-signature tsd-kind-icon">section<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ParseSections</span><span class="tsd-signature-symbol"> =&nbsp;null</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/a66012c/src/matrix_graph/conversion/WorldMapReader.ts#L18">matrix_graph/conversion/WorldMapReader.ts:18</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
-					<a name="definitions_section_start_test" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> DEFINITIONS_<wbr>SECTION_<wbr>START_<wbr>TEST</h3>
-					<div class="tsd-signature tsd-kind-icon">DEFINITIONS_<wbr>SECTION_<wbr>START_<wbr>TEST<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RegExp</span><span class="tsd-signature-symbol"> =&nbsp;/\s*definitions\s*&#x60;\s*/</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/a66012c/src/matrix_graph/conversion/WorldMapReader.ts#L21">matrix_graph/conversion/WorldMapReader.ts:21</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
-					<a name="details_section_start_test" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> DETAILS_<wbr>SECTION_<wbr>START_<wbr>TEST</h3>
-					<div class="tsd-signature tsd-kind-icon">DETAILS_<wbr>SECTION_<wbr>START_<wbr>TEST<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RegExp</span><span class="tsd-signature-symbol"> =&nbsp;/\s*details2\s*&#x60;\s*/</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/a66012c/src/matrix_graph/conversion/WorldMapReader.ts#L23">matrix_graph/conversion/WorldMapReader.ts:23</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
-					<a name="map_section_start_test" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> MAP_<wbr>SECTION_<wbr>START_<wbr>TEST</h3>
-					<div class="tsd-signature tsd-kind-icon">MAP_<wbr>SECTION_<wbr>START_<wbr>TEST<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RegExp</span><span class="tsd-signature-symbol"> =&nbsp;/\s*map\s*&#x60;\s*/</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/a66012c/src/matrix_graph/conversion/WorldMapReader.ts#L20">matrix_graph/conversion/WorldMapReader.ts:20</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
-					<a name="section_closing_test" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> SECTION_<wbr>CLOSING_<wbr>TEST</h3>
-					<div class="tsd-signature tsd-kind-icon">SECTION_<wbr>CLOSING_<wbr>TEST<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RegExp</span><span class="tsd-signature-symbol"> =&nbsp;/^\s*\&#x60;\s*$/</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/a66012c/src/matrix_graph/conversion/WorldMapReader.ts#L22">matrix_graph/conversion/WorldMapReader.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/a66012c/src/parsing/RootWorldItemGenerator.ts#L7">parsing/RootWorldItemGenerator.ts:7</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a name="categorizelines" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> categorize<wbr>Lines</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">categorize<wbr>Lines<span class="tsd-signature-symbol">(</span>lines<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="createrootworlditem" class="tsd-anchor"></a>
+					<h3>create<wbr>Root<wbr>World<wbr>Item</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Root<wbr>World<wbr>Item<span class="tsd-signature-symbol">(</span>graph<span class="tsd-signature-symbol">: </span><a href="matrixgraph.html" class="tsd-signature-type">MatrixGraph</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="gwmworlditem.html" class="tsd-signature-type">GwmWorldItem</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/a66012c/src/matrix_graph/conversion/WorldMapReader.ts#L35">matrix_graph/conversion/WorldMapReader.ts:35</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/a66012c/src/parsing/RootWorldItemGenerator.ts#L26">parsing/RootWorldItemGenerator.ts:26</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>lines: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>graph: <a href="matrixgraph.html" class="tsd-signature-type">MatrixGraph</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a name="checkparsestate" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> check<wbr>Parse<wbr>State</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">check<wbr>Parse<wbr>State<span class="tsd-signature-symbol">(</span>line<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/a66012c/src/matrix_graph/conversion/WorldMapReader.ts#L57">matrix_graph/conversion/WorldMapReader.ts:57</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>line: <span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="gwmworlditem.html" class="tsd-signature-type">GwmWorldItem</a></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="read" class="tsd-anchor"></a>
-					<h3>read</h3>
+					<a name="generate" class="tsd-anchor"></a>
+					<h3>generate</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">read<span class="tsd-signature-symbol">(</span>worldMap<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">generate<span class="tsd-signature-symbol">(</span>graph<span class="tsd-signature-symbol">: </span><a href="matrixgraph.html" class="tsd-signature-type">MatrixGraph</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="gwmworlditem.html" class="tsd-signature-type">GwmWorldItem</a><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/gwmworlditemgenerator.html">GwmWorldItemGenerator</a>.<a href="../interfaces/gwmworlditemgenerator.html#generate">generate</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/a66012c/src/matrix_graph/conversion/WorldMapReader.ts#L29">matrix_graph/conversion/WorldMapReader.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/a66012c/src/parsing/RootWorldItemGenerator.ts#L13">parsing/RootWorldItemGenerator.ts:13</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>worldMap: <span class="tsd-signature-type">string</span></h5>
+									<h5>graph: <a href="matrixgraph.html" class="tsd-signature-type">MatrixGraph</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="gwmworlditem.html" class="tsd-signature-type">GwmWorldItem</a><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="generatefromstringmap" class="tsd-anchor"></a>
+					<h3>generate<wbr>From<wbr>String<wbr>Map</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">generate<wbr>From<wbr>String<wbr>Map<span class="tsd-signature-symbol">(</span>strMap<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="gwmworlditem.html" class="tsd-signature-type">GwmWorldItem</a><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/gwmworlditemgenerator.html">GwmWorldItemGenerator</a>.<a href="../interfaces/gwmworlditemgenerator.html#generatefromstringmap">generateFromStringMap</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/a66012c/src/parsing/RootWorldItemGenerator.ts#L17">parsing/RootWorldItemGenerator.ts:17</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>strMap: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="gwmworlditem.html" class="tsd-signature-type">GwmWorldItem</a><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getmatrixgraphforstringmap" class="tsd-anchor"></a>
+					<h3>get<wbr>Matrix<wbr>Graph<wbr>For<wbr>String<wbr>Map</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Matrix<wbr>Graph<wbr>For<wbr>String<wbr>Map<span class="tsd-signature-symbol">(</span>strMap<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrixgraph.html" class="tsd-signature-type">MatrixGraph</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/gwmworlditemgenerator.html">GwmWorldItemGenerator</a>.<a href="../interfaces/gwmworlditemgenerator.html#getmatrixgraphforstringmap">getMatrixGraphForStringMap</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/a66012c/src/parsing/RootWorldItemGenerator.ts#L22">parsing/RootWorldItemGenerator.ts:22</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>strMap: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="matrixgraph.html" class="tsd-signature-type">MatrixGraph</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -321,51 +299,39 @@
 					<li class=" tsd-kind-class">
 						<a href="rectangle.html" class="tsd-kind-icon">Rectangle</a>
 					</li>
-					<li class=" tsd-kind-class">
-						<a href="rootworlditemgenerator.html" class="tsd-kind-icon">Root<wbr>World<wbr>Item<wbr>Generator</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="scalingworlditemgeneratordecorator.html" class="tsd-kind-icon">Scaling<wbr>World<wbr>Item<wbr>Generator<wbr>Decorator</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
-						<a href="worldmapreader.html" class="tsd-kind-icon">World<wbr>Map<wbr>Reader</a>
+						<a href="rootworlditemgenerator.html" class="tsd-kind-icon">Root<wbr>World<wbr>Item<wbr>Generator</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="worldmapreader.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="rootworlditemgenerator.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="worldmapreader.html#listener" class="tsd-kind-icon">listener</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="worldmapreader.html#section" class="tsd-kind-icon">section</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
-								<a href="worldmapreader.html#definitions_section_start_test" class="tsd-kind-icon">DEFINITIONS_<wbr>SECTION_<wbr>START_<wbr>TEST</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
-								<a href="worldmapreader.html#details_section_start_test" class="tsd-kind-icon">DETAILS_<wbr>SECTION_<wbr>START_<wbr>TEST</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
-								<a href="worldmapreader.html#map_section_start_test" class="tsd-kind-icon">MAP_<wbr>SECTION_<wbr>START_<wbr>TEST</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
-								<a href="worldmapreader.html#section_closing_test" class="tsd-kind-icon">SECTION_<wbr>CLOSING_<wbr>TEST</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="worldmapreader.html#categorizelines" class="tsd-kind-icon">categorize<wbr>Lines</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="worldmapreader.html#checkparsestate" class="tsd-kind-icon">check<wbr>Parse<wbr>State</a>
+								<a href="rootworlditemgenerator.html#worldmapconverter" class="tsd-kind-icon">world<wbr>Map<wbr>Converter</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="worldmapreader.html#read" class="tsd-kind-icon">read</a>
+								<a href="rootworlditemgenerator.html#createrootworlditem" class="tsd-kind-icon">create<wbr>Root<wbr>World<wbr>Item</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="rootworlditemgenerator.html#generate" class="tsd-kind-icon">generate</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="rootworlditemgenerator.html#generatefromstringmap" class="tsd-kind-icon">generate<wbr>From<wbr>String<wbr>Map</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="rootworlditemgenerator.html#getmatrixgraphforstringmap" class="tsd-kind-icon">get<wbr>Matrix<wbr>Graph<wbr>For<wbr>String<wbr>Map</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-class">
+						<a href="scalingworlditemgeneratordecorator.html" class="tsd-kind-icon">Scaling<wbr>World<wbr>Item<wbr>Generator<wbr>Decorator</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="worldmapreader.html" class="tsd-kind-icon">World<wbr>Map<wbr>Reader</a>
+					</li>
 					<li class=" tsd-kind-class">
 						<a href="worldmaptomatrixgraphconverter.html" class="tsd-kind-icon">World<wbr>Map<wbr>ToMatrix<wbr>Graph<wbr>Converter</a>
 					</li>
