@@ -1,6 +1,7 @@
 import { GwmWorldItemGenerator } from '../GwmWorldItemGenerator';
 import { MatrixGraph } from '../../matrix_graph/MatrixGraph';
 import { GwmWorldItem } from '../../model/GwmWorldItem';
+import { TreeIteratorGenerator } from '../../gwm_world_item/iterator/TreeIteratorGenerator';
 
 type Scaling = {
     x: number,
@@ -29,7 +30,11 @@ export class ScalingWorldItemGeneratorDecorator {
     }
 
     private scaleItems(worldItems: GwmWorldItem[]): GwmWorldItem[] {
-        worldItems.forEach(worldItem => worldItem.dimensions = worldItem.dimensions.scaleX(this.scaling.x).scaleY(this.scaling.y));
+        worldItems.forEach(rootItem => {
+            for (const item of TreeIteratorGenerator(rootItem)) {
+                item.dimensions = item.dimensions = item.dimensions.scaleX(this.scaling.x).scaleY(this.scaling.y);
+            }
+        });
 
         return worldItems;
     }

@@ -34,7 +34,7 @@ export class AdditionalDataConvertingWorldItemDecorator<T> {
             for (const item of TreeIteratorGenerator(rootItem)) {
                 item.additionalData = this.conversionFunction(item.additionalData)
             }
-        })
+        });
 
         return worldItems;
     }
