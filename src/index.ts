@@ -9,6 +9,7 @@ export {GwmWorldItem} from './model/GwmWorldItem';
 export {Rectangle} from './model/Rectangle';
 export {Polygon} from './model/Polygon';
 export {GwmWorldItemGenerator} from './parsing/GwmWorldItemGenerator';
+export {TreeNode, TreeIteratorGenerator} from './gwm_world_item/iterator/TreeIteratorGenerator';
 
 export const generators = {
     RoomInfoGenerator,
