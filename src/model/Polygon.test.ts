@@ -5,7 +5,7 @@ import { Rectangle } from './Rectangle';
 
 
 describe('Polygon', () => {
-    describe('overlaps', () => {
+    describe('contains', () => {
         it ('returns true if the polygon contains the other', () => {
             const poly1 = new Polygon([
                 new Point(1, 1),
@@ -21,10 +21,10 @@ describe('Polygon', () => {
                 new Point(2, 4)
             ]);
 
-            expect(poly1.overlaps(poly2)).to.eql(true);
+            expect(poly1.contains(poly2)).to.eql(true);
         });
 
-        it ('returns false if the two polygons intersect', () => {
+        it ('returns false if the two polygons overlap', () => {
             const poly1 = new Polygon([
                 new Point(1, 1),
                 new Point(3, 1),
@@ -39,7 +39,7 @@ describe('Polygon', () => {
                 new Point(2, 4)
             ]);
 
-            expect(poly1.overlaps(poly2)).to.eql(false);
+            expect(poly1.contains(poly2)).to.eql(false);
         });
 
         it ('returns false if the two polygons do have any common parts', () => {
@@ -57,7 +57,63 @@ describe('Polygon', () => {
                 new Point(4, 4)
             ]);
 
-            expect(poly1.overlaps(poly2)).to.eql(false);
+            expect(poly1.contains(poly2)).to.eql(false);
+        });
+    });
+
+    describe('intersects', () => {
+        it ('returns true if the polygon intersects with the other', () => {
+            const poly1 = new Polygon([
+                new Point(1, 1),
+                new Point(3, 1),
+                new Point(3, 4),
+                new Point(1, 4)
+            ]);
+
+            const poly2 = new Polygon([
+                new Point(3, 1),
+                new Point(4, 1),
+                new Point(4, 4),
+                new Point(3, 4)
+            ]);
+
+            expect(poly1.intersectBorder(poly2)).to.eql(true);
+        });
+
+        it ('returns false if the two polygons do have any common parts', () => {
+            const poly1 = new Polygon([
+                new Point(1, 1),
+                new Point(3, 1),
+                new Point(3, 4),
+                new Point(1, 4)
+            ]);
+
+            const poly2 = new Polygon([
+                new Point(4, 1),
+                new Point(5, 1),
+                new Point(5, 4),
+                new Point(4, 4)
+            ]);
+
+            expect(poly1.intersectBorder(poly2)).to.eql(false);
+        });
+
+        it ('returns false if the two polygons overlap', () => {
+            const poly1 = new Polygon([
+                new Point(1, 1),
+                new Point(4, 1),
+                new Point(4, 4),
+                new Point(1, 4)
+            ]);
+
+            const poly2 = new Polygon([
+                new Point(5, 1),
+                new Point(3, 1),
+                new Point(3, 4),
+                new Point(5, 4)
+            ]);
+
+            expect(poly1.intersectBorder(poly2)).to.eql(false);
         });
     });
 

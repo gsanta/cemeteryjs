@@ -13,7 +13,7 @@ import { RootWorldItemGenerator } from '../RootWorldItemGenerator';
 export class CombinedWorldItemGenerator implements GwmWorldItemGenerator {
     private worldItemGenerators: GwmWorldItemGenerator[];
 
-    constructor(worldItemGenerators: GwmWorldItemGenerator[] = CombinedWorldItemGenerator.getDefaultWorldItemGenerators()) {
+    constructor(worldItemGenerators: GwmWorldItemGenerator[]) {
         this.worldItemGenerators = worldItemGenerators;
     }
 
@@ -31,9 +31,5 @@ export class CombinedWorldItemGenerator implements GwmWorldItemGenerator {
 
     public getMatrixGraphForStringMap(strMap: string): MatrixGraph {
         throw new Error('`getMatrixGraphForStringMap` not supported for `CombinedWorldItemGenerator`');
-    }
-
-    private static getDefaultWorldItemGenerators(): GwmWorldItemGenerator[] {
-        return [new FurnitureInfoGenerator(), new RoomInfoGenerator(), new RootWorldItemGenerator()];
     }
 }

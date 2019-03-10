@@ -9,6 +9,7 @@ import { FurnitureInfoGenerator } from './parsing/furniture_parsing/FurnitureInf
 import { RoomInfoGenerator } from './parsing/room_parsing/RoomInfoGenerator';
 import { RootWorldItemGenerator } from './parsing/RootWorldItemGenerator';
 import { WorldMapToMatrixGraphConverter } from './matrix_graph/conversion/WorldMapToMatrixGraphConverter';
+import { RoomSeparatorGenerator } from './parsing/room_separator_parsing/RoomSeparatorGenerator';
 
 export interface ParseOptions<T> {
     xScale: number;
@@ -24,6 +25,11 @@ export const defaultParseOptions: ParseOptions<any> = {
     additionalDataConverter: _.identity
 }
 
+export interface CharacterTypes {
+    furnitureCharacters: string[];
+    roomSeparatorCharacters: string[];
+}
+
 /**
  * Generates a list of `GwmWorldItem` objects, which describe your world, based on a `gwm (game world map)` format
  * string.
@@ -31,17 +37,7 @@ export const defaultParseOptions: ParseOptions<any> = {
 export class GwmWorldMapParser {
     private worldItemGenerator: GwmWorldItemGenerator;
 
-    private constructor(worldItemGenerator: GwmWorldItemGenerator =
-            new AdditionalDataConvertingWorldItemDecorator(
-                new HierarchyBuildingWorldItemGeneratorDecorator(
-                    new ScalingWorldItemGeneratorDecorator(
-                        new CombinedWorldItemGenerator()
-                    ),
-                    ['room'],
-                    ['bed', 'cupboard']
-                ),
-            )
-        ) {
+    private constructor(worldItemGenerator: GwmWorldItemGenerator) {
         this.worldItemGenerator = worldItemGenerator;
     }
 
@@ -49,14 +45,15 @@ export class GwmWorldMapParser {
         return this.worldItemGenerator.generateFromStringMap(worldMap);
     }
 
-    public static createWithOptions<T>(options: ParseOptions<T> = defaultParseOptions): GwmWorldMapParser {
+    public static createWithOptions<T>(characterTypes: CharacterTypes, options: ParseOptions<T> = defaultParseOptions): GwmWorldMapParser {
         return new GwmWorldMapParser(
             new AdditionalDataConvertingWorldItemDecorator<T>(
                 new HierarchyBuildingWorldItemGeneratorDecorator(
                     new ScalingWorldItemGeneratorDecorator(
                         new CombinedWorldItemGenerator(
                             [
-                                new FurnitureInfoGenerator(new WorldMapToMatrixGraphConverter(), options.charactersToInclude),
+                                new FurnitureInfoGenerator(characterTypes.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
+                                new RoomSeparatorGenerator(characterTypes.roomSeparatorCharacters),
                                 new RoomInfoGenerator(),
                                 new RootWorldItemGenerator()
                             ]

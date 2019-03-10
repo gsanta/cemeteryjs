@@ -23,7 +23,7 @@ describe('FurnitureInfoGenerator', () => {
             );
 
 
-            const graphToWorldItemListConverter = new FurnitureInfoGenerator();
+            const graphToWorldItemListConverter = new FurnitureInfoGenerator(['W']);
             const worldItems = graphToWorldItemListConverter.generate(graph);
 
             expect(worldItems.length).to.eql(4);
@@ -50,7 +50,7 @@ describe('FurnitureInfoGenerator', () => {
             );
 
 
-            const graphToWorldItemListConverter = new FurnitureInfoGenerator();
+            const graphToWorldItemListConverter = new FurnitureInfoGenerator(['W']);
             const worldItems = graphToWorldItemListConverter.generate(graph);
 
             expect(worldItems.length).to.eql(3);
@@ -77,7 +77,7 @@ describe('FurnitureInfoGenerator', () => {
             );
 
 
-            const graphToWorldItemListConverter = new FurnitureInfoGenerator();
+            const graphToWorldItemListConverter = new FurnitureInfoGenerator(['D']);
             const worldItems = graphToWorldItemListConverter.generate(graph);
             expect(worldItems.length).to.equal(1);
             expect(worldItems[0]).to.eql(new GwmWorldItem('D', new Rectangle(1, 0, 2, 3), 'door'));

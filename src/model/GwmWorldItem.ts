@@ -9,6 +9,7 @@ export class GwmWorldItem<T = any> {
     public dimensions: Polygon;
     public additionalData: T;
     public children: GwmWorldItem[] = [];
+    public borderItems: GwmWorldItem[] = [];
 
     constructor(type: string, dimensions: Polygon, name: string, additionalData: T = null) {
         this.type = type;

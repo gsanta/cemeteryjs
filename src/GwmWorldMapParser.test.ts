@@ -9,12 +9,32 @@ import { Point } from './model/Point';
 describe('GwmWorldMapParser', () => {
     describe('parse', () => {
         it ('creates a WorldItem for every distinguishable item in the input map', () => {
-            const file = fs.readFileSync(__dirname + '/../assets/test/test1.gwm', 'utf8');
-            const gameObjectParser = GwmWorldMapParser.createWithOptions();
+            const map = `
+                map \`
 
-            const [root] = gameObjectParser.parse(file);
+                WWWIIWWW
+                W--TT--W
+                WWWWWWWW
+
+
+                \`
+
+                definitions \`
+
+                - = empty
+                W = wall
+                I = window
+                T = table
+                \`
+            `;
+
+            const gameObjectParser = GwmWorldMapParser.createWithOptions(
+                { furnitureCharacters: ['T'], roomSeparatorCharacters: ['W', 'I']}
+            );
+
+            const [root] = gameObjectParser.parse(map);
             const children = root.children;
-            expect(children.length).to.equal(7);
+            expect(children.length).to.equal(7, 'number of children of root is not correct.');
             expect(children[0]).to.eql(new GwmWorldItem('W', new Rectangle(0, 0, 1, 3), 'wall'), 'children[0] is not correct');
             expect(children[1]).to.eql(new GwmWorldItem('W', new Rectangle(7, 0, 1, 3), 'wall'), 'children[1] is not correct');
             expect(children[2]).to.eql(new GwmWorldItem('W', new Rectangle(1, 0, 2, 1), 'wall'), 'children[2] is not correct');
@@ -25,13 +45,41 @@ describe('GwmWorldMapParser', () => {
         });
 
         it ('can parse the additional data for a WorldItem.', () => {
-            const file = fs.readFileSync(__dirname + '/../assets/test/testNewDetailsSection.gwm', 'utf8');
-            const worldMapParser = GwmWorldMapParser.createWithOptions();
+            const map = `
+                map \`
 
-            const [root] = worldMapParser.parse(file);
+                WWWWWWWWWW
+                W---II---W
+                W---T----W
+                W--------W
+                WWWWWWWWWW
+
+                \`
+
+                definitions \`
+
+                # = empty
+                I = window
+                W = wall
+                T = table
+
+                \`
+
+                details2 \`
+
+                T = pos(4,2) axis1(4,2) axis2(13,2) angle(-90)
+
+                \`
+            `;
+
+            const worldMapParser = GwmWorldMapParser.createWithOptions(
+                { furnitureCharacters: ['I', 'T'], roomSeparatorCharacters: ['W']}
+            );
+
+            const [root] = worldMapParser.parse(map);
             const room = root.children.filter(item => item.name === 'room')[0];
 
-            expect(room.children[0].additionalData).to.eql({
+            expect(room.children[1].additionalData).to.eql({
                 angle: -90,
                 axis1: {
                     x: 4, y: 2
@@ -47,7 +95,9 @@ describe('GwmWorldMapParser', () => {
 
         it('attaches the additional data to vertices, if present TEST CASE 1', () => {
             const file = fs.readFileSync(__dirname + '/../assets/test/testAdditionalData.gwm', 'utf8');
-            const worldMapParser = GwmWorldMapParser.createWithOptions();
+            const worldMapParser = GwmWorldMapParser.createWithOptions(
+                { furnitureCharacters: ['I'], roomSeparatorCharacters: ['W']}
+            );
 
             const [root] = worldMapParser.parse(file);
             const room = root.children.filter(item => item.name === 'room')[0];
@@ -64,7 +114,9 @@ describe('GwmWorldMapParser', () => {
 
         it ('attaches the additional data to vertices, if present TEST CASE 2', () => {
             const file = fs.readFileSync(__dirname + '/../assets/test/testAdditionalData2.gwm', 'utf8');
-            const worldMapParser = GwmWorldMapParser.createWithOptions();
+            const worldMapParser = GwmWorldMapParser.createWithOptions(
+                { furnitureCharacters: ['I'], roomSeparatorCharacters: ['W']}
+            );
 
             const [root] = worldMapParser.parse(file);
             const room = root.children.filter(item => item.name === 'room')[0];
@@ -106,7 +158,9 @@ describe('GwmWorldMapParser', () => {
                 \`
             `;
 
-            const worldMapParser = GwmWorldMapParser.createWithOptions();
+            const worldMapParser = GwmWorldMapParser.createWithOptions(
+                { furnitureCharacters: ['I'], roomSeparatorCharacters: ['W']}
+            );
             const [root] = worldMapParser.parse(map);
             const room = root.children.filter(item => item.name === 'room')[0];
 
@@ -148,7 +202,10 @@ describe('GwmWorldMapParser', () => {
                     null
             };
 
-            const worldMapParser = GwmWorldMapParser.createWithOptions({...defaultParseOptions, ...{additionalDataConverter}});
+            const worldMapParser = GwmWorldMapParser.createWithOptions(
+                { furnitureCharacters: ['C'], roomSeparatorCharacters: ['W']},
+                {...defaultParseOptions, ...{additionalDataConverter}}
+            );
             const [root] = worldMapParser.parse(map);
 
             const room = root.children.filter(item => item.name === 'room')[0];
@@ -170,12 +227,7 @@ describe('GwmWorldMapParser', () => {
                 \`
             `;
 
-            const worldMapParser = GwmWorldMapParser.createWithOptions({
-                ...defaultParseOptions,
-                ...{
-                    charactersToInclude: ['W', 'I', 'D']
-                }
-            });
+            const worldMapParser = GwmWorldMapParser.createWithOptions({ furnitureCharacters: [], roomSeparatorCharacters: ['W', 'I', 'D']});
             const items = worldMapParser.parse(map);
             const rooms = items[0].children.filter(item => item.name === 'room');
             expect(rooms.length).to.eq(1);
@@ -200,7 +252,13 @@ describe('GwmWorldMapParser', () => {
                 \`
             `;
 
-            const worldMapParser = GwmWorldMapParser.createWithOptions({...defaultParseOptions, ...{xScale: 2, yScale: 3}});
+            const options = {...defaultParseOptions, ...{xScale: 2, yScale: 3}};
+
+
+            const worldMapParser = GwmWorldMapParser.createWithOptions(
+                { furnitureCharacters: [], roomSeparatorCharacters: ['W', 'I', 'D']},
+                {...defaultParseOptions, ...{xScale: 2, yScale: 3}}
+            );
             const [root] = worldMapParser.parse(map);
             const rooms = root.children.filter(item => item.name === 'room');
 
@@ -236,7 +294,10 @@ describe('GwmWorldMapParser', () => {
                 \`
             `;
 
-            const worldMapParser = GwmWorldMapParser.createWithOptions({...defaultParseOptions, ...{xScale: 1, yScale: 2}});
+            const worldMapParser = GwmWorldMapParser.createWithOptions(
+                { furnitureCharacters: ['B', 'C'], roomSeparatorCharacters: ['W', 'I', 'D']},
+                {...defaultParseOptions, ...{xScale: 1, yScale: 2}}
+            );
             const items = worldMapParser.parse(map);
 
             const [root] = items.filter(item => item.name === 'root');

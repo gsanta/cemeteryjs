@@ -10,19 +10,9 @@ import _ = require("lodash");
 
 export class HierarchyBuildingWorldItemGeneratorDecorator implements GwmWorldItemGenerator {
     private decoratedWorldItemGenerator: GwmWorldItemGenerator;
-    /**
-     * Restricts search for parents only these types
-     */
-    private parentTypes: string[];
-    /**
-     * Restricts search for parents only these types
-     */
-    private childTypes: string[];
 
-    constructor(decoratedWorldItemGenerator: GwmWorldItemGenerator, parentTypes: string[], childTypes: string[]) {
+    constructor(decoratedWorldItemGenerator: GwmWorldItemGenerator) {
         this.decoratedWorldItemGenerator = decoratedWorldItemGenerator;
-        this.parentTypes = parentTypes;
-        this.childTypes = childTypes;
     }
 
     public generate(graph: MatrixGraph): GwmWorldItem[] {
@@ -38,19 +28,16 @@ export class HierarchyBuildingWorldItemGeneratorDecorator implements GwmWorldIte
     }
 
     public buildHierarchy(worldItems: GwmWorldItem[]) {
-        const parentWorldItems = worldItems//.filter(worldItem => this.parentTypes.indexOf(worldItem.name) !== -1);
-        const childWorldItems = worldItems//.filter(worldItem => this.childTypes.indexOf(worldItem.name) !== -1);
-
         const childrenAlreadyCategorized = [];
 
         let rootWorldItems = worldItems;
 
-        parentWorldItems.forEach(currentItem => {
-            _.chain(childWorldItems)
+        worldItems.forEach(currentItem => {
+            _.chain(worldItems)
                 .without(...childrenAlreadyCategorized)
                 .without(currentItem)
                 .forEach((childItem: GwmWorldItem) => {
-                    if (currentItem.dimensions.overlaps(childItem.dimensions)) {
+                    if (currentItem.dimensions.contains(childItem.dimensions)) {
                         currentItem.addChild(childItem);
                         childrenAlreadyCategorized.push(childItem);
                         rootWorldItems = _.without(rootWorldItems, childItem);

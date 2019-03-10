@@ -24,11 +24,22 @@ export class Polygon {
         return clone;
     }
 
-    public overlaps(other: Polygon): boolean {
+    public contains(other: Polygon): boolean {
         const poly1 = turf.polygon([this.toLinearRing().toTwoDimensionalArray()]);
         const poly2 = turf.polygon([other.toLinearRing().toTwoDimensionalArray()]);
 
         return turf.booleanContains(poly1, poly2);
+    }
+
+    /**
+     * Returns true if the two polygons intersect only at a border (but do not overlap)
+     */
+    public intersectBorder(other: Polygon): boolean {
+        const poly1 = turf.polygon([this.toLinearRing().toTwoDimensionalArray()]);
+        const poly2 = turf.polygon([other.toLinearRing().toTwoDimensionalArray()]);
+
+        const intersection = turf.intersect(poly1, poly2);
+        return intersection !== null && intersection.geometry.type === 'LineString';
     }
 
     public scaleX(times: number): Polygon {

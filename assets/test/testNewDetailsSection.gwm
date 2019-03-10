@@ -2,7 +2,7 @@ map `
 
 WWWWWWWWWW
 W###II###W
-W###W####W
+W###T####W
 W########W
 WWWWWWWWWW
 
@@ -13,10 +13,11 @@ definitions `
 # = empty
 I = window
 W = wall
+T = table
 `
 
 details2 `
 
-W = pos(4,2) axis1(4,2) axis2(13,2) angle(-90)
+T = pos(4,2) axis1(4,2) axis2(13,2) angle(-90)
 
 `

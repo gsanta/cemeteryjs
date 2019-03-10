@@ -7,7 +7,7 @@ import { WorldMapToRoomMapConverter } from "./WorldMapToRoomMapConverter";
 
 describe('RoomInfoGenerator', () => {
     describe('generate', () => {
-        it ('returns with a Polygon per room, the points in the Polygon representing the room\'s edges.', () => {
+        it ('returns with a WorldItem per room, the points in the Polygon representing the room\'s edges.', () => {
             const map = `
                 map \`
 
