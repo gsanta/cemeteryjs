@@ -10,6 +10,7 @@ import { RoomInfoGenerator } from './parsing/room_parsing/RoomInfoGenerator';
 import { RootWorldItemGenerator } from './parsing/RootWorldItemGenerator';
 import { WorldMapToMatrixGraphConverter } from './matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 import { RoomSeparatorGenerator } from './parsing/room_separator_parsing/RoomSeparatorGenerator';
+import { BorderItemAddingWorldItemGeneratorDecorator } from './parsing/decorators/BorderItemAddingWorldItemGeneratorDecorator';
 
 export interface ParseOptions<T> {
     xScale: number;
@@ -48,20 +49,21 @@ export class GwmWorldMapParser {
     public static createWithOptions<T>(characterTypes: CharacterTypes, options: ParseOptions<T> = defaultParseOptions): GwmWorldMapParser {
         return new GwmWorldMapParser(
             new AdditionalDataConvertingWorldItemDecorator<T>(
-                new HierarchyBuildingWorldItemGeneratorDecorator(
-                    new ScalingWorldItemGeneratorDecorator(
-                        new CombinedWorldItemGenerator(
-                            [
-                                new FurnitureInfoGenerator(characterTypes.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
-                                new RoomSeparatorGenerator(characterTypes.roomSeparatorCharacters),
-                                new RoomInfoGenerator(),
-                                new RootWorldItemGenerator()
-                            ]
-                        ),
-                        { x: options.xScale, y: options.yScale }
+                new BorderItemAddingWorldItemGeneratorDecorator(
+                    new HierarchyBuildingWorldItemGeneratorDecorator(
+                        new ScalingWorldItemGeneratorDecorator(
+                            new CombinedWorldItemGenerator(
+                                [
+                                    new FurnitureInfoGenerator(characterTypes.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
+                                    new RoomSeparatorGenerator(characterTypes.roomSeparatorCharacters),
+                                    new RoomInfoGenerator(),
+                                    new RootWorldItemGenerator()
+                                ]
+                            ),
+                            { x: options.xScale, y: options.yScale }
+                        )
                     ),
-                    ['room', 'root'],
-                    ['bed', 'cupboard', 'room', 'wall']
+                    ['wall', 'door', 'window']
                 ),
                 options.additionalDataConverter
             )

@@ -1,14 +1,13 @@
 import { CombinedWorldItemGenerator } from './CombinedWorldItemGenerator';
-import { FurnitureInfoGenerator } from '../furniture_parsing/FurnitureInfoGenerator';
 import { RoomSeparatorGenerator } from '../room_separator_parsing/RoomSeparatorGenerator';
 import { RoomInfoGenerator } from '../room_parsing/RoomInfoGenerator';
-import { RootWorldItemGenerator } from '../RootWorldItemGenerator';
 import { BorderItemAddingWorldItemGeneratorDecorator } from './BorderItemAddingWorldItemGeneratorDecorator';
+import { expect } from 'chai';
 
 
 describe('BorderItemAddingWorldItemGeneratorDecorator', () => {
     describe('generate', () => {
-        it.only ('adds the bordering WorldItems to the corresponding room WorldItem', () => {
+        it ('adds the bordering WorldItems to the corresponding room WorldItem', () => {
             const map = `
                 map \`
 
@@ -40,8 +39,9 @@ describe('BorderItemAddingWorldItemGeneratorDecorator', () => {
                 ['wall']
             );
 
-            const worldItems = borderItemAddingWorldItemGeneratorDecorator.generateFromStringMap(map);
-            debugger;
+            const [wall1, wall2, wall3, wall4, room] = borderItemAddingWorldItemGeneratorDecorator.generateFromStringMap(map);
+
+            expect(room.borderItems).to.eql([wall1, wall2, wall3, wall4]);
         });
     });
 });

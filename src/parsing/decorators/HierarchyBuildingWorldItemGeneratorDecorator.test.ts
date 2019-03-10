@@ -33,9 +33,7 @@ describe('HierarchyBuildingWorldItemGeneratorDecorator', () => {
             );
 
             const hierarchyBuildingWorldItemGeneratorDecorator = new HierarchyBuildingWorldItemGeneratorDecorator(
-                new MockWorldItemGenerator([worldItemParentMock, worldItemChildMock]),
-                ['room'],
-                ['cupboard']
+                new MockWorldItemGenerator([worldItemParentMock, worldItemChildMock])
             );
 
             hierarchyBuildingWorldItemGeneratorDecorator.generate(null);
@@ -68,9 +66,7 @@ describe('HierarchyBuildingWorldItemGeneratorDecorator', () => {
             );
 
             const hierarchyBuildingWorldItemGeneratorDecorator = new HierarchyBuildingWorldItemGeneratorDecorator(
-                new MockWorldItemGenerator([worldItemParentMock, worldItemChildMock]),
-                ['room'],
-                ['cupboard']
+                new MockWorldItemGenerator([worldItemParentMock, worldItemChildMock])
             );
 
             hierarchyBuildingWorldItemGeneratorDecorator.generate(null);

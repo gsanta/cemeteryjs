@@ -307,5 +307,39 @@ describe('GwmWorldMapParser', () => {
             expect(room2.children.length).to.eql(2);
             expect(root.children.length).to.eq(12);
         });
+
+        it ('adds the bordering `WorldItem`s to the corresponding rooms', () => {
+            const map = `
+                map \`
+
+                WWDDWWWDDWWW
+                WCCC--WBB--W
+                WCCC--W----W
+                W-----WBB##W
+                WWWWWWWWWWWW
+
+                \`
+
+                definitions \`
+
+                D = door
+                C = cupboard
+                B = bed
+                W = wall
+
+                \`
+            `;
+
+            const worldMapParser = GwmWorldMapParser.createWithOptions(
+                { furnitureCharacters: ['B', 'C'], roomSeparatorCharacters: ['W', 'D']},
+                {...defaultParseOptions, ...{xScale: 1, yScale: 2}}
+            );
+            const [root] = worldMapParser.parse(map);
+
+            const [room1, room2] = root.children.filter(item => item.name === 'room');
+
+            expect(room1.borderItems.length).to.eql(6);
+            expect(room2.borderItems.length).to.eql(5);
+        });
     });
 });
