@@ -21,4 +21,12 @@ export class GwmWorldItem<T = any> {
     public addChild(worldItem: GwmWorldItem) {
         this.children.push(worldItem);
     }
+
+    public clone() {
+        const clone = new GwmWorldItem(this.type, this.dimensions, this.name, this.additionalData);
+        clone.children = this.children;
+        clone.borderItems = this.borderItems;
+
+        return clone;
+    }
 }
