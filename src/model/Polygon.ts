@@ -1,5 +1,7 @@
 import { Point } from './Point';
 import * as turf from '@turf/turf';
+import { Line } from './Line';
+import _ = require('lodash');
 
 export class Polygon {
     public points: Point[];
@@ -34,12 +36,18 @@ export class Polygon {
     /**
      * Returns true if the two polygons intersect only at a border (but do not overlap)
      */
-    public intersectBorder(other: Polygon): boolean {
+    public intersectBorder(other: Polygon): Line {
         const poly1 = turf.polygon([this.toLinearRing().toTwoDimensionalArray()]);
         const poly2 = turf.polygon([other.toLinearRing().toTwoDimensionalArray()]);
 
         const intersection = turf.intersect(poly1, poly2);
-        return intersection !== null && intersection.geometry.type === 'LineString';
+
+        if (intersection !== null && intersection.geometry.type === 'LineString') {
+            // return intersection.geometry.coordinates;
+            const coordinates: [[number, number], [number, number]] = intersection.geometry.coordinates;
+
+            return new Line(new Point(coordinates[0][0], coordinates[0][1]), new Point(coordinates[1][0], coordinates[1][1]));
+        }
     }
 
     public scaleX(times: number): Polygon {
@@ -68,6 +76,34 @@ export class Polygon {
         newPolygon.height = height;
 
         return newPolygon;
+    }
+
+    /**
+     * Returns with the minimum x position of all of the polygon's points
+     */
+    public minX(): number {
+        return _.minBy(this.points, point => point.x).x;
+    }
+
+    /**
+     * Returns with the maximum x position of all of the polygon's points
+     */
+    public maxX(): number {
+        return _.maxBy(this.points, point => point.x).x;
+    }
+
+    /**
+     * Returns with the minimum y position of all of the polygon's points
+     */
+    public minY(): number {
+        return _.minBy(this.points, point => point.y).y;
+    }
+
+    /**
+     * Returns with the maxmium y position of all of the polygon's points
+     */
+    public maxY(): number {
+        return _.maxBy(this.points, point => point.y).y;
     }
 
     private toTwoDimensionalArray(): number[][] {

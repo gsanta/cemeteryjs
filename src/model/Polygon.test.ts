@@ -2,6 +2,7 @@ import { Polygon } from './Polygon';
 import { Point } from './Point';
 import { expect } from 'chai';
 import { Rectangle } from './Rectangle';
+import { Line } from './Line';
 
 
 describe('Polygon', () => {
@@ -61,7 +62,7 @@ describe('Polygon', () => {
         });
     });
 
-    describe('intersects', () => {
+    describe('intersectBorder', () => {
         it ('returns true if the polygon intersects with the other', () => {
             const poly1 = new Polygon([
                 new Point(1, 1),
@@ -77,7 +78,7 @@ describe('Polygon', () => {
                 new Point(3, 4)
             ]);
 
-            expect(poly1.intersectBorder(poly2)).to.eql(true);
+            expect(poly1.intersectBorder(poly2)).to.eql(new Line(new Point(3, 1), new Point(3, 4)));
         });
 
         it ('returns false if the two polygons do have any common parts', () => {
@@ -95,7 +96,7 @@ describe('Polygon', () => {
                 new Point(4, 4)
             ]);
 
-            expect(poly1.intersectBorder(poly2)).to.eql(false);
+            expect(poly1.intersectBorder(poly2)).to.eql(undefined);
         });
 
         it ('returns false if the two polygons overlap', () => {
@@ -113,7 +114,7 @@ describe('Polygon', () => {
                 new Point(5, 4)
             ]);
 
-            expect(poly1.intersectBorder(poly2)).to.eql(false);
+            expect(poly1.intersectBorder(poly2)).to.eql(undefined);
         });
     });
 
