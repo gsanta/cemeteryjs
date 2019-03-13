@@ -67,7 +67,7 @@ export class GwmWorldMapParser {
                 ),
                 options.additionalDataConverter
             )
-        )
+        );
     }
 
     public static createWithCustomWorldItemGenerator(worldItemGenerator: GwmWorldItemGenerator): GwmWorldMapParser {

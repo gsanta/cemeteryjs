@@ -3,6 +3,8 @@ import { FurnitureInfoGenerator } from './parsing/furniture_parsing/FurnitureInf
 import { CombinedWorldItemGenerator } from './parsing/decorators/CombinedWorldItemGenerator';
 import { ScalingWorldItemGeneratorDecorator } from './parsing/decorators/ScalingWorldItemGeneratorDecorator';
 import { AdditionalDataConvertingWorldItemDecorator } from './parsing/decorators/AdditionalDataConvertingWorldItemDecorator';
+import { BorderItemAddingWorldItemGeneratorDecorator } from './parsing/decorators/BorderItemAddingWorldItemGeneratorDecorator';
+import { BorderItemSegmentingWorldItemGeneratorDecorator } from './parsing/decorators/BorderItemSegmentingWorldItemGeneratorDecorator';
 
 export {GwmWorldMapParser, ParseOptions, defaultParseOptions} from './GwmWorldMapParser';
 export {GwmWorldItem} from './model/GwmWorldItem';
@@ -16,5 +18,7 @@ export const generators = {
     FurnitureInfoGenerator,
     CombinedWorldItemGenerator,
     ScalingWorldItemGeneratorDecorator,
-    AdditionalDataConvertingWorldItemDecorator
+    AdditionalDataConvertingWorldItemDecorator,
+    BorderItemAddingWorldItemGeneratorDecorator,
+    BorderItemSegmentingWorldItemGeneratorDecorator
 }
