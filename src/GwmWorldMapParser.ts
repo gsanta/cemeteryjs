@@ -11,6 +11,7 @@ import { RootWorldItemGenerator } from './parsing/RootWorldItemGenerator';
 import { WorldMapToMatrixGraphConverter } from './matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 import { RoomSeparatorGenerator } from './parsing/room_separator_parsing/RoomSeparatorGenerator';
 import { BorderItemAddingWorldItemGeneratorDecorator } from './parsing/decorators/BorderItemAddingWorldItemGeneratorDecorator';
+import { BorderItemSegmentingWorldItemGeneratorDecorator } from './parsing/decorators/BorderItemSegmentingWorldItemGeneratorDecorator';
 
 export interface ParseOptions<T> {
     xScale: number;
@@ -51,16 +52,19 @@ export class GwmWorldMapParser {
             new AdditionalDataConvertingWorldItemDecorator<T>(
                 new BorderItemAddingWorldItemGeneratorDecorator(
                     new HierarchyBuildingWorldItemGeneratorDecorator(
-                        new ScalingWorldItemGeneratorDecorator(
-                            new CombinedWorldItemGenerator(
-                                [
-                                    new FurnitureInfoGenerator(characterTypes.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
-                                    new RoomSeparatorGenerator(characterTypes.roomSeparatorCharacters),
-                                    new RoomInfoGenerator(),
-                                    new RootWorldItemGenerator()
-                                ]
+                        new BorderItemSegmentingWorldItemGeneratorDecorator(
+                            new ScalingWorldItemGeneratorDecorator(
+                                new CombinedWorldItemGenerator(
+                                    [
+                                        new FurnitureInfoGenerator(characterTypes.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
+                                        new RoomSeparatorGenerator(characterTypes.roomSeparatorCharacters),
+                                        new RoomInfoGenerator(),
+                                        new RootWorldItemGenerator()
+                                    ]
+                                ),
+                                { x: options.xScale, y: options.yScale }
                             ),
-                            { x: options.xScale, y: options.yScale }
+                            ['wall', 'door', 'window']
                         )
                     ),
                     ['wall', 'door', 'window']

@@ -3,11 +3,13 @@ import { RoomSeparatorGenerator } from "../room_separator_parsing/RoomSeparatorG
 import { RoomInfoGenerator } from "../room_parsing/RoomInfoGenerator";
 import { BorderItemSegmentingWorldItemGeneratorDecorator } from "./BorderItemSegmentingWorldItemGeneratorDecorator";
 import { expect } from "chai";
+import { Rectangle } from '../../model/Rectangle';
+import _ = require("lodash");
 
 
 describe('BorderItemSegmentingWorldItemGeneratorDecorator', () => {
     describe('generate', () => {
-        it.only ('segments the two vertical walls so that they wont \'overflow\' the rooms', () => {
+        it ('segments the walls into smaller pieces so that no wall will conver more then one room', () => {
             const map = `
                 map \`
 
@@ -43,7 +45,22 @@ describe('BorderItemSegmentingWorldItemGeneratorDecorator', () => {
 
             const items = borderItemSegmentingWorldItemGeneratorDecorator.generateFromStringMap(map);
 
-            expect(items.length).to.eql(2);
+            expect(items.filter(item => item.name === 'wall').length).to.eql(13, 'wall segment number not ok');
+
+            expect(_.some(items, {dimensions: new Rectangle(0, 0, 1, 1)}), 'Rectangle(0, 0, 1, 1) not found.').to.be.true;
+            expect(_.some(items, {dimensions: new Rectangle(1, 0, 8, 1)}), 'Rectangle(1, 0, 8, 1) not found.').to.be.true;
+            expect(_.some(items, {dimensions: new Rectangle(9, 0, 1, 1)}), 'Rectangle(9, 0, 1, 1) not found.').to.be.true;
+            expect(_.some(items, {dimensions: new Rectangle(0, 1, 1, 2)}), 'Rectangle(0, 1, 1, 2) not found.').to.be.true;
+            expect(_.some(items, {dimensions: new Rectangle(9, 1, 1, 2)}), 'Rectangle(9, 1, 1, 2) not found.').to.be.true;
+            expect(_.some(items, {dimensions: new Rectangle(0, 3, 1, 1)}), 'Rectangle(0, 3, 1, 1) not found.').to.be.true;
+            expect(_.some(items, {dimensions: new Rectangle(9, 3, 1, 1)}), 'Rectangle(9, 3, 1, 1) not found.').to.be.true;
+            expect(_.some(items, {dimensions: new Rectangle(1, 3, 8, 1)}), 'Rectangle(1, 3, 8, 1) not found.').to.be.true;
+            expect(_.some(items, {dimensions: new Rectangle(0, 4, 1, 2)}), 'Rectangle(0, 4, 1, 2) not found.').to.be.true;
+            expect(_.some(items, {dimensions: new Rectangle(9, 4, 1, 2)}), 'Rectangle(9, 4, 1, 2) not found.').to.be.true;
+            expect(_.some(items, {dimensions: new Rectangle(0, 6, 1, 1)}), 'Rectangle(0, 6, 1, 1) not found.').to.be.true;
+            expect(_.some(items, {dimensions: new Rectangle(9, 6, 1, 1)}), 'Rectangle(9, 6, 1, 1) not found.').to.be.true;
+            expect(_.some(items, {dimensions: new Rectangle(1, 6, 8, 1)}), 'Rectangle(1, 6, 8, 1) not found.').to.be.true;
+
         });
     });
 });

@@ -3,7 +3,6 @@ import { MatrixGraph } from "../../matrix_graph/MatrixGraph";
 import { GwmWorldItem } from "../../model/GwmWorldItem";
 import _ = require("lodash");
 import { TreeIteratorGenerator } from "../../gwm_world_item/iterator/TreeIteratorGenerator";
-import { Polygon } from "../../model/Polygon";
 import { Rectangle } from "../../model/Rectangle";
 
 export class BorderItemSegmentingWorldItemGeneratorDecorator  implements GwmWorldItemGenerator {
@@ -33,7 +32,7 @@ export class BorderItemSegmentingWorldItemGeneratorDecorator  implements GwmWorl
 
         const itemsToSegment = [...roomSeparatorItems];
 
-        const newRoomSeparatorItems: GwmWorldItem[] = [];
+        let newRoomSeparatorItems: Set<GwmWorldItem> = new Set();
 
         while (itemsToSegment.length > 0) {
             const currentItem = itemsToSegment.shift();
@@ -42,17 +41,12 @@ export class BorderItemSegmentingWorldItemGeneratorDecorator  implements GwmWorl
             if (room) {
                 const segmentedItems = this.segmentByRoom(currentItem, room);
                 itemsToSegment.push(...segmentedItems);
-                newRoomSeparatorItems.push(...segmentedItems);
+                newRoomSeparatorItems.delete(currentItem);
+                segmentedItems.forEach(item => newRoomSeparatorItems.add(item));
             } else {
-                newRoomSeparatorItems.push(currentItem);
+                newRoomSeparatorItems.add(currentItem);
             }
         }
-
-        roomSeparatorItems.forEach(roomSeparatorItem => {
-            rooms
-                .filter(room => room.dimensions.intersectBorder(roomSeparatorItem.dimensions))
-                .forEach(room => room.borderItems.push(roomSeparatorItem));
-        });
 
         return _.chain(worldItems).without(...roomSeparatorItems).push(...newRoomSeparatorItems).value();
     }
