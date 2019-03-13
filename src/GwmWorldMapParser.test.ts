@@ -4,6 +4,17 @@ import * as fs from 'fs';
 import { Rectangle } from './model/Rectangle';
 import { GwmWorldItem } from './model/GwmWorldItem';
 import { Point } from './model/Point';
+import { AdditionalDataConvertingWorldItemDecorator } from './parsing/decorators/AdditionalDataConvertingWorldItemDecorator';
+import { BorderItemAddingWorldItemGeneratorDecorator } from './parsing/decorators/BorderItemAddingWorldItemGeneratorDecorator';
+import { HierarchyBuildingWorldItemGeneratorDecorator } from './parsing/decorators/HierarchyBuildingWorldItemGeneratorDecorator';
+import { ScalingWorldItemGeneratorDecorator } from './parsing/decorators/ScalingWorldItemGeneratorDecorator';
+import { CombinedWorldItemGenerator } from './parsing/decorators/CombinedWorldItemGenerator';
+import { FurnitureInfoGenerator } from './parsing/furniture_parsing/FurnitureInfoGenerator';
+import { WorldMapToMatrixGraphConverter } from './matrix_graph/conversion/WorldMapToMatrixGraphConverter';
+import { RoomSeparatorGenerator } from './parsing/room_separator_parsing/RoomSeparatorGenerator';
+import { RoomInfoGenerator } from './parsing/room_parsing/RoomInfoGenerator';
+import { RootWorldItemGenerator } from './parsing/RootWorldItemGenerator';
+import { BorderItemSegmentingWorldItemGeneratorDecorator } from './parsing/decorators/BorderItemSegmentingWorldItemGeneratorDecorator';
 
 
 describe('GwmWorldMapParser', () => {
@@ -341,5 +352,64 @@ describe('GwmWorldMapParser', () => {
             expect(room1.borderItems.length).to.eql(6);
             expect(room2.borderItems.length).to.eql(5);
         });
+    });
+
+    it.only ('integrates correctly the BorderItemSegmentingWorldItemGeneratorDecorator if used', () => {
+        const map = `
+            map \`
+
+            WWDDWWWDDWWW
+            WCCC--WBB--W
+            WCCC--W----W
+            W-----WBB##W
+            WWWWWWWWWWWW
+
+            \`
+
+            definitions \`
+
+            D = door
+            C = cupboard
+            B = bed
+            W = wall
+
+            \`
+        `;
+
+        const options = {
+            xScale: 1,
+            yScale: 1,
+            furnitureCharacters: ['C', 'B'],
+            roomSeparatorCharacters: ['W', 'D', 'I']
+        }
+
+        const worldMapParser = GwmWorldMapParser.createWithCustomWorldItemGenerator(
+            new AdditionalDataConvertingWorldItemDecorator(
+                new BorderItemAddingWorldItemGeneratorDecorator(
+                    new HierarchyBuildingWorldItemGeneratorDecorator(
+                        new BorderItemSegmentingWorldItemGeneratorDecorator(
+                            new ScalingWorldItemGeneratorDecorator(
+                                new CombinedWorldItemGenerator(
+                                    [
+                                        new FurnitureInfoGenerator(options.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
+                                        new RoomSeparatorGenerator(options.roomSeparatorCharacters),
+                                        new RoomInfoGenerator(),
+                                        new RootWorldItemGenerator()
+                                    ]
+                                ),
+                                { x: options.xScale, y: options.yScale }
+                            ),
+                            ['wall', 'door', 'window']
+                        ),
+                    ),
+                    ['wall', 'door', 'window']
+                )
+            )
+        );
+
+        const [root] = worldMapParser.parse(map);
+        const walls = root.children.filter(item => item.name === 'wall');
+
+        expect(walls.length).to.eql(14);
     });
 });

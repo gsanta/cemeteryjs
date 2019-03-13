@@ -50,7 +50,7 @@ export class BorderItemAddingWorldItemGeneratorDecorator implements GwmWorldItem
             }
         });
 
-        return worldItems;
+        return rooms;
     }
 
     private filterRoomSeparatorItems(worldItems: GwmWorldItem[]): GwmWorldItem[] {
