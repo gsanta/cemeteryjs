@@ -354,7 +354,7 @@ describe('GwmWorldMapParser', () => {
         });
     });
 
-    it.only ('integrates correctly the BorderItemSegmentingWorldItemGeneratorDecorator if used', () => {
+    it ('integrates correctly the BorderItemSegmentingWorldItemGeneratorDecorator if used', () => {
         const map = `
             map \`
 

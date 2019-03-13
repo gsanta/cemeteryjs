@@ -5,6 +5,9 @@ import { ScalingWorldItemGeneratorDecorator } from './parsing/decorators/Scaling
 import { AdditionalDataConvertingWorldItemDecorator } from './parsing/decorators/AdditionalDataConvertingWorldItemDecorator';
 import { BorderItemAddingWorldItemGeneratorDecorator } from './parsing/decorators/BorderItemAddingWorldItemGeneratorDecorator';
 import { BorderItemSegmentingWorldItemGeneratorDecorator } from './parsing/decorators/BorderItemSegmentingWorldItemGeneratorDecorator';
+import { RootWorldItemGenerator } from './parsing/RootWorldItemGenerator';
+import { RoomSeparatorGenerator } from './parsing/room_separator_parsing/RoomSeparatorGenerator';
+import { HierarchyBuildingWorldItemGeneratorDecorator } from './parsing/decorators/HierarchyBuildingWorldItemGeneratorDecorator';
 
 export {GwmWorldMapParser, ParseOptions, defaultParseOptions} from './GwmWorldMapParser';
 export {GwmWorldItem} from './model/GwmWorldItem';
@@ -20,5 +23,8 @@ export const generators = {
     ScalingWorldItemGeneratorDecorator,
     AdditionalDataConvertingWorldItemDecorator,
     BorderItemAddingWorldItemGeneratorDecorator,
-    BorderItemSegmentingWorldItemGeneratorDecorator
+    BorderItemSegmentingWorldItemGeneratorDecorator,
+    RootWorldItemGenerator,
+    RoomSeparatorGenerator,
+    HierarchyBuildingWorldItemGeneratorDecorator
 }
