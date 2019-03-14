@@ -1,10 +1,11 @@
 
-export interface TreeNode {
-    children?: any[];
-    addChild(child: any);
+export interface TreeNode<T = any> {
+    children?: T[];
+    addChild(child: T);
+    borderItems?: T[];
 }
 
-export function* TreeIteratorGenerator<T extends TreeNode>(treeNode: T): IterableIterator<T> {
+export function* TreeIteratorGenerator<T extends TreeNode<T>>(treeNode: T): IterableIterator<T> {
 
     yield treeNode;
 
