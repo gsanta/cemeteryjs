@@ -3,6 +3,7 @@ import { GwmWorldItemGenerator } from '../GwmWorldItemGenerator';
 import { GwmWorldItem } from '../../model/GwmWorldItem';
 import { TreeIteratorGenerator } from '../../gwm_world_item/iterator/TreeIteratorGenerator';
 import _ = require('lodash');
+import { Rectangle } from '../..';
 
 
 export class BorderItemAddingWorldItemGeneratorDecorator implements GwmWorldItemGenerator {
@@ -30,13 +31,17 @@ export class BorderItemAddingWorldItemGeneratorDecorator implements GwmWorldItem
         const rooms = this.filterRooms(worldItems);
         const roomSeparatorItems = this.filterRoomSeparatorItems(worldItems);
 
-        roomSeparatorItems.forEach(roomSeparatorItem => {
-            rooms
-                .filter(room => room.dimensions.intersectBorder(roomSeparatorItem.dimensions))
-                .forEach(room => room.borderItems.push(roomSeparatorItem));
+        rooms.forEach(room => {
+            roomSeparatorItems
+                .filter(roomSeparator => room.dimensions.intersectBorder(roomSeparator.dimensions))
+                .forEach(roomSeparator => room.borderItems.push(roomSeparator));
         });
 
         return worldItems;
+    }
+
+    private isNarrowSide(rectangle: Rectangle) {
+
     }
 
     private filterRooms(worldItems: GwmWorldItem[]): GwmWorldItem[] {
