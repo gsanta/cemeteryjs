@@ -9,10 +9,16 @@ import { Line } from "../../model/Line";
 export class BorderItemSegmentingWorldItemGeneratorDecorator  implements GwmWorldItemGenerator {
     private decoratedWorldItemGenerator: GwmWorldItemGenerator;
     private roomSeparatorItemNames: string[];
+    private scales: {xScale: number, yScale: number};
 
-    constructor(decoratedWorldItemGenerator: GwmWorldItemGenerator, roomSeparatorItemNames: string[]) {
+    constructor(
+        decoratedWorldItemGenerator: GwmWorldItemGenerator,
+        roomSeparatorItemNames: string[],
+        scales: {xScale: number, yScale: number} = {xScale: 1, yScale: 1}
+    ) {
         this.decoratedWorldItemGenerator = decoratedWorldItemGenerator;
         this.roomSeparatorItemNames = roomSeparatorItemNames;
+        this.scales = scales;
     }
 
     public generate(graph: MatrixGraph): GwmWorldItem[] {
@@ -184,11 +190,11 @@ export class BorderItemSegmentingWorldItemGeneratorDecorator  implements GwmWorl
         if (line.isVertical()) {
             const segmentPositions = _.sortBy([line.start.y, line.end.y]);
 
-            return [segmentPositions[0] - 1, segmentPositions[1] + 1];
+            return [segmentPositions[0] - this.scales.yScale, segmentPositions[1] + this.scales.yScale];
         } else {
             const segmentPositions = _.sortBy([line.start.x, line.end.x]);
 
-            return [segmentPositions[0] - 1, segmentPositions[1] + 1];
+            return [segmentPositions[0] - this.scales.xScale, segmentPositions[1] + this.scales.xScale];
         }
     }
 }
