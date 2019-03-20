@@ -16,4 +16,20 @@ export class Line {
     public isHorizontal() {
         return this.start.y === this.end.y;
     }
+
+    public addToEnd(amount: number) {
+        if (this.isVertical()) {
+            return new Line(this.start, this.end.addY(amount));
+        } else {
+            return new Line(this.start, this.end.addX(amount));
+        }
+    }
+
+    public addToStart(amount: number) {
+        if (this.isVertical()) {
+            return new Line(this.start.addY(amount), this.end);
+        } else {
+            return new Line(this.start.addX(amount), this.end);
+        }
+    }
 }

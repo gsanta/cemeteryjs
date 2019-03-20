@@ -410,6 +410,6 @@ describe('GwmWorldMapParser', () => {
         const [root] = worldMapParser.parse(map);
         const walls = root.children.filter(item => item.name === 'wall');
 
-        expect(walls.length).to.eql(14);
+        expect(walls.length).to.eql(8);
     });
 });

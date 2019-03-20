@@ -4,6 +4,7 @@ import { GwmWorldItem } from "../../model/GwmWorldItem";
 import _ = require("lodash");
 import { TreeIteratorGenerator } from "../../gwm_world_item/iterator/TreeIteratorGenerator";
 import { Rectangle } from "../../model/Rectangle";
+import { Line } from "../../model/Line";
 
 export class BorderItemSegmentingWorldItemGeneratorDecorator  implements GwmWorldItemGenerator {
     private decoratedWorldItemGenerator: GwmWorldItemGenerator;
@@ -55,18 +56,20 @@ export class BorderItemSegmentingWorldItemGeneratorDecorator  implements GwmWorl
         const intersectingRoom = <GwmWorldItem> _.find(rooms, (room: GwmWorldItem) => room.dimensions.intersectBorder(roomSeparator.dimensions));
 
         if (intersectingRoom) {
-            const intersection = intersectingRoom.dimensions.intersectBorder(roomSeparator.dimensions);
+            const intersectionLine = intersectingRoom.dimensions.intersectBorder(roomSeparator.dimensions);
 
-            if (intersection.isVertical()) {
-                const sorted = _.sortBy([intersection.start.y, intersection.end.y]);
+            const intersectionExtent = this.getIntersectionExtent(intersectionLine);
 
-                if (roomSeparator.dimensions.minY() < sorted[0] || roomSeparator.dimensions.maxY() > sorted[1]) {
+            if (intersectionLine.isVertical()) {
+                // const sorted = _.sortBy([intersectionLine.start.y, intersectionLine.end.y]);
+
+                if (roomSeparator.dimensions.minY() < intersectionExtent[0] || roomSeparator.dimensions.maxY() > intersectionExtent[1]) {
                     return intersectingRoom;
                 }
             } else {
-                const sorted = _.sortBy([intersection.start.x, intersection.end.x]);
+                // const sorted = _.sortBy([intersectionLine.start.x, intersectionLine.end.x]);
 
-                if (roomSeparator.dimensions.minX() < sorted[0] || roomSeparator.dimensions.maxX() > sorted[1]) {
+                if (roomSeparator.dimensions.minX() < intersectionExtent[0] || roomSeparator.dimensions.maxX() > intersectionExtent[1]) {
                     return intersectingRoom;
                 }
             }
@@ -77,9 +80,9 @@ export class BorderItemSegmentingWorldItemGeneratorDecorator  implements GwmWorl
         const line = segmentingRoom.dimensions.intersectBorder(roomSeparator.dimensions);
 
         if (line.isVertical()) {
-            return this.segmentVertically(roomSeparator, <[number, number]> _.sortBy([line.start.y, line.end.y]));
+            return this.segmentVertically(roomSeparator, this.getIntersectionExtent(line));
         } else {
-            return this.segmentHorizontally(roomSeparator, <[number, number]> _.sortBy([line.start.x, line.end.x]));
+            return this.segmentHorizontally(roomSeparator, this.getIntersectionExtent(line));
         }
     }
 
@@ -115,12 +118,18 @@ export class BorderItemSegmentingWorldItemGeneratorDecorator  implements GwmWorl
     private segmentHorizontally(roomSeparator: GwmWorldItem, segmentPositions: [number, number]): GwmWorldItem[] {
         const segmentedRoomSeparators: GwmWorldItem[] = [];
 
+        let bottomSegment: GwmWorldItem = null;
+        let topSegment: GwmWorldItem = null;
+        let middleSegment: GwmWorldItem = null;
+
         if (roomSeparator.dimensions.minX() < segmentPositions[0]) {
             const clone = roomSeparator.clone();
 
             const width = segmentPositions[0] - roomSeparator.dimensions.minX();
 
             clone.dimensions = new Rectangle(roomSeparator.dimensions.left, roomSeparator.dimensions.top, width, roomSeparator.dimensions.height);
+
+            bottomSegment = clone;
             segmentedRoomSeparators.push(clone);
         }
 
@@ -130,10 +139,12 @@ export class BorderItemSegmentingWorldItemGeneratorDecorator  implements GwmWorl
             const width = roomSeparator.dimensions.maxX() - segmentPositions[1];
 
             clone.dimensions = new Rectangle(segmentPositions[1], roomSeparator.dimensions.top, width, roomSeparator.dimensions.height);
+
+            topSegment = clone;
             segmentedRoomSeparators.push(clone);
         }
 
-        const middleSegment = roomSeparator.clone();
+        middleSegment = roomSeparator.clone();
         const middleSegmentWidth = segmentPositions[1] - segmentPositions[0];
         middleSegment.dimensions = new Rectangle(segmentPositions[0], roomSeparator.dimensions.top, middleSegmentWidth, roomSeparator.dimensions.height);
         segmentedRoomSeparators.push(middleSegment);
@@ -167,5 +178,17 @@ export class BorderItemSegmentingWorldItemGeneratorDecorator  implements GwmWorl
         });
 
         return roomSeparatorItems;
+    }
+
+    private getIntersectionExtent(line: Line): [number, number] {
+        if (line.isVertical()) {
+            const segmentPositions = _.sortBy([line.start.y, line.end.y]);
+
+            return [segmentPositions[0] - 1, segmentPositions[1] + 1];
+        } else {
+            const segmentPositions = _.sortBy([line.start.x, line.end.x]);
+
+            return [segmentPositions[0] - 1, segmentPositions[1] + 1];
+        }
     }
 }

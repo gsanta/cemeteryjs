@@ -9,6 +9,52 @@ import _ = require("lodash");
 
 describe('BorderItemSegmentingWorldItemGeneratorDecorator', () => {
     describe('generate', () => {
+        it ('segments the walls into smaller pieces with minimal number of segmentation', () => {
+            const map = `
+                map \`
+
+                WWWWWWWWWWWWWWWWWWWWW
+                W-------------------W
+                W-------X-----------W
+                W-------------------W
+                W-------------------W
+                W-------------------W
+                W-------------------W
+                W-------------------W
+                W-------------------W
+                WWWWWWWWWWWWWWWWWWWWW
+
+                \`
+
+                definitions \`
+
+                - = empty
+                W = wall
+                X = player
+
+                \`
+            `;
+
+            const combinedWorldItemGenerator = new CombinedWorldItemGenerator(
+                [
+                    new RoomSeparatorGenerator(['W']),
+                    new RoomInfoGenerator()
+                ]
+            );
+
+            const borderItemSegmentingWorldItemGeneratorDecorator = new BorderItemSegmentingWorldItemGeneratorDecorator(
+                combinedWorldItemGenerator,
+                ['wall']
+            );
+
+            const items = borderItemSegmentingWorldItemGeneratorDecorator.generateFromStringMap(map);
+
+            expect(items.filter(item => item.name === 'wall').length).to.eql(4, 'wall segment number not ok');
+        });
+    });
+
+
+    describe('generate', () => {
         it ('segments the walls into smaller pieces so that no wall will conver more then one room', () => {
             const map = `
                 map \`
@@ -45,20 +91,14 @@ describe('BorderItemSegmentingWorldItemGeneratorDecorator', () => {
 
             const items = borderItemSegmentingWorldItemGeneratorDecorator.generateFromStringMap(map);
 
-            expect(items.filter(item => item.name === 'wall').length).to.eql(13, 'wall segment number not ok');
+            expect(items.filter(item => item.name === 'wall').length).to.eql(7, 'wall segment number not ok');
 
-            expect(_.some(items, {dimensions: new Rectangle(0, 0, 1, 1)}), 'Rectangle(0, 0, 1, 1) not found.').to.be.true;
+            expect(_.some(items, {dimensions: new Rectangle(0, 0, 1, 4)}), 'Rectangle(0, 0, 1, 4) not found.').to.be.true;
+            expect(_.some(items, {dimensions: new Rectangle(9, 4, 1, 3)}), 'Rectangle(9, 4, 1, 3) not found.').to.be.true;
+            expect(_.some(items, {dimensions: new Rectangle(9, 0, 1, 4)}), 'Rectangle(9, 0, 1, 4) not found.').to.be.true;
             expect(_.some(items, {dimensions: new Rectangle(1, 0, 8, 1)}), 'Rectangle(1, 0, 8, 1) not found.').to.be.true;
-            expect(_.some(items, {dimensions: new Rectangle(9, 0, 1, 1)}), 'Rectangle(9, 0, 1, 1) not found.').to.be.true;
-            expect(_.some(items, {dimensions: new Rectangle(0, 1, 1, 2)}), 'Rectangle(0, 1, 1, 2) not found.').to.be.true;
-            expect(_.some(items, {dimensions: new Rectangle(9, 1, 1, 2)}), 'Rectangle(9, 1, 1, 2) not found.').to.be.true;
-            expect(_.some(items, {dimensions: new Rectangle(0, 3, 1, 1)}), 'Rectangle(0, 3, 1, 1) not found.').to.be.true;
-            expect(_.some(items, {dimensions: new Rectangle(9, 3, 1, 1)}), 'Rectangle(9, 3, 1, 1) not found.').to.be.true;
+            expect(_.some(items, {dimensions: new Rectangle(1, 0, 8, 1)}), 'Rectangle(1, 0, 8, 1) not found.').to.be.true;
             expect(_.some(items, {dimensions: new Rectangle(1, 3, 8, 1)}), 'Rectangle(1, 3, 8, 1) not found.').to.be.true;
-            expect(_.some(items, {dimensions: new Rectangle(0, 4, 1, 2)}), 'Rectangle(0, 4, 1, 2) not found.').to.be.true;
-            expect(_.some(items, {dimensions: new Rectangle(9, 4, 1, 2)}), 'Rectangle(9, 4, 1, 2) not found.').to.be.true;
-            expect(_.some(items, {dimensions: new Rectangle(0, 6, 1, 1)}), 'Rectangle(0, 6, 1, 1) not found.').to.be.true;
-            expect(_.some(items, {dimensions: new Rectangle(9, 6, 1, 1)}), 'Rectangle(9, 6, 1, 1) not found.').to.be.true;
             expect(_.some(items, {dimensions: new Rectangle(1, 6, 8, 1)}), 'Rectangle(1, 6, 8, 1) not found.').to.be.true;
 
         });
