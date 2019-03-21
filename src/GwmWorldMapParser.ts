@@ -63,7 +63,8 @@ export class GwmWorldMapParser {
                             { x: options.xScale, y: options.yScale }
                         ),
                     ),
-                    ['wall', 'door', 'window']
+                    ['wall', 'door', 'window'],
+                    true
                 ),
                 options.additionalDataConverter
             )

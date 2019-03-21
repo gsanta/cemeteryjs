@@ -48,7 +48,7 @@ export class BorderItemAddingWorldItemGeneratorDecorator implements GwmWorldItem
                     }
 
                     if (this.doNotIncludeBorderItemsThatIntersectsOnlyAtCorner) {
-                        return this.doesBorderItemIntersectOnlyAtCorner(roomSeparator, intersectionLine)
+                        return !this.doesBorderItemIntersectOnlyAtCorner(roomSeparator, intersectionLine);
                     }
 
                     return true;
@@ -60,10 +60,12 @@ export class BorderItemAddingWorldItemGeneratorDecorator implements GwmWorldItem
     }
 
     private doesBorderItemIntersectOnlyAtCorner(roomSeparator: GwmWorldItem, intersectionLine: Line) {
-        const narrowSides = (<Rectangle> roomSeparator.dimensions).getNarrowSides();
+        if (roomSeparator.dimensions instanceof Rectangle) {
+            const narrowSides = (<Rectangle> roomSeparator.dimensions).getNarrowSides();
 
-        if (narrowSides) {
-            return !narrowSides[0].equalTo(intersectionLine) && !narrowSides[1].equalTo(intersectionLine);
+            if (narrowSides) {
+                return narrowSides[0].equalTo(intersectionLine) || narrowSides[1].equalTo(intersectionLine);
+            }
         }
 
         return false;
