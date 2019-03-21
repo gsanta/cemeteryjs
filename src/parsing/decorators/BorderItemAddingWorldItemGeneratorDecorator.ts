@@ -11,14 +11,17 @@ export class BorderItemAddingWorldItemGeneratorDecorator implements GwmWorldItem
     private decoratedWorldItemGenerator: GwmWorldItemGenerator;
     private roomSeparatorItemNames: string[];
     private doNotIncludeBorderItemsThatIntersectsOnlyAtCorner: boolean;
+    private scales: {xScale: number, yScale: number} = {xScale: 1, yScale: 1};
 
     constructor(
         decoratedWorldItemGenerator: GwmWorldItemGenerator,
         roomSeparatorItemNames: string[],
+        scales: {xScale: number, yScale: number} = {xScale: 1, yScale: 1},
         doNotIncludeBorderItemsThatIntersectsOnlyAtCorner = true
     ) {
         this.decoratedWorldItemGenerator = decoratedWorldItemGenerator;
         this.roomSeparatorItemNames = roomSeparatorItemNames;
+        this.scales = scales;
         this.doNotIncludeBorderItemsThatIntersectsOnlyAtCorner = doNotIncludeBorderItemsThatIntersectsOnlyAtCorner
     }
 
@@ -64,7 +67,9 @@ export class BorderItemAddingWorldItemGeneratorDecorator implements GwmWorldItem
             const narrowSides = (<Rectangle> roomSeparator.dimensions).getNarrowSides();
 
             if (narrowSides) {
-                return narrowSides[0].equalTo(intersectionLine) || narrowSides[1].equalTo(intersectionLine);
+                const narrowSides1 = narrowSides[0].scaleX(this.scales.xScale).scaleY(this.scales.yScale);
+                const narrowSides2 = narrowSides[1].scaleX(this.scales.xScale).scaleY(this.scales.yScale);
+                return narrowSides1.equalTo(intersectionLine) || narrowSides2.equalTo(intersectionLine);
             }
         }
 

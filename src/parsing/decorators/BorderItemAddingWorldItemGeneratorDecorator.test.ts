@@ -7,6 +7,7 @@ import { BorderItemSegmentingWorldItemGeneratorDecorator } from './BorderItemSeg
 import { Rectangle } from '../../model/Rectangle';
 import { Polygon } from '../../model/Polygon';
 import _ = require('lodash');
+import { ScalingWorldItemGeneratorDecorator } from './ScalingWorldItemGeneratorDecorator';
 
 
 describe('BorderItemAddingWorldItemGeneratorDecorator', () => {
@@ -83,6 +84,7 @@ describe('BorderItemAddingWorldItemGeneratorDecorator', () => {
                     ['wall']
                 ),
                 ['wall'],
+                {xScale: 1, yScale: 1},
                 false
             );
 
@@ -130,8 +132,59 @@ describe('BorderItemAddingWorldItemGeneratorDecorator', () => {
                     ),
                     ['wall']
                 ),
+                ['wall']
+            );
+
+            const worldItems = borderItemAddingWorldItemGeneratorDecorator.generateFromStringMap(map);
+
+            const room3 = worldItems.filter(worldItem => worldItem.name === 'room')[2];
+
+            const borderItemDimensions = room3.borderItems.map(borderItem => borderItem.dimensions);
+
+            const cornerIntersectingRect = new Rectangle(4, 0, 1, 5);
+            expect(_.find(borderItemDimensions, (dim: Polygon) => dim.equalTo(cornerIntersectingRect))).to.eql(undefined);
+        });
+
+        it ('takes scales into consideration when calculating \'only corner\' connection', () => {
+            const map = `
+                map \`
+
+                WWWWWWWWWW
+                W---W----W
+                W---W----W
+                W---W----W
+                WWWWWWWWWW
+                W--------W
+                W--------W
+                W--------W
+                WWWWWWWWWW
+
+                \`
+
+                definitions \`
+
+                - = empty
+                W = wall
+
+                \`
+            `;
+
+            const borderItemAddingWorldItemGeneratorDecorator = new BorderItemAddingWorldItemGeneratorDecorator(
+                new BorderItemSegmentingWorldItemGeneratorDecorator(
+                    new ScalingWorldItemGeneratorDecorator(
+                        new CombinedWorldItemGenerator(
+                            [
+                                new RoomSeparatorGenerator(['W']),
+                                new RoomInfoGenerator()
+                            ]
+                        ),
+                        {x: 2, y: 2}
+                    ),
+                    ['wall'],
+                    {xScale: 2, yScale: 2}
+                ),
                 ['wall'],
-                true
+                {xScale: 2, yScale: 2}
             );
 
             const worldItems = borderItemAddingWorldItemGeneratorDecorator.generateFromStringMap(map);

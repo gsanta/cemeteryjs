@@ -16,6 +16,14 @@ export class Line {
         return this.start.y === this.end.y;
     }
 
+    public scaleX(times: number): Line {
+        return new Line(this.start.scaleX(times), this.end.scaleX(times));
+    }
+
+    public scaleY(times: number): Line {
+        return new Line(this.start.scaleY(times), this.end.scaleY(times));
+    }
+
     public addToEnd(amount: number) {
         if (this.isVertical()) {
             return new Line(this.start, this.end.addY(amount));
