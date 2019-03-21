@@ -17,7 +17,17 @@ export class Rectangle extends Polygon {
     }
 
     /**
-     * Calculates the two sides that are narrower than the other two or null
+     * Calculates the two sides that are narrower than the other two or null    public clone(): Polygon {
+        const points = this.points.map(point => point.clone());
+
+        const clone = new Polygon(points);
+        clone.left = this.left;
+        clone.top = this.top;
+        clone.width = this.width;
+        clone.height = this.height;
+
+        return clone;
+    }
      * if it is a square.
      */
     public getNarrowSides(): [Line, Line] {
@@ -34,5 +44,9 @@ export class Rectangle extends Polygon {
         } else {
             return null;
         }
+    }
+
+    public clone(): Rectangle {
+        return new Rectangle(this.left, this.top, this.width, this.height);
     }
 }

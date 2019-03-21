@@ -349,7 +349,7 @@ describe('GwmWorldMapParser', () => {
 
             const [room1, room2] = root.children.filter(item => item.name === 'room');
 
-            expect(room1.borderItems.length).to.eql(6);
+            expect(room1.borderItems.length).to.eql(5);
             expect(room2.borderItems.length).to.eql(5);
         });
     });
