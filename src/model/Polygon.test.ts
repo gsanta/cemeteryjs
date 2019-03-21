@@ -131,4 +131,27 @@ describe('Polygon', () => {
             expect(polygon.scaleY(3)).to.eql(new Rectangle(1, 6, 1, 9));
         });
     });
+
+    describe('equalTo', () => {
+        it ('returns true if all of the points in the polygon are equal', () => {
+            const polygon1 = new Polygon([new Point(1, 2), new Point(3, 4), new Point(5, 6)]);
+            const polygon2 = new Polygon([new Point(1, 2), new Point(3, 4), new Point(5, 6)]);
+
+            expect(polygon1.equalTo(polygon2)).to.be.true;
+        });
+
+        it ('returns false it not all the points are equal', () => {
+            const polygon1 = new Polygon([new Point(1, 2), new Point(5, 4), new Point(5, 6)]);
+            const polygon2 = new Polygon([new Point(1, 2), new Point(3, 4), new Point(5, 6)]);
+
+            expect(polygon1.equalTo(polygon2)).to.be.false;
+        });
+
+        it ('returns false it the two polygons do not have the same number of points', () => {
+            const polygon1 = new Polygon([new Point(1, 2), new Point(3, 4)]);
+            const polygon2 = new Polygon([new Point(1, 2), new Point(3, 4), new Point(5, 6)]);
+
+            expect(polygon1.equalTo(polygon2)).to.be.false;
+        });
+    });
 });

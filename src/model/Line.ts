@@ -4,9 +4,8 @@ export class Line {
     public start: Point;
     public end: Point;
 
-    constructor(start: Point, end: Point) {
-        this.start = start;
-        this.end = end;
+    constructor(endPoint1: Point, endPoint2: Point) {
+        [this.start, this.end] = this.orderPoints(endPoint1, endPoint2);
     }
 
     public isVertical() {
@@ -30,6 +29,20 @@ export class Line {
             return new Line(this.start.addY(amount), this.end);
         } else {
             return new Line(this.start.addX(amount), this.end);
+        }
+    }
+
+    public equalTo(otherLine: Line): boolean {
+        return this.start.equalTo(otherLine.start) && this.end.equalTo(otherLine.end);
+    }
+
+    private orderPoints(endPoint1: Point, endPoint2: Point): [Point, Point] {
+        if (endPoint1.y < endPoint2.y) {
+            return [endPoint1, endPoint2];
+        } else if (endPoint1.x < endPoint2.x) {
+            return [endPoint1, endPoint2];
+        } else {
+            return [endPoint2, endPoint1];
         }
     }
 }

@@ -4,15 +4,22 @@ import { GwmWorldItem } from '../../model/GwmWorldItem';
 import { TreeIteratorGenerator } from '../../gwm_world_item/iterator/TreeIteratorGenerator';
 import _ = require('lodash');
 import { Rectangle } from '../..';
+import { Line } from '../../model/Line';
 
 
 export class BorderItemAddingWorldItemGeneratorDecorator implements GwmWorldItemGenerator {
     private decoratedWorldItemGenerator: GwmWorldItemGenerator;
     private roomSeparatorItemNames: string[];
+    private doNotIncludeBorderItemsThatIntersectsOnlyAtCorner: boolean;
 
-    constructor(decoratedWorldItemGenerator: GwmWorldItemGenerator, roomSeparatorItemNames: string[]) {
+    constructor(
+        decoratedWorldItemGenerator: GwmWorldItemGenerator,
+        roomSeparatorItemNames: string[],
+        doNotIncludeBorderItemsThatIntersectsOnlyAtCorner = true
+    ) {
         this.decoratedWorldItemGenerator = decoratedWorldItemGenerator;
         this.roomSeparatorItemNames = roomSeparatorItemNames;
+        this.doNotIncludeBorderItemsThatIntersectsOnlyAtCorner = doNotIncludeBorderItemsThatIntersectsOnlyAtCorner
     }
 
     public generate(graph: MatrixGraph): GwmWorldItem[] {
@@ -33,15 +40,33 @@ export class BorderItemAddingWorldItemGeneratorDecorator implements GwmWorldItem
 
         rooms.forEach(room => {
             roomSeparatorItems
-                .filter(roomSeparator => room.dimensions.intersectBorder(roomSeparator.dimensions))
+                .filter(roomSeparator => {
+                    const intersectionLine = room.dimensions.intersectBorder(roomSeparator.dimensions);
+
+                    if (!intersectionLine) {
+                        return false;
+                    }
+
+                    if (this.doNotIncludeBorderItemsThatIntersectsOnlyAtCorner) {
+                        return this.doesBorderItemIntersectOnlyAtCorner(roomSeparator, intersectionLine)
+                    }
+
+                    return true;
+                })
                 .forEach(roomSeparator => room.borderItems.push(roomSeparator));
         });
 
         return worldItems;
     }
 
-    private isNarrowSide(rectangle: Rectangle) {
+    private doesBorderItemIntersectOnlyAtCorner(roomSeparator: GwmWorldItem, intersectionLine: Line) {
+        const narrowSides = (<Rectangle> roomSeparator.dimensions).getNarrowSides();
 
+        if (narrowSides) {
+            return !narrowSides[0].equalTo(intersectionLine) && !narrowSides[1].equalTo(intersectionLine);
+        }
+
+        return false;
     }
 
     private filterRooms(worldItems: GwmWorldItem[]): GwmWorldItem[] {

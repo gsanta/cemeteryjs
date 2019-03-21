@@ -16,17 +16,23 @@ export class Rectangle extends Polygon {
         this.height = height;
     }
 
+    /**
+     * Calculates the two sides that are narrower than the other two or null
+     * if it is a square.
+     */
     public getNarrowSides(): [Line, Line] {
         if (this.width < this.height) {
             return [
                 new Line(this.points[0], this.points[1]),
                 new Line(this.points[3], this.points[2])
             ]
-        } else {
+        } else if (this.width > this.height) {
             return [
                 new Line(this.points[1], this.points[2]),
                 new Line(this.points[0], this.points[3])
             ]
+        } else {
+            return null;
         }
     }
 }

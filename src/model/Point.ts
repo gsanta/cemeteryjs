@@ -35,4 +35,8 @@ export class Point {
     public clone(): Point {
         return new Point(this.x, this.y);
     }
+
+    public equalTo(otherPoint: Point) {
+        return this.x === otherPoint.x && this.y === otherPoint.y;
+    }
 }

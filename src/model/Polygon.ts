@@ -106,6 +106,17 @@ export class Polygon {
         return _.maxBy(this.points, point => point.y).y;
     }
 
+    public equalTo(otherPolygon: Polygon): boolean {
+        if (this.points.length !== otherPolygon.points.length) {
+            return false;
+        }
+
+        return _.chain(this.points)
+            .map((point, index) => point.equalTo(otherPolygon.points[index]))
+            .every(isEqual => isEqual === true)
+            .value();
+    }
+
     private toTwoDimensionalArray(): number[][] {
         return <[][]> this.points.map(point => [point.x, point.y]);
     }
