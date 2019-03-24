@@ -150,13 +150,13 @@ describe('BorderItemAddingWorldItemGeneratorDecorator', () => {
                 map \`
 
                 WWWWWWWWWW
-                W---W----W
-                W---W----W
-                W---W----W
+                W--------W
+                W--------W
+                W--------W
                 WWWWWWWWWW
-                W--------W
-                W--------W
-                W--------W
+                W---W----W
+                W---W----W
+                W---W----W
                 WWWWWWWWWW
 
                 \`
@@ -189,11 +189,11 @@ describe('BorderItemAddingWorldItemGeneratorDecorator', () => {
 
             const worldItems = borderItemAddingWorldItemGeneratorDecorator.generateFromStringMap(map);
 
-            const room3 = worldItems.filter(worldItem => worldItem.name === 'room')[2];
+            const room3 = worldItems.filter(worldItem => worldItem.name === 'room')[0];
 
             const borderItemDimensions = room3.borderItems.map(borderItem => borderItem.dimensions);
-
-            const cornerIntersectingRect = new Rectangle(4, 0, 1, 5);
+            1;
+            const cornerIntersectingRect = new Rectangle(8, 8, 2, 10);
             expect(_.find(borderItemDimensions, (dim: Polygon) => dim.equalTo(cornerIntersectingRect))).to.eql(undefined);
         });
     });

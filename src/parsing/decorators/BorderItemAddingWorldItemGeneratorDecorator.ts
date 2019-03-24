@@ -67,8 +67,8 @@ export class BorderItemAddingWorldItemGeneratorDecorator implements GwmWorldItem
             const narrowSides = (<Rectangle> roomSeparator.dimensions).getNarrowSides();
 
             if (narrowSides) {
-                const narrowSides1 = narrowSides[0].scaleX(this.scales.xScale).scaleY(this.scales.yScale);
-                const narrowSides2 = narrowSides[1].scaleX(this.scales.xScale).scaleY(this.scales.yScale);
+                const narrowSides1 = narrowSides[0];//.scaleX(this.scales.xScale).scaleY(this.scales.yScale);
+                const narrowSides2 = narrowSides[1];//.scaleX(this.scales.xScale).scaleY(this.scales.yScale);
                 return narrowSides1.equalTo(intersectionLine) || narrowSides2.equalTo(intersectionLine);
             }
         }
