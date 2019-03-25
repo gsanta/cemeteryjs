@@ -33,4 +33,36 @@ describe('Rectangle', () => {
             expect(narrowSides).to.eql(null);
         });
     });
+
+    describe('`negateX`', () => {
+        it ('negates the x coordinates of the `Rectangle`', () => {
+            const rectangle = new Rectangle(5, 6, 4, 4);
+
+            expect(rectangle.negateX()).to.eql(new Rectangle(-5, 6, 4, 4));
+        });
+    });
+
+    describe('`negateY`', () => {
+        it ('negates the x coordinates of the `Rectangle`', () => {
+            const rectangle = new Rectangle(5, 6, 4, 4);
+
+            expect(rectangle.negateY()).to.eql(new Rectangle(5, -6, 4, 4));
+        });
+    });
+
+    describe('`addX`', () => {
+        it ('adds the speficied amount to the x coordinates of the `Rectangle`', () => {
+            const rectangle = new Rectangle(5, 6, 4, 4);
+
+            expect(rectangle.addX(4)).to.eql(new Rectangle(9, 6, 4, 4));
+        });
+    });
+
+    describe('`addY`', () => {
+        it ('adds the speficied amount to the y coordinates of the `Rectangle`', () => {
+            const rectangle = new Rectangle(5, 6, 4, 4);
+
+            expect(rectangle.addY(4)).to.eql(new Rectangle(5, 10, 4, 4));
+        });
+    });
 });

@@ -154,4 +154,92 @@ describe('Polygon', () => {
             expect(polygon1.equalTo(polygon2)).to.be.false;
         });
     });
+
+    describe('`negateX`', () => {
+        it ('negates the x coordinates of the `Polygon`', () => {
+            const polygon = new Polygon([
+                new Point(2, 3),
+                new Point(5, 3),
+                new Point(5, 6),
+                new Point(4, 7),
+                new Point(2, 7)
+            ]);
+
+            const expectedPolygon = new Polygon([
+                new Point(-2, 3),
+                new Point(-5, 3),
+                new Point(-5, 6),
+                new Point(-4, 7),
+                new Point(-2, 7)
+            ])
+
+            expect(polygon.negateX().equalTo(expectedPolygon)).to.be.true;
+        });
+    });
+
+    describe('`negateY`', () => {
+        it ('negates the x coordinates of the `Polygon`', () => {
+            const polygon = new Polygon([
+                new Point(2, 3),
+                new Point(5, 3),
+                new Point(5, 6),
+                new Point(4, 7),
+                new Point(2, 7)
+            ]);
+
+            const expectedPolygon = new Polygon([
+                new Point(2, -3),
+                new Point(5, -3),
+                new Point(5, -6),
+                new Point(4, -7),
+                new Point(2, -7)
+            ])
+
+            expect(polygon.negateY().equalTo(expectedPolygon)).to.be.true;
+        });
+    });
+
+    describe('`addX`', () => {
+        it ('adds the speficied amount to the x coordinates of the `Polygon`', () => {
+            const polygon = new Polygon([
+                new Point(2, 3),
+                new Point(5, 3),
+                new Point(5, 6),
+                new Point(4, 7),
+                new Point(2, 7)
+            ]);
+
+            const expectedPolygon = new Polygon([
+                new Point(5, 3),
+                new Point(8, 3),
+                new Point(8, 6),
+                new Point(7, 7),
+                new Point(5, 7)
+            ]);
+
+            expect(polygon.addX(3).equalTo(expectedPolygon)).to.be.true;
+        });
+    });
+
+    describe('`addY`', () => {
+        it ('adds the speficied amount to the y coordinates of the `Polygon`', () => {
+            const polygon = new Polygon([
+                new Point(2, 3),
+                new Point(5, 3),
+                new Point(5, 6),
+                new Point(4, 7),
+                new Point(2, 7)
+            ]);
+
+            const expectedPolygon = new Polygon([
+                new Point(2, 0),
+                new Point(5, 0),
+                new Point(5, 3),
+                new Point(4, 4),
+                new Point(2, 4)
+            ]);
+
+            expect(polygon.addY(-3).equalTo(expectedPolygon)).to.be.true;
+        });
+    });
 });

@@ -21,7 +21,16 @@ export class Rectangle extends Polygon {
     }
 
     public addY(amount: number): Polygon {
-        return new Rectangle(this.left, this.top + amount, this.width, this.height + amount);
+        return new Rectangle(this.left, this.top + amount, this.width, this.height);
+    }
+
+
+    public negateX(): Polygon {
+        return new Rectangle(-this.left, this.top, this.width, this.height);
+    }
+
+    public negateY(): Polygon {
+        return new Rectangle(this.left, -this.top, this.width, this.height);
     }
 
     /**

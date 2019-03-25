@@ -28,6 +28,17 @@ export class Polygon {
         return this.addX(point.x).addY(point.y);
     }
 
+    public negateX(): Polygon {
+        const translatedPoints = this.points.map(point => new Point(-point.x, point.y));
+        return new Polygon(translatedPoints);
+    }
+
+
+    public negateY(): Polygon {
+        const translatedPoints = this.points.map(point => new Point(point.x, -point.y));
+        return new Polygon(translatedPoints);
+    }
+
     public clone(): Polygon {
         const points = this.points.map(point => point.clone());
 
