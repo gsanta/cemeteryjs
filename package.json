@@ -1,6 +1,6 @@
 {
   "name": "game-worldmap-generator",
-  "version": "6.8.2",
+  "version": "6.9.0",
   "description": "A simple worldmap generator for 2d games, which generates the worldmap from a text file.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
