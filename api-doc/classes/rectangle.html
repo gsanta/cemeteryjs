@@ -100,6 +100,8 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="rectangle.html#addx" class="tsd-kind-icon">addX</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="rectangle.html#addy" class="tsd-kind-icon">addY</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="rectangle.html#clone" class="tsd-kind-icon">clone</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="rectangle.html#contains" class="tsd-kind-icon">contains</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="rectangle.html#equalto" class="tsd-kind-icon">equal<wbr>To</a></li>
@@ -111,6 +113,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="rectangle.html#miny" class="tsd-kind-icon">minY</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="rectangle.html#scalex" class="tsd-kind-icon">scaleX</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="rectangle.html#scaley" class="tsd-kind-icon">scaleY</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="rectangle.html#translate" class="tsd-kind-icon">translate</a></li>
 							</ul>
 						</section>
 					</div>
@@ -129,7 +132,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="polygon.html">Polygon</a>.<a href="polygon.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/ceb4641/src/model/Rectangle.ts#L5">model/Rectangle.ts:5</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/b075141/src/model/Rectangle.ts#L5">model/Rectangle.ts:5</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -161,7 +164,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="polygon.html">Polygon</a>.<a href="polygon.html#height">height</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/ceb4641/src/model/Polygon.ts#L11">model/Polygon.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/b075141/src/model/Polygon.ts#L11">model/Polygon.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -172,7 +175,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="polygon.html">Polygon</a>.<a href="polygon.html#left">left</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/ceb4641/src/model/Polygon.ts#L8">model/Polygon.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/b075141/src/model/Polygon.ts#L8">model/Polygon.ts:8</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -183,7 +186,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="polygon.html">Polygon</a>.<a href="polygon.html#points">points</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/ceb4641/src/model/Polygon.ts#L7">model/Polygon.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/b075141/src/model/Polygon.ts#L7">model/Polygon.ts:7</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -194,7 +197,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="polygon.html">Polygon</a>.<a href="polygon.html#top">top</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/ceb4641/src/model/Polygon.ts#L9">model/Polygon.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/b075141/src/model/Polygon.ts#L9">model/Polygon.ts:9</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -205,13 +208,61 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="polygon.html">Polygon</a>.<a href="polygon.html#width">width</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/ceb4641/src/model/Polygon.ts#L10">model/Polygon.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/b075141/src/model/Polygon.ts#L10">model/Polygon.ts:10</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+					<a name="addx" class="tsd-anchor"></a>
+					<h3>addX</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">addX<span class="tsd-signature-symbol">(</span>amount<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="polygon.html" class="tsd-signature-type">Polygon</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overrides <a href="polygon.html">Polygon</a>.<a href="polygon.html#addx">addX</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/b075141/src/model/Rectangle.ts#L19">model/Rectangle.ts:19</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>amount: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="polygon.html" class="tsd-signature-type">Polygon</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+					<a name="addy" class="tsd-anchor"></a>
+					<h3>addY</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">addY<span class="tsd-signature-symbol">(</span>amount<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="polygon.html" class="tsd-signature-type">Polygon</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overrides <a href="polygon.html">Polygon</a>.<a href="polygon.html#addy">addY</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/b075141/src/model/Rectangle.ts#L23">model/Rectangle.ts:23</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>amount: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="polygon.html" class="tsd-signature-type">Polygon</a></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 					<a name="clone" class="tsd-anchor"></a>
 					<h3>clone</h3>
@@ -223,7 +274,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="polygon.html">Polygon</a>.<a href="polygon.html#clone">clone</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/ceb4641/src/model/Rectangle.ts#L49">model/Rectangle.ts:49</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/b075141/src/model/Rectangle.ts#L57">model/Rectangle.ts:57</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="rectangle.html" class="tsd-signature-type">Rectangle</a></h4>
@@ -241,7 +292,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="polygon.html">Polygon</a>.<a href="polygon.html#contains">contains</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/ceb4641/src/model/Polygon.ts#L29">model/Polygon.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/b075141/src/model/Polygon.ts#L43">model/Polygon.ts:43</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -265,7 +316,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="polygon.html">Polygon</a>.<a href="polygon.html#equalto">equalTo</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/ceb4641/src/model/Polygon.ts#L109">model/Polygon.ts:109</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/b075141/src/model/Polygon.ts#L123">model/Polygon.ts:123</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -288,7 +339,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/ceb4641/src/model/Rectangle.ts#L33">model/Rectangle.ts:33</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/b075141/src/model/Rectangle.ts#L41">model/Rectangle.ts:41</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -320,7 +371,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="polygon.html">Polygon</a>.<a href="polygon.html#intersectborder">intersectBorder</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/ceb4641/src/model/Polygon.ts#L39">model/Polygon.ts:39</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/b075141/src/model/Polygon.ts#L53">model/Polygon.ts:53</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -349,7 +400,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="polygon.html">Polygon</a>.<a href="polygon.html#maxx">maxX</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/ceb4641/src/model/Polygon.ts#L91">model/Polygon.ts:91</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/b075141/src/model/Polygon.ts#L105">model/Polygon.ts:105</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -372,7 +423,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="polygon.html">Polygon</a>.<a href="polygon.html#maxy">maxY</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/ceb4641/src/model/Polygon.ts#L105">model/Polygon.ts:105</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/b075141/src/model/Polygon.ts#L119">model/Polygon.ts:119</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -395,7 +446,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="polygon.html">Polygon</a>.<a href="polygon.html#minx">minX</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/ceb4641/src/model/Polygon.ts#L84">model/Polygon.ts:84</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/b075141/src/model/Polygon.ts#L98">model/Polygon.ts:98</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -418,7 +469,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="polygon.html">Polygon</a>.<a href="polygon.html#miny">minY</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/ceb4641/src/model/Polygon.ts#L98">model/Polygon.ts:98</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/b075141/src/model/Polygon.ts#L112">model/Polygon.ts:112</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -441,7 +492,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="polygon.html">Polygon</a>.<a href="polygon.html#scalex">scaleX</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/ceb4641/src/model/Polygon.ts#L53">model/Polygon.ts:53</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/b075141/src/model/Polygon.ts#L67">model/Polygon.ts:67</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -465,13 +516,37 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="polygon.html">Polygon</a>.<a href="polygon.html#scaley">scaleY</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/ceb4641/src/model/Polygon.ts#L66">model/Polygon.ts:66</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/b075141/src/model/Polygon.ts#L80">model/Polygon.ts:80</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>times: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="polygon.html" class="tsd-signature-type">Polygon</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="translate" class="tsd-anchor"></a>
+					<h3>translate</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">translate<span class="tsd-signature-symbol">(</span>point<span class="tsd-signature-symbol">: </span><a href="point.html" class="tsd-signature-type">Point</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="polygon.html" class="tsd-signature-type">Polygon</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="polygon.html">Polygon</a>.<a href="polygon.html#translate">translate</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/b075141/src/model/Polygon.ts#L27">model/Polygon.ts:27</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>point: <a href="point.html" class="tsd-signature-type">Point</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="polygon.html" class="tsd-signature-type">Polygon</a></h4>
@@ -562,6 +637,12 @@
 								<a href="rectangle.html#width" class="tsd-kind-icon">width</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="rectangle.html#addx" class="tsd-kind-icon">addX</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="rectangle.html#addy" class="tsd-kind-icon">addY</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 								<a href="rectangle.html#clone" class="tsd-kind-icon">clone</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -593,6 +674,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="rectangle.html#scaley" class="tsd-kind-icon">scaleY</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="rectangle.html#translate" class="tsd-kind-icon">translate</a>
 							</li>
 						</ul>
 					</li>
