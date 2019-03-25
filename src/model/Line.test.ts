@@ -37,4 +37,12 @@ describe('Line', () => {
             expect(line.scaleY(3).equalTo(scaledLine));
         });
     });
+
+    describe('getLength', () => {
+        it ('calculates the distance between `start` and `end` of `Line`', () => {
+            const line = new Line(new Point(4, 2), new Point(1, 2));
+
+            expect(line.getLength()).to.eql(3);
+        });
+    });
 });

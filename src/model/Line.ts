@@ -44,6 +44,13 @@ export class Line {
         return this.start.equalTo(otherLine.start) && this.end.equalTo(otherLine.end);
     }
 
+    public getLength(): number {
+        const xDistance = Math.abs(this.start.x - this.end.x);
+        const yDistance = Math.abs(this.start.y - this.end.y);
+
+        return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
+    }
+
     private orderPoints(endPoint1: Point, endPoint2: Point): [Point, Point] {
         if (endPoint1.y < endPoint2.y) {
             return [endPoint1, endPoint2];

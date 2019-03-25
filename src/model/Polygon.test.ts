@@ -242,4 +242,59 @@ describe('Polygon', () => {
             expect(polygon.addY(-3).equalTo(expectedPolygon)).to.be.true;
         });
     });
+
+
+    describe('`getCircumference`', () => {
+        it ('calculates the circumference of the `Polygon`', () => {
+            const polygon = new Polygon([
+                new Point(2, 3),
+                new Point(5, 3),
+                new Point(5, 6),
+                new Point(2, 6)
+            ]);
+
+            expect(polygon.getCircumference()).to.eql(12);
+        });
+    });
+
+
+    describe('`strechX`', () => {
+        it ('stretches the `Polygon` with the given amount on the x axis', () => {
+            const polygon = new Polygon([
+                new Point(2, 3),
+                new Point(5, 3),
+                new Point(5, 6),
+                new Point(2, 6)
+            ]);
+
+            const expectedPolygon = new Polygon([
+                new Point(1, 3),
+                new Point(6, 3),
+                new Point(6, 6),
+                new Point(1, 6)
+            ]);
+
+            expect(polygon.strechX(1).equalTo(expectedPolygon)).to.be.true;
+        });
+    });
+
+    describe('`strechY`', () => {
+        it ('stretches the `Polygon` with the given amount on the y axis', () => {
+            const polygon = new Polygon([
+                new Point(2, 1),
+                new Point(5, 1),
+                new Point(5, 4),
+                new Point(2, 4)
+            ]);
+
+            const expectedPolygon = new Polygon([
+                new Point(2, -1),
+                new Point(5, -1),
+                new Point(5, 6),
+                new Point(2, 6)
+            ]);
+
+            expect(polygon.strechY(2)).to.eql(expectedPolygon);
+        });
+    });
 });

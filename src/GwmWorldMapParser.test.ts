@@ -15,6 +15,7 @@ import { RoomSeparatorGenerator } from './parsing/room_separator_parsing/RoomSep
 import { RoomInfoGenerator } from './parsing/room_parsing/RoomInfoGenerator';
 import { RootWorldItemGenerator } from './parsing/RootWorldItemGenerator';
 import { BorderItemSegmentingWorldItemGeneratorDecorator } from './parsing/decorators/BorderItemSegmentingWorldItemGeneratorDecorator';
+import { StretchRoomsSoTheyJoinWorldItemGeneratorDecorator } from './parsing/decorators/StretchRoomsSoTheyJoinWorldItemGeneratorDecorator';
 
 
 describe('GwmWorldMapParser', () => {
@@ -411,5 +412,63 @@ describe('GwmWorldMapParser', () => {
         const walls = root.children.filter(item => item.name === 'wall');
 
         expect(walls.length).to.eql(8);
+    });
+
+    it ('integrates correctly the StretchRoomsSoTheyJoinWorldItemGeneratorDecorator if used', () => {
+        const map = `
+            map \`
+
+            WWWWWWW
+            W--W--W
+            W--W--W
+            WWWWWWW
+            W--W--W
+            W--W--W
+            WWWWWWW
+
+            \`
+
+            definitions \`
+
+            - = empty
+            W = wall
+
+            \`
+        `;
+
+        const options = {
+            xScale: 1,
+            yScale: 1,
+            furnitureCharacters: ['C', 'B'],
+            roomSeparatorCharacters: ['W', 'D', 'I']
+        }
+
+        const worldMapParser = GwmWorldMapParser.createWithCustomWorldItemGenerator(
+            new AdditionalDataConvertingWorldItemDecorator(
+                new BorderItemAddingWorldItemGeneratorDecorator(
+                    new HierarchyBuildingWorldItemGeneratorDecorator(
+                        new BorderItemSegmentingWorldItemGeneratorDecorator(
+                            new ScalingWorldItemGeneratorDecorator(
+                                new CombinedWorldItemGenerator(
+                                    [
+                                        new FurnitureInfoGenerator(options.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
+                                        new RoomSeparatorGenerator(options.roomSeparatorCharacters),
+                                        new StretchRoomsSoTheyJoinWorldItemGeneratorDecorator(
+                                            new RoomInfoGenerator()
+                                        ),
+                                        new RootWorldItemGenerator()
+                                    ]
+                                ),
+                                { x: options.xScale, y: options.yScale }
+                            ),
+                            ['wall', 'door', 'window']
+                        ),
+                    ),
+                    ['wall', 'door', 'window']
+                )
+            )
+        );
+
+        const [root] = worldMapParser.parse(map);
     });
 });

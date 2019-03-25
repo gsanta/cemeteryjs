@@ -39,6 +39,13 @@ export class Polygon {
         return new Polygon(translatedPoints);
     }
 
+    public getCircumference(): number {
+        return this.points.reduce(
+            (sum: number, currentItem: Point, index: number) => sum + this.getNthLine(index).getLength(),
+            0
+        );
+    }
+
     public clone(): Polygon {
         const points = this.points.map(point => point.clone());
 
@@ -131,6 +138,58 @@ export class Polygon {
         return _.maxBy(this.points, point => point.y).y;
     }
 
+    public strechX(amount: number): Polygon {
+        return this.points.reduce(
+            (stretchedPolygon, point, index) => {
+            const currentCircumference = stretchedPolygon.getCircumference();
+
+                const stretchNeg = point.addX(-amount);
+                let clonedPoints = [...stretchedPolygon.points];
+                clonedPoints.splice(index, 1, stretchNeg)
+                let testPolygonStretchToNeg = new Polygon(clonedPoints);
+                if (testPolygonStretchToNeg.getCircumference() < currentCircumference) {
+                    const stretchPos = point.addX(amount);
+
+                    clonedPoints = [...stretchedPolygon.points];
+                    clonedPoints.splice(index, 1, stretchPos)
+
+                    return new Polygon(clonedPoints);
+                } else {
+                    return testPolygonStretchToNeg;
+                }
+            },
+            this
+        );
+    }
+
+    public strechY(amount: number): Polygon {
+        return this.points.reduce(
+            (stretchedPolygon, point, index) => {
+            const currentCircumference = stretchedPolygon.getCircumference();
+
+                const stretchNeg = point.addY(-amount);
+                let clonedPoints = [...stretchedPolygon.points];
+                clonedPoints.splice(index, 1, stretchNeg)
+                let testPolygonStretchToNeg = new Polygon(clonedPoints);
+                if (testPolygonStretchToNeg.getCircumference() < currentCircumference) {
+                    const stretchPos = point.addY(amount);
+
+                    clonedPoints = [...stretchedPolygon.points];
+                    clonedPoints.splice(index, 1, stretchPos)
+
+                    return new Polygon(clonedPoints);
+                } else {
+                    return testPolygonStretchToNeg;
+                }
+            },
+            this
+        );
+    }
+
+    public stretch(xAmount: number, yAmount: number): Polygon {
+        return this.strechX(xAmount).strechY(yAmount);
+    }
+
     public equalTo(otherPolygon: Polygon): boolean {
         if (this.points.length !== otherPolygon.points.length) {
             return false;
@@ -150,5 +209,13 @@ export class Polygon {
         const clone = this.clone();
         clone.points.push(clone.points[0]);
         return clone;
+    }
+
+
+    private getNthLine(index: number): Line {
+        if (this.points.length - 1 === index) {
+            return new Line(this.points[index], this.points[0]);
+        }
+        return new Line(this.points[index], this.points[index + 1]);
     }
 }
