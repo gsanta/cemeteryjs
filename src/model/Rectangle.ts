@@ -16,6 +16,14 @@ export class Rectangle extends Polygon {
         this.height = height;
     }
 
+    public addX(amount: number): Polygon {
+        return new Rectangle(this.left + amount, this.top, this.width, this.height);
+    }
+
+    public addY(amount: number): Polygon {
+        return new Rectangle(this.left, this.top + amount, this.width, this.height + amount);
+    }
+
     /**
      * Calculates the two sides that are narrower than the other two or null    public clone(): Polygon {
         const points = this.points.map(point => point.clone());

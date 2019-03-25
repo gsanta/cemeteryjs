@@ -14,6 +14,20 @@ export class Polygon {
         this.points = points;
     }
 
+    public addX(amount: number): Polygon {
+        const translatedPoints = this.points.map(point => point.addX(amount));
+        return new Polygon(translatedPoints);
+    }
+
+    public addY(amount: number): Polygon {
+        const translatedPoints = this.points.map(point => point.addY(amount));
+        return new Polygon(translatedPoints);
+    }
+
+    public translate(point: Point): Polygon {
+        return this.addX(point.x).addY(point.y);
+    }
+
     public clone(): Polygon {
         const points = this.points.map(point => point.clone());
 
