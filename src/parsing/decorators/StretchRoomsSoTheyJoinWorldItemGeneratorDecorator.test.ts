@@ -68,5 +68,44 @@ describe('`StretchRoomsSoTheyJoinWorldItemGeneratorDecorator`', () => {
             expect(items[0].dimensions).to.eql(new Polygon([new Point(1, 1.5), new Point(13, 1.5), new Point(13, 10.5), new Point(1, 10.5)]));
             expect(items[1].dimensions).to.eql(new Polygon([new Point(13, 1.5), new Point(19, 1.5), new Point(19, 10.5), new Point(13, 10.5)]));
         });
+
+        it ('correctly streches more complex polygonal shapes too', () => {
+            const map = `
+                map \`
+
+                #######
+                #-----#
+                #-----#
+                ####--#
+                #--#--#
+                #--#--#
+                #######
+
+                \`
+            `;
+
+            const roomInfoGenerator = new StretchRoomsSoTheyJoinWorldItemGeneratorDecorator(
+                new ScalingWorldItemGeneratorDecorator(
+                    new RoomInfoGenerator(
+                        '-',
+                        new WorldMapToMatrixGraphConverter(),
+                        new WorldMapToRoomMapConverter('#', '-', ['#'])
+                    )
+                )
+            );
+
+            // const roomInfoGenerator = new ScalingWorldItemGeneratorDecorator(
+            //     new RoomInfoGenerator(
+            //         '-',
+            //         new WorldMapToMatrixGraphConverter(),
+            //         new WorldMapToRoomMapConverter('#', '-', ['#'])
+            //     )
+            // );
+
+            const items = roomInfoGenerator.generateFromStringMap(map);
+
+            expect(items[0].dimensions).to.eql(new Polygon([new Point(1, 1.5), new Point(13, 1.5), new Point(13, 10.5), new Point(1, 10.5)]));
+            expect(items[1].dimensions).to.eql(new Polygon([new Point(13, 1.5), new Point(19, 1.5), new Point(19, 10.5), new Point(13, 10.5)]));
+        });
     });
 });

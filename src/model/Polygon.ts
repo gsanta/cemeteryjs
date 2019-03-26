@@ -46,6 +46,18 @@ export class Polygon {
         );
     }
 
+    public getArea() {
+        let area = 0;
+        let prevIndex = this.points.length - 1;
+
+        for (let i = 0; i < this.points.length; i++) {
+            area = area +  (this.points[prevIndex].x + this.points[i].x) * (this.points[prevIndex].y - this.points[i].y);
+            prevIndex = i;
+        }
+
+        return Math.abs(area / 2);
+    }
+
     public clone(): Polygon {
         const points = this.points.map(point => point.clone());
 
@@ -138,16 +150,16 @@ export class Polygon {
         return _.maxBy(this.points, point => point.y).y;
     }
 
-    public strechX(amount: number): Polygon {
+    public stretchX(amount: number): Polygon {
         return this.points.reduce(
             (stretchedPolygon, point, index) => {
-            const currentCircumference = stretchedPolygon.getCircumference();
+            const currentArea = stretchedPolygon.getArea();
 
                 const stretchNeg = point.addX(-amount);
                 let clonedPoints = [...stretchedPolygon.points];
                 clonedPoints.splice(index, 1, stretchNeg)
                 let testPolygonStretchToNeg = new Polygon(clonedPoints);
-                if (testPolygonStretchToNeg.getCircumference() < currentCircumference) {
+                if (testPolygonStretchToNeg.getArea() < currentArea) {
                     const stretchPos = point.addX(amount);
 
                     clonedPoints = [...stretchedPolygon.points];
@@ -162,16 +174,16 @@ export class Polygon {
         );
     }
 
-    public strechY(amount: number): Polygon {
+    public stretchY(amount: number): Polygon {
         return this.points.reduce(
             (stretchedPolygon, point, index) => {
-            const currentCircumference = stretchedPolygon.getCircumference();
+            const currentArea = stretchedPolygon.getArea();
 
                 const stretchNeg = point.addY(-amount);
                 let clonedPoints = [...stretchedPolygon.points];
                 clonedPoints.splice(index, 1, stretchNeg)
                 let testPolygonStretchToNeg = new Polygon(clonedPoints);
-                if (testPolygonStretchToNeg.getCircumference() < currentCircumference) {
+                if (testPolygonStretchToNeg.getArea() < currentArea) {
                     const stretchPos = point.addY(amount);
 
                     clonedPoints = [...stretchedPolygon.points];
@@ -187,7 +199,7 @@ export class Polygon {
     }
 
     public stretch(xAmount: number, yAmount: number): Polygon {
-        return this.strechX(xAmount).strechY(yAmount);
+        return this.stretchX(xAmount).stretchY(yAmount);
     }
 
     public equalTo(otherPolygon: Polygon): boolean {

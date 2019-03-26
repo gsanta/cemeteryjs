@@ -274,7 +274,7 @@ describe('Polygon', () => {
                 new Point(1, 6)
             ]);
 
-            expect(polygon.strechX(1).equalTo(expectedPolygon)).to.be.true;
+            expect(polygon.stretchX(1).equalTo(expectedPolygon)).to.be.true;
         });
     });
 
@@ -294,7 +294,22 @@ describe('Polygon', () => {
                 new Point(2, 6)
             ]);
 
-            expect(polygon.strechY(2)).to.eql(expectedPolygon);
+            expect(polygon.stretchY(2)).to.eql(expectedPolygon);
+        });
+    });
+
+    describe('getArea', () => {
+        it ('calculates the area of the polygon', () => {
+            const polygon = new Polygon([
+                new Point(4, 6),
+                new Point(4, -4),
+                new Point(8, -4),
+                new Point(8, -8),
+                new Point(-4, -8),
+                new Point(-4, 6)
+            ]);
+
+            expect(polygon.getArea()).to.eql(128);
         });
     });
 });
