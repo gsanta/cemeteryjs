@@ -43,6 +43,6 @@ export class StretchRoomsSoTheyJoinWorldItemGeneratorDecorator {
             room.dimensions = room.dimensions.stretch(this.scales.xScale / 2, this.scales.yScale / 2);
         });
 
-        return rooms;
+        return rootWorldItems;
     }
 }

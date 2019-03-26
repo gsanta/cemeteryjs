@@ -16,6 +16,7 @@ import { RoomInfoGenerator } from './parsing/room_parsing/RoomInfoGenerator';
 import { RootWorldItemGenerator } from './parsing/RootWorldItemGenerator';
 import { BorderItemSegmentingWorldItemGeneratorDecorator } from './parsing/decorators/BorderItemSegmentingWorldItemGeneratorDecorator';
 import { StretchRoomsSoTheyJoinWorldItemGeneratorDecorator } from './parsing/decorators/StretchRoomsSoTheyJoinWorldItemGeneratorDecorator';
+import { Polygon } from './model/Polygon';
 
 
 describe('GwmWorldMapParser', () => {
@@ -412,5 +413,57 @@ describe('GwmWorldMapParser', () => {
         const walls = root.children.filter(item => item.name === 'wall');
 
         expect(walls.length).to.eql(8);
+    });
+
+    it ('integrates correctly the StretchRoomsSoTheyJoinWorldItemGeneratorDecorator if used', () => {
+        const map = `
+            map \`
+
+            WWWWW
+            W---W
+            W---W
+            WWWWW
+
+            \`
+        `;
+
+        const options = {
+            xScale: 1,
+            yScale: 1,
+            furnitureCharacters: [],
+            roomSeparatorCharacters: ['W']
+        }
+
+        const worldMapParser = GwmWorldMapParser.createWithCustomWorldItemGenerator(
+            new AdditionalDataConvertingWorldItemDecorator(
+                new StretchRoomsSoTheyJoinWorldItemGeneratorDecorator(
+                    new BorderItemAddingWorldItemGeneratorDecorator(
+                        new HierarchyBuildingWorldItemGeneratorDecorator(
+                            new BorderItemSegmentingWorldItemGeneratorDecorator(
+                                new ScalingWorldItemGeneratorDecorator(
+                                    new CombinedWorldItemGenerator(
+                                        [
+                                            new FurnitureInfoGenerator(options.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
+                                            new RoomSeparatorGenerator(options.roomSeparatorCharacters),
+                                            new RoomInfoGenerator(),
+                                            new RootWorldItemGenerator()
+                                        ]
+                                    ),
+                                    { x: options.xScale, y: options.yScale }
+                                ),
+                                ['wall']
+                            ),
+                        ),
+                        ['wall']
+                    )
+                )
+            )
+        );
+
+        const [root] = worldMapParser.parse(map);
+        const walls = root.children.filter(item => item.name === 'wall');
+
+        expect(root.children.length).to.eql(5);
+        expect(root.children[4].dimensions).to.eql(new Polygon([new Point(0.5, 0.5), new Point(4.5, 0.5), new Point(4.5, 3.5), new Point(0.5, 3.5)]))
     });
 });
