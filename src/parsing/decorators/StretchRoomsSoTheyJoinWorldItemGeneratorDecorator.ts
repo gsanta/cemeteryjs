@@ -6,9 +6,14 @@ import { TreeIteratorGenerator } from "../../gwm_world_item/iterator/TreeIterato
 
 export class StretchRoomsSoTheyJoinWorldItemGeneratorDecorator {
     private decoratedWorldItemGenerator: GwmWorldItemGenerator;
+    private scales: {xScale: number, yScale: number};
 
-    constructor(decoratedWorldItemGenerator: GwmWorldItemGenerator) {
+    constructor(
+        decoratedWorldItemGenerator: GwmWorldItemGenerator,
+        scales: {xScale: number, yScale: number} = {xScale: 1, yScale: 1}
+    ) {
         this.decoratedWorldItemGenerator = decoratedWorldItemGenerator;
+        this.scales = scales;
     }
 
     public generate(graph: MatrixGraph): GwmWorldItem[] {
@@ -35,7 +40,7 @@ export class StretchRoomsSoTheyJoinWorldItemGeneratorDecorator {
         });
 
         rooms.forEach(room => {
-            room.dimensions = room.dimensions.stretch(0.5, 0.5);
+            room.dimensions = room.dimensions.stretch(this.scales.xScale / 2, this.scales.yScale / 2);
         });
 
         return rooms;

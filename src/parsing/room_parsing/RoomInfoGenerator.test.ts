@@ -36,15 +36,15 @@ describe('RoomInfoGenerator', () => {
             ]);
         });
 
-        it ('converts multiple rooms correctly.', () => {
+        it ('makes sure that the space between two adjacent rooms is one unit', () => {
             const map = `
                 map \`
 
+                -#####----
+                -#####----
                 ----------
-                -------##-
-                -###---##-
-                -###------
-                ----------
+                -#####----
+                -#####----
 
                 \`
             `;
@@ -58,17 +58,17 @@ describe('RoomInfoGenerator', () => {
 
             expect(worldItem.length).to.eql(2);
             expect(worldItem[0].dimensions.points).to.eql([
-                new Point(7, 1),
-                new Point(9, 1),
-                new Point(9, 3),
-                new Point(7, 3)
+                new Point(1, 0),
+                new Point(6, 0),
+                new Point(6, 2),
+                new Point(1, 2)
             ]);
 
             expect(worldItem[1].dimensions.points).to.eql([
-                new Point(1, 2),
-                new Point(4, 2),
-                new Point(4, 4),
-                new Point(1, 4)
+                new Point(1, 3),
+                new Point(6, 3),
+                new Point(6, 5),
+                new Point(1, 5)
             ]);
         });
 
