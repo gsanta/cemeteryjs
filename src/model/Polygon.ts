@@ -123,6 +123,24 @@ export class Polygon {
     }
 
     /**
+     * Stretches or pushes the `Polygon` so that the points min and max y coordinate stretches
+     * exactly the new height
+     */
+    // TODO: implement it
+    public setBoundingHeight(newHeight: number): Polygon {
+        throw new Error('not implemented');
+    }
+
+    /**
+     * Stretches or pushes the `Polygon` so that the points min and max x coordinate stretches
+     * exactly the new width
+     */
+    // TODO: implement it
+    public setBoundingWidth(newWidth: number): Polygon {
+        throw new Error('not implemented');
+    }
+
+    /**
      * Returns with the minimum x position of all of the polygon's points
      */
     public minX(): number {

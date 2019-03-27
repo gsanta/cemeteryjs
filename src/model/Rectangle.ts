@@ -16,6 +16,22 @@ export class Rectangle extends Polygon {
         this.height = height;
     }
 
+    /**
+     * Sets the height of the `Rectangle`, the name is general to be able to apply it
+     * to other types of shapes as well.
+     */
+    public setBoundingHeight(newHeight: number): Rectangle {
+        return new Rectangle(this.left, this.top, this.width, newHeight);
+    }
+
+    /**
+     * Sets the width of the `Rectangle`, the name is general to be able to apply it
+     * to other types of shapes as well.
+     */
+    public setBoundingWidth(newWidth: number): Rectangle {
+        return new Rectangle(this.left, this.top, newWidth, this.height);
+    }
+
     public addX(amount: number): Polygon {
         return new Rectangle(this.left + amount, this.top, this.width, this.height);
     }
