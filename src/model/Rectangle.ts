@@ -32,6 +32,13 @@ export class Rectangle extends Polygon {
         return new Rectangle(this.left, this.top, newWidth, this.height);
     }
 
+    /**
+     * Returns the center `Point` of the `Rectangle`
+     */
+    public getBoundingCenter(): Point {
+        return new Point(this.left + this.width / 2, this.top + this.height / 2);
+    }
+
     public addX(amount: number): Polygon {
         return new Rectangle(this.left + amount, this.top, this.width, this.height);
     }

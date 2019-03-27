@@ -141,6 +141,14 @@ export class Polygon {
     }
 
     /**
+     * Returns the center `Point` of the bounding `Rectangle`
+     */
+    // TODO: implement it
+    public getBoundingCenter(): Point {
+        throw new Error('not implemented');
+    }
+
+    /**
      * Returns with the minimum x position of all of the polygon's points
      */
     public minX(): number {
