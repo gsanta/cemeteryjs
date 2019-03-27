@@ -116,7 +116,7 @@ export class RoomInfoGenerator implements GwmWorldItemGenerator {
         _.chain(lines)
             .map(line => line.start)
             .forEach(point => {
-                const newPoints = this.processNextPoint(point, prevPoint);
+                const newPoints = this.processNextPoint2(point, prevPoint);
                 leftPoints.push(...newPoints);
 
                 prevPoint = _.last(newPoints);
@@ -132,6 +132,20 @@ export class RoomInfoGenerator implements GwmWorldItemGenerator {
 
         if (prevPoint.x !== actPoint.x) {
             newPoints.push(new Point(prevPoint.x, actPoint.y))
+        }
+
+        prevPoint = actPoint
+
+        newPoints.push(actPoint);
+
+        return newPoints;
+    }
+
+    private processNextPoint2(actPoint: Point, prevPoint: Point): Point[] {
+        const newPoints: Point[] = [];
+
+        if (prevPoint.x !== actPoint.x) {
+            newPoints.push(new Point(actPoint.x, prevPoint.y))
         }
 
         prevPoint = actPoint

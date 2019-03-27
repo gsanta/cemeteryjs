@@ -94,18 +94,12 @@ describe('`StretchRoomsSoTheyJoinWorldItemGeneratorDecorator`', () => {
                 )
             );
 
-            // const roomInfoGenerator = new ScalingWorldItemGeneratorDecorator(
-            //     new RoomInfoGenerator(
-            //         '-',
-            //         new WorldMapToMatrixGraphConverter(),
-            //         new WorldMapToRoomMapConverter('#', '-', ['#'])
-            //     )
-            // );
-
             const items = roomInfoGenerator.generateFromStringMap(map);
 
-            expect(items[0].dimensions).to.eql(new Polygon([new Point(1, 1.5), new Point(13, 1.5), new Point(13, 10.5), new Point(1, 10.5)]));
-            expect(items[1].dimensions).to.eql(new Polygon([new Point(13, 1.5), new Point(19, 1.5), new Point(19, 10.5), new Point(13, 10.5)]));
+            expect(items[0].dimensions).to.eql(
+                new Polygon([new Point(0.5, 0.5), new Point(6.5, 0.5), new Point(6.5, 6.5), new Point(3.5, 6.5), new Point(3.5, 3.5), new Point(0.5, 3.5)])
+            );
+            expect(items[1].dimensions).to.eql(new Polygon([new Point(0.5, 3.5), new Point(3.5, 3.5), new Point(3.5, 6.5), new Point(0.5, 6.5)]));
         });
     });
 });

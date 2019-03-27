@@ -72,7 +72,7 @@ describe('RoomInfoGenerator', () => {
             ]);
         });
 
-        it ('converts a more complicated room shape correctly.', () => {
+        it ('converts shapes where the right side has steps', () => {
             const map = `
                 map \`
 
@@ -105,6 +105,38 @@ describe('RoomInfoGenerator', () => {
             ]);
         });
 
+        it ('converts shapes where the left side has steps.', () => {
+            const map = `
+                map \`
+
+                ----------
+                -####-----
+                -####-----
+                ---##-----
+                ---##-----
+                ----------
+
+                \`
+            `;
+
+            const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
+            const matrixGraph = worldMapToGraphConverter.convert(map);
+
+            const roomGraphToPolygonListConverter = new RoomInfoGenerator('#');
+
+            const worldItem = roomGraphToPolygonListConverter.generate(matrixGraph);
+
+            expect(worldItem.length).to.eql(1);
+            expect(worldItem[0].dimensions.points).to.eql([
+                new Point(1, 1),
+                new Point(5, 1),
+                new Point(5, 5),
+                new Point(3, 5),
+                new Point(3, 3),
+                new Point(1, 3)
+            ]);
+        });
+
         it ('converts a complicated real-world example to the correct room Polygons.', () => {
             const worldMapStr = fs.readFileSync(__dirname + '/../../../assets/test/big_world.gwm', 'utf8');
 
@@ -123,8 +155,8 @@ describe('RoomInfoGenerator', () => {
                 new Point(37, 1),
                 new Point(37, 26),
                 new Point(26, 26),
-                new Point(26, 16),
-                new Point(1, 16)
+                new Point(26, 17),
+                new Point(1, 17)
             ]);
         });
     });
