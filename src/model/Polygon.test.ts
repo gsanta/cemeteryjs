@@ -312,4 +312,42 @@ describe('Polygon', () => {
             expect(polygon.getArea()).to.eql(128);
         });
     });
+
+    describe('`containsMoreThenHalf`', () => {
+        it ('returns true if more than half of the other `Polygon`s area is overlapping with the `Polygon`', () => {
+            const polygon = new Polygon([
+                new Point(1, 1),
+                new Point(3, 1),
+                new Point(3, 3),
+                new Point(1, 3)
+            ]);
+
+            const otherPolygon = new Polygon([
+                new Point(1, 0),
+                new Point(2, 0),
+                new Point(2, 3),
+                new Point(1, 3)
+            ]);
+
+            expect(polygon.containsMoreThenHalf(otherPolygon)).to.be.true;
+        });
+
+        it ('returns false if less the half of the other `Polygon` is overlapping', () => {
+            const polygon = new Polygon([
+                new Point(1, 1),
+                new Point(3, 1),
+                new Point(3, 3),
+                new Point(1, 3)
+            ]);
+
+            const otherPolygon = new Polygon([
+                new Point(1, 0),
+                new Point(2, 0),
+                new Point(2, 6),
+                new Point(1, 6)
+            ]);
+
+            expect(polygon.containsMoreThenHalf(otherPolygon)).to.be.false;
+        });
+    });
 });

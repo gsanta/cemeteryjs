@@ -78,6 +78,27 @@ export class Polygon {
     }
 
     /**
+     * returns true if this `Polygon` contains more than half of the other `Polygon`s area
+     */
+    public containsMoreThenHalf(other: Polygon): boolean {
+        const poly1 = turf.polygon([this.toLinearRing().toTwoDimensionalArray()]);
+        const poly2 = turf.polygon([other.toLinearRing().toTwoDimensionalArray()]);
+
+        const intersection = turf.intersect(poly1, poly2);
+
+        if (intersection) {
+            const intersectionPolygon = this.createPolygonFromTurfGeometry(intersection.geometry);
+
+            const intersectionArea = intersectionPolygon.getArea();
+            const otherPolygonArea = other.getArea();
+
+            return intersectionArea / otherPolygonArea > 0.5;
+        }
+
+        return false;
+    }
+
+    /**
      * Returns true if the two polygons intersect only at a border (but do not overlap)
      */
     public intersectBorder(other: Polygon): Line {
@@ -255,5 +276,19 @@ export class Polygon {
             return new Line(this.points[index], this.points[0]);
         }
         return new Line(this.points[index], this.points[index + 1]);
+    }
+
+    private createPolygonFromTurfGeometry(geometry: {type: string, coordinates: [[number, number][]]}): Polygon {
+        if (geometry.type !== 'Polygon') {
+            return null;
+        }
+
+        let points = geometry.coordinates[0];
+
+        points = _.without(points, _.last(points));
+
+        const polygon = new Polygon(points.map(p => new Point(p[0], p[1])));
+
+        return polygon;
     }
 }
