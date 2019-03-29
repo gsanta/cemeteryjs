@@ -280,7 +280,11 @@ export class Polygon {
 
     private createPolygonFromTurfGeometry(geometry: {type: string, coordinates: [[number, number][]]}): Polygon {
         if (geometry.type !== 'Polygon') {
-            return null;
+            return new Polygon([
+                new Point(0, 0),
+                new Point(0, 0),
+                new Point(0, 0)
+            ])
         }
 
         let points = geometry.coordinates[0];

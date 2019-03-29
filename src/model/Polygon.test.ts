@@ -332,7 +332,7 @@ describe('Polygon', () => {
             expect(polygon.containsMoreThenHalf(otherPolygon)).to.be.true;
         });
 
-        it ('returns false if less the half of the other `Polygon` is overlapping', () => {
+        it ('returns false if less than half of the other `Polygon` is overlapping', () => {
             const polygon = new Polygon([
                 new Point(1, 1),
                 new Point(3, 1),
@@ -345,6 +345,24 @@ describe('Polygon', () => {
                 new Point(2, 0),
                 new Point(2, 6),
                 new Point(1, 6)
+            ]);
+
+            expect(polygon.containsMoreThenHalf(otherPolygon)).to.be.false;
+        });
+
+        it ('returns false if only the border lines are overlapping of the two `Polygon`s sides', () => {
+            const polygon = new Polygon([
+                new Point(1, 1),
+                new Point(3, 1),
+                new Point(3, 3),
+                new Point(1, 3)
+            ]);
+
+            const otherPolygon = new Polygon([
+                new Point(0, 0),
+                new Point(1, 0),
+                new Point(1, 3),
+                new Point(0, 3)
             ]);
 
             expect(polygon.containsMoreThenHalf(otherPolygon)).to.be.false;
