@@ -65,4 +65,46 @@ describe('Rectangle', () => {
             expect(rectangle.addY(4)).to.eql(new Rectangle(5, 10, 4, 4));
         });
     });
+
+    describe('`cutToEqualHorizontalSlices`', () => {
+        it ('cuts the `Rectangle` into two slices without any parameters', () => {
+            const rectangle = new Rectangle(1, 3, 4, 2);
+
+            const cuts = rectangle.cutToEqualHorizontalSlices();
+
+            expect(cuts[0]).to.eql(new Rectangle(1, 3, 4, 1));
+            expect(cuts[1]).to.eql(new Rectangle(1, 4, 4, 1));
+        });
+
+        it ('cuts the `Rectangle` into three slices when `numberOfCuts` parameter equals to 2', () => {
+            const rectangle = new Rectangle(1, -2, 4, 6);
+
+            const cuts = rectangle.cutToEqualHorizontalSlices(2);
+
+            expect(cuts[0]).to.eql(new Rectangle(1, -2, 4, 2));
+            expect(cuts[1]).to.eql(new Rectangle(1, 0, 4, 2));
+            expect(cuts[2]).to.eql(new Rectangle(1, 2, 4, 2));
+        });
+    });
+
+    describe('`cutToEqualVerticalSlices`', () => {
+        it ('cuts the `Rectangle` into two slices without any parameters', () => {
+            const rectangle = new Rectangle(1, 3, 4, 2);
+
+            const cuts = rectangle.cutToEqualVerticalSlices();
+
+            expect(cuts[0]).to.eql(new Rectangle(1, 3, 2, 2));
+            expect(cuts[1]).to.eql(new Rectangle(3, 3, 2, 2));
+        });
+
+        it ('cuts the `Rectangle` into three slices when `numberOfCuts` parameter equals to 2', () => {
+            const rectangle = new Rectangle(-2, 1, 6, 2);
+
+            const cuts = rectangle.cutToEqualVerticalSlices(2);
+
+            expect(cuts[0]).to.eql(new Rectangle(-2, 1, 2, 2));
+            expect(cuts[1]).to.eql(new Rectangle(0, 1, 2, 2));
+            expect(cuts[2]).to.eql(new Rectangle(2, 1, 2, 2));
+        });
+    });
 });

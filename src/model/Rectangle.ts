@@ -1,6 +1,7 @@
 import { Polygon } from './Polygon';
 import { Point } from './Point';
 import { Line } from './Line';
+import _ = require('lodash');
 
 export class Rectangle extends Polygon {
     constructor(left: number, top: number, width: number, height: number) {
@@ -39,6 +40,42 @@ export class Rectangle extends Polygon {
         return new Point(this.left + this.width / 2, this.top + this.height / 2);
     }
 
+    /**
+     * Cuts the `Rectangle` into equal slices and returns with an array representing each slice.
+     * The area of the slices adds up to the original `Rectangle`
+     */
+    public cutToEqualHorizontalSlices(numberOfCuts: number = 1): Rectangle[] {
+        const sliceHeight = this.height / (numberOfCuts + 1);
+
+        const cuts: Rectangle[] = [];
+
+        _.range(0, numberOfCuts + 1).forEach(index => {
+            const currentTop = this.top + index * sliceHeight;
+
+            cuts.push(new Rectangle(this.left, currentTop, this.width, sliceHeight));
+        });
+
+        return cuts;
+    }
+
+    /**
+     * Cuts the `Rectangle` into equal slices and returns with an array representing each slice.
+     * The area of the slices adds up to the original `Rectangle`
+     */
+    public cutToEqualVerticalSlices(numberOfCuts: number = 1): Rectangle[] {
+        const sliceWidth = this.width / (numberOfCuts + 1);
+
+        const cuts: Rectangle[] = [];
+
+        _.range(0, numberOfCuts + 1).forEach(index => {
+            const currentLeft = this.left + index * sliceWidth;
+
+            cuts.push(new Rectangle(currentLeft, this.top, sliceWidth, this.height));
+        });
+
+        return cuts;
+    }
+
     public addX(amount: number): Polygon {
         return new Rectangle(this.left + amount, this.top, this.width, this.height);
     }
@@ -57,17 +94,7 @@ export class Rectangle extends Polygon {
     }
 
     /**
-     * Calculates the two sides that are narrower than the other two or null    public clone(): Polygon {
-        const points = this.points.map(point => point.clone());
-
-        const clone = new Polygon(points);
-        clone.left = this.left;
-        clone.top = this.top;
-        clone.width = this.width;
-        clone.height = this.height;
-
-        return clone;
-    }
+     * Calculates the two sides that are narrower than the other two or null
      * if it is a square.
      */
     public getNarrowSides(): [Line, Line] {
