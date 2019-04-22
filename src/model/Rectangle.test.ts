@@ -87,6 +87,22 @@ describe('Rectangle', () => {
         });
     });
 
+    describe('`stretchX`', () => {
+        it ('stretches the `Rectangle` in the x direction', () => {
+            const rectangle = new Rectangle(0, 2, 2, 3);
+
+            expect(rectangle.stretchX(2)).to.eql(new Rectangle(-2, 2, 6, 3));
+        });
+    });
+
+    describe('`stretchY`', () => {
+        it ('stretches the `Rectangle` in the y direction', () => {
+            const rectangle = new Rectangle(0, 2, 2, 3);
+
+            expect(rectangle.stretchY(1)).to.eql(new Rectangle(0, 1, 2, 5));
+        });
+    });
+
     describe('`cutToEqualVerticalSlices`', () => {
         it ('cuts the `Rectangle` into two slices without any parameters', () => {
             const rectangle = new Rectangle(1, 3, 4, 2);

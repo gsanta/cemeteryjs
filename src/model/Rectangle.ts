@@ -18,6 +18,20 @@ export class Rectangle extends Polygon {
     }
 
     /**
+     * Stretches the `Rectangle` in the x direction by the given `amount` while keeping the center point
+     */
+    public stretchX(amount: number): Rectangle {
+        return new Rectangle(this.left - amount, this.top, this.width + amount * 2, this.height);
+    }
+
+    /**
+     * Stretches the `Rectangle` in the x direction by the given `amount` while keeping the center point
+     */
+    public stretchY(amount: number): Rectangle {
+        return new Rectangle(this.left, this.top - amount, this.width, this.height + amount * 2);
+    }
+
+    /**
      * Sets the height of the `Rectangle`, the name is general to be able to apply it
      * to other types of shapes as well.
      */
