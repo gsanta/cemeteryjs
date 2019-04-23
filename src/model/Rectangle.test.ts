@@ -91,8 +91,8 @@ describe('Rectangle', () => {
 
             const cuts = rectangle.cutToEqualHorizontalSlices(1, true);
 
-            expect(cuts[0]).to.eql(new Rectangle(0, 0, 4, 1));
-            expect(cuts[1]).to.eql(new Rectangle(0, 1, 4, 1));
+            expect(cuts[0]).to.eql(new Rectangle(0, -0.5, 4, 1));
+            expect(cuts[1]).to.eql(new Rectangle(0, 0.5, 4, 1));
         });
     });
 
@@ -137,8 +137,8 @@ describe('Rectangle', () => {
 
             const cuts = rectangle.cutToEqualVerticalSlices(1, true);
 
-            expect(cuts[0]).to.eql(new Rectangle(0, 0, 2, 2));
-            expect(cuts[1]).to.eql(new Rectangle(2, 0, 2, 2));
+            expect(cuts[0]).to.eql(new Rectangle(-1, 0, 2, 2));
+            expect(cuts[1]).to.eql(new Rectangle(1, 0, 2, 2));
         });
     });
 });

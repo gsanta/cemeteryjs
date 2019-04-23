@@ -61,7 +61,7 @@ export class Rectangle extends Polygon {
     public cutToEqualHorizontalSlices(numberOfCuts: number = 1, areCoordinatesRelativeToTheCuttingRectangle = false): Polygon[] {
         const sliceHeight = this.height / (numberOfCuts + 1);
 
-        const translate = areCoordinatesRelativeToTheCuttingRectangle ? new Point(this.left, this.top).negate() : new Point(0, 0);
+        const translate = areCoordinatesRelativeToTheCuttingRectangle ? new Point(this.left, this.top + sliceHeight / 2).negate() : new Point(0, 0);
 
         return _.range(0, numberOfCuts + 1)
             .map(index => {
@@ -79,7 +79,7 @@ export class Rectangle extends Polygon {
     public cutToEqualVerticalSlices(numberOfCuts: number = 1, areCoordinatesRelativeToTheCuttingRectangle = false): Polygon[] {
         const sliceWidth = this.width / (numberOfCuts + 1);
 
-        const translate = areCoordinatesRelativeToTheCuttingRectangle ? new Point(this.left, this.top).negate() : new Point(0, 0);
+        const translate = areCoordinatesRelativeToTheCuttingRectangle ? new Point(this.left + sliceWidth / 2, this.top).negate() : new Point(0, 0);
 
         return _.range(0, numberOfCuts + 1)
             .map(index => {
