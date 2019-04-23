@@ -131,5 +131,14 @@ describe('Rectangle', () => {
             expect(cuts[1]).to.eql(new Rectangle(0, 1, 2, 2));
             expect(cuts[2]).to.eql(new Rectangle(2, 1, 2, 2));
         });
+
+        it ('makes the cuts\' coordinates relative to the `Rectangle` they were cut from if `areCoordinatesRelativeToTheCuttingRectangle` is set to true ', () => {
+            const rectangle = new Rectangle(1, 3, 4, 2);
+
+            const cuts = rectangle.cutToEqualVerticalSlices(1, true);
+
+            expect(cuts[0]).to.eql(new Rectangle(0, 0, 2, 2));
+            expect(cuts[1]).to.eql(new Rectangle(2, 0, 2, 2));
+        });
     });
 });

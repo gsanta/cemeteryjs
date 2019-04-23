@@ -76,18 +76,19 @@ export class Rectangle extends Polygon {
      * Cuts the `Rectangle` into equal slices and returns with an array representing each slice.
      * The area of the slices adds up to the original `Rectangle`
      */
-    public cutToEqualVerticalSlices(numberOfCuts: number = 1): Rectangle[] {
+    public cutToEqualVerticalSlices(numberOfCuts: number = 1, areCoordinatesRelativeToTheCuttingRectangle = false): Polygon[] {
         const sliceWidth = this.width / (numberOfCuts + 1);
 
-        const cuts: Rectangle[] = [];
+        const translate = areCoordinatesRelativeToTheCuttingRectangle ? new Point(this.left, this.top).negate() : new Point(0, 0);
 
-        _.range(0, numberOfCuts + 1).forEach(index => {
-            const currentLeft = this.left + index * sliceWidth;
+        return _.range(0, numberOfCuts + 1)
+            .map(index => {
+                const currentLeft = this.left + index * sliceWidth;
 
-            cuts.push(new Rectangle(currentLeft, this.top, sliceWidth, this.height));
-        });
+                return new Rectangle(currentLeft, this.top, sliceWidth, this.height);
+            })
+            .map(rect => rect.translate(translate));
 
-        return cuts;
     }
 
     public addX(amount: number): Polygon {
