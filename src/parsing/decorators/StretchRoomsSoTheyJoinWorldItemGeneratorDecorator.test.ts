@@ -30,7 +30,7 @@ describe('`StretchRoomsSoTheyJoinWorldItemGeneratorDecorator`', () => {
                 new RoomInfoGenerator(
                     '-',
                     new WorldMapToMatrixGraphConverter(),
-                    new PolygonAreaInfoGenerator('-'),
+                    new PolygonAreaInfoGenerator('room', '-'),
                     new WorldMapToRoomMapConverter('#', '-', ['#'])
                 )
             );
@@ -58,7 +58,7 @@ describe('`StretchRoomsSoTheyJoinWorldItemGeneratorDecorator`', () => {
                     new RoomInfoGenerator(
                         '-',
                         new WorldMapToMatrixGraphConverter(),
-                        new PolygonAreaInfoGenerator('-'),
+                        new PolygonAreaInfoGenerator('room', '-'),
                         new WorldMapToRoomMapConverter('#', '-', ['#'])
                     ),
                     { x: 2, y: 3}
@@ -92,7 +92,7 @@ describe('`StretchRoomsSoTheyJoinWorldItemGeneratorDecorator`', () => {
                     new RoomInfoGenerator(
                         '-',
                         new WorldMapToMatrixGraphConverter(),
-                        new PolygonAreaInfoGenerator('-'),
+                        new PolygonAreaInfoGenerator('room', '-'),
                         new WorldMapToRoomMapConverter('#', '-', ['#'])
                     )
                 )

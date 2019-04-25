@@ -17,6 +17,7 @@ import { RootWorldItemGenerator } from './parsing/RootWorldItemGenerator';
 import { BorderItemSegmentingWorldItemGeneratorDecorator } from './parsing/decorators/BorderItemSegmentingWorldItemGeneratorDecorator';
 import { StretchRoomsSoTheyJoinWorldItemGeneratorDecorator } from './parsing/decorators/StretchRoomsSoTheyJoinWorldItemGeneratorDecorator';
 import { Polygon } from './model/Polygon';
+import { PolygonAreaInfoGenerator } from './parsing/polygon_area_parsing/PolygonAreaInfoGenerator';
 
 
 describe('GwmWorldMapParser', () => {
@@ -465,5 +466,39 @@ describe('GwmWorldMapParser', () => {
 
         expect(root.children.length).to.eql(5);
         expect(root.children[4].dimensions).to.eql(new Polygon([new Point(0.5, 0.5), new Point(4.5, 0.5), new Point(4.5, 3.5), new Point(0.5, 3.5)]))
+    });
+
+    it ('can integrate with `PolygonAreaInfoGenerator`', () => {
+        const map = `
+            map \`
+
+            WWWWW
+            W---W
+            W---W
+            WWWWW
+
+            \`
+        `;
+
+        const worldMapParser = GwmWorldMapParser.createWithCustomWorldItemGenerator(
+            new HierarchyBuildingWorldItemGeneratorDecorator(
+                new CombinedWorldItemGenerator(
+                    [
+                        new RoomInfoGenerator(),
+                        new PolygonAreaInfoGenerator('empty', '-'),
+                        new RootWorldItemGenerator()
+                    ]
+                ),
+
+            )
+        );
+
+        const [root] = worldMapParser.parse(map);
+
+        expect(root.children.length).to.eq(1, 'root\'s children size is incorrect');
+        expect(root.children[0].name).to.eq('room');
+        const room = root.children[0];
+        expect(room.children.length).to.eq(1, 'room\'s children size is incorrect');
+        expect(room.children[0].name).to.eq('empty');
     });
 });

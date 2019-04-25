@@ -21,7 +21,7 @@ describe('PolygonAreaInfoGenerator', () => {
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const polygonAreaInfoGenerator = new PolygonAreaInfoGenerator('#');
+            const polygonAreaInfoGenerator = new PolygonAreaInfoGenerator('room', '#');
 
             const worldItem = polygonAreaInfoGenerator.generate(matrixGraph);
 
@@ -50,7 +50,7 @@ describe('PolygonAreaInfoGenerator', () => {
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const polygonAreaInfoGenerator = new PolygonAreaInfoGenerator('#');
+            const polygonAreaInfoGenerator = new PolygonAreaInfoGenerator('room', '#');
 
             const worldItem = polygonAreaInfoGenerator.generate(matrixGraph);
 
@@ -86,7 +86,7 @@ describe('PolygonAreaInfoGenerator', () => {
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const polygonAreaInfoGenerator = new PolygonAreaInfoGenerator('#');
+            const polygonAreaInfoGenerator = new PolygonAreaInfoGenerator('room', '#');
 
             const worldItem = polygonAreaInfoGenerator.generate(matrixGraph);
 
@@ -120,7 +120,7 @@ describe('PolygonAreaInfoGenerator', () => {
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const polygonAreaInfoGenerator = new PolygonAreaInfoGenerator('#');
+            const polygonAreaInfoGenerator = new PolygonAreaInfoGenerator('room', '#');
 
             const worldItem = polygonAreaInfoGenerator.generate(matrixGraph);
 

@@ -6,7 +6,7 @@ import { Polygon } from "../../model/Polygon";
 import { GwmWorldItem } from '../../model/GwmWorldItem';
 import { GwmWorldItemGenerator } from "../GwmWorldItemGenerator";
 import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
-import { PolygonRedundantPointReducer } from "../room_parsing/PolygonRedundantPointReducer";
+import { PolygonRedundantPointReducer } from "./PolygonRedundantPointReducer";
 
 /**
  * @hidden
@@ -16,10 +16,12 @@ import { PolygonRedundantPointReducer } from "../room_parsing/PolygonRedundantPo
  */
 export class PolygonAreaInfoGenerator implements GwmWorldItemGenerator {
     private polygonRedundantPointReducer: PolygonRedundantPointReducer;
+    private itemName: string;
     private character: string;
     private worldMapConverter: WorldMapToMatrixGraphConverter;
 
-    constructor(character: string, worldMapConverter = new WorldMapToMatrixGraphConverter()) {
+    constructor(itemName: string, character: string, worldMapConverter = new WorldMapToMatrixGraphConverter()) {
+        this.itemName = itemName;
         this.character = character;
         this.worldMapConverter = worldMapConverter;
         this.polygonRedundantPointReducer = new PolygonRedundantPointReducer();
@@ -34,7 +36,7 @@ export class PolygonAreaInfoGenerator implements GwmWorldItemGenerator {
                     this.createPolygonPointsFromHorizontalLines(lines)
                 );
 
-                return new GwmWorldItem(null, new Polygon(points), 'room');
+                return new GwmWorldItem(null, new Polygon(points), this.itemName);
             });
     }
 

@@ -9,6 +9,7 @@ import { RootWorldItemGenerator } from './parsing/RootWorldItemGenerator';
 import { RoomSeparatorGenerator } from './parsing/room_separator_parsing/RoomSeparatorGenerator';
 import { HierarchyBuildingWorldItemGeneratorDecorator } from './parsing/decorators/HierarchyBuildingWorldItemGeneratorDecorator';
 import { StretchRoomsSoTheyJoinWorldItemGeneratorDecorator } from './parsing/decorators/StretchRoomsSoTheyJoinWorldItemGeneratorDecorator';
+import { PolygonAreaInfoGenerator } from './parsing/polygon_area_parsing/PolygonAreaInfoGenerator';
 
 export {GwmWorldMapParser, ParseOptions, defaultParseOptions} from './GwmWorldMapParser';
 export {GwmWorldItem} from './model/GwmWorldItem';
@@ -19,6 +20,7 @@ export {TreeNode, TreeIteratorGenerator} from './gwm_world_item/iterator/TreeIte
 
 export const generators = {
     RoomInfoGenerator,
+    PolygonAreaInfoGenerator,
     FurnitureInfoGenerator,
     CombinedWorldItemGenerator,
     ScalingWorldItemGeneratorDecorator,

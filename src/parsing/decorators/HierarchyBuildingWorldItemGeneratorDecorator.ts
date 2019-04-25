@@ -38,9 +38,13 @@ export class HierarchyBuildingWorldItemGeneratorDecorator implements GwmWorldIte
                 .without(currentItem)
                 .forEach((childItem: GwmWorldItem) => {
                     if (currentItem.dimensions.contains(childItem.dimensions)) {
-                        currentItem.addChild(childItem);
-                        childrenAlreadyCategorized.push(childItem);
-                        rootWorldItems = _.without(rootWorldItems, childItem);
+                        // this condition ensures that no two items will be each other's children if they would have the
+                        // same size
+                        if (childItem.children.indexOf(currentItem) === -1) {
+                            currentItem.addChild(childItem);
+                            childrenAlreadyCategorized.push(childItem);
+                            rootWorldItems = _.without(rootWorldItems, childItem);
+                        }
                     }
                 })
                 .value();
