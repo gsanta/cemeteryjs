@@ -6,6 +6,7 @@ import { Point } from '../../model/Point';
 import { WorldMapToMatrixGraphConverter } from '../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 import { WorldMapToRoomMapConverter } from '../room_parsing/WorldMapToRoomMapConverter';
 import { ScalingWorldItemGeneratorDecorator } from './ScalingWorldItemGeneratorDecorator';
+import { PolygonAreaInfoGenerator } from '../polygon_area_parsing/PolygonAreaInfoGenerator';
 
 
 describe('`StretchRoomsSoTheyJoinWorldItemGeneratorDecorator`', () => {
@@ -29,6 +30,7 @@ describe('`StretchRoomsSoTheyJoinWorldItemGeneratorDecorator`', () => {
                 new RoomInfoGenerator(
                     '-',
                     new WorldMapToMatrixGraphConverter(),
+                    new PolygonAreaInfoGenerator('-'),
                     new WorldMapToRoomMapConverter('#', '-', ['#'])
                 )
             );
@@ -56,6 +58,7 @@ describe('`StretchRoomsSoTheyJoinWorldItemGeneratorDecorator`', () => {
                     new RoomInfoGenerator(
                         '-',
                         new WorldMapToMatrixGraphConverter(),
+                        new PolygonAreaInfoGenerator('-'),
                         new WorldMapToRoomMapConverter('#', '-', ['#'])
                     ),
                     { x: 2, y: 3}
@@ -89,6 +92,7 @@ describe('`StretchRoomsSoTheyJoinWorldItemGeneratorDecorator`', () => {
                     new RoomInfoGenerator(
                         '-',
                         new WorldMapToMatrixGraphConverter(),
+                        new PolygonAreaInfoGenerator('-'),
                         new WorldMapToRoomMapConverter('#', '-', ['#'])
                     )
                 )
