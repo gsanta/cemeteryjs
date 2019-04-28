@@ -472,10 +472,12 @@ describe('GwmWorldMapParser', () => {
         const map = `
             map \`
 
-            WWWWW
-            W---W
-            W---W
-            WWWWW
+            WWWWWWWW
+            W---W--W
+            W---WWWW
+            W------W
+            W------W
+            WWWWWWWW
 
             \`
         `;
@@ -495,7 +497,7 @@ describe('GwmWorldMapParser', () => {
 
         const [root] = worldMapParser.parse(map);
 
-        expect(root.children.length).to.eq(1, 'root\'s children size is incorrect');
+        expect(root.children.length).to.eq(2, 'root\'s children size is incorrect');
         expect(root.children[0].name).to.eq('room');
         const room = root.children[0];
         expect(room.children.length).to.eq(1, 'room\'s children size is incorrect');

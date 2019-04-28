@@ -3,6 +3,9 @@ import { Point } from './Point';
 import { expect } from 'chai';
 import { Rectangle } from './Rectangle';
 import { Line } from './Line';
+import { CombinedWorldItemGenerator } from '../parsing/decorators/CombinedWorldItemGenerator';
+import { RoomInfoGenerator } from '../parsing/room_parsing/RoomInfoGenerator';
+import { GwmWorldMapParser } from '../GwmWorldMapParser';
 
 
 describe('Polygon', () => {
@@ -366,6 +369,36 @@ describe('Polygon', () => {
             ]);
 
             expect(polygon.containsMoreThenHalf(otherPolygon)).to.be.false;
+        });
+    });
+
+    describe('getBoundingCenter', () => {
+        it ('returns the visual center of the polygon', () => {
+            const map = `
+                map \`
+
+                WWWWWWWWWWWWWW
+                W---W--------W
+                W---WWWWWWWWWW
+                W------------W
+                W------------W
+                WWWWWWWWWWWWWW
+
+                \`
+            `;
+            const worldMapParser = GwmWorldMapParser.createWithCustomWorldItemGenerator(
+                new CombinedWorldItemGenerator(
+                    [
+                        new RoomInfoGenerator(),
+                    ]
+                ),
+            );
+
+
+            const rooms = worldMapParser.parse(map);
+
+            const center = rooms[0].dimensions.getBoundingCenter();
+            expect(center).to.eql(new Point(2.5, 3.5));
         });
     });
 });

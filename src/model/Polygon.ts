@@ -2,6 +2,7 @@ import { Point } from './Point';
 import * as turf from '@turf/turf';
 import { Line } from './Line';
 import _ = require('lodash');
+import polylabel from 'polylabel';
 
 export class Polygon {
     public points: Point[];
@@ -164,9 +165,9 @@ export class Polygon {
     /**
      * Returns the center `Point` of the bounding `Rectangle`
      */
-    // TODO: implement it
     public getBoundingCenter(): Point {
-        throw new Error('not implemented');
+        const center = polylabel([this.toTwoDimensionalArray()], 1.0);
+        return new Point(center[0], center[1]);
     }
 
     /**
@@ -261,7 +262,7 @@ export class Polygon {
     }
 
     private toTwoDimensionalArray(): number[][] {
-        return <[][]> this.points.map(point => [point.x, point.y]);
+        return <number[][]> this.points.map(point => [point.x, point.y]);
     }
 
     private toLinearRing(): Polygon {
