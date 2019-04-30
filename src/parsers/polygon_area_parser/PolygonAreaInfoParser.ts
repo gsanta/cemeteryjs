@@ -14,7 +14,7 @@ import { PolygonRedundantPointReducer } from "./PolygonRedundantPointReducer";
  * Generates `GwmWorldItem`s based on connected area of the given character. It can detect `Polygon` shaped
  * areas.
  */
-export class PolygonAreaInfoGenerator implements GwmWorldItemParser {
+export class PolygonAreaInfoParser implements GwmWorldItemParser {
     private polygonRedundantPointReducer: PolygonRedundantPointReducer;
     private itemName: string;
     private character: string;
@@ -41,10 +41,10 @@ export class PolygonAreaInfoGenerator implements GwmWorldItemParser {
     }
 
     public generateFromStringMap(strMap: string): GwmWorldItem[] {
-        return this.generate(this.getMatrixGraphForStringMap(strMap));
+        return this.generate(this.parseWorldMap(strMap));
     }
 
-    public getMatrixGraphForStringMap(strMap: string): MatrixGraph {
+    public parseWorldMap(strMap: string): MatrixGraph {
         return this.worldMapConverter.convert(strMap);
     }
 
@@ -69,7 +69,7 @@ export class PolygonAreaInfoGenerator implements GwmWorldItemParser {
         const lines: Line[] = [];
 
         map.forEach((xList: number[], yPos: number) => {
-            xList.sort(PolygonAreaInfoGenerator.sortByNumber);
+            xList.sort(PolygonAreaInfoParser.sortByNumber);
 
             const xStart = xList[0];
             const xEnd = _.last(xList);

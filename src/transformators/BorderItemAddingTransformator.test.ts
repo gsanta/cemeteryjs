@@ -1,6 +1,6 @@
-import { CombinedWorldItemGenerator } from '../parsers/CombinedWorldItemGenerator';
-import { RoomSeparatorGenerator } from '../parsers/room_separator_parsing/RoomSeparatorGenerator';
-import { RoomInfoGenerator } from '../parsers/room_parsing/RoomInfoGenerator';
+import { CombinedWorldItemParser } from '../parsers/CombinedWorldItemParser';
+import { RoomSeparatorParser } from '../parsers/room_separator_parser/RoomSeparatorParser';
+import { RoomInfoParser } from '../parsers/room_parser/RoomInfoParser';
 import { BorderItemAddingTransformator } from './BorderItemAddingTransformator';
 import { expect } from 'chai';
 import { BorderItemSegmentingTransformator } from './BorderItemSegmentingTransformator';
@@ -32,10 +32,10 @@ describe('BorderItemAddingTransformator', () => {
                 \`
             `;
 
-            let items = new CombinedWorldItemGenerator(
+            let items = new CombinedWorldItemParser(
                 [
-                    new RoomSeparatorGenerator(['W']),
-                    new RoomInfoGenerator()
+                    new RoomSeparatorParser(['W']),
+                    new RoomInfoParser()
                 ]
             ).generateFromStringMap(map);
 
@@ -68,10 +68,10 @@ describe('BorderItemAddingTransformator', () => {
                 \`
             `;
 
-            let items = new CombinedWorldItemGenerator(
+            let items = new CombinedWorldItemParser(
                 [
-                    new RoomSeparatorGenerator(['W']),
-                    new RoomInfoGenerator()
+                    new RoomSeparatorParser(['W']),
+                    new RoomInfoParser()
                 ]
             ).generateFromStringMap(map);
 
@@ -110,10 +110,10 @@ describe('BorderItemAddingTransformator', () => {
                 \`
             `;
 
-            let items = new CombinedWorldItemGenerator(
+            let items = new CombinedWorldItemParser(
                 [
-                    new RoomSeparatorGenerator(['W']),
-                    new RoomInfoGenerator()
+                    new RoomSeparatorParser(['W']),
+                    new RoomInfoParser()
                 ]
             ).generateFromStringMap(map);
 
@@ -152,10 +152,10 @@ describe('BorderItemAddingTransformator', () => {
                 \`
             `;
 
-            let items = new CombinedWorldItemGenerator(
+            let items = new CombinedWorldItemParser(
                 [
-                    new RoomSeparatorGenerator(['W']),
-                    new RoomInfoGenerator()
+                    new RoomSeparatorParser(['W']),
+                    new RoomInfoParser()
                 ]
             ).generateFromStringMap(map);
 

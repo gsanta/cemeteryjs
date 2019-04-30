@@ -1,12 +1,12 @@
-import { RoomInfoGenerator } from '../parsers/room_parsing/RoomInfoGenerator';
+import { RoomInfoParser } from '../parsers/room_parser/RoomInfoParser';
 import { StretchRoomsSoTheyJoinTransformator } from './StretchRoomsSoTheyJoinTransformator';
 import { expect } from 'chai';
 import { Polygon } from '../model/Polygon';
 import { Point } from '../model/Point';
 import { WorldMapToMatrixGraphConverter } from '../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
-import { WorldMapToRoomMapConverter } from '../parsers/room_parsing/WorldMapToRoomMapConverter';
+import { WorldMapToRoomMapConverter } from '../parsers/room_parser/WorldMapToRoomMapConverter';
 import { ScalingTransformator } from './ScalingTransformator';
-import { PolygonAreaInfoGenerator } from '../parsers/polygon_area_parsing/PolygonAreaInfoGenerator';
+import { PolygonAreaInfoParser } from '../parsers/polygon_area_parser/PolygonAreaInfoParser';
 
 
 describe('`StretchRoomsSoTheyJoinTransformator`', () => {
@@ -26,10 +26,10 @@ describe('`StretchRoomsSoTheyJoinTransformator`', () => {
                 \`
             `;
 
-            let items = new RoomInfoGenerator(
+            let items = new RoomInfoParser(
                 '-',
                 new WorldMapToMatrixGraphConverter(),
-                new PolygonAreaInfoGenerator('room', '-'),
+                new PolygonAreaInfoParser('room', '-'),
                 new WorldMapToRoomMapConverter('#', '-', ['#'])
             ).generateFromStringMap(map);
 
@@ -51,10 +51,10 @@ describe('`StretchRoomsSoTheyJoinTransformator`', () => {
                 \`
             `;
 
-            let items = new RoomInfoGenerator(
+            let items = new RoomInfoParser(
                 '-',
                 new WorldMapToMatrixGraphConverter(),
-                new PolygonAreaInfoGenerator('room', '-'),
+                new PolygonAreaInfoParser('room', '-'),
                 new WorldMapToRoomMapConverter('#', '-', ['#'])
             ).generateFromStringMap(map);
 
@@ -82,10 +82,10 @@ describe('`StretchRoomsSoTheyJoinTransformator`', () => {
                 \`
             `;
 
-            let items = new RoomInfoGenerator(
+            let items = new RoomInfoParser(
                     '-',
                     new WorldMapToMatrixGraphConverter(),
-                    new PolygonAreaInfoGenerator('room', '-'),
+                    new PolygonAreaInfoParser('room', '-'),
                     new WorldMapToRoomMapConverter('#', '-', ['#'])
                 ).generateFromStringMap(map);
 

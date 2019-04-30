@@ -3,35 +3,31 @@ import _ = require("lodash");
 import { Line } from "../../model/Line";
 import { Point } from "../../model/Point";
 import { Polygon } from "../../model/Polygon";
-import { PolygonRedundantPointReducer } from '../polygon_area_parsing/PolygonRedundantPointReducer';
+import { PolygonRedundantPointReducer } from '../polygon_area_parser/PolygonRedundantPointReducer';
 import { GwmWorldItem } from '../../model/GwmWorldItem';
 import { GwmWorldItemParser } from "../GwmWorldItemParser";
 import { WorldMapToRoomMapConverter } from './WorldMapToRoomMapConverter';
 import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
-import { PolygonAreaInfoGenerator } from '../polygon_area_parsing/PolygonAreaInfoGenerator';
+import { PolygonAreaInfoParser } from '../polygon_area_parser/PolygonAreaInfoParser';
 
 /**
  * @hidden
  *
  * Generates room info
  */
-export class RoomInfoGenerator implements GwmWorldItemParser {
-    private polygonRedundantPointReducer: PolygonRedundantPointReducer;
-    private roomCharacter: string;
+export class RoomInfoParser implements GwmWorldItemParser {
     private worldMapToRoomMapConverter: WorldMapToRoomMapConverter;
     private worldMapConverter: WorldMapToMatrixGraphConverter;
-    private polygonAreaInfoGenerator: PolygonAreaInfoGenerator;
+    private polygonAreaInfoGenerator: PolygonAreaInfoParser;
 
     constructor(
         roomCharacter = '-',
         worldMapConverter = new WorldMapToMatrixGraphConverter(),
-        polygonAreaInfoGenerator = new PolygonAreaInfoGenerator('room', roomCharacter),
+        polygonAreaInfoGenerator = new PolygonAreaInfoParser('room', roomCharacter),
         worldMapToRoomMapConverter = new WorldMapToRoomMapConverter('W', '-', ['W', 'D', 'I']),
     ) {
-        this.roomCharacter = roomCharacter;
         this.worldMapConverter = worldMapConverter;
         this.worldMapToRoomMapConverter = worldMapToRoomMapConverter;
-        this.polygonRedundantPointReducer = new PolygonRedundantPointReducer();
         this.polygonAreaInfoGenerator = polygonAreaInfoGenerator;
     }
 
@@ -40,10 +36,10 @@ export class RoomInfoGenerator implements GwmWorldItemParser {
     }
 
     public generateFromStringMap(strMap: string): GwmWorldItem[] {
-        return this.polygonAreaInfoGenerator.generate(this.getMatrixGraphForStringMap(strMap));
+        return this.polygonAreaInfoGenerator.generate(this.parseWorldMap(strMap));
     }
 
-    public getMatrixGraphForStringMap(strMap: string): MatrixGraph {
+    public parseWorldMap(strMap: string): MatrixGraph {
         return this.worldMapConverter.convert(
             this.worldMapToRoomMapConverter.convert(strMap)
         );
@@ -70,7 +66,7 @@ export class RoomInfoGenerator implements GwmWorldItemParser {
         const lines: Line[] = [];
 
         map.forEach((xList: number[], yPos: number) => {
-            xList.sort(RoomInfoGenerator.sortByNumber);
+            xList.sort(RoomInfoParser.sortByNumber);
 
             const xStart = xList[0];
             const xEnd = _.last(xList);

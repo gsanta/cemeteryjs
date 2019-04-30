@@ -1,15 +1,15 @@
 import { GwmWorldItem } from './model/GwmWorldItem';
 import _ = require('lodash');
 import { GwmWorldItemParser } from './parsers/GwmWorldItemParser';
-import { CombinedWorldItemGenerator } from './parsers/CombinedWorldItemGenerator';
+import { CombinedWorldItemParser } from './parsers/CombinedWorldItemParser';
 import { AdditionalDataConverter, AdditionalDataConvertingTransformator } from './transformators/AdditionalDataConvertingTransformator';
 import { ScalingTransformator } from './transformators/ScalingTransformator';
 import { HierarchyBuildingTransformator } from './transformators/HierarchyBuildingTransformator';
-import { FurnitureInfoGenerator } from './parsers/furniture_parsing/FurnitureInfoGenerator';
-import { RoomInfoGenerator } from './parsers/room_parsing/RoomInfoGenerator';
-import { RootWorldItemGenerator } from './parsers/RootWorldItemGenerator';
+import { FurnitureInfoParser } from './parsers/furniture_parser/FurnitureInfoParser';
+import { RoomInfoParser } from './parsers/room_parser/RoomInfoParser';
+import { RootWorldItemParser } from './parsers/RootWorldItemParser';
 import { WorldMapToMatrixGraphConverter } from './matrix_graph/conversion/WorldMapToMatrixGraphConverter';
-import { RoomSeparatorGenerator } from './parsers/room_separator_parsing/RoomSeparatorGenerator';
+import { RoomSeparatorParser } from './parsers/room_separator_parser/RoomSeparatorParser';
 import { BorderItemAddingTransformator } from './transformators/BorderItemAddingTransformator';
 import { GwmWorldItemTransformator } from './transformators/GwmWorldItemTransformator';
 
@@ -53,12 +53,12 @@ export class GwmWorldMapParser {
 
     public static createWithOptions<T>(characterTypes: CharacterTypes, options: ParseOptions<T> = defaultParseOptions): GwmWorldMapParser {
         return new GwmWorldMapParser(
-            new CombinedWorldItemGenerator(
+            new CombinedWorldItemParser(
                 [
-                    new FurnitureInfoGenerator(characterTypes.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
-                    new RoomSeparatorGenerator(characterTypes.roomSeparatorCharacters),
-                    new RoomInfoGenerator(),
-                    new RootWorldItemGenerator()
+                    new FurnitureInfoParser(characterTypes.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
+                    new RoomSeparatorParser(characterTypes.roomSeparatorCharacters),
+                    new RoomInfoParser(),
+                    new RootWorldItemParser()
                 ]
             ),
             [

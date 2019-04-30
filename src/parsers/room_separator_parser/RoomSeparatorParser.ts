@@ -4,11 +4,10 @@ import * as _ from 'lodash';
 import { Rectangle } from '../../model/Rectangle';
 import { GwmWorldItemParser } from '../GwmWorldItemParser';
 import { WorldMapToMatrixGraphConverter } from '../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
-import { WorldMapToRoomMapConverter } from '../room_parsing/WorldMapToRoomMapConverter';
+import { WorldMapToRoomMapConverter } from '../room_parser/WorldMapToRoomMapConverter';
 
-export class RoomSeparatorGenerator implements GwmWorldItemParser {
+export class RoomSeparatorParser implements GwmWorldItemParser {
     private worldMapConverter: WorldMapToMatrixGraphConverter;
-    private worldMapToRoomMapConverter: WorldMapToRoomMapConverter;
     private roomSeparatorCharacters: string[];
 
     constructor(
@@ -33,10 +32,10 @@ export class RoomSeparatorGenerator implements GwmWorldItemParser {
     }
 
     public generateFromStringMap(strMap: string): GwmWorldItem[] {
-        return this.generate(this.getMatrixGraphForStringMap(strMap));
+        return this.generate(this.parseWorldMap(strMap));
     }
 
-    public getMatrixGraphForStringMap(strMap: string): MatrixGraph {
+    public parseWorldMap(strMap: string): MatrixGraph {
         return this.worldMapConverter.convert(strMap);
     }
 

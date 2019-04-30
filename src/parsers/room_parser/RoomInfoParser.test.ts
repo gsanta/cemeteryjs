@@ -1,11 +1,11 @@
 import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
-import { RoomInfoGenerator } from './RoomInfoGenerator';
+import { RoomInfoParser } from './RoomInfoParser';
 import { expect } from 'chai';
 import { Point } from "../../model/Point";
 import * as fs from 'fs';
 import { WorldMapToRoomMapConverter } from "./WorldMapToRoomMapConverter";
 
-describe('RoomInfoGenerator', () => {
+describe('RoomInfoParser', () => {
     describe ('generate', () => {
         it ('converts a complicated real-world example to the correct room Polygons.', () => {
             const worldMapStr = fs.readFileSync(__dirname + '/../../../assets/test/big_world.gwm', 'utf8');
@@ -16,9 +16,9 @@ describe('RoomInfoGenerator', () => {
 
             const matrixGraph = worldMapToGraphConverter.convert(worldMapToRoomMapConverter.convert(worldMapStr));
 
-            const roomGraphToPolygonListConverter = new RoomInfoGenerator('#');
+            const roomInfoParser = new RoomInfoParser('#');
 
-            const worldItem = roomGraphToPolygonListConverter.generate(matrixGraph);
+            const worldItem = roomInfoParser.generate(matrixGraph);
 
             expect(worldItem[0].dimensions.points).to.eql([
                 new Point(1, 1),

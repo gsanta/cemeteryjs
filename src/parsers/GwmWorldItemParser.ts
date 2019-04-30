@@ -5,5 +5,5 @@ import { MatrixGraph } from "../matrix_graph/MatrixGraph";
 export interface GwmWorldItemParser {
     generate(graph: MatrixGraph): GwmWorldItem[];
     generateFromStringMap(strMap: string): GwmWorldItem[];
-    getMatrixGraphForStringMap(strMap: string): MatrixGraph;
+    parseWorldMap(strMap: string): MatrixGraph;
 }

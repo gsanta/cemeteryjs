@@ -8,16 +8,16 @@ import { AdditionalDataConvertingTransformator } from './transformators/Addition
 import { BorderItemAddingTransformator } from './transformators/BorderItemAddingTransformator';
 import { HierarchyBuildingTransformator } from './transformators/HierarchyBuildingTransformator';
 import { ScalingTransformator } from './transformators/ScalingTransformator';
-import { CombinedWorldItemGenerator } from './parsers/CombinedWorldItemGenerator';
-import { FurnitureInfoGenerator } from './parsers/furniture_parsing/FurnitureInfoGenerator';
+import { CombinedWorldItemParser } from './parsers/CombinedWorldItemParser';
+import { FurnitureInfoParser } from './parsers/furniture_parser/FurnitureInfoParser';
 import { WorldMapToMatrixGraphConverter } from './matrix_graph/conversion/WorldMapToMatrixGraphConverter';
-import { RoomSeparatorGenerator } from './parsers/room_separator_parsing/RoomSeparatorGenerator';
-import { RoomInfoGenerator } from './parsers/room_parsing/RoomInfoGenerator';
-import { RootWorldItemGenerator } from './parsers/RootWorldItemGenerator';
+import { RoomSeparatorParser } from './parsers/room_separator_parser/RoomSeparatorParser';
+import { RoomInfoParser } from './parsers/room_parser/RoomInfoParser';
+import { RootWorldItemParser } from './parsers/RootWorldItemParser';
 import { BorderItemSegmentingTransformator } from './transformators/BorderItemSegmentingTransformator';
 import { StretchRoomsSoTheyJoinTransformator } from './transformators/StretchRoomsSoTheyJoinTransformator';
 import { Polygon } from './model/Polygon';
-import { PolygonAreaInfoGenerator } from './parsers/polygon_area_parsing/PolygonAreaInfoGenerator';
+import { PolygonAreaInfoParser } from './parsers/polygon_area_parser/PolygonAreaInfoParser';
 
 
 describe('GwmWorldMapParser', () => {
@@ -384,12 +384,12 @@ describe('GwmWorldMapParser', () => {
         }
 
         const worldMapParser = GwmWorldMapParser.createWithCustomWorldItemGenerator(
-            new CombinedWorldItemGenerator(
+            new CombinedWorldItemParser(
                 [
-                    new FurnitureInfoGenerator(options.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
-                    new RoomSeparatorGenerator(options.roomSeparatorCharacters),
-                    new RoomInfoGenerator(),
-                    new RootWorldItemGenerator()
+                    new FurnitureInfoParser(options.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
+                    new RoomSeparatorParser(options.roomSeparatorCharacters),
+                    new RoomInfoParser(),
+                    new RootWorldItemParser()
                 ]
             ),
             [
@@ -427,12 +427,12 @@ describe('GwmWorldMapParser', () => {
         }
 
         const worldMapParser = GwmWorldMapParser.createWithCustomWorldItemGenerator(
-            new CombinedWorldItemGenerator(
+            new CombinedWorldItemParser(
                 [
-                    new FurnitureInfoGenerator(options.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
-                    new RoomSeparatorGenerator(options.roomSeparatorCharacters),
-                    new RoomInfoGenerator(),
-                    new RootWorldItemGenerator()
+                    new FurnitureInfoParser(options.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
+                    new RoomSeparatorParser(options.roomSeparatorCharacters),
+                    new RoomInfoParser(),
+                    new RootWorldItemParser()
                 ]
             ),
             [
@@ -467,11 +467,11 @@ describe('GwmWorldMapParser', () => {
         `;
 
         const worldMapParser = GwmWorldMapParser.createWithCustomWorldItemGenerator(
-            new CombinedWorldItemGenerator(
+            new CombinedWorldItemParser(
                 [
-                    new RoomInfoGenerator(),
-                    new PolygonAreaInfoGenerator('empty', '-'),
-                    new RootWorldItemGenerator()
+                    new RoomInfoParser(),
+                    new PolygonAreaInfoParser('empty', '-'),
+                    new RootWorldItemParser()
                 ]
             ),
             [new HierarchyBuildingTransformator()]

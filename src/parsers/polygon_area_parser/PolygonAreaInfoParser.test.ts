@@ -1,7 +1,7 @@
 import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
 import { expect } from "chai";
 import { Point } from "../../model/Point";
-import { PolygonAreaInfoGenerator } from "./PolygonAreaInfoGenerator";
+import { PolygonAreaInfoParser } from "./PolygonAreaInfoParser";
 
 describe('PolygonAreaInfoGenerator', () => {
     describe ('generate', () => {
@@ -21,9 +21,9 @@ describe('PolygonAreaInfoGenerator', () => {
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const polygonAreaInfoGenerator = new PolygonAreaInfoGenerator('room', '#');
+            const polygonAreaInfoParser = new PolygonAreaInfoParser('room', '#');
 
-            const worldItem = polygonAreaInfoGenerator.generate(matrixGraph);
+            const worldItem = polygonAreaInfoParser.generate(matrixGraph);
 
             expect(worldItem.length).to.eql(1);
             expect(worldItem[0].dimensions.points).to.eql([
@@ -50,9 +50,9 @@ describe('PolygonAreaInfoGenerator', () => {
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const polygonAreaInfoGenerator = new PolygonAreaInfoGenerator('room', '#');
+            const polygonAreaInfoParser = new PolygonAreaInfoParser('room', '#');
 
-            const worldItem = polygonAreaInfoGenerator.generate(matrixGraph);
+            const worldItem = polygonAreaInfoParser.generate(matrixGraph);
 
             expect(worldItem.length).to.eql(2);
             expect(worldItem[0].dimensions.points).to.eql([
@@ -86,9 +86,9 @@ describe('PolygonAreaInfoGenerator', () => {
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const polygonAreaInfoGenerator = new PolygonAreaInfoGenerator('room', '#');
+            const polygonAreaInfoParser = new PolygonAreaInfoParser('room', '#');
 
-            const worldItem = polygonAreaInfoGenerator.generate(matrixGraph);
+            const worldItem = polygonAreaInfoParser.generate(matrixGraph);
 
             expect(worldItem.length).to.eql(1);
             expect(worldItem[0].dimensions.points).to.eql([
@@ -120,9 +120,9 @@ describe('PolygonAreaInfoGenerator', () => {
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const polygonAreaInfoGenerator = new PolygonAreaInfoGenerator('room', '#');
+            const polygonAreaInfoParser = new PolygonAreaInfoParser('room', '#');
 
-            const worldItem = polygonAreaInfoGenerator.generate(matrixGraph);
+            const worldItem = polygonAreaInfoParser.generate(matrixGraph);
 
             expect(worldItem.length).to.eql(1);
             expect(worldItem[0].dimensions.points).to.eql([

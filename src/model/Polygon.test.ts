@@ -3,8 +3,8 @@ import { Point } from './Point';
 import { expect } from 'chai';
 import { Rectangle } from './Rectangle';
 import { Line } from './Line';
-import { CombinedWorldItemGenerator } from '../parsers/CombinedWorldItemGenerator';
-import { RoomInfoGenerator } from '../parsers/room_parsing/RoomInfoGenerator';
+import { CombinedWorldItemParser } from '../parsers/CombinedWorldItemParser';
+import { RoomInfoParser } from '../parsers/room_parser/RoomInfoParser';
 import { GwmWorldMapParser } from '../GwmWorldMapParser';
 
 
@@ -387,9 +387,9 @@ describe('Polygon', () => {
                 \`
             `;
             const worldMapParser = GwmWorldMapParser.createWithCustomWorldItemGenerator(
-                new CombinedWorldItemGenerator(
+                new CombinedWorldItemParser(
                     [
-                        new RoomInfoGenerator(),
+                        new RoomInfoParser(),
                     ]
                 ),
             );

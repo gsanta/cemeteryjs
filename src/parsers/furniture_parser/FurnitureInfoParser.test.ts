@@ -1,10 +1,10 @@
 import { LinesToGraphConverter } from '../../matrix_graph/conversion/LinesToGraphConverter';
-import { FurnitureInfoGenerator } from './FurnitureInfoGenerator';
+import { FurnitureInfoParser } from './FurnitureInfoParser';
 import { expect } from 'chai';
 import { GwmWorldItem } from '../../model/GwmWorldItem';
 import { Rectangle } from '../../model/Rectangle';
 
-describe('FurnitureInfoGenerator', () => {
+describe('FurnitureInfoParser', () => {
     describe('generate', () => {
         it ('creates world items from the graph (test case with one connected component)', () => {
             const linesToGraphConverter = new LinesToGraphConverter();
@@ -23,8 +23,8 @@ describe('FurnitureInfoGenerator', () => {
             );
 
 
-            const graphToWorldItemListConverter = new FurnitureInfoGenerator(['W']);
-            const worldItems = graphToWorldItemListConverter.generate(graph);
+            const furnitureInfoParser = new FurnitureInfoParser(['W']);
+            const worldItems = furnitureInfoParser.generate(graph);
 
             expect(worldItems.length).to.eql(4);
             const firstItem = worldItems[0];
@@ -50,8 +50,8 @@ describe('FurnitureInfoGenerator', () => {
             );
 
 
-            const graphToWorldItemListConverter = new FurnitureInfoGenerator(['W']);
-            const worldItems = graphToWorldItemListConverter.generate(graph);
+            const furnitureInfoParser = new FurnitureInfoParser(['W']);
+            const worldItems = furnitureInfoParser.generate(graph);
 
             expect(worldItems.length).to.eql(3);
             const firstItem = worldItems[0];
@@ -77,8 +77,8 @@ describe('FurnitureInfoGenerator', () => {
             );
 
 
-            const graphToWorldItemListConverter = new FurnitureInfoGenerator(['D']);
-            const worldItems = graphToWorldItemListConverter.generate(graph);
+            const furnitureInfoParser = new FurnitureInfoParser(['D']);
+            const worldItems = furnitureInfoParser.generate(graph);
             expect(worldItems.length).to.equal(1);
             expect(worldItems[0]).to.eql(new GwmWorldItem('D', new Rectangle(1, 0, 2, 3), 'door'));
         });

@@ -3,7 +3,7 @@ import { MatrixGraph } from "../matrix_graph/MatrixGraph";
 import { WorldMapToMatrixGraphConverter } from "../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
 
 
-export class RootWorldItemGenerator implements GwmWorldItemGenerator {
+export class RootWorldItemParser implements GwmWorldItemGenerator {
     private worldMapConverter: WorldMapToMatrixGraphConverter;
 
     constructor(worldMapConverter = new WorldMapToMatrixGraphConverter()) {
@@ -19,7 +19,7 @@ export class RootWorldItemGenerator implements GwmWorldItemGenerator {
         return [this.createRootWorldItem(matrixGraph)];
     }
 
-    public getMatrixGraphForStringMap(strMap: string): MatrixGraph {
+    public parseWorldMap(strMap: string): MatrixGraph {
         return this.worldMapConverter.convert(strMap);
     }
 

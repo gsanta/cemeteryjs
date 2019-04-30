@@ -5,7 +5,7 @@ import { Rectangle } from '../../model/Rectangle';
 import { GwmWorldItemParser } from '../GwmWorldItemParser';
 import { WorldMapToMatrixGraphConverter } from '../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 
-export class FurnitureInfoGenerator implements GwmWorldItemParser {
+export class FurnitureInfoParser implements GwmWorldItemParser {
     private worldMapConverter: WorldMapToMatrixGraphConverter;
     private furnitureCharacters: string[];
 
@@ -28,10 +28,10 @@ export class FurnitureInfoGenerator implements GwmWorldItemParser {
     }
 
     public generateFromStringMap(strMap: string): GwmWorldItem[] {
-        return this.generate(this.getMatrixGraphForStringMap(strMap));
+        return this.generate(this.parseWorldMap(strMap));
     }
 
-    public getMatrixGraphForStringMap(strMap: string): MatrixGraph {
+    public parseWorldMap(strMap: string): MatrixGraph {
         return this.worldMapConverter.convert(strMap);
     }
 

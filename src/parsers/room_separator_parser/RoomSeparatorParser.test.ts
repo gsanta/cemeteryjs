@@ -1,10 +1,10 @@
 import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
-import { RoomSeparatorGenerator } from './RoomSeparatorGenerator';
+import { RoomSeparatorParser } from './RoomSeparatorParser';
 import { expect } from "chai";
 import { Rectangle } from '../../model/Rectangle';
 
 
-describe('RoomSeparatorGenerator', () => {
+describe('RoomSeparatorParser', () => {
     describe('generate', () => {
         it ('returns with a WorldItem for each vertical or horizontal room separator segments.', () => {
             const map = `
@@ -31,10 +31,10 @@ describe('RoomSeparatorGenerator', () => {
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const wallGenerator = new RoomSeparatorGenerator(['W', 'D', 'I']);
+            const roomSeparatorParser = new RoomSeparatorParser(['W', 'D', 'I']);
 
 
-            const worldItems = wallGenerator.generate(matrixGraph);
+            const worldItems = roomSeparatorParser.generate(matrixGraph);
             expect(worldItems.length).to.eql(4);
             expect(worldItems[0].dimensions).to.eql(new Rectangle(0, 0, 2, 1));
             expect(worldItems[1].dimensions).to.eql(new Rectangle(6, 0, 4, 1));
