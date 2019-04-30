@@ -4,20 +4,20 @@ import * as fs from 'fs';
 import { Rectangle } from './model/Rectangle';
 import { GwmWorldItem } from './model/GwmWorldItem';
 import { Point } from './model/Point';
-import { AdditionalDataConvertingWorldItemDecorator } from './parsing/decorators/AdditionalDataConvertingWorldItemDecorator';
-import { BorderItemAddingWorldItemGeneratorDecorator } from './parsing/decorators/BorderItemAddingWorldItemGeneratorDecorator';
-import { HierarchyBuildingWorldItemGeneratorDecorator } from './parsing/decorators/HierarchyBuildingWorldItemGeneratorDecorator';
-import { ScalingWorldItemGeneratorDecorator } from './parsing/decorators/ScalingWorldItemGeneratorDecorator';
-import { CombinedWorldItemGenerator } from './parsing/decorators/CombinedWorldItemGenerator';
-import { FurnitureInfoGenerator } from './parsing/furniture_parsing/FurnitureInfoGenerator';
+import { AdditionalDataConvertingTransformator } from './transformators/AdditionalDataConvertingTransformator';
+import { BorderItemAddingTransformator } from './transformators/BorderItemAddingTransformator';
+import { HierarchyBuildingTransformator } from './transformators/HierarchyBuildingTransformator';
+import { ScalingTransformator } from './transformators/ScalingTransformator';
+import { CombinedWorldItemGenerator } from './parsers/CombinedWorldItemGenerator';
+import { FurnitureInfoGenerator } from './parsers/furniture_parsing/FurnitureInfoGenerator';
 import { WorldMapToMatrixGraphConverter } from './matrix_graph/conversion/WorldMapToMatrixGraphConverter';
-import { RoomSeparatorGenerator } from './parsing/room_separator_parsing/RoomSeparatorGenerator';
-import { RoomInfoGenerator } from './parsing/room_parsing/RoomInfoGenerator';
-import { RootWorldItemGenerator } from './parsing/RootWorldItemGenerator';
-import { BorderItemSegmentingWorldItemGeneratorDecorator } from './parsing/decorators/BorderItemSegmentingWorldItemGeneratorDecorator';
-import { StretchRoomsSoTheyJoinWorldItemGeneratorDecorator } from './parsing/decorators/StretchRoomsSoTheyJoinWorldItemGeneratorDecorator';
+import { RoomSeparatorGenerator } from './parsers/room_separator_parsing/RoomSeparatorGenerator';
+import { RoomInfoGenerator } from './parsers/room_parsing/RoomInfoGenerator';
+import { RootWorldItemGenerator } from './parsers/RootWorldItemGenerator';
+import { BorderItemSegmentingTransformator } from './transformators/BorderItemSegmentingTransformator';
+import { StretchRoomsSoTheyJoinTransformator } from './transformators/StretchRoomsSoTheyJoinTransformator';
 import { Polygon } from './model/Polygon';
-import { PolygonAreaInfoGenerator } from './parsing/polygon_area_parsing/PolygonAreaInfoGenerator';
+import { PolygonAreaInfoGenerator } from './parsers/polygon_area_parsing/PolygonAreaInfoGenerator';
 
 
 describe('GwmWorldMapParser', () => {
@@ -266,9 +266,6 @@ describe('GwmWorldMapParser', () => {
                 \`
             `;
 
-            const options = {...defaultParseOptions, ...{xScale: 2, yScale: 3}};
-
-
             const worldMapParser = GwmWorldMapParser.createWithOptions(
                 { furnitureCharacters: [], roomSeparatorCharacters: ['W', 'I', 'D']},
                 {...defaultParseOptions, ...{xScale: 2, yScale: 3}}
@@ -387,27 +384,21 @@ describe('GwmWorldMapParser', () => {
         }
 
         const worldMapParser = GwmWorldMapParser.createWithCustomWorldItemGenerator(
-            new AdditionalDataConvertingWorldItemDecorator(
-                new BorderItemAddingWorldItemGeneratorDecorator(
-                    new HierarchyBuildingWorldItemGeneratorDecorator(
-                        new BorderItemSegmentingWorldItemGeneratorDecorator(
-                            new ScalingWorldItemGeneratorDecorator(
-                                new CombinedWorldItemGenerator(
-                                    [
-                                        new FurnitureInfoGenerator(options.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
-                                        new RoomSeparatorGenerator(options.roomSeparatorCharacters),
-                                        new RoomInfoGenerator(),
-                                        new RootWorldItemGenerator()
-                                    ]
-                                ),
-                                { x: options.xScale, y: options.yScale }
-                            ),
-                            ['wall', 'door', 'window']
-                        ),
-                    ),
-                    ['wall', 'door', 'window']
-                )
-            )
+            new CombinedWorldItemGenerator(
+                [
+                    new FurnitureInfoGenerator(options.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
+                    new RoomSeparatorGenerator(options.roomSeparatorCharacters),
+                    new RoomInfoGenerator(),
+                    new RootWorldItemGenerator()
+                ]
+            ),
+            [
+                new ScalingTransformator({ x: options.xScale, y: options.yScale }),
+                new BorderItemSegmentingTransformator(['wall', 'door', 'window']),
+                new HierarchyBuildingTransformator(),
+                new BorderItemAddingTransformator(['wall', 'door', 'window']),
+                new AdditionalDataConvertingTransformator()
+            ]
         );
 
         const [root] = worldMapParser.parse(map);
@@ -436,29 +427,22 @@ describe('GwmWorldMapParser', () => {
         }
 
         const worldMapParser = GwmWorldMapParser.createWithCustomWorldItemGenerator(
-            new AdditionalDataConvertingWorldItemDecorator(
-                new StretchRoomsSoTheyJoinWorldItemGeneratorDecorator(
-                    new BorderItemAddingWorldItemGeneratorDecorator(
-                        new HierarchyBuildingWorldItemGeneratorDecorator(
-                            new BorderItemSegmentingWorldItemGeneratorDecorator(
-                                new ScalingWorldItemGeneratorDecorator(
-                                    new CombinedWorldItemGenerator(
-                                        [
-                                            new FurnitureInfoGenerator(options.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
-                                            new RoomSeparatorGenerator(options.roomSeparatorCharacters),
-                                            new RoomInfoGenerator(),
-                                            new RootWorldItemGenerator()
-                                        ]
-                                    ),
-                                    { x: options.xScale, y: options.yScale }
-                                ),
-                                ['wall']
-                            ),
-                        ),
-                        ['wall']
-                    )
-                )
-            )
+            new CombinedWorldItemGenerator(
+                [
+                    new FurnitureInfoGenerator(options.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
+                    new RoomSeparatorGenerator(options.roomSeparatorCharacters),
+                    new RoomInfoGenerator(),
+                    new RootWorldItemGenerator()
+                ]
+            ),
+            [
+                new ScalingTransformator(),
+                new BorderItemSegmentingTransformator(['wall']),
+                new HierarchyBuildingTransformator(),
+                new BorderItemAddingTransformator(['wall']),
+                new StretchRoomsSoTheyJoinTransformator(),
+                new AdditionalDataConvertingTransformator()
+            ]
         );
 
         const [root] = worldMapParser.parse(map);
@@ -483,16 +467,14 @@ describe('GwmWorldMapParser', () => {
         `;
 
         const worldMapParser = GwmWorldMapParser.createWithCustomWorldItemGenerator(
-            new HierarchyBuildingWorldItemGeneratorDecorator(
-                new CombinedWorldItemGenerator(
-                    [
-                        new RoomInfoGenerator(),
-                        new PolygonAreaInfoGenerator('empty', '-'),
-                        new RootWorldItemGenerator()
-                    ]
-                ),
-
-            )
+            new CombinedWorldItemGenerator(
+                [
+                    new RoomInfoGenerator(),
+                    new PolygonAreaInfoGenerator('empty', '-'),
+                    new RootWorldItemGenerator()
+                ]
+            ),
+            [new HierarchyBuildingTransformator()]
         );
 
         const [root] = worldMapParser.parse(map);

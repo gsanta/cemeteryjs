@@ -1,19 +1,19 @@
-import { GwmWorldItemGenerator } from '../GwmWorldItemGenerator';
-import { MatrixGraph } from '../../matrix_graph/MatrixGraph';
-import { RoomInfoGenerator } from '../room_parsing/RoomInfoGenerator';
-import { FurnitureInfoGenerator } from '../furniture_parsing/FurnitureInfoGenerator';
-import { GwmWorldItem } from '../../model/GwmWorldItem';
+import { GwmWorldItemParser } from './GwmWorldItemParser';
+import { MatrixGraph } from '../matrix_graph/MatrixGraph';
+import { RoomInfoGenerator } from './room_parsing/RoomInfoGenerator';
+import { FurnitureInfoGenerator } from './furniture_parsing/FurnitureInfoGenerator';
+import { GwmWorldItem } from '../model/GwmWorldItem';
 import _ = require('lodash');
-import { RootWorldItemGenerator } from '../RootWorldItemGenerator';
+import { RootWorldItemGenerator } from './RootWorldItemGenerator';
 
 /**
  * The goal of this generator is to combine multiple generators together each of which parses the input worldmap string
  * from a different aspect, and emits all of the `GwmWorldItem`s merged together.
  */
-export class CombinedWorldItemGenerator implements GwmWorldItemGenerator {
-    private worldItemGenerators: GwmWorldItemGenerator[];
+export class CombinedWorldItemGenerator implements GwmWorldItemParser {
+    private worldItemGenerators: GwmWorldItemParser[];
 
-    constructor(worldItemGenerators: GwmWorldItemGenerator[]) {
+    constructor(worldItemGenerators: GwmWorldItemParser[]) {
         this.worldItemGenerators = worldItemGenerators;
     }
 

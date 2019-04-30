@@ -1,16 +1,17 @@
 import { GwmWorldItem } from './model/GwmWorldItem';
 import _ = require('lodash');
-import { GwmWorldItemGenerator } from './parsing/GwmWorldItemGenerator';
-import { CombinedWorldItemGenerator } from './parsing/decorators/CombinedWorldItemGenerator';
-import { AdditionalDataConverter, AdditionalDataConvertingWorldItemDecorator } from './parsing/decorators/AdditionalDataConvertingWorldItemDecorator';
-import { ScalingWorldItemGeneratorDecorator } from './parsing/decorators/ScalingWorldItemGeneratorDecorator';
-import { HierarchyBuildingWorldItemGeneratorDecorator } from './parsing/decorators/HierarchyBuildingWorldItemGeneratorDecorator';
-import { FurnitureInfoGenerator } from './parsing/furniture_parsing/FurnitureInfoGenerator';
-import { RoomInfoGenerator } from './parsing/room_parsing/RoomInfoGenerator';
-import { RootWorldItemGenerator } from './parsing/RootWorldItemGenerator';
+import { GwmWorldItemParser } from './parsers/GwmWorldItemParser';
+import { CombinedWorldItemGenerator } from './parsers/CombinedWorldItemGenerator';
+import { AdditionalDataConverter, AdditionalDataConvertingTransformator } from './transformators/AdditionalDataConvertingTransformator';
+import { ScalingTransformator } from './transformators/ScalingTransformator';
+import { HierarchyBuildingTransformator } from './transformators/HierarchyBuildingTransformator';
+import { FurnitureInfoGenerator } from './parsers/furniture_parsing/FurnitureInfoGenerator';
+import { RoomInfoGenerator } from './parsers/room_parsing/RoomInfoGenerator';
+import { RootWorldItemGenerator } from './parsers/RootWorldItemGenerator';
 import { WorldMapToMatrixGraphConverter } from './matrix_graph/conversion/WorldMapToMatrixGraphConverter';
-import { RoomSeparatorGenerator } from './parsing/room_separator_parsing/RoomSeparatorGenerator';
-import { BorderItemAddingWorldItemGeneratorDecorator } from './parsing/decorators/BorderItemAddingWorldItemGeneratorDecorator';
+import { RoomSeparatorGenerator } from './parsers/room_separator_parsing/RoomSeparatorGenerator';
+import { BorderItemAddingTransformator } from './transformators/BorderItemAddingTransformator';
+import { GwmWorldItemTransformator } from './transformators/GwmWorldItemTransformator';
 
 export interface ParseOptions<T> {
     xScale: number;
@@ -36,41 +37,41 @@ export interface CharacterTypes {
  * string.
  */
 export class GwmWorldMapParser {
-    private worldItemGenerator: GwmWorldItemGenerator;
+    private worldItemGenerator: GwmWorldItemParser;
+    private worldItemTransformators: GwmWorldItemTransformator[];
 
-    private constructor(worldItemGenerator: GwmWorldItemGenerator) {
+    private constructor(worldItemGenerator: GwmWorldItemParser, worldItemTransformators: GwmWorldItemTransformator[] = []) {
         this.worldItemGenerator = worldItemGenerator;
+        this.worldItemTransformators = worldItemTransformators;
     }
 
     public parse(worldMap: string): GwmWorldItem[] {
-        return this.worldItemGenerator.generateFromStringMap(worldMap);
+        const worldItems = this.worldItemGenerator.generateFromStringMap(worldMap);
+
+        return this.worldItemTransformators.reduce((worldItems, transformator) => transformator.transform(worldItems), worldItems);
     }
 
     public static createWithOptions<T>(characterTypes: CharacterTypes, options: ParseOptions<T> = defaultParseOptions): GwmWorldMapParser {
         return new GwmWorldMapParser(
-            new AdditionalDataConvertingWorldItemDecorator<T>(
-                new BorderItemAddingWorldItemGeneratorDecorator(
-                    new HierarchyBuildingWorldItemGeneratorDecorator(
-                        new ScalingWorldItemGeneratorDecorator(
-                            new CombinedWorldItemGenerator(
-                                [
-                                    new FurnitureInfoGenerator(characterTypes.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
-                                    new RoomSeparatorGenerator(characterTypes.roomSeparatorCharacters),
-                                    new RoomInfoGenerator(),
-                                    new RootWorldItemGenerator()
-                                ]
-                            ),
-                            { x: options.xScale, y: options.yScale }
-                        ),
-                    ),
-                    ['wall', 'door', 'window']
-                ),
-                options.additionalDataConverter
-            )
+            new CombinedWorldItemGenerator(
+                [
+                    new FurnitureInfoGenerator(characterTypes.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
+                    new RoomSeparatorGenerator(characterTypes.roomSeparatorCharacters),
+                    new RoomInfoGenerator(),
+                    new RootWorldItemGenerator()
+                ]
+            ),
+            [
+                new ScalingTransformator({ x: options.xScale, y: options.yScale }),
+                new HierarchyBuildingTransformator(),
+                new BorderItemAddingTransformator(['wall', 'door', 'window']),
+                new AdditionalDataConvertingTransformator<T>(options.additionalDataConverter)
+
+            ]
         );
     }
 
-    public static createWithCustomWorldItemGenerator(worldItemGenerator: GwmWorldItemGenerator): GwmWorldMapParser {
-        return new GwmWorldMapParser(worldItemGenerator);
+    public static createWithCustomWorldItemGenerator(worldItemGenerator: GwmWorldItemParser, worldItemTransformator?: GwmWorldItemTransformator[]): GwmWorldMapParser {
+        return new GwmWorldMapParser(worldItemGenerator, worldItemTransformator);
     }
 }

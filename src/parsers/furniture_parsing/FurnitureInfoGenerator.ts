@@ -2,27 +2,22 @@ import { MatrixGraph } from '../../matrix_graph/MatrixGraph';
 import { GwmWorldItem } from '../../model/GwmWorldItem';
 import * as _ from 'lodash';
 import { Rectangle } from '../../model/Rectangle';
-import { GwmWorldItemGenerator } from '../GwmWorldItemGenerator';
+import { GwmWorldItemParser } from '../GwmWorldItemParser';
 import { WorldMapToMatrixGraphConverter } from '../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
-import { WorldMapToRoomMapConverter } from '../room_parsing/WorldMapToRoomMapConverter';
 
-export class RoomSeparatorGenerator implements GwmWorldItemGenerator {
+export class FurnitureInfoGenerator implements GwmWorldItemParser {
     private worldMapConverter: WorldMapToMatrixGraphConverter;
-    private worldMapToRoomMapConverter: WorldMapToRoomMapConverter;
-    private roomSeparatorCharacters: string[];
+    private furnitureCharacters: string[];
 
-    constructor(
-        roomSeparatorCharacters: string[],
-        worldMapConverter = new WorldMapToMatrixGraphConverter()
-    ) {
+    constructor(furnitureCharacters: string[], worldMapConverter = new WorldMapToMatrixGraphConverter()) {
         this.worldMapConverter = worldMapConverter;
-        this.roomSeparatorCharacters = roomSeparatorCharacters;
+        this.furnitureCharacters = furnitureCharacters;
     }
 
     public generate(graph: MatrixGraph): GwmWorldItem[] {
 
         return <any> _.chain(graph.getCharacters())
-            .intersection(this.roomSeparatorCharacters)
+            .intersection(this.furnitureCharacters)
             .map((character) => {
                 return graph.findConnectedComponentsForCharacter(character)
                     .map(connectedComp => this.createGameObjectsForConnectedComponent(graph.getGraphForVertices(connectedComp)));
@@ -41,7 +36,31 @@ export class RoomSeparatorGenerator implements GwmWorldItemGenerator {
     }
 
     private createGameObjectsForConnectedComponent(componentGraph: MatrixGraph): GwmWorldItem[] {
-        return this.createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph);
+        if (this.areConnectedComponentsRectangular(componentGraph)) {
+            return [this.createRectangularGameObject(componentGraph)];
+        } else {
+            return this.createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph);
+        }
+    }
+
+    private createRectangularGameObject(componentGraph): GwmWorldItem {
+        const minX = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).x).min().value();
+        const maxX = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).x).max().value();
+        const minY = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).y).min().value();
+        const maxY = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).y).max().value();
+
+        const oneVertex = componentGraph.getAllVertices()[0];
+
+        const x = minX;
+        const y = minY;
+        const width = (maxX - minX + 1);
+        const height = (maxY - minY + 1);
+        return new GwmWorldItem(
+            componentGraph.getCharacters()[0],
+            new Rectangle(x, y, width, height),
+            componentGraph.getVertexValue(oneVertex).name,
+            this.getAdditionalDataFromGameObjectGraph(componentGraph)
+        );
     }
 
     private createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph: MatrixGraph): GwmWorldItem[] {
@@ -81,6 +100,31 @@ export class RoomSeparatorGenerator implements GwmWorldItemGenerator {
             });
 
         return [...verticalGameObjects, ...horizontalGameObjects];
+    }
+
+    private areConnectedComponentsRectangular(componentGraph: MatrixGraph) {
+        const minX = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).x).min().value();
+        const maxX = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).x).max().value();
+        const minY = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).y).min().value();
+        const maxY = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).y).max().value();
+
+        const checkedVertices = [];
+
+        if (maxX > minX && maxY > minY) {
+            for (let x = minX; x <= maxX; x++) {
+                for (let y = minY; y <= maxY; y++) {
+                    const vertex = componentGraph.getVertexAtPosition({x, y});
+
+                    if (vertex === null) {
+                        return false;
+                    }
+
+                    checkedVertices.push(vertex);
+                }
+            }
+        }
+
+        return _.without(componentGraph.getAllVertices(), ...checkedVertices).length === 0;
     }
 
     private findVerticalSlices(reducedGraph: MatrixGraph): number[][] {

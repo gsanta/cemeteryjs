@@ -1,6 +1,7 @@
-import { GwmWorldItemGenerator } from "../GwmWorldItemGenerator";
-import { MatrixGraph } from "../../matrix_graph/MatrixGraph";
-import { GwmWorldItem } from "../../model/GwmWorldItem";
+import { GwmWorldItemParser } from "../parsers/GwmWorldItemParser";
+import { MatrixGraph } from "../matrix_graph/MatrixGraph";
+import { GwmWorldItem } from "../model/GwmWorldItem";
+import { GwmWorldItemTransformator } from './GwmWorldItemTransformator';
 import _ = require("lodash");
 
 /**
@@ -8,23 +9,9 @@ import _ = require("lodash");
  * a child based on wheter one fully contains the other.
  */
 
-export class HierarchyBuildingWorldItemGeneratorDecorator implements GwmWorldItemGenerator {
-    private decoratedWorldItemGenerator: GwmWorldItemGenerator;
-
-    constructor(decoratedWorldItemGenerator: GwmWorldItemGenerator) {
-        this.decoratedWorldItemGenerator = decoratedWorldItemGenerator;
-    }
-
-    public generate(graph: MatrixGraph): GwmWorldItem[] {
-        return this.buildHierarchy(this.decoratedWorldItemGenerator.generate(graph));
-    }
-
-    public generateFromStringMap(strMap: string): GwmWorldItem[] {
-        return this.buildHierarchy(this.decoratedWorldItemGenerator.generateFromStringMap(strMap));
-    }
-
-    public getMatrixGraphForStringMap(strMap: string): MatrixGraph {
-        return this.decoratedWorldItemGenerator.getMatrixGraphForStringMap(strMap);
+export class HierarchyBuildingTransformator implements GwmWorldItemTransformator {
+    public transform(gwmWorldItems: GwmWorldItem[]): GwmWorldItem[] {
+        return this.buildHierarchy(gwmWorldItems);
     }
 
     public buildHierarchy(worldItems: GwmWorldItem[]) {

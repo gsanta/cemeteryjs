@@ -1,36 +1,23 @@
-import { GwmWorldItemGenerator } from "../GwmWorldItemGenerator";
-import { MatrixGraph } from "../../matrix_graph/MatrixGraph";
-import { GwmWorldItem } from "../../model/GwmWorldItem";
+import { GwmWorldItemParser } from "../parsers/GwmWorldItemParser";
+import { MatrixGraph } from "../matrix_graph/MatrixGraph";
+import { GwmWorldItem } from "../model/GwmWorldItem";
 import _ = require("lodash");
-import { TreeIteratorGenerator } from "../../gwm_world_item/iterator/TreeIteratorGenerator";
-import { Rectangle } from "../../model/Rectangle";
-import { Line } from "../../model/Line";
+import { TreeIteratorGenerator } from "../gwm_world_item/iterator/TreeIteratorGenerator";
+import { Rectangle } from "../model/Rectangle";
+import { Line } from "../model/Line";
+import { GwmWorldItemTransformator } from './GwmWorldItemTransformator';
 
-export class BorderItemSegmentingWorldItemGeneratorDecorator  implements GwmWorldItemGenerator {
-    private decoratedWorldItemGenerator: GwmWorldItemGenerator;
+export class BorderItemSegmentingTransformator  implements GwmWorldItemTransformator {
     private roomSeparatorItemNames: string[];
     private scales: {xScale: number, yScale: number};
 
-    constructor(
-        decoratedWorldItemGenerator: GwmWorldItemGenerator,
-        roomSeparatorItemNames: string[],
-        scales: {xScale: number, yScale: number} = {xScale: 1, yScale: 1}
-    ) {
-        this.decoratedWorldItemGenerator = decoratedWorldItemGenerator;
+    constructor(roomSeparatorItemNames: string[], scales: {xScale: number, yScale: number} = {xScale: 1, yScale: 1}) {
         this.roomSeparatorItemNames = roomSeparatorItemNames;
         this.scales = scales;
     }
 
-    public generate(graph: MatrixGraph): GwmWorldItem[] {
-        return this.segmentBorderItemsIfNeeded(this.decoratedWorldItemGenerator.generate(graph));
-    }
-
-    public generateFromStringMap(strMap: string): GwmWorldItem[] {
-        return this.segmentBorderItemsIfNeeded(this.decoratedWorldItemGenerator.generateFromStringMap(strMap));
-    }
-
-    public getMatrixGraphForStringMap(strMap: string): MatrixGraph {
-        return this.decoratedWorldItemGenerator.getMatrixGraphForStringMap(strMap);
+    public transform(gwmWorldItems: GwmWorldItem[]): GwmWorldItem[] {
+        return this.segmentBorderItemsIfNeeded(gwmWorldItems);
     }
 
     private segmentBorderItemsIfNeeded(worldItems: GwmWorldItem[]): GwmWorldItem[] {

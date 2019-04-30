@@ -1,13 +1,13 @@
-import { CombinedWorldItemGenerator } from "./CombinedWorldItemGenerator";
-import { RoomSeparatorGenerator } from "../room_separator_parsing/RoomSeparatorGenerator";
-import { RoomInfoGenerator } from "../room_parsing/RoomInfoGenerator";
-import { BorderItemSegmentingWorldItemGeneratorDecorator } from "./BorderItemSegmentingWorldItemGeneratorDecorator";
+import { CombinedWorldItemGenerator } from "../parsers/CombinedWorldItemGenerator";
+import { RoomSeparatorGenerator } from "../parsers/room_separator_parsing/RoomSeparatorGenerator";
+import { RoomInfoGenerator } from "../parsers/room_parsing/RoomInfoGenerator";
+import { BorderItemSegmentingTransformator } from "./BorderItemSegmentingTransformator";
 import { expect } from "chai";
-import { Rectangle } from '../../model/Rectangle';
+import { Rectangle } from '../model/Rectangle';
 import _ = require("lodash");
 
 
-describe('BorderItemSegmentingWorldItemGeneratorDecorator', () => {
+describe('BorderItemSegmentingTransformator', () => {
     describe('generate', () => {
         it ('segments the walls into smaller pieces with minimal number of segmentation', () => {
             const map = `
@@ -35,19 +35,14 @@ describe('BorderItemSegmentingWorldItemGeneratorDecorator', () => {
                 \`
             `;
 
-            const combinedWorldItemGenerator = new CombinedWorldItemGenerator(
+            let items = new CombinedWorldItemGenerator(
                 [
                     new RoomSeparatorGenerator(['W']),
                     new RoomInfoGenerator()
                 ]
-            );
+            ).generateFromStringMap(map);
 
-            const borderItemSegmentingWorldItemGeneratorDecorator = new BorderItemSegmentingWorldItemGeneratorDecorator(
-                combinedWorldItemGenerator,
-                ['wall']
-            );
-
-            const items = borderItemSegmentingWorldItemGeneratorDecorator.generateFromStringMap(map);
+            items = new BorderItemSegmentingTransformator(['wall']).transform(items);
 
             expect(items.filter(item => item.name === 'wall').length).to.eql(4, 'wall segment number not ok');
         });
@@ -77,19 +72,14 @@ describe('BorderItemSegmentingWorldItemGeneratorDecorator', () => {
                 \`
             `;
 
-            const combinedWorldItemGenerator = new CombinedWorldItemGenerator(
+            let items = new CombinedWorldItemGenerator(
                 [
                     new RoomSeparatorGenerator(['W']),
                     new RoomInfoGenerator()
                 ]
-            );
+            ).generateFromStringMap(map);
 
-            const borderItemSegmentingWorldItemGeneratorDecorator = new BorderItemSegmentingWorldItemGeneratorDecorator(
-                combinedWorldItemGenerator,
-                ['wall']
-            );
-
-            const items = borderItemSegmentingWorldItemGeneratorDecorator.generateFromStringMap(map);
+            items = new BorderItemSegmentingTransformator(['wall']).transform(items);
 
             expect(items.filter(item => item.name === 'wall').length).to.eql(7, 'wall segment number not ok');
 

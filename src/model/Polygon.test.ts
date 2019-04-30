@@ -3,8 +3,8 @@ import { Point } from './Point';
 import { expect } from 'chai';
 import { Rectangle } from './Rectangle';
 import { Line } from './Line';
-import { CombinedWorldItemGenerator } from '../parsing/decorators/CombinedWorldItemGenerator';
-import { RoomInfoGenerator } from '../parsing/room_parsing/RoomInfoGenerator';
+import { CombinedWorldItemGenerator } from '../parsers/CombinedWorldItemGenerator';
+import { RoomInfoGenerator } from '../parsers/room_parsing/RoomInfoGenerator';
 import { GwmWorldMapParser } from '../GwmWorldMapParser';
 
 

@@ -1,14 +1,12 @@
-import { GwmWorldItem } from '../../model/GwmWorldItem';
-import { Point } from '../../model/Point';
-import { Polygon, GwmWorldMapParser } from '../..';
 import { expect } from 'chai';
-import { defaultParseOptions } from '../../GwmWorldMapParser';
-import { MockWorldItemGenerator } from './MockWorldItemGenerator';
-import { HierarchyBuildingWorldItemGeneratorDecorator } from './HierarchyBuildingWorldItemGeneratorDecorator';
+import { Polygon } from '..';
+import { GwmWorldItem } from '../model/GwmWorldItem';
+import { Point } from '../model/Point';
+import { HierarchyBuildingTransformator } from './HierarchyBuildingTransformator';
 
 
-describe('HierarchyBuildingWorldItemGeneratorDecorator', () => {
-    describe('generate', () => {
+describe('HierarchyBuildingTransformator', () => {
+    describe('transform', () => {
         it ('creates a parent-child relationship between two WorldItems, if one contains the other', () => {
             const worldItemParentMock = new GwmWorldItem(
                 '',
@@ -32,11 +30,9 @@ describe('HierarchyBuildingWorldItemGeneratorDecorator', () => {
                 'cupboard'
             );
 
-            const hierarchyBuildingWorldItemGeneratorDecorator = new HierarchyBuildingWorldItemGeneratorDecorator(
-                new MockWorldItemGenerator([worldItemParentMock, worldItemChildMock])
-            );
+            const hierarchyBuildingWorldItemGeneratorDecorator = new HierarchyBuildingTransformator();
 
-            hierarchyBuildingWorldItemGeneratorDecorator.generate(null);
+            hierarchyBuildingWorldItemGeneratorDecorator.transform([worldItemParentMock, worldItemChildMock]);
 
             expect(worldItemParentMock.children.length).to.eq(1);
             expect(worldItemParentMock.children[0]).to.eq(worldItemChildMock);
@@ -65,11 +61,7 @@ describe('HierarchyBuildingWorldItemGeneratorDecorator', () => {
                 'cupboard'
             );
 
-            const hierarchyBuildingWorldItemGeneratorDecorator = new HierarchyBuildingWorldItemGeneratorDecorator(
-                new MockWorldItemGenerator([worldItemParentMock, worldItemChildMock])
-            );
-
-            hierarchyBuildingWorldItemGeneratorDecorator.generate(null);
+            new HierarchyBuildingTransformator().transform([worldItemParentMock, worldItemChildMock]);
 
             expect(worldItemParentMock.children.length).to.eq(0);
         });
