@@ -1,7 +1,7 @@
 import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
 import { RoomSeparatorParser } from './RoomSeparatorParser';
 import { expect } from "chai";
-import { Rectangle } from '../../model/Rectangle';
+import { Rectangle } from "@nightshifts.inc/geometry";
 
 
 describe('RoomSeparatorParser', () => {

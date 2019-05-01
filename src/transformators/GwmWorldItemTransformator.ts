@@ -1,4 +1,4 @@
-import { GwmWorldItem } from '../model/GwmWorldItem';
+import { GwmWorldItem } from '../GwmWorldItem';
 
 
 export interface GwmWorldItemTransformator {

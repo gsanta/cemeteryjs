@@ -1,5 +1,5 @@
 import { MatrixGraph } from '../matrix_graph/MatrixGraph';
-import { GwmWorldItem } from '../model/GwmWorldItem';
+import { GwmWorldItem } from '../GwmWorldItem';
 import { GwmWorldItemParser } from './GwmWorldItemParser';
 import _ = require('lodash');
 

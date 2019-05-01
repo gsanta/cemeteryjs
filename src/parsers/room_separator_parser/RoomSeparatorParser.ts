@@ -1,10 +1,9 @@
 import { MatrixGraph } from '../../matrix_graph/MatrixGraph';
-import { GwmWorldItem } from '../../model/GwmWorldItem';
+import { GwmWorldItem } from '../../GwmWorldItem';
 import * as _ from 'lodash';
-import { Rectangle } from '../../model/Rectangle';
 import { GwmWorldItemParser } from '../GwmWorldItemParser';
 import { WorldMapToMatrixGraphConverter } from '../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
-import { WorldMapToRoomMapConverter } from '../room_parser/WorldMapToRoomMapConverter';
+import { Rectangle } from '@nightshifts.inc/geometry';
 
 export class RoomSeparatorParser implements GwmWorldItemParser {
     private worldMapConverter: WorldMapToMatrixGraphConverter;

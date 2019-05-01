@@ -1,8 +1,7 @@
 import { expect } from 'chai';
-import { Polygon } from '..';
-import { GwmWorldItem } from '../model/GwmWorldItem';
-import { Point } from '../model/Point';
+import { GwmWorldItem } from '../GwmWorldItem';
 import { HierarchyBuildingTransformator } from './HierarchyBuildingTransformator';
+import { Polygon, Point } from '@nightshifts.inc/geometry';
 
 
 describe('HierarchyBuildingTransformator', () => {

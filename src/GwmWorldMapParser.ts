@@ -1,4 +1,4 @@
-import { GwmWorldItem } from './model/GwmWorldItem';
+import { GwmWorldItem } from './GwmWorldItem';
 import _ = require('lodash');
 import { GwmWorldItemParser } from './parsers/GwmWorldItemParser';
 import { CombinedWorldItemParser } from './parsers/CombinedWorldItemParser';

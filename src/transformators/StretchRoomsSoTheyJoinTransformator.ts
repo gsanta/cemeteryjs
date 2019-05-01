@@ -1,5 +1,5 @@
 import { TreeIteratorGenerator } from "../gwm_world_item/iterator/TreeIteratorGenerator";
-import { GwmWorldItem } from "../model/GwmWorldItem";
+import { GwmWorldItem } from "../GwmWorldItem";
 import { GwmWorldItemTransformator } from './GwmWorldItemTransformator';
 
 

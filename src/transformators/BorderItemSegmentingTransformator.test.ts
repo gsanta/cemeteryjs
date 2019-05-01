@@ -3,8 +3,8 @@ import { RoomSeparatorParser } from "../parsers/room_separator_parser/RoomSepara
 import { RoomInfoParser } from "../parsers/room_parser/RoomInfoParser";
 import { BorderItemSegmentingTransformator } from "./BorderItemSegmentingTransformator";
 import { expect } from "chai";
-import { Rectangle } from '../model/Rectangle';
 import _ = require("lodash");
+import { Rectangle } from "@nightshifts.inc/geometry";
 
 
 describe('BorderItemSegmentingTransformator', () => {

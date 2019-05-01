@@ -12,9 +12,7 @@ import { StretchRoomsSoTheyJoinTransformator } from './transformators/StretchRoo
 import { PolygonAreaInfoParser } from './parsers/polygon_area_parser/PolygonAreaInfoParser';
 
 export {GwmWorldMapParser, ParseOptions, defaultParseOptions} from './GwmWorldMapParser';
-export {GwmWorldItem} from './model/GwmWorldItem';
-export {Rectangle} from './model/Rectangle';
-export {Polygon} from './model/Polygon';
+export {GwmWorldItem} from './GwmWorldItem';
 export {GwmWorldItemParser as GwmWorldItemGenerator} from './parsers/GwmWorldItemParser';
 export {TreeNode, TreeIteratorGenerator} from './gwm_world_item/iterator/TreeIteratorGenerator';
 

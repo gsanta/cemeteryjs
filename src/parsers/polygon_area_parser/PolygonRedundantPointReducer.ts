@@ -1,5 +1,5 @@
-import { Point } from '../../model/Point';
 import _ = require('lodash');
+import { Point } from '@nightshifts.inc/geometry';
 
 const getPrevIndex = (currentIndex: number, maxIndex: number) => currentIndex === maxIndex ? 0 : currentIndex + 1;
 const getNextIndex = (currentIndex: number, maxIndex: number) => currentIndex === 0 ? maxIndex : currentIndex - 1;

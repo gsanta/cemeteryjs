@@ -1,6 +1,6 @@
-import { Point } from '../../model/Point';
 import { PolygonRedundantPointReducer } from './PolygonRedundantPointReducer';
 import { expect } from 'chai';
+import { Point } from '@nightshifts.inc/geometry';
 
 describe('PolygonRedundantPointReducer', () => {
     describe('reduce', () => {

@@ -1,12 +1,11 @@
 import { RoomInfoParser } from '../parsers/room_parser/RoomInfoParser';
 import { StretchRoomsSoTheyJoinTransformator } from './StretchRoomsSoTheyJoinTransformator';
 import { expect } from 'chai';
-import { Polygon } from '../model/Polygon';
-import { Point } from '../model/Point';
 import { WorldMapToMatrixGraphConverter } from '../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 import { WorldMapToRoomMapConverter } from '../parsers/room_parser/WorldMapToRoomMapConverter';
 import { ScalingTransformator } from './ScalingTransformator';
 import { PolygonAreaInfoParser } from '../parsers/polygon_area_parser/PolygonAreaInfoParser';
+import { Polygon, Point } from '@nightshifts.inc/geometry';
 
 
 describe('`StretchRoomsSoTheyJoinTransformator`', () => {

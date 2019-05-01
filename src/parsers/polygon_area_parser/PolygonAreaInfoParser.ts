@@ -1,12 +1,10 @@
 import { MatrixGraph } from "../../matrix_graph/MatrixGraph";
 import _ = require("lodash");
-import { Line } from "../../model/Line";
-import { Point } from "../../model/Point";
-import { Polygon } from "../../model/Polygon";
-import { GwmWorldItem } from '../../model/GwmWorldItem';
+import { GwmWorldItem } from '../../GwmWorldItem';
 import { GwmWorldItemParser } from "../GwmWorldItemParser";
 import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
 import { PolygonRedundantPointReducer } from "./PolygonRedundantPointReducer";
+import { Polygon, Line, Point } from "@nightshifts.inc/geometry";
 
 /**
  * @hidden

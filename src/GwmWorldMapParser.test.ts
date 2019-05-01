@@ -1,9 +1,7 @@
 import { GwmWorldMapParser, defaultParseOptions } from './GwmWorldMapParser';
 import { expect } from 'chai';
 import * as fs from 'fs';
-import { Rectangle } from './model/Rectangle';
-import { GwmWorldItem } from './model/GwmWorldItem';
-import { Point } from './model/Point';
+import { GwmWorldItem } from './GwmWorldItem';
 import { AdditionalDataConvertingTransformator } from './transformators/AdditionalDataConvertingTransformator';
 import { BorderItemAddingTransformator } from './transformators/BorderItemAddingTransformator';
 import { HierarchyBuildingTransformator } from './transformators/HierarchyBuildingTransformator';
@@ -16,9 +14,8 @@ import { RoomInfoParser } from './parsers/room_parser/RoomInfoParser';
 import { RootWorldItemParser } from './parsers/RootWorldItemParser';
 import { BorderItemSegmentingTransformator } from './transformators/BorderItemSegmentingTransformator';
 import { StretchRoomsSoTheyJoinTransformator } from './transformators/StretchRoomsSoTheyJoinTransformator';
-import { Polygon } from './model/Polygon';
 import { PolygonAreaInfoParser } from './parsers/polygon_area_parser/PolygonAreaInfoParser';
-
+import {Rectangle, Polygon, Point} from '@nightshifts.inc/geometry';
 
 describe('GwmWorldMapParser', () => {
     describe('parse', () => {

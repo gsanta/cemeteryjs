@@ -1,9 +1,9 @@
 import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
 import { RoomInfoParser } from './RoomInfoParser';
 import { expect } from 'chai';
-import { Point } from "../../model/Point";
 import * as fs from 'fs';
 import { WorldMapToRoomMapConverter } from "./WorldMapToRoomMapConverter";
+import { Point } from "@nightshifts.inc/geometry";
 
 describe('RoomInfoParser', () => {
     describe ('generate', () => {

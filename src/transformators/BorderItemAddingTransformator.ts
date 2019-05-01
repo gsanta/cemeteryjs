@@ -1,11 +1,8 @@
-import { MatrixGraph } from '../matrix_graph/MatrixGraph';
-import { GwmWorldItemParser } from '../parsers/GwmWorldItemParser';
-import { GwmWorldItem } from '../model/GwmWorldItem';
+import { GwmWorldItem } from '../GwmWorldItem';
 import { TreeIteratorGenerator } from '../gwm_world_item/iterator/TreeIteratorGenerator';
-import _ = require('lodash');
-import { Rectangle } from '..';
-import { Line } from '../model/Line';
 import { GwmWorldItemTransformator } from './GwmWorldItemTransformator';
+import _ = require('lodash');
+import { Line, Rectangle } from '@nightshifts.inc/geometry';
 
 
 export class BorderItemAddingTransformator implements GwmWorldItemTransformator {

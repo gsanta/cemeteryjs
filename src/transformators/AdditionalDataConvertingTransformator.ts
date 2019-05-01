@@ -1,7 +1,7 @@
 import { GwmWorldItemParser } from "../parsers/GwmWorldItemParser";
 import _ = require("lodash");
 import { MatrixGraph } from "../matrix_graph/MatrixGraph";
-import { GwmWorldItem } from '../model/GwmWorldItem';
+import { GwmWorldItem } from '../GwmWorldItem';
 import { TreeIteratorGenerator } from '../gwm_world_item/iterator/TreeIteratorGenerator';
 import { GwmWorldItemTransformator } from './GwmWorldItemTransformator';
 

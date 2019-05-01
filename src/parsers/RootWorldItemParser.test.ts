@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import { GwmWorldItem } from '../model/GwmWorldItem';
+import { GwmWorldItem } from '../GwmWorldItem';
 import { RootWorldItemParser } from "./RootWorldItemParser";
 import { MatrixGraph } from "../matrix_graph/MatrixGraph";
-import { Rectangle } from "../model/Rectangle";
+import { Rectangle } from "@nightshifts.inc/geometry";
 
 
 describe('RootWorldItemParser', () => {

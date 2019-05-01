@@ -1,6 +1,7 @@
-import { GwmWorldItemGenerator, GwmWorldItem, Rectangle } from "..";
+import { GwmWorldItemGenerator, GwmWorldItem } from "..";
 import { MatrixGraph } from "../matrix_graph/MatrixGraph";
 import { WorldMapToMatrixGraphConverter } from "../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
+import { Rectangle } from "@nightshifts.inc/geometry";
 
 
 export class RootWorldItemParser implements GwmWorldItemGenerator {

@@ -1,11 +1,8 @@
-import { GwmWorldItemParser } from "../parsers/GwmWorldItemParser";
-import { MatrixGraph } from "../matrix_graph/MatrixGraph";
-import { GwmWorldItem } from "../model/GwmWorldItem";
+import { GwmWorldItem } from "../GwmWorldItem";
 import _ = require("lodash");
 import { TreeIteratorGenerator } from "../gwm_world_item/iterator/TreeIteratorGenerator";
-import { Rectangle } from "../model/Rectangle";
-import { Line } from "../model/Line";
 import { GwmWorldItemTransformator } from './GwmWorldItemTransformator';
+import { Rectangle, Line } from "@nightshifts.inc/geometry";
 
 export class BorderItemSegmentingTransformator  implements GwmWorldItemTransformator {
     private roomSeparatorItemNames: string[];

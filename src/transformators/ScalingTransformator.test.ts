@@ -1,10 +1,7 @@
-import * as sinon from 'sinon';
-import { GwmWorldItemParser } from '../parsers/GwmWorldItemParser';
-import { Rectangle } from '../model/Rectangle';
-import { ScalingTransformator } from './ScalingTransformator';
-import { MatrixGraph } from '../matrix_graph/MatrixGraph';
 import { expect } from 'chai';
 import { GwmWorldItem } from '..';
+import { ScalingTransformator } from './ScalingTransformator';
+import { Rectangle } from '@nightshifts.inc/geometry';
 
 describe ('ScalingTransformator', () => {
     describe ('`transform`', () => {

@@ -1,14 +1,11 @@
-import { MatrixGraph } from "../../matrix_graph/MatrixGraph";
-import _ = require("lodash");
-import { Line } from "../../model/Line";
-import { Point } from "../../model/Point";
-import { Polygon } from "../../model/Polygon";
-import { PolygonRedundantPointReducer } from '../polygon_area_parser/PolygonRedundantPointReducer';
-import { GwmWorldItem } from '../../model/GwmWorldItem';
-import { GwmWorldItemParser } from "../GwmWorldItemParser";
-import { WorldMapToRoomMapConverter } from './WorldMapToRoomMapConverter';
+import { GwmWorldItem } from '../../GwmWorldItem';
 import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
+import { MatrixGraph } from "../../matrix_graph/MatrixGraph";
+import { GwmWorldItemParser } from "../GwmWorldItemParser";
 import { PolygonAreaInfoParser } from '../polygon_area_parser/PolygonAreaInfoParser';
+import { WorldMapToRoomMapConverter } from './WorldMapToRoomMapConverter';
+import _ = require("lodash");
+import { Line, Point } from '@nightshifts.inc/geometry';
 
 /**
  * @hidden

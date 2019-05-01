@@ -1,8 +1,8 @@
 import { LinesToGraphConverter } from '../../matrix_graph/conversion/LinesToGraphConverter';
 import { FurnitureInfoParser } from './FurnitureInfoParser';
 import { expect } from 'chai';
-import { GwmWorldItem } from '../../model/GwmWorldItem';
-import { Rectangle } from '../../model/Rectangle';
+import { GwmWorldItem } from '../../GwmWorldItem';
+import { Rectangle } from '@nightshifts.inc/geometry';
 
 describe('FurnitureInfoParser', () => {
     describe('generate', () => {

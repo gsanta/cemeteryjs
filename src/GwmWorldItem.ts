@@ -1,4 +1,4 @@
-import { Polygon } from './Polygon';
+import { Polygon } from "@nightshifts.inc/geometry";
 
 /**
  * `GwmWorldItem` represents any distinguishable item in the parsed world (think of it as a mesh, e.g walls, rooms, creatures).

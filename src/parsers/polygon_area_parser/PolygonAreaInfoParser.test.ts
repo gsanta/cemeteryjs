@@ -1,7 +1,7 @@
 import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
 import { expect } from "chai";
-import { Point } from "../../model/Point";
 import { PolygonAreaInfoParser } from "./PolygonAreaInfoParser";
+import { Point } from "@nightshifts.inc/geometry";
 
 describe('PolygonAreaInfoGenerator', () => {
     describe ('generate', () => {

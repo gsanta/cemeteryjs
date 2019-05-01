@@ -4,10 +4,9 @@ import { RoomInfoParser } from '../parsers/room_parser/RoomInfoParser';
 import { BorderItemAddingTransformator } from './BorderItemAddingTransformator';
 import { expect } from 'chai';
 import { BorderItemSegmentingTransformator } from './BorderItemSegmentingTransformator';
-import { Rectangle } from '../model/Rectangle';
-import { Polygon } from '../model/Polygon';
 import _ = require('lodash');
 import { ScalingTransformator } from './ScalingTransformator';
+import { Rectangle, Polygon } from '@nightshifts.inc/geometry';
 
 
 describe('BorderItemAddingTransformator', () => {
