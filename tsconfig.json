@@ -5,7 +5,8 @@
       "sourceMap": true,
       "moduleResolution": "node",
       "module": "commonjs",
-      "outDir": "build"
+      "outDir": "build",
+      "jsx": "react"
     },
     "include": [
       "src/**/*.ts"
