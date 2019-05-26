@@ -26,6 +26,6 @@ export class WorldItemInfoFactory {
         clone.borderItems = worldItemInfo.borderItems;
 
         return clone;
-
     }
+
 }

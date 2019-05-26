@@ -11,6 +11,11 @@ export class WorldItemInfo<T = any> {
     public additionalData: T;
     public children: WorldItemInfo[] = [];
     public borderItems: WorldItemInfo[] = [];
+    public indexedBorderItems: {
+        roomBoundingPolygonSideIndex: number;
+        sizeRatio: number;
+        borderItem: WorldItemInfo;
+    }[] = [];
 
     constructor(id: number, type: string, dimensions: Polygon, name: string, additionalData: T = null) {
         this.type = type;

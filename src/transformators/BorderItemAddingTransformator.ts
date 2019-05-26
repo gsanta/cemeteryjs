@@ -3,6 +3,7 @@ import { TreeIteratorGenerator } from '../gwm_world_item/iterator/TreeIteratorGe
 import { WorldItemTransformator } from './WorldItemTransformator';
 import _ = require('lodash');
 import { Line, Rectangle } from '@nightshifts.inc/geometry';
+import { WorldItemInfoUtils } from '../WorldItemInfoUtils';
 
 
 export class BorderItemAddingTransformator implements WorldItemTransformator {
@@ -19,8 +20,8 @@ export class BorderItemAddingTransformator implements WorldItemTransformator {
     }
 
     private addBoderItems(worldItems: WorldItemInfo[]): WorldItemInfo[] {
-        const rooms = this.filterRooms(worldItems);
-        const roomSeparatorItems = this.filterRoomSeparatorItems(worldItems);
+        const rooms = WorldItemInfoUtils.filterRooms(worldItems);
+        const roomSeparatorItems = WorldItemInfoUtils.filterBorderItems(worldItems, this.roomSeparatorItemNames);
 
         rooms.forEach(room => {
             roomSeparatorItems
@@ -48,40 +49,12 @@ export class BorderItemAddingTransformator implements WorldItemTransformator {
             const narrowSides = (<Rectangle> roomSeparator.dimensions).getNarrowSides();
 
             if (narrowSides) {
-                const narrowSides1 = narrowSides[0];//.scaleX(this.scales.xScale).scaleY(this.scales.yScale);
-                const narrowSides2 = narrowSides[1];//.scaleX(this.scales.xScale).scaleY(this.scales.yScale);
+                const narrowSides1 = narrowSides[0];
+                const narrowSides2 = narrowSides[1];
                 return narrowSides1.equalTo(intersectionLine) || narrowSides2.equalTo(intersectionLine);
             }
         }
 
         return false;
-    }
-
-    private filterRooms(worldItems: WorldItemInfo[]): WorldItemInfo[] {
-        const rooms: WorldItemInfo[] = [];
-
-        worldItems.forEach(rootItem => {
-            for (const item of TreeIteratorGenerator(rootItem)) {
-                if (item.name === 'room') {
-                    rooms.push(item);
-                }
-            }
-        });
-
-        return rooms;
-    }
-
-    private filterRoomSeparatorItems(worldItems: WorldItemInfo[]): WorldItemInfo[] {
-        const roomSeparatorItems: WorldItemInfo[] = [];
-
-        worldItems.forEach(rootItem => {
-            for (const item of TreeIteratorGenerator(rootItem)) {
-                if (_.find(this.roomSeparatorItemNames, separatorName => item.name === separatorName)) {
-                    roomSeparatorItems.push(item);
-                }
-            }
-        });
-
-        return roomSeparatorItems;
     }
 }

@@ -10,7 +10,7 @@ import { Rectangle, Polygon } from '@nightshifts.inc/geometry';
 import { WorldItemInfoFactory } from '../WorldItemInfoFactory';
 
 
-describe('BorderItemAddingTransformator', () => {
+describe('`BorderItemAddingTransformator`', () => {
     describe('`transform`', () => {
         it ('adds the bordering WorldItems to the corresponding room WorldItem', () => {
             const map = `

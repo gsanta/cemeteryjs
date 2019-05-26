@@ -17,6 +17,7 @@ import { StretchRoomsSoTheyJoinTransformator } from './transformators/StretchRoo
 import { PolygonAreaInfoParser } from './parsers/polygon_area_parser/PolygonAreaInfoParser';
 import {Rectangle, Polygon, Point} from '@nightshifts.inc/geometry';
 import { WorldItemInfoFactory } from './WorldItemInfoFactory';
+import { BorderItemToRoomPolygonSideAssigningTransformator } from './transformators/BorderItemToRoomPolygonSideAssigningTransformator';
 
 describe('`WorldParser`', () => {
     describe('parse', () => {
@@ -446,11 +447,53 @@ describe('`WorldParser`', () => {
         );
 
         const [root] = worldMapParser.parse(map);
-        const walls = root.children.filter(item => item.name === 'wall');
 
         expect(root.children.length).to.eql(5);
         expect(root.children[4].dimensions).to.eql(new Polygon([new Point(0.5, 0.5), new Point(4.5, 0.5), new Point(4.5, 3.5), new Point(0.5, 3.5)]))
     });
+
+
+    it ('can integrate with BorderItemToRoomPolygonSideAssigningTransformator', () => {
+        const map = `
+            map \`
+
+            WWWWW
+            W---W
+            W---W
+            WWWWW
+
+            \`
+        `;
+
+        const options = {
+            xScale: 1,
+            yScale: 1,
+            furnitureCharacters: [],
+            roomSeparatorCharacters: ['W']
+        }
+
+        const worldItemInfoFactory = new WorldItemInfoFactory();
+        const worldMapParser = WorldParser.createWithCustomWorldItemGenerator(
+            new CombinedWorldItemParser(
+                [
+                    new FurnitureInfoParser(worldItemInfoFactory, options.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
+                    new RoomSeparatorParser(worldItemInfoFactory, options.roomSeparatorCharacters),
+                    new RoomInfoParser(worldItemInfoFactory),
+                    new RootWorldItemParser(worldItemInfoFactory)
+                ]
+            ),
+            [
+                new ScalingTransformator(),
+                new BorderItemSegmentingTransformator(worldItemInfoFactory, ['wall']),
+                new HierarchyBuildingTransformator(),
+                new BorderItemAddingTransformator(['wall']),
+                new BorderItemToRoomPolygonSideAssigningTransformator()
+            ]
+        );
+
+        const [root] = worldMapParser.parse(map);
+    });
+
 
     it ('can integrate with `PolygonAreaInfoGenerator`', () => {
         const map = `
