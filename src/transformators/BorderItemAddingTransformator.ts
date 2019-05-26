@@ -1,11 +1,11 @@
-import { GwmWorldItem } from '../GwmWorldItem';
+import { WorldItemInfo } from '../WorldItemInfo';
 import { TreeIteratorGenerator } from '../gwm_world_item/iterator/TreeIteratorGenerator';
-import { GwmWorldItemTransformator } from './GwmWorldItemTransformator';
+import { WorldItemTransformator } from './WorldItemTransformator';
 import _ = require('lodash');
 import { Line, Rectangle } from '@nightshifts.inc/geometry';
 
 
-export class BorderItemAddingTransformator implements GwmWorldItemTransformator {
+export class BorderItemAddingTransformator implements WorldItemTransformator {
     private roomSeparatorItemNames: string[];
     private doNotIncludeBorderItemsThatIntersectsOnlyAtCorner: boolean;
 
@@ -14,11 +14,11 @@ export class BorderItemAddingTransformator implements GwmWorldItemTransformator 
         this.doNotIncludeBorderItemsThatIntersectsOnlyAtCorner = doNotIncludeBorderItemsThatIntersectsOnlyAtCorner
     }
 
-    public transform(gwmWorldItems: GwmWorldItem[]): GwmWorldItem[] {
+    public transform(gwmWorldItems: WorldItemInfo[]): WorldItemInfo[] {
         return this.addBoderItems(gwmWorldItems);
     }
 
-    private addBoderItems(worldItems: GwmWorldItem[]): GwmWorldItem[] {
+    private addBoderItems(worldItems: WorldItemInfo[]): WorldItemInfo[] {
         const rooms = this.filterRooms(worldItems);
         const roomSeparatorItems = this.filterRoomSeparatorItems(worldItems);
 
@@ -43,7 +43,7 @@ export class BorderItemAddingTransformator implements GwmWorldItemTransformator 
         return worldItems;
     }
 
-    private doesBorderItemIntersectOnlyAtCorner(roomSeparator: GwmWorldItem, intersectionLine: Line) {
+    private doesBorderItemIntersectOnlyAtCorner(roomSeparator: WorldItemInfo, intersectionLine: Line) {
         if (roomSeparator.dimensions instanceof Rectangle) {
             const narrowSides = (<Rectangle> roomSeparator.dimensions).getNarrowSides();
 
@@ -57,8 +57,8 @@ export class BorderItemAddingTransformator implements GwmWorldItemTransformator 
         return false;
     }
 
-    private filterRooms(worldItems: GwmWorldItem[]): GwmWorldItem[] {
-        const rooms: GwmWorldItem[] = [];
+    private filterRooms(worldItems: WorldItemInfo[]): WorldItemInfo[] {
+        const rooms: WorldItemInfo[] = [];
 
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
@@ -71,8 +71,8 @@ export class BorderItemAddingTransformator implements GwmWorldItemTransformator 
         return rooms;
     }
 
-    private filterRoomSeparatorItems(worldItems: GwmWorldItem[]): GwmWorldItem[] {
-        const roomSeparatorItems: GwmWorldItem[] = [];
+    private filterRoomSeparatorItems(worldItems: WorldItemInfo[]): WorldItemInfo[] {
+        const roomSeparatorItems: WorldItemInfo[] = [];
 
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {

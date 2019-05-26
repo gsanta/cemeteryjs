@@ -1,6 +1,6 @@
-import { GwmWorldItem } from './GwmWorldItem';
+import { WorldItemInfo } from './WorldItemInfo';
 import _ = require('lodash');
-import { GwmWorldItemParser } from './parsers/GwmWorldItemParser';
+import { WorldItemParser } from './parsers/WorldItemParser';
 import { CombinedWorldItemParser } from './parsers/CombinedWorldItemParser';
 import { AdditionalDataConverter, AdditionalDataConvertingTransformator } from './transformators/AdditionalDataConvertingTransformator';
 import { ScalingTransformator } from './transformators/ScalingTransformator';
@@ -11,7 +11,7 @@ import { RootWorldItemParser } from './parsers/RootWorldItemParser';
 import { WorldMapToMatrixGraphConverter } from './matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 import { RoomSeparatorParser } from './parsers/room_separator_parser/RoomSeparatorParser';
 import { BorderItemAddingTransformator } from './transformators/BorderItemAddingTransformator';
-import { GwmWorldItemTransformator } from './transformators/GwmWorldItemTransformator';
+import { WorldItemTransformator } from './transformators/WorldItemTransformator';
 
 export interface ParseOptions<T> {
     xScale: number;
@@ -33,26 +33,26 @@ export interface CharacterTypes {
 }
 
 /**
- * Generates a list of `GwmWorldItem` objects, which describe your world, based on a `gwm (game world map)` format
+ * Generates a list of `WorldItemInfo` objects, which describe your world, based on a `gwm (game world map)` format
  * string.
  */
-export class GwmWorldMapParser {
-    private worldItemGenerator: GwmWorldItemParser;
-    private worldItemTransformators: GwmWorldItemTransformator[];
+export class WorldParser {
+    private worldItemGenerator: WorldItemParser;
+    private worldItemTransformators: WorldItemTransformator[];
 
-    private constructor(worldItemGenerator: GwmWorldItemParser, worldItemTransformators: GwmWorldItemTransformator[] = []) {
+    private constructor(worldItemGenerator: WorldItemParser, worldItemTransformators: WorldItemTransformator[] = []) {
         this.worldItemGenerator = worldItemGenerator;
         this.worldItemTransformators = worldItemTransformators;
     }
 
-    public parse(worldMap: string): GwmWorldItem[] {
+    public parse(worldMap: string): WorldItemInfo[] {
         const worldItems = this.worldItemGenerator.generateFromStringMap(worldMap);
 
         return this.worldItemTransformators.reduce((worldItems, transformator) => transformator.transform(worldItems), worldItems);
     }
 
-    public static createWithOptions<T>(characterTypes: CharacterTypes, options: ParseOptions<T> = defaultParseOptions): GwmWorldMapParser {
-        return new GwmWorldMapParser(
+    public static createWithOptions<T>(characterTypes: CharacterTypes, options: ParseOptions<T> = defaultParseOptions): WorldParser {
+        return new WorldParser(
             new CombinedWorldItemParser(
                 [
                     new FurnitureInfoParser(characterTypes.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
@@ -71,7 +71,7 @@ export class GwmWorldMapParser {
         );
     }
 
-    public static createWithCustomWorldItemGenerator(worldItemGenerator: GwmWorldItemParser, worldItemTransformator?: GwmWorldItemTransformator[]): GwmWorldMapParser {
-        return new GwmWorldMapParser(worldItemGenerator, worldItemTransformator);
+    public static createWithCustomWorldItemGenerator(worldItemGenerator: WorldItemParser, worldItemTransformator?: WorldItemTransformator[]): WorldParser {
+        return new WorldParser(worldItemGenerator, worldItemTransformator);
     }
 }

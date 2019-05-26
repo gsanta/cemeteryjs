@@ -1,11 +1,11 @@
 import { MatrixGraph } from '../../matrix_graph/MatrixGraph';
-import { GwmWorldItem } from '../../GwmWorldItem';
+import { WorldItemInfo } from '../../WorldItemInfo';
 import * as _ from 'lodash';
-import { GwmWorldItemParser } from '../GwmWorldItemParser';
+import { WorldItemParser } from '../WorldItemParser';
 import { WorldMapToMatrixGraphConverter } from '../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 import { Rectangle } from '@nightshifts.inc/geometry';
 
-export class FurnitureInfoParser implements GwmWorldItemParser {
+export class FurnitureInfoParser implements WorldItemParser {
     private worldMapConverter: WorldMapToMatrixGraphConverter;
     private furnitureCharacters: string[];
 
@@ -14,7 +14,7 @@ export class FurnitureInfoParser implements GwmWorldItemParser {
         this.furnitureCharacters = furnitureCharacters;
     }
 
-    public generate(graph: MatrixGraph): GwmWorldItem[] {
+    public generate(graph: MatrixGraph): WorldItemInfo[] {
 
         return <any> _.chain(graph.getCharacters())
             .intersection(this.furnitureCharacters)
@@ -27,7 +27,7 @@ export class FurnitureInfoParser implements GwmWorldItemParser {
 
     }
 
-    public generateFromStringMap(strMap: string): GwmWorldItem[] {
+    public generateFromStringMap(strMap: string): WorldItemInfo[] {
         return this.generate(this.parseWorldMap(strMap));
     }
 
@@ -35,7 +35,7 @@ export class FurnitureInfoParser implements GwmWorldItemParser {
         return this.worldMapConverter.convert(strMap);
     }
 
-    private createGameObjectsForConnectedComponent(componentGraph: MatrixGraph): GwmWorldItem[] {
+    private createGameObjectsForConnectedComponent(componentGraph: MatrixGraph): WorldItemInfo[] {
         if (this.areConnectedComponentsRectangular(componentGraph)) {
             return [this.createRectangularGameObject(componentGraph)];
         } else {
@@ -43,7 +43,7 @@ export class FurnitureInfoParser implements GwmWorldItemParser {
         }
     }
 
-    private createRectangularGameObject(componentGraph): GwmWorldItem {
+    private createRectangularGameObject(componentGraph): WorldItemInfo {
         const minX = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).x).min().value();
         const maxX = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).x).max().value();
         const minY = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).y).min().value();
@@ -55,7 +55,7 @@ export class FurnitureInfoParser implements GwmWorldItemParser {
         const y = minY;
         const width = (maxX - minX + 1);
         const height = (maxY - minY + 1);
-        return new GwmWorldItem(
+        return new WorldItemInfo(
             componentGraph.getCharacters()[0],
             new Rectangle(x, y, width, height),
             componentGraph.getVertexValue(oneVertex).name,
@@ -63,7 +63,7 @@ export class FurnitureInfoParser implements GwmWorldItemParser {
         );
     }
 
-    private createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph: MatrixGraph): GwmWorldItem[] {
+    private createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph: MatrixGraph): WorldItemInfo[] {
         const verticalSubComponents = this.findVerticalSlices(componentGraph);
         const verticesMinusVerticalSubComponents = _.without(componentGraph.getAllVertices(), ..._.flatten(verticalSubComponents));
         const componentGraphMinusVerticalSubComponents = componentGraph.getGraphForVertices(verticesMinusVerticalSubComponents);
@@ -74,7 +74,7 @@ export class FurnitureInfoParser implements GwmWorldItemParser {
                 const rect = this.createRectangleFromVerticalVertices(gameObjectGraph)
                 const additionalData = this.getAdditionalDataFromGameObjectGraph(gameObjectGraph);
                 const oneVertex = componentGraph.getAllVertices()[0];
-                return new GwmWorldItem(
+                return new WorldItemInfo(
                     componentGraph.getCharacters()[0],
                     rect,
                     componentGraph.getVertexValue(oneVertex).name,
@@ -91,7 +91,7 @@ export class FurnitureInfoParser implements GwmWorldItemParser {
                 const rect = this.createRectangleFromHorizontalVertices(gameObjectGraph);
                 const oneVertex = componentGraph.getAllVertices()[0];
 
-                return new GwmWorldItem(
+                return new WorldItemInfo(
                     gameObjectGraph.getCharacters()[0],
                     rect,
                     componentGraph.getVertexValue(oneVertex).name,

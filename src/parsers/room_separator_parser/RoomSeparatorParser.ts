@@ -1,11 +1,11 @@
 import { MatrixGraph } from '../../matrix_graph/MatrixGraph';
-import { GwmWorldItem } from '../../GwmWorldItem';
+import { WorldItemInfo } from '../../WorldItemInfo';
 import * as _ from 'lodash';
-import { GwmWorldItemParser } from '../GwmWorldItemParser';
+import { WorldItemParser } from '../WorldItemParser';
 import { WorldMapToMatrixGraphConverter } from '../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 import { Rectangle } from '@nightshifts.inc/geometry';
 
-export class RoomSeparatorParser implements GwmWorldItemParser {
+export class RoomSeparatorParser implements WorldItemParser {
     private worldMapConverter: WorldMapToMatrixGraphConverter;
     private roomSeparatorCharacters: string[];
 
@@ -17,7 +17,7 @@ export class RoomSeparatorParser implements GwmWorldItemParser {
         this.roomSeparatorCharacters = roomSeparatorCharacters;
     }
 
-    public generate(graph: MatrixGraph): GwmWorldItem[] {
+    public generate(graph: MatrixGraph): WorldItemInfo[] {
 
         return <any> _.chain(graph.getCharacters())
             .intersection(this.roomSeparatorCharacters)
@@ -30,7 +30,7 @@ export class RoomSeparatorParser implements GwmWorldItemParser {
 
     }
 
-    public generateFromStringMap(strMap: string): GwmWorldItem[] {
+    public generateFromStringMap(strMap: string): WorldItemInfo[] {
         return this.generate(this.parseWorldMap(strMap));
     }
 
@@ -38,11 +38,11 @@ export class RoomSeparatorParser implements GwmWorldItemParser {
         return this.worldMapConverter.convert(strMap);
     }
 
-    private createGameObjectsForConnectedComponent(componentGraph: MatrixGraph): GwmWorldItem[] {
+    private createGameObjectsForConnectedComponent(componentGraph: MatrixGraph): WorldItemInfo[] {
         return this.createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph);
     }
 
-    private createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph: MatrixGraph): GwmWorldItem[] {
+    private createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph: MatrixGraph): WorldItemInfo[] {
         const verticalSubComponents = this.findVerticalSlices(componentGraph);
         const verticesMinusVerticalSubComponents = _.without(componentGraph.getAllVertices(), ..._.flatten(verticalSubComponents));
         const componentGraphMinusVerticalSubComponents = componentGraph.getGraphForVertices(verticesMinusVerticalSubComponents);
@@ -53,7 +53,7 @@ export class RoomSeparatorParser implements GwmWorldItemParser {
                 const rect = this.createRectangleFromVerticalVertices(gameObjectGraph)
                 const additionalData = this.getAdditionalDataFromGameObjectGraph(gameObjectGraph);
                 const oneVertex = componentGraph.getAllVertices()[0];
-                return new GwmWorldItem(
+                return new WorldItemInfo(
                     componentGraph.getCharacters()[0],
                     rect,
                     componentGraph.getVertexValue(oneVertex).name,
@@ -70,7 +70,7 @@ export class RoomSeparatorParser implements GwmWorldItemParser {
                 const rect = this.createRectangleFromHorizontalVertices(gameObjectGraph);
                 const oneVertex = componentGraph.getAllVertices()[0];
 
-                return new GwmWorldItem(
+                return new WorldItemInfo(
                     gameObjectGraph.getCharacters()[0],
                     rect,
                     componentGraph.getVertexValue(oneVertex).name,

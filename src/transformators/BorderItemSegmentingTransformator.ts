@@ -1,10 +1,10 @@
-import { GwmWorldItem } from "../GwmWorldItem";
+import { WorldItemInfo } from "../WorldItemInfo";
 import _ = require("lodash");
 import { TreeIteratorGenerator } from "../gwm_world_item/iterator/TreeIteratorGenerator";
-import { GwmWorldItemTransformator } from './GwmWorldItemTransformator';
+import { WorldItemTransformator } from './WorldItemTransformator';
 import { Rectangle, Line } from "@nightshifts.inc/geometry";
 
-export class BorderItemSegmentingTransformator  implements GwmWorldItemTransformator {
+export class BorderItemSegmentingTransformator  implements WorldItemTransformator {
     private roomSeparatorItemNames: string[];
     private scales: {xScale: number, yScale: number};
 
@@ -13,17 +13,17 @@ export class BorderItemSegmentingTransformator  implements GwmWorldItemTransform
         this.scales = scales;
     }
 
-    public transform(gwmWorldItems: GwmWorldItem[]): GwmWorldItem[] {
+    public transform(gwmWorldItems: WorldItemInfo[]): WorldItemInfo[] {
         return this.segmentBorderItemsIfNeeded(gwmWorldItems);
     }
 
-    private segmentBorderItemsIfNeeded(worldItems: GwmWorldItem[]): GwmWorldItem[] {
+    private segmentBorderItemsIfNeeded(worldItems: WorldItemInfo[]): WorldItemInfo[] {
         const rooms = this.filterRooms(worldItems);
         const roomSeparatorItems = this.filterRoomSeparatorItems(worldItems);
 
         const itemsToSegment = [...roomSeparatorItems];
 
-        let newRoomSeparatorItems: Set<GwmWorldItem> = new Set();
+        let newRoomSeparatorItems: Set<WorldItemInfo> = new Set();
 
         while (itemsToSegment.length > 0) {
             const currentItem = itemsToSegment.shift();
@@ -42,8 +42,8 @@ export class BorderItemSegmentingTransformator  implements GwmWorldItemTransform
         return _.chain(worldItems).without(...roomSeparatorItems).push(...newRoomSeparatorItems).value();
     }
 
-    private findRoomByWhichToSegment(roomSeparator: GwmWorldItem, rooms: GwmWorldItem[]): GwmWorldItem {
-        const intersectingRoom = <GwmWorldItem> _.find(rooms, (room: GwmWorldItem) => room.dimensions.intersectBorder(roomSeparator.dimensions));
+    private findRoomByWhichToSegment(roomSeparator: WorldItemInfo, rooms: WorldItemInfo[]): WorldItemInfo {
+        const intersectingRoom = <WorldItemInfo> _.find(rooms, (room: WorldItemInfo) => room.dimensions.intersectBorder(roomSeparator.dimensions));
 
         if (intersectingRoom) {
             const intersectionLine = intersectingRoom.dimensions.intersectBorder(roomSeparator.dimensions);
@@ -66,7 +66,7 @@ export class BorderItemSegmentingTransformator  implements GwmWorldItemTransform
         }
     }
 
-    private segmentByRoom(roomSeparator: GwmWorldItem, segmentingRoom: GwmWorldItem): GwmWorldItem[] {
+    private segmentByRoom(roomSeparator: WorldItemInfo, segmentingRoom: WorldItemInfo): WorldItemInfo[] {
         const line = segmentingRoom.dimensions.intersectBorder(roomSeparator.dimensions);
 
         if (line.isVertical()) {
@@ -76,8 +76,8 @@ export class BorderItemSegmentingTransformator  implements GwmWorldItemTransform
         }
     }
 
-    private segmentVertically(roomSeparator: GwmWorldItem, segmentPositions: [number, number]): GwmWorldItem[] {
-        const segmentedRoomSeparators: GwmWorldItem[] = [];
+    private segmentVertically(roomSeparator: WorldItemInfo, segmentPositions: [number, number]): WorldItemInfo[] {
+        const segmentedRoomSeparators: WorldItemInfo[] = [];
 
         if (roomSeparator.dimensions.minY() < segmentPositions[0]) {
             const clone = roomSeparator.clone();
@@ -105,12 +105,12 @@ export class BorderItemSegmentingTransformator  implements GwmWorldItemTransform
         return segmentedRoomSeparators;
     }
 
-    private segmentHorizontally(roomSeparator: GwmWorldItem, segmentPositions: [number, number]): GwmWorldItem[] {
-        const segmentedRoomSeparators: GwmWorldItem[] = [];
+    private segmentHorizontally(roomSeparator: WorldItemInfo, segmentPositions: [number, number]): WorldItemInfo[] {
+        const segmentedRoomSeparators: WorldItemInfo[] = [];
 
-        let bottomSegment: GwmWorldItem = null;
-        let topSegment: GwmWorldItem = null;
-        let middleSegment: GwmWorldItem = null;
+        let bottomSegment: WorldItemInfo = null;
+        let topSegment: WorldItemInfo = null;
+        let middleSegment: WorldItemInfo = null;
 
         if (roomSeparator.dimensions.minX() < segmentPositions[0]) {
             const clone = roomSeparator.clone();
@@ -142,8 +142,8 @@ export class BorderItemSegmentingTransformator  implements GwmWorldItemTransform
         return segmentedRoomSeparators;
     }
 
-    private filterRooms(worldItems: GwmWorldItem[]): GwmWorldItem[] {
-        const rooms: GwmWorldItem[] = [];
+    private filterRooms(worldItems: WorldItemInfo[]): WorldItemInfo[] {
+        const rooms: WorldItemInfo[] = [];
 
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
@@ -156,8 +156,8 @@ export class BorderItemSegmentingTransformator  implements GwmWorldItemTransform
         return rooms;
     }
 
-    private filterRoomSeparatorItems(worldItems: GwmWorldItem[]): GwmWorldItem[] {
-        const roomSeparatorItems: GwmWorldItem[] = [];
+    private filterRoomSeparatorItems(worldItems: WorldItemInfo[]): WorldItemInfo[] {
+        const roomSeparatorItems: WorldItemInfo[] = [];
 
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {

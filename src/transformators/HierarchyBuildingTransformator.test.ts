@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { GwmWorldItem } from '../GwmWorldItem';
+import { WorldItemInfo } from '../WorldItemInfo';
 import { HierarchyBuildingTransformator } from './HierarchyBuildingTransformator';
 import { Polygon, Point } from '@nightshifts.inc/geometry';
 
@@ -7,7 +7,7 @@ import { Polygon, Point } from '@nightshifts.inc/geometry';
 describe('HierarchyBuildingTransformator', () => {
     describe('transform', () => {
         it ('creates a parent-child relationship between two WorldItems, if one contains the other', () => {
-            const worldItemParentMock = new GwmWorldItem(
+            const worldItemParentMock = new WorldItemInfo(
                 '',
                 new Polygon([
                         new Point(1, 1),
@@ -18,7 +18,7 @@ describe('HierarchyBuildingTransformator', () => {
                 'room'
             );
 
-            const worldItemChildMock = new GwmWorldItem(
+            const worldItemChildMock = new WorldItemInfo(
                 '',
                 new Polygon([
                     new Point(1, 1),
@@ -38,7 +38,7 @@ describe('HierarchyBuildingTransformator', () => {
         });
 
         it ('does not create a parent-child relationship if one does not contain the other', () => {
-            const worldItemParentMock = new GwmWorldItem(
+            const worldItemParentMock = new WorldItemInfo(
                 '',
                 new Polygon([
                         new Point(1, 1),
@@ -49,7 +49,7 @@ describe('HierarchyBuildingTransformator', () => {
                 'room'
             );
 
-            const worldItemChildMock = new GwmWorldItem(
+            const worldItemChildMock = new WorldItemInfo(
                 '',
                 new Polygon([
                     new Point(5, 1),

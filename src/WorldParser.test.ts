@@ -1,7 +1,7 @@
-import { GwmWorldMapParser, defaultParseOptions } from './GwmWorldMapParser';
+import { WorldParser, defaultParseOptions } from './WorldParser';
 import { expect } from 'chai';
 import * as fs from 'fs';
-import { GwmWorldItem } from './GwmWorldItem';
+import { WorldItemInfo } from './WorldItemInfo';
 import { AdditionalDataConvertingTransformator } from './transformators/AdditionalDataConvertingTransformator';
 import { BorderItemAddingTransformator } from './transformators/BorderItemAddingTransformator';
 import { HierarchyBuildingTransformator } from './transformators/HierarchyBuildingTransformator';
@@ -17,7 +17,7 @@ import { StretchRoomsSoTheyJoinTransformator } from './transformators/StretchRoo
 import { PolygonAreaInfoParser } from './parsers/polygon_area_parser/PolygonAreaInfoParser';
 import {Rectangle, Polygon, Point} from '@nightshifts.inc/geometry';
 
-describe('GwmWorldMapParser', () => {
+describe('`WorldParser`', () => {
     describe('parse', () => {
         it ('creates a WorldItem for every distinguishable item in the input map', () => {
             const map = `
@@ -39,19 +39,19 @@ describe('GwmWorldMapParser', () => {
                 \`
             `;
 
-            const gameObjectParser = GwmWorldMapParser.createWithOptions(
+            const gameObjectParser = WorldParser.createWithOptions(
                 { furnitureCharacters: ['T'], roomSeparatorCharacters: ['W', 'I']}
             );
 
             const [root] = gameObjectParser.parse(map);
             const children = root.children;
             expect(children.length).to.equal(7, 'number of children of root is not correct.');
-            expect(children[0]).to.eql(new GwmWorldItem('W', new Rectangle(0, 0, 1, 3), 'wall'), 'children[0] is not correct');
-            expect(children[1]).to.eql(new GwmWorldItem('W', new Rectangle(7, 0, 1, 3), 'wall'), 'children[1] is not correct');
-            expect(children[2]).to.eql(new GwmWorldItem('W', new Rectangle(1, 0, 2, 1), 'wall'), 'children[2] is not correct');
-            expect(children[3]).to.eql(new GwmWorldItem('W', new Rectangle(1, 2, 6, 1), 'wall'), 'children[3] is not correct');
-            expect(children[4]).to.eql(new GwmWorldItem('W', new Rectangle(5, 0, 2, 1), 'wall'), 'children[4] is not correct');
-            expect(children[5]).to.eql(new GwmWorldItem('I', new Rectangle(3, 0, 2, 1), 'window'), 'children[5] is not correct');
+            expect(children[0]).to.eql(new WorldItemInfo('W', new Rectangle(0, 0, 1, 3), 'wall'), 'children[0] is not correct');
+            expect(children[1]).to.eql(new WorldItemInfo('W', new Rectangle(7, 0, 1, 3), 'wall'), 'children[1] is not correct');
+            expect(children[2]).to.eql(new WorldItemInfo('W', new Rectangle(1, 0, 2, 1), 'wall'), 'children[2] is not correct');
+            expect(children[3]).to.eql(new WorldItemInfo('W', new Rectangle(1, 2, 6, 1), 'wall'), 'children[3] is not correct');
+            expect(children[4]).to.eql(new WorldItemInfo('W', new Rectangle(5, 0, 2, 1), 'wall'), 'children[4] is not correct');
+            expect(children[5]).to.eql(new WorldItemInfo('I', new Rectangle(3, 0, 2, 1), 'window'), 'children[5] is not correct');
             expect(children[6].name).to.eql('room', 'children[6] is not correct');
         });
 
@@ -83,7 +83,7 @@ describe('GwmWorldMapParser', () => {
                 \`
             `;
 
-            const worldMapParser = GwmWorldMapParser.createWithOptions(
+            const worldMapParser = WorldParser.createWithOptions(
                 { furnitureCharacters: ['I', 'T'], roomSeparatorCharacters: ['W']}
             );
 
@@ -106,7 +106,7 @@ describe('GwmWorldMapParser', () => {
 
         it('attaches the additional data to vertices, if present TEST CASE 1', () => {
             const file = fs.readFileSync(__dirname + '/../assets/test/testAdditionalData.gwm', 'utf8');
-            const worldMapParser = GwmWorldMapParser.createWithOptions(
+            const worldMapParser = WorldParser.createWithOptions(
                 { furnitureCharacters: ['I'], roomSeparatorCharacters: ['W']}
             );
 
@@ -125,7 +125,7 @@ describe('GwmWorldMapParser', () => {
 
         it ('attaches the additional data to vertices, if present TEST CASE 2', () => {
             const file = fs.readFileSync(__dirname + '/../assets/test/testAdditionalData2.gwm', 'utf8');
-            const worldMapParser = GwmWorldMapParser.createWithOptions(
+            const worldMapParser = WorldParser.createWithOptions(
                 { furnitureCharacters: ['I'], roomSeparatorCharacters: ['W']}
             );
 
@@ -169,7 +169,7 @@ describe('GwmWorldMapParser', () => {
                 \`
             `;
 
-            const worldMapParser = GwmWorldMapParser.createWithOptions(
+            const worldMapParser = WorldParser.createWithOptions(
                 { furnitureCharacters: ['I'], roomSeparatorCharacters: ['W']}
             );
             const [root] = worldMapParser.parse(map);
@@ -213,7 +213,7 @@ describe('GwmWorldMapParser', () => {
                     null
             };
 
-            const worldMapParser = GwmWorldMapParser.createWithOptions(
+            const worldMapParser = WorldParser.createWithOptions(
                 { furnitureCharacters: ['C'], roomSeparatorCharacters: ['W']},
                 {...defaultParseOptions, ...{additionalDataConverter}}
             );
@@ -238,7 +238,7 @@ describe('GwmWorldMapParser', () => {
                 \`
             `;
 
-            const worldMapParser = GwmWorldMapParser.createWithOptions({ furnitureCharacters: [], roomSeparatorCharacters: ['W', 'I', 'D']});
+            const worldMapParser = WorldParser.createWithOptions({ furnitureCharacters: [], roomSeparatorCharacters: ['W', 'I', 'D']});
             const items = worldMapParser.parse(map);
             const rooms = items[0].children.filter(item => item.name === 'room');
             expect(rooms.length).to.eq(1);
@@ -263,7 +263,7 @@ describe('GwmWorldMapParser', () => {
                 \`
             `;
 
-            const worldMapParser = GwmWorldMapParser.createWithOptions(
+            const worldMapParser = WorldParser.createWithOptions(
                 { furnitureCharacters: [], roomSeparatorCharacters: ['W', 'I', 'D']},
                 {...defaultParseOptions, ...{xScale: 2, yScale: 3}}
             );
@@ -302,7 +302,7 @@ describe('GwmWorldMapParser', () => {
                 \`
             `;
 
-            const worldMapParser = GwmWorldMapParser.createWithOptions(
+            const worldMapParser = WorldParser.createWithOptions(
                 { furnitureCharacters: ['B', 'C'], roomSeparatorCharacters: ['W', 'I', 'D']},
                 {...defaultParseOptions, ...{xScale: 1, yScale: 2}}
             );
@@ -338,7 +338,7 @@ describe('GwmWorldMapParser', () => {
                 \`
             `;
 
-            const worldMapParser = GwmWorldMapParser.createWithOptions(
+            const worldMapParser = WorldParser.createWithOptions(
                 { furnitureCharacters: ['B', 'C'], roomSeparatorCharacters: ['W', 'D']},
                 {...defaultParseOptions, ...{xScale: 1, yScale: 2}}
             );
@@ -380,7 +380,7 @@ describe('GwmWorldMapParser', () => {
             roomSeparatorCharacters: ['W', 'D', 'I']
         }
 
-        const worldMapParser = GwmWorldMapParser.createWithCustomWorldItemGenerator(
+        const worldMapParser = WorldParser.createWithCustomWorldItemGenerator(
             new CombinedWorldItemParser(
                 [
                     new FurnitureInfoParser(options.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
@@ -423,7 +423,7 @@ describe('GwmWorldMapParser', () => {
             roomSeparatorCharacters: ['W']
         }
 
-        const worldMapParser = GwmWorldMapParser.createWithCustomWorldItemGenerator(
+        const worldMapParser = WorldParser.createWithCustomWorldItemGenerator(
             new CombinedWorldItemParser(
                 [
                     new FurnitureInfoParser(options.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
@@ -463,7 +463,7 @@ describe('GwmWorldMapParser', () => {
             \`
         `;
 
-        const worldMapParser = GwmWorldMapParser.createWithCustomWorldItemGenerator(
+        const worldMapParser = WorldParser.createWithCustomWorldItemGenerator(
             new CombinedWorldItemParser(
                 [
                     new RoomInfoParser(),

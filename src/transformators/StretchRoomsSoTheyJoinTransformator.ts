@@ -1,21 +1,21 @@
 import { TreeIteratorGenerator } from "../gwm_world_item/iterator/TreeIteratorGenerator";
-import { GwmWorldItem } from "../GwmWorldItem";
-import { GwmWorldItemTransformator } from './GwmWorldItemTransformator';
+import { WorldItemInfo } from "../WorldItemInfo";
+import { WorldItemTransformator } from './WorldItemTransformator';
 
 
-export class StretchRoomsSoTheyJoinTransformator implements GwmWorldItemTransformator {
+export class StretchRoomsSoTheyJoinTransformator implements WorldItemTransformator {
     private scales: {xScale: number, yScale: number};
 
     constructor(scales: {xScale: number, yScale: number} = {xScale: 1, yScale: 1}) {
         this.scales = scales;
     }
 
-    public transform(gwmWorldItems: GwmWorldItem[]): GwmWorldItem[] {
+    public transform(gwmWorldItems: WorldItemInfo[]): WorldItemInfo[] {
         return this.stretchRooms(gwmWorldItems);
     }
 
-    private stretchRooms(rootWorldItems: GwmWorldItem[]) {
-        const rooms: GwmWorldItem[] = [];
+    private stretchRooms(rootWorldItems: WorldItemInfo[]) {
+        const rooms: WorldItemInfo[] = [];
 
         rootWorldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {

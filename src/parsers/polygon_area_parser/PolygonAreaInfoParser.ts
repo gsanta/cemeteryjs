@@ -1,7 +1,7 @@
 import { MatrixGraph } from "../../matrix_graph/MatrixGraph";
 import _ = require("lodash");
-import { GwmWorldItem } from '../../GwmWorldItem';
-import { GwmWorldItemParser } from "../GwmWorldItemParser";
+import { WorldItemInfo } from '../../WorldItemInfo';
+import { WorldItemParser } from "../WorldItemParser";
 import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
 import { PolygonRedundantPointReducer } from "./PolygonRedundantPointReducer";
 import { Polygon, Line, Point } from "@nightshifts.inc/geometry";
@@ -9,10 +9,10 @@ import { Polygon, Line, Point } from "@nightshifts.inc/geometry";
 /**
  * @hidden
  *
- * Generates `GwmWorldItem`s based on connected area of the given character. It can detect `Polygon` shaped
+ * Generates `WorldItemInfo`s based on connected area of the given character. It can detect `Polygon` shaped
  * areas.
  */
-export class PolygonAreaInfoParser implements GwmWorldItemParser {
+export class PolygonAreaInfoParser implements WorldItemParser {
     private polygonRedundantPointReducer: PolygonRedundantPointReducer;
     private itemName: string;
     private character: string;
@@ -25,7 +25,7 @@ export class PolygonAreaInfoParser implements GwmWorldItemParser {
         this.polygonRedundantPointReducer = new PolygonRedundantPointReducer();
     }
 
-    public generate(graph: MatrixGraph): GwmWorldItem[] {
+    public generate(graph: MatrixGraph): WorldItemInfo[] {
         return graph.createConnectedComponentGraphsForCharacter(this.character)
             .map(componentGraph => {
                 const lines = this.segmentGraphToHorizontalLines(componentGraph);
@@ -34,11 +34,11 @@ export class PolygonAreaInfoParser implements GwmWorldItemParser {
                     this.createPolygonPointsFromHorizontalLines(lines)
                 );
 
-                return new GwmWorldItem(null, new Polygon(points), this.itemName);
+                return new WorldItemInfo(null, new Polygon(points), this.itemName);
             });
     }
 
-    public generateFromStringMap(strMap: string): GwmWorldItem[] {
+    public generateFromStringMap(strMap: string): WorldItemInfo[] {
         return this.generate(this.parseWorldMap(strMap));
     }
 

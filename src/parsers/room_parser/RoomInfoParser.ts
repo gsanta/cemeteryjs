@@ -1,7 +1,7 @@
-import { GwmWorldItem } from '../../GwmWorldItem';
+import { WorldItemInfo } from '../../WorldItemInfo';
 import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
 import { MatrixGraph } from "../../matrix_graph/MatrixGraph";
-import { GwmWorldItemParser } from "../GwmWorldItemParser";
+import { WorldItemParser } from "../WorldItemParser";
 import { PolygonAreaInfoParser } from '../polygon_area_parser/PolygonAreaInfoParser';
 import { WorldMapToRoomMapConverter } from './WorldMapToRoomMapConverter';
 import _ = require("lodash");
@@ -12,7 +12,7 @@ import { Line, Point } from '@nightshifts.inc/geometry';
  *
  * Generates room info
  */
-export class RoomInfoParser implements GwmWorldItemParser {
+export class RoomInfoParser implements WorldItemParser {
     private worldMapToRoomMapConverter: WorldMapToRoomMapConverter;
     private worldMapConverter: WorldMapToMatrixGraphConverter;
     private polygonAreaInfoGenerator: PolygonAreaInfoParser;
@@ -28,11 +28,11 @@ export class RoomInfoParser implements GwmWorldItemParser {
         this.polygonAreaInfoGenerator = polygonAreaInfoGenerator;
     }
 
-    public generate(graph: MatrixGraph): GwmWorldItem[] {
+    public generate(graph: MatrixGraph): WorldItemInfo[] {
         return this.polygonAreaInfoGenerator.generate(graph);
     }
 
-    public generateFromStringMap(strMap: string): GwmWorldItem[] {
+    public generateFromStringMap(strMap: string): WorldItemInfo[] {
         return this.polygonAreaInfoGenerator.generate(this.parseWorldMap(strMap));
     }
 

@@ -11,9 +11,9 @@ import { HierarchyBuildingTransformator } from './transformators/HierarchyBuildi
 import { StretchRoomsSoTheyJoinTransformator } from './transformators/StretchRoomsSoTheyJoinTransformator';
 import { PolygonAreaInfoParser } from './parsers/polygon_area_parser/PolygonAreaInfoParser';
 
-export {GwmWorldMapParser, ParseOptions, defaultParseOptions} from './GwmWorldMapParser';
-export {GwmWorldItem} from './GwmWorldItem';
-export {GwmWorldItemParser as GwmWorldItemGenerator} from './parsers/GwmWorldItemParser';
+export {WorldParser, ParseOptions, defaultParseOptions} from './WorldParser';
+export {WorldItemInfo} from './WorldItemInfo';
+export {WorldItemParser} from './parsers/WorldItemParser';
 export {TreeNode, TreeIteratorGenerator} from './gwm_world_item/iterator/TreeIteratorGenerator';
 
 export const parsers = {
