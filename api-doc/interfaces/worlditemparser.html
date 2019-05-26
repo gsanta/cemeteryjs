@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>GwmWorldItemParser | game-worldmap-generator</title>
+	<title>WorldItemParser | @nightshifts.inc/world-generator</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">game-worldmap-generator</a>
+					<a href="../index.html" class="title">@nightshifts.inc/world-generator</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="gwmworlditemparser.html">GwmWorldItemParser</a>
+					<a href="worlditemparser.html">WorldItemParser</a>
 				</li>
 			</ul>
-			<h1>Interface GwmWorldItemParser</h1>
+			<h1>Interface WorldItemParser</h1>
 		</div>
 	</div>
 </header>
@@ -68,7 +68,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">GwmWorldItemParser</span>
+						<span class="target">WorldItemParser</span>
 					</li>
 				</ul>
 			</section>
@@ -88,9 +88,9 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="gwmworlditemparser.html#generate" class="tsd-kind-icon">generate</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="gwmworlditemparser.html#generatefromstringmap" class="tsd-kind-icon">generate<wbr>From<wbr>String<wbr>Map</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="gwmworlditemparser.html#parseworldmap" class="tsd-kind-icon">parse<wbr>World<wbr>Map</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="worlditemparser.html#generate" class="tsd-kind-icon">generate</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="worlditemparser.html#generatefromstringmap" class="tsd-kind-icon">generate<wbr>From<wbr>String<wbr>Map</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="worlditemparser.html#parseworldmap" class="tsd-kind-icon">parse<wbr>World<wbr>Map</a></li>
 							</ul>
 						</section>
 					</div>
@@ -102,13 +102,13 @@
 					<a name="generate" class="tsd-anchor"></a>
 					<h3>generate</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">generate<span class="tsd-signature-symbol">(</span>graph<span class="tsd-signature-symbol">: </span><a href="../classes/matrixgraph.html" class="tsd-signature-type">MatrixGraph</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/gwmworlditem.html" class="tsd-signature-type">GwmWorldItem</a><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">generate<span class="tsd-signature-symbol">(</span>graph<span class="tsd-signature-symbol">: </span><a href="../classes/matrixgraph.html" class="tsd-signature-type">MatrixGraph</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/worlditeminfo.html" class="tsd-signature-type">WorldItemInfo</a><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/be4b4b6/src/parsers/GwmWorldItemParser.ts#L6">parsers/GwmWorldItemParser.ts:6</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/86943ad/src/parsers/WorldItemParser.ts#L6">parsers/WorldItemParser.ts:6</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -117,7 +117,7 @@
 									<h5>graph: <a href="../classes/matrixgraph.html" class="tsd-signature-type">MatrixGraph</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../classes/gwmworlditem.html" class="tsd-signature-type">GwmWorldItem</a><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/worlditeminfo.html" class="tsd-signature-type">WorldItemInfo</a><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -125,13 +125,13 @@
 					<a name="generatefromstringmap" class="tsd-anchor"></a>
 					<h3>generate<wbr>From<wbr>String<wbr>Map</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">generate<wbr>From<wbr>String<wbr>Map<span class="tsd-signature-symbol">(</span>strMap<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/gwmworlditem.html" class="tsd-signature-type">GwmWorldItem</a><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">generate<wbr>From<wbr>String<wbr>Map<span class="tsd-signature-symbol">(</span>strMap<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/worlditeminfo.html" class="tsd-signature-type">WorldItemInfo</a><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/be4b4b6/src/parsers/GwmWorldItemParser.ts#L7">parsers/GwmWorldItemParser.ts:7</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/86943ad/src/parsers/WorldItemParser.ts#L7">parsers/WorldItemParser.ts:7</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -140,7 +140,7 @@
 									<h5>strMap: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../classes/gwmworlditem.html" class="tsd-signature-type">GwmWorldItem</a><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/worlditeminfo.html" class="tsd-signature-type">WorldItemInfo</a><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -154,7 +154,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/be4b4b6/src/parsers/GwmWorldItemParser.ts#L8">parsers/GwmWorldItemParser.ts:8</a></li>
+									<li>Defined in <a href="https://github.com/gsanta/game-worldmap-generator/blob/86943ad/src/parsers/WorldItemParser.ts#L8">parsers/WorldItemParser.ts:8</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -197,12 +197,6 @@
 					<li class=" tsd-kind-class">
 						<a href="../classes/furnitureinfoparser.html" class="tsd-kind-icon">Furniture<wbr>Info<wbr>Parser</a>
 					</li>
-					<li class=" tsd-kind-class tsd-has-type-parameter">
-						<a href="../classes/gwmworlditem.html" class="tsd-kind-icon">Gwm<wbr>World<wbr>Item</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="../classes/gwmworldmapparser.html" class="tsd-kind-icon">Gwm<wbr>World<wbr>Map<wbr>Parser</a>
-					</li>
 					<li class=" tsd-kind-class">
 						<a href="../classes/hierarchybuildingtransformator.html" class="tsd-kind-icon">Hierarchy<wbr>Building<wbr>Transformator</a>
 					</li>
@@ -227,6 +221,9 @@
 					<li class=" tsd-kind-class">
 						<a href="../classes/stretchroomssotheyjointransformator.html" class="tsd-kind-icon">Stretch<wbr>Rooms<wbr>SoThey<wbr>Join<wbr>Transformator</a>
 					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="../classes/worlditeminfo.html" class="tsd-kind-icon">World<wbr>Item<wbr>Info</a>
+					</li>
 					<li class=" tsd-kind-class">
 						<a href="../classes/worldmapreader.html" class="tsd-kind-icon">World<wbr>Map<wbr>Reader</a>
 					</li>
@@ -236,32 +233,17 @@
 					<li class=" tsd-kind-class">
 						<a href="../classes/worldmaptoroommapconverter.html" class="tsd-kind-icon">World<wbr>Map<wbr>ToRoom<wbr>Map<wbr>Converter</a>
 					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/worldparser.html" class="tsd-kind-icon">World<wbr>Parser</a>
+					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="additionaldataconverter.html" class="tsd-kind-icon">Additional<wbr>Data<wbr>Converter</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="charactertypes.html" class="tsd-kind-icon">Character<wbr>Types</a>
+						<a href="canvasprops.html" class="tsd-kind-icon">Canvas<wbr>Props</a>
 					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-interface">
-						<a href="gwmworlditemparser.html" class="tsd-kind-icon">Gwm<wbr>World<wbr>Item<wbr>Parser</a>
-						<ul>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="gwmworlditemparser.html#generate" class="tsd-kind-icon">generate</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="gwmworlditemparser.html#generatefromstringmap" class="tsd-kind-icon">generate<wbr>From<wbr>String<wbr>Map</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="gwmworlditemparser.html#parseworldmap" class="tsd-kind-icon">parse<wbr>World<wbr>Map</a>
-							</li>
-						</ul>
-					</li>
-				</ul>
-				<ul class="after-current">
 					<li class=" tsd-kind-interface">
-						<a href="gwmworlditemtransformator.html" class="tsd-kind-icon">Gwm<wbr>World<wbr>Item<wbr>Transformator</a>
+						<a href="charactertypes.html" class="tsd-kind-icon">Character<wbr>Types</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="matrixgraphvertexvalue.html" class="tsd-kind-icon">Matrix<wbr>Graph<wbr>Vertex<wbr>Value</a>
@@ -272,11 +254,38 @@
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="treenode.html" class="tsd-kind-icon">Tree<wbr>Node</a>
 					</li>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface">
+						<a href="worlditemparser.html" class="tsd-kind-icon">World<wbr>Item<wbr>Parser</a>
+						<ul>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="worlditemparser.html#generate" class="tsd-kind-icon">generate</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="worlditemparser.html#generatefromstringmap" class="tsd-kind-icon">generate<wbr>From<wbr>String<wbr>Map</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="worlditemparser.html#parseworldmap" class="tsd-kind-icon">parse<wbr>World<wbr>Map</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+					<li class=" tsd-kind-interface">
+						<a href="worlditemtransformator.html" class="tsd-kind-icon">World<wbr>Item<wbr>Transformator</a>
+					</li>
 					<li class=" tsd-kind-interface">
 						<a href="worldmaplinelistener.html" class="tsd-kind-icon">World<wbr>Map<wbr>Line<wbr>Listener</a>
 					</li>
+					<li class=" tsd-kind-function">
+						<a href="../globals.html#canvas" class="tsd-kind-icon">Canvas</a>
+					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="../globals.html#treeiteratorgenerator" class="tsd-kind-icon">Tree<wbr>Iterator<wbr>Generator</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../globals.html#render" class="tsd-kind-icon">render</a>
 					</li>
 					<li class=" tsd-kind-object-literal">
 						<a href="../globals.html#defaultparseoptions" class="tsd-kind-icon">default<wbr>Parse<wbr>Options</a>
