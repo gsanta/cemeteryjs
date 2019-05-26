@@ -2,6 +2,7 @@ import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/Wo
 import { expect } from "chai";
 import { PolygonAreaInfoParser } from "./PolygonAreaInfoParser";
 import { Point } from "@nightshifts.inc/geometry";
+import { WorldItemInfoFactory } from "../../WorldItemInfoFactory";
 
 describe('PolygonAreaInfoGenerator', () => {
     describe ('generate', () => {
@@ -21,7 +22,7 @@ describe('PolygonAreaInfoGenerator', () => {
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const polygonAreaInfoParser = new PolygonAreaInfoParser('room', '#');
+            const polygonAreaInfoParser = new PolygonAreaInfoParser(new WorldItemInfoFactory(), 'room', '#');
 
             const worldItem = polygonAreaInfoParser.generate(matrixGraph);
 
@@ -50,7 +51,7 @@ describe('PolygonAreaInfoGenerator', () => {
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const polygonAreaInfoParser = new PolygonAreaInfoParser('room', '#');
+            const polygonAreaInfoParser = new PolygonAreaInfoParser(new WorldItemInfoFactory(), 'room', '#');
 
             const worldItem = polygonAreaInfoParser.generate(matrixGraph);
 
@@ -86,7 +87,7 @@ describe('PolygonAreaInfoGenerator', () => {
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const polygonAreaInfoParser = new PolygonAreaInfoParser('room', '#');
+            const polygonAreaInfoParser = new PolygonAreaInfoParser(new WorldItemInfoFactory(), 'room', '#');
 
             const worldItem = polygonAreaInfoParser.generate(matrixGraph);
 
@@ -120,7 +121,7 @@ describe('PolygonAreaInfoGenerator', () => {
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const polygonAreaInfoParser = new PolygonAreaInfoParser('room', '#');
+            const polygonAreaInfoParser = new PolygonAreaInfoParser(new WorldItemInfoFactory(), 'room', '#');
 
             const worldItem = polygonAreaInfoParser.generate(matrixGraph);
 

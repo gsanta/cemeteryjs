@@ -3,12 +3,19 @@ import _ = require("lodash");
 import { TreeIteratorGenerator } from "../gwm_world_item/iterator/TreeIteratorGenerator";
 import { WorldItemTransformator } from './WorldItemTransformator';
 import { Rectangle, Line } from "@nightshifts.inc/geometry";
+import { WorldItemInfoFactory } from '../WorldItemInfoFactory';
 
 export class BorderItemSegmentingTransformator  implements WorldItemTransformator {
+    private worldItemInfoFactory: WorldItemInfoFactory;
     private roomSeparatorItemNames: string[];
     private scales: {xScale: number, yScale: number};
 
-    constructor(roomSeparatorItemNames: string[], scales: {xScale: number, yScale: number} = {xScale: 1, yScale: 1}) {
+    constructor(
+        worldItemInfoFactory: WorldItemInfoFactory,
+        roomSeparatorItemNames: string[],
+        scales: {xScale: number, yScale: number} = {xScale: 1, yScale: 1}
+    ) {
+        this.worldItemInfoFactory = worldItemInfoFactory;
         this.roomSeparatorItemNames = roomSeparatorItemNames;
         this.scales = scales;
     }
@@ -80,7 +87,7 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
         const segmentedRoomSeparators: WorldItemInfo[] = [];
 
         if (roomSeparator.dimensions.minY() < segmentPositions[0]) {
-            const clone = roomSeparator.clone();
+            const clone = this.worldItemInfoFactory.clone(roomSeparator);
 
             const height = segmentPositions[0] - roomSeparator.dimensions.minY();
 
@@ -89,7 +96,7 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
         }
 
         if (roomSeparator.dimensions.maxY() > segmentPositions[1]) {
-            const clone = roomSeparator.clone();
+            const clone = this.worldItemInfoFactory.clone(roomSeparator);
 
             const height = roomSeparator.dimensions.maxY() - segmentPositions[1];
 
@@ -97,7 +104,7 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
             segmentedRoomSeparators.push(clone);
         }
 
-        const middleSegment = roomSeparator.clone();
+        const middleSegment = this.worldItemInfoFactory.clone(roomSeparator);
         const middleSegmentHeight = segmentPositions[1] - segmentPositions[0];
         middleSegment.dimensions = new Rectangle(roomSeparator.dimensions.left, segmentPositions[0], roomSeparator.dimensions.width, middleSegmentHeight);
         segmentedRoomSeparators.push(middleSegment);
@@ -113,7 +120,7 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
         let middleSegment: WorldItemInfo = null;
 
         if (roomSeparator.dimensions.minX() < segmentPositions[0]) {
-            const clone = roomSeparator.clone();
+            const clone = this.worldItemInfoFactory.clone(roomSeparator);
 
             const width = segmentPositions[0] - roomSeparator.dimensions.minX();
 
@@ -124,7 +131,7 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
         }
 
         if (roomSeparator.dimensions.maxX() > segmentPositions[1]) {
-            const clone = roomSeparator.clone();
+            const clone = this.worldItemInfoFactory.clone(roomSeparator);
 
             const width = roomSeparator.dimensions.maxX() - segmentPositions[1];
 
@@ -134,7 +141,7 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
             segmentedRoomSeparators.push(clone);
         }
 
-        middleSegment = roomSeparator.clone();
+        middleSegment = this.worldItemInfoFactory.clone(roomSeparator);
         const middleSegmentWidth = segmentPositions[1] - segmentPositions[0];
         middleSegment.dimensions = new Rectangle(segmentPositions[0], roomSeparator.dimensions.top, middleSegmentWidth, roomSeparator.dimensions.height);
         segmentedRoomSeparators.push(middleSegment);

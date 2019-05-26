@@ -7,6 +7,7 @@ import { BorderItemSegmentingTransformator } from './BorderItemSegmentingTransfo
 import _ = require('lodash');
 import { ScalingTransformator } from './ScalingTransformator';
 import { Rectangle, Polygon } from '@nightshifts.inc/geometry';
+import { WorldItemInfoFactory } from '../WorldItemInfoFactory';
 
 
 describe('BorderItemAddingTransformator', () => {
@@ -31,10 +32,11 @@ describe('BorderItemAddingTransformator', () => {
                 \`
             `;
 
+            const worldItemInfoFacotry = new WorldItemInfoFactory();
             let items = new CombinedWorldItemParser(
                 [
-                    new RoomSeparatorParser(['W']),
-                    new RoomInfoParser()
+                    new RoomSeparatorParser(worldItemInfoFacotry, ['W']),
+                    new RoomInfoParser(worldItemInfoFacotry)
                 ]
             ).generateFromStringMap(map);
 
@@ -67,14 +69,15 @@ describe('BorderItemAddingTransformator', () => {
                 \`
             `;
 
+            const worldItemInfoFacotry = new WorldItemInfoFactory();
             let items = new CombinedWorldItemParser(
                 [
-                    new RoomSeparatorParser(['W']),
-                    new RoomInfoParser()
+                    new RoomSeparatorParser(worldItemInfoFacotry, ['W']),
+                    new RoomInfoParser(worldItemInfoFacotry)
                 ]
             ).generateFromStringMap(map);
 
-            items = new BorderItemSegmentingTransformator(['wall']).transform(items);
+            items = new BorderItemSegmentingTransformator(worldItemInfoFacotry, ['wall']).transform(items);
             items = new BorderItemAddingTransformator(['wall'], false).transform(items);
 
             const room3 = items.filter(worldItem => worldItem.name === 'room')[2];
@@ -109,14 +112,15 @@ describe('BorderItemAddingTransformator', () => {
                 \`
             `;
 
+            const worldItemInfoFacotry = new WorldItemInfoFactory();
             let items = new CombinedWorldItemParser(
                 [
-                    new RoomSeparatorParser(['W']),
-                    new RoomInfoParser()
+                    new RoomSeparatorParser(worldItemInfoFacotry, ['W']),
+                    new RoomInfoParser(worldItemInfoFacotry)
                 ]
             ).generateFromStringMap(map);
 
-            items = new BorderItemSegmentingTransformator(['wall']).transform(items);
+            items = new BorderItemSegmentingTransformator(worldItemInfoFacotry, ['wall']).transform(items);
             items = new BorderItemAddingTransformator(['wall']).transform(items);
 
             const room3 = items.filter(worldItem => worldItem.name === 'room')[2];
@@ -151,15 +155,16 @@ describe('BorderItemAddingTransformator', () => {
                 \`
             `;
 
+            const worldItemInfoFacotry = new WorldItemInfoFactory();
             let items = new CombinedWorldItemParser(
                 [
-                    new RoomSeparatorParser(['W']),
-                    new RoomInfoParser()
+                    new RoomSeparatorParser(worldItemInfoFacotry, ['W']),
+                    new RoomInfoParser(worldItemInfoFacotry)
                 ]
             ).generateFromStringMap(map);
 
             items = new ScalingTransformator({x: 2, y: 2}).transform(items);
-            items = new BorderItemSegmentingTransformator(['wall'], {xScale: 2, yScale: 2}).transform(items);
+            items = new BorderItemSegmentingTransformator(worldItemInfoFacotry, ['wall'], {xScale: 2, yScale: 2}).transform(items);
             items = new BorderItemAddingTransformator(['wall']).transform(items);
 
             const room3 = items.filter(worldItem => worldItem.name === 'room')[0];

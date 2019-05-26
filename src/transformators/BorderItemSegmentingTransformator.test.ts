@@ -5,6 +5,7 @@ import { BorderItemSegmentingTransformator } from "./BorderItemSegmentingTransfo
 import { expect } from "chai";
 import _ = require("lodash");
 import { Rectangle } from "@nightshifts.inc/geometry";
+import { WorldItemInfoFactory } from "../WorldItemInfoFactory";
 
 
 describe('BorderItemSegmentingTransformator', () => {
@@ -35,14 +36,15 @@ describe('BorderItemSegmentingTransformator', () => {
                 \`
             `;
 
+            const worldItemInfoFacotry = new WorldItemInfoFactory();
             let items = new CombinedWorldItemParser(
                 [
-                    new RoomSeparatorParser(['W']),
-                    new RoomInfoParser()
+                    new RoomSeparatorParser(worldItemInfoFacotry, ['W']),
+                    new RoomInfoParser(worldItemInfoFacotry)
                 ]
             ).generateFromStringMap(map);
 
-            items = new BorderItemSegmentingTransformator(['wall']).transform(items);
+            items = new BorderItemSegmentingTransformator(worldItemInfoFacotry, ['wall']).transform(items);
 
             expect(items.filter(item => item.name === 'wall').length).to.eql(4, 'wall segment number not ok');
         });
@@ -72,14 +74,15 @@ describe('BorderItemSegmentingTransformator', () => {
                 \`
             `;
 
+            const worldItemInfoFacotry = new WorldItemInfoFactory();
             let items = new CombinedWorldItemParser(
                 [
-                    new RoomSeparatorParser(['W']),
-                    new RoomInfoParser()
+                    new RoomSeparatorParser(worldItemInfoFacotry, ['W']),
+                    new RoomInfoParser(worldItemInfoFacotry)
                 ]
             ).generateFromStringMap(map);
 
-            items = new BorderItemSegmentingTransformator(['wall']).transform(items);
+            items = new BorderItemSegmentingTransformator(worldItemInfoFacotry, ['wall']).transform(items);
 
             expect(items.filter(item => item.name === 'wall').length).to.eql(7, 'wall segment number not ok');
 

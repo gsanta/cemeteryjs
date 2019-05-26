@@ -6,6 +6,7 @@ import { PolygonAreaInfoParser } from '../polygon_area_parser/PolygonAreaInfoPar
 import { WorldMapToRoomMapConverter } from './WorldMapToRoomMapConverter';
 import _ = require("lodash");
 import { Line, Point } from '@nightshifts.inc/geometry';
+import { WorldItemInfoFactory } from '../../WorldItemInfoFactory';
 
 /**
  * @hidden
@@ -18,9 +19,10 @@ export class RoomInfoParser implements WorldItemParser {
     private polygonAreaInfoGenerator: PolygonAreaInfoParser;
 
     constructor(
+        worldItemInfoFactory: WorldItemInfoFactory,
         roomCharacter = '-',
         worldMapConverter = new WorldMapToMatrixGraphConverter(),
-        polygonAreaInfoGenerator = new PolygonAreaInfoParser('room', roomCharacter),
+        polygonAreaInfoGenerator = new PolygonAreaInfoParser(worldItemInfoFactory, 'room', roomCharacter),
         worldMapToRoomMapConverter = new WorldMapToRoomMapConverter('W', '-', ['W', 'D', 'I']),
     ) {
         this.worldMapConverter = worldMapConverter;

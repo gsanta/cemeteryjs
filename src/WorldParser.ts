@@ -12,6 +12,7 @@ import { WorldMapToMatrixGraphConverter } from './matrix_graph/conversion/WorldM
 import { RoomSeparatorParser } from './parsers/room_separator_parser/RoomSeparatorParser';
 import { BorderItemAddingTransformator } from './transformators/BorderItemAddingTransformator';
 import { WorldItemTransformator } from './transformators/WorldItemTransformator';
+import { WorldItemInfoFactory } from './WorldItemInfoFactory';
 
 export interface ParseOptions<T> {
     xScale: number;
@@ -52,13 +53,14 @@ export class WorldParser {
     }
 
     public static createWithOptions<T>(characterTypes: CharacterTypes, options: ParseOptions<T> = defaultParseOptions): WorldParser {
+        const worldItemInfoFactory = new WorldItemInfoFactory();
         return new WorldParser(
             new CombinedWorldItemParser(
                 [
-                    new FurnitureInfoParser(characterTypes.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
-                    new RoomSeparatorParser(characterTypes.roomSeparatorCharacters),
-                    new RoomInfoParser(),
-                    new RootWorldItemParser()
+                    new FurnitureInfoParser(worldItemInfoFactory, characterTypes.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
+                    new RoomSeparatorParser(worldItemInfoFactory, characterTypes.roomSeparatorCharacters),
+                    new RoomInfoParser(worldItemInfoFactory),
+                    new RootWorldItemParser(worldItemInfoFactory)
                 ]
             ),
             [

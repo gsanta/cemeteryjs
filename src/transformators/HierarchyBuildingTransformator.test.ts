@@ -8,6 +8,7 @@ describe('HierarchyBuildingTransformator', () => {
     describe('transform', () => {
         it ('creates a parent-child relationship between two WorldItems, if one contains the other', () => {
             const worldItemParentMock = new WorldItemInfo(
+                1,
                 '',
                 new Polygon([
                         new Point(1, 1),
@@ -19,6 +20,7 @@ describe('HierarchyBuildingTransformator', () => {
             );
 
             const worldItemChildMock = new WorldItemInfo(
+                2,
                 '',
                 new Polygon([
                     new Point(1, 1),
@@ -39,6 +41,7 @@ describe('HierarchyBuildingTransformator', () => {
 
         it ('does not create a parent-child relationship if one does not contain the other', () => {
             const worldItemParentMock = new WorldItemInfo(
+                1,
                 '',
                 new Polygon([
                         new Point(1, 1),
@@ -50,6 +53,7 @@ describe('HierarchyBuildingTransformator', () => {
             );
 
             const worldItemChildMock = new WorldItemInfo(
+                2,
                 '',
                 new Polygon([
                     new Point(5, 1),

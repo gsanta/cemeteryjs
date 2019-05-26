@@ -5,6 +5,7 @@ import { WorldItemParser } from "../WorldItemParser";
 import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
 import { PolygonRedundantPointReducer } from "./PolygonRedundantPointReducer";
 import { Polygon, Line, Point } from "@nightshifts.inc/geometry";
+import { WorldItemInfoFactory } from '../../WorldItemInfoFactory';
 
 /**
  * @hidden
@@ -14,11 +15,17 @@ import { Polygon, Line, Point } from "@nightshifts.inc/geometry";
  */
 export class PolygonAreaInfoParser implements WorldItemParser {
     private polygonRedundantPointReducer: PolygonRedundantPointReducer;
+    private worldItemInfoFactory: WorldItemInfoFactory;
     private itemName: string;
     private character: string;
     private worldMapConverter: WorldMapToMatrixGraphConverter;
 
-    constructor(itemName: string, character: string, worldMapConverter = new WorldMapToMatrixGraphConverter()) {
+    constructor(
+        worldItemInfoFactory: WorldItemInfoFactory,
+        itemName: string,
+        character: string,
+        worldMapConverter = new WorldMapToMatrixGraphConverter()) {
+        this.worldItemInfoFactory = worldItemInfoFactory;
         this.itemName = itemName;
         this.character = character;
         this.worldMapConverter = worldMapConverter;
@@ -34,7 +41,7 @@ export class PolygonAreaInfoParser implements WorldItemParser {
                     this.createPolygonPointsFromHorizontalLines(lines)
                 );
 
-                return new WorldItemInfo(null, new Polygon(points), this.itemName);
+                return this.worldItemInfoFactory.create(null, new Polygon(points), this.itemName);
             });
     }
 

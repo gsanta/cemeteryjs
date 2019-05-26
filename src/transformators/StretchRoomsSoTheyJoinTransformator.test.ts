@@ -6,6 +6,7 @@ import { WorldMapToRoomMapConverter } from '../parsers/room_parser/WorldMapToRoo
 import { ScalingTransformator } from './ScalingTransformator';
 import { PolygonAreaInfoParser } from '../parsers/polygon_area_parser/PolygonAreaInfoParser';
 import { Polygon, Point } from '@nightshifts.inc/geometry';
+import { WorldItemInfoFactory } from '../WorldItemInfoFactory';
 
 
 describe('`StretchRoomsSoTheyJoinTransformator`', () => {
@@ -25,10 +26,12 @@ describe('`StretchRoomsSoTheyJoinTransformator`', () => {
                 \`
             `;
 
+            const worldItemInfoFacotry = new WorldItemInfoFactory();
             let items = new RoomInfoParser(
+                worldItemInfoFacotry,
                 '-',
                 new WorldMapToMatrixGraphConverter(),
-                new PolygonAreaInfoParser('room', '-'),
+                new PolygonAreaInfoParser(worldItemInfoFacotry, 'room', '-'),
                 new WorldMapToRoomMapConverter('#', '-', ['#'])
             ).generateFromStringMap(map);
 
@@ -50,10 +53,12 @@ describe('`StretchRoomsSoTheyJoinTransformator`', () => {
                 \`
             `;
 
+            const worldItemInfoFacotry = new WorldItemInfoFactory();
             let items = new RoomInfoParser(
+                worldItemInfoFacotry,
                 '-',
                 new WorldMapToMatrixGraphConverter(),
-                new PolygonAreaInfoParser('room', '-'),
+                new PolygonAreaInfoParser(worldItemInfoFacotry, 'room', '-'),
                 new WorldMapToRoomMapConverter('#', '-', ['#'])
             ).generateFromStringMap(map);
 
@@ -81,10 +86,12 @@ describe('`StretchRoomsSoTheyJoinTransformator`', () => {
                 \`
             `;
 
+            const worldItemInfoFacotry = new WorldItemInfoFactory();
             let items = new RoomInfoParser(
+                    worldItemInfoFacotry,
                     '-',
                     new WorldMapToMatrixGraphConverter(),
-                    new PolygonAreaInfoParser('room', '-'),
+                    new PolygonAreaInfoParser(worldItemInfoFacotry, 'room', '-'),
                     new WorldMapToRoomMapConverter('#', '-', ['#'])
                 ).generateFromStringMap(map);
 

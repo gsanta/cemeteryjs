@@ -4,12 +4,19 @@ import * as _ from 'lodash';
 import { WorldItemParser } from '../WorldItemParser';
 import { WorldMapToMatrixGraphConverter } from '../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 import { Rectangle } from '@nightshifts.inc/geometry';
+import { WorldItemInfoFactory } from '../../WorldItemInfoFactory';
 
 export class FurnitureInfoParser implements WorldItemParser {
+    private worldItemInfoFactory: WorldItemInfoFactory
     private worldMapConverter: WorldMapToMatrixGraphConverter;
     private furnitureCharacters: string[];
 
-    constructor(furnitureCharacters: string[], worldMapConverter = new WorldMapToMatrixGraphConverter()) {
+    constructor(
+        worldItemInfoFactory: WorldItemInfoFactory,
+        furnitureCharacters: string[],
+        worldMapConverter = new WorldMapToMatrixGraphConverter(),
+    ) {
+        this.worldItemInfoFactory = worldItemInfoFactory;
         this.worldMapConverter = worldMapConverter;
         this.furnitureCharacters = furnitureCharacters;
     }
@@ -55,7 +62,7 @@ export class FurnitureInfoParser implements WorldItemParser {
         const y = minY;
         const width = (maxX - minX + 1);
         const height = (maxY - minY + 1);
-        return new WorldItemInfo(
+        return this.worldItemInfoFactory.create(
             componentGraph.getCharacters()[0],
             new Rectangle(x, y, width, height),
             componentGraph.getVertexValue(oneVertex).name,
@@ -74,7 +81,7 @@ export class FurnitureInfoParser implements WorldItemParser {
                 const rect = this.createRectangleFromVerticalVertices(gameObjectGraph)
                 const additionalData = this.getAdditionalDataFromGameObjectGraph(gameObjectGraph);
                 const oneVertex = componentGraph.getAllVertices()[0];
-                return new WorldItemInfo(
+                return this.worldItemInfoFactory.create(
                     componentGraph.getCharacters()[0],
                     rect,
                     componentGraph.getVertexValue(oneVertex).name,
@@ -91,7 +98,7 @@ export class FurnitureInfoParser implements WorldItemParser {
                 const rect = this.createRectangleFromHorizontalVertices(gameObjectGraph);
                 const oneVertex = componentGraph.getAllVertices()[0];
 
-                return new WorldItemInfo(
+                return this.worldItemInfoFactory.create(
                     gameObjectGraph.getCharacters()[0],
                     rect,
                     componentGraph.getVertexValue(oneVertex).name,

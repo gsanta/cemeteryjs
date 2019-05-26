@@ -4,6 +4,7 @@ import { expect } from 'chai';
 import * as fs from 'fs';
 import { WorldMapToRoomMapConverter } from "./WorldMapToRoomMapConverter";
 import { Point } from "@nightshifts.inc/geometry";
+import { WorldItemInfoFactory } from '../../WorldItemInfoFactory';
 
 describe('RoomInfoParser', () => {
     describe ('generate', () => {
@@ -16,7 +17,7 @@ describe('RoomInfoParser', () => {
 
             const matrixGraph = worldMapToGraphConverter.convert(worldMapToRoomMapConverter.convert(worldMapStr));
 
-            const roomInfoParser = new RoomInfoParser('#');
+            const roomInfoParser = new RoomInfoParser(new WorldItemInfoFactory(), '#');
 
             const worldItem = roomInfoParser.generate(matrixGraph);
 

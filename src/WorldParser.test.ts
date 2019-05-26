@@ -16,6 +16,7 @@ import { BorderItemSegmentingTransformator } from './transformators/BorderItemSe
 import { StretchRoomsSoTheyJoinTransformator } from './transformators/StretchRoomsSoTheyJoinTransformator';
 import { PolygonAreaInfoParser } from './parsers/polygon_area_parser/PolygonAreaInfoParser';
 import {Rectangle, Polygon, Point} from '@nightshifts.inc/geometry';
+import { WorldItemInfoFactory } from './WorldItemInfoFactory';
 
 describe('`WorldParser`', () => {
     describe('parse', () => {
@@ -46,12 +47,12 @@ describe('`WorldParser`', () => {
             const [root] = gameObjectParser.parse(map);
             const children = root.children;
             expect(children.length).to.equal(7, 'number of children of root is not correct.');
-            expect(children[0]).to.eql(new WorldItemInfo('W', new Rectangle(0, 0, 1, 3), 'wall'), 'children[0] is not correct');
-            expect(children[1]).to.eql(new WorldItemInfo('W', new Rectangle(7, 0, 1, 3), 'wall'), 'children[1] is not correct');
-            expect(children[2]).to.eql(new WorldItemInfo('W', new Rectangle(1, 0, 2, 1), 'wall'), 'children[2] is not correct');
-            expect(children[3]).to.eql(new WorldItemInfo('W', new Rectangle(1, 2, 6, 1), 'wall'), 'children[3] is not correct');
-            expect(children[4]).to.eql(new WorldItemInfo('W', new Rectangle(5, 0, 2, 1), 'wall'), 'children[4] is not correct');
-            expect(children[5]).to.eql(new WorldItemInfo('I', new Rectangle(3, 0, 2, 1), 'window'), 'children[5] is not correct');
+            expect(children[0]).to.eql(new WorldItemInfo(2, 'W', new Rectangle(0, 0, 1, 3), 'wall'), 'children[0] is not correct');
+            expect(children[1]).to.eql(new WorldItemInfo(3, 'W', new Rectangle(7, 0, 1, 3), 'wall'), 'children[1] is not correct');
+            expect(children[2]).to.eql(new WorldItemInfo(4, 'W', new Rectangle(1, 0, 2, 1), 'wall'), 'children[2] is not correct');
+            expect(children[3]).to.eql(new WorldItemInfo(5, 'W', new Rectangle(1, 2, 6, 1), 'wall'), 'children[3] is not correct');
+            expect(children[4]).to.eql(new WorldItemInfo(6, 'W', new Rectangle(5, 0, 2, 1), 'wall'), 'children[4] is not correct');
+            expect(children[5]).to.eql(new WorldItemInfo(7, 'I', new Rectangle(3, 0, 2, 1), 'window'), 'children[5] is not correct');
             expect(children[6].name).to.eql('room', 'children[6] is not correct');
         });
 
@@ -380,18 +381,19 @@ describe('`WorldParser`', () => {
             roomSeparatorCharacters: ['W', 'D', 'I']
         }
 
+        const worldItemInfoFactory = new WorldItemInfoFactory();
         const worldMapParser = WorldParser.createWithCustomWorldItemGenerator(
             new CombinedWorldItemParser(
                 [
-                    new FurnitureInfoParser(options.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
-                    new RoomSeparatorParser(options.roomSeparatorCharacters),
-                    new RoomInfoParser(),
-                    new RootWorldItemParser()
+                    new FurnitureInfoParser(worldItemInfoFactory, options.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
+                    new RoomSeparatorParser(worldItemInfoFactory, options.roomSeparatorCharacters),
+                    new RoomInfoParser(worldItemInfoFactory),
+                    new RootWorldItemParser(worldItemInfoFactory)
                 ]
             ),
             [
                 new ScalingTransformator({ x: options.xScale, y: options.yScale }),
-                new BorderItemSegmentingTransformator(['wall', 'door', 'window']),
+                new BorderItemSegmentingTransformator(worldItemInfoFactory, ['wall', 'door', 'window']),
                 new HierarchyBuildingTransformator(),
                 new BorderItemAddingTransformator(['wall', 'door', 'window']),
                 new AdditionalDataConvertingTransformator()
@@ -423,18 +425,19 @@ describe('`WorldParser`', () => {
             roomSeparatorCharacters: ['W']
         }
 
+        const worldItemInfoFactory = new WorldItemInfoFactory();
         const worldMapParser = WorldParser.createWithCustomWorldItemGenerator(
             new CombinedWorldItemParser(
                 [
-                    new FurnitureInfoParser(options.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
-                    new RoomSeparatorParser(options.roomSeparatorCharacters),
-                    new RoomInfoParser(),
-                    new RootWorldItemParser()
+                    new FurnitureInfoParser(worldItemInfoFactory, options.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
+                    new RoomSeparatorParser(worldItemInfoFactory, options.roomSeparatorCharacters),
+                    new RoomInfoParser(worldItemInfoFactory),
+                    new RootWorldItemParser(worldItemInfoFactory)
                 ]
             ),
             [
                 new ScalingTransformator(),
-                new BorderItemSegmentingTransformator(['wall']),
+                new BorderItemSegmentingTransformator(worldItemInfoFactory, ['wall']),
                 new HierarchyBuildingTransformator(),
                 new BorderItemAddingTransformator(['wall']),
                 new StretchRoomsSoTheyJoinTransformator(),
@@ -463,12 +466,13 @@ describe('`WorldParser`', () => {
             \`
         `;
 
+        const worldItemInfoFactory = new WorldItemInfoFactory();
         const worldMapParser = WorldParser.createWithCustomWorldItemGenerator(
             new CombinedWorldItemParser(
                 [
-                    new RoomInfoParser(),
-                    new PolygonAreaInfoParser('empty', '-'),
-                    new RootWorldItemParser()
+                    new RoomInfoParser(worldItemInfoFactory),
+                    new PolygonAreaInfoParser(worldItemInfoFactory, 'empty', '-'),
+                    new RootWorldItemParser(worldItemInfoFactory)
                 ]
             ),
             [new HierarchyBuildingTransformator()]

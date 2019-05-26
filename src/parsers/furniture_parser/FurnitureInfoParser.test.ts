@@ -3,6 +3,7 @@ import { FurnitureInfoParser } from './FurnitureInfoParser';
 import { expect } from 'chai';
 import { WorldItemInfo } from '../../WorldItemInfo';
 import { Rectangle } from '@nightshifts.inc/geometry';
+import { WorldItemInfoFactory } from '../../WorldItemInfoFactory';
 
 describe('FurnitureInfoParser', () => {
     describe('generate', () => {
@@ -23,14 +24,14 @@ describe('FurnitureInfoParser', () => {
             );
 
 
-            const furnitureInfoParser = new FurnitureInfoParser(['W']);
+            const furnitureInfoParser = new FurnitureInfoParser(new WorldItemInfoFactory(), ['W']);
             const worldItems = furnitureInfoParser.generate(graph);
 
             expect(worldItems.length).to.eql(4);
             const firstItem = worldItems[0];
-            expect(firstItem).to.eql(new WorldItemInfo('W', new Rectangle(1, 1, 1, 2), 'wall'));
+            expect(firstItem).to.eql(new WorldItemInfo(1, 'W', new Rectangle(1, 1, 1, 2), 'wall'));
             const secondItem = worldItems[1];
-            expect(secondItem).to.eql(new WorldItemInfo('W', new Rectangle(3, 1, 1, 2), 'wall'));
+            expect(secondItem).to.eql(new WorldItemInfo(2, 'W', new Rectangle(3, 1, 1, 2), 'wall'));
         });
 
         it ('creates world items from the graph (test case with multiple connected components)', () => {
@@ -50,14 +51,14 @@ describe('FurnitureInfoParser', () => {
             );
 
 
-            const furnitureInfoParser = new FurnitureInfoParser(['W']);
+            const furnitureInfoParser = new FurnitureInfoParser(new WorldItemInfoFactory(), ['W']);
             const worldItems = furnitureInfoParser.generate(graph);
 
             expect(worldItems.length).to.eql(3);
             const firstItem = worldItems[0];
-            expect(firstItem).to.eql(new WorldItemInfo('W', new Rectangle(1, 1, 1, 2), 'wall'));
+            expect(firstItem).to.eql(new WorldItemInfo(1, 'W', new Rectangle(1, 1, 1, 2), 'wall'));
             const thirdItem = worldItems[2];
-            expect(thirdItem).to.eql(new WorldItemInfo('W', new Rectangle(2, 3, 2, 1), 'wall'));
+            expect(thirdItem).to.eql(new WorldItemInfo(3, 'W', new Rectangle(2, 3, 2, 1), 'wall'));
         });
 
         it ('creates one world item for a rectangular connected component', () => {
@@ -77,10 +78,10 @@ describe('FurnitureInfoParser', () => {
             );
 
 
-            const furnitureInfoParser = new FurnitureInfoParser(['D']);
+            const furnitureInfoParser = new FurnitureInfoParser(new WorldItemInfoFactory(), ['D']);
             const worldItems = furnitureInfoParser.generate(graph);
             expect(worldItems.length).to.equal(1);
-            expect(worldItems[0]).to.eql(new WorldItemInfo('D', new Rectangle(1, 0, 2, 3), 'door'));
+            expect(worldItems[0]).to.eql(new WorldItemInfo(1, 'D', new Rectangle(1, 0, 2, 3), 'door'));
         });
     });
 });

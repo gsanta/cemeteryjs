@@ -2,6 +2,7 @@ import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/Wo
 import { RoomSeparatorParser } from './RoomSeparatorParser';
 import { expect } from "chai";
 import { Rectangle } from "@nightshifts.inc/geometry";
+import { WorldItemInfoFactory } from '../../WorldItemInfoFactory';
 
 
 describe('RoomSeparatorParser', () => {
@@ -31,7 +32,7 @@ describe('RoomSeparatorParser', () => {
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const roomSeparatorParser = new RoomSeparatorParser(['W', 'D', 'I']);
+            const roomSeparatorParser = new RoomSeparatorParser(new WorldItemInfoFactory(), ['W', 'D', 'I']);
 
 
             const worldItems = roomSeparatorParser.generate(matrixGraph);

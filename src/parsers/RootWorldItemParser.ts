@@ -3,12 +3,15 @@ import { WorldMapToMatrixGraphConverter } from "../matrix_graph/conversion/World
 import { Rectangle } from "@nightshifts.inc/geometry";
 import { WorldItemInfo } from "../WorldItemInfo";
 import { WorldItemParser } from './WorldItemParser';
+import { WorldItemInfoFactory } from '../WorldItemInfoFactory';
 
 
 export class RootWorldItemParser implements WorldItemParser {
     private worldMapConverter: WorldMapToMatrixGraphConverter;
+    private worldItemInfoFactory: WorldItemInfoFactory;
 
-    constructor(worldMapConverter = new WorldMapToMatrixGraphConverter()) {
+    constructor(worldItemInfoFactory: WorldItemInfoFactory, worldMapConverter = new WorldMapToMatrixGraphConverter()) {
+        this.worldItemInfoFactory = worldItemInfoFactory;
         this.worldMapConverter = worldMapConverter;
     }
 
@@ -26,7 +29,7 @@ export class RootWorldItemParser implements WorldItemParser {
     }
 
     public createRootWorldItem(graph: MatrixGraph): WorldItemInfo {
-        return new WorldItemInfo(
+        return this.worldItemInfoFactory.create(
             'F',
             new Rectangle(
                 0,
