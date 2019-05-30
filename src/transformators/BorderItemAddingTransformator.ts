@@ -26,14 +26,14 @@ export class BorderItemAddingTransformator implements WorldItemTransformator {
         rooms.forEach(room => {
             roomSeparatorItems
                 .filter(roomSeparator => {
-                    const intersectionLine = room.dimensions.intersectBorder(roomSeparator.dimensions);
+                    const intersectionLine = room.dimensions.getCoincidentLineSegment(roomSeparator.dimensions);
 
                     if (!intersectionLine) {
                         return false;
                     }
 
                     if (this.doNotIncludeBorderItemsThatIntersectsOnlyAtCorner) {
-                        return !this.doesBorderItemIntersectOnlyAtCorner(roomSeparator, intersectionLine);
+                        return !this.doesBorderItemIntersectOnlyAtCorner(roomSeparator, intersectionLine[0]);
                     }
 
                     return true;

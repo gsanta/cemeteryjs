@@ -50,14 +50,14 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
     }
 
     private findRoomByWhichToSegment(roomSeparator: WorldItemInfo, rooms: WorldItemInfo[]): WorldItemInfo {
-        const intersectingRoom = <WorldItemInfo> _.find(rooms, (room: WorldItemInfo) => room.dimensions.intersectBorder(roomSeparator.dimensions));
+        const intersectingRoom = <WorldItemInfo> _.find(rooms, (room: WorldItemInfo) => room.dimensions.getCoincidentLineSegment(roomSeparator.dimensions));
 
         if (intersectingRoom) {
-            const intersectionLine = intersectingRoom.dimensions.intersectBorder(roomSeparator.dimensions);
+            const coincidingLineInfo = intersectingRoom.dimensions.getCoincidentLineSegment(roomSeparator.dimensions);
 
-            const intersectionExtent = this.getIntersectionExtent(intersectionLine);
+            const intersectionExtent = this.getIntersectionExtent(coincidingLineInfo[0]);
 
-            if (intersectionLine.isVertical()) {
+            if (coincidingLineInfo[0].isVertical()) {
                 // const sorted = _.sortBy([intersectionLine.start.y, intersectionLine.end.y]);
 
                 if (roomSeparator.dimensions.minY() < intersectionExtent[0] || roomSeparator.dimensions.maxY() > intersectionExtent[1]) {
@@ -74,7 +74,7 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
     }
 
     private segmentByRoom(roomSeparator: WorldItemInfo, segmentingRoom: WorldItemInfo): WorldItemInfo[] {
-        const line = segmentingRoom.dimensions.intersectBorder(roomSeparator.dimensions);
+        const [line] = segmentingRoom.dimensions.getCoincidentLineSegment(roomSeparator.dimensions);
 
         if (line.isVertical()) {
             return this.segmentVertically(roomSeparator, this.getIntersectionExtent(line));
@@ -85,28 +85,29 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
 
     private segmentVertically(roomSeparator: WorldItemInfo, segmentPositions: [number, number]): WorldItemInfo[] {
         const segmentedRoomSeparators: WorldItemInfo[] = [];
+        const dimensions = <Rectangle> roomSeparator.dimensions;
 
-        if (roomSeparator.dimensions.minY() < segmentPositions[0]) {
+        if (dimensions.minY() < segmentPositions[0]) {
             const clone = this.worldItemInfoFactory.clone(roomSeparator);
 
-            const height = segmentPositions[0] - roomSeparator.dimensions.minY();
+            const height = segmentPositions[0] - dimensions.minY();
 
-            clone.dimensions = new Rectangle(roomSeparator.dimensions.left, roomSeparator.dimensions.top, roomSeparator.dimensions.width, height);
+            clone.dimensions = new Rectangle(dimensions.left, dimensions.top, dimensions.width, height);
             segmentedRoomSeparators.push(clone);
         }
 
-        if (roomSeparator.dimensions.maxY() > segmentPositions[1]) {
+        if (dimensions.maxY() > segmentPositions[1]) {
             const clone = this.worldItemInfoFactory.clone(roomSeparator);
 
-            const height = roomSeparator.dimensions.maxY() - segmentPositions[1];
+            const height = dimensions.maxY() - segmentPositions[1];
 
-            clone.dimensions = new Rectangle(roomSeparator.dimensions.left, segmentPositions[1], roomSeparator.dimensions.width, height);
+            clone.dimensions = new Rectangle(dimensions.left, segmentPositions[1], dimensions.width, height);
             segmentedRoomSeparators.push(clone);
         }
 
         const middleSegment = this.worldItemInfoFactory.clone(roomSeparator);
         const middleSegmentHeight = segmentPositions[1] - segmentPositions[0];
-        middleSegment.dimensions = new Rectangle(roomSeparator.dimensions.left, segmentPositions[0], roomSeparator.dimensions.width, middleSegmentHeight);
+        middleSegment.dimensions = new Rectangle(dimensions.left, segmentPositions[0], dimensions.width, middleSegmentHeight);
         segmentedRoomSeparators.push(middleSegment);
 
         return segmentedRoomSeparators;
@@ -114,28 +115,29 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
 
     private segmentHorizontally(roomSeparator: WorldItemInfo, segmentPositions: [number, number]): WorldItemInfo[] {
         const segmentedRoomSeparators: WorldItemInfo[] = [];
+        const dimensions = <Rectangle> roomSeparator.dimensions;
 
         let bottomSegment: WorldItemInfo = null;
         let topSegment: WorldItemInfo = null;
         let middleSegment: WorldItemInfo = null;
 
-        if (roomSeparator.dimensions.minX() < segmentPositions[0]) {
+        if (dimensions.minX() < segmentPositions[0]) {
             const clone = this.worldItemInfoFactory.clone(roomSeparator);
 
-            const width = segmentPositions[0] - roomSeparator.dimensions.minX();
+            const width = segmentPositions[0] - dimensions.minX();
 
-            clone.dimensions = new Rectangle(roomSeparator.dimensions.left, roomSeparator.dimensions.top, width, roomSeparator.dimensions.height);
+            clone.dimensions = new Rectangle(dimensions.left, dimensions.top, width, dimensions.height);
 
             bottomSegment = clone;
             segmentedRoomSeparators.push(clone);
         }
 
-        if (roomSeparator.dimensions.maxX() > segmentPositions[1]) {
+        if (dimensions.maxX() > segmentPositions[1]) {
             const clone = this.worldItemInfoFactory.clone(roomSeparator);
 
-            const width = roomSeparator.dimensions.maxX() - segmentPositions[1];
+            const width = dimensions.maxX() - segmentPositions[1];
 
-            clone.dimensions = new Rectangle(segmentPositions[1], roomSeparator.dimensions.top, width, roomSeparator.dimensions.height);
+            clone.dimensions = new Rectangle(segmentPositions[1], dimensions.top, width, dimensions.height);
 
             topSegment = clone;
             segmentedRoomSeparators.push(clone);
@@ -143,7 +145,7 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
 
         middleSegment = this.worldItemInfoFactory.clone(roomSeparator);
         const middleSegmentWidth = segmentPositions[1] - segmentPositions[0];
-        middleSegment.dimensions = new Rectangle(segmentPositions[0], roomSeparator.dimensions.top, middleSegmentWidth, roomSeparator.dimensions.height);
+        middleSegment.dimensions = new Rectangle(segmentPositions[0], dimensions.top, middleSegmentWidth, dimensions.height);
         segmentedRoomSeparators.push(middleSegment);
 
         return segmentedRoomSeparators;
@@ -179,11 +181,11 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
 
     private getIntersectionExtent(line: Line): [number, number] {
         if (line.isVertical()) {
-            const segmentPositions = _.sortBy([line.start.y, line.end.y]);
+            const segmentPositions = _.sortBy([line.points[0].y, line.points[1].y]);
 
             return [segmentPositions[0] - this.scales.yScale, segmentPositions[1] + this.scales.yScale];
         } else {
-            const segmentPositions = _.sortBy([line.start.x, line.end.x]);
+            const segmentPositions = _.sortBy([line.points[0].x, line.points[1].x]);
 
             return [segmentPositions[0] - this.scales.xScale, segmentPositions[1] + this.scales.xScale];
         }

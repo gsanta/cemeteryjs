@@ -86,18 +86,18 @@ export class PolygonAreaInfoParser implements WorldItemParser {
     }
 
     private createPolygonPointsFromHorizontalLines(lines: Line[]): Point[] {
-        lines.sort((a: Line, b: Line) => a.start.y - b.start.y);
+        lines.sort((a: Line, b: Line) => a.points[0].y - b.points[0].y);
 
-        const topPoints = [lines[0].start, lines[0].end.addX(1)];
-        const bottomPoints = [_.last(lines).end.addY(1).addX(1), _.last(lines).start.addY(1)];
+        const topPoints = [lines[0].points[0], lines[0].points[1].addX(1)];
+        const bottomPoints = [_.last(lines).points[1].addY(1).addX(1), _.last(lines).points[0].addY(1)];
 
-        let prevPoint = lines[0].end.addX(1);
+        let prevPoint = lines[0].points[1].addX(1);
 
         const rightPoints: Point[] = [];
 
         _.chain(lines)
             .without(_.first(lines))
-            .map(line => line.end.addX(1))
+            .map(line => line.points[1].addX(1))
             .forEach(point => {
                 const newPoints = this.processNextPoint(point, prevPoint);
                 rightPoints.push(...newPoints);
@@ -113,7 +113,7 @@ export class PolygonAreaInfoParser implements WorldItemParser {
         lines.reverse();
 
         _.chain(lines)
-            .map(line => line.start)
+            .map(line => line.points[0])
             .forEach(point => {
                 const newPoints = this.processNextPoint2(point, prevPoint);
                 leftPoints.push(...newPoints);

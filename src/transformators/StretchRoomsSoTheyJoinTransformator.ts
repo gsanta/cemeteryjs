@@ -1,6 +1,7 @@
 import { TreeIteratorGenerator } from "../gwm_world_item/iterator/TreeIteratorGenerator";
 import { WorldItemInfo } from "../WorldItemInfo";
 import { WorldItemTransformator } from './WorldItemTransformator';
+import { Polygon } from "@nightshifts.inc/geometry";
 
 
 export class StretchRoomsSoTheyJoinTransformator implements WorldItemTransformator {
@@ -26,7 +27,7 @@ export class StretchRoomsSoTheyJoinTransformator implements WorldItemTransformat
         });
 
         rooms.forEach(room => {
-            room.dimensions = room.dimensions.stretch(this.scales.xScale / 2, this.scales.yScale / 2);
+            room.dimensions = (<Polygon>room.dimensions).stretch(this.scales.xScale / 2, this.scales.yScale / 2);
         });
 
         return rootWorldItems;
