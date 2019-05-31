@@ -13,11 +13,10 @@ import { RoomSeparatorParser } from './parsers/room_separator_parser/RoomSeparat
 import { RoomInfoParser } from './parsers/room_parser/RoomInfoParser';
 import { RootWorldItemParser } from './parsers/RootWorldItemParser';
 import { BorderItemSegmentingTransformator } from './transformators/BorderItemSegmentingTransformator';
-import { StretchRoomsSoTheyJoinTransformator } from './transformators/StretchRoomsSoTheyJoinTransformator';
+import { BorderItemsToLinesTransformator } from './transformators/BorderItemsToLinesTransformator';
 import { PolygonAreaInfoParser } from './parsers/polygon_area_parser/PolygonAreaInfoParser';
-import {Rectangle, Polygon, Point} from '@nightshifts.inc/geometry';
+import {Rectangle, Polygon, Point, Line} from '@nightshifts.inc/geometry';
 import { WorldItemInfoFactory } from './WorldItemInfoFactory';
-import { BorderItemToRoomPolygonSideAssigningTransformator } from './transformators/BorderItemToRoomPolygonSideAssigningTransformator';
 
 describe('`WorldParser`', () => {
     describe('parse', () => {
@@ -407,14 +406,14 @@ describe('`WorldParser`', () => {
         expect(walls.length).to.eql(8);
     });
 
-    it ('integrates correctly the StretchRoomsSoTheyJoinWorldItemGeneratorDecorator if used', () => {
+    it ('integrates correctly the `BorderItemsToLinesTransformator` if used', () => {
         const map = `
             map \`
 
-            WWWWW
-            W---W
-            W---W
-            WWWWW
+            WWWWWWWWW
+            W---W---W
+            W---W---W
+            WWWWWWWWW
 
             \`
 
@@ -447,64 +446,23 @@ describe('`WorldParser`', () => {
                 new BorderItemSegmentingTransformator(worldItemInfoFactory, ['wall']),
                 new HierarchyBuildingTransformator(),
                 new BorderItemAddingTransformator(['wall']),
-                new StretchRoomsSoTheyJoinTransformator(),
+                new BorderItemsToLinesTransformator(),
                 new AdditionalDataConvertingTransformator()
             ]
         );
 
         const [root] = worldMapParser.parse(map);
 
-        expect(root.children.length).to.eql(5);
-        expect(root.children[0].dimensions).to.eql(new Polygon([new Point(0.5, 0.5), new Point(4.5, 0.5), new Point(4.5, 3.5), new Point(0.5, 3.5)]))
+        expect(root.children.length).to.eql(9);
+        const room1 = root.children[0];
+        expect(room1.dimensions).to.eql(new Polygon([new Point(0.5, 0.5), new Point(4.5, 0.5), new Point(4.5, 3.5), new Point(0.5, 3.5)]));
+        const room2 = root.children[1];
+        expect(room2.dimensions).to.eql(new Polygon([new Point(4.5, 0.5), new Point(8.5, 0.5), new Point(8.5, 3.5), new Point(4.5, 3.5)]));
+        const randomWall1 = root.children[2];
+        expect(randomWall1.dimensions).to.eql(new Line(new Point(0.5, 0), new Point(0.5, 4)));
+        const randomWall2 = root.children[5];
+        expect(randomWall2.dimensions).to.eql(new Line(new Point(1, 0.5), new Point(4, 0.5)));
     });
-
-
-    // it ('can integrate with BorderItemToRoomPolygonSideAssigningTransformator', () => {
-    //     const map = `
-    //         map \`
-
-    //         WWWWW
-    //         W---W
-    //         W---W
-    //         WWWWW
-
-    //         \`
-
-    //         definitions \`
-
-    //         W = wall
-
-    //         \`
-    //     `;
-
-    //     const options = {
-    //         xScale: 1,
-    //         yScale: 1,
-    //         furnitureCharacters: [],
-    //         roomSeparatorCharacters: ['W']
-    //     }
-
-    //     const worldItemInfoFactory = new WorldItemInfoFactory();
-    //     const worldMapParser = WorldParser.createWithCustomWorldItemGenerator(
-    //         new CombinedWorldItemParser(
-    //             [
-    //                 new FurnitureInfoParser(worldItemInfoFactory, options.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
-    //                 new RoomSeparatorParser(worldItemInfoFactory, options.roomSeparatorCharacters),
-    //                 new RoomInfoParser(worldItemInfoFactory),
-    //                 new RootWorldItemParser(worldItemInfoFactory)
-    //             ]
-    //         ),
-    //         [
-    //             new ScalingTransformator(),
-    //             new BorderItemSegmentingTransformator(worldItemInfoFactory, ['wall']),
-    //             new HierarchyBuildingTransformator(),
-    //             new BorderItemAddingTransformator(['wall']),
-    //             new BorderItemToRoomPolygonSideAssigningTransformator(['wall'])
-    //         ]
-    //     );
-
-    //     const [root] = worldMapParser.parse(map);
-    // });
 
     it ('can integrate with `PolygonAreaInfoGenerator`', () => {
         const map = `

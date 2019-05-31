@@ -8,8 +8,8 @@ import { BorderItemSegmentingTransformator } from './transformators/BorderItemSe
 import { RootWorldItemParser } from './parsers/RootWorldItemParser';
 import { RoomSeparatorParser } from './parsers/room_separator_parser/RoomSeparatorParser';
 import { HierarchyBuildingTransformator } from './transformators/HierarchyBuildingTransformator';
-import { StretchRoomsSoTheyJoinTransformator } from './transformators/StretchRoomsSoTheyJoinTransformator';
 import { PolygonAreaInfoParser } from './parsers/polygon_area_parser/PolygonAreaInfoParser';
+import { BorderItemsToLinesTransformator } from './transformators/BorderItemsToLinesTransformator';
 
 export {WorldParser, ParseOptions, defaultParseOptions} from './WorldParser';
 export {WorldItemInfo} from './WorldItemInfo';
@@ -32,5 +32,5 @@ export const transformators = {
     AdditionalDataConvertingTransformator,
     BorderItemAddingTransformator,
     BorderItemSegmentingTransformator,
-    StretchRoomsSoTheyJoinTransformator
+    BorderItemsToLinesTransformator
 }

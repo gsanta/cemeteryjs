@@ -1,5 +1,5 @@
 import { RoomInfoParser } from '../parsers/room_parser/RoomInfoParser';
-import { StretchRoomsSoTheyJoinTransformator } from './StretchRoomsSoTheyJoinTransformator';
+import { BorderItemsToLinesTransformator } from './BorderItemsToLinesTransformator';
 import { expect } from 'chai';
 import { WorldMapToMatrixGraphConverter } from '../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 import { WorldMapToRoomMapConverter } from '../parsers/room_parser/WorldMapToRoomMapConverter';
@@ -9,7 +9,7 @@ import { Polygon, Point } from '@nightshifts.inc/geometry';
 import { WorldItemInfoFactory } from '../WorldItemInfoFactory';
 
 
-describe('`StretchRoomsSoTheyJoinTransformator`', () => {
+describe('`BorderItemsToLinesTransformator`', () => {
     describe('`transform`', () => {
         it ('streches the dimensions of the room\'s `Polygon`s so that they won\'t have space between them', () => {
             const map = `
@@ -35,7 +35,7 @@ describe('`StretchRoomsSoTheyJoinTransformator`', () => {
                 new WorldMapToRoomMapConverter('#', '-', ['#'])
             ).generateFromStringMap(map);
 
-            items = new StretchRoomsSoTheyJoinTransformator().transform(items);
+            items = new BorderItemsToLinesTransformator().transform(items);
 
             expect(items[0].dimensions).to.eql(new Polygon([new Point(0.5, 0.5), new Point(6.5, 0.5), new Point(6.5, 3.5), new Point(0.5, 3.5)]));
             expect(items[1].dimensions).to.eql(new Polygon([new Point(0.5, 3.5), new Point(6.5, 3.5), new Point(6.5, 6.5), new Point(0.5, 6.5)]));
@@ -63,7 +63,7 @@ describe('`StretchRoomsSoTheyJoinTransformator`', () => {
             ).generateFromStringMap(map);
 
 
-            items = new StretchRoomsSoTheyJoinTransformator({ xScale: 2, yScale: 3}).transform(
+            items = new BorderItemsToLinesTransformator({ xScale: 2, yScale: 3}).transform(
                 new ScalingTransformator({ x: 2, y: 3}).transform(items)
             );
 
@@ -95,7 +95,7 @@ describe('`StretchRoomsSoTheyJoinTransformator`', () => {
                     new WorldMapToRoomMapConverter('#', '-', ['#'])
                 ).generateFromStringMap(map);
 
-            items = new StretchRoomsSoTheyJoinTransformator()
+            items = new BorderItemsToLinesTransformator()
                 .transform(new ScalingTransformator().transform(items));
 
             expect(items[0].dimensions).to.eql(

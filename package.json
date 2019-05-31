@@ -38,7 +38,7 @@
     "webpack-dev-server": "^3.3.1"
   },
   "dependencies": {
-    "@nightshifts.inc/geometry": "^1.5.4",
+    "@nightshifts.inc/geometry": "^1.5.6",
     "@turf/intersect": "^6.1.3",
     "@turf/turf": "^5.1.6",
     "@types/lodash": "^4.14.123",
