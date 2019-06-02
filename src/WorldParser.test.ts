@@ -15,7 +15,7 @@ import { RootWorldItemParser } from './parsers/RootWorldItemParser';
 import { BorderItemSegmentingTransformator } from './transformators/BorderItemSegmentingTransformator';
 import { BorderItemsToLinesTransformator } from './transformators/BorderItemsToLinesTransformator';
 import { PolygonAreaInfoParser } from './parsers/polygon_area_parser/PolygonAreaInfoParser';
-import {Rectangle, Polygon, Point, Line} from '@nightshifts.inc/geometry';
+import {Polygon, Point, Line} from '@nightshifts.inc/geometry';
 import { WorldItemInfoFactory } from './WorldItemInfoFactory';
 
 describe('`WorldParser`', () => {
@@ -47,12 +47,12 @@ describe('`WorldParser`', () => {
             const [root] = gameObjectParser.parse(map);
             const children = root.children;
             expect(children.length).to.equal(7, 'number of children of root is not correct.');
-            expect(children[0]).to.eql(new WorldItemInfo(2, 'W', new Rectangle(0, 0, 1, 3), 'wall'), 'children[0] is not correct');
-            expect(children[1]).to.eql(new WorldItemInfo(3, 'W', new Rectangle(7, 0, 1, 3), 'wall'), 'children[1] is not correct');
-            expect(children[2]).to.eql(new WorldItemInfo(4, 'W', new Rectangle(1, 0, 2, 1), 'wall'), 'children[2] is not correct');
-            expect(children[3]).to.eql(new WorldItemInfo(5, 'W', new Rectangle(1, 2, 6, 1), 'wall'), 'children[3] is not correct');
-            expect(children[4]).to.eql(new WorldItemInfo(6, 'W', new Rectangle(5, 0, 2, 1), 'wall'), 'children[4] is not correct');
-            expect(children[5]).to.eql(new WorldItemInfo(7, 'I', new Rectangle(3, 0, 2, 1), 'window'), 'children[5] is not correct');
+            expect(children[0]).to.eql(new WorldItemInfo(2, 'W', Polygon.createRectangle(0, 0, 1, 3), 'wall'), 'children[0] is not correct');
+            expect(children[1]).to.eql(new WorldItemInfo(3, 'W', Polygon.createRectangle(7, 0, 1, 3), 'wall'), 'children[1] is not correct');
+            expect(children[2]).to.eql(new WorldItemInfo(4, 'W', Polygon.createRectangle(1, 0, 2, 1), 'wall'), 'children[2] is not correct');
+            expect(children[3]).to.eql(new WorldItemInfo(5, 'W', Polygon.createRectangle(1, 2, 6, 1), 'wall'), 'children[3] is not correct');
+            expect(children[4]).to.eql(new WorldItemInfo(6, 'W', Polygon.createRectangle(5, 0, 2, 1), 'wall'), 'children[4] is not correct');
+            expect(children[5]).to.eql(new WorldItemInfo(7, 'I', Polygon.createRectangle(3, 0, 2, 1), 'window'), 'children[5] is not correct');
             expect(children[6].name).to.eql('room', 'children[6] is not correct');
         });
 

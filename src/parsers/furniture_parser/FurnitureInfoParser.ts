@@ -3,7 +3,7 @@ import { WorldItemInfo } from '../../WorldItemInfo';
 import * as _ from 'lodash';
 import { WorldItemParser } from '../WorldItemParser';
 import { WorldMapToMatrixGraphConverter } from '../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
-import { Rectangle } from '@nightshifts.inc/geometry';
+import { Polygon } from '@nightshifts.inc/geometry';
 import { WorldItemInfoFactory } from '../../WorldItemInfoFactory';
 
 export class FurnitureInfoParser implements WorldItemParser {
@@ -64,7 +64,7 @@ export class FurnitureInfoParser implements WorldItemParser {
         const height = (maxY - minY + 1);
         return this.worldItemInfoFactory.create(
             componentGraph.getCharacters()[0],
-            new Rectangle(x, y, width, height),
+            Polygon.createRectangle(x, y, width, height),
             componentGraph.getVertexValue(oneVertex).name,
             this.getAdditionalDataFromGameObjectGraph(componentGraph)
         );
@@ -186,7 +186,7 @@ export class FurnitureInfoParser implements WorldItemParser {
         const width = 1;
         const height = endCoord.y - y + 1;
 
-        return new Rectangle(x, y, width, height);
+        return Polygon.createRectangle(x, y, width, height);
     }
 
     private createRectangleFromHorizontalVertices(graph: MatrixGraph) {
@@ -201,7 +201,7 @@ export class FurnitureInfoParser implements WorldItemParser {
         const width = endCoord.x - x + 1;
         const height = 1;
 
-        return new Rectangle(x, y, width, height);
+        return Polygon.createRectangle(x, y, width, height);
     }
 
     private getAdditionalDataFromGameObjectGraph(graph: MatrixGraph): any {

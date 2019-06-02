@@ -4,7 +4,7 @@ import { RoomInfoParser } from "../parsers/room_parser/RoomInfoParser";
 import { BorderItemSegmentingTransformator } from "./BorderItemSegmentingTransformator";
 import { expect } from "chai";
 import _ = require("lodash");
-import { Rectangle } from "@nightshifts.inc/geometry";
+import { Polygon } from "@nightshifts.inc/geometry";
 import { WorldItemInfoFactory } from "../WorldItemInfoFactory";
 
 
@@ -86,13 +86,13 @@ describe('BorderItemSegmentingTransformator', () => {
 
             expect(items.filter(item => item.name === 'wall').length).to.eql(7, 'wall segment number not ok');
 
-            expect(_.some(items, {dimensions: new Rectangle(0, 0, 1, 4)}), 'Rectangle(0, 0, 1, 4) not found.').to.be.true;
-            expect(_.some(items, {dimensions: new Rectangle(9, 4, 1, 3)}), 'Rectangle(9, 4, 1, 3) not found.').to.be.true;
-            expect(_.some(items, {dimensions: new Rectangle(9, 0, 1, 4)}), 'Rectangle(9, 0, 1, 4) not found.').to.be.true;
-            expect(_.some(items, {dimensions: new Rectangle(1, 0, 8, 1)}), 'Rectangle(1, 0, 8, 1) not found.').to.be.true;
-            expect(_.some(items, {dimensions: new Rectangle(1, 0, 8, 1)}), 'Rectangle(1, 0, 8, 1) not found.').to.be.true;
-            expect(_.some(items, {dimensions: new Rectangle(1, 3, 8, 1)}), 'Rectangle(1, 3, 8, 1) not found.').to.be.true;
-            expect(_.some(items, {dimensions: new Rectangle(1, 6, 8, 1)}), 'Rectangle(1, 6, 8, 1) not found.').to.be.true;
+            expect(_.some(items, {dimensions: Polygon.createRectangle(0, 0, 1, 4)}), 'Rectangle(0, 0, 1, 4) not found.').to.be.true;
+            expect(_.some(items, {dimensions: Polygon.createRectangle(9, 4, 1, 3)}), 'Rectangle(9, 4, 1, 3) not found.').to.be.true;
+            expect(_.some(items, {dimensions: Polygon.createRectangle(9, 0, 1, 4)}), 'Rectangle(9, 0, 1, 4) not found.').to.be.true;
+            expect(_.some(items, {dimensions: Polygon.createRectangle(1, 0, 8, 1)}), 'Rectangle(1, 0, 8, 1) not found.').to.be.true;
+            expect(_.some(items, {dimensions: Polygon.createRectangle(1, 0, 8, 1)}), 'Rectangle(1, 0, 8, 1) not found.').to.be.true;
+            expect(_.some(items, {dimensions: Polygon.createRectangle(1, 3, 8, 1)}), 'Rectangle(1, 3, 8, 1) not found.').to.be.true;
+            expect(_.some(items, {dimensions: Polygon.createRectangle(1, 6, 8, 1)}), 'Rectangle(1, 6, 8, 1) not found.').to.be.true;
 
         });
     });

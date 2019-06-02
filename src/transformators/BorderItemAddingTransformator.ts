@@ -1,8 +1,7 @@
 import { WorldItemInfo } from '../WorldItemInfo';
-import { TreeIteratorGenerator } from '../gwm_world_item/iterator/TreeIteratorGenerator';
 import { WorldItemTransformator } from './WorldItemTransformator';
 import _ = require('lodash');
-import { Line, Rectangle } from '@nightshifts.inc/geometry';
+import { Line } from '@nightshifts.inc/geometry';
 import { WorldItemInfoUtils } from '../WorldItemInfoUtils';
 
 
@@ -45,16 +44,10 @@ export class BorderItemAddingTransformator implements WorldItemTransformator {
     }
 
     private doesBorderItemIntersectOnlyAtCorner(roomSeparator: WorldItemInfo, intersectionLine: Line) {
-        if (roomSeparator.dimensions instanceof Rectangle) {
-            const narrowSides = (<Rectangle> roomSeparator.dimensions).getNarrowSides();
+        const edges = roomSeparator.dimensions.getEdges();
 
-            if (narrowSides) {
-                const narrowSides1 = narrowSides[0];
-                const narrowSides2 = narrowSides[1];
-                return narrowSides1.equalTo(intersectionLine) || narrowSides2.equalTo(intersectionLine);
-            }
-        }
+        const smallerEdge = _.minBy(edges, edge => edge.getLength());
 
-        return false;
+        return intersectionLine.getLength() === smallerEdge.getLength();
     }
 }

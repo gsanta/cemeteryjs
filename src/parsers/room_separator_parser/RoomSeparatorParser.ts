@@ -3,8 +3,8 @@ import { WorldItemInfo } from '../../WorldItemInfo';
 import * as _ from 'lodash';
 import { WorldItemParser } from '../WorldItemParser';
 import { WorldMapToMatrixGraphConverter } from '../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
-import { Rectangle } from '@nightshifts.inc/geometry';
 import { WorldItemInfoFactory } from '../../WorldItemInfoFactory';
+import { Polygon } from '@nightshifts.inc/geometry';
 
 export class RoomSeparatorParser implements WorldItemParser {
     private worldItemInfoFactory: WorldItemInfoFactory;
@@ -137,7 +137,7 @@ export class RoomSeparatorParser implements WorldItemParser {
         const width = 1;
         const height = endCoord.y - y + 1;
 
-        return new Rectangle(x, y, width, height);
+        return Polygon.createRectangle(x, y, width, height);
     }
 
     private createRectangleFromHorizontalVertices(graph: MatrixGraph) {
@@ -152,7 +152,7 @@ export class RoomSeparatorParser implements WorldItemParser {
         const width = endCoord.x - x + 1;
         const height = 1;
 
-        return new Rectangle(x, y, width, height);
+        return Polygon.createRectangle(x, y, width, height);
     }
 
     private getAdditionalDataFromGameObjectGraph(graph: MatrixGraph): any {

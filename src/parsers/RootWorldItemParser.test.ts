@@ -2,8 +2,8 @@ import { expect } from "chai";
 import { WorldItemInfo } from '../WorldItemInfo';
 import { RootWorldItemParser } from "./RootWorldItemParser";
 import { MatrixGraph } from "../matrix_graph/MatrixGraph";
-import { Rectangle } from "@nightshifts.inc/geometry";
 import { WorldItemInfoFactory } from "../WorldItemInfoFactory";
+import { Point, Polygon } from "@nightshifts.inc/geometry";
 
 
 describe('RootWorldItemParser', () => {
@@ -18,7 +18,13 @@ describe('RootWorldItemParser', () => {
 
             const worldItems = rootWorldItemParser.generate(<MatrixGraph> graphMock);
             expect(worldItems.length).to.eql(1);
-            expect(worldItems[0]).to.eql(new WorldItemInfo(1, 'F', new Rectangle(0, 0, 5, 4), 'root'));
+            const expectedShape = new Polygon([
+                new Point(0, -4),
+                new Point(0, 0),
+                new Point(5, 0),
+                new Point(5, -4)
+            ]);
+            expect(worldItems[0]).to.eql(new WorldItemInfo(1, 'F', expectedShape, 'root'));
         });
     });
 });

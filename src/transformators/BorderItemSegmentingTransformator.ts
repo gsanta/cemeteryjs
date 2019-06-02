@@ -2,7 +2,7 @@ import { WorldItemInfo } from "../WorldItemInfo";
 import _ = require("lodash");
 import { TreeIteratorGenerator } from "../gwm_world_item/iterator/TreeIteratorGenerator";
 import { WorldItemTransformator } from './WorldItemTransformator';
-import { Rectangle, Line } from "@nightshifts.inc/geometry";
+import { Line, Polygon } from "@nightshifts.inc/geometry";
 import { WorldItemInfoFactory } from '../WorldItemInfoFactory';
 
 export class BorderItemSegmentingTransformator  implements WorldItemTransformator {
@@ -85,14 +85,19 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
 
     private segmentVertically(roomSeparator: WorldItemInfo, segmentPositions: [number, number]): WorldItemInfo[] {
         const segmentedRoomSeparators: WorldItemInfo[] = [];
-        const dimensions = <Rectangle> roomSeparator.dimensions;
+        const dimensions = roomSeparator.dimensions;
 
         if (dimensions.minY() < segmentPositions[0]) {
             const clone = this.worldItemInfoFactory.clone(roomSeparator);
 
             const height = segmentPositions[0] - dimensions.minY();
 
-            clone.dimensions = new Rectangle(dimensions.left, dimensions.top, dimensions.width, height);
+            clone.dimensions = Polygon.createRectangle(
+                dimensions.minX(),
+                dimensions.maxY(),
+                dimensions.maxX() - dimensions.minX(),
+                dimensions.maxY() - dimensions.minY()
+            );
             segmentedRoomSeparators.push(clone);
         }
 
@@ -101,13 +106,23 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
 
             const height = dimensions.maxY() - segmentPositions[1];
 
-            clone.dimensions = new Rectangle(dimensions.left, segmentPositions[1], dimensions.width, height);
+            clone.dimensions = Polygon.createRectangle(
+                dimensions.minX(),
+                segmentPositions[1],
+                dimensions.maxX() - dimensions.minX(),
+                height
+            );
             segmentedRoomSeparators.push(clone);
         }
 
         const middleSegment = this.worldItemInfoFactory.clone(roomSeparator);
         const middleSegmentHeight = segmentPositions[1] - segmentPositions[0];
-        middleSegment.dimensions = new Rectangle(dimensions.left, segmentPositions[0], dimensions.width, middleSegmentHeight);
+        middleSegment.dimensions = Polygon.createRectangle(
+            dimensions.minX(),
+            segmentPositions[0],
+            dimensions.maxX() - dimensions.minX(),
+            middleSegmentHeight
+        );
         segmentedRoomSeparators.push(middleSegment);
 
         return segmentedRoomSeparators;
@@ -115,7 +130,7 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
 
     private segmentHorizontally(roomSeparator: WorldItemInfo, segmentPositions: [number, number]): WorldItemInfo[] {
         const segmentedRoomSeparators: WorldItemInfo[] = [];
-        const dimensions = <Rectangle> roomSeparator.dimensions;
+        const dimensions = roomSeparator.dimensions;
 
         let bottomSegment: WorldItemInfo = null;
         let topSegment: WorldItemInfo = null;
@@ -126,7 +141,12 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
 
             const width = segmentPositions[0] - dimensions.minX();
 
-            clone.dimensions = new Rectangle(dimensions.left, dimensions.top, width, dimensions.height);
+            clone.dimensions = Polygon.createRectangle(
+                dimensions.minX(),
+                dimensions.maxY(),
+                width,
+                dimensions.maxY() - dimensions.minY()
+            );
 
             bottomSegment = clone;
             segmentedRoomSeparators.push(clone);
@@ -137,7 +157,12 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
 
             const width = dimensions.maxX() - segmentPositions[1];
 
-            clone.dimensions = new Rectangle(segmentPositions[1], dimensions.top, width, dimensions.height);
+            clone.dimensions = Polygon.createRectangle(
+                segmentPositions[1],
+                dimensions.maxY(),
+                width,
+                dimensions.maxY() - dimensions.minY()
+            );
 
             topSegment = clone;
             segmentedRoomSeparators.push(clone);
@@ -145,7 +170,12 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
 
         middleSegment = this.worldItemInfoFactory.clone(roomSeparator);
         const middleSegmentWidth = segmentPositions[1] - segmentPositions[0];
-        middleSegment.dimensions = new Rectangle(segmentPositions[0], dimensions.top, middleSegmentWidth, dimensions.height);
+        middleSegment.dimensions = Polygon.createRectangle(
+            segmentPositions[0],
+            dimensions.maxY(),
+            middleSegmentWidth,
+            dimensions.maxY() - dimensions.minY()
+        );
         segmentedRoomSeparators.push(middleSegment);
 
         return segmentedRoomSeparators;

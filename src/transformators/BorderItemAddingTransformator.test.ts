@@ -6,7 +6,7 @@ import { expect } from 'chai';
 import { BorderItemSegmentingTransformator } from './BorderItemSegmentingTransformator';
 import _ = require('lodash');
 import { ScalingTransformator } from './ScalingTransformator';
-import { Rectangle, Polygon } from '@nightshifts.inc/geometry';
+import { Polygon } from '@nightshifts.inc/geometry';
 import { WorldItemInfoFactory } from '../WorldItemInfoFactory';
 
 
@@ -84,7 +84,7 @@ describe('`BorderItemAddingTransformator`', () => {
 
             const borderItemDimensions = room3.borderItems.map(borderItem => borderItem.dimensions);
 
-            const cornerIntersectingRect = new Rectangle(4, 0, 1, 5);
+            const cornerIntersectingRect = Polygon.createRectangle(4, 0, 1, 5);
             expect(_.find(borderItemDimensions, (dim: Polygon) => dim.equalTo(cornerIntersectingRect))).to.eql(cornerIntersectingRect);
         });
 
@@ -127,7 +127,7 @@ describe('`BorderItemAddingTransformator`', () => {
 
             const borderItemDimensions = room3.borderItems.map(borderItem => borderItem.dimensions);
 
-            const cornerIntersectingRect = new Rectangle(4, 0, 1, 5);
+            const cornerIntersectingRect = Polygon.createRectangle(4, 0, 1, 5);
             expect(_.find(borderItemDimensions, (dim: Polygon) => dim.equalTo(cornerIntersectingRect))).to.eql(undefined);
         });
 
@@ -171,7 +171,7 @@ describe('`BorderItemAddingTransformator`', () => {
 
             const borderItemDimensions = room3.borderItems.map(borderItem => borderItem.dimensions);
             1;
-            const cornerIntersectingRect = new Rectangle(8, 8, 2, 10);
+            const cornerIntersectingRect = Polygon.createRectangle(8, 8, 2, 10);
             expect(_.find(borderItemDimensions, (dim: Polygon) => dim.equalTo(cornerIntersectingRect))).to.eql(undefined);
         });
     });
