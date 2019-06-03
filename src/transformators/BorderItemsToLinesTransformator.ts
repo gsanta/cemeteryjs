@@ -35,13 +35,19 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
 
     private convertBorderItemPolygonToLine(borderItemPolygon: Polygon, roomPolygon: Shape): Line {
         const coincidentLine = borderItemPolygon.getCoincidentLineSegment(roomPolygon);
-        const centerLines = borderItemPolygon.getBoundingRectangle().getCenterLines();
 
-        if (centerLines[0].getSlope() === coincidentLine[0].getSlope()) {
-            return centerLines[0];
-        } else {
-            return centerLines[1];
-        }
+        const perpendicularSegments = borderItemPolygon.getEdges().filter(edge => edge.getSlope() !== coincidentLine[0].getSlope());
+
+        const point1 = perpendicularSegments[0].getBoundingCenter();
+        const point2 = perpendicularSegments[1].getBoundingCenter();
+        // const centerLines = borderItemPolygon.getBoundingRectangle().getCenterLines();
+
+        // if (centerLines[0].getSlope() === coincidentLine[0].getSlope()) {
+        //     return centerLines[0];
+        // } else {
+        //     return centerLines[1];
+        // }
+        return new Line(point1, point2);
     }
 
     private expandRoomShapeToFillFreedUpSpace(shape: Shape): Shape {

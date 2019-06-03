@@ -19,10 +19,10 @@ describe('RootWorldItemParser', () => {
             const worldItems = rootWorldItemParser.generate(<MatrixGraph> graphMock);
             expect(worldItems.length).to.eql(1);
             const expectedShape = new Polygon([
-                new Point(0, -4),
                 new Point(0, 0),
-                new Point(5, 0),
-                new Point(5, -4)
+                new Point(0, 4),
+                new Point(5, 4),
+                new Point(5, 0)
             ]);
             expect(worldItems[0]).to.eql(new WorldItemInfo(1, 'F', expectedShape, 'root'));
         });

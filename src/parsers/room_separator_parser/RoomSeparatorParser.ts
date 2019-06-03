@@ -23,7 +23,7 @@ export class RoomSeparatorParser implements WorldItemParser {
 
     public generate(graph: MatrixGraph): WorldItemInfo[] {
 
-        return <any> _.chain(graph.getCharacters())
+        const a = _.chain(graph.getCharacters())
             .intersection(this.roomSeparatorCharacters)
             .map((character) => {
                 return graph.findConnectedComponentsForCharacter(character)
@@ -32,6 +32,7 @@ export class RoomSeparatorParser implements WorldItemParser {
             .flattenDeep()
             .value();
 
+        return <any> a;
     }
 
     public generateFromStringMap(strMap: string): WorldItemInfo[] {

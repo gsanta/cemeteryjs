@@ -3,6 +3,7 @@ import { WorldItemTransformator } from './WorldItemTransformator';
 import _ = require('lodash');
 import { Line } from '@nightshifts.inc/geometry';
 import { WorldItemInfoUtils } from '../WorldItemInfoUtils';
+import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 
 
 export class BorderItemAddingTransformator implements WorldItemTransformator {
@@ -25,14 +26,14 @@ export class BorderItemAddingTransformator implements WorldItemTransformator {
         rooms.forEach(room => {
             roomSeparatorItems
                 .filter(roomSeparator => {
-                    const intersectionLine = room.dimensions.getCoincidentLineSegment(roomSeparator.dimensions);
+                    const intersectionLineInfo = room.dimensions.getCoincidentLineSegment(roomSeparator.dimensions);
 
-                    if (!intersectionLine) {
+                    if (!intersectionLineInfo) {
                         return false;
                     }
 
                     if (this.doNotIncludeBorderItemsThatIntersectsOnlyAtCorner) {
-                        return !this.doesBorderItemIntersectOnlyAtCorner(roomSeparator, intersectionLine[0]);
+                        return !this.doesBorderItemIntersectOnlyAtCorner(roomSeparator, intersectionLineInfo);
                     }
 
                     return true;
@@ -43,11 +44,13 @@ export class BorderItemAddingTransformator implements WorldItemTransformator {
         return worldItems;
     }
 
-    private doesBorderItemIntersectOnlyAtCorner(roomSeparator: WorldItemInfo, intersectionLine: Line) {
+    private doesBorderItemIntersectOnlyAtCorner(roomSeparator: WorldItemInfo, intersectionLineInfo: [Segment, number, number]) {
         const edges = roomSeparator.dimensions.getEdges();
 
-        const smallerEdge = _.minBy(edges, edge => edge.getLength());
+        const intersectingEdge = edges[intersectionLineInfo[2]];
 
-        return intersectionLine.getLength() === smallerEdge.getLength();
+        const smallerEdgeLen = _.minBy(edges, edge => edge.getLength()).getLength();
+
+        return smallerEdgeLen === intersectingEdge.getLength();
     }
 }

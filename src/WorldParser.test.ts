@@ -341,7 +341,7 @@ describe('`WorldParser`', () => {
 
             const worldMapParser = WorldParser.createWithOptions(
                 { furnitureCharacters: ['B', 'C'], roomSeparatorCharacters: ['W', 'D']},
-                {...defaultParseOptions, ...{xScale: 1, yScale: 2}}
+                {...defaultParseOptions, ...{xScale: 1, yScale: 1}}
             );
             const [root] = worldMapParser.parse(map);
 

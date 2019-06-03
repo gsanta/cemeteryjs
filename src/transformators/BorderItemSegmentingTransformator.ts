@@ -50,7 +50,9 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
     }
 
     private findRoomByWhichToSegment(roomSeparator: WorldItemInfo, rooms: WorldItemInfo[]): WorldItemInfo {
-        const intersectingRoom = <WorldItemInfo> _.find(rooms, (room: WorldItemInfo) => room.dimensions.getCoincidentLineSegment(roomSeparator.dimensions));
+        const intersectingRoom = <WorldItemInfo> _.find(rooms, (room: WorldItemInfo) => {
+            return room.dimensions.getCoincidentLineSegment(roomSeparator.dimensions)
+        });
 
         if (intersectingRoom) {
             const coincidingLineInfo = intersectingRoom.dimensions.getCoincidentLineSegment(roomSeparator.dimensions);
@@ -96,7 +98,7 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
                 dimensions.minX(),
                 dimensions.maxY(),
                 dimensions.maxX() - dimensions.minX(),
-                dimensions.maxY() - dimensions.minY()
+                height
             );
             segmentedRoomSeparators.push(clone);
         }
