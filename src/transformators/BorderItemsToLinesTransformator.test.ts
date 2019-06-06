@@ -84,9 +84,30 @@ describe('`BorderItemsToLinesTransformator`', () => {
                 #######
 
                 \`
+
+                definitions \`
+
+                # = wall
+                - = empty
+
+                \`
             `;
 
             const worldItemInfoFacotry = new WorldItemInfoFactory();
+
+            // let items = new CombinedWorldItemParser(
+            //     [
+            //         new RoomSeparatorParser(worldItemInfoFacotry, ['#']),
+            //         new RoomInfoParser(
+            //             worldItemInfoFacotry,
+            //             '-',
+            //             new WorldMapToMatrixGraphConverter(),
+            //             new PolygonAreaInfoParser(worldItemInfoFacotry, 'room', '-'),
+            //             new WorldMapToRoomMapConverter('#', '-', ['#'])
+            //         )
+            //     ]
+            // ).generateFromStringMap(map);
+
             let items = new RoomInfoParser(
                     worldItemInfoFacotry,
                     '-',

@@ -6,6 +6,7 @@ import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/Wo
 import { PolygonRedundantPointReducer } from "./PolygonRedundantPointReducer";
 import { Polygon, Line, Point } from "@nightshifts.inc/geometry";
 import { WorldItemInfoFactory } from '../../WorldItemInfoFactory';
+import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 
 /**
  * @hidden
@@ -57,7 +58,7 @@ export class PolygonAreaInfoParser implements WorldItemParser {
      * Converts the polygon points of the component graph to horizontal lines which
      * include all of the points in the graph.
      */
-    private segmentGraphToHorizontalLines(componentGraph: MatrixGraph): Line[] {
+    private segmentGraphToHorizontalLines(componentGraph: MatrixGraph): Segment[] {
         const map = new Map<Number, number[]>();
 
         componentGraph.getAllVertices()
@@ -71,7 +72,7 @@ export class PolygonAreaInfoParser implements WorldItemParser {
                 map.get(position.y).push(position.x);
             });
 
-        const lines: Line[] = [];
+        const segments: Segment[] = [];
 
         map.forEach((xList: number[], yPos: number) => {
             xList.sort(PolygonAreaInfoParser.sortByNumber);
@@ -79,24 +80,24 @@ export class PolygonAreaInfoParser implements WorldItemParser {
             const xStart = xList[0];
             const xEnd = _.last(xList);
 
-            lines.push(new Line(new Point(xStart, yPos), new Point(xEnd, yPos)));
+            segments.push(new Segment(new Point(xStart, yPos), new Point(xEnd, yPos)));
         });
 
-        return lines;
+        return segments;
     }
 
-    private createPolygonPointsFromHorizontalLines(lines: Line[]): Point[] {
-        lines.sort((a: Line, b: Line) => a.points[0].y - b.points[0].y);
+    private createPolygonPointsFromHorizontalLines(segments: Segment[]): Point[] {
+        segments.sort((a: Segment, b: Segment) => a.points[0].y - b.points[0].y);
 
-        const topPoints = [lines[0].points[0], lines[0].points[1].addX(1)];
-        const bottomPoints = [_.last(lines).points[1].addY(1).addX(1), _.last(lines).points[0].addY(1)];
+        const topPoints = [segments[0].points[0], segments[0].points[1].addX(1)];
+        const bottomPoints = [_.last(segments).points[1].addY(1).addX(1), _.last(segments).points[0].addY(1)];
 
-        let prevPoint = lines[0].points[1].addX(1);
+        let prevPoint = segments[0].points[1].addX(1);
 
         const rightPoints: Point[] = [];
 
-        _.chain(lines)
-            .without(_.first(lines))
+        _.chain(segments)
+            .without(_.first(segments))
             .map(line => line.points[1].addX(1))
             .forEach(point => {
                 const newPoints = this.processNextPoint(point, prevPoint);
@@ -109,10 +110,10 @@ export class PolygonAreaInfoParser implements WorldItemParser {
         prevPoint = bottomPoints[1];
         const leftPoints: Point[] = [];
 
-        lines = _.without(lines, _.first(lines));
-        lines.reverse();
+        segments = _.without(segments, _.first(segments));
+        segments.reverse();
 
-        _.chain(lines)
+        _.chain(segments)
             .map(line => line.points[0])
             .forEach(point => {
                 const newPoints = this.processNextPoint2(point, prevPoint);

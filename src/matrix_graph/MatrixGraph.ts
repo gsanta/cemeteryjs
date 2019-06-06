@@ -201,11 +201,11 @@ export class MatrixGraph {
 
         const connectedComps: Set<number>[] = [];
 
-        let actComp = new Set();
+        let actComp = new Set<number>();
         reducedGraph.BFS((vertex, newRoot) => {
             if (newRoot) {
                 connectedComps.push(actComp);
-                actComp = new Set();
+                actComp = new Set<number>();
             }
             actComp.add(vertex);
         });

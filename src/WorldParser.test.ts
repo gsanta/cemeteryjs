@@ -17,6 +17,7 @@ import { BorderItemsToLinesTransformator } from './transformators/BorderItemsToL
 import { PolygonAreaInfoParser } from './parsers/polygon_area_parser/PolygonAreaInfoParser';
 import {Polygon, Point, Line} from '@nightshifts.inc/geometry';
 import { WorldItemInfoFactory } from './WorldItemInfoFactory';
+import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 
 describe('`WorldParser`', () => {
     describe('parse', () => {
@@ -459,9 +460,9 @@ describe('`WorldParser`', () => {
         const room2 = root.children[1];
         expect(room2.dimensions).to.eql(new Polygon([new Point(4.5, 0.5), new Point(8.5, 0.5), new Point(8.5, 3.5), new Point(4.5, 3.5)]));
         const randomWall1 = root.children[2];
-        expect(randomWall1.dimensions).to.eql(new Line(new Point(0.5, 0), new Point(0.5, 4)));
+        expect(randomWall1.dimensions).to.eql(new Segment(new Point(0.5, 0), new Point(0.5, 4)));
         const randomWall2 = root.children[5];
-        expect(randomWall2.dimensions).to.eql(new Line(new Point(1, 0.5), new Point(4, 0.5)));
+        expect(randomWall2.dimensions).to.eql(new Segment(new Point(1, 0.5), new Point(4, 0.5)));
     });
 
     it ('can integrate with `PolygonAreaInfoGenerator`', () => {

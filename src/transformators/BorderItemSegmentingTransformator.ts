@@ -2,8 +2,9 @@ import { WorldItemInfo } from "../WorldItemInfo";
 import _ = require("lodash");
 import { TreeIteratorGenerator } from "../gwm_world_item/iterator/TreeIteratorGenerator";
 import { WorldItemTransformator } from './WorldItemTransformator';
-import { Line, Polygon } from "@nightshifts.inc/geometry";
+import { Polygon } from "@nightshifts.inc/geometry";
 import { WorldItemInfoFactory } from '../WorldItemInfoFactory';
+import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 
 export class BorderItemSegmentingTransformator  implements WorldItemTransformator {
     private worldItemInfoFactory: WorldItemInfoFactory;
@@ -211,13 +212,13 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
         return roomSeparatorItems;
     }
 
-    private getIntersectionExtent(line: Line): [number, number] {
-        if (line.isVertical()) {
-            const segmentPositions = _.sortBy([line.points[0].y, line.points[1].y]);
+    private getIntersectionExtent(segment: Segment): [number, number] {
+        if (segment.isVertical()) {
+            const segmentPositions = _.sortBy([segment.points[0].y, segment.points[1].y]);
 
             return [segmentPositions[0] - this.scales.yScale, segmentPositions[1] + this.scales.yScale];
         } else {
-            const segmentPositions = _.sortBy([line.points[0].x, line.points[1].x]);
+            const segmentPositions = _.sortBy([segment.points[0].x, segment.points[1].x]);
 
             return [segmentPositions[0] - this.scales.xScale, segmentPositions[1] + this.scales.xScale];
         }
