@@ -446,23 +446,54 @@ describe('`WorldParser`', () => {
                 new ScalingTransformator(),
                 new BorderItemSegmentingTransformator(worldItemInfoFactory, ['wall']),
                 new HierarchyBuildingTransformator(),
-                new BorderItemAddingTransformator(['wall']),
-                new BorderItemsToLinesTransformator(),
-                new AdditionalDataConvertingTransformator()
+                new BorderItemAddingTransformator(['wall'])
             ]
         );
 
-        const [root] = worldMapParser.parse(map);
+        const [root1] = worldMapParser.parse(map);
 
-        expect(root.children.length).to.eql(9);
-        const room1 = root.children[0];
-        expect(room1.dimensions).to.eql(new Polygon([new Point(0.5, 0.5), new Point(4.5, 0.5), new Point(4.5, 3.5), new Point(0.5, 3.5)]));
-        const room2 = root.children[1];
-        expect(room2.dimensions).to.eql(new Polygon([new Point(4.5, 0.5), new Point(8.5, 0.5), new Point(8.5, 3.5), new Point(4.5, 3.5)]));
-        const randomWall1 = root.children[2];
-        expect(randomWall1.dimensions).to.eql(new Segment(new Point(0.5, 0), new Point(0.5, 4)));
-        const randomWall2 = root.children[5];
-        expect(randomWall2.dimensions).to.eql(new Segment(new Point(1, 0.5), new Point(4, 0.5)));
+        expect(root1.children[0].dimensions).to.eql(new Polygon([
+            new Point(1, 1),
+            new Point(4, 1),
+            new Point(4, 3),
+            new Point(1, 3)
+        ]));
+
+        expect(root1.children[1].dimensions).to.eql(new Polygon([
+            new Point(5, 1),
+            new Point(8, 1),
+            new Point(8, 3),
+            new Point(5, 3)
+        ]));
+
+        expect(root1.children[2].dimensions).to.eql(new Polygon([
+            new Point(0, 0),
+            new Point(0, 4),
+            new Point(1, 4),
+            new Point(1, 0)
+        ]));
+
+        expect(root1.children[5].dimensions).to.eql(new Polygon([
+            new Point(1, 0),
+            new Point(1, 1),
+            new Point(4, 1),
+            new Point(4, 0)
+        ]));
+        const [root] = new BorderItemsToLinesTransformator().transform([root1]);
+        expect(root.children[0].dimensions).to.eql(new Polygon([
+            new Point(0.5, 0.5),
+            new Point(4.5, 0.5),
+            new Point(4.5, 3.5),
+            new Point(0.5, 3.5)
+        ]));
+        expect(root.children[1].dimensions).to.eql(new Polygon([
+            new Point(4.5, 0.5),
+            new Point(8.5, 0.5),
+            new Point(8.5, 3.5),
+            new Point(4.5, 3.5)
+        ]));
+        expect(root.children[2].dimensions).to.eql(new Segment(new Point(0.5, 0.5), new Point(0.5, 3.5)));
+        expect(root.children[5].dimensions).to.eql(new Segment(new Point(0.5, 0.5), new Point(4.5, 0.5)));
     });
 
     it ('can integrate with `PolygonAreaInfoGenerator`', () => {

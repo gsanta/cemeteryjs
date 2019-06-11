@@ -8,151 +8,12 @@ import { PolygonAreaInfoParser } from '../parsers/polygon_area_parser/PolygonAre
 import { Polygon, Point } from '@nightshifts.inc/geometry';
 import { WorldItemInfoFactory } from '../WorldItemInfoFactory';
 import { WorldItemInfo } from '../WorldItemInfo';
+import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 
 
 describe('`BorderItemsToLinesTransformator`', () => {
     describe('`transform`', () => {
-        it ('streches the dimensions of the room\'s `Polygon`s so that they won\'t have space between them', () => {
-            const map = `
-                map \`
-
-                #######
-                #-----#
-                #-----#
-                #######
-                #-----#
-                #-----#
-                #######
-
-                \`
-            `;
-
-            const worldItemInfoFacotry = new WorldItemInfoFactory();
-            let items = new RoomInfoParser(
-                worldItemInfoFacotry,
-                '-',
-                new WorldMapToMatrixGraphConverter(),
-                new PolygonAreaInfoParser(worldItemInfoFacotry, 'room', '-'),
-                new WorldMapToRoomMapConverter('#', '-', ['#'])
-            ).generateFromStringMap(map);
-
-            items = new BorderItemsToLinesTransformator().transform(items);
-
-            expect(items[0].dimensions).to.eql(new Polygon([new Point(0.5, 0.5), new Point(6.5, 0.5), new Point(6.5, 3.5), new Point(0.5, 3.5)]));
-            expect(items[1].dimensions).to.eql(new Polygon([new Point(0.5, 3.5), new Point(6.5, 3.5), new Point(6.5, 6.5), new Point(0.5, 6.5)]));
-        });
-
-        it ('takes scale into consideration when stretching', () => {
-            const map = `
-                map \`
-
-                ##########
-                #-----#--#
-                #-----#--#
-                ##########
-
-                \`
-            `;
-
-            const worldItemInfoFacotry = new WorldItemInfoFactory();
-            let items = new RoomInfoParser(
-                worldItemInfoFacotry,
-                '-',
-                new WorldMapToMatrixGraphConverter(),
-                new PolygonAreaInfoParser(worldItemInfoFacotry, 'room', '-'),
-                new WorldMapToRoomMapConverter('#', '-', ['#'])
-            ).generateFromStringMap(map);
-
-
-            items = new BorderItemsToLinesTransformator({ xScale: 2, yScale: 3}).transform(
-                new ScalingTransformator({ x: 2, y: 3}).transform(items)
-            );
-
-            expect(items[0].dimensions).to.eql(new Polygon([new Point(1, 1.5), new Point(13, 1.5), new Point(13, 10.5), new Point(1, 10.5)]));
-            expect(items[1].dimensions).to.eql(new Polygon([new Point(13, 1.5), new Point(19, 1.5), new Point(19, 10.5), new Point(13, 10.5)]));
-        });
-
-        it ('correctly streches more complex polygonal shapes too', () => {
-            const map = `
-                map \`
-
-                #######
-                #-----#
-                #-----#
-                ####--#
-                #--#--#
-                #--#--#
-                #######
-
-                \`
-
-                definitions \`
-
-                # = wall
-                - = empty
-
-                \`
-            `;
-
-            const worldItemInfoFacotry = new WorldItemInfoFactory();
-
-            // let items = new CombinedWorldItemParser(
-            //     [
-            //         new RoomSeparatorParser(worldItemInfoFacotry, ['#']),
-            //         new RoomInfoParser(
-            //             worldItemInfoFacotry,
-            //             '-',
-            //             new WorldMapToMatrixGraphConverter(),
-            //             new PolygonAreaInfoParser(worldItemInfoFacotry, 'room', '-'),
-            //             new WorldMapToRoomMapConverter('#', '-', ['#'])
-            //         )
-            //     ]
-            // ).generateFromStringMap(map);
-
-            let items = new RoomInfoParser(
-                    worldItemInfoFacotry,
-                    '-',
-                    new WorldMapToMatrixGraphConverter(),
-                    new PolygonAreaInfoParser(worldItemInfoFacotry, 'room', '-'),
-                    new WorldMapToRoomMapConverter('#', '-', ['#'])
-                ).generateFromStringMap(map);
-
-            items = new BorderItemsToLinesTransformator()
-                .transform(new ScalingTransformator().transform(items));
-
-            expect(items[0].dimensions).to.eql(
-                new Polygon([new Point(0.5, 0.5), new Point(6.5, 0.5), new Point(6.5, 6.5), new Point(3.5, 6.5), new Point(3.5, 3.5), new Point(0.5, 3.5)])
-            );
-            expect(items[1].dimensions).to.eql(new Polygon([new Point(0.5, 3.5), new Point(3.5, 3.5), new Point(3.5, 6.5), new Point(0.5, 6.5)]));
-        });
-    });
-
-    describe('runAlgorithm', () => {
-        it.only ('runs the algorithm', () => {
-            const polygon = new Polygon([
-                new Point(1, 1),
-                new Point(1, 3),
-                new Point(5, 3),
-                new Point(5, 1)
-            ]);
-
-            const polygon2 = new Polygon([
-                new Point(6, 1),
-                new Point(6, 3),
-                new Point(8, 3),
-                new Point(8, 1)
-            ]);
-
-            const worldItemInfo = new WorldItemInfo(1, 'room', polygon, 'room');
-            const worldItemInfo2 = new WorldItemInfo(2, 'room', polygon2, 'room');
-
-            const borderItemsToLinesTransformator = new BorderItemsToLinesTransformator();
-            const newPolygons = borderItemsToLinesTransformator.runAlgorithm([worldItemInfo, worldItemInfo2]);
-        });
-    });
-
-    describe('alignBorderItems', () => {
-        it.only ('works', () => {
+        it ('converts the border items to `Line`s and stretches the rooms so they fill up the gaps.', () => {
             const borderItems = [
                 new WorldItemInfo(1, 'wall', new Polygon([new Point(1, 1), new Point(1, 5), new Point(2, 5), new Point(2, 1)]), 'wall'),
                 new WorldItemInfo(2, 'wall', new Polygon([new Point(2, 4), new Point(2, 5), new Point(6, 5), new Point(6, 4)]), 'wall'),
@@ -167,22 +28,28 @@ describe('`BorderItemsToLinesTransformator`', () => {
                 new Point(6, 2)
             ]);
 
-            const poly2 = new Polygon([
-                new Point(1, 1),
-                new Point(1, 5),
-                new Point(7, 5),
-                new Point(7, 1)
-            ]);
+            const worldItemInfo = new WorldItemInfo(5, 'room', poly1, 'room');
+            worldItemInfo.borderItems = borderItems;
 
-            const borderItemsToLinesTransformator = new BorderItemsToLinesTransformator();
-            debugger;
-            const newPolygons = borderItemsToLinesTransformator.alignBorderItems(
-                borderItems,
-                poly1,
-                poly2
-            );
-            1;
-            debugger;
+            const items = new BorderItemsToLinesTransformator().transform([worldItemInfo]);
+            expect(items[0].dimensions).to.eql(new Polygon([
+                new Point(1.5, 1.5),
+                new Point(1.5, 4.5),
+                new Point(6.5, 4.5),
+                new Point(6.5, 1.5)
+            ]), 'room dimensions are not correct');
+
+            const segment1 = new Segment(new Point(1.5, 1.5), new Point(1.5, 4.5))
+            expect(items[0].borderItems[0].dimensions).to.eql(segment1, 'first border item dimensions are not correct');
+
+            const segment2 = new Segment(new Point(1.5, 4.5), new Point(6.5, 4.5));
+            expect(items[0].borderItems[1].dimensions).to.eql(segment2, 'second border item dimensions are correct');
+
+            const segment3 = new Segment(new Point(6.5, 4.5), new Point(6.5, 1.5));
+            expect(items[0].borderItems[2].dimensions).to.eql(segment3, 'third border item dimensions are correct');
+
+            const segment4 = new Segment(new Point(6.5, 1.5), new Point(1.5, 1.5));
+            expect(items[0].borderItems[3].dimensions).to.eql(segment4, 'fourth border item dimensions are correct');
         });
     });
 });

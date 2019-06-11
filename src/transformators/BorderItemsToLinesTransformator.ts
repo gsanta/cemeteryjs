@@ -23,14 +23,16 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
     private stretchRooms(rootWorldItems: WorldItemInfo[]) {
         const rooms: WorldItemInfo[] = WorldItemInfoUtils.filterRooms(rootWorldItems);
 
-        rooms.forEach(room => {
-            room.borderItems.forEach(borderItem => {
-                if (borderItem.dimensions instanceof Polygon) {
-                    borderItem.dimensions = this.convertBorderItemPolygonToLine(borderItem.dimensions, room.dimensions);
-                }
-            });
-            room.dimensions = this.expandRoomShapeToFillFreedUpSpace(room.dimensions);
-        });
+        // rooms.forEach(room => {
+        //     room.borderItems.forEach(borderItem => {
+        //         if (borderItem.dimensions instanceof Polygon) {
+        //             borderItem.dimensions = this.convertBorderItemPolygonToLine(borderItem.dimensions, room.dimensions);
+        //         }
+        //     });
+        //     room.dimensions = this.expandRoomShapeToFillFreedUpSpace(room.dimensions);
+        // });
+
+        this.runAlgorithm(rooms);
 
         return rootWorldItems;
     }
@@ -54,7 +56,7 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
     }
 
     public runAlgorithm(rooms: WorldItemInfo[]) {
-        return rooms.map((room: WorldItemInfo) => {
+        return rooms.forEach((room: WorldItemInfo) => {
             const segments = room.dimensions.getEdges();
             const newSegments: Segment[] = [];
 
@@ -87,11 +89,13 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
                 }
             });
 
-            return new Polygon(newPoints);
+            const newDimensions = new Polygon(newPoints);
+            this.alignBorderItems(room.borderItems, room.dimensions, newDimensions);
+            room.dimensions = new Polygon(newPoints);
         });
     }
 
-    public alignBorderItems(borderItems: WorldItemInfo[], dimensions: Polygon, newDimensions: Polygon) {
+    public alignBorderItems(borderItems: WorldItemInfo[], dimensions: Shape, newDimensions: Polygon) {
         const oldEdges = dimensions.getEdges();
         const newEdges = newDimensions.getEdges();
 
