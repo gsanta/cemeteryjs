@@ -78,7 +78,7 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
 
     private segmentByRoom(roomSeparator: WorldItemInfo, segmentingRoom: WorldItemInfo): WorldItemInfo[] {
         const [line] = segmentingRoom.dimensions.getCoincidentLineSegment(roomSeparator.dimensions);
-
+        debugger;
         if (line.isVertical()) {
             return this.segmentVertically(roomSeparator, this.getIntersectionExtent(line));
         } else {
@@ -97,7 +97,7 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
 
             clone.dimensions = Polygon.createRectangle(
                 dimensions.minX(),
-                dimensions.maxY(),
+                dimensions.minY(),
                 dimensions.maxX() - dimensions.minX(),
                 height
             );
@@ -138,7 +138,7 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
         let bottomSegment: WorldItemInfo = null;
         let topSegment: WorldItemInfo = null;
         let middleSegment: WorldItemInfo = null;
-
+        debugger;
         if (dimensions.minX() < segmentPositions[0]) {
             const clone = this.worldItemInfoFactory.clone(roomSeparator);
 

@@ -413,7 +413,8 @@ describe('`WorldParser`', () => {
 
             WWWWWWWWW
             W---W---W
-            W---W---W
+            W---WWWWW
+            W-------W
             WWWWWWWWW
 
             \`

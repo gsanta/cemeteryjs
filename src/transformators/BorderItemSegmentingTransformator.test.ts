@@ -4,7 +4,7 @@ import { RoomInfoParser } from "../parsers/room_parser/RoomInfoParser";
 import { BorderItemSegmentingTransformator } from "./BorderItemSegmentingTransformator";
 import { expect } from "chai";
 import _ = require("lodash");
-import { Polygon } from "@nightshifts.inc/geometry";
+import { Polygon, Point } from "@nightshifts.inc/geometry";
 import { WorldItemInfoFactory } from "../WorldItemInfoFactory";
 
 
@@ -94,6 +94,113 @@ describe('BorderItemSegmentingTransformator', () => {
             expect(_.some(items, {dimensions: Polygon.createRectangle(1, 3, 8, 1)}), 'Rectangle(1, 3, 8, 1) not found.').to.be.true;
             expect(_.some(items, {dimensions: Polygon.createRectangle(1, 6, 8, 1)}), 'Rectangle(1, 6, 8, 1) not found.').to.be.true;
 
+        });
+
+        it.only ('segments the walls into smaller pieces so that no wall will conver more then one room', () => {
+            const map = `
+                map \`
+
+                WWWWWWWWWW
+                W----W---W
+                W----W---W
+                W----WWWWW
+                W--------W
+                W--------W
+                WWWWWWWWWW
+
+                \`
+
+                definitions \`
+
+                - = empty
+                W = wall
+
+                \`
+            `;
+
+            const worldItemInfoFacotry = new WorldItemInfoFactory();
+            let items = new CombinedWorldItemParser(
+                [
+                    new RoomSeparatorParser(worldItemInfoFacotry, ['W']),
+                    new RoomInfoParser(worldItemInfoFacotry)
+                ]
+            ).generateFromStringMap(map);
+
+            items = new BorderItemSegmentingTransformator(worldItemInfoFacotry, ['wall']).transform(items);
+            expect(items.filter(item => item.name === 'wall').length).to.eql(8, 'wall segment number not ok');
+
+            expect(items[0].dimensions).to.eql(new Polygon([
+                new Point(1, 1),
+                new Point(5, 1),
+                new Point(5, 4),
+                new Point(9, 4),
+                new Point(9, 6),
+                new Point(1, 6)
+            ]));
+
+            expect(items[1].dimensions).to.eql(new Polygon([
+                new Point(6, 1),
+                new Point(9, 1),
+                new Point(9, 3),
+                new Point(6, 3)
+            ]));
+
+            expect(items[2].dimensions).to.eql(new Polygon([
+                new Point(0, 0),
+                new Point(0, 7),
+                new Point(1, 7),
+                new Point(1, 0)
+            ]));
+
+            expect(items[3].dimensions).to.eql(new Polygon([
+                new Point(5, 0),
+                new Point(5, 4),
+                new Point(6, 4),
+                new Point(6, 0)
+            ]));
+
+            expect(items[4].dimensions).to.eql(new Polygon([
+                new Point(9, 0),
+                new Point(9, 3),
+                new Point(10, 3),
+                new Point(10, 0)
+            ]));
+
+
+            expect(items[5].dimensions).to.eql(new Polygon([
+                new Point(9, 3),
+                new Point(9, 7),
+                new Point(10, 7),
+                new Point(10, 3)
+            ]));
+
+            expect(items[6].dimensions).to.eql(new Polygon([
+                new Point(1, 0),
+                new Point(1, 1),
+                new Point(5, 1),
+                new Point(5, 0)
+            ]));
+
+            expect(items[7].dimensions).to.eql(new Polygon([
+                new Point(6, 0),
+                new Point(6, 1),
+                new Point(9, 1),
+                new Point(9, 0)
+            ]));
+
+            expect(items[8].dimensions).to.eql(new Polygon([
+                new Point(1, 6),
+                new Point(1, 7),
+                new Point(9, 7),
+                new Point(9, 6)
+            ]));
+
+            expect(items[9].dimensions).to.eql(new Polygon([
+                new Point(6, 3),
+                new Point(6, 4),
+                new Point(9, 4),
+                new Point(9, 3)
+            ]));
         });
     });
 });
