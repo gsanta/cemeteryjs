@@ -82,10 +82,12 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
             newPoints.push(newSegments[0].points[0]);
             newPoints.push(newSegments[0].points[1]);
             _.without(newSegments, newSegments[0], _.last(newSegments)).forEach(segment => {
-                if (segment.points[0].equalTo(_.last(newPoints))) {
-                    newPoints.push(segment.points[1]);
-                } else {
+                const distance1 = segment.points[0].distanceTo(_.last(newPoints));
+                const distance2 = segment.points[1].distanceTo(_.last(newPoints));
+                if (distance1 < distance2) {
                     newPoints.push(segment.points[0]);
+                } else {
+                    newPoints.push(segment.points[1]);
                 }
             });
 
