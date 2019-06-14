@@ -18,6 +18,7 @@ import { PolygonAreaInfoParser } from './parsers/polygon_area_parser/PolygonArea
 import {Polygon, Point, Line} from '@nightshifts.inc/geometry';
 import { WorldItemInfoFactory } from './WorldItemInfoFactory';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
+import _ = require('lodash');
 
 describe('`WorldParser`', () => {
     describe('parse', () => {
@@ -407,7 +408,7 @@ describe('`WorldParser`', () => {
         expect(walls.length).to.eql(8);
     });
 
-    it.only ('integrates correctly the `BorderItemsToLinesTransformator` if used', () => {
+    it ('integrates correctly the `BorderItemsToLinesTransformator` if used', () => {
         const map = `
             map \`
 
@@ -432,8 +433,6 @@ describe('`WorldParser`', () => {
             furnitureCharacters: [],
             roomSeparatorCharacters: ['W']
         }
-
-        debugger;
 
         const worldItemInfoFactory = new WorldItemInfoFactory();
         const worldMapParser = WorldParser.createWithCustomWorldItemGenerator(
@@ -490,9 +489,9 @@ describe('`WorldParser`', () => {
         expect(root.children[0].dimensions).to.eql(new Polygon([
             new Point(0.5, 0.5),
             new Point(4.5, 0.5),
-            new Point(4.5, 3.5),
-            new Point(8.5, 3.5),
+            new Point(4.5, 2.5),
             new Point(8.5, 2.5),
+            new Point(8.5, 4.5),
             new Point(0.5, 4.5),
         ]), 'postcondition for children[0] dimensions are wrong');
 
@@ -502,8 +501,19 @@ describe('`WorldParser`', () => {
             new Point(8.5, 2.5),
             new Point(4.5, 2.5)
         ]), 'postcondition for children[1] dimensions are wrong');
-        expect(root.children[2].dimensions).to.eql(new Segment(new Point(0.5, 0.5), new Point(0.5, 4.5)));
-        expect(root.children[5].dimensions).to.eql(new Segment(new Point(8.5, 2.5), new Point(4.5, 0.5)));
+
+        const expectedBorderDimensions = [
+            new Segment(new Point(0.5, 0.5), new Point(4.5, 0.5)),
+            new Segment(new Point(4.5, 0.5), new Point(4.5, 2.5)),
+            new Segment(new Point(4.5, 2.5), new Point(8.5, 2.5)),
+            new Segment(new Point(8.5, 2.5), new Point(8.5, 4.5)),
+            new Segment(new Point(8.5, 4.5), new Point(0.5, 4.5)),
+            new Segment(new Point(0.5, 0.5), new Point(0.5, 4.5))
+        ];
+
+        expectedBorderDimensions.forEach((segment) => {
+            expect(_.find(root.children, child => child.dimensions.equalTo(segment))).to.be.an('object', `missing wall segment: ${segment.toString()}`);
+        });
     });
 
     it ('can integrate with `PolygonAreaInfoGenerator`', () => {

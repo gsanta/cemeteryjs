@@ -58,9 +58,9 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
     public runAlgorithm(rooms: WorldItemInfo[]) {
 
         rooms.forEach(room => {
-            const borderItems = rooms[0].borderItems;
+            const borderItems = room.borderItems;
 
-            const indexedEdges: [Segment, number][] = rooms[0].dimensions.getEdges().map((edge, index) => [edge, index]);
+            const indexedEdges: [Segment, number][] = room.dimensions.getEdges().map((edge, index) => [edge, index]);
             const arr: [Shape, Segment, number][] = [];
             borderItems.forEach(item => {
                 const closest = _.minBy(indexedEdges, indexedEdge => indexedEdge[0].getBoundingCenter().distanceTo(item.dimensions.getBoundingCenter()));
