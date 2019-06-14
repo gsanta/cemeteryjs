@@ -1,6 +1,6 @@
 import { WorldItemInfo } from "../WorldItemInfo";
 import { WorldItemTransformator } from './WorldItemTransformator';
-import { Polygon, Line, Shape, Point } from '@nightshifts.inc/geometry';
+import { Polygon, Line, Shape, Point, GeometryUtils } from '@nightshifts.inc/geometry';
 import { WorldItemInfoUtils } from '../WorldItemInfoUtils';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import _ = require("lodash");
@@ -56,45 +56,130 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
     }
 
     public runAlgorithm(rooms: WorldItemInfo[]) {
-        return rooms.forEach((room: WorldItemInfo) => {
-            const segments = room.dimensions.getEdges();
-            const newSegments: Segment[] = [];
 
-            segments.forEach((segment: Segment) => {
-                const centerPoint = segment.getBoundingCenter();
-                const perpendicularBisector = segment.getPerpendicularBisector();
-                const tmpSegment = perpendicularBisector.getSegmentWithCenterPointAndDistance(centerPoint, 0.5);
-                const roomCenterPoint = room.dimensions.getBoundingCenter();
-                let chosenEndPoint: Point = null;
-                if (tmpSegment[0].distanceTo(roomCenterPoint) > tmpSegment[1].distanceTo(roomCenterPoint)) {
-                    chosenEndPoint = tmpSegment[0];
-                } else {
-                    chosenEndPoint = tmpSegment[1];
-                }
+        rooms.forEach(room => {
+            const borderItems = rooms[0].borderItems;
 
-                const line = Line.createFromPointSlopeForm(chosenEndPoint, segment.getSlope());
-                const points = line.getSegmentWithCenterPointAndDistance(chosenEndPoint, segment.getLength() / 2 + 0.5);
-                const newSegment = new Segment(points[0], points[1]);
-                newSegments.push(newSegment);
+            const indexedEdges: [Segment, number][] = rooms[0].dimensions.getEdges().map((edge, index) => [edge, index]);
+            const arr: [Shape, Segment, number][] = [];
+            borderItems.forEach(item => {
+                const closest = _.minBy(indexedEdges, indexedEdge => indexedEdge[0].getBoundingCenter().distanceTo(item.dimensions.getBoundingCenter()));
+
+                arr.push([item.dimensions, closest[0], closest[1]]);
             });
 
-            const newPoints: Point[] = [];
-            newPoints.push(newSegments[0].points[0]);
-            newPoints.push(newSegments[0].points[1]);
-            _.without(newSegments, newSegments[0], _.last(newSegments)).forEach(segment => {
-                const distance1 = segment.points[0].distanceTo(_.last(newPoints));
-                const distance2 = segment.points[1].distanceTo(_.last(newPoints));
-                if (distance1 < distance2) {
-                    newPoints.push(segment.points[0]);
-                } else {
-                    newPoints.push(segment.points[1]);
-                }
-            });
+            arr.sort((a, b) => a[2] - b[2]);
 
-            const newDimensions = new Polygon(newPoints);
-            this.alignBorderItems(room.borderItems, room.dimensions, newDimensions);
-            room.dimensions = new Polygon(newPoints);
-        });
+            const newPolygonPoints: Point[] = [];
+
+            for (let i = 0; i < arr.length; i++) {
+                const item1 = arr[i];
+                const item2 = i === arr.length - 1 ? arr[0] : arr[i + 1];
+
+                let segments1: [Segment, Segment];
+                if (item1[0] instanceof Segment) {
+                    segments1 = [item1[0], item1[0]];
+                } else {
+                    segments1 = <[Segment, Segment]> item1[0].getEdges().filter(segment => segment.getLine().hasEqualSlope(item1[1].getLine()));
+                }
+
+                let segments2: [Segment, Segment];
+                if (item2[0] instanceof Segment) {
+                    segments2 = [item2[0], item2[0]];
+                } else {
+                    segments2 = <[Segment, Segment]> item2[0].getEdges().filter(segment => segment.getLine().hasEqualSlope(item2[1].getLine()));
+                }
+
+                const variations: [Segment, Segment][] = [
+                    [segments1[0], segments2[0]],
+                    [segments1[1], segments2[0]],
+                    [segments1[0], segments2[1]],
+                    [segments1[1], segments2[1]]
+                ];
+
+                const segmentPair1 = _.minBy(variations, (val) => val[0].getBoundingCenter().distanceTo(val[1].getBoundingCenter()));
+                const segmentPair2 = _.maxBy(variations, (val) => val[0].getBoundingCenter().distanceTo(val[1].getBoundingCenter()));
+
+                const point1 = segmentPair1[0].getLine().intersection(segmentPair1[1].getLine());
+                const point2 = segmentPair2[0].getLine().intersection(segmentPair2[1].getLine());
+
+                newPolygonPoints.push(new Segment(point1, point2).getBoundingCenter());
+            }
+
+            const newPolygon = new Polygon(GeometryUtils.orderPointsToStartAtBottomLeft(newPolygonPoints));
+            this.alignBorderItems(room.borderItems, room.dimensions, newPolygon);
+            room.dimensions = newPolygon;
+        })
+
+        // rooms[0].dimensions.getEdges().forEach(edge => {
+        //     const coincidentBorderItems = borderItems.filter(item => item.dimensions.getCoincidentLineSegment(edge));
+        //     debugger;
+        //     // orderedBorderItems.push(...coincidentBorderItems)
+        // });
+        // debugger;
+        // return rooms.forEach((room: WorldItemInfo) => {
+
+
+
+        //     let dimensions: Polygon = <Polygon> room.dimensions;
+        //     room.dimensions.getIndexedPoints().forEach(([point, index]) => {
+        //         const segment = new Segment(dimensions.getPreviousPoint(index), point);
+
+        //         const centerPoint = segment.getBoundingCenter();
+        //         const perpendicularBisector = segment.getPerpendicularBisector();
+        //         const tmpSegment = perpendicularBisector.getSegmentWithCenterPointAndDistance(centerPoint, 0.5);
+        //         const roomCenterPoint = room.dimensions.getBoundingCenter();
+        //         let chosenEndPoint: Point = null;
+        //         if (tmpSegment[0].distanceTo(roomCenterPoint) > tmpSegment[1].distanceTo(roomCenterPoint)) {
+        //             chosenEndPoint = tmpSegment[0];
+        //         } else {
+        //             chosenEndPoint = tmpSegment[1];
+        //         }
+
+        //         const line = Line.createFromPointSlopeForm(chosenEndPoint, segment.getSlope());
+        //         const points = line.getSegmentWithCenterPointAndDistance(chosenEndPoint, segment.getLength() / 2 + 0.5);
+        //         const newSegment = new Segment(points[0], points[1]);
+        //         newSegments.push(newSegment);
+        //     });
+
+        //     const segments = room.dimensions.getEdges();
+        //     const newSegments: Segment[] = [];
+
+        //     segments.forEach((segment: Segment) => {
+        //         const centerPoint = segment.getBoundingCenter();
+        //         const perpendicularBisector = segment.getPerpendicularBisector();
+        //         const tmpSegment = perpendicularBisector.getSegmentWithCenterPointAndDistance(centerPoint, 0.5);
+        //         const roomCenterPoint = room.dimensions.getBoundingCenter();
+        //         let chosenEndPoint: Point = null;
+        //         if (tmpSegment[0].distanceTo(roomCenterPoint) > tmpSegment[1].distanceTo(roomCenterPoint)) {
+        //             chosenEndPoint = tmpSegment[0];
+        //         } else {
+        //             chosenEndPoint = tmpSegment[1];
+        //         }
+
+        //         const line = Line.createFromPointSlopeForm(chosenEndPoint, segment.getSlope());
+        //         const points = line.getSegmentWithCenterPointAndDistance(chosenEndPoint, segment.getLength() / 2 + 0.5);
+        //         const newSegment = new Segment(points[0], points[1]);
+        //         newSegments.push(newSegment);
+        //     });
+
+        //     const newPoints: Point[] = [];
+        //     newPoints.push(newSegments[0].getPoints()[0]);
+        //     newPoints.push(newSegments[0].getPoints()[1]);
+        //     _.without(newSegments, newSegments[0], _.last(newSegments)).forEach(segment => {
+        //         const distance1 = segment.getPoints()[0].distanceTo(_.last(newPoints));
+        //         const distance2 = segment.getPoints()[1].distanceTo(_.last(newPoints));
+        //         if (distance1 < distance2) {
+        //             newPoints.push(segment.getPoints()[1]);
+        //         } else {
+        //             newPoints.push(segment.getPoints()[0]);
+        //         }
+        //     });
+
+        //     const newDimensions = new Polygon(newPoints);
+        //     this.alignBorderItems(room.borderItems, room.dimensions, newDimensions);
+        //     room.dimensions = new Polygon(newPoints);
+        // });
     }
 
     public alignBorderItems(borderItems: WorldItemInfo[], dimensions: Shape, newDimensions: Polygon) {
@@ -109,10 +194,10 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
                 .reduce((sum, nextItem) => sum + nextItem.getLength(), 0);
 
             coincidentBorderItems.sort((item1, item2) => {
-                return item1.dimensions.getBoundingCenter().distanceTo(edge.points[0]) - item2.dimensions.getBoundingCenter().distanceTo(edge.points[0])
+                return item1.dimensions.getBoundingCenter().distanceTo(edge.getPoints()[0]) - item2.dimensions.getBoundingCenter().distanceTo(edge.getPoints()[0])
             });
 
-            const referencePoint = edge.points[0];
+            const referencePoint = edge.getPoints()[0];
 
             coincidentBorderItems.forEach(item => {
                 const len = newEdges[index].getLength();
@@ -120,7 +205,7 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
                 const line = Line.createFromPointSlopeForm(referencePoint, edge.getSlope());
                 const tmpSegment = line.getSegmentWithCenterPointAndDistance(referencePoint, (ratio * len) / 2);
 
-                if (tmpSegment[0].distanceTo(edge.points[1]) < tmpSegment[1].distanceTo(edge.points[1])) {
+                if (tmpSegment[0].distanceTo(edge.getPoints()[1]) < tmpSegment[1].distanceTo(edge.getPoints()[1])) {
                     const newSegment = line.getSegmentWithCenterPointAndDistance(tmpSegment[0], (ratio * len) / 2);
                     item.dimensions = new Segment(newSegment[0], newSegment[1]);
                 } else {

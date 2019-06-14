@@ -21,7 +21,7 @@ describe('RoomInfoParser', () => {
 
             const worldItem = roomInfoParser.generate(matrixGraph);
 
-            expect(worldItem[0].dimensions.points).to.eql([
+            expect(worldItem[0].dimensions.getPoints()).to.eql([
                 new Point(1, 1),
                 new Point(37, 1),
                 new Point(37, 26),

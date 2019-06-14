@@ -244,7 +244,7 @@ describe('`WorldParser`', () => {
             const items = worldMapParser.parse(map);
             const rooms = items[0].children.filter(item => item.name === 'room');
             expect(rooms.length).to.eq(1);
-            expect(rooms[0].dimensions.points).to.eql([
+            expect(rooms[0].dimensions.getPoints()).to.eql([
                 new Point(1, 1),
                 new Point(4, 1),
                 new Point(4, 3),
@@ -273,7 +273,7 @@ describe('`WorldParser`', () => {
             const rooms = root.children.filter(item => item.name === 'room');
 
             expect(rooms.length).to.eq(1);
-            expect(rooms[0].dimensions.points).to.eql([
+            expect(rooms[0].dimensions.getPoints()).to.eql([
                 new Point(2, 3),
                 new Point(8, 3),
                 new Point(8, 9),
@@ -407,7 +407,7 @@ describe('`WorldParser`', () => {
         expect(walls.length).to.eql(8);
     });
 
-    it ('integrates correctly the `BorderItemsToLinesTransformator` if used', () => {
+    it.only ('integrates correctly the `BorderItemsToLinesTransformator` if used', () => {
         const map = `
             map \`
 
@@ -433,6 +433,8 @@ describe('`WorldParser`', () => {
             roomSeparatorCharacters: ['W']
         }
 
+        debugger;
+
         const worldItemInfoFactory = new WorldItemInfoFactory();
         const worldMapParser = WorldParser.createWithCustomWorldItemGenerator(
             new CombinedWorldItemParser(
@@ -457,44 +459,51 @@ describe('`WorldParser`', () => {
             new Point(1, 1),
             new Point(4, 1),
             new Point(4, 3),
-            new Point(1, 3)
-        ]));
+            new Point(8, 3),
+            new Point(8, 4),
+            new Point(1, 4)
+        ]), 'precondition for children[0] dimensions are wrong.');
 
         expect(root1.children[1].dimensions).to.eql(new Polygon([
             new Point(5, 1),
             new Point(8, 1),
-            new Point(8, 3),
-            new Point(5, 3)
-        ]));
+            new Point(8, 2),
+            new Point(5, 2)
+        ]), 'precondition for children[1] dimensions are wrong.');
 
         expect(root1.children[2].dimensions).to.eql(new Polygon([
             new Point(0, 0),
-            new Point(0, 4),
-            new Point(1, 4),
+            new Point(0, 5),
+            new Point(1, 5),
             new Point(1, 0)
-        ]));
+        ]), 'precondition for children[2] dimensions are wrong.');
 
         expect(root1.children[5].dimensions).to.eql(new Polygon([
-            new Point(1, 0),
-            new Point(1, 1),
-            new Point(4, 1),
-            new Point(4, 0)
-        ]));
+            new Point(8, 2),
+            new Point(8, 5),
+            new Point(9, 5),
+            new Point(9, 2)
+        ]), 'precondition for children[5] dimensions are wrong.');
+
         const [root] = new BorderItemsToLinesTransformator().transform([root1]);
+
         expect(root.children[0].dimensions).to.eql(new Polygon([
             new Point(0.5, 0.5),
             new Point(4.5, 0.5),
             new Point(4.5, 3.5),
-            new Point(0.5, 3.5)
-        ]));
+            new Point(8.5, 3.5),
+            new Point(8.5, 2.5),
+            new Point(0.5, 4.5),
+        ]), 'postcondition for children[0] dimensions are wrong');
+
         expect(root.children[1].dimensions).to.eql(new Polygon([
             new Point(4.5, 0.5),
             new Point(8.5, 0.5),
-            new Point(8.5, 3.5),
-            new Point(4.5, 3.5)
-        ]));
-        expect(root.children[2].dimensions).to.eql(new Segment(new Point(0.5, 0.5), new Point(0.5, 3.5)));
-        expect(root.children[5].dimensions).to.eql(new Segment(new Point(0.5, 0.5), new Point(4.5, 0.5)));
+            new Point(8.5, 2.5),
+            new Point(4.5, 2.5)
+        ]), 'postcondition for children[1] dimensions are wrong');
+        expect(root.children[2].dimensions).to.eql(new Segment(new Point(0.5, 0.5), new Point(0.5, 4.5)));
+        expect(root.children[5].dimensions).to.eql(new Segment(new Point(8.5, 2.5), new Point(4.5, 0.5)));
     });
 
     it ('can integrate with `PolygonAreaInfoGenerator`', () => {

@@ -78,7 +78,7 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
 
     private segmentByRoom(roomSeparator: WorldItemInfo, segmentingRoom: WorldItemInfo): WorldItemInfo[] {
         const [line] = segmentingRoom.dimensions.getCoincidentLineSegment(roomSeparator.dimensions);
-        debugger;
+
         if (line.isVertical()) {
             return this.segmentVertically(roomSeparator, this.getIntersectionExtent(line));
         } else {
@@ -214,11 +214,11 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
 
     private getIntersectionExtent(segment: Segment): [number, number] {
         if (segment.isVertical()) {
-            const segmentPositions = _.sortBy([segment.points[0].y, segment.points[1].y]);
+            const segmentPositions = _.sortBy([segment.getPoints()[0].y, segment.getPoints()[1].y]);
 
             return [segmentPositions[0] - this.scales.yScale, segmentPositions[1] + this.scales.yScale];
         } else {
-            const segmentPositions = _.sortBy([segment.points[0].x, segment.points[1].x]);
+            const segmentPositions = _.sortBy([segment.getPoints()[0].x, segment.getPoints()[1].x]);
 
             return [segmentPositions[0] - this.scales.xScale, segmentPositions[1] + this.scales.xScale];
         }

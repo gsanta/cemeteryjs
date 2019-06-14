@@ -96,7 +96,7 @@ describe('BorderItemSegmentingTransformator', () => {
 
         });
 
-        it.only ('segments the walls into smaller pieces so that no wall will conver more then one room', () => {
+        it ('segments the walls into smaller pieces so that no wall will conver more then one room', () => {
             const map = `
                 map \`
 

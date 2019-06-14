@@ -27,7 +27,7 @@ describe('PolygonAreaInfoGenerator', () => {
             const worldItem = polygonAreaInfoParser.generate(matrixGraph);
 
             expect(worldItem.length).to.eql(1);
-            expect(worldItem[0].dimensions.points).to.eql([
+            expect(worldItem[0].dimensions.getPoints()).to.eql([
                 new Point(1, 1),
                 new Point(6, 1),
                 new Point(6, 4),
@@ -56,14 +56,14 @@ describe('PolygonAreaInfoGenerator', () => {
             const worldItem = polygonAreaInfoParser.generate(matrixGraph);
 
             expect(worldItem.length).to.eql(2);
-            expect(worldItem[0].dimensions.points).to.eql([
+            expect(worldItem[0].dimensions.getPoints()).to.eql([
                 new Point(1, 0),
                 new Point(6, 0),
                 new Point(6, 2),
                 new Point(1, 2)
             ]);
 
-            expect(worldItem[1].dimensions.points).to.eql([
+            expect(worldItem[1].dimensions.getPoints()).to.eql([
                 new Point(1, 3),
                 new Point(6, 3),
                 new Point(6, 5),
@@ -92,7 +92,7 @@ describe('PolygonAreaInfoGenerator', () => {
             const worldItem = polygonAreaInfoParser.generate(matrixGraph);
 
             expect(worldItem.length).to.eql(1);
-            expect(worldItem[0].dimensions.points).to.eql([
+            expect(worldItem[0].dimensions.getPoints()).to.eql([
                 new Point(1, 1),
                 new Point(4, 1),
                 new Point(4, 2),
@@ -126,7 +126,7 @@ describe('PolygonAreaInfoGenerator', () => {
             const worldItem = polygonAreaInfoParser.generate(matrixGraph);
 
             expect(worldItem.length).to.eql(1);
-            expect(worldItem[0].dimensions.points).to.eql([
+            expect(worldItem[0].dimensions.getPoints()).to.eql([
                 new Point(1, 1),
                 new Point(5, 1),
                 new Point(5, 5),
