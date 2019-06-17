@@ -58,7 +58,7 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
 
     public runAlgorithm(rooms: WorldItemInfo[]) {
 
-        rooms.forEach(room => {
+        const newRoomDimensions = rooms.map(room => {
             let borderItemPolygons = room.borderItems.map(item => item.dimensions);
             borderItemPolygons = this.mergeStraightAngledNeighbouringBorderItemPolygons(borderItemPolygons);
             const roomEdges = room.dimensions.getEdges();
@@ -90,8 +90,13 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
             }
 
             const newPolygon = new Polygon(GeometryUtils.orderPointsToStartAtBottomLeft(newPolygonPoints));
-            this.alignBorderItems(room.borderItems, room.dimensions, newPolygon);
-            room.dimensions = newPolygon;
+            // this.alignBorderItems(room.borderItems, room.dimensions, newPolygon);
+            return newPolygon;
+        });
+
+        rooms.forEach((room, index) => {
+            this.alignBorderItems(room.borderItems, room.dimensions, newRoomDimensions[index]);
+            room.dimensions = newRoomDimensions[index];
         });
     }
 

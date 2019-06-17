@@ -183,7 +183,20 @@ describe('`BorderItemsToLinesTransformator`', () => {
             const [root] = initBorderItems(map);
 
             const items = new BorderItemsToLinesTransformator().transform([root]);
+        });
 
+        it ('handles multiple rooms', () => {
+            const map = `
+                WDDDWWWWWWWWWWWWW
+                W-------W---W---W
+                W-------W---WWWWW
+                W-------W-------W
+                WWWWWWWWWWWWWWWWW
+            `;
+
+            const [root] = initBorderItems(map);
+
+            const items = new BorderItemsToLinesTransformator().transform([root]);
         });
     });
 });
