@@ -1,5 +1,5 @@
 import { RoomInfoParser } from '../parsers/room_parser/RoomInfoParser';
-import { BorderItemsToLinesTransformator } from './BorderItemsToLinesTransformator';
+import { BorderItemsToLinesTransformator, mergeStraightAngledNeighbouringBorderItemPolygons } from './BorderItemsToLinesTransformator';
 import { expect } from 'chai';
 import { WorldMapToMatrixGraphConverter } from '../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 import { WorldMapToRoomMapConverter } from '../parsers/room_parser/WorldMapToRoomMapConverter';
@@ -20,9 +20,66 @@ import { BorderItemAddingTransformator } from './BorderItemAddingTransformator';
 
 var Offset = require('polygon-offset');
 
+const initBorderItems = (strMap: string): WorldItemInfo[] => {
+    const map = `
+        map \`
+
+        ${strMap}
+
+        \`
+
+        definitions \`
+
+        W = wall
+        D = door
+
+        \`
+    `;
+
+    const options = {
+        xScale: 1,
+        yScale: 1,
+        furnitureCharacters: [],
+        roomSeparatorCharacters: ['W', 'D']
+    }
+
+    const worldItemInfoFactory = new WorldItemInfoFactory();
+    const worldMapParser = WorldParser.createWithCustomWorldItemGenerator(
+        new CombinedWorldItemParser(
+            [
+                new FurnitureInfoParser(worldItemInfoFactory, options.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
+                new RoomSeparatorParser(worldItemInfoFactory, options.roomSeparatorCharacters),
+                new RoomInfoParser(worldItemInfoFactory),
+                new RootWorldItemParser(worldItemInfoFactory)
+            ]
+        ),
+        [
+            new ScalingTransformator(),
+            new BorderItemSegmentingTransformator(worldItemInfoFactory, ['wall', 'door']),
+            new HierarchyBuildingTransformator(),
+            new BorderItemAddingTransformator(['wall', 'door'])
+        ]
+    );
+
+    return worldMapParser.parse(map);
+}
+
 
 describe('`BorderItemsToLinesTransformator`', () => {
+    describe('mergeStraightAngledNeighbouringBorderItemPolygons', () => {
 
+        it ('reduces the number of `Polygon`s as much as possible by merging `Polygon`s with common edge', () => {
+
+            const polygons = [
+                Polygon.createRectangle(1, 1, 1, 3),
+                Polygon.createRectangle(2, 3, 2, 1),
+                Polygon.createRectangle(4, 3, 3, 1)
+            ];
+
+            const reducedPolygons = mergeStraightAngledNeighbouringBorderItemPolygons(polygons);
+            expect(reducedPolygons.length).to.eql(2);
+        });
+    });
 
     it.skip ('tests the new implementation', () => {
         const map = `
@@ -112,6 +169,21 @@ describe('`BorderItemsToLinesTransformator`', () => {
 
             const segment4 = new Segment(new Point(6.5, 1.5), new Point(1.5, 1.5));
             expect(items[0].borderItems[3].dimensions.equalTo(segment4)).to.eql(true, 'fourth border item dimensions are correct');
+        });
+
+        it ('handles multiple types of border items (e.g doors, windows) beside walls', () => {
+            const map = `
+                WDDDWWWWW
+                W-------W
+                W-------W
+                W-------W
+                WWWWWWWWW
+            `;
+
+            const [root] = initBorderItems(map);
+
+            const items = new BorderItemsToLinesTransformator().transform([root]);
+
         });
     });
 });
