@@ -66,30 +66,36 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
             const newPolygonPoints: Point[] = [];
             const map = this.mapBorderItemToCorrespondingRoomEdge(borderItemPolygons, roomEdges);
 
-            for (let i = 0; i < map.length; i++) {
-                const item1 = map[i];
-                const item2 = i === map.length - 1 ? map[0] : map[i + 1];
+            let newPolygon: Polygon;
 
-                let segments1: [Segment, Segment] = this.getBorderItemPolygonEdgesParallelToCorrespondingRoomEdge(item1);
-                let segments2: [Segment, Segment] = this.getBorderItemPolygonEdgesParallelToCorrespondingRoomEdge(item2);
+            try {
+                for (let i = 0; i < map.length; i++) {
+                    const item1 = map[i];
+                    const item2 = i === map.length - 1 ? map[0] : map[i + 1];
 
-                const variations: [Segment, Segment][] = [
-                    [segments1[0], segments2[0]],
-                    [segments1[1], segments2[0]],
-                    [segments1[0], segments2[1]],
-                    [segments1[1], segments2[1]]
-                ];
+                    let segments1: [Segment, Segment] = this.getBorderItemPolygonEdgesParallelToCorrespondingRoomEdge(item1);
+                    let segments2: [Segment, Segment] = this.getBorderItemPolygonEdgesParallelToCorrespondingRoomEdge(item2);
 
-                const segmentPair1 = _.minBy(variations, (val) => val[0].getBoundingCenter().distanceTo(val[1].getBoundingCenter()));
-                const segmentPair2 = _.maxBy(variations, (val) => val[0].getBoundingCenter().distanceTo(val[1].getBoundingCenter()));
+                    const variations: [Segment, Segment][] = [
+                        [segments1[0], segments2[0]],
+                        [segments1[1], segments2[0]],
+                        [segments1[0], segments2[1]],
+                        [segments1[1], segments2[1]]
+                    ];
 
-                const point1 = segmentPair1[0].getLine().intersection(segmentPair1[1].getLine());
-                const point2 = segmentPair2[0].getLine().intersection(segmentPair2[1].getLine());
+                    const segmentPair1 = _.minBy(variations, (val) => val[0].getBoundingCenter().distanceTo(val[1].getBoundingCenter()));
+                    const segmentPair2 = _.maxBy(variations, (val) => val[0].getBoundingCenter().distanceTo(val[1].getBoundingCenter()));
 
-                newPolygonPoints.push(new Segment(point1, point2).getBoundingCenter());
+                    const point1 = segmentPair1[0].getLine().intersection(segmentPair1[1].getLine());
+                    const point2 = segmentPair2[0].getLine().intersection(segmentPair2[1].getLine());
+
+                    newPolygonPoints.push(new Segment(point1, point2).getBoundingCenter());
+                }
+                newPolygon = new Polygon(GeometryUtils.orderPointsToStartAtBottomLeft(newPolygonPoints));
+            } catch (e) {
+                newPolygon = <Polygon>room.dimensions;
             }
 
-            const newPolygon = new Polygon(GeometryUtils.orderPointsToStartAtBottomLeft(newPolygonPoints));
             // this.alignBorderItems(room.borderItems, room.dimensions, newPolygon);
             return newPolygon;
         });
