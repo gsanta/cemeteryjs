@@ -1,7 +1,8 @@
 import { WorldItemTransformator } from "./WorldItemTransformator";
 import { WorldItemInfo } from "../WorldItemInfo";
-import { Point, Segment } from '@nightshifts.inc/geometry';
+import { Point, Segment, Shape } from '@nightshifts.inc/geometry';
 import _ = require("lodash");
+import { WorldItemInfoUtils } from "../WorldItemInfoUtils";
 
 
 export class BorderItemWidthToRealWidthTransformator implements WorldItemTransformator {
@@ -11,14 +12,30 @@ export class BorderItemWidthToRealWidthTransformator implements WorldItemTransfo
         this.realItemWidths = realItemWidths;
     }
 
-    public transform(gwmWorldItems: WorldItemInfo[]): WorldItemInfo[] {
+    public transform(worldItems: WorldItemInfo[]): WorldItemInfo[] {
+        const rooms: WorldItemInfo[] = WorldItemInfoUtils.filterRooms(worldItems);
 
+        rooms.forEach(room => room.borderItems = this.orderJoiningSegmentsClockwise(room));
+
+        return worldItems[0].borderItems;
     }
 
-    private orderBorderItemsClockwise(room: WorldItemInfo) {
-        const borderItems = room.borderItems;
+    private orderJoiningSegmentsClockwise(room: WorldItemInfo) {
+        const borderItems = [...room.borderItems];
 
-        let [startItem, ...rest] = borderItems;
+        borderItems.sort((item1: WorldItemInfo, item2: WorldItemInfo) => {
+            const center1 = item1.dimensions.getBoundingCenter();
+            const center2 = item2.dimensions.getBoundingCenter();
+
+            if (center1.x === center2.x) {
+                return center1.y - center2.y;
+            }
+
+            return center1.x - center2.x;
+        });
+
+        const startItem = borderItems[0];
+        let rest = _.without(borderItems, startItem);
 
         const orderedItems = [startItem];
         while (rest.length > 0) {
@@ -27,6 +44,8 @@ export class BorderItemWidthToRealWidthTransformator implements WorldItemTransfo
             orderedItems.push(nextItem);
             rest = _.without(rest, nextItem);
         }
+
+        return orderedItems;
     }
 
     private findNextBorderItem(currentBorderItem: WorldItemInfo, borderItems: WorldItemInfo[]) {
@@ -44,5 +63,13 @@ export class BorderItemWidthToRealWidthTransformator implements WorldItemTransfo
         }
 
         throw new Error('Next border item could not be determined.');
+    }
+
+    private resizeItem(item: WorldItemInfo, orderedItems: WorldItemInfo[], newSize: number) {
+        const nextItem = _.last(orderedItems) === item ? orderedItems[0] : orderedItems[orderedItems.indexOf(item) + 1];
+        const prevItem = _.first(orderedItems) === item ? _.last(orderedItems) : orderedItems[orderedItems.indexOf(item) - 1];
+
+        const centerPoint = item.dimensions.getBoundingCenter();
+        const newSegment = (<Segment> item.dimensions).getLine().getSegmentWithCenterPointAndDistance(centerPoint, newSize / 2);
     }
 }
