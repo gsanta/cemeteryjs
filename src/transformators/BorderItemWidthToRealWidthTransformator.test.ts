@@ -43,7 +43,7 @@ describe('BorderItemWidthToRealWidthTransformator', () => {
             new WorldItemInfo(0, 'door', new Segment(new Point(0, 4), new Point(0, 6)), 'door')
         ];
 
-        const transformator = new BorderItemWidthToRealWidthTransformator([{type: 'door', width: 1}]);
+        const transformator = new BorderItemWidthToRealWidthTransformator([{name: 'door', width: 1}]);
 
         [room] = transformator.transform([room]);
 

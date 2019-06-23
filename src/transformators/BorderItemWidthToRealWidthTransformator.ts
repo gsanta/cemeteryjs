@@ -6,9 +6,9 @@ import { WorldItemInfoUtils } from "../WorldItemInfoUtils";
 
 
 export class BorderItemWidthToRealWidthTransformator implements WorldItemTransformator {
-    private realItemWidths: {type: string, width: number}[] = [];
+    private realItemWidths: {name: string, width: number}[] = [];
 
-    constructor(realItemWidths: {type: string, width: number}[] = []) {
+    constructor(realItemWidths: {name: string, width: number}[] = []) {
         this.realItemWidths = realItemWidths;
     }
 
@@ -40,7 +40,7 @@ export class BorderItemWidthToRealWidthTransformator implements WorldItemTransfo
 
     private resizeBorderItems(room: WorldItemInfo) {
         room.borderItems.forEach(item => {
-            const realItemWidth = _.find(this.realItemWidths, itemWidth => itemWidth.type === item.type);
+            const realItemWidth = _.find(this.realItemWidths, itemWidth => itemWidth.name === item.name);
             if (realItemWidth !== undefined) {
                 this.resizeItem(item, room.borderItems, realItemWidth.width);
             }
