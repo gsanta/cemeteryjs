@@ -81,7 +81,7 @@ describe('`BorderItemsToLinesTransformator`', () => {
         });
     });
 
-    it.skip ('tests the new implementation', () => {
+    it ('tests the new implementation', () => {
         const map = `
             map \`
 

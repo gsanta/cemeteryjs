@@ -15,26 +15,16 @@ export class BorderItemWidthToRealWidthTransformator implements WorldItemTransfo
     public transform(worldItems: WorldItemInfo[]): WorldItemInfo[] {
         const rooms: WorldItemInfo[] = WorldItemInfoUtils.filterRooms(worldItems);
 
-        rooms.forEach(room => room.borderItems = this.orderJoiningSegmentsClockwise(room));
+        rooms.forEach(room => this.orderBorderItemsAroundRoomClockwise(room));
+        rooms.forEach(room => this.resizeBorderItems(room));
 
-        return worldItems[0].borderItems;
+        return worldItems;
     }
 
-    private orderJoiningSegmentsClockwise(room: WorldItemInfo) {
+    private orderBorderItemsAroundRoomClockwise(room: WorldItemInfo) {
         const borderItems = [...room.borderItems];
 
-        borderItems.sort((item1: WorldItemInfo, item2: WorldItemInfo) => {
-            const center1 = item1.dimensions.getBoundingCenter();
-            const center2 = item2.dimensions.getBoundingCenter();
-
-            if (center1.x === center2.x) {
-                return center1.y - center2.y;
-            }
-
-            return center1.x - center2.x;
-        });
-
-        const startItem = borderItems[0];
+        const startItem = this.getBottomLeftItem(borderItems);
         let rest = _.without(borderItems, startItem);
 
         const orderedItems = [startItem];
@@ -45,7 +35,30 @@ export class BorderItemWidthToRealWidthTransformator implements WorldItemTransfo
             rest = _.without(rest, nextItem);
         }
 
-        return orderedItems;
+        room.borderItems = orderedItems;
+    }
+
+    private resizeBorderItems(room: WorldItemInfo) {
+        room.borderItems.forEach(item => {
+            const realItemWidth = _.find(this.realItemWidths, itemWidth => itemWidth.type === item.type);
+            if (realItemWidth !== undefined) {
+                this.resizeItem(item, room.borderItems, realItemWidth.width);
+            }
+        });
+
+    }
+
+    private getBottomLeftItem(items: WorldItemInfo[]): WorldItemInfo {
+        const copy = [...items];
+
+        copy.sort((item1: WorldItemInfo, item2: WorldItemInfo) => {
+            const center1 = item1.dimensions.getBoundingCenter();
+            const center2 = item2.dimensions.getBoundingCenter();
+
+            return center1.x === center2.x ? center1.y - center2.y : center1.x - center2.x;
+        });
+
+        return copy[0];
     }
 
     private findNextBorderItem(currentBorderItem: WorldItemInfo, borderItems: WorldItemInfo[]) {
@@ -69,7 +82,25 @@ export class BorderItemWidthToRealWidthTransformator implements WorldItemTransfo
         const nextItem = _.last(orderedItems) === item ? orderedItems[0] : orderedItems[orderedItems.indexOf(item) + 1];
         const prevItem = _.first(orderedItems) === item ? _.last(orderedItems) : orderedItems[orderedItems.indexOf(item) - 1];
 
+        let neighbours = prevItem.dimensions.hasPoint(item.dimensions.getPoints()[0]) ? [prevItem, nextItem] : [nextItem, prevItem];
+
         const centerPoint = item.dimensions.getBoundingCenter();
-        const newSegment = (<Segment> item.dimensions).getLine().getSegmentWithCenterPointAndDistance(centerPoint, newSize / 2);
+        let newSegmentPoints = (<Segment> item.dimensions).getLine().getSegmentWithCenterPointAndDistance(centerPoint, newSize / 2);
+
+        if (newSegmentPoints[0].distanceTo(item.dimensions.getPoints()[0]) > newSegmentPoints[1].distanceTo(item.dimensions.getPoints()[0])) {
+            newSegmentPoints = [newSegmentPoints[1], newSegmentPoints[0]];
+        }
+
+        this.connectNeighbourSegmentToNewEndpoint(item.dimensions.getPoints()[0], newSegmentPoints[0], neighbours[0]);
+        this.connectNeighbourSegmentToNewEndpoint(item.dimensions.getPoints()[1], newSegmentPoints[1], neighbours[1]);
+        item.dimensions = new Segment(newSegmentPoints[0], newSegmentPoints[1]);
+    }
+
+    private connectNeighbourSegmentToNewEndpoint(oldPoint: Point, newPoint: Point, neighbour: WorldItemInfo) {
+        if (neighbour.dimensions.getPoints()[0].equalTo(oldPoint)) {
+            neighbour.dimensions = new Segment(newPoint, neighbour.dimensions.getPoints()[1]);
+        } else {
+            neighbour.dimensions = new Segment(neighbour.dimensions.getPoints()[0], newPoint);
+        }
     }
 }

@@ -10,6 +10,7 @@ import { RoomSeparatorParser } from './parsers/room_separator_parser/RoomSeparat
 import { HierarchyBuildingTransformator } from './transformators/HierarchyBuildingTransformator';
 import { PolygonAreaInfoParser } from './parsers/polygon_area_parser/PolygonAreaInfoParser';
 import { BorderItemsToLinesTransformator } from './transformators/BorderItemsToLinesTransformator';
+import { BorderItemWidthToRealWidthTransformator } from './transformators/BorderItemWidthToRealWidthTransformator';
 
 export {WorldParser, ParseOptions, defaultParseOptions} from './WorldParser';
 export {WorldItemInfo} from './WorldItemInfo';
@@ -32,5 +33,6 @@ export const transformators = {
     AdditionalDataConvertingTransformator,
     BorderItemAddingTransformator,
     BorderItemSegmentingTransformator,
-    BorderItemsToLinesTransformator
+    BorderItemsToLinesTransformator,
+    BorderItemWidthToRealWidthTransformator
 }
