@@ -550,4 +550,62 @@ describe('`WorldParser`', () => {
         expect(room.children.length).to.eq(1, 'room\'s children size is incorrect');
         expect(room.children[0].name).to.eq('empty');
     });
+
+    it ('can parse this', () => {
+        const map = `
+            map \`
+
+            WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+            W---------------------------------------------------W
+            W---------------------------------------------------W
+            W---------------------------------------------------W
+            WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+            W-------------W-----------W-------------W-----------W
+            W-------------W-----------W-------------W-----------W
+            W-------------W-----------W-------------W-----------W
+            W-------------W-----------W-------------W-----------W
+            W-------------WWWWWWWWWWWWW-------------WWWWWWWWWWWWW
+            W-------------------------W-------------------------W
+            W-------------------------W-------------------------W
+            W-------------------------W-------------------------W
+            WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+            \`
+
+            definitions \`
+
+            W = wall
+            - = empty
+
+            \`
+        `;
+
+        const options = {
+            xScale: 1,
+            yScale: 1,
+            furnitureCharacters: [],
+            roomSeparatorCharacters: ['W']
+        }
+
+        const worldItemInfoFactory = new WorldItemInfoFactory();
+        const worldMapParser = WorldParser.createWithCustomWorldItemGenerator(
+            new CombinedWorldItemParser(
+                [
+                    new FurnitureInfoParser(worldItemInfoFactory, options.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
+                    new RoomSeparatorParser(worldItemInfoFactory, options.roomSeparatorCharacters),
+                    new RoomInfoParser(worldItemInfoFactory),
+                    new RootWorldItemParser(worldItemInfoFactory)
+                ]
+            ),
+            [
+                new ScalingTransformator(),
+                new BorderItemSegmentingTransformator(worldItemInfoFactory, ['wall']),
+                new HierarchyBuildingTransformator(),
+                new BorderItemAddingTransformator(['wall']),
+                new BorderItemsToLinesTransformator()
+            ]
+        );
+
+        const [root1] = worldMapParser.parse(map);
+    });
 });

@@ -2,12 +2,55 @@ import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/Wo
 import { RoomSeparatorParser } from './RoomSeparatorParser';
 import { expect } from "chai";
 import { WorldItemInfoFactory } from '../../WorldItemInfoFactory';
-import { Polygon } from "@nightshifts.inc/geometry";
+import { Polygon, Shape } from "@nightshifts.inc/geometry";
+import { WorldItemInfo } from '../../WorldItemInfo';
+import * as _ from 'lodash';
 
+// TODO: create custom matcher
+function hasAnyWorldItemInfoDimension(dimension: Shape, worldItemInfos: WorldItemInfo[]) {
+    return _.some(worldItemInfos, worldItemInfo => worldItemInfo.dimensions.equalTo(dimension));
+}
 
 describe('RoomSeparatorParser', () => {
     describe('generate', () => {
-        it ('returns with a WorldItem for each vertical or horizontal room separator segments.', () => {
+        it ('sepearates the walls into vertical and horizontal `WorldItemInfo`s.', () => {
+            const map = `
+                map \`
+
+                WWWWWWWWWWWWWWWWWW
+                W--------W-------W
+                W--------W-------W
+                W--------W-------W
+                WWWWWWWWWWWWWWWWWW
+
+                \`
+
+                definitions \`
+
+                - = empty
+                W = wall
+                D = door
+                I = window
+
+                \`
+            `;
+
+            const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
+            const matrixGraph = worldMapToGraphConverter.convert(map);
+
+            const roomSeparatorParser = new RoomSeparatorParser(new WorldItemInfoFactory(), ['W', 'D', 'I']);
+
+
+            const worldItems = roomSeparatorParser.generate(matrixGraph);
+            expect(worldItems.length).to.eql(5);
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(0, 0, 1, 5), worldItems));
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(9, 0, 1, 5), worldItems));
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(17, 0, 1, 5), worldItems));
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(0, 0, 18, 1), worldItems));
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(0, 4, 18, 1), worldItems));
+        });
+
+        it ('creates separate `WorldItemInfo`s for different type of border items.', () => {
             const map = `
                 map \`
 

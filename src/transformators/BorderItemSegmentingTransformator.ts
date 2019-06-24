@@ -35,7 +35,7 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
 
         while (itemsToSegment.length > 0) {
             const currentItem = itemsToSegment.shift();
-            const room = this.findRoomByWhichToSegment(currentItem, rooms);
+            const room = this.findRoomsByWhichToSegment(currentItem, rooms);
 
             if (room) {
                 const segmentedItems = this.segmentByRoom(currentItem, room);
@@ -50,30 +50,26 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
         return _.chain(worldItems).without(...roomSeparatorItems).push(...newRoomSeparatorItems).value();
     }
 
-    private findRoomByWhichToSegment(roomSeparator: WorldItemInfo, rooms: WorldItemInfo[]): WorldItemInfo {
-        const intersectingRoom = <WorldItemInfo> _.find(rooms, (room: WorldItemInfo) => {
-            return room.dimensions.getCoincidentLineSegment(roomSeparator.dimensions)
-        });
+    private findRoomsByWhichToSegment(roomSeparator: WorldItemInfo, rooms: WorldItemInfo[]): WorldItemInfo[] {
+        return rooms
+            .filter(room => room.dimensions.getCoincidentLineSegment(roomSeparator.dimensions))
+            .filter(room => {
+                const coincidingLineInfo = room.dimensions.getCoincidentLineSegment(roomSeparator.dimensions);
+                
+                const intersectionExtent = this.getIntersectionExtent(coincidingLineInfo[0]);
 
-        if (intersectingRoom) {
-            const coincidingLineInfo = intersectingRoom.dimensions.getCoincidentLineSegment(roomSeparator.dimensions);
+                if (coincidingLineInfo[0].isVertical()) {
 
-            const intersectionExtent = this.getIntersectionExtent(coincidingLineInfo[0]);
+                    if (roomSeparator.dimensions.minY() < intersectionExtent[0] || roomSeparator.dimensions.maxY() > intersectionExtent[1]) {
+                        return room;
+                    }
+                } else {
 
-            if (coincidingLineInfo[0].isVertical()) {
-                // const sorted = _.sortBy([intersectionLine.start.y, intersectionLine.end.y]);
-
-                if (roomSeparator.dimensions.minY() < intersectionExtent[0] || roomSeparator.dimensions.maxY() > intersectionExtent[1]) {
-                    return intersectingRoom;
+                    if (roomSeparator.dimensions.minX() < intersectionExtent[0] || roomSeparator.dimensions.maxX() > intersectionExtent[1]) {
+                        return room;
+                    }
                 }
-            } else {
-                // const sorted = _.sortBy([intersectionLine.start.x, intersectionLine.end.x]);
-
-                if (roomSeparator.dimensions.minX() < intersectionExtent[0] || roomSeparator.dimensions.maxX() > intersectionExtent[1]) {
-                    return intersectingRoom;
-                }
-            }
-        }
+            });
     }
 
     private segmentByRoom(roomSeparator: WorldItemInfo, segmentingRoom: WorldItemInfo): WorldItemInfo[] {
@@ -138,7 +134,7 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
         let bottomSegment: WorldItemInfo = null;
         let topSegment: WorldItemInfo = null;
         let middleSegment: WorldItemInfo = null;
-        debugger;
+
         if (dimensions.minX() < segmentPositions[0]) {
             const clone = this.worldItemInfoFactory.clone(roomSeparator);
 

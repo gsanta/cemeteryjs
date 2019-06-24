@@ -110,15 +110,23 @@ export class MatrixGraph {
     }
 
     public getLeftNeighbour(vertex: number): number {
-        const topNeighbourIndex = vertex - 1;
+        const leftNeighbourIndex = vertex - 1;
 
-        return this.vertices.indexOf(topNeighbourIndex) !== -1 ? topNeighbourIndex : null;
+        if (this.hasVertex(leftNeighbourIndex) && leftNeighbourIndex % this.columns !== this.columns - 1) {
+            return leftNeighbourIndex;
+        }
+
+        return null;
     }
 
     public getRightNeighbour(vertex: number): number {
-        const topNeighbourIndex = vertex + 1;
+        const rightNeighbourIndex = vertex + 1;
 
-        return this.vertices.indexOf(topNeighbourIndex) !== -1 ? topNeighbourIndex : null;
+        if (this.hasVertex(rightNeighbourIndex) && rightNeighbourIndex % this.columns !== 0) {
+            return rightNeighbourIndex;
+        }
+
+        return null;
     }
 
     public getGraphForVertices(vertices: number[]): MatrixGraph {

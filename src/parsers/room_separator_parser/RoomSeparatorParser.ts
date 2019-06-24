@@ -22,8 +22,7 @@ export class RoomSeparatorParser implements WorldItemParser {
     }
 
     public generate(graph: MatrixGraph): WorldItemInfo[] {
-
-        const a = _.chain(graph.getCharacters())
+        return <any> _.chain(graph.getCharacters())
             .intersection(this.roomSeparatorCharacters)
             .map((character) => {
                 return graph.findConnectedComponentsForCharacter(character)
@@ -31,8 +30,6 @@ export class RoomSeparatorParser implements WorldItemParser {
             })
             .flattenDeep()
             .value();
-
-        return <any> a;
     }
 
     public generateFromStringMap(strMap: string): WorldItemInfo[] {
@@ -49,10 +46,9 @@ export class RoomSeparatorParser implements WorldItemParser {
 
     private createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph: MatrixGraph): WorldItemInfo[] {
         const verticalSubComponents = this.findVerticalSlices(componentGraph);
-        const verticesMinusVerticalSubComponents = _.without(componentGraph.getAllVertices(), ..._.flatten(verticalSubComponents));
-        const componentGraphMinusVerticalSubComponents = componentGraph.getGraphForVertices(verticesMinusVerticalSubComponents);
+        const horixontalComponents = this.findHorizontalSlices(componentGraph);
 
-        const verticalGameObjects = verticalSubComponents
+        const verticalItems = verticalSubComponents
             .map(slice => {
                 const gameObjectGraph = componentGraph.getGraphForVertices(slice);
                 const rect = this.createRectangleFromVerticalVertices(gameObjectGraph)
@@ -66,24 +62,21 @@ export class RoomSeparatorParser implements WorldItemParser {
                 );
             });
 
-        const horizontalGameObjects = componentGraphMinusVerticalSubComponents
-            .findConnectedComponentsForCharacter(componentGraphMinusVerticalSubComponents.getCharacters()[0])
-            .filter(comp => comp.length > 0)
-            .map(comp => {
-                const gameObjectGraph = componentGraph.getGraphForVertices(comp);
+        const horizontalItems = horixontalComponents
+            .map(slice => {
+                const gameObjectGraph = componentGraph.getGraphForVertices(slice);
+                const rect = this.createRectangleFromHorizontalVertices(gameObjectGraph)
                 const additionalData = this.getAdditionalDataFromGameObjectGraph(gameObjectGraph);
-                const rect = this.createRectangleFromHorizontalVertices(gameObjectGraph);
                 const oneVertex = componentGraph.getAllVertices()[0];
-
                 return this.worldItemInfoFactory.create(
-                    gameObjectGraph.getCharacters()[0],
+                    componentGraph.getCharacters()[0],
                     rect,
                     componentGraph.getVertexValue(oneVertex).name,
                     additionalData
                 );
             });
 
-        return [...verticalGameObjects, ...horizontalGameObjects];
+        return [...verticalItems, ...horizontalItems];
     }
 
     private findVerticalSlices(reducedGraph: MatrixGraph): number[][] {
@@ -121,6 +114,46 @@ export class RoomSeparatorParser implements WorldItemParser {
         while (componentGraph.getBottomNeighbour(actVertex) !== null) {
             subComponentVertices.push(componentGraph.getBottomNeighbour(actVertex));
             actVertex = componentGraph.getBottomNeighbour(actVertex);
+        }
+
+        return subComponentVertices;
+    }
+
+    private findHorizontalSlices(reducedGraph: MatrixGraph): number[][] {
+        const visitedVertices = [];
+
+        let componentVertices = reducedGraph.getAllVertices();
+        const horizontalSubCompnents = [];
+
+        while (componentVertices.length > 0) {
+            let actVertex = componentVertices[0];
+            if (reducedGraph.getLeftNeighbour(actVertex) !== null || reducedGraph.getRightNeighbour(actVertex) !== null) {
+                const subComponentVertices = this.findHorizontalSubComponentForVertex(actVertex, reducedGraph);
+                horizontalSubCompnents.push(subComponentVertices);
+                visitedVertices.push(...subComponentVertices);
+                componentVertices = _.without(componentVertices, ...subComponentVertices);
+            } else {
+                componentVertices = _.without(componentVertices, actVertex);
+            }
+        }
+
+        return horizontalSubCompnents;
+    }
+
+    private findHorizontalSubComponentForVertex(vertex: number, componentGraph: MatrixGraph): number[] {
+        let subComponentVertices = [vertex];
+
+        let actVertex = vertex;
+        while (componentGraph.getLeftNeighbour(actVertex) !== null) {
+            subComponentVertices.push(componentGraph.getLeftNeighbour(actVertex));
+            actVertex = componentGraph.getLeftNeighbour(actVertex);
+        }
+
+        actVertex = vertex;
+
+        while (componentGraph.getRightNeighbour(actVertex) !== null) {
+            subComponentVertices.push(componentGraph.getRightNeighbour(actVertex));
+            actVertex = componentGraph.getRightNeighbour(actVertex);
         }
 
         return subComponentVertices;
