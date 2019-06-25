@@ -96,7 +96,7 @@ describe.only('BorderItemSegmentingTransformator', () => {
 
         });
 
-        it ('segments the walls into as many pices as many rooms the wall spans', () => {
+        it.only ('segments the walls into as many pices as many rooms the wall spans', () => {
             const map = `
                 map \`
 

@@ -2,7 +2,7 @@ import { WorldItemInfo } from "../WorldItemInfo";
 import _ = require("lodash");
 import { TreeIteratorGenerator } from "../gwm_world_item/iterator/TreeIteratorGenerator";
 import { WorldItemTransformator } from './WorldItemTransformator';
-import { Polygon } from "@nightshifts.inc/geometry";
+import { Polygon, Point, MeasurementUtils, Line } from '@nightshifts.inc/geometry';
 import { WorldItemInfoFactory } from '../WorldItemInfoFactory';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 
@@ -35,19 +35,71 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
 
         while (itemsToSegment.length > 0) {
             const currentItem = itemsToSegment.shift();
-            const room = this.findRoomsByWhichToSegment(currentItem, rooms);
+            const segmentingRooms = this.findRoomsByWhichToSegment(currentItem, rooms);
 
-            if (room) {
-                const segmentedItems = this.segmentByRoom(currentItem, room);
-                itemsToSegment.push(...segmentedItems);
-                newRoomSeparatorItems.delete(currentItem);
-                segmentedItems.forEach(item => newRoomSeparatorItems.add(item));
-            } else {
-                newRoomSeparatorItems.add(currentItem);
+            const longestEdge = currentItem.dimensions.getEdges().sort((a, b) => b.getLength() - a.getLength())[0];
+
+            let segmentingPoints: Point[] = [];
+
+
+            segmentingRooms.forEach(room => {
+                const coincidentSegmentInfo = room.dimensions.getCoincidentLineSegment(currentItem.dimensions);
+                segmentingPoints.push(...coincidentSegmentInfo[0].getPoints());
+            });
+
+            if (segmentingPoints.length > 0) {
+                segmentingPoints.sort((a, b) => longestEdge.getPoints()[0].distanceTo(a) - longestEdge.getPoints()[0].distanceTo(b));
+
+                segmentingPoints = this.mergeNeigbouringPointsWithDistanceSmallerThanOneUnit(segmentingPoints);
+                segmentingPoints.pop();
+                segmentingPoints.unshift();
+                segmentingPoints.unshift(longestEdge.getPoints[0]);
+                segmentingPoints.push(longestEdge.getPoints[1]);
             }
+
+
+
+            debugger;
+
+            // if (room) {
+            //     const segmentedItems = this.segmentByRoom(currentItem, room[0]);
+            //     itemsToSegment.push(...segmentedItems);
+            //     newRoomSeparatorItems.delete(currentItem);
+            //     segmentedItems.forEach(item => newRoomSeparatorItems.add(item));
+            // } else {
+            //     newRoomSeparatorItems.add(currentItem);
+            // }
         }
 
         return _.chain(worldItems).without(...roomSeparatorItems).push(...newRoomSeparatorItems).value();
+    }
+
+    private segment(borderItem: WorldItemInfo, segmentingPoints: Point[]) {
+        const sortedEdges = borderItem.dimensions.getEdges().sort((a, b) => b.getLength() - a.getLength())[0];
+        const longerEdges: [Segment, Segment] = [sortedEdges[0], sortedEdges[1]];
+        const perpendicularSlope = longerEdges[0].getPerpendicularBisector().m;
+
+        for (let i = 0; i < segmentingPoints.length - 1; i++) {
+            const line = Line.createFromPointSlopeForm(segmentingPoints[0], perpendicularSlope);
+            const pointPair1 = longerEdges[0].in
+        }
+    }
+
+    private mergeNeigbouringPointsWithDistanceSmallerThanOneUnit(points: Point[]) {
+        points = [...points];
+        const mergedPoints: Point[] = [];
+
+        while (points.length > 0) {
+            if (points.length > 1 && MeasurementUtils.isDistanceSmallerThanOneUnit(points[0], points[1])) {
+                mergedPoints.push(new Segment(points[0], points[1]).getBoundingCenter());
+                points.shift();
+                points.shift();
+            } else {
+                mergedPoints.push(points.shift());
+            }
+        }
+
+        return mergedPoints;
     }
 
     private findRoomsByWhichToSegment(roomSeparator: WorldItemInfo, rooms: WorldItemInfo[]): WorldItemInfo[] {
@@ -55,7 +107,7 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
             .filter(room => room.dimensions.getCoincidentLineSegment(roomSeparator.dimensions))
             .filter(room => {
                 const coincidingLineInfo = room.dimensions.getCoincidentLineSegment(roomSeparator.dimensions);
-                
+
                 const intersectionExtent = this.getIntersectionExtent(coincidingLineInfo[0]);
 
                 if (coincidingLineInfo[0].isVertical()) {
