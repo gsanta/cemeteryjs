@@ -31,13 +31,14 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
 
         const itemsToSegment = [...roomSeparatorItems];
 
-        let newRoomSeparatorItems: Set<WorldItemInfo> = new Set();
+        let newRoomSeparatorItems: WorldItemInfo[] = [];
 
         while (itemsToSegment.length > 0) {
             const currentItem = itemsToSegment.shift();
             const segmentingRooms = this.findRoomsByWhichToSegment(currentItem, rooms);
 
-            const longestEdge = currentItem.dimensions.getEdges().sort((a, b) => b.getLength() - a.getLength())[0];
+            const edges = currentItem.dimensions.getEdges();
+            edges.sort((a, b) => b.getLength() - a.getLength());
 
             let segmentingPoints: Point[] = [];
 
@@ -48,46 +49,64 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
             });
 
             if (segmentingPoints.length > 0) {
-                segmentingPoints.sort((a, b) => longestEdge.getPoints()[0].distanceTo(a) - longestEdge.getPoints()[0].distanceTo(b));
+                segmentingPoints.sort((a, b) => edges[0].getPoints()[0].distanceTo(a) - edges[0].getPoints()[0].distanceTo(b));
 
-                segmentingPoints = this.mergeNeigbouringPointsWithDistanceSmallerThanOneUnit(segmentingPoints);
                 segmentingPoints.pop();
-                segmentingPoints.unshift();
-                segmentingPoints.unshift(longestEdge.getPoints[0]);
-                segmentingPoints.push(longestEdge.getPoints[1]);
+                segmentingPoints.shift();
+                segmentingPoints.unshift(edges[0].getPoints()[0]);
+                segmentingPoints.push(edges[0].getPoints()[1]);
+                const segments = this.createSegments(segmentingPoints);
+                const segmentedWorldItemInfos = this.segment(currentItem, segments);
+                newRoomSeparatorItems.push(...segmentedWorldItemInfos);
+            } else {
+                newRoomSeparatorItems.push(currentItem);
             }
-
-
-
-            debugger;
-
-            // if (room) {
-            //     const segmentedItems = this.segmentByRoom(currentItem, room[0]);
-            //     itemsToSegment.push(...segmentedItems);
-            //     newRoomSeparatorItems.delete(currentItem);
-            //     segmentedItems.forEach(item => newRoomSeparatorItems.add(item));
-            // } else {
-            //     newRoomSeparatorItems.add(currentItem);
-            // }
         }
 
         return _.chain(worldItems).without(...roomSeparatorItems).push(...newRoomSeparatorItems).value();
     }
 
-    private segment(borderItem: WorldItemInfo, segmentingPoints: Point[]) {
-        const sortedEdges = borderItem.dimensions.getEdges().sort((a, b) => b.getLength() - a.getLength())[0];
-        const longerEdges: [Segment, Segment] = [sortedEdges[0], sortedEdges[1]];
+    private segment(borderItem: WorldItemInfo, segments: Segment[]): WorldItemInfo[] {
+        const edges = borderItem.dimensions.getEdges();
+        edges.sort((a, b) => b.getLength() - a.getLength())[0];
+        const longerEdges: [Segment, Segment] = [edges[0], edges[1]];
         const perpendicularSlope = longerEdges[0].getPerpendicularBisector().m;
 
-        for (let i = 0; i < segmentingPoints.length - 1; i++) {
-            const line = Line.createFromPointSlopeForm(segmentingPoints[0], perpendicularSlope);
-            const pointPair1 = longerEdges[0].in
-        }
+        const segmentedWorldItemInfos: WorldItemInfo[] = [];
+
+        segments.map(segment => {
+            const startPerpendicularLine = Line.createFromPointSlopeForm(segment.getPoints()[0], perpendicularSlope);
+            const endPerpendicularLine = Line.createFromPointSlopeForm(segment.getPoints()[1], perpendicularSlope);
+            const point1 = longerEdges[0].getLine().intersection(endPerpendicularLine);
+            const point2 = longerEdges[1].getLine().intersection(endPerpendicularLine);
+            const point3 = longerEdges[0].getLine().intersection(startPerpendicularLine);
+            const point4 = longerEdges[1].getLine().intersection(startPerpendicularLine);
+
+            const clone = this.worldItemInfoFactory.clone(borderItem);
+            clone.dimensions = new Polygon([
+                point1,
+                point2,
+                point4,
+                point3
+            ]);
+
+            return segmentedWorldItemInfos.push(clone);
+        });
+
+        return segmentedWorldItemInfos;
     }
 
-    private mergeNeigbouringPointsWithDistanceSmallerThanOneUnit(points: Point[]) {
+    private createSegments(points: Point[]): Segment[] {
         points = [...points];
         const mergedPoints: Point[] = [];
+
+        const firstSegment = new Segment(points[0], points[2]);
+
+        const restSegments: Segment[] = [];
+
+        for (let i = 1; i < points.length - 2; i+=2) {
+            restSegments.push(new Segment(points[i], points[i + 2]));
+        }
 
         while (points.length > 0) {
             if (points.length > 1 && MeasurementUtils.isDistanceSmallerThanOneUnit(points[0], points[1])) {
@@ -99,7 +118,7 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
             }
         }
 
-        return mergedPoints;
+        return [firstSegment, ...restSegments];
     }
 
     private findRoomsByWhichToSegment(roomSeparator: WorldItemInfo, rooms: WorldItemInfo[]): WorldItemInfo[] {
@@ -122,114 +141,6 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
                     }
                 }
             });
-    }
-
-    private segmentByRoom(roomSeparator: WorldItemInfo, segmentingRoom: WorldItemInfo): WorldItemInfo[] {
-        const [line] = segmentingRoom.dimensions.getCoincidentLineSegment(roomSeparator.dimensions);
-
-        if (line.isVertical()) {
-            return this.segmentVertically(roomSeparator, this.getIntersectionExtent(line));
-        } else {
-            return this.segmentHorizontally(roomSeparator, this.getIntersectionExtent(line));
-        }
-    }
-
-    private segmentVertically(roomSeparator: WorldItemInfo, segmentPositions: [number, number]): WorldItemInfo[] {
-        const segmentedRoomSeparators: WorldItemInfo[] = [];
-        const dimensions = roomSeparator.dimensions;
-
-        if (dimensions.minY() < segmentPositions[0]) {
-            const clone = this.worldItemInfoFactory.clone(roomSeparator);
-
-            const height = segmentPositions[0] - dimensions.minY();
-
-            clone.dimensions = Polygon.createRectangle(
-                dimensions.minX(),
-                dimensions.minY(),
-                dimensions.maxX() - dimensions.minX(),
-                height
-            );
-            segmentedRoomSeparators.push(clone);
-        }
-
-        if (dimensions.maxY() > segmentPositions[1]) {
-            const clone = this.worldItemInfoFactory.clone(roomSeparator);
-
-            const height = dimensions.maxY() - segmentPositions[1];
-
-            clone.dimensions = Polygon.createRectangle(
-                dimensions.minX(),
-                segmentPositions[1],
-                dimensions.maxX() - dimensions.minX(),
-                height
-            );
-            segmentedRoomSeparators.push(clone);
-        }
-
-        const middleSegment = this.worldItemInfoFactory.clone(roomSeparator);
-        const middleSegmentHeight = segmentPositions[1] - segmentPositions[0];
-        middleSegment.dimensions = Polygon.createRectangle(
-            dimensions.minX(),
-            segmentPositions[0],
-            dimensions.maxX() - dimensions.minX(),
-            middleSegmentHeight
-        );
-        segmentedRoomSeparators.push(middleSegment);
-
-        return segmentedRoomSeparators;
-    }
-
-    private segmentHorizontally(roomSeparator: WorldItemInfo, segmentPositions: [number, number]): WorldItemInfo[] {
-        const segmentedRoomSeparators: WorldItemInfo[] = [];
-        const dimensions = roomSeparator.dimensions;
-
-        let bottomSegment: WorldItemInfo = null;
-        let topSegment: WorldItemInfo = null;
-        let middleSegment: WorldItemInfo = null;
-
-        if (dimensions.minX() < segmentPositions[0]) {
-            const clone = this.worldItemInfoFactory.clone(roomSeparator);
-
-            const width = segmentPositions[0] - dimensions.minX();
-
-            clone.dimensions = Polygon.createRectangle(
-                dimensions.minX(),
-                dimensions.maxY(),
-                width,
-                dimensions.maxY() - dimensions.minY()
-            );
-
-            bottomSegment = clone;
-            segmentedRoomSeparators.push(clone);
-        }
-
-        if (dimensions.maxX() > segmentPositions[1]) {
-            const clone = this.worldItemInfoFactory.clone(roomSeparator);
-
-            const width = dimensions.maxX() - segmentPositions[1];
-
-            clone.dimensions = Polygon.createRectangle(
-                segmentPositions[1],
-                dimensions.maxY(),
-                width,
-                dimensions.maxY() - dimensions.minY()
-            );
-
-            topSegment = clone;
-            segmentedRoomSeparators.push(clone);
-        }
-
-        middleSegment = this.worldItemInfoFactory.clone(roomSeparator);
-        const middleSegmentWidth = segmentPositions[1] - segmentPositions[0];
-        middleSegment.dimensions = Polygon.createRectangle(
-            segmentPositions[0],
-            dimensions.maxY(),
-            middleSegmentWidth,
-            dimensions.maxY() - dimensions.minY()
-        );
-        segmentedRoomSeparators.push(middleSegment);
-
-        return segmentedRoomSeparators;
     }
 
     private filterRooms(worldItems: WorldItemInfo[]): WorldItemInfo[] {

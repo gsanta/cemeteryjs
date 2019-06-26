@@ -7,7 +7,7 @@ import { WorldItemInfo } from '../../WorldItemInfo';
 import * as _ from 'lodash';
 
 // TODO: create custom matcher
-function hasAnyWorldItemInfoDimension(dimension: Shape, worldItemInfos: WorldItemInfo[]) {
+export function hasAnyWorldItemInfoDimension(dimension: Shape, worldItemInfos: WorldItemInfo[]) {
     return _.some(worldItemInfos, worldItemInfo => worldItemInfo.dimensions.equalTo(dimension));
 }
 
@@ -43,11 +43,11 @@ describe('RoomSeparatorParser', () => {
 
             const worldItems = roomSeparatorParser.generate(matrixGraph);
             expect(worldItems.length).to.eql(5);
-            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(0, 0, 1, 5), worldItems));
-            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(9, 0, 1, 5), worldItems));
-            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(17, 0, 1, 5), worldItems));
-            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(0, 0, 18, 1), worldItems));
-            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(0, 4, 18, 1), worldItems));
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(0, 0, 1, 5), worldItems)).to.be.true;
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(9, 0, 1, 5), worldItems)).to.be.true;
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(17, 0, 1, 5), worldItems)).to.be.true;
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(0, 0, 18, 1), worldItems)).to.be.true;
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(0, 4, 18, 1), worldItems)).to.be.true;
         });
 
         it ('creates separate `WorldItemInfo`s for different type of border items.', () => {

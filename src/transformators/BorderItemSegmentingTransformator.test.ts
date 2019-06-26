@@ -6,51 +6,10 @@ import { expect } from "chai";
 import _ = require("lodash");
 import { Polygon, Point } from "@nightshifts.inc/geometry";
 import { WorldItemInfoFactory } from "../WorldItemInfoFactory";
+import { hasAnyWorldItemInfoDimension } from "../parsers/room_separator_parser/RoomSeparatorParser.test";
 
 
-describe.only('BorderItemSegmentingTransformator', () => {
-    describe('generate', () => {
-        it ('segments the walls into smaller pieces with minimal number of segmentation', () => {
-            const map = `
-                map \`
-
-                WWWWWWWWWWWWWWWWWWWWW
-                W-------------------W
-                W-------X-----------W
-                W-------------------W
-                W-------------------W
-                W-------------------W
-                W-------------------W
-                W-------------------W
-                W-------------------W
-                WWWWWWWWWWWWWWWWWWWWW
-
-                \`
-
-                definitions \`
-
-                - = empty
-                W = wall
-                X = player
-
-                \`
-            `;
-
-            const worldItemInfoFacotry = new WorldItemInfoFactory();
-            let items = new CombinedWorldItemParser(
-                [
-                    new RoomSeparatorParser(worldItemInfoFacotry, ['W']),
-                    new RoomInfoParser(worldItemInfoFacotry)
-                ]
-            ).generateFromStringMap(map);
-
-            items = new BorderItemSegmentingTransformator(worldItemInfoFacotry, ['wall']).transform(items);
-
-            expect(items.filter(item => item.name === 'wall').length).to.eql(4, 'wall segment number not ok');
-        });
-    });
-
-
+describe('BorderItemSegmentingTransformator', () => {
     describe('generate', () => {
         it ('segments the walls into smaller pieces so that no wall will cover more then one room', () => {
             const map = `
@@ -87,16 +46,16 @@ describe.only('BorderItemSegmentingTransformator', () => {
             expect(items.filter(item => item.name === 'wall').length).to.eql(7, 'wall segment number not ok');
 
             expect(_.some(items, {dimensions: Polygon.createRectangle(0, 0, 1, 4)}), 'Rectangle(0, 0, 1, 4) not found.').to.be.true;
-            expect(_.some(items, {dimensions: Polygon.createRectangle(9, 4, 1, 3)}), 'Rectangle(9, 4, 1, 3) not found.').to.be.true;
+            expect(_.some(items, {dimensions: Polygon.createRectangle(0, 3, 1, 4)}), 'Rectangle(0, 3, 1, 4) not found.').to.be.true;
             expect(_.some(items, {dimensions: Polygon.createRectangle(9, 0, 1, 4)}), 'Rectangle(9, 0, 1, 4) not found.').to.be.true;
-            expect(_.some(items, {dimensions: Polygon.createRectangle(1, 0, 8, 1)}), 'Rectangle(1, 0, 8, 1) not found.').to.be.true;
-            expect(_.some(items, {dimensions: Polygon.createRectangle(1, 0, 8, 1)}), 'Rectangle(1, 0, 8, 1) not found.').to.be.true;
-            expect(_.some(items, {dimensions: Polygon.createRectangle(1, 3, 8, 1)}), 'Rectangle(1, 3, 8, 1) not found.').to.be.true;
-            expect(_.some(items, {dimensions: Polygon.createRectangle(1, 6, 8, 1)}), 'Rectangle(1, 6, 8, 1) not found.').to.be.true;
+            expect(_.some(items, {dimensions: Polygon.createRectangle(9, 3, 1, 4)}), 'Rectangle(9, 3, 1, 4) not found.').to.be.true;
+            expect(_.some(items, {dimensions: Polygon.createRectangle(0, 0, 10, 1)}), 'Rectangle(0, 0, 10, 1) not found.').to.be.true;
+            expect(_.some(items, {dimensions: Polygon.createRectangle(0, 3, 10, 1)}), 'Rectangle(0, 3, 10, 1) not found.').to.be.true;
+            expect(_.some(items, {dimensions: Polygon.createRectangle(0, 6, 10, 1)}), 'Rectangle(0, 6, 10, 1) not found.').to.be.true;
 
         });
 
-        it.only ('segments the walls into as many pices as many rooms the wall spans', () => {
+        it ('segments the walls into as many pices as many rooms the wall spans', () => {
             const map = `
                 map \`
 
@@ -130,80 +89,24 @@ describe.only('BorderItemSegmentingTransformator', () => {
             ).generateFromStringMap(map);
 
             items = new BorderItemSegmentingTransformator(worldItemInfoFacotry, ['wall']).transform(items);
-            // expect(items.filter(item => item.name === 'wall').length).to.eql(8, 'wall segment number not ok');
 
-            // expect(items[0].dimensions).to.eql(new Polygon([
-            //     new Point(1, 1),
-            //     new Point(5, 1),
-            //     new Point(5, 4),
-            //     new Point(9, 4),
-            //     new Point(9, 6),
-            //     new Point(1, 6)
-            // ]));
-
-            // expect(items[1].dimensions).to.eql(new Polygon([
-            //     new Point(6, 1),
-            //     new Point(9, 1),
-            //     new Point(9, 3),
-            //     new Point(6, 3)
-            // ]));
-
-            // expect(items[2].dimensions).to.eql(new Polygon([
-            //     new Point(0, 0),
-            //     new Point(0, 7),
-            //     new Point(1, 7),
-            //     new Point(1, 0)
-            // ]));
-
-            // expect(items[3].dimensions).to.eql(new Polygon([
-            //     new Point(5, 0),
-            //     new Point(5, 4),
-            //     new Point(6, 4),
-            //     new Point(6, 0)
-            // ]));
-
-            // expect(items[4].dimensions).to.eql(new Polygon([
-            //     new Point(9, 0),
-            //     new Point(9, 3),
-            //     new Point(10, 3),
-            //     new Point(10, 0)
-            // ]));
-
-
-            // expect(items[5].dimensions).to.eql(new Polygon([
-            //     new Point(9, 3),
-            //     new Point(9, 7),
-            //     new Point(10, 7),
-            //     new Point(10, 3)
-            // ]));
-
-            // expect(items[6].dimensions).to.eql(new Polygon([
-            //     new Point(1, 0),
-            //     new Point(1, 1),
-            //     new Point(5, 1),
-            //     new Point(5, 0)
-            // ]));
-
-            // expect(items[7].dimensions).to.eql(new Polygon([
-            //     new Point(6, 0),
-            //     new Point(6, 1),
-            //     new Point(9, 1),
-            //     new Point(9, 0)
-            // ]));
-
-            // expect(items[8].dimensions).to.eql(new Polygon([
-            //     new Point(1, 6),
-            //     new Point(1, 7),
-            //     new Point(9, 7),
-            //     new Point(9, 6)
-            // ]));
-
-            // expect(items[9].dimensions).to.eql(new Polygon([
-            //     new Point(6, 3),
-            //     new Point(6, 4),
-            //     new Point(9, 4),
-            //     new Point(9, 3)
-            // ]));
+            expect(items.filter(item => item.name === 'wall').length).to.eq(16);
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(0, 0, 1, 5), items), 'Rectangle(0, 0, 1, 5) not found').to.be.true;
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(0, 4, 1, 6), items), 'Rectangle(0, 4, 1, 6) not found').to.be.true;
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(14, 4, 1, 6), items), 'Rectangle(14, 4, 1, 6) not found').to.be.true;
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(26, 4, 1, 6), items), 'Rectangle(26, 4, 1, 6) not found').to.be.true;
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(40, 4, 1, 6), items), 'Rectangle(40, 4, 1, 6) not found').to.be.true;
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(52, 0, 1, 5), items), 'Rectangle(52, 0, 1, 5) not found').to.be.true;
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(52, 4, 1, 6), items), 'Rectangle(52, 4, 1, 6) not found').to.be.true;
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(0, 0, 53, 1), items), 'Rectangle(0, 0, 53, 1) not found').to.be.true;
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(0, 4, 15, 1), items), 'Rectangle(0, 4, 15, 1) not found').to.be.true;
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(14, 4, 12, 1), items), 'Rectangle(14, 4, 12, 1) not found').to.be.true;
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(26, 4, 14, 1), items), 'Rectangle(26, 4, 14, 1) not found').to.be.true;
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(40, 4, 13, 1), items), 'Rectangle(40, 4, 13, 1) not found').to.be.true;
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(0, 9, 15, 1), items), 'Rectangle(0, 9, 15, 1) not found').to.be.true;
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(14, 9, 12, 1), items), 'Rectangle(14, 9, 12, 1) not found').to.be.true;
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(26, 9, 14, 1), items), 'Rectangle(26, 9, 14, 1) not found').to.be.true;
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(40, 9, 13, 1), items), 'Rectangle(40, 9, 13, 1) not found').to.be.true;
         });
     });
 });
