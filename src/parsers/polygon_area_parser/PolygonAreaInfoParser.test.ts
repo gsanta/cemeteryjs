@@ -1,7 +1,7 @@
 import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
 import { expect } from "chai";
 import { PolygonAreaInfoParser } from "./PolygonAreaInfoParser";
-import { Point } from "@nightshifts.inc/geometry";
+import { Point, Polygon } from '@nightshifts.inc/geometry';
 import { WorldItemInfoFactory } from "../../WorldItemInfoFactory";
 
 describe('PolygonAreaInfoGenerator', () => {
@@ -27,12 +27,12 @@ describe('PolygonAreaInfoGenerator', () => {
             const worldItem = polygonAreaInfoParser.generate(matrixGraph);
 
             expect(worldItem.length).to.eql(1);
-            expect(worldItem[0].dimensions.getPoints()).to.eql([
+            expect(worldItem[0].dimensions.equalTo(new Polygon([
                 new Point(1, 1),
-                new Point(6, 1),
+                new Point(1, 4),
                 new Point(6, 4),
-                new Point(1, 4)
-            ]);
+                new Point(6, 1)
+            ]))).to.be.true;
         });
 
         it ('makes sure that the space between two adjacent connected component is one unit', () => {
@@ -56,19 +56,19 @@ describe('PolygonAreaInfoGenerator', () => {
             const worldItem = polygonAreaInfoParser.generate(matrixGraph);
 
             expect(worldItem.length).to.eql(2);
-            expect(worldItem[0].dimensions.getPoints()).to.eql([
+            expect(worldItem[0].dimensions.equalTo(new Polygon([
                 new Point(1, 0),
-                new Point(6, 0),
+                new Point(1, 2),
                 new Point(6, 2),
-                new Point(1, 2)
-            ]);
+                new Point(6, 0)
+            ]))).to.be.true;
 
-            expect(worldItem[1].dimensions.getPoints()).to.eql([
+            expect(worldItem[1].dimensions.equalTo(new Polygon([
                 new Point(1, 3),
-                new Point(6, 3),
+                new Point(1, 5),
                 new Point(6, 5),
-                new Point(1, 5)
-            ]);
+                new Point(6, 3)
+            ]))).to.be.true;
         });
 
         it ('converts shapes where the right side has steps', () => {
@@ -92,16 +92,16 @@ describe('PolygonAreaInfoGenerator', () => {
             const worldItem = polygonAreaInfoParser.generate(matrixGraph);
 
             expect(worldItem.length).to.eql(1);
-            expect(worldItem[0].dimensions.getPoints()).to.eql([
+            expect(worldItem[0].dimensions.equalTo(new Polygon([
                 new Point(1, 1),
-                new Point(4, 1),
-                new Point(4, 2),
-                new Point(5, 2),
-                new Point(5, 4),
-                new Point(7, 4),
+                new Point(1, 5),
                 new Point(7, 5),
-                new Point(1, 5)
-            ]);
+                new Point(7, 4),
+                new Point(5, 4),
+                new Point(5, 2),
+                new Point(4, 2),
+                new Point(4, 1)
+            ]))).to.be.true;
         });
 
         it ('converts shapes where the left side has steps.', () => {
@@ -126,14 +126,14 @@ describe('PolygonAreaInfoGenerator', () => {
             const worldItem = polygonAreaInfoParser.generate(matrixGraph);
 
             expect(worldItem.length).to.eql(1);
-            expect(worldItem[0].dimensions.getPoints()).to.eql([
+            expect(worldItem[0].dimensions.equalTo(new Polygon([
                 new Point(1, 1),
-                new Point(5, 1),
-                new Point(5, 5),
-                new Point(3, 5),
+                new Point(1, 3),
                 new Point(3, 3),
-                new Point(1, 3)
-            ]);
+                new Point(3, 5),
+                new Point(5, 5),
+                new Point(5, 1),
+            ]))).to.be.true;
         });
     });
 });

@@ -20,7 +20,7 @@ import { WorldItemInfoFactory } from './WorldItemInfoFactory';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import _ = require('lodash');
 
-describe('`WorldParser`', () => {
+describe.skip('`WorldParser`', () => {
     describe('parse', () => {
         it ('creates a WorldItem for every distinguishable item in the input map', () => {
             const map = `

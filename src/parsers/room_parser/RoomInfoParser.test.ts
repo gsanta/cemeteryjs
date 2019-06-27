@@ -3,7 +3,7 @@ import { RoomInfoParser } from './RoomInfoParser';
 import { expect } from 'chai';
 import * as fs from 'fs';
 import { WorldMapToRoomMapConverter } from "./WorldMapToRoomMapConverter";
-import { Point } from "@nightshifts.inc/geometry";
+import { Point, Polygon } from '@nightshifts.inc/geometry';
 import { WorldItemInfoFactory } from '../../WorldItemInfoFactory';
 
 describe('RoomInfoParser', () => {
@@ -21,14 +21,14 @@ describe('RoomInfoParser', () => {
 
             const worldItem = roomInfoParser.generate(matrixGraph);
 
-            expect(worldItem[0].dimensions.getPoints()).to.eql([
+            expect(worldItem[0].dimensions.equalTo(new Polygon([
                 new Point(1, 1),
-                new Point(37, 1),
-                new Point(37, 26),
-                new Point(26, 26),
+                new Point(1, 17),
                 new Point(26, 17),
-                new Point(1, 17)
-            ]);
+                new Point(26, 26),
+                new Point(37, 26),
+                new Point(37, 1)
+            ]))).to.be.true;
         });
     });
 });

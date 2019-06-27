@@ -108,5 +108,44 @@ describe('BorderItemSegmentingTransformator', () => {
             expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(26, 9, 14, 1), items), 'Rectangle(26, 9, 14, 1) not found').to.be.true;
             expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(40, 9, 13, 1), items), 'Rectangle(40, 9, 13, 1) not found').to.be.true;
         });
+
+
+        it.skip ('alternating segmentation not supported yet, but should add', () => {
+            const map = `
+                map \`
+
+                WWWWWWWWWWWWWWWWWWW#WWWWWWWWWWWWWWWWWWWW
+                W------------------#-------------------W
+                W------------------#-------------------W
+                W------------------#-------------------W
+                WWWWWWWWWWWWWWWWWWW#WWWWWWWWWWWWWWWWWWWW
+                W-------------W-----------W------------W
+                W-------------W-----------W------------W
+                W-------------W-----------W------------W
+                W-------------W-----------W------------W
+                WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+                \`
+
+                definitions \`
+
+                - = empty
+                W = wall
+
+                \`
+            `;
+
+            const worldItemInfoFacotry = new WorldItemInfoFactory();
+            let items = new CombinedWorldItemParser(
+                [
+                    new RoomSeparatorParser(worldItemInfoFacotry, ['W']),
+                    new RoomInfoParser(worldItemInfoFacotry)
+                ]
+            ).generateFromStringMap(map);
+
+            items = new BorderItemSegmentingTransformator(worldItemInfoFacotry, ['wall']).transform(items);
+
+            expect(1).to.eq(2);
+        });
     });
 });

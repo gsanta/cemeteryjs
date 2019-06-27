@@ -1,6 +1,6 @@
 import { WorldItemInfo } from "../WorldItemInfo";
 import { WorldItemTransformator } from './WorldItemTransformator';
-import { Polygon, Line, Shape, Point, GeometryUtils } from '@nightshifts.inc/geometry';
+import { Polygon, Line, Shape, Point, GeometryUtils, StripeView } from '@nightshifts.inc/geometry';
 import { WorldItemInfoUtils } from '../WorldItemInfoUtils';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import _ = require("lodash");
@@ -31,6 +31,40 @@ export const mergeStraightAngledNeighbouringBorderItemPolygons = (borderItemPoly
     }
 
     return mergedPolygons;
+}
+
+export const mergePolygonsIfHaveCommonEdges = (polygon1: Polygon, polygon2: Polygon): Polygon | undefined => {
+    const stripe1 = new StripeView(polygon1);
+    const stripe2 = new StripeView(polygon2);
+    const edges1 = polygon1.getEdges();
+    const edges2 = polygon2.getEdges();
+
+    let commonEdge: Segment;
+    for (let i = 0; i < edges1.length; i++) {
+        for (let j = 0; j < edges2.length; j++) {
+            if (this.isCommonEdge(edges1[i], edges2[j])) {
+                commonEdge = edges1[i];
+                break;
+            }
+        }
+    }
+
+    if (commonEdge) {
+        const orderedPoints1 = this.orderPolygonPointSoThatTheArrayStartsAndEndsWithEdge(polygon1, commonEdge);
+        const orderedPoints2 = this.orderPolygonPointSoThatTheArrayStartsAndEndsWithEdge(polygon2, commonEdge);
+
+        orderedPoints2.pop();
+
+        if (polygon1.getIndexOf(orderedPoints1[0]) === 0) {
+            orderedPoints2.push(...orderedPoints1);
+        } else {
+            orderedPoints2.unshift(...orderedPoints1);
+        }
+
+        return new Polygon(orderedPoints2).removeStraightVertices();
+    }
+
+    return undefined;
 }
 
 /**

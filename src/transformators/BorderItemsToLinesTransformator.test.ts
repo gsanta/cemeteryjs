@@ -65,7 +65,7 @@ const initBorderItems = (strMap: string): WorldItemInfo[] => {
 }
 
 
-describe('`BorderItemsToLinesTransformator`', () => {
+describe.only('`BorderItemsToLinesTransformator`', () => {
     describe('mergeStraightAngledNeighbouringBorderItemPolygons', () => {
 
         it ('reduces the number of `Polygon`s as much as possible by merging `Polygon`s with common edge', () => {
