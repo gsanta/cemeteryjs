@@ -10,15 +10,20 @@ export const mergeStraightAngledNeighbouringBorderItemPolygons = (borderItemPoly
     const mergedPolygons: Shape[] = [borderItemPolygons.shift()];
 
     while(borderItemPolygons.length > 0) {
-        const currentPolygon = mergedPolygons.shift();
+        const currentPolygon: Polygon = <Polygon> mergedPolygons.shift();
 
         const mergeablePolygonIndex = borderItemPolygons
-            .findIndex(otherPolygon => GeometryUtils.mergePolygonsIfHaveCommonEdges(<Polygon>currentPolygon, <Polygon>otherPolygon));
+            .findIndex((otherPolygon: Polygon) => {
+                const stripe1 = new StripeView(<Polygon> currentPolygon);
+                const stripe2 = new StripeView(<Polygon> otherPolygon);
+
+                return stripe1.getSlope() === stripe2.getSlope() && currentPolygon.intersect(otherPolygon);
+            });
 
         let mergedPolygon: Polygon;
 
         if (mergeablePolygonIndex !== -1) {
-            mergedPolygon = GeometryUtils.mergePolygonsIfHaveCommonEdges(<Polygon>currentPolygon, <Polygon>borderItemPolygons[mergeablePolygonIndex]);
+            mergedPolygon = new StripeView(<Polygon> currentPolygon).merge(new StripeView(<Polygon> borderItemPolygons[mergeablePolygonIndex]));
         }
 
         if (mergedPolygon) {
@@ -94,8 +99,8 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
 
         const newRoomDimensions = rooms.map(room => {
             let borderItemPolygons = room.borderItems.map(item => item.dimensions);
-            borderItemPolygons = this.mergeStraightAngledNeighbouringBorderItemPolygons(borderItemPolygons);
-            const roomEdges = room.dimensions.getEdges();
+            borderItemPolygons = mergeStraightAngledNeighbouringBorderItemPolygons(borderItemPolygons);
+            const roomEdges = room. dimensions.getEdges();
 
             const newPolygonPoints: Point[] = [];
             const map = this.mapBorderItemToCorrespondingRoomEdge(borderItemPolygons, roomEdges);

@@ -20,7 +20,7 @@ import { WorldItemInfoFactory } from './WorldItemInfoFactory';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import _ = require('lodash');
 
-describe.skip('`WorldParser`', () => {
+describe('`WorldParser`', () => {
     describe('parse', () => {
         it ('creates a WorldItem for every distinguishable item in the input map', () => {
             const map = `
@@ -406,114 +406,6 @@ describe.skip('`WorldParser`', () => {
         const walls = root.children.filter(item => item.name === 'wall');
 
         expect(walls.length).to.eql(8);
-    });
-
-    it ('integrates correctly the `BorderItemsToLinesTransformator` if used', () => {
-        const map = `
-            map \`
-
-            WWWWWWWWW
-            W---W---W
-            W---WWWWW
-            W-------W
-            WWWWWWWWW
-
-            \`
-
-            definitions \`
-
-            W = wall
-
-            \`
-        `;
-
-        const options = {
-            xScale: 1,
-            yScale: 1,
-            furnitureCharacters: [],
-            roomSeparatorCharacters: ['W']
-        }
-
-        const worldItemInfoFactory = new WorldItemInfoFactory();
-        const worldMapParser = WorldParser.createWithCustomWorldItemGenerator(
-            new CombinedWorldItemParser(
-                [
-                    new FurnitureInfoParser(worldItemInfoFactory, options.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
-                    new RoomSeparatorParser(worldItemInfoFactory, options.roomSeparatorCharacters),
-                    new RoomInfoParser(worldItemInfoFactory),
-                    new RootWorldItemParser(worldItemInfoFactory)
-                ]
-            ),
-            [
-                new ScalingTransformator(),
-                new BorderItemSegmentingTransformator(worldItemInfoFactory, ['wall']),
-                new HierarchyBuildingTransformator(),
-                new BorderItemAddingTransformator(['wall'])
-            ]
-        );
-
-        const [root1] = worldMapParser.parse(map);
-
-        expect(root1.children[0].dimensions).to.eql(new Polygon([
-            new Point(1, 1),
-            new Point(4, 1),
-            new Point(4, 3),
-            new Point(8, 3),
-            new Point(8, 4),
-            new Point(1, 4)
-        ]), 'precondition for children[0] dimensions are wrong.');
-
-        expect(root1.children[1].dimensions).to.eql(new Polygon([
-            new Point(5, 1),
-            new Point(8, 1),
-            new Point(8, 2),
-            new Point(5, 2)
-        ]), 'precondition for children[1] dimensions are wrong.');
-
-        expect(root1.children[2].dimensions).to.eql(new Polygon([
-            new Point(0, 0),
-            new Point(0, 5),
-            new Point(1, 5),
-            new Point(1, 0)
-        ]), 'precondition for children[2] dimensions are wrong.');
-
-        expect(root1.children[5].dimensions).to.eql(new Polygon([
-            new Point(8, 2),
-            new Point(8, 5),
-            new Point(9, 5),
-            new Point(9, 2)
-        ]), 'precondition for children[5] dimensions are wrong.');
-
-        const [root] = new BorderItemsToLinesTransformator().transform([root1]);
-
-        expect(root.children[0].dimensions).to.eql(new Polygon([
-            new Point(0.5, 0.5),
-            new Point(4.5, 0.5),
-            new Point(4.5, 2.5),
-            new Point(8.5, 2.5),
-            new Point(8.5, 4.5),
-            new Point(0.5, 4.5),
-        ]), 'postcondition for children[0] dimensions are wrong');
-
-        expect(root.children[1].dimensions).to.eql(new Polygon([
-            new Point(4.5, 0.5),
-            new Point(8.5, 0.5),
-            new Point(8.5, 2.5),
-            new Point(4.5, 2.5)
-        ]), 'postcondition for children[1] dimensions are wrong');
-
-        const expectedBorderDimensions = [
-            new Segment(new Point(0.5, 0.5), new Point(4.5, 0.5)),
-            new Segment(new Point(4.5, 0.5), new Point(4.5, 2.5)),
-            new Segment(new Point(4.5, 2.5), new Point(8.5, 2.5)),
-            new Segment(new Point(8.5, 2.5), new Point(8.5, 4.5)),
-            new Segment(new Point(8.5, 4.5), new Point(0.5, 4.5)),
-            new Segment(new Point(0.5, 0.5), new Point(0.5, 4.5))
-        ];
-
-        expectedBorderDimensions.forEach((segment) => {
-            expect(_.find(root.children, child => child.dimensions.equalTo(segment))).to.be.an('object', `missing wall segment: ${segment.toString()}`);
-        });
     });
 
     it ('can integrate with `PolygonAreaInfoGenerator`', () => {

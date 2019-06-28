@@ -17,6 +17,8 @@ import { RootWorldItemParser } from '../parsers/RootWorldItemParser';
 import { BorderItemSegmentingTransformator } from './BorderItemSegmentingTransformator';
 import { HierarchyBuildingTransformator } from './HierarchyBuildingTransformator';
 import { BorderItemAddingTransformator } from './BorderItemAddingTransformator';
+import * as _ from 'lodash';
+import { hasAnyWorldItemInfoDimension } from '../parsers/room_separator_parser/RoomSeparatorParser.test';
 
 var Offset = require('polygon-offset');
 
@@ -65,7 +67,7 @@ const initBorderItems = (strMap: string): WorldItemInfo[] => {
 }
 
 
-describe.only('`BorderItemsToLinesTransformator`', () => {
+describe('`BorderItemsToLinesTransformator`', () => {
     describe('mergeStraightAngledNeighbouringBorderItemPolygons', () => {
 
         it ('reduces the number of `Polygon`s as much as possible by merging `Polygon`s with common edge', () => {
@@ -75,8 +77,9 @@ describe.only('`BorderItemsToLinesTransformator`', () => {
                 Polygon.createRectangle(2, 3, 2, 1),
                 Polygon.createRectangle(4, 3, 3, 1)
             ];
-
             const reducedPolygons = mergeStraightAngledNeighbouringBorderItemPolygons(polygons);
+            expect(_.find(reducedPolygons, polygon => polygon.equalTo( Polygon.createRectangle(1, 1, 1, 3)))).to.be.ok
+            expect(_.find(reducedPolygons, polygon => polygon.equalTo( Polygon.createRectangle(2, 3, 5, 1)))).to.be.ok
             expect(reducedPolygons.length).to.eql(2);
         });
     });
@@ -122,62 +125,38 @@ describe.only('`BorderItemsToLinesTransformator`', () => {
                 new BorderItemSegmentingTransformator(worldItemInfoFactory, ['wall']),
                 new HierarchyBuildingTransformator(),
                 new BorderItemAddingTransformator(['wall']),
-                new BorderItemsToLinesTransformator()
             ]
         );
 
         const [root1] = worldMapParser.parse(map);
+        const [root] = new BorderItemsToLinesTransformator().transform([root1]);
 
-
+        const expectedRoomDimensions1 = new Polygon([
+            new Point(0.5, 0.5),
+            new Point(0.5, 4.5),
+            new Point(8.5, 4.5),
+            new Point(8.5, 2.5),
+            new Point(4.5, 2.5),
+            new Point(4.5, 0.5)
+        ])
+        expect(hasAnyWorldItemInfoDimension(expectedRoomDimensions1, root.children)).to.be.true;
+        expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(4.5, 0.5, 4, 2), root.children)).to.be.true;
+        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(0.5, 0.5), new Point(0.5, 4.5)), root.children)).to.be.true;
+        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(8.5, 0.5), new Point(8.5, 2.5)), root.children)).to.be.true;
+        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(8.5, 2.5), new Point(8.5, 4.5)), root.children)).to.be.true;
+        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(0.5, 0.5), new Point(4.5, 0.5)), root.children)).to.be.true;
+        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(4.5, 0.5), new Point(8.5, 0.5)), root.children)).to.be.true;
+        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(0.5, 4.5), new Point(8.5, 4.5)), root.children)).to.be.true;
+        // TODO: 2 border items are not validated, they have weird dimensions, check it later
     });
 
     describe('`transform`', () => {
-        it ('converts the border items to `Line`s and stretches the rooms so they fill up the gaps.', () => {
-            const borderItems = [
-                new WorldItemInfo(1, 'wall', new Polygon([new Point(1, 1), new Point(1, 5), new Point(2, 5), new Point(2, 1)]), 'wall'),
-                new WorldItemInfo(2, 'wall', new Polygon([new Point(2, 4), new Point(2, 5), new Point(6, 5), new Point(6, 4)]), 'wall'),
-                new WorldItemInfo(3, 'wall', new Polygon([new Point(6, 1), new Point(6, 5), new Point(7, 5), new Point(7, 1)]), 'wall'),
-                new WorldItemInfo(4, 'wall', new Polygon([new Point(2, 1), new Point(2, 2), new Point(6, 2), new Point(6, 1)]), 'wall')
-            ];
-
-            const poly1 = new Polygon([
-                new Point(2, 2),
-                new Point(2, 4),
-                new Point(6, 4),
-                new Point(6, 2)
-            ]);
-
-            const worldItemInfo = new WorldItemInfo(5, 'room', poly1, 'room');
-            worldItemInfo.borderItems = borderItems;
-
-            const items = new BorderItemsToLinesTransformator().transform([worldItemInfo]);
-            expect(items[0].dimensions).to.eql(new Polygon([
-                new Point(1.5, 1.5),
-                new Point(1.5, 4.5),
-                new Point(6.5, 4.5),
-                new Point(6.5, 1.5)
-            ]), 'room dimensions are not correct');
-
-            const segment1 = new Segment(new Point(1.5, 1.5), new Point(1.5, 4.5))
-            expect(items[0].borderItems[0].dimensions).to.eql(segment1, 'first border item dimensions are not correct');
-
-            const segment2 = new Segment(new Point(1.5, 4.5), new Point(6.5, 4.5));
-            expect(items[0].borderItems[1].dimensions).to.eql(segment2, 'second border item dimensions are correct');
-
-            const segment3 = new Segment(new Point(6.5, 4.5), new Point(6.5, 1.5));
-            expect(items[0].borderItems[2].dimensions.equalTo(segment3)).to.eql(true, 'third border item dimensions are correct');
-
-            const segment4 = new Segment(new Point(6.5, 1.5), new Point(1.5, 1.5));
-            expect(items[0].borderItems[3].dimensions.equalTo(segment4)).to.eql(true, 'fourth border item dimensions are correct');
-        });
-
         it ('handles multiple types of border items (e.g doors, windows) beside walls', () => {
             const map = `
-                WDDDWWWWW
-                W-------W
-                W-------W
-                W-------W
-                WWWWWWWWW
+                WDDWWWWW
+                W------W
+                W------W
+                WWWWWWWW
             `;
 
             const [root] = initBorderItems(map);
