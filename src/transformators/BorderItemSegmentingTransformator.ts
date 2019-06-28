@@ -62,7 +62,7 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
                 newRoomSeparatorItems.push(currentItem);
             }
         }
-
+        debugger;
         return _.chain(worldItems).without(...roomSeparatorItems).push(...newRoomSeparatorItems).value();
     }
 

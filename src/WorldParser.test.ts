@@ -17,7 +17,6 @@ import { BorderItemsToLinesTransformator } from './transformators/BorderItemsToL
 import { PolygonAreaInfoParser } from './parsers/polygon_area_parser/PolygonAreaInfoParser';
 import {Polygon, Point, Line} from '@nightshifts.inc/geometry';
 import { WorldItemInfoFactory } from './WorldItemInfoFactory';
-import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import _ = require('lodash');
 
 describe('`WorldParser`', () => {
@@ -51,9 +50,9 @@ describe('`WorldParser`', () => {
             expect(children.length).to.equal(7, 'number of children of root is not correct.');
             expect(children[0]).to.eql(new WorldItemInfo(2, 'W', Polygon.createRectangle(0, 0, 1, 3), 'wall'), 'children[0] is not correct');
             expect(children[1]).to.eql(new WorldItemInfo(3, 'W', Polygon.createRectangle(7, 0, 1, 3), 'wall'), 'children[1] is not correct');
-            expect(children[2]).to.eql(new WorldItemInfo(4, 'W', Polygon.createRectangle(1, 0, 2, 1), 'wall'), 'children[2] is not correct');
-            expect(children[3]).to.eql(new WorldItemInfo(5, 'W', Polygon.createRectangle(1, 2, 6, 1), 'wall'), 'children[3] is not correct');
-            expect(children[4]).to.eql(new WorldItemInfo(6, 'W', Polygon.createRectangle(5, 0, 2, 1), 'wall'), 'children[4] is not correct');
+            expect(children[2]).to.eql(new WorldItemInfo(4, 'W', Polygon.createRectangle(0, 0, 3, 1), 'wall'), 'children[2] is not correct');
+            expect(children[3]).to.eql(new WorldItemInfo(5, 'W', Polygon.createRectangle(0, 2, 8, 1), 'wall'), 'children[3] is not correct');
+            expect(children[4]).to.eql(new WorldItemInfo(6, 'W', Polygon.createRectangle(5, 0, 3, 1), 'wall'), 'children[4] is not correct');
             expect(children[5]).to.eql(new WorldItemInfo(7, 'I', Polygon.createRectangle(3, 0, 2, 1), 'window'), 'children[5] is not correct');
             expect(children[6].name).to.eql('room', 'children[6] is not correct');
         });
@@ -229,31 +228,6 @@ describe('`WorldParser`', () => {
             });
         });
 
-        it ('creates a polygon for every room', () => {
-            const map = `
-                map \`
-
-                WIIWW
-                W---W
-                W---W
-                WWDDW
-
-                \`
-            `;
-
-            const worldMapParser = WorldParser.createWithOptions({ furnitureCharacters: [], roomSeparatorCharacters: ['W', 'I', 'D']});
-            const items = worldMapParser.parse(map);
-            const rooms = items[0].children.filter(item => item.name === 'room');
-            expect(rooms.length).to.eq(1);
-            expect(rooms[0].dimensions.getPoints()).to.eql([
-                new Point(1, 1),
-                new Point(4, 1),
-                new Point(4, 3),
-                new Point(1, 3),
-            ]);
-        });
-
-
         it ('scales the polygons if scale option is changed.', () => {
             const map = `
                 map \`
@@ -274,60 +248,23 @@ describe('`WorldParser`', () => {
             const rooms = root.children.filter(item => item.name === 'room');
 
             expect(rooms.length).to.eq(1);
-            expect(rooms[0].dimensions.getPoints()).to.eql([
+            expect(rooms[0].dimensions.equalTo(new Polygon([
                 new Point(2, 3),
-                new Point(8, 3),
+                new Point(2, 9),
                 new Point(8, 9),
-                new Point(2, 9)
-            ]);
-        });
-
-        it ('builds a hierarchy between rooms and the furnitures inside the rooms', () => {
-            const map = `
-                map \`
-
-                WWDDWWWDDWWW
-                WCCC##WBB##W
-                WCCC##W####W
-                W#####WBB##W
-                WWWWWWWWWWWW
-
-                \`
-
-                definitions \`
-
-                # = empty
-                D = door
-                C = cupboard
-                B = bed
-                W = wall
-
-                \`
-            `;
-
-            const worldMapParser = WorldParser.createWithOptions(
-                { furnitureCharacters: ['B', 'C'], roomSeparatorCharacters: ['W', 'I', 'D']},
-                {...defaultParseOptions, ...{xScale: 1, yScale: 2}}
-            );
-            const items = worldMapParser.parse(map);
-
-            const [root] = items.filter(item => item.name === 'root');
-            const [room1, room2] = root.children.filter(item => item.name === 'room');
-
-            expect(room1.children.length).to.eql(1);
-            expect(room2.children.length).to.eql(2);
-            expect(root.children.length).to.eq(12);
+                new Point(8, 3)
+            ]))).to.be.ok;
         });
 
         it ('adds the bordering `WorldItem`s to the corresponding rooms', () => {
             const map = `
                 map \`
 
-                WWDDWWWDDWWW
-                WCCC--WBB--W
-                WCCC--W----W
-                W-----WBB##W
-                WWWWWWWWWWWW
+                WWWDDWWWWWDDWWW
+                WCCC---WBB----W
+                WCCC---W------W
+                W------WBB----W
+                WWWWWWWWWWWWWWW
 
                 \`
 
@@ -340,17 +277,37 @@ describe('`WorldParser`', () => {
 
                 \`
             `;
+            const options = {
+                xScale: 1,
+                yScale: 1,
+                furnitureCharacters: ['C', 'B'],
+                roomSeparatorCharacters: ['W', 'D', 'I']
+            }
 
-            const worldMapParser = WorldParser.createWithOptions(
-                { furnitureCharacters: ['B', 'C'], roomSeparatorCharacters: ['W', 'D']},
-                {...defaultParseOptions, ...{xScale: 1, yScale: 1}}
+            const worldItemInfoFactory = new WorldItemInfoFactory();
+            const worldMapParser = WorldParser.createWithCustomWorldItemGenerator(
+                new CombinedWorldItemParser(
+                    [
+                        new FurnitureInfoParser(worldItemInfoFactory, options.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
+                        new RoomSeparatorParser(worldItemInfoFactory, options.roomSeparatorCharacters),
+                        new RoomInfoParser(worldItemInfoFactory),
+                        new RootWorldItemParser(worldItemInfoFactory)
+                    ]
+                ),
+                [
+                    new ScalingTransformator({ x: options.xScale, y: options.yScale }),
+                    new BorderItemSegmentingTransformator(worldItemInfoFactory, ['wall', 'door', 'window']),
+                    new HierarchyBuildingTransformator(),
+                    new BorderItemAddingTransformator(['wall', 'door', 'window']),
+                    new AdditionalDataConvertingTransformator()
+                ]
             );
+
             const [root] = worldMapParser.parse(map);
 
             const [room1, room2] = root.children.filter(item => item.name === 'room');
-
-            expect(room1.borderItems.length).to.eql(5);
-            expect(room2.borderItems.length).to.eql(5);
+            expect(room1.borderItems.length).to.eql(6);
+            expect(room2.borderItems.length).to.eql(6);
         });
     });
 
