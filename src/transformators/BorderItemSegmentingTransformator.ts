@@ -62,7 +62,6 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
                 newRoomSeparatorItems.push(currentItem);
             }
         }
-        debugger;
         return _.chain(worldItems).without(...roomSeparatorItems).push(...newRoomSeparatorItems).value();
     }
 
@@ -109,7 +108,7 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
         }
 
         while (points.length > 0) {
-            if (points.length > 1 && MeasurementUtils.isDistanceSmallerThanOneUnit(points[0], points[1])) {
+            if (points.length > 1 && MeasurementUtils.isDistanceSmallerThan(points[0], points[1])) {
                 mergedPoints.push(new Segment(points[0], points[1]).getBoundingCenter());
                 points.shift();
                 points.shift();

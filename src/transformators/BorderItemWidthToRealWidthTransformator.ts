@@ -1,6 +1,6 @@
 import { WorldItemTransformator } from "./WorldItemTransformator";
 import { WorldItemInfo } from "../WorldItemInfo";
-import { Point, Segment, Shape } from '@nightshifts.inc/geometry';
+import { Point, Segment, Shape, MeasurementUtils } from '@nightshifts.inc/geometry';
 import _ = require("lodash");
 import { WorldItemInfoUtils } from "../WorldItemInfoUtils";
 
@@ -63,7 +63,11 @@ export class BorderItemWidthToRealWidthTransformator implements WorldItemTransfo
 
     private findNextBorderItem(currentBorderItem: WorldItemInfo, borderItems: WorldItemInfo[]) {
         const findByCommonPoint = (commonPoint: Point) =>
-            _.find(borderItems, item => item.dimensions.getPoints()[0].equalTo(commonPoint) || item.dimensions.getPoints()[1].equalTo(commonPoint));
+            _.find(borderItems, item => {
+                const point1 = item.dimensions.getPoints()[0];
+                const point2 = item.dimensions.getPoints()[1];
+                return MeasurementUtils.isDistanceSmallerThan(point1, commonPoint)  || MeasurementUtils.isDistanceSmallerThan(point2, commonPoint);
+            });
 
         const points = currentBorderItem.dimensions.getPoints();
 

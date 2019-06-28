@@ -454,7 +454,6 @@ describe('`WorldParser`', () => {
                 new BorderItemsToLinesTransformator()
             ]
         );
-
         const [root1] = worldMapParser.parse(map);
     });
 });
