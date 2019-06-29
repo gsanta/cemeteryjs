@@ -177,5 +177,35 @@ describe('`BorderItemsToLinesTransformator`', () => {
 
             const items = new BorderItemsToLinesTransformator().transform([root]);
         });
+
+        it ('handles multiple rooms', () => {
+            const map = `
+                WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+                W---------------------------------------------------W
+                W---------------------------------------------------W
+                W---------------------------------------------------W
+                WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+                W-------------W-----------W-------------W-----------W
+                W-------------W-----------W-------------W-----------W
+                W-------------W-----------W-------------W-----------W
+                W-------------W-----------W-------------W-----------W
+                W-------------WWWWWWWWWWWWW-------------WWWWWWWWWWWWW
+                W-------------------------W-------------------------W
+                W-------------------------W-------------------------W
+                W-------------------------W-------------------------W
+                WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+                `;
+
+            let [root] = initBorderItems(map);
+
+            [root] = new BorderItemsToLinesTransformator().transform([root]);
+
+            //TODO: finish testing
+            expect(hasAnyWorldItemInfoDimension(new Segment(new Point(0.5, 0.5), new Point(52.5, 0.5)), root.children)).to.be.true;
+            expect(hasAnyWorldItemInfoDimension(new Segment(new Point(0.5, 0.5), new Point(0.5, 4.5)), root.children)).to.be.true;
+            expect(hasAnyWorldItemInfoDimension(new Segment(new Point(52.5, 0.5), new Point(52.5, 4.5)), root.children)).to.be.true;
+
+        });
     });
 });

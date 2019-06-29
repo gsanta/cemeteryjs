@@ -100,12 +100,12 @@ describe('BorderItemSegmentingTransformator', () => {
             expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(52, 4, 1, 6), items), 'Rectangle(52, 4, 1, 6) not found').to.be.true;
             expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(0, 0, 53, 1), items), 'Rectangle(0, 0, 53, 1) not found').to.be.true;
             expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(0, 4, 15, 1), items), 'Rectangle(0, 4, 15, 1) not found').to.be.true;
-            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(14, 4, 12, 1), items), 'Rectangle(14, 4, 12, 1) not found').to.be.true;
-            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(26, 4, 14, 1), items), 'Rectangle(26, 4, 14, 1) not found').to.be.true;
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(14, 4, 13, 1), items), 'Rectangle(14, 4, 12, 1) not found').to.be.true;
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(26, 4, 15, 1), items), 'Rectangle(26, 4, 14, 1) not found').to.be.true;
             expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(40, 4, 13, 1), items), 'Rectangle(40, 4, 13, 1) not found').to.be.true;
             expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(0, 9, 15, 1), items), 'Rectangle(0, 9, 15, 1) not found').to.be.true;
-            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(14, 9, 12, 1), items), 'Rectangle(14, 9, 12, 1) not found').to.be.true;
-            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(26, 9, 14, 1), items), 'Rectangle(26, 9, 14, 1) not found').to.be.true;
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(14, 9, 13, 1), items), 'Rectangle(14, 9, 12, 1) not found').to.be.true;
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(26, 9, 15, 1), items), 'Rectangle(26, 9, 14, 1) not found').to.be.true;
             expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(40, 9, 13, 1), items), 'Rectangle(40, 9, 13, 1) not found').to.be.true;
         });
 

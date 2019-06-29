@@ -48,13 +48,18 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
                 segmentingPoints.push(...coincidentSegmentInfo[0].getPoints());
             });
 
+            // const edge = edges[0].getPoints()[0].distanceTo(segmentingPoints[0]) < edges[1].getPoints()[0].distanceTo(segmentingPoints[0]) ? edges[0] : edges[1];
+
+
             if (segmentingPoints.length > 0) {
+                const edgeIndex = segmentingRooms[0].dimensions.getCoincidentLineSegment(currentItem.dimensions)[2];
+                const edge = currentItem.dimensions.getEdges()[edgeIndex];
                 segmentingPoints.sort((a, b) => edges[0].getPoints()[0].distanceTo(a) - edges[0].getPoints()[0].distanceTo(b));
 
-                segmentingPoints.pop();
-                segmentingPoints.shift();
-                segmentingPoints.unshift(edges[0].getPoints()[0]);
-                segmentingPoints.push(edges[0].getPoints()[1]);
+                const endE = segmentingPoints.pop();
+                const startE = segmentingPoints.shift();
+                segmentingPoints.unshift(edge.getPoints()[0].distanceTo(startE) < edge.getPoints()[1].distanceTo(startE) ? edge.getPoints()[0] : edge.getPoints()[1]);
+                segmentingPoints.push(edge.getPoints()[0].distanceTo(endE) < edge.getPoints()[1].distanceTo(endE) ? edge.getPoints()[0] : edge.getPoints()[1]);
                 const segments = this.createSegments(segmentingPoints);
                 const segmentedWorldItemInfos = this.segment(currentItem, segments);
                 newRoomSeparatorItems.push(...segmentedWorldItemInfos);
@@ -97,23 +102,16 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
 
     private createSegments(points: Point[]): Segment[] {
         points = [...points];
-        const mergedPoints: Point[] = [];
 
         const firstSegment = new Segment(points[0], points[2]);
 
         const restSegments: Segment[] = [];
 
         for (let i = 1; i < points.length - 2; i+=2) {
-            restSegments.push(new Segment(points[i], points[i + 2]));
-        }
-
-        while (points.length > 0) {
-            if (points.length > 1 && MeasurementUtils.isDistanceSmallerThan(points[0], points[1])) {
-                mergedPoints.push(new Segment(points[0], points[1]).getBoundingCenter());
-                points.shift();
-                points.shift();
+            if (points.length > i + 3) {
+                restSegments.push(new Segment(points[i], points[i + 3]));
             } else {
-                mergedPoints.push(points.shift());
+                restSegments.push(new Segment(points[i], points[i + 2]));
             }
         }
 
