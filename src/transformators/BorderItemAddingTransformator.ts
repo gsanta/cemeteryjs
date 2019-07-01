@@ -44,6 +44,7 @@ export class BorderItemAddingTransformator implements WorldItemTransformator {
         return worldItems;
     }
 
+    //TODO: we might not need this when using `StripeView` for border item `Polygon`
     private doesBorderItemIntersectOnlyAtCorner(roomSeparator: WorldItemInfo, intersectionLineInfo: [Segment, number, number]) {
         const edges = roomSeparator.dimensions.getEdges();
 

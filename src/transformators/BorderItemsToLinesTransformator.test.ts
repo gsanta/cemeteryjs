@@ -164,19 +164,19 @@ describe('`BorderItemsToLinesTransformator`', () => {
             const items = new BorderItemsToLinesTransformator().transform([root]);
         });
 
-        it ('handles multiple rooms', () => {
-            const map = `
-                WDDDWWWWWWWWWWWWW
-                W-------W---W---W
-                W-------W---WWWWW
-                W-------W-------W
-                WWWWWWWWWWWWWWWWW
-            `;
+        // it ('handles multiple rooms', () => {
+        //     const map = `
+        //         WDDDWWWWWWWWWWWWW
+        //         W-------W---W---W
+        //         W-------W---WWWWW
+        //         W-------W-------W
+        //         WWWWWWWWWWWWWWWWW
+        //     `;
 
-            const [root] = initBorderItems(map);
+        //     const [root] = initBorderItems(map);
 
-            const items = new BorderItemsToLinesTransformator().transform([root]);
-        });
+        //     const items = new BorderItemsToLinesTransformator().transform([root]);
+        // });
 
         it ('handles multiple rooms', () => {
             const map = `
@@ -201,10 +201,25 @@ describe('`BorderItemsToLinesTransformator`', () => {
 
             [root] = new BorderItemsToLinesTransformator().transform([root]);
 
+            //room1
+            expect(hasAnyWorldItemInfoDimension(new Segment(new Point(1, 1), new Point(1, 4)), root.children)).to.be.true;
+            expect(hasAnyWorldItemInfoDimension(new Segment(new Point(52, 1), new Point(52, 4)), root.children)).to.be.true;
+            expect(hasAnyWorldItemInfoDimension(new Segment(new Point(1, 1), new Point(52, 1)), root.children)).to.be.true;
+            expect(hasAnyWorldItemInfoDimension(new Segment(new Point(1, 1), new Point(52, 1)), root.children)).to.be.true;
+            expect(hasAnyWorldItemInfoDimension(new Segment(new Point(1, 4), new Point(14.222222222222221, 4)), root.children)).to.be.true;
+            expect(hasAnyWorldItemInfoDimension(new Segment(new Point(14.222222222222221, 4), new Point(26.5, 4)), root.children)).to.be.true;
+            expect(hasAnyWorldItemInfoDimension(new Segment(new Point(26.5, 4), new Point(40.66666666666667, 4)), root.children)).to.be.true;
+            expect(hasAnyWorldItemInfoDimension(new Segment(new Point(40.66666666666667, 4), new Point(52, 4)), root.children)).to.be.true;
+
+            //room2
+            expect(hasAnyWorldItemInfoDimension(new Segment(new Point(0.5, 4.5), new Point(0.5, 13.5)), root.children)).to.be.true;
+            expect(hasAnyWorldItemInfoDimension(new Segment(new Point(14.5, 4.5), new Point(14.5, 9.5)), root.children)).to.be.true;
+            expect(hasAnyWorldItemInfoDimension(new Segment(new Point(26.5, 9.5), new Point(26.5, 13.5)), root.children)).to.be.true;
+            expect(hasAnyWorldItemInfoDimension(new Segment(new Point(1, 4), new Point(14.222222222222221, 4)), root.children)).to.be.true;
+            expect(hasAnyWorldItemInfoDimension(new Segment(new Point(0.5, 13.5), new Point(26.5, 13.5)), root.children)).to.be.true;
+            expect(hasAnyWorldItemInfoDimension(new Segment(new Point(14.5, 9.5), new Point(26.5, 9.5)), root.children)).to.be.true;
+
             //TODO: finish testing
-            expect(hasAnyWorldItemInfoDimension(new Segment(new Point(0.5, 0.5), new Point(52.5, 0.5)), root.children)).to.be.true;
-            expect(hasAnyWorldItemInfoDimension(new Segment(new Point(0.5, 0.5), new Point(0.5, 4.5)), root.children)).to.be.true;
-            expect(hasAnyWorldItemInfoDimension(new Segment(new Point(52.5, 0.5), new Point(52.5, 4.5)), root.children)).to.be.true;
 
         });
     });

@@ -206,7 +206,11 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
         const newEdges = newDimensions.getEdges();
 
         newEdges.forEach((edge, index) => {
-            const coincidentBorderItems = borderItems.filter(item => item.dimensions.getCoincidentLineSegment(oldEdges[index]));
+            const coincidentBorderItems = borderItems
+                .filter(item => item.dimensions instanceof Polygon)
+                .filter(item => new StripeView(<Polygon> item.dimensions).overlaps(oldEdges[index]));
+
+
 
             const maxLen = coincidentBorderItems
                 .map(borderItem => borderItem.dimensions.getCoincidentLineSegment(oldEdges[index])[0])

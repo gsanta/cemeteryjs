@@ -114,11 +114,11 @@ describe('BorderItemSegmentingTransformator', () => {
             const map = `
                 map \`
 
-                WWWWWWWWWWWWWWWWWWW#WWWWWWWWWWWWWWWWWWWW
-                W------------------#-------------------W
-                W------------------#-------------------W
-                W------------------#-------------------W
-                WWWWWWWWWWWWWWWWWWW#WWWWWWWWWWWWWWWWWWWW
+                WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+                W------------------W-------------------W
+                W------------------W-------------------W
+                W------------------W-------------------W
+                WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
                 W-------------W-----------W------------W
                 W-------------W-----------W------------W
                 W-------------W-----------W------------W
