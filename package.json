@@ -1,6 +1,6 @@
 {
   "name": "@nightshifts.inc/world-generator",
-  "version": "0.2.16",
+  "version": "0.2.17",
   "description": "A simple worldmap generator for 2d games, which generates the worldmap from a text file.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
