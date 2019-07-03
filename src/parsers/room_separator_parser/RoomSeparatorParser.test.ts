@@ -8,7 +8,11 @@ import * as _ from 'lodash';
 
 // TODO: create custom matcher
 export function hasAnyWorldItemInfoDimension(dimension: Shape, worldItemInfos: WorldItemInfo[]) {
-    return _.some(worldItemInfos, worldItemInfo => worldItemInfo.dimensions.equalTo(dimension));
+    if (_.some(worldItemInfos, worldItemInfo => worldItemInfo.dimensions.equalTo(dimension))) {
+        return true;
+    } else {
+        throw new Error(`${dimension.toString()} does not exist`);
+    }
 }
 
 describe('RoomSeparatorParser', () => {

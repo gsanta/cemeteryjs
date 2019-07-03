@@ -9,7 +9,7 @@ import { WorldItemInfoFactory } from "../WorldItemInfoFactory";
 import { hasAnyWorldItemInfoDimension } from "../parsers/room_separator_parser/RoomSeparatorParser.test";
 
 
-describe('BorderItemSegmentingTransformator', () => {
+describe ('BorderItemSegmentingTransformator', () => {
     describe('generate', () => {
         it ('segments the walls into smaller pieces so that no wall will cover more then one room', () => {
             const map = `

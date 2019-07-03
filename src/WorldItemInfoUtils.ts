@@ -18,7 +18,7 @@ export class WorldItemInfoUtils {
         return rooms;
     }
 
-    public static filterBorderItems(worldItems: WorldItemInfo[], roomSeparatorItemNames: string[]): WorldItemInfo[] {
+    public static filterBorders(worldItems: WorldItemInfo[], roomSeparatorItemNames: string[]): WorldItemInfo[] {
         const roomSeparatorItems: WorldItemInfo[] = [];
 
         worldItems.forEach(rootItem => {

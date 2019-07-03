@@ -21,7 +21,7 @@ export class BorderItemAddingTransformator implements WorldItemTransformator {
 
     private addBoderItems(worldItems: WorldItemInfo[]): WorldItemInfo[] {
         const rooms = WorldItemInfoUtils.filterRooms(worldItems);
-        const roomSeparatorItems = WorldItemInfoUtils.filterBorderItems(worldItems, this.roomSeparatorItemNames);
+        const roomSeparatorItems = WorldItemInfoUtils.filterBorders(worldItems, this.roomSeparatorItemNames);
 
         rooms.forEach(room => {
             roomSeparatorItems

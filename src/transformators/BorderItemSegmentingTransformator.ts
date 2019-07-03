@@ -1,11 +1,22 @@
 import { WorldItemInfo } from "../WorldItemInfo";
 import _ = require("lodash");
-import { TreeIteratorGenerator } from "../gwm_world_item/iterator/TreeIteratorGenerator";
 import { WorldItemTransformator } from './WorldItemTransformator';
-import { Polygon, Point, MeasurementUtils, Line } from '@nightshifts.inc/geometry';
+import { Polygon, Point, Line, StripeView } from '@nightshifts.inc/geometry';
 import { WorldItemInfoFactory } from '../WorldItemInfoFactory';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
+import { WorldItemInfoUtils } from '../WorldItemInfoUtils';
 
+/**
+ * If a border spans alongside multiple rooms it cuts the border into pieces so that each piece will separate exactly two neigbouring rooms
+ * but not more than that.
+ *
+ * e.g
+ *
+ * ROOM1|ROOM2                  ROOM1|ROOM2
+ * -----------  ------------>   ------.....
+ * ROOM3|ROOM4                  ROOM3|ROOM4
+ *
+ */
 export class BorderItemSegmentingTransformator  implements WorldItemTransformator {
     private worldItemInfoFactory: WorldItemInfoFactory;
     private roomSeparatorItemNames: string[];
@@ -26,67 +37,69 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
     }
 
     private segmentBorderItemsIfNeeded(worldItems: WorldItemInfo[]): WorldItemInfo[] {
-        const rooms = this.filterRooms(worldItems);
-        const roomSeparatorItems = this.filterRoomSeparatorItems(worldItems);
+        const rooms = WorldItemInfoUtils.filterRooms(worldItems);
+        const originalBorders = WorldItemInfoUtils.filterBorders(worldItems, this.roomSeparatorItemNames);
+        const borders = [...originalBorders];
+        const newBorders: WorldItemInfo[] = [];
 
-        const itemsToSegment = [...roomSeparatorItems];
+        while (borders.length > 0) {
+            const currentBorder = borders.shift();
 
-        let newRoomSeparatorItems: WorldItemInfo[] = [];
+            const neighbouringRoomsAlongsideBorder = this.findRoomsAlongsideBorder(currentBorder, rooms);
+            const segmentingPoints = this.getSegmentingPoints(currentBorder, neighbouringRoomsAlongsideBorder);
+            const segments = this.createSegmentsFromSegmentingPoints(segmentingPoints);
+            const segmentedBorders = this.segmentOriginalBorderIntoPieces(currentBorder, segments);
 
-        while (itemsToSegment.length > 0) {
-            const currentItem = itemsToSegment.shift();
-            const segmentingRooms = this.findRoomsByWhichToSegment(currentItem, rooms);
-
-            const edges = currentItem.dimensions.getEdges();
-            edges.sort((a, b) => b.getLength() - a.getLength());
-
-            let segmentingPoints: Point[] = [];
-
-
-            segmentingRooms.forEach(room => {
-                const coincidentSegmentInfo = room.dimensions.getCoincidentLineSegment(currentItem.dimensions);
-                segmentingPoints.push(...coincidentSegmentInfo[0].getPoints());
-            });
-
-            // const edge = edges[0].getPoints()[0].distanceTo(segmentingPoints[0]) < edges[1].getPoints()[0].distanceTo(segmentingPoints[0]) ? edges[0] : edges[1];
-
-
-            if (segmentingPoints.length > 0) {
-                const edgeIndex = segmentingRooms[0].dimensions.getCoincidentLineSegment(currentItem.dimensions)[2];
-                const edge = currentItem.dimensions.getEdges()[edgeIndex];
-                segmentingPoints.sort((a, b) => edges[0].getPoints()[0].distanceTo(a) - edges[0].getPoints()[0].distanceTo(b));
-
-                const endE = segmentingPoints.pop();
-                const startE = segmentingPoints.shift();
-                segmentingPoints.unshift(edge.getPoints()[0].distanceTo(startE) < edge.getPoints()[1].distanceTo(startE) ? edge.getPoints()[0] : edge.getPoints()[1]);
-                segmentingPoints.push(edge.getPoints()[0].distanceTo(endE) < edge.getPoints()[1].distanceTo(endE) ? edge.getPoints()[0] : edge.getPoints()[1]);
-                const segments = this.createSegments(segmentingPoints);
-                const segmentedWorldItemInfos = this.segment(currentItem, segments);
-                newRoomSeparatorItems.push(...segmentedWorldItemInfos);
-            } else {
-                newRoomSeparatorItems.push(currentItem);
-            }
+            newBorders.push(...segmentedBorders);
         }
-        return _.chain(worldItems).without(...roomSeparatorItems).push(...newRoomSeparatorItems).value();
+
+        return _.chain(worldItems).without(...originalBorders).push(...newBorders).value();
     }
 
-    private segment(borderItem: WorldItemInfo, segments: Segment[]): WorldItemInfo[] {
-        const edges = borderItem.dimensions.getEdges();
-        edges.sort((a, b) => b.getLength() - a.getLength())[0];
-        const longerEdges: [Segment, Segment] = [edges[0], edges[1]];
-        const perpendicularSlope = longerEdges[0].getPerpendicularBisector().m;
+    private getSegmentingPoints(border: WorldItemInfo, roomsAlongsideBorder: WorldItemInfo[]): Point[] {
+        const startCapEdge = new StripeView(<Polygon> border.dimensions).getCapEdges()[0];
+        const endCapEdge = new StripeView(<Polygon> border.dimensions).getCapEdges()[1];
+        const referencePointForSorting = startCapEdge.getPoints()[0];
 
-        const segmentedWorldItemInfos: WorldItemInfo[] = [];
+        const getSegmentPointsForRoom = (room: WorldItemInfo) => room.dimensions.getCoincidentLineSegment(border.dimensions)[0].getPoints();
+        const sortByDistanceToReferencePoint = (a, b) => referencePointForSorting.distanceTo(a) - referencePointForSorting.distanceTo(b);
+        const getOriginalFirstPoint = (points: Point[]) => startCapEdge.getLine().intersection(new Segment(points[0], points[points.length - 1]).getLine())
+        const replaceFirstPointWithOriginal = (points: Point[]) => { points.shift(); points.unshift(getOriginalFirstPoint(points));};
+        const getOriginalLastPoint = (points: Point[]) => endCapEdge.getLine().intersection(new Segment(points[0], points[points.length - 1]).getLine())
+        const replaceLastPointWithOriginal = (points: Point[]) => { points.pop(); points.push(getOriginalLastPoint(points))};
+
+
+        let segmentPoints =_.chain(roomsAlongsideBorder)
+            .map(getSegmentPointsForRoom)
+            .flatten()
+            .sort(sortByDistanceToReferencePoint)
+            .value();
+
+        if (segmentPoints.length > 0) {
+            replaceFirstPointWithOriginal(segmentPoints);
+            replaceLastPointWithOriginal(segmentPoints);
+        } else {
+            segmentPoints = new StripeView(<Polygon> border.dimensions).getLongEdges()[0].getPoints();
+        }
+
+        return segmentPoints;
+    }
+
+    private segmentOriginalBorderIntoPieces(originalBorderItem: WorldItemInfo, segments: Segment[]): WorldItemInfo[] {
+        const longEdges: [Segment, Segment] = new StripeView(<Polygon> originalBorderItem.dimensions).getLongEdges();
+        const perpendicularSlope = longEdges[0].getPerpendicularBisector().m;
+
+        const segmentedBorders: WorldItemInfo[] = [];
 
         segments.map(segment => {
             const startPerpendicularLine = Line.createFromPointSlopeForm(segment.getPoints()[0], perpendicularSlope);
             const endPerpendicularLine = Line.createFromPointSlopeForm(segment.getPoints()[1], perpendicularSlope);
-            const point1 = longerEdges[0].getLine().intersection(endPerpendicularLine);
-            const point2 = longerEdges[1].getLine().intersection(endPerpendicularLine);
-            const point3 = longerEdges[0].getLine().intersection(startPerpendicularLine);
-            const point4 = longerEdges[1].getLine().intersection(startPerpendicularLine);
+            const point1 = longEdges[0].getLine().intersection(endPerpendicularLine);
+            const point2 = longEdges[1].getLine().intersection(endPerpendicularLine);
+            const point3 = longEdges[0].getLine().intersection(startPerpendicularLine);
+            const point4 = longEdges[1].getLine().intersection(startPerpendicularLine);
 
-            const clone = this.worldItemInfoFactory.clone(borderItem);
+            const clone = this.worldItemInfoFactory.clone(originalBorderItem);
             clone.dimensions = new Polygon([
                 point1,
                 point2,
@@ -94,14 +107,18 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
                 point3
             ]);
 
-            return segmentedWorldItemInfos.push(clone);
+            return segmentedBorders.push(clone);
         });
 
-        return segmentedWorldItemInfos;
+        return segmentedBorders;
     }
 
-    private createSegments(points: Point[]): Segment[] {
+    private createSegmentsFromSegmentingPoints(points: Point[]): Segment[] {
         points = [...points];
+
+        if (points.length === 2) {
+            return [new Segment(points[0], points[1])];
+        }
 
         const firstSegment = new Segment(points[0], points[2]);
 
@@ -118,7 +135,7 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
         return [firstSegment, ...restSegments];
     }
 
-    private findRoomsByWhichToSegment(roomSeparator: WorldItemInfo, rooms: WorldItemInfo[]): WorldItemInfo[] {
+    private findRoomsAlongsideBorder(roomSeparator: WorldItemInfo, rooms: WorldItemInfo[]): WorldItemInfo[] {
         return rooms
             .filter(room => room.dimensions.getCoincidentLineSegment(roomSeparator.dimensions))
             .filter(room => {
@@ -140,34 +157,7 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
             });
     }
 
-    private filterRooms(worldItems: WorldItemInfo[]): WorldItemInfo[] {
-        const rooms: WorldItemInfo[] = [];
-
-        worldItems.forEach(rootItem => {
-            for (const item of TreeIteratorGenerator(rootItem)) {
-                if (item.name === 'room') {
-                    rooms.push(item);
-                }
-            }
-        });
-
-        return rooms;
-    }
-
-    private filterRoomSeparatorItems(worldItems: WorldItemInfo[]): WorldItemInfo[] {
-        const roomSeparatorItems: WorldItemInfo[] = [];
-
-        worldItems.forEach(rootItem => {
-            for (const item of TreeIteratorGenerator(rootItem)) {
-                if (_.find(this.roomSeparatorItemNames, separatorName => item.name === separatorName)) {
-                    roomSeparatorItems.push(item);
-                }
-            }
-        });
-
-        return roomSeparatorItems;
-    }
-
+    // TODO: support intersections other than horizontal or vertical
     private getIntersectionExtent(segment: Segment): [number, number] {
         if (segment.isVertical()) {
             const segmentPositions = _.sortBy([segment.getPoints()[0].y, segment.getPoints()[1].y]);

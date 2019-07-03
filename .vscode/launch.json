@@ -12,6 +12,7 @@
             "args": [
                 "-r",
                 "ts-node/register",
+                "tests/test.setup.ts",
                 "--timeout",
                 "999999",
                 "--colors",

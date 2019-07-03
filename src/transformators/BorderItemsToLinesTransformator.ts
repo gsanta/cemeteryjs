@@ -38,40 +38,6 @@ export const mergeStraightAngledNeighbouringBorderItemPolygons = (borderItemPoly
     return mergedPolygons;
 }
 
-export const mergePolygonsIfHaveCommonEdges = (polygon1: Polygon, polygon2: Polygon): Polygon | undefined => {
-    const stripe1 = new StripeView(polygon1);
-    const stripe2 = new StripeView(polygon2);
-    const edges1 = polygon1.getEdges();
-    const edges2 = polygon2.getEdges();
-
-    let commonEdge: Segment;
-    for (let i = 0; i < edges1.length; i++) {
-        for (let j = 0; j < edges2.length; j++) {
-            if (this.isCommonEdge(edges1[i], edges2[j])) {
-                commonEdge = edges1[i];
-                break;
-            }
-        }
-    }
-
-    if (commonEdge) {
-        const orderedPoints1 = this.orderPolygonPointSoThatTheArrayStartsAndEndsWithEdge(polygon1, commonEdge);
-        const orderedPoints2 = this.orderPolygonPointSoThatTheArrayStartsAndEndsWithEdge(polygon2, commonEdge);
-
-        orderedPoints2.pop();
-
-        if (polygon1.getIndexOf(orderedPoints1[0]) === 0) {
-            orderedPoints2.push(...orderedPoints1);
-        } else {
-            orderedPoints2.unshift(...orderedPoints1);
-        }
-
-        return new Polygon(orderedPoints2).removeStraightVertices();
-    }
-
-    return undefined;
-}
-
 /**
  * It can be useful to represent walls, doors etc. as `Segment`s instead of `Polygon`s, so this class transforms the border item
  * `Polygon`s into `Segment`s and also stretches the room `Polygon`s so that they fill up the generated empty space.
@@ -143,34 +109,6 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
             this.alignBorderItems(room.borderItems, room.dimensions, newRoomDimensions[index]);
             room.dimensions = newRoomDimensions[index];
         });
-    }
-
-    private mergeStraightAngledNeighbouringBorderItemPolygons(borderItemPolygons: Shape[]): Shape[] {
-        borderItemPolygons = [...borderItemPolygons];
-        const mergedPolygons: Shape[] = [borderItemPolygons.shift()];
-
-        while(borderItemPolygons.length > 0) {
-            const currentPolygon = mergedPolygons.shift();
-
-            const mergeablePolygonIndex = borderItemPolygons
-                .findIndex(otherPolygon => GeometryUtils.mergePolygonsIfHaveCommonEdges(<Polygon>currentPolygon, <Polygon>otherPolygon));
-
-            let mergedPolygon: Polygon;
-
-            if (mergeablePolygonIndex !== -1) {
-                mergedPolygon = GeometryUtils.mergePolygonsIfHaveCommonEdges(<Polygon>currentPolygon, <Polygon>borderItemPolygons[mergeablePolygonIndex]);
-            }
-
-            if (mergedPolygon) {
-                borderItemPolygons.splice(mergeablePolygonIndex, 1);
-                mergedPolygons.unshift(mergedPolygon);
-            } else {
-                mergedPolygons.unshift(currentPolygon);
-                mergedPolygons.unshift(borderItemPolygons.pop())
-            }
-        }
-
-        return mergedPolygons;
     }
 
     private mapBorderItemToCorrespondingRoomEdge(borderItemPolygons: Shape[], roomEdges: Segment[]): { borderItem: Shape, roomEdge: Segment}[]  {
