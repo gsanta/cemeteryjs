@@ -1,6 +1,7 @@
 import { WorldItemInfo } from '../WorldItemInfo';
 import { TreeIteratorGenerator } from '../gwm_world_item/iterator/TreeIteratorGenerator';
 import { WorldItemTransformator } from './WorldItemTransformator';
+import { Point } from '@nightshifts.inc/geometry';
 
 type Scaling = {
     x: number,
@@ -21,7 +22,7 @@ export class ScalingTransformator implements WorldItemTransformator {
     private scaleItems(worldItems: WorldItemInfo[]): WorldItemInfo[] {
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
-                item.dimensions = item.dimensions = item.dimensions.scaleX(this.scaling.x).scaleY(this.scaling.y);
+                item.dimensions = item.dimensions = item.dimensions.scale(new Point(this.scaling.x, this.scaling.y));
             }
         });
 

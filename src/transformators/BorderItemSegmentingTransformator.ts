@@ -79,14 +79,14 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
             replaceFirstPointWithOriginal(segmentPoints);
             replaceLastPointWithOriginal(segmentPoints);
         } else {
-            segmentPoints = new StripeView(<Polygon> border.dimensions).getLongEdges()[0].getPoints();
+            segmentPoints = new StripeView(<Polygon> border.dimensions).getEdges()[0].getPoints();
         }
 
         return segmentPoints;
     }
 
     private segmentOriginalBorderIntoPieces(originalBorderItem: WorldItemInfo, segments: Segment[]): WorldItemInfo[] {
-        const longEdges: [Segment, Segment] = new StripeView(<Polygon> originalBorderItem.dimensions).getLongEdges();
+        const longEdges: [Segment, Segment] = new StripeView(<Polygon> originalBorderItem.dimensions).getEdges();
         const perpendicularSlope = longEdges[0].getPerpendicularBisector().m;
 
         const segmentedBorders: WorldItemInfo[] = [];
@@ -135,22 +135,22 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
         return [firstSegment, ...restSegments];
     }
 
-    private findRoomsAlongsideBorder(roomSeparator: WorldItemInfo, rooms: WorldItemInfo[]): WorldItemInfo[] {
+    private findRoomsAlongsideBorder(border: WorldItemInfo, rooms: WorldItemInfo[]): WorldItemInfo[] {
         return rooms
-            .filter(room => room.dimensions.getCoincidentLineSegment(roomSeparator.dimensions))
+            .filter(room => room.dimensions.getCoincidentLineSegment(border.dimensions))
             .filter(room => {
-                const coincidingLineInfo = room.dimensions.getCoincidentLineSegment(roomSeparator.dimensions);
+                const coincidingLineInfo = room.dimensions.getCoincidentLineSegment(border.dimensions);
 
                 const intersectionExtent = this.getIntersectionExtent(coincidingLineInfo[0]);
 
                 if (coincidingLineInfo[0].isVertical()) {
 
-                    if (roomSeparator.dimensions.minY() < intersectionExtent[0] || roomSeparator.dimensions.maxY() > intersectionExtent[1]) {
+                    if (border.dimensions.getBoundingInfo().min[1] < intersectionExtent[0] || border.dimensions.getBoundingInfo().max[1] > intersectionExtent[1]) {
                         return room;
                     }
                 } else {
 
-                    if (roomSeparator.dimensions.minX() < intersectionExtent[0] || roomSeparator.dimensions.maxX() > intersectionExtent[1]) {
+                    if (border.dimensions.getBoundingInfo().min[0] < intersectionExtent[0] || border.dimensions.getBoundingInfo().max[0] > intersectionExtent[1]) {
                         return room;
                     }
                 }
