@@ -212,17 +212,17 @@ describe('`BorderItemsToLinesTransformator`', () => {
                 new Segment(new Point(52.5, 4.5), new Point(52.5, 8.5)),
                 new Segment(new Point(0.5, 4.5), new Point(32.5, 4.5)),
                 new Segment(new Point(32.5, 4.5), new Point(52.5, 4.5)),
-                new Segment(new Point(0.5, 8.5), new Point(13.981481481481481, 8.5)),
-                new Segment(new Point(13.981481481481481, 8.5), new Point(26.5, 8.5)),
-                new Segment(new Point(26.5, 8.5), new Point(40.94444444444444, 8.5)),
-                new Segment(new Point(40.94444444444444, 8.5), new Point(52.5, 8.5))
+                new Segment(new Point(0.5, 8.5), new Point(14.235849056603774, 8.5)),
+                new Segment(new Point(14.235849056603776, 8.5), new Point(26.5, 8.5)),
+                new Segment(new Point(26.499999999999996, 8.5), new Point(40.726415094339615, 8.5)),
+                new Segment(new Point(40.726415094339615, 8.5), new Point(52.5, 8.5))
             ]);
 
             expect(root.children[3]).to.haveBorders([
                 new Segment(new Point(0.5, 8.5), new Point(0.5, 17.5)),
                 new Segment(new Point(14.5, 8.5), new Point(14.5, 13.5)),
                 new Segment(new Point(26.5, 13.5), new Point(26.5, 17.5)),
-                new Segment(new Point(0.5, 8.5), new Point(13.981481481481481, 8.5)),
+                new Segment(new Point(0.5, 8.5), new Point(14.235849056603774, 8.5)),
                 new Segment(new Point(0.5, 17.5), new Point(26.5, 17.5)),
                 new Segment(new Point(14.5, 13.5), new Point(26.5, 13.5))
             ]);
@@ -231,7 +231,7 @@ describe('`BorderItemsToLinesTransformator`', () => {
             expect(root.children[4]).to.haveBorders([
                 new Segment(new Point(14.5, 8.5), new Point(14.5, 13.5)),
                 new Segment(new Point(26.5, 8.5), new Point(26.5, 13.5)),
-                new Segment(new Point(13.981481481481481, 8.5), new Point(26.5, 8.5)),
+                new Segment(new Point(14.235849056603776, 8.5), new Point(26.5, 8.5)),
                 new Segment(new Point(14.5, 13.5), new Point(26.5, 13.5))
             ]);
 

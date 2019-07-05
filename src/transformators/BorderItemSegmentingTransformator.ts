@@ -120,13 +120,15 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
             return [new Segment(points[0], points[1])];
         }
 
-        const firstSegment = new Segment(points[0], points[2]);
+        const getMiddlePoint = (p1: Point, p2: Point) => new Segment(p1, p2).getBoundingCenter();
+
+        const firstSegment = new Segment(points[0], getMiddlePoint(points[2], points[2]));
 
         const restSegments: Segment[] = [];
 
         for (let i = 1; i < points.length - 2; i+=2) {
             if (points.length > i + 3) {
-                restSegments.push(new Segment(points[i], points[i + 3]));
+                restSegments.push(new Segment(points[i], getMiddlePoint(points[i + 2], points[i + 3])));
             } else {
                 restSegments.push(new Segment(points[i], points[i + 2]));
             }

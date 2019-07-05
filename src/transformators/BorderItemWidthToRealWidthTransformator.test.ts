@@ -117,27 +117,27 @@ describe('BorderItemWidthToRealWidthTransformator', () => {
         );
     });
 
-    // it.only ('works for a complicated example', () => {
-    //     const map = `
-    //         WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-    //         W---------------------------------------------------W
-    //         W---------------------------------------------------W
-    //         W---------------------------------------------------W
-    //         WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-    //         W-------------W-----------W-------------W-----------W
-    //         W-------------W-----------W-------------W-----------W
-    //         W-------------W-----------W-------------W-----------W
-    //         W-------------W-----------W-------------W-----------W
-    //         W-------------WWWWWWWWWWWWW-------------WWWWWWWWWWWWW
-    //         W-------------------------W-------------------------W
-    //         W-------------------------W-------------------------W
-    //         W-------------------------W-------------------------W
-    //         WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+    it ('works for a complicated example', () => {
+        const map = `
+            WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+            W---------------------------------------------------W
+            W---------------------------------------------------W
+            W---------------------------------------------------W
+            WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+            W-------------W-----------W-------------W-----------W
+            W-------------W-----------W-------------W-----------W
+            W-------------W-----------W-------------W-----------W
+            W-------------W-----------W-------------W-----------W
+            W-------------WWWWWWWWWWWWW-------------WWWWWWWWWWWWW
+            W-------------------------W-------------------------W
+            W-------------------------W-------------------------W
+            W-------------------------W-------------------------W
+            WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
-    //         `;
-    //     debugger;
-    //     const [root] = initBorderItems(map);
+            `;
+        debugger;
+        const [root] = initBorderItems(map);
 
-    //     debugger;
-    // });
+        debugger;
+    });
 });
