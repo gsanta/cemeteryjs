@@ -1,3 +1,5 @@
+/// <reference path="../../tests/test.setup.ts"/>
+
 import { WorldItemInfo } from '../WorldItemInfo';
 import { Segment, Point } from '@nightshifts.inc/geometry';
 import { BorderItemWidthToRealWidthTransformator } from './BorderItemWidthToRealWidthTransformator';
@@ -115,6 +117,28 @@ describe('BorderItemWidthToRealWidthTransformator', () => {
                 new WorldItemInfo(0, 'door', new Segment(new Point(0, 4.5), new Point(0, 5.5)), 'door')
             ]
         );
+    });
+
+    it.only ('snaps the border to the corner if the resizable border is a corner item', () => {
+        const map = `
+        WWWWWWWWWWWWWWW
+        W-------------W
+        W-------------W
+        W-------------W
+        WDDDDWWWWWWWWWW
+
+        `;
+
+        const transformator = new BorderItemWidthToRealWidthTransformator([{name: 'door', width: 2}]);
+        const [root] = transformator.transform(initBorderItems(map));
+
+        expect(root.children[0]).to.haveBorders([
+            new Segment(new Point(0.5, 0.5), new Point(0.5, 4.5)),
+            new Segment(new Point(0.5, 0.5), new Point(14.5, 0.5)),
+            new Segment(new Point(14.5, 0.5), new Point(14.5, 4.5)),
+            new Segment(new Point(2.5, 4.5), new Point(14.5, 4.5)),
+            new Segment(new Point(0.5, 4.5), new Point(2.5, 4.5)),
+        ]);
     });
 
     it ('works for a complicated example', () => {

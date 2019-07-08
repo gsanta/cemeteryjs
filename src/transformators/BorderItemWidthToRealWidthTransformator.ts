@@ -1,6 +1,6 @@
 import { WorldItemTransformator } from "./WorldItemTransformator";
 import { WorldItemInfo } from "../WorldItemInfo";
-import { Point, Segment, Shape, MeasurementUtils } from '@nightshifts.inc/geometry';
+import { Point, Segment, Shape, MeasurementUtils, StripeView, Polygon, Line } from '@nightshifts.inc/geometry';
 import _ = require("lodash");
 import { WorldItemInfoUtils } from "../WorldItemInfoUtils";
 
@@ -38,6 +38,27 @@ export class BorderItemWidthToRealWidthTransformator implements WorldItemTransfo
         room.borderItems = orderedItems;
     }
 
+    private findNextBorderItem(currentBorderItem: WorldItemInfo, borderItems: WorldItemInfo[]) {
+        const findByCommonPoint = (commonPoint: Point) =>
+            _.find(borderItems, item => {
+                const point1 = item.dimensions.getPoints()[0];
+                const point2 = item.dimensions.getPoints()[1];
+                return MeasurementUtils.isDistanceSmallerThan(point1, commonPoint)  || MeasurementUtils.isDistanceSmallerThan(point2, commonPoint);
+            });
+
+        const points = currentBorderItem.dimensions.getPoints();
+
+        for (let i = 0; i < points.length; i++) {
+            const nextBorderItem = findByCommonPoint(points[i]);
+
+            if (nextBorderItem) {
+                return nextBorderItem;
+            }
+        }
+
+        throw new Error('Next border item could not be determined.');
+    }
+
     private resizeBorderItems(room: WorldItemInfo) {
         room.borderItems.forEach(item => {
             const realItemWidth = _.find(this.realItemWidths, itemWidth => itemWidth.name === item.name);
@@ -61,27 +82,6 @@ export class BorderItemWidthToRealWidthTransformator implements WorldItemTransfo
         return copy[0];
     }
 
-    private findNextBorderItem(currentBorderItem: WorldItemInfo, borderItems: WorldItemInfo[]) {
-        const findByCommonPoint = (commonPoint: Point) =>
-            _.find(borderItems, item => {
-                const point1 = item.dimensions.getPoints()[0];
-                const point2 = item.dimensions.getPoints()[1];
-                return MeasurementUtils.isDistanceSmallerThan(point1, commonPoint)  || MeasurementUtils.isDistanceSmallerThan(point2, commonPoint);
-            });
-
-        const points = currentBorderItem.dimensions.getPoints();
-
-        for (let i = 0; i < points.length; i++) {
-            const nextBorderItem = findByCommonPoint(points[i]);
-
-            if (nextBorderItem) {
-                return nextBorderItem;
-            }
-        }
-
-        throw new Error('Next border item could not be determined.');
-    }
-
     private resizeItem(item: WorldItemInfo, orderedItems: WorldItemInfo[], newSize: number) {
         const nextItem = _.last(orderedItems) === item ? orderedItems[0] : orderedItems[orderedItems.indexOf(item) + 1];
         const prevItem = _.first(orderedItems) === item ? _.last(orderedItems) : orderedItems[orderedItems.indexOf(item) - 1];
@@ -95,13 +95,47 @@ export class BorderItemWidthToRealWidthTransformator implements WorldItemTransfo
             newSegmentPoints = [newSegmentPoints[1], newSegmentPoints[0]];
         }
 
-        this.connectNeighbourSegmentToNewEndpoint(item.dimensions.getPoints()[0], newSegmentPoints[0], neighbours[0]);
-        this.connectNeighbourSegmentToNewEndpoint(item.dimensions.getPoints()[1], newSegmentPoints[1], neighbours[1]);
+        const prevBorderStripe = new StripeView(<Polygon> neighbours[0].dimensions);
+        const nextBorderStripe = new StripeView(<Polygon> neighbours[1].dimensions);
+        const currentBorderStripe = new StripeView(<Polygon> item.dimensions);
+
+        if (prevBorderStripe.getCapEdges()[0].getSlope() !== currentBorderStripe.getCapEdges()[0].getSlope()) {
+            this.snapModifiedBorderToPrevBorder(<[Point, Point]> item.dimensions.getPoints(), newSegmentPoints, neighbours[0], neighbours[1]);
+        } else if (nextBorderStripe.getCapEdges()[0].getSlope() !== currentBorderStripe.getCapEdges()[0].getSlope()) {
+
+        } else {
+            this.connectModifiedBordersToNeighbour(item.dimensions.getPoints()[0], newSegmentPoints[0], neighbours[0]);
+            this.connectModifiedBordersToNeighbour(item.dimensions.getPoints()[1], newSegmentPoints[1], neighbours[1]);
+        }
+
+
         item.dimensions = new Segment(newSegmentPoints[0], newSegmentPoints[1]);
     }
 
-    private connectNeighbourSegmentToNewEndpoint(oldPoint: Point, newPoint: Point, neighbour: WorldItemInfo) {
-        if (neighbour.dimensions.getPoints()[0].equalTo(oldPoint)) {
+    private snapModifiedBorderToPrevBorder(oldPoints: [Point, Point], newPoints: [Point, Point], prevNeigbour: WorldItemInfo, nextNeighbour: WorldItemInfo) {
+        const width = newPoints[0].distanceTo(newPoints[1]);
+        newPoints[0] = oldPoints[0];
+        const line = new Segment(oldPoints[0], oldPoints[1]).getLine();
+
+        const tmpSegmentPoints = line.getSegmentWithCenterPointAndDistance(newPoints[0], width);
+
+        if (tmpSegmentPoints[0].distanceTo(newPoints[1]) < tmpSegmentPoints[1].distanceTo(newPoints[1])) {
+            newPoints[1] = tmpSegmentPoints[0];
+        } else {
+            newPoints[1] = tmpSegmentPoints[1];
+        }
+
+        this.connectModifiedBordersToNeighbour(oldPoints[1], newPoints[1], nextNeighbour);
+    }
+
+    private snapModifiedBorderToNextBorder() {
+
+    }
+
+    private connectModifiedBordersToNeighbour(oldPoint: Point, newPoint: Point, neighbour: WorldItemInfo) {
+        const neighbourPoints = neighbour.dimensions.getPoints();
+
+        if (neighbourPoints[0].distanceTo(oldPoint) < neighbourPoints[1].distanceTo(oldPoint)) {
             neighbour.dimensions = new Segment(newPoint, neighbour.dimensions.getPoints()[1]);
         } else {
             neighbour.dimensions = new Segment(neighbour.dimensions.getPoints()[0], newPoint);
