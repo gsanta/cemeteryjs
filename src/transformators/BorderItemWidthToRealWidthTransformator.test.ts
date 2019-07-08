@@ -119,13 +119,13 @@ describe('BorderItemWidthToRealWidthTransformator', () => {
         );
     });
 
-    it.only ('snaps the border to the corner if the resizable border is a corner item', () => {
+    it ('snaps the border to the corner if the resizable border is a corner item', () => {
         const map = `
         WWWWWWWWWWWWWWW
         W-------------W
         W-------------W
         W-------------W
-        WDDDDWWWWWWWWWW
+        WDDDDWWWWWWDDDW
 
         `;
 
@@ -136,7 +136,8 @@ describe('BorderItemWidthToRealWidthTransformator', () => {
             new Segment(new Point(0.5, 0.5), new Point(0.5, 4.5)),
             new Segment(new Point(0.5, 0.5), new Point(14.5, 0.5)),
             new Segment(new Point(14.5, 0.5), new Point(14.5, 4.5)),
-            new Segment(new Point(2.5, 4.5), new Point(14.5, 4.5)),
+            new Segment(new Point(12.5, 4.5), new Point(14.5, 4.5)),
+            new Segment(new Point(2.5, 4.5), new Point(12.5, 4.5)),
             new Segment(new Point(0.5, 4.5), new Point(2.5, 4.5)),
         ]);
     });

@@ -100,9 +100,9 @@ export class BorderItemWidthToRealWidthTransformator implements WorldItemTransfo
         const currentBorderStripe = new StripeView(<Polygon> item.dimensions);
 
         if (prevBorderStripe.getCapEdges()[0].getSlope() !== currentBorderStripe.getCapEdges()[0].getSlope()) {
-            this.snapModifiedBorderToPrevBorder(<[Point, Point]> item.dimensions.getPoints(), newSegmentPoints, neighbours[0], neighbours[1]);
+            this.snapModifiedBorderToPrevBorder(<[Point, Point]> item.dimensions.getPoints(), newSegmentPoints, neighbours[1]);
         } else if (nextBorderStripe.getCapEdges()[0].getSlope() !== currentBorderStripe.getCapEdges()[0].getSlope()) {
-
+            this.snapModifiedBorderToNextBorder(<[Point, Point]> item.dimensions.getPoints(), newSegmentPoints, neighbours[0]);
         } else {
             this.connectModifiedBordersToNeighbour(item.dimensions.getPoints()[0], newSegmentPoints[0], neighbours[0]);
             this.connectModifiedBordersToNeighbour(item.dimensions.getPoints()[1], newSegmentPoints[1], neighbours[1]);
@@ -112,7 +112,7 @@ export class BorderItemWidthToRealWidthTransformator implements WorldItemTransfo
         item.dimensions = new Segment(newSegmentPoints[0], newSegmentPoints[1]);
     }
 
-    private snapModifiedBorderToPrevBorder(oldPoints: [Point, Point], newPoints: [Point, Point], prevNeigbour: WorldItemInfo, nextNeighbour: WorldItemInfo) {
+    private snapModifiedBorderToPrevBorder(oldPoints: [Point, Point], newPoints: [Point, Point], nextNeighbour: WorldItemInfo) {
         const width = newPoints[0].distanceTo(newPoints[1]);
         newPoints[0] = oldPoints[0];
         const line = new Segment(oldPoints[0], oldPoints[1]).getLine();
@@ -128,8 +128,20 @@ export class BorderItemWidthToRealWidthTransformator implements WorldItemTransfo
         this.connectModifiedBordersToNeighbour(oldPoints[1], newPoints[1], nextNeighbour);
     }
 
-    private snapModifiedBorderToNextBorder() {
+    private snapModifiedBorderToNextBorder(oldPoints: [Point, Point], newPoints: [Point, Point], prevNeighbour: WorldItemInfo) {
+        const width = newPoints[0].distanceTo(newPoints[1]);
+        newPoints[1] = oldPoints[1];
+        const line = new Segment(oldPoints[0], oldPoints[1]).getLine();
 
+        const tmpSegmentPoints = line.getSegmentWithCenterPointAndDistance(newPoints[1], width);
+
+        if (tmpSegmentPoints[0].distanceTo(newPoints[0]) < tmpSegmentPoints[1].distanceTo(newPoints[0])) {
+            newPoints[0] = tmpSegmentPoints[0];
+        } else {
+            newPoints[0] = tmpSegmentPoints[1];
+        }
+
+        this.connectModifiedBordersToNeighbour(oldPoints[0], newPoints[0], prevNeighbour);
     }
 
     private connectModifiedBordersToNeighbour(oldPoint: Point, newPoint: Point, neighbour: WorldItemInfo) {
