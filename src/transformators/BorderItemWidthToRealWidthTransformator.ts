@@ -5,6 +5,11 @@ import { WorldItemInfoUtils } from "../WorldItemInfoUtils";
 import { WorldItemTransformator } from "./WorldItemTransformator";
 import _ = require("lodash");
 
+/**
+ * This transformator can be used to adjust the width of a border item to it's real width.
+ * Usually for example for a door the size on the world map is just an estimation, which has to be adjusted to the
+ * real width of the actual door mesh. This transformator can be used for that.
+ */
 export class BorderItemWidthToRealWidthTransformator implements WorldItemTransformator {
     private realItemWidths: {name: string, width: number}[] = [];
 
@@ -15,14 +20,18 @@ export class BorderItemWidthToRealWidthTransformator implements WorldItemTransfo
     public transform(worldItems: WorldItemInfo[]): WorldItemInfo[] {
         const rooms: WorldItemInfo[] = WorldItemInfoUtils.filterRooms(worldItems);
 
+        /**
+         * The border width adjustment has to be done room by room because the adjustment algorithm needs the
+         * prev and next border segments which can be provided easier when the borders are in context of a room.
+         */
         rooms.forEach(room => RoomUtils.orderBorderItemsAroundRoomClockwise(room));
-        rooms.forEach(room => this.resizeBorderItems(room));
+        rooms.forEach(room => this.adjustBorderWidthsForRoom(room));
 
         return worldItems;
     }
 
 
-    private resizeBorderItems(room: WorldItemInfo) {
+    private adjustBorderWidthsForRoom(room: WorldItemInfo) {
         room.borderItems.forEach(item => {
             const realItemWidth = _.find(this.realItemWidths, itemWidth => itemWidth.name === item.name);
             if (realItemWidth !== undefined) {
@@ -33,20 +42,23 @@ export class BorderItemWidthToRealWidthTransformator implements WorldItemTransfo
     }
 
     private resizeItem(item: WorldItemInfo, orderedItems: WorldItemInfo[], newSize: number) {
-        const nextItem = _.last(orderedItems) === item ? orderedItems[0] : orderedItems[orderedItems.indexOf(item) + 1];
-        const prevItem = _.first(orderedItems) === item ? _.last(orderedItems) : orderedItems[orderedItems.indexOf(item) - 1];
+        const rightItem = _.last(orderedItems) === item ? orderedItems[0] : orderedItems[orderedItems.indexOf(item) + 1];
+        const leftItem = _.first(orderedItems) === item ? _.last(orderedItems) : orderedItems[orderedItems.indexOf(item) - 1];
 
-        let neighbours = prevItem.dimensions.hasPoint(item.dimensions.getPoints()[0]) ? [prevItem, nextItem] : [nextItem, prevItem];
+        let neighbours = leftItem.dimensions.hasPoint(item.dimensions.getPoints()[0]) ? [leftItem, rightItem] : [rightItem, leftItem];
 
-        const prevBorderStripe = new StripeView(<Polygon> neighbours[0].dimensions);
-        const nextBorderStripe = new StripeView(<Polygon> neighbours[1].dimensions);
+        const leftBorderStripe = new StripeView(<Polygon> neighbours[0].dimensions);
+        const rightBorderStripe = new StripeView(<Polygon> neighbours[1].dimensions);
         const currentBorderStripe = new StripeView(<Polygon> item.dimensions);
 
         let newPoints: [Point, Point];
 
-        if (prevBorderStripe.getCapEdges()[0].getSlope() !== currentBorderStripe.getCapEdges()[0].getSlope()) {
+        const isLeftCornerItem = () => leftBorderStripe.getCapEdges()[0].getSlope() !== currentBorderStripe.getCapEdges()[0].getSlope();
+        const isRightCornerItem = () => rightBorderStripe.getCapEdges()[0].getSlope() !== currentBorderStripe.getCapEdges()[0].getSlope();
+
+        if (isLeftCornerItem()) {
             newPoints = this.moveOnlyRightEndPoint(<[Point, Point]> item.dimensions.getPoints(), newSize, neighbours[1]);
-        } else if (nextBorderStripe.getCapEdges()[0].getSlope() !== currentBorderStripe.getCapEdges()[0].getSlope()) {
+        } else if (isRightCornerItem()) {
             newPoints = this.moveOnlyLeftEndPoint(<[Point, Point]> item.dimensions.getPoints(), newSize, neighbours[0]);
         } else {
             newPoints = this.moveBothEndPointsEqually(<[Point, Point]> item.dimensions.getPoints(), newSize, neighbours[0], neighbours[1]);
