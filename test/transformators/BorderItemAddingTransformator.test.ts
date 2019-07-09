@@ -1,13 +1,13 @@
-import { CombinedWorldItemParser } from '../parsers/CombinedWorldItemParser';
-import { RoomSeparatorParser } from '../parsers/room_separator_parser/RoomSeparatorParser';
-import { RoomInfoParser } from '../parsers/room_parser/RoomInfoParser';
-import { BorderItemAddingTransformator } from './BorderItemAddingTransformator';
+import { CombinedWorldItemParser } from '../../src/parsers/CombinedWorldItemParser';
+import { RoomSeparatorParser } from '../../src/parsers/room_separator_parser/RoomSeparatorParser';
+import { RoomInfoParser } from '../../src/parsers/room_parser/RoomInfoParser';
+import { BorderItemAddingTransformator } from '../../src/transformators/BorderItemAddingTransformator';
 import { expect } from 'chai';
-import { BorderItemSegmentingTransformator } from './BorderItemSegmentingTransformator';
+import { BorderItemSegmentingTransformator } from '../../src/transformators/BorderItemSegmentingTransformator';
 import _ = require('lodash');
-import { ScalingTransformator } from './ScalingTransformator';
+import { ScalingTransformator } from '../../src/transformators/ScalingTransformator';
 import { Polygon } from '@nightshifts.inc/geometry';
-import { WorldItemInfoFactory } from '../WorldItemInfoFactory';
+import { WorldItemInfoFactory } from '../../src/WorldItemInfoFactory';
 
 
 describe('`BorderItemAddingTransformator`', () => {

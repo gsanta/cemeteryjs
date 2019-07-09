@@ -1,8 +1,8 @@
-import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
+import { WorldMapToMatrixGraphConverter } from "../../../src/matrix_graph/conversion/WorldMapToMatrixGraphConverter";
 import { expect } from "chai";
-import { PolygonAreaInfoParser } from "./PolygonAreaInfoParser";
+import { PolygonAreaInfoParser } from "../../../src/parsers/polygon_area_parser/PolygonAreaInfoParser";
 import { Point, Polygon } from '@nightshifts.inc/geometry';
-import { WorldItemInfoFactory } from "../../WorldItemInfoFactory";
+import { WorldItemInfoFactory } from "../../../src/WorldItemInfoFactory";
 
 describe('PolygonAreaInfoGenerator', () => {
     describe ('generate', () => {

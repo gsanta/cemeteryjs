@@ -1,24 +1,24 @@
-/// <reference path="../../tests/test.setup.ts"/>
+/// <reference path="../../test/test.setup.ts"/>
 
-import { RoomInfoParser } from '../parsers/room_parser/RoomInfoParser';
-import { BorderItemsToLinesTransformator, mergeStraightAngledNeighbouringBorderItemPolygons } from './BorderItemsToLinesTransformator';
+import { RoomInfoParser } from '../../src/parsers/room_parser/RoomInfoParser';
+import { BorderItemsToLinesTransformator, mergeStraightAngledNeighbouringBorderItemPolygons } from '../../src/transformators/BorderItemsToLinesTransformator';
 import { expect } from 'chai';
-import { WorldMapToMatrixGraphConverter } from '../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
-import { WorldMapToRoomMapConverter } from '../parsers/room_parser/WorldMapToRoomMapConverter';
-import { ScalingTransformator } from './ScalingTransformator';
-import { PolygonAreaInfoParser } from '../parsers/polygon_area_parser/PolygonAreaInfoParser';
+import { WorldMapToMatrixGraphConverter } from '../../src/matrix_graph/conversion/WorldMapToMatrixGraphConverter';
+import { WorldMapToRoomMapConverter } from '../../src/parsers/room_parser/WorldMapToRoomMapConverter';
+import { ScalingTransformator } from '../../src/transformators/ScalingTransformator';
+import { PolygonAreaInfoParser } from '../../src/parsers/polygon_area_parser/PolygonAreaInfoParser';
 import { Polygon, Point } from '@nightshifts.inc/geometry';
-import { WorldItemInfoFactory } from '../WorldItemInfoFactory';
-import { WorldItemInfo } from '../WorldItemInfo';
+import { WorldItemInfoFactory } from '../../src/WorldItemInfoFactory';
+import { WorldItemInfo } from '../../src/WorldItemInfo';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
-import { WorldParser } from '..';
-import { CombinedWorldItemParser } from '../parsers/CombinedWorldItemParser';
-import { FurnitureInfoParser } from '../parsers/furniture_parser/FurnitureInfoParser';
-import { RoomSeparatorParser } from '../parsers/room_separator_parser/RoomSeparatorParser';
-import { RootWorldItemParser } from '../parsers/RootWorldItemParser';
-import { BorderItemSegmentingTransformator } from './BorderItemSegmentingTransformator';
-import { HierarchyBuildingTransformator } from './HierarchyBuildingTransformator';
-import { BorderItemAddingTransformator } from './BorderItemAddingTransformator';
+import { WorldParser } from '../../src';
+import { CombinedWorldItemParser } from '../../src/parsers/CombinedWorldItemParser';
+import { FurnitureInfoParser } from '../../src/parsers/furniture_parser/FurnitureInfoParser';
+import { RoomSeparatorParser } from '../../src/parsers/room_separator_parser/RoomSeparatorParser';
+import { RootWorldItemParser } from '../../src/parsers/RootWorldItemParser';
+import { BorderItemSegmentingTransformator } from '../../src/transformators/BorderItemSegmentingTransformator';
+import { HierarchyBuildingTransformator } from '../../src/transformators/HierarchyBuildingTransformator';
+import { BorderItemAddingTransformator } from '../../src/transformators/BorderItemAddingTransformator';
 import * as _ from 'lodash';
 import { hasAnyWorldItemInfoDimension } from '../parsers/room_separator_parser/RoomSeparatorParser.test';
 

@@ -2,7 +2,7 @@ import { WorldItemParser } from "../parsers/WorldItemParser";
 import _ = require("lodash");
 import { MatrixGraph } from "../matrix_graph/MatrixGraph";
 import { WorldItemInfo } from '../WorldItemInfo';
-import { TreeIteratorGenerator } from '../gwm_world_item/iterator/TreeIteratorGenerator';
+import { TreeIteratorGenerator } from '../utils/TreeIteratorGenerator';
 import { WorldItemTransformator } from './WorldItemTransformator';
 
 export interface AdditionalDataConverter<T> {

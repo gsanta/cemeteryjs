@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { WorldItemInfo } from '../WorldItemInfo';
-import { HierarchyBuildingTransformator } from './HierarchyBuildingTransformator';
+import { WorldItemInfo } from '../../src/WorldItemInfo';
+import { HierarchyBuildingTransformator } from '../../src/transformators/HierarchyBuildingTransformator';
 import { Polygon, Point } from '@nightshifts.inc/geometry';
 
 

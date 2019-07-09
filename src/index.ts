@@ -16,7 +16,7 @@ export {WorldParser, ParseOptions, defaultParseOptions} from './WorldParser';
 export {WorldItemInfo} from './WorldItemInfo';
 export {WorldItemInfoFactory} from './WorldItemInfoFactory';
 export {WorldItemParser} from './parsers/WorldItemParser';
-export {TreeNode, TreeIteratorGenerator} from './gwm_world_item/iterator/TreeIteratorGenerator';
+export {TreeNode, TreeIteratorGenerator} from './utils/TreeIteratorGenerator';
 
 export const parsers = {
     RoomInfoParser,

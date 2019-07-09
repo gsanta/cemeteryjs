@@ -1,9 +1,9 @@
-import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
-import { RoomSeparatorParser } from './RoomSeparatorParser';
+import { WorldMapToMatrixGraphConverter } from "../../../src/matrix_graph/conversion/WorldMapToMatrixGraphConverter";
+import { RoomSeparatorParser } from '../../../src/parsers/room_separator_parser/RoomSeparatorParser';
 import { expect } from "chai";
-import { WorldItemInfoFactory } from '../../WorldItemInfoFactory';
+import { WorldItemInfoFactory } from '../../../src/WorldItemInfoFactory';
 import { Polygon, Shape } from "@nightshifts.inc/geometry";
-import { WorldItemInfo } from '../../WorldItemInfo';
+import { WorldItemInfo } from '../../../src/WorldItemInfo';
 import * as _ from 'lodash';
 
 // TODO: create custom matcher

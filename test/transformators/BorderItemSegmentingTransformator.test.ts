@@ -1,12 +1,11 @@
-import { CombinedWorldItemParser } from "../parsers/CombinedWorldItemParser";
-import { RoomSeparatorParser } from "../parsers/room_separator_parser/RoomSeparatorParser";
-import { RoomInfoParser } from "../parsers/room_parser/RoomInfoParser";
-import { BorderItemSegmentingTransformator } from "./BorderItemSegmentingTransformator";
+import { Polygon } from "@nightshifts.inc/geometry";
 import { expect } from "chai";
+import { CombinedWorldItemParser } from "../../src/parsers/CombinedWorldItemParser";
+import { RoomInfoParser } from "../../src/parsers/room_parser/RoomInfoParser";
+import { RoomSeparatorParser } from "../../src/parsers/room_separator_parser/RoomSeparatorParser";
+import { BorderItemSegmentingTransformator } from "../../src/transformators/BorderItemSegmentingTransformator";
+import { WorldItemInfoFactory } from "../../src/WorldItemInfoFactory";
 import _ = require("lodash");
-import { Polygon, Point } from "@nightshifts.inc/geometry";
-import { WorldItemInfoFactory } from "../WorldItemInfoFactory";
-import { hasAnyWorldItemInfoDimension } from "../parsers/room_separator_parser/RoomSeparatorParser.test";
 
 
 describe ('BorderItemSegmentingTransformator', () => {

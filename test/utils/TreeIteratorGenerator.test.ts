@@ -1,4 +1,4 @@
-import { TreeIteratorGenerator, TreeNode } from './TreeIteratorGenerator';
+import { TreeIteratorGenerator, TreeNode } from '../../src/utils/TreeIteratorGenerator';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 

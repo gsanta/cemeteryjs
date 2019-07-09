@@ -1,4 +1,4 @@
-import { PolygonRedundantPointReducer } from './PolygonRedundantPointReducer';
+import { PolygonRedundantPointReducer } from '../../../src/parsers/polygon_area_parser/PolygonRedundantPointReducer';
 import { expect } from 'chai';
 import { Point } from '@nightshifts.inc/geometry';
 

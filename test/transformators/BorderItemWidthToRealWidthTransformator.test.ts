@@ -1,21 +1,21 @@
-/// <reference path="../../tests/test.setup.ts"/>
+/// <reference path="../../test/test.setup.ts"/>
 
-import { WorldItemInfo } from '../WorldItemInfo';
+import { WorldItemInfo } from '../../src/WorldItemInfo';
 import { Segment, Point } from '@nightshifts.inc/geometry';
-import { BorderItemWidthToRealWidthTransformator } from './BorderItemWidthToRealWidthTransformator';
+import { BorderItemWidthToRealWidthTransformator } from '../../src/transformators/BorderItemWidthToRealWidthTransformator';
 import { expect } from 'chai';
-import { BorderItemAddingTransformator } from './BorderItemAddingTransformator';
-import { WorldItemInfoFactory, WorldParser } from '..';
-import { CombinedWorldItemParser } from '../parsers/CombinedWorldItemParser';
-import { FurnitureInfoParser } from '../parsers/furniture_parser/FurnitureInfoParser';
-import { WorldMapToMatrixGraphConverter } from '../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
-import { RoomSeparatorParser } from '../parsers/room_separator_parser/RoomSeparatorParser';
-import { RoomInfoParser } from '../parsers/room_parser/RoomInfoParser';
-import { RootWorldItemParser } from '../parsers/RootWorldItemParser';
-import { ScalingTransformator } from './ScalingTransformator';
-import { BorderItemSegmentingTransformator } from './BorderItemSegmentingTransformator';
-import { HierarchyBuildingTransformator } from './HierarchyBuildingTransformator';
-import { BorderItemsToLinesTransformator } from './BorderItemsToLinesTransformator';
+import { BorderItemAddingTransformator } from '../../src/transformators/BorderItemAddingTransformator';
+import { WorldItemInfoFactory, WorldParser } from '../../src';
+import { CombinedWorldItemParser } from '../../src/parsers/CombinedWorldItemParser';
+import { FurnitureInfoParser } from '../../src/parsers/furniture_parser/FurnitureInfoParser';
+import { WorldMapToMatrixGraphConverter } from '../../src/matrix_graph/conversion/WorldMapToMatrixGraphConverter';
+import { RoomSeparatorParser } from '../../src/parsers/room_separator_parser/RoomSeparatorParser';
+import { RoomInfoParser } from '../../src/parsers/room_parser/RoomInfoParser';
+import { RootWorldItemParser } from '../../src/parsers/RootWorldItemParser';
+import { ScalingTransformator } from '../../src/transformators/ScalingTransformator';
+import { BorderItemSegmentingTransformator } from '../../src/transformators/BorderItemSegmentingTransformator';
+import { HierarchyBuildingTransformator } from '../../src/transformators/HierarchyBuildingTransformator';
+import { BorderItemsToLinesTransformator } from '../../src/transformators/BorderItemsToLinesTransformator';
 
 const initBorderItems = (strMap: string): WorldItemInfo[] => {
     const map = `

@@ -1,4 +1,4 @@
-import { LinesToGraphConverter } from './LinesToGraphConverter';
+import { LinesToGraphConverter } from '../../../src/matrix_graph/conversion/LinesToGraphConverter';
 import {expect} from 'chai';
 
 describe('LinesToGraphConverter', () => {

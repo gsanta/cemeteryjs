@@ -14,7 +14,7 @@
     },
     "include": [
       "src/**/*.ts",
-      "tests/**/*.ts",
+      "test/**/*.ts", "test/WorldParser.test.ts"
     ],
     "exclude": [
       "node_modules"

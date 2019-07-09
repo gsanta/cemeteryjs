@@ -1,5 +1,5 @@
 import { WorldItemInfo } from '../WorldItemInfo';
-import { TreeIteratorGenerator } from '../gwm_world_item/iterator/TreeIteratorGenerator';
+import { TreeIteratorGenerator } from '../utils/TreeIteratorGenerator';
 import { WorldItemTransformator } from './WorldItemTransformator';
 import { Point } from '@nightshifts.inc/geometry';
 

@@ -1,4 +1,4 @@
-import { DetailsLineToObjectConverter, DetailsLineDataTypes } from './DetailsLineToObjectConverter';
+import { DetailsLineToObjectConverter, DetailsLineDataTypes } from '../../../src/matrix_graph/conversion/DetailsLineToObjectConverter';
 import { expect } from 'chai';
 
 describe('DetailsLineToObjectConverter', () => {

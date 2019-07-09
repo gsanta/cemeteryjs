@@ -1,9 +1,9 @@
-import { LinesToGraphConverter } from '../../matrix_graph/conversion/LinesToGraphConverter';
-import { FurnitureInfoParser } from './FurnitureInfoParser';
+import { LinesToGraphConverter } from '../../../src/matrix_graph/conversion/LinesToGraphConverter';
+import { FurnitureInfoParser } from '../../../src/parsers/furniture_parser/FurnitureInfoParser';
 import { expect } from 'chai';
-import { WorldItemInfo } from '../../WorldItemInfo';
+import { WorldItemInfo } from '../../../src/WorldItemInfo';
 import { Polygon } from '@nightshifts.inc/geometry';
-import { WorldItemInfoFactory } from '../../WorldItemInfoFactory';
+import { WorldItemInfoFactory } from '../../../src/WorldItemInfoFactory';
 
 describe('FurnitureInfoParser', () => {
     describe('generate', () => {

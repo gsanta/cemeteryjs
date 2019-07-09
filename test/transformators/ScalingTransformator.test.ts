@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { ScalingTransformator } from './ScalingTransformator';
-import { WorldItemInfo } from '../WorldItemInfo';
+import { ScalingTransformator } from '../../src/transformators/ScalingTransformator';
+import { WorldItemInfo } from '../../src/WorldItemInfo';
 import { Polygon } from '@nightshifts.inc/geometry';
 
 describe ('ScalingTransformator', () => {

@@ -1,10 +1,10 @@
-import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
-import { RoomInfoParser } from './RoomInfoParser';
+import { WorldMapToMatrixGraphConverter } from "../../../src/matrix_graph/conversion/WorldMapToMatrixGraphConverter";
+import { RoomInfoParser } from '../../../src/parsers/room_parser/RoomInfoParser';
 import { expect } from 'chai';
 import * as fs from 'fs';
-import { WorldMapToRoomMapConverter } from "./WorldMapToRoomMapConverter";
+import { WorldMapToRoomMapConverter } from "../../../src/parsers/room_parser/WorldMapToRoomMapConverter";
 import { Point, Polygon } from '@nightshifts.inc/geometry';
-import { WorldItemInfoFactory } from '../../WorldItemInfoFactory';
+import { WorldItemInfoFactory } from '../../../src/WorldItemInfoFactory';
 
 describe('RoomInfoParser', () => {
     describe ('generate', () => {

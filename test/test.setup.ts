@@ -2,7 +2,7 @@
 import * as chai from 'chai';
 import { Shape } from '@nightshifts.inc/geometry';
 import { expect } from 'chai';
-import { hasAnyWorldItemInfoDimension } from '../src/parsers/room_separator_parser/RoomSeparatorParser.test';
+import { hasAnyWorldItemInfoDimension } from './parsers/room_separator_parser/RoomSeparatorParser.test';
 import { WorldItemInfo } from '../src';
 
 declare global {

@@ -12,12 +12,12 @@
             "args": [
                 "-r",
                 "ts-node/register",
-                "tests/test.setup.ts",
+                "test/test.setup.ts",
                 "--timeout",
                 "999999",
                 "--colors",
-                "${workspaceFolder}/src/*.test.ts",
-                "${workspaceFolder}/src/**/*.test.ts"            ],
+                "${workspaceFolder}/test/*.test.ts",
+                "${workspaceFolder}/test/**/*.test.ts"            ],
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
             "protocol": "inspector"

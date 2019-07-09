@@ -1,4 +1,4 @@
-import { WorldMapToRoomMapConverter } from './WorldMapToRoomMapConverter';
+import { WorldMapToRoomMapConverter } from '../../../src/parsers/room_parser/WorldMapToRoomMapConverter';
 import { expect } from 'chai';
 import * as fs from 'fs';
 

@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import { WorldItemInfo } from '../WorldItemInfo';
-import { RootWorldItemParser } from "./RootWorldItemParser";
-import { MatrixGraph } from "../matrix_graph/MatrixGraph";
-import { WorldItemInfoFactory } from "../WorldItemInfoFactory";
+import { WorldItemInfo } from '../../src/WorldItemInfo';
+import { RootWorldItemParser } from "../../src/parsers/RootWorldItemParser";
+import { MatrixGraph } from "../../src/matrix_graph/MatrixGraph";
+import { WorldItemInfoFactory } from "../../src/WorldItemInfoFactory";
 import { Point, Polygon } from "@nightshifts.inc/geometry";
 
 
