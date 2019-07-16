@@ -83,7 +83,7 @@ describe('FurnitureRealSizeTransformator', () => {
         expect(table.dimensions).to.eql(Polygon.createRectangle(7.5, 2.5, 2, 1));
     });
 
-    it.only ('keeps the item beside the wall if the sketch touched the wall', () => {
+    it ('keeps the item beside the wall if the sketch touched the wall', () => {
         const map = `
         WWWWWWWWWWWWWWW
         W-------------W
@@ -100,6 +100,6 @@ describe('FurnitureRealSizeTransformator', () => {
         const room = items[0].children[0];
         const table = room.children[0];
 
-        expect(table.dimensions).to.eql(Polygon.createRectangle(7.5, 2.5, 2, 1));
+        expect(table.dimensions).to.eql(Polygon.createRectangle(0.5, 2.5, 2, 1));
     });
 });
