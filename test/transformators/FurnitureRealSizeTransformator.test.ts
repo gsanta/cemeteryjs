@@ -1,3 +1,5 @@
+/// <reference path="../../test/test.setup.ts"/>
+
 import { WorldItemInfo, WorldItemInfoFactory, WorldParser } from "../../src";
 import { CombinedWorldItemParser } from "../../src/parsers/CombinedWorldItemParser";
 import { FurnitureInfoParser } from "../../src/parsers/furniture_parser/FurnitureInfoParser";
@@ -28,6 +30,8 @@ const initBorderItems = (strMap: string): WorldItemInfo[] => {
         W = wall
         D = door
         T = table
+        B = bed
+        C = cupboard
 
         \`
     `;
@@ -35,7 +39,7 @@ const initBorderItems = (strMap: string): WorldItemInfo[] => {
     const options = {
         xScale: 1,
         yScale: 1,
-        furnitureCharacters: ['T'],
+        furnitureCharacters: ['T', 'B', 'C'],
         roomSeparatorCharacters: ['W', 'D']
     }
 
@@ -86,20 +90,23 @@ describe('FurnitureRealSizeTransformator', () => {
     it ('keeps the item beside the wall if the sketch touched the wall', () => {
         const map = `
         WWWWWWWWWWWWWWW
-        W-------------W
-        WTTT----------W
-        WTTT----------W
-        W-------------W
+        W------C------W
+        WTTT---C------W
+        WTTT---C----TTW
+        W-----------TTW
+        W---BBB-------W
         WWWWWWWWWWWWWWW
 
         `;
 
-        const transformator = new FurnitureRealSizeTransformator({table: Polygon.createRectangle(0, 0, 2, 1)});
+        const transformator = new FurnitureRealSizeTransformator({table: Polygon.createRectangle(0, 0, 2, 1), cupboard: Polygon.createRectangle(0, 0, 0.5, 3)});
         const items = transformator.transform(initBorderItems(map));
 
         const room = items[0].children[0];
-        const table = room.children[0];
 
-        expect(table.dimensions).to.eql(Polygon.createRectangle(0.5, 2.5, 2, 1));
+        expect(room.children).to.haveAnyWithDimensions(Polygon.createRectangle(0.5, 2.5, 2, 1));
+        expect(room.children).to.haveAnyWithDimensions(Polygon.createRectangle(12.5, 3.5, 2, 1));
+        expect(room.children).to.haveAnyWithDimensions(Polygon.createRectangle(4, 5.5, 3, 1));
+        expect(room.children).to.haveAnyWithDimensions(Polygon.createRectangle(7.25, 0.5, 0.5, 3));
     });
 });

@@ -21,16 +21,14 @@ export class FurnitureRealSizeTransformator {
     private transformFurnituresInRoom(room: WorldItemInfo) {
         room.children.forEach(furniture => {
 
-            if (this.realSizes[furniture.name]) {
-                const realSize = this.realSizes[furniture.name];
-                const centerPoint = furniture.dimensions.getBoundingCenter();
+            const realSize = this.realSizes[furniture.name] || furniture.dimensions;
+            const centerPoint = furniture.dimensions.getBoundingCenter();
 
-                const snappingWallSegment = this.getSnappingWallSegmentIfExists(room, furniture);
-                furniture.dimensions = realSize.clone().setPosition(centerPoint);
+            const snappingWallSegment = this.getSnappingWallSegmentIfExists(room, furniture);
+            furniture.dimensions = realSize.clone().setPosition(centerPoint);
 
-                if (snappingWallSegment) {
-                    this.snapToWallWallSegment(furniture, snappingWallSegment);
-                }
+            if (snappingWallSegment) {
+                this.snapToWallWallSegment(furniture, snappingWallSegment);
             }
         });
     }

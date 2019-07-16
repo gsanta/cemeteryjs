@@ -160,9 +160,7 @@ describe('BorderItemWidthToRealWidthTransformator', () => {
             WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
             `;
-        debugger;
         const [root] = initBorderItems(map);
 
-        debugger;
     });
 });
