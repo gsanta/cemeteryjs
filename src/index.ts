@@ -11,6 +11,7 @@ import { HierarchyBuildingTransformator } from './transformators/HierarchyBuildi
 import { PolygonAreaInfoParser } from './parsers/polygon_area_parser/PolygonAreaInfoParser';
 import { BorderItemsToLinesTransformator } from './transformators/BorderItemsToLinesTransformator';
 import { BorderItemWidthToRealWidthTransformator } from './transformators/BorderItemWidthToRealWidthTransformator';
+import { FurnitureRealSizeTransformator } from './transformators/FurnitureRealSizeTransformator';
 
 export {WorldParser, ParseOptions, defaultParseOptions} from './WorldParser';
 export {WorldItemInfo} from './WorldItemInfo';
@@ -34,5 +35,6 @@ export const transformators = {
     BorderItemAddingTransformator,
     BorderItemSegmentingTransformator,
     BorderItemsToLinesTransformator,
-    BorderItemWidthToRealWidthTransformator
+    BorderItemWidthToRealWidthTransformator,
+    FurnitureRealSizeTransformator
 }
