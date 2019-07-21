@@ -87,26 +87,26 @@ describe('FurnitureRealSizeTransformator', () => {
         expect(table.dimensions).to.eql(Polygon.createRectangle(7.5, 2.5, 2, 1));
     });
 
-    it ('keeps the item beside the wall if the sketch touched the wall', () => {
+    it ('snaps the furniture beside the wall if the original dimensions touched a wall', () => {
         const map = `
         WWWWWWWWWWWWWWW
         W------C------W
         WTTT---C------W
         WTTT---C----TTW
         W-----------TTW
-        W---BBB-------W
+        W----BBB------W
         WWWWWWWWWWWWWWW
 
         `;
 
-        const transformator = new FurnitureRealSizeTransformator({table: Polygon.createRectangle(0, 0, 2, 1), cupboard: Polygon.createRectangle(0, 0, 0.5, 3)});
+        const transformator = new FurnitureRealSizeTransformator({table: Polygon.createRectangle(0, 0, 2, 1), cupboard: Polygon.createRectangle(0, 0, 0.5, 2)});
         const items = transformator.transform(initBorderItems(map));
 
         const room = items[0].children[0];
 
-        expect(room.children).to.haveAnyWithDimensions(Polygon.createRectangle(0.5, 2.5, 2, 1));
-        expect(room.children).to.haveAnyWithDimensions(Polygon.createRectangle(12.5, 3.5, 2, 1));
-        expect(room.children).to.haveAnyWithDimensions(Polygon.createRectangle(4, 5.5, 3, 1));
-        expect(room.children).to.haveAnyWithDimensions(Polygon.createRectangle(7.25, 0.5, 0.5, 3));
+        expect(room.children).to.haveAnyWithDimensions(Polygon.createRectangle(0.5, 2, 1, 2));
+        expect(room.children).to.haveAnyWithDimensions(Polygon.createRectangle(5, 5.5, 3, 1));
+        expect(room.children).to.haveAnyWithDimensions(Polygon.createRectangle(5, 5.5, 3, 1));
+        expect(room.children).to.haveAnyWithDimensions(Polygon.createRectangle(13.5, 3, 1, 2));
     });
 });

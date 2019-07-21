@@ -8,6 +8,7 @@ export class WorldItemInfo<T = any> {
     public type: string;
     public name: string;
     public dimensions: Shape;
+    public rotation: number;
     public additionalData: T;
     public children: WorldItemInfo[] = [];
     public borderItems: WorldItemInfo[] = [];

@@ -1,6 +1,6 @@
 import { WorldItemInfoUtils } from "../WorldItemInfoUtils";
 import { WorldItemInfo } from "../WorldItemInfo";
-import { Polygon, Segment, Distance, Line } from '@nightshifts.inc/geometry';
+import { Polygon, Segment, Distance, Line, Point, Angle, Transform } from '@nightshifts.inc/geometry';
 
 
 export class FurnitureRealSizeTransformator {
@@ -21,14 +21,17 @@ export class FurnitureRealSizeTransformator {
     private transformFurnituresInRoom(room: WorldItemInfo) {
         room.children.forEach(furniture => {
 
-            const realSize = this.realSizes[furniture.name] || furniture.dimensions;
+            let realSize = <Polygon> (this.realSizes[furniture.name] || furniture.dimensions);
             const centerPoint = furniture.dimensions.getBoundingCenter();
 
             const snappingWallSegment = this.getSnappingWallSegmentIfExists(room, furniture);
-            furniture.dimensions = realSize.clone().setPosition(centerPoint);
 
             if (snappingWallSegment) {
+                realSize = this.rotateRealPolygon(snappingWallSegment, realSize);
+                furniture.dimensions = realSize.setPosition(centerPoint);
                 this.snapToWallWallSegment(furniture, snappingWallSegment);
+            } else {
+                furniture.dimensions = realSize.clone().setPosition(centerPoint);
             }
         });
     }
@@ -77,6 +80,24 @@ export class FurnitureRealSizeTransformator {
         const vector = toPoint.subtract(fromPoint);
 
         furniture.dimensions = furniture.dimensions.translate(vector);
+    }
+
+    private rotateRealPolygon(snappingWallSegment: Segment, realPolygon: Polygon): Polygon {
+        const xAxis = new Segment(new Point(0, 0), new Point(10, 0)).getLine();
+        const snappingWallLine = snappingWallSegment.getLine();
+        const o = xAxis.intersection(snappingWallLine);
+
+        if (o !== undefined) {
+            const a = snappingWallSegment.getPoints()[0];
+            const b = new Point(o.x + 10, 0);
+
+            const angle = new Angle(o, a, b);
+            const transform = new Transform();
+
+            return transform.rotate(realPolygon, angle.getAngle());
+        }
+
+        return realPolygon;
     }
 
 }
