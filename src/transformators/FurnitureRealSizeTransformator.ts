@@ -27,7 +27,9 @@ export class FurnitureRealSizeTransformator {
             const snappingWallSegment = this.getSnappingWallSegmentIfExists(room, furniture);
 
             if (snappingWallSegment) {
-                realSize = this.rotateRealPolygon(snappingWallSegment, realSize);
+                const angle = this.getRotationAngle(snappingWallSegment, realSize);
+                realSize = this.rotate(realSize, angle);
+                furniture.rotation = angle.getAngle();
                 furniture.dimensions = realSize.setPosition(centerPoint);
                 this.snapToWallWallSegment(furniture, snappingWallSegment);
             } else {
@@ -82,7 +84,7 @@ export class FurnitureRealSizeTransformator {
         furniture.dimensions = furniture.dimensions.translate(vector);
     }
 
-    private rotateRealPolygon(snappingWallSegment: Segment, realPolygon: Polygon): Polygon {
+    private getRotationAngle(snappingWallSegment: Segment, realPolygon: Polygon): Angle {
         const xAxis = new Segment(new Point(0, 0), new Point(10, 0)).getLine();
         const snappingWallLine = snappingWallSegment.getLine();
         const o = xAxis.intersection(snappingWallLine);
@@ -91,14 +93,18 @@ export class FurnitureRealSizeTransformator {
             const a = snappingWallSegment.getPoints()[0];
             const b = new Point(o.x + 10, 0);
 
-            const angle = new Angle(o, a, b);
-            const transform = new Transform();
+            return new Angle(o, a, b);
 
-            return transform.rotate(realPolygon, angle.getAngle());
         }
 
-        return realPolygon;
+        return new Angle(new Point(0, 0), new Point(0, 0), new Point(0, 0));
+
     }
 
+    private rotate(polygon: Polygon, angle: Angle): Polygon {
+        const transform = new Transform();
+
+        return transform.rotate(polygon, angle.getAngle());
+    }
 }
 

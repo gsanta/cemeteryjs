@@ -24,6 +24,7 @@ export class WorldItemInfo<T = any> {
         this.name = name;
         this.additionalData = additionalData;
         this.id = id;
+        this.rotation = 0;
     }
 
     public addChild(worldItem: WorldItemInfo) {
