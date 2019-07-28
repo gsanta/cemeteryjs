@@ -101,7 +101,6 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
                 newPolygon = <Polygon>room.dimensions;
             }
 
-            // this.alignBorderItems(room.borderItems, room.dimensions, newPolygon);
             return newPolygon;
         });
 
