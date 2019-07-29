@@ -1,7 +1,6 @@
 import { Scene } from '@babylonjs/core';
 import { Polygon } from '@nightshifts.inc/geometry';
 import { BorderItemSegmentingTransformator } from '../../transformators/BorderItemSegmentingTransformator';
-import { AdditionalDataConvertingTransformator } from '../../transformators/AdditionalDataConvertingTransformator';
 import { FurnitureRealSizeTransformator } from '../../transformators/FurnitureRealSizeTransformator';
 import { BorderItemWidthToRealWidthTransformator } from '../../transformators/BorderItemWidthToRealWidthTransformator';
 import { BorderItemsToLinesTransformator } from '../../transformators/BorderItemsToLinesTransformator';
@@ -64,7 +63,6 @@ export class WorldImporter {
 
                         }
                     ),
-                    new AdditionalDataConvertingTransformator(options.additionalDataConverter),
                     new MeshCreationTransformator(meshFactory)
                 ]
             ).parse(strWorld);

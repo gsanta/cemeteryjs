@@ -66,7 +66,7 @@ export class FurnitureInfoParser implements WorldItemParser {
             componentGraph.getCharacters()[0],
             Polygon.createRectangle(x, y, width, height),
             componentGraph.getVertexValue(oneVertex).name,
-            this.getAdditionalDataFromGameObjectGraph(componentGraph)
+            false
         );
     }
 
@@ -79,13 +79,12 @@ export class FurnitureInfoParser implements WorldItemParser {
             .map(slice => {
                 const gameObjectGraph = componentGraph.getGraphForVertices(slice);
                 const rect = this.createRectangleFromVerticalVertices(gameObjectGraph)
-                const additionalData = this.getAdditionalDataFromGameObjectGraph(gameObjectGraph);
                 const oneVertex = componentGraph.getAllVertices()[0];
                 return this.worldItemInfoFactory.create(
                     componentGraph.getCharacters()[0],
                     rect,
                     componentGraph.getVertexValue(oneVertex).name,
-                    additionalData
+                    false
                 );
             });
 
@@ -94,7 +93,6 @@ export class FurnitureInfoParser implements WorldItemParser {
             .filter(comp => comp.length > 0)
             .map(comp => {
                 const gameObjectGraph = componentGraph.getGraphForVertices(comp);
-                const additionalData = this.getAdditionalDataFromGameObjectGraph(gameObjectGraph);
                 const rect = this.createRectangleFromHorizontalVertices(gameObjectGraph);
                 const oneVertex = componentGraph.getAllVertices()[0];
 
@@ -102,7 +100,7 @@ export class FurnitureInfoParser implements WorldItemParser {
                     gameObjectGraph.getCharacters()[0],
                     rect,
                     componentGraph.getVertexValue(oneVertex).name,
-                    additionalData
+                    false
                 );
             });
 

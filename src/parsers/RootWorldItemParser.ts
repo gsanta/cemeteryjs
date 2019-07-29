@@ -37,7 +37,8 @@ export class RootWorldItemParser implements WorldItemParser {
                 graph.getColumns(),
                 graph.getRows(),
             ),
-            'root'
+            'root',
+            false
         );
     }
 }

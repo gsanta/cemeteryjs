@@ -10,7 +10,7 @@ export class WorldItemInfo<T = any> {
     name: string;
     dimensions: Shape;
     rotation: number;
-    additionalData: T;
+    isBorder: boolean;
     children: WorldItemInfo[] = [];
     borderItems: WorldItemInfo[] = [];
     indexedBorderItems: {
@@ -19,11 +19,11 @@ export class WorldItemInfo<T = any> {
         borderItem: WorldItemInfo;
     }[] = [];
 
-    constructor(id: number, type: string, dimensions: Shape, name: string, additionalData: T = null) {
+    constructor(id: number, type: string, dimensions: Shape, name: string, isBorder: boolean = false) {
         this.type = type;
         this.dimensions = dimensions;
         this.name = name;
-        this.additionalData = additionalData;
+        this.isBorder = isBorder;
         this.id = id;
         this.rotation = 0;
     }

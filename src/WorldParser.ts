@@ -2,7 +2,6 @@ import { WorldItemInfo } from './WorldItemInfo';
 import _ = require('lodash');
 import { WorldItemParser } from './parsers/WorldItemParser';
 import { CombinedWorldItemParser } from './parsers/CombinedWorldItemParser';
-import { AdditionalDataConverter, AdditionalDataConvertingTransformator } from './transformators/AdditionalDataConvertingTransformator';
 import { ScalingTransformator } from './transformators/ScalingTransformator';
 import { HierarchyBuildingTransformator } from './transformators/HierarchyBuildingTransformator';
 import { FurnitureInfoParser } from './parsers/furniture_parser/FurnitureInfoParser';
@@ -17,7 +16,6 @@ import { WorldItemInfoFactory } from './WorldItemInfoFactory';
 export interface ParseOptions<T> {
     xScale: number;
     yScale: number;
-    additionalDataConverter: AdditionalDataConverter<T>;
     charactersToInclude?: string[];
     charactersToExclude?: string[];
 }
@@ -25,7 +23,6 @@ export interface ParseOptions<T> {
 export const defaultParseOptions: ParseOptions<any> = {
     xScale: 1,
     yScale: 1,
-    additionalDataConverter: _.identity
 }
 
 export interface CharacterTypes {
@@ -66,9 +63,7 @@ export class WorldParser {
             [
                 new ScalingTransformator({ x: options.xScale, y: options.yScale }),
                 new HierarchyBuildingTransformator(),
-                new BorderItemAddingTransformator(['wall', 'door', 'window']),
-                new AdditionalDataConvertingTransformator<T>(options.additionalDataConverter)
-
+                new BorderItemAddingTransformator(['wall', 'door', 'window'])
             ]
         );
     }

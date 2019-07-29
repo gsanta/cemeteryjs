@@ -42,7 +42,7 @@ export class PolygonAreaInfoParser implements WorldItemParser {
                     this.createPolygonPointsFromHorizontalLines(lines)
                 );
 
-                return this.worldItemInfoFactory.create(null, new Polygon(points), this.itemName);
+                return this.worldItemInfoFactory.create(null, new Polygon(points), this.itemName, false);
             });
     }
 

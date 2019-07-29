@@ -52,13 +52,12 @@ export class RoomSeparatorParser implements WorldItemParser {
             .map(slice => {
                 const gameObjectGraph = componentGraph.getGraphForVertices(slice);
                 const rect = this.createRectangleFromVerticalVertices(gameObjectGraph)
-                const additionalData = this.getAdditionalDataFromGameObjectGraph(gameObjectGraph);
                 const oneVertex = componentGraph.getAllVertices()[0];
                 return this.worldItemInfoFactory.create(
                     componentGraph.getCharacters()[0],
                     rect,
                     componentGraph.getVertexValue(oneVertex).name,
-                    additionalData
+                    true
                 );
             });
 
@@ -66,13 +65,12 @@ export class RoomSeparatorParser implements WorldItemParser {
             .map(slice => {
                 const gameObjectGraph = componentGraph.getGraphForVertices(slice);
                 const rect = this.createRectangleFromHorizontalVertices(gameObjectGraph)
-                const additionalData = this.getAdditionalDataFromGameObjectGraph(gameObjectGraph);
                 const oneVertex = componentGraph.getAllVertices()[0];
                 return this.worldItemInfoFactory.create(
                     componentGraph.getCharacters()[0],
                     rect,
                     componentGraph.getVertexValue(oneVertex).name,
-                    additionalData
+                    true
                 );
             });
 

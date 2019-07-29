@@ -9,8 +9,8 @@ import { WorldItemInfo } from './WorldItemInfo';
 export class WorldItemInfoFactory {
     private idCounter = 1;
 
-    public create(type: string, dimensions: Polygon, name: string, additionalData: any = null): WorldItemInfo {
-        return new WorldItemInfo(this.idCounter++, type, dimensions, name, additionalData);
+    public create(type: string, dimensions: Polygon, name: string, isBorder: boolean): WorldItemInfo {
+        return new WorldItemInfo(this.idCounter++, type, dimensions, name, isBorder);
     }
 
     public clone(worldItemInfo: WorldItemInfo): WorldItemInfo {
@@ -18,8 +18,7 @@ export class WorldItemInfoFactory {
             this.idCounter++,
             worldItemInfo.type,
             worldItemInfo.dimensions,
-            worldItemInfo.name,
-            worldItemInfo.additionalData
+            worldItemInfo.name
         );
 
         clone.children = worldItemInfo.children;

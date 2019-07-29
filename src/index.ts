@@ -2,7 +2,6 @@ import { RoomInfoParser } from './parsers/room_parser/RoomInfoParser';
 import { FurnitureInfoParser } from './parsers/furniture_parser/FurnitureInfoParser';
 import { CombinedWorldItemParser } from './parsers/CombinedWorldItemParser';
 import { ScalingTransformator } from './transformators/ScalingTransformator';
-import { AdditionalDataConvertingTransformator } from './transformators/AdditionalDataConvertingTransformator';
 import { BorderItemAddingTransformator } from './transformators/BorderItemAddingTransformator';
 import { BorderItemSegmentingTransformator } from './transformators/BorderItemSegmentingTransformator';
 import { RootWorldItemParser } from './parsers/RootWorldItemParser';
@@ -31,7 +30,6 @@ export const parsers = {
 export const transformators = {
     HierarchyBuildingTransformator,
     ScalingTransformator,
-    AdditionalDataConvertingTransformator,
     BorderItemAddingTransformator,
     BorderItemSegmentingTransformator,
     BorderItemsToLinesTransformator,
