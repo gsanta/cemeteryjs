@@ -32,7 +32,7 @@ export const defaultMeshConfig: MeshTemplateConfig = {
     materials: null
 };
 
-export class MeshactoryProducer {
+export class MeshFactoryProducer {
 
     private readonly FURNITURE_1_MATERIAL = 'models/furniture_1/material/beds.png';
     private readonly FURNITURE_1_BASE_PATH = 'models/furniture_1/';

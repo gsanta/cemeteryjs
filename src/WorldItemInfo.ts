@@ -4,15 +4,16 @@ import { Polygon, Shape } from "@nightshifts.inc/geometry";
  * `WorldItemInfo` represents any distinguishable item in the parsed world (think of it as a mesh, e.g walls, rooms, creatures).
  */
 export class WorldItemInfo<T = any> {
-    public id: number;
-    public type: string;
-    public name: string;
-    public dimensions: Shape;
-    public rotation: number;
-    public additionalData: T;
-    public children: WorldItemInfo[] = [];
-    public borderItems: WorldItemInfo[] = [];
-    public indexedBorderItems: {
+    mesh: any;
+    id: number;
+    type: string;
+    name: string;
+    dimensions: Shape;
+    rotation: number;
+    additionalData: T;
+    children: WorldItemInfo[] = [];
+    borderItems: WorldItemInfo[] = [];
+    indexedBorderItems: {
         roomBoundingPolygonSideIndex: number;
         sizeRatio: number;
         borderItem: WorldItemInfo;
@@ -27,7 +28,7 @@ export class WorldItemInfo<T = any> {
         this.rotation = 0;
     }
 
-    public addChild(worldItem: WorldItemInfo) {
+    addChild(worldItem: WorldItemInfo) {
         this.children.push(worldItem);
     }
 }
