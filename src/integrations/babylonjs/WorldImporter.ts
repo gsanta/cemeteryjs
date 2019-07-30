@@ -1,4 +1,3 @@
-import { Scene } from '@babylonjs/core';
 import { Polygon } from '@nightshifts.inc/geometry';
 import { BorderItemSegmentingTransformator } from '../../transformators/BorderItemSegmentingTransformator';
 import { FurnitureRealSizeTransformator } from '../../transformators/FurnitureRealSizeTransformator';
@@ -22,50 +21,54 @@ import { WorldItemInfo } from '../../WorldItemInfo';
 
 export class WorldImporter {
     private meshFactoryProducer: MeshFactoryProducer;
-    private scene: Scene;
 
-    constructor(scene: Scene, meshFactoryProducer: MeshFactoryProducer) {
-        this.scene = scene;
+    constructor(meshFactoryProducer: MeshFactoryProducer) {
         this.meshFactoryProducer = meshFactoryProducer;
     }
 
     public import(strWorld: string): Promise<WorldItemInfo[]> {
-        return this.meshFactoryProducer.getFactory(this.scene).then(meshFactory => {
-            const options = {...defaultParseOptions, ...{yScale: 2}};
-            const furnitureCharacters = ['X', 'C', 'T', 'B', 'S', 'E', 'H'];
-            const roomSeparatorCharacters = ['W', 'D', 'I'];
+        if (!this.meshFactoryProducer.factory) {
+            return this.meshFactoryProducer.load().then(() => this.parse(strWorld));
+        } else {
+            return Promise.resolve(this.parse(strWorld));
+        }
+    }
 
-            const worldItemInfoFactory = new WorldItemInfoFactory();
-            return WorldParser.createWithCustomWorldItemGenerator(
-                new CombinedWorldItemParser(
-                    [
-                        new FurnitureInfoParser(worldItemInfoFactory, furnitureCharacters, new WorldMapToMatrixGraphConverter()),
-                        new RoomSeparatorParser(worldItemInfoFactory, roomSeparatorCharacters),
-                        new RoomInfoParser(worldItemInfoFactory),
-                        new PolygonAreaInfoParser(worldItemInfoFactory, 'empty', '#'),
-                        new RootWorldItemParser(worldItemInfoFactory)
-                    ]
-                ),
+    private parse(strWorld: string): WorldItemInfo[] {
+        const options = {...defaultParseOptions, ...{yScale: 2}};
+        const furnitureCharacters = ['X', 'C', 'T', 'B', 'S', 'E', 'H'];
+        const roomSeparatorCharacters = ['W', 'D', 'I'];
+
+        const worldItemInfoFactory = new WorldItemInfoFactory();
+        return WorldParser.createWithCustomWorldItemGenerator(
+            new CombinedWorldItemParser(
                 [
-
-                    new ScalingTransformator({ x: options.xScale, y: options.yScale }),
-                    new BorderItemSegmentingTransformator(worldItemInfoFactory, ['wall', 'door', 'window'], { xScale: options.xScale, yScale: options.yScale }),
-                    new HierarchyBuildingTransformator(),
-                    new BorderItemAddingTransformator(['wall', 'door', 'window']),
-                    new BorderItemsToLinesTransformator({ xScale: options.xScale, yScale: options.yScale }),
-                    new BorderItemWidthToRealWidthTransformator([{name: 'window', width: 2}, {name: 'door', width: 2.7}]),
-                    new FurnitureRealSizeTransformator(
-                        {
-                            cupboard: Polygon.createRectangle(0, 0, 2, 1.5),
-                            bathtub: Polygon.createRectangle(0, 0, 4.199999999999999, 2.400004970948398),
-                            washbasin: Polygon.createRectangle(0, 0, 2, 1.58 + 1.5),
-                            table: Polygon.createRectangle(0, 0, 3.4, 1.4 + 1.5)
-
-                        }
-                    ),
-                    new MeshCreationTransformator(meshFactory)
+                    new FurnitureInfoParser(worldItemInfoFactory, furnitureCharacters, new WorldMapToMatrixGraphConverter()),
+                    new RoomSeparatorParser(worldItemInfoFactory, roomSeparatorCharacters),
+                    new RoomInfoParser(worldItemInfoFactory),
+                    new PolygonAreaInfoParser(worldItemInfoFactory, 'empty', '#'),
+                    new RootWorldItemParser(worldItemInfoFactory)
                 ]
-            ).parse(strWorld);
-        });
+            ),
+            [
+
+                new ScalingTransformator({ x: options.xScale, y: options.yScale }),
+                new BorderItemSegmentingTransformator(worldItemInfoFactory, ['wall', 'door', 'window'], { xScale: options.xScale, yScale: options.yScale }),
+                new HierarchyBuildingTransformator(),
+                new BorderItemAddingTransformator(['wall', 'door', 'window']),
+                new BorderItemsToLinesTransformator({ xScale: options.xScale, yScale: options.yScale }),
+                new BorderItemWidthToRealWidthTransformator([{name: 'window', width: 2}, {name: 'door', width: 2.7}]),
+                new FurnitureRealSizeTransformator(
+                    {
+                        cupboard: Polygon.createRectangle(0, 0, 2, 1.5),
+                        bathtub: Polygon.createRectangle(0, 0, 4.199999999999999, 2.400004970948398),
+                        washbasin: Polygon.createRectangle(0, 0, 2, 1.58 + 1.5),
+                        table: Polygon.createRectangle(0, 0, 3.4, 1.4 + 1.5)
+
+                    }
+                ),
+                new MeshCreationTransformator(this.meshFactoryProducer.factory)
+            ]
+        ).parse(strWorld);
     }
 }

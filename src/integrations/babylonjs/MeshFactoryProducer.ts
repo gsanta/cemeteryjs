@@ -33,6 +33,9 @@ export const defaultMeshConfig: MeshTemplateConfig = {
 };
 
 export class MeshFactoryProducer {
+    factory: MeshFactory;
+
+    private scene: Scene;
 
     private readonly FURNITURE_1_MATERIAL = 'models/furniture_1/material/beds.png';
     private readonly FURNITURE_1_BASE_PATH = 'models/furniture_1/';
@@ -62,8 +65,19 @@ export class MeshFactoryProducer {
         'models/player/material/3.jpg'
     ];
 
-    public getFactory(scene: Scene): Promise<MeshFactory> {
+    constructor(scene: Scene, autoLoadFactory = true) {
+        this.scene = scene;
+        if (autoLoadFactory) {
+            this.load();
+        }
+    }
 
+    public load(): Promise<void> {
+        return this.getFactory(this.scene)
+            .then(factory => {this.factory = factory})
+    }
+
+    private getFactory(scene: Scene): Promise<MeshFactory> {
         return this.getMeshTemplateStore(scene)
             .then(meshTemplateStore => {
 
@@ -84,7 +98,7 @@ export class MeshFactoryProducer {
             });
     }
 
-    protected getMeshTemplateStore(scene: Scene): Promise<Map<string, [Mesh[], Skeleton[]]>> {
+    private getMeshTemplateStore(scene: Scene): Promise<Map<string, [Mesh[], Skeleton[]]>> {
 
         const modelFileLoader = new ModelFileLoader(scene);
 
