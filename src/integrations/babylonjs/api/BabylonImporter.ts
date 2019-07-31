@@ -12,30 +12,30 @@ import { RoomInfoParser } from '../../../parsers/room_parser/RoomInfoParser';
 import { RoomSeparatorParser } from '../../../parsers/room_separator_parser/RoomSeparatorParser';
 import { FurnitureInfoParser } from '../../../parsers/furniture_parser/FurnitureInfoParser';
 import { MeshCreationTransformator } from '../../../transformators/MeshCreationTransformator';
-import { MeshFactoryProducer } from '../MeshFactoryProducer';
+import { MeshFactoryProducer, ModelTypeDescription } from '../MeshFactoryProducer';
 import { defaultParseOptions, WorldParser } from '../../../WorldParser';
 import { WorldItemInfoFactory } from '../../../WorldItemInfoFactory';
 import { CombinedWorldItemParser } from '../../../parsers/CombinedWorldItemParser';
 import { WorldMapToMatrixGraphConverter } from '../../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 import { WorldItemInfo } from '../../../WorldItemInfo';
 import { Importer } from '../../api/Importer';
+import { Scene } from '@babylonjs/core';
+import { MeshFactory } from '../MeshFactory';
 
 export class BabylonImporter implements Importer {
+    private scene: Scene;
     private meshFactoryProducer: MeshFactoryProducer;
 
-    constructor(meshFactoryProducer: MeshFactoryProducer) {
+    constructor(scene: Scene, meshFactoryProducer: MeshFactoryProducer) {
+        this.scene = scene;
         this.meshFactoryProducer = meshFactoryProducer;
     }
 
-    import(strWorld: string): Promise<WorldItemInfo[]> {
-        if (!this.meshFactoryProducer.factory) {
-            return this.meshFactoryProducer.load().then(() => this.parse(strWorld));
-        } else {
-            return Promise.resolve(this.parse(strWorld));
-        }
+    import(strWorld: string, modelTypeDescription: ModelTypeDescription[]): Promise<WorldItemInfo[]> {
+        return this.meshFactoryProducer.getFactory(this.scene, modelTypeDescription).then((meshFactory) => this.parse(strWorld, meshFactory));
     }
 
-    private parse(strWorld: string): WorldItemInfo[] {
+    private parse(strWorld: string, meshFactory: MeshFactory): WorldItemInfo[] {
         const options = {...defaultParseOptions, ...{yScale: 2}};
         const furnitureCharacters = ['X', 'C', 'T', 'B', 'S', 'E', 'H'];
         const roomSeparatorCharacters = ['W', 'D', 'I'];
@@ -68,7 +68,7 @@ export class BabylonImporter implements Importer {
 
                     }
                 ),
-                new MeshCreationTransformator(this.meshFactoryProducer.factory)
+                new MeshCreationTransformator(meshFactory)
             ]
         ).parse(strWorld);
     }

@@ -32,155 +32,70 @@ export const defaultMeshConfig: MeshTemplateConfig = {
     materials: null
 };
 
+export interface ModelTypeDescription {
+    type: string;
+    model: 'file' | 'rectangle';
+    fileDescription: {
+        path: string;
+        fileName: string;
+        scale: number
+    }
+}
+
 export class MeshFactoryProducer {
-    factory: MeshFactory;
-
-    private scene: Scene;
-
-    private readonly FURNITURE_1_MATERIAL = 'models/furniture_1/material/beds.png';
-    private readonly FURNITURE_1_BASE_PATH = 'models/furniture_1/';
-    private readonly BED_MODEL_FILE = 'bed.babylon';
-
-    private readonly FURNITURE_2_MATERIAL = 'models/furniture_2/material/furniture.png';
-    private readonly FURITURE_2_BASE_PATH = 'models/furniture_2/';
-    private readonly CUPBOARD_MODEL_FILE = 'cupboard.babylon';
-    private readonly TABLE_MODEL_FILE = 'table.babylon';
-
-    private readonly FURNITURE_3_MATERIAL = 'models/furniture_3/material/bathroom.png';
-    private readonly FURITURE_3_BASE_PATH = 'models/furniture_3/';
-    private readonly BATHTUB_MODEL_FILE = 'bathtub.babylon';
-    private readonly WASHBASIN_MODEL_FILE = 'wash_basin.babylon';
-    private readonly CHAIR_MODEL_FILE = 'chair.babylon';
-
-    private readonly ENEMY_PATH = 'models/enemy/';
-    private readonly GHOST_MODEL_FILE = 'ghost.obj';
-
-
-    private readonly PLAYER_BASE_PATH = 'models/player/';
-    private readonly PLAYER_MODEL_FILE = 'player.babylon';
-    private readonly PLAYER_MATERIALS = [
-        'models/player/material/0.jpg',
-        'models/player/material/1.jpg',
-        'models/player/material/2.jpg',
-        'models/player/material/3.jpg'
-    ];
-
-    constructor(scene: Scene, autoLoadFactory = true) {
-        this.scene = scene;
-        if (autoLoadFactory) {
-            this.load();
-        }
-    }
-
-    public load(): Promise<void> {
-        return this.getFactory(this.scene)
-            .then(factory => {this.factory = factory})
-    }
-
-    private getFactory(scene: Scene): Promise<MeshFactory> {
-        return this.getMeshTemplateStore(scene)
-            .then(meshTemplateStore => {
-
+    public getFactory(scene: Scene, modelTypeDescription: ModelTypeDescription[]): Promise<MeshFactory> {
+        return this.loadModels(scene, modelTypeDescription)
+            .then(modelStore => {
                 const map: Map<string, MeshCreator> = new Map();
-                map.set('bed', new ModelFactory(meshTemplateStore.get('bed'), scene));
-                map.set('empty', new EmptyAreaFactory(scene));
-                map.set('table', new ModelFactory(meshTemplateStore.get('table'), scene));
-                map.set('cupboard', new ModelFactory(meshTemplateStore.get('cupboard'), scene));
-                map.set('bathtub', new ModelFactory(meshTemplateStore.get('bathtub'), scene));
-                map.set('washbasin', new ModelFactory(meshTemplateStore.get('washbasin'), scene));
-                map.set('chair', new ModelFactory(meshTemplateStore.get('chair'), scene));
-                map.set('player', new PlayerFactory(meshTemplateStore.get('player'), scene));
-                map.set('door', new DoorFactory(meshTemplateStore.get('door'), scene, MeshBuilder));
-                map.set('window', new WindowFactory(meshTemplateStore.get('window'), scene, MeshBuilder));
-                map.set('wall', new WallFactory(scene));
+
+                modelStore.forEach((model, type) => {
+                    // TODO: get rid of hardcoded types
+                    switch(type) {
+                        case 'empty':
+                            map.set('empty', new EmptyAreaFactory(scene));
+                            break;
+                        case 'player':
+                            map.set('player', new PlayerFactory(model, scene));
+                            break;
+                        case 'door':
+                            map.set('door', new DoorFactory(model, scene, MeshBuilder));
+                            break;
+                        case 'window':
+                            map.set('window', new WindowFactory(model, scene, MeshBuilder));
+                            break;
+                        case 'wall':
+                            map.set('wall', new WallFactory(scene));
+                            break;
+                        default:
+                            map.set(type, new ModelFactory(model, scene));
+                            break;
+                    }
+                });
 
                 return new MeshFactory(map);
             });
     }
 
-    private getMeshTemplateStore(scene: Scene): Promise<Map<string, [Mesh[], Skeleton[]]>> {
-
+    private loadModels(scene: Scene, modelTypeDescription: ModelTypeDescription[]): Promise<Map<string, [Mesh[], Skeleton[]]>> {
         const modelFileLoader = new ModelFileLoader(scene);
 
-        return Promise.all([
-            modelFileLoader.load(
-                'ghost',
-                this.ENEMY_PATH,
-                this.GHOST_MODEL_FILE,
+        const promises = modelTypeDescription.map(
+            desc => modelFileLoader.load(
+                desc.type,
+                desc.fileDescription.path,
+                desc.fileDescription.fileName,
                 [],
-                {...defaultMeshConfig, scaling: new Vector3(0.005, 0.005, 0.005)}
-            ),
-            modelFileLoader.load(
-                'player',
-                this.PLAYER_BASE_PATH,
-                this.PLAYER_MODEL_FILE,
-                this.PLAYER_MATERIALS,
-                {...defaultMeshConfig, scaling: new Vector3(0.28, 0.28, 0.28)}
-            ),
-            modelFileLoader.load(
-                'bed',
-                this.FURNITURE_1_BASE_PATH,
-                this.BED_MODEL_FILE,
-                [this.FURNITURE_1_MATERIAL],
-                {...defaultMeshConfig, scaling: new Vector3(0.03, 0.03, 0.03)}
-            ),
-            modelFileLoader.load(
-                'window',
-                'models/',
-                'window.babylon',
-                [],
-                {...defaultMeshConfig, scaling: new Vector3(1, 1, 1)}
-            ),
-            modelFileLoader.load(
-                'door',
-                'models/',
-                'door.babylon',
-                [],
-                {...defaultMeshConfig, scaling: new Vector3(1, 1, 1)}
-            ),
-            modelFileLoader.load(
-                'table',
-                this.FURITURE_2_BASE_PATH,
-                this.TABLE_MODEL_FILE,
-                [this.FURNITURE_2_MATERIAL],
-                {...defaultMeshConfig, scaling: new Vector3(0.03, 0.03, 0.03)}
-            ),
-            modelFileLoader.load(
-                'cupboard',
-                this.FURITURE_2_BASE_PATH,
-                this.CUPBOARD_MODEL_FILE,
-                [this.FURNITURE_2_MATERIAL],
-                {...defaultMeshConfig, scaling: new Vector3(0.03, 0.03, 0.03)}
-            ),
-            modelFileLoader.load(
-                'bathtub',
-                this.FURITURE_3_BASE_PATH,
-                this.BATHTUB_MODEL_FILE,
-                [this.FURNITURE_3_MATERIAL],
-                {...defaultMeshConfig, scaling: new Vector3(3, 3, 3)}
-            ),
-            modelFileLoader.load(
-                'washbasin',
-                this.FURITURE_3_BASE_PATH,
-                this.WASHBASIN_MODEL_FILE,
-                [this.FURNITURE_3_MATERIAL],
-                {...defaultMeshConfig, scaling: new Vector3(3, 3, 3)}
-            ),
-            modelFileLoader.load(
-                'chair',
-                this.FURITURE_3_BASE_PATH,
-                this.CHAIR_MODEL_FILE,
-                [this.FURNITURE_3_MATERIAL],
-                {...defaultMeshConfig, scaling: new Vector3(3, 3, 3)}
+                {...defaultMeshConfig, scaling: new Vector3(desc.fileDescription.scale, desc.fileDescription.scale, desc.fileDescription.scale)}
             )
-        ])
-        .then((results: [Mesh[], Skeleton[]][]) => {
-            const map = new Map<string, [Mesh[], Skeleton[]]>();
+        );
+        return Promise.all(promises)
+            .then((results: [Mesh[], Skeleton[]][]) => {
+                const map = new Map<string, [Mesh[], Skeleton[]]>();
 
-            results.forEach(model => map.set(model[0][0].name, model));
+                results.forEach(model => map.set(model[0][0].name, model));
 
-            return map;
-        });
+                return map;
+            });
     }
 }
 
