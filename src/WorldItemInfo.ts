@@ -3,7 +3,7 @@ import { Polygon, Shape } from "@nightshifts.inc/geometry";
 /**
  * `WorldItemInfo` represents any distinguishable item in the parsed world (think of it as a mesh, e.g walls, rooms, creatures).
  */
-export class WorldItemInfo<T = any> {
+export class WorldItemInfo {
     mesh: any;
     id: number;
     type: string;
@@ -13,11 +13,6 @@ export class WorldItemInfo<T = any> {
     isBorder: boolean;
     children: WorldItemInfo[] = [];
     borderItems: WorldItemInfo[] = [];
-    indexedBorderItems: {
-        roomBoundingPolygonSideIndex: number;
-        sizeRatio: number;
-        borderItem: WorldItemInfo;
-    }[] = [];
 
     constructor(id: number, type: string, dimensions: Shape, name: string, isBorder: boolean = false) {
         this.type = type;

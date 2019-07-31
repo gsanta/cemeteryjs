@@ -1,32 +1,33 @@
 import { Polygon } from '@nightshifts.inc/geometry';
-import { BorderItemSegmentingTransformator } from '../../transformators/BorderItemSegmentingTransformator';
-import { FurnitureRealSizeTransformator } from '../../transformators/FurnitureRealSizeTransformator';
-import { BorderItemWidthToRealWidthTransformator } from '../../transformators/BorderItemWidthToRealWidthTransformator';
-import { BorderItemsToLinesTransformator } from '../../transformators/BorderItemsToLinesTransformator';
-import { BorderItemAddingTransformator } from '../../transformators/BorderItemAddingTransformator';
-import { HierarchyBuildingTransformator } from '../../transformators/HierarchyBuildingTransformator';
-import { ScalingTransformator } from '../../transformators/ScalingTransformator';
-import { RootWorldItemParser } from '../../parsers/RootWorldItemParser';
-import { PolygonAreaInfoParser } from '../../parsers/polygon_area_parser/PolygonAreaInfoParser';
-import { RoomInfoParser } from '../../parsers/room_parser/RoomInfoParser';
-import { RoomSeparatorParser } from '../../parsers/room_separator_parser/RoomSeparatorParser';
-import { FurnitureInfoParser } from '../../parsers/furniture_parser/FurnitureInfoParser';
-import { MeshCreationTransformator } from '../../transformators/MeshCreationTransformator';
-import { MeshFactoryProducer } from './MeshFactoryProducer';
-import { defaultParseOptions, WorldParser } from '../../WorldParser';
-import { WorldItemInfoFactory } from '../../WorldItemInfoFactory';
-import { CombinedWorldItemParser } from '../../parsers/CombinedWorldItemParser';
-import { WorldMapToMatrixGraphConverter } from '../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
-import { WorldItemInfo } from '../../WorldItemInfo';
+import { BorderItemSegmentingTransformator } from '../../../transformators/BorderItemSegmentingTransformator';
+import { FurnitureRealSizeTransformator } from '../../../transformators/FurnitureRealSizeTransformator';
+import { BorderItemWidthToRealWidthTransformator } from '../../../transformators/BorderItemWidthToRealWidthTransformator';
+import { BorderItemsToLinesTransformator } from '../../../transformators/BorderItemsToLinesTransformator';
+import { BorderItemAddingTransformator } from '../../../transformators/BorderItemAddingTransformator';
+import { HierarchyBuildingTransformator } from '../../../transformators/HierarchyBuildingTransformator';
+import { ScalingTransformator } from '../../../transformators/ScalingTransformator';
+import { RootWorldItemParser } from '../../../parsers/RootWorldItemParser';
+import { PolygonAreaInfoParser } from '../../../parsers/polygon_area_parser/PolygonAreaInfoParser';
+import { RoomInfoParser } from '../../../parsers/room_parser/RoomInfoParser';
+import { RoomSeparatorParser } from '../../../parsers/room_separator_parser/RoomSeparatorParser';
+import { FurnitureInfoParser } from '../../../parsers/furniture_parser/FurnitureInfoParser';
+import { MeshCreationTransformator } from '../../../transformators/MeshCreationTransformator';
+import { MeshFactoryProducer } from '../MeshFactoryProducer';
+import { defaultParseOptions, WorldParser } from '../../../WorldParser';
+import { WorldItemInfoFactory } from '../../../WorldItemInfoFactory';
+import { CombinedWorldItemParser } from '../../../parsers/CombinedWorldItemParser';
+import { WorldMapToMatrixGraphConverter } from '../../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
+import { WorldItemInfo } from '../../../WorldItemInfo';
+import { Importer } from '../../api/Importer';
 
-export class WorldImporter {
+export class BabylonImporter implements Importer {
     private meshFactoryProducer: MeshFactoryProducer;
 
     constructor(meshFactoryProducer: MeshFactoryProducer) {
         this.meshFactoryProducer = meshFactoryProducer;
     }
 
-    public import(strWorld: string): Promise<WorldItemInfo[]> {
+    import(strWorld: string): Promise<WorldItemInfo[]> {
         if (!this.meshFactoryProducer.factory) {
             return this.meshFactoryProducer.load().then(() => this.parse(strWorld));
         } else {
