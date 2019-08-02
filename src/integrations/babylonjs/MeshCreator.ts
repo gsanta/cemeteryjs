@@ -1,6 +1,6 @@
 import { WorldItemInfo } from "../../WorldItemInfo";
-import { Mesh } from "@babylonjs/core";
+import { Mesh, Skeleton } from "@babylonjs/core";
 
 export interface MeshCreator {
-    createItem(worldItemInfo: WorldItemInfo): Mesh;
+    createItem(worldItemInfo: WorldItemInfo, meshInfo: [Mesh[], Skeleton[]]): Mesh;
 }

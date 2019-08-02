@@ -5,19 +5,11 @@ import { WorldItemInfo } from '../../../WorldItemInfo';
 import { MeshCreator } from '../MeshCreator';
 
 export class PlayerFactory implements MeshCreator  {
-    public meshInfo: [Mesh[], Skeleton[]];
-    private scene: Scene;
     private worldItemBoundingBoxCalculator: WorldItemBoundingBoxCalculator = new WorldItemBoundingBoxCalculator();
 
-    constructor(meshInfo: [Mesh[], Skeleton[]], scene: Scene) {
-        this.meshInfo = meshInfo;
-        this.scene = scene;
-    }
-
-
-    public createItem(worldItemInfo: WorldItemInfo): Mesh {
+    public createItem(worldItemInfo: WorldItemInfo, meshInfo: [Mesh[], Skeleton[]]): Mesh {
         let boundingBox = this.worldItemBoundingBoxCalculator.getBoundingBox(worldItemInfo);
-        let meshes = this.meshInfo[0]; //.map(mesh => mesh.clone('player'));
+        let meshes = meshInfo[0]; //.map(mesh => mesh.clone('player'));
         meshes.forEach(mesh => mesh.isVisible = true);
 
         boundingBox = boundingBox.negate('y');

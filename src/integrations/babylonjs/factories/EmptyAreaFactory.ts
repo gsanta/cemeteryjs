@@ -5,7 +5,6 @@ import { WorldItemBoundingBoxCalculator } from './utils/WorldItemBoundingBoxCalc
 
 export class EmptyAreaFactory implements MeshCreator {
     private scene: Scene;
-    public meshInfo: [Mesh[], Skeleton[]];
     private worldItemBoundingBoxCalculator: WorldItemBoundingBoxCalculator = new WorldItemBoundingBoxCalculator();
 
     constructor(scene: Scene) {

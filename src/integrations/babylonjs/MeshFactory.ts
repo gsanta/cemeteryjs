@@ -43,14 +43,16 @@ export interface ModelTypeDescription {
 }
 
 export class MeshFactory {
-    private map: Map<string, MeshCreator> = new Map();
+    private map: Map<string, [Mesh[], Skeleton[]]> = new Map();
     private scene: Scene;
     private modelFileLoader: ModelFileLoader;
     private isReady = true;
+    private modelFactory: ModelFactory;
 
-    constructor(scene: Scene, modelFileLoader: ModelFileLoader) {
+    constructor(scene: Scene, modelFileLoader: ModelFileLoader, modelFactory: ModelFactory) {
         this.scene = scene;
         this.modelFileLoader = modelFileLoader;
+        this.modelFactory = modelFactory;
     }
 
     loadModels(modelTypeDescription: ModelTypeDescription[]): Promise<void> {
@@ -73,26 +75,7 @@ export class MeshFactory {
     }
 
     private registerMeshCreator(type: string, model: [Mesh[], Skeleton[]]) {
-        switch(type) {
-            case 'empty':
-                this.map.set('empty', new EmptyAreaFactory(this.scene));
-                break;
-            case 'player':
-                this.map.set('player', new PlayerFactory(model, this.scene));
-                break;
-            case 'door':
-                this.map.set('door', new DoorFactory(model, this.scene, MeshBuilder));
-                break;
-            case 'window':
-                this.map.set('window', new WindowFactory(model, this.scene, MeshBuilder));
-                break;
-            case 'wall':
-                this.map.set('wall', new WallFactory(this.scene));
-                break;
-            default:
-                this.map.set(type, new ModelFactory(model, this.scene));
-                break;
-        }
+        this.map.set(type, model);
     }
 
     getInstance(worldItemInfo: WorldItemInfo): Mesh {
@@ -100,7 +83,21 @@ export class MeshFactory {
             throw new Error('`MeshFactory` is not ready loading the models, please wait for the Promise returned from `loadModels` to resolve.');
         }
 
-        const worldItemFactory = this.map.get(worldItemInfo.type);
-        return worldItemFactory.createItem(worldItemInfo);
+        const meshModel = this.map.get(worldItemInfo.type);
+
+        switch(worldItemInfo.type) {
+            case 'empty':
+                return new EmptyAreaFactory(this.scene).createItem(worldItemInfo);
+            case 'player':
+                return new PlayerFactory().createItem(worldItemInfo, meshModel)
+            case 'door':
+                return new DoorFactory(this.scene, MeshBuilder).createItem(worldItemInfo, meshModel);
+            case 'window':
+                return new WindowFactory(this.scene, MeshBuilder).createItem(worldItemInfo, meshModel);
+            case 'wall':
+                return new WallFactory(this.scene).createItem(worldItemInfo);
+            default:
+                return this.modelFactory.createItem(worldItemInfo, meshModel);
+        }
     }
 }

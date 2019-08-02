@@ -5,17 +5,15 @@ import { WorldItemBoundingBoxCalculator } from './utils/WorldItemBoundingBoxCalc
 import { MeshCreator } from '../MeshCreator';
 
 export class ModelFactory implements MeshCreator {
-    public meshInfo: [Mesh[], Skeleton[]];
     private scene: Scene;
     private worldItemBoundingBoxCalculator: WorldItemBoundingBoxCalculator = new WorldItemBoundingBoxCalculator();
 
-    constructor(meshInfo: [Mesh[], Skeleton[]], scene: Scene) {
-        this.meshInfo = meshInfo;
+    constructor(scene: Scene) {
         this.scene = scene;
     }
 
-    public createItem(worldItemInfo: WorldItemInfo): Mesh {
-        const meshes = this.meshInfo[0].map(m => m.clone());
+    public createItem(worldItemInfo: WorldItemInfo, meshInfo: [Mesh[], Skeleton[]]): Mesh {
+        const meshes = meshInfo[0].map(m => m.clone());
         let boundingBox = this.worldItemBoundingBoxCalculator.getBoundingBox(worldItemInfo);
         const rotation = - worldItemInfo.rotation;
         meshes[0].isVisible = true;
