@@ -20,43 +20,8 @@ export class MeshCreationTransformator {
     }
 
     private createMesh(worldItemInfo: WorldItemInfo): void {
-        let mesh: any;
-        switch (worldItemInfo.name) {
-            case 'wall':
-                mesh = this.meshFactory.createWall(worldItemInfo);
-                break;
-            case 'door':
-                mesh = this.meshFactory.createDoor(worldItemInfo);
-                break;
-            case 'player':
-                mesh = this.meshFactory.createPlayer(worldItemInfo);
-            case 'table':
-                mesh = this.meshFactory.createTable(worldItemInfo);
-                break;
-            case 'cupboard':
-                mesh = this.meshFactory.createCupboard(worldItemInfo);
-                break;
-            case 'bathtub':
-                mesh = this.meshFactory.createBathtub(worldItemInfo);
-                break;
-            case 'washbasin':
-                mesh = this.meshFactory.createWashbasin(worldItemInfo);
-                break;
-            case 'chair':
-                mesh = this.meshFactory.createChair(worldItemInfo);
-                break;
-            case 'room':
-                mesh = this.meshFactory.createRoom(worldItemInfo);
-                break;
-            case 'empty':
-                mesh = this.meshFactory.createEmptyArea(worldItemInfo);
-                break;
-            case 'window':
-                mesh = this.meshFactory.createWindow(worldItemInfo);
-                break;
-            default:
-                throw new Error('Unknown GameObject type: ' + worldItemInfo.name);
-        }
+        let mesh = this.meshFactory.getInstance(worldItemInfo);
+
         worldItemInfo.mesh = mesh;
     }
 }

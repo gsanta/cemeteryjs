@@ -26,7 +26,7 @@ export class ModelFileLoader {
     }
 
     public load(name: string, base: string, fileName: string, materialFileNames: string[], config: Partial<MeshTemplateConfig>)
-        : Promise<[Mesh[], Skeleton[]]> {
+        : Promise<[Mesh[], Skeleton[], string]> {
         const materials = this.loadMaterials(materialFileNames);
 
         return new Promise(resolve => {
@@ -40,7 +40,7 @@ export class ModelFileLoader {
                 this.configMeshes(<Mesh[]> meshes, config);
                 meshes[0].name = name;
 
-                resolve([<Mesh[]> meshes, skeletons]);
+                resolve([<Mesh[]> meshes, skeletons, name]);
             };
 
             const onError = (scene: Scene, message: string) => {

@@ -1,5 +1,5 @@
 import { WorldItemInfo } from "../../WorldItemInfo";
-import { ModelTypeDescription } from "../babylonjs/MeshFactoryProducer";
+import { ModelTypeDescription } from "../babylonjs/MeshFactory";
 
 
 export interface Importer {
