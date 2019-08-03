@@ -1,4 +1,4 @@
-import { Mesh, MeshBuilder, Scene, StandardMaterial, Texture, Vector3 } from '@babylonjs/core';
+import { Mesh, MeshBuilder, Scene, StandardMaterial, Texture, Vector3 } from 'babylonjs';
 import { GeometryUtils } from '@nightshifts.inc/geometry';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { WorldItemBoundingBoxCalculator } from './utils/WorldItemBoundingBoxCalculator';

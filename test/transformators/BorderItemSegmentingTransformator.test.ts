@@ -1,5 +1,4 @@
 import { Polygon } from "@nightshifts.inc/geometry";
-import { expect } from "chai";
 import { CombinedWorldItemParser } from "../../src/parsers/CombinedWorldItemParser";
 import { RoomInfoParser } from "../../src/parsers/room_parser/RoomInfoParser";
 import { RoomSeparatorParser } from "../../src/parsers/room_separator_parser/RoomSeparatorParser";
@@ -42,15 +41,15 @@ describe ('BorderItemSegmentingTransformator', () => {
 
             items = new BorderItemSegmentingTransformator(worldItemInfoFacotry, ['wall']).transform(items);
 
-            expect(items.filter(item => item.name === 'wall').length).to.eql(7, 'wall segment number not ok');
+            expect(items.filter(item => item.name === 'wall').length).toEqual(7);
 
-            expect(_.some(items, {dimensions: Polygon.createRectangle(0, 0, 1, 4)}), 'Rectangle(0, 0, 1, 4) not found.').to.be.true;
-            expect(_.some(items, {dimensions: Polygon.createRectangle(0, 3, 1, 4)}), 'Rectangle(0, 3, 1, 4) not found.').to.be.true;
-            expect(_.some(items, {dimensions: Polygon.createRectangle(9, 0, 1, 4)}), 'Rectangle(9, 0, 1, 4) not found.').to.be.true;
-            expect(_.some(items, {dimensions: Polygon.createRectangle(9, 3, 1, 4)}), 'Rectangle(9, 3, 1, 4) not found.').to.be.true;
-            expect(_.some(items, {dimensions: Polygon.createRectangle(0, 0, 10, 1)}), 'Rectangle(0, 0, 10, 1) not found.').to.be.true;
-            expect(_.some(items, {dimensions: Polygon.createRectangle(0, 3, 10, 1)}), 'Rectangle(0, 3, 10, 1) not found.').to.be.true;
-            expect(_.some(items, {dimensions: Polygon.createRectangle(0, 6, 10, 1)}), 'Rectangle(0, 6, 10, 1) not found.').to.be.true;
+            expect(_.some(items, {dimensions: Polygon.createRectangle(0, 0, 1, 4)})).toBeTruthy();
+            expect(_.some(items, {dimensions: Polygon.createRectangle(0, 3, 1, 4)})).toBeTruthy();
+            expect(_.some(items, {dimensions: Polygon.createRectangle(9, 0, 1, 4)})).toBeTruthy();
+            expect(_.some(items, {dimensions: Polygon.createRectangle(9, 3, 1, 4)})).toBeTruthy();
+            expect(_.some(items, {dimensions: Polygon.createRectangle(0, 0, 10, 1)})).toBeTruthy();
+            expect(_.some(items, {dimensions: Polygon.createRectangle(0, 3, 10, 1)})).toBeTruthy();
+            expect(_.some(items, {dimensions: Polygon.createRectangle(0, 6, 10, 1)})).toBeTruthy();
 
         });
 
@@ -89,7 +88,7 @@ describe ('BorderItemSegmentingTransformator', () => {
 
             items = new BorderItemSegmentingTransformator(worldItemInfoFacotry, ['wall']).transform(items);
 
-            expect(items.filter(item => item.name === 'wall').length).to.eq(16);
+            expect(items.filter(item => item.name === 'wall').length).toEqual(16);
             // TODO: fix expectations
             // expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(0, 0, 1, 5), items), 'Rectangle(0, 0, 1, 5) not found').to.be.true;
             // expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(0, 4, 1, 6), items), 'Rectangle(0, 4, 1, 6) not found').to.be.true;
@@ -145,7 +144,7 @@ describe ('BorderItemSegmentingTransformator', () => {
 
             items = new BorderItemSegmentingTransformator(worldItemInfoFacotry, ['wall']).transform(items);
 
-            expect(1).to.eq(2);
+            expect(1).toEqual(2);
         });
     });
 });

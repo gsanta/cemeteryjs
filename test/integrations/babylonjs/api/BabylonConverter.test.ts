@@ -1,7 +1,6 @@
 import { WorldItemInfo } from '../../../../src/WorldItemInfo';
 import { BabylonConverter } from '../../../../src/integrations/babylonjs/api/BabylonConverter';
 import * as sinon from 'sinon';
-import { expect } from 'chai';
 
 function setupWorldItemInfo(): WorldItemInfo[] {
     const root: WorldItemInfo = new WorldItemInfo(0, 'root', null, null, false);
@@ -102,7 +101,7 @@ describe('BabylonConverter', () => {
             const [root] = setupWorldItemInfo();
             const convertedObjs = converter.convert([root], convert, addChildren, addBorders);
 
-            expect(convertedObjs[0]).to.eql(new GameObj(0));
+            expect(convertedObjs[0]).toEqual(new GameObj(0));
         });
     });
 });

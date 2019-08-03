@@ -1,6 +1,5 @@
-import { MeshCreator } from './MeshCreator';
 import { WorldItemInfo } from '../..';
-import { Mesh, Skeleton, MeshBuilder, Scene, Vector3, StandardMaterial } from '@babylonjs/core';
+import { Mesh, Skeleton, MeshBuilder, Scene, Vector3, StandardMaterial } from 'babylonjs';
 import { EmptyAreaFactory } from './factories/EmptyAreaFactory';
 import { PlayerFactory } from './factories/PlayerFactory';
 import { DoorFactory } from './factories/DoorFactory';

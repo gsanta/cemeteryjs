@@ -1,5 +1,5 @@
 
-import { Color3, Mesh, MeshBuilder, PhysicsImpostor, Scene, Skeleton, Space, StandardMaterial, Vector3, Axis } from '@babylonjs/core';
+import { Color3, Mesh, MeshBuilder, PhysicsImpostor, Scene, Skeleton, Space, StandardMaterial, Vector3, Axis } from 'babylonjs';
 import { WorldItemInfo } from '../../../WorldItemInfo';
 import { WorldItemBoundingBoxCalculator } from './utils/WorldItemBoundingBoxCalculator';
 import { MeshCreator } from '../MeshCreator';

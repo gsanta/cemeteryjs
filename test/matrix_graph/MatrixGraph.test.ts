@@ -1,5 +1,4 @@
 import { LinesToGraphConverter } from '../../src/matrix_graph/conversion/LinesToGraphConverter';
-import { expect } from 'chai';
 
 
 describe('MatrixGraph', () => {
@@ -26,7 +25,7 @@ describe('MatrixGraph', () => {
 
             const reducedGraph = graph.getGraphForVertexValue('W');
 
-            expect(reducedGraph.size()).to.equal(6);
+            expect(reducedGraph.size()).toEqual(6);
         });
     });
 
@@ -53,9 +52,9 @@ describe('MatrixGraph', () => {
 
             const connectedComponentGraphs = graph.createConnectedComponentGraphsForCharacter('R');
 
-            expect(connectedComponentGraphs.length).to.equal(2);
-            expect(connectedComponentGraphs[0].getAllVertices().length).to.eql(9)
-            expect(connectedComponentGraphs[1].getAllVertices().length).to.eql(4)
+            expect(connectedComponentGraphs.length).toEqual(2);
+            expect(connectedComponentGraphs[0].getAllVertices().length).toEqual(9)
+            expect(connectedComponentGraphs[1].getAllVertices().length).toEqual(4)
          });
     });
 });

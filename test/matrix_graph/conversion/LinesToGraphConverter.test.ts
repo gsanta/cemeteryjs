@@ -1,5 +1,4 @@
 import { LinesToGraphConverter } from '../../../src/matrix_graph/conversion/LinesToGraphConverter';
-import {expect} from 'chai';
 
 describe('LinesToGraphConverter', () => {
     describe('parse', () => {
@@ -18,11 +17,11 @@ describe('LinesToGraphConverter', () => {
                 },
                 {}
             );
-            expect(graph.size()).to.equal(24);
-            expect(graph.getAjacentEdges(0)).to.have.members([1, 6]);
-            expect(graph.getAjacentEdges(1)).to.have.members([0, 2]);
-            expect(graph.getAjacentEdges(8)).to.have.members([7, 9]);
-            expect(graph.getAjacentEdges(23)).to.have.members([17, 22]);
+            expect(graph.size()).toEqual(24);
+            expect(graph.getAjacentEdges(0)).toEqual(expect.arrayContaining([1, 6]));
+            expect(graph.getAjacentEdges(1)).toEqual(expect.arrayContaining([0, 2]));
+            expect(graph.getAjacentEdges(8)).toEqual(expect.arrayContaining([7, 9]));
+            expect(graph.getAjacentEdges(23)).toEqual(expect.arrayContaining([17, 22]));
         });
     });
 });

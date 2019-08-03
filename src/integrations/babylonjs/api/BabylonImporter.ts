@@ -18,7 +18,7 @@ import { CombinedWorldItemParser } from '../../../parsers/CombinedWorldItemParse
 import { WorldMapToMatrixGraphConverter } from '../../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 import { WorldItemInfo } from '../../../WorldItemInfo';
 import { Importer } from '../../api/Importer';
-import { Scene } from '@babylonjs/core';
+import { Scene } from 'babylonjs';
 import { MeshFactory, ModelTypeDescription } from '../MeshFactory';
 import { ModelFileLoader } from '../ModelFileLoader';
 

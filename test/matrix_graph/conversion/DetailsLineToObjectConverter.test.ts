@@ -1,5 +1,4 @@
 import { DetailsLineToObjectConverter, DetailsLineDataTypes } from '../../../src/matrix_graph/conversion/DetailsLineToObjectConverter';
-import { expect } from 'chai';
 
 describe('DetailsLineToObjectConverter', () => {
     describe('convert', () => {
@@ -13,7 +12,7 @@ describe('DetailsLineToObjectConverter', () => {
             });
             const obj = detailsLineToObjectConverter.convert(line);
 
-            expect(obj).to.eql({
+            expect(obj).toEqual({
                 angle: '-90',
                 axis: {
                     x: 5,

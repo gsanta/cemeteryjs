@@ -1,5 +1,4 @@
 import { PolygonRedundantPointReducer } from '../../../src/parsers/polygon_area_parser/PolygonRedundantPointReducer';
-import { expect } from 'chai';
 import { Point } from '@nightshifts.inc/geometry';
 
 describe('PolygonRedundantPointReducer', () => {
@@ -16,7 +15,7 @@ describe('PolygonRedundantPointReducer', () => {
             const polygonRedundantPointReducer = new PolygonRedundantPointReducer();
             const reducedPoints = polygonRedundantPointReducer.reduce(points);
 
-            expect(reducedPoints).to.eql([
+            expect(reducedPoints).toEqual([
                 new Point(1, 1),
                 new Point(3, 1),
                 new Point(3, 3),

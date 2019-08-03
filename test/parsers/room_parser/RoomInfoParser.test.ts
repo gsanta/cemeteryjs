@@ -1,6 +1,5 @@
 import { WorldMapToMatrixGraphConverter } from "../../../src/matrix_graph/conversion/WorldMapToMatrixGraphConverter";
 import { RoomInfoParser } from '../../../src/parsers/room_parser/RoomInfoParser';
-import { expect } from 'chai';
 import * as fs from 'fs';
 import { WorldMapToRoomMapConverter } from "../../../src/parsers/room_parser/WorldMapToRoomMapConverter";
 import { Point, Polygon } from '@nightshifts.inc/geometry';
@@ -28,7 +27,7 @@ describe('RoomInfoParser', () => {
                 new Point(26, 26),
                 new Point(37, 26),
                 new Point(37, 1)
-            ]))).to.be.true;
+            ]))).toBeTruthy();
         });
     });
 });

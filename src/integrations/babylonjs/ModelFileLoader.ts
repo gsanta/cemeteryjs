@@ -1,4 +1,4 @@
-import { Scene, Mesh, Skeleton, StandardMaterial, AbstractMesh, ParticleSystem, AnimationGroup, Texture, SceneLoader, Vector3 } from '@babylonjs/core';
+import { Scene, Mesh, Skeleton, StandardMaterial, AbstractMesh, ParticleSystem, AnimationGroup, Texture, SceneLoader, Vector3 } from 'babylonjs';
 import '@babylonjs/loaders/OBJ';
 import '@babylonjs/loaders/glTF';
 

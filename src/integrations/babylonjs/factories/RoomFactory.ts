@@ -1,4 +1,4 @@
-import { Mesh, MeshBuilder, PhysicsImpostor, Scene, Vector3 } from '@babylonjs/core';
+import { Mesh, MeshBuilder, PhysicsImpostor, Scene, Vector3 } from 'babylonjs';
 import { Shape } from '@nightshifts.inc/geometry';
 import { RoomLabelFactory } from './RoomLabelFactory';
 import { WorldItemBoundingBoxCalculator } from './utils/WorldItemBoundingBoxCalculator';

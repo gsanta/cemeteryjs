@@ -1,9 +1,6 @@
-/// <reference path="../../test/test.setup.ts"/>
-
 import { WorldItemInfo } from '../../src/WorldItemInfo';
 import { Segment, Point } from '@nightshifts.inc/geometry';
 import { BorderItemWidthToRealWidthTransformator } from '../../src/transformators/BorderItemWidthToRealWidthTransformator';
-import { expect } from 'chai';
 import { BorderItemAddingTransformator } from '../../src/transformators/BorderItemAddingTransformator';
 import { WorldItemInfoFactory, WorldParser } from '../../src';
 import { CombinedWorldItemParser } from '../../src/parsers/CombinedWorldItemParser';
@@ -80,7 +77,7 @@ describe('BorderItemWidthToRealWidthTransformator', () => {
 
         [room] = transformator.transform([room]);
 
-        expect(room.borderItems).to.eql(
+        expect(room.borderItems).toEqual(
             [
                 new WorldItemInfo(0, 'wall', new Segment(new Point(0, 0), new Point(0, 4)), 'wall'),
                 new WorldItemInfo(0, 'wall', new Segment(new Point(4, 0), new Point(0, 0)), 'wall'),
@@ -107,7 +104,7 @@ describe('BorderItemWidthToRealWidthTransformator', () => {
 
         [room] = transformator.transform([room]);
 
-        expect(room.borderItems).to.eql(
+        expect(room.borderItems).toEqual(
             [
                 new WorldItemInfo(0, 'wall', new Segment(new Point(0, 0), new Point(0, 4.5)), 'wall'),
                 new WorldItemInfo(0, 'wall', new Segment(new Point(4, 0), new Point(0, 0)), 'wall'),
@@ -132,7 +129,7 @@ describe('BorderItemWidthToRealWidthTransformator', () => {
         const transformator = new BorderItemWidthToRealWidthTransformator([{name: 'door', width: 2}]);
         const [root] = transformator.transform(initBorderItems(map));
 
-        expect(root.children[0]).to.haveBorders([
+        expect(root.children[0]).toHaveBorders([
             new Segment(new Point(0.5, 0.5), new Point(0.5, 4.5)),
             new Segment(new Point(0.5, 0.5), new Point(14.5, 0.5)),
             new Segment(new Point(14.5, 0.5), new Point(14.5, 4.5)),

@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import { WorldItemInfo } from '../../src/WorldItemInfo';
 import { RootWorldItemParser } from "../../src/parsers/RootWorldItemParser";
 import { MatrixGraph } from "../../src/matrix_graph/MatrixGraph";
@@ -17,14 +16,14 @@ describe('RootWorldItemParser', () => {
             const rootWorldItemParser = new RootWorldItemParser(new WorldItemInfoFactory());
 
             const worldItems = rootWorldItemParser.generate(<MatrixGraph> graphMock);
-            expect(worldItems.length).to.eql(1);
+            expect(worldItems.length).toEqual(1);
             const expectedShape = new Polygon([
                 new Point(0, 0),
                 new Point(0, 4),
                 new Point(5, 4),
                 new Point(5, 0)
             ]);
-            expect(worldItems[0]).to.eql(new WorldItemInfo(1, 'F', expectedShape, 'root'));
+            expect(worldItems[0]).toEqual(new WorldItemInfo(1, 'F', expectedShape, 'root'));
         });
     });
 });

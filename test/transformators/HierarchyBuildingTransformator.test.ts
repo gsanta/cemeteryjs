@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { WorldItemInfo } from '../../src/WorldItemInfo';
 import { HierarchyBuildingTransformator } from '../../src/transformators/HierarchyBuildingTransformator';
 import { Polygon, Point } from '@nightshifts.inc/geometry';
@@ -35,8 +34,8 @@ describe('HierarchyBuildingTransformator', () => {
 
             hierarchyBuildingWorldItemGeneratorDecorator.transform([worldItemParentMock, worldItemChildMock]);
 
-            expect(worldItemParentMock.children.length).to.eq(1);
-            expect(worldItemParentMock.children[0]).to.eq(worldItemChildMock);
+            expect(worldItemParentMock.children.length).toEqual(1);
+            expect(worldItemParentMock.children[0]).toEqual(worldItemChildMock);
         });
 
         it ('does not create a parent-child relationship if one does not contain the other', () => {
@@ -66,7 +65,7 @@ describe('HierarchyBuildingTransformator', () => {
 
             new HierarchyBuildingTransformator().transform([worldItemParentMock, worldItemChildMock]);
 
-            expect(worldItemParentMock.children.length).to.eq(0);
+            expect(worldItemParentMock.children.length).toEqual(0);
         });
     });
 });

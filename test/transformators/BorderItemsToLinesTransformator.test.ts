@@ -1,12 +1,7 @@
-/// <reference path="../../test/test.setup.ts"/>
-
 import { RoomInfoParser } from '../../src/parsers/room_parser/RoomInfoParser';
 import { BorderItemsToLinesTransformator, mergeStraightAngledNeighbouringBorderItemPolygons } from '../../src/transformators/BorderItemsToLinesTransformator';
-import { expect } from 'chai';
 import { WorldMapToMatrixGraphConverter } from '../../src/matrix_graph/conversion/WorldMapToMatrixGraphConverter';
-import { WorldMapToRoomMapConverter } from '../../src/parsers/room_parser/WorldMapToRoomMapConverter';
 import { ScalingTransformator } from '../../src/transformators/ScalingTransformator';
-import { PolygonAreaInfoParser } from '../../src/parsers/polygon_area_parser/PolygonAreaInfoParser';
 import { Polygon, Point } from '@nightshifts.inc/geometry';
 import { WorldItemInfoFactory } from '../../src/WorldItemInfoFactory';
 import { WorldItemInfo } from '../../src/WorldItemInfo';
@@ -80,9 +75,9 @@ describe('`BorderItemsToLinesTransformator`', () => {
                 Polygon.createRectangle(4, 3, 3, 1)
             ];
             const reducedPolygons = mergeStraightAngledNeighbouringBorderItemPolygons(polygons);
-            expect(_.find(reducedPolygons, polygon => polygon.equalTo( Polygon.createRectangle(1, 1, 1, 3)))).to.be.ok
-            expect(_.find(reducedPolygons, polygon => polygon.equalTo( Polygon.createRectangle(2, 3, 5, 1)))).to.be.ok
-            expect(reducedPolygons.length).to.eql(2);
+            expect(_.find(reducedPolygons, polygon => polygon.equalTo( Polygon.createRectangle(1, 1, 1, 3)))).toBeTruthy()
+            expect(_.find(reducedPolygons, polygon => polygon.equalTo( Polygon.createRectangle(2, 3, 5, 1)))).toBeTruthy()
+            expect(reducedPolygons.length).toEqual(2);
         });
     });
 
@@ -141,14 +136,14 @@ describe('`BorderItemsToLinesTransformator`', () => {
             new Point(4.5, 2.5),
             new Point(4.5, 0.5)
         ])
-        expect(hasAnyWorldItemInfoDimension(expectedRoomDimensions1, root.children)).to.be.true;
-        expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(4.5, 0.5, 4, 2), root.children)).to.be.true;
-        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(0.5, 0.5), new Point(0.5, 4.5)), root.children)).to.be.true;
-        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(8.5, 0.5), new Point(8.5, 2.5)), root.children)).to.be.true;
-        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(8.5, 2.5), new Point(8.5, 4.5)), root.children)).to.be.true;
-        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(0.5, 0.5), new Point(4.5, 0.5)), root.children)).to.be.true;
-        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(4.5, 0.5), new Point(8.5, 0.5)), root.children)).to.be.true;
-        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(0.5, 4.5), new Point(8.5, 4.5)), root.children)).to.be.true;
+        expect(hasAnyWorldItemInfoDimension(expectedRoomDimensions1, root.children)).toBeTruthy();
+        expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(4.5, 0.5, 4, 2), root.children)).toBeTruthy();
+        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(0.5, 0.5), new Point(0.5, 4.5)), root.children)).toBeTruthy();
+        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(8.5, 0.5), new Point(8.5, 2.5)), root.children)).toBeTruthy();
+        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(8.5, 2.5), new Point(8.5, 4.5)), root.children)).toBeTruthy();
+        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(0.5, 0.5), new Point(4.5, 0.5)), root.children)).toBeTruthy();
+        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(4.5, 0.5), new Point(8.5, 0.5)), root.children)).toBeTruthy();
+        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(0.5, 4.5), new Point(8.5, 4.5)), root.children)).toBeTruthy();
         // TODO: 2 border items are not validated, they have weird dimensions, check it later
     });
 
@@ -193,21 +188,21 @@ describe('`BorderItemsToLinesTransformator`', () => {
 
             [root] = new BorderItemsToLinesTransformator().transform([root]);
 
-            expect(root.children[0]).to.haveBorders([
+            expect(root.children[0]).toHaveBorders([
                 new Segment(new Point(0.5, 0.5), new Point(0.5, 4.5)),
                 new Segment(new Point(32.5, 0.5), new Point(32.5, 4.5)),
                 new Segment(new Point(0.5, 0.5), new Point(32.5, 0.5)),
                 new Segment(new Point(0.5, 4.5), new Point(32.5, 4.5))
             ]);
 
-            expect(root.children[1]).to.haveBorders([
+            expect(root.children[1]).toHaveBorders([
                 new Segment(new Point(32.5, 0.5), new Point(32.5, 4.5)),
                 new Segment(new Point(52.5, 0.5), new Point(52.5, 4.5)),
                 new Segment(new Point(32.5, 0.5), new Point(52.5, 0.5)),
                 new Segment(new Point(32.5, 4.5), new Point(52.5, 4.5))
             ]);
 
-            expect(root.children[2]).to.haveBorders([
+            expect(root.children[2]).toHaveBorders([
                 new Segment(new Point(0.5, 4.5), new Point(0.5, 8.5)),
                 new Segment(new Point(52.5, 4.5), new Point(52.5, 8.5)),
                 new Segment(new Point(0.5, 4.5), new Point(32.5, 4.5)),
@@ -218,7 +213,7 @@ describe('`BorderItemsToLinesTransformator`', () => {
                 new Segment(new Point(40.726415094339615, 8.5), new Point(52.5, 8.5))
             ]);
 
-            expect(root.children[3]).to.haveBorders([
+            expect(root.children[3]).toHaveBorders([
                 new Segment(new Point(0.5, 8.5), new Point(0.5, 17.5)),
                 new Segment(new Point(14.5, 8.5), new Point(14.5, 13.5)),
                 new Segment(new Point(26.5, 13.5), new Point(26.5, 17.5)),
@@ -228,7 +223,7 @@ describe('`BorderItemsToLinesTransformator`', () => {
             ]);
 
 
-            expect(root.children[4]).to.haveBorders([
+            expect(root.children[4]).toHaveBorders([
                 new Segment(new Point(14.5, 8.5), new Point(14.5, 13.5)),
                 new Segment(new Point(26.5, 8.5), new Point(26.5, 13.5)),
                 new Segment(new Point(14.235849056603776, 8.5), new Point(26.5, 8.5)),

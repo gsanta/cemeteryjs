@@ -1,6 +1,4 @@
 import { WorldParser, defaultParseOptions } from '../src/WorldParser';
-import { expect } from 'chai';
-import * as fs from 'fs';
 import { WorldItemInfo } from '../src/WorldItemInfo';
 import { BorderItemAddingTransformator } from '../src/transformators/BorderItemAddingTransformator';
 import { HierarchyBuildingTransformator } from '../src/transformators/HierarchyBuildingTransformator';
@@ -46,14 +44,14 @@ describe('`WorldParser`', () => {
 
             const [root] = gameObjectParser.parse(map);
             const children = root.children;
-            expect(children.length).to.equal(7, 'number of children of root is not correct.');
-            expect(children[0]).to.eql(new WorldItemInfo(2, 'W', Polygon.createRectangle(0, 0, 1, 3), 'wall', true), 'children[0] is not correct');
-            expect(children[1]).to.eql(new WorldItemInfo(3, 'W', Polygon.createRectangle(7, 0, 1, 3), 'wall', true), 'children[1] is not correct');
-            expect(children[2]).to.eql(new WorldItemInfo(4, 'W', Polygon.createRectangle(0, 0, 3, 1), 'wall', true), 'children[2] is not correct');
-            expect(children[3]).to.eql(new WorldItemInfo(5, 'W', Polygon.createRectangle(0, 2, 8, 1), 'wall', true), 'children[3] is not correct');
-            expect(children[4]).to.eql(new WorldItemInfo(6, 'W', Polygon.createRectangle(5, 0, 3, 1), 'wall', true), 'children[4] is not correct');
-            expect(children[5]).to.eql(new WorldItemInfo(7, 'I', Polygon.createRectangle(3, 0, 2, 1), 'window', true), 'children[5] is not correct');
-            expect(children[6].name).to.eql('room', 'children[6] is not correct');
+            expect(children.length).toEqual(7);
+            expect(children[0]).toEqual(new WorldItemInfo(2, 'W', Polygon.createRectangle(0, 0, 1, 3), 'wall', true));
+            expect(children[1]).toEqual(new WorldItemInfo(3, 'W', Polygon.createRectangle(7, 0, 1, 3), 'wall', true));
+            expect(children[2]).toEqual(new WorldItemInfo(4, 'W', Polygon.createRectangle(0, 0, 3, 1), 'wall', true));
+            expect(children[3]).toEqual(new WorldItemInfo(5, 'W', Polygon.createRectangle(0, 2, 8, 1), 'wall', true));
+            expect(children[4]).toEqual(new WorldItemInfo(6, 'W', Polygon.createRectangle(5, 0, 3, 1), 'wall', true));
+            expect(children[5]).toEqual(new WorldItemInfo(7, 'I', Polygon.createRectangle(3, 0, 2, 1), 'window', true));
+            expect(children[6].name).toEqual('room');
         });
 
         it ('scales the polygons if scale option is changed.', () => {
@@ -75,13 +73,13 @@ describe('`WorldParser`', () => {
             const [root] = worldMapParser.parse(map);
             const rooms = root.children.filter(item => item.name === 'room');
 
-            expect(rooms.length).to.eq(1);
+            expect(rooms.length).toEqual(1);
             expect(rooms[0].dimensions.equalTo(new Polygon([
                 new Point(2, 3),
                 new Point(2, 9),
                 new Point(8, 9),
                 new Point(8, 3)
-            ]))).to.be.ok;
+            ]))).toBeTruthy();
         });
 
         it ('adds the bordering `WorldItem`s to the corresponding rooms', () => {
@@ -133,8 +131,8 @@ describe('`WorldParser`', () => {
             const [root] = worldMapParser.parse(map);
 
             const [room1, room2] = root.children.filter(item => item.name === 'room');
-            expect(room1.borderItems.length).to.eql(6);
-            expect(room2.borderItems.length).to.eql(6);
+            expect(room1.borderItems.length).toEqual(6);
+            expect(room2.borderItems.length).toEqual(6);
         });
     });
 
@@ -188,7 +186,7 @@ describe('`WorldParser`', () => {
         const [root] = worldMapParser.parse(map);
         const walls = root.children.filter(item => item.name === 'wall');
 
-        expect(walls.length).to.eql(8);
+        expect(walls.length).toEqual(8);
     });
 
     it ('can integrate with `PolygonAreaInfoGenerator`', () => {
@@ -219,11 +217,11 @@ describe('`WorldParser`', () => {
 
         const [root] = worldMapParser.parse(map);
 
-        expect(root.children.length).to.eq(2, 'root\'s children size is incorrect');
-        expect(root.children[0].name).to.eq('room');
+        expect(root.children.length).toEqual(2);
+        expect(root.children[0].name).toEqual('room');
         const room = root.children[0];
-        expect(room.children.length).to.eq(1, 'room\'s children size is incorrect');
-        expect(room.children[0].name).to.eq('empty');
+        expect(room.children.length).toEqual(1);
+        expect(room.children[0].name).toEqual('empty');
     });
 
     it ('can parse this', () => {

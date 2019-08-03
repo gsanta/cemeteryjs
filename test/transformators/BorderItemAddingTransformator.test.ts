@@ -2,7 +2,6 @@ import { CombinedWorldItemParser } from '../../src/parsers/CombinedWorldItemPars
 import { RoomSeparatorParser } from '../../src/parsers/room_separator_parser/RoomSeparatorParser';
 import { RoomInfoParser } from '../../src/parsers/room_parser/RoomInfoParser';
 import { BorderItemAddingTransformator } from '../../src/transformators/BorderItemAddingTransformator';
-import { expect } from 'chai';
 import { BorderItemSegmentingTransformator } from '../../src/transformators/BorderItemSegmentingTransformator';
 import _ = require('lodash');
 import { ScalingTransformator } from '../../src/transformators/ScalingTransformator';
@@ -42,7 +41,7 @@ describe('`BorderItemAddingTransformator`', () => {
 
             const [wall1, wall2, wall3, wall4, room] =  new BorderItemAddingTransformator(['wall']).transform(items);
 
-            expect(room.borderItems).to.eql([wall1, wall2, wall3, wall4]);
+            expect(room.borderItems).toEqual([wall1, wall2, wall3, wall4]);
         });
 
         it ('adds border items that intersect at corner when doNotIncludeBorderItemsThatIntersectsOnlyAtCorner is set', () => {
@@ -85,7 +84,7 @@ describe('`BorderItemAddingTransformator`', () => {
             const borderItemDimensions = room3.borderItems.map(borderItem => borderItem.dimensions);
 
             const cornerIntersectingRect = Polygon.createRectangle(4, 0, 1, 5);
-            expect(_.find(borderItemDimensions, (dim: Polygon) => dim.equalTo(cornerIntersectingRect))).to.eql(cornerIntersectingRect);
+            expect(_.find(borderItemDimensions, (dim: Polygon) => dim.equalTo(cornerIntersectingRect))).toEqual(cornerIntersectingRect);
         });
 
         it ('does not add the bordering WorldItem if it only touches the room at it\'s edge', () => {
@@ -128,7 +127,7 @@ describe('`BorderItemAddingTransformator`', () => {
             const borderItemDimensions = room3.borderItems.map(borderItem => borderItem.dimensions);
 
             const cornerIntersectingRect = Polygon.createRectangle(4, 0, 1, 5);
-            expect(_.find(borderItemDimensions, (dim: Polygon) => dim.equalTo(cornerIntersectingRect))).to.eql(undefined);
+            expect(_.find(borderItemDimensions, (dim: Polygon) => dim.equalTo(cornerIntersectingRect))).toEqual(undefined);
         });
 
         it ('takes scales into consideration when calculating \'only corner\' connection', () => {
@@ -172,7 +171,7 @@ describe('`BorderItemAddingTransformator`', () => {
             const borderItemDimensions = room3.borderItems.map(borderItem => borderItem.dimensions);
             1;
             const cornerIntersectingRect = Polygon.createRectangle(8, 8, 2, 10);
-            expect(_.find(borderItemDimensions, (dim: Polygon) => dim.equalTo(cornerIntersectingRect))).to.eql(undefined);
+            expect(_.find(borderItemDimensions, (dim: Polygon) => dim.equalTo(cornerIntersectingRect))).toEqual(undefined);
         });
     });
 });

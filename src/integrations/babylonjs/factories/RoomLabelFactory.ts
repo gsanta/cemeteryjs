@@ -1,4 +1,4 @@
-import { DynamicTexture, MeshBuilder, Scene, StandardMaterial, Texture, Vector3, Mesh } from '@babylonjs/core';
+import { DynamicTexture, MeshBuilder, Scene, StandardMaterial, Texture, Vector3, Mesh } from 'babylonjs';
 import { Shape } from '@nightshifts.inc/geometry';
 import { WorldItemInfo } from '../../../WorldItemInfo';
 import { MeshCreator } from '../MeshCreator';

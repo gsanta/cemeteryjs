@@ -1,4 +1,4 @@
-import { Axis, Mesh, Quaternion, Scene, Skeleton, Vector3 } from '@babylonjs/core';
+import { Axis, Mesh, Quaternion, Scene, Skeleton, Vector3 } from 'babylonjs';
 import { Point, Polygon } from '@nightshifts.inc/geometry';
 import { WorldItemBoundingBoxCalculator } from './utils/WorldItemBoundingBoxCalculator';
 import { WorldItemInfo } from '../../../WorldItemInfo';

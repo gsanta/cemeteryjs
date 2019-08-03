@@ -1,5 +1,4 @@
 import { TreeIteratorGenerator, TreeNode } from '../../src/utils/TreeIteratorGenerator';
-import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 describe('TreeIteratorGenerator', () => {
@@ -40,18 +39,18 @@ describe('TreeIteratorGenerator', () => {
 
         const iterator: Iterator<any> = TreeIteratorGenerator(rootNode);
 
-        expect(iterator.next().value).to.eql(rootNode, 'should be the root node');
-        expect(iterator.next().value).to.eql(level1Nodes[0], 'should be level1Nodes[0]');
-        expect(iterator.next().value).to.eql(level2Nodes[0], 'should be level2Nodes[0]');
-        expect(iterator.next().value).to.eql(level2Nodes[1], 'should be level2Nodes[1]');
-        expect(iterator.next().value).to.eql(level2Nodes[2], 'should be level2Nodes[2]');
-        expect(iterator.next().value).to.eql(level1Nodes[1], 'should be level1Nodes[1]');
-        expect(iterator.next()).to.eql(
+
+        expect(iterator.next().value).toEqual(rootNode);
+        expect(iterator.next().value).toEqual(level1Nodes[0]);
+        expect(iterator.next().value).toEqual(level2Nodes[0]);
+        expect(iterator.next().value).toEqual(level2Nodes[1]);
+        expect(iterator.next().value).toEqual(level2Nodes[2]);
+        expect(iterator.next().value).toEqual(level1Nodes[1]);
+        expect(iterator.next()).toEqual(
             {
                 value: undefined,
                 done: true
-            },
-            'should be done'
+            }
         );
     });
 });

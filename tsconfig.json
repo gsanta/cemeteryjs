@@ -8,8 +8,8 @@
       "outDir": "build",
       "jsx": "react",
       "types": [
-        "mocha",
-        "node"
+        "node",
+        "jest"
       ]
     },
     "include": [

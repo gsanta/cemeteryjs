@@ -1,6 +1,5 @@
 import { WorldMapToMatrixGraphConverter } from "../../../src/matrix_graph/conversion/WorldMapToMatrixGraphConverter";
 import { RoomSeparatorParser } from '../../../src/parsers/room_separator_parser/RoomSeparatorParser';
-import { expect } from "chai";
 import { WorldItemInfoFactory } from '../../../src/WorldItemInfoFactory';
 import { Polygon, Shape } from "@nightshifts.inc/geometry";
 import { WorldItemInfo } from '../../../src/WorldItemInfo';
@@ -46,12 +45,12 @@ describe('RoomSeparatorParser', () => {
 
 
             const worldItems = roomSeparatorParser.generate(matrixGraph);
-            expect(worldItems.length).to.eql(5);
-            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(0, 0, 1, 5), worldItems)).to.be.true;
-            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(9, 0, 1, 5), worldItems)).to.be.true;
-            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(17, 0, 1, 5), worldItems)).to.be.true;
-            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(0, 0, 18, 1), worldItems)).to.be.true;
-            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(0, 4, 18, 1), worldItems)).to.be.true;
+            expect(worldItems.length).toEqual(5);
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(0, 0, 1, 5), worldItems)).toBeTruthy();
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(9, 0, 1, 5), worldItems)).toBeTruthy();
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(17, 0, 1, 5), worldItems)).toBeTruthy();
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(0, 0, 18, 1), worldItems)).toBeTruthy();
+            expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(0, 4, 18, 1), worldItems)).toBeTruthy();
         });
 
         it ('creates separate `WorldItemInfo`s for different type of border items.', () => {
@@ -83,11 +82,11 @@ describe('RoomSeparatorParser', () => {
 
 
             const worldItems = roomSeparatorParser.generate(matrixGraph);
-            expect(worldItems.length).to.eql(4);
-            expect(worldItems[0].dimensions).to.eql(Polygon.createRectangle(0, 0, 2, 1));
-            expect(worldItems[1].dimensions).to.eql(Polygon.createRectangle(6, 0, 4, 1));
-            expect(worldItems[2].dimensions).to.eql(Polygon.createRectangle(2, 0, 4, 1));
-            expect(worldItems[3].dimensions).to.eql(Polygon.createRectangle(9, 1, 1, 2));
+            expect(worldItems.length).toEqual(4);
+            expect(worldItems[0].dimensions).toEqual(Polygon.createRectangle(0, 0, 2, 1));
+            expect(worldItems[1].dimensions).toEqual(Polygon.createRectangle(6, 0, 4, 1));
+            expect(worldItems[2].dimensions).toEqual(Polygon.createRectangle(2, 0, 4, 1));
+            expect(worldItems[3].dimensions).toEqual(Polygon.createRectangle(9, 1, 1, 2));
         });
     });
 });
