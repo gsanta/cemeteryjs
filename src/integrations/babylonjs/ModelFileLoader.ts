@@ -25,7 +25,7 @@ export class ModelFileLoader {
         this.scene = scene;
     }
 
-    public load(name: string, base: string, fileName: string, materialFileNames: string[], config: Partial<MeshTemplateConfig>)
+    public load(name: string, base: string, fileName: string, materialFileNames: string[], scaling: Vector3)
         : Promise<[Mesh[], Skeleton[], string]> {
         const materials = this.loadMaterials(materialFileNames);
 
@@ -37,7 +37,7 @@ export class ModelFileLoader {
                     meshes.forEach(mesh => mesh.material = materials[0]);
                 }
 
-                this.configMeshes(<Mesh[]> meshes, config);
+                this.configMeshes(<Mesh[]> meshes, scaling);
                 meshes[0].name = name;
 
                 resolve([<Mesh[]> meshes, skeletons, name]);
@@ -59,12 +59,12 @@ export class ModelFileLoader {
         });
     }
 
-    private configMeshes(meshes: Mesh[], config: Partial<MeshTemplateConfig>) {
+    private configMeshes(meshes: Mesh[], scaling: Vector3) {
         meshes.forEach(m => {
             m.isPickable = true;
-            m.checkCollisions = config.checkCollisions;
-            m.receiveShadows = config.receiveShadows;
-            m.scaling = config.scaling
+            m.checkCollisions = true;
+            m.receiveShadows = true;
+            m.scaling = scaling
             m.isVisible = false;
         });
     }

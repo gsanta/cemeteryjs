@@ -62,7 +62,7 @@ export class MeshFactory {
                 desc.fileDescription.path,
                 desc.fileDescription.fileName,
                 [],
-                {...defaultMeshConfig, scaling: new Vector3(desc.fileDescription.scale, desc.fileDescription.scale, desc.fileDescription.scale)}
+                new Vector3(desc.fileDescription.scale, desc.fileDescription.scale, desc.fileDescription.scale)
             )
         );
         return Promise.all(promises)
@@ -71,10 +71,6 @@ export class MeshFactory {
 
                 this.isReady = true;
             });
-    }
-
-    private registerMeshCreator(type: string, model: [Mesh[], Skeleton[]]) {
-        this.map.set(type, model);
     }
 
     getInstance(worldItemInfo: WorldItemInfo): Mesh {
@@ -98,5 +94,9 @@ export class MeshFactory {
             default:
                 return this.modelFactory.createItem(worldItemInfo, meshModel);
         }
+    }
+
+    private registerMeshCreator(type: string, model: [Mesh[], Skeleton[]]) {
+        this.map.set(type, model);
     }
 }
