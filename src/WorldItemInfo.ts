@@ -5,6 +5,7 @@ import { Polygon, Shape } from "@nightshifts.inc/geometry";
  */
 export class WorldItemInfo {
     mesh: any;
+    skeleton: any;
     id: number;
     type: string;
     name: string;

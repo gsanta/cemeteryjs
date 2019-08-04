@@ -84,6 +84,7 @@ export class MeshFactory {
             case 'empty':
                 return new EmptyAreaFactory(this.scene).createItem(worldItemInfo);
             case 'player':
+                worldItemInfo.skeleton = meshModel[1][0];
                 return new PlayerFactory().createItem(worldItemInfo, meshModel)
             case 'door':
                 return new DoorFactory(this.scene, MeshBuilder).createItem(worldItemInfo, meshModel);
