@@ -7,6 +7,7 @@ import { WindowFactory } from './factories/WindowFactory';
 import { WallFactory } from './factories/WallFactory';
 import { ModelFactory } from './factories/ModelFactory';
 import { ModelFileLoader } from './ModelFileLoader';
+import { RoomFactory } from './factories/RoomFactory';
 
 export interface MeshTemplateConfig {
     checkCollisions: boolean;
@@ -80,7 +81,9 @@ export class MeshFactory {
 
         const meshModel = this.map.get(worldItemInfo.type);
 
-        switch(worldItemInfo.type) {
+        switch(worldItemInfo.name) {
+            case 'root':
+                return null;
             case 'empty':
                 return new EmptyAreaFactory(this.scene).createItem(worldItemInfo);
             case 'player':
@@ -92,6 +95,8 @@ export class MeshFactory {
                 return new WindowFactory(this.scene, MeshBuilder).createItem(worldItemInfo, meshModel);
             case 'wall':
                 return new WallFactory(this.scene).createItem(worldItemInfo);
+            case 'room':
+                return new RoomFactory(this.scene).createItem(worldItemInfo);
             default:
                 return this.modelFactory.createItem(worldItemInfo, meshModel);
         }
