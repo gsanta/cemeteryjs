@@ -13,6 +13,7 @@ export class WorldItemInfo {
     rotation: number;
     isBorder: boolean;
     children: WorldItemInfo[] = [];
+    parent: WorldItemInfo;
     borderItems: WorldItemInfo[] = [];
 
     constructor(id: number, type: string, dimensions: Shape, name: string, isBorder: boolean = false) {

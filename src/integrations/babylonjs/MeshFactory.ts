@@ -79,7 +79,7 @@ export class MeshFactory {
             throw new Error('`MeshFactory` is not ready loading the models, please wait for the Promise returned from `loadModels` to resolve.');
         }
 
-        const meshModel = this.map.get(worldItemInfo.type);
+        const meshModel = this.map.get(worldItemInfo.name);
 
         switch(worldItemInfo.name) {
             case 'root':

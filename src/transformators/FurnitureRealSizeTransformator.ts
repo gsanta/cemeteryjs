@@ -19,7 +19,10 @@ export class FurnitureRealSizeTransformator {
     }
 
     private transformFurnituresInRoom(room: WorldItemInfo) {
-        room.children.forEach(furniture => {
+        room.children
+        // TODO: find better solution to handle empty
+        .filter(furniture => furniture.name !== 'empty')
+        .forEach(furniture => {
 
             let realSize = <Polygon> (this.realSizes[furniture.name] || furniture.dimensions);
             const centerPoint = furniture.dimensions.getBoundingCenter();

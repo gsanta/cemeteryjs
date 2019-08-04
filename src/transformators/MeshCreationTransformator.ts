@@ -12,16 +12,10 @@ export class MeshCreationTransformator {
     public transform(worldItems: WorldItemInfo[]): WorldItemInfo[] {
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
-                item.mesh = this.createMesh(item)
+                item.mesh = this.meshFactory.getInstance(item);
             }
         });
 
         return worldItems;
-    }
-
-    private createMesh(worldItemInfo: WorldItemInfo): void {
-        let mesh = this.meshFactory.getInstance(worldItemInfo);
-
-        worldItemInfo.mesh = mesh;
     }
 }

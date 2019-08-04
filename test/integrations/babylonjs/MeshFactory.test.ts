@@ -81,11 +81,11 @@ describe(`MeshFactory`, () => {
             const meshFactory = new MeshFactory(null, modelFileLoader, modelFactory);
 
             const bed: Partial<WorldItemInfo> = {
-                type: 'bed'
+                name: 'bed'
             };
 
             const table: Partial<WorldItemInfo> = {
-                type: 'table'
+                name: 'table'
             };
 
             return meshFactory.loadModels(setuoModelDescriptions())
@@ -93,8 +93,8 @@ describe(`MeshFactory`, () => {
                     expect(meshFactory.getInstance(<WorldItemInfo> bed)).toEqual('bed');
                     expect(meshFactory.getInstance(<WorldItemInfo> table)).toEqual('table');
 
-                    expect(createItem.getCall(0).args).toEqual([{"type": "bed"}, [["mesh1"], ["skeleton1"]]]);
-                    expect(createItem.getCall(1).args).toEqual([{"type": "table"}, [["mesh2"], ["skeleton2"]]]);
+                    expect(createItem.getCall(0).args).toEqual([{"name": "bed"}, [["mesh1"], ["skeleton1"]]]);
+                    expect(createItem.getCall(1).args).toEqual([{"name": "table"}, [["mesh2"], ["skeleton2"]]]);
                 });
         });
     });

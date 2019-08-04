@@ -30,6 +30,7 @@ export class HierarchyBuildingTransformator implements WorldItemTransformator {
                         // same size
                         if (childItem.children.indexOf(currentItem) === -1) {
                             currentItem.addChild(childItem);
+                            childItem.parent = currentItem;
                             childrenAlreadyCategorized.push(childItem);
                             rootWorldItems = _.without(rootWorldItems, childItem);
                         }
