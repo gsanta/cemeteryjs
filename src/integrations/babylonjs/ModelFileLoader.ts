@@ -1,6 +1,5 @@
 import { Scene, Mesh, Skeleton, StandardMaterial, AbstractMesh, ParticleSystem, AnimationGroup, Texture, SceneLoader, Vector3 } from 'babylonjs';
-import '@babylonjs/loaders/OBJ';
-import '@babylonjs/loaders/glTF';
+import 'babylonjs-loaders';
 
 export interface MeshTemplateConfig {
     checkCollisions: boolean;

@@ -11,12 +11,16 @@ import { PolygonAreaInfoParser } from './parsers/polygon_area_parser/PolygonArea
 import { BorderItemsToLinesTransformator } from './transformators/BorderItemsToLinesTransformator';
 import { BorderItemWidthToRealWidthTransformator } from './transformators/BorderItemWidthToRealWidthTransformator';
 import { FurnitureRealSizeTransformator } from './transformators/FurnitureRealSizeTransformator';
-
+import { MeshCreationTransformator } from './transformators/MeshCreationTransformator';
+export { BabylonImporter } from './integrations/babylonjs/api/BabylonImporter';
+export { BabylonConverter } from './integrations/babylonjs/api/BabylonConverter';
 export {WorldParser, ParseOptions, defaultParseOptions} from './WorldParser';
 export {WorldItemInfo} from './WorldItemInfo';
 export {WorldItemInfoFactory} from './WorldItemInfoFactory';
 export {WorldItemParser} from './parsers/WorldItemParser';
 export {TreeNode, TreeIteratorGenerator} from './utils/TreeIteratorGenerator';
+export {Converter} from './integrations/api/Converter';
+export {Importer} from './integrations/api/Importer';
 
 export const parsers = {
     RoomInfoParser,
@@ -34,5 +38,6 @@ export const transformators = {
     BorderItemSegmentingTransformator,
     BorderItemsToLinesTransformator,
     BorderItemWidthToRealWidthTransformator,
-    FurnitureRealSizeTransformator
+    FurnitureRealSizeTransformator,
+    MeshCreationTransformator
 }

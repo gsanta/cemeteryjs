@@ -48,7 +48,7 @@ export class MeshFactory {
     private isReady = true;
     private modelFactory: ModelFactory;
 
-    constructor(scene: Scene, modelFileLoader: ModelFileLoader, modelFactory: ModelFactory) {
+    constructor(scene: Scene, modelFileLoader: ModelFileLoader = new ModelFileLoader(scene), modelFactory: ModelFactory = new ModelFactory(scene)) {
         this.scene = scene;
         this.modelFileLoader = modelFileLoader;
         this.modelFactory = modelFactory;

@@ -20,12 +20,11 @@ import { WorldItemInfo } from '../../../WorldItemInfo';
 import { Importer } from '../../api/Importer';
 import { Scene } from 'babylonjs';
 import { MeshFactory, ModelTypeDescription } from '../MeshFactory';
-import { ModelFileLoader } from '../ModelFileLoader';
 
 export class BabylonImporter implements Importer {
     private meshFactory: MeshFactory;
 
-    constructor(scene: Scene, meshFactory: MeshFactory = new MeshFactory(scene, new ModelFileLoader(scene))) {
+    constructor(scene: Scene, meshFactory: MeshFactory = new MeshFactory(scene)) {
         this.meshFactory = meshFactory;
     }
 
