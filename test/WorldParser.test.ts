@@ -45,12 +45,12 @@ describe('`WorldParser`', () => {
             const [root] = gameObjectParser.parse(map);
             const children = root.children;
             expect(children.length).toEqual(7);
-            expect(children[0]).toEqual(new WorldItemInfo(2, 'W', Polygon.createRectangle(0, 0, 1, 3), 'wall', true));
-            expect(children[1]).toEqual(new WorldItemInfo(3, 'W', Polygon.createRectangle(7, 0, 1, 3), 'wall', true));
-            expect(children[2]).toEqual(new WorldItemInfo(4, 'W', Polygon.createRectangle(0, 0, 3, 1), 'wall', true));
-            expect(children[3]).toEqual(new WorldItemInfo(5, 'W', Polygon.createRectangle(0, 2, 8, 1), 'wall', true));
-            expect(children[4]).toEqual(new WorldItemInfo(6, 'W', Polygon.createRectangle(5, 0, 3, 1), 'wall', true));
-            expect(children[5]).toEqual(new WorldItemInfo(7, 'I', Polygon.createRectangle(3, 0, 2, 1), 'window', true));
+            expect(children[0]).toMatchObject(new WorldItemInfo(2, 'W', Polygon.createRectangle(0, 0, 1, 3), 'wall', true));
+            expect(children[1]).toMatchObject(new WorldItemInfo(3, 'W', Polygon.createRectangle(7, 0, 1, 3), 'wall', true));
+            expect(children[2]).toMatchObject(new WorldItemInfo(4, 'W', Polygon.createRectangle(0, 0, 3, 1), 'wall', true));
+            expect(children[3]).toMatchObject(new WorldItemInfo(5, 'W', Polygon.createRectangle(0, 2, 8, 1), 'wall', true));
+            expect(children[4]).toMatchObject(new WorldItemInfo(6, 'W', Polygon.createRectangle(5, 0, 3, 1), 'wall', true));
+            expect(children[5]).toMatchObject(new WorldItemInfo(7, 'I', Polygon.createRectangle(3, 0, 2, 1), 'window', true));
             expect(children[6].name).toEqual('room');
         });
 
