@@ -38,6 +38,7 @@ export interface ModelTypeDescription {
     fileDescription: {
         path: string;
         fileName: string;
+        materials?: string[];
         scale: number
     }
 }
@@ -62,7 +63,7 @@ export class MeshFactory {
                 desc.type,
                 desc.fileDescription.path,
                 desc.fileDescription.fileName,
-                [],
+                desc.fileDescription.materials || [],
                 new Vector3(desc.fileDescription.scale, desc.fileDescription.scale, desc.fileDescription.scale)
             )
         );

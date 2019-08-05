@@ -19,8 +19,8 @@ export class WorldItemBoundingBoxCalculator {
     private findRoot(worldItemInfo: WorldItemInfo) {
         let root = worldItemInfo;
 
-        while(worldItemInfo.parent) {
-            root = worldItemInfo.parent;
+        while (root.parent) {
+            root = root.parent;
         }
 
         return root;
