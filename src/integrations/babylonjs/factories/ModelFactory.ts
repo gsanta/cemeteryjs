@@ -15,11 +15,10 @@ export class ModelFactory implements MeshCreator {
     public createItem(worldItemInfo: WorldItemInfo, meshInfo: [Mesh[], Skeleton[]]): Mesh {
         const meshes = meshInfo[0].map(m => m.clone());
         let boundingBox = this.worldItemBoundingBoxCalculator.getBoundingBox(worldItemInfo);
-        // const rotation = - worldItemInfo.rotation;
+        const rotation = - worldItemInfo.rotation;
         meshes[0].isVisible = true;
-        // meshes[0].translate(new Vector3(0, 15, 0), 1);
 
-        // meshes[0].rotate(Axis.Y, rotation, Space.WORLD);
+        meshes[0].rotate(Axis.Y, rotation, Space.WORLD);
         boundingBox = boundingBox.negate('y');
         worldItemInfo.dimensions = boundingBox;
         const mesh = this.createMesh(worldItemInfo, meshes[0], this.scene);
@@ -43,8 +42,10 @@ export class ModelFactory implements MeshCreator {
             scene
         );
 
+        mesh.parent = box;
+
         const center = boundingPolygon.getBoundingCenter();
-        box.translate(new Vector3(center.x, height, center.y), 1, Space.WORLD);
+        box.translate(new Vector3(center.x, 0, center.y), 1, Space.WORLD);
 
         const material = new StandardMaterial('box-material', scene);
         material.diffuseColor = Color3.FromHexString('#00FF00');

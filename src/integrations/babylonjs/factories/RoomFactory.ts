@@ -19,9 +19,9 @@ export class RoomFactory implements MeshCreator  {
     public createItem(worldItemInfo: WorldItemInfo): Mesh {
         worldItemInfo.dimensions = this.worldItemBoundingBoxCalculator.getBoundingBox(worldItemInfo);
 
-        const dimensions  = worldItemInfo.dimensions.negate('y')
+        worldItemInfo.dimensions  = worldItemInfo.dimensions.negate('y')
 
-        const mesh = this.createRoomFloor(dimensions);
+        const mesh = this.createRoomFloor(worldItemInfo.dimensions);
         mesh.receiveShadows = true;
 
         const impostor = new PhysicsImpostor(mesh, PhysicsImpostor.PlaneImpostor, { mass: 0, friction: 1, restitution: 0.7 }, this.scene);
