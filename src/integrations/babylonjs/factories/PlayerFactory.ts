@@ -10,7 +10,7 @@ export class PlayerFactory implements MeshCreator  {
 
     public createItem(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh {
         let boundingBox = this.worldItemBoundingBoxCalculator.getBoundingBox(worldItemInfo);
-        const meshes = meshTemplate.getMeshes();
+        const meshes = meshTemplate.meshes;
         meshes.forEach(mesh => mesh.isVisible = true);
 
         boundingBox = boundingBox.negate('y');

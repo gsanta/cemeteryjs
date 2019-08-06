@@ -1,12 +1,13 @@
-import { WorldItemInfo } from '../..';
-import { Mesh, Skeleton, MeshBuilder, Scene, Vector3, StandardMaterial } from 'babylonjs';
+
+import { Color3, Mesh, MeshBuilder, PhysicsImpostor, Scene, Skeleton, Space, StandardMaterial, Vector3, Axis, DynamicTexture, Texture } from 'babylonjs';
+import { WorldItemInfo } from '../../WorldItemInfo';
+import { WorldItemBoundingBoxCalculator } from './factories/utils/WorldItemBoundingBoxCalculator';
+import { MeshTemplate } from '../api/MeshTemplate';
 import { EmptyAreaFactory } from './factories/EmptyAreaFactory';
 import { PlayerFactory } from './factories/PlayerFactory';
 import { DoorFactory } from './factories/DoorFactory';
 import { WindowFactory } from './factories/WindowFactory';
 import { WallFactory } from './factories/WallFactory';
-import { ModelFactory } from './factories/ModelFactory';
-import { ModelFileLoader } from './ModelFileLoader';
 import { RoomFactory } from './factories/RoomFactory';
 
 export interface MeshTemplateConfig {
@@ -60,43 +61,33 @@ export interface MultiModelDescriptor {
 }
 
 export class MeshFactory {
-    private map: Map<string, [Mesh[], Skeleton[]]> = new Map();
     private scene: Scene;
-    private modelFileLoader: ModelFileLoader;
-    private isReady = true;
-    private modelFactory: ModelFactory;
+    private worldItemBoundingBoxCalculator: WorldItemBoundingBoxCalculator = new WorldItemBoundingBoxCalculator();
 
-    constructor(scene: Scene, modelFileLoader: ModelFileLoader = new ModelFileLoader(scene), modelFactory: ModelFactory = new ModelFactory(scene)) {
+    constructor(scene: Scene) {
         this.scene = scene;
-        this.modelFileLoader = modelFileLoader;
-        this.modelFactory = modelFactory;
     }
 
-    loadModels(modelTypeDescriptions: (ModelDescriptor | MultiModelDescriptor)[]): Promise<void> {
-        this.isReady = false;
-        const promises = modelTypeDescriptions.map(
-            desc => this.modelFileLoader.load(
-                desc.type,
-                desc.fileDescription.path,
-                desc.fileDescription.fileName,
-                desc.fileDescription.materials || [],
-                new Vector3(desc.fileDescription.scale, desc.fileDescription.scale, desc.fileDescription.scale)
-            )
-        );
-        return Promise.all(promises)
-            .then((results: [Mesh[], Skeleton[], string][]) => {
-                results.forEach(model => this.registerMeshCreator(model[2], [model[0], model[1]]));
+    public createItem(worldItemInfo: WorldItemInfo, meshInfo: [Mesh[], Skeleton[]]): Mesh {
+        const meshes = meshInfo[0].map(m => m.clone());
+        let boundingBox = this.worldItemBoundingBoxCalculator.getBoundingBox(worldItemInfo);
+        const rotation = - worldItemInfo.rotation;
+        meshes[0].isVisible = true;
 
-                this.isReady = true;
-            });
+        meshes[0].rotate(Axis.Y, rotation, Space.WORLD);
+        boundingBox = boundingBox.negate('y');
+        worldItemInfo.dimensions = boundingBox;
+        const mesh = this.createMesh(worldItemInfo, meshes[0], this.scene);
+        mesh.checkCollisions = true;
+        mesh.isVisible = false;
+
+        const impostor = new PhysicsImpostor(mesh, PhysicsImpostor.BoxImpostor, { mass: 2, friction: 1, restitution: 0.3 }, this.scene);
+        mesh.physicsImpostor = impostor;
+
+        return mesh;
     }
 
-    getInstance(worldItemInfo: WorldItemInfo): Mesh {
-        if (!this.isReady) {
-            throw new Error('`MeshFactory` is not ready loading the models, please wait for the Promise returned from `loadModels` to resolve.');
-        }
-
-        const meshModel = this.map.get(worldItemInfo.name);
+    public createFromTemplate(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh {
 
         switch(worldItemInfo.name) {
             case 'root':
@@ -104,22 +95,105 @@ export class MeshFactory {
             case 'empty':
                 return new EmptyAreaFactory(this.scene).createItem(worldItemInfo);
             case 'player':
-                worldItemInfo.skeleton = meshModel[1][0];
-                return new PlayerFactory().createItem(worldItemInfo, meshModel)
+                worldItemInfo.skeleton = meshTemplate[1][0];
+                return new PlayerFactory().createItem(worldItemInfo, meshTemplate)
             case 'door':
-                return new DoorFactory(this.scene, MeshBuilder).createItem(worldItemInfo, meshModel);
+                return new DoorFactory(this.scene, MeshBuilder).createItem(worldItemInfo, meshTemplate);
             case 'window':
-                return new WindowFactory(this.scene, MeshBuilder).createItem(worldItemInfo, meshModel);
+                return new WindowFactory(this.scene, MeshBuilder).createItem(worldItemInfo, meshTemplate);
             case 'wall':
                 return new WallFactory(this.scene).createItem(worldItemInfo);
             case 'room':
                 return new RoomFactory(this.scene).createItem(worldItemInfo);
             default:
-                return this.modelFactory.createItem(worldItemInfo, meshModel);
+                return this.create(worldItemInfo, meshTemplate);
         }
     }
 
-    private registerMeshCreator(type: string, model: [Mesh[], Skeleton[]]) {
-        this.map.set(type, model);
+    private create(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>) {
+        const meshes = meshTemplate.meshes;
+        let boundingBox = this.worldItemBoundingBoxCalculator.getBoundingBox(worldItemInfo);
+        const rotation = - worldItemInfo.rotation;
+        meshes[0].isVisible = true;
+
+        meshes[0].rotate(Axis.Y, rotation, Space.WORLD);
+        boundingBox = boundingBox.negate('y');
+        worldItemInfo.dimensions = boundingBox;
+        const mesh = this.createMesh(worldItemInfo, meshes[0], this.scene);
+        mesh.checkCollisions = true;
+        mesh.isVisible = false;
+
+        const impostor = new PhysicsImpostor(mesh, PhysicsImpostor.BoxImpostor, { mass: 2, friction: 1, restitution: 0.3 }, this.scene);
+        mesh.physicsImpostor = impostor;
+
+        return mesh;
+    }
+
+    public createFromShapeDescriptor(worldItemInfo: WorldItemInfo, shapeDescriptor: ShapeDescriptor) {
+        switch(shapeDescriptor.shape) {
+            case 'plane':
+                return this.createPlane(worldItemInfo, shapeDescriptor);
+            default:
+                throw new Error('Unsupported shape: ' + shapeDescriptor.shape);
+        }
+    }
+
+    private createPlane(worldItemInfo: WorldItemInfo, shapeDescriptor: ShapeDescriptor): Mesh {
+        const roomTop = MeshBuilder.CreatePolygon(
+            'room-label',
+            {
+                shape: worldItemInfo.dimensions.getPoints().map(point => new Vector3(point.x, 0, point.y)),
+                depth: 2,
+                updatable: true
+            },
+            this.scene
+        );
+
+        roomTop.translate(new Vector3(0, 7.21, 0), 1);
+
+        if (shapeDescriptor.materials) {
+            roomTop.material = this.createMaterial('room1', shapeDescriptor.materials[0]);
+        }
+
+        return roomTop;
+    }
+
+    private createMaterial(label: string, materialPath: string): StandardMaterial {
+        const textureGround = new DynamicTexture('room-label-texture', {width: 512, height: 256}, this.scene, false);
+
+        const material = new StandardMaterial('door-closed-material', this.scene);
+        material.diffuseTexture = new Texture(materialPath, this.scene);
+        // material.diffuseTexture = textureGround;
+        // material.alpha = 0.5;
+
+        const font = 'bold 60px Arial';
+        textureGround.drawText(label, 200, 150, font, 'green', '#895139', true, true);
+
+        return material;
+    }
+
+    private createMesh(worldItemInfo: WorldItemInfo, mesh: Mesh, scene: Scene): Mesh {
+        const boundingPolygon = worldItemInfo.dimensions;
+        const height = mesh.getBoundingInfo().boundingBox.maximumWorld.y;
+
+        const box = MeshBuilder.CreateBox(
+            `bounding-box`,
+            {  width: boundingPolygon.getBoundingInfo().extent[0], depth: boundingPolygon.getBoundingInfo().extent[1], height: height  },
+            scene
+        );
+
+        mesh.parent = box;
+
+        const center = boundingPolygon.getBoundingCenter();
+        box.translate(new Vector3(center.x, 0, center.y), 1, Space.WORLD);
+
+        const material = new StandardMaterial('box-material', scene);
+        material.diffuseColor = Color3.FromHexString('#00FF00');
+        material.alpha = 0.5;
+        material.wireframe = false;
+        box.material = material;
+        box.isVisible = true;
+
+        return box;
     }
 }

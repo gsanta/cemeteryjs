@@ -1,6 +1,6 @@
 
 export interface MeshTemplate<M, S> {
-    getMeshes: () => M[];
-    getSkeletons: () => S[];
+    meshes: M[];
+    skeletons: S[];
     type: string;
 }

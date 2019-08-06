@@ -1,10 +1,9 @@
-import { ModelDescriptor, MeshFactory } from '../../../src/integrations/babylonjs/MeshFactory';
-import { ModelFileLoader } from '../../../src/integrations/babylonjs/ModelFileLoader';
+import { MeshLoader } from '../../../src/integrations/babylonjs/MeshLoader';
 import * as sinon from 'sinon';
 import { WorldItemInfo } from '../../../src';
-import { ModelFactory } from '../../../src/integrations/babylonjs/factories/ModelFactory';
+import { MeshFactory, ModelDescriptor } from '../../../src/integrations/babylonjs/MeshFactory';
 
-function setupModelFileLoader(): [ModelFileLoader, sinon.SinonStub] {
+function setupModelFileLoader(): [MeshLoader, sinon.SinonStub] {
     const meshModel1 = [['mesh1'], ['skeleton1'], 'bed'];
     const meshModel2 = [['mesh2'], ['skeleton2'], 'table'];
 
@@ -14,25 +13,25 @@ function setupModelFileLoader(): [ModelFileLoader, sinon.SinonStub] {
         .onSecondCall()
         .resolves(meshModel2);
 
-    const modelFileLoader: Partial<ModelFileLoader> = {
+    const modelFileLoader: Partial<MeshLoader> = {
         load
     };
 
-    return [<ModelFileLoader> modelFileLoader, load];
+    return [<MeshLoader> modelFileLoader, load];
 }
 
-function setupModelFactory(): [ModelFactory, sinon.SinonStub] {
+function setupModelFactory(): [MeshFactory, sinon.SinonStub] {
     const createItem = sinon.stub()
         .onFirstCall()
         .returns('bed')
         .onSecondCall()
         .returns('table');
 
-    const modelFactory: Partial<ModelFactory> = {
+    const modelFactory: Partial<MeshFactory> = {
         createItem
     }
 
-    return [<ModelFactory> modelFactory, createItem];
+    return [<MeshFactory> modelFactory, createItem];
 }
 
 function setuoModelDescriptions(): ModelDescriptor[] {

@@ -18,7 +18,7 @@ export class WindowFactory implements MeshCreator  {
     }
 
     public createItem(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh {
-        const meshes = meshTemplate.getMeshes();
+        const meshes = meshTemplate.meshes;
         let boundingBox = this.worldItemBoundingBoxCalculator.getBoundingBox(worldItemInfo);
 
         boundingBox = boundingBox.negate('y');

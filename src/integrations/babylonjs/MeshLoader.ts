@@ -19,14 +19,14 @@ export interface MeshTemplateConfig {
 /**
  * Loads a model from file and gives back a `Mesh`.
  */
-export class ModelFileLoader {
+export class MeshLoader {
     private scene: Scene;
 
     constructor(scene: Scene) {
         this.scene = scene;
     }
 
-    public load(fileDescriptor: FileDescriptor): Promise<MeshTemplate<Mesh, Skeleton>> {
+    public load(type: string, fileDescriptor: FileDescriptor): Promise<MeshTemplate<Mesh, Skeleton>> {
         const materials = this.loadMaterials(fileDescriptor.materials);
 
         return new Promise(resolve => {
@@ -37,12 +37,12 @@ export class ModelFileLoader {
                 }
 
                 this.configMeshes(<Mesh[]> meshes, new Vector3(fileDescriptor.scale, fileDescriptor.scale, fileDescriptor.scale));
-                meshes[0].name = name;
+                meshes[0].name = type;
 
                 resolve({
-                    getMeshes: () => <Mesh[]> meshes,
-                    getSkeletons: () => skeletons,
-                    type: name
+                    meshes: <Mesh[]> meshes,
+                    skeletons: skeletons,
+                    type
                 });
             };
 

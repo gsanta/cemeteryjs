@@ -4,7 +4,7 @@ import { ShapeDescriptor } from './MeshFactory';
 
 export class ShapeTemplateCreator {
 
-    public create(shapeDescriptor: ShapeDescriptor): MeshTemplate {
+    // public create(shapeDescriptor: ShapeDescriptor): MeshTemplate {
 
-    }
+    // }
 }
