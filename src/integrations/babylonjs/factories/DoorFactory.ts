@@ -3,6 +3,7 @@ import { Segment, GeometryUtils, Shape } from '@nightshifts.inc/geometry';
 import { WorldItemInfo } from '../../../WorldItemInfo';
 import { WorldItemBoundingBoxCalculator } from './utils/WorldItemBoundingBoxCalculator';
 import { MeshCreator } from '../MeshCreator';
+import { MeshTemplate } from '../../api/MeshTemplate';
 
 export class DoorFactory implements MeshCreator {
     private scene: Scene;
@@ -14,8 +15,8 @@ export class DoorFactory implements MeshCreator {
         this.meshBuilder = meshBuilder;
     }
 
-    public createItem(worldItemInfo: WorldItemInfo, meshInfo: [Mesh[], Skeleton[]]): Mesh {
-        const meshes = meshInfo[0].map(m => m.clone());
+    public createItem(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh {
+        const meshes = meshTemplate.getMeshes();
         let boundingBox = this.worldItemBoundingBoxCalculator.getBoundingBox(worldItemInfo);
 
         boundingBox = boundingBox.negate('y');

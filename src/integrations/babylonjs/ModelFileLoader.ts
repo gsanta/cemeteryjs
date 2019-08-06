@@ -1,6 +1,7 @@
 import { Scene, Mesh, Skeleton, StandardMaterial, AbstractMesh, ParticleSystem, AnimationGroup, Texture, SceneLoader, Vector3 } from 'babylonjs';
 import 'babylonjs-loaders';
 import { MeshTemplate } from '../api/MeshTemplate';
+import { FileDescriptor } from './MeshFactory';
 
 export interface MeshTemplateConfig {
     checkCollisions: boolean;
@@ -25,9 +26,8 @@ export class ModelFileLoader {
         this.scene = scene;
     }
 
-    public load(name: string, base: string, fileName: string, materialFileNames: string[], scaling: Vector3)
-        : Promise<MeshTemplate<Mesh, Skeleton>> {
-        const materials = this.loadMaterials(materialFileNames);
+    public load(fileDescriptor: FileDescriptor): Promise<MeshTemplate<Mesh, Skeleton>> {
+        const materials = this.loadMaterials(fileDescriptor.materials);
 
         return new Promise(resolve => {
             const onSuccess = (meshes: AbstractMesh[], ps: ParticleSystem[], skeletons: Skeleton[], ag: AnimationGroup[]) => {
@@ -36,7 +36,7 @@ export class ModelFileLoader {
                     meshes.forEach(mesh => mesh.material = materials[0]);
                 }
 
-                this.configMeshes(<Mesh[]> meshes, scaling);
+                this.configMeshes(<Mesh[]> meshes, new Vector3(fileDescriptor.scale, fileDescriptor.scale, fileDescriptor.scale));
                 meshes[0].name = name;
 
                 resolve({
@@ -52,8 +52,8 @@ export class ModelFileLoader {
 
             SceneLoader.ImportMesh(
                 '',
-                base,
-                fileName,
+                fileDescriptor.path,
+                fileDescriptor.fileName,
                 this.scene,
                 onSuccess,
                 () => {},

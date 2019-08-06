@@ -43,6 +43,7 @@ export interface FileDescriptor {
 export interface ShapeDescriptor {
     name: 'shape-descriptor';
     shape: 'plane';
+    materials?: string[];
     translateY?: number;
 }
 

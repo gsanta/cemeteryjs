@@ -3,13 +3,14 @@ import { Point, Polygon } from '@nightshifts.inc/geometry';
 import { WorldItemBoundingBoxCalculator } from './utils/WorldItemBoundingBoxCalculator';
 import { WorldItemInfo } from '../../../WorldItemInfo';
 import { MeshCreator } from '../MeshCreator';
+import { MeshTemplate } from '../../api/MeshTemplate';
 
 export class PlayerFactory implements MeshCreator  {
     private worldItemBoundingBoxCalculator: WorldItemBoundingBoxCalculator = new WorldItemBoundingBoxCalculator();
 
-    public createItem(worldItemInfo: WorldItemInfo, meshInfo: [Mesh[], Skeleton[]]): Mesh {
+    public createItem(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh {
         let boundingBox = this.worldItemBoundingBoxCalculator.getBoundingBox(worldItemInfo);
-        let meshes = meshInfo[0]; //.map(mesh => mesh.clone('player'));
+        const meshes = meshTemplate.getMeshes();
         meshes.forEach(mesh => mesh.isVisible = true);
 
         boundingBox = boundingBox.negate('y');
