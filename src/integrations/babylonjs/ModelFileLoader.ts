@@ -1,5 +1,6 @@
 import { Scene, Mesh, Skeleton, StandardMaterial, AbstractMesh, ParticleSystem, AnimationGroup, Texture, SceneLoader, Vector3 } from 'babylonjs';
 import 'babylonjs-loaders';
+import { MeshTemplate } from '../api/MeshTemplate';
 
 export interface MeshTemplateConfig {
     checkCollisions: boolean;
@@ -25,12 +26,11 @@ export class ModelFileLoader {
     }
 
     public load(name: string, base: string, fileName: string, materialFileNames: string[], scaling: Vector3)
-        : Promise<[Mesh[], Skeleton[], string]> {
+        : Promise<MeshTemplate<Mesh, Skeleton>> {
         const materials = this.loadMaterials(materialFileNames);
 
         return new Promise(resolve => {
             const onSuccess = (meshes: AbstractMesh[], ps: ParticleSystem[], skeletons: Skeleton[], ag: AnimationGroup[]) => {
-                const name2 = name;
                 // TODO: probably not the best idea getting always material[0] then why do we load the other materials?
                 if (materials.length > 0) {
                     meshes.forEach(mesh => mesh.material = materials[0]);
@@ -39,7 +39,11 @@ export class ModelFileLoader {
                 this.configMeshes(<Mesh[]> meshes, scaling);
                 meshes[0].name = name;
 
-                resolve([<Mesh[]> meshes, skeletons, name]);
+                resolve({
+                    getMeshes: () => <Mesh[]> meshes,
+                    getSkeletons: () => skeletons,
+                    type: name
+                });
             };
 
             const onError = (scene: Scene, message: string) => {

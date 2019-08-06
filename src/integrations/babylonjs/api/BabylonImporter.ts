@@ -19,7 +19,7 @@ import { WorldMapToMatrixGraphConverter } from '../../../matrix_graph/conversion
 import { WorldItemInfo } from '../../../WorldItemInfo';
 import { Importer } from '../../api/Importer';
 import { Scene } from 'babylonjs';
-import { MeshFactory, ModelTypeDescription } from '../MeshFactory';
+import { MeshFactory, ModelDescriptor } from '../MeshFactory';
 
 export class BabylonImporter implements Importer {
     private meshFactory: MeshFactory;
@@ -28,7 +28,7 @@ export class BabylonImporter implements Importer {
         this.meshFactory = meshFactory;
     }
 
-    import(strWorld: string, modelTypeDescription: ModelTypeDescription[]): Promise<WorldItemInfo[]> {
+    import(strWorld: string, modelTypeDescription: ModelDescriptor[]): Promise<WorldItemInfo[]> {
         return this.meshFactory
             .loadModels(modelTypeDescription)
             .then(() => this.parse(strWorld));

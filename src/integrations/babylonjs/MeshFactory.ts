@@ -32,15 +32,30 @@ export const defaultMeshConfig: MeshTemplateConfig = {
     materials: null
 };
 
-export interface ModelTypeDescription {
+export interface FileDescriptor {
+    name: 'file-descriptor'
+    path: string;
+    fileName: string;
+    materials?: string[];
+    scale: number;
+}
+
+export interface ShapeDescriptor {
+    name: 'shape-descriptor';
+    shape: 'plane';
+    translateY?: number;
+}
+
+export interface ModelDescriptor {
+    name: 'model-descriptor';
     type: string;
-    model: 'file' | 'rectangle';
-    fileDescription: {
-        path: string;
-        fileName: string;
-        materials?: string[];
-        scale: number
-    }
+    details: FileDescriptor | ShapeDescriptor
+}
+
+export interface MultiModelDescriptor {
+    name: 'multi-model-descriptor';
+    type: string;
+    details: FileDescriptor[] | ShapeDescriptor[]
 }
 
 export class MeshFactory {
@@ -56,9 +71,9 @@ export class MeshFactory {
         this.modelFactory = modelFactory;
     }
 
-    loadModels(modelTypeDescription: ModelTypeDescription[]): Promise<void> {
+    loadModels(modelTypeDescriptions: (ModelDescriptor | MultiModelDescriptor)[]): Promise<void> {
         this.isReady = false;
-        const promises = modelTypeDescription.map(
+        const promises = modelTypeDescriptions.map(
             desc => this.modelFileLoader.load(
                 desc.type,
                 desc.fileDescription.path,

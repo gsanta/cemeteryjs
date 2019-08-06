@@ -1,4 +1,4 @@
-import { ModelTypeDescription, MeshFactory } from '../../../src/integrations/babylonjs/MeshFactory';
+import { ModelDescriptor, MeshFactory } from '../../../src/integrations/babylonjs/MeshFactory';
 import { ModelFileLoader } from '../../../src/integrations/babylonjs/ModelFileLoader';
 import * as sinon from 'sinon';
 import { WorldItemInfo } from '../../../src';
@@ -35,7 +35,7 @@ function setupModelFactory(): [ModelFactory, sinon.SinonStub] {
     return [<ModelFactory> modelFactory, createItem];
 }
 
-function setuoModelDescriptions(): ModelTypeDescription[] {
+function setuoModelDescriptions(): ModelDescriptor[] {
     return [
         {
             type: 'bed',

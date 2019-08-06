@@ -2,9 +2,10 @@
 import { Color3, Mesh, MeshBuilder, PhysicsImpostor, Scene, Skeleton, Space, StandardMaterial, Vector3, Axis } from 'babylonjs';
 import { WorldItemInfo } from '../../../WorldItemInfo';
 import { WorldItemBoundingBoxCalculator } from './utils/WorldItemBoundingBoxCalculator';
-import { MeshCreator } from '../MeshCreator';
+import { MeshTemplate } from '../../api/MeshTemplate';
+import { ShapeDescriptor } from '../MeshFactory';
 
-export class ModelFactory implements MeshCreator {
+export class ModelFactory {
     private scene: Scene;
     private worldItemBoundingBoxCalculator: WorldItemBoundingBoxCalculator = new WorldItemBoundingBoxCalculator();
 
@@ -29,6 +30,14 @@ export class ModelFactory implements MeshCreator {
         mesh.physicsImpostor = impostor;
 
         return mesh;
+    }
+
+    public createFromTemplate(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>) {
+
+    }
+
+    public createFromShapeDescriptor(worldItemInfo: WorldItemInfo, shapeDescriptor: ShapeDescriptor) {
+
     }
 
 

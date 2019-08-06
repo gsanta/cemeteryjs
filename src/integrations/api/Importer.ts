@@ -1,7 +1,7 @@
 import { WorldItemInfo } from "../../WorldItemInfo";
-import { ModelTypeDescription } from "../babylonjs/MeshFactory";
+import { ModelDescriptor } from "../babylonjs/MeshFactory";
 
 
 export interface Importer {
-    import(strWorld: string, modelTypeDescription: ModelTypeDescription[]): Promise<WorldItemInfo[]>;
+    import(strWorld: string, modelTypeDescription: ModelDescriptor[]): Promise<WorldItemInfo[]>;
 }

@@ -1,10 +1,11 @@
 import { Polygon, Shape } from "@nightshifts.inc/geometry";
+import { MeshTemplate } from './integrations/api/MeshTemplate';
 
 /**
  * `WorldItemInfo` represents any distinguishable item in the parsed world (think of it as a mesh, e.g walls, rooms, creatures).
  */
-export class WorldItemInfo {
-    mesh: any;
+export class WorldItemInfo<M = any, S = any> {
+    meshTemplate: MeshTemplate<M, S>;
     skeleton: any;
     id: number;
     type: string;
