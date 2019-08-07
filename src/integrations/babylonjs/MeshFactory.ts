@@ -48,10 +48,17 @@ export interface ShapeDescriptor {
     translateY?: number;
 }
 
+export interface RoomDescriptor {
+    name: 'room-descriptor';
+    floorMaterialPath?: string;
+    roofMaterialPath?: string;
+    roofY: number;
+}
+
 export interface MeshDescriptor {
     name: 'mesh-descriptor';
     type: string;
-    details: FileDescriptor | ShapeDescriptor
+    details: FileDescriptor | ShapeDescriptor | RoomDescriptor
 }
 
 export interface MultiModelDescriptor {
@@ -87,26 +94,24 @@ export class MeshFactory {
         return mesh;
     }
 
-    public createFromTemplate(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh {
+    public createFromTemplate(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
 
         switch(worldItemInfo.name) {
             case 'root':
-                return null;
+                return [];
             case 'empty':
-                return new EmptyAreaFactory(this.scene).createItem(worldItemInfo);
+                return [new EmptyAreaFactory(this.scene).createItem(worldItemInfo)];
             case 'player':
                 worldItemInfo.skeleton = meshTemplate.skeletons[0];
-                return new PlayerFactory().createItem(worldItemInfo, meshTemplate)
+                return [new PlayerFactory().createItem(worldItemInfo, meshTemplate)];
             case 'door':
-                return new DoorFactory(this.scene, MeshBuilder).createItem(worldItemInfo, meshTemplate);
+                return [new DoorFactory(this.scene, MeshBuilder).createItem(worldItemInfo, meshTemplate)];
             case 'window':
-                return new WindowFactory(this.scene, MeshBuilder).createItem(worldItemInfo, meshTemplate);
+                return [new WindowFactory(this.scene, MeshBuilder).createItem(worldItemInfo, meshTemplate)];
             case 'wall':
-                return new WallFactory(this.scene).createItem(worldItemInfo);
-            case 'room':
-                return new RoomFactory(this.scene).createItem(worldItemInfo);
+                return [new WallFactory(this.scene).createItem(worldItemInfo)];
             default:
-                return this.create(worldItemInfo, meshTemplate);
+                return [this.create(worldItemInfo, meshTemplate)];
         }
     }
 
@@ -129,13 +134,23 @@ export class MeshFactory {
         return mesh;
     }
 
-    public createFromShapeDescriptor(worldItemInfo: WorldItemInfo, shapeDescriptor: ShapeDescriptor) {
-        switch(shapeDescriptor.shape) {
-            case 'plane':
-                return this.createPlane(worldItemInfo, shapeDescriptor);
+    public createFromMeshDescriptor(worldItemInfo: WorldItemInfo, meshDescriptor: MeshDescriptor): Mesh[] {
+        switch(meshDescriptor.details.name) {
+            case 'room-descriptor':
+                return this.createRoomMeshes(worldItemInfo, meshDescriptor.details);
+            case 'shape-descriptor':
+                return this.createFromShapeDescriptor(worldItemInfo, meshDescriptor.details);
             default:
-                throw new Error('Unsupported shape: ' + shapeDescriptor.shape);
+                throw new Error('Unsupported descriptor: ' + meshDescriptor.details.name);
         }
+    }
+
+    private createRoomMeshes(worldItemInfo: WorldItemInfo, roomDescriptor: RoomDescriptor): Mesh[] {
+        return new RoomFactory(this.scene).createItem(worldItemInfo, roomDescriptor);
+    }
+
+    private createFromShapeDescriptor(worldItemInfo: WorldItemInfo, shapeDescriptor: ShapeDescriptor): Mesh[] {
+        return [this.createPlane(worldItemInfo, shapeDescriptor)];
     }
 
     private createPlane(worldItemInfo: WorldItemInfo, shapeDescriptor: ShapeDescriptor): Mesh {

@@ -12,7 +12,7 @@ export class MeshCreationTransformator implements WorldItemTransformator {
     private meshLoader: MeshLoader;
     private isReady = true;
     private modelMap: Map<string, MeshTemplate<Mesh, Skeleton>> = new Map();
-    private shapeMap: Map<string, ShapeDescriptor> = new Map();
+    private descriptorMap: Map<string, MeshDescriptor> = new Map();
 
     constructor(meshLoader: MeshLoader, meshFactory: MeshFactory) {
         this.meshLoader = meshLoader;
@@ -47,8 +47,7 @@ export class MeshCreationTransformator implements WorldItemTransformator {
 
     private createShapeTemplates(modelTypeDescriptions: MeshDescriptor[]) {
         modelTypeDescriptions
-            .filter(desc => desc.details.name === 'shape-descriptor')
-            .forEach(desc => this.shapeMap.set(desc.type, <ShapeDescriptor>desc.details));
+            .forEach(desc => this.descriptorMap.set(desc.type, desc));
     }
 
     private createModelTemplates(modelTypeDescriptions: MeshDescriptor[]) {
@@ -63,12 +62,12 @@ export class MeshCreationTransformator implements WorldItemTransformator {
             });
     }
 
-    private createMesh(worldItemInfo: WorldItemInfo): Mesh {
+    private createMesh(worldItemInfo: WorldItemInfo): Mesh[] {
 
-        if (this.shapeMap.has(worldItemInfo.type)) {
-            return this.meshFactory.createFromShapeDescriptor(worldItemInfo, this.shapeMap.get(worldItemInfo.name));
-        } else {
+        if (this.modelMap.has(worldItemInfo.name)) {
             return this.meshFactory.createFromTemplate(worldItemInfo, this.modelMap.get(worldItemInfo.name));
+        } else {
+            return this.meshFactory.createFromMeshDescriptor(worldItemInfo, this.descriptorMap.get(worldItemInfo.name));
         }
     }
 }

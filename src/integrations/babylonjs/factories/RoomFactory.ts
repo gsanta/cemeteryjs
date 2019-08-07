@@ -1,11 +1,12 @@
-import { Mesh, MeshBuilder, PhysicsImpostor, Scene, Vector3 } from 'babylonjs';
+import { Mesh, MeshBuilder, PhysicsImpostor, Scene, Vector3, StandardMaterial, DynamicTexture, Texture } from 'babylonjs';
 import { Shape } from '@nightshifts.inc/geometry';
 import { RoomLabelFactory } from './RoomLabelFactory';
 import { WorldItemBoundingBoxCalculator } from './utils/WorldItemBoundingBoxCalculator';
 import { WorldItemInfo } from '../../../WorldItemInfo';
 import { MeshCreator } from '../MeshCreator';
+import { RoomDescriptor } from '../MeshFactory';
 
-export class RoomFactory implements MeshCreator  {
+export class RoomFactory  {
     private scene: Scene;
     private roomLabelFactory: RoomLabelFactory;
     private counter = 1;
@@ -16,7 +17,7 @@ export class RoomFactory implements MeshCreator  {
         this.roomLabelFactory = new RoomLabelFactory(scene);
     }
 
-    public createItem(worldItemInfo: WorldItemInfo): Mesh {
+    public createItem(worldItemInfo: WorldItemInfo, roomDescriptor: RoomDescriptor): Mesh[] {
         worldItemInfo.dimensions = this.worldItemBoundingBoxCalculator.getBoundingBox(worldItemInfo);
 
         worldItemInfo.dimensions  = worldItemInfo.dimensions.negate('y')
@@ -28,12 +29,12 @@ export class RoomFactory implements MeshCreator  {
         mesh.physicsImpostor = impostor;
         mesh.isVisible = true;
 
-
+        const roofMesh = this.createRoof(worldItemInfo, roomDescriptor);
         // const label = `room-${this.counter++}`;
         // const roomLabel = this.roomLabelFactory.createItem(worldItemInfo);
         // roomLabel.isVisible = false;
 
-        return mesh;
+        return [mesh, roofMesh];
     }
 
     private createRoomFloor(dimensions: Shape) {
@@ -46,5 +47,39 @@ export class RoomFactory implements MeshCreator  {
             },
             this.scene
         );
+    }
+
+    public createRoof(worldItemInfo: WorldItemInfo, roomDescriptor: RoomDescriptor): Mesh {
+        const roomTop = MeshBuilder.CreatePolygon(
+            'room-label',
+            {
+                shape: worldItemInfo.dimensions.getPoints().map(point => new Vector3(point.x, 0, point.y)),
+                depth: 2,
+                updatable: true
+            },
+            this.scene
+        );
+
+        roomTop.translate(new Vector3(0, roomDescriptor.roofY, 0), 1);
+
+        if (roomDescriptor.roofMaterialPath) {
+            roomTop.material = this.createRoofMaterial('roof', roomDescriptor);
+        }
+
+        return roomTop;
+    }
+
+    private createRoofMaterial(label: string, roomDescriptor: RoomDescriptor): StandardMaterial {
+        const textureGround = new DynamicTexture('room-label-texture', {width: 512, height: 256}, this.scene, false);
+
+        const material = new StandardMaterial('door-closed-material', this.scene);
+        material.diffuseTexture = new Texture(roomDescriptor.roofMaterialPath, this.scene);
+        // material.diffuseTexture = textureGround;
+        // material.alpha = 0.5;
+
+        const font = 'bold 60px Arial';
+        textureGround.drawText(label, 200, 150, font, 'green', '#895139', true, true);
+
+        return material;
     }
 }
