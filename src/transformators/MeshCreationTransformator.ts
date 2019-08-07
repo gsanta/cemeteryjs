@@ -35,7 +35,7 @@ export class MeshCreationTransformator implements WorldItemTransformator {
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
                 item.meshTemplate = {
-                    meshes: [this.createMesh(item)],
+                    meshes: this.createMesh(item),
                     skeletons: [],
                     type: item.name
                 }
@@ -64,7 +64,7 @@ export class MeshCreationTransformator implements WorldItemTransformator {
 
     private createMesh(worldItemInfo: WorldItemInfo): Mesh[] {
 
-        if (this.modelMap.has(worldItemInfo.name)) {
+        if (this.modelMap.has(worldItemInfo.name) || worldItemInfo.name === 'root' || worldItemInfo.name === 'empty' || worldItemInfo.name === 'wall') {
             return this.meshFactory.createFromTemplate(worldItemInfo, this.modelMap.get(worldItemInfo.name));
         } else {
             return this.meshFactory.createFromMeshDescriptor(worldItemInfo, this.descriptorMap.get(worldItemInfo.name));
