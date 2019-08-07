@@ -65,12 +65,10 @@ export class MeshCreationTransformator implements WorldItemTransformator {
 
     private createMesh(worldItemInfo: WorldItemInfo): Mesh {
 
-        if (this.modelMap.has(worldItemInfo.name)) {
-            return this.meshFactory.createFromTemplate(worldItemInfo, this.modelMap.get(worldItemInfo.name));
-        } else if (this.shapeMap.has(worldItemInfo.type)) {
+        if (this.shapeMap.has(worldItemInfo.type)) {
             return this.meshFactory.createFromShapeDescriptor(worldItemInfo, this.shapeMap.get(worldItemInfo.name));
         } else {
-            throw new Error('Unsupported type: ' + worldItemInfo.name);
+            return this.meshFactory.createFromTemplate(worldItemInfo, this.modelMap.get(worldItemInfo.name));
         }
     }
 }

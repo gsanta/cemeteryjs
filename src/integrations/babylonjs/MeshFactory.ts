@@ -95,7 +95,7 @@ export class MeshFactory {
             case 'empty':
                 return new EmptyAreaFactory(this.scene).createItem(worldItemInfo);
             case 'player':
-                worldItemInfo.skeleton = meshTemplate[1][0];
+                worldItemInfo.skeleton = meshTemplate.skeletons[0];
                 return new PlayerFactory().createItem(worldItemInfo, meshTemplate)
             case 'door':
                 return new DoorFactory(this.scene, MeshBuilder).createItem(worldItemInfo, meshTemplate);
@@ -111,7 +111,7 @@ export class MeshFactory {
     }
 
     private create(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>) {
-        const meshes = meshTemplate.meshes;
+        const meshes = meshTemplate.meshes.map(m => m.clone());
         let boundingBox = this.worldItemBoundingBoxCalculator.getBoundingBox(worldItemInfo);
         const rotation = - worldItemInfo.rotation;
         meshes[0].isVisible = true;

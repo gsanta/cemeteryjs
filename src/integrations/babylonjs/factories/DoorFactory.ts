@@ -16,7 +16,7 @@ export class DoorFactory implements MeshCreator {
     }
 
     public createItem(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh {
-        const meshes = meshTemplate.meshes;
+        const meshes = meshTemplate.meshes.map(m => m.clone());
         let boundingBox = this.worldItemBoundingBoxCalculator.getBoundingBox(worldItemInfo);
 
         boundingBox = boundingBox.negate('y');
