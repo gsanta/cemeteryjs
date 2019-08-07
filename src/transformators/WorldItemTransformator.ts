@@ -2,5 +2,5 @@ import { WorldItemInfo } from '../WorldItemInfo';
 
 
 export interface WorldItemTransformator {
-    transform(gwmWorldItems: WorldItemInfo[]): WorldItemInfo[];
+    transform(worldItems: WorldItemInfo[]): WorldItemInfo[];
 }

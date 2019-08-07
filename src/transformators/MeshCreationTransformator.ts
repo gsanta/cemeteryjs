@@ -1,24 +1,25 @@
 import { Skeleton } from "babylonjs";
 import { Mesh } from "babylonjs/Meshes/mesh";
 import { MeshTemplate } from "../integrations/api/MeshTemplate";
-import { FileDescriptor, ModelDescriptor, MeshFactory, ShapeDescriptor } from '../integrations/babylonjs/MeshFactory';
+import { FileDescriptor, MeshDescriptor, MeshFactory, ShapeDescriptor } from '../integrations/babylonjs/MeshFactory';
 import { MeshLoader } from "../integrations/babylonjs/MeshLoader";
 import { TreeIteratorGenerator } from "../utils/TreeIteratorGenerator";
 import { WorldItemInfo } from "../WorldItemInfo";
+import { WorldItemTransformator } from './WorldItemTransformator';
 
-export class MeshCreationTransformator {
-    private modelFactory: MeshFactory;
-    private modelFileLoader: MeshLoader;
+export class MeshCreationTransformator implements WorldItemTransformator {
+    private meshFactory: MeshFactory;
+    private meshLoader: MeshLoader;
     private isReady = true;
     private modelMap: Map<string, MeshTemplate<Mesh, Skeleton>> = new Map();
     private shapeMap: Map<string, ShapeDescriptor> = new Map();
 
-    constructor(modelFileLoader: MeshLoader, modelFactory: MeshFactory) {
-        this.modelFileLoader = modelFileLoader;
-        this.modelFactory = modelFactory;
+    constructor(meshLoader: MeshLoader, meshFactory: MeshFactory) {
+        this.meshLoader = meshLoader;
+        this.meshFactory = meshFactory;
     }
 
-    public prepareMeshTemplates(modelTypeDescriptions: ModelDescriptor[]): Promise<void> {
+    public prepareMeshTemplates(modelTypeDescriptions: MeshDescriptor[]): Promise<void> {
         this.isReady = false;
 
         this.createShapeTemplates(modelTypeDescriptions);
@@ -44,19 +45,19 @@ export class MeshCreationTransformator {
         return worldItems;
     }
 
-    private createShapeTemplates(modelTypeDescriptions: ModelDescriptor[]) {
+    private createShapeTemplates(modelTypeDescriptions: MeshDescriptor[]) {
         modelTypeDescriptions
             .filter(desc => desc.details.name === 'shape-descriptor')
             .forEach(desc => this.shapeMap.set(desc.type, <ShapeDescriptor>desc.details));
     }
 
-    private createModelTemplates(modelTypeDescriptions: ModelDescriptor[]) {
+    private createModelTemplates(modelTypeDescriptions: MeshDescriptor[]) {
         const fileDescriptions = modelTypeDescriptions
             .filter(desc => desc.details.name === 'file-descriptor');
 
 
         return Promise
-            .all(fileDescriptions.map(desc => this.modelFileLoader.load(desc.type, <FileDescriptor>desc.details)))
+            .all(fileDescriptions.map(desc => this.meshLoader.load(desc.type, <FileDescriptor>desc.details)))
             .then((meshTemplates: MeshTemplate<Mesh, Skeleton>[]) => {
                 meshTemplates.forEach(template => this.modelMap.set(template.type, template));
             });
@@ -65,9 +66,9 @@ export class MeshCreationTransformator {
     private createMesh(worldItemInfo: WorldItemInfo): Mesh {
 
         if (this.modelMap.has(worldItemInfo.name)) {
-            return this.modelFactory.createFromTemplate(worldItemInfo, this.modelMap.get(worldItemInfo.name));
+            return this.meshFactory.createFromTemplate(worldItemInfo, this.modelMap.get(worldItemInfo.name));
         } else if (this.shapeMap.has(worldItemInfo.type)) {
-            return this.modelFactory.createFromShapeDescriptor(worldItemInfo, this.shapeMap.get(worldItemInfo.name));
+            return this.meshFactory.createFromShapeDescriptor(worldItemInfo, this.shapeMap.get(worldItemInfo.name));
         } else {
             throw new Error('Unsupported type: ' + worldItemInfo.name);
         }

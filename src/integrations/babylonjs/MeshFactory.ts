@@ -48,8 +48,8 @@ export interface ShapeDescriptor {
     translateY?: number;
 }
 
-export interface ModelDescriptor {
-    name: 'model-descriptor';
+export interface MeshDescriptor {
+    name: 'mesh-descriptor';
     type: string;
     details: FileDescriptor | ShapeDescriptor
 }
