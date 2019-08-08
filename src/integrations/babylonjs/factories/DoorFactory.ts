@@ -17,18 +17,17 @@ export class DoorFactory implements MeshCreator {
 
     public createItem(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh {
         const meshes = meshTemplate.meshes.map(m => m.clone());
-        let boundingBox = this.worldItemBoundingBoxCalculator.getBoundingBox(worldItemInfo);
+        worldItemInfo.dimensions = this.worldItemBoundingBoxCalculator.getBoundingBox(worldItemInfo);
 
-        boundingBox = boundingBox.negate('y');
-        const boundingMesh = this.createBoundingMesh(boundingBox);
+        worldItemInfo.dimensions = worldItemInfo.dimensions.negate('y');
+        const boundingMesh = this.createBoundingMesh(worldItemInfo.dimensions);
 
-        const mesh = meshes[1];
         meshes.forEach(m => {
             m.isVisible = true;
             m.parent = boundingMesh;
         });
 
-        const center = boundingBox.getBoundingCenter();
+        const center = worldItemInfo.dimensions.getBoundingCenter();
         boundingMesh.translate(new Vector3(center.x, 4, center.y), 1);
 
         return boundingMesh;

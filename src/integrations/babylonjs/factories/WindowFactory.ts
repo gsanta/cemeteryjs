@@ -19,18 +19,18 @@ export class WindowFactory implements MeshCreator  {
 
     public createItem(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh {
         const meshes = meshTemplate.meshes.map(m => m.clone());;
-        let boundingBox = this.worldItemBoundingBoxCalculator.getBoundingBox(worldItemInfo);
+        worldItemInfo.dimensions = this.worldItemBoundingBoxCalculator.getBoundingBox(worldItemInfo);
 
-        boundingBox = boundingBox.negate('y');
+        worldItemInfo.dimensions = worldItemInfo.dimensions.negate('y');
 
-        const parentMesh = this.createSideItems(boundingBox);
+        const parentMesh = this.createSideItems(worldItemInfo.dimensions);
 
         meshes.forEach(m => {
             m.isVisible = true;
             m.parent = parentMesh;
         });
 
-        const center = boundingBox.getBoundingCenter();
+        const center = worldItemInfo.dimensions.getBoundingCenter();
         parentMesh.translate(new Vector3(center.x, 4, center.y), 1);
 
         return parentMesh;
