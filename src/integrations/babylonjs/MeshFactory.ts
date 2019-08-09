@@ -43,7 +43,7 @@ export interface FileDescriptor {
 
 export interface ShapeDescriptor {
     name: 'shape-descriptor';
-    shape: 'plane';
+    shape: 'plane' | 'disc';
     materials?: string[];
     translateY?: number;
 }
@@ -73,25 +73,6 @@ export class MeshFactory {
 
     constructor(scene: Scene) {
         this.scene = scene;
-    }
-
-    public createItem(worldItemInfo: WorldItemInfo, meshInfo: [Mesh[], Skeleton[]]): Mesh {
-        const meshes = meshInfo[0].map(m => m.clone());
-        let boundingBox = this.worldItemBoundingBoxCalculator.getBoundingBox(worldItemInfo);
-        const rotation = - worldItemInfo.rotation;
-        meshes[0].isVisible = true;
-
-        meshes[0].rotate(Axis.Y, rotation, Space.WORLD);
-        boundingBox = boundingBox.negate('y');
-        worldItemInfo.dimensions = boundingBox;
-        const mesh = this.createMesh(worldItemInfo, meshes[0], this.scene);
-        mesh.checkCollisions = true;
-        mesh.isVisible = false;
-
-        const impostor = new PhysicsImpostor(mesh, PhysicsImpostor.BoxImpostor, { mass: 2, friction: 1, restitution: 0.3 }, this.scene);
-        mesh.physicsImpostor = impostor;
-
-        return mesh;
     }
 
     public createFromTemplate(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
