@@ -1,6 +1,6 @@
 import { WorldItemInfo } from "../../../WorldItemInfo";
 import { MeshDescriptor } from "../MeshFactory";
-import { MeshBuilder, Scene } from 'babylonjs';
+import { MeshBuilder, Scene, Mesh } from 'babylonjs';
 import { WorldItemBoundingBoxCalculator } from "../factories/utils/WorldItemBoundingBoxCalculator";
 
 
@@ -16,10 +16,10 @@ export class DiscFactory {
 
     public createItem(worldItemInfo: WorldItemInfo, meshDescriptor: MeshDescriptor) {
         const mesh = this.createDisc();
-        let boundingBox = this.worldItemBoundingBoxCalculator.getBoundingBox(worldItemInfo);
-        boundingBox = boundingBox.negate('y');
+        // let boundingBox = this.worldItemBoundingBoxCalculator.getBoundingBox(worldItemInfo);
+        // boundingBox = boundingBox.negate('y');
 
-        worldItemInfo.dimensions = boundingBox;
+        // worldItemInfo.dimensions = boundingBox;
 
         mesh.checkCollisions = true;
 
@@ -27,6 +27,6 @@ export class DiscFactory {
     }
 
     private createDisc() {
-        return this.meshBuilder.CreateDisc("disc", {radius: 1, arc: 1, tessellation: 36, sideOrientation: BABYLON.Mesh.DOUBLESIDE}, this.scene);
+        return this.meshBuilder.CreateDisc("disc", {radius: 1, arc: 1, tessellation: 36, sideOrientation: Mesh.DOUBLESIDE}, this.scene);
     }
 }

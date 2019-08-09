@@ -7,8 +7,22 @@ export function createScene(): Scene {
     };
 }
 
-export function createMeshBuilder(): typeof MeshBuilder {
-    return <typeof MeshBuilder> {
-        CreateDisc: (<any> sinon.stub())
-    }
+export abstract class MeshBuilderStubs {
+    static CreateDisc: sinon.SinonStub;
+}
+
+export function createMeshBuilder(): [typeof MeshBuilder, typeof MeshBuilderStubs] {
+    const CreateDisc = sinon.stub();
+
+    CreateDisc.returns({
+        name: 'Disc'
+    });
+    return [
+        <typeof MeshBuilder> {
+            CreateDisc: (<any> CreateDisc)
+        },
+        <typeof MeshBuilderStubs> {
+            CreateDisc
+        }
+    ]
 }
