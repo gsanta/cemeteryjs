@@ -1,6 +1,7 @@
 
 import { Scene, Engine, ArcRotateCamera, Vector3, HemisphericLight, Color3 } from 'babylonjs';
 import { BabylonImporter } from '../api/BabylonImporter';
+import { TreeIteratorGenerator } from '../../../utils/TreeIteratorGenerator';
 (<any> window).earcut = require('earcut');
 
 // const strWorld = require('raw-loader!../../../../assets/test/demo_world.gwm');
@@ -11,7 +12,7 @@ const strWorld = `
 
     WWWWWWWWWWWWWWWWW
     W###############W
-    W###############W
+    W#####DD########W
     W###############W
     W###############W
     WWWWWWWWWWWWWWWWW
@@ -23,7 +24,7 @@ const strWorld = `
     W = wall
     # = empty
     X = player
-    D = door
+    D = disc
     C = cupboard
     I = window
     T = table
@@ -60,10 +61,28 @@ export class BabylonjsDemo {
                             roofMaterialPath: './assets/textures/roof.jpeg',
                             roofY: 7.21
                         }
-                    }
+                    },
+                    {
+                        type: 'disc',
+                        name: 'mesh-descriptor' as 'mesh-descriptor',
+                        details: {
+                            name: 'shape-descriptor' as 'shape-descriptor',
+                            shape: 'disc',
+                            translateY: 2
+                        }
+                    },
                 ]
             )
-            .then(() => {
+            .then(worldItems => {
+                worldItems.forEach(rootItem => {
+                    for (const item of TreeIteratorGenerator(rootItem)) {
+                        if (item.name === 'room') {
+                            item.meshTemplate.meshes[1].isVisible = false;
+                        }
+                    }
+                });
+
+
                 engine.runRenderLoop(() => scene.render());
             });
     }

@@ -34,6 +34,7 @@ export class MeshCreationTransformator implements WorldItemTransformator {
 
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
+                console.log(item.name);
                 item.meshTemplate = {
                     meshes: this.createMesh(item),
                     skeletons: [],

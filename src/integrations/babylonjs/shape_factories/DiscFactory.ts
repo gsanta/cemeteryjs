@@ -1,19 +1,30 @@
+import { Color3, Mesh, MeshBuilder, Scene, StandardMaterial, Vector3 } from 'babylonjs';
 import { WorldItemInfo } from "../../../WorldItemInfo";
-import { MeshDescriptor } from "../MeshFactory";
-import { MeshBuilder, Scene, Mesh } from 'babylonjs';
+import { MaterialBuilder } from '../MaterialBuilder';
+import { ShapeDescriptor } from '../MeshFactory';
 
 
 export class DiscFactory {
     private scene: Scene;
     private meshBuilder: typeof MeshBuilder;
+    private materialBuilder: typeof MaterialBuilder;
 
-    constructor(scene: Scene, meshBuilder: typeof MeshBuilder) {
-        this.meshBuilder = meshBuilder;
+    constructor(scene: Scene, meshBuilder: typeof MeshBuilder, materialBuilder: typeof MaterialBuilder) {
         this.scene = scene;
+        this.meshBuilder = meshBuilder;
+        this.materialBuilder = materialBuilder;
     }
 
-    public createItem(worldItemInfo: WorldItemInfo, meshDescriptor: MeshDescriptor) {
+    public createItem(worldItemInfo: WorldItemInfo, shapeDescriptor: ShapeDescriptor) {
         const mesh = this.createDisc();
+
+        mesh.material = this.materialBuilder.CreateMaterial('disc-material', this.scene);
+        (<StandardMaterial> mesh.material).diffuseColor = Color3.FromHexString('#00FF00');
+
+        const translateY = shapeDescriptor.translateY ? shapeDescriptor.translateY : 0;
+
+        const dimensions = worldItemInfo.dimensions.getBoundingCenter();
+        mesh.translate(new Vector3(dimensions.x, translateY, dimensions.y), 1);
 
         mesh.checkCollisions = true;
 

@@ -8,6 +8,8 @@ import { DoorFactory } from './factories/DoorFactory';
 import { WindowFactory } from './factories/WindowFactory';
 import { WallFactory } from './factories/WallFactory';
 import { RoomFactory } from './factories/RoomFactory';
+import { DiscFactory } from './shape_factories/DiscFactory';
+import { MaterialBuilder } from './MaterialBuilder';
 
 export interface MeshTemplateConfig {
     checkCollisions: boolean;
@@ -126,7 +128,14 @@ export class MeshFactory {
     }
 
     private createFromShapeDescriptor(worldItemInfo: WorldItemInfo, shapeDescriptor: ShapeDescriptor): Mesh[] {
-        return [this.createPlane(worldItemInfo, shapeDescriptor)];
+        switch(shapeDescriptor.shape) {
+            case 'disc':
+                return [new DiscFactory(this.scene, MeshBuilder, MaterialBuilder).createItem(worldItemInfo, shapeDescriptor)]
+            case 'plane':
+                return [this.createPlane(worldItemInfo, shapeDescriptor)];
+            default:
+                throw new Error('Unsupported shape: ' + shapeDescriptor.shape);
+        }
     }
 
     private createPlane(worldItemInfo: WorldItemInfo, shapeDescriptor: ShapeDescriptor): Mesh {
