@@ -1,11 +1,10 @@
 const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = env => {
     return {
-        entry: './src/gui/index.tsx',
+        entry: './src/index.ts',
         module: {
             rules: [
                 {
@@ -51,23 +50,19 @@ module.exports = env => {
             new webpack.DefinePlugin({
                 DEBUG: env === 'debug' ? true : false
             }),
-            // new BundleAnalyzerPlugin()
         ],
         resolve: {
             extensions: [ '.tsx', '.ts', '.js', 'scss', '.css' ]
         },
         output: {
             filename: 'app.js',
-            path: path.resolve(__dirname, 'build')
+            path: path.resolve(__dirname, 'build'),
+            library: 'worldGenerator'
         },
         devtool: 'eval',
         devServer: {
-            contentBase: ['.', './test', './assets'],
+            contentBase: ['.', './test', './assets', './demo'],
             port: 8764
-        },
-        externals: {
-            oimo: 'OIMO',
-            cannon: 'CANNON'
         }
     }
 };

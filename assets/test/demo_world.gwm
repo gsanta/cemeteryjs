@@ -1,0 +1,26 @@
+map `
+
+WWWWWWWWWWWWWWWWW
+W###############W
+W###############W
+W###############W
+W###############W
+WWWWWWWWWWWWWWWWW
+
+`
+
+definitions `
+
+W = wall
+# = empty
+X = player
+D = door
+C = cupboard
+I = window
+T = table
+B = bathtub
+S = washbasin
+E = bed
+H = chair
+
+`

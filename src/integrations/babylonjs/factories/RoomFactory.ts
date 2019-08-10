@@ -16,8 +16,6 @@ export class RoomFactory  {
         const mesh = this.createRoomFloor(worldItemInfo.dimensions);
         mesh.receiveShadows = true;
 
-        const impostor = new PhysicsImpostor(mesh, PhysicsImpostor.PlaneImpostor, { mass: 0, friction: 1, restitution: 0.7 }, this.scene);
-        mesh.physicsImpostor = impostor;
         mesh.isVisible = true;
 
         const roofMesh = this.createRoof(worldItemInfo, roomDescriptor);

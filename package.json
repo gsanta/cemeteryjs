@@ -51,6 +51,7 @@
     "@types/styled-components": "^4.1.18",
     "babylonjs": "^4.0.3",
     "babylonjs-loaders": "^4.0.3",
+    "earcut": "^2.1.5",
     "lodash": "^4.17.15",
     "polygon-offset": "^0.3.1",
     "polylabel": "^1.0.2",

@@ -1,0 +1,70 @@
+
+import { Scene, Engine, ArcRotateCamera, Vector3, HemisphericLight, Color3 } from 'babylonjs';
+import { BabylonImporter } from '../api/BabylonImporter';
+(<any> window).earcut = require('earcut');
+
+// const strWorld = require('raw-loader!../../../../assets/test/demo_world.gwm');
+// import strWorld from 'raw-loader!../../../../assets/test/demo_world.gwm';
+
+const strWorld = `
+    map \`
+
+    WWWWWWWWWWWWWWWWW
+    W###############W
+    W###############W
+    W###############W
+    W###############W
+    WWWWWWWWWWWWWWWWW
+
+    \`
+
+    definitions \`
+
+    W = wall
+    # = empty
+    X = player
+    D = door
+    C = cupboard
+    I = window
+    T = table
+    B = bathtub
+    S = washbasin
+    E = bed
+    H = chair
+
+    \`
+`;
+
+export class BabylonjsDemo {
+    public setupDemo(canvas: HTMLCanvasElement): Promise<void> {
+
+        const engine = new Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
+        const scene = new Scene(engine);
+        const camera = new ArcRotateCamera("Camera", 0, 0, 40, new Vector3(0, 0, 0), scene);
+        camera.setPosition(new Vector3(0, 40, 20));
+        camera.attachControl(canvas, true);
+
+        const light = new HemisphericLight('light', new Vector3(0, 1, 0), scene);
+        light.diffuse = new Color3(1, 1, 1);
+        light.intensity = 1;
+
+        return <any> new BabylonImporter(scene as any)
+            .import(
+                strWorld,
+                [
+                    {
+                        type: 'room',
+                        name: 'mesh-descriptor' as 'mesh-descriptor',
+                        details: {
+                            name: 'room-descriptor' as 'room-descriptor',
+                            roofMaterialPath: './assets/textures/roof.jpeg',
+                            roofY: 7.21
+                        }
+                    }
+                ]
+            )
+            .then(() => {
+                engine.runRenderLoop(() => scene.render());
+            });
+    }
+}

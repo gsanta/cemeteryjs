@@ -21,6 +21,7 @@ export {WorldItemParser} from './parsers/WorldItemParser';
 export {TreeNode, TreeIteratorGenerator} from './utils/TreeIteratorGenerator';
 export {Converter} from './integrations/api/Converter';
 export {Importer} from './integrations/api/Importer';
+export {BabylonjsDemo} from './integrations/babylonjs/demo/BabylonjsDemo';
 
 export const parsers = {
     RoomInfoParser,
