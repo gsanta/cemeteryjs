@@ -1,7 +1,6 @@
 
 import { Color3, Mesh, MeshBuilder, PhysicsImpostor, Scene, Skeleton, Space, StandardMaterial, Vector3, Axis, DynamicTexture, Texture } from 'babylonjs';
 import { WorldItemInfo } from '../../WorldItemInfo';
-import { WorldItemBoundingBoxCalculator } from './factories/utils/WorldItemBoundingBoxCalculator';
 import { MeshTemplate } from '../api/MeshTemplate';
 import { EmptyAreaFactory } from './factories/EmptyAreaFactory';
 import { PlayerFactory } from './factories/PlayerFactory';
@@ -69,7 +68,6 @@ export interface MultiModelDescriptor {
 
 export class MeshFactory {
     private scene: Scene;
-    private worldItemBoundingBoxCalculator: WorldItemBoundingBoxCalculator = new WorldItemBoundingBoxCalculator();
 
     constructor(scene: Scene) {
         this.scene = scene;
@@ -98,13 +96,10 @@ export class MeshFactory {
 
     private create(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>) {
         const meshes = meshTemplate.meshes.map(m => m.clone());
-        let boundingBox = this.worldItemBoundingBoxCalculator.getBoundingBox(worldItemInfo);
         const rotation = - worldItemInfo.rotation;
         meshes[0].isVisible = true;
 
         meshes[0].rotate(Axis.Y, rotation, Space.WORLD);
-        boundingBox = boundingBox.negate('y');
-        worldItemInfo.dimensions = boundingBox;
         const mesh = this.createMesh(worldItemInfo, meshes[0], this.scene);
         mesh.checkCollisions = true;
         mesh.isVisible = false;

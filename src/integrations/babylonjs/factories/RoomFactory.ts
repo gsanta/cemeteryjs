@@ -1,6 +1,5 @@
 import { Mesh, MeshBuilder, PhysicsImpostor, Scene, Vector3, StandardMaterial, DynamicTexture, Texture } from 'babylonjs';
 import { Shape } from '@nightshifts.inc/geometry';
-import { WorldItemBoundingBoxCalculator } from './utils/WorldItemBoundingBoxCalculator';
 import { WorldItemInfo } from '../../../WorldItemInfo';
 import { MeshCreator } from '../MeshCreator';
 import { RoomDescriptor } from '../MeshFactory';
@@ -8,17 +7,12 @@ import { RoomDescriptor } from '../MeshFactory';
 export class RoomFactory  {
     private scene: Scene;
     private counter = 1;
-    private worldItemBoundingBoxCalculator: WorldItemBoundingBoxCalculator = new WorldItemBoundingBoxCalculator();
 
     constructor(scene: Scene) {
         this.scene = scene;
     }
 
     public createItem(worldItemInfo: WorldItemInfo, roomDescriptor: RoomDescriptor): Mesh[] {
-        worldItemInfo.dimensions = this.worldItemBoundingBoxCalculator.getBoundingBox(worldItemInfo);
-
-        worldItemInfo.dimensions  = worldItemInfo.dimensions.negate('y')
-
         const mesh = this.createRoomFloor(worldItemInfo.dimensions);
         mesh.receiveShadows = true;
 

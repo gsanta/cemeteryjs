@@ -35,9 +35,10 @@ describe(`WorldCoordinateTransfomrator`, () => {
 
             const result = worldCoordinateTransformator.transform(items);
 
-            expect(result[0].dimensions).toEqual(<Shape> Polygon.createRectangle(0, 0, 10, 15));
-            expect(result[0].children[0].dimensions).toEqual(<Shape> Polygon.createRectangle(-5, -7.5, 5, 15));
-            expect(result[0].children[0].children[0].dimensions).toEqual(<Shape> Polygon.createRectangle(-3, -5.5, 1, 1));
+            expect(result[0]).toMatchObject({ name: 'root', dimensions: Polygon.createRectangle(0, 0, 10, 15)});
+            expect(result[0].children[0]).toMatchObject({ name: 'room', dimensions: Polygon.createRectangle(-5, -7.5, 5, 15)});
+            expect(result[0].children[0].children[0]).toMatchObject({ name: 'chair', dimensions: Polygon.createRectangle(-3, 4.5, 1, 1)});
+            expect(result[0].children[1]).toMatchObject({ name: 'room', dimensions: Polygon.createRectangle(0, -7.5, 5, 15)})
         });
     });
 });

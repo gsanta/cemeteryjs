@@ -1,14 +1,12 @@
 import { Scene, StandardMaterial, Mesh, Vector3, MeshBuilder, Skeleton } from 'babylonjs';
 import { Segment, GeometryUtils, Shape } from '@nightshifts.inc/geometry';
 import { WorldItemInfo } from '../../../WorldItemInfo';
-import { WorldItemBoundingBoxCalculator } from './utils/WorldItemBoundingBoxCalculator';
 import { MeshCreator } from '../MeshCreator';
 import { MeshTemplate } from '../../api/MeshTemplate';
 
 export class DoorFactory implements MeshCreator {
     private scene: Scene;
     private meshBuilder: typeof MeshBuilder;
-    private worldItemBoundingBoxCalculator: WorldItemBoundingBoxCalculator = new WorldItemBoundingBoxCalculator();
 
     constructor(scene: Scene, meshBuilder: typeof MeshBuilder) {
         this.scene = scene;
@@ -17,9 +15,6 @@ export class DoorFactory implements MeshCreator {
 
     public createItem(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh {
         const meshes = meshTemplate.meshes.map(m => m.clone());
-        worldItemInfo.dimensions = this.worldItemBoundingBoxCalculator.getBoundingBox(worldItemInfo);
-
-        worldItemInfo.dimensions = worldItemInfo.dimensions.negate('y');
         const boundingMesh = this.createBoundingMesh(worldItemInfo.dimensions);
 
         meshes.forEach(m => {

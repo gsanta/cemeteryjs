@@ -1,7 +1,6 @@
 import { Color3, Mesh, MeshBuilder, Scene, Skeleton, StandardMaterial, Vector3 } from 'babylonjs';
 import { GeometryUtils, Segment, Shape } from '@nightshifts.inc/geometry';
 import { WorldItemInfo } from '../../../WorldItemInfo';
-import { WorldItemBoundingBoxCalculator } from './utils/WorldItemBoundingBoxCalculator';
 import { MeshCreator } from '../MeshCreator';
 import { MeshTemplate } from '../../api/MeshTemplate';
 
@@ -10,7 +9,6 @@ export class WindowFactory implements MeshCreator  {
     private scene: Scene;
 
     private meshBuilder: typeof MeshBuilder;
-    private worldItemBoundingBoxCalculator: WorldItemBoundingBoxCalculator = new WorldItemBoundingBoxCalculator();
 
     constructor(scene: Scene, meshBuilder: typeof MeshBuilder) {
         this.scene = scene;
@@ -19,9 +17,6 @@ export class WindowFactory implements MeshCreator  {
 
     public createItem(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh {
         const meshes = meshTemplate.meshes.map(m => m.clone());;
-        worldItemInfo.dimensions = this.worldItemBoundingBoxCalculator.getBoundingBox(worldItemInfo);
-
-        worldItemInfo.dimensions = worldItemInfo.dimensions.negate('y');
 
         const parentMesh = this.createSideItems(worldItemInfo.dimensions);
 

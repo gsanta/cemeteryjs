@@ -1,26 +1,20 @@
 import { Mesh, MeshBuilder, Scene, Skeleton, StandardMaterial, Vector3 } from 'babylonjs';
 import { WorldItemInfo } from '../../../WorldItemInfo';
 import { MeshCreator } from '../MeshCreator';
-import { WorldItemBoundingBoxCalculator } from './utils/WorldItemBoundingBoxCalculator';
 
 export class EmptyAreaFactory implements MeshCreator {
     private scene: Scene;
-    private worldItemBoundingBoxCalculator: WorldItemBoundingBoxCalculator = new WorldItemBoundingBoxCalculator();
 
     constructor(scene: Scene) {
         this.scene = scene;
     }
 
     public createItem(worldItemInfo: WorldItemInfo): Mesh {
-        worldItemInfo.dimensions = this.worldItemBoundingBoxCalculator.getBoundingBox(worldItemInfo);
-
-        const dimensions  = worldItemInfo.dimensions
-            .negate('y');
 
         const mesh = MeshBuilder.CreatePolygon(
             worldItemInfo.name,
             {
-                shape: dimensions.getPoints().map(point => new Vector3(point.x, 2, point.y)),
+                shape: worldItemInfo.dimensions.getPoints().map(point => new Vector3(point.x, 2, point.y)),
                 depth: 2,
                 updatable: true
             },

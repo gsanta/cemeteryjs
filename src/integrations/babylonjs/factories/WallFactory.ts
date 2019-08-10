@@ -1,25 +1,20 @@
 import { Mesh, MeshBuilder, Scene, StandardMaterial, Texture, Vector3 } from 'babylonjs';
 import { GeometryUtils } from '@nightshifts.inc/geometry';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
-import { WorldItemBoundingBoxCalculator } from './utils/WorldItemBoundingBoxCalculator';
 import { WorldItemInfo } from '../../../WorldItemInfo';
 import { MeshCreator } from '../MeshCreator';
 
 export class WallFactory implements MeshCreator  {
     private scene: Scene;
     private index = 1;
-    private worldItemBoundingBoxCalculator: WorldItemBoundingBoxCalculator = new WorldItemBoundingBoxCalculator();
 
     constructor(scene: Scene) {
         this.scene = scene;
     }
 
     public createItem(worldItemInfo: WorldItemInfo): Mesh {
-        worldItemInfo.dimensions = this.worldItemBoundingBoxCalculator.getBoundingBox(worldItemInfo);
 
-        const segment = <Segment> worldItemInfo.dimensions.negate('y');
-
-        const rectangle = GeometryUtils.addThicknessToSegment(segment, 0.25);
+        const rectangle = GeometryUtils.addThicknessToSegment(<Segment> worldItemInfo.dimensions, 0.25);
 
         const parentMesh = MeshBuilder.CreateBox(
                 `default-wall-container-${this.index}`,
