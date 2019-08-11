@@ -64,28 +64,27 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
     public runAlgorithm(rooms: WorldItemInfo[]) {
 
         const newRoomDimensions = rooms.map(room => {
-            let borderItemPolygons = room.borderItems.map(item => item.dimensions);
-            borderItemPolygons = mergeStraightAngledNeighbouringBorderItemPolygons(borderItemPolygons);
-            const roomEdges = room. dimensions.getEdges();
+            const borders = mergeStraightAngledNeighbouringBorderItemPolygons(room.borderItems.map(item => item.dimensions));
+            const roomSides = room.dimensions.getEdges();
 
             const newPolygonPoints: Point[] = [];
-            const map = this.mapBorderItemToCorrespondingRoomEdge(borderItemPolygons, roomEdges);
+            const borderRoomSidePairs = this.pairBordersToRoomSides(borders, roomSides);
 
             let newPolygon: Polygon;
 
             try {
-                for (let i = 0; i < map.length; i++) {
-                    const item1 = map[i];
-                    const item2 = i === map.length - 1 ? map[0] : map[i + 1];
+                for (let i = 0; i < borderRoomSidePairs.length; i++) {
+                    const currentPair = borderRoomSidePairs[i];
+                    const nextPair = i === borderRoomSidePairs.length - 1 ? borderRoomSidePairs[0] : borderRoomSidePairs[i + 1];
 
-                    let segments1: [Segment, Segment] = this.getBorderItemPolygonEdgesParallelToCorrespondingRoomEdge(item1);
-                    let segments2: [Segment, Segment] = this.getBorderItemPolygonEdgesParallelToCorrespondingRoomEdge(item2);
+                    let currParallelLines: [Segment, Segment] = this.getBorderSidesParallelToRoomSide(currentPair.border, currentPair.roomSide);
+                    let nextParallelLines: [Segment, Segment] = this.getBorderSidesParallelToRoomSide(nextPair.border, nextPair.roomSide);
 
                     const variations: [Segment, Segment][] = [
-                        [segments1[0], segments2[0]],
-                        [segments1[1], segments2[0]],
-                        [segments1[0], segments2[1]],
-                        [segments1[1], segments2[1]]
+                        [currParallelLines[0], nextParallelLines[0]],
+                        [currParallelLines[1], nextParallelLines[0]],
+                        [currParallelLines[0], nextParallelLines[1]],
+                        [currParallelLines[1], nextParallelLines[1]]
                     ];
 
                     const segmentPair1 = _.minBy(variations, (val) => val[0].getBoundingCenter().distanceTo(val[1].getBoundingCenter()));
@@ -110,16 +109,16 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
         });
     }
 
-    private mapBorderItemToCorrespondingRoomEdge(borderItemPolygons: Shape[], roomEdges: Segment[]): { borderItem: Shape, roomEdge: Segment}[]  {
-        const indexedEdges: [Segment, number][] = roomEdges.map((edge, index) => [edge, index]);
-        const map: { borderItem: Shape, roomEdge: Segment, roomEdgeIndex: number}[] = [];
+    private pairBordersToRoomSides(borderPolygons: Shape[], roomSides: Segment[]): { border: Shape, roomSide: Segment}[]  {
+        const indexedEdges: [Segment, number][] = roomSides.map((edge, index) => [edge, index]);
+        const map: { border: Shape, roomSide: Segment, roomEdgeIndex: number}[] = [];
 
-        borderItemPolygons.forEach(item => {
+        borderPolygons.forEach(item => {
             const closestIndexedEdge = _.minBy(indexedEdges, indexedEdge => indexedEdge[0].getBoundingCenter().distanceTo(item.getBoundingCenter()));
 
             map.push({
-                borderItem: item,
-                roomEdge: closestIndexedEdge[0],
+                border: item,
+                roomSide: closestIndexedEdge[0],
                 roomEdgeIndex: closestIndexedEdge[1]
             });
         });
@@ -129,12 +128,11 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
         return map;
     }
 
-    private getBorderItemPolygonEdgesParallelToCorrespondingRoomEdge(borderItemRoomEdgePair: { borderItem: Shape, roomEdge: Segment}): [Segment, Segment] {
-        const {borderItem, roomEdge} = {...borderItemRoomEdgePair};
-        if (borderItem instanceof Segment) {
-            return [borderItem, borderItem];
+    private getBorderSidesParallelToRoomSide(border: Shape, roomSide: Segment): [Segment, Segment] {
+        if (border instanceof Segment) {
+            return [border, border];
         } else {
-            return <[Segment, Segment]> borderItem.getEdges().filter(segment => segment.getLine().hasEqualSlope(roomEdge.getLine()));
+            return <[Segment, Segment]> border.getEdges().filter(segment => segment.getLine().hasEqualSlope(roomSide.getLine()));
         }
     }
 
@@ -146,8 +144,6 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
             const coincidentBorderItems = borderItems
                 .filter(item => item.dimensions instanceof Polygon)
                 .filter(item => new StripeView(<Polygon> item.dimensions).overlaps(oldEdges[index]));
-
-
 
             const maxLen = coincidentBorderItems
                 .map(borderItem => borderItem.dimensions.getCoincidentLineSegment(oldEdges[index])[0])
@@ -175,6 +171,7 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
                 }
 
                 item.dimensions = newSegment;
+                // item.rotation = newSegment.getLine().getAngle
 
                 if (referencePoint.distanceTo(newSegment.getPoints()[0]) > referencePoint.distanceTo(newSegment.getPoints()[1])) {
                     referencePoint = newSegment.getPoints()[0];
