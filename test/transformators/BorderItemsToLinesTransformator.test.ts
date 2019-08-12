@@ -16,8 +16,7 @@ import { HierarchyBuildingTransformator } from '../../src/transformators/Hierarc
 import { BorderItemAddingTransformator } from '../../src/transformators/BorderItemAddingTransformator';
 import * as _ from 'lodash';
 import { hasAnyWorldItemInfoDimension } from '../parsers/room_separator_parser/RoomSeparatorParser.test';
-
-var Offset = require('polygon-offset');
+import { findWorldItemWithDimensions } from '../testUtils';
 
 const initBorderItems = (strMap: string): WorldItemInfo[] => {
     const map = `
@@ -148,6 +147,25 @@ describe('`BorderItemsToLinesTransformator`', () => {
     });
 
     describe('`transform`', () => {
+        it ('sets the rotations for the borders correctly', () => {
+            const map = `
+                WDDWWWWW
+                W------W
+                W------W
+                WWWWWWWW
+            `;
+
+            const [root] = initBorderItems(map);
+
+            const items = new BorderItemsToLinesTransformator().transform([root]);
+
+            expect(findWorldItemWithDimensions(items, new Segment(new Point(0.5, 0.5), new Point(0.5, 3.5))).rotation).toEqual(Math.PI / 2);
+            expect(findWorldItemWithDimensions(items, new Segment(new Point(7.5, 0.5), new Point(7.5, 3.5))).rotation).toEqual(Math.PI / 2);
+            expect(findWorldItemWithDimensions(items, new Segment(new Point(0.5, 3.5), new Point(7.5, 3.5))).rotation).toEqual(0);
+            expect(findWorldItemWithDimensions(items, new Segment(new Point(2.833333333333334, 0.5), new Point(7.5, 0.5))).rotation).toEqual(0);
+            expect(findWorldItemWithDimensions(items, new Segment(new Point(0.5000000000000009, 0.5), new Point(2.833333333333334, 0.5))).rotation).toEqual(0);
+        });
+
         it ('handles multiple types of border items (e.g doors, windows) beside walls', () => {
             const map = `
                 WDDWWWWW

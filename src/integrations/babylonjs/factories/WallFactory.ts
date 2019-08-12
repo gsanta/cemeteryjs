@@ -1,4 +1,4 @@
-import { Mesh, MeshBuilder, Scene, StandardMaterial, Texture, Vector3 } from 'babylonjs';
+import { Mesh, MeshBuilder, Scene, StandardMaterial, Texture, Vector3, Axis, Space } from 'babylonjs';
 import { GeometryUtils } from '@nightshifts.inc/geometry';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { WorldItemInfo } from '../../../WorldItemInfo';
@@ -13,28 +13,29 @@ export class WallFactory implements MeshCreator  {
     }
 
     public createItem(worldItemInfo: WorldItemInfo): Mesh {
-
-        const rectangle = GeometryUtils.addThicknessToSegment(<Segment> worldItemInfo.dimensions, 0.25);
-
         const parentMesh = MeshBuilder.CreateBox(
                 `default-wall-container-${this.index}`,
                 {
-                    width: rectangle.getBoundingInfo().extent[0],
-                    depth: rectangle.getBoundingInfo().extent[1],
+                    width: (<Segment> worldItemInfo.dimensions).getLength(),
+                    depth: 0.25,
                     height: 7.2
                 },
                 this.scene
             );
 
+        const center = worldItemInfo.dimensions.getBoundingCenter();
+        const pivotPoint = new Vector3(center.x, 0, center.y);
+        parentMesh.setPivotPoint(pivotPoint);
+        parentMesh.rotate(Axis.Y, worldItemInfo.rotation, Space.LOCAL)
+        parentMesh.translate(new Vector3(worldItemInfo.dimensions.getBoundingCenter().x, 3.6, worldItemInfo.dimensions.getBoundingCenter().y), 1);
+
         const mat = new StandardMaterial('wallMaterial', this.scene);
         mat.diffuseTexture = new Texture('./assets/textures/brick.jpeg', this.scene);
         parentMesh.material = mat;
 
-        parentMesh.translate(new Vector3(rectangle.getBoundingCenter().x, 0, rectangle.getBoundingCenter().y), 1);
         this.index++;
 
 
-        parentMesh.translate(new Vector3(0, 3.6, 0), 1);
 
         parentMesh.computeWorldMatrix(true);
         return parentMesh;

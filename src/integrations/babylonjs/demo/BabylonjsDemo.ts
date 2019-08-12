@@ -10,12 +10,17 @@ import { TreeIteratorGenerator } from '../../../utils/TreeIteratorGenerator';
 const strWorld = `
     map \`
 
-    WWWWWWWWWWWWWWWWW
-    W###############W
-    W#####DD########W
-    W###############W
-    W###############W
-    WWWWWWWWWWWWWWWWW
+    WWWWWWWWWWWWWWWWWWWWWWWWW
+    W###############W#######W
+    W#####DD########W#######W
+    W###############W#######W
+    W###############W#######W
+    WWWWWWWWWWWWWWWWWWWWWWWWW
+    W###############W#######W
+    W###############W#######W
+    W###############W#######W
+    W###############W#######W
+    WWWWWWWWWWWWWWWWWWWWWWWWW
 
     \`
 

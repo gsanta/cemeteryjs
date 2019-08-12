@@ -96,11 +96,11 @@ export class FurnitureRealSizeTransformator {
             const a = snappingWallSegment.getPoints()[0];
             const b = new Point(o.x + 10, 0);
 
-            return new Angle(o, a, b);
+            return Angle.fromThreePoints(o, a, b);
 
         }
 
-        return new Angle(new Point(0, 0), new Point(0, 0), new Point(0, 0));
+        return Angle.fromThreePoints(new Point(0, 0), new Point(0, 0), new Point(0, 0));
 
     }
 

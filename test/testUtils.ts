@@ -1,6 +1,9 @@
 import { Scene, MeshBuilder } from 'babylonjs';
 import * as sinon from 'sinon';
 import { MaterialBuilder } from '../src/integrations/babylonjs/MaterialBuilder';
+import { WorldItemInfo } from '../src/WorldItemInfo';
+import { Shape } from '@nightshifts.inc/geometry';
+import { TreeIteratorGenerator } from '../src/utils/TreeIteratorGenerator';
 
 export function createScene(): Scene {
     return <Scene> {
@@ -47,4 +50,15 @@ export function createMaterialBuilder(): [typeof MaterialBuilder, typeof Materia
             CreateMaterial
         }
     ]
+}
+
+export function findWorldItemWithDimensions(worldItems: WorldItemInfo[], dimensions: Shape): WorldItemInfo {
+
+    for (let i = 0; i < worldItems.length; i++) {
+        for (const item of TreeIteratorGenerator<WorldItemInfo>(worldItems[i])) {
+            if (item.dimensions.equalTo(dimensions)) {
+                return item;
+            }
+        }
+    }
 }

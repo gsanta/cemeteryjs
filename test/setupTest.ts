@@ -55,7 +55,6 @@ expect.extend({
                 pass: false,
             };
         }
-
     }
 });
 

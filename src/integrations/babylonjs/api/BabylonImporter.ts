@@ -37,7 +37,7 @@ export class BabylonImporter implements Importer {
 
     private parse(strWorld: string, modelTypeDescription: MeshDescriptor[]): Promise<WorldItemInfo[]> {
         const options = {...defaultParseOptions, ...{yScale: 2}};
-        const furnitureCharacters = ['X', 'C', 'T', 'B', 'S', 'E', 'H', 'P'];
+        const furnitureCharacters = ['X', 'C', 'T', 'B', 'S', 'E', 'H', 'P', '-'];
         const roomSeparatorCharacters = ['W', 'D', 'I'];
 
         const meshCreationTransformator = new MeshCreationTransformator(this.meshLoader, this.meshFactory);

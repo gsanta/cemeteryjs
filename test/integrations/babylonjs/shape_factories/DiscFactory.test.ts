@@ -1,9 +1,9 @@
 import { Polygon, Shape } from '@nightshifts.inc/geometry';
 import { Mesh, Vector3 } from 'babylonjs';
 import * as sinon from 'sinon';
-import { WorldItemInfo } from '../../../../src';
 import { DiscFactory } from '../../../../src/integrations/babylonjs/shape_factories/DiscFactory';
 import { createMaterialBuilder, createMeshBuilder, createScene } from '../../../testUtils';
+import { WorldItemInfo } from '../../../../src/WorldItemInfo';
 
 describe('DiscFactory', () => {
     describe('createItem', () => {

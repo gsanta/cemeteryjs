@@ -171,7 +171,7 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
                 }
 
                 item.dimensions = newSegment;
-                // item.rotation = newSegment.getLine().getAngle
+                item.rotation = newSegment.getLine().getAngleToXAxis().getAngle();
 
                 if (referencePoint.distanceTo(newSegment.getPoints()[0]) > referencePoint.distanceTo(newSegment.getPoints()[1])) {
                     referencePoint = newSegment.getPoints()[0];
