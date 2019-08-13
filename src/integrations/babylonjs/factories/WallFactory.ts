@@ -13,6 +13,7 @@ export class WallFactory implements MeshCreator  {
     }
 
     public createItem(worldItemInfo: WorldItemInfo): Mesh {
+
         const parentMesh = MeshBuilder.CreateBox(
                 `default-wall-container-${this.index}`,
                 {
@@ -23,11 +24,13 @@ export class WallFactory implements MeshCreator  {
                 this.scene
             );
 
+        worldItemInfo.dimensions = GeometryUtils.addThicknessToSegment(<Segment> worldItemInfo.dimensions, 0.25);
+
         const center = worldItemInfo.dimensions.getBoundingCenter();
         const pivotPoint = new Vector3(center.x, 0, center.y);
         parentMesh.setPivotPoint(pivotPoint);
-        parentMesh.rotate(Axis.Y, worldItemInfo.rotation, Space.LOCAL)
-        parentMesh.translate(new Vector3(worldItemInfo.dimensions.getBoundingCenter().x, 3.6, worldItemInfo.dimensions.getBoundingCenter().y), 1);
+        parentMesh.rotate(Axis.Y, worldItemInfo.rotation, Space.WORLD)
+        parentMesh.translate(new Vector3(center.x, 3.6, center.y), 1);
 
         const mat = new StandardMaterial('wallMaterial', this.scene);
         mat.diffuseTexture = new Texture('./assets/textures/brick.jpeg', this.scene);
