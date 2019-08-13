@@ -12,6 +12,7 @@ import { BorderItemsToLinesTransformator } from './transformators/BorderItemsToL
 import { BorderItemWidthToRealWidthTransformator } from './transformators/BorderItemWidthToRealWidthTransformator';
 import { FurnitureRealSizeTransformator } from './transformators/FurnitureRealSizeTransformator';
 import { MeshCreationTransformator } from './transformators/MeshCreationTransformator';
+import { MockMeshCreationTransformator } from './transformators/MockMeshCreationTransformator';
 export { BabylonImporter } from './integrations/babylonjs/api/BabylonImporter';
 export { BabylonConverter } from './integrations/babylonjs/api/BabylonConverter';
 export {WorldParser, ParseOptions, defaultParseOptions} from './WorldParser';
@@ -40,5 +41,6 @@ export const transformators = {
     BorderItemsToLinesTransformator,
     BorderItemWidthToRealWidthTransformator,
     FurnitureRealSizeTransformator,
-    MeshCreationTransformator
+    MeshCreationTransformator,
+    MockMeshCreationTransformator
 }
