@@ -87,13 +87,13 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
 
     private segmentOriginalBorderIntoPieces(originalBorderItem: WorldItemInfo, segments: Segment[]): WorldItemInfo[] {
         const longEdges: [Segment, Segment] = new StripeView(<Polygon> originalBorderItem.dimensions).getEdges();
-        const perpendicularSlope = longEdges[0].getPerpendicularBisector().m;
+        const perpendicularSlope = longEdges[0].getPerpendicularBisector().slope;
 
         const segmentedBorders: WorldItemInfo[] = [];
 
         segments.map(segment => {
-            const startPerpendicularLine = Line.createFromPointSlopeForm(segment.getPoints()[0], perpendicularSlope);
-            const endPerpendicularLine = Line.createFromPointSlopeForm(segment.getPoints()[1], perpendicularSlope);
+            const startPerpendicularLine = Line.fromPointSlopeForm(segment.getPoints()[0], perpendicularSlope);
+            const endPerpendicularLine = Line.fromPointSlopeForm(segment.getPoints()[1], perpendicularSlope);
             const point1 = longEdges[0].getLine().intersection(endPerpendicularLine);
             const point2 = longEdges[1].getLine().intersection(endPerpendicularLine);
             const point3 = longEdges[0].getLine().intersection(startPerpendicularLine);

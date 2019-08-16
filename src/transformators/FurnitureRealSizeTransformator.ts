@@ -77,8 +77,8 @@ export class FurnitureRealSizeTransformator {
         }
 
         const fromPoint = closestFurnitureSegment.getPoints()[0];
-        const slope = wallSegment.getPerpendicularBisector().m;
-        const line = Line.createFromPointSlopeForm(fromPoint, slope);
+        const slope = wallSegment.getPerpendicularBisector().slope;
+        const line = Line.fromPointSlopeForm(fromPoint, slope);
 
         const toPoint = wallSegment.getLine().intersection(line);
 

@@ -158,7 +158,7 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
             coincidentBorderItems.forEach(item => {
                 const len = newEdges[index].getLength();
                 const ratio = item.dimensions.getCoincidentLineSegment(oldEdges[index])[0].getLength() / maxLen;
-                const line = Line.createFromPointSlopeForm(referencePoint, edge.getSlope());
+                const line = Line.fromPointSlopeForm(referencePoint, edge.getSlope());
                 const tmpSegment = line.getSegmentWithCenterPointAndDistance(referencePoint, (ratio * len) / 2);
 
                 let newSegment: Segment;
