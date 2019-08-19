@@ -26,7 +26,7 @@ export class RoomSeparatorParser implements WorldItemParser {
             .intersection(this.roomSeparatorCharacters)
             .map((character) => {
                 return graph.findConnectedComponentsForCharacter(character)
-                    .map(connectedComp => this.createGameObjectsForConnectedComponent(graph.getGraphForVertices(connectedComp)));
+                    .map(connectedComp => this.createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(graph.getGraphForVertices(connectedComp)));
             })
             .flattenDeep()
             .value();
@@ -38,10 +38,6 @@ export class RoomSeparatorParser implements WorldItemParser {
 
     public parseWorldMap(strMap: string): MatrixGraph {
         return this.worldMapConverter.convert(strMap);
-    }
-
-    private createGameObjectsForConnectedComponent(componentGraph: MatrixGraph): WorldItemInfo[] {
-        return this.createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph);
     }
 
     private createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph: MatrixGraph): WorldItemInfo[] {

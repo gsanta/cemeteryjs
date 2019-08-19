@@ -1,0 +1,31 @@
+map `
+
+WWWIIIWWWWWWWWWWWWWWWWWWW
+W###############W#######W
+I#####DD########I#######W
+I###############I#######W
+W###############W#######W
+WWWWWWWIIWWWWWWWWWWWWWWWW
+W###############W#######W
+W###############W#######W
+W###############W#######W
+W###############W#######W
+WWWWWWWWWWWWWWWWWWWWWWWWW
+
+`
+
+definitions `
+
+W = wall
+# = empty
+X = player
+D = disc
+C = cupboard
+I = window
+T = table
+B = bathtub
+S = washbasin
+E = bed
+H = chair
+
+`

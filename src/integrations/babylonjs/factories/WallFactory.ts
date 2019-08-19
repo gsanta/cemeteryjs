@@ -29,7 +29,7 @@ export class WallFactory implements MeshCreator  {
         const center = worldItemInfo.dimensions.getBoundingCenter();
         const pivotPoint = new Vector3(center.x, 0, center.y);
         parentMesh.setPivotPoint(pivotPoint);
-        parentMesh.rotate(Axis.Y, worldItemInfo.rotation, Space.WORLD)
+        parentMesh.rotate(Axis.Y, worldItemInfo.rotation, Space.WORLD);
         parentMesh.translate(new Vector3(center.x, 3.6, center.y), 1);
 
         const mat = new StandardMaterial('wallMaterial', this.scene);

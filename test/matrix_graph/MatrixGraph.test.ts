@@ -57,4 +57,42 @@ describe('MatrixGraph', () => {
             expect(connectedComponentGraphs[1].getAllVertices().length).toEqual(4)
          });
     });
+
+    describe('getReducedGraphForCharacters', () => {
+        it ('returns a reduced graph that contains only the provided characters', () => {
+            const input = [
+                '##DDD########',
+                '#------#----#',
+                'D------#----#',
+                'D------#----#',
+                '#############',
+            ];
+
+            const linesToGraphConverter = new LinesToGraphConverter();
+            const graph = linesToGraphConverter.parse(
+                input,
+                {
+                    '-': 'room',
+                    '#': 'wall',
+                    D: 'door'
+                },
+                {}
+            );
+
+            const reducedGraph = graph.getReducedGraphForCharacters(['#', 'D']);
+
+            expect(reducedGraph.getVertexAtPosition({x: 0, y: 0})).not.toBeNull();
+            expect(reducedGraph.getVertexAtPosition({x: 2, y: 0})).not.toBeNull();
+            expect(reducedGraph.getVertexAtPosition({x: 12, y: 0})).not.toBeNull();
+            expect(reducedGraph.getVertexAtPosition({x: 12, y: 1})).not.toBeNull();
+            expect(reducedGraph.getVertexAtPosition({x: 12, y: 4})).not.toBeNull();
+            expect(reducedGraph.getVertexAtPosition({x: 0, y: 4})).not.toBeNull();
+            expect(reducedGraph.getVertexAtPosition({x: 7, y: 1})).not.toBeNull();
+
+            expect(reducedGraph.getVertexAtPosition({x: 1, y: 1})).toBeNull();
+            expect(reducedGraph.getVertexAtPosition({x: 11, y: 1})).toBeNull();
+            expect(reducedGraph.getVertexAtPosition({x: 1, y: 3})).toBeNull();
+            expect(reducedGraph.getVertexAtPosition({x: 11, y: 3})).toBeNull();
+        });
+    });
 });

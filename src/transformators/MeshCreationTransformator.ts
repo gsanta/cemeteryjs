@@ -11,7 +11,6 @@ export class MeshCreationTransformator implements WorldItemTransformator {
     private meshFactory: MeshFactory;
     private meshLoader: MeshLoader;
     private isReady = true;
-    private modelMap: Map<string, MeshTemplate<Mesh, Skeleton>> = new Map();
     private descriptorMap: Map<string, MeshDescriptor> = new Map();
 
     constructor(meshLoader: MeshLoader, meshFactory: MeshFactory) {
@@ -58,16 +57,19 @@ export class MeshCreationTransformator implements WorldItemTransformator {
         return Promise
             .all(fileDescriptions.map(desc => this.meshLoader.load(desc.type, <FileDescriptor>desc.details)))
             .then((meshTemplates: MeshTemplate<Mesh, Skeleton>[]) => {
-                meshTemplates.forEach(template => this.modelMap.set(template.type, template));
+                const templateMap: Map<string, MeshTemplate<Mesh, Skeleton>> = new Map();
+                meshTemplates.forEach(template => templateMap.set(template.type, template));
+                this.meshFactory.setMeshTemplates(templateMap);
             });
     }
 
     private createMesh(worldItemInfo: WorldItemInfo): Mesh[] {
+        return this.meshFactory.createFromMeshDescriptor(worldItemInfo, this.descriptorMap.get(worldItemInfo.name));
 
-        if (this.modelMap.has(worldItemInfo.name) || worldItemInfo.name === 'root' || worldItemInfo.name === 'empty' || worldItemInfo.name === 'wall') {
-            return this.meshFactory.createFromTemplate(worldItemInfo, this.modelMap.get(worldItemInfo.name));
-        } else {
-            return this.meshFactory.createFromMeshDescriptor(worldItemInfo, this.descriptorMap.get(worldItemInfo.name));
-        }
+        // if (this.modelMap.has(worldItemInfo.name) || worldItemInfo.name === 'root' || worldItemInfo.name === 'empty' || worldItemInfo.name === 'wall') {
+        //     return this.meshFactory.createFromTemplate(worldItemInfo, this.modelMap.get(worldItemInfo.name));
+        // } else {
+
+        // }
     }
 }

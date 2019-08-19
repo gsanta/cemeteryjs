@@ -234,6 +234,20 @@ export class MatrixGraph {
         return connectedComponents.map(component => this.getReducedGraphForVertices(component));
     }
 
+    getReducedGraphForCharacters(characters: string[]): MatrixGraph {
+        const graph = new MatrixGraph(this.columns, this.rows);
+
+        this.vertices
+            .filter(vertex => characters.includes(this.getVertexValue(vertex).character))
+            .forEach(vertex => graph.addNextVertex(vertex, this.getVertexValue(vertex)));
+
+        this.getAllEdges()
+            .filter(edge =>  graph.hasVertex(edge[0]) && graph.hasVertex(edge[1]))
+            .forEach(edge => graph.addEdge(edge[0], edge[1]));
+
+        return graph;
+    }
+
     /*
      * returns with a graph of the same extent (same column and row number), but
      * containing only the vertices passed as the `vertices` parameter and the edges between

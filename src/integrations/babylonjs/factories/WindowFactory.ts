@@ -1,10 +1,11 @@
-import { Color3, Mesh, MeshBuilder, Scene, Skeleton, StandardMaterial, Vector3 } from 'babylonjs';
+import { Color3, Mesh, MeshBuilder, Scene, Skeleton, StandardMaterial, Vector3, Axis, Space } from 'babylonjs';
 import { GeometryUtils, Segment, Shape } from '@nightshifts.inc/geometry';
 import { WorldItemInfo } from '../../../WorldItemInfo';
 import { MeshCreator } from '../MeshCreator';
 import { MeshTemplate } from '../../api/MeshTemplate';
+import { MeshDescriptor } from '../MeshFactory';
 
-export class WindowFactory implements MeshCreator  {
+export class WindowFactory  {
     public meshInfo: [Mesh[], Skeleton[]];
     private scene: Scene;
 
@@ -15,10 +16,10 @@ export class WindowFactory implements MeshCreator  {
         this.meshBuilder = meshBuilder;
     }
 
-    public createItem(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh {
+    public createItem(worldItemInfo: WorldItemInfo, meshDescriptor: MeshDescriptor, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh {
         const meshes = meshTemplate.meshes.map(m => m.clone());;
 
-        const parentMesh = this.createSideItems(worldItemInfo.dimensions);
+        const parentMesh = this.createSideItems(worldItemInfo.dimensions, meshDescriptor);
 
         meshes.forEach(m => {
             m.isVisible = true;
@@ -27,11 +28,12 @@ export class WindowFactory implements MeshCreator  {
 
         const center = worldItemInfo.dimensions.getBoundingCenter();
         parentMesh.translate(new Vector3(center.x, 4, center.y), 1);
+        parentMesh.rotate(Axis.Y, worldItemInfo.rotation, Space.WORLD);
 
         return parentMesh;
     }
 
-    private createSideItems(boundingBox: Shape): Mesh {
+    private createSideItems(boundingBox: Shape, meshDescriptor: MeshDescriptor): Mesh {
         const segment = <Segment> boundingBox;
 
         const rectangle = GeometryUtils.addThicknessToSegment(segment, 0.25);
@@ -42,8 +44,11 @@ export class WindowFactory implements MeshCreator  {
 
         const translate1 = rectangle.getBoundingCenter().subtract(center);
 
-        side1.translate(new Vector3(translate1.x, 0, translate1.y), 1);
+        const translateY = meshDescriptor.translateY ? meshDescriptor.translateY : 0;
+
+        side1.translate(new Vector3(translate1.x, translateY, translate1.y), 1);
         side1.material.wireframe = true;
+        side1.isVisible = false;
         return side1;
     }
 

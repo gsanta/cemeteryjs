@@ -40,6 +40,7 @@ export interface FileDescriptor {
     fileName: string;
     materials?: string[];
     scale: number;
+    translateY?: number;
 }
 
 export interface ShapeDescriptor {
@@ -59,6 +60,7 @@ export interface RoomDescriptor {
 export interface MeshDescriptor {
     name: 'mesh-descriptor';
     type: string;
+    translateY?: number;
     details: FileDescriptor | ShapeDescriptor | RoomDescriptor
 }
 
@@ -70,12 +72,17 @@ export interface MultiModelDescriptor {
 
 export class MeshFactory {
     private scene: Scene;
+    private modelMap: Map<string, MeshTemplate<Mesh, Skeleton>> = new Map();
 
     constructor(scene: Scene) {
         this.scene = scene;
     }
 
-    public createFromTemplate(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
+    public setMeshTemplates(map: Map<string, MeshTemplate<Mesh, Skeleton>>) {
+        this.modelMap = map;
+    }
+
+    public createFromTemplate(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>, meshDescriptor: MeshDescriptor): Mesh[] {
 
         switch(worldItemInfo.name) {
             case 'root':
@@ -88,7 +95,7 @@ export class MeshFactory {
             case 'door':
                 return [new DoorFactory(this.scene, MeshBuilder).createItem(worldItemInfo, meshTemplate)];
             case 'window':
-                return [new WindowFactory(this.scene, MeshBuilder).createItem(worldItemInfo, meshTemplate)];
+                return [new WindowFactory(this.scene, MeshBuilder).createItem(worldItemInfo, meshDescriptor, meshTemplate)];
             case 'wall':
                 return [new WallFactory(this.scene).createItem(worldItemInfo)];
             default:
@@ -113,13 +120,20 @@ export class MeshFactory {
     }
 
     public createFromMeshDescriptor(worldItemInfo: WorldItemInfo, meshDescriptor: MeshDescriptor): Mesh[] {
+        // TODO: get rid of this at some point
+        if (worldItemInfo.name === 'root' || worldItemInfo.name === 'empty' || worldItemInfo.name === 'wall') {
+            return this.createFromTemplate(worldItemInfo, null, meshDescriptor);
+        }
+
         switch(meshDescriptor.details.name) {
             case 'room-descriptor':
                 return this.createRoomMeshes(worldItemInfo, meshDescriptor.details);
             case 'shape-descriptor':
                 return this.createFromShapeDescriptor(worldItemInfo, meshDescriptor.details);
+            case 'file-descriptor':
+                return this.createFromTemplate(worldItemInfo, this.modelMap.get(worldItemInfo.name), meshDescriptor);
             default:
-                throw new Error('Unsupported descriptor: ' + meshDescriptor.details.name);
+                return null;
         }
     }
 
