@@ -1,10 +1,13 @@
 module.exports = {
-    "testRegex": "test/.*.test.tsx?$",
-    "transform": {
+    testRegex: "test/.*.test.tsx?$",
+    transform: {
         "^.+\\.tsx?$": "ts-jest"
-      },
+    },
     transformIgnorePatterns: [
-      "node_modules/(?!(@babylonjs/core)/)"
+        "node_modules/(?!(@babylonjs/core)/)"
     ],
-    "setupFilesAfterEnv": ['<rootDir>/test/setupTest.ts'],
-  };
+    setupFilesAfterEnv: ['<rootDir>/test/setupTest.ts'],
+    moduleNameMapper: {
+        "\\.(gwm)$": "<rootDir>/test/test_setup/fileMock.js"
+    }
+};

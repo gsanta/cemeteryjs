@@ -41,31 +41,31 @@ export class BorderItemWidthToRealWidthTransformator implements WorldItemTransfo
 
     }
 
-    private resizeItem(item: WorldItemInfo, orderedItems: WorldItemInfo[], newSize: number) {
-        const rightItem = _.last(orderedItems) === item ? orderedItems[0] : orderedItems[orderedItems.indexOf(item) + 1];
-        const leftItem = _.first(orderedItems) === item ? _.last(orderedItems) : orderedItems[orderedItems.indexOf(item) - 1];
+    private resizeItem(border: WorldItemInfo, orderedItems: WorldItemInfo[], newSize: number) {
+        const rightItem = _.last(orderedItems) === border ? orderedItems[0] : orderedItems[orderedItems.indexOf(border) + 1];
+        const leftItem = _.first(orderedItems) === border ? _.last(orderedItems) : orderedItems[orderedItems.indexOf(border) - 1];
 
-        let neighbours = leftItem.dimensions.hasPoint(item.dimensions.getPoints()[0]) ? [leftItem, rightItem] : [rightItem, leftItem];
+        let neighbours = leftItem.dimensions.hasPoint(border.dimensions.getPoints()[0]) ? [leftItem, rightItem] : [rightItem, leftItem];
 
-        const leftBorderStripe = new StripeView(<Polygon> neighbours[0].dimensions);
-        const rightBorderStripe = new StripeView(<Polygon> neighbours[1].dimensions);
-        const currentBorderStripe = new StripeView(<Polygon> item.dimensions);
+        const leftBorderStripe = new StripeView(<Polygon> neighbours[0].dimensions, border.rotation);
+        const rightBorderStripe = new StripeView(<Polygon> neighbours[1].dimensions, border.rotation);
+        const currentBorderStripe = new StripeView(<Polygon> border.dimensions, border.rotation);
 
         let newPoints: [Point, Point];
 
-        const isLeftCornerItem = () => leftBorderStripe.getCapEdges()[0].getSlope() !== currentBorderStripe.getCapEdges()[0].getSlope();
-        const isRightCornerItem = () => rightBorderStripe.getCapEdges()[0].getSlope() !== currentBorderStripe.getCapEdges()[0].getSlope();
+        const isLeftCornerItem = () => leftBorderStripe.getSlope() !== currentBorderStripe.getSlope();
+        const isRightCornerItem = () => rightBorderStripe.getSlope() !== currentBorderStripe.getSlope();
 
         if (isLeftCornerItem()) {
-            newPoints = this.moveOnlyRightEndPoint(<[Point, Point]> item.dimensions.getPoints(), newSize, neighbours[1]);
+            newPoints = this.moveOnlyRightEndPoint(<[Point, Point]> border.dimensions.getPoints(), newSize, neighbours[1]);
         } else if (isRightCornerItem()) {
-            newPoints = this.moveOnlyLeftEndPoint(<[Point, Point]> item.dimensions.getPoints(), newSize, neighbours[0]);
+            newPoints = this.moveOnlyLeftEndPoint(<[Point, Point]> border.dimensions.getPoints(), newSize, neighbours[0]);
         } else {
-            newPoints = this.moveBothEndPointsEqually(<[Point, Point]> item.dimensions.getPoints(), newSize, neighbours[0], neighbours[1]);
+            newPoints = this.moveBothEndPointsEqually(<[Point, Point]> border.dimensions.getPoints(), newSize, neighbours[0], neighbours[1]);
         }
 
 
-        item.dimensions = new Segment(newPoints[0], newPoints[1]);
+        border.dimensions = new Segment(newPoints[0], newPoints[1]);
     }
 
     private moveOnlyRightEndPoint(oldPoints: [Point, Point], newWidth: number, rightNeighbour: WorldItemInfo): [Point, Point] {

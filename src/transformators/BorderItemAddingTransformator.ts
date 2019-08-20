@@ -32,9 +32,9 @@ export class BorderItemAddingTransformator implements WorldItemTransformator {
                         return false;
                     }
 
-                    if (this.doNotIncludeBorderItemsThatIntersectsOnlyAtCorner) {
-                        return !this.doesBorderItemIntersectOnlyAtCorner(roomSeparator, intersectionLineInfo);
-                    }
+                    // if (this.doNotIncludeBorderItemsThatIntersectsOnlyAtCorner) {
+                    //     return !this.doesBorderItemIntersectOnlyAtCorner(roomSeparator, intersectionLineInfo);
+                    // }
 
                     return true;
                 })

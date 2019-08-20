@@ -57,8 +57,8 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
     }
 
     private getSegmentingPoints(border: WorldItemInfo, roomsAlongsideBorder: WorldItemInfo[]): Point[] {
-        const startCapEdge = new StripeView(<Polygon> border.dimensions).getCapEdges()[0];
-        const endCapEdge = new StripeView(<Polygon> border.dimensions).getCapEdges()[1];
+        const startCapEdge = new StripeView(<Polygon> border.dimensions, border.rotation).getCapEdges()[0];
+        const endCapEdge = new StripeView(<Polygon> border.dimensions, border.rotation).getCapEdges()[1];
         const referencePointForSorting = startCapEdge.getPoints()[0];
 
         const getSegmentPointsForRoom = (room: WorldItemInfo) => room.dimensions.getCoincidentLineSegment(border.dimensions)[0].getPoints();
@@ -79,14 +79,14 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
             replaceFirstPointWithOriginal(segmentPoints);
             replaceLastPointWithOriginal(segmentPoints);
         } else {
-            segmentPoints = new StripeView(<Polygon> border.dimensions).getEdges()[0].getPoints();
+            segmentPoints = new StripeView(<Polygon> border.dimensions, border.rotation).getEdges()[0].getPoints();
         }
 
         return segmentPoints;
     }
 
     private segmentOriginalBorderIntoPieces(originalBorderItem: WorldItemInfo, segments: Segment[]): WorldItemInfo[] {
-        const longEdges: [Segment, Segment] = new StripeView(<Polygon> originalBorderItem.dimensions).getEdges();
+        const longEdges: [Segment, Segment] = new StripeView(<Polygon> originalBorderItem.dimensions, originalBorderItem.rotation).getEdges();
         const perpendicularSlope = longEdges[0].getPerpendicularBisector().slope;
 
         const segmentedBorders: WorldItemInfo[] = [];

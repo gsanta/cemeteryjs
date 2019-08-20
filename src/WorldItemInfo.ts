@@ -17,13 +17,13 @@ export class WorldItemInfo<M = any, S = any> {
     parent: WorldItemInfo;
     borderItems: WorldItemInfo[] = [];
 
-    constructor(id: number, type: string, dimensions: Shape, name: string, isBorder: boolean = false) {
+    constructor(id: number, type: string, dimensions: Shape, name: string, isBorder: boolean = false, rotation = 0) {
         this.type = type;
         this.dimensions = dimensions;
         this.name = name;
         this.isBorder = isBorder;
         this.id = id;
-        this.rotation = 0;
+        this.rotation = rotation;
     }
 
     addChild(worldItem: WorldItemInfo) {

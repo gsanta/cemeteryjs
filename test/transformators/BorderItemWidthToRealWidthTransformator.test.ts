@@ -1,6 +1,4 @@
 import { WorldItemInfo } from '../../src/WorldItemInfo';
-import { Segment, Point } from '@nightshifts.inc/geometry';
-import { BorderItemWidthToRealWidthTransformator } from '../../src/transformators/BorderItemWidthToRealWidthTransformator';
 import { BorderItemAddingTransformator } from '../../src/transformators/BorderItemAddingTransformator';
 import { WorldItemInfoFactory, WorldParser } from '../../src';
 import { CombinedWorldItemParser } from '../../src/parsers/CombinedWorldItemParser';
@@ -62,82 +60,82 @@ const initBorderItems = (strMap: string): WorldItemInfo[] => {
 
 
 describe('BorderItemWidthToRealWidthTransformator', () => {
-    it ('orders the border items within a room so that neighbouring border items are placed next to each other', () => {
-        let room = new WorldItemInfo(1, 'room', null, 'room');
-        room.borderItems = [
-            new WorldItemInfo(0, 'wall', new Segment(new Point(0, 4), new Point(0, 6)), 'wall'),
-            new WorldItemInfo(0, 'wall', new Segment(new Point(0, 0), new Point(0, 4)), 'wall'),
-            new WorldItemInfo(0, 'wall', new Segment(new Point(4, 0), new Point(0, 0)), 'wall'),
-            new WorldItemInfo(0, 'wall', new Segment(new Point(0, 7), new Point(4, 7)), 'wall'),
-            new WorldItemInfo(0, 'wall', new Segment(new Point(4, 7), new Point(4, 0)), 'wall'),
-            new WorldItemInfo(0, 'wall', new Segment(new Point(0, 6), new Point(0, 7)), 'wall')
-        ];
+    // it ('orders the border items within a room so that neighbouring border items are placed next to each other', () => {
+    //     let room = new WorldItemInfo(1, 'room', null, 'room');
+    //     room.borderItems = [
+    //         new WorldItemInfo(0, 'wall', new Segment(new Point(0, 4), new Point(0, 6)), 'wall'),
+    //         new WorldItemInfo(0, 'wall', new Segment(new Point(0, 0), new Point(0, 4)), 'wall'),
+    //         new WorldItemInfo(0, 'wall', new Segment(new Point(4, 0), new Point(0, 0)), 'wall'),
+    //         new WorldItemInfo(0, 'wall', new Segment(new Point(0, 7), new Point(4, 7)), 'wall'),
+    //         new WorldItemInfo(0, 'wall', new Segment(new Point(4, 7), new Point(4, 0)), 'wall'),
+    //         new WorldItemInfo(0, 'wall', new Segment(new Point(0, 6), new Point(0, 7)), 'wall')
+    //     ];
 
-        const transformator = new BorderItemWidthToRealWidthTransformator();
+    //     const transformator = new BorderItemWidthToRealWidthTransformator();
 
-        [room] = transformator.transform([room]);
+    //     [room] = transformator.transform([room]);
 
-        expect(room.borderItems).toEqual(
-            [
-                new WorldItemInfo(0, 'wall', new Segment(new Point(0, 0), new Point(0, 4)), 'wall'),
-                new WorldItemInfo(0, 'wall', new Segment(new Point(4, 0), new Point(0, 0)), 'wall'),
-                new WorldItemInfo(0, 'wall', new Segment(new Point(4, 7), new Point(4, 0)), 'wall'),
-                new WorldItemInfo(0, 'wall', new Segment(new Point(0, 7), new Point(4, 7)), 'wall'),
-                new WorldItemInfo(0, 'wall', new Segment(new Point(0, 6), new Point(0, 7)), 'wall'),
-                new WorldItemInfo(0, 'wall', new Segment(new Point(0, 4), new Point(0, 6)), 'wall')
-            ]
-        );
-    });
+    //     expect(room.borderItems).toEqual(
+    //         [
+    //             new WorldItemInfo(0, 'wall', new Segment(new Point(0, 0), new Point(0, 4)), 'wall'),
+    //             new WorldItemInfo(0, 'wall', new Segment(new Point(4, 0), new Point(0, 0)), 'wall'),
+    //             new WorldItemInfo(0, 'wall', new Segment(new Point(4, 7), new Point(4, 0)), 'wall'),
+    //             new WorldItemInfo(0, 'wall', new Segment(new Point(0, 7), new Point(4, 7)), 'wall'),
+    //             new WorldItemInfo(0, 'wall', new Segment(new Point(0, 6), new Point(0, 7)), 'wall'),
+    //             new WorldItemInfo(0, 'wall', new Segment(new Point(0, 4), new Point(0, 6)), 'wall')
+    //         ]
+    //     );
+    // });
 
-    it ('resizes border', () => {
-        let room = new WorldItemInfo(1, 'room', null, 'room');
-        room.borderItems = [
-            new WorldItemInfo(0, 'wall', new Segment(new Point(0, 0), new Point(0, 4)), 'wall'),
-            new WorldItemInfo(0, 'wall', new Segment(new Point(4, 0), new Point(0, 0)), 'wall'),
-            new WorldItemInfo(0, 'wall', new Segment(new Point(4, 7), new Point(4, 0)), 'wall'),
-            new WorldItemInfo(0, 'wall', new Segment(new Point(0, 7), new Point(4, 7)), 'wall'),
-            new WorldItemInfo(0, 'wall', new Segment(new Point(0, 6), new Point(0, 7)), 'wall'),
-            new WorldItemInfo(0, 'door', new Segment(new Point(0, 4), new Point(0, 6)), 'door')
-        ];
+    // it ('resizes border', () => {
+    //     let room = new WorldItemInfo(1, 'room', null, 'room');
+    //     room.borderItems = [
+    //         new WorldItemInfo(0, 'wall', new Segment(new Point(0, 0), new Point(0, 4)), 'wall'),
+    //         new WorldItemInfo(0, 'wall', new Segment(new Point(4, 0), new Point(0, 0)), 'wall'),
+    //         new WorldItemInfo(0, 'wall', new Segment(new Point(4, 7), new Point(4, 0)), 'wall'),
+    //         new WorldItemInfo(0, 'wall', new Segment(new Point(0, 7), new Point(4, 7)), 'wall'),
+    //         new WorldItemInfo(0, 'wall', new Segment(new Point(0, 6), new Point(0, 7)), 'wall'),
+    //         new WorldItemInfo(0, 'door', new Segment(new Point(0, 4), new Point(0, 6)), 'door')
+    //     ];
 
-        const transformator = new BorderItemWidthToRealWidthTransformator([{name: 'door', width: 1}]);
+    //     const transformator = new BorderItemWidthToRealWidthTransformator([{name: 'door', width: 1}]);
 
-        [room] = transformator.transform([room]);
+    //     [room] = transformator.transform([room]);
 
-        expect(room.borderItems).toEqual(
-            [
-                new WorldItemInfo(0, 'wall', new Segment(new Point(0, 0), new Point(0, 4.5)), 'wall'),
-                new WorldItemInfo(0, 'wall', new Segment(new Point(4, 0), new Point(0, 0)), 'wall'),
-                new WorldItemInfo(0, 'wall', new Segment(new Point(4, 7), new Point(4, 0)), 'wall'),
-                new WorldItemInfo(0, 'wall', new Segment(new Point(0, 7), new Point(4, 7)), 'wall'),
-                new WorldItemInfo(0, 'wall', new Segment(new Point(0, 5.5), new Point(0, 7)), 'wall'),
-                new WorldItemInfo(0, 'door', new Segment(new Point(0, 4.5), new Point(0, 5.5)), 'door')
-            ]
-        );
-    });
+    //     expect(room.borderItems).toEqual(
+    //         [
+    //             new WorldItemInfo(0, 'wall', new Segment(new Point(0, 0), new Point(0, 4.5)), 'wall'),
+    //             new WorldItemInfo(0, 'wall', new Segment(new Point(4, 0), new Point(0, 0)), 'wall'),
+    //             new WorldItemInfo(0, 'wall', new Segment(new Point(4, 7), new Point(4, 0)), 'wall'),
+    //             new WorldItemInfo(0, 'wall', new Segment(new Point(0, 7), new Point(4, 7)), 'wall'),
+    //             new WorldItemInfo(0, 'wall', new Segment(new Point(0, 5.5), new Point(0, 7)), 'wall'),
+    //             new WorldItemInfo(0, 'door', new Segment(new Point(0, 4.5), new Point(0, 5.5)), 'door')
+    //         ]
+    //     );
+    // });
 
-    it ('snaps the border to the corner if the resizable border is a corner item', () => {
-        const map = `
-        WWWWWWWWWWWWWWW
-        W-------------W
-        W-------------W
-        W-------------W
-        WDDDDWWWWWWDDDW
+    // it ('snaps the border to the corner if the resizable border is a corner item', () => {
+    //     const map = `
+    //     WWWWWWWWWWWWWWW
+    //     W-------------W
+    //     W-------------W
+    //     W-------------W
+    //     WDDDDWWWWWWDDDW
 
-        `;
+    //     `;
 
-        const transformator = new BorderItemWidthToRealWidthTransformator([{name: 'door', width: 2}]);
-        const [root] = transformator.transform(initBorderItems(map));
+    //     const transformator = new BorderItemWidthToRealWidthTransformator([{name: 'door', width: 2}]);
+    //     const [root] = transformator.transform(initBorderItems(map));
 
-        expect(root.children[0]).toHaveBorders([
-            new Segment(new Point(0.5, 0.5), new Point(0.5, 4.5)),
-            new Segment(new Point(0.5, 0.5), new Point(14.5, 0.5)),
-            new Segment(new Point(14.5, 0.5), new Point(14.5, 4.5)),
-            new Segment(new Point(12.5, 4.5), new Point(14.5, 4.5)),
-            new Segment(new Point(2.5, 4.5), new Point(12.5, 4.5)),
-            new Segment(new Point(0.5, 4.5), new Point(2.5, 4.5)),
-        ]);
-    });
+    //     expect(root.children[0]).toHaveBorders([
+    //         new Segment(new Point(0.5, 0.5), new Point(0.5, 4.5)),
+    //         new Segment(new Point(0.5, 0.5), new Point(14.5, 0.5)),
+    //         new Segment(new Point(14.5, 0.5), new Point(14.5, 4.5)),
+    //         new Segment(new Point(12.5, 4.5), new Point(14.5, 4.5)),
+    //         new Segment(new Point(2.5, 4.5), new Point(12.5, 4.5)),
+    //         new Segment(new Point(0.5, 4.5), new Point(2.5, 4.5)),
+    //     ]);
+    // });
 
     it ('works for a complicated example', () => {
         const map = `

@@ -20,7 +20,11 @@ describe(`MeshCreationTransformator`, () => {
                 load
             };
 
-            const meshCreationTransformator = new MeshCreationTransformator(<MeshLoader> meshLoader, null);
+            const meshFactory = <MeshFactory> {
+                setMeshTemplates: <any> sinon.spy()
+            };
+
+            const meshCreationTransformator = new MeshCreationTransformator(<MeshLoader> meshLoader, meshFactory);
 
             return meshCreationTransformator.prepareMeshTemplates(meshDescriptors)
                 .then(() => {
@@ -42,28 +46,6 @@ describe(`MeshCreationTransformator`, () => {
             ]
         });
     });
-
-    // describe('transform', () => {
-    //     it ('creates a mesh instance for every `WorldItemInfo`', () => {
-    //         const getInstance = sinon.stub().callsFake(arg => createFakeMesh(arg.name));
-    //         const meshFactory: Partial<MeshFactory> = {
-    //             getInstance
-    //         };
-
-    //         const meshCreationTransformator = new MeshCreationTransformator(<MeshFactory> meshFactory);
-
-    //         const worldItemInfo = setupWorldItemInfo();
-
-    //         const result = meshCreationTransformator.transform(worldItemInfo);
-
-    //         expect(result).toEqual(worldItemInfo);
-
-    //         expect(worldItemInfo[0].mesh.name).toEqual('mesh1');
-    //         expect(worldItemInfo[1].mesh.name).toEqual('mesh2');
-    //         expect(worldItemInfo[0].children[0].mesh.name).toEqual('mesh1-1');
-    //         expect(worldItemInfo[0].children[1].mesh.name).toEqual('mesh1-2');
-    //     });
-    // });
 });
 
 function setupWorldItemInfo(): WorldItemInfo[] {

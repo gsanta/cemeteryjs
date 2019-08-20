@@ -5,33 +5,32 @@ import { WorldItemInfoUtils } from '../WorldItemInfoUtils';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import _ = require("lodash");
 
-export const mergeStraightAngledNeighbouringBorderItemPolygons = (borderItemPolygons: Shape[]): Shape[] => {
-    borderItemPolygons = [...borderItemPolygons];
-    const mergedPolygons: Shape[] = [borderItemPolygons.shift()];
+export const mergeStraightAngledNeighbouringBorderItemPolygons = (borders: WorldItemInfo[]): [Shape, number][] => {
+    const borderItemPolygons = borders.map(border => border.dimensions);
+    const angles: number[] = borders.map(border => border.rotation);
+    const mergedPolygons: [Shape, number][] = [[borderItemPolygons.shift(), angles.shift()]];
+    // const mergedAngles: number[] = [angles.shift()];
 
     while(borderItemPolygons.length > 0) {
-        const currentPolygon: Polygon = <Polygon> mergedPolygons.shift();
+        const [currentPolygon, currentAngle] = <[Polygon, number]> mergedPolygons.shift();
 
-        const mergeablePolygonIndex = borderItemPolygons
-            .findIndex((otherPolygon: Polygon) => {
-                const stripe1 = new StripeView(<Polygon> currentPolygon);
-                const stripe2 = new StripeView(<Polygon> otherPolygon);
-
-                return stripe1.getSlope() === stripe2.getSlope() && currentPolygon.intersect(otherPolygon);
-            });
+        const mergeablePolygonIndex = borderItemPolygons.findIndex((otherPolygon: Polygon, index: number) => currentAngle === angles[index] && currentPolygon.intersect(otherPolygon));
 
         let mergedPolygon: Polygon;
 
         if (mergeablePolygonIndex !== -1) {
-            mergedPolygon = new StripeView(<Polygon> currentPolygon).merge(new StripeView(<Polygon> borderItemPolygons[mergeablePolygonIndex]));
+
+            mergedPolygon = new StripeView(<Polygon> currentPolygon, currentAngle)
+                .merge(new StripeView(<Polygon> borderItemPolygons[mergeablePolygonIndex], angles[mergeablePolygonIndex]));
         }
 
         if (mergedPolygon) {
             borderItemPolygons.splice(mergeablePolygonIndex, 1);
-            mergedPolygons.unshift(mergedPolygon);
+            angles.splice(mergeablePolygonIndex, 1);
+            mergedPolygons.unshift([mergedPolygon, currentAngle]);
         } else {
-            mergedPolygons.unshift(currentPolygon);
-            mergedPolygons.unshift(borderItemPolygons.pop())
+            mergedPolygons.unshift([currentPolygon, currentAngle]);
+            mergedPolygons.unshift([borderItemPolygons.pop(), angles.pop()]);
         }
     }
 
@@ -64,11 +63,11 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
     public runAlgorithm(rooms: WorldItemInfo[]) {
 
         const newRoomDimensions = rooms.map(room => {
-            const borders = mergeStraightAngledNeighbouringBorderItemPolygons(room.borderItems.map(item => item.dimensions));
+            const mergedBorderePolygonAndAngles = mergeStraightAngledNeighbouringBorderItemPolygons(room.borderItems);
             const roomSides = room.dimensions.getEdges();
 
             const newPolygonPoints: Point[] = [];
-            const borderRoomSidePairs = this.pairBordersToRoomSides(borders, roomSides);
+            const borderRoomSidePairs = this.pairBordersToRoomSides(mergedBorderePolygonAndAngles, roomSides);
 
             let newPolygon: Polygon;
 
@@ -109,15 +108,17 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
         });
     }
 
-    private pairBordersToRoomSides(borderPolygons: Shape[], roomSides: Segment[]): { border: Shape, roomSide: Segment}[]  {
+    private pairBordersToRoomSides(borderPolygons: [Shape, number][], roomSides: Segment[]): { border: Shape, roomSide: Segment}[]  {
         const indexedEdges: [Segment, number][] = roomSides.map((edge, index) => [edge, index]);
         const map: { border: Shape, roomSide: Segment, roomEdgeIndex: number}[] = [];
 
         borderPolygons.forEach(item => {
-            const closestIndexedEdge = _.minBy(indexedEdges, indexedEdge => indexedEdge[0].getBoundingCenter().distanceTo(item.getBoundingCenter()));
+            const indexedEdgesWithCorrectAngle = indexedEdges.filter(indexedEdge => indexedEdge[0].getLine().getAngleToXAxis().getAngle() === item[1])
+
+            const closestIndexedEdge = _.minBy(indexedEdgesWithCorrectAngle, indexedEdge => indexedEdge[0].getBoundingCenter().distanceTo(item[0].getBoundingCenter()));
 
             map.push({
-                border: item,
+                border: item[0],
                 roomSide: closestIndexedEdge[0],
                 roomEdgeIndex: closestIndexedEdge[1]
             });
@@ -136,14 +137,18 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
         }
     }
 
-    public alignBorderItems(borderItems: WorldItemInfo[], dimensions: Shape, newDimensions: Polygon) {
-        const oldEdges = dimensions.getEdges();
-        const newEdges = newDimensions.getEdges();
+    public alignBorderItems(borderItems: WorldItemInfo[], roomOldDimensions: Shape, roomNewDimensions: Polygon) {
+        const oldEdges = roomOldDimensions.getEdges();
+        const newEdges = roomNewDimensions.getEdges();
 
         newEdges.forEach((edge, index) => {
             const coincidentBorderItems = borderItems
                 .filter(item => item.dimensions instanceof Polygon)
-                .filter(item => new StripeView(<Polygon> item.dimensions).overlaps(oldEdges[index]));
+                .filter(item => {
+                    if (oldEdges[index].getLine().getAngleToXAxis().getAngle() === item.rotation) {
+                        return new StripeView(<Polygon> item.dimensions, item.rotation).overlaps(oldEdges[index])
+                    }
+                });
 
             const maxLen = coincidentBorderItems
                 .map(borderItem => borderItem.dimensions.getCoincidentLineSegment(oldEdges[index])[0])

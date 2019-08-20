@@ -66,18 +66,18 @@ const initBorderItems = (strMap: string): WorldItemInfo[] => {
 describe('`BorderItemsToLinesTransformator`', () => {
     describe('mergeStraightAngledNeighbouringBorderItemPolygons', () => {
 
-        it ('reduces the number of `Polygon`s as much as possible by merging `Polygon`s with common edge', () => {
+        // it ('reduces the number of `Polygon`s as much as possible by merging `Polygon`s with common edge', () => {
 
-            const polygons = [
-                Polygon.createRectangle(1, 1, 1, 3),
-                Polygon.createRectangle(2, 3, 2, 1),
-                Polygon.createRectangle(4, 3, 3, 1)
-            ];
-            const reducedPolygons = mergeStraightAngledNeighbouringBorderItemPolygons(polygons);
-            expect(_.find(reducedPolygons, polygon => polygon.equalTo( Polygon.createRectangle(1, 1, 1, 3)))).toBeTruthy()
-            expect(_.find(reducedPolygons, polygon => polygon.equalTo( Polygon.createRectangle(2, 3, 5, 1)))).toBeTruthy()
-            expect(reducedPolygons.length).toEqual(2);
-        });
+        //     const polygons = [
+        //         Polygon.createRectangle(1, 1, 1, 3),
+        //         Polygon.createRectangle(2, 3, 2, 1),
+        //         Polygon.createRectangle(4, 3, 3, 1)
+        //     ];
+        //     const reducedPolygons = mergeStraightAngledNeighbouringBorderItemPolygons(polygons);
+        //     expect(_.find(reducedPolygons, polygon => polygon.equalTo( Polygon.createRectangle(1, 1, 1, 3)))).toBeTruthy()
+        //     expect(_.find(reducedPolygons, polygon => polygon.equalTo( Polygon.createRectangle(2, 3, 5, 1)))).toBeTruthy()
+        //     expect(reducedPolygons.length).toEqual(2);
+        // });
     });
 
     it ('tests the new implementation', () => {
