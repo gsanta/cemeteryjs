@@ -3,10 +3,48 @@ import { Scene, Engine, ArcRotateCamera, Vector3, HemisphericLight, Color3 } fro
 import { BabylonImporter } from '../api/BabylonImporter';
 import { TreeIteratorGenerator } from '../../../utils/TreeIteratorGenerator';
 (<any> window).earcut = require('earcut');
-const strWorld = require('../../../../assets/test/babylonjs_demo.gwm').default;
+// const strWorld = require('../../../../assets/test/babylonjs_demo.gwm').default;
 
 // const strWorld = require('raw-loader!../../../../assets/test/demo_world.gwm');
 // import strWorld from 'raw-loader!../../../../assets/test/demo_world.gwm';
+
+const strWorld = `map \`
+
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+W-------------------------------W-------------------W
+W-------------------------------W-------------------W
+W-------------------------------W-------------------W
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+W---------------------------------------------------W
+W---------------------------------------------------W
+W---------------------------------------------------W
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+W--------------W------------------W-----------------W
+W--------------W------------------W-----------------W
+W--------------W------------------W-----------------W
+W--------------W------------------W-----------------W
+W--------------W------------------W-----------------W
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+\`
+
+definitions \`
+
+W = wall
+- = empty
+X = player
+D = disc
+C = cupboard
+I = window
+T = table
+B = bathtub
+S = washbasin
+E = bed
+H = chair
+
+\`
+
+`
 
 export class BabylonjsDemo {
     public setupDemo(canvas: HTMLCanvasElement): Promise<void> {
