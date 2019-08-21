@@ -1,23 +1,28 @@
 map `
 
-WWWWIIWWWWWWWWWWWWWWWWWWW
-W###############W#######W
-I#####DD########I#######W
-W###############I#######W
-W###############W#######W
-WWWWWIIWWWWWWWWWWWWWWWWWW
-W###############W#######W
-W###############W#######W
-W###############W#######W
-W###############W#######W
-WWWWWWWWWWWWWWWWWWWWWWWWW
+                WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+                W-------------------------------W-------------------W
+                W-------------------------------W-------------------W
+                W-------------------------------W-------------------W
+                WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+                W---------------------------------------------------W
+                W---------------------------------------------------W
+                W---------------------------------------------------W
+                WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+                W--------------W------------------W-----------------W
+                W--------------W------------------W-----------------W
+                W--------------W------------------W-----------------W
+                W--------------W------------------W-----------------W
+                W--------------W------------------W-----------------W
+                WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
 
 `
 
 definitions `
 
 W = wall
-# = empty
+- = empty
 X = player
 D = disc
 C = cupboard

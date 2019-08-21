@@ -44,49 +44,6 @@ describe('`BorderItemAddingTransformator`', () => {
             expect(room.borderItems).toEqual([wall1, wall2, wall3, wall4]);
         });
 
-        it ('adds border items that intersect at corner when doNotIncludeBorderItemsThatIntersectsOnlyAtCorner is set', () => {
-            const map = `
-                map \`
-
-                WWWWWWWWWW
-                W---W----W
-                W---W----W
-                W---W----W
-                WWWWWWWWWW
-                W--------W
-                W--------W
-                W--------W
-                WWWWWWWWWW
-
-                \`
-
-                definitions \`
-
-                - = empty
-                W = wall
-
-                \`
-            `;
-
-            const worldItemInfoFacotry = new WorldItemInfoFactory();
-            let items = new CombinedWorldItemParser(
-                [
-                    new RoomSeparatorParser(worldItemInfoFacotry, ['W']),
-                    new RoomInfoParser(worldItemInfoFacotry)
-                ]
-            ).generateFromStringMap(map);
-
-            items = new BorderItemSegmentingTransformator(worldItemInfoFacotry, ['wall']).transform(items);
-            items = new BorderItemAddingTransformator(['wall'], false).transform(items);
-
-            const room3 = items.filter(worldItem => worldItem.name === 'room')[2];
-
-            const borderItemDimensions = room3.borderItems.map(borderItem => borderItem.dimensions);
-
-            const cornerIntersectingRect = Polygon.createRectangle(4, 0, 1, 5);
-            expect(_.find(borderItemDimensions, (dim: Polygon) => dim.equalTo(cornerIntersectingRect))).toEqual(cornerIntersectingRect);
-        });
-
         it ('does not add the bordering WorldItem if it only touches the room at it\'s edge', () => {
             const map = `
                 map \`

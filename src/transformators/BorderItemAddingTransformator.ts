@@ -1,7 +1,6 @@
 import { WorldItemInfo } from '../WorldItemInfo';
 import { WorldItemTransformator } from './WorldItemTransformator';
 import _ = require('lodash');
-import { Line } from '@nightshifts.inc/geometry';
 import { WorldItemInfoUtils } from '../WorldItemInfoUtils';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 
@@ -32,11 +31,7 @@ export class BorderItemAddingTransformator implements WorldItemTransformator {
                         return false;
                     }
 
-                    // if (this.doNotIncludeBorderItemsThatIntersectsOnlyAtCorner) {
-                    //     return !this.doesBorderItemIntersectOnlyAtCorner(roomSeparator, intersectionLineInfo);
-                    // }
-
-                    return true;
+                    return !this.doesBorderItemIntersectOnlyAtCorner(roomSeparator, intersectionLineInfo);
                 })
                 .forEach(roomSeparator => room.borderItems.push(roomSeparator));
         });
@@ -45,13 +40,11 @@ export class BorderItemAddingTransformator implements WorldItemTransformator {
     }
 
     //TODO: we might not need this when using `StripeView` for border item `Polygon`
-    private doesBorderItemIntersectOnlyAtCorner(roomSeparator: WorldItemInfo, intersectionLineInfo: [Segment, number, number]) {
-        const edges = roomSeparator.dimensions.getEdges();
+    private doesBorderItemIntersectOnlyAtCorner(border: WorldItemInfo, intersectionLineInfo: [Segment, number, number]) {
+        const edges = border.dimensions.getEdges();
 
         const intersectingEdge = edges[intersectionLineInfo[2]];
 
-        const smallerEdgeLen = _.minBy(edges, edge => edge.getLength()).getLength();
-
-        return smallerEdgeLen === intersectingEdge.getLength();
+        return intersectingEdge.getLine().getAngleToXAxis().getAngle() !== border.rotation;
     }
 }

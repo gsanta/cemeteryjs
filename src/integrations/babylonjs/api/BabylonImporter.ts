@@ -51,7 +51,7 @@ export class BabylonImporter implements Importer {
                         new FurnitureInfoParser(worldItemInfoFactory, furnitureCharacters, new WorldMapToMatrixGraphConverter()),
                         new RoomSeparatorParser(worldItemInfoFactory, roomSeparatorCharacters),
                         new RoomInfoParser(worldItemInfoFactory),
-                        new PolygonAreaInfoParser(worldItemInfoFactory, 'empty', '#'),
+                        new PolygonAreaInfoParser(worldItemInfoFactory, 'empty', '-'),
                         new RootWorldItemParser(worldItemInfoFactory)
                     ]
                 ),
