@@ -58,7 +58,7 @@ export class BabylonImporter implements Importer {
                     new BorderItemSegmentingTransformator(worldItemInfoFactory, ['wall', 'door', 'window'], { xScale: worldConfig.xScale, yScale: worldConfig.yScale }),
                     new HierarchyBuildingTransformator(),
                     new BorderItemAddingTransformator(['wall', 'door', 'window']),
-                    new BorderItemsToLinesTransformator({ xScale: worldConfig.xScale, yScale: worldConfig.yScale }),
+                    new BorderItemsToLinesTransformator(),
                     new BorderItemWidthToRealWidthTransformator([{name: 'window', width: 2}, {name: 'door', width: 2.7}]),
                     new FurnitureRealSizeTransformator(
                         {
