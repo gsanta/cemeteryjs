@@ -9,7 +9,6 @@ export const mergeStraightAngledNeighbouringBorderItemPolygons = (borders: World
     const borderItemPolygons = borders.map(border => border.dimensions);
     const angles: number[] = borders.map(border => border.rotation);
     const mergedPolygons: [Shape, number][] = [[borderItemPolygons.shift(), angles.shift()]];
-    // const mergedAngles: number[] = [angles.shift()];
 
     while(borderItemPolygons.length > 0) {
         const [currentPolygon, currentAngle] = <[Polygon, number]> mergedPolygons.shift();
@@ -42,11 +41,6 @@ export const mergeStraightAngledNeighbouringBorderItemPolygons = (borders: World
  * `Polygon`s into `Segment`s and also stretches the room `Polygon`s so that they fill up the generated empty space.
  */
 export class BorderItemsToLinesTransformator implements WorldItemTransformator {
-    private scales: {xScale: number, yScale: number};
-
-    constructor(scales: {xScale: number, yScale: number} = {xScale: 1, yScale: 1}) {
-        this.scales = scales;
-    }
 
     public transform(gwmWorldItems: WorldItemInfo[]): WorldItemInfo[] {
         return this.stretchRooms(gwmWorldItems);

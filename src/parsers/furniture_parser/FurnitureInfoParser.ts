@@ -25,7 +25,7 @@ export class FurnitureInfoParser implements WorldItemParser {
     public generate(graph: MatrixGraph): WorldItemInfo[] {
         const characters = this.furnitureCharacters.filter(name => graph.getCharacterForName(name)).map(name => graph.getCharacterForName(name));
 
-        const ret = flat<WorldItemInfo>(
+        return flat<WorldItemInfo>(
                 characters
                 .map((character) => {
                     return graph.findConnectedComponentsForCharacter(character)
@@ -33,8 +33,6 @@ export class FurnitureInfoParser implements WorldItemParser {
                 }),
                 2
         );
-
-        return ret;
     }
 
     public generateFromStringMap(strMap: string): WorldItemInfo[] {

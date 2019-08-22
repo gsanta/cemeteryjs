@@ -27,15 +27,13 @@ export class RoomSeparatorParser implements WorldItemParser {
 
         const borderGraph = graph.getReducedGraphForCharacters(characters);
 
-        const worldItemsDeep = characters.map((character) => {
-            return graph.findConnectedComponentsForCharacter(character)
-                .map(connectedComp => this.createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(graph.getGraphForVertices(connectedComp), borderGraph));
-        });
-        const ret = flat<WorldItemInfo>(
-                worldItemsDeep,
+        return flat<WorldItemInfo>(
+                characters.map((character) => {
+                    return graph.findConnectedComponentsForCharacter(character)
+                        .map(connectedComp => this.createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(graph.getGraphForVertices(connectedComp), borderGraph));
+                }),
                 2
             );
-        return ret;
     }
 
     public generateFromStringMap(strMap: string): WorldItemInfo[] {
