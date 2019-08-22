@@ -47,8 +47,8 @@ export class BorderItemWidthToRealWidthTransformator implements WorldItemTransfo
 
         let neighbours = leftItem.dimensions.hasPoint(border.dimensions.getPoints()[0]) ? [leftItem, rightItem] : [rightItem, leftItem];
 
-        const leftBorderStripe = new StripeView(<Polygon> neighbours[0].dimensions, border.rotation);
-        const rightBorderStripe = new StripeView(<Polygon> neighbours[1].dimensions, border.rotation);
+        const leftBorderStripe = new StripeView(<Polygon> neighbours[0].dimensions, neighbours[0].rotation);
+        const rightBorderStripe = new StripeView(<Polygon> neighbours[1].dimensions, neighbours[1].rotation);
         const currentBorderStripe = new StripeView(<Polygon> border.dimensions, border.rotation);
 
         let newPoints: [Point, Point];

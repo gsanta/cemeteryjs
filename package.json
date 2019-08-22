@@ -44,7 +44,7 @@
     "@turf/turf": "^5.1.6",
     "@types/babylonjs": "^2.4.1",
     "@types/lodash": "^4.14.137",
-    "@types/node": "^10.14.15",
+    "@types/node": "^10.14.16",
     "@types/polylabel": "^1.0.5",
     "@types/react": "^16.9.2",
     "@types/react-dom": "^16.9.0",

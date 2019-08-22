@@ -2,10 +2,11 @@ import * as _ from 'lodash';
 
 export interface MatrixGraphVertexValue {
     character: string;
-    name: string;
     additionalData?: any;
 }
 
+// TODO: separate matrix strore from additional data (like 'name')
+// matrix is specific to the .gwm format, the other data should be independent
 export class MatrixGraph {
     private numberOfVertices = 0;
     private adjacencyList: { [key: number]: number[] } = {};
@@ -16,10 +17,17 @@ export class MatrixGraph {
     private rows: number;
     private characters: Set<string>;
 
+    private charToNameMap: Map<string, string> = new Map();
+    private nameToCharMap: Map<string, string> = new Map();
+
     constructor(columns: number, rows: number) {
         this.columns = columns;
         this.rows = rows;
         this.characters = new Set<string>([]);
+    }
+
+    public getCharacterForName(name: string) {
+        return this.nameToCharMap.get(name);
     }
 
     public getCharacters(): string[] {
@@ -59,16 +67,29 @@ export class MatrixGraph {
         return null;
     }
 
+    public getVertexName(vertex: number): string {
+        return this.charToNameMap.get(this.vertexValues[vertex].character);
+    }
+
     public getVertexValue(vertex: number): MatrixGraphVertexValue {
         return this.vertexValues[vertex];
     }
 
-    public addNextVertex(vertex: number, vertexValue: MatrixGraphVertexValue) {
+    public addVertex(vertex: number, character: string, name: string) {
         this.adjacencyList[vertex] = [];
-        this.vertexValues[vertex] = vertexValue;
+        this.vertexValues[vertex] = {
+            character,
+            additionalData: []
+        };
         this.numberOfVertices += 1;
+
         this.vertices.push(vertex);
-        this.characters.add(vertexValue.character);
+        this.characters.add(character);
+
+        if (!this.nameToCharMap.has(character)) {
+            this.nameToCharMap.set(name, character);
+            this.charToNameMap.set(character, name);
+        }
     }
 
     public addEdge(v, w) {
@@ -132,7 +153,7 @@ export class MatrixGraph {
     public getGraphForVertices(vertices: number[]): MatrixGraph {
         const graph = new MatrixGraph(this.columns, this.rows);
 
-        vertices.forEach(vertex => graph.addNextVertex(vertex, this.getVertexValue(vertex)));
+        vertices.forEach(vertex => graph.addVertex(vertex, this.getVertexValue(vertex).character, this.charToNameMap.get(this.getVertexValue(vertex).character)));
         graph.getAllVertices().forEach(vertex => {
             const neighbours = this.getAjacentEdges(vertex);
 
@@ -150,7 +171,7 @@ export class MatrixGraph {
         const graph = new MatrixGraph(this.columns, this.rows);
         this.getAllVertices()
             .filter(vertex => this.getVertexValue(vertex).character === val)
-            .forEach(vertex => graph.addNextVertex(vertex, this.getVertexValue(vertex)));
+            .forEach(vertex => graph.addVertex(vertex, this.getVertexValue(vertex).character, this.charToNameMap.get(this.getVertexValue(vertex).character)));
 
         graph.getAllVertices().forEach(vertex => {
 
@@ -164,44 +185,6 @@ export class MatrixGraph {
         });
 
         return graph;
-    }
-
-    public BFS(callback: (vertex: number, isNewRoot: boolean) => void) {
-        let allVertices = this.getAllVertices();
-        const queue = [allVertices[0]];
-        const visited: {[key: number]: boolean} = {
-            [allVertices[0]]: true
-        };
-
-        let isNewRoot = false;
-        while (allVertices.length > 0) {
-            while (queue.length > 0) {
-
-                const vertex = queue.shift();
-
-                allVertices = _.without(allVertices, vertex);
-                callback(vertex, isNewRoot);
-                isNewRoot = false;
-
-                const adjacentEdges = this.getAjacentEdges(vertex);
-
-                const notVisitedAdjacentEdges = adjacentEdges.filter(edge =>  visited[edge] !== true);
-                if (notVisitedAdjacentEdges.length === 0) {
-                    continue;
-                }
-
-                for (let i = 0; i < notVisitedAdjacentEdges.length; i++) {
-                    queue.push(notVisitedAdjacentEdges[i]);
-                    visited[notVisitedAdjacentEdges[i]] = true;
-                }
-            }
-
-            if (allVertices.length > 0) {
-                queue.push(allVertices[0]);
-                isNewRoot = true;
-            }
-        }
-
     }
 
     public findConnectedComponentsForCharacter(character: string): number[][] {
@@ -239,7 +222,7 @@ export class MatrixGraph {
 
         this.vertices
             .filter(vertex => characters.includes(this.getVertexValue(vertex).character))
-            .forEach(vertex => graph.addNextVertex(vertex, this.getVertexValue(vertex)));
+            .forEach(vertex => graph.addVertex(vertex, this.getVertexValue(vertex).character, this.charToNameMap.get(this.getVertexValue(vertex).character)));
 
         this.getAllEdges()
             .filter(edge =>  graph.hasVertex(edge[0]) && graph.hasVertex(edge[1]))
@@ -256,7 +239,7 @@ export class MatrixGraph {
     private getReducedGraphForVertices(vertices: number[]): MatrixGraph {
         const graph = new MatrixGraph(this.columns, this.rows);
 
-        vertices.forEach(vertex => graph.addNextVertex(vertex, this.getVertexValue(vertex)));
+        vertices.forEach(vertex => graph.addVertex(vertex, this.getVertexValue(vertex).character, this.charToNameMap.get(this.getVertexValue(vertex).character)));
 
         graph.getAllVertices().forEach(vertex => {
 
@@ -270,5 +253,43 @@ export class MatrixGraph {
         });
 
         return graph;
+    }
+
+    private BFS(callback: (vertex: number, isNewRoot: boolean) => void) {
+        let allVertices = this.getAllVertices();
+        const queue = [allVertices[0]];
+        const visited: {[key: number]: boolean} = {
+            [allVertices[0]]: true
+        };
+
+        let isNewRoot = false;
+        while (allVertices.length > 0) {
+            while (queue.length > 0) {
+
+                const vertex = queue.shift();
+
+                allVertices = _.without(allVertices, vertex);
+                callback(vertex, isNewRoot);
+                isNewRoot = false;
+
+                const adjacentEdges = this.getAjacentEdges(vertex);
+
+                const notVisitedAdjacentEdges = adjacentEdges.filter(edge =>  visited[edge] !== true);
+                if (notVisitedAdjacentEdges.length === 0) {
+                    continue;
+                }
+
+                for (let i = 0; i < notVisitedAdjacentEdges.length; i++) {
+                    queue.push(notVisitedAdjacentEdges[i]);
+                    visited[notVisitedAdjacentEdges[i]] = true;
+                }
+            }
+
+            if (allVertices.length > 0) {
+                queue.push(allVertices[0]);
+                isNewRoot = true;
+            }
+        }
+
     }
 }

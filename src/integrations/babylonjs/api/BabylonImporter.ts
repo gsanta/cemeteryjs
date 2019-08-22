@@ -17,7 +17,7 @@ import { WorldItemInfoFactory } from '../../../WorldItemInfoFactory';
 import { CombinedWorldItemParser } from '../../../parsers/CombinedWorldItemParser';
 import { WorldMapToMatrixGraphConverter } from '../../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 import { WorldItemInfo } from '../../../WorldItemInfo';
-import { Importer } from '../../api/Importer';
+import { Importer, defaultWorldConfig, WorldConfig } from '../../api/Importer';
 import { Scene } from 'babylonjs';
 import { MeshFactory, MeshDescriptor } from '../MeshFactory';
 import { MeshLoader } from '../MeshLoader';
@@ -31,14 +31,11 @@ export class BabylonImporter implements Importer {
         this.meshLoader = meshLoader;
     }
 
-    import(strWorld: string, modelTypeDescription: MeshDescriptor[]): Promise<WorldItemInfo[]> {
-        return this.parse(strWorld, modelTypeDescription);
+    import(strWorld: string, modelTypeDescription: MeshDescriptor[], worldConfig = defaultWorldConfig): Promise<WorldItemInfo[]> {
+        return this.parse(strWorld, worldConfig, modelTypeDescription);
     }
 
-    private parse(strWorld: string, modelTypeDescription: MeshDescriptor[]): Promise<WorldItemInfo[]> {
-        const options = {...defaultParseOptions, ...{yScale: 2}};
-        const furnitureCharacters = ['X', 'C', 'T', 'B', 'S', 'E', 'H', 'P', '-'];
-        const roomSeparatorCharacters = ['W', 'D', 'I'];
+    private parse(strWorld: string, worldConfig: WorldConfig, modelTypeDescription: MeshDescriptor[]): Promise<WorldItemInfo[]> {
 
         const meshCreationTransformator = new MeshCreationTransformator(this.meshLoader, this.meshFactory);
 
@@ -48,8 +45,8 @@ export class BabylonImporter implements Importer {
             return WorldParser.createWithCustomWorldItemGenerator(
                 new CombinedWorldItemParser(
                     [
-                        new FurnitureInfoParser(worldItemInfoFactory, furnitureCharacters, new WorldMapToMatrixGraphConverter()),
-                        new RoomSeparatorParser(worldItemInfoFactory, roomSeparatorCharacters),
+                        new FurnitureInfoParser(worldItemInfoFactory, worldConfig.furnitures, new WorldMapToMatrixGraphConverter()),
+                        new RoomSeparatorParser(worldItemInfoFactory, worldConfig.borders),
                         new RoomInfoParser(worldItemInfoFactory),
                         new PolygonAreaInfoParser(worldItemInfoFactory, 'empty', '-'),
                         new RootWorldItemParser(worldItemInfoFactory)
@@ -57,11 +54,11 @@ export class BabylonImporter implements Importer {
                 ),
                 [
 
-                    new ScalingTransformator({ x: options.xScale, y: options.yScale }),
-                    new BorderItemSegmentingTransformator(worldItemInfoFactory, ['wall', 'door', 'window'], { xScale: options.xScale, yScale: options.yScale }),
+                    new ScalingTransformator({ x: worldConfig.xScale, y: worldConfig.yScale }),
+                    new BorderItemSegmentingTransformator(worldItemInfoFactory, ['wall', 'door', 'window'], { xScale: worldConfig.xScale, yScale: worldConfig.yScale }),
                     new HierarchyBuildingTransformator(),
                     new BorderItemAddingTransformator(['wall', 'door', 'window']),
-                    new BorderItemsToLinesTransformator({ xScale: options.xScale, yScale: options.yScale }),
+                    new BorderItemsToLinesTransformator({ xScale: worldConfig.xScale, yScale: worldConfig.yScale }),
                     new BorderItemWidthToRealWidthTransformator([{name: 'window', width: 2}, {name: 'door', width: 2.7}]),
                     new FurnitureRealSizeTransformator(
                         {

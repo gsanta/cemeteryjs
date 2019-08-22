@@ -93,6 +93,17 @@ export class BabylonjsDemo {
                             scale: 1
                         }
                     },
+                    {
+                        type: 'chair',
+                        name: 'mesh-descriptor' as 'mesh-descriptor',
+                        details: {
+                            name: 'file-descriptor' as 'file-descriptor',
+                            path: 'models/',
+                            fileName: 'chair.babylon',
+                            materials: ['models/material/bathroom.png'],
+                            scale: 3
+                        }
+                    },
                 ]
             )
             .then(worldItems => {

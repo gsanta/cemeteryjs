@@ -36,8 +36,8 @@ const initBorderItems = (strMap: string): WorldItemInfo[] => {
     const options = {
         xScale: 1,
         yScale: 1,
-        furnitureCharacters: ['T', 'B', 'C'],
-        roomSeparatorCharacters: ['W', 'D']
+        furnitureCharacters: ['table', 'bed', 'cupboard'],
+        roomSeparatorCharacters: ['wall', 'door']
     }
 
     const worldItemInfoFactory = new WorldItemInfoFactory();

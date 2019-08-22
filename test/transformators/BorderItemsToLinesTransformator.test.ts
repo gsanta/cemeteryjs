@@ -38,7 +38,7 @@ const initBorderItems = (strMap: string): WorldItemInfo[] => {
         xScale: 1,
         yScale: 1,
         furnitureCharacters: [],
-        roomSeparatorCharacters: ['W', 'D']
+        roomSeparatorCharacters: ['wall', 'door']
     }
 
     const worldItemInfoFactory = new WorldItemInfoFactory();
@@ -103,7 +103,7 @@ describe('`BorderItemsToLinesTransformator`', () => {
             xScale: 1,
             yScale: 1,
             furnitureCharacters: [],
-            roomSeparatorCharacters: ['W']
+            roomSeparatorCharacters: ['wall']
         }
 
         const worldItemInfoFactory = new WorldItemInfoFactory();

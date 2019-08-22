@@ -34,11 +34,7 @@ export class LinesToGraphConverter {
         _.range(0, vertices).forEach(val => {
             const character = findCharacter(val);
             const name = this.charachterToNameMap[character];
-            this.graph.addNextVertex(val, {
-                character,
-                name,
-                additionalData: this.vertexAdditinalData[val]
-            })
+            this.graph.addVertex(val, character, name);
         });
 
         this.parseLines(this.lines);

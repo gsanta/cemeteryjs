@@ -41,7 +41,7 @@ describe('RoomSeparatorParser', () => {
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const roomSeparatorParser = new RoomSeparatorParser(new WorldItemInfoFactory(), ['W', 'D', 'I']);
+            const roomSeparatorParser = new RoomSeparatorParser(new WorldItemInfoFactory(), ['wall', 'door', 'window']);
 
 
             const worldItems = roomSeparatorParser.generate(matrixGraph);
@@ -78,7 +78,7 @@ describe('RoomSeparatorParser', () => {
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const roomSeparatorParser = new RoomSeparatorParser(new WorldItemInfoFactory(), ['W', 'D', 'I']);
+            const roomSeparatorParser = new RoomSeparatorParser(new WorldItemInfoFactory(), ['wall', 'door', 'window']);
 
 
             const worldItems = roomSeparatorParser.generate(matrixGraph);

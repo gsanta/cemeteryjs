@@ -23,7 +23,7 @@ describe('FurnitureInfoParser', () => {
             );
 
 
-            const furnitureInfoParser = new FurnitureInfoParser(new WorldItemInfoFactory(), ['W']);
+            const furnitureInfoParser = new FurnitureInfoParser(new WorldItemInfoFactory(), ['wall']);
             const worldItems = furnitureInfoParser.generate(graph);
 
             expect(worldItems.length).toEqual(4);
@@ -50,7 +50,7 @@ describe('FurnitureInfoParser', () => {
             );
 
 
-            const furnitureInfoParser = new FurnitureInfoParser(new WorldItemInfoFactory(), ['W']);
+            const furnitureInfoParser = new FurnitureInfoParser(new WorldItemInfoFactory(), ['wall']);
             const worldItems = furnitureInfoParser.generate(graph);
 
             expect(worldItems.length).toEqual(3);
@@ -77,7 +77,7 @@ describe('FurnitureInfoParser', () => {
             );
 
 
-            const furnitureInfoParser = new FurnitureInfoParser(new WorldItemInfoFactory(), ['D']);
+            const furnitureInfoParser = new FurnitureInfoParser(new WorldItemInfoFactory(), ['door']);
             const worldItems = furnitureInfoParser.generate(graph);
             expect(worldItems.length).toEqual(1);
             expect(worldItems[0]).toEqual(new WorldItemInfo(1, 'D', Polygon.createRectangle(1, 0, 2, 3), 'door'));

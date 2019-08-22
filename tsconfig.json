@@ -7,9 +7,14 @@
       "module": "commonjs",
       "outDir": "build",
       "jsx": "react",
+      "lib": [
+        "es6",
+        "dom",
+        "esnext.array"
+      ],
       "types": [
         "node",
-        "jest"
+        "jest",
       ]
     },
     "include": [

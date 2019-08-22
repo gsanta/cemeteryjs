@@ -5,6 +5,7 @@ import { WorldItemParser } from '../WorldItemParser';
 import { WorldMapToMatrixGraphConverter } from '../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 import { WorldItemInfoFactory } from '../../WorldItemInfoFactory';
 import { Polygon } from '@nightshifts.inc/geometry';
+import { flat } from '../../utils/ArrayUtils';
 
 export class RoomSeparatorParser implements WorldItemParser {
     private worldItemInfoFactory: WorldItemInfoFactory;
@@ -22,21 +23,19 @@ export class RoomSeparatorParser implements WorldItemParser {
     }
 
     public generate(graph: MatrixGraph): WorldItemInfo[] {
-        const borderGraph = graph.getReducedGraphForCharacters(this.roomSeparatorCharacters);
+        const characters = this.roomSeparatorCharacters.filter(name => graph.getCharacterForName(name)).map(name => graph.getCharacterForName(name));
 
-        borderGraph.getCharacters()
-            .forEach(character => {
+        const borderGraph = graph.getReducedGraphForCharacters(characters);
 
-            });
-
-        return <any> _.chain(graph.getCharacters())
-            .intersection(this.roomSeparatorCharacters)
-            .map((character) => {
-                return graph.findConnectedComponentsForCharacter(character)
-                    .map(connectedComp => this.createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(graph.getGraphForVertices(connectedComp), borderGraph));
-            })
-            .flattenDeep()
-            .value();
+        const worldItemsDeep = characters.map((character) => {
+            return graph.findConnectedComponentsForCharacter(character)
+                .map(connectedComp => this.createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(graph.getGraphForVertices(connectedComp), borderGraph));
+        });
+        const ret = flat<WorldItemInfo>(
+                worldItemsDeep,
+                2
+            );
+        return ret;
     }
 
     public generateFromStringMap(strMap: string): WorldItemInfo[] {
@@ -59,7 +58,7 @@ export class RoomSeparatorParser implements WorldItemParser {
                 return this.worldItemInfoFactory.create(
                     componentGraph.getCharacters()[0],
                     rect,
-                    componentGraph.getVertexValue(oneVertex).name,
+                    componentGraph.getVertexName(oneVertex),
                     true,
                     Math.PI / 2
                 );
@@ -73,7 +72,7 @@ export class RoomSeparatorParser implements WorldItemParser {
                 return this.worldItemInfoFactory.create(
                     componentGraph.getCharacters()[0],
                     rect,
-                    componentGraph.getVertexValue(oneVertex).name,
+                    componentGraph.getVertexName(oneVertex),
                     true,
                     0
                 );

@@ -1,7 +1,6 @@
 import * as sinon from 'sinon';
 import { MeshCreationTransformator } from '../../src/transformators/MeshCreationTransformator';
 import { WorldItemInfo } from '../../src/WorldItemInfo';
-import { Mesh } from "babylonjs";
 import { MeshFactory, MeshDescriptor } from '../../src/integrations/babylonjs/MeshFactory';
 import { MeshLoader } from '../../src/integrations/babylonjs/MeshLoader';
 
@@ -47,31 +46,6 @@ describe(`MeshCreationTransformator`, () => {
         });
     });
 });
-
-function setupWorldItemInfo(): WorldItemInfo[] {
-    return <WorldItemInfo[]> [
-        {
-            name: 'mesh1',
-            children: [
-                <WorldItemInfo> {
-                    name: 'mesh1-1'
-                },
-                <WorldItemInfo> {
-                    name: 'mesh1-2'
-                }
-            ]
-        },
-        {
-            name: 'mesh2'
-        }
-    ]
-}
-
-function createFakeMesh(name: string): Mesh {
-    return <Mesh> {
-        name
-    };
-}
 
 function setupMeshDescriptors(): MeshDescriptor[] {
     return [

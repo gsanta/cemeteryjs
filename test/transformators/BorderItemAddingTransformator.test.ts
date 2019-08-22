@@ -34,7 +34,7 @@ describe('`BorderItemAddingTransformator`', () => {
             const worldItemInfoFacotry = new WorldItemInfoFactory();
             let items = new CombinedWorldItemParser(
                 [
-                    new RoomSeparatorParser(worldItemInfoFacotry, ['W']),
+                    new RoomSeparatorParser(worldItemInfoFacotry, ['wall']),
                     new RoomInfoParser(worldItemInfoFacotry)
                 ]
             ).generateFromStringMap(map);
@@ -71,7 +71,7 @@ describe('`BorderItemAddingTransformator`', () => {
             const worldItemInfoFacotry = new WorldItemInfoFactory();
             let items = new CombinedWorldItemParser(
                 [
-                    new RoomSeparatorParser(worldItemInfoFacotry, ['W']),
+                    new RoomSeparatorParser(worldItemInfoFacotry, ['wall']),
                     new RoomInfoParser(worldItemInfoFacotry)
                 ]
             ).generateFromStringMap(map);
@@ -114,7 +114,7 @@ describe('`BorderItemAddingTransformator`', () => {
             const worldItemInfoFacotry = new WorldItemInfoFactory();
             let items = new CombinedWorldItemParser(
                 [
-                    new RoomSeparatorParser(worldItemInfoFacotry, ['W']),
+                    new RoomSeparatorParser(worldItemInfoFacotry, ['wall']),
                     new RoomInfoParser(worldItemInfoFacotry)
                 ]
             ).generateFromStringMap(map);

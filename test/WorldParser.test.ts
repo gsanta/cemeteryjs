@@ -39,7 +39,7 @@ describe('`WorldParser`', () => {
             `;
 
             const gameObjectParser = WorldParser.createWithOptions(
-                { furnitureCharacters: ['T'], roomSeparatorCharacters: ['W', 'I']}
+                { furnitures: ['table'], borders: ['wall', 'window'], xScale: 1, yScale: 1}
             );
 
             const [root] = gameObjectParser.parse(map);
@@ -66,10 +66,7 @@ describe('`WorldParser`', () => {
                 \`
             `;
 
-            const worldMapParser = WorldParser.createWithOptions(
-                { furnitureCharacters: [], roomSeparatorCharacters: ['W', 'I', 'D']},
-                {...defaultParseOptions, ...{xScale: 2, yScale: 3}}
-            );
+            const worldMapParser = WorldParser.createWithOptions({ furnitures: [], borders: ['wall', 'window', 'door'], xScale: 2, yScale: 3});
             const [root] = worldMapParser.parse(map);
             const rooms = root.children.filter(item => item.name === 'room');
 
@@ -106,8 +103,8 @@ describe('`WorldParser`', () => {
             const options = {
                 xScale: 1,
                 yScale: 1,
-                furnitureCharacters: ['C', 'B'],
-                roomSeparatorCharacters: ['W', 'D', 'I']
+                furnitureCharacters: ['cupboard', 'bed'],
+                roomSeparatorCharacters: ['wall', 'door', 'window']
             }
 
             const worldItemInfoFactory = new WorldItemInfoFactory();
@@ -161,8 +158,8 @@ describe('`WorldParser`', () => {
         const options = {
             xScale: 1,
             yScale: 1,
-            furnitureCharacters: ['C', 'B'],
-            roomSeparatorCharacters: ['W', 'D', 'I']
+            furnitureCharacters: ['cupboard', 'bed'],
+            roomSeparatorCharacters: ['wall', 'door', 'window']
         }
 
         const worldItemInfoFactory = new WorldItemInfoFactory();
@@ -257,7 +254,7 @@ describe('`WorldParser`', () => {
             xScale: 1,
             yScale: 1,
             furnitureCharacters: [],
-            roomSeparatorCharacters: ['W']
+            roomSeparatorCharacters: ['wall']
         }
 
         const worldItemInfoFactory = new WorldItemInfoFactory();

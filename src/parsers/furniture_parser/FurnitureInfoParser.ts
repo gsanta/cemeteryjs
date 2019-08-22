@@ -1,10 +1,11 @@
 import { MatrixGraph } from '../../matrix_graph/MatrixGraph';
 import { WorldItemInfo } from '../../WorldItemInfo';
-import * as _ from 'lodash';
 import { WorldItemParser } from '../WorldItemParser';
 import { WorldMapToMatrixGraphConverter } from '../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 import { Polygon } from '@nightshifts.inc/geometry';
 import { WorldItemInfoFactory } from '../../WorldItemInfoFactory';
+import * as _ from 'lodash';
+import { flat } from '../../utils/ArrayUtils';
 
 export class FurnitureInfoParser implements WorldItemParser {
     private worldItemInfoFactory: WorldItemInfoFactory
@@ -22,16 +23,18 @@ export class FurnitureInfoParser implements WorldItemParser {
     }
 
     public generate(graph: MatrixGraph): WorldItemInfo[] {
+        const characters = this.furnitureCharacters.filter(name => graph.getCharacterForName(name)).map(name => graph.getCharacterForName(name));
 
-        return <any> _.chain(graph.getCharacters())
-            .intersection(this.furnitureCharacters)
-            .map((character) => {
-                return graph.findConnectedComponentsForCharacter(character)
-                    .map(connectedComp => this.createGameObjectsForConnectedComponent(graph.getGraphForVertices(connectedComp)));
-            })
-            .flattenDeep()
-            .value();
+        const ret = flat<WorldItemInfo>(
+                characters
+                .map((character) => {
+                    return graph.findConnectedComponentsForCharacter(character)
+                        .map(connectedComp => this.createGameObjectsForConnectedComponent(graph.getGraphForVertices(connectedComp)));
+                }),
+                2
+        );
 
+        return ret;
     }
 
     public generateFromStringMap(strMap: string): WorldItemInfo[] {
@@ -50,7 +53,7 @@ export class FurnitureInfoParser implements WorldItemParser {
         }
     }
 
-    private createRectangularGameObject(componentGraph): WorldItemInfo {
+    private createRectangularGameObject(componentGraph: MatrixGraph): WorldItemInfo {
         const minX = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).x).min().value();
         const maxX = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).x).max().value();
         const minY = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).y).min().value();
@@ -65,7 +68,7 @@ export class FurnitureInfoParser implements WorldItemParser {
         return this.worldItemInfoFactory.create(
             componentGraph.getCharacters()[0],
             Polygon.createRectangle(x, y, width, height),
-            componentGraph.getVertexValue(oneVertex).name,
+            componentGraph.getVertexName(oneVertex),
             false
         );
     }
@@ -83,7 +86,7 @@ export class FurnitureInfoParser implements WorldItemParser {
                 return this.worldItemInfoFactory.create(
                     componentGraph.getCharacters()[0],
                     rect,
-                    componentGraph.getVertexValue(oneVertex).name,
+                    componentGraph.getVertexName(oneVertex),
                     false
                 );
             });
@@ -99,7 +102,7 @@ export class FurnitureInfoParser implements WorldItemParser {
                 return this.worldItemInfoFactory.create(
                     gameObjectGraph.getCharacters()[0],
                     rect,
-                    componentGraph.getVertexValue(oneVertex).name,
+                    componentGraph.getVertexName(oneVertex),
                     false
                 );
             });

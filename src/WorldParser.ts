@@ -12,6 +12,7 @@ import { RoomSeparatorParser } from './parsers/room_separator_parser/RoomSeparat
 import { BorderItemAddingTransformator } from './transformators/BorderItemAddingTransformator';
 import { WorldItemTransformator } from './transformators/WorldItemTransformator';
 import { WorldItemInfoFactory } from './WorldItemInfoFactory';
+import { WorldConfig, defaultWorldConfig } from './integrations/api/Importer';
 
 export interface ParseOptions<T> {
     xScale: number;
@@ -23,11 +24,6 @@ export interface ParseOptions<T> {
 export const defaultParseOptions: ParseOptions<any> = {
     xScale: 1,
     yScale: 1,
-}
-
-export interface CharacterTypes {
-    furnitureCharacters: string[];
-    roomSeparatorCharacters: string[];
 }
 
 /**
@@ -49,19 +45,20 @@ export class WorldParser {
         return this.worldItemTransformators.reduce((worldItems, transformator) => transformator.transform(worldItems), worldItems);
     }
 
-    public static createWithOptions<T>(characterTypes: CharacterTypes, options: ParseOptions<T> = defaultParseOptions): WorldParser {
+    public static createWithOptions(worldConfig: Partial<WorldConfig>): WorldParser {
+        worldConfig = {...defaultWorldConfig, ...worldConfig};
         const worldItemInfoFactory = new WorldItemInfoFactory();
         return new WorldParser(
             new CombinedWorldItemParser(
                 [
-                    new FurnitureInfoParser(worldItemInfoFactory, characterTypes.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
-                    new RoomSeparatorParser(worldItemInfoFactory, characterTypes.roomSeparatorCharacters),
+                    new FurnitureInfoParser(worldItemInfoFactory, worldConfig.furnitures, new WorldMapToMatrixGraphConverter()),
+                    new RoomSeparatorParser(worldItemInfoFactory, worldConfig.borders),
                     new RoomInfoParser(worldItemInfoFactory),
                     new RootWorldItemParser(worldItemInfoFactory)
                 ]
             ),
             [
-                new ScalingTransformator({ x: options.xScale, y: options.yScale }),
+                new ScalingTransformator({ x: worldConfig.xScale, y: worldConfig.yScale }),
                 new HierarchyBuildingTransformator(),
                 new BorderItemAddingTransformator(['wall', 'door', 'window'])
             ]
