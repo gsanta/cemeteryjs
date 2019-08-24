@@ -16,12 +16,16 @@ describe('PolygonAreaInfoGenerator', () => {
                 ----------
 
                 \`
+
+                definitions \`
+                    # = empty
+                \`
             `;
 
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const polygonAreaInfoParser = new PolygonAreaInfoParser(new WorldItemInfoFactory(), 'room', '#');
+            const polygonAreaInfoParser = new PolygonAreaInfoParser('empty', new WorldItemInfoFactory());
 
             const worldItem = polygonAreaInfoParser.generate(matrixGraph);
 
@@ -45,12 +49,16 @@ describe('PolygonAreaInfoGenerator', () => {
                 -#####----
 
                 \`
+
+                definitions \`
+                    # = empty
+                \`
             `;
 
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const polygonAreaInfoParser = new PolygonAreaInfoParser(new WorldItemInfoFactory(), 'room', '#');
+            const polygonAreaInfoParser = new PolygonAreaInfoParser('empty', new WorldItemInfoFactory());
 
             const worldItem = polygonAreaInfoParser.generate(matrixGraph);
 
@@ -81,12 +89,16 @@ describe('PolygonAreaInfoGenerator', () => {
                 -######---
 
                 \`
+
+                definitions \`
+                    # = empty
+                \`
             `;
 
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const polygonAreaInfoParser = new PolygonAreaInfoParser(new WorldItemInfoFactory(), 'room', '#');
+            const polygonAreaInfoParser = new PolygonAreaInfoParser('empty', new WorldItemInfoFactory());
 
             const worldItem = polygonAreaInfoParser.generate(matrixGraph);
 
@@ -115,12 +127,16 @@ describe('PolygonAreaInfoGenerator', () => {
                 ----------
 
                 \`
+
+                definitions \`
+                    # = empty
+                \`
             `;
 
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const polygonAreaInfoParser = new PolygonAreaInfoParser(new WorldItemInfoFactory(), 'room', '#');
+            const polygonAreaInfoParser = new PolygonAreaInfoParser('empty', new WorldItemInfoFactory());
 
             const worldItem = polygonAreaInfoParser.generate(matrixGraph);
 

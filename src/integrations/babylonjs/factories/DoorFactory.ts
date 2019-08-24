@@ -4,7 +4,7 @@ import { WorldItemInfo } from '../../../WorldItemInfo';
 import { MeshCreator } from '../MeshCreator';
 import { MeshTemplate } from '../../api/MeshTemplate';
 
-export class DoorFactory implements MeshCreator {
+export class DoorFactory {
     private scene: Scene;
     private meshBuilder: typeof MeshBuilder;
 
@@ -13,7 +13,7 @@ export class DoorFactory implements MeshCreator {
         this.meshBuilder = meshBuilder;
     }
 
-    public createItem(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh {
+    public createItem(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
         const meshes = meshTemplate.meshes.map(m => m.clone());
         const boundingMesh = this.createBoundingMesh(worldItemInfo.dimensions);
 
@@ -25,7 +25,7 @@ export class DoorFactory implements MeshCreator {
         const center = worldItemInfo.dimensions.getBoundingCenter();
         boundingMesh.translate(new Vector3(center.x, 4, center.y), 1);
 
-        return boundingMesh;
+        return [boundingMesh, ...meshes];
     }
 
     private createBoundingMesh(boundingBox: Shape): Mesh {

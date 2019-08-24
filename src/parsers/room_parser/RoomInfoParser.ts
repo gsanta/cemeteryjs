@@ -19,9 +19,8 @@ export class RoomInfoParser implements WorldItemParser {
 
     constructor(
         worldItemInfoFactory: WorldItemInfoFactory,
-        roomCharacter = '-',
         worldMapConverter = new WorldMapToMatrixGraphConverter(),
-        polygonAreaInfoGenerator = new PolygonAreaInfoParser(worldItemInfoFactory, 'room', roomCharacter),
+        polygonAreaInfoGenerator = new PolygonAreaInfoParser('room', worldItemInfoFactory),
         worldMapToRoomMapConverter = new WorldMapToRoomMapConverter('W', '-', ['W', 'D', 'I']),
     ) {
         this.worldMapConverter = worldMapConverter;

@@ -12,7 +12,7 @@ import { RoomInfoParser } from '../../../parsers/room_parser/RoomInfoParser';
 import { RoomSeparatorParser } from '../../../parsers/room_separator_parser/RoomSeparatorParser';
 import { FurnitureInfoParser } from '../../../parsers/furniture_parser/FurnitureInfoParser';
 import { MeshCreationTransformator } from '../../../transformators/MeshCreationTransformator';
-import { defaultParseOptions, WorldParser } from '../../../WorldParser';
+import { WorldParser } from '../../../WorldParser';
 import { WorldItemInfoFactory } from '../../../WorldItemInfoFactory';
 import { CombinedWorldItemParser } from '../../../parsers/CombinedWorldItemParser';
 import { WorldMapToMatrixGraphConverter } from '../../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
@@ -48,16 +48,16 @@ export class BabylonImporter implements Importer {
                         new FurnitureInfoParser(worldItemInfoFactory, worldConfig.furnitures, new WorldMapToMatrixGraphConverter()),
                         new RoomSeparatorParser(worldItemInfoFactory, worldConfig.borders),
                         new RoomInfoParser(worldItemInfoFactory),
-                        new PolygonAreaInfoParser(worldItemInfoFactory, 'empty', '-'),
+                        new PolygonAreaInfoParser('empty', worldItemInfoFactory),
                         new RootWorldItemParser(worldItemInfoFactory)
                     ]
                 ),
                 [
 
                     new ScalingTransformator({ x: worldConfig.xScale, y: worldConfig.yScale }),
-                    new BorderItemSegmentingTransformator(worldItemInfoFactory, ['wall', 'door', 'window'], { xScale: worldConfig.xScale, yScale: worldConfig.yScale }),
+                    new BorderItemSegmentingTransformator(worldItemInfoFactory, worldConfig.borders, { xScale: worldConfig.xScale, yScale: worldConfig.yScale }),
                     new HierarchyBuildingTransformator(),
-                    new BorderItemAddingTransformator(['wall', 'door', 'window']),
+                    new BorderItemAddingTransformator(worldConfig.borders),
                     new BorderItemsToLinesTransformator(),
                     new BorderItemWidthToRealWidthTransformator([{name: 'window', width: 2}, {name: 'door', width: 2.7}]),
                     new FurnitureRealSizeTransformator(

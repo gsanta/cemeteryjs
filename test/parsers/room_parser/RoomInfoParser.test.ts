@@ -16,7 +16,7 @@ describe('RoomInfoParser', () => {
 
             const matrixGraph = worldMapToGraphConverter.convert(worldMapToRoomMapConverter.convert(worldMapStr));
 
-            const roomInfoParser = new RoomInfoParser(new WorldItemInfoFactory(), '#');
+            const roomInfoParser = new RoomInfoParser(new WorldItemInfoFactory());
 
             const worldItem = roomInfoParser.generate(matrixGraph);
 

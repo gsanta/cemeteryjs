@@ -1,4 +1,4 @@
-import { WorldParser, defaultParseOptions } from '../src/WorldParser';
+import { WorldParser } from '../src/WorldParser';
 import { WorldItemInfo } from '../src/WorldItemInfo';
 import { BorderItemAddingTransformator } from '../src/transformators/BorderItemAddingTransformator';
 import { HierarchyBuildingTransformator } from '../src/transformators/HierarchyBuildingTransformator';
@@ -59,10 +59,17 @@ describe('`WorldParser`', () => {
                 map \`
 
                 WIIWW
-                W###W
-                W###W
+                W---W
+                W---W
                 WWDDW
 
+                \`
+
+                definitions \`
+                    - = empty
+                    I = window
+                    W = wall
+                    D = door
                 \`
             `;
 
@@ -97,6 +104,7 @@ describe('`WorldParser`', () => {
                 C = cupboard
                 B = bed
                 W = wall
+                - = empty
 
                 \`
             `;
@@ -151,6 +159,7 @@ describe('`WorldParser`', () => {
             C = cupboard
             B = bed
             W = wall
+            - = empty
 
             \`
         `;
@@ -198,6 +207,12 @@ describe('`WorldParser`', () => {
             WWWWWWWW
 
             \`
+
+            definitions \`
+
+                W = wall
+                - = empty
+            \`
         `;
 
         const worldItemInfoFactory = new WorldItemInfoFactory();
@@ -205,7 +220,7 @@ describe('`WorldParser`', () => {
             new CombinedWorldItemParser(
                 [
                     new RoomInfoParser(worldItemInfoFactory),
-                    new PolygonAreaInfoParser(worldItemInfoFactory, 'empty', '-'),
+                    new PolygonAreaInfoParser('empty', worldItemInfoFactory),
                     new RootWorldItemParser(worldItemInfoFactory)
                 ]
             ),

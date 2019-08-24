@@ -29,6 +29,7 @@ const initBorderItems = (strMap: string): WorldItemInfo[] => {
         T = table
         B = bed
         C = cupboard
+        - = empty
 
         \`
     `;

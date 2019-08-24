@@ -16,7 +16,7 @@ export class WindowFactory  {
         this.meshBuilder = meshBuilder;
     }
 
-    public createItem(worldItemInfo: WorldItemInfo, meshDescriptor: MeshDescriptor, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh {
+    public createItem(worldItemInfo: WorldItemInfo, meshDescriptor: MeshDescriptor, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
         const meshes = meshTemplate.meshes.map(m => m.clone());;
 
         const parentMesh = this.createSideItems(worldItemInfo.dimensions, meshDescriptor);
@@ -30,7 +30,7 @@ export class WindowFactory  {
         parentMesh.translate(new Vector3(center.x, 4, center.y), 1);
         parentMesh.rotate(Axis.Y, worldItemInfo.rotation, Space.WORLD);
 
-        return parentMesh;
+        return [parentMesh, ...meshes];
     }
 
     private createSideItems(boundingBox: Shape, meshDescriptor: MeshDescriptor): Mesh {

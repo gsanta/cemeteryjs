@@ -1,4 +1,4 @@
-import { Mesh, MeshBuilder, PhysicsImpostor, Scene, Vector3, StandardMaterial, DynamicTexture, Texture } from 'babylonjs';
+import { Mesh, MeshBuilder, PhysicsImpostor, Scene, Vector3, StandardMaterial, DynamicTexture, Texture, } from 'babylonjs';
 import { Shape } from '@nightshifts.inc/geometry';
 import { WorldItemInfo } from '../../../WorldItemInfo';
 import { MeshCreator } from '../MeshCreator';
@@ -55,6 +55,8 @@ export class RoomFactory  {
         if (roomDescriptor.roofMaterialPath) {
             roomTop.material = this.createRoofMaterial('roof', roomDescriptor);
         }
+
+        roomTop.receiveShadows = true
 
         return roomTop;
     }

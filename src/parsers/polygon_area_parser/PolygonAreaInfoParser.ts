@@ -17,24 +17,20 @@ import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 export class PolygonAreaInfoParser implements WorldItemParser {
     private polygonRedundantPointReducer: PolygonRedundantPointReducer;
     private worldItemInfoFactory: WorldItemInfoFactory;
-    private itemName: string;
-    private character: string;
     private worldMapConverter: WorldMapToMatrixGraphConverter;
+    private itemName: string;
 
-    constructor(
-        worldItemInfoFactory: WorldItemInfoFactory,
-        itemName: string,
-        character: string,
-        worldMapConverter = new WorldMapToMatrixGraphConverter()) {
-        this.worldItemInfoFactory = worldItemInfoFactory;
+    constructor(itemName: string, worldItemInfoFactory: WorldItemInfoFactory, worldMapConverter = new WorldMapToMatrixGraphConverter()) {
         this.itemName = itemName;
-        this.character = character;
+        this.worldItemInfoFactory = worldItemInfoFactory;
         this.worldMapConverter = worldMapConverter;
         this.polygonRedundantPointReducer = new PolygonRedundantPointReducer();
     }
 
     public generate(graph: MatrixGraph): WorldItemInfo[] {
-        return graph.createConnectedComponentGraphsForCharacter(this.character)
+        const character = graph.getCharacterForName('empty');
+
+        return graph.createConnectedComponentGraphsForCharacter(character)
             .map(componentGraph => {
                 const lines = this.segmentGraphToHorizontalLines(componentGraph);
 

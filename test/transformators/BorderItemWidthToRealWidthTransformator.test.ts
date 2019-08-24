@@ -24,6 +24,7 @@ const initBorderItems = (strMap: string): WorldItemInfo[] => {
 
         W = wall
         D = door
+        - = empty
 
         \`
     `;

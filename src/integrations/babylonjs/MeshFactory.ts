@@ -93,17 +93,17 @@ export class MeshFactory {
                 worldItemInfo.skeleton = meshTemplate.skeletons[0];
                 return [new PlayerFactory().createItem(worldItemInfo, meshTemplate)];
             case 'door':
-                return [new DoorFactory(this.scene, MeshBuilder).createItem(worldItemInfo, meshTemplate)];
+                return new DoorFactory(this.scene, MeshBuilder).createItem(worldItemInfo, meshTemplate);
             case 'window':
-                return [new WindowFactory(this.scene, MeshBuilder).createItem(worldItemInfo, meshDescriptor, meshTemplate)];
+                return new WindowFactory(this.scene, MeshBuilder).createItem(worldItemInfo, meshDescriptor, meshTemplate);
             case 'wall':
                 return [new WallFactory(this.scene).createItem(worldItemInfo)];
             default:
-                return [this.create(worldItemInfo, meshTemplate)];
+                return this.create(worldItemInfo, meshTemplate);
         }
     }
 
-    private create(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>) {
+    private create(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
         const meshes = meshTemplate.meshes.map(m => m.clone());
         const rotation = - worldItemInfo.rotation;
         meshes[0].isVisible = true;
@@ -116,7 +116,7 @@ export class MeshFactory {
         const impostor = new PhysicsImpostor(mesh, PhysicsImpostor.BoxImpostor, { mass: 2, friction: 1, restitution: 0.3 }, this.scene);
         mesh.physicsImpostor = impostor;
 
-        return mesh;
+        return [mesh, meshes[0]];
     }
 
     public createFromMeshDescriptor(worldItemInfo: WorldItemInfo, meshDescriptor: MeshDescriptor): Mesh[] {

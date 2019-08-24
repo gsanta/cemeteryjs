@@ -30,6 +30,7 @@ const initBorderItems = (strMap: string): WorldItemInfo[] => {
 
         W = wall
         D = door
+        - = empty
 
         \`
     `;
@@ -95,6 +96,7 @@ describe('`BorderItemsToLinesTransformator`', () => {
             definitions \`
 
             W = wall
+            - = empty
 
             \`
         `;
