@@ -10,8 +10,15 @@ export class WorldItemInfo<M = any, S = any> {
     id: number;
     type: string;
     name: string;
+    /**
+     * This property can be used to group multiple `WorldItemInfo` together, e.g some of the final 'Game Objects' (see `Converter`) can consist
+     * of multiple `WorldItemInfo` and this is the property to signal that relationship.
+     */
+    group: number;
     dimensions: Shape;
+    normalizedDimensions: Shape;
     rotation: number;
+    thickness: number;
     isBorder: boolean;
     children: WorldItemInfo[] = [];
     parent: WorldItemInfo;

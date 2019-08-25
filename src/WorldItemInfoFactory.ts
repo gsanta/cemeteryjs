@@ -29,6 +29,9 @@ export class WorldItemInfoFactory {
         clone.children = worldItemInfo.children;
         clone.borderItems = worldItemInfo.borderItems;
         clone.rotation = worldItemInfo.rotation;
+        clone.isBorder = worldItemInfo.isBorder;
+        clone.thickness = worldItemInfo.thickness;
+        clone.parent = worldItemInfo.parent;
 
         return clone;
     }

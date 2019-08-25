@@ -107,7 +107,7 @@ export class FurnitureRealSizeTransformator {
     private rotate(polygon: Polygon, angle: Angle): Polygon {
         const transform = new Transform();
 
-        return transform.rotate(polygon, angle.getAngle());
+        return transform.rotatePolygon(polygon, angle.getAngle());
     }
 }
 

@@ -21,6 +21,9 @@ import { Importer, defaultWorldConfig, WorldConfig } from '../../api/Importer';
 import { Scene } from 'babylonjs';
 import { MeshFactory, MeshDescriptor } from '../MeshFactory';
 import { MeshLoader } from '../MeshLoader';
+import { BorderRotationNormalizingTransformator } from '../../../transformators/BorderRotationNormalizingTransformator';
+import { BorderThickeningTransformator } from '../../../transformators/BorderThickeningTransformator';
+import { OuterBorderLayerAddingTransformator } from '../../../transformators/OuterBorderLayerAddingTransformator';
 
 export class BabylonImporter implements Importer {
     private meshFactory: MeshFactory;
@@ -60,6 +63,9 @@ export class BabylonImporter implements Importer {
                     new BorderItemAddingTransformator(worldConfig.borders),
                     new BorderItemsToLinesTransformator(),
                     new BorderItemWidthToRealWidthTransformator([{name: 'window', width: 2}, {name: 'door', width: 2.7}]),
+                    new BorderThickeningTransformator(),
+                    new OuterBorderLayerAddingTransformator(),
+                    new BorderRotationNormalizingTransformator(),
                     new FurnitureRealSizeTransformator(
                         {
                             cupboard: Polygon.createRectangle(0, 0, 2, 1.5),

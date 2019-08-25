@@ -169,8 +169,8 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
                     newSegment = new Segment(newSegmentPoints[0], newSegmentPoints[1]);
                 }
 
-                item.dimensions = newSegment;
                 item.rotation = newSegment.getLine().getAngleToXAxis().getAngle();
+                item.dimensions = newSegment //this.makeSegmentHorizontal(newSegment);
 
                 if (referencePoint.distanceTo(newSegment.getPoints()[0]) > referencePoint.distanceTo(newSegment.getPoints()[1])) {
                     referencePoint = newSegment.getPoints()[0];
@@ -179,5 +179,11 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
                 }
             });
         });
+    }
+
+    private makeSegmentHorizontal(segment: Segment): Segment {
+        const line = Line.fromPointSlopeForm(segment.getBoundingCenter(), 0);
+        const [point1, point2] = line.getSegmentWithCenterPointAndDistance(segment.getBoundingCenter(), segment.getLength() / 2);
+        return new Segment(point1, point2);
     }
 }

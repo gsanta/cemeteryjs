@@ -1,4 +1,4 @@
-import { Point, Polygon, Segment, StripeView } from '@nightshifts.inc/geometry';
+import { Point, Segment } from '@nightshifts.inc/geometry';
 import { RoomUtils } from "../utils/RoomUtils";
 import { WorldItemInfo } from "../WorldItemInfo";
 import { WorldItemInfoUtils } from "../WorldItemInfoUtils";
@@ -47,14 +47,14 @@ export class BorderItemWidthToRealWidthTransformator implements WorldItemTransfo
 
         let neighbours = leftItem.dimensions.hasPoint(border.dimensions.getPoints()[0]) ? [leftItem, rightItem] : [rightItem, leftItem];
 
-        const leftBorderStripe = new StripeView(<Polygon> neighbours[0].dimensions, neighbours[0].rotation);
-        const rightBorderStripe = new StripeView(<Polygon> neighbours[1].dimensions, neighbours[1].rotation);
-        const currentBorderStripe = new StripeView(<Polygon> border.dimensions, border.rotation);
+        const leftBorderItem = <Segment> neighbours[0].dimensions;
+        const rightBorderItem = <Segment> neighbours[1].dimensions;
+        const currentBorderItem = <Segment> border.dimensions;
 
         let newPoints: [Point, Point];
 
-        const isLeftCornerItem = () => leftBorderStripe.getSlope() !== currentBorderStripe.getSlope();
-        const isRightCornerItem = () => rightBorderStripe.getSlope() !== currentBorderStripe.getSlope();
+        const isLeftCornerItem = () => leftBorderItem.getSlope() !== currentBorderItem.getSlope();
+        const isRightCornerItem = () => rightBorderItem.getSlope() !== currentBorderItem.getSlope();
 
         if (isLeftCornerItem()) {
             newPoints = this.moveOnlyRightEndPoint(<[Point, Point]> border.dimensions.getPoints(), newSize, neighbours[1]);
