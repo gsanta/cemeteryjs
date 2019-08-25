@@ -32,22 +32,11 @@ export class WallFactory implements MeshCreator  {
         parentMesh.rotate(Axis.Y, worldItemInfo.rotation, Space.WORLD);
         parentMesh.translate(new Vector3(center.x, 3.6, center.y), 1);
 
-        if (worldItemInfo.thickness !== 0.1) {
-            const mat = new StandardMaterial('wallMaterial', this.scene);
-            mat.diffuseTexture = new Texture('./assets/textures/brick.jpeg', this.scene);
-            parentMesh.material = mat;
-        } else {
-            const mat2 = new StandardMaterial('wallMaterial2', this.scene);
-            mat2.diffuseColor = new Color3(0, 0, 1);
-            parentMesh.material = mat2;
-        }
-
-
-
+        const mat = new StandardMaterial('wallMaterial', this.scene);
+        mat.diffuseTexture = new Texture('./assets/textures/brick.jpeg', this.scene);
+        parentMesh.material = mat;
 
         this.index++;
-
-
 
         parentMesh.computeWorldMatrix(true);
         return parentMesh;

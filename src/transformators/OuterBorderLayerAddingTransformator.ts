@@ -20,20 +20,24 @@ export class OuterBorderLayerAddingTransformator implements WorldItemTransformat
         const rooms = rootItems[0].children.filter(child => child.name === 'room');
         rootItems[0].children
             .filter(child => child.name === 'wall')
-            .forEach(wall => this.addLayerIfOuterWall(wall, rooms));
+            .forEach(wall => this.addLayerIfOuterWall(rootItems[0], wall, rooms));
         return rootItems;
     }
 
-    private addLayerIfOuterWall(wall: WorldItemInfo, rooms: WorldItemInfo[]) {
+    private addLayerIfOuterWall(root: WorldItemInfo, wall: WorldItemInfo, rooms: WorldItemInfo[]) {
         const segment = <Segment> wall.dimensions;
 
         const perpendicularLine = segment.getPerpendicularBisector();
         const [testPoint1, testPoint2] = perpendicularLine.getSegmentWithCenterPointAndDistance(segment.getBoundingCenter(), wall.thickness / 2);
 
         if (rooms.find(room => (<Polygon> room.dimensions).containsPoint(testPoint1)) === undefined) {
-            wall.parent.children.push(this.createOuterLayouer(wall, testPoint1));
+            const outerBorder = this.createOuterLayouer(wall, testPoint1);
+            wall.parent.children.push(outerBorder);
+            root.borderItems.push(outerBorder);
         } else if (rooms.find(room => (<Polygon> room.dimensions).containsPoint(testPoint2)) === undefined) {
-            wall.parent.children.push(this.createOuterLayouer(wall, testPoint2));
+            const outerBorder = this.createOuterLayouer(wall, testPoint2);
+            wall.parent.children.push(outerBorder);
+            root.borderItems.push(outerBorder);
         }
     }
 
