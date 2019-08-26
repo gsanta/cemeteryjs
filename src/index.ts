@@ -13,6 +13,10 @@ import { BorderItemWidthToRealWidthTransformator } from './transformators/Border
 import { FurnitureRealSizeTransformator } from './transformators/FurnitureRealSizeTransformator';
 import { MeshCreationTransformator } from './transformators/MeshCreationTransformator';
 import { MockMeshCreationTransformator } from './transformators/MockMeshCreationTransformator';
+import { OuterBorderLayerAddingTransformator } from './transformators/OuterBorderLayerAddingTransformator';
+import { BorderThickeningTransformator } from './transformators/BorderThickeningTransformator';
+export { FileDescriptor, ShapeDescriptor, ParentBasedMaterialDescriptor, RoomDescriptor } from './integrations/babylonjs/MeshFactory';
+export { MeshDescriptor } from './integrations/babylonjs/MeshFactory';
 export { BabylonImporter } from './integrations/babylonjs/api/BabylonImporter';
 export { BabylonConverter } from './integrations/babylonjs/api/BabylonConverter';
 export {WorldParser, ParseOptions, defaultParseOptions} from './WorldParser';
@@ -23,6 +27,7 @@ export {TreeNode, TreeIteratorGenerator} from './utils/TreeIteratorGenerator';
 export {Converter} from './integrations/api/Converter';
 export {Importer} from './integrations/api/Importer';
 export {BabylonjsDemo} from './integrations/babylonjs/demo/BabylonjsDemo';
+
 
 export const parsers = {
     RoomInfoParser,
@@ -42,5 +47,7 @@ export const transformators = {
     BorderItemWidthToRealWidthTransformator,
     FurnitureRealSizeTransformator,
     MeshCreationTransformator,
-    MockMeshCreationTransformator
+    MockMeshCreationTransformator,
+    OuterBorderLayerAddingTransformator,
+    BorderThickeningTransformator
 }

@@ -1,7 +1,7 @@
 import { Scene } from "babylonjs/scene";
 import { StandardMaterial, Texture, Color3 } from 'babylonjs';
 import { Mesh } from 'babylonjs/Meshes/mesh';
-import { MeshDescriptor, ShapeDescriptor, ParentBasedMaterial } from './MeshFactory';
+import { MeshDescriptor, ShapeDescriptor, ParentBasedMaterialDescriptor } from './MeshFactory';
 import { WorldItemInfo } from '../../WorldItemInfo';
 
 
@@ -35,7 +35,7 @@ export class MaterialFactory {
         }
     }
 
-    private applyConditionalMaterials(mesh: Mesh, worldItem: WorldItemInfo, conditionalMaterials: ParentBasedMaterial) {
+    private applyConditionalMaterials(mesh: Mesh, worldItem: WorldItemInfo, conditionalMaterials: ParentBasedMaterialDescriptor) {
         if (worldItem.rooms.find(room => room.name === 'root')) {
             const mat = new StandardMaterial('wallMaterial', this.scene);
             mat.diffuseTexture = new Texture('./assets/textures/brick.jpeg', this.scene);

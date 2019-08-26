@@ -43,7 +43,7 @@ export interface FileDescriptor {
     translateY?: number;
 }
 
-export interface ParentBasedMaterial {
+export interface ParentBasedMaterialDescriptor {
     name: 'parent-based-material';
     path?: string;
     color?: string;
@@ -53,7 +53,7 @@ export interface ShapeDescriptor {
     name: 'shape-descriptor';
     shape: 'plane' | 'disc' | 'rect';
     materials?: string[];
-    conditionalMaterial?: ParentBasedMaterial;
+    conditionalMaterial?: ParentBasedMaterialDescriptor;
     translateY?: number;
 }
 
@@ -69,7 +69,7 @@ export interface MeshDescriptor {
     type: string;
     translateY?: number;
     materials?: string[];
-    faceMaterials?: ParentBasedMaterial[],
+    faceMaterials?: ParentBasedMaterialDescriptor[],
     details: FileDescriptor | ShapeDescriptor | RoomDescriptor
 }
 
