@@ -10,7 +10,7 @@ import { TreeIteratorGenerator } from '../../../utils/TreeIteratorGenerator';
 
 const strWorld = `map \`
 
-WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+WWWWWWWWWIIWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 W-------------------------------W-------------------W
 W-------------------------------W-------------------W
 W-------------------------------W-------------------W
@@ -21,8 +21,8 @@ W---------------------------------------------------W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 W--------------W------------------W-----------------W
 W--------------W------------------W-----------------W
-W--------------W------------------W-----------------W
-W--------------W------------------W-----------------W
+W--------------W------------------W-----------------I
+W--------------W------------------W-----------------I
 W--------------W------------------W-----------------W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
@@ -102,6 +102,17 @@ export class BabylonjsDemo {
                             fileName: 'chair.babylon',
                             materials: ['models/material/bathroom.png'],
                             scale: 3
+                        }
+                    },
+                    {
+                        type: 'wall',
+                        name: 'mesh-descriptor' as 'mesh-descriptor',
+                        details: {
+                            name: 'shape-descriptor' as 'shape-descriptor',
+                            shape: 'rect',
+                            conditionalMaterial: {
+                                name: 'parent-based-material'
+                            }
                         }
                     },
                 ]

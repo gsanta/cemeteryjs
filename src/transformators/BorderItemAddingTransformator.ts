@@ -33,7 +33,10 @@ export class BorderItemAddingTransformator implements WorldItemTransformator {
 
                     return !this.doesBorderItemIntersectOnlyAtCorner(roomSeparator, intersectionLineInfo);
                 })
-                .forEach(roomSeparator => room.borderItems.push(roomSeparator));
+                .forEach(roomSeparator => {
+                    room.borderItems.push(roomSeparator);
+                    roomSeparator.rooms.push(room);
+                });
         });
 
         return worldItems;

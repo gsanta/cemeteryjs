@@ -1,4 +1,4 @@
-import { Color3, Mesh, MeshBuilder, Scene, Skeleton, StandardMaterial, Vector3, Axis, Space } from 'babylonjs';
+import { Color3, Mesh, MeshBuilder, Scene, Skeleton, StandardMaterial, Vector3, Axis, Space, Texture } from 'babylonjs';
 import { GeometryUtils, Segment, Shape } from '@nightshifts.inc/geometry';
 import { WorldItemInfo } from '../../../WorldItemInfo';
 import { MeshCreator } from '../MeshCreator';
@@ -17,51 +17,91 @@ export class WindowFactory  {
     }
 
     public createItem(worldItemInfo: WorldItemInfo, meshDescriptor: MeshDescriptor, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
-        const meshes = meshTemplate.meshes.map(m => m.clone());;
 
-        const parentMesh = this.createSideItems(worldItemInfo.dimensions, meshDescriptor);
-
-        meshes.forEach(m => {
-            m.isVisible = true;
-            m.parent = parentMesh;
-        });
+        const parentMesh = this.createBoundingMesh(worldItemInfo.dimensions, meshDescriptor);
+        const top = this.createTopWall(worldItemInfo.dimensions, meshDescriptor);
+        const bottom = this.createBottomWall(worldItemInfo.dimensions, meshDescriptor);
+        top.parent = parentMesh;
+        bottom.parent = parentMesh;
 
         const center = worldItemInfo.dimensions.getBoundingCenter();
         parentMesh.translate(new Vector3(center.x, 4, center.y), 1);
         parentMesh.rotate(Axis.Y, worldItemInfo.rotation, Space.WORLD);
+        top.rotate(Axis.Y, worldItemInfo.rotation, Space.WORLD);
+        bottom.rotate(Axis.Y, worldItemInfo.rotation, Space.WORLD);
 
-        return [parentMesh, ...meshes];
+        return [parentMesh, top, bottom];
     }
 
-    private createSideItems(boundingBox: Shape, meshDescriptor: MeshDescriptor): Mesh {
+    private createTopWall(boundingBox: Shape, meshDescriptor: MeshDescriptor) {
+        const segment = <Segment> boundingBox;
+
+        const rectangle = GeometryUtils.addThicknessToSegment(segment, 0.125);
+
+        const mesh = this.meshBuilder.CreateBox(
+            name,
+            { width: rectangle.getBoundingInfo().extent[0], depth: rectangle.getBoundingInfo().extent[1], height: 1.6 },
+            this.scene
+        );
+
+        mesh.material = new StandardMaterial('window-material', this.scene);
+        mesh.translate(new Vector3(0, 2.9, 0), 1, Space.WORLD);
+        const texture = new Texture('./assets/textures/brick.jpeg', this.scene);
+        // texture.uScale = 0.5;
+        // texture.vScale = 0.5;
+
+        (<StandardMaterial> mesh.material).diffuseTexture = texture;
+        mesh.receiveShadows = true;
+
+        return mesh;
+    }
+
+    private createBottomWall(boundingBox: Shape, meshDescriptor: MeshDescriptor) {
+        const segment = <Segment> boundingBox;
+
+        const rectangle = GeometryUtils.addThicknessToSegment(segment, 0.125);
+
+        const mesh = this.meshBuilder.CreateBox(
+            name,
+            { width: rectangle.getBoundingInfo().extent[0], depth: rectangle.getBoundingInfo().extent[1], height: 3 },
+            this.scene
+        );
+
+        mesh.material = new StandardMaterial('window-material', this.scene);
+        const texture = new Texture('./assets/textures/brick.jpeg', this.scene);
+        texture.uScale = 0.5;
+        texture.vScale = 0.5;
+        (<StandardMaterial> mesh.material).diffuseTexture = texture;
+
+        mesh.receiveShadows = true;
+        mesh.translate(new Vector3(0, -2, 0), 1, Space.WORLD);
+
+        return mesh;
+    }
+
+    private createBoundingMesh(boundingBox: Shape, meshDescriptor: MeshDescriptor): Mesh {
         const segment = <Segment> boundingBox;
 
         const rectangle = GeometryUtils.addThicknessToSegment(segment, 0.25);
 
         const center = segment.getBoundingCenter();
 
-        const side1 = this.createSideItem(rectangle, `${name}-side-1`);
-
-        const translate1 = rectangle.getBoundingCenter().subtract(center);
-
-        const translateY = meshDescriptor.translateY ? meshDescriptor.translateY : 0;
-
-        side1.translate(new Vector3(translate1.x, translateY, translate1.y), 1);
-        side1.material.wireframe = true;
-        side1.isVisible = false;
-        return side1;
-    }
-
-    private createSideItem(dimension: Shape, name: string): Mesh {
         const mesh = this.meshBuilder.CreateBox(
             name,
-            { width: dimension.getBoundingInfo().extent[0], depth: dimension.getBoundingInfo().extent[1], height: 8 },
+            { width: rectangle.getBoundingInfo().extent[0], depth: rectangle.getBoundingInfo().extent[1], height: 8 },
             this.scene
         );
 
         mesh.material = new StandardMaterial('window-material', this.scene);
         mesh.receiveShadows = true;
 
+        const translate1 = rectangle.getBoundingCenter().subtract(center);
+
+        const translateY = meshDescriptor.translateY ? meshDescriptor.translateY : 0;
+
+        mesh.translate(new Vector3(translate1.x, translateY, translate1.y), 1);
+        mesh.material.wireframe = true;
+        mesh.isVisible = false;
         return mesh;
     }
 }

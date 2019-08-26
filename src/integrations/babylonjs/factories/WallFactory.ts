@@ -3,16 +3,20 @@ import { GeometryUtils } from '@nightshifts.inc/geometry';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { WorldItemInfo } from '../../../WorldItemInfo';
 import { MeshCreator } from '../MeshCreator';
+import { MaterialFactory } from '../MaterialFactory';
+import { MeshDescriptor } from '../MeshFactory';
 
-export class WallFactory implements MeshCreator  {
+export class WallFactory  {
+    private materialFactory: MaterialFactory;
     private scene: Scene;
     private index = 1;
 
-    constructor(scene: Scene) {
+    constructor(scene: Scene, materialFactory: MaterialFactory) {
         this.scene = scene;
+        this.materialFactory = materialFactory;
     }
 
-    public createItem(worldItemInfo: WorldItemInfo): Mesh {
+    createItem(worldItemInfo: WorldItemInfo, meshDescriptor: MeshDescriptor): Mesh {
 
         const parentMesh = MeshBuilder.CreateBox(
                 `default-wall-container-${this.index}`,
@@ -32,9 +36,7 @@ export class WallFactory implements MeshCreator  {
         parentMesh.rotate(Axis.Y, worldItemInfo.rotation, Space.WORLD);
         parentMesh.translate(new Vector3(center.x, 3.6, center.y), 1);
 
-        const mat = new StandardMaterial('wallMaterial', this.scene);
-        mat.diffuseTexture = new Texture('./assets/textures/brick.jpeg', this.scene);
-        parentMesh.material = mat;
+        this.materialFactory.applyMaterial(parentMesh, worldItemInfo, meshDescriptor);
 
         this.index++;
 

@@ -9,7 +9,7 @@ import { WindowFactory } from './factories/WindowFactory';
 import { WallFactory } from './factories/WallFactory';
 import { RoomFactory } from './factories/RoomFactory';
 import { DiscFactory } from './shape_factories/DiscFactory';
-import { MaterialBuilder } from './MaterialBuilder';
+import { MaterialFactory } from './MaterialFactory';
 
 export interface MeshTemplateConfig {
     checkCollisions: boolean;
@@ -43,10 +43,17 @@ export interface FileDescriptor {
     translateY?: number;
 }
 
+export interface ParentBasedMaterial {
+    name: 'parent-based-material';
+    path?: string;
+    color?: string;
+}
+
 export interface ShapeDescriptor {
     name: 'shape-descriptor';
-    shape: 'plane' | 'disc';
+    shape: 'plane' | 'disc' | 'rect';
     materials?: string[];
+    conditionalMaterial?: ParentBasedMaterial;
     translateY?: number;
 }
 
@@ -61,6 +68,8 @@ export interface MeshDescriptor {
     name: 'mesh-descriptor';
     type: string;
     translateY?: number;
+    materials?: string[];
+    faceMaterials?: ParentBasedMaterial[],
     details: FileDescriptor | ShapeDescriptor | RoomDescriptor
 }
 
@@ -97,7 +106,7 @@ export class MeshFactory {
             case 'window':
                 return new WindowFactory(this.scene, MeshBuilder).createItem(worldItemInfo, meshDescriptor, meshTemplate);
             case 'wall':
-                return [new WallFactory(this.scene).createItem(worldItemInfo)];
+                return [new WallFactory(this.scene, new MaterialFactory(this.scene)).createItem(worldItemInfo, meshDescriptor)];
             default:
                 return this.create(worldItemInfo, meshTemplate);
         }
@@ -144,7 +153,7 @@ export class MeshFactory {
     private createFromShapeDescriptor(worldItemInfo: WorldItemInfo, shapeDescriptor: ShapeDescriptor): Mesh[] {
         switch(shapeDescriptor.shape) {
             case 'disc':
-                return [new DiscFactory(this.scene, MeshBuilder, MaterialBuilder).createItem(worldItemInfo, shapeDescriptor)]
+                return [new DiscFactory(this.scene, MeshBuilder, MaterialFactory).createItem(worldItemInfo, shapeDescriptor)]
             case 'plane':
                 return [this.createPlane(worldItemInfo, shapeDescriptor)];
             default:

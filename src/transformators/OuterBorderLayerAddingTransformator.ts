@@ -48,6 +48,7 @@ export class OuterBorderLayerAddingTransformator implements WorldItemTransformat
         const [p1, p2] = Line.fromPointSlopeForm(outerPoint, segment.getSlope()).getSegmentWithCenterPointAndDistance(outerPoint, segment.getLength() / 2);
         clone.dimensions = new Segment(p1, p2);
         clone.thickness = 0.1;
+        clone.rooms = [wall.parent];
 
         return clone;
     }
