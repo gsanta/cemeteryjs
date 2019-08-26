@@ -10,7 +10,8 @@ export class WorldItemInfoFactory {
     private idCounter = 1;
 
     public create(type: string, dimensions: Polygon, name: string, isBorder: boolean, rotation?: number): WorldItemInfo {
-        const worldItem = new WorldItemInfo(this.idCounter++, type, dimensions, name, isBorder);
+        const id = this.idCounter++ + '';
+        const worldItem = new WorldItemInfo(id, type, dimensions, name, isBorder);
         if (rotation !== undefined) {
             worldItem.rotation = rotation;
         }
@@ -19,8 +20,10 @@ export class WorldItemInfoFactory {
     }
 
     public clone(worldItemInfo: WorldItemInfo): WorldItemInfo {
+        const id = this.idCounter++ + '';
+
         const clone = new WorldItemInfo(
-            this.idCounter++,
+            id,
             worldItemInfo.type,
             worldItemInfo.dimensions,
             worldItemInfo.name

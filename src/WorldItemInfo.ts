@@ -7,7 +7,7 @@ import { MeshTemplate } from './integrations/api/MeshTemplate';
 export class WorldItemInfo<M = any, S = any> {
     meshTemplate: MeshTemplate<M, S>;
     skeleton: any;
-    id: number;
+    id: string;
     type: string;
     name: string;
     /**
@@ -25,7 +25,7 @@ export class WorldItemInfo<M = any, S = any> {
     borderItems: WorldItemInfo[] = [];
     rooms: WorldItemInfo[] = [];
 
-    constructor(id: number, type: string, dimensions: Shape, name: string, isBorder: boolean = false, rotation = 0) {
+    constructor(id: string, type: string, dimensions: Shape, name: string, isBorder: boolean = false, rotation = 0) {
         this.type = type;
         this.dimensions = dimensions;
         this.name = name;
