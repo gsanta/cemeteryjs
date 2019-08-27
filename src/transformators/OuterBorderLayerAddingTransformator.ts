@@ -19,7 +19,7 @@ export class OuterBorderLayerAddingTransformator implements WorldItemTransformat
     public transform(rootItems: WorldItemInfo[]): WorldItemInfo[] {
         const rooms = rootItems[0].children.filter(child => child.name === 'room');
         rootItems[0].children
-            .filter(child => child.name === 'wall')
+            .filter(child => child.isBorder)
             .forEach(wall => this.addLayerIfOuterWall(rootItems[0], wall, rooms));
         return rootItems;
     }

@@ -104,7 +104,7 @@ export class MeshFactory {
             case 'door':
                 return new DoorFactory(this.scene, MeshBuilder).createItem(worldItemInfo, meshTemplate);
             case 'window':
-                return new WindowFactory(this.scene, MeshBuilder).createItem(worldItemInfo, meshDescriptor, meshTemplate);
+                return new WindowFactory(this.scene, MeshBuilder,  new MaterialFactory(this.scene)).createItem(worldItemInfo, meshDescriptor, meshTemplate);
             case 'wall':
                 return [new WallFactory(this.scene, new MaterialFactory(this.scene)).createItem(worldItemInfo, meshDescriptor)];
             default:
@@ -130,7 +130,7 @@ export class MeshFactory {
 
     public createFromMeshDescriptor(worldItemInfo: WorldItemInfo, meshDescriptor: MeshDescriptor): Mesh[] {
         // TODO: get rid of this at some point
-        if (worldItemInfo.name === 'root' || worldItemInfo.name === 'empty' || worldItemInfo.name === 'wall') {
+        if (worldItemInfo.name === 'root' || worldItemInfo.name === 'empty' || worldItemInfo.name === 'wall' || worldItemInfo.name === 'window') {
             return this.createFromTemplate(worldItemInfo, null, meshDescriptor);
         }
 

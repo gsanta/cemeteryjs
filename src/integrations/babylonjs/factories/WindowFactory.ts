@@ -4,23 +4,26 @@ import { WorldItemInfo } from '../../../WorldItemInfo';
 import { MeshCreator } from '../MeshCreator';
 import { MeshTemplate } from '../../api/MeshTemplate';
 import { MeshDescriptor } from '../MeshFactory';
+import { MaterialFactory } from '../MaterialFactory';
 
 export class WindowFactory  {
+    private materialFactory: MaterialFactory;
     public meshInfo: [Mesh[], Skeleton[]];
     private scene: Scene;
 
     private meshBuilder: typeof MeshBuilder;
 
-    constructor(scene: Scene, meshBuilder: typeof MeshBuilder) {
+    constructor(scene: Scene, meshBuilder: typeof MeshBuilder, materialFactory: MaterialFactory) {
         this.scene = scene;
         this.meshBuilder = meshBuilder;
+        this.materialFactory = materialFactory;
     }
 
     public createItem(worldItemInfo: WorldItemInfo, meshDescriptor: MeshDescriptor, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
 
         const parentMesh = this.createBoundingMesh(worldItemInfo.dimensions, meshDescriptor);
-        const top = this.createTopWall(worldItemInfo.dimensions, meshDescriptor);
-        const bottom = this.createBottomWall(worldItemInfo.dimensions, meshDescriptor);
+        const top = this.createTopWall(worldItemInfo, meshDescriptor);
+        const bottom = this.createBottomWall(worldItemInfo, meshDescriptor);
         top.parent = parentMesh;
         bottom.parent = parentMesh;
 
@@ -33,8 +36,8 @@ export class WindowFactory  {
         return [parentMesh, top, bottom];
     }
 
-    private createTopWall(boundingBox: Shape, meshDescriptor: MeshDescriptor) {
-        const segment = <Segment> boundingBox;
+    private createTopWall(worldItem: WorldItemInfo, meshDescriptor: MeshDescriptor) {
+        const segment = <Segment> worldItem.dimensions;
 
         const rectangle = GeometryUtils.addThicknessToSegment(segment, 0.125);
 
@@ -44,20 +47,15 @@ export class WindowFactory  {
             this.scene
         );
 
-        mesh.material = new StandardMaterial('window-material', this.scene);
-        mesh.translate(new Vector3(0, 2.9, 0), 1, Space.WORLD);
-        const texture = new Texture('./assets/textures/brick.jpeg', this.scene);
-        // texture.uScale = 0.5;
-        // texture.vScale = 0.5;
+        this.materialFactory.applyMaterial(mesh, worldItem, meshDescriptor);
 
-        (<StandardMaterial> mesh.material).diffuseTexture = texture;
         mesh.receiveShadows = true;
 
         return mesh;
     }
 
-    private createBottomWall(boundingBox: Shape, meshDescriptor: MeshDescriptor) {
-        const segment = <Segment> boundingBox;
+    private createBottomWall(worldItem: WorldItemInfo, meshDescriptor: MeshDescriptor) {
+        const segment = <Segment> worldItem.dimensions;
 
         const rectangle = GeometryUtils.addThicknessToSegment(segment, 0.125);
 
@@ -67,11 +65,7 @@ export class WindowFactory  {
             this.scene
         );
 
-        mesh.material = new StandardMaterial('window-material', this.scene);
-        const texture = new Texture('./assets/textures/brick.jpeg', this.scene);
-        texture.uScale = 0.5;
-        texture.vScale = 0.5;
-        (<StandardMaterial> mesh.material).diffuseTexture = texture;
+        this.materialFactory.applyMaterial(mesh, worldItem, meshDescriptor);
 
         mesh.receiveShadows = true;
         mesh.translate(new Vector3(0, -2, 0), 1, Space.WORLD);

@@ -8,7 +8,7 @@ export class BorderThickeningTransformator implements WorldItemTransformator {
 
     public transform(rootItems: WorldItemInfo[]): WorldItemInfo[] {
         rootItems[0].children
-            .filter(child => child.name === 'wall')
+            .filter(child => child.isBorder)
             .forEach(wall => this.thickenWall(wall));
 
         return rootItems;

@@ -68,9 +68,9 @@ describe('BabylonConverter', () => {
             const [root] = setupWorldItemInfo();
             converter.convert([root], convert, addChildren, addBorders);
 
-            sinon.assert.calledWith(addChildren, new GameObj('0'), [new GameObj('1'), new GameObj('2'), new GameObj('3'), new GameObj('4'), new GameObj('5')]);
-            sinon.assert.calledWith(addChildren, new GameObj('1'), [new GameObj('6')]);
-            sinon.assert.calledWith(addChildren, new GameObj('2'), [new GameObj('7'), new GameObj('8')]);
+            sinon.assert.calledWith(addChildren, new GameObj('1'), [new GameObj('2'), new GameObj('3'), new GameObj('4'), new GameObj('5'), new GameObj('6')]);
+            sinon.assert.calledWith(addChildren, new GameObj('2'), [new GameObj('7')]);
+            sinon.assert.calledWith(addChildren, new GameObj('3'), [new GameObj('8'), new GameObj('9')]);
         });
 
         it ('calls the `addBorders` for each `WorldItemInfo` which has borders with the correct border `WorldItemInfo`s', () => {
@@ -86,8 +86,8 @@ describe('BabylonConverter', () => {
             const [root] = setupWorldItemInfo();
             converter.convert([root], convert, addChildren, addBorders);
 
-            sinon.assert.calledWith(addBorders, new GameObj('1'), [new GameObj('3'), new GameObj('5')]);
-            sinon.assert.calledWith(addBorders, new GameObj('2'), [new GameObj('4')]);
+            sinon.assert.calledWith(addBorders, new GameObj('2'), [new GameObj('4'), new GameObj('6')]);
+            sinon.assert.calledWith(addBorders, new GameObj('3'), [new GameObj('5')]);
         });
 
         it ('returns with the converted hierarchy', () => {
@@ -103,7 +103,7 @@ describe('BabylonConverter', () => {
             const [root] = setupWorldItemInfo();
             const convertedObjs = converter.convert([root], convert, addChildren, addBorders);
 
-            expect(convertedObjs[0]).toEqual(new GameObj('0'));
+            expect(convertedObjs[0]).toEqual(new GameObj('1'));
         });
     });
 });

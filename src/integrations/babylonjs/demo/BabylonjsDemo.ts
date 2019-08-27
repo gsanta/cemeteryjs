@@ -84,13 +84,12 @@ export class BabylonjsDemo {
                     {
                         type: 'window',
                         name: 'mesh-descriptor' as 'mesh-descriptor',
-                        translateY: -0.5,
                         details: {
-                            name: 'file-descriptor' as 'file-descriptor',
-                            path: 'models/',
-                            fileName: 'window.babylon',
-                            materials: [],
-                            scale: 1
+                            name: 'shape-descriptor' as 'shape-descriptor',
+                            shape: 'rect',
+                            conditionalMaterial: {
+                                name: 'parent-based-material'
+                            }
                         }
                     },
                     {
