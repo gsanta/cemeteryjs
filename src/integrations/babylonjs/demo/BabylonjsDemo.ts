@@ -87,10 +87,17 @@ export class BabylonjsDemo {
                         details: {
                             name: 'shape-descriptor' as 'shape-descriptor',
                             shape: 'rect',
-                            conditionalMaterial: {
-                                name: 'parent-based-material-descriptor'
-                            }
-                        }
+                            conditionalMaterials: [
+                                {
+                                    name: 'parent-room-based-material-descriptor',
+                                    parentId: 'root-1',
+                                    path: './assets/textures/brick.jpeg'
+                                }
+                            ],
+                            materials: [
+                                '#FFFFFF'
+                            ]
+                        },
                     },
                     {
                         type: 'chair',
@@ -109,9 +116,16 @@ export class BabylonjsDemo {
                         details: {
                             name: 'shape-descriptor' as 'shape-descriptor',
                             shape: 'rect',
-                            conditionalMaterial: {
-                                name: 'parent-based-material-descriptor'
-                            }
+                            conditionalMaterials: [
+                                {
+                                    name: 'parent-room-based-material-descriptor',
+                                    parentId: 'root-1',
+                                    path: './assets/textures/brick.jpeg'
+                                }
+                            ],
+                            materials: [
+                                '#FFFFFF'
+                            ]
                         }
                     },
                 ]

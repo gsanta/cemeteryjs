@@ -1,15 +1,15 @@
 import { Color3, Mesh, MeshBuilder, Scene, StandardMaterial, Vector3 } from 'babylonjs';
 import { WorldItemInfo } from "../../../WorldItemInfo";
-import { MaterialFactory } from '../MaterialFactory';
+import { MaterialBuilder } from '../MaterialFactory';
 import { ShapeDescriptor } from '../MeshFactory';
 
 
 export class DiscFactory {
     private scene: Scene;
     private meshBuilder: typeof MeshBuilder;
-    private materialBuilder: typeof MaterialFactory;
+    private materialBuilder: typeof MaterialBuilder;
 
-    constructor(scene: Scene, meshBuilder: typeof MeshBuilder, materialBuilder: typeof MaterialFactory) {
+    constructor(scene: Scene, meshBuilder: typeof MeshBuilder, materialBuilder: typeof MaterialBuilder) {
         this.scene = scene;
         this.meshBuilder = meshBuilder;
         this.materialBuilder = materialBuilder;

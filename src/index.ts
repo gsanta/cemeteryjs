@@ -15,7 +15,7 @@ import { MeshCreationTransformator } from './transformators/MeshCreationTransfor
 import { MockMeshCreationTransformator } from './transformators/MockMeshCreationTransformator';
 import { OuterBorderLayerAddingTransformator } from './transformators/OuterBorderLayerAddingTransformator';
 import { BorderThickeningTransformator } from './transformators/BorderThickeningTransformator';
-export { FileDescriptor, ShapeDescriptor, ParentBasedMaterialDescriptor, RoomDescriptor } from './integrations/babylonjs/MeshFactory';
+export { FileDescriptor, ShapeDescriptor, ParentRoomBasedMaterialDescriptor as ParentBasedMaterialDescriptor, RoomDescriptor } from './integrations/babylonjs/MeshFactory';
 export { MeshDescriptor } from './integrations/babylonjs/MeshFactory';
 export { BabylonImporter } from './integrations/babylonjs/api/BabylonImporter';
 export { BabylonConverter } from './integrations/babylonjs/api/BabylonConverter';

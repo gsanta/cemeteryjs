@@ -43,8 +43,9 @@ export interface FileDescriptor {
     translateY?: number;
 }
 
-export interface ParentBasedMaterialDescriptor {
-    name: 'parent-based-material-descriptor';
+export interface ParentRoomBasedMaterialDescriptor {
+    name: 'parent-room-based-material-descriptor';
+    parentId: string;
     path?: string;
     color?: string;
 }
@@ -53,7 +54,7 @@ export interface ShapeDescriptor {
     name: 'shape-descriptor';
     shape: 'plane' | 'disc' | 'rect';
     materials?: string[];
-    conditionalMaterial?: ParentBasedMaterialDescriptor;
+    conditionalMaterials?: ParentRoomBasedMaterialDescriptor[];
     translateY?: number;
 }
 
@@ -69,7 +70,7 @@ export interface MeshDescriptor {
     type: string;
     translateY?: number;
     materials?: string[];
-    faceMaterials?: ParentBasedMaterialDescriptor[],
+    faceMaterials?: ParentRoomBasedMaterialDescriptor[],
     details: FileDescriptor | ShapeDescriptor | RoomDescriptor
 }
 
