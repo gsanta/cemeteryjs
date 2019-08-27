@@ -88,7 +88,7 @@ export class BabylonjsDemo {
                             name: 'shape-descriptor' as 'shape-descriptor',
                             shape: 'rect',
                             conditionalMaterial: {
-                                name: 'parent-based-material'
+                                name: 'parent-based-material-descriptor'
                             }
                         }
                     },
@@ -110,7 +110,7 @@ export class BabylonjsDemo {
                             name: 'shape-descriptor' as 'shape-descriptor',
                             shape: 'rect',
                             conditionalMaterial: {
-                                name: 'parent-based-material'
+                                name: 'parent-based-material-descriptor'
                             }
                         }
                     },

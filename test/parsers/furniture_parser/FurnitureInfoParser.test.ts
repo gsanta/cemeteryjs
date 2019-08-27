@@ -28,9 +28,9 @@ describe('FurnitureInfoParser', () => {
 
             expect(worldItems.length).toEqual(4);
             const firstItem = worldItems[0];
-            expect(firstItem).toEqual(new WorldItemInfo('1', 'W', Polygon.createRectangle(1, 1, 1, 2), 'wall'));
+            expect(firstItem).toEqual(new WorldItemInfo('wall-1', 'W', Polygon.createRectangle(1, 1, 1, 2), 'wall'));
             const secondItem = worldItems[1];
-            expect(secondItem).toEqual(new WorldItemInfo('2', 'W', Polygon.createRectangle(3, 1, 1, 2), 'wall'));
+            expect(secondItem).toEqual(new WorldItemInfo('wall-2', 'W', Polygon.createRectangle(3, 1, 1, 2), 'wall'));
         });
 
         it ('creates world items from the graph (test case with multiple connected components)', () => {
@@ -55,9 +55,9 @@ describe('FurnitureInfoParser', () => {
 
             expect(worldItems.length).toEqual(3);
             const firstItem = worldItems[0];
-            expect(firstItem).toEqual(new WorldItemInfo('1', 'W', Polygon.createRectangle(1, 1, 1, 2), 'wall'));
+            expect(firstItem).toEqual(new WorldItemInfo('wall-1', 'W', Polygon.createRectangle(1, 1, 1, 2), 'wall'));
             const thirdItem = worldItems[2];
-            expect(thirdItem).toEqual(new WorldItemInfo('3', 'W', Polygon.createRectangle(2, 3, 2, 1), 'wall'));
+            expect(thirdItem).toEqual(new WorldItemInfo('wall-3', 'W', Polygon.createRectangle(2, 3, 2, 1), 'wall'));
         });
 
         it ('creates one world item for a rectangular connected component', () => {
@@ -80,7 +80,7 @@ describe('FurnitureInfoParser', () => {
             const furnitureInfoParser = new FurnitureInfoParser(new WorldItemInfoFactory(), ['door']);
             const worldItems = furnitureInfoParser.generate(graph);
             expect(worldItems.length).toEqual(1);
-            expect(worldItems[0]).toEqual(new WorldItemInfo('1', 'D', Polygon.createRectangle(1, 0, 2, 3), 'door'));
+            expect(worldItems[0]).toEqual(new WorldItemInfo('door-1', 'D', Polygon.createRectangle(1, 0, 2, 3), 'door'));
         });
     });
 });

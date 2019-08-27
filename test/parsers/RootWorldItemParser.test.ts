@@ -23,7 +23,7 @@ describe('RootWorldItemParser', () => {
                 new Point(5, 4),
                 new Point(5, 0)
             ]);
-            expect(worldItems[0]).toEqual(new WorldItemInfo('1', 'F', expectedShape, 'root'));
+            expect(worldItems[0]).toEqual(new WorldItemInfo('root-1', 'F', expectedShape, 'root'));
         });
     });
 });

@@ -7,10 +7,10 @@ import { WorldItemInfo } from './WorldItemInfo';
  * for each new instance.
  */
 export class WorldItemInfoFactory {
-    private idCounter = 1;
+    private countersByType: Map<string, number> = new Map();
 
     public create(type: string, dimensions: Polygon, name: string, isBorder: boolean, rotation?: number): WorldItemInfo {
-        const id = this.idCounter++ + '';
+        const id = this.getNextId(name);
         const worldItem = new WorldItemInfo(id, type, dimensions, name, isBorder);
         if (rotation !== undefined) {
             worldItem.rotation = rotation;
@@ -20,7 +20,7 @@ export class WorldItemInfoFactory {
     }
 
     public clone(worldItemInfo: WorldItemInfo): WorldItemInfo {
-        const id = this.idCounter++ + '';
+        const id = this.getNextId(name);
 
         const clone = new WorldItemInfo(
             id,
@@ -39,4 +39,15 @@ export class WorldItemInfoFactory {
         return clone;
     }
 
+    private getNextId(name: string): string {
+        if (!this.countersByType.has(name)) {
+            this.countersByType.set(name, 1);
+        }
+
+        const id = `${name}-${this.countersByType.get(name)}`;
+
+        this.countersByType.set(name, this.countersByType.get(name) + 1);
+
+        return id;
+    }
 }

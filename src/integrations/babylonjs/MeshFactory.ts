@@ -44,7 +44,7 @@ export interface FileDescriptor {
 }
 
 export interface ParentBasedMaterialDescriptor {
-    name: 'parent-based-material';
+    name: 'parent-based-material-descriptor';
     path?: string;
     color?: string;
 }
