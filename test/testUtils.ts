@@ -1,6 +1,6 @@
 import { Scene, MeshBuilder } from 'babylonjs';
 import * as sinon from 'sinon';
-import { MaterialFactory, MaterialBuilder } from '../src/integrations/babylonjs/MaterialFactory';
+import { MaterialBuilder } from '../src/integrations/babylonjs/MaterialFactory';
 import { WorldItemInfo } from '../src/WorldItemInfo';
 import { Shape } from '@nightshifts.inc/geometry';
 import { TreeIteratorGenerator } from '../src/utils/TreeIteratorGenerator';
@@ -34,20 +34,34 @@ export function createMeshBuilder(): [typeof MeshBuilder, typeof MeshBuilderStub
 
 export abstract class MaterialBuilderStubs {
     static CreateMaterial: sinon.SinonStub;
+    static CreateTexture: sinon.SinonStub;
 }
 
 export function createMaterialBuilder(): [typeof MaterialBuilder, typeof MaterialBuilderStubs] {
     const CreateMaterial = sinon.stub();
 
-    CreateMaterial.returns({
-        name: 'material'
+    CreateMaterial.callsFake((name: string) => {
+        return {
+            name
+        }
     });
+
+    const CreateTexture = sinon.stub();
+
+    CreateTexture.callsFake((url: string) => {
+        return {
+            url
+        }
+    });
+
     return [
         <typeof MaterialBuilder> {
-            CreateMaterial: (<any> CreateMaterial)
+            CreateMaterial: (<any> CreateMaterial),
+            CreateTexture: (<any> CreateTexture)
         },
         <typeof MaterialBuilderStubs> {
-            CreateMaterial
+            CreateMaterial,
+            CreateTexture
         }
     ]
 }

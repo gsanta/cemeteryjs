@@ -34,11 +34,10 @@ export const defaultMeshConfig: MeshTemplateConfig = {
     materials: null
 };
 
-export interface FileDescriptor {
+export interface FileDescriptor extends DetailsDescriptor {
     name: 'file-descriptor'
     path: string;
     fileName: string;
-    materials?: string[];
     scale: number;
     translateY?: number;
 }
@@ -50,28 +49,30 @@ export interface ParentRoomBasedMaterialDescriptor {
     color?: string;
 }
 
-export interface ShapeDescriptor {
+export interface ShapeDescriptor extends DetailsDescriptor {
     name: 'shape-descriptor';
     shape: 'plane' | 'disc' | 'rect';
-    materials?: string[];
-    conditionalMaterials?: ParentRoomBasedMaterialDescriptor[];
     translateY?: number;
 }
 
-export interface RoomDescriptor {
+export interface RoomDescriptor extends DetailsDescriptor {
     name: 'room-descriptor';
     floorMaterialPath?: string;
     roofMaterialPath?: string;
     roofY: number;
 }
 
-export interface MeshDescriptor {
+export interface DetailsDescriptor {
+    name: 'file-descriptor' | 'room-descriptor' | 'shape-descriptor'
+}
+
+export interface MeshDescriptor<T extends DetailsDescriptor = any> {
     name: 'mesh-descriptor';
     type: string;
     translateY?: number;
     materials?: string[];
-    faceMaterials?: ParentRoomBasedMaterialDescriptor[],
-    details: FileDescriptor | ShapeDescriptor | RoomDescriptor
+    conditionalMaterials?: ParentRoomBasedMaterialDescriptor[];
+    details: T;
 }
 
 export interface MultiModelDescriptor {
@@ -129,7 +130,7 @@ export class MeshFactory {
         return [mesh, meshes[0]];
     }
 
-    public createFromMeshDescriptor(worldItemInfo: WorldItemInfo, meshDescriptor: MeshDescriptor): Mesh[] {
+    public createFromMeshDescriptor(worldItemInfo: WorldItemInfo, meshDescriptor: MeshDescriptor<any>): Mesh[] {
         // TODO: get rid of this at some point
         if (worldItemInfo.name === 'root' || worldItemInfo.name === 'empty' || worldItemInfo.name === 'wall' || worldItemInfo.name === 'window') {
             return this.createFromTemplate(worldItemInfo, null, meshDescriptor);
@@ -139,7 +140,7 @@ export class MeshFactory {
             case 'room-descriptor':
                 return this.createRoomMeshes(worldItemInfo, meshDescriptor.details);
             case 'shape-descriptor':
-                return this.createFromShapeDescriptor(worldItemInfo, meshDescriptor.details);
+                return this.createFromShapeDescriptor(worldItemInfo, meshDescriptor);
             case 'file-descriptor':
                 return this.createFromTemplate(worldItemInfo, this.modelMap.get(worldItemInfo.name), meshDescriptor);
             default:
@@ -151,18 +152,19 @@ export class MeshFactory {
         return new RoomFactory(this.scene).createItem(worldItemInfo, roomDescriptor);
     }
 
-    private createFromShapeDescriptor(worldItemInfo: WorldItemInfo, shapeDescriptor: ShapeDescriptor): Mesh[] {
+    private createFromShapeDescriptor(worldItemInfo: WorldItemInfo, meshDescriptor: MeshDescriptor<ShapeDescriptor>): Mesh[] {
+        const shapeDescriptor = meshDescriptor.details;
         switch(shapeDescriptor.shape) {
             case 'disc':
                 return [new DiscFactory(this.scene, MeshBuilder, MaterialBuilder).createItem(worldItemInfo, shapeDescriptor)]
             case 'plane':
-                return [this.createPlane(worldItemInfo, shapeDescriptor)];
+                return [this.createPlane(worldItemInfo, meshDescriptor)];
             default:
                 throw new Error('Unsupported shape: ' + shapeDescriptor.shape);
         }
     }
 
-    private createPlane(worldItemInfo: WorldItemInfo, shapeDescriptor: ShapeDescriptor): Mesh {
+    private createPlane(worldItemInfo: WorldItemInfo, meshDescriptor: MeshDescriptor<ShapeDescriptor>): Mesh {
         const roomTop = MeshBuilder.CreatePolygon(
             'room-label',
             {
@@ -175,8 +177,8 @@ export class MeshFactory {
 
         roomTop.translate(new Vector3(0, 7.21, 0), 1);
 
-        if (shapeDescriptor.materials) {
-            roomTop.material = this.createMaterial('room1', shapeDescriptor.materials[0]);
+        if (meshDescriptor.materials) {
+            roomTop.material = this.createMaterial('room1', meshDescriptor.materials[0]);
         }
 
         return roomTop;

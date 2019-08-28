@@ -47,7 +47,7 @@ export class WindowFactory  {
             this.scene
         );
 
-        this.materialFactory.applyMaterial(mesh, worldItem, meshDescriptor);
+        mesh.material = this.materialFactory.createMaterial(worldItem, meshDescriptor);
         mesh.translate(new Vector3(0, 2.4, 0), 1, Space.WORLD);
 
         mesh.receiveShadows = true;
@@ -66,7 +66,7 @@ export class WindowFactory  {
             this.scene
         );
 
-        this.materialFactory.applyMaterial(mesh, worldItem, meshDescriptor);
+        mesh.material = this.materialFactory.createMaterial(worldItem, meshDescriptor);
 
         mesh.receiveShadows = true;
         mesh.translate(new Vector3(0, -2.5, 0), 1, Space.WORLD);

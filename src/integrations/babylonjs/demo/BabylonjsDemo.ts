@@ -84,48 +84,48 @@ export class BabylonjsDemo {
                     {
                         type: 'window',
                         name: 'mesh-descriptor' as 'mesh-descriptor',
+                        conditionalMaterials: [
+                            {
+                                name: 'parent-room-based-material-descriptor',
+                                parentId: 'root-1',
+                                path: './assets/textures/brick.jpeg'
+                            }
+                        ],
+                        materials: [
+                            '#FFFFFF'
+                        ],
                         details: {
                             name: 'shape-descriptor' as 'shape-descriptor',
-                            shape: 'rect',
-                            conditionalMaterials: [
-                                {
-                                    name: 'parent-room-based-material-descriptor',
-                                    parentId: 'root-1',
-                                    path: './assets/textures/brick.jpeg'
-                                }
-                            ],
-                            materials: [
-                                '#FFFFFF'
-                            ]
-                        },
+                            shape: 'rect'
+                        }
                     },
                     {
                         type: 'chair',
                         name: 'mesh-descriptor' as 'mesh-descriptor',
+                        materials: ['models/material/bathroom.png'],
                         details: {
                             name: 'file-descriptor' as 'file-descriptor',
                             path: 'models/',
                             fileName: 'chair.babylon',
-                            materials: ['models/material/bathroom.png'],
                             scale: 3
-                        }
+                        },
                     },
                     {
                         type: 'wall',
                         name: 'mesh-descriptor' as 'mesh-descriptor',
+                        conditionalMaterials: [
+                            {
+                                name: 'parent-room-based-material-descriptor',
+                                parentId: 'root-1',
+                                path: './assets/textures/brick.jpeg'
+                            }
+                        ],
+                        materials: [
+                            '#FFFFFF'
+                        ],
                         details: {
                             name: 'shape-descriptor' as 'shape-descriptor',
-                            shape: 'rect',
-                            conditionalMaterials: [
-                                {
-                                    name: 'parent-room-based-material-descriptor',
-                                    parentId: 'root-1',
-                                    path: './assets/textures/brick.jpeg'
-                                }
-                            ],
-                            materials: [
-                                '#FFFFFF'
-                            ]
+                            shape: 'rect'
                         }
                     },
                 ]

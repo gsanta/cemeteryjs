@@ -27,22 +27,9 @@ describe(`MeshCreationTransformator`, () => {
 
             return meshCreationTransformator.prepareMeshTemplates(meshDescriptors)
                 .then(() => {
-                    sinon.assert.calledWith(load, 'door', meshDescriptors[0].details);
-                    sinon.assert.calledWith(load, 'window', meshDescriptors[2].details);
+                    sinon.assert.calledWith(load, 'door', meshDescriptors[0]);
+                    sinon.assert.calledWith(load, 'window', meshDescriptors[2]);
                 });
-        });
-    });
-
-    describe('transform', () => {
-        it ('sets up the mesh information for the provided `WorldItemInfo`', () => {
-            const worldItems: WorldItemInfo[] = [
-                <WorldItemInfo> {
-                    name: 'window'
-                },
-                <WorldItemInfo> {
-                    name: 'table'
-                }
-            ]
         });
     });
 });

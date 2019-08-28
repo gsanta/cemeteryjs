@@ -1,8 +1,7 @@
-import { Mesh, MeshBuilder, Scene, StandardMaterial, Texture, Vector3, Axis, Space, Color3 } from 'babylonjs';
 import { GeometryUtils } from '@nightshifts.inc/geometry';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
+import { Axis, Mesh, MeshBuilder, Scene, Space, Vector3 } from 'babylonjs';
 import { WorldItemInfo } from '../../../WorldItemInfo';
-import { MeshCreator } from '../MeshCreator';
 import { MaterialFactory } from '../MaterialFactory';
 import { MeshDescriptor } from '../MeshFactory';
 
@@ -36,7 +35,7 @@ export class WallFactory  {
         parentMesh.rotate(Axis.Y, worldItemInfo.rotation, Space.WORLD);
         parentMesh.translate(new Vector3(center.x, 3.6, center.y), 1);
 
-        this.materialFactory.applyMaterial(parentMesh, worldItemInfo, meshDescriptor);
+        parentMesh.material = this.materialFactory.createMaterial(worldItemInfo, meshDescriptor);
 
         this.index++;
 

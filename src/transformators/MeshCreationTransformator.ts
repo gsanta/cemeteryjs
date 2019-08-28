@@ -55,7 +55,7 @@ export class MeshCreationTransformator implements WorldItemTransformator {
 
 
         return Promise
-            .all(fileDescriptions.map(desc => this.meshLoader.load(desc.type, <FileDescriptor>desc.details)))
+            .all(fileDescriptions.map(desc => this.meshLoader.load(desc.type, desc)))
             .then((meshTemplates: MeshTemplate<Mesh, Skeleton>[]) => {
                 const templateMap: Map<string, MeshTemplate<Mesh, Skeleton>> = new Map();
                 meshTemplates.forEach(template => templateMap.set(template.type, template));
