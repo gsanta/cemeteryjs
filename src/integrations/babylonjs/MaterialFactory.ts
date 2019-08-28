@@ -23,9 +23,7 @@ export class MaterialFactory {
         this.materialBuilder = materialBuilder;
     }
 
-
     applyMaterial(mesh: Mesh, worldItem: WorldItemInfo, meshDescriptor: MeshDescriptor) {
-
         switch(meshDescriptor.details.name) {
             case 'shape-descriptor':
                 this.applyMaterialForShapeDescriptor(mesh, worldItem, meshDescriptor.details);

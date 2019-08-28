@@ -9,7 +9,7 @@ import { WindowFactory } from './factories/WindowFactory';
 import { WallFactory } from './factories/WallFactory';
 import { RoomFactory } from './factories/RoomFactory';
 import { DiscFactory } from './shape_factories/DiscFactory';
-import { MaterialFactory } from './MaterialFactory';
+import { MaterialFactory, MaterialBuilder } from './MaterialFactory';
 
 export interface MeshTemplateConfig {
     checkCollisions: boolean;
@@ -154,7 +154,7 @@ export class MeshFactory {
     private createFromShapeDescriptor(worldItemInfo: WorldItemInfo, shapeDescriptor: ShapeDescriptor): Mesh[] {
         switch(shapeDescriptor.shape) {
             case 'disc':
-                return [new DiscFactory(this.scene, MeshBuilder, MaterialFactory).createItem(worldItemInfo, shapeDescriptor)]
+                return [new DiscFactory(this.scene, MeshBuilder, MaterialBuilder).createItem(worldItemInfo, shapeDescriptor)]
             case 'plane':
                 return [this.createPlane(worldItemInfo, shapeDescriptor)];
             default:
