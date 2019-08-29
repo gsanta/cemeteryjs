@@ -1,5 +1,5 @@
 import { Mesh, MeshBuilder, Scene, Skeleton, StandardMaterial, Vector3 } from 'babylonjs';
-import { WorldItemInfo } from '../../../WorldItemInfo';
+import { WorldItem } from '../../../WorldItemInfo';
 import { MeshCreator } from '../MeshCreator';
 
 export class EmptyAreaFactory implements MeshCreator {
@@ -9,7 +9,7 @@ export class EmptyAreaFactory implements MeshCreator {
         this.scene = scene;
     }
 
-    public createItem(worldItemInfo: WorldItemInfo): Mesh {
+    public createItem(worldItemInfo: WorldItem): Mesh {
 
         const mesh = MeshBuilder.CreatePolygon(
             worldItemInfo.name,

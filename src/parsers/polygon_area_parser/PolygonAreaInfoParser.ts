@@ -1,6 +1,6 @@
 import { MatrixGraph } from "../../matrix_graph/MatrixGraph";
 import _ = require("lodash");
-import { WorldItemInfo } from '../../WorldItemInfo';
+import { WorldItem } from '../../WorldItemInfo';
 import { WorldItemParser } from "../WorldItemParser";
 import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
 import { PolygonRedundantPointReducer } from "./PolygonRedundantPointReducer";
@@ -27,7 +27,7 @@ export class PolygonAreaInfoParser implements WorldItemParser {
         this.polygonRedundantPointReducer = new PolygonRedundantPointReducer();
     }
 
-    public generate(graph: MatrixGraph): WorldItemInfo[] {
+    public generate(graph: MatrixGraph): WorldItem[] {
         const character = graph.getCharacterForName('empty');
 
         return graph.createConnectedComponentGraphsForCharacter(character)
@@ -42,7 +42,7 @@ export class PolygonAreaInfoParser implements WorldItemParser {
             });
     }
 
-    public generateFromStringMap(strMap: string): WorldItemInfo[] {
+    public generateFromStringMap(strMap: string): WorldItem[] {
         return this.generate(this.parseWorldMap(strMap));
     }
 

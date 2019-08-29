@@ -1,6 +1,6 @@
 import { Scene, StandardMaterial, Mesh, Vector3, MeshBuilder, Skeleton } from 'babylonjs';
 import { Segment, GeometryUtils, Shape } from '@nightshifts.inc/geometry';
-import { WorldItemInfo } from '../../../WorldItemInfo';
+import { WorldItem } from '../../../WorldItemInfo';
 import { MeshCreator } from '../MeshCreator';
 import { MeshTemplate } from '../../api/MeshTemplate';
 
@@ -13,7 +13,7 @@ export class DoorFactory {
         this.meshBuilder = meshBuilder;
     }
 
-    public createItem(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
+    public createItem(worldItemInfo: WorldItem, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
         const meshes = meshTemplate.meshes.map(m => m.clone());
         const boundingMesh = this.createBoundingMesh(worldItemInfo.dimensions);
 

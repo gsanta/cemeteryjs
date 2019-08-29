@@ -1,4 +1,4 @@
-import { WorldItemInfo } from '../../src/WorldItemInfo';
+import { WorldItem } from '../../src/WorldItemInfo';
 import { AssignBordersToRoomsModifier } from '../../src/modifiers/AssignBordersToRoomsModifier';
 import { WorldItemInfoFactory, WorldParser } from '../../src';
 import { CombinedWorldItemParser } from '../../src/parsers/CombinedWorldItemParser';
@@ -12,7 +12,7 @@ import { SegmentBordersModifier } from '../../src/modifiers/SegmentBordersModifi
 import { BuildHierarchyModifier } from '../../src/modifiers/BuildHierarchyModifier';
 import { ConvertBorderPolyToLineModifier } from '../../src/modifiers/ConvertBorderPolyToLineModifier';
 
-const initBorderItems = (strMap: string): WorldItemInfo[] => {
+const initBorderItems = (strMap: string): WorldItem[] => {
     const map = `
         map \`
 

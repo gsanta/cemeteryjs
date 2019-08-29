@@ -1,12 +1,12 @@
 
 import { Line, Segment } from "@nightshifts.inc/geometry";
-import { WorldItemInfo } from "../WorldItemInfo";
+import { WorldItem } from "../WorldItemInfo";
 import { Modifier } from "./Modifier";
 
 
 export class NormalizeBorderRotationModifier implements Modifier {
 
-    public apply(rootItems: WorldItemInfo[]): WorldItemInfo[] {
+    public apply(rootItems: WorldItem[]): WorldItem[] {
         rootItems[0].children
             .filter(child => child.isBorder === true)
             .forEach(border => this.normalizeBorder(border));
@@ -14,7 +14,7 @@ export class NormalizeBorderRotationModifier implements Modifier {
         return rootItems;
     }
 
-    private normalizeBorder(border: WorldItemInfo) {
+    private normalizeBorder(border: WorldItem) {
         if (!(border.dimensions instanceof Segment)) {
             throw new Error('Normalizing is supported only for segments.');
         }

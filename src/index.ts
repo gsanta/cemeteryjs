@@ -20,7 +20,7 @@ export { MeshDescriptor } from './integrations/babylonjs/MeshFactory';
 export { BabylonImporter } from './integrations/babylonjs/api/BabylonImporter';
 export { BabylonConverter } from './integrations/babylonjs/api/BabylonConverter';
 export {WorldParser, ParseOptions, defaultParseOptions} from './WorldParser';
-export {WorldItemInfo} from './WorldItemInfo';
+export {WorldItem as WorldItemInfo} from './WorldItemInfo';
 export {WorldItemInfoFactory} from './WorldItemInfoFactory';
 export {WorldItemParser} from './parsers/WorldItemParser';
 export {TreeNode, TreeIteratorGenerator} from './utils/TreeIteratorGenerator';

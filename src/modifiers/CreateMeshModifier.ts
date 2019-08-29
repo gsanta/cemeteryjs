@@ -4,7 +4,7 @@ import { MeshTemplate } from "../integrations/api/MeshTemplate";
 import { MeshDescriptor, MeshFactory } from '../integrations/babylonjs/MeshFactory';
 import { MeshLoader } from "../integrations/babylonjs/MeshLoader";
 import { TreeIteratorGenerator } from "../utils/TreeIteratorGenerator";
-import { WorldItemInfo } from "../WorldItemInfo";
+import { WorldItem } from "../WorldItemInfo";
 import { Modifier } from './Modifier';
 
 export class CreateMeshModifier implements Modifier {
@@ -26,7 +26,7 @@ export class CreateMeshModifier implements Modifier {
             .then(() => { this.isReady = true });
     }
 
-    public apply(worldItems: WorldItemInfo[]): WorldItemInfo[] {
+    public apply(worldItems: WorldItem[]): WorldItem[] {
         if (!this.isReady) {
             throw new Error('`MeshFactory` is not ready loading the models, please wait for the Promise returned from `loadModels` to resolve.');
         }
@@ -63,7 +63,7 @@ export class CreateMeshModifier implements Modifier {
             });
     }
 
-    private createMesh(worldItemInfo: WorldItemInfo): Mesh[] {
+    private createMesh(worldItemInfo: WorldItem): Mesh[] {
         return this.meshFactory.createFromMeshDescriptor(worldItemInfo, this.descriptorMap.get(worldItemInfo.name));
 
         // if (this.modelMap.has(worldItemInfo.name) || worldItemInfo.name === 'root' || worldItemInfo.name === 'empty' || worldItemInfo.name === 'wall') {

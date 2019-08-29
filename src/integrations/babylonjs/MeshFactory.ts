@@ -1,6 +1,6 @@
 
 import { Color3, Mesh, MeshBuilder, PhysicsImpostor, Scene, Skeleton, Space, StandardMaterial, Vector3, Axis, DynamicTexture, Texture } from 'babylonjs';
-import { WorldItemInfo } from '../../WorldItemInfo';
+import { WorldItem } from '../../WorldItemInfo';
 import { MeshTemplate } from '../api/MeshTemplate';
 import { EmptyAreaFactory } from './factories/EmptyAreaFactory';
 import { PlayerFactory } from './factories/PlayerFactory';
@@ -93,7 +93,7 @@ export class MeshFactory {
         this.modelMap = map;
     }
 
-    public createFromTemplate(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>, meshDescriptor: MeshDescriptor): Mesh[] {
+    public createFromTemplate(worldItemInfo: WorldItem, meshTemplate: MeshTemplate<Mesh, Skeleton>, meshDescriptor: MeshDescriptor): Mesh[] {
 
         switch(worldItemInfo.name) {
             case 'root':
@@ -114,7 +114,7 @@ export class MeshFactory {
         }
     }
 
-    private create(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
+    private create(worldItemInfo: WorldItem, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
         const meshes = meshTemplate.meshes.map(m => m.clone());
         const rotation = - worldItemInfo.rotation;
         meshes[0].isVisible = true;
@@ -130,7 +130,7 @@ export class MeshFactory {
         return [mesh, meshes[0]];
     }
 
-    public createFromMeshDescriptor(worldItemInfo: WorldItemInfo, meshDescriptor: MeshDescriptor<any>): Mesh[] {
+    public createFromMeshDescriptor(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor<any>): Mesh[] {
         // TODO: get rid of this at some point
         if (worldItemInfo.name === 'root' || worldItemInfo.name === 'empty' || worldItemInfo.name === 'wall' || worldItemInfo.name === 'window') {
             return this.createFromTemplate(worldItemInfo, null, meshDescriptor);
@@ -148,11 +148,11 @@ export class MeshFactory {
         }
     }
 
-    private createRoomMeshes(worldItemInfo: WorldItemInfo, roomDescriptor: RoomDescriptor): Mesh[] {
+    private createRoomMeshes(worldItemInfo: WorldItem, roomDescriptor: RoomDescriptor): Mesh[] {
         return new RoomFactory(this.scene).createItem(worldItemInfo, roomDescriptor);
     }
 
-    private createFromShapeDescriptor(worldItemInfo: WorldItemInfo, meshDescriptor: MeshDescriptor<ShapeDescriptor>): Mesh[] {
+    private createFromShapeDescriptor(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor<ShapeDescriptor>): Mesh[] {
         const shapeDescriptor = meshDescriptor.details;
         switch(shapeDescriptor.shape) {
             case 'disc':
@@ -164,7 +164,7 @@ export class MeshFactory {
         }
     }
 
-    private createPlane(worldItemInfo: WorldItemInfo, meshDescriptor: MeshDescriptor<ShapeDescriptor>): Mesh {
+    private createPlane(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor<ShapeDescriptor>): Mesh {
         const roomTop = MeshBuilder.CreatePolygon(
             'room-label',
             {
@@ -198,7 +198,7 @@ export class MeshFactory {
         return material;
     }
 
-    private createMesh(worldItemInfo: WorldItemInfo, mesh: Mesh, scene: Scene): Mesh {
+    private createMesh(worldItemInfo: WorldItem, mesh: Mesh, scene: Scene): Mesh {
         const boundingPolygon = worldItemInfo.dimensions;
         const height = mesh.getBoundingInfo().boundingBox.maximumWorld.y;
 

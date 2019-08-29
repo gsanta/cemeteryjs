@@ -4,7 +4,7 @@ import { WorldMapToMatrixGraphConverter } from '../../src/matrix_graph/conversio
 import { ScaleModifier } from '../../src/modifiers/ScaleModifier';
 import { Polygon, Point } from '@nightshifts.inc/geometry';
 import { WorldItemInfoFactory } from '../../src/WorldItemInfoFactory';
-import { WorldItemInfo } from '../../src/WorldItemInfo';
+import { WorldItem } from '../../src/WorldItemInfo';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { WorldParser } from '../../src';
 import { CombinedWorldItemParser } from '../../src/parsers/CombinedWorldItemParser';
@@ -18,7 +18,7 @@ import * as _ from 'lodash';
 import { hasAnyWorldItemInfoDimension } from '../parsers/room_separator_parser/RoomSeparatorParser.test';
 import { findWorldItemWithDimensions } from '../test_utils/mocks';
 
-const initBorderItems = (strMap: string): WorldItemInfo[] => {
+const initBorderItems = (strMap: string): WorldItem[] => {
     const map = `
         map \`
 

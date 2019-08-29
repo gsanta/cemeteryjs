@@ -1,4 +1,4 @@
-import { WorldItemInfo } from '../../src/WorldItemInfo';
+import { WorldItem } from '../../src/WorldItemInfo';
 import { Shape } from '@nightshifts.inc/geometry';
 import { hasAnyWorldItemInfoDimension } from '../parsers/room_separator_parser/RoomSeparatorParser.test';
 
@@ -12,7 +12,7 @@ declare global {
 }
 
 expect.extend({
-    toHaveBorders(room: WorldItemInfo, borderDimensions: Shape[]) {
+    toHaveBorders(room: WorldItem, borderDimensions: Shape[]) {
         let pass = true;
 
         let message: string = '';
@@ -39,7 +39,7 @@ expect.extend({
         }
     },
 
-    toHaveAnyWithDimensions(worldItems: WorldItemInfo[], dimensions: Shape) {
+    toHaveAnyWithDimensions(worldItems: WorldItem[], dimensions: Shape) {
 
         let pass = true;
 

@@ -1,9 +1,9 @@
 import * as _ from 'lodash';
 import { Point, MeasurementUtils } from '@nightshifts.inc/geometry';
-import { WorldItemInfo } from '../WorldItemInfo';
+import { WorldItem } from '../WorldItemInfo';
 
 export class RoomUtils {
-    public static orderBorderItemsAroundRoomClockwise(room: WorldItemInfo) {
+    public static orderBorderItemsAroundRoomClockwise(room: WorldItem) {
         const borderItems = [...room.borderItems];
 
         const startItem = this.getBottomLeftItem(borderItems);
@@ -20,7 +20,7 @@ export class RoomUtils {
         room.borderItems = orderedItems;
     }
 
-    private static findNextBorderItem(currentBorderItem: WorldItemInfo, borderItems: WorldItemInfo[]) {
+    private static findNextBorderItem(currentBorderItem: WorldItem, borderItems: WorldItem[]) {
         const findByCommonPoint = (commonPoint: Point) =>
             _.find(borderItems, item => {
                 const point1 = item.dimensions.getPoints()[0];
@@ -41,10 +41,10 @@ export class RoomUtils {
         throw new Error('Next border item could not be determined.');
     }
 
-    private static getBottomLeftItem(items: WorldItemInfo[]): WorldItemInfo {
+    private static getBottomLeftItem(items: WorldItem[]): WorldItem {
         const copy = [...items];
 
-        copy.sort((item1: WorldItemInfo, item2: WorldItemInfo) => {
+        copy.sort((item1: WorldItem, item2: WorldItem) => {
             const center1 = item1.dimensions.getBoundingCenter();
             const center2 = item2.dimensions.getBoundingCenter();
 

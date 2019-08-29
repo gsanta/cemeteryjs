@@ -1,6 +1,6 @@
 import { MatrixGraph } from "../matrix_graph/MatrixGraph";
 import { WorldMapToMatrixGraphConverter } from "../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
-import { WorldItemInfo } from "../WorldItemInfo";
+import { WorldItem } from "../WorldItemInfo";
 import { WorldItemParser } from './WorldItemParser';
 import { WorldItemInfoFactory } from '../WorldItemInfoFactory';
 import { Polygon } from "@nightshifts.inc/geometry";
@@ -15,11 +15,11 @@ export class RootWorldItemParser implements WorldItemParser {
         this.worldMapConverter = worldMapConverter;
     }
 
-    public generate(graph: MatrixGraph): WorldItemInfo[] {
+    public generate(graph: MatrixGraph): WorldItem[] {
         return [this.createRootWorldItem(graph)];
     }
 
-    public generateFromStringMap(strMap: string): WorldItemInfo[] {
+    public generateFromStringMap(strMap: string): WorldItem[] {
         const matrixGraph = this.worldMapConverter.convert(strMap);
         return [this.createRootWorldItem(matrixGraph)];
     }
@@ -28,7 +28,7 @@ export class RootWorldItemParser implements WorldItemParser {
         return this.worldMapConverter.convert(strMap);
     }
 
-    public createRootWorldItem(graph: MatrixGraph): WorldItemInfo {
+    public createRootWorldItem(graph: MatrixGraph): WorldItem {
         return this.worldItemInfoFactory.create(
             'F',
             Polygon.createRectangle(

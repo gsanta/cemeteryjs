@@ -1,5 +1,5 @@
 import { WorldParser } from '../src/WorldParser';
-import { WorldItemInfo } from '../src/WorldItemInfo';
+import { WorldItem } from '../src/WorldItemInfo';
 import { AssignBordersToRoomsModifier } from '../src/modifiers/AssignBordersToRoomsModifier';
 import { BuildHierarchyModifier } from '../src/modifiers/BuildHierarchyModifier';
 import { ScaleModifier } from '../src/modifiers/ScaleModifier';
@@ -46,18 +46,18 @@ describe('`WorldParser`', () => {
             const children = root.children;
             expect(children.length).toEqual(7);
             expect(children[0])
-                .toMatchObject(expect.objectContaining(<Partial<WorldItemInfo>> {name: 'wall', dimensions: Polygon.createRectangle(0, 0, 1, 3), isBorder: true, rotation: Math.PI / 2}));
+                .toMatchObject(expect.objectContaining(<Partial<WorldItem>> {name: 'wall', dimensions: Polygon.createRectangle(0, 0, 1, 3), isBorder: true, rotation: Math.PI / 2}));
             expect(children[1])
-                .toMatchObject(expect.objectContaining(<Partial<WorldItemInfo>> {name: 'wall', dimensions: Polygon.createRectangle(7, 0, 1, 3), isBorder: true, rotation: Math.PI / 2}));
+                .toMatchObject(expect.objectContaining(<Partial<WorldItem>> {name: 'wall', dimensions: Polygon.createRectangle(7, 0, 1, 3), isBorder: true, rotation: Math.PI / 2}));
 
             expect(children[2])
-                .toMatchObject(expect.objectContaining(<Partial<WorldItemInfo>> {name: 'wall', dimensions: Polygon.createRectangle(0, 0, 3, 1), isBorder: true, rotation: 0}));
+                .toMatchObject(expect.objectContaining(<Partial<WorldItem>> {name: 'wall', dimensions: Polygon.createRectangle(0, 0, 3, 1), isBorder: true, rotation: 0}));
             expect(children[3])
-                .toMatchObject(expect.objectContaining(<Partial<WorldItemInfo>> {name: 'wall', dimensions: Polygon.createRectangle(0, 2, 8, 1), isBorder: true, rotation: 0}));
+                .toMatchObject(expect.objectContaining(<Partial<WorldItem>> {name: 'wall', dimensions: Polygon.createRectangle(0, 2, 8, 1), isBorder: true, rotation: 0}));
             expect(children[4])
-                .toMatchObject(expect.objectContaining(<Partial<WorldItemInfo>> {name: 'wall', dimensions: Polygon.createRectangle(5, 0, 3, 1), isBorder: true, rotation: 0}));
+                .toMatchObject(expect.objectContaining(<Partial<WorldItem>> {name: 'wall', dimensions: Polygon.createRectangle(5, 0, 3, 1), isBorder: true, rotation: 0}));
             expect(children[5])
-                .toMatchObject(expect.objectContaining(<Partial<WorldItemInfo>> {name: 'window', dimensions: Polygon.createRectangle(3, 0, 2, 1), isBorder: true, rotation: 0}));
+                .toMatchObject(expect.objectContaining(<Partial<WorldItem>> {name: 'window', dimensions: Polygon.createRectangle(3, 0, 2, 1), isBorder: true, rotation: 0}));
 
             expect(children[6].name).toEqual('room');
         });

@@ -1,4 +1,4 @@
-import { WorldItemInfo } from "../../src/WorldItemInfo";
+import { WorldItem } from "../../src/WorldItemInfo";
 import { Shape, Polygon } from "@nightshifts.inc/geometry";
 import { CreateMockMeshModifier, MockMeshCreator } from '../../src/modifiers/CreateMockMeshModifier';
 
@@ -6,23 +6,23 @@ import { CreateMockMeshModifier, MockMeshCreator } from '../../src/modifiers/Cre
 describe(`CreateMockMeshModifier`, () => {
     describe('apply', () => {
         it ('sets up mock Meshes for each `WorldItemInfo`', () => {
-            const items: WorldItemInfo[] = [
-                <WorldItemInfo> {
+            const items: WorldItem[] = [
+                <WorldItem> {
                     name: 'root',
                     dimensions: <Shape> Polygon.createRectangle(0, 0, 10, 15),
                     children: [
-                        <WorldItemInfo> {
+                        <WorldItem> {
                             name: 'room',
                             dimensions: <Shape> Polygon.createRectangle(0, 0, 5, 15),
                             children: [
-                                <WorldItemInfo> {
+                                <WorldItem> {
                                     name: 'chair',
                                     dimensions: <Shape> Polygon.createRectangle(2, 2, 1, 1),
                                     children: []
                                 }
                             ]
                         },
-                        <WorldItemInfo> {
+                        <WorldItem> {
                             name: 'room',
                             dimensions: <Shape> Polygon.createRectangle(5, 0, 5, 15),
                             children: []
@@ -31,7 +31,7 @@ describe(`CreateMockMeshModifier`, () => {
                 }
             ];
 
-            const mockMeshCreator: MockMeshCreator<{dimensions: Shape}> = (worldItem: WorldItemInfo) => {
+            const mockMeshCreator: MockMeshCreator<{dimensions: Shape}> = (worldItem: WorldItem) => {
                 return [
                     {
                         dimensions: worldItem.dimensions

@@ -1,5 +1,5 @@
 import { Modifier } from "./Modifier";
-import { WorldItemInfo } from "../WorldItemInfo";
+import { WorldItem } from "../WorldItemInfo";
 import { WorldItemUtils } from '../WorldItemUtils';
 import { WorldItemInfoFactory } from '../WorldItemInfoFactory';
 
@@ -13,7 +13,7 @@ export class AddRoofModifier implements Modifier {
         this.worldItemFactory = worldItemFactory;
     }
 
-    public apply(worldItems: WorldItemInfo[]): WorldItemInfo[] {
+    public apply(worldItems: WorldItem[]): WorldItem[] {
         const root = worldItems[0];
         const rooms = WorldItemUtils.filterRooms(worldItems);
 
@@ -22,7 +22,7 @@ export class AddRoofModifier implements Modifier {
         return worldItems;
     }
 
-    private createRoof(room: WorldItemInfo) {
+    private createRoof(room: WorldItem) {
         const roof = this.worldItemFactory.clone('roof', room);
 
         return roof;

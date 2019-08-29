@@ -1,10 +1,10 @@
 import { Modifier } from "./Modifier";
-import { WorldItemInfo } from "../WorldItemInfo";
+import { WorldItem } from "../WorldItemInfo";
 import { TreeIteratorGenerator } from "../utils/TreeIteratorGenerator";
 
 
 export interface MockMeshCreator<M> {
-    (worldItem: WorldItemInfo<M>): M[];
+    (worldItem: WorldItem<M>): M[];
 }
 
 /**
@@ -19,7 +19,7 @@ export class CreateMockMeshModifier<M> implements Modifier  {
         this.mockMeshCreator = mockMeshCreator;
     }
 
-    public apply(worldItems: WorldItemInfo<M>[]): WorldItemInfo<M>[] {
+    public apply(worldItems: WorldItem<M>[]): WorldItem<M>[] {
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
                 item.meshTemplate = {

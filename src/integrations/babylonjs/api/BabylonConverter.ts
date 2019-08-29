@@ -1,11 +1,11 @@
 import { Convert, Converter, AddChildren, AddBorders } from '../../api/Converter';
-import { WorldItemInfo } from '../../../WorldItemInfo';
+import { WorldItem } from '../../../WorldItemInfo';
 import { TreeIteratorGenerator } from '../../../utils/TreeIteratorGenerator';
 
 
 export class BabylonConverter<T> implements Converter<T> {
-    convert(worldItemInfo: WorldItemInfo[], convert: Convert<T>, addChildren: AddChildren<T>, addBorders: AddBorders<T>): T[] {
-        const map: Map<WorldItemInfo, T> = new Map();
+    convert(worldItemInfo: WorldItem[], convert: Convert<T>, addChildren: AddChildren<T>, addBorders: AddBorders<T>): T[] {
+        const map: Map<WorldItem, T> = new Map();
 
         const rootItems: T[] = [];
 
@@ -16,7 +16,7 @@ export class BabylonConverter<T> implements Converter<T> {
             }
         });
 
-        map.forEach((val: T, key: WorldItemInfo) => {
+        map.forEach((val: T, key: WorldItem) => {
             const children = key.children.map(child => map.get(child));
 
             if (children.length > 0) {

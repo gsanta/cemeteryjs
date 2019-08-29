@@ -1,12 +1,12 @@
 
 import { Segment } from "@nightshifts.inc/geometry";
-import { WorldItemInfo } from "../WorldItemInfo";
+import { WorldItem } from "../WorldItemInfo";
 import { Modifier } from "./Modifier";
 
 
 export class ThickenBordersModifier implements Modifier {
 
-    public apply(rootItems: WorldItemInfo[]): WorldItemInfo[] {
+    public apply(rootItems: WorldItem[]): WorldItem[] {
         rootItems[0].children
             .filter(child => child.isBorder)
             .forEach(wall => this.thickenWall(wall));
@@ -14,7 +14,7 @@ export class ThickenBordersModifier implements Modifier {
         return rootItems;
     }
 
-    private thickenWall(wall: WorldItemInfo) {
+    private thickenWall(wall: WorldItem) {
         if (!(wall.dimensions instanceof Segment)) {
             throw new Error('Thickening is supported only for segments.');
         }

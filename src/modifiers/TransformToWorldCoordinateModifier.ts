@@ -1,11 +1,11 @@
-import { WorldItemInfo } from "../WorldItemInfo";
+import { WorldItem } from "../WorldItemInfo";
 import { Modifier } from "./Modifier";
 import { Shape, Point } from "@nightshifts.inc/geometry";
 import { TreeIteratorGenerator } from "../utils/TreeIteratorGenerator";
 
 export class TransformToWorldCoordinateModifier implements Modifier {
 
-    public apply(worldItems: WorldItemInfo[]): WorldItemInfo[] {
+    public apply(worldItems: WorldItem[]): WorldItem[] {
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
                 if (item !== rootItem) {
@@ -19,7 +19,7 @@ export class TransformToWorldCoordinateModifier implements Modifier {
     }
 
 
-    private moveToWorldCenter(worldItemInfo: WorldItemInfo, root: WorldItemInfo): Shape {
+    private moveToWorldCenter(worldItemInfo: WorldItem, root: WorldItem): Shape {
         const translateX = - (root.dimensions.getBoundingInfo().extent[0] / 2);
         const translateY = - (root.dimensions.getBoundingInfo().extent[1] / 2);
 

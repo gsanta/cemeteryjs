@@ -1,9 +1,9 @@
 import { MatrixGraph } from "../matrix_graph/MatrixGraph";
-import { WorldItemInfo } from '../WorldItemInfo';
+import { WorldItem } from '../WorldItemInfo';
 
 
 export interface WorldItemParser {
-    generate(graph: MatrixGraph): WorldItemInfo[];
-    generateFromStringMap(strMap: string): WorldItemInfo[];
+    generate(graph: MatrixGraph): WorldItem[];
+    generateFromStringMap(strMap: string): WorldItem[];
     parseWorldMap(strMap: string): MatrixGraph;
 }

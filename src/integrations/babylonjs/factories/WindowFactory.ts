@@ -1,6 +1,6 @@
 import { Color3, Mesh, MeshBuilder, Scene, Skeleton, StandardMaterial, Vector3, Axis, Space, Texture } from 'babylonjs';
 import { GeometryUtils, Segment, Shape } from '@nightshifts.inc/geometry';
-import { WorldItemInfo } from '../../../WorldItemInfo';
+import { WorldItem } from '../../../WorldItemInfo';
 import { MeshCreator } from '../MeshCreator';
 import { MeshTemplate } from '../../api/MeshTemplate';
 import { MeshDescriptor } from '../MeshFactory';
@@ -19,7 +19,7 @@ export class WindowFactory  {
         this.materialFactory = materialFactory;
     }
 
-    public createItem(worldItemInfo: WorldItemInfo, meshDescriptor: MeshDescriptor, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
+    public createItem(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
 
         const parentMesh = this.createBoundingMesh(worldItemInfo.dimensions, meshDescriptor);
         const top = this.createTopWall(worldItemInfo, meshDescriptor);
@@ -36,7 +36,7 @@ export class WindowFactory  {
         return [parentMesh, top, bottom];
     }
 
-    private createTopWall(worldItem: WorldItemInfo, meshDescriptor: MeshDescriptor) {
+    private createTopWall(worldItem: WorldItem, meshDescriptor: MeshDescriptor) {
         const segment = <Segment> worldItem.dimensions;
 
         const rectangle = GeometryUtils.addThicknessToSegment(segment, 0.125);
@@ -55,7 +55,7 @@ export class WindowFactory  {
         return mesh;
     }
 
-    private createBottomWall(worldItem: WorldItemInfo, meshDescriptor: MeshDescriptor) {
+    private createBottomWall(worldItem: WorldItem, meshDescriptor: MeshDescriptor) {
         const segment = <Segment> worldItem.dimensions;
 
         const rectangle = GeometryUtils.addThicknessToSegment(segment, 0.125);

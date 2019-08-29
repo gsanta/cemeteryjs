@@ -1,4 +1,4 @@
-import { WorldItemInfo } from "../WorldItemInfo";
+import { WorldItem } from "../WorldItemInfo";
 import _ = require("lodash");
 import { Modifier } from './Modifier';
 import { Polygon, Point, Line, StripeView } from '@nightshifts.inc/geometry';
@@ -32,15 +32,15 @@ export class SegmentBordersModifier  implements Modifier {
         this.scales = scales;
     }
 
-    public apply(gwmWorldItems: WorldItemInfo[]): WorldItemInfo[] {
+    public apply(gwmWorldItems: WorldItem[]): WorldItem[] {
         return this.segmentBorderItemsIfNeeded(gwmWorldItems);
     }
 
-    private segmentBorderItemsIfNeeded(worldItems: WorldItemInfo[]): WorldItemInfo[] {
+    private segmentBorderItemsIfNeeded(worldItems: WorldItem[]): WorldItem[] {
         const rooms = WorldItemUtils.filterRooms(worldItems);
         const originalBorders = WorldItemUtils.filterBorders(worldItems, this.roomSeparatorItemNames);
         const borders = [...originalBorders];
-        const newBorders: WorldItemInfo[] = [];
+        const newBorders: WorldItem[] = [];
 
         while (borders.length > 0) {
             const currentBorder = borders.shift();
@@ -56,12 +56,12 @@ export class SegmentBordersModifier  implements Modifier {
         return _.chain(worldItems).without(...originalBorders).push(...newBorders).value();
     }
 
-    private getSegmentingPoints(border: WorldItemInfo, roomsAlongsideBorder: WorldItemInfo[]): Point[] {
+    private getSegmentingPoints(border: WorldItem, roomsAlongsideBorder: WorldItem[]): Point[] {
         const startCapEdge = new StripeView(<Polygon> border.dimensions, border.rotation).getCapEdges()[0];
         const endCapEdge = new StripeView(<Polygon> border.dimensions, border.rotation).getCapEdges()[1];
         const referencePointForSorting = startCapEdge.getPoints()[0];
 
-        const getSegmentPointsForRoom = (room: WorldItemInfo) => room.dimensions.getCoincidentLineSegment(border.dimensions)[0].getPoints();
+        const getSegmentPointsForRoom = (room: WorldItem) => room.dimensions.getCoincidentLineSegment(border.dimensions)[0].getPoints();
         const sortByDistanceToReferencePoint = (a, b) => referencePointForSorting.distanceTo(a) - referencePointForSorting.distanceTo(b);
         const getOriginalFirstPoint = (points: Point[]) => startCapEdge.getLine().intersection(new Segment(points[0], points[points.length - 1]).getLine())
         const replaceFirstPointWithOriginal = (points: Point[]) => { points.shift(); points.unshift(getOriginalFirstPoint(points));};
@@ -85,11 +85,11 @@ export class SegmentBordersModifier  implements Modifier {
         return segmentPoints;
     }
 
-    private segmentOriginalBorderIntoPieces(originalBorderItem: WorldItemInfo, segments: Segment[]): WorldItemInfo[] {
+    private segmentOriginalBorderIntoPieces(originalBorderItem: WorldItem, segments: Segment[]): WorldItem[] {
         const longEdges: [Segment, Segment] = new StripeView(<Polygon> originalBorderItem.dimensions, originalBorderItem.rotation).getEdges();
         const perpendicularSlope = longEdges[0].getPerpendicularBisector().slope;
 
-        const segmentedBorders: WorldItemInfo[] = [];
+        const segmentedBorders: WorldItem[] = [];
 
         segments.map(segment => {
             const startPerpendicularLine = Line.fromPointSlopeForm(segment.getPoints()[0], perpendicularSlope);
@@ -137,7 +137,7 @@ export class SegmentBordersModifier  implements Modifier {
         return [firstSegment, ...restSegments];
     }
 
-    private findRoomsAlongsideBorder(border: WorldItemInfo, rooms: WorldItemInfo[]): WorldItemInfo[] {
+    private findRoomsAlongsideBorder(border: WorldItem, rooms: WorldItem[]): WorldItem[] {
         return rooms
             .filter(room => room.dimensions.getCoincidentLineSegment(border.dimensions))
             .filter(room => {

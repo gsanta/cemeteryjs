@@ -1,4 +1,4 @@
-import { WorldItemInfo } from '../../WorldItemInfo';
+import { WorldItem } from '../../WorldItemInfo';
 import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
 import { MatrixGraph } from "../../matrix_graph/MatrixGraph";
 import { WorldItemParser } from "../WorldItemParser";
@@ -28,11 +28,11 @@ export class RoomInfoParser implements WorldItemParser {
         this.polygonAreaInfoGenerator = polygonAreaInfoGenerator;
     }
 
-    public generate(graph: MatrixGraph): WorldItemInfo[] {
+    public generate(graph: MatrixGraph): WorldItem[] {
         return this.polygonAreaInfoGenerator.generate(graph);
     }
 
-    public generateFromStringMap(strMap: string): WorldItemInfo[] {
+    public generateFromStringMap(strMap: string): WorldItem[] {
         return this.polygonAreaInfoGenerator.generate(this.parseWorldMap(strMap));
     }
 

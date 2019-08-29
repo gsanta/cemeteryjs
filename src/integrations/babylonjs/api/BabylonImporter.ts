@@ -16,7 +16,7 @@ import { WorldParser } from '../../../WorldParser';
 import { WorldItemInfoFactory } from '../../../WorldItemInfoFactory';
 import { CombinedWorldItemParser } from '../../../parsers/CombinedWorldItemParser';
 import { WorldMapToMatrixGraphConverter } from '../../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
-import { WorldItemInfo } from '../../../WorldItemInfo';
+import { WorldItem } from '../../../WorldItemInfo';
 import { Importer, defaultWorldConfig, WorldConfig } from '../../api/Importer';
 import { Scene } from 'babylonjs';
 import { MeshFactory, MeshDescriptor } from '../MeshFactory';
@@ -34,11 +34,11 @@ export class BabylonImporter implements Importer {
         this.meshLoader = meshLoader;
     }
 
-    import(strWorld: string, modelTypeDescription: MeshDescriptor[], worldConfig = defaultWorldConfig): Promise<WorldItemInfo[]> {
+    import(strWorld: string, modelTypeDescription: MeshDescriptor[], worldConfig = defaultWorldConfig): Promise<WorldItem[]> {
         return this.parse(strWorld, worldConfig, modelTypeDescription);
     }
 
-    private parse(strWorld: string, worldConfig: WorldConfig, modelTypeDescription: MeshDescriptor[]): Promise<WorldItemInfo[]> {
+    private parse(strWorld: string, worldConfig: WorldConfig, modelTypeDescription: MeshDescriptor[]): Promise<WorldItem[]> {
 
         const meshCreationTransformator = new CreateMeshModifier(this.meshLoader, this.meshFactory);
 

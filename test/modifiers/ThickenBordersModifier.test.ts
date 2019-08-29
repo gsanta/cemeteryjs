@@ -8,14 +8,14 @@ import { ScaleModifier } from "../../src/modifiers/ScaleModifier";
 import { SegmentBordersModifier } from "../../src/modifiers/SegmentBordersModifier";
 import { BuildHierarchyModifier } from "../../src/modifiers/BuildHierarchyModifier";
 import { AssignBordersToRoomsModifier } from "../../src/modifiers/AssignBordersToRoomsModifier";
-import { WorldItemInfo } from "../../src/WorldItemInfo";
+import { WorldItem } from "../../src/WorldItemInfo";
 import { WorldItemInfoFactory } from "../../src/WorldItemInfoFactory";
 import { WorldParser } from "../../src/WorldParser";
 import { ConvertBorderPolyToLineModifier } from "../../src/modifiers/ConvertBorderPolyToLineModifier";
 import { ThickenBordersModifier } from '../../src/modifiers/ThickenBordersModifier';
 
 
-const setup = (strMap: string): WorldItemInfo[] => {
+const setup = (strMap: string): WorldItem[] => {
     const map = `
         map \`
 

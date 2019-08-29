@@ -1,6 +1,6 @@
 import { Color3, StandardMaterial, Texture } from 'babylonjs';
 import { Scene } from "babylonjs/scene";
-import { WorldItemInfo } from '../../WorldItemInfo';
+import { WorldItem } from '../../WorldItemInfo';
 import { MeshDescriptor } from './MeshFactory';
 
 export class MaterialBuilder {
@@ -23,7 +23,7 @@ export class MaterialFactory {
         this.materialBuilder = materialBuilder;
     }
 
-    createMaterial(worldItem: WorldItemInfo, meshDescriptor: MeshDescriptor): StandardMaterial {
+    createMaterial(worldItem: WorldItem, meshDescriptor: MeshDescriptor): StandardMaterial {
         if (meshDescriptor.conditionalMaterials) {
             return this.createConditionalMaterials(worldItem, meshDescriptor);
         } else {
@@ -31,7 +31,7 @@ export class MaterialFactory {
         }
     }
 
-    private createConditionalMaterials(worldItem: WorldItemInfo, meshDescriptor: MeshDescriptor) {
+    private createConditionalMaterials(worldItem: WorldItem, meshDescriptor: MeshDescriptor) {
         const conditionalMaterial = meshDescriptor.conditionalMaterials.find(condMat => worldItem.rooms.find(room => room.id === condMat.parentId));
 
         if (conditionalMaterial) {

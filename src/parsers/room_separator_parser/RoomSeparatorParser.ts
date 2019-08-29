@@ -1,5 +1,5 @@
 import { MatrixGraph } from '../../matrix_graph/MatrixGraph';
-import { WorldItemInfo } from '../../WorldItemInfo';
+import { WorldItem } from '../../WorldItemInfo';
 import * as _ from 'lodash';
 import { WorldItemParser } from '../WorldItemParser';
 import { WorldMapToMatrixGraphConverter } from '../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
@@ -22,12 +22,12 @@ export class RoomSeparatorParser implements WorldItemParser {
         this.roomSeparatorCharacters = roomSeparatorCharacters;
     }
 
-    public generate(graph: MatrixGraph): WorldItemInfo[] {
+    public generate(graph: MatrixGraph): WorldItem[] {
         const characters = this.roomSeparatorCharacters.filter(name => graph.getCharacterForName(name)).map(name => graph.getCharacterForName(name));
 
         const borderGraph = graph.getReducedGraphForCharacters(characters);
 
-        return flat<WorldItemInfo>(
+        return flat<WorldItem>(
                 characters.map((character) => {
                     return graph.findConnectedComponentsForCharacter(character)
                         .map(connectedComp => this.createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(graph.getGraphForVertices(connectedComp), borderGraph));
@@ -36,7 +36,7 @@ export class RoomSeparatorParser implements WorldItemParser {
             );
     }
 
-    public generateFromStringMap(strMap: string): WorldItemInfo[] {
+    public generateFromStringMap(strMap: string): WorldItem[] {
         return this.generate(this.parseWorldMap(strMap));
     }
 
@@ -44,7 +44,7 @@ export class RoomSeparatorParser implements WorldItemParser {
         return this.worldMapConverter.convert(strMap);
     }
 
-    private createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph: MatrixGraph, borderGraph: MatrixGraph): WorldItemInfo[] {
+    private createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph: MatrixGraph, borderGraph: MatrixGraph): WorldItem[] {
         const verticalSubComponents = this.findVerticalSlices(componentGraph, borderGraph);
         const horixontalComponents = this.findHorizontalSlices(componentGraph, borderGraph);
 

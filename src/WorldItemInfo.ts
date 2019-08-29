@@ -4,7 +4,7 @@ import { MeshTemplate } from './integrations/api/MeshTemplate';
 /**
  * `WorldItemInfo` represents any distinguishable item in the parsed world (think of it as a mesh, e.g walls, rooms, creatures).
  */
-export class WorldItemInfo<M = any, S = any> {
+export class WorldItem<M = any, S = any> {
     meshTemplate: MeshTemplate<M, S>;
     skeleton: any;
     id: string;
@@ -20,10 +20,10 @@ export class WorldItemInfo<M = any, S = any> {
     rotation: number;
     thickness: number;
     isBorder: boolean;
-    children: WorldItemInfo[] = [];
-    parent: WorldItemInfo;
-    borderItems: WorldItemInfo[] = [];
-    rooms: WorldItemInfo[] = [];
+    children: WorldItem[] = [];
+    parent: WorldItem;
+    borderItems: WorldItem[] = [];
+    rooms: WorldItem[] = [];
 
     constructor(id: string, type: string, dimensions: Shape, name: string, isBorder: boolean = false, rotation = 0) {
         this.type = type;
@@ -34,7 +34,7 @@ export class WorldItemInfo<M = any, S = any> {
         this.rotation = rotation;
     }
 
-    addChild(worldItem: WorldItemInfo) {
+    addChild(worldItem: WorldItem) {
         this.children.push(worldItem);
     }
 }

@@ -1,5 +1,5 @@
 import { Polygon } from "@nightshifts.inc/geometry";
-import { WorldItemInfo } from './WorldItemInfo';
+import { WorldItem } from './WorldItemInfo';
 
 
 /**
@@ -9,9 +9,9 @@ import { WorldItemInfo } from './WorldItemInfo';
 export class WorldItemInfoFactory {
     private countersByType: Map<string, number> = new Map();
 
-    public create(type: string, dimensions: Polygon, name: string, isBorder: boolean, rotation?: number): WorldItemInfo {
+    public create(type: string, dimensions: Polygon, name: string, isBorder: boolean, rotation?: number): WorldItem {
         const id = this.getNextId(name);
-        const worldItem = new WorldItemInfo(id, type, dimensions, name, isBorder);
+        const worldItem = new WorldItem(id, type, dimensions, name, isBorder);
         if (rotation !== undefined) {
             worldItem.rotation = rotation;
         }
@@ -19,10 +19,10 @@ export class WorldItemInfoFactory {
         return worldItem;
     }
 
-    public clone(newType: string, worldItemInfo: WorldItemInfo): WorldItemInfo {
+    public clone(newType: string, worldItemInfo: WorldItem): WorldItem {
         const id = this.getNextId(newType);
 
-        const clone = new WorldItemInfo(
+        const clone = new WorldItem(
             id,
             worldItemInfo.type,
             worldItemInfo.dimensions,

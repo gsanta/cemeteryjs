@@ -1,6 +1,6 @@
 import { WorldItemParser } from "../parsers/WorldItemParser";
 import { MatrixGraph } from "../matrix_graph/MatrixGraph";
-import { WorldItemInfo } from "../WorldItemInfo";
+import { WorldItem } from "../WorldItemInfo";
 import { Modifier } from './Modifier';
 import _ = require("lodash");
 import { Polygon } from "@nightshifts.inc/geometry";
@@ -11,11 +11,11 @@ import { Polygon } from "@nightshifts.inc/geometry";
  */
 
 export class BuildHierarchyModifier implements Modifier {
-    public apply(gwmWorldItems: WorldItemInfo[]): WorldItemInfo[] {
+    public apply(gwmWorldItems: WorldItem[]): WorldItem[] {
         return this.buildHierarchy(gwmWorldItems);
     }
 
-    public buildHierarchy(worldItems: WorldItemInfo[]) {
+    public buildHierarchy(worldItems: WorldItem[]) {
         const childrenAlreadyCategorized = [];
 
         let rootWorldItems = worldItems;
@@ -24,7 +24,7 @@ export class BuildHierarchyModifier implements Modifier {
             _.chain(worldItems)
                 .without(...childrenAlreadyCategorized)
                 .without(currentItem)
-                .forEach((childItem: WorldItemInfo) => {
+                .forEach((childItem: WorldItem) => {
                     if ((<Polygon>currentItem.dimensions).contains(<Polygon> childItem.dimensions)) {
                         // this condition ensures that no two items will be each other's children if they would have the
                         // same size

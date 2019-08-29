@@ -1,11 +1,11 @@
-import { WorldItemInfo } from "../WorldItemInfo";
+import { WorldItem } from "../WorldItemInfo";
 import { Modifier } from './Modifier';
 import { Polygon, Line, Shape, Point, GeometryUtils, StripeView } from '@nightshifts.inc/geometry';
 import { WorldItemUtils } from '../WorldItemUtils';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import _ = require("lodash");
 
-export const mergeStraightAngledNeighbouringBorderItemPolygons = (borders: WorldItemInfo[]): [Shape, number][] => {
+export const mergeStraightAngledNeighbouringBorderItemPolygons = (borders: WorldItem[]): [Shape, number][] => {
     const borderItemPolygons = borders.map(border => border.dimensions);
     const angles: number[] = borders.map(border => border.rotation);
     const mergedPolygons: [Shape, number][] = [[borderItemPolygons.shift(), angles.shift()]];
@@ -42,19 +42,19 @@ export const mergeStraightAngledNeighbouringBorderItemPolygons = (borders: World
  */
 export class ConvertBorderPolyToLineModifier implements Modifier {
 
-    public apply(gwmWorldItems: WorldItemInfo[]): WorldItemInfo[] {
+    public apply(gwmWorldItems: WorldItem[]): WorldItem[] {
         return this.stretchRooms(gwmWorldItems);
     }
 
-    private stretchRooms(rootWorldItems: WorldItemInfo[]) {
-        const rooms: WorldItemInfo[] = WorldItemUtils.filterRooms(rootWorldItems);
+    private stretchRooms(rootWorldItems: WorldItem[]) {
+        const rooms: WorldItem[] = WorldItemUtils.filterRooms(rootWorldItems);
 
         this.runAlgorithm(rooms);
 
         return rootWorldItems;
     }
 
-    public runAlgorithm(rooms: WorldItemInfo[]) {
+    public runAlgorithm(rooms: WorldItem[]) {
 
         const newRoomDimensions = rooms.map(room => {
             const mergedBorderePolygonAndAngles = mergeStraightAngledNeighbouringBorderItemPolygons(room.borderItems);
@@ -131,7 +131,7 @@ export class ConvertBorderPolyToLineModifier implements Modifier {
         }
     }
 
-    public alignBorderItems(borderItems: WorldItemInfo[], roomOldDimensions: Shape, roomNewDimensions: Polygon) {
+    public alignBorderItems(borderItems: WorldItem[], roomOldDimensions: Shape, roomNewDimensions: Polygon) {
         const oldEdges = roomOldDimensions.getEdges();
         const newEdges = roomNewDimensions.getEdges();
 

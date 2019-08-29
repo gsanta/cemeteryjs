@@ -1,4 +1,4 @@
-import { WorldItemInfo } from "../../WorldItemInfo";
+import { WorldItem } from "../../WorldItemInfo";
 import { MeshDescriptor } from "../babylonjs/MeshFactory";
 
 export interface WorldConfig {
@@ -17,5 +17,5 @@ export const defaultWorldConfig: WorldConfig = {
 
 
 export interface Importer {
-    import(strWorld: string, modelTypeDescription: MeshDescriptor[], worldConfig: WorldConfig): Promise<WorldItemInfo[]>;
+    import(strWorld: string, modelTypeDescription: MeshDescriptor[], worldConfig: WorldConfig): Promise<WorldItem[]>;
 }

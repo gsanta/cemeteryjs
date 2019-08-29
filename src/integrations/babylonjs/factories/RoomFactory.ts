@@ -1,6 +1,6 @@
 import { Mesh, MeshBuilder, PhysicsImpostor, Scene, Vector3, StandardMaterial, DynamicTexture, Texture, } from 'babylonjs';
 import { Shape } from '@nightshifts.inc/geometry';
-import { WorldItemInfo } from '../../../WorldItemInfo';
+import { WorldItem } from '../../../WorldItemInfo';
 import { MeshCreator } from '../MeshCreator';
 import { RoomDescriptor } from '../MeshFactory';
 
@@ -12,7 +12,7 @@ export class RoomFactory  {
         this.scene = scene;
     }
 
-    public createItem(worldItemInfo: WorldItemInfo, roomDescriptor: RoomDescriptor): Mesh[] {
+    public createItem(worldItemInfo: WorldItem, roomDescriptor: RoomDescriptor): Mesh[] {
         const mesh = this.createRoomFloor(worldItemInfo.dimensions);
         mesh.receiveShadows = true;
 
@@ -38,7 +38,7 @@ export class RoomFactory  {
         );
     }
 
-    public createRoof(worldItemInfo: WorldItemInfo, roomDescriptor: RoomDescriptor): Mesh {
+    public createRoof(worldItemInfo: WorldItem, roomDescriptor: RoomDescriptor): Mesh {
         const roomTop = MeshBuilder.CreatePolygon(
             'room-label',
             {

@@ -77,7 +77,7 @@ describe('ChangeFurnitureSizeModifier', () => {
         `;
 
         const transformator = new ChangeFurnitureSizeModifier({table: Polygon.createRectangle(0, 0, 2, 1)});
-        const items = transformator.transform(initBorderItems(map));
+        const items = transformator.apply(initBorderItems(map));
 
         const room = items[0].children[0];
         const table = room.children[0];
@@ -98,7 +98,7 @@ describe('ChangeFurnitureSizeModifier', () => {
         `;
 
         const transformator = new ChangeFurnitureSizeModifier({table: Polygon.createRectangle(0, 0, 2, 1), cupboard: Polygon.createRectangle(0, 0, 0.5, 2)});
-        const items = transformator.transform(initBorderItems(map));
+        const items = transformator.apply(initBorderItems(map));
 
         const room = items[0].children[0];
 

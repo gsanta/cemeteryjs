@@ -1,7 +1,7 @@
-import { WorldItemInfo } from "../../WorldItemInfo";
+import { WorldItem } from "../../WorldItemInfo";
 
 export interface Convert<T> {
-    (worldItemInfo: WorldItemInfo): T
+    (worldItemInfo: WorldItem): T
 }
 
 export interface AddChildren<T> {
@@ -13,5 +13,5 @@ export interface AddBorders<T> {
 }
 
 export interface Converter<T> {
-    convert(worldItemInfo: WorldItemInfo[], convert: Convert<T>, addChildren: AddChildren<T>, addBorders: AddBorders<T>): T[];
+    convert(worldItemInfo: WorldItem[], convert: Convert<T>, addChildren: AddChildren<T>, addBorders: AddBorders<T>): T[];
 }

@@ -1,4 +1,4 @@
-import { WorldItemInfo } from '../../src/WorldItemInfo';
+import { WorldItem } from '../../src/WorldItemInfo';
 import { RootWorldItemParser } from "../../src/parsers/RootWorldItemParser";
 import { MatrixGraph } from "../../src/matrix_graph/MatrixGraph";
 import { WorldItemInfoFactory } from "../../src/WorldItemInfoFactory";
@@ -23,7 +23,7 @@ describe('RootWorldItemParser', () => {
                 new Point(5, 4),
                 new Point(5, 0)
             ]);
-            expect(worldItems[0]).toEqual(new WorldItemInfo('root-1', 'F', expectedShape, 'root'));
+            expect(worldItems[0]).toEqual(new WorldItem('root-1', 'F', expectedShape, 'root'));
         });
     });
 });

@@ -2,11 +2,11 @@ import { WorldMapToMatrixGraphConverter } from "../../../src/matrix_graph/conver
 import { RoomSeparatorParser } from '../../../src/parsers/room_separator_parser/RoomSeparatorParser';
 import { WorldItemInfoFactory } from '../../../src/WorldItemInfoFactory';
 import { Polygon, Shape } from "@nightshifts.inc/geometry";
-import { WorldItemInfo } from '../../../src/WorldItemInfo';
+import { WorldItem } from '../../../src/WorldItemInfo';
 import * as _ from 'lodash';
 
 // TODO: create custom matcher
-export function hasAnyWorldItemInfoDimension(dimension: Shape, worldItemInfos: WorldItemInfo[]) {
+export function hasAnyWorldItemInfoDimension(dimension: Shape, worldItemInfos: WorldItem[]) {
     if (_.some(worldItemInfos, worldItemInfo => worldItemInfo.dimensions.equalTo(dimension))) {
         return true;
     } else {

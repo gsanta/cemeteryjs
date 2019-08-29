@@ -1,11 +1,11 @@
 import { Axis, Mesh, Quaternion, Scene, Skeleton, Vector3 } from 'babylonjs';
 import { Point, Polygon } from '@nightshifts.inc/geometry';
-import { WorldItemInfo } from '../../../WorldItemInfo';
+import { WorldItem } from '../../../WorldItemInfo';
 import { MeshCreator } from '../MeshCreator';
 import { MeshTemplate } from '../../api/MeshTemplate';
 
 export class PlayerFactory implements MeshCreator  {
-    public createItem(worldItemInfo: WorldItemInfo, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh {
+    public createItem(worldItemInfo: WorldItem, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh {
         let dimensions = worldItemInfo.dimensions;
         const meshes = meshTemplate.meshes;
         meshes.forEach(mesh => mesh.isVisible = true);

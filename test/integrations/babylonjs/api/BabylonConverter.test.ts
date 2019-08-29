@@ -1,22 +1,22 @@
-import { WorldItemInfo } from '../../../../src/WorldItemInfo';
+import { WorldItem } from '../../../../src/WorldItemInfo';
 import { BabylonConverter } from '../../../../src/integrations/babylonjs/api/BabylonConverter';
 import * as sinon from 'sinon';
 import { WorldItemInfoFactory } from '../../../../src/WorldItemInfoFactory';
 
-function setupWorldItemInfo(): WorldItemInfo[] {
+function setupWorldItemInfo(): WorldItem[] {
     const worldItemFactory = new WorldItemInfoFactory();
-    const root: WorldItemInfo = worldItemFactory.create('root', null, 'root', false);
+    const root: WorldItem = worldItemFactory.create('root', null, 'root', false);
 
-    const room1: WorldItemInfo = worldItemFactory.create('room', null, 'room', false);
-    const room2: WorldItemInfo = worldItemFactory.create('room', null, 'room', false);
+    const room1: WorldItem = worldItemFactory.create('room', null, 'room', false);
+    const room2: WorldItem = worldItemFactory.create('room', null, 'room', false);
 
-    const wall1: WorldItemInfo = worldItemFactory.create('wall', null, 'wall', true);
-    const wall2: WorldItemInfo = worldItemFactory.create('wall', null, 'wall', true);
-    const door: WorldItemInfo = worldItemFactory.create('door', null, 'door', true);
+    const wall1: WorldItem = worldItemFactory.create('wall', null, 'wall', true);
+    const wall2: WorldItem = worldItemFactory.create('wall', null, 'wall', true);
+    const door: WorldItem = worldItemFactory.create('door', null, 'door', true);
 
-    const furniture1: WorldItemInfo = worldItemFactory.create('bed', null, 'bed', false);
-    const furniture2: WorldItemInfo = worldItemFactory.create('table', null, 'table', false);
-    const furniture3: WorldItemInfo = worldItemFactory.create('table', null, 'table', false);
+    const furniture1: WorldItem = worldItemFactory.create('bed', null, 'bed', false);
+    const furniture2: WorldItem = worldItemFactory.create('table', null, 'table', false);
+    const furniture3: WorldItem = worldItemFactory.create('table', null, 'table', false);
 
     root.children = [room1, room2, wall1, wall2, door];
 
@@ -61,7 +61,7 @@ describe('BabylonConverter', () => {
             }
 
             const converter = new BabylonConverter();
-            const convert = sinon.stub().callsFake((item: WorldItemInfo) => new GameObj(item.id));
+            const convert = sinon.stub().callsFake((item: WorldItem) => new GameObj(item.id));
             const addChildren = sinon.spy();
             const addBorders = sinon.spy();
 
@@ -79,7 +79,7 @@ describe('BabylonConverter', () => {
             }
 
             const converter = new BabylonConverter();
-            const convert = sinon.stub().callsFake((item: WorldItemInfo) => new GameObj(item.id));
+            const convert = sinon.stub().callsFake((item: WorldItem) => new GameObj(item.id));
             const addChildren = sinon.spy();
             const addBorders = sinon.spy();
 
@@ -96,7 +96,7 @@ describe('BabylonConverter', () => {
             }
 
             const converter = new BabylonConverter();
-            const convert = sinon.stub().callsFake((item: WorldItemInfo) => new GameObj(item.id));
+            const convert = sinon.stub().callsFake((item: WorldItem) => new GameObj(item.id));
             const addChildren = sinon.spy();
             const addBorders = sinon.spy();
 

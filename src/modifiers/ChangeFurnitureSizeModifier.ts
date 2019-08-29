@@ -1,24 +1,25 @@
 import { WorldItemUtils } from "../WorldItemUtils";
-import { WorldItemInfo } from "../WorldItemInfo";
+import { WorldItem } from "../WorldItemInfo";
 import { Polygon, Segment, Distance, Line, Point, Angle, Transform } from '@nightshifts.inc/geometry';
+import { Modifier } from './Modifier';
 
 
-export class ChangeFurnitureSizeModifier {
+export class ChangeFurnitureSizeModifier implements Modifier {
     private realSizes: {[name: string]: Polygon};
 
     constructor(realFurnitureSizes: {[name: string]: Polygon}) {
         this.realSizes = realFurnitureSizes;
     }
 
-    public transform(worldItems: WorldItemInfo[]): WorldItemInfo[] {
-        const rooms: WorldItemInfo[] = WorldItemUtils.filterRooms(worldItems);
+    public apply(worldItems: WorldItem[]): WorldItem[] {
+        const rooms: WorldItem[] = WorldItemUtils.filterRooms(worldItems);
 
         rooms.forEach(room => this.transformFurnituresInRoom(room));
 
         return worldItems;
     }
 
-    private transformFurnituresInRoom(room: WorldItemInfo) {
+    private transformFurnituresInRoom(room: WorldItem) {
         room.children
         // TODO: find better solution to handle empty
         .filter(furniture => furniture.name !== 'empty')
@@ -41,7 +42,7 @@ export class ChangeFurnitureSizeModifier {
         });
     }
 
-    private getSnappingWallSegmentIfExists(room: WorldItemInfo, furniture: WorldItemInfo): Segment {
+    private getSnappingWallSegmentIfExists(room: WorldItem, furniture: WorldItem): Segment {
         const roomSegments = <Segment[]> room.borderItems.map(item => item.dimensions);
         const furnitureSegments = furniture.dimensions.getEdges();
 
@@ -62,7 +63,7 @@ export class ChangeFurnitureSizeModifier {
         return minDistance <= 0.5 ? closestWallSegment : null;
     }
 
-    private snapToWallWallSegment(furniture: WorldItemInfo, wallSegment: Segment) {
+    private snapToWallWallSegment(furniture: WorldItem, wallSegment: Segment) {
         let closestFurnitureSegment: Segment = null;
         const furnitureSegments = furniture.dimensions.getEdges();
         let minDistance = Number.MAX_VALUE;

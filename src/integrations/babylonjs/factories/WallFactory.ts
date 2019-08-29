@@ -1,7 +1,7 @@
 import { GeometryUtils } from '@nightshifts.inc/geometry';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { Axis, Mesh, MeshBuilder, Scene, Space, Vector3 } from 'babylonjs';
-import { WorldItemInfo } from '../../../WorldItemInfo';
+import { WorldItem } from '../../../WorldItemInfo';
 import { MaterialFactory } from '../MaterialFactory';
 import { MeshDescriptor } from '../MeshFactory';
 
@@ -15,7 +15,7 @@ export class WallFactory  {
         this.materialFactory = materialFactory;
     }
 
-    createItem(worldItemInfo: WorldItemInfo, meshDescriptor: MeshDescriptor): Mesh {
+    createItem(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor): Mesh {
 
         const parentMesh = MeshBuilder.CreateBox(
                 `default-wall-container-${this.index}`,

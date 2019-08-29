@@ -3,7 +3,7 @@ import { Mesh, Vector3 } from 'babylonjs';
 import * as sinon from 'sinon';
 import { DiscFactory } from '../../../../src/integrations/babylonjs/shape_factories/DiscFactory';
 import { createMaterialBuilder, createMeshBuilder, createScene } from '../../../test_utils/mocks';
-import { WorldItemInfo } from '../../../../src/WorldItemInfo';
+import { WorldItem } from '../../../../src/WorldItemInfo';
 
 describe('DiscFactory', () => {
     describe('createItem', () => {
@@ -14,7 +14,7 @@ describe('DiscFactory', () => {
 
             const discFactory = new DiscFactory(scene, MeshBuilder, MaterialBuilder)
 
-            const worldItem = <WorldItemInfo> {
+            const worldItem = <WorldItem> {
                 name: 'disc-item',
                 dimensions: <Shape> Polygon.createRectangle(5, 5, 2, 2)
             }
@@ -42,7 +42,7 @@ describe('DiscFactory', () => {
 
             const discFactory = new DiscFactory(scene, MeshBuilder, MaterialBuilder)
 
-            const worldItem = <WorldItemInfo> {
+            const worldItem = <WorldItem> {
                 name: 'disc-item',
                 dimensions: <Shape> Polygon.createRectangle(5, 5, 2, 2)
             }

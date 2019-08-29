@@ -1,4 +1,4 @@
-import { WorldItemInfo } from './WorldItemInfo';
+import { WorldItem } from './WorldItemInfo';
 import _ = require('lodash');
 import { WorldItemParser } from './parsers/WorldItemParser';
 import { CombinedWorldItemParser } from './parsers/CombinedWorldItemParser';
@@ -39,7 +39,7 @@ export class WorldParser {
         this.worldItemTransformators = worldItemTransformators;
     }
 
-    public parse(worldMap: string): WorldItemInfo[] {
+    public parse(worldMap: string): WorldItem[] {
         const worldItems = this.worldItemGenerator.generateFromStringMap(worldMap);
 
         return this.worldItemTransformators.reduce((worldItems, transformator) => transformator.apply(worldItems), worldItems);

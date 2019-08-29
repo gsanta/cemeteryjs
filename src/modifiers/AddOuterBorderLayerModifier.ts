@@ -1,6 +1,6 @@
 import { Modifier } from "./Modifier";
 import { WorldItemUtils } from "../WorldItemUtils";
-import { WorldItemInfo } from "../WorldItemInfo";
+import { WorldItem } from "../WorldItemInfo";
 import { Segment, Polygon, Line, Point } from '@nightshifts.inc/geometry';
 import { WorldItemInfoFactory } from '../WorldItemInfoFactory';
 
@@ -16,7 +16,7 @@ export class AddOuterBorderLayerModifier implements Modifier {
         this.worldItemFactory = worldItemFactory;
     }
 
-    public apply(rootItems: WorldItemInfo[]): WorldItemInfo[] {
+    public apply(rootItems: WorldItem[]): WorldItem[] {
         const rooms = rootItems[0].children.filter(child => child.name === 'room');
         rootItems[0].children
             .filter(child => child.isBorder)
@@ -24,7 +24,7 @@ export class AddOuterBorderLayerModifier implements Modifier {
         return rootItems;
     }
 
-    private addLayerIfOuterWall(root: WorldItemInfo, wall: WorldItemInfo, rooms: WorldItemInfo[]) {
+    private addLayerIfOuterWall(root: WorldItem, wall: WorldItem, rooms: WorldItem[]) {
         const segment = <Segment> wall.dimensions;
 
         const perpendicularLine = segment.getPerpendicularBisector();
@@ -41,7 +41,7 @@ export class AddOuterBorderLayerModifier implements Modifier {
         }
     }
 
-    private createOuterLayouer(wall: WorldItemInfo, outerPoint: Point): WorldItemInfo {
+    private createOuterLayouer(wall: WorldItem, outerPoint: Point): WorldItem {
         const segment = <Segment> wall.dimensions;
 
         const clone = this.worldItemFactory.clone(wall.name, wall);

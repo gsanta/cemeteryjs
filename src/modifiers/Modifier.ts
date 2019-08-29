@@ -1,6 +1,6 @@
-import { WorldItemInfo } from '../WorldItemInfo';
+import { WorldItem } from '../WorldItemInfo';
 
 
 export interface Modifier {
-    apply(worldItems: WorldItemInfo[]): WorldItemInfo[];
+    apply(worldItems: WorldItem[]): WorldItem[];
 }
