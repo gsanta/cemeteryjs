@@ -11,4 +11,8 @@ export class ModifierFacade {
     getModifier(name: string) {
         return this.modifierMap.get(name);
     }
+
+    private resolve() {
+        
+    }
 }

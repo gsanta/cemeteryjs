@@ -3,17 +3,17 @@ import { Modifier } from './Modifier';
 import _ = require('lodash');
 import { WorldItemUtils } from '../WorldItemUtils';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
+import { BuildHierarchyModifier } from './BuildHierarchyModifier';
 
 
 export class AssignBordersToRoomsModifier implements Modifier {
     static modName = 'assignBordersToRooms';
+    dependencies = [BuildHierarchyModifier.modName];
 
-    private roomSeparatorItemNames: string[];
-    private doNotIncludeBorderItemsThatIntersectsOnlyAtCorner: boolean;
+    private borderTypes: string[];
 
-    constructor(roomSeparatorItemNames: string[], doNotIncludeBorderItemsThatIntersectsOnlyAtCorner = true) {
-        this.roomSeparatorItemNames = roomSeparatorItemNames;
-        this.doNotIncludeBorderItemsThatIntersectsOnlyAtCorner = doNotIncludeBorderItemsThatIntersectsOnlyAtCorner
+    constructor(borderTypes: string[]) {
+        this.borderTypes = borderTypes;
     }
 
     getName(): string {
@@ -26,7 +26,7 @@ export class AssignBordersToRoomsModifier implements Modifier {
 
     private addBoderItems(worldItems: WorldItem[]): WorldItem[] {
         const rooms = WorldItemUtils.filterRooms(worldItems);
-        const roomSeparatorItems = WorldItemUtils.filterBorders(worldItems, this.roomSeparatorItemNames);
+        const roomSeparatorItems = WorldItemUtils.filterBorders(worldItems, this.borderTypes);
 
         rooms.forEach(room => {
             roomSeparatorItems

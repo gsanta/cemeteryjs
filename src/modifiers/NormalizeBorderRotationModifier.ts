@@ -2,10 +2,12 @@
 import { Line, Segment } from "@nightshifts.inc/geometry";
 import { WorldItem } from "../WorldItemInfo";
 import { Modifier } from "./Modifier";
+import { AddOuterBorderLayerModifier } from './AddOuterBorderLayerModifier';
 
 
 export class NormalizeBorderRotationModifier implements Modifier {
     static modName = 'normalizeBorderRotation';
+    dependencies = [AddOuterBorderLayerModifier.modName];
 
     getName(): string {
         return NormalizeBorderRotationModifier.name;

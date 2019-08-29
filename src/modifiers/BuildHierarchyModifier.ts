@@ -4,6 +4,7 @@ import { WorldItem } from "../WorldItemInfo";
 import { Modifier } from './Modifier';
 import _ = require("lodash");
 import { Polygon } from "@nightshifts.inc/geometry";
+import { SegmentBordersModifier } from './SegmentBordersModifier';
 
 /**
  * Creates relationship between `WorldItemInfo`'s via adding a `WorldItemInfo` to another as
@@ -12,6 +13,7 @@ import { Polygon } from "@nightshifts.inc/geometry";
 
 export class BuildHierarchyModifier implements Modifier {
     static modName = 'buildHierarchy';
+    dependencies = [SegmentBordersModifier.modName]
 
     getName(): string {
         return BuildHierarchyModifier.name;

@@ -13,6 +13,7 @@ type Scaling = {
  */
 export class ScaleModifier implements Modifier {
     static modName = 'scale';
+    dependencies = [];
 
     private scaling: Scaling;
 

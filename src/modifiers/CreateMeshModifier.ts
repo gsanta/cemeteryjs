@@ -6,9 +6,11 @@ import { MeshLoader } from "../integrations/babylonjs/MeshLoader";
 import { TreeIteratorGenerator } from "../utils/TreeIteratorGenerator";
 import { WorldItem } from "../WorldItemInfo";
 import { Modifier } from './Modifier';
+import { ChangeFurnitureSizeModifier } from './ChangeFurnitureSizeModifier';
 
 export class CreateMeshModifier implements Modifier {
     static modName = 'createMesh';
+    dependencies = [ChangeFurnitureSizeModifier.modeName];
 
     private meshFactory: MeshFactory;
     private meshLoader: MeshLoader;

@@ -3,6 +3,7 @@ import { WorldItemUtils } from "../WorldItemUtils";
 import { WorldItem } from "../WorldItemInfo";
 import { Segment, Polygon, Line, Point } from '@nightshifts.inc/geometry';
 import { WorldItemFactory } from '../WorldItemInfoFactory';
+import { ThickenBordersModifier } from "./ThickenBordersModifier";
 
 /**
  * For external walls (walls where on of the side is not inside of the building) it creates a duplicate `WorldItemInfo` which forms an outer layer.
@@ -11,6 +12,7 @@ import { WorldItemFactory } from '../WorldItemInfoFactory';
  */
 export class AddOuterBorderLayerModifier implements Modifier {
     static modName = 'addOuterBorderLayer';
+    dependencies = [ThickenBordersModifier.modName];
 
     private worldItemFactory: WorldItemFactory;
 

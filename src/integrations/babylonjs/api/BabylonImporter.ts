@@ -40,9 +40,9 @@ export class BabylonImporter implements Importer {
 
     private parse(strWorld: string, worldConfig: WorldConfig, modelTypeDescription: MeshDescriptor[]): Promise<WorldItem[]> {
 
-        const meshCreationTransformator = new CreateMeshModifier(this.meshLoader, this.meshFactory);
+        const createMeshModifier = new CreateMeshModifier(this.meshLoader, this.meshFactory);
 
-        return meshCreationTransformator.prepareMeshTemplates(modelTypeDescription)
+        return createMeshModifier.prepareMeshTemplates(modelTypeDescription)
         .then(() => {
             const worldItemInfoFactory = new WorldItemFactory();
             return WorldParser.createWithCustomWorldItemGenerator(
@@ -75,7 +75,7 @@ export class BabylonImporter implements Importer {
 
                         }
                     ),
-                    meshCreationTransformator
+                    createMeshModifier
                 ]
             ).parse(strWorld);
         });

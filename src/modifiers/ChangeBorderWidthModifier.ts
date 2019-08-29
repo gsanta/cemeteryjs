@@ -3,6 +3,7 @@ import { RoomUtils } from "../utils/RoomUtils";
 import { WorldItem } from "../WorldItemInfo";
 import { WorldItemUtils } from "../WorldItemUtils";
 import { Modifier } from "./Modifier";
+import { ConvertBorderPolyToLineModifier } from './ConvertBorderPolyToLineModifier';
 import _ = require("lodash");
 
 /**
@@ -12,6 +13,7 @@ import _ = require("lodash");
  */
 export class ChangeBorderWidthModifier implements Modifier {
     static modName = 'changeBorderWidth';
+    dependencies = [ConvertBorderPolyToLineModifier.modName];
 
     private realItemWidths: {name: string, width: number}[] = [];
 

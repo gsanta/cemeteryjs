@@ -2,10 +2,12 @@ import { WorldItemUtils } from "../WorldItemUtils";
 import { WorldItem } from "../WorldItemInfo";
 import { Polygon, Segment, Distance, Line, Point, Angle, Transform } from '@nightshifts.inc/geometry';
 import { Modifier } from './Modifier';
+import { NormalizeBorderRotationModifier } from "./NormalizeBorderRotationModifier";
 
 
 export class ChangeFurnitureSizeModifier implements Modifier {
     static modeName = 'changeFurnitureSize';
+    dependencies = [NormalizeBorderRotationModifier.modName];
 
     private realSizes: {[name: string]: Polygon};
 

@@ -5,6 +5,7 @@ import { Polygon, Point, Line, StripeView } from '@nightshifts.inc/geometry';
 import { WorldItemFactory } from '../WorldItemInfoFactory';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { WorldItemUtils } from '../WorldItemUtils';
+import { ScaleModifier } from "./ScaleModifier";
 
 /**
  * If a border spans alongside multiple rooms it cuts the border into pieces so that each piece will separate exactly two neigbouring rooms
@@ -19,6 +20,7 @@ import { WorldItemUtils } from '../WorldItemUtils';
  */
 export class SegmentBordersModifier  implements Modifier {
     static modName = 'segmentBorders';
+    dependencies = [ScaleModifier.modName]
 
     private worldItemInfoFactory: WorldItemFactory;
     private roomSeparatorItemNames: string[];

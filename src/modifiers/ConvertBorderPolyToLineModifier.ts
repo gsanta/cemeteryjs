@@ -3,6 +3,7 @@ import { Modifier } from './Modifier';
 import { Polygon, Line, Shape, Point, GeometryUtils, StripeView } from '@nightshifts.inc/geometry';
 import { WorldItemUtils } from '../WorldItemUtils';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
+import { AssignBordersToRoomsModifier } from './AssignBordersToRoomsModifier';
 import _ = require("lodash");
 
 export const mergeStraightAngledNeighbouringBorderItemPolygons = (borders: WorldItem[]): [Shape, number][] => {
@@ -42,6 +43,7 @@ export const mergeStraightAngledNeighbouringBorderItemPolygons = (borders: World
  */
 export class ConvertBorderPolyToLineModifier implements Modifier {
     static modName = 'convertBorderPolygonToLine';
+    dependencies = [AssignBordersToRoomsModifier.modName];
 
     getName(): string {
         return ConvertBorderPolyToLineModifier.name;
