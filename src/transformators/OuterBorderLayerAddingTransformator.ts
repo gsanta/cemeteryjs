@@ -1,5 +1,5 @@
 import { WorldItemTransformator } from "./WorldItemTransformator";
-import { WorldItemInfoUtils } from "../WorldItemInfoUtils";
+import { WorldItemUtils } from "../WorldItemUtils";
 import { WorldItemInfo } from "../WorldItemInfo";
 import { Segment, Polygon, Line, Point } from '@nightshifts.inc/geometry';
 import { WorldItemInfoFactory } from '../WorldItemInfoFactory';
@@ -44,7 +44,7 @@ export class OuterBorderLayerAddingTransformator implements WorldItemTransformat
     private createOuterLayouer(wall: WorldItemInfo, outerPoint: Point): WorldItemInfo {
         const segment = <Segment> wall.dimensions;
 
-        const clone = this.worldItemFactory.clone(wall);
+        const clone = this.worldItemFactory.clone(wall.name, wall);
         const [p1, p2] = Line.fromPointSlopeForm(outerPoint, segment.getSlope()).getSegmentWithCenterPointAndDistance(outerPoint, segment.getLength() / 2);
         clone.dimensions = new Segment(p1, p2);
         clone.thickness = 0.1;

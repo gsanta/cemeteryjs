@@ -1,6 +1,6 @@
 import { WorldItemInfo } from '../WorldItemInfo';
 import { TreeIteratorGenerator } from '../utils/TreeIteratorGenerator';
-import { WorldItemTransformator } from './WorldItemTransformator';
+import { WorldItemTransformator } from '../transformators/WorldItemTransformator';
 import { Point } from '@nightshifts.inc/geometry';
 
 type Scaling = {
@@ -8,7 +8,10 @@ type Scaling = {
     y: number
 }
 
-export class ScalingTransformator implements WorldItemTransformator {
+/**
+ * Scales the dimensions of every `WorldItemInfo` by the given amount in the x and y direction.
+ */
+export class ScaleModifier implements WorldItemTransformator {
     private scaling: Scaling;
 
     constructor(scaling: Scaling = { x: 1, y: 1}) {

@@ -1,15 +1,15 @@
 import { CombinedWorldItemParser } from '../../src/parsers/CombinedWorldItemParser';
 import { RoomSeparatorParser } from '../../src/parsers/room_separator_parser/RoomSeparatorParser';
 import { RoomInfoParser } from '../../src/parsers/room_parser/RoomInfoParser';
-import { BorderItemAddingTransformator } from '../../src/transformators/BorderItemAddingTransformator';
-import { BorderItemSegmentingTransformator } from '../../src/transformators/BorderItemSegmentingTransformator';
+import { AssignBordersToRoomsModifier } from '../../src/modifiers/AssignBordersToRoomsModifier';
+import { SegmentBordersModifier } from '../../src/modifiers/SegmentBordersModifier';
 import _ = require('lodash');
-import { ScalingTransformator } from '../../src/transformators/ScalingTransformator';
+import { ScaleModifier } from '../../src/modifiers/ScaleModifier';
 import { Polygon } from '@nightshifts.inc/geometry';
 import { WorldItemInfoFactory } from '../../src/WorldItemInfoFactory';
 
 
-describe('`BorderItemAddingTransformator`', () => {
+describe(`AssignBordersToRoomsModifier`, () => {
     describe('`transform`', () => {
         it ('adds the bordering WorldItems to the corresponding room WorldItem', () => {
             const map = `
@@ -39,7 +39,7 @@ describe('`BorderItemAddingTransformator`', () => {
                 ]
             ).generateFromStringMap(map);
 
-            const [wall1, wall2, wall3, wall4, room] =  new BorderItemAddingTransformator(['wall']).transform(items);
+            const [wall1, wall2, wall3, wall4, room] =  new AssignBordersToRoomsModifier(['wall']).transform(items);
 
             expect(room.borderItems).toEqual([wall1, wall2, wall3, wall4]);
         });
@@ -76,8 +76,8 @@ describe('`BorderItemAddingTransformator`', () => {
                 ]
             ).generateFromStringMap(map);
 
-            items = new BorderItemSegmentingTransformator(worldItemInfoFacotry, ['wall']).transform(items);
-            items = new BorderItemAddingTransformator(['wall']).transform(items);
+            items = new SegmentBordersModifier(worldItemInfoFacotry, ['wall']).transform(items);
+            items = new AssignBordersToRoomsModifier(['wall']).transform(items);
 
             const room3 = items.filter(worldItem => worldItem.name === 'room')[2];
 
@@ -119,9 +119,9 @@ describe('`BorderItemAddingTransformator`', () => {
                 ]
             ).generateFromStringMap(map);
 
-            items = new ScalingTransformator({x: 2, y: 2}).transform(items);
-            items = new BorderItemSegmentingTransformator(worldItemInfoFacotry, ['wall'], {xScale: 2, yScale: 2}).transform(items);
-            items = new BorderItemAddingTransformator(['wall']).transform(items);
+            items = new ScaleModifier({x: 2, y: 2}).transform(items);
+            items = new SegmentBordersModifier(worldItemInfoFacotry, ['wall'], {xScale: 2, yScale: 2}).transform(items);
+            items = new AssignBordersToRoomsModifier(['wall']).transform(items);
 
             const room3 = items.filter(worldItem => worldItem.name === 'room')[0];
 

@@ -2,14 +2,14 @@ import { WorldItemInfo } from './WorldItemInfo';
 import _ = require('lodash');
 import { WorldItemParser } from './parsers/WorldItemParser';
 import { CombinedWorldItemParser } from './parsers/CombinedWorldItemParser';
-import { ScalingTransformator } from './transformators/ScalingTransformator';
-import { HierarchyBuildingTransformator } from './transformators/HierarchyBuildingTransformator';
+import { ScaleModifier } from './modifiers/ScaleModifier';
+import { BuildHierarchyModifier } from './modifiers/BuildHierarchyModifier';
 import { FurnitureInfoParser } from './parsers/furniture_parser/FurnitureInfoParser';
 import { RoomInfoParser } from './parsers/room_parser/RoomInfoParser';
 import { RootWorldItemParser } from './parsers/RootWorldItemParser';
 import { WorldMapToMatrixGraphConverter } from './matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 import { RoomSeparatorParser } from './parsers/room_separator_parser/RoomSeparatorParser';
-import { BorderItemAddingTransformator } from './transformators/BorderItemAddingTransformator';
+import { AssignBordersToRoomsModifier } from './modifiers/AssignBordersToRoomsModifier';
 import { WorldItemTransformator } from './transformators/WorldItemTransformator';
 import { WorldItemInfoFactory } from './WorldItemInfoFactory';
 import { WorldConfig, defaultWorldConfig } from './integrations/api/Importer';
@@ -58,9 +58,9 @@ export class WorldParser {
                 ]
             ),
             [
-                new ScalingTransformator({ x: worldConfig.xScale, y: worldConfig.yScale }),
-                new HierarchyBuildingTransformator(),
-                new BorderItemAddingTransformator(['wall', 'door', 'window'])
+                new ScaleModifier({ x: worldConfig.xScale, y: worldConfig.yScale }),
+                new BuildHierarchyModifier(),
+                new AssignBordersToRoomsModifier(['wall', 'door', 'window'])
             ]
         );
     }

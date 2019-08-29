@@ -1,11 +1,11 @@
 import { Polygon } from '@nightshifts.inc/geometry';
-import { BorderItemSegmentingTransformator } from '../../../transformators/BorderItemSegmentingTransformator';
+import { SegmentBordersModifier } from '../../../modifiers/SegmentBordersModifier';
 import { FurnitureRealSizeTransformator } from '../../../transformators/FurnitureRealSizeTransformator';
 import { BorderItemWidthToRealWidthTransformator } from '../../../transformators/BorderItemWidthToRealWidthTransformator';
-import { BorderItemsToLinesTransformator } from '../../../transformators/BorderItemsToLinesTransformator';
-import { BorderItemAddingTransformator } from '../../../transformators/BorderItemAddingTransformator';
-import { HierarchyBuildingTransformator } from '../../../transformators/HierarchyBuildingTransformator';
-import { ScalingTransformator } from '../../../transformators/ScalingTransformator';
+import { ConvertBorderPolyToLineModifier } from '../../../modifiers/ConvertBorderPolyToLineModifier';
+import { AssignBordersToRoomsModifier } from '../../../modifiers/AssignBordersToRoomsModifier';
+import { BuildHierarchyModifier } from '../../../modifiers/BuildHierarchyModifier';
+import { ScaleModifier } from '../../../modifiers/ScaleModifier';
 import { RootWorldItemParser } from '../../../parsers/RootWorldItemParser';
 import { PolygonAreaInfoParser } from '../../../parsers/polygon_area_parser/PolygonAreaInfoParser';
 import { RoomInfoParser } from '../../../parsers/room_parser/RoomInfoParser';
@@ -57,11 +57,11 @@ export class BabylonImporter implements Importer {
                 ),
                 [
 
-                    new ScalingTransformator({ x: worldConfig.xScale, y: worldConfig.yScale }),
-                    new BorderItemSegmentingTransformator(worldItemInfoFactory, worldConfig.borders, { xScale: worldConfig.xScale, yScale: worldConfig.yScale }),
-                    new HierarchyBuildingTransformator(),
-                    new BorderItemAddingTransformator(worldConfig.borders),
-                    new BorderItemsToLinesTransformator(),
+                    new ScaleModifier({ x: worldConfig.xScale, y: worldConfig.yScale }),
+                    new SegmentBordersModifier(worldItemInfoFactory, worldConfig.borders, { xScale: worldConfig.xScale, yScale: worldConfig.yScale }),
+                    new BuildHierarchyModifier(),
+                    new AssignBordersToRoomsModifier(worldConfig.borders),
+                    new ConvertBorderPolyToLineModifier(),
                     new BorderItemWidthToRealWidthTransformator([{name: 'window', width: 2}, {name: 'door', width: 2.7}]),
                     new BorderThickeningTransformator(),
                     new OuterBorderLayerAddingTransformator(),

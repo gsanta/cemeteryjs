@@ -4,14 +4,14 @@ import { WorldMapToMatrixGraphConverter } from "../../src/matrix_graph/conversio
 import { RoomSeparatorParser } from "../../src/parsers/room_separator_parser/RoomSeparatorParser";
 import { RoomInfoParser } from "../../src/parsers/room_parser/RoomInfoParser";
 import { RootWorldItemParser } from "../../src/parsers/RootWorldItemParser";
-import { ScalingTransformator } from "../../src/transformators/ScalingTransformator";
-import { BorderItemSegmentingTransformator } from "../../src/transformators/BorderItemSegmentingTransformator";
-import { HierarchyBuildingTransformator } from "../../src/transformators/HierarchyBuildingTransformator";
-import { BorderItemAddingTransformator } from "../../src/transformators/BorderItemAddingTransformator";
+import { ScaleModifier } from "../../src/modifiers/ScaleModifier";
+import { SegmentBordersModifier } from "../../src/modifiers/SegmentBordersModifier";
+import { BuildHierarchyModifier } from "../../src/modifiers/BuildHierarchyModifier";
+import { AssignBordersToRoomsModifier } from "../../src/modifiers/AssignBordersToRoomsModifier";
 import { WorldItemInfo } from "../../src/WorldItemInfo";
 import { WorldItemInfoFactory } from "../../src/WorldItemInfoFactory";
 import { WorldParser } from "../../src/WorldParser";
-import { BorderItemsToLinesTransformator } from "../../src/transformators/BorderItemsToLinesTransformator";
+import { ConvertBorderPolyToLineModifier } from "../../src/modifiers/ConvertBorderPolyToLineModifier";
 import { BorderThickeningTransformator } from '../../src/transformators/BorderThickeningTransformator';
 
 
@@ -50,11 +50,11 @@ const setup = (strMap: string): WorldItemInfo[] => {
             ]
         ),
         [
-            new ScalingTransformator(),
-            new BorderItemSegmentingTransformator(worldItemInfoFactory, ['wall', 'door']),
-            new HierarchyBuildingTransformator(),
-            new BorderItemAddingTransformator(['wall', 'door']),
-            new BorderItemsToLinesTransformator()
+            new ScaleModifier(),
+            new SegmentBordersModifier(worldItemInfoFactory, ['wall', 'door']),
+            new BuildHierarchyModifier(),
+            new AssignBordersToRoomsModifier(['wall', 'door']),
+            new ConvertBorderPolyToLineModifier()
         ]
     );
 

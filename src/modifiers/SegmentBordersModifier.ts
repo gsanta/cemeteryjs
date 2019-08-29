@@ -1,10 +1,10 @@
 import { WorldItemInfo } from "../WorldItemInfo";
 import _ = require("lodash");
-import { WorldItemTransformator } from './WorldItemTransformator';
+import { WorldItemTransformator } from '../transformators/WorldItemTransformator';
 import { Polygon, Point, Line, StripeView } from '@nightshifts.inc/geometry';
 import { WorldItemInfoFactory } from '../WorldItemInfoFactory';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
-import { WorldItemInfoUtils } from '../WorldItemInfoUtils';
+import { WorldItemUtils } from '../WorldItemUtils';
 
 /**
  * If a border spans alongside multiple rooms it cuts the border into pieces so that each piece will separate exactly two neigbouring rooms
@@ -17,7 +17,7 @@ import { WorldItemInfoUtils } from '../WorldItemInfoUtils';
  * ROOM3|ROOM4                  ROOM3|ROOM4
  *
  */
-export class BorderItemSegmentingTransformator  implements WorldItemTransformator {
+export class SegmentBordersModifier  implements WorldItemTransformator {
     private worldItemInfoFactory: WorldItemInfoFactory;
     private roomSeparatorItemNames: string[];
     private scales: {xScale: number, yScale: number};
@@ -37,8 +37,8 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
     }
 
     private segmentBorderItemsIfNeeded(worldItems: WorldItemInfo[]): WorldItemInfo[] {
-        const rooms = WorldItemInfoUtils.filterRooms(worldItems);
-        const originalBorders = WorldItemInfoUtils.filterBorders(worldItems, this.roomSeparatorItemNames);
+        const rooms = WorldItemUtils.filterRooms(worldItems);
+        const originalBorders = WorldItemUtils.filterBorders(worldItems, this.roomSeparatorItemNames);
         const borders = [...originalBorders];
         const newBorders: WorldItemInfo[] = [];
 
@@ -99,7 +99,7 @@ export class BorderItemSegmentingTransformator  implements WorldItemTransformato
             const point3 = longEdges[0].getLine().intersection(startPerpendicularLine);
             const point4 = longEdges[1].getLine().intersection(startPerpendicularLine);
 
-            const clone = this.worldItemInfoFactory.clone(originalBorderItem);
+            const clone = this.worldItemInfoFactory.clone(originalBorderItem.name, originalBorderItem);
             clone.dimensions = new Polygon([
                 point1,
                 point2,

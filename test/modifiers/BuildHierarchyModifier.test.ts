@@ -1,5 +1,5 @@
 import { WorldItemInfo } from '../../src/WorldItemInfo';
-import { HierarchyBuildingTransformator } from '../../src/transformators/HierarchyBuildingTransformator';
+import { BuildHierarchyModifier } from '../../src/modifiers/BuildHierarchyModifier';
 import { Polygon, Point } from '@nightshifts.inc/geometry';
 
 
@@ -30,7 +30,7 @@ describe('HierarchyBuildingTransformator', () => {
                 'cupboard'
             );
 
-            const hierarchyBuildingWorldItemGeneratorDecorator = new HierarchyBuildingTransformator();
+            const hierarchyBuildingWorldItemGeneratorDecorator = new BuildHierarchyModifier();
 
             hierarchyBuildingWorldItemGeneratorDecorator.transform([worldItemParentMock, worldItemChildMock]);
 
@@ -63,7 +63,7 @@ describe('HierarchyBuildingTransformator', () => {
                 'cupboard'
             );
 
-            new HierarchyBuildingTransformator().transform([worldItemParentMock, worldItemChildMock]);
+            new BuildHierarchyModifier().transform([worldItemParentMock, worldItemChildMock]);
 
             expect(worldItemParentMock.children.length).toEqual(0);
         });

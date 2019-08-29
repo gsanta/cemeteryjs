@@ -2,7 +2,7 @@ import { Polygon, Shape } from '@nightshifts.inc/geometry';
 import { Mesh, Vector3 } from 'babylonjs';
 import * as sinon from 'sinon';
 import { DiscFactory } from '../../../../src/integrations/babylonjs/shape_factories/DiscFactory';
-import { createMaterialBuilder, createMeshBuilder, createScene } from '../../../testUtils';
+import { createMaterialBuilder, createMeshBuilder, createScene } from '../../../test_utils/mocks';
 import { WorldItemInfo } from '../../../../src/WorldItemInfo';
 
 describe('DiscFactory', () => {
@@ -30,7 +30,7 @@ describe('DiscFactory', () => {
                 name: 'Disc',
                 checkCollisions: true,
                 material: {
-                    name: 'material'
+                    name: 'disc-material'
                 }
             });
         });

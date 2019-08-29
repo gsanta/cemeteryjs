@@ -1,4 +1,4 @@
-import { WorldItemInfoUtils } from "../WorldItemInfoUtils";
+import { WorldItemUtils } from "../WorldItemUtils";
 import { WorldItemInfo } from "../WorldItemInfo";
 import { Polygon, Segment, Distance, Line, Point, Angle, Transform } from '@nightshifts.inc/geometry';
 
@@ -11,7 +11,7 @@ export class FurnitureRealSizeTransformator {
     }
 
     public transform(worldItems: WorldItemInfo[]): WorldItemInfo[] {
-        const rooms: WorldItemInfo[] = WorldItemInfoUtils.filterRooms(worldItems);
+        const rooms: WorldItemInfo[] = WorldItemUtils.filterRooms(worldItems);
 
         rooms.forEach(room => this.transformFurnituresInRoom(room));
 

@@ -1,4 +1,4 @@
-import { createMaterialBuilder as setupMaterialBuilder, createScene as setupScene } from "../../testUtils";
+import { createMaterialBuilder as setupMaterialBuilder, createScene as setupScene } from "../../test_utils/mocks";
 import { MaterialFactory } from '../../../src/integrations/babylonjs/MaterialFactory';
 import { MeshDescriptor, ShapeDescriptor } from '../../../src/integrations/babylonjs/MeshFactory';
 import { WorldItemInfo } from "../../../src";

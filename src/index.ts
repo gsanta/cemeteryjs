@@ -1,14 +1,14 @@
 import { RoomInfoParser } from './parsers/room_parser/RoomInfoParser';
 import { FurnitureInfoParser } from './parsers/furniture_parser/FurnitureInfoParser';
 import { CombinedWorldItemParser } from './parsers/CombinedWorldItemParser';
-import { ScalingTransformator } from './transformators/ScalingTransformator';
-import { BorderItemAddingTransformator } from './transformators/BorderItemAddingTransformator';
-import { BorderItemSegmentingTransformator } from './transformators/BorderItemSegmentingTransformator';
+import { ScaleModifier } from './modifiers/ScaleModifier';
+import { AssignBordersToRoomsModifier } from './modifiers/AssignBordersToRoomsModifier';
+import { SegmentBordersModifier } from './modifiers/SegmentBordersModifier';
 import { RootWorldItemParser } from './parsers/RootWorldItemParser';
 import { RoomSeparatorParser } from './parsers/room_separator_parser/RoomSeparatorParser';
-import { HierarchyBuildingTransformator } from './transformators/HierarchyBuildingTransformator';
+import { BuildHierarchyModifier } from './modifiers/BuildHierarchyModifier';
 import { PolygonAreaInfoParser } from './parsers/polygon_area_parser/PolygonAreaInfoParser';
-import { BorderItemsToLinesTransformator } from './transformators/BorderItemsToLinesTransformator';
+import { ConvertBorderPolyToLineModifier } from './modifiers/ConvertBorderPolyToLineModifier';
 import { BorderItemWidthToRealWidthTransformator } from './transformators/BorderItemWidthToRealWidthTransformator';
 import { FurnitureRealSizeTransformator } from './transformators/FurnitureRealSizeTransformator';
 import { MeshCreationTransformator } from './transformators/MeshCreationTransformator';
@@ -39,11 +39,11 @@ export const parsers = {
 }
 
 export const transformators = {
-    HierarchyBuildingTransformator,
-    ScalingTransformator,
-    BorderItemAddingTransformator,
-    BorderItemSegmentingTransformator,
-    BorderItemsToLinesTransformator,
+    BuildHierarchyModifier,
+    ScaleModifier,
+    AssignBordersToRoomsModifier,
+    SegmentBordersModifier,
+    ConvertBorderPolyToLineModifier,
     BorderItemWidthToRealWidthTransformator,
     FurnitureRealSizeTransformator,
     MeshCreationTransformator,

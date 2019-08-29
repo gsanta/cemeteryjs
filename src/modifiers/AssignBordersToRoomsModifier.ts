@@ -1,11 +1,11 @@
 import { WorldItemInfo } from '../WorldItemInfo';
-import { WorldItemTransformator } from './WorldItemTransformator';
+import { WorldItemTransformator } from '../transformators/WorldItemTransformator';
 import _ = require('lodash');
-import { WorldItemInfoUtils } from '../WorldItemInfoUtils';
+import { WorldItemUtils } from '../WorldItemUtils';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 
 
-export class BorderItemAddingTransformator implements WorldItemTransformator {
+export class AssignBordersToRoomsModifier implements WorldItemTransformator {
     private roomSeparatorItemNames: string[];
     private doNotIncludeBorderItemsThatIntersectsOnlyAtCorner: boolean;
 
@@ -19,8 +19,8 @@ export class BorderItemAddingTransformator implements WorldItemTransformator {
     }
 
     private addBoderItems(worldItems: WorldItemInfo[]): WorldItemInfo[] {
-        const rooms = WorldItemInfoUtils.filterRooms(worldItems);
-        const roomSeparatorItems = WorldItemInfoUtils.filterBorders(worldItems, this.roomSeparatorItemNames);
+        const rooms = WorldItemUtils.filterRooms(worldItems);
+        const roomSeparatorItems = WorldItemUtils.filterBorders(worldItems, this.roomSeparatorItemNames);
 
         rooms.forEach(room => {
             roomSeparatorItems

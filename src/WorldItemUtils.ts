@@ -3,7 +3,7 @@ import { TreeIteratorGenerator } from "./utils/TreeIteratorGenerator";
 import _ = require("lodash");
 
 
-export class WorldItemInfoUtils {
+export class WorldItemUtils {
     public static filterRooms(worldItems: WorldItemInfo[]): WorldItemInfo[] {
         const rooms: WorldItemInfo[] = [];
 

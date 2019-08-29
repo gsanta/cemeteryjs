@@ -1,7 +1,15 @@
-import { WorldItemInfo } from '../src/WorldItemInfo';
+import { WorldItemInfo } from '../../src/WorldItemInfo';
 import { Shape } from '@nightshifts.inc/geometry';
-import { hasAnyWorldItemInfoDimension } from './parsers/room_separator_parser/RoomSeparatorParser.test';
-// declare const expect;
+import { hasAnyWorldItemInfoDimension } from '../parsers/room_separator_parser/RoomSeparatorParser.test';
+
+declare global {
+    namespace jest {
+        interface Matchers<R> {
+            toHaveBorders(borderDimensions: Shape[]),
+            toHaveAnyWithDimensions(dimensions: Shape)
+        }
+    }
+}
 
 expect.extend({
     toHaveBorders(room: WorldItemInfo, borderDimensions: Shape[]) {
@@ -40,7 +48,7 @@ expect.extend({
 
         try {
             hasAnyWorldItemInfoDimension(dimensions, worldItems)
-        } catch(e) {
+        } catch (e) {
             message = e.message;
         }
 

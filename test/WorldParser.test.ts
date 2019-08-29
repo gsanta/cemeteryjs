@@ -1,16 +1,16 @@
 import { WorldParser } from '../src/WorldParser';
 import { WorldItemInfo } from '../src/WorldItemInfo';
-import { BorderItemAddingTransformator } from '../src/transformators/BorderItemAddingTransformator';
-import { HierarchyBuildingTransformator } from '../src/transformators/HierarchyBuildingTransformator';
-import { ScalingTransformator } from '../src/transformators/ScalingTransformator';
+import { AssignBordersToRoomsModifier } from '../src/modifiers/AssignBordersToRoomsModifier';
+import { BuildHierarchyModifier } from '../src/modifiers/BuildHierarchyModifier';
+import { ScaleModifier } from '../src/modifiers/ScaleModifier';
 import { CombinedWorldItemParser } from '../src/parsers/CombinedWorldItemParser';
 import { FurnitureInfoParser } from '../src/parsers/furniture_parser/FurnitureInfoParser';
 import { WorldMapToMatrixGraphConverter } from '../src/matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 import { RoomSeparatorParser } from '../src/parsers/room_separator_parser/RoomSeparatorParser';
 import { RoomInfoParser } from '../src/parsers/room_parser/RoomInfoParser';
 import { RootWorldItemParser } from '../src/parsers/RootWorldItemParser';
-import { BorderItemSegmentingTransformator } from '../src/transformators/BorderItemSegmentingTransformator';
-import { BorderItemsToLinesTransformator } from '../src/transformators/BorderItemsToLinesTransformator';
+import { SegmentBordersModifier } from '../src/modifiers/SegmentBordersModifier';
+import { ConvertBorderPolyToLineModifier } from '../src/modifiers/ConvertBorderPolyToLineModifier';
 import { PolygonAreaInfoParser } from '../src/parsers/polygon_area_parser/PolygonAreaInfoParser';
 import {Polygon, Point, Line} from '@nightshifts.inc/geometry';
 import { WorldItemInfoFactory } from '../src/WorldItemInfoFactory';
@@ -134,10 +134,10 @@ describe('`WorldParser`', () => {
                     ]
                 ),
                 [
-                    new ScalingTransformator({ x: options.xScale, y: options.yScale }),
-                    new BorderItemSegmentingTransformator(worldItemInfoFactory, ['wall', 'door', 'window']),
-                    new HierarchyBuildingTransformator(),
-                    new BorderItemAddingTransformator(['wall', 'door', 'window'])
+                    new ScaleModifier({ x: options.xScale, y: options.yScale }),
+                    new SegmentBordersModifier(worldItemInfoFactory, ['wall', 'door', 'window']),
+                    new BuildHierarchyModifier(),
+                    new AssignBordersToRoomsModifier(['wall', 'door', 'window'])
                 ]
             );
 
@@ -190,10 +190,10 @@ describe('`WorldParser`', () => {
                 ]
             ),
             [
-                new ScalingTransformator({ x: options.xScale, y: options.yScale }),
-                new BorderItemSegmentingTransformator(worldItemInfoFactory, ['wall', 'door', 'window']),
-                new HierarchyBuildingTransformator(),
-                new BorderItemAddingTransformator(['wall', 'door', 'window'])
+                new ScaleModifier({ x: options.xScale, y: options.yScale }),
+                new SegmentBordersModifier(worldItemInfoFactory, ['wall', 'door', 'window']),
+                new BuildHierarchyModifier(),
+                new AssignBordersToRoomsModifier(['wall', 'door', 'window'])
             ]
         );
 
@@ -232,7 +232,7 @@ describe('`WorldParser`', () => {
                     new RootWorldItemParser(worldItemInfoFactory)
                 ]
             ),
-            [new HierarchyBuildingTransformator()]
+            [new BuildHierarchyModifier()]
         );
 
         const [root] = worldMapParser.parse(map);
@@ -291,11 +291,11 @@ describe('`WorldParser`', () => {
                 ]
             ),
             [
-                new ScalingTransformator(),
-                new BorderItemSegmentingTransformator(worldItemInfoFactory, ['wall']),
-                new HierarchyBuildingTransformator(),
-                new BorderItemAddingTransformator(['wall']),
-                new BorderItemsToLinesTransformator()
+                new ScaleModifier(),
+                new SegmentBordersModifier(worldItemInfoFactory, ['wall']),
+                new BuildHierarchyModifier(),
+                new AssignBordersToRoomsModifier(['wall']),
+                new ConvertBorderPolyToLineModifier()
             ]
         );
         const [root1] = worldMapParser.parse(map);

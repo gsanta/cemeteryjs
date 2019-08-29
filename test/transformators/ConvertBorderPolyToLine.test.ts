@@ -1,7 +1,7 @@
 import { RoomInfoParser } from '../../src/parsers/room_parser/RoomInfoParser';
-import { BorderItemsToLinesTransformator, mergeStraightAngledNeighbouringBorderItemPolygons } from '../../src/transformators/BorderItemsToLinesTransformator';
+import { ConvertBorderPolyToLineModifier, mergeStraightAngledNeighbouringBorderItemPolygons } from '../../src/modifiers/ConvertBorderPolyToLineModifier';
 import { WorldMapToMatrixGraphConverter } from '../../src/matrix_graph/conversion/WorldMapToMatrixGraphConverter';
-import { ScalingTransformator } from '../../src/transformators/ScalingTransformator';
+import { ScaleModifier } from '../../src/modifiers/ScaleModifier';
 import { Polygon, Point } from '@nightshifts.inc/geometry';
 import { WorldItemInfoFactory } from '../../src/WorldItemInfoFactory';
 import { WorldItemInfo } from '../../src/WorldItemInfo';
@@ -11,12 +11,12 @@ import { CombinedWorldItemParser } from '../../src/parsers/CombinedWorldItemPars
 import { FurnitureInfoParser } from '../../src/parsers/furniture_parser/FurnitureInfoParser';
 import { RoomSeparatorParser } from '../../src/parsers/room_separator_parser/RoomSeparatorParser';
 import { RootWorldItemParser } from '../../src/parsers/RootWorldItemParser';
-import { BorderItemSegmentingTransformator } from '../../src/transformators/BorderItemSegmentingTransformator';
-import { HierarchyBuildingTransformator } from '../../src/transformators/HierarchyBuildingTransformator';
-import { BorderItemAddingTransformator } from '../../src/transformators/BorderItemAddingTransformator';
+import { SegmentBordersModifier } from '../../src/modifiers/SegmentBordersModifier';
+import { BuildHierarchyModifier } from '../../src/modifiers/BuildHierarchyModifier';
+import { AssignBordersToRoomsModifier } from '../../src/modifiers/AssignBordersToRoomsModifier';
 import * as _ from 'lodash';
 import { hasAnyWorldItemInfoDimension } from '../parsers/room_separator_parser/RoomSeparatorParser.test';
-import { findWorldItemWithDimensions } from '../testUtils';
+import { findWorldItemWithDimensions } from '../test_utils/mocks';
 
 const initBorderItems = (strMap: string): WorldItemInfo[] => {
     const map = `
@@ -53,10 +53,10 @@ const initBorderItems = (strMap: string): WorldItemInfo[] => {
             ]
         ),
         [
-            new ScalingTransformator(),
-            new BorderItemSegmentingTransformator(worldItemInfoFactory, ['wall', 'door']),
-            new HierarchyBuildingTransformator(),
-            new BorderItemAddingTransformator(['wall', 'door'])
+            new ScaleModifier(),
+            new SegmentBordersModifier(worldItemInfoFactory, ['wall', 'door']),
+            new BuildHierarchyModifier(),
+            new AssignBordersToRoomsModifier(['wall', 'door'])
         ]
     );
 
@@ -64,23 +64,7 @@ const initBorderItems = (strMap: string): WorldItemInfo[] => {
 }
 
 
-describe('`BorderItemsToLinesTransformator`', () => {
-    describe('mergeStraightAngledNeighbouringBorderItemPolygons', () => {
-
-        // it ('reduces the number of `Polygon`s as much as possible by merging `Polygon`s with common edge', () => {
-
-        //     const polygons = [
-        //         Polygon.createRectangle(1, 1, 1, 3),
-        //         Polygon.createRectangle(2, 3, 2, 1),
-        //         Polygon.createRectangle(4, 3, 3, 1)
-        //     ];
-        //     const reducedPolygons = mergeStraightAngledNeighbouringBorderItemPolygons(polygons);
-        //     expect(_.find(reducedPolygons, polygon => polygon.equalTo( Polygon.createRectangle(1, 1, 1, 3)))).toBeTruthy()
-        //     expect(_.find(reducedPolygons, polygon => polygon.equalTo( Polygon.createRectangle(2, 3, 5, 1)))).toBeTruthy()
-        //     expect(reducedPolygons.length).toEqual(2);
-        // });
-    });
-
+describe(`ConvertBorderPolyToLine`, () => {
     it ('tests the new implementation', () => {
         const map = `
             map \`
@@ -119,15 +103,15 @@ describe('`BorderItemsToLinesTransformator`', () => {
                 ]
             ),
             [
-                new ScalingTransformator(),
-                new BorderItemSegmentingTransformator(worldItemInfoFactory, ['wall']),
-                new HierarchyBuildingTransformator(),
-                new BorderItemAddingTransformator(['wall']),
+                new ScaleModifier(),
+                new SegmentBordersModifier(worldItemInfoFactory, ['wall']),
+                new BuildHierarchyModifier(),
+                new AssignBordersToRoomsModifier(['wall']),
             ]
         );
 
         const [root1] = worldMapParser.parse(map);
-        const [root] = new BorderItemsToLinesTransformator().transform([root1]);
+        const [root] = new ConvertBorderPolyToLineModifier().transform([root1]);
 
         const expectedRoomDimensions1 = new Polygon([
             new Point(0.5, 0.5),
@@ -159,7 +143,7 @@ describe('`BorderItemsToLinesTransformator`', () => {
 
             const [root] = initBorderItems(map);
 
-            const items = new BorderItemsToLinesTransformator().transform([root]);
+            const items = new ConvertBorderPolyToLineModifier().transform([root]);
 
             expect(findWorldItemWithDimensions(items, new Segment(new Point(0.5, 0.5), new Point(0.5, 3.5))).rotation).toEqual(Math.PI / 2);
             expect(findWorldItemWithDimensions(items, new Segment(new Point(7.5, 0.5), new Point(7.5, 3.5))).rotation).toEqual(Math.PI / 2);
@@ -178,7 +162,7 @@ describe('`BorderItemsToLinesTransformator`', () => {
 
             const [root] = initBorderItems(map);
 
-            const items = new BorderItemsToLinesTransformator().transform([root]);
+            const items = new ConvertBorderPolyToLineModifier().transform([root]);
         });
 
         it ('handles multiple rooms', () => {
@@ -206,7 +190,7 @@ describe('`BorderItemsToLinesTransformator`', () => {
 
             let [root] = initBorderItems(map);
 
-            [root] = new BorderItemsToLinesTransformator().transform([root]);
+            [root] = new ConvertBorderPolyToLineModifier().transform([root]);
 
             expect(root.children[0]).toHaveBorders([
                 new Segment(new Point(0.5, 0.5), new Point(0.5, 4.5)),

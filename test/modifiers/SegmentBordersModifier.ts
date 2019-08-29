@@ -2,7 +2,7 @@ import { Polygon } from "@nightshifts.inc/geometry";
 import { CombinedWorldItemParser } from "../../src/parsers/CombinedWorldItemParser";
 import { RoomInfoParser } from "../../src/parsers/room_parser/RoomInfoParser";
 import { RoomSeparatorParser } from "../../src/parsers/room_separator_parser/RoomSeparatorParser";
-import { BorderItemSegmentingTransformator } from "../../src/transformators/BorderItemSegmentingTransformator";
+import { SegmentBordersModifier } from "../../src/modifiers/SegmentBordersModifier";
 import { WorldItemInfoFactory } from "../../src/WorldItemInfoFactory";
 import _ = require("lodash");
 
@@ -39,7 +39,7 @@ describe ('BorderItemSegmentingTransformator', () => {
                 ]
             ).generateFromStringMap(map);
 
-            items = new BorderItemSegmentingTransformator(worldItemInfoFacotry, ['wall']).transform(items);
+            items = new SegmentBordersModifier(worldItemInfoFacotry, ['wall']).transform(items);
 
             expect(items.filter(item => item.name === 'wall').length).toEqual(7);
 
@@ -86,7 +86,7 @@ describe ('BorderItemSegmentingTransformator', () => {
                 ]
             ).generateFromStringMap(map);
 
-            items = new BorderItemSegmentingTransformator(worldItemInfoFacotry, ['wall']).transform(items);
+            items = new SegmentBordersModifier(worldItemInfoFacotry, ['wall']).transform(items);
 
             expect(items.filter(item => item.name === 'wall').length).toEqual(16);
             // TODO: fix expectations
@@ -142,7 +142,7 @@ describe ('BorderItemSegmentingTransformator', () => {
                 ]
             ).generateFromStringMap(map);
 
-            items = new BorderItemSegmentingTransformator(worldItemInfoFacotry, ['wall']).transform(items);
+            items = new SegmentBordersModifier(worldItemInfoFacotry, ['wall']).transform(items);
 
             expect(1).toEqual(2);
         });

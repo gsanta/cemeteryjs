@@ -6,8 +6,8 @@ module.exports = {
     transformIgnorePatterns: [
         "node_modules/(?!(@babylonjs/core)/)"
     ],
-    setupFilesAfterEnv: ['<rootDir>/test/setupTest.ts'],
+    setupFilesAfterEnv: ['<rootDir>/test/test_utils/assertions.ts'],
     moduleNameMapper: {
-        "\\.(gwm)$": "<rootDir>/test/test_setup/fileMock.js"
+        "\\.(gwm)$": "<rootDir>/test/test_utils/fileMock.js"
     }
 };

@@ -1,7 +1,7 @@
 import { WorldItemInfo } from "../WorldItemInfo";
-import { WorldItemTransformator } from './WorldItemTransformator';
+import { WorldItemTransformator } from '../transformators/WorldItemTransformator';
 import { Polygon, Line, Shape, Point, GeometryUtils, StripeView } from '@nightshifts.inc/geometry';
-import { WorldItemInfoUtils } from '../WorldItemInfoUtils';
+import { WorldItemUtils } from '../WorldItemUtils';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import _ = require("lodash");
 
@@ -40,14 +40,14 @@ export const mergeStraightAngledNeighbouringBorderItemPolygons = (borders: World
  * It can be useful to represent walls, doors etc. as `Segment`s instead of `Polygon`s, so this class transforms the border item
  * `Polygon`s into `Segment`s and also stretches the room `Polygon`s so that they fill up the generated empty space.
  */
-export class BorderItemsToLinesTransformator implements WorldItemTransformator {
+export class ConvertBorderPolyToLineModifier implements WorldItemTransformator {
 
     public transform(gwmWorldItems: WorldItemInfo[]): WorldItemInfo[] {
         return this.stretchRooms(gwmWorldItems);
     }
 
     private stretchRooms(rootWorldItems: WorldItemInfo[]) {
-        const rooms: WorldItemInfo[] = WorldItemInfoUtils.filterRooms(rootWorldItems);
+        const rooms: WorldItemInfo[] = WorldItemUtils.filterRooms(rootWorldItems);
 
         this.runAlgorithm(rooms);
 
@@ -179,11 +179,5 @@ export class BorderItemsToLinesTransformator implements WorldItemTransformator {
                 }
             });
         });
-    }
-
-    private makeSegmentHorizontal(segment: Segment): Segment {
-        const line = Line.fromPointSlopeForm(segment.getBoundingCenter(), 0);
-        const [point1, point2] = line.getSegmentWithCenterPointAndDistance(segment.getBoundingCenter(), segment.getLength() / 2);
-        return new Segment(point1, point2);
     }
 }

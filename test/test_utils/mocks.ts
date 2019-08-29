@@ -1,9 +1,16 @@
 import { Scene, MeshBuilder } from 'babylonjs';
 import * as sinon from 'sinon';
-import { MaterialBuilder } from '../src/integrations/babylonjs/MaterialFactory';
-import { WorldItemInfo } from '../src/WorldItemInfo';
+import { MaterialBuilder } from '../../src/integrations/babylonjs/MaterialFactory';
+import { WorldItemInfo } from '../../src/WorldItemInfo';
 import { Shape } from '@nightshifts.inc/geometry';
-import { TreeIteratorGenerator } from '../src/utils/TreeIteratorGenerator';
+import { TreeIteratorGenerator } from '../../src/utils/TreeIteratorGenerator';
+
+type ModifierId = 'scale' | 'segmentBorders' | 'buildHierarchy' | 'assignBordersToRooms' | 'convertBorderPolyToLine' | 'thickenBorder';
+
+
+export function setup(map: string, modifiers: []) {
+
+}
 
 export function createScene(): Scene {
     return <Scene> {

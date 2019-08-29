@@ -19,14 +19,14 @@ export class WorldItemInfoFactory {
         return worldItem;
     }
 
-    public clone(worldItemInfo: WorldItemInfo): WorldItemInfo {
-        const id = this.getNextId(name);
+    public clone(newType: string, worldItemInfo: WorldItemInfo): WorldItemInfo {
+        const id = this.getNextId(newType);
 
         const clone = new WorldItemInfo(
             id,
             worldItemInfo.type,
             worldItemInfo.dimensions,
-            worldItemInfo.name
+            newType
         );
 
         clone.children = worldItemInfo.children;

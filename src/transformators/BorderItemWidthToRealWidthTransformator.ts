@@ -1,7 +1,7 @@
 import { Point, Segment } from '@nightshifts.inc/geometry';
 import { RoomUtils } from "../utils/RoomUtils";
 import { WorldItemInfo } from "../WorldItemInfo";
-import { WorldItemInfoUtils } from "../WorldItemInfoUtils";
+import { WorldItemUtils } from "../WorldItemUtils";
 import { WorldItemTransformator } from "./WorldItemTransformator";
 import _ = require("lodash");
 
@@ -18,7 +18,7 @@ export class BorderItemWidthToRealWidthTransformator implements WorldItemTransfo
     }
 
     public transform(worldItems: WorldItemInfo[]): WorldItemInfo[] {
-        const rooms: WorldItemInfo[] = WorldItemInfoUtils.filterRooms(worldItems);
+        const rooms: WorldItemInfo[] = WorldItemUtils.filterRooms(worldItems);
 
         /**
          * The border width adjustment has to be done room by room because the adjustment algorithm needs the
