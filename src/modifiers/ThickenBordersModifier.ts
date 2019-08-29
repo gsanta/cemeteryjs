@@ -5,8 +5,13 @@ import { Modifier } from "./Modifier";
 
 
 export class ThickenBordersModifier implements Modifier {
+    static modName = 'thickenBorders';
 
-    public apply(rootItems: WorldItem[]): WorldItem[] {
+    getName(): string {
+        return ThickenBordersModifier.name;
+    }
+
+    apply(rootItems: WorldItem[]): WorldItem[] {
         rootItems[0].children
             .filter(child => child.isBorder)
             .forEach(wall => this.thickenWall(wall));

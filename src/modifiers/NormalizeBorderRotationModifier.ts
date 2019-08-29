@@ -5,8 +5,13 @@ import { Modifier } from "./Modifier";
 
 
 export class NormalizeBorderRotationModifier implements Modifier {
+    static modName = 'normalizeBorderRotation';
 
-    public apply(rootItems: WorldItem[]): WorldItem[] {
+    getName(): string {
+        return NormalizeBorderRotationModifier.name;
+    }
+
+    apply(rootItems: WorldItem[]): WorldItem[] {
         rootItems[0].children
             .filter(child => child.isBorder === true)
             .forEach(border => this.normalizeBorder(border));

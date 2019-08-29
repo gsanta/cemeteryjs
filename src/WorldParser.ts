@@ -11,7 +11,7 @@ import { WorldMapToMatrixGraphConverter } from './matrix_graph/conversion/WorldM
 import { RoomSeparatorParser } from './parsers/room_separator_parser/RoomSeparatorParser';
 import { AssignBordersToRoomsModifier } from './modifiers/AssignBordersToRoomsModifier';
 import { Modifier } from './modifiers/Modifier';
-import { WorldItemInfoFactory } from './WorldItemInfoFactory';
+import { WorldItemFactory } from './WorldItemInfoFactory';
 import { WorldConfig, defaultWorldConfig } from './integrations/api/Importer';
 
 export interface ParseOptions<T> {
@@ -47,7 +47,7 @@ export class WorldParser {
 
     public static createWithOptions(worldConfig: Partial<WorldConfig>): WorldParser {
         worldConfig = {...defaultWorldConfig, ...worldConfig};
-        const worldItemInfoFactory = new WorldItemInfoFactory();
+        const worldItemInfoFactory = new WorldItemFactory();
         return new WorldParser(
             new CombinedWorldItemParser(
                 [

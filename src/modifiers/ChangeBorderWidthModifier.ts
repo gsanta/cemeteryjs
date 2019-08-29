@@ -11,13 +11,19 @@ import _ = require("lodash");
  * real width of the actual door mesh. This transformator can be used for that.
  */
 export class ChangeBorderWidthModifier implements Modifier {
+    static modName = 'changeBorderWidth';
+
     private realItemWidths: {name: string, width: number}[] = [];
 
     constructor(realItemWidths: {name: string, width: number}[] = []) {
         this.realItemWidths = realItemWidths;
     }
 
-    public apply(worldItems: WorldItem[]): WorldItem[] {
+    getName(): string {
+        return ChangeBorderWidthModifier.name;
+    }
+
+    apply(worldItems: WorldItem[]): WorldItem[] {
         const rooms: WorldItem[] = WorldItemUtils.filterRooms(worldItems);
 
         /**

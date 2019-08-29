@@ -13,13 +13,19 @@ export interface MockMeshCreator<M> {
  * So this module can be used instead of `MeshCreationTransformator` which sets up mock Meshes for each `WorldItemInfo`.
  */
 export class CreateMockMeshModifier<M> implements Modifier  {
+    static modName = 'createMockMesh';
+
     private mockMeshCreator: MockMeshCreator<M>;
 
     constructor(mockMeshCreator: MockMeshCreator<M>) {
         this.mockMeshCreator = mockMeshCreator;
     }
 
-    public apply(worldItems: WorldItem<M>[]): WorldItem<M>[] {
+    getName(): string {
+        return CreateMockMeshModifier.name;
+    }
+
+    apply(worldItems: WorldItem<M>[]): WorldItem<M>[] {
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
                 item.meshTemplate = {

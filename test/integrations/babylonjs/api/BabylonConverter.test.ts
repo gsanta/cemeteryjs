@@ -1,10 +1,10 @@
 import { WorldItem } from '../../../../src/WorldItemInfo';
 import { BabylonConverter } from '../../../../src/integrations/babylonjs/api/BabylonConverter';
 import * as sinon from 'sinon';
-import { WorldItemInfoFactory } from '../../../../src/WorldItemInfoFactory';
+import { WorldItemFactory } from '../../../../src/WorldItemInfoFactory';
 
 function setupWorldItemInfo(): WorldItem[] {
-    const worldItemFactory = new WorldItemInfoFactory();
+    const worldItemFactory = new WorldItemFactory();
     const root: WorldItem = worldItemFactory.create('root', null, 'root', false);
 
     const room1: WorldItem = worldItemFactory.create('room', null, 'room', false);

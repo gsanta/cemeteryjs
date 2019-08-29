@@ -5,7 +5,7 @@ import { WorldItemParser } from "../WorldItemParser";
 import { PolygonAreaInfoParser } from '../polygon_area_parser/PolygonAreaInfoParser';
 import { WorldMapToRoomMapConverter } from './WorldMapToRoomMapConverter';
 import _ = require("lodash");
-import { WorldItemInfoFactory } from '../../WorldItemInfoFactory';
+import { WorldItemFactory } from '../../WorldItemInfoFactory';
 
 /**
  * @hidden
@@ -18,7 +18,7 @@ export class RoomInfoParser implements WorldItemParser {
     private polygonAreaInfoGenerator: PolygonAreaInfoParser;
 
     constructor(
-        worldItemInfoFactory: WorldItemInfoFactory,
+        worldItemInfoFactory: WorldItemFactory,
         worldMapConverter = new WorldMapToMatrixGraphConverter(),
         polygonAreaInfoGenerator = new PolygonAreaInfoParser('room', worldItemInfoFactory),
         worldMapToRoomMapConverter = new WorldMapToRoomMapConverter('W', '-', ['W', 'D', 'I']),

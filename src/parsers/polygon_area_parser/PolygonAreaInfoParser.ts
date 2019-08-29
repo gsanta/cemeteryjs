@@ -5,7 +5,7 @@ import { WorldItemParser } from "../WorldItemParser";
 import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
 import { PolygonRedundantPointReducer } from "./PolygonRedundantPointReducer";
 import { Polygon, Line, Point } from "@nightshifts.inc/geometry";
-import { WorldItemInfoFactory } from '../../WorldItemInfoFactory';
+import { WorldItemFactory } from '../../WorldItemInfoFactory';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 
 /**
@@ -16,11 +16,11 @@ import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
  */
 export class PolygonAreaInfoParser implements WorldItemParser {
     private polygonRedundantPointReducer: PolygonRedundantPointReducer;
-    private worldItemInfoFactory: WorldItemInfoFactory;
+    private worldItemInfoFactory: WorldItemFactory;
     private worldMapConverter: WorldMapToMatrixGraphConverter;
     private itemName: string;
 
-    constructor(itemName: string, worldItemInfoFactory: WorldItemInfoFactory, worldMapConverter = new WorldMapToMatrixGraphConverter()) {
+    constructor(itemName: string, worldItemInfoFactory: WorldItemFactory, worldMapConverter = new WorldMapToMatrixGraphConverter()) {
         this.itemName = itemName;
         this.worldItemInfoFactory = worldItemInfoFactory;
         this.worldMapConverter = worldMapConverter;

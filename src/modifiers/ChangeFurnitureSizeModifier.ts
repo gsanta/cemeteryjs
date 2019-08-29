@@ -5,13 +5,19 @@ import { Modifier } from './Modifier';
 
 
 export class ChangeFurnitureSizeModifier implements Modifier {
+    static modeName = 'changeFurnitureSize';
+
     private realSizes: {[name: string]: Polygon};
 
     constructor(realFurnitureSizes: {[name: string]: Polygon}) {
         this.realSizes = realFurnitureSizes;
     }
 
-    public apply(worldItems: WorldItem[]): WorldItem[] {
+    getName(): string {
+        return ChangeFurnitureSizeModifier.name;
+    }
+
+    apply(worldItems: WorldItem[]): WorldItem[] {
         const rooms: WorldItem[] = WorldItemUtils.filterRooms(worldItems);
 
         rooms.forEach(room => this.transformFurnituresInRoom(room));

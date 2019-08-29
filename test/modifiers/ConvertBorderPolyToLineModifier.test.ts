@@ -3,7 +3,7 @@ import { ConvertBorderPolyToLineModifier, mergeStraightAngledNeighbouringBorderI
 import { WorldMapToMatrixGraphConverter } from '../../src/matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 import { ScaleModifier } from '../../src/modifiers/ScaleModifier';
 import { Polygon, Point } from '@nightshifts.inc/geometry';
-import { WorldItemInfoFactory } from '../../src/WorldItemInfoFactory';
+import { WorldItemFactory } from '../../src/WorldItemInfoFactory';
 import { WorldItem } from '../../src/WorldItemInfo';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { WorldParser } from '../../src';
@@ -42,7 +42,7 @@ const initBorderItems = (strMap: string): WorldItem[] => {
         roomSeparatorCharacters: ['wall', 'door']
     }
 
-    const worldItemInfoFactory = new WorldItemInfoFactory();
+    const worldItemInfoFactory = new WorldItemFactory();
     const worldMapParser = WorldParser.createWithCustomWorldItemGenerator(
         new CombinedWorldItemParser(
             [
@@ -92,7 +92,7 @@ describe(`ConvertBorderPolyToLineModifier`, () => {
             roomSeparatorCharacters: ['wall']
         }
 
-        const worldItemInfoFactory = new WorldItemInfoFactory();
+        const worldItemInfoFactory = new WorldItemFactory();
         const worldMapParser = WorldParser.createWithCustomWorldItemGenerator(
             new CombinedWorldItemParser(
                 [

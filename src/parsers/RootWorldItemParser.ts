@@ -2,15 +2,15 @@ import { MatrixGraph } from "../matrix_graph/MatrixGraph";
 import { WorldMapToMatrixGraphConverter } from "../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
 import { WorldItem } from "../WorldItemInfo";
 import { WorldItemParser } from './WorldItemParser';
-import { WorldItemInfoFactory } from '../WorldItemInfoFactory';
+import { WorldItemFactory } from '../WorldItemInfoFactory';
 import { Polygon } from "@nightshifts.inc/geometry";
 
 
 export class RootWorldItemParser implements WorldItemParser {
     private worldMapConverter: WorldMapToMatrixGraphConverter;
-    private worldItemInfoFactory: WorldItemInfoFactory;
+    private worldItemInfoFactory: WorldItemFactory;
 
-    constructor(worldItemInfoFactory: WorldItemInfoFactory, worldMapConverter = new WorldMapToMatrixGraphConverter()) {
+    constructor(worldItemInfoFactory: WorldItemFactory, worldMapConverter = new WorldMapToMatrixGraphConverter()) {
         this.worldItemInfoFactory = worldItemInfoFactory;
         this.worldMapConverter = worldMapConverter;
     }

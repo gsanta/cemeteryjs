@@ -4,12 +4,33 @@ import { MaterialBuilder } from '../../src/integrations/babylonjs/MaterialFactor
 import { WorldItem } from '../../src/WorldItemInfo';
 import { Shape } from '@nightshifts.inc/geometry';
 import { TreeIteratorGenerator } from '../../src/utils/TreeIteratorGenerator';
+import { ScaleModifier } from '../../src/modifiers/ScaleModifier';
+import { SegmentBordersModifier } from '../../src/modifiers/SegmentBordersModifier';
+import { BuildHierarchyModifier } from '../../src/modifiers/BuildHierarchyModifier';
+import { AssignBordersToRoomsModifier } from '../../src/modifiers/AssignBordersToRoomsModifier';
+import { ConvertBorderPolyToLineModifier } from '../../src/modifiers/ConvertBorderPolyToLineModifier';
+import { ChangeBorderWidthModifier } from '../../src/modifiers/ChangeBorderWidthModifier';
+import { WorldItemFactory } from '../../src/WorldItemInfoFactory';
+import { ModifierFacade } from '../../src/modifiers/ModifierFacade';
 
 type ModifierId = 'scale' | 'segmentBorders' | 'buildHierarchy' | 'assignBordersToRooms' | 'convertBorderPolyToLine' | 'thickenBorder';
 
 
-export function setup(map: string, modifiers: []) {
+export function setup(map: string) {
+    const worldItemFactory = new WorldItemFactory();
 
+    const modifiers = [
+        new ScaleModifier(),
+        new SegmentBordersModifier(worldItemFactory, ['wall', 'door']),
+        new BuildHierarchyModifier(),
+        new AssignBordersToRoomsModifier(['wall', 'door']),
+        new ConvertBorderPolyToLineModifier(),
+        new ChangeBorderWidthModifier([{name: 'door', width: 2}])
+    ];
+
+    const modifierFacade = new ModifierFacade(modifiers);
+
+    
 }
 
 export function createScene(): Scene {

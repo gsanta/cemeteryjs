@@ -2,7 +2,7 @@ import { Modifier } from "./Modifier";
 import { WorldItemUtils } from "../WorldItemUtils";
 import { WorldItem } from "../WorldItemInfo";
 import { Segment, Polygon, Line, Point } from '@nightshifts.inc/geometry';
-import { WorldItemInfoFactory } from '../WorldItemInfoFactory';
+import { WorldItemFactory } from '../WorldItemInfoFactory';
 
 /**
  * For external walls (walls where on of the side is not inside of the building) it creates a duplicate `WorldItemInfo` which forms an outer layer.
@@ -10,13 +10,19 @@ import { WorldItemInfoFactory } from '../WorldItemInfoFactory';
  * should be removed in the future when custom transformators can be applied by the user.
  */
 export class AddOuterBorderLayerModifier implements Modifier {
-    private worldItemFactory: WorldItemInfoFactory;
+    static modName = 'addOuterBorderLayer';
 
-    constructor(worldItemFactory: WorldItemInfoFactory = new WorldItemInfoFactory()) {
+    private worldItemFactory: WorldItemFactory;
+
+    constructor(worldItemFactory: WorldItemFactory = new WorldItemFactory()) {
         this.worldItemFactory = worldItemFactory;
     }
 
-    public apply(rootItems: WorldItem[]): WorldItem[] {
+    getName(): string {
+        return AddOuterBorderLayerModifier.name;
+    }
+
+    apply(rootItems: WorldItem[]): WorldItem[] {
         const rooms = rootItems[0].children.filter(child => child.name === 'room');
         rootItems[0].children
             .filter(child => child.isBorder)

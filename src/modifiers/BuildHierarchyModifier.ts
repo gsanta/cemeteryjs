@@ -11,11 +11,18 @@ import { Polygon } from "@nightshifts.inc/geometry";
  */
 
 export class BuildHierarchyModifier implements Modifier {
-    public apply(gwmWorldItems: WorldItem[]): WorldItem[] {
+    static modName = 'buildHierarchy';
+
+    getName(): string {
+        return BuildHierarchyModifier.name;
+    }
+
+    apply(gwmWorldItems: WorldItem[]): WorldItem[] {
         return this.buildHierarchy(gwmWorldItems);
     }
 
-    public buildHierarchy(worldItems: WorldItem[]) {
+
+    buildHierarchy(worldItems: WorldItem[]) {
         const childrenAlreadyCategorized = [];
 
         let rootWorldItems = worldItems;

@@ -13,7 +13,7 @@ import { RoomSeparatorParser } from '../../../parsers/room_separator_parser/Room
 import { FurnitureInfoParser } from '../../../parsers/furniture_parser/FurnitureInfoParser';
 import { CreateMeshModifier } from '../../../modifiers/CreateMeshModifier';
 import { WorldParser } from '../../../WorldParser';
-import { WorldItemInfoFactory } from '../../../WorldItemInfoFactory';
+import { WorldItemFactory } from '../../../WorldItemInfoFactory';
 import { CombinedWorldItemParser } from '../../../parsers/CombinedWorldItemParser';
 import { WorldMapToMatrixGraphConverter } from '../../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 import { WorldItem } from '../../../WorldItemInfo';
@@ -44,7 +44,7 @@ export class BabylonImporter implements Importer {
 
         return meshCreationTransformator.prepareMeshTemplates(modelTypeDescription)
         .then(() => {
-            const worldItemInfoFactory = new WorldItemInfoFactory();
+            const worldItemInfoFactory = new WorldItemFactory();
             return WorldParser.createWithCustomWorldItemGenerator(
                 new CombinedWorldItemParser(
                     [

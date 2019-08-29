@@ -12,13 +12,19 @@ type Scaling = {
  * Scales the dimensions of every `WorldItemInfo` by the given amount in the x and y direction.
  */
 export class ScaleModifier implements Modifier {
+    static modName = 'scale';
+
     private scaling: Scaling;
 
     constructor(scaling: Scaling = { x: 1, y: 1}) {
         this.scaling = scaling;
     }
 
-    public apply(gwmWorldItems: WorldItem[]): WorldItem[] {
+    getName(): string {
+        return ScaleModifier.name;
+    }
+
+    apply(gwmWorldItems: WorldItem[]): WorldItem[] {
         return this.scaleItems(gwmWorldItems);
     }
 

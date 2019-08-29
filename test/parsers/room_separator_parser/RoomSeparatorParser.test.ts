@@ -1,6 +1,6 @@
 import { WorldMapToMatrixGraphConverter } from "../../../src/matrix_graph/conversion/WorldMapToMatrixGraphConverter";
 import { RoomSeparatorParser } from '../../../src/parsers/room_separator_parser/RoomSeparatorParser';
-import { WorldItemInfoFactory } from '../../../src/WorldItemInfoFactory';
+import { WorldItemFactory } from '../../../src/WorldItemInfoFactory';
 import { Polygon, Shape } from "@nightshifts.inc/geometry";
 import { WorldItem } from '../../../src/WorldItemInfo';
 import * as _ from 'lodash';
@@ -41,7 +41,7 @@ describe('RoomSeparatorParser', () => {
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const roomSeparatorParser = new RoomSeparatorParser(new WorldItemInfoFactory(), ['wall', 'door', 'window']);
+            const roomSeparatorParser = new RoomSeparatorParser(new WorldItemFactory(), ['wall', 'door', 'window']);
 
 
             const worldItems = roomSeparatorParser.generate(matrixGraph);
@@ -78,7 +78,7 @@ describe('RoomSeparatorParser', () => {
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const roomSeparatorParser = new RoomSeparatorParser(new WorldItemInfoFactory(), ['wall', 'door', 'window']);
+            const roomSeparatorParser = new RoomSeparatorParser(new WorldItemFactory(), ['wall', 'door', 'window']);
 
 
             const worldItems = roomSeparatorParser.generate(matrixGraph);

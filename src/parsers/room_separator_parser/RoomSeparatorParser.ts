@@ -3,17 +3,17 @@ import { WorldItem } from '../../WorldItemInfo';
 import * as _ from 'lodash';
 import { WorldItemParser } from '../WorldItemParser';
 import { WorldMapToMatrixGraphConverter } from '../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
-import { WorldItemInfoFactory } from '../../WorldItemInfoFactory';
+import { WorldItemFactory } from '../../WorldItemInfoFactory';
 import { Polygon } from '@nightshifts.inc/geometry';
 import { flat } from '../../utils/ArrayUtils';
 
 export class RoomSeparatorParser implements WorldItemParser {
-    private worldItemInfoFactory: WorldItemInfoFactory;
+    private worldItemInfoFactory: WorldItemFactory;
     private worldMapConverter: WorldMapToMatrixGraphConverter;
     private roomSeparatorCharacters: string[];
 
     constructor(
-        worldItemInfoFactory: WorldItemInfoFactory,
+        worldItemInfoFactory: WorldItemFactory,
         roomSeparatorCharacters: string[],
         worldMapConverter = new WorldMapToMatrixGraphConverter()
     ) {

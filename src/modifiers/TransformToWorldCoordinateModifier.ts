@@ -4,8 +4,13 @@ import { Shape, Point } from "@nightshifts.inc/geometry";
 import { TreeIteratorGenerator } from "../utils/TreeIteratorGenerator";
 
 export class TransformToWorldCoordinateModifier implements Modifier {
+    static modName = 'transformToWorldCoordinate';
 
-    public apply(worldItems: WorldItem[]): WorldItem[] {
+    getName(): string {
+        return TransformToWorldCoordinateModifier.name;
+    }
+
+    apply(worldItems: WorldItem[]): WorldItem[] {
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
                 if (item !== rootItem) {

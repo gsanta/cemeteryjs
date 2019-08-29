@@ -2,7 +2,7 @@ import { WorldItem } from "../WorldItemInfo";
 import _ = require("lodash");
 import { Modifier } from './Modifier';
 import { Polygon, Point, Line, StripeView } from '@nightshifts.inc/geometry';
-import { WorldItemInfoFactory } from '../WorldItemInfoFactory';
+import { WorldItemFactory } from '../WorldItemInfoFactory';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { WorldItemUtils } from '../WorldItemUtils';
 
@@ -18,12 +18,14 @@ import { WorldItemUtils } from '../WorldItemUtils';
  *
  */
 export class SegmentBordersModifier  implements Modifier {
-    private worldItemInfoFactory: WorldItemInfoFactory;
+    static modName = 'segmentBorders';
+
+    private worldItemInfoFactory: WorldItemFactory;
     private roomSeparatorItemNames: string[];
     private scales: {xScale: number, yScale: number};
 
     constructor(
-        worldItemInfoFactory: WorldItemInfoFactory,
+        worldItemInfoFactory: WorldItemFactory,
         roomSeparatorItemNames: string[],
         scales: {xScale: number, yScale: number} = {xScale: 1, yScale: 1}
     ) {
@@ -32,7 +34,11 @@ export class SegmentBordersModifier  implements Modifier {
         this.scales = scales;
     }
 
-    public apply(gwmWorldItems: WorldItem[]): WorldItem[] {
+    getName(): string {
+        return SegmentBordersModifier.name;
+    }
+
+    apply(gwmWorldItems: WorldItem[]): WorldItem[] {
         return this.segmentBorderItemsIfNeeded(gwmWorldItems);
     }
 

@@ -41,8 +41,13 @@ export const mergeStraightAngledNeighbouringBorderItemPolygons = (borders: World
  * `Polygon`s into `Segment`s and also stretches the room `Polygon`s so that they fill up the generated empty space.
  */
 export class ConvertBorderPolyToLineModifier implements Modifier {
+    static modName = 'convertBorderPolygonToLine';
 
-    public apply(gwmWorldItems: WorldItem[]): WorldItem[] {
+    getName(): string {
+        return ConvertBorderPolyToLineModifier.name;
+    }
+
+    apply(gwmWorldItems: WorldItem[]): WorldItem[] {
         return this.stretchRooms(gwmWorldItems);
     }
 

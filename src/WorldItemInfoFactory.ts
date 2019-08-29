@@ -6,7 +6,7 @@ import { WorldItem } from './WorldItemInfo';
  * new `WorldItemInfo` instances should be created via this class, so that a unique id can be set
  * for each new instance.
  */
-export class WorldItemInfoFactory {
+export class WorldItemFactory {
     private countersByType: Map<string, number> = new Map();
 
     public create(type: string, dimensions: Polygon, name: string, isBorder: boolean, rotation?: number): WorldItem {

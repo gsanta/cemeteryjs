@@ -8,6 +8,8 @@ import { WorldItem } from "../WorldItemInfo";
 import { Modifier } from './Modifier';
 
 export class CreateMeshModifier implements Modifier {
+    static modName = 'createMesh';
+
     private meshFactory: MeshFactory;
     private meshLoader: MeshLoader;
     private isReady = true;
@@ -18,7 +20,11 @@ export class CreateMeshModifier implements Modifier {
         this.meshFactory = meshFactory;
     }
 
-    public prepareMeshTemplates(modelTypeDescriptions: MeshDescriptor[]): Promise<void> {
+    getName(): string {
+        return CreateMeshModifier.name;
+    }
+
+    prepareMeshTemplates(modelTypeDescriptions: MeshDescriptor[]): Promise<void> {
         this.isReady = false;
 
         this.createShapeTemplates(modelTypeDescriptions);

@@ -9,7 +9,7 @@ import { SegmentBordersModifier } from "../../src/modifiers/SegmentBordersModifi
 import { BuildHierarchyModifier } from "../../src/modifiers/BuildHierarchyModifier";
 import { AssignBordersToRoomsModifier } from "../../src/modifiers/AssignBordersToRoomsModifier";
 import { WorldItem } from "../../src/WorldItemInfo";
-import { WorldItemInfoFactory } from "../../src/WorldItemInfoFactory";
+import { WorldItemFactory } from "../../src/WorldItemInfoFactory";
 import { WorldParser } from "../../src/WorldParser";
 import { ConvertBorderPolyToLineModifier } from "../../src/modifiers/ConvertBorderPolyToLineModifier";
 import { ThickenBordersModifier } from '../../src/modifiers/ThickenBordersModifier';
@@ -39,7 +39,7 @@ const setup = (strMap: string): WorldItem[] => {
         roomSeparatorCharacters: ['wall', 'door']
     }
 
-    const worldItemInfoFactory = new WorldItemInfoFactory();
+    const worldItemInfoFactory = new WorldItemFactory();
     const worldMapParser = WorldParser.createWithCustomWorldItemGenerator(
         new CombinedWorldItemParser(
             [

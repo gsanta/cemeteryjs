@@ -13,7 +13,7 @@ import { SegmentBordersModifier } from '../src/modifiers/SegmentBordersModifier'
 import { ConvertBorderPolyToLineModifier } from '../src/modifiers/ConvertBorderPolyToLineModifier';
 import { PolygonAreaInfoParser } from '../src/parsers/polygon_area_parser/PolygonAreaInfoParser';
 import {Polygon, Point, Line} from '@nightshifts.inc/geometry';
-import { WorldItemInfoFactory } from '../src/WorldItemInfoFactory';
+import { WorldItemFactory } from '../src/WorldItemInfoFactory';
 import _ = require('lodash');
 
 describe('`WorldParser`', () => {
@@ -123,7 +123,7 @@ describe('`WorldParser`', () => {
                 roomSeparatorCharacters: ['wall', 'door', 'window']
             }
 
-            const worldItemInfoFactory = new WorldItemInfoFactory();
+            const worldItemInfoFactory = new WorldItemFactory();
             const worldMapParser = WorldParser.createWithCustomWorldItemGenerator(
                 new CombinedWorldItemParser(
                     [
@@ -179,7 +179,7 @@ describe('`WorldParser`', () => {
             roomSeparatorCharacters: ['wall', 'door', 'window']
         }
 
-        const worldItemInfoFactory = new WorldItemInfoFactory();
+        const worldItemInfoFactory = new WorldItemFactory();
         const worldMapParser = WorldParser.createWithCustomWorldItemGenerator(
             new CombinedWorldItemParser(
                 [
@@ -223,7 +223,7 @@ describe('`WorldParser`', () => {
             \`
         `;
 
-        const worldItemInfoFactory = new WorldItemInfoFactory();
+        const worldItemInfoFactory = new WorldItemFactory();
         const worldMapParser = WorldParser.createWithCustomWorldItemGenerator(
             new CombinedWorldItemParser(
                 [
@@ -280,7 +280,7 @@ describe('`WorldParser`', () => {
             roomSeparatorCharacters: ['wall']
         }
 
-        const worldItemInfoFactory = new WorldItemInfoFactory();
+        const worldItemInfoFactory = new WorldItemFactory();
         const worldMapParser = WorldParser.createWithCustomWorldItemGenerator(
             new CombinedWorldItemParser(
                 [

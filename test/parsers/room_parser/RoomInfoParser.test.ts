@@ -3,7 +3,7 @@ import { RoomInfoParser } from '../../../src/parsers/room_parser/RoomInfoParser'
 import * as fs from 'fs';
 import { WorldMapToRoomMapConverter } from "../../../src/parsers/room_parser/WorldMapToRoomMapConverter";
 import { Point, Polygon } from '@nightshifts.inc/geometry';
-import { WorldItemInfoFactory } from '../../../src/WorldItemInfoFactory';
+import { WorldItemFactory } from '../../../src/WorldItemInfoFactory';
 
 describe('RoomInfoParser', () => {
     describe ('generate', () => {
@@ -16,7 +16,7 @@ describe('RoomInfoParser', () => {
 
             const matrixGraph = worldMapToGraphConverter.convert(worldMapToRoomMapConverter.convert(worldMapStr));
 
-            const roomInfoParser = new RoomInfoParser(new WorldItemInfoFactory());
+            const roomInfoParser = new RoomInfoParser(new WorldItemFactory());
 
             const worldItem = roomInfoParser.generate(matrixGraph);
 

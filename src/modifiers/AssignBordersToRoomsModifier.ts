@@ -6,6 +6,8 @@ import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 
 
 export class AssignBordersToRoomsModifier implements Modifier {
+    static modName = 'assignBordersToRooms';
+
     private roomSeparatorItemNames: string[];
     private doNotIncludeBorderItemsThatIntersectsOnlyAtCorner: boolean;
 
@@ -14,7 +16,11 @@ export class AssignBordersToRoomsModifier implements Modifier {
         this.doNotIncludeBorderItemsThatIntersectsOnlyAtCorner = doNotIncludeBorderItemsThatIntersectsOnlyAtCorner
     }
 
-    public apply(gwmWorldItems: WorldItem[]): WorldItem[] {
+    getName(): string {
+        return AssignBordersToRoomsModifier.name;
+    }
+
+    apply(gwmWorldItems: WorldItem[]): WorldItem[] {
         return this.addBoderItems(gwmWorldItems);
     }
 
