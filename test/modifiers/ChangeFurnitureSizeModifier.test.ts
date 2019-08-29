@@ -10,11 +10,11 @@ import { SegmentBordersModifier } from "../../src/modifiers/SegmentBordersModifi
 import { BuildHierarchyModifier } from "../../src/modifiers/BuildHierarchyModifier";
 import { AssignBordersToRoomsModifier } from "../../src/modifiers/AssignBordersToRoomsModifier";
 import { ConvertBorderPolyToLineModifier } from "../../src/modifiers/ConvertBorderPolyToLineModifier";
-import { BorderThickeningTransformator } from '../../src/transformators/BorderThickeningTransformator';
-import { OuterBorderLayerAddingTransformator } from '../../src/transformators/OuterBorderLayerAddingTransformator';
-import { Point, Segment } from "@nightshifts.inc/geometry";
+import { ChangeBorderWidthModifier } from "../../src/modifiers/ChangeBorderWidthModifier";
+import { ChangeFurnitureSizeModifier } from '../../src/modifiers/ChangeFurnitureSizeModifier';
+import { Polygon } from '@nightshifts.inc/geometry';
 
-const setup = (strMap: string): WorldItemInfo[] => {
+const initBorderItems = (strMap: string): WorldItemInfo[] => {
     const map = `
         map \`
 
@@ -26,6 +26,9 @@ const setup = (strMap: string): WorldItemInfo[] => {
 
         W = wall
         D = door
+        T = table
+        B = bed
+        C = cupboard
         - = empty
 
         \`
@@ -34,7 +37,7 @@ const setup = (strMap: string): WorldItemInfo[] => {
     const options = {
         xScale: 1,
         yScale: 1,
-        furnitureCharacters: [],
+        furnitureCharacters: ['table', 'bed', 'cupboard'],
         roomSeparatorCharacters: ['wall', 'door']
     }
 
@@ -54,38 +57,54 @@ const setup = (strMap: string): WorldItemInfo[] => {
             new BuildHierarchyModifier(),
             new AssignBordersToRoomsModifier(['wall', 'door']),
             new ConvertBorderPolyToLineModifier(),
-            new BorderThickeningTransformator()
+            new ChangeBorderWidthModifier([{name: 'door', width: 2}])
         ]
     );
 
     return worldMapParser.parse(map);
 }
 
-describe(`OuterBorderLayerAddingTransformator`, () => {
-
-
-    it ('applies the outer layer for external walls', () => {
+describe('ChangeFurnitureSizeModifier', () => {
+    it ('transforms the sketched furniture dimensions into real mesh dimensions', () => {
         const map = `
-            WDDWWWWW
-            W--W---W
-            W--W---W
-            WWWWWWWW
+        WWWWWWWWWWWWWWW
+        W-------------W
+        W------TTT----W
+        W------TTT----W
+        W-------------W
+        WWWWWWWWWWWWWWW
+
         `;
 
-        setup(map);
+        const transformator = new ChangeFurnitureSizeModifier({table: Polygon.createRectangle(0, 0, 2, 1)});
+        const items = transformator.transform(initBorderItems(map));
 
-        const [root] = setup(map);
+        const room = items[0].children[0];
+        const table = room.children[0];
 
-        expect(root.children.length).toEqual(9);
+        expect(table.dimensions).toEqual(Polygon.createRectangle(7.5, 2.5, 2, 1));
+    });
 
-        const items = new OuterBorderLayerAddingTransformator().transform([root]);
+    it ('snaps the furniture beside the wall if the original dimensions touched a wall', () => {
+        const map = `
+        WWWWWWWWWWWWWWW
+        W------C------W
+        WTTT---C------W
+        WTTT---C----TTW
+        W-----------TTW
+        W----BBB------W
+        WWWWWWWWWWWWWWW
 
-        expect(items[0].children.length).toEqual(15);
-        expect(items[0].children).toHaveAnyWithDimensions(new Segment(new Point(0.375, 0.5), new Point(0.375, 3.5)));
-        expect(items[0].children).toHaveAnyWithDimensions(new Segment(new Point(7.625, 0.5), new Point(7.625, 3.5)));
-        expect(items[0].children).toHaveAnyWithDimensions(new Segment(new Point(0.5, 3.625), new Point(3.5, 3.625)));
-        expect(items[0].children).toHaveAnyWithDimensions(new Segment(new Point(3.5, 3.625), new Point(7.5, 3.625)));
-        expect(items[0].children).toHaveAnyWithDimensions(new Segment(new Point(3.5, 0.325), new Point(7.5, 0.325)));
-        expect(items[0].children).toHaveAnyWithDimensions(new Segment(new Point(0.5, 0.375), new Point(3.5, 0.375)));
+        `;
+
+        const transformator = new ChangeFurnitureSizeModifier({table: Polygon.createRectangle(0, 0, 2, 1), cupboard: Polygon.createRectangle(0, 0, 0.5, 2)});
+        const items = transformator.transform(initBorderItems(map));
+
+        const room = items[0].children[0];
+
+        expect(room.children).toHaveAnyWithDimensions(Polygon.createRectangle(0.5, 2, 1, 2));
+        expect(room.children).toHaveAnyWithDimensions(Polygon.createRectangle(5, 5.5, 3, 1));
+        expect(room.children).toHaveAnyWithDimensions(Polygon.createRectangle(5, 5.5, 3, 1));
+        expect(room.children).toHaveAnyWithDimensions(Polygon.createRectangle(13.5, 3, 1, 2));
     });
 });

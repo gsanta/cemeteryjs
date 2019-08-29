@@ -1,12 +1,12 @@
 
-import { WorldItemTransformator } from "./WorldItemTransformator";
+import { Segment } from "@nightshifts.inc/geometry";
 import { WorldItemInfo } from "../WorldItemInfo";
-import { GeometryUtils, Segment } from "@nightshifts.inc/geometry";
+import { Modifier } from "./Modifier";
 
 
-export class BorderThickeningTransformator implements WorldItemTransformator {
+export class ThickenBordersModifier implements Modifier {
 
-    public transform(rootItems: WorldItemInfo[]): WorldItemInfo[] {
+    public apply(rootItems: WorldItemInfo[]): WorldItemInfo[] {
         rootItems[0].children
             .filter(child => child.isBorder)
             .forEach(wall => this.thickenWall(wall));

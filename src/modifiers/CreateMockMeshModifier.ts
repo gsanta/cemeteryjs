@@ -1,4 +1,4 @@
-import { WorldItemTransformator } from "./WorldItemTransformator";
+import { Modifier } from "./Modifier";
 import { WorldItemInfo } from "../WorldItemInfo";
 import { TreeIteratorGenerator } from "../utils/TreeIteratorGenerator";
 
@@ -12,14 +12,14 @@ export interface MockMeshCreator<M> {
  * because Mesh implementations (e.g for BabylonJS) uses webgl functionality which is not available for unit-tests.
  * So this module can be used instead of `MeshCreationTransformator` which sets up mock Meshes for each `WorldItemInfo`.
  */
-export class MockMeshCreationTransformator<M> implements WorldItemTransformator  {
+export class CreateMockMeshModifier<M> implements Modifier  {
     private mockMeshCreator: MockMeshCreator<M>;
 
     constructor(mockMeshCreator: MockMeshCreator<M>) {
         this.mockMeshCreator = mockMeshCreator;
     }
 
-    public transform(worldItems: WorldItemInfo<M>[]): WorldItemInfo<M>[] {
+    public apply(worldItems: WorldItemInfo<M>[]): WorldItemInfo<M>[] {
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
                 item.meshTemplate = {

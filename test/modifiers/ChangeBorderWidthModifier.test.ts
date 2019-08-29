@@ -60,7 +60,7 @@ const initBorderItems = (strMap: string): WorldItemInfo[] => {
 
 
 
-describe('BorderItemWidthToRealWidthTransformator', () => {
+describe('ChangeBorderWidthModifier', () => {
     // it ('orders the border items within a room so that neighbouring border items are placed next to each other', () => {
     //     let room = new WorldItemInfo(1, 'room', null, 'room');
     //     room.borderItems = [

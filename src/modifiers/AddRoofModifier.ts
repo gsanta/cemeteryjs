@@ -1,4 +1,4 @@
-import { WorldItemTransformator } from "../transformators/WorldItemTransformator";
+import { Modifier } from "./Modifier";
 import { WorldItemInfo } from "../WorldItemInfo";
 import { WorldItemUtils } from '../WorldItemUtils';
 import { WorldItemInfoFactory } from '../WorldItemInfoFactory';
@@ -6,14 +6,14 @@ import { WorldItemInfoFactory } from '../WorldItemInfoFactory';
 /**
  * For each `WorldItemInfo` of type 'room' it creates a new `WorldIemInfo` of type 'roof'.
  */
-export class AddRoofModifier implements WorldItemTransformator {
+export class AddRoofModifier implements Modifier {
     private worldItemFactory: WorldItemInfoFactory;
 
     constructor(worldItemFactory: WorldItemInfoFactory) {
         this.worldItemFactory = worldItemFactory;
     }
 
-    public transform(worldItems: WorldItemInfo[]): WorldItemInfo[] {
+    public apply(worldItems: WorldItemInfo[]): WorldItemInfo[] {
         const root = worldItems[0];
         const rooms = WorldItemUtils.filterRooms(worldItems);
 

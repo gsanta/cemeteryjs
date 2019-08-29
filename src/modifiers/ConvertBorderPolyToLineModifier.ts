@@ -1,5 +1,5 @@
 import { WorldItemInfo } from "../WorldItemInfo";
-import { WorldItemTransformator } from '../transformators/WorldItemTransformator';
+import { Modifier } from './Modifier';
 import { Polygon, Line, Shape, Point, GeometryUtils, StripeView } from '@nightshifts.inc/geometry';
 import { WorldItemUtils } from '../WorldItemUtils';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
@@ -40,9 +40,9 @@ export const mergeStraightAngledNeighbouringBorderItemPolygons = (borders: World
  * It can be useful to represent walls, doors etc. as `Segment`s instead of `Polygon`s, so this class transforms the border item
  * `Polygon`s into `Segment`s and also stretches the room `Polygon`s so that they fill up the generated empty space.
  */
-export class ConvertBorderPolyToLineModifier implements WorldItemTransformator {
+export class ConvertBorderPolyToLineModifier implements Modifier {
 
-    public transform(gwmWorldItems: WorldItemInfo[]): WorldItemInfo[] {
+    public apply(gwmWorldItems: WorldItemInfo[]): WorldItemInfo[] {
         return this.stretchRooms(gwmWorldItems);
     }
 

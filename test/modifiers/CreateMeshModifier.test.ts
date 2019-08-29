@@ -1,10 +1,9 @@
 import * as sinon from 'sinon';
-import { MeshCreationTransformator } from '../../src/transformators/MeshCreationTransformator';
-import { WorldItemInfo } from '../../src/WorldItemInfo';
-import { MeshFactory, MeshDescriptor } from '../../src/integrations/babylonjs/MeshFactory';
+import { MeshDescriptor, MeshFactory } from '../../src/integrations/babylonjs/MeshFactory';
 import { MeshLoader } from '../../src/integrations/babylonjs/MeshLoader';
+import { CreateMeshModifier } from '../../src/modifiers/CreateMeshModifier';
 
-describe(`MeshCreationTransformator`, () => {
+describe(`CreateMeshModifier`, () => {
     describe(`prepareMeshTemplates`, () => {
         it ('loads the mesh for every `MeshDescriptor` that has a `FileDescriptor`', () => {
             const meshDescriptors = setupMeshDescriptors();
@@ -23,7 +22,7 @@ describe(`MeshCreationTransformator`, () => {
                 setMeshTemplates: <any> sinon.spy()
             };
 
-            const meshCreationTransformator = new MeshCreationTransformator(<MeshLoader> meshLoader, meshFactory);
+            const meshCreationTransformator = new CreateMeshModifier(<MeshLoader> meshLoader, meshFactory);
 
             return meshCreationTransformator.prepareMeshTemplates(meshDescriptors)
                 .then(() => {

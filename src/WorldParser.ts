@@ -10,7 +10,7 @@ import { RootWorldItemParser } from './parsers/RootWorldItemParser';
 import { WorldMapToMatrixGraphConverter } from './matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 import { RoomSeparatorParser } from './parsers/room_separator_parser/RoomSeparatorParser';
 import { AssignBordersToRoomsModifier } from './modifiers/AssignBordersToRoomsModifier';
-import { WorldItemTransformator } from './transformators/WorldItemTransformator';
+import { Modifier } from './modifiers/Modifier';
 import { WorldItemInfoFactory } from './WorldItemInfoFactory';
 import { WorldConfig, defaultWorldConfig } from './integrations/api/Importer';
 
@@ -32,9 +32,9 @@ export const defaultParseOptions: ParseOptions<any> = {
  */
 export class WorldParser {
     private worldItemGenerator: WorldItemParser;
-    private worldItemTransformators: WorldItemTransformator[];
+    private worldItemTransformators: Modifier[];
 
-    private constructor(worldItemGenerator: WorldItemParser, worldItemTransformators: WorldItemTransformator[] = []) {
+    private constructor(worldItemGenerator: WorldItemParser, worldItemTransformators: Modifier[] = []) {
         this.worldItemGenerator = worldItemGenerator;
         this.worldItemTransformators = worldItemTransformators;
     }
@@ -42,7 +42,7 @@ export class WorldParser {
     public parse(worldMap: string): WorldItemInfo[] {
         const worldItems = this.worldItemGenerator.generateFromStringMap(worldMap);
 
-        return this.worldItemTransformators.reduce((worldItems, transformator) => transformator.transform(worldItems), worldItems);
+        return this.worldItemTransformators.reduce((worldItems, transformator) => transformator.apply(worldItems), worldItems);
     }
 
     public static createWithOptions(worldConfig: Partial<WorldConfig>): WorldParser {
@@ -65,7 +65,7 @@ export class WorldParser {
         );
     }
 
-    public static createWithCustomWorldItemGenerator(worldItemGenerator: WorldItemParser, worldItemTransformator?: WorldItemTransformator[]): WorldParser {
+    public static createWithCustomWorldItemGenerator(worldItemGenerator: WorldItemParser, worldItemTransformator?: Modifier[]): WorldParser {
         return new WorldParser(worldItemGenerator, worldItemTransformator);
     }
 }

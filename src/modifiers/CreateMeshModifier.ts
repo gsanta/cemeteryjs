@@ -1,13 +1,13 @@
 import { Skeleton } from "babylonjs";
 import { Mesh } from "babylonjs/Meshes/mesh";
 import { MeshTemplate } from "../integrations/api/MeshTemplate";
-import { FileDescriptor, MeshDescriptor, MeshFactory, ShapeDescriptor } from '../integrations/babylonjs/MeshFactory';
+import { MeshDescriptor, MeshFactory } from '../integrations/babylonjs/MeshFactory';
 import { MeshLoader } from "../integrations/babylonjs/MeshLoader";
 import { TreeIteratorGenerator } from "../utils/TreeIteratorGenerator";
 import { WorldItemInfo } from "../WorldItemInfo";
-import { WorldItemTransformator } from './WorldItemTransformator';
+import { Modifier } from './Modifier';
 
-export class MeshCreationTransformator implements WorldItemTransformator {
+export class CreateMeshModifier implements Modifier {
     private meshFactory: MeshFactory;
     private meshLoader: MeshLoader;
     private isReady = true;
@@ -26,7 +26,7 @@ export class MeshCreationTransformator implements WorldItemTransformator {
             .then(() => { this.isReady = true });
     }
 
-    public transform(worldItems: WorldItemInfo[]): WorldItemInfo[] {
+    public apply(worldItems: WorldItemInfo[]): WorldItemInfo[] {
         if (!this.isReady) {
             throw new Error('`MeshFactory` is not ready loading the models, please wait for the Promise returned from `loadModels` to resolve.');
         }

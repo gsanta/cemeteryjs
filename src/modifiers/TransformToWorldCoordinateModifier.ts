@@ -1,11 +1,11 @@
 import { WorldItemInfo } from "../WorldItemInfo";
-import { WorldItemTransformator } from "./WorldItemTransformator";
+import { Modifier } from "./Modifier";
 import { Shape, Point } from "@nightshifts.inc/geometry";
 import { TreeIteratorGenerator } from "../utils/TreeIteratorGenerator";
 
-export class WorldCoordinateTransformator implements WorldItemTransformator {
+export class TransformToWorldCoordinateModifier implements Modifier {
 
-    public transform(worldItems: WorldItemInfo[]): WorldItemInfo[] {
+    public apply(worldItems: WorldItemInfo[]): WorldItemInfo[] {
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
                 if (item !== rootItem) {

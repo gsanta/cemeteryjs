@@ -1,10 +1,10 @@
 import { WorldItemInfo } from "../../src";
 import { Polygon, Shape } from '@nightshifts.inc/geometry';
-import { WorldCoordinateTransformator } from '../../src/transformators/WorldCoordinateTransformator';
+import { TransformToWorldCoordinateModifier } from '../../src/modifiers/TransformToWorldCoordinateModifier';
 
 
-describe(`WorldCoordinateTransfomrator`, () => {
-    describe (`transform`, () => {
+describe(`TransformToWorldCoordinateModifier`, () => {
+    describe (`apply`, () => {
         it ('transforms the `WorldItem`s into world space', () => {
             const items: WorldItemInfo[] = [
                 <WorldItemInfo> {
@@ -31,9 +31,9 @@ describe(`WorldCoordinateTransfomrator`, () => {
                 }
             ];
 
-            const worldCoordinateTransformator = new WorldCoordinateTransformator();
+            const worldCoordinateTransformator = new TransformToWorldCoordinateModifier();
 
-            const result = worldCoordinateTransformator.transform(items);
+            const result = worldCoordinateTransformator.apply(items);
 
             expect(result[0]).toMatchObject({ name: 'root', dimensions: Polygon.createRectangle(0, 0, 10, 15)});
             expect(result[0].children[0]).toMatchObject({ name: 'room', dimensions: Polygon.createRectangle(-5, -7.5, 5, 15)});

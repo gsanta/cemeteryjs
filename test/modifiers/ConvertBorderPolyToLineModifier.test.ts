@@ -64,7 +64,7 @@ const initBorderItems = (strMap: string): WorldItemInfo[] => {
 }
 
 
-describe(`ConvertBorderPolyToLine`, () => {
+describe(`ConvertBorderPolyToLineModifier`, () => {
     it ('tests the new implementation', () => {
         const map = `
             map \`
@@ -111,7 +111,7 @@ describe(`ConvertBorderPolyToLine`, () => {
         );
 
         const [root1] = worldMapParser.parse(map);
-        const [root] = new ConvertBorderPolyToLineModifier().transform([root1]);
+        const [root] = new ConvertBorderPolyToLineModifier().apply([root1]);
 
         const expectedRoomDimensions1 = new Polygon([
             new Point(0.5, 0.5),
@@ -132,7 +132,7 @@ describe(`ConvertBorderPolyToLine`, () => {
         // TODO: 2 border items are not validated, they have weird dimensions, check it later
     });
 
-    describe('`transform`', () => {
+    describe('`apply`', () => {
         it ('sets the rotations for the borders correctly', () => {
             const map = `
                 WDDWWWWW
@@ -143,7 +143,7 @@ describe(`ConvertBorderPolyToLine`, () => {
 
             const [root] = initBorderItems(map);
 
-            const items = new ConvertBorderPolyToLineModifier().transform([root]);
+            const items = new ConvertBorderPolyToLineModifier().apply([root]);
 
             expect(findWorldItemWithDimensions(items, new Segment(new Point(0.5, 0.5), new Point(0.5, 3.5))).rotation).toEqual(Math.PI / 2);
             expect(findWorldItemWithDimensions(items, new Segment(new Point(7.5, 0.5), new Point(7.5, 3.5))).rotation).toEqual(Math.PI / 2);
@@ -162,7 +162,7 @@ describe(`ConvertBorderPolyToLine`, () => {
 
             const [root] = initBorderItems(map);
 
-            const items = new ConvertBorderPolyToLineModifier().transform([root]);
+            const items = new ConvertBorderPolyToLineModifier().apply([root]);
         });
 
         it ('handles multiple rooms', () => {
@@ -190,7 +190,7 @@ describe(`ConvertBorderPolyToLine`, () => {
 
             let [root] = initBorderItems(map);
 
-            [root] = new ConvertBorderPolyToLineModifier().transform([root]);
+            [root] = new ConvertBorderPolyToLineModifier().apply([root]);
 
             expect(root.children[0]).toHaveBorders([
                 new Segment(new Point(0.5, 0.5), new Point(0.5, 4.5)),

@@ -1,6 +1,6 @@
 import { WorldItemInfo } from "../WorldItemInfo";
 import _ = require("lodash");
-import { WorldItemTransformator } from '../transformators/WorldItemTransformator';
+import { Modifier } from './Modifier';
 import { Polygon, Point, Line, StripeView } from '@nightshifts.inc/geometry';
 import { WorldItemInfoFactory } from '../WorldItemInfoFactory';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
@@ -17,7 +17,7 @@ import { WorldItemUtils } from '../WorldItemUtils';
  * ROOM3|ROOM4                  ROOM3|ROOM4
  *
  */
-export class SegmentBordersModifier  implements WorldItemTransformator {
+export class SegmentBordersModifier  implements Modifier {
     private worldItemInfoFactory: WorldItemInfoFactory;
     private roomSeparatorItemNames: string[];
     private scales: {xScale: number, yScale: number};
@@ -32,7 +32,7 @@ export class SegmentBordersModifier  implements WorldItemTransformator {
         this.scales = scales;
     }
 
-    public transform(gwmWorldItems: WorldItemInfo[]): WorldItemInfo[] {
+    public apply(gwmWorldItems: WorldItemInfo[]): WorldItemInfo[] {
         return this.segmentBorderItemsIfNeeded(gwmWorldItems);
     }
 

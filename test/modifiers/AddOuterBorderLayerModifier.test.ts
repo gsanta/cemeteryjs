@@ -1,3 +1,4 @@
+import { WorldItemInfo, WorldItemInfoFactory, WorldParser } from "../../src";
 import { CombinedWorldItemParser } from "../../src/parsers/CombinedWorldItemParser";
 import { FurnitureInfoParser } from "../../src/parsers/furniture_parser/FurnitureInfoParser";
 import { WorldMapToMatrixGraphConverter } from "../../src/matrix_graph/conversion/WorldMapToMatrixGraphConverter";
@@ -8,12 +9,10 @@ import { ScaleModifier } from "../../src/modifiers/ScaleModifier";
 import { SegmentBordersModifier } from "../../src/modifiers/SegmentBordersModifier";
 import { BuildHierarchyModifier } from "../../src/modifiers/BuildHierarchyModifier";
 import { AssignBordersToRoomsModifier } from "../../src/modifiers/AssignBordersToRoomsModifier";
-import { WorldItemInfo } from "../../src/WorldItemInfo";
-import { WorldItemInfoFactory } from "../../src/WorldItemInfoFactory";
-import { WorldParser } from "../../src/WorldParser";
 import { ConvertBorderPolyToLineModifier } from "../../src/modifiers/ConvertBorderPolyToLineModifier";
-import { BorderThickeningTransformator } from '../../src/transformators/BorderThickeningTransformator';
-
+import { ThickenBordersModifier } from '../../src/modifiers/ThickenBordersModifier';
+import { AddOuterBorderLayerModifier } from '../../src/modifiers/AddOuterBorderLayerModifier';
+import { Point, Segment } from "@nightshifts.inc/geometry";
 
 const setup = (strMap: string): WorldItemInfo[] => {
     const map = `
@@ -54,26 +53,39 @@ const setup = (strMap: string): WorldItemInfo[] => {
             new SegmentBordersModifier(worldItemInfoFactory, ['wall', 'door']),
             new BuildHierarchyModifier(),
             new AssignBordersToRoomsModifier(['wall', 'door']),
-            new ConvertBorderPolyToLineModifier()
+            new ConvertBorderPolyToLineModifier(),
+            new ThickenBordersModifier()
         ]
     );
 
     return worldMapParser.parse(map);
 }
 
-describe('BorderThickeningTransformator', () => {
+describe(`AddOuterBorderLayerModifier`, () => {
 
-    it ('gives thickness to the walls which were represented as a line segment', () => {
+
+    it ('applies the outer layer for external walls', () => {
         const map = `
             WDDWWWWW
-            W------W
-            W------W
+            W--W---W
+            W--W---W
             WWWWWWWW
         `;
 
-    const [root] = setup(map);
+        setup(map);
 
-    const items = new BorderThickeningTransformator().transform([root]);
+        const [root] = setup(map);
 
+        expect(root.children.length).toEqual(9);
+
+        const items = new AddOuterBorderLayerModifier().apply([root]);
+
+        expect(items[0].children.length).toEqual(15);
+        expect(items[0].children).toHaveAnyWithDimensions(new Segment(new Point(0.375, 0.5), new Point(0.375, 3.5)));
+        expect(items[0].children).toHaveAnyWithDimensions(new Segment(new Point(7.625, 0.5), new Point(7.625, 3.5)));
+        expect(items[0].children).toHaveAnyWithDimensions(new Segment(new Point(0.5, 3.625), new Point(3.5, 3.625)));
+        expect(items[0].children).toHaveAnyWithDimensions(new Segment(new Point(3.5, 3.625), new Point(7.5, 3.625)));
+        expect(items[0].children).toHaveAnyWithDimensions(new Segment(new Point(3.5, 0.325), new Point(7.5, 0.325)));
+        expect(items[0].children).toHaveAnyWithDimensions(new Segment(new Point(0.5, 0.375), new Point(3.5, 0.375)));
     });
 });

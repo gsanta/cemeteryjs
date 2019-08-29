@@ -39,7 +39,7 @@ describe ('BorderItemSegmentingTransformator', () => {
                 ]
             ).generateFromStringMap(map);
 
-            items = new SegmentBordersModifier(worldItemInfoFacotry, ['wall']).transform(items);
+            items = new SegmentBordersModifier(worldItemInfoFacotry, ['wall']).apply(items);
 
             expect(items.filter(item => item.name === 'wall').length).toEqual(7);
 
@@ -86,7 +86,7 @@ describe ('BorderItemSegmentingTransformator', () => {
                 ]
             ).generateFromStringMap(map);
 
-            items = new SegmentBordersModifier(worldItemInfoFacotry, ['wall']).transform(items);
+            items = new SegmentBordersModifier(worldItemInfoFacotry, ['wall']).apply(items);
 
             expect(items.filter(item => item.name === 'wall').length).toEqual(16);
             // TODO: fix expectations
@@ -142,7 +142,7 @@ describe ('BorderItemSegmentingTransformator', () => {
                 ]
             ).generateFromStringMap(map);
 
-            items = new SegmentBordersModifier(worldItemInfoFacotry, ['wall']).transform(items);
+            items = new SegmentBordersModifier(worldItemInfoFacotry, ['wall']).apply(items);
 
             expect(1).toEqual(2);
         });

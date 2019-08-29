@@ -1,6 +1,6 @@
 import { WorldItemInfo } from '../WorldItemInfo';
 import { TreeIteratorGenerator } from '../utils/TreeIteratorGenerator';
-import { WorldItemTransformator } from '../transformators/WorldItemTransformator';
+import { Modifier } from './Modifier';
 import { Point } from '@nightshifts.inc/geometry';
 
 type Scaling = {
@@ -11,14 +11,14 @@ type Scaling = {
 /**
  * Scales the dimensions of every `WorldItemInfo` by the given amount in the x and y direction.
  */
-export class ScaleModifier implements WorldItemTransformator {
+export class ScaleModifier implements Modifier {
     private scaling: Scaling;
 
     constructor(scaling: Scaling = { x: 1, y: 1}) {
         this.scaling = scaling;
     }
 
-    public transform(gwmWorldItems: WorldItemInfo[]): WorldItemInfo[] {
+    public apply(gwmWorldItems: WorldItemInfo[]): WorldItemInfo[] {
         return this.scaleItems(gwmWorldItems);
     }
 

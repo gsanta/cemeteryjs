@@ -9,12 +9,12 @@ import { RoomSeparatorParser } from './parsers/room_separator_parser/RoomSeparat
 import { BuildHierarchyModifier } from './modifiers/BuildHierarchyModifier';
 import { PolygonAreaInfoParser } from './parsers/polygon_area_parser/PolygonAreaInfoParser';
 import { ConvertBorderPolyToLineModifier } from './modifiers/ConvertBorderPolyToLineModifier';
-import { BorderItemWidthToRealWidthTransformator } from './transformators/BorderItemWidthToRealWidthTransformator';
-import { FurnitureRealSizeTransformator } from './transformators/FurnitureRealSizeTransformator';
-import { MeshCreationTransformator } from './transformators/MeshCreationTransformator';
-import { MockMeshCreationTransformator } from './transformators/MockMeshCreationTransformator';
-import { OuterBorderLayerAddingTransformator } from './transformators/OuterBorderLayerAddingTransformator';
-import { BorderThickeningTransformator } from './transformators/BorderThickeningTransformator';
+import { ChangeBorderWidthModifier } from './modifiers/ChangeBorderWidthModifier';
+import { ChangeFurnitureSizeModifier } from './modifiers/ChangeFurnitureSizeModifier';
+import { CreateMeshModifier } from './modifiers/CreateMeshModifier';
+import { CreateMockMeshModifier } from './modifiers/CreateMockMeshModifier';
+import { AddOuterBorderLayerModifier } from './modifiers/AddOuterBorderLayerModifier';
+import { ThickenBordersModifier } from './modifiers/ThickenBordersModifier';
 export { FileDescriptor, ShapeDescriptor, ParentRoomBasedMaterialDescriptor as ParentBasedMaterialDescriptor, RoomDescriptor } from './integrations/babylonjs/MeshFactory';
 export { MeshDescriptor } from './integrations/babylonjs/MeshFactory';
 export { BabylonImporter } from './integrations/babylonjs/api/BabylonImporter';
@@ -44,10 +44,10 @@ export const transformators = {
     AssignBordersToRoomsModifier,
     SegmentBordersModifier,
     ConvertBorderPolyToLineModifier,
-    BorderItemWidthToRealWidthTransformator,
-    FurnitureRealSizeTransformator,
-    MeshCreationTransformator,
-    MockMeshCreationTransformator,
-    OuterBorderLayerAddingTransformator,
-    BorderThickeningTransformator
+    ChangeBorderWidthModifier,
+    ChangeFurnitureSizeModifier,
+    CreateMeshModifier,
+    CreateMockMeshModifier,
+    AddOuterBorderLayerModifier,
+    ThickenBordersModifier
 }

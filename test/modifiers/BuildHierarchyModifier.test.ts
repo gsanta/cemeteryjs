@@ -4,7 +4,7 @@ import { Polygon, Point } from '@nightshifts.inc/geometry';
 
 
 describe('HierarchyBuildingTransformator', () => {
-    describe('transform', () => {
+    describe('apply', () => {
         it ('creates a parent-child relationship between two WorldItems, if one contains the other', () => {
             const worldItemParentMock = new WorldItemInfo(
                 '1',
@@ -32,7 +32,7 @@ describe('HierarchyBuildingTransformator', () => {
 
             const hierarchyBuildingWorldItemGeneratorDecorator = new BuildHierarchyModifier();
 
-            hierarchyBuildingWorldItemGeneratorDecorator.transform([worldItemParentMock, worldItemChildMock]);
+            hierarchyBuildingWorldItemGeneratorDecorator.apply([worldItemParentMock, worldItemChildMock]);
 
             expect(worldItemParentMock.children.length).toEqual(1);
             expect(worldItemParentMock.children[0]).toEqual(worldItemChildMock);
@@ -63,7 +63,7 @@ describe('HierarchyBuildingTransformator', () => {
                 'cupboard'
             );
 
-            new BuildHierarchyModifier().transform([worldItemParentMock, worldItemChildMock]);
+            new BuildHierarchyModifier().apply([worldItemParentMock, worldItemChildMock]);
 
             expect(worldItemParentMock.children.length).toEqual(0);
         });

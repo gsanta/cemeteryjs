@@ -2,7 +2,7 @@ import { Point, Segment } from '@nightshifts.inc/geometry';
 import { RoomUtils } from "../utils/RoomUtils";
 import { WorldItemInfo } from "../WorldItemInfo";
 import { WorldItemUtils } from "../WorldItemUtils";
-import { WorldItemTransformator } from "./WorldItemTransformator";
+import { Modifier } from "./Modifier";
 import _ = require("lodash");
 
 /**
@@ -10,14 +10,14 @@ import _ = require("lodash");
  * Usually for example for a door the size on the world map is just an estimation, which has to be adjusted to the
  * real width of the actual door mesh. This transformator can be used for that.
  */
-export class BorderItemWidthToRealWidthTransformator implements WorldItemTransformator {
+export class ChangeBorderWidthModifier implements Modifier {
     private realItemWidths: {name: string, width: number}[] = [];
 
     constructor(realItemWidths: {name: string, width: number}[] = []) {
         this.realItemWidths = realItemWidths;
     }
 
-    public transform(worldItems: WorldItemInfo[]): WorldItemInfo[] {
+    public apply(worldItems: WorldItemInfo[]): WorldItemInfo[] {
         const rooms: WorldItemInfo[] = WorldItemUtils.filterRooms(worldItems);
 
         /**

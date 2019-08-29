@@ -1,4 +1,4 @@
-import { WorldItemTransformator } from "./WorldItemTransformator";
+import { Modifier } from "./Modifier";
 import { WorldItemUtils } from "../WorldItemUtils";
 import { WorldItemInfo } from "../WorldItemInfo";
 import { Segment, Polygon, Line, Point } from '@nightshifts.inc/geometry';
@@ -9,14 +9,14 @@ import { WorldItemInfoFactory } from '../WorldItemInfoFactory';
  * The use of this transformator is highly specialized (used only in the game 'nightshifts-inc' to apply different lights for the outer layer and the other walls), maybe it
  * should be removed in the future when custom transformators can be applied by the user.
  */
-export class OuterBorderLayerAddingTransformator implements WorldItemTransformator {
+export class AddOuterBorderLayerModifier implements Modifier {
     private worldItemFactory: WorldItemInfoFactory;
 
     constructor(worldItemFactory: WorldItemInfoFactory = new WorldItemInfoFactory()) {
         this.worldItemFactory = worldItemFactory;
     }
 
-    public transform(rootItems: WorldItemInfo[]): WorldItemInfo[] {
+    public apply(rootItems: WorldItemInfo[]): WorldItemInfo[] {
         const rooms = rootItems[0].children.filter(child => child.name === 'room');
         rootItems[0].children
             .filter(child => child.isBorder)

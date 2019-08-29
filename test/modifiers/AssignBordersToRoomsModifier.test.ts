@@ -10,7 +10,7 @@ import { WorldItemInfoFactory } from '../../src/WorldItemInfoFactory';
 
 
 describe(`AssignBordersToRoomsModifier`, () => {
-    describe('`transform`', () => {
+    describe('`apply`', () => {
         it ('adds the bordering WorldItems to the corresponding room WorldItem', () => {
             const map = `
                 map \`
@@ -39,7 +39,7 @@ describe(`AssignBordersToRoomsModifier`, () => {
                 ]
             ).generateFromStringMap(map);
 
-            const [wall1, wall2, wall3, wall4, room] =  new AssignBordersToRoomsModifier(['wall']).transform(items);
+            const [wall1, wall2, wall3, wall4, room] =  new AssignBordersToRoomsModifier(['wall']).apply(items);
 
             expect(room.borderItems).toEqual([wall1, wall2, wall3, wall4]);
         });
@@ -76,8 +76,8 @@ describe(`AssignBordersToRoomsModifier`, () => {
                 ]
             ).generateFromStringMap(map);
 
-            items = new SegmentBordersModifier(worldItemInfoFacotry, ['wall']).transform(items);
-            items = new AssignBordersToRoomsModifier(['wall']).transform(items);
+            items = new SegmentBordersModifier(worldItemInfoFacotry, ['wall']).apply(items);
+            items = new AssignBordersToRoomsModifier(['wall']).apply(items);
 
             const room3 = items.filter(worldItem => worldItem.name === 'room')[2];
 
@@ -119,9 +119,9 @@ describe(`AssignBordersToRoomsModifier`, () => {
                 ]
             ).generateFromStringMap(map);
 
-            items = new ScaleModifier({x: 2, y: 2}).transform(items);
-            items = new SegmentBordersModifier(worldItemInfoFacotry, ['wall'], {xScale: 2, yScale: 2}).transform(items);
-            items = new AssignBordersToRoomsModifier(['wall']).transform(items);
+            items = new ScaleModifier({x: 2, y: 2}).apply(items);
+            items = new SegmentBordersModifier(worldItemInfoFacotry, ['wall'], {xScale: 2, yScale: 2}).apply(items);
+            items = new AssignBordersToRoomsModifier(['wall']).apply(items);
 
             const room3 = items.filter(worldItem => worldItem.name === 'room')[0];
 

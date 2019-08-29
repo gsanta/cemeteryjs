@@ -1,11 +1,11 @@
 import { WorldItemInfo } from '../WorldItemInfo';
-import { WorldItemTransformator } from '../transformators/WorldItemTransformator';
+import { Modifier } from './Modifier';
 import _ = require('lodash');
 import { WorldItemUtils } from '../WorldItemUtils';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 
 
-export class AssignBordersToRoomsModifier implements WorldItemTransformator {
+export class AssignBordersToRoomsModifier implements Modifier {
     private roomSeparatorItemNames: string[];
     private doNotIncludeBorderItemsThatIntersectsOnlyAtCorner: boolean;
 
@@ -14,7 +14,7 @@ export class AssignBordersToRoomsModifier implements WorldItemTransformator {
         this.doNotIncludeBorderItemsThatIntersectsOnlyAtCorner = doNotIncludeBorderItemsThatIntersectsOnlyAtCorner
     }
 
-    public transform(gwmWorldItems: WorldItemInfo[]): WorldItemInfo[] {
+    public apply(gwmWorldItems: WorldItemInfo[]): WorldItemInfo[] {
         return this.addBoderItems(gwmWorldItems);
     }
 

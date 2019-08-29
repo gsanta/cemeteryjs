@@ -3,7 +3,7 @@ import { WorldItemInfo } from "../WorldItemInfo";
 import { Polygon, Segment, Distance, Line, Point, Angle, Transform } from '@nightshifts.inc/geometry';
 
 
-export class FurnitureRealSizeTransformator {
+export class ChangeFurnitureSizeModifier {
     private realSizes: {[name: string]: Polygon};
 
     constructor(realFurnitureSizes: {[name: string]: Polygon}) {

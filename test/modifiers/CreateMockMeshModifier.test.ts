@@ -1,10 +1,10 @@
 import { WorldItemInfo } from "../../src/WorldItemInfo";
 import { Shape, Polygon } from "@nightshifts.inc/geometry";
-import { MockMeshCreationTransformator, MockMeshCreator } from '../../src/transformators/MockMeshCreationTransformator';
+import { CreateMockMeshModifier, MockMeshCreator } from '../../src/modifiers/CreateMockMeshModifier';
 
 
-describe(`MockMeshCreationTransformator`, () => {
-    describe('transform', () => {
+describe(`CreateMockMeshModifier`, () => {
+    describe('apply', () => {
         it ('sets up mock Meshes for each `WorldItemInfo`', () => {
             const items: WorldItemInfo[] = [
                 <WorldItemInfo> {
@@ -39,9 +39,9 @@ describe(`MockMeshCreationTransformator`, () => {
                 ]
             }
 
-            const mockMeshCreationTransformator = new MockMeshCreationTransformator(mockMeshCreator);
+            const mockMeshCreationTransformator = new CreateMockMeshModifier(mockMeshCreator);
 
-            const worldItems = mockMeshCreationTransformator.transform(items);
+            const worldItems = mockMeshCreationTransformator.apply(items);
 
             expect(worldItems[0].meshTemplate.type).toEqual('root');
             expect(worldItems[0].meshTemplate.meshes[0]).toMatchObject({dimensions: Polygon.createRectangle(0, 0, 10, 15)});

@@ -1,7 +1,7 @@
 import { WorldItemParser } from "../parsers/WorldItemParser";
 import { MatrixGraph } from "../matrix_graph/MatrixGraph";
 import { WorldItemInfo } from "../WorldItemInfo";
-import { WorldItemTransformator } from '../transformators/WorldItemTransformator';
+import { Modifier } from './Modifier';
 import _ = require("lodash");
 import { Polygon } from "@nightshifts.inc/geometry";
 
@@ -10,8 +10,8 @@ import { Polygon } from "@nightshifts.inc/geometry";
  * a child based on wheter one fully contains the other.
  */
 
-export class BuildHierarchyModifier implements WorldItemTransformator {
-    public transform(gwmWorldItems: WorldItemInfo[]): WorldItemInfo[] {
+export class BuildHierarchyModifier implements Modifier {
+    public apply(gwmWorldItems: WorldItemInfo[]): WorldItemInfo[] {
         return this.buildHierarchy(gwmWorldItems);
     }
 

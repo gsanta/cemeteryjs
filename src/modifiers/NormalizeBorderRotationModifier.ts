@@ -1,12 +1,12 @@
 
 import { Line, Segment } from "@nightshifts.inc/geometry";
 import { WorldItemInfo } from "../WorldItemInfo";
-import { WorldItemTransformator } from "./WorldItemTransformator";
+import { Modifier } from "./Modifier";
 
 
-export class BorderRotationNormalizingTransformator implements WorldItemTransformator {
+export class NormalizeBorderRotationModifier implements Modifier {
 
-    public transform(rootItems: WorldItemInfo[]): WorldItemInfo[] {
+    public apply(rootItems: WorldItemInfo[]): WorldItemInfo[] {
         rootItems[0].children
             .filter(child => child.isBorder === true)
             .forEach(border => this.normalizeBorder(border));
