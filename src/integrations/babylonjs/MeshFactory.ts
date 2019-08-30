@@ -10,6 +10,7 @@ import { WallFactory } from './factories/WallFactory';
 import { RoomFactory } from './factories/RoomFactory';
 import { DiscFactory } from './shape_factories/DiscFactory';
 import { MaterialFactory, MaterialBuilder } from './MaterialFactory';
+import { MeshDescriptor, ShapeDescriptor, RoomDescriptor } from '../api/Config';
 
 export interface MeshTemplateConfig {
     checkCollisions: boolean;
@@ -33,53 +34,6 @@ export const defaultMeshConfig: MeshTemplateConfig = {
 
     materials: null
 };
-
-export interface FileDescriptor extends DetailsDescriptor {
-    name: 'file-descriptor'
-    path: string;
-    fileName: string;
-    scale: number;
-    translateY?: number;
-}
-
-export interface ParentRoomBasedMaterialDescriptor {
-    name: 'parent-room-based-material-descriptor';
-    parentId: string;
-    path?: string;
-    color?: string;
-}
-
-export interface ShapeDescriptor extends DetailsDescriptor {
-    name: 'shape-descriptor';
-    shape: 'plane' | 'disc' | 'rect';
-    translateY?: number;
-}
-
-export interface RoomDescriptor extends DetailsDescriptor {
-    name: 'room-descriptor';
-    floorMaterialPath?: string;
-    roofMaterialPath?: string;
-    roofY: number;
-}
-
-export interface DetailsDescriptor {
-    name: 'file-descriptor' | 'room-descriptor' | 'shape-descriptor'
-}
-
-export interface MeshDescriptor<T extends DetailsDescriptor = any> {
-    name: 'mesh-descriptor';
-    type: string;
-    translateY?: number;
-    materials?: string[];
-    conditionalMaterials?: ParentRoomBasedMaterialDescriptor[];
-    details: T;
-}
-
-export interface MultiModelDescriptor {
-    name: 'multi-model-descriptor';
-    type: string;
-    details: FileDescriptor[] | ShapeDescriptor[]
-}
 
 export class MeshFactory {
     private scene: Scene;
