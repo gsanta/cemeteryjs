@@ -1,37 +1,30 @@
 import { Skeleton } from "babylonjs";
 import { Mesh } from "babylonjs/Meshes/mesh";
+import { MeshDescriptor } from "../integrations/api/Config";
+import { MeshFactory } from "../integrations/api/MeshFactory";
 import { MeshTemplate } from "../integrations/api/MeshTemplate";
-import { MeshDescriptor, MeshFactory } from '../integrations/babylonjs/MeshFactory';
-import { MeshLoader } from "../integrations/babylonjs/MeshLoader";
 import { TreeIteratorGenerator } from "../utils/TreeIteratorGenerator";
 import { WorldItem } from "../WorldItemInfo";
-import { Modifier } from './Modifier';
 import { ChangeFurnitureSizeModifier } from './ChangeFurnitureSizeModifier';
+import { Modifier } from './Modifier';
+import { ModifierConfig } from './ModifierConfig';
 
-export class CreateMeshModifier implements Modifier {
+export class CreateMeshModifier<M, S> implements Modifier {
     static modName = 'createMesh';
     dependencies = [ChangeFurnitureSizeModifier.modeName];
 
-    private meshFactory: MeshFactory;
-    private meshLoader: MeshLoader;
     private isReady = true;
     private descriptorMap: Map<string, MeshDescriptor> = new Map();
+    private templateMap: Map<string, MeshTemplate<Mesh, Skeleton>>;
+    private meshFactory: MeshFactory<M, S>;
 
-    constructor(meshLoader: MeshLoader, meshFactory: MeshFactory) {
-        this.meshLoader = meshLoader;
-        this.meshFactory = meshFactory;
+    constructor(modifierConfig: ModifierConfig<M, S>) {
+        this.meshFactory = modifierConfig.meshFactory;
+        this.templateMap = modifierConfig.templateMap;
     }
 
     getName(): string {
         return CreateMeshModifier.name;
-    }
-
-    prepareMeshTemplates(modelTypeDescriptions: MeshDescriptor[]): Promise<void> {
-        this.isReady = false;
-
-        this.createShapeTemplates(modelTypeDescriptions);
-        return this.createModelTemplates(modelTypeDescriptions)
-            .then(() => { this.isReady = true });
     }
 
     public apply(worldItems: WorldItem[]): WorldItem[] {
@@ -52,27 +45,8 @@ export class CreateMeshModifier implements Modifier {
         return worldItems;
     }
 
-    private createShapeTemplates(modelTypeDescriptions: MeshDescriptor[]) {
-        modelTypeDescriptions
-            .forEach(desc => this.descriptorMap.set(desc.type, desc));
-    }
-
-    private createModelTemplates(modelTypeDescriptions: MeshDescriptor[]) {
-        const fileDescriptions = modelTypeDescriptions
-            .filter(desc => desc.details.name === 'file-descriptor');
-
-
-        return Promise
-            .all(fileDescriptions.map(desc => this.meshLoader.load(desc.type, desc)))
-            .then((meshTemplates: MeshTemplate<Mesh, Skeleton>[]) => {
-                const templateMap: Map<string, MeshTemplate<Mesh, Skeleton>> = new Map();
-                meshTemplates.forEach(template => templateMap.set(template.type, template));
-                this.meshFactory.setMeshTemplates(templateMap);
-            });
-    }
-
     private createMesh(worldItemInfo: WorldItem): Mesh[] {
-        return this.meshFactory.createFromMeshDescriptor(worldItemInfo, this.descriptorMap.get(worldItemInfo.name));
+        return this.meshFactory.getInstance(worldItemInfo, this.descriptorMap.get(worldItemInfo.name), this.templateMap);
 
         // if (this.modelMap.has(worldItemInfo.name) || worldItemInfo.name === 'root' || worldItemInfo.name === 'empty' || worldItemInfo.name === 'wall') {
         //     return this.meshFactory.createFromTemplate(worldItemInfo, this.modelMap.get(worldItemInfo.name));

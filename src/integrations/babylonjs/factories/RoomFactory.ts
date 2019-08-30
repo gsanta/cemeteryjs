@@ -1,8 +1,7 @@
-import { Mesh, MeshBuilder, PhysicsImpostor, Scene, Vector3, StandardMaterial, DynamicTexture, Texture, } from 'babylonjs';
 import { Shape } from '@nightshifts.inc/geometry';
+import { DynamicTexture, Mesh, MeshBuilder, Scene, StandardMaterial, Texture, Vector3 } from 'babylonjs';
 import { WorldItem } from '../../../WorldItemInfo';
-import { MeshCreator } from '../MeshCreator';
-import { RoomDescriptor } from '../MeshFactory';
+import { RoomDescriptor } from '../../api/Config';
 
 export class RoomFactory  {
     private scene: Scene;

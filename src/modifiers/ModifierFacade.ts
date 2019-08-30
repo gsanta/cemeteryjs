@@ -11,18 +11,25 @@ export class ModifierFacade {
     }
 
     applyModifiers(worldItems: WorldItem[], modNames: string[]): WorldItem[] {
-        modNames.forEach(modName => this.checkIfExists(modName));
-
         return this.resolve(modNames).reduce((worldItems, transformator) => transformator.apply(worldItems), worldItems);
     }
 
     private resolve(modNames: string[]): Modifier[] {
+        const unresolvedModifiers = modNames.map(name => this.modifierFactory.getInstance(name));
         const resolvedModifiers: Modifier[] = [];
+        let infiniteCycleTestCounter = 0;
 
-        while(modNames.length > 0) {
-            const modifier = this.modifierFactory.getInstance(modNames[0]);
-            if (this.areDepsOfModifierResolved(modifier, resolvedModifiers)) {
+        while(unresolvedModifiers.length > 0) {
+            if (this.areDepsOfModifierResolved(unresolvedModifiers[0], resolvedModifiers)) {
+                resolvedModifiers.push(unresolvedModifiers.shift());
+                infiniteCycleTestCounter = 0;
+            } else {
+                infiniteCycleTestCounter++;
+                unresolvedModifiers.push(unresolvedModifiers.shift());
+            }
 
+            if (infiniteCycleTestCounter === unresolvedModifiers.length) {
+                throw new Error(`Modifier dependency can not be resolved by ordering the modifiers unresolved modifiers are: ${unresolvedModifiers.map(m => m.getName()).join(', ')}`);
             }
         }
         return [];
@@ -31,16 +38,6 @@ export class ModifierFacade {
     private areDepsOfModifierResolved(modifier: Modifier, resolvedModifiers: Modifier[]) {
         const unresolvedModifiers = modifier.dependencies.filter(dep => resolvedModifiers.find(mod => mod.getName() === dep) === undefined);
 
-        if (unresolvedModifiers.length > 0) {
-            throw new Error(`The following modifiers were not resolved for ${modifier.getName()}: ${unresolvedModifiers.join(', ')}`);
-        }
-
-        return true;
-    }
-
-    private checkIfExists(modName: string) {
-        if (!this.modifierFactory.getInstance(modName)) {
-            throw new Error(`No modifier exists with name: ${modName}`);
-        }
+        return unresolvedModifiers.length === 0;
     }
 }

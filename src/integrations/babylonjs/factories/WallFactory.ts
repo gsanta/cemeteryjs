@@ -3,7 +3,7 @@ import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { Axis, Mesh, MeshBuilder, Scene, Space, Vector3 } from 'babylonjs';
 import { WorldItem } from '../../../WorldItemInfo';
 import { MaterialFactory } from '../MaterialFactory';
-import { MeshDescriptor } from '../MeshFactory';
+import { MeshDescriptor } from '../../api/Config';
 
 export class WallFactory  {
     private materialFactory: MaterialFactory;

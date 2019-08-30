@@ -18,66 +18,72 @@ import { CombinedWorldItemParser } from '../../../parsers/CombinedWorldItemParse
 import { WorldMapToMatrixGraphConverter } from '../../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 import { WorldItem } from '../../../WorldItemInfo';
 import { Importer, defaultWorldConfig, WorldConfig } from '../../api/Importer';
-import { Scene } from 'babylonjs';
-import { MeshFactory, MeshDescriptor } from '../MeshFactory';
-import { MeshLoader } from '../MeshLoader';
+import { Scene, Skeleton, Mesh } from 'babylonjs';
+import { BabylonMeshLoader } from './BabylonMeshLoader';
 import { NormalizeBorderRotationModifier } from '../../../modifiers/NormalizeBorderRotationModifier';
 import { ThickenBordersModifier } from '../../../modifiers/ThickenBordersModifier';
 import { AddOuterBorderLayerModifier } from '../../../modifiers/AddOuterBorderLayerModifier';
+import { BabylonMeshFactory } from './BabylonMeshFactory';
+import { MeshDescriptor } from '../../api/Config';
 
-export class BabylonImporter implements Importer {
-    private meshFactory: MeshFactory;
-    private meshLoader: MeshLoader;
+export class BabylonImporter extends Importer<Mesh, Skeleton> {
+    // private meshFactory: BabylonMeshFactory;
+    // private meshLoader: BabylonMeshLoader;
 
-    constructor(scene: Scene, meshFactory: MeshFactory = new MeshFactory(scene), meshLoader: MeshLoader = new MeshLoader(scene)) {
-        this.meshFactory = meshFactory;
-        this.meshLoader = meshLoader;
+    constructor(scene: Scene) {
+        super(new BabylonMeshLoader(scene), new BabylonMeshFactory(scene));
     }
 
-    import(strWorld: string, modelTypeDescription: MeshDescriptor[], worldConfig = defaultWorldConfig): Promise<WorldItem[]> {
-        return this.parse(strWorld, worldConfig, modelTypeDescription);
-    }
+    // constructor(scene: Scene, meshFactory: BabylonMeshFactory = new BabylonMeshFactory(scene), meshLoader: BabylonMeshLoader = new BabylonMeshLoader(scene)) {
+    //     super();
+    //     this.meshFactory = meshFactory;
+    //     this.meshLoader = meshLoader;
+    // }
 
-    private parse(strWorld: string, worldConfig: WorldConfig, modelTypeDescription: MeshDescriptor[]): Promise<WorldItem[]> {
+    // import(strWorld: string, modelTypeDescription: MeshDescriptor[], worldConfig = defaultWorldConfig): Promise<WorldItem[]> {
+    //     return this.parse(strWorld, worldConfig, modelTypeDescription);
+    // }
 
-        const createMeshModifier = new CreateMeshModifier(this.meshLoader, this.meshFactory);
+    // private parse(strWorld: string, worldConfig: WorldConfig, modelTypeDescription: MeshDescriptor[]): Promise<WorldItem[]> {
 
-        return createMeshModifier.prepareMeshTemplates(modelTypeDescription)
-        .then(() => {
-            const worldItemInfoFactory = new WorldItemFactory();
-            return WorldParser.createWithCustomWorldItemGenerator(
-                new CombinedWorldItemParser(
-                    [
-                        new FurnitureInfoParser(worldItemInfoFactory, worldConfig.furnitures, new WorldMapToMatrixGraphConverter()),
-                        new RoomSeparatorParser(worldItemInfoFactory, worldConfig.borders),
-                        new RoomInfoParser(worldItemInfoFactory),
-                        new PolygonAreaInfoParser('empty', worldItemInfoFactory),
-                        new RootWorldItemParser(worldItemInfoFactory)
-                    ]
-                ),
-                [
+    //     const createMeshModifier = new CreateMeshModifier(this.meshLoader, this.meshFactory);
 
-                    new ScaleModifier({ x: worldConfig.xScale, y: worldConfig.yScale }),
-                    new SegmentBordersModifier(worldItemInfoFactory, worldConfig.borders, { xScale: worldConfig.xScale, yScale: worldConfig.yScale }),
-                    new BuildHierarchyModifier(),
-                    new AssignBordersToRoomsModifier(worldConfig.borders),
-                    new ConvertBorderPolyToLineModifier(),
-                    new ChangeBorderWidthModifier([{name: 'window', width: 2}, {name: 'door', width: 2.7}]),
-                    new ThickenBordersModifier(),
-                    new AddOuterBorderLayerModifier(),
-                    new NormalizeBorderRotationModifier(),
-                    new ChangeFurnitureSizeModifier(
-                        {
-                            cupboard: Polygon.createRectangle(0, 0, 2, 1.5),
-                            bathtub: Polygon.createRectangle(0, 0, 4.199999999999999, 2.400004970948398),
-                            washbasin: Polygon.createRectangle(0, 0, 2, 1.58 + 1.5),
-                            table: Polygon.createRectangle(0, 0, 3.4, 1.4 + 1.5)
+    //     return createMeshModifier.prepareMeshTemplates(modelTypeDescription)
+    //     .then(() => {
+    //         const worldItemInfoFactory = new WorldItemFactory();
+    //         return WorldParser.createWithCustomWorldItemGenerator(
+    //             new CombinedWorldItemParser(
+    //                 [
+    //                     new FurnitureInfoParser(worldItemInfoFactory, worldConfig.furnitures, new WorldMapToMatrixGraphConverter()),
+    //                     new RoomSeparatorParser(worldItemInfoFactory, worldConfig.borders),
+    //                     new RoomInfoParser(worldItemInfoFactory),
+    //                     new PolygonAreaInfoParser('empty', worldItemInfoFactory),
+    //                     new RootWorldItemParser(worldItemInfoFactory)
+    //                 ]
+    //             ),
+    //             [
 
-                        }
-                    ),
-                    createMeshModifier
-                ]
-            ).parse(strWorld);
-        });
-    }
+    //                 new ScaleModifier({ x: worldConfig.xScale, y: worldConfig.yScale }),
+    //                 new SegmentBordersModifier(worldItemInfoFactory, worldConfig.borders, { xScale: worldConfig.xScale, yScale: worldConfig.yScale }),
+    //                 new BuildHierarchyModifier(),
+    //                 new AssignBordersToRoomsModifier(worldConfig.borders),
+    //                 new ConvertBorderPolyToLineModifier(),
+    //                 new ChangeBorderWidthModifier([{name: 'window', width: 2}, {name: 'door', width: 2.7}]),
+    //                 new ThickenBordersModifier(),
+    //                 new AddOuterBorderLayerModifier(),
+    //                 new NormalizeBorderRotationModifier(),
+    //                 new ChangeFurnitureSizeModifier(
+    //                     {
+    //                         cupboard: Polygon.createRectangle(0, 0, 2, 1.5),
+    //                         bathtub: Polygon.createRectangle(0, 0, 4.199999999999999, 2.400004970948398),
+    //                         washbasin: Polygon.createRectangle(0, 0, 2, 1.58 + 1.5),
+    //                         table: Polygon.createRectangle(0, 0, 3.4, 1.4 + 1.5)
+
+    //                     }
+    //                 ),
+    //                 createMeshModifier
+    //             ]
+    //         ).parse(strWorld);
+    //     });
+    // }
 }

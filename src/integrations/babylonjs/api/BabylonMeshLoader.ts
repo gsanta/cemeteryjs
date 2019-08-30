@@ -1,7 +1,8 @@
 import { Scene, Mesh, Skeleton, StandardMaterial, AbstractMesh, ParticleSystem, AnimationGroup, Texture, SceneLoader, Vector3 } from 'babylonjs';
 import 'babylonjs-loaders';
-import { MeshTemplate } from '../api/MeshTemplate';
-import { FileDescriptor, MeshDescriptor } from './MeshFactory';
+import { MeshTemplate } from '../../api/MeshTemplate';
+import { MeshDescriptor, FileDescriptor } from '../../api/Config';
+import { MeshLoader } from '../../api/MeshLoader';
 
 export interface MeshTemplateConfig {
     checkCollisions: boolean;
@@ -19,14 +20,14 @@ export interface MeshTemplateConfig {
 /**
  * Loads a model from file and gives back a `Mesh`.
  */
-export class MeshLoader {
+export class BabylonMeshLoader implements MeshLoader<Mesh, Skeleton> {
     private scene: Scene;
 
     constructor(scene: Scene) {
         this.scene = scene;
     }
 
-    public load(type: string, meshDescriptor: MeshDescriptor<FileDescriptor>): Promise<MeshTemplate<Mesh, Skeleton>> {
+    public load(meshDescriptor: MeshDescriptor<FileDescriptor>): Promise<MeshTemplate<Mesh, Skeleton>> {
         const fileDescriptor = meshDescriptor.details;
         const materials = this.loadMaterials(meshDescriptor.materials);
 
@@ -39,12 +40,12 @@ export class MeshLoader {
 
 
                 this.configMeshes(<Mesh[]> meshes, new Vector3(fileDescriptor.scale, fileDescriptor.scale, fileDescriptor.scale));
-                meshes[0].name = type;
+                meshes[0].name = meshDescriptor.type;
 
                 resolve({
                     meshes: <Mesh[]> meshes,
                     skeletons: skeletons,
-                    type
+                    type: meshDescriptor.type
                 });
             };
 

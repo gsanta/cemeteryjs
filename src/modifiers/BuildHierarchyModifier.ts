@@ -23,7 +23,6 @@ export class BuildHierarchyModifier implements Modifier {
         return this.buildHierarchy(gwmWorldItems);
     }
 
-
     buildHierarchy(worldItems: WorldItem[]) {
         const childrenAlreadyCategorized = [];
 

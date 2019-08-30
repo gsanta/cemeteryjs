@@ -15,8 +15,6 @@ import { CreateMeshModifier } from './modifiers/CreateMeshModifier';
 import { CreateMockMeshModifier } from './modifiers/CreateMockMeshModifier';
 import { AddOuterBorderLayerModifier } from './modifiers/AddOuterBorderLayerModifier';
 import { ThickenBordersModifier } from './modifiers/ThickenBordersModifier';
-export { FileDescriptor, ShapeDescriptor, ParentRoomBasedMaterialDescriptor as ParentBasedMaterialDescriptor, RoomDescriptor } from './integrations/babylonjs/MeshFactory';
-export { MeshDescriptor } from './integrations/babylonjs/MeshFactory';
 export { BabylonImporter } from './integrations/babylonjs/api/BabylonImporter';
 export { BabylonConverter } from './integrations/babylonjs/api/BabylonConverter';
 export {WorldParser, ParseOptions, defaultParseOptions} from './WorldParser';

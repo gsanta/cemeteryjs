@@ -8,6 +8,7 @@ import { WorldItemFactory } from '../WorldItemInfoFactory';
  */
 export class AddRoofModifier implements Modifier {
     static modName: 'addRoof';
+    dependencies = [];
 
     private worldItemFactory: WorldItemFactory;
 

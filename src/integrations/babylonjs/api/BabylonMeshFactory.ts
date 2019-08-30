@@ -1,16 +1,17 @@
 
 import { Color3, Mesh, MeshBuilder, PhysicsImpostor, Scene, Skeleton, Space, StandardMaterial, Vector3, Axis, DynamicTexture, Texture } from 'babylonjs';
-import { WorldItem } from '../../WorldItemInfo';
-import { MeshTemplate } from '../api/MeshTemplate';
-import { EmptyAreaFactory } from './factories/EmptyAreaFactory';
-import { PlayerFactory } from './factories/PlayerFactory';
-import { DoorFactory } from './factories/DoorFactory';
-import { WindowFactory } from './factories/WindowFactory';
-import { WallFactory } from './factories/WallFactory';
-import { RoomFactory } from './factories/RoomFactory';
-import { DiscFactory } from './shape_factories/DiscFactory';
-import { MaterialFactory, MaterialBuilder } from './MaterialFactory';
-import { MeshDescriptor, ShapeDescriptor, RoomDescriptor } from '../api/Config';
+import { WorldItem } from '../../../WorldItemInfo';
+import { MeshTemplate } from '../../api/MeshTemplate';
+import { EmptyAreaFactory } from '../factories/EmptyAreaFactory';
+import { PlayerFactory } from '../factories/PlayerFactory';
+import { DoorFactory } from '../factories/DoorFactory';
+import { WindowFactory } from '../factories/WindowFactory';
+import { WallFactory } from '../factories/WallFactory';
+import { RoomFactory } from '../factories/RoomFactory';
+import { DiscFactory } from '../shape_factories/DiscFactory';
+import { MaterialFactory, MaterialBuilder } from '../MaterialFactory';
+import { MeshDescriptor, ShapeDescriptor, RoomDescriptor } from '../../api/Config';
+import { MeshFactory } from '../../api/MeshFactory';
 
 export interface MeshTemplateConfig {
     checkCollisions: boolean;
@@ -35,7 +36,7 @@ export const defaultMeshConfig: MeshTemplateConfig = {
     materials: null
 };
 
-export class MeshFactory {
+export class BabylonMeshFactory implements MeshFactory<Mesh, Skeleton> {
     private scene: Scene;
     private modelMap: Map<string, MeshTemplate<Mesh, Skeleton>> = new Map();
 
@@ -45,6 +46,10 @@ export class MeshFactory {
 
     public setMeshTemplates(map: Map<string, MeshTemplate<Mesh, Skeleton>>) {
         this.modelMap = map;
+    }
+
+    getInstance(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor, templateMap: Map<string, MeshTemplate<Mesh, Skeleton>>): Mesh[] {
+        return this.createFromTemplate(worldItemInfo, templateMap.get(worldItemInfo.type), meshDescriptor);
     }
 
     public createFromTemplate(worldItemInfo: WorldItem, meshTemplate: MeshTemplate<Mesh, Skeleton>, meshDescriptor: MeshDescriptor): Mesh[] {

@@ -1,9 +1,29 @@
 import { WorldItem } from "../../WorldItemInfo";
-import { MeshDescriptor, FileDescriptor, DetailsDescriptor } from "../babylonjs/MeshFactory";
 import { MeshLoader } from './MeshLoader';
 import { MeshTemplate } from "./MeshTemplate";
 import { ModifierConfig } from '../../modifiers/ModifierConfig';
 import { MeshFactory } from './MeshFactory';
+import { MeshDescriptor, DetailsDescriptor, FileDescriptor } from "./Config";
+import { WorldItemFactory } from "../../WorldItemInfoFactory";
+import { WorldParser } from "../..";
+import { CombinedWorldItemParser } from "../../parsers/CombinedWorldItemParser";
+import { FurnitureInfoParser } from "../../parsers/furniture_parser/FurnitureInfoParser";
+import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
+import { RoomSeparatorParser } from "../../parsers/room_separator_parser/RoomSeparatorParser";
+import { RoomInfoParser } from "../../parsers/room_parser/RoomInfoParser";
+import { PolygonAreaInfoParser } from "../../parsers/polygon_area_parser/PolygonAreaInfoParser";
+import { RootWorldItemParser } from "../../parsers/RootWorldItemParser";
+import { ScaleModifier } from "../../modifiers/ScaleModifier";
+import { SegmentBordersModifier } from "../../modifiers/SegmentBordersModifier";
+import { BuildHierarchyModifier } from "../../modifiers/BuildHierarchyModifier";
+import { AssignBordersToRoomsModifier } from "../../modifiers/AssignBordersToRoomsModifier";
+import { ConvertBorderPolyToLineModifier } from "../../modifiers/ConvertBorderPolyToLineModifier";
+import { ChangeBorderWidthModifier } from "../../modifiers/ChangeBorderWidthModifier";
+import { ThickenBordersModifier } from "../../modifiers/ThickenBordersModifier";
+import { AddOuterBorderLayerModifier } from "../../modifiers/AddOuterBorderLayerModifier";
+import { NormalizeBorderRotationModifier } from "../../modifiers/NormalizeBorderRotationModifier";
+import { ChangeFurnitureSizeModifier } from "../../modifiers/ChangeFurnitureSizeModifier";
+import { Polygon } from "@nightshifts.inc/geometry";
 
 export interface WorldConfig {
     borders: string[];
@@ -28,56 +48,57 @@ export class Importer<M, S> {
         this.meshLoader = meshLoader;
     }
 
-    import(strWorld: string, meshDescriptors: MeshDescriptor<DetailsDescriptor>[], worldConfig: WorldConfig): Promise<WorldItem[]> {
-        this.loadMeshes(<MeshDescriptor<FileDescriptor>[]> meshDescriptors.filter(desc => desc.details.name === 'file-descriptor'))
-            .then((templateMap: Map<string, MeshTemplate<M, S>>) => {
+    import(strWorld: string, meshDescriptors: MeshDescriptor<any>[], worldConfig: WorldConfig = defaultWorldConfig): Promise<WorldItem[]> {
+        return null;
+        // this.loadMeshes(<MeshDescriptor<FileDescriptor>[]> meshDescriptors.filter(desc => desc.details.name === 'file-descriptor'))
+        //     .then((templateMap: Map<string, MeshTemplate<M, S>>) => {
 
-                const modifierConfig: ModifierConfig<M, S> = {
-                    borderTypes: worldConfig.borders,
-                    realBorderTypeWidths: [],
-                    realFurnitureSizes: null,
-                    meshDescriptors: meshDescriptors,
-                    templateMap: templateMap,
+        //         const modifierConfig: ModifierConfig<M, S> = {
+        //             borderTypes: worldConfig.borders,
+        //             realBorderTypeWidths: [],
+        //             realFurnitureSizes: null,
+        //             meshDescriptors: meshDescriptors,
+        //             templateMap: templateMap,
 
-                    meshFactory: this.meshFactory
-                }
+        //             meshFactory: this.meshFactory
+        //         }
 
-                const worldItemInfoFactory = new WorldItemFactory();
-                return WorldParser.createWithCustomWorldItemGenerator(
-                    new CombinedWorldItemParser(
-                        [
-                            new FurnitureInfoParser(worldItemInfoFactory, worldConfig.furnitures, new WorldMapToMatrixGraphConverter()),
-                            new RoomSeparatorParser(worldItemInfoFactory, worldConfig.borders),
-                            new RoomInfoParser(worldItemInfoFactory),
-                            new PolygonAreaInfoParser('empty', worldItemInfoFactory),
-                            new RootWorldItemParser(worldItemInfoFactory)
-                        ]
-                    ),
-                    [
+        //         const worldItemInfoFactory = new WorldItemFactory();
+        //         return WorldParser.createWithCustomWorldItemGenerator(
+        //             new CombinedWorldItemParser(
+        //                 [
+        //                     new FurnitureInfoParser(worldItemInfoFactory, worldConfig.furnitures, new WorldMapToMatrixGraphConverter()),
+        //                     new RoomSeparatorParser(worldItemInfoFactory, worldConfig.borders),
+        //                     new RoomInfoParser(worldItemInfoFactory),
+        //                     new PolygonAreaInfoParser('empty', worldItemInfoFactory),
+        //                     new RootWorldItemParser(worldItemInfoFactory)
+        //                 ]
+        //             ),
+        //             [
 
-                        new ScaleModifier({ x: worldConfig.xScale, y: worldConfig.yScale }),
-                        new SegmentBordersModifier(worldItemInfoFactory, worldConfig.borders, { xScale: worldConfig.xScale, yScale: worldConfig.yScale }),
-                        new BuildHierarchyModifier(),
-                        new AssignBordersToRoomsModifier(worldConfig.borders),
-                        new ConvertBorderPolyToLineModifier(),
-                        new ChangeBorderWidthModifier([{name: 'window', width: 2}, {name: 'door', width: 2.7}]),
-                        new ThickenBordersModifier(),
-                        new AddOuterBorderLayerModifier(),
-                        new NormalizeBorderRotationModifier(),
-                        new ChangeFurnitureSizeModifier(
-                            {
-                                cupboard: Polygon.createRectangle(0, 0, 2, 1.5),
-                                bathtub: Polygon.createRectangle(0, 0, 4.199999999999999, 2.400004970948398),
-                                washbasin: Polygon.createRectangle(0, 0, 2, 1.58 + 1.5),
-                                table: Polygon.createRectangle(0, 0, 3.4, 1.4 + 1.5)
+        //                 new ScaleModifier({ x: worldConfig.xScale, y: worldConfig.yScale }),
+        //                 new SegmentBordersModifier(worldItemInfoFactory, worldConfig.borders, { xScale: worldConfig.xScale, yScale: worldConfig.yScale }),
+        //                 new BuildHierarchyModifier(),
+        //                 new AssignBordersToRoomsModifier(worldConfig.borders),
+        //                 new ConvertBorderPolyToLineModifier(),
+        //                 new ChangeBorderWidthModifier([{name: 'window', width: 2}, {name: 'door', width: 2.7}]),
+        //                 new ThickenBordersModifier(),
+        //                 new AddOuterBorderLayerModifier(),
+        //                 new NormalizeBorderRotationModifier(),
+        //                 new ChangeFurnitureSizeModifier(
+        //                     {
+        //                         cupboard: Polygon.createRectangle(0, 0, 2, 1.5),
+        //                         bathtub: Polygon.createRectangle(0, 0, 4.199999999999999, 2.400004970948398),
+        //                         washbasin: Polygon.createRectangle(0, 0, 2, 1.58 + 1.5),
+        //                         table: Polygon.createRectangle(0, 0, 3.4, 1.4 + 1.5)
 
-                            }
-                        ),
-                        createMeshModifier
-                    ]
-                ).parse(strWorld);
+        //                     }
+        //                 ),
+        //                 createMeshModifier
+        //             ]
+        //         ).parse(strWorld);
 
-            });
+        //     });
     }
 
     private loadMeshes(meshDescriptors: MeshDescriptor<FileDescriptor>[]): Promise<Map<string, MeshTemplate<M, S>>> {

@@ -1,7 +1,7 @@
 import { Color3, StandardMaterial, Texture } from 'babylonjs';
 import { Scene } from "babylonjs/scene";
 import { WorldItem } from '../../WorldItemInfo';
-import { MeshDescriptor } from './MeshFactory';
+import { MeshDescriptor } from '../api/Config';
 
 export class MaterialBuilder {
     static CreateMaterial(name: string, scene: Scene): StandardMaterial {

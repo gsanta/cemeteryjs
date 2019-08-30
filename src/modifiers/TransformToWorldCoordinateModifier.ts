@@ -5,6 +5,7 @@ import { TreeIteratorGenerator } from "../utils/TreeIteratorGenerator";
 
 export class TransformToWorldCoordinateModifier implements Modifier {
     static modName = 'transformToWorldCoordinate';
+    dependencies = [];
 
     getName(): string {
         return TransformToWorldCoordinateModifier.name;

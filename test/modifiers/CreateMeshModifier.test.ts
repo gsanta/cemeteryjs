@@ -1,7 +1,8 @@
 import * as sinon from 'sinon';
-import { MeshDescriptor, MeshFactory } from '../../src/integrations/babylonjs/MeshFactory';
-import { MeshLoader } from '../../src/integrations/babylonjs/MeshLoader';
+import { BabylonMeshLoader } from '../../src/integrations/babylonjs/api/BabylonMeshLoader';
 import { CreateMeshModifier } from '../../src/modifiers/CreateMeshModifier';
+import { MeshFactory } from '../../src/integrations/api/MeshFactory';
+import { MeshDescriptor } from '../../src/integrations/api/Config';
 
 describe(`CreateMeshModifier`, () => {
     describe(`prepareMeshTemplates`, () => {
@@ -14,7 +15,7 @@ describe(`CreateMeshModifier`, () => {
                 .onSecondCall()
                 .resolves({type: 'window'});
 
-            const meshLoader: Partial<MeshLoader> = {
+            const meshLoader: Partial<BabylonMeshLoader> = {
                 load
             };
 
@@ -22,7 +23,7 @@ describe(`CreateMeshModifier`, () => {
                 setMeshTemplates: <any> sinon.spy()
             };
 
-            const meshCreationTransformator = new CreateMeshModifier(<MeshLoader> meshLoader, meshFactory);
+            const meshCreationTransformator = new CreateMeshModifier(<BabylonMeshLoader> meshLoader, meshFactory);
 
             return meshCreationTransformator.prepareMeshTemplates(meshDescriptors)
                 .then(() => {

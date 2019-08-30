@@ -15,6 +15,8 @@ export interface MockMeshCreator<M> {
 export class CreateMockMeshModifier<M> implements Modifier  {
     static modName = 'createMockMesh';
 
+    dependencies = [];
+
     private mockMeshCreator: MockMeshCreator<M>;
 
     constructor(mockMeshCreator: MockMeshCreator<M>) {

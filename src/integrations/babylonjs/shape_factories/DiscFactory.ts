@@ -1,7 +1,7 @@
 import { Color3, Mesh, MeshBuilder, Scene, StandardMaterial, Vector3 } from 'babylonjs';
 import { WorldItem } from "../../../WorldItemInfo";
 import { MaterialBuilder } from '../MaterialFactory';
-import { ShapeDescriptor } from '../MeshFactory';
+import { ShapeDescriptor } from '../../api/Config';
 
 
 export class DiscFactory {
