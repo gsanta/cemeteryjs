@@ -1,19 +1,19 @@
 import { MatrixGraph } from '../../matrix_graph/MatrixGraph';
 import { WorldItem } from '../../WorldItemInfo';
 import * as _ from 'lodash';
-import { WorldItemParser } from '../WorldItemParser';
+import { Parser } from '../Parser';
 import { WorldMapToMatrixGraphConverter } from '../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
-import { WorldItemFactory } from '../../WorldItemInfoFactory';
+import { WorldItemFactoryService } from '../../services/WorldItemFactoryService';
 import { Polygon } from '@nightshifts.inc/geometry';
 import { flat } from '../../utils/ArrayUtils';
 
-export class RoomSeparatorParser implements WorldItemParser {
-    private worldItemInfoFactory: WorldItemFactory;
+export class RoomSeparatorParser implements Parser {
+    private worldItemInfoFactory: WorldItemFactoryService;
     private worldMapConverter: WorldMapToMatrixGraphConverter;
     private roomSeparatorCharacters: string[];
 
     constructor(
-        worldItemInfoFactory: WorldItemFactory,
+        worldItemInfoFactory: WorldItemFactoryService,
         roomSeparatorCharacters: string[],
         worldMapConverter = new WorldMapToMatrixGraphConverter()
     ) {

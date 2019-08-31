@@ -1,16 +1,16 @@
 import { MatrixGraph } from '../matrix_graph/MatrixGraph';
 import { WorldItem } from '../WorldItemInfo';
-import { WorldItemParser } from './WorldItemParser';
+import { Parser } from './Parser';
 import _ = require('lodash');
 
 /**
  * The goal of this generator is to combine multiple generators together each of which parses the input worldmap string
  * from a different aspect, and emits all of the `WorldItemInfo`s merged together.
  */
-export class CombinedWorldItemParser implements WorldItemParser {
-    private worldItemGenerators: WorldItemParser[];
+export class CombinedWorldItemParser implements Parser {
+    private worldItemGenerators: Parser[];
 
-    constructor(worldItemGenerators: WorldItemParser[]) {
+    constructor(worldItemGenerators: Parser[]) {
         this.worldItemGenerators = worldItemGenerators;
     }
 

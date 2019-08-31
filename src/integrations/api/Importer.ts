@@ -1,10 +1,10 @@
 import { WorldItem } from "../../WorldItemInfo";
-import { MeshLoader } from './MeshLoader';
+import { MeshLoaderService } from '../../services/MeshLoaderService';
 import { MeshTemplate } from "./MeshTemplate";
 import { ModifierConfig } from '../../modifiers/ModifierConfig';
-import { MeshFactory } from './MeshFactory';
+import { MeshFactoryService } from '../../services/MeshFactoryService';
 import { MeshDescriptor, DetailsDescriptor, FileDescriptor } from "./Config";
-import { WorldItemFactory } from "../../WorldItemInfoFactory";
+import { WorldItemFactoryService } from "../../services/WorldItemFactoryService";
 import { WorldParser } from "../..";
 import { CombinedWorldItemParser } from "../../parsers/CombinedWorldItemParser";
 import { FurnitureInfoParser } from "../../parsers/furniture_parser/FurnitureInfoParser";
@@ -24,6 +24,8 @@ import { AddOuterBorderLayerModifier } from "../../modifiers/AddOuterBorderLayer
 import { NormalizeBorderRotationModifier } from "../../modifiers/NormalizeBorderRotationModifier";
 import { ChangeFurnitureSizeModifier } from "../../modifiers/ChangeFurnitureSizeModifier";
 import { Polygon } from "@nightshifts.inc/geometry";
+import { ModifierFactoryService } from '../../services/ModifierFactoryService';
+import { ServiceFacade } from '../../services/ServiceFacade';
 
 export interface WorldConfig {
     borders: string[];
@@ -41,14 +43,17 @@ export const defaultWorldConfig: WorldConfig = {
 
 
 export class Importer<M, S> {
-    private meshLoader: MeshLoader<M, S>;
-    private meshFactory: MeshFactory<M, S>;
+    private services: ServiceFacade<M, S>;
 
-    constructor(meshLoader: MeshLoader<M, S>, meshFactory: MeshFactory<M, S>) {
-        this.meshLoader = meshLoader;
+    constructor(services: ServiceFacade<M, S>) {
+        this.services = services;
     }
 
     import(strWorld: string, meshDescriptors: MeshDescriptor<any>[], worldConfig: WorldConfig = defaultWorldConfig): Promise<WorldItem[]> {
+
+
+        this.services.modifierService.applyModifiers()
+
         return null;
         // this.loadMeshes(<MeshDescriptor<FileDescriptor>[]> meshDescriptors.filter(desc => desc.details.name === 'file-descriptor'))
         //     .then((templateMap: Map<string, MeshTemplate<M, S>>) => {

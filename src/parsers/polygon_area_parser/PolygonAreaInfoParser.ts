@@ -1,11 +1,11 @@
 import { MatrixGraph } from "../../matrix_graph/MatrixGraph";
 import _ = require("lodash");
 import { WorldItem } from '../../WorldItemInfo';
-import { WorldItemParser } from "../WorldItemParser";
+import { Parser } from "../Parser";
 import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
 import { PolygonRedundantPointReducer } from "./PolygonRedundantPointReducer";
 import { Polygon, Line, Point } from "@nightshifts.inc/geometry";
-import { WorldItemFactory } from '../../WorldItemInfoFactory';
+import { WorldItemFactoryService } from '../../services/WorldItemFactoryService';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 
 /**
@@ -14,13 +14,13 @@ import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
  * Generates `WorldItemInfo`s based on connected area of the given character. It can detect `Polygon` shaped
  * areas.
  */
-export class PolygonAreaInfoParser implements WorldItemParser {
+export class PolygonAreaInfoParser implements Parser {
     private polygonRedundantPointReducer: PolygonRedundantPointReducer;
-    private worldItemInfoFactory: WorldItemFactory;
+    private worldItemInfoFactory: WorldItemFactoryService;
     private worldMapConverter: WorldMapToMatrixGraphConverter;
     private itemName: string;
 
-    constructor(itemName: string, worldItemInfoFactory: WorldItemFactory, worldMapConverter = new WorldMapToMatrixGraphConverter()) {
+    constructor(itemName: string, worldItemInfoFactory: WorldItemFactoryService, worldMapConverter = new WorldMapToMatrixGraphConverter()) {
         this.itemName = itemName;
         this.worldItemInfoFactory = worldItemInfoFactory;
         this.worldMapConverter = worldMapConverter;

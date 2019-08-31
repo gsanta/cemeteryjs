@@ -4,6 +4,7 @@ import { WorldItem } from "../WorldItemInfo";
 import { WorldItemUtils } from "../WorldItemUtils";
 import { Modifier } from "./Modifier";
 import { ConvertBorderPolyToLineModifier } from './ConvertBorderPolyToLineModifier';
+import { ConfigService } from '../services/ConfigService';
 import _ = require("lodash");
 
 /**
@@ -15,10 +16,10 @@ export class ChangeBorderWidthModifier implements Modifier {
     static modName = 'changeBorderWidth';
     dependencies = [ConvertBorderPolyToLineModifier.modName];
 
-    private realItemWidths: {name: string, width: number}[] = [];
+    private configService: ConfigService;
 
-    constructor(realItemWidths: {name: string, width: number}[] = []) {
-        this.realItemWidths = realItemWidths;
+    constructor(configService: ConfigService) {
+        this.configService = configService;
     }
 
     getName(): string {
@@ -41,7 +42,7 @@ export class ChangeBorderWidthModifier implements Modifier {
 
     private adjustBorderWidthsForRoom(room: WorldItem) {
         room.borderItems.forEach(item => {
-            const realItemWidth = _.find(this.realItemWidths, itemWidth => itemWidth.name === item.name);
+            const realItemWidth = _.find(this.configService.realBorderWidths, itemWidth => itemWidth.name === item.name);
             if (realItemWidth !== undefined) {
                 this.resizeItem(item, room.borderItems, realItemWidth.width);
             }

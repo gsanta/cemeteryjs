@@ -10,14 +10,14 @@ import { BuildHierarchyModifier } from '../../src/modifiers/BuildHierarchyModifi
 import { AssignBordersToRoomsModifier } from '../../src/modifiers/AssignBordersToRoomsModifier';
 import { ConvertBorderPolyToLineModifier } from '../../src/modifiers/ConvertBorderPolyToLineModifier';
 import { ChangeBorderWidthModifier } from '../../src/modifiers/ChangeBorderWidthModifier';
-import { WorldItemFactory } from '../../src/WorldItemInfoFactory';
-import { ModifierFacade } from '../../src/modifiers/ModifierFacade';
+import { WorldItemFactoryService } from '../../src/services/WorldItemFactoryService';
+import { ModifierService } from '../../src/services/ModifierService';
 
 type ModifierId = 'scale' | 'segmentBorders' | 'buildHierarchy' | 'assignBordersToRooms' | 'convertBorderPolyToLine' | 'thickenBorder';
 
 
 export function setup(map: string) {
-    const worldItemFactory = new WorldItemFactory();
+    const worldItemFactory = new WorldItemFactoryService();
 
     const modifiers = [
         new ScaleModifier(),
@@ -28,9 +28,9 @@ export function setup(map: string) {
         new ChangeBorderWidthModifier([{name: 'door', width: 2}])
     ];
 
-    const modifierFacade = new ModifierFacade(modifiers);
+    // const modifierFacade = new ModifierFacade(modifiers);
 
-    
+
 }
 
 export function createScene(): Scene {

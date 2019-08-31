@@ -2,7 +2,7 @@ import { Modifier } from "./Modifier";
 import { WorldItemUtils } from "../WorldItemUtils";
 import { WorldItem } from "../WorldItemInfo";
 import { Segment, Polygon, Line, Point } from '@nightshifts.inc/geometry';
-import { WorldItemFactory } from '../WorldItemInfoFactory';
+import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 import { ThickenBordersModifier } from "./ThickenBordersModifier";
 
 /**
@@ -14,9 +14,9 @@ export class AddOuterBorderLayerModifier implements Modifier {
     static modName = 'addOuterBorderLayer';
     dependencies = [ThickenBordersModifier.modName];
 
-    private worldItemFactory: WorldItemFactory;
+    private worldItemFactory: WorldItemFactoryService;
 
-    constructor(worldItemFactory: WorldItemFactory = new WorldItemFactory()) {
+    constructor(worldItemFactory: WorldItemFactoryService) {
         this.worldItemFactory = worldItemFactory;
     }
 

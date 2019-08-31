@@ -4,16 +4,17 @@ import _ = require('lodash');
 import { WorldItemUtils } from '../WorldItemUtils';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { BuildHierarchyModifier } from './BuildHierarchyModifier';
+import { ConfigService } from '../services/ConfigService';
 
 
 export class AssignBordersToRoomsModifier implements Modifier {
     static modName = 'assignBordersToRooms';
     dependencies = [BuildHierarchyModifier.modName];
 
-    private borderTypes: string[];
+    private configService: ConfigService;
 
-    constructor(borderTypes: string[]) {
-        this.borderTypes = borderTypes;
+    constructor(configService: ConfigService) {
+        this.configService = configService;
     }
 
     getName(): string {
@@ -26,7 +27,7 @@ export class AssignBordersToRoomsModifier implements Modifier {
 
     private addBoderItems(worldItems: WorldItem[]): WorldItem[] {
         const rooms = WorldItemUtils.filterRooms(worldItems);
-        const roomSeparatorItems = WorldItemUtils.filterBorders(worldItems, this.borderTypes);
+        const roomSeparatorItems = WorldItemUtils.filterBorders(worldItems, this.configService.borderTypes);
 
         rooms.forEach(room => {
             roomSeparatorItems

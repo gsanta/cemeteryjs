@@ -3,7 +3,7 @@ import { CombinedWorldItemParser } from "../../src/parsers/CombinedWorldItemPars
 import { RoomInfoParser } from "../../src/parsers/room_parser/RoomInfoParser";
 import { RoomSeparatorParser } from "../../src/parsers/room_separator_parser/RoomSeparatorParser";
 import { SegmentBordersModifier } from "../../src/modifiers/SegmentBordersModifier";
-import { WorldItemFactory } from "../../src/WorldItemInfoFactory";
+import { WorldItemFactoryService } from "../../src/services/WorldItemFactoryService";
 import _ = require("lodash");
 
 
@@ -31,7 +31,7 @@ describe ('BorderItemSegmentingTransformator', () => {
                 \`
             `;
 
-            const worldItemInfoFacotry = new WorldItemFactory();
+            const worldItemInfoFacotry = new WorldItemFactoryService();
             let items = new CombinedWorldItemParser(
                 [
                     new RoomSeparatorParser(worldItemInfoFacotry, ['wall']),
@@ -78,7 +78,7 @@ describe ('BorderItemSegmentingTransformator', () => {
                 \`
             `;
 
-            const worldItemInfoFacotry = new WorldItemFactory();
+            const worldItemInfoFacotry = new WorldItemFactoryService();
             let items = new CombinedWorldItemParser(
                 [
                     new RoomSeparatorParser(worldItemInfoFacotry, ['wall']),
@@ -134,7 +134,7 @@ describe ('BorderItemSegmentingTransformator', () => {
                 \`
             `;
 
-            const worldItemInfoFacotry = new WorldItemFactory();
+            const worldItemInfoFacotry = new WorldItemFactoryService();
             let items = new CombinedWorldItemParser(
                 [
                     new RoomSeparatorParser(worldItemInfoFacotry, ['wall']),

@@ -2,10 +2,11 @@ import { WorldItem } from "../WorldItemInfo";
 import _ = require("lodash");
 import { Modifier } from './Modifier';
 import { Polygon, Point, Line, StripeView } from '@nightshifts.inc/geometry';
-import { WorldItemFactory } from '../WorldItemInfoFactory';
+import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { WorldItemUtils } from '../WorldItemUtils';
 import { ScaleModifier } from "./ScaleModifier";
+import { ConfigService } from '../services/ConfigService';
 
 /**
  * If a border spans alongside multiple rooms it cuts the border into pieces so that each piece will separate exactly two neigbouring rooms
@@ -22,18 +23,12 @@ export class SegmentBordersModifier  implements Modifier {
     static modName = 'segmentBorders';
     dependencies = [ScaleModifier.modName]
 
-    private worldItemInfoFactory: WorldItemFactory;
-    private roomSeparatorItemNames: string[];
-    private scales: {xScale: number, yScale: number};
+    private configService: ConfigService;
+    private worldItemFactoryService: WorldItemFactoryService;
 
-    constructor(
-        worldItemInfoFactory: WorldItemFactory,
-        roomSeparatorItemNames: string[],
-        scales: {xScale: number, yScale: number} = {xScale: 1, yScale: 1}
-    ) {
-        this.worldItemInfoFactory = worldItemInfoFactory;
-        this.roomSeparatorItemNames = roomSeparatorItemNames;
-        this.scales = scales;
+    constructor(configService: ConfigService, worldItemFactoryService: WorldItemFactoryService) {
+        this.configService = configService;
+        this.worldItemFactoryService = worldItemFactoryService;
     }
 
     getName(): string {
@@ -46,7 +41,7 @@ export class SegmentBordersModifier  implements Modifier {
 
     private segmentBorderItemsIfNeeded(worldItems: WorldItem[]): WorldItem[] {
         const rooms = WorldItemUtils.filterRooms(worldItems);
-        const originalBorders = WorldItemUtils.filterBorders(worldItems, this.roomSeparatorItemNames);
+        const originalBorders = WorldItemUtils.filterBorders(worldItems, this.configService.borderTypes);
         const borders = [...originalBorders];
         const newBorders: WorldItem[] = [];
 
@@ -107,7 +102,7 @@ export class SegmentBordersModifier  implements Modifier {
             const point3 = longEdges[0].getLine().intersection(startPerpendicularLine);
             const point4 = longEdges[1].getLine().intersection(startPerpendicularLine);
 
-            const clone = this.worldItemInfoFactory.clone(originalBorderItem.name, originalBorderItem);
+            const clone = this.worldItemFactoryService.clone(originalBorderItem.name, originalBorderItem);
             clone.dimensions = new Polygon([
                 point1,
                 point2,
@@ -172,11 +167,11 @@ export class SegmentBordersModifier  implements Modifier {
         if (segment.isVertical()) {
             const segmentPositions = _.sortBy([segment.getPoints()[0].y, segment.getPoints()[1].y]);
 
-            return [segmentPositions[0] - this.scales.yScale, segmentPositions[1] + this.scales.yScale];
+            return [segmentPositions[0] - this.configService.scaling.x, segmentPositions[1] + this.configService.scaling.y];
         } else {
             const segmentPositions = _.sortBy([segment.getPoints()[0].x, segment.getPoints()[1].x]);
 
-            return [segmentPositions[0] - this.scales.xScale, segmentPositions[1] + this.scales.xScale];
+            return [segmentPositions[0] - this.configService.scaling.x, segmentPositions[1] + this.configService.scaling.x];
         }
     }
 }

@@ -13,7 +13,7 @@ import { RoomSeparatorParser } from '../../../parsers/room_separator_parser/Room
 import { FurnitureInfoParser } from '../../../parsers/furniture_parser/FurnitureInfoParser';
 import { CreateMeshModifier } from '../../../modifiers/CreateMeshModifier';
 import { WorldParser } from '../../../WorldParser';
-import { WorldItemFactory } from '../../../WorldItemInfoFactory';
+import { WorldItemFactoryService } from '../../../services/WorldItemFactoryService';
 import { CombinedWorldItemParser } from '../../../parsers/CombinedWorldItemParser';
 import { WorldMapToMatrixGraphConverter } from '../../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 import { WorldItem } from '../../../WorldItemInfo';
@@ -25,13 +25,17 @@ import { ThickenBordersModifier } from '../../../modifiers/ThickenBordersModifie
 import { AddOuterBorderLayerModifier } from '../../../modifiers/AddOuterBorderLayerModifier';
 import { BabylonMeshFactory } from './BabylonMeshFactory';
 import { MeshDescriptor } from '../../api/Config';
+import { MeshFactoryService } from '../../../services/MeshFactoryService';
+import { ModifierFactoryService } from '../../../services/ModifierFactoryService';
 
 export class BabylonImporter extends Importer<Mesh, Skeleton> {
     // private meshFactory: BabylonMeshFactory;
     // private meshLoader: BabylonMeshLoader;
 
-    constructor(scene: Scene) {
-        super(new BabylonMeshLoader(scene), new BabylonMeshFactory(scene));
+    constructor(scene: Scene, meshFactory: BabylonMeshFactory, modifierFactory: ModifierFactoryService) {
+        super(new BabylonMeshLoader(scene), meshFactory);
+
+        meshFactory.
     }
 
     // constructor(scene: Scene, meshFactory: BabylonMeshFactory = new BabylonMeshFactory(scene), meshLoader: BabylonMeshLoader = new BabylonMeshLoader(scene)) {
@@ -40,9 +44,9 @@ export class BabylonImporter extends Importer<Mesh, Skeleton> {
     //     this.meshLoader = meshLoader;
     // }
 
-    // import(strWorld: string, modelTypeDescription: MeshDescriptor[], worldConfig = defaultWorldConfig): Promise<WorldItem[]> {
-    //     return this.parse(strWorld, worldConfig, modelTypeDescription);
-    // }
+    import(strWorld: string, modelTypeDescription: MeshDescriptor[], worldConfig = defaultWorldConfig): Promise<WorldItem[]> {
+        return this.parse(strWorld, worldConfig, modelTypeDescription);
+    }
 
     // private parse(strWorld: string, worldConfig: WorldConfig, modelTypeDescription: MeshDescriptor[]): Promise<WorldItem[]> {
 

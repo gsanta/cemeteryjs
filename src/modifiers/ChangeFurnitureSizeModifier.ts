@@ -3,16 +3,17 @@ import { WorldItem } from "../WorldItemInfo";
 import { Polygon, Segment, Distance, Line, Point, Angle, Transform } from '@nightshifts.inc/geometry';
 import { Modifier } from './Modifier';
 import { NormalizeBorderRotationModifier } from "./NormalizeBorderRotationModifier";
+import { ConfigService } from '../services/ConfigService';
 
 
 export class ChangeFurnitureSizeModifier implements Modifier {
     static modeName = 'changeFurnitureSize';
     dependencies = [NormalizeBorderRotationModifier.modName];
 
-    private realSizes: {[name: string]: Polygon};
+    private configService: ConfigService;
 
-    constructor(realFurnitureSizes: {[name: string]: Polygon}) {
-        this.realSizes = realFurnitureSizes;
+    constructor(configService: ConfigService) {
+        this.configService = configService;
     }
 
     getName(): string {
@@ -33,7 +34,7 @@ export class ChangeFurnitureSizeModifier implements Modifier {
         .filter(furniture => furniture.name !== 'empty')
         .forEach(furniture => {
 
-            let realSize = <Polygon> (this.realSizes[furniture.name] || furniture.dimensions);
+            let realSize = <Polygon> (this.configService.realFurnitureSizes[furniture.name] || furniture.dimensions);
             const centerPoint = furniture.dimensions.getBoundingCenter();
 
             const snappingWallSegment = this.getSnappingWallSegmentIfExists(room, furniture);

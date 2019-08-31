@@ -1,13 +1,14 @@
 import { Skeleton } from "babylonjs";
 import { Mesh } from "babylonjs/Meshes/mesh";
 import { MeshDescriptor } from "../integrations/api/Config";
-import { MeshFactory } from "../integrations/api/MeshFactory";
+import { MeshFactoryService } from "../services/MeshFactoryService";
 import { MeshTemplate } from "../integrations/api/MeshTemplate";
 import { TreeIteratorGenerator } from "../utils/TreeIteratorGenerator";
 import { WorldItem } from "../WorldItemInfo";
 import { ChangeFurnitureSizeModifier } from './ChangeFurnitureSizeModifier';
 import { Modifier } from './Modifier';
 import { ModifierConfig } from './ModifierConfig';
+import { MeshLoaderService } from '../services/MeshLoaderService';
 
 export class CreateMeshModifier<M, S> implements Modifier {
     static modName = 'createMesh';
@@ -15,12 +16,12 @@ export class CreateMeshModifier<M, S> implements Modifier {
 
     private isReady = true;
     private descriptorMap: Map<string, MeshDescriptor> = new Map();
-    private templateMap: Map<string, MeshTemplate<Mesh, Skeleton>>;
-    private meshFactory: MeshFactory<M, S>;
+    private meshFactoryService: MeshFactoryService<M, S>;
+    private meshLoaderService: MeshLoaderService<M, S>;
 
-    constructor(modifierConfig: ModifierConfig<M, S>) {
-        this.meshFactory = modifierConfig.meshFactory;
-        this.templateMap = modifierConfig.templateMap;
+    constructor(meshFactoryService: MeshFactoryService<M, S>, meshLoaderService: MeshLoaderService<M, S>) {
+        this.meshFactoryService = meshFactoryService;
+        this.meshLoaderService = meshLoaderService;
     }
 
     getName(): string {
@@ -45,13 +46,7 @@ export class CreateMeshModifier<M, S> implements Modifier {
         return worldItems;
     }
 
-    private createMesh(worldItemInfo: WorldItem): Mesh[] {
-        return this.meshFactory.getInstance(worldItemInfo, this.descriptorMap.get(worldItemInfo.name), this.templateMap);
-
-        // if (this.modelMap.has(worldItemInfo.name) || worldItemInfo.name === 'root' || worldItemInfo.name === 'empty' || worldItemInfo.name === 'wall') {
-        //     return this.meshFactory.createFromTemplate(worldItemInfo, this.modelMap.get(worldItemInfo.name));
-        // } else {
-
-        // }
+    private createMesh(worldItemInfo: WorldItem): M[] {
+        return this.meshFactoryService.getInstance(worldItemInfo, this.descriptorMap.get(worldItemInfo.name), this.meshLoaderService.meshTemplates);
     }
 }

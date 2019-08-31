@@ -1,12 +1,12 @@
-import { Modifier } from './Modifier';
-import { ModifierFactory } from './ModifierFactory';
+import { Modifier } from '../modifiers/Modifier';
+import { ModifierFactoryService } from './ModifierFactoryService';
 import { WorldItem } from '../WorldItemInfo';
 
 
-export class ModifierFacade {
-    private modifierFactory: ModifierFactory;
+export class ModifierService {
+    private modifierFactory: ModifierFactoryService;
 
-    constructor(modifierFactory: ModifierFactory) {
+    constructor(modifierFactory: ModifierFactoryService) {
         this.modifierFactory = modifierFactory;
     }
 

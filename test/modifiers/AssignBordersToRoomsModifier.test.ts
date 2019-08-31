@@ -6,7 +6,7 @@ import { SegmentBordersModifier } from '../../src/modifiers/SegmentBordersModifi
 import _ = require('lodash');
 import { ScaleModifier } from '../../src/modifiers/ScaleModifier';
 import { Polygon } from '@nightshifts.inc/geometry';
-import { WorldItemFactory } from '../../src/WorldItemInfoFactory';
+import { WorldItemFactoryService } from '../../src/services/WorldItemFactoryService';
 
 
 describe(`AssignBordersToRoomsModifier`, () => {
@@ -31,7 +31,7 @@ describe(`AssignBordersToRoomsModifier`, () => {
                 \`
             `;
 
-            const worldItemInfoFacotry = new WorldItemFactory();
+            const worldItemInfoFacotry = new WorldItemFactoryService();
             let items = new CombinedWorldItemParser(
                 [
                     new RoomSeparatorParser(worldItemInfoFacotry, ['wall']),
@@ -68,7 +68,7 @@ describe(`AssignBordersToRoomsModifier`, () => {
                 \`
             `;
 
-            const worldItemInfoFacotry = new WorldItemFactory();
+            const worldItemInfoFacotry = new WorldItemFactoryService();
             let items = new CombinedWorldItemParser(
                 [
                     new RoomSeparatorParser(worldItemInfoFacotry, ['wall']),
@@ -111,7 +111,7 @@ describe(`AssignBordersToRoomsModifier`, () => {
                 \`
             `;
 
-            const worldItemInfoFacotry = new WorldItemFactory();
+            const worldItemInfoFacotry = new WorldItemFactoryService();
             let items = new CombinedWorldItemParser(
                 [
                     new RoomSeparatorParser(worldItemInfoFacotry, ['wall']),

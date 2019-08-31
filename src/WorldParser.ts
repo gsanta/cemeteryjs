@@ -1,6 +1,6 @@
 import { WorldItem } from './WorldItemInfo';
 import _ = require('lodash');
-import { WorldItemParser } from './parsers/WorldItemParser';
+import { Parser } from './parsers/Parser';
 import { CombinedWorldItemParser } from './parsers/CombinedWorldItemParser';
 import { ScaleModifier } from './modifiers/ScaleModifier';
 import { BuildHierarchyModifier } from './modifiers/BuildHierarchyModifier';
@@ -11,7 +11,7 @@ import { WorldMapToMatrixGraphConverter } from './matrix_graph/conversion/WorldM
 import { RoomSeparatorParser } from './parsers/room_separator_parser/RoomSeparatorParser';
 import { AssignBordersToRoomsModifier } from './modifiers/AssignBordersToRoomsModifier';
 import { Modifier } from './modifiers/Modifier';
-import { WorldItemFactory } from './WorldItemInfoFactory';
+import { WorldItemFactoryService } from './services/WorldItemFactoryService';
 import { WorldConfig, defaultWorldConfig } from './integrations/api/Importer';
 
 export interface ParseOptions<T> {
@@ -31,10 +31,10 @@ export const defaultParseOptions: ParseOptions<any> = {
  * string.
  */
 export class WorldParser {
-    private worldItemGenerator: WorldItemParser;
+    private worldItemGenerator: Parser;
     private worldItemTransformators: Modifier[];
 
-    private constructor(worldItemGenerator: WorldItemParser, worldItemTransformators: Modifier[] = []) {
+    private constructor(worldItemGenerator: Parser, worldItemTransformators: Modifier[] = []) {
         this.worldItemGenerator = worldItemGenerator;
         this.worldItemTransformators = worldItemTransformators;
     }
@@ -47,7 +47,7 @@ export class WorldParser {
 
     public static createWithOptions(worldConfig: Partial<WorldConfig>): WorldParser {
         worldConfig = {...defaultWorldConfig, ...worldConfig};
-        const worldItemInfoFactory = new WorldItemFactory();
+        const worldItemInfoFactory = new WorldItemFactoryService();
         return new WorldParser(
             new CombinedWorldItemParser(
                 [
@@ -65,7 +65,7 @@ export class WorldParser {
         );
     }
 
-    public static createWithCustomWorldItemGenerator(worldItemGenerator: WorldItemParser, worldItemTransformator?: Modifier[]): WorldParser {
+    public static createWithCustomWorldItemGenerator(worldItemGenerator: Parser, worldItemTransformator?: Modifier[]): WorldParser {
         return new WorldParser(worldItemGenerator, worldItemTransformator);
     }
 }

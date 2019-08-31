@@ -11,7 +11,7 @@ import { RoomFactory } from '../factories/RoomFactory';
 import { DiscFactory } from '../shape_factories/DiscFactory';
 import { MaterialFactory, MaterialBuilder } from '../MaterialFactory';
 import { MeshDescriptor, ShapeDescriptor, RoomDescriptor } from '../../api/Config';
-import { MeshFactory } from '../../api/MeshFactory';
+import { MeshFactoryService } from '../../../services/MeshFactoryService';
 
 export interface MeshTemplateConfig {
     checkCollisions: boolean;
@@ -36,7 +36,7 @@ export const defaultMeshConfig: MeshTemplateConfig = {
     materials: null
 };
 
-export class BabylonMeshFactory implements MeshFactory<Mesh, Skeleton> {
+export class BabylonMeshFactory implements MeshFactoryService<Mesh, Skeleton> {
     private scene: Scene;
     private modelMap: Map<string, MeshTemplate<Mesh, Skeleton>> = new Map();
 
@@ -44,15 +44,11 @@ export class BabylonMeshFactory implements MeshFactory<Mesh, Skeleton> {
         this.scene = scene;
     }
 
-    public setMeshTemplates(map: Map<string, MeshTemplate<Mesh, Skeleton>>) {
-        this.modelMap = map;
-    }
-
     getInstance(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor, templateMap: Map<string, MeshTemplate<Mesh, Skeleton>>): Mesh[] {
         return this.createFromTemplate(worldItemInfo, templateMap.get(worldItemInfo.type), meshDescriptor);
     }
 
-    public createFromTemplate(worldItemInfo: WorldItem, meshTemplate: MeshTemplate<Mesh, Skeleton>, meshDescriptor: MeshDescriptor): Mesh[] {
+    private createFromTemplate(worldItemInfo: WorldItem, meshTemplate: MeshTemplate<Mesh, Skeleton>, meshDescriptor: MeshDescriptor): Mesh[] {
 
         switch(worldItemInfo.name) {
             case 'root':
@@ -89,7 +85,7 @@ export class BabylonMeshFactory implements MeshFactory<Mesh, Skeleton> {
         return [mesh, meshes[0]];
     }
 
-    public createFromMeshDescriptor(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor<any>): Mesh[] {
+    private createFromMeshDescriptor(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor<any>): Mesh[] {
         // TODO: get rid of this at some point
         if (worldItemInfo.name === 'root' || worldItemInfo.name === 'empty' || worldItemInfo.name === 'wall' || worldItemInfo.name === 'window') {
             return this.createFromTemplate(worldItemInfo, null, meshDescriptor);

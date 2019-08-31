@@ -2,7 +2,7 @@ import { Scene, Mesh, Skeleton, StandardMaterial, AbstractMesh, ParticleSystem, 
 import 'babylonjs-loaders';
 import { MeshTemplate } from '../../api/MeshTemplate';
 import { MeshDescriptor, FileDescriptor } from '../../api/Config';
-import { MeshLoader } from '../../api/MeshLoader';
+import { MeshLoaderService } from '../../../services/MeshLoaderService';
 
 export interface MeshTemplateConfig {
     checkCollisions: boolean;
@@ -20,7 +20,7 @@ export interface MeshTemplateConfig {
 /**
  * Loads a model from file and gives back a `Mesh`.
  */
-export class BabylonMeshLoader implements MeshLoader<Mesh, Skeleton> {
+export class BabylonMeshLoader implements MeshLoaderService<Mesh, Skeleton> {
     private scene: Scene;
 
     constructor(scene: Scene) {

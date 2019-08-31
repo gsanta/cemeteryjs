@@ -1,7 +1,7 @@
 import { Modifier } from "./Modifier";
 import { WorldItem } from "../WorldItemInfo";
 import { WorldItemUtils } from '../WorldItemUtils';
-import { WorldItemFactory } from '../WorldItemInfoFactory';
+import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 
 /**
  * For each `WorldItemInfo` of type 'room' it creates a new `WorldIemInfo` of type 'roof'.
@@ -10,9 +10,9 @@ export class AddRoofModifier implements Modifier {
     static modName: 'addRoof';
     dependencies = [];
 
-    private worldItemFactory: WorldItemFactory;
+    private worldItemFactory: WorldItemFactoryService;
 
-    constructor(worldItemFactory: WorldItemFactory) {
+    constructor(worldItemFactory: WorldItemFactoryService) {
         this.worldItemFactory = worldItemFactory;
     }
 

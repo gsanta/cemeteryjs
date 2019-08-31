@@ -1,7 +1,7 @@
 import { WorldItem } from '../../src/WorldItemInfo';
 import { RootWorldItemParser } from "../../src/parsers/RootWorldItemParser";
 import { MatrixGraph } from "../../src/matrix_graph/MatrixGraph";
-import { WorldItemFactory } from "../../src/WorldItemInfoFactory";
+import { WorldItemFactoryService } from "../../src/services/WorldItemFactoryService";
 import { Point, Polygon } from "@nightshifts.inc/geometry";
 
 
@@ -13,7 +13,7 @@ describe('RootWorldItemParser', () => {
                 getRows: () => 4
             };
 
-            const rootWorldItemParser = new RootWorldItemParser(new WorldItemFactory());
+            const rootWorldItemParser = new RootWorldItemParser(new WorldItemFactoryService());
 
             const worldItems = rootWorldItemParser.generate(<MatrixGraph> graphMock);
             expect(worldItems.length).toEqual(1);

@@ -1,4 +1,4 @@
-import { WorldItemParser } from "../parsers/WorldItemParser";
+import { Parser } from "../parsers/Parser";
 import { MatrixGraph } from "../matrix_graph/MatrixGraph";
 import { WorldItem } from "../WorldItemInfo";
 import { Modifier } from './Modifier';
