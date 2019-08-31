@@ -3,7 +3,7 @@ import { CreateMeshModifier } from '../../src/modifiers/CreateMeshModifier';
 import { MeshFactoryService } from '../../src/services/MeshFactoryService';
 import { MeshDescriptor } from '../../src/integrations/api/Config';
 import { ModifierConfig } from '../../src/modifiers/ModifierConfig';
-import { BabylonMeshLoader } from '../../src/integrations/babylonjs/api/BabylonMeshLoader';
+import { BabylonMeshLoaderService } from '../../src/integrations/babylonjs/services/BabylonMeshLoaderService';
 
 describe(`CreateMeshModifier`, () => {
     describe(`prepareMeshTemplates`, () => {
@@ -16,7 +16,7 @@ describe(`CreateMeshModifier`, () => {
                 .onSecondCall()
                 .resolves({type: 'window'});
 
-            const meshLoader: Partial<BabylonMeshLoader> = {
+            const meshLoader: Partial<BabylonMeshLoaderService> = {
                 load
             };
 

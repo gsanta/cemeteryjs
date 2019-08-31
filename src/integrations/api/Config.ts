@@ -32,6 +32,17 @@ export interface DetailsDescriptor {
     name: 'file-descriptor' | 'room-descriptor' | 'shape-descriptor'
 }
 
+export interface BorderDimensionsDescriptor {
+    name: 'border-dimensions-descriptor',
+    width: number;
+}
+
+export interface FurnitureDimensionsDescriptor {
+    name: 'furniture-dimensions-descriptor',
+    width: number;
+    height: number;
+}
+
 export interface MeshDescriptor<T extends DetailsDescriptor = any> {
     name: 'mesh-descriptor';
     type: string;
@@ -39,6 +50,7 @@ export interface MeshDescriptor<T extends DetailsDescriptor = any> {
     materials?: string[];
     conditionalMaterials?: ParentRoomBasedMaterialDescriptor[];
     details: T;
+    realDimensions?: BorderDimensionsDescriptor | FurnitureDimensionsDescriptor;
 }
 
 export interface MultiModelDescriptor {

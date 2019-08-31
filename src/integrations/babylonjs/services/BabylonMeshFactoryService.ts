@@ -8,7 +8,7 @@ import { DoorFactory } from '../factories/DoorFactory';
 import { WindowFactory } from '../factories/WindowFactory';
 import { WallFactory } from '../factories/WallFactory';
 import { RoomFactory } from '../factories/RoomFactory';
-import { DiscFactory } from '../shape_factories/DiscFactory';
+import { DiscFactory } from '../factories/DiscFactory';
 import { MaterialFactory, MaterialBuilder } from '../MaterialFactory';
 import { MeshDescriptor, ShapeDescriptor, RoomDescriptor } from '../../api/Config';
 import { MeshFactoryService } from '../../../services/MeshFactoryService';
@@ -36,7 +36,7 @@ export const defaultMeshConfig: MeshTemplateConfig = {
     materials: null
 };
 
-export class BabylonMeshFactory implements MeshFactoryService<Mesh, Skeleton> {
+export class BabylonMeshFactoryService implements MeshFactoryService<Mesh, Skeleton> {
     private scene: Scene;
     private modelMap: Map<string, MeshTemplate<Mesh, Skeleton>> = new Map();
 

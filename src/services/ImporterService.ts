@@ -1,32 +1,23 @@
-import { WorldItem } from "../WorldItemInfo";
-import { MeshLoaderService } from './MeshLoaderService';
-import { MeshTemplate } from "../integrations/api/MeshTemplate";
-import { ModifierConfig } from '../modifiers/ModifierConfig';
-import { MeshFactoryService } from './MeshFactoryService';
-import { MeshDescriptor, DetailsDescriptor, FileDescriptor } from "../integrations/api/Config";
-import { WorldItemFactoryService } from "./WorldItemFactoryService";
-import { WorldParser } from "..";
-import { CombinedWorldItemParser } from "../parsers/CombinedWorldItemParser";
-import { FurnitureInfoParser } from "../parsers/furniture_parser/FurnitureInfoParser";
 import { WorldMapToMatrixGraphConverter } from "../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
-import { RoomSeparatorParser } from "../parsers/room_separator_parser/RoomSeparatorParser";
-import { RoomInfoParser } from "../parsers/room_parser/RoomInfoParser";
-import { PolygonAreaInfoParser } from "../parsers/polygon_area_parser/PolygonAreaInfoParser";
-import { RootWorldItemParser } from "../parsers/RootWorldItemParser";
+import { AddOuterBorderLayerModifier } from "../modifiers/AddOuterBorderLayerModifier";
+import { AssignBordersToRoomsModifier } from "../modifiers/AssignBordersToRoomsModifier";
+import { BuildHierarchyModifier } from "../modifiers/BuildHierarchyModifier";
+import { ChangeBorderWidthModifier } from "../modifiers/ChangeBorderWidthModifier";
+import { ChangeFurnitureSizeModifier } from "../modifiers/ChangeFurnitureSizeModifier";
+import { ConvertBorderPolyToLineModifier } from "../modifiers/ConvertBorderPolyToLineModifier";
+import { CreateMeshModifier } from '../modifiers/CreateMeshModifier';
+import { NormalizeBorderRotationModifier } from "../modifiers/NormalizeBorderRotationModifier";
 import { ScaleModifier } from "../modifiers/ScaleModifier";
 import { SegmentBordersModifier } from "../modifiers/SegmentBordersModifier";
-import { BuildHierarchyModifier } from "../modifiers/BuildHierarchyModifier";
-import { AssignBordersToRoomsModifier } from "../modifiers/AssignBordersToRoomsModifier";
-import { ConvertBorderPolyToLineModifier } from "../modifiers/ConvertBorderPolyToLineModifier";
-import { ChangeBorderWidthModifier } from "../modifiers/ChangeBorderWidthModifier";
 import { ThickenBordersModifier } from "../modifiers/ThickenBordersModifier";
-import { AddOuterBorderLayerModifier } from "../modifiers/AddOuterBorderLayerModifier";
-import { NormalizeBorderRotationModifier } from "../modifiers/NormalizeBorderRotationModifier";
-import { ChangeFurnitureSizeModifier } from "../modifiers/ChangeFurnitureSizeModifier";
-import { Polygon } from "@nightshifts.inc/geometry";
-import { ModifierFactoryService } from './ModifierFactoryService';
+import { CombinedWorldItemParser } from "../parsers/CombinedWorldItemParser";
+import { FurnitureInfoParser } from "../parsers/furniture_parser/FurnitureInfoParser";
+import { PolygonAreaInfoParser } from "../parsers/polygon_area_parser/PolygonAreaInfoParser";
+import { RoomInfoParser } from "../parsers/room_parser/RoomInfoParser";
+import { RoomSeparatorParser } from "../parsers/room_separator_parser/RoomSeparatorParser";
+import { RootWorldItemParser } from "../parsers/RootWorldItemParser";
+import { WorldItem } from "../WorldItemInfo";
 import { ServiceFacade } from './ServiceFacade';
-import { CreateMeshModifier } from '../modifiers/CreateMeshModifier';
 
 export interface WorldConfig {
     borders: string[];
@@ -43,22 +34,20 @@ export const defaultWorldConfig: WorldConfig = {
 }
 
 
-export class ImporterService<M, S> {
-    private services: ServiceFacade<M, S>;
+export class ImporterService<M, S, T> {
+    private services: ServiceFacade<M, S, T>;
 
-    constructor(services: ServiceFacade<M, S>) {
+    constructor(services: ServiceFacade<M, S, T>) {
         this.services = services;
     }
 
-    import(worldMap: string, meshDescriptors: MeshDescriptor<any>[], worldConfig: WorldConfig = defaultWorldConfig): WorldItem[] {
-
-
+    import(worldMap: string, modNames?: string[]): WorldItem[] {
         let worldItems = this.services.parserService.apply(
             worldMap,
             new CombinedWorldItemParser(
                 [
-                    new FurnitureInfoParser(this.services.worldItemFactoryService, worldConfig.furnitures, new WorldMapToMatrixGraphConverter()),
-                    new RoomSeparatorParser(this.services.worldItemFactoryService, worldConfig.borders),
+                    new FurnitureInfoParser(this.services.worldItemFactoryService, this.services.configService.furnitureTypes, new WorldMapToMatrixGraphConverter()),
+                    new RoomSeparatorParser(this.services.worldItemFactoryService, this.services.configService.borderTypes),
                     new RoomInfoParser(this.services.worldItemFactoryService),
                     new PolygonAreaInfoParser('empty', this.services.worldItemFactoryService),
                     new RootWorldItemParser(this.services.worldItemFactoryService)
@@ -66,23 +55,20 @@ export class ImporterService<M, S> {
             )
         );
 
-        worldItems = this.services.modifierService.applyModifiers(
-            worldItems,
-            [
-                ScaleModifier.modName,
-                SegmentBordersModifier.modName,
-                BuildHierarchyModifier.modName,
-                AssignBordersToRoomsModifier.modName,
-                ConvertBorderPolyToLineModifier.modName,
-                ChangeBorderWidthModifier.modName,
-                ThickenBordersModifier.modName,
-                AddOuterBorderLayerModifier.modName,
-                NormalizeBorderRotationModifier.modName,
-                ChangeFurnitureSizeModifier.modeName,
-                CreateMeshModifier.modName
-            ]
-        );
+        modNames = modNames ? modNames : [
+            ScaleModifier.modName,
+            SegmentBordersModifier.modName,
+            BuildHierarchyModifier.modName,
+            AssignBordersToRoomsModifier.modName,
+            ConvertBorderPolyToLineModifier.modName,
+            ChangeBorderWidthModifier.modName,
+            ThickenBordersModifier.modName,
+            AddOuterBorderLayerModifier.modName,
+            NormalizeBorderRotationModifier.modName,
+            ChangeFurnitureSizeModifier.modeName,
+            CreateMeshModifier.modName
+        ];
 
-        return worldItems;
+        return this.services.modifierService.applyModifiers(worldItems, modNames);
     }
 }

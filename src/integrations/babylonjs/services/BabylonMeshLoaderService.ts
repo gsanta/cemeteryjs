@@ -20,14 +20,22 @@ export interface MeshTemplateConfig {
 /**
  * Loads a model from file and gives back a `Mesh`.
  */
-export class BabylonMeshLoader implements MeshLoaderService<Mesh, Skeleton> {
+export class BabylonMeshLoaderService implements MeshLoaderService<Mesh, Skeleton> {
     private scene: Scene;
 
     constructor(scene: Scene) {
         this.scene = scene;
     }
 
-    public load(meshDescriptor: MeshDescriptor<FileDescriptor>): Promise<MeshTemplate<Mesh, Skeleton>> {
+    meshTemplates: Map<string, MeshTemplate<Mesh, Skeleton>> = new Map();
+
+    loadAll(meshDescriptors: MeshDescriptor<FileDescriptor>[]): Promise<unknown> {
+        const promises = meshDescriptors.map(meshDescriptor => this.load(meshDescriptor));
+
+        return Promise.all(promises);
+    }
+
+    private load(meshDescriptor: MeshDescriptor<FileDescriptor>): Promise<void> {
         const fileDescriptor = meshDescriptor.details;
         const materials = this.loadMaterials(meshDescriptor.materials);
 
@@ -42,11 +50,12 @@ export class BabylonMeshLoader implements MeshLoaderService<Mesh, Skeleton> {
                 this.configMeshes(<Mesh[]> meshes, new Vector3(fileDescriptor.scale, fileDescriptor.scale, fileDescriptor.scale));
                 meshes[0].name = meshDescriptor.type;
 
-                resolve({
+                this.meshTemplates.set(meshDescriptor.type, {
                     meshes: <Mesh[]> meshes,
                     skeletons: skeletons,
                     type: meshDescriptor.type
-                });
+                })
+                resolve();
             };
 
             const onError = (scene: Scene, message: string) => {

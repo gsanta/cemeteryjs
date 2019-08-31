@@ -1,6 +1,4 @@
 import { MeshDescriptor } from "../integrations/api/Config";
-import { Polygon } from "@nightshifts.inc/geometry";
-
 
 export type Scaling = {
     x: number,
@@ -8,11 +6,8 @@ export type Scaling = {
 }
 
 export class ConfigService {
-
-    
     borderTypes: string[];
-    realBorderWidths: {name: string, width: number}[];
-    realFurnitureSizes: {[name: string]: Polygon};
-    meshDescriptors: MeshDescriptor[];
-    scaling: Scaling = { x: 1, y: 1}
+    furnitureTypes: string[];
+    meshDescriptorMap: Map<string, MeshDescriptor>;
+    scaling: Scaling = { x: 1, y: 1};
 }

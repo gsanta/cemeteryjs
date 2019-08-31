@@ -1,7 +1,7 @@
 import { Polygon, Shape } from '@nightshifts.inc/geometry';
 import { Mesh, Vector3 } from 'babylonjs';
 import * as sinon from 'sinon';
-import { DiscFactory } from '../../../../src/integrations/babylonjs/shape_factories/DiscFactory';
+import { DiscFactory } from '../../../../src/integrations/babylonjs/factories/DiscFactory';
 import { createMaterialBuilder, createMeshBuilder, createScene } from '../../../test_utils/mocks';
 import { WorldItem } from '../../../../src/WorldItemInfo';
 
