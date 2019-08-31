@@ -1,6 +1,9 @@
-
+import { Parser } from '../parsers/Parser';
+import { WorldItem } from '../WorldItemInfo';
 
 export class ParserService {
 
-    applyParsers(parser)
+    apply(worldMap: string, parser: Parser): WorldItem[] {
+        return parser.generateFromStringMap(worldMap);
+    }
 }

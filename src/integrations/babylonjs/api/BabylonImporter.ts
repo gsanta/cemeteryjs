@@ -17,7 +17,7 @@ import { WorldItemFactoryService } from '../../../services/WorldItemFactoryServi
 import { CombinedWorldItemParser } from '../../../parsers/CombinedWorldItemParser';
 import { WorldMapToMatrixGraphConverter } from '../../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
 import { WorldItem } from '../../../WorldItemInfo';
-import { Importer, defaultWorldConfig, WorldConfig } from '../../api/Importer';
+import { ImporterService, defaultWorldConfig, WorldConfig } from '../../../services/ImporterService';
 import { Scene, Skeleton, Mesh } from 'babylonjs';
 import { BabylonMeshLoader } from './BabylonMeshLoader';
 import { NormalizeBorderRotationModifier } from '../../../modifiers/NormalizeBorderRotationModifier';
@@ -28,7 +28,7 @@ import { MeshDescriptor } from '../../api/Config';
 import { MeshFactoryService } from '../../../services/MeshFactoryService';
 import { ModifierFactoryService } from '../../../services/ModifierFactoryService';
 
-export class BabylonImporter extends Importer<Mesh, Skeleton> {
+export class BabylonImporter extends ImporterService<Mesh, Skeleton> {
     // private meshFactory: BabylonMeshFactory;
     // private meshLoader: BabylonMeshLoader;
 

@@ -1,4 +1,5 @@
-import { WorldItem } from "../../WorldItemInfo";
+import { WorldItem } from "../WorldItemInfo";
+import { Converter } from "../WorldGenerator";
 
 export interface Convert<T> {
     (worldItemInfo: WorldItem): T
@@ -12,6 +13,6 @@ export interface AddBorders<T> {
     (item: T, borders: T[]): void;
 }
 
-export interface Converter<T> {
-    convert(worldItemInfo: WorldItem[], convert: Convert<T>, addChildren: AddChildren<T>, addBorders: AddBorders<T>): T[];
+export interface ConverterService<T> {
+    convert(worldItemInfo: WorldItem[], converter: Converter<T>): void;
 }

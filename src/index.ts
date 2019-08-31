@@ -22,8 +22,8 @@ export {WorldItem as WorldItemInfo} from './WorldItemInfo';
 export {WorldItemFactoryService as WorldItemInfoFactory} from './services/WorldItemFactoryService';
 export {Parser as WorldItemParser} from './parsers/Parser';
 export {TreeNode, TreeIteratorGenerator} from './utils/TreeIteratorGenerator';
-export {Converter} from './integrations/api/Converter';
-export {Importer} from './integrations/api/Importer';
+export {ConverterService as Converter} from './services/ConverterService';
+export {ImporterService as Importer} from './services/ImporterService';
 export {BabylonjsDemo} from './integrations/babylonjs/demo/BabylonjsDemo';
 
 

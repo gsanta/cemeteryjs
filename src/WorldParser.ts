@@ -12,7 +12,7 @@ import { RoomSeparatorParser } from './parsers/room_separator_parser/RoomSeparat
 import { AssignBordersToRoomsModifier } from './modifiers/AssignBordersToRoomsModifier';
 import { Modifier } from './modifiers/Modifier';
 import { WorldItemFactoryService } from './services/WorldItemFactoryService';
-import { WorldConfig, defaultWorldConfig } from './integrations/api/Importer';
+import { WorldConfig, defaultWorldConfig } from './services/ImporterService';
 
 export interface ParseOptions<T> {
     xScale: number;

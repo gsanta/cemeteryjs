@@ -8,6 +8,8 @@ export type Scaling = {
 }
 
 export class ConfigService {
+
+    
     borderTypes: string[];
     realBorderWidths: {name: string, width: number}[];
     realFurnitureSizes: {[name: string]: Polygon};
