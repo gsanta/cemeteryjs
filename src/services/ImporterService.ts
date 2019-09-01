@@ -18,19 +18,22 @@ import { RoomSeparatorParser } from "../parsers/room_separator_parser/RoomSepara
 import { RootWorldItemParser } from "../parsers/RootWorldItemParser";
 import { WorldItem } from "../WorldItemInfo";
 import { ServiceFacade } from './ServiceFacade';
+import { MeshDescriptor } from '../integrations/api/Config';
 
 export interface WorldConfig {
     borders: string[];
     furnitures: string[];
     xScale: number;
     yScale: number;
+    meshDescriptors: MeshDescriptor[];
 }
 
 export const defaultWorldConfig: WorldConfig = {
     borders: ['wall', 'door', 'window'],
     furnitures: ['player', 'cupboard', 'table', 'bathtub', 'washbasin', 'bed', 'chair', 'portal'],
     xScale: 1,
-    yScale: 2
+    yScale: 2,
+    meshDescriptors: []
 }
 
 

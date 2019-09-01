@@ -12,23 +12,39 @@ import { ConvertBorderPolyToLineModifier } from '../../src/modifiers/ConvertBord
 import { ChangeBorderWidthModifier } from '../../src/modifiers/ChangeBorderWidthModifier';
 import { WorldItemFactoryService } from '../../src/services/WorldItemFactoryService';
 import { ModifierService } from '../../src/services/ModifierService';
+import { TestMeshFactoryService } from '../setup/TestMeshFactoryService';
+import { TestMeshLoaderService } from '../setup/TestMeshLoaderService';
+import { ConfigService } from '../../src/services/ConfigService';
 
 type ModifierId = 'scale' | 'segmentBorders' | 'buildHierarchy' | 'assignBordersToRooms' | 'convertBorderPolyToLine' | 'thickenBorder';
 
 
 export function setup(map: string) {
     const worldItemFactory = new WorldItemFactoryService();
+    const meshDescriptorMap: Map<string, MeshDescriptor<any>> = new Map();
+    worldConfig.meshDescriptors.map(descriptor => meshDescriptorMap.set(descriptor.type, descriptor));
 
-    const modifiers = [
-        new ScaleModifier(),
-        new SegmentBordersModifier(worldItemFactory, ['wall', 'door']),
-        new BuildHierarchyModifier(),
-        new AssignBordersToRoomsModifier(['wall', 'door']),
-        new ConvertBorderPolyToLineModifier(),
-        new ChangeBorderWidthModifier([{name: 'door', width: 2}])
-    ];
+    const meshFactoryService = new TestMeshFactoryService();
+    const meshLoaderService = new TestMeshLoaderService();
 
-    // const modifierFacade = new ModifierFacade(modifiers);
+    const configService: ConfigService = {
+        borderTypes: [],
+        furnitureTypes: [],
+        meshDescriptorMap,
+        scaling: {
+            x: 1,
+            y: 2
+        }
+    }
+
+    const serviceFacade = new ServiceFacade<any, any, T>(
+        meshFactoryService,
+        meshLoaderService,
+        configService
+    );
+
+    const worldItems = serviceFacade.importerService.import(worldMap);
+
 
 
 }

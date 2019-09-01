@@ -29,36 +29,6 @@ export interface Converter<T> {
     done();
 }
 
-export class WorldGenerator<T> {
-    private meshFactoryService: MeshFactoryService<any, any>;
-    private meshLoaderService: MeshLoaderService<any, any>;
-
-    constructor(meshFactoryService: MeshFactoryService<any, any>, meshLoaderService: MeshLoaderService<any, any>) {
-        this.meshFactoryService = meshFactoryService;
-        this.meshLoaderService = meshLoaderService;
-    }
-
-    generate(worldMap: string, meshDescriptors: MeshDescriptor<any>[], worldConfig: WorldConfig = defaultWorldConfig) {
-        const meshDescriptorMap: Map<string, MeshDescriptor<any>> = new Map();
-        meshDescriptors.map(descriptor => meshDescriptorMap.set(descriptor.type, descriptor));
-
-
-        const configService: ConfigService = {
-            borderTypes: worldConfig.borders,
-            furnitureTypes: worldConfig.furnitures,
-            meshDescriptorMap,
-            scaling: {
-                x: worldConfig.xScale,
-                y: worldConfig.yScale
-            }
-        }
-
-        const serviceFacade = new ServiceFacade<any, any, T>(
-            this.meshFactoryService,
-            this.meshLoaderService,
-            configService
-        );
-
-        return serviceFacade.importerService.import(worldMap);
-    }
+export interface WorldGenerator<T> {
+    generate(worldMap: string, worldConfig: WorldConfig, converter: Converter<T>);
 }
