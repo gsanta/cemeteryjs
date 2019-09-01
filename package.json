@@ -6,9 +6,9 @@
   "types": "build/src/index.d.ts",
   "scripts": {
     "test": "jest",
-    "build": "tsc --declaration",
+    "build": "./node_modules/.bin/webpack",
     "doc": "typedoc --out api-doc src --mode file --excludeNotExported",
-    "watch": "./node_modules/.bin/webpack-dev-server"
+    "start": "./node_modules/.bin/webpack-dev-server"
   },
   "publishConfig": {
     "access": "public"

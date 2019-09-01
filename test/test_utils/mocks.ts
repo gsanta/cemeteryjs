@@ -1,52 +1,28 @@
-import { Scene, MeshBuilder } from 'babylonjs';
+import { Shape } from '@nightshifts.inc/geometry';
+import { MeshBuilder, Scene } from 'babylonjs';
 import * as sinon from 'sinon';
 import { MaterialBuilder } from '../../src/integrations/babylonjs/MaterialFactory';
-import { WorldItem } from '../../src/WorldItemInfo';
-import { Shape } from '@nightshifts.inc/geometry';
+import { ConfigService } from '../../src/services/ConfigService';
+import { defaultWorldConfig, WorldConfig } from '../../src/services/ImporterService';
+import { ServiceFacade } from '../../src/services/ServiceFacade';
 import { TreeIteratorGenerator } from '../../src/utils/TreeIteratorGenerator';
-import { ScaleModifier } from '../../src/modifiers/ScaleModifier';
-import { SegmentBordersModifier } from '../../src/modifiers/SegmentBordersModifier';
-import { BuildHierarchyModifier } from '../../src/modifiers/BuildHierarchyModifier';
-import { AssignBordersToRoomsModifier } from '../../src/modifiers/AssignBordersToRoomsModifier';
-import { ConvertBorderPolyToLineModifier } from '../../src/modifiers/ConvertBorderPolyToLineModifier';
-import { ChangeBorderWidthModifier } from '../../src/modifiers/ChangeBorderWidthModifier';
-import { WorldItemFactoryService } from '../../src/services/WorldItemFactoryService';
-import { ModifierService } from '../../src/services/ModifierService';
+import { WorldItem } from '../../src/WorldItemInfo';
 import { TestMeshFactoryService } from '../setup/TestMeshFactoryService';
 import { TestMeshLoaderService } from '../setup/TestMeshLoaderService';
-import { ConfigService } from '../../src/services/ConfigService';
 
-type ModifierId = 'scale' | 'segmentBorders' | 'buildHierarchy' | 'assignBordersToRooms' | 'convertBorderPolyToLine' | 'thickenBorder';
-
-
-export function setup(map: string) {
-    const worldItemFactory = new WorldItemFactoryService();
-    const meshDescriptorMap: Map<string, MeshDescriptor<any>> = new Map();
-    worldConfig.meshDescriptors.map(descriptor => meshDescriptorMap.set(descriptor.type, descriptor));
-
+export function setup(config: Partial<WorldConfig> = {}): ServiceFacade<any, any, any> {
+    config = {...defaultWorldConfig, ...config};
+    
     const meshFactoryService = new TestMeshFactoryService();
     const meshLoaderService = new TestMeshLoaderService();
 
-    const configService: ConfigService = {
-        borderTypes: [],
-        furnitureTypes: [],
-        meshDescriptorMap,
-        scaling: {
-            x: 1,
-            y: 2
-        }
-    }
+    const configService = new ConfigService([], [], new Map())
 
-    const serviceFacade = new ServiceFacade<any, any, T>(
+    return new ServiceFacade<any, any, any>(
         meshFactoryService,
         meshLoaderService,
         configService
     );
-
-    const worldItems = serviceFacade.importerService.import(worldMap);
-
-
-
 }
 
 export function createScene(): Scene {

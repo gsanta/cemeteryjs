@@ -12,7 +12,10 @@ import { AssignBordersToRoomsModifier } from "../../src/modifiers/AssignBordersT
 import { ConvertBorderPolyToLineModifier } from "../../src/modifiers/ConvertBorderPolyToLineModifier";
 import { ChangeBorderWidthModifier } from "../../src/modifiers/ChangeBorderWidthModifier";
 import { ChangeFurnitureSizeModifier } from '../../src/modifiers/ChangeFurnitureSizeModifier';
-import { Polygon } from '@nightshifts.inc/geometry';
+import { Polygon, Segment } from '@nightshifts.inc/geometry';
+import { setup } from "../test_utils/mocks";
+import { MeshDescriptor } from "../../src/integrations/api/Config";
+import { ServiceFacade } from "../../src/services/ServiceFacade";
 
 const initBorderItems = (strMap: string): WorldItemInfo[] => {
     const map = `
@@ -64,20 +67,76 @@ const initBorderItems = (strMap: string): WorldItemInfo[] => {
     return worldMapParser.parse(map);
 }
 
+function createMap(worldMap: string) {
+    return `
+        map \`
+
+        ${worldMap}
+
+        \`
+
+        definitions \`
+
+        W = wall
+        D = door
+        - = empty
+
+        \`
+    `;
+}
+
 describe('ChangeFurnitureSizeModifier', () => {
+    let services: ServiceFacade<any, any, any>;
+
+    beforeEach(() => {
+        services = setup({
+            meshDescriptors: [
+                {
+                    name: 'mesh-descriptor',
+                    type: 'table',
+                    realDimensions: {
+                        name: 'furniture-dimensions-descriptor',
+                        width: 2,
+                        height: 1
+                    }
+                } as MeshDescriptor,
+                {
+                    name: 'mesh-descriptor',
+                    type: 'cupboard',
+                    realDimensions: {
+                        name: 'furniture-dimensions-descriptor',
+                        width: 0.5,
+                        height: 2
+                    }
+                } as MeshDescriptor
+            ]
+        });
+    });
+
     it ('transforms the sketched furniture dimensions into real mesh dimensions', () => {
-        const map = `
-        WWWWWWWWWWWWWWW
-        W-------------W
-        W------TTT----W
-        W------TTT----W
-        W-------------W
-        WWWWWWWWWWWWWWW
+        const map = createMap(
+            `
+            WWWWWWWWWWWWWWW
+            W-------------W
+            W------TTT----W
+            W------TTT----W
+            W-------------W
+            WWWWWWWWWWWWWWW
+           `
+        );
 
-        `;
-
-        const transformator = new ChangeFurnitureSizeModifier({table: Polygon.createRectangle(0, 0, 2, 1)});
-        const items = transformator.apply(initBorderItems(map));
+        const items = services.importerService.import(
+            map,
+            [
+                ScaleModifier.modName,
+                SegmentBordersModifier.modName,
+                BuildHierarchyModifier.modName,
+                AssignBordersToRoomsModifier.modName,
+                ConvertBorderPolyToLineModifier.modName,
+                ChangeBorderWidthModifier.modName,
+                ChangeFurnitureSizeModifier.modeName
+            ]
+        );
 
         const room = items[0].children[0];
         const table = room.children[0];
@@ -97,8 +156,18 @@ describe('ChangeFurnitureSizeModifier', () => {
 
         `;
 
-        const transformator = new ChangeFurnitureSizeModifier({table: Polygon.createRectangle(0, 0, 2, 1), cupboard: Polygon.createRectangle(0, 0, 0.5, 2)});
-        const items = transformator.apply(initBorderItems(map));
+        const items = services.importerService.import(
+            map,
+            [
+                ScaleModifier.modName,
+                SegmentBordersModifier.modName,
+                BuildHierarchyModifier.modName,
+                AssignBordersToRoomsModifier.modName,
+                ConvertBorderPolyToLineModifier.modName,
+                ChangeBorderWidthModifier.modName,
+                ChangeFurnitureSizeModifier.modeName
+            ]
+        );
 
         const room = items[0].children[0];
 

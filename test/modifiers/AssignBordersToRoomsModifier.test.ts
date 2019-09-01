@@ -7,6 +7,7 @@ import _ = require('lodash');
 import { ScaleModifier } from '../../src/modifiers/ScaleModifier';
 import { Polygon } from '@nightshifts.inc/geometry';
 import { WorldItemFactoryService } from '../../src/services/WorldItemFactoryService';
+import { setup } from '../test_utils/mocks';
 
 
 describe(`AssignBordersToRoomsModifier`, () => {
@@ -31,15 +32,11 @@ describe(`AssignBordersToRoomsModifier`, () => {
                 \`
             `;
 
-            const worldItemInfoFacotry = new WorldItemFactoryService();
-            let items = new CombinedWorldItemParser(
-                [
-                    new RoomSeparatorParser(worldItemInfoFacotry, ['wall']),
-                    new RoomInfoParser(worldItemInfoFacotry)
-                ]
-            ).generateFromStringMap(map);
+            const services = setup();
 
-            const [wall1, wall2, wall3, wall4, room] =  new AssignBordersToRoomsModifier(['wall']).apply(items);
+            let items = services.importerService.import(map, []);
+
+            const [wall1, wall2, wall3, wall4, room] =  new AssignBordersToRoomsModifier(services.configService).apply(items);
 
             expect(room.borderItems).toEqual([wall1, wall2, wall3, wall4]);
         });
@@ -68,19 +65,11 @@ describe(`AssignBordersToRoomsModifier`, () => {
                 \`
             `;
 
-            const worldItemInfoFacotry = new WorldItemFactoryService();
-            let items = new CombinedWorldItemParser(
-                [
-                    new RoomSeparatorParser(worldItemInfoFacotry, ['wall']),
-                    new RoomInfoParser(worldItemInfoFacotry)
-                ]
-            ).generateFromStringMap(map);
+            const services = setup();
 
-            items = new SegmentBordersModifier(worldItemInfoFacotry, ['wall']).apply(items);
-            items = new AssignBordersToRoomsModifier(['wall']).apply(items);
+            const items = services.importerService.import(map, [SegmentBordersModifier.modName, AssignBordersToRoomsModifier.modName]);
 
             const room3 = items.filter(worldItem => worldItem.name === 'room')[2];
-
             const borderItemDimensions = room3.borderItems.map(borderItem => borderItem.dimensions);
 
             const cornerIntersectingRect = Polygon.createRectangle(4, 0, 1, 5);
@@ -111,17 +100,14 @@ describe(`AssignBordersToRoomsModifier`, () => {
                 \`
             `;
 
-            const worldItemInfoFacotry = new WorldItemFactoryService();
-            let items = new CombinedWorldItemParser(
-                [
-                    new RoomSeparatorParser(worldItemInfoFacotry, ['wall']),
-                    new RoomInfoParser(worldItemInfoFacotry)
-                ]
-            ).generateFromStringMap(map);
+            
+            const services = setup({
+                xScale: 2,
+                yScale: 2
+            });
 
-            items = new ScaleModifier({x: 2, y: 2}).apply(items);
-            items = new SegmentBordersModifier(worldItemInfoFacotry, ['wall'], {xScale: 2, yScale: 2}).apply(items);
-            items = new AssignBordersToRoomsModifier(['wall']).apply(items);
+
+            const items = services.importerService.import(map, [ScaleModifier.modName, SegmentBordersModifier.modName, AssignBordersToRoomsModifier.modName]);
 
             const room3 = items.filter(worldItem => worldItem.name === 'room')[0];
 

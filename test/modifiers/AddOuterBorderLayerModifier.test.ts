@@ -13,72 +13,56 @@ import { ConvertBorderPolyToLineModifier } from "../../src/modifiers/ConvertBord
 import { ThickenBordersModifier } from '../../src/modifiers/ThickenBordersModifier';
 import { AddOuterBorderLayerModifier } from '../../src/modifiers/AddOuterBorderLayerModifier';
 import { Point, Segment } from "@nightshifts.inc/geometry";
+import { setup } from "../test_utils/mocks";
 
-const setup = (strMap: string): WorldItemInfo[] => {
-    const map = `
-        map \`
+function createMap(worldMap: string) {
+        return `
+            map \`
 
-        ${strMap}
+            ${worldMap}
 
-        \`
+            \`
 
-        definitions \`
+            definitions \`
 
-        W = wall
-        D = door
-        - = empty
+            W = wall
+            D = door
+            - = empty
 
-        \`
-    `;
-
-    const options = {
-        xScale: 1,
-        yScale: 1,
-        furnitureCharacters: [],
-        roomSeparatorCharacters: ['wall', 'door']
-    }
-
-    const worldItemInfoFactory = new WorldItemInfoFactory();
-    const worldMapParser = WorldParser.createWithCustomWorldItemGenerator(
-        new CombinedWorldItemParser(
-            [
-                new FurnitureInfoParser(worldItemInfoFactory, options.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
-                new RoomSeparatorParser(worldItemInfoFactory, options.roomSeparatorCharacters),
-                new RoomInfoParser(worldItemInfoFactory),
-                new RootWorldItemParser(worldItemInfoFactory)
-            ]
-        ),
-        [
-            new ScaleModifier(),
-            new SegmentBordersModifier(worldItemInfoFactory, ['wall', 'door']),
-            new BuildHierarchyModifier(),
-            new AssignBordersToRoomsModifier(['wall', 'door']),
-            new ConvertBorderPolyToLineModifier(),
-            new ThickenBordersModifier()
-        ]
-    );
-
-    return worldMapParser.parse(map);
+            \`
+        `;
 }
 
 describe(`AddOuterBorderLayerModifier`, () => {
 
 
     it ('applies the outer layer for external walls', () => {
-        const map = `
+        const map = createMap(
+            `
             WDDWWWWW
             W--W---W
             W--W---W
             WWWWWWWW
-        `;
+            `
+        );
 
-        setup(map);
+        const serviceFacade = setup();
 
-        const [root] = setup(map);
+        const [root] = serviceFacade.importerService.import(
+            map, 
+            [
+                ScaleModifier.modName,
+                SegmentBordersModifier.modName,
+                BuildHierarchyModifier.modName,
+                AssignBordersToRoomsModifier.modName,
+                ConvertBorderPolyToLineModifier.modName,
+                ThickenBordersModifier.modName
+            ]    
+        )
 
         expect(root.children.length).toEqual(9);
 
-        const items = new AddOuterBorderLayerModifier().apply([root]);
+        const items = new AddOuterBorderLayerModifier(serviceFacade.worldItemFactoryService).apply([root]);
 
         expect(items[0].children.length).toEqual(15);
         expect(items[0].children).toHaveAnyWithDimensions(new Segment(new Point(0.375, 0.5), new Point(0.375, 3.5)));

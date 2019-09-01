@@ -33,8 +33,14 @@ export class ChangeFurnitureSizeModifier implements Modifier {
         // TODO: find better solution to handle empty
         .filter(furniture => furniture.name !== 'empty')
         .forEach(furniture => {
+            let realSize = <Polygon> furniture.dimensions;
 
-            let realSize = <Polygon> (this.configService.realFurnitureSizes[furniture.name] || furniture.dimensions);
+            if (this.configService.getFurnitureDimensions(furniture.name)) {
+                const furnitureDimensions = this.configService.getFurnitureDimensions(furniture.name);
+
+                realSize = Polygon.createRectangle(0, 0, furnitureDimensions.width, furnitureDimensions.height);
+            }
+            
             const centerPoint = furniture.dimensions.getBoundingCenter();
 
             const snappingWallSegment = this.getSnappingWallSegmentIfExists(room, furniture);

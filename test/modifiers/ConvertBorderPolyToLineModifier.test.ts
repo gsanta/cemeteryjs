@@ -16,13 +16,14 @@ import { BuildHierarchyModifier } from '../../src/modifiers/BuildHierarchyModifi
 import { AssignBordersToRoomsModifier } from '../../src/modifiers/AssignBordersToRoomsModifier';
 import * as _ from 'lodash';
 import { hasAnyWorldItemInfoDimension } from '../parsers/room_separator_parser/RoomSeparatorParser.test';
-import { findWorldItemWithDimensions } from '../test_utils/mocks';
+import { findWorldItemWithDimensions, setup } from '../test_utils/mocks';
+import { ServiceFacade } from '../../src/services/ServiceFacade';
 
-const initBorderItems = (strMap: string): WorldItem[] => {
-    const map = `
+function createMap(worldMap: string) {
+    return `
         map \`
 
-        ${strMap}
+        ${worldMap}
 
         \`
 
@@ -34,84 +35,34 @@ const initBorderItems = (strMap: string): WorldItem[] => {
 
         \`
     `;
-
-    const options = {
-        xScale: 1,
-        yScale: 1,
-        furnitureCharacters: [],
-        roomSeparatorCharacters: ['wall', 'door']
-    }
-
-    const worldItemInfoFactory = new WorldItemFactoryService();
-    const worldMapParser = WorldParser.createWithCustomWorldItemGenerator(
-        new CombinedWorldItemParser(
-            [
-                new FurnitureInfoParser(worldItemInfoFactory, options.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
-                new RoomSeparatorParser(worldItemInfoFactory, options.roomSeparatorCharacters),
-                new RoomInfoParser(worldItemInfoFactory),
-                new RootWorldItemParser(worldItemInfoFactory)
-            ]
-        ),
-        [
-            new ScaleModifier(),
-            new SegmentBordersModifier(worldItemInfoFactory, ['wall', 'door']),
-            new BuildHierarchyModifier(),
-            new AssignBordersToRoomsModifier(['wall', 'door'])
-        ]
-    );
-
-    return worldMapParser.parse(map);
 }
 
-
 describe(`ConvertBorderPolyToLineModifier`, () => {
-    it ('tests the new implementation', () => {
-        const map = `
-            map \`
+    let services: ServiceFacade<any, any, any>;
 
+    it ('tests the new implementation', () => {
+        const map = createMap(
+            `
             WWWWWWWWW
             W---W---W
             W---WWWWW
             W-------W
             WWWWWWWWW
-
-            \`
-
-            definitions \`
-
-            W = wall
-            - = empty
-
-            \`
-        `;
-
-        const options = {
-            xScale: 1,
-            yScale: 1,
-            furnitureCharacters: [],
-            roomSeparatorCharacters: ['wall']
-        }
-
-        const worldItemInfoFactory = new WorldItemFactoryService();
-        const worldMapParser = WorldParser.createWithCustomWorldItemGenerator(
-            new CombinedWorldItemParser(
-                [
-                    new FurnitureInfoParser(worldItemInfoFactory, options.furnitureCharacters, new WorldMapToMatrixGraphConverter()),
-                    new RoomSeparatorParser(worldItemInfoFactory, options.roomSeparatorCharacters),
-                    new RoomInfoParser(worldItemInfoFactory),
-                    new RootWorldItemParser(worldItemInfoFactory)
-                ]
-            ),
-            [
-                new ScaleModifier(),
-                new SegmentBordersModifier(worldItemInfoFactory, ['wall']),
-                new BuildHierarchyModifier(),
-                new AssignBordersToRoomsModifier(['wall']),
-            ]
+            `
         );
 
-        const [root1] = worldMapParser.parse(map);
-        const [root] = new ConvertBorderPolyToLineModifier().apply([root1]);
+        let services: ServiceFacade<any, any, any> = setup({xScale: 1, yScale: 1});
+
+        const [root] = services.importerService.import(
+            map,
+            [
+                ScaleModifier.modName,
+                SegmentBordersModifier.modName,
+                BuildHierarchyModifier.modName,
+                AssignBordersToRoomsModifier.modName,
+                ConvertBorderPolyToLineModifier.modName
+            ]
+        );
 
         const expectedRoomDimensions1 = new Polygon([
             new Point(0.5, 0.5),
@@ -141,28 +92,24 @@ describe(`ConvertBorderPolyToLineModifier`, () => {
                 WWWWWWWW
             `;
 
-            const [root] = initBorderItems(map);
+            let services: ServiceFacade<any, any, any> = setup();
 
-            const items = new ConvertBorderPolyToLineModifier().apply([root]);
+            const items = services.importerService.import(
+                map,
+                [
+                    ScaleModifier.modName,
+                    SegmentBordersModifier.modName,
+                    BuildHierarchyModifier.modName,
+                    AssignBordersToRoomsModifier.modName,
+                    ConvertBorderPolyToLineModifier.modName
+                ]
+            );
 
             expect(findWorldItemWithDimensions(items, new Segment(new Point(0.5, 0.5), new Point(0.5, 3.5))).rotation).toEqual(Math.PI / 2);
             expect(findWorldItemWithDimensions(items, new Segment(new Point(7.5, 0.5), new Point(7.5, 3.5))).rotation).toEqual(Math.PI / 2);
             expect(findWorldItemWithDimensions(items, new Segment(new Point(0.5, 3.5), new Point(7.5, 3.5))).rotation).toEqual(0);
             expect(findWorldItemWithDimensions(items, new Segment(new Point(2.833333333333334, 0.5), new Point(7.5, 0.5))).rotation).toEqual(0);
             expect(findWorldItemWithDimensions(items, new Segment(new Point(0.5000000000000009, 0.5), new Point(2.833333333333334, 0.5))).rotation).toEqual(0);
-        });
-
-        it ('handles multiple types of border items (e.g doors, windows) beside walls', () => {
-            const map = `
-                WDDWWWWW
-                W------W
-                W------W
-                WWWWWWWW
-            `;
-
-            const [root] = initBorderItems(map);
-
-            const items = new ConvertBorderPolyToLineModifier().apply([root]);
         });
 
         it ('handles multiple rooms', () => {
@@ -186,11 +133,20 @@ describe(`ConvertBorderPolyToLineModifier`, () => {
                 W-------------------------W-------------------------W
                 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
-                `;
+            `;
 
-            let [root] = initBorderItems(map);
+            let services: ServiceFacade<any, any, any> = setup();
 
-            [root] = new ConvertBorderPolyToLineModifier().apply([root]);
+            const [root] = services.importerService.import(
+                map,
+                [
+                    ScaleModifier.modName,
+                    SegmentBordersModifier.modName,
+                    BuildHierarchyModifier.modName,
+                    AssignBordersToRoomsModifier.modName,
+                    ConvertBorderPolyToLineModifier.modName
+                ]
+            );
 
             expect(root.children[0]).toHaveBorders([
                 new Segment(new Point(0.5, 0.5), new Point(0.5, 4.5)),
