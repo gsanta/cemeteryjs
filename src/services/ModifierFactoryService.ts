@@ -17,9 +17,9 @@ import { TransformToWorldCoordinateModifier } from '../modifiers/TransformToWorl
 
 export class ModifierFactoryService {
     private modifierMap: Map<string, Modifier> = new Map();
-    private services: ServiceFacade<any, any>;
+    private services: ServiceFacade<any, any, any>;
 
-    constructor(services: ServiceFacade<any, any>) {
+    constructor(services: ServiceFacade<any, any, any>) {
         this.services = services;
 
         this

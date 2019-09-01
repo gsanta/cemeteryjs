@@ -1,23 +1,13 @@
-import { RoomInfoParser } from '../../src/parsers/room_parser/RoomInfoParser';
-import { ConvertBorderPolyToLineModifier, mergeStraightAngledNeighbouringBorderItemPolygons } from '../../src/modifiers/ConvertBorderPolyToLineModifier';
-import { WorldMapToMatrixGraphConverter } from '../../src/matrix_graph/conversion/WorldMapToMatrixGraphConverter';
-import { ScaleModifier } from '../../src/modifiers/ScaleModifier';
-import { Polygon, Point } from '@nightshifts.inc/geometry';
-import { WorldItemFactoryService } from '../../src/services/WorldItemFactoryService';
-import { WorldItem } from '../../src/WorldItemInfo';
+import { Point, Polygon } from '@nightshifts.inc/geometry';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
-import { WorldParser } from '../../src';
-import { CombinedWorldItemParser } from '../../src/parsers/CombinedWorldItemParser';
-import { FurnitureInfoParser } from '../../src/parsers/furniture_parser/FurnitureInfoParser';
-import { RoomSeparatorParser } from '../../src/parsers/room_separator_parser/RoomSeparatorParser';
-import { RootWorldItemParser } from '../../src/parsers/RootWorldItemParser';
-import { SegmentBordersModifier } from '../../src/modifiers/SegmentBordersModifier';
-import { BuildHierarchyModifier } from '../../src/modifiers/BuildHierarchyModifier';
 import { AssignBordersToRoomsModifier } from '../../src/modifiers/AssignBordersToRoomsModifier';
-import * as _ from 'lodash';
+import { BuildHierarchyModifier } from '../../src/modifiers/BuildHierarchyModifier';
+import { ConvertBorderPolyToLineModifier } from '../../src/modifiers/ConvertBorderPolyToLineModifier';
+import { ScaleModifier } from '../../src/modifiers/ScaleModifier';
+import { SegmentBordersModifier } from '../../src/modifiers/SegmentBordersModifier';
+import { ServiceFacade } from '../../src/services/ServiceFacade';
 import { hasAnyWorldItemInfoDimension } from '../parsers/room_separator_parser/RoomSeparatorParser.test';
 import { findWorldItemWithDimensions, setup } from '../test_utils/mocks';
-import { ServiceFacade } from '../../src/services/ServiceFacade';
 
 function createMap(worldMap: string) {
     return `

@@ -1,13 +1,9 @@
-import { CombinedWorldItemParser } from '../../src/parsers/CombinedWorldItemParser';
-import { RoomSeparatorParser } from '../../src/parsers/room_separator_parser/RoomSeparatorParser';
-import { RoomInfoParser } from '../../src/parsers/room_parser/RoomInfoParser';
-import { AssignBordersToRoomsModifier } from '../../src/modifiers/AssignBordersToRoomsModifier';
-import { SegmentBordersModifier } from '../../src/modifiers/SegmentBordersModifier';
-import _ = require('lodash');
-import { ScaleModifier } from '../../src/modifiers/ScaleModifier';
 import { Polygon } from '@nightshifts.inc/geometry';
-import { WorldItemFactoryService } from '../../src/services/WorldItemFactoryService';
+import { AssignBordersToRoomsModifier } from '../../src/modifiers/AssignBordersToRoomsModifier';
+import { ScaleModifier } from '../../src/modifiers/ScaleModifier';
+import { SegmentBordersModifier } from '../../src/modifiers/SegmentBordersModifier';
 import { setup } from '../test_utils/mocks';
+import _ = require('lodash');
 
 
 describe(`AssignBordersToRoomsModifier`, () => {
