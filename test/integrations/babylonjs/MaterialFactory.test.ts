@@ -1,8 +1,8 @@
 import { createMaterialBuilder as setupMaterialBuilder, createScene as setupScene } from "../../test_utils/mocks";
 import { MaterialFactory } from '../../../src/integrations/babylonjs/MaterialFactory';
-import { WorldItemInfo } from "../../../src";
 import { Color3, Texture } from 'babylonjs';
 import { MeshDescriptor, ShapeDescriptor } from "../../../src/integrations/api/Config";
+import { WorldItem } from '../../../src/WorldItemInfo';
 
 
 describe('MaterialFactory', () => {
@@ -22,7 +22,7 @@ describe('MaterialFactory', () => {
             }
         };
 
-        const worldItem = <WorldItemInfo> {
+        const worldItem = <WorldItem> {
             name: 'wall',
         }
 
@@ -59,7 +59,7 @@ describe('MaterialFactory', () => {
             }
         };
 
-        let worldItem = <WorldItemInfo> {
+        let worldItem = <WorldItem> {
             name: 'wall',
             rooms: [
                 {
@@ -73,7 +73,7 @@ describe('MaterialFactory', () => {
         expect(material.diffuseColor).toEqual(new Color3(0, 1, 0));
         expect(material.name).toEqual("1");
 
-        worldItem = <WorldItemInfo> {
+        worldItem = <WorldItem> {
             name: 'wall',
             rooms: [
                 {

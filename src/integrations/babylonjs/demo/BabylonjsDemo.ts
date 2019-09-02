@@ -1,5 +1,4 @@
 import { Scene, Engine, ArcRotateCamera, Vector3, HemisphericLight, Color3 } from 'babylonjs';
-import { TreeIteratorGenerator } from '../../../utils/TreeIteratorGenerator';
 import { BabylonWorldGenerator } from '../BabylonWorldGenerator';
 (<any> window).earcut = require('earcut');
 // const strWorld = require('../../../../assets/test/babylonjs_demo.gwm').default;
@@ -8,7 +7,6 @@ import { BabylonWorldGenerator } from '../BabylonWorldGenerator';
 // import strWorld from 'raw-loader!../../../../assets/test/demo_world.gwm';
 import { MeshDescriptor } from '../../api/Config';
 import { WorldConfig } from '../../../services/ImporterService';
-import { NullConverter } from '../../../WorldGenerator';
 import { WorldItem } from '../../../WorldItemInfo';
 
 const strWorld = `map \`

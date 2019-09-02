@@ -15,13 +15,21 @@ import { CreateMeshModifier } from './modifiers/CreateMeshModifier';
 import { CreateMockMeshModifier } from './modifiers/CreateMockMeshModifier';
 import { AddOuterBorderLayerModifier } from './modifiers/AddOuterBorderLayerModifier';
 import { ThickenBordersModifier } from './modifiers/ThickenBordersModifier';
-export {WorldItem as WorldItemInfo} from './WorldItemInfo';
-export {WorldItemFactoryService as WorldItemInfoFactory} from './services/WorldItemFactoryService';
-export {Parser as WorldItemParser} from './parsers/Parser';
-export {TreeNode, TreeIteratorGenerator} from './utils/TreeIteratorGenerator';
-export {ConverterService as Converter} from './services/ConverterService';
-export {ImporterService as Importer} from './services/ImporterService';
+
+export {WorldItem} from './WorldItemInfo';
 export {BabylonjsDemo} from './integrations/babylonjs/demo/BabylonjsDemo';
+export {WorldGenerator} from './WorldGenerator';
+export {BabylonWorldGenerator} from './integrations/babylonjs/BabylonWorldGenerator';
+export {WorldConfig} from './services/ImporterService';
+export {MeshDescriptor} from './integrations/api/Config';
+export {FileDescriptor} from './integrations/api/Config';
+export {ParentRoomBasedMaterialDescriptor} from './integrations/api/Config';
+export {ShapeDescriptor} from './integrations/api/Config';
+export {RoomDescriptor} from './integrations/api/Config';
+export {DetailsDescriptor} from './integrations/api/Config';
+export {BorderDimensionsDescriptor} from './integrations/api/Config';
+export {FurnitureDimensionsDescriptor} from './integrations/api/Config';
+
 
 
 export const parsers = {
