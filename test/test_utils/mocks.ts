@@ -9,14 +9,26 @@ import { TreeIteratorGenerator } from '../../src/utils/TreeIteratorGenerator';
 import { WorldItem } from '../../src/WorldItemInfo';
 import { TestMeshFactoryService } from '../setup/TestMeshFactoryService';
 import { TestMeshLoaderService } from '../setup/TestMeshLoaderService';
+import { MeshDescriptor } from '../../src/integrations/api/Config';
 
 export function setup(config: Partial<WorldConfig> = {}): ServiceFacade<any, any, any> {
     config = {...defaultWorldConfig, ...config};
-    
+
     const meshFactoryService = new TestMeshFactoryService();
     const meshLoaderService = new TestMeshLoaderService();
 
-    const configService = new ConfigService([], [], new Map())
+    const meshDescriptorMap: Map<string, MeshDescriptor<any>> = new Map();
+    config.meshDescriptors.map(descriptor => meshDescriptorMap.set(descriptor.type, descriptor));
+
+    const configService = new ConfigService(
+        ['door', 'window', 'wall'],
+        ['empty', 'player', 'cupboard', 'table', 'bathtub', 'washbasin', 'bed', 'chair'],
+        meshDescriptorMap,
+        {
+            x: config.xScale,
+            y: config.yScale
+        }
+    )
 
     return new ServiceFacade<any, any, any>(
         meshFactoryService,

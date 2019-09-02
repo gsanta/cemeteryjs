@@ -45,11 +45,13 @@ export class ImporterService<M, S, T> {
     }
 
     import(worldMap: string, modNames?: string[]): WorldItem[] {
+        const furnitureTypes = this.services.configService.furnitureTypes.filter(furniture => furniture !== 'empty');
+
         let worldItems = this.services.parserService.apply(
             worldMap,
             new CombinedWorldItemParser(
                 [
-                    new FurnitureInfoParser(this.services.worldItemFactoryService, this.services.configService.furnitureTypes, new WorldMapToMatrixGraphConverter()),
+                    new FurnitureInfoParser(this.services.worldItemFactoryService, furnitureTypes, new WorldMapToMatrixGraphConverter()),
                     new RoomSeparatorParser(this.services.worldItemFactoryService, this.services.configService.borderTypes),
                     new RoomInfoParser(this.services.worldItemFactoryService),
                     new PolygonAreaInfoParser('empty', this.services.worldItemFactoryService),

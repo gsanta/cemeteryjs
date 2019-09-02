@@ -9,6 +9,8 @@ import { ScaleModifier } from "../../src/modifiers/ScaleModifier";
 import { SegmentBordersModifier } from "../../src/modifiers/SegmentBordersModifier";
 import { ServiceFacade } from "../../src/services/ServiceFacade";
 import { setup } from "../test_utils/mocks";
+import { NormalizeBorderRotationModifier } from '../../src/modifiers/NormalizeBorderRotationModifier';
+import { AddOuterBorderLayerModifier } from '../../src/modifiers/AddOuterBorderLayerModifier';
 
 function createMap(worldMap: string) {
     return `
@@ -23,6 +25,7 @@ function createMap(worldMap: string) {
         W = wall
         D = door
         - = empty
+        T = table
 
         \`
     `;
@@ -71,7 +74,6 @@ describe('ChangeFurnitureSizeModifier', () => {
         const items = services.importerService.import(
             map,
             [
-                ScaleModifier.modName,
                 SegmentBordersModifier.modName,
                 BuildHierarchyModifier.modName,
                 AssignBordersToRoomsModifier.modName,
@@ -88,21 +90,21 @@ describe('ChangeFurnitureSizeModifier', () => {
     });
 
     it ('snaps the furniture beside the wall if the original dimensions touched a wall', () => {
-        const map = `
-        WWWWWWWWWWWWWWW
-        W------C------W
-        WTTT---C------W
-        WTTT---C----TTW
-        W-----------TTW
-        W----BBB------W
-        WWWWWWWWWWWWWWW
-
-        `;
+        const map = createMap(
+        `
+            WWWWWWWWWWWWWWW
+            W------C------W
+            WTTT---C------W
+            WTTT---C----TTW
+            W-----------TTW
+            W----BBB------W
+            WWWWWWWWWWWWWWW
+        `
+        );
 
         const items = services.importerService.import(
             map,
             [
-                ScaleModifier.modName,
                 SegmentBordersModifier.modName,
                 BuildHierarchyModifier.modName,
                 AssignBordersToRoomsModifier.modName,

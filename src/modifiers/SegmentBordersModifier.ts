@@ -167,7 +167,7 @@ export class SegmentBordersModifier  implements Modifier {
         if (segment.isVertical()) {
             const segmentPositions = _.sortBy([segment.getPoints()[0].y, segment.getPoints()[1].y]);
 
-            return [segmentPositions[0] - this.configService.scaling.x, segmentPositions[1] + this.configService.scaling.y];
+            return [segmentPositions[0] - this.configService.scaling.y, segmentPositions[1] + this.configService.scaling.y];
         } else {
             const segmentPositions = _.sortBy([segment.getPoints()[0].x, segment.getPoints()[1].x]);
 

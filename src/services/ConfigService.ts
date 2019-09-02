@@ -21,4 +21,8 @@ export class ConfigService {
     getFurnitureDimensions(type: string): FurnitureDimensionsDescriptor {
         return <FurnitureDimensionsDescriptor> this.meshDescriptorMap.get(type).realDimensions;
     }
+
+    getRealBorderWidth(type: string): BorderDimensionsDescriptor {
+        return  this.meshDescriptorMap.get(type) ? <BorderDimensionsDescriptor> this.meshDescriptorMap.get(type).realDimensions : null;
+    }
 }

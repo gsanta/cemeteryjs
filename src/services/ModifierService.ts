@@ -20,7 +20,7 @@ export class ModifierService {
         let infiniteCycleTestCounter = 0;
 
         while(unresolvedModifiers.length > 0) {
-            if (this.areDepsOfModifierResolved(unresolvedModifiers[0], resolvedModifiers)) {
+            if (this.areDepsOfModifierResolved(unresolvedModifiers[0], resolvedModifiers, unresolvedModifiers)) {
                 resolvedModifiers.push(unresolvedModifiers.shift());
                 infiniteCycleTestCounter = 0;
             } else {
@@ -36,9 +36,10 @@ export class ModifierService {
         return resolvedModifiers;
     }
 
-    private areDepsOfModifierResolved(modifier: Modifier, resolvedModifiers: Modifier[]) {
-        const unresolvedModifiers = modifier.dependencies.filter(dep => resolvedModifiers.find(mod => mod.getName() === dep) === undefined);
+    private areDepsOfModifierResolved(modifier: Modifier, resolvedModifiers: Modifier[], unresolvedModifier: Modifier[]) {
+        let dependencies = modifier.dependencies.filter(dep => resolvedModifiers.find(mod => mod.getName() === dep) === undefined);
+        dependencies = dependencies.filter(dep => unresolvedModifier.find(mod => mod.getName() === dep));
 
-        return unresolvedModifiers.length === 0;
+        return dependencies.length === 0;
     }
 }

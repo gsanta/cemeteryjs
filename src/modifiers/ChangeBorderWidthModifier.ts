@@ -43,8 +43,8 @@ export class ChangeBorderWidthModifier implements Modifier {
     private adjustBorderWidthsForRoom(room: WorldItem) {
         room.borderItems.forEach(item => {
 
-            const realItemWidth = this.configService.meshDescriptorMap.get(item.name).realDimensions;
-            if (realItemWidth !== undefined) {
+            const realItemWidth = this.configService.getRealBorderWidth(item.name);
+            if (realItemWidth) {
                 this.resizeItem(item, room.borderItems, realItemWidth.width);
             }
         });

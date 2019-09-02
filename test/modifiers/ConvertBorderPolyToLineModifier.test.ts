@@ -75,14 +75,14 @@ describe(`ConvertBorderPolyToLineModifier`, () => {
 
     describe('`apply`', () => {
         it ('sets the rotations for the borders correctly', () => {
-            const map = `
+            const map = createMap(`
                 WDDWWWWW
                 W------W
                 W------W
                 WWWWWWWW
-            `;
+            `);
 
-            let services: ServiceFacade<any, any, any> = setup();
+            let services: ServiceFacade<any, any, any> = setup({xScale: 1, yScale: 1});
 
             const items = services.importerService.import(
                 map,
@@ -103,7 +103,7 @@ describe(`ConvertBorderPolyToLineModifier`, () => {
         });
 
         it ('handles multiple rooms', () => {
-            const map = `
+            const map = createMap(`
                 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
                 W-------------------------------W-------------------W
                 W-------------------------------W-------------------W
@@ -123,9 +123,9 @@ describe(`ConvertBorderPolyToLineModifier`, () => {
                 W-------------------------W-------------------------W
                 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
-            `;
+            `);
 
-            let services: ServiceFacade<any, any, any> = setup();
+            let services: ServiceFacade<any, any, any> = setup({xScale: 1, yScale: 1});
 
             const [root] = services.importerService.import(
                 map,

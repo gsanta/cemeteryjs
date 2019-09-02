@@ -2,6 +2,7 @@ import { Polygon } from "@nightshifts.inc/geometry";
 import { SegmentBordersModifier } from "../../src/modifiers/SegmentBordersModifier";
 import { ServiceFacade } from "../../src/services/ServiceFacade";
 import { setup } from "../test_utils/mocks";
+import { ScaleModifier } from '../../src/modifiers/ScaleModifier';
 import _ = require("lodash");
 
 function createMap(worldMap: string) {
@@ -37,11 +38,12 @@ describe ('BorderItemSegmentingTransformator', () => {
                 `
             );
 
-            let services: ServiceFacade<any, any, any> = setup();
+            let services: ServiceFacade<any, any, any> = setup({xScale: 1, yScale: 1});
 
             const items = services.importerService.import(
                 map,
                 [
+                    ScaleModifier.modName,
                     SegmentBordersModifier.modName
                 ]
             );
@@ -74,11 +76,12 @@ describe ('BorderItemSegmentingTransformator', () => {
                 `
             );
 
-            let services: ServiceFacade<any, any, any> = setup();
+            let services: ServiceFacade<any, any, any> = setup({xScale: 1, yScale: 1});
 
             const items = services.importerService.import(
                 map,
                 [
+                    ScaleModifier.modName,
                     SegmentBordersModifier.modName
                 ]
             );

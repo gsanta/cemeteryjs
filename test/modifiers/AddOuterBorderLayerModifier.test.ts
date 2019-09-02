@@ -7,6 +7,7 @@ import { ScaleModifier } from "../../src/modifiers/ScaleModifier";
 import { SegmentBordersModifier } from "../../src/modifiers/SegmentBordersModifier";
 import { ThickenBordersModifier } from '../../src/modifiers/ThickenBordersModifier';
 import { setup } from "../test_utils/mocks";
+import { ChangeBorderWidthModifier } from '../../src/modifiers/ChangeBorderWidthModifier';
 
 function createMap(worldMap: string) {
         return `
@@ -36,21 +37,23 @@ describe(`AddOuterBorderLayerModifier`, () => {
             W--W---W
             W--W---W
             WWWWWWWW
+
             `
         );
 
         const serviceFacade = setup();
 
         const [root] = serviceFacade.importerService.import(
-            map, 
+            map,
             [
                 ScaleModifier.modName,
                 SegmentBordersModifier.modName,
                 BuildHierarchyModifier.modName,
                 AssignBordersToRoomsModifier.modName,
                 ConvertBorderPolyToLineModifier.modName,
-                ThickenBordersModifier.modName
-            ]    
+                ChangeBorderWidthModifier.modName,
+                ThickenBordersModifier.modName,
+            ]
         )
 
         expect(root.children.length).toEqual(9);

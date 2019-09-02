@@ -43,25 +43,25 @@ describe('`WorldParser`', () => {
 
             let services: ServiceFacade<any, any, any> = setup({xScale: 1, yScale: 1});
 
-            const [root] = services.importerService.import(map,[]);
+            const [root] = services.importerService.import(map,[BuildHierarchyModifier.modName]);
 
-            const children = root.children;
-            expect(children.length).toEqual(7);
-            expect(children[0])
+            const items = root.children;
+            expect(items.length).toEqual(7);
+            expect(items[0])
+                .toMatchObject(expect.objectContaining(<Partial<WorldItem>> {name: 'window', dimensions: Polygon.createRectangle(3, 0, 2, 1), isBorder: true, rotation: 0}));
+            expect(items[1])
                 .toMatchObject(expect.objectContaining(<Partial<WorldItem>> {name: 'wall', dimensions: Polygon.createRectangle(0, 0, 1, 3), isBorder: true, rotation: Math.PI / 2}));
-            expect(children[1])
+            expect(items[2])
                 .toMatchObject(expect.objectContaining(<Partial<WorldItem>> {name: 'wall', dimensions: Polygon.createRectangle(7, 0, 1, 3), isBorder: true, rotation: Math.PI / 2}));
 
-            expect(children[2])
+            expect(items[3])
                 .toMatchObject(expect.objectContaining(<Partial<WorldItem>> {name: 'wall', dimensions: Polygon.createRectangle(0, 0, 3, 1), isBorder: true, rotation: 0}));
-            expect(children[3])
+            expect(items[4])
                 .toMatchObject(expect.objectContaining(<Partial<WorldItem>> {name: 'wall', dimensions: Polygon.createRectangle(0, 2, 8, 1), isBorder: true, rotation: 0}));
-            expect(children[4])
+            expect(items[5])
                 .toMatchObject(expect.objectContaining(<Partial<WorldItem>> {name: 'wall', dimensions: Polygon.createRectangle(5, 0, 3, 1), isBorder: true, rotation: 0}));
-            expect(children[5])
-                .toMatchObject(expect.objectContaining(<Partial<WorldItem>> {name: 'window', dimensions: Polygon.createRectangle(3, 0, 2, 1), isBorder: true, rotation: 0}));
 
-            expect(children[6].name).toEqual('room');
+            expect(items[6].name).toEqual('room');
         });
 
         it ('scales the polygons if scale option is changed.', () => {
@@ -74,7 +74,7 @@ describe('`WorldParser`', () => {
                 `
             );
 
-            
+
             let services: ServiceFacade<any, any, any> = setup({xScale: 2, yScale: 3});
 
             const [root] = services.importerService.import(
@@ -137,7 +137,7 @@ describe('`WorldParser`', () => {
             `
         );
 
-        
+
         let services: ServiceFacade<any, any, any> = setup({xScale: 1, yScale: 1});
 
         const [root] = services.importerService.import(
@@ -172,11 +172,13 @@ describe('`WorldParser`', () => {
         const [root] = services.importerService.import(
             map,
             [
+                ScaleModifier.modName,
+                SegmentBordersModifier.modName,
                 BuildHierarchyModifier.modName
             ]
         );
 
-        expect(root.children.length).toEqual(2);
+        expect(root.children.length).toEqual(10);
         expect(root.children[0].name).toEqual('room');
         const room = root.children[0];
         expect(room.children.length).toEqual(1);
