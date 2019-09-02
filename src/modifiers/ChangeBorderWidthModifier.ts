@@ -1,6 +1,6 @@
 import { Point, Segment } from '@nightshifts.inc/geometry';
 import { RoomUtils } from "../utils/RoomUtils";
-import { WorldItem } from "../WorldItemInfo";
+import { WorldItem } from "../WorldItem";
 import { WorldItemUtils } from "../WorldItemUtils";
 import { Modifier } from "./Modifier";
 import { ConvertBorderPolyToLineModifier } from './ConvertBorderPolyToLineModifier';

@@ -1,6 +1,6 @@
 import { Polygon, Shape } from '@nightshifts.inc/geometry';
 import { TransformToWorldCoordinateModifier } from '../../src/modifiers/TransformToWorldCoordinateModifier';
-import { WorldItem } from '../../src/WorldItemInfo';
+import { WorldItem } from '../../src/WorldItem';
 
 
 describe(`TransformToWorldCoordinateModifier`, () => {

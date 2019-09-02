@@ -1,4 +1,4 @@
-import { WorldItem } from "../../src/WorldItemInfo";
+import { WorldItem } from "../../src/WorldItem";
 import { Shape, Polygon } from "@nightshifts.inc/geometry";
 import { CreateMockMeshModifier, MockMeshCreator } from '../../src/modifiers/CreateMockMeshModifier';
 

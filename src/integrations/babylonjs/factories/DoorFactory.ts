@@ -1,8 +1,8 @@
 import { Scene, StandardMaterial, Mesh, Vector3, MeshBuilder, Skeleton } from 'babylonjs';
 import { Segment, GeometryUtils, Shape } from '@nightshifts.inc/geometry';
-import { WorldItem } from '../../../WorldItemInfo';
+import { WorldItem } from '../../../WorldItem';
 import { MeshCreator } from '../MeshCreator';
-import { MeshTemplate } from '../../api/MeshTemplate';
+import { MeshTemplate } from '../../../MeshTemplate';
 
 export class DoorFactory {
     private scene: Scene;

@@ -1,4 +1,4 @@
-import { WorldItem } from "../WorldItemInfo";
+import { WorldItem } from "../WorldItem";
 import _ = require("lodash");
 import { Modifier } from './Modifier';
 import { Polygon, Point, Line, StripeView } from '@nightshifts.inc/geometry';

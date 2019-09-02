@@ -1,8 +1,8 @@
-import { WorldMapToMatrixGraphConverter } from "../../../src/matrix_graph/conversion/WorldMapToMatrixGraphConverter";
-import { RoomSeparatorParser } from '../../../src/parsers/room_separator_parser/RoomSeparatorParser';
-import { WorldItemFactoryService } from '../../../src/services/WorldItemFactoryService';
+import { WorldMapToMatrixGraphConverter } from "../../src/parsers/reader/WorldMapToMatrixGraphConverter";
+import { BorderParser } from '../../src/parsers/BorderParser';
+import { WorldItemFactoryService } from '../../src/services/WorldItemFactoryService';
 import { Polygon, Shape } from "@nightshifts.inc/geometry";
-import { WorldItem } from '../../../src/WorldItemInfo';
+import { WorldItem } from '../../src/WorldItem';
 import * as _ from 'lodash';
 
 // TODO: create custom matcher
@@ -14,7 +14,7 @@ export function hasAnyWorldItemInfoDimension(dimension: Shape, worldItemInfos: W
     }
 }
 
-describe('RoomSeparatorParser', () => {
+describe('BorderParser', () => {
     describe('generate', () => {
         it ('sepearates the walls into vertical and horizontal `WorldItemInfo`s.', () => {
             const map = `
@@ -41,7 +41,7 @@ describe('RoomSeparatorParser', () => {
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const roomSeparatorParser = new RoomSeparatorParser(new WorldItemFactoryService(), ['wall', 'door', 'window']);
+            const roomSeparatorParser = new BorderParser(new WorldItemFactoryService(), ['wall', 'door', 'window']);
 
 
             const worldItems = roomSeparatorParser.generate(matrixGraph);
@@ -78,7 +78,7 @@ describe('RoomSeparatorParser', () => {
             const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
             const matrixGraph = worldMapToGraphConverter.convert(map);
 
-            const roomSeparatorParser = new RoomSeparatorParser(new WorldItemFactoryService(), ['wall', 'door', 'window']);
+            const roomSeparatorParser = new BorderParser(new WorldItemFactoryService(), ['wall', 'door', 'window']);
 
 
             const worldItems = roomSeparatorParser.generate(matrixGraph);

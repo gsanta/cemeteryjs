@@ -1,8 +1,8 @@
 import { createMaterialBuilder as setupMaterialBuilder, createScene as setupScene } from "../../test_utils/mocks";
 import { MaterialFactory } from '../../../src/integrations/babylonjs/MaterialFactory';
 import { Color3, Texture } from 'babylonjs';
-import { MeshDescriptor, ShapeDescriptor } from "../../../src/integrations/api/Config";
-import { WorldItem } from '../../../src/WorldItemInfo';
+import { MeshDescriptor, ShapeDescriptor } from "../../../src/Config";
+import { WorldItem } from '../../../src/WorldItem';
 
 
 describe('MaterialFactory', () => {

@@ -3,7 +3,7 @@ import { Mesh, Vector3 } from 'babylonjs';
 import * as sinon from 'sinon';
 import { DiscFactory } from '../../../../src/integrations/babylonjs/factories/DiscFactory';
 import { createMaterialBuilder, createMeshBuilder, createScene } from '../../../test_utils/mocks';
-import { WorldItem } from '../../../../src/WorldItemInfo';
+import { WorldItem } from '../../../../src/WorldItem';
 
 describe('DiscFactory', () => {
     describe('createItem', () => {

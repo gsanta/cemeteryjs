@@ -1,13 +1,13 @@
-import { MatrixGraph } from '../../matrix_graph/MatrixGraph';
-import { WorldItem } from '../../WorldItemInfo';
+import { MatrixGraph } from './matrix/MatrixGraph';
+import { WorldItem } from '../WorldItem';
 import * as _ from 'lodash';
-import { Parser } from '../Parser';
-import { WorldMapToMatrixGraphConverter } from '../../matrix_graph/conversion/WorldMapToMatrixGraphConverter';
-import { WorldItemFactoryService } from '../../services/WorldItemFactoryService';
+import { Parser } from './Parser';
+import { WorldMapToMatrixGraphConverter } from './reader/WorldMapToMatrixGraphConverter';
+import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 import { Polygon } from '@nightshifts.inc/geometry';
-import { flat } from '../../utils/ArrayUtils';
+import { flat } from '../utils/ArrayUtils';
 
-export class RoomSeparatorParser implements Parser {
+export class BorderParser implements Parser {
     private worldItemInfoFactory: WorldItemFactoryService;
     private worldMapConverter: WorldMapToMatrixGraphConverter;
     private roomSeparatorCharacters: string[];

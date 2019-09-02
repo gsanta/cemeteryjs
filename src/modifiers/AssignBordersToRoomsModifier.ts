@@ -1,4 +1,4 @@
-import { WorldItem } from '../WorldItemInfo';
+import { WorldItem } from '../WorldItem';
 import { Modifier } from './Modifier';
 import _ = require('lodash');
 import { WorldItemUtils } from '../WorldItemUtils';

@@ -1,7 +1,7 @@
 
 import { Color3, Mesh, MeshBuilder, PhysicsImpostor, Scene, Skeleton, Space, StandardMaterial, Vector3, Axis, DynamicTexture, Texture } from 'babylonjs';
-import { WorldItem } from '../../../WorldItemInfo';
-import { MeshTemplate } from '../../api/MeshTemplate';
+import { WorldItem } from '../../../WorldItem';
+import { MeshTemplate } from '../../../MeshTemplate';
 import { EmptyAreaFactory } from '../factories/EmptyAreaFactory';
 import { PlayerFactory } from '../factories/PlayerFactory';
 import { DoorFactory } from '../factories/DoorFactory';
@@ -10,7 +10,7 @@ import { WallFactory } from '../factories/WallFactory';
 import { RoomFactory } from '../factories/RoomFactory';
 import { DiscFactory } from '../factories/DiscFactory';
 import { MaterialFactory, MaterialBuilder } from '../MaterialFactory';
-import { MeshDescriptor, ShapeDescriptor, RoomDescriptor } from '../../api/Config';
+import { MeshDescriptor, ShapeDescriptor, RoomDescriptor } from '../../../Config';
 import { MeshFactoryService } from '../../../services/MeshFactoryService';
 
 export interface MeshTemplateConfig {

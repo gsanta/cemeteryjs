@@ -1,6 +1,6 @@
-import { WorldItem } from '../../src/WorldItemInfo';
+import { WorldItem } from '../../src/WorldItem';
 import { RootWorldItemParser } from "../../src/parsers/RootWorldItemParser";
-import { MatrixGraph } from "../../src/matrix_graph/MatrixGraph";
+import { MatrixGraph } from "../../src/parsers/matrix/MatrixGraph";
 import { WorldItemFactoryService } from "../../src/services/WorldItemFactoryService";
 import { Point, Polygon } from "@nightshifts.inc/geometry";
 

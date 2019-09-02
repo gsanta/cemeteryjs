@@ -6,10 +6,10 @@ import { ConfigService } from '../../src/services/ConfigService';
 import { defaultWorldConfig, WorldConfig } from '../../src/services/ImporterService';
 import { ServiceFacade } from '../../src/services/ServiceFacade';
 import { TreeIteratorGenerator } from '../../src/utils/TreeIteratorGenerator';
-import { WorldItem } from '../../src/WorldItemInfo';
+import { WorldItem } from '../../src/WorldItem';
 import { TestMeshFactoryService } from '../setup/TestMeshFactoryService';
 import { TestMeshLoaderService } from '../setup/TestMeshLoaderService';
-import { MeshDescriptor } from '../../src/integrations/api/Config';
+import { MeshDescriptor } from '../../src/Config';
 
 export function setup(config: Partial<WorldConfig> = {}): ServiceFacade<any, any, any> {
     config = {...defaultWorldConfig, ...config};

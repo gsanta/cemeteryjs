@@ -1,9 +1,9 @@
 import { Polygon } from "@nightshifts.inc/geometry";
-import { WorldItem } from '../WorldItemInfo';
+import { WorldItem } from '../WorldItem';
 
 
 /**
- * new `WorldItemInfo` instances should be created via this class, so that a unique id can be set
+ * new `WorldItem` instances should be created via this class, so that a unique id can be set
  * for each new instance.
  */
 export class WorldItemFactoryService {

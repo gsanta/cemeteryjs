@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { Point, MeasurementUtils } from '@nightshifts.inc/geometry';
-import { WorldItem } from '../WorldItemInfo';
+import { WorldItem } from '../WorldItem';
 
 export class RoomUtils {
     public static orderBorderItemsAroundRoomClockwise(room: WorldItem) {

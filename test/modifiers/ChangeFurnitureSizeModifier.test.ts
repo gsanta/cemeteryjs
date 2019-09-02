@@ -1,5 +1,5 @@
 import { Polygon } from '@nightshifts.inc/geometry';
-import { MeshDescriptor } from "../../src/integrations/api/Config";
+import { MeshDescriptor } from "../../src/Config";
 import { AssignBordersToRoomsModifier } from "../../src/modifiers/AssignBordersToRoomsModifier";
 import { BuildHierarchyModifier } from "../../src/modifiers/BuildHierarchyModifier";
 import { ChangeBorderWidthModifier } from "../../src/modifiers/ChangeBorderWidthModifier";

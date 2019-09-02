@@ -1,14 +1,14 @@
-import { WorldMapToMatrixGraphConverter } from "../../../src/matrix_graph/conversion/WorldMapToMatrixGraphConverter";
-import { RoomInfoParser } from '../../../src/parsers/room_parser/RoomInfoParser';
+import { WorldMapToMatrixGraphConverter } from "../../src/parsers/reader/WorldMapToMatrixGraphConverter";
+import { RoomParser } from '../../src/parsers/RoomParser';
 import * as fs from 'fs';
-import { WorldMapToRoomMapConverter } from "../../../src/parsers/room_parser/WorldMapToRoomMapConverter";
+import { WorldMapToRoomMapConverter } from "../../src/parsers/WorldMapToRoomMapConverter";
 import { Point, Polygon } from '@nightshifts.inc/geometry';
-import { WorldItemFactoryService } from '../../../src/services/WorldItemFactoryService';
+import { WorldItemFactoryService } from '../../src/services/WorldItemFactoryService';
 
-describe('RoomInfoParser', () => {
+describe('RoomParser', () => {
     describe ('generate', () => {
         it ('converts a complicated real-world example to the correct room Polygons.', () => {
-            const worldMapStr = fs.readFileSync(__dirname + '/../../../assets/test/big_world.gwm', 'utf8');
+            const worldMapStr = fs.readFileSync(__dirname + '/../../assets/test/big_world.gwm', 'utf8');
 
             const worldMapToRoomMapConverter = new WorldMapToRoomMapConverter('-', '#', ['W', 'D', 'I']);
 
@@ -16,7 +16,7 @@ describe('RoomInfoParser', () => {
 
             const matrixGraph = worldMapToGraphConverter.convert(worldMapToRoomMapConverter.convert(worldMapStr));
 
-            const roomInfoParser = new RoomInfoParser(new WorldItemFactoryService());
+            const roomInfoParser = new RoomParser(new WorldItemFactoryService());
 
             const worldItem = roomInfoParser.generate(matrixGraph);
 

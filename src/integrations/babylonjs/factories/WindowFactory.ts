@@ -1,9 +1,9 @@
 import { GeometryUtils, Segment, Shape } from '@nightshifts.inc/geometry';
 import { Axis, Mesh, MeshBuilder, Scene, Skeleton, Space, StandardMaterial, Vector3 } from 'babylonjs';
-import { WorldItem } from '../../../WorldItemInfo';
-import { MeshTemplate } from '../../api/MeshTemplate';
+import { WorldItem } from '../../../WorldItem';
+import { MeshTemplate } from '../../../MeshTemplate';
 import { MaterialFactory } from '../MaterialFactory';
-import { MeshDescriptor } from '../../api/Config';
+import { MeshDescriptor } from '../../../Config';
 
 export class WindowFactory  {
     private materialFactory: MaterialFactory;

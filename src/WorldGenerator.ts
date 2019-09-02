@@ -1,5 +1,5 @@
-import { WorldItem } from "./WorldItemInfo";
-import { MeshDescriptor } from './integrations/api/Config';
+import { WorldItem } from "./WorldItem";
+import { MeshDescriptor } from './Config';
 import { WorldConfig, defaultWorldConfig, ImporterService } from "./services/ImporterService";
 import { ServiceFacade } from "./services/ServiceFacade";
 import { ConverterService } from './services/ConverterService';

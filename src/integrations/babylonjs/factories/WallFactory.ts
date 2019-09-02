@@ -1,9 +1,9 @@
 import { GeometryUtils } from '@nightshifts.inc/geometry';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { Axis, Mesh, MeshBuilder, Scene, Space, Vector3 } from 'babylonjs';
-import { WorldItem } from '../../../WorldItemInfo';
+import { WorldItem } from '../../../WorldItem';
 import { MaterialFactory } from '../MaterialFactory';
-import { MeshDescriptor } from '../../api/Config';
+import { MeshDescriptor } from '../../../Config';
 
 export class WallFactory  {
     private materialFactory: MaterialFactory;

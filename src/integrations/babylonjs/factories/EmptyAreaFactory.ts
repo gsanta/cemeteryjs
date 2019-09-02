@@ -1,5 +1,5 @@
 import { Mesh, MeshBuilder, Scene, Skeleton, StandardMaterial, Vector3 } from 'babylonjs';
-import { WorldItem } from '../../../WorldItemInfo';
+import { WorldItem } from '../../../WorldItem';
 import { MeshCreator } from '../MeshCreator';
 
 export class EmptyAreaFactory implements MeshCreator {

@@ -1,7 +1,7 @@
 import { Polygon } from "@nightshifts.inc/geometry";
-import { MeshTemplate } from "../integrations/api/MeshTemplate";
+import { MeshTemplate } from "../MeshTemplate";
 import { MeshFactoryService } from "../services/MeshFactoryService";
-import { MeshDescriptor } from "../integrations/api/Config";
+import { MeshDescriptor } from "../Config";
 
 
 export interface ModifierConfig<M, S> {

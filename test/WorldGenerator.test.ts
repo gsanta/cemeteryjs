@@ -4,7 +4,7 @@ import { BuildHierarchyModifier } from '../src/modifiers/BuildHierarchyModifier'
 import { ScaleModifier } from '../src/modifiers/ScaleModifier';
 import { SegmentBordersModifier } from '../src/modifiers/SegmentBordersModifier';
 import { ServiceFacade } from '../src/services/ServiceFacade';
-import { WorldItem } from '../src/WorldItemInfo';
+import { WorldItem } from '../src/WorldItem';
 import { setup } from './test_utils/mocks';
 import _ = require('lodash');
 

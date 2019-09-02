@@ -1,5 +1,5 @@
-import { MatrixGraph } from "../matrix_graph/MatrixGraph";
-import { WorldItem } from '../WorldItemInfo';
+import { MatrixGraph } from "./matrix/MatrixGraph";
+import { WorldItem } from '../WorldItem';
 
 
 export interface Parser {

@@ -1,8 +1,8 @@
 import { Polygon, Shape } from "@nightshifts.inc/geometry";
-import { MeshTemplate } from './integrations/api/MeshTemplate';
+import { MeshTemplate } from './MeshTemplate';
 
 /**
- * `WorldItemInfo` represents any distinguishable item in the parsed world (think of it as a mesh, e.g walls, rooms, creatures).
+ * `WorldItem` represents any distinguishable item in the parsed world (think of it as a mesh, e.g walls, rooms, creatures).
  */
 export class WorldItem<M = any, S = any> {
     meshTemplate: MeshTemplate<M, S>;
@@ -11,8 +11,8 @@ export class WorldItem<M = any, S = any> {
     type: string;
     name: string;
     /**
-     * This property can be used to group multiple `WorldItemInfo` together, e.g some of the final 'Game Objects' (see `Converter`) can consist
-     * of multiple `WorldItemInfo` and this is the property to signal that relationship.
+     * This property can be used to group multiple `WorldItem` together, e.g some of the final 'Game Objects' (see `Converter`) can consist
+     * of multiple `WorldItem` and this is the property to signal that relationship.
      */
     group: number;
     dimensions: Shape;

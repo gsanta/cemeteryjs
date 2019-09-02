@@ -1,4 +1,4 @@
-import { WorldMapLineListener, WorldMapReader } from '../../matrix_graph/conversion/WorldMapReader';
+import { WorldMapLineListener, WorldMapReader } from './reader/WorldMapReader';
 
 /*
  * Takes a world map (gwm string) and converts the characters inside the map to contain only

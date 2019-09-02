@@ -1,4 +1,4 @@
-import { WorldItem } from '../WorldItemInfo';
+import { WorldItem } from '../WorldItem';
 
 
 export interface Modifier {

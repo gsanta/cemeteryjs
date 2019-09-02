@@ -1,6 +1,6 @@
 
 import { Segment } from "@nightshifts.inc/geometry";
-import { WorldItem } from "../WorldItemInfo";
+import { WorldItem } from "../WorldItem";
 import { Modifier } from "./Modifier";
 import { ChangeBorderWidthModifier } from './ChangeBorderWidthModifier';
 

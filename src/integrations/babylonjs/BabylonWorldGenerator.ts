@@ -2,7 +2,7 @@ import { Scene } from 'babylonjs/scene';
 import { WorldGenerator, Converter } from '../../WorldGenerator';
 import { BabylonMeshFactoryService } from './services/BabylonMeshFactoryService';
 import { BabylonMeshLoaderService } from './services/BabylonMeshLoaderService';
-import { MeshDescriptor } from '../api/Config';
+import { MeshDescriptor } from '../../Config';
 import { WorldConfig } from '../../services/ImporterService';
 import { ConfigService } from '../../services/ConfigService';
 import { ServiceFacade } from '../../services/ServiceFacade';

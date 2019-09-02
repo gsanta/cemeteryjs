@@ -1,26 +1,21 @@
-import { WorldItem } from '../../WorldItemInfo';
-import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
-import { MatrixGraph } from "../../matrix_graph/MatrixGraph";
-import { Parser } from "../Parser";
-import { PolygonAreaInfoParser } from '../polygon_area_parser/PolygonAreaInfoParser';
+import { WorldItem } from '../WorldItem';
+import { WorldMapToMatrixGraphConverter } from "./reader/WorldMapToMatrixGraphConverter";
+import { MatrixGraph } from "./matrix/MatrixGraph";
+import { Parser } from "./Parser";
+import { PolygonAreaParser } from './PolygonAreaParser';
 import { WorldMapToRoomMapConverter } from './WorldMapToRoomMapConverter';
 import _ = require("lodash");
-import { WorldItemFactoryService } from '../../services/WorldItemFactoryService';
+import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 
-/**
- * @hidden
- *
- * Generates room info
- */
-export class RoomInfoParser implements Parser {
+export class RoomParser implements Parser {
     private worldMapToRoomMapConverter: WorldMapToRoomMapConverter;
     private worldMapConverter: WorldMapToMatrixGraphConverter;
-    private polygonAreaInfoGenerator: PolygonAreaInfoParser;
+    private polygonAreaInfoGenerator: PolygonAreaParser;
 
     constructor(
         worldItemInfoFactory: WorldItemFactoryService,
         worldMapConverter = new WorldMapToMatrixGraphConverter(),
-        polygonAreaInfoGenerator = new PolygonAreaInfoParser('room', worldItemInfoFactory),
+        polygonAreaInfoGenerator = new PolygonAreaParser('room', worldItemInfoFactory),
         worldMapToRoomMapConverter = new WorldMapToRoomMapConverter('W', '-', ['W', 'D', 'I']),
     ) {
         this.worldMapConverter = worldMapConverter;

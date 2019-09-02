@@ -1,6 +1,6 @@
-import { WorldItem } from "../../src/WorldItemInfo";
-import { MeshDescriptor } from "../../src/integrations/api/Config";
-import { MeshTemplate } from "../../src/integrations/api/MeshTemplate";
+import { WorldItem } from "../../src/WorldItem";
+import { MeshDescriptor } from "../../src/Config";
+import { MeshTemplate } from "../../src/MeshTemplate";
 
 export class TestMeshFactoryService {
     getInstance(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor, templateMap: Map<string, MeshTemplate<any, any>>): any {

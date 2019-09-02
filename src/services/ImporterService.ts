@@ -1,4 +1,4 @@
-import { WorldMapToMatrixGraphConverter } from "../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
+import { WorldMapToMatrixGraphConverter } from "../parsers/reader/WorldMapToMatrixGraphConverter";
 import { AddOuterBorderLayerModifier } from "../modifiers/AddOuterBorderLayerModifier";
 import { AssignBordersToRoomsModifier } from "../modifiers/AssignBordersToRoomsModifier";
 import { BuildHierarchyModifier } from "../modifiers/BuildHierarchyModifier";
@@ -11,14 +11,14 @@ import { ScaleModifier } from "../modifiers/ScaleModifier";
 import { SegmentBordersModifier } from "../modifiers/SegmentBordersModifier";
 import { ThickenBordersModifier } from "../modifiers/ThickenBordersModifier";
 import { CombinedWorldItemParser } from "../parsers/CombinedWorldItemParser";
-import { FurnitureInfoParser } from "../parsers/furniture_parser/FurnitureInfoParser";
-import { PolygonAreaInfoParser } from "../parsers/polygon_area_parser/PolygonAreaInfoParser";
-import { RoomInfoParser } from "../parsers/room_parser/RoomInfoParser";
-import { RoomSeparatorParser } from "../parsers/room_separator_parser/RoomSeparatorParser";
+import { FurnitureParser } from "../parsers/FurnitureParser";
+import { PolygonAreaParser } from "../parsers/PolygonAreaParser";
+import { RoomParser } from "../parsers/RoomParser";
+import { BorderParser } from "../parsers/BorderParser";
 import { RootWorldItemParser } from "../parsers/RootWorldItemParser";
-import { WorldItem } from "../WorldItemInfo";
+import { WorldItem } from "../WorldItem";
 import { ServiceFacade } from './ServiceFacade';
-import { MeshDescriptor } from '../integrations/api/Config';
+import { MeshDescriptor } from '../Config';
 
 export interface WorldConfig {
     borders: string[];
@@ -51,10 +51,10 @@ export class ImporterService<M, S, T> {
             worldMap,
             new CombinedWorldItemParser(
                 [
-                    new FurnitureInfoParser(this.services.worldItemFactoryService, furnitureTypes, new WorldMapToMatrixGraphConverter()),
-                    new RoomSeparatorParser(this.services.worldItemFactoryService, this.services.configService.borderTypes),
-                    new RoomInfoParser(this.services.worldItemFactoryService),
-                    new PolygonAreaInfoParser('empty', this.services.worldItemFactoryService),
+                    new FurnitureParser(this.services.worldItemFactoryService, furnitureTypes, new WorldMapToMatrixGraphConverter()),
+                    new BorderParser(this.services.worldItemFactoryService, this.services.configService.borderTypes),
+                    new RoomParser(this.services.worldItemFactoryService),
+                    new PolygonAreaParser('empty', this.services.worldItemFactoryService),
                     new RootWorldItemParser(this.services.worldItemFactoryService)
                 ]
             )

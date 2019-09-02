@@ -1,4 +1,4 @@
-import { LinesToGraphConverter } from '../../../src/matrix_graph/conversion/LinesToGraphConverter';
+import { LinesToGraphConverter } from '../../../src/parsers/reader/LinesToGraphConverter';
 
 describe('LinesToGraphConverter', () => {
     describe('parse', () => {

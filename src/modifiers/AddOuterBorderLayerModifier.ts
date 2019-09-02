@@ -1,12 +1,12 @@
 import { Modifier } from "./Modifier";
 import { WorldItemUtils } from "../WorldItemUtils";
-import { WorldItem } from "../WorldItemInfo";
+import { WorldItem } from "../WorldItem";
 import { Segment, Polygon, Line, Point } from '@nightshifts.inc/geometry';
 import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 import { ThickenBordersModifier } from "./ThickenBordersModifier";
 
 /**
- * For external walls (walls where on of the side is not inside of the building) it creates a duplicate `WorldItemInfo` which forms an outer layer.
+ * For external walls (walls where on of the side is not inside of the building) it creates a duplicate `WorldItem` which forms an outer layer.
  * The use of this transformator is highly specialized (used only in the game 'nightshifts-inc' to apply different lights for the outer layer and the other walls), maybe it
  * should be removed in the future when custom transformators can be applied by the user.
  */

@@ -1,5 +1,5 @@
 import { ScaleModifier } from '../../src/modifiers/ScaleModifier';
-import { WorldItem } from '../../src/WorldItemInfo';
+import { WorldItem } from '../../src/WorldItem';
 import { Polygon } from '@nightshifts.inc/geometry';
 import { ConfigService } from '../../src/services/ConfigService';
 

@@ -1,5 +1,5 @@
 import { WorldItemUtils } from "../WorldItemUtils";
-import { WorldItem } from "../WorldItemInfo";
+import { WorldItem } from "../WorldItem";
 import { Polygon, Segment, Distance, Line, Point, Angle, Transform } from '@nightshifts.inc/geometry';
 import { Modifier } from './Modifier';
 import { NormalizeBorderRotationModifier } from "./NormalizeBorderRotationModifier";

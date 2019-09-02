@@ -1,20 +1,20 @@
-import { MatrixGraph } from "../../matrix_graph/MatrixGraph";
+import { MatrixGraph } from "./matrix/MatrixGraph";
 import _ = require("lodash");
-import { WorldItem } from '../../WorldItemInfo';
-import { Parser } from "../Parser";
-import { WorldMapToMatrixGraphConverter } from "../../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
+import { WorldItem } from '../WorldItem';
+import { Parser } from "./Parser";
+import { WorldMapToMatrixGraphConverter } from "./reader/WorldMapToMatrixGraphConverter";
 import { PolygonRedundantPointReducer } from "./PolygonRedundantPointReducer";
 import { Polygon, Line, Point } from "@nightshifts.inc/geometry";
-import { WorldItemFactoryService } from '../../services/WorldItemFactoryService';
+import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 
 /**
  * @hidden
  *
- * Generates `WorldItemInfo`s based on connected area of the given character. It can detect `Polygon` shaped
+ * Generates `WorldItem`s based on connected area of the given character. It can detect `Polygon` shaped
  * areas.
  */
-export class PolygonAreaInfoParser implements Parser {
+export class PolygonAreaParser implements Parser {
     private polygonRedundantPointReducer: PolygonRedundantPointReducer;
     private worldItemInfoFactory: WorldItemFactoryService;
     private worldMapConverter: WorldMapToMatrixGraphConverter;
@@ -71,7 +71,7 @@ export class PolygonAreaInfoParser implements Parser {
         const segments: Segment[] = [];
 
         map.forEach((xList: number[], yPos: number) => {
-            xList.sort(PolygonAreaInfoParser.sortByNumber);
+            xList.sort(PolygonAreaParser.sortByNumber);
 
             const xStart = xList[0];
             const xEnd = _.last(xList);

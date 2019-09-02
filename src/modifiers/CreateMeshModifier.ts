@@ -1,10 +1,10 @@
 import { Skeleton } from "babylonjs";
 import { Mesh } from "babylonjs/Meshes/mesh";
-import { MeshDescriptor } from "../integrations/api/Config";
+import { MeshDescriptor } from "../Config";
 import { MeshFactoryService } from "../services/MeshFactoryService";
-import { MeshTemplate } from "../integrations/api/MeshTemplate";
+import { MeshTemplate } from "../MeshTemplate";
 import { TreeIteratorGenerator } from "../utils/TreeIteratorGenerator";
-import { WorldItem } from "../WorldItemInfo";
+import { WorldItem } from "../WorldItem";
 import { ChangeFurnitureSizeModifier } from './ChangeFurnitureSizeModifier';
 import { Modifier } from './Modifier';
 import { ModifierConfig } from './ModifierConfig';

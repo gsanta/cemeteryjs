@@ -1,4 +1,4 @@
-import { WorldItem } from "../WorldItemInfo";
+import { WorldItem } from "../WorldItem";
 import { Modifier } from './Modifier';
 import { Polygon, Line, Shape, Point, GeometryUtils, StripeView } from '@nightshifts.inc/geometry';
 import { WorldItemUtils } from '../WorldItemUtils';

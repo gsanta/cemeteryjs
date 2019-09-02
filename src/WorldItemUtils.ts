@@ -1,4 +1,4 @@
-import { WorldItem } from "./WorldItemInfo";
+import { WorldItem } from "./WorldItem";
 import { TreeIteratorGenerator } from "./utils/TreeIteratorGenerator";
 import _ = require("lodash");
 

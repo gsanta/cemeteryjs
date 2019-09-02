@@ -1,6 +1,6 @@
-import { MatrixGraph } from "../matrix_graph/MatrixGraph";
-import { WorldMapToMatrixGraphConverter } from "../matrix_graph/conversion/WorldMapToMatrixGraphConverter";
-import { WorldItem } from "../WorldItemInfo";
+import { MatrixGraph } from "./matrix/MatrixGraph";
+import { WorldMapToMatrixGraphConverter } from "./reader/WorldMapToMatrixGraphConverter";
+import { WorldItem } from "../WorldItem";
 import { Parser } from './Parser';
 import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 import { Polygon } from "@nightshifts.inc/geometry";

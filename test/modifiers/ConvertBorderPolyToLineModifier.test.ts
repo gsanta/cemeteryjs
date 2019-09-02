@@ -6,7 +6,7 @@ import { ConvertBorderPolyToLineModifier } from '../../src/modifiers/ConvertBord
 import { ScaleModifier } from '../../src/modifiers/ScaleModifier';
 import { SegmentBordersModifier } from '../../src/modifiers/SegmentBordersModifier';
 import { ServiceFacade } from '../../src/services/ServiceFacade';
-import { hasAnyWorldItemInfoDimension } from '../parsers/room_separator_parser/RoomSeparatorParser.test';
+import { hasAnyWorldItemInfoDimension } from '../parsers/BorderParser.test';
 import { findWorldItemWithDimensions, setup } from '../test_utils/mocks';
 
 function createMap(worldMap: string) {

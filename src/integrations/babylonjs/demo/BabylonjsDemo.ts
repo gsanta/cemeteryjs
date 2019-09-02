@@ -5,9 +5,9 @@ import { BabylonWorldGenerator } from '../BabylonWorldGenerator';
 
 // const strWorld = require('raw-loader!../../../../assets/test/demo_world.gwm');
 // import strWorld from 'raw-loader!../../../../assets/test/demo_world.gwm';
-import { MeshDescriptor } from '../../api/Config';
+import { MeshDescriptor } from '../../../Config';
 import { WorldConfig } from '../../../services/ImporterService';
-import { WorldItem } from '../../../WorldItemInfo';
+import { WorldItem } from '../../../WorldItem';
 
 const strWorld = `map \`
 

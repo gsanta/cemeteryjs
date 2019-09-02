@@ -1,4 +1,4 @@
-import { DetailsLineToObjectConverter, DetailsLineDataTypes } from '../../../src/matrix_graph/conversion/DetailsLineToObjectConverter';
+import { DetailsLineToObjectConverter, DetailsLineDataTypes } from '../../../src/parsers/reader/DetailsLineToObjectConverter';
 
 describe('DetailsLineToObjectConverter', () => {
     describe('convert', () => {

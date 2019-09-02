@@ -1,4 +1,4 @@
-import { WorldItem } from '../WorldItemInfo';
+import { WorldItem } from '../WorldItem';
 import { TreeIteratorGenerator } from '../utils/TreeIteratorGenerator';
 import { Modifier } from './Modifier';
 import { Point } from '@nightshifts.inc/geometry';
@@ -6,7 +6,7 @@ import { Scaling, ConfigService } from '../services/ConfigService';
 
 
 /**
- * Scales the dimensions of every `WorldItemInfo` by the given amount in the x and y direction.
+ * Scales the dimensions of every `WorldItem` by the given amount in the x and y direction.
  */
 export class ScaleModifier implements Modifier {
     static modName = 'scale';

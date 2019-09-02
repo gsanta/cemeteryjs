@@ -1,4 +1,4 @@
-import { WorldItem } from '../../src/WorldItemInfo';
+import { WorldItem } from '../../src/WorldItem';
 import { BuildHierarchyModifier } from '../../src/modifiers/BuildHierarchyModifier';
 import { Polygon, Point } from '@nightshifts.inc/geometry';
 

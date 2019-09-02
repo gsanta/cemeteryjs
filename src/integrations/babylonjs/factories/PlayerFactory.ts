@@ -1,8 +1,8 @@
 import { Axis, Mesh, Quaternion, Scene, Skeleton, Vector3 } from 'babylonjs';
 import { Point, Polygon } from '@nightshifts.inc/geometry';
-import { WorldItem } from '../../../WorldItemInfo';
+import { WorldItem } from '../../../WorldItem';
 import { MeshCreator } from '../MeshCreator';
-import { MeshTemplate } from '../../api/MeshTemplate';
+import { MeshTemplate } from '../../../MeshTemplate';
 
 export class PlayerFactory implements MeshCreator  {
     public createItem(worldItemInfo: WorldItem, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh {

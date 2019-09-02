@@ -1,4 +1,4 @@
-import { PolygonRedundantPointReducer } from '../../../src/parsers/polygon_area_parser/PolygonRedundantPointReducer';
+import { PolygonRedundantPointReducer } from '../../src/parsers/PolygonRedundantPointReducer';
 import { Point } from '@nightshifts.inc/geometry';
 
 describe('PolygonRedundantPointReducer', () => {

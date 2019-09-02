@@ -1,10 +1,10 @@
 import { Modifier } from "./Modifier";
-import { WorldItem } from "../WorldItemInfo";
+import { WorldItem } from "../WorldItem";
 import { WorldItemUtils } from '../WorldItemUtils';
 import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 
 /**
- * For each `WorldItemInfo` of type 'room' it creates a new `WorldIemInfo` of type 'roof'.
+ * For each `WorldItem` of type 'room' it creates a new `WorldIemInfo` of type 'roof'.
  */
 export class AddRoofModifier implements Modifier {
     static modName: 'addRoof';

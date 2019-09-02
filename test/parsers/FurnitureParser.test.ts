@@ -1,10 +1,10 @@
-import { LinesToGraphConverter } from '../../../src/matrix_graph/conversion/LinesToGraphConverter';
-import { FurnitureInfoParser } from '../../../src/parsers/furniture_parser/FurnitureInfoParser';
-import { WorldItem } from '../../../src/WorldItemInfo';
+import { LinesToGraphConverter } from '../../src/parsers/reader/LinesToGraphConverter';
+import { FurnitureParser } from '../../src/parsers/FurnitureParser';
+import { WorldItem } from '../../src/WorldItem';
 import { Polygon } from '@nightshifts.inc/geometry';
-import { WorldItemFactoryService } from '../../../src/services/WorldItemFactoryService';
+import { WorldItemFactoryService } from '../../src/services/WorldItemFactoryService';
 
-describe('FurnitureInfoParser', () => {
+describe('FurnitureParser', () => {
     describe('generate', () => {
         it ('creates world items from the graph (test case with one connected component)', () => {
             const linesToGraphConverter = new LinesToGraphConverter();
@@ -23,7 +23,7 @@ describe('FurnitureInfoParser', () => {
             );
 
 
-            const furnitureInfoParser = new FurnitureInfoParser(new WorldItemFactoryService(), ['wall']);
+            const furnitureInfoParser = new FurnitureParser(new WorldItemFactoryService(), ['wall']);
             const worldItems = furnitureInfoParser.generate(graph);
 
             expect(worldItems.length).toEqual(4);
@@ -50,7 +50,7 @@ describe('FurnitureInfoParser', () => {
             );
 
 
-            const furnitureInfoParser = new FurnitureInfoParser(new WorldItemFactoryService(), ['wall']);
+            const furnitureInfoParser = new FurnitureParser(new WorldItemFactoryService(), ['wall']);
             const worldItems = furnitureInfoParser.generate(graph);
 
             expect(worldItems.length).toEqual(3);
@@ -77,7 +77,7 @@ describe('FurnitureInfoParser', () => {
             );
 
 
-            const furnitureInfoParser = new FurnitureInfoParser(new WorldItemFactoryService(), ['door']);
+            const furnitureInfoParser = new FurnitureParser(new WorldItemFactoryService(), ['door']);
             const worldItems = furnitureInfoParser.generate(graph);
             expect(worldItems.length).toEqual(1);
             expect(worldItems[0]).toEqual(new WorldItem('door-1', 'D', Polygon.createRectangle(1, 0, 2, 3), 'door'));

@@ -1,13 +1,13 @@
 import { Parser } from "../parsers/Parser";
-import { MatrixGraph } from "../matrix_graph/MatrixGraph";
-import { WorldItem } from "../WorldItemInfo";
+import { MatrixGraph } from "../parsers/matrix/MatrixGraph";
+import { WorldItem } from "../WorldItem";
 import { Modifier } from './Modifier';
 import _ = require("lodash");
 import { Polygon } from "@nightshifts.inc/geometry";
 import { SegmentBordersModifier } from './SegmentBordersModifier';
 
 /**
- * Creates relationship between `WorldItemInfo`'s via adding a `WorldItemInfo` to another as
+ * Creates relationship between `WorldItem`'s via adding a `WorldItem` to another as
  * a child based on wheter one fully contains the other.
  */
 

@@ -1,5 +1,5 @@
 import { Parser } from '../parsers/Parser';
-import { WorldItem } from '../WorldItemInfo';
+import { WorldItem } from '../WorldItem';
 
 export class ParserService {
 
