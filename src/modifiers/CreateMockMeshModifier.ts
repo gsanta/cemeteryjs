@@ -24,7 +24,7 @@ export class CreateMockMeshModifier<M> implements Modifier  {
     }
 
     getName(): string {
-        return CreateMockMeshModifier.name;
+        return CreateMockMeshModifier.modName;
     }
 
     apply(worldItems: WorldItem<M>[]): WorldItem<M>[] {

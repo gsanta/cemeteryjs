@@ -18,7 +18,7 @@ export class AssignBordersToRoomsModifier implements Modifier {
     }
 
     getName(): string {
-        return AssignBordersToRoomsModifier.name;
+        return AssignBordersToRoomsModifier.modName;
     }
 
     apply(gwmWorldItems: WorldItem[]): WorldItem[] {

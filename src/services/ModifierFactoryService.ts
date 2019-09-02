@@ -17,10 +17,8 @@ import { TransformToWorldCoordinateModifier } from '../modifiers/TransformToWorl
 
 export class ModifierFactoryService {
     private modifierMap: Map<string, Modifier> = new Map();
-    private services: ServiceFacade<any, any, any>;
 
     constructor(services: ServiceFacade<any, any, any>) {
-        this.services = services;
 
         this
             .registerInstance(new AddOuterBorderLayerModifier(services.worldItemFactoryService))
@@ -30,7 +28,7 @@ export class ModifierFactoryService {
             .registerInstance(new ChangeBorderWidthModifier(services.configService))
             .registerInstance(new ChangeFurnitureSizeModifier(services.configService))
             .registerInstance(new ConvertBorderPolyToLineModifier())
-            .registerInstance(new CreateMeshModifier(services.meshFactoryService, services.meshLoaderService))
+            .registerInstance(new CreateMeshModifier(services.meshFactoryService, services.meshLoaderService, services.configService))
             .registerInstance(new NormalizeBorderRotationModifier())
             .registerInstance(new ScaleModifier(services.configService))
             .registerInstance(new SegmentBordersModifier(services.configService, services.worldItemFactoryService))

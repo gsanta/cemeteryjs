@@ -24,12 +24,12 @@ export class ServiceFacade<M, S, T> {
         meshLoaderService: MeshLoaderService<any, any>,
         configService: ConfigService
     ) {
+        this.configService = configService;
         this.converterService = new ConverterService();
         this.meshFactoryService = meshFactoryService;
         this.meshLoaderService = meshLoaderService;
-        this.configService = configService;
-        this.modifierFactoryService = new ModifierFactoryService(this);
         this.worldItemFactoryService = new WorldItemFactoryService();
+        this.modifierFactoryService = new ModifierFactoryService(this);
         this.modifierService = new ModifierService(this.modifierFactoryService);
         this.parserService = new ParserService();
         this.importerService = new ImporterService(this);

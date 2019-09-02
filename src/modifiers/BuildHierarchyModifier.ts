@@ -16,7 +16,7 @@ export class BuildHierarchyModifier implements Modifier {
     dependencies = [SegmentBordersModifier.modName]
 
     getName(): string {
-        return BuildHierarchyModifier.name;
+        return BuildHierarchyModifier.modName;
     }
 
     apply(gwmWorldItems: WorldItem[]): WorldItem[] {

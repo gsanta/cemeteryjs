@@ -8,7 +8,7 @@ export class TransformToWorldCoordinateModifier implements Modifier {
     dependencies = [];
 
     getName(): string {
-        return TransformToWorldCoordinateModifier.name;
+        return TransformToWorldCoordinateModifier.modName;
     }
 
     apply(worldItems: WorldItem[]): WorldItem[] {

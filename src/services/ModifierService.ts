@@ -28,11 +28,12 @@ export class ModifierService {
                 unresolvedModifiers.push(unresolvedModifiers.shift());
             }
 
-            if (infiniteCycleTestCounter === unresolvedModifiers.length) {
+            if (infiniteCycleTestCounter > 0 && infiniteCycleTestCounter === unresolvedModifiers.length) {
                 throw new Error(`Modifier dependency can not be resolved by ordering the modifiers unresolved modifiers are: ${unresolvedModifiers.map(m => m.getName()).join(', ')}`);
             }
         }
-        return [];
+
+        return resolvedModifiers;
     }
 
     private areDepsOfModifierResolved(modifier: Modifier, resolvedModifiers: Modifier[]) {

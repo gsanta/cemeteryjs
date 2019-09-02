@@ -21,7 +21,7 @@ export class AddOuterBorderLayerModifier implements Modifier {
     }
 
     getName(): string {
-        return AddOuterBorderLayerModifier.name;
+        return AddOuterBorderLayerModifier.modName;
     }
 
     apply(rootItems: WorldItem[]): WorldItem[] {

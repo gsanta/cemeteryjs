@@ -17,7 +17,7 @@ export class AddRoofModifier implements Modifier {
     }
 
     getName(): string {
-        return AddRoofModifier.name;
+        return AddRoofModifier.modName;
     }
 
     public apply(worldItems: WorldItem[]): WorldItem[] {

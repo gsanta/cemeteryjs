@@ -22,16 +22,22 @@ export class BabylonWorldGenerator<T> implements WorldGenerator<T> {
         const meshFactoryService = new BabylonMeshFactoryService(this.scene);
         const meshLoaderService = new BabylonMeshLoaderService(this.scene);
 
-        const configService = new ConfigService(worldConfig.borders, worldConfig.furnitures, meshDescriptorMap, {x: worldConfig.xScale, y: worldConfig.yScale})
+        meshLoaderService
+            .loadAll(worldConfig.meshDescriptors)
+            .then(() => {
 
-        const serviceFacade = new ServiceFacade<any, any, T>(
-            meshFactoryService,
-            meshLoaderService,
-            configService
-        );
+                const configService = new ConfigService(worldConfig.borders, worldConfig.furnitures, meshDescriptorMap, {x: worldConfig.xScale, y: worldConfig.yScale})
 
-        const worldItems = serviceFacade.importerService.import(worldMap);
+                const serviceFacade = new ServiceFacade<any, any, T>(
+                    meshFactoryService,
+                    meshLoaderService,
+                    configService
+                );
 
-        serviceFacade.converterService.convert(worldItems, converter);
+                const worldItems = serviceFacade.importerService.import(worldMap);
+
+                serviceFacade.converterService.convert(worldItems, converter);
+            })
+            .catch(e => console.log(e));
     }
 }

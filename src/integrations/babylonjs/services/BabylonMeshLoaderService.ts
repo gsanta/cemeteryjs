@@ -29,8 +29,10 @@ export class BabylonMeshLoaderService implements MeshLoaderService<Mesh, Skeleto
 
     meshTemplates: Map<string, MeshTemplate<Mesh, Skeleton>> = new Map();
 
-    loadAll(meshDescriptors: MeshDescriptor<FileDescriptor>[]): Promise<unknown> {
-        const promises = meshDescriptors.map(meshDescriptor => this.load(meshDescriptor));
+    loadAll(meshDescriptors: MeshDescriptor[]): Promise<unknown> {
+        const promises = meshDescriptors
+            .filter(meshDescriptor => meshDescriptor.details.name === 'file-descriptor')
+            .map(meshDescriptor => this.load(meshDescriptor));
 
         return Promise.all(promises);
     }

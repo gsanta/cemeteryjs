@@ -23,7 +23,7 @@ export class ChangeBorderWidthModifier implements Modifier {
     }
 
     getName(): string {
-        return ChangeBorderWidthModifier.name;
+        return ChangeBorderWidthModifier.modName;
     }
 
     apply(worldItems: WorldItem[]): WorldItem[] {
@@ -42,7 +42,8 @@ export class ChangeBorderWidthModifier implements Modifier {
 
     private adjustBorderWidthsForRoom(room: WorldItem) {
         room.borderItems.forEach(item => {
-            const realItemWidth = _.find(this.configService.realBorderWidths, itemWidth => itemWidth.name === item.name);
+
+            const realItemWidth = this.configService.meshDescriptorMap.get(item.name).realDimensions;
             if (realItemWidth !== undefined) {
                 this.resizeItem(item, room.borderItems, realItemWidth.width);
             }

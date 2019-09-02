@@ -19,7 +19,7 @@ export class ScaleModifier implements Modifier {
     }
 
     getName(): string {
-        return ScaleModifier.name;
+        return ScaleModifier.modName;
     }
 
     apply(gwmWorldItems: WorldItem[]): WorldItem[] {

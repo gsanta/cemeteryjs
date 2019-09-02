@@ -17,7 +17,7 @@ export class ChangeFurnitureSizeModifier implements Modifier {
     }
 
     getName(): string {
-        return ChangeFurnitureSizeModifier.name;
+        return ChangeFurnitureSizeModifier.modeName;
     }
 
     apply(worldItems: WorldItem[]): WorldItem[] {
@@ -40,7 +40,7 @@ export class ChangeFurnitureSizeModifier implements Modifier {
 
                 realSize = Polygon.createRectangle(0, 0, furnitureDimensions.width, furnitureDimensions.height);
             }
-            
+
             const centerPoint = furniture.dimensions.getBoundingCenter();
 
             const snappingWallSegment = this.getSnappingWallSegmentIfExists(room, furniture);

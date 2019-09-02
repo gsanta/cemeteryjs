@@ -46,7 +46,7 @@ export class ConvertBorderPolyToLineModifier implements Modifier {
     dependencies = [AssignBordersToRoomsModifier.modName];
 
     getName(): string {
-        return ConvertBorderPolyToLineModifier.name;
+        return ConvertBorderPolyToLineModifier.modName;
     }
 
     apply(gwmWorldItems: WorldItem[]): WorldItem[] {

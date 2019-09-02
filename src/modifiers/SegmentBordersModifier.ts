@@ -32,7 +32,7 @@ export class SegmentBordersModifier  implements Modifier {
     }
 
     getName(): string {
-        return SegmentBordersModifier.name;
+        return SegmentBordersModifier.modName;
     }
 
     apply(gwmWorldItems: WorldItem[]): WorldItem[] {

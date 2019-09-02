@@ -10,7 +10,7 @@ export class NormalizeBorderRotationModifier implements Modifier {
     dependencies = [AddOuterBorderLayerModifier.modName];
 
     getName(): string {
-        return NormalizeBorderRotationModifier.name;
+        return NormalizeBorderRotationModifier.modName;
     }
 
     apply(rootItems: WorldItem[]): WorldItem[] {

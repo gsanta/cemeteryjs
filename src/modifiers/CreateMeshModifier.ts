@@ -9,23 +9,25 @@ import { ChangeFurnitureSizeModifier } from './ChangeFurnitureSizeModifier';
 import { Modifier } from './Modifier';
 import { ModifierConfig } from './ModifierConfig';
 import { MeshLoaderService } from '../services/MeshLoaderService';
+import { ConfigService } from '../services/ConfigService';
 
 export class CreateMeshModifier<M, S> implements Modifier {
     static modName = 'createMesh';
     dependencies = [ChangeFurnitureSizeModifier.modeName];
 
     private isReady = true;
-    private descriptorMap: Map<string, MeshDescriptor> = new Map();
     private meshFactoryService: MeshFactoryService<M, S>;
     private meshLoaderService: MeshLoaderService<M, S>;
+    private configService: ConfigService;
 
-    constructor(meshFactoryService: MeshFactoryService<M, S>, meshLoaderService: MeshLoaderService<M, S>) {
+    constructor(meshFactoryService: MeshFactoryService<M, S>, meshLoaderService: MeshLoaderService<M, S>, configService: ConfigService) {
         this.meshFactoryService = meshFactoryService;
         this.meshLoaderService = meshLoaderService;
+        this.configService = configService;
     }
 
     getName(): string {
-        return CreateMeshModifier.name;
+        return CreateMeshModifier.modName;
     }
 
     public apply(worldItems: WorldItem[]): WorldItem[] {
@@ -47,6 +49,6 @@ export class CreateMeshModifier<M, S> implements Modifier {
     }
 
     private createMesh(worldItemInfo: WorldItem): M[] {
-        return this.meshFactoryService.getInstance(worldItemInfo, this.descriptorMap.get(worldItemInfo.name), this.meshLoaderService.meshTemplates);
+        return this.meshFactoryService.getInstance(worldItemInfo, this.configService.meshDescriptorMap.get(worldItemInfo.name), this.meshLoaderService.meshTemplates);
     }
 }

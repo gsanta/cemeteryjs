@@ -10,7 +10,7 @@ export class ThickenBordersModifier implements Modifier {
     dependencies = [ChangeBorderWidthModifier.modName];
 
     getName(): string {
-        return ThickenBordersModifier.name;
+        return ThickenBordersModifier.modName;
     }
 
     apply(rootItems: WorldItem[]): WorldItem[] {

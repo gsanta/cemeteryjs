@@ -29,6 +29,15 @@ export interface Converter<T> {
     done();
 }
 
+export class NullConverter<T> {
+    convert(worldItem: WorldItem): T { return null; };
+    addChildren(parent: T, children: T[]): void {};
+    addBorders(item: T, borders: T[]): void {};
+    done() {
+        
+    };
+}
+
 export interface WorldGenerator<T> {
     generate(worldMap: string, worldConfig: WorldConfig, converter: Converter<T>);
 }
