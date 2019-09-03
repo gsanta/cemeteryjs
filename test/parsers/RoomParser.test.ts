@@ -1,8 +1,6 @@
-import { WorldMapToMatrixGraphConverter } from "../../src/parsers/reader/WorldMapToMatrixGraphConverter";
-import { RoomParser } from '../../src/parsers/RoomParser';
-import * as fs from 'fs';
-import { WorldMapToRoomMapConverter } from "../../src/parsers/WorldMapToRoomMapConverter";
 import { Point, Polygon } from '@nightshifts.inc/geometry';
+import * as fs from 'fs';
+import { RoomParser } from '../../src/parsers/RoomParser';
 import { WorldItemFactoryService } from '../../src/services/WorldItemFactoryService';
 
 describe('RoomParser', () => {
