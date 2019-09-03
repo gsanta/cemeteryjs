@@ -1,5 +1,5 @@
 import { Parser } from "../parsers/Parser";
-import { MatrixGraph } from "../parsers/matrix/MatrixGraph";
+import { Matrix } from "../parsers/matrix/Matrix";
 import { WorldItem } from "../WorldItem";
 import { Modifier } from './Modifier';
 import _ = require("lodash");

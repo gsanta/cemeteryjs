@@ -1,4 +1,4 @@
-import { MatrixGraph } from "./matrix/MatrixGraph";
+import { Matrix } from "./matrix/Matrix";
 import { WorldMapToMatrixGraphConverter } from "./reader/WorldMapToMatrixGraphConverter";
 import { WorldItem } from "../WorldItem";
 import { Parser } from './Parser';
@@ -15,8 +15,8 @@ export class RootWorldItemParser implements Parser {
         this.worldMapConverter = worldMapConverter;
     }
 
-    public generate(graph: MatrixGraph): WorldItem[] {
-        return [this.createRootWorldItem(graph)];
+    public parse(worldMap: string): WorldItem[] {
+        return [this.createRootWorldItem(this.parseWorldMap(worldMap))];
     }
 
     public generateFromStringMap(strMap: string): WorldItem[] {
@@ -24,11 +24,11 @@ export class RootWorldItemParser implements Parser {
         return [this.createRootWorldItem(matrixGraph)];
     }
 
-    public parseWorldMap(strMap: string): MatrixGraph {
+    private parseWorldMap(strMap: string): Matrix {
         return this.worldMapConverter.convert(strMap);
     }
 
-    public createRootWorldItem(graph: MatrixGraph): WorldItem {
+    public createRootWorldItem(graph: Matrix): WorldItem {
         return this.worldItemInfoFactory.create(
             'F',
             Polygon.createRectangle(

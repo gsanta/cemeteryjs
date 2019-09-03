@@ -1,32 +1,22 @@
-import { MatrixGraph } from './matrix/MatrixGraph';
 import { WorldItem } from '../WorldItem';
 import { Parser } from './Parser';
 import _ = require('lodash');
+import { flat } from '../utils/ArrayUtils';
 
 /**
  * The goal of this generator is to combine multiple generators together each of which parses the input worldmap string
  * from a different aspect, and emits all of the `WorldItem`s merged together.
  */
 export class CombinedWorldItemParser implements Parser {
-    private worldItemGenerators: Parser[];
+    private parsers: Parser[];
 
-    constructor(worldItemGenerators: Parser[]) {
-        this.worldItemGenerators = worldItemGenerators;
+    constructor(parsers: Parser[]) {
+        this.parsers = parsers;
     }
 
-    public generate(graph: MatrixGraph): WorldItem[] {
-        throw new Error('`generate` not supported for `CombinedWorldItemGenerator`, use `generateFromStringMap`');
-    }
+    public parse(worldMap: string): WorldItem[] {
+        const results = this.parsers.map(parser => parser.parse(worldMap));
 
-    public generateFromStringMap(strMap: string): WorldItem[] {
-        const generatorResults = _.chain(this.worldItemGenerators)
-            .map(generator => generator.generate(generator.parseWorldMap(strMap)))
-            .value();
-
-        return _.flatten(generatorResults);
-    }
-
-    public parseWorldMap(strMap: string): MatrixGraph {
-        throw new Error('`getMatrixGraphForStringMap` not supported for `CombinedWorldItemGenerator`');
+        return flat<WorldItem>(results, 2);
     }
 }

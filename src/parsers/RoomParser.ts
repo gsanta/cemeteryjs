@@ -1,6 +1,6 @@
 import { WorldItem } from '../WorldItem';
 import { WorldMapToMatrixGraphConverter } from "./reader/WorldMapToMatrixGraphConverter";
-import { MatrixGraph } from "./matrix/MatrixGraph";
+import { Matrix } from "./matrix/Matrix";
 import { Parser } from "./Parser";
 import { PolygonAreaParser } from './PolygonAreaParser';
 import { WorldMapToRoomMapConverter } from './WorldMapToRoomMapConverter';
@@ -9,31 +9,14 @@ import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 
 export class RoomParser implements Parser {
     private worldMapToRoomMapConverter: WorldMapToRoomMapConverter;
-    private worldMapConverter: WorldMapToMatrixGraphConverter;
-    private polygonAreaInfoGenerator: PolygonAreaParser;
+    private polygonAreaParser: PolygonAreaParser;
 
-    constructor(
-        worldItemInfoFactory: WorldItemFactoryService,
-        worldMapConverter = new WorldMapToMatrixGraphConverter(),
-        polygonAreaInfoGenerator = new PolygonAreaParser('room', worldItemInfoFactory),
-        worldMapToRoomMapConverter = new WorldMapToRoomMapConverter('W', '-', ['W', 'D', 'I']),
-    ) {
-        this.worldMapConverter = worldMapConverter;
-        this.worldMapToRoomMapConverter = worldMapToRoomMapConverter;
-        this.polygonAreaInfoGenerator = polygonAreaInfoGenerator;
+    constructor(worldItemInfoFactory: WorldItemFactoryService, borderCharacters: string[] = ['W', 'D', 'I'], roomCharacter = '-') {
+        this.worldMapToRoomMapConverter = new WorldMapToRoomMapConverter('W', roomCharacter, borderCharacters);
+        this.polygonAreaParser = new PolygonAreaParser('room', worldItemInfoFactory);
     }
 
-    public generate(graph: MatrixGraph): WorldItem[] {
-        return this.polygonAreaInfoGenerator.generate(graph);
-    }
-
-    public generateFromStringMap(strMap: string): WorldItem[] {
-        return this.polygonAreaInfoGenerator.generate(this.parseWorldMap(strMap));
-    }
-
-    public parseWorldMap(strMap: string): MatrixGraph {
-        return this.worldMapConverter.convert(
-            this.worldMapToRoomMapConverter.convert(strMap)
-        );
+    parse(worldMap: string): WorldItem[] {
+        return this.polygonAreaParser.parse(this.worldMapToRoomMapConverter.convert(worldMap));
     }
 }

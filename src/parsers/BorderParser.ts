@@ -1,4 +1,4 @@
-import { MatrixGraph } from './matrix/MatrixGraph';
+import { Matrix } from './matrix/Matrix';
 import { WorldItem } from '../WorldItem';
 import * as _ from 'lodash';
 import { Parser } from './Parser';
@@ -22,7 +22,8 @@ export class BorderParser implements Parser {
         this.roomSeparatorCharacters = roomSeparatorCharacters;
     }
 
-    public generate(graph: MatrixGraph): WorldItem[] {
+    public parse(worldMap: string): WorldItem[] {
+        const graph = this.parseWorldMap(worldMap);
         const characters = this.roomSeparatorCharacters.filter(name => graph.getCharacterForName(name)).map(name => graph.getCharacterForName(name));
 
         const borderGraph = graph.getReducedGraphForCharacters(characters);
@@ -36,15 +37,11 @@ export class BorderParser implements Parser {
             );
     }
 
-    public generateFromStringMap(strMap: string): WorldItem[] {
-        return this.generate(this.parseWorldMap(strMap));
-    }
-
-    public parseWorldMap(strMap: string): MatrixGraph {
+    private parseWorldMap(strMap: string): Matrix {
         return this.worldMapConverter.convert(strMap);
     }
 
-    private createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph: MatrixGraph, borderGraph: MatrixGraph): WorldItem[] {
+    private createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph: Matrix, borderGraph: Matrix): WorldItem[] {
         const verticalSubComponents = this.findVerticalSlices(componentGraph, borderGraph);
         const horixontalComponents = this.findHorizontalSlices(componentGraph, borderGraph);
 
@@ -79,7 +76,7 @@ export class BorderParser implements Parser {
         return [...verticalItems, ...horizontalItems];
     }
 
-    private findVerticalSlices(singleCharacterGraph: MatrixGraph, borderGraph: MatrixGraph): number[][] {
+    private findVerticalSlices(singleCharacterGraph: Matrix, borderGraph: Matrix): number[][] {
         const visitedVertices = [];
 
         let componentVertices = singleCharacterGraph.getAllVertices();
@@ -105,7 +102,7 @@ export class BorderParser implements Parser {
         return verticalSubCompnents;
     }
 
-    private findVerticalSubComponentForVertex(vertex: number, componentGraph: MatrixGraph): number[] {
+    private findVerticalSubComponentForVertex(vertex: number, componentGraph: Matrix): number[] {
         let subComponentVertices = [vertex];
 
         let actVertex = vertex;
@@ -124,7 +121,7 @@ export class BorderParser implements Parser {
         return subComponentVertices;
     }
 
-    private findHorizontalSlices(singleCharacterGraph: MatrixGraph, borderGraph: MatrixGraph): number[][] {
+    private findHorizontalSlices(singleCharacterGraph: Matrix, borderGraph: Matrix): number[][] {
         const visitedVertices = [];
 
         let componentVertices = singleCharacterGraph.getAllVertices();
@@ -145,7 +142,7 @@ export class BorderParser implements Parser {
         return horizontalSubCompnents;
     }
 
-    private findHorizontalSubComponentForVertex(vertex: number, componentGraph: MatrixGraph): number[] {
+    private findHorizontalSubComponentForVertex(vertex: number, componentGraph: Matrix): number[] {
         let subComponentVertices = [vertex];
 
         let actVertex = vertex;
@@ -164,7 +161,7 @@ export class BorderParser implements Parser {
         return subComponentVertices;
     }
 
-    private createRectangleFromVerticalVertices(graph: MatrixGraph) {
+    private createRectangleFromVerticalVertices(graph: Matrix) {
         const vertices = [...graph.getAllVertices()];
         vertices.sort((a, b) => graph.getVertexPositionInMatrix(a).y - graph.getVertexPositionInMatrix(b).y);
 
@@ -179,7 +176,7 @@ export class BorderParser implements Parser {
         return Polygon.createRectangle(x, y, width, height);
     }
 
-    private createRectangleFromHorizontalVertices(graph: MatrixGraph) {
+    private createRectangleFromHorizontalVertices(graph: Matrix) {
         const vertices = [...graph.getAllVertices()];
         vertices.sort((a, b) => graph.getVertexPositionInMatrix(a).x - graph.getVertexPositionInMatrix(b).x);
 

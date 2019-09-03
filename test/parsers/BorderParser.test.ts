@@ -38,13 +38,10 @@ describe('BorderParser', () => {
                 \`
             `;
 
-            const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
-            const matrixGraph = worldMapToGraphConverter.convert(map);
-
             const roomSeparatorParser = new BorderParser(new WorldItemFactoryService(), ['wall', 'door', 'window']);
 
 
-            const worldItems = roomSeparatorParser.generate(matrixGraph);
+            const worldItems = roomSeparatorParser.parse(map);
             expect(worldItems.length).toEqual(5);
             expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(0, 0, 1, 5), worldItems)).toBeTruthy();
             expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(9, 0, 1, 5), worldItems)).toBeTruthy();
@@ -75,13 +72,10 @@ describe('BorderParser', () => {
                 \`
             `;
 
-            const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
-            const matrixGraph = worldMapToGraphConverter.convert(map);
-
             const roomSeparatorParser = new BorderParser(new WorldItemFactoryService(), ['wall', 'door', 'window']);
 
 
-            const worldItems = roomSeparatorParser.generate(matrixGraph);
+            const worldItems = roomSeparatorParser.parse(map);
             expect(worldItems.length).toEqual(4);
             expect(worldItems[0].dimensions).toEqual(Polygon.createRectangle(0, 0, 2, 1));
             expect(worldItems[1].dimensions).toEqual(Polygon.createRectangle(6, 0, 4, 1));

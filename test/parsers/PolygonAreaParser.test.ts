@@ -22,12 +22,9 @@ describe('PolygonAreaParser', () => {
                 \`
             `;
 
-            const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
-            const matrixGraph = worldMapToGraphConverter.convert(map);
-
             const polygonAreaInfoParser = new PolygonAreaParser('empty', new WorldItemFactoryService());
 
-            const worldItem = polygonAreaInfoParser.generate(matrixGraph);
+            const worldItem = polygonAreaInfoParser.parse(map);
 
             expect(worldItem.length).toEqual(1);
             expect(worldItem[0].dimensions.equalTo(new Polygon([
@@ -55,12 +52,9 @@ describe('PolygonAreaParser', () => {
                 \`
             `;
 
-            const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
-            const matrixGraph = worldMapToGraphConverter.convert(map);
-
             const polygonAreaInfoParser = new PolygonAreaParser('empty', new WorldItemFactoryService());
 
-            const worldItem = polygonAreaInfoParser.generate(matrixGraph);
+            const worldItem = polygonAreaInfoParser.parse(map);
 
             expect(worldItem.length).toEqual(2);
             expect(worldItem[0].dimensions.equalTo(new Polygon([
@@ -95,12 +89,9 @@ describe('PolygonAreaParser', () => {
                 \`
             `;
 
-            const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
-            const matrixGraph = worldMapToGraphConverter.convert(map);
-
             const polygonAreaInfoParser = new PolygonAreaParser('empty', new WorldItemFactoryService());
 
-            const worldItem = polygonAreaInfoParser.generate(matrixGraph);
+            const worldItem = polygonAreaInfoParser.parse(map);
 
             expect(worldItem.length).toEqual(1);
             expect(worldItem[0].dimensions.equalTo(new Polygon([
@@ -133,12 +124,9 @@ describe('PolygonAreaParser', () => {
                 \`
             `;
 
-            const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
-            const matrixGraph = worldMapToGraphConverter.convert(map);
-
             const polygonAreaInfoParser = new PolygonAreaParser('empty', new WorldItemFactoryService());
 
-            const worldItem = polygonAreaInfoParser.generate(matrixGraph);
+            const worldItem = polygonAreaInfoParser.parse(map);
 
             expect(worldItem.length).toEqual(1);
             expect(worldItem[0].dimensions.equalTo(new Polygon([

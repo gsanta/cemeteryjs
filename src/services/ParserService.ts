@@ -4,6 +4,6 @@ import { WorldItem } from '../WorldItem';
 export class ParserService {
 
     apply(worldMap: string, parser: Parser): WorldItem[] {
-        return parser.generateFromStringMap(worldMap);
+        return parser.parse(worldMap);
     }
 }

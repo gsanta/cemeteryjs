@@ -8,17 +8,11 @@ import { WorldItemFactoryService } from '../../src/services/WorldItemFactoryServ
 describe('RoomParser', () => {
     describe ('generate', () => {
         it ('converts a complicated real-world example to the correct room Polygons.', () => {
-            const worldMapStr = fs.readFileSync(__dirname + '/../../assets/test/big_world.gwm', 'utf8');
+            const worldMap = fs.readFileSync(__dirname + '/../../assets/test/big_world.gwm', 'utf8');
 
-            const worldMapToRoomMapConverter = new WorldMapToRoomMapConverter('-', '#', ['W', 'D', 'I']);
+            const roomInfoParser = new RoomParser(new WorldItemFactoryService(), ['W', 'D', 'I'], '#');
 
-            const worldMapToGraphConverter = new WorldMapToMatrixGraphConverter();
-
-            const matrixGraph = worldMapToGraphConverter.convert(worldMapToRoomMapConverter.convert(worldMapStr));
-
-            const roomInfoParser = new RoomParser(new WorldItemFactoryService());
-
-            const worldItem = roomInfoParser.generate(matrixGraph);
+            const worldItem = roomInfoParser.parse(worldMap);
 
             expect(worldItem[0].dimensions.equalTo(new Polygon([
                 new Point(1, 1),

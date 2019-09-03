@@ -1,4 +1,4 @@
-import { MatrixGraph } from "./matrix/MatrixGraph";
+import { Matrix } from "./matrix/Matrix";
 import _ = require("lodash");
 import { WorldItem } from '../WorldItem';
 import { Parser } from "./Parser";
@@ -27,7 +27,8 @@ export class PolygonAreaParser implements Parser {
         this.polygonRedundantPointReducer = new PolygonRedundantPointReducer();
     }
 
-    public generate(graph: MatrixGraph): WorldItem[] {
+    public parse(worldMap: string): WorldItem[] {
+        const graph = this.parseWorldMap(worldMap);
         const character = graph.getCharacterForName('empty');
 
         return graph.createConnectedComponentGraphsForCharacter(character)
@@ -42,11 +43,7 @@ export class PolygonAreaParser implements Parser {
             });
     }
 
-    public generateFromStringMap(strMap: string): WorldItem[] {
-        return this.generate(this.parseWorldMap(strMap));
-    }
-
-    public parseWorldMap(strMap: string): MatrixGraph {
+    private parseWorldMap(strMap: string): Matrix {
         return this.worldMapConverter.convert(strMap);
     }
 
@@ -54,7 +51,7 @@ export class PolygonAreaParser implements Parser {
      * Converts the polygon points of the component graph to horizontal lines which
      * include all of the points in the graph.
      */
-    private segmentGraphToHorizontalLines(componentGraph: MatrixGraph): Segment[] {
+    private segmentGraphToHorizontalLines(componentGraph: Matrix): Segment[] {
         const map = new Map<Number, number[]>();
 
         componentGraph.getAllVertices()

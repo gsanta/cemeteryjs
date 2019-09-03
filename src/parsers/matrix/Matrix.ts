@@ -7,7 +7,7 @@ export interface MatrixGraphVertexValue {
 
 // TODO: separate matrix strore from additional data (like 'name')
 // matrix is specific to the .gwm format, the other data should be independent
-export class MatrixGraph {
+export class Matrix {
     private numberOfVertices = 0;
     private adjacencyList: { [key: number]: number[] } = {};
     private vertexValues: { [key: number]: MatrixGraphVertexValue } = {};
@@ -150,8 +150,8 @@ export class MatrixGraph {
         return null;
     }
 
-    public getGraphForVertices(vertices: number[]): MatrixGraph {
-        const graph = new MatrixGraph(this.columns, this.rows);
+    public getGraphForVertices(vertices: number[]): Matrix {
+        const graph = new Matrix(this.columns, this.rows);
 
         vertices.forEach(vertex => graph.addVertex(vertex, this.getVertexValue(vertex).character, this.charToNameMap.get(this.getVertexValue(vertex).character)));
         graph.getAllVertices().forEach(vertex => {
@@ -167,8 +167,8 @@ export class MatrixGraph {
         return graph;
     }
 
-    public getGraphForVertexValue(val: string): MatrixGraph {
-        const graph = new MatrixGraph(this.columns, this.rows);
+    public getGraphForVertexValue(val: string): Matrix {
+        const graph = new Matrix(this.columns, this.rows);
         this.getAllVertices()
             .filter(vertex => this.getVertexValue(vertex).character === val)
             .forEach(vertex => graph.addVertex(vertex, this.getVertexValue(vertex).character, this.charToNameMap.get(this.getVertexValue(vertex).character)));
@@ -210,15 +210,15 @@ export class MatrixGraph {
      * Reduces the graph into subgraphs, where each graph has only vetices with value of `character`
      * and where each graph is a `connected-component`.
      */
-    public createConnectedComponentGraphsForCharacter(character: string): MatrixGraph[] {
+    public createConnectedComponentGraphsForCharacter(character: string): Matrix[] {
         const reducedGraph = this.getGraphForVertexValue(character);
         const connectedComponents = reducedGraph.findConnectedComponentsForCharacter(character);
 
         return connectedComponents.map(component => this.getReducedGraphForVertices(component));
     }
 
-    getReducedGraphForCharacters(characters: string[]): MatrixGraph {
-        const graph = new MatrixGraph(this.columns, this.rows);
+    getReducedGraphForCharacters(characters: string[]): Matrix {
+        const graph = new Matrix(this.columns, this.rows);
 
         this.vertices
             .filter(vertex => characters.includes(this.getVertexValue(vertex).character))
@@ -236,8 +236,8 @@ export class MatrixGraph {
      * containing only the vertices passed as the `vertices` parameter and the edges between
      * those vertices.
      */
-    private getReducedGraphForVertices(vertices: number[]): MatrixGraph {
-        const graph = new MatrixGraph(this.columns, this.rows);
+    private getReducedGraphForVertices(vertices: number[]): Matrix {
+        const graph = new Matrix(this.columns, this.rows);
 
         vertices.forEach(vertex => graph.addVertex(vertex, this.getVertexValue(vertex).character, this.charToNameMap.get(this.getVertexValue(vertex).character)));
 

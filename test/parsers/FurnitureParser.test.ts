@@ -7,24 +7,27 @@ import { WorldItemFactoryService } from '../../src/services/WorldItemFactoryServ
 describe('FurnitureParser', () => {
     describe('generate', () => {
         it ('creates world items from the graph (test case with one connected component)', () => {
-            const linesToGraphConverter = new LinesToGraphConverter();
-            const graph = linesToGraphConverter.parse(
-                [
-                    '######',
-                    '#WWWWW',
-                    '#W#W##',
-                    '######'
-                ],
-                {
-                    W: 'wall',
-                    '#': 'empty'
-                },
-                {}
-            );
+            const worldMap = `
+                map \`
 
+                ######
+                #WWWWW
+                #W#W##
+                ######
+
+                \`
+
+                definitions \`
+
+                W = wall
+                D = door
+                - = empty
+
+                \`
+            `;
 
             const furnitureInfoParser = new FurnitureParser(new WorldItemFactoryService(), ['wall']);
-            const worldItems = furnitureInfoParser.generate(graph);
+            const worldItems = furnitureInfoParser.parse(worldMap);
 
             expect(worldItems.length).toEqual(4);
             const firstItem = worldItems[0];
@@ -34,24 +37,28 @@ describe('FurnitureParser', () => {
         });
 
         it ('creates world items from the graph (test case with multiple connected components)', () => {
-            const linesToGraphConverter = new LinesToGraphConverter();
-            const graph = linesToGraphConverter.parse(
-                [
-                    '######',
-                    '#WWWW#',
-                    '#W####',
-                    '##WW##'
-                ],
-                {
-                    W: 'wall',
-                    '#': 'empty'
-                },
-                {}
-            );
+            const worldMap = `
+                map \`
+
+                ######
+                #WWWW#
+                #W####
+                ##WW##
+
+                \`
+
+                definitions \`
+
+                W = wall
+                D = door
+                - = empty
+
+                \`
+            `;
 
 
             const furnitureInfoParser = new FurnitureParser(new WorldItemFactoryService(), ['wall']);
-            const worldItems = furnitureInfoParser.generate(graph);
+            const worldItems = furnitureInfoParser.parse(worldMap);
 
             expect(worldItems.length).toEqual(3);
             const firstItem = worldItems[0];
@@ -61,24 +68,28 @@ describe('FurnitureParser', () => {
         });
 
         it ('creates one world item for a rectangular connected component', () => {
-            const linesToGraphConverter = new LinesToGraphConverter();
-            const graph = linesToGraphConverter.parse(
-                [
-                    '#DD###',
-                    '#DD###',
-                    '#DD###',
-                    '######'
-                ],
-                {
-                    D: 'door',
-                    '#': 'empty'
-                },
-                {}
-            );
+            const worldMap = `
+                map \`
+
+                #DD###
+                #DD###
+                #DD###
+                ######
+
+                \`
+
+                definitions \`
+
+                W = wall
+                D = door
+                - = empty
+
+                \`
+            `;
 
 
             const furnitureInfoParser = new FurnitureParser(new WorldItemFactoryService(), ['door']);
-            const worldItems = furnitureInfoParser.generate(graph);
+            const worldItems = furnitureInfoParser.parse(worldMap);
             expect(worldItems.length).toEqual(1);
             expect(worldItems[0]).toEqual(new WorldItem('door-1', 'D', Polygon.createRectangle(1, 0, 2, 3), 'door'));
         });

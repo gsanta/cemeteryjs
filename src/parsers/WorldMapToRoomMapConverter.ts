@@ -26,10 +26,10 @@ export class WorldMapToRoomMapConverter implements WorldMapLineListener {
 
     private lines: string[] = [];
 
-    constructor(wallChar: string, roomChar: string, roomSeparatorCharacters: string[]) {
+    constructor(wallChar: string, roomChar: string, borderCharacters: string[]) {
         this.wallChar = wallChar;
         this.roomChar = roomChar;
-        this.roomSeparatorCharacters = roomSeparatorCharacters;
+        this.roomSeparatorCharacters = borderCharacters;
         this.worldMapReader = new WorldMapReader(this);
     }
 

@@ -1,16 +1,8 @@
 import { LinesToGraphConverter } from './LinesToGraphConverter';
-import { MatrixGraph } from '../matrix/MatrixGraph';
+import { Matrix } from '../matrix/Matrix';
 import { DetailsLineToObjectConverter, DetailsLineDataTypes } from './DetailsLineToObjectConverter';
 import { WorldMapLineListener, WorldMapReader } from './WorldMapReader';
 
-interface DetailsJsonSchema {
-    attributes: {
-        pos: {
-            x: number;
-            y: number;
-        }
-    }[];
-}
 
 export class WorldMapToMatrixGraphConverter implements WorldMapLineListener {
     private linesToGraphConverter: LinesToGraphConverter;
@@ -28,7 +20,7 @@ export class WorldMapToMatrixGraphConverter implements WorldMapLineListener {
         this.worldMapReader = new WorldMapReader(this);
     }
 
-    public convert(worldmap: string): MatrixGraph {
+    public convert(worldmap: string): Matrix {
         this.worldMapLines = [];
         this.charachterToNameMap = {};
 
@@ -43,7 +35,7 @@ export class WorldMapToMatrixGraphConverter implements WorldMapLineListener {
         return this.stringToGraph(worldmap);
     }
 
-    private stringToGraph(worldmap: string): MatrixGraph {
+    private stringToGraph(worldmap: string): Matrix {
         this.worldMapReader.read(worldmap);
 
         const attributes = this.detailsLines.map(line => this.convertDetailsLineToAdditionalData(line));
