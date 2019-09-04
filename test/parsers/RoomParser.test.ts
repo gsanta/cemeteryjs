@@ -8,7 +8,7 @@ describe('RoomParser', () => {
         it ('converts a complicated real-world example to the correct room Polygons.', () => {
             const worldMap = fs.readFileSync(__dirname + '/../../assets/test/big_world.gwm', 'utf8');
 
-            const roomInfoParser = new RoomParser(new WorldItemFactoryService(), ['W', 'D', 'I'], '#');
+            const roomInfoParser = new RoomParser(new WorldItemFactoryService(), ['W', 'D', 'I']);
 
             const worldItem = roomInfoParser.parse(worldMap);
 
