@@ -6,7 +6,7 @@ import { EmptyAreaFactory } from '../factories/EmptyAreaFactory';
 import { PlayerFactory } from '../factories/PlayerFactory';
 import { DoorFactory } from '../factories/DoorFactory';
 import { WindowFactory } from '../factories/WindowFactory';
-import { WallFactory } from '../factories/WallFactory';
+import { RectangleFactory } from '../factories/RectangleFactory';
 import { RoomFactory } from '../factories/RoomFactory';
 import { DiscFactory } from '../factories/DiscFactory';
 import { MaterialFactory, MaterialBuilder } from '../MaterialFactory';
@@ -45,16 +45,20 @@ export class BabylonMeshFactoryService implements MeshFactoryService<Mesh, Skele
     }
 
     getInstance(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor, templateMap: Map<string, MeshTemplate<Mesh, Skeleton>>): Mesh[] {
-        return this.createFromTemplate(worldItemInfo, templateMap.get(worldItemInfo.type), meshDescriptor);
+        return this.createFromTemplate(worldItemInfo, templateMap.get(worldItemInfo.name), meshDescriptor);
     }
 
     private createFromTemplate(worldItemInfo: WorldItem, meshTemplate: MeshTemplate<Mesh, Skeleton>, meshDescriptor: MeshDescriptor): Mesh[] {
+
+        if (meshDescriptor.details.name === 'shape-descriptor') {
+            return this.createFromShapeDescriptor(worldItemInfo, meshDescriptor);
+        }
 
         switch(worldItemInfo.name) {
             case 'root':
                 return [];
             case 'empty':
-                return [new EmptyAreaFactory(this.scene).createItem(worldItemInfo)];
+                return [new EmptyAreaFactory(this.scene).createItem(worldItemInfo, meshDescriptor)];
             case 'player':
                 worldItemInfo.skeleton = meshTemplate.skeletons[0];
                 return [new PlayerFactory().createItem(worldItemInfo, meshTemplate)];
@@ -62,8 +66,6 @@ export class BabylonMeshFactoryService implements MeshFactoryService<Mesh, Skele
                 return new DoorFactory(this.scene, MeshBuilder).createItem(worldItemInfo, meshTemplate);
             case 'window':
                 return new WindowFactory(this.scene, MeshBuilder,  new MaterialFactory(this.scene)).createItem(worldItemInfo, meshDescriptor, meshTemplate);
-            case 'wall':
-                return [new WallFactory(this.scene, new MaterialFactory(this.scene)).createItem(worldItemInfo, meshDescriptor)];
             case 'room':
                 return this.createRoomMeshes(worldItemInfo, meshDescriptor.details);
             default:
@@ -87,24 +89,6 @@ export class BabylonMeshFactoryService implements MeshFactoryService<Mesh, Skele
         return [mesh, meshes[0]];
     }
 
-    private createFromMeshDescriptor(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor<any>): Mesh[] {
-        // TODO: get rid of this at some point
-        if (worldItemInfo.name === 'root' || worldItemInfo.name === 'empty' || worldItemInfo.name === 'wall' || worldItemInfo.name === 'window') {
-            return this.createFromTemplate(worldItemInfo, null, meshDescriptor);
-        }
-
-        switch(meshDescriptor.details.name) {
-            case 'room-descriptor':
-                return this.createRoomMeshes(worldItemInfo, meshDescriptor.details);
-            case 'shape-descriptor':
-                return this.createFromShapeDescriptor(worldItemInfo, meshDescriptor);
-            case 'file-descriptor':
-                return this.createFromTemplate(worldItemInfo, this.modelMap.get(worldItemInfo.name), meshDescriptor);
-            default:
-                return null;
-        }
-    }
-
     private createRoomMeshes(worldItemInfo: WorldItem, roomDescriptor: RoomDescriptor): Mesh[] {
         return new RoomFactory(this.scene).createItem(worldItemInfo, roomDescriptor);
     }
@@ -116,6 +100,8 @@ export class BabylonMeshFactoryService implements MeshFactoryService<Mesh, Skele
                 return [new DiscFactory(this.scene, MeshBuilder, MaterialBuilder).createItem(worldItemInfo, shapeDescriptor)]
             case 'plane':
                 return [this.createPlane(worldItemInfo, meshDescriptor)];
+            case 'rect':
+                return [new RectangleFactory(this.scene, new MaterialFactory(this.scene)).createItem(worldItemInfo, meshDescriptor)];
             default:
                 throw new Error('Unsupported shape: ' + shapeDescriptor.shape);
         }

@@ -1,5 +1,5 @@
 import { MeshFactoryService } from './MeshFactoryService';
-import { MeshLoaderService } from './MeshLoaderService';
+import { MeshTemplateService } from './MeshTemplateService';
 import { ConfigService } from './ConfigService';
 import { ModifierFactoryService } from './ModifierFactoryService';
 import { WorldItemFactoryService } from './WorldItemFactoryService';
@@ -12,7 +12,7 @@ export class ServiceFacade<M, S, T> {
     meshFactoryService: MeshFactoryService<M, S>;
     modifierFactoryService: ModifierFactoryService;
     worldItemFactoryService: WorldItemFactoryService;
-    meshLoaderService: MeshLoaderService<M, S>
+    meshTamplateService: MeshTemplateService<M, S>
     configService: ConfigService;
     modifierService: ModifierService;
     parserService: ParserService;
@@ -21,13 +21,13 @@ export class ServiceFacade<M, S, T> {
 
     constructor(
         meshFactoryService: MeshFactoryService<any, any>,
-        meshLoaderService: MeshLoaderService<any, any>,
+        meshLoaderService: MeshTemplateService<any, any>,
         configService: ConfigService
     ) {
         this.configService = configService;
         this.converterService = new ConverterService();
         this.meshFactoryService = meshFactoryService;
-        this.meshLoaderService = meshLoaderService;
+        this.meshTamplateService = meshLoaderService;
         this.worldItemFactoryService = new WorldItemFactoryService();
         this.modifierFactoryService = new ModifierFactoryService(this);
         this.modifierService = new ModifierService(this.modifierFactoryService);

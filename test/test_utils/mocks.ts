@@ -8,14 +8,14 @@ import { ServiceFacade } from '../../src/services/ServiceFacade';
 import { TreeIteratorGenerator } from '../../src/utils/TreeIteratorGenerator';
 import { WorldItem } from '../../src/WorldItem';
 import { TestMeshFactoryService } from '../setup/TestMeshFactoryService';
-import { TestMeshLoaderService } from '../setup/TestMeshLoaderService';
 import { MeshDescriptor } from '../../src/Config';
+import { MockMeshTemplateService } from '../../src/integrations/mock/MockWorldGenerator';
 
-export function setup(config: Partial<WorldConfig> = {}): ServiceFacade<any, any, any> {
+export function setup(config: Partial<WorldConfig> = {}, meshTemplateService = new MockMeshTemplateService()): ServiceFacade<any, any, any> {
     config = {...defaultWorldConfig, ...config};
 
     const meshFactoryService = new TestMeshFactoryService();
-    const meshLoaderService = new TestMeshLoaderService();
+    const mockMeshTemplateService = new MockMeshTemplateService();
 
     const meshDescriptorMap: Map<string, MeshDescriptor<any>> = new Map();
     config.meshDescriptors.map(descriptor => meshDescriptorMap.set(descriptor.type, descriptor));
@@ -32,7 +32,7 @@ export function setup(config: Partial<WorldConfig> = {}): ServiceFacade<any, any
 
     return new ServiceFacade<any, any, any>(
         meshFactoryService,
-        meshLoaderService,
+        mockMeshTemplateService,
         configService
     );
 }

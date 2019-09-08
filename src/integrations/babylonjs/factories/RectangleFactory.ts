@@ -5,7 +5,7 @@ import { WorldItem } from '../../../WorldItem';
 import { MaterialFactory } from '../MaterialFactory';
 import { MeshDescriptor } from '../../../Config';
 
-export class WallFactory  {
+export class RectangleFactory  {
     private materialFactory: MaterialFactory;
     private scene: Scene;
     private index = 1;

@@ -3,17 +3,17 @@ import { WorldItem } from "../WorldItem";
 import { Polygon, Segment, Distance, Line, Point, Angle, Transform } from '@nightshifts.inc/geometry';
 import { Modifier } from './Modifier';
 import { NormalizeBorderRotationModifier } from "./NormalizeBorderRotationModifier";
-import { ConfigService } from '../services/ConfigService';
+import { MeshTemplateService } from "../services/MeshTemplateService";
 
 
 export class ChangeFurnitureSizeModifier implements Modifier {
     static modeName = 'changeFurnitureSize';
     dependencies = [NormalizeBorderRotationModifier.modName];
 
-    private configService: ConfigService;
+    private meshTemplateService: MeshTemplateService<any, any>;
 
-    constructor(configService: ConfigService) {
-        this.configService = configService;
+    constructor(meshTemplateService: MeshTemplateService<any, any>) {
+        this.meshTemplateService = meshTemplateService;
     }
 
     getName(): string {
@@ -30,30 +30,30 @@ export class ChangeFurnitureSizeModifier implements Modifier {
 
     private transformFurnituresInRoom(room: WorldItem) {
         room.children
-        // TODO: find better solution to handle empty
-        .filter(furniture => furniture.name !== 'empty')
         .forEach(furniture => {
             let realSize = <Polygon> furniture.dimensions;
+            let furnitureDimensions: Point;
 
-            if (this.configService.getFurnitureDimensions(furniture.name)) {
-                const furnitureDimensions = this.configService.getFurnitureDimensions(furniture.name);
+            if (this.meshTemplateService.hasTemplate(furniture.name)) {
+                furnitureDimensions = this.meshTemplateService.getTemplateDimensions(furniture.name);
 
-                realSize = Polygon.createRectangle(0, 0, furnitureDimensions.width, furnitureDimensions.height);
+                realSize = Polygon.createRectangle(0, 0, furnitureDimensions.x, furnitureDimensions.y);
+                const boundingRect = furniture.dimensions.getBoundingRectangle();
+                const topLeft = new Point(boundingRect.getPoints()[0].x, boundingRect.getPoints()[0].y);
+                const center = topLeft.addX(furnitureDimensions.x / 2).addY(furnitureDimensions.y / 2);
+                const snappingWallSegment = this.getSnappingWallSegmentIfExists(room, furniture);
+
+                if (snappingWallSegment) {
+                    const angle = this.getRotationAngle(snappingWallSegment, realSize);
+                    realSize = this.rotate(realSize, angle);
+                    furniture.rotation = angle.getAngle();
+                    furniture.dimensions = realSize.setPosition(center);
+                    this.snapToWallWallSegment(furniture, snappingWallSegment);
+                } else {
+                    furniture.dimensions = realSize.clone().setPosition(center);
+                }
             }
 
-            const centerPoint = furniture.dimensions.getBoundingCenter();
-
-            const snappingWallSegment = this.getSnappingWallSegmentIfExists(room, furniture);
-
-            if (snappingWallSegment) {
-                const angle = this.getRotationAngle(snappingWallSegment, realSize);
-                realSize = this.rotate(realSize, angle);
-                furniture.rotation = angle.getAngle();
-                furniture.dimensions = realSize.setPosition(centerPoint);
-                this.snapToWallWallSegment(furniture, snappingWallSegment);
-            } else {
-                furniture.dimensions = realSize.clone().setPosition(centerPoint);
-            }
         });
     }
 

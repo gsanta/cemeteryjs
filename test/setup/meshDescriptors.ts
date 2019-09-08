@@ -49,6 +49,15 @@ export const meshDescriptors: MeshDescriptor[] = [
         },
     },
     {
+        type: 'empty',
+        name: 'mesh-descriptor' as 'mesh-descriptor',
+        materials: [],
+        details: {
+            name: 'shape-descriptor' as 'shape-descriptor',
+            shape: 'plane',
+        },
+    },
+    {
         type: 'wall',
         name: 'mesh-descriptor' as 'mesh-descriptor',
         conditionalMaterials: [
@@ -65,5 +74,29 @@ export const meshDescriptors: MeshDescriptor[] = [
             name: 'shape-descriptor' as 'shape-descriptor',
             shape: 'rect'
         }
+    },
+    {
+        type: 'bed',
+        name: 'mesh-descriptor' as 'mesh-descriptor',
+        details: {
+            name: 'file-descriptor' as 'file-descriptor',
+            path: 'assets/models/',
+            fileName: 'bed.babylon',
+            scale: 2.7
+
+        },
+        materials: ['assets/models/bed_material.png'],
+    },
+    {
+        type: 'table',
+        name: 'mesh-descriptor' as 'mesh-descriptor',
+        details: {
+            name: 'file-descriptor' as 'file-descriptor',
+            path: 'assets/models/',
+            fileName: 'table.babylon',
+            scale: 0.6
+
+        },
+        materials: ['assets/models/table_material.png'],
     }
 ];

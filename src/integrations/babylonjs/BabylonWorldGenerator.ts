@@ -1,7 +1,7 @@
 import { Scene } from 'babylonjs/scene';
 import { WorldGenerator, Converter } from '../../WorldGenerator';
 import { BabylonMeshFactoryService } from './services/BabylonMeshFactoryService';
-import { BabylonMeshLoaderService } from './services/BabylonMeshLoaderService';
+import { BabylonMeshTemplateService } from './services/BabylonMeshTemplateService';
 import { MeshDescriptor } from '../../Config';
 import { WorldConfig } from '../../services/ImporterService';
 import { ConfigService } from '../../services/ConfigService';
@@ -20,7 +20,7 @@ export class BabylonWorldGenerator<T> implements WorldGenerator<T> {
         worldConfig.meshDescriptors.map(descriptor => meshDescriptorMap.set(descriptor.type, descriptor));
 
         const meshFactoryService = new BabylonMeshFactoryService(this.scene);
-        const meshLoaderService = new BabylonMeshLoaderService(this.scene);
+        const meshLoaderService = new BabylonMeshTemplateService(this.scene);
 
         meshLoaderService
             .loadAll(worldConfig.meshDescriptors)

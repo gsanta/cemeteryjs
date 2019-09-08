@@ -22,6 +22,7 @@ export class WorldItem<M = any, S = any> {
     isBorder: boolean;
     children: WorldItem[] = [];
     parent: WorldItem;
+    
     borderItems: WorldItem[] = [];
     rooms: WorldItem[] = [];
 

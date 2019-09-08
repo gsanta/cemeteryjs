@@ -2,7 +2,8 @@ import { Scene, Mesh, Skeleton, StandardMaterial, AbstractMesh, ParticleSystem, 
 import 'babylonjs-loaders';
 import { MeshTemplate } from '../../../MeshTemplate';
 import { MeshDescriptor, FileDescriptor } from '../../../Config';
-import { MeshLoaderService } from '../../../services/MeshLoaderService';
+import { MeshTemplateService } from '../../../services/MeshTemplateService';
+import { Point } from '@nightshifts.inc/geometry';
 
 export interface MeshTemplateConfig {
     checkCollisions: boolean;
@@ -20,7 +21,7 @@ export interface MeshTemplateConfig {
 /**
  * Loads a model from file and gives back a `Mesh`.
  */
-export class BabylonMeshLoaderService implements MeshLoaderService<Mesh, Skeleton> {
+export class BabylonMeshTemplateService implements MeshTemplateService<Mesh, Skeleton> {
     private scene: Scene;
 
     constructor(scene: Scene) {
@@ -28,6 +29,16 @@ export class BabylonMeshLoaderService implements MeshLoaderService<Mesh, Skeleto
     }
 
     meshTemplates: Map<string, MeshTemplate<Mesh, Skeleton>> = new Map();
+
+    hasTemplate(type: string): boolean {
+        return this.meshTemplates.has(type);
+    }
+
+    getTemplateDimensions(type: string): Point {
+        const extend = this.meshTemplates.get(type).meshes[0].getBoundingInfo().boundingBox.extendSizeWorld;
+
+        return new Point(extend.x, extend.z);
+    }
 
     loadAll(meshDescriptors: MeshDescriptor[]): Promise<unknown> {
         const promises = meshDescriptors

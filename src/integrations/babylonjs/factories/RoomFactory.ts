@@ -17,12 +17,13 @@ export class RoomFactory  {
 
         mesh.isVisible = true;
 
-        const roofMesh = this.createRoof(worldItemInfo, roomDescriptor);
+        // const roofMesh = this.createRoof(worldItemInfo, roomDescriptor);
         // const label = `room-${this.counter++}`;
         // const roomLabel = this.roomLabelFactory.createItem(worldItemInfo);
         // roomLabel.isVisible = false;
 
-        return [mesh, roofMesh];
+        // return [mesh, roofMesh];
+        return [mesh];
     }
 
     private createRoomFloor(dimensions: Shape) {

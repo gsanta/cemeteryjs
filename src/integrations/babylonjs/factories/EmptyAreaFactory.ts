@@ -1,20 +1,22 @@
 import { Mesh, MeshBuilder, Scene, Skeleton, StandardMaterial, Vector3 } from 'babylonjs';
 import { WorldItem } from '../../../WorldItem';
 import { MeshCreator } from '../MeshCreator';
+import { MeshDescriptor } from '../../../Config';
 
-export class EmptyAreaFactory implements MeshCreator {
+export class EmptyAreaFactory {
     private scene: Scene;
 
     constructor(scene: Scene) {
         this.scene = scene;
     }
 
-    public createItem(worldItemInfo: WorldItem): Mesh {
+    createItem(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor): Mesh {
 
+        const y = meshDescriptor.translateY ? meshDescriptor.translateY : 0;
         const mesh = MeshBuilder.CreatePolygon(
             worldItemInfo.name,
             {
-                shape: worldItemInfo.dimensions.getPoints().map(point => new Vector3(point.x, 2, point.y)),
+                shape: worldItemInfo.dimensions.getPoints().map(point => new Vector3(point.x, y, point.y)),
                 depth: 2,
                 updatable: true
             },
@@ -22,8 +24,6 @@ export class EmptyAreaFactory implements MeshCreator {
         );
 
         mesh.material = this.createMaterial(this.scene);
-
-        mesh.isVisible = false;
 
         return mesh;
     }

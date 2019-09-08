@@ -5,7 +5,7 @@ import { ServiceFacade } from "./services/ServiceFacade";
 import { ConverterService } from './services/ConverterService';
 import { MeshFactoryService } from './services/MeshFactoryService';
 import { ConfigService } from './services/ConfigService';
-import { MeshLoaderService } from './services/MeshLoaderService';
+import { MeshTemplateService } from './services/MeshTemplateService';
 import { ModifierFactoryService } from './services/ModifierFactoryService';
 
 
