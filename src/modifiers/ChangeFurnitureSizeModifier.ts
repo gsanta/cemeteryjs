@@ -36,21 +36,23 @@ export class ChangeFurnitureSizeModifier implements Modifier {
 
             if (this.meshTemplateService.hasTemplate(furniture.name)) {
                 furnitureDimensions = this.meshTemplateService.getTemplateDimensions(furniture.name);
-
+                console.log(furnitureDimensions.x + ' ' + furnitureDimensions.y);
                 realSize = Polygon.createRectangle(0, 0, furnitureDimensions.x, furnitureDimensions.y);
-                const boundingRect = furniture.dimensions.getBoundingRectangle();
-                const topLeft = new Point(boundingRect.getPoints()[0].x, boundingRect.getPoints()[0].y);
-                const center = topLeft.addX(furnitureDimensions.x / 2).addY(furnitureDimensions.y / 2);
+                // const boundingRect = furniture.dimensions.getBoundingRectangle();
+                // const topLeft = new Point(boundingRect.getPoints()[0].x, boundingRect.getPoints()[0].y);
+                // const center = topLeft.addX(furnitureDimensions.x / 2).addY(furnitureDimensions.y / 2);
+                const centerPoint = furniture.dimensions.getBoundingCenter();
+
                 const snappingWallSegment = this.getSnappingWallSegmentIfExists(room, furniture);
 
                 if (snappingWallSegment) {
                     const angle = this.getRotationAngle(snappingWallSegment, realSize);
                     realSize = this.rotate(realSize, angle);
                     furniture.rotation = angle.getAngle();
-                    furniture.dimensions = realSize.setPosition(center);
+                    furniture.dimensions = realSize.setPosition(centerPoint);
                     this.snapToWallWallSegment(furniture, snappingWallSegment);
                 } else {
-                    furniture.dimensions = realSize.clone().setPosition(center);
+                    furniture.dimensions = realSize.clone().setPosition(centerPoint);
                 }
             }
 
@@ -58,7 +60,7 @@ export class ChangeFurnitureSizeModifier implements Modifier {
     }
 
     private getSnappingWallSegmentIfExists(room: WorldItem, furniture: WorldItem): Segment {
-        const roomSegments = <Segment[]> room.borderItems.map(item => item.dimensions);
+        const borders = <Segment[]> room.borderItems.map(item => item.dimensions);
         const furnitureSegments = furniture.dimensions.getEdges();
 
         let minDistance = Number.MAX_VALUE;
@@ -66,16 +68,16 @@ export class ChangeFurnitureSizeModifier implements Modifier {
 
         for (let j = 0; j < furnitureSegments.length; j++) {
             const center = furnitureSegments[j].getBoundingCenter();
-            for (let i = 0; i < roomSegments.length; i++) {
-                const dist = new Distance().pointToSegment(center, roomSegments[i]);
+            for (let i = 0; i < borders.length; i++) {
+                const dist = new Distance().pointToSegment(center, borders[i]);
                 if (dist < minDistance) {
                     minDistance = dist;
-                    closestWallSegment = roomSegments[i];
+                    closestWallSegment = borders[i];
                 }
             }
         }
 
-        return minDistance <= 0.5 ? closestWallSegment : null;
+        return minDistance <= 1 ? closestWallSegment : null;
     }
 
     private snapToWallWallSegment(furniture: WorldItem, wallSegment: Segment) {

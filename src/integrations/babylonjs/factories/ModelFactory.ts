@@ -13,31 +13,33 @@ export class ModelFactory {
 
     public getInstance(worldItemInfo: WorldItem, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
         const meshes = meshTemplate.meshes.map(m => m.clone());
-        const boundingMesh = this.createBoundingMesh(worldItemInfo, meshes[0], this.scene);
-
-        meshes.forEach(m => {
-            m.isVisible = true;
-            m.parent = boundingMesh;
-        });
-
         const rotation = - worldItemInfo.rotation;
+        meshes[0].isVisible = true;
 
-        boundingMesh.rotate(Axis.Y, rotation, Space.WORLD);
-        boundingMesh.checkCollisions = true;
-        boundingMesh.isVisible = false;
+        meshes[0].rotate(Axis.Y, rotation, Space.WORLD);
+        const mesh = this.createBoundingMesh(worldItemInfo, meshes[0], this.scene);
+        mesh.checkCollisions = true;
+        const extend = meshes[0].getBoundingInfo().boundingBox.extendSizeWorld;
+        // meshes[0].translate(new Vector3(0, - extend.y / 2, 0), 1, Space.WORLD);
 
-        return [boundingMesh, meshes[0]];
+        // mesh.isVisible = false;
+
+        return [mesh, meshes[0]];
     }
 
     private createBoundingMesh(worldItemInfo: WorldItem, mesh: Mesh, scene: Scene): Mesh {
         const boundingPolygon = worldItemInfo.dimensions;
         const height = mesh.getBoundingInfo().boundingBox.maximumWorld.y;
 
-        const box = MeshBuilder.CreateBox(
+        const extend = mesh.getBoundingInfo().boundingBox.extendSizeWorld;
+
+        const box = this.meshBuilder.CreateBox(
             `bounding-box`,
-            {  width: boundingPolygon.getBoundingInfo().extent[0], depth: boundingPolygon.getBoundingInfo().extent[1], height: height  },
+            {  width: extend.x * 2, depth: extend.z * 2, height: extend.y * 2  },
             scene
         );
+
+        mesh.parent = box;
 
         const center = boundingPolygon.getBoundingCenter();
         box.translate(new Vector3(center.x, 0, center.y), 1, Space.WORLD);

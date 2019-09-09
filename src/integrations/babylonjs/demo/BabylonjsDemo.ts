@@ -10,6 +10,21 @@ import { WorldConfig } from '../../../services/ImporterService';
 import { WorldItem } from '../../../WorldItem';
 import { meshDescriptors } from '../../../../test/setup/meshDescriptors';
 
+
+// const strWorld = `map \`
+
+// WWWWWWWWWIIWWWWWWWWWWWWWWWWW
+// W--------------------------W
+// W--------------------------W
+// W--------------------------W
+// W--------------------------W
+// W--------------------------W
+// W--------------------------W
+// W--------------------------W
+// WWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+// \`
+
 const strWorld = `map \`
 
 WWWWWWWWWIIWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -21,14 +36,15 @@ W---------------------------------------------------W
 W---------------------------------------------------W
 W---------------------------------------------------W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-W---------TTTT---------------EEEE-W-----------------W
-W---------TTTT---------------EEEE-W-----------------W
+W-------TTTTT--------EEEE---------W-----------------W
+W-------TTTTT--------EEEE---------W-----------------W
 W---------------------------------W-----------------I
 W---------------------------------W-----------------I
 W---------------------------------W-----------------W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 \`
+
 
 definitions \`
 

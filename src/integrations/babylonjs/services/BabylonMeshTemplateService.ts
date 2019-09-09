@@ -35,9 +35,13 @@ export class BabylonMeshTemplateService implements MeshTemplateService<Mesh, Ske
     }
 
     getTemplateDimensions(type: string): Point {
+        const mesh = this.meshTemplates.get(type).meshes[0];
+        mesh.computeWorldMatrix();
+        mesh.getBoundingInfo().update(mesh._worldMatrix);
+        console.log(this.meshTemplates.get(type).meshes[0].name)
         const extend = this.meshTemplates.get(type).meshes[0].getBoundingInfo().boundingBox.extendSizeWorld;
 
-        return new Point(extend.x, extend.z);
+        return new Point(extend.x * 2, extend.z * 2);
     }
 
     loadAll(meshDescriptors: MeshDescriptor[]): Promise<unknown> {

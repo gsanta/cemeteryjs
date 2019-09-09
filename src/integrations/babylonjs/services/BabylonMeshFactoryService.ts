@@ -12,6 +12,7 @@ import { DiscFactory } from '../factories/DiscFactory';
 import { MaterialFactory, MaterialBuilder } from '../MaterialFactory';
 import { MeshDescriptor, ShapeDescriptor, RoomDescriptor } from '../../../Config';
 import { MeshFactoryService } from '../../../services/MeshFactoryService';
+import { ModelFactory } from '../factories/ModelFactory';
 
 export interface MeshTemplateConfig {
     checkCollisions: boolean;
@@ -48,45 +49,29 @@ export class BabylonMeshFactoryService implements MeshFactoryService<Mesh, Skele
         return this.createFromTemplate(worldItemInfo, templateMap.get(worldItemInfo.name), meshDescriptor);
     }
 
-    private createFromTemplate(worldItemInfo: WorldItem, meshTemplate: MeshTemplate<Mesh, Skeleton>, meshDescriptor: MeshDescriptor): Mesh[] {
+    private createFromTemplate(worldItem: WorldItem, meshTemplate: MeshTemplate<Mesh, Skeleton>, meshDescriptor: MeshDescriptor): Mesh[] {
 
         if (meshDescriptor.details.name === 'shape-descriptor') {
-            return this.createFromShapeDescriptor(worldItemInfo, meshDescriptor);
+            return this.createFromShapeDescriptor(worldItem, meshDescriptor);
         }
 
-        switch(worldItemInfo.name) {
+        switch(worldItem.name) {
             case 'root':
                 return [];
             case 'empty':
-                return [new EmptyAreaFactory(this.scene).createItem(worldItemInfo, meshDescriptor)];
+                return [new EmptyAreaFactory(this.scene).createItem(worldItem, meshDescriptor)];
             case 'player':
-                worldItemInfo.skeleton = meshTemplate.skeletons[0];
-                return [new PlayerFactory().createItem(worldItemInfo, meshTemplate)];
+                worldItem.skeleton = meshTemplate.skeletons[0];
+                return [new PlayerFactory().createItem(worldItem, meshTemplate)];
             case 'door':
-                return new DoorFactory(this.scene, MeshBuilder).createItem(worldItemInfo, meshTemplate);
+                return new DoorFactory(this.scene, MeshBuilder).createItem(worldItem, meshTemplate);
             case 'window':
-                return new WindowFactory(this.scene, MeshBuilder,  new MaterialFactory(this.scene)).createItem(worldItemInfo, meshDescriptor, meshTemplate);
+                return new WindowFactory(this.scene, MeshBuilder,  new MaterialFactory(this.scene)).createItem(worldItem, meshDescriptor, meshTemplate);
             case 'room':
-                return this.createRoomMeshes(worldItemInfo, meshDescriptor.details);
+                return this.createRoomMeshes(worldItem, meshDescriptor.details);
             default:
-                return this.create(worldItemInfo, meshTemplate);
+                return new ModelFactory(this.scene, MeshBuilder).getInstance(worldItem, meshTemplate);
         }
-    }
-
-    private create(worldItemInfo: WorldItem, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
-        const meshes = meshTemplate.meshes.map(m => m.clone());
-        const rotation = - worldItemInfo.rotation;
-        meshes[0].isVisible = true;
-
-        meshes[0].rotate(Axis.Y, rotation, Space.WORLD);
-        const mesh = this.createMesh(worldItemInfo, meshes[0], this.scene);
-        mesh.checkCollisions = true;
-        mesh.isVisible = false;
-
-        const impostor = new PhysicsImpostor(mesh, PhysicsImpostor.BoxImpostor, { mass: 2, friction: 1, restitution: 0.3 }, this.scene);
-        mesh.physicsImpostor = impostor;
-
-        return [mesh, meshes[0]];
     }
 
     private createRoomMeshes(worldItemInfo: WorldItem, roomDescriptor: RoomDescriptor): Mesh[] {
@@ -139,30 +124,5 @@ export class BabylonMeshFactoryService implements MeshFactoryService<Mesh, Skele
         textureGround.drawText(label, 200, 150, font, 'green', '#895139', true, true);
 
         return material;
-    }
-
-    private createMesh(worldItemInfo: WorldItem, mesh: Mesh, scene: Scene): Mesh {
-        const boundingPolygon = worldItemInfo.dimensions;
-        const height = mesh.getBoundingInfo().boundingBox.maximumWorld.y;
-
-        const box = MeshBuilder.CreateBox(
-            `bounding-box`,
-            {  width: boundingPolygon.getBoundingInfo().extent[0], depth: boundingPolygon.getBoundingInfo().extent[1], height: height  },
-            scene
-        );
-
-        mesh.parent = box;
-
-        const center = boundingPolygon.getBoundingCenter();
-        box.translate(new Vector3(center.x, 0, center.y), 1, Space.WORLD);
-
-        const material = new StandardMaterial('box-material', scene);
-        material.diffuseColor = Color3.FromHexString('#00FF00');
-        material.alpha = 0.5;
-        material.wireframe = false;
-        box.material = material;
-        box.isVisible = true;
-
-        return box;
     }
 }
