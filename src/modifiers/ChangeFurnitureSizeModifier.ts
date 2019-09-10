@@ -1,9 +1,10 @@
 import { WorldItemUtils } from "../WorldItemUtils";
 import { WorldItem } from "../WorldItem";
-import { Polygon, Segment, Distance, Line, Point, Angle, Transform } from '@nightshifts.inc/geometry';
+import { Polygon, Segment, Distance, Line, Point, Angle, Transform, Measurements, Shape } from '@nightshifts.inc/geometry';
 import { Modifier } from './Modifier';
 import { NormalizeBorderRotationModifier } from "./NormalizeBorderRotationModifier";
 import { MeshTemplateService } from "../services/MeshTemplateService";
+import { toRadian } from "@nightshifts.inc/geometry/build/utils/GeometryUtils";
 
 
 export class ChangeFurnitureSizeModifier implements Modifier {
@@ -31,28 +32,26 @@ export class ChangeFurnitureSizeModifier implements Modifier {
     private transformFurnituresInRoom(room: WorldItem) {
         room.children
         .forEach(furniture => {
-            let realSize = <Polygon> furniture.dimensions;
+            // let realSize = <Polygon> furniture.dimensions;
             let furnitureDimensions: Point;
 
             if (this.meshTemplateService.hasTemplate(furniture.name)) {
                 furnitureDimensions = this.meshTemplateService.getTemplateDimensions(furniture.name);
-                console.log(furnitureDimensions.x + ' ' + furnitureDimensions.y);
-                realSize = Polygon.createRectangle(0, 0, furnitureDimensions.x, furnitureDimensions.y);
-                // const boundingRect = furniture.dimensions.getBoundingRectangle();
-                // const topLeft = new Point(boundingRect.getPoints()[0].x, boundingRect.getPoints()[0].y);
-                // const center = topLeft.addX(furnitureDimensions.x / 2).addY(furnitureDimensions.y / 2);
+
+                let realDimensions = Polygon.createRectangle(0, 0, furnitureDimensions.x, furnitureDimensions.y);
                 const centerPoint = furniture.dimensions.getBoundingCenter();
 
                 const snappingWallSegment = this.getSnappingWallSegmentIfExists(room, furniture);
 
                 if (snappingWallSegment) {
-                    const angle = this.getRotationAngle(snappingWallSegment, realSize);
-                    realSize = this.rotate(realSize, angle);
-                    furniture.rotation = angle.getAngle();
-                    furniture.dimensions = realSize.setPosition(centerPoint);
-                    this.snapToWallWallSegment(furniture, snappingWallSegment);
+                    this.rotateFurntitureToSnappingWallIfNeeded(snappingWallSegment, furniture, realDimensions);
+                    // const angle = this.getWallRotationAngle(snappingWallSegment, realDimensions);
+                    // realDimensions = this.rotate(realDimensions, angle);
+                    // furniture.rotation = angle.getAngle();
+                    // furniture.dimensions = realDimensions.setPosition(centerPoint);
+                    this.snapToWall(furniture, snappingWallSegment);
                 } else {
-                    furniture.dimensions = realSize.clone().setPosition(centerPoint);
+                    furniture.dimensions = realDimensions.clone().setPosition(centerPoint);
                 }
             }
 
@@ -80,7 +79,7 @@ export class ChangeFurnitureSizeModifier implements Modifier {
         return minDistance <= 1 ? closestWallSegment : null;
     }
 
-    private snapToWallWallSegment(furniture: WorldItem, wallSegment: Segment) {
+    private snapToWall(furniture: WorldItem, wallSegment: Segment) {
         let closestFurnitureSegment: Segment = null;
         const furnitureSegments = furniture.dimensions.getEdges();
         let minDistance = Number.MAX_VALUE;
@@ -105,7 +104,24 @@ export class ChangeFurnitureSizeModifier implements Modifier {
         furniture.dimensions = furniture.dimensions.translate(vector);
     }
 
-    private getRotationAngle(snappingWallSegment: Segment, realPolygon: Polygon): Angle {
+    private rotateFurntitureToSnappingWallIfNeeded(snappingWallSegment: Segment, furniture: WorldItem, realFurnitureDimensions: Polygon) {
+        const centerPoint = furniture.dimensions.getBoundingCenter();
+
+        const furnitureAlignment = this.furnitureIsParallelOrPerpendicularToWall(furniture.dimensions, snappingWallSegment);
+
+        let angle = this.getWallRotationAngle(snappingWallSegment);
+
+        if (furnitureAlignment === 'perpendicular') {
+            angle = Angle.fromRadian(angle.getAngle() - toRadian(90));
+        }
+
+        realFurnitureDimensions = this.rotate(realFurnitureDimensions, angle);
+        furniture.rotation = angle.getAngle();
+        furniture.dimensions = realFurnitureDimensions.setPosition(centerPoint);
+    }
+
+    // TODO: rotation angle calculation could be put onto the Segment class
+    private getWallRotationAngle(snappingWallSegment: Segment): Angle {
         const xAxis = new Segment(new Point(0, 0), new Point(10, 0)).getLine();
         const snappingWallLine = snappingWallSegment.getLine();
         const o = xAxis.intersection(snappingWallLine);
@@ -115,11 +131,26 @@ export class ChangeFurnitureSizeModifier implements Modifier {
             const b = new Point(o.x + 10, 0);
 
             return Angle.fromThreePoints(o, a, b);
+        } else {
+            return Angle.fromThreePoints(new Point(0, 0), new Point(0, 0), new Point(0, 0));
+        }
+    }
 
+    private furnitureIsParallelOrPerpendicularToWall(furnitureDim: Shape, wallSegment: Segment): 'parallel' | 'perpendicular' {
+        const furnitureEdges = furnitureDim.getEdges();
+
+        const measurements = new Measurements();
+
+        let parallelEdge: Segment = null;
+        let perpEdge: Segment = null;
+
+        if (measurements.linesParallel(furnitureEdges[0].getLine(), wallSegment.getLine())) {
+            [parallelEdge, perpEdge] = [furnitureEdges[0], furnitureEdges[1]];
+        } else {
+            [parallelEdge, perpEdge] = [furnitureEdges[1], furnitureEdges[0]];
         }
 
-        return Angle.fromThreePoints(new Point(0, 0), new Point(0, 0), new Point(0, 0));
-
+        return parallelEdge.getLength() > perpEdge.getLength() ? 'parallel' : 'perpendicular';
     }
 
     private rotate(polygon: Polygon, angle: Angle): Polygon {

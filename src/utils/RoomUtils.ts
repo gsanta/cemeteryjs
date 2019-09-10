@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { Point, MeasurementUtils } from '@nightshifts.inc/geometry';
+import { Point, Measurements } from '@nightshifts.inc/geometry';
 import { WorldItem } from '../WorldItem';
 
 export class RoomUtils {
@@ -25,7 +25,7 @@ export class RoomUtils {
             _.find(borderItems, item => {
                 const point1 = item.dimensions.getPoints()[0];
                 const point2 = item.dimensions.getPoints()[1];
-                return MeasurementUtils.isDistanceSmallerThan(point1, commonPoint)  || MeasurementUtils.isDistanceSmallerThan(point2, commonPoint);
+                return Measurements.isDistanceSmallerThan(point1, commonPoint)  || Measurements.isDistanceSmallerThan(point2, commonPoint);
             });
 
         const points = currentBorderItem.dimensions.getPoints();
