@@ -148,7 +148,7 @@ export class SegmentBordersModifier  implements Modifier {
 
                 const intersectionExtent = this.getIntersectionExtent(coincidingLineInfo[0]);
 
-                if (coincidingLineInfo[0].isVertical()) {
+                if (coincidingLineInfo[0].getLine().isVertical()) {
 
                     if (border.dimensions.getBoundingInfo().min[1] < intersectionExtent[0] || border.dimensions.getBoundingInfo().max[1] > intersectionExtent[1]) {
                         return room;
@@ -164,7 +164,7 @@ export class SegmentBordersModifier  implements Modifier {
 
     // TODO: support intersections other than horizontal or vertical
     private getIntersectionExtent(segment: Segment): [number, number] {
-        if (segment.isVertical()) {
+        if (segment.getLine().isVertical()) {
             const segmentPositions = _.sortBy([segment.getPoints()[0].y, segment.getPoints()[1].y]);
 
             return [segmentPositions[0] - this.configService.scaling.y, segmentPositions[1] + this.configService.scaling.y];
