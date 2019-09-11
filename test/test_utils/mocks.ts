@@ -1,4 +1,4 @@
-import { Shape } from '@nightshifts.inc/geometry';
+import { Shape, Point } from '@nightshifts.inc/geometry';
 import { MeshBuilder, Scene } from 'babylonjs';
 import * as sinon from 'sinon';
 import { MaterialBuilder } from '../../src/integrations/babylonjs/MaterialFactory';
@@ -11,11 +11,14 @@ import { TestMeshFactoryService } from '../setup/TestMeshFactoryService';
 import { MeshDescriptor } from '../../src/Config';
 import { MockMeshTemplateService } from '../../src/integrations/mock/MockWorldGenerator';
 
-export function setup(config: Partial<WorldConfig> = {}, meshTemplateService = new MockMeshTemplateService()): ServiceFacade<any, any, any> {
+export function setup(config: Partial<WorldConfig> = {}): ServiceFacade<any, any, any> {
     config = {...defaultWorldConfig, ...config};
 
     const meshFactoryService = new TestMeshFactoryService();
-    const mockMeshTemplateService = new MockMeshTemplateService();
+
+    const templateMap: Map<string, MeshDescriptor> = new Map();
+    config.meshDescriptors.map(descriptor => templateMap.set(descriptor.type, descriptor));
+    const mockMeshTemplateService = new MockMeshTemplateService(templateMap);
 
     const meshDescriptorMap: Map<string, MeshDescriptor<any>> = new Map();
     config.meshDescriptors.map(descriptor => meshDescriptorMap.set(descriptor.type, descriptor));

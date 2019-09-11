@@ -14,22 +14,21 @@ export class ModelFactory {
     public getInstance(worldItemInfo: WorldItem, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
         const meshes = meshTemplate.meshes.map(m => m.clone());
         const rotation = - worldItemInfo.rotation;
-        meshes[0].isVisible = true;
-
-        meshes[0].rotate(Axis.Y, rotation, Space.WORLD);
-        const mesh = this.createBoundingMesh(worldItemInfo, meshes[0], this.scene);
-        mesh.checkCollisions = true;
         const extend = meshes[0].getBoundingInfo().boundingBox.extendSizeWorld;
-        // meshes[0].translate(new Vector3(0, - extend.y / 2, 0), 1, Space.WORLD);
+        meshes[0].isVisible = true;
+        meshes[0].translate(new Vector3(0, - extend.y, 0), 1, Space.WORLD);
 
-        // mesh.isVisible = false;
+        const mesh = this.createBoundingMesh(worldItemInfo, meshes[0], this.scene);
+        mesh.translate(new Vector3(0, extend.y, 0), 1, Space.WORLD);
+
+        mesh.rotate(Axis.Y, rotation, Space.WORLD);
+        mesh.checkCollisions = true;
 
         return [mesh, meshes[0]];
     }
 
     private createBoundingMesh(worldItemInfo: WorldItem, mesh: Mesh, scene: Scene): Mesh {
         const boundingPolygon = worldItemInfo.dimensions;
-        const height = mesh.getBoundingInfo().boundingBox.maximumWorld.y;
 
         const extend = mesh.getBoundingInfo().boundingBox.extendSizeWorld;
 

@@ -39,14 +39,13 @@ export const defaultMeshConfig: MeshTemplateConfig = {
 
 export class BabylonMeshFactoryService implements MeshFactoryService<Mesh, Skeleton> {
     private scene: Scene;
-    private modelMap: Map<string, MeshTemplate<Mesh, Skeleton>> = new Map();
 
     constructor(scene: Scene) {
         this.scene = scene;
     }
 
-    getInstance(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor, templateMap: Map<string, MeshTemplate<Mesh, Skeleton>>): Mesh[] {
-        return this.createFromTemplate(worldItemInfo, templateMap.get(worldItemInfo.name), meshDescriptor);
+    getInstance(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
+        return this.createFromTemplate(worldItemInfo, meshTemplate, meshDescriptor);
     }
 
     private createFromTemplate(worldItem: WorldItem, meshTemplate: MeshTemplate<Mesh, Skeleton>, meshDescriptor: MeshDescriptor): Mesh[] {

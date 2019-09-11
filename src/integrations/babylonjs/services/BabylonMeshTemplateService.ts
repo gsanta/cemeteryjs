@@ -28,10 +28,14 @@ export class BabylonMeshTemplateService implements MeshTemplateService<Mesh, Ske
         this.scene = scene;
     }
 
-    meshTemplates: Map<string, MeshTemplate<Mesh, Skeleton>> = new Map();
+    private meshTemplates: Map<string, MeshTemplate<Mesh, Skeleton>> = new Map();
 
     hasTemplate(type: string): boolean {
         return this.meshTemplates.has(type);
+    }
+
+    getTemplate(type: string): MeshTemplate<Mesh, Skeleton> {
+        return this.meshTemplates.get(type);
     }
 
     getTemplateDimensions(type: string): Point {

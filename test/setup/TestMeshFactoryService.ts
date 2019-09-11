@@ -3,7 +3,7 @@ import { MeshDescriptor } from "../../src/Config";
 import { MeshTemplate } from "../../src/MeshTemplate";
 
 export class TestMeshFactoryService {
-    getInstance(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor, templateMap: Map<string, MeshTemplate<any, any>>): any {
+    getInstance(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor, meshTemplate: MeshTemplate<any, any>): any {
         return null;
     }
 }
