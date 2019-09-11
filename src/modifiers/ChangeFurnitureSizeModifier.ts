@@ -24,68 +24,49 @@ export class ChangeFurnitureSizeModifier implements Modifier {
     apply(worldItems: WorldItem[]): WorldItem[] {
         const rooms: WorldItem[] = WorldItemUtils.filterRooms(worldItems);
 
-        rooms.forEach(room => this.transformFurnituresInRoom(room));
+        rooms.forEach(room => this.snapFurnituresInRoom(room));
 
         return worldItems;
     }
 
-    private transformFurnituresInRoom(room: WorldItem) {
+    private snapFurnituresInRoom(room: WorldItem) {
         room.children
         .forEach(furniture => {
-            // let realSize = <Polygon> furniture.dimensions;
-            let furnitureDimensions: Point;
 
             if (this.meshTemplateService.hasTemplate(furniture.name)) {
-                furnitureDimensions = this.meshTemplateService.getTemplateDimensions(furniture.name);
+                const furnitureDimensions = this.meshTemplateService.getTemplateDimensions(furniture.name);
 
-                let realDimensions = furnitureDimensions ? Polygon.createRectangle(0, 0, furnitureDimensions.x, furnitureDimensions.y) : <Polygon> furniture.dimensions;
-                const centerPoint = furniture.dimensions.getBoundingCenter();
+                const snappingWallEdges = this.getSnappingWalls(room, furniture);
+                const originalFurnitureDimensions = furniture.dimensions;
 
-                const snappingWallSegments = this.getSnappingWallSegmentIfExists(room, furniture);
+                furniture.dimensions = furnitureDimensions ? Polygon.createRectangle(0, 0, furnitureDimensions.x, furnitureDimensions.y) : <Polygon> furniture.dimensions;
 
-                if (snappingWallSegments.length > 0) {
-                    this.rotateFurntitureToSnappingWallIfNeeded(snappingWallSegments[0], furniture, realDimensions);
-                    // const angle = this.getWallRotationAngle(snappingWallSegment, realDimensions);
-                    // realDimensions = this.rotate(realDimensions, angle);
-                    // furniture.rotation = angle.getAngle();
-                    // furniture.dimensions = realDimensions.setPosition(centerPoint);
-                    this.snapToWall(furniture, snappingWallSegments);
-                } else {
-                    furniture.dimensions = realDimensions.clone().setPosition(centerPoint);
-                }
+                this.rotateFurnitureToWallBeforeSnapping(snappingWallEdges, furniture, <Polygon> originalFurnitureDimensions);
+                this.snapFurnitureToWall(furniture, snappingWallEdges);
             }
-
         });
     }
 
-    private getSnappingWallSegmentIfExists(room: WorldItem, furniture: WorldItem): Segment[] {
+    private getSnappingWalls(room: WorldItem, furniture: WorldItem): Segment[] {
         const borders = <Segment[]> room.borderItems.map(item => item.dimensions);
-        const snappingWallSegments: Segment[] = [];
-        // for (let i = 0; i < borders.length; i++) {
-            const furnitureSegments = furniture.dimensions.getEdges();
+        const snappingWallEdges: Segment[] = [];
+        const furnitureEdges = furniture.dimensions.getEdges();
 
-            // let minDistance = Number.MAX_VALUE;
-            // let closestWallSegment: Segment = null;
-
-            for (let j = 0; j < furnitureSegments.length; j++) {
-                const center = furnitureSegments[j].getBoundingCenter();
-                for (let i = 0; i < borders.length; i++) {
-                    const dist = new Distance().pointToSegment(center, borders[i]);
-                    if (dist <= 1) {
-                        snappingWallSegments.push(borders[i]);
-                        // minDistance = dist;
-                        // closestWallSegment = borders[i];
-                    }
+        for (let j = 0; j < furnitureEdges.length; j++) {
+            const center = furnitureEdges[j].getBoundingCenter();
+            for (let i = 0; i < borders.length; i++) {
+                const dist = new Distance().pointToSegment(center, borders[i]);
+                if (dist <= 1) {
+                    snappingWallEdges.push(borders[i]);
                 }
             }
+        }
 
-            return snappingWallSegments;
+        return snappingWallEdges;
 
-            // return minDistance <= 1 ? closestWallSegment : null;
-        // }
     }
 
-    private snapToWall(furniture: WorldItem, wallSegments: Segment[]) {
+    private snapFurnitureToWall(furniture: WorldItem, wallSegments: Segment[]) {
         wallSegments.forEach(wallSegment => {
             let closestFurnitureSegment: Segment = null;
             const furnitureSegments = furniture.dimensions.getEdges();
@@ -112,59 +93,36 @@ export class ChangeFurnitureSizeModifier implements Modifier {
         });
     }
 
-    private rotateFurntitureToSnappingWallIfNeeded(snappingWallSegment: Segment, furniture: WorldItem, realFurnitureDimensions: Polygon) {
-        const centerPoint = furniture.dimensions.getBoundingCenter();
+    private rotateFurnitureToWallBeforeSnapping(snappingWallEdges: Segment[], furniture: WorldItem, originalFurnitureDimensions: Polygon) {
+        if (snappingWallEdges.length > 0) {
+            const furnitureAlignment = this.isFurnitureParallelOrPerpendicularToWall(originalFurnitureDimensions, snappingWallEdges[0]);
 
-        const furnitureAlignment = this.furnitureIsParallelOrPerpendicularToWall(furniture.dimensions, snappingWallSegment);
+            let angle = snappingWallEdges[0].getLine().getAngleToXAxis();
 
-        let angle = this.getWallRotationAngle(snappingWallSegment);
+            if (furnitureAlignment === 'perpendicular') {
+                angle = Angle.fromRadian(angle.getAngle() - toRadian(90));
+            }
 
-        if (furnitureAlignment === 'perpendicular') {
-            angle = Angle.fromRadian(angle.getAngle() - toRadian(90));
+            const transform = new Transform();
+
+            furniture.dimensions = transform.rotatePolygon(<Polygon> furniture.dimensions, angle.getAngle());
+            furniture.rotation = angle.getAngle();
         }
 
-        realFurnitureDimensions = this.rotate(realFurnitureDimensions, angle);
-        furniture.rotation = angle.getAngle();
-        furniture.dimensions = realFurnitureDimensions.setPosition(centerPoint);
+        furniture.dimensions = furniture.dimensions.setPosition(originalFurnitureDimensions.getBoundingCenter());
     }
 
-    // TODO: rotation angle calculation could be put onto the Segment class
-    private getWallRotationAngle(snappingWallSegment: Segment): Angle {
-        const xAxis = new Segment(new Point(0, 0), new Point(10, 0)).getLine();
-        const snappingWallLine = snappingWallSegment.getLine();
-        const o = xAxis.intersection(snappingWallLine);
-
-        if (o !== undefined) {
-            const a = snappingWallSegment.getPoints()[0];
-            const b = new Point(o.x + 10, 0);
-
-            return Angle.fromThreePoints(o, a, b);
-        } else {
-            return Angle.fromThreePoints(new Point(0, 0), new Point(0, 0), new Point(0, 0));
-        }
-    }
-
-    private furnitureIsParallelOrPerpendicularToWall(furnitureDim: Shape, wallSegment: Segment): 'parallel' | 'perpendicular' {
+    private isFurnitureParallelOrPerpendicularToWall(furnitureDim: Shape, wallSegment: Segment): 'parallel' | 'perpendicular' {
         const furnitureEdges = furnitureDim.getEdges();
 
         const measurements = new Measurements();
 
-        let parallelEdge: Segment = null;
-        let perpEdge: Segment = null;
+        const furnitureLine = furnitureEdges[0].getLine();
+        const wallLine = wallSegment.getLine();
 
-        if (measurements.linesParallel(furnitureEdges[0].getLine(), wallSegment.getLine())) {
-            [parallelEdge, perpEdge] = [furnitureEdges[0], furnitureEdges[1]];
-        } else {
-            [parallelEdge, perpEdge] = [furnitureEdges[1], furnitureEdges[0]];
-        }
+        const [parallelEdge, perpEdge] = measurements.linesParallel(furnitureLine, wallLine) ? [furnitureEdges[0], furnitureEdges[1]] : [furnitureEdges[1], furnitureEdges[0]];
 
         return parallelEdge.getLength() > perpEdge.getLength() ? 'parallel' : 'perpendicular';
-    }
-
-    private rotate(polygon: Polygon, angle: Angle): Polygon {
-        const transform = new Transform();
-
-        return transform.rotatePolygon(polygon, angle.getAngle());
     }
 }
 
