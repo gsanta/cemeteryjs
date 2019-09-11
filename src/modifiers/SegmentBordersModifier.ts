@@ -1,7 +1,7 @@
 import { WorldItem } from "../WorldItem";
 import _ = require("lodash");
 import { Modifier } from './Modifier';
-import { Polygon, Point, Line, StripeView } from '@nightshifts.inc/geometry';
+import { Polygon, Point, Line, StripeView, GeometryService } from '@nightshifts.inc/geometry';
 import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { WorldItemUtils } from '../WorldItemUtils';
@@ -24,11 +24,13 @@ export class SegmentBordersModifier  implements Modifier {
     dependencies = [ScaleModifier.modName]
 
     private configService: ConfigService;
+    private geometryService: GeometryService;
     private worldItemFactoryService: WorldItemFactoryService;
 
-    constructor(configService: ConfigService, worldItemFactoryService: WorldItemFactoryService) {
+    constructor(configService: ConfigService, worldItemFactoryService: WorldItemFactoryService, geometryService: GeometryService) {
         this.configService = configService;
         this.worldItemFactoryService = worldItemFactoryService;
+        this.geometryService = geometryService;
     }
 
     getName(): string {
@@ -103,7 +105,7 @@ export class SegmentBordersModifier  implements Modifier {
             const point4 = longEdges[1].getLine().intersection(startPerpendicularLine);
 
             const clone = this.worldItemFactoryService.clone(originalBorderItem.name, originalBorderItem);
-            clone.dimensions = new Polygon([
+            clone.dimensions = this.geometryService.factory.polygon([
                 point1,
                 point2,
                 point4,

@@ -1,6 +1,6 @@
 import { WorldItem } from "../WorldItem";
 import { Modifier } from './Modifier';
-import { Polygon, Line, Shape, Point, GeometryUtils, StripeView } from '@nightshifts.inc/geometry';
+import { Polygon, Line, Shape, Point, GeometryUtils, StripeView, GeometryService } from '@nightshifts.inc/geometry';
 import { WorldItemUtils } from '../WorldItemUtils';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { AssignBordersToRoomsModifier } from './AssignBordersToRoomsModifier';
@@ -44,6 +44,12 @@ export const mergeStraightAngledNeighbouringBorderItemPolygons = (borders: World
 export class ConvertBorderPolyToLineModifier implements Modifier {
     static modName = 'convertBorderPolygonToLine';
     dependencies = [AssignBordersToRoomsModifier.modName];
+
+    private geometryService: GeometryService;
+
+    constructor(geometryService: GeometryService) {
+        this.geometryService = geometryService;
+    }
 
     getName(): string {
         return ConvertBorderPolyToLineModifier.modName;
@@ -93,9 +99,9 @@ export class ConvertBorderPolyToLineModifier implements Modifier {
                     const point1 = segmentPair1[0].getLine().intersection(segmentPair1[1].getLine());
                     const point2 = segmentPair2[0].getLine().intersection(segmentPair2[1].getLine());
 
-                    newPolygonPoints.push(new Segment(point1, point2).getBoundingCenter());
+                    newPolygonPoints.push(this.geometryService.factory.edge(point1, point2).getBoundingCenter());
                 }
-                newPolygon = new Polygon(GeometryUtils.orderPointsToStartAtBottomLeft(newPolygonPoints));
+                newPolygon = this.geometryService.factory.polygon(GeometryUtils.orderPointsToStartAtBottomLeft(newPolygonPoints));
             } catch (e) {
                 newPolygon = <Polygon>room.dimensions;
             }

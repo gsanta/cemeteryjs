@@ -7,6 +7,7 @@ import { ModifierService } from './ModifierService';
 import { ParserService } from './ParserService';
 import { ConverterService } from './ConverterService';
 import { ImporterService } from './ImporterService';
+import { GeometryService } from '@nightshifts.inc/geometry';
 
 export class ServiceFacade<M, S, T> {
     meshFactoryService: MeshFactoryService<M, S>;
@@ -18,12 +19,14 @@ export class ServiceFacade<M, S, T> {
     parserService: ParserService;
     converterService: ConverterService<T>;
     importerService: ImporterService<M, S, T>;
+    geometryService: GeometryService;
 
     constructor(
         meshFactoryService: MeshFactoryService<any, any>,
         meshLoaderService: MeshTemplateService<any, any>,
         configService: ConfigService
     ) {
+        this.geometryService = new GeometryService();
         this.configService = configService;
         this.converterService = new ConverterService();
         this.meshFactoryService = meshFactoryService;

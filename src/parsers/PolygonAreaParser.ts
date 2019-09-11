@@ -4,9 +4,10 @@ import { WorldItem } from '../WorldItem';
 import { Parser } from "./Parser";
 import { WorldMapToMatrixGraphConverter } from "./reader/WorldMapToMatrixGraphConverter";
 import { PolygonRedundantPointReducer } from "./PolygonRedundantPointReducer";
-import { Polygon, Line, Point } from "@nightshifts.inc/geometry";
+import { Polygon, Line, Point, GeometryService } from "@nightshifts.inc/geometry";
 import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
+import { ServiceFacade } from '../services/ServiceFacade';
 
 /**
  * @hidden
@@ -16,13 +17,15 @@ import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
  */
 export class PolygonAreaParser implements Parser {
     private polygonRedundantPointReducer: PolygonRedundantPointReducer;
-    private worldItemInfoFactory: WorldItemFactoryService;
     private worldMapConverter: WorldMapToMatrixGraphConverter;
     private itemName: string;
+    private services: ServiceFacade<any, any, any>;
+    private geometryService: GeometryService;
 
-    constructor(itemName: string, worldItemInfoFactory: WorldItemFactoryService, worldMapConverter = new WorldMapToMatrixGraphConverter()) {
+    constructor(itemName: string, services: ServiceFacade<any, any, any>, worldMapConverter = new WorldMapToMatrixGraphConverter()) {
         this.itemName = itemName;
-        this.worldItemInfoFactory = worldItemInfoFactory;
+        this.services = services;
+        this.geometryService = services.geometryService;
         this.worldMapConverter = worldMapConverter;
         this.polygonRedundantPointReducer = new PolygonRedundantPointReducer();
     }
@@ -39,7 +42,7 @@ export class PolygonAreaParser implements Parser {
                     this.createPolygonPointsFromHorizontalLines(lines)
                 );
 
-                return this.worldItemInfoFactory.create(null, new Polygon(points), this.itemName, false);
+                return this.services.worldItemFactoryService.create(null, this.geometryService.factory.polygon(points), this.itemName, false);
             });
     }
 
