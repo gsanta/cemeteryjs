@@ -40,6 +40,26 @@ export function setup(config: Partial<WorldConfig> = {}): ServiceFacade<any, any
     );
 }
 
+export function setupMap(map: string): string {
+    return `
+    map \`
+
+    ${map}
+
+    \`
+
+    definitions \`
+
+    W = wall
+    D = door
+    - = empty
+    E = bed
+    T = table
+
+    \`
+`;
+}
+
 export function createScene(): Scene {
     return <Scene> {
 

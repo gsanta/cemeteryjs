@@ -1,14 +1,15 @@
 import { Point, Polygon } from '@nightshifts.inc/geometry';
 import * as fs from 'fs';
 import { RoomParser } from '../../src/parsers/RoomParser';
-import { WorldItemFactoryService } from '../../src/services/WorldItemFactoryService';
+import { setup } from '../test_utils/mocks';
 
 describe('RoomParser', () => {
     describe ('generate', () => {
         it ('converts a complicated real-world example to the correct room Polygons.', () => {
             const worldMap = fs.readFileSync(__dirname + '/../../assets/test/big_world.gwm', 'utf8');
 
-            const roomInfoParser = new RoomParser(new WorldItemFactoryService(), ['W', 'D', 'I']);
+            const services = setup();
+            const roomInfoParser = new RoomParser(services, ['W', 'D', 'I']);
 
             const worldItem = roomInfoParser.parse(worldMap);
 

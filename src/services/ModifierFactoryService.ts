@@ -31,7 +31,7 @@ export class ModifierFactoryService {
             .registerInstance(new CreateMeshModifier(services.meshFactoryService, services.meshTamplateService, services.configService))
             .registerInstance(new NormalizeBorderRotationModifier())
             .registerInstance(new ScaleModifier(services.configService))
-            .registerInstance(new SegmentBordersModifier(services.configService, services.worldItemFactoryService))
+            .registerInstance(new SegmentBordersModifier(services.configService, services.worldItemFactoryService, services.geometryService))
             .registerInstance(new ThickenBordersModifier())
             .registerInstance(new TransformToWorldCoordinateModifier());
     }

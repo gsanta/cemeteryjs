@@ -1,7 +1,6 @@
-import { WorldMapToMatrixGraphConverter } from "../../src/parsers/reader/WorldMapToMatrixGraphConverter";
-import { PolygonAreaParser } from "../../src/parsers/PolygonAreaParser";
 import { Point, Polygon } from '@nightshifts.inc/geometry';
-import { WorldItemFactoryService } from "../../src/services/WorldItemFactoryService";
+import { PolygonAreaParser } from "../../src/parsers/PolygonAreaParser";
+import { setup } from "../test_utils/mocks";
 
 describe('PolygonAreaParser', () => {
     describe ('generate', () => {
@@ -22,12 +21,14 @@ describe('PolygonAreaParser', () => {
                 \`
             `;
 
-            const polygonAreaInfoParser = new PolygonAreaParser('empty', new WorldItemFactoryService());
+            const services = setup();
+            const polygonAreaInfoParser = new PolygonAreaParser('empty', services);
 
             const worldItem = polygonAreaInfoParser.parse(map);
 
             expect(worldItem.length).toEqual(1);
-            expect(worldItem[0].dimensions.equalTo(new Polygon([
+            expect(worldItem[0].dimensions.
+                (new Polygon([
                 new Point(1, 1),
                 new Point(1, 4),
                 new Point(6, 4),
@@ -52,7 +53,8 @@ describe('PolygonAreaParser', () => {
                 \`
             `;
 
-            const polygonAreaInfoParser = new PolygonAreaParser('empty', new WorldItemFactoryService());
+            const services = setup();
+            const polygonAreaInfoParser = new PolygonAreaParser('empty', services);
 
             const worldItem = polygonAreaInfoParser.parse(map);
 
@@ -89,7 +91,8 @@ describe('PolygonAreaParser', () => {
                 \`
             `;
 
-            const polygonAreaInfoParser = new PolygonAreaParser('empty', new WorldItemFactoryService());
+            const services = setup();
+            const polygonAreaInfoParser = new PolygonAreaParser('empty', services);
 
             const worldItem = polygonAreaInfoParser.parse(map);
 
@@ -124,7 +127,8 @@ describe('PolygonAreaParser', () => {
                 \`
             `;
 
-            const polygonAreaInfoParser = new PolygonAreaParser('empty', new WorldItemFactoryService());
+            const services = setup();
+            const polygonAreaInfoParser = new PolygonAreaParser('empty', services);
 
             const worldItem = polygonAreaInfoParser.parse(map);
 
