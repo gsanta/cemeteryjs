@@ -1,4 +1,3 @@
-import { GeometryUtils } from '@nightshifts.inc/geometry';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { Axis, Mesh, MeshBuilder, Scene, Space, Vector3 } from 'babylonjs';
 import { WorldItem } from '../../../WorldItem';
@@ -27,7 +26,7 @@ export class RectangleFactory  {
                 this.scene
             );
 
-        worldItemInfo.dimensions = GeometryUtils.addThicknessToSegment(<Segment> worldItemInfo.dimensions, 0.25);
+        worldItemInfo.dimensions = (<Segment> worldItemInfo.dimensions).addThickness(0.25);
 
         const center = worldItemInfo.dimensions.getBoundingCenter();
         const pivotPoint = new Vector3(center.x, 0, center.y);

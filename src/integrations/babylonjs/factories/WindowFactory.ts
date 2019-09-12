@@ -1,4 +1,4 @@
-import { GeometryUtils, Segment, Shape } from '@nightshifts.inc/geometry';
+import { Segment, Shape } from '@nightshifts.inc/geometry';
 import { Axis, Mesh, MeshBuilder, Scene, Skeleton, Space, StandardMaterial, Vector3 } from 'babylonjs';
 import { WorldItem } from '../../../WorldItem';
 import { MeshTemplate } from '../../../MeshTemplate';
@@ -38,7 +38,7 @@ export class WindowFactory  {
     private createTopWall(worldItem: WorldItem, meshDescriptor: MeshDescriptor) {
         const segment = <Segment> worldItem.dimensions;
 
-        const rectangle = GeometryUtils.addThicknessToSegment(segment, 0.125);
+        const rectangle = segment.addThickness(0.125);
 
         const mesh = this.meshBuilder.CreateBox(
             name,
@@ -57,7 +57,7 @@ export class WindowFactory  {
     private createBottomWall(worldItem: WorldItem, meshDescriptor: MeshDescriptor) {
         const segment = <Segment> worldItem.dimensions;
 
-        const rectangle = GeometryUtils.addThicknessToSegment(segment, 0.125);
+        const rectangle = segment.addThickness(0.125);
 
         const mesh = this.meshBuilder.CreateBox(
             name,
@@ -76,7 +76,7 @@ export class WindowFactory  {
     private createBoundingMesh(boundingBox: Shape, meshDescriptor: MeshDescriptor): Mesh {
         const segment = <Segment> boundingBox;
 
-        const rectangle = GeometryUtils.addThicknessToSegment(segment, 0.25);
+        const rectangle = segment.addThickness(0.25);
 
         const center = segment.getBoundingCenter();
 

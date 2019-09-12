@@ -27,8 +27,7 @@ describe('PolygonAreaParser', () => {
             const worldItem = polygonAreaInfoParser.parse(map);
 
             expect(worldItem.length).toEqual(1);
-            expect(worldItem[0].dimensions.
-                (new Polygon([
+            expect(worldItem[0].dimensions.equalTo(new Polygon([
                 new Point(1, 1),
                 new Point(1, 4),
                 new Point(6, 4),

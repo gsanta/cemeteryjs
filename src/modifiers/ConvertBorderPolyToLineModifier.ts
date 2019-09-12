@@ -1,6 +1,6 @@
 import { WorldItem } from "../WorldItem";
 import { Modifier } from './Modifier';
-import { Polygon, Line, Shape, Point, GeometryUtils, StripeView, GeometryService } from '@nightshifts.inc/geometry';
+import { Polygon, Line, Shape, Point, StripeView, GeometryService } from '@nightshifts.inc/geometry';
 import { WorldItemUtils } from '../WorldItemUtils';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { AssignBordersToRoomsModifier } from './AssignBordersToRoomsModifier';
@@ -101,7 +101,7 @@ export class ConvertBorderPolyToLineModifier implements Modifier {
 
                     newPolygonPoints.push(this.geometryService.factory.edge(point1, point2).getBoundingCenter());
                 }
-                newPolygon = this.geometryService.factory.polygon(GeometryUtils.orderPointsToStartAtBottomLeft(newPolygonPoints));
+                newPolygon = this.geometryService.factory.polygon(newPolygonPoints);
             } catch (e) {
                 newPolygon = <Polygon>room.dimensions;
             }
