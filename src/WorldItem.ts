@@ -22,7 +22,7 @@ export class WorldItem<M = any, S = any> {
     isBorder: boolean;
     children: WorldItem[] = [];
     parent: WorldItem;
-    
+
     borderItems: WorldItem[] = [];
     rooms: WorldItem[] = [];
 
@@ -37,5 +37,15 @@ export class WorldItem<M = any, S = any> {
 
     addChild(worldItem: WorldItem) {
         this.children.push(worldItem);
+    }
+
+    equalTo(worldItem: WorldItem) {
+        return (
+            this.name === worldItem.name &&
+            this.id === worldItem.id &&
+            this.type === worldItem.id &&
+            this.dimensions.equalTo(worldItem.dimensions) &&
+            this.rotation === worldItem.rotation
+        );
     }
 }

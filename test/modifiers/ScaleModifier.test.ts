@@ -12,8 +12,8 @@ describe ('ScaleModifier', () => {
             const scalingWorldItemGenerator = new ScaleModifier(<ConfigService> {scaling: {x: 2, y: 3}});
             scalingWorldItemGenerator.apply([worldItem1, worldItem2]);
 
-            expect(worldItem1.dimensions).toEqual(Polygon.createRectangle(2, 6, 6, 12));
-            expect(worldItem2.dimensions).toEqual(Polygon.createRectangle(8, 15, 12, 21));
+            expect(worldItem1.dimensions.equalTo(Polygon.createRectangle(2, 6, 6, 12))).toBeTruthy();
+            expect(worldItem2.dimensions.equalTo(Polygon.createRectangle(8, 15, 12, 21))).toBeTruthy()
         });
     });
 });

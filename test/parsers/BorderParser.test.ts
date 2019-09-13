@@ -77,10 +77,10 @@ describe('BorderParser', () => {
 
             const worldItems = roomSeparatorParser.parse(map);
             expect(worldItems.length).toEqual(4);
-            expect(worldItems[0].dimensions).toEqual(Polygon.createRectangle(0, 0, 2, 1));
-            expect(worldItems[1].dimensions).toEqual(Polygon.createRectangle(6, 0, 4, 1));
-            expect(worldItems[2].dimensions).toEqual(Polygon.createRectangle(2, 0, 4, 1));
-            expect(worldItems[3].dimensions).toEqual(Polygon.createRectangle(9, 1, 1, 2));
+            expect(worldItems[0].dimensions.equalTo(Polygon.createRectangle(0, 0, 2, 1))).toBeTruthy();
+            expect(worldItems[1].dimensions.equalTo(Polygon.createRectangle(6, 0, 4, 1))).toBeTruthy();
+            expect(worldItems[2].dimensions.equalTo(Polygon.createRectangle(2, 0, 4, 1))).toBeTruthy()
+            expect(worldItems[3].dimensions.equalTo(Polygon.createRectangle(9, 1, 1, 2))).toBeTruthy()
         });
     });
 });

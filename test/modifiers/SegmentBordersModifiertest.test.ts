@@ -50,14 +50,13 @@ describe ('BorderItemSegmentingTransformator', () => {
 
             expect(items.filter(item => item.name === 'wall').length).toEqual(7);
 
-            expect(_.some(items, {dimensions: Polygon.createRectangle(0, 0, 1, 4)})).toBeTruthy();
-            expect(_.some(items, {dimensions: Polygon.createRectangle(0, 3, 1, 4)})).toBeTruthy();
-            expect(_.some(items, {dimensions: Polygon.createRectangle(9, 0, 1, 4)})).toBeTruthy();
-            expect(_.some(items, {dimensions: Polygon.createRectangle(9, 3, 1, 4)})).toBeTruthy();
-            expect(_.some(items, {dimensions: Polygon.createRectangle(0, 0, 10, 1)})).toBeTruthy();
-            expect(_.some(items, {dimensions: Polygon.createRectangle(0, 3, 10, 1)})).toBeTruthy();
-            expect(_.some(items, {dimensions: Polygon.createRectangle(0, 6, 10, 1)})).toBeTruthy();
-
+            expect(items).toHaveAnyWithDimensions(Polygon.createRectangle(0, 0, 1, 4));
+            expect(items).toHaveAnyWithDimensions(Polygon.createRectangle(0, 3, 1, 4));
+            expect(items).toHaveAnyWithDimensions(Polygon.createRectangle(9, 0, 1, 4));
+            expect(items).toHaveAnyWithDimensions(Polygon.createRectangle(9, 3, 1, 4));
+            expect(items).toHaveAnyWithDimensions(Polygon.createRectangle(0, 0, 10, 1));
+            expect(items).toHaveAnyWithDimensions(Polygon.createRectangle(0, 3, 10, 1));
+            expect(items).toHaveAnyWithDimensions(Polygon.createRectangle(0, 6, 10, 1));
         });
 
         it ('segments the walls into as many pices as many rooms the wall spans', () => {

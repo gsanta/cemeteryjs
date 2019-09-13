@@ -6,7 +6,8 @@ declare global {
     namespace jest {
         interface Matchers<R> {
             toHaveBorders(borderDimensions: Shape[]),
-            toHaveAnyWithDimensions(dimensions: Shape)
+            toHaveAnyWithDimensions(dimensions: Shape),
+            toPartiallyEqualToWorldItem(partialWorldItem: Partial<WorldItem>)
         }
     }
 }
@@ -50,6 +51,40 @@ expect.extend({
             hasAnyWorldItemInfoDimension(dimensions, worldItems)
         } catch (e) {
             message = e.message;
+        }
+
+        if (pass) {
+            return {
+                message: () => 'should not happen',
+                pass: true,
+            };
+        } else {
+            return {
+                message: () => message,
+                pass: false,
+            };
+        }
+    },
+
+    toPartiallyEqualToWorldItem(worldItem: WorldItem, partialWorldItem: Partial<WorldItem>) {
+        let pass = true;
+        let message = '';
+
+        if (partialWorldItem.name !== undefined && partialWorldItem.name !== worldItem.name) {
+            pass = false;
+            message = `Names are not equal: ${partialWorldItem.name}, ${worldItem.name}`;
+        } else if (partialWorldItem.id !== undefined && partialWorldItem.id !== worldItem.id) {
+            pass = false;
+            message = `Ids are not equal: ${partialWorldItem.id}, ${worldItem.id}`;
+        } else if (partialWorldItem.type !== undefined && partialWorldItem.type !== worldItem.type) {
+            pass = false;
+            message = `Types are not equal: ${partialWorldItem.type}, ${worldItem.type}`;
+        } else if (partialWorldItem.dimensions !== undefined && !partialWorldItem.dimensions.equalTo(worldItem.dimensions)) {
+            pass = false;
+            message = `Dimensions are not equal: ${partialWorldItem.dimensions}, ${worldItem.dimensions}`;
+        } else if (partialWorldItem.rotation !== undefined && partialWorldItem.rotation !== worldItem.rotation) {
+            pass = false;
+            message = `Rotations are not equal: ${partialWorldItem.rotation}, ${worldItem.rotation}`;
         }
 
         if (pass) {

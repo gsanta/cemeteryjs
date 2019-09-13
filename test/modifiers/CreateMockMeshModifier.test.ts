@@ -44,16 +44,16 @@ describe(`CreateMockMeshModifier`, () => {
             const worldItems = mockMeshCreationTransformator.apply(items);
 
             expect(worldItems[0].meshTemplate.type).toEqual('root');
-            expect(worldItems[0].meshTemplate.meshes[0]).toMatchObject({dimensions: Polygon.createRectangle(0, 0, 10, 15)});
+            expect(worldItems[0].meshTemplate.meshes[0]).toPartiallyEqualToWorldItem({dimensions: Polygon.createRectangle(0, 0, 10, 15)});
 
             expect(worldItems[0].children[0].meshTemplate.type).toEqual('room');
-            expect(worldItems[0].children[0].meshTemplate.meshes[0]).toMatchObject({dimensions: Polygon.createRectangle(0, 0, 5, 15)});
+            expect(worldItems[0].children[0].meshTemplate.meshes[0]).toPartiallyEqualToWorldItem({dimensions: Polygon.createRectangle(0, 0, 5, 15)});
 
             expect(worldItems[0].children[0].children[0].meshTemplate.type).toEqual('chair');
-            expect(worldItems[0].children[0].children[0].meshTemplate.meshes[0]).toMatchObject({dimensions: Polygon.createRectangle(2, 2, 1, 1)});
+            expect(worldItems[0].children[0].children[0].meshTemplate.meshes[0]).toPartiallyEqualToWorldItem({dimensions: Polygon.createRectangle(2, 2, 1, 1)});
 
             expect(worldItems[0].children[1].meshTemplate.type).toEqual('room');
-            expect(worldItems[0].children[1].meshTemplate.meshes[0]).toMatchObject({dimensions: Polygon.createRectangle(5, 0, 5, 15)});
+            expect(worldItems[0].children[1].meshTemplate.meshes[0]).toPartiallyEqualToWorldItem({dimensions: Polygon.createRectangle(5, 0, 5, 15)});
         });
     });
 });

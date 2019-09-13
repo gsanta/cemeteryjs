@@ -47,19 +47,12 @@ describe('`WorldParser`', () => {
 
             const items = root.children;
             expect(items.length).toEqual(7);
-            expect(items[0])
-                .toMatchObject(expect.objectContaining(<Partial<WorldItem>> {name: 'window', dimensions: Polygon.createRectangle(3, 0, 2, 1), isBorder: true, rotation: 0}));
-            expect(items[1])
-                .toMatchObject(expect.objectContaining(<Partial<WorldItem>> {name: 'wall', dimensions: Polygon.createRectangle(0, 0, 1, 3), isBorder: true, rotation: Math.PI / 2}));
-            expect(items[2])
-                .toMatchObject(expect.objectContaining(<Partial<WorldItem>> {name: 'wall', dimensions: Polygon.createRectangle(7, 0, 1, 3), isBorder: true, rotation: Math.PI / 2}));
-
-            expect(items[3])
-                .toMatchObject(expect.objectContaining(<Partial<WorldItem>> {name: 'wall', dimensions: Polygon.createRectangle(0, 0, 3, 1), isBorder: true, rotation: 0}));
-            expect(items[4])
-                .toMatchObject(expect.objectContaining(<Partial<WorldItem>> {name: 'wall', dimensions: Polygon.createRectangle(0, 2, 8, 1), isBorder: true, rotation: 0}));
-            expect(items[5])
-                .toMatchObject(expect.objectContaining(<Partial<WorldItem>> {name: 'wall', dimensions: Polygon.createRectangle(5, 0, 3, 1), isBorder: true, rotation: 0}));
+            expect(items[0]).toPartiallyEqualToWorldItem({name: 'window', dimensions: Polygon.createRectangle(3, 0, 2, 1), isBorder: true, rotation: 0});
+            expect(items[1]).toPartiallyEqualToWorldItem({name: 'wall', dimensions: Polygon.createRectangle(0, 0, 1, 3), isBorder: true, rotation: Math.PI / 2});
+            expect(items[2]).toPartiallyEqualToWorldItem(<Partial<WorldItem>> {name: 'wall', dimensions: Polygon.createRectangle(7, 0, 1, 3), isBorder: true, rotation: Math.PI / 2});
+            expect(items[3]).toPartiallyEqualToWorldItem({name: 'wall', dimensions: Polygon.createRectangle(0, 0, 3, 1), isBorder: true, rotation: 0});
+            expect(items[4]).toPartiallyEqualToWorldItem({name: 'wall', dimensions: Polygon.createRectangle(0, 2, 8, 1), isBorder: true, rotation: 0});
+            expect(items[5]).toPartiallyEqualToWorldItem({name: 'wall', dimensions: Polygon.createRectangle(5, 0, 3, 1), isBorder: true, rotation: 0});
 
             expect(items[6].name).toEqual('room');
         });
