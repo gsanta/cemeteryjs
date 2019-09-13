@@ -98,5 +98,21 @@ export const meshDescriptors: MeshDescriptor[] = [
 
         },
         materials: ['assets/models/table_material.png'],
-    }
+    },
+    {
+        type: 'player',
+        name: 'mesh-descriptor' as 'mesh-descriptor',
+        details: {
+            name: 'file-descriptor' as 'file-descriptor',
+            path: 'models/player/',
+            fileName: 'player.babylon',
+            scale: 0.28
+        },
+        materials: [
+            'models/player/material/0.jpg',
+            'models/player/material/1.jpg',
+            'models/player/material/2.jpg',
+            'models/player/material/3.jpg'
+        ],
+    },
 ];
