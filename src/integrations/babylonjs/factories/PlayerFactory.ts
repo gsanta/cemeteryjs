@@ -18,7 +18,7 @@ export class PlayerFactory implements MeshCreator  {
 
         const center = dimensions.getBoundingCenter();
         const height = meshes[0].getBoundingInfo().boundingBox.maximumWorld.y;
-        meshes[0].position = new Vector3(center.x, height / 2 + 1, center.y);
+        meshes[0].position = new Vector3(center.x, height / 2, center.y);
 
         return meshes[0];
     }

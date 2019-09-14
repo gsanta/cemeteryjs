@@ -63,7 +63,7 @@ export class BabylonMeshFactoryService implements MeshFactoryService<Mesh, Skele
                 worldItem.skeleton = meshTemplate.skeletons[0];
                 return [new PlayerFactory().createItem(worldItem, meshTemplate)];
             case 'door':
-                return new DoorFactory(this.scene, MeshBuilder).createItem(worldItem, meshTemplate);
+                return new DoorFactory(this.scene, MeshBuilder).createItem(worldItem, meshDescriptor, meshTemplate);
             case 'window':
                 return new WindowFactory(this.scene, MeshBuilder,  new MaterialFactory(this.scene)).createItem(worldItem, meshDescriptor, meshTemplate);
             case 'room':

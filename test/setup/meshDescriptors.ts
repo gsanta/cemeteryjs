@@ -20,6 +20,22 @@ export const meshDescriptors: MeshDescriptor[] = [
         }
     },
     {
+        type: 'door',
+        name: 'mesh-descriptor' as 'mesh-descriptor',
+        details: {
+            name: 'file-descriptor' as 'file-descriptor',
+            path: 'models/door/',
+            fileName: 'door.babylon',
+            scale: 3
+        },
+        translateY: -4,
+        materials: ['models/door/door_material.png'],
+        realDimensions: {
+            name: 'border-dimensions-descriptor' as 'border-dimensions-descriptor',
+            width: 3
+        }
+    },
+    {
         type: 'window',
         name: 'mesh-descriptor' as 'mesh-descriptor',
         conditionalMaterials: [
@@ -106,7 +122,8 @@ export const meshDescriptors: MeshDescriptor[] = [
             name: 'file-descriptor' as 'file-descriptor',
             path: 'models/player/',
             fileName: 'player.babylon',
-            scale: 0.28
+            scale: 0.26,
+            translateY: -1
         },
         materials: [
             'models/player/material/0.jpg',

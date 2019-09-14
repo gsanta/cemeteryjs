@@ -38,10 +38,10 @@ W---------------------------------------------------W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 WEEEEE-------------------------TTTW-----------------W
 WEEEEE-------------------------TTTW-----------------W
-W--------XX----TTT----------------W-----------------I
-W--------XX----TTT----------------W-----------------I
+W--------XX----TTT----------------D-----------------I
+W--------XX----TTT----------------D-----------------I
 W---------------------------------W-----------------W
-WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+WWWWWWWWWWWWWWWWWWWWWDDDWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 \`
 
@@ -59,6 +59,7 @@ B = bathtub
 S = washbasin
 E = bed
 H = chair
+D = door
 
 \`
 

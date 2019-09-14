@@ -1,7 +1,8 @@
-import { Scene, StandardMaterial, Mesh, Vector3, MeshBuilder, Skeleton } from 'babylonjs';
+import { Scene, StandardMaterial, Mesh, Vector3, MeshBuilder, Skeleton, Axis, Space } from 'babylonjs';
 import { Segment, Shape } from '@nightshifts.inc/geometry';
 import { WorldItem } from '../../../WorldItem';
 import { MeshTemplate } from '../../../MeshTemplate';
+import { MeshDescriptor } from '../../../Config';
 
 export class DoorFactory {
     private scene: Scene;
@@ -12,9 +13,9 @@ export class DoorFactory {
         this.meshBuilder = meshBuilder;
     }
 
-    public createItem(worldItemInfo: WorldItem, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
+    public createItem(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
         const meshes = meshTemplate.meshes.map(m => m.clone());
-        const boundingMesh = this.createBoundingMesh(worldItemInfo.dimensions);
+        const boundingMesh = this.createBoundingMesh(worldItemInfo.dimensions, meshDescriptor);
 
         meshes.forEach(m => {
             m.isVisible = true;
@@ -23,11 +24,12 @@ export class DoorFactory {
 
         const center = worldItemInfo.dimensions.getBoundingCenter();
         boundingMesh.translate(new Vector3(center.x, 4, center.y), 1);
+        boundingMesh.rotate(Axis.Y, worldItemInfo.rotation, Space.WORLD);
 
         return [boundingMesh, ...meshes];
     }
 
-    private createBoundingMesh(boundingBox: Shape): Mesh {
+    private createBoundingMesh(boundingBox: Shape, meshDescriptor: MeshDescriptor): Mesh {
         const segment = <Segment> boundingBox;
 
         const rectangle = segment.addThickness(0.25);
@@ -38,7 +40,9 @@ export class DoorFactory {
 
         const translate1 = rectangle.getBoundingCenter().subtract(center);
 
-        mesh.translate(new Vector3(translate1.x, 0, translate1.y), 1);
+        const translateY = meshDescriptor.translateY ? meshDescriptor.translateY : 0;
+
+        mesh.translate(new Vector3(translate1.x, translateY, translate1.y), 1);
 
         return mesh;
     }
@@ -51,8 +55,8 @@ export class DoorFactory {
         );
 
         mesh.material = new StandardMaterial('door-material', this.scene);
-        mesh.material.wireframe = true;
         mesh.receiveShadows = true;
+        mesh.isVisible = false;
 
         return mesh;
     }
