@@ -58,7 +58,7 @@ describe(`AddOuterBorderLayerModifier`, () => {
 
         expect(root.children.length).toEqual(9);
 
-        const items = new AddOuterBorderLayerModifier(serviceFacade.worldItemFactoryService).apply([root]);
+        const items = new AddOuterBorderLayerModifier(serviceFacade.worldItemFactoryService, serviceFacade.geometryService).apply([root]);
 
         expect(items[0].children.length).toEqual(15);
         expect(items[0].children).toHaveAnyWithDimensions(new Segment(new Point(0.375, 0.5), new Point(0.375, 3.5)));

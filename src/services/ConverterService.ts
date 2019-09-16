@@ -18,12 +18,12 @@ export class ConverterService<T> {
     convert(worldItemInfo: WorldItem[], converter: Converter<T>): void {
         const map: Map<WorldItem, T> = new Map();
 
-        const rootItems: T[] = [];
-
         worldItemInfo.forEach(rootItem => {
+
+            // switch()
+
             for (const item of TreeIteratorGenerator(rootItem)) {
                 map.set(item, converter.convert(item));
-                rootItems.push(map.get(item));
             }
         });
 

@@ -1,40 +1,40 @@
-import { TreeIteratorGenerator, TreeNode } from '../../src/utils/TreeIteratorGenerator';
+import { TreeIteratorGenerator } from '../../src/utils/TreeIteratorGenerator';
 import * as sinon from 'sinon';
+import { WorldItem } from '../../src/WorldItem';
 
 describe('TreeIteratorGenerator', () => {
     it ('creates an iterator which yields every node in the tree structure', () => {
-        const level2Nodes: TreeNode[] = [
-            <TreeNode> {
+        const level2Nodes: WorldItem[] = [
+            <WorldItem> {
                 name: 'node1',
-                addChild: sinon.spy()
+                addChild: <any> sinon.spy()
             },
-            <TreeNode> {
+            <WorldItem> {
                 name: 'node2',
-                addChild: sinon.spy()
+                addChild: <any> sinon.spy()
             },
-            <TreeNode> {
+            <WorldItem> {
                 name: 'node3',
-                addChild: sinon.spy()
+                addChild: <any> sinon.spy()
             }
         ];
 
-        const level1Nodes: TreeNode[] = [
-            <TreeNode> {
+        const level1Nodes: WorldItem[] = [
+            <WorldItem> {
                 name: 'node4',
                 children: level2Nodes,
-                addChild: sinon.spy()
+                addChild: <any> sinon.spy()
             },
-            <TreeNode> {
+            <WorldItem> {
                 name: 'node5',
-                addChild: sinon.spy()
+                addChild: <any> sinon.spy()
             }
         ];
 
-
-        const rootNode = <TreeNode>  {
+        const rootNode = <WorldItem>  {
             name: 'node6',
             children: level1Nodes,
-            addChild: sinon.spy()
+            addChild: <any> sinon.spy()
         };
 
         const iterator: Iterator<any> = TreeIteratorGenerator(rootNode);

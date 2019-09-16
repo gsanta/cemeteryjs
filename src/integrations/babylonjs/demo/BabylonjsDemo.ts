@@ -10,23 +10,7 @@ import { WorldConfig } from '../../../services/ImporterService';
 import { WorldItem } from '../../../WorldItem';
 import { meshDescriptors } from '../../../../test/setup/meshDescriptors';
 
-
-// const strWorld = `map \`
-
-// WWWWWWWWWIIWWWWWWWWWWWWWWWWW
-// W--------------------------W
-// W--------------------------W
-// W--------------------------W
-// W--------------------------W
-// W--------------------------W
-// W--------------------------W
-// W--------------------------W
-// WWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
-// \`
-
-const strWorld = `map \`
-
+/*
 WWWWWWWWWIIWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 W-------------------------------W-------------------W
 W-------------------------------W-------------------W
@@ -36,12 +20,25 @@ W---------------------------------------------------W
 W---------------------------------------------------W
 W---------------------------------------------------W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-WEEEEE-------------------------TTTW-----------------W
-WEEEEE-------------------------TTTW-----------------W
+WEEEEE-----------------------TTTTTWLLLLLL-----------W
+WEEEEE-----------------------TTTTTWLLLLLL-----------W
 W--------XX----TTT----------------D-----------------I
 W--------XX----TTT----------------D-----------------I
 W---------------------------------W-----------------W
-WWWWWWWWWWWWWWWWWWWWWDDDWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+WWWWIIIIWWWWWWWWWWWWWDDDWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+*/
+
+const strWorld = `map \`
+
+WWWWWWWWWIIWWWWWWWWWWWWWWWWW
+W--------------------------W
+W--------------------------W
+W--------------------------W
+W--------------------------W
+W--------------------------W
+W--------------------------W
+W--------------------------W
+WWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 \`
 
@@ -60,6 +57,7 @@ S = washbasin
 E = bed
 H = chair
 D = door
+L = double_bed
 
 \`
 
@@ -81,7 +79,7 @@ export class BabylonjsDemo {
         const worldConfig: WorldConfig = {
             meshDescriptors: meshDescriptors,
             borders: ['door', 'window', 'wall'],
-            furnitures: ['empty', 'player', 'cupboard', 'table', 'bathtub', 'washbasin', 'bed', 'chair'],
+            furnitures: ['empty', 'player', 'cupboard', 'table', 'bathtub', 'washbasin', 'bed', 'chair', 'double_bed'],
             xScale: 1,
             yScale: 2
         }

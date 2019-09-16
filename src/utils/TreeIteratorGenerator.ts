@@ -1,15 +1,12 @@
+import { WorldItem } from '../WorldItem';
 
-export interface TreeNode<T = any> {
-    children?: T[];
-    addChild(child: T);
-    borderItems?: T[];
-}
+export function* TreeIteratorGenerator(worldItem: WorldItem): IterableIterator<WorldItem> {
 
-export function* TreeIteratorGenerator<T extends TreeNode<T>>(treeNode: T): IterableIterator<T> {
+    yield worldItem;
 
-    yield treeNode;
-
-    for (let child of treeNode.children || []) {
-        yield * TreeIteratorGenerator<T>(child);
+    if (worldItem.iterable) {
+        for (let child of worldItem.children || []) {
+            yield * TreeIteratorGenerator(child);
+        }
     }
 }

@@ -69,7 +69,7 @@ export class BabylonMeshFactoryService implements MeshFactoryService<Mesh, Skele
             case 'room':
                 return this.createRoomMeshes(worldItem, meshDescriptor.details);
             default:
-                return new ModelFactory(this.scene, MeshBuilder).getInstance(worldItem, meshTemplate);
+                return new ModelFactory(this.scene, MeshBuilder).getInstance(worldItem, meshDescriptor, meshTemplate);
         }
     }
 

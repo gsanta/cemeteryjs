@@ -1,0 +1,77 @@
+Exporter version: 6.1.1, Blender version: 2.80 (sub 75)
+========= Conversion from Blender to Babylon.js =========
+	Scene settings used :
+		inline textures     :  false
+		Material Type       :  PBR
+		Positions Precision :  4
+		Normals Precision   :  3
+		UVs Precision       :  3
+		Vert Color Precision:  3
+		Mat Weight Precision:  2
+		texture directory   :  /home/gsanta/dev/other/nightshifts-inc-world-generator/assets/models/double_bed/
+	Python World class constructor completed
+	processing begun of camera (UniversalCamera):  Camera
+	processing begun of camera (UniversalCamera):  Camera.001
+	processing begun of mesh:  BedFrame
+		processing begun of material:  Dark Blue
+		num positions      :  87
+		num normals        :  87
+		num tangents       :  0
+		num uvs            :  174
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  96
+	processing begun of mesh:  BedFrame.001
+		processing begun of material:  Brown Dark
+		num positions      :  113
+		num normals        :  113
+		num tangents       :  0
+		num uvs            :  226
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  156
+	processing begun of mesh:  BedFrame.002
+		processing begun of material:  Blue Light
+		num positions      :  31
+		num normals        :  31
+		num tangents       :  0
+		num uvs            :  62
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  36
+	processing begun of mesh:  BedFrame.003
+		processing begun of material:  Dark Blue
+		registered as also a user of material:  Dark Blue
+		num positions      :  87
+		num normals        :  87
+		num tangents       :  0
+		num uvs            :  174
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  96
+	processing begun of mesh:  BedFrame.004
+		processing begun of material:  Brown Dark
+		registered as also a user of material:  Brown Dark
+		num positions      :  113
+		num normals        :  113
+		num tangents       :  0
+		num uvs            :  226
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  156
+	processing begun of mesh:  BedFrame.005
+		processing begun of material:  Blue Light
+		registered as also a user of material:  Blue Light
+		num positions      :  31
+		num normals        :  31
+		num tangents       :  0
+		num uvs            :  62
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  36
+	processing begun of light (POINT):  Light
+	processing begun of light (POINT):  Light.001
+========= Writing of JSON file started =========
+========= Writing of JSON file completed =========
+========= end of processing =========
+elapsed time:  0 min, 0.0354 secs

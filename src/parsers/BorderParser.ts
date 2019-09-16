@@ -50,13 +50,16 @@ export class BorderParser implements Parser {
                 const gameObjectGraph = componentGraph.getGraphForVertices(slice);
                 const rect = this.createRectangleFromVerticalVertices(gameObjectGraph)
                 const oneVertex = componentGraph.getAllVertices()[0];
-                return this.worldItemInfoFactory.create(
+                const worldItem = this.worldItemInfoFactory.create(
                     componentGraph.getCharacters()[0],
                     rect,
                     componentGraph.getVertexName(oneVertex),
                     true,
                     Math.PI / 2
                 );
+
+                worldItem.iterable = false;
+                return worldItem;
             });
 
         const horizontalItems = horixontalComponents
@@ -64,13 +67,15 @@ export class BorderParser implements Parser {
                 const gameObjectGraph = componentGraph.getGraphForVertices(slice);
                 const rect = this.createRectangleFromHorizontalVertices(gameObjectGraph)
                 const oneVertex = componentGraph.getAllVertices()[0];
-                return this.worldItemInfoFactory.create(
+                const worldItem = this.worldItemInfoFactory.create(
                     componentGraph.getCharacters()[0],
                     rect,
                     componentGraph.getVertexName(oneVertex),
                     true,
                     0
                 );
+                worldItem.iterable = false;
+                return worldItem;
             });
 
         return [...verticalItems, ...horizontalItems];

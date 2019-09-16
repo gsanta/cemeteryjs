@@ -1,6 +1,8 @@
 import { Scene, MeshBuilder, Mesh, Skeleton, Axis, Space, PhysicsImpostor, Vector3, StandardMaterial, Color3 } from "babylonjs";
 import { WorldItem } from "../../..";
 import { MeshTemplate } from "../../../MeshTemplate";
+import { meshDescriptors } from '../../../../test/setup/meshDescriptors';
+import { MeshDescriptor } from '../../../Config';
 
 export class ModelFactory {
     private scene: Scene;
@@ -11,7 +13,7 @@ export class ModelFactory {
         this.meshBuilder = meshBuilder;
     }
 
-    public getInstance(worldItemInfo: WorldItem, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
+    public getInstance(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
         const meshes = meshTemplate.meshes.map(m => m.clone());
         const rotation = - worldItemInfo.rotation;
         const extend = meshes[0].getBoundingInfo().boundingBox.extendSizeWorld;
@@ -19,11 +21,12 @@ export class ModelFactory {
         meshes[0].translate(new Vector3(0, - extend.y, 0), 1, Space.WORLD);
 
         const mesh = this.createBoundingMesh(worldItemInfo, meshes[0], this.scene);
-        mesh.translate(new Vector3(0, extend.y, 0), 1, Space.WORLD);
+        const translateY = meshDescriptor.translateY ? meshDescriptor.translateY : 1;
+        mesh.translate(new Vector3(0, extend.y, 0), translateY, Space.WORLD);
 
         mesh.rotate(Axis.Y, rotation, Space.WORLD);
         mesh.checkCollisions = true;
-
+        mesh.isVisible = false;
         return [mesh, meshes[0]];
     }
 

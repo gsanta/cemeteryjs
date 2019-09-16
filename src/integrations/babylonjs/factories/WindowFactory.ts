@@ -19,8 +19,14 @@ export class WindowFactory  {
     }
 
     public createItem(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
-
+        const meshes = meshTemplate.meshes.map(m => m.clone());
         const parentMesh = this.createBoundingMesh(worldItemInfo.dimensions, meshDescriptor);
+
+        meshes.forEach(m => {
+            m.isVisible = true;
+            m.parent = parentMesh;
+        });
+
         const top = this.createTopWall(worldItemInfo, meshDescriptor);
         const bottom = this.createBottomWall(worldItemInfo, meshDescriptor);
         top.parent = parentMesh;

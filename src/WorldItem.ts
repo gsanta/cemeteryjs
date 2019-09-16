@@ -25,6 +25,7 @@ export class WorldItem<M = any, S = any> {
 
     borderItems: WorldItem[] = [];
     rooms: WorldItem[] = [];
+    iterable: boolean;
 
     constructor(id: string, type: string, dimensions: Shape, name: string, isBorder: boolean = false, rotation = 0) {
         this.type = type;
@@ -33,6 +34,7 @@ export class WorldItem<M = any, S = any> {
         this.isBorder = isBorder;
         this.id = id;
         this.rotation = rotation;
+        this.iterable = true;
     }
 
     addChild(worldItem: WorldItem) {

@@ -38,20 +38,14 @@ export const meshDescriptors: MeshDescriptor[] = [
     {
         type: 'window',
         name: 'mesh-descriptor' as 'mesh-descriptor',
-        conditionalMaterials: [
-            {
-                name: 'parent-room-based-material-descriptor',
-                parentId: 'root-1',
-                path: './assets/textures/brick.jpeg'
-            }
-        ],
-        materials: [
-            '#FFFFFF'
-        ],
         details: {
-            name: 'shape-descriptor' as 'shape-descriptor',
-            shape: 'rect'
-        }
+            name: 'file-descriptor' as 'file-descriptor',
+            path: 'models/window/',
+            fileName: 'window.babylon',
+            scale: 3
+        },
+        translateY: 0,
+        materials: ['#FFFFFF'],
     },
     {
         type: 'chair',
@@ -96,12 +90,26 @@ export const meshDescriptors: MeshDescriptor[] = [
         name: 'mesh-descriptor' as 'mesh-descriptor',
         details: {
             name: 'file-descriptor' as 'file-descriptor',
-            path: 'assets/models/',
+            path: 'assets/models/bed/',
             fileName: 'bed.babylon',
-            scale: 2.7
+            scale: 3.5
 
         },
-        materials: ['assets/models/bed_material.png'],
+        translateY: 1.5,
+        materials: ['assets/models/bed/bed_material.png'],
+    },
+    {
+        type: 'double_bed',
+        name: 'mesh-descriptor' as 'mesh-descriptor',
+        details: {
+            name: 'file-descriptor' as 'file-descriptor',
+            path: 'assets/models/double_bed/',
+            fileName: 'double_bed.babylon',
+            scale: 3.5
+
+        },
+        translateY: 1.5,
+        materials: ['assets/models/bed/bed_material.png'],
     },
     {
         type: 'table',
@@ -110,7 +118,7 @@ export const meshDescriptors: MeshDescriptor[] = [
             name: 'file-descriptor' as 'file-descriptor',
             path: 'assets/models/',
             fileName: 'table.babylon',
-            scale: 0.6
+            scale: 0.5
 
         },
         materials: ['assets/models/table_material.png'],

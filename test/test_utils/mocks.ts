@@ -124,7 +124,7 @@ export function createMaterialBuilder(): [typeof MaterialBuilder, typeof Materia
 export function findWorldItemWithDimensions(worldItems: WorldItem[], dimensions: Shape): WorldItem {
 
     for (let i = 0; i < worldItems.length; i++) {
-        for (const item of TreeIteratorGenerator<WorldItem>(worldItems[i])) {
+        for (const item of TreeIteratorGenerator(worldItems[i])) {
             if (item.dimensions.equalTo(dimensions)) {
                 return item;
             }

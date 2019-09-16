@@ -21,7 +21,7 @@ export class ModifierFactoryService {
     constructor(services: ServiceFacade<any, any, any>) {
 
         this
-            .registerInstance(new AddOuterBorderLayerModifier(services.worldItemFactoryService))
+            .registerInstance(new AddOuterBorderLayerModifier(services.worldItemFactoryService, services.geometryService))
             .registerInstance(new AddRoofModifier(services.worldItemFactoryService))
             .registerInstance(new AssignBordersToRoomsModifier(services.configService))
             .registerInstance(new BuildHierarchyModifier())

@@ -1,0 +1,42 @@
+Exporter version: 6.1.1, Blender version: 2.80 (sub 75)
+========= Conversion from Blender to Babylon.js =========
+	Scene settings used :
+		inline textures     :  false
+		Material Type       :  PBR
+		Positions Precision :  4
+		Normals Precision   :  3
+		UVs Precision       :  3
+		Vert Color Precision:  3
+		Mat Weight Precision:  2
+		texture directory   :  /home/gsanta/dev/other/nightshifts-inc-world-generator/assets/models/window/
+	Python World class constructor completed
+	WARNING: No active camera has been assigned, or is not in a currently selected Blender layer
+	processing begun of mesh:  Blind
+		processing begun of material:  Blind_plastic_material
+		processing begun of material:  Window_material
+		processing begun of material:  Glass_material
+			WARNING: unsupported node type(ShaderNodeLightPath) will trigger baking
+		processing begun of material:  Plastic_Handle_material
+		processing begun of material:  Sill_material
+			WARNING: Metal channel baking required, but not possible, ignored
+			WARNING: Roughness channel baking required, but not possible, ignored
+			WARNING: Refraction channel baking required, but not possible, ignored
+			Baking texture, type: DIFFUSE, mapped using: BakingUV
+			processing texture Blind_baked_DIFFUSE
+				texture type:  diffuseTexture, mapped using: "BakingUV"
+			Baking texture, type: GLOSSY, mapped using: BakingUV
+			processing texture Blind_baked_GLOSSY
+				texture type:  specularTexture, mapped using: "BakingUV"
+			bake time:  0 min, 2.869 secs
+		num positions      :  3861
+		num normals        :  3861
+		num tangents       :  0
+		num uvs            :  7722
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  5016
+	processing begun of node:  Window_Group
+========= Writing of JSON file started =========
+========= Writing of JSON file completed =========
+========= end of processing =========
+elapsed time:  0 min, 2.9806 secs

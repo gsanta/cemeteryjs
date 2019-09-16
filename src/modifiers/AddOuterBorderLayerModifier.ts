@@ -1,7 +1,6 @@
 import { Modifier } from "./Modifier";
-import { WorldItemUtils } from "../WorldItemUtils";
 import { WorldItem } from "../WorldItem";
-import { Segment, Polygon, Line, Point } from '@nightshifts.inc/geometry';
+import { Segment, Polygon, Line, Point, GeometryService } from '@nightshifts.inc/geometry';
 import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 import { ThickenBordersModifier } from "./ThickenBordersModifier";
 
@@ -15,9 +14,11 @@ export class AddOuterBorderLayerModifier implements Modifier {
     dependencies = [ThickenBordersModifier.modName];
 
     private worldItemFactory: WorldItemFactoryService;
+    private geometryService: GeometryService;
 
-    constructor(worldItemFactory: WorldItemFactoryService) {
+    constructor(worldItemFactory: WorldItemFactoryService, geometryService: GeometryService) {
         this.worldItemFactory = worldItemFactory;
+        this.geometryService = geometryService;
     }
 
     getName(): string {
@@ -28,8 +29,27 @@ export class AddOuterBorderLayerModifier implements Modifier {
         const rooms = rootItems[0].children.filter(child => child.name === 'room');
         rootItems[0].children
             .filter(child => child.isBorder)
-            .forEach(wall => this.addLayerIfOuterWall(rootItems[0], wall, rooms));
+            .forEach(wall => this.splitWallIntoTwoSides(wall));
+            // .forEach(wall => this.addLayerIfOuterWall(rootItems[0], wall, rooms));
         return rootItems;
+    }
+
+    private splitWallIntoTwoSides(wall: WorldItem) {
+        const wallEdge = <Segment> wall.dimensions;
+        const poly = (<Segment> wall.dimensions).addThickness(wall.thickness);
+
+        const twoWallHalves = poly.getEdges()
+            .filter(edge => this.geometryService.measuerments.linesParallel(edge.getLine(), wallEdge.getLine()))
+            .map(parallelEdge => {
+                const worldItem = this.worldItemFactory.clone(wall.name, wall);
+                worldItem.dimensions = this.geometryService.factory.edge(parallelEdge.getPoints()[0], parallelEdge.getPoints()[1]);
+                worldItem.thickness = wall.thickness / 2;
+                worldItem.children = [];
+
+                return worldItem;
+            });
+
+        wall.children.push(...twoWallHalves);
     }
 
     private addLayerIfOuterWall(root: WorldItem, wall: WorldItem, rooms: WorldItem[]) {

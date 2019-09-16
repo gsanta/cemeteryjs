@@ -1,0 +1,36 @@
+Exporter version: 6.1.1, Blender version: 2.80 (sub 75)
+========= Conversion from Blender to Babylon.js =========
+	Scene settings used :
+		inline textures     :  false
+		Material Type       :  PBR
+		Positions Precision :  4
+		Normals Precision   :  3
+		UVs Precision       :  3
+		Vert Color Precision:  3
+		Mat Weight Precision:  2
+		texture directory   :  /home/gsanta/dev/other/nightshifts-inc-world-generator/assets/models/bed/
+	Python World class constructor completed
+	processing begun of camera (UniversalCamera):  Camera
+	processing begun of mesh:  BedFrame.000
+		processing begun of material:  Dark Blue
+		processing begun of material:  Blue Light
+		processing begun of material:  Brown Dark
+			processing texture bed_material
+				texture type:  diffuseTexture, mapped using: "UVMap"
+			processing texture bed_material
+				texture type:  diffuseTexture, mapped using: "UVMap"
+			processing texture bed_material
+				texture type:  diffuseTexture, mapped using: "UVMap"
+		processing begun of multimaterial:  bed.Multimaterial#0
+		num positions      :  230
+		num normals        :  230
+		num tangents       :  0
+		num uvs            :  460
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  288
+	processing begun of light (POINT):  Light
+========= Writing of JSON file started =========
+========= Writing of JSON file completed =========
+========= end of processing =========
+elapsed time:  0 min, 0.0508 secs
