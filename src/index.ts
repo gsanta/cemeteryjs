@@ -7,7 +7,7 @@ import { ChangeBorderWidthModifier } from './modifiers/ChangeBorderWidthModifier
 import { ChangeFurnitureSizeModifier } from './modifiers/ChangeFurnitureSizeModifier';
 import { CreateMeshModifier } from './modifiers/CreateMeshModifier';
 import { CreateMockMeshModifier } from './modifiers/CreateMockMeshModifier';
-import { SplitWallsIntoTwoParallelChildWalls } from './modifiers/splitWallsIntoTwoParallelChildWallsModifier';
+import { SplitWallsIntoTwoParallelChildWallsModifier } from './modifiers/SplitWallsIntoTwoParallelChildWallsModifier';
 import { ThickenBordersModifier } from './modifiers/ThickenBordersModifier';
 
 export {WorldItem} from './WorldItem';

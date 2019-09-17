@@ -10,7 +10,7 @@ import { SegmentBordersModifier } from "../../src/modifiers/SegmentBordersModifi
 import { ServiceFacade } from "../../src/services/ServiceFacade";
 import { setup } from "../test_utils/mocks";
 import { NormalizeBorderRotationModifier } from '../../src/modifiers/NormalizeBorderRotationModifier';
-import { SplitWallsIntoTwoParallelChildWalls } from '../../src/modifiers/SplitWallsIntoTwoParallelChildWalls';
+import { SplitWallsIntoTwoParallelChildWallsModifier } from '../../src/modifiers/SplitWallsIntoTwoParallelChildWallsModifier';
 
 function createMap(worldMap: string) {
     return `

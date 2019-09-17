@@ -1,5 +1,5 @@
 import { Point, Segment, StripeView } from "@nightshifts.inc/geometry";
-import { SplitWallsIntoTwoParallelChildWalls } from '../../src/modifiers/SplitWallsIntoTwoParallelChildWalls';
+import { SplitWallsIntoTwoParallelChildWallsModifier } from '../../src/modifiers/SplitWallsIntoTwoParallelChildWallsModifier';
 import { AssignBordersToRoomsModifier } from "../../src/modifiers/AssignBordersToRoomsModifier";
 import { BuildHierarchyModifier } from "../../src/modifiers/BuildHierarchyModifier";
 import { ConvertBorderPolyToLineModifier } from "../../src/modifiers/ConvertBorderPolyToLineModifier";
@@ -28,7 +28,7 @@ function createMap(worldMap: string) {
         `;
 }
 
-describe(`SplitWallsIntoTwoParallelChildWalls`, () => {
+describe(`SplitWallsIntoTwoParallelChildWallsModifier`, () => {
 
 
     it ('splits each wall into two parallel walls and adds them as children to the original wall', () => {
@@ -59,7 +59,7 @@ describe(`SplitWallsIntoTwoParallelChildWalls`, () => {
 
         expect(root.children.length).toEqual(9);
 
-        const items = new SplitWallsIntoTwoParallelChildWalls(serviceFacade.worldItemFactoryService, serviceFacade.geometryService).apply([root]);
+        const items = new SplitWallsIntoTwoParallelChildWallsModifier(serviceFacade.worldItemFactoryService, serviceFacade.geometryService).apply([root]);
 
         const walls = root.children.filter(item => item.name === 'wall');
 

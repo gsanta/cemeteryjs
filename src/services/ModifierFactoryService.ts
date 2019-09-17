@@ -1,6 +1,6 @@
 import { Modifier } from '../modifiers/Modifier';
 import { ServiceFacade } from './ServiceFacade';
-import { SplitWallsIntoTwoParallelChildWalls } from '../modifiers/splitWallsIntoTwoParallelChildWallsModifier';
+import { SplitWallsIntoTwoParallelChildWallsModifier } from '../modifiers/SplitWallsIntoTwoParallelChildWallsModifier';
 import { AddRoofModifier } from '../modifiers/AddRoofModifier';
 import { AssignBordersToRoomsModifier } from '../modifiers/AssignBordersToRoomsModifier';
 import { BuildHierarchyModifier } from '../modifiers/BuildHierarchyModifier';
@@ -8,7 +8,6 @@ import { ChangeBorderWidthModifier } from '../modifiers/ChangeBorderWidthModifie
 import { ChangeFurnitureSizeModifier } from '../modifiers/ChangeFurnitureSizeModifier';
 import { ConvertBorderPolyToLineModifier } from '../modifiers/ConvertBorderPolyToLineModifier';
 import { CreateMeshModifier } from '../modifiers/CreateMeshModifier';
-import { CreateMockMeshModifier, MockMeshCreator } from '../modifiers/CreateMockMeshModifier';
 import { NormalizeBorderRotationModifier } from '../modifiers/NormalizeBorderRotationModifier';
 import { ScaleModifier } from '../modifiers/ScaleModifier';
 import { SegmentBordersModifier } from '../modifiers/SegmentBordersModifier';
@@ -21,7 +20,7 @@ export class ModifierFactoryService {
     constructor(services: ServiceFacade<any, any, any>) {
 
         this
-            .registerInstance(new SplitWallsIntoTwoParallelChildWalls(services.worldItemFactoryService, services.geometryService))
+            .registerInstance(new SplitWallsIntoTwoParallelChildWallsModifier(services.worldItemFactoryService, services.geometryService))
             .registerInstance(new AddRoofModifier(services.worldItemFactoryService))
             .registerInstance(new AssignBordersToRoomsModifier(services.configService))
             .registerInstance(new BuildHierarchyModifier())

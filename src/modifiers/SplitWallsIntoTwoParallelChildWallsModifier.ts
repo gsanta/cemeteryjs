@@ -4,7 +4,7 @@ import { WorldItem } from "../WorldItem";
 import { Modifier } from "./Modifier";
 import { ThickenBordersModifier } from "./ThickenBordersModifier";
 
-export class SplitWallsIntoTwoParallelChildWalls implements Modifier {
+export class SplitWallsIntoTwoParallelChildWallsModifier implements Modifier {
     static modName = 'splitWallsIntoTwoParallelChildWalls';
     dependencies = [ThickenBordersModifier.modName];
 
@@ -17,7 +17,7 @@ export class SplitWallsIntoTwoParallelChildWalls implements Modifier {
     }
 
     getName(): string {
-        return SplitWallsIntoTwoParallelChildWalls.modName;
+        return SplitWallsIntoTwoParallelChildWallsModifier.modName;
     }
 
     apply(rootItems: WorldItem[]): WorldItem[] {

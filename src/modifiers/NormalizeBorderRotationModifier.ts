@@ -2,12 +2,12 @@
 import { Line, Segment } from "@nightshifts.inc/geometry";
 import { WorldItem } from "../WorldItem";
 import { Modifier } from "./Modifier";
-import { SplitWallsIntoTwoParallelChildWalls } from './splitWallsIntoTwoParallelChildWallsModifier';
+import { SplitWallsIntoTwoParallelChildWallsModifier } from './SplitWallsIntoTwoParallelChildWallsModifier';
 
 
 export class NormalizeBorderRotationModifier implements Modifier {
     static modName = 'normalizeBorderRotation';
-    dependencies = [SplitWallsIntoTwoParallelChildWalls.modName];
+    dependencies = [SplitWallsIntoTwoParallelChildWallsModifier.modName];
 
     getName(): string {
         return NormalizeBorderRotationModifier.modName;
