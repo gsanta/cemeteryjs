@@ -1,5 +1,5 @@
 import { WorldMapToMatrixGraphConverter } from "../parsers/reader/WorldMapToMatrixGraphConverter";
-import { AddOuterBorderLayerModifier } from "../modifiers/AddOuterBorderLayerModifier";
+import { SplitWallsIntoTwoParallelChildWalls } from "../modifiers/splitWallsIntoTwoParallelChildWallsModifier";
 import { AssignBordersToRoomsModifier } from "../modifiers/AssignBordersToRoomsModifier";
 import { BuildHierarchyModifier } from "../modifiers/BuildHierarchyModifier";
 import { ChangeBorderWidthModifier } from "../modifiers/ChangeBorderWidthModifier";
@@ -68,7 +68,7 @@ export class ImporterService<M, S, T> {
             ConvertBorderPolyToLineModifier.modName,
             ChangeBorderWidthModifier.modName,
             ThickenBordersModifier.modName,
-            AddOuterBorderLayerModifier.modName,
+            SplitWallsIntoTwoParallelChildWalls.modName,
             NormalizeBorderRotationModifier.modName,
             ChangeFurnitureSizeModifier.modeName,
             CreateMeshModifier.modName

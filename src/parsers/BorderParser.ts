@@ -58,7 +58,6 @@ export class BorderParser implements Parser {
                     Math.PI / 2
                 );
 
-                worldItem.iterable = false;
                 return worldItem;
             });
 
@@ -74,7 +73,6 @@ export class BorderParser implements Parser {
                     true,
                     0
                 );
-                worldItem.iterable = false;
                 return worldItem;
             });
 

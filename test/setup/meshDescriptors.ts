@@ -45,7 +45,11 @@ export const meshDescriptors: MeshDescriptor[] = [
             scale: 3
         },
         translateY: 0,
-        materials: ['#FFFFFF'],
+        materials: ['assets/models/window/window.png'],
+        realDimensions: {
+            name: 'border-dimensions-descriptor' as 'border-dimensions-descriptor',
+            width: 3.5
+        }
     },
     {
         type: 'chair',

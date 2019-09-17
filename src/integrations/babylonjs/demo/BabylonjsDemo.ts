@@ -11,6 +11,20 @@ import { WorldItem } from '../../../WorldItem';
 import { meshDescriptors } from '../../../../test/setup/meshDescriptors';
 
 /*
+WWWWWWWWWIIWWWWWWWWWWWWWWWWW
+W--------------------------W
+W--------------------------W
+W--------------------------W
+W--------------------------W
+W--------------------------W
+W--------------------------W
+W--------------------------W
+WWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+*/
+
+const strWorld = `map \`
+
 WWWWWWWWWIIWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 W-------------------------------W-------------------W
 W-------------------------------W-------------------W
@@ -26,19 +40,6 @@ W--------XX----TTT----------------D-----------------I
 W--------XX----TTT----------------D-----------------I
 W---------------------------------W-----------------W
 WWWWIIIIWWWWWWWWWWWWWDDDWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-*/
-
-const strWorld = `map \`
-
-WWWWWWWWWIIWWWWWWWWWWWWWWWWW
-W--------------------------W
-W--------------------------W
-W--------------------------W
-W--------------------------W
-W--------------------------W
-W--------------------------W
-W--------------------------W
-WWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 \`
 
@@ -86,8 +87,8 @@ export class BabylonjsDemo {
 
         new BabylonWorldGenerator(scene).generate(strWorld, worldConfig, {
             convert(worldItem: WorldItem): any {
-                if (worldItem.name === 'room') {
-                    // worldItem.meshTemplate.meshes[1].isVisible = false;
+                if (worldItem.name === 'wall' && worldItem.children.length > 0) {
+                    worldItem.meshTemplate.meshes[0].isVisible = false;
                 }
             },
             addChildren(parent: any, children: any[]): void {},

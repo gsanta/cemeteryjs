@@ -2,12 +2,12 @@
 import { Line, Segment } from "@nightshifts.inc/geometry";
 import { WorldItem } from "../WorldItem";
 import { Modifier } from "./Modifier";
-import { AddOuterBorderLayerModifier } from './AddOuterBorderLayerModifier';
+import { SplitWallsIntoTwoParallelChildWalls } from './splitWallsIntoTwoParallelChildWallsModifier';
 
 
 export class NormalizeBorderRotationModifier implements Modifier {
     static modName = 'normalizeBorderRotation';
-    dependencies = [AddOuterBorderLayerModifier.modName];
+    dependencies = [SplitWallsIntoTwoParallelChildWalls.modName];
 
     getName(): string {
         return NormalizeBorderRotationModifier.modName;

@@ -4,9 +4,7 @@ export function* TreeIteratorGenerator(worldItem: WorldItem): IterableIterator<W
 
     yield worldItem;
 
-    if (worldItem.iterable) {
-        for (let child of worldItem.children || []) {
-            yield * TreeIteratorGenerator(child);
-        }
+    for (let child of worldItem.children || []) {
+        yield * TreeIteratorGenerator(child);
     }
 }

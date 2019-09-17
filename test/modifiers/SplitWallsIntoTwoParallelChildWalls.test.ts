@@ -1,5 +1,5 @@
-import { Point, Segment } from "@nightshifts.inc/geometry";
-import { AddOuterBorderLayerModifier } from '../../src/modifiers/AddOuterBorderLayerModifier';
+import { Point, Segment, StripeView } from "@nightshifts.inc/geometry";
+import { SplitWallsIntoTwoParallelChildWalls } from '../../src/modifiers/SplitWallsIntoTwoParallelChildWalls';
 import { AssignBordersToRoomsModifier } from "../../src/modifiers/AssignBordersToRoomsModifier";
 import { BuildHierarchyModifier } from "../../src/modifiers/BuildHierarchyModifier";
 import { ConvertBorderPolyToLineModifier } from "../../src/modifiers/ConvertBorderPolyToLineModifier";
@@ -8,6 +8,7 @@ import { SegmentBordersModifier } from "../../src/modifiers/SegmentBordersModifi
 import { ThickenBordersModifier } from '../../src/modifiers/ThickenBordersModifier';
 import { setup } from "../test_utils/mocks";
 import { ChangeBorderWidthModifier } from '../../src/modifiers/ChangeBorderWidthModifier';
+import { WorldItem } from '../../src/WorldItem';
 
 function createMap(worldMap: string) {
         return `
@@ -27,10 +28,10 @@ function createMap(worldMap: string) {
         `;
 }
 
-describe(`AddOuterBorderLayerModifier`, () => {
+describe(`SplitWallsIntoTwoParallelChildWalls`, () => {
 
 
-    it ('applies the outer layer for external walls', () => {
+    it ('splits each wall into two parallel walls and adds them as children to the original wall', () => {
         const map = createMap(
             `
             WDDWWWWW
@@ -58,14 +59,23 @@ describe(`AddOuterBorderLayerModifier`, () => {
 
         expect(root.children.length).toEqual(9);
 
-        const items = new AddOuterBorderLayerModifier(serviceFacade.worldItemFactoryService, serviceFacade.geometryService).apply([root]);
+        const items = new SplitWallsIntoTwoParallelChildWalls(serviceFacade.worldItemFactoryService, serviceFacade.geometryService).apply([root]);
 
-        expect(items[0].children.length).toEqual(15);
-        expect(items[0].children).toHaveAnyWithDimensions(new Segment(new Point(0.375, 0.5), new Point(0.375, 3.5)));
-        expect(items[0].children).toHaveAnyWithDimensions(new Segment(new Point(7.625, 0.5), new Point(7.625, 3.5)));
-        expect(items[0].children).toHaveAnyWithDimensions(new Segment(new Point(0.5, 3.625), new Point(3.5, 3.625)));
-        expect(items[0].children).toHaveAnyWithDimensions(new Segment(new Point(3.5, 3.625), new Point(7.5, 3.625)));
-        expect(items[0].children).toHaveAnyWithDimensions(new Segment(new Point(3.5, 0.325), new Point(7.5, 0.325)));
-        expect(items[0].children).toHaveAnyWithDimensions(new Segment(new Point(0.5, 0.375), new Point(3.5, 0.375)));
+        const walls = root.children.filter(item => item.name === 'wall');
+
+        expect(items[0].children.length).toEqual(9);
+        walls.forEach(wall => {
+            expect(wall.children.length).toEqual(2);
+            checkIfChildrenDimensionsAddUpToParentDimensions(wall);
+        });
     });
 });
+
+function checkIfChildrenDimensionsAddUpToParentDimensions(parentWall: WorldItem) {
+    const parentRect = (<Segment> parentWall.dimensions).addThickness(parentWall.thickness / 2);
+    const childSegment1 = <Segment> parentWall.children[0].dimensions;
+    const childSegment2 = <Segment> parentWall.children[1].dimensions;
+
+    const childrenRect = StripeView.createRectangleFromTwoOppositeSides(childSegment1, childSegment2);
+    expect(parentRect.equalTo(childrenRect)).toBeTruthy();
+}

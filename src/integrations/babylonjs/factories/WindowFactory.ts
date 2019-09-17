@@ -27,6 +27,8 @@ export class WindowFactory  {
             m.parent = parentMesh;
         });
 
+        meshes[0].translate(new Vector3(0, 0, -0.1), 1);
+
         const top = this.createTopWall(worldItemInfo, meshDescriptor);
         const bottom = this.createBottomWall(worldItemInfo, meshDescriptor);
         top.parent = parentMesh;
@@ -67,14 +69,14 @@ export class WindowFactory  {
 
         const mesh = this.meshBuilder.CreateBox(
             name,
-            { width: rectangle.getBoundingInfo().extent[0], depth: rectangle.getBoundingInfo().extent[1], height: 3 },
+            { width: rectangle.getBoundingInfo().extent[0], depth: rectangle.getBoundingInfo().extent[1], height: 2 },
             this.scene
         );
 
         mesh.material = this.materialFactory.createMaterial(worldItem, meshDescriptor);
 
         mesh.receiveShadows = true;
-        mesh.translate(new Vector3(0, -2.5, 0), 1, Space.WORLD);
+        mesh.translate(new Vector3(0, -3, 0), 1, Space.WORLD);
 
         return mesh;
     }

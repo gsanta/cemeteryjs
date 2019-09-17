@@ -7,7 +7,7 @@ import { ChangeBorderWidthModifier } from './modifiers/ChangeBorderWidthModifier
 import { ChangeFurnitureSizeModifier } from './modifiers/ChangeFurnitureSizeModifier';
 import { CreateMeshModifier } from './modifiers/CreateMeshModifier';
 import { CreateMockMeshModifier } from './modifiers/CreateMockMeshModifier';
-import { AddOuterBorderLayerModifier } from './modifiers/AddOuterBorderLayerModifier';
+import { SplitWallsIntoTwoParallelChildWalls } from './modifiers/splitWallsIntoTwoParallelChildWallsModifier';
 import { ThickenBordersModifier } from './modifiers/ThickenBordersModifier';
 
 export {WorldItem} from './WorldItem';
@@ -36,6 +36,6 @@ export const transformators = {
     ChangeFurnitureSizeModifier,
     CreateMeshModifier,
     CreateMockMeshModifier,
-    AddOuterBorderLayerModifier,
+    SplitWallsIntoTwoParallelChildWalls: splitWallsIntoTwoParallelChildWallsModifier,
     ThickenBordersModifier
 }

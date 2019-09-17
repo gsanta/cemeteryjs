@@ -47,6 +47,6 @@ describe('MockWorldGenerator', () => {
             done() {}
         });
 
-        expect(worldItems.length).toEqual(19);
+        expect(worldItems.length).toEqual(27);
     });
 });

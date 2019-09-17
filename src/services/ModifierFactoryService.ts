@@ -1,6 +1,6 @@
 import { Modifier } from '../modifiers/Modifier';
 import { ServiceFacade } from './ServiceFacade';
-import { AddOuterBorderLayerModifier } from '../modifiers/AddOuterBorderLayerModifier';
+import { SplitWallsIntoTwoParallelChildWalls } from '../modifiers/splitWallsIntoTwoParallelChildWallsModifier';
 import { AddRoofModifier } from '../modifiers/AddRoofModifier';
 import { AssignBordersToRoomsModifier } from '../modifiers/AssignBordersToRoomsModifier';
 import { BuildHierarchyModifier } from '../modifiers/BuildHierarchyModifier';
@@ -21,7 +21,7 @@ export class ModifierFactoryService {
     constructor(services: ServiceFacade<any, any, any>) {
 
         this
-            .registerInstance(new AddOuterBorderLayerModifier(services.worldItemFactoryService, services.geometryService))
+            .registerInstance(new SplitWallsIntoTwoParallelChildWalls(services.worldItemFactoryService, services.geometryService))
             .registerInstance(new AddRoofModifier(services.worldItemFactoryService))
             .registerInstance(new AssignBordersToRoomsModifier(services.configService))
             .registerInstance(new BuildHierarchyModifier())

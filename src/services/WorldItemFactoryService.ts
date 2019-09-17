@@ -35,7 +35,6 @@ export class WorldItemFactoryService {
         clone.isBorder = worldItemInfo.isBorder;
         clone.thickness = worldItemInfo.thickness;
         clone.parent = worldItemInfo.parent;
-        clone.iterable = worldItemInfo.iterable;
 
         return clone;
     }
