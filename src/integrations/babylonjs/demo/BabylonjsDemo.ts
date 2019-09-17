@@ -34,8 +34,8 @@ W---------------------------------------------------W
 W---------------------------------------------------W
 W---------------------------------------------------W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-WEEEEE-----------------------TTTTTWLLLLLL-----------W
-WEEEEE-----------------------TTTTTWLLLLLL-----------W
+WEEEEE-----OOOOO-------------TTTTTWLLLLLL-----------W
+WEEEEE-----OOOOO-------------TTTTTWLLLLLL-----------W
 W--------XX----TTT----------------D-----------------I
 W--------XX----TTT----------------D-----------------I
 W---------------------------------W-----------------W
@@ -59,6 +59,7 @@ E = bed
 H = chair
 D = door
 L = double_bed
+O = shelves
 
 \`
 
@@ -80,7 +81,7 @@ export class BabylonjsDemo {
         const worldConfig: WorldConfig = {
             meshDescriptors: meshDescriptors,
             borders: ['door', 'window', 'wall'],
-            furnitures: ['empty', 'player', 'cupboard', 'table', 'bathtub', 'washbasin', 'bed', 'chair', 'double_bed'],
+            furnitures: ['empty', 'player', 'cupboard', 'table', 'bathtub', 'washbasin', 'bed', 'chair', 'double_bed', 'shelves'],
             xScale: 1,
             yScale: 2
         }

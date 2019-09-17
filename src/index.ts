@@ -36,6 +36,6 @@ export const transformators = {
     ChangeFurnitureSizeModifier,
     CreateMeshModifier,
     CreateMockMeshModifier,
-    SplitWallsIntoTwoParallelChildWalls: splitWallsIntoTwoParallelChildWallsModifier,
+    SplitWallsIntoTwoParallelChildWallsModifier,
     ThickenBordersModifier
 }

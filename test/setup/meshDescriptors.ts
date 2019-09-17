@@ -103,6 +103,19 @@ export const meshDescriptors: MeshDescriptor[] = [
         materials: ['assets/models/bed/bed_material.png'],
     },
     {
+        type: 'shelves',
+        name: 'mesh-descriptor' as 'mesh-descriptor',
+        details: {
+            name: 'file-descriptor' as 'file-descriptor',
+            path: 'assets/models/shelves/',
+            fileName: 'shelves.babylon',
+            scale: 3.3
+
+        },
+        translateY: 1,
+        materials: ['assets/models/shelves/shelves.png'],
+    },
+    {
         type: 'double_bed',
         name: 'mesh-descriptor' as 'mesh-descriptor',
         details: {

@@ -30,7 +30,7 @@ export interface WorldConfig {
 
 export const defaultWorldConfig: WorldConfig = {
     borders: ['wall', 'door', 'window'],
-    furnitures: ['player', 'cupboard', 'table', 'bathtub', 'washbasin', 'bed', 'chair', 'portal', 'double_bed'],
+    furnitures: ['player', 'cupboard', 'table', 'bathtub', 'washbasin', 'bed', 'chair', 'portal', 'double_bed', 'shelves'],
     xScale: 1,
     yScale: 2,
     meshDescriptors: []
