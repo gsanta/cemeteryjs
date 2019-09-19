@@ -1,8 +1,7 @@
-import { Scene, MeshBuilder, Mesh, Skeleton, Axis, Space, PhysicsImpostor, Vector3, StandardMaterial, Color3 } from "babylonjs";
+import { Axis, Color3, Mesh, MeshBuilder, Scene, Skeleton, Space, StandardMaterial, Vector3 } from "babylonjs";
 import { WorldItem } from "../../..";
-import { MeshTemplate } from "../../../MeshTemplate";
-import { meshDescriptors } from '../../../../test/setup/meshDescriptors';
 import { MeshDescriptor } from '../../../Config';
+import { MeshTemplate } from "../../../MeshTemplate";
 
 export class ModelFactory {
     private scene: Scene;
@@ -25,8 +24,9 @@ export class ModelFactory {
         mesh.translate(new Vector3(0, extend.y, 0), translateY, Space.WORLD);
 
         mesh.rotate(Axis.Y, rotation, Space.WORLD);
+
         mesh.checkCollisions = true;
-        mesh.isVisible = false;
+        mesh.isVisible = true;
         return [mesh, meshes[0]];
     }
 

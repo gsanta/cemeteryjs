@@ -20,8 +20,6 @@ export class ConverterService<T> {
 
         worldItemInfo.forEach(rootItem => {
 
-            // switch()
-
             for (const item of TreeIteratorGenerator(rootItem)) {
                 map.set(item, converter.convert(item));
             }

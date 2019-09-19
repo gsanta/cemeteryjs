@@ -11,18 +11,19 @@ import { WorldItem } from '../../../WorldItem';
 import { meshDescriptors } from '../../../../test/setup/meshDescriptors';
 
 /*
-WWWWWWWWWIIWWWWWWWWWWWWWWWWW
-W--------------------------W
-W--------------------------W
-W--------------------------W
-W--------------------------W
-W--------------------------W
-W--------------------------W
-W--------------------------W
-WWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 */
-
+/*
+WWWWWWWWWIIWWWWWWWWWWWWWWWWW
+W---------------OOOOO------W
+W---------------OOOOO------W
+W--------------------------W
+W--------------------------W
+W--------------------------W
+W--------OOOOO-------------W
+W--------OOOOO-------------W
+WWWWWWWWWWWWWWWWWWWWWWWWWWWW
+*/
 const strWorld = `map \`
 
 WWWWWWWWWIIWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -34,12 +35,13 @@ W---------------------------------------------------W
 W---------------------------------------------------W
 W---------------------------------------------------W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-WEEEEE-----OOOOO-------------TTTTTWLLLLLL-----------W
-WEEEEE-----OOOOO-------------TTTTTWLLLLLL-----------W
-W--------XX----TTT----------------D-----------------I
-W--------XX----TTT----------------D-----------------I
-W---------------------------------W-----------------W
+WEEEEE-----OOOOO-------------TTTTTW-----------------W
+WEEEEE-----OOOOO-------------TTTTTW-----------------W
+W--------XX----TTT---------------OD-----------------I
+W--------XX----TTT------OOOOO----OD-----------------I
+WOOO--------------------OOOOO----OW-----------------W
 WWWWIIIIWWWWWWWWWWWWWDDDWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
 
 \`
 

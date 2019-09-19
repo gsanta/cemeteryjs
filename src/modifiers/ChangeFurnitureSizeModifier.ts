@@ -87,7 +87,7 @@ export class ChangeFurnitureSizeModifier implements Modifier {
 
             const toPoint = wallSegment.getLine().intersection(line);
 
-            const vector = toPoint.subtract(fromPoint);
+            let vector = toPoint.subtract(fromPoint);
 
             furniture.dimensions = furniture.dimensions.translate(vector);
         });
@@ -97,7 +97,10 @@ export class ChangeFurnitureSizeModifier implements Modifier {
         if (snappingWallEdges.length > 0) {
             const furnitureAlignment = this.isFurnitureParallelOrPerpendicularToWall(originalFurnitureDimensions, snappingWallEdges[0]);
 
-            let angle = snappingWallEdges[0].getLine().getAngleToXAxis();
+            // let angle = snappingWallEdges[0].getLine().getAngleToXAxis();
+            let angle = this.calcRotation(snappingWallEdges[0], <Polygon> originalFurnitureDimensions);
+
+            furniture.dimensions.getBoundingCenter()
 
             if (furnitureAlignment === 'perpendicular') {
                 angle = Angle.fromRadian(angle.getAngle() - toRadian(90));
@@ -106,10 +109,28 @@ export class ChangeFurnitureSizeModifier implements Modifier {
             const transform = new Transform();
 
             furniture.dimensions = transform.rotatePolygon(<Polygon> furniture.dimensions, angle.getAngle());
+
             furniture.rotation = angle.getAngle();
         }
-
         furniture.dimensions = furniture.dimensions.setPosition(originalFurnitureDimensions.getBoundingCenter());
+    }
+
+    private calcRotation(wallSegment: Segment, furnitureDim: Polygon) {
+        const furnitureCenter = furnitureDim.getBoundingCenter();
+        // const [x1, y1] = [wallSegment.getPoints()[0].x, wallSegment.getPoints()[0].y]
+        // const [x2, y2] = [wallSegment.getPoints()[1].x, wallSegment.getPoints()[1].y]
+        // const [x, y] = [furnitureCenter.x, furnitureCenter.y];
+        // const perpVector = new Point(y2 - y1, x1 - x2);
+        // const d = (x - x1) * (y2 - y1) - (y - y1) * (x2 - x1);
+        // // const d = (x − x1) * (y2−y1) − (y−y1) * (x2−x1);
+        const AB = wallSegment.toVector();
+        const perpAB = AB.perpendicularVector();
+        const AP = new Segment(furnitureCenter, wallSegment.getPoints()[0]).toVector();
+        const dotProduct = perpAB.x * AP.x + perpAB.y * AP.y;
+
+        let angle = wallSegment.getLine().getAngleToXAxis();
+
+        return Angle.fromRadian(angle.getAngle() + dotProduct < 0 ? Math.PI : 0);
     }
 
     private isFurnitureParallelOrPerpendicularToWall(furnitureDim: Shape, wallSegment: Segment): 'parallel' | 'perpendicular' {
