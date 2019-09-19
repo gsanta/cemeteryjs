@@ -27,11 +27,11 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWW
 const strWorld = `map \`
 
 WWWWWWWWWIIWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-W-------------------------------W-------------------W
-W-------------------------------W-------------------W
-W-------------------------------W-------------------W
+W-----------------==H=H==-------W-------------------W
+W-----------------=TTTTT=-------W-------------------W
+W-----------------=TTTTT=-------W-------------------W
+W-----------------==H=H==-------W-------------------W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-W---------------------------------------------------W
 W---------------------------------------------------W
 W---------------------------------------------------W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -62,6 +62,7 @@ H = chair
 D = door
 L = double_bed
 O = shelves
+= = subarea
 
 \`
 

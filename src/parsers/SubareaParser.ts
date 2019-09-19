@@ -6,7 +6,7 @@ import { WorldMapToMatrixGraphConverter } from "./reader/WorldMapToMatrixGraphCo
 import { WorldMapToRoomMapConverter } from './WorldMapToRoomMapConverter';
 import _ = require("lodash");
 
-export class RoomParser implements Parser {
+export class SubareaParser implements Parser {
     private worldMapToRoomMapConverter: WorldMapToRoomMapConverter;
     private polygonAreaParser: PolygonAreaParser;
     private worldMapToMatrixGraphConverter = new WorldMapToMatrixGraphConverter();

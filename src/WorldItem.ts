@@ -25,6 +25,7 @@ export class WorldItem<M = any, S = any> {
 
     borderItems: WorldItem[] = [];
     rooms: WorldItem[] = [];
+    subareaId = 0;
 
     constructor(id: string, type: string, dimensions: Shape, name: string, isBorder: boolean = false, rotation = 0) {
         this.type = type;

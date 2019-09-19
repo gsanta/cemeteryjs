@@ -1,13 +1,12 @@
-import { Matrix } from "./matrix/Matrix";
-import _ = require("lodash");
-import { WorldItem } from '../WorldItem';
-import { Parser } from "./Parser";
-import { WorldMapToMatrixGraphConverter } from "./reader/WorldMapToMatrixGraphConverter";
-import { PolygonRedundantPointReducer } from "./PolygonRedundantPointReducer";
-import { Polygon, Line, Point, GeometryService } from "@nightshifts.inc/geometry";
-import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
+import { GeometryService, Point } from "@nightshifts.inc/geometry";
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { ServiceFacade } from '../services/ServiceFacade';
+import { WorldItem } from '../WorldItem';
+import { Matrix } from "./matrix/Matrix";
+import { Parser } from "./Parser";
+import { PolygonRedundantPointReducer } from "./PolygonRedundantPointReducer";
+import { WorldMapToMatrixGraphConverter } from "./reader/WorldMapToMatrixGraphConverter";
+import _ = require("lodash");
 
 /**
  * @hidden
