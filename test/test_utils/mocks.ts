@@ -26,6 +26,7 @@ export function setup(config: Partial<WorldConfig> = {}): ServiceFacade<any, any
     const configService = new ConfigService(
         ['door', 'window', 'wall'],
         ['empty', 'player', 'cupboard', 'table', 'bathtub', 'washbasin', 'bed', 'chair'],
+        '-',
         meshDescriptorMap,
         {
             x: config.xScale,

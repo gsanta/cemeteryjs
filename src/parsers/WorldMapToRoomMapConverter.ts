@@ -18,7 +18,7 @@ import { WorldMapLineListener, WorldMapReader } from './reader/WorldMapReader';
  * -###-
  * -----
  */
-export class WorldMapToRoomMapConverter implements WorldMapLineListener {
+export class WorldMapToRoomMapConverter extends WorldMapLineListener {
     private roomSeparatorCharacters: string[];
     private wallChar: string;
     private roomChar: string;
@@ -27,6 +27,7 @@ export class WorldMapToRoomMapConverter implements WorldMapLineListener {
     private lines: string[] = [];
 
     constructor(wallChar: string, roomChar: string, borderCharacters: string[]) {
+        super();
         this.wallChar = wallChar;
         this.roomChar = roomChar;
         this.roomSeparatorCharacters = borderCharacters;

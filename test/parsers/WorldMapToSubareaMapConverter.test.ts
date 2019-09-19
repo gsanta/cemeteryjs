@@ -1,6 +1,6 @@
-import { WorldMapToSectionMapConverter } from '../../src/parsers/WorldMapToSectionMapConverter';
+import { WorldMapToSubareaMapConverter as WorldMapToSubareaMapConverter } from '../../src/parsers/WorldMapToSubareaMapConverter';
 
-describe('WorldMapToSectionMapConverter', () => {
+describe('WorldMapToSubareaMapConverter', () => {
     it ('replaces the border characters with empty characters', () => {
         const input = `
             map \`
@@ -48,9 +48,9 @@ describe('WorldMapToSectionMapConverter', () => {
             \`
         `;
 
-        const worldMapToSectionMapConverter = new WorldMapToSectionMapConverter('=', '-', ['W', 'D', 'I']);
+        const worldMapToSubareaMapConverter = new WorldMapToSubareaMapConverter('=', '-', ['W', 'D', 'I']);
 
-        expect(worldMapToSectionMapConverter.convert(input)).toEqual(output);
+        expect(worldMapToSubareaMapConverter.convert(input)).toEqual(output);
     });
 
     it ('replaces the furniture characters with section character', () => {
@@ -104,8 +104,8 @@ describe('WorldMapToSectionMapConverter', () => {
             \`
         `;
 
-        const worldMapToSectionMapConverter = new WorldMapToSectionMapConverter('=', '-', ['W', 'D', 'I']);
+        const worldMapToSubareaMapConverter = new WorldMapToSubareaMapConverter('=', '-', ['W', 'D', 'I']);
 
-        expect(worldMapToSectionMapConverter.convert(input)).toEqual(output);
+        expect(worldMapToSubareaMapConverter.convert(input)).toEqual(output);
     });
 });

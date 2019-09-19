@@ -26,7 +26,7 @@ export class BabylonWorldGenerator<T> implements WorldGenerator<T> {
             .loadAll(worldConfig.meshDescriptors)
             .then(() => {
 
-                const configService = new ConfigService(worldConfig.borders, worldConfig.furnitures, meshDescriptorMap, {x: worldConfig.xScale, y: worldConfig.yScale})
+                const configService = new ConfigService(worldConfig.borders, worldConfig.furnitures, '-', meshDescriptorMap, {x: worldConfig.xScale, y: worldConfig.yScale})
 
                 const serviceFacade = new ServiceFacade<any, any, T>(
                     meshFactoryService,

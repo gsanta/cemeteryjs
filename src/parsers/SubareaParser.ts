@@ -4,10 +4,11 @@ import { Parser } from "./Parser";
 import { PolygonAreaParser } from './PolygonAreaParser';
 import { WorldMapToMatrixGraphConverter } from "./reader/WorldMapToMatrixGraphConverter";
 import { WorldMapToRoomMapConverter } from './WorldMapToRoomMapConverter';
+import { WorldMapToSubareaMapConverter } from './WorldMapToSubareaMapConverter';
 import _ = require("lodash");
 
 export class SubareaParser implements Parser {
-    private worldMapToRoomMapConverter: WorldMapToRoomMapConverter;
+    private worldMapToSubareaMapConverter: WorldMapToSubareaMapConverter;
     private polygonAreaParser: PolygonAreaParser;
     private worldMapToMatrixGraphConverter = new WorldMapToMatrixGraphConverter();
     private borderCharacters: string[];
@@ -21,9 +22,12 @@ export class SubareaParser implements Parser {
     parse(worldMap: string): WorldItem[] {
         const matrix = this.worldMapToMatrixGraphConverter.convert(worldMap);
 
-        this.worldMapToRoomMapConverter = new WorldMapToRoomMapConverter('W', matrix.getCharacterForName('empty'), this.borderCharacters);
+        const emptyChar = this.services.configService.emptyType;
+
+        this.worldMapToSubareaMapConverter = new WorldMapToSubareaMapConverter('W', matrix.getCharacterForName('empty'), this.borderCharacters);
         this.polygonAreaParser = new PolygonAreaParser('room', this.services);
 
-        return this.polygonAreaParser.parse(this.worldMapToRoomMapConverter.convert(worldMap));
+        // return this.polygonAreaParser.parse(this.worldMapToRoomMapConverter.convert(worldMap));
+        return null;
     }
 }

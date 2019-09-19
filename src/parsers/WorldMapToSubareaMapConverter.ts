@@ -18,7 +18,7 @@ import { WorldMapLineListener, WorldMapReader } from './reader/WorldMapReader';
  * -###-
  * -----
  */
-export class WorldMapToSectionMapConverter implements WorldMapLineListener {
+export class WorldMapToSubareaMapConverter extends WorldMapLineListener {
     private borderCharacters: string[];
     private sectionCharacter: string;
     private emptyCharacter: string;
@@ -27,6 +27,7 @@ export class WorldMapToSectionMapConverter implements WorldMapLineListener {
     private lines: string[] = [];
 
     constructor(sectionCharacter: string, emptyCharacter: string, borderCharacters: string[]) {
+        super();
         this.sectionCharacter = sectionCharacter;
         this.emptyCharacter = emptyCharacter;
         this.borderCharacters = borderCharacters;

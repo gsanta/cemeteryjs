@@ -4,7 +4,7 @@ import { DetailsLineToObjectConverter, DetailsLineDataTypes } from './DetailsLin
 import { WorldMapLineListener, WorldMapReader } from './WorldMapReader';
 
 
-export class WorldMapToMatrixGraphConverter implements WorldMapLineListener {
+export class WorldMapToMatrixGraphConverter extends WorldMapLineListener {
     private linesToGraphConverter: LinesToGraphConverter;
     private worldMapReader: WorldMapReader;
 
@@ -17,6 +17,7 @@ export class WorldMapToMatrixGraphConverter implements WorldMapLineListener {
     private static DEFINITION_SECTION_LINE_TEST = /^\s*(\S)\s*\=\s*(\S*)\s*$/;
 
     constructor() {
+        super();
         this.worldMapReader = new WorldMapReader(this);
     }
 

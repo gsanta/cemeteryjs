@@ -6,11 +6,11 @@ enum ParseSections {
     DETAILS
 }
 
-export interface WorldMapLineListener {
-    addMapSectionLine(line: string);
-    addDefinitionSectionLine(line: string);
-    addDetailsSectionLine(line: string);
-    addSeparator(line: string);
+export abstract class WorldMapLineListener {
+    addMapSectionLine(line: string) {}
+    addDefinitionSectionLine(line: string) {}
+    addDetailsSectionLine(line: string) {}
+    addSeparator(line: string) {}
 }
 
 export class WorldMapReader {

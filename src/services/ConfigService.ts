@@ -8,12 +8,14 @@ export type Scaling = {
 export class ConfigService {
     borderTypes: string[];
     furnitureTypes: string[];
+    emptyType: string;
     meshDescriptorMap: Map<string, MeshDescriptor>;
     scaling: Scaling;
 
-    constructor(borderTypes: string[], furnitureTypes: string[], meshDescriptorMap: Map<string, MeshDescriptor>, scaling?: Scaling) {
+    constructor(borderTypes: string[], furnitureTypes: string[], emptyType: string, meshDescriptorMap: Map<string, MeshDescriptor>, scaling?: Scaling) {
         this.borderTypes = borderTypes;
         this.furnitureTypes = furnitureTypes;
+        this.emptyType = emptyType;
         this.meshDescriptorMap = meshDescriptorMap;
         this.scaling = scaling ? scaling : { x: 1, y: 2};
     }
