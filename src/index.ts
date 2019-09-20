@@ -9,6 +9,9 @@ import { CreateMeshModifier } from './modifiers/CreateMeshModifier';
 import { CreateMockMeshModifier } from './modifiers/CreateMockMeshModifier';
 import { SplitWallsIntoTwoParallelChildWallsModifier } from './modifiers/SplitWallsIntoTwoParallelChildWallsModifier';
 import { ThickenBordersModifier } from './modifiers/ThickenBordersModifier';
+import * as ReactDOM from 'react-dom';
+import * as React from 'react';
+import { App } from './gui/App';
 
 export {WorldItem} from './WorldItem';
 export {BabylonjsDemo} from './integrations/babylonjs/demo/BabylonjsDemo';
@@ -26,6 +29,7 @@ export {BorderDimensionsDescriptor} from './Config';
 export {FurnitureDimensionsDescriptor} from './Config';
 export {Converter} from './WorldGenerator';
 
+
 export const transformators = {
     BuildHierarchyModifier,
     ScaleModifier,
@@ -38,4 +42,11 @@ export const transformators = {
     CreateMockMeshModifier,
     SplitWallsIntoTwoParallelChildWallsModifier,
     ThickenBordersModifier
+}
+
+export function renderApp(element: HTMLDivElement) {
+    ReactDOM.render(
+        React.createElement(App, null),
+        element
+    );
 }
