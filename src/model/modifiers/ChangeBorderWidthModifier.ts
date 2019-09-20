@@ -5,7 +5,7 @@ import { WorldItemUtils } from "../../WorldItemUtils";
 import { Modifier } from "./Modifier";
 import { ConvertBorderPolyToLineModifier } from './ConvertBorderPolyToLineModifier';
 import { ConfigService } from '../services/ConfigService';
-import _ = require("lodash");
+import { last } from '../utils/ArrayUtils';
 
 /**
  * This transformator can be used to adjust the width of a border item to it's real width.
@@ -52,8 +52,8 @@ export class ChangeBorderWidthModifier implements Modifier {
     }
 
     private resizeItem(border: WorldItem, orderedItems: WorldItem[], newSize: number) {
-        const rightItem = _.last(orderedItems) === border ? orderedItems[0] : orderedItems[orderedItems.indexOf(border) + 1];
-        const leftItem = _.first(orderedItems) === border ? _.last(orderedItems) : orderedItems[orderedItems.indexOf(border) - 1];
+        const rightItem = last(orderedItems) === border ? orderedItems[0] : orderedItems[orderedItems.indexOf(border) + 1];
+        const leftItem = orderedItems[0] === border ? last(orderedItems) : orderedItems[orderedItems.indexOf(border) - 1];
 
         let neighbours = leftItem.dimensions.hasPoint(border.dimensions.getPoints()[0]) ? [leftItem, rightItem] : [rightItem, leftItem];
 

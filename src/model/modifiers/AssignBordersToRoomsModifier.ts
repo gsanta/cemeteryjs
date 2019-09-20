@@ -1,6 +1,5 @@
 import { WorldItem } from '../../WorldItem';
 import { Modifier } from './Modifier';
-import _ = require('lodash');
 import { WorldItemUtils } from '../../WorldItemUtils';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { BuildHierarchyModifier } from './BuildHierarchyModifier';

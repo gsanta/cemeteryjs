@@ -1,15 +1,28 @@
 import { MeshDescriptor, FurnitureDimensionsDescriptor, BorderDimensionsDescriptor } from "../../Config";
+import { DefinitionSectionParser } from "../parsers/DefinitionSectionParser";
 
 export type Scaling = {
     x: number,
     y: number
 }
 
+const DEFAULT_BORDERS = [
+    'wall',
+    'door',
+    'window'
+];
+
+const INTERNAL_TYPES = [
+    '_subarea',
+    'empty'
+]
+
 export class ConfigService {
     borderTypes: string[];
     furnitureTypes: string[];
     emptyType: string;
     meshDescriptorMap: Map<string, MeshDescriptor>;
+    typeToCharMap: Map<string, string>;
     scaling: Scaling;
 
     constructor(borderTypes: string[], furnitureTypes: string[], emptyType: string, meshDescriptorMap: Map<string, MeshDescriptor>, scaling?: Scaling) {
@@ -18,6 +31,13 @@ export class ConfigService {
         this.emptyType = emptyType;
         this.meshDescriptorMap = meshDescriptorMap;
         this.scaling = scaling ? scaling : { x: 1, y: 2};
+    }
+
+    update(worldMap: string) {
+        this.typeToCharMap = new DefinitionSectionParser().parse(worldMap);
+        const types = Array.from(this.typeToCharMap.keys())
+        this.borderTypes = DEFAULT_BORDERS;
+        this.furnitureTypes = types.filter(type => !this.borderTypes.includes(type) && !INTERNAL_TYPES.includes(type));
     }
 
     getFurnitureDimensions(type: string): FurnitureDimensionsDescriptor {

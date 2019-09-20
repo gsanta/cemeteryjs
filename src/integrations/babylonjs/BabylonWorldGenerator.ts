@@ -6,6 +6,7 @@ import { MeshDescriptor } from '../../Config';
 import { WorldConfig } from '../../model/services/ImporterService';
 import { ConfigService } from '../../model/services/ConfigService';
 import { ServiceFacade } from '../../model/services/ServiceFacade';
+import { DefinitionSectionParser } from '../../model/parsers/DefinitionSectionParser';
 
 
 export class BabylonWorldGenerator<T> implements WorldGenerator<T> {
@@ -22,18 +23,18 @@ export class BabylonWorldGenerator<T> implements WorldGenerator<T> {
         const meshFactoryService = new BabylonMeshFactoryService(this.scene);
         const meshLoaderService = new BabylonMeshTemplateService(this.scene);
 
+        const configService = new ConfigService(worldConfig.borders, worldConfig.furnitures, '-', meshDescriptorMap, {x: worldConfig.xScale, y: worldConfig.yScale});
+        configService.typeToCharMap = new DefinitionSectionParser().parse(worldMap);
+
+        const serviceFacade = new ServiceFacade<any, any, T>(
+            meshFactoryService,
+            meshLoaderService,
+            configService
+        );
+
         meshLoaderService
             .loadAll(worldConfig.meshDescriptors)
             .then(() => {
-
-                const configService = new ConfigService(worldConfig.borders, worldConfig.furnitures, '-', meshDescriptorMap, {x: worldConfig.xScale, y: worldConfig.yScale})
-
-                const serviceFacade = new ServiceFacade<any, any, T>(
-                    meshFactoryService,
-                    meshLoaderService,
-                    configService
-                );
-
                 const worldItems = serviceFacade.importerService.import(worldMap);
 
                 serviceFacade.converterService.convert(worldItems, converter);

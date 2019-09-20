@@ -20,7 +20,7 @@ describe('WorldMapToSubareaMapConverter', () => {
             I = window
             D = door
             W = wall
-            = = _section
+            = = _subarea
 
             \`
         `;
@@ -43,7 +43,7 @@ describe('WorldMapToSubareaMapConverter', () => {
             I = window
             D = door
             W = wall
-            = = _section
+            = = _subarea
 
             \`
         `;
@@ -74,7 +74,7 @@ describe('WorldMapToSubareaMapConverter', () => {
             W = wall
             T = table
             H = chair
-            = = _section
+            = = _subarea
 
             \`
         `;
@@ -99,7 +99,7 @@ describe('WorldMapToSubareaMapConverter', () => {
             W = wall
             T = table
             H = chair
-            = = _section
+            = = _subarea
 
             \`
         `;

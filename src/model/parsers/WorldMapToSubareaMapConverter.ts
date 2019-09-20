@@ -26,9 +26,9 @@ export class WorldMapToSubareaMapConverter extends WorldMapLineListener {
 
     private lines: string[] = [];
 
-    constructor(sectionCharacter: string, emptyCharacter: string, borderCharacters: string[]) {
+    constructor(subareaChar: string, emptyCharacter: string, borderCharacters: string[]) {
         super();
-        this.sectionCharacter = sectionCharacter;
+        this.sectionCharacter = subareaChar;
         this.emptyCharacter = emptyCharacter;
         this.borderCharacters = borderCharacters;
         this.worldMapReader = new WorldMapReader(this);

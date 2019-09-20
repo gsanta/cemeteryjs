@@ -31,7 +31,7 @@ export class PolygonAreaParser implements Parser {
 
     public parse(worldMap: string): WorldItem[] {
         const graph = this.parseWorldMap(worldMap);
-        const character = graph.getCharacterForName('empty');
+        const character = this.services.configService.typeToCharMap.get(this.itemName);;
 
         return graph.createConnectedComponentGraphsForCharacter(character)
             .map(componentGraph => {

@@ -22,7 +22,7 @@ describe('DefinitionSectionParser', () => {
             I = window
             D = door
             W = wall
-            = = _section
+            = = _subarea
 
             \`
         `;

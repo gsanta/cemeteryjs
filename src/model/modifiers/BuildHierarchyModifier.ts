@@ -1,10 +1,8 @@
-import { Parser } from "../parsers/Parser";
-import { Matrix } from "../parsers/Matrix";
 import { WorldItem } from "../../WorldItem";
 import { Modifier } from './Modifier';
-import _ = require("lodash");
 import { Polygon } from "@nightshifts.inc/geometry";
 import { SegmentBordersModifier } from './SegmentBordersModifier';
+import { without } from "../utils/ArrayUtils";
 
 /**
  * Creates relationship between `WorldItem`'s via adding a `WorldItem` to another as
@@ -29,9 +27,8 @@ export class BuildHierarchyModifier implements Modifier {
         let rootWorldItems = worldItems;
 
         worldItems.forEach(currentItem => {
-            _.chain(worldItems)
-                .without(...childrenAlreadyCategorized)
-                .without(currentItem)
+
+            return without(worldItems, ...[childrenAlreadyCategorized, currentItem])
                 .forEach((childItem: WorldItem) => {
                     if ((<Polygon>currentItem.dimensions).contains(<Polygon> childItem.dimensions)) {
                         // this condition ensures that no two items will be each other's children if they would have the
@@ -40,11 +37,10 @@ export class BuildHierarchyModifier implements Modifier {
                             currentItem.addChild(childItem);
                             childItem.parent = currentItem;
                             childrenAlreadyCategorized.push(childItem);
-                            rootWorldItems = _.without(rootWorldItems, childItem);
+                            rootWorldItems = without(rootWorldItems, childItem);
                         }
                     }
-                })
-                .value();
+                });
         });
 
         return rootWorldItems;
