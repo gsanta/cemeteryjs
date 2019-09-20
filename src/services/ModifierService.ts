@@ -1,4 +1,4 @@
-import { Modifier } from '../modifiers/Modifier';
+import { Modifier } from '../model/modifiers/Modifier';
 import { ModifierFactoryService } from './ModifierFactoryService';
 import { WorldItem } from '../WorldItem';
 

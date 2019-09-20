@@ -1,6 +1,6 @@
 import { WorldItem } from '../../src/WorldItem';
 import { Shape } from '@nightshifts.inc/geometry';
-import { hasAnyWorldItemInfoDimension } from '../parsers/BorderParser.test';
+import { hasAnyWorldItemInfoDimension } from '../model/parsers/BorderParser.test';
 
 declare global {
     namespace jest {

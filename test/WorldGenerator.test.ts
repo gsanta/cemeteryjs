@@ -1,8 +1,8 @@
 import { Point, Polygon } from '@nightshifts.inc/geometry';
-import { AssignBordersToRoomsModifier } from '../src/modifiers/AssignBordersToRoomsModifier';
-import { BuildHierarchyModifier } from '../src/modifiers/BuildHierarchyModifier';
-import { ScaleModifier } from '../src/modifiers/ScaleModifier';
-import { SegmentBordersModifier } from '../src/modifiers/SegmentBordersModifier';
+import { AssignBordersToRoomsModifier } from '../src/model/modifiers/AssignBordersToRoomsModifier';
+import { BuildHierarchyModifier } from '../src/model/modifiers/BuildHierarchyModifier';
+import { ScaleModifier } from '../src/model/modifiers/ScaleModifier';
+import { SegmentBordersModifier } from '../src/model/modifiers/SegmentBordersModifier';
 import { ServiceFacade } from '../src/services/ServiceFacade';
 import { WorldItem } from '../src/WorldItem';
 import { setup } from './test_utils/mocks';

@@ -1,4 +1,4 @@
-import { Parser } from '../parsers/Parser';
+import { Parser } from '../model/parsers/Parser';
 import { WorldItem } from '../WorldItem';
 
 export class ParserService {

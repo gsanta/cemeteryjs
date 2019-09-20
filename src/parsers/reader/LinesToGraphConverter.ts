@@ -1,4 +1,4 @@
-import { Matrix } from '../matrix/Matrix';
+import { Matrix } from '../../model/parsers/Matrix';
 import * as _ from 'lodash';
 
 export class LinesToGraphConverter {
