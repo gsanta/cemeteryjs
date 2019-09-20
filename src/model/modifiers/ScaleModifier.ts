@@ -1,8 +1,8 @@
 import { WorldItem } from '../../WorldItem';
-import { TreeIteratorGenerator } from '../../utils/TreeIteratorGenerator';
+import { TreeIteratorGenerator } from '../utils/TreeIteratorGenerator';
 import { Modifier } from './Modifier';
 import { Point } from '@nightshifts.inc/geometry';
-import { Scaling, ConfigService } from '../../services/ConfigService';
+import { Scaling, ConfigService } from '../services/ConfigService';
 
 
 /**

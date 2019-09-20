@@ -3,7 +3,7 @@ import { WorldItem } from "../../WorldItem";
 import { Polygon, Segment, Distance, Line, Point, Angle, Transform, Measurements, Shape } from '@nightshifts.inc/geometry';
 import { Modifier } from './Modifier';
 import { NormalizeBorderRotationModifier } from "./NormalizeBorderRotationModifier";
-import { MeshTemplateService } from "../../services/MeshTemplateService";
+import { MeshTemplateService } from "../services/MeshTemplateService";
 import { toRadian } from "@nightshifts.inc/geometry/build/utils/GeometryUtils";
 
 

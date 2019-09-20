@@ -1,8 +1,8 @@
 import { Matrix } from "./Matrix";
-import { WorldMapToMatrixGraphConverter } from "../../parsers/reader/WorldMapToMatrixGraphConverter";
+import { WorldMapToMatrixGraphConverter } from "./reader/WorldMapToMatrixGraphConverter";
 import { WorldItem } from "../../WorldItem";
 import { Parser } from './Parser';
-import { WorldItemFactoryService } from '../../services/WorldItemFactoryService';
+import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 import { Polygon } from "@nightshifts.inc/geometry";
 
 

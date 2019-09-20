@@ -1,4 +1,4 @@
-import { WorldItem } from '../WorldItem';
+import { WorldItem } from '../../WorldItem';
 
 export function* TreeIteratorGenerator(worldItem: WorldItem): IterableIterator<WorldItem> {
 

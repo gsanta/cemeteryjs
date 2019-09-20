@@ -3,9 +3,9 @@ import { WorldGenerator, Converter } from '../../WorldGenerator';
 import { BabylonMeshFactoryService } from './services/BabylonMeshFactoryService';
 import { BabylonMeshTemplateService } from './services/BabylonMeshTemplateService';
 import { MeshDescriptor } from '../../Config';
-import { WorldConfig } from '../../services/ImporterService';
-import { ConfigService } from '../../services/ConfigService';
-import { ServiceFacade } from '../../services/ServiceFacade';
+import { WorldConfig } from '../../model/services/ImporterService';
+import { ConfigService } from '../../model/services/ConfigService';
+import { ServiceFacade } from '../../model/services/ServiceFacade';
 
 
 export class BabylonWorldGenerator<T> implements WorldGenerator<T> {

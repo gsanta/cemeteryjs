@@ -1,11 +1,11 @@
 import { Matrix } from './Matrix';
 import { WorldItem } from '../../WorldItem';
 import { Parser } from './Parser';
-import { WorldMapToMatrixGraphConverter } from '../../parsers/reader/WorldMapToMatrixGraphConverter';
+import { WorldMapToMatrixGraphConverter } from './reader/WorldMapToMatrixGraphConverter';
 import { Polygon } from '@nightshifts.inc/geometry';
-import { WorldItemFactoryService } from '../../services/WorldItemFactoryService';
+import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 import * as _ from 'lodash';
-import { flat } from '../../utils/ArrayUtils';
+import { flat } from '../utils/ArrayUtils';
 
 export class FurnitureParser implements Parser {
     private worldItemInfoFactory: WorldItemFactoryService

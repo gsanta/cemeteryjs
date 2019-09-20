@@ -1,18 +1,18 @@
-import { Modifier } from '../model/modifiers/Modifier';
+import { Modifier } from '../modifiers/Modifier';
 import { ServiceFacade } from './ServiceFacade';
-import { SplitWallsIntoTwoParallelChildWallsModifier } from '../model/modifiers/SplitWallsIntoTwoParallelChildWallsModifier';
-import { AddRoofModifier } from '../model/modifiers/AddRoofModifier';
-import { AssignBordersToRoomsModifier } from '../model/modifiers/AssignBordersToRoomsModifier';
-import { BuildHierarchyModifier } from '../model/modifiers/BuildHierarchyModifier';
-import { ChangeBorderWidthModifier } from '../model/modifiers/ChangeBorderWidthModifier';
-import { ChangeFurnitureSizeModifier } from '../model/modifiers/ChangeFurnitureSizeModifier';
-import { ConvertBorderPolyToLineModifier } from '../model/modifiers/ConvertBorderPolyToLineModifier';
-import { CreateMeshModifier } from '../model/modifiers/CreateMeshModifier';
-import { NormalizeBorderRotationModifier } from '../model/modifiers/NormalizeBorderRotationModifier';
-import { ScaleModifier } from '../model/modifiers/ScaleModifier';
-import { SegmentBordersModifier } from '../model/modifiers/SegmentBordersModifier';
-import { ThickenBordersModifier } from '../model/modifiers/ThickenBordersModifier';
-import { TransformToWorldCoordinateModifier } from '../model/modifiers/TransformToWorldCoordinateModifier';
+import { SplitWallsIntoTwoParallelChildWallsModifier } from '../modifiers/SplitWallsIntoTwoParallelChildWallsModifier';
+import { AddRoofModifier } from '../modifiers/AddRoofModifier';
+import { AssignBordersToRoomsModifier } from '../modifiers/AssignBordersToRoomsModifier';
+import { BuildHierarchyModifier } from '../modifiers/BuildHierarchyModifier';
+import { ChangeBorderWidthModifier } from '../modifiers/ChangeBorderWidthModifier';
+import { ChangeFurnitureSizeModifier } from '../modifiers/ChangeFurnitureSizeModifier';
+import { ConvertBorderPolyToLineModifier } from '../modifiers/ConvertBorderPolyToLineModifier';
+import { CreateMeshModifier } from '../modifiers/CreateMeshModifier';
+import { NormalizeBorderRotationModifier } from '../modifiers/NormalizeBorderRotationModifier';
+import { ScaleModifier } from '../modifiers/ScaleModifier';
+import { SegmentBordersModifier } from '../modifiers/SegmentBordersModifier';
+import { ThickenBordersModifier } from '../modifiers/ThickenBordersModifier';
+import { TransformToWorldCoordinateModifier } from '../modifiers/TransformToWorldCoordinateModifier';
 
 export class ModifierFactoryService {
     private modifierMap: Map<string, Modifier> = new Map();

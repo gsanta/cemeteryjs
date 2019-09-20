@@ -1,7 +1,7 @@
 import { WorldItem } from "../../WorldItem";
 import { Modifier } from "./Modifier";
 import { Shape, Point } from "@nightshifts.inc/geometry";
-import { TreeIteratorGenerator } from "../../utils/TreeIteratorGenerator";
+import { TreeIteratorGenerator } from "../utils/TreeIteratorGenerator";
 
 export class TransformToWorldCoordinateModifier implements Modifier {
     static modName = 'transformToWorldCoordinate';

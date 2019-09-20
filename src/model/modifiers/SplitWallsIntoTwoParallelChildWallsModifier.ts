@@ -1,5 +1,5 @@
 import { GeometryService, Segment } from '@nightshifts.inc/geometry';
-import { WorldItemFactoryService } from '../../services/WorldItemFactoryService';
+import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 import { WorldItem } from "../../WorldItem";
 import { Modifier } from "./Modifier";
 import { ThickenBordersModifier } from "./ThickenBordersModifier";

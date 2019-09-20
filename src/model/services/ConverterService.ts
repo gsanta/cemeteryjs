@@ -1,5 +1,5 @@
-import { WorldItem } from "../WorldItem";
-import { Converter } from "../WorldGenerator";
+import { WorldItem } from "../../WorldItem";
+import { Converter } from "../../WorldGenerator";
 import { TreeIteratorGenerator } from "../utils/TreeIteratorGenerator";
 
 export interface Convert<T> {

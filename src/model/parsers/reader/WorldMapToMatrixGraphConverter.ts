@@ -1,5 +1,5 @@
 import { LinesToGraphConverter } from './LinesToGraphConverter';
-import { Matrix } from '../../model/parsers/Matrix';
+import { Matrix } from '../Matrix';
 import { DetailsLineToObjectConverter, DetailsLineDataTypes } from './DetailsLineToObjectConverter';
 import { WorldMapLineListener, WorldMapReader } from './WorldMapReader';
 

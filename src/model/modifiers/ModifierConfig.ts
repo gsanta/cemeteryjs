@@ -1,6 +1,6 @@
 import { Polygon } from "@nightshifts.inc/geometry";
 import { MeshTemplate } from "../../MeshTemplate";
-import { MeshFactoryService } from "../../services/MeshFactoryService";
+import { MeshFactoryService } from "../services/MeshFactoryService";
 import { MeshDescriptor } from "../../Config";
 
 

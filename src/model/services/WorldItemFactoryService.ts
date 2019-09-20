@@ -1,5 +1,5 @@
 import { Polygon } from "@nightshifts.inc/geometry";
-import { WorldItem } from '../WorldItem';
+import { WorldItem } from '../../WorldItem';
 
 
 /**

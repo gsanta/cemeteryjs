@@ -1,5 +1,5 @@
 import { MockWorldGenerator } from '../../../src/integrations/mock/MockWorldGenerator';
-import { WorldConfig } from '../../../src/services/ImporterService';
+import { WorldConfig } from '../../../src/model/services/ImporterService';
 import { WorldItem } from '../../../src/WorldItem';
 import { meshDescriptors } from '../../setup/meshDescriptors';
 

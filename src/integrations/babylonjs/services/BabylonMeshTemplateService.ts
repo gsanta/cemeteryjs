@@ -2,7 +2,7 @@ import { Scene, Mesh, Skeleton, StandardMaterial, AbstractMesh, ParticleSystem, 
 import 'babylonjs-loaders';
 import { MeshTemplate } from '../../../MeshTemplate';
 import { MeshDescriptor, FileDescriptor } from '../../../Config';
-import { MeshTemplateService } from '../../../services/MeshTemplateService';
+import { MeshTemplateService } from '../../../model/services/MeshTemplateService';
 import { Point } from '@nightshifts.inc/geometry';
 
 export interface MeshTemplateConfig {

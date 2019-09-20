@@ -1,4 +1,4 @@
-import { MeshDescriptor, FurnitureDimensionsDescriptor, BorderDimensionsDescriptor } from "../Config";
+import { MeshDescriptor, FurnitureDimensionsDescriptor, BorderDimensionsDescriptor } from "../../Config";
 
 export type Scaling = {
     x: number,

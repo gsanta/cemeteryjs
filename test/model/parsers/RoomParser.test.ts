@@ -6,7 +6,7 @@ import { setup } from '../../test_utils/mocks';
 describe('RoomParser', () => {
     describe ('generate', () => {
         it ('converts a complicated real-world example to the correct room Polygons.', () => {
-            const worldMap = fs.readFileSync(__dirname + '/../../assets/test/big_world.gwm', 'utf8');
+            const worldMap = fs.readFileSync(__dirname + '/../../../assets/test/big_world.gwm', 'utf8');
 
             const services = setup();
             const roomInfoParser = new RoomParser(services, ['W', 'D', 'I']);

@@ -18,7 +18,7 @@ export {BabylonjsDemo} from './integrations/babylonjs/demo/BabylonjsDemo';
 export {WorldGenerator} from './WorldGenerator';
 export {BabylonWorldGenerator} from './integrations/babylonjs/BabylonWorldGenerator';
 export {MockWorldGenerator} from './integrations/mock/MockWorldGenerator';
-export {WorldConfig} from './services/ImporterService';
+export {WorldConfig} from './model/services/ImporterService';
 export {MeshDescriptor} from './Config';
 export {FileDescriptor} from './Config';
 export {ParentRoomBasedMaterialDescriptor} from './Config';

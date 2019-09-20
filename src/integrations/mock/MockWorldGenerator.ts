@@ -1,13 +1,13 @@
 import { Scene } from 'babylonjs/scene';
 import { WorldGenerator, Converter } from '../../WorldGenerator';
 import { MeshDescriptor, FurnitureDimensionsDescriptor } from '../../Config';
-import { WorldConfig } from '../../services/ImporterService';
-import { ConfigService } from '../../services/ConfigService';
-import { ServiceFacade } from '../../services/ServiceFacade';
-import { MeshFactoryService } from '../../services/MeshFactoryService';
+import { WorldConfig } from '../../model/services/ImporterService';
+import { ConfigService } from '../../model/services/ConfigService';
+import { ServiceFacade } from '../../model/services/ServiceFacade';
+import { MeshFactoryService } from '../../model/services/MeshFactoryService';
 import { WorldItem } from '../../WorldItem';
 import { MeshTemplate } from '../../MeshTemplate';
-import { MeshTemplateService } from '../../services/MeshTemplateService';
+import { MeshTemplateService } from '../../model/services/MeshTemplateService';
 import { Point } from '@nightshifts.inc/geometry';
 import { setup } from '../../../test/test_utils/mocks';
 

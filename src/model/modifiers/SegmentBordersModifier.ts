@@ -2,11 +2,11 @@ import { WorldItem } from "../../WorldItem";
 import _ = require("lodash");
 import { Modifier } from './Modifier';
 import { Polygon, Point, Line, StripeView, GeometryService } from '@nightshifts.inc/geometry';
-import { WorldItemFactoryService } from '../../services/WorldItemFactoryService';
+import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { WorldItemUtils } from '../../WorldItemUtils';
 import { ScaleModifier } from "./ScaleModifier";
-import { ConfigService } from '../../services/ConfigService';
+import { ConfigService } from '../services/ConfigService';
 
 /**
  * If a border spans alongside multiple rooms it cuts the border into pieces so that each piece will separate exactly two neigbouring rooms

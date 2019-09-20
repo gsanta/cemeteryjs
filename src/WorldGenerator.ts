@@ -1,12 +1,12 @@
 import { WorldItem } from "./WorldItem";
 import { MeshDescriptor } from './Config';
-import { WorldConfig, defaultWorldConfig, ImporterService } from "./services/ImporterService";
-import { ServiceFacade } from "./services/ServiceFacade";
-import { ConverterService } from './services/ConverterService';
-import { MeshFactoryService } from './services/MeshFactoryService';
-import { ConfigService } from './services/ConfigService';
-import { MeshTemplateService } from './services/MeshTemplateService';
-import { ModifierFactoryService } from './services/ModifierFactoryService';
+import { WorldConfig, defaultWorldConfig, ImporterService } from "./model/services/ImporterService";
+import { ServiceFacade } from "./model/services/ServiceFacade";
+import { ConverterService } from './model/services/ConverterService';
+import { MeshFactoryService } from './model/services/MeshFactoryService';
+import { ConfigService } from './model/services/ConfigService';
+import { MeshTemplateService } from './model/services/MeshTemplateService';
+import { ModifierFactoryService } from './model/services/ModifierFactoryService';
 
 
 export interface Converter<T> {

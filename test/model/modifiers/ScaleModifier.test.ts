@@ -1,7 +1,7 @@
 import { ScaleModifier } from '../../../src/model/modifiers/ScaleModifier';
 import { WorldItem } from '../../../src/WorldItem';
 import { Polygon } from '@nightshifts.inc/geometry';
-import { ConfigService } from '../../../src/services/ConfigService';
+import { ConfigService } from '../../../src/model/services/ConfigService';
 
 describe ('ScaleModifier', () => {
     describe ('`apply`', () => {

@@ -1,7 +1,7 @@
 import { FurnitureParser } from '../../../src/model/parsers/FurnitureParser';
 import { WorldItem } from '../../../src/WorldItem';
 import { Polygon } from '@nightshifts.inc/geometry';
-import { WorldItemFactoryService } from '../../../src/services/WorldItemFactoryService';
+import { WorldItemFactoryService } from '../../../src/model/services/WorldItemFactoryService';
 
 describe('FurnitureParser', () => {
     describe('generate', () => {

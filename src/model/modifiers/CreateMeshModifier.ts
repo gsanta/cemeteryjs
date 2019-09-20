@@ -1,7 +1,7 @@
-import { ConfigService } from '../../services/ConfigService';
-import { MeshFactoryService } from "../../services/MeshFactoryService";
-import { MeshTemplateService } from '../../services/MeshTemplateService';
-import { TreeIteratorGenerator } from "../../utils/TreeIteratorGenerator";
+import { ConfigService } from '../services/ConfigService';
+import { MeshFactoryService } from "../services/MeshFactoryService";
+import { MeshTemplateService } from '../services/MeshTemplateService';
+import { TreeIteratorGenerator } from "../utils/TreeIteratorGenerator";
 import { WorldItem } from "../../WorldItem";
 import { ChangeFurnitureSizeModifier } from './ChangeFurnitureSizeModifier';
 import { Modifier } from './Modifier';

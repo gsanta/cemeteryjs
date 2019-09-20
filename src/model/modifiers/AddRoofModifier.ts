@@ -1,7 +1,7 @@
 import { Modifier } from "./Modifier";
 import { WorldItem } from "../../WorldItem";
 import { WorldItemUtils } from '../../WorldItemUtils';
-import { WorldItemFactoryService } from '../../services/WorldItemFactoryService';
+import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 
 /**
  * For each `WorldItem` of type 'room' it creates a new `WorldIemInfo` of type 'roof'.

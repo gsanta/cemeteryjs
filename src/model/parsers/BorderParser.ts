@@ -2,10 +2,10 @@ import { Matrix } from './Matrix';
 import { WorldItem } from '../../WorldItem';
 import * as _ from 'lodash';
 import { Parser } from './Parser';
-import { WorldMapToMatrixGraphConverter } from '../../parsers/reader/WorldMapToMatrixGraphConverter';
-import { WorldItemFactoryService } from '../../services/WorldItemFactoryService';
+import { WorldMapToMatrixGraphConverter } from './reader/WorldMapToMatrixGraphConverter';
+import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 import { Polygon } from '@nightshifts.inc/geometry';
-import { flat } from '../../utils/ArrayUtils';
+import { flat } from '../utils/ArrayUtils';
 
 export class BorderParser implements Parser {
     private worldItemInfoFactory: WorldItemFactoryService;

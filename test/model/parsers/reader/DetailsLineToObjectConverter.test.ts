@@ -1,4 +1,4 @@
-import { DetailsLineToObjectConverter, DetailsLineDataTypes } from '../../../src/parsers/reader/DetailsLineToObjectConverter';
+import { DetailsLineToObjectConverter, DetailsLineDataTypes } from '../../../../src/model/parsers/reader/DetailsLineToObjectConverter';
 
 describe('DetailsLineToObjectConverter', () => {
     describe('convert', () => {

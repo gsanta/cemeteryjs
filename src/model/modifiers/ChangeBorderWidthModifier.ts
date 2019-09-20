@@ -1,10 +1,10 @@
 import { Point, Segment } from '@nightshifts.inc/geometry';
-import { RoomUtils } from "../../utils/RoomUtils";
+import { RoomUtils } from "../utils/RoomUtils";
 import { WorldItem } from "../../WorldItem";
 import { WorldItemUtils } from "../../WorldItemUtils";
 import { Modifier } from "./Modifier";
 import { ConvertBorderPolyToLineModifier } from './ConvertBorderPolyToLineModifier';
-import { ConfigService } from '../../services/ConfigService';
+import { ConfigService } from '../services/ConfigService';
 import _ = require("lodash");
 
 /**

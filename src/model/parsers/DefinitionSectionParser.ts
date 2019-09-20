@@ -1,4 +1,4 @@
-import { WorldMapLineListener, WorldMapReader } from "../../parsers/reader/WorldMapReader";
+import { WorldMapLineListener, WorldMapReader } from "./reader/WorldMapReader";
 
 const DEFINITION_SECTION_LINE_TEST = /^\s*(\S)\s*\=\s*(\S*)\s*$/;
 

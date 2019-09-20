@@ -1,6 +1,6 @@
-import { Modifier } from '../model/modifiers/Modifier';
+import { Modifier } from '../modifiers/Modifier';
 import { ModifierFactoryService } from './ModifierFactoryService';
-import { WorldItem } from '../WorldItem';
+import { WorldItem } from '../../WorldItem';
 
 
 export class ModifierService {

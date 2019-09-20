@@ -6,7 +6,7 @@ import { BabylonWorldGenerator } from '../BabylonWorldGenerator';
 // const strWorld = require('raw-loader!../../../../assets/test/demo_world.gwm');
 // import strWorld from 'raw-loader!../../../../assets/test/demo_world.gwm';
 import { MeshDescriptor } from '../../../Config';
-import { WorldConfig } from '../../../services/ImporterService';
+import { WorldConfig } from '../../../model/services/ImporterService';
 import { WorldItem } from '../../../WorldItem';
 import { meshDescriptors } from '../../../../test/setup/meshDescriptors';
 

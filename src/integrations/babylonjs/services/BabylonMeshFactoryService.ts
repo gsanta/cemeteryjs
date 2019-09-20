@@ -11,7 +11,7 @@ import { RoomFactory } from '../factories/RoomFactory';
 import { DiscFactory } from '../factories/DiscFactory';
 import { MaterialFactory, MaterialBuilder } from '../MaterialFactory';
 import { MeshDescriptor, ShapeDescriptor, RoomDescriptor } from '../../../Config';
-import { MeshFactoryService } from '../../../services/MeshFactoryService';
+import { MeshFactoryService } from '../../../model/services/MeshFactoryService';
 import { ModelFactory } from '../factories/ModelFactory';
 
 export interface MeshTemplateConfig {

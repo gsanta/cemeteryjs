@@ -1,6 +1,6 @@
-import { WorldMapToMatrixGraphConverter } from "../../../src/parsers/reader/WorldMapToMatrixGraphConverter";
+import { WorldMapToMatrixGraphConverter } from "../../../src/model/parsers/reader/WorldMapToMatrixGraphConverter";
 import { BorderParser } from '../../../src/model/parsers/BorderParser';
-import { WorldItemFactoryService } from '../../../src/services/WorldItemFactoryService';
+import { WorldItemFactoryService } from '../../../src/model/services/WorldItemFactoryService';
 import { Polygon, Shape } from "@nightshifts.inc/geometry";
 import { WorldItem } from '../../../src/WorldItem';
 import * as _ from 'lodash';

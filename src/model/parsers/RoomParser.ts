@@ -1,8 +1,8 @@
-import { ServiceFacade } from '../../services/ServiceFacade';
+import { ServiceFacade } from '../services/ServiceFacade';
 import { WorldItem } from '../../WorldItem';
 import { Parser } from "./Parser";
 import { PolygonAreaParser } from './PolygonAreaParser';
-import { WorldMapToMatrixGraphConverter } from "../../parsers/reader/WorldMapToMatrixGraphConverter";
+import { WorldMapToMatrixGraphConverter } from "./reader/WorldMapToMatrixGraphConverter";
 import { WorldMapToRoomMapConverter } from './WorldMapToRoomMapConverter';
 import _ = require("lodash");
 

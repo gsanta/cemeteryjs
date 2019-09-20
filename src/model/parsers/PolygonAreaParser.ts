@@ -1,11 +1,11 @@
 import { GeometryService, Point } from "@nightshifts.inc/geometry";
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
-import { ServiceFacade } from '../../services/ServiceFacade';
+import { ServiceFacade } from '../services/ServiceFacade';
 import { WorldItem } from '../../WorldItem';
 import { Matrix } from "./Matrix";
 import { Parser } from "./Parser";
 import { PolygonRedundantPointReducer } from "./PolygonRedundantPointReducer";
-import { WorldMapToMatrixGraphConverter } from "../../parsers/reader/WorldMapToMatrixGraphConverter";
+import { WorldMapToMatrixGraphConverter } from "./reader/WorldMapToMatrixGraphConverter";
 import _ = require("lodash");
 
 /**

@@ -1,6 +1,6 @@
 import { Modifier } from "./Modifier";
 import { WorldItem } from "../../WorldItem";
-import { TreeIteratorGenerator } from "../../utils/TreeIteratorGenerator";
+import { TreeIteratorGenerator } from "../utils/TreeIteratorGenerator";
 
 
 export interface MockMeshCreator<M> {

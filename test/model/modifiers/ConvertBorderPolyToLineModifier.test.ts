@@ -5,7 +5,7 @@ import { BuildHierarchyModifier } from '../../../src/model/modifiers/BuildHierar
 import { ConvertBorderPolyToLineModifier } from '../../../src/model/modifiers/ConvertBorderPolyToLineModifier';
 import { ScaleModifier } from '../../../src/model/modifiers/ScaleModifier';
 import { SegmentBordersModifier } from '../../../src/model/modifiers/SegmentBordersModifier';
-import { ServiceFacade } from '../../../src/services/ServiceFacade';
+import { ServiceFacade } from '../../../src/model/services/ServiceFacade';
 import { hasAnyWorldItemInfoDimension } from '../parsers/BorderParser.test';
 import { findWorldItemWithDimensions, setup } from '../../test_utils/mocks';
 

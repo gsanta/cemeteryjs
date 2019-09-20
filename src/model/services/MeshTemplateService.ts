@@ -1,5 +1,5 @@
-import { MeshTemplate } from "../MeshTemplate";
-import { MeshDescriptor, FileDescriptor } from "../Config";
+import { MeshTemplate } from "../../MeshTemplate";
+import { MeshDescriptor, FileDescriptor } from "../../Config";
 import { Point } from "@nightshifts.inc/geometry";
 
 export interface MeshTemplateService<M, S> {

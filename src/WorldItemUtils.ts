@@ -1,5 +1,5 @@
 import { WorldItem } from "./WorldItem";
-import { TreeIteratorGenerator } from "./utils/TreeIteratorGenerator";
+import { TreeIteratorGenerator } from "./model/utils/TreeIteratorGenerator";
 import _ = require("lodash");
 
 

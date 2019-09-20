@@ -7,7 +7,7 @@ import { ChangeFurnitureSizeModifier } from '../../../src/model/modifiers/Change
 import { ConvertBorderPolyToLineModifier } from "../../../src/model/modifiers/ConvertBorderPolyToLineModifier";
 import { ScaleModifier } from "../../../src/model/modifiers/ScaleModifier";
 import { SegmentBordersModifier } from "../../../src/model/modifiers/SegmentBordersModifier";
-import { ServiceFacade } from "../../../src/services/ServiceFacade";
+import { ServiceFacade } from "../../../src/model/services/ServiceFacade";
 import { setup } from "../../test_utils/mocks";
 import { NormalizeBorderRotationModifier } from '../../../src/model/modifiers/NormalizeBorderRotationModifier';
 import { SplitWallsIntoTwoParallelChildWallsModifier } from '../../../src/model/modifiers/SplitWallsIntoTwoParallelChildWallsModifier';
