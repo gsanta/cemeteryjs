@@ -26,11 +26,9 @@ export interface EditorProps {
 }
 
 export class Editor extends React.Component<EditorProps, EditorState> {
-    private contentEditable: React.RefObject<HTMLDivElement>;
 
     constructor(props: EditorProps) {
         super(props);
-        this.contentEditable = React.createRef();
         this.handleChange = this.handleChange.bind(this);
         this.handleChange = debounce(this.handleChange, 500)
 
