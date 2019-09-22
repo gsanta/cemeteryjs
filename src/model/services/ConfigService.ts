@@ -25,12 +25,14 @@ export class ConfigService {
     typeToCharMap: Map<string, string>;
     scaling: Scaling;
 
-    constructor(borderTypes: string[], furnitureTypes: string[], emptyType: string, meshDescriptorMap: Map<string, MeshDescriptor>, scaling?: Scaling) {
-        this.borderTypes = borderTypes;
-        this.furnitureTypes = furnitureTypes;
-        this.emptyType = emptyType;
+    constructor(worldMap: string, meshDescriptorMap: Map<string, MeshDescriptor>) {
+        // this.borderTypes = borderTypes;
+        // this.furnitureTypes = furnitureTypes;
+        // this.emptyType = emptyType;
         this.meshDescriptorMap = meshDescriptorMap;
-        this.scaling = scaling ? scaling : { x: 1, y: 2};
+        this.update(worldMap)
+        // this.scaling = scaling ? scaling : { x: 1, y: 2};
+        this.scaling = { x: 1, y: 2};
     }
 
     update(worldMap: string) {

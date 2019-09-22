@@ -9,6 +9,7 @@ import { MeshDescriptor } from '../../../Config';
 import { WorldConfig } from '../../../model/services/ImporterService';
 import { WorldItem } from '../../../WorldItem';
 import { meshDescriptors } from '../../../../test/setup/meshDescriptors';
+import { WorldItemUtils } from '../../../WorldItemUtils';
 
 /*
 
@@ -23,9 +24,25 @@ W--------------------------W
 W--------OOOOO-------------W
 W--------OOOOO-------------W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWW
-*/
-const strWorld = `map \`
 
+WWWWWWWWWIIWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+W-------------------------------W-------------------W
+W-------------------------------W-------------------W
+W-------------------------------W-------------------W
+W-------------------------------W-------------------W
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+W---------------------------------------------------W
+W---------------------------------------------------W
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+WEEEEE-----OOOOO-------------TTTTTW-----------------W
+WEEEEE-----OOOOO-------------TTTTTW-----------------W
+W--------XX----TTT---------------OD-----------------I
+W--------XX----TTT------OOOOO----OD-----------------I
+WOOO--------------------OOOOO----OW-----------------W
+WWWWIIIIWWWWWWWWWWWWWDDDWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+*/
+
+/*
 WWWWWWWWWIIWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 W-----------------==H=H==-------W-------------------W
 W-----------------=TTTTT=-------W-------------------W
@@ -41,7 +58,24 @@ W--------XX----TTT---------------OD-----------------I
 W--------XX----TTT------OOOOO----OD-----------------I
 WOOO--------------------OOOOO----OW-----------------W
 WWWWIIIIWWWWWWWWWWWWWDDDWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+*/
+const strWorld = `map \`
 
+WWWWWWWWWIIWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+W-------------------------------W-------------------W
+W-------------------------------W-------------------W
+W-------------------------------W-------------------W
+W-------------------------------W-------------------W
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+W---------------------------------------------------W
+W---------------------------------------------------W
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+WEEEEE-----OOOOO-------------TTTTTW-----------------W
+WEEEEE-----OOOOO-------------TTTTTW-----------------W
+W--------XX----TTT---------------OD-----------------I
+W--------XX----TTT------OOOOO----OD-----------------I
+WOOO--------------------OOOOO----OW-----------------W
+WWWWIIIIWWWWWWWWWWWWWDDDWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 \`
 
@@ -69,7 +103,7 @@ O = shelves
 `
 
 export class BabylonjsDemo {
-    public setupDemo(canvas: HTMLCanvasElement): void {
+    public setupDemo(model: string, canvas: HTMLCanvasElement): void {
 
         const engine = new Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
         const scene = new Scene(engine);
@@ -81,15 +115,7 @@ export class BabylonjsDemo {
         light.diffuse = new Color3(1, 1, 1);
         light.intensity = 1;
 
-        const worldConfig: WorldConfig = {
-            meshDescriptors: meshDescriptors,
-            borders: ['door', 'window', 'wall'],
-            furnitures: ['empty', 'player', 'cupboard', 'table', 'bathtub', 'washbasin', 'bed', 'chair', 'double_bed', 'shelves'],
-            xScale: 1,
-            yScale: 2
-        }
-
-        new BabylonWorldGenerator(scene).generate(strWorld, worldConfig, {
+        new BabylonWorldGenerator(scene).generate(model, meshDescriptors, {
             convert(worldItem: WorldItem): any {
                 if (worldItem.name === 'wall' && worldItem.children.length > 0) {
                     worldItem.meshTemplate.meshes[0].isVisible = false;

@@ -1,49 +1,48 @@
 import * as React from 'react';
 import './Editor.css';
-import ContentEditable from 'react-contenteditable';
 import * as monaco from 'monaco-editor';
 
 interface EditorState {
     map: string;
 }
 
-const map = `
-WWWWWWWWWIIWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-W-----------------==H=H==-------W-------------------W
-W-----------------=TTTTT=-------W-------------------W
-W-----------------=TTTTT=-------W-------------------W
-W-----------------==H=H==-------W-------------------W
-WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-W---------------------------------------------------W
-W---------------------------------------------------W
-WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-WEEEEE-----OOOOO-------------TTTTTW-----------------W
-WEEEEE-----OOOOO-------------TTTTTW-----------------W
-W--------XX----TTT---------------OD-----------------I
-W--------XX----TTT------OOOOO----OD-----------------I
-WOOO--------------------OOOOO----OW-----------------W
-WWWWIIIIWWWWWWWWWWWWWDDDWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-`;
+function debounce(func, wait) {
+	let timeout;
+	return function() {
+		const context = this, args = arguments;
+		const later = function() {
+			timeout = null;
+			func.apply(context, args);
+        };
 
-export class Editor extends React.Component<{}, EditorState> {
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+	};
+};
+
+export interface EditorProps {
+    onModelChanged(content: string): void;
+    initialModel: string;
+}
+
+export class Editor extends React.Component<EditorProps, EditorState> {
     private contentEditable: React.RefObject<HTMLDivElement>;
 
-    constructor(props: {}) {
+    constructor(props: EditorProps) {
         super(props);
         this.contentEditable = React.createRef();
-
+        this.handleChange = this.handleChange.bind(this);
+        this.handleChange = debounce(this.handleChange, 500)
 
         this.state = {
-            map//: Array(15000).join('-')
+            map: this.props.initialModel
         }
     }
 
     componentDidMount() {
-        // Register a new language
-        monaco.languages.register({ id: 'mySpecialLanguage' });
+        monaco.languages.register({ id: 'nightshiftsLanguage' });
 
-        // Register a tokens provider for the language
-        monaco.languages.setMonarchTokensProvider('mySpecialLanguage', {
+        monaco.languages.setMonarchTokensProvider('nightshiftsLanguage', {
             tokenizer: {
                 root: [
                     [/W/, "character-W"],
@@ -55,8 +54,7 @@ export class Editor extends React.Component<{}, EditorState> {
             }
         });
 
-        // Define a new theme that contains only rules that match this language
-        monaco.editor.defineTheme('myCoolTheme', {
+        monaco.editor.defineTheme('nightshiftsTheme', {
             base: 'vs',
             inherit: false,
             rules: [
@@ -69,31 +67,25 @@ export class Editor extends React.Component<{}, EditorState> {
         });
 
 
-        monaco.editor.create(document.getElementById('editor'), {
+        const editor = monaco.editor.create(document.getElementById('editor'), {
             value: this.state.map,
-            theme: 'myCoolTheme',
-            language: 'mySpecialLanguage'
+            theme: 'nightshiftsTheme',
+            language: 'nightshiftsLanguage'
           });
+
+        editor.onDidChangeModelContent(() => {
+            this.handleChange(editor.getValue());
+        })
     }
 
     render(): JSX.Element {
         return (
             <div className="editor" id="editor"></div>
-        )
-        // return (
-        //     <ContentEditable
-        //         innerRef={this.contentEditable}
-        //         html={this.state.map} // innerHTML of the editable div
-        //         disabled={false}       // use true to disable editing
-        //         onChange={this.handleChange} // handle innerHTML change
-        //         tagName='article' // Use a custom HTML tag (uses a div by default)
-        //         className="editor"
-        //     />
-        // )
+        );
     }
 
 
-    handleChange(evt) {
-        this.setState({map: evt.target.value});
+    handleChange(model: string) {
+        this.props.onModelChanged(model);
     };
 }

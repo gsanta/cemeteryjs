@@ -17,5 +17,5 @@ export interface Converter<T> {
 }
 
 export interface WorldGenerator<T> {
-    generate(worldMap: string, worldConfig: WorldConfig, converter: Converter<T>);
+    generate(worldMap: string, meshDescriptors: MeshDescriptor[], converter: Converter<T>);
 }

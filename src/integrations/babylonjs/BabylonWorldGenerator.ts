@@ -16,14 +16,14 @@ export class BabylonWorldGenerator<T> implements WorldGenerator<T> {
         this.scene = scene;
     }
 
-    generate(worldMap: string, worldConfig: WorldConfig, converter: Converter<T>) {
+    generate(worldMap: string, meshDescriptors: MeshDescriptor[], converter: Converter<T>) {
         const meshDescriptorMap: Map<string, MeshDescriptor<any>> = new Map();
-        worldConfig.meshDescriptors.map(descriptor => meshDescriptorMap.set(descriptor.type, descriptor));
+        meshDescriptors.map(descriptor => meshDescriptorMap.set(descriptor.type, descriptor));
 
         const meshFactoryService = new BabylonMeshFactoryService(this.scene);
         const meshLoaderService = new BabylonMeshTemplateService(this.scene);
 
-        const configService = new ConfigService(worldConfig.borders, worldConfig.furnitures, '-', meshDescriptorMap, {x: worldConfig.xScale, y: worldConfig.yScale});
+        const configService = new ConfigService(worldMap, meshDescriptorMap);
         configService.typeToCharMap = new DefinitionSectionParser().parse(worldMap);
 
         const serviceFacade = new ServiceFacade<any, any, T>(
@@ -33,7 +33,7 @@ export class BabylonWorldGenerator<T> implements WorldGenerator<T> {
         );
 
         meshLoaderService
-            .loadAll(worldConfig.meshDescriptors)
+            .loadAll(meshDescriptors)
             .then(() => {
                 const worldItems = serviceFacade.importerService.import(worldMap);
 

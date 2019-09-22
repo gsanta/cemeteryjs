@@ -31,4 +31,35 @@ export class WorldItemUtils {
 
         return roomSeparatorItems;
     }
+
+
+    public static setupMap(worldMap: string) {
+        return `
+            map \`
+
+            ${worldMap}
+
+            \`
+
+            definitions \`
+
+            W = wall
+            - = empty
+            X = player
+            D = disc
+            C = cupboard
+            I = window
+            T = table
+            B = bathtub
+            S = washbasin
+            E = bed
+            H = chair
+            D = door
+            L = double_bed
+            O = shelves
+            = = subarea
+
+            \`
+        `;
+    }
 }
