@@ -5,7 +5,7 @@ import { WorldItemUtils } from "../../WorldItemUtils";
 import { Modifier } from "./Modifier";
 import { ConvertBorderPolyToLineModifier } from './ConvertBorderPolyToLineModifier';
 import { ConfigService } from '../services/ConfigService';
-import { last } from '../utils/ArrayUtils';
+import { last } from '../utils/Functions';
 
 /**
  * This transformator can be used to adjust the width of a border item to it's real width.

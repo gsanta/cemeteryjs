@@ -1,7 +1,7 @@
 import { WorldItem } from '../../WorldItem';
 import { Parser } from './Parser';
 import _ = require('lodash');
-import { flat } from '../utils/ArrayUtils';
+import { flat } from '../utils/Functions';
 
 /**
  * The goal of this generator is to combine multiple generators together each of which parses the input worldmap string

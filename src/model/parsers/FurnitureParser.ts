@@ -5,7 +5,7 @@ import { WorldMapToMatrixGraphConverter } from './reader/WorldMapToMatrixGraphCo
 import { Polygon } from '@nightshifts.inc/geometry';
 import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 import * as _ from 'lodash';
-import { flat } from '../utils/ArrayUtils';
+import { flat } from '../utils/Functions';
 
 export class FurnitureParser implements Parser {
     private worldItemInfoFactory: WorldItemFactoryService

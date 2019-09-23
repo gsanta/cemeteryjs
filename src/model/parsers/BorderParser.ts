@@ -5,7 +5,7 @@ import { Parser } from './Parser';
 import { WorldMapToMatrixGraphConverter } from './reader/WorldMapToMatrixGraphConverter';
 import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 import { Polygon } from '@nightshifts.inc/geometry';
-import { flat } from '../utils/ArrayUtils';
+import { flat } from '../utils/Functions';
 
 export class BorderParser implements Parser {
     private worldItemInfoFactory: WorldItemFactoryService;

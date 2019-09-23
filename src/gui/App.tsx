@@ -3,9 +3,11 @@ import SplitPane from 'react-split-pane';
 import './SplitPane.css';
 import { Editor } from './Editor';
 import { Canvas } from './Canvas';
+import { GuiServiceFacade } from './gui_services/GuiServiceFacade';
 
 export interface AppState {
     model: string;
+    guiServices: GuiServiceFacade;
 }
 
 // const initialModel = `
@@ -75,15 +77,16 @@ export class App extends React.Component<{}, AppState> {
         super(props);
 
         this.state = {
-            model: initialModel
+            model: initialModel,
+            guiServices: new GuiServiceFacade()
         }
     }
 
     render() {
         return (
-            <SplitPane split="vertical" primary="second" minSize={900} defaultSize={900}>
+            <SplitPane split="vertical" primary="second" minSize={300} defaultSize={900}>
                 {/* <div style={{height: '100%', width: '1000px', overflow: 'scroll'}}> */}
-                    <Editor onModelChanged={(content: string) => this.onModelChanged(content)} initialModel={this.state.model}/>
+                    <Editor guiServices={this.state.guiServices} onModelChanged={(content: string) => this.onModelChanged(content)} initialModel={this.state.model}/>
                 {/* </div> */}
                 <Canvas model={this.state.model}/>
             </SplitPane>

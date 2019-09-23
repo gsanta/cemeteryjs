@@ -1,36 +1,48 @@
 import { MonacoConfig } from '../gui_models/editor/MonacoConfig';
 import * as monaco from 'monaco-editor';
+import { debounce } from '../../model/utils/Functions';
+
+const THEME = 'nightshiftsTheme';
+const LANGUAGE = 'nightshiftsLanguage';
 
 export class TextEditorService {
-    private monacoConfig: typeof MonacoConfig
 
     constructor(monacoConfig: typeof MonacoConfig) {
-        this.monacoConfig = monacoConfig;
+        monacoConfig;
 
-        monaco.languages.register({ id: 'nightshiftsLanguage' });
+        monaco.languages.register({ id: LANGUAGE });
 
-        monaco.languages.setMonarchTokensProvider('nightshiftsLanguage', {
+        monaco.languages.setMonarchTokensProvider(LANGUAGE, {
             tokenizer: <any> {
                 root: monacoConfig.languageTokens
             }
         });
 
-        monaco.editor.defineTheme('nightshiftsTheme', <any> {
+        monaco.editor.defineTheme(THEME, <any> {
             base: 'vs',
             inherit: false,
             rules: monacoConfig.colorRules
         });
     }
 
-    getEditor() {
-        const editor = monaco.editor.create(document.getElementById('editor'), {
-            value: this.state.map,
-            theme: 'nightshiftsTheme',
-            language: 'nightshiftsLanguage'
-          });
+    getEditor(element: HTMLDivElement, content: string) {
+        const editor = monaco.editor.create(element, {
+            value: content,
+            theme: THEME,
+            language: LANGUAGE,
+            minimap: {
+                enabled: false
+            }
+        });
 
-        editor.onDidChangeModelContent(() => {
-            this.handleChange(editor.getValue());
-        })
+        return {
+            onChange: (callback: (newContent: string) => void) => {
+                const debounced = debounce(callback, 1000);
+                editor.onDidChangeModelContent(() => {
+                    debounced(editor.getValue());
+                });
+            }
+        }
+
     }
 }

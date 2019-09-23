@@ -2,7 +2,7 @@ import { WorldItem } from "../../WorldItem";
 import { Modifier } from './Modifier';
 import { Polygon } from "@nightshifts.inc/geometry";
 import { SegmentBordersModifier } from './SegmentBordersModifier';
-import { without } from "../utils/ArrayUtils";
+import { without } from "../utils/Functions";
 
 /**
  * Creates relationship between `WorldItem`'s via adding a `WorldItem` to another as
