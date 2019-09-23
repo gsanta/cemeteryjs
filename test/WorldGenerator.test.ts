@@ -47,47 +47,14 @@ describe('`WorldParser`', () => {
 
             const items = root.children;
             expect(items.length).toEqual(7);
-            expect(items[0]).toPartiallyEqualToWorldItem({name: 'window', dimensions: Polygon.createRectangle(3, 0, 2, 1), isBorder: true, rotation: 0});
-            expect(items[1]).toPartiallyEqualToWorldItem({name: 'wall', dimensions: Polygon.createRectangle(0, 0, 1, 3), isBorder: true, rotation: Math.PI / 2});
-            expect(items[2]).toPartiallyEqualToWorldItem(<Partial<WorldItem>> {name: 'wall', dimensions: Polygon.createRectangle(7, 0, 1, 3), isBorder: true, rotation: Math.PI / 2});
-            expect(items[3]).toPartiallyEqualToWorldItem({name: 'wall', dimensions: Polygon.createRectangle(0, 0, 3, 1), isBorder: true, rotation: 0});
-            expect(items[4]).toPartiallyEqualToWorldItem({name: 'wall', dimensions: Polygon.createRectangle(0, 2, 8, 1), isBorder: true, rotation: 0});
-            expect(items[5]).toPartiallyEqualToWorldItem({name: 'wall', dimensions: Polygon.createRectangle(5, 0, 3, 1), isBorder: true, rotation: 0});
+            expect(items).toContainWorldItem({name: 'window', dimensions: Polygon.createRectangle(3, 0, 2, 1), isBorder: true, rotation: 0});
+            expect(items).toContainWorldItem({name: 'wall', dimensions: Polygon.createRectangle(0, 0, 1, 3), isBorder: true, rotation: Math.PI / 2});
+            expect(items).toContainWorldItem({name: 'wall', dimensions: Polygon.createRectangle(7, 0, 1, 3), isBorder: true, rotation: Math.PI / 2});
+            expect(items).toContainWorldItem({name: 'wall', dimensions: Polygon.createRectangle(0, 0, 3, 1), isBorder: true, rotation: 0});
+            expect(items).toContainWorldItem({name: 'wall', dimensions: Polygon.createRectangle(0, 2, 8, 1), isBorder: true, rotation: 0});
+            expect(items).toContainWorldItem({name: 'wall', dimensions: Polygon.createRectangle(5, 0, 3, 1), isBorder: true, rotation: 0});
 
             expect(items[6].name).toEqual('room');
-        });
-
-        it ('scales the polygons if scale option is changed.', () => {
-            const map = createMap(
-                `
-                WIIWW
-                W---W
-                W---W
-                WWDDW
-                `
-            );
-
-
-            let services: ServiceFacade<any, any, any> = setup(map, []);
-
-            const [root] = services.importerService.import(
-                map,
-                [
-                    ScaleModifier.modName,
-                    BuildHierarchyModifier.modName,
-                    AssignBordersToRoomsModifier.modName
-                ]
-            );
-
-            const rooms = root.children.filter(item => item.name === 'room');
-
-            expect(rooms.length).toEqual(1);
-            expect(rooms[0].dimensions.equalTo(new Polygon([
-                new Point(2, 3),
-                new Point(2, 9),
-                new Point(8, 9),
-                new Point(8, 3)
-            ]))).toBeTruthy();
         });
 
         it ('adds the bordering `WorldItem`s to the corresponding rooms', () => {

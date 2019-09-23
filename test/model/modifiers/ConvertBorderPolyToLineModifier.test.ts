@@ -41,7 +41,7 @@ describe(`ConvertBorderPolyToLineModifier`, () => {
             `
         );
 
-        let services: ServiceFacade<any, any, any> = setup({xScale: 1, yScale: 1});
+        let services: ServiceFacade<any, any, any> = setup(map, []);
 
         const [root] = services.importerService.import(
             map,
@@ -55,21 +55,21 @@ describe(`ConvertBorderPolyToLineModifier`, () => {
         );
 
         const expectedRoomDimensions1 = new Polygon([
-            new Point(0.5, 0.5),
-            new Point(0.5, 4.5),
-            new Point(8.5, 4.5),
-            new Point(8.5, 2.5),
-            new Point(4.5, 2.5),
-            new Point(4.5, 0.5)
+            new Point(0.5, 1),
+            new Point(0.5, 9),
+            new Point(8.5, 9),
+            new Point(8.5, 5),
+            new Point(4.5, 5),
+            new Point(4.5, 1)
         ])
         expect(hasAnyWorldItemInfoDimension(expectedRoomDimensions1, root.children)).toBeTruthy();
-        expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(4.5, 0.5, 4, 2), root.children)).toBeTruthy();
-        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(0.5, 0.5), new Point(0.5, 4.5)), root.children)).toBeTruthy();
-        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(8.5, 0.5), new Point(8.5, 2.5)), root.children)).toBeTruthy();
-        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(8.5, 2.5), new Point(8.5, 4.5)), root.children)).toBeTruthy();
-        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(0.5, 0.5), new Point(4.5, 0.5)), root.children)).toBeTruthy();
-        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(4.5, 0.5), new Point(8.5, 0.5)), root.children)).toBeTruthy();
-        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(0.5, 4.5), new Point(8.5, 4.5)), root.children)).toBeTruthy();
+        expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(4.5, 1, 4, 4), root.children)).toBeTruthy();
+        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(0.5, 1), new Point(0.5, 9)), root.children)).toBeTruthy();
+        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(8.5, 1), new Point(8.5, 5)), root.children)).toBeTruthy();
+        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(8.5, 5), new Point(8.5, 9)), root.children)).toBeTruthy();
+        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(0.5, 1), new Point(4.5, 1)), root.children)).toBeTruthy();
+        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(4.5, 1), new Point(8.5, 1)), root.children)).toBeTruthy();
+        expect(hasAnyWorldItemInfoDimension(new Segment(new Point(0.5, 9), new Point(8.5, 9)), root.children)).toBeTruthy();
         // TODO: 2 border items are not validated, they have weird dimensions, check it later
     });
 
@@ -82,7 +82,7 @@ describe(`ConvertBorderPolyToLineModifier`, () => {
                 WWWWWWWW
             `);
 
-            let services: ServiceFacade<any, any, any> = setup({xScale: 1, yScale: 1});
+            let services: ServiceFacade<any, any, any> = setup(map, []);
 
             const items = services.importerService.import(
                 map,
@@ -95,11 +95,11 @@ describe(`ConvertBorderPolyToLineModifier`, () => {
                 ]
             );
 
-            expect(findWorldItemWithDimensions(items, new Segment(new Point(0.5, 0.5), new Point(0.5, 3.5))).rotation).toEqual(Math.PI / 2);
-            expect(findWorldItemWithDimensions(items, new Segment(new Point(7.5, 0.5), new Point(7.5, 3.5))).rotation).toEqual(Math.PI / 2);
-            expect(findWorldItemWithDimensions(items, new Segment(new Point(0.5, 3.5), new Point(7.5, 3.5))).rotation).toEqual(0);
-            expect(findWorldItemWithDimensions(items, new Segment(new Point(2.833333333333334, 0.5), new Point(7.5, 0.5))).rotation).toEqual(0);
-            expect(findWorldItemWithDimensions(items, new Segment(new Point(0.5000000000000009, 0.5), new Point(2.833333333333334, 0.5))).rotation).toEqual(0);
+            expect(findWorldItemWithDimensions(items, new Segment(new Point(0.5, 1), new Point(0.5, 7))).rotation).toEqual(Math.PI / 2);
+            expect(findWorldItemWithDimensions(items, new Segment(new Point(7.5, 1), new Point(7.5, 7))).rotation).toEqual(Math.PI / 2);
+            expect(findWorldItemWithDimensions(items, new Segment(new Point(0.5, 7), new Point(7.5, 7))).rotation).toEqual(0);
+            expect(findWorldItemWithDimensions(items, new Segment(new Point(2.833333333333334, 1), new Point(7.5, 1))).rotation).toEqual(0);
+            expect(findWorldItemWithDimensions(items, new Segment(new Point(0.5000000000000009, 1), new Point(2.833333333333334, 1))).rotation).toEqual(0);
         });
 
         it ('handles multiple rooms', () => {
@@ -125,7 +125,7 @@ describe(`ConvertBorderPolyToLineModifier`, () => {
 
             `);
 
-            let services: ServiceFacade<any, any, any> = setup({xScale: 1, yScale: 1});
+            let services: ServiceFacade<any, any, any> = setup(map, []);
 
             const [root] = services.importerService.import(
                 map,
@@ -139,45 +139,45 @@ describe(`ConvertBorderPolyToLineModifier`, () => {
             );
 
             expect(root.children[0]).toHaveBorders([
-                new Segment(new Point(0.5, 0.5), new Point(0.5, 4.5)),
-                new Segment(new Point(32.5, 0.5), new Point(32.5, 4.5)),
-                new Segment(new Point(0.5, 0.5), new Point(32.5, 0.5)),
-                new Segment(new Point(0.5, 4.5), new Point(32.5, 4.5))
+                new Segment(new Point(0.5, 1), new Point(0.5, 9)),
+                new Segment(new Point(32.5, 1), new Point(32.5, 9)),
+                new Segment(new Point(0.5, 1), new Point(32.5, 1)),
+                new Segment(new Point(0.5, 9), new Point(32.5, 9))
             ]);
 
             expect(root.children[1]).toHaveBorders([
-                new Segment(new Point(32.5, 0.5), new Point(32.5, 4.5)),
-                new Segment(new Point(52.5, 0.5), new Point(52.5, 4.5)),
-                new Segment(new Point(32.5, 0.5), new Point(52.5, 0.5)),
-                new Segment(new Point(32.5, 4.5), new Point(52.5, 4.5))
+                new Segment(new Point(32.5, 1), new Point(32.5, 9)),
+                new Segment(new Point(52.5, 1), new Point(52.5, 9)),
+                new Segment(new Point(32.5, 1), new Point(52.5, 1)),
+                new Segment(new Point(32.5, 9), new Point(52.5, 9))
             ]);
 
             expect(root.children[2]).toHaveBorders([
-                new Segment(new Point(0.5, 4.5), new Point(0.5, 8.5)),
-                new Segment(new Point(52.5, 4.5), new Point(52.5, 8.5)),
-                new Segment(new Point(0.5, 4.5), new Point(32.5, 4.5)),
-                new Segment(new Point(32.5, 4.5), new Point(52.5, 4.5)),
-                new Segment(new Point(0.5, 8.5), new Point(14.235849056603774, 8.5)),
-                new Segment(new Point(14.235849056603776, 8.5), new Point(26.5, 8.5)),
-                new Segment(new Point(26.499999999999996, 8.5), new Point(40.726415094339615, 8.5)),
-                new Segment(new Point(40.726415094339615, 8.5), new Point(52.5, 8.5))
+                new Segment(new Point(0.5, 9), new Point(0.5, 17)),
+                new Segment(new Point(52.5, 9), new Point(52.5, 17)),
+                new Segment(new Point(0.5, 9), new Point(32.5, 9)),
+                new Segment(new Point(32.5, 9), new Point(52.5, 9)),
+                new Segment(new Point(0.5, 17), new Point(14.235849056603774, 17)),
+                new Segment(new Point(14.235849056603776, 17), new Point(26.5, 17)),
+                new Segment(new Point(26.499999999999996, 17), new Point(40.726415094339615, 17)),
+                new Segment(new Point(40.726415094339615, 17), new Point(52.5, 17))
             ]);
 
             expect(root.children[3]).toHaveBorders([
-                new Segment(new Point(0.5, 8.5), new Point(0.5, 17.5)),
-                new Segment(new Point(14.5, 8.5), new Point(14.5, 13.5)),
-                new Segment(new Point(26.5, 13.5), new Point(26.5, 17.5)),
-                new Segment(new Point(0.5, 8.5), new Point(14.235849056603774, 8.5)),
-                new Segment(new Point(0.5, 17.5), new Point(26.5, 17.5)),
-                new Segment(new Point(14.5, 13.5), new Point(26.5, 13.5))
+                new Segment(new Point(0.5, 17), new Point(0.5, 35)),
+                new Segment(new Point(14.5, 17), new Point(14.5, 27)),
+                new Segment(new Point(26.5, 27), new Point(26.5, 35)),
+                new Segment(new Point(0.5, 17), new Point(14.235849056603774, 17)),
+                new Segment(new Point(0.5, 35), new Point(26.5, 35)),
+                new Segment(new Point(14.5, 27), new Point(26.5, 27))
             ]);
 
 
             expect(root.children[4]).toHaveBorders([
-                new Segment(new Point(14.5, 8.5), new Point(14.5, 13.5)),
-                new Segment(new Point(26.5, 8.5), new Point(26.5, 13.5)),
-                new Segment(new Point(14.235849056603776, 8.5), new Point(26.5, 8.5)),
-                new Segment(new Point(14.5, 13.5), new Point(26.5, 13.5))
+                new Segment(new Point(14.5, 17), new Point(14.5, 27)),
+                new Segment(new Point(26.5, 17), new Point(26.5, 27)),
+                new Segment(new Point(14.235849056603776, 17), new Point(26.5, 17)),
+                new Segment(new Point(14.5, 27), new Point(26.5, 27))
             ]);
 
             // //TODO: finish testing

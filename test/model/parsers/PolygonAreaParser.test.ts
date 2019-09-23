@@ -21,7 +21,7 @@ describe('PolygonAreaParser', () => {
                 \`
             `;
 
-            const services = setup();
+            const services = setup(map, []);
             const polygonAreaInfoParser = new PolygonAreaParser('empty', services);
 
             const worldItem = polygonAreaInfoParser.parse(map);
@@ -52,7 +52,7 @@ describe('PolygonAreaParser', () => {
                 \`
             `;
 
-            const services = setup();
+            const services = setup(map, []);
             const polygonAreaInfoParser = new PolygonAreaParser('empty', services);
 
             const worldItem = polygonAreaInfoParser.parse(map);
@@ -90,7 +90,7 @@ describe('PolygonAreaParser', () => {
                 \`
             `;
 
-            const services = setup();
+            const services = setup(map, []);
             const polygonAreaInfoParser = new PolygonAreaParser('empty', services);
 
             const worldItem = polygonAreaInfoParser.parse(map);
@@ -126,7 +126,7 @@ describe('PolygonAreaParser', () => {
                 \`
             `;
 
-            const services = setup();
+            const services = setup(map, []);
             const polygonAreaInfoParser = new PolygonAreaParser('empty', services);
 
             const worldItem = polygonAreaInfoParser.parse(map);

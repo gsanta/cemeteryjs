@@ -34,7 +34,7 @@ describe('ThickenBordersModifier', () => {
             `
         )
 
-        let services: ServiceFacade<any, any, any> = setup({xScale: 1, yScale: 1});
+        let services: ServiceFacade<any, any, any> = setup(map, []);
 
         const items = services.importerService.import(
             map,

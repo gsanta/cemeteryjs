@@ -7,7 +7,8 @@ declare global {
         interface Matchers<R> {
             toHaveBorders(borderDimensions: Shape[]),
             toHaveAnyWithDimensions(dimensions: Shape),
-            toPartiallyEqualToWorldItem(partialWorldItem: Partial<WorldItem>)
+            toPartiallyEqualToWorldItem(partialWorldItem: Partial<WorldItem>),
+            toContainWorldItem(partialWorldItem: Partial<WorldItem>)
         }
     }
 }
@@ -63,6 +64,25 @@ expect.extend({
                 message: () => message,
                 pass: false,
             };
+        }
+    },
+
+    toContainWorldItem(worldItems: WorldItem[], partialWorldItem: Partial<WorldItem>) {
+        for (let i = 0; i < worldItems.length; i++) {
+            try {
+                expect(worldItems[i]).toPartiallyEqualToWorldItem(partialWorldItem);
+                return {
+                    pass: true,
+                    message: ''
+                }
+            } catch (e) {
+                // error expected
+            }
+        }
+
+        return {
+            pass: false,
+            message: `${worldItems.toString()} does not match any element in the list.`
         }
     },
 
