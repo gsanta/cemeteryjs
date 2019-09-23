@@ -85,9 +85,7 @@ export class App extends React.Component<{}, AppState> {
     render() {
         return (
             <SplitPane split="vertical" primary="second" minSize={300} defaultSize={900}>
-                {/* <div style={{height: '100%', width: '1000px', overflow: 'scroll'}}> */}
-                    <Editor guiServices={this.state.guiServices} onModelChanged={(content: string) => this.onModelChanged(content)} initialModel={this.state.model}/>
-                {/* </div> */}
+                <Editor guiServices={this.state.guiServices} onModelChanged={(content: string) => this.onModelChanged(content)} initialModel={this.state.model}/>
                 <Canvas model={this.state.model}/>
             </SplitPane>
         );

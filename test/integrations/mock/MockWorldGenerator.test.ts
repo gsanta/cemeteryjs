@@ -26,19 +26,12 @@ describe('MockWorldGenerator', () => {
 
             \`
         `;
-
-        const worldConfig: WorldConfig = {
-            meshDescriptors: meshDescriptors,
-            borders: ['door', 'window', 'wall'],
-            furnitures: [],
-            xScale: 1,
-            yScale: 2
-        }
+        
         const mockWorldGenerator = new MockWorldGenerator();
 
         const worldItems: WorldItem[] = [];
 
-        mockWorldGenerator.generate(worldMap, worldConfig, {
+        mockWorldGenerator.generate(worldMap, meshDescriptors, {
             convert(worldItem: WorldItem): any {
                 worldItems.push(worldItem);
             },

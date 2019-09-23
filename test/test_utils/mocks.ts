@@ -3,7 +3,6 @@ import { MeshBuilder, Scene } from 'babylonjs';
 import * as sinon from 'sinon';
 import { MaterialBuilder } from '../../src/integrations/babylonjs/MaterialFactory';
 import { ConfigService } from '../../src/model/services/ConfigService';
-import { defaultWorldConfig, WorldConfig } from '../../src/model/services/ImporterService';
 import { ServiceFacade } from '../../src/model/services/ServiceFacade';
 import { TreeIteratorGenerator } from '../../src/model/utils/TreeIteratorGenerator';
 import { WorldItem } from '../../src/WorldItem';
@@ -11,28 +10,18 @@ import { TestMeshFactoryService } from '../setup/TestMeshFactoryService';
 import { MeshDescriptor } from '../../src/Config';
 import { MockMeshTemplateService } from '../../src/integrations/mock/MockWorldGenerator';
 
-export function setup(config: Partial<WorldConfig> = {}): ServiceFacade<any, any, any> {
-    config = {...defaultWorldConfig, ...config};
+export function setup(worldMap: string, meshDescriptors: MeshDescriptor[]): ServiceFacade<any, any, any> {
 
     const meshFactoryService = new TestMeshFactoryService();
 
     const templateMap: Map<string, MeshDescriptor> = new Map();
-    config.meshDescriptors.map(descriptor => templateMap.set(descriptor.type, descriptor));
+    meshDescriptors.map(descriptor => templateMap.set(descriptor.type, descriptor));
     const mockMeshTemplateService = new MockMeshTemplateService(templateMap);
 
     const meshDescriptorMap: Map<string, MeshDescriptor<any>> = new Map();
-    config.meshDescriptors.map(descriptor => meshDescriptorMap.set(descriptor.type, descriptor));
+    meshDescriptors.map(descriptor => meshDescriptorMap.set(descriptor.type, descriptor));
 
-    const configService = new ConfigService(
-        ['door', 'window', 'wall'],
-        ['empty', 'player', 'cupboard', 'table', 'bathtub', 'washbasin', 'bed', 'chair'],
-        '-',
-        meshDescriptorMap,
-        {
-            x: config.xScale,
-            y: config.yScale
-        }
-    )
+    const configService = new ConfigService(worldMap, meshDescriptorMap);
 
     return new ServiceFacade<any, any, any>(
         meshFactoryService,

@@ -1,6 +1,6 @@
-import { TreeIteratorGenerator } from '../../../src/model/utils/TreeIteratorGenerator';
 import * as sinon from 'sinon';
-import { WorldItem } from '../../../src/WorldItem';
+import { WorldItem } from '../../src';
+import { TreeIteratorGenerator } from '../../src/model/utils/TreeIteratorGenerator';
 
 describe('TreeIteratorGenerator', () => {
     it ('creates an iterator which yields every node in the tree structure', () => {

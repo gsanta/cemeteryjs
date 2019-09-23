@@ -41,7 +41,7 @@ describe('`WorldParser`', () => {
                 `
             );
 
-            let services: ServiceFacade<any, any, any> = setup({xScale: 1, yScale: 1});
+            let services: ServiceFacade<any, any, any> = setup(map, []);
 
             const [root] = services.importerService.import(map,[BuildHierarchyModifier.modName]);
 
@@ -68,7 +68,7 @@ describe('`WorldParser`', () => {
             );
 
 
-            let services: ServiceFacade<any, any, any> = setup({xScale: 2, yScale: 3});
+            let services: ServiceFacade<any, any, any> = setup(map, []);
 
             const [root] = services.importerService.import(
                 map,
@@ -101,7 +101,7 @@ describe('`WorldParser`', () => {
                 `
             );
 
-            let services: ServiceFacade<any, any, any> = setup({xScale: 1, yScale: 1});
+            let services: ServiceFacade<any, any, any> = setup(map, []);
 
             const [root] = services.importerService.import(
                 map,
@@ -131,7 +131,7 @@ describe('`WorldParser`', () => {
         );
 
 
-        let services: ServiceFacade<any, any, any> = setup({xScale: 1, yScale: 1});
+        let services: ServiceFacade<any, any, any> = setup(map, []);
 
         const [root] = services.importerService.import(
             map,
@@ -160,7 +160,7 @@ describe('`WorldParser`', () => {
             `
         );
 
-        let services: ServiceFacade<any, any, any> = setup({xScale: 1, yScale: 1});
+        let services: ServiceFacade<any, any, any> = setup(map, []);
 
         const [root] = services.importerService.import(
             map,

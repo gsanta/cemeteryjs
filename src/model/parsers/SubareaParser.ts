@@ -4,7 +4,6 @@ import { Parser } from "./Parser";
 import { PolygonAreaParser } from './PolygonAreaParser';
 import { WorldMapToMatrixGraphConverter } from "./reader/WorldMapToMatrixGraphConverter";
 import { WorldMapToSubareaMapConverter } from './WorldMapToSubareaMapConverter';
-import _ = require("lodash");
 
 export class SubareaParser implements Parser {
     private worldMapToSubareaMapConverter: WorldMapToSubareaMapConverter;

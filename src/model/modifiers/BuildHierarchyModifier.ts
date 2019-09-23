@@ -28,7 +28,7 @@ export class BuildHierarchyModifier implements Modifier {
 
         worldItems.forEach(currentItem => {
 
-            return without(worldItems, ...[childrenAlreadyCategorized, currentItem])
+            return without(worldItems, ...[...childrenAlreadyCategorized, currentItem])
                 .forEach((childItem: WorldItem) => {
                     if ((<Polygon>currentItem.dimensions).contains(<Polygon> childItem.dimensions)) {
                         // this condition ensures that no two items will be each other's children if they would have the

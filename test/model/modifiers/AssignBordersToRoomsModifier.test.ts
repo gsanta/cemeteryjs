@@ -28,7 +28,7 @@ describe(`AssignBordersToRoomsModifier`, () => {
                 \`
             `;
 
-            const services = setup();
+            const services = setup(map, []);
 
             let items = services.importerService.import(map, []);
 
@@ -61,7 +61,7 @@ describe(`AssignBordersToRoomsModifier`, () => {
                 \`
             `;
 
-            const services = setup();
+            const services = setup(map, []);
 
             const items = services.importerService.import(map, [SegmentBordersModifier.modName, AssignBordersToRoomsModifier.modName]);
 
@@ -97,10 +97,7 @@ describe(`AssignBordersToRoomsModifier`, () => {
             `;
 
 
-            const services = setup({
-                xScale: 2,
-                yScale: 2
-            });
+            const services = setup(map, []);
 
 
             const items = services.importerService.import(map, [ScaleModifier.modName, SegmentBordersModifier.modName, AssignBordersToRoomsModifier.modName]);

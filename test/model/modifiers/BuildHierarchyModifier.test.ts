@@ -7,7 +7,6 @@ import { SegmentBordersModifier } from '../../../src/model/modifiers/SegmentBord
 describe('BuildHierarchyModifier', () => {
     describe('apply', () => {
         it ('creates a parent-child relationship between two WorldItems, if one contains the other', () => {
-            const services = setup();
             const map = setupMap(
                 `
                 WDDWWWWW
@@ -17,6 +16,7 @@ describe('BuildHierarchyModifier', () => {
 
                 `
             );
+            const services = setup(map, []);
 
             const [root] = services.importerService.import(
                 map,
