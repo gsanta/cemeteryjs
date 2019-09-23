@@ -22,7 +22,7 @@ export class RoomParser implements Parser {
         const matrix = this.worldMapToMatrixGraphConverter.convert(worldMap);
 
         this.worldMapToRoomMapConverter = new WorldMapToRoomMapConverter('W', matrix.getCharacterForName('empty'), this.borderCharacters);
-        this.polygonAreaParser = new PolygonAreaParser('room', this.services);
+        this.polygonAreaParser = new PolygonAreaParser('room', this.services.configService.typeToCharMap.get('empty'), this.services);
 
         return this.polygonAreaParser.parse(this.worldMapToRoomMapConverter.convert(worldMap));
     }

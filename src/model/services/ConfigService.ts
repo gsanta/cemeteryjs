@@ -37,7 +37,8 @@ export class ConfigService {
 
     update(worldMap: string) {
         this.typeToCharMap = new DefinitionSectionParser().parse(worldMap);
-        const types = Array.from(this.typeToCharMap.keys())
+        const types = Array.from(this.typeToCharMap.keys());
+        this.emptyType = 'empty';
         this.borderTypes = DEFAULT_BORDERS;
         this.furnitureTypes = types.filter(type => !this.borderTypes.includes(type) && !INTERNAL_TYPES.includes(type));
     }

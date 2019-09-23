@@ -54,7 +54,7 @@ export class ImporterService<M, S, T> {
                     new FurnitureParser(this.services.worldItemFactoryService, furnitureTypes, new WorldMapToMatrixGraphConverter()),
                     new BorderParser(this.services.worldItemFactoryService, this.services.configService.borderTypes),
                     new RoomParser(this.services),
-                    new PolygonAreaParser('empty', this.services),
+                    new PolygonAreaParser('empty', this.services.configService.typeToCharMap.get('empty'), this.services),
                     new RootWorldItemParser(this.services.worldItemFactoryService)
                 ]
             )

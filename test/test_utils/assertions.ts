@@ -73,7 +73,7 @@ expect.extend({
                 expect(worldItems[i]).toPartiallyEqualToWorldItem(partialWorldItem);
                 return {
                     pass: true,
-                    message: ''
+                    message: () => ''
                 }
             } catch (e) {
                 // error expected
@@ -82,29 +82,29 @@ expect.extend({
 
         return {
             pass: false,
-            message: `${worldItems.toString()} does not match any element in the list.`
+            message: () => `${worldItems.toString()} does not match any element in the list.`
         }
     },
 
     toPartiallyEqualToWorldItem(worldItem: WorldItem, partialWorldItem: Partial<WorldItem>) {
         let pass = true;
-        let message = '';
+        let message = () => '';
 
         if (partialWorldItem.name !== undefined && partialWorldItem.name !== worldItem.name) {
             pass = false;
-            message = `Names are not equal: ${partialWorldItem.name}, ${worldItem.name}`;
+            message = () => `Names are not equal: ${partialWorldItem.name}, ${worldItem.name}`;
         } else if (partialWorldItem.id !== undefined && partialWorldItem.id !== worldItem.id) {
             pass = false;
-            message = `Ids are not equal: ${partialWorldItem.id}, ${worldItem.id}`;
+            message = () => `Ids are not equal: ${partialWorldItem.id}, ${worldItem.id}`;
         } else if (partialWorldItem.type !== undefined && partialWorldItem.type !== worldItem.type) {
             pass = false;
-            message = `Types are not equal: ${partialWorldItem.type}, ${worldItem.type}`;
+            message = () => `Types are not equal: ${partialWorldItem.type}, ${worldItem.type}`;
         } else if (partialWorldItem.dimensions !== undefined && !partialWorldItem.dimensions.equalTo(worldItem.dimensions)) {
             pass = false;
-            message = `Dimensions are not equal: ${partialWorldItem.dimensions}, ${worldItem.dimensions}`;
+            message = () => `Dimensions are not equal: ${partialWorldItem.dimensions}, ${worldItem.dimensions}`;
         } else if (partialWorldItem.rotation !== undefined && partialWorldItem.rotation !== worldItem.rotation) {
             pass = false;
-            message = `Rotations are not equal: ${partialWorldItem.rotation}, ${worldItem.rotation}`;
+            message = () => `Rotations are not equal: ${partialWorldItem.rotation}, ${worldItem.rotation}`;
         }
 
         if (pass) {
@@ -114,7 +114,7 @@ expect.extend({
             };
         } else {
             return {
-                message: () => message,
+                message: message,
                 pass: false,
             };
         }

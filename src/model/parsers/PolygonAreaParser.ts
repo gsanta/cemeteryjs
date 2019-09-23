@@ -20,20 +20,22 @@ export class PolygonAreaParser implements Parser {
     private itemName: string;
     private services: ServiceFacade<any, any, any>;
     private geometryService: GeometryService;
+    // TODO: the graph after running WorldMapConverter should only contain one character, so this info is redundant
+    private areaChar: string;
 
-    constructor(itemName: string, services: ServiceFacade<any, any, any>, worldMapConverter = new WorldMapToMatrixGraphConverter()) {
+    constructor(itemName: string, areaChar: string, services: ServiceFacade<any, any, any>, worldMapConverter = new WorldMapToMatrixGraphConverter()) {
         this.itemName = itemName;
         this.services = services;
+        this.areaChar = areaChar;
         this.geometryService = services.geometryService;
         this.worldMapConverter = worldMapConverter;
         this.polygonRedundantPointReducer = new PolygonRedundantPointReducer();
     }
 
     public parse(worldMap: string): WorldItem[] {
-        const graph = this.parseWorldMap(worldMap);
-        const character = this.services.configService.typeToCharMap.get('empty');
+        const graph = this.worldMapConverter.convert(worldMap);
 
-        return graph.createConnectedComponentGraphsForCharacter(character)
+        return graph.createConnectedComponentGraphsForCharacter(this.areaChar)
             .map(componentGraph => {
                 const lines = this.segmentGraphToHorizontalLines(componentGraph);
 
@@ -43,10 +45,6 @@ export class PolygonAreaParser implements Parser {
 
                 return this.services.worldItemFactoryService.create(null, this.geometryService.factory.polygon(points), this.itemName, false);
             });
-    }
-
-    private parseWorldMap(strMap: string): Matrix {
-        return this.worldMapConverter.convert(strMap);
     }
 
     /*
