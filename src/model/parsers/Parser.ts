@@ -1,4 +1,4 @@
-import { Matrix } from "./Matrix";
+import { CharGraph } from "./CharGraph";
 import { WorldItem } from '../../WorldItem';
 
 

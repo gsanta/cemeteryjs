@@ -2,7 +2,7 @@ import { GeometryService, Point } from "@nightshifts.inc/geometry";
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { ServiceFacade } from '../services/ServiceFacade';
 import { WorldItem } from '../../WorldItem';
-import { Matrix } from "./Matrix";
+import { CharGraph } from "./CharGraph";
 import { Parser } from "./Parser";
 import { PolygonRedundantPointReducer } from "./PolygonRedundantPointReducer";
 import { WorldMapToMatrixGraphConverter } from "./reader/WorldMapToMatrixGraphConverter";
@@ -49,7 +49,7 @@ export class PolygonAreaParser implements Parser {
             });
     }
 
-    public parse2(graph: Matrix): WorldItem {
+    public parse2(graph: CharGraph): WorldItem {
         const lines = this.segmentGraphToHorizontalLines(graph);
 
         const points = this.polygonRedundantPointReducer.reduce(
@@ -63,7 +63,7 @@ export class PolygonAreaParser implements Parser {
      * Converts the polygon points of the component graph to horizontal lines which
      * include all of the points in the graph.
      */
-    private segmentGraphToHorizontalLines(componentGraph: Matrix): Segment[] {
+    private segmentGraphToHorizontalLines(componentGraph: CharGraph): Segment[] {
         const map = new Map<Number, number[]>();
 
         componentGraph.getAllVertices()

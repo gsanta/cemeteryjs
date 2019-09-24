@@ -1,4 +1,4 @@
-import { Matrix } from './Matrix';
+import { CharGraph } from './CharGraph';
 import { WorldItem } from '../../WorldItem';
 import * as _ from 'lodash';
 import { Parser } from './Parser';
@@ -39,11 +39,11 @@ export class BorderParser implements Parser {
             );
     }
 
-    private parseWorldMap(strMap: string): Matrix {
+    private parseWorldMap(strMap: string): CharGraph {
         return this.worldMapConverter.convert(strMap);
     }
 
-    private createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph: Matrix, borderGraph: Matrix): WorldItem[] {
+    private createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph: CharGraph, borderGraph: CharGraph): WorldItem[] {
         const verticalSubComponents = this.findVerticalSlices(componentGraph, borderGraph);
         const horixontalComponents = this.findHorizontalSlices(componentGraph, borderGraph);
 
@@ -81,7 +81,7 @@ export class BorderParser implements Parser {
         return [...verticalItems, ...horizontalItems];
     }
 
-    private findVerticalSlices(singleCharacterGraph: Matrix, borderGraph: Matrix): number[][] {
+    private findVerticalSlices(singleCharacterGraph: CharGraph, borderGraph: CharGraph): number[][] {
         const visitedVertices = [];
 
         let componentVertices = singleCharacterGraph.getAllVertices();
@@ -107,7 +107,7 @@ export class BorderParser implements Parser {
         return verticalSubCompnents;
     }
 
-    private findVerticalSubComponentForVertex(vertex: number, componentGraph: Matrix): number[] {
+    private findVerticalSubComponentForVertex(vertex: number, componentGraph: CharGraph): number[] {
         let subComponentVertices = [vertex];
 
         let actVertex = vertex;
@@ -126,7 +126,7 @@ export class BorderParser implements Parser {
         return subComponentVertices;
     }
 
-    private findHorizontalSlices(singleCharacterGraph: Matrix, borderGraph: Matrix): number[][] {
+    private findHorizontalSlices(singleCharacterGraph: CharGraph, borderGraph: CharGraph): number[][] {
         const visitedVertices = [];
 
         let componentVertices = singleCharacterGraph.getAllVertices();
@@ -147,7 +147,7 @@ export class BorderParser implements Parser {
         return horizontalSubCompnents;
     }
 
-    private findHorizontalSubComponentForVertex(vertex: number, componentGraph: Matrix): number[] {
+    private findHorizontalSubComponentForVertex(vertex: number, componentGraph: CharGraph): number[] {
         let subComponentVertices = [vertex];
 
         let actVertex = vertex;
@@ -166,7 +166,7 @@ export class BorderParser implements Parser {
         return subComponentVertices;
     }
 
-    private createRectangleFromVerticalVertices(graph: Matrix) {
+    private createRectangleFromVerticalVertices(graph: CharGraph) {
         const vertices = [...graph.getAllVertices()];
         vertices.sort((a, b) => graph.getVertexPositionInMatrix(a).y - graph.getVertexPositionInMatrix(b).y);
 
@@ -181,7 +181,7 @@ export class BorderParser implements Parser {
         return Polygon.createRectangle(x, y, width, height);
     }
 
-    private createRectangleFromHorizontalVertices(graph: Matrix) {
+    private createRectangleFromHorizontalVertices(graph: CharGraph) {
         const vertices = [...graph.getAllVertices()];
         vertices.sort((a, b) => graph.getVertexPositionInMatrix(a).x - graph.getVertexPositionInMatrix(b).x);
 

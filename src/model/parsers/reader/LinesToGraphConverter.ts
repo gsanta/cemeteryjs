@@ -1,21 +1,21 @@
-import { Matrix } from '../Matrix';
+import { CharGraph } from '../CharGraph';
 import * as _ from 'lodash';
 
 export class LinesToGraphConverter {
-    private graph: Matrix;
+    private graph: CharGraph;
     private lines: string[];
     private columns: number;
     private rows: number;
     private charachterToNameMap: {[key: string]: string};
     private vertexAdditinalData: {[key: number]: any};
 
-    public parse(lines: string[], charachterToNameMap: {[key: string]: string}, vertexAdditinalData: {[key: number]: any}): Matrix {
+    public parse(lines: string[], charachterToNameMap: {[key: string]: string}, vertexAdditinalData: {[key: number]: any}): CharGraph {
         this.lines = lines;
         this.charachterToNameMap = charachterToNameMap;
         this.vertexAdditinalData = vertexAdditinalData;
         this.columns = this.lines[0].length;
         this.rows = this.lines.length;
-        this.graph = new Matrix(this.columns, this.rows);
+        this.graph = new CharGraph(this.columns, this.rows);
         this.initGraph();
         this.parseLines(lines);
 

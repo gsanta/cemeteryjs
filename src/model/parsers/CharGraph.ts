@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import { without } from '../utils/Functions';
 
 export interface MatrixGraphVertexValue {
     character: string;
@@ -7,11 +7,9 @@ export interface MatrixGraphVertexValue {
 
 // TODO: separate matrix strore from additional data (like 'name')
 // matrix is specific to the .gwm format, the other data should be independent
-export class Matrix {
+export class CharGraph {
     private numberOfVertices = 0;
-    private adjacencyList: { [key: number]: number[] } = {};
     private vertexValues: { [key: number]: MatrixGraphVertexValue } = {};
-    private edges: [number, number][] = [];
     private vertices: number[] = [];
     private columns: number;
     private rows: number;
@@ -76,7 +74,7 @@ export class Matrix {
     }
 
     public addVertex(vertex: number, character: string, name: string) {
-        this.adjacencyList[vertex] = [];
+
         this.vertexValues[vertex] = {
             character,
             additionalData: []
@@ -92,22 +90,17 @@ export class Matrix {
         }
     }
 
-    public addEdge(v, w) {
-        this.adjacencyList[v].push(w);
-        this.adjacencyList[w].push(v);
-        this.edges.push([v, w]);
-    }
-
-    public getAllEdges(): [number, number][] {
-        return this.edges;
-    }
-
     public getAllVertices(): number[] {
         return this.vertices;
     }
 
-    public getAjacentEdges(vertex: number) {
-        return this.adjacencyList[vertex];
+    private getAjacentEdges(vertex: number) {
+        return [
+            this.getTopNeighbour(vertex),
+            this.getBottomNeighbour(vertex),
+            this.getLeftNeighbour(vertex),
+            this.getRightNeighbour(vertex)
+        ].filter(vert => vert !== null);
     }
 
     public hasVertex(vertex: number): boolean {
@@ -115,7 +108,7 @@ export class Matrix {
     }
 
     public hasEdgeBetween(v1: number, v2: number) {
-        return this.adjacencyList[v1].indexOf(v2) !== -1;
+        return this.vertices.includes(v1) && this.vertices.includes(v2);
     }
 
     public getTopNeighbour(vertex: number): number {
@@ -150,19 +143,10 @@ export class Matrix {
         return null;
     }
 
-    public getGraphForVertices(vertices: number[]): Matrix {
-        const graph = new Matrix(this.columns, this.rows);
+    public getGraphForVertices(vertices: number[]): CharGraph {
+        const graph = new CharGraph(this.columns, this.rows);
 
         vertices.forEach(vertex => graph.addVertex(vertex, this.getVertexValue(vertex).character, this.charToNameMap.get(this.getVertexValue(vertex).character)));
-        graph.getAllVertices().forEach(vertex => {
-            const neighbours = this.getAjacentEdges(vertex);
-
-            neighbours.forEach(neighbour => {
-                if (graph.hasVertex(neighbour)) {
-                    graph.addEdge(vertex, neighbour);
-                }
-            });
-        });
 
         return graph;
     }
@@ -171,22 +155,18 @@ export class Matrix {
      * Reduces the graph into subgraphs, where each graph has only vetices with value of `character`
      * and where each graph is a `connected-component`.
      */
-    public getConnectedComponentGraphs(): Matrix[] {
+    public getConnectedComponentGraphs(): CharGraph[] {
         const connectedComponents = this.findConnectedComponents();
 
         return connectedComponents.map(component => this.getReducedGraphForVertices(component));
     }
 
-    getReducedGraphForCharacters(characters: string[]): Matrix {
-        const graph = new Matrix(this.columns, this.rows);
+    getReducedGraphForCharacters(characters: string[]): CharGraph {
+        const graph = new CharGraph(this.columns, this.rows);
 
         this.vertices
             .filter(vertex => characters.includes(this.getVertexValue(vertex).character))
             .forEach(vertex => graph.addVertex(vertex, this.getVertexValue(vertex).character, this.charToNameMap.get(this.getVertexValue(vertex).character)));
-
-        this.getAllEdges()
-            .filter(edge =>  graph.hasVertex(edge[0]) && graph.hasVertex(edge[1]))
-            .forEach(edge => graph.addEdge(edge[0], edge[1]));
 
         return graph;
     }
@@ -213,21 +193,10 @@ export class Matrix {
      * containing only the vertices passed as the `vertices` parameter and the edges between
      * those vertices.
      */
-    private getReducedGraphForVertices(vertices: number[]): Matrix {
-        const graph = new Matrix(this.columns, this.rows);
+    private getReducedGraphForVertices(vertices: number[]): CharGraph {
+        const graph = new CharGraph(this.columns, this.rows);
 
         vertices.forEach(vertex => graph.addVertex(vertex, this.getVertexValue(vertex).character, this.charToNameMap.get(this.getVertexValue(vertex).character)));
-
-        graph.getAllVertices().forEach(vertex => {
-
-            const neighbours = this.getAjacentEdges(vertex);
-
-            neighbours.forEach(neighbour => {
-                if (vertices.indexOf(neighbour) !== -1 && !graph.hasEdgeBetween(vertex, neighbour)) {
-                    graph.addEdge(vertex, neighbour);
-                }
-            });
-        });
 
         return graph;
     }
@@ -245,7 +214,7 @@ export class Matrix {
 
                 const vertex = queue.shift();
 
-                allVertices = _.without(allVertices, vertex);
+                allVertices = without(allVertices, vertex);
                 callback(vertex, isNewRoot);
                 isNewRoot = false;
 

@@ -1,4 +1,4 @@
-import { Matrix } from './Matrix';
+import { CharGraph } from './CharGraph';
 import { WorldItem } from '../../WorldItem';
 import { Parser } from './Parser';
 import { WorldMapToMatrixGraphConverter } from './reader/WorldMapToMatrixGraphConverter';
@@ -39,11 +39,11 @@ export class FurnitureParser implements Parser {
         );
     }
 
-    private parseWorldMap(strMap: string): Matrix {
+    private parseWorldMap(strMap: string): CharGraph {
         return this.worldMapConverter.convert(strMap);
     }
 
-    private createGameObjectsForConnectedComponent(componentGraph: Matrix): WorldItem[] {
+    private createGameObjectsForConnectedComponent(componentGraph: CharGraph): WorldItem[] {
         if (this.areConnectedComponentsRectangular(componentGraph)) {
             return [this.createRectangularGameObject(componentGraph)];
         } else {
@@ -51,7 +51,7 @@ export class FurnitureParser implements Parser {
         }
     }
 
-    private createRectangularGameObject(componentGraph: Matrix): WorldItem {
+    private createRectangularGameObject(componentGraph: CharGraph): WorldItem {
         const minX = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).x).min().value();
         const maxX = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).x).max().value();
         const minY = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).y).min().value();
@@ -71,7 +71,7 @@ export class FurnitureParser implements Parser {
         );
     }
 
-    private createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph: Matrix): WorldItem[] {
+    private createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph: CharGraph): WorldItem[] {
         const verticalSubComponents = this.findVerticalSlices(componentGraph);
         const verticesMinusVerticalSubComponents = _.without(componentGraph.getAllVertices(), ..._.flatten(verticalSubComponents));
         const componentGraphMinusVerticalSubComponents = componentGraph.getGraphForVertices(verticesMinusVerticalSubComponents);
@@ -108,7 +108,7 @@ export class FurnitureParser implements Parser {
         return [...verticalGameObjects, ...horizontalGameObjects];
     }
 
-    private areConnectedComponentsRectangular(componentGraph: Matrix) {
+    private areConnectedComponentsRectangular(componentGraph: CharGraph) {
         const minX = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).x).min().value();
         const maxX = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).x).max().value();
         const minY = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).y).min().value();
@@ -133,7 +133,7 @@ export class FurnitureParser implements Parser {
         return _.without(componentGraph.getAllVertices(), ...checkedVertices).length === 0;
     }
 
-    private findVerticalSlices(reducedGraph: Matrix): number[][] {
+    private findVerticalSlices(reducedGraph: CharGraph): number[][] {
         const visitedVertices = [];
 
         let componentVertices = reducedGraph.getAllVertices();
@@ -154,7 +154,7 @@ export class FurnitureParser implements Parser {
         return verticalSubCompnents;
     }
 
-    private findVerticalSubComponentForVertex(vertex: number, componentGraph: Matrix): number[] {
+    private findVerticalSubComponentForVertex(vertex: number, componentGraph: CharGraph): number[] {
         let subComponentVertices = [vertex];
 
         let actVertex = vertex;
@@ -173,7 +173,7 @@ export class FurnitureParser implements Parser {
         return subComponentVertices;
     }
 
-    private createRectangleFromVerticalVertices(graph: Matrix) {
+    private createRectangleFromVerticalVertices(graph: CharGraph) {
         const vertices = [...graph.getAllVertices()];
         vertices.sort((a, b) => graph.getVertexPositionInMatrix(a).y - graph.getVertexPositionInMatrix(b).y);
 
@@ -188,7 +188,7 @@ export class FurnitureParser implements Parser {
         return Polygon.createRectangle(x, y, width, height);
     }
 
-    private createRectangleFromHorizontalVertices(graph: Matrix) {
+    private createRectangleFromHorizontalVertices(graph: CharGraph) {
         const vertices = [...graph.getAllVertices()];
         vertices.sort((a, b) => graph.getVertexPositionInMatrix(a).x - graph.getVertexPositionInMatrix(b).x);
 
@@ -203,7 +203,7 @@ export class FurnitureParser implements Parser {
         return Polygon.createRectangle(x, y, width, height);
     }
 
-    private getAdditionalDataFromGameObjectGraph(graph: Matrix): any {
+    private getAdditionalDataFromGameObjectGraph(graph: CharGraph): any {
         return graph.getAllVertices().reduce((additionalData, vertex) => {
             return graph.getVertexValue(vertex).additionalData ? graph.getVertexValue(vertex).additionalData : additionalData
         }, null);
