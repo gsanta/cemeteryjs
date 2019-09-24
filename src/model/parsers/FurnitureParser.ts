@@ -29,8 +29,11 @@ export class FurnitureParser implements Parser {
         return flat<WorldItem>(
                 characters
                 .map((character) => {
-                    return graph.findConnectedComponentsForCharacter(character)
-                        .map(connectedComp => this.createGameObjectsForConnectedComponent(graph.getGraphForVertices(connectedComp)));
+                    return graph
+                        .getReducedGraphForCharacters([character])
+                        .getConnectedComponentGraphs()
+                        // .findConnectedComponents()
+                        .map(connectedCompGraph => this.createGameObjectsForConnectedComponent(connectedCompGraph));
                 }),
                 2
         );
@@ -87,15 +90,15 @@ export class FurnitureParser implements Parser {
             });
 
         const horizontalGameObjects = componentGraphMinusVerticalSubComponents
-            .findConnectedComponentsForCharacter(componentGraphMinusVerticalSubComponents.getCharacters()[0])
-            .filter(comp => comp.length > 0)
-            .map(comp => {
-                const gameObjectGraph = componentGraph.getGraphForVertices(comp);
-                const rect = this.createRectangleFromHorizontalVertices(gameObjectGraph);
+            .getReducedGraphForCharacters([componentGraphMinusVerticalSubComponents.getCharacters()[0]])
+            .getConnectedComponentGraphs()
+            .filter(connectedCompGraph => connectedCompGraph.size() > 0)
+            .map(connectedCompGraph => {
+                const rect = this.createRectangleFromHorizontalVertices(connectedCompGraph);
                 const oneVertex = componentGraph.getAllVertices()[0];
 
                 return this.worldItemInfoFactory.create(
-                    gameObjectGraph.getCharacters()[0],
+                    connectedCompGraph.getCharacters()[0],
                     rect,
                     componentGraph.getVertexName(oneVertex),
                     false

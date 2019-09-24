@@ -30,8 +30,10 @@ export class BorderParser implements Parser {
 
         return flat<WorldItem>(
                 characters.map((character) => {
-                    return graph.findConnectedComponentsForCharacter(character)
-                        .map(connectedComp => this.createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(graph.getGraphForVertices(connectedComp), borderGraph));
+                    return graph
+                        .getReducedGraphForCharacters([character])
+                        .getConnectedComponentGraphs()
+                        .map(connectedCompGraph => this.createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(connectedCompGraph, borderGraph));
                 }),
                 2
             );

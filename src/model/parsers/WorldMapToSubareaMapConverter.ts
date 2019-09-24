@@ -1,23 +1,5 @@
 import { WorldMapLineListener, WorldMapReader } from './reader/WorldMapReader';
 
-/*
- * Takes a world map (gwm string) and converts the characters inside the map to contain only
- * two characters which represent the walls and the rooms.
- *
- * e.g
- *
- * input:
- *
- * WIIIW
- * W###W
- * WDDWW
- *
- * output:
- *
- * -----
- * -###-
- * -----
- */
 export class WorldMapToSubareaMapConverter extends WorldMapLineListener {
     private borderCharacters: string[];
     private sectionCharacter: string;
@@ -45,7 +27,7 @@ export class WorldMapToSubareaMapConverter extends WorldMapLineListener {
             line = line.replace(new RegExp(char, 'g'), this.emptyCharacter);
         });
 
-        line = line.replace(new RegExp(`[^${this.emptyCharacter}\\s]`, 'g'), this.sectionCharacter);
+        // line = line.replace(new RegExp(`[^${this.emptyCharacter}\\s]`, 'g'), this.sectionCharacter);
 
         this.lines.push(line);
     }

@@ -23,7 +23,7 @@ describe('MatrixGraph', () => {
                 {}
             );
 
-            const reducedGraph = graph.getGraphForVertexValue('W');
+            const reducedGraph = graph.getReducedGraphForCharacters(['W']);
 
             expect(reducedGraph.size()).toEqual(6);
         });
@@ -50,7 +50,7 @@ describe('MatrixGraph', () => {
                 {}
             );
 
-            const connectedComponentGraphs = graph.createConnectedComponentGraphsForCharacter('R');
+            const connectedComponentGraphs = graph.getReducedGraphForCharacters(['R']).getConnectedComponentGraphs();
 
             expect(connectedComponentGraphs.length).toEqual(2);
             expect(connectedComponentGraphs[0].getAllVertices().length).toEqual(9)

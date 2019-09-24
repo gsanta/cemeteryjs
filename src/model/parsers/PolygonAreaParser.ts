@@ -35,7 +35,9 @@ export class PolygonAreaParser implements Parser {
     public parse(worldMap: string): WorldItem[] {
         const graph = this.worldMapConverter.convert(worldMap);
 
-        return graph.createConnectedComponentGraphsForCharacter(this.areaChar)
+        return graph
+            .getReducedGraphForCharacters([this.areaChar])
+            .getConnectedComponentGraphs()
             .map(componentGraph => {
                 const lines = this.segmentGraphToHorizontalLines(componentGraph);
 
@@ -45,6 +47,16 @@ export class PolygonAreaParser implements Parser {
 
                 return this.services.worldItemFactoryService.create(null, this.geometryService.factory.polygon(points), this.itemName, false);
             });
+    }
+
+    public parse2(graph: Matrix): WorldItem {
+        const lines = this.segmentGraphToHorizontalLines(graph);
+
+        const points = this.polygonRedundantPointReducer.reduce(
+            this.createPolygonPointsFromHorizontalLines(lines)
+        );
+
+        return this.services.worldItemFactoryService.create(null, this.geometryService.factory.polygon(points), this.itemName, false);
     }
 
     /*

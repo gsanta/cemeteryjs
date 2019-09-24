@@ -167,52 +167,12 @@ export class Matrix {
         return graph;
     }
 
-    public getGraphForVertexValue(val: string): Matrix {
-        const graph = new Matrix(this.columns, this.rows);
-        this.getAllVertices()
-            .filter(vertex => this.getVertexValue(vertex).character === val)
-            .forEach(vertex => graph.addVertex(vertex, this.getVertexValue(vertex).character, this.charToNameMap.get(this.getVertexValue(vertex).character)));
-
-        graph.getAllVertices().forEach(vertex => {
-
-            const neighbours = this.getAjacentEdges(vertex);
-
-            neighbours.forEach(neighbour => {
-                if (this.getVertexValue(neighbour).character === val && !graph.hasEdgeBetween(vertex, neighbour)) {
-                    graph.addEdge(vertex, neighbour);
-                }
-            });
-        });
-
-        return graph;
-    }
-
-    public findConnectedComponentsForCharacter(character: string): number[][] {
-        const reducedGraph = this.getGraphForVertexValue(character);
-
-        const connectedComps: Set<number>[] = [];
-
-        let actComp = new Set<number>();
-        reducedGraph.BFS((vertex, newRoot) => {
-            if (newRoot) {
-                connectedComps.push(actComp);
-                actComp = new Set<number>();
-            }
-            actComp.add(vertex);
-        });
-
-        connectedComps.push(actComp);
-
-        return connectedComps.map(set => Array.from(set));
-    }
-
     /*
      * Reduces the graph into subgraphs, where each graph has only vetices with value of `character`
      * and where each graph is a `connected-component`.
      */
-    public createConnectedComponentGraphsForCharacter(character: string): Matrix[] {
-        const reducedGraph = this.getGraphForVertexValue(character);
-        const connectedComponents = reducedGraph.findConnectedComponentsForCharacter(character);
+    public getConnectedComponentGraphs(): Matrix[] {
+        const connectedComponents = this.findConnectedComponents();
 
         return connectedComponents.map(component => this.getReducedGraphForVertices(component));
     }
@@ -229,6 +189,23 @@ export class Matrix {
             .forEach(edge => graph.addEdge(edge[0], edge[1]));
 
         return graph;
+    }
+
+    private findConnectedComponents(): number[][] {
+        const connectedComps: Set<number>[] = [];
+
+        let actComp = new Set<number>();
+        this.BFS((vertex, newRoot) => {
+            if (newRoot) {
+                connectedComps.push(actComp);
+                actComp = new Set<number>();
+            }
+            actComp.add(vertex);
+        });
+
+        connectedComps.push(actComp);
+
+        return connectedComps.map(set => Array.from(set));
     }
 
     /*
