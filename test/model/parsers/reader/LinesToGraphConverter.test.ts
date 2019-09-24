@@ -18,10 +18,6 @@ describe('LinesToGraphConverter', () => {
                 {}
             );
             expect(graph.size()).toEqual(24);
-            expect(graph.getAjacentEdges(0)).toEqual(expect.arrayContaining([1, 6]));
-            expect(graph.getAjacentEdges(1)).toEqual(expect.arrayContaining([0, 2]));
-            expect(graph.getAjacentEdges(8)).toEqual(expect.arrayContaining([7, 9]));
-            expect(graph.getAjacentEdges(23)).toEqual(expect.arrayContaining([17, 22]));
         });
     });
 });

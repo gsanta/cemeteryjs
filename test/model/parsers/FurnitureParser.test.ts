@@ -1,7 +1,6 @@
-import { FurnitureParser } from '../../../src/model/parsers/FurnitureParser';
-import { WorldItem } from '../../../src/WorldItem';
 import { Polygon } from '@nightshifts.inc/geometry';
-import { WorldItemFactoryService } from '../../../src/model/services/WorldItemFactoryService';
+import { FurnitureParser } from '../../../src/model/parsers/FurnitureParser';
+import { setup } from '../../test_utils/mocks';
 
 describe('FurnitureParser', () => {
     describe('generate', () => {
@@ -9,88 +8,91 @@ describe('FurnitureParser', () => {
             const worldMap = `
                 map \`
 
-                ######
-                #WWWWW
-                #W#W##
-                ######
+                ------
+                -TTTTT
+                -T-T--
+                ------
 
                 \`
 
                 definitions \`
 
                 W = wall
-                D = door
+                T = table
                 - = empty
 
                 \`
             `;
 
-            const furnitureInfoParser = new FurnitureParser(new WorldItemFactoryService(), ['wall']);
+            const services = setup(worldMap, []);
+
+            const furnitureInfoParser = new FurnitureParser(services);
             const worldItems = furnitureInfoParser.parse(worldMap);
 
             expect(worldItems.length).toEqual(4);
-            const firstItem = worldItems[0];
-            expect(firstItem).toPartiallyEqualToWorldItem(new WorldItem('wall-1', 'W', Polygon.createRectangle(1, 1, 1, 2), 'wall'));
-            const secondItem = worldItems[1];
-            expect(secondItem).toPartiallyEqualToWorldItem(new WorldItem('wall-2', 'W', Polygon.createRectangle(3, 1, 1, 2), 'wall'));
+            expect(worldItems).toContainWorldItem({id: 'table-1', name: 'table', dimensions: Polygon.createRectangle(1, 1, 1, 2)});
+            expect(worldItems).toContainWorldItem({id: 'table-2', name: 'table', dimensions: Polygon.createRectangle(3, 1, 1, 2)});
+            expect(worldItems).toContainWorldItem({id: 'table-3', name: 'table', dimensions: Polygon.createRectangle(2, 1, 1, 1)});
+            expect(worldItems).toContainWorldItem({id: 'table-4', name: 'table', dimensions: Polygon.createRectangle(4, 1, 2, 1)});
         });
 
         it ('creates world items from the graph (test case with multiple connected components)', () => {
             const worldMap = `
                 map \`
 
-                ######
-                #WWWW#
-                #W####
-                ##WW##
+                ------
+                -TTTT-
+                -T----
+                --TT--
 
                 \`
 
                 definitions \`
 
                 W = wall
-                D = door
+                T = table
                 - = empty
 
                 \`
             `;
 
+            const services = setup(worldMap, []);
 
-            const furnitureInfoParser = new FurnitureParser(new WorldItemFactoryService(), ['wall']);
+            const furnitureInfoParser = new FurnitureParser(services);
             const worldItems = furnitureInfoParser.parse(worldMap);
 
             expect(worldItems.length).toEqual(3);
-            const firstItem = worldItems[0];
-            expect(firstItem).toPartiallyEqualToWorldItem(new WorldItem('wall-1', 'W', Polygon.createRectangle(1, 1, 1, 2), 'wall'));
-            const thirdItem = worldItems[2];
-            expect(thirdItem).toPartiallyEqualToWorldItem(new WorldItem('wall-3', 'W', Polygon.createRectangle(2, 3, 2, 1), 'wall'));
+            expect(worldItems).toContainWorldItem({id: 'table-1', name: 'table', dimensions: Polygon.createRectangle(1, 1, 1, 2)});
+            expect(worldItems).toContainWorldItem({id: 'table-2', name: 'table', dimensions: Polygon.createRectangle(2, 1, 3, 1)});
+            expect(worldItems).toContainWorldItem({id: 'table-3', name: 'table', dimensions: Polygon.createRectangle(2, 3, 2, 1)});
         });
 
         it ('creates one world item for a rectangular connected component', () => {
             const worldMap = `
                 map \`
 
-                #DD###
-                #DD###
-                #DD###
-                ######
+                -TT---
+                -TT---
+                -TT---
+                ------
 
                 \`
 
                 definitions \`
 
                 W = wall
-                D = door
+                T = table
                 - = empty
 
                 \`
             `;
 
+            const services = setup(worldMap, []);
 
-            const furnitureInfoParser = new FurnitureParser(new WorldItemFactoryService(), ['door']);
+            const furnitureInfoParser = new FurnitureParser(services);
             const worldItems = furnitureInfoParser.parse(worldMap);
             expect(worldItems.length).toEqual(1);
-            expect(worldItems[0]).toPartiallyEqualToWorldItem(new WorldItem('door-1', 'D', Polygon.createRectangle(1, 0, 2, 3), 'door'));
+            expect(worldItems).toContainWorldItem({id: 'table-1', name: 'table', dimensions: Polygon.createRectangle(1, 0, 2, 3)});
         });
     });
 });

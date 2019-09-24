@@ -6,25 +6,20 @@ import { Polygon } from '@nightshifts.inc/geometry';
 import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 import * as _ from 'lodash';
 import { flat } from '../utils/Functions';
+import { ServiceFacade } from '../services/ServiceFacade';
 
 export class FurnitureParser implements Parser {
-    private worldItemInfoFactory: WorldItemFactoryService
     private worldMapConverter: WorldMapToMatrixGraphConverter;
-    private furnitureCharacters: string[];
+    private services: ServiceFacade<any, any, any>;
 
-    constructor(
-        worldItemInfoFactory: WorldItemFactoryService,
-        furnitureCharacters: string[],
-        worldMapConverter = new WorldMapToMatrixGraphConverter(),
-    ) {
-        this.worldItemInfoFactory = worldItemInfoFactory;
+    constructor(services: ServiceFacade<any, any, any>, worldMapConverter = new WorldMapToMatrixGraphConverter(),) {
+        this.services = services;
         this.worldMapConverter = worldMapConverter;
-        this.furnitureCharacters = furnitureCharacters;
     }
 
     public parse(worldMap: string): WorldItem[] {
-        const graph = this.parseWorldMap(worldMap);
-        const characters = this.furnitureCharacters.filter(name => graph.getCharacterForName(name)).map(name => graph.getCharacterForName(name));
+        const graph = this.worldMapConverter.convert(worldMap);
+        const characters = this.services.configService.furnitureTypes.filter(name => graph.getCharacterForName(name)).map(name => graph.getCharacterForName(name));
 
         return flat<WorldItem>(
                 characters
@@ -32,15 +27,10 @@ export class FurnitureParser implements Parser {
                     return graph
                         .getReducedGraphForCharacters([character])
                         .getConnectedComponentGraphs()
-                        // .findConnectedComponents()
                         .map(connectedCompGraph => this.createGameObjectsForConnectedComponent(connectedCompGraph));
                 }),
                 2
         );
-    }
-
-    private parseWorldMap(strMap: string): CharGraph {
-        return this.worldMapConverter.convert(strMap);
     }
 
     private createGameObjectsForConnectedComponent(componentGraph: CharGraph): WorldItem[] {
@@ -63,7 +53,7 @@ export class FurnitureParser implements Parser {
         const y = minY;
         const width = (maxX - minX + 1);
         const height = (maxY - minY + 1);
-        return this.worldItemInfoFactory.create(
+        return this.services.worldItemFactoryService.create(
             componentGraph.getCharacters()[0],
             Polygon.createRectangle(x, y, width, height),
             componentGraph.getVertexName(oneVertex),
@@ -81,7 +71,7 @@ export class FurnitureParser implements Parser {
                 const gameObjectGraph = componentGraph.getGraphForVertices(slice);
                 const rect = this.createRectangleFromVerticalVertices(gameObjectGraph)
                 const oneVertex = componentGraph.getAllVertices()[0];
-                return this.worldItemInfoFactory.create(
+                return this.services.worldItemFactoryService.create(
                     componentGraph.getCharacters()[0],
                     rect,
                     componentGraph.getVertexName(oneVertex),
@@ -97,7 +87,7 @@ export class FurnitureParser implements Parser {
                 const rect = this.createRectangleFromHorizontalVertices(connectedCompGraph);
                 const oneVertex = componentGraph.getAllVertices()[0];
 
-                return this.worldItemInfoFactory.create(
+                return this.services.worldItemFactoryService.create(
                     connectedCompGraph.getCharacters()[0],
                     rect,
                     componentGraph.getVertexName(oneVertex),

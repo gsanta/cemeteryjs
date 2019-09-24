@@ -19,6 +19,7 @@ import { RootWorldItemParser } from "../parsers/RootWorldItemParser";
 import { WorldItem } from "../../WorldItem";
 import { ServiceFacade } from './ServiceFacade';
 import { MeshDescriptor } from '../../Config';
+import { SubareaParser } from '../parsers/SubareaParser';
 
 export interface WorldConfig {
     borders: string[];
@@ -45,17 +46,16 @@ export class ImporterService<M, S, T> {
     }
 
     import(worldMap: string, modNames?: string[]): WorldItem[] {
-        const furnitureTypes = this.services.configService.furnitureTypes.filter(furniture => furniture !== 'empty');
-
         let worldItems = this.services.parserService.apply(
             worldMap,
             new CombinedWorldItemParser(
                 [
-                    new FurnitureParser(this.services.worldItemFactoryService, furnitureTypes, new WorldMapToMatrixGraphConverter()),
+                    new FurnitureParser(this.services),
                     new BorderParser(this.services.worldItemFactoryService, this.services.configService.borderTypes),
                     new RoomParser(this.services),
                     new PolygonAreaParser('empty', this.services.configService.typeToCharMap.get('empty'), this.services),
-                    new RootWorldItemParser(this.services.worldItemFactoryService)
+                    new RootWorldItemParser(this.services.worldItemFactoryService),
+                    new SubareaParser(this.services)
                 ]
             )
         );

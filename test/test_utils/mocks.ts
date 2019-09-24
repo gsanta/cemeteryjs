@@ -42,9 +42,11 @@ export function setupMap(map: string): string {
 
     W = wall
     D = door
+    I = window
     - = empty
     E = bed
     T = table
+    = = _subarea
 
     \`
 `;
