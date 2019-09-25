@@ -138,46 +138,47 @@ describe(`ConvertBorderPolyToLineModifier`, () => {
                 ]
             );
 
-            expect(root.children[0]).toHaveBorders([
-                new Segment(new Point(0.5, 1), new Point(0.5, 9)),
-                new Segment(new Point(32.5, 1), new Point(32.5, 9)),
-                new Segment(new Point(0.5, 1), new Point(32.5, 1)),
-                new Segment(new Point(0.5, 9), new Point(32.5, 9))
+            const rooms = root.children.filter(child => child.name === 'room');
+            expect(rooms).toHaveAnyWithBorders([
+                {dimensions: new Segment(new Point(0.5, 1), new Point(0.5, 9))},
+                {dimensions: new Segment(new Point(32.5, 1), new Point(32.5, 9))},
+                {dimensions: new Segment(new Point(0.5, 1), new Point(32.5, 1))},
+                {dimensions: new Segment(new Point(0.5, 9), new Point(32.5, 9))}
             ]);
 
-            expect(root.children[1]).toHaveBorders([
-                new Segment(new Point(32.5, 1), new Point(32.5, 9)),
-                new Segment(new Point(52.5, 1), new Point(52.5, 9)),
-                new Segment(new Point(32.5, 1), new Point(52.5, 1)),
-                new Segment(new Point(32.5, 9), new Point(52.5, 9))
+            expect(rooms).toHaveAnyWithBorders([
+                {dimensions: new Segment(new Point(32.5, 1), new Point(32.5, 9))},
+                {dimensions: new Segment(new Point(52.5, 1), new Point(52.5, 9))},
+                {dimensions: new Segment(new Point(32.5, 1), new Point(52.5, 1))},
+                {dimensions: new Segment(new Point(32.5, 9), new Point(52.5, 9))}
             ]);
 
-            expect(root.children[2]).toHaveBorders([
-                new Segment(new Point(0.5, 9), new Point(0.5, 17)),
-                new Segment(new Point(52.5, 9), new Point(52.5, 17)),
-                new Segment(new Point(0.5, 9), new Point(32.5, 9)),
-                new Segment(new Point(32.5, 9), new Point(52.5, 9)),
-                new Segment(new Point(0.5, 17), new Point(14.235849056603774, 17)),
-                new Segment(new Point(14.235849056603776, 17), new Point(26.5, 17)),
-                new Segment(new Point(26.499999999999996, 17), new Point(40.726415094339615, 17)),
-                new Segment(new Point(40.726415094339615, 17), new Point(52.5, 17))
+            expect(rooms).toHaveAnyWithBorders([
+                {dimensions: new Segment(new Point(0.5, 9), new Point(0.5, 17))},
+                {dimensions: new Segment(new Point(52.5, 9), new Point(52.5, 17))},
+                {dimensions: new Segment(new Point(0.5, 9), new Point(32.5, 9))},
+                {dimensions: new Segment(new Point(32.5, 9), new Point(52.5, 9))},
+                {dimensions: new Segment(new Point(0.5, 17), new Point(14.235849056603774, 17))},
+                {dimensions: new Segment(new Point(14.235849056603776, 17), new Point(26.5, 17))},
+                {dimensions: new Segment(new Point(26.499999999999996, 17), new Point(40.726415094339615, 17))},
+                {dimensions: new Segment(new Point(40.726415094339615, 17), new Point(52.5, 17))}
             ]);
 
-            expect(root.children[3]).toHaveBorders([
-                new Segment(new Point(0.5, 17), new Point(0.5, 35)),
-                new Segment(new Point(14.5, 17), new Point(14.5, 27)),
-                new Segment(new Point(26.5, 27), new Point(26.5, 35)),
-                new Segment(new Point(0.5, 17), new Point(14.235849056603774, 17)),
-                new Segment(new Point(0.5, 35), new Point(26.5, 35)),
-                new Segment(new Point(14.5, 27), new Point(26.5, 27))
+            expect(rooms).toHaveAnyWithBorders([
+                {dimensions: new Segment(new Point(0.5, 17), new Point(0.5, 35))},
+                {dimensions: new Segment(new Point(14.5, 17), new Point(14.5, 27))},
+                {dimensions: new Segment(new Point(26.5, 27), new Point(26.5, 35))},
+                {dimensions: new Segment(new Point(0.5, 17), new Point(14.235849056603774, 17))},
+                {dimensions: new Segment(new Point(0.5, 35), new Point(26.5, 35))},
+                {dimensions: new Segment(new Point(14.5, 27), new Point(26.5, 27))}
             ]);
 
 
-            expect(root.children[4]).toHaveBorders([
-                new Segment(new Point(14.5, 17), new Point(14.5, 27)),
-                new Segment(new Point(26.5, 17), new Point(26.5, 27)),
-                new Segment(new Point(14.235849056603776, 17), new Point(26.5, 17)),
-                new Segment(new Point(14.5, 27), new Point(26.5, 27))
+            expect(rooms).toHaveAnyWithBorders([
+                {dimensions: new Segment(new Point(14.5, 17), new Point(14.5, 27))},
+                {dimensions: new Segment(new Point(26.5, 17), new Point(26.5, 27))},
+                {dimensions: new Segment(new Point(14.235849056603776, 17), new Point(26.5, 17))},
+                {dimensions: new Segment(new Point(14.5, 27), new Point(26.5, 27))}
             ]);
 
             // //TODO: finish testing

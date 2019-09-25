@@ -78,9 +78,7 @@ describe('ChangeFurnitureSizeModifier', () => {
         );
 
         const room = items[0].children[0];
-        const table = room.children[0];
-
-        expect(table.dimensions.equalTo(Polygon.createRectangle(7.5, 2.5, 2, 1))).toBeTruthy();
+        expect(room.children).toHaveAnyWithDimensions(Polygon.createRectangle(7.5, 2.5, 2, 1));
     });
 
     it ('snaps the furniture beside the wall if the original dimensions touched a wall', () => {

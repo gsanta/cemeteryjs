@@ -5,8 +5,9 @@ import { hasAnyWorldItemInfoDimension } from '../model/parsers/BorderParser.test
 declare global {
     namespace jest {
         interface Matchers<R> {
-            toHaveBorders(borderDimensions: Shape[]),
+            toHaveBorders(borders: Partial<WorldItem>[]),
             toHaveAnyWithDimensions(dimensions: Shape),
+            toHaveAnyWithBorders(borders: Partial<WorldItem>[]);
             toPartiallyEqualToWorldItem(partialWorldItem: Partial<WorldItem>),
             toContainWorldItem(partialWorldItem: Partial<WorldItem>)
         }
@@ -14,31 +15,23 @@ declare global {
 }
 
 expect.extend({
-    toHaveBorders(room: WorldItem, borderDimensions: Shape[]) {
-        let pass = true;
+    toHaveBorders(room: WorldItem, borders: Partial<WorldItem>[]) {
+        return hasBorders(room, borders);
+    },
 
-        let message: string = '';
+    toHaveAnyWithBorders(rooms: WorldItem[], worldItems: Partial<WorldItem>[]) {
+        for (let i = 0; i < rooms.length; i++) {
+            const res = hasBorders(rooms[i], worldItems);
 
-        try {
-            for (let i = 0; i < borderDimensions.length; i++) {
-                hasAnyWorldItemInfoDimension(borderDimensions[i], room.borderItems)
+            if (res.pass) {
+                return res;
             }
-        } catch (e) {
-            pass = false;
-            message = e.message;
         }
 
-        if (pass) {
-            return {
-                message: () => 'should not happen',
-                pass: true,
-            };
-        } else {
-            return {
-                message: () => message,
-                pass: false,
-            };
-        }
+        return {
+            message: () => 'None of the rooms matches the given borders',
+            pass: false,
+        };
     },
 
     toHaveAnyWithDimensions(worldItems: WorldItem[], dimensions: Shape) {
@@ -68,22 +61,7 @@ expect.extend({
     },
 
     toContainWorldItem(worldItems: WorldItem[], partialWorldItem: Partial<WorldItem>) {
-        for (let i = 0; i < worldItems.length; i++) {
-            try {
-                expect(worldItems[i]).toPartiallyEqualToWorldItem(partialWorldItem);
-                return {
-                    pass: true,
-                    message: () => ''
-                }
-            } catch (e) {
-                // error expected
-            }
-        }
-
-        return {
-            pass: false,
-            message: () => `${worldItems.toString()} does not match any element in the list.`
-        }
+        return containsWorldItem(worldItems, partialWorldItem);
     },
 
     toPartiallyEqualToWorldItem(worldItem: WorldItem, partialWorldItem: Partial<WorldItem>) {
@@ -109,7 +87,7 @@ expect.extend({
 
         if (pass) {
             return {
-                message: () => 'should not happen',
+                message: () => '',
                 pass: true,
             };
         } else {
@@ -121,3 +99,36 @@ expect.extend({
     }
 });
 
+function containsWorldItem(worldItems: WorldItem[], partialWorldItem: Partial<WorldItem>) {
+    for (let i = 0; i < worldItems.length; i++) {
+        try {
+            expect(worldItems[i]).toPartiallyEqualToWorldItem(partialWorldItem);
+            return {
+                pass: true,
+                message: () => ''
+            }
+        } catch (e) {
+            // error expected
+        }
+    }
+
+    return {
+        pass: false,
+        message: () => `${worldItems.toString()} does not match any element in the list.`
+    }
+}
+
+function hasBorders(room: WorldItem, borders: Partial<WorldItem>[]) {
+    for (let i = 0; i < borders.length; i++) {
+        const res = containsWorldItem(room.borderItems, borders[i]);
+
+        if (!res.pass) {
+            return res;
+        }
+    }
+
+    return {
+        message: () => '',
+        pass: true,
+    };
+}

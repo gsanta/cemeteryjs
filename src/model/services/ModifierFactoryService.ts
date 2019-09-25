@@ -23,7 +23,7 @@ export class ModifierFactoryService {
             .registerInstance(new SplitWallsIntoTwoParallelChildWallsModifier(services.worldItemFactoryService, services.geometryService))
             .registerInstance(new AddRoofModifier(services.worldItemFactoryService))
             .registerInstance(new AssignBordersToRoomsModifier(services.configService))
-            .registerInstance(new BuildHierarchyModifier())
+            .registerInstance(new BuildHierarchyModifier(services))
             .registerInstance(new ChangeBorderWidthModifier(services.configService))
             .registerInstance(new ChangeFurnitureSizeModifier(services.meshTamplateService))
             .registerInstance(new ConvertBorderPolyToLineModifier(services.geometryService))

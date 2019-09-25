@@ -29,7 +29,9 @@ export class SubareaParser implements Parser {
         let graph = this.worldMapConverter.convert(worldMapToSubareaMapConverter.convert(worldMap));
         const characters = without(graph.getCharacters(), this.services.configService.typeToCharMap.get('empty'));
 
-        const connectedCompGraphs = graph.getReducedGraphForCharacters(characters).getConnectedComponentGraphs()
+        const connectedCompGraphs = graph.getReducedGraphForCharacters(characters)
+            .getConnectedComponentGraphs()
+            .filter(graph => graph.getCharacters().includes(subareaChar));
 
         const polygonAreaParser = new PolygonAreaParser('_subarea', this.services.configService.typeToCharMap.get('_subarea'), this.services);
 

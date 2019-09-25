@@ -31,89 +31,87 @@ function createMap(worldMap: string) {
 }
 
 describe('`WorldParser`', () => {
-    describe('parse', () => {
-        it ('creates a WorldItem for every distinguishable item in the input map', () => {
-            const map = createMap(
-                `
-                WWWIIWWW
-                W--TT--W
-                WWWWWWWW
-                `
-            );
+    // describe('parse', () => {
+    //     it ('creates a WorldItem for every distinguishable item in the input map', () => {
+    //         const map = createMap(
+    //             `
+    //             WWWIIWWW
+    //             W--TT--W
+    //             WWWWWWWW
+    //             `
+    //         );
 
-            let services: ServiceFacade<any, any, any> = setup(map, []);
+    //         let services: ServiceFacade<any, any, any> = setup(map, []);
 
-            const [root] = services.importerService.import(map,[BuildHierarchyModifier.modName]);
+    //         const [root] = services.importerService.import(map,[BuildHierarchyModifier.modName]);
 
-            const items = root.children;
-            expect(items.length).toEqual(7);
-            expect(items).toContainWorldItem({name: 'window', dimensions: Polygon.createRectangle(3, 0, 2, 1), isBorder: true, rotation: 0});
-            expect(items).toContainWorldItem({name: 'wall', dimensions: Polygon.createRectangle(0, 0, 1, 3), isBorder: true, rotation: Math.PI / 2});
-            expect(items).toContainWorldItem({name: 'wall', dimensions: Polygon.createRectangle(7, 0, 1, 3), isBorder: true, rotation: Math.PI / 2});
-            expect(items).toContainWorldItem({name: 'wall', dimensions: Polygon.createRectangle(0, 0, 3, 1), isBorder: true, rotation: 0});
-            expect(items).toContainWorldItem({name: 'wall', dimensions: Polygon.createRectangle(0, 2, 8, 1), isBorder: true, rotation: 0});
-            expect(items).toContainWorldItem({name: 'wall', dimensions: Polygon.createRectangle(5, 0, 3, 1), isBorder: true, rotation: 0});
+    //         const items = root.children;
+    //         expect(items.length).toEqual(7);
+    //         expect(items).toContainWorldItem({name: 'window', dimensions: Polygon.createRectangle(3, 0, 2, 1), isBorder: true, rotation: 0});
+    //         expect(items).toContainWorldItem({name: 'wall', dimensions: Polygon.createRectangle(0, 0, 1, 3), isBorder: true, rotation: Math.PI / 2});
+    //         expect(items).toContainWorldItem({name: 'wall', dimensions: Polygon.createRectangle(7, 0, 1, 3), isBorder: true, rotation: Math.PI / 2});
+    //         expect(items).toContainWorldItem({name: 'wall', dimensions: Polygon.createRectangle(0, 0, 3, 1), isBorder: true, rotation: 0});
+    //         expect(items).toContainWorldItem({name: 'wall', dimensions: Polygon.createRectangle(0, 2, 8, 1), isBorder: true, rotation: 0});
+    //         expect(items).toContainWorldItem({name: 'wall', dimensions: Polygon.createRectangle(5, 0, 3, 1), isBorder: true, rotation: 0});
+    //         expect(items).toContainWorldItem({name: 'room'});
+    //     });
 
-            expect(items[6].name).toEqual('room');
-        });
+    //     it ('adds the bordering `WorldItem`s to the corresponding rooms', () => {
+    //         const map = createMap(
+    //             `
+    //             WWWDDWWWWWDDWWW
+    //             WCCC---WBB----W
+    //             WCCC---W------W
+    //             W------WBB----W
+    //             WWWWWWWWWWWWWWW
+    //             `
+    //         );
 
-        it ('adds the bordering `WorldItem`s to the corresponding rooms', () => {
-            const map = createMap(
-                `
-                WWWDDWWWWWDDWWW
-                WCCC---WBB----W
-                WCCC---W------W
-                W------WBB----W
-                WWWWWWWWWWWWWWW
-                `
-            );
+    //         let services: ServiceFacade<any, any, any> = setup(map, []);
 
-            let services: ServiceFacade<any, any, any> = setup(map, []);
+    //         const [root] = services.importerService.import(
+    //             map,
+    //             [
+    //                 ScaleModifier.modName,
+    //                 SegmentBordersModifier.modName,
+    //                 BuildHierarchyModifier.modName,
+    //                 AssignBordersToRoomsModifier.modName
+    //             ]
+    //         );
 
-            const [root] = services.importerService.import(
-                map,
-                [
-                    ScaleModifier.modName,
-                    SegmentBordersModifier.modName,
-                    BuildHierarchyModifier.modName,
-                    AssignBordersToRoomsModifier.modName
-                ]
-            );
+    //         const [room1, room2] = root.children.filter(item => item.name === 'room');
+    //         expect(room1.borderItems.length).toEqual(6);
+    //         expect(room2.borderItems.length).toEqual(6);
+    //     });
+    // });
 
-            const [room1, room2] = root.children.filter(item => item.name === 'room');
-            expect(room1.borderItems.length).toEqual(6);
-            expect(room2.borderItems.length).toEqual(6);
-        });
-    });
+    // it ('integrates correctly the BorderItemSegmentingWorldItemGeneratorDecorator if used', () => {
+    //     const map = createMap(
+    //         `
+    //         WWDDWWWDDWWW
+    //         WCCC--WBB--W
+    //         WCCC--W----W
+    //         W-----WBB##W
+    //         WWWWWWWWWWWW
+    //         `
+    //     );
 
-    it ('integrates correctly the BorderItemSegmentingWorldItemGeneratorDecorator if used', () => {
-        const map = createMap(
-            `
-            WWDDWWWDDWWW
-            WCCC--WBB--W
-            WCCC--W----W
-            W-----WBB##W
-            WWWWWWWWWWWW
-            `
-        );
+    //     let services: ServiceFacade<any, any, any> = setup(map, []);
 
+    //     const [root] = services.importerService.import(
+    //         map,
+    //         [
+    //             ScaleModifier.modName,
+    //             SegmentBordersModifier.modName,
+    //             BuildHierarchyModifier.modName,
+    //             AssignBordersToRoomsModifier.modName
+    //         ]
+    //     );
 
-        let services: ServiceFacade<any, any, any> = setup(map, []);
+    //     const walls = root.children.filter(item => item.name === 'wall');
 
-        const [root] = services.importerService.import(
-            map,
-            [
-                ScaleModifier.modName,
-                SegmentBordersModifier.modName,
-                BuildHierarchyModifier.modName,
-                AssignBordersToRoomsModifier.modName
-            ]
-        );
-
-        const walls = root.children.filter(item => item.name === 'wall');
-
-        expect(walls.length).toEqual(8);
-    });
+    //     expect(walls.length).toEqual(8);
+    // });
 
     it ('can integrate with `PolygonAreaInfoGenerator`', () => {
         const map = createMap(
@@ -126,7 +124,6 @@ describe('`WorldParser`', () => {
             WWWWWWWW
             `
         );
-
         let services: ServiceFacade<any, any, any> = setup(map, []);
 
         const [root] = services.importerService.import(
@@ -138,6 +135,7 @@ describe('`WorldParser`', () => {
             ]
         );
 
+        console.log(root.children.map(child => child.name));
         expect(root.children.length).toEqual(10);
         expect(root.children[0].name).toEqual('room');
         const room = root.children[0];
