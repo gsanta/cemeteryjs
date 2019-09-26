@@ -13,7 +13,7 @@ export class ServiceFacade<M, S, T> {
     meshFactoryService: MeshFactoryService<M, S>;
     modifierFactoryService: ModifierFactoryService;
     worldItemFactoryService: WorldItemFactoryService;
-    meshTamplateService: MeshTemplateService<M, S>
+    meshTemplateService: MeshTemplateService<M, S>
     configService: ConfigService;
     modifierService: ModifierService;
     parserService: ParserService;
@@ -30,7 +30,7 @@ export class ServiceFacade<M, S, T> {
         this.configService = configService;
         this.converterService = new ConverterService();
         this.meshFactoryService = meshFactoryService;
-        this.meshTamplateService = meshLoaderService;
+        this.meshTemplateService = meshLoaderService;
         this.worldItemFactoryService = new WorldItemFactoryService();
         this.modifierFactoryService = new ModifierFactoryService(this);
         this.modifierService = new ModifierService(this.modifierFactoryService);

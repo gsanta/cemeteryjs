@@ -16,6 +16,13 @@ export function last<T>(arr: T[]): T {
     return arr[arr.length - 1];
 }
 
+
+export function minBy<T>(collection: T[], callback: (a: T, b: T) => number) {
+	const select = (a, b) => callback(a, b) < 0 ? a : b;
+	return collection.reduce(select, {})
+}
+
+
 export function debounce<T extends Function>(func: T, wait: number): T {
 	let timeout;
 	return <any> function() {

@@ -13,7 +13,6 @@ declare global {
         }
     }
 }
-
 expect.extend({
     toHaveBorders(room: WorldItem, borders: Partial<WorldItem>[]) {
         return hasBorders(room, borders);

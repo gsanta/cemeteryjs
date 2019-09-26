@@ -1,6 +1,6 @@
 import { WorldItemUtils } from "../../WorldItemUtils";
 import { WorldItem } from "../../WorldItem";
-import { Polygon, Segment, Distance, Line, Point, Angle, Transform, Measurements, Shape } from '@nightshifts.inc/geometry';
+import { Polygon, Segment, Distance, Line, Angle, Transform, Measurements, Shape } from '@nightshifts.inc/geometry';
 import { Modifier } from './Modifier';
 import { NormalizeBorderRotationModifier } from "./NormalizeBorderRotationModifier";
 import { MeshTemplateService } from "../services/MeshTemplateService";
@@ -34,9 +34,9 @@ export class ChangeFurnitureSizeModifier implements Modifier {
         .forEach(furniture => {
 
             if (this.meshTemplateService.hasTemplate(furniture.name)) {
-                const furnitureDimensions = this.meshTemplateService.getTemplateDimensions(furniture.name);
-
                 const snappingWallEdges = this.getSnappingWalls(room, furniture);
+
+                const furnitureDimensions = this.meshTemplateService.getTemplateDimensions(furniture.name);
                 const originalFurnitureDimensions = furniture.dimensions;
 
                 furniture.dimensions = furnitureDimensions ? Polygon.createRectangle(0, 0, furnitureDimensions.x, furnitureDimensions.y) : <Polygon> furniture.dimensions;
@@ -97,7 +97,6 @@ export class ChangeFurnitureSizeModifier implements Modifier {
         if (snappingWallEdges.length > 0) {
             const furnitureAlignment = this.isFurnitureParallelOrPerpendicularToWall(originalFurnitureDimensions, snappingWallEdges[0]);
 
-            // let angle = snappingWallEdges[0].getLine().getAngleToXAxis();
             let angle = this.calcRotation(snappingWallEdges[0], <Polygon> originalFurnitureDimensions);
 
             furniture.dimensions.getBoundingCenter()
@@ -117,12 +116,6 @@ export class ChangeFurnitureSizeModifier implements Modifier {
 
     private calcRotation(wallSegment: Segment, furnitureDim: Polygon) {
         const furnitureCenter = furnitureDim.getBoundingCenter();
-        // const [x1, y1] = [wallSegment.getPoints()[0].x, wallSegment.getPoints()[0].y]
-        // const [x2, y2] = [wallSegment.getPoints()[1].x, wallSegment.getPoints()[1].y]
-        // const [x, y] = [furnitureCenter.x, furnitureCenter.y];
-        // const perpVector = new Point(y2 - y1, x1 - x2);
-        // const d = (x - x1) * (y2 - y1) - (y - y1) * (x2 - x1);
-        // // const d = (x − x1) * (y2−y1) − (y−y1) * (x2−x1);
         const AB = wallSegment.toVector();
         const perpAB = AB.perpendicularVector();
         const AP = new Segment(furnitureCenter, wallSegment.getPoints()[0]).toVector();

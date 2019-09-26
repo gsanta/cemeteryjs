@@ -27,38 +27,6 @@ export class BuildHierarchyModifier implements Modifier {
         return this.buildHierarchy(gwmWorldItems);
     }
 
-    // buildHierarchy(worldItems: WorldItem[]) {
-    //     const childrenAlreadyCategorized = [];
-
-    //     // worldItems.sort((a, b) => (<Polygon> a.dimensions).getArea() - (<Polygon> b.dimensions).getArea());
-    //     let rootWorldItems = worldItems;
-    //     const borderItems = worldItems.filter(item => this.services.configService.furnitureTypes.includes(item.name));
-    //     worldItems = without(worldItems, ...borderItems);
-
-    //     const empties = worldItems.filter(item => item.name === 'empty');
-
-    //     worldItems.forEach(currentItem => {
-
-    //         return without(worldItems, ...[...childrenAlreadyCategorized, currentItem, ...borderItems])
-    //             .forEach((childItem: WorldItem) => {
-    //                 if ((<Polygon>currentItem.dimensions).contains(<Polygon> childItem.dimensions) && !empties.includes(currentItem)) {
-    //                     // this condition ensures that no two items will be each other's children if they would have the
-    //                     // same size
-    //                     if (childItem.children.indexOf(currentItem) === -1) {
-    //                         currentItem.addChild(childItem);
-    //                         childItem.parent = currentItem;
-    //                         childrenAlreadyCategorized.push(childItem);
-    //                         rootWorldItems = without(rootWorldItems, childItem);
-    //                     }
-    //                 }
-    //             });
-    //     });
-
-    //     // rootWorldItems = rootWorldItems.concat(...borderItems);
-
-    //     return [...rootWorldItems, ...borderItems];
-    // }
-
     buildHierarchy(worldItems: WorldItem[]) {
         const furnitures = worldItems.filter(item => this.services.configService.furnitureTypes.includes(item.name))
         const subareas = worldItems.filter(item => item.name === '_subarea');
@@ -70,24 +38,6 @@ export class BuildHierarchyModifier implements Modifier {
 
         const remainingFurnitures = this.addChildren(subareas, furnitures);
         this.addChildren(rooms, [...subareas, ...remainingFurnitures, ...empty]);
-
-
-        // worldItems.forEach(currentItem => {
-
-        //     return without(worldItems, ...[...childrenAlreadyCategorized, currentItem])
-        //         .forEach((childItem: WorldItem) => {
-        //             if ((<Polygon>currentItem.dimensions).contains(<Polygon> childItem.dimensions)) {
-        //                 // this condition ensures that no two items will be each other's children if they would have the
-        //                 // same size
-        //                 if (childItem.children.indexOf(currentItem) === -1) {
-        //                     currentItem.addChild(childItem);
-        //                     childItem.parent = currentItem;
-        //                     childrenAlreadyCategorized.push(childItem);
-        //                     rootWorldItems = without(rootWorldItems, childItem);
-        //                 }
-        //             }
-        //         });
-        // });
 
         roots[0].children = [...rooms, ...borders];
 

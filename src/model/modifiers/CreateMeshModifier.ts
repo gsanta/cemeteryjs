@@ -30,10 +30,12 @@ export class CreateMeshModifier<M, S> implements Modifier {
             throw new Error('`MeshFactory` is not ready loading the models, please wait for the Promise returned from `loadModels` to resolve.');
         }
 
+        const skipTypes = ['_subarea'];
+
         const visitedItems: Set<WorldItem> = new Set();
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
-                if (!visitedItems.has(item)) {
+                if (!skipTypes.includes(item.name) && !visitedItems.has(item)) {
                     item.meshTemplate = {
                         meshes: this.createMesh(item),
                         skeletons: [],

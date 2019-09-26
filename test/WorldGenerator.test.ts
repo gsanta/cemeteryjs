@@ -135,7 +135,6 @@ describe('`WorldParser`', () => {
             ]
         );
 
-        console.log(root.children.map(child => child.name));
         expect(root.children.length).toEqual(10);
         expect(root.children[0].name).toEqual('room');
         const room = root.children[0];
