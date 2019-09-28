@@ -1,6 +1,5 @@
 import { WorldItem } from '../../WorldItem';
 import { Parser } from './Parser';
-import _ = require('lodash');
 import { flat } from '../utils/Functions';
 
 /**

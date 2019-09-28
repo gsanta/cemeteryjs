@@ -14,8 +14,7 @@ describe('LinesToGraphConverter', () => {
                 {
                     W: 'wall',
                     '#': 'empty'
-                },
-                {}
+                }
             );
             expect(graph.size()).toEqual(24);
         });

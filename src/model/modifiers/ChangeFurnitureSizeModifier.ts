@@ -4,7 +4,10 @@ import { Polygon, Segment, Distance, Line, Angle, Transform, Measurements, Shape
 import { Modifier } from './Modifier';
 import { NormalizeBorderRotationModifier } from "./NormalizeBorderRotationModifier";
 import { MeshTemplateService } from "../services/MeshTemplateService";
-import { toRadian } from "@nightshifts.inc/geometry/build/utils/GeometryUtils";
+import { DefaultFurnitureResizer } from './real_furniture_size/DefaultFurnitureResizer';
+import { ServiceFacade } from '../services/ServiceFacade';
+import { flat } from "../utils/Functions";
+import { SubareaFurnitureResizer } from './real_furniture_size/SubareaFurnitureResizer';
 
 
 export class ChangeFurnitureSizeModifier implements Modifier {
@@ -12,9 +15,13 @@ export class ChangeFurnitureSizeModifier implements Modifier {
     dependencies = [NormalizeBorderRotationModifier.modName];
 
     private meshTemplateService: MeshTemplateService<any, any>;
+    private defaultFurnitureResizer: DefaultFurnitureResizer;
+    private subareaFurnituerResizer: SubareaFurnitureResizer;
 
-    constructor(meshTemplateService: MeshTemplateService<any, any>) {
-        this.meshTemplateService = meshTemplateService;
+    constructor(services: ServiceFacade<any, any, any>) {
+        this.meshTemplateService = services.meshTemplateService;
+        this.defaultFurnitureResizer = new DefaultFurnitureResizer(services);
+        this.subareaFurnituerResizer = new SubareaFurnitureResizer(services);
     }
 
     getName(): string {
@@ -24,119 +31,14 @@ export class ChangeFurnitureSizeModifier implements Modifier {
     apply(worldItems: WorldItem[]): WorldItem[] {
         const rooms: WorldItem[] = WorldItemUtils.filterRooms(worldItems);
 
-        rooms.forEach(room => this.snapFurnituresInRoom(room));
+        // rooms.forEach(room => this.snapFurnituresInRoom(room));
+        rooms.forEach(room => this.defaultFurnitureResizer.resize(room));
+        const subareas = flat<WorldItem>(rooms.map(room => room.children.filter(child => child.name === '_subarea')), 2);
+
+        subareas.forEach(subarea => this.subareaFurnituerResizer.resize(subarea));
+
 
         return worldItems;
-    }
-
-    private snapFurnituresInRoom(room: WorldItem) {
-        room.children
-        .forEach(furniture => {
-
-            if (this.meshTemplateService.hasTemplate(furniture.name)) {
-                const snappingWallEdges = this.getSnappingWalls(room, furniture);
-
-                const furnitureDimensions = this.meshTemplateService.getTemplateDimensions(furniture.name);
-                const originalFurnitureDimensions = furniture.dimensions;
-
-                furniture.dimensions = furnitureDimensions ? Polygon.createRectangle(0, 0, furnitureDimensions.x, furnitureDimensions.y) : <Polygon> furniture.dimensions;
-
-                this.rotateFurnitureToWallBeforeSnapping(snappingWallEdges, furniture, <Polygon> originalFurnitureDimensions);
-                this.snapFurnitureToWall(furniture, snappingWallEdges);
-            }
-        });
-    }
-
-    private getSnappingWalls(room: WorldItem, furniture: WorldItem): Segment[] {
-        const borders = <Segment[]> room.borderItems.map(item => item.dimensions);
-        const snappingWallEdges: Segment[] = [];
-        const furnitureEdges = furniture.dimensions.getEdges();
-
-        for (let j = 0; j < furnitureEdges.length; j++) {
-            const center = furnitureEdges[j].getBoundingCenter();
-            for (let i = 0; i < borders.length; i++) {
-                const dist = new Distance().pointToSegment(center, borders[i]);
-                if (dist <= 1) {
-                    snappingWallEdges.push(borders[i]);
-                }
-            }
-        }
-
-        return snappingWallEdges;
-
-    }
-
-    private snapFurnitureToWall(furniture: WorldItem, wallSegments: Segment[]) {
-        wallSegments.forEach(wallSegment => {
-            let closestFurnitureSegment: Segment = null;
-            const furnitureSegments = furniture.dimensions.getEdges();
-            let minDistance = Number.MAX_VALUE;
-
-            for (let j = 0; j < furnitureSegments.length; j++) {
-                const center = furnitureSegments[j].getBoundingCenter();
-                const dist = new Distance().pointToSegment(center, wallSegment);
-                if (dist < minDistance) {
-                    minDistance = dist;
-                    closestFurnitureSegment = furnitureSegments[j];
-                }
-            }
-
-            const fromPoint = closestFurnitureSegment.getPoints()[0];
-            const slope = wallSegment.getPerpendicularBisector().slope;
-            const line = Line.fromPointSlopeForm(fromPoint, slope);
-
-            const toPoint = wallSegment.getLine().intersection(line);
-
-            let vector = toPoint.subtract(fromPoint);
-
-            furniture.dimensions = furniture.dimensions.translate(vector);
-        });
-    }
-
-    private rotateFurnitureToWallBeforeSnapping(snappingWallEdges: Segment[], furniture: WorldItem, originalFurnitureDimensions: Polygon) {
-        if (snappingWallEdges.length > 0) {
-            const furnitureAlignment = this.isFurnitureParallelOrPerpendicularToWall(originalFurnitureDimensions, snappingWallEdges[0]);
-
-            let angle = this.calcRotation(snappingWallEdges[0], <Polygon> originalFurnitureDimensions);
-
-            furniture.dimensions.getBoundingCenter()
-
-            if (furnitureAlignment === 'perpendicular') {
-                angle = Angle.fromRadian(angle.getAngle() - toRadian(90));
-            }
-
-            const transform = new Transform();
-
-            furniture.dimensions = transform.rotatePolygon(<Polygon> furniture.dimensions, angle.getAngle());
-
-            furniture.rotation = angle.getAngle();
-        }
-        furniture.dimensions = furniture.dimensions.setPosition(originalFurnitureDimensions.getBoundingCenter());
-    }
-
-    private calcRotation(wallSegment: Segment, furnitureDim: Polygon) {
-        const furnitureCenter = furnitureDim.getBoundingCenter();
-        const AB = wallSegment.toVector();
-        const perpAB = AB.perpendicularVector();
-        const AP = new Segment(furnitureCenter, wallSegment.getPoints()[0]).toVector();
-        const dotProduct = perpAB.x * AP.x + perpAB.y * AP.y;
-
-        let angle = wallSegment.getLine().getAngleToXAxis();
-
-        return Angle.fromRadian(angle.getAngle() + dotProduct < 0 ? Math.PI : 0);
-    }
-
-    private isFurnitureParallelOrPerpendicularToWall(furnitureDim: Shape, wallSegment: Segment): 'parallel' | 'perpendicular' {
-        const furnitureEdges = furnitureDim.getEdges();
-
-        const measurements = new Measurements();
-
-        const furnitureLine = furnitureEdges[0].getLine();
-        const wallLine = wallSegment.getLine();
-
-        const [parallelEdge, perpEdge] = measurements.linesParallel(furnitureLine, wallLine) ? [furnitureEdges[0], furnitureEdges[1]] : [furnitureEdges[1], furnitureEdges[0]];
-
-        return parallelEdge.getLength() > perpEdge.getLength() ? 'parallel' : 'perpendicular';
     }
 }
 

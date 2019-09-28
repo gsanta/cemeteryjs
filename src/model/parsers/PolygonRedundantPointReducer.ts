@@ -1,5 +1,5 @@
-import _ = require('lodash');
 import { Point } from '@nightshifts.inc/geometry';
+import { range } from '../utils/Functions';
 
 const getPrevIndex = (currentIndex: number, maxIndex: number) => currentIndex === maxIndex ? 0 : currentIndex + 1;
 const getNextIndex = (currentIndex: number, maxIndex: number) => currentIndex === 0 ? maxIndex : currentIndex - 1;
@@ -19,7 +19,7 @@ export class PolygonRedundantPointReducer {
 
         const reducedPoints = [startPoint];
 
-        _.range(1, points.length).forEach(index => {
+        range(1, points.length).forEach(index => {
             const normalizedIndex = getNormalizedIndex(index + startIndex, max);
             const prevIndex = getPrevIndex(normalizedIndex, max);
             const nextIndex = getNextIndex(normalizedIndex, max);

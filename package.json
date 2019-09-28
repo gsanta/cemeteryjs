@@ -9,7 +9,7 @@
     "build": "./node_modules/.bin/webpack",
     "tsc": "tsc --declaration",
     "doc": "typedoc --out api-doc src --mode file --excludeNotExported",
-    "start": "./node_modules/.bin/webpack-dev-server"
+    "start": "./node_modules/.bin/webpack-dev-server --config webpack-gui.config"
   },
   "publishConfig": {
     "access": "public"

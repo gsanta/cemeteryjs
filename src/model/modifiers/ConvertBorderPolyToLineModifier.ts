@@ -4,7 +4,7 @@ import { Polygon, Line, Shape, Point, StripeView, GeometryService } from '@night
 import { WorldItemUtils } from '../../WorldItemUtils';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { AssignBordersToRoomsModifier } from './AssignBordersToRoomsModifier';
-import _ = require("lodash");
+import { maxBy, minBy } from '../utils/Functions';
 
 export const mergeStraightAngledNeighbouringBorderItemPolygons = (borders: WorldItem[]): [Shape, number][] => {
     const borderItemPolygons = borders.map(border => border.dimensions);
@@ -93,8 +93,8 @@ export class ConvertBorderPolyToLineModifier implements Modifier {
                         [currParallelLines[1], nextParallelLines[1]]
                     ];
 
-                    const segmentPair1 = _.minBy(variations, (val) => val[0].getBoundingCenter().distanceTo(val[1].getBoundingCenter()));
-                    const segmentPair2 = _.maxBy(variations, (val) => val[0].getBoundingCenter().distanceTo(val[1].getBoundingCenter()));
+                    const segmentPair1 = minBy(variations, (val) => val[0].getBoundingCenter().distanceTo(val[1].getBoundingCenter()));
+                    const segmentPair2 = maxBy(variations, (val) => val[0].getBoundingCenter().distanceTo(val[1].getBoundingCenter()));
 
                     const point1 = segmentPair1[0].getLine().intersection(segmentPair1[1].getLine());
                     const point2 = segmentPair2[0].getLine().intersection(segmentPair2[1].getLine());
@@ -122,7 +122,7 @@ export class ConvertBorderPolyToLineModifier implements Modifier {
         borderPolygons.forEach(item => {
             const indexedEdgesWithCorrectAngle = indexedEdges.filter(indexedEdge => indexedEdge[0].getLine().getAngleToXAxis().getAngle() === item[1])
 
-            const closestIndexedEdge = _.minBy(indexedEdgesWithCorrectAngle, indexedEdge => indexedEdge[0].getBoundingCenter().distanceTo(item[0].getBoundingCenter()));
+            const closestIndexedEdge = minBy(indexedEdgesWithCorrectAngle, indexedEdge => indexedEdge[0].getBoundingCenter().distanceTo(item[0].getBoundingCenter()));
 
             map.push({
                 border: item[0],

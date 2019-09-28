@@ -1,5 +1,3 @@
-import * as _ from 'lodash';
-
 enum ParseSections {
     MAP,
     DEFINITION,

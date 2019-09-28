@@ -18,8 +18,35 @@ export function last<T>(arr: T[]): T {
 
 
 export function minBy<T>(collection: T[], callback: (a: T, b: T) => number) {
+	if (collection.length === 0) {
+		return undefined;
+	}
+
 	const select = (a, b) => callback(a, b) < 0 ? a : b;
-	return collection.reduce(select, {})
+	return collection.reduce(select, collection[0]);
+}
+
+export function maxBy<T>(collection: T[], callback: (a: T, b: T) => number) {
+	if (collection.length === 0) {
+		return undefined;
+	}
+
+	const select = (a, b) => callback(a, b) > 0 ? a : b;
+	return collection.reduce(select, collection[0]);
+}
+
+export function range(from: number, to: number): number [] {
+	const nums: number[] = [];
+
+	for (let i = from; i < to; i++) {
+		nums.push(i);
+	}
+
+	return nums;
+}
+
+export function sortNum(arr: number[]): number[] {
+	return [...arr].sort((a, b) => a - b);
 }
 
 

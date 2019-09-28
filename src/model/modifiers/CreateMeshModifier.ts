@@ -5,6 +5,7 @@ import { TreeIteratorGenerator } from "../utils/TreeIteratorGenerator";
 import { WorldItem } from "../../WorldItem";
 import { ChangeFurnitureSizeModifier } from './ChangeFurnitureSizeModifier';
 import { Modifier } from './Modifier';
+import { ChangeFurnitureSizeModifier2 } from './ChangeFurnitureSizeModifier2';
 
 export class CreateMeshModifier<M, S> implements Modifier {
     static modName = 'createMesh';

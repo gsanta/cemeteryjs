@@ -46,7 +46,7 @@ export class WorldMapToMatrixGraphConverter extends WorldMapLineListener {
             this.vertexAdditinalData[vertex] = attribute
         });
 
-        return this.linesToGraphConverter.parse(this.worldMapLines, this.charachterToNameMap, this.vertexAdditinalData);
+        return this.linesToGraphConverter.parse(this.worldMapLines, this.charachterToNameMap);
     }
 
     private convertDetailsLineToAdditionalData(line: string): any {

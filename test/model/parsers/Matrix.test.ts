@@ -19,8 +19,7 @@ describe('MatrixGraph', () => {
                 {
                     W: 'wall',
                     '#': 'empty'
-                },
-                {}
+                }
             );
 
             const reducedGraph = graph.getReducedGraphForCharacters(['W']);
@@ -46,8 +45,7 @@ describe('MatrixGraph', () => {
                 {
                     R: 'room',
                     '-': 'wall'
-                },
-                {}
+                }
             );
 
             const connectedComponentGraphs = graph.getReducedGraphForCharacters(['R']).getConnectedComponentGraphs();
@@ -75,8 +73,7 @@ describe('MatrixGraph', () => {
                     '-': 'room',
                     '#': 'wall',
                     D: 'door'
-                },
-                {}
+                }
             );
 
             const reducedGraph = graph.getReducedGraphForCharacters(['#', 'D']);

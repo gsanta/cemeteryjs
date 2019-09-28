@@ -1,11 +1,10 @@
 import { CharGraph } from './CharGraph';
 import { WorldItem } from '../../WorldItem';
-import * as _ from 'lodash';
 import { Parser } from './Parser';
 import { WorldMapToMatrixGraphConverter } from './reader/WorldMapToMatrixGraphConverter';
 import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 import { Polygon } from '@nightshifts.inc/geometry';
-import { flat } from '../utils/Functions';
+import { flat, without, last } from '../utils/Functions';
 
 export class BorderParser implements Parser {
     private worldItemInfoFactory: WorldItemFactoryService;
@@ -93,14 +92,14 @@ export class BorderParser implements Parser {
                 const subComponentVertices = this.findVerticalSubComponentForVertex(actVertex, singleCharacterGraph);
                 verticalSubCompnents.push(subComponentVertices);
                 visitedVertices.push(...subComponentVertices);
-                componentVertices = _.without(componentVertices, ...subComponentVertices);
+                componentVertices = without(componentVertices, ...subComponentVertices);
             } else if (borderGraph.getLeftNeighbour(actVertex) === null && borderGraph.getRightNeighbour(actVertex) === null) {
                 const subComponentVertices = this.findVerticalSubComponentForVertex(actVertex, singleCharacterGraph);
                 verticalSubCompnents.push(subComponentVertices);
                 visitedVertices.push(...subComponentVertices);
-                componentVertices = _.without(componentVertices, ...subComponentVertices);
+                componentVertices = without(componentVertices, ...subComponentVertices);
             } else {
-                componentVertices = _.without(componentVertices, actVertex);
+                componentVertices = without(componentVertices, actVertex);
             }
         }
 
@@ -138,9 +137,9 @@ export class BorderParser implements Parser {
                 const subComponentVertices = this.findHorizontalSubComponentForVertex(actVertex, singleCharacterGraph);
                 horizontalSubCompnents.push(subComponentVertices);
                 visitedVertices.push(...subComponentVertices);
-                componentVertices = _.without(componentVertices, ...subComponentVertices);
+                componentVertices = without(componentVertices, ...subComponentVertices);
             } else {
-                componentVertices = _.without(componentVertices, actVertex);
+                componentVertices = without(componentVertices, actVertex);
             }
         }
 
@@ -171,7 +170,7 @@ export class BorderParser implements Parser {
         vertices.sort((a, b) => graph.getVertexPositionInMatrix(a).y - graph.getVertexPositionInMatrix(b).y);
 
         const startCoord = graph.getVertexPositionInMatrix(vertices[0]);
-        const endCoord = graph.getVertexPositionInMatrix(_.last(vertices));
+        const endCoord = graph.getVertexPositionInMatrix(last(vertices));
 
         const x = startCoord.x;
         const y = startCoord.y;
@@ -186,7 +185,7 @@ export class BorderParser implements Parser {
         vertices.sort((a, b) => graph.getVertexPositionInMatrix(a).x - graph.getVertexPositionInMatrix(b).x);
 
         const startCoord = graph.getVertexPositionInMatrix(vertices[0]);
-        const endCoord = graph.getVertexPositionInMatrix(_.last(vertices));
+        const endCoord = graph.getVertexPositionInMatrix(last(vertices));
 
         const x = startCoord.x;
         const y = startCoord.y;

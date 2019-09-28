@@ -25,7 +25,7 @@ export class ModifierFactoryService {
             .registerInstance(new AssignBordersToRoomsModifier(services.configService))
             .registerInstance(new BuildHierarchyModifier(services))
             .registerInstance(new ChangeBorderWidthModifier(services.configService))
-            .registerInstance(new ChangeFurnitureSizeModifier(services.meshTemplateService))
+            .registerInstance(new ChangeFurnitureSizeModifier(services))
             .registerInstance(new ConvertBorderPolyToLineModifier(services.geometryService))
             .registerInstance(new CreateMeshModifier(services.meshFactoryService, services.meshTemplateService, services.configService))
             .registerInstance(new NormalizeBorderRotationModifier())

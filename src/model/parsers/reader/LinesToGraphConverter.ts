@@ -1,5 +1,5 @@
 import { CharGraph } from '../CharGraph';
-import * as _ from 'lodash';
+import { range } from '../../utils/Functions';
 
 export class LinesToGraphConverter {
     private graph: CharGraph;
@@ -7,12 +7,10 @@ export class LinesToGraphConverter {
     private columns: number;
     private rows: number;
     private charachterToNameMap: {[key: string]: string};
-    private vertexAdditinalData: {[key: number]: any};
 
-    public parse(lines: string[], charachterToNameMap: {[key: string]: string}, vertexAdditinalData: {[key: number]: any}): CharGraph {
+    public parse(lines: string[], charachterToNameMap: {[key: string]: string}): CharGraph {
         this.lines = lines;
         this.charachterToNameMap = charachterToNameMap;
-        this.vertexAdditinalData = vertexAdditinalData;
         this.columns = this.lines[0].length;
         this.rows = this.lines.length;
         this.graph = new CharGraph(this.columns, this.rows);
@@ -30,7 +28,7 @@ export class LinesToGraphConverter {
             return this.lines[row][column];
         };
 
-        _.range(0, vertices).forEach(val => {
+        range(0, vertices).forEach(val => {
             const character = findCharacter(val);
             const name = this.charachterToNameMap[character];
             this.graph.addVertex(val, character, name);

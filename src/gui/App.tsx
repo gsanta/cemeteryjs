@@ -32,8 +32,8 @@ const initialModel = `
 map \`
 
 WWWWWWWWWIIWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-W-------------------------------W-------------------W
-W-----------=TTTT---------------W-------------------W
+W-------------H-----------------W-------------------W
+W-----------=TTTTH--------------W-------------------W
 W-----------=TTTT---------------W-------------------W
 W-------------H-----------------W-------------------W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW

@@ -3,9 +3,7 @@ import { WorldItem } from '../../WorldItem';
 import { Parser } from './Parser';
 import { WorldMapToMatrixGraphConverter } from './reader/WorldMapToMatrixGraphConverter';
 import { Polygon } from '@nightshifts.inc/geometry';
-import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
-import * as _ from 'lodash';
-import { flat } from '../utils/Functions';
+import { flat, minBy, maxBy, without, last } from '../utils/Functions';
 import { ServiceFacade } from '../services/ServiceFacade';
 
 export class FurnitureParser implements Parser {
@@ -42,10 +40,11 @@ export class FurnitureParser implements Parser {
     }
 
     private createRectangularGameObject(componentGraph: CharGraph): WorldItem {
-        const minX = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).x).min().value();
-        const maxX = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).x).max().value();
-        const minY = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).y).min().value();
-        const maxY = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).y).max().value();
+        const vertexPositions = componentGraph.getAllVertices().map(vertex => componentGraph.getVertexPositionInMatrix(vertex));
+        const minX = minBy<{x: number, y: number}>(vertexPositions, (a, b) => a.x - b.x).x;
+        const maxX = maxBy<{x: number, y: number}>(vertexPositions, (a, b) => a.x - b.x).x;
+        const minY = minBy<{x: number, y: number}>(vertexPositions, (a, b) => a.y - b.y).y;
+        const maxY = maxBy<{x: number, y: number}>(vertexPositions, (a, b) => a.y - b.y).y;
 
         const oneVertex = componentGraph.getAllVertices()[0];
 
@@ -63,7 +62,7 @@ export class FurnitureParser implements Parser {
 
     private createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph: CharGraph): WorldItem[] {
         const verticalSubComponents = this.findVerticalSlices(componentGraph);
-        const verticesMinusVerticalSubComponents = _.without(componentGraph.getAllVertices(), ..._.flatten(verticalSubComponents));
+        const verticesMinusVerticalSubComponents = <number[]> without(componentGraph.getAllVertices(), ...flat(verticalSubComponents, 2));
         const componentGraphMinusVerticalSubComponents = componentGraph.getGraphForVertices(verticesMinusVerticalSubComponents);
 
         const verticalGameObjects = verticalSubComponents
@@ -99,10 +98,12 @@ export class FurnitureParser implements Parser {
     }
 
     private areConnectedComponentsRectangular(componentGraph: CharGraph) {
-        const minX = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).x).min().value();
-        const maxX = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).x).max().value();
-        const minY = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).y).min().value();
-        const maxY = _.chain(componentGraph.getAllVertices()).map(vertex => componentGraph.getVertexPositionInMatrix(vertex).y).max().value();
+        const vertexPositions = componentGraph.getAllVertices().map(vertex => componentGraph.getVertexPositionInMatrix(vertex));
+
+        const minX = minBy<{x: number, y: number}>(vertexPositions, (a, b) => a.x - b.x).x;
+        const maxX = maxBy<{x: number, y: number}>(vertexPositions, (a, b) => a.x - b.x).x;
+        const minY = minBy<{x: number, y: number}>(vertexPositions, (a, b) => a.y - b.y).y;
+        const maxY = maxBy<{x: number, y: number}>(vertexPositions, (a, b) => a.y - b.y).y;
 
         const checkedVertices = [];
 
@@ -120,7 +121,7 @@ export class FurnitureParser implements Parser {
             }
         }
 
-        return _.without(componentGraph.getAllVertices(), ...checkedVertices).length === 0;
+        return without(componentGraph.getAllVertices(), ...checkedVertices).length === 0;
     }
 
     private findVerticalSlices(reducedGraph: CharGraph): number[][] {
@@ -135,9 +136,9 @@ export class FurnitureParser implements Parser {
                 const subComponentVertices = this.findVerticalSubComponentForVertex(actVertex, reducedGraph);
                 verticalSubCompnents.push(subComponentVertices);
                 visitedVertices.push(...subComponentVertices);
-                componentVertices = _.without(componentVertices, ...subComponentVertices);
+                componentVertices = without(componentVertices, ...subComponentVertices);
             } else {
-                componentVertices = _.without(componentVertices, actVertex);
+                componentVertices = without(componentVertices, actVertex);
             }
         }
 
@@ -168,7 +169,7 @@ export class FurnitureParser implements Parser {
         vertices.sort((a, b) => graph.getVertexPositionInMatrix(a).y - graph.getVertexPositionInMatrix(b).y);
 
         const startCoord = graph.getVertexPositionInMatrix(vertices[0]);
-        const endCoord = graph.getVertexPositionInMatrix(_.last(vertices));
+        const endCoord = graph.getVertexPositionInMatrix(last(vertices));
 
         const x = startCoord.x;
         const y = startCoord.y;
@@ -183,7 +184,7 @@ export class FurnitureParser implements Parser {
         vertices.sort((a, b) => graph.getVertexPositionInMatrix(a).x - graph.getVertexPositionInMatrix(b).x);
 
         const startCoord = graph.getVertexPositionInMatrix(vertices[0]);
-        const endCoord = graph.getVertexPositionInMatrix(_.last(vertices));
+        const endCoord = graph.getVertexPositionInMatrix(last(vertices));
 
         const x = startCoord.x;
         const y = startCoord.y;
@@ -191,11 +192,5 @@ export class FurnitureParser implements Parser {
         const height = 1;
 
         return Polygon.createRectangle(x, y, width, height);
-    }
-
-    private getAdditionalDataFromGameObjectGraph(graph: CharGraph): any {
-        return graph.getAllVertices().reduce((additionalData, vertex) => {
-            return graph.getVertexValue(vertex).additionalData ? graph.getVertexValue(vertex).additionalData : additionalData
-        }, null);
     }
 }

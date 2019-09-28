@@ -1,5 +1,4 @@
 import { WorldItem } from "../../WorldItem";
-import _ = require("lodash");
 import { Modifier } from './Modifier';
 import { Polygon, Point, Line, StripeView, GeometryService } from '@nightshifts.inc/geometry';
 import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
@@ -7,6 +6,7 @@ import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { WorldItemUtils } from '../../WorldItemUtils';
 import { ScaleModifier } from "./ScaleModifier";
 import { ConfigService } from '../services/ConfigService';
+import { without, flat, sortNum } from '../utils/Functions';
 
 /**
  * If a border spans alongside multiple rooms it cuts the border into pieces so that each piece will separate exactly two neigbouring rooms
@@ -58,7 +58,10 @@ export class SegmentBordersModifier  implements Modifier {
             newBorders.push(...segmentedBorders);
         }
 
-        return _.chain(worldItems).without(...originalBorders).push(...newBorders).value();
+        const items = without(worldItems, ...originalBorders)
+        items.push(...newBorders);
+
+        return items;
     }
 
     private getSegmentingPoints(border: WorldItem, roomsAlongsideBorder: WorldItem[]): Point[] {
@@ -74,11 +77,8 @@ export class SegmentBordersModifier  implements Modifier {
         const replaceLastPointWithOriginal = (points: Point[]) => { points.pop(); points.push(getOriginalLastPoint(points))};
 
 
-        let segmentPoints =_.chain(roomsAlongsideBorder)
-            .map(getSegmentPointsForRoom)
-            .flatten()
-            .sort(sortByDistanceToReferencePoint)
-            .value();
+        let segmentPoints = flat<Point>(roomsAlongsideBorder.map(getSegmentPointsForRoom), 2);
+        segmentPoints.sort(sortByDistanceToReferencePoint);
 
         if (segmentPoints.length > 0) {
             replaceFirstPointWithOriginal(segmentPoints);
@@ -167,11 +167,11 @@ export class SegmentBordersModifier  implements Modifier {
     // TODO: support intersections other than horizontal or vertical
     private getIntersectionExtent(segment: Segment): [number, number] {
         if (segment.getLine().isVertical()) {
-            const segmentPositions = _.sortBy([segment.getPoints()[0].y, segment.getPoints()[1].y]);
+            const segmentPositions = sortNum([segment.getPoints()[0].y, segment.getPoints()[1].y]);
 
             return [segmentPositions[0] - this.configService.scaling.y, segmentPositions[1] + this.configService.scaling.y];
         } else {
-            const segmentPositions = _.sortBy([segment.getPoints()[0].x, segment.getPoints()[1].x]);
+            const segmentPositions = sortNum([segment.getPoints()[0].x, segment.getPoints()[1].x]);
 
             return [segmentPositions[0] - this.configService.scaling.x, segmentPositions[1] + this.configService.scaling.x];
         }

@@ -6,7 +6,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 
 module.exports = env => {
     return {
-        entry: './src/index.ts',
+        entry: './src/index_gui.ts',
         module: {
             rules: [
                 {
@@ -59,7 +59,7 @@ module.exports = env => {
             extensions: [ '.tsx', '.ts', '.js', 'scss', '.css' ]
         },
         output: {
-            filename: 'app.js',
+            filename: 'app-gui.js',
             path: path.resolve(__dirname, 'build'),
             library: 'worldGenerator'
         },

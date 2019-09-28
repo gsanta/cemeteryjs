@@ -1,20 +1,20 @@
-import * as _ from 'lodash';
 import { Point, Measurements } from '@nightshifts.inc/geometry';
 import { WorldItem } from '../../WorldItem';
+import { without, last } from './Functions';
 
 export class RoomUtils {
     public static orderBorderItemsAroundRoomClockwise(room: WorldItem) {
         const borderItems = [...room.borderItems];
 
         const startItem = this.getBottomLeftItem(borderItems);
-        let rest = _.without(borderItems, startItem);
+        let rest = without(borderItems, startItem);
 
         const orderedItems = [startItem];
         while (rest.length > 0) {
-            const nextItem = this.findNextBorderItem(_.last(orderedItems), rest);
+            const nextItem = this.findNextBorderItem(last(orderedItems), rest);
 
             orderedItems.push(nextItem);
-            rest = _.without(rest, nextItem);
+            rest = without(rest, nextItem);
         }
 
         room.borderItems = orderedItems;
@@ -22,7 +22,7 @@ export class RoomUtils {
 
     private static findNextBorderItem(currentBorderItem: WorldItem, borderItems: WorldItem[]) {
         const findByCommonPoint = (commonPoint: Point) =>
-            _.find(borderItems, item => {
+            borderItems.find(item => {
                 const point1 = item.dimensions.getPoints()[0];
                 const point2 = item.dimensions.getPoints()[1];
                 return Measurements.isDistanceSmallerThan(point1, commonPoint)  || Measurements.isDistanceSmallerThan(point2, commonPoint);
