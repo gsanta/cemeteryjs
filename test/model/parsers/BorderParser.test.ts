@@ -1,13 +1,11 @@
-import { WorldMapToMatrixGraphConverter } from "../../../src/model/parsers/reader/WorldMapToMatrixGraphConverter";
+import { Polygon, Shape } from "@nightshifts.inc/geometry";
 import { BorderParser } from '../../../src/model/parsers/BorderParser';
 import { WorldItemFactoryService } from '../../../src/model/services/WorldItemFactoryService';
-import { Polygon, Shape } from "@nightshifts.inc/geometry";
 import { WorldItem } from '../../../src/WorldItem';
-import * as _ from 'lodash';
 
 // TODO: create custom matcher
 export function hasAnyWorldItemInfoDimension(dimension: Shape, worldItemInfos: WorldItem[]) {
-    if (_.some(worldItemInfos, worldItemInfo => worldItemInfo.dimensions.equalTo(dimension))) {
+    if (worldItemInfos.find(worldItemInfo => worldItemInfo.dimensions.equalTo(dimension))) {
         return true;
     } else {
         throw new Error(`${dimension.toString()} does not exist`);

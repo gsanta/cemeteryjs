@@ -9,33 +9,13 @@ export interface AppState {
     model: string;
     guiServices: GuiServiceFacade;
 }
-
-// const initialModel = `
-// WWWWWWWWWIIWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-// W-------------------------------W-------------------W
-// W-------------------------------W-------------------W
-// W-------------------------------W-------------------W
-// W-------------------------------W-------------------W
-// WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-// W---------------------------------------------------W
-// W---------------------------------------------------W
-// WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-// WEEEEE-----OOOOO-------------TTTTTW-----------------W
-// WEEEEE-----OOOOO-------------TTTTTW-----------------W
-// W--------XX----TTT---------------OD-----------------I
-// W--------XX----TTT------OOOOO----OD-----------------I
-// WOOO--------------------OOOOO----OW-----------------W
-// WWWWIIIIWWWWWWWWWWWWWDDDWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-// `;
-
-const initialModel = `
-map \`
-
+/*
+ const initialModel = `
 WWWWWWWWWIIWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-W-------------H-----------------W-------------------W
-W-----------=TTTTH--------------W-------------------W
+W-------------HHH---------------W-------------------W
 W-----------=TTTT---------------W-------------------W
-W-------------H-----------------W-------------------W
+W-----------=TTTT---------------W-------------------W
+W-------------HHH---------------W-------------------W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 W---------------------------------------------------W
 W---------------------------------------------------W
@@ -45,6 +25,26 @@ WEEEEE-----OOOOO-------------TTTTTW-----------------W
 W--------XX----TTT---------------OD-----------------I
 W--------XX----TTT------OOOOO----OD-----------------I
 WOOO--------------------OOOOO----OW-----------------W
+WWWWIIIIWWWWWWWWWWWWWDDDWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+ `;
+*/
+const initialModel = `
+map \`
+
+WWWWWWWWWIIWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+W-----------==------------------W-------------------W
+W-----------HTTTT---------------W-------------------W
+W-----------HTTTT---------------W-------------------W
+W-------------------------------W-------------------W
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+W---------------------------------------------------W
+W---------------------------------------------------W
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+W---------------------------------W-----------------W
+W---------------------------------W-----------------W
+W---------------------------------D-----------------I
+W---------------------------------D-----------------I
+W---------------------------------W-----------------W
 WWWWIIIIWWWWWWWWWWWWWDDDWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 \`

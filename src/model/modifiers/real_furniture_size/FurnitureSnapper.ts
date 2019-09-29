@@ -1,14 +1,21 @@
 import { WorldItem } from "../../..";
-import { Segment, Distance, Line, Shape, Measurements, Angle, Polygon, Transform } from "@nightshifts.inc/geometry";
+import { Segment, Distance, Line, Shape, Measurements, Angle, Polygon, Transform, Point } from "@nightshifts.inc/geometry";
 import { toRadian } from "@nightshifts.inc/geometry/build/utils/Measurements";
 import { ServiceFacade } from "../../services/ServiceFacade";
+import { maxBy } from '../../utils/Functions';
 
+export enum SnapType {
+    ROTATE_TOWARD,
+    ROTATE_AWAY
+}
 
 export class FurnitureSnapper {
-    protected services: ServiceFacade<any, any, any>;
+    private services: ServiceFacade<any, any, any>;
+    private readonly snapType: SnapType;
 
-    constructor(services: ServiceFacade<any, any, any>) {
+    constructor(services: ServiceFacade<any, any, any>, snapType: SnapType) {
         this.services = services;
+        this.snapType = snapType;
     }
 
     snap(furniture: WorldItem, originalFurnitureDimensions: Polygon, snapToEdges: Segment[]) {
@@ -65,20 +72,33 @@ export class FurnitureSnapper {
     }
 
     private calcRotation(wallSegment: Segment, furnitureDim: Polygon) {
-        const furnitureCenter = furnitureDim.getBoundingCenter();
-        const AB = wallSegment.toVector();
-        const perpAB = AB.perpendicularVector();
-        const AP = new Segment(furnitureCenter, wallSegment.getPoints()[0]).toVector();
-        const dotProduct = perpAB.x * AP.x + perpAB.y * AP.y;
+        const P = furnitureDim.getBoundingCenter();
+        const [A, B] = [wallSegment.getPoints()[0], wallSegment.getPoints()[1]];
+        const d = this.computeD(A, B, P);
 
-        let angle = wallSegment.getLine().getAngleToXAxis();
+        const leftPoint = new Point(-5000, -5000);
+        const dRefLeft = this.computeD(A, B, leftPoint);
 
-        return Angle.fromRadian(angle.getAngle() + dotProduct < 0 ? Math.PI : 0);
+        let rotation = Math.sign(d) === Math.sign(dRefLeft) ? Math.PI : 0;
+        rotation += this.snapType === SnapType.ROTATE_TOWARD ? Math.PI : 0;
+
+        const angleToXAxis = wallSegment.getLine().getAngleToXAxis();
+        rotation += angleToXAxis.getAngle();
+
+        if (rotation >= Math.PI * 2) {
+            rotation -= Math.PI * 2;
+        }
+
+
+        return Angle.fromRadian(rotation);
+    }
+
+    private computeD(A: Point, B: Point, P: Point): number {
+        return (P.x - A.x) * (B.y - A.y) - (P.y - A.y) * (B.x - A.x);
     }
 
     private isFurnitureParallelOrPerpendicularToWall(furnitureDim: Shape, wallSegment: Segment): 'parallel' | 'perpendicular' {
         const furnitureEdges = furnitureDim.getEdges();
-
         const measurements = new Measurements();
 
         const furnitureLine = furnitureEdges[0].getLine();

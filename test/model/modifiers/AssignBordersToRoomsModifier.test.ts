@@ -3,8 +3,6 @@ import { AssignBordersToRoomsModifier } from '../../../src/model/modifiers/Assig
 import { ScaleModifier } from '../../../src/model/modifiers/ScaleModifier';
 import { SegmentBordersModifier } from '../../../src/model/modifiers/SegmentBordersModifier';
 import { setup } from '../../test_utils/mocks';
-import _ = require('lodash');
-
 
 describe(`AssignBordersToRoomsModifier`, () => {
     describe('`apply`', () => {
@@ -69,7 +67,7 @@ describe(`AssignBordersToRoomsModifier`, () => {
             const borderItemDimensions = room3.borderItems.map(borderItem => borderItem.dimensions);
 
             const cornerIntersectingRect = Polygon.createRectangle(4, 0, 1, 5);
-            expect(_.find(borderItemDimensions, (dim: Polygon) => dim.equalTo(cornerIntersectingRect))).toEqual(undefined);
+            expect(borderItemDimensions.find((dim: Polygon) => dim.equalTo(cornerIntersectingRect))).toEqual(undefined);
         });
 
         it ('takes scales into consideration when calculating \'only corner\' connection', () => {
@@ -107,7 +105,7 @@ describe(`AssignBordersToRoomsModifier`, () => {
             const borderItemDimensions = room3.borderItems.map(borderItem => borderItem.dimensions);
             1;
             const cornerIntersectingRect = Polygon.createRectangle(8, 8, 2, 10);
-            expect(_.find(borderItemDimensions, (dim: Polygon) => dim.equalTo(cornerIntersectingRect))).toEqual(undefined);
+            expect(borderItemDimensions.find((dim: Polygon) => dim.equalTo(cornerIntersectingRect))).toEqual(undefined);
         });
     });
 });

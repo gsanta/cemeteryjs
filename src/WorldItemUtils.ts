@@ -1,7 +1,5 @@
 import { WorldItem } from "./WorldItem";
 import { TreeIteratorGenerator } from "./model/utils/TreeIteratorGenerator";
-import _ = require("lodash");
-
 
 export class WorldItemUtils {
     public static filterRooms(worldItems: WorldItem[]): WorldItem[] {
@@ -23,7 +21,7 @@ export class WorldItemUtils {
 
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
-                if (_.find(roomSeparatorItemNames, separatorName => item.name === separatorName)) {
+                if (roomSeparatorItemNames.find(separatorName => item.name === separatorName)) {
                     roomSeparatorItems.push(item);
                 }
             }

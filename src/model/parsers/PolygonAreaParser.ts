@@ -6,7 +6,7 @@ import { CharGraph } from "./CharGraph";
 import { Parser } from "./Parser";
 import { PolygonRedundantPointReducer } from "./PolygonRedundantPointReducer";
 import { WorldMapToMatrixGraphConverter } from "./reader/WorldMapToMatrixGraphConverter";
-import _ = require("lodash");
+import { last, without } from '../utils/Functions';
 
 /**
  * @hidden
@@ -83,7 +83,7 @@ export class PolygonAreaParser implements Parser {
             xList.sort(PolygonAreaParser.sortByNumber);
 
             const xStart = xList[0];
-            const xEnd = _.last(xList);
+            const xEnd = last(xList);
 
             segments.push(new Segment(new Point(xStart, yPos), new Point(xEnd, yPos)));
         });
@@ -95,38 +95,35 @@ export class PolygonAreaParser implements Parser {
         segments.sort((a: Segment, b: Segment) => a.getPoints()[0].y - b.getPoints()[0].y);
 
         const topPoints = [segments[0].getPoints()[0], segments[0].getPoints()[1].addX(1)];
-        const bottomPoints = [_.last(segments).getPoints()[1].addY(1).addX(1), _.last(segments).getPoints()[0].addY(1)];
+        const bottomPoints = [last(segments).getPoints()[1].addY(1).addX(1), last(segments).getPoints()[0].addY(1)];
 
         let prevPoint = segments[0].getPoints()[1].addX(1);
 
         const rightPoints: Point[] = [];
 
-        _.chain(segments)
-            .without(_.first(segments))
+        without(segments, segments[0])
             .map(line => line.getPoints()[1].addX(1))
             .forEach(point => {
                 const newPoints = this.processNextPoint(point, prevPoint);
                 rightPoints.push(...newPoints);
 
-                prevPoint = _.last(newPoints);
-            })
-            .value();
+                prevPoint = last(newPoints);
+            });
 
         prevPoint = bottomPoints[1];
         const leftPoints: Point[] = [];
 
-        segments = _.without(segments, _.first(segments));
+        segments = without(segments, segments[0]);
         segments.reverse();
 
-        _.chain(segments)
+        segments
             .map(line => line.getPoints()[0])
             .forEach(point => {
                 const newPoints = this.processNextPoint2(point, prevPoint);
                 leftPoints.push(...newPoints);
 
-                prevPoint = _.last(newPoints);
+                prevPoint = last(newPoints);
             })
-            .value();
 
 
         return [...topPoints, ...rightPoints, ...bottomPoints, ...leftPoints];

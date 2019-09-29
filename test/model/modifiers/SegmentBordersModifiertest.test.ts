@@ -3,7 +3,6 @@ import { SegmentBordersModifier } from "../../../src/model/modifiers/SegmentBord
 import { ServiceFacade } from "../../../src/model/services/ServiceFacade";
 import { setup } from "../../test_utils/mocks";
 import { ScaleModifier } from '../../../src/model/modifiers/ScaleModifier';
-import _ = require("lodash");
 
 function createMap(worldMap: string) {
     return `

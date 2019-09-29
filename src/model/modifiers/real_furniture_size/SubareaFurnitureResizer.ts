@@ -1,9 +1,8 @@
-import { FurnitureSnapper } from "./FurnitureSnapper";
+import { Polygon, Segment } from "@nightshifts.inc/geometry";
 import { WorldItem } from "../../..";
-import { WorldItemUtils } from "../../../WorldItemUtils";
 import { ServiceFacade } from "../../services/ServiceFacade";
-import { without, minBy, maxBy } from "../../utils/Functions";
-import { Segment, Polygon } from "@nightshifts.inc/geometry";
+import { maxBy, minBy, without } from "../../utils/Functions";
+import { FurnitureSnapper, SnapType } from './FurnitureSnapper';
 
 
 export class SubareaFurnitureResizer {
@@ -12,7 +11,7 @@ export class SubareaFurnitureResizer {
 
     constructor(services: ServiceFacade<any, any, any>) {
         this.services = services;
-        this.furnitureSnapper = new FurnitureSnapper(services);
+        this.furnitureSnapper = new FurnitureSnapper(services, SnapType.ROTATE_TOWARD);
     }
 
     resize(subarea: WorldItem) {
@@ -59,7 +58,7 @@ export class SubareaFurnitureResizer {
             snappingFurniture.dimensions = snappingFurnitureDimensions ? Polygon.createRectangle(0, 0, snappingFurnitureDimensions.x, snappingFurnitureDimensions.y) : <Polygon> snappingFurniture.dimensions;
             snappingFurniture.dimensions = snappingFurniture.dimensions.setPosition(originalSnappingFurnitureDimensions.getBoundingCenter());
 
-            this.furnitureSnapper.snap(snappingFurniture, <Polygon> originalMainFurnitureDimensions, [mainFurniture.dimensions.getEdges()[minMainFurnitureSegmentIndex]]);
+            this.furnitureSnapper.snap(snappingFurniture, <Polygon> originalSnappingFurnitureDimensions, [mainFurniture.dimensions.getEdges()[minMainFurnitureSegmentIndex]]);
         });
     }
 

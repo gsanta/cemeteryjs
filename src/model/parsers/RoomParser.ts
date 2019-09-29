@@ -4,7 +4,6 @@ import { Parser } from "./Parser";
 import { PolygonAreaParser } from './PolygonAreaParser';
 import { WorldMapToMatrixGraphConverter } from "./reader/WorldMapToMatrixGraphConverter";
 import { WorldMapToRoomMapConverter } from './WorldMapToRoomMapConverter';
-import _ = require("lodash");
 
 export class RoomParser implements Parser {
     private worldMapToRoomMapConverter: WorldMapToRoomMapConverter;

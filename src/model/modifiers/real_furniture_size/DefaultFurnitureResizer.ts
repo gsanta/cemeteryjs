@@ -1,4 +1,4 @@
-import { FurnitureSnapper } from "./FurnitureSnapper";
+import { FurnitureSnapper, SnapType } from './FurnitureSnapper';
 import { ServiceFacade } from "../../services/ServiceFacade";
 import { WorldItem } from "../../../WorldItem";
 import { Segment, Distance, Polygon } from "@nightshifts.inc/geometry";
@@ -10,7 +10,7 @@ export class DefaultFurnitureResizer {
 
     constructor(services: ServiceFacade<any, any, any>) {
         this.services = services;
-        this.furnitureSnapper = new FurnitureSnapper(services);
+        this.furnitureSnapper = new FurnitureSnapper(services, SnapType.ROTATE_AWAY);
     }
 
 

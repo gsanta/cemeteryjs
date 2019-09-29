@@ -1,5 +1,4 @@
 import { Scene, Mesh, Skeleton, StandardMaterial, AbstractMesh, ParticleSystem, AnimationGroup, Texture, SceneLoader, Vector3 } from 'babylonjs';
-import 'babylonjs-loaders';
 import { MeshTemplate } from '../../../MeshTemplate';
 import { MeshDescriptor, FileDescriptor } from '../../../Config';
 import { MeshTemplateService } from '../../../model/services/MeshTemplateService';
