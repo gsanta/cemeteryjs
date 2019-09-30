@@ -58,7 +58,12 @@ export class SubareaFurnitureResizer {
             snappingFurniture.dimensions = snappingFurnitureDimensions ? Polygon.createRectangle(0, 0, snappingFurnitureDimensions.x, snappingFurnitureDimensions.y) : <Polygon> snappingFurniture.dimensions;
             snappingFurniture.dimensions = snappingFurniture.dimensions.setPosition(originalSnappingFurnitureDimensions.getBoundingCenter());
 
-            this.furnitureSnapper.snap(snappingFurniture, <Polygon> originalSnappingFurnitureDimensions, [mainFurniture.dimensions.getEdges()[minMainFurnitureSegmentIndex]]);
+            this.furnitureSnapper.snap(
+                snappingFurniture,
+                <Polygon> originalSnappingFurnitureDimensions,
+                [mainFurniture.dimensions.getEdges()[minMainFurnitureSegmentIndex]],
+                [originalMainFurnitureDimensions.getEdges()[minMainFurnitureSegmentIndex]]
+            );
         });
     }
 

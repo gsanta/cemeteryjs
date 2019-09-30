@@ -26,7 +26,7 @@ export class DefaultFurnitureResizer {
 
                 furniture.dimensions = furnitureDimensions ? Polygon.createRectangle(0, 0, furnitureDimensions.x, furnitureDimensions.y) : <Polygon> furniture.dimensions;
 
-                this.furnitureSnapper.snap(furniture, <Polygon> originalFurnitureDimensions, snappingWallEdges);
+                this.furnitureSnapper.snap(furniture, <Polygon> originalFurnitureDimensions, snappingWallEdges, snappingWallEdges);
                 // this.rotateFurnitureToWallBeforeSnapping(snappingWallEdges, furniture, <Polygon> originalFurnitureDimensions);
                 // this.snapFurnitureToWall(furniture, snappingWallEdges);
             }

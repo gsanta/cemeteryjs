@@ -1,5 +1,5 @@
 import { WorldItem } from '../../src/WorldItem';
-import { Shape } from '@nightshifts.inc/geometry';
+import { Shape, Point } from '@nightshifts.inc/geometry';
 import { hasAnyWorldItemInfoDimension } from '../model/parsers/BorderParser.test';
 
 declare global {
@@ -9,13 +9,31 @@ declare global {
             toHaveAnyWithDimensions(dimensions: Shape),
             toHaveAnyWithBorders(borders: Partial<WorldItem>[]);
             toPartiallyEqualToWorldItem(partialWorldItem: Partial<WorldItem>),
-            toContainWorldItem(partialWorldItem: Partial<WorldItem>)
+            toContainWorldItem(partialWorldItem: Partial<WorldItem>),
+            toHavePoint(point: Point);
         }
     }
 }
 expect.extend({
     toHaveBorders(room: WorldItem, borders: Partial<WorldItem>[]) {
         return hasBorders(room, borders);
+    },
+
+    toHavePoint(shape: Shape, point: Point) {
+        const delta = 0.1;
+        const equalPoint = shape.getPoints().find(p => Math.abs(p.x - point.x) < delta && Math.abs(p.y - point.y) < delta);
+
+        if (equalPoint) {
+            return {
+                message: () => '',
+                pass: true
+            }
+        } else {
+            return {
+                pass: false,
+                message: () => `None of the points: ${shape.getPoints().map(p => p.toString()).join(', ')} matches ${point.toString()}`
+            }
+        }
     },
 
     toHaveAnyWithBorders(rooms: WorldItem[], worldItems: Partial<WorldItem>[]) {

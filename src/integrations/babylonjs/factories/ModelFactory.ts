@@ -26,7 +26,7 @@ export class ModelFactory {
         mesh.rotate(Axis.Y, rotation, Space.WORLD);
 
         mesh.checkCollisions = true;
-        mesh.isVisible = true;
+        mesh.isVisible = false;
         return [mesh, meshes[0]];
     }
 

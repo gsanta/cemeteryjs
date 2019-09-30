@@ -45,6 +45,7 @@ export function setupMap(map: string): string {
     E = bed
     T = table
     = = _subarea
+    H = chair
 
     \`
 `;

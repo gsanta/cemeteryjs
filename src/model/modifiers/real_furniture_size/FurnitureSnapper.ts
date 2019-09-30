@@ -18,27 +18,27 @@ export class FurnitureSnapper {
         this.snapType = snapType;
     }
 
-    snap(furniture: WorldItem, originalFurnitureDimensions: Polygon, snapToEdges: Segment[]) {
+    snap(furniture: WorldItem, originalFurnitureDimensions: Polygon, snapToEdges: Segment[], originalSnappingEdges: Segment[]) {
         this.rotateFurnitureToWallBeforeSnapping(snapToEdges, furniture, originalFurnitureDimensions);
-        this.snapFurnitureToWall(furniture, snapToEdges);
+        this.snapFurnitureToWall(furniture, originalFurnitureDimensions, snapToEdges, originalSnappingEdges);
     }
 
-    private snapFurnitureToWall(furniture: WorldItem, wallSegments: Segment[]) {
-        wallSegments.forEach(wallSegment => {
-            let closestFurnitureSegment: Segment = null;
-            const furnitureSegments = furniture.dimensions.getEdges();
+    private snapFurnitureToWall(furniture: WorldItem, originalFurnitureDimensions: Polygon, wallSegments: Segment[], originalSnappingEdges: Segment[]) {
+        wallSegments.forEach((wallSegment, index) => {
+            let closestFurnitureSegmentIndex: number = -1;
+            const furnitureSegments = originalFurnitureDimensions.getEdges();
             let minDistance = Number.MAX_VALUE;
 
             for (let j = 0; j < furnitureSegments.length; j++) {
                 const center = furnitureSegments[j].getBoundingCenter();
-                const dist = new Distance().pointToSegment(center, wallSegment);
+                const dist = new Distance().pointToSegment(center, originalSnappingEdges[index]);
                 if (dist < minDistance) {
                     minDistance = dist;
-                    closestFurnitureSegment = furnitureSegments[j];
+                    closestFurnitureSegmentIndex = j;
                 }
             }
 
-            const fromPoint = closestFurnitureSegment.getPoints()[0];
+            const fromPoint = furniture.dimensions.getEdges()[closestFurnitureSegmentIndex].getPoints()[0];
             const slope = wallSegment.getPerpendicularBisector().slope;
             const line = Line.fromPointSlopeForm(fromPoint, slope);
 
