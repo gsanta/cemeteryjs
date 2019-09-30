@@ -26,6 +26,8 @@ it ('Rotates furniture to face the snapping edges if snaptype is "ROTATE_TOWARD"
 
     const chair = worldItems.find(item => item.name === 'chair');
     const chairCenter = chair.dimensions.getBoundingCenter();
+    expect(services.geometryService.measuerments.coordinatesEqual(chairCenter.x, 3.5));
+    expect(services.geometryService.measuerments.coordinatesEqual(chairCenter.y, 6));
     const realChairDimensions = Polygon.createRectangle(chairCenter.x - 0.2, chairCenter.y + 0.3, 0.4, 0.6);
 
     const furnitureSnapper = new FurnitureSnapper(services, SnapType.ROTATE_TOWARD);
@@ -62,6 +64,9 @@ it ('Rotate the furniture to face away from the snapping edges if snaptype is "R
     const realSnapToEdge = new Segment(new Point(5, 5), new Point(5, 7));
     const chair = worldItems.find(item => item.name === 'chair');
     const chairCenter = chair.dimensions.getBoundingCenter();
+    expect(services.geometryService.measuerments.coordinatesEqual(chairCenter.x, 3.5));
+    expect(services.geometryService.measuerments.coordinatesEqual(chairCenter.y, 6));
+
     const realChairDimensions = Polygon.createRectangle(chairCenter.x - 0.2, chairCenter.y + 0.3, 0.4, 0.6);
 
     const furnitureSnapper = new FurnitureSnapper(services, SnapType.ROTATE_AWAY);
@@ -98,6 +103,9 @@ it ('Rotate furniture which are perpendicular to the snapping edges', () => {
     const realSnapToEdge = new Segment(new Point(3, 7), new Point(6, 7));
     const chair = worldItems.find(item => item.name === 'chair');
     const chairCenter = chair.dimensions.getBoundingCenter();
+    expect(services.geometryService.measuerments.coordinatesEqual(chairCenter.x, 4.5));
+    expect(services.geometryService.measuerments.coordinatesEqual(chairCenter.y, 9));
+
     const realChairDimensions = Polygon.createRectangle(chairCenter.x - 0.2, chairCenter.y + 0.3, 0.4, 0.6);
 
     const furnitureSnapper = new FurnitureSnapper(services, SnapType.ROTATE_TOWARD);
@@ -140,6 +148,9 @@ it ('Rotate furniture into a corner', () => {
     ];
     const table = worldItems.find(item => item.name === 'table');
     const tableCenter = table.dimensions.getBoundingCenter();
+    expect(services.geometryService.measuerments.coordinatesEqual(tableCenter.x, 2));
+    expect(services.geometryService.measuerments.coordinatesEqual(tableCenter.y, 5));
+
     const realChairDimensions = Polygon.createRectangle(tableCenter.x - 1, tableCenter.y + 1.5, 2, 3);
 
     const furnitureSnapper = new FurnitureSnapper(services, SnapType.ROTATE_TOWARD);
