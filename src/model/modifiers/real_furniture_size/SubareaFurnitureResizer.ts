@@ -1,4 +1,4 @@
-import { Polygon, Segment } from "@nightshifts.inc/geometry";
+import { Polygon, Segment, Shape } from "@nightshifts.inc/geometry";
 import { WorldItem } from "../../..";
 import { ServiceFacade } from "../../services/ServiceFacade";
 import { maxBy, minBy, without } from "../../utils/Functions";
@@ -15,56 +15,60 @@ export class SubareaFurnitureResizer {
     }
 
     resize(subarea: WorldItem) {
-        const mainFurniture = this.getMainFurnitureInSubarea(subarea);
-        const restFurnitures = without<WorldItem>(subarea.children, mainFurniture);
+        const referenceFurniture = this.getMainFurnitureInSubarea(subarea);
+        const dependentFurnitures = without<WorldItem>(subarea.children, referenceFurniture);
 
-        const mainFurnitureEdges = (<Polygon> mainFurniture.dimensions).getEdges();
+        const mainFurnitureDimensions = this.services.meshTemplateService.getTemplateDimensions(referenceFurniture.name);
+        const originalReferenceFurnitureDimensions = referenceFurniture.dimensions;
 
-        const mainFurnitureDimensions = this.services.meshTemplateService.getTemplateDimensions(mainFurniture.name);
-        const originalMainFurnitureDimensions = mainFurniture.dimensions;
+        referenceFurniture.dimensions = mainFurnitureDimensions ? Polygon.createRectangle(0, 0, mainFurnitureDimensions.x, mainFurnitureDimensions.y) : <Polygon> referenceFurniture.dimensions;
+        referenceFurniture.dimensions = referenceFurniture.dimensions.setPosition(originalReferenceFurnitureDimensions.getBoundingCenter());
 
-        mainFurniture.dimensions = mainFurnitureDimensions ? Polygon.createRectangle(0, 0, mainFurnitureDimensions.x, mainFurnitureDimensions.y) : <Polygon> mainFurniture.dimensions;
-        mainFurniture.dimensions = mainFurniture.dimensions.setPosition(originalMainFurnitureDimensions.getBoundingCenter());
+        dependentFurnitures.forEach(dependentFurniture => this.resizeDependentFurniture(dependentFurniture, referenceFurniture, originalReferenceFurnitureDimensions));
+    }
 
-        restFurnitures.forEach(snappingFurniture => {
-            const snappingFurnitureEdges = (<Polygon> snappingFurniture.dimensions).getEdges();
+    private resizeDependentFurniture(dependentFurniture: WorldItem, referenceFurniture: WorldItem, originalReferenceFurnitureDimensions: Shape) {
+        const snappingFurnitureEdges = (<Polygon> dependentFurniture.dimensions).getEdges();
 
-            const pairs: [Segment, Segment][] = []
+        const referenceEdgeIndex = this.calcReferenceEdgeIndex(snappingFurnitureEdges, originalReferenceFurnitureDimensions.getEdges());
 
-            mainFurnitureEdges.forEach(mainFurnitureEdge => {
-                snappingFurnitureEdges.forEach(snappingFurnitureEdge => pairs.push([snappingFurnitureEdge, mainFurnitureEdge]));
-            });
+        const snappingFurnitureDimensions = this.services.meshTemplateService.getTemplateDimensions(dependentFurniture.name);
+        const originalSnappingFurnitureDimensions = dependentFurniture.dimensions;
 
-            const minPair = minBy(pairs, (a, b) => {
-                const dist1 = this.services.geometryService.distance.twoSegments(a[0], a[1]);
-                const dist2 = this.services.geometryService.distance.twoSegments(b[0], b[1]);
+        dependentFurniture.dimensions = snappingFurnitureDimensions ? Polygon.createRectangle(0, 0, snappingFurnitureDimensions.x, snappingFurnitureDimensions.y) : <Polygon> dependentFurniture.dimensions;
+        dependentFurniture.dimensions = dependentFurniture.dimensions.setPosition(originalSnappingFurnitureDimensions.getBoundingCenter());
 
-                if (dist1 === undefined && dist2 === undefined) {
-                    return 0;
-                } else if (dist1 === undefined) {
-                    return 1;
-                } else if (dist2 === undefined) {
-                    return -1;
-                } else {
-                    return dist1 - dist2;
-                }
-            });
+        this.furnitureSnapper.snap(
+            dependentFurniture,
+            <Polygon> originalSnappingFurnitureDimensions,
+            [referenceFurniture.dimensions.getEdges()[referenceEdgeIndex]],
+            [originalReferenceFurnitureDimensions.getEdges()[referenceEdgeIndex]]
+        );
+    }
 
-            const minMainFurnitureSegmentIndex = mainFurnitureEdges.indexOf(minPair[1]);
+    private calcReferenceEdgeIndex(snappingFurnitureEdges: Segment[], referenceEdges: Segment[]): number {
+        const edgePermutations: [Segment, Segment][] = []
 
-            const snappingFurnitureDimensions = this.services.meshTemplateService.getTemplateDimensions(snappingFurniture.name);
-            const originalSnappingFurnitureDimensions = snappingFurniture.dimensions;
-
-            snappingFurniture.dimensions = snappingFurnitureDimensions ? Polygon.createRectangle(0, 0, snappingFurnitureDimensions.x, snappingFurnitureDimensions.y) : <Polygon> snappingFurniture.dimensions;
-            snappingFurniture.dimensions = snappingFurniture.dimensions.setPosition(originalSnappingFurnitureDimensions.getBoundingCenter());
-
-            this.furnitureSnapper.snap(
-                snappingFurniture,
-                <Polygon> originalSnappingFurnitureDimensions,
-                [mainFurniture.dimensions.getEdges()[minMainFurnitureSegmentIndex]],
-                [originalMainFurnitureDimensions.getEdges()[minMainFurnitureSegmentIndex]]
-            );
+        referenceEdges.forEach(mainFurnitureEdge => {
+            snappingFurnitureEdges.forEach(snappingFurnitureEdge => edgePermutations.push([snappingFurnitureEdge, mainFurnitureEdge]));
         });
+
+        const minDistanceEdges = minBy(edgePermutations, (a, b) => {
+            const dist1 = this.services.geometryService.distance.twoSegments(a[0], a[1]);
+            const dist2 = this.services.geometryService.distance.twoSegments(b[0], b[1]);
+
+            if (dist1 === undefined && dist2 === undefined) {
+                return 0;
+            } else if (dist1 === undefined) {
+                return 1;
+            } else if (dist2 === undefined) {
+                return -1;
+            } else {
+                return dist1 - dist2;
+            }
+        });
+
+        return referenceEdges.indexOf(minDistanceEdges[1]);
     }
 
     private getMainFurnitureInSubarea(subarea: WorldItem): WorldItem {
