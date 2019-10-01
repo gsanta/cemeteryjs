@@ -20,7 +20,6 @@ import { WorldItem } from "../../WorldItem";
 import { ServiceFacade } from './ServiceFacade';
 import { MeshDescriptor } from '../../Config';
 import { SubareaParser } from '../parsers/SubareaParser';
-import { ChangeFurnitureSizeModifier2 } from '../modifiers/ChangeFurnitureSizeModifier2';
 
 export interface WorldConfig {
     borders: string[];

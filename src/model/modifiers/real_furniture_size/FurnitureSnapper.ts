@@ -1,48 +1,34 @@
+import { Angle, Distance, Line, Point, Polygon, Segment, Transform } from "@nightshifts.inc/geometry";
 import { WorldItem } from "../../..";
-import { Segment, Distance, Line, Shape, Measurements, Angle, Polygon, Transform, Point } from "@nightshifts.inc/geometry";
-import { toRadian } from "@nightshifts.inc/geometry/build/utils/Measurements";
-import { ServiceFacade } from "../../services/ServiceFacade";
-import { maxBy } from '../../utils/Functions';
 
 export enum SnapType {
-    ROTATE_TOWARD,
-    ROTATE_AWAY
+    ROTATE_PARALLEL_FACE_TOWARD,
+    ROTATE_PARALLEL_FACE_AWAY,
+    ROTATE_PERPENDICULAR
 }
 
 export class FurnitureSnapper {
-    private services: ServiceFacade<any, any, any>;
     private readonly snapType: SnapType;
 
-    constructor(services: ServiceFacade<any, any, any>, snapType: SnapType) {
-        this.services = services;
+    constructor(snapType: SnapType) {
         this.snapType = snapType;
     }
 
-    snap(furniture: WorldItem, originalFurnitureDimensions: Polygon, snapToEdges: Segment[], originalSnappingEdges: Segment[]) {
-        this.rotateFurnitureToWallBeforeSnapping(snapToEdges, furniture, originalFurnitureDimensions);
-        this.snapFurnitureToWall(furniture, originalFurnitureDimensions, snapToEdges, originalSnappingEdges);
+    snap(furniture: WorldItem, originalFurnitureDimensions: Polygon, referenceEdges: Segment[], originalReferenceEdges: Segment[]) {
+        this.rotateFurnitureToReferenceEdge(referenceEdges[0], furniture, originalFurnitureDimensions);
+        this.snapFurnitureToReferenceEdges(furniture, originalFurnitureDimensions, referenceEdges, originalReferenceEdges);
     }
 
-    private snapFurnitureToWall(furniture: WorldItem, originalFurnitureDimensions: Polygon, wallSegments: Segment[], originalSnappingEdges: Segment[]) {
-        wallSegments.forEach((wallSegment, index) => {
-            let closestFurnitureSegmentIndex: number = -1;
-            const furnitureSegments = originalFurnitureDimensions.getEdges();
-            let minDistance = Number.MAX_VALUE;
+    private snapFurnitureToReferenceEdges(furniture: WorldItem, originalFurnitureDimensions: Polygon, referenceEdges: Segment[], originalReferenceEdges: Segment[]) {
+        referenceEdges.forEach((referenceEdge, index) => {
+            const originalSnappingEdgeIndex = this.calcSnappingFurnitureEdgeIndex(originalFurnitureDimensions, originalReferenceEdges[index]);
+            const snappingEdge = furniture.dimensions.getEdges()[originalSnappingEdgeIndex];
 
-            for (let j = 0; j < furnitureSegments.length; j++) {
-                const center = furnitureSegments[j].getBoundingCenter();
-                const dist = new Distance().pointToSegment(center, originalSnappingEdges[index]);
-                if (dist < minDistance) {
-                    minDistance = dist;
-                    closestFurnitureSegmentIndex = j;
-                }
-            }
-
-            const fromPoint = furniture.dimensions.getEdges()[closestFurnitureSegmentIndex].getPoints()[0];
-            const slope = wallSegment.getPerpendicularBisector().slope;
+            const fromPoint = snappingEdge.getPoints()[0];
+            const slope = referenceEdge.getPerpendicularBisector().slope;
             const line = Line.fromPointSlopeForm(fromPoint, slope);
 
-            const toPoint = wallSegment.getLine().intersection(line);
+            const toPoint = referenceEdge.getLine().intersection(line);
 
             let vector = toPoint.subtract(fromPoint);
 
@@ -50,62 +36,69 @@ export class FurnitureSnapper {
         });
     }
 
-    private rotateFurnitureToWallBeforeSnapping(snappingWallEdges: Segment[], furniture: WorldItem, originalFurnitureDimensions: Polygon) {
-        if (snappingWallEdges.length > 0) {
-            const furnitureAlignment = this.isFurnitureParallelOrPerpendicularToWall(originalFurnitureDimensions, snappingWallEdges[0]);
+    private calcSnappingFurnitureEdgeIndex(originalFurnitureDimensions: Polygon, referenceEdge: Segment): number {
+        let closestFurnitureSegmentIndex: number = -1;
+        const furnitureSegments = originalFurnitureDimensions.getEdges();
+        let minDistance = Number.MAX_VALUE;
 
-            let angle = this.calcRotation(snappingWallEdges[0], <Polygon> originalFurnitureDimensions);
-
-            furniture.dimensions.getBoundingCenter()
-
-            if (furnitureAlignment === 'perpendicular') {
-                angle = Angle.fromRadian(angle.getAngle() - toRadian(90));
+        for (let i = 0; i < furnitureSegments.length; i++) {
+            const center = furnitureSegments[i].getBoundingCenter();
+            const dist = new Distance().pointToSegment(center, referenceEdge);
+            if (dist < minDistance) {
+                minDistance = dist;
+                closestFurnitureSegmentIndex = i;
             }
-
-            const transform = new Transform();
-
-            furniture.dimensions = transform.rotatePolygon(<Polygon> furniture.dimensions, angle.getAngle());
-
-            furniture.rotation = angle.getAngle();
         }
+
+        return closestFurnitureSegmentIndex;
+    }
+
+    private rotateFurnitureToReferenceEdge(referenceEdge: Segment, furniture: WorldItem, originalFurnitureDimensions: Polygon) {
+        let angle = this.calcRotation(referenceEdge, <Polygon> originalFurnitureDimensions);
+
+        furniture.dimensions.getBoundingCenter()
+
+        const transform = new Transform();
+
+        furniture.dimensions = transform.rotatePolygon(<Polygon> furniture.dimensions, angle.getAngle());
+
+        furniture.rotation = angle.getAngle();
         furniture.dimensions = furniture.dimensions.setPosition(originalFurnitureDimensions.getBoundingCenter());
     }
 
-    private calcRotation(wallSegment: Segment, furnitureDim: Polygon) {
-        const P = furnitureDim.getBoundingCenter();
-        const [A, B] = [wallSegment.getPoints()[0], wallSegment.getPoints()[1]];
-        const d = this.computeD(A, B, P);
+    private calcRotation(referenceEdge: Segment, furnitureDim: Polygon): Angle {
+        let rotation = referenceEdge.getLine().getAngleToXAxis().getAngle();
 
-        const leftPoint = new Point(-5000, -5000);
-        const dRefLeft = this.computeD(A, B, leftPoint);
-
-        let rotation = Math.sign(d) === Math.sign(dRefLeft) ? Math.PI : 0;
-        rotation += this.snapType === SnapType.ROTATE_TOWARD ? Math.PI : 0;
-
-        const angleToXAxis = wallSegment.getLine().getAngleToXAxis();
-        rotation += angleToXAxis.getAngle();
-
-        if (rotation >= Math.PI * 2) {
-            rotation -= Math.PI * 2;
+        if(this.isFurnitureOnTheLeftSideOfReferenceEdge(referenceEdge, furnitureDim)) {
+            rotation += Math.PI;
         }
 
+        if (this.snapType === SnapType.ROTATE_PARALLEL_FACE_TOWARD) {
+            rotation += Math.PI;
+        } else if (this.snapType === SnapType.ROTATE_PERPENDICULAR) {
+            rotation += Math.PI / 2;
+        }
 
         return Angle.fromRadian(rotation);
     }
 
-    private computeD(A: Point, B: Point, P: Point): number {
-        return (P.x - A.x) * (B.y - A.y) - (P.y - A.y) * (B.x - A.x);
+    private isFurnitureOnTheLeftSideOfReferenceEdge(referenceEdge: Segment, furnitureDim: Polygon) {
+        const P = furnitureDim.getBoundingCenter();
+        const [A, B] = [referenceEdge.getPoints()[0], referenceEdge.getPoints()[1]];
+        const d = this.getLeftOrRightSideSign(A, B, P);
+
+        const leftPoint = new Point(-5000, -5000);
+        const dRefLeft = this.getLeftOrRightSideSign(A, B, leftPoint);
+
+        return Math.sign(d) === Math.sign(dRefLeft);
     }
 
-    private isFurnitureParallelOrPerpendicularToWall(furnitureDim: Shape, wallSegment: Segment): 'parallel' | 'perpendicular' {
-        const furnitureEdges = furnitureDim.getEdges();
-        const measurements = new Measurements();
-
-        const furnitureLine = furnitureEdges[0].getLine();
-        const wallLine = wallSegment.getLine();
-
-        const [parallelEdge, perpEdge] = measurements.linesParallel(furnitureLine, wallLine) ? [furnitureEdges[0], furnitureEdges[1]] : [furnitureEdges[1], furnitureEdges[0]];
-
-        return parallelEdge.getLength() > perpEdge.getLength() ? 'parallel' : 'perpendicular';
+    /**
+     *  Based on the sign of the return value P is either on the left side or on the right side
+     *  of the A-B segment. To determine if the positive number represents the left or the right side
+     *  run this method with a P where it is known on which side it is.
+     */
+    private getLeftOrRightSideSign(A: Point, B: Point, P: Point): number {
+        return (P.x - A.x) * (B.y - A.y) - (P.y - A.y) * (B.x - A.x);
     }
 }

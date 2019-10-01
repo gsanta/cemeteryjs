@@ -7,6 +7,7 @@ declare global {
         interface Matchers<R> {
             toHaveBorders(borders: Partial<WorldItem>[]),
             toHaveAnyWithDimensions(dimensions: Shape),
+            toHaveDimensions(dimensions: Shape),
             toHaveAnyWithBorders(borders: Partial<WorldItem>[]);
             toPartiallyEqualToWorldItem(partialWorldItem: Partial<WorldItem>),
             toContainWorldItem(partialWorldItem: Partial<WorldItem>),
@@ -15,12 +16,23 @@ declare global {
     }
 }
 expect.extend({
+    toHaveDimensions(worldItem: WorldItem, dimensions: Shape) {
+        for (let i = 0; i < worldItem.dimensions.getPoints().length; i++) {
+            expect(dimensions).toHavePoint(worldItem.dimensions.getPoints()[i]);
+        }
+
+        return {
+            pass: true,
+            message: () => ''
+        }
+    },
+
     toHaveBorders(room: WorldItem, borders: Partial<WorldItem>[]) {
         return hasBorders(room, borders);
     },
 
     toHavePoint(shape: Shape, point: Point) {
-        const delta = 0.1;
+        const delta = 0.05;
         const equalPoint = shape.getPoints().find(p => Math.abs(p.x - point.x) < delta && Math.abs(p.y - point.y) < delta);
 
         if (equalPoint) {

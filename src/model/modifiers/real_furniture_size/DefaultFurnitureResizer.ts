@@ -1,16 +1,18 @@
 import { FurnitureSnapper, SnapType } from './FurnitureSnapper';
 import { ServiceFacade } from "../../services/ServiceFacade";
 import { WorldItem } from "../../../WorldItem";
-import { Segment, Distance, Polygon } from "@nightshifts.inc/geometry";
+import { Segment, Distance, Polygon, Shape } from "@nightshifts.inc/geometry";
 
 
 export class DefaultFurnitureResizer {
-    private furnitureSnapper: FurnitureSnapper;
+    private parallelFurnitureSnapper: FurnitureSnapper;
+    private perpendicularFurnitureSnapper: FurnitureSnapper;
     private services: ServiceFacade<any, any, any>;
 
     constructor(services: ServiceFacade<any, any, any>) {
         this.services = services;
-        this.furnitureSnapper = new FurnitureSnapper(services, SnapType.ROTATE_AWAY);
+        this.parallelFurnitureSnapper = new FurnitureSnapper(SnapType.ROTATE_PARALLEL_FACE_AWAY);
+        this.perpendicularFurnitureSnapper = new FurnitureSnapper(SnapType.ROTATE_PERPENDICULAR);
     }
 
 
@@ -26,9 +28,13 @@ export class DefaultFurnitureResizer {
 
                 furniture.dimensions = furnitureDimensions ? Polygon.createRectangle(0, 0, furnitureDimensions.x, furnitureDimensions.y) : <Polygon> furniture.dimensions;
 
-                this.furnitureSnapper.snap(furniture, <Polygon> originalFurnitureDimensions, snappingWallEdges, snappingWallEdges);
-                // this.rotateFurnitureToWallBeforeSnapping(snappingWallEdges, furniture, <Polygon> originalFurnitureDimensions);
-                // this.snapFurnitureToWall(furniture, snappingWallEdges);
+                if (snappingWallEdges.length > 0) {
+                    if (this.isFurnitureParallelToWall(originalFurnitureDimensions, snappingWallEdges[0])) {
+                        this.parallelFurnitureSnapper.snap(furniture, <Polygon> originalFurnitureDimensions, snappingWallEdges, snappingWallEdges);
+                    } else {
+                        this.perpendicularFurnitureSnapper.snap(furniture, <Polygon> originalFurnitureDimensions, snappingWallEdges, snappingWallEdges);
+                    }
+                }
             }
         });
     }
@@ -49,5 +55,17 @@ export class DefaultFurnitureResizer {
         }
 
         return snappingWallEdges;
+    }
+
+    private isFurnitureParallelToWall(furnitureDim: Shape, wallSegment: Segment): boolean {
+        const furnitureEdges = furnitureDim.getEdges();
+        const measurements = this.services.geometryService.measuerments;
+
+        const furnitureLine = furnitureEdges[0].getLine();
+        const wallLine = wallSegment.getLine();
+
+        const [parallelEdge, perpEdge] = measurements.linesParallel(furnitureLine, wallLine) ? [furnitureEdges[0], furnitureEdges[1]] : [furnitureEdges[1], furnitureEdges[0]];
+
+        return parallelEdge.getLength() > perpEdge.getLength() ? true : false;
     }
 }

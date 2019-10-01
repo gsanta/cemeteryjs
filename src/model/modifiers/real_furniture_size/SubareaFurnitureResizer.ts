@@ -11,7 +11,7 @@ export class SubareaFurnitureResizer {
 
     constructor(services: ServiceFacade<any, any, any>) {
         this.services = services;
-        this.furnitureSnapper = new FurnitureSnapper(services, SnapType.ROTATE_TOWARD);
+        this.furnitureSnapper = new FurnitureSnapper(SnapType.ROTATE_PARALLEL_FACE_TOWARD);
     }
 
     resize(subarea: WorldItem) {
