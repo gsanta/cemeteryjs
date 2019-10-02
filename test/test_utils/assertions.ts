@@ -15,6 +15,7 @@ declare global {
         }
     }
 }
+
 expect.extend({
     toHaveDimensions(worldItem: WorldItem, dimensions: Shape) {
         for (let i = 0; i < worldItem.dimensions.getPoints().length; i++) {

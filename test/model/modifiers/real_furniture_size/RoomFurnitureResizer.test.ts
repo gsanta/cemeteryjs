@@ -65,7 +65,7 @@ it ('Snap furnitures which are beside walls', () => {
         `
     );
 
-    const services = setup(map, meshDescriptors);
+    const services = setup(map, testMeshDescriptors);
 
     const [root] = services.importerService.import(map, [
         ScaleModifier.modName,
