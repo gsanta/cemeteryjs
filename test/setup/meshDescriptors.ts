@@ -141,6 +141,19 @@ export const meshDescriptors: MeshDescriptor[] = [
         materials: ['assets/models/table_material.png'],
     },
     {
+        type: 'stairs',
+        name: 'mesh-descriptor' as 'mesh-descriptor',
+        details: {
+            name: 'file-descriptor' as 'file-descriptor',
+            path: 'assets/models/stairs/',
+            fileName: 'stairs.babylon',
+            scale: 3
+
+        },
+        translateY: 2,
+        materials: ['assets/models/stairs/stairs_uv.png'],
+    },
+    {
         type: 'player',
         name: 'mesh-descriptor' as 'mesh-descriptor',
         details: {

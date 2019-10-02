@@ -32,8 +32,8 @@ const initialModel = `
 map \`
 
 WWWWWWWWWIIWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-WEE---------==HHH---------------W-------------------W
-WEE---------HTTTTH--------------W-------------------W
+WEE---------==HHH---------------WRR-----------------W
+WEE---------HTTTTH--------------WRR-----------------W
 WEE---------HTTTTH--------------W-------------------W
 W-------------HHH---------------W-------------------W
 W-------------------------------W-------------------W
@@ -68,6 +68,7 @@ D = door
 L = double_bed
 O = shelves
 = = _subarea
+R = stairs
 
 \`
 `;
