@@ -1,6 +1,6 @@
 import { Polygon } from '@nightshifts.inc/geometry';
 import { FurnitureParser } from '../../../src/model/parsers/FurnitureParser';
-import { setup } from '../../test_utils/mocks';
+import { setup } from '../../test_utils/testUtils';
 
 describe('FurnitureParser', () => {
     describe('generate', () => {

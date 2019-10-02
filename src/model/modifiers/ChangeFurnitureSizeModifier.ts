@@ -4,7 +4,7 @@ import { Polygon, Segment, Distance, Line, Angle, Transform, Measurements, Shape
 import { Modifier } from './Modifier';
 import { NormalizeBorderRotationModifier } from "./NormalizeBorderRotationModifier";
 import { MeshTemplateService } from "../services/MeshTemplateService";
-import { DefaultFurnitureResizer } from './real_furniture_size/DefaultFurnitureResizer';
+import { RoomFurnitureResizer } from './real_furniture_size/RoomFurnitureResizer';
 import { ServiceFacade } from '../services/ServiceFacade';
 import { flat } from "../utils/Functions";
 import { SubareaFurnitureResizer } from './real_furniture_size/SubareaFurnitureResizer';
@@ -15,12 +15,12 @@ export class ChangeFurnitureSizeModifier implements Modifier {
     dependencies = [NormalizeBorderRotationModifier.modName];
 
     private meshTemplateService: MeshTemplateService<any, any>;
-    private defaultFurnitureResizer: DefaultFurnitureResizer;
+    private defaultFurnitureResizer: RoomFurnitureResizer;
     private subareaFurnituerResizer: SubareaFurnitureResizer;
 
     constructor(services: ServiceFacade<any, any, any>) {
         this.meshTemplateService = services.meshTemplateService;
-        this.defaultFurnitureResizer = new DefaultFurnitureResizer(services);
+        this.defaultFurnitureResizer = new RoomFurnitureResizer(services);
         this.subareaFurnituerResizer = new SubareaFurnitureResizer(services);
     }
 

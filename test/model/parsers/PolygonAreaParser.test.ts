@@ -1,6 +1,6 @@
 import { Point, Polygon } from '@nightshifts.inc/geometry';
 import { PolygonAreaParser } from "../../../src/model/parsers/PolygonAreaParser";
-import { setup } from "../../test_utils/mocks";
+import { setup } from "../../test_utils/testUtils";
 
 describe('PolygonAreaParser', () => {
     describe ('generate', () => {

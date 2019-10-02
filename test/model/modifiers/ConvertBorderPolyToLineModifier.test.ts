@@ -7,7 +7,7 @@ import { ScaleModifier } from '../../../src/model/modifiers/ScaleModifier';
 import { SegmentBordersModifier } from '../../../src/model/modifiers/SegmentBordersModifier';
 import { ServiceFacade } from '../../../src/model/services/ServiceFacade';
 import { hasAnyWorldItemInfoDimension } from '../parsers/BorderParser.test';
-import { findWorldItemWithDimensions, setup } from '../../test_utils/mocks';
+import { findWorldItemWithDimensions, setup } from '../../test_utils/testUtils';
 
 function createMap(worldMap: string) {
     return `

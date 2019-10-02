@@ -2,7 +2,7 @@ import { BuildHierarchyModifier } from '../src/model/modifiers/BuildHierarchyMod
 import { ScaleModifier } from '../src/model/modifiers/ScaleModifier';
 import { SegmentBordersModifier } from '../src/model/modifiers/SegmentBordersModifier';
 import { ServiceFacade } from '../src/model/services/ServiceFacade';
-import { setup } from './test_utils/mocks';
+import { setup } from './test_utils/testUtils';
 
 function createMap(worldMap: string) {
     return `

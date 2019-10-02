@@ -1,7 +1,7 @@
 import { Point, Polygon } from '@nightshifts.inc/geometry';
 import * as fs from 'fs';
 import { RoomParser } from '../../../src/model/parsers/RoomParser';
-import { setup } from '../../test_utils/mocks';
+import { setup } from '../../test_utils/testUtils';
 
 describe('RoomParser', () => {
     describe ('generate', () => {

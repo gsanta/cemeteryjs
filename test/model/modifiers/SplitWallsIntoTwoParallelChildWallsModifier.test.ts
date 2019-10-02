@@ -6,7 +6,7 @@ import { ConvertBorderPolyToLineModifier } from "../../../src/model/modifiers/Co
 import { ScaleModifier } from "../../../src/model/modifiers/ScaleModifier";
 import { SegmentBordersModifier } from "../../../src/model/modifiers/SegmentBordersModifier";
 import { ThickenBordersModifier } from '../../../src/model/modifiers/ThickenBordersModifier';
-import { setup } from "../../test_utils/mocks";
+import { setup } from "../../test_utils/testUtils";
 import { ChangeBorderWidthModifier } from '../../../src/model/modifiers/ChangeBorderWidthModifier';
 import { WorldItem } from '../../../src/WorldItem';
 

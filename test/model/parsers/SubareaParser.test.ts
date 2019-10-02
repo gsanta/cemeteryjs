@@ -1,6 +1,6 @@
 import { Point, Polygon } from '@nightshifts.inc/geometry';
 import { SubareaParser } from '../../../src/model/parsers/SubareaParser';
-import { setup } from '../../test_utils/mocks';
+import { setup } from '../../test_utils/testUtils';
 
 describe('SubareaParser', () => {
     it ('creates WorldItems for each subarea', () => {

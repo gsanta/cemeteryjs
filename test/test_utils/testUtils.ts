@@ -1,5 +1,5 @@
 import { Shape } from '@nightshifts.inc/geometry';
-import { MeshBuilder, Scene } from 'babylonjs';
+import { Scene } from 'babylonjs';
 import { MeshDescriptor } from '../../src/Config';
 import { MockMeshTemplateService } from '../../src/integrations/mock/MockWorldGenerator';
 import { ConfigService } from '../../src/model/services/ConfigService';
@@ -52,7 +52,7 @@ export function setupMap(map: string): string {
 }
 
 export function createScene(): Scene {
-    return <Scene> {
+    return <Scene>{
 
     };
 }

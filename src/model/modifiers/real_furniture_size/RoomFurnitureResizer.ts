@@ -4,7 +4,7 @@ import { WorldItem } from "../../../WorldItem";
 import { Segment, Distance, Polygon, Shape } from "@nightshifts.inc/geometry";
 
 
-export class DefaultFurnitureResizer {
+export class RoomFurnitureResizer {
     private parallelFurnitureSnapper: FurnitureSnapper;
     private perpendicularFurnitureSnapper: FurnitureSnapper;
     private services: ServiceFacade<any, any, any>;
@@ -24,19 +24,22 @@ export class DefaultFurnitureResizer {
                 const furnitureDimensions = this.services.meshTemplateService.getTemplateDimensions(furniture.name);
                 furniture.dimensions = furnitureDimensions ? Polygon.createRectangle(0, 0, furnitureDimensions.x, furnitureDimensions.y) : <Polygon> furniture.dimensions;
 
-                this.snapFurnitureToWall(room, furniture, originalFurnitureDimensions);
+                const snappingWalls = this.getSnappingWalls(room, originalFurnitureDimensions);
+
+                if (snappingWalls.length > 0) {
+                    this.snapFurnitureToWall(snappingWalls, furniture, originalFurnitureDimensions);
+                } else {
+                    furniture.dimensions = furniture.dimensions.setPosition(originalFurnitureDimensions.getBoundingCenter());
+                }
             }
         });
     }
 
-    private snapFurnitureToWall(room: WorldItem, furniture: WorldItem, originalFurnitureDimensions: Shape) {
-        const snappingWallEdges = this.getSnappingWalls(room, originalFurnitureDimensions);
-        if (snappingWallEdges.length > 0) {
-            if (this.isFurnitureParallelToWall(originalFurnitureDimensions, snappingWallEdges[0])) {
-                this.parallelFurnitureSnapper.snap(furniture, <Polygon> originalFurnitureDimensions, snappingWallEdges, snappingWallEdges);
-            } else {
-                this.perpendicularFurnitureSnapper.snap(furniture, <Polygon> originalFurnitureDimensions, snappingWallEdges, snappingWallEdges);
-            }
+    private snapFurnitureToWall(snappingWallEdges: Segment[], furniture: WorldItem, originalFurnitureDimensions: Shape) {
+        if (this.isFurnitureParallelToWall(originalFurnitureDimensions, snappingWallEdges[0])) {
+            this.parallelFurnitureSnapper.snap(furniture, <Polygon> originalFurnitureDimensions, snappingWallEdges, snappingWallEdges);
+        } else {
+            this.perpendicularFurnitureSnapper.snap(furniture, <Polygon> originalFurnitureDimensions, snappingWallEdges, snappingWallEdges);
         }
     }
 

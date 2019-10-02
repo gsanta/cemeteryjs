@@ -1,5 +1,5 @@
 import { BuildHierarchyModifier } from '../../../src/model/modifiers/BuildHierarchyModifier';
-import { setupMap, setup } from '../../test_utils/mocks';
+import { setupMap, setup } from '../../test_utils/testUtils';
 import { ScaleModifier } from '../../../src/model/modifiers/ScaleModifier';
 import { SegmentBordersModifier } from '../../../src/model/modifiers/SegmentBordersModifier';
 

@@ -2,7 +2,7 @@ import { Polygon } from '@nightshifts.inc/geometry';
 import { AssignBordersToRoomsModifier } from '../../../src/model/modifiers/AssignBordersToRoomsModifier';
 import { ScaleModifier } from '../../../src/model/modifiers/ScaleModifier';
 import { SegmentBordersModifier } from '../../../src/model/modifiers/SegmentBordersModifier';
-import { setup } from '../../test_utils/mocks';
+import { setup } from '../../test_utils/testUtils';
 
 describe(`AssignBordersToRoomsModifier`, () => {
     describe('`apply`', () => {

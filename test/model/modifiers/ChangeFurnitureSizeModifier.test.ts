@@ -7,7 +7,7 @@ import { ChangeFurnitureSizeModifier } from '../../../src/model/modifiers/Change
 import { ConvertBorderPolyToLineModifier } from "../../../src/model/modifiers/ConvertBorderPolyToLineModifier";
 import { SegmentBordersModifier } from "../../../src/model/modifiers/SegmentBordersModifier";
 import { ServiceFacade } from "../../../src/model/services/ServiceFacade";
-import { setup } from "../../test_utils/mocks";
+import { setup } from "../../test_utils/testUtils";
 
 function createMap(worldMap: string) {
     return `

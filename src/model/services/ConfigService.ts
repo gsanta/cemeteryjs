@@ -26,12 +26,8 @@ export class ConfigService {
     scaling: Scaling;
 
     constructor(worldMap: string, meshDescriptorMap: Map<string, MeshDescriptor>) {
-        // this.borderTypes = borderTypes;
-        // this.furnitureTypes = furnitureTypes;
-        // this.emptyType = emptyType;
         this.meshDescriptorMap = meshDescriptorMap;
         this.update(worldMap)
-        // this.scaling = scaling ? scaling : { x: 1, y: 2};
         this.scaling = { x: 1, y: 2};
     }
 
