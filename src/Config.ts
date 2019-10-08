@@ -46,6 +46,7 @@ export interface FurnitureDimensionsDescriptor {
 export interface MeshDescriptor<T extends DetailsDescriptor = any> {
     name: 'mesh-descriptor';
     type: string;
+    char?: string;
     translateY?: number;
     materials?: string[];
     conditionalMaterials?: ParentRoomBasedMaterialDescriptor[];

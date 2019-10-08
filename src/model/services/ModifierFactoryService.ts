@@ -29,7 +29,7 @@ export class ModifierFactoryService {
             .registerInstance(new ConvertBorderPolyToLineModifier(services.geometryService))
             .registerInstance(new CreateMeshModifier(services.meshFactoryService, services.meshTemplateService, services.configService))
             .registerInstance(new NormalizeBorderRotationModifier())
-            .registerInstance(new ScaleModifier(services.configService))
+            .registerInstance(new ScaleModifier(services))
             .registerInstance(new SegmentBordersModifier(services.configService, services.worldItemFactoryService, services.geometryService))
             .registerInstance(new ThickenBordersModifier())
             .registerInstance(new TransformToWorldCoordinateModifier());

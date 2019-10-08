@@ -1,13 +1,13 @@
 enum ParseSections {
     MAP,
     DEFINITION,
-    DETAILS
+    GLOBALS
 }
 
 export abstract class WorldMapLineListener {
     addMapSectionLine(line: string) {}
     addDefinitionSectionLine(line: string) {}
-    addDetailsSectionLine(line: string) {}
+    addGlobalsSectionLine(line: string) {}
     addSeparator(line: string) {}
 }
 
@@ -17,8 +17,8 @@ export class WorldMapReader {
 
     private static MAP_SECTION_START_TEST = /\s*map\s*`\s*/;
     private static DEFINITIONS_SECTION_START_TEST = /\s*definitions\s*`\s*/;
+    private static GLOBALS_SECTION_START_TEST = /\s*globals\s*`\s*/;
     private static SECTION_CLOSING_TEST = /^\s*\`\s*$/;
-    private static DETAILS_SECTION_START_TEST =  /\s*details2\s*`\s*/;
 
     constructor(listener: WorldMapLineListener) {
         this.listener = listener;
@@ -43,8 +43,8 @@ export class WorldMapReader {
                     this.listener.addMapSectionLine(line);
                 } else if (this.section === ParseSections.DEFINITION) {
                     this.listener.addDefinitionSectionLine(line);
-                } else if (this.section === ParseSections.DETAILS) {
-                    this.listener.addDetailsSectionLine(line);
+                } else if (this.section === ParseSections.GLOBALS) {
+                    this.listener.addGlobalsSectionLine(line);
                 }
             } else {
                 this.listener.addSeparator(line);
@@ -57,8 +57,8 @@ export class WorldMapReader {
             this.section = ParseSections.MAP;
         } else if (WorldMapReader.DEFINITIONS_SECTION_START_TEST.test(line)) {
             this.section = ParseSections.DEFINITION;
-        } else if (WorldMapReader.DETAILS_SECTION_START_TEST.test(line)) {
-            this.section = ParseSections.DETAILS;
+        } else if (WorldMapReader.GLOBALS_SECTION_START_TEST.test(line)) {
+            this.section = ParseSections.GLOBALS;
         } else if (WorldMapReader.SECTION_CLOSING_TEST.test(line)) {
             this.section = null;
         }

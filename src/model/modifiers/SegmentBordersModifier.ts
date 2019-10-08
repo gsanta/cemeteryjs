@@ -21,7 +21,7 @@ import { without, flat, sortNum } from '../utils/Functions';
  */
 export class SegmentBordersModifier  implements Modifier {
     static modName = 'segmentBorders';
-    dependencies = [ScaleModifier.modName]
+    dependencies = []
 
     private configService: ConfigService;
     private geometryService: GeometryService;
@@ -169,11 +169,11 @@ export class SegmentBordersModifier  implements Modifier {
         if (segment.getLine().isVertical()) {
             const segmentPositions = sortNum([segment.getPoints()[0].y, segment.getPoints()[1].y]);
 
-            return [segmentPositions[0] - this.configService.scaling.y, segmentPositions[1] + this.configService.scaling.y];
+            return [segmentPositions[0] - this.configService.globalConfig.scale.y, segmentPositions[1] + this.configService.globalConfig.scale.y];
         } else {
             const segmentPositions = sortNum([segment.getPoints()[0].x, segment.getPoints()[1].x]);
 
-            return [segmentPositions[0] - this.configService.scaling.x, segmentPositions[1] + this.configService.scaling.x];
+            return [segmentPositions[0] - this.configService.globalConfig.scale.x, segmentPositions[1] + this.configService.globalConfig.scale.x];
         }
     }
 }

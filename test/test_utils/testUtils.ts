@@ -7,6 +7,7 @@ import { ServiceFacade } from '../../src/model/services/ServiceFacade';
 import { TreeIteratorGenerator } from '../../src/model/utils/TreeIteratorGenerator';
 import { WorldItem } from '../../src/WorldItem';
 import { TestMeshFactoryService } from '../setup/TestMeshFactoryService';
+import { GlobalsSectionParser } from '../../src/model/parsers/GlobalSectionParser';
 
 export function setup(worldMap: string, meshDescriptors: MeshDescriptor[]): ServiceFacade<any, any, any> {
 
@@ -20,6 +21,7 @@ export function setup(worldMap: string, meshDescriptors: MeshDescriptor[]): Serv
     meshDescriptors.map(descriptor => meshDescriptorMap.set(descriptor.type, descriptor));
 
     const configService = new ConfigService(worldMap, meshDescriptorMap);
+    configService.globalConfig = new GlobalsSectionParser().parse(worldMap);
 
     return new ServiceFacade<any, any, any>(
         meshFactoryService,

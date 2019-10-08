@@ -71,6 +71,12 @@ O = shelves
 R = stairs
 
 \`
+
+globals \`
+
+    scale 1 2
+
+\`
 `;
 
 export class App extends React.Component<{}, AppState> {

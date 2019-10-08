@@ -61,7 +61,7 @@ export class ImporterService<M, S, T> {
         );
 
         modNames = modNames ? modNames : [
-            ScaleModifier.modName,
+            // ScaleModifier.modName,
             SegmentBordersModifier.modName,
             BuildHierarchyModifier.modName,
             AssignBordersToRoomsModifier.modName,

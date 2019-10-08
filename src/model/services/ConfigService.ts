@@ -1,10 +1,6 @@
 import { MeshDescriptor, FurnitureDimensionsDescriptor, BorderDimensionsDescriptor } from "../../Config";
 import { DefinitionSectionParser } from "../parsers/DefinitionSectionParser";
-
-export type Scaling = {
-    x: number,
-    y: number
-}
+import { GlobalConfig } from '../parsers/GlobalSectionParser';
 
 const DEFAULT_BORDERS = [
     'wall',
@@ -18,17 +14,16 @@ const INTERNAL_TYPES = [
 ]
 
 export class ConfigService {
+    globalConfig: GlobalConfig;
     borderTypes: string[];
     furnitureTypes: string[];
     emptyType: string;
     meshDescriptorMap: Map<string, MeshDescriptor>;
     typeToCharMap: Map<string, string>;
-    scaling: Scaling;
 
     constructor(worldMap: string, meshDescriptorMap: Map<string, MeshDescriptor>) {
         this.meshDescriptorMap = meshDescriptorMap;
         this.update(worldMap)
-        this.scaling = { x: 1, y: 2};
     }
 
     update(worldMap: string) {

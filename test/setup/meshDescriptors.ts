@@ -50,6 +50,9 @@ export const meshDescriptors: MeshDescriptor[] = [
             name: 'border-dimensions-descriptor' as 'border-dimensions-descriptor',
             width: 3.5
         }
+        // W = window dim S 3 W 3.5 H 3.5 mod P models/window/ N window.babylon mat F assets/models/window/window.png
+        // W = window dim S 3 W 3.5 H 3.5 mod S rect mat F assets/models/window/window.png
+        // W = window DIM s 3 w 3.5 h 3.5 MOD s rect MAT f assets/models/window/window.png
     },
     {
         type: 'chair',
