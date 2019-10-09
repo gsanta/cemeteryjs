@@ -24,28 +24,7 @@ export class MaterialFactory {
     }
 
     createMaterial(worldItem: WorldItem, meshDescriptor: MeshDescriptor): StandardMaterial {
-        if (meshDescriptor.conditionalMaterials) {
-            return this.createConditionalMaterials(worldItem, meshDescriptor);
-        } else {
-            return this.createSimpleMaterial(meshDescriptor.materials[0]);
-        }
-    }
-
-    private createConditionalMaterials(worldItem: WorldItem, meshDescriptor: MeshDescriptor) {
-        const conditionalMaterial = meshDescriptor.conditionalMaterials.find(condMat => worldItem.rooms.find(room => room.id === condMat.parentId));
-
-        if (conditionalMaterial) {
-            const mat = this.materialBuilder.CreateMaterial(`${this.materialIndex++}`, this.scene);
-
-            if (conditionalMaterial.path) {
-                mat.diffuseTexture = this.materialBuilder.CreateTexture(conditionalMaterial.path, this.scene);
-            } else {
-                mat.diffuseColor = Color3.FromHexString(conditionalMaterial.color);
-            }
-            return mat;
-        } else {
-            return this.createSimpleMaterial(meshDescriptor.materials[0]);
-        }
+        return this.createSimpleMaterial(meshDescriptor.materials[0]);
     }
 
     private createSimpleMaterial(material: string): StandardMaterial {

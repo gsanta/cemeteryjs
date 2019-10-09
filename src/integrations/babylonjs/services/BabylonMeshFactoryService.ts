@@ -1,18 +1,18 @@
 
-import { Color3, Mesh, MeshBuilder, PhysicsImpostor, Scene, Skeleton, Space, StandardMaterial, Vector3, Axis, DynamicTexture, Texture } from 'babylonjs';
-import { WorldItem } from '../../../WorldItem';
+import { DynamicTexture, Mesh, MeshBuilder, Scene, Skeleton, StandardMaterial, Texture, Vector3 } from 'babylonjs';
+import { MeshDescriptor } from '../../../Config';
 import { MeshTemplate } from '../../../MeshTemplate';
-import { EmptyAreaFactory } from '../factories/EmptyAreaFactory';
-import { PlayerFactory } from '../factories/PlayerFactory';
+import { MeshFactoryService } from '../../../model/services/MeshFactoryService';
+import { WorldItem } from '../../../WorldItem';
+import { DiscFactory } from '../factories/DiscFactory';
 import { DoorFactory } from '../factories/DoorFactory';
-import { WindowFactory } from '../factories/WindowFactory';
+import { EmptyAreaFactory } from '../factories/EmptyAreaFactory';
+import { ModelFactory } from '../factories/ModelFactory';
+import { PlayerFactory } from '../factories/PlayerFactory';
 import { RectangleFactory } from '../factories/RectangleFactory';
 import { RoomFactory } from '../factories/RoomFactory';
-import { DiscFactory } from '../factories/DiscFactory';
-import { MaterialFactory, MaterialBuilder } from '../MaterialFactory';
-import { MeshDescriptor, ShapeDescriptor, RoomDescriptor } from '../../../Config';
-import { MeshFactoryService } from '../../../model/services/MeshFactoryService';
-import { ModelFactory } from '../factories/ModelFactory';
+import { WindowFactory } from '../factories/WindowFactory';
+import { MaterialBuilder, MaterialFactory } from '../MaterialFactory';
 
 export interface MeshTemplateConfig {
     checkCollisions: boolean;
@@ -50,7 +50,7 @@ export class BabylonMeshFactoryService implements MeshFactoryService<Mesh, Skele
 
     private createFromTemplate(worldItem: WorldItem, meshTemplate: MeshTemplate<Mesh, Skeleton>, meshDescriptor: MeshDescriptor): Mesh[] {
 
-        if (meshDescriptor.details.name === 'shape-descriptor') {
+        if (!meshDescriptor.model) {
             return this.createFromShapeDescriptor(worldItem, meshDescriptor);
         }
 
@@ -67,31 +67,26 @@ export class BabylonMeshFactoryService implements MeshFactoryService<Mesh, Skele
             case 'window':
                 return new WindowFactory(this.scene, MeshBuilder,  new MaterialFactory(this.scene)).createItem(worldItem, meshDescriptor, meshTemplate);
             case 'room':
-                return this.createRoomMeshes(worldItem, meshDescriptor.details);
+                return new RoomFactory(this.scene).createItem(worldItem);
             default:
                 return new ModelFactory(this.scene, MeshBuilder).getInstance(worldItem, meshDescriptor, meshTemplate);
         }
     }
 
-    private createRoomMeshes(worldItemInfo: WorldItem, roomDescriptor: RoomDescriptor): Mesh[] {
-        return new RoomFactory(this.scene).createItem(worldItemInfo, roomDescriptor);
-    }
-
-    private createFromShapeDescriptor(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor<ShapeDescriptor>): Mesh[] {
-        const shapeDescriptor = meshDescriptor.details;
-        switch(shapeDescriptor.shape) {
+    private createFromShapeDescriptor(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor): Mesh[] {
+        switch(meshDescriptor.shape) {
             case 'disc':
-                return [new DiscFactory(this.scene, MeshBuilder, MaterialBuilder).createItem(worldItemInfo, shapeDescriptor)]
+                return [new DiscFactory(this.scene, MeshBuilder, MaterialBuilder).createItem(worldItemInfo, meshDescriptor)]
             case 'plane':
                 return [this.createPlane(worldItemInfo, meshDescriptor)];
             case 'rect':
                 return [new RectangleFactory(this.scene, new MaterialFactory(this.scene)).createItem(worldItemInfo, meshDescriptor)];
             default:
-                throw new Error('Unsupported shape: ' + shapeDescriptor.shape);
+                throw new Error('Unsupported shape: ' + meshDescriptor.shape);
         }
     }
 
-    private createPlane(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor<ShapeDescriptor>): Mesh {
+    private createPlane(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor): Mesh {
         const roomTop = MeshBuilder.CreatePolygon(
             'room-label',
             {

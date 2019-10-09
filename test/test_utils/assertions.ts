@@ -1,6 +1,7 @@
 import { WorldItem } from '../../src/WorldItem';
 import { Shape, Point } from '@nightshifts.inc/geometry';
 import { hasAnyWorldItemInfoDimension } from '../model/parsers/BorderParser.test';
+import { MeshDescriptor } from '../../src/Config';
 
 declare global {
     namespace jest {
@@ -12,11 +13,21 @@ declare global {
             toPartiallyEqualToWorldItem(partialWorldItem: Partial<WorldItem>),
             toContainWorldItem(partialWorldItem: Partial<WorldItem>),
             toHavePoint(point: Point);
+            toMatchMeshDescriptor(expectedMeshDescriptor: Partial<MeshDescriptor>);
         }
     }
 }
 
 expect.extend({
+    toMatchMeshDescriptor(meshDescriptor: MeshDescriptor, expectedMeshDescriptor: Partial<MeshDescriptor>) {
+        expect(meshDescriptor).toMatchObject(expectedMeshDescriptor);
+
+        return {
+            pass: true,
+            message: () => ''
+        }
+    },
+
     toHaveDimensions(worldItem: WorldItem, dimensions: Shape) {
         for (let i = 0; i < worldItem.dimensions.getPoints().length; i++) {
             expect(dimensions).toHavePoint(worldItem.dimensions.getPoints()[i]);

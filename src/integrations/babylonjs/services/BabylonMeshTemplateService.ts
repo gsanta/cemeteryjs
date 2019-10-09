@@ -1,8 +1,8 @@
-import { Scene, Mesh, Skeleton, StandardMaterial, AbstractMesh, ParticleSystem, AnimationGroup, Texture, SceneLoader, Vector3 } from 'babylonjs';
-import { MeshTemplate } from '../../../MeshTemplate';
-import { MeshDescriptor, FileDescriptor } from '../../../Config';
-import { MeshTemplateService } from '../../../model/services/MeshTemplateService';
 import { Point } from '@nightshifts.inc/geometry';
+import { AbstractMesh, AnimationGroup, Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, StandardMaterial, Texture, Vector3 } from 'babylonjs';
+import { MeshDescriptor } from '../../../Config';
+import { MeshTemplate } from '../../../MeshTemplate';
+import { MeshTemplateService } from '../../../model/services/MeshTemplateService';
 
 export interface MeshTemplateConfig {
     checkCollisions: boolean;
@@ -55,14 +55,13 @@ export class BabylonMeshTemplateService implements MeshTemplateService<Mesh, Ske
 
     loadAll(meshDescriptors: MeshDescriptor[]): Promise<unknown> {
         const promises = meshDescriptors
-            .filter(meshDescriptor => meshDescriptor.details.name === 'file-descriptor')
+            .filter(meshDescriptor => meshDescriptor.model !== undefined)
             .map(meshDescriptor => this.load(meshDescriptor));
 
         return Promise.all(promises);
     }
 
-    private load(meshDescriptor: MeshDescriptor<FileDescriptor>): Promise<void> {
-        const fileDescriptor = meshDescriptor.details;
+    private load(meshDescriptor: MeshDescriptor): Promise<void> {
         const materials = this.loadMaterials(meshDescriptor.materials);
 
         return new Promise(resolve => {
@@ -73,7 +72,7 @@ export class BabylonMeshTemplateService implements MeshTemplateService<Mesh, Ske
                 }
 
 
-                this.configMeshes(<Mesh[]> meshes, new Vector3(fileDescriptor.scale, fileDescriptor.scale, fileDescriptor.scale));
+                this.configMeshes(<Mesh[]> meshes, new Vector3(meshDescriptor.scale, meshDescriptor.scale, meshDescriptor.scale));
                 meshes[0].name = meshDescriptor.type;
 
                 this.meshTemplates.set(meshDescriptor.type, {
@@ -88,16 +87,26 @@ export class BabylonMeshTemplateService implements MeshTemplateService<Mesh, Ske
                 throw new Error(message);
             };
 
+            const [path, fileName] = this.splitPathIntoBaseAndFileName(meshDescriptor.model)
             SceneLoader.ImportMesh(
                 '',
-                fileDescriptor.path,
-                fileDescriptor.fileName,
+                path,
+                fileName,
                 this.scene,
                 onSuccess,
                 () => {},
                 onError
             );
         });
+    }
+
+    private splitPathIntoBaseAndFileName(path: string): [string, string] {
+        const lastSlashIndex = path.lastIndexOf('/');
+        if (lastSlashIndex !== -1) {
+            return [path.substring(0, lastSlashIndex), path.substring(lastSlashIndex + 1)]
+        } else {
+            return ['', path];
+        }
     }
 
     private configMeshes(meshes: Mesh[], scaling: Vector3) {

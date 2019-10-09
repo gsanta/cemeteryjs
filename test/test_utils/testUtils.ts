@@ -17,10 +17,10 @@ export function setup(worldMap: string, meshDescriptors: MeshDescriptor[]): Serv
     meshDescriptors.map(descriptor => templateMap.set(descriptor.type, descriptor));
     const mockMeshTemplateService = new MockMeshTemplateService(templateMap);
 
-    const meshDescriptorMap: Map<string, MeshDescriptor<any>> = new Map();
+    const meshDescriptorMap: Map<string, MeshDescriptor> = new Map();
     meshDescriptors.map(descriptor => meshDescriptorMap.set(descriptor.type, descriptor));
 
-    const configService = new ConfigService(worldMap, meshDescriptorMap);
+    const configService = new ConfigService().update(worldMap);
     configService.globalConfig = new GlobalsSectionParser().parse(worldMap);
 
     return new ServiceFacade<any, any, any>(

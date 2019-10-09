@@ -1,9 +1,5 @@
-import { Scene } from 'babylonjs/scene';
 import { WorldGenerator, Converter } from '../../WorldGenerator';
-import { MeshDescriptor, FurnitureDimensionsDescriptor } from '../../Config';
-import { WorldConfig } from '../../model/services/ImporterService';
-import { ConfigService } from '../../model/services/ConfigService';
-import { ServiceFacade } from '../../model/services/ServiceFacade';
+import { MeshDescriptor } from '../../Config';
 import { MeshFactoryService } from '../../model/services/MeshFactoryService';
 import { WorldItem } from '../../WorldItem';
 import { MeshTemplate } from '../../MeshTemplate';
@@ -37,10 +33,10 @@ export class MockMeshTemplateService implements MeshTemplateService<any, any> {
         const meshDescriptor = this.templateMap.get(type);
 
         if (meshDescriptor.realDimensions) {
-            if (meshDescriptor.realDimensions.name === 'furniture-dimensions-descriptor') {
-                return new Point(meshDescriptor.realDimensions.width, (<FurnitureDimensionsDescriptor> meshDescriptor.realDimensions).height);
-            } else {
+            if (meshDescriptor.isBorder) {
                 return new Point(meshDescriptor.realDimensions.width, 0);
+            } else {
+                return new Point(meshDescriptor.realDimensions.width, meshDescriptor.realDimensions.height);
             }
         } else {
             return null;

@@ -1,5 +1,5 @@
-import { WorldMapToMatrixGraphConverter } from "../parsers/reader/WorldMapToMatrixGraphConverter";
-import { SplitWallsIntoTwoParallelChildWallsModifier } from "../modifiers/SplitWallsIntoTwoParallelChildWallsModifier";
+import { MeshDescriptor } from '../../Config';
+import { WorldItem } from "../../WorldItem";
 import { AssignBordersToRoomsModifier } from "../modifiers/AssignBordersToRoomsModifier";
 import { BuildHierarchyModifier } from "../modifiers/BuildHierarchyModifier";
 import { ChangeBorderWidthModifier } from "../modifiers/ChangeBorderWidthModifier";
@@ -7,19 +7,17 @@ import { ChangeFurnitureSizeModifier } from "../modifiers/ChangeFurnitureSizeMod
 import { ConvertBorderPolyToLineModifier } from "../modifiers/ConvertBorderPolyToLineModifier";
 import { CreateMeshModifier } from '../modifiers/CreateMeshModifier';
 import { NormalizeBorderRotationModifier } from "../modifiers/NormalizeBorderRotationModifier";
-import { ScaleModifier } from "../modifiers/ScaleModifier";
 import { SegmentBordersModifier } from "../modifiers/SegmentBordersModifier";
+import { SplitWallsIntoTwoParallelChildWallsModifier } from "../modifiers/SplitWallsIntoTwoParallelChildWallsModifier";
 import { ThickenBordersModifier } from "../modifiers/ThickenBordersModifier";
+import { BorderParser } from "../parsers/BorderParser";
 import { CombinedWorldItemParser } from "../parsers/CombinedWorldItemParser";
 import { FurnitureParser } from "../parsers/FurnitureParser";
 import { PolygonAreaParser } from "../parsers/PolygonAreaParser";
 import { RoomParser } from "../parsers/RoomParser";
-import { BorderParser } from "../parsers/BorderParser";
 import { RootWorldItemParser } from "../parsers/RootWorldItemParser";
-import { WorldItem } from "../../WorldItem";
-import { ServiceFacade } from './ServiceFacade';
-import { MeshDescriptor } from '../../Config';
 import { SubareaParser } from '../parsers/SubareaParser';
+import { ServiceFacade } from './ServiceFacade';
 
 export interface WorldConfig {
     borders: string[];
@@ -53,7 +51,7 @@ export class ImporterService<M, S, T> {
                     new FurnitureParser(this.services),
                     new BorderParser(this.services.worldItemFactoryService, this.services.configService.borderTypes),
                     new RoomParser(this.services),
-                    new PolygonAreaParser('empty', this.services.configService.typeToCharMap.get('empty'), this.services),
+                    new PolygonAreaParser('empty', this.services.configService.meshDescriptorMap.get('empty').char, this.services),
                     new RootWorldItemParser(this.services.worldItemFactoryService),
                     new SubareaParser(this.services)
                 ]

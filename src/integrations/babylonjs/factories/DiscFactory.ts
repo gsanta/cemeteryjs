@@ -1,7 +1,7 @@
 import { Color3, Mesh, MeshBuilder, Scene, StandardMaterial, Vector3 } from 'babylonjs';
+import { MeshDescriptor } from '../../../Config';
 import { WorldItem } from "../../../WorldItem";
 import { MaterialBuilder } from '../MaterialFactory';
-import { ShapeDescriptor } from '../../../Config';
 
 
 export class DiscFactory {
@@ -15,16 +15,14 @@ export class DiscFactory {
         this.materialBuilder = materialBuilder;
     }
 
-    public createItem(worldItemInfo: WorldItem, shapeDescriptor: ShapeDescriptor) {
+    public createItem(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor) {
         const mesh = this.createDisc();
 
         mesh.material = this.materialBuilder.CreateMaterial('disc-material', this.scene);
         (<StandardMaterial> mesh.material).diffuseColor = Color3.FromHexString('#00FF00');
 
-        const translateY = shapeDescriptor.translateY ? shapeDescriptor.translateY : 0;
-
         const dimensions = worldItemInfo.dimensions.getBoundingCenter();
-        mesh.translate(new Vector3(dimensions.x, translateY, dimensions.y), 1);
+        mesh.translate(new Vector3(dimensions.x, meshDescriptor.translateY, dimensions.y), 1);
 
         mesh.checkCollisions = true;
 

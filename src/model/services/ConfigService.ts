@@ -1,4 +1,4 @@
-import { MeshDescriptor, FurnitureDimensionsDescriptor, BorderDimensionsDescriptor } from "../../Config";
+import { MeshDescriptor } from "../../Config";
 import { DefinitionSectionParser } from "../parsers/DefinitionSectionParser";
 import { GlobalConfig } from '../parsers/GlobalSectionParser';
 
@@ -19,26 +19,20 @@ export class ConfigService {
     furnitureTypes: string[];
     emptyType: string;
     meshDescriptorMap: Map<string, MeshDescriptor>;
-    typeToCharMap: Map<string, string>;
 
-    constructor(worldMap: string, meshDescriptorMap: Map<string, MeshDescriptor>) {
-        this.meshDescriptorMap = meshDescriptorMap;
-        this.update(worldMap)
-    }
-
-    update(worldMap: string) {
-        this.typeToCharMap = new DefinitionSectionParser().parse(worldMap);
-        const types = Array.from(this.typeToCharMap.keys());
+    update(worldMap: string): ConfigService {
+        const meshDescriptors = new DefinitionSectionParser().parse(worldMap);
+        this.meshDescriptorMap = new Map();
+        meshDescriptors.forEach(desc => this.meshDescriptorMap.set(desc.type, desc));
+        const types = Array.from(this.meshDescriptorMap.keys());
         this.emptyType = 'empty';
         this.borderTypes = DEFAULT_BORDERS;
         this.furnitureTypes = types.filter(type => !this.borderTypes.includes(type) && !INTERNAL_TYPES.includes(type));
+
+        return this;
     }
 
-    getFurnitureDimensions(type: string): FurnitureDimensionsDescriptor {
-        return <FurnitureDimensionsDescriptor> this.meshDescriptorMap.get(type).realDimensions;
-    }
-
-    getRealBorderWidth(type: string): BorderDimensionsDescriptor {
-        return  this.meshDescriptorMap.get(type) ? <BorderDimensionsDescriptor> this.meshDescriptorMap.get(type).realDimensions : null;
+    getRealBorderWidth(type: string): { width: number, height?: number } {
+        return  this.meshDescriptorMap.get(type) ? this.meshDescriptorMap.get(type).realDimensions : null;
     }
 }

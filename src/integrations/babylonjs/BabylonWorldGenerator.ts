@@ -19,11 +19,10 @@ export class BabylonWorldGenerator<T> implements WorldGenerator<T> {
     }
 
     generate(worldMap: string, meshDescriptors: MeshDescriptor[], converter: Converter<T>) {
-        const meshDescriptorMap: Map<string, MeshDescriptor<any>> = new Map();
+        const meshDescriptorMap: Map<string, MeshDescriptor> = new Map();
         meshDescriptors.map(descriptor => meshDescriptorMap.set(descriptor.type, descriptor));
 
-        const configService = new ConfigService(worldMap, meshDescriptorMap);
-        configService.typeToCharMap = new DefinitionSectionParser().parse(worldMap);
+        const configService = new ConfigService().update(worldMap);
         configService.globalConfig = new GlobalsSectionParser().parse(worldMap);
 
         const serviceFacade = new ServiceFacade<any, any, T>(

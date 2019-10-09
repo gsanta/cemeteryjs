@@ -21,19 +21,39 @@ function createWorldMap(definitionLines: string) {
     `;
 }
 
+it ('Parse the definition section of the world map', () => {
+    const worldMap = createWorldMap(`
+        I = window DIM 2 SCALE 2 MAT [assets/materials/window.png] MOD assets/models/window.babylon
+        T = table DIM 3.2 2.5 MAT [ assets/materials/table_top.png assets/materials/table_leg.png ] SHAPE rect TRANS_Y 2
+    `);
 
-describe('DefinitionSectionParser', () => {
+    const definitionSectionParser = new DefinitionSectionParser();
 
-    it ('parsers the definition section of the world map', () => {
-        const worldMap = createWorldMap(`
-            I = window DIM 2
-            T = table DIM 3.2 2.5
-        `);
+    const definitions = definitionSectionParser.parse(worldMap);
 
-        const definitionSectionParser = new DefinitionSectionParser();
+    expect(definitions[0]).toMatchMeshDescriptor({
+        char: 'I',
+        materials: ['assets/materials/window.png'],
+        scale: 2,
+        model: 'assets/models/window.babylon',
+        realDimensions: {
+            width: 2,
+            height: 2
+        }
+    });
 
-        const definitions = definitionSectionParser.parse(worldMap);
-        1;
-        1;
+    expect(definitions[1]).toMatchObject({
+        char: 'T',
+        materials: [
+            'assets/materials/table_top.png',
+            'assets/materials/table_leg.png'
+        ],
+        shape: 'rect',
+        translateY: 2,
+        realDimensions: {
+            name: 'furniture-dimensions-descriptor' as 'furniture-dimensions-descriptor',
+            width: 3.2,
+            height: 2.5
+        }
     });
 });
