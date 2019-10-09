@@ -53,8 +53,9 @@ it ('Resize each funrinture in the room', () => {
 
 
 it ('Snap furnitures which are beside walls', () => {
-    const map = setupMap(
-        `
+    const map = `
+    map \`
+
         WWWWWWWWWW
         W--------W
         WTT------W
@@ -62,8 +63,18 @@ it ('Snap furnitures which are beside walls', () => {
         W------HHW
         W--------W
         WWWWWWWWWW
-        `
-    );
+
+        \`
+
+        definitions \`
+
+        W = wall
+        - = empty
+        T = table DIM 2 1
+        H = chair DIM 1
+
+        \`
+    `;
 
     const services = setup(map, testMeshDescriptors);
 

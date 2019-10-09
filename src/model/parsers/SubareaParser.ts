@@ -16,13 +16,11 @@ export class SubareaParser implements Parser {
     }
 
     parse(worldMap: string): WorldItem[] {
+        if (!this.services.configService.meshDescriptorMap.has('_subarea')) { return []; }
+
         const emptyChar = this.services.configService.meshDescriptorMap.get(this.services.configService.emptyType).char;
         const subareaChar = this.services.configService.meshDescriptorMap.get('_subarea').char;
         const borderChars = this.services.configService.borderTypes.map(borderType => this.services.configService.meshDescriptorMap.get(borderType).char);
-
-        if (subareaChar === undefined) {
-            return [];
-        }
 
         const worldMapToSubareaMapConverter = new WorldMapToSubareaMapConverter(subareaChar, emptyChar, borderChars);
 

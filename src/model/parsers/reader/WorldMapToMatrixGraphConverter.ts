@@ -2,6 +2,7 @@ import { LinesToGraphConverter } from './LinesToGraphConverter';
 import { CharGraph } from '../CharGraph';
 import { DetailsLineToObjectConverter, DetailsLineDataTypes } from './DetailsLineToObjectConverter';
 import { WorldMapLineListener, WorldMapReader } from './WorldMapReader';
+import { ServiceFacade } from '../../services/ServiceFacade';
 
 
 export class WorldMapToMatrixGraphConverter extends WorldMapLineListener {
@@ -13,11 +14,13 @@ export class WorldMapToMatrixGraphConverter extends WorldMapLineListener {
     private charachterToNameMap: {[key: string]: string};
     private vertexAdditinalData: {[key: number]: any} = {};
     private detailsLineToObjectConverter: DetailsLineToObjectConverter;
+    private services: ServiceFacade<any, any, any>
 
     private static DEFINITION_SECTION_LINE_TEST = /^\s*(\S)\s*\=\s*(\S*)\s*$/;
 
-    constructor() {
+    constructor(services: ServiceFacade<any, any, any>) {
         super();
+        this.services = services;
         this.worldMapReader = new WorldMapReader(this);
     }
 
@@ -25,7 +28,7 @@ export class WorldMapToMatrixGraphConverter extends WorldMapLineListener {
         this.worldMapLines = [];
         this.charachterToNameMap = {};
 
-        this.linesToGraphConverter = new LinesToGraphConverter();
+        this.linesToGraphConverter = new LinesToGraphConverter(this.services);
         this.detailsLineToObjectConverter = new DetailsLineToObjectConverter({
             pos: DetailsLineDataTypes.COORDINATE,
             axis: DetailsLineDataTypes.COORDINATE,

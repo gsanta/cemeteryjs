@@ -51,7 +51,6 @@ it ('Parse the definition section of the world map', () => {
         shape: 'rect',
         translateY: 2,
         realDimensions: {
-            name: 'furniture-dimensions-descriptor' as 'furniture-dimensions-descriptor',
             width: 3.2,
             height: 2.5
         }

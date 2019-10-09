@@ -2,7 +2,7 @@ import { WorldMapLineListener, WorldMapReader } from "./reader/WorldMapReader";
 import { Point } from "@nightshifts.inc/geometry";
 import { MeshDescriptor } from '../../Config';
 
-const TYPE_TEST = /^([^=]*)=\s*([^\s]*)/;
+const TYPE_TEST = /^\s*([^\s]*)\s+=\s*([^\s]*)/;
 const DIMENSIONS_TEST = /DIM\s+(?<num1>\d+(\.\d+)?)(\s+(?<num2>\d+(\.\d+)?))?/;
 const MATERIAL_TEST = /\s+MAT\s+(?:\[(?<singleMat>[^\s]+)\]|\[(?<multiMat>[^\]]+)\])/;
 const MODEL_TEST = /\s+MOD\s+([^\s]+)/;

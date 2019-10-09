@@ -1,4 +1,5 @@
 import { WorldMapLineListener, WorldMapReader } from './reader/WorldMapReader';
+import { ServiceFacade } from '../services/ServiceFacade';
 
 /*
  * Takes a world map (gwm string) and converts the characters inside the map to contain only
@@ -31,6 +32,7 @@ export class WorldMapToRoomMapConverter extends WorldMapLineListener {
         this.wallChar = wallChar;
         this.roomChar = roomChar;
         this.roomSeparatorCharacters = borderCharacters;
+        this.services = services;
         this.worldMapReader = new WorldMapReader(this);
     }
 
