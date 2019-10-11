@@ -1,7 +1,7 @@
 import { Scene } from 'babylonjs/scene';
 import { WorldGenerator, Converter } from '../../WorldGenerator';
 import { BabylonMeshFactoryService } from './services/BabylonMeshFactoryService';
-import { BabylonMeshTemplateService } from './services/BabylonMeshTemplateService';
+import { BabylonModelImportService } from './services/BabylonModelImportService';
 import { MeshDescriptor } from '../../Config';
 import { ConfigService } from '../../model/services/ConfigService';
 import { ServiceFacade } from '../../model/services/ServiceFacade';
@@ -11,11 +11,11 @@ import { GlobalsSectionParser } from '../../model/parsers/GlobalSectionParser';
 
 export class BabylonWorldGenerator<T> implements WorldGenerator<T> {
     private meshFactoryService: BabylonMeshFactoryService;
-    private meshLoaderService: BabylonMeshTemplateService;
+    private meshLoaderService: BabylonModelImportService;
 
     constructor(scene: Scene) {
         this.meshFactoryService = new BabylonMeshFactoryService(scene);
-        this.meshLoaderService = new BabylonMeshTemplateService(scene);
+        this.meshLoaderService = new BabylonModelImportService(scene);
     }
 
     generate(worldMap: string, meshDescriptors: MeshDescriptor[], converter: Converter<T>) {

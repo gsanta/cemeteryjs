@@ -22,7 +22,7 @@ it ('Resize each funrinture in the room', () => {
         `
     );
 
-    const services = setup(map, testMeshDescriptors);
+    const services = setup(map);
 
     const [root] = services.importerService.import(map, [
         ScaleModifier.modName,
@@ -76,7 +76,7 @@ it ('Snap furnitures which are beside walls', () => {
         \`
     `;
 
-    const services = setup(map, testMeshDescriptors);
+    const services = setup(map);
 
     const [root] = services.importerService.import(map, [
         ScaleModifier.modName,

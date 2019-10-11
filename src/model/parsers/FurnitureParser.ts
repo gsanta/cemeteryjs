@@ -10,7 +10,7 @@ export class FurnitureParser implements Parser {
     private worldMapConverter: WorldMapToMatrixGraphConverter;
     private services: ServiceFacade<any, any, any>;
 
-    constructor(services: ServiceFacade<any, any, any>, worldMapConverter = new WorldMapToMatrixGraphConverter(),) {
+    constructor(services: ServiceFacade<any, any, any>, worldMapConverter = new WorldMapToMatrixGraphConverter(services.configService)) {
         this.services = services;
         this.worldMapConverter = worldMapConverter;
     }

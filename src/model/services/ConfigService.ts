@@ -10,7 +10,8 @@ const DEFAULT_BORDERS = [
 
 const INTERNAL_TYPES = [
     '_subarea',
-    'empty'
+    'empty',
+    'room'
 ]
 
 export class ConfigService {
@@ -25,6 +26,7 @@ export class ConfigService {
         const meshDescriptors = new DefinitionSectionParser().parse(worldMap);
         this.meshDescriptorMap = new Map();
         meshDescriptors.forEach(desc => this.meshDescriptorMap.set(desc.type, desc));
+        this.meshDescriptorMapByChar = new Map();
         meshDescriptors.forEach(desc => this.meshDescriptorMapByChar.set(desc.char, desc));
         const types = Array.from(this.meshDescriptorMap.keys());
         this.emptyType = 'empty';

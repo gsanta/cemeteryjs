@@ -1,4 +1,5 @@
 import { LinesToGraphConverter } from '../../../src/model/parsers/reader/LinesToGraphConverter';
+import { ConfigService } from '../../../src/model/services/ConfigService';
 
 
 describe('MatrixGraph', () => {
@@ -13,14 +14,19 @@ describe('MatrixGraph', () => {
                 '##WW##',
             ];
 
-            const linesToGraphConverter = new LinesToGraphConverter();
-            const graph = linesToGraphConverter.parse(
-                input,
-                {
-                    W: 'wall',
-                    '#': 'empty'
-                }
-            );
+            const definitions = `
+                definitions \`
+
+                # = empty
+                W = wall
+
+                \`
+            `
+
+            const configService = new ConfigService().update(definitions);
+
+            const linesToGraphConverter = new LinesToGraphConverter(configService);
+            const graph = linesToGraphConverter.parse(input);
 
             const reducedGraph = graph.getReducedGraphForCharacters(['W']);
 
@@ -39,14 +45,19 @@ describe('MatrixGraph', () => {
                 '--------',
             ];
 
-            const linesToGraphConverter = new LinesToGraphConverter();
-            const graph = linesToGraphConverter.parse(
-                input,
-                {
-                    R: 'room',
-                    '-': 'wall'
-                }
+            const configService = new ConfigService().update(
+                `
+                    definitions \`
+
+                    R = room
+                    - = wall
+
+                    \`
+                `
             );
+
+            const linesToGraphConverter = new LinesToGraphConverter(configService);
+            const graph = linesToGraphConverter.parse(input);
 
             const connectedComponentGraphs = graph.getReducedGraphForCharacters(['R']).getConnectedComponentGraphs();
 
@@ -66,15 +77,22 @@ describe('MatrixGraph', () => {
                 '#############',
             ];
 
-            const linesToGraphConverter = new LinesToGraphConverter();
-            const graph = linesToGraphConverter.parse(
-                input,
-                {
-                    '-': 'room',
-                    '#': 'wall',
-                    D: 'door'
-                }
+
+            const configService = new ConfigService().update(
+                `
+                    definitions \`
+
+                    - = room
+                    # = wall
+                    D = door
+
+                    \`
+                `
             );
+
+            const linesToGraphConverter = new LinesToGraphConverter(configService);
+
+            const graph = linesToGraphConverter.parse(input);
 
             const reducedGraph = graph.getReducedGraphForCharacters(['#', 'D']);
 

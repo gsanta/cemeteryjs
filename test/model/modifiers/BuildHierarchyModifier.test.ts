@@ -15,7 +15,7 @@ describe('BuildHierarchyModifier', () => {
 
                 `
             );
-            const services = setup(map, []);
+            const services = setup(map);
 
             const [root] = services.importerService.import(
                 map,
@@ -51,7 +51,7 @@ describe('BuildHierarchyModifier', () => {
                 WWWWWWWWWW
                 `
             );
-            const services = setup(map, []);
+            const services = setup(map);
 
             const [root] = services.importerService.import(
                 map,

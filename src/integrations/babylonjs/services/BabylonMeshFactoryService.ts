@@ -49,6 +49,13 @@ export class BabylonMeshFactoryService implements MeshFactoryService<Mesh, Skele
     }
 
     private createFromTemplate(worldItem: WorldItem, meshTemplate: MeshTemplate<Mesh, Skeleton>, meshDescriptor: MeshDescriptor): Mesh[] {
+        if (!meshDescriptor) {
+            return [];
+        }
+
+        if (worldItem.name === 'room') {
+            return new RoomFactory(this.scene).createItem(worldItem);
+        }
 
         if (!meshDescriptor.model) {
             return this.createFromShapeDescriptor(worldItem, meshDescriptor);
@@ -66,8 +73,6 @@ export class BabylonMeshFactoryService implements MeshFactoryService<Mesh, Skele
                 return new DoorFactory(this.scene, MeshBuilder).createItem(worldItem, meshDescriptor, meshTemplate);
             case 'window':
                 return new WindowFactory(this.scene, MeshBuilder,  new MaterialFactory(this.scene)).createItem(worldItem, meshDescriptor, meshTemplate);
-            case 'room':
-                return new RoomFactory(this.scene).createItem(worldItem);
             default:
                 return new ModelFactory(this.scene, MeshBuilder).getInstance(worldItem, meshDescriptor, meshTemplate);
         }

@@ -10,7 +10,7 @@ export class SubareaParser implements Parser {
     private services: ServiceFacade<any, any, any>;
     private worldMapConverter: WorldMapToMatrixGraphConverter;
 
-    constructor(services: ServiceFacade<any, any, any>, worldMapConverter = new WorldMapToMatrixGraphConverter()) {
+    constructor(services: ServiceFacade<any, any, any>, worldMapConverter = new WorldMapToMatrixGraphConverter(services.configService)) {
         this.services = services;
         this.worldMapConverter = worldMapConverter;
     }
@@ -18,14 +18,14 @@ export class SubareaParser implements Parser {
     parse(worldMap: string): WorldItem[] {
         if (!this.services.configService.meshDescriptorMap.has('_subarea')) { return []; }
 
-        const emptyChar = this.services.configService.meshDescriptorMap.get(this.services.configService.emptyType).char;
+        const emptyChar = this.services.configService.meshDescriptorMap.get('room').char;
         const subareaChar = this.services.configService.meshDescriptorMap.get('_subarea').char;
         const borderChars = this.services.configService.borderTypes.map(borderType => this.services.configService.meshDescriptorMap.get(borderType).char);
 
         const worldMapToSubareaMapConverter = new WorldMapToSubareaMapConverter(subareaChar, emptyChar, borderChars);
 
         let graph = this.worldMapConverter.convert(worldMapToSubareaMapConverter.convert(worldMap));
-        const characters = without(graph.getCharacters(), this.services.configService.meshDescriptorMap.get('empty').char);
+        const characters = without(graph.getCharacters(), this.services.configService.meshDescriptorMap.get('room').char);
 
         const connectedCompGraphs = graph.getReducedGraphForCharacters(characters)
             .getConnectedComponentGraphs()

@@ -8,11 +8,11 @@ it ('Scale the items', () => {
     const map = `
     map \`
 
-    #DDD####
-    #------#
-    #-TTT--#
-    #-TTT--#
-    ########
+    WDDDWWWW
+    W------W
+    W-TTT--W
+    W-TTT--W
+    WWWWWWWW
 
     \`
 
@@ -35,7 +35,7 @@ it ('Scale the items', () => {
 
     \`
 `
-    const services = setup(map, []);
+    const services = setup(map);
 
     const worldItems = services.importerService.import(
         map,

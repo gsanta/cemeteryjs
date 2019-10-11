@@ -38,7 +38,7 @@ describe('`WorldParser`', () => {
             WWWWWWWW
             `
         );
-        let services: ServiceFacade<any, any, any> = setup(map, []);
+        let services: ServiceFacade<any, any, any> = setup(map);
 
         const [root] = services.importerService.import(
             map,

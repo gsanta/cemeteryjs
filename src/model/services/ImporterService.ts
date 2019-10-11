@@ -49,10 +49,10 @@ export class ImporterService<M, S, T> {
             new CombinedWorldItemParser(
                 [
                     new FurnitureParser(this.services),
-                    new BorderParser(this.services.worldItemFactoryService, this.services.configService.borderTypes),
+                    new BorderParser(this.services.worldItemFactoryService, this.services.configService.borderTypes, this.services.configService),
                     new RoomParser(this.services),
-                    new PolygonAreaParser('empty', this.services.configService.meshDescriptorMap.get('empty').char, this.services),
-                    new RootWorldItemParser(this.services.worldItemFactoryService),
+                    new PolygonAreaParser('empty', this.services.configService.meshDescriptorMap.get('room').char, this.services),
+                    new RootWorldItemParser(this.services.worldItemFactoryService, this.services.configService),
                     new SubareaParser(this.services)
                 ]
             )

@@ -23,7 +23,7 @@ export class PolygonAreaParser implements Parser {
     // TODO: the graph after running WorldMapConverter should only contain one character, so this info is redundant
     private areaChar: string;
 
-    constructor(itemName: string, areaChar: string, services: ServiceFacade<any, any, any>, worldMapConverter = new WorldMapToMatrixGraphConverter()) {
+    constructor(itemName: string, areaChar: string, services: ServiceFacade<any, any, any>, worldMapConverter = new WorldMapToMatrixGraphConverter(services.configService)) {
         this.itemName = itemName;
         this.services = services;
         this.areaChar = areaChar;

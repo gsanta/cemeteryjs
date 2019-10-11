@@ -4,13 +4,14 @@ import { WorldItem } from "../../WorldItem";
 import { Parser } from './Parser';
 import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 import { Polygon } from "@nightshifts.inc/geometry";
+import { ConfigService } from '../services/ConfigService';
 
 
 export class RootWorldItemParser implements Parser {
     private worldMapConverter: WorldMapToMatrixGraphConverter;
     private worldItemInfoFactory: WorldItemFactoryService;
 
-    constructor(worldItemInfoFactory: WorldItemFactoryService, worldMapConverter = new WorldMapToMatrixGraphConverter()) {
+    constructor(worldItemInfoFactory: WorldItemFactoryService, configService: ConfigService, worldMapConverter = new WorldMapToMatrixGraphConverter(configService)) {
         this.worldItemInfoFactory = worldItemInfoFactory;
         this.worldMapConverter = worldMapConverter;
     }

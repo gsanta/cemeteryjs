@@ -21,7 +21,7 @@ export class MockMeshTemplateService implements MeshTemplateService<any, any> {
     }
 
     hasTemplate(type: string): boolean {
-        return this.templateMap.has(type);
+        return this.templateMap.has(type) && !!this.templateMap.get(type).model;
     }
 
     getTemplate(type: string): MeshTemplate<any, any> {
@@ -51,21 +51,7 @@ export class MockMeshTemplateService implements MeshTemplateService<any, any> {
 
 export class MockWorldGenerator<T> implements WorldGenerator<T> {
     generate(worldMap: string, meshDescriptors: MeshDescriptor[], converter: Converter<T>) {
-        // const meshDescriptorMap: Map<string, MeshDescriptor<any>> = new Map();
-        // worldConfig.meshDescriptors.map(descriptor => meshDescriptorMap.set(descriptor.type, descriptor));
-
-        // const meshFactoryService = new MockMeshFactoryService();
-        // const meshTemplateService = new MockMeshTemplateService(null);
-
-        // const configService = new ConfigService(worldConfig.borders, worldConfig.furnitures, meshDescriptorMap, {x: worldConfig.xScale, y: worldConfig.yScale})
-
-        // const serviceFacade = new ServiceFacade<any, any, T>(
-        //     meshFactoryService,
-        //     meshTemplateService,
-        //     configService
-        // );
-
-        const serviceFacade = setup(worldMap, meshDescriptors);
+        const serviceFacade = setup(worldMap);
 
         const worldItems = serviceFacade.importerService.import(worldMap);
 

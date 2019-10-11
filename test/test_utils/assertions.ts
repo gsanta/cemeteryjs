@@ -85,6 +85,7 @@ expect.extend({
         try {
             hasAnyWorldItemInfoDimension(dimensions, worldItems)
         } catch (e) {
+            pass = false;
             message = e.message;
         }
 

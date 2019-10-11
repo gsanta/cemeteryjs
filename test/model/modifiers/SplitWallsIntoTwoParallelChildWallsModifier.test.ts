@@ -42,7 +42,7 @@ describe(`SplitWallsIntoTwoParallelChildWallsModifier`, () => {
             `
         );
 
-        const serviceFacade = setup(map, []);
+        const serviceFacade = setup(map);
 
         const [root] = serviceFacade.importerService.import(
             map,

@@ -30,7 +30,7 @@ describe('SubareaParser', () => {
             \`
         `;
 
-        const services = setup(worldMap, []);
+        const services = setup(worldMap);
         const subareaParser = new SubareaParser(services);
 
         const worldItems = subareaParser.parse(worldMap);

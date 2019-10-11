@@ -2,7 +2,7 @@ import { LinesToGraphConverter } from './LinesToGraphConverter';
 import { CharGraph } from '../CharGraph';
 import { DetailsLineToObjectConverter, DetailsLineDataTypes } from './DetailsLineToObjectConverter';
 import { WorldMapLineListener, WorldMapReader } from './WorldMapReader';
-import { ServiceFacade } from '../../services/ServiceFacade';
+import { ConfigService } from '../../services/ConfigService';
 
 
 export class WorldMapToMatrixGraphConverter extends WorldMapLineListener {
@@ -11,24 +11,20 @@ export class WorldMapToMatrixGraphConverter extends WorldMapLineListener {
 
     private worldMapLines: string[];
     private detailsLines: string[] = [];
-    private charachterToNameMap: {[key: string]: string};
     private vertexAdditinalData: {[key: number]: any} = {};
     private detailsLineToObjectConverter: DetailsLineToObjectConverter;
-    private services: ServiceFacade<any, any, any>
+    private configService: ConfigService;
 
-    private static DEFINITION_SECTION_LINE_TEST = /^\s*(\S)\s*\=\s*(\S*)\s*$/;
-
-    constructor(services: ServiceFacade<any, any, any>) {
+    constructor(configService: ConfigService) {
         super();
-        this.services = services;
+        this.configService = configService;
         this.worldMapReader = new WorldMapReader(this);
     }
 
     public convert(worldmap: string): CharGraph {
         this.worldMapLines = [];
-        this.charachterToNameMap = {};
 
-        this.linesToGraphConverter = new LinesToGraphConverter(this.services);
+        this.linesToGraphConverter = new LinesToGraphConverter(this.configService);
         this.detailsLineToObjectConverter = new DetailsLineToObjectConverter({
             pos: DetailsLineDataTypes.COORDINATE,
             axis: DetailsLineDataTypes.COORDINATE,
@@ -49,7 +45,7 @@ export class WorldMapToMatrixGraphConverter extends WorldMapLineListener {
             this.vertexAdditinalData[vertex] = attribute
         });
 
-        return this.linesToGraphConverter.parse(this.worldMapLines, this.charachterToNameMap);
+        return this.linesToGraphConverter.parse(this.worldMapLines);
     }
 
     private convertDetailsLineToAdditionalData(line: string): any {
@@ -58,11 +54,6 @@ export class WorldMapToMatrixGraphConverter extends WorldMapLineListener {
 
     public addMapSectionLine(line: string) {
         this.worldMapLines.push(line.trim())
-    }
-
-    public addDefinitionSectionLine(line: string) {
-        const match = line.match(WorldMapToMatrixGraphConverter.DEFINITION_SECTION_LINE_TEST);
-        this.charachterToNameMap[match[1]] = match[2];
     }
 
     public addDetailsSectionLine(line: string) {

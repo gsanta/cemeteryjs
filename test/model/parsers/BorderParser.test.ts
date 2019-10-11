@@ -2,6 +2,7 @@ import { Polygon, Shape } from "@nightshifts.inc/geometry";
 import { BorderParser } from '../../../src/model/parsers/BorderParser';
 import { WorldItemFactoryService } from '../../../src/model/services/WorldItemFactoryService';
 import { WorldItem } from '../../../src/WorldItem';
+import { ConfigService } from '../../../src/model/services/ConfigService';
 
 // TODO: create custom matcher
 export function hasAnyWorldItemInfoDimension(dimension: Shape, worldItemInfos: WorldItem[]) {
@@ -15,7 +16,7 @@ export function hasAnyWorldItemInfoDimension(dimension: Shape, worldItemInfos: W
 describe('BorderParser', () => {
     describe('generate', () => {
         it ('sepearates the walls into vertical and horizontal `WorldItemInfo`s.', () => {
-            const map = `
+            const worldMap = `
                 map \`
 
                 WWWWWWWWWWWWWWWWWW
@@ -36,10 +37,11 @@ describe('BorderParser', () => {
                 \`
             `;
 
-            const roomSeparatorParser = new BorderParser(new WorldItemFactoryService(), ['wall', 'door', 'window']);
+            const configService = new ConfigService().update(worldMap);
+            const roomSeparatorParser = new BorderParser(new WorldItemFactoryService(), ['wall', 'door', 'window'], configService);
 
 
-            const worldItems = roomSeparatorParser.parse(map);
+            const worldItems = roomSeparatorParser.parse(worldMap);
             expect(worldItems.length).toEqual(5);
             expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(0, 0, 1, 5), worldItems)).toBeTruthy();
             expect(hasAnyWorldItemInfoDimension(Polygon.createRectangle(9, 0, 1, 5), worldItems)).toBeTruthy();
@@ -49,7 +51,7 @@ describe('BorderParser', () => {
         });
 
         it ('creates separate `WorldItemInfo`s for different type of border items.', () => {
-            const map = `
+            const worldMap = `
                 map \`
 
                 WWDDDDWWWW
@@ -70,10 +72,11 @@ describe('BorderParser', () => {
                 \`
             `;
 
-            const roomSeparatorParser = new BorderParser(new WorldItemFactoryService(), ['wall', 'door', 'window']);
+            const configService = new ConfigService().update(worldMap);
+            const borderParser = new BorderParser(new WorldItemFactoryService(), ['wall', 'door', 'window'], configService);
 
 
-            const worldItems = roomSeparatorParser.parse(map);
+            const worldItems = borderParser.parse(worldMap);
             expect(worldItems.length).toEqual(4);
             expect(worldItems[0].dimensions.equalTo(Polygon.createRectangle(0, 0, 2, 1))).toBeTruthy();
             expect(worldItems[1].dimensions.equalTo(Polygon.createRectangle(6, 0, 4, 1))).toBeTruthy();

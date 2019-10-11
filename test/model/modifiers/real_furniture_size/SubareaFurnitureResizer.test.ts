@@ -19,7 +19,7 @@ it ('Snap furnitures in a subarea to the biggest furniture in that subarea', () 
         `
     );
 
-    const services = setup(map, testMeshDescriptors);
+    const services = setup(map);
 
     const [root] = services.importerService.import(map, [
         ScaleModifier.modName,

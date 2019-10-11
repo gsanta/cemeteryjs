@@ -32,7 +32,6 @@ export class WorldMapToRoomMapConverter extends WorldMapLineListener {
         this.wallChar = wallChar;
         this.roomChar = roomChar;
         this.roomSeparatorCharacters = borderCharacters;
-        this.services = services;
         this.worldMapReader = new WorldMapReader(this);
     }
 

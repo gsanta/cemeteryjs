@@ -27,9 +27,9 @@ export class DefinitionSectionParser extends WorldMapLineListener {
         const char = typeMatch[1].trim();
         const type = typeMatch[2].trim();
         const dimensions = this.parseDimensions(line);
-        const materials = this.parseMaterials(line);
+        const materials = this.parseMaterials(line) || ['000000'];
         const modelPath = this.parseModel(line);
-        const shape = this.parseShape(line);
+        const shape = this.parseShape(line) || 'rect';
         const scale = this.parseScale(line);
         const translateY = this.parseTranslateY(line);
 
@@ -68,17 +68,13 @@ export class DefinitionSectionParser extends WorldMapLineListener {
     private parseMaterials(line: string): string[] {
         const materialMatch = line.match(MATERIAL_TEST);
 
-        let materials: string[] = [];
-
         if (materialMatch) {
             if (materialMatch.groups.singleMat) {
-                materials = [materialMatch.groups.singleMat];
+                return [materialMatch.groups.singleMat];
             } else {
-                materials = materialMatch.groups.multiMat.trim().split(' ').filter(mat => mat !== ' ');
+                return materialMatch.groups.multiMat.trim().split(' ').filter(mat => mat !== ' ');
             }
         }
-
-        return materials;
     }
 
     private parseModel(line: string): string {

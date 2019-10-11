@@ -2,7 +2,7 @@ import { Point } from '@nightshifts.inc/geometry';
 import { AbstractMesh, AnimationGroup, Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, StandardMaterial, Texture, Vector3 } from 'babylonjs';
 import { MeshDescriptor } from '../../../Config';
 import { MeshTemplate } from '../../../MeshTemplate';
-import { MeshTemplateService } from '../../../model/services/MeshTemplateService';
+import { MeshTemplateService as ModelImportService } from '../../../model/services/MeshTemplateService';
 
 export interface MeshTemplateConfig {
     checkCollisions: boolean;
@@ -20,7 +20,7 @@ export interface MeshTemplateConfig {
 /**
  * Loads a model from file and gives back a `Mesh`.
  */
-export class BabylonMeshTemplateService implements MeshTemplateService<Mesh, Skeleton> {
+export class BabylonModelImportService implements ModelImportService<Mesh, Skeleton> {
     private scene: Scene;
 
     constructor(scene: Scene) {
@@ -103,9 +103,9 @@ export class BabylonMeshTemplateService implements MeshTemplateService<Mesh, Ske
     private splitPathIntoBaseAndFileName(path: string): [string, string] {
         const lastSlashIndex = path.lastIndexOf('/');
         if (lastSlashIndex !== -1) {
-            return [path.substring(0, lastSlashIndex), path.substring(lastSlashIndex + 1)]
+            return [path.substring(0, lastSlashIndex + 1), path.substring(lastSlashIndex + 1)]
         } else {
-            return ['', path];
+            return ['/', path];
         }
     }
 

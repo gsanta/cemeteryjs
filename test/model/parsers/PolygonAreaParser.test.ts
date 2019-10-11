@@ -18,10 +18,11 @@ describe('PolygonAreaParser', () => {
 
                 definitions \`
                     # = empty
+                    - = wall
                 \`
             `;
 
-            const services = setup(map, []);
+            const services = setup(map);
             const polygonAreaInfoParser = new PolygonAreaParser('empty', '#', services);
 
             const worldItem = polygonAreaInfoParser.parse(map);
@@ -49,10 +50,11 @@ describe('PolygonAreaParser', () => {
 
                 definitions \`
                     # = empty
+                    - = wall
                 \`
             `;
 
-            const services = setup(map, []);
+            const services = setup(map);
             const polygonAreaInfoParser = new PolygonAreaParser('empty', '#', services);
 
             const worldItem = polygonAreaInfoParser.parse(map);
@@ -87,10 +89,11 @@ describe('PolygonAreaParser', () => {
 
                 definitions \`
                     # = empty
+                    - = wall
                 \`
             `;
 
-            const services = setup(map, []);
+            const services = setup(map);
             const polygonAreaInfoParser = new PolygonAreaParser('empty', '#', services);
 
             const worldItem = polygonAreaInfoParser.parse(map);
@@ -123,10 +126,11 @@ describe('PolygonAreaParser', () => {
 
                 definitions \`
                     # = empty
+                    - = wall
                 \`
             `;
 
-            const services = setup(map, []);
+            const services = setup(map);
             const polygonAreaInfoParser = new PolygonAreaParser('empty', '#', services);
 
             const worldItem = polygonAreaInfoParser.parse(map);

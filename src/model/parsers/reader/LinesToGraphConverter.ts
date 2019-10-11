@@ -1,16 +1,16 @@
 import { CharGraph } from '../CharGraph';
 import { range } from '../../utils/Functions';
-import { ServiceFacade } from '../../services/ServiceFacade';
+import { ConfigService } from '../../services/ConfigService';
 
 export class LinesToGraphConverter {
     private graph: CharGraph;
     private lines: string[];
     private columns: number;
     private rows: number;
-    private services: ServiceFacade<any, any, any>;
+    private configService: ConfigService;
 
-    constructor(services: ServiceFacade<any, any, any>) {
-        this.services = services;
+    constructor(configService: ConfigService) {
+        this.configService = configService;
     }
 
     public parse(lines: string[]): CharGraph {
@@ -34,7 +34,7 @@ export class LinesToGraphConverter {
 
         range(0, vertices).forEach(val => {
             const character = findCharacter(val);
-            const name = this.services.configService.getMeshDescriptorByChar(character).type;
+            const name = this.configService.getMeshDescriptorByChar(character).type;
             this.graph.addVertex(val, character, name);
         });
 

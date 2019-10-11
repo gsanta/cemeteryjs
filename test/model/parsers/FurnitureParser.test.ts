@@ -24,7 +24,7 @@ describe('FurnitureParser', () => {
                 \`
             `;
 
-            const services = setup(worldMap, []);
+            const services = setup(worldMap);
 
             const furnitureInfoParser = new FurnitureParser(services);
             const worldItems = furnitureInfoParser.parse(worldMap);
@@ -56,7 +56,7 @@ describe('FurnitureParser', () => {
                 \`
             `;
 
-            const services = setup(worldMap, []);
+            const services = setup(worldMap);
 
             const furnitureInfoParser = new FurnitureParser(services);
             const worldItems = furnitureInfoParser.parse(worldMap);
@@ -87,7 +87,7 @@ describe('FurnitureParser', () => {
                 \`
             `;
 
-            const services = setup(worldMap, []);
+            const services = setup(worldMap);
 
             const furnitureInfoParser = new FurnitureParser(services);
             const worldItems = furnitureInfoParser.parse(worldMap);

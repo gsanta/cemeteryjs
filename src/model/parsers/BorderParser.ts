@@ -5,6 +5,7 @@ import { WorldMapToMatrixGraphConverter } from './reader/WorldMapToMatrixGraphCo
 import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 import { Polygon } from '@nightshifts.inc/geometry';
 import { flat, without, last } from '../utils/Functions';
+import { ConfigService } from '../services/ConfigService';
 
 export class BorderParser implements Parser {
     private worldItemInfoFactory: WorldItemFactoryService;
@@ -14,7 +15,8 @@ export class BorderParser implements Parser {
     constructor(
         worldItemInfoFactory: WorldItemFactoryService,
         roomSeparatorCharacters: string[],
-        worldMapConverter = new WorldMapToMatrixGraphConverter()
+        configService: ConfigService,
+        worldMapConverter = new WorldMapToMatrixGraphConverter(configService)
     ) {
         this.worldItemInfoFactory = worldItemInfoFactory;
         this.worldMapConverter = worldMapConverter;

@@ -19,7 +19,7 @@ it ('Rotates furniture to face the snapping edges if snaptype is "ROTATE_PARALLE
         `
     );
 
-    const services = setup(map, []);
+    const services = setup(map);
 
     const worldItems = services.importerService.import(map, [ ScaleModifier.modName ]);
 
@@ -53,7 +53,7 @@ it ('Rotate the furniture to face away from the snapping edges if snaptype is "R
         `
     );
 
-    const services = setup(map, []);
+    const services = setup(map);
 
     const worldItems = services.importerService.import(map, [ ScaleModifier.modName ]);
 
@@ -88,7 +88,7 @@ it ('Rotate furniture which are perpendicular to the snapping edges', () => {
         `
     );
 
-    const services = setup(map, []);
+    const services = setup(map);
 
     const worldItems = services.importerService.import(map, [ ScaleModifier.modName ]);
 
@@ -121,7 +121,7 @@ it ('Rotate furniture into a corner', () => {
         `
     );
 
-    const services = setup(map, []);
+    const services = setup(map);
 
     const worldItems = services.importerService.import(map, [ ScaleModifier.modName ]);
 

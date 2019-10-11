@@ -7,52 +7,52 @@ import { ChangeFurnitureSizeModifier } from '../../../src/model/modifiers/Change
 import { ConvertBorderPolyToLineModifier } from "../../../src/model/modifiers/ConvertBorderPolyToLineModifier";
 import { SegmentBordersModifier } from "../../../src/model/modifiers/SegmentBordersModifier";
 import { ServiceFacade } from "../../../src/model/services/ServiceFacade";
-import { setup } from "../../test_utils/testUtils";
+import { setup, setupMap } from "../../test_utils/testUtils";
 
-function createMap(worldMap: string) {
-    return `
-        map \`
+// function createMap(worldMap: string) {
+//     return `
+//         map \`
 
-        ${worldMap}
+//         ${worldMap}
 
-        \`
+//         \`
 
-        definitions \`
+//         definitions \`
 
-        W = wall
-        D = door
-        - = empty
-        T = table
+//         W = wall
+//         D = door
+//         - = empty
+//         T = table
 
-        \`
-    `;
-}
+//         \`
+//     `;
+// }
 
-const meshDescriptors: MeshDescriptor[] = [
-    {
-        name: 'mesh-descriptor',
-        type: 'table',
-        realDimensions: {
-            name: 'furniture-dimensions-descriptor',
-            width: 2,
-            height: 1
-        }
-    } as MeshDescriptor,
-    {
-        name: 'mesh-descriptor',
-        type: 'cupboard',
-        realDimensions: {
-            name: 'furniture-dimensions-descriptor',
-            width: 0.5,
-            height: 2
-        }
-    } as MeshDescriptor
-];
+// const meshDescriptors: MeshDescriptor[] = [
+//     {
+//         name: 'mesh-descriptor',
+//         type: 'table',
+//         realDimensions: {
+//             name: 'furniture-dimensions-descriptor',
+//             width: 2,
+//             height: 1
+//         }
+//     } as MeshDescriptor,
+//     {
+//         name: 'mesh-descriptor',
+//         type: 'cupboard',
+//         realDimensions: {
+//             name: 'furniture-dimensions-descriptor',
+//             width: 0.5,
+//             height: 2
+//         }
+//     } as MeshDescriptor
+// ];
 
 describe('ChangeFurnitureSizeModifier', () => {
     it ('transforms the sketched furniture dimensions into real mesh dimensions', () => {
 
-        const map = createMap(
+        const map = setupMap(
             `
             WWWWWWWWWWWWWWW
             W-------------W
@@ -63,7 +63,7 @@ describe('ChangeFurnitureSizeModifier', () => {
             `
         );
 
-        let services: ServiceFacade<any, any, any> = setup(map, meshDescriptors);
+        let services: ServiceFacade<any, any, any> = setup(map);
 
         const items = services.importerService.import(
             map,
@@ -82,7 +82,7 @@ describe('ChangeFurnitureSizeModifier', () => {
     });
 
     it ('snaps the furniture beside the wall if the original dimensions touched a wall', () => {
-        const map = createMap(
+        const map = setupMap(
         `
             WWWWWWWWWWWWWWW
             W------C------W
@@ -94,7 +94,7 @@ describe('ChangeFurnitureSizeModifier', () => {
         `
         );
 
-        let services: ServiceFacade<any, any, any> = setup(map, meshDescriptors);
+        let services: ServiceFacade<any, any, any> = setup(map);
 
         const items = services.importerService.import(
             map,

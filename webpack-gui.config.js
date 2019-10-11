@@ -53,7 +53,7 @@ module.exports = env => {
                 DEBUG: env === 'debug' ? true : false
             }),
             new MonacoWebpackPlugin(),
-            new BundleAnalyzerPlugin()
+            // new BundleAnalyzerPlugin()
         ],
         resolve: {
             extensions: [ '.tsx', '.ts', '.js', 'scss', '.css' ]
