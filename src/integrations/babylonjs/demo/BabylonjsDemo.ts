@@ -1,4 +1,4 @@
-import { Scene, Engine, ArcRotateCamera, Vector3, HemisphericLight, Color3 } from 'babylonjs';
+import { Scene, Engine, ArcRotateCamera, Vector3, HemisphericLight, Color3, FlyCamera } from 'babylonjs';
 import { BabylonWorldGenerator } from '../BabylonWorldGenerator';
 (<any> window).earcut = require('earcut');
 // const strWorld = require('../../../../assets/test/babylonjs_demo.gwm').default;
@@ -115,7 +115,7 @@ export class BabylonjsDemo {
         light.diffuse = new Color3(1, 1, 1);
         light.intensity = 1;
 
-        new BabylonWorldGenerator(scene).generate(model, meshDescriptors, {
+        new BabylonWorldGenerator(scene).generate(model, {
             convert(worldItem: WorldItem): any {
                 if (worldItem.name === 'wall' && worldItem.children.length > 0) {
                     worldItem.meshTemplate.meshes[0].isVisible = false;

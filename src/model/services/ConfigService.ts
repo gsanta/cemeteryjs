@@ -19,15 +19,16 @@ export class ConfigService {
     borderTypes: string[];
     furnitureTypes: string[];
     emptyType: string;
+    meshDescriptors: MeshDescriptor[];
     meshDescriptorMap: Map<string, MeshDescriptor>;
     meshDescriptorMapByChar: Map<string, MeshDescriptor>;
 
     update(worldMap: string): ConfigService {
-        const meshDescriptors = new DefinitionSectionParser().parse(worldMap);
+        this.meshDescriptors = new DefinitionSectionParser().parse(worldMap);
         this.meshDescriptorMap = new Map();
-        meshDescriptors.forEach(desc => this.meshDescriptorMap.set(desc.type, desc));
+        this.meshDescriptors.forEach(desc => this.meshDescriptorMap.set(desc.type, desc));
         this.meshDescriptorMapByChar = new Map();
-        meshDescriptors.forEach(desc => this.meshDescriptorMapByChar.set(desc.char, desc));
+        this.meshDescriptors.forEach(desc => this.meshDescriptorMapByChar.set(desc.char, desc));
         const types = Array.from(this.meshDescriptorMap.keys());
         this.emptyType = 'empty';
         this.borderTypes = DEFAULT_BORDERS;

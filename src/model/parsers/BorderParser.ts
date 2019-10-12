@@ -29,15 +29,14 @@ export class BorderParser implements Parser {
 
         const borderGraph = graph.getReducedGraphForCharacters(characters);
 
-        return flat<WorldItem>(
-                characters.map((character) => {
-                    return graph
-                        .getReducedGraphForCharacters([character])
-                        .getConnectedComponentGraphs()
-                        .map(connectedCompGraph => this.createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(connectedCompGraph, borderGraph));
-                }),
-                2
-            );
+        const borders = characters.map((character) => {
+            return graph
+                .getReducedGraphForCharacters([character])
+                .getConnectedComponentGraphs()
+                .map(connectedCompGraph => this.createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(connectedCompGraph, borderGraph));
+        });
+
+        return flat<WorldItem>(borders, 2);
     }
 
     private parseWorldMap(strMap: string): CharGraph {

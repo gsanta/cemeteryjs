@@ -69,7 +69,7 @@ it ('Snap furnitures which are beside walls', () => {
         definitions \`
 
         W = wall
-        - = empty
+        - = room
         T = table DIM 2 1
         H = chair DIM 1
 

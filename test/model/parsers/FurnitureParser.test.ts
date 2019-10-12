@@ -19,7 +19,7 @@ describe('FurnitureParser', () => {
 
                 W = wall
                 T = table
-                - = empty
+                - = room
 
                 \`
             `;
@@ -51,7 +51,7 @@ describe('FurnitureParser', () => {
 
                 W = wall
                 T = table
-                - = empty
+                - = room
 
                 \`
             `;
@@ -82,7 +82,7 @@ describe('FurnitureParser', () => {
 
                 W = wall
                 T = table
-                - = empty
+                - = room
 
                 \`
             `;

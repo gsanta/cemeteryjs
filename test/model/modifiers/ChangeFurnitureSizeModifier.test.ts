@@ -21,7 +21,7 @@ import { setup, setupMap } from "../../test_utils/testUtils";
 
 //         W = wall
 //         D = door
-//         - = empty
+//         - = room
 //         T = table
 
 //         \`

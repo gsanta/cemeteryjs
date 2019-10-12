@@ -19,7 +19,7 @@ describe('SubareaParser', () => {
 
             definitions \`
 
-            - = empty
+            - = room
             I = window
             D = door
             W = wall

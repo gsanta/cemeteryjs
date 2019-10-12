@@ -1,4 +1,4 @@
-import { Polygon, Segment, Shape } from "@nightshifts.inc/geometry";
+import { Polygon, Segment, Shape, Point } from "@nightshifts.inc/geometry";
 import { WorldItem } from "../../..";
 import { ServiceFacade } from "../../services/ServiceFacade";
 import { maxBy, minBy, without } from "../../utils/Functions";
@@ -18,8 +18,12 @@ export class SubareaFurnitureResizer {
         const referenceFurniture = this.getMainFurnitureInSubarea(subarea);
         const dependentFurnitures = without<WorldItem>(subarea.children, referenceFurniture);
 
-        const mainFurnitureDimensions = this.services.meshTemplateService.getTemplateDimensions(referenceFurniture.name);
         const originalReferenceFurnitureDimensions = referenceFurniture.dimensions;
+
+        let mainFurnitureDimensions: Point;
+        if (this.services.meshTemplateService.hasTemplate(referenceFurniture.name)) {
+            mainFurnitureDimensions = this.services.meshTemplateService.getTemplateDimensions(referenceFurniture.name);
+        }
 
         referenceFurniture.dimensions = mainFurnitureDimensions ? Polygon.createRectangle(0, 0, mainFurnitureDimensions.x, mainFurnitureDimensions.y) : <Polygon> referenceFurniture.dimensions;
         referenceFurniture.dimensions = referenceFurniture.dimensions.setPosition(originalReferenceFurnitureDimensions.getBoundingCenter());
@@ -27,19 +31,24 @@ export class SubareaFurnitureResizer {
         dependentFurnitures.forEach(dependentFurniture => this.resizeDependentFurniture(dependentFurniture, referenceFurniture, originalReferenceFurnitureDimensions));
     }
 
-    private resizeDependentFurniture(dependentFurniture: WorldItem, referenceFurniture: WorldItem, originalReferenceFurnitureDimensions: Shape) {
-        const snappingFurnitureEdges = (<Polygon> dependentFurniture.dimensions).getEdges();
+    private resizeDependentFurniture(snappingFurniture: WorldItem, referenceFurniture: WorldItem, originalReferenceFurnitureDimensions: Shape) {
+        const snappingFurnitureEdges = (<Polygon> snappingFurniture.dimensions).getEdges();
 
         const referenceEdgeIndex = this.calcReferenceEdgeIndex(snappingFurnitureEdges, originalReferenceFurnitureDimensions.getEdges());
 
-        const snappingFurnitureDimensions = this.services.meshTemplateService.getTemplateDimensions(dependentFurniture.name);
-        const originalSnappingFurnitureDimensions = dependentFurniture.dimensions;
+        let snappingFurnitureDimensions: Point;
 
-        dependentFurniture.dimensions = snappingFurnitureDimensions ? Polygon.createRectangle(0, 0, snappingFurnitureDimensions.x, snappingFurnitureDimensions.y) : <Polygon> dependentFurniture.dimensions;
-        dependentFurniture.dimensions = dependentFurniture.dimensions.setPosition(originalSnappingFurnitureDimensions.getBoundingCenter());
+        if (this.services.meshTemplateService.hasTemplate(snappingFurniture.name)) {
+            snappingFurnitureDimensions = this.services.meshTemplateService.getTemplateDimensions(snappingFurniture.name);
+        }
+
+        const originalSnappingFurnitureDimensions = snappingFurniture.dimensions;
+
+        snappingFurniture.dimensions = snappingFurnitureDimensions ? Polygon.createRectangle(0, 0, snappingFurnitureDimensions.x, snappingFurnitureDimensions.y) : <Polygon> snappingFurniture.dimensions;
+        snappingFurniture.dimensions = snappingFurniture.dimensions.setPosition(originalSnappingFurnitureDimensions.getBoundingCenter());
 
         this.furnitureSnapper.snap(
-            dependentFurniture,
+            snappingFurniture,
             <Polygon> originalSnappingFurnitureDimensions,
             [referenceFurniture.dimensions.getEdges()[referenceEdgeIndex]],
             [originalReferenceFurnitureDimensions.getEdges()[referenceEdgeIndex]]

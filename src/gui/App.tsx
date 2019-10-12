@@ -12,10 +12,11 @@ export interface AppState {
 /*
  const initialModel = `
 WWWWWWWWWIIWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+WEE---------==HHH---------------WRR-----------------W
+WEE--------HHTTTTHH-------------WRR-----------------W
+WEE--------HHTTTTHH-------------W-------------------W
 W-------------HHH---------------W-------------------W
-W-----------=TTTT---------------W-------------------W
-W-----------=TTTT---------------W-------------------W
-W-------------HHH---------------W-------------------W
+W-------------------------------W-------------------W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 W---------------------------------------------------W
 W---------------------------------------------------W
@@ -30,11 +31,10 @@ WWWWIIIIWWWWWWWWWWWWWDDDWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 */
 const initialModel = `
 map \`
-
 WWWWWWWWWIIWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 WEE---------==HHH---------------WRR-----------------W
-WEE---------HTTTTH--------------WRR-----------------W
-WEE---------HTTTTH--------------W-------------------W
+WEE--------HHTTTTHH-------------WRR-----------------W
+WEE--------HHTTTTHH-------------W-------------------W
 W-------------HHH---------------W-------------------W
 W-------------------------------W-------------------W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -47,7 +47,6 @@ W--------XX----TTT---------------OD-----------------I
 W--------XX----TTT------OOOOO----OD-----------------I
 WOOO--------------------OOOOO----OW-----------------W
 WWWWIIIIWWWWWWWWWWWWWDDDWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
 \`
 
 

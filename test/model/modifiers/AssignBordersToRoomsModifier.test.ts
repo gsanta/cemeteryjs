@@ -20,7 +20,7 @@ describe(`AssignBordersToRoomsModifier`, () => {
 
                 definitions \`
 
-                - = empty
+                - = room
                 W = wall
 
                 \`
@@ -53,7 +53,7 @@ describe(`AssignBordersToRoomsModifier`, () => {
 
                 definitions \`
 
-                - = empty
+                - = room
                 W = wall
 
                 \`
@@ -88,7 +88,7 @@ describe(`AssignBordersToRoomsModifier`, () => {
 
                 definitions \`
 
-                - = empty
+                - = room
                 W = wall
 
                 \`

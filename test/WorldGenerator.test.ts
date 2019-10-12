@@ -14,7 +14,7 @@ function createMap(worldMap: string) {
 
         definitions \`
 
-        - = empty
+        - = room
         W = wall
         I = window
         T = table

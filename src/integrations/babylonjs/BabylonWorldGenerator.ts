@@ -2,10 +2,8 @@ import { Scene } from 'babylonjs/scene';
 import { WorldGenerator, Converter } from '../../WorldGenerator';
 import { BabylonMeshFactoryService } from './services/BabylonMeshFactoryService';
 import { BabylonModelImportService } from './services/BabylonModelImportService';
-import { MeshDescriptor } from '../../Config';
 import { ConfigService } from '../../model/services/ConfigService';
 import { ServiceFacade } from '../../model/services/ServiceFacade';
-import { DefinitionSectionParser } from '../../model/parsers/DefinitionSectionParser';
 import { GlobalsSectionParser } from '../../model/parsers/GlobalSectionParser';
 
 
@@ -18,9 +16,7 @@ export class BabylonWorldGenerator<T> implements WorldGenerator<T> {
         this.meshLoaderService = new BabylonModelImportService(scene);
     }
 
-    generate(worldMap: string, meshDescriptors: MeshDescriptor[], converter: Converter<T>) {
-        const meshDescriptorMap: Map<string, MeshDescriptor> = new Map();
-        meshDescriptors.map(descriptor => meshDescriptorMap.set(descriptor.type, descriptor));
+    generate(worldMap: string, converter: Converter<T>) {
 
         const configService = new ConfigService().update(worldMap);
         configService.globalConfig = new GlobalsSectionParser().parse(worldMap);
@@ -32,7 +28,7 @@ export class BabylonWorldGenerator<T> implements WorldGenerator<T> {
         );
 
         this.meshLoaderService
-            .loadAll(meshDescriptors)
+            .loadAll(configService.meshDescriptors.filter(descriptor => descriptor.model))
             .then(() => {
                 const worldItems = serviceFacade.importerService.import(worldMap);
 

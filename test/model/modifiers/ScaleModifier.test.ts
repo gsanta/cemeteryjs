@@ -21,7 +21,7 @@ it ('Scale the items', () => {
     W = wall
     D = door
     I = window
-    - = empty
+    - = room
     E = bed
     T = table
     = = _subarea

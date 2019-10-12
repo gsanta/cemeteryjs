@@ -37,7 +37,7 @@ export function setupMap(map: string): string {
     W = wall
     D = door
     I = window
-    - = empty
+    - = room
     E = bed
     T = table DIM 2 1 MOD assets/models/table.babylon
     = = _subarea

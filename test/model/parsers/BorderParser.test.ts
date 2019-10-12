@@ -29,7 +29,7 @@ describe('BorderParser', () => {
 
                 definitions \`
 
-                - = empty
+                - = room
                 W = wall
                 D = door
                 I = window
@@ -64,7 +64,7 @@ describe('BorderParser', () => {
 
                 definitions \`
 
-                - = empty
+                - = room
                 W = wall
                 D = door
                 I = window

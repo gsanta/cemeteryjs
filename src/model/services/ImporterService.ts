@@ -18,6 +18,7 @@ import { RoomParser } from "../parsers/RoomParser";
 import { RootWorldItemParser } from "../parsers/RootWorldItemParser";
 import { SubareaParser } from '../parsers/SubareaParser';
 import { ServiceFacade } from './ServiceFacade';
+import { ScaleModifier } from '../modifiers/ScaleModifier';
 
 export interface WorldConfig {
     borders: string[];
@@ -59,7 +60,7 @@ export class ImporterService<M, S, T> {
         );
 
         modNames = modNames ? modNames : [
-            // ScaleModifier.modName,
+            ScaleModifier.modName,
             SegmentBordersModifier.modName,
             BuildHierarchyModifier.modName,
             AssignBordersToRoomsModifier.modName,

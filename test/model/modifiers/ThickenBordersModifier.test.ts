@@ -15,7 +15,7 @@ function createMap(worldMap: string) {
 
         W = wall
         D = door
-        - = empty
+        - = room
 
         \`
     `;

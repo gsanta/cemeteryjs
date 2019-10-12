@@ -16,7 +16,7 @@ describe('WorldMapToSubareaMapConverter', () => {
 
             definitions \`
 
-            - = empty
+            - = room
             I = window
             D = door
             W = wall
@@ -39,7 +39,7 @@ describe('WorldMapToSubareaMapConverter', () => {
 
             definitions \`
 
-            - = empty
+            - = room
             I = window
             D = door
             W = wall
@@ -68,7 +68,7 @@ describe('WorldMapToSubareaMapConverter', () => {
 
             definitions \`
 
-            - = empty
+            - = room
             I = window
             D = door
             W = wall
@@ -93,7 +93,7 @@ describe('WorldMapToSubareaMapConverter', () => {
 
             definitions \`
 
-            - = empty
+            - = room
             I = window
             D = door
             W = wall

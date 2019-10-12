@@ -19,14 +19,14 @@ describe('MockWorldGenerator', () => {
 
             definitions \`
 
-            - = empty
+            - = room
             W = wall
             I = window
             D = door
 
             \`
         `;
-        
+
         const mockWorldGenerator = new MockWorldGenerator();
 
         const worldItems: WorldItem[] = [];

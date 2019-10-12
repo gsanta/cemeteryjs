@@ -2,6 +2,19 @@ import { WorldMapLineListener, WorldMapReader } from "./reader/WorldMapReader";
 import { Point } from "@nightshifts.inc/geometry";
 import { MeshDescriptor } from '../../Config';
 
+const COLOR_MAP = {
+    T: '#BF973B',
+    H: '#90602C',
+    E: '#5E7ABA',
+    O: '#9AC581',
+    D: '#D47373',
+    I: '#8FBED1',
+    W: '#A1A1A1'
+}
+
+const DEFAULT_COLOR = '#B0BF3B';
+
+
 const TYPE_TEST = /^\s*([^\s]*)\s+=\s*([^\s]*)/;
 const DIMENSIONS_TEST = /DIM\s+(?<num1>\d+(\.\d+)?)(\s+(?<num2>\d+(\.\d+)?))?/;
 const MATERIAL_TEST = /\s+MAT\s+(?:\[(?<singleMat>[^\s]+)\]|\[(?<multiMat>[^\]]+)\])/;
@@ -27,7 +40,7 @@ export class DefinitionSectionParser extends WorldMapLineListener {
         const char = typeMatch[1].trim();
         const type = typeMatch[2].trim();
         const dimensions = this.parseDimensions(line);
-        const materials = this.parseMaterials(line) || ['000000'];
+        const materials = this.parseMaterials(line) || this.getDefaultMaterial(char);
         const modelPath = this.parseModel(line);
         const shape = this.parseShape(line) || 'rect';
         const scale = this.parseScale(line);
@@ -41,10 +54,10 @@ export class DefinitionSectionParser extends WorldMapLineListener {
             shape,
             scale,
             translateY,
-            realDimensions: {
+            realDimensions: dimensions ? {
                 width: dimensions.x,
                 height: dimensions.y
-            }
+            } : undefined
         })
 
         this.typeToCharMap.set(typeMatch[2], typeMatch[1]);
@@ -54,15 +67,12 @@ export class DefinitionSectionParser extends WorldMapLineListener {
 
         const dimensionsMatch = line.match(DIMENSIONS_TEST);
 
-        let dimensions = new Point(1, 1);
 
         if (dimensionsMatch) {
             const x = dimensionsMatch.groups.num1 ? this.parseNum(dimensionsMatch.groups.num1) : 1;
             const y = dimensionsMatch.groups.num2 ? this.parseNum(dimensionsMatch.groups.num2) : x;
-            dimensions = new Point(x, y);
+            return new Point(x, y);
         }
-
-        return dimensions;
     }
 
     private parseMaterials(line: string): string[] {
@@ -75,6 +85,10 @@ export class DefinitionSectionParser extends WorldMapLineListener {
                 return materialMatch.groups.multiMat.trim().split(' ').filter(mat => mat !== ' ');
             }
         }
+    }
+
+    private getDefaultMaterial(char: string): string[] {
+        return COLOR_MAP[char] ? [COLOR_MAP[char]] : [DEFAULT_COLOR];
     }
 
     private parseModel(line: string): string {

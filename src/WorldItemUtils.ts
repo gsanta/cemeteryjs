@@ -42,7 +42,7 @@ export class WorldItemUtils {
             definitions \`
 
             W = wall
-            - = empty
+            - = room
             X = player
             D = disc
             C = cupboard
