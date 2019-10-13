@@ -55,17 +55,16 @@ definitions \`
 W = wall
 - = room
 X = player
-D = disc
 C = cupboard
-I = window
-T = table
+I = window MOD models/window/window.babylon MAT [assets/models/window/window.png] DIM 3.5 SCALE 3
+T = table MOD assets/models/table.babylon MAT [assets/models/table_material.png] SCALE 0.5
 B = bathtub
 S = washbasin
-E = bed
-H = chair
-D = door
+E = bed MOD assets/models/bed/bed.babylon MAT [assets/models/bed/bed_material.png] SCALE 3.5 TRANS_Y 1.5
+H = chair MOD models/chair.babylon MAT [models/material/bathroom.png] SCALE 3
+D = door MOD models/door/door.babylon MAT [models/door/door_material.png] DIM 3 SCALE 3 TRANS_Y -4
 L = double_bed
-O = shelves
+O = shelves MOD assets/models/shelves/shelves.babylon MAT [assets/models/shelves/shelves.png] SCALE 3.3 TRANS_Y 1
 = = _subarea
 R = stairs
 

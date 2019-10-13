@@ -50,7 +50,7 @@ export class MockMeshTemplateService implements MeshTemplateService<any, any> {
 
 
 export class MockWorldGenerator<T> implements WorldGenerator<T> {
-    generate(worldMap: string, meshDescriptors: MeshDescriptor[], converter: Converter<T>) {
+    generate(worldMap: string, converter: Converter<T>) {
         const serviceFacade = setup(worldMap);
 
         const worldItems = serviceFacade.importerService.import(worldMap);

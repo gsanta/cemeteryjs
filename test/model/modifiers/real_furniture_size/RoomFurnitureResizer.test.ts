@@ -10,17 +10,28 @@ import { testMeshDescriptors } from '../../../test_utils/testMeshDescriptors';
 
 it ('Resize each funrinture in the room', () => {
 
-    const map = setupMap(
-        `
-        WWWWWWWWWWWWWWWWWWW
-        W--------W--------W
-        W-TT-----W-TTT----W
-        W-TT-----W-TTT----W
-        W----HH--W--------W
-        W--------W--------W
-        WWWWWWWWWWWWWWWWWWW
-        `
-    );
+    const map = `
+    map \`
+
+    WWWWWWWWWWWWWWWWWWW
+    W--------W--------W
+    W-TT-----W-TTT----W
+    W-TT-----W-TTT----W
+    W----HH--W--------W
+    W--------W--------W
+    WWWWWWWWWWWWWWWWWWW
+
+    \`
+
+    definitions \`
+
+    W = wall
+    - = room
+    T = table DIM 2 1 MOD assets/models/table.babylon
+    H = chair DIM 1 MOD assets/models/chair.babylon
+
+    \`
+    `;
 
     const services = setup(map);
 
@@ -70,8 +81,8 @@ it ('Snap furnitures which are beside walls', () => {
 
         W = wall
         - = room
-        T = table DIM 2 1
-        H = chair DIM 1
+        T = table DIM 2 1 MOD assets/models/table.babylon
+        H = chair DIM 1 MOD assets/models/chair.babylon
 
         \`
     `;

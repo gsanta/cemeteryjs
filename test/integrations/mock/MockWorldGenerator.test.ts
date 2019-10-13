@@ -31,7 +31,7 @@ describe('MockWorldGenerator', () => {
 
         const worldItems: WorldItem[] = [];
 
-        mockWorldGenerator.generate(worldMap, meshDescriptors, {
+        mockWorldGenerator.generate(worldMap, {
             convert(worldItem: WorldItem): any {
                 worldItems.push(worldItem);
             },

@@ -21,7 +21,7 @@ const MATERIAL_TEST = /\s+MAT\s+(?:\[(?<singleMat>[^\s]+)\]|\[(?<multiMat>[^\]]+
 const MODEL_TEST = /\s+MOD\s+([^\s]+)/;
 const SHAPE_TEST = /\s+SHAPE\s+([^\s]+)/;
 const SCALE_TEST = /\s+SCALE\s+(\d+(?:\.\d+)?)/
-const TRANSLATE_Y_TEST = /\s+TRANS_Y\s+(\d+(?:\.\d+)?)/;
+const TRANSLATE_Y_TEST = /\s+TRANS_Y\s+(-?\d+(?:\.\d+)?)/;
 
 export class DefinitionSectionParser extends WorldMapLineListener {
     private typeToCharMap: Map<string, string>;
@@ -44,7 +44,7 @@ export class DefinitionSectionParser extends WorldMapLineListener {
         const modelPath = this.parseModel(line);
         const shape = this.parseShape(line) || 'rect';
         const scale = this.parseScale(line);
-        const translateY = this.parseTranslateY(line);
+        const translateY = this.parseTranslateY(line) || 0;
 
         this.meshDescriptors.push({
             char,
@@ -123,8 +123,6 @@ export class DefinitionSectionParser extends WorldMapLineListener {
         if (translateYMatch) {
             return parseFloat(translateYMatch[1]);
         }
-
-        return 1;
     }
 
     private parseNum(num: string) {
