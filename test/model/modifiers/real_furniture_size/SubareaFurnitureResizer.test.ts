@@ -1,23 +1,35 @@
-import { MeshDescriptor } from "../../../../src";
 import { setupMap, setup } from "../../../test_utils/testUtils";
 import { ScaleModifier } from "../../../../src/model/modifiers/ScaleModifier";
 import { SegmentBordersModifier } from "../../../../src/model/modifiers/SegmentBordersModifier";
 import { BuildHierarchyModifier } from "../../../../src/model/modifiers/BuildHierarchyModifier";
 import { SubareaFurnitureResizer } from "../../../../src/model/modifiers/real_furniture_size/SubareaFurnitureResizer";
-import { testMeshDescriptors } from '../../../test_utils/testMeshDescriptors';
 
 it ('Snap furnitures in a subarea to the biggest furniture in that subarea', () => {
-    const map = setupMap(
-        `
-        WWWWWWWWWW
-        W--==----W
-        W--TTT---W
-        W--TTTH--W
-        W--HHH---W
-        W--------W
-        WWWWWWWWWW
-        `
-    );
+    const map = `
+    map \`
+
+    WWWWWWWWWW
+    W--==----W
+    W--TTT---W
+    W--TTTH--W
+    W--HHH---W
+    W--------W
+    WWWWWWWWWW
+
+    \`
+
+    definitions \`
+
+    W = wall
+    D = door
+    I = window
+    - = room
+    T = table DIM 2 1 MOD assets/models/table.babylon
+    H = chair DIM 1 1  MOD assets/models/chair.babylon
+    = = _subarea
+
+    \`
+    `;
 
     const services = setup(map);
 

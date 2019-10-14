@@ -25,17 +25,34 @@ function createMap(worldMap: string) {
 describe ('BorderItemSegmentingTransformator', () => {
     describe('generate', () => {
         it ('segments the walls into smaller pieces so that no wall will cover more then one room', () => {
-            const map = createMap(
-                `
-                WWWWWWWWWW
-                W--------W
-                W--------W
-                WWWWWWWWWW
-                W--------W
-                W--------W
-                WWWWWWWWWW
-                `
-            );
+            const map = `
+            map \`
+
+            WWWWWWWWWW
+            W--------W
+            W--------W
+            WWWWWWWWWW
+            W--------W
+            W--------W
+            WWWWWWWWWW
+
+            \`
+
+            definitions \`
+
+            W = wall
+            D = door
+            I = window
+            - = room
+
+            \`
+
+            globals \`
+
+                scale 1 1
+
+            \`
+            `;
 
             let services: ServiceFacade<any, any, any> = setup(map);
 

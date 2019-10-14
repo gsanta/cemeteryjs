@@ -68,7 +68,7 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 definitions `
 
 W = wall
-# = empty
+# = room
 X = player
 D = door
 C = cupboard

@@ -50,11 +50,11 @@ it ('Scale the items', () => {
 
     expect(table).toHaveDimensions(services.geometryService.factory.rectangle(2, 2, 3, 2));
     expect(door).toHaveDimensions(services.geometryService.factory.rectangle(1, 0, 3, 1));
-    expect(room).toHaveDimensions(services.geometryService.factory.rectangle(0, 0, 8, 5));
+    expect(room).toHaveDimensions(services.geometryService.factory.rectangle(1, 1, 6, 3));
 
     scalingWorldItemGenerator.apply(worldItems);
 
     expect(table).toHaveDimensions(services.geometryService.factory.rectangle(4, 4, 6, 4));
     expect(door).toHaveDimensions(services.geometryService.factory.rectangle(2, 0, 6, 2));
-    expect(room).toHaveDimensions(services.geometryService.factory.rectangle(0, 0, 16, 10));
+    expect(room).toHaveDimensions(services.geometryService.factory.rectangle(2, 2, 12, 6));
 });
