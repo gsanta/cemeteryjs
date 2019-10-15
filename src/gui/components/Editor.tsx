@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './Editor.css';
-import { GuiServiceFacade } from './gui_services/GuiServiceFacade';
-import { debounce } from '../model/utils/Functions';
+import { GuiServiceFacade } from '../gui_services/GuiServiceFacade';
+import { debounce } from '../../model/utils/Functions';
 
 interface EditorState {
     map: string;

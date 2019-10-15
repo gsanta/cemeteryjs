@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './SplitPane.css';
-import { BabylonjsDemo } from '../integrations/babylonjs/demo/BabylonjsDemo';
+import { BabylonjsDemo } from '../../integrations/babylonjs/demo/BabylonjsDemo';
 
 export interface CanvasProps {
     model: string;

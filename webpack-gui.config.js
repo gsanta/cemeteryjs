@@ -26,7 +26,17 @@ module.exports = env => {
                     test: /\.css$/,
                     use: [
                         MiniCssExtractPlugin.loader,
-                        'css-loader'
+                        'css-loader',
+                        {
+                            loader: 'postcss-loader',
+                            options: {
+                                ident: 'postcss',
+                                plugins: [
+                                    require("postcss-css-variables")(),
+                                    require('postcss-import')()
+                              ]
+                            }
+                        }
                     ]
                 },
                 {

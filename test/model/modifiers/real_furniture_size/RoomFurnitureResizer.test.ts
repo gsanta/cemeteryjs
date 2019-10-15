@@ -5,8 +5,7 @@ import { ConvertBorderPolyToLineModifier } from "../../../../src/model/modifiers
 import { RoomFurnitureResizer } from "../../../../src/model/modifiers/real_furniture_size/RoomFurnitureResizer";
 import { ScaleModifier } from "../../../../src/model/modifiers/ScaleModifier";
 import { SegmentBordersModifier } from "../../../../src/model/modifiers/SegmentBordersModifier";
-import { setup, setupMap } from "../../../test_utils/testUtils";
-import { testMeshDescriptors } from '../../../test_utils/testMeshDescriptors';
+import { setup } from "../../../test_utils/testUtils";
 
 it ('Resize each funrinture in the room', () => {
 

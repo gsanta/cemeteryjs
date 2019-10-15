@@ -22,6 +22,7 @@ const MODEL_TEST = /\s+MOD\s+([^\s]+)/;
 const SHAPE_TEST = /\s+SHAPE\s+([^\s]+)/;
 const SCALE_TEST = /\s+SCALE\s+(\d+(?:\.\d+)?)/
 const TRANSLATE_Y_TEST = /\s+TRANS_Y\s+(-?\d+(?:\.\d+)?)/;
+const BORDER_TEST = /^\s*BORDER\s*/;
 
 export class DefinitionSectionParser extends WorldMapLineListener {
     private typeToCharMap: Map<string, string>;
@@ -45,6 +46,7 @@ export class DefinitionSectionParser extends WorldMapLineListener {
         const shape = this.parseShape(line) || 'rect';
         const scale = this.parseScale(line);
         const translateY = this.parseTranslateY(line) || 0;
+        const isBorder = this.parseBorder(line);
 
         this.meshDescriptors.push({
             char,
@@ -54,6 +56,7 @@ export class DefinitionSectionParser extends WorldMapLineListener {
             shape,
             scale,
             translateY,
+            isBorder,
             realDimensions: dimensions ? {
                 width: dimensions.x,
                 height: dimensions.y
@@ -123,6 +126,16 @@ export class DefinitionSectionParser extends WorldMapLineListener {
         if (translateYMatch) {
             return parseFloat(translateYMatch[1]);
         }
+    }
+
+    private parseBorder(line: string): boolean {
+        const borderMatch = line.match(BORDER_TEST);
+
+        if (borderMatch) {
+            return true;
+        }
+
+        return false;
     }
 
     private parseNum(num: string) {

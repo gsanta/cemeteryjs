@@ -1,15 +1,7 @@
-import { Scene, Engine, ArcRotateCamera, Vector3, HemisphericLight, Color3, FlyCamera } from 'babylonjs';
+import { ArcRotateCamera, Color3, Engine, HemisphericLight, Scene, Vector3 } from 'babylonjs';
+import { WorldItem } from '../../../WorldItem';
 import { BabylonWorldGenerator } from '../BabylonWorldGenerator';
 (<any> window).earcut = require('earcut');
-// const strWorld = require('../../../../assets/test/babylonjs_demo.gwm').default;
-
-// const strWorld = require('raw-loader!../../../../assets/test/demo_world.gwm');
-// import strWorld from 'raw-loader!../../../../assets/test/demo_world.gwm';
-import { MeshDescriptor } from '../../../Config';
-import { WorldConfig } from '../../../model/services/ImporterService';
-import { WorldItem } from '../../../WorldItem';
-import { meshDescriptors } from '../../../../test/setup/meshDescriptors';
-import { WorldItemUtils } from '../../../WorldItemUtils';
 
 /*
 

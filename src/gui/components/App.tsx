@@ -3,11 +3,14 @@ import SplitPane from 'react-split-pane';
 import './SplitPane.css';
 import { Editor } from './Editor';
 import { Canvas } from './Canvas';
-import { GuiServiceFacade } from './gui_services/GuiServiceFacade';
+import { GuiServiceFacade } from '../gui_services/GuiServiceFacade';
+import { Header } from './Header';
+import { IntegrationCodeDialog } from './IntegrationCodeDialog';
 
 export interface AppState {
     model: string;
     guiServices: GuiServiceFacade;
+    isDialogOpen: boolean;
 }
 /*
  const initialModel = `
@@ -84,16 +87,21 @@ export class App extends React.Component<{}, AppState> {
 
         this.state = {
             model: initialModel,
-            guiServices: new GuiServiceFacade()
+            guiServices: new GuiServiceFacade(),
+            isDialogOpen: false
         }
     }
 
     render() {
         return (
-            <SplitPane split="vertical" primary="second" minSize={300} defaultSize={900}>
-                <Editor guiServices={this.state.guiServices} onModelChanged={(content: string) => this.onModelChanged(content)} initialModel={this.state.model}/>
-                <Canvas model={this.state.model}/>
-            </SplitPane>
+            <div>
+                <Header model={this.state.model} openIntegrationCodeDialog={() => this.setState({isDialogOpen: true})}/>
+                <SplitPane split="vertical" primary="second" minSize={300} defaultSize={900}>
+                    <Editor guiServices={this.state.guiServices} onModelChanged={(content: string) => this.onModelChanged(content)} initialModel={this.state.model}/>
+                    <Canvas model={this.state.model}/>
+                </SplitPane>
+                <IntegrationCodeDialog isOpen={this.state.isDialogOpen} worldMap={this.state.model}/>
+            </div>
         );
     }
 
