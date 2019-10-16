@@ -15,7 +15,7 @@ function createMap(worldMap: string) {
         definitions \`
 
         - = room
-        W = wall
+        W = wall BORDER
 
 
         \`
@@ -40,9 +40,9 @@ describe ('BorderItemSegmentingTransformator', () => {
 
             definitions \`
 
-            W = wall
-            D = door
-            I = window
+            W = wall BORDER
+            D = door BORDER
+            I = window BORDER
             - = room
 
             \`

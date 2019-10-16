@@ -20,7 +20,7 @@ export class SubareaParser implements Parser {
 
         const emptyChar = this.services.configService.meshDescriptorMap.get('room').char;
         const subareaChar = this.services.configService.meshDescriptorMap.get('_subarea').char;
-        const borderChars = this.services.configService.borderTypes.map(borderType => this.services.configService.meshDescriptorMap.get(borderType).char);
+        const borderChars = this.services.configService.borders.map(border => border.char);
 
         const worldMapToSubareaMapConverter = new WorldMapToSubareaMapConverter(subareaChar, emptyChar, borderChars);
 

@@ -19,8 +19,8 @@ function createMap(worldMap: string) {
 
         definitions \`
 
-        W = wall
-        D = door
+        W = wall BORDER
+        D = door BORDER
         - = room
 
         \`

@@ -18,7 +18,7 @@ describe('MatrixGraph', () => {
                 definitions \`
 
                 # = empty
-                W = wall
+                W = wall BORDER
 
                 \`
             `
@@ -84,7 +84,7 @@ describe('MatrixGraph', () => {
 
                     - = room
                     # = wall
-                    D = door
+                    D = door BORDER
 
                     \`
                 `

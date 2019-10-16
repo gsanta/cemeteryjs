@@ -21,12 +21,12 @@ map `
 
 definitions `
 
-W = wall
+W = wall BORDER
 - = empty
 X = player
 D = disc
 C = cupboard
-I = window
+I = window BORDER
 T = table
 B = bathtub
 S = washbasin

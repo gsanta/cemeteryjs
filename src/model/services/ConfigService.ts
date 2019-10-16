@@ -16,8 +16,8 @@ const INTERNAL_TYPES = [
 
 export class ConfigService {
     globalConfig: GlobalConfig;
-    borderTypes: string[];
-    furnitureTypes: string[];
+    borders: MeshDescriptor[];
+    furnitures: MeshDescriptor[];
     emptyType: string;
     meshDescriptors: MeshDescriptor[];
     meshDescriptorMap: Map<string, MeshDescriptor>;
@@ -29,10 +29,9 @@ export class ConfigService {
         this.meshDescriptors.forEach(desc => this.meshDescriptorMap.set(desc.type, desc));
         this.meshDescriptorMapByChar = new Map();
         this.meshDescriptors.forEach(desc => this.meshDescriptorMapByChar.set(desc.char, desc));
-        const types = Array.from(this.meshDescriptorMap.keys());
         this.emptyType = 'empty';
-        this.borderTypes = DEFAULT_BORDERS;
-        this.furnitureTypes = types.filter(type => !this.borderTypes.includes(type) && !INTERNAL_TYPES.includes(type));
+        this.borders = this.meshDescriptors.filter(descriptor => descriptor.isBorder);
+        this.furnitures = this.meshDescriptors.filter(descriptor => !descriptor.isBorder && !INTERNAL_TYPES.includes(descriptor.type));
 
         return this;
     }

@@ -74,18 +74,18 @@ WWWWIIIIWWWWWWWWWWWWWDDDWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 definitions \`
 
-W = wall
+W = wall BORDER
 - = empty
 X = player
 D = disc
 C = cupboard
-I = window
+I = window BORDER
 T = table
 B = bathtub
 S = washbasin
 E = bed
 H = chair
-D = door
+D = door BORDER
 L = double_bed
 O = shelves
 = = subarea

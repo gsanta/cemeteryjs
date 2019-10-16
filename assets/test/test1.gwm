@@ -8,8 +8,8 @@ WWWWWWWW
 
 definitions `
 
-W = wall
+W = wall BORDER
 # = empty
-I = window
+I = window BORDER
 
 `

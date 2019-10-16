@@ -34,9 +34,9 @@ export function setupMap(map: string): string {
 
     definitions \`
 
-    W = wall
-    D = door
-    I = window
+    W = wall BORDER
+    D = door BORDER
+    I = window BORDER
     - = room
     E = bed
     T = table DIM 2 1 MOD assets/models/table.babylon

@@ -20,9 +20,9 @@ it ('Snap furnitures in a subarea to the biggest furniture in that subarea', () 
 
     definitions \`
 
-    W = wall
-    D = door
-    I = window
+    W = wall BORDER
+    D = door BORDER
+    I = window BORDER
     - = room
     T = table DIM 2 1 MOD assets/models/table.babylon
     H = chair DIM 1 1  MOD assets/models/chair.babylon

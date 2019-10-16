@@ -20,9 +20,9 @@ describe('SubareaParser', () => {
             definitions \`
 
             - = room
-            I = window
-            D = door
-            W = wall
+            I = window BORDER
+            D = door BORDER
+            W = wall BORDER
             T = table
             E = bed
             = = _subarea

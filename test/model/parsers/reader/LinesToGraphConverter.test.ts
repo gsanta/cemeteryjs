@@ -8,7 +8,7 @@ describe('LinesToGraphConverter', () => {
                 `
                     definitions \`
 
-                    W = wall
+                    W = wall BORDER
                     # = empty
 
                     \`

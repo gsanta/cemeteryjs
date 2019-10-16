@@ -10,22 +10,18 @@ import { ConfigService } from '../services/ConfigService';
 export class BorderParser implements Parser {
     private worldItemInfoFactory: WorldItemFactoryService;
     private worldMapConverter: WorldMapToMatrixGraphConverter;
-    private roomSeparatorCharacters: string[];
+    private configService: ConfigService;
 
-    constructor(
-        worldItemInfoFactory: WorldItemFactoryService,
-        roomSeparatorCharacters: string[],
-        configService: ConfigService,
-        worldMapConverter = new WorldMapToMatrixGraphConverter(configService)
-    ) {
+    constructor(worldItemInfoFactory: WorldItemFactoryService, configService: ConfigService, worldMapConverter = new WorldMapToMatrixGraphConverter(configService)) {
         this.worldItemInfoFactory = worldItemInfoFactory;
         this.worldMapConverter = worldMapConverter;
-        this.roomSeparatorCharacters = roomSeparatorCharacters;
+        this.configService = configService;
     }
 
     public parse(worldMap: string): WorldItem[] {
         const graph = this.parseWorldMap(worldMap);
-        const characters = this.roomSeparatorCharacters.filter(name => graph.getCharacterForName(name)).map(name => graph.getCharacterForName(name));
+        // TODO: simplify this, MeshDescriptor contains both char and type no need to use graph here
+        const characters = this.configService.borders.filter(border => graph.getCharacterForName(border.type)).map(border => graph.getCharacterForName(border.type));
 
         const borderGraph = graph.getReducedGraphForCharacters(characters);
 

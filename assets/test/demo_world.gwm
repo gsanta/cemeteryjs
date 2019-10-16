@@ -11,12 +11,12 @@ WWWWWWWWWWWWWWWWW
 
 definitions `
 
-W = wall
+W = wall BORDER
 # = empty
 X = player
-D = door
+D = door BORDER
 C = cupboard
-I = window
+I = window BORDER
 T = table
 B = bathtub
 S = washbasin

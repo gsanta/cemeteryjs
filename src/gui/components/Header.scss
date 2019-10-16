@@ -3,4 +3,14 @@
 #header {
     height: 40px;
     background: $header-color;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    justify-content: space-between;
+
+    .button {
+        &:last-child {
+            margin-right: 0px;
+        }
+    }
 }

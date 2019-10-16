@@ -26,7 +26,7 @@ export class AssignBordersToRoomsModifier implements Modifier {
 
     private addBoderItems(worldItems: WorldItem[]): WorldItem[] {
         const rooms = WorldItemUtils.filterRooms(worldItems);
-        const roomSeparatorItems = WorldItemUtils.filterBorders(worldItems, this.configService.borderTypes);
+        const roomSeparatorItems = WorldItemUtils.filterBorders(worldItems);
 
         rooms.forEach(room => {
             roomSeparatorItems

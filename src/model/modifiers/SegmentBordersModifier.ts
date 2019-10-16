@@ -43,7 +43,7 @@ export class SegmentBordersModifier  implements Modifier {
 
     private segmentBorderItemsIfNeeded(worldItems: WorldItem[]): WorldItem[] {
         const rooms = WorldItemUtils.filterRooms(worldItems);
-        const originalBorders = WorldItemUtils.filterBorders(worldItems, this.configService.borderTypes);
+        const originalBorders = WorldItemUtils.filterBorders(worldItems);
         const borders = [...originalBorders];
         const newBorders: WorldItem[] = [];
 

@@ -1,5 +1,6 @@
 import { WorldMapLineListener, WorldMapReader } from './reader/WorldMapReader';
 import { ServiceFacade } from '../services/ServiceFacade';
+import { ConfigService } from '../services/ConfigService';
 
 /*
  * Takes a world map (gwm string) and converts the characters inside the map to contain only
@@ -20,18 +21,18 @@ import { ServiceFacade } from '../services/ServiceFacade';
  * -----
  */
 export class WorldMapToRoomMapConverter extends WorldMapLineListener {
-    private roomSeparatorCharacters: string[];
     private wallChar: string;
     private roomChar: string;
     private worldMapReader: WorldMapReader;
 
     private lines: string[] = [];
+    private configService: ConfigService;
 
-    constructor(wallChar: string, roomChar: string, borderCharacters: string[]) {
+    constructor(configService: ConfigService, wallChar: string, roomChar: string) {
         super();
+        this.configService = configService;
         this.wallChar = wallChar;
         this.roomChar = roomChar;
-        this.roomSeparatorCharacters = borderCharacters;
         this.worldMapReader = new WorldMapReader(this);
     }
 
@@ -42,9 +43,9 @@ export class WorldMapToRoomMapConverter extends WorldMapLineListener {
     }
 
     public addMapSectionLine(line: string) {
-        this.roomSeparatorCharacters.forEach(char => {
-            line = line.replace(new RegExp(char, 'g'), this.wallChar);
-        });
+        this.configService.borders.forEach(descriptor => {
+                line = line.replace(new RegExp(descriptor.char, 'g'), this.wallChar);
+            });
 
         line = line.replace(new RegExp(`[^${this.wallChar}\\s]`, 'g'), this.roomChar);
 

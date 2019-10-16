@@ -30,15 +30,15 @@ describe('BorderParser', () => {
                 definitions \`
 
                 - = room
-                W = wall
-                D = door
-                I = window
+                W = wall BORDER
+                D = door BORDER
+                I = window BORDER
 
                 \`
             `;
 
             const configService = new ConfigService().update(worldMap);
-            const roomSeparatorParser = new BorderParser(new WorldItemFactoryService(), ['wall', 'door', 'window'], configService);
+            const roomSeparatorParser = new BorderParser(new WorldItemFactoryService(), configService);
 
 
             const worldItems = roomSeparatorParser.parse(worldMap);
@@ -65,15 +65,15 @@ describe('BorderParser', () => {
                 definitions \`
 
                 - = room
-                W = wall
-                D = door
-                I = window
+                W = wall BORDER
+                D = door BORDER
+                I = window BORDER
 
                 \`
             `;
 
             const configService = new ConfigService().update(worldMap);
-            const borderParser = new BorderParser(new WorldItemFactoryService(), ['wall', 'door', 'window'], configService);
+            const borderParser = new BorderParser(new WorldItemFactoryService(), configService);
 
 
             const worldItems = borderParser.parse(worldMap);

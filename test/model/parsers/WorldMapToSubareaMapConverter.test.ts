@@ -17,9 +17,9 @@ describe('WorldMapToSubareaMapConverter', () => {
             definitions \`
 
             - = room
-            I = window
-            D = door
-            W = wall
+            I = window BORDER
+            D = door BORDER
+            W = wall BORDER
             = = _subarea
 
             \`
@@ -40,9 +40,9 @@ describe('WorldMapToSubareaMapConverter', () => {
             definitions \`
 
             - = room
-            I = window
-            D = door
-            W = wall
+            I = window BORDER
+            D = door BORDER
+            W = wall BORDER
             = = _subarea
 
             \`
@@ -69,9 +69,9 @@ describe('WorldMapToSubareaMapConverter', () => {
             definitions \`
 
             - = room
-            I = window
-            D = door
-            W = wall
+            I = window BORDER
+            D = door BORDER
+            W = wall BORDER
             T = table
             H = chair
             = = _subarea
@@ -94,9 +94,9 @@ describe('WorldMapToSubareaMapConverter', () => {
             definitions \`
 
             - = room
-            I = window
-            D = door
-            W = wall
+            I = window BORDER
+            D = door BORDER
+            W = wall BORDER
             T = table
             H = chair
             = = _subarea

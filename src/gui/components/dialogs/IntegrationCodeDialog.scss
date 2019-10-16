@@ -1,4 +1,4 @@
-@import './variables.scss';
+@import '../variables.scss';
 
 .dialog-overlay {
     position: absolute;
@@ -6,6 +6,9 @@
     height: 100%;
     display: flex;
     justify-content: center;
+    top: 0;
+    left: 0;
+    z-index: 1;
 }
 
 .dialog {
@@ -17,10 +20,9 @@
     box-shadow: 0 4px 8px 0 $border-color;
     font-family: roboto;
     font-size: 16px;
-    color: #edf0ee;
-    background: #434a45;
+    color: $text-color;
+    background: $background-color;
     border: 1px solid $border-color;
-    z-index: 1;
 }
 
 .dialog-title {

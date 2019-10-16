@@ -22,7 +22,7 @@ const MODEL_TEST = /\s+MOD\s+([^\s]+)/;
 const SHAPE_TEST = /\s+SHAPE\s+([^\s]+)/;
 const SCALE_TEST = /\s+SCALE\s+(\d+(?:\.\d+)?)/
 const TRANSLATE_Y_TEST = /\s+TRANS_Y\s+(-?\d+(?:\.\d+)?)/;
-const BORDER_TEST = /^\s*BORDER\s*/;
+const BORDER_TEST = /\s*BORDER\s*/;
 
 export class DefinitionSectionParser extends WorldMapLineListener {
     private typeToCharMap: Map<string, string>;

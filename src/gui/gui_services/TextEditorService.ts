@@ -21,7 +21,7 @@ export class TextEditorService {
         monaco.editor.defineTheme(THEME, <any> {
             base: 'vs-dark',
             inherit: true,
-            rules: [{ background: 'EDF9FA' }],
+            rules: monacoConfig.colorRules,
             colors: {
                 'editor.foreground': '#000000',
                 // 'editor.background': '#EDF9FA',

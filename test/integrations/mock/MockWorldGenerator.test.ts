@@ -18,9 +18,9 @@ describe('MockWorldGenerator', () => {
             definitions \`
 
             - = room
-            W = wall
-            I = window
-            D = door
+            W = wall BORDER
+            I = window BORDER
+            D = door BORDER
 
             \`
         `;

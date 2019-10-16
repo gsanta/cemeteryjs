@@ -17,7 +17,7 @@ describe('FurnitureParser', () => {
 
                 definitions \`
 
-                W = wall
+                W = wall BORDER
                 T = table
                 - = room
 
@@ -49,7 +49,7 @@ describe('FurnitureParser', () => {
 
                 definitions \`
 
-                W = wall
+                W = wall BORDER
                 T = table
                 - = room
 
@@ -80,7 +80,7 @@ describe('FurnitureParser', () => {
 
                 definitions \`
 
-                W = wall
+                W = wall BORDER
                 T = table
                 - = room
 

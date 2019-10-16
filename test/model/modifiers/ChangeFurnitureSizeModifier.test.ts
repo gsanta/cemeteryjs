@@ -56,7 +56,7 @@ describe('ChangeFurnitureSizeModifier', () => {
 
         definitions \`
 
-        W = wall
+        W = wall BORDER
         - = room
         C = cupboard DIM 0.5 2 MOD assets/models/cupboard.babylon
         T = table DIM 1 2 MOD assets/models/table.babylon

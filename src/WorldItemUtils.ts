@@ -16,12 +16,12 @@ export class WorldItemUtils {
         return rooms;
     }
 
-    public static filterBorders(worldItems: WorldItem[], roomSeparatorItemNames: string[]): WorldItem[] {
+    public static filterBorders(worldItems: WorldItem[]): WorldItem[] {
         const roomSeparatorItems: WorldItem[] = [];
 
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
-                if (roomSeparatorItemNames.find(separatorName => item.name === separatorName)) {
+                if (item.isBorder) {
                     roomSeparatorItems.push(item);
                 }
             }
@@ -41,18 +41,18 @@ export class WorldItemUtils {
 
             definitions \`
 
-            W = wall
+            W = wall BORDER
             - = room
             X = player
             D = disc
             C = cupboard
-            I = window
+            I = window BORDER
             T = table
             B = bathtub
             S = washbasin
             E = bed
             H = chair
-            D = door
+            D = door BORDER
             L = double_bed
             O = shelves
             = = subarea

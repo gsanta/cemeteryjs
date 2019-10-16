@@ -9,7 +9,7 @@ describe('RoomParser', () => {
             const worldMap = fs.readFileSync(__dirname + '/../../../assets/test/big_world.gwm', 'utf8');
 
             const services = setup(worldMap);
-            const roomInfoParser = new RoomParser(services, ['W', 'D', 'I']);
+            const roomInfoParser = new RoomParser(services);
 
             const worldItem = roomInfoParser.parse(worldMap);
 

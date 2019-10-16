@@ -11,7 +11,7 @@ WWWWWWWWWW
 definitions `
 
 # = empty
-I = window
+I = window BORDER
 
 `
 

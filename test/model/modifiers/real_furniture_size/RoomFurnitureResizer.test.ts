@@ -24,7 +24,7 @@ it ('Resize each funrinture in the room', () => {
 
     definitions \`
 
-    W = wall
+    W = wall BORDER
     - = room
     T = table DIM 2 1 MOD assets/models/table.babylon
     H = chair DIM 1 MOD assets/models/chair.babylon
@@ -78,7 +78,7 @@ it ('Snap furnitures which are beside walls', () => {
 
         definitions \`
 
-        W = wall
+        W = wall BORDER
         - = room
         T = table DIM 2 1 MOD assets/models/table.babylon
         H = chair DIM 1 MOD assets/models/chair.babylon
