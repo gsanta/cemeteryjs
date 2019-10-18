@@ -95,7 +95,7 @@ O = shelves
 `
 
 export class BabylonjsDemo {
-    public setupDemo(model: string, canvas: HTMLCanvasElement): void {
+    public setupDemo(model: string, canvas: HTMLCanvasElement): Engine {
 
         const engine = new Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
         const scene = new Scene(engine);
@@ -119,5 +119,7 @@ export class BabylonjsDemo {
                 engine.runRenderLoop(() => scene.render());
             }
         });
+
+        return engine;
     }
 }

@@ -24,3 +24,32 @@ describe('RoomParser', () => {
         });
     });
 });
+
+it ('Parse room with empty area around the whole world map', () => {
+    const worldMap = `
+        map \`
+
+        **********
+        *WWWWWWWW*
+        *W------W*
+        *W------W*
+        *WWWWWWWW*
+        **********
+
+        \`
+
+        definitions \`
+            W = wall
+            - = room
+            * = outdoors
+        \`
+    `;
+
+
+    const services = setup(worldMap);
+    const roomInfoParser = new RoomParser(services);
+
+    const rooms = roomInfoParser.parse(worldMap);
+    expect(rooms.length).toEqual(1);
+    expect(rooms[0]).toHaveDimensions(services.geometryService.factory.rectangle(2, 2, 6, 2));
+});

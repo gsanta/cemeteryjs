@@ -38,12 +38,11 @@ export function setupMap(map: string): string {
     D = door BORDER
     I = window BORDER
     - = room
-    E = bed
+    E = bed MOD assets/models/bed.babylon
     T = table DIM 2 1 MOD assets/models/table.babylon
     = = _subarea
     H = chair
     C = cupboard DIM 0.5 2 MOD assets/models/cupboard.babylon
-    B = bed MOD assets/models/bed.babylon
 
     \`
 `;

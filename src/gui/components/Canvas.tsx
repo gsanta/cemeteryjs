@@ -2,9 +2,11 @@ import * as React from 'react';
 import './SplitPane.css';
 import './Canvas.scss'
 import { BabylonjsDemo } from '../../integrations/babylonjs/demo/BabylonjsDemo';
+import { Engine } from 'babylonjs/Engines/engine';
 
 export interface CanvasProps {
     model: string;
+    onWebglReady(engine: Engine)
 }
 
 export class Canvas extends React.Component<CanvasProps> {
@@ -17,7 +19,8 @@ export class Canvas extends React.Component<CanvasProps> {
     }
 
     componentDidMount() {
-        new BabylonjsDemo().setupDemo(this.props.model, this.canvasRef.current);
+        const engine = new BabylonjsDemo().setupDemo(this.props.model, this.canvasRef.current);
+        this.props.onWebglReady(engine);
     }
 
     componentDidUpdate() {

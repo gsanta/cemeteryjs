@@ -31,7 +31,7 @@ export class SubareaParser implements Parser {
             .getConnectedComponentGraphs()
             .filter(graph => graph.getCharacters().includes(subareaChar));
 
-        const polygonAreaParser = new PolygonAreaParser('_subarea', this.services.configService.meshDescriptorMap.get('_subarea').char, this.services);
+        const polygonAreaParser = new PolygonAreaParser('_subarea', this.services);
 
         return connectedCompGraphs.map(g => polygonAreaParser.parse2(g));
     }

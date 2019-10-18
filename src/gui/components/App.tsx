@@ -9,6 +9,7 @@ import { IntegrationCodeDialog } from './dialogs/IntegrationCodeDialog';
 import './App.scss';
 import { HowToIntegrateDialog } from './dialogs/HowToIntegrateDialog';
 import { AboutDialog } from './dialogs/AboutDialog';
+import { Engine } from 'babylonjs';
 
 export interface AppState {
     model: string;
@@ -39,22 +40,30 @@ WWWWIIIIWWWWWWWWWWWWWDDDWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 */
 const initialModel = `
 map \`
-WWWWWWWWWIIWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-WEE---------==HHH---------------WRR-----------------W
-WEE--------HHTTTTHH-------------WRR-----------------W
-WEE--------HHTTTTHH-------------W-------------------W
-W-------------HHH---------------W-------------------W
-W-------------------------------W-------------------W
-WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-W---------------------------------------------------W
-W---------------------------------------------------W
-WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-WEEEEE-----OOOOO-------------TTTTTW-----------------W
-WEEEEE-----OOOOO-------------TTTTTW-----------------W
-W--------XX----TTT---------------OD-----------------I
-W--------XX----TTT------OOOOO----OD-----------------I
-WOOO--------------------OOOOO----OW-----------------W
-WWWWIIIIWWWWWWWWWWWWWDDDWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+*****************************************************************************************************************************************
+*WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW*
+*W-------------------------------WRR-------------------------------------------------------------------------------------------------RRW*
+*W-------------------------------WRR-------------------------------------------------------------------------------------------------RRW*
+*W-------------------------------W-----------------------------------------------------------------------------------------------------W*
+*W-------------------------------W-----------------------------------------------------------------------------------------------------W*
+*W-------------------------------W-----------------------------------------------------------------------------------------------------W*
+*W-------------------------------WWWWWWWWWWWWWWWWWWWWWWWWWWWWWDDDDWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWDDDDWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWDDDDWW*
+*W-------------------------------W-------------------W-------------W---------------------------------W---------------------------------W*
+*W-------------------------------W-------------------W-------------W---------------------------------W---------------------------------W*
+*W-------------------------------W-------------------W-------------W---------------------------------W---------------------------------W*
+*W-------------------------------W-------------------W-------------W---------------------------------W---------------------------------W*
+*W-------------------------------W-------------------W-------------W---------------------------------W---------------------------------W*
+*W-------------------------------W-------------------W-------------W---------------------------------W---------------------------------W*
+*W-------------------------------WWWWWWWWWWWWWWWWWWWWW-------------W---------------------------------W---------------------------------W*
+*W-------------------------------W---------------------------------W---------------------------------W---------------------------------W*
+*W-------------------------------W---------------------------------W---------------------------------W---------------------------------W*
+*W-------------------------------W---------------------------------W---------------------------------W---------------------------------W*
+*W-------------------------------W---------------------------------W---------------------------------W---------------------------------W*
+*W-------------------------------W---------------------------------W---------------------------------W---------------------------------W*
+*W-------------------------------W---------------------------------W---------------------------------W---------------------------------W*
+*W-------------------------------W---------------------------------W---------------------------------W---------------------------------W*
+*WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWIIIIWWWWWWWWWWWWWIIIWWWWWWWWWWWWWWIIIIWWWWWWWWWWWWWIIIWWWWWWWWWWWWWWIIIIWWWWWWWWWWWWWIIIWWWWWWWWWWW*
+*****************************************************************************************************************************************
 \`
 
 
@@ -74,8 +83,8 @@ D = door BORDER MOD models/door/door.babylon MAT [models/door/door_material.png]
 L = double_bed
 O = shelves MOD assets/models/shelves/shelves.babylon MAT [assets/models/shelves/shelves.png] SCALE 3.3 TRANS_Y 1
 = = _subarea
-R = stairs
-
+R = stairs MOD assets/models/stairs/stairs.babylon MAT [assets/models/stairs/stairs_uv.png] SCALE 3 TRANS_Y 2
+* = outdoors
 \`
 
 globals \`
@@ -86,6 +95,7 @@ globals \`
 `;
 
 export class App extends React.Component<{}, AppState> {
+    private engine: Engine;
 
     constructor(props: {}) {
         super(props);
@@ -109,9 +119,9 @@ export class App extends React.Component<{}, AppState> {
                     openAboutDialog={() => this.setState({isAboutDialogOpen: true})}
                 />
                 <div className="main-content">
-                    <SplitPane split="vertical" primary="second" minSize={300} defaultSize={900} className="split-pane">
+                    <SplitPane split="vertical" primary="second" minSize={300} defaultSize={900} className="split-pane" onChange={() => this.engine.resize()}>
                         <Editor guiServices={this.state.guiServices} onModelChanged={(content: string) => this.onModelChanged(content)} initialModel={this.state.model}/>
-                        <Canvas model={this.state.model}/>
+                        <Canvas model={this.state.model} onWebglReady={(engine: Engine) => this.engine = engine}/>
                     </SplitPane>
                 </div>
                 <IntegrationCodeDialog isOpen={this.state.isDialogOpen} worldMap={this.state.model} onClose={() => this.setState({isDialogOpen: false})}/>

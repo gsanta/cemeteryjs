@@ -3,6 +3,7 @@ import { BorderParser } from '../../../src/model/parsers/BorderParser';
 import { WorldItemFactoryService } from '../../../src/model/services/WorldItemFactoryService';
 import { WorldItem } from '../../../src/WorldItem';
 import { ConfigService } from '../../../src/model/services/ConfigService';
+import { setup } from '../../test_utils/testUtils';
 
 // TODO: create custom matcher
 export function hasAnyWorldItemInfoDimension(dimension: Shape, worldItemInfos: WorldItem[]) {
@@ -37,8 +38,8 @@ describe('BorderParser', () => {
                 \`
             `;
 
-            const configService = new ConfigService().update(worldMap);
-            const roomSeparatorParser = new BorderParser(new WorldItemFactoryService(), configService);
+            const services = setup(worldMap);
+            const roomSeparatorParser = new BorderParser(new WorldItemFactoryService(services), services.configService);
 
 
             const worldItems = roomSeparatorParser.parse(worldMap);
@@ -72,8 +73,8 @@ describe('BorderParser', () => {
                 \`
             `;
 
-            const configService = new ConfigService().update(worldMap);
-            const borderParser = new BorderParser(new WorldItemFactoryService(), configService);
+            const services = setup(worldMap);
+            const borderParser = new BorderParser(new WorldItemFactoryService(services), services.configService);
 
 
             const worldItems = borderParser.parse(worldMap);

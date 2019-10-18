@@ -8,20 +8,21 @@ describe('WorldMapToRoomMapConverter', () => {
             const input = `
                 map \`
 
-                ##########
-                #WWDDWWWW#
-                #W######I#
-                #WWWWWWWW#
-                ##########
+                **********
+                *WWDDWWWW*
+                *W------I*
+                *WWWWWWWW*
+                **********
 
                 \`
 
                 definitions \`
 
-                # = empty
+                - = room
                 I = window BORDER
                 D = door BORDER
                 W = wall BORDER
+                * = outdoors
 
                 \`
             `;
@@ -29,27 +30,28 @@ describe('WorldMapToRoomMapConverter', () => {
             const output = `
                 map \`
 
-                ----------
-                -WWWWWWWW-
-                -W------W-
-                -WWWWWWWW-
-                ----------
+                **********
+                *WWWWWWWW*
+                *W------W*
+                *WWWWWWWW*
+                **********
 
                 \`
 
                 definitions \`
 
-                # = empty
+                - = room
                 I = window BORDER
                 D = door BORDER
                 W = wall BORDER
+                * = outdoors
 
                 \`
             `;
 
             const services = setup(input);
 
-            const worldMapToRoomMapConverter = new WorldMapToRoomMapConverter(services.configService, 'W', '-');
+            const worldMapToRoomMapConverter = new WorldMapToRoomMapConverter(services.configService);
 
             expect(worldMapToRoomMapConverter.convert(input)).toEqual(output);
         });
@@ -60,7 +62,7 @@ describe('WorldMapToRoomMapConverter', () => {
 
         const services = setup(worldMapStr);
 
-        const worldMapToRoomMapConverter = new WorldMapToRoomMapConverter(services.configService, 'W', '-');
+        const worldMapToRoomMapConverter = new WorldMapToRoomMapConverter(services.configService);
         const actualConvertedWorldMapStr = worldMapToRoomMapConverter.convert(worldMapStr);
 
         const expectedConvertedWorldMap = fs.readFileSync(__dirname + '/../../../assets/test/big_world_rooms.gwm', 'utf8');

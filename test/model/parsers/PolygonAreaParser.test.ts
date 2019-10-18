@@ -2,39 +2,42 @@ import { Point, Polygon } from '@nightshifts.inc/geometry';
 import { PolygonAreaParser } from "../../../src/model/parsers/PolygonAreaParser";
 import { setup } from "../../test_utils/testUtils";
 
+it ('Create items for a given type which is represented on the world map by a polygon shape.', () => {
+    const map = `
+        map \`
+
+        WWWWWWWWWW
+        W---W----W
+        W---W----W
+        W---W----W
+        W---W----W
+        WWWWWWWWWW
+
+        \`
+
+        definitions \`
+            - = empty
+            W = wall
+        \`
+    `;
+
+    const services = setup(map);
+    const polygonAreaInfoParser = new PolygonAreaParser('empty', services);
+
+    const worldItem = polygonAreaInfoParser.parse(map);
+
+    expect(worldItem.length).toEqual(1);
+    expect(worldItem[0].dimensions.equalTo(new Polygon([
+        new Point(1, 1),
+        new Point(1, 4),
+        new Point(6, 4),
+        new Point(6, 1)
+    ]))).toBeTruthy();
+});
+
+
 describe('PolygonAreaParser', () => {
     describe ('generate', () => {
-        it ('returns with a WorldItem per connected area, the points in the Polygon representing the area\'s edges.', () => {
-            const map = `
-                map \`
-
-                ----------
-                -#####----
-                -#####----
-                -#####----
-                ----------
-
-                \`
-
-                definitions \`
-                    # = empty
-                    - = wall
-                \`
-            `;
-
-            const services = setup(map);
-            const polygonAreaInfoParser = new PolygonAreaParser('empty', '#', services);
-
-            const worldItem = polygonAreaInfoParser.parse(map);
-
-            expect(worldItem.length).toEqual(1);
-            expect(worldItem[0].dimensions.equalTo(new Polygon([
-                new Point(1, 1),
-                new Point(1, 4),
-                new Point(6, 4),
-                new Point(6, 1)
-            ]))).toBeTruthy();
-        });
 
         it ('makes sure that the space between two adjacent connected component is one unit', () => {
             const map = `
@@ -55,7 +58,7 @@ describe('PolygonAreaParser', () => {
             `;
 
             const services = setup(map);
-            const polygonAreaInfoParser = new PolygonAreaParser('empty', '#', services);
+            const polygonAreaInfoParser = new PolygonAreaParser('empty', services);
 
             const worldItem = polygonAreaInfoParser.parse(map);
 
@@ -94,7 +97,7 @@ describe('PolygonAreaParser', () => {
             `;
 
             const services = setup(map);
-            const polygonAreaInfoParser = new PolygonAreaParser('empty', '#', services);
+            const polygonAreaInfoParser = new PolygonAreaParser('empty', services);
 
             const worldItem = polygonAreaInfoParser.parse(map);
 
@@ -131,7 +134,7 @@ describe('PolygonAreaParser', () => {
             `;
 
             const services = setup(map);
-            const polygonAreaInfoParser = new PolygonAreaParser('empty', '#', services);
+            const polygonAreaInfoParser = new PolygonAreaParser('empty', services);
 
             const worldItem = polygonAreaInfoParser.parse(map);
 

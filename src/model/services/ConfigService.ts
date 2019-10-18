@@ -11,7 +11,8 @@ const DEFAULT_BORDERS = [
 const INTERNAL_TYPES = [
     '_subarea',
     'empty',
-    'room'
+    'room',
+    'outdoors'
 ]
 
 export class ConfigService {

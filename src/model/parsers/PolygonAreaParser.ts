@@ -23,10 +23,10 @@ export class PolygonAreaParser implements Parser {
     // TODO: the graph after running WorldMapConverter should only contain one character, so this info is redundant
     private areaChar: string;
 
-    constructor(itemName: string, areaChar: string, services: ServiceFacade<any, any, any>, worldMapConverter = new WorldMapToMatrixGraphConverter(services.configService)) {
+    constructor(itemName: string, services: ServiceFacade<any, any, any>, worldMapConverter = new WorldMapToMatrixGraphConverter(services.configService)) {
         this.itemName = itemName;
         this.services = services;
-        this.areaChar = areaChar;
+        this.areaChar = services.configService.meshDescriptorMap.get(itemName).char;
         this.geometryService = services.geometryService;
         this.worldMapConverter = worldMapConverter;
         this.polygonRedundantPointReducer = new PolygonRedundantPointReducer();
@@ -45,7 +45,9 @@ export class PolygonAreaParser implements Parser {
                     this.createPolygonPointsFromHorizontalLines(lines)
                 );
 
-                return this.services.worldItemFactoryService.create(null, this.geometryService.factory.polygon(points), this.itemName, false);
+
+
+                return this.services.worldItemFactoryService.createFromPoints(null, points, this.itemName, false);
             });
     }
 

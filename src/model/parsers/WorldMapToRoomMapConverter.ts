@@ -1,5 +1,4 @@
 import { WorldMapLineListener, WorldMapReader } from './reader/WorldMapReader';
-import { ServiceFacade } from '../services/ServiceFacade';
 import { ConfigService } from '../services/ConfigService';
 
 /*
@@ -21,18 +20,14 @@ import { ConfigService } from '../services/ConfigService';
  * -----
  */
 export class WorldMapToRoomMapConverter extends WorldMapLineListener {
-    private wallChar: string;
-    private roomChar: string;
     private worldMapReader: WorldMapReader;
 
     private lines: string[] = [];
     private configService: ConfigService;
 
-    constructor(configService: ConfigService, wallChar: string, roomChar: string) {
+    constructor(configService: ConfigService) {
         super();
         this.configService = configService;
-        this.wallChar = wallChar;
-        this.roomChar = roomChar;
         this.worldMapReader = new WorldMapReader(this);
     }
 
@@ -43,11 +38,15 @@ export class WorldMapToRoomMapConverter extends WorldMapLineListener {
     }
 
     public addMapSectionLine(line: string) {
+        const wallChar = this.configService.meshDescriptorMap.get('wall').char;
+        const roomChar = this.configService.meshDescriptorMap.get('room').char;
+        const outdoorsChar = this.configService.meshDescriptorMap.get('outdoors') ? this.configService.meshDescriptorMap.get('outdoors').char : '';
+
         this.configService.borders.forEach(descriptor => {
-                line = line.replace(new RegExp(descriptor.char, 'g'), this.wallChar);
+                line = line.replace(new RegExp(descriptor.char, 'g'), wallChar);
             });
 
-        line = line.replace(new RegExp(`[^${this.wallChar}\\s]`, 'g'), this.roomChar);
+        line = line.replace(new RegExp(`[^${wallChar}${outdoorsChar}\\s]`, 'g'), roomChar);
 
         this.lines.push(line);
     }

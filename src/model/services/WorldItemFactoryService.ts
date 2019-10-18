@@ -1,5 +1,6 @@
-import { Polygon } from "@nightshifts.inc/geometry";
+import { Polygon, Point } from '@nightshifts.inc/geometry';
 import { WorldItem } from '../../WorldItem';
+import { ServiceFacade } from './ServiceFacade';
 
 
 /**
@@ -8,9 +9,25 @@ import { WorldItem } from '../../WorldItem';
  */
 export class WorldItemFactoryService {
     private countersByType: Map<string, number> = new Map();
+    private services: ServiceFacade<any, any, any>;
+
+    constructor(services: ServiceFacade<any, any, any>) {
+        this.services = services;
+    }
 
     public create(type: string, dimensions: Polygon, name: string, isBorder: boolean, rotation?: number): WorldItem {
         const id = this.getNextId(name);
+        const worldItem = new WorldItem(id, type, dimensions, name, isBorder);
+        if (rotation !== undefined) {
+            worldItem.rotation = rotation;
+        }
+
+        return worldItem;
+    }
+
+    public createFromPoints(type: string, points: Point[], name: string, isBorder: boolean, rotation?: number): WorldItem {
+        const id = this.getNextId(name);
+        const dimensions = this.services.geometryService.factory.polygon(points);
         const worldItem = new WorldItem(id, type, dimensions, name, isBorder);
         if (rotation !== undefined) {
             worldItem.rotation = rotation;

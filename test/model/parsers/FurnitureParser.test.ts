@@ -96,3 +96,34 @@ describe('FurnitureParser', () => {
         });
     });
 });
+
+it ('Parse furnitures that are outdoors', () => {
+    const worldMap = `
+        map \`
+
+        ****************
+        *WWWWWWWW*******
+        *W------W*TTTT**
+        *W------W*TTTT**
+        *W------W*******
+        *WWWWWWWW*******
+
+        \`
+
+        definitions \`
+
+        W = wall BORDER
+        T = table
+        - = room
+        * = outdoors
+
+        \`
+    `;
+
+    const services = setup(worldMap);
+
+    const furnitureInfoParser = new FurnitureParser(services);
+    const furnitures = furnitureInfoParser.parse(worldMap);
+    expect(furnitures.length).toEqual(1);
+    expect(furnitures).toContainWorldItem({id: 'table-1', name: 'table', dimensions: Polygon.createRectangle(10, 2, 4, 2)});
+});
