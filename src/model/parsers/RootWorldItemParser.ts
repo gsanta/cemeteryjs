@@ -30,16 +30,16 @@ export class RootWorldItemParser implements Parser {
     }
 
     public createRootWorldItem(graph: CharGraph): WorldItem {
-        return this.worldItemInfoFactory.create(
-            'F',
-            Polygon.createRectangle(
+        return this.worldItemInfoFactory.create({
+            type: 'F',
+            dimensions: Polygon.createRectangle(
                 0,
                 0,
                 graph.getColumns(),
                 graph.getRows(),
             ),
-            'root',
-            false
-        );
+            name: 'root',
+            isBorder: false
+        });
     }
 }

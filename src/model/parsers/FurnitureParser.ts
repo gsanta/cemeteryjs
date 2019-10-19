@@ -53,12 +53,12 @@ export class FurnitureParser implements Parser {
         const y = minY;
         const width = (maxX - minX + 1);
         const height = (maxY - minY + 1);
-        return this.services.worldItemFactoryService.create(
-            componentGraph.getCharacters()[0],
-            Polygon.createRectangle(x, y, width, height),
-            componentGraph.getVertexName(oneVertex),
-            false
-        );
+        return this.services.worldItemFactoryService.create({
+            type: componentGraph.getCharacters()[0],
+            dimensions: Polygon.createRectangle(x, y, width, height),
+            name: componentGraph.getVertexName(oneVertex),
+            isBorder: false
+        });
     }
 
     private createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph: CharGraph): WorldItem[] {
@@ -71,12 +71,12 @@ export class FurnitureParser implements Parser {
                 const gameObjectGraph = componentGraph.getGraphForVertices(slice);
                 const rect = this.createRectangleFromVerticalVertices(gameObjectGraph)
                 const oneVertex = componentGraph.getAllVertices()[0];
-                return this.services.worldItemFactoryService.create(
-                    componentGraph.getCharacters()[0],
-                    rect,
-                    componentGraph.getVertexName(oneVertex),
-                    false
-                );
+                return this.services.worldItemFactoryService.create({
+                    type: componentGraph.getCharacters()[0],
+                    dimensions: rect,
+                    name: componentGraph.getVertexName(oneVertex),
+                    isBorder: false
+                });
             });
 
         const horizontalGameObjects = componentGraphMinusVerticalSubComponents
@@ -87,12 +87,12 @@ export class FurnitureParser implements Parser {
                 const rect = this.createRectangleFromHorizontalVertices(connectedCompGraph);
                 const oneVertex = componentGraph.getAllVertices()[0];
 
-                return this.services.worldItemFactoryService.create(
-                    connectedCompGraph.getCharacters()[0],
-                    rect,
-                    componentGraph.getVertexName(oneVertex),
-                    false
-                );
+                return this.services.worldItemFactoryService.create({
+                    type: connectedCompGraph.getCharacters()[0],
+                    dimensions: rect,
+                    name: componentGraph.getVertexName(oneVertex),
+                    isBorder: false
+                });
             });
 
         return [...verticalGameObjects, ...horizontalGameObjects];

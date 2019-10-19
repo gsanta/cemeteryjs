@@ -41,13 +41,21 @@ export class PolygonAreaParser implements Parser {
             .map(componentGraph => {
                 const lines = this.segmentGraphToHorizontalLines(componentGraph);
 
+                const worldMapPositions = componentGraph.getAllVertices()
+                    .map(vertex => componentGraph.getVertexPositionInMatrix(vertex))
+                    .map(vertexPos => this.services.geometryService.factory.point(vertexPos.x, vertexPos.y));
+
                 const points = this.polygonRedundantPointReducer.reduce(
                     this.createPolygonPointsFromHorizontalLines(lines)
                 );
 
 
-
-                return this.services.worldItemFactoryService.createFromPoints(null, points, this.itemName, false);
+                return this.services.worldItemFactoryService.create({
+                    dimensions: this.services.geometryService.factory.polygon(points),
+                    name: this.itemName,
+                    isBorder: false,
+                    worldMapPositions: worldMapPositions
+                });
             });
     }
 
@@ -58,7 +66,11 @@ export class PolygonAreaParser implements Parser {
             this.createPolygonPointsFromHorizontalLines(lines)
         );
 
-        return this.services.worldItemFactoryService.create(null, this.geometryService.factory.polygon(points), this.itemName, false);
+        return this.services.worldItemFactoryService.create({
+            dimensions: this.geometryService.factory.polygon(points),
+            name: this.itemName,
+            isBorder: false
+        });
     }
 
     /*
@@ -162,4 +174,5 @@ export class PolygonAreaParser implements Parser {
     private static sortByNumber(a: number, b: number) {
         return a - b;
     }
+
 }

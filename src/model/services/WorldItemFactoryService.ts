@@ -2,6 +2,19 @@ import { Polygon, Point } from '@nightshifts.inc/geometry';
 import { WorldItem } from '../../WorldItem';
 import { ServiceFacade } from './ServiceFacade';
 
+export interface WorldItemConfig {
+    type?: string;
+    dimensions: Polygon;
+    name: string;
+    isBorder: boolean;
+    rotation?: number;
+    worldMapPositions?: Point[];
+}
+
+export const defaultWorldItemConfig: Partial<WorldItemConfig> = {
+    rotation: 0,
+    worldMapPositions: []
+}
 
 /**
  * new `WorldItem` instances should be created via this class, so that a unique id can be set
@@ -15,7 +28,7 @@ export class WorldItemFactoryService {
         this.services = services;
     }
 
-    public create(type: string, dimensions: Polygon, name: string, isBorder: boolean, rotation?: number): WorldItem {
+    public createOld(type: string, dimensions: Polygon, name: string, isBorder: boolean, rotation?: number): WorldItem {
         const id = this.getNextId(name);
         const worldItem = new WorldItem(id, type, dimensions, name, isBorder);
         if (rotation !== undefined) {
@@ -25,14 +38,13 @@ export class WorldItemFactoryService {
         return worldItem;
     }
 
-    public createFromPoints(type: string, points: Point[], name: string, isBorder: boolean, rotation?: number): WorldItem {
-        const id = this.getNextId(name);
-        const dimensions = this.services.geometryService.factory.polygon(points);
-        const worldItem = new WorldItem(id, type, dimensions, name, isBorder);
-        if (rotation !== undefined) {
-            worldItem.rotation = rotation;
-        }
+    public create(worldItemConfig: WorldItemConfig): WorldItem {
+        worldItemConfig = {...defaultWorldItemConfig, ...worldItemConfig};
 
+        const id = this.getNextId(worldItemConfig.name);
+        const worldItem = new WorldItem(id, worldItemConfig.type, worldItemConfig.dimensions, worldItemConfig.name, worldItemConfig.isBorder);
+        worldItem.worldMapPositions = worldItemConfig.worldMapPositions;
+        worldItem.rotation = worldItemConfig.rotation;
         return worldItem;
     }
 
@@ -46,8 +58,8 @@ export class WorldItemFactoryService {
             newType
         );
 
-        clone.children = worldItemInfo.children;
-        clone.borderItems = worldItemInfo.borderItems;
+        clone.children = [...worldItemInfo.children];
+        clone.borderItems = [...worldItemInfo.borderItems];
         clone.rotation = worldItemInfo.rotation;
         clone.isBorder = worldItemInfo.isBorder;
         clone.thickness = worldItemInfo.thickness;

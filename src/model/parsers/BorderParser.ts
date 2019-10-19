@@ -48,13 +48,13 @@ export class BorderParser implements Parser {
                 const gameObjectGraph = componentGraph.getGraphForVertices(slice);
                 const rect = this.createRectangleFromVerticalVertices(gameObjectGraph)
                 const oneVertex = componentGraph.getAllVertices()[0];
-                const worldItem = this.worldItemInfoFactory.create(
-                    componentGraph.getCharacters()[0],
-                    rect,
-                    componentGraph.getVertexName(oneVertex),
-                    true,
-                    Math.PI / 2
-                );
+                const worldItem = this.worldItemInfoFactory.create({
+                    type: componentGraph.getCharacters()[0],
+                    dimensions: rect,
+                    name: componentGraph.getVertexName(oneVertex),
+                    isBorder: true,
+                    rotation: Math.PI / 2
+                });
 
                 return worldItem;
             });
@@ -64,13 +64,13 @@ export class BorderParser implements Parser {
                 const gameObjectGraph = componentGraph.getGraphForVertices(slice);
                 const rect = this.createRectangleFromHorizontalVertices(gameObjectGraph)
                 const oneVertex = componentGraph.getAllVertices()[0];
-                const worldItem = this.worldItemInfoFactory.create(
-                    componentGraph.getCharacters()[0],
-                    rect,
-                    componentGraph.getVertexName(oneVertex),
-                    true,
-                    0
-                );
+                const worldItem = this.worldItemInfoFactory.create({
+                    type: componentGraph.getCharacters()[0],
+                    dimensions: rect,
+                    name: componentGraph.getVertexName(oneVertex),
+                    isBorder: true
+                });
+
                 return worldItem;
             });
 
