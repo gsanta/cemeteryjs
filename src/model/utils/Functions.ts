@@ -63,3 +63,9 @@ export function debounce<T extends Function>(func: T, wait: number): T {
 		timeout = setTimeout(later, wait);
 	};
 };
+
+export function arraysEqual<T extends {equalTo(other: T)}>(arr1: T[], arr2: T[]): boolean {
+	const notFound = arr1.find(arr1Item => !arr2.find(arr2Item => arr1Item.equalTo(arr2Item)));
+
+	return !notFound;
+}

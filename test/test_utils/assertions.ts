@@ -2,6 +2,8 @@ import { WorldItem } from '../../src/WorldItem';
 import { Shape, Point } from '@nightshifts.inc/geometry';
 import { hasAnyWorldItemInfoDimension } from '../model/parsers/BorderParser.test';
 import { MeshDescriptor } from '../../src/Config';
+import { arraysEqual } from '../../src/model/utils/Functions';
+import { ServiceFacade } from '../../src/model/services/ServiceFacade';
 
 declare global {
     namespace jest {
@@ -14,6 +16,7 @@ declare global {
             toContainWorldItem(partialWorldItem: Partial<WorldItem>),
             toHavePoint(point: Point);
             toMatchMeshDescriptor(expectedMeshDescriptor: Partial<MeshDescriptor>);
+            toHaveAnyWithWorldMapPositions(services: ServiceFacade<any, any, any>, positions: [number, number][]);
         }
     }
 }
@@ -138,6 +141,32 @@ expect.extend({
                 pass: false,
             };
         }
+    },
+
+    toHaveAnyWithWorldMapPositions(worldItems: WorldItem[], services: ServiceFacade<any, any, any>, positions: [number, number][]) {
+        let pass = true;
+
+        let message: string = '';
+
+
+        try {
+            hasAnyWorldItemWithWorldMapPositions(worldItems, positions.map(pos => services.geometryService.factory.point(pos[0], pos[1])));
+        } catch (e) {
+            pass = false;
+            message = e.message;
+        }
+
+        if (pass) {
+            return {
+                message: () => '',
+                pass: true,
+            };
+        } else {
+            return {
+                message: () => message,
+                pass: false,
+            };
+        }
     }
 });
 
@@ -174,3 +203,12 @@ function hasBorders(room: WorldItem, borders: Partial<WorldItem>[]) {
         pass: true,
     };
 }
+
+export function hasAnyWorldItemWithWorldMapPositions(worldItems: WorldItem[], expectedWorldMapPositions: Point[]) {
+    if (worldItems.find(worldItem => arraysEqual(worldItem.worldMapPositions, expectedWorldMapPositions))) {
+        return true;
+    } else {
+        throw new Error(`world map positions: ${expectedWorldMapPositions.map(p => p.toString()).join(', ')} could not be found in the world item list.`);
+    }
+}
+

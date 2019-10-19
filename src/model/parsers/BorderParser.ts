@@ -1,27 +1,24 @@
-import { CharGraph } from './CharGraph';
+import { Polygon } from '@nightshifts.inc/geometry';
 import { WorldItem } from '../../WorldItem';
+import { ServiceFacade } from '../services/ServiceFacade';
+import { flat, last, without } from '../utils/Functions';
+import { CharGraph } from './CharGraph';
 import { Parser } from './Parser';
 import { WorldMapToMatrixGraphConverter } from './reader/WorldMapToMatrixGraphConverter';
-import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
-import { Polygon } from '@nightshifts.inc/geometry';
-import { flat, without, last } from '../utils/Functions';
-import { ConfigService } from '../services/ConfigService';
 
 export class BorderParser implements Parser {
-    private worldItemInfoFactory: WorldItemFactoryService;
     private worldMapConverter: WorldMapToMatrixGraphConverter;
-    private configService: ConfigService;
+    private services: ServiceFacade<any, any, any>;
 
-    constructor(worldItemInfoFactory: WorldItemFactoryService, configService: ConfigService, worldMapConverter = new WorldMapToMatrixGraphConverter(configService)) {
-        this.worldItemInfoFactory = worldItemInfoFactory;
+    constructor(services: ServiceFacade<any, any, any>, worldMapConverter = new WorldMapToMatrixGraphConverter(services.configService)) {
+        this.services = services;
         this.worldMapConverter = worldMapConverter;
-        this.configService = configService;
     }
 
     public parse(worldMap: string): WorldItem[] {
         const graph = this.parseWorldMap(worldMap);
         // TODO: simplify this, MeshDescriptor contains both char and type no need to use graph here
-        const characters = this.configService.borders.filter(border => graph.getCharacterForName(border.type)).map(border => graph.getCharacterForName(border.type));
+        const characters = this.services.configService.borders.filter(border => graph.getCharacterForName(border.type)).map(border => graph.getCharacterForName(border.type));
 
         const borderGraph = graph.getReducedGraphForCharacters(characters);
 
@@ -46,14 +43,19 @@ export class BorderParser implements Parser {
         const verticalItems = verticalSubComponents
             .map(slice => {
                 const gameObjectGraph = componentGraph.getGraphForVertices(slice);
+                const worldMapPositions = slice.map(vertex => gameObjectGraph
+                        .getVertexPositionInMatrix(vertex))
+                        .map(vertexPosition => this.services.geometryService.factory.point(vertexPosition.x, vertexPosition.y));
+
                 const rect = this.createRectangleFromVerticalVertices(gameObjectGraph)
                 const oneVertex = componentGraph.getAllVertices()[0];
-                const worldItem = this.worldItemInfoFactory.create({
+                const worldItem = this.services.worldItemFactoryService.create({
                     type: componentGraph.getCharacters()[0],
                     dimensions: rect,
                     name: componentGraph.getVertexName(oneVertex),
                     isBorder: true,
-                    rotation: Math.PI / 2
+                    rotation: Math.PI / 2,
+                    worldMapPositions
                 });
 
                 return worldItem;
@@ -62,13 +64,17 @@ export class BorderParser implements Parser {
         const horizontalItems = horixontalComponents
             .map(slice => {
                 const gameObjectGraph = componentGraph.getGraphForVertices(slice);
+                const worldMapPositions = slice.map(vertex => gameObjectGraph
+                    .getVertexPositionInMatrix(vertex))
+                    .map(vertexPosition => this.services.geometryService.factory.point(vertexPosition.x, vertexPosition.y));
                 const rect = this.createRectangleFromHorizontalVertices(gameObjectGraph)
                 const oneVertex = componentGraph.getAllVertices()[0];
-                const worldItem = this.worldItemInfoFactory.create({
+                const worldItem = this.services.worldItemFactoryService.create({
                     type: componentGraph.getCharacters()[0],
                     dimensions: rect,
                     name: componentGraph.getVertexName(oneVertex),
-                    isBorder: true
+                    isBorder: true,
+                    worldMapPositions
                 });
 
                 return worldItem;

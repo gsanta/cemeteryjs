@@ -1,9 +1,8 @@
+import { Point } from '@nightshifts.inc/geometry';
 import { WorldItem } from '../../WorldItem';
+import { ServiceFacade } from '../services/ServiceFacade';
 import { TreeIteratorGenerator } from '../utils/TreeIteratorGenerator';
 import { Modifier } from './Modifier';
-import { Point } from '@nightshifts.inc/geometry';
-import { ConfigService } from '../services/ConfigService';
-import { ServiceFacade } from '../services/ServiceFacade';
 
 
 /**

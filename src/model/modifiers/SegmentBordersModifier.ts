@@ -1,12 +1,12 @@
-import { WorldItem } from "../../WorldItem";
-import { Modifier } from './Modifier';
-import { Polygon, Point, Line, StripeView, GeometryService } from '@nightshifts.inc/geometry';
-import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
+import { GeometryService, Line, Point, Polygon, StripeView } from '@nightshifts.inc/geometry';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
+import { WorldItem } from "../../WorldItem";
 import { WorldItemUtils } from '../../WorldItemUtils';
-import { ScaleModifier } from "./ScaleModifier";
 import { ConfigService } from '../services/ConfigService';
-import { without, flat, sortNum } from '../utils/Functions';
+import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
+import { flat, sortNum, without } from '../utils/Functions';
+import { Modifier } from './Modifier';
+import { ServiceFacade } from '../services/ServiceFacade';
 
 /**
  * If a border spans alongside multiple rooms it cuts the border into pieces so that each piece will separate exactly two neigbouring rooms
@@ -23,14 +23,10 @@ export class SegmentBordersModifier  implements Modifier {
     static modName = 'segmentBorders';
     dependencies = []
 
-    private configService: ConfigService;
-    private geometryService: GeometryService;
-    private worldItemFactoryService: WorldItemFactoryService;
+    private services: ServiceFacade<any, any, any>;
 
-    constructor(configService: ConfigService, worldItemFactoryService: WorldItemFactoryService, geometryService: GeometryService) {
-        this.configService = configService;
-        this.worldItemFactoryService = worldItemFactoryService;
-        this.geometryService = geometryService;
+    constructor(services: ServiceFacade<any, any, any>) {
+        this.services = services;
     }
 
     getName(): string {
@@ -104,8 +100,8 @@ export class SegmentBordersModifier  implements Modifier {
             const point3 = longEdges[0].getLine().intersection(startPerpendicularLine);
             const point4 = longEdges[1].getLine().intersection(startPerpendicularLine);
 
-            const clone = this.worldItemFactoryService.clone(originalBorderItem.name, originalBorderItem);
-            clone.dimensions = this.geometryService.factory.polygon([
+            const clone = this.services.worldItemFactoryService.clone(originalBorderItem.name, originalBorderItem);
+            clone.dimensions = this.services.geometryService.factory.polygon([
                 point1,
                 point2,
                 point4,
@@ -169,11 +165,24 @@ export class SegmentBordersModifier  implements Modifier {
         if (segment.getLine().isVertical()) {
             const segmentPositions = sortNum([segment.getPoints()[0].y, segment.getPoints()[1].y]);
 
-            return [segmentPositions[0] - this.configService.globalConfig.scale.y, segmentPositions[1] + this.configService.globalConfig.scale.y];
+            return [segmentPositions[0] - this.services.configService.globalConfig.scale.y, segmentPositions[1] + this.services.configService.globalConfig.scale.y];
         } else {
             const segmentPositions = sortNum([segment.getPoints()[0].x, segment.getPoints()[1].x]);
 
-            return [segmentPositions[0] - this.configService.globalConfig.scale.x, segmentPositions[1] + this.configService.globalConfig.scale.x];
+            return [segmentPositions[0] - this.services.configService.globalConfig.scale.x, segmentPositions[1] + this.services.configService.globalConfig.scale.x];
+        }
+    }
+
+    private polygonToPoints(polygon: Polygon): Point[] {
+        const boundingInfo = polygon.getBoundingInfo();
+        const topLeft = boundingInfo.min;
+        const bottomRight = boundingInfo.max;
+        const points: Point[] = [];
+
+        for (let i = topLeft[0]; i < bottomRight[0]; i++) {
+            for (let j = topLeft[1]; j < bottomRight[1]; j++) {
+                this
+            }
         }
     }
 }

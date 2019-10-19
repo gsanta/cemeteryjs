@@ -43,8 +43,8 @@ describe('`WorldParser`', () => {
         const [root] = services.importerService.import(
             map,
             [
-                ScaleModifier.modName,
                 SegmentBordersModifier.modName,
+                ScaleModifier.modName,
                 BuildHierarchyModifier.modName
             ]
         );

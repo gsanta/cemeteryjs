@@ -59,8 +59,8 @@ describe ('BorderItemSegmentingTransformator', () => {
             const items = services.importerService.import(
                 map,
                 [
-                    ScaleModifier.modName,
-                    SegmentBordersModifier.modName
+                    SegmentBordersModifier.modName,
+                    ScaleModifier.modName
                 ]
             );
 
@@ -96,8 +96,8 @@ describe ('BorderItemSegmentingTransformator', () => {
             const items = services.importerService.import(
                 map,
                 [
-                    ScaleModifier.modName,
-                    SegmentBordersModifier.modName
+                    SegmentBordersModifier.modName,
+                    ScaleModifier.modName
                 ]
             );
 
