@@ -19,8 +19,8 @@ import { ServiceFacade } from '../services/ServiceFacade';
  * ROOM3|ROOM4                  ROOM3|ROOM4
  *
  */
-export class SegmentBordersModifier  implements Modifier {
-    static modName = 'segmentBorders';
+export class SegmentBordersModifierNew  implements Modifier {
+    static modName = 'segmentBordersNew';
     dependencies = []
 
     private services: ServiceFacade<any, any, any>;
@@ -30,7 +30,7 @@ export class SegmentBordersModifier  implements Modifier {
     }
 
     getName(): string {
-        return SegmentBordersModifier.modName;
+        return SegmentBordersModifierNew.modName;
     }
 
     apply(gwmWorldItems: WorldItem[]): WorldItem[] {
@@ -38,26 +38,47 @@ export class SegmentBordersModifier  implements Modifier {
     }
 
     private segmentBorderItemsIfNeeded(worldItems: WorldItem[]): WorldItem[] {
-        const rooms = WorldItemUtils.filterRooms(worldItems);
         const originalBorders = WorldItemUtils.filterBorders(worldItems);
+        const notVisited = [...originalBorders];
+        const visited = new Set(originalBorders);
         const borders = [...originalBorders];
-        const newBorders: WorldItem[] = [];
 
-        while (borders.length > 0) {
-            const currentBorder = borders.shift();
+        while(notVisited.length > 0) {
 
-            const neighbouringRoomsAlongsideBorder = this.findRoomsAlongsideBorder(currentBorder, rooms);
-            const segmentingPoints = this.getSegmentingPoints(currentBorder, neighbouringRoomsAlongsideBorder);
-            const segments = this.createSegmentsFromSegmentingPoints(segmentingPoints);
-            const segmentedBorders = this.segmentOriginalBorderIntoPieces(currentBorder, segments);
+            const currentBorder = notVisited.pop();
 
-            newBorders.push(...segmentedBorders);
+            const intersectingBorders = borders.filter(border => {
+                const intersection = (<Segment> border.dimensions).intersection(<Segment> currentBorder.dimensions);
+            });
+
         }
 
-        const items = without(worldItems, ...originalBorders)
-        items.push(...newBorders);
+        return null;
 
-        return items;
+        // const newBorders: WorldItem[] = [...originalBorders];
+
+        // originalBorders.forEach(border => {
+
+        // });
+        // // const rooms = WorldItemUtils.filterRooms(worldItems);
+        // const borders = [...originalBorders];
+        // // const newBorders: WorldItem[] = [];
+
+        // while (borders.length > 0) {
+        //     const currentBorder = borders.shift();
+
+        //     const neighbouringRoomsAlongsideBorder = this.findRoomsAlongsideBorder(currentBorder, rooms);
+        //     const segmentingPoints = this.getSegmentingPoints(currentBorder, neighbouringRoomsAlongsideBorder);
+        //     const segments = this.createSegmentsFromSegmentingPoints(segmentingPoints);
+        //     const segmentedBorders = this.segmentOriginalBorderIntoPieces(currentBorder, segments);
+
+        //     newBorders.push(...segmentedBorders);
+        // }
+
+        // const items = without(worldItems, ...originalBorders)
+        // items.push(...newBorders);
+
+        // return items;
     }
 
     private getSegmentingPoints(border: WorldItem, roomsAlongsideBorder: WorldItem[]): Point[] {

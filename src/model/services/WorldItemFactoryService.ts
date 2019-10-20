@@ -1,10 +1,10 @@
-import { Polygon, Point } from '@nightshifts.inc/geometry';
+import { Polygon, Point, Shape } from '@nightshifts.inc/geometry';
 import { WorldItem } from '../../WorldItem';
 import { ServiceFacade } from './ServiceFacade';
 
 export interface WorldItemConfig {
     type?: string;
-    dimensions: Polygon;
+    dimensions: Shape;
     name: string;
     isBorder: boolean;
     rotation?: number;

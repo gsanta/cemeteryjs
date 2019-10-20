@@ -26,10 +26,10 @@ export class AssignBordersToRoomsModifier implements Modifier {
 
     private addBoderItems(worldItems: WorldItem[]): WorldItem[] {
         const rooms = WorldItemUtils.filterRooms(worldItems);
-        const roomSeparatorItems = WorldItemUtils.filterBorders(worldItems);
+        const borders = WorldItemUtils.filterBorders(worldItems);
 
         rooms.forEach(room => {
-            roomSeparatorItems
+            borders
                 .filter(roomSeparator => {
                     const intersectionLineInfo = room.dimensions.getCoincidentLineSegment(roomSeparator.dimensions);
 

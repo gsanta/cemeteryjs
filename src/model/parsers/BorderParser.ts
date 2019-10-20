@@ -10,15 +10,17 @@ export class BorderParser implements Parser {
     private worldMapConverter: WorldMapToMatrixGraphConverter;
     private services: ServiceFacade<any, any, any>;
 
+    private positionToComponentMap: Map<number, number[]>;
+
     constructor(services: ServiceFacade<any, any, any>, worldMapConverter = new WorldMapToMatrixGraphConverter(services.configService)) {
         this.services = services;
         this.worldMapConverter = worldMapConverter;
     }
 
     public parse(worldMap: string): WorldItem[] {
-        const graph = this.parseWorldMap(worldMap);
-        // TODO: simplify this, MeshDescriptor contains both char and type no need to use graph here
-        const characters = this.services.configService.borders.filter(border => graph.getCharacterForName(border.type)).map(border => graph.getCharacterForName(border.type));
+        this.positionToComponentMap = new Map();
+        const graph = this.worldMapConverter.convert(worldMap);
+        const characters = this.services.configService.borders.map(border => border.char);
 
         const borderGraph = graph.getReducedGraphForCharacters(characters);
 
@@ -30,10 +32,6 @@ export class BorderParser implements Parser {
         });
 
         return flat<WorldItem>(borders, 2);
-    }
-
-    private parseWorldMap(strMap: string): CharGraph {
-        return this.worldMapConverter.convert(strMap);
     }
 
     private createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph: CharGraph, borderGraph: CharGraph): WorldItem[] {

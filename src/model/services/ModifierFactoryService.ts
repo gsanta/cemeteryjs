@@ -13,6 +13,7 @@ import { ScaleModifier } from '../modifiers/ScaleModifier';
 import { SegmentBordersModifier } from '../modifiers/SegmentBordersModifier';
 import { ThickenBordersModifier } from '../modifiers/ThickenBordersModifier';
 import { TransformToWorldCoordinateModifier } from '../modifiers/TransformToWorldCoordinateModifier';
+import { SegmentBordersModifierNew } from '../modifiers/SegmentBordersModifierNew';
 
 export class ModifierFactoryService {
     private modifierMap: Map<string, Modifier> = new Map();
@@ -30,9 +31,10 @@ export class ModifierFactoryService {
             .registerInstance(new CreateMeshModifier(services.meshFactoryService, services.meshTemplateService, services.configService))
             .registerInstance(new NormalizeBorderRotationModifier())
             .registerInstance(new ScaleModifier(services))
-            .registerInstance(new SegmentBordersModifier(services.configService, services.worldItemFactoryService, services.geometryService))
+            .registerInstance(new SegmentBordersModifier(services))
             .registerInstance(new ThickenBordersModifier())
-            .registerInstance(new TransformToWorldCoordinateModifier());
+            .registerInstance(new TransformToWorldCoordinateModifier())
+            .registerInstance(new SegmentBordersModifierNew(services));
     }
 
     getInstance(modName: string): Modifier {

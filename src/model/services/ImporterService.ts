@@ -19,6 +19,8 @@ import { RootWorldItemParser } from "../parsers/RootWorldItemParser";
 import { SubareaParser } from '../parsers/SubareaParser';
 import { ServiceFacade } from './ServiceFacade';
 import { ScaleModifier } from '../modifiers/ScaleModifier';
+import { BorderParserNew } from '../parsers/BorderParserNew';
+import { SegmentBordersModifierNew } from '../modifiers/SegmentBordersModifierNew';
 
 export interface WorldConfig {
     borders: string[];
@@ -50,7 +52,7 @@ export class ImporterService<M, S, T> {
             new CombinedWorldItemParser(
                 [
                     new FurnitureParser(this.services),
-                    new BorderParser(this.services),
+                    new BorderParserNew(this.services),
                     new RoomParser(this.services),
                     // new PolygonAreaParser('empty', this.services.configService.meshDescriptorMap.get('room').char, this.services),
                     new RootWorldItemParser(this.services.worldItemFactoryService, this.services.configService),
@@ -61,6 +63,7 @@ export class ImporterService<M, S, T> {
 
         modNames = modNames ? modNames : [
             SegmentBordersModifier.modName,
+            SegmentBordersModifierNew.modName,
             BuildHierarchyModifier.modName,
             ScaleModifier.modName,
             AssignBordersToRoomsModifier.modName,
