@@ -1,7 +1,6 @@
 import { AssignBordersToRoomsModifier } from '../../../../src/model/modifiers/AssignBordersToRoomsModifier';
 import { BuildHierarchyModifier } from "../../../../src/model/modifiers/BuildHierarchyModifier";
 import { ChangeBorderWidthModifier } from "../../../../src/model/modifiers/ChangeBorderWidthModifier";
-import { ConvertBorderPolyToLineModifier } from "../../../../src/model/modifiers/ConvertBorderPolyToLineModifier";
 import { RoomFurnitureResizer } from "../../../../src/model/modifiers/real_furniture_size/RoomFurnitureResizer";
 import { ScaleModifier } from "../../../../src/model/modifiers/ScaleModifier";
 import { SegmentBordersModifier } from "../../../../src/model/modifiers/SegmentBordersModifier";
@@ -39,7 +38,6 @@ it ('Resize each funrinture in the room', () => {
         SegmentBordersModifier.modName,
         BuildHierarchyModifier.modName,
         AssignBordersToRoomsModifier.modName,
-        ConvertBorderPolyToLineModifier.modName,
         ChangeBorderWidthModifier.modName
     ]);
     const rooms = root.children.filter(item => item.name === 'room');
@@ -93,7 +91,6 @@ it ('Snap furnitures which are beside walls', () => {
         SegmentBordersModifier.modName,
         BuildHierarchyModifier.modName,
         AssignBordersToRoomsModifier.modName,
-        ConvertBorderPolyToLineModifier.modName,
         ChangeBorderWidthModifier.modName
     ]);
     const room = root.children.filter(item => item.name === 'room')[0];

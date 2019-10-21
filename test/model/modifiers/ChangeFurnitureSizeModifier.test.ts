@@ -3,7 +3,6 @@ import { AssignBordersToRoomsModifier } from "../../../src/model/modifiers/Assig
 import { BuildHierarchyModifier } from "../../../src/model/modifiers/BuildHierarchyModifier";
 import { ChangeBorderWidthModifier } from "../../../src/model/modifiers/ChangeBorderWidthModifier";
 import { ChangeFurnitureSizeModifier } from '../../../src/model/modifiers/ChangeFurnitureSizeModifier';
-import { ConvertBorderPolyToLineModifier } from "../../../src/model/modifiers/ConvertBorderPolyToLineModifier";
 import { SegmentBordersModifier } from "../../../src/model/modifiers/SegmentBordersModifier";
 import { ServiceFacade } from "../../../src/model/services/ServiceFacade";
 import { setup, setupMap } from "../../test_utils/testUtils";
@@ -30,7 +29,7 @@ describe('ChangeFurnitureSizeModifier', () => {
                 SegmentBordersModifier.modName,
                 BuildHierarchyModifier.modName,
                 AssignBordersToRoomsModifier.modName,
-                ConvertBorderPolyToLineModifier.modName,
+                // ConvertBorderPolyToLineModifier.modName,
                 ChangeBorderWidthModifier.modName,
                 ChangeFurnitureSizeModifier.modeName
             ]
@@ -73,7 +72,6 @@ describe('ChangeFurnitureSizeModifier', () => {
                 SegmentBordersModifier.modName,
                 BuildHierarchyModifier.modName,
                 AssignBordersToRoomsModifier.modName,
-                ConvertBorderPolyToLineModifier.modName,
                 ChangeBorderWidthModifier.modName,
                 ChangeFurnitureSizeModifier.modeName
             ]

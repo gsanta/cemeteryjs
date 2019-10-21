@@ -2,7 +2,6 @@ import { Point, Segment, StripeView } from "@nightshifts.inc/geometry";
 import { SplitWallsIntoTwoParallelChildWallsModifier } from '../../../src/model/modifiers/SplitWallsIntoTwoParallelChildWallsModifier';
 import { AssignBordersToRoomsModifier } from "../../../src/model/modifiers/AssignBordersToRoomsModifier";
 import { BuildHierarchyModifier } from "../../../src/model/modifiers/BuildHierarchyModifier";
-import { ConvertBorderPolyToLineModifier } from "../../../src/model/modifiers/ConvertBorderPolyToLineModifier";
 import { ScaleModifier } from "../../../src/model/modifiers/ScaleModifier";
 import { SegmentBordersModifier } from "../../../src/model/modifiers/SegmentBordersModifier";
 import { ThickenBordersModifier } from '../../../src/model/modifiers/ThickenBordersModifier';
@@ -51,7 +50,6 @@ describe(`SplitWallsIntoTwoParallelChildWallsModifier`, () => {
                 SegmentBordersModifier.modName,
                 BuildHierarchyModifier.modName,
                 AssignBordersToRoomsModifier.modName,
-                ConvertBorderPolyToLineModifier.modName,
                 ChangeBorderWidthModifier.modName,
                 ThickenBordersModifier.modName,
             ]

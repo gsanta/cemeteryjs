@@ -1,6 +1,5 @@
 import { WorldItem } from '../../src/WorldItem';
 import { Shape, Point } from '@nightshifts.inc/geometry';
-import { hasAnyWorldItemInfoDimension } from '../model/parsers/BorderParser.test';
 import { MeshDescriptor } from '../../src/Config';
 import { arraysEqual } from '../../src/model/utils/Functions';
 import { ServiceFacade } from '../../src/model/services/ServiceFacade';
@@ -169,6 +168,15 @@ expect.extend({
         }
     }
 });
+
+// TODO: create custom matcher
+export function hasAnyWorldItemInfoDimension(dimension: Shape, worldItemInfos: WorldItem[]) {
+    if (worldItemInfos.find(worldItemInfo => worldItemInfo.dimensions.equalTo(dimension))) {
+        return true;
+    } else {
+        throw new Error(`${dimension.toString()} does not exist`);
+    }
+}
 
 function containsWorldItem(worldItems: WorldItem[], partialWorldItem: Partial<WorldItem>) {
     for (let i = 0; i < worldItems.length; i++) {

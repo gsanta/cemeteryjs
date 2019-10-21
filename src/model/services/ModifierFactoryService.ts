@@ -6,14 +6,12 @@ import { AssignBordersToRoomsModifier } from '../modifiers/AssignBordersToRoomsM
 import { BuildHierarchyModifier } from '../modifiers/BuildHierarchyModifier';
 import { ChangeBorderWidthModifier } from '../modifiers/ChangeBorderWidthModifier';
 import { ChangeFurnitureSizeModifier } from '../modifiers/ChangeFurnitureSizeModifier';
-import { ConvertBorderPolyToLineModifier } from '../modifiers/ConvertBorderPolyToLineModifier';
 import { CreateMeshModifier } from '../modifiers/CreateMeshModifier';
 import { NormalizeBorderRotationModifier } from '../modifiers/NormalizeBorderRotationModifier';
 import { ScaleModifier } from '../modifiers/ScaleModifier';
-import { SegmentBordersModifier } from '../modifiers/SegmentBordersModifier';
 import { ThickenBordersModifier } from '../modifiers/ThickenBordersModifier';
 import { TransformToWorldCoordinateModifier } from '../modifiers/TransformToWorldCoordinateModifier';
-import { SegmentBordersModifierNew } from '../modifiers/SegmentBordersModifierNew';
+import { SegmentBordersModifier } from '../modifiers/SegmentBordersModifier';
 
 export class ModifierFactoryService {
     private modifierMap: Map<string, Modifier> = new Map();
@@ -23,18 +21,16 @@ export class ModifierFactoryService {
         this
             .registerInstance(new SplitWallsIntoTwoParallelChildWallsModifier(services.worldItemFactoryService, services.geometryService))
             .registerInstance(new AddRoofModifier(services.worldItemFactoryService))
-            .registerInstance(new AssignBordersToRoomsModifier(services.configService))
+            .registerInstance(new AssignBordersToRoomsModifier(services))
             .registerInstance(new BuildHierarchyModifier(services))
             .registerInstance(new ChangeBorderWidthModifier(services.configService))
             .registerInstance(new ChangeFurnitureSizeModifier(services))
-            .registerInstance(new ConvertBorderPolyToLineModifier(services.geometryService))
             .registerInstance(new CreateMeshModifier(services.meshFactoryService, services.meshTemplateService, services.configService))
             .registerInstance(new NormalizeBorderRotationModifier())
             .registerInstance(new ScaleModifier(services))
             .registerInstance(new SegmentBordersModifier(services))
             .registerInstance(new ThickenBordersModifier())
-            .registerInstance(new TransformToWorldCoordinateModifier())
-            .registerInstance(new SegmentBordersModifierNew(services));
+            .registerInstance(new TransformToWorldCoordinateModifier());
     }
 
     getInstance(modName: string): Modifier {

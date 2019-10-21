@@ -51,7 +51,7 @@ map \`
 *W-------------------------------W-------------------W-------------W---------------------------------W---------------------------------W*
 *W-------------------------------W-------------------W-------------W---------------------------------W---------------------------------W*
 *W-------------------------------W-------------------W-------------W---------------------------------W---------------------------------W*
-*W-------------------------------W-------------------W-------------W---------------------------------W---------------------------------W*np
+*W-------------------------------W-------------------W-------------W---------------------------------W---------------------------------W*
 *W-------------------------------W-------------------W-------------W---------------------------------W---------------------------------W*
 *W-------------------------------W-------------------W-------------W---------------------------------W---------------------------------W*
 *W-------------------------------WWWWWWWWWWWWWWWWWWWWW-------------W---------------------------------W---------------------------------W*
@@ -93,6 +93,46 @@ globals \`
 
 \`
 `;
+
+// const initialModel = `
+// map \`
+
+// WWWWWWWWWWWWW
+// W-----------W
+// W-----------W
+// W-----------W
+// W-----------W
+// WWWWWWWWWWWWW
+
+// \`
+
+
+// definitions \`
+
+// W = wall BORDER
+// - = room
+// X = player
+// C = cupboard
+// I = window BORDER MOD models/window/window.babylon MAT [assets/models/window/window.png] DIM 3.5 SCALE 3
+// T = table MOD assets/models/table.babylon MAT [assets/models/table_material.png] SCALE 0.5
+// B = bathtub
+// S = washbasin
+// E = bed MOD assets/models/bed/bed.babylon MAT [assets/models/bed/bed_material.png] SCALE 3.5 TRANS_Y 1.5
+// H = chair MOD models/chair.babylon MAT [models/material/bathroom.png] SCALE 3
+// D = door BORDER MOD models/door/door.babylon MAT [models/door/door_material.png] DIM 3 SCALE 3 TRANS_Y -4
+// L = double_bed
+// O = shelves MOD assets/models/shelves/shelves.babylon MAT [assets/models/shelves/shelves.png] SCALE 3.3 TRANS_Y 1
+// = = _subarea
+// R = stairs MOD assets/models/stairs/stairs.babylon MAT [assets/models/stairs/stairs_uv.png] SCALE 3 TRANS_Y 2
+// * = outdoors
+// \`
+
+// globals \`
+
+//     scale 1 2
+
+// \`
+// `;
 
 export class App extends React.Component<{}, AppState> {
     private engine: Engine;

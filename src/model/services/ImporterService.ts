@@ -4,23 +4,19 @@ import { AssignBordersToRoomsModifier } from "../modifiers/AssignBordersToRoomsM
 import { BuildHierarchyModifier } from "../modifiers/BuildHierarchyModifier";
 import { ChangeBorderWidthModifier } from "../modifiers/ChangeBorderWidthModifier";
 import { ChangeFurnitureSizeModifier } from "../modifiers/ChangeFurnitureSizeModifier";
-import { ConvertBorderPolyToLineModifier } from "../modifiers/ConvertBorderPolyToLineModifier";
 import { CreateMeshModifier } from '../modifiers/CreateMeshModifier';
 import { NormalizeBorderRotationModifier } from "../modifiers/NormalizeBorderRotationModifier";
-import { SegmentBordersModifier } from "../modifiers/SegmentBordersModifier";
 import { SplitWallsIntoTwoParallelChildWallsModifier } from "../modifiers/SplitWallsIntoTwoParallelChildWallsModifier";
 import { ThickenBordersModifier } from "../modifiers/ThickenBordersModifier";
-import { BorderParser } from "../parsers/BorderParser";
 import { CombinedWorldItemParser } from "../parsers/CombinedWorldItemParser";
 import { FurnitureParser } from "../parsers/FurnitureParser";
-import { PolygonAreaParser } from "../parsers/PolygonAreaParser";
 import { RoomParser } from "../parsers/RoomParser";
 import { RootWorldItemParser } from "../parsers/RootWorldItemParser";
 import { SubareaParser } from '../parsers/SubareaParser';
 import { ServiceFacade } from './ServiceFacade';
 import { ScaleModifier } from '../modifiers/ScaleModifier';
-import { BorderParserNew } from '../parsers/BorderParserNew';
-import { SegmentBordersModifierNew } from '../modifiers/SegmentBordersModifierNew';
+import { BorderParser } from '../parsers/BorderParser';
+import { SegmentBordersModifier } from '../modifiers/SegmentBordersModifier';
 
 export interface WorldConfig {
     borders: string[];
@@ -52,7 +48,7 @@ export class ImporterService<M, S, T> {
             new CombinedWorldItemParser(
                 [
                     new FurnitureParser(this.services),
-                    new BorderParserNew(this.services),
+                    new BorderParser(this.services),
                     new RoomParser(this.services),
                     // new PolygonAreaParser('empty', this.services.configService.meshDescriptorMap.get('room').char, this.services),
                     new RootWorldItemParser(this.services.worldItemFactoryService, this.services.configService),
@@ -63,11 +59,10 @@ export class ImporterService<M, S, T> {
 
         modNames = modNames ? modNames : [
             SegmentBordersModifier.modName,
-            SegmentBordersModifierNew.modName,
             BuildHierarchyModifier.modName,
-            ScaleModifier.modName,
             AssignBordersToRoomsModifier.modName,
-            ConvertBorderPolyToLineModifier.modName,
+            ScaleModifier.modName,
+            // ConvertBorderPolyToLineModifier.modName,
             ChangeBorderWidthModifier.modName,
             ThickenBordersModifier.modName,
             SplitWallsIntoTwoParallelChildWallsModifier.modName,

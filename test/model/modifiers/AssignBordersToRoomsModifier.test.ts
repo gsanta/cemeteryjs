@@ -1,111 +1,90 @@
-import { Polygon } from '@nightshifts.inc/geometry';
 import { AssignBordersToRoomsModifier } from '../../../src/model/modifiers/AssignBordersToRoomsModifier';
-import { ScaleModifier } from '../../../src/model/modifiers/ScaleModifier';
 import { SegmentBordersModifier } from '../../../src/model/modifiers/SegmentBordersModifier';
 import { setup } from '../../test_utils/testUtils';
 
-describe(`AssignBordersToRoomsModifier`, () => {
-    describe('`apply`', () => {
-        it ('adds the bordering WorldItems to the corresponding room WorldItem', () => {
-            const map = `
-                map \`
+it ('Add the correct borders to a single room', () => {
+    const map = `
+        map \`
 
-                WWWWWWWWWW
-                W--------W
-                W--------W
-                W--------W
-                WWWWWWWWWW
+        WWWWWWWWWW
+        W--------W
+        W--------W
+        W--------W
+        WWWWWWWWWW
 
-                \`
+        \`
 
-                definitions \`
+        definitions \`
 
-                - = room
-                W = wall BORDER
+        - = room
+        W = wall BORDER
 
-                \`
-            `;
+        \`
+    `;
 
-            const services = setup(map);
+    const services = setup(map);
 
-            let items = services.importerService.import(map, []);
+    let items = services.importerService.import(map, []);
 
-            const [wall1, wall2, wall3, wall4, room] =  new AssignBordersToRoomsModifier(services.configService).apply(items);
+    const [wall1, wall2, wall3, wall4, room] =  new AssignBordersToRoomsModifier(services).apply(items);
 
-            expect(room.borderItems).toEqual([wall1, wall2, wall3, wall4]);
-        });
+    expect(room.borderItems).toEqual([wall1, wall2, wall3, wall4]);
+});
 
-        it ('does not add the bordering WorldItem if it only touches the room at it\'s edge', () => {
-            const map = `
-                map \`
+it ('Add the correct borders to rooms with multiple roomw', () => {
+    const map = `
+        map \`
 
-                WWWWWWWWWW
-                W---W----W
-                W---W----W
-                W---W----W
-                WWWWWWWWWW
-                W--------W
-                W--------W
-                W--------W
-                WWWWWWWWWW
+        WWWWWWWWWW
+        W---W----W
+        W---W----W
+        W---W----W
+        WWWWWWWWWW
+        W--------W
+        W--------W
+        W--------W
+        WWWWWWWWWW
 
-                \`
+        \`
 
-                definitions \`
+        definitions \`
 
-                - = room
-                W = wall BORDER
+        - = room
+        W = wall BORDER
 
-                \`
-            `;
+        \`
+    `;
 
-            const services = setup(map);
+    const services = setup(map);
+    const geometryService = services.geometryService;
 
-            const items = services.importerService.import(map, [SegmentBordersModifier.modName, AssignBordersToRoomsModifier.modName]);
+    let items = services.importerService.import(map, [SegmentBordersModifier.modName]);
 
-            const room3 = items.filter(worldItem => worldItem.name === 'room')[2];
-            const borderItemDimensions = room3.borderItems.map(borderItem => borderItem.dimensions);
+    items = new AssignBordersToRoomsModifier(services).apply(items);
 
-            const cornerIntersectingRect = Polygon.createRectangle(4, 0, 1, 5);
-            expect(borderItemDimensions.find((dim: Polygon) => dim.equalTo(cornerIntersectingRect))).toEqual(undefined);
-        });
+    const rooms = items.filter(item => item.name === 'room');
 
-        it ('takes scales into consideration when calculating \'only corner\' connection', () => {
-            const map = `
-                map \`
+    const room1 = rooms.find(item => item.dimensions.equalTo(services.geometryService.factory.rectangle(1, 1, 3, 3)));
 
-                WWWWWWWWWW
-                W--------W
-                W--------W
-                W--------W
-                WWWWWWWWWW
-                W---W----W
-                W---W----W
-                W---W----W
-                WWWWWWWWWW
-
-                \`
-
-                definitions \`
-
-                - = room
-                W = wall
-
-                \`
-            `;
+    expect(room1.borderItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(0.5, 0.5), geometryService.factory.point(0.5, 4.5)));
+    expect(room1.borderItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(0.5, 4.5), geometryService.factory.point(4.5, 4.5)));
+    expect(room1.borderItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(4.5, 0.5), geometryService.factory.point(4.5, 4.5)));
+    expect(room1.borderItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(0.5, 0.5), geometryService.factory.point(4.5, 0.5)));
 
 
-            const services = setup(map);
+    const room2 = rooms.find(item => item.dimensions.equalTo(services.geometryService.factory.rectangle(5, 1, 4, 3)));
+
+    expect(room2.borderItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(4.5, 0.5), geometryService.factory.point(4.5, 4.5)));
+    expect(room2.borderItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(4.5, 4.5), geometryService.factory.point(9.5, 4.5)));
+    expect(room2.borderItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(9.5, 0.5), geometryService.factory.point(9.5, 4.5)));
+    expect(room2.borderItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(4.5, 0.5), geometryService.factory.point(9.5, 0.5)));
 
 
-            const items = services.importerService.import(map, [ScaleModifier.modName, SegmentBordersModifier.modName, AssignBordersToRoomsModifier.modName]);
+    const room3 = rooms.find(item => item.dimensions.equalTo(services.geometryService.factory.rectangle(1, 5, 8, 3)));
 
-            const room3 = items.filter(worldItem => worldItem.name === 'room')[0];
-
-            const borderItemDimensions = room3.borderItems.map(borderItem => borderItem.dimensions);
-            1;
-            const cornerIntersectingRect = Polygon.createRectangle(8, 8, 2, 10);
-            expect(borderItemDimensions.find((dim: Polygon) => dim.equalTo(cornerIntersectingRect))).toEqual(undefined);
-        });
-    });
+    expect(room3.borderItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(0.5, 4.5), geometryService.factory.point(0.5, 8.5)));
+    expect(room3.borderItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(0.5, 8.5), geometryService.factory.point(9.5, 8.5)));
+    expect(room3.borderItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(9.5, 4.5), geometryService.factory.point(9.5, 8.5)));
+    expect(room3.borderItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(0.5, 4.5), geometryService.factory.point(4.5, 4.5)));
+    expect(room3.borderItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(4.5, 4.5), geometryService.factory.point(9.5, 4.5)));
 });

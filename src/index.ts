@@ -2,7 +2,6 @@ import { ScaleModifier } from './model/modifiers/ScaleModifier';
 import { AssignBordersToRoomsModifier } from './model/modifiers/AssignBordersToRoomsModifier';
 import { SegmentBordersModifier } from './model/modifiers/SegmentBordersModifier';
 import { BuildHierarchyModifier } from './model/modifiers/BuildHierarchyModifier';
-import { ConvertBorderPolyToLineModifier } from './model/modifiers/ConvertBorderPolyToLineModifier';
 import { ChangeBorderWidthModifier } from './model/modifiers/ChangeBorderWidthModifier';
 import { ChangeFurnitureSizeModifier } from './model/modifiers/ChangeFurnitureSizeModifier';
 import { CreateMeshModifier } from './model/modifiers/CreateMeshModifier';
@@ -25,7 +24,6 @@ export const transformators = {
     ScaleModifier,
     AssignBordersToRoomsModifier,
     SegmentBordersModifier,
-    ConvertBorderPolyToLineModifier,
     ChangeBorderWidthModifier,
     ChangeFurnitureSizeModifier,
     CreateMeshModifier,

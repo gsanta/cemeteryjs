@@ -1,19 +1,19 @@
-import { WorldItem } from '../../WorldItem';
-import { Modifier } from './Modifier';
-import { WorldItemUtils } from '../../WorldItemUtils';
+import { Line, Point } from '@nightshifts.inc/geometry';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
+import { WorldItem } from '../../WorldItem';
+import { WorldItemUtils } from '../../WorldItemUtils';
+import { ServiceFacade } from '../services/ServiceFacade';
 import { BuildHierarchyModifier } from './BuildHierarchyModifier';
-import { ConfigService } from '../services/ConfigService';
-
+import { Modifier } from './Modifier';
 
 export class AssignBordersToRoomsModifier implements Modifier {
     static modName = 'assignBordersToRooms';
     dependencies = [BuildHierarchyModifier.modName];
 
-    private configService: ConfigService;
+    private services: ServiceFacade<any, any, any>;
 
-    constructor(configService: ConfigService) {
-        this.configService = configService;
+    constructor(services: ServiceFacade<any, any, any>) {
+        this.services = services;
     }
 
     getName(): string {
@@ -28,32 +28,35 @@ export class AssignBordersToRoomsModifier implements Modifier {
         const rooms = WorldItemUtils.filterRooms(worldItems);
         const borders = WorldItemUtils.filterBorders(worldItems);
 
+        const triplets: [WorldItem, Point, Line][] = borders.map(border => [border, border.dimensions.getBoundingCenter(), (<Segment> border.dimensions).getLine()]);
+
         rooms.forEach(room => {
-            borders
-                .filter(roomSeparator => {
-                    const intersectionLineInfo = room.dimensions.getCoincidentLineSegment(roomSeparator.dimensions);
+            const edges = room.dimensions.getEdges();
 
-                    if (!intersectionLineInfo) {
-                        return false;
-                    }
+            edges.forEach(edge => {
+                const bordersForEdge = this.findBordersForEdge(edge, triplets);
 
-                    return !this.doesBorderItemIntersectOnlyAtCorner(roomSeparator, intersectionLineInfo);
-                })
-                .forEach(roomSeparator => {
-                    room.borderItems.push(roomSeparator);
-                    roomSeparator.rooms.push(room);
-                });
+                room.borderItems.push(...bordersForEdge);
+            });
         });
 
         return worldItems;
     }
 
-    //TODO: we might not need this when using `StripeView` for border item `Polygon`
-    private doesBorderItemIntersectOnlyAtCorner(border: WorldItem, intersectionLineInfo: [Segment, number, number]) {
-        const edges = border.dimensions.getEdges();
+    private findBordersForEdge(edge: Segment, borderTriplets: [WorldItem, Point, Line][]): WorldItem[] {
+        const edgeLine = edge.getLine();
 
-        const intersectingEdge = edges[intersectionLineInfo[2]];
+        const borders: WorldItem[] = [];
 
-        return intersectingEdge.getLine().getAngleToXAxis().getAngle() !== border.rotation;
+        for (let i = 0; i < borderTriplets.length; i++) {
+            if (this.services.geometryService.measuerments.linesParallel(edgeLine, borderTriplets[i][2])) {
+
+                if (this.services.geometryService.distance.twoSegments(edge, <Segment> borderTriplets[i][0].dimensions) === 0.5) {
+                    borders.push(borderTriplets[i][0]);
+                }
+            }
+        }
+
+        return borders;
     }
 }

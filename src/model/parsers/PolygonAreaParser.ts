@@ -137,7 +137,7 @@ export class PolygonAreaParser implements Parser {
                 leftPoints.push(...newPoints);
 
                 prevPoint = last(newPoints);
-            })
+            });
 
 
         return [...topPoints, ...rightPoints, ...bottomPoints, ...leftPoints];

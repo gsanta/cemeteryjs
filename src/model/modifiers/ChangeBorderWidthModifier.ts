@@ -3,9 +3,9 @@ import { RoomUtils } from "../utils/RoomUtils";
 import { WorldItem } from "../../WorldItem";
 import { WorldItemUtils } from "../../WorldItemUtils";
 import { Modifier } from "./Modifier";
-import { ConvertBorderPolyToLineModifier } from './ConvertBorderPolyToLineModifier';
 import { ConfigService } from '../services/ConfigService';
 import { last } from '../utils/Functions';
+import { AssignBordersToRoomsModifier } from './AssignBordersToRoomsModifier';
 
 /**
  * This transformator can be used to adjust the width of a border item to it's real width.
@@ -14,7 +14,7 @@ import { last } from '../utils/Functions';
  */
 export class ChangeBorderWidthModifier implements Modifier {
     static modName = 'changeBorderWidth';
-    dependencies = [ConvertBorderPolyToLineModifier.modName];
+    dependencies = [AssignBordersToRoomsModifier.modName];
 
     private configService: ConfigService;
 
