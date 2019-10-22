@@ -56,16 +56,4 @@ describe('WorldMapToRoomMapConverter', () => {
             expect(worldMapToRoomMapConverter.convert(input)).toEqual(output);
         });
     });
-
-    it ('converts a complicated real-world example correctly.', () => {
-        const worldMapStr = fs.readFileSync(__dirname + '/../../../assets/test/big_world.gwm', 'utf8');
-
-        const services = setup(worldMapStr);
-
-        const worldMapToRoomMapConverter = new WorldMapToRoomMapConverter(services.configService);
-        const actualConvertedWorldMapStr = worldMapToRoomMapConverter.convert(worldMapStr);
-
-        const expectedConvertedWorldMap = fs.readFileSync(__dirname + '/../../../assets/test/big_world_rooms.gwm', 'utf8');
-        expect(actualConvertedWorldMapStr).toEqual(expectedConvertedWorldMap);
-    });
 });

@@ -8,6 +8,7 @@ import { Header } from './Header';
 import { IntegrationCodeDialog } from './dialogs/IntegrationCodeDialog';
 import './App.scss';
 import { HowToIntegrateDialog } from './dialogs/HowToIntegrateDialog';
+import { DefinitionPanelComponent } from './panels/DefinitionPanelComponent';
 import { AboutDialog } from './dialogs/AboutDialog';
 import { Engine } from 'babylonjs';
 
@@ -159,8 +160,18 @@ export class App extends React.Component<{}, AppState> {
                     openAboutDialog={() => this.setState({isAboutDialogOpen: true})}
                 />
                 <div className="main-content">
-                    <SplitPane split="vertical" primary="second" minSize={300} defaultSize={900} className="split-pane" onChange={() => this.engine.resize()}>
-                        <Editor guiServices={this.state.guiServices} onModelChanged={(content: string) => this.onModelChanged(content)} initialModel={this.state.model}/>
+                    <SplitPane 
+                        split="vertical"
+                        primary="second"
+                        minSize={300}
+                        defaultSize={900}
+                        className="split-pane"
+                        onChange={() => {this.engine.resize(); this.state.guiServices.textEditorService.resize();}}
+                    >
+                        <SplitPane split="horizontal" onChange={() => this.state.guiServices.textEditorService.resize()}>
+                            <Editor guiServices={this.state.guiServices} onModelChanged={(content: string) => this.onModelChanged(content)} initialModel={this.state.model}/>
+                            <DefinitionPanelComponent/>
+                        </SplitPane>
                         <Canvas model={this.state.model} onWebglReady={(engine: Engine) => this.engine = engine}/>
                     </SplitPane>
                 </div>

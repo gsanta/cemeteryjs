@@ -28,7 +28,10 @@ it ('Add the correct borders to a single room', () => {
 
     const [wall1, wall2, wall3, wall4, room] =  new AssignBordersToRoomsModifier(services).apply(items);
 
-    expect(room.borderItems).toEqual([wall1, wall2, wall3, wall4]);
+    expect(room.borderItems).toHaveAnyWithDimensions(wall1.dimensions);
+    expect(room.borderItems).toHaveAnyWithDimensions(wall2.dimensions);
+    expect(room.borderItems).toHaveAnyWithDimensions(wall3.dimensions);
+    expect(room.borderItems).toHaveAnyWithDimensions(wall4.dimensions);
 });
 
 it ('Add the correct borders to rooms with multiple roomw', () => {

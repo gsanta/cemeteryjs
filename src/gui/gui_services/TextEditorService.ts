@@ -1,4 +1,4 @@
-import { MonacoConfig } from '../gui_models/editor/MonacoConfig';
+import { MonacoConfig } from '../gui_models/MonacoConfig';
 import * as monaco from 'monaco-editor';
 import { debounce } from '../../model/utils/Functions';
 
@@ -6,6 +6,7 @@ const THEME = 'nightshiftsTheme';
 const LANGUAGE = 'nightshiftsLanguage';
 
 export class TextEditorService {
+    editor: any;
 
     constructor(monacoConfig: typeof MonacoConfig) {
         monacoConfig;
@@ -32,10 +33,9 @@ export class TextEditorService {
                 // 'editor.inactiveSelectionBackground': '#88000015'
             }
         });
-
     }
 
-    getEditor(element: HTMLDivElement, content: string) {
+    createEditor(element: HTMLDivElement, content: string) {
         const editor = monaco.editor.create(element, {
             value: content,
             theme: THEME,
@@ -45,6 +45,8 @@ export class TextEditorService {
             }
         });
 
+        this.editor = editor;
+
         return {
             onChange: (callback: (newContent: string) => void) => {
                 const debounced = debounce(callback, 1000);
@@ -53,6 +55,9 @@ export class TextEditorService {
                 });
             }
         }
+    }
 
+    resize() {
+        this.editor.layout();
     }
 }

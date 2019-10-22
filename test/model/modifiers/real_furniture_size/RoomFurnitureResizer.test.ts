@@ -34,10 +34,10 @@ it ('Resize each funrinture in the room', () => {
     const services = setup(map);
 
     const [root] = services.importerService.import(map, [
-        ScaleModifier.modName,
         SegmentBordersModifier.modName,
         BuildHierarchyModifier.modName,
         AssignBordersToRoomsModifier.modName,
+        ScaleModifier.modName,
         ChangeBorderWidthModifier.modName
     ]);
     const rooms = root.children.filter(item => item.name === 'room');
@@ -87,10 +87,10 @@ it ('Snap furnitures which are beside walls', () => {
     const services = setup(map);
 
     const [root] = services.importerService.import(map, [
-        ScaleModifier.modName,
         SegmentBordersModifier.modName,
         BuildHierarchyModifier.modName,
         AssignBordersToRoomsModifier.modName,
+        ScaleModifier.modName,
         ChangeBorderWidthModifier.modName
     ]);
     const room = root.children.filter(item => item.name === 'room')[0];

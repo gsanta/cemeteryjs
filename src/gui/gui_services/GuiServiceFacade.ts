@@ -1,5 +1,5 @@
 import { TextEditorService } from './TextEditorService';
-import { MonacoConfig } from '../gui_models/editor/MonacoConfig';
+import { MonacoConfig } from '../gui_models/MonacoConfig';
 
 
 export class GuiServiceFacade {

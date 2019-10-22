@@ -46,22 +46,22 @@ describe(`SplitWallsIntoTwoParallelChildWallsModifier`, () => {
         const [root] = serviceFacade.importerService.import(
             map,
             [
-                ScaleModifier.modName,
                 SegmentBordersModifier.modName,
                 BuildHierarchyModifier.modName,
                 AssignBordersToRoomsModifier.modName,
+                ScaleModifier.modName,
                 ChangeBorderWidthModifier.modName,
                 ThickenBordersModifier.modName,
             ]
         )
 
-        expect(root.children.length).toEqual(9);
+        expect(root.children.length).toEqual(10);
 
         const items = new SplitWallsIntoTwoParallelChildWallsModifier(serviceFacade.worldItemFactoryService, serviceFacade.geometryService).apply([root]);
 
         const walls = root.children.filter(item => item.name === 'wall');
 
-        expect(items[0].children.length).toEqual(9);
+        expect(items[0].children.length).toEqual(10);
         walls.forEach(wall => {
             expect(wall.children.length).toEqual(2);
             checkIfChildrenDimensionsAddUpToParentDimensions(wall);
