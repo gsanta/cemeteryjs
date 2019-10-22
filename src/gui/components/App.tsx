@@ -12,6 +12,8 @@ import { DefinitionPanelComponent } from './panels/DefinitionPanelComponent';
 import { AboutDialog } from './dialogs/AboutDialog';
 import { Engine } from 'babylonjs';
 
+import 'react-table/react-table.css';
+
 export interface AppState {
     model: string;
     guiServices: GuiServiceFacade;
@@ -170,7 +172,7 @@ export class App extends React.Component<{}, AppState> {
                     >
                         <SplitPane split="horizontal" onChange={() => this.state.guiServices.textEditorService.resize()}>
                             <Editor guiServices={this.state.guiServices} onModelChanged={(content: string) => this.onModelChanged(content)} initialModel={this.state.model}/>
-                            <DefinitionPanelComponent/>
+                            <DefinitionPanelComponent services={this.state.guiServices}/>
                         </SplitPane>
                         <Canvas model={this.state.model} onWebglReady={(engine: Engine) => this.engine = engine}/>
                     </SplitPane>
