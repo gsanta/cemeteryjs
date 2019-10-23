@@ -5,15 +5,15 @@ import * as React from 'react';
 
 export interface CheckboxProps {
     isSelected: boolean;
+    onChange(isSelected: boolean): void;
 }
 
 export function CheckboxComponent(props: CheckboxProps) {
-
     return (
-            <FormCheck type="switch">
+        <FormCheck type="switch">
             <FormCheckInput checked={props.isSelected} />
-            <FormCheckLabel onClick={() => null}>
-                is border
+            <FormCheckLabel onClick={() => props.onChange(!props.isSelected)}>
+                Is border?
             </FormCheckLabel>
         </FormCheck>
     )

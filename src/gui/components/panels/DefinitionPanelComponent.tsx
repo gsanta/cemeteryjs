@@ -3,6 +3,7 @@ import './DefinitionPanelComponent.scss';
 import { ControllerFacade } from '../../controllers/ControllerFacade';
 import { Input } from '../forms/Input';
 import { LabeledDropdown } from '../forms/LabeledDropdown';
+import { LabeledInputComponent } from '../forms/LabeledInput';
 import { CheckboxComponent } from '../forms/CheckboxComponent';
 
 
@@ -38,6 +39,8 @@ export class DefinitionPanelComponent extends React.Component<DefinitionPanelPro
         ));
 
         const char = selectedMeshDescriptor ? selectedMeshDescriptor.char : null;
+        const isBorder = selectedMeshDescriptor ? selectedMeshDescriptor.isBorder : false;
+        const model = selectedMeshDescriptor ? selectedMeshDescriptor.model : null;
 
         return (
             <div className="definition-panel">
@@ -45,8 +48,17 @@ export class DefinitionPanelComponent extends React.Component<DefinitionPanelPro
                     {names}
                 </div>
                 <div className="properties-column">
-                    <LabeledDropdown label="character" values={chars} currentValue={char} onChange={(char: string) => definitionService.setChar(char)}/>
-                    <CheckboxComponent isSelected={true}/>
+                    <div className="top-row">
+                        <LabeledDropdown label="character" values={chars} currentValue={char} onChange={(char: string) => definitionService.setChar(char)}/>
+                        <CheckboxComponent isSelected={isBorder} onChange={isSelected => definitionService.setIsBorder(isSelected)}/>
+                    </div>
+                    <LabeledInputComponent
+                        type="text"
+                        label="Model file path"
+                        value={model} 
+                        onFocus={(type: string) => definitionService.setSelectedDescriptorByType(type)}
+                        onChange={() => null} placeholder="name"
+                    />
                 </div>
             </div>
         );

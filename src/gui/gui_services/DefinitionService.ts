@@ -53,6 +53,11 @@ export class DefinitionService {
         this.controllers.renderController.render();
     }
 
+    setIsBorder(isBorder: boolean) {
+        this.selectedMeshDescriptor.isBorder = isBorder;
+        this.controllers.renderController.render();
+    }
+
     // private createEmptyMeshDescriptor(): MeshDescriptor {
     //     return {
 
