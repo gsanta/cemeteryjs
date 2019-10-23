@@ -3,7 +3,7 @@ import SplitPane from 'react-split-pane';
 import './SplitPane.css';
 import { Editor } from './Editor';
 import { Canvas } from './Canvas';
-import { GuiServiceFacade } from '../gui_services/GuiServiceFacade';
+import { ControllerFacade } from '../controllers/ControllerFacade';
 import { Header } from './Header';
 import { IntegrationCodeDialog } from './dialogs/IntegrationCodeDialog';
 import './App.scss';
@@ -16,7 +16,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 export interface AppState {
     model: string;
-    guiServices: GuiServiceFacade;
+    guiServices: ControllerFacade;
     isDialogOpen: boolean;
     isHowToIntegrateDialogOpen: boolean;
     isAboutDialogOpen: boolean;
@@ -145,7 +145,7 @@ export class App extends React.Component<{}, AppState> {
 
         this.state = {
             model: initialModel,
-            guiServices: new GuiServiceFacade(),
+            guiServices: new ControllerFacade(),
             isDialogOpen: false,
             isHowToIntegrateDialogOpen: false,
             isAboutDialogOpen: false

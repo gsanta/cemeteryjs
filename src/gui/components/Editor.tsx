@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './Editor.css';
-import { GuiServiceFacade } from '../gui_services/GuiServiceFacade';
+import { ControllerFacade } from '../controllers/ControllerFacade';
 import { debounce } from '../../model/utils/Functions';
 
 interface EditorState {
@@ -10,7 +10,7 @@ interface EditorState {
 export interface EditorProps {
     onModelChanged(content: string): void;
     initialModel: string;
-    guiServices: GuiServiceFacade;
+    guiServices: ControllerFacade;
 }
 
 export class Editor extends React.Component<EditorProps, EditorState> {
