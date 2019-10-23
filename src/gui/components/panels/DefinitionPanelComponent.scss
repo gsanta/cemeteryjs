@@ -1,0 +1,16 @@
+
+
+.definition-panel {
+    display: flex;
+    padding: 10px;
+
+    .names-column {
+        width: 150px;
+
+        input {
+            width: 100px;
+            display: block;
+            margin-top: 10px;
+        }
+    }
+}

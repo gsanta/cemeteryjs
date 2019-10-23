@@ -12,7 +12,7 @@ import { DefinitionPanelComponent } from './panels/DefinitionPanelComponent';
 import { AboutDialog } from './dialogs/AboutDialog';
 import { Engine } from 'babylonjs';
 
-import 'react-table/react-table.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export interface AppState {
     model: string;
@@ -170,7 +170,7 @@ export class App extends React.Component<{}, AppState> {
                         className="split-pane"
                         onChange={() => {this.engine.resize(); this.state.guiServices.textEditorService.resize();}}
                     >
-                        <SplitPane split="horizontal" onChange={() => this.state.guiServices.textEditorService.resize()}>
+                        <SplitPane split="horizontal" onChange={() => this.state.guiServices.textEditorService.resize()} defaultSize={500}>
                             <Editor guiServices={this.state.guiServices} onModelChanged={(content: string) => this.onModelChanged(content)} initialModel={this.state.model}/>
                             <DefinitionPanelComponent services={this.state.guiServices}/>
                         </SplitPane>

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import './DefinitionPanelComponent.scss';
 import { GuiServiceFacade } from '../../gui_services/GuiServiceFacade';
+import { Input } from '../forms/Input';
 
 const definitions = [
     {
@@ -41,15 +42,16 @@ export class DefinitionPanelComponent extends React.Component<DefinitionPanelPro
         const meshDescriptors = this.props.services.definitionService.meshDescriptors;
 
         const names = meshDescriptors.map(def => (
-            <div><input type="text" value={def.type}></input></div>
+            <div><Input type="text" value={def.type} onChange={() => null} placeholder="name"/></div>
         ))
 
         return (
-            <div style={{ display: 'flex'}}>
-                <div style={{width: '150px'}}>
+            <div className="definition-panel">
+                <div className="names-column">
                     {names}
                 </div>
-                <div style={{width: '300px'}}>other</div>
+                <div className="properties-columnt">
+                </div>
             </div>
         );
     }
