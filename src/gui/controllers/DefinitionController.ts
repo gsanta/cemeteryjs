@@ -32,12 +32,69 @@ export class DefinitionController {
             translateY: 2,
             materials: ['table.jpg'],
             isBorder: false
+        },
+        {
+            type: 'wall',
+            char: 'W',
+            model: 'wall.babylon',
+            shape: 'rect',
+            scale: 3,
+            translateY: 2,
+            materials: ['wall.jpg'],
+            isBorder: false
+        },
+        {
+            type: 'door',
+            char: 'D',
+            model: 'door.babylon',
+            scale: 3,
+            translateY: 2,
+            materials: ['door.jpg'],
+            isBorder: false
+        },
+        {
+            type: 'table',
+            char: 'T',
+            model: 'table.babylon',
+            scale: 3,
+            translateY: 2,
+            materials: ['table.jpg'],
+            isBorder: false
+        },
+        {
+            type: 'wall',
+            char: 'W',
+            model: 'wall.babylon',
+            shape: 'rect',
+            scale: 3,
+            translateY: 2,
+            materials: ['wall.jpg'],
+            isBorder: false
+        },
+        {
+            type: 'door',
+            char: 'D',
+            model: 'door.babylon',
+            scale: 3,
+            translateY: 2,
+            materials: ['door.jpg'],
+            isBorder: false
+        },
+        {
+            type: 'table',
+            char: 'T',
+            model: 'table.babylon',
+            scale: 3,
+            translateY: 2,
+            materials: ['table.jpg'],
+            isBorder: false
         }
     ];
 
     selectedMeshDescriptor: MeshDescriptor = this.meshDescriptors[0];
 
     private controllers: ControllerFacade;
+    tmpMaterial: string;
 
     constructor(controllers: ControllerFacade) {
         this.controllers = controllers;
@@ -75,10 +132,14 @@ export class DefinitionController {
         this.controllers.renderController.render();
     }
 
+    setTmpMaterial(path: string) {
+        this.tmpMaterial = path;
+        this.controllers.renderController.render();
+    }
 
-    // private createEmptyMeshDescriptor(): MeshDescriptor {
-    //     return {
-
-    //     }
-    // }
+    saveTmpMaterial(): void {
+        this.selectedMeshDescriptor.materials.push(this.tmpMaterial);
+        this.tmpMaterial = '';
+        this.controllers.renderController.render();
+    }
 }

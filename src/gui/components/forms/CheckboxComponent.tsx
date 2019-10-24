@@ -10,11 +10,6 @@ export interface CheckboxProps {
 
 export function CheckboxComponent(props: CheckboxProps) {
     return (
-        <FormCheck type="switch">
-            <FormCheckInput checked={props.isSelected} />
-            <FormCheckLabel onClick={() => props.onChange(!props.isSelected)}>
-                Is border?
-            </FormCheckLabel>
-        </FormCheck>
+        <FormCheck custom type="checkbox" label={"is border?"} onClick={() => props.onChange(!props.isSelected)} checked={props.isSelected}/>
     )
 }

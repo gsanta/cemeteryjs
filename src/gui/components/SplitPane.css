@@ -1,4 +1,8 @@
 
+.Pane2.horizontal {
+    overflow-y: auto;
+}
+
 .Resizer {
     background: #000;
     opacity: .2;

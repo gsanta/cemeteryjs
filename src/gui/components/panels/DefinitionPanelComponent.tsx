@@ -49,11 +49,13 @@ export class DefinitionPanelComponent extends React.Component<DefinitionPanelPro
         return (
             <div className="definition-panel">
                 <div className="names-column">
-                    {names}
+                    <div className="names-column-inner">
+                        {names}
+                    </div>
                 </div>
                 <div className="properties-column">
-                    <div className="row">
-                        <LabeledComponent label="Character">
+                    <div className="property-row">
+                        <LabeledComponent label="Character" direction="horizontal">
                             <DropdownComponent
                                 values={chars}
                                 currentValue={char}
@@ -63,8 +65,8 @@ export class DefinitionPanelComponent extends React.Component<DefinitionPanelPro
                         </LabeledComponent>
                         <CheckboxComponent isSelected={isBorder} onChange={isSelected => definitionService.setIsBorder(isSelected)}/>
                     </div>
-                    <div className="row">
-                        <LabeledComponent label="Model file path">
+                    <div className="property-row">
+                        <LabeledComponent label="Model file path" direction="vertical">
                             <InputComponent
                                 type="text"
                                 value={model} 
@@ -72,7 +74,7 @@ export class DefinitionPanelComponent extends React.Component<DefinitionPanelPro
                                 onChange={() => null} placeholder="name"
                             />
                         </LabeledComponent>
-                        <LabeledComponent label="Shape">
+                        <LabeledComponent label="Shape" direction="vertical">
                             <DropdownComponent
                                 values={definitionService.shapes}
                                 currentValue={shape}
@@ -80,8 +82,8 @@ export class DefinitionPanelComponent extends React.Component<DefinitionPanelPro
                             />
                         </LabeledComponent>
                     </div>
-                    <div className="row">
-                        <LabeledComponent label="Scale">
+                    <div className="property-row">
+                        <LabeledComponent label="Scale" direction="vertical">
                             <InputComponent
                                 type="number"
                                 value={scale} 
@@ -89,7 +91,7 @@ export class DefinitionPanelComponent extends React.Component<DefinitionPanelPro
                                 onChange={() => null} placeholder="name"
                             />
                         </LabeledComponent>
-                        <LabeledComponent label="Y translate">
+                        <LabeledComponent label="Y translate" direction="vertical">
                             <InputComponent
                                 type="number"
                                 value={scale} 
@@ -98,7 +100,7 @@ export class DefinitionPanelComponent extends React.Component<DefinitionPanelPro
                             />
                         </LabeledComponent>
                     </div>
-                    <div className="row">
+                    <div className="property-row">
                         {this.renderMaterials()}
                     </div>
                 </div>
@@ -107,7 +109,8 @@ export class DefinitionPanelComponent extends React.Component<DefinitionPanelPro
     }
 
     private renderMaterials() {
-        const selectedMeshDescriptor = this.props.services.definitionController.selectedMeshDescriptor;
+        const definitionController = this.props.services.definitionController;
+        const selectedMeshDescriptor = definitionController.selectedMeshDescriptor;
         const materials = selectedMeshDescriptor ? selectedMeshDescriptor.materials : [];
 
         const materialElements = materials.map(material => {
@@ -118,12 +121,13 @@ export class DefinitionPanelComponent extends React.Component<DefinitionPanelPro
 
         return (
             <div>
-                <LabeledComponent label="Materials">
+                <LabeledComponent label="Materials" direction="vertical">
                     <ButtonedInputComponent
                         type="text"
-                        value={""} 
+                        value={definitionController.tmpMaterial} 
                         onFocus={(type: string) => null}
-                        onChange={() => null} placeholder="name"
+                        onChange={val => definitionController.setTmpMaterial(val)} placeholder="name"
+                        onButtonClick={() => definitionController.saveTmpMaterial()}
                     />
                 </LabeledComponent>
                 {materialElements}

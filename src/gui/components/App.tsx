@@ -154,7 +154,7 @@ export class App extends React.Component<{}, AppState> {
 
     render() {
         return (
-            <div>
+            <div className="world-generator">
                 <Header
                     model={this.state.model}
                     openIntegrationCodeDialog={() => this.setState({isDialogOpen: true})}

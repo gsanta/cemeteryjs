@@ -1,6 +1,49 @@
-
+@import './variables.scss';
 
 .main-content {
     height: calc(100% - 40px);
     position: relative;
+}
+
+.world-generator {
+    .btn-primary {
+        background-color: $background03;
+    }
+
+    .labeled-component {
+        &.horizontal {
+            display: flex;
+
+            label {
+                margin-right: 10px;
+            }
+        }
+
+        margin-right: 20px;
+    }
+
+    .form-control {
+        background-color: $background03;
+        color: $text-color;
+        border: 1px solid transparent;
+
+        &:focus {
+            background-color: $background03;
+            color: $text-color;      
+            border: 1px solid transparent;
+            box-shadow: 0 0 0 0.2rem rgba($color: $background03, $alpha: 0.25); 
+        }
+    }
+
+    .dropdown-component {
+        .dropdown-toggle {
+            border: 1px solid transparent;
+
+            &:hover, &:active, &:focus {
+                background-color: $background03 !important;
+                border: 1px solid transparent;
+                box-shadow: 0 0 0 0.2rem rgba($color: $background03, $alpha: 0.25) !important; 
+            }
+        }
+    }
 }
