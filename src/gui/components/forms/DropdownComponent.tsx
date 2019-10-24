@@ -2,9 +2,8 @@ import Dropdown from "react-bootstrap/Dropdown";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownItem from "react-bootstrap/DropdownItem";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
-import DropdownButton from "react-bootstrap/DropdownButton";
 import * as React from 'react'
-import './Dropdown.scss';
+import './DropdownComponent.scss';
 
 export interface DropdownProps {
     values: string[];

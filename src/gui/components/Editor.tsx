@@ -26,7 +26,7 @@ export class Editor extends React.Component<EditorProps, EditorState> {
     }
 
     componentDidMount() {
-        const editor = this.props.guiServices.textEditorService.createEditor(this.editorElement.current, this.state.map);
+        const editor = this.props.guiServices.textEditorController.createEditor(this.editorElement.current, this.state.map);
         editor.onChange((content: string) => this.handleChange(content));
     }
 

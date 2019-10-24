@@ -1,13 +1,15 @@
 import { MeshDescriptor } from "../../Config";
-import { ControllerFacade } from "../controllers/ControllerFacade";
+import { ControllerFacade } from "./ControllerFacade";
 
-export class DefinitionService {
+export class DefinitionController {
+    shapes: string[] = ['rect'];
 
     meshDescriptors: MeshDescriptor[] = [
         {
             type: 'wall',
             char: 'W',
             model: 'wall.babylon',
+            shape: 'rect',
             scale: 3,
             translateY: 2,
             materials: ['wall.jpg'],
@@ -57,6 +59,22 @@ export class DefinitionService {
         this.selectedMeshDescriptor.isBorder = isBorder;
         this.controllers.renderController.render();
     }
+
+    setShape(shape: string) {
+        this.selectedMeshDescriptor.shape = shape;
+        this.controllers.renderController.render();
+    }
+
+    setScale(scale: number) {
+        this.selectedMeshDescriptor.scale = scale;
+        this.controllers.renderController.render();
+    }
+
+    setYTranslate(translateY: number) {
+        this.selectedMeshDescriptor.translateY = translateY;
+        this.controllers.renderController.render();
+    }
+
 
     // private createEmptyMeshDescriptor(): MeshDescriptor {
     //     return {

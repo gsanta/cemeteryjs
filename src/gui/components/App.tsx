@@ -168,9 +168,9 @@ export class App extends React.Component<{}, AppState> {
                         minSize={300}
                         defaultSize={900}
                         className="split-pane"
-                        onChange={() => {this.engine.resize(); this.state.guiServices.textEditorService.resize();}}
+                        onChange={() => {this.engine.resize(); this.state.guiServices.textEditorController.resize();}}
                     >
-                        <SplitPane split="horizontal" onChange={() => this.state.guiServices.textEditorService.resize()} defaultSize={500}>
+                        <SplitPane split="horizontal" onChange={() => this.state.guiServices.textEditorController.resize()} defaultSize={500}>
                             <Editor guiServices={this.state.guiServices} onModelChanged={(content: string) => this.onModelChanged(content)} initialModel={this.state.model}/>
                             <DefinitionPanelComponent services={this.state.guiServices}/>
                         </SplitPane>

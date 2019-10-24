@@ -1,17 +1,17 @@
-import { TextEditorService } from '../gui_services/TextEditorService';
-import { MonacoConfig } from '../gui_models/MonacoConfig';
-import { DefinitionService } from '../gui_services/DefinitionService';
+import { TextEditorController } from './TextEditorController';
+import { MonacoConfig } from '../views/MonacoConfig';
+import { DefinitionController } from './DefinitionController';
 import { RenderController } from './RenderController';
 
 
 export class ControllerFacade {
-    textEditorService: TextEditorService;
-    definitionService: DefinitionService;
+    textEditorController: TextEditorController;
+    definitionController: DefinitionController;
     renderController: RenderController;
 
     constructor() {
-        this.textEditorService = new TextEditorService(MonacoConfig);
-        this.definitionService = new DefinitionService(this);
+        this.textEditorController = new TextEditorController(MonacoConfig);
+        this.definitionController = new DefinitionController(this);
         this.renderController = new RenderController();
     }
 }

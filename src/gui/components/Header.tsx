@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './Header.scss';
-import { Button } from './forms/Button';
+import { ButtonComponent } from './forms/ButtonComponent';
 
 export interface HeaderProps {
     model: string;
@@ -20,11 +20,11 @@ export class Header extends React.Component<HeaderProps> {
         return (
             <div id="header">
                 <div>
-                    <Button text="Get integration code" type="success" onClick={() => this.props.openIntegrationCodeDialog()}/>
-                    <Button text="How to integrate" type="info" onClick={() => this.props.openHowToIntegrateDialog()}/>
+                    <ButtonComponent text="Get integration code" type="success" onClick={() => this.props.openIntegrationCodeDialog()}/>
+                    <ButtonComponent text="How to integrate" type="info" onClick={() => this.props.openHowToIntegrateDialog()}/>
                 </div>
                 <div>
-                    <Button text="About" type="info" onClick={() => this.props.openAboutDialog()}/>
+                    <ButtonComponent text="About" type="info" onClick={() => this.props.openAboutDialog()}/>
                 </div>
             </div>
         );

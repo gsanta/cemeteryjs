@@ -1,11 +1,11 @@
-import { MonacoConfig } from '../gui_models/MonacoConfig';
+import { MonacoConfig } from '../views/MonacoConfig';
 import * as monaco from 'monaco-editor';
 import { debounce } from '../../model/utils/Functions';
 
 const THEME = 'nightshiftsTheme';
 const LANGUAGE = 'nightshiftsLanguage';
 
-export class TextEditorService {
+export class TextEditorController {
     editor: any;
 
     constructor(monacoConfig: typeof MonacoConfig) {

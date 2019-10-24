@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './Button.scss';
+import './ButtonComponent.scss';
 
 export interface ButtonProps {
     text: string;
@@ -7,7 +7,7 @@ export interface ButtonProps {
     type: 'success' | 'info'
 }
 
-export function Button(props: ButtonProps) {
+export function ButtonComponent(props: ButtonProps) {
 
     return (
         <button className={`button ${props.type}`} onClick={() => props.onClick()}>{props.text}</button>
