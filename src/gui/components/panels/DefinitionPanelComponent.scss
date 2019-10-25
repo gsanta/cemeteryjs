@@ -35,6 +35,12 @@
             background: $background02;
         }
 
+        .added-material {
+            width: 280px;
+            display: flex;
+            justify-content: space-between;
+        }
+
         overflow-y: auto;
         width: calc(100% - 210px);
     }

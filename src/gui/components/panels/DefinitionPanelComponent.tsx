@@ -1,11 +1,11 @@
 import * as React from 'react';
-import './DefinitionPanelComponent.scss';
 import { ControllerFacade } from '../../controllers/ControllerFacade';
-import { InputComponent } from '../forms/InputComponent';
 import { CheckboxComponent } from '../forms/CheckboxComponent';
-import { ButtonedInputComponent } from '../forms/ButtonedInputComponent';
-import { LabeledComponent } from '../forms/LabeledComponent';
 import { DropdownComponent } from '../forms/DropdownComponent';
+import { InputComponent } from '../forms/InputComponent';
+import { LabeledComponent } from '../forms/LabeledComponent';
+import { MaterialsComponent } from './definition/MaterialsComponent';
+import './DefinitionPanelComponent.scss';
 
 
 export interface DefinitionPanelProps {
@@ -33,7 +33,7 @@ export class DefinitionPanelComponent extends React.Component<DefinitionPanelPro
                 <InputComponent 
                     type="text"
                     value={def.type} 
-                    onFocus={(type: string) => definitionService.setSelectedDescriptorByType(type)}
+                    onFocus={() => null}
                     onChange={() => null} placeholder="name"
                 />
             </div>
@@ -70,7 +70,7 @@ export class DefinitionPanelComponent extends React.Component<DefinitionPanelPro
                             <InputComponent
                                 type="text"
                                 value={model} 
-                                onFocus={(type: string) => definitionService.setSelectedDescriptorByType(type)}
+                                onFocus={() => null}
                                 onChange={() => null} placeholder="name"
                             />
                         </LabeledComponent>
@@ -87,7 +87,7 @@ export class DefinitionPanelComponent extends React.Component<DefinitionPanelPro
                             <InputComponent
                                 type="number"
                                 value={scale} 
-                                onFocus={(type: string) => definitionService.setSelectedDescriptorByType(type)}
+                                onFocus={() => null}
                                 onChange={() => null} placeholder="name"
                             />
                         </LabeledComponent>
@@ -95,43 +95,16 @@ export class DefinitionPanelComponent extends React.Component<DefinitionPanelPro
                             <InputComponent
                                 type="number"
                                 value={scale} 
-                                onFocus={(type: string) => definitionService.setSelectedDescriptorByType(type)}
+                                onFocus={() => null}
                                 onChange={() => null} placeholder="name"
                             />
                         </LabeledComponent>
                     </div>
                     <div className="property-row">
-                        {this.renderMaterials()}
+                        <MaterialsComponent definitionController={this.props.services.definitionController}/>
                     </div>
                 </div>
             </div>
         );
-    }
-
-    private renderMaterials() {
-        const definitionController = this.props.services.definitionController;
-        const selectedMeshDescriptor = definitionController.selectedMeshDescriptor;
-        const materials = selectedMeshDescriptor ? selectedMeshDescriptor.materials : [];
-
-        const materialElements = materials.map(material => {
-            return (
-                <div className="added-material">{material}</div>
-            )
-        });
-
-        return (
-            <div>
-                <LabeledComponent label="Materials" direction="vertical">
-                    <ButtonedInputComponent
-                        type="text"
-                        value={definitionController.tmpMaterial} 
-                        onFocus={(type: string) => null}
-                        onChange={val => definitionController.setTmpMaterial(val)} placeholder="name"
-                        onButtonClick={() => definitionController.saveTmpMaterial()}
-                    />
-                </LabeledComponent>
-                {materialElements}
-            </div>
-        )
     }
 };

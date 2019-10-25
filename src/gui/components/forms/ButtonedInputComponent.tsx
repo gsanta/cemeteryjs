@@ -5,7 +5,7 @@ import './ButtonedInputComponent.scss';
 
 export interface InputProps {
     onChange(text: string): void;
-    onFocus(text: string | number): void;
+    onFocus(): void;
     onButtonClick(): void;
     value: string | number;
     type: 'text' | 'number';
