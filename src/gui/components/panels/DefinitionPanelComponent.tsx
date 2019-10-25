@@ -2,10 +2,11 @@ import * as React from 'react';
 import { ControllerFacade } from '../../controllers/ControllerFacade';
 import { CheckboxComponent } from '../forms/CheckboxComponent';
 import { DropdownComponent } from '../forms/DropdownComponent';
-import { InputComponent } from '../forms/InputComponent';
+import { InputComponent, DelayedInputComponent } from '../forms/InputComponent';
 import { LabeledComponent } from '../forms/LabeledComponent';
 import { MaterialsComponent } from './definition/MaterialsComponent';
 import './DefinitionPanelComponent.scss';
+import { DefinitionProperty } from '../../controllers/DefinitionController';
 
 
 export interface DefinitionPanelProps {
@@ -67,11 +68,13 @@ export class DefinitionPanelComponent extends React.Component<DefinitionPanelPro
                     </div>
                     <div className="property-row">
                         <LabeledComponent label="Model file path" direction="vertical">
-                            <InputComponent
+                            <DelayedInputComponent
                                 type="text"
-                                value={model} 
-                                onFocus={() => null}
-                                onChange={() => null} placeholder="name"
+                                value={definitionService.getVal(DefinitionProperty.MODEL) as string} 
+                                placeholder="Model path..."
+                                setFocus={() => definitionService.focusProp(DefinitionProperty.MODEL)}
+                                updateProp={val => definitionService.updateStringProp(val)}
+                                commitProp={() => definitionService.commitProp()}            
                             />
                         </LabeledComponent>
                         <LabeledComponent label="Shape" direction="vertical">

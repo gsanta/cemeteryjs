@@ -1,8 +1,9 @@
 import * as React from 'react';
 import FormControl from 'react-bootstrap/FormControl';
-import { withFocusHandling } from '../panels/withFocusHandling';
+import { withDelayedSynchronization, DelayedSynchronizationProps } from '../panels/withFocusHandling';
+import { Focusable } from './Focusable';
 
-export interface InputProps {
+export interface InputProps extends Focusable {
     onChange(text: string): void;
     onFocus(): void;
     value: string | number;
@@ -23,4 +24,4 @@ export function InputComponent(props: InputProps) {
     );
 }
 
-// export default comp = withFocusHandling(InputComponent)
+export const DelayedInputComponent = withDelayedSynchronization<InputProps>(InputComponent);
