@@ -5,12 +5,20 @@
     position: relative;
 }
 
-.world-generator {
+.style-nightshifs {
+    .checkbox {
+        display: flex;
+    }
+
     .btn-primary {
         background-color: $background03;
     }
 
     .labeled-component {
+        .form-control {
+            color: $text-color;
+        }
+
         &.horizontal {
             display: flex;
 
@@ -26,6 +34,7 @@
         background-color: $background03;
         color: $text-color;
         border: 1px solid transparent;
+        height: 30px;
 
         &:focus {
             background-color: $background03;
@@ -37,6 +46,8 @@
 
     .dropdown-component {
         .dropdown-toggle {
+            height: 30px;
+            padding: 0px 10px;
             border: 1px solid transparent;
 
             &:hover, &:active, &:focus {
@@ -44,6 +55,16 @@
                 border: 1px solid transparent;
                 box-shadow: 0 0 0 0.2rem rgba($color: $background03, $alpha: 0.25) !important; 
             }
+        }
+    }
+
+    .input-group {
+        .buttoned-input-button {
+            height: 28px;
+            border: 1px solid transparent;
+            margin-top: 1px;
+            background: $grey4;
+            color: $text-color;
         }
     }
 }

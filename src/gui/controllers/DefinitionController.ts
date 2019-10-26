@@ -46,59 +46,59 @@ export class DefinitionController implements FormController<DefinitionProperty> 
             isBorder: false
         },
         {
-            type: 'wall',
+            type: 'window',
             char: 'W',
-            model: 'wall.babylon',
+            model: 'window.babylon',
             shape: 'rect',
             scale: 3,
             translateY: 2,
-            materials: ['wall.jpg'],
+            materials: ['window.jpg'],
             isBorder: false
         },
         {
-            type: 'door',
+            type: 'chair',
             char: 'D',
-            model: 'door.babylon',
+            model: 'chair.babylon',
             scale: 3,
             translateY: 2,
-            materials: ['door.jpg'],
+            materials: ['chair.jpg'],
             isBorder: false
         },
         {
-            type: 'table',
+            type: 'shelf',
             char: 'T',
-            model: 'table.babylon',
+            model: 'shelf.babylon',
             scale: 3,
             translateY: 2,
-            materials: ['table.jpg'],
+            materials: ['shelf.jpg'],
             isBorder: false
         },
         {
-            type: 'wall',
+            type: 'cupboard',
             char: 'W',
-            model: 'wall.babylon',
+            model: 'cupboard.babylon',
             shape: 'rect',
             scale: 3,
             translateY: 2,
-            materials: ['wall.jpg'],
+            materials: ['cupboard.jpg'],
             isBorder: false
         },
         {
-            type: 'door',
+            type: 'stair',
             char: 'D',
-            model: 'door.babylon',
+            model: 'stair.babylon',
             scale: 3,
             translateY: 2,
-            materials: ['door.jpg'],
+            materials: ['stair.jpg'],
             isBorder: false
         },
         {
-            type: 'table',
+            type: 'bath',
             char: 'T',
-            model: 'table.babylon',
+            model: 'bath.babylon',
             scale: 3,
             translateY: 2,
-            materials: ['table.jpg'],
+            materials: ['bath.jpg'],
             isBorder: false
         }
     ];
@@ -216,17 +216,26 @@ export class DefinitionController implements FormController<DefinitionProperty> 
                 return this.focusedPropType === property ? this.tempNumber : this.selectedMeshDescriptor.translateY;
             case DefinitionProperty.TYPE:
                 return this.focusedPropType === property ? this.tempString : this.selectedMeshDescriptor.type;
-            case DefinitionProperty.TYPE:
-                return this.focusedPropType === property ? this.tempString : this.selectedMeshDescriptor.type;
+            case DefinitionProperty.MATERIALS:
+                return this.focusedPropType === property ? this.tmpMaterial : '';
+        
         }
+    }
+
+    deleteListItem(prop: DefinitionProperty, index: number) {
+        switch(prop) {
+            case DefinitionProperty.MATERIALS:
+                this.selectedMeshDescriptor.materials.splice(index, 1);
+                this.syncSelected();
+                break;
+        } 
+
+        this.controllers.renderController.render();
     }
 
     selectDefinitionByType(type: string) {
         if (this.selectedMeshDescriptor) {
-            const clone = [...this.meshDescriptors];
-            const descriptorToReplace = this.meshDescriptors.find(desc => desc.type === this.selectedMeshDescriptor.type);
-            clone.splice(this.meshDescriptors.indexOf(descriptorToReplace), 1, this.selectedMeshDescriptor);
-            this.meshDescriptors = clone;
+            this.syncSelected();
         }
 
         const meshDescriptor = this.meshDescriptors.find(descriptor => descriptor.type === type);
@@ -246,5 +255,12 @@ export class DefinitionController implements FormController<DefinitionProperty> 
         this.selectedMeshDescriptor.materials.push(this.tmpMaterial);
         this.tmpMaterial = '';
         this.controllers.renderController.render();
+    }
+
+    private syncSelected() {
+        const clone = [...this.meshDescriptors];
+        const descriptorToReplace = this.meshDescriptors.find(desc => desc.type === this.selectedMeshDescriptor.type);
+        clone.splice(this.meshDescriptors.indexOf(descriptorToReplace), 1, this.selectedMeshDescriptor);
+        this.meshDescriptors = clone;
     }
 }

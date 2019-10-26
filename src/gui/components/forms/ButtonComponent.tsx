@@ -10,6 +10,6 @@ export interface ButtonProps {
 export function ButtonComponent(props: ButtonProps) {
 
     return (
-        <button className={`button ${props.type}`} onClick={() => props.onClick()}>{props.text}</button>
+        <button className={`button override ${props.type}`} onClick={() => props.onClick()}>{props.text}</button>
     );
 }

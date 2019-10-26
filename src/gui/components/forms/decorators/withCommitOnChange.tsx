@@ -11,8 +11,8 @@ export function withCommitOnChange<T extends Focusable>(WrappedComponent: React.
             return <WrappedComponent 
                 {...this.props as any}
                 onFocus={() => this.props.formController.focusProp(this.props.propertyName)}
-                onChange={(val: string) => {
-                    this.updateProp(val);
+                onChange={(val: boolean) => {
+                    this.props.formController.updateBooleanProp(val);
                     this.props.formController.commitProp();
                 }}
                 onBlur={() => null}

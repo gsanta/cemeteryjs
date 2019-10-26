@@ -40,6 +40,7 @@ export class DefinitionPanelComponent extends React.Component<DefinitionPanelPro
                     }}
                     onChange={val => definitionController.updateStringProp(val)}
                     onBlur={() => definitionController.commitProp()}
+                    isMarked={def.type === definitionController.selectedMeshDescriptor.type}
                 />
             </div>
         ));

@@ -154,7 +154,7 @@ export class App extends React.Component<{}, AppState> {
 
     render() {
         return (
-            <div className="world-generator">
+            <div className="style-nightshifs">
                 <Header
                     model={this.state.model}
                     openIntegrationCodeDialog={() => this.setState({isDialogOpen: true})}

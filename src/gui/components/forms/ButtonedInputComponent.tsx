@@ -17,9 +17,7 @@ export function ButtonedInputComponent(props: InputProps) {
         <InputGroup>
             <FormControl
                 type="text"
-                placeholder="Username"
-                aria-describedby="inputGroupPrepend"
-                name="username"
+                placeholder="Type material path..."
                 value={props.value && props.value.toString()}
                 onFocus={() => props.onFocus()}
                 onChange={(e: React.ChangeEvent<any>) => props.onChange(e.target.value)}

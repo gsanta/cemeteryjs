@@ -35,11 +35,11 @@ export class MaterialsComponent extends React.Component<{definitionController: D
         const selectedMeshDescriptor = this.props.definitionController.selectedMeshDescriptor;
         const materials = selectedMeshDescriptor ? selectedMeshDescriptor.materials : [];
 
-        const addedMaterials = materials.map(material => {
+        const addedMaterials = materials.map((material, index) => {
             return (
                 <div className="added-material">
                     <div>{material}
-                    </div><CloseIconComponent onClick={() => null}/>
+                    </div><CloseIconComponent onClick={() => this.props.definitionController.deleteListItem(DefinitionProperty.MATERIALS, index)}/>
                 </div>
             )
         });
