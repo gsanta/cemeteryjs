@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DefinitionController } from '../../../controllers/DefinitionController';
+import { DefinitionController, DefinitionProperty } from '../../../controllers/DefinitionController';
 import { LabeledComponent } from '../../forms/LabeledComponent';
 import { ButtonedInputComponent } from '../../forms/ButtonedInputComponent';
 import { CloseIconComponent } from '../../dialogs/CloseIconComponent';
@@ -21,10 +21,11 @@ export class MaterialsComponent extends React.Component<{definitionController: D
             <LabeledComponent label="Materials" direction="vertical">
                 <ButtonedInputComponent
                     type="text"
-                    value={this.props.definitionController.tmpMaterial} 
-                    onFocus={() => null}
-                    onChange={val => this.props.definitionController.setTmpMaterial(val)} placeholder="name"
-                    onButtonClick={() => this.props.definitionController.saveTmpMaterial()}
+                    value={this.props.definitionController.getVal(DefinitionProperty.MATERIALS) as string} 
+                    onFocus={() => this.props.definitionController.focusProp(DefinitionProperty.MATERIALS)}
+                    onChange={val => this.props.definitionController.updateStringProp(val)}
+                    placeholder="name"
+                    onButtonClick={() => this.props.definitionController.commitProp()}
                 />
             </LabeledComponent>
         );

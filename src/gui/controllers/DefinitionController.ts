@@ -6,6 +6,13 @@ export enum DefinitionProperty {
     TYPE, CHAR, MODEL, SHAPE, SCALE, TRANSLATE_Y, MATERIALS, IS_BORDER
 }
 
+function cloneMeshDescriptor(descriptor: MeshDescriptor) {
+    const clone = {...descriptor};
+    clone.materials = [...clone.materials];
+
+    return clone;
+}
+
 export class DefinitionController implements FormController<DefinitionProperty> {
     shapes: string[] = ['rect'];
 
@@ -96,13 +103,14 @@ export class DefinitionController implements FormController<DefinitionProperty> 
         }
     ];
 
-    selectedMeshDescriptor: MeshDescriptor = this.meshDescriptors[0];
+    selectedMeshDescriptor: MeshDescriptor;
 
     private controllers: ControllerFacade;
     tmpMaterial: string;
 
     constructor(controllers: ControllerFacade) {
         this.controllers = controllers;
+        this.selectDefinitionByType(this.meshDescriptors[0].type);
     }
 
     private tempString: string;
@@ -134,11 +142,18 @@ export class DefinitionController implements FormController<DefinitionProperty> 
             case DefinitionProperty.TRANSLATE_Y:
                 this.tempNumber = this.selectedMeshDescriptor.translateY;
                 break;
+            case DefinitionProperty.MATERIALS:
+                this.tmpMaterial = "";
+                break;
         }
     }
 
     updateStringProp(value: string) {
-        this.tempString = value;        
+        if (this.focusedPropType === DefinitionProperty.MATERIALS) {
+            this.tmpMaterial = value;
+        } else {
+            this.tempString = value;        
+        }
         this.controllers.renderController.render();            
     }
 
@@ -175,38 +190,51 @@ export class DefinitionController implements FormController<DefinitionProperty> 
             case DefinitionProperty.TYPE:
                 this.selectedMeshDescriptor.type = this.tempString;
                 break;
+            case DefinitionProperty.MATERIALS:
+                this.selectedMeshDescriptor.materials.push(this.tmpMaterial);
+                this.tmpMaterial = '';
+                this.focusedPropType = null;
+                break;
         }
 
         this.controllers.renderController.render();            
     }
 
     getVal(property: DefinitionProperty) {
-        if (property === this.focusedPropType) {
-            return this.tempString;
-        }
-
         switch(property) {
             case DefinitionProperty.MODEL:
-                return this.selectedMeshDescriptor.model;
+                return this.focusedPropType === property ? this.tempString : this.selectedMeshDescriptor.model;
             case DefinitionProperty.CHAR:
-                return this.selectedMeshDescriptor.char;
+                return this.focusedPropType === property ? this.tempString : this.selectedMeshDescriptor.char;
             case DefinitionProperty.IS_BORDER:
-                return this.selectedMeshDescriptor.isBorder;
+                return this.focusedPropType === property ? this.tempBoolean : this.selectedMeshDescriptor.isBorder;
             case DefinitionProperty.SCALE:
-                return this.selectedMeshDescriptor.scale;
+                return this.focusedPropType === property ? this.tempNumber : this.selectedMeshDescriptor.scale;
             case DefinitionProperty.SHAPE:
-                return this.selectedMeshDescriptor.shape;
+                return this.focusedPropType === property ? this.tempString : this.selectedMeshDescriptor.shape;
             case DefinitionProperty.TRANSLATE_Y:
-                return this.selectedMeshDescriptor.translateY;
+                return this.focusedPropType === property ? this.tempNumber : this.selectedMeshDescriptor.translateY;
             case DefinitionProperty.TYPE:
-                return this.selectedMeshDescriptor.type;
+                return this.focusedPropType === property ? this.tempString : this.selectedMeshDescriptor.type;
+            case DefinitionProperty.TYPE:
+                return this.focusedPropType === property ? this.tempString : this.selectedMeshDescriptor.type;
         }
     }
 
-    setSelectedDescriptorByType(type: string) {
+    selectDefinitionByType(type: string) {
+        if (this.selectedMeshDescriptor) {
+            const clone = [...this.meshDescriptors];
+            const descriptorToReplace = this.meshDescriptors.find(desc => desc.type === this.selectedMeshDescriptor.type);
+            clone.splice(this.meshDescriptors.indexOf(descriptorToReplace), 1, this.selectedMeshDescriptor);
+            this.meshDescriptors = clone;
+        }
+
         const meshDescriptor = this.meshDescriptors.find(descriptor => descriptor.type === type);
-        this.selectedMeshDescriptor = meshDescriptor;
-        this.controllers.renderController.render();
+        this.selectedMeshDescriptor = cloneMeshDescriptor(meshDescriptor);
+
+        if (this.controllers.renderController) {
+            this.controllers.renderController.render();
+        }
     }
   
     setTmpMaterial(path: string) {

@@ -21,6 +21,7 @@ export function ButtonedInputComponent(props: InputProps) {
                 aria-describedby="inputGroupPrepend"
                 name="username"
                 value={props.value && props.value.toString()}
+                onFocus={() => props.onFocus()}
                 onChange={(e: React.ChangeEvent<any>) => props.onChange(e.target.value)}
             />
             <InputGroup.Append>

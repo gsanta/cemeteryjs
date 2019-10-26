@@ -5,16 +5,15 @@ import DropdownToggle from "react-bootstrap/DropdownToggle";
 import * as React from 'react'
 import './DropdownComponent.scss';
 import { withCommitOnChange } from './decorators/withCommitOnChange';
+import { Focusable } from "./Focusable";
 
-export interface DropdownProps {
+export interface DropdownProps extends Focusable {
     values: string[];
     currentValue: string;
     onChange(newValue: string): void;
-    onFocus(): void;
-    onBlur(): void;
 }
 
-export function _DropdownComponent(props: DropdownProps) {
+export function DropdownComponent(props: DropdownProps) {
     const placeholder = <span>Select...</span>
     const options = props.values.map(char => <DropdownItem eventKey={char}>{char}</DropdownItem>)
 
@@ -35,4 +34,4 @@ export function _DropdownComponent(props: DropdownProps) {
     );
 }
 
-export const ConnectedDropdownComponent = withCommitOnChange<DropdownProps, boolean>(_DropdownComponent);
+export const ConnectedDropdownComponent = withCommitOnChange<DropdownProps>(DropdownComponent);

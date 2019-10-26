@@ -2,8 +2,8 @@ import * as React from 'react';
 import { ControllerFacade } from '../../controllers/ControllerFacade';
 import { DefinitionProperty } from '../../controllers/DefinitionController';
 import { CheckboxComponent } from '../forms/CheckboxComponent';
-import { DropdownComponent } from '../forms/DropdownComponent';
-import { DelayedInputComponent } from '../forms/InputComponent';
+import { ConnectedDropdownComponent } from '../forms/DropdownComponent';
+import { ConnectedInputComponent, InputComponent } from '../forms/InputComponent';
 import { LabeledComponent } from '../forms/LabeledComponent';
 import { MaterialsComponent } from './definition/MaterialsComponent';
 import './DefinitionPanelComponent.scss';
@@ -25,29 +25,24 @@ export class DefinitionPanelComponent extends React.Component<DefinitionPanelPro
     }
 
     render() {
-        const definitionService = this.props.services.definitionController;
+        const definitionController = this.props.services.definitionController;
         const meshDescriptors = this.props.services.definitionController.meshDescriptors;
-        const selectedMeshDescriptor = this.props.services.definitionController.selectedMeshDescriptor;
 
         const names = meshDescriptors.map(def => (
             <div>
-                <DelayedInputComponent 
+                <InputComponent 
                     type="text"
                     value={def.type} 
                     placeholder="Type..."
-                    setFocus={() => definitionService.focusProp(DefinitionProperty.TYPE)}
-                    updateProp={val => definitionService.updateStringProp(val)}
-                    commitProp={() => definitionService.commitProp()}            
+                    onFocus={() => {
+                        definitionController.selectDefinitionByType(def.type);
+                        definitionController.focusProp(DefinitionProperty.TYPE);
+                    }}
+                    onChange={val => definitionController.updateStringProp(val)}
+                    onBlur={() => definitionController.commitProp()}
                 />
             </div>
         ));
-
-        const char = selectedMeshDescriptor ? selectedMeshDescriptor.char : null;
-        const isBorder = selectedMeshDescriptor ? selectedMeshDescriptor.isBorder : false;
-        const model = selectedMeshDescriptor ? selectedMeshDescriptor.model : null;
-        const shape = selectedMeshDescriptor ? selectedMeshDescriptor.shape : null;
-        const scale = selectedMeshDescriptor ? selectedMeshDescriptor.scale : 1;
-        const materials = selectedMeshDescriptor ? selectedMeshDescriptor.materials : [];
 
         return (
             <div className="definition-panel">
@@ -59,62 +54,61 @@ export class DefinitionPanelComponent extends React.Component<DefinitionPanelPro
                 <div className="properties-column">
                     <div className="property-row">
                         <LabeledComponent label="Character" direction="horizontal">
-                            <DropdownComponent
+                            <ConnectedDropdownComponent
                                 values={chars}
-                                currentValue={char}
-                                setFocus={() => definitionService.focusProp(DefinitionProperty.CHAR)}
-                                updateProp={val => definitionService.updateBooleanProp(val)}
-                                commitProp={() => definitionService.commitProp()}     
+                                currentValue={definitionController.getVal(DefinitionProperty.CHAR) as string}
+                                formController={definitionController}
+                                propertyName={DefinitionProperty.CHAR}
+                                propertyType='string'
                             />
-
                         </LabeledComponent>
                         <CheckboxComponent 
-                            isSelected={isBorder}
-                            setFocus={() => definitionService.focusProp(DefinitionProperty.IS_BORDER)}
-                            updateProp={(val: boolean) => definitionService.updateBooleanProp(val)}
-                            commitProp={() => definitionService.commitProp()}   
+                            isSelected={definitionController.getVal(DefinitionProperty.IS_BORDER) as boolean}
+                            formController={definitionController}
+                            propertyName={DefinitionProperty.IS_BORDER}
+                            propertyType='boolean'
                         />
                     </div>
                     <div className="property-row">
                         <LabeledComponent label="Model file path" direction="vertical">
-                            <DelayedInputComponent
+                            <ConnectedInputComponent
                                 type="text"
-                                value={definitionService.getVal(DefinitionProperty.MODEL) as string} 
+                                value={definitionController.getVal(DefinitionProperty.MODEL) as string} 
                                 placeholder="Model path..."
-                                setFocus={() => definitionService.focusProp(DefinitionProperty.MODEL)}
-                                updateProp={val => definitionService.updateStringProp(val)}
-                                commitProp={() => definitionService.commitProp()}            
+                                formController={definitionController}
+                                propertyName={DefinitionProperty.MODEL}
+                                propertyType='string'
                             />
                         </LabeledComponent>
                         <LabeledComponent label="Shape" direction="vertical">
-                            <DropdownComponent
-                                values={definitionService.shapes}
-                                currentValue={shape}
-                                setFocus={() => definitionService.focusProp(DefinitionProperty.SHAPE)}
-                                updateProp={val => definitionService.updateBooleanProp(val)}
-                                commitProp={() => definitionService.commitProp()}            
+                            <ConnectedDropdownComponent
+                                values={definitionController.shapes}
+                                currentValue={definitionController.getVal(DefinitionProperty.SHAPE) as string}
+                                formController={definitionController}
+                                propertyName={DefinitionProperty.SHAPE}
+                                propertyType='string'
                             />
                         </LabeledComponent>
                     </div>
                     <div className="property-row">
                         <LabeledComponent label="Scale" direction="vertical">
-                            <DelayedInputComponent
+                            <ConnectedInputComponent
                                 type="number"
-                                value={scale} 
+                                value={definitionController.getVal(DefinitionProperty.SCALE) as number} 
                                 placeholder="Scale..."
-                                setFocus={() => definitionService.focusProp(DefinitionProperty.SCALE)}
-                                updateProp={val => definitionService.updateStringProp(val)}
-                                commitProp={() => definitionService.commitProp()}    
+                                formController={definitionController}
+                                propertyName={DefinitionProperty.SCALE}
+                                propertyType='number'
                             />
                         </LabeledComponent>
                         <LabeledComponent label="Y translate" direction="vertical">
-                            <DelayedInputComponent
+                            <ConnectedInputComponent
                                 type="number"
-                                value={scale} 
+                                value={definitionController.getVal(DefinitionProperty.TRANSLATE_Y) as string} 
                                 placeholder="Y translate..."
-                                setFocus={() => definitionService.focusProp(DefinitionProperty.TRANSLATE_Y)}
-                                updateProp={val => definitionService.updateStringProp(val)}
-                                commitProp={() => definitionService.commitProp()}
+                                formController={definitionController}
+                                propertyName={DefinitionProperty.TRANSLATE_Y}
+                                propertyType='number'
                             />
                         </LabeledComponent>
                     </div>
