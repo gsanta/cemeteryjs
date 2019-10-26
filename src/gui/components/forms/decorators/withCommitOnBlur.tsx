@@ -1,17 +1,10 @@
 import * as React from "react";
-import { Focusable } from '../forms/Focusable';
+import { Focusable } from '../Focusable';
+import { InputFieldCommands } from "./InputFieldCommands";
 
-export interface DelayedSynchronizationProps {
-    setFocus(): void;
-    updateProp(val: string): void;
-    commitProp(): void;            
-
-}
-
-
-export function withDelayedSynchronization<T extends Focusable>(WrappedComponent: React.ComponentType<T>) {
+export function withCommitOnBlur<T extends Focusable>(WrappedComponent: React.ComponentType<T>) {
     
-    return class extends React.Component<Omit<T & DelayedSynchronizationProps, 'onBlur' | 'onFocus' | 'onChange'>> {
+    return class extends React.Component<Omit<T & InputFieldCommands, 'onBlur' | 'onFocus' | 'onChange'>> {
 
         render(): JSX.Element {
             // it seems to be a react bug to have to cast props to any

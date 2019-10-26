@@ -4,19 +4,27 @@ import DropdownItem from "react-bootstrap/DropdownItem";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
 import * as React from 'react'
 import './DropdownComponent.scss';
+import { withCommitOnChange } from './decorators/withCommitOnChange';
 
 export interface DropdownProps {
     values: string[];
     currentValue: string;
     onChange(newValue: string): void;
+    onFocus(): void;
+    onBlur(): void;
 }
 
-export function DropdownComponent(props: DropdownProps) {
+export function _DropdownComponent(props: DropdownProps) {
     const placeholder = <span>Select...</span>
     const options = props.values.map(char => <DropdownItem eventKey={char}>{char}</DropdownItem>)
 
     return (
-        <Dropdown className="dropdown-component" onSelect={e => props.onChange(e)}>
+        <Dropdown 
+            className="dropdown-component"
+            onSelect={e => props.onChange(e)}
+            onFocus={() => props.onFocus()}
+            onBlur={() => props.onBlur()}
+        >
             <DropdownToggle id="dropdown-basic">
                 {props.currentValue ? props.currentValue : placeholder}
             </DropdownToggle>
@@ -26,3 +34,5 @@ export function DropdownComponent(props: DropdownProps) {
         </Dropdown>
     );
 }
+
+export const ConnectedDropdownComponent = withCommitOnChange<DropdownProps, boolean>(_DropdownComponent);

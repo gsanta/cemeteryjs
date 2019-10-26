@@ -1,11 +1,12 @@
 import { MeshDescriptor } from "../../Config";
 import { ControllerFacade } from "./ControllerFacade";
+import { FormController } from './FormController';
 
 export enum DefinitionProperty {
     TYPE, CHAR, MODEL, SHAPE, SCALE, TRANSLATE_Y, MATERIALS, IS_BORDER
 }
 
-export class DefinitionController {
+export class DefinitionController implements FormController<DefinitionProperty> {
     shapes: string[] = ['rect'];
 
     meshDescriptors: MeshDescriptor[] = [

@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { ControllerFacade } from '../../controllers/ControllerFacade';
+import { DefinitionProperty } from '../../controllers/DefinitionController';
 import { CheckboxComponent } from '../forms/CheckboxComponent';
 import { DropdownComponent } from '../forms/DropdownComponent';
-import { InputComponent, DelayedInputComponent } from '../forms/InputComponent';
+import { DelayedInputComponent } from '../forms/InputComponent';
 import { LabeledComponent } from '../forms/LabeledComponent';
 import { MaterialsComponent } from './definition/MaterialsComponent';
 import './DefinitionPanelComponent.scss';
-import { DefinitionProperty } from '../../controllers/DefinitionController';
 
 
 export interface DefinitionPanelProps {
@@ -31,11 +31,13 @@ export class DefinitionPanelComponent extends React.Component<DefinitionPanelPro
 
         const names = meshDescriptors.map(def => (
             <div>
-                <InputComponent 
+                <DelayedInputComponent 
                     type="text"
                     value={def.type} 
-                    onFocus={() => null}
-                    onChange={() => null} placeholder="name"
+                    placeholder="Type..."
+                    setFocus={() => definitionService.focusProp(DefinitionProperty.TYPE)}
+                    updateProp={val => definitionService.updateStringProp(val)}
+                    commitProp={() => definitionService.commitProp()}            
                 />
             </div>
         ));
@@ -60,11 +62,18 @@ export class DefinitionPanelComponent extends React.Component<DefinitionPanelPro
                             <DropdownComponent
                                 values={chars}
                                 currentValue={char}
-                                onChange={(char: string) => definitionService.setChar(char)}
+                                setFocus={() => definitionService.focusProp(DefinitionProperty.CHAR)}
+                                updateProp={val => definitionService.updateBooleanProp(val)}
+                                commitProp={() => definitionService.commitProp()}     
                             />
 
                         </LabeledComponent>
-                        <CheckboxComponent isSelected={isBorder} onChange={isSelected => definitionService.setIsBorder(isSelected)}/>
+                        <CheckboxComponent 
+                            isSelected={isBorder}
+                            setFocus={() => definitionService.focusProp(DefinitionProperty.IS_BORDER)}
+                            updateProp={(val: boolean) => definitionService.updateBooleanProp(val)}
+                            commitProp={() => definitionService.commitProp()}   
+                        />
                     </div>
                     <div className="property-row">
                         <LabeledComponent label="Model file path" direction="vertical">
@@ -81,25 +90,31 @@ export class DefinitionPanelComponent extends React.Component<DefinitionPanelPro
                             <DropdownComponent
                                 values={definitionService.shapes}
                                 currentValue={shape}
-                                onChange={(char: string) => definitionService.setShape(char)}
+                                setFocus={() => definitionService.focusProp(DefinitionProperty.SHAPE)}
+                                updateProp={val => definitionService.updateBooleanProp(val)}
+                                commitProp={() => definitionService.commitProp()}            
                             />
                         </LabeledComponent>
                     </div>
                     <div className="property-row">
                         <LabeledComponent label="Scale" direction="vertical">
-                            <InputComponent
+                            <DelayedInputComponent
                                 type="number"
                                 value={scale} 
-                                onFocus={() => null}
-                                onChange={() => null} placeholder="name"
+                                placeholder="Scale..."
+                                setFocus={() => definitionService.focusProp(DefinitionProperty.SCALE)}
+                                updateProp={val => definitionService.updateStringProp(val)}
+                                commitProp={() => definitionService.commitProp()}    
                             />
                         </LabeledComponent>
                         <LabeledComponent label="Y translate" direction="vertical">
-                            <InputComponent
+                            <DelayedInputComponent
                                 type="number"
                                 value={scale} 
-                                onFocus={() => null}
-                                onChange={() => null} placeholder="name"
+                                placeholder="Y translate..."
+                                setFocus={() => definitionService.focusProp(DefinitionProperty.TRANSLATE_Y)}
+                                updateProp={val => definitionService.updateStringProp(val)}
+                                commitProp={() => definitionService.commitProp()}
                             />
                         </LabeledComponent>
                     </div>

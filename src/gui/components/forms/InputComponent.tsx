@@ -1,6 +1,6 @@
 import * as React from 'react';
 import FormControl from 'react-bootstrap/FormControl';
-import { withDelayedSynchronization, DelayedSynchronizationProps } from '../panels/withFocusHandling';
+import { withCommitOnBlur, DelayedSynchronizationProps } from './decorators/withCommitOnBlur';
 import { Focusable } from './Focusable';
 
 export interface InputProps extends Focusable {
@@ -24,4 +24,4 @@ export function InputComponent(props: InputProps) {
     );
 }
 
-export const DelayedInputComponent = withDelayedSynchronization<InputProps>(InputComponent);
+export const DelayedInputComponent = withCommitOnBlur<InputProps>(InputComponent);
