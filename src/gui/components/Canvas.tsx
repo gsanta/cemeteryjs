@@ -1,16 +1,15 @@
 import * as React from 'react';
 import './SplitPane.css';
 import './Canvas.scss'
-import { BabylonjsDemo } from '../../integrations/babylonjs/demo/BabylonjsDemo';
-import { Engine } from 'babylonjs/Engines/engine';
+import { ControllerFacade } from '../controllers/ControllerFacade';
 
 export interface CanvasProps {
-    model: string;
-    onWebglReady(engine: Engine)
+    controllers: ControllerFacade;
 }
 
 export class Canvas extends React.Component<CanvasProps> {
     private canvasRef: React.RefObject<HTMLCanvasElement>;
+    private worldMap: string;
 
     constructor(props: CanvasProps) {
         super(props);
@@ -19,12 +18,15 @@ export class Canvas extends React.Component<CanvasProps> {
     }
 
     componentDidMount() {
-        const engine = new BabylonjsDemo().setupDemo(this.props.model, this.canvasRef.current);
-        this.props.onWebglReady(engine);
+        this.props.controllers.canvasController.init(this.canvasRef.current);
+        this.props.controllers.canvasController.updateCanvas(this.props.controllers.worldMapController.getMap());
     }
 
     componentDidUpdate() {
-        new BabylonjsDemo().setupDemo(this.props.model, this.canvasRef.current);
+        if (this.worldMap !== this.props.controllers.worldMapController.getMap()) {
+            this.worldMap = this.props.controllers.worldMapController.getMap();
+            this.props.controllers.canvasController.updateCanvas(this.worldMap);
+        }
     }
 
     render() {

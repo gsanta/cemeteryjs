@@ -1,42 +1,58 @@
 import { MonacoConfig } from '../views/MonacoConfig';
-import * as monaco from 'monaco-editor';
 import { debounce } from '../../model/utils/Functions';
 
 const THEME = 'nightshiftsTheme';
 const LANGUAGE = 'nightshiftsLanguage';
 
+const initialText = 
+`*****************************************************************************************************************************************
+*WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW*
+*W-------------------------------WRR-------------------------------------------------------------------------------------------------RRW*
+*W-------------------------------WRR-------------------------------------------------------------------------------------------------RRW*
+*W-------------------------------W-----------------------------------------------------------------------------------------------------W*
+*W-------------------------------W-----------------------------------------------------------------------------------------------------W*
+*W-------------------------------W-----------------------------------------------------------------------------------------------------W*
+*W-------------------------------WWWWWWWWWWWWWWWWWWWWWWWWWWWWWDDDDWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWDDDDWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWDDDDWW*
+*W-------------------------------W-------------------W-------------W---------------------------------W---------------------------------W*
+*W-------------------------------W-------------------W-------------W---------------------------------W---------------------------------W*
+*W-------------------------------W-------------------W-------------W---------------------------------W---------------------------------W*
+*W-------------------------------W-------------------W-------------W---------------------------------W---------------------------------W*
+*W-------------------------------W-------------------W-------------W---------------------------------W---------------------------------W*
+*W-------------------------------W-------------------W-------------W---------------------------------W---------------------------------W*
+*W-------------------------------WWWWWWWWWWWWWWWWWWWWW-------------W---------------------------------W---------------------------------W*
+*W-------------------------------W---------------------------------W---------------------------------W---------------------------------W*
+*W-------------------------------W---------------------------------W---------------------------------W---------------------------------W*
+*W-------------------------------W---------------------------------W---------------------------------W---------------------------------W*
+*W-------------------------------W---------------------------------W---------------------------------W---------------------------------W*
+*W-------------------------------W---------------------------------W---------------------------------W---------------------------------W*
+*W-------------------------------W---------------------------------W---------------------------------W---------------------------------W*
+*W-------------------------------W---------------------------------W---------------------------------W---------------------------------W*
+*WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWIIIIWWWWWWWWWWWWWIIIWWWWWWWWWWWWWWIIIIWWWWWWWWWWWWWIIIWWWWWWWWWWWWWWIIIIWWWWWWWWWWWWWIIIWWWWWWWWWWW*
+*****************************************************************************************************************************************`;
+
 export class TextEditorController {
     editor: any;
+    text: string = initialText;
 
-    constructor(monacoConfig: typeof MonacoConfig) {
-        monacoConfig;
+    createEditor(monacoModule: any, monacoConfig: typeof MonacoConfig, element: HTMLDivElement, content: string) {
+        monacoModule.languages.register({ id: LANGUAGE });
 
-        monaco.languages.register({ id: LANGUAGE });
-
-        monaco.languages.setMonarchTokensProvider(LANGUAGE, {
+        monacoModule.languages.setMonarchTokensProvider(LANGUAGE, {
             tokenizer: <any> {
                 root: monacoConfig.languageTokens
             }
         });
 
-        monaco.editor.defineTheme(THEME, <any> {
+        monacoModule.editor.defineTheme(THEME, <any> {
             base: 'vs-dark',
             inherit: true,
             rules: monacoConfig.colorRules,
             colors: {
-                'editor.foreground': '#000000',
-                // 'editor.background': '#EDF9FA',
-                // 'editorCursor.foreground': '#8B0000',
-                // 'editor.lineHighlightBackground': '#0000FF20',
-                // 'editorLineNumber.foreground': '#008800',
-                // 'editor.selectionBackground': '#88000030',
-                // 'editor.inactiveSelectionBackground': '#88000015'
+                'editor.foreground': '#000000'
             }
         });
-    }
 
-    createEditor(element: HTMLDivElement, content: string) {
-        const editor = monaco.editor.create(element, {
+        const editor = monacoModule.editor.create(element, {
             value: content,
             theme: THEME,
             language: LANGUAGE,
@@ -59,5 +75,9 @@ export class TextEditorController {
 
     resize() {
         this.editor.layout();
+    }
+
+    setText(text: string) {
+        this.text = text;
     }
 }

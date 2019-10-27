@@ -2,6 +2,9 @@ import * as React from 'react';
 import './Editor.css';
 import { ControllerFacade } from '../controllers/ControllerFacade';
 import { debounce } from '../../model/utils/Functions';
+import * as monaco from 'monaco-editor';
+import { MonacoConfig } from '../views/MonacoConfig';
+
 
 interface EditorState {
     map: string;
@@ -9,8 +12,7 @@ interface EditorState {
 
 export interface EditorProps {
     onModelChanged(content: string): void;
-    initialModel: string;
-    guiServices: ControllerFacade;
+    controllers: ControllerFacade;
 }
 
 export class Editor extends React.Component<EditorProps, EditorState> {
@@ -19,14 +21,10 @@ export class Editor extends React.Component<EditorProps, EditorState> {
     constructor(props: EditorProps) {
         super(props);
         this.editorElement = React.createRef();
-
-        this.state = {
-            map: this.props.initialModel
-        }
     }
 
     componentDidMount() {
-        const editor = this.props.guiServices.textEditorController.createEditor(this.editorElement.current, this.state.map);
+        const editor = this.props.controllers.textEditorController.createEditor(monaco, MonacoConfig, this.editorElement.current, this.props.controllers.textEditorController.text);
         editor.onChange((content: string) => this.handleChange(content));
     }
 
@@ -37,6 +35,6 @@ export class Editor extends React.Component<EditorProps, EditorState> {
     }
 
     handleChange(model: string) {
-        this.props.onModelChanged(model);
+        this.props.controllers.textEditorController.setText(model);
     };
 }

@@ -35,7 +35,7 @@ export class MaterialsComponent extends React.Component<{definitionController: D
         const selectedMeshDescriptor = this.props.definitionController.selectedMeshDescriptor;
         const materials = selectedMeshDescriptor ? selectedMeshDescriptor.materials : [];
 
-        const addedMaterials = materials.map((material, index) => {
+        const addedMaterials = (materials || []).map((material, index) => {
             return (
                 <div className="added-material">
                     <div>{material}

@@ -10,7 +10,7 @@ export const MonacoConfig = {
     ],
 
     colorRules: [
-        { token: 'character-W', foreground: '000000' },
+        { token: 'character-W', foreground: 'FFFFFF' },
         { token: 'character--', foreground: 'dbd9d5' },
         { token: 'character-I', foreground: '3e70f7' },
         { token: 'character-D', foreground: 'fc7a00' },

@@ -16,7 +16,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 export interface AppState {
     model: string;
-    guiServices: ControllerFacade;
+    controllers: ControllerFacade;
     isDialogOpen: boolean;
     isHowToIntegrateDialogOpen: boolean;
     isAboutDialogOpen: boolean;
@@ -145,7 +145,7 @@ export class App extends React.Component<{}, AppState> {
 
         this.state = {
             model: initialModel,
-            guiServices: new ControllerFacade(),
+            controllers: new ControllerFacade(),
             isDialogOpen: false,
             isHowToIntegrateDialogOpen: false,
             isAboutDialogOpen: false
@@ -168,13 +168,13 @@ export class App extends React.Component<{}, AppState> {
                         minSize={300}
                         defaultSize={900}
                         className="split-pane"
-                        onChange={() => {this.engine.resize(); this.state.guiServices.textEditorController.resize();}}
+                        onChange={() => {this.state.controllers.canvasController.engine.resize(); this.state.controllers.textEditorController.resize();}}
                     >
-                        <SplitPane split="horizontal" onChange={() => this.state.guiServices.textEditorController.resize()} defaultSize={500}>
-                            <Editor guiServices={this.state.guiServices} onModelChanged={(content: string) => this.onModelChanged(content)} initialModel={this.state.model}/>
-                            <DefinitionPanelComponent services={this.state.guiServices}/>
+                        <SplitPane split="horizontal" onChange={() => this.state.controllers.textEditorController.resize()} defaultSize={500}>
+                            <Editor controllers={this.state.controllers} onModelChanged={(content: string) => this.onModelChanged(content)}/>
+                            <DefinitionPanelComponent services={this.state.controllers}/>
                         </SplitPane>
-                        <Canvas model={this.state.model} onWebglReady={(engine: Engine) => this.engine = engine}/>
+                        <Canvas controllers={this.state.controllers}/>
                     </SplitPane>
                 </div>
                 <IntegrationCodeDialog isOpen={this.state.isDialogOpen} worldMap={this.state.model} onClose={() => this.setState({isDialogOpen: false})}/>

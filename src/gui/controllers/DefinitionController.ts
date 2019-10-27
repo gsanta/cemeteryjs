@@ -8,7 +8,10 @@ export enum DefinitionProperty {
 
 function cloneMeshDescriptor(descriptor: MeshDescriptor) {
     const clone = {...descriptor};
-    clone.materials = [...clone.materials];
+
+    if (clone.materials) {
+        clone.materials = [...clone.materials];
+    }
 
     return clone;
 }
@@ -20,87 +23,76 @@ export class DefinitionController implements FormController<DefinitionProperty> 
         {
             type: 'wall',
             char: 'W',
-            model: 'wall.babylon',
             shape: 'rect',
-            scale: 3,
-            translateY: 2,
-            materials: ['wall.jpg'],
             isBorder: true
         },
         {
             type: 'door',
             char: 'D',
-            model: 'door.babylon',
+            model: 'models/door/door.babylon',
             scale: 3,
-            translateY: 2,
-            materials: ['door.jpg'],
-            isBorder: false
+            translateY: -4,
+            materials: ['models/door/door_material.png'],
+            isBorder: true
         },
         {
             type: 'table',
             char: 'T',
-            model: 'table.babylon',
-            scale: 3,
-            translateY: 2,
-            materials: ['table.jpg'],
+            model: 'assets/models/table.babylon',
+            scale: 0.5,
+            materials: ['assets/models/table_material.png'],
             isBorder: false
         },
         {
             type: 'window',
-            char: 'W',
-            model: 'window.babylon',
-            shape: 'rect',
+            char: 'I',
+            model: 'models/window/window.babylon',
             scale: 3,
-            translateY: 2,
-            materials: ['window.jpg'],
-            isBorder: false
+            materials: ['assets/models/window/window.png'],
+            isBorder: true
         },
         {
             type: 'chair',
-            char: 'D',
-            model: 'chair.babylon',
+            char: 'H',
+            model: 'models/chair.babylon',
             scale: 3,
-            translateY: 2,
-            materials: ['chair.jpg'],
+            materials: ['models/material/bathroom.png'],
             isBorder: false
         },
         {
-            type: 'shelf',
-            char: 'T',
-            model: 'shelf.babylon',
-            scale: 3,
-            translateY: 2,
-            materials: ['shelf.jpg'],
+            type: 'shelves',
+            char: 'O',
+            model: 'assets/models/shelves/shelves.babylon',
+            scale: 3.3,
+            translateY: 1,
+            materials: ['assets/models/shelves/shelves.png'],
             isBorder: false
         },
         {
-            type: 'cupboard',
-            char: 'W',
-            model: 'cupboard.babylon',
-            shape: 'rect',
+            type: 'stairs',
+            char: 'R',
+            model: 'assets/models/stairs/stairs.babylon',
             scale: 3,
             translateY: 2,
-            materials: ['cupboard.jpg'],
+            materials: ['assets/models/stairs/stairs_uv.png'],
             isBorder: false
         },
         {
-            type: 'stair',
-            char: 'D',
-            model: 'stair.babylon',
-            scale: 3,
-            translateY: 2,
-            materials: ['stair.jpg'],
+            type: 'outdoors',
+            char: '*',
             isBorder: false
         },
         {
-            type: 'bath',
-            char: 'T',
-            model: 'bath.babylon',
-            scale: 3,
-            translateY: 2,
-            materials: ['bath.jpg'],
+            type: 'room',
+            char: '-',
+            isBorder: false
+        },
+        {
+            type: 'player',
+            char: 'X',
             isBorder: false
         }
+
     ];
 
     selectedMeshDescriptor: MeshDescriptor;
