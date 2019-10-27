@@ -150,6 +150,8 @@ export class App extends React.Component<{}, AppState> {
             isHowToIntegrateDialogOpen: false,
             isAboutDialogOpen: false
         }
+
+        this.state.controllers.renderController.setRender(() => this.forceUpdate());
     }
 
     render() {

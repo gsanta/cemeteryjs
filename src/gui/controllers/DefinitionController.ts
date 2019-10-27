@@ -189,6 +189,8 @@ export class DefinitionController implements FormController<DefinitionProperty> 
                 break;
         }
 
+        this.syncSelected();
+
         this.controllers.renderController.render();            
     }
 
@@ -252,7 +254,7 @@ export class DefinitionController implements FormController<DefinitionProperty> 
     private syncSelected() {
         const clone = [...this.meshDescriptors];
         const descriptorToReplace = this.meshDescriptors.find(desc => desc.type === this.selectedMeshDescriptor.type);
-        clone.splice(this.meshDescriptors.indexOf(descriptorToReplace), 1, this.selectedMeshDescriptor);
+        clone.splice(this.meshDescriptors.indexOf(descriptorToReplace), 1, cloneMeshDescriptor(this.selectedMeshDescriptor));
         this.meshDescriptors = clone;
     }
 }

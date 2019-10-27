@@ -21,7 +21,6 @@ export class DefinitionPanelComponent extends React.Component<DefinitionPanelPro
 
     constructor(props: DefinitionPanelProps) {
         super(props);
-        this.props.services.renderController.setRender(() => this.forceUpdate());
     }
 
     render() {
@@ -72,7 +71,7 @@ export class DefinitionPanelComponent extends React.Component<DefinitionPanelPro
                         <LabeledComponent label="Model file path" direction="vertical">
                             <ConnectedInputComponent
                                 type="text"
-                                value={definitionController.getVal(DefinitionProperty.MODEL) as string} 
+                                value={definitionController.getVal(DefinitionProperty.MODEL) as string || ''} 
                                 placeholder="Model path..."
                                 formController={definitionController}
                                 propertyName={DefinitionProperty.MODEL}

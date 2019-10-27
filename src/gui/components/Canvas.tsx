@@ -22,7 +22,7 @@ export class Canvas extends React.Component<CanvasProps> {
         this.props.controllers.canvasController.updateCanvas(this.props.controllers.worldMapController.getMap());
     }
 
-    componentDidUpdate() {
+    componentWillReceiveProps() {
         if (this.worldMap !== this.props.controllers.worldMapController.getMap()) {
             this.worldMap = this.props.controllers.worldMapController.getMap();
             this.props.controllers.canvasController.updateCanvas(this.worldMap);
