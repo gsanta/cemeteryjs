@@ -5,6 +5,7 @@
 .definition-panel {
     background: $background03;
     display: flex;
+    justify-content: center;
     height: 100%;
     padding: 10px 0;
     color: $text-color;
@@ -14,15 +15,14 @@
         margin: 0 10px;
         overflow-y: auto;
 
-        .names-column-inner {
-            padding: 10px;
+        padding: 10px;
+        height: 100%;
 
-            background-color: $background02;
-            input {
-                width: 100px;
-                display: block;
-                margin-top: 10px;
-            }
+        background-color: $background02;
+        input {
+            width: 100px;
+            display: block;
+            margin-top: 10px;
         }
     }
 
@@ -31,8 +31,10 @@
             display: flex;
             padding: 5px;
             margin: 5px;
-            border-radius: 4px;
-            background: $background02;
+
+            &:not(:last-child) {
+                border-bottom: 1px solid $background03;
+            }
         }
 
         .added-material {
@@ -42,6 +44,7 @@
         }
 
         overflow-y: auto;
-        width: calc(100% - 210px);
+        width: 500px;
+        background: $background02;
     }
 }

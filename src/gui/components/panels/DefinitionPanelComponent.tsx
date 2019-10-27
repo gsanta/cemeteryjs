@@ -48,9 +48,7 @@ export class DefinitionPanelComponent extends React.Component<DefinitionPanelPro
         return (
             <div className="definition-panel">
                 <div className="names-column">
-                    <div className="names-column-inner">
-                        {names}
-                    </div>
+                    {names}
                 </div>
                 <div className="properties-column">
                     <div className="property-row">

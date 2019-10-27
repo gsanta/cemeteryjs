@@ -25,7 +25,7 @@ export class DefinitionController implements FormController<DefinitionProperty> 
             scale: 3,
             translateY: 2,
             materials: ['wall.jpg'],
-            isBorder: false
+            isBorder: true
         },
         {
             type: 'door',

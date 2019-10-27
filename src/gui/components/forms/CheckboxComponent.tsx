@@ -1,9 +1,7 @@
 import * as React from 'react';
 import FormCheck from 'react-bootstrap/FormCheck';
-import FormCheckInput from 'react-bootstrap/FormCheckInput';
-import FormCheckLabel from 'react-bootstrap/FormCheckInput';
 import { withCommitOnChange } from './decorators/withCommitOnChange';
-import FormControl from 'react-bootstrap/FormControl';
+import './CheckboxComponent.scss';
 
 export interface CheckboxProps {
     isSelected: boolean;
@@ -15,13 +13,15 @@ export interface CheckboxProps {
 export function _CheckboxComponent(props: CheckboxProps) {
     return (
         <div className="checkbox">
+            <div className="label">is border?</div>
             <FormCheck
+                checked={props.isSelected}
                 className="form-check"
                 type='checkbox'
-                label={props.isSelected}
-                onChange={() => console.log('select')}
+                onChange={() => props.onChange(!props.isSelected)}
+                onFocus={() => props.onFocus()}
+                onBlur={() => props.onBlur()}
             />
-            is selected?
         </div>
     )
 }
