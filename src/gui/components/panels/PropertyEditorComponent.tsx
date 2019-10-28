@@ -6,10 +6,10 @@ import { ConnectedDropdownComponent } from '../forms/DropdownComponent';
 import { ConnectedInputComponent, InputComponent } from '../forms/InputComponent';
 import { LabeledComponent } from '../forms/LabeledComponent';
 import { MaterialsComponent } from './definition/MaterialsComponent';
-import './DefinitionPanelComponent.scss';
+import './PropertyEditorComponent.scss';
 
 
-export interface DefinitionPanelProps {
+export interface PropertyEditorProps {
     services: ControllerFacade;
 }
 
@@ -17,9 +17,9 @@ const chars = [
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
 ]
 
-export class DefinitionPanelComponent extends React.Component<DefinitionPanelProps> {
+export class PropertyEditorComponent extends React.Component<PropertyEditorProps> {
 
-    constructor(props: DefinitionPanelProps) {
+    constructor(props: PropertyEditorProps) {
         super(props);
     }
 

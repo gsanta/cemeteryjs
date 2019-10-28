@@ -7,7 +7,7 @@ export interface CanvasProps {
     controllers: ControllerFacade;
 }
 
-export class Canvas extends React.Component<CanvasProps> {
+export class MapViewerComponent extends React.Component<CanvasProps> {
     private canvasRef: React.RefObject<HTMLCanvasElement>;
     private worldMap: string;
 

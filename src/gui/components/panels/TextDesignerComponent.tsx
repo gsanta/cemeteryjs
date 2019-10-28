@@ -1,24 +1,24 @@
 import * as React from 'react';
-import './Editor.css';
-import { ControllerFacade } from '../controllers/ControllerFacade';
-import { debounce } from '../../model/utils/Functions';
+import './TextDesignerComponent.scss';
+import { ControllerFacade } from '../../controllers/ControllerFacade';
+import { debounce } from '../../../model/utils/Functions';
 import * as monaco from 'monaco-editor';
-import { MonacoConfig } from '../configs/MonacoConfig';
+import { MonacoConfig } from '../../configs/MonacoConfig';
 
 
-interface EditorState {
+interface TextDesignerState {
     map: string;
 }
 
-export interface EditorProps {
+export interface TextDesignerProps {
     onModelChanged(content: string): void;
     controllers: ControllerFacade;
 }
 
-export class Editor extends React.Component<EditorProps, EditorState> {
+export class TextDesignerComponent extends React.Component<TextDesignerProps, TextDesignerState> {
     private editorElement: React.RefObject<HTMLDivElement>;
 
-    constructor(props: EditorProps) {
+    constructor(props: TextDesignerProps) {
         super(props);
         this.editorElement = React.createRef();
     }

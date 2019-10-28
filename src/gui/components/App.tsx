@@ -1,14 +1,14 @@
 import * as React from 'react';
 import SplitPane from 'react-split-pane';
 import './SplitPane.css';
-import { Editor } from './Editor';
+import { TextDesignerComponent } from './panels/TextDesignerComponent';
 import { Canvas } from './Canvas';
 import { ControllerFacade } from '../controllers/ControllerFacade';
 import { Header } from './Header';
 import { IntegrationCodeDialog } from './dialogs/IntegrationCodeDialog';
 import './App.scss';
 import { HowToIntegrateDialog } from './dialogs/HowToIntegrateDialog';
-import { DefinitionPanelComponent } from './panels/DefinitionPanelComponent';
+import { PropertyEditorComponent } from './panels/PropertyEditorComponent';
 import { AboutDialog } from './dialogs/AboutDialog';
 import { Engine } from 'babylonjs';
 
@@ -173,8 +173,8 @@ export class App extends React.Component<{}, AppState> {
                         onChange={() => {this.state.controllers.canvasController.engine.resize(); this.state.controllers.textEditorController.resize();}}
                     >
                         <SplitPane split="horizontal" onChange={() => this.state.controllers.textEditorController.resize()} defaultSize={500}>
-                            <Editor controllers={this.state.controllers} onModelChanged={(content: string) => this.onModelChanged(content)}/>
-                            <DefinitionPanelComponent services={this.state.controllers}/>
+                            <TextDesignerComponent controllers={this.state.controllers} onModelChanged={(content: string) => this.onModelChanged(content)}/>
+                            <PropertyEditorComponent services={this.state.controllers}/>
                         </SplitPane>
                         <Canvas controllers={this.state.controllers}/>
                     </SplitPane>
