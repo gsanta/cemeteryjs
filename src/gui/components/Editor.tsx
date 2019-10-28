@@ -3,7 +3,7 @@ import './Editor.css';
 import { ControllerFacade } from '../controllers/ControllerFacade';
 import { debounce } from '../../model/utils/Functions';
 import * as monaco from 'monaco-editor';
-import { MonacoConfig } from '../views/MonacoConfig';
+import { MonacoConfig } from '../configs/MonacoConfig';
 
 
 interface EditorState {

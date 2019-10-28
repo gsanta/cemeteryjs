@@ -39,7 +39,7 @@ export class MaterialsComponent extends React.Component<{definitionController: D
             return (
                 <div className="added-material">
                     <div>{material}
-                    </div><CloseIconComponent onClick={() => this.props.definitionController.deleteListItem(DefinitionProperty.MATERIALS, index)}/>
+                    </div><CloseIconComponent onClick={() => this.props.definitionController.deletItemFromListProp(DefinitionProperty.MATERIALS, index)}/>
                 </div>
             )
         });

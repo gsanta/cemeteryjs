@@ -34,7 +34,7 @@ export class DefinitionPanelComponent extends React.Component<DefinitionPanelPro
                     value={def.type} 
                     placeholder="Type..."
                     onFocus={() => {
-                        definitionController.selectDefinitionByType(def.type);
+                        definitionController.setSelectedDefinition(def.type);
                         definitionController.focusProp(DefinitionProperty.TYPE);
                     }}
                     onChange={val => definitionController.updateStringProp(val)}

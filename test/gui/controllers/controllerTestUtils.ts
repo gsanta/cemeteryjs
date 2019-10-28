@@ -31,10 +31,10 @@ const testMeshDescriptors = [
     {
         type: 'door',
         char: 'D',
-        model: 'door.babylon',
+        model: 'models/door/door.babylon',
         scale: 3,
         translateY: 2,
-        materials: ['door.jpg'],
+        materials: ['materials/door/door.jpg'],
         isBorder: false
     },
     {

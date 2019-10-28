@@ -1,4 +1,4 @@
-import { MonacoConfig } from '../views/MonacoConfig';
+import { MonacoConfig } from '../configs/MonacoConfig';
 import { debounce } from '../../model/utils/Functions';
 
 const THEME = 'nightshiftsTheme';

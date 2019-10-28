@@ -3,7 +3,7 @@ import { ControllerFacade } from "./ControllerFacade";
 import { FormController } from './FormController';
 
 export enum DefinitionProperty {
-    TYPE, CHAR, MODEL, SHAPE, SCALE, TRANSLATE_Y, MATERIALS, IS_BORDER
+    TYPE = 'type', CHAR = 'char', MODEL = 'model', SHAPE = 'shape', SCALE = 'scale', TRANSLATE_Y = 'translateY', MATERIALS = 'materials', IS_BORDER = 'isBorder'
 }
 
 function cloneMeshDescriptor(descriptor: MeshDescriptor) {
@@ -19,90 +19,15 @@ function cloneMeshDescriptor(descriptor: MeshDescriptor) {
 export class DefinitionController implements FormController<DefinitionProperty> {
     shapes: string[] = ['rect'];
 
-    meshDescriptors: MeshDescriptor[] = [
-        {
-            type: 'wall',
-            char: 'W',
-            shape: 'rect',
-            isBorder: true
-        },
-        {
-            type: 'door',
-            char: 'D',
-            model: 'models/door/door.babylon',
-            scale: 3,
-            translateY: -4,
-            materials: ['models/door/door_material.png'],
-            isBorder: true
-        },
-        {
-            type: 'table',
-            char: 'T',
-            model: 'assets/models/table.babylon',
-            scale: 0.5,
-            materials: ['assets/models/table_material.png'],
-            isBorder: false
-        },
-        {
-            type: 'window',
-            char: 'I',
-            model: 'models/window/window.babylon',
-            scale: 3,
-            materials: ['assets/models/window/window.png'],
-            isBorder: true
-        },
-        {
-            type: 'chair',
-            char: 'H',
-            model: 'models/chair.babylon',
-            scale: 3,
-            materials: ['models/material/bathroom.png'],
-            isBorder: false
-        },
-        {
-            type: 'shelves',
-            char: 'O',
-            model: 'assets/models/shelves/shelves.babylon',
-            scale: 3.3,
-            translateY: 1,
-            materials: ['assets/models/shelves/shelves.png'],
-            isBorder: false
-        },
-        {
-            type: 'stairs',
-            char: 'R',
-            model: 'assets/models/stairs/stairs.babylon',
-            scale: 3,
-            translateY: 2,
-            materials: ['assets/models/stairs/stairs_uv.png'],
-            isBorder: false
-        },
-        {
-            type: 'outdoors',
-            char: '*',
-            isBorder: false
-        },
-        {
-            type: 'room',
-            char: '-',
-            isBorder: false
-        },
-        {
-            type: 'player',
-            char: 'X',
-            isBorder: false
-        }
-
-    ];
-
+    meshDescriptors: MeshDescriptor[];
     selectedMeshDescriptor: MeshDescriptor;
 
     private controllers: ControllerFacade;
-    tmpMaterial: string;
 
-    constructor(controllers: ControllerFacade) {
+    constructor(controllers: ControllerFacade, meshDescriptors: MeshDescriptor[]) {
         this.controllers = controllers;
-        this.selectDefinitionByType(this.meshDescriptors[0].type);
+        this.meshDescriptors = meshDescriptors;
+        this.setSelectedDefinition(this.meshDescriptors[0].type);
     }
 
     private tempString: string;
@@ -135,17 +60,13 @@ export class DefinitionController implements FormController<DefinitionProperty> 
                 this.tempNumber = this.selectedMeshDescriptor.translateY;
                 break;
             case DefinitionProperty.MATERIALS:
-                this.tmpMaterial = "";
+                this.tempString = "";
                 break;
         }
     }
 
     updateStringProp(value: string) {
-        if (this.focusedPropType === DefinitionProperty.MATERIALS) {
-            this.tmpMaterial = value;
-        } else {
-            this.tempString = value;        
-        }
+        this.tempString = value;        
         this.controllers.renderController.render();            
     }
 
@@ -159,7 +80,20 @@ export class DefinitionController implements FormController<DefinitionProperty> 
         this.controllers.renderController.render();            
     }
 
+    deletItemFromListProp(prop: DefinitionProperty, index: number) {
+        switch(prop) {
+            case DefinitionProperty.MATERIALS:
+                this.selectedMeshDescriptor.materials.splice(index, 1);
+                this.syncSelectedToList(this.meshDescriptors.find(desc => desc.type === this.selectedMeshDescriptor.type));
+                break;
+        } 
+
+        this.controllers.renderController.render();
+    }
+
     commitProp() {
+        const origMeshDescriptor = this.meshDescriptors.find(desc => desc.type === this.selectedMeshDescriptor.type);
+
         switch(this.focusedPropType) {
             case DefinitionProperty.MODEL:
                 this.selectedMeshDescriptor.model = this.tempString;
@@ -183,13 +117,13 @@ export class DefinitionController implements FormController<DefinitionProperty> 
                 this.selectedMeshDescriptor.type = this.tempString;
                 break;
             case DefinitionProperty.MATERIALS:
-                this.selectedMeshDescriptor.materials.push(this.tmpMaterial);
-                this.tmpMaterial = '';
+                this.selectedMeshDescriptor.materials.push(this.tempString);
+                this.tempString = '';
                 this.focusedPropType = null;
                 break;
         }
 
-        this.syncSelected();
+        this.syncSelectedToList(origMeshDescriptor);
 
         this.controllers.renderController.render();            
     }
@@ -211,25 +145,14 @@ export class DefinitionController implements FormController<DefinitionProperty> 
             case DefinitionProperty.TYPE:
                 return this.focusedPropType === property ? this.tempString : this.selectedMeshDescriptor.type;
             case DefinitionProperty.MATERIALS:
-                return this.focusedPropType === property ? this.tmpMaterial : '';
+                return this.focusedPropType === property ? this.tempString : '';
         
         }
     }
 
-    deleteListItem(prop: DefinitionProperty, index: number) {
-        switch(prop) {
-            case DefinitionProperty.MATERIALS:
-                this.selectedMeshDescriptor.materials.splice(index, 1);
-                this.syncSelected();
-                break;
-        } 
-
-        this.controllers.renderController.render();
-    }
-
-    selectDefinitionByType(type: string) {
+    setSelectedDefinition(type: string) {
         if (this.selectedMeshDescriptor) {
-            this.syncSelected();
+            this.syncSelectedToList(this.meshDescriptors.find(desc => desc.type === this.selectedMeshDescriptor.type));
         }
 
         const meshDescriptor = this.meshDescriptors.find(descriptor => descriptor.type === type);
@@ -239,22 +162,10 @@ export class DefinitionController implements FormController<DefinitionProperty> 
             this.controllers.renderController.render();
         }
     }
-  
-    setTmpMaterial(path: string) {
-        this.tmpMaterial = path;
-        this.controllers.renderController.render();
-    }
 
-    saveTmpMaterial(): void {
-        this.selectedMeshDescriptor.materials.push(this.tmpMaterial);
-        this.tmpMaterial = '';
-        this.controllers.renderController.render();
-    }
-
-    private syncSelected() {
+    private syncSelectedToList(origMeshDescriptor: MeshDescriptor) {
         const clone = [...this.meshDescriptors];
-        const descriptorToReplace = this.meshDescriptors.find(desc => desc.type === this.selectedMeshDescriptor.type);
-        clone.splice(this.meshDescriptors.indexOf(descriptorToReplace), 1, cloneMeshDescriptor(this.selectedMeshDescriptor));
+        clone.splice(this.meshDescriptors.indexOf(origMeshDescriptor), 1, cloneMeshDescriptor(this.selectedMeshDescriptor));
         this.meshDescriptors = clone;
     }
 }
