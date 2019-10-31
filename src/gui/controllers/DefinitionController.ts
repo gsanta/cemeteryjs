@@ -16,7 +16,7 @@ function cloneMeshDescriptor(descriptor: MeshDescriptor) {
     return clone;
 }
 
-export class DefinitionController implements FormController<DefinitionProperty> {
+export class DefinitionController extends FormController<DefinitionProperty> {
     shapes: string[] = ['rect'];
 
     meshDescriptors: MeshDescriptor[];
@@ -25,6 +25,7 @@ export class DefinitionController implements FormController<DefinitionProperty> 
     private controllers: ControllerFacade;
 
     constructor(controllers: ControllerFacade, meshDescriptors: MeshDescriptor[]) {
+        super();
         this.controllers = controllers;
         this.meshDescriptors = meshDescriptors;
         this.setSelectedDefinition(this.meshDescriptors[0].type);

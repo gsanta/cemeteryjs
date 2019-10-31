@@ -9,7 +9,7 @@ import { IntegrationCodeDialog } from './dialogs/IntegrationCodeDialog';
 import { Header } from './Header';
 import './misc/SplitPane.css';
 import { VerticalSplitComponent } from './misc/VerticalSplitComponent';
-import { MapDesignerComponent } from './panels/MapDesignerComponent';
+import { EditorComponent } from './panels/EditorComponent';
 import { MapViewerComponent } from './panels/MapViewerComponent';
 import { AppContext, AppContextType } from './Context';
 
@@ -47,7 +47,7 @@ export class App extends React.Component<{}, AppState> {
                 />
                 <div className="main-content">
                     <VerticalSplitComponent onChange={() => this.resize()}>
-                        <MapDesignerComponent/>
+                        <EditorComponent/>
                         <MapViewerComponent/>
                     </VerticalSplitComponent>
                 </div>

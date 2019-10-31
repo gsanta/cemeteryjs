@@ -2,23 +2,23 @@ import * as monaco from 'monaco-editor';
 import * as React from 'react';
 import { MonacoConfig } from '../../configs/MonacoConfig';
 import { AppContext, AppContextType } from '../Context';
-import './TextDesignerComponent.scss';
+import './TextEditorComponent.scss';
 
 
-interface TextDesignerState {
+interface TextEditorComponentState {
     map: string;
 }
 
-export interface TextDesignerProps {
+export interface TextEditorComponentProps {
     onModelChanged(content: string): void;
 }
 
-export class TextDesignerComponent extends React.Component<TextDesignerProps, TextDesignerState> {
+export class TextEditorComponent extends React.Component<TextEditorComponentProps, TextEditorComponentState> {
     static contextType = AppContext;
     private editorElement: React.RefObject<HTMLDivElement>;
     context: AppContextType;
 
-    constructor(props: TextDesignerProps) {
+    constructor(props: TextEditorComponentProps) {
         super(props);
         this.editorElement = React.createRef();
     }
@@ -29,10 +29,14 @@ export class TextDesignerComponent extends React.Component<TextDesignerProps, Te
         editor.onChange((content: string) => this.handleChange(content));
     }
 
+    componentWillUnmount() {
+        
+    }
+
     render(): JSX.Element {
         return (
             <AppContext.Consumer>
-                {value => <div className="editor" id="editor" ref={this.editorElement}></div> }
+                {value => <div className="text-editor" id="editor" ref={this.editorElement}></div> }
             </AppContext.Consumer>
         );
     }

@@ -1,5 +1,6 @@
 import { MonacoConfig } from '../configs/MonacoConfig';
 import { debounce } from '../../model/utils/Functions';
+import { ControllerFacade } from './ControllerFacade';
 
 const THEME = 'nightshiftsTheme';
 const LANGUAGE = 'nightshiftsLanguage';
@@ -33,6 +34,11 @@ const initialText =
 export class TextEditorController {
     editor: any;
     text: string = initialText;
+    private controllers: ControllerFacade;
+
+    constructor(controllers: ControllerFacade) {
+        this.controllers = controllers;
+    }
 
     createEditor(monacoModule: any, monacoConfig: typeof MonacoConfig, element: HTMLDivElement, content: string) {
         monacoModule.languages.register({ id: LANGUAGE });
@@ -79,5 +85,6 @@ export class TextEditorController {
 
     setText(text: string) {
         this.text = text;
+        this.controllers.renderController.render();
     }
 }
