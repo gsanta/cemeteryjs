@@ -6,7 +6,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 
 module.exports = env => {
     return {
-        entry: './src/index_gui.ts',
+        entry: './src/gui/components/index.tsx',
         module: {
             rules: [
                 {

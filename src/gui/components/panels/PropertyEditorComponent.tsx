@@ -7,25 +7,23 @@ import { ConnectedInputComponent, InputComponent } from '../forms/InputComponent
 import { LabeledComponent } from '../forms/LabeledComponent';
 import { MaterialsComponent } from './definition/MaterialsComponent';
 import './PropertyEditorComponent.scss';
-
-
-export interface PropertyEditorProps {
-    services: ControllerFacade;
-}
+import { AppContext, AppContextType } from '../Context';
 
 const chars = [
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
 ]
 
-export class PropertyEditorComponent extends React.Component<PropertyEditorProps> {
+export class PropertyEditorComponent extends React.Component<{}> {
+    static contextType = AppContext;
+    context: AppContextType;
 
-    constructor(props: PropertyEditorProps) {
+    constructor(props: {}) {
         super(props);
     }
 
     render() {
-        const definitionController = this.props.services.definitionController;
-        const meshDescriptors = this.props.services.definitionController.meshDescriptors;
+        const definitionController = this.context.controllers.definitionController;
+        const meshDescriptors = this.context.controllers.definitionController.meshDescriptors;
 
         const names = meshDescriptors.map(def => (
             <div>
@@ -111,7 +109,7 @@ export class PropertyEditorComponent extends React.Component<PropertyEditorProps
                         </LabeledComponent>
                     </div>
                     <div className="property-row">
-                        <MaterialsComponent definitionController={this.props.services.definitionController}/>
+                        <MaterialsComponent definitionController={this.context.controllers.definitionController}/>
                     </div>
                 </div>
             </div>

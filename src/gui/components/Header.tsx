@@ -3,7 +3,6 @@ import './Header.scss';
 import { ButtonComponent } from './forms/ButtonComponent';
 
 export interface HeaderProps {
-    model: string;
     openIntegrationCodeDialog(): void;
     openHowToIntegrateDialog(): void;
     openAboutDialog(): void;

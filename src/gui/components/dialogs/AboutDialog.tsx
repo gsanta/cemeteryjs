@@ -4,7 +4,6 @@ import { CloseIconComponent } from './CloseIconComponent';
 
 export interface AboutDialogProps {
     isOpen: boolean;
-    worldMap: string;
     onClose(): void;
 }
 
