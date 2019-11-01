@@ -5,11 +5,11 @@ import { WorldMapController } from './WorldMapController';
 import { CanvasController } from './CanvasController';
 import { defaultMeshDescriptors } from '../configs/DefaultMeshDescriptors';
 import { WindowController } from './WindowController';
-import { DrawEditorController } from './draw_editor/DrawEditorController';
+import { BitmapEditor } from './bitmap_editor/BitmapEditor';
 
 export class ControllerFacade {
     textEditorController: TextEditorController;
-    drawEditorController: DrawEditorController;
+    bitmapEditor: BitmapEditor;
     worldMapController: WorldMapController;
     definitionController: DefinitionController;
     renderController: RenderController;
@@ -18,7 +18,7 @@ export class ControllerFacade {
 
     constructor() {
         this.textEditorController = new TextEditorController(this);
-        this.drawEditorController = new DrawEditorController();
+        this.bitmapEditor = new BitmapEditor(this);
         this.definitionController = new DefinitionController(this, defaultMeshDescriptors);
         this.renderController = new RenderController();
         this.worldMapController = new WorldMapController(this);

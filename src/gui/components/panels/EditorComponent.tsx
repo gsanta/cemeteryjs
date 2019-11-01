@@ -6,7 +6,21 @@ import { HorizontalSplitComponent } from '../misc/HorizontalSplitComponent';
 import { PropertyEditorComponent } from './PropertyEditorComponent';
 import { TextEditorComponent } from './TextEditorComponent';
 import './EditorComponent.scss';
-import { DrawEditorComponent } from './draw_editor/DrawEditorComponent';
+import { BitmapEditorComponent } from './bitmap_editor/BitmapEditorComponent';
+import { BitmapEditorToolbar } from './bitmap_editor/BitmapEditorToolbar';
+import styled from 'styled-components';
+import { colors } from '../colors';
+
+const GlobalToolbarComponent = styled.div`
+    margin-right: 20px;
+`;
+
+const Toolbar = styled.div`
+    height: 35px;
+    padding: 2px 5px;
+    background: ${colors.grey2};
+    display: flex;
+`;
 
 export class EditorComponent extends React.Component<{}> {
 
@@ -24,15 +38,18 @@ export class EditorComponent extends React.Component<{}> {
         return (
             <HorizontalSplitComponent onChange={() => context.controllers.textEditorController.resize()}>
                 <div className="editor">
-                    <div className="toolbar">
-                        <ConnectedDropdownComponent
-                            values={[EditorType.DRAW_EDITOR, EditorType.TEXT_EDITOR]}
-                            currentValue={windowController.getVal(WindowProperty.EDITOR) as string}
-                            formController={windowController}
-                            propertyName={WindowProperty.EDITOR}
-                            propertyType='string'
-                        />
-                    </div>
+                    <Toolbar>
+                        <GlobalToolbarComponent>
+                            <ConnectedDropdownComponent
+                                values={[EditorType.DRAW_EDITOR, EditorType.TEXT_EDITOR]}
+                                currentValue={windowController.getVal(WindowProperty.EDITOR) as string}
+                                formController={windowController}
+                                propertyName={WindowProperty.EDITOR}
+                                propertyType='string'
+                            />
+                        </GlobalToolbarComponent>
+                        {this.renderToolbar(context)}
+                    </Toolbar>
                     {windowController.activeEditor === EditorType.DRAW_EDITOR ? this.renderDrawEditor(context) : this.renderTextEditor(context)}
                 </div>
                 <PropertyEditorComponent/>
@@ -45,6 +62,11 @@ export class EditorComponent extends React.Component<{}> {
     }
 
     private renderDrawEditor(context: AppContextType) {
-        return <DrawEditorComponent/>;
+        return <BitmapEditorComponent/>;
+    }
+
+    private renderToolbar(context: AppContextType): JSX.Element {
+        const windowController = context.controllers.windowController;
+        return context.controllers.windowController.activeEditor === EditorType.DRAW_EDITOR ? <BitmapEditorToolbar/> : null;
     }
 }
