@@ -6,6 +6,7 @@ import { HorizontalSplitComponent } from '../misc/HorizontalSplitComponent';
 import { PropertyEditorComponent } from './PropertyEditorComponent';
 import { TextEditorComponent } from './TextEditorComponent';
 import './EditorComponent.scss';
+import { DrawEditorComponent } from './draw_editor/DrawEditorComponent';
 
 export class EditorComponent extends React.Component<{}> {
 
@@ -44,6 +45,6 @@ export class EditorComponent extends React.Component<{}> {
     }
 
     private renderDrawEditor(context: AppContextType) {
-        return <div>Draw editor</div>;
+        return <DrawEditorComponent/>;
     }
 }
