@@ -18,6 +18,18 @@ export class PixelController {
 
         this.bitMap.set(index, pixel);
     }
+    
+    removePixel(position: Point): void {
+        const x = Math.floor(position.x / this.bitmapEditor.config.pixelSize);
+        const y = Math.floor(position.y / this.bitmapEditor.config.pixelSize);
+        const xDim = this.bitmapEditor.config.canvasDimensions.x / this.bitmapEditor.config.pixelSize;
+        const pixelIndex = y * xDim + x;
+
+        if (this.bitMap.get(pixelIndex)) {
+            this.bitMap.delete(pixelIndex);
+        }
+    }
+
 
     getPixelPosition(pixelIndex: number): Point {
         const canvasDimensions = this.bitmapEditor.config.canvasDimensions;

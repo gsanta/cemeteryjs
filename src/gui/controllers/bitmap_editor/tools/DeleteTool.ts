@@ -10,5 +10,7 @@ export class DeleteTool implements Tool {
     }
 
     up() {
+        this.bitmapEditor.pixelController.removePixel(this.bitmapEditor.mouseController.pointer);
+        this.bitmapEditor.render();
     }
 }
