@@ -10,7 +10,7 @@ export class VerticalSplitComponent extends React.Component<SplitProps> {
                 split="vertical"
                 primary="second"
                 minSize={300}
-                defaultSize={900}
+                defaultSize={700}
                 className="split-pane"
                 onChange={this.props.onChange}
             >

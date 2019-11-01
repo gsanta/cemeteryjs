@@ -15,14 +15,17 @@ const GlobalToolbarComponent = styled.div`
     margin-right: 20px;
 `;
 
-const Toolbar = styled.div`
-    height: 35px;
+const ToolbarComponent = styled.div`
+    height: 40px;
     padding: 2px 5px;
     background: ${colors.grey2};
     display: flex;
+    align-items: center;
 `;
 
 export class EditorComponent extends React.Component<{}> {
+    static contextType = AppContext;
+    context: AppContextType;
 
     render(): JSX.Element {
         return (
@@ -38,7 +41,7 @@ export class EditorComponent extends React.Component<{}> {
         return (
             <HorizontalSplitComponent onChange={() => context.controllers.textEditorController.resize()}>
                 <div className="editor">
-                    <Toolbar>
+                    <ToolbarComponent>
                         <GlobalToolbarComponent>
                             <ConnectedDropdownComponent
                                 values={[EditorType.DRAW_EDITOR, EditorType.TEXT_EDITOR]}
@@ -49,7 +52,7 @@ export class EditorComponent extends React.Component<{}> {
                             />
                         </GlobalToolbarComponent>
                         {this.renderToolbar(context)}
-                    </Toolbar>
+                    </ToolbarComponent>
                     {windowController.activeEditor === EditorType.DRAW_EDITOR ? this.renderDrawEditor(context) : this.renderTextEditor(context)}
                 </div>
                 <PropertyEditorComponent/>

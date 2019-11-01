@@ -1,7 +1,8 @@
-import { BitmapEditor } from './BitmapEditor';
+import { BitmapEditor } from '../BitmapEditor';
+import { Tool, ToolType } from './Tool';
 
-
-export class RectangleTool {
+export class RectangleTool implements Tool {
+    type = ToolType.RECTANGLE;
     private bitmapEditor: BitmapEditor;
 
     constructor(bitmapEditor: BitmapEditor) {

@@ -19,7 +19,7 @@
     },
     "include": [
       "src/**/*.ts",
-      "test/**/*.ts", "src/gui/components/index.tsx"
+      "test/**/*.ts", "src/gui/components/index.tsx", "src/gui/components/icons/Icon.tsx"
     ],
     "exclude": [
       "node_modules"

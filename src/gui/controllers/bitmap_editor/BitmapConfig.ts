@@ -2,7 +2,7 @@ import { Point, Segment } from "@nightshifts.inc/geometry";
 import { range } from "../../../model/utils/Functions";
 
 export class BitmapConfig {
-    canvasDimensions = new Point(1000, 1000);
+    canvasDimensions = new Point(1500, 1000);
     horizontalHelperLines: Segment[] = [];
     verticalHelperLines: Segment[] = [];
     pixelSize: number = 10;
@@ -27,7 +27,7 @@ export class BitmapConfig {
     }
 
     private calcVerticalLines() {
-        const verticalLineNum = Math.floor(this.canvasDimensions.y / this.pixelSize);
+        const verticalLineNum = Math.floor(this.canvasDimensions.x / this.pixelSize);
         const verticalOffset = (this.canvasDimensions.x % this.pixelSize) / 2;
         
         this.verticalHelperLines = range(0, verticalLineNum)

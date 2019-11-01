@@ -1,6 +1,5 @@
-import { ControllerFacade } from '../ControllerFacade';
-import { BitmapEditor } from './BitmapEditor';
 import { Point } from '@nightshifts.inc/geometry';
+import { BitmapEditor } from './BitmapEditor';
 
 export interface Pixel {
     color: string;
@@ -24,10 +23,9 @@ export class PixelController {
         const canvasDimensions = this.bitmapEditor.config.canvasDimensions;
         const pixelSize = this.bitmapEditor.config.pixelSize;
         const xDim = canvasDimensions.x / pixelSize;
-        const yDim = canvasDimensions.y / pixelSize;
 
         const x = pixelIndex % xDim;
-        const y = Math.floor(pixelIndex / yDim);
+        const y = Math.floor(pixelIndex / xDim);
         
         return new Point(x * pixelSize, y * pixelSize);
     }

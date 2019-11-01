@@ -11,8 +11,8 @@ const EditorComponent = styled.div`
 `;
 
 const CanvasComponent = styled.svg`
-    width: 1000px;
-    height: 1000px;
+    width: ${({w}: {w: number, h: number}) => `${w}px`};
+    height: ${({h}: {w: number, h: number}) => `${h}px`};
 `;
 
 const LineComponent = styled.line`
@@ -35,12 +35,15 @@ export class BitmapEditorComponent extends React.Component<any> {
     }
 
     private renderContent(context: AppContextType): JSX.Element {
+        const bitmapConfig = context.controllers.bitmapEditor.config;
         const horizontalLines = this.renderLines(context.controllers.bitmapEditor.config.horizontalHelperLines);
         const verticalLines = this.renderLines(context.controllers.bitmapEditor.config.verticalHelperLines);
         
         return (
             <EditorComponent id={context.controllers.bitmapEditor.id}>
                 <CanvasComponent
+                    w={bitmapConfig.canvasDimensions.x}
+                    h={bitmapConfig.canvasDimensions.y}
                     onMouseDown={(e) => context.controllers.bitmapEditor.mouseController.onMouseDown(e.nativeEvent)}
                     onMouseMove={(e) => context.controllers.bitmapEditor.mouseController.onMouseMove(e.nativeEvent)}
                     onMouseUp={(e) => context.controllers.bitmapEditor.mouseController.onMouseUp(e.nativeEvent)}    
