@@ -1,5 +1,5 @@
-import { WorldMapToSubareaMapConverter as WorldMapToSubareaMapConverter } from '../../../src/model/parsers/WorldMapToSubareaMapConverter';
-import { ConfigService } from '../../../src/model/services/ConfigService';
+import { WorldMapToSubareaMapConverter as WorldMapToSubareaMapConverter } from '../../../../src/model/formats/text/WorldMapToSubareaMapConverter';
+import { ConfigService } from '../../../../src/model/services/ConfigService';
 
 describe('WorldMapToSubareaMapConverter', () => {
     it ('replaces the border characters with empty characters', () => {

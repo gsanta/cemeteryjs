@@ -1,6 +1,6 @@
-import { WorldMapLineListener, WorldMapReader } from "../formats/text/WorldMapReader";
+import { WorldMapLineListener, WorldMapReader } from "./WorldMapReader";
 import { Point } from "@nightshifts.inc/geometry";
-import { MeshDescriptor } from '../../Config';
+import { MeshDescriptor } from '../../../Config';
 
 const COLOR_MAP = {
     T: '#BF973B',

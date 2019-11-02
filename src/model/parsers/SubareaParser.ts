@@ -1,8 +1,8 @@
 import { ServiceFacade } from '../services/ServiceFacade';
 import { WorldItem } from '../../WorldItem';
-import { Parser } from "./Parser";
+import { Parser, Format } from "./Parser";
 import { PolygonAreaParser } from './PolygonAreaParser';
-import { WorldMapToSubareaMapConverter } from './WorldMapToSubareaMapConverter';
+import { WorldMapToSubareaMapConverter } from '../formats/text/WorldMapToSubareaMapConverter';
 import { WorldMapToMatrixGraphConverter } from '../formats/text/WorldMapToMatrixGraphConverter';
 import { without } from '../utils/Functions';
 
@@ -15,7 +15,14 @@ export class SubareaParser implements Parser {
         this.worldMapConverter = worldMapConverter;
     }
 
-    parse(worldMap: string): WorldItem[] {
+
+    parse(worldMap: string, format: Format): WorldItem[] {
+        if (format === Format.TEXT) {
+            return this.parseTextFormat(worldMap);
+        }
+    }
+
+    private parseTextFormat(worldMap: string): WorldItem[] {
         if (!this.services.configService.meshDescriptorMap.has('_subarea')) { return []; }
 
         const subareaType = this.services.configService.meshDescriptorMap.get('_subarea').type;

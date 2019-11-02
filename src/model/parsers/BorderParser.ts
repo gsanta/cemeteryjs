@@ -3,7 +3,7 @@ import { WorldItem } from '../../WorldItem';
 import { ServiceFacade } from '../services/ServiceFacade';
 import { last, without } from '../utils/Functions';
 import { WorldMapGraph } from './WorldMapGraph';
-import { Parser } from './Parser';
+import { Parser, Format } from './Parser';
 import { WorldMapToMatrixGraphConverter } from '../formats/text/WorldMapToMatrixGraphConverter';
 
 interface Border {
@@ -23,7 +23,13 @@ export class BorderParser implements Parser {
         this.worldMapConverter = worldMapConverter;
     }
 
-    public parse(worldMap: string): WorldItem[] {
+    parse(worldMap: string, format: Format): WorldItem[] {
+        if (format === Format.TEXT) {
+            return this.parseTextFormat(worldMap);
+        }
+    }
+
+    public parseTextFormat(worldMap: string): WorldItem[] {
         this.positionToComponentMap = new Map();
         const graph = this.worldMapConverter.convert(worldMap);
         const borderTypes = this.services.configService.borders.map(border => border.type);
@@ -35,11 +41,11 @@ export class BorderParser implements Parser {
         let borders: Border[] = [];
 
         borderTypes.forEach((type) => {
-            const graphForChar = graph.getReducedGraphForTypes([type]);
+            const graphForType = graph.getReducedGraphForTypes([type]);
 
 
-            borders.push(...this.findVerticalSlices(graphForChar));
-            borders.push(...this.findHorizontalSlices(graphForChar));
+            borders.push(...this.findVerticalSlices(graphForType));
+            borders.push(...this.findHorizontalSlices(graphForType));
         });
 
         borders.forEach(border => {

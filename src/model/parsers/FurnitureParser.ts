@@ -1,6 +1,6 @@
 import { WorldMapGraph } from './WorldMapGraph';
 import { WorldItem } from '../../WorldItem';
-import { Parser } from './Parser';
+import { Parser, Format } from './Parser';
 import { WorldMapToMatrixGraphConverter } from '../formats/text/WorldMapToMatrixGraphConverter';
 import { Polygon } from '@nightshifts.inc/geometry';
 import { flat, minBy, maxBy, without, last } from '../utils/Functions';
@@ -15,7 +15,13 @@ export class FurnitureParser implements Parser {
         this.worldMapConverter = worldMapConverter;
     }
 
-    public parse(worldMap: string): WorldItem[] {
+    parse(worldMap: string, format: Format): WorldItem[] {
+        if (format === Format.TEXT) {
+            return this.parseTextFormat(worldMap);
+        }
+    }
+
+    private parseTextFormat(worldMap: string): WorldItem[] {
         const graph = this.worldMapConverter.convert(worldMap);
         const types = this.services.configService.furnitures
             .filter(furniture => graph.hasType(furniture.type))

@@ -1,5 +1,5 @@
-import { WorldMapLineListener, WorldMapReader } from '../formats/text/WorldMapReader';
-import { ConfigService } from '../services/ConfigService';
+import { WorldMapLineListener, WorldMapReader } from './WorldMapReader';
+import { ConfigService } from '../../services/ConfigService';
 
 /*
  * Takes a world map (gwm string) and converts the characters inside the map to contain only

@@ -1,6 +1,6 @@
-import { WorldMapToRoomMapConverter } from '../../../src/model/parsers/WorldMapToRoomMapConverter';
+import { WorldMapToRoomMapConverter } from '../../../../src/model/formats/text/WorldMapToRoomMapConverter';
 import * as fs from 'fs';
-import { setup } from '../../test_utils/testUtils';
+import { setup } from '../../../test_utils/testUtils';
 
 describe('WorldMapToRoomMapConverter', () => {
     describe('convert', () => {

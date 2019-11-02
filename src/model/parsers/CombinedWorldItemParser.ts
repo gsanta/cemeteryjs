@@ -1,5 +1,5 @@
 import { WorldItem } from '../../WorldItem';
-import { Parser } from './Parser';
+import { Parser, Format } from './Parser';
 import { flat } from '../utils/Functions';
 
 /**
@@ -13,8 +13,8 @@ export class CombinedWorldItemParser implements Parser {
         this.parsers = parsers;
     }
 
-    public parse(worldMap: string): WorldItem[] {
-        const results = this.parsers.map(parser => parser.parse(worldMap));
+    public parse(worldMap: string, format: Format): WorldItem[] {
+        const results = this.parsers.map(parser => parser.parse(worldMap, format));
 
         return flat<WorldItem>(results, 2);
     }

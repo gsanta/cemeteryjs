@@ -6,7 +6,7 @@ import { ServiceFacade } from '../../src/model/services/ServiceFacade';
 import { TreeIteratorGenerator } from '../../src/model/utils/TreeIteratorGenerator';
 import { WorldItem } from '../../src/WorldItem';
 import { TestMeshFactoryService } from '../setup/TestMeshFactoryService';
-import { GlobalsSectionParser } from '../../src/model/parsers/GlobalSectionParser';
+import { GlobalsSectionParser } from '../../src/model/formats/text/GlobalSectionParser';
 
 export function setup(worldMap: string): ServiceFacade<any, any, any> {
 

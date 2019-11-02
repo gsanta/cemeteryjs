@@ -1,6 +1,6 @@
-import { WorldMapLineListener, WorldMapReader } from '../formats/text/WorldMapReader';
-import { ServiceFacade } from '../services/ServiceFacade';
-import { ConfigService } from '../services/ConfigService';
+import { WorldMapLineListener, WorldMapReader } from './WorldMapReader';
+import { ServiceFacade } from '../../services/ServiceFacade';
+import { ConfigService } from '../../services/ConfigService';
 
 export class WorldMapToSubareaMapConverter extends WorldMapLineListener {
     private worldMapReader: WorldMapReader;

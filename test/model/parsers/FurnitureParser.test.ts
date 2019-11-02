@@ -1,6 +1,7 @@
 import { Polygon } from '@nightshifts.inc/geometry';
 import { FurnitureParser } from '../../../src/model/parsers/FurnitureParser';
 import { setup } from '../../test_utils/testUtils';
+import { Format } from '../../../src/model/parsers/Parser';
 
 describe('FurnitureParser', () => {
     describe('generate', () => {
@@ -27,7 +28,7 @@ describe('FurnitureParser', () => {
             const services = setup(worldMap);
 
             const furnitureInfoParser = new FurnitureParser(services);
-            const worldItems = furnitureInfoParser.parse(worldMap);
+            const worldItems = furnitureInfoParser.parse(worldMap, Format.TEXT);
 
             expect(worldItems.length).toEqual(4);
             expect(worldItems).toContainWorldItem({id: 'table-1', name: 'table', dimensions: Polygon.createRectangle(1, 1, 1, 2)});
@@ -59,7 +60,7 @@ describe('FurnitureParser', () => {
             const services = setup(worldMap);
 
             const furnitureInfoParser = new FurnitureParser(services);
-            const worldItems = furnitureInfoParser.parse(worldMap);
+            const worldItems = furnitureInfoParser.parse(worldMap, Format.TEXT);
 
             expect(worldItems.length).toEqual(3);
             expect(worldItems).toContainWorldItem({id: 'table-1', name: 'table', dimensions: Polygon.createRectangle(1, 1, 1, 2)});
@@ -90,7 +91,7 @@ describe('FurnitureParser', () => {
             const services = setup(worldMap);
 
             const furnitureInfoParser = new FurnitureParser(services);
-            const worldItems = furnitureInfoParser.parse(worldMap);
+            const worldItems = furnitureInfoParser.parse(worldMap, Format.TEXT);
             expect(worldItems.length).toEqual(1);
             expect(worldItems).toContainWorldItem({id: 'table-1', name: 'table', dimensions: Polygon.createRectangle(1, 0, 2, 3)});
         });
@@ -123,7 +124,7 @@ it ('Parse furnitures that are outdoors', () => {
     const services = setup(worldMap);
 
     const furnitureInfoParser = new FurnitureParser(services);
-    const furnitures = furnitureInfoParser.parse(worldMap);
+    const furnitures = furnitureInfoParser.parse(worldMap, Format.TEXT);
     expect(furnitures.length).toEqual(1);
     expect(furnitures).toContainWorldItem({id: 'table-1', name: 'table', dimensions: Polygon.createRectangle(10, 2, 4, 2)});
 });

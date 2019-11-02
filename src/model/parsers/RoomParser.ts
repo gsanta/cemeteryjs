@@ -1,8 +1,8 @@
 import { WorldItem } from '../../WorldItem';
 import { ServiceFacade } from '../services/ServiceFacade';
-import { Parser } from "./Parser";
+import { Parser, Format } from './Parser';
 import { PolygonAreaParser } from './PolygonAreaParser';
-import { WorldMapToRoomMapConverter } from './WorldMapToRoomMapConverter';
+import { WorldMapToRoomMapConverter } from '../formats/text/WorldMapToRoomMapConverter';
 
 export class RoomParser implements Parser {
     private worldMapToRoomMapConverter: WorldMapToRoomMapConverter;
@@ -13,11 +13,17 @@ export class RoomParser implements Parser {
         this.services = services;
     }
 
-    parse(worldMap: string): WorldItem[] {
+    parse(worldMap: string, format: Format): WorldItem[] {
+        if (format === Format.TEXT) {
+            return this.parseTextFormat(worldMap);
+        }
+    }
+
+    private parseTextFormat(worldMap: string): WorldItem[] {
         this.worldMapToRoomMapConverter = new WorldMapToRoomMapConverter(this.services.configService);
         this.polygonAreaParser = new PolygonAreaParser('room', this.services);
 
-        const rooms = this.polygonAreaParser.parse(this.worldMapToRoomMapConverter.convert(worldMap));
+        const rooms = this.polygonAreaParser.parse(this.worldMapToRoomMapConverter.convert(worldMap), Format.TEXT);
         const empties = rooms.map(room => this.services.worldItemFactoryService.clone('empty', room));
 
         return [...rooms, ...empties];

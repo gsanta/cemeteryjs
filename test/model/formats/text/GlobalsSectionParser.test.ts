@@ -1,4 +1,4 @@
-import { GlobalsSectionParser } from "../../../src/model/parsers/GlobalSectionParser";
+import { GlobalsSectionParser } from "../../../../src/model/formats/text/GlobalSectionParser";
 import { Point } from "@nightshifts.inc/geometry";
 
 it ('Parse scale property', () => {

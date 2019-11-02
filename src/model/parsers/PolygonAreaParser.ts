@@ -3,7 +3,7 @@ import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { ServiceFacade } from '../services/ServiceFacade';
 import { WorldItem } from '../../WorldItem';
 import { WorldMapGraph } from "./WorldMapGraph";
-import { Parser } from "./Parser";
+import { Parser, Format } from "./Parser";
 import { PolygonRedundantPointReducer } from "./PolygonRedundantPointReducer";
 import { WorldMapToMatrixGraphConverter } from "../formats/text/WorldMapToMatrixGraphConverter";
 import { last, without } from '../utils/Functions';
@@ -30,7 +30,14 @@ export class PolygonAreaParser implements Parser {
         this.polygonRedundantPointReducer = new PolygonRedundantPointReducer();
     }
 
-    public parse(worldMap: string): WorldItem[] {
+
+    parse(worldMap: string, format: Format): WorldItem[] {
+        if (format === Format.TEXT) {
+            return this.parseTextFormat(worldMap);
+        }
+    }
+
+    private parseTextFormat(worldMap: string): WorldItem[] {
         const graph = this.worldMapConverter.convert(worldMap);
 
         return graph

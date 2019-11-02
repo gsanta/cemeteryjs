@@ -1,7 +1,7 @@
 import { WorldMapGraph } from "./WorldMapGraph";
 import { WorldMapToMatrixGraphConverter } from "../formats/text/WorldMapToMatrixGraphConverter";
 import { WorldItem } from "../../WorldItem";
-import { Parser } from './Parser';
+import { Parser, Format } from './Parser';
 import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 import { Polygon } from "@nightshifts.inc/geometry";
 import { ConfigService } from '../services/ConfigService';
@@ -16,7 +16,13 @@ export class RootWorldItemParser implements Parser {
         this.worldMapConverter = worldMapConverter;
     }
 
-    public parse(worldMap: string): WorldItem[] {
+    parse(worldMap: string, format: Format): WorldItem[] {
+        if (format === Format.TEXT) {
+            return this.parseTextFormat(worldMap);
+        }
+    }
+
+    private parseTextFormat(worldMap: string): WorldItem[] {
         return [this.createRootWorldItem(this.parseWorldMap(worldMap))];
     }
 

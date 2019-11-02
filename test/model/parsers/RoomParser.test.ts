@@ -2,6 +2,7 @@ import { Point, Polygon } from '@nightshifts.inc/geometry';
 import * as fs from 'fs';
 import { RoomParser } from '../../../src/model/parsers/RoomParser';
 import { setup } from '../../test_utils/testUtils';
+import { Format } from '../../../src/model/parsers/Parser';
 
 describe('RoomParser', () => {
     describe ('generate', () => {
@@ -11,7 +12,7 @@ describe('RoomParser', () => {
             const services = setup(worldMap);
             const roomInfoParser = new RoomParser(services);
 
-            const worldItem = roomInfoParser.parse(worldMap);
+            const worldItem = roomInfoParser.parse(worldMap, Format.TEXT);
 
             expect(worldItem[0].dimensions.equalTo(new Polygon([
                 new Point(1, 1),
@@ -49,7 +50,7 @@ it ('Parse room with empty area around the whole world map', () => {
     const services = setup(worldMap);
     const roomInfoParser = new RoomParser(services);
 
-    const rooms = roomInfoParser.parse(worldMap);
+    const rooms = roomInfoParser.parse(worldMap, Format.TEXT);
     expect(rooms.length).toEqual(2);
     expect(rooms).toContainWorldItem({name: 'room', dimensions: services.geometryService.factory.rectangle(2, 2, 6, 2)});
     expect(rooms).toContainWorldItem({name: 'empty', dimensions: services.geometryService.factory.rectangle(2, 2, 6, 2)});

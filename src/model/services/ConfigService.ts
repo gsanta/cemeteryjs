@@ -1,6 +1,6 @@
 import { MeshDescriptor } from "../../Config";
-import { DefinitionSectionParser } from "../parsers/DefinitionSectionParser";
-import { GlobalConfig } from '../parsers/GlobalSectionParser';
+import { DefinitionSectionParser } from "../formats/text/DefinitionSectionParser";
+import { GlobalConfig } from '../formats/text/GlobalSectionParser';
 
 const DEFAULT_BORDERS = [
     'wall',

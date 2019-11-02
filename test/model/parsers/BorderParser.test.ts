@@ -1,5 +1,6 @@
 import { BorderParser } from '../../../src/model/parsers/BorderParser';
 import { setup } from '../../test_utils/testUtils';
+import { Format } from '../../../src/model/parsers/Parser';
 
 
 it ('Create separate items for every vertical/horizontal slices of walls', () => {
@@ -26,7 +27,7 @@ it ('Create separate items for every vertical/horizontal slices of walls', () =>
     const roomSeparatorParser = new BorderParser(services);
 
 
-    const worldItems = roomSeparatorParser.parse(worldMap);
+    const worldItems = roomSeparatorParser.parse(worldMap, Format.TEXT);
     expect(worldItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(0.5, 3.5), geometryService.factory.point(9.5, 3.5)));
     expect(worldItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(0.5, 0.5), geometryService.factory.point(9.5, 0.5)));
     expect(worldItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(9.5, 0.5), geometryService.factory.point(9.5, 3.5)));
@@ -60,7 +61,7 @@ it ('Create separate items for different types (represented by different charact
     const roomSeparatorParser = new BorderParser(services);
 
 
-    const worldItems = roomSeparatorParser.parse(worldMap);
+    const worldItems = roomSeparatorParser.parse(worldMap, Format.TEXT);
     expect(worldItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(0.5, 0.5), geometryService.factory.point(8, 0.5)));
     expect(worldItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(4, 3.5), geometryService.factory.point(9.5, 3.5)));
     expect(worldItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(9.5, 0.5), geometryService.factory.point(9.5, 3.5)));
@@ -98,7 +99,7 @@ it ('Create separate items for every vertical/horizontal slices of walls', () =>
     const roomSeparatorParser = new BorderParser(services);
 
 
-    const borders = roomSeparatorParser.parse(worldMap);
+    const borders = roomSeparatorParser.parse(worldMap, Format.TEXT);
 
     expect(borders).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(0.5, 6.5), geometryService.factory.point(9.5, 6.5)));
     expect(borders).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(0.5, 3.5), geometryService.factory.point(9.5, 3.5)));

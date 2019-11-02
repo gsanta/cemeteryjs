@@ -1,4 +1,4 @@
-import { DefinitionSectionParser } from "../../../src/model/parsers/DefinitionSectionParser";
+import { DefinitionSectionParser } from "../../../../src/model/formats/text/DefinitionSectionParser";
 
 function createWorldMap(definitionLines: string) {
     return `
