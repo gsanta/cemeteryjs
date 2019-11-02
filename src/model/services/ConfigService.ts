@@ -41,6 +41,10 @@ export class ConfigService {
         return this.meshDescriptorMapByChar.get(char);
     }
 
+    getMeshDescriptorByType(type: string) {
+        return this.meshDescriptorMap.get(type);
+    }
+
     getRealBorderWidth(type: string): { width: number, height?: number } {
         return  this.meshDescriptorMap.get(type) ? this.meshDescriptorMap.get(type).realDimensions : null;
     }

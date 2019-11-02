@@ -17,14 +17,15 @@ export class FurnitureParser implements Parser {
 
     public parse(worldMap: string): WorldItem[] {
         const graph = this.worldMapConverter.convert(worldMap);
-        const furnitureTypes = this.services.configService.furnitures.map(furniture => furniture.type);
-        const characters = furnitureTypes.filter(name => graph.getCharacterForName(name)).map(name => graph.getCharacterForName(name));
+        const types = this.services.configService.furnitures
+            .filter(furniture => graph.hasType(furniture.type))
+            .map(furniture => furniture.type);
 
         return flat<WorldItem>(
-                characters
-                .map((character) => {
+                types
+                .map((type) => {
                     return graph
-                        .getReducedGraphForCharacters([character])
+                        .getReducedGraphForTypes([type])
                         .getConnectedComponentGraphs()
                         .map(connectedCompGraph => this.createGameObjectsForConnectedComponent(connectedCompGraph));
                 }),
@@ -47,16 +48,15 @@ export class FurnitureParser implements Parser {
         const minY = minBy<{x: number, y: number}>(vertexPositions, (a, b) => a.y - b.y).y;
         const maxY = maxBy<{x: number, y: number}>(vertexPositions, (a, b) => a.y - b.y).y;
 
-        const oneVertex = componentGraph.getAllVertices()[0];
-
         const x = minX;
         const y = minY;
         const width = (maxX - minX + 1);
         const height = (maxY - minY + 1);
+        const type = componentGraph.getTypes()[0];
         return this.services.worldItemFactoryService.create({
-            type: componentGraph.getCharacters()[0],
+            type: this.services.configService.getMeshDescriptorByType(type).char,
             dimensions: Polygon.createRectangle(x, y, width, height),
-            name: componentGraph.getVertexName(oneVertex),
+            name: type,
             isBorder: false
         });
     }
@@ -70,27 +70,28 @@ export class FurnitureParser implements Parser {
             .map(slice => {
                 const gameObjectGraph = componentGraph.getGraphForVertices(slice);
                 const rect = this.createRectangleFromVerticalVertices(gameObjectGraph)
-                const oneVertex = componentGraph.getAllVertices()[0];
+                const type = componentGraph.getTypes()[0];
+
                 return this.services.worldItemFactoryService.create({
-                    type: componentGraph.getCharacters()[0],
+                    type: this.services.configService.getMeshDescriptorByType(type).char,
                     dimensions: rect,
-                    name: componentGraph.getVertexName(oneVertex),
+                    name: type,
                     isBorder: false
                 });
             });
 
         const horizontalGameObjects = componentGraphMinusVerticalSubComponents
-            .getReducedGraphForCharacters([componentGraphMinusVerticalSubComponents.getCharacters()[0]])
+            .getReducedGraphForTypes([componentGraphMinusVerticalSubComponents.getTypes()[0]])
             .getConnectedComponentGraphs()
             .filter(connectedCompGraph => connectedCompGraph.size() > 0)
             .map(connectedCompGraph => {
                 const rect = this.createRectangleFromHorizontalVertices(connectedCompGraph);
-                const oneVertex = componentGraph.getAllVertices()[0];
 
+                const type = componentGraph.getTypes()[0];
                 return this.services.worldItemFactoryService.create({
-                    type: connectedCompGraph.getCharacters()[0],
+                    type: this.services.configService.getMeshDescriptorByType(type).char,
                     dimensions: rect,
-                    name: componentGraph.getVertexName(oneVertex),
+                    name: type,
                     isBorder: false
                 });
             });

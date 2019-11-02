@@ -1,18 +1,15 @@
 import { WorldMapLineListener, WorldMapReader } from './reader/WorldMapReader';
+import { ServiceFacade } from '../services/ServiceFacade';
 
 export class WorldMapToSubareaMapConverter extends WorldMapLineListener {
-    private borderCharacters: string[];
-    private sectionCharacter: string;
-    private emptyCharacter: string;
     private worldMapReader: WorldMapReader;
 
     private lines: string[] = [];
+    private services: ServiceFacade<any, any, any>;
 
-    constructor(subareaChar: string, emptyCharacter: string, borderCharacters: string[]) {
+    constructor(services: ServiceFacade<any, any, any>) {
         super();
-        this.sectionCharacter = subareaChar;
-        this.emptyCharacter = emptyCharacter;
-        this.borderCharacters = borderCharacters;
+        this.services = services;
         this.worldMapReader = new WorldMapReader(this);
     }
 

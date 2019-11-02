@@ -21,12 +21,10 @@ export class PolygonAreaParser implements Parser {
     private services: ServiceFacade<any, any, any>;
     private geometryService: GeometryService;
     // TODO: the graph after running WorldMapConverter should only contain one character, so this info is redundant
-    private areaChar: string;
 
     constructor(itemName: string, services: ServiceFacade<any, any, any>, worldMapConverter = new WorldMapToMatrixGraphConverter(services.configService)) {
         this.itemName = itemName;
         this.services = services;
-        this.areaChar = services.configService.meshDescriptorMap.get(itemName).char;
         this.geometryService = services.geometryService;
         this.worldMapConverter = worldMapConverter;
         this.polygonRedundantPointReducer = new PolygonRedundantPointReducer();
@@ -36,7 +34,7 @@ export class PolygonAreaParser implements Parser {
         const graph = this.worldMapConverter.convert(worldMap);
 
         return graph
-            .getReducedGraphForCharacters([this.areaChar])
+            .getReducedGraphForTypes([this.itemName])
             .getConnectedComponentGraphs()
             .map(componentGraph => {
                 const lines = this.segmentGraphToHorizontalLines(componentGraph);

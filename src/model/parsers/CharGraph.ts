@@ -1,51 +1,41 @@
 import { without } from '../utils/Functions';
 
-export interface MatrixGraphVertexValue {
-    character: string;
-    additionalData?: any;
-}
-
-// TODO: separate matrix strore from additional data (like 'name')
-// matrix is specific to the .gwm format, the other data should be independent
 export class CharGraph {
     private numberOfVertices = 0;
-    private vertexValues: { [key: number]: MatrixGraphVertexValue } = {};
+    private vertexValues: { [key: number]: string } = {};
     private vertices: number[] = [];
     private columns: number;
     private rows: number;
-    private characters: Set<string>;
-
-    private charToNameMap: Map<string, string> = new Map();
-    private nameToCharMap: Map<string, string> = new Map();
+    private types: Set<string>;
 
     constructor(columns: number, rows: number) {
         this.columns = columns;
         this.rows = rows;
-        this.characters = new Set<string>([]);
+        this.types = new Set<string>([]);
     }
 
-    public getCharacterForName(name: string) {
-        return this.nameToCharMap.get(name);
+    hasType(type: string): boolean {
+        return this.types.has(type);
     }
 
-    public getCharacters(): string[] {
-        return [...this.characters.values()];
+    getTypes(): string[] {
+        return [...this.types.values()];
     }
 
-    public size() {
+    size() {
         return this.numberOfVertices;
     }
 
-    public getRows(): number {
+    getRows(): number {
         return this.rows;
     }
 
-    public getColumns(): number {
+    getColumns(): number {
         return this.columns;
     }
 
 
-    public getVertexPositionInMatrix(vertex: number): {x: number, y: number} {
+    getVertexPositionInMatrix(vertex: number): {x: number, y: number} {
         const row = Math.floor(vertex / this.columns);
         const column = vertex % this.columns;
 
@@ -55,7 +45,7 @@ export class CharGraph {
         };
     }
 
-    public getVertexAtPosition(pos: {x: number, y: number}): number {
+    getVertexAtPosition(pos: {x: number, y: number}): number {
         const vertex = pos.y * this.columns + pos.x;
 
         if (this.hasVertex(vertex)) {
@@ -65,32 +55,20 @@ export class CharGraph {
         return null;
     }
 
-    public getVertexName(vertex: number): string {
-        return this.charToNameMap.get(this.vertexValues[vertex].character);
-    }
-
-    public getVertexValue(vertex: number): MatrixGraphVertexValue {
+    getVertexValue(vertex: number): string {
         return this.vertexValues[vertex];
     }
 
-    public addVertex(vertex: number, character: string, name: string) {
+    addVertex(vertex: number, type: string) {
 
-        this.vertexValues[vertex] = {
-            character,
-            additionalData: []
-        };
+        this.vertexValues[vertex] = type;
         this.numberOfVertices += 1;
 
         this.vertices.push(vertex);
-        this.characters.add(character);
-
-        if (!this.nameToCharMap.has(character)) {
-            this.nameToCharMap.set(name, character);
-            this.charToNameMap.set(character, name);
-        }
+        this.types.add(type);
     }
 
-    public getAllVertices(): number[] {
+    getAllVertices(): number[] {
         return this.vertices;
     }
 
@@ -146,13 +124,13 @@ export class CharGraph {
     public getGraphForVertices(vertices: number[]): CharGraph {
         const graph = new CharGraph(this.columns, this.rows);
 
-        vertices.forEach(vertex => graph.addVertex(vertex, this.getVertexValue(vertex).character, this.charToNameMap.get(this.getVertexValue(vertex).character)));
+        vertices.forEach(vertex => graph.addVertex(vertex, this.getVertexValue(vertex)));
 
         return graph;
     }
 
     /*
-     * Reduces the graph into subgraphs, where each graph has only vetices with value of `character`
+     * Reduces the graph into subgraphs, where each graph consists of only one type
      * and where each graph is a `connected-component`.
      */
     public getConnectedComponentGraphs(): CharGraph[] {
@@ -161,12 +139,12 @@ export class CharGraph {
         return connectedComponents.map(component => this.getReducedGraphForVertices(component));
     }
 
-    getReducedGraphForCharacters(characters: string[]): CharGraph {
+    getReducedGraphForTypes(types: string[]): CharGraph {
         const graph = new CharGraph(this.columns, this.rows);
 
         this.vertices
-            .filter(vertex => characters.includes(this.getVertexValue(vertex).character))
-            .forEach(vertex => graph.addVertex(vertex, this.getVertexValue(vertex).character, this.charToNameMap.get(this.getVertexValue(vertex).character)));
+            .filter(vertex => types.includes(this.getVertexValue(vertex)))
+            .forEach(vertex => graph.addVertex(vertex, this.getVertexValue(vertex)));
 
         return graph;
     }
@@ -196,7 +174,7 @@ export class CharGraph {
     private getReducedGraphForVertices(vertices: number[]): CharGraph {
         const graph = new CharGraph(this.columns, this.rows);
 
-        vertices.forEach(vertex => graph.addVertex(vertex, this.getVertexValue(vertex).character, this.charToNameMap.get(this.getVertexValue(vertex).character)));
+        vertices.forEach(vertex => graph.addVertex(vertex, this.getVertexValue(vertex)));
 
         return graph;
     }
