@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ControllerFacade } from '../../controllers/ControllerFacade';
 import { DefinitionProperty } from '../../controllers/DefinitionController';
 import { CheckboxComponent } from '../forms/CheckboxComponent';
 import { ConnectedDropdownComponent } from '../forms/DropdownComponent';
@@ -8,6 +7,7 @@ import { LabeledComponent } from '../forms/LabeledComponent';
 import { MaterialsComponent } from './definition/MaterialsComponent';
 import './PropertyEditorComponent.scss';
 import { AppContext, AppContextType } from '../Context';
+import { ColorPicker } from '../forms/ColorPicker';
 
 const chars = [
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
@@ -58,6 +58,7 @@ export class PropertyEditorComponent extends React.Component<{}> {
                                 propertyType='string'
                             />
                         </LabeledComponent>
+                        {true ? this.renderColorChooser() : this.renderCharacterDropdown()}
                         <CheckboxComponent 
                             isSelected={definitionController.getVal(DefinitionProperty.IS_BORDER) as boolean}
                             formController={definitionController}
@@ -114,5 +115,13 @@ export class PropertyEditorComponent extends React.Component<{}> {
                 </div>
             </div>
         );
+    }
+
+    renderCharacterDropdown() {
+
+    }
+
+    renderColorChooser() {
+
     }
 };

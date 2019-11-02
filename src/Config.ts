@@ -3,6 +3,7 @@
 export interface MeshDescriptor {
     type: string;
     char?: string;
+    color?: string;
     model?: string;
     shape?: string;
     scale?: number;
