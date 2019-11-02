@@ -2,13 +2,13 @@ import { Polygon, Point, Segment } from '@nightshifts.inc/geometry';
 import { WorldItem } from '../../WorldItem';
 import { ServiceFacade } from '../services/ServiceFacade';
 import { last, without } from '../utils/Functions';
-import { CharGraph } from './CharGraph';
+import { WorldMapGraph } from './WorldMapGraph';
 import { Parser } from './Parser';
-import { WorldMapToMatrixGraphConverter } from './reader/WorldMapToMatrixGraphConverter';
+import { WorldMapToMatrixGraphConverter } from '../formats/text/WorldMapToMatrixGraphConverter';
 
 interface Border {
     vertices: number[];
-    character: string;
+    type: string;
     direction: 'vertical' | 'horizontal'
 }
 
@@ -26,27 +26,20 @@ export class BorderParser implements Parser {
     public parse(worldMap: string): WorldItem[] {
         this.positionToComponentMap = new Map();
         const graph = this.worldMapConverter.convert(worldMap);
-        const characters = this.services.configService.borders.map(border => border.char);
+        const borderTypes = this.services.configService.borders.map(border => border.type);
 
-        const borderGraph = graph.getReducedGraphForCharacters(characters)
+        const borderGraph = graph.getReducedGraphForTypes(borderTypes)
         borderGraph.getAllVertices().forEach(vertex => this.positionToComponentMap.set(vertex, []));
 
-        const verticalBorders = this
 
         let borders: Border[] = [];
 
-        characters.forEach((character) => {
-            const graphForChar = graph.getReducedGraphForCharacters([character]);
+        borderTypes.forEach((type) => {
+            const graphForChar = graph.getReducedGraphForTypes([type]);
 
 
             borders.push(...this.findVerticalSlices(graphForChar));
             borders.push(...this.findHorizontalSlices(graphForChar));
-
-
-            // return graph
-            //     .getReducedGraphForCharacters([character])
-            //     .getConnectedComponentGraphs()
-            //     .map(connectedCompGraph => this.createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(connectedCompGraph, borderGraph));
         });
 
         borders.forEach(border => {
@@ -77,10 +70,10 @@ export class BorderParser implements Parser {
         return worldItems;
     }
 
-    private createWorldItemFromOneSizedBorder(vertex: number, graph: CharGraph): WorldItem {
+    private createWorldItemFromOneSizedBorder(vertex: number, graph: WorldMapGraph): WorldItem {
         const border: Partial<Border> = {
             vertices: [vertex],
-            character: graph.getVertexValue(vertex).character
+            type: graph.getVertexValue(vertex)
         }
 
         if (graph.getLeftNeighbour(vertex) !== null && graph.getRightNeighbour(vertex) !== null) {
@@ -94,7 +87,7 @@ export class BorderParser implements Parser {
     }
 
 
-    private findVerticalSlices(borderGraph: CharGraph): Border[] {
+    private findVerticalSlices(borderGraph: WorldMapGraph): Border[] {
         const visitedVertices = [];
 
         let allVertices = borderGraph.getAllVertices();
@@ -115,13 +108,13 @@ export class BorderParser implements Parser {
         return verticalSubCompnents.map(comp => {
             return {
                 vertices: comp,
-                character: borderGraph.getCharacters()[0],
+                type: borderGraph.getTypes()[0],
                 direction: 'vertical'
             }
         });
     }
 
-    private findVerticalSubComponentForVertex(vertex: number, componentGraph: CharGraph): number[] {
+    private findVerticalSubComponentForVertex(vertex: number, componentGraph: WorldMapGraph): number[] {
         let subComponentVertices = [vertex];
 
         let actVertex = vertex;
@@ -140,7 +133,7 @@ export class BorderParser implements Parser {
         return subComponentVertices;
     }
 
-    private findHorizontalSlices(borderGraph: CharGraph): Border[] {
+    private findHorizontalSlices(borderGraph: WorldMapGraph): Border[] {
         const visitedVertices = [];
 
         let componentVertices = borderGraph.getAllVertices();
@@ -161,13 +154,13 @@ export class BorderParser implements Parser {
         return horizontalSubCompnents.map(comp => {
             return {
                 vertices: comp,
-                character: borderGraph.getCharacters()[0],
+                type: borderGraph.getTypes()[0],
                 direction: 'horizontal'
             }
         });
     }
 
-    private findHorizontalSubComponentForVertex(vertex: number, componentGraph: CharGraph): number[] {
+    private findHorizontalSubComponentForVertex(vertex: number, componentGraph: WorldMapGraph): number[] {
         let subComponentVertices = [vertex];
 
         let actVertex = vertex;
@@ -186,7 +179,7 @@ export class BorderParser implements Parser {
         return subComponentVertices;
     }
 
-    private createWorldItemFromBorder(border: Border, graph: CharGraph) {
+    private createWorldItemFromBorder(border: Border, graph: WorldMapGraph) {
         const worldMapPositions = border.vertices.map(vertex => graph
                 .getVertexPositionInMatrix(vertex))
                 .map(vertexPosition => this.services.geometryService.factory.point(vertexPosition.x, vertexPosition.y));
@@ -195,9 +188,9 @@ export class BorderParser implements Parser {
         const rotation = segment.getLine().getAngleToXAxis();
 
         const worldItem = this.services.worldItemFactoryService.create({
-            type: border.character,
+            type: this.services.configService.getMeshDescriptorByType(border.type).char,
             dimensions: segment,
-            name: this.services.configService.meshDescriptorMapByChar.get(border.character).type,
+            name: border.type,
             isBorder: true,
             rotation: rotation.getAngle(),
             worldMapPositions,
@@ -206,7 +199,7 @@ export class BorderParser implements Parser {
         return worldItem;
     }
 
-    private createRectangleFromBorder(border: Border, graph: CharGraph): Segment {
+    private createRectangleFromBorder(border: Border, graph: WorldMapGraph): Segment {
         const vertices = [...border.vertices]
 
         const startCoord = graph.getVertexPositionInMatrix(vertices[0]);

@@ -1,6 +1,6 @@
 import { without } from '../utils/Functions';
 
-export class CharGraph {
+export class WorldMapGraph {
     private numberOfVertices = 0;
     private vertexValues: { [key: number]: string } = {};
     private vertices: number[] = [];
@@ -121,8 +121,8 @@ export class CharGraph {
         return null;
     }
 
-    public getGraphForVertices(vertices: number[]): CharGraph {
-        const graph = new CharGraph(this.columns, this.rows);
+    public getGraphForVertices(vertices: number[]): WorldMapGraph {
+        const graph = new WorldMapGraph(this.columns, this.rows);
 
         vertices.forEach(vertex => graph.addVertex(vertex, this.getVertexValue(vertex)));
 
@@ -133,14 +133,14 @@ export class CharGraph {
      * Reduces the graph into subgraphs, where each graph consists of only one type
      * and where each graph is a `connected-component`.
      */
-    public getConnectedComponentGraphs(): CharGraph[] {
+    public getConnectedComponentGraphs(): WorldMapGraph[] {
         const connectedComponents = this.findConnectedComponents();
 
         return connectedComponents.map(component => this.getReducedGraphForVertices(component));
     }
 
-    getReducedGraphForTypes(types: string[]): CharGraph {
-        const graph = new CharGraph(this.columns, this.rows);
+    getReducedGraphForTypes(types: string[]): WorldMapGraph {
+        const graph = new WorldMapGraph(this.columns, this.rows);
 
         this.vertices
             .filter(vertex => types.includes(this.getVertexValue(vertex)))
@@ -171,8 +171,8 @@ export class CharGraph {
      * containing only the vertices passed as the `vertices` parameter and the edges between
      * those vertices.
      */
-    private getReducedGraphForVertices(vertices: number[]): CharGraph {
-        const graph = new CharGraph(this.columns, this.rows);
+    private getReducedGraphForVertices(vertices: number[]): WorldMapGraph {
+        const graph = new WorldMapGraph(this.columns, this.rows);
 
         vertices.forEach(vertex => graph.addVertex(vertex, this.getVertexValue(vertex)));
 

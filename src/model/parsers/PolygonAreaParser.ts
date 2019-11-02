@@ -2,10 +2,10 @@ import { GeometryService, Point } from "@nightshifts.inc/geometry";
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { ServiceFacade } from '../services/ServiceFacade';
 import { WorldItem } from '../../WorldItem';
-import { CharGraph } from "./CharGraph";
+import { WorldMapGraph } from "./WorldMapGraph";
 import { Parser } from "./Parser";
 import { PolygonRedundantPointReducer } from "./PolygonRedundantPointReducer";
-import { WorldMapToMatrixGraphConverter } from "./reader/WorldMapToMatrixGraphConverter";
+import { WorldMapToMatrixGraphConverter } from "../formats/text/WorldMapToMatrixGraphConverter";
 import { last, without } from '../utils/Functions';
 
 /**
@@ -57,7 +57,7 @@ export class PolygonAreaParser implements Parser {
             });
     }
 
-    public parse2(graph: CharGraph): WorldItem {
+    public parse2(graph: WorldMapGraph): WorldItem {
         const lines = this.segmentGraphToHorizontalLines(graph);
 
         const points = this.polygonRedundantPointReducer.reduce(
@@ -75,7 +75,7 @@ export class PolygonAreaParser implements Parser {
      * Converts the polygon points of the component graph to horizontal lines which
      * include all of the points in the graph.
      */
-    private segmentGraphToHorizontalLines(componentGraph: CharGraph): Segment[] {
+    private segmentGraphToHorizontalLines(componentGraph: WorldMapGraph): Segment[] {
         const map = new Map<Number, number[]>();
 
         componentGraph.getAllVertices()

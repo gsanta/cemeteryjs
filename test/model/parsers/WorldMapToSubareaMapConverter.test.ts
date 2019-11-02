@@ -1,4 +1,5 @@
 import { WorldMapToSubareaMapConverter as WorldMapToSubareaMapConverter } from '../../../src/model/parsers/WorldMapToSubareaMapConverter';
+import { ConfigService } from '../../../src/model/services/ConfigService';
 
 describe('WorldMapToSubareaMapConverter', () => {
     it ('replaces the border characters with empty characters', () => {
@@ -48,7 +49,21 @@ describe('WorldMapToSubareaMapConverter', () => {
             \`
         `;
 
-        const worldMapToSubareaMapConverter = new WorldMapToSubareaMapConverter('=', '-', ['W', 'D', 'I']);
+        const configService = new ConfigService().update(
+            `
+                definitions \`
+
+                - = room
+                I = window BORDER
+                D = door BORDER
+                W = wall BORDER
+                = = _subarea
+
+                \`
+            `
+        );
+
+        const worldMapToSubareaMapConverter = new WorldMapToSubareaMapConverter(configService);
 
         expect(worldMapToSubareaMapConverter.convert(input)).toEqual(output);
     });
@@ -104,7 +119,23 @@ describe('WorldMapToSubareaMapConverter', () => {
             \`
         `;
 
-        const worldMapToSubareaMapConverter = new WorldMapToSubareaMapConverter('=', '-', ['W', 'D', 'I']);
+        const configService = new ConfigService().update(
+            `
+                definitions \`
+
+                - = room
+                I = window BORDER
+                D = door BORDER
+                W = wall BORDER
+                T = table
+                H = chair
+                = = _subarea
+
+                \`
+            `
+        );
+
+        const worldMapToSubareaMapConverter = new WorldMapToSubareaMapConverter(configService);
 
         expect(worldMapToSubareaMapConverter.convert(input)).toEqual(output);
     });

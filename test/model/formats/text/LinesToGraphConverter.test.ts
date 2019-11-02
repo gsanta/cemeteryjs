@@ -1,4 +1,4 @@
-import { LinesToGraphConverter } from '../../../../src/model/parsers/reader/LinesToGraphConverter';
+import { LinesToGraphConverter } from '../../../../src/model/formats/text/LinesToGraphConverter';
 import { ConfigService } from '../../../../src/model/services/ConfigService';
 
 describe('LinesToGraphConverter', () => {

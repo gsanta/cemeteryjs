@@ -1,9 +1,9 @@
-import { CharGraph } from '../CharGraph';
+import { WorldMapGraph } from '../../parsers/WorldMapGraph';
 import { range } from '../../utils/Functions';
 import { ConfigService } from '../../services/ConfigService';
 
 export class LinesToGraphConverter {
-    private graph: CharGraph;
+    private graph: WorldMapGraph;
     private lines: string[];
     private columns: number;
     private rows: number;
@@ -13,11 +13,11 @@ export class LinesToGraphConverter {
         this.configService = configService;
     }
 
-    public parse(lines: string[]): CharGraph {
+    public parse(lines: string[]): WorldMapGraph {
         this.lines = lines;
         this.columns = this.lines[0].length;
         this.rows = this.lines.length;
-        this.graph = new CharGraph(this.columns, this.rows);
+        this.graph = new WorldMapGraph(this.columns, this.rows);
         this.initGraph();
 
         return this.graph;
@@ -34,8 +34,8 @@ export class LinesToGraphConverter {
 
         range(0, vertices).forEach(val => {
             const character = findCharacter(val);
-            const name = this.configService.getMeshDescriptorByChar(character).type;
-            this.graph.addVertex(val, character, name);
+            const type = this.configService.getMeshDescriptorByChar(character).type;
+            this.graph.addVertex(val, type);
         });
 
     }

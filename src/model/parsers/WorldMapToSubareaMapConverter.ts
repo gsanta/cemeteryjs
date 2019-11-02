@@ -1,15 +1,16 @@
-import { WorldMapLineListener, WorldMapReader } from './reader/WorldMapReader';
+import { WorldMapLineListener, WorldMapReader } from '../formats/text/WorldMapReader';
 import { ServiceFacade } from '../services/ServiceFacade';
+import { ConfigService } from '../services/ConfigService';
 
 export class WorldMapToSubareaMapConverter extends WorldMapLineListener {
     private worldMapReader: WorldMapReader;
 
     private lines: string[] = [];
-    private services: ServiceFacade<any, any, any>;
+    private configService: ConfigService;
 
-    constructor(services: ServiceFacade<any, any, any>) {
+    constructor(configService: ConfigService) {
         super();
-        this.services = services;
+        this.configService = configService;
         this.worldMapReader = new WorldMapReader(this);
     }
 
@@ -20,8 +21,11 @@ export class WorldMapToSubareaMapConverter extends WorldMapLineListener {
     }
 
     public addMapSectionLine(line: string) {
-        this.borderCharacters.forEach(char => {
-            line = line.replace(new RegExp(char, 'g'), this.emptyCharacter);
+        const emptyChar = this.configService.meshDescriptorMap.get('room').char
+        const borderChars = this.configService.borders.map(border => border.char);
+
+        borderChars.forEach(char => {
+            line = line.replace(new RegExp(char, 'g'), emptyChar);
         });
 
         // line = line.replace(new RegExp(`[^${this.emptyCharacter}\\s]`, 'g'), this.sectionCharacter);

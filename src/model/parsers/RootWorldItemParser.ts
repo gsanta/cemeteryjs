@@ -1,5 +1,5 @@
-import { CharGraph } from "./CharGraph";
-import { WorldMapToMatrixGraphConverter } from "./reader/WorldMapToMatrixGraphConverter";
+import { WorldMapGraph } from "./WorldMapGraph";
+import { WorldMapToMatrixGraphConverter } from "../formats/text/WorldMapToMatrixGraphConverter";
 import { WorldItem } from "../../WorldItem";
 import { Parser } from './Parser';
 import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
@@ -25,11 +25,11 @@ export class RootWorldItemParser implements Parser {
         return [this.createRootWorldItem(matrixGraph)];
     }
 
-    private parseWorldMap(strMap: string): CharGraph {
+    private parseWorldMap(strMap: string): WorldMapGraph {
         return this.worldMapConverter.convert(strMap);
     }
 
-    public createRootWorldItem(graph: CharGraph): WorldItem {
+    public createRootWorldItem(graph: WorldMapGraph): WorldItem {
         return this.worldItemInfoFactory.create({
             type: 'F',
             dimensions: Polygon.createRectangle(

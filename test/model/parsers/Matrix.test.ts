@@ -1,4 +1,4 @@
-import { LinesToGraphConverter } from '../../../src/model/parsers/reader/LinesToGraphConverter';
+import { LinesToGraphConverter } from '../../../src/model/formats/text/LinesToGraphConverter';
 import { ConfigService } from '../../../src/model/services/ConfigService';
 
 
@@ -28,7 +28,7 @@ describe('MatrixGraph', () => {
             const linesToGraphConverter = new LinesToGraphConverter(configService);
             const graph = linesToGraphConverter.parse(input);
 
-            const reducedGraph = graph.getReducedGraphForCharacters(['W']);
+            const reducedGraph = graph.getReducedGraphForTypes(['wall']);
 
             expect(reducedGraph.size()).toEqual(6);
         });
@@ -59,7 +59,7 @@ describe('MatrixGraph', () => {
             const linesToGraphConverter = new LinesToGraphConverter(configService);
             const graph = linesToGraphConverter.parse(input);
 
-            const connectedComponentGraphs = graph.getReducedGraphForCharacters(['R']).getConnectedComponentGraphs();
+            const connectedComponentGraphs = graph.getReducedGraphForTypes(['room']).getConnectedComponentGraphs();
 
             expect(connectedComponentGraphs.length).toEqual(2);
             expect(connectedComponentGraphs[0].getAllVertices().length).toEqual(9)
@@ -94,7 +94,7 @@ describe('MatrixGraph', () => {
 
             const graph = linesToGraphConverter.parse(input);
 
-            const reducedGraph = graph.getReducedGraphForCharacters(['#', 'D']);
+            const reducedGraph = graph.getReducedGraphForTypes(['wall', 'door']);
 
             expect(reducedGraph.getVertexAtPosition({x: 0, y: 0})).not.toBeNull();
             expect(reducedGraph.getVertexAtPosition({x: 2, y: 0})).not.toBeNull();

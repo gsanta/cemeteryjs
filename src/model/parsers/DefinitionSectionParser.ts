@@ -1,4 +1,4 @@
-import { WorldMapLineListener, WorldMapReader } from "./reader/WorldMapReader";
+import { WorldMapLineListener, WorldMapReader } from "../formats/text/WorldMapReader";
 import { Point } from "@nightshifts.inc/geometry";
 import { MeshDescriptor } from '../../Config';
 

@@ -1,4 +1,4 @@
-import { CharGraph } from "./CharGraph";
+import { WorldMapGraph } from "./WorldMapGraph";
 import { WorldItem } from '../../WorldItem';
 
 

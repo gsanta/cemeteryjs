@@ -1,5 +1,5 @@
 import { LinesToGraphConverter } from './LinesToGraphConverter';
-import { CharGraph } from '../CharGraph';
+import { WorldMapGraph } from '../../parsers/WorldMapGraph';
 import { DetailsLineToObjectConverter, DetailsLineDataTypes } from './DetailsLineToObjectConverter';
 import { WorldMapLineListener, WorldMapReader } from './WorldMapReader';
 import { ConfigService } from '../../services/ConfigService';
@@ -21,7 +21,7 @@ export class WorldMapToMatrixGraphConverter extends WorldMapLineListener {
         this.worldMapReader = new WorldMapReader(this);
     }
 
-    public convert(worldmap: string): CharGraph {
+    public convert(worldmap: string): WorldMapGraph {
         this.worldMapLines = [];
 
         this.linesToGraphConverter = new LinesToGraphConverter(this.configService);
@@ -35,7 +35,7 @@ export class WorldMapToMatrixGraphConverter extends WorldMapLineListener {
         return this.stringToGraph(worldmap);
     }
 
-    private stringToGraph(worldmap: string): CharGraph {
+    private stringToGraph(worldmap: string): WorldMapGraph {
         this.worldMapReader.read(worldmap);
 
         const attributes = this.detailsLines.map(line => this.convertDetailsLineToAdditionalData(line));

@@ -1,7 +1,7 @@
-import { CharGraph } from './CharGraph';
+import { WorldMapGraph } from './WorldMapGraph';
 import { WorldItem } from '../../WorldItem';
 import { Parser } from './Parser';
-import { WorldMapToMatrixGraphConverter } from './reader/WorldMapToMatrixGraphConverter';
+import { WorldMapToMatrixGraphConverter } from '../formats/text/WorldMapToMatrixGraphConverter';
 import { Polygon } from '@nightshifts.inc/geometry';
 import { flat, minBy, maxBy, without, last } from '../utils/Functions';
 import { ServiceFacade } from '../services/ServiceFacade';
@@ -33,7 +33,7 @@ export class FurnitureParser implements Parser {
         );
     }
 
-    private createGameObjectsForConnectedComponent(componentGraph: CharGraph): WorldItem[] {
+    private createGameObjectsForConnectedComponent(componentGraph: WorldMapGraph): WorldItem[] {
         if (this.areConnectedComponentsRectangular(componentGraph)) {
             return [this.createRectangularGameObject(componentGraph)];
         } else {
@@ -41,7 +41,7 @@ export class FurnitureParser implements Parser {
         }
     }
 
-    private createRectangularGameObject(componentGraph: CharGraph): WorldItem {
+    private createRectangularGameObject(componentGraph: WorldMapGraph): WorldItem {
         const vertexPositions = componentGraph.getAllVertices().map(vertex => componentGraph.getVertexPositionInMatrix(vertex));
         const minX = minBy<{x: number, y: number}>(vertexPositions, (a, b) => a.x - b.x).x;
         const maxX = maxBy<{x: number, y: number}>(vertexPositions, (a, b) => a.x - b.x).x;
@@ -61,7 +61,7 @@ export class FurnitureParser implements Parser {
         });
     }
 
-    private createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph: CharGraph): WorldItem[] {
+    private createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph: WorldMapGraph): WorldItem[] {
         const verticalSubComponents = this.findVerticalSlices(componentGraph);
         const verticesMinusVerticalSubComponents = <number[]> without(componentGraph.getAllVertices(), ...flat(verticalSubComponents, 2));
         const componentGraphMinusVerticalSubComponents = componentGraph.getGraphForVertices(verticesMinusVerticalSubComponents);
@@ -99,7 +99,7 @@ export class FurnitureParser implements Parser {
         return [...verticalGameObjects, ...horizontalGameObjects];
     }
 
-    private areConnectedComponentsRectangular(componentGraph: CharGraph) {
+    private areConnectedComponentsRectangular(componentGraph: WorldMapGraph) {
         const vertexPositions = componentGraph.getAllVertices().map(vertex => componentGraph.getVertexPositionInMatrix(vertex));
 
         const minX = minBy<{x: number, y: number}>(vertexPositions, (a, b) => a.x - b.x).x;
@@ -126,7 +126,7 @@ export class FurnitureParser implements Parser {
         return without(componentGraph.getAllVertices(), ...checkedVertices).length === 0;
     }
 
-    private findVerticalSlices(reducedGraph: CharGraph): number[][] {
+    private findVerticalSlices(reducedGraph: WorldMapGraph): number[][] {
         const visitedVertices = [];
 
         let componentVertices = reducedGraph.getAllVertices();
@@ -147,7 +147,7 @@ export class FurnitureParser implements Parser {
         return verticalSubCompnents;
     }
 
-    private findVerticalSubComponentForVertex(vertex: number, componentGraph: CharGraph): number[] {
+    private findVerticalSubComponentForVertex(vertex: number, componentGraph: WorldMapGraph): number[] {
         let subComponentVertices = [vertex];
 
         let actVertex = vertex;
@@ -166,7 +166,7 @@ export class FurnitureParser implements Parser {
         return subComponentVertices;
     }
 
-    private createRectangleFromVerticalVertices(graph: CharGraph) {
+    private createRectangleFromVerticalVertices(graph: WorldMapGraph) {
         const vertices = [...graph.getAllVertices()];
         vertices.sort((a, b) => graph.getVertexPositionInMatrix(a).y - graph.getVertexPositionInMatrix(b).y);
 
@@ -181,7 +181,7 @@ export class FurnitureParser implements Parser {
         return Polygon.createRectangle(x, y, width, height);
     }
 
-    private createRectangleFromHorizontalVertices(graph: CharGraph) {
+    private createRectangleFromHorizontalVertices(graph: WorldMapGraph) {
         const vertices = [...graph.getAllVertices()];
         vertices.sort((a, b) => graph.getVertexPositionInMatrix(a).x - graph.getVertexPositionInMatrix(b).x);
 
