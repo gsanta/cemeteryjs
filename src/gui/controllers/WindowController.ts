@@ -7,13 +7,17 @@ export enum EditorType {
 }
 
 export enum WindowProperty {
-    EDITOR = 'editor'
+    EDITOR = 'editor',
+    IS_PROPERTIES_WINDOW_OPEN = 'is-properties-window-open'
 }
 
 export class WindowController extends FormController<WindowProperty> {
     focusedPropType: WindowProperty;
-    private tempString: string;
     activeEditor: EditorType = EditorType.DRAW_EDITOR;
+    isPropertiesWindowOpen = true;
+
+    private tempString: string;
+    private tempBoolean: boolean;
     private controllers: ControllerFacade;
 
     constructor(controllers: ControllerFacade) {
@@ -27,6 +31,9 @@ export class WindowController extends FormController<WindowProperty> {
             case WindowProperty.EDITOR:
                 this.tempString = this.activeEditor;
                 break;
+            case WindowProperty.IS_PROPERTIES_WINDOW_OPEN:
+                this.tempBoolean = this.isPropertiesWindowOpen;
+                break;
         }
     }
 
@@ -35,11 +42,20 @@ export class WindowController extends FormController<WindowProperty> {
         this.controllers.renderController.render();       
     }
 
+    updateBooleanProp(value: boolean) {
+        this.tempBoolean = value;        
+        this.controllers.renderController.render();       
+    }
+
+
     commitProp() {
         switch(this.focusedPropType) {
             case WindowProperty.EDITOR:
                 this.activeEditor = <EditorType> this.tempString;
                 break;
+            case WindowProperty.IS_PROPERTIES_WINDOW_OPEN:
+                this.isPropertiesWindowOpen = this.tempBoolean;
+                break;    
         }
 
         this.controllers.renderController.render();
@@ -49,6 +65,9 @@ export class WindowController extends FormController<WindowProperty> {
         switch(propType) {
             case WindowProperty.EDITOR:
                 return this.focusedPropType === propType ? this.tempString : this.activeEditor;
+            case WindowProperty.IS_PROPERTIES_WINDOW_OPEN:
+                return this.focusedPropType === propType ? this.tempBoolean : this.isPropertiesWindowOpen;
+
         }
     }
 }

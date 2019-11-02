@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { colors } from '../colors';
+import { colors } from '../styles';
 import { IconProps, IconComponent } from './Icon';
 
 const IconBackgroundComponent = styled.path`

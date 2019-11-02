@@ -2,7 +2,7 @@ import * as React from 'react';
 import { AppContextType, AppContext } from '../../Context';
 import styled from 'styled-components';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
-import { colors } from '../../colors';
+import { colors } from '../../styles';
 import { Pixel } from '../../../controllers/bitmap_editor/PixelController';
 
 const EditorComponent = styled.div`
