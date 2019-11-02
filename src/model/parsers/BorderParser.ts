@@ -29,7 +29,11 @@ export class BorderParser implements Parser {
         }
     }
 
-    public parseTextFormat(worldMap: string): WorldItem[] {
+    private parseSvgFormat(svg: string): WorldItem[] {
+        
+    }
+
+    private parseTextFormat(worldMap: string): WorldItem[] {
         this.positionToComponentMap = new Map();
         const graph = this.worldMapConverter.convert(worldMap);
         const borderTypes = this.services.configService.borders.map(border => border.type);
