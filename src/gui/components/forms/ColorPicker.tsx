@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { SketchPicker } from 'react-color';
 import styled from 'styled-components';
+import { InputFieldCommands } from './decorators/InputFieldCommands';
  
 const ColorPickerStyled = styled.div`
     width: 20px;
@@ -30,19 +31,39 @@ const CoverStyled = styled.div`
 export interface ColorPickerProps {
     onClose(): void;
     onOpen(): void;
+    onColorChange(color: string): void;
+    isOpen: boolean;
 }
 
-export class ColorPicker extends React.Component<ColorPickerProps> {
- 
-  render() {
-        return (
-            <ColorPickerStyled>
-                <ColorStyled onClick={() => this.props.onOpen()}/>
-                <PopoverStyled>
-                    <CoverStyled onClick={() => this.props.onClose()}/>
-                    <SketchPicker color={'red'} onChange={() => null} />
-                </PopoverStyled>
-            </ColorPickerStyled>
-        )
+export function ColorPicker(props: ColorPickerProps) { 
+    return (
+        <ColorPickerStyled>
+            <ColorStyled id="color-styled" onClick={() => props.onOpen()}/>
+            <PopoverStyled>
+                { props.isOpen ? <CoverStyled onClick={() => props.onClose()}/> : null}
+                { props.isOpen ? <SketchPicker color={'red'} onChange={(color) => props.onColorChange(color.hex)} /> : null}
+            </PopoverStyled>
+        </ColorPickerStyled>
+    )
+}
+
+function withController(WrappedComponent: React.ComponentType<ColorPickerProps>) {
+    return class extends React.Component<Omit<ColorPickerProps & InputFieldCommands<any>, 'onOpen' | 'onClose' | 'onColorChange' | 'isOpen'>> {
+
+        render(): JSX.Element {
+            // it seems to be a react bug to have to cast props to any
+            return <WrappedComponent 
+                {...this.props as any}
+                onOpen={() => this.props.formController.focusProp(this.props.propertyName)}
+                isOpen={this.props.formController.getFocusedProp()}
+                onColorChange={(color: string) => {
+                    this.props.formController.updateStringProp(color);
+                    this.props.formController.commitProp();
+                }}
+                onClose={() => null}
+            />
+        }
     }
 }
+
+export const ConnectedColorPicker = withController(ColorPicker);

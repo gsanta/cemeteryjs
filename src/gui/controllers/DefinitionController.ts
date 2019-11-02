@@ -3,7 +3,15 @@ import { ControllerFacade } from "./ControllerFacade";
 import { FormController } from './FormController';
 
 export enum DefinitionProperty {
-    TYPE = 'type', CHAR = 'char', MODEL = 'model', SHAPE = 'shape', SCALE = 'scale', TRANSLATE_Y = 'translateY', MATERIALS = 'materials', IS_BORDER = 'isBorder'
+    TYPE = 'type',
+    CHAR = 'char',
+    MODEL = 'model',
+    SHAPE = 'shape',
+    SCALE = 'scale',
+    TRANSLATE_Y = 'translateY',
+    MATERIALS = 'materials',
+    IS_BORDER = 'isBorder',
+    COLOR = 'color'
 }
 
 function cloneMeshDescriptor(descriptor: MeshDescriptor) {
@@ -64,6 +72,10 @@ export class DefinitionController extends FormController<DefinitionProperty> {
                 this.tempString = "";
                 break;
         }
+    }
+
+    getFocusedProp(): DefinitionProperty { 
+        return this.focusedPropType
     }
 
     updateStringProp(value: string) {

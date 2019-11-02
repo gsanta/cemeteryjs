@@ -1,6 +1,7 @@
 
 export abstract class FormController<P> {
     focusProp(propType: P) {};
+    getFocusedProp(): P { return null; };
     updateStringProp(value: string) {}
     updateBooleanProp(value: boolean) {};
     updateNumberProp(value: number) {};
