@@ -5,7 +5,7 @@ export abstract class FormController<P> {
     updateStringProp(value: string) {}
     updateBooleanProp(value: boolean) {};
     updateNumberProp(value: number) {};
-    commitProp() {};
+    commitProp(removeFocus?: boolean) {};
     deletItemFromListProp(propType: P, index: number): void {};
     getVal(propType: P) {};
 }

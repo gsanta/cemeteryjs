@@ -47,10 +47,10 @@ export class EditorComponent extends React.Component<{}> {
         const windowController = context.controllers.windowController;
 
         return (
-            <HorizontalSplitComponent onChange={() => context.controllers.textEditorController.resize()}>
+            <HorizontalSplitComponent onChange={() => this.onResize()}>
                 <div className="editor">
                     {this.renderToolbar(context)}
-                    {windowController.activeEditor === EditorType.DRAW_EDITOR ? this.renderDrawEditor(context) : this.renderTextEditor(context)}
+                    {windowController.activeEditor === EditorType.BITMAP_EDITOR ? this.renderDrawEditor(context) : this.renderTextEditor(context)}
                 </div>
                 <PropertyEditorComponent/>
             </HorizontalSplitComponent>
@@ -63,7 +63,7 @@ export class EditorComponent extends React.Component<{}> {
         return (
             <div className="editor">
                 {this.renderToolbar(context)}
-                {windowController.activeEditor === EditorType.DRAW_EDITOR ? this.renderDrawEditor(context) : this.renderTextEditor(context)}
+                {windowController.activeEditor === EditorType.BITMAP_EDITOR ? this.renderDrawEditor(context) : this.renderTextEditor(context)}
             </div>
         );
     }
@@ -83,7 +83,7 @@ export class EditorComponent extends React.Component<{}> {
             <ToolbarComponent>
                 <GlobalToolbarComponent>
                     <ConnectedDropdownComponent
-                        values={[EditorType.DRAW_EDITOR, EditorType.TEXT_EDITOR]}
+                        values={[EditorType.BITMAP_EDITOR, EditorType.TEXT_EDITOR]}
                         currentValue={windowController.getVal(WindowProperty.EDITOR) as string}
                         formController={windowController}
                         propertyName={WindowProperty.EDITOR}
@@ -104,7 +104,13 @@ export class EditorComponent extends React.Component<{}> {
         );
     }
 
+    private onResize() {
+        if (this.context.controllers.windowController.activeEditor === EditorType.TEXT_EDITOR) {
+            this.context.controllers.textEditorController.resize();
+        }
+    }
+
     private renderEditorSpecificToolbar(context: AppContextType): JSX.Element {
-        return context.controllers.windowController.activeEditor === EditorType.DRAW_EDITOR ? <BitmapEditorToolbar/> : null;
+        return context.controllers.windowController.activeEditor === EditorType.BITMAP_EDITOR ? <BitmapEditorToolbar/> : null;
     }
 }

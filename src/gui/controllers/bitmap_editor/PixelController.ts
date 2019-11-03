@@ -1,8 +1,9 @@
 import { Point } from '@nightshifts.inc/geometry';
 import { BitmapEditor } from './BitmapEditor';
+import { MeshDescriptor } from '../../../Config';
 
 export interface Pixel {
-    color: string;
+    type: string;
 }
 
 export class PixelController {

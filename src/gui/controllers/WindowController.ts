@@ -3,7 +3,7 @@ import { ControllerFacade } from './ControllerFacade';
 
 export enum EditorType {
     TEXT_EDITOR = 'text-editor',
-    DRAW_EDITOR = 'draw-editor'
+    BITMAP_EDITOR = 'draw-editor'
 }
 
 export enum WindowProperty {
@@ -13,7 +13,7 @@ export enum WindowProperty {
 
 export class WindowController extends FormController<WindowProperty> {
     focusedPropType: WindowProperty;
-    activeEditor: EditorType = EditorType.DRAW_EDITOR;
+    activeEditor: EditorType = EditorType.BITMAP_EDITOR;
     isPropertiesWindowOpen = true;
 
     private tempString: string;

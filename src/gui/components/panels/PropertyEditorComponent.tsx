@@ -8,6 +8,7 @@ import { MaterialsComponent } from './definition/MaterialsComponent';
 import './PropertyEditorComponent.scss';
 import { AppContext, AppContextType } from '../Context';
 import { ColorPicker, ConnectedColorPicker } from '../forms/ColorPicker';
+import { EditorType } from '../../controllers/WindowController';
 
 const chars = [
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
@@ -24,6 +25,7 @@ export class PropertyEditorComponent extends React.Component<{}> {
     render() {
         const definitionController = this.context.controllers.definitionController;
         const meshDescriptors = this.context.controllers.definitionController.meshDescriptors;
+        const windowController = this.context.controllers.windowController;
 
         const names = meshDescriptors.map(def => (
             <div>
@@ -49,16 +51,7 @@ export class PropertyEditorComponent extends React.Component<{}> {
                 </div>
                 <div className="properties-column">
                     <div className="property-row">
-                        <LabeledComponent label="Character" direction="horizontal">
-                            <ConnectedDropdownComponent
-                                values={chars}
-                                currentValue={definitionController.getVal(DefinitionProperty.CHAR) as string}
-                                formController={definitionController}
-                                propertyName={DefinitionProperty.CHAR}
-                                propertyType='string'
-                            />
-                        </LabeledComponent>
-                        {true ? this.renderColorChooser(definitionController) : this.renderCharacterDropdown()}
+                        {windowController.activeEditor === EditorType.BITMAP_EDITOR ? this.renderColorChooser(definitionController) : this.renderCharacterDropdown(definitionController)}
                         <CheckboxComponent 
                             isSelected={definitionController.getVal(DefinitionProperty.IS_BORDER) as boolean}
                             formController={definitionController}
@@ -117,17 +110,29 @@ export class PropertyEditorComponent extends React.Component<{}> {
         );
     }
 
-    renderCharacterDropdown() {
-
+    renderCharacterDropdown(definitionController: DefinitionController) {
+        return (
+            <LabeledComponent label="Character" direction="horizontal">
+                <ConnectedDropdownComponent
+                    values={chars}
+                    currentValue={definitionController.getVal(DefinitionProperty.CHAR) as string}
+                    formController={definitionController}
+                    propertyName={DefinitionProperty.CHAR}
+                    propertyType='string'
+                />
+            </LabeledComponent>
+        );
     }
 
     renderColorChooser(definitionController: DefinitionController) {
         return (
-            <ConnectedColorPicker
-                formController={definitionController}
-                propertyName={DefinitionProperty.COLOR}
-                propertyType='string'
-            />
+            <LabeledComponent label="Choose color" direction="horizontal">
+                <ConnectedColorPicker
+                    formController={definitionController}
+                    propertyName={DefinitionProperty.COLOR}
+                    propertyType='string'
+                />
+            </LabeledComponent>
         );
     }
 };

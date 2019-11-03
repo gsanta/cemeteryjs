@@ -3,7 +3,8 @@ export const defaultMeshDescriptors = [
         type: 'wall',
         char: 'W',
         shape: 'rect',
-        isBorder: true
+        isBorder: true,
+        color: '#7B7982'
     },
     {
         type: 'door',
@@ -12,7 +13,8 @@ export const defaultMeshDescriptors = [
         scale: 3,
         translateY: -4,
         materials: ['models/door/door_material.png'],
-        isBorder: true
+        isBorder: true,
+        color: '#BFA85C'
     },
     {
         type: 'table',
@@ -28,7 +30,8 @@ export const defaultMeshDescriptors = [
         model: 'models/window/window.babylon',
         scale: 3,
         materials: ['assets/models/window/window.png'],
-        isBorder: true
+        isBorder: true,
+        color: '#70C0CF'
     },
     {
         type: 'chair',
@@ -36,7 +39,8 @@ export const defaultMeshDescriptors = [
         model: 'models/chair.babylon',
         scale: 3,
         materials: ['models/material/bathroom.png'],
-        isBorder: false
+        isBorder: false,
+        color: '#9894eb'
     },
     {
         type: 'shelves',
@@ -45,7 +49,8 @@ export const defaultMeshDescriptors = [
         scale: 3.3,
         translateY: 1,
         materials: ['assets/models/shelves/shelves.png'],
-        isBorder: false
+        isBorder: false,
+        color: '#8c7f6f'
     },
     {
         type: 'stairs',
@@ -54,7 +59,8 @@ export const defaultMeshDescriptors = [
         scale: 3,
         translateY: 2,
         materials: ['assets/models/stairs/stairs_uv.png'],
-        isBorder: false
+        isBorder: false,
+        color: '#66553f'
     },
     {
         type: 'outdoors',

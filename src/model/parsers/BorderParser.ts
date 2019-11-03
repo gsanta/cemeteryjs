@@ -5,6 +5,7 @@ import { last, without } from '../utils/Functions';
 import { WorldMapGraph } from './WorldMapGraph';
 import { Parser, Format } from './Parser';
 import { WorldMapToMatrixGraphConverter } from '../formats/text/WorldMapToMatrixGraphConverter';
+import { SvgWorldMapReader } from '../readers/svg/SvgWorldMapReader';
 
 interface Border {
     vertices: number[];
@@ -30,7 +31,9 @@ export class BorderParser implements Parser {
     }
 
     private parseSvgFormat(svg: string): WorldItem[] {
+        const svgReader = new SvgWorldMapReader();
         
+        const graph = svgReader.read(svg);
     }
 
     private parseTextFormat(worldMap: string): WorldItem[] {

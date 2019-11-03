@@ -13,7 +13,7 @@ export class BitmapEditor {
     activeTool: Tool;
     tools: Tool[];
     id: string;
-    private controllers: ControllerFacade;
+    controllers: ControllerFacade;
 
     constructor(controllers: ControllerFacade) {
         this.config = new BitmapConfig;

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { SketchPicker } from 'react-color';
 import styled from 'styled-components';
 import { InputFieldCommands } from './decorators/InputFieldCommands';
+import { colors } from '../styles';
  
 const ColorPickerStyled = styled.div`
     width: 20px;
@@ -10,9 +11,10 @@ const ColorPickerStyled = styled.div`
 `;
 
 const ColorStyled = styled.div`
+    border: 1px solid ${colors.textColor}
     width: 20px;
     height: 20px;
-    background-color: green;
+    background-color: ${({color}: {color: string}) => color};
 `;
 
 const PopoverStyled = styled.div`
@@ -33,34 +35,36 @@ export interface ColorPickerProps {
     onOpen(): void;
     onColorChange(color: string): void;
     isOpen: boolean;
+    color: string;
 }
 
 export function ColorPicker(props: ColorPickerProps) { 
     return (
         <ColorPickerStyled>
-            <ColorStyled id="color-styled" onClick={() => props.onOpen()}/>
+            <ColorStyled id="color-styled" color={props.color} onClick={() => props.onOpen()}/>
             <PopoverStyled>
                 { props.isOpen ? <CoverStyled onClick={() => props.onClose()}/> : null}
-                { props.isOpen ? <SketchPicker color={'red'} onChange={(color) => props.onColorChange(color.hex)} /> : null}
+                { props.isOpen ? <SketchPicker color={props.color} onChange={(color) => props.onColorChange(color.hex)} /> : null}
             </PopoverStyled>
         </ColorPickerStyled>
     )
 }
 
 function withController(WrappedComponent: React.ComponentType<ColorPickerProps>) {
-    return class extends React.Component<Omit<ColorPickerProps & InputFieldCommands<any>, 'onOpen' | 'onClose' | 'onColorChange' | 'isOpen'>> {
+    return class extends React.Component<Omit<ColorPickerProps & InputFieldCommands<any>, 'onOpen' | 'onClose' | 'onColorChange' | 'isOpen' | 'color'>> {
 
         render(): JSX.Element {
             // it seems to be a react bug to have to cast props to any
             return <WrappedComponent 
                 {...this.props as any}
                 onOpen={() => this.props.formController.focusProp(this.props.propertyName)}
-                isOpen={this.props.formController.getFocusedProp()}
+                isOpen={this.props.formController.getFocusedProp() === this.props.propertyName}
                 onColorChange={(color: string) => {
                     this.props.formController.updateStringProp(color);
-                    this.props.formController.commitProp();
+                    this.props.formController.commitProp(true);
                 }}
                 onClose={() => null}
+                color={this.props.formController.getVal(this.props.propertyName)}
             />
         }
     }

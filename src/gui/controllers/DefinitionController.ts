@@ -71,7 +71,11 @@ export class DefinitionController extends FormController<DefinitionProperty> {
             case DefinitionProperty.MATERIALS:
                 this.tempString = "";
                 break;
+            case DefinitionProperty.COLOR:
+                this.tempString = this.selectedMeshDescriptor.color;
+                break;
         }
+        this.controllers.renderController.render();
     }
 
     getFocusedProp(): DefinitionProperty { 
@@ -104,7 +108,7 @@ export class DefinitionController extends FormController<DefinitionProperty> {
         this.controllers.renderController.render();
     }
 
-    commitProp() {
+    commitProp(removeFocus = false) {
         const origMeshDescriptor = this.meshDescriptors.find(desc => desc.type === this.selectedMeshDescriptor.type);
 
         switch(this.focusedPropType) {
@@ -134,9 +138,17 @@ export class DefinitionController extends FormController<DefinitionProperty> {
                 this.tempString = '';
                 this.focusedPropType = null;
                 break;
+            case DefinitionProperty.COLOR:
+                this.selectedMeshDescriptor.color = this.tempString;
+                this.tempString = '';
+                break;
         }
 
         this.syncSelectedToList(origMeshDescriptor);
+
+        if (removeFocus) {
+            this.focusedPropType = null;
+        }
 
         this.controllers.renderController.render();            
     }
@@ -159,7 +171,8 @@ export class DefinitionController extends FormController<DefinitionProperty> {
                 return this.focusedPropType === property ? this.tempString : this.selectedMeshDescriptor.type;
             case DefinitionProperty.MATERIALS:
                 return this.focusedPropType === property ? this.tempString : '';
-        
+            case DefinitionProperty.COLOR:
+                return this.focusedPropType === property ? this.tempString : this.selectedMeshDescriptor.color;
         }
     }
 
