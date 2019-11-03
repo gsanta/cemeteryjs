@@ -3,7 +3,7 @@ import { Axis, Mesh, MeshBuilder, Scene, Skeleton, Space, StandardMaterial, Vect
 import { WorldItem } from '../../../WorldItem';
 import { MeshTemplate } from '../../../MeshTemplate';
 import { MaterialFactory } from '../MaterialFactory';
-import { MeshDescriptor } from '../../../Config';
+import { WorldItemType } from '../../../WorldItemType';
 
 export class WindowFactory  {
     private materialFactory: MaterialFactory;
@@ -18,7 +18,7 @@ export class WindowFactory  {
         this.materialFactory = materialFactory;
     }
 
-    public createItem(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
+    public createItem(worldItemInfo: WorldItem, meshDescriptor: WorldItemType, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
         const meshes = meshTemplate.meshes.map(m => m.clone());
         const parentMesh = this.createBoundingMesh(worldItemInfo.dimensions, meshDescriptor);
 
@@ -43,7 +43,7 @@ export class WindowFactory  {
         return [parentMesh, top, bottom];
     }
 
-    private createTopWall(worldItem: WorldItem, meshDescriptor: MeshDescriptor) {
+    private createTopWall(worldItem: WorldItem, meshDescriptor: WorldItemType) {
         const segment = <Segment> worldItem.dimensions;
 
         const rectangle = segment.addThickness(0.125);
@@ -62,7 +62,7 @@ export class WindowFactory  {
         return mesh;
     }
 
-    private createBottomWall(worldItem: WorldItem, meshDescriptor: MeshDescriptor) {
+    private createBottomWall(worldItem: WorldItem, meshDescriptor: WorldItemType) {
         const segment = <Segment> worldItem.dimensions;
 
         const rectangle = segment.addThickness(0.125);
@@ -81,7 +81,7 @@ export class WindowFactory  {
         return mesh;
     }
 
-    private createBoundingMesh(boundingBox: Shape, meshDescriptor: MeshDescriptor): Mesh {
+    private createBoundingMesh(boundingBox: Shape, meshDescriptor: WorldItemType): Mesh {
         const segment = <Segment> boundingBox;
 
         const rectangle = segment.addThickness(0.25);

@@ -1,6 +1,4 @@
-
-
-export interface MeshDescriptor {
+export interface WorldItemType {
     type: string;
     char?: string;
     color?: string;

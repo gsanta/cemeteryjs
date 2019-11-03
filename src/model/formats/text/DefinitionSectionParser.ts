@@ -1,6 +1,6 @@
 import { WorldMapLineListener, WorldMapReader } from "./WorldMapReader";
 import { Point } from "@nightshifts.inc/geometry";
-import { MeshDescriptor } from '../../../Config';
+import { WorldItemType } from '../../../WorldItemType';
 
 const COLOR_MAP = {
     T: '#BF973B',
@@ -26,9 +26,9 @@ const BORDER_TEST = /\s*BORDER\s*/;
 
 export class DefinitionSectionParser extends WorldMapLineListener {
     private typeToCharMap: Map<string, string>;
-    private meshDescriptors: MeshDescriptor[] = [];
+    private meshDescriptors: WorldItemType[] = [];
 
-    parse(worldMap: string): MeshDescriptor[] {
+    parse(worldMap: string): WorldItemType[] {
         this.typeToCharMap = new Map();
 
         new WorldMapReader(this).read(worldMap);

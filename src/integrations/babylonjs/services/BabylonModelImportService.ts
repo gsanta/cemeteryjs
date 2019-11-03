@@ -1,6 +1,6 @@
 import { Point } from '@nightshifts.inc/geometry';
 import { AbstractMesh, AnimationGroup, Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, StandardMaterial, Texture, Vector3 } from 'babylonjs';
-import { MeshDescriptor } from '../../../Config';
+import { WorldItemType } from '../../../WorldItemType';
 import { MeshTemplate } from '../../../MeshTemplate';
 import { MeshTemplateService as ModelImportService } from '../../../model/services/MeshTemplateService';
 
@@ -53,7 +53,7 @@ export class BabylonModelImportService implements ModelImportService<Mesh, Skele
         return new Point(1, 1);
     }
 
-    loadAll(meshDescriptors: MeshDescriptor[]): Promise<unknown> {
+    loadAll(meshDescriptors: WorldItemType[]): Promise<unknown> {
         const promises = meshDescriptors
             .filter(meshDescriptor => meshDescriptor.model !== undefined)
             .map(meshDescriptor => this.load(meshDescriptor));
@@ -61,7 +61,7 @@ export class BabylonModelImportService implements ModelImportService<Mesh, Skele
         return Promise.all(promises);
     }
 
-    private load(meshDescriptor: MeshDescriptor): Promise<void> {
+    private load(meshDescriptor: WorldItemType): Promise<void> {
         const materials = this.loadMaterials(meshDescriptor.materials);
 
         return new Promise(resolve => {

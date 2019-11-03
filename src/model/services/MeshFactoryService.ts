@@ -1,7 +1,7 @@
 import { WorldItem } from "../../WorldItem";
 import { MeshTemplate } from "../../MeshTemplate";
-import { MeshDescriptor } from "../../Config";
+import { WorldItemType } from "../../WorldItemType";
 
 export interface MeshFactoryService<M, S> {
-    getInstance(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor, meshTemplate: MeshTemplate<M, S>): M[];
+    getInstance(worldItemInfo: WorldItem, meshDescriptor: WorldItemType, meshTemplate: MeshTemplate<M, S>): M[];
 }

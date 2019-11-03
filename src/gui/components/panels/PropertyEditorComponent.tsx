@@ -24,7 +24,7 @@ export class PropertyEditorComponent extends React.Component<{}> {
 
     render() {
         const definitionController = this.context.controllers.definitionController;
-        const meshDescriptors = this.context.controllers.definitionController.meshDescriptors;
+        const meshDescriptors = this.context.controllers.definitionController.worldItemTypes;
         const windowController = this.context.controllers.windowController;
 
         const names = meshDescriptors.map(def => (
@@ -39,7 +39,7 @@ export class PropertyEditorComponent extends React.Component<{}> {
                     }}
                     onChange={val => definitionController.updateStringProp(val)}
                     onBlur={() => definitionController.commitProp()}
-                    isMarked={def.type === definitionController.selectedMeshDescriptor.type}
+                    isMarked={def.type === definitionController.selectedWorldItemType.type}
                 />
             </div>
         ));

@@ -1,6 +1,6 @@
 
 import { DynamicTexture, Mesh, MeshBuilder, Scene, Skeleton, StandardMaterial, Texture, Vector3 } from 'babylonjs';
-import { MeshDescriptor } from '../../../Config';
+import { WorldItemType } from '../../../WorldItemType';
 import { MeshTemplate } from '../../../MeshTemplate';
 import { MeshFactoryService } from '../../../model/services/MeshFactoryService';
 import { WorldItem } from '../../../WorldItem';
@@ -44,11 +44,11 @@ export class BabylonMeshFactoryService implements MeshFactoryService<Mesh, Skele
         this.scene = scene;
     }
 
-    getInstance(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
+    getInstance(worldItemInfo: WorldItem, meshDescriptor: WorldItemType, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
         return this.createFromTemplate(worldItemInfo, meshTemplate, meshDescriptor);
     }
 
-    private createFromTemplate(worldItem: WorldItem, meshTemplate: MeshTemplate<Mesh, Skeleton>, meshDescriptor: MeshDescriptor): Mesh[] {
+    private createFromTemplate(worldItem: WorldItem, meshTemplate: MeshTemplate<Mesh, Skeleton>, meshDescriptor: WorldItemType): Mesh[] {
         if (!meshDescriptor) {
             return [];
         }
@@ -78,7 +78,7 @@ export class BabylonMeshFactoryService implements MeshFactoryService<Mesh, Skele
         }
     }
 
-    private createFromShapeDescriptor(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor): Mesh[] {
+    private createFromShapeDescriptor(worldItemInfo: WorldItem, meshDescriptor: WorldItemType): Mesh[] {
         switch(meshDescriptor.shape) {
             case 'disc':
                 return [new DiscFactory(this.scene, MeshBuilder, MaterialBuilder).createItem(worldItemInfo, meshDescriptor)]
@@ -91,7 +91,7 @@ export class BabylonMeshFactoryService implements MeshFactoryService<Mesh, Skele
         }
     }
 
-    private createPlane(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor): Mesh {
+    private createPlane(worldItemInfo: WorldItem, meshDescriptor: WorldItemType): Mesh {
         const roomTop = MeshBuilder.CreatePolygon(
             'room-label',
             {

@@ -3,7 +3,7 @@ import { ControllerFacade } from './ControllerFacade';
 
 export enum EditorType {
     TEXT_EDITOR = 'text-editor',
-    BITMAP_EDITOR = 'draw-editor'
+    BITMAP_EDITOR = 'bitmap-editor'
 }
 
 export enum WindowProperty {

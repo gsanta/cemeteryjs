@@ -1,6 +1,6 @@
 import { Point } from '@nightshifts.inc/geometry';
 import { BitmapEditor } from './BitmapEditor';
-import { MeshDescriptor } from '../../../Config';
+import { WorldItemType } from '../../../WorldItemType';
 
 export interface Pixel {
     type: string;

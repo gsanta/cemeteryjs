@@ -1,4 +1,4 @@
-import { MeshDescriptor } from '../../Config';
+import { WorldItemType } from '../../WorldItemType';
 import { WorldItem } from "../../WorldItem";
 import { AssignBordersToRoomsModifier } from "../modifiers/AssignBordersToRoomsModifier";
 import { BuildHierarchyModifier } from "../modifiers/BuildHierarchyModifier";
@@ -23,7 +23,7 @@ export interface WorldConfig {
     furnitures: string[];
     xScale: number;
     yScale: number;
-    meshDescriptors: MeshDescriptor[];
+    meshDescriptors: WorldItemType[];
 }
 
 export const defaultWorldConfig: WorldConfig = {

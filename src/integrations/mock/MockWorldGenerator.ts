@@ -1,5 +1,5 @@
 import { WorldGenerator, Converter } from '../../WorldGenerator';
-import { MeshDescriptor } from '../../Config';
+import { WorldItemType } from '../../WorldItemType';
 import { MeshFactoryService } from '../../model/services/MeshFactoryService';
 import { WorldItem } from '../../WorldItem';
 import { MeshTemplate } from '../../MeshTemplate';
@@ -8,15 +8,15 @@ import { Point } from '@nightshifts.inc/geometry';
 import { setup } from '../../../test/test_utils/testUtils';
 
 export class MockMeshFactoryService implements MeshFactoryService<any, any> {
-    getInstance(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor, meshTemplate: MeshTemplate<any, any>): any {
+    getInstance(worldItemInfo: WorldItem, meshDescriptor: WorldItemType, meshTemplate: MeshTemplate<any, any>): any {
         return null
     }
 }
 
 export class MockMeshTemplateService implements MeshTemplateService<any, any> {
-    private templateMap: Map<string, MeshDescriptor>;
+    private templateMap: Map<string, WorldItemType>;
 
-    constructor(templateMap: Map<string, MeshDescriptor>) {
+    constructor(templateMap: Map<string, WorldItemType>) {
         this.templateMap = templateMap;
     }
 
@@ -43,7 +43,7 @@ export class MockMeshTemplateService implements MeshTemplateService<any, any> {
         }
     }
 
-    loadAll(meshDescriptors: MeshDescriptor[]): Promise<unknown> {
+    loadAll(meshDescriptors: WorldItemType[]): Promise<unknown> {
         return Promise.resolve();
     }
 }

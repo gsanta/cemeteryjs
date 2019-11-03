@@ -70,7 +70,7 @@ export class BitmapEditorComponent extends React.Component<any> {
         return Array.from(pixelController.bitMap).map(([index, pixel]) => {
             const pos = pixelController.getPixelPosition(index);
             return (
-                <rect width="10px" height="10px" x={`${pos.x}px`} y={`${pos.y}px`} fill={pixel.color}></rect>
+                <rect width="10px" height="10px" x={`${pos.x}px`} y={`${pos.y}px`} fill={null}></rect>
             )
         })
     }

@@ -10,7 +10,7 @@ export class RectangleTool implements Tool {
     }
 
     up() {
-        const type = this.bitmapEditor.controllers.definitionController.selectedMeshDescriptor.type;
+        const type = this.bitmapEditor.controllers.definitionController.selectedWorldItemType.type;
         this.bitmapEditor.pixelController.addPixel(this.bitmapEditor.mouseController.pointer, {type});
         this.bitmapEditor.render();
     }

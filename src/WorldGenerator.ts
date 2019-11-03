@@ -1,4 +1,4 @@
-import { MeshDescriptor } from './Config';
+import { WorldItemType } from './WorldItemType';
 import { WorldItem } from "./WorldItem";
 
 

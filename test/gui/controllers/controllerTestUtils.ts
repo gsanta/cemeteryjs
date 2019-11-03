@@ -62,7 +62,7 @@ const testMeshDescriptors = [
 export function setupControllers(map = testMap, meshDescriptors = testMeshDescriptors): ControllerFacade {
     const controllers = new ControllerFacade();
     controllers.textEditorController.text = map;
-    controllers.definitionController.meshDescriptors = meshDescriptors;
+    controllers.definitionController.worldItemTypes = meshDescriptors;
 
     return controllers;
 }

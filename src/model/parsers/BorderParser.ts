@@ -34,6 +34,8 @@ export class BorderParser implements Parser {
         const svgReader = new SvgWorldMapReader();
         
         const graph = svgReader.read(svg);
+
+        return [];
     }
 
     private parseTextFormat(worldMap: string): WorldItem[] {

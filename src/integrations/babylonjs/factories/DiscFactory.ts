@@ -1,5 +1,5 @@
 import { Color3, Mesh, MeshBuilder, Scene, StandardMaterial, Vector3 } from 'babylonjs';
-import { MeshDescriptor } from '../../../Config';
+import { WorldItemType } from '../../../WorldItemType';
 import { WorldItem } from "../../../WorldItem";
 import { MaterialBuilder } from '../MaterialFactory';
 
@@ -15,7 +15,7 @@ export class DiscFactory {
         this.materialBuilder = materialBuilder;
     }
 
-    public createItem(worldItemInfo: WorldItem, meshDescriptor: MeshDescriptor) {
+    public createItem(worldItemInfo: WorldItem, meshDescriptor: WorldItemType) {
         const mesh = this.createDisc();
 
         mesh.material = this.materialBuilder.CreateMaterial('disc-material', this.scene);

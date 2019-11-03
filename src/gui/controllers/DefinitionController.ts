@@ -1,4 +1,4 @@
-import { MeshDescriptor } from "../../Config";
+import { WorldItemType } from "../../WorldItemType";
 import { ControllerFacade } from "./ControllerFacade";
 import { FormController } from './FormController';
 
@@ -14,7 +14,7 @@ export enum DefinitionProperty {
     COLOR = 'color'
 }
 
-function cloneMeshDescriptor(descriptor: MeshDescriptor) {
+function cloneMeshDescriptor(descriptor: WorldItemType) {
     const clone = {...descriptor};
 
     if (clone.materials) {
@@ -27,16 +27,16 @@ function cloneMeshDescriptor(descriptor: MeshDescriptor) {
 export class DefinitionController extends FormController<DefinitionProperty> {
     shapes: string[] = ['rect'];
 
-    meshDescriptors: MeshDescriptor[];
-    selectedMeshDescriptor: MeshDescriptor;
+    worldItemTypes: WorldItemType[];
+    selectedWorldItemType: WorldItemType;
 
     private controllers: ControllerFacade;
 
-    constructor(controllers: ControllerFacade, meshDescriptors: MeshDescriptor[]) {
+    constructor(controllers: ControllerFacade, worldItemTypes: WorldItemType[]) {
         super();
         this.controllers = controllers;
-        this.meshDescriptors = meshDescriptors;
-        this.setSelectedDefinition(this.meshDescriptors[0].type);
+        this.worldItemTypes = worldItemTypes;
+        this.setSelectedDefinition(this.worldItemTypes[0].type);
     }
 
     private tempString: string;
@@ -48,31 +48,31 @@ export class DefinitionController extends FormController<DefinitionProperty> {
         this.focusedPropType = type;
         switch(this.focusedPropType) {
             case DefinitionProperty.MODEL:
-                this.tempString = this.selectedMeshDescriptor.model;
+                this.tempString = this.selectedWorldItemType.model;
                 break;
             case DefinitionProperty.CHAR:
-                this.tempString = this.selectedMeshDescriptor.char;
+                this.tempString = this.selectedWorldItemType.char;
                 break;
             case DefinitionProperty.TYPE:
-                this.tempString = this.selectedMeshDescriptor.type;
+                this.tempString = this.selectedWorldItemType.type;
                 break;
             case DefinitionProperty.IS_BORDER:
-                this.tempBoolean = this.selectedMeshDescriptor.isBorder;
+                this.tempBoolean = this.selectedWorldItemType.isBorder;
                 break;
             case DefinitionProperty.SCALE:
-                this.tempNumber = this.selectedMeshDescriptor.scale;
+                this.tempNumber = this.selectedWorldItemType.scale;
                 break;
             case DefinitionProperty.SHAPE:
-                this.tempString = this.selectedMeshDescriptor.shape;
+                this.tempString = this.selectedWorldItemType.shape;
                 break;
             case DefinitionProperty.TRANSLATE_Y:
-                this.tempNumber = this.selectedMeshDescriptor.translateY;
+                this.tempNumber = this.selectedWorldItemType.translateY;
                 break;
             case DefinitionProperty.MATERIALS:
                 this.tempString = "";
                 break;
             case DefinitionProperty.COLOR:
-                this.tempString = this.selectedMeshDescriptor.color;
+                this.tempString = this.selectedWorldItemType.color;
                 break;
         }
         this.controllers.renderController.render();
@@ -100,8 +100,8 @@ export class DefinitionController extends FormController<DefinitionProperty> {
     deletItemFromListProp(prop: DefinitionProperty, index: number) {
         switch(prop) {
             case DefinitionProperty.MATERIALS:
-                this.selectedMeshDescriptor.materials.splice(index, 1);
-                this.syncSelectedToList(this.meshDescriptors.find(desc => desc.type === this.selectedMeshDescriptor.type));
+                this.selectedWorldItemType.materials.splice(index, 1);
+                this.syncSelectedToList(this.worldItemTypes.find(desc => desc.type === this.selectedWorldItemType.type));
                 break;
         } 
 
@@ -109,37 +109,37 @@ export class DefinitionController extends FormController<DefinitionProperty> {
     }
 
     commitProp(removeFocus = false) {
-        const origMeshDescriptor = this.meshDescriptors.find(desc => desc.type === this.selectedMeshDescriptor.type);
+        const origMeshDescriptor = this.worldItemTypes.find(desc => desc.type === this.selectedWorldItemType.type);
 
         switch(this.focusedPropType) {
             case DefinitionProperty.MODEL:
-                this.selectedMeshDescriptor.model = this.tempString;
+                this.selectedWorldItemType.model = this.tempString;
                 break;
             case DefinitionProperty.CHAR:
-                this.selectedMeshDescriptor.char = this.tempString;
+                this.selectedWorldItemType.char = this.tempString;
                 break;
             case DefinitionProperty.IS_BORDER:
-                this.selectedMeshDescriptor.isBorder = this.tempBoolean;
+                this.selectedWorldItemType.isBorder = this.tempBoolean;
                 break;
             case DefinitionProperty.SCALE:
-                this.selectedMeshDescriptor.scale = this.tempNumber;
+                this.selectedWorldItemType.scale = this.tempNumber;
                 break;
             case DefinitionProperty.SHAPE:
-                this.selectedMeshDescriptor.shape = this.tempString;
+                this.selectedWorldItemType.shape = this.tempString;
                 break;
             case DefinitionProperty.TRANSLATE_Y:
-                this.selectedMeshDescriptor.translateY = this.tempNumber;
+                this.selectedWorldItemType.translateY = this.tempNumber;
                 break;
             case DefinitionProperty.TYPE:
-                this.selectedMeshDescriptor.type = this.tempString;
+                this.selectedWorldItemType.type = this.tempString;
                 break;
             case DefinitionProperty.MATERIALS:
-                this.selectedMeshDescriptor.materials.push(this.tempString);
+                this.selectedWorldItemType.materials.push(this.tempString);
                 this.tempString = '';
                 this.focusedPropType = null;
                 break;
             case DefinitionProperty.COLOR:
-                this.selectedMeshDescriptor.color = this.tempString;
+                this.selectedWorldItemType.color = this.tempString;
                 this.tempString = '';
                 break;
         }
@@ -156,42 +156,42 @@ export class DefinitionController extends FormController<DefinitionProperty> {
     getVal(property: DefinitionProperty) {
         switch(property) {
             case DefinitionProperty.MODEL:
-                return this.focusedPropType === property ? this.tempString : this.selectedMeshDescriptor.model;
+                return this.focusedPropType === property ? this.tempString : this.selectedWorldItemType.model;
             case DefinitionProperty.CHAR:
-                return this.focusedPropType === property ? this.tempString : this.selectedMeshDescriptor.char;
+                return this.focusedPropType === property ? this.tempString : this.selectedWorldItemType.char;
             case DefinitionProperty.IS_BORDER:
-                return this.focusedPropType === property ? this.tempBoolean : this.selectedMeshDescriptor.isBorder;
+                return this.focusedPropType === property ? this.tempBoolean : this.selectedWorldItemType.isBorder;
             case DefinitionProperty.SCALE:
-                return this.focusedPropType === property ? this.tempNumber : this.selectedMeshDescriptor.scale;
+                return this.focusedPropType === property ? this.tempNumber : this.selectedWorldItemType.scale;
             case DefinitionProperty.SHAPE:
-                return this.focusedPropType === property ? this.tempString : this.selectedMeshDescriptor.shape;
+                return this.focusedPropType === property ? this.tempString : this.selectedWorldItemType.shape;
             case DefinitionProperty.TRANSLATE_Y:
-                return this.focusedPropType === property ? this.tempNumber : this.selectedMeshDescriptor.translateY;
+                return this.focusedPropType === property ? this.tempNumber : this.selectedWorldItemType.translateY;
             case DefinitionProperty.TYPE:
-                return this.focusedPropType === property ? this.tempString : this.selectedMeshDescriptor.type;
+                return this.focusedPropType === property ? this.tempString : this.selectedWorldItemType.type;
             case DefinitionProperty.MATERIALS:
                 return this.focusedPropType === property ? this.tempString : '';
             case DefinitionProperty.COLOR:
-                return this.focusedPropType === property ? this.tempString : this.selectedMeshDescriptor.color;
+                return this.focusedPropType === property ? this.tempString : this.selectedWorldItemType.color;
         }
     }
 
     setSelectedDefinition(type: string) {
-        if (this.selectedMeshDescriptor) {
-            this.syncSelectedToList(this.meshDescriptors.find(desc => desc.type === this.selectedMeshDescriptor.type));
+        if (this.selectedWorldItemType) {
+            this.syncSelectedToList(this.worldItemTypes.find(desc => desc.type === this.selectedWorldItemType.type));
         }
 
-        const meshDescriptor = this.meshDescriptors.find(descriptor => descriptor.type === type);
-        this.selectedMeshDescriptor = cloneMeshDescriptor(meshDescriptor);
+        const meshDescriptor = this.worldItemTypes.find(descriptor => descriptor.type === type);
+        this.selectedWorldItemType = cloneMeshDescriptor(meshDescriptor);
 
         if (this.controllers.renderController) {
             this.controllers.renderController.render();
         }
     }
 
-    private syncSelectedToList(origMeshDescriptor: MeshDescriptor) {
-        const clone = [...this.meshDescriptors];
-        clone.splice(this.meshDescriptors.indexOf(origMeshDescriptor), 1, cloneMeshDescriptor(this.selectedMeshDescriptor));
-        this.meshDescriptors = clone;
+    private syncSelectedToList(origWorldItemType: WorldItemType) {
+        const clone = [...this.worldItemTypes];
+        clone.splice(this.worldItemTypes.indexOf(origWorldItemType), 1, cloneMeshDescriptor(this.selectedWorldItemType));
+        this.worldItemTypes = clone;
     }
 }

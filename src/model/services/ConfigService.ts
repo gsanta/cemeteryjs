@@ -1,4 +1,4 @@
-import { MeshDescriptor } from "../../Config";
+import { WorldItemType } from "../../WorldItemType";
 import { DefinitionSectionParser } from "../formats/text/DefinitionSectionParser";
 import { GlobalConfig } from '../formats/text/GlobalSectionParser';
 
@@ -17,12 +17,12 @@ const INTERNAL_TYPES = [
 
 export class ConfigService {
     globalConfig: GlobalConfig;
-    borders: MeshDescriptor[];
-    furnitures: MeshDescriptor[];
+    borders: WorldItemType[];
+    furnitures: WorldItemType[];
     emptyType: string;
-    meshDescriptors: MeshDescriptor[];
-    meshDescriptorMap: Map<string, MeshDescriptor>;
-    meshDescriptorMapByChar: Map<string, MeshDescriptor>;
+    meshDescriptors: WorldItemType[];
+    meshDescriptorMap: Map<string, WorldItemType>;
+    meshDescriptorMapByChar: Map<string, WorldItemType>;
 
     update(worldMap: string): ConfigService {
         this.meshDescriptors = new DefinitionSectionParser().parse(worldMap);
