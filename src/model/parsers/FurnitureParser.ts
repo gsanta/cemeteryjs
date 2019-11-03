@@ -24,8 +24,8 @@ export class FurnitureParser implements Parser {
     private parseTextFormat(worldMap: string): WorldItem[] {
         const graph = this.worldMapConverter.convert(worldMap);
         const types = this.services.configService.furnitures
-            .filter(furniture => graph.hasType(furniture.type))
-            .map(furniture => furniture.type);
+            .filter(furniture => graph.hasType(furniture.typeName))
+            .map(furniture => furniture.typeName);
 
         return flat<WorldItem>(
                 types

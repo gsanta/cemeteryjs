@@ -25,11 +25,11 @@ export class SubareaParser implements Parser {
     private parseTextFormat(worldMap: string): WorldItem[] {
         if (!this.services.configService.meshDescriptorMap.has('_subarea')) { return []; }
 
-        const subareaType = this.services.configService.meshDescriptorMap.get('_subarea').type;
+        const subareaType = this.services.configService.meshDescriptorMap.get('_subarea').typeName;
         const worldMapToSubareaMapConverter = new WorldMapToSubareaMapConverter(this.services.configService);
 
         let graph = this.worldMapConverter.convert(worldMapToSubareaMapConverter.convert(worldMap));
-        const types = without(graph.getTypes(), this.services.configService.meshDescriptorMap.get('room').type);
+        const types = without(graph.getTypes(), this.services.configService.meshDescriptorMap.get('room').typeName);
 
         const connectedCompGraphs = graph.getReducedGraphForTypes(types)
             .getConnectedComponentGraphs()

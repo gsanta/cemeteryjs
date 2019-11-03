@@ -22,7 +22,7 @@ export class WorldMapController {
     }
 
     private createDefinitionSection() {
-        const meshDescriptors = this.controllers.definitionController.worldItemTypes;
+        const meshDescriptors = this.controllers.worldItemTypeController.getModel().types;
 
         const lines = meshDescriptors.map(descriptor => this.createDefinitionLine(descriptor));
 
@@ -30,7 +30,7 @@ export class WorldMapController {
     }
 
     private createDefinitionLine(meshDescriptor: WorldItemType): string {
-        let line = `${meshDescriptor.char} = ${meshDescriptor.type}`;
+        let line = `${meshDescriptor.char} = ${meshDescriptor.typeName}`;
 
         if (meshDescriptor.isBorder) {
             line += ' BORDER';
@@ -60,14 +60,14 @@ export class WorldMapController {
     }
 
     private shouldUpdateWorldMap() {
-        return this.map !== this.controllers.textEditorController.text || this.meshDescriptors !== this.controllers.definitionController.worldItemTypes;
+        return this.map !== this.controllers.textEditorController.text || this.meshDescriptors !== this.controllers.worldItemTypeController.getModel().types;
     }
 
     private updateWorldMap() {
         this.worldMap = this.createWorldMap();
 
         this.map = this.controllers.textEditorController.text;
-        this.meshDescriptors = this.controllers.definitionController.worldItemTypes;
+        this.meshDescriptors = this.controllers.worldItemTypeController.getModel().types;
     }
 
     private createWorldMap(): string {

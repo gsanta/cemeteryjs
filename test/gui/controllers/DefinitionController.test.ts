@@ -1,90 +1,90 @@
 import { setupControllers } from "./controllerTestUtils";
-import { DefinitionProperty, DefinitionController } from "../../../src/gui/controllers/DefinitionController";
+import { WorldItemTypeProperty, WorldItemTypeController } from "../../../src/gui/controllers/WorldItemTypeController";
 import { MeshDescriptor } from "../../../src";
 
 it ("Update the 'type' prop", () => {
     const controllers = setupControllers();
 
-    const definitionController = controllers.definitionController;
-    const meshDescriptor = definitionController.worldItemTypes[1];
+    const worldItemTypeController = controllers.worldItemTypeController;
+    const meshDescriptor = worldItemTypeController.getModel().types[1];
 
-    testSimpleProp(definitionController, meshDescriptor, DefinitionProperty.TYPE, 'new type', val => definitionController.updateStringProp(val));
+    testSimpleProp(worldItemTypeController, meshDescriptor, WorldItemTypeProperty.TYPE_NAME, 'new type', val => worldItemTypeController.updateStringProp(val));
 });
 
 it ("Update the 'char' prop", () => {
     const controllers = setupControllers();
 
-    const definitionController = controllers.definitionController;
-    const meshDescriptor = definitionController.worldItemTypes[1];
+    const worldItemTypeController = controllers.worldItemTypeController;
+    const meshDescriptor = worldItemTypeController.getModel().types[1];
 
-    testSimpleProp(definitionController, meshDescriptor, DefinitionProperty.CHAR, 'A', val => definitionController.updateStringProp(val));
+    testSimpleProp(worldItemTypeController, meshDescriptor, WorldItemTypeProperty.CHAR, 'A', val => worldItemTypeController.updateStringProp(val));
 });
 
 it ("Update the 'model' prop", () => {
     const controllers = setupControllers();
 
-    const definitionController = controllers.definitionController;
-    const meshDescriptor = definitionController.worldItemTypes[1];
+    const worldItemTypeController = controllers.worldItemTypeController;
+    const meshDescriptor = worldItemTypeController.getModel().types[1];
 
-    testSimpleProp(definitionController, meshDescriptor, DefinitionProperty.MODEL, 'models/door/new_model.babylon', val => definitionController.updateStringProp(val));
+    testSimpleProp(worldItemTypeController, meshDescriptor, WorldItemTypeProperty.MODEL, 'models/door/new_model.babylon', val => worldItemTypeController.updateStringProp(val));
 });
 
 it ("Update the 'shape' prop", () => {
     const controllers = setupControllers();
 
-    const definitionController = controllers.definitionController;
-    const meshDescriptor = definitionController.worldItemTypes[0];
+    const worldItemTypeController = controllers.worldItemTypeController;
+    const meshDescriptor = worldItemTypeController.getModel().types[0];
 
-    testSimpleProp(definitionController, meshDescriptor, DefinitionProperty.SHAPE, 'circle', val => definitionController.updateStringProp(val));
+    testSimpleProp(worldItemTypeController, meshDescriptor, WorldItemTypeProperty.SHAPE, 'circle', val => worldItemTypeController.updateStringProp(val));
 });
 
 it ("Update the 'scale' prop", () => {
     const controllers = setupControllers();
 
-    const definitionController = controllers.definitionController;
-    const meshDescriptor = definitionController.worldItemTypes[1];
+    const worldItemTypeController = controllers.worldItemTypeController;
+    const meshDescriptor = worldItemTypeController.getModel().types[1];
 
-    testSimpleProp(definitionController, meshDescriptor, DefinitionProperty.SCALE, 2, val => definitionController.updateNumberProp(val));
+    testSimpleProp(worldItemTypeController, meshDescriptor, WorldItemTypeProperty.SCALE, 2, val => worldItemTypeController.updateNumberProp(val));
 });
 
 it ("Update the 'translate' prop", () => {
     const controllers = setupControllers();
 
-    const definitionController = controllers.definitionController;
-    const meshDescriptor = definitionController.worldItemTypes[1];
+    const worldItemTypeController = controllers.worldItemTypeController;
+    const meshDescriptor = worldItemTypeController.getModel().types[1];
 
-    testSimpleProp(definitionController, meshDescriptor, DefinitionProperty.TRANSLATE_Y, 4, val => definitionController.updateNumberProp(val));
+    testSimpleProp(worldItemTypeController, meshDescriptor, WorldItemTypeProperty.TRANSLATE_Y, 4, val => worldItemTypeController.updateNumberProp(val));
 });
 
 it ("Update the 'isBorder' prop", () => {
     const controllers = setupControllers();
 
-    const definitionController = controllers.definitionController;
-    const meshDescriptor = definitionController.worldItemTypes[1];
+    const worldItemTypeController = controllers.worldItemTypeController;
+    const meshDescriptor = worldItemTypeController.getModel().types[1];
 
-    testSimpleProp(definitionController, meshDescriptor, DefinitionProperty.IS_BORDER, false, val => definitionController.updateBooleanProp(val));
+    testSimpleProp(worldItemTypeController, meshDescriptor, WorldItemTypeProperty.IS_BORDER, false, val => worldItemTypeController.updateBooleanProp(val));
 });
 
 it ("Update the 'isBorder' prop", () => {
     const controllers = setupControllers();
 
-    const definitionController = controllers.definitionController;
-    const meshDescriptor = definitionController.worldItemTypes[1];
+    const worldItemTypeController = controllers.worldItemTypeController;
+    const meshDescriptor = worldItemTypeController.getModel().types[1];
     const oldMaterials = ['materials/door/door.jpg'];
-    definitionController.setSelectedDefinition('door');
-    definitionController.focusProp(DefinitionProperty.MATERIALS);
+    worldItemTypeController.setSelectedDefinition('door');
+    worldItemTypeController.focusProp(WorldItemTypeProperty.MATERIALS);
 
-    expect(definitionController.getVal(DefinitionProperty.MATERIALS)).toEqual('');
+    expect(worldItemTypeController.getVal(WorldItemTypeProperty.MATERIALS)).toEqual('');
     expect(meshDescriptor.materials).toEqual(oldMaterials);
 
-    definitionController.updateStringProp('materials/door/door2.jpg');
+    worldItemTypeController.updateStringProp('materials/door/door2.jpg');
     
-    expect(definitionController.getVal(DefinitionProperty.MATERIALS)).toEqual('materials/door/door2.jpg');
+    expect(worldItemTypeController.getVal(WorldItemTypeProperty.MATERIALS)).toEqual('materials/door/door2.jpg');
     expect(meshDescriptor.materials).toEqual(oldMaterials);
 
-    definitionController.commitProp();
-    expect(definitionController.getVal(DefinitionProperty.MATERIALS)).toEqual('');
-    expect(definitionController.worldItemTypes.find(desc => desc.type === 'door').materials).toEqual(
+    worldItemTypeController.commitProp();
+    expect(worldItemTypeController.getVal(WorldItemTypeProperty.MATERIALS)).toEqual('');
+    expect(worldItemTypeController.getModel().types.find(desc => desc.typeName === 'door').materials).toEqual(
         [
             'materials/door/door.jpg',
             'materials/door/door2.jpg'
@@ -93,49 +93,25 @@ it ("Update the 'isBorder' prop", () => {
 });
 
 function testSimpleProp(
-    definitionController: DefinitionController,
+    worldItemTypeController: WorldItemTypeController,
     descriptor: MeshDescriptor,
-    property: DefinitionProperty,
+    property: WorldItemTypeProperty,
     newVal: any, updateProp: (val: any) => void
 ) {
-    const meshDescriptorIndex = definitionController.worldItemTypes.indexOf(descriptor);
-    const meshDescriptorType = descriptor.type;
+    const meshDescriptorIndex = worldItemTypeController.getModel().types.indexOf(descriptor);
+    const meshDescriptorType = descriptor.typeName;
     const oldVal = descriptor[property];
-    definitionController.setSelectedDefinition(meshDescriptorType);
-    definitionController.focusProp(property);
+    worldItemTypeController.setSelectedDefinition(meshDescriptorType);
+    worldItemTypeController.focusProp(property);
 
-    expect(definitionController.getVal(property)).toEqual(oldVal);
+    expect(worldItemTypeController.getVal(property)).toEqual(oldVal);
 
     updateProp(newVal);
     
-    expect(definitionController.getVal(property)).toEqual(newVal);
-    expect(definitionController.worldItemTypes[meshDescriptorIndex][property]).toEqual(oldVal);
+    expect(worldItemTypeController.getVal(property)).toEqual(newVal);
+    expect(worldItemTypeController.getModel().types[meshDescriptorIndex][property]).toEqual(oldVal);
 
-    definitionController.commitProp();
-    expect(definitionController.getVal(property)).toEqual(newVal);
-    expect(definitionController.worldItemTypes[meshDescriptorIndex][property]).toEqual(newVal);
-}
-
-function testArrayProp(
-    definitionController: DefinitionController,
-    descriptor: MeshDescriptor,
-    property: DefinitionProperty,
-    newVal: any, updateProp: (val: any) => void
-) {
-    const meshDescriptorIndex = definitionController.worldItemTypes.indexOf(descriptor);
-    const meshDescriptorType = descriptor.type;
-    const oldVal = descriptor[property];
-    definitionController.setSelectedDefinition(meshDescriptorType);
-    definitionController.focusProp(property);
-
-    expect(definitionController.getVal(property)).toEqual(oldVal);
-
-    updateProp(newVal);
-    
-    expect(definitionController.getVal(property)).toEqual(newVal);
-    expect(definitionController.worldItemTypes[meshDescriptorIndex][property]).toEqual(oldVal);
-
-    definitionController.commitProp();
-    expect(definitionController.getVal(property)).toEqual(newVal);
-    expect(definitionController.worldItemTypes[meshDescriptorIndex][property]).toEqual(newVal);
+    worldItemTypeController.commitProp();
+    expect(worldItemTypeController.getVal(property)).toEqual(newVal);
+    expect(worldItemTypeController.getModel().types[meshDescriptorIndex][property]).toEqual(newVal);
 }

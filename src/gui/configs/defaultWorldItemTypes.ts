@@ -1,13 +1,13 @@
-export const defaultMeshDescriptors = [
+export const defaultWorldItemTypes = [
     {
-        type: 'wall',
+        typeName: 'wall',
         char: 'W',
         shape: 'rect',
         isBorder: true,
         color: '#7B7982'
     },
     {
-        type: 'door',
+        typeName: 'door',
         char: 'D',
         model: 'models/door/door.babylon',
         scale: 3,
@@ -17,7 +17,7 @@ export const defaultMeshDescriptors = [
         color: '#BFA85C'
     },
     {
-        type: 'table',
+        typeName: 'table',
         char: 'T',
         model: 'assets/models/table.babylon',
         scale: 0.5,
@@ -25,7 +25,7 @@ export const defaultMeshDescriptors = [
         isBorder: false
     },
     {
-        type: 'window',
+        typeName: 'window',
         char: 'I',
         model: 'models/window/window.babylon',
         scale: 3,
@@ -34,7 +34,7 @@ export const defaultMeshDescriptors = [
         color: '#70C0CF'
     },
     {
-        type: 'chair',
+        typeName: 'chair',
         char: 'H',
         model: 'models/chair.babylon',
         scale: 3,
@@ -43,7 +43,7 @@ export const defaultMeshDescriptors = [
         color: '#9894eb'
     },
     {
-        type: 'shelves',
+        typeName: 'shelves',
         char: 'O',
         model: 'assets/models/shelves/shelves.babylon',
         scale: 3.3,
@@ -53,7 +53,7 @@ export const defaultMeshDescriptors = [
         color: '#8c7f6f'
     },
     {
-        type: 'stairs',
+        typeName: 'stairs',
         char: 'R',
         model: 'assets/models/stairs/stairs.babylon',
         scale: 3,
@@ -63,19 +63,18 @@ export const defaultMeshDescriptors = [
         color: '#66553f'
     },
     {
-        type: 'outdoors',
+        typeName: 'outdoors',
         char: '*',
         isBorder: false
     },
     {
-        type: 'room',
+        typeName: 'room',
         char: '-',
         isBorder: false
     },
     {
-        type: 'player',
+        typeName: 'player',
         char: 'X',
         isBorder: false
     }
-
 ];

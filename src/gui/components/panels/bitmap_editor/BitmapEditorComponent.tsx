@@ -46,7 +46,10 @@ export class BitmapEditorComponent extends React.Component<any> {
                     h={bitmapConfig.canvasDimensions.y}
                     onMouseDown={(e) => context.controllers.bitmapEditor.mouseController.onMouseDown(e.nativeEvent)}
                     onMouseMove={(e) => context.controllers.bitmapEditor.mouseController.onMouseMove(e.nativeEvent)}
-                    onMouseUp={(e) => context.controllers.bitmapEditor.mouseController.onMouseUp(e.nativeEvent)}    
+                    onMouseUp={(e) => context.controllers.bitmapEditor.mouseController.onMouseUp(e.nativeEvent)}
+                    data-wg-pixel-size={bitmapConfig.pixelSize}
+                    data-wg-width={bitmapConfig.canvasDimensions.x}
+                    data-wg-height={bitmapConfig.canvasDimensions.y}
                 >
                     {horizontalLines}
                     {verticalLines}
@@ -66,11 +69,23 @@ export class BitmapEditorComponent extends React.Component<any> {
 
     private renderPixels(context: AppContextType): JSX.Element[] {
         const pixelController = context.controllers.bitmapEditor.pixelController;
+        const worldItemTypeModel = context.controllers.worldItemTypeModel;
 
         return Array.from(pixelController.bitMap).map(([index, pixel]) => {
             const pos = pixelController.getPixelPosition(index);
+            const color = worldItemTypeModel.getByTypeName(pixel.type).color;
+
             return (
-                <rect width="10px" height="10px" x={`${pos.x}px`} y={`${pos.y}px`} fill={null}></rect>
+                <rect 
+                    width="10px" 
+                    height="10px" 
+                    x={`${pos.x}px`} 
+                    y={`${pos.y}px`} 
+                    fill={color}
+                    data-wg-x={2}
+                    data-wg-y={2}
+                    data-wg-type={pixel.type}
+                />
             )
         })
     }

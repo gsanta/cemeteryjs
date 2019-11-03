@@ -17,9 +17,9 @@ const testMap =
 ***********************************
 `;
 
-const testMeshDescriptors = [
+const testWorldItemTypes = [
     {
-        type: 'wall',
+        typeName: 'wall',
         char: 'W',
         model: 'wall.babylon',
         shape: 'rect',
@@ -29,7 +29,7 @@ const testMeshDescriptors = [
         isBorder: true
     },
     {
-        type: 'door',
+        typeName: 'door',
         char: 'D',
         model: 'models/door/door.babylon',
         scale: 3,
@@ -38,17 +38,17 @@ const testMeshDescriptors = [
         isBorder: false
     },
     {
-        type: 'room',
+        typeName: 'room',
         char: '-',
         isBorder: false
     },
     {
-        type: 'outdoors',
+        typeName: 'outdoors',
         char: '*',
         isBorder: false
     },
     {
-        type: 'table',
+        typeName: 'table',
         char: 'T',
         model: 'table.babylon',
         shape: 'rect',
@@ -59,10 +59,10 @@ const testMeshDescriptors = [
     }
 ] 
 
-export function setupControllers(map = testMap, meshDescriptors = testMeshDescriptors): ControllerFacade {
+export function setupControllers(map = testMap, meshDescriptors = testWorldItemTypes): ControllerFacade {
     const controllers = new ControllerFacade();
     controllers.textEditorController.text = map;
-    controllers.definitionController.worldItemTypes = meshDescriptors;
+    controllers.worldItemTypeController.getModel().types = meshDescriptors;
 
     return controllers;
 }

@@ -50,7 +50,7 @@ export class DefinitionSectionParser extends WorldMapLineListener {
 
         this.meshDescriptors.push({
             char,
-            type,
+            typeName: type,
             model: modelPath,
             materials,
             shape,

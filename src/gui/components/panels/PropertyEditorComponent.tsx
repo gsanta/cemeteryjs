@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DefinitionProperty, DefinitionController } from '../../controllers/DefinitionController';
+import { WorldItemTypeProperty, WorldItemTypeController } from '../../controllers/WorldItemTypeController';
 import { CheckboxComponent } from '../forms/CheckboxComponent';
 import { ConnectedDropdownComponent } from '../forms/DropdownComponent';
 import { ConnectedInputComponent, InputComponent } from '../forms/InputComponent';
@@ -23,23 +23,23 @@ export class PropertyEditorComponent extends React.Component<{}> {
     }
 
     render() {
-        const definitionController = this.context.controllers.definitionController;
-        const meshDescriptors = this.context.controllers.definitionController.worldItemTypes;
+        const definitionController = this.context.controllers.worldItemTypeController;
+        const meshDescriptors = this.context.controllers.worldItemTypeController.getModel().types;
         const windowController = this.context.controllers.windowController;
 
         const names = meshDescriptors.map(def => (
             <div>
                 <InputComponent 
                     type="text"
-                    value={def.type} 
+                    value={def.typeName} 
                     placeholder="Type..."
                     onFocus={() => {
-                        definitionController.setSelectedDefinition(def.type);
-                        definitionController.focusProp(DefinitionProperty.TYPE);
+                        definitionController.setSelectedDefinition(def.typeName);
+                        definitionController.focusProp(WorldItemTypeProperty.TYPE_NAME);
                     }}
                     onChange={val => definitionController.updateStringProp(val)}
                     onBlur={() => definitionController.commitProp()}
-                    isMarked={def.type === definitionController.selectedWorldItemType.type}
+                    isMarked={def.typeName === definitionController.getModel().selectedType.typeName}
                 />
             </div>
         ));
@@ -53,9 +53,9 @@ export class PropertyEditorComponent extends React.Component<{}> {
                     <div className="property-row">
                         {windowController.activeEditor === EditorType.BITMAP_EDITOR ? this.renderColorChooser(definitionController) : this.renderCharacterDropdown(definitionController)}
                         <CheckboxComponent 
-                            isSelected={definitionController.getVal(DefinitionProperty.IS_BORDER) as boolean}
+                            isSelected={definitionController.getVal(WorldItemTypeProperty.IS_BORDER) as boolean}
                             formController={definitionController}
-                            propertyName={DefinitionProperty.IS_BORDER}
+                            propertyName={WorldItemTypeProperty.IS_BORDER}
                             propertyType='boolean'
                         />
                     </div>
@@ -63,19 +63,19 @@ export class PropertyEditorComponent extends React.Component<{}> {
                         <LabeledComponent label="Model file path" direction="vertical">
                             <ConnectedInputComponent
                                 type="text"
-                                value={definitionController.getVal(DefinitionProperty.MODEL) as string || ''} 
+                                value={definitionController.getVal(WorldItemTypeProperty.MODEL) as string || ''} 
                                 placeholder="Model path..."
                                 formController={definitionController}
-                                propertyName={DefinitionProperty.MODEL}
+                                propertyName={WorldItemTypeProperty.MODEL}
                                 propertyType='string'
                             />
                         </LabeledComponent>
                         <LabeledComponent label="Shape" direction="vertical">
                             <ConnectedDropdownComponent
                                 values={definitionController.shapes}
-                                currentValue={definitionController.getVal(DefinitionProperty.SHAPE) as string}
+                                currentValue={definitionController.getVal(WorldItemTypeProperty.SHAPE) as string}
                                 formController={definitionController}
-                                propertyName={DefinitionProperty.SHAPE}
+                                propertyName={WorldItemTypeProperty.SHAPE}
                                 propertyType='string'
                             />
                         </LabeledComponent>
@@ -84,52 +84,52 @@ export class PropertyEditorComponent extends React.Component<{}> {
                         <LabeledComponent label="Scale" direction="vertical">
                             <ConnectedInputComponent
                                 type="number"
-                                value={definitionController.getVal(DefinitionProperty.SCALE) as number} 
+                                value={definitionController.getVal(WorldItemTypeProperty.SCALE) as number} 
                                 placeholder="Scale..."
                                 formController={definitionController}
-                                propertyName={DefinitionProperty.SCALE}
+                                propertyName={WorldItemTypeProperty.SCALE}
                                 propertyType='number'
                             />
                         </LabeledComponent>
                         <LabeledComponent label="Y translate" direction="vertical">
                             <ConnectedInputComponent
                                 type="number"
-                                value={definitionController.getVal(DefinitionProperty.TRANSLATE_Y) as string} 
+                                value={definitionController.getVal(WorldItemTypeProperty.TRANSLATE_Y) as string} 
                                 placeholder="Y translate..."
                                 formController={definitionController}
-                                propertyName={DefinitionProperty.TRANSLATE_Y}
+                                propertyName={WorldItemTypeProperty.TRANSLATE_Y}
                                 propertyType='number'
                             />
                         </LabeledComponent>
                     </div>
                     <div className="property-row">
-                        <MaterialsComponent definitionController={this.context.controllers.definitionController}/>
+                        <MaterialsComponent definitionController={this.context.controllers.worldItemTypeController}/>
                     </div>
                 </div>
             </div>
         );
     }
 
-    renderCharacterDropdown(definitionController: DefinitionController) {
+    renderCharacterDropdown(definitionController: WorldItemTypeController) {
         return (
             <LabeledComponent label="Character" direction="horizontal">
                 <ConnectedDropdownComponent
                     values={chars}
-                    currentValue={definitionController.getVal(DefinitionProperty.CHAR) as string}
+                    currentValue={definitionController.getVal(WorldItemTypeProperty.CHAR) as string}
                     formController={definitionController}
-                    propertyName={DefinitionProperty.CHAR}
+                    propertyName={WorldItemTypeProperty.CHAR}
                     propertyType='string'
                 />
             </LabeledComponent>
         );
     }
 
-    renderColorChooser(definitionController: DefinitionController) {
+    renderColorChooser(definitionController: WorldItemTypeController) {
         return (
             <LabeledComponent label="Choose color" direction="horizontal">
                 <ConnectedColorPicker
                     formController={definitionController}
-                    propertyName={DefinitionProperty.COLOR}
+                    propertyName={WorldItemTypeProperty.COLOR}
                     propertyType='string'
                 />
             </LabeledComponent>

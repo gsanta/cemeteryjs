@@ -41,7 +41,7 @@ export class BorderParser implements Parser {
     private parseTextFormat(worldMap: string): WorldItem[] {
         this.positionToComponentMap = new Map();
         const graph = this.worldMapConverter.convert(worldMap);
-        const borderTypes = this.services.configService.borders.map(border => border.type);
+        const borderTypes = this.services.configService.borders.map(border => border.typeName);
 
         const borderGraph = graph.getReducedGraphForTypes(borderTypes)
         borderGraph.getAllVertices().forEach(vertex => this.positionToComponentMap.set(vertex, []));

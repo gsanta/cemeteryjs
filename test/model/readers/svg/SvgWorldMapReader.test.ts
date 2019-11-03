@@ -2,10 +2,10 @@ import { SvgWorldMapReader } from '../../../../src/model/readers/svg/SvgWorldMap
 
 it ('Parse an svg world map and generate the corresponding world map graph', () => {
     var worldMap =
-    `<svg wg:width="10" wg:height="5">
-        <rect width="10px" height="10px" x="410px" y="120px" fill="red" wg:x="1" wg:y="1" wg:type="wall"></rect>
-        <rect width="10px" height="10px" x="420px" y="120px" fill="red" wg:x="2" wg:y="1" wg:type="door"></rect>
-        <rect width="10px" height="10px" x="420px" y="120px" fill="red" wg:x="3" wg:y="1" wg:type="wall"></rect>
+    `<svg data-wg-width="100" data-wg-height="50" data-wg-pixel-size="10">
+        <rect width="10px" height="10px" x="410px" y="120px" fill="red" data-wg-x="10" data-wg-y="10" data-wg-type="wall"></rect>
+        <rect width="10px" height="10px" x="420px" y="120px" fill="red" data-wg-x="20" data-wg-y="10" data-wg-type="door"></rect>
+        <rect width="10px" height="10px" x="420px" y="120px" fill="red" data-wg-x="30" data-wg-y="10" data-wg-type="wall"></rect>
     </svg>`;
     
 

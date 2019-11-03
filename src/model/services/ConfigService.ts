@@ -27,12 +27,12 @@ export class ConfigService {
     update(worldMap: string): ConfigService {
         this.meshDescriptors = new DefinitionSectionParser().parse(worldMap);
         this.meshDescriptorMap = new Map();
-        this.meshDescriptors.forEach(desc => this.meshDescriptorMap.set(desc.type, desc));
+        this.meshDescriptors.forEach(desc => this.meshDescriptorMap.set(desc.typeName, desc));
         this.meshDescriptorMapByChar = new Map();
         this.meshDescriptors.forEach(desc => this.meshDescriptorMapByChar.set(desc.char, desc));
         this.emptyType = 'empty';
         this.borders = this.meshDescriptors.filter(descriptor => descriptor.isBorder);
-        this.furnitures = this.meshDescriptors.filter(descriptor => !descriptor.isBorder && !INTERNAL_TYPES.includes(descriptor.type));
+        this.furnitures = this.meshDescriptors.filter(descriptor => !descriptor.isBorder && !INTERNAL_TYPES.includes(descriptor.typeName));
 
         return this;
     }

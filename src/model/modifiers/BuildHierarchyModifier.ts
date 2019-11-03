@@ -28,7 +28,7 @@ export class BuildHierarchyModifier implements Modifier {
     }
 
     buildHierarchy(worldItems: WorldItem[]) {
-        const furnitureTypes = this.services.configService.furnitures.map(furniture => furniture.type);
+        const furnitureTypes = this.services.configService.furnitures.map(furniture => furniture.typeName);
         const furnitures =  worldItems.filter(item => furnitureTypes.includes(item.name))
         const subareas = worldItems.filter(item => item.name === '_subarea');
         const empty = worldItems.filter(item => item.name === 'empty');

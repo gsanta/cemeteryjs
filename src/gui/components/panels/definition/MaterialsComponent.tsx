@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { DefinitionController, DefinitionProperty } from '../../../controllers/DefinitionController';
+import { WorldItemTypeController, WorldItemTypeProperty } from '../../../controllers/WorldItemTypeController';
 import { LabeledComponent } from '../../forms/LabeledComponent';
 import { ButtonedInputComponent } from '../../forms/ButtonedInputComponent';
 import { CloseIconComponent } from '../../dialogs/CloseIconComponent';
 
 
-export class MaterialsComponent extends React.Component<{definitionController: DefinitionController}> {
+export class MaterialsComponent extends React.Component<{definitionController: WorldItemTypeController}> {
 
     render(): JSX.Element {
         return (
@@ -21,8 +21,8 @@ export class MaterialsComponent extends React.Component<{definitionController: D
             <LabeledComponent label="Materials" direction="vertical">
                 <ButtonedInputComponent
                     type="text"
-                    value={this.props.definitionController.getVal(DefinitionProperty.MATERIALS) as string} 
-                    onFocus={() => this.props.definitionController.focusProp(DefinitionProperty.MATERIALS)}
+                    value={this.props.definitionController.getVal(WorldItemTypeProperty.MATERIALS) as string} 
+                    onFocus={() => this.props.definitionController.focusProp(WorldItemTypeProperty.MATERIALS)}
                     onChange={val => this.props.definitionController.updateStringProp(val)}
                     placeholder="name"
                     onButtonClick={() => this.props.definitionController.commitProp()}
@@ -32,14 +32,14 @@ export class MaterialsComponent extends React.Component<{definitionController: D
     }
 
     private renderAddedMaterials(): JSX.Element[] {
-        const selectedMeshDescriptor = this.props.definitionController.selectedWorldItemType;
+        const selectedMeshDescriptor = this.props.definitionController.getModel().selectedType;
         const materials = selectedMeshDescriptor ? selectedMeshDescriptor.materials : [];
 
         const addedMaterials = (materials || []).map((material, index) => {
             return (
                 <div className="added-material">
                     <div>{material}
-                    </div><CloseIconComponent onClick={() => this.props.definitionController.deletItemFromListProp(DefinitionProperty.MATERIALS, index)}/>
+                    </div><CloseIconComponent onClick={() => this.props.definitionController.deletItemFromListProp(WorldItemTypeProperty.MATERIALS, index)}/>
                 </div>
             )
         });

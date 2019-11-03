@@ -1,5 +1,5 @@
 export interface WorldItemType {
-    type: string;
+    typeName: string;
     char?: string;
     color?: string;
     model?: string;

@@ -73,12 +73,12 @@ export class BabylonModelImportService implements ModelImportService<Mesh, Skele
 
 
                 this.configMeshes(<Mesh[]> meshes, new Vector3(meshDescriptor.scale, meshDescriptor.scale, meshDescriptor.scale));
-                meshes[0].name = meshDescriptor.type;
+                meshes[0].name = meshDescriptor.typeName;
 
-                this.meshTemplates.set(meshDescriptor.type, {
+                this.meshTemplates.set(meshDescriptor.typeName, {
                     meshes: <Mesh[]> meshes,
                     skeletons: skeletons,
-                    type: meshDescriptor.type
+                    type: meshDescriptor.typeName
                 })
                 resolve();
             };
