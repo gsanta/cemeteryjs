@@ -1,6 +1,6 @@
 import { WorldItemType } from "../../WorldItemType";
-import { DefinitionSectionParser } from "../formats/text/DefinitionSectionParser";
-import { GlobalConfig } from '../formats/text/GlobalSectionParser';
+import { DefinitionSectionParser } from "../readers/text/DefinitionSectionParser";
+import { GlobalConfig } from '../readers/text/GlobalSectionParser';
 
 const DEFAULT_BORDERS = [
     'wall',

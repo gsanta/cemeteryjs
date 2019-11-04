@@ -8,14 +8,14 @@ import { CreateMeshModifier } from '../modifiers/CreateMeshModifier';
 import { NormalizeBorderRotationModifier } from "../modifiers/NormalizeBorderRotationModifier";
 import { SplitWallsIntoTwoParallelChildWallsModifier } from "../modifiers/SplitWallsIntoTwoParallelChildWallsModifier";
 import { ThickenBordersModifier } from "../modifiers/ThickenBordersModifier";
-import { CombinedWorldItemParser } from "../parsers/CombinedWorldItemParser";
-import { FurnitureParser } from "../parsers/FurnitureParser";
-import { RoomParser } from "../parsers/RoomParser";
-import { RootWorldItemParser } from "../parsers/RootWorldItemParser";
-import { SubareaParser } from '../parsers/SubareaParser';
+import { CombinedWorldItemBuilder } from "../builders/CombinedWorldItemBuilder";
+import { FurnitureBuilder } from "../builders/FurnitureBuilder";
+import { RoomBuilder } from "../builders/RoomBuilder";
+import { RootWorldItemBuilder } from "../builders/RootWorldItemBuilder";
+import { SubareaBuilder } from '../builders/SubareaBuilder';
 import { ServiceFacade } from './ServiceFacade';
 import { ScaleModifier } from '../modifiers/ScaleModifier';
-import { BorderParser } from '../parsers/BorderParser';
+import { BorderBuilder } from '../builders/BorderBuilder';
 import { SegmentBordersModifier } from '../modifiers/SegmentBordersModifier';
 
 export interface WorldConfig {
@@ -45,14 +45,14 @@ export class ImporterService<M, S, T> {
     import(worldMap: string, modNames?: string[]): WorldItem[] {
         let worldItems = this.services.parserService.apply(
             worldMap,
-            new CombinedWorldItemParser(
+            new CombinedWorldItemBuilder(
                 [
-                    new FurnitureParser(this.services),
-                    new BorderParser(this.services),
-                    new RoomParser(this.services),
+                    new FurnitureBuilder(this.services),
+                    new BorderBuilder(this.services),
+                    new RoomBuilder(this.services),
                     // new PolygonAreaParser('empty', this.services.configService.meshDescriptorMap.get('room').char, this.services),
-                    new RootWorldItemParser(this.services.worldItemFactoryService, this.services.configService),
-                    new SubareaParser(this.services)
+                    new RootWorldItemBuilder(this.services.worldItemFactoryService, this.services.configService),
+                    new SubareaBuilder(this.services)
                 ]
             )
         );

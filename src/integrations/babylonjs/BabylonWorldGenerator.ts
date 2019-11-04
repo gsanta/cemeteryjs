@@ -4,7 +4,7 @@ import { BabylonMeshFactoryService } from './services/BabylonMeshFactoryService'
 import { BabylonModelImportService } from './services/BabylonModelImportService';
 import { ConfigService } from '../../model/services/ConfigService';
 import { ServiceFacade } from '../../model/services/ServiceFacade';
-import { GlobalsSectionParser } from '../../model/formats/text/GlobalSectionParser';
+import { GlobalsSectionParser } from '../../model/readers/text/GlobalSectionParser';
 
 
 export class BabylonWorldGenerator<T> implements WorldGenerator<T> {

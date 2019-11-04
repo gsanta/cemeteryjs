@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { WorldItemTypeProperty, WorldItemTypeController } from '../../controllers/WorldItemTypeController';
+import { WorldItemTypeController, WorldItemTypeProperty } from '../../controllers/WorldItemTypeController';
+import { AppContext, AppContextType } from '../Context';
 import { CheckboxComponent } from '../forms/CheckboxComponent';
+import { ConnectedColorPicker } from '../forms/ColorPicker';
 import { ConnectedDropdownComponent } from '../forms/DropdownComponent';
 import { ConnectedInputComponent, InputComponent } from '../forms/InputComponent';
 import { LabeledComponent } from '../forms/LabeledComponent';
 import { MaterialsComponent } from './definition/MaterialsComponent';
 import './PropertyEditorComponent.scss';
-import { AppContext, AppContextType } from '../Context';
-import { ColorPicker, ConnectedColorPicker } from '../forms/ColorPicker';
-import { EditorType } from '../../controllers/WindowController';
+import { EditorType } from '../../models/WindowModel';
 
 const chars = [
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
@@ -25,7 +25,7 @@ export class PropertyEditorComponent extends React.Component<{}> {
     render() {
         const definitionController = this.context.controllers.worldItemTypeController;
         const meshDescriptors = this.context.controllers.worldItemTypeController.getModel().types;
-        const windowController = this.context.controllers.windowController;
+        const windowModel = this.context.controllers.windowModel;
 
         const names = meshDescriptors.map(def => (
             <div>
@@ -51,7 +51,7 @@ export class PropertyEditorComponent extends React.Component<{}> {
                 </div>
                 <div className="properties-column">
                     <div className="property-row">
-                        {windowController.activeEditor === EditorType.BITMAP_EDITOR ? this.renderColorChooser(definitionController) : this.renderCharacterDropdown(definitionController)}
+                        {windowModel.activeEditor === EditorType.BITMAP_EDITOR ? this.renderColorChooser(definitionController) : this.renderCharacterDropdown(definitionController)}
                         <CheckboxComponent 
                             isSelected={definitionController.getVal(WorldItemTypeProperty.IS_BORDER) as boolean}
                             formController={definitionController}

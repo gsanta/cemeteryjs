@@ -1,16 +1,17 @@
 import * as React from 'react';
-import { EditorType, WindowProperty } from '../../controllers/WindowController';
+import styled from 'styled-components';
+import { WindowProperty } from '../../controllers/WindowController';
+import { EditorType } from '../../models/WindowModel';
 import { AppContext, AppContextType } from '../Context';
 import { ConnectedDropdownComponent } from '../forms/DropdownComponent';
+import { ConnectedToggleButtonComponent } from '../forms/ToggleButtonComponent';
 import { HorizontalSplitComponent } from '../misc/HorizontalSplitComponent';
-import { PropertyEditorComponent } from './PropertyEditorComponent';
-import { TextEditorComponent } from './TextEditorComponent';
-import './EditorComponent.scss';
+import { colors } from '../styles';
 import { BitmapEditorComponent } from './bitmap_editor/BitmapEditorComponent';
 import { BitmapEditorToolbar } from './bitmap_editor/BitmapEditorToolbar';
-import styled from 'styled-components';
-import { colors } from '../styles';
-import { ToggleButtonComponent, ConnectedToggleButtonComponent } from '../forms/ToggleButtonComponent';
+import './EditorComponent.scss';
+import { PropertyEditorComponent } from './PropertyEditorComponent';
+import { TextEditorComponent } from './TextEditorComponent';
 
 const GlobalToolbarComponent = styled.div`
     margin-right: 20px;
@@ -39,18 +40,18 @@ export class EditorComponent extends React.Component<{}> {
     }
 
     private renderContent(context: AppContextType): JSX.Element {
-        const windowController = context.controllers.windowController;
-        {return windowController.isPropertiesWindowOpen ? this.renderEditorWithPropertiesPanel(context) : this.renderOnlyEditor(context)}
+        const windowModel = context.controllers.windowModel;
+        {return windowModel.isWorldItemTypeEditorOpen ? this.renderEditorWithPropertiesPanel(context) : this.renderOnlyEditor(context)}
     }
 
     private renderEditorWithPropertiesPanel(context: AppContextType): JSX.Element {
-        const windowController = context.controllers.windowController;
+        const windowModel = context.controllers.windowModel;
 
         return (
             <HorizontalSplitComponent onChange={() => this.onResize()}>
                 <div className="editor">
                     {this.renderToolbar(context)}
-                    {windowController.activeEditor === EditorType.BITMAP_EDITOR ? this.renderDrawEditor(context) : this.renderTextEditor(context)}
+                    {windowModel.activeEditor === EditorType.BITMAP_EDITOR ? this.renderDrawEditor(context) : this.renderTextEditor(context)}
                 </div>
                 <PropertyEditorComponent/>
             </HorizontalSplitComponent>
@@ -58,12 +59,12 @@ export class EditorComponent extends React.Component<{}> {
     }
 
     private renderOnlyEditor(context: AppContextType): JSX.Element {
-        const windowController = context.controllers.windowController;
+        const windowModel = context.controllers.windowModel;
 
         return (
             <div className="editor">
                 {this.renderToolbar(context)}
-                {windowController.activeEditor === EditorType.BITMAP_EDITOR ? this.renderDrawEditor(context) : this.renderTextEditor(context)}
+                {windowModel.activeEditor === EditorType.BITMAP_EDITOR ? this.renderDrawEditor(context) : this.renderTextEditor(context)}
             </div>
         );
     }
@@ -94,9 +95,9 @@ export class EditorComponent extends React.Component<{}> {
                 <GlobalToolbarComponent>
                     <ConnectedToggleButtonComponent
                         text="Show Properties"
-                        isActive={windowController.getVal(WindowProperty.IS_PROPERTIES_WINDOW_OPEN) as boolean}
+                        isActive={windowController.getVal(WindowProperty.IS_WORLD_ITEM_TYPE_EDITOR_OPEN) as boolean}
                         formController={windowController}
-                        propertyName={WindowProperty.IS_PROPERTIES_WINDOW_OPEN}
+                        propertyName={WindowProperty.IS_WORLD_ITEM_TYPE_EDITOR_OPEN}
                         propertyType="boolean"
                     />
                 </GlobalToolbarComponent>
@@ -105,12 +106,12 @@ export class EditorComponent extends React.Component<{}> {
     }
 
     private onResize() {
-        if (this.context.controllers.windowController.activeEditor === EditorType.TEXT_EDITOR) {
+        if (this.context.controllers.windowModel.activeEditor === EditorType.TEXT_EDITOR) {
             this.context.controllers.textEditorController.resize();
         }
     }
 
     private renderEditorSpecificToolbar(context: AppContextType): JSX.Element {
-        return context.controllers.windowController.activeEditor === EditorType.BITMAP_EDITOR ? <BitmapEditorToolbar/> : null;
+        return context.controllers.windowModel.activeEditor === EditorType.BITMAP_EDITOR ? <BitmapEditorToolbar/> : null;
     }
 }

@@ -1,8 +1,8 @@
-import { Engine } from 'babylonjs';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as React from 'react';
-import { ControllerFacade } from '../controllers/ControllerFacade';
+import { EditorType } from '../models/WindowModel';
 import './App.scss';
+import { AppContext, AppContextType } from './Context';
 import { AboutDialog } from './dialogs/AboutDialog';
 import { HowToIntegrateDialog } from './dialogs/HowToIntegrateDialog';
 import { IntegrationCodeDialog } from './dialogs/IntegrationCodeDialog';
@@ -11,8 +11,6 @@ import './misc/SplitPane.css';
 import { VerticalSplitComponent } from './misc/VerticalSplitComponent';
 import { EditorComponent } from './panels/EditorComponent';
 import { MapViewerComponent } from './panels/MapViewerComponent';
-import { AppContext, AppContextType } from './Context';
-import { EditorType } from '../controllers/WindowController';
 
 export interface AppState {
     isDialogOpen: boolean;
@@ -62,7 +60,7 @@ export class App extends React.Component<{}, AppState> {
 
     private resize() {
         this.context.controllers.canvasController.engine.resize();
-        if (this.context.controllers.windowController.activeEditor === EditorType.TEXT_EDITOR) {
+        if (this.context.controllers.windowModel.activeEditor === EditorType.TEXT_EDITOR) {
             this.context.controllers.textEditorController.resize();
         }
     }

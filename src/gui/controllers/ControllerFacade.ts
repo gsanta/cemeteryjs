@@ -7,6 +7,7 @@ import { defaultWorldItemTypes } from '../configs/defaultWorldItemTypes';
 import { WindowController } from './WindowController';
 import { BitmapEditor } from './bitmap_editor/BitmapEditor';
 import { WorldItemTypeModel } from '../models/WorldItemTypeModel';
+import { WindowModel } from '../models/WindowModel';
 
 export class ControllerFacade {
     textEditorController: TextEditorController;
@@ -18,9 +19,11 @@ export class ControllerFacade {
     windowController: WindowController;
 
     worldItemTypeModel: WorldItemTypeModel;
+    windowModel: WindowModel;
 
     constructor() {
         this.worldItemTypeModel = new WorldItemTypeModel(defaultWorldItemTypes);
+        this.windowModel = new WindowModel();
         
         this.textEditorController = new TextEditorController(this);
         this.bitmapEditor = new BitmapEditor(this);
@@ -29,6 +32,5 @@ export class ControllerFacade {
         this.worldMapController = new WorldMapController(this);
         this.canvasController = new CanvasController(this);
         this.windowController = new WindowController(this);
-
     }
 }

@@ -1,20 +1,14 @@
 import { FormController } from './FormController';
 import { ControllerFacade } from './ControllerFacade';
-
-export enum EditorType {
-    TEXT_EDITOR = 'text-editor',
-    BITMAP_EDITOR = 'bitmap-editor'
-}
+import { EditorType, WindowModel } from '../models/WindowModel';
 
 export enum WindowProperty {
     EDITOR = 'editor',
-    IS_PROPERTIES_WINDOW_OPEN = 'is-properties-window-open'
+    IS_WORLD_ITEM_TYPE_EDITOR_OPEN = 'is-properties-window-open'
 }
 
 export class WindowController extends FormController<WindowProperty> {
     focusedPropType: WindowProperty;
-    activeEditor: EditorType = EditorType.BITMAP_EDITOR;
-    isPropertiesWindowOpen = true;
 
     private tempString: string;
     private tempBoolean: boolean;
@@ -29,10 +23,10 @@ export class WindowController extends FormController<WindowProperty> {
         this.focusedPropType = propType;
         switch(this.focusedPropType) {
             case WindowProperty.EDITOR:
-                this.tempString = this.activeEditor;
+                this.tempString = this.controllers.windowModel.activeEditor;
                 break;
-            case WindowProperty.IS_PROPERTIES_WINDOW_OPEN:
-                this.tempBoolean = this.isPropertiesWindowOpen;
+            case WindowProperty.IS_WORLD_ITEM_TYPE_EDITOR_OPEN:
+                this.tempBoolean = this.controllers.windowModel.isWorldItemTypeEditorOpen;
                 break;
         }
     }
@@ -51,10 +45,10 @@ export class WindowController extends FormController<WindowProperty> {
     commitProp() {
         switch(this.focusedPropType) {
             case WindowProperty.EDITOR:
-                this.activeEditor = <EditorType> this.tempString;
+                this.controllers.windowModel.activeEditor = <EditorType> this.tempString;
                 break;
-            case WindowProperty.IS_PROPERTIES_WINDOW_OPEN:
-                this.isPropertiesWindowOpen = this.tempBoolean;
+            case WindowProperty.IS_WORLD_ITEM_TYPE_EDITOR_OPEN:
+                this.controllers.windowModel.isWorldItemTypeEditorOpen = this.tempBoolean;
                 break;    
         }
 
@@ -64,9 +58,9 @@ export class WindowController extends FormController<WindowProperty> {
     getVal(propType: WindowProperty) {
         switch(propType) {
             case WindowProperty.EDITOR:
-                return this.focusedPropType === propType ? this.tempString : this.activeEditor;
-            case WindowProperty.IS_PROPERTIES_WINDOW_OPEN:
-                return this.focusedPropType === propType ? this.tempBoolean : this.isPropertiesWindowOpen;
+                return this.focusedPropType === propType ? this.tempString : this.controllers.windowModel.activeEditor;
+            case WindowProperty.IS_WORLD_ITEM_TYPE_EDITOR_OPEN:
+                return this.focusedPropType === propType ? this.tempBoolean : this.controllers.windowModel.isWorldItemTypeEditorOpen;
 
         }
     }

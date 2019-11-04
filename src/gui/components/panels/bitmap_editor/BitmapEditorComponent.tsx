@@ -82,8 +82,8 @@ export class BitmapEditorComponent extends React.Component<any> {
                     x={`${pos.x}px`} 
                     y={`${pos.y}px`} 
                     fill={color}
-                    data-wg-x={2}
-                    data-wg-y={2}
+                    data-wg-x={pos.x}
+                    data-wg-y={pos.y}
                     data-wg-type={pixel.type}
                 />
             )
