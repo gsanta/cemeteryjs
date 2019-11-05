@@ -6,5 +6,7 @@ export enum ToolType {
 
 export interface Tool {
     type: ToolType;
+    down();
     up();
+    drag();
 }

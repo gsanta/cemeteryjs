@@ -1,4 +1,4 @@
-import { setupMap, setup } from "../../../test_utils/testUtils";
+import { setupMap, setup } from "../../testUtils";
 import { ScaleModifier } from "../../../../src/model/modifiers/ScaleModifier";
 import { Polygon, Point } from '@nightshifts.inc/geometry';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';

@@ -5,7 +5,7 @@ import { ChangeBorderWidthModifier } from "../../../src/model/modifiers/ChangeBo
 import { ChangeFurnitureSizeModifier } from '../../../src/model/modifiers/ChangeFurnitureSizeModifier';
 import { SegmentBordersModifier } from "../../../src/model/modifiers/SegmentBordersModifier";
 import { ServiceFacade } from "../../../src/model/services/ServiceFacade";
-import { setup, setupMap } from "../../test_utils/testUtils";
+import { setup, setupMap } from "../testUtils";
 
 describe('ChangeFurnitureSizeModifier', () => {
     it ('transforms the sketched furniture dimensions into real mesh dimensions', () => {

@@ -1,5 +1,5 @@
 import { ScaleModifier } from '../../../src/model/modifiers/ScaleModifier';
-import { setup } from '../../test_utils/testUtils';
+import { setup } from '../testUtils';
 
 it ('Scale the items', () => {
     const map = `

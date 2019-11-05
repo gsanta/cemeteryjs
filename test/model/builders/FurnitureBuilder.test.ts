@@ -1,6 +1,6 @@
 import { Polygon } from '@nightshifts.inc/geometry';
 import { FurnitureBuilder } from '../../../src/model/builders/FurnitureBuilder';
-import { setup } from '../../test_utils/testUtils';
+import { setup } from '../testUtils';
 import { Format } from '../../../src/model/builders/WorldItemBuilder';
 
 describe('FurnitureBuilder', () => {

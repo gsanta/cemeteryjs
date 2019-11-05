@@ -21,6 +21,12 @@ const LineComponent = styled.line`
     opacity: 0.5;
 `;
 
+const SelectionComponentStyled = styled.rect`
+    stroke: red;
+    stroke-width: 1px;
+    fill: transparent;
+`;
+
 export class BitmapEditorComponent extends React.Component<any> {
     static contextType = AppContext;
     context: AppContextType;
@@ -47,6 +53,7 @@ export class BitmapEditorComponent extends React.Component<any> {
                     onMouseDown={(e) => context.controllers.bitmapEditor.mouseController.onMouseDown(e.nativeEvent)}
                     onMouseMove={(e) => context.controllers.bitmapEditor.mouseController.onMouseMove(e.nativeEvent)}
                     onMouseUp={(e) => context.controllers.bitmapEditor.mouseController.onMouseUp(e.nativeEvent)}
+                    onMouseLeave={(e) => context.controllers.bitmapEditor.mouseController.onMouseOut(e.nativeEvent)}
                     data-wg-pixel-size={bitmapConfig.pixelSize}
                     data-wg-width={bitmapConfig.canvasDimensions.x}
                     data-wg-height={bitmapConfig.canvasDimensions.y}
@@ -54,6 +61,7 @@ export class BitmapEditorComponent extends React.Component<any> {
                     {horizontalLines}
                     {verticalLines}
                     {this.renderPixels(context)}
+                    {this.renderSelection()}
                 </CanvasComponent>
             </EditorComponent>
         )
@@ -88,5 +96,23 @@ export class BitmapEditorComponent extends React.Component<any> {
                 />
             )
         })
+    }
+
+    private renderSelection(): JSX.Element {
+        const selectionModel = this.context.controllers.bitmapEditor.selectionModel;
+
+        if (selectionModel.isVisible && selectionModel.startPoint && selectionModel.endPoint) {
+            console.log('selection')
+            return (
+                <SelectionComponentStyled 
+                    x={selectionModel.startPoint.x}
+                    y={selectionModel.startPoint.y}
+                    width={selectionModel.endPoint.x - selectionModel.startPoint.x}
+                    height={selectionModel.endPoint.y - selectionModel.startPoint.y}
+                />
+            );
+        } else {
+            return null;
+        }
     }
 }

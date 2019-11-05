@@ -4,7 +4,7 @@ import { ChangeBorderWidthModifier } from "../../../../src/model/modifiers/Chang
 import { RoomFurnitureResizer } from "../../../../src/model/modifiers/real_furniture_size/RoomFurnitureResizer";
 import { ScaleModifier } from "../../../../src/model/modifiers/ScaleModifier";
 import { SegmentBordersModifier } from "../../../../src/model/modifiers/SegmentBordersModifier";
-import { setup } from "../../../test_utils/testUtils";
+import { setup } from "../../testUtils";
 
 it ('Resize each funrinture in the room', () => {
 

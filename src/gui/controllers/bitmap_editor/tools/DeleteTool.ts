@@ -1,16 +1,23 @@
 import { BitmapEditor } from '../BitmapEditor';
-import { Tool, ToolType } from './Tool';
+import { AbstractSelectionTool } from './AbstractSelectionTool';
+import { ToolType } from './Tool';
 
-export class DeleteTool implements Tool {
-    type = ToolType.DELETE;
-    private bitmapEditor: BitmapEditor;
-
+export class DeleteTool extends AbstractSelectionTool {
     constructor(bitmapEditor: BitmapEditor) {
-        this.bitmapEditor = bitmapEditor;
+        super(bitmapEditor, ToolType.DELETE);
     }
 
     up() {
-        this.bitmapEditor.pixelController.removePixel(this.bitmapEditor.mouseController.pointer);
+        if (this.bitmapEditor.mouseController.isDrag) {
+            const pixels = this.getPixelsInSelection();
+
+            pixels.forEach(pixel => this.bitmapEditor.pixelController.removePixel(pixel.index));
+        } else {
+            this.bitmapEditor.pixelController.removePixelAtPosition(this.bitmapEditor.mouseController.movePoint);
+        }
+
+        super.up();
+
         this.bitmapEditor.render();
     }
 }

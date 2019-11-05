@@ -1,5 +1,5 @@
 import { BorderBuilder } from '../../../src/model/builders/BorderBuilder';
-import { setup } from '../../test_utils/testUtils';
+import { setup } from '../testUtils';
 import { Format } from '../../../src/model/builders/WorldItemBuilder';
 
 

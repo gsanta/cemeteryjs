@@ -48,7 +48,7 @@ export class ImporterService<M, S, T> {
             new CombinedWorldItemBuilder(
                 [
                     new FurnitureBuilder(this.services),
-                    new BorderBuilder(this.services),
+                    new BorderBuilder(this.services, null),
                     new RoomBuilder(this.services),
                     // new PolygonAreaParser('empty', this.services.configService.meshDescriptorMap.get('room').char, this.services),
                     new RootWorldItemBuilder(this.services.worldItemFactoryService, this.services.configService),

@@ -1,7 +1,7 @@
 import { Segment } from "@nightshifts.inc/geometry";
 import { SegmentBordersModifier } from '../../../src/model/modifiers/SegmentBordersModifier';
 import { ServiceFacade } from "../../../src/model/services/ServiceFacade";
-import { setup } from "../../test_utils/testUtils";
+import { setup } from "../testUtils";
 
 
 it ('Segment a vertical wall where it intersects with the horizontal walls', () => {

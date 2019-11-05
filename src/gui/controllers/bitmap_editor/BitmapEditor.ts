@@ -5,6 +5,7 @@ import { PixelController } from './PixelController';
 import { ControllerFacade } from '../ControllerFacade';
 import { Tool, ToolType } from './tools/Tool';
 import { DeleteTool } from './tools/DeleteTool';
+import { SelectionModel } from '../../models/bitmap_editor/SelectionModel';
 
 export class BitmapEditor {
     config: BitmapConfig;
@@ -15,7 +16,11 @@ export class BitmapEditor {
     id: string;
     controllers: ControllerFacade;
 
+    selectionModel: SelectionModel;
+
     constructor(controllers: ControllerFacade) {
+        this.selectionModel = new SelectionModel();
+        
         this.config = new BitmapConfig;
         this.mouseController = new MouseController(this);
         this.pixelController = new PixelController(this);

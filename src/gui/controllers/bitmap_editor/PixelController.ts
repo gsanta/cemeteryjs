@@ -1,33 +1,50 @@
 import { Point } from '@nightshifts.inc/geometry';
+import { Rectangle } from '../../models/bitmap_editor/Rectangle';
 import { BitmapEditor } from './BitmapEditor';
-import { WorldItemType } from '../../../WorldItemType';
 
 export interface Pixel {
     type: string;
+    index: number;
 }
 
 export class PixelController {
     bitMap: Map<number, Pixel> = new Map();
+    pixels: Pixel[] = [];
     private bitmapEditor: BitmapEditor;
 
     constructor(controllers: BitmapEditor) {
         this.bitmapEditor = controllers;
     }
 
-    addPixel(position: Point, pixel: Pixel) {
+    addPixel(position: Point, type: string) {
         const index = this.getPixelIndex(position);
 
+        const pixel: Pixel = {
+            type,
+            index
+        }
         this.bitMap.set(index, pixel);
+        this.pixels.push(pixel);
+    }
+
+    removePixel(pixelIndex: number) {
+        const pixel = this.bitMap.get(pixelIndex);
+        if (pixel) {
+            this.bitMap.delete(pixelIndex);
+            this.pixels.splice(this.pixels.indexOf(pixel), 1);
+        }
     }
     
-    removePixel(position: Point): void {
+    removePixelAtPosition(position: Point): void {
         const x = Math.floor(position.x / this.bitmapEditor.config.pixelSize);
         const y = Math.floor(position.y / this.bitmapEditor.config.pixelSize);
         const xDim = this.bitmapEditor.config.canvasDimensions.x / this.bitmapEditor.config.pixelSize;
         const pixelIndex = y * xDim + x;
 
-        if (this.bitMap.get(pixelIndex)) {
+        const pixel = this.bitMap.get(pixelIndex);
+        if (pixel) {
             this.bitMap.delete(pixelIndex);
+            this.pixels.splice(this.pixels.indexOf(pixel), 1);
         }
     }
 
@@ -41,6 +58,19 @@ export class PixelController {
         const y = Math.floor(pixelIndex / xDim);
         
         return new Point(x * pixelSize, y * pixelSize);
+    }
+
+    getPixelsInside(rectangle: Rectangle): Pixel[] {
+        const pixelSize = this.bitmapEditor.config.pixelSize;
+
+        return this.pixels.filter(pixel => {
+            const pixelPosition = this.getPixelPosition(pixel.index);
+
+            return pixelPosition.x > rectangle.topLeft.x &&
+                pixelPosition.y > rectangle.topLeft.y &&
+                pixelPosition.x + pixelSize < rectangle.bottomRight.x &&
+                pixelPosition.y + pixelSize < rectangle.bottomRight.y
+        });
     }
 
     private getPixelIndex(position: Point): number {

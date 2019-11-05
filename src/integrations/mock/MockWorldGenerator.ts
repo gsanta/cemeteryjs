@@ -5,7 +5,7 @@ import { WorldItem } from '../../WorldItem';
 import { MeshTemplate } from '../../MeshTemplate';
 import { MeshTemplateService } from '../../model/services/MeshTemplateService';
 import { Point } from '@nightshifts.inc/geometry';
-import { setup } from '../../../test/test_utils/testUtils';
+import { setup } from '../../../test/model/testUtils';
 
 export class MockMeshFactoryService implements MeshFactoryService<any, any> {
     getInstance(worldItemInfo: WorldItem, meshDescriptor: WorldItemType, meshTemplate: MeshTemplate<any, any>): any {

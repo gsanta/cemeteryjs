@@ -1,6 +1,6 @@
 import { SegmentBordersModifier } from "../../../src/model/modifiers/SegmentBordersModifier";
 import { ServiceFacade } from "../../../src/model/services/ServiceFacade";
-import { setup } from "../../test_utils/testUtils";
+import { setup } from "../testUtils";
 
 
 function createMap(worldMap: string) {

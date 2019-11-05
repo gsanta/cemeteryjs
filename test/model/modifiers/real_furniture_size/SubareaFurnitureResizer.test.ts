@@ -1,4 +1,4 @@
-import { setupMap, setup } from "../../../test_utils/testUtils";
+import { setupMap, setup } from "../../testUtils";
 import { ScaleModifier } from "../../../../src/model/modifiers/ScaleModifier";
 import { SegmentBordersModifier } from "../../../../src/model/modifiers/SegmentBordersModifier";
 import { BuildHierarchyModifier } from "../../../../src/model/modifiers/BuildHierarchyModifier";

@@ -1,6 +1,6 @@
 import { Point, Polygon } from '@nightshifts.inc/geometry';
 import { PolygonShapeBuilder } from "../../../src/model/builders/PolygonShapeBuilder";
-import { setup } from "../../test_utils/testUtils";
+import { setup } from "../testUtils";
 import { Format } from '../../../src/model/builders/WorldItemBuilder';
 
 it ('Create items for a given type which is represented on the world map by a polygon shape.', () => {

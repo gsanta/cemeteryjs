@@ -1,6 +1,6 @@
 import { AssignBordersToRoomsModifier } from '../../../src/model/modifiers/AssignBordersToRoomsModifier';
 import { SegmentBordersModifier } from '../../../src/model/modifiers/SegmentBordersModifier';
-import { setup } from '../../test_utils/testUtils';
+import { setup } from '../testUtils';
 
 it ('Add the correct borders to a single room', () => {
     const map = `

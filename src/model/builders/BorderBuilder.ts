@@ -6,6 +6,7 @@ import { WorldMapGraph } from '../../WorldMapGraph';
 import { WorldItemBuilder, Format } from './WorldItemBuilder';
 import { TextWorldMapReader } from '../readers/text/TextWorldMapReader';
 import { SvgWorldMapReader } from '../readers/svg/SvgWorldMapReader';
+import { WorldMapReader } from '../readers/WorldMapReader';
 
 interface Border {
     vertices: number[];
@@ -14,14 +15,14 @@ interface Border {
 }
 
 export class BorderBuilder implements WorldItemBuilder {
-    private worldMapConverter: TextWorldMapReader;
+    private worldMapReader: WorldMapReader;
     private services: ServiceFacade<any, any, any>;
 
     private positionToComponentMap: Map<number, Border[]>;
 
-    constructor(services: ServiceFacade<any, any, any>, worldMapConverter = new TextWorldMapReader(services.configService)) {
+    constructor(services: ServiceFacade<any, any, any>, worldMapReader: WorldMapReader) {
         this.services = services;
-        this.worldMapConverter = worldMapConverter;
+        this.worldMapReader = worldMapReader;
     }
 
     parse(worldMap: string, format: Format): WorldItem[] {
@@ -40,7 +41,7 @@ export class BorderBuilder implements WorldItemBuilder {
 
     private parseTextFormat(worldMap: string): WorldItem[] {
         this.positionToComponentMap = new Map();
-        const graph = this.worldMapConverter.read(worldMap);
+        const graph = this.worldMapReader.read(worldMap);
         const borderTypes = this.services.configService.borders.map(border => border.typeName);
 
         const borderGraph = graph.getReducedGraphForTypes(borderTypes)

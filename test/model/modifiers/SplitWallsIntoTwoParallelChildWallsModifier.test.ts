@@ -5,7 +5,7 @@ import { BuildHierarchyModifier } from "../../../src/model/modifiers/BuildHierar
 import { ScaleModifier } from "../../../src/model/modifiers/ScaleModifier";
 import { SegmentBordersModifier } from "../../../src/model/modifiers/SegmentBordersModifier";
 import { ThickenBordersModifier } from '../../../src/model/modifiers/ThickenBordersModifier';
-import { setup } from "../../test_utils/testUtils";
+import { setup } from "../testUtils";
 import { ChangeBorderWidthModifier } from '../../../src/model/modifiers/ChangeBorderWidthModifier';
 import { WorldItem } from '../../../src/WorldItem';
 
