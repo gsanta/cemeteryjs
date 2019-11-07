@@ -5,26 +5,30 @@ import { Point } from '@nightshifts.inc/geometry';
 export class AbstractSelectionTool implements Tool {
     type: ToolType;
     protected bitmapEditor: BitmapEditor;
+    private showSelection: boolean;
 
-    constructor(bitmapEditor: BitmapEditor, type: ToolType) {
+    constructor(bitmapEditor: BitmapEditor, type: ToolType, showSelection: boolean) {
         this.type = type;
         this.bitmapEditor = bitmapEditor;
+        this.showSelection = showSelection;
     }
 
     down() {
-        this.bitmapEditor.selectionModel.isVisible = true;
-        this.bitmapEditor.selectionModel.startPoint = this.bitmapEditor.mouseController.downPoint;
+        if (this.showSelection) {
+            this.bitmapEditor.selectionModel.isVisible = true;
+        }
     }
 
     up() {
-        this.bitmapEditor.selectionModel.isVisible = false;
-        this.bitmapEditor.selectionModel.startPoint = null;
-        this.bitmapEditor.selectionModel.endPoint = null;
+        if (this.showSelection) {
+            this.bitmapEditor.selectionModel.isVisible = false;
+        }
+        this.bitmapEditor.selectionModel.topLeftPoint = null;
+        this.bitmapEditor.selectionModel.bottomRightPoint = null;
     }
 
     drag() {
-        this.bitmapEditor.selectionModel.endPoint = this.bitmapEditor.mouseController.movePoint;
-        this.bitmapEditor.render();
+        this.bitmapEditor.selectionModel.setPoints(this.bitmapEditor.mouseController.downPoint, this.bitmapEditor.mouseController.movePoint);
     }
 
     protected getPixelsInSelection() {
@@ -35,10 +39,10 @@ export class AbstractSelectionTool implements Tool {
     protected getPositionsInSelection(): Point[] {
         const selectionRect = this.bitmapEditor.selectionModel.getSelectionRect();
         const pixelSize = this.bitmapEditor.config.pixelSize;
-        const xStart = Math.floor(selectionRect.topLeft.x / pixelSize) + 1; 
-        const yStart = Math.floor(selectionRect.topLeft.y / pixelSize) + 1;
-        const xEnd = Math.floor(selectionRect.bottomRight.x / pixelSize);
-        const yEnd = Math.floor(selectionRect.bottomRight.y / pixelSize);
+        const xStart = Math.floor(selectionRect.topLeft.x / pixelSize); 
+        const yStart = Math.floor(selectionRect.topLeft.y / pixelSize);
+        const xEnd = Math.floor(selectionRect.bottomRight.x / pixelSize) + 1;
+        const yEnd = Math.floor(selectionRect.bottomRight.y / pixelSize) + 1;
 
         const positions: Point[] = [];
         for (let i = xStart; i < xEnd; i++) {

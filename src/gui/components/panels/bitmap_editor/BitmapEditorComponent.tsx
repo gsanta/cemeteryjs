@@ -101,14 +101,14 @@ export class BitmapEditorComponent extends React.Component<any> {
     private renderSelection(): JSX.Element {
         const selectionModel = this.context.controllers.bitmapEditor.selectionModel;
 
-        if (selectionModel.isVisible && selectionModel.startPoint && selectionModel.endPoint) {
+        if (selectionModel.isVisible && selectionModel.topLeftPoint && selectionModel.bottomRightPoint) {
             console.log('selection')
             return (
                 <SelectionComponentStyled 
-                    x={selectionModel.startPoint.x}
-                    y={selectionModel.startPoint.y}
-                    width={selectionModel.endPoint.x - selectionModel.startPoint.x}
-                    height={selectionModel.endPoint.y - selectionModel.startPoint.y}
+                    x={selectionModel.topLeftPoint.x}
+                    y={selectionModel.topLeftPoint.y}
+                    width={selectionModel.bottomRightPoint.x - selectionModel.topLeftPoint.x}
+                    height={selectionModel.bottomRightPoint.y - selectionModel.topLeftPoint.y}
                 />
             );
         } else {

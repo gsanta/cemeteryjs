@@ -5,6 +5,7 @@ import { BitmapEditor } from './BitmapEditor';
 export interface Pixel {
     type: string;
     index: number;
+    isPreview: boolean;
 }
 
 export class PixelController {
@@ -16,15 +17,27 @@ export class PixelController {
         this.bitmapEditor = controllers;
     }
 
-    addPixel(position: Point, type: string) {
+    addPreview(position: Point, type: string) {
         const index = this.getPixelIndex(position);
 
         const pixel: Pixel = {
             type,
-            index
+            index,
+            isPreview: true
         }
         this.bitMap.set(index, pixel);
         this.pixels.push(pixel);
+    }
+
+    commitPreviews() {
+        this.pixels.forEach(pixel => pixel.isPreview = false);
+    }
+    
+    removePreviews() {
+        const previews = this.pixels.filter(pixel => pixel.isPreview);
+    
+        previews.forEach(preview => this.bitMap.delete(preview.index));
+        this.pixels = this.pixels.filter(pixel => !pixel.isPreview);
     }
 
     removePixel(pixelIndex: number) {
