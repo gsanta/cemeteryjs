@@ -5,11 +5,13 @@
   "main": "build/src/index.js",
   "types": "build/src/index.d.ts",
   "scripts": {
-    "test": "jest",
+    "test": "jest --coverage --coverageDirectory=build/coverage/json",
     "build": "./node_modules/.bin/webpack",
     "tsc": "tsc --declaration",
     "doc": "typedoc --out api-doc src --mode file --excludeNotExported",
-    "start": "./node_modules/.bin/webpack-dev-server --config webpack-gui.config"
+    "start": "./node_modules/.bin/webpack-dev-server --config webpack-gui.config",
+    "coverage": "npm t && npm run coverage:report",
+    "coverage:report": "nyc report --report-dir=build/coverage/html --temp-dir=build/coverage/json --reporter=html"
   },
   "publishConfig": {
     "access": "public"
@@ -35,6 +37,7 @@
     "jest": "^24.9.0",
     "mini-css-extract-plugin": "^0.6.0",
     "node-sass": "^4.12.0",
+    "nyc": "^14.1.1",
     "postcss-css-variables": "^0.13.0",
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",

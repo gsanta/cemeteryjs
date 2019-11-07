@@ -48,6 +48,10 @@ export class PixelController {
         }
     }
 
+    clear(): void {
+        this.bitMap = new Map();
+        this.pixels = [];
+    }
 
     getPixelPosition(pixelIndex: number): Point {
         const canvasDimensions = this.bitmapEditor.config.canvasDimensions;
@@ -57,14 +61,20 @@ export class PixelController {
         const x = pixelIndex % xDim;
         const y = Math.floor(pixelIndex / xDim);
         
-        return new Point(x * pixelSize, y * pixelSize);
+        return new Point(x, y);
+    }
+
+    getAbsolutePosition(pixelIndex: number): Point {
+        const pixelPos = this.getPixelPosition(pixelIndex);
+        const pixelSize = this.bitmapEditor.config.pixelSize;
+        return new Point(pixelPos.x * pixelSize, pixelPos.y * pixelSize)
     }
 
     getPixelsInside(rectangle: Rectangle): Pixel[] {
         const pixelSize = this.bitmapEditor.config.pixelSize;
 
         return this.pixels.filter(pixel => {
-            const pixelPosition = this.getPixelPosition(pixel.index);
+            const pixelPosition = this.getAbsolutePosition(pixel.index);
 
             return pixelPosition.x > rectangle.topLeft.x &&
                 pixelPosition.y > rectangle.topLeft.y &&

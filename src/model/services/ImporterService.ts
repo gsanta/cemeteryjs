@@ -17,6 +17,7 @@ import { ServiceFacade } from './ServiceFacade';
 import { ScaleModifier } from '../modifiers/ScaleModifier';
 import { BorderBuilder } from '../builders/BorderBuilder';
 import { SegmentBordersModifier } from '../modifiers/SegmentBordersModifier';
+import { TextWorldMapReader } from '../readers/text/TextWorldMapReader';
 
 export interface WorldConfig {
     borders: string[];
@@ -48,7 +49,7 @@ export class ImporterService<M, S, T> {
             new CombinedWorldItemBuilder(
                 [
                     new FurnitureBuilder(this.services),
-                    new BorderBuilder(this.services, null),
+                    new BorderBuilder(this.services, new TextWorldMapReader(this.services.configService)),
                     new RoomBuilder(this.services),
                     // new PolygonAreaParser('empty', this.services.configService.meshDescriptorMap.get('room').char, this.services),
                     new RootWorldItemBuilder(this.services.worldItemFactoryService, this.services.configService),

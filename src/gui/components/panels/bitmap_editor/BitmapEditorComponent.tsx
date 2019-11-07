@@ -80,7 +80,7 @@ export class BitmapEditorComponent extends React.Component<any> {
         const worldItemTypeModel = context.controllers.worldItemTypeModel;
 
         return Array.from(pixelController.bitMap).map(([index, pixel]) => {
-            const pos = pixelController.getPixelPosition(index);
+            const pos = pixelController.getAbsolutePosition(index);
             const color = worldItemTypeModel.getByTypeName(pixel.type).color;
 
             return (
