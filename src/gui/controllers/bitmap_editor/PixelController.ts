@@ -17,13 +17,17 @@ export class PixelController {
         this.bitmapEditor = controllers;
     }
 
-    addPreview(position: Point, type: string) {
+    addPixel(position: Point, type: string, isPreview: boolean) {
         const index = this.getPixelIndex(position);
 
+        if (this.bitMap.has(index)) {
+            this.removePixel(index);
+        }
+        
         const pixel: Pixel = {
             type,
             index,
-            isPreview: true
+            isPreview
         }
         this.bitMap.set(index, pixel);
         this.pixels.push(pixel);
