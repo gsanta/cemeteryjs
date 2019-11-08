@@ -17,11 +17,11 @@ export class PixelController {
         this.bitmapEditor = controllers;
     }
 
-    addPixel(position: Point, type: string, isPreview: boolean) {
-        const index = this.getPixelIndex(position);
+    addPixel(coordinate: Point, type: string, isPreview: boolean) {
+        const index = this.getIndexAtCoordinate(coordinate);
 
         if (this.bitMap.has(index)) {
-            this.removePixel(index);
+            this.removePixelAtIndex(index);
         }
         
         const pixel: Pixel = {
@@ -44,7 +44,7 @@ export class PixelController {
         this.pixels = this.pixels.filter(pixel => !pixel.isPreview);
     }
 
-    removePixel(pixelIndex: number) {
+    removePixelAtIndex(pixelIndex: number) {
         const pixel = this.bitMap.get(pixelIndex);
         if (pixel) {
             this.bitMap.delete(pixelIndex);
@@ -52,7 +52,7 @@ export class PixelController {
         }
     }
     
-    removePixelAtPosition(position: Point): void {
+    removePixelAtPoint(position: Point): void {
         const x = Math.floor(position.x / this.bitmapEditor.config.pixelSize);
         const y = Math.floor(position.y / this.bitmapEditor.config.pixelSize);
         const xDim = this.bitmapEditor.config.canvasDimensions.x / this.bitmapEditor.config.pixelSize;
@@ -81,17 +81,11 @@ export class PixelController {
         return new Point(x, y);
     }
 
-    getAbsolutePosition(pixelIndex: number): Point {
-        const pixelPos = this.getPixelPosition(pixelIndex);
-        const pixelSize = this.bitmapEditor.config.pixelSize;
-        return new Point(pixelPos.x * pixelSize, pixelPos.y * pixelSize)
-    }
-
     getPixelsInside(rectangle: Rectangle): Pixel[] {
         const pixelSize = this.bitmapEditor.config.pixelSize;
 
         return this.pixels.filter(pixel => {
-            const pixelPosition = this.getAbsolutePosition(pixel.index);
+            const pixelPosition = this.getPixelPosition(pixel.index).mul(pixelSize);
 
             return pixelPosition.x > rectangle.topLeft.x &&
                 pixelPosition.y > rectangle.topLeft.y &&
@@ -100,13 +94,19 @@ export class PixelController {
         });
     }
 
-    private getPixelIndex(position: Point): number {
+    getPixelAtCoordinate(coordinate: Point): Pixel {
+        const index = this.getIndexAtCoordinate(coordinate);
+
+        return this.bitMap.get(index);
+    }
+
+    private getIndexAtCoordinate(coordinate: Point): number {
         const canvasDimensions = this.bitmapEditor.config.canvasDimensions;
         const pixelSize = this.bitmapEditor.config.pixelSize;
         const xPixels = canvasDimensions.x / pixelSize;
 
-        const xIndex = Math.floor(position.x / pixelSize);
-        const yIndex = Math.floor(position.y / pixelSize);
+        const xIndex = Math.floor(coordinate.x / pixelSize);
+        const yIndex = Math.floor(coordinate.y / pixelSize);
 
         return yIndex * xPixels + xIndex;
     }

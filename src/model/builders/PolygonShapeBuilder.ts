@@ -5,8 +5,8 @@ import { WorldItem } from '../../WorldItem';
 import { WorldMapGraph } from "../../WorldMapGraph";
 import { WorldItemBuilder, Format } from "./WorldItemBuilder";
 import { PolygonRedundantPointReducer } from "./PolygonRedundantPointReducer";
-import { TextWorldMapReader } from "../readers/text/TextWorldMapReader";
 import { last, without } from '../utils/Functions';
+import { WorldMapReader } from '../readers/WorldMapReader';
 
 /**
  * @hidden
@@ -16,17 +16,17 @@ import { last, without } from '../utils/Functions';
  */
 export class PolygonShapeBuilder implements WorldItemBuilder {
     private polygonRedundantPointReducer: PolygonRedundantPointReducer;
-    private worldMapConverter: TextWorldMapReader;
+    private worldMapReader: WorldMapReader;
     private itemName: string;
     private services: ServiceFacade<any, any, any>;
     private geometryService: GeometryService;
     // TODO: the graph after running WorldMapConverter should only contain one character, so this info is redundant
 
-    constructor(itemName: string, services: ServiceFacade<any, any, any>, worldMapConverter = new TextWorldMapReader(services.configService)) {
+    constructor(itemName: string, services: ServiceFacade<any, any, any>, worldMapReader: WorldMapReader) {
         this.itemName = itemName;
         this.services = services;
         this.geometryService = services.geometryService;
-        this.worldMapConverter = worldMapConverter;
+        this.worldMapReader = worldMapReader;
         this.polygonRedundantPointReducer = new PolygonRedundantPointReducer();
     }
 
@@ -38,7 +38,7 @@ export class PolygonShapeBuilder implements WorldItemBuilder {
     }
 
     private parseTextFormat(worldMap: string): WorldItem[] {
-        const graph = this.worldMapConverter.read(worldMap);
+        const graph = this.worldMapReader.read(worldMap);
 
         return graph
             .getReducedGraphForTypes([this.itemName])

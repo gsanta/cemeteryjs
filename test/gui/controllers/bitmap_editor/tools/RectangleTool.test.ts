@@ -12,7 +12,6 @@ it ('Draw pixels with mouse click', () => {
     expect(controllers.bitmapEditor.pixelController.pixels.length).toEqual(1);
     let pixel = controllers.bitmapEditor.pixelController.pixels[0];
     expect(controllers.bitmapEditor.pixelController.getPixelPosition(pixel.index)).toEqual(new Point(0, 0));
-    expect(controllers.bitmapEditor.pixelController.getAbsolutePosition(pixel.index)).toEqual(new Point(0, 0));
 
     controllers.bitmapEditor.pixelController.clear();
 
@@ -23,7 +22,6 @@ it ('Draw pixels with mouse click', () => {
     expect(controllers.bitmapEditor.pixelController.pixels.length).toEqual(1);
     pixel = controllers.bitmapEditor.pixelController.pixels[0];
     expect(controllers.bitmapEditor.pixelController.getPixelPosition(pixel.index)).toEqual(new Point(2, 1));
-    expect(controllers.bitmapEditor.pixelController.getAbsolutePosition(pixel.index)).toEqual(new Point(20, 10));
 });
 
 it ('Draw pixels with rectangle selection', () => {

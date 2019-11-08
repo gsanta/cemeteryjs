@@ -28,7 +28,7 @@ export function InputComponent(props: InputProps) {
             onFocus={() => props.onFocus()}
             placeholder={props.placeholder}
             value={props.value && props.value.toString()}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => props.onChange(e.target.value)}
+            onChange={(e: React.ChangeEvent<any>) => props.onChange(e.target.value)}
             onBlur={() => props.onBlur()}
         />
     );

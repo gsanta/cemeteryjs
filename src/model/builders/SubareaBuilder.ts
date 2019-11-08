@@ -5,14 +5,15 @@ import { PolygonShapeBuilder } from './PolygonShapeBuilder';
 import { WorldMapToSubareaMapConverter } from '../readers/text/WorldMapToSubareaMapConverter';
 import { TextWorldMapReader } from '../readers/text/TextWorldMapReader';
 import { without } from '../utils/Functions';
+import { WorldMapReader } from '../readers/WorldMapReader';
 
 export class SubareaBuilder implements WorldItemBuilder {
     private services: ServiceFacade<any, any, any>;
-    private worldMapConverter: TextWorldMapReader;
+    private worldMapReader: WorldMapReader;
 
-    constructor(services: ServiceFacade<any, any, any>, worldMapConverter = new TextWorldMapReader(services.configService)) {
+    constructor(services: ServiceFacade<any, any, any>, worldMapReader: WorldMapReader) {
         this.services = services;
-        this.worldMapConverter = worldMapConverter;
+        this.worldMapReader = worldMapReader;
     }
 
 
@@ -28,14 +29,14 @@ export class SubareaBuilder implements WorldItemBuilder {
         const subareaType = this.services.configService.meshDescriptorMap.get('_subarea').typeName;
         const worldMapToSubareaMapConverter = new WorldMapToSubareaMapConverter(this.services.configService);
 
-        let graph = this.worldMapConverter.read(worldMapToSubareaMapConverter.convert(worldMap));
+        let graph = this.worldMapReader.read(worldMapToSubareaMapConverter.convert(worldMap));
         const types = without(graph.getTypes(), this.services.configService.meshDescriptorMap.get('room').typeName);
 
         const connectedCompGraphs = graph.getReducedGraphForTypes(types)
             .getConnectedComponentGraphs()
             .filter(graph => graph.getTypes().includes(subareaType));
 
-        const polygonAreaParser = new PolygonShapeBuilder('_subarea', this.services);
+        const polygonAreaParser = new PolygonShapeBuilder('_subarea', this.services, this.worldMapReader);
 
         return connectedCompGraphs.map(g => polygonAreaParser.parse2(g));
     }

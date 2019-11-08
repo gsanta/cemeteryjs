@@ -6,7 +6,7 @@ import { ServiceFacade } from '../../src/model/services/ServiceFacade';
 
 declare global {
     namespace jest {
-        interface Matchers<R> {
+        interface Matchers<R, T> {
             toHaveBorders(borders: Partial<WorldItem>[]),
             toHaveAnyWithDimensions(dimensions: Shape),
             toHaveDimensions(dimensions: Shape),

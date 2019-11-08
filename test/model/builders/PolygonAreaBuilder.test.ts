@@ -2,6 +2,7 @@ import { Point, Polygon } from '@nightshifts.inc/geometry';
 import { PolygonShapeBuilder } from "../../../src/model/builders/PolygonShapeBuilder";
 import { setup } from "../testUtils";
 import { Format } from '../../../src/model/builders/WorldItemBuilder';
+import { TextWorldMapReader } from '../../../src/model/readers/text/TextWorldMapReader';
 
 it ('Create items for a given type which is represented on the world map by a polygon shape.', () => {
     const map = `
@@ -23,7 +24,7 @@ it ('Create items for a given type which is represented on the world map by a po
     `;
 
     const services = setup(map);
-    const polygonAreaInfoParser = new PolygonShapeBuilder('empty', services);
+    const polygonAreaInfoParser = new PolygonShapeBuilder('empty', services, new TextWorldMapReader(services.configService));
 
     const worldItems = polygonAreaInfoParser.parse(map, Format.TEXT);
 
@@ -51,7 +52,7 @@ it ('Create a more complicated polygon shape TEST 1', () => {
     `;
 
     const services = setup(map);
-    const polygonAreaInfoParser = new PolygonShapeBuilder('empty', services);
+    const polygonAreaInfoParser = new PolygonShapeBuilder('empty', services, new TextWorldMapReader(services.configService));
 
     const worldItem = polygonAreaInfoParser.parse(map, Format.TEXT);
 
@@ -88,7 +89,7 @@ it ('Create a more complicated polygon shape TEST 2', () => {
     `;
 
     const services = setup(map);
-    const polygonAreaInfoParser = new PolygonShapeBuilder('empty', services);
+    const polygonAreaInfoParser = new PolygonShapeBuilder('empty', services, new TextWorldMapReader(services.configService));
 
     const worldItem = polygonAreaInfoParser.parse(map, Format.TEXT);
 

@@ -2,6 +2,7 @@ import { Point, Polygon } from '@nightshifts.inc/geometry';
 import { SubareaBuilder } from '../../../src/model/builders/SubareaBuilder';
 import { setup } from '../testUtils';
 import { Format } from '../../../src/model/builders/WorldItemBuilder';
+import { TextWorldMapReader } from '../../../src/model/readers/text/TextWorldMapReader';
 
 describe('SubareaParser', () => {
     it ('creates WorldItems for each subarea', () => {
@@ -32,7 +33,7 @@ describe('SubareaParser', () => {
         `;
 
         const services = setup(worldMap);
-        const subareaParser = new SubareaBuilder(services);
+        const subareaParser = new SubareaBuilder(services, new TextWorldMapReader(services.configService));
 
         const worldItems = subareaParser.parse(worldMap, Format.TEXT);
 

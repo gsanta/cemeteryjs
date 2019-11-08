@@ -5,15 +5,16 @@ import { WorldItemBuilder, Format } from './WorldItemBuilder';
 import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 import { Polygon } from "@nightshifts.inc/geometry";
 import { ConfigService } from '../services/ConfigService';
+import { WorldMapReader } from '../readers/WorldMapReader';
 
 
 export class RootWorldItemBuilder implements WorldItemBuilder {
-    private worldMapConverter: TextWorldMapReader;
+    private worldMapReader: WorldMapReader;
     private worldItemInfoFactory: WorldItemFactoryService;
 
-    constructor(worldItemInfoFactory: WorldItemFactoryService, configService: ConfigService, worldMapConverter = new TextWorldMapReader(configService)) {
+    constructor(worldItemInfoFactory: WorldItemFactoryService, worldMapReader: WorldMapReader) {
         this.worldItemInfoFactory = worldItemInfoFactory;
-        this.worldMapConverter = worldMapConverter;
+        this.worldMapReader = worldMapReader;
     }
 
     parse(worldMap: string, format: Format): WorldItem[] {
@@ -27,12 +28,12 @@ export class RootWorldItemBuilder implements WorldItemBuilder {
     }
 
     public generateFromStringMap(strMap: string): WorldItem[] {
-        const matrixGraph = this.worldMapConverter.read(strMap);
+        const matrixGraph = this.worldMapReader.read(strMap);
         return [this.createRootWorldItem(matrixGraph)];
     }
 
     private parseWorldMap(strMap: string): WorldMapGraph {
-        return this.worldMapConverter.read(strMap);
+        return this.worldMapReader.read(strMap);
     }
 
     public createRootWorldItem(graph: WorldMapGraph): WorldItem {

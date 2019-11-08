@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import { RoomBuilder } from '../../../src/model/builders/RoomBuilder';
 import { setup } from '../testUtils';
 import { Format } from '../../../src/model/builders/WorldItemBuilder';
+import { TextWorldMapReader } from '../../../src/model/readers/text/TextWorldMapReader';
 
 describe('RoomParser', () => {
     describe ('generate', () => {
@@ -10,7 +11,7 @@ describe('RoomParser', () => {
             const worldMap = fs.readFileSync(__dirname + '/../../../assets/test/big_world.gwm', 'utf8');
 
             const services = setup(worldMap);
-            const roomInfoParser = new RoomBuilder(services);
+            const roomInfoParser = new RoomBuilder(services, new TextWorldMapReader(services.configService));
 
             const worldItem = roomInfoParser.parse(worldMap, Format.TEXT);
 
@@ -48,7 +49,7 @@ it ('Parse room with empty area around the whole world map', () => {
 
 
     const services = setup(worldMap);
-    const roomInfoParser = new RoomBuilder(services);
+    const roomInfoParser = new RoomBuilder(services, new TextWorldMapReader(services.configService));
 
     const rooms = roomInfoParser.parse(worldMap, Format.TEXT);
     expect(rooms.length).toEqual(2);

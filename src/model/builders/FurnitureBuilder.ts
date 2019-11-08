@@ -5,14 +5,15 @@ import { TextWorldMapReader } from '../readers/text/TextWorldMapReader';
 import { Polygon } from '@nightshifts.inc/geometry';
 import { flat, minBy, maxBy, without, last } from '../utils/Functions';
 import { ServiceFacade } from '../services/ServiceFacade';
+import { WorldMapReader } from '../readers/WorldMapReader';
 
 export class FurnitureBuilder implements WorldItemBuilder {
-    private worldMapConverter: TextWorldMapReader;
+    private worldMapReader: WorldMapReader
     private services: ServiceFacade<any, any, any>;
 
-    constructor(services: ServiceFacade<any, any, any>, worldMapConverter = new TextWorldMapReader(services.configService)) {
+    constructor(services: ServiceFacade<any, any, any>, worldMapReader: WorldMapReader) {
         this.services = services;
-        this.worldMapConverter = worldMapConverter;
+        this.worldMapReader = worldMapReader;
     }
 
     parse(worldMap: string, format: Format): WorldItem[] {
@@ -22,7 +23,7 @@ export class FurnitureBuilder implements WorldItemBuilder {
     }
 
     private parseTextFormat(worldMap: string): WorldItem[] {
-        const graph = this.worldMapConverter.read(worldMap);
+        const graph = this.worldMapReader.read(worldMap);
         const types = this.services.configService.furnitures
             .filter(furniture => graph.hasType(furniture.typeName))
             .map(furniture => furniture.typeName);
