@@ -1,5 +1,6 @@
 import { WorldMapLineListener, TextWorldMapParser } from './TextWorldMapParser';
 import { ConfigService } from '../../services/ConfigService';
+import { InputConverter } from '../InputConverter';
 
 /*
  * Takes a world map (gwm string) and converts the characters inside the map to contain only
@@ -19,7 +20,7 @@ import { ConfigService } from '../../services/ConfigService';
  * -###-
  * -----
  */
-export class WorldMapToRoomMapConverter extends WorldMapLineListener {
+export class WorldMapToRoomMapConverter extends WorldMapLineListener implements InputConverter {
     private worldMapReader: TextWorldMapParser;
 
     private lines: string[] = [];

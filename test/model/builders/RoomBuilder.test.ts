@@ -4,6 +4,7 @@ import { RoomBuilder } from '../../../src/model/builders/RoomBuilder';
 import { setup } from '../testUtils';
 import { Format } from '../../../src/model/builders/WorldItemBuilder';
 import { TextWorldMapReader } from '../../../src/model/readers/text/TextWorldMapReader';
+import { WorldMapToRoomMapConverter } from '../../../src/model/readers/text/WorldMapToRoomMapConverter';
 
 describe('RoomParser', () => {
     describe ('generate', () => {
@@ -11,9 +12,9 @@ describe('RoomParser', () => {
             const worldMap = fs.readFileSync(__dirname + '/../../../assets/test/big_world.gwm', 'utf8');
 
             const services = setup(worldMap);
-            const roomInfoParser = new RoomBuilder(services, new TextWorldMapReader(services.configService));
+            const roomInfoParser = new RoomBuilder(services, new TextWorldMapReader(services.configService), new WorldMapToRoomMapConverter(services.configService));
 
-            const worldItem = roomInfoParser.parse(worldMap, Format.TEXT);
+            const worldItem = roomInfoParser.parse(worldMap);
 
             expect(worldItem[0].dimensions.equalTo(new Polygon([
                 new Point(1, 1),
@@ -51,7 +52,7 @@ it ('Parse room with empty area around the whole world map', () => {
     const services = setup(worldMap);
     const roomInfoParser = new RoomBuilder(services, new TextWorldMapReader(services.configService));
 
-    const rooms = roomInfoParser.parse(worldMap, Format.TEXT);
+    const rooms = roomInfoParser.parse(worldMap);
     expect(rooms.length).toEqual(2);
     expect(rooms).toContainWorldItem({name: 'room', dimensions: services.geometryService.factory.rectangle(2, 2, 6, 2)});
     expect(rooms).toContainWorldItem({name: 'empty', dimensions: services.geometryService.factory.rectangle(2, 2, 6, 2)});

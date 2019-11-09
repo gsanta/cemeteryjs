@@ -13,8 +13,8 @@ export class CombinedWorldItemBuilder implements WorldItemBuilder {
         this.parsers = parsers;
     }
 
-    public parse(worldMap: string, format: Format): WorldItem[] {
-        const results = this.parsers.map(parser => parser.parse(worldMap, format));
+    public parse(worldMap: string): WorldItem[] {
+        const results = this.parsers.map(parser => parser.parse(worldMap));
 
         return flat<WorldItem>(results, 2);
     }

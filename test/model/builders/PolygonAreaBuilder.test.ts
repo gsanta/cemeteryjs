@@ -26,7 +26,7 @@ it ('Create items for a given type which is represented on the world map by a po
     const services = setup(map);
     const polygonAreaInfoParser = new PolygonShapeBuilder('empty', services, new TextWorldMapReader(services.configService));
 
-    const worldItems = polygonAreaInfoParser.parse(map, Format.TEXT);
+    const worldItems = polygonAreaInfoParser.parse(map);
 
     expect(worldItems.length).toEqual(2);
     expect(worldItems).toHaveAnyWithDimensions(services.geometryService.factory.rectangle(1, 1, 3, 4));
@@ -54,7 +54,7 @@ it ('Create a more complicated polygon shape TEST 1', () => {
     const services = setup(map);
     const polygonAreaInfoParser = new PolygonShapeBuilder('empty', services, new TextWorldMapReader(services.configService));
 
-    const worldItem = polygonAreaInfoParser.parse(map, Format.TEXT);
+    const worldItem = polygonAreaInfoParser.parse(map);
 
     expect(worldItem.length).toEqual(1);
     expect(worldItem[0].dimensions.equalTo(new Polygon([
@@ -91,7 +91,7 @@ it ('Create a more complicated polygon shape TEST 2', () => {
     const services = setup(map);
     const polygonAreaInfoParser = new PolygonShapeBuilder('empty', services, new TextWorldMapReader(services.configService));
 
-    const worldItem = polygonAreaInfoParser.parse(map, Format.TEXT);
+    const worldItem = polygonAreaInfoParser.parse(map);
 
     expect(worldItem.length).toEqual(1);
     expect(worldItem[0].dimensions.equalTo(new Polygon([

@@ -16,14 +16,8 @@ export class RootWorldItemBuilder implements WorldItemBuilder {
         this.worldItemInfoFactory = worldItemInfoFactory;
         this.worldMapReader = worldMapReader;
     }
-
-    parse(worldMap: string, format: Format): WorldItem[] {
-        if (format === Format.TEXT) {
-            return this.parseTextFormat(worldMap);
-        }
-    }
-
-    private parseTextFormat(worldMap: string): WorldItem[] {
+    
+    parse(worldMap: string): WorldItem[] {
         return [this.createRootWorldItem(this.parseWorldMap(worldMap))];
     }
 

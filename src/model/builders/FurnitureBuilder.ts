@@ -16,13 +16,7 @@ export class FurnitureBuilder implements WorldItemBuilder {
         this.worldMapReader = worldMapReader;
     }
 
-    parse(worldMap: string, format: Format): WorldItem[] {
-        if (format === Format.TEXT) {
-            return this.parseTextFormat(worldMap);
-        }
-    }
-
-    private parseTextFormat(worldMap: string): WorldItem[] {
+    parse(worldMap: string): WorldItem[] {
         const graph = this.worldMapReader.read(worldMap);
         const types = this.services.configService.furnitures
             .filter(furniture => graph.hasType(furniture.typeName))

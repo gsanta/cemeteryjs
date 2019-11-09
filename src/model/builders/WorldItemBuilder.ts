@@ -6,5 +6,5 @@ export enum Format {
 }
 
 export interface WorldItemBuilder {
-    parse(worldMap: string, format: Format): WorldItem[];
+    parse(worldMap: string): WorldItem[];
 }

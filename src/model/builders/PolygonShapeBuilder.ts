@@ -30,14 +30,7 @@ export class PolygonShapeBuilder implements WorldItemBuilder {
         this.polygonRedundantPointReducer = new PolygonRedundantPointReducer();
     }
 
-
-    parse(worldMap: string, format: Format): WorldItem[] {
-        if (format === Format.TEXT) {
-            return this.parseTextFormat(worldMap);
-        }
-    }
-
-    private parseTextFormat(worldMap: string): WorldItem[] {
+    parse(worldMap: string): WorldItem[] {
         const graph = this.worldMapReader.read(worldMap);
 
         return graph

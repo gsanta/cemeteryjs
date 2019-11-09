@@ -1,8 +1,8 @@
 import { Point, Polygon } from '@nightshifts.inc/geometry';
 import { SubareaBuilder } from '../../../src/model/builders/SubareaBuilder';
 import { setup } from '../testUtils';
-import { Format } from '../../../src/model/builders/WorldItemBuilder';
 import { TextWorldMapReader } from '../../../src/model/readers/text/TextWorldMapReader';
+import { WorldMapToSubareaMapConverter } from '../../../src/model/readers/text/WorldMapToSubareaMapConverter';
 
 describe('SubareaParser', () => {
     it ('creates WorldItems for each subarea', () => {
@@ -33,9 +33,9 @@ describe('SubareaParser', () => {
         `;
 
         const services = setup(worldMap);
-        const subareaParser = new SubareaBuilder(services, new TextWorldMapReader(services.configService));
+        const subareaParser = new SubareaBuilder(services, new TextWorldMapReader(services.configService), new WorldMapToSubareaMapConverter(services.configService));
 
-        const worldItems = subareaParser.parse(worldMap, Format.TEXT);
+        const worldItems = subareaParser.parse(worldMap);
 
         expect(worldItems).toContainWorldItem({
             id: '_subarea-1',

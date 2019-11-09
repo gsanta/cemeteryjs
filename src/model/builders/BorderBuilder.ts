@@ -1,12 +1,11 @@
-import { Polygon, Point, Segment } from '@nightshifts.inc/geometry';
+import { Segment } from '@nightshifts.inc/geometry';
 import { WorldItem } from '../../WorldItem';
-import { ServiceFacade } from '../services/ServiceFacade';
-import { last, without } from '../utils/Functions';
 import { WorldMapGraph } from '../../WorldMapGraph';
-import { WorldItemBuilder, Format } from './WorldItemBuilder';
-import { TextWorldMapReader } from '../readers/text/TextWorldMapReader';
 import { SvgWorldMapReader } from '../readers/svg/SvgWorldMapReader';
 import { WorldMapReader } from '../readers/WorldMapReader';
+import { ServiceFacade } from '../services/ServiceFacade';
+import { last, without } from '../utils/Functions';
+import { Format, WorldItemBuilder } from './WorldItemBuilder';
 
 interface Border {
     vertices: number[];
@@ -25,21 +24,7 @@ export class BorderBuilder implements WorldItemBuilder {
         this.worldMapReader = worldMapReader;
     }
 
-    parse(worldMap: string, format: Format): WorldItem[] {
-        if (format === Format.TEXT) {
-            return this.parseTextFormat(worldMap);
-        }
-    }
-
-    private parseSvgFormat(svg: string): WorldItem[] {
-        const svgReader = new SvgWorldMapReader();
-        
-        const graph = svgReader.read(svg);
-
-        return [];
-    }
-
-    private parseTextFormat(worldMap: string): WorldItem[] {
+    parse(worldMap: string): WorldItem[] {
         this.positionToComponentMap = new Map();
         const graph = this.worldMapReader.read(worldMap);
         const borderTypes = this.services.configService.borders.map(border => border.typeName);

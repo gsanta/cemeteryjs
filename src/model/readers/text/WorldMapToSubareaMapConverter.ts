@@ -1,8 +1,9 @@
 import { WorldMapLineListener, TextWorldMapParser } from './TextWorldMapParser';
 import { ServiceFacade } from '../../services/ServiceFacade';
 import { ConfigService } from '../../services/ConfigService';
+import { InputConverter } from '../InputConverter';
 
-export class WorldMapToSubareaMapConverter extends WorldMapLineListener {
+export class WorldMapToSubareaMapConverter extends WorldMapLineListener implements InputConverter {
     private worldMapReader: TextWorldMapParser;
 
     private lines: string[] = [];
