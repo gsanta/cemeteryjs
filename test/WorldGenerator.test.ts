@@ -3,6 +3,7 @@ import { ScaleModifier } from '../src/model/modifiers/ScaleModifier';
 import { SegmentBordersModifier } from '../src/model/modifiers/SegmentBordersModifier';
 import { ServiceFacade } from '../src/model/services/ServiceFacade';
 import { setup } from './model/testUtils';
+import { FileFormat } from '../src/WorldGenerator';
 
 function createMap(worldMap: string) {
     return `
@@ -38,7 +39,7 @@ describe('`WorldParser`', () => {
             WWWWWWWW
             `
         );
-        let services: ServiceFacade<any, any, any> = setup(map);
+        let services: ServiceFacade<any, any, any> = setup(map, FileFormat.TEXT);
 
         const [root] = services.importerService.import(
             map,

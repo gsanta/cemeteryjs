@@ -1,10 +1,10 @@
-import { ServiceFacade } from '../services/ServiceFacade';
 import { WorldItem } from '../../WorldItem';
-import { WorldItemBuilder, Format } from "./WorldItemBuilder";
-import { PolygonShapeBuilder } from './PolygonShapeBuilder';
-import { without } from '../utils/Functions';
-import { WorldMapReader } from '../readers/WorldMapReader';
 import { InputConverter, NullConverter } from '../readers/InputConverter';
+import { WorldMapReader } from '../readers/WorldMapReader';
+import { ServiceFacade } from '../services/ServiceFacade';
+import { without } from '../utils/Functions';
+import { PolygonShapeBuilder } from './PolygonShapeBuilder';
+import { WorldItemBuilder } from "./WorldItemBuilder";
 
 export class SubareaBuilder implements WorldItemBuilder {
     private services: ServiceFacade<any, any, any>;

@@ -1,27 +1,25 @@
 import { Shape } from '@nightshifts.inc/geometry';
 import { Scene } from 'babylonjs';
 import { MockMeshTemplateService } from '../../src/integrations/mock/MockWorldGenerator';
-import { ConfigService } from '../../src/model/services/ConfigService';
 import { ServiceFacade } from '../../src/model/services/ServiceFacade';
 import { TreeIteratorGenerator } from '../../src/model/utils/TreeIteratorGenerator';
+import { FileFormat } from '../../src/WorldGenerator';
 import { WorldItem } from '../../src/WorldItem';
 import { TestMeshFactoryService } from '../setup/TestMeshFactoryService';
-import { GlobalsSectionParser } from '../../src/model/readers/text/GlobalSectionParser';
 
-export function setup(worldMap: string): ServiceFacade<any, any, any> {
+export function setup(worldMap: string, fileFormat: FileFormat): ServiceFacade<any, any, any> {
 
     const meshFactoryService = new TestMeshFactoryService();
-
-    const configService = new ConfigService().update(worldMap);
-    configService.globalConfig = new GlobalsSectionParser().parse(worldMap);
-
-    const mockMeshTemplateService = new MockMeshTemplateService(configService.meshDescriptorMap);
-
-    return new ServiceFacade<any, any, any>(
+    
+    const serviceFacade = new ServiceFacade<any, any, any>(
         meshFactoryService,
-        mockMeshTemplateService,
-        configService
+        null,
+        fileFormat
     );
+    serviceFacade.configService.update(worldMap);
+    serviceFacade.meshTemplateService = new MockMeshTemplateService(serviceFacade.configService.meshDescriptorMap); 
+
+    return serviceFacade;
 }
 
 export function setupMap(map: string): string {

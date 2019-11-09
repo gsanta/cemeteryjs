@@ -1,11 +1,10 @@
-import { WorldMapGraph } from '../../WorldMapGraph';
-import { WorldItem } from '../../WorldItem';
-import { WorldItemBuilder, Format } from './WorldItemBuilder';
-import { TextWorldMapReader } from '../readers/text/TextWorldMapReader';
 import { Polygon } from '@nightshifts.inc/geometry';
-import { flat, minBy, maxBy, without, last } from '../utils/Functions';
-import { ServiceFacade } from '../services/ServiceFacade';
+import { WorldItem } from '../../WorldItem';
+import { WorldMapGraph } from '../../WorldMapGraph';
 import { WorldMapReader } from '../readers/WorldMapReader';
+import { ServiceFacade } from '../services/ServiceFacade';
+import { flat, last, maxBy, minBy, without } from '../utils/Functions';
+import { WorldItemBuilder } from './WorldItemBuilder';
 
 export class FurnitureBuilder implements WorldItemBuilder {
     private worldMapReader: WorldMapReader

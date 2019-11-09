@@ -1,4 +1,4 @@
-import { WorldGenerator, Converter } from '../../WorldGenerator';
+import { WorldGenerator, Converter, FileFormat } from '../../WorldGenerator';
 import { WorldItemType } from '../../WorldItemType';
 import { MeshFactoryService } from '../../model/services/MeshFactoryService';
 import { WorldItem } from '../../WorldItem';
@@ -50,8 +50,8 @@ export class MockMeshTemplateService implements MeshTemplateService<any, any> {
 
 
 export class MockWorldGenerator<T> implements WorldGenerator<T> {
-    generate(worldMap: string, converter: Converter<T>) {
-        const serviceFacade = setup(worldMap);
+    generate(worldMap: string, fileFormat: FileFormat, converter: Converter<T>) {
+        const serviceFacade = setup(worldMap, FileFormat.TEXT);
 
         const worldItems = serviceFacade.importerService.import(worldMap);
 

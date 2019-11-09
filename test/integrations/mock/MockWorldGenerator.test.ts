@@ -1,5 +1,6 @@
 import { MockWorldGenerator } from '../../../src/integrations/mock/MockWorldGenerator';
 import { WorldItem } from '../../../src/WorldItem';
+import { FileFormat } from '../../../src/WorldGenerator';
 
 
 describe('MockWorldGenerator', () => {
@@ -29,7 +30,7 @@ describe('MockWorldGenerator', () => {
 
         const worldItems: WorldItem[] = [];
 
-        mockWorldGenerator.generate(worldMap, {
+        mockWorldGenerator.generate(worldMap, FileFormat.TEXT, {
             convert(worldItem: WorldItem): any {
                 worldItems.push(worldItem);
             },

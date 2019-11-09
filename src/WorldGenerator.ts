@@ -1,6 +1,8 @@
-import { WorldItemType } from './WorldItemType';
 import { WorldItem } from "./WorldItem";
 
+export enum FileFormat {
+    TEXT, SVG
+}
 
 export interface Converter<T> {
     convert(worldItem: WorldItem): T;
@@ -10,5 +12,5 @@ export interface Converter<T> {
 }
 
 export interface WorldGenerator<T> {
-    generate(worldMap: string, converter: Converter<T>);
+    generate(worldMap: string, fileFormat: FileFormat, converter: Converter<T>);
 }

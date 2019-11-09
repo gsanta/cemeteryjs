@@ -1,5 +1,6 @@
 import { WorldMapToSubareaMapConverter as WorldMapToSubareaMapConverter } from '../../../../src/model/readers/text/WorldMapToSubareaMapConverter';
 import { ConfigService } from '../../../../src/model/services/ConfigService';
+import { TextConfigReader } from '../../../../src/model/readers/text/TextConfigReader';
 
 describe('WorldMapToSubareaMapConverter', () => {
     it ('replaces the border characters with empty characters', () => {
@@ -49,7 +50,7 @@ describe('WorldMapToSubareaMapConverter', () => {
             \`
         `;
 
-        const configService = new ConfigService().update(
+        const configService = new ConfigService(new TextConfigReader()).update(
             `
                 definitions \`
 
@@ -119,7 +120,7 @@ describe('WorldMapToSubareaMapConverter', () => {
             \`
         `;
 
-        const configService = new ConfigService().update(
+        const configService = new ConfigService(new TextConfigReader()).update(
             `
                 definitions \`
 

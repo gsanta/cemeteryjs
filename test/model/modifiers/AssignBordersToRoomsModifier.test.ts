@@ -1,6 +1,7 @@
 import { AssignBordersToRoomsModifier } from '../../../src/model/modifiers/AssignBordersToRoomsModifier';
 import { SegmentBordersModifier } from '../../../src/model/modifiers/SegmentBordersModifier';
 import { setup } from '../testUtils';
+import { FileFormat } from '../../../src/WorldGenerator';
 
 it ('Add the correct borders to a single room', () => {
     const map = `
@@ -22,7 +23,7 @@ it ('Add the correct borders to a single room', () => {
         \`
     `;
 
-    const services = setup(map);
+    const services = setup(map, FileFormat.TEXT);
 
     let items = services.importerService.import(map, []);
 
@@ -58,7 +59,7 @@ it ('Add the correct borders to rooms with multiple roomw', () => {
         \`
     `;
 
-    const services = setup(map);
+    const services = setup(map, FileFormat.TEXT);
     const geometryService = services.geometryService;
 
     let items = services.importerService.import(map, [SegmentBordersModifier.modName]);

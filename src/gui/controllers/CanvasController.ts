@@ -2,6 +2,7 @@ import { ControllerFacade } from "./ControllerFacade";
 import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, Color3 } from "babylonjs";
 import { BabylonWorldGenerator } from "../../integrations/babylonjs/BabylonWorldGenerator";
 import { WorldItem } from "../../WorldItem";
+import { FileFormat } from '../../WorldGenerator';
 (<any> window).earcut = require('earcut');
 
 export class CanvasController {
@@ -41,7 +42,7 @@ export class CanvasController {
 
         const engine = this.engine;
 
-        new BabylonWorldGenerator(scene).generate(worldMap, {
+        new BabylonWorldGenerator(scene).generate(worldMap, FileFormat.TEXT, {
             convert(worldItem: WorldItem): any {
                 if (worldItem.name === 'wall' && worldItem.children.length > 0) {
                     worldItem.meshTemplate.meshes[0].isVisible = false;

@@ -5,6 +5,7 @@ import { RoomFurnitureResizer } from "../../../../src/model/modifiers/real_furni
 import { ScaleModifier } from "../../../../src/model/modifiers/ScaleModifier";
 import { SegmentBordersModifier } from "../../../../src/model/modifiers/SegmentBordersModifier";
 import { setup } from "../../testUtils";
+import { FileFormat } from '../../../../src/WorldGenerator';
 
 it ('Resize each funrinture in the room', () => {
 
@@ -31,7 +32,7 @@ it ('Resize each funrinture in the room', () => {
     \`
     `;
 
-    const services = setup(map);
+    const services = setup(map, FileFormat.TEXT);
 
     const [root] = services.importerService.import(map, [
         SegmentBordersModifier.modName,
@@ -84,7 +85,7 @@ it ('Snap furnitures which are beside walls', () => {
         \`
     `;
 
-    const services = setup(map);
+    const services = setup(map, FileFormat.TEXT);
 
     const [root] = services.importerService.import(map, [
         SegmentBordersModifier.modName,

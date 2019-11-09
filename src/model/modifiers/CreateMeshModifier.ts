@@ -5,20 +5,17 @@ import { TreeIteratorGenerator } from "../utils/TreeIteratorGenerator";
 import { WorldItem } from "../../WorldItem";
 import { ChangeFurnitureSizeModifier } from './ChangeFurnitureSizeModifier';
 import { Modifier } from './Modifier';
+import { ServiceFacade } from '../services/ServiceFacade';
 
 export class CreateMeshModifier<M, S> implements Modifier {
     static modName = 'createMesh';
     dependencies = [ChangeFurnitureSizeModifier.modeName];
 
     private isReady = true;
-    private meshFactoryService: MeshFactoryService<M, S>;
-    private meshTemplateService: MeshTemplateService<M, S>;
-    private configService: ConfigService;
+    private services: ServiceFacade<any, any, any>;
 
-    constructor(meshFactoryService: MeshFactoryService<M, S>, meshLoaderService: MeshTemplateService<M, S>, configService: ConfigService) {
-        this.meshFactoryService = meshFactoryService;
-        this.meshTemplateService = meshLoaderService;
-        this.configService = configService;
+    constructor(services: ServiceFacade<any, any, any>) {
+        this.services = services;
     }
 
     getName(): string {
@@ -51,7 +48,9 @@ export class CreateMeshModifier<M, S> implements Modifier {
 
     private createMesh(worldItemInfo: WorldItem): M[] {
         if (worldItemInfo.name !== 'root') {
-            return this.meshFactoryService.getInstance(worldItemInfo, this.configService.meshDescriptorMap.get(worldItemInfo.name), this.meshTemplateService.getTemplate(worldItemInfo.name));
+            const configService = this.services.configService;
+            const meshTemplateService = this.services.meshTemplateService;
+            return this.services.meshFactoryService.getInstance(worldItemInfo, configService.meshDescriptorMap.get(worldItemInfo.name), meshTemplateService.getTemplate(worldItemInfo.name));
         }
 
         return [];

@@ -1,6 +1,7 @@
 import { SegmentBordersModifier } from "../../../src/model/modifiers/SegmentBordersModifier";
 import { ServiceFacade } from "../../../src/model/services/ServiceFacade";
 import { setup } from "../testUtils";
+import { FileFormat } from "../../../src/WorldGenerator";
 
 
 function createMap(worldMap: string) {
@@ -34,7 +35,7 @@ describe('ThickenBordersModifier', () => {
             `
         )
 
-        let services: ServiceFacade<any, any, any> = setup(map);
+        let services: ServiceFacade<any, any, any> = setup(map, FileFormat.TEXT);
 
         const items = services.importerService.import(
             map,

@@ -1,11 +1,10 @@
 import { Segment } from '@nightshifts.inc/geometry';
 import { WorldItem } from '../../WorldItem';
 import { WorldMapGraph } from '../../WorldMapGraph';
-import { SvgWorldMapReader } from '../readers/svg/SvgWorldMapReader';
 import { WorldMapReader } from '../readers/WorldMapReader';
 import { ServiceFacade } from '../services/ServiceFacade';
 import { last, without } from '../utils/Functions';
-import { Format, WorldItemBuilder } from './WorldItemBuilder';
+import { WorldItemBuilder } from './WorldItemBuilder';
 
 interface Border {
     vertices: number[];

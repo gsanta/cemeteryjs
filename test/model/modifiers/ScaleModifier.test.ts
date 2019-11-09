@@ -1,5 +1,6 @@
 import { ScaleModifier } from '../../../src/model/modifiers/ScaleModifier';
 import { setup } from '../testUtils';
+import { FileFormat } from '../../../src/WorldGenerator';
 
 it ('Scale the items', () => {
     const map = `
@@ -32,7 +33,7 @@ it ('Scale the items', () => {
 
     \`
 `
-    const services = setup(map);
+    const services = setup(map, FileFormat.TEXT);
     const geometryService = services.geometryService;
 
     let worldItems = services.importerService.import(map, []);

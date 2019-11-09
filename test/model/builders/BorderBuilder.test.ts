@@ -1,7 +1,7 @@
 import { BorderBuilder } from '../../../src/model/builders/BorderBuilder';
-import { setup } from '../testUtils';
-import { Format } from '../../../src/model/builders/WorldItemBuilder';
 import { TextWorldMapReader } from '../../../src/model/readers/text/TextWorldMapReader';
+import { setup } from '../testUtils';
+import { FileFormat } from '../../../src/WorldGenerator';
 
 
 it ('Create separate items for every vertical/horizontal slices of walls', () => {
@@ -23,7 +23,7 @@ it ('Create separate items for every vertical/horizontal slices of walls', () =>
         \`
     `;
 
-    const services = setup(worldMap);
+    const services = setup(worldMap, FileFormat.TEXT);
     const geometryService = services.geometryService;
     const roomSeparatorParser = new BorderBuilder(services, new TextWorldMapReader(services.configService));
 
@@ -57,7 +57,7 @@ it ('Create separate items for different types (represented by different charact
         \`
     `;
 
-    const services = setup(worldMap);
+    const services = setup(worldMap, FileFormat.TEXT);
     const geometryService = services.geometryService;
     const roomSeparatorParser = new BorderBuilder(services, new TextWorldMapReader(services.configService));
 
@@ -95,7 +95,7 @@ it ('Create separate items for every vertical/horizontal slices of walls', () =>
         \`
     `;
 
-    const services = setup(worldMap);
+    const services = setup(worldMap, FileFormat.TEXT);
     const geometryService = services.geometryService;
     const roomSeparatorParser = new BorderBuilder(services, new TextWorldMapReader(services.configService));
 

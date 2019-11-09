@@ -1,6 +1,7 @@
 import { WorldItemType } from "../../WorldItemType";
-import { DefinitionSectionParser } from "../readers/text/DefinitionSectionParser";
+import { TextConfigReader } from "../readers/text/TextConfigReader";
 import { GlobalConfig } from '../readers/text/GlobalSectionParser';
+import { ConfigReader } from '../readers/ConfigReader';
 
 const DEFAULT_BORDERS = [
     'wall',
@@ -24,8 +25,16 @@ export class ConfigService {
     meshDescriptorMap: Map<string, WorldItemType>;
     meshDescriptorMapByChar: Map<string, WorldItemType>;
 
+    private configReader: ConfigReader;
+
+    constructor(configReader: ConfigReader) {
+        this.configReader = configReader;
+    }
+
     update(worldMap: string): ConfigService {
-        this.meshDescriptors = new DefinitionSectionParser().parse(worldMap);
+        const {worldItemTypes, globalConfig} = this.configReader.read(worldMap);
+        this.meshDescriptors = worldItemTypes
+        this.globalConfig = globalConfig;
         this.meshDescriptorMap = new Map();
         this.meshDescriptors.forEach(desc => this.meshDescriptorMap.set(desc.typeName, desc));
         this.meshDescriptorMapByChar = new Map();

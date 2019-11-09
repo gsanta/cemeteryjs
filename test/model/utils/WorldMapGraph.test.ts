@@ -1,5 +1,6 @@
 import { LinesToGraphConverter } from '../../../src/model/readers/text/LinesToGraphConverter';
 import { ConfigService } from '../../../src/model/services/ConfigService';
+import { TextConfigReader } from '../../../src/model/readers/text/TextConfigReader';
 
 
 describe('MatrixGraph', () => {
@@ -23,7 +24,7 @@ describe('MatrixGraph', () => {
                 \`
             `
 
-            const configService = new ConfigService().update(definitions);
+            const configService = new ConfigService(new TextConfigReader()).update(definitions);
 
             const linesToGraphConverter = new LinesToGraphConverter(configService);
             const graph = linesToGraphConverter.parse(input);
@@ -45,7 +46,7 @@ describe('MatrixGraph', () => {
                 '--------',
             ];
 
-            const configService = new ConfigService().update(
+            const configService = new ConfigService(new TextConfigReader()).update(
                 `
                     definitions \`
 
@@ -78,7 +79,7 @@ describe('MatrixGraph', () => {
             ];
 
 
-            const configService = new ConfigService().update(
+            const configService = new ConfigService(new TextConfigReader()).update(
                 `
                     definitions \`
 

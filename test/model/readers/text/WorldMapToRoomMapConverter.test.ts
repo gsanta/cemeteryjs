@@ -1,6 +1,7 @@
 import { WorldMapToRoomMapConverter } from '../../../../src/model/readers/text/WorldMapToRoomMapConverter';
 import * as fs from 'fs';
 import { setup } from '../../testUtils';
+import { FileFormat } from '../../../../src/WorldGenerator';
 
 describe('WorldMapToRoomMapConverter', () => {
     describe('convert', () => {
@@ -49,7 +50,7 @@ describe('WorldMapToRoomMapConverter', () => {
                 \`
             `;
 
-            const services = setup(input);
+            const services = setup(input, FileFormat.TEXT);
 
             const worldMapToRoomMapConverter = new WorldMapToRoomMapConverter(services.configService);
 

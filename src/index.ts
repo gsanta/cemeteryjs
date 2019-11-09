@@ -10,7 +10,6 @@ import { SplitWallsIntoTwoParallelChildWallsModifier } from './model/modifiers/S
 import { ThickenBordersModifier } from './model/modifiers/ThickenBordersModifier';
 
 export {WorldItem} from './WorldItem';
-export {BabylonjsDemo} from './integrations/babylonjs/demo/BabylonjsDemo';
 export {WorldGenerator} from './WorldGenerator';
 export {BabylonWorldGenerator} from './integrations/babylonjs/BabylonWorldGenerator';
 export {MockWorldGenerator} from './integrations/mock/MockWorldGenerator';

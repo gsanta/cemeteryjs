@@ -1,12 +1,12 @@
 import { GeometryService, Point } from "@nightshifts.inc/geometry";
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
-import { ServiceFacade } from '../services/ServiceFacade';
 import { WorldItem } from '../../WorldItem';
 import { WorldMapGraph } from "../../WorldMapGraph";
-import { WorldItemBuilder, Format } from "./WorldItemBuilder";
-import { PolygonRedundantPointReducer } from "./PolygonRedundantPointReducer";
-import { last, without } from '../utils/Functions';
 import { WorldMapReader } from '../readers/WorldMapReader';
+import { ServiceFacade } from '../services/ServiceFacade';
+import { last, without } from '../utils/Functions';
+import { PolygonRedundantPointReducer } from "./PolygonRedundantPointReducer";
+import { WorldItemBuilder } from "./WorldItemBuilder";
 
 /**
  * @hidden

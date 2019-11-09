@@ -21,6 +21,8 @@ import { TextWorldMapReader } from '../readers/text/TextWorldMapReader';
 import { WorldMapToRoomMapConverter } from '../readers/text/WorldMapToRoomMapConverter';
 import { ServiceFacade } from './ServiceFacade';
 import { WorldMapToSubareaMapConverter } from '../readers/text/WorldMapToSubareaMapConverter';
+import { WorldMapReader } from '../readers/WorldMapReader';
+import { InputConverter } from '../readers/InputConverter';
 
 export interface WorldConfig {
     borders: string[];
@@ -42,52 +44,32 @@ export const defaultWorldConfig: WorldConfig = {
 export class ImporterService<M, S, T> {
     private services: ServiceFacade<M, S, T>;
 
-    constructor(services: ServiceFacade<M, S, T>) {
+    private worldMapReader: WorldMapReader;
+    private roomInputConverter: InputConverter;
+    private subareaInputConverter: InputConverter;
+
+    constructor(
+        services: ServiceFacade<M, S, T>,
+        worldMapReader: WorldMapReader,
+        roomInputConverter: InputConverter,
+        subareaInputConverter: InputConverter
+    ) {
         this.services = services;
+        this.worldMapReader = worldMapReader;
+        this.roomInputConverter = roomInputConverter;
+        this.subareaInputConverter = subareaInputConverter;
     }
 
     import(worldMap: string, modNames?: string[]): WorldItem[] {
-        const configService = this.services.configService;
-
         let worldItems = this.services.parserService.apply(
             worldMap,
             new CombinedWorldItemBuilder(
                 [
-                    new FurnitureBuilder(this.services, new TextWorldMapReader(configService)),
-                    new BorderBuilder(this.services, new TextWorldMapReader(configService)),
-                    new RoomBuilder(this.services, new TextWorldMapReader(configService), new WorldMapToRoomMapConverter(configService)),
-                    new RootWorldItemBuilder(this.services.worldItemFactoryService, new TextWorldMapReader(configService)),
-                    new SubareaBuilder(this.services, new TextWorldMapReader(configService), new WorldMapToSubareaMapConverter(configService))
-                ]
-            )
-        );
-
-        modNames = modNames ? modNames : [
-            SegmentBordersModifier.modName,
-            BuildHierarchyModifier.modName,
-            AssignBordersToRoomsModifier.modName,
-            ScaleModifier.modName,
-            ChangeBorderWidthModifier.modName,
-            ThickenBordersModifier.modName,
-            SplitWallsIntoTwoParallelChildWallsModifier.modName,
-            NormalizeBorderRotationModifier.modName,
-            ChangeFurnitureSizeModifier.modeName,
-            CreateMeshModifier.modName
-        ];
-
-        return this.services.modifierService.applyModifiers(worldItems, modNames);
-    }
-
-    importSvg(worldMap: string, modNames?: string[]): WorldItem[] {
-        let worldItems = this.services.parserService.apply(
-            worldMap,
-            new CombinedWorldItemBuilder(
-                [
-                    new FurnitureBuilder(this.services, new SvgWorldMapReader()),
-                    new BorderBuilder(this.services, new SvgWorldMapReader()),
-                    new RoomBuilder(this.services, new SvgWorldMapReader()),
-                    new RootWorldItemBuilder(this.services.worldItemFactoryService, new SvgWorldMapReader()),
-                    new SubareaBuilder(this.services, new SvgWorldMapReader())
+                    new FurnitureBuilder(this.services, this.worldMapReader),
+                    new BorderBuilder(this.services, this.worldMapReader),
+                    new RoomBuilder(this.services, this.worldMapReader, this.roomInputConverter),
+                    new RootWorldItemBuilder(this.services.worldItemFactoryService, this.worldMapReader),
+                    new SubareaBuilder(this.services, this.worldMapReader, this.subareaInputConverter)
                 ]
             )
         );

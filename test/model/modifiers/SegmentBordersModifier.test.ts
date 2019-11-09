@@ -2,6 +2,7 @@ import { Segment } from "@nightshifts.inc/geometry";
 import { SegmentBordersModifier } from '../../../src/model/modifiers/SegmentBordersModifier';
 import { ServiceFacade } from "../../../src/model/services/ServiceFacade";
 import { setup } from "../testUtils";
+import { FileFormat } from "../../../src/WorldGenerator";
 
 
 it ('Segment a vertical wall where it intersects with the horizontal walls', () => {
@@ -32,7 +33,7 @@ it ('Segment a vertical wall where it intersects with the horizontal walls', () 
     \`
     `;
 
-    let services: ServiceFacade<any, any, any> = setup(map);
+    let services: ServiceFacade<any, any, any> = setup(map, FileFormat.TEXT);
     let geometryService = services.geometryService;
 
     const worldItems = services.importerService.import(
@@ -77,7 +78,7 @@ it ('Segment a horizontal wall where it intersects with the vertical walls', () 
     \`
     `;
 
-    let services: ServiceFacade<any, any, any> = setup(map);
+    let services: ServiceFacade<any, any, any> = setup(map, FileFormat.TEXT);
     let geometryService = services.geometryService;
 
     let worldItems = services.importerService.import(map,[]);
@@ -121,7 +122,7 @@ it ('does not add the bordering WorldItem if it only touches the room at it\'s e
         \`
     `;
 
-    const services = setup(map);
+    const services = setup(map, FileFormat.TEXT);
 
     let items = services.importerService.import(map, []);
 

@@ -1,10 +1,9 @@
 import { WorldItem } from '../../WorldItem';
-import { ServiceFacade } from '../services/ServiceFacade';
-import { WorldItemBuilder, Format } from './WorldItemBuilder';
-import { PolygonShapeBuilder } from './PolygonShapeBuilder';
-import { WorldMapToRoomMapConverter } from '../readers/text/WorldMapToRoomMapConverter';
+import { InputConverter, NullConverter } from '../readers/InputConverter';
 import { WorldMapReader } from '../readers/WorldMapReader';
-import { NullConverter, InputConverter } from '../readers/InputConverter';
+import { ServiceFacade } from '../services/ServiceFacade';
+import { PolygonShapeBuilder } from './PolygonShapeBuilder';
+import { WorldItemBuilder } from './WorldItemBuilder';
 
 export class RoomBuilder implements WorldItemBuilder {
     private polygonAreaParser: PolygonShapeBuilder;

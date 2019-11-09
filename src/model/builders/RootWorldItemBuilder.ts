@@ -1,11 +1,9 @@
-import { WorldMapGraph } from "../../WorldMapGraph";
-import { TextWorldMapReader } from "../readers/text/TextWorldMapReader";
-import { WorldItem } from "../../WorldItem";
-import { WorldItemBuilder, Format } from './WorldItemBuilder';
-import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 import { Polygon } from "@nightshifts.inc/geometry";
-import { ConfigService } from '../services/ConfigService';
+import { WorldItem } from "../../WorldItem";
+import { WorldMapGraph } from "../../WorldMapGraph";
 import { WorldMapReader } from '../readers/WorldMapReader';
+import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
+import { WorldItemBuilder } from './WorldItemBuilder';
 
 
 export class RootWorldItemBuilder implements WorldItemBuilder {

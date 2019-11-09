@@ -1,4 +1,4 @@
-import { DefinitionSectionParser } from "../../../../src/model/readers/text/DefinitionSectionParser";
+import { TextConfigReader } from "../../../../src/model/readers/text/TextConfigReader";
 
 function createWorldMap(definitionLines: string) {
     return `
@@ -27,11 +27,11 @@ it ('Parse the definition section of the world map', () => {
         T = table DIM 3.2 2.5 MAT [ assets/materials/table_top.png assets/materials/table_leg.png ] SHAPE rect TRANS_Y 2
     `);
 
-    const definitionSectionParser = new DefinitionSectionParser();
+    const textConfigReader = new TextConfigReader();
 
-    const definitions = definitionSectionParser.parse(worldMap);
+    const {worldItemTypes} = textConfigReader.read(worldMap);
 
-    expect(definitions[0]).toMatchMeshDescriptor({
+    expect(worldItemTypes[0]).toMatchMeshDescriptor({
         char: 'I',
         materials: ['assets/materials/window.png'],
         scale: 2,
@@ -42,7 +42,7 @@ it ('Parse the definition section of the world map', () => {
         }
     });
 
-    expect(definitions[1]).toMatchObject({
+    expect(worldItemTypes[1]).toMatchObject({
         char: 'T',
         materials: [
             'assets/materials/table_top.png',

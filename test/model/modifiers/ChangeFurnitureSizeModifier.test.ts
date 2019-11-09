@@ -6,6 +6,7 @@ import { ChangeFurnitureSizeModifier } from '../../../src/model/modifiers/Change
 import { SegmentBordersModifier } from "../../../src/model/modifiers/SegmentBordersModifier";
 import { ServiceFacade } from "../../../src/model/services/ServiceFacade";
 import { setup, setupMap } from "../testUtils";
+import { FileFormat } from '../../../src/WorldGenerator';
 
 describe('ChangeFurnitureSizeModifier', () => {
     it ('transforms the sketched furniture dimensions into real mesh dimensions', () => {
@@ -21,7 +22,7 @@ describe('ChangeFurnitureSizeModifier', () => {
             `
         );
 
-        let services: ServiceFacade<any, any, any> = setup(map);
+        let services: ServiceFacade<any, any, any> = setup(map, FileFormat.TEXT);
 
         const items = services.importerService.import(
             map,
@@ -64,7 +65,7 @@ describe('ChangeFurnitureSizeModifier', () => {
         \`
         `;
 
-        let services: ServiceFacade<any, any, any> = setup(map);
+        let services: ServiceFacade<any, any, any> = setup(map, FileFormat.TEXT);
 
         const items = services.importerService.import(
             map,

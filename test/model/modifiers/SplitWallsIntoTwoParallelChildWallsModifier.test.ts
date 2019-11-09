@@ -8,6 +8,7 @@ import { ThickenBordersModifier } from '../../../src/model/modifiers/ThickenBord
 import { setup } from "../testUtils";
 import { ChangeBorderWidthModifier } from '../../../src/model/modifiers/ChangeBorderWidthModifier';
 import { WorldItem } from '../../../src/WorldItem';
+import { FileFormat } from "../../../src/WorldGenerator";
 
 function createMap(worldMap: string) {
         return `
@@ -41,7 +42,7 @@ describe(`SplitWallsIntoTwoParallelChildWallsModifier`, () => {
             `
         );
 
-        const serviceFacade = setup(map);
+        const serviceFacade = setup(map, FileFormat.TEXT);
 
         const [root] = serviceFacade.importerService.import(
             map,

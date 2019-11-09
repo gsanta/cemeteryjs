@@ -1,8 +1,8 @@
 import { Polygon } from '@nightshifts.inc/geometry';
 import { FurnitureBuilder } from '../../../src/model/builders/FurnitureBuilder';
-import { setup } from '../testUtils';
-import { Format } from '../../../src/model/builders/WorldItemBuilder';
 import { TextWorldMapReader } from '../../../src/model/readers/text/TextWorldMapReader';
+import { setup } from '../testUtils';
+import { FileFormat } from '../../../src/WorldGenerator';
 
 describe('FurnitureBuilder', () => {
     describe('generate', () => {
@@ -26,7 +26,7 @@ describe('FurnitureBuilder', () => {
                 \`
             `;
 
-            const services = setup(worldMap);
+            const services = setup(worldMap, FileFormat.TEXT);
 
             const furnitureInfoParser = new FurnitureBuilder(services, new TextWorldMapReader(services.configService));
             const worldItems = furnitureInfoParser.parse(worldMap);
@@ -58,7 +58,7 @@ describe('FurnitureBuilder', () => {
                 \`
             `;
 
-            const services = setup(worldMap);
+            const services = setup(worldMap, FileFormat.TEXT);
 
             const furnitureInfoParser = new FurnitureBuilder(services, new TextWorldMapReader(services.configService));
             const worldItems = furnitureInfoParser.parse(worldMap);
@@ -89,7 +89,7 @@ describe('FurnitureBuilder', () => {
                 \`
             `;
 
-            const services = setup(worldMap);
+            const services = setup(worldMap, FileFormat.TEXT);
 
             const furnitureInfoParser = new FurnitureBuilder(services, new TextWorldMapReader(services.configService));
             const worldItems = furnitureInfoParser.parse(worldMap);
@@ -122,7 +122,7 @@ it ('Parse furnitures that are outdoors', () => {
         \`
     `;
 
-    const services = setup(worldMap);
+    const services = setup(worldMap, FileFormat.TEXT);
 
     const furnitureInfoParser = new FurnitureBuilder(services, new TextWorldMapReader(services.configService));
     const furnitures = furnitureInfoParser.parse(worldMap);

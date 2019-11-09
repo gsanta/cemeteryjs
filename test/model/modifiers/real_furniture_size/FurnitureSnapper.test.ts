@@ -5,6 +5,7 @@ import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { FurnitureSnapper, SnapType } from '../../../../src/model/modifiers/real_furniture_size/FurnitureSnapper';
 import { WorldItem } from '../../../../src/WorldItem';
 import { ServiceFacade } from "../../../../src/model/services/ServiceFacade";
+import { FileFormat } from "../../../../src/WorldGenerator";
 
 it ('Rotates furniture to face the snapping edges if snaptype is "ROTATE_PARALLEL_FACE_TOWARD"', () => {
     const map = setupMap(
@@ -19,7 +20,7 @@ it ('Rotates furniture to face the snapping edges if snaptype is "ROTATE_PARALLE
         `
     );
 
-    const services = setup(map);
+    const services = setup(map, FileFormat.TEXT);
 
     const worldItems = services.importerService.import(map, [ ScaleModifier.modName ]);
 
@@ -53,7 +54,7 @@ it ('Rotate the furniture to face away from the snapping edges if snaptype is "R
         `
     );
 
-    const services = setup(map);
+    const services = setup(map, FileFormat.TEXT);
 
     const worldItems = services.importerService.import(map, [ ScaleModifier.modName ]);
 
@@ -88,7 +89,7 @@ it ('Rotate furniture which are perpendicular to the snapping edges', () => {
         `
     );
 
-    const services = setup(map);
+    const services = setup(map, FileFormat.TEXT);
 
     const worldItems = services.importerService.import(map, [ ScaleModifier.modName ]);
 
@@ -121,7 +122,7 @@ it ('Rotate furniture into a corner', () => {
         `
     );
 
-    const services = setup(map);
+    const services = setup(map, FileFormat.TEXT);
 
     const worldItems = services.importerService.import(map, [ ScaleModifier.modName ]);
 

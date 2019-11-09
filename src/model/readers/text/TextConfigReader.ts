@@ -1,6 +1,24 @@
 import { WorldMapLineListener, TextWorldMapParser } from "./TextWorldMapParser";
 import { Point } from "@nightshifts.inc/geometry";
 import { WorldItemType } from '../../../WorldItemType';
+import { ConfigReader } from '../ConfigReader';
+
+const GLOBALS_SECTION_LINE_REGEX = /^(\S*)/;
+
+export enum Globals {
+    SCALE = 'scale'
+}
+
+export interface GlobalConfig {
+    scale: Point;
+}
+
+function getDefaultGlobalConfig(): GlobalConfig {
+    return {
+        scale: new Point(1, 2)
+    }
+}
+
 
 const COLOR_MAP = {
     T: '#BF973B',
@@ -24,16 +42,18 @@ const SCALE_TEST = /\s+SCALE\s+(\d+(?:\.\d+)?)/
 const TRANSLATE_Y_TEST = /\s+TRANS_Y\s+(-?\d+(?:\.\d+)?)/;
 const BORDER_TEST = /\s*BORDER\s*/;
 
-export class DefinitionSectionParser extends WorldMapLineListener {
+export class TextConfigReader extends WorldMapLineListener implements ConfigReader {
     private typeToCharMap: Map<string, string>;
-    private meshDescriptors: WorldItemType[] = [];
+    private worldItemTypes: WorldItemType[] = [];
+    private globalConfig: GlobalConfig;
 
-    parse(worldMap: string): WorldItemType[] {
+    read(worldMap: string): {worldItemTypes: WorldItemType[], globalConfig: GlobalConfig} {
         this.typeToCharMap = new Map();
+        this.globalConfig = getDefaultGlobalConfig();
 
         new TextWorldMapParser(this).read(worldMap);
 
-        return this.meshDescriptors;
+        return {worldItemTypes: this.worldItemTypes, globalConfig: this.globalConfig};
     }
 
     public addDefinitionSectionLine(line: string) {
@@ -47,8 +67,7 @@ export class DefinitionSectionParser extends WorldMapLineListener {
         const scale = this.parseScale(line);
         const translateY = this.parseTranslateY(line) || 0;
         const isBorder = this.parseBorder(line);
-
-        this.meshDescriptors.push({
+        this.worldItemTypes.push({
             char,
             typeName: type,
             model: modelPath,
@@ -143,6 +162,28 @@ export class DefinitionSectionParser extends WorldMapLineListener {
             return parseFloat(num);
         } catch(e) {
             `${num} is not a number.`
+        }
+    }
+
+    addGlobalsSectionLine(line: string) {
+        const globalParamName = line.trim().match(GLOBALS_SECTION_LINE_REGEX)[0];
+
+        switch(globalParamName) {
+            case Globals.SCALE:
+                this.parseGlobalScale(line);
+                break;
+        }
+    }
+
+    private parseGlobalScale(line: string) {
+        const scaleRegex = /^(\S*)\s*(\d*)\s*(\d*)/;
+
+        const scaleMatch = line.trim().match(scaleRegex);
+
+        if (scaleMatch[3] === '') {
+            this.globalConfig.scale = new Point(parseInt(scaleMatch[2], 10), parseInt(scaleMatch[2], 10));
+        } else {
+            this.globalConfig.scale = new Point(parseInt(scaleMatch[2], 10), parseInt(scaleMatch[3], 10));
         }
     }
 }

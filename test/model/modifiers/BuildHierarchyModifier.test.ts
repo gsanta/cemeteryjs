@@ -2,6 +2,7 @@ import { BuildHierarchyModifier } from '../../../src/model/modifiers/BuildHierar
 import { setupMap, setup } from '../testUtils';
 import { ScaleModifier } from '../../../src/model/modifiers/ScaleModifier';
 import { SegmentBordersModifier } from '../../../src/model/modifiers/SegmentBordersModifier';
+import { FileFormat } from '../../../src/WorldGenerator';
 
 describe('BuildHierarchyModifier', () => {
     describe('apply', () => {
@@ -15,7 +16,7 @@ describe('BuildHierarchyModifier', () => {
 
                 `
             );
-            const services = setup(map);
+            const services = setup(map, FileFormat.TEXT);
 
             const [root] = services.importerService.import(
                 map,
@@ -51,7 +52,7 @@ describe('BuildHierarchyModifier', () => {
                 WWWWWWWWWW
                 `
             );
-            const services = setup(map);
+            const services = setup(map, FileFormat.TEXT);
 
             const [root] = services.importerService.import(
                 map,

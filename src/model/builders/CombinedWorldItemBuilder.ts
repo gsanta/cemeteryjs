@@ -1,11 +1,7 @@
 import { WorldItem } from '../../WorldItem';
-import { WorldItemBuilder, Format } from './WorldItemBuilder';
 import { flat } from '../utils/Functions';
+import { WorldItemBuilder } from './WorldItemBuilder';
 
-/**
- * The goal of this generator is to combine multiple generators together each of which parses the input worldmap string
- * from a different aspect, and emits all of the `WorldItem`s merged together.
- */
 export class CombinedWorldItemBuilder implements WorldItemBuilder {
     private parsers: WorldItemBuilder[];
 

@@ -3,6 +3,7 @@ import { SubareaBuilder } from '../../../src/model/builders/SubareaBuilder';
 import { setup } from '../testUtils';
 import { TextWorldMapReader } from '../../../src/model/readers/text/TextWorldMapReader';
 import { WorldMapToSubareaMapConverter } from '../../../src/model/readers/text/WorldMapToSubareaMapConverter';
+import { FileFormat } from '../../../src/WorldGenerator';
 
 describe('SubareaParser', () => {
     it ('creates WorldItems for each subarea', () => {
@@ -32,7 +33,7 @@ describe('SubareaParser', () => {
             \`
         `;
 
-        const services = setup(worldMap);
+        const services = setup(worldMap, FileFormat.TEXT);
         const subareaParser = new SubareaBuilder(services, new TextWorldMapReader(services.configService), new WorldMapToSubareaMapConverter(services.configService));
 
         const worldItems = subareaParser.parse(worldMap);

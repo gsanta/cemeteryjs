@@ -3,6 +3,7 @@ import { ScaleModifier } from "../../../../src/model/modifiers/ScaleModifier";
 import { SegmentBordersModifier } from "../../../../src/model/modifiers/SegmentBordersModifier";
 import { BuildHierarchyModifier } from "../../../../src/model/modifiers/BuildHierarchyModifier";
 import { SubareaFurnitureResizer } from "../../../../src/model/modifiers/real_furniture_size/SubareaFurnitureResizer";
+import { FileFormat } from "../../../../src/WorldGenerator";
 
 it ('Snap furnitures in a subarea to the biggest furniture in that subarea', () => {
     const map = `
@@ -31,7 +32,7 @@ it ('Snap furnitures in a subarea to the biggest furniture in that subarea', () 
     \`
     `;
 
-    const services = setup(map);
+    const services = setup(map, FileFormat.TEXT);
 
     const [root] = services.importerService.import(map, [
         ScaleModifier.modName,
