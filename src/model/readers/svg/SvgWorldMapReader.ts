@@ -3,37 +3,7 @@ import * as convert from 'xml-js';
 import { WorldMapReader } from '../WorldMapReader';
 import { minBy, maxBy } from '../../utils/Functions';
 import { Point } from '@nightshifts.inc/geometry';
-
-interface RawWorldMapJson {
-    svg: {
-        _attributes: {
-            "data-wg-width": string;
-            "data-wg-height": string;
-            "data-wg-pixel-size": string;
-        },
-        rect: {
-            _attributes: {
-                "data-wg-x": string,
-                "data-wg-y": string,
-                "data-wg-type": string
-            }
-        }[]
-    }
-}
-
-interface Rect {
-    x: number;
-    y: number;
-    type: string;
-}
-
-interface ProcessedWorldMapJson {
-    pixelSize: number;
-    width: number;
-    height: number;
-    rects: Rect[];
-}
-
+import { RawWorldMapJson, ProcessedWorldMapJson, Rect } from './WorldMapJson';
 
 export class SvgWorldMapReader implements WorldMapReader {
     private removeEmptyFrame: boolean;
