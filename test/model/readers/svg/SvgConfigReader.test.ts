@@ -1,6 +1,7 @@
 import { SvgConfigReader } from '../../../../src/model/readers/svg/SvgConfigReader';
+import { Point } from '@nightshifts.inc/geometry';
 
-it ('Read the config metadata from the svg file', () => {
+it ('Read the world item definition related config from the svg file', () => {
     var worldMap =
     `<svg data-wg-width="100" data-wg-height="50" data-wg-pixel-size="10">
         <metadata>
@@ -36,4 +37,26 @@ it ('Read the config metadata from the svg file', () => {
         materials: [],
         isBorder: true
     });
+
+    expect(worldItemTypes[2]).toMatchMeshDescriptor({
+        typeName: 'table',
+        color: 'yellow',
+        scale: 1,
+        model: 'models/table/table.babylon',
+        translateY: 2,
+        materials: ['models/table/table.png'],
+        isBorder: false
+    });
+});
+
+it ('Read the global config from the svg file', () => {
+    var worldMap =
+    `<svg data-wg-width="100" data-wg-height="50" data-wg-pixel-size="10" data-wg-scale-x="2" data-wg-scale-y="3">
+    </svg>`;
+
+    const svgConfigReader = new SvgConfigReader();
+
+    const {globalConfig} = svgConfigReader.read(worldMap);
+
+    expect(globalConfig.scale).toEqual(new Point(2, 3));
 });

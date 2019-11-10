@@ -1,4 +1,4 @@
-export const defaultWorldItemTypes = [
+export const defaultWorldItemDefinitions = [
     {
         typeName: 'wall',
         char: 'W',

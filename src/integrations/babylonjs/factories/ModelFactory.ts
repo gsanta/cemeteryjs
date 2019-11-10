@@ -1,6 +1,6 @@
 import { Axis, Color3, Mesh, MeshBuilder, Scene, Skeleton, Space, StandardMaterial, Vector3 } from "babylonjs";
 import { WorldItem } from "../../..";
-import { WorldItemType } from '../../../WorldItemType';
+import { WorldItemDefinition } from '../../../WorldItemDefinition';
 import { MeshTemplate } from "../../../MeshTemplate";
 
 export class ModelFactory {
@@ -12,7 +12,7 @@ export class ModelFactory {
         this.meshBuilder = meshBuilder;
     }
 
-    public getInstance(worldItemInfo: WorldItem, meshDescriptor: WorldItemType, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
+    public getInstance(worldItemInfo: WorldItem, meshDescriptor: WorldItemDefinition, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
         const meshes = meshTemplate.meshes.map(m => m.clone());
         const rotation = - worldItemInfo.rotation;
         const extend = meshes[0].getBoundingInfo().boundingBox.extendSizeWorld;

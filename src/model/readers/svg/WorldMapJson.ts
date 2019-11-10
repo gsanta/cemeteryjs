@@ -1,32 +1,38 @@
+
+export interface WgType {
+    _attributes: {
+        color: string;
+        "is-border": string;
+        "materials": string;
+        model: string;
+        scale: string;
+        "translate-y": string;
+        "type-name": string;
+            
+    }
+}
+
 export interface RawWorldMapJson {
     svg: {
         metadata: {
-            "wg-type": {
-                _attributes: {
-                    color: string;
-                    "is-border": string;
-                    "materials": string;
-                    model: string;
-                    scale: string;
-                    "translate-y": string;
-                    "type-name": string;
-                        
-                }
-            }[]
-        }
+            "wg-type": WgType[]
+        };
 
         _attributes: {
             "data-wg-width": string;
             "data-wg-height": string;
             "data-wg-pixel-size": string;
-        },
+            "data-wg-scale-x": string;
+            "data-wg-scale-y": string;
+        };
+
         rect: {
             _attributes: {
                 "data-wg-x": string,
                 "data-wg-y": string,
                 "data-wg-type": string
             }
-        }[]
+        }[];
     }
 }
 
@@ -53,7 +59,6 @@ export interface MetaData {
 }
 
 export interface ProcessedWorldMapJson {
-    metadata?: MetaData;
     pixelSize: number;
     width: number;
     height: number;

@@ -1,4 +1,4 @@
-export interface WorldItemType {
+export interface WorldItemDefinition {
     typeName: string;
     char?: string;
     color?: string;

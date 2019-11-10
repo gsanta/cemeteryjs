@@ -1,4 +1,4 @@
-import { WorldItemType } from "../../WorldItemType";
+import { WorldItemDefinition } from "../../WorldItemDefinition";
 import { TextConfigReader } from "../readers/text/TextConfigReader";
 import { GlobalConfig } from '../readers/text/GlobalSectionParser';
 import { ConfigReader } from '../readers/ConfigReader';
@@ -18,12 +18,12 @@ const INTERNAL_TYPES = [
 
 export class ConfigService {
     globalConfig: GlobalConfig;
-    borders: WorldItemType[];
-    furnitures: WorldItemType[];
+    borders: WorldItemDefinition[];
+    furnitures: WorldItemDefinition[];
     emptyType: string;
-    meshDescriptors: WorldItemType[];
-    meshDescriptorMap: Map<string, WorldItemType>;
-    meshDescriptorMapByChar: Map<string, WorldItemType>;
+    meshDescriptors: WorldItemDefinition[];
+    meshDescriptorMap: Map<string, WorldItemDefinition>;
+    meshDescriptorMapByChar: Map<string, WorldItemDefinition>;
 
     private configReader: ConfigReader;
 

@@ -1,10 +1,10 @@
 import { ControllerFacade } from "./ControllerFacade";
-import { WorldItemType } from "../../WorldItemType";
+import { WorldItemDefinition } from "../../WorldItemDefinition";
 
 export class WorldMapController {
     private controllers: ControllerFacade;
 
-    private meshDescriptors: WorldItemType[];
+    private meshDescriptors: WorldItemDefinition[];
     private map: string;
 
     private worldMap: string;
@@ -29,7 +29,7 @@ export class WorldMapController {
         return lines.join('\n');
     }
 
-    private createDefinitionLine(meshDescriptor: WorldItemType): string {
+    private createDefinitionLine(meshDescriptor: WorldItemDefinition): string {
         let line = `${meshDescriptor.char} = ${meshDescriptor.typeName}`;
 
         if (meshDescriptor.isBorder) {

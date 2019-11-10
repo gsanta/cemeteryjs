@@ -14,7 +14,6 @@ export {WorldGenerator} from './WorldGenerator';
 export {BabylonWorldGenerator} from './integrations/babylonjs/BabylonWorldGenerator';
 export {MockWorldGenerator} from './integrations/mock/MockWorldGenerator';
 export {WorldConfig} from './model/services/ImporterService';
-export {WorldItemType as MeshDescriptor} from './WorldItemType';
 export {Converter} from './WorldGenerator';
 
 

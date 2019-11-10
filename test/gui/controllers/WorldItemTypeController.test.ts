@@ -1,6 +1,6 @@
 import { setupControllers } from "./controllerTestUtils";
-import { WorldItemTypeProperty, WorldItemTypeController } from "../../../src/gui/controllers/WorldItemTypeController";
-import { MeshDescriptor } from "../../../src";
+import { WorldItemTypeProperty, WorldItemDefinitionController } from "../../../src/gui/controllers/WorldItemDefinitionController";
+import { WorldItemDefinition } from "../../../src/WorldItemDefinition";
 
 it ("Update the 'type' prop", () => {
     const controllers = setupControllers();
@@ -93,8 +93,8 @@ it ("Update the 'isBorder' prop", () => {
 });
 
 function testSimpleProp(
-    worldItemTypeController: WorldItemTypeController,
-    descriptor: MeshDescriptor,
+    worldItemTypeController: WorldItemDefinitionController,
+    descriptor: WorldItemDefinition,
     property: WorldItemTypeProperty,
     newVal: any, updateProp: (val: any) => void
 ) {

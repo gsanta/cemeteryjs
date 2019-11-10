@@ -1,5 +1,5 @@
 import { WorldItem } from "../../WorldItem";
-import { WorldItemType } from '../../WorldItemType';
+import { WorldItemDefinition } from '../../WorldItemDefinition';
 import { BorderBuilder } from '../builders/BorderBuilder';
 import { CombinedWorldItemBuilder } from "../builders/CombinedWorldItemBuilder";
 import { FurnitureBuilder } from "../builders/FurnitureBuilder";
@@ -29,7 +29,7 @@ export interface WorldConfig {
     furnitures: string[];
     xScale: number;
     yScale: number;
-    meshDescriptors: WorldItemType[];
+    meshDescriptors: WorldItemDefinition[];
 }
 
 export const defaultWorldConfig: WorldConfig = {
@@ -61,7 +61,7 @@ export class ImporterService<M, S, T> {
     }
 
     import(worldMap: string, modNames?: string[]): WorldItem[] {
-        let worldItems = this.services.parserService.apply(
+        let worldItems = this.services.builderService.apply(
             worldMap,
             new CombinedWorldItemBuilder(
                 [

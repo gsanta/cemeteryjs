@@ -1,6 +1,6 @@
-import { WorldItemType } from "../../WorldItemType";
+import { WorldItemDefinition } from "../../WorldItemDefinition";
 import { GlobalConfig } from './text/GlobalSectionParser';
 
 export interface ConfigReader {
-    read(worldMap: string): {worldItemTypes: WorldItemType[], globalConfig: GlobalConfig};
+    read(worldMap: string): {worldItemTypes: WorldItemDefinition[], globalConfig: GlobalConfig};
 }

@@ -2,7 +2,7 @@ import { Scene, StandardMaterial, Mesh, Vector3, MeshBuilder, Skeleton, Axis, Sp
 import { Segment, Shape } from '@nightshifts.inc/geometry';
 import { WorldItem } from '../../../WorldItem';
 import { MeshTemplate } from '../../../MeshTemplate';
-import { WorldItemType } from '../../../WorldItemType';
+import { WorldItemDefinition } from '../../../WorldItemDefinition';
 
 export class DoorFactory {
     private scene: Scene;
@@ -13,7 +13,7 @@ export class DoorFactory {
         this.meshBuilder = meshBuilder;
     }
 
-    public createItem(worldItemInfo: WorldItem, meshDescriptor: WorldItemType, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
+    public createItem(worldItemInfo: WorldItem, meshDescriptor: WorldItemDefinition, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
         const meshes = meshTemplate.meshes.map(m => m.clone());
         const boundingMesh = this.createBoundingMesh(worldItemInfo.dimensions, meshDescriptor);
 
@@ -29,7 +29,7 @@ export class DoorFactory {
         return [boundingMesh, ...meshes];
     }
 
-    private createBoundingMesh(boundingBox: Shape, meshDescriptor: WorldItemType): Mesh {
+    private createBoundingMesh(boundingBox: Shape, meshDescriptor: WorldItemDefinition): Mesh {
         const segment = <Segment> boundingBox;
 
         const rectangle = segment.addThickness(0.25);

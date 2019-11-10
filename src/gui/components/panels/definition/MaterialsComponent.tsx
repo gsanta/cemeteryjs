@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { WorldItemTypeController, WorldItemTypeProperty } from '../../../controllers/WorldItemTypeController';
+import { WorldItemDefinitionController, WorldItemTypeProperty } from '../../../controllers/WorldItemDefinitionController';
 import { LabeledComponent } from '../../forms/LabeledComponent';
 import { ButtonedInputComponent } from '../../forms/ButtonedInputComponent';
 import { CloseIconComponent } from '../../dialogs/CloseIconComponent';
 
 
-export class MaterialsComponent extends React.Component<{definitionController: WorldItemTypeController}> {
+export class MaterialsComponent extends React.Component<{definitionController: WorldItemDefinitionController}> {
 
     render(): JSX.Element {
         return (

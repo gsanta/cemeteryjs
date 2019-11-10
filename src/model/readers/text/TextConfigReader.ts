@@ -1,6 +1,6 @@
 import { WorldMapLineListener, TextWorldMapParser } from "./TextWorldMapParser";
 import { Point } from "@nightshifts.inc/geometry";
-import { WorldItemType } from '../../../WorldItemType';
+import { WorldItemDefinition } from '../../../WorldItemDefinition';
 import { ConfigReader } from '../ConfigReader';
 
 const GLOBALS_SECTION_LINE_REGEX = /^(\S*)/;
@@ -44,10 +44,10 @@ const BORDER_TEST = /\s*BORDER\s*/;
 
 export class TextConfigReader extends WorldMapLineListener implements ConfigReader {
     private typeToCharMap: Map<string, string>;
-    private worldItemTypes: WorldItemType[] = [];
+    private worldItemTypes: WorldItemDefinition[] = [];
     private globalConfig: GlobalConfig;
 
-    read(worldMap: string): {worldItemTypes: WorldItemType[], globalConfig: GlobalConfig} {
+    read(worldMap: string): {worldItemTypes: WorldItemDefinition[], globalConfig: GlobalConfig} {
         this.typeToCharMap = new Map();
         this.globalConfig = getDefaultGlobalConfig();
 

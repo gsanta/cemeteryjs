@@ -2,7 +2,7 @@ import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { Axis, Mesh, MeshBuilder, Scene, Space, Vector3 } from 'babylonjs';
 import { WorldItem } from '../../../WorldItem';
 import { MaterialFactory } from '../MaterialFactory';
-import { WorldItemType } from '../../../WorldItemType';
+import { WorldItemDefinition } from '../../../WorldItemDefinition';
 import { Polygon } from '@nightshifts.inc/geometry';
 
 export class RectangleFactory  {
@@ -15,7 +15,7 @@ export class RectangleFactory  {
         this.materialFactory = materialFactory;
     }
 
-    createItem(worldItemInfo: WorldItem, meshDescriptor: WorldItemType): Mesh {
+    createItem(worldItemInfo: WorldItem, meshDescriptor: WorldItemDefinition): Mesh {
 
         let width: number;
         let depth: number;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { WorldItemTypeController, WorldItemTypeProperty } from '../../controllers/WorldItemTypeController';
+import { WorldItemDefinitionController, WorldItemTypeProperty } from '../../controllers/WorldItemDefinitionController';
 import { AppContext, AppContextType } from '../Context';
 import { CheckboxComponent } from '../forms/CheckboxComponent';
 import { ConnectedColorPicker } from '../forms/ColorPicker';
@@ -110,7 +110,7 @@ export class PropertyEditorComponent extends React.Component<{}> {
         );
     }
 
-    renderCharacterDropdown(definitionController: WorldItemTypeController) {
+    renderCharacterDropdown(definitionController: WorldItemDefinitionController) {
         return (
             <LabeledComponent label="Character" direction="horizontal">
                 <ConnectedDropdownComponent
@@ -124,7 +124,7 @@ export class PropertyEditorComponent extends React.Component<{}> {
         );
     }
 
-    renderColorChooser(definitionController: WorldItemTypeController) {
+    renderColorChooser(definitionController: WorldItemDefinitionController) {
         return (
             <LabeledComponent label="Choose color" direction="horizontal">
                 <ConnectedColorPicker

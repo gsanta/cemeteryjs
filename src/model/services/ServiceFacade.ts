@@ -13,6 +13,9 @@ import { TextConfigReader } from '../readers/text/TextConfigReader';
 import { TextWorldMapReader } from '../readers/text/TextWorldMapReader';
 import { WorldMapToRoomMapConverter } from '../readers/text/WorldMapToRoomMapConverter';
 import { WorldMapToSubareaMapConverter } from '../readers/text/WorldMapToSubareaMapConverter';
+import { SvgConfigReader } from '../readers/svg/SvgConfigReader';
+import { SvgWorldMapReader } from '../readers/svg/SvgWorldMapReader';
+import { NullConverter } from '../readers/InputConverter';
 
 export class ServiceFacade<M, S, T> {
     meshFactoryService: MeshFactoryService<M, S>;
@@ -21,7 +24,7 @@ export class ServiceFacade<M, S, T> {
     meshTemplateService: MeshTemplateService<M, S>
     configService: ConfigService;
     modifierService: ModifierService;
-    parserService: BuilderService;
+    builderService: BuilderService;
     converterService: ConverterService<T>;
     importerService: ImporterService<M, S, T>;
     geometryService: GeometryService;
@@ -30,6 +33,11 @@ export class ServiceFacade<M, S, T> {
         if (fileFormat === FileFormat.TEXT) {
             this.configService = new ConfigService(new TextConfigReader());
             this.importerService = new ImporterService(this, new TextWorldMapReader(this.configService), new WorldMapToRoomMapConverter(this.configService), new WorldMapToSubareaMapConverter(this.configService))
+        } else if (fileFormat === FileFormat.SVG) {
+            this.configService = new ConfigService(new SvgConfigReader());
+            this.importerService = new ImporterService(this, new SvgWorldMapReader(true), new NullConverter(), new NullConverter());
+        } else {
+            throw new Error('Unknown file format: ' + fileFormat); 
         }
 
         this.geometryService = new GeometryService();
@@ -39,10 +47,11 @@ export class ServiceFacade<M, S, T> {
         this.worldItemFactoryService = new WorldItemFactoryService(this);
         this.modifierFactoryService = new ModifierFactoryService(this);
         this.modifierService = new ModifierService(this.modifierFactoryService);
-        this.parserService = new BuilderService();
+        this.builderService = new BuilderService();
     }
 
     generateWorld(worldMap: string, converter: Converter<T>) {
+        this.configService.update(worldMap);
         this.meshTemplateService
         .loadAll(this.configService.meshDescriptors.filter(descriptor => descriptor.model))
         .then(() => {

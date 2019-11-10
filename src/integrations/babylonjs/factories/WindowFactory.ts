@@ -3,7 +3,7 @@ import { Axis, Mesh, MeshBuilder, Scene, Skeleton, Space, StandardMaterial, Vect
 import { WorldItem } from '../../../WorldItem';
 import { MeshTemplate } from '../../../MeshTemplate';
 import { MaterialFactory } from '../MaterialFactory';
-import { WorldItemType } from '../../../WorldItemType';
+import { WorldItemDefinition } from '../../../WorldItemDefinition';
 
 export class WindowFactory  {
     private materialFactory: MaterialFactory;
@@ -18,7 +18,7 @@ export class WindowFactory  {
         this.materialFactory = materialFactory;
     }
 
-    public createItem(worldItemInfo: WorldItem, meshDescriptor: WorldItemType, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
+    public createItem(worldItemInfo: WorldItem, meshDescriptor: WorldItemDefinition, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
         const meshes = meshTemplate.meshes.map(m => m.clone());
         const parentMesh = this.createBoundingMesh(worldItemInfo.dimensions, meshDescriptor);
 
@@ -43,7 +43,7 @@ export class WindowFactory  {
         return [parentMesh, top, bottom];
     }
 
-    private createTopWall(worldItem: WorldItem, meshDescriptor: WorldItemType) {
+    private createTopWall(worldItem: WorldItem, meshDescriptor: WorldItemDefinition) {
         const segment = <Segment> worldItem.dimensions;
 
         const rectangle = segment.addThickness(0.125);
@@ -62,7 +62,7 @@ export class WindowFactory  {
         return mesh;
     }
 
-    private createBottomWall(worldItem: WorldItem, meshDescriptor: WorldItemType) {
+    private createBottomWall(worldItem: WorldItem, meshDescriptor: WorldItemDefinition) {
         const segment = <Segment> worldItem.dimensions;
 
         const rectangle = segment.addThickness(0.125);
@@ -81,7 +81,7 @@ export class WindowFactory  {
         return mesh;
     }
 
-    private createBoundingMesh(boundingBox: Shape, meshDescriptor: WorldItemType): Mesh {
+    private createBoundingMesh(boundingBox: Shape, meshDescriptor: WorldItemDefinition): Mesh {
         const segment = <Segment> boundingBox;
 
         const rectangle = segment.addThickness(0.25);
