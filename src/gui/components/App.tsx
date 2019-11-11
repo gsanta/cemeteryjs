@@ -10,7 +10,7 @@ import { Header } from './Header';
 import './misc/SplitPane.css';
 import { VerticalSplitComponent } from './misc/VerticalSplitComponent';
 import { EditorComponent } from './panels/EditorComponent';
-import { MapViewerComponent } from './panels/MapViewerComponent';
+import { RendererComponent } from './panels/RendererComponent';
 
 export interface AppState {
     isDialogOpen: boolean;
@@ -33,7 +33,7 @@ export class App extends React.Component<{}, AppState> {
     }
     
     componentDidMount() {
-        this.context.controllers.renderController.setRender(() => this.forceUpdate());
+        this.context.controllers.updateUIController.setUpdateFunc(() => this.forceUpdate());
     }
 
     render() {
@@ -47,7 +47,7 @@ export class App extends React.Component<{}, AppState> {
                 <div className="main-content">
                     <VerticalSplitComponent onChange={() => this.resize()}>
                         <EditorComponent/>
-                        <MapViewerComponent/>
+                        <RendererComponent/>
                     </VerticalSplitComponent>
                 </div>
 
@@ -59,7 +59,7 @@ export class App extends React.Component<{}, AppState> {
     }
 
     private resize() {
-        this.context.controllers.canvasController.engine.resize();
+        this.context.controllers.rendererController.engine.resize();
         if (this.context.controllers.windowModel.activeEditor === EditorType.TEXT_EDITOR) {
             this.context.controllers.textEditorController.resize();
         }

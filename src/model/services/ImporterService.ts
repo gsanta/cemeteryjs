@@ -16,11 +16,7 @@ import { ScaleModifier } from '../modifiers/ScaleModifier';
 import { SegmentBordersModifier } from '../modifiers/SegmentBordersModifier';
 import { SplitWallsIntoTwoParallelChildWallsModifier } from "../modifiers/SplitWallsIntoTwoParallelChildWallsModifier";
 import { ThickenBordersModifier } from "../modifiers/ThickenBordersModifier";
-import { SvgWorldMapReader } from '../readers/svg/SvgWorldMapReader';
-import { TextWorldMapReader } from '../readers/text/TextWorldMapReader';
-import { WorldMapToRoomMapConverter } from '../readers/text/WorldMapToRoomMapConverter';
 import { ServiceFacade } from './ServiceFacade';
-import { WorldMapToSubareaMapConverter } from '../readers/text/WorldMapToSubareaMapConverter';
 import { WorldMapReader } from '../readers/WorldMapReader';
 import { InputConverter } from '../readers/InputConverter';
 

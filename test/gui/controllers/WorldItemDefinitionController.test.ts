@@ -5,7 +5,7 @@ import { WorldItemDefinition } from "../../../src/WorldItemDefinition";
 it ("Update the 'type' prop", () => {
     const controllers = setupControllers();
 
-    const worldItemTypeController = controllers.worldItemTypeController;
+    const worldItemTypeController = controllers.worldItemDefinitionController;
     const meshDescriptor = worldItemTypeController.getModel().types[1];
 
     testSimpleProp(worldItemTypeController, meshDescriptor, WorldItemTypeProperty.TYPE_NAME, 'new type', val => worldItemTypeController.updateStringProp(val));
@@ -14,7 +14,7 @@ it ("Update the 'type' prop", () => {
 it ("Update the 'char' prop", () => {
     const controllers = setupControllers();
 
-    const worldItemTypeController = controllers.worldItemTypeController;
+    const worldItemTypeController = controllers.worldItemDefinitionController;
     const meshDescriptor = worldItemTypeController.getModel().types[1];
 
     testSimpleProp(worldItemTypeController, meshDescriptor, WorldItemTypeProperty.CHAR, 'A', val => worldItemTypeController.updateStringProp(val));
@@ -23,7 +23,7 @@ it ("Update the 'char' prop", () => {
 it ("Update the 'model' prop", () => {
     const controllers = setupControllers();
 
-    const worldItemTypeController = controllers.worldItemTypeController;
+    const worldItemTypeController = controllers.worldItemDefinitionController;
     const meshDescriptor = worldItemTypeController.getModel().types[1];
 
     testSimpleProp(worldItemTypeController, meshDescriptor, WorldItemTypeProperty.MODEL, 'models/door/new_model.babylon', val => worldItemTypeController.updateStringProp(val));
@@ -32,7 +32,7 @@ it ("Update the 'model' prop", () => {
 it ("Update the 'shape' prop", () => {
     const controllers = setupControllers();
 
-    const worldItemTypeController = controllers.worldItemTypeController;
+    const worldItemTypeController = controllers.worldItemDefinitionController;
     const meshDescriptor = worldItemTypeController.getModel().types[0];
 
     testSimpleProp(worldItemTypeController, meshDescriptor, WorldItemTypeProperty.SHAPE, 'circle', val => worldItemTypeController.updateStringProp(val));
@@ -41,7 +41,7 @@ it ("Update the 'shape' prop", () => {
 it ("Update the 'scale' prop", () => {
     const controllers = setupControllers();
 
-    const worldItemTypeController = controllers.worldItemTypeController;
+    const worldItemTypeController = controllers.worldItemDefinitionController;
     const meshDescriptor = worldItemTypeController.getModel().types[1];
 
     testSimpleProp(worldItemTypeController, meshDescriptor, WorldItemTypeProperty.SCALE, 2, val => worldItemTypeController.updateNumberProp(val));
@@ -50,7 +50,7 @@ it ("Update the 'scale' prop", () => {
 it ("Update the 'translate' prop", () => {
     const controllers = setupControllers();
 
-    const worldItemTypeController = controllers.worldItemTypeController;
+    const worldItemTypeController = controllers.worldItemDefinitionController;
     const meshDescriptor = worldItemTypeController.getModel().types[1];
 
     testSimpleProp(worldItemTypeController, meshDescriptor, WorldItemTypeProperty.TRANSLATE_Y, 4, val => worldItemTypeController.updateNumberProp(val));
@@ -59,7 +59,7 @@ it ("Update the 'translate' prop", () => {
 it ("Update the 'isBorder' prop", () => {
     const controllers = setupControllers();
 
-    const worldItemTypeController = controllers.worldItemTypeController;
+    const worldItemTypeController = controllers.worldItemDefinitionController;
     const meshDescriptor = worldItemTypeController.getModel().types[1];
 
     testSimpleProp(worldItemTypeController, meshDescriptor, WorldItemTypeProperty.IS_BORDER, false, val => worldItemTypeController.updateBooleanProp(val));
@@ -68,7 +68,7 @@ it ("Update the 'isBorder' prop", () => {
 it ("Update the 'isBorder' prop", () => {
     const controllers = setupControllers();
 
-    const worldItemTypeController = controllers.worldItemTypeController;
+    const worldItemTypeController = controllers.worldItemDefinitionController;
     const meshDescriptor = worldItemTypeController.getModel().types[1];
     const oldMaterials = ['materials/door/door.jpg'];
     worldItemTypeController.setSelectedDefinition('door');

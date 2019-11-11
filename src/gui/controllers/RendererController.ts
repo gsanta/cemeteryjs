@@ -1,22 +1,15 @@
-import { ControllerFacade } from "./ControllerFacade";
-import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, Color3 } from "babylonjs";
+import { ArcRotateCamera, Color3, Engine, HemisphericLight, Scene, Vector3 } from "babylonjs";
 import { BabylonWorldGenerator } from "../../integrations/babylonjs/BabylonWorldGenerator";
-import { WorldItem } from "../../WorldItem";
 import { FileFormat } from '../../WorldGenerator';
+import { WorldItem } from "../../WorldItem";
 (<any> window).earcut = require('earcut');
 
-export class CanvasController {
-    private controllers: ControllerFacade;
+export class RendererController {
     engine: Engine;
     private canvas: HTMLCanvasElement;
-    private position: Vector3;
     private camera: ArcRotateCamera;
 
-    constructor(controllers: ControllerFacade) {
-        this.controllers = controllers;
-
-        this.position = new Vector3(0, 40, 20);
-    }
+    isDirty: boolean;
 
     init(canvas: HTMLCanvasElement) {
         this.canvas = canvas;

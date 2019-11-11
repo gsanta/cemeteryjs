@@ -85,6 +85,6 @@ export class TextEditorController {
 
     setText(text: string) {
         this.text = text;
-        this.controllers.renderController.render();
+        this.controllers.updateUIController.updateUI();
     }
 }

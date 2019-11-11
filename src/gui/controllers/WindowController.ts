@@ -33,12 +33,12 @@ export class WindowController extends FormController<WindowProperty> {
 
     updateStringProp(value: string) {
         this.tempString = value;        
-        this.controllers.renderController.render();       
+        this.controllers.updateUIController.updateUI();       
     }
 
     updateBooleanProp(value: boolean) {
         this.tempBoolean = value;        
-        this.controllers.renderController.render();       
+        this.controllers.updateUIController.updateUI();       
     }
 
 
@@ -52,7 +52,7 @@ export class WindowController extends FormController<WindowProperty> {
                 break;    
         }
 
-        this.controllers.renderController.render();
+        this.controllers.updateUIController.updateUI();
     }
 
     getVal(propType: WindowProperty) {

@@ -2,7 +2,7 @@ import * as convert from 'xml-js';
 import { WorldItemDefinition } from '../../../WorldItemDefinition';
 import { ConfigReader } from '../ConfigReader';
 import { GlobalConfig } from '../text/GlobalSectionParser';
-import { RawWorldMapJson, WgType } from './WorldMapJson';
+import { RawWorldMapJson, WgDefinition } from './WorldMapJson';
 import { Point } from '@nightshifts.inc/geometry';
 
 export class SvgConfigReader implements ConfigReader {
@@ -20,11 +20,11 @@ export class SvgConfigReader implements ConfigReader {
         if (rawJson.svg.metadata['wg-type'].length) {
             return rawJson.svg.metadata['wg-type'].map(wgType => this.parseWorldItemDefinition(wgType));
         } else {
-            return [this.parseWorldItemDefinition(<WgType> <unknown> rawJson.svg.metadata['wg-type'])];
+            return [this.parseWorldItemDefinition(<WgDefinition> <unknown> rawJson.svg.metadata['wg-type'])];
         }
     }
 
-    parseWorldItemDefinition(wgType: WgType): WorldItemDefinition {
+    parseWorldItemDefinition(wgType: WgDefinition): WorldItemDefinition {
         const color = wgType._attributes["color"] as string;
         const isBorder = wgType._attributes["is-border"] === "true" ? true : false;
         const model = wgType._attributes["model"];

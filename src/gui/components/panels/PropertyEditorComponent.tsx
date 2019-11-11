@@ -23,8 +23,8 @@ export class PropertyEditorComponent extends React.Component<{}> {
     }
 
     render() {
-        const definitionController = this.context.controllers.worldItemTypeController;
-        const meshDescriptors = this.context.controllers.worldItemTypeController.getModel().types;
+        const definitionController = this.context.controllers.worldItemDefinitionController;
+        const meshDescriptors = this.context.controllers.worldItemDefinitionController.getModel().types;
         const windowModel = this.context.controllers.windowModel;
 
         const names = meshDescriptors.map(def => (
@@ -103,7 +103,7 @@ export class PropertyEditorComponent extends React.Component<{}> {
                         </LabeledComponent>
                     </div>
                     <div className="property-row">
-                        <MaterialsComponent definitionController={this.context.controllers.worldItemTypeController}/>
+                        <MaterialsComponent definitionController={this.context.controllers.worldItemDefinitionController}/>
                     </div>
                 </div>
             </div>

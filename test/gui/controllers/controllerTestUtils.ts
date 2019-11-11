@@ -62,7 +62,7 @@ const testWorldItemTypes = [
 export function setupControllers(map = testMap, meshDescriptors = testWorldItemTypes): ControllerFacade {
     const controllers = new ControllerFacade();
     controllers.textEditorController.text = map;
-    controllers.worldItemTypeController.getModel().types = meshDescriptors;
+    controllers.worldItemDefinitionController.getModel().types = meshDescriptors;
 
     return controllers;
 }

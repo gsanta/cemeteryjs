@@ -22,7 +22,7 @@ export class WorldMapController {
     }
 
     private createDefinitionSection() {
-        const meshDescriptors = this.controllers.worldItemTypeController.getModel().types;
+        const meshDescriptors = this.controllers.worldItemDefinitionController.getModel().types;
 
         const lines = meshDescriptors.map(descriptor => this.createDefinitionLine(descriptor));
 
@@ -60,14 +60,14 @@ export class WorldMapController {
     }
 
     private shouldUpdateWorldMap() {
-        return this.map !== this.controllers.textEditorController.text || this.meshDescriptors !== this.controllers.worldItemTypeController.getModel().types;
+        return this.map !== this.controllers.textEditorController.text || this.meshDescriptors !== this.controllers.worldItemDefinitionController.getModel().types;
     }
 
     private updateWorldMap() {
         this.worldMap = this.createWorldMap();
 
         this.map = this.controllers.textEditorController.text;
-        this.meshDescriptors = this.controllers.worldItemTypeController.getModel().types;
+        this.meshDescriptors = this.controllers.worldItemDefinitionController.getModel().types;
     }
 
     private createWorldMap(): string {

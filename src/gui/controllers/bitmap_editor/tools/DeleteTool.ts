@@ -9,12 +9,12 @@ export class DeleteTool extends AbstractSelectionTool {
 
     down() {
         super.down();
-        this.bitmapEditor.render();
+        this.bitmapEditor.updateUI();
     }
 
     drag() {
         super.drag();
-        this.bitmapEditor.render();
+        this.bitmapEditor.updateUI();
     }
 
     up() {
@@ -29,6 +29,6 @@ export class DeleteTool extends AbstractSelectionTool {
 
         super.up();
 
-        this.bitmapEditor.render();
+        this.bitmapEditor.updateUI();
     }
 }

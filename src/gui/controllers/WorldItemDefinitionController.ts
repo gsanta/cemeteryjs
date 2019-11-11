@@ -61,7 +61,7 @@ export class WorldItemDefinitionController extends FormController<WorldItemTypeP
                 this.tempString = this.getModel().selectedType.color;
                 break;
         }
-        this.controllers.renderController.render();
+        this.controllers.updateUIController.updateUI();
     }
 
     getFocusedProp(): WorldItemTypeProperty { 
@@ -70,17 +70,17 @@ export class WorldItemDefinitionController extends FormController<WorldItemTypeP
 
     updateStringProp(value: string) {
         this.tempString = value;        
-        this.controllers.renderController.render();            
+        this.controllers.updateUIController.updateUI();            
     }
 
     updateBooleanProp(value: boolean) {
         this.tempBoolean = value;
-        this.controllers.renderController.render();            
+        this.controllers.updateUIController.updateUI();            
     }
 
     updateNumberProp(value: number) {
         this.tempNumber = value;
-        this.controllers.renderController.render();            
+        this.controllers.updateUIController.updateUI();            
     }
 
     deletItemFromListProp(prop: WorldItemTypeProperty, index: number) {
@@ -91,7 +91,7 @@ export class WorldItemDefinitionController extends FormController<WorldItemTypeP
                 break;
         } 
 
-        this.controllers.renderController.render();
+        this.controllers.updateUIController.updateUI();
     }
 
     commitProp(removeFocus = false) {
@@ -136,7 +136,7 @@ export class WorldItemDefinitionController extends FormController<WorldItemTypeP
             this.focusedPropType = null;
         }
 
-        this.controllers.renderController.render();            
+        this.controllers.updateUIController.updateUI();            
     }
 
     getVal(property: WorldItemTypeProperty) {
@@ -170,12 +170,12 @@ export class WorldItemDefinitionController extends FormController<WorldItemTypeP
         const meshDescriptor = this.getModel().types.find(descriptor => descriptor.typeName === type);
         this.getModel().selectedType = cloneWorldItemType(meshDescriptor);
 
-        if (this.controllers.renderController) {
-            this.controllers.renderController.render();
+        if (this.controllers.updateUIController) {
+            this.controllers.updateUIController.updateUI();
         }
     }
 
     getModel(): WorldItemDefinitionModel {
-        return this.controllers.worldItemTypeModel;
+        return this.controllers.worldItemDefinitionModel;
     }
 }

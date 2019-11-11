@@ -3,7 +3,7 @@ import { AppContextType, AppContext } from '../../Context';
 import styled from 'styled-components';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { colors } from '../../styles';
-import { Pixel } from '../../../controllers/bitmap_editor/PixelController';
+import { WgDefinitionAttributes } from '../../../../model/readers/svg/WorldMapJson';
 
 const EditorComponent = styled.div`
     height: calc(100% - 35px);
@@ -60,8 +60,11 @@ export class BitmapEditorComponent extends React.Component<any> {
                 >
                     {horizontalLines}
                     {verticalLines}
-                    {this.renderPixels(context)}
-                    {this.renderSelection()}
+                    <g className="bitmap-layer">
+                        {this.renderMetaData()}
+                        {this.renderPixels(context)}
+                        {this.renderSelection()}
+                    </g>
                 </CanvasComponent>
             </EditorComponent>
         )
@@ -77,7 +80,7 @@ export class BitmapEditorComponent extends React.Component<any> {
 
     private renderPixels(context: AppContextType): JSX.Element[] {
         const pixelController = context.controllers.bitmapEditor.pixelController;
-        const worldItemTypeModel = context.controllers.worldItemTypeModel;
+        const worldItemTypeModel = context.controllers.worldItemDefinitionModel;
 
         return Array.from(pixelController.bitMap).map(([index, pixel]) => {
             const pixelSize = context.controllers.bitmapEditor.config.pixelSize;
@@ -115,5 +118,29 @@ export class BitmapEditorComponent extends React.Component<any> {
         } else {
             return null;
         }
+    }
+
+    renderMetaData(): JSX.Element {
+        const wgTypeComponents = this.context.controllers.worldItemDefinitionModel.types.map(type => {
+            const props: Partial<WgDefinitionAttributes> = {
+                color: type.color,
+                'is-border': type.isBorder ? 'true' : 'false',
+                scale: type.scale ? type.scale + '' : '1',
+                'translate-y': type.translateY ? type.translateY + '' : '0',
+                'type-name': type.typeName
+            };
+
+            if (props.model) {
+                props.model = type.model;
+            }
+
+            if (props.materials) {
+                props.materials = type.materials.join(', ');
+            }
+
+            return React.createElement('wg-type', props);
+        });
+
+        return <metadata>{wgTypeComponents}</metadata>
     }
 }

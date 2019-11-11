@@ -1,8 +1,8 @@
 import * as React from 'react';
-import './MapViewerComponent.scss'
+import './RendererComponent.scss'
 import { AppContext, AppContextType } from '../Context';
 
-export class MapViewerComponent extends React.Component<{}> {
+export class RendererComponent extends React.Component<{}> {
     static contextType = AppContext;
     private canvasRef: React.RefObject<HTMLCanvasElement>;
     private worldMap: string;
@@ -15,14 +15,15 @@ export class MapViewerComponent extends React.Component<{}> {
     }
 
     componentDidMount() {
-        this.context.controllers.canvasController.init(this.canvasRef.current);
-        this.context.controllers.canvasController.updateCanvas(this.context.controllers.worldMapController.getMap());
+        this.context.controllers.rendererController.init(this.canvasRef.current);
+        this.context.controllers.rendererController.updateCanvas(this.context.controllers.worldMapController.getMap());
     }
 
     componentWillReceiveProps() {
-        if (this.worldMap !== this.context.controllers.worldMapController.getMap()) {
+        if (this.context.controllers.rendererController.isDirty) {
             this.worldMap = this.context.controllers.worldMapController.getMap();
-            this.context.controllers.canvasController.updateCanvas(this.worldMap);
+            this.context.controllers.rendererController.updateCanvas(this.worldMap);
+            this.context.controllers.rendererController.isDirty = false;
         }
     }
 

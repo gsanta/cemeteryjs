@@ -1,21 +1,22 @@
 
-export interface WgType {
-    _attributes: {
-        color: string;
-        "is-border": string;
-        "materials": string;
-        model: string;
-        scale: string;
-        "translate-y": string;
-        "type-name": string;
-            
-    }
+export interface WgDefinition {
+    _attributes: WgDefinitionAttributes;
+}
+
+export interface WgDefinitionAttributes {
+    color: string;
+    "is-border": string;
+    "materials": string;
+    model: string;
+    scale: string;
+    "translate-y": string;
+    "type-name": string;
 }
 
 export interface RawWorldMapJson {
     svg: {
         metadata: {
-            "wg-type": WgType[]
+            "wg-type": WgDefinition[]
         };
 
         _attributes: {

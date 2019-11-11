@@ -36,12 +36,16 @@ export class BitmapEditor {
         this.id = 'bitmap-editor';
     }
 
-    render() {
-        this.controllers.renderController.render();
+    updateUI() {
+        this.controllers.updateUIController.updateUI();
+    }
+
+    updateRenderer() {
+        this.controllers.rendererController.isDirty = true;
     }
 
     setActiveTool(toolType: ToolType) {
         this.activeTool = this.tools.find(tool => tool.type === toolType);
-        this.render();
+        this.updateUI();
     }
 }

@@ -1,7 +1,7 @@
 import { ControllerFacade } from '../../src/gui/controllers/ControllerFacade';
-import { RenderController } from '../../src/gui/controllers/RenderController';
+import { UIUpdateController } from '../../src/gui/controllers/UIUpdateController';
 
-export class MockRenderController extends RenderController {
+export class MockRenderController extends UIUpdateController {
     private renderCounter = 0;
 
     getRenderCount() {
@@ -19,7 +19,7 @@ export class MockRenderController extends RenderController {
 
 export function setupControllers(): ControllerFacade {
     const controllers = new ControllerFacade();
-    controllers.renderController = new MockRenderController();
+    controllers.updateUIController = new MockRenderController();
 
     return controllers;
 }
