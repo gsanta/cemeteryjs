@@ -1,6 +1,6 @@
-import { MonacoConfig } from '../configs/MonacoConfig';
-import { debounce } from '../../model/utils/Functions';
-import { ControllerFacade } from './ControllerFacade';
+import { MonacoConfig } from '../../../configs/MonacoConfig';
+import { debounce } from '../../../../model/utils/Functions';
+import { ControllerFacade } from '../../ControllerFacade';
 
 const THEME = 'nightshiftsTheme';
 const LANGUAGE = 'nightshiftsLanguage';

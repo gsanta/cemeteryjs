@@ -2,12 +2,12 @@ import { BitmapConfig as BitmapConfig } from './BitmapConfig';
 import { MouseController } from './MouseController';
 import { RectangleTool } from './tools/RectangleTool';
 import { PixelController } from './PixelController';
-import { ControllerFacade } from '../ControllerFacade';
+import { ControllerFacade } from '../../ControllerFacade';
 import { Tool, ToolType } from './tools/Tool';
 import { DeleteTool } from './tools/DeleteTool';
-import { SelectionModel } from '../../models/bitmap_editor/SelectionModel';
+import { SelectionModel } from './SelectionModel';
 
-export class BitmapEditor {
+export class BitmapEditorController {
     config: BitmapConfig;
     mouseController: MouseController;
     pixelController: PixelController;

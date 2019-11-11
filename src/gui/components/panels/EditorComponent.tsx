@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { WindowProperty } from '../../controllers/WindowController';
-import { EditorType } from '../../models/WindowModel';
+import { SettingsProperty } from '../../controllers/settings/SettingsController';
+import { EditorType } from '../../controllers/settings/SettingsModel';
 import { AppContext, AppContextType } from '../Context';
 import { ConnectedDropdownComponent } from '../forms/DropdownComponent';
 import { ConnectedToggleButtonComponent } from '../forms/ToggleButtonComponent';
@@ -40,12 +40,12 @@ export class EditorComponent extends React.Component<{}> {
     }
 
     private renderContent(context: AppContextType): JSX.Element {
-        const windowModel = context.controllers.windowModel;
+        const windowModel = context.controllers.settingsModel;
         {return windowModel.isWorldItemTypeEditorOpen ? this.renderEditorWithPropertiesPanel(context) : this.renderOnlyEditor(context)}
     }
 
     private renderEditorWithPropertiesPanel(context: AppContextType): JSX.Element {
-        const windowModel = context.controllers.windowModel;
+        const windowModel = context.controllers.settingsModel;
 
         return (
             <HorizontalSplitComponent onChange={() => this.onResize()}>
@@ -59,7 +59,7 @@ export class EditorComponent extends React.Component<{}> {
     }
 
     private renderOnlyEditor(context: AppContextType): JSX.Element {
-        const windowModel = context.controllers.windowModel;
+        const windowModel = context.controllers.settingsModel;
 
         return (
             <div className="editor">
@@ -78,16 +78,16 @@ export class EditorComponent extends React.Component<{}> {
     }
 
     private renderToolbar(context: AppContextType): JSX.Element {
-        const windowController = context.controllers.windowController;
+        const windowController = context.controllers.settingsController;
 
         return (
             <ToolbarComponent>
                 <GlobalToolbarComponent>
                     <ConnectedDropdownComponent
                         values={[EditorType.BITMAP_EDITOR, EditorType.TEXT_EDITOR]}
-                        currentValue={windowController.getVal(WindowProperty.EDITOR) as string}
+                        currentValue={windowController.getVal(SettingsProperty.EDITOR) as string}
                         formController={windowController}
-                        propertyName={WindowProperty.EDITOR}
+                        propertyName={SettingsProperty.EDITOR}
                         propertyType='string'
                     />
                 </GlobalToolbarComponent>
@@ -95,9 +95,9 @@ export class EditorComponent extends React.Component<{}> {
                 <GlobalToolbarComponent>
                     <ConnectedToggleButtonComponent
                         text="Show Properties"
-                        isActive={windowController.getVal(WindowProperty.IS_WORLD_ITEM_TYPE_EDITOR_OPEN) as boolean}
+                        isActive={windowController.getVal(SettingsProperty.IS_WORLD_ITEM_TYPE_EDITOR_OPEN) as boolean}
                         formController={windowController}
-                        propertyName={WindowProperty.IS_WORLD_ITEM_TYPE_EDITOR_OPEN}
+                        propertyName={SettingsProperty.IS_WORLD_ITEM_TYPE_EDITOR_OPEN}
                         propertyType="boolean"
                     />
                 </GlobalToolbarComponent>
@@ -106,12 +106,12 @@ export class EditorComponent extends React.Component<{}> {
     }
 
     private onResize() {
-        if (this.context.controllers.windowModel.activeEditor === EditorType.TEXT_EDITOR) {
+        if (this.context.controllers.settingsModel.activeEditor === EditorType.TEXT_EDITOR) {
             this.context.controllers.textEditorController.resize();
         }
     }
 
     private renderEditorSpecificToolbar(context: AppContextType): JSX.Element {
-        return context.controllers.windowModel.activeEditor === EditorType.BITMAP_EDITOR ? <BitmapEditorToolbar/> : null;
+        return context.controllers.settingsModel.activeEditor === EditorType.BITMAP_EDITOR ? <BitmapEditorToolbar/> : null;
     }
 }

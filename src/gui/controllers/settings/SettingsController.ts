@@ -1,0 +1,67 @@
+import { IFormController } from '../IFormController';
+import { ControllerFacade } from '../ControllerFacade';
+import { EditorType, SettingsModel } from './SettingsModel';
+
+export enum SettingsProperty {
+    EDITOR = 'editor',
+    IS_WORLD_ITEM_TYPE_EDITOR_OPEN = 'is-properties-window-open'
+}
+
+export class SettingsController extends IFormController<SettingsProperty> {
+    focusedPropType: SettingsProperty;
+
+    private tempString: string;
+    private tempBoolean: boolean;
+    private controllers: ControllerFacade;
+
+    constructor(controllers: ControllerFacade) {
+        super();
+        this.controllers = controllers;
+    }
+
+    focusProp(propType: SettingsProperty) {
+        this.focusedPropType = propType;
+        switch(this.focusedPropType) {
+            case SettingsProperty.EDITOR:
+                this.tempString = this.controllers.settingsModel.activeEditor;
+                break;
+            case SettingsProperty.IS_WORLD_ITEM_TYPE_EDITOR_OPEN:
+                this.tempBoolean = this.controllers.settingsModel.isWorldItemTypeEditorOpen;
+                break;
+        }
+    }
+
+    updateStringProp(value: string) {
+        this.tempString = value;        
+        this.controllers.updateUIController.updateUI();       
+    }
+
+    updateBooleanProp(value: boolean) {
+        this.tempBoolean = value;        
+        this.controllers.updateUIController.updateUI();       
+    }
+
+
+    commitProp() {
+        switch(this.focusedPropType) {
+            case SettingsProperty.EDITOR:
+                this.controllers.settingsModel.activeEditor = <EditorType> this.tempString;
+                break;
+            case SettingsProperty.IS_WORLD_ITEM_TYPE_EDITOR_OPEN:
+                this.controllers.settingsModel.isWorldItemTypeEditorOpen = this.tempBoolean;
+                break;    
+        }
+
+        this.controllers.updateUIController.updateUI();
+    }
+
+    getVal(propType: SettingsProperty) {
+        switch(propType) {
+            case SettingsProperty.EDITOR:
+                return this.focusedPropType === propType ? this.tempString : this.controllers.settingsModel.activeEditor;
+            case SettingsProperty.IS_WORLD_ITEM_TYPE_EDITOR_OPEN:
+                return this.focusedPropType === propType ? this.tempBoolean : this.controllers.settingsModel.isWorldItemTypeEditorOpen;
+
+        }
+    }
+}

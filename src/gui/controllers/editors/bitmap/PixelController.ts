@@ -1,6 +1,6 @@
 import { Point } from '@nightshifts.inc/geometry';
-import { Rectangle } from '../../models/bitmap_editor/Rectangle';
-import { BitmapEditor } from './BitmapEditor';
+import { Rectangle } from './Rectangle';
+import { BitmapEditorController } from './BitmapEditorController';
 
 export interface Pixel {
     type: string;
@@ -11,9 +11,9 @@ export interface Pixel {
 export class PixelController {
     bitMap: Map<number, Pixel> = new Map();
     pixels: Pixel[] = [];
-    private bitmapEditor: BitmapEditor;
+    private bitmapEditor: BitmapEditorController;
 
-    constructor(controllers: BitmapEditor) {
+    constructor(controllers: BitmapEditorController) {
         this.bitmapEditor = controllers;
     }
 

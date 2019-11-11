@@ -1,5 +1,5 @@
 import { Point } from '@nightshifts.inc/geometry';
-import { BitmapEditor } from './BitmapEditor';
+import { BitmapEditorController } from './BitmapEditorController';
 
 function calcOffsetFromDom(bitmapEditorId: string): Point {
     if (typeof document !== 'undefined') {
@@ -14,7 +14,7 @@ function calcOffsetFromDom(bitmapEditorId: string): Point {
 }
 
 export class MouseController {
-    private bitmapEditor: BitmapEditor;
+    private bitmapEditor: BitmapEditorController;
     isDown = false;
     isDrag = false;
     downPoint: Point;
@@ -22,7 +22,7 @@ export class MouseController {
 
     private calcOffset: (id: string) => Point;
 
-    constructor(bitmapEditor: BitmapEditor, calcOffset: (id: string) => Point = calcOffsetFromDom) {
+    constructor(bitmapEditor: BitmapEditorController, calcOffset: (id: string) => Point = calcOffsetFromDom) {
         this.bitmapEditor = bitmapEditor;
         this.calcOffset = calcOffset;
     }

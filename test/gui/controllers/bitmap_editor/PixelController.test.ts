@@ -5,7 +5,7 @@ import { Point } from '@nightshifts.inc/geometry';
 it ('Add new pixels based on their canvas position', () => {
     const controllers = setupControllers();
 
-    const bitmapEditor = controllers.bitmapEditor;
+    const bitmapEditor = controllers.bitmapEditorController;
     bitmapEditor.config.canvasDimensions = new Point(100, 50);
     bitmapEditor.config.pixelSize = 10;
 

@@ -8,7 +8,7 @@ import { ConnectedInputComponent, InputComponent } from '../forms/InputComponent
 import { LabeledComponent } from '../forms/LabeledComponent';
 import { MaterialsComponent } from './definition/MaterialsComponent';
 import './PropertyEditorComponent.scss';
-import { EditorType } from '../../models/WindowModel';
+import { EditorType } from '../../controllers/settings/SettingsModel';
 
 const chars = [
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
@@ -25,7 +25,7 @@ export class PropertyEditorComponent extends React.Component<{}> {
     render() {
         const definitionController = this.context.controllers.worldItemDefinitionController;
         const meshDescriptors = this.context.controllers.worldItemDefinitionController.getModel().types;
-        const windowModel = this.context.controllers.windowModel;
+        const windowModel = this.context.controllers.settingsModel;
 
         const names = meshDescriptors.map(def => (
             <div>

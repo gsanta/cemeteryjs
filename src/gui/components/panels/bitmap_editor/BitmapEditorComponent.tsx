@@ -41,19 +41,19 @@ export class BitmapEditorComponent extends React.Component<any> {
     }
 
     private renderContent(context: AppContextType): JSX.Element {
-        const bitmapConfig = context.controllers.bitmapEditor.config;
-        const horizontalLines = this.renderLines(context.controllers.bitmapEditor.config.horizontalHelperLines);
-        const verticalLines = this.renderLines(context.controllers.bitmapEditor.config.verticalHelperLines);
+        const bitmapConfig = context.controllers.bitmapEditorController.config;
+        const horizontalLines = this.renderLines(context.controllers.bitmapEditorController.config.horizontalHelperLines);
+        const verticalLines = this.renderLines(context.controllers.bitmapEditorController.config.verticalHelperLines);
         
         return (
-            <EditorComponent id={context.controllers.bitmapEditor.id}>
+            <EditorComponent id={context.controllers.bitmapEditorController.id}>
                 <CanvasComponent
                     w={bitmapConfig.canvasDimensions.x}
                     h={bitmapConfig.canvasDimensions.y}
-                    onMouseDown={(e) => context.controllers.bitmapEditor.mouseController.onMouseDown(e.nativeEvent)}
-                    onMouseMove={(e) => context.controllers.bitmapEditor.mouseController.onMouseMove(e.nativeEvent)}
-                    onMouseUp={(e) => context.controllers.bitmapEditor.mouseController.onMouseUp(e.nativeEvent)}
-                    onMouseLeave={(e) => context.controllers.bitmapEditor.mouseController.onMouseOut(e.nativeEvent)}
+                    onMouseDown={(e) => context.controllers.bitmapEditorController.mouseController.onMouseDown(e.nativeEvent)}
+                    onMouseMove={(e) => context.controllers.bitmapEditorController.mouseController.onMouseMove(e.nativeEvent)}
+                    onMouseUp={(e) => context.controllers.bitmapEditorController.mouseController.onMouseUp(e.nativeEvent)}
+                    onMouseLeave={(e) => context.controllers.bitmapEditorController.mouseController.onMouseOut(e.nativeEvent)}
                     data-wg-pixel-size={bitmapConfig.pixelSize}
                     data-wg-width={bitmapConfig.canvasDimensions.x}
                     data-wg-height={bitmapConfig.canvasDimensions.y}
@@ -79,11 +79,11 @@ export class BitmapEditorComponent extends React.Component<any> {
     }
 
     private renderPixels(context: AppContextType): JSX.Element[] {
-        const pixelController = context.controllers.bitmapEditor.pixelController;
+        const pixelController = context.controllers.bitmapEditorController.pixelController;
         const worldItemTypeModel = context.controllers.worldItemDefinitionModel;
 
         return Array.from(pixelController.bitMap).map(([index, pixel]) => {
-            const pixelSize = context.controllers.bitmapEditor.config.pixelSize;
+            const pixelSize = context.controllers.bitmapEditorController.config.pixelSize;
             const pos = pixelController.getPixelPosition(index).mul(pixelSize);
             const color = worldItemTypeModel.getByTypeName(pixel.type).color;
 
@@ -103,7 +103,7 @@ export class BitmapEditorComponent extends React.Component<any> {
     }
 
     private renderSelection(): JSX.Element {
-        const selectionModel = this.context.controllers.bitmapEditor.selectionModel;
+        const selectionModel = this.context.controllers.bitmapEditorController.selectionModel;
 
         if (selectionModel.isVisible && selectionModel.topLeftPoint && selectionModel.bottomRightPoint) {
             console.log('selection')

@@ -4,7 +4,7 @@ export enum EditorType {
     BITMAP_EDITOR = 'bitmap-editor'
 }
 
-export class WindowModel {
+export class SettingsModel {
     activeEditor: EditorType = EditorType.BITMAP_EDITOR;
     isWorldItemTypeEditorOpen = true;
 }

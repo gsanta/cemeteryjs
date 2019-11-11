@@ -1,6 +1,6 @@
 import { ControllerFacade } from "./ControllerFacade";
-import { FormController } from './FormController';
-import { cloneWorldItemType, WorldItemDefinitionModel } from '../models/WorldItemDefinitionModel';
+import { IFormController } from './IFormController';
+import { cloneWorldItemType, WorldItemDefinitionModel } from './WorldItemDefinitionModel';
 
 export enum WorldItemTypeProperty {
     TYPE_NAME = 'typeName',
@@ -14,7 +14,7 @@ export enum WorldItemTypeProperty {
     COLOR = 'color'
 }
 
-export class WorldItemDefinitionController extends FormController<WorldItemTypeProperty> {
+export class WorldItemDefinitionController extends IFormController<WorldItemTypeProperty> {
     shapes: string[] = ['rect'];
 
     private controllers: ControllerFacade;

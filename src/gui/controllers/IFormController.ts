@@ -1,5 +1,5 @@
 
-export abstract class FormController<P> {
+export abstract class IFormController<P> {
     focusProp(propType: P) {};
     getFocusedProp(): P { return null; };
     updateStringProp(value: string) {}

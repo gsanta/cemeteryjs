@@ -1,5 +1,5 @@
 import { Point, Segment } from "@nightshifts.inc/geometry";
-import { range } from "../../../model/utils/Functions";
+import { range } from "../../../../model/utils/Functions";
 
 export class BitmapConfig {
     canvasDimensions = new Point(1500, 1000);

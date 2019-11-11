@@ -1,9 +1,9 @@
-import { BitmapEditor } from '../BitmapEditor';
+import { BitmapEditorController } from '../BitmapEditorController';
 import { Tool, ToolType } from './Tool';
 import { AbstractSelectionTool } from './AbstractSelectionTool';
 
 export class RectangleTool extends AbstractSelectionTool {
-    constructor(bitmapEditor: BitmapEditor) {
+    constructor(bitmapEditor: BitmapEditorController) {
         super(bitmapEditor, ToolType.RECTANGLE, false);
     }
 

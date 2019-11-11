@@ -1,9 +1,9 @@
-import { BitmapEditor } from '../BitmapEditor';
+import { BitmapEditorController } from '../BitmapEditorController';
 import { AbstractSelectionTool } from './AbstractSelectionTool';
 import { ToolType } from './Tool';
 
 export class DeleteTool extends AbstractSelectionTool {
-    constructor(bitmapEditor: BitmapEditor) {
+    constructor(bitmapEditor: BitmapEditorController) {
         super(bitmapEditor, ToolType.DELETE, true);
     }
 

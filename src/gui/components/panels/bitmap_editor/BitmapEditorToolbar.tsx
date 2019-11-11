@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ToolType } from '../../../controllers/bitmap_editor/tools/Tool';
+import { ToolType } from '../../../controllers/editors/bitmap/tools/Tool';
 import { AppContext, AppContextType } from '../../Context';
 import { BrushIconComponent } from '../../icons/BrushIconComponent';
 import { DeleteIconComponent } from '../../icons/DeleteIconComponent';
@@ -18,10 +18,10 @@ export class BitmapEditorToolbar extends React.Component<any> {
     }
 
     private isToolActive(toolType: ToolType) {
-        return this.context.controllers.bitmapEditor.activeTool.type === toolType;
+        return this.context.controllers.bitmapEditorController.activeTool.type === toolType;
     }
 
     private activateTool(toolType: ToolType) {
-        this.context.controllers.bitmapEditor.setActiveTool(toolType);
+        this.context.controllers.bitmapEditorController.setActiveTool(toolType);
     }
 }

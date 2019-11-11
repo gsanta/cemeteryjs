@@ -1,5 +1,5 @@
 import { WorldItemDefinition } from '../../WorldItemDefinition';
-import { ControllerFacade } from '../controllers/ControllerFacade';
+import { ControllerFacade } from './ControllerFacade';
 
 export function cloneWorldItemType(descriptor: WorldItemDefinition) {
     const clone = {...descriptor};
