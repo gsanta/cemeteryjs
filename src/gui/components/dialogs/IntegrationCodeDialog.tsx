@@ -25,7 +25,7 @@ export class IntegrationCodeDialog extends React.Component<IntegrationCodeDialog
                                 <CloseIconComponent onClick={this.props.onClose}/>
                             </div>
                             <div className="dialog-body">
-                                <pre>{value.controllers.worldMapController.getMap()}</pre>
+                                <pre>{}</pre>
                             </div>
                         </div>
                     </div>

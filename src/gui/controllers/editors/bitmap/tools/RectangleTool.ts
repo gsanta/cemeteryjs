@@ -15,25 +15,25 @@ export class RectangleTool extends AbstractSelectionTool {
     drag() {
         super.drag();
         
-        this.bitmapEditor.pixelController.removePreviews();
+        this.bitmapEditor.model.pixels.removePreviews();
         const type = this.bitmapEditor.controllers.worldItemDefinitionController.getModel().selectedType.typeName;
         const positions = this.getPositionsInSelection();
-        positions.forEach(pos => this.bitmapEditor.pixelController.addPixel(pos, type, true));
+        positions.forEach(pos => this.bitmapEditor.model.pixels.addPixel(pos, type, true));
 
         this.bitmapEditor.updateUI();
     }
 
     up() {
         if (this.bitmapEditor.mouseController.isDrag) {
-            this.bitmapEditor.pixelController.commitPreviews();
+            this.bitmapEditor.model.pixels.commitPreviews();
         } else {
             const type = this.bitmapEditor.controllers.worldItemDefinitionController.getModel().selectedType.typeName;
-            this.bitmapEditor.pixelController.addPixel(this.bitmapEditor.mouseController.movePoint, type, false);
+            this.bitmapEditor.model.pixels.addPixel(this.bitmapEditor.mouseController.movePoint, type, false);
         }
 
         super.up();
 
-        this.bitmapEditor.updateRenderer();
+        this.bitmapEditor.setRendererDirty();
         this.bitmapEditor.updateUI();
     }
 }

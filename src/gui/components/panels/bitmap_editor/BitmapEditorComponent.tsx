@@ -41,12 +41,12 @@ export class BitmapEditorComponent extends React.Component<any> {
     }
 
     private renderContent(context: AppContextType): JSX.Element {
-        const bitmapConfig = context.controllers.bitmapEditorController.config;
-        const horizontalLines = this.renderLines(context.controllers.bitmapEditorController.config.horizontalHelperLines);
-        const verticalLines = this.renderLines(context.controllers.bitmapEditorController.config.verticalHelperLines);
+        const bitmapConfig = context.controllers.bitmapEditorController.model.config;
+        const horizontalLines = this.renderLines(context.controllers.bitmapEditorController.model.config.horizontalHelperLines);
+        const verticalLines = this.renderLines(context.controllers.bitmapEditorController.model.config.verticalHelperLines);
         
         return (
-            <EditorComponent id={context.controllers.bitmapEditorController.id}>
+            <EditorComponent id={context.controllers.bitmapEditorController.getId()}>
                 <CanvasComponent
                     w={bitmapConfig.canvasDimensions.x}
                     h={bitmapConfig.canvasDimensions.y}
@@ -63,8 +63,8 @@ export class BitmapEditorComponent extends React.Component<any> {
                     <g className="bitmap-layer">
                         {this.renderMetaData()}
                         {this.renderPixels(context)}
-                        {this.renderSelection()}
                     </g>
+                    {this.renderSelection()}
                 </CanvasComponent>
             </EditorComponent>
         )
@@ -79,11 +79,11 @@ export class BitmapEditorComponent extends React.Component<any> {
     }
 
     private renderPixels(context: AppContextType): JSX.Element[] {
-        const pixelController = context.controllers.bitmapEditorController.pixelController;
+        const pixelController = context.controllers.bitmapEditorController.model.pixels;
         const worldItemTypeModel = context.controllers.worldItemDefinitionModel;
 
         return Array.from(pixelController.bitMap).map(([index, pixel]) => {
-            const pixelSize = context.controllers.bitmapEditorController.config.pixelSize;
+            const pixelSize = context.controllers.bitmapEditorController.model.config.pixelSize;
             const pos = pixelController.getPixelPosition(index).mul(pixelSize);
             const color = worldItemTypeModel.getByTypeName(pixel.type).color;
 

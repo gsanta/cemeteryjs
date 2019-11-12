@@ -1,29 +1,33 @@
 import { BitmapConfig as BitmapConfig } from './BitmapConfig';
 import { MouseController } from './MouseController';
 import { RectangleTool } from './tools/RectangleTool';
-import { PixelController } from './PixelController';
+import { PixelModel } from './PixelModel';
 import { ControllerFacade } from '../../ControllerFacade';
 import { Tool, ToolType } from './tools/Tool';
 import { DeleteTool } from './tools/DeleteTool';
 import { SelectionModel } from './SelectionModel';
+import { IEditorController } from '../IEditorController';
+import { BitmapEditorModel } from './BitmapEditorModel';
 
-export class BitmapEditorController {
-    config: BitmapConfig;
+export class BitmapEditorController implements IEditorController {
+    static id = 'bitmap-editor';
     mouseController: MouseController;
-    pixelController: PixelController;
     activeTool: Tool;
     tools: Tool[];
-    id: string;
     controllers: ControllerFacade;
+    model: BitmapEditorModel;
+
+    configModel: BitmapConfig;
+    pixelModel: PixelModel;
 
     selectionModel: SelectionModel;
 
     constructor(controllers: ControllerFacade) {
         this.selectionModel = new SelectionModel();
+        this.configModel = new BitmapConfig();
+        this.pixelModel = new PixelModel(this.configModel);
         
-        this.config = new BitmapConfig;
         this.mouseController = new MouseController(this);
-        this.pixelController = new PixelController(this);
         this.controllers = controllers;
 
         this.tools = [
@@ -32,20 +36,28 @@ export class BitmapEditorController {
         ];
 
         this.activeTool = this.tools[0];
-
-        this.id = 'bitmap-editor';
     }
 
     updateUI() {
         this.controllers.updateUIController.updateUI();
     }
 
-    updateRenderer() {
+    setRendererDirty() {
         this.controllers.rendererController.isDirty = true;
     }
 
     setActiveTool(toolType: ToolType) {
         this.activeTool = this.tools.find(tool => tool.type === toolType);
         this.updateUI();
+    }
+
+    getId() {
+        return BitmapEditorController.id;
+    }
+
+    resize(): void {};
+
+    getModel() {
+        return this.controllers.bitmapEditorModel;
     }
 }

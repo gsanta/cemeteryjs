@@ -1,4 +1,5 @@
 import { ControllerFacade } from "../../../src/gui/controllers/ControllerFacade";
+import { FileFormat } from '../../../src/WorldGenerator';
 
 
 const testMap = 
@@ -59,7 +60,7 @@ const testWorldItemTypes = [
     }
 ] 
 
-export function setupControllers(map = testMap, meshDescriptors = testWorldItemTypes): ControllerFacade {
+export function setupControllers(map = testMap, fileFormat: FileFormat, meshDescriptors = testWorldItemTypes): ControllerFacade {
     const controllers = new ControllerFacade();
     controllers.textEditorController.text = map;
     controllers.worldItemDefinitionController.getModel().types = meshDescriptors;

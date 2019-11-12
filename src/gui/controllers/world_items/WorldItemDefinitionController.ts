@@ -1,5 +1,5 @@
-import { ControllerFacade } from "./ControllerFacade";
-import { IFormController } from './IFormController';
+import { ControllerFacade } from "../ControllerFacade";
+import { IFormController } from '../IFormController';
 import { cloneWorldItemType, WorldItemDefinitionModel } from './WorldItemDefinitionModel';
 
 export enum WorldItemTypeProperty {

@@ -1,6 +1,7 @@
 import { MonacoConfig } from '../../../configs/MonacoConfig';
 import { debounce } from '../../../../model/utils/Functions';
 import { ControllerFacade } from '../../ControllerFacade';
+import { IEditorController } from '../IEditorController';
 
 const THEME = 'nightshiftsTheme';
 const LANGUAGE = 'nightshiftsLanguage';
@@ -31,7 +32,8 @@ const initialText =
 *WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWIIIIWWWWWWWWWWWWWIIIWWWWWWWWWWWWWWIIIIWWWWWWWWWWWWWIIIWWWWWWWWWWWWWWIIIIWWWWWWWWWWWWWIIIWWWWWWWWWWW*
 *****************************************************************************************************************************************`;
 
-export class TextEditorController {
+export class TextEditorController implements IEditorController {
+    static id = 'text-editor';
     editor: any;
     text: string = initialText;
     private controllers: ControllerFacade;
@@ -79,12 +81,24 @@ export class TextEditorController {
         }
     }
 
+    setText(text: string) {
+        this.text = text;
+        this.controllers.updateUIController.updateUI();
+    }
+
+    getEditorContent(): string {
+        return null;
+    }
+
+    getId(): string {
+        return TextEditorController.id;
+    }
+
     resize() {
         this.editor.layout();
     }
 
-    setText(text: string) {
-        this.text = text;
-        this.controllers.updateUIController.updateUI();
+    getModel() {
+        return this.controllers.textEditorModel;
     }
 }

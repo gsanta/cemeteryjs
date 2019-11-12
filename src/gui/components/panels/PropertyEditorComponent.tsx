@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { WorldItemDefinitionController, WorldItemTypeProperty } from '../../controllers/WorldItemDefinitionController';
+import { WorldItemDefinitionController, WorldItemTypeProperty } from '../../controllers/world_items/WorldItemDefinitionController';
 import { AppContext, AppContextType } from '../Context';
 import { CheckboxComponent } from '../forms/CheckboxComponent';
 import { ConnectedColorPicker } from '../forms/ColorPicker';
@@ -8,7 +8,7 @@ import { ConnectedInputComponent, InputComponent } from '../forms/InputComponent
 import { LabeledComponent } from '../forms/LabeledComponent';
 import { MaterialsComponent } from './definition/MaterialsComponent';
 import './PropertyEditorComponent.scss';
-import { EditorType } from '../../controllers/settings/SettingsModel';
+import { BitmapEditorController } from '../../controllers/editors/bitmap/BitmapEditorController';
 
 const chars = [
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
@@ -51,7 +51,7 @@ export class PropertyEditorComponent extends React.Component<{}> {
                 </div>
                 <div className="properties-column">
                     <div className="property-row">
-                        {windowModel.activeEditor === EditorType.BITMAP_EDITOR ? this.renderColorChooser(definitionController) : this.renderCharacterDropdown(definitionController)}
+                        {windowModel.activeEditor.getId() === BitmapEditorController.id ? this.renderColorChooser(definitionController) : this.renderCharacterDropdown(definitionController)}
                         <CheckboxComponent 
                             isSelected={definitionController.getVal(WorldItemTypeProperty.IS_BORDER) as boolean}
                             formController={definitionController}

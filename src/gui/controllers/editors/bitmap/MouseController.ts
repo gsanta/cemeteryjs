@@ -54,7 +54,7 @@ export class MouseController {
     }
 
     private getPointFromEvent(e: MouseEvent): Point {
-        const offset = this.calcOffset(this.bitmapEditor.id);
+        const offset = this.calcOffset(this.bitmapEditor.getId());
 
         const x: number = (e ? e.x - offset.x : 0);
         const y: number = (e ? e.y - offset.y : 0);

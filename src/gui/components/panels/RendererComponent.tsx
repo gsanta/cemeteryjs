@@ -16,12 +16,13 @@ export class RendererComponent extends React.Component<{}> {
 
     componentDidMount() {
         this.context.controllers.rendererController.init(this.canvasRef.current);
-        this.context.controllers.rendererController.updateCanvas(this.context.controllers.worldMapController.getMap());
+        const worldMap = this.context.controllers.settingsModel.activeEditor.getModel().getFile(this.context.controllers.worldItemDefinitionModel);
+        this.context.controllers.rendererController.updateCanvas(worldMap);
     }
 
     componentWillReceiveProps() {
         if (this.context.controllers.rendererController.isDirty) {
-            this.worldMap = this.context.controllers.worldMapController.getMap();
+            this.worldMap = this.context.controllers.settingsModel.activeEditor.getModel().getFile(this.context.controllers.worldItemDefinitionModel);
             this.context.controllers.rendererController.updateCanvas(this.worldMap);
             this.context.controllers.rendererController.isDirty = false;
         }

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { SettingsProperty } from '../../controllers/settings/SettingsController';
-import { EditorType } from '../../controllers/settings/SettingsModel';
 import { AppContext, AppContextType } from '../Context';
 import { ConnectedDropdownComponent } from '../forms/DropdownComponent';
 import { ConnectedToggleButtonComponent } from '../forms/ToggleButtonComponent';
@@ -12,6 +11,8 @@ import { BitmapEditorToolbar } from './bitmap_editor/BitmapEditorToolbar';
 import './EditorComponent.scss';
 import { PropertyEditorComponent } from './PropertyEditorComponent';
 import { TextEditorComponent } from './TextEditorComponent';
+import { BitmapEditorController } from '../../controllers/editors/bitmap/BitmapEditorController';
+import { TextEditorController } from '../../controllers/editors/text/TextEditorController';
 
 const GlobalToolbarComponent = styled.div`
     margin-right: 20px;
@@ -51,7 +52,7 @@ export class EditorComponent extends React.Component<{}> {
             <HorizontalSplitComponent onChange={() => this.onResize()}>
                 <div className="editor">
                     {this.renderToolbar(context)}
-                    {windowModel.activeEditor === EditorType.BITMAP_EDITOR ? this.renderDrawEditor(context) : this.renderTextEditor(context)}
+                    {windowModel.activeEditor.getId() === BitmapEditorController.id ? this.renderDrawEditor(context) : this.renderTextEditor(context)}
                 </div>
                 <PropertyEditorComponent/>
             </HorizontalSplitComponent>
@@ -64,7 +65,7 @@ export class EditorComponent extends React.Component<{}> {
         return (
             <div className="editor">
                 {this.renderToolbar(context)}
-                {windowModel.activeEditor === EditorType.BITMAP_EDITOR ? this.renderDrawEditor(context) : this.renderTextEditor(context)}
+                {windowModel.activeEditor.getId() === BitmapEditorController.id ? this.renderDrawEditor(context) : this.renderTextEditor(context)}
             </div>
         );
     }
@@ -84,7 +85,7 @@ export class EditorComponent extends React.Component<{}> {
             <ToolbarComponent>
                 <GlobalToolbarComponent>
                     <ConnectedDropdownComponent
-                        values={[EditorType.BITMAP_EDITOR, EditorType.TEXT_EDITOR]}
+                        values={context.controllers.editors.map(editor => editor.getId())}
                         currentValue={windowController.getVal(SettingsProperty.EDITOR) as string}
                         formController={windowController}
                         propertyName={SettingsProperty.EDITOR}
@@ -106,12 +107,12 @@ export class EditorComponent extends React.Component<{}> {
     }
 
     private onResize() {
-        if (this.context.controllers.settingsModel.activeEditor === EditorType.TEXT_EDITOR) {
+        if (this.context.controllers.settingsModel.activeEditor.getId() === TextEditorController.id) {
             this.context.controllers.textEditorController.resize();
         }
     }
 
     private renderEditorSpecificToolbar(context: AppContextType): JSX.Element {
-        return context.controllers.settingsModel.activeEditor === EditorType.BITMAP_EDITOR ? <BitmapEditorToolbar/> : null;
+        return context.controllers.settingsModel.activeEditor.getId() === BitmapEditorController.id ? <BitmapEditorToolbar/> : null;
     }
 }

@@ -1,6 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as React from 'react';
-import { EditorType } from '../controllers/settings/SettingsModel';
 import './App.scss';
 import { AppContext, AppContextType } from './Context';
 import { AboutDialog } from './dialogs/AboutDialog';
@@ -60,8 +59,6 @@ export class App extends React.Component<{}, AppState> {
 
     private resize() {
         this.context.controllers.rendererController.engine.resize();
-        if (this.context.controllers.settingsModel.activeEditor === EditorType.TEXT_EDITOR) {
-            this.context.controllers.textEditorController.resize();
-        }
+        this.context.controllers.settingsModel.activeEditor.resize();
     }
 }

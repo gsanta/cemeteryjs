@@ -21,10 +21,10 @@ export class DeleteTool extends AbstractSelectionTool {
         if (this.bitmapEditor.mouseController.isDrag) {
             const pixels = this.getPixelsInSelection();
 
-            pixels.forEach(pixel => this.bitmapEditor.pixelController.removePixelAtIndex(pixel.index));
+            pixels.forEach(pixel => this.bitmapEditor.model.pixels.removePixelAtIndex(pixel.index));
         } else {
-            const pixel = this.bitmapEditor.pixelController.getPixelAtCoordinate(this.bitmapEditor.mouseController.movePoint);
-            pixel && this.bitmapEditor.pixelController.removePixelAtIndex(pixel.index);
+            const pixel = this.bitmapEditor.model.pixels.getPixelAtCoordinate(this.bitmapEditor.mouseController.movePoint);
+            pixel && this.bitmapEditor.model.pixels.removePixelAtIndex(pixel.index);
         }
 
         super.up();

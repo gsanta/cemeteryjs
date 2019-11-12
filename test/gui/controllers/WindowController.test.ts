@@ -1,47 +1,48 @@
+import { SettingsProperty } from '../../../src/gui/controllers/settings/SettingsController';
 import { setupControllers } from "./controllerTestUtils";
-import { SettingsController, SettingsProperty } from '../../../src/gui/controllers/settings/SettingsController';
-import { EditorType } from '../../../src/gui/controllers/settings/SettingsModel';
+import { BitmapEditorController } from '../../../src/gui/controllers/editors/bitmap/BitmapEditorController';
+import { TextEditorController } from '../../../src/gui/controllers/editors/text/TextEditorController';
 
 it ("Update the 'activeEditor' prop", () => {
     const controllers = setupControllers();
 
-    const windowController = controllers.settingsController;
-    const windowModel = controllers.settingsModel;
+    const settingsController = controllers.settingsController;
+    const settingsModel = controllers.settingsModel;
 
-    windowController.focusProp(SettingsProperty.EDITOR);
+    settingsController.focusProp(SettingsProperty.EDITOR);
     
-    expect(windowController.getVal(SettingsProperty.EDITOR)).toEqual(EditorType.BITMAP_EDITOR);
-    expect(windowModel.activeEditor).toEqual(EditorType.BITMAP_EDITOR);
+    expect(settingsController.getVal(SettingsProperty.EDITOR)).toEqual(BitmapEditorController.id);
+    expect(settingsModel.activeEditor.getId()).toEqual(BitmapEditorController.id);
 
-    windowController.updateStringProp(EditorType.TEXT_EDITOR);
+    settingsController.updateStringProp(TextEditorController.id);
 
-    expect(windowController.getVal(SettingsProperty.EDITOR)).toEqual(EditorType.TEXT_EDITOR);
-    expect(windowModel.activeEditor).toEqual(EditorType.BITMAP_EDITOR);
+    expect(settingsController.getVal(SettingsProperty.EDITOR)).toEqual(TextEditorController.id);
+    expect(settingsModel.activeEditor.getId()).toEqual(BitmapEditorController.id);
 
-    windowController.commitProp();
+    settingsController.commitProp();
 
-    expect(windowController.getVal(SettingsProperty.EDITOR)).toEqual(EditorType.TEXT_EDITOR);
-    expect(windowModel.activeEditor).toEqual(EditorType.TEXT_EDITOR);
+    expect(settingsController.getVal(SettingsProperty.EDITOR)).toEqual(TextEditorController.id);
+    expect(settingsModel.activeEditor.getId()).toEqual(TextEditorController.id);
 });
 
 it ("Update the 'isWorldItemTypeEditorOpen' prop", () => {
     const controllers = setupControllers();
 
-    const windowController = controllers.settingsController;
-    const windowModel = controllers.settingsModel;
+    const settingsController = controllers.settingsController;
+    const settingsModel = controllers.settingsModel;
 
-    windowController.focusProp(SettingsProperty.IS_WORLD_ITEM_TYPE_EDITOR_OPEN);
+    settingsController.focusProp(SettingsProperty.IS_WORLD_ITEM_TYPE_EDITOR_OPEN);
     
-    expect(windowController.getVal(SettingsProperty.IS_WORLD_ITEM_TYPE_EDITOR_OPEN)).toEqual(true);
-    expect(windowModel.isWorldItemTypeEditorOpen).toEqual(true);
+    expect(settingsController.getVal(SettingsProperty.IS_WORLD_ITEM_TYPE_EDITOR_OPEN)).toEqual(true);
+    expect(settingsModel.isWorldItemTypeEditorOpen).toEqual(true);
 
-    windowController.updateBooleanProp(false);
+    settingsController.updateBooleanProp(false);
 
-    expect(windowController.getVal(SettingsProperty.IS_WORLD_ITEM_TYPE_EDITOR_OPEN)).toEqual(false);
-    expect(windowModel.isWorldItemTypeEditorOpen).toEqual(true);
+    expect(settingsController.getVal(SettingsProperty.IS_WORLD_ITEM_TYPE_EDITOR_OPEN)).toEqual(false);
+    expect(settingsModel.isWorldItemTypeEditorOpen).toEqual(true);
 
-    windowController.commitProp();
+    settingsController.commitProp();
 
-    expect(windowController.getVal(SettingsProperty.IS_WORLD_ITEM_TYPE_EDITOR_OPEN)).toEqual(false);
-    expect(windowModel.isWorldItemTypeEditorOpen).toEqual(false);
+    expect(settingsController.getVal(SettingsProperty.IS_WORLD_ITEM_TYPE_EDITOR_OPEN)).toEqual(false);
+    expect(settingsModel.isWorldItemTypeEditorOpen).toEqual(false);
 });

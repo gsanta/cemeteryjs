@@ -1,5 +1,5 @@
 import { setupControllers } from "./controllerTestUtils";
-import { WorldItemTypeProperty, WorldItemDefinitionController } from "../../../src/gui/controllers/WorldItemDefinitionController";
+import { WorldItemTypeProperty, WorldItemDefinitionController } from "../../../src/gui/controllers/world_items/WorldItemDefinitionController";
 import { WorldItemDefinition } from "../../../src/WorldItemDefinition";
 
 it ("Update the 'type' prop", () => {

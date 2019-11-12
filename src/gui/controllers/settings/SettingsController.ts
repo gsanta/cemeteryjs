@@ -1,6 +1,6 @@
 import { IFormController } from '../IFormController';
 import { ControllerFacade } from '../ControllerFacade';
-import { EditorType, SettingsModel } from './SettingsModel';
+import { IEditorController } from '../editors/IEditorController';
 
 export enum SettingsProperty {
     EDITOR = 'editor',
@@ -17,13 +17,14 @@ export class SettingsController extends IFormController<SettingsProperty> {
     constructor(controllers: ControllerFacade) {
         super();
         this.controllers = controllers;
+        this.controllers.settingsModel.activeEditor = this.controllers.bitmapEditorController;
     }
 
     focusProp(propType: SettingsProperty) {
         this.focusedPropType = propType;
         switch(this.focusedPropType) {
             case SettingsProperty.EDITOR:
-                this.tempString = this.controllers.settingsModel.activeEditor;
+                this.tempString = this.controllers.settingsModel.activeEditor.getId();
                 break;
             case SettingsProperty.IS_WORLD_ITEM_TYPE_EDITOR_OPEN:
                 this.tempBoolean = this.controllers.settingsModel.isWorldItemTypeEditorOpen;
@@ -45,7 +46,7 @@ export class SettingsController extends IFormController<SettingsProperty> {
     commitProp() {
         switch(this.focusedPropType) {
             case SettingsProperty.EDITOR:
-                this.controllers.settingsModel.activeEditor = <EditorType> this.tempString;
+                this.controllers.settingsModel.activeEditor = this.findEditorById(this.tempString);
                 break;
             case SettingsProperty.IS_WORLD_ITEM_TYPE_EDITOR_OPEN:
                 this.controllers.settingsModel.isWorldItemTypeEditorOpen = this.tempBoolean;
@@ -63,5 +64,9 @@ export class SettingsController extends IFormController<SettingsProperty> {
                 return this.focusedPropType === propType ? this.tempBoolean : this.controllers.settingsModel.isWorldItemTypeEditorOpen;
 
         }
+    }
+
+    private findEditorById(id: string): IEditorController {
+        return this.controllers.editors.find(editor => editor.getId() === id);
     }
 }

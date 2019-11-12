@@ -1,6 +1,7 @@
 import { Point } from '@nightshifts.inc/geometry';
 import { Rectangle } from './Rectangle';
 import { BitmapEditorController } from './BitmapEditorController';
+import { BitmapConfig } from './BitmapConfig';
 
 export interface Pixel {
     type: string;
@@ -8,13 +9,13 @@ export interface Pixel {
     isPreview: boolean;
 }
 
-export class PixelController {
+export class PixelModel {
     bitMap: Map<number, Pixel> = new Map();
     pixels: Pixel[] = [];
-    private bitmapEditor: BitmapEditorController;
+    private bitmapConfig: BitmapConfig;
 
-    constructor(controllers: BitmapEditorController) {
-        this.bitmapEditor = controllers;
+    constructor(bitmapConfig: BitmapConfig) {
+        this.bitmapConfig = bitmapConfig;
     }
 
     addPixel(coordinate: Point, type: string, isPreview: boolean) {
@@ -53,9 +54,9 @@ export class PixelController {
     }
     
     removePixelAtPoint(position: Point): void {
-        const x = Math.floor(position.x / this.bitmapEditor.config.pixelSize);
-        const y = Math.floor(position.y / this.bitmapEditor.config.pixelSize);
-        const xDim = this.bitmapEditor.config.canvasDimensions.x / this.bitmapEditor.config.pixelSize;
+        const x = Math.floor(position.x / this.bitmapConfig.pixelSize);
+        const y = Math.floor(position.y / this.bitmapConfig.pixelSize);
+        const xDim = this.bitmapConfig.canvasDimensions.x / this.bitmapConfig.pixelSize;
         const pixelIndex = y * xDim + x;
 
         const pixel = this.bitMap.get(pixelIndex);
@@ -71,8 +72,8 @@ export class PixelController {
     }
 
     getPixelPosition(pixelIndex: number): Point {
-        const canvasDimensions = this.bitmapEditor.config.canvasDimensions;
-        const pixelSize = this.bitmapEditor.config.pixelSize;
+        const canvasDimensions = this.bitmapConfig.canvasDimensions;
+        const pixelSize = this.bitmapConfig.pixelSize;
         const xDim = canvasDimensions.x / pixelSize;
 
         const x = pixelIndex % xDim;
@@ -82,7 +83,7 @@ export class PixelController {
     }
 
     getPixelsInside(rectangle: Rectangle): Pixel[] {
-        const pixelSize = this.bitmapEditor.config.pixelSize;
+        const pixelSize = this.bitmapConfig.pixelSize;
 
         return this.pixels.filter(pixel => {
             const pixelPosition = this.getPixelPosition(pixel.index).mul(pixelSize);
@@ -101,8 +102,8 @@ export class PixelController {
     }
 
     private getIndexAtCoordinate(coordinate: Point): number {
-        const canvasDimensions = this.bitmapEditor.config.canvasDimensions;
-        const pixelSize = this.bitmapEditor.config.pixelSize;
+        const canvasDimensions = this.bitmapConfig.canvasDimensions;
+        const pixelSize = this.bitmapConfig.pixelSize;
         const xPixels = canvasDimensions.x / pixelSize;
 
         const xIndex = Math.floor(coordinate.x / pixelSize);
