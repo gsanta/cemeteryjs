@@ -1,20 +1,21 @@
-import { WorldMapGraph } from '../../../WorldMapGraph';
-import * as convert from 'xml-js';
-import { WorldMapReader } from '../WorldMapReader';
-import { minBy, maxBy } from '../../utils/Functions';
 import { Point } from '@nightshifts.inc/geometry';
-import { RawWorldMapJson, ProcessedWorldMapJson, Rect } from './WorldMapJson';
+import { WorldMapGraph } from '../../../WorldMapGraph';
+import { maxBy, minBy } from '../../utils/Functions';
+import { WorldMapReader } from '../WorldMapReader';
+import { SvgPreprocessor } from './SvgPreprocessor';
+import { ProcessedWorldMapJson, Rect } from './WorldMapJson';
 
 export class SvgWorldMapReader implements WorldMapReader {
     private removeEmptyFrame: boolean;
+    private svgPreprocessor: SvgPreprocessor;
 
     constructor(removeEmptyFrame = false) {
         this.removeEmptyFrame = removeEmptyFrame;
+        this.svgPreprocessor = new SvgPreprocessor();
     }
 
     read(svg: string): WorldMapGraph {
-        const rawJson: RawWorldMapJson = JSON.parse(convert.xml2json(svg, {compact: true, spaces: 4}));
-        const processedJson = this.processRawJson(rawJson); 
+        const processedJson = this.svgPreprocessor.process(svg); 
 
         if (this.removeEmptyFrame) {
             this.removeFrame(processedJson);
@@ -24,33 +25,6 @@ export class SvgWorldMapReader implements WorldMapReader {
         processedJson.rects.forEach(rect => graph.addVertex(rect.y * processedJson.width + rect.x, rect.type));
 
         return graph;
-    }
-
-    private processRawJson(rawJson: RawWorldMapJson): ProcessedWorldMapJson {
-        const pixelSize = parseInt(rawJson.svg._attributes["data-wg-pixel-size"], 10);
-        const width = parseInt(rawJson.svg._attributes["data-wg-width"], 10) / pixelSize;
-        const height = parseInt(rawJson.svg._attributes["data-wg-height"], 10) / pixelSize;
-
-        const processedJson: ProcessedWorldMapJson = {
-            pixelSize,
-            width,
-            height,
-            rects: []
-        }
-
-        rawJson.svg.rect.forEach(rect => {
-            const type = rect._attributes["data-wg-type"];
-            const x = parseInt(rect._attributes["data-wg-x"], 10) / pixelSize;
-            const y = parseInt(rect._attributes["data-wg-y"], 10) / pixelSize;
-
-            processedJson.rects.push({
-                x,
-                y,
-                type
-            });
-        });
-
-        return processedJson;
     }
 
     private removeFrame(processedJson: ProcessedWorldMapJson) {

@@ -1,20 +1,20 @@
-import { IEditorModel } from "../IEditorModel";
 import { WorldItemDefinition } from "../../../../WorldItemDefinition";
-import { FileFormat } from "../../../../WorldGenerator";
 import { WorldItemDefinitionModel } from "../../world_items/WorldItemDefinitionModel";
+import { IEditorWriter } from '../IEditorWriter';
+import { TextEditorController } from './TextEditorController';
 
-export class TextEditorModel implements IEditorModel {
-    private editorContent: string;
+export class TextEditorWriter implements IEditorWriter {
+    private textEditorController: TextEditorController;
 
-    setEditorContent(editorContent: string): void {
-        this.editorContent = editorContent;
+    constructor(textEditorController: TextEditorController) {
+        this.textEditorController = textEditorController;
     }
 
-    getFileFormat(): FileFormat {
-        return FileFormat.TEXT;
+    write(worldItemDefinitionModel: WorldItemDefinitionModel): string {
+        return this.createFile(worldItemDefinitionModel);
     }
 
-    getFile(worldItemDefinitionModel: WorldItemDefinitionModel): string {
+    private getFile(worldItemDefinitionModel: WorldItemDefinitionModel): string {
         return this.createFile(worldItemDefinitionModel);
     }
 
@@ -24,7 +24,7 @@ export class TextEditorModel implements IEditorModel {
             return `
 map \`
 
-${this.editorContent.trim()}
+${this.textEditorController.text.trim()}
 
 \`
 

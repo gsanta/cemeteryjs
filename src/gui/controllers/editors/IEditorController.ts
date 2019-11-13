@@ -1,7 +1,9 @@
-import { IEditorModel } from "./IEditorModel";
+import { IEditorWriter } from "./IEditorWriter";
+import { IEditorReader } from './IEditorReader';
 
 export interface IEditorController {
     getId(): string;
     resize(): void;
-    getModel(): IEditorModel;
+    writer: IEditorWriter;
+    reader: IEditorReader;
 }

@@ -1,9 +1,10 @@
 import { setupControllers } from "./controllerTestUtils";
 import { WorldItemTypeProperty, WorldItemDefinitionController } from "../../../src/gui/controllers/world_items/WorldItemDefinitionController";
 import { WorldItemDefinition } from "../../../src/WorldItemDefinition";
+import { FileFormat } from '../../../src/WorldGenerator';
 
 it ("Update the 'type' prop", () => {
-    const controllers = setupControllers();
+    const controllers = setupControllers(FileFormat.TEXT);
 
     const worldItemTypeController = controllers.worldItemDefinitionController;
     const meshDescriptor = worldItemTypeController.getModel().types[1];
@@ -12,7 +13,7 @@ it ("Update the 'type' prop", () => {
 });
 
 it ("Update the 'char' prop", () => {
-    const controllers = setupControllers();
+    const controllers = setupControllers(FileFormat.TEXT);
 
     const worldItemTypeController = controllers.worldItemDefinitionController;
     const meshDescriptor = worldItemTypeController.getModel().types[1];
@@ -21,7 +22,7 @@ it ("Update the 'char' prop", () => {
 });
 
 it ("Update the 'model' prop", () => {
-    const controllers = setupControllers();
+    const controllers = setupControllers(FileFormat.TEXT);
 
     const worldItemTypeController = controllers.worldItemDefinitionController;
     const meshDescriptor = worldItemTypeController.getModel().types[1];
@@ -30,7 +31,7 @@ it ("Update the 'model' prop", () => {
 });
 
 it ("Update the 'shape' prop", () => {
-    const controllers = setupControllers();
+    const controllers = setupControllers(FileFormat.TEXT);
 
     const worldItemTypeController = controllers.worldItemDefinitionController;
     const meshDescriptor = worldItemTypeController.getModel().types[0];
@@ -39,7 +40,7 @@ it ("Update the 'shape' prop", () => {
 });
 
 it ("Update the 'scale' prop", () => {
-    const controllers = setupControllers();
+    const controllers = setupControllers(FileFormat.TEXT);
 
     const worldItemTypeController = controllers.worldItemDefinitionController;
     const meshDescriptor = worldItemTypeController.getModel().types[1];
@@ -48,7 +49,7 @@ it ("Update the 'scale' prop", () => {
 });
 
 it ("Update the 'translate' prop", () => {
-    const controllers = setupControllers();
+    const controllers = setupControllers(FileFormat.TEXT);
 
     const worldItemTypeController = controllers.worldItemDefinitionController;
     const meshDescriptor = worldItemTypeController.getModel().types[1];
@@ -57,7 +58,7 @@ it ("Update the 'translate' prop", () => {
 });
 
 it ("Update the 'isBorder' prop", () => {
-    const controllers = setupControllers();
+    const controllers = setupControllers(FileFormat.TEXT);
 
     const worldItemTypeController = controllers.worldItemDefinitionController;
     const meshDescriptor = worldItemTypeController.getModel().types[1];
@@ -66,7 +67,7 @@ it ("Update the 'isBorder' prop", () => {
 });
 
 it ("Update the 'isBorder' prop", () => {
-    const controllers = setupControllers();
+    const controllers = setupControllers(FileFormat.TEXT);
 
     const worldItemTypeController = controllers.worldItemDefinitionController;
     const meshDescriptor = worldItemTypeController.getModel().types[1];

@@ -2,6 +2,10 @@ import { MonacoConfig } from '../../../configs/MonacoConfig';
 import { debounce } from '../../../../model/utils/Functions';
 import { ControllerFacade } from '../../ControllerFacade';
 import { IEditorController } from '../IEditorController';
+import { IEditorWriter } from '../IEditorWriter';
+import { TextEditorWriter } from './TextEditorWriter';
+import { IEditorReader } from '../IEditorReader';
+import { TextEditorReader } from './TextEditorReader';
 
 const THEME = 'nightshiftsTheme';
 const LANGUAGE = 'nightshiftsLanguage';
@@ -36,10 +40,15 @@ export class TextEditorController implements IEditorController {
     static id = 'text-editor';
     editor: any;
     text: string = initialText;
+    writer: IEditorWriter;
+    reader: IEditorReader;
+    
     private controllers: ControllerFacade;
 
     constructor(controllers: ControllerFacade) {
         this.controllers = controllers;
+        this.writer = new TextEditorWriter(this);
+        this.reader = new TextEditorReader(this, controllers.worldItemDefinitionModel);
     }
 
     createEditor(monacoModule: any, monacoConfig: typeof MonacoConfig, element: HTMLDivElement, content: string) {
@@ -83,11 +92,8 @@ export class TextEditorController implements IEditorController {
 
     setText(text: string) {
         this.text = text;
+        this.controllers.rendererController.isDirty = true;
         this.controllers.updateUIController.updateUI();
-    }
-
-    getEditorContent(): string {
-        return null;
     }
 
     getId(): string {
@@ -98,7 +104,7 @@ export class TextEditorController implements IEditorController {
         this.editor.layout();
     }
 
-    getModel() {
-        return this.controllers.textEditorModel;
+    setRendererDirty() {
+        this.controllers.rendererController.isDirty = true;
     }
 }

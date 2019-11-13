@@ -1,6 +1,6 @@
 import { BitmapEditorController } from '../BitmapEditorController';
-import { Tool, ToolType } from './Tool';
 import { AbstractSelectionTool } from './AbstractSelectionTool';
+import { ToolType } from './Tool';
 
 export class RectangleTool extends AbstractSelectionTool {
     constructor(bitmapEditor: BitmapEditorController) {
@@ -15,20 +15,20 @@ export class RectangleTool extends AbstractSelectionTool {
     drag() {
         super.drag();
         
-        this.bitmapEditor.model.pixels.removePreviews();
+        this.bitmapEditor.pixelModel.removePreviews();
         const type = this.bitmapEditor.controllers.worldItemDefinitionController.getModel().selectedType.typeName;
         const positions = this.getPositionsInSelection();
-        positions.forEach(pos => this.bitmapEditor.model.pixels.addPixel(pos, type, true));
+        positions.forEach(pos => this.bitmapEditor.pixelModel.addPixel(pos, type, true));
 
         this.bitmapEditor.updateUI();
     }
 
     up() {
         if (this.bitmapEditor.mouseController.isDrag) {
-            this.bitmapEditor.model.pixels.commitPreviews();
+            this.bitmapEditor.pixelModel.commitPreviews();
         } else {
             const type = this.bitmapEditor.controllers.worldItemDefinitionController.getModel().selectedType.typeName;
-            this.bitmapEditor.model.pixels.addPixel(this.bitmapEditor.mouseController.movePoint, type, false);
+            this.bitmapEditor.pixelModel.addPixel(this.bitmapEditor.mouseController.movePoint, type, false);
         }
 
         super.up();

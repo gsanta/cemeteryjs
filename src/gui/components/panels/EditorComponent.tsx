@@ -79,15 +79,15 @@ export class EditorComponent extends React.Component<{}> {
     }
 
     private renderToolbar(context: AppContextType): JSX.Element {
-        const windowController = context.controllers.settingsController;
+        const settingsController = context.controllers.settingsController;
 
         return (
             <ToolbarComponent>
                 <GlobalToolbarComponent>
                     <ConnectedDropdownComponent
                         values={context.controllers.editors.map(editor => editor.getId())}
-                        currentValue={windowController.getVal(SettingsProperty.EDITOR) as string}
-                        formController={windowController}
+                        currentValue={settingsController.getVal(SettingsProperty.EDITOR) as string}
+                        formController={settingsController}
                         propertyName={SettingsProperty.EDITOR}
                         propertyType='string'
                     />
@@ -96,8 +96,8 @@ export class EditorComponent extends React.Component<{}> {
                 <GlobalToolbarComponent>
                     <ConnectedToggleButtonComponent
                         text="Show Properties"
-                        isActive={windowController.getVal(SettingsProperty.IS_WORLD_ITEM_TYPE_EDITOR_OPEN) as boolean}
-                        formController={windowController}
+                        isActive={settingsController.getVal(SettingsProperty.IS_WORLD_ITEM_TYPE_EDITOR_OPEN) as boolean}
+                        formController={settingsController}
                         propertyName={SettingsProperty.IS_WORLD_ITEM_TYPE_EDITOR_OPEN}
                         propertyType="boolean"
                     />

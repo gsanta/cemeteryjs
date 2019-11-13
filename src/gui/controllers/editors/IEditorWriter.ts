@@ -1,5 +1,6 @@
+import { WorldItemDefinitionModel } from "../world_items/WorldItemDefinitionModel";
 
 
 export interface IEditorWriter {
-    write(): string;
+    write(worldItemDefinitionModel: WorldItemDefinitionModel): string;
 }

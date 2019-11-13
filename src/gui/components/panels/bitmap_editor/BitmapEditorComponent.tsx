@@ -41,9 +41,9 @@ export class BitmapEditorComponent extends React.Component<any> {
     }
 
     private renderContent(context: AppContextType): JSX.Element {
-        const bitmapConfig = context.controllers.bitmapEditorController.model.config;
-        const horizontalLines = this.renderLines(context.controllers.bitmapEditorController.model.config.horizontalHelperLines);
-        const verticalLines = this.renderLines(context.controllers.bitmapEditorController.model.config.verticalHelperLines);
+        const bitmapConfig = context.controllers.bitmapEditorController.configModel;
+        const horizontalLines = this.renderLines(context.controllers.bitmapEditorController.configModel.horizontalHelperLines);
+        const verticalLines = this.renderLines(context.controllers.bitmapEditorController.configModel.verticalHelperLines);
         
         return (
             <EditorComponent id={context.controllers.bitmapEditorController.getId()}>
@@ -79,11 +79,11 @@ export class BitmapEditorComponent extends React.Component<any> {
     }
 
     private renderPixels(context: AppContextType): JSX.Element[] {
-        const pixelController = context.controllers.bitmapEditorController.model.pixels;
+        const pixelController = context.controllers.bitmapEditorController.pixelModel;
         const worldItemTypeModel = context.controllers.worldItemDefinitionModel;
 
         return Array.from(pixelController.bitMap).map(([index, pixel]) => {
-            const pixelSize = context.controllers.bitmapEditorController.model.config.pixelSize;
+            const pixelSize = context.controllers.bitmapEditorController.configModel.pixelSize;
             const pos = pixelController.getPixelPosition(index).mul(pixelSize);
             const color = worldItemTypeModel.getByTypeName(pixel.type).color;
 

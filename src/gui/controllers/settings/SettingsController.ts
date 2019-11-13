@@ -53,13 +53,14 @@ export class SettingsController extends IFormController<SettingsProperty> {
                 break;    
         }
 
+        this.controllers.rendererController.isDirty = true;
         this.controllers.updateUIController.updateUI();
     }
 
     getVal(propType: SettingsProperty) {
         switch(propType) {
             case SettingsProperty.EDITOR:
-                return this.focusedPropType === propType ? this.tempString : this.controllers.settingsModel.activeEditor;
+                return this.focusedPropType === propType ? this.tempString : this.controllers.settingsModel.activeEditor.getId();
             case SettingsProperty.IS_WORLD_ITEM_TYPE_EDITOR_OPEN:
                 return this.focusedPropType === propType ? this.tempBoolean : this.controllers.settingsModel.isWorldItemTypeEditorOpen;
 

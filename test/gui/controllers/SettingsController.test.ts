@@ -2,9 +2,10 @@ import { SettingsProperty } from '../../../src/gui/controllers/settings/Settings
 import { setupControllers } from "./controllerTestUtils";
 import { BitmapEditorController } from '../../../src/gui/controllers/editors/bitmap/BitmapEditorController';
 import { TextEditorController } from '../../../src/gui/controllers/editors/text/TextEditorController';
+import { FileFormat } from '../../../src/WorldGenerator';
 
 it ("Update the 'activeEditor' prop", () => {
-    const controllers = setupControllers();
+    const controllers = setupControllers(FileFormat.TEXT);
 
     const settingsController = controllers.settingsController;
     const settingsModel = controllers.settingsModel;
@@ -26,7 +27,7 @@ it ("Update the 'activeEditor' prop", () => {
 });
 
 it ("Update the 'isWorldItemTypeEditorOpen' prop", () => {
-    const controllers = setupControllers();
+    const controllers = setupControllers(FileFormat.TEXT);
 
     const settingsController = controllers.settingsController;
     const settingsModel = controllers.settingsModel;

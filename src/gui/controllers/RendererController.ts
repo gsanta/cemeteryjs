@@ -35,7 +35,7 @@ export class RendererController {
 
         const engine = this.engine;
 
-        new BabylonWorldGenerator(scene).generate(worldMap, FileFormat.TEXT, {
+        new BabylonWorldGenerator(scene).generate(worldMap, FileFormat.SVG, {
             convert(worldItem: WorldItem): any {
                 if (worldItem.name === 'wall' && worldItem.children.length > 0) {
                     worldItem.meshTemplate.meshes[0].isVisible = false;

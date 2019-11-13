@@ -22,6 +22,12 @@ export class WorldItemDefinitionModel {
         this.createMapByTypeName();
     }
 
+    setTypes(types: WorldItemDefinition[]) {
+        this.types = types;
+        this.selectedType = types[0];
+        this.createMapByTypeName();
+    }
+
     syncSelected(origTypeName: string) {
         const origWorldItemType = this.types.find(type => type.typeName === origTypeName);
         const clone = [...this.types];

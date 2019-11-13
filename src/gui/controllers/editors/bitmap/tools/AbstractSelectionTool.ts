@@ -33,12 +33,12 @@ export class AbstractSelectionTool implements Tool {
 
     protected getPixelsInSelection() {
         const selectionRect = this.bitmapEditor.selectionModel.getSelectionRect();
-        return this.bitmapEditor.model.pixels.getPixelsInside(selectionRect);
+        return this.bitmapEditor.pixelModel.getPixelsInside(selectionRect);
     }
 
     protected getPositionsInSelection(): Point[] {
         const selectionRect = this.bitmapEditor.selectionModel.getSelectionRect();
-        const pixelSize = this.bitmapEditor.model.config.pixelSize;
+        const pixelSize = this.bitmapEditor.configModel.pixelSize;
         const xStart = Math.floor(selectionRect.topLeft.x / pixelSize); 
         const yStart = Math.floor(selectionRect.topLeft.y / pixelSize);
         const xEnd = Math.floor(selectionRect.bottomRight.x / pixelSize) + 1;
