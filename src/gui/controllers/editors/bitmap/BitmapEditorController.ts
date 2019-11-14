@@ -11,6 +11,7 @@ import { IEditorWriter } from '../IEditorWriter';
 import { IEditorReader } from '../IEditorReader';
 import { BitmapEditorWriter } from './BitmapEditorWriter';
 import { BitmapEditorReader } from './BitmapEditorReader';
+import { FileFormat } from '../../../../WorldGenerator';
 
 export const initialSvg = 
 `
@@ -49,11 +50,30 @@ export const initialSvg =
     <rect width="10px" height="10px" x="110px" y="80px" fill="#7B7982" data-wg-x="110" data-wg-y="80" data-wg-type="wall"></rect>
     <rect width="10px" height="10px" x="110px" y="70px" fill="#7B7982" data-wg-x="110" data-wg-y="70" data-wg-type="wall"></rect>
     <rect width="10px" height="10px" x="110px" y="60px" fill="#7B7982" data-wg-x="110" data-wg-y="60" data-wg-type="wall"></rect>
+    <rect width="10px" height="10px" x="120px" y="70px" data-wg-x="120" data-wg-y="70" data-wg-type="room"></rect>
+    <rect width="10px" height="10px" x="120px" y="80px" data-wg-x="120" data-wg-y="80" data-wg-type="room"></rect>
+    <rect width="10px" height="10px" x="120px" y="90px" data-wg-x="120" data-wg-y="90" data-wg-type="room"></rect>
+    <rect width="10px" height="10px" x="130px" y="70px" data-wg-x="130" data-wg-y="70" data-wg-type="room"></rect>
+    <rect width="10px" height="10px" x="130px" y="80px" data-wg-x="130" data-wg-y="80" data-wg-type="room"></rect>
+    <rect width="10px" height="10px" x="130px" y="90px" data-wg-x="130" data-wg-y="90" data-wg-type="room"></rect>
+    <rect width="10px" height="10px" x="140px" y="70px" data-wg-x="140" data-wg-y="70" data-wg-type="room"></rect>
+    <rect width="10px" height="10px" x="140px" y="80px" data-wg-x="140" data-wg-y="80" data-wg-type="room"></rect>
+    <rect width="10px" height="10px" x="140px" y="90px" data-wg-x="140" data-wg-y="90" data-wg-type="room"></rect>
+    <rect width="10px" height="10px" x="150px" y="70px" data-wg-x="150" data-wg-y="70" data-wg-type="room"></rect>
+    <rect width="10px" height="10px" x="150px" y="80px" data-wg-x="150" data-wg-y="80" data-wg-type="room"></rect>
+    <rect width="10px" height="10px" x="150px" y="90px" data-wg-x="150" data-wg-y="90" data-wg-type="room"></rect>
+    <rect width="10px" height="10px" x="160px" y="70px" data-wg-x="160" data-wg-y="70" data-wg-type="room"></rect>
+    <rect width="10px" height="10px" x="160px" y="80px" data-wg-x="160" data-wg-y="80" data-wg-type="room"></rect>
+    <rect width="10px" height="10px" x="160px" y="90px" data-wg-x="160" data-wg-y="90" data-wg-type="room"></rect>
+    <rect width="10px" height="10px" x="170px" y="70px" data-wg-x="170" data-wg-y="70" data-wg-type="room"></rect>
+    <rect width="10px" height="10px" x="170px" y="80px" data-wg-x="170" data-wg-y="80" data-wg-type="room"></rect>
+    <rect width="10px" height="10px" x="170px" y="90px" data-wg-x="170" data-wg-y="90" data-wg-type="room"></rect>
 </svg>
 `;
 
 export class BitmapEditorController implements IEditorController {
     static id = 'bitmap-editor';
+    fileFormat = FileFormat.SVG;
     mouseController: MouseController;
     activeTool: Tool;
     tools: Tool[];
@@ -66,7 +86,7 @@ export class BitmapEditorController implements IEditorController {
     
     controllers: ControllerFacade;
     
-    constructor(controllers: ControllerFacade, svg: string = initialSvg) {
+    constructor(controllers: ControllerFacade) {
         this.controllers = controllers;
         this.selectionModel = new SelectionModel();
         this.configModel = new BitmapConfig();

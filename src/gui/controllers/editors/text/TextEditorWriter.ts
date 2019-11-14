@@ -14,10 +14,6 @@ export class TextEditorWriter implements IEditorWriter {
         return this.createFile(worldItemDefinitionModel);
     }
 
-    private getFile(worldItemDefinitionModel: WorldItemDefinitionModel): string {
-        return this.createFile(worldItemDefinitionModel);
-    }
-
     private createFile(worldItemDefinitionModel: WorldItemDefinitionModel) {
         const definitions = this.createDefinitionSection(worldItemDefinitionModel);
     

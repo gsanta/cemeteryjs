@@ -37,6 +37,7 @@ export class ControllerFacade {
         this.settingsController = new SettingsController(this);
 
         this.bitmapEditorController.reader.read(initialSvg);
+        this.textEditorController.reader.read()
         this.editors = [this.textEditorController, this.bitmapEditorController];
     }
 }

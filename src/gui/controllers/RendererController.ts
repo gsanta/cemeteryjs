@@ -16,7 +16,7 @@ export class RendererController {
         this.engine = new Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
     }
 
-    updateCanvas(worldMap: string) {
+    updateCanvas(worldMap: string, fileFormat: FileFormat) {
         const scene = new Scene(this.engine);
 
         const alpha = this.camera ? this.camera.alpha : 0;
@@ -35,7 +35,7 @@ export class RendererController {
 
         const engine = this.engine;
 
-        new BabylonWorldGenerator(scene).generate(worldMap, FileFormat.SVG, {
+        new BabylonWorldGenerator(scene).generate(worldMap, fileFormat, {
             convert(worldItem: WorldItem): any {
                 if (worldItem.name === 'wall' && worldItem.children.length > 0) {
                     worldItem.meshTemplate.meshes[0].isVisible = false;
