@@ -1,11 +1,10 @@
-import { IEditorWriter } from "./IEditorWriter";
-import { IEditorReader } from './IEditorReader';
 import { FileFormat } from '../../../WorldGenerator';
 
 export interface IEditorController {
-    fileFormat: FileFormat;
+    fileFormats: FileFormat[];
     getId(): string;
+    setRenderer(renderFunc: () => void);
+    render();
     resize(): void;
-    writer: IEditorWriter;
-    reader: IEditorReader;
+    activate(): void;
 }

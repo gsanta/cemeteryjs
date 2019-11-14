@@ -1,6 +1,7 @@
 import { IFormController } from '../IFormController';
 import { ControllerFacade } from '../ControllerFacade';
-import { IEditorController } from '../editors/IEditorController';
+import { IReadableWriteableEditor } from '../editors/IReadableWriteableEditor';
+import { Events } from '../events/Events';
 
 export enum SettingsProperty {
     EDITOR = 'editor',
@@ -47,13 +48,14 @@ export class SettingsController extends IFormController<SettingsProperty> {
         switch(this.focusedPropType) {
             case SettingsProperty.EDITOR:
                 this.controllers.settingsModel.activeEditor = this.findEditorById(this.tempString);
+                this.controllers.settingsModel.activeEditor.activate();
                 break;
             case SettingsProperty.IS_WORLD_ITEM_TYPE_EDITOR_OPEN:
                 this.controllers.settingsModel.isWorldItemTypeEditorOpen = this.tempBoolean;
                 break;    
         }
 
-        this.controllers.rendererController.isDirty = true;
+        this.controllers.webglEditorController.isDirty = true;
         this.controllers.updateUIController.updateUI();
     }
 
@@ -67,7 +69,7 @@ export class SettingsController extends IFormController<SettingsProperty> {
         }
     }
 
-    private findEditorById(id: string): IEditorController {
+    private findEditorById(id: string): IReadableWriteableEditor {
         return this.controllers.editors.find(editor => editor.getId() === id);
     }
 }

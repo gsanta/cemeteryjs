@@ -27,9 +27,18 @@ const SelectionComponentStyled = styled.rect`
     fill: transparent;
 `;
 
-export class BitmapEditorComponent extends React.Component<any> {
+export class WebglEditorComponent extends React.Component<any> {
     static contextType = AppContext;
     context: AppContextType;
+
+    constructor(props: any) {
+        super(props);
+
+    }
+    
+    componentDidMount() {
+        this.context.controllers.webglEditorController.setRenderer(() => this.forceUpdate());
+    }
     
     render(): JSX.Element {
         return (

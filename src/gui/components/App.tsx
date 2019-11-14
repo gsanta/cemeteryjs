@@ -58,7 +58,7 @@ export class App extends React.Component<{}, AppState> {
     }
 
     private resize() {
-        this.context.controllers.rendererController.engine.resize();
+        this.context.controllers.webglEditorController.engine.resize();
         this.context.controllers.settingsModel.activeEditor.resize();
     }
 }

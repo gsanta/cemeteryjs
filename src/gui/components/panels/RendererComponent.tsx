@@ -15,16 +15,16 @@ export class RendererComponent extends React.Component<{}> {
     }
 
     componentDidMount() {
-        this.context.controllers.rendererController.init(this.canvasRef.current);
+        this.context.controllers.webglEditorController.init(this.canvasRef.current);
         const worldMap = this.context.controllers.settingsModel.activeEditor.reader.read(this.context.controllers.worldItemDefinitionModel);
-        this.context.controllers.rendererController.updateCanvas(worldMap, this.context.controllers.settingsModel.activeEditor.fileFormat);
+        this.context.controllers.webglEditorController.updateCanvas(worldMap, this.context.controllers.settingsModel.activeEditor.fileFormats[0]);
     }
 
     componentWillReceiveProps() {
-        if (this.context.controllers.rendererController.isDirty) {
+        if (this.context.controllers.webglEditorController.isDirty) {
             this.worldMap = this.context.controllers.settingsModel.activeEditor.reader.read(this.context.controllers.worldItemDefinitionModel);
-            this.context.controllers.rendererController.updateCanvas(this.worldMap, this.context.controllers.settingsModel.activeEditor.fileFormat);
-            this.context.controllers.rendererController.isDirty = false;
+            this.context.controllers.webglEditorController.updateCanvas(this.worldMap, this.context.controllers.settingsModel.activeEditor.fileFormats[0]);
+            this.context.controllers.webglEditorController.isDirty = false;
         }
     }
 

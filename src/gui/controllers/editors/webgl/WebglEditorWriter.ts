@@ -24,7 +24,8 @@ export class WebglEditorWriter implements IEditorWriter {
             addChildren(parent: any, children: any[]): void {},
             addBorders(item: any, borders: any[]): void {},
             done() {
-                this.webglEditorController.engine.runRenderLoop(() => this.webglEditorController.scene.render());
+                // this.webglEditorController.engine.runRenderLoop(() => this.webglEditorController.scene.render());
+                this.WebglEditorController.render();
             }
         });
     }

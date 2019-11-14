@@ -31,7 +31,7 @@ export class TextEditorWriter implements IEditorWriter {
             addMapSectionLine(line: string) {
                 lines.push(line);
             }
-        });
+        }).read(file);
 
         this.worldItemDefinitionModel.setTypes(worldItemTypes);
         this.textEditorController.setRendererDirty();

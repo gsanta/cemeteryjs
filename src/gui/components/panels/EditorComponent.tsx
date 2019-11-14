@@ -6,7 +6,7 @@ import { ConnectedDropdownComponent } from '../forms/DropdownComponent';
 import { ConnectedToggleButtonComponent } from '../forms/ToggleButtonComponent';
 import { HorizontalSplitComponent } from '../misc/HorizontalSplitComponent';
 import { colors } from '../styles';
-import { BitmapEditorComponent } from './bitmap_editor/BitmapEditorComponent';
+import { WebglEditorComponent } from './bitmap_editor/WebglEditorComponent';
 import { BitmapEditorToolbar } from './bitmap_editor/BitmapEditorToolbar';
 import './EditorComponent.scss';
 import { PropertyEditorComponent } from './PropertyEditorComponent';
@@ -75,7 +75,7 @@ export class EditorComponent extends React.Component<{}> {
     }
 
     private renderDrawEditor(context: AppContextType) {
-        return <BitmapEditorComponent/>;
+        return <WebglEditorComponent/>;
     }
 
     private renderToolbar(context: AppContextType): JSX.Element {

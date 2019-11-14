@@ -2,19 +2,37 @@ import { ArcRotateCamera, Color3, Engine, HemisphericLight, Scene, Vector3 } fro
 import { BabylonWorldGenerator } from "../../../../integrations/babylonjs/BabylonWorldGenerator";
 import { FileFormat } from '../../../../WorldGenerator';
 import { WorldItem } from "../../../../WorldItem";
+import { IWritableEditor } from '../IWritableEditor';
+import { WebglEditorWriter } from './WebglEditorWriter';
+import { ControllerFacade } from '../../ControllerFacade';
+import { Events } from "../../events/Events";
 (<any> window).earcut = require('earcut');
 
-export class WebglEditorController {
+export class WebglEditorController implements IWritableEditor {
+    static id = 'webgl-editor';
+    fileFormats = [FileFormat.TEXT, FileFormat.SVG];
+
     engine: Engine;
     scene: Scene;
+    writer: WebglEditorWriter;
+    isDirty: boolean;
+
     private canvas: HTMLCanvasElement;
     private camera: ArcRotateCamera;
+    private controllers: ControllerFacade;
+    private renderFunc: () => void;
 
-    isDirty: boolean;
+    constructor(controllers: ControllerFacade) {
+        this.controllers = controllers;
+        this.controllers.eventDispatcher.addEventListener(Events.CONTENT_CHANGED, () => this.updateContent());
+    }
+
+    resize() {}
 
     init(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
         this.engine = new Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
+        this.writer = new WebglEditorWriter(this, this.controllers.worldItemDefinitionModel);
     }
 
     updateCanvas(worldMap: string, fileFormat: FileFormat) {
@@ -49,5 +67,29 @@ export class WebglEditorController {
                 engine.runRenderLoop(() => scene.render());
             }
         });
+    }
+
+
+    getId(): string {
+        return WebglEditorController.id;
+    }
+
+    setRenderer(renderFunc: () => void) {
+        this.renderFunc = renderFunc;
+    }
+
+    render() {
+        this.engine.runRenderLoop(() => this.scene.render());
+
+        // this.renderFunc();
+    }
+
+    activate(): void {}
+
+    private updateContent() {
+        if (this.writer) {
+            const file = this.controllers.settingsModel.activeEditor.reader.read(this.controllers.worldItemDefinitionModel);
+            this.writer.write(file, this.controllers.settingsModel.activeEditor.fileFormats[0]);
+        }
     }
 }

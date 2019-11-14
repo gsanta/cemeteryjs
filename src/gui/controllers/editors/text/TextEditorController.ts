@@ -7,6 +7,10 @@ import { TextEditorReader } from './TextEditorReader';
 import { IEditorReader } from '../IEditorReader';
 import { TextEditorWriter } from './TextEditorWriter';
 import { FileFormat } from '../../../../WorldGenerator';
+import { IReadableEditor } from '../IReadableEditor';
+import { IWritableEditor } from '../IWritableEditor';
+import { IReadableWriteableEditor } from '../IReadableWriteableEditor';
+import { Events } from '../../events/Events';
 
 const THEME = 'nightshiftsTheme';
 const LANGUAGE = 'nightshiftsLanguage';
@@ -26,7 +30,7 @@ WWWWWWWW
 
 definitions \`
 
-# = wall BORDER
+W = wall BORDER
 D = door BORDER
 I = window BORDER
 - = room
@@ -34,17 +38,16 @@ E = bed MOD assets/models/bed.babylon
 T = table DIM 2 1 MOD assets/models/table.babylon
 = = _subarea
 H = chair
-C = cupboard DIM 0.5 2 MOD assets/models/cupboard.babylon
 
 \`
 
 `;
 
-export class TextEditorController implements IEditorController {
+export class TextEditorController implements IReadableWriteableEditor {
     static id = 'text-editor';
-    fileFormat = FileFormat.TEXT;
+    fileFormats = [FileFormat.TEXT];
     editor: any;
-    text: string = initialText;
+    text: string = null;
     writer: IEditorWriter;
     reader: IEditorReader;
     
@@ -97,8 +100,9 @@ export class TextEditorController implements IEditorController {
 
     setText(text: string) {
         this.text = text;
-        this.controllers.rendererController.isDirty = true;
+        this.controllers.webglEditorController.isDirty = true;
         this.controllers.updateUIController.updateUI();
+        this.controllers.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
     }
 
     getId(): string {
@@ -110,6 +114,14 @@ export class TextEditorController implements IEditorController {
     }
 
     setRendererDirty() {
-        this.controllers.rendererController.isDirty = true;
+        this.controllers.webglEditorController.isDirty = true;
+    }
+
+    setRenderer(renderFunc: () => void) {}
+    render() {}
+    activate(): void {
+        if (!this.text) {
+            this.writer.write(initialText, FileFormat.TEXT);
+        }
     }
 }

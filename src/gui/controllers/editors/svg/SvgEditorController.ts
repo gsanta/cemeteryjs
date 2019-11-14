@@ -12,6 +12,9 @@ import { IEditorReader } from '../IEditorReader';
 import { SvgEditorReader } from './SvgEditorReader';
 import { SvgEditorWriter } from './SvgEditorWriter';
 import { FileFormat } from '../../../../WorldGenerator';
+import { IReadableEditor } from '../IReadableEditor';
+import { IWritableEditor } from '../IWritableEditor';
+import { IReadableWriteableEditor } from '../IReadableWriteableEditor';
 
 export const initialSvg = 
 `
@@ -71,9 +74,9 @@ export const initialSvg =
 </svg>
 `;
 
-export class SvgEditorController implements IEditorController {
+export class SvgEditorController implements IReadableWriteableEditor {
     static id = 'bitmap-editor';
-    fileFormat = FileFormat.SVG;
+    fileFormats = [FileFormat.SVG];
     mouseController: MouseController;
     activeTool: Tool;
     tools: Tool[];
@@ -109,7 +112,7 @@ export class SvgEditorController implements IEditorController {
     }
 
     setRendererDirty() {
-        this.controllers.rendererController.isDirty = true;
+        this.controllers.webglEditorController.isDirty = true;
     }
 
     setActiveTool(toolType: ToolType) {
@@ -125,5 +128,12 @@ export class SvgEditorController implements IEditorController {
 
     getModel() {
         return this.controllers.bitmapEditorModel;
+    }
+
+    setRenderer(renderFunc: () => void) {}
+    render() {}
+
+    activate(): void {
+        // this.
     }
 }
