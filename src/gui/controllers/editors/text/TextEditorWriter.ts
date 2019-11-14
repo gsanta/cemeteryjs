@@ -1,70 +1,40 @@
-import { WorldItemDefinition } from "../../../../WorldItemDefinition";
-import { WorldItemDefinitionModel } from "../../world_items/WorldItemDefinitionModel";
-import { IEditorWriter } from '../IEditorWriter';
+import { IEditorReader } from '../IEditorReader';
 import { TextEditorController } from './TextEditorController';
+import { WorldItemDefinitionModel } from '../../world_items/WorldItemDefinitionModel';
+import { TextConfigReader } from '../../../../model/readers/text/TextConfigReader';
+import { TextWorldMapParser, WorldMapLineListener } from '../../../../model/readers/text/TextWorldMapParser';
+import { IEditorWriter } from '../IEditorWriter';
+import { FileFormat } from '../../../../WorldGenerator';
+
 
 export class TextEditorWriter implements IEditorWriter {
     private textEditorController: TextEditorController;
+    private worldItemDefinitionModel: WorldItemDefinitionModel;
+    private textConfigReader: TextConfigReader;
 
-    constructor(textEditorController: TextEditorController) {
+    constructor(textEditorController: TextEditorController, worldItemDefinitionModel: WorldItemDefinitionModel) {
         this.textEditorController = textEditorController;
+        this.worldItemDefinitionModel = worldItemDefinitionModel;
+        this.textConfigReader = new TextConfigReader();
+
     }
 
-    write(worldItemDefinitionModel: WorldItemDefinitionModel): string {
-        return this.createFile(worldItemDefinitionModel);
-    }
-
-    private createFile(worldItemDefinitionModel: WorldItemDefinitionModel) {
-        const definitions = this.createDefinitionSection(worldItemDefinitionModel);
-    
-            return `
-map \`
-
-${this.textEditorController.text.trim()}
-
-\`
-
-definitions \`
-
-${definitions}
-
-\`
-`;
-    }
-
-    private createDefinitionSection(worldItemDefinitionModel: WorldItemDefinitionModel) {
-        const lines = worldItemDefinitionModel.types.map(descriptor => this.createDefinitionLine(descriptor));
-
-        return lines.join('\n');
-    }
-
-    private createDefinitionLine(meshDescriptor: WorldItemDefinition): string {
-        let line = `${meshDescriptor.char} = ${meshDescriptor.typeName}`;
-
-        if (meshDescriptor.isBorder) {
-            line += ' BORDER';
+    write(file: string, fileFormat: FileFormat): void {
+        if (fileFormat !== FileFormat.TEXT) {
+            throw new Error('TextEditorWriter only supports text file format.');
         }
 
-        if (meshDescriptor.model) {
-            line += ` MOD ${meshDescriptor.model}`;
-        }
+        const {worldItemTypes} = this.textConfigReader.read(file);
 
-        if (meshDescriptor.materials && meshDescriptor.materials.length > 0) {
-            let materialPaths = '';
+        const lines: string[] = [];
+        new TextWorldMapParser(new class extends WorldMapLineListener {
+            addMapSectionLine(line: string) {
+                lines.push(line);
+            }
+        });
 
-            meshDescriptor.materials.forEach(mat => materialPaths += ` ${mat}`);
-            
-            line += ` MAT [${materialPaths}]`;
-        }
-
-        if (meshDescriptor.scale) {
-            line += ` SCALE ${meshDescriptor.scale}`
-        }
-
-        if (meshDescriptor.translateY) {
-            line += ` TRANS_Y ${meshDescriptor.translateY}`
-        }
-
-        return line;
+        this.worldItemDefinitionModel.setTypes(worldItemTypes);
+        this.textEditorController.setRendererDirty();
+        this.textEditorController.setText(lines.join('\n'));
     }
 }

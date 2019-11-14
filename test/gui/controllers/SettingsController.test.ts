@@ -1,6 +1,6 @@
 import { SettingsProperty } from '../../../src/gui/controllers/settings/SettingsController';
 import { setupControllers } from "./controllerTestUtils";
-import { BitmapEditorController } from '../../../src/gui/controllers/editors/bitmap/BitmapEditorController';
+import { SvgEditorController } from '../../../src/gui/controllers/editors/svg/SvgEditorController';
 import { TextEditorController } from '../../../src/gui/controllers/editors/text/TextEditorController';
 import { FileFormat } from '../../../src/WorldGenerator';
 
@@ -12,13 +12,13 @@ it ("Update the 'activeEditor' prop", () => {
 
     settingsController.focusProp(SettingsProperty.EDITOR);
     
-    expect(settingsController.getVal(SettingsProperty.EDITOR)).toEqual(BitmapEditorController.id);
-    expect(settingsModel.activeEditor.getId()).toEqual(BitmapEditorController.id);
+    expect(settingsController.getVal(SettingsProperty.EDITOR)).toEqual(SvgEditorController.id);
+    expect(settingsModel.activeEditor.getId()).toEqual(SvgEditorController.id);
 
     settingsController.updateStringProp(TextEditorController.id);
 
     expect(settingsController.getVal(SettingsProperty.EDITOR)).toEqual(TextEditorController.id);
-    expect(settingsModel.activeEditor.getId()).toEqual(BitmapEditorController.id);
+    expect(settingsModel.activeEditor.getId()).toEqual(SvgEditorController.id);
 
     settingsController.commitProp();
 

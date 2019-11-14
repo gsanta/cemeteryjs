@@ -1,34 +1,70 @@
-import { IEditorReader } from '../IEditorReader';
+import { WorldItemDefinition } from "../../../../WorldItemDefinition";
+import { WorldItemDefinitionModel } from "../../world_items/WorldItemDefinitionModel";
 import { TextEditorController } from './TextEditorController';
-import { WorldItemDefinitionModel } from '../../world_items/WorldItemDefinitionModel';
-import { TextConfigReader } from '../../../../model/readers/text/TextConfigReader';
-import { TextWorldMapParser, WorldMapLineListener } from '../../../../model/readers/text/TextWorldMapParser';
-
+import { IEditorReader } from '../IEditorReader';
 
 export class TextEditorReader implements IEditorReader {
     private textEditorController: TextEditorController;
-    private worldItemDefinitionModel: WorldItemDefinitionModel;
-    private textConfigReader: TextConfigReader;
 
-    constructor(textEditorController: TextEditorController, worldItemDefinitionModel: WorldItemDefinitionModel) {
+    constructor(textEditorController: TextEditorController) {
         this.textEditorController = textEditorController;
-        this.worldItemDefinitionModel = worldItemDefinitionModel;
-        this.textConfigReader = new TextConfigReader();
-
     }
 
-    read(file: string): void {
-        const {worldItemTypes} = this.textConfigReader.read(file);
+    read(worldItemDefinitionModel: WorldItemDefinitionModel): string {
+        return this.createFile(worldItemDefinitionModel);
+    }
 
-        const lines: string[] = [];
-        new TextWorldMapParser(new class extends WorldMapLineListener {
-            addMapSectionLine(line: string) {
-                lines.push(line);
-            }
-        });
+    private createFile(worldItemDefinitionModel: WorldItemDefinitionModel) {
+        const definitions = this.createDefinitionSection(worldItemDefinitionModel);
+    
+            return `
+map \`
 
-        this.worldItemDefinitionModel.setTypes(worldItemTypes);
-        this.textEditorController.setRendererDirty();
-        this.textEditorController.setText(lines.join('\n'));
+${this.textEditorController.text.trim()}
+
+\`
+
+definitions \`
+
+${definitions}
+
+\`
+`;
+    }
+
+    private createDefinitionSection(worldItemDefinitionModel: WorldItemDefinitionModel) {
+        const lines = worldItemDefinitionModel.types.map(descriptor => this.createDefinitionLine(descriptor));
+
+        return lines.join('\n');
+    }
+
+    private createDefinitionLine(meshDescriptor: WorldItemDefinition): string {
+        let line = `${meshDescriptor.char} = ${meshDescriptor.typeName}`;
+
+        if (meshDescriptor.isBorder) {
+            line += ' BORDER';
+        }
+
+        if (meshDescriptor.model) {
+            line += ` MOD ${meshDescriptor.model}`;
+        }
+
+        if (meshDescriptor.materials && meshDescriptor.materials.length > 0) {
+            let materialPaths = '';
+
+            meshDescriptor.materials.forEach(mat => materialPaths += ` ${mat}`);
+            
+            line += ` MAT [${materialPaths}]`;
+        }
+
+        if (meshDescriptor.scale) {
+            line += ` SCALE ${meshDescriptor.scale}`
+        }
+
+        if (meshDescriptor.translateY) {
+            line += ` TRANS_Y ${meshDescriptor.translateY}`
+        }
+
+        return line;
     }
 }

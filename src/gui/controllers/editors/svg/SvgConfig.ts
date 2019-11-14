@@ -1,7 +1,7 @@
 import { Point, Segment } from "@nightshifts.inc/geometry";
 import { range } from "../../../../model/utils/Functions";
 
-export class BitmapConfig {
+export class SvgConfig {
     canvasDimensions = new Point(1500, 1000);
     horizontalHelperLines: Segment[] = [];
     verticalHelperLines: Segment[] = [];

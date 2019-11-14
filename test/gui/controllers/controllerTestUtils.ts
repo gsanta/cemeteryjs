@@ -1,7 +1,7 @@
 import { ControllerFacade } from "../../../src/gui/controllers/ControllerFacade";
 import { FileFormat } from '../../../src/WorldGenerator';
 import { TextEditorController } from '../../../src/gui/controllers/editors/text/TextEditorController';
-import { BitmapEditorController } from "../../../src/gui/controllers/editors/bitmap/BitmapEditorController";
+import { SvgEditorController } from "../../../src/gui/controllers/editors/svg/SvgEditorController";
 
 
 const testMap = 
@@ -39,10 +39,10 @@ export function setupControllers(fileFormat: FileFormat, map = testMap): Control
     if (fileFormat === FileFormat.TEXT) {
         controllers.settingsModel.activeEditor = controllers.editors.find(editor => editor.getId() === TextEditorController.id);
     } else if (fileFormat === FileFormat.SVG) {
-        controllers.settingsModel.activeEditor = controllers.editors.find(editor => editor.getId() === BitmapEditorController.id);
+        controllers.settingsModel.activeEditor = controllers.editors.find(editor => editor.getId() === SvgEditorController.id);
     }
 
-    controllers.settingsModel.activeEditor.reader.read(map);
+    controllers.settingsModel.activeEditor.writer.write(map, fileFormat);
 
     return controllers;
 }

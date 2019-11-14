@@ -1,16 +1,15 @@
-import { IEditorWriter } from '../IEditorWriter';
-import { BitmapEditorController } from './BitmapEditorController';
+import { SvgEditorController } from './SvgEditorController';
 import { WorldItemDefinitionModel } from '../../world_items/WorldItemDefinitionModel';
+import { IEditorReader } from '../IEditorReader';
 
+export class SvgEditorReader implements IEditorReader {
+    private bitmapEditorController: SvgEditorController;
 
-export class BitmapEditorWriter implements IEditorWriter {
-    private bitmapEditorController: BitmapEditorController;
-
-    constructor(bitmapEditorController: BitmapEditorController) {
+    constructor(bitmapEditorController: SvgEditorController) {
         this.bitmapEditorController = bitmapEditorController;
     }
 
-    write(worldItemDefinitionModel: WorldItemDefinitionModel): string {
+    read(worldItemDefinitionModel: WorldItemDefinitionModel): string {
         const metaData = this.createMetaData(worldItemDefinitionModel);
         const shapes = this.createShapes(worldItemDefinitionModel);
 

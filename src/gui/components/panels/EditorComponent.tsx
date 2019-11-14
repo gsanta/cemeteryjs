@@ -11,7 +11,7 @@ import { BitmapEditorToolbar } from './bitmap_editor/BitmapEditorToolbar';
 import './EditorComponent.scss';
 import { PropertyEditorComponent } from './PropertyEditorComponent';
 import { TextEditorComponent } from './TextEditorComponent';
-import { BitmapEditorController } from '../../controllers/editors/bitmap/BitmapEditorController';
+import { SvgEditorController } from '../../controllers/editors/svg/SvgEditorController';
 import { TextEditorController } from '../../controllers/editors/text/TextEditorController';
 
 const GlobalToolbarComponent = styled.div`
@@ -52,7 +52,7 @@ export class EditorComponent extends React.Component<{}> {
             <HorizontalSplitComponent onChange={() => this.onResize()}>
                 <div className="editor">
                     {this.renderToolbar(context)}
-                    {windowModel.activeEditor.getId() === BitmapEditorController.id ? this.renderDrawEditor(context) : this.renderTextEditor(context)}
+                    {windowModel.activeEditor.getId() === SvgEditorController.id ? this.renderDrawEditor(context) : this.renderTextEditor(context)}
                 </div>
                 <PropertyEditorComponent/>
             </HorizontalSplitComponent>
@@ -65,7 +65,7 @@ export class EditorComponent extends React.Component<{}> {
         return (
             <div className="editor">
                 {this.renderToolbar(context)}
-                {windowModel.activeEditor.getId() === BitmapEditorController.id ? this.renderDrawEditor(context) : this.renderTextEditor(context)}
+                {windowModel.activeEditor.getId() === SvgEditorController.id ? this.renderDrawEditor(context) : this.renderTextEditor(context)}
             </div>
         );
     }
@@ -113,6 +113,6 @@ export class EditorComponent extends React.Component<{}> {
     }
 
     private renderEditorSpecificToolbar(context: AppContextType): JSX.Element {
-        return context.controllers.settingsModel.activeEditor.getId() === BitmapEditorController.id ? <BitmapEditorToolbar/> : null;
+        return context.controllers.settingsModel.activeEditor.getId() === SvgEditorController.id ? <BitmapEditorToolbar/> : null;
     }
 }

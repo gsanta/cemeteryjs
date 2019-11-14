@@ -1,6 +1,6 @@
-import { WorldItemDefinitionModel } from "../world_items/WorldItemDefinitionModel";
+import { FileFormat } from '../../../WorldGenerator';
 
 
 export interface IEditorWriter {
-    write(worldItemDefinitionModel: WorldItemDefinitionModel): string;
+    write(file: string, fileFormat: FileFormat): void;
 }

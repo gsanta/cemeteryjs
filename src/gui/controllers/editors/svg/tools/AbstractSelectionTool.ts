@@ -1,13 +1,13 @@
-import { BitmapEditorController } from '../BitmapEditorController';
+import { SvgEditorController } from '../SvgEditorController';
 import { Tool, ToolType } from './Tool';
 import { Point } from '@nightshifts.inc/geometry';
 
 export class AbstractSelectionTool implements Tool {
     type: ToolType;
-    protected bitmapEditor: BitmapEditorController;
+    protected bitmapEditor: SvgEditorController;
     private showSelection: boolean;
 
-    constructor(bitmapEditor: BitmapEditorController, type: ToolType, showSelection: boolean) {
+    constructor(bitmapEditor: SvgEditorController, type: ToolType, showSelection: boolean) {
         this.type = type;
         this.bitmapEditor = bitmapEditor;
         this.showSelection = showSelection;

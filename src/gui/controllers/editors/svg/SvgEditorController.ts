@@ -1,4 +1,4 @@
-import { BitmapConfig as BitmapConfig } from './BitmapConfig';
+import { SvgConfig as SvgConfig } from './SvgConfig';
 import { MouseController } from './MouseController';
 import { RectangleTool } from './tools/RectangleTool';
 import { PixelModel } from './PixelModel';
@@ -9,8 +9,8 @@ import { SelectionModel } from './SelectionModel';
 import { IEditorController } from '../IEditorController';
 import { IEditorWriter } from '../IEditorWriter';
 import { IEditorReader } from '../IEditorReader';
-import { BitmapEditorWriter } from './BitmapEditorWriter';
-import { BitmapEditorReader } from './BitmapEditorReader';
+import { SvgEditorReader } from './SvgEditorReader';
+import { SvgEditorWriter } from './SvgEditorWriter';
 import { FileFormat } from '../../../../WorldGenerator';
 
 export const initialSvg = 
@@ -71,7 +71,7 @@ export const initialSvg =
 </svg>
 `;
 
-export class BitmapEditorController implements IEditorController {
+export class SvgEditorController implements IEditorController {
     static id = 'bitmap-editor';
     fileFormat = FileFormat.SVG;
     mouseController: MouseController;
@@ -80,7 +80,7 @@ export class BitmapEditorController implements IEditorController {
     writer: IEditorWriter;
     reader: IEditorReader;
     
-    configModel: BitmapConfig;
+    configModel: SvgConfig;
     pixelModel: PixelModel;
     selectionModel: SelectionModel;
     
@@ -89,12 +89,12 @@ export class BitmapEditorController implements IEditorController {
     constructor(controllers: ControllerFacade) {
         this.controllers = controllers;
         this.selectionModel = new SelectionModel();
-        this.configModel = new BitmapConfig();
+        this.configModel = new SvgConfig();
         this.pixelModel = new PixelModel(this.configModel);
         
         this.mouseController = new MouseController(this);
-        this.writer = new BitmapEditorWriter(this);
-        this.reader = new BitmapEditorReader(this, this.controllers.worldItemDefinitionModel);
+        this.writer = new SvgEditorWriter(this, this.controllers.worldItemDefinitionModel);
+        this.reader = new SvgEditorReader(this);
 
         this.tools = [
             new RectangleTool(this),
@@ -118,7 +118,7 @@ export class BitmapEditorController implements IEditorController {
     }
 
     getId() {
-        return BitmapEditorController.id;
+        return SvgEditorController.id;
     }
 
     resize(): void {};

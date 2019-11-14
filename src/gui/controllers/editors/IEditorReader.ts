@@ -1,4 +1,5 @@
+import { WorldItemDefinitionModel } from "../world_items/WorldItemDefinitionModel";
 
 export interface IEditorReader {
-    read(file: string): void;
+    read(worldItemDefinitionModel: WorldItemDefinitionModel): string;
 }

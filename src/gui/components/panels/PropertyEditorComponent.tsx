@@ -8,7 +8,7 @@ import { ConnectedInputComponent, InputComponent } from '../forms/InputComponent
 import { LabeledComponent } from '../forms/LabeledComponent';
 import { MaterialsComponent } from './definition/MaterialsComponent';
 import './PropertyEditorComponent.scss';
-import { BitmapEditorController } from '../../controllers/editors/bitmap/BitmapEditorController';
+import { SvgEditorController } from '../../controllers/editors/svg/SvgEditorController';
 
 const chars = [
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
@@ -51,7 +51,7 @@ export class PropertyEditorComponent extends React.Component<{}> {
                 </div>
                 <div className="properties-column">
                     <div className="property-row">
-                        {windowModel.activeEditor.getId() === BitmapEditorController.id ? this.renderColorChooser(definitionController) : this.renderCharacterDropdown(definitionController)}
+                        {windowModel.activeEditor.getId() === SvgEditorController.id ? this.renderColorChooser(definitionController) : this.renderCharacterDropdown(definitionController)}
                         <CheckboxComponent 
                             isSelected={definitionController.getVal(WorldItemTypeProperty.IS_BORDER) as boolean}
                             formController={definitionController}

@@ -3,17 +3,17 @@ import { debounce } from '../../../../model/utils/Functions';
 import { ControllerFacade } from '../../ControllerFacade';
 import { IEditorController } from '../IEditorController';
 import { IEditorWriter } from '../IEditorWriter';
-import { TextEditorWriter } from './TextEditorWriter';
-import { IEditorReader } from '../IEditorReader';
 import { TextEditorReader } from './TextEditorReader';
+import { IEditorReader } from '../IEditorReader';
+import { TextEditorWriter } from './TextEditorWriter';
 import { FileFormat } from '../../../../WorldGenerator';
 
 const THEME = 'nightshiftsTheme';
 const LANGUAGE = 'nightshiftsLanguage';
 
-const initialText = 
+export const initialText = 
 `
-definitions \`
+map \`
 
 WWWWWWWW
 w------W
@@ -52,8 +52,8 @@ export class TextEditorController implements IEditorController {
 
     constructor(controllers: ControllerFacade) {
         this.controllers = controllers;
-        this.writer = new TextEditorWriter(this);
-        this.reader = new TextEditorReader(this, controllers.worldItemDefinitionModel);
+        this.writer = new TextEditorWriter(this, controllers.worldItemDefinitionModel);
+        this.reader = new TextEditorReader(this);
     }
 
     createEditor(monacoModule: any, monacoConfig: typeof MonacoConfig, element: HTMLDivElement, content: string) {

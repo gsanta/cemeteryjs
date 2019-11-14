@@ -1,27 +1,28 @@
 import { WorldItemDefinitionController } from './world_items/WorldItemDefinitionController';
 import { UIUpdateController } from './UIUpdateController';
-import { TextEditorController } from './editors/text/TextEditorController';
-import { RendererController } from './RendererController';
+import { TextEditorController, initialText } from './editors/text/TextEditorController';
+import { WebglEditorController } from './editors/webgl/WebglEditorController';
 import { defaultWorldItemDefinitions } from '../configs/defaultWorldItemDefinitions';
 import { SettingsController } from './settings/SettingsController';
-import { BitmapEditorController, initialSvg } from './editors/bitmap/BitmapEditorController';
+import { SvgEditorController, initialSvg } from './editors/svg/SvgEditorController';
 import { WorldItemDefinitionModel } from './world_items/WorldItemDefinitionModel';
 import { SettingsModel } from './settings/SettingsModel';
 import { IEditorController } from './editors/IEditorController';
-import { TextEditorWriter } from './editors/text/TextEditorWriter';
+import { TextEditorReader } from './editors/text/TextEditorReader';
+import { FileFormat } from '../../WorldGenerator';
 
 export class ControllerFacade {
     textEditorController: TextEditorController;
-    bitmapEditorController: BitmapEditorController;
+    bitmapEditorController: SvgEditorController;
     worldItemDefinitionController: WorldItemDefinitionController;
     updateUIController: UIUpdateController;
-    rendererController: RendererController;
+    rendererController: WebglEditorController;
     settingsController: SettingsController;
 
     worldItemDefinitionModel: WorldItemDefinitionModel;
     settingsModel: SettingsModel;
-    textEditorModel: TextEditorWriter;
-    bitmapEditorModel: TextEditorWriter;
+    textEditorModel: TextEditorReader;
+    bitmapEditorModel: TextEditorReader;
     editors: IEditorController[];
 
     constructor() {
@@ -30,14 +31,14 @@ export class ControllerFacade {
         this.bitmapEditorModel = null;
         
         this.textEditorController = new TextEditorController(this);
-        this.bitmapEditorController = new BitmapEditorController(this);
+        this.bitmapEditorController = new SvgEditorController(this);
         this.worldItemDefinitionController = new WorldItemDefinitionController(this);
         this.updateUIController = new UIUpdateController();
-        this.rendererController = new RendererController();
+        this.rendererController = new WebglEditorController();
         this.settingsController = new SettingsController(this);
 
-        this.bitmapEditorController.reader.read(initialSvg);
-        this.textEditorController.reader.read()
+        this.bitmapEditorController.writer.write(initialSvg, FileFormat.SVG);
+        this.textEditorController.writer.write(initialText, FileFormat.TEXT);
         this.editors = [this.textEditorController, this.bitmapEditorController];
     }
 }

@@ -1,7 +1,7 @@
 import { Point } from '@nightshifts.inc/geometry';
 import { Rectangle } from './Rectangle';
-import { BitmapEditorController } from './BitmapEditorController';
-import { BitmapConfig } from './BitmapConfig';
+import { SvgEditorController } from './SvgEditorController';
+import { SvgConfig } from './SvgConfig';
 
 export interface Pixel {
     type: string;
@@ -12,9 +12,9 @@ export interface Pixel {
 export class PixelModel {
     bitMap: Map<number, Pixel> = new Map();
     pixels: Pixel[] = [];
-    private bitmapConfig: BitmapConfig;
+    private bitmapConfig: SvgConfig;
 
-    constructor(bitmapConfig: BitmapConfig) {
+    constructor(bitmapConfig: SvgConfig) {
         this.bitmapConfig = bitmapConfig;
     }
 

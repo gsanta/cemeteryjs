@@ -1,11 +1,12 @@
 import { ArcRotateCamera, Color3, Engine, HemisphericLight, Scene, Vector3 } from "babylonjs";
-import { BabylonWorldGenerator } from "../../integrations/babylonjs/BabylonWorldGenerator";
-import { FileFormat } from '../../WorldGenerator';
-import { WorldItem } from "../../WorldItem";
+import { BabylonWorldGenerator } from "../../../../integrations/babylonjs/BabylonWorldGenerator";
+import { FileFormat } from '../../../../WorldGenerator';
+import { WorldItem } from "../../../../WorldItem";
 (<any> window).earcut = require('earcut');
 
-export class RendererController {
+export class WebglEditorController {
     engine: Engine;
+    scene: Scene;
     private canvas: HTMLCanvasElement;
     private camera: ArcRotateCamera;
 
@@ -34,6 +35,7 @@ export class RendererController {
         light.intensity = 1
 
         const engine = this.engine;
+        this.scene = scene;
 
         new BabylonWorldGenerator(scene).generate(worldMap, fileFormat, {
             convert(worldItem: WorldItem): any {
