@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ToolType } from '../../../controllers/editors/svg/tools/Tool';
+import { ToolType } from '../../../controllers/canvases/svg/tools/Tool';
 import { AppContext, AppContextType } from '../../Context';
 import { BrushIconComponent } from '../../icons/BrushIconComponent';
 import { DeleteIconComponent } from '../../icons/DeleteIconComponent';

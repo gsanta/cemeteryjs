@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { colors } from '../../styles';
 import { WgDefinitionAttributes } from '../../../../model/readers/svg/WorldMapJson';
+import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvasController';
 
 const EditorComponent = styled.div`
     height: calc(100% - 35px);
@@ -89,12 +90,12 @@ export class WebglEditorComponent extends React.Component<any> {
 
     private renderPixels(context: AppContextType): JSX.Element[] {
         const pixelController = context.controllers.bitmapEditorController.pixelModel;
-        const worldItemTypeModel = context.controllers.worldItemDefinitionModel;
+        const worldItemDefinitionModel = context.controllers.bitmapEditorController.worldItemDefinitionModel;
 
         return Array.from(pixelController.bitMap).map(([index, pixel]) => {
             const pixelSize = context.controllers.bitmapEditorController.configModel.pixelSize;
             const pos = pixelController.getPixelPosition(index).mul(pixelSize);
-            const color = worldItemTypeModel.getByTypeName(pixel.type).color;
+            const color = worldItemDefinitionModel.getByTypeName(pixel.type).color;
 
             return (
                 <rect 
@@ -130,7 +131,9 @@ export class WebglEditorComponent extends React.Component<any> {
     }
 
     renderMetaData(): JSX.Element {
-        const wgTypeComponents = this.context.controllers.worldItemDefinitionModel.types.map(type => {
+        const canvasController = this.context.controllers.getCanvasControllerById(SvgCanvasController.id);
+        const worldItemDefinitionModel = this.context.controllers.bitmapEditorController.worldItemDefinitionModel;
+        const wgTypeComponents = worldItemDefinitionModel.types.map(type => {
             const props: Partial<WgDefinitionAttributes> = {
                 color: type.color,
                 'is-border': type.isBorder ? 'true' : 'false',

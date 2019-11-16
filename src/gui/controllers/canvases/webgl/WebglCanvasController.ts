@@ -2,20 +2,23 @@ import { ArcRotateCamera, Color3, Engine, HemisphericLight, Scene, Vector3 } fro
 import { BabylonWorldGenerator } from "../../../../integrations/babylonjs/BabylonWorldGenerator";
 import { FileFormat } from '../../../../WorldGenerator';
 import { WorldItem } from "../../../../WorldItem";
-import { IWritableEditor } from '../IWritableEditor';
-import { WebglEditorWriter } from './WebglEditorWriter';
 import { ControllerFacade } from '../../ControllerFacade';
 import { Events } from "../../events/Events";
+import { IWritableCanvas } from '../IWritableCanvas';
+import { WebglCanvasWriter } from './WebglCanvasWriter';
 (<any> window).earcut = require('earcut');
 
-export class WebglEditorController implements IWritableEditor {
+export class WebglCanvasController implements IWritableCanvas {
     static id = 'webgl-editor';
     fileFormats = [FileFormat.TEXT, FileFormat.SVG];
 
     engine: Engine;
     scene: Scene;
-    writer: WebglEditorWriter;
+    writer: WebglCanvasWriter;
     isDirty: boolean;
+
+    // worldItemDefintionForm: WorldItemDefinitionForm;
+    // worldItemDefinitionModel: WorldItemDefinitionModel;
 
     private canvas: HTMLCanvasElement;
     private camera: ArcRotateCamera;
@@ -24,6 +27,9 @@ export class WebglEditorController implements IWritableEditor {
 
     constructor(controllers: ControllerFacade) {
         this.controllers = controllers;
+        // this.worldItemDefintionForm = new WorldItemDefinitionForm(this);
+        // this.worldItemDefinitionModel = new WorldItemDefinitionModel(defaultWorldItemDefinitions);
+
         this.controllers.eventDispatcher.addEventListener(Events.CONTENT_CHANGED, () => this.updateContent());
     }
 
@@ -32,7 +38,7 @@ export class WebglEditorController implements IWritableEditor {
     init(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
         this.engine = new Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
-        this.writer = new WebglEditorWriter(this, this.controllers.worldItemDefinitionModel);
+        this.writer = new WebglCanvasWriter(this, this.controllers.getActiveCanvas().worldItemDefinitionModel);
     }
 
     updateCanvas(worldMap: string, fileFormat: FileFormat) {
@@ -71,7 +77,7 @@ export class WebglEditorController implements IWritableEditor {
 
 
     getId(): string {
-        return WebglEditorController.id;
+        return WebglCanvasController.id;
     }
 
     setRenderer(renderFunc: () => void) {
@@ -88,7 +94,7 @@ export class WebglEditorController implements IWritableEditor {
 
     private updateContent() {
         if (this.writer) {
-            const file = this.controllers.settingsModel.activeEditor.reader.read(this.controllers.worldItemDefinitionModel);
+            const file = this.controllers.settingsModel.activeEditor.reader.read();
             this.writer.write(file, this.controllers.settingsModel.activeEditor.fileFormats[0]);
         }
     }

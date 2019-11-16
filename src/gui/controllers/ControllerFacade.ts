@@ -1,47 +1,53 @@
-import { WorldItemDefinitionController } from './world_items/WorldItemDefinitionController';
+import { WorldItemDefinitionForm } from './world_items/WorldItemDefinitionForm';
 import { UIUpdateController } from './UIUpdateController';
-import { TextEditorController, initialText } from './editors/text/TextEditorController';
-import { WebglEditorController } from './editors/webgl/WebglEditorController';
+import { TextCanvasController, initialText } from './canvases/text/TextCanvasController';
+import { WebglCanvasController } from './canvases/webgl/WebglCanvasController';
 import { defaultWorldItemDefinitions } from '../configs/defaultWorldItemDefinitions';
 import { SettingsController } from './settings/SettingsController';
-import { SvgEditorController, initialSvg } from './editors/svg/SvgEditorController';
+import { SvgCanvasController, initialSvg } from './canvases/svg/SvgCanvasController';
 import { WorldItemDefinitionModel } from './world_items/WorldItemDefinitionModel';
 import { SettingsModel } from './settings/SettingsModel';
-import { TextEditorReader } from './editors/text/TextEditorReader';
-import { FileFormat } from '../../WorldGenerator';
-import { IReadableWriteableEditor } from './editors/IReadableWriteableEditor';
+import { TextCanvasReader } from './canvases/text/TextCanvasReader';
+import { IEditableCanvas } from './canvases/IEditableCanvas';
 import { EventDispatcher } from './events/EventDispatcher';
+import { ICanvasController } from './canvases/ICanvasController';
 
 export class ControllerFacade {
-    textEditorController: TextEditorController;
-    bitmapEditorController: SvgEditorController;
-    webglEditorController: WebglEditorController;
-    worldItemDefinitionController: WorldItemDefinitionController;
+    textEditorController: TextCanvasController;
+    bitmapEditorController: SvgCanvasController;
+    webglEditorController: WebglCanvasController;
     updateUIController: UIUpdateController;
     settingsController: SettingsController;
     
-    worldItemDefinitionModel: WorldItemDefinitionModel;
     settingsModel: SettingsModel;
-    textEditorModel: TextEditorReader;
-    bitmapEditorModel: TextEditorReader;
-    editors: IReadableWriteableEditor[];
+    textEditorModel: TextCanvasReader;
+    bitmapEditorModel: TextCanvasReader;
+    editors: IEditableCanvas[];
     eventDispatcher: EventDispatcher;
 
     constructor() {
         this.eventDispatcher = new EventDispatcher();
-        this.worldItemDefinitionModel = new WorldItemDefinitionModel(defaultWorldItemDefinitions);
+        // this.worldItemDefinitionModel = new WorldItemDefinitionModel(defaultWorldItemDefinitions);
         this.settingsModel = new SettingsModel();
         this.bitmapEditorModel = null;
         
-        this.textEditorController = new TextEditorController(this);
-        this.bitmapEditorController = new SvgEditorController(this);
-        this.worldItemDefinitionController = new WorldItemDefinitionController(this);
+        this.textEditorController = new TextCanvasController(this);
+        this.bitmapEditorController = new SvgCanvasController(this);
+        // this.worldItemDefinitionController = new WorldItemDefinitionController(this);
         this.updateUIController = new UIUpdateController();
-        this.webglEditorController = new WebglEditorController(this);
+        this.webglEditorController = new WebglCanvasController(this);
         this.settingsController = new SettingsController(this);
 
         // this.bitmapEditorController.writer.write(initialSvg, FileFormat.SVG);
         this.editors = [this.textEditorController, this.bitmapEditorController];
         // this.textEditorController.writer.write(initialText, FileFormat.TEXT);
+    }
+
+    getCanvasControllerById(id: string): ICanvasController {
+        return this.editors.find(editor => editor.getId() === id);
+    }
+
+    getActiveCanvas(): IEditableCanvas {
+        return <IEditableCanvas> this.settingsModel.activeEditor;
     }
 }

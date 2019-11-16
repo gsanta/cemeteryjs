@@ -1,20 +1,23 @@
-import { SvgConfig as SvgConfig } from './SvgConfig';
-import { MouseController } from './MouseController';
+import { SvgConfig as SvgConfig } from './models/SvgConfig';
+import { MouseHandler } from './handlers/MouseHandler';
 import { RectangleTool } from './tools/RectangleTool';
-import { PixelModel } from './PixelModel';
+import { PixelModel } from './models/PixelModel';
 import { ControllerFacade } from '../../ControllerFacade';
 import { Tool, ToolType } from './tools/Tool';
 import { DeleteTool } from './tools/DeleteTool';
-import { SelectionModel } from './SelectionModel';
-import { IEditorController } from '../IEditorController';
-import { IEditorWriter } from '../IEditorWriter';
-import { IEditorReader } from '../IEditorReader';
-import { SvgEditorReader } from './SvgEditorReader';
-import { SvgEditorWriter } from './SvgEditorWriter';
+import { SelectionModel } from './models/SelectionModel';
+import { ICanvasController } from '../ICanvasController';
+import { ICanvasWriter } from '../ICanvasWriter';
+import { ICanvasReader } from '../ICanvasReader';
+import { SvgCanvasReader } from './SvgCanvasReader';
+import { SvgCanvasWriter } from './SvgCanvasWriter';
 import { FileFormat } from '../../../../WorldGenerator';
-import { IReadableEditor } from '../IReadableEditor';
-import { IWritableEditor } from '../IWritableEditor';
-import { IReadableWriteableEditor } from '../IReadableWriteableEditor';
+import { IReadableCanvas } from '../IReadableCanvas';
+import { IWritableCanvas } from '../IWritableCanvas';
+import { IEditableCanvas } from '../IEditableCanvas';
+import { WorldItemDefinitionModel } from '../../world_items/WorldItemDefinitionModel';
+import { WorldItemDefinitionForm } from '../../world_items/WorldItemDefinitionForm';
+import { defaultWorldItemDefinitions } from '../../../configs/defaultWorldItemDefinitions';
 
 export const initialSvg = 
 `
@@ -74,30 +77,35 @@ export const initialSvg =
 </svg>
 `;
 
-export class SvgEditorController implements IReadableWriteableEditor {
+export class SvgCanvasController implements IEditableCanvas {
     static id = 'bitmap-editor';
     fileFormats = [FileFormat.SVG];
-    mouseController: MouseController;
+    mouseController: MouseHandler;
     activeTool: Tool;
     tools: Tool[];
-    writer: IEditorWriter;
-    reader: IEditorReader;
+    writer: ICanvasWriter;
+    reader: ICanvasReader;
     
     configModel: SvgConfig;
     pixelModel: PixelModel;
     selectionModel: SelectionModel;
     
     controllers: ControllerFacade;
+    WorldItemDefinitionForm: WorldItemDefinitionForm;
+    worldItemDefinitionModel: WorldItemDefinitionModel;
     
     constructor(controllers: ControllerFacade) {
         this.controllers = controllers;
+        this.worldItemDefinitionModel = new WorldItemDefinitionModel(defaultWorldItemDefinitions);
+        this.WorldItemDefinitionForm = new WorldItemDefinitionForm(this);
+
         this.selectionModel = new SelectionModel();
         this.configModel = new SvgConfig();
         this.pixelModel = new PixelModel(this.configModel);
         
-        this.mouseController = new MouseController(this);
-        this.writer = new SvgEditorWriter(this, this.controllers.worldItemDefinitionModel);
-        this.reader = new SvgEditorReader(this);
+        this.mouseController = new MouseHandler(this);
+        this.writer = new SvgCanvasWriter(this);
+        this.reader = new SvgCanvasReader(this);
 
         this.tools = [
             new RectangleTool(this),
@@ -121,7 +129,7 @@ export class SvgEditorController implements IReadableWriteableEditor {
     }
 
     getId() {
-        return SvgEditorController.id;
+        return SvgCanvasController.id;
     }
 
     resize(): void {};

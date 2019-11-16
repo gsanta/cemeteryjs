@@ -1,20 +1,16 @@
-import { IEditorReader } from '../IEditorReader';
-import { TextEditorController } from './TextEditorController';
-import { WorldItemDefinitionModel } from '../../world_items/WorldItemDefinitionModel';
 import { TextConfigReader } from '../../../../model/readers/text/TextConfigReader';
 import { TextWorldMapParser, WorldMapLineListener } from '../../../../model/readers/text/TextWorldMapParser';
-import { IEditorWriter } from '../IEditorWriter';
 import { FileFormat } from '../../../../WorldGenerator';
+import { ICanvasWriter } from '../ICanvasWriter';
+import { TextCanvasController } from './TextCanvasController';
 
 
-export class TextEditorWriter implements IEditorWriter {
-    private textEditorController: TextEditorController;
-    private worldItemDefinitionModel: WorldItemDefinitionModel;
+export class TextCanvasWriter implements ICanvasWriter {
+    private textCanvasController: TextCanvasController;
     private textConfigReader: TextConfigReader;
 
-    constructor(textEditorController: TextEditorController, worldItemDefinitionModel: WorldItemDefinitionModel) {
-        this.textEditorController = textEditorController;
-        this.worldItemDefinitionModel = worldItemDefinitionModel;
+    constructor(textEditorController: TextCanvasController) {
+        this.textCanvasController = textEditorController;
         this.textConfigReader = new TextConfigReader();
 
     }
@@ -33,8 +29,8 @@ export class TextEditorWriter implements IEditorWriter {
             }
         }).read(file);
 
-        this.worldItemDefinitionModel.setTypes(worldItemTypes);
-        this.textEditorController.setRendererDirty();
-        this.textEditorController.setText(lines.join('\n'));
+        this.textCanvasController.worldItemDefinitionModel.setTypes(worldItemTypes);
+        this.textCanvasController.setRendererDirty();
+        this.textCanvasController.setText(lines.join('\n'));
     }
 }

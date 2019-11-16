@@ -1,6 +1,6 @@
 import { FileFormat } from '../../../WorldGenerator';
 
 
-export interface IEditorWriter {
+export interface ICanvasWriter {
     write(file: string, fileFormat: FileFormat): void;
 }

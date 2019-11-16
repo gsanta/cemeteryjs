@@ -11,8 +11,9 @@ import { BitmapEditorToolbar } from './bitmap_editor/BitmapEditorToolbar';
 import './EditorComponent.scss';
 import { PropertyEditorComponent } from './PropertyEditorComponent';
 import { TextEditorComponent } from './TextEditorComponent';
-import { SvgEditorController } from '../../controllers/editors/svg/SvgEditorController';
-import { TextEditorController } from '../../controllers/editors/text/TextEditorController';
+import { SvgCanvasController } from '../../controllers/canvases/svg/SvgCanvasController';
+import { TextCanvasController } from '../../controllers/canvases/text/TextCanvasController';
+import { WorldItemDefinitionForm } from '../../controllers/world_items/WorldItemDefinitionForm';
 
 const GlobalToolbarComponent = styled.div`
     margin-right: 20px;
@@ -52,9 +53,9 @@ export class EditorComponent extends React.Component<{}> {
             <HorizontalSplitComponent onChange={() => this.onResize()}>
                 <div className="editor">
                     {this.renderToolbar(context)}
-                    {windowModel.activeEditor.getId() === SvgEditorController.id ? this.renderDrawEditor(context) : this.renderTextEditor(context)}
+                    {windowModel.activeEditor.getId() === SvgCanvasController.id ? this.renderDrawEditor(context) : this.renderTextEditor(context)}
                 </div>
-                <PropertyEditorComponent/>
+                <PropertyEditorComponent worldItemDefinitionForm={context.controllers.getActiveCanvas().WorldItemDefinitionForm} />
             </HorizontalSplitComponent>
         );
     }
@@ -65,7 +66,7 @@ export class EditorComponent extends React.Component<{}> {
         return (
             <div className="editor">
                 {this.renderToolbar(context)}
-                {windowModel.activeEditor.getId() === SvgEditorController.id ? this.renderDrawEditor(context) : this.renderTextEditor(context)}
+                {windowModel.activeEditor.getId() === SvgCanvasController.id ? this.renderDrawEditor(context) : this.renderTextEditor(context)}
             </div>
         );
     }
@@ -107,12 +108,12 @@ export class EditorComponent extends React.Component<{}> {
     }
 
     private onResize() {
-        if (this.context.controllers.settingsModel.activeEditor.getId() === TextEditorController.id) {
+        if (this.context.controllers.settingsModel.activeEditor.getId() === TextCanvasController.id) {
             this.context.controllers.textEditorController.resize();
         }
     }
 
     private renderEditorSpecificToolbar(context: AppContextType): JSX.Element {
-        return context.controllers.settingsModel.activeEditor.getId() === SvgEditorController.id ? <BitmapEditorToolbar/> : null;
+        return context.controllers.settingsModel.activeEditor.getId() === SvgCanvasController.id ? <BitmapEditorToolbar/> : null;
     }
 }

@@ -1,91 +1,96 @@
 import { setupControllers } from "./controllerTestUtils";
-import { WorldItemTypeProperty, WorldItemDefinitionController } from "../../../src/gui/controllers/world_items/WorldItemDefinitionController";
+import { WorldItemTypeProperty, WorldItemDefinitionForm } from "../../../src/gui/controllers/world_items/WorldItemDefinitionForm";
 import { WorldItemDefinition } from "../../../src/WorldItemDefinition";
 import { FileFormat } from '../../../src/WorldGenerator';
 
 it ("Update the 'type' prop", () => {
     const controllers = setupControllers(FileFormat.TEXT);
 
-    const worldItemTypeController = controllers.worldItemDefinitionController;
-    const meshDescriptor = worldItemTypeController.getModel().types[1];
+    const worldItemDefinitionForm = new WorldItemDefinitionForm(controllers.getActiveCanvas());
 
-    testSimpleProp(worldItemTypeController, meshDescriptor, WorldItemTypeProperty.TYPE_NAME, 'new type', val => worldItemTypeController.updateStringProp(val));
+    const meshDescriptor = worldItemDefinitionForm.getModel().types[1];
+
+    testSimpleProp(worldItemDefinitionForm, meshDescriptor, WorldItemTypeProperty.TYPE_NAME, 'new type', val => worldItemDefinitionForm.updateStringProp(val));
 });
 
 it ("Update the 'char' prop", () => {
     const controllers = setupControllers(FileFormat.TEXT);
 
-    const worldItemTypeController = controllers.worldItemDefinitionController;
-    const meshDescriptor = worldItemTypeController.getModel().types[1];
+    const worldItemDefinitionForm = new WorldItemDefinitionForm(controllers.getActiveCanvas());
+    const meshDescriptor = worldItemDefinitionForm.getModel().types[1];
 
-    testSimpleProp(worldItemTypeController, meshDescriptor, WorldItemTypeProperty.CHAR, 'A', val => worldItemTypeController.updateStringProp(val));
+    testSimpleProp(worldItemDefinitionForm, meshDescriptor, WorldItemTypeProperty.CHAR, 'A', val => worldItemDefinitionForm.updateStringProp(val));
 });
 
 it ("Update the 'model' prop", () => {
     const controllers = setupControllers(FileFormat.TEXT);
 
-    const worldItemTypeController = controllers.worldItemDefinitionController;
-    const meshDescriptor = worldItemTypeController.getModel().types[1];
+    const worldItemDefinitionForm = new WorldItemDefinitionForm(controllers.getActiveCanvas());
 
-    testSimpleProp(worldItemTypeController, meshDescriptor, WorldItemTypeProperty.MODEL, 'models/door/new_model.babylon', val => worldItemTypeController.updateStringProp(val));
+    const meshDescriptor = worldItemDefinitionForm.getModel().types[1];
+
+    testSimpleProp(worldItemDefinitionForm, meshDescriptor, WorldItemTypeProperty.MODEL, 'models/door/new_model.babylon', val => worldItemDefinitionForm.updateStringProp(val));
 });
 
 it ("Update the 'shape' prop", () => {
     const controllers = setupControllers(FileFormat.TEXT);
 
-    const worldItemTypeController = controllers.worldItemDefinitionController;
-    const meshDescriptor = worldItemTypeController.getModel().types[0];
+    const worldItemDefinitionForm = new WorldItemDefinitionForm(controllers.getActiveCanvas());
 
-    testSimpleProp(worldItemTypeController, meshDescriptor, WorldItemTypeProperty.SHAPE, 'circle', val => worldItemTypeController.updateStringProp(val));
+    const meshDescriptor = worldItemDefinitionForm.getModel().types[0];
+
+    testSimpleProp(worldItemDefinitionForm, meshDescriptor, WorldItemTypeProperty.SHAPE, 'circle', val => worldItemDefinitionForm.updateStringProp(val));
 });
 
 it ("Update the 'scale' prop", () => {
     const controllers = setupControllers(FileFormat.TEXT);
 
-    const worldItemTypeController = controllers.worldItemDefinitionController;
-    const meshDescriptor = worldItemTypeController.getModel().types[1];
+    const worldItemDefinitionForm = new WorldItemDefinitionForm(controllers.getActiveCanvas());
 
-    testSimpleProp(worldItemTypeController, meshDescriptor, WorldItemTypeProperty.SCALE, 2, val => worldItemTypeController.updateNumberProp(val));
+    const meshDescriptor = worldItemDefinitionForm.getModel().types[1];
+
+    testSimpleProp(worldItemDefinitionForm, meshDescriptor, WorldItemTypeProperty.SCALE, 2, val => worldItemDefinitionForm.updateNumberProp(val));
 });
 
 it ("Update the 'translate' prop", () => {
     const controllers = setupControllers(FileFormat.TEXT);
 
-    const worldItemTypeController = controllers.worldItemDefinitionController;
-    const meshDescriptor = worldItemTypeController.getModel().types[1];
+    const worldItemDefinitionForm = new WorldItemDefinitionForm(controllers.getActiveCanvas());
 
-    testSimpleProp(worldItemTypeController, meshDescriptor, WorldItemTypeProperty.TRANSLATE_Y, 4, val => worldItemTypeController.updateNumberProp(val));
+    const meshDescriptor = worldItemDefinitionForm.getModel().types[1];
+
+    testSimpleProp(worldItemDefinitionForm, meshDescriptor, WorldItemTypeProperty.TRANSLATE_Y, 4, val => worldItemDefinitionForm.updateNumberProp(val));
 });
 
 it ("Update the 'isBorder' prop", () => {
     const controllers = setupControllers(FileFormat.TEXT);
 
-    const worldItemTypeController = controllers.worldItemDefinitionController;
-    const meshDescriptor = worldItemTypeController.getModel().types[1];
+    const worldItemDefinitionForm = new WorldItemDefinitionForm(controllers.getActiveCanvas());
+    const meshDescriptor = worldItemDefinitionForm.getModel().types[1];
 
-    testSimpleProp(worldItemTypeController, meshDescriptor, WorldItemTypeProperty.IS_BORDER, false, val => worldItemTypeController.updateBooleanProp(val));
+    testSimpleProp(worldItemDefinitionForm, meshDescriptor, WorldItemTypeProperty.IS_BORDER, false, val => worldItemDefinitionForm.updateBooleanProp(val));
 });
 
 it ("Update the 'isBorder' prop", () => {
     const controllers = setupControllers(FileFormat.TEXT);
 
-    const worldItemTypeController = controllers.worldItemDefinitionController;
-    const meshDescriptor = worldItemTypeController.getModel().types[1];
+    const worldItemDefinitionForm = new WorldItemDefinitionForm(controllers.getActiveCanvas());
+    const meshDescriptor = worldItemDefinitionForm.getModel().types[1];
     const oldMaterials = ['materials/door/door.jpg'];
-    worldItemTypeController.setSelectedDefinition('door');
-    worldItemTypeController.focusProp(WorldItemTypeProperty.MATERIALS);
+    worldItemDefinitionForm.setSelectedDefinition('door');
+    worldItemDefinitionForm.focusProp(WorldItemTypeProperty.MATERIALS);
 
-    expect(worldItemTypeController.getVal(WorldItemTypeProperty.MATERIALS)).toEqual('');
+    expect(worldItemDefinitionForm.getVal(WorldItemTypeProperty.MATERIALS)).toEqual('');
     expect(meshDescriptor.materials).toEqual(oldMaterials);
 
-    worldItemTypeController.updateStringProp('materials/door/door2.jpg');
+    worldItemDefinitionForm.updateStringProp('materials/door/door2.jpg');
     
-    expect(worldItemTypeController.getVal(WorldItemTypeProperty.MATERIALS)).toEqual('materials/door/door2.jpg');
+    expect(worldItemDefinitionForm.getVal(WorldItemTypeProperty.MATERIALS)).toEqual('materials/door/door2.jpg');
     expect(meshDescriptor.materials).toEqual(oldMaterials);
 
-    worldItemTypeController.commitProp();
-    expect(worldItemTypeController.getVal(WorldItemTypeProperty.MATERIALS)).toEqual('');
-    expect(worldItemTypeController.getModel().types.find(desc => desc.typeName === 'door').materials).toEqual(
+    worldItemDefinitionForm.commitProp();
+    expect(worldItemDefinitionForm.getVal(WorldItemTypeProperty.MATERIALS)).toEqual('');
+    expect(worldItemDefinitionForm.getModel().types.find(desc => desc.typeName === 'door').materials).toEqual(
         [
             'materials/door/door.jpg',
             'materials/door/door2.jpg'
@@ -94,7 +99,7 @@ it ("Update the 'isBorder' prop", () => {
 });
 
 function testSimpleProp(
-    worldItemTypeController: WorldItemDefinitionController,
+    worldItemTypeController: WorldItemDefinitionForm,
     descriptor: WorldItemDefinition,
     property: WorldItemTypeProperty,
     newVal: any, updateProp: (val: any) => void

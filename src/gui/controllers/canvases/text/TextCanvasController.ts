@@ -1,16 +1,16 @@
-import { MonacoConfig } from '../../../configs/MonacoConfig';
 import { debounce } from '../../../../model/utils/Functions';
-import { ControllerFacade } from '../../ControllerFacade';
-import { IEditorController } from '../IEditorController';
-import { IEditorWriter } from '../IEditorWriter';
-import { TextEditorReader } from './TextEditorReader';
-import { IEditorReader } from '../IEditorReader';
-import { TextEditorWriter } from './TextEditorWriter';
 import { FileFormat } from '../../../../WorldGenerator';
-import { IReadableEditor } from '../IReadableEditor';
-import { IWritableEditor } from '../IWritableEditor';
-import { IReadableWriteableEditor } from '../IReadableWriteableEditor';
+import { defaultWorldItemDefinitions } from '../../../configs/defaultWorldItemDefinitions';
+import { MonacoConfig } from '../../../configs/MonacoConfig';
+import { ControllerFacade } from '../../ControllerFacade';
 import { Events } from '../../events/Events';
+import { WorldItemDefinitionForm } from '../../world_items/WorldItemDefinitionForm';
+import { WorldItemDefinitionModel } from '../../world_items/WorldItemDefinitionModel';
+import { ICanvasReader } from '../ICanvasReader';
+import { ICanvasWriter } from '../ICanvasWriter';
+import { IEditableCanvas } from '../IEditableCanvas';
+import { TextCanvasReader } from './TextCanvasReader';
+import { TextCanvasWriter } from './TextCanvasWriter';
 
 const THEME = 'nightshiftsTheme';
 const LANGUAGE = 'nightshiftsLanguage';
@@ -43,20 +43,24 @@ H = chair
 
 `;
 
-export class TextEditorController implements IReadableWriteableEditor {
+export class TextCanvasController implements IEditableCanvas {
     static id = 'text-editor';
     fileFormats = [FileFormat.TEXT];
     editor: any;
     text: string = null;
-    writer: IEditorWriter;
-    reader: IEditorReader;
+    writer: ICanvasWriter;
+    reader: ICanvasReader;
+    WorldItemDefinitionForm: WorldItemDefinitionForm;
+    worldItemDefinitionModel: WorldItemDefinitionModel;
     
     private controllers: ControllerFacade;
 
     constructor(controllers: ControllerFacade) {
         this.controllers = controllers;
-        this.writer = new TextEditorWriter(this, controllers.worldItemDefinitionModel);
-        this.reader = new TextEditorReader(this);
+        this.writer = new TextCanvasWriter(this);
+        this.reader = new TextCanvasReader(this);
+        this.worldItemDefinitionModel = new WorldItemDefinitionModel(defaultWorldItemDefinitions);
+        this.WorldItemDefinitionForm = new WorldItemDefinitionForm(this);
     }
 
     createEditor(monacoModule: any, monacoConfig: typeof MonacoConfig, element: HTMLDivElement, content: string) {
@@ -106,7 +110,7 @@ export class TextEditorController implements IReadableWriteableEditor {
     }
 
     getId(): string {
-        return TextEditorController.id;
+        return TextCanvasController.id;
     }
 
     resize() {

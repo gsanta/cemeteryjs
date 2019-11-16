@@ -52,7 +52,7 @@ it ('Remove existing pixel if adding pixel to an occupied position', () => {
     expect(controllers.bitmapEditorController.pixelModel.pixels.length).toEqual(1);
     let pixel = controllers.bitmapEditorController.pixelModel.pixels[0];
     expect(pixel.type).toEqual('wall');
-    controllers.worldItemDefinitionController.setSelectedDefinition('door');
+    controllers.bitmapEditorController.WorldItemDefinitionForm.setSelectedDefinition('door');
 
     controllers.bitmapEditorController.mouseController.onMouseMove(<MouseEvent> {x: 5, y: 5});
     controllers.bitmapEditorController.mouseController.onMouseDown(<MouseEvent> {x: 5, y: 5});

@@ -1,6 +1,6 @@
 import { IFormController } from '../IFormController';
 import { ControllerFacade } from '../ControllerFacade';
-import { IReadableWriteableEditor } from '../editors/IReadableWriteableEditor';
+import { IEditableCanvas } from '../canvases/IEditableCanvas';
 import { Events } from '../events/Events';
 
 export enum SettingsProperty {
@@ -69,7 +69,7 @@ export class SettingsController extends IFormController<SettingsProperty> {
         }
     }
 
-    private findEditorById(id: string): IReadableWriteableEditor {
+    private findEditorById(id: string): IEditableCanvas {
         return this.controllers.editors.find(editor => editor.getId() === id);
     }
 }

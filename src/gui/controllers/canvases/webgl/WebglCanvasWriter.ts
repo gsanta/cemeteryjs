@@ -1,15 +1,15 @@
-import { IEditorWriter } from "../IEditorWriter";
-import { WebglEditorController } from './WebglEditorController';
+import { ICanvasWriter } from "../ICanvasWriter";
+import { WebglCanvasController } from './WebglCanvasController';
 import { WorldItemDefinitionModel } from "../../world_items/WorldItemDefinitionModel";
 import { BabylonWorldGenerator } from "../../../../integrations/babylonjs/BabylonWorldGenerator";
 import { FileFormat } from '../../../../WorldGenerator';
 import { WorldItem } from "../../../../WorldItem";
 
-export class WebglEditorWriter implements IEditorWriter {
-    private webglEditorController: WebglEditorController;
+export class WebglCanvasWriter implements ICanvasWriter {
+    private webglEditorController: WebglCanvasController;
     private worldItemDefinitionModel: WorldItemDefinitionModel;
 
-    constructor(webglEditorController: WebglEditorController, worldItemDefinitionModel: WorldItemDefinitionModel) {
+    constructor(webglEditorController: WebglCanvasController, worldItemDefinitionModel: WorldItemDefinitionModel) {
         this.webglEditorController = webglEditorController;
         this.worldItemDefinitionModel = worldItemDefinitionModel;
     }

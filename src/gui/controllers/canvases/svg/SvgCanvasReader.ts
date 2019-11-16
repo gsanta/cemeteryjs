@@ -1,17 +1,17 @@
-import { SvgEditorController } from './SvgEditorController';
+import { SvgCanvasController } from './SvgCanvasController';
 import { WorldItemDefinitionModel } from '../../world_items/WorldItemDefinitionModel';
-import { IEditorReader } from '../IEditorReader';
+import { ICanvasReader } from '../ICanvasReader';
 
-export class SvgEditorReader implements IEditorReader {
-    private bitmapEditorController: SvgEditorController;
+export class SvgCanvasReader implements ICanvasReader {
+    private bitmapEditorController: SvgCanvasController;
 
-    constructor(bitmapEditorController: SvgEditorController) {
+    constructor(bitmapEditorController: SvgCanvasController) {
         this.bitmapEditorController = bitmapEditorController;
     }
 
-    read(worldItemDefinitionModel: WorldItemDefinitionModel): string {
-        const metaData = this.createMetaData(worldItemDefinitionModel);
-        const shapes = this.createShapes(worldItemDefinitionModel);
+    read(): string {
+        const metaData = this.createMetaData(this.bitmapEditorController.worldItemDefinitionModel);
+        const shapes = this.createShapes(this.bitmapEditorController.worldItemDefinitionModel);
 
         return `<svg data-wg-pixel-size="10" data-wg-width="1500" data-wg-height="1000">${metaData}\n${shapes}</svg>`;
     }

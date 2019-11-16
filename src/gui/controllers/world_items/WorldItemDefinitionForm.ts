@@ -1,6 +1,7 @@
-import { ControllerFacade } from "../ControllerFacade";
+import { ICanvasController } from '../canvases/ICanvasController';
 import { IFormController } from '../IFormController';
 import { cloneWorldItemType, WorldItemDefinitionModel } from './WorldItemDefinitionModel';
+import { IEditableCanvas } from '../canvases/IEditableCanvas';
 
 export enum WorldItemTypeProperty {
     TYPE_NAME = 'typeName',
@@ -14,14 +15,14 @@ export enum WorldItemTypeProperty {
     COLOR = 'color'
 }
 
-export class WorldItemDefinitionController extends IFormController<WorldItemTypeProperty> {
+export class WorldItemDefinitionForm extends IFormController<WorldItemTypeProperty> {
     shapes: string[] = ['rect'];
 
-    private controllers: ControllerFacade;
+    private canvasController: IEditableCanvas;
 
-    constructor(controllers: ControllerFacade) {
+    constructor(canvasController: IEditableCanvas) {
         super();
-        this.controllers = controllers;
+        this.canvasController = canvasController;
         this.setSelectedDefinition(this.getModel().types[0].typeName);
     }
 
@@ -61,7 +62,7 @@ export class WorldItemDefinitionController extends IFormController<WorldItemType
                 this.tempString = this.getModel().selectedType.color;
                 break;
         }
-        this.controllers.updateUIController.updateUI();
+        this.canvasController.render();
     }
 
     getFocusedProp(): WorldItemTypeProperty { 
@@ -69,18 +70,18 @@ export class WorldItemDefinitionController extends IFormController<WorldItemType
     }
 
     updateStringProp(value: string) {
-        this.tempString = value;        
-        this.controllers.updateUIController.updateUI();            
+        this.tempString = value;
+        this.canvasController.render();
     }
 
     updateBooleanProp(value: boolean) {
         this.tempBoolean = value;
-        this.controllers.updateUIController.updateUI();            
+        this.canvasController.render();
     }
 
     updateNumberProp(value: number) {
         this.tempNumber = value;
-        this.controllers.updateUIController.updateUI();            
+        this.canvasController.render();
     }
 
     deletItemFromListProp(prop: WorldItemTypeProperty, index: number) {
@@ -91,7 +92,7 @@ export class WorldItemDefinitionController extends IFormController<WorldItemType
                 break;
         } 
 
-        this.controllers.updateUIController.updateUI();
+        this.canvasController.render();
     }
 
     commitProp(removeFocus = false) {
@@ -136,7 +137,7 @@ export class WorldItemDefinitionController extends IFormController<WorldItemType
             this.focusedPropType = null;
         }
 
-        this.controllers.updateUIController.updateUI();            
+        this.canvasController.render();
     }
 
     getVal(property: WorldItemTypeProperty) {
@@ -170,12 +171,10 @@ export class WorldItemDefinitionController extends IFormController<WorldItemType
         const meshDescriptor = this.getModel().types.find(descriptor => descriptor.typeName === type);
         this.getModel().selectedType = cloneWorldItemType(meshDescriptor);
 
-        if (this.controllers.updateUIController) {
-            this.controllers.updateUIController.updateUI();
-        }
+        this.canvasController.render();
     }
 
     getModel(): WorldItemDefinitionModel {
-        return this.controllers.worldItemDefinitionModel;
+        return this.canvasController.worldItemDefinitionModel;
     }
 }

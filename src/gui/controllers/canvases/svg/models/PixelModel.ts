@@ -1,6 +1,6 @@
 import { Point } from '@nightshifts.inc/geometry';
 import { Rectangle } from './Rectangle';
-import { SvgEditorController } from './SvgEditorController';
+import { SvgCanvasController } from '../SvgCanvasController';
 import { SvgConfig } from './SvgConfig';
 
 export interface Pixel {

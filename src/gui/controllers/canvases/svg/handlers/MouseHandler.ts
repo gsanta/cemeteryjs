@@ -1,5 +1,5 @@
 import { Point } from '@nightshifts.inc/geometry';
-import { SvgEditorController } from './SvgEditorController';
+import { SvgCanvasController } from '../SvgCanvasController';
 
 function calcOffsetFromDom(bitmapEditorId: string): Point {
     if (typeof document !== 'undefined') {
@@ -13,8 +13,8 @@ function calcOffsetFromDom(bitmapEditorId: string): Point {
     return new Point(0, 0);
 }
 
-export class MouseController {
-    private bitmapEditor: SvgEditorController;
+export class MouseHandler {
+    private bitmapEditor: SvgCanvasController;
     isDown = false;
     isDrag = false;
     downPoint: Point;
@@ -22,7 +22,7 @@ export class MouseController {
 
     private calcOffset: (id: string) => Point;
 
-    constructor(bitmapEditor: SvgEditorController, calcOffset: (id: string) => Point = calcOffsetFromDom) {
+    constructor(bitmapEditor: SvgCanvasController, calcOffset: (id: string) => Point = calcOffsetFromDom) {
         this.bitmapEditor = bitmapEditor;
         this.calcOffset = calcOffset;
     }

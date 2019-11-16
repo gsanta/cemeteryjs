@@ -1,17 +1,17 @@
 import { WorldItemDefinition } from "../../../../WorldItemDefinition";
 import { WorldItemDefinitionModel } from "../../world_items/WorldItemDefinitionModel";
-import { TextEditorController } from './TextEditorController';
-import { IEditorReader } from '../IEditorReader';
+import { TextCanvasController } from './TextCanvasController';
+import { ICanvasReader } from '../ICanvasReader';
 
-export class TextEditorReader implements IEditorReader {
-    private textEditorController: TextEditorController;
+export class TextCanvasReader implements ICanvasReader {
+    private textEditorController: TextCanvasController;
 
-    constructor(textEditorController: TextEditorController) {
+    constructor(textEditorController: TextCanvasController) {
         this.textEditorController = textEditorController;
     }
 
-    read(worldItemDefinitionModel: WorldItemDefinitionModel): string {
-        return this.createFile(worldItemDefinitionModel);
+    read(): string {
+        return this.createFile(this.textEditorController.worldItemDefinitionModel);
     }
 
     private createFile(worldItemDefinitionModel: WorldItemDefinitionModel) {

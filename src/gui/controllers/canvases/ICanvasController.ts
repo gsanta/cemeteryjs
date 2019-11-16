@@ -1,6 +1,7 @@
 import { FileFormat } from '../../../WorldGenerator';
+import { WorldItemDefinitionModel } from '../world_items/WorldItemDefinitionModel';
 
-export interface IEditorController {
+export interface ICanvasController {
     fileFormats: FileFormat[];
     getId(): string;
     setRenderer(renderFunc: () => void);
