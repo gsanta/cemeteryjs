@@ -7,7 +7,7 @@ import { ConnectedColorPicker } from '../forms/ColorPicker';
 import { ConnectedDropdownComponent } from '../forms/DropdownComponent';
 import { ConnectedInputComponent, InputComponent } from '../forms/InputComponent';
 import { LabeledComponent } from '../forms/LabeledComponent';
-import { MaterialsComponent } from './definition/MaterialsComponent';
+import { MaterialsComponent } from './MaterialsComponent';
 import './PropertyEditorComponent.scss';
 
 const chars = [

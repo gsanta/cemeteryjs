@@ -1,8 +1,8 @@
 import * as React from 'react';
-import './RendererComponent.scss'
-import { AppContext, AppContextType } from '../Context';
+import './WebglCanvasComponent.scss'
+import { AppContext, AppContextType } from '../../Context';
 
-export class RendererComponent extends React.Component<{}> {
+export class WebglCanvasComponent extends React.Component<{}> {
     static contextType = AppContext;
     private canvasRef: React.RefObject<HTMLCanvasElement>;
     private worldMap: string;

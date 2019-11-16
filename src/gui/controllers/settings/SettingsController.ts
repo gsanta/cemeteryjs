@@ -2,6 +2,7 @@ import { IFormController } from '../IFormController';
 import { ControllerFacade } from '../ControllerFacade';
 import { IEditableCanvas } from '../canvases/IEditableCanvas';
 import { Events } from '../events/Events';
+import { SvgCanvasController } from '../canvases/svg/SvgCanvasController';
 
 export enum SettingsProperty {
     EDITOR = 'editor',
@@ -18,7 +19,7 @@ export class SettingsController extends IFormController<SettingsProperty> {
     constructor(controllers: ControllerFacade) {
         super();
         this.controllers = controllers;
-        this.controllers.settingsModel.activeEditor = this.controllers.bitmapEditorController;
+        this.controllers.settingsModel.activeEditor = <IEditableCanvas> this.controllers.getCanvasControllerById(SvgCanvasController.id);
     }
 
     focusProp(propType: SettingsProperty) {

@@ -1,9 +1,7 @@
-import { ICanvasController } from '../canvases/ICanvasController';
-import { IReadableCanvas } from '../canvases/IReadableCanvas';
-import { IWritableCanvas } from '../canvases/IWritableCanvas';
+import { IEditableCanvas } from '../canvases/IEditableCanvas';
 
 
 export class SettingsModel {
-    activeEditor: ICanvasController & IReadableCanvas & IWritableCanvas;
+    activeEditor: IEditableCanvas;
     isWorldItemTypeEditorOpen = true;
 }

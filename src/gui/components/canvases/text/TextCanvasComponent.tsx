@@ -1,31 +1,32 @@
 import * as monaco from 'monaco-editor';
 import * as React from 'react';
-import { MonacoConfig } from '../../configs/MonacoConfig';
-import { AppContext, AppContextType } from '../Context';
-import './TextEditorComponent.scss';
+import { MonacoConfig } from '../../../configs/MonacoConfig';
+import { AppContext, AppContextType } from '../../Context';
+import './TextCanvasComponent.scss';
+import { TextCanvasController } from '../../../controllers/canvases/text/TextCanvasController';
 
 
-interface TextEditorComponentState {
+interface TextCanvasComponentState {
     map: string;
 }
 
-export interface TextEditorComponentProps {
+export interface TextCanvasComponentProps {
     onModelChanged(content: string): void;
+    canvasController: TextCanvasController;
 }
 
-export class TextEditorComponent extends React.Component<TextEditorComponentProps, TextEditorComponentState> {
+export class TextCanvasComponent extends React.Component<TextCanvasComponentProps, TextCanvasComponentState> {
     static contextType = AppContext;
     private editorElement: React.RefObject<HTMLDivElement>;
     context: AppContextType;
 
-    constructor(props: TextEditorComponentProps) {
+    constructor(props: TextCanvasComponentProps) {
         super(props);
         this.editorElement = React.createRef();
     }
 
     componentDidMount() {
-        const editor = this.context.controllers
-            .textEditorController.createEditor(monaco, MonacoConfig, this.editorElement.current, this.context.controllers.textEditorController.text);
+        const editor = this.props.canvasController.createEditor(monaco, MonacoConfig, this.editorElement.current, this.props.canvasController.text);
         editor.onChange((content: string) => this.handleChange(content));
     }
 
@@ -42,6 +43,6 @@ export class TextEditorComponent extends React.Component<TextEditorComponentProp
     }
 
     handleChange(model: string) {
-        this.context.controllers.textEditorController.setText(model);
+        this.props.canvasController.setText(model);
     };
 }

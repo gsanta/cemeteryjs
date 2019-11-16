@@ -3,8 +3,9 @@ import { ToolType } from '../../../controllers/canvases/svg/tools/Tool';
 import { AppContext, AppContextType } from '../../Context';
 import { BrushIconComponent } from '../../icons/BrushIconComponent';
 import { DeleteIconComponent } from '../../icons/DeleteIconComponent';
+import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvasController';
 
-export class BitmapEditorToolbar extends React.Component<any> {
+export class SvgCanvasToolbar extends React.Component<{canvasController: SvgCanvasController}> {
     static contextType = AppContext;
     context: AppContextType;
 
@@ -18,10 +19,10 @@ export class BitmapEditorToolbar extends React.Component<any> {
     }
 
     private isToolActive(toolType: ToolType) {
-        return this.context.controllers.bitmapEditorController.activeTool.type === toolType;
+        return this.props.canvasController.activeTool.type === toolType;
     }
 
     private activateTool(toolType: ToolType) {
-        this.context.controllers.bitmapEditorController.setActiveTool(toolType);
+        this.props.canvasController.setActiveTool(toolType);
     }
 }

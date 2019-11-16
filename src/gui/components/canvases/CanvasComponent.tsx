@@ -1,19 +1,20 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { SvgCanvasController } from '../../controllers/canvases/svg/SvgCanvasController';
+import { TextCanvasController } from '../../controllers/canvases/text/TextCanvasController';
 import { SettingsProperty } from '../../controllers/settings/SettingsController';
+import { SvgCanvasComponent } from './svg/SvgCanvasComponent';
+import { SvgCanvasToolbar } from './svg/SvgCanvasToolbar';
+import { TextCanvasComponent } from './text/TextCanvasComponent';
 import { AppContext, AppContextType } from '../Context';
 import { ConnectedDropdownComponent } from '../forms/DropdownComponent';
 import { ConnectedToggleButtonComponent } from '../forms/ToggleButtonComponent';
 import { HorizontalSplitComponent } from '../misc/HorizontalSplitComponent';
 import { colors } from '../styles';
-import { WebglEditorComponent } from './bitmap_editor/WebglEditorComponent';
-import { BitmapEditorToolbar } from './bitmap_editor/BitmapEditorToolbar';
-import './EditorComponent.scss';
+import './CanvasComponent.scss';
 import { PropertyEditorComponent } from './PropertyEditorComponent';
-import { TextEditorComponent } from './TextEditorComponent';
-import { SvgCanvasController } from '../../controllers/canvases/svg/SvgCanvasController';
-import { TextCanvasController } from '../../controllers/canvases/text/TextCanvasController';
-import { WorldItemDefinitionForm } from '../../controllers/world_items/WorldItemDefinitionForm';
+import { IEditableCanvas } from '../../controllers/canvases/IEditableCanvas';
+import { FileFormat } from '../../../WorldGenerator';
 
 const GlobalToolbarComponent = styled.div`
     margin-right: 20px;
@@ -28,7 +29,7 @@ const ToolbarComponent = styled.div`
     justify-content: space-between;
 `;
 
-export class EditorComponent extends React.Component<{}> {
+export class CanvasComponent extends React.Component<{}> {
     static contextType = AppContext;
     context: AppContextType;
 
@@ -53,7 +54,7 @@ export class EditorComponent extends React.Component<{}> {
             <HorizontalSplitComponent onChange={() => this.onResize()}>
                 <div className="editor">
                     {this.renderToolbar(context)}
-                    {windowModel.activeEditor.getId() === SvgCanvasController.id ? this.renderDrawEditor(context) : this.renderTextEditor(context)}
+                    {windowModel.activeEditor.getId() === SvgCanvasController.id ? this.renderSvgCanvas(context) : this.renderTextCanvas(context)}
                 </div>
                 <PropertyEditorComponent worldItemDefinitionForm={context.controllers.getActiveCanvas().WorldItemDefinitionForm} />
             </HorizontalSplitComponent>
@@ -66,17 +67,23 @@ export class EditorComponent extends React.Component<{}> {
         return (
             <div className="editor">
                 {this.renderToolbar(context)}
-                {windowModel.activeEditor.getId() === SvgCanvasController.id ? this.renderDrawEditor(context) : this.renderTextEditor(context)}
+                {windowModel.activeEditor.getId() === SvgCanvasController.id ? this.renderSvgCanvas(context) : this.renderTextCanvas(context)}
             </div>
         );
     }
 
-    private renderTextEditor(context: AppContextType) {
-        return <TextEditorComponent onModelChanged={(content: string) => context.controllers.textEditorController.setText(content)}/>;
+    private renderTextCanvas(context: AppContextType) {
+        const editorController = context.controllers.getCanvasControllerById(TextCanvasController.id) as IEditableCanvas;
+        return (
+            <TextCanvasComponent 
+                onModelChanged={(content: string) => editorController.writer.write(content, FileFormat.TEXT)}
+                canvasController={context.controllers.getCanvasControllerById(TextCanvasController.id) as TextCanvasController}
+            />
+        )
     }
 
-    private renderDrawEditor(context: AppContextType) {
-        return <WebglEditorComponent/>;
+    private renderSvgCanvas(context: AppContextType) {
+        return <SvgCanvasComponent canvasController={context.controllers.getCanvasControllerById(SvgCanvasController.id) as SvgCanvasController}/>;
     }
 
     private renderToolbar(context: AppContextType): JSX.Element {
@@ -109,11 +116,12 @@ export class EditorComponent extends React.Component<{}> {
 
     private onResize() {
         if (this.context.controllers.settingsModel.activeEditor.getId() === TextCanvasController.id) {
-            this.context.controllers.textEditorController.resize();
+            this.context.controllers.getCanvasControllerById(TextCanvasController.id).resize();
         }
     }
 
     private renderEditorSpecificToolbar(context: AppContextType): JSX.Element {
-        return context.controllers.settingsModel.activeEditor.getId() === SvgCanvasController.id ? <BitmapEditorToolbar/> : null;
+        const activeEditor = context.controllers.settingsModel.activeEditor; 
+        return activeEditor.getId() === SvgCanvasController.id ? <SvgCanvasToolbar canvasController={activeEditor as SvgCanvasController}/> : null;
     }
 }

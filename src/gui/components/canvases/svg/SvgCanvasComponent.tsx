@@ -28,11 +28,11 @@ const SelectionComponentStyled = styled.rect`
     fill: transparent;
 `;
 
-export class WebglEditorComponent extends React.Component<any> {
+export class SvgCanvasComponent extends React.Component<{canvasController: SvgCanvasController}> {
     static contextType = AppContext;
     context: AppContextType;
 
-    constructor(props: any) {
+    constructor(props: {canvasController: SvgCanvasController}) {
         super(props);
 
     }
@@ -51,19 +51,22 @@ export class WebglEditorComponent extends React.Component<any> {
     }
 
     private renderContent(context: AppContextType): JSX.Element {
-        const bitmapConfig = context.controllers.bitmapEditorController.configModel;
-        const horizontalLines = this.renderLines(context.controllers.bitmapEditorController.configModel.horizontalHelperLines);
-        const verticalLines = this.renderLines(context.controllers.bitmapEditorController.configModel.verticalHelperLines);
+
+
+
+        const bitmapConfig = this.props.canvasController.configModel;
+        const horizontalLines = this.renderLines(this.props.canvasController.configModel.horizontalHelperLines);
+        const verticalLines = this.renderLines(this.props.canvasController.configModel.verticalHelperLines);
         
         return (
-            <EditorComponent id={context.controllers.bitmapEditorController.getId()}>
+            <EditorComponent id={this.props.canvasController.getId()}>
                 <CanvasComponent
                     w={bitmapConfig.canvasDimensions.x}
                     h={bitmapConfig.canvasDimensions.y}
-                    onMouseDown={(e) => context.controllers.bitmapEditorController.mouseController.onMouseDown(e.nativeEvent)}
-                    onMouseMove={(e) => context.controllers.bitmapEditorController.mouseController.onMouseMove(e.nativeEvent)}
-                    onMouseUp={(e) => context.controllers.bitmapEditorController.mouseController.onMouseUp(e.nativeEvent)}
-                    onMouseLeave={(e) => context.controllers.bitmapEditorController.mouseController.onMouseOut(e.nativeEvent)}
+                    onMouseDown={(e) => this.props.canvasController.mouseController.onMouseDown(e.nativeEvent)}
+                    onMouseMove={(e) => this.props.canvasController.mouseController.onMouseMove(e.nativeEvent)}
+                    onMouseUp={(e) => this.props.canvasController.mouseController.onMouseUp(e.nativeEvent)}
+                    onMouseLeave={(e) => this.props.canvasController.mouseController.onMouseOut(e.nativeEvent)}
                     data-wg-pixel-size={bitmapConfig.pixelSize}
                     data-wg-width={bitmapConfig.canvasDimensions.x}
                     data-wg-height={bitmapConfig.canvasDimensions.y}
@@ -89,11 +92,11 @@ export class WebglEditorComponent extends React.Component<any> {
     }
 
     private renderPixels(context: AppContextType): JSX.Element[] {
-        const pixelController = context.controllers.bitmapEditorController.pixelModel;
-        const worldItemDefinitionModel = context.controllers.bitmapEditorController.worldItemDefinitionModel;
+        const pixelController = this.props.canvasController.pixelModel;
+        const worldItemDefinitionModel = this.props.canvasController.worldItemDefinitionModel;
 
         return Array.from(pixelController.bitMap).map(([index, pixel]) => {
-            const pixelSize = context.controllers.bitmapEditorController.configModel.pixelSize;
+            const pixelSize = this.props.canvasController.configModel.pixelSize;
             const pos = pixelController.getPixelPosition(index).mul(pixelSize);
             const color = worldItemDefinitionModel.getByTypeName(pixel.type).color;
 
@@ -113,7 +116,7 @@ export class WebglEditorComponent extends React.Component<any> {
     }
 
     private renderSelection(): JSX.Element {
-        const selectionModel = this.context.controllers.bitmapEditorController.selectionModel;
+        const selectionModel = this.props.canvasController.selectionModel;
 
         if (selectionModel.isVisible && selectionModel.topLeftPoint && selectionModel.bottomRightPoint) {
             console.log('selection')
@@ -131,8 +134,7 @@ export class WebglEditorComponent extends React.Component<any> {
     }
 
     renderMetaData(): JSX.Element {
-        const canvasController = this.context.controllers.getCanvasControllerById(SvgCanvasController.id);
-        const worldItemDefinitionModel = this.context.controllers.bitmapEditorController.worldItemDefinitionModel;
+        const worldItemDefinitionModel = this.props.canvasController.worldItemDefinitionModel;
         const wgTypeComponents = worldItemDefinitionModel.types.map(type => {
             const props: Partial<WgDefinitionAttributes> = {
                 color: type.color,

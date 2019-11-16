@@ -8,8 +8,8 @@ import { IntegrationCodeDialog } from './dialogs/IntegrationCodeDialog';
 import { Header } from './Header';
 import './misc/SplitPane.css';
 import { VerticalSplitComponent } from './misc/VerticalSplitComponent';
-import { EditorComponent } from './panels/EditorComponent';
-import { RendererComponent } from './panels/RendererComponent';
+import { CanvasComponent } from './canvases/CanvasComponent';
+import { WebglCanvasComponent } from './canvases/webgl/WebglCanvasComponent';
 
 export interface AppState {
     isDialogOpen: boolean;
@@ -45,8 +45,8 @@ export class App extends React.Component<{}, AppState> {
                 />
                 <div className="main-content">
                     <VerticalSplitComponent onChange={() => this.resize()}>
-                        <EditorComponent/>
-                        <RendererComponent/>
+                        <CanvasComponent/>
+                        <WebglCanvasComponent/>
                     </VerticalSplitComponent>
                 </div>
 

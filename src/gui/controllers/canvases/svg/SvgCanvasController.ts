@@ -1,23 +1,20 @@
-import { SvgConfig as SvgConfig } from './models/SvgConfig';
-import { MouseHandler } from './handlers/MouseHandler';
-import { RectangleTool } from './tools/RectangleTool';
-import { PixelModel } from './models/PixelModel';
+import { FileFormat } from '../../../../WorldGenerator';
+import { defaultWorldItemDefinitions } from '../../../configs/defaultWorldItemDefinitions';
 import { ControllerFacade } from '../../ControllerFacade';
-import { Tool, ToolType } from './tools/Tool';
-import { DeleteTool } from './tools/DeleteTool';
-import { SelectionModel } from './models/SelectionModel';
-import { ICanvasController } from '../ICanvasController';
-import { ICanvasWriter } from '../ICanvasWriter';
+import { WorldItemDefinitionForm } from '../../world_items/WorldItemDefinitionForm';
+import { WorldItemDefinitionModel } from '../../world_items/WorldItemDefinitionModel';
 import { ICanvasReader } from '../ICanvasReader';
+import { ICanvasWriter } from '../ICanvasWriter';
+import { IEditableCanvas } from '../IEditableCanvas';
+import { MouseHandler } from './handlers/MouseHandler';
+import { PixelModel } from './models/PixelModel';
+import { SelectionModel } from './models/SelectionModel';
+import { SvgConfig as SvgConfig } from './models/SvgConfig';
 import { SvgCanvasReader } from './SvgCanvasReader';
 import { SvgCanvasWriter } from './SvgCanvasWriter';
-import { FileFormat } from '../../../../WorldGenerator';
-import { IReadableCanvas } from '../IReadableCanvas';
-import { IWritableCanvas } from '../IWritableCanvas';
-import { IEditableCanvas } from '../IEditableCanvas';
-import { WorldItemDefinitionModel } from '../../world_items/WorldItemDefinitionModel';
-import { WorldItemDefinitionForm } from '../../world_items/WorldItemDefinitionForm';
-import { defaultWorldItemDefinitions } from '../../../configs/defaultWorldItemDefinitions';
+import { DeleteTool } from './tools/DeleteTool';
+import { RectangleTool } from './tools/RectangleTool';
+import { Tool, ToolType } from './tools/Tool';
 
 export const initialSvg = 
 `
@@ -133,10 +130,6 @@ export class SvgCanvasController implements IEditableCanvas {
     }
 
     resize(): void {};
-
-    getModel() {
-        return this.controllers.bitmapEditorModel;
-    }
 
     setRenderer(renderFunc: () => void) {}
     render() {}
