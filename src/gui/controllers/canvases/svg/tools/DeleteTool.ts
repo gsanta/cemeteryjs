@@ -9,12 +9,12 @@ export class DeleteTool extends AbstractSelectionTool {
 
     down() {
         super.down();
-        this.svgCanvasController.updateUI();
+        this.svgCanvasController.render();
     }
 
     drag() {
         super.drag();
-        this.svgCanvasController.updateUI();
+        this.svgCanvasController.render();
     }
 
     up() {
@@ -29,6 +29,6 @@ export class DeleteTool extends AbstractSelectionTool {
 
         super.up();
 
-        this.svgCanvasController.updateUI();
+        this.svgCanvasController.render();
     }
 }

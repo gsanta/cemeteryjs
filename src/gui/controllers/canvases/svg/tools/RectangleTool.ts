@@ -9,7 +9,7 @@ export class RectangleTool extends AbstractSelectionTool {
 
     down() {
         super.down();
-        this.svgCanvasController.updateUI();
+        this.svgCanvasController.render();
     }
 
     drag() {
@@ -20,7 +20,7 @@ export class RectangleTool extends AbstractSelectionTool {
         const positions = this.getPositionsInSelection();
         positions.forEach(pos => this.svgCanvasController.pixelModel.addPixel(pos, type, true));
 
-        this.svgCanvasController.updateUI();
+        this.svgCanvasController.render();
     }
 
     up() {
@@ -33,7 +33,6 @@ export class RectangleTool extends AbstractSelectionTool {
 
         super.up();
 
-        this.svgCanvasController.setRendererDirty();
-        this.svgCanvasController.updateUI();
+        this.svgCanvasController.render();
     }
 }

@@ -17,9 +17,6 @@ export class WebglCanvasController implements IWritableCanvas {
     writer: WebglCanvasWriter;
     isDirty: boolean;
 
-    // worldItemDefintionForm: WorldItemDefinitionForm;
-    // worldItemDefinitionModel: WorldItemDefinitionModel;
-
     private canvas: HTMLCanvasElement;
     private camera: ArcRotateCamera;
     private controllers: ControllerFacade;
@@ -27,8 +24,6 @@ export class WebglCanvasController implements IWritableCanvas {
 
     constructor(controllers: ControllerFacade) {
         this.controllers = controllers;
-        // this.worldItemDefintionForm = new WorldItemDefinitionForm(this);
-        // this.worldItemDefinitionModel = new WorldItemDefinitionModel(defaultWorldItemDefinitions);
 
         this.controllers.eventDispatcher.addEventListener(Events.CONTENT_CHANGED, () => this.updateContent());
     }
@@ -39,6 +34,7 @@ export class WebglCanvasController implements IWritableCanvas {
         this.canvas = canvas;
         this.engine = new Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
         this.writer = new WebglCanvasWriter(this, this.controllers.getActiveCanvas().worldItemDefinitionModel);
+        this.updateContent();
     }
 
     updateCanvas(worldMap: string, fileFormat: FileFormat) {

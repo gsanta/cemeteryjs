@@ -2,7 +2,6 @@ import { ICanvasController } from './canvases/ICanvasController';
 import { IEditableCanvas } from './canvases/IEditableCanvas';
 import { SvgCanvasController } from './canvases/svg/SvgCanvasController';
 import { TextCanvasController } from './canvases/text/TextCanvasController';
-import { TextCanvasReader } from './canvases/text/TextCanvasReader';
 import { WebglCanvasController } from './canvases/webgl/WebglCanvasController';
 import { EventDispatcher } from './events/EventDispatcher';
 import { SettingsController } from './settings/SettingsController';
@@ -21,13 +20,13 @@ export class ControllerFacade {
 
     constructor() {
         this.eventDispatcher = new EventDispatcher();
+        this.editors = [new TextCanvasController(this), new SvgCanvasController(this)];
         this.settingsModel = new SettingsModel();
         
         this.updateUIController = new UIUpdateController();
         this.webglEditorController = new WebglCanvasController(this);
         this.settingsController = new SettingsController(this);
 
-        this.editors = [new TextCanvasController(this), new SvgCanvasController(this)];
     }
 
     getCanvasControllerById(id: string): ICanvasController {

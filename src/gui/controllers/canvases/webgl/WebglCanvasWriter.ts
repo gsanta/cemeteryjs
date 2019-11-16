@@ -15,6 +15,7 @@ export class WebglCanvasWriter implements ICanvasWriter {
     }
 
     write(file: string, fileFormat: FileFormat): void {
+        const that = this;
         new BabylonWorldGenerator(this.webglEditorController.scene).generate(file, fileFormat, {
             convert(worldItem: WorldItem): any {
                 if (worldItem.name === 'wall' && worldItem.children.length > 0) {
@@ -25,7 +26,7 @@ export class WebglCanvasWriter implements ICanvasWriter {
             addBorders(item: any, borders: any[]): void {},
             done() {
                 // this.webglEditorController.engine.runRenderLoop(() => this.webglEditorController.scene.render());
-                this.WebglEditorController.render();
+                that.webglEditorController.render();
             }
         });
     }

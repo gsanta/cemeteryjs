@@ -90,6 +90,8 @@ export class SvgCanvasController implements IEditableCanvas {
     controllers: ControllerFacade;
     WorldItemDefinitionForm: WorldItemDefinitionForm;
     worldItemDefinitionModel: WorldItemDefinitionModel;
+
+    private renderFunc: () => void;
     
     constructor(controllers: ControllerFacade) {
         this.controllers = controllers;
@@ -101,7 +103,7 @@ export class SvgCanvasController implements IEditableCanvas {
         this.pixelModel = new PixelModel(this.configModel);
         
         this.mouseController = new MouseHandler(this);
-        this.writer = new SvgCanvasWriter(this);
+        this.writer = new SvgCanvasWriter(this, controllers.eventDispatcher);
         this.reader = new SvgCanvasReader(this);
 
         this.tools = [
@@ -110,19 +112,18 @@ export class SvgCanvasController implements IEditableCanvas {
         ];
 
         this.activeTool = this.tools[0];
+        this.writer.write(initialSvg, FileFormat.SVG);
     }
 
-    updateUI() {
-        this.controllers.updateUIController.updateUI();
-    }
-
-    setRendererDirty() {
-        this.controllers.webglEditorController.isDirty = true;
+    render() {
+        if (this.renderFunc) {
+            this.renderFunc();
+        }
     }
 
     setActiveTool(toolType: ToolType) {
         this.activeTool = this.tools.find(tool => tool.type === toolType);
-        this.updateUI();
+        this.render();
     }
 
     getId() {
@@ -131,8 +132,9 @@ export class SvgCanvasController implements IEditableCanvas {
 
     resize(): void {};
 
-    setRenderer(renderFunc: () => void) {}
-    render() {}
+    setRenderer(renderFunc: () => void) {
+        this.renderFunc = renderFunc;
+    }
 
     activate(): void {
         // this.

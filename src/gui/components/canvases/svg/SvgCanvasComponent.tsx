@@ -35,10 +35,7 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
     constructor(props: {canvasController: SvgCanvasController}) {
         super(props);
 
-    }
-    
-    componentDidMount() {
-        this.context.controllers.webglEditorController.setRenderer(() => this.forceUpdate());
+        this.props.canvasController.setRenderer(() => this.forceUpdate());
     }
     
     render(): JSX.Element {
@@ -51,9 +48,6 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
     }
 
     private renderContent(context: AppContextType): JSX.Element {
-
-
-
         const bitmapConfig = this.props.canvasController.configModel;
         const horizontalLines = this.renderLines(this.props.canvasController.configModel.horizontalHelperLines);
         const verticalLines = this.renderLines(this.props.canvasController.configModel.verticalHelperLines);
