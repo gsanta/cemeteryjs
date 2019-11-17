@@ -44,7 +44,7 @@ H = chair
 `;
 
 export class TextCanvasController implements IEditableCanvas {
-    static id = 'text-editor';
+    static id = 'text-canvas-controller';
     fileFormats = [FileFormat.TEXT];
     editor: any;
     text: string = null;

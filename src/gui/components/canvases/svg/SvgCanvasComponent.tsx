@@ -5,13 +5,14 @@ import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { colors } from '../../styles';
 import { WgDefinitionAttributes } from '../../../../model/readers/svg/WorldMapJson';
 import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvasController';
+import { CanvasComponent } from '../CanvasComponent';
 
-const EditorComponent = styled.div`
+const EditorComponentStyled = styled.div`
     height: calc(100% - 35px);
     overflow: auto;
 `;
 
-const CanvasComponent = styled.svg`
+const CanvasComponentStyled = styled.svg`
     width: ${({w}: {w: number, h: number}) => `${w}px`};
     height: ${({h}: {w: number, h: number}) => `${h}px`};
 `;
@@ -39,22 +40,13 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
     }
     
     render(): JSX.Element {
-        return (
-            <AppContext.Consumer>
-                { value => this.renderContent(value) }
-            </AppContext.Consumer>
-
-        );
-    }
-
-    private renderContent(context: AppContextType): JSX.Element {
         const bitmapConfig = this.props.canvasController.configModel;
         const horizontalLines = this.renderLines(this.props.canvasController.configModel.horizontalHelperLines);
         const verticalLines = this.renderLines(this.props.canvasController.configModel.verticalHelperLines);
         
-        return (
-            <EditorComponent id={this.props.canvasController.getId()}>
-                <CanvasComponent
+        const canvas = (
+            <EditorComponentStyled id={this.props.canvasController.getId()}>
+                <CanvasComponentStyled
                     w={bitmapConfig.canvasDimensions.x}
                     h={bitmapConfig.canvasDimensions.y}
                     onMouseDown={(e) => this.props.canvasController.mouseController.onMouseDown(e.nativeEvent)}
@@ -69,12 +61,14 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
                     {verticalLines}
                     <g className="bitmap-layer">
                         {this.renderMetaData()}
-                        {this.renderPixels(context)}
+                        {this.renderPixels(this.context)}
                     </g>
                     {this.renderSelection()}
-                </CanvasComponent>
-            </EditorComponent>
-        )
+                </CanvasComponentStyled>
+            </EditorComponentStyled>
+        );
+
+        return <CanvasComponent canvas={canvas}/>
     }
 
     private renderLines(lines: Segment[]): JSX.Element[] {

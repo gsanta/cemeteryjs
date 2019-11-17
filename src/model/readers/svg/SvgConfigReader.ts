@@ -28,13 +28,14 @@ export class SvgConfigReader implements ConfigReader {
         const color = wgType._attributes["color"] as string;
         const isBorder = wgType._attributes["is-border"] === "true" ? true : false;
         const model = wgType._attributes["model"];
+        const shape = wgType._attributes["shape"];
         const scale = wgType._attributes["scale"] ? parseInt(wgType._attributes["scale"], 10) : 1;
         const translateY = wgType._attributes["translate-y"] ? parseInt(wgType._attributes["translate-y"], 10) : 0;
         const typeName = wgType._attributes["type-name"];
         const materials = wgType._attributes["materials"] ? wgType._attributes["materials"].split(", ") : []; 
 
 
-        return {color, isBorder, model, scale, translateY, typeName, materials};
+        return {color, isBorder, model, scale, translateY, typeName, materials, shape};
     }
 
 

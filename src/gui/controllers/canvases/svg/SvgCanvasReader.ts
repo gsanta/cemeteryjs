@@ -48,7 +48,8 @@ export class SvgCanvasReader implements ICanvasReader {
                 ['is-border', type.isBorder ? 'true' : 'false'],
                 ['scale', type.scale ? type.scale + '' : '1'],
                 ['translate-y', type.translateY ? type.translateY + '' : '0'],
-                ['type-name', type.typeName]
+                ['type-name', type.typeName],
+                ['shape', type.shape]
             ]
 
             if (type.model) {

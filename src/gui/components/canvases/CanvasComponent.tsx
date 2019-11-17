@@ -29,61 +29,36 @@ const ToolbarComponent = styled.div`
     justify-content: space-between;
 `;
 
-export class CanvasComponent extends React.Component<{}> {
+export interface CanvasComponentProps {
+    canvas: JSX.Element;
+}
+
+export class CanvasComponent extends React.Component<CanvasComponentProps> {
     static contextType = AppContext;
     context: AppContextType;
 
     render(): JSX.Element {
-        return (
-            <AppContext.Consumer>
-                { value => this.renderContent(value) }
-            </AppContext.Consumer>
+        const settingsModel = this.context.controllers.settingsModel;
 
-        );
-    }
 
-    private renderContent(context: AppContextType): JSX.Element {
-        const windowModel = context.controllers.settingsModel;
-        {return windowModel.isWorldItemTypeEditorOpen ? this.renderEditorWithPropertiesPanel(context) : this.renderOnlyEditor(context)}
-    }
-
-    private renderEditorWithPropertiesPanel(context: AppContextType): JSX.Element {
-        const windowModel = context.controllers.settingsModel;
-
-        return (
-            <HorizontalSplitComponent onChange={() => this.onResize()}>
-                <div className="editor">
-                    {this.renderToolbar(context)}
-                    {windowModel.activeEditor.getId() === SvgCanvasController.id ? this.renderSvgCanvas(context) : this.renderTextCanvas(context)}
-                </div>
-                <PropertyEditorComponent worldItemDefinitionForm={context.controllers.getActiveCanvas().WorldItemDefinitionForm} />
-            </HorizontalSplitComponent>
-        );
-    }
-
-    private renderOnlyEditor(context: AppContextType): JSX.Element {
-        const windowModel = context.controllers.settingsModel;
-
-        return (
+        let canvas = (
             <div className="editor">
-                {this.renderToolbar(context)}
-                {windowModel.activeEditor.getId() === SvgCanvasController.id ? this.renderSvgCanvas(context) : this.renderTextCanvas(context)}
+                {this.renderToolbar(this.context)}
+                {this.props.canvas}
             </div>
         );
-    }
 
-    private renderTextCanvas(context: AppContextType) {
-        const editorController = context.controllers.getCanvasControllerById(TextCanvasController.id) as IEditableCanvas;
-        return (
-            <TextCanvasComponent 
-                onModelChanged={(content: string) => editorController.writer.write(content, FileFormat.TEXT)}
-                canvasController={context.controllers.getCanvasControllerById(TextCanvasController.id) as TextCanvasController}
-            />
-        )
-    }
+        if (settingsModel.isWorldItemTypeEditorOpen) {
 
-    private renderSvgCanvas(context: AppContextType) {
-        return <SvgCanvasComponent canvasController={context.controllers.getCanvasControllerById(SvgCanvasController.id) as SvgCanvasController}/>;
+            canvas = (
+                <HorizontalSplitComponent onChange={() => this.onResize()}>
+                    {canvas}
+                    <PropertyEditorComponent worldItemDefinitionForm={this.context.controllers.getActiveCanvas().WorldItemDefinitionForm} />
+                </HorizontalSplitComponent>
+            )
+        }
+
+        return canvas;
     }
 
     private renderToolbar(context: AppContextType): JSX.Element {

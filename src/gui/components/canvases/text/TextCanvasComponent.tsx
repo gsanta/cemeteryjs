@@ -4,6 +4,7 @@ import { MonacoConfig } from '../../../configs/MonacoConfig';
 import { AppContext, AppContextType } from '../../Context';
 import './TextCanvasComponent.scss';
 import { TextCanvasController } from '../../../controllers/canvases/text/TextCanvasController';
+import { CanvasComponent } from '../CanvasComponent';
 
 
 interface TextCanvasComponentState {
@@ -11,7 +12,6 @@ interface TextCanvasComponentState {
 }
 
 export interface TextCanvasComponentProps {
-    onModelChanged(content: string): void;
     canvasController: TextCanvasController;
 }
 
@@ -30,15 +30,9 @@ export class TextCanvasComponent extends React.Component<TextCanvasComponentProp
         editor.onChange((content: string) => this.handleChange(content));
     }
 
-    componentWillUnmount() {
-        
-    }
-
     render(): JSX.Element {
         return (
-            <AppContext.Consumer>
-                {value => <div className="text-editor" id="editor" ref={this.editorElement}></div> }
-            </AppContext.Consumer>
+            <CanvasComponent canvas={<div className="text-editor" id="editor" ref={this.editorElement}></div>}/>
         );
     }
 

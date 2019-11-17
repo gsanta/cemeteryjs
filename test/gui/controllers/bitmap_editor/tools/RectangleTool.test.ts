@@ -6,6 +6,7 @@ it ('Draw pixels with mouse click', () => {
     const controllers = setupControllers(); 
 
     const canvasController = <SvgCanvasController> controllers.getCanvasControllerById(SvgCanvasController.id);
+    canvasController.pixelModel.clear();
 
     canvasController.mouseController.onMouseMove(<MouseEvent> {x: 5, y: 5});
     canvasController.mouseController.onMouseDown(<MouseEvent> {x: 5, y: 5});
@@ -29,6 +30,7 @@ it ('Draw pixels with mouse click', () => {
 it ('Draw pixels with rectangle selection', () => {
     const controllers = setupControllers(); 
     const canvasController = <SvgCanvasController> controllers.getCanvasControllerById(SvgCanvasController.id);
+    canvasController.pixelModel.clear();
 
     canvasController.mouseController.onMouseMove(<MouseEvent> {x: 5, y: 5});
     canvasController.mouseController.onMouseDown(<MouseEvent> {x: 5, y: 5});
@@ -48,6 +50,7 @@ it ('Draw pixels with rectangle selection', () => {
 it ('Remove existing pixel if adding pixel to an occupied position', () => {
     const controllers = setupControllers();
     const canvasController = <SvgCanvasController> controllers.getCanvasControllerById(SvgCanvasController.id);
+    canvasController.pixelModel.clear();
 
     canvasController.mouseController.onMouseMove(<MouseEvent> {x: 5, y: 5});
     canvasController.mouseController.onMouseDown(<MouseEvent> {x: 5, y: 5});

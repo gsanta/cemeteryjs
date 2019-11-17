@@ -1,6 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as React from 'react';
 import './App.scss';
+import { createCanvas } from './canvases/canvasFactory';
+import { WebglCanvasComponent } from './canvases/webgl/WebglCanvasComponent';
 import { AppContext, AppContextType } from './Context';
 import { AboutDialog } from './dialogs/AboutDialog';
 import { HowToIntegrateDialog } from './dialogs/HowToIntegrateDialog';
@@ -8,8 +10,6 @@ import { IntegrationCodeDialog } from './dialogs/IntegrationCodeDialog';
 import { Header } from './Header';
 import './misc/SplitPane.css';
 import { VerticalSplitComponent } from './misc/VerticalSplitComponent';
-import { CanvasComponent } from './canvases/CanvasComponent';
-import { WebglCanvasComponent } from './canvases/webgl/WebglCanvasComponent';
 
 export interface AppState {
     isDialogOpen: boolean;
@@ -45,7 +45,7 @@ export class App extends React.Component<{}, AppState> {
                 />
                 <div className="main-content">
                     <VerticalSplitComponent onChange={() => this.resize()}>
-                        <CanvasComponent/>
+                        {createCanvas(this.context.controllers)}
                         <WebglCanvasComponent/>
                     </VerticalSplitComponent>
                 </div>
