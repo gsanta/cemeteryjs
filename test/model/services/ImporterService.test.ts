@@ -127,7 +127,7 @@ describe('Importing svg format', () => {
     
         const services = setup(worldMap, FileFormat.SVG);
     
-        const worldItems = services.importerService.import(worldMap, []);
+        const worldItems = services.importerService.import(worldMap);
         const rooms = worldItems.filter(worldItem => worldItem.name === 'room');
     
         expect(rooms).toContainWorldItem({
