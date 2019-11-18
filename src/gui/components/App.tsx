@@ -46,7 +46,7 @@ export class App extends React.Component<{}, AppState> {
                 <div className="main-content">
                     <VerticalSplitComponent onChange={() => this.resize()}>
                         {createCanvas(this.context.controllers)}
-                        <WebglCanvasComponent/>
+                        <WebglCanvasComponent canvasController={this.context.controllers.webglCanvasController}/>
                     </VerticalSplitComponent>
                 </div>
 
@@ -58,7 +58,7 @@ export class App extends React.Component<{}, AppState> {
     }
 
     private resize() {
-        this.context.controllers.webglEditorController.engine.resize();
+        this.context.controllers.webglCanvasController.engine.resize();
         this.context.controllers.settingsModel.activeEditor.resize();
     }
 }

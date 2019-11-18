@@ -24,7 +24,7 @@ export class MaterialFactory {
     }
 
     createMaterial(worldItem: WorldItem, meshDescriptor: WorldItemDefinition): StandardMaterial {
-        return this.createSimpleMaterial(meshDescriptor.materials[0]);
+        return this.createSimpleMaterial(meshDescriptor.materials[0] || meshDescriptor.color);
     }
 
     private createSimpleMaterial(material: string): StandardMaterial {

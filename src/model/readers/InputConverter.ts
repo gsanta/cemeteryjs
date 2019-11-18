@@ -5,7 +5,7 @@ export interface InputConverter {
 }
 
 export class NullConverter implements InputConverter {
-    convert(worldMap: string) {
+    convert(worldMap: string): string {
         return worldMap;
     }
 }

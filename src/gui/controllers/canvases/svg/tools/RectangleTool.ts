@@ -1,10 +1,15 @@
 import { SvgCanvasController } from '../SvgCanvasController';
 import { AbstractSelectionTool } from './AbstractSelectionTool';
 import { ToolType } from './Tool';
+import { EventDispatcher } from '../../../events/EventDispatcher';
+import { Events } from '../../../events/Events';
 
 export class RectangleTool extends AbstractSelectionTool {
-    constructor(bitmapEditor: SvgCanvasController) {
-        super(bitmapEditor, ToolType.RECTANGLE, false);
+    private eventDispatcher: EventDispatcher;
+
+    constructor(svgCanvasController: SvgCanvasController, eventDispatcher: EventDispatcher) {
+        super(svgCanvasController, ToolType.RECTANGLE, false);
+        this.eventDispatcher = eventDispatcher;
     }
 
     down() {
@@ -34,5 +39,6 @@ export class RectangleTool extends AbstractSelectionTool {
         super.up();
 
         this.svgCanvasController.render();
+        this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
     }
 }

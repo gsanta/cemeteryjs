@@ -59,6 +59,10 @@ export class WorldMapGraph {
         return this.vertexValues[vertex];
     }
 
+    getVerticesByType(type: string): number[] {
+        return this.vertices.filter(vertex => this.getVertexValue(vertex) === type);
+    }
+
     addVertex(vertex: number, type: string) {
 
         this.vertexValues[vertex] = type;
@@ -66,6 +70,10 @@ export class WorldMapGraph {
 
         this.vertices.push(vertex);
         this.types.add(type);
+    }
+
+    setVertexType(vertex: number, type: string) {
+        this.vertexValues[vertex] = type;
     }
 
     getAllVertices(): number[] {

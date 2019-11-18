@@ -2,6 +2,7 @@ import { SvgCanvasController } from './SvgCanvasController';
 import { WorldItemDefinitionModel } from '../../world_items/WorldItemDefinitionModel';
 import { ICanvasReader } from '../ICanvasReader';
 
+
 export class SvgCanvasReader implements ICanvasReader {
     private bitmapEditorController: SvgCanvasController;
 

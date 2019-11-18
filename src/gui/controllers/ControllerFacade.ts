@@ -9,7 +9,7 @@ import { SettingsModel } from './settings/SettingsModel';
 import { UIUpdateController } from './UIUpdateController';
 
 export class ControllerFacade {
-    webglEditorController: WebglCanvasController;
+    webglCanvasController: WebglCanvasController;
     updateUIController: UIUpdateController;
     settingsController: SettingsController;
     
@@ -24,7 +24,7 @@ export class ControllerFacade {
         this.settingsModel = new SettingsModel();
         
         this.updateUIController = new UIUpdateController();
-        this.webglEditorController = new WebglCanvasController(this);
+        this.webglCanvasController = new WebglCanvasController(this);
         this.settingsController = new SettingsController(this);
 
     }

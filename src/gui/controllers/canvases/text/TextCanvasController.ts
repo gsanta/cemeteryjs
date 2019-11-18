@@ -104,7 +104,7 @@ export class TextCanvasController implements IEditableCanvas {
 
     setText(text: string) {
         this.text = text;
-        this.controllers.webglEditorController.isDirty = true;
+        this.controllers.webglCanvasController.isDirty = true;
         this.controllers.updateUIController.updateUI();
         this.controllers.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
     }
@@ -118,7 +118,7 @@ export class TextCanvasController implements IEditableCanvas {
     }
 
     setRendererDirty() {
-        this.controllers.webglEditorController.isDirty = true;
+        this.controllers.webglCanvasController.isDirty = true;
     }
 
     setRenderer(renderFunc: () => void) {}

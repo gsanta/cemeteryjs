@@ -97,7 +97,7 @@ export class SvgCanvasController implements IEditableCanvas {
         this.reader = new SvgCanvasReader(this);
 
         this.tools = [
-            new RectangleTool(this),
+            new RectangleTool(this, this.controllers.eventDispatcher),
             new DeleteTool(this)
         ];
 

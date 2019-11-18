@@ -82,8 +82,7 @@ export class WebglCanvasController implements IWritableCanvas {
 
     render() {
         this.engine.runRenderLoop(() => this.scene.render());
-
-        // this.renderFunc();
+        this.renderFunc();
     }
 
     activate(): void {}

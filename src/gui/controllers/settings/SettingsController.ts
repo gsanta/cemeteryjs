@@ -56,7 +56,7 @@ export class SettingsController extends IFormController<SettingsProperty> {
                 break;    
         }
 
-        this.controllers.webglEditorController.isDirty = true;
+        this.controllers.webglCanvasController.isDirty = true;
         this.controllers.updateUIController.updateUI();
     }
 

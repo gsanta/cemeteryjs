@@ -16,6 +16,7 @@ import { WorldMapToSubareaMapConverter } from '../readers/text/WorldMapToSubarea
 import { SvgConfigReader } from '../readers/svg/SvgConfigReader';
 import { SvgWorldMapReader } from '../readers/svg/SvgWorldMapReader';
 import { NullConverter } from '../readers/InputConverter';
+import { SvgRoomMapConverter } from '../readers/svg/SvgRoomMapConverter';
 
 export class ServiceFacade<M, S, T> {
     meshFactoryService: MeshFactoryService<M, S>;
@@ -35,7 +36,7 @@ export class ServiceFacade<M, S, T> {
             this.importerService = new ImporterService(this, new TextWorldMapReader(this.configService), new WorldMapToRoomMapConverter(this.configService), new WorldMapToSubareaMapConverter(this.configService))
         } else if (fileFormat === FileFormat.SVG) {
             this.configService = new ConfigService(new SvgConfigReader());
-            this.importerService = new ImporterService(this, new SvgWorldMapReader(true), new NullConverter(), new NullConverter());
+            this.importerService = new ImporterService(this, new SvgWorldMapReader(true), new SvgRoomMapConverter(this.configService), new NullConverter());
         } else {
             throw new Error('Unknown file format: ' + fileFormat); 
         }
