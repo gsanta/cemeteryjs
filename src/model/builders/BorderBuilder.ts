@@ -3,7 +3,7 @@ import { WorldItem } from '../../WorldItem';
 import { WorldMapGraph } from '../../WorldMapGraph';
 import { WorldMapReader } from '../readers/WorldMapReader';
 import { ServiceFacade } from '../services/ServiceFacade';
-import { last, without } from '../utils/Functions';
+import { last, without, sortNum } from '../utils/Functions';
 import { WorldItemBuilder } from './WorldItemBuilder';
 
 interface Border {
@@ -107,7 +107,7 @@ export class BorderBuilder implements WorldItemBuilder {
 
         return verticalSubCompnents.map(comp => {
             return {
-                vertices: comp,
+                vertices: sortNum(comp),
                 type: borderGraph.getTypes()[0],
                 direction: 'vertical'
             }
@@ -153,7 +153,7 @@ export class BorderBuilder implements WorldItemBuilder {
 
         return horizontalSubCompnents.map(comp => {
             return {
-                vertices: comp,
+                vertices: sortNum(comp),
                 type: borderGraph.getTypes()[0],
                 direction: 'horizontal'
             }
@@ -214,7 +214,7 @@ export class BorderBuilder implements WorldItemBuilder {
                 this.services.geometryService.factory.point(startCoord.x + 0.5, y2)
             );
         } else {
-            const x1 = graph.getLeftNeighbour(vertices[0]) !== null ? startCoord.x: startCoord.x + 0.5;
+            const x1 = graph.getLeftNeighbour(vertices[0]) !== null ? startCoord.x : startCoord.x + 0.5;
             const x2 = graph.getRightNeighbour(last(vertices)) !== null ? endCoord.x + 1 : endCoord.x + 0.5;
 
             return this.services.geometryService.factory.edge(
