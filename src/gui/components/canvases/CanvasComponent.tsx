@@ -53,7 +53,7 @@ export class CanvasComponent extends React.Component<CanvasComponentProps> {
             canvas = (
                 <HorizontalSplitComponent onChange={() => this.onResize()}>
                     {canvas}
-                    <PropertyEditorComponent worldItemDefinitionForm={this.context.controllers.getActiveCanvas().WorldItemDefinitionForm} />
+                    <PropertyEditorComponent worldItemDefinitionForm={this.context.controllers.getActiveCanvas().worldItemDefinitionForm} />
                 </HorizontalSplitComponent>
             )
         }

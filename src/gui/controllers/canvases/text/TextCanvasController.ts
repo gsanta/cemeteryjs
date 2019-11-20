@@ -50,7 +50,7 @@ export class TextCanvasController implements IEditableCanvas {
     text: string = null;
     writer: ICanvasWriter;
     reader: ICanvasReader;
-    WorldItemDefinitionForm: WorldItemDefinitionForm;
+    worldItemDefinitionForm: WorldItemDefinitionForm;
     worldItemDefinitionModel: WorldItemDefinitionModel;
     
     private controllers: ControllerFacade;
@@ -60,7 +60,7 @@ export class TextCanvasController implements IEditableCanvas {
         this.writer = new TextCanvasWriter(this);
         this.reader = new TextCanvasReader(this);
         this.worldItemDefinitionModel = new WorldItemDefinitionModel(defaultWorldItemDefinitions);
-        this.WorldItemDefinitionForm = new WorldItemDefinitionForm(this);
+        this.worldItemDefinitionForm = new WorldItemDefinitionForm(this);
     }
 
     createEditor(monacoModule: any, monacoConfig: typeof MonacoConfig, element: HTMLDivElement, content: string) {

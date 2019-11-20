@@ -43,7 +43,8 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
         const bitmapConfig = this.props.canvasController.configModel;
         const horizontalLines = this.renderLines(this.props.canvasController.configModel.horizontalHelperLines);
         const verticalLines = this.renderLines(this.props.canvasController.configModel.verticalHelperLines);
-        
+        const svg = this.props.canvasController.reader.read();
+
         const canvas = (
             <EditorComponentStyled id={this.props.canvasController.getId()}>
                 <CanvasComponentStyled
@@ -59,9 +60,9 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
                 >
                     {horizontalLines}
                     {verticalLines}
-                    <g className="bitmap-layer">
-                        {this.renderMetaData()}
-                        {this.renderPixels(this.context)}
+                    <g className="bitmap-layer" dangerouslySetInnerHTML={{__html: svg}}>
+                        {/* {this.renderMetaData()}
+                        {this.renderPixels(this.context)} */}
                     </g>
                     {this.renderSelection()}
                 </CanvasComponentStyled>
@@ -79,29 +80,29 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
         });
     }
 
-    private renderPixels(context: AppContextType): JSX.Element[] {
-        const pixelController = this.props.canvasController.pixelModel;
-        const worldItemDefinitionModel = this.props.canvasController.worldItemDefinitionModel;
+    // private renderPixels(context: AppContextType): JSX.Element[] {
+    //     const pixelController = this.props.canvasController.pixelModel;
+    //     const worldItemDefinitionModel = this.props.canvasController.worldItemDefinitionModel;
 
-        return Array.from(pixelController.bitMap).map(([index, pixel]) => {
-            const pixelSize = this.props.canvasController.configModel.pixelSize;
-            const pos = pixelController.getPixelPosition(index).mul(pixelSize);
-            const color = worldItemDefinitionModel.getByTypeName(pixel.type).color;
+    //     return Array.from(pixelController.bitMap).map(([index, pixel]) => {
+    //         const pixelSize = this.props.canvasController.configModel.pixelSize;
+    //         const pos = pixelController.getPixelPosition(index).mul(pixelSize);
+    //         const color = worldItemDefinitionModel.getByTypeName(pixel.type).color;
 
-            return (
-                <rect 
-                    width="10px" 
-                    height="10px" 
-                    x={`${pos.x}px`} 
-                    y={`${pos.y}px`} 
-                    fill={color}
-                    data-wg-x={pos.x}
-                    data-wg-y={pos.y}
-                    data-wg-type={pixel.type}
-                />
-            )
-        })
-    }
+    //         return (
+    //             <rect 
+    //                 width="10px" 
+    //                 height="10px" 
+    //                 x={`${pos.x}px`} 
+    //                 y={`${pos.y}px`} 
+    //                 fill={color}
+    //                 data-wg-x={pos.x}
+    //                 data-wg-y={pos.y}
+    //                 data-wg-type={pixel.type}
+    //             />
+    //         )
+    //     })
+    // }
 
     private renderSelection(): JSX.Element {
         const selectionModel = this.props.canvasController.selectionModel;

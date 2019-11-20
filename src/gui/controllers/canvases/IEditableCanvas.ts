@@ -6,5 +6,5 @@ import { IWritableCanvas } from './IWritableCanvas';
 
 export interface IEditableCanvas extends IReadableCanvas, IWritableCanvas {
     worldItemDefinitionModel: WorldItemDefinitionModel;
-    WorldItemDefinitionForm: WorldItemDefinitionForm;
+    worldItemDefinitionForm: WorldItemDefinitionForm;
 }

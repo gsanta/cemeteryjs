@@ -44,6 +44,8 @@ export function setupControllers(fileFormat: FileFormat, worldMap?: string): Con
         worldMap = worldMap ? worldMap : initialSvg;
     }
 
+    controllers.webglCanvasController.unregisterEvents();
+
     controllers.settingsModel.activeEditor.writer.write(worldMap, fileFormat);
 
     return controllers;

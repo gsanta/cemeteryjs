@@ -111,7 +111,7 @@ export class SvgCanvasController implements IEditableCanvas {
     selectionModel: SelectionModel;
     
     controllers: ControllerFacade;
-    WorldItemDefinitionForm: WorldItemDefinitionForm;
+    worldItemDefinitionForm: WorldItemDefinitionForm;
     worldItemDefinitionModel: WorldItemDefinitionModel;
 
     private renderFunc: () => void;
@@ -119,7 +119,7 @@ export class SvgCanvasController implements IEditableCanvas {
     constructor(controllers: ControllerFacade) {
         this.controllers = controllers;
         this.worldItemDefinitionModel = new WorldItemDefinitionModel(defaultWorldItemDefinitions);
-        this.WorldItemDefinitionForm = new WorldItemDefinitionForm(this);
+        this.worldItemDefinitionForm = new WorldItemDefinitionForm(this);
 
         this.selectionModel = new SelectionModel();
         this.configModel = new SvgConfig();

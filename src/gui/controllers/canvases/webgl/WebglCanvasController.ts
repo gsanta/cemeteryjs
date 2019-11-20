@@ -1,7 +1,5 @@
 import { ArcRotateCamera, Color3, Engine, HemisphericLight, Scene, Vector3 } from "babylonjs";
-import { BabylonWorldGenerator } from "../../../../integrations/babylonjs/BabylonWorldGenerator";
 import { FileFormat } from '../../../../WorldGenerator';
-import { WorldItem } from "../../../../WorldItem";
 import { ControllerFacade } from '../../ControllerFacade';
 import { Events } from "../../events/Events";
 import { IWritableCanvas } from '../IWritableCanvas';
@@ -24,8 +22,16 @@ export class WebglCanvasController implements IWritableCanvas {
 
     constructor(controllers: ControllerFacade) {
         this.controllers = controllers;
+        this.updateContent = this.updateContent.bind(this);
+        this.registerEvents();
+    }
 
-        this.controllers.eventDispatcher.addEventListener(Events.CONTENT_CHANGED, () => this.updateContent());
+    registerEvents() {
+        this.controllers.eventDispatcher.addEventListener(Events.CONTENT_CHANGED, this.updateContent);
+    }
+
+    unregisterEvents() {
+        this.controllers.eventDispatcher.removeEventListener(this.updateContent);
     }
 
     resize() {}

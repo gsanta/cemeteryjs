@@ -16,6 +16,12 @@ export class EventDispatcher {
         this.eventListeners.push(listener);
     }
 
+    removeEventListener(handler: () => void) {
+        const listenerIndex = this.eventListeners.findIndex(listener => listener.handler === handler);
+
+        this.eventListeners.splice(listenerIndex, 1);
+    }
+
     dispatchEvent(eventType) {
         this.eventListeners.forEach(event => {
             if (eventType === event.type) {

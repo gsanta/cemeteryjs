@@ -19,12 +19,11 @@ export class DeleteTool extends AbstractSelectionTool {
 
     up() {
         if (this.svgCanvasController.mouseController.isDrag) {
-            const pixels = this.getPixelsInSelection();
-
-            pixels.forEach(pixel => this.svgCanvasController.pixelModel.removePixelAtIndex(pixel.index));
+            const pixelIndexes = this.getPixelIndexesInSelection();
+            pixelIndexes.forEach(pixelIndex => this.svgCanvasController.pixelModel.removeTopPixel(pixelIndex));
         } else {
-            const pixel = this.svgCanvasController.pixelModel.getPixelAtCoordinate(this.svgCanvasController.mouseController.movePoint);
-            pixel && this.svgCanvasController.pixelModel.removePixelAtIndex(pixel.index);
+            const pixel = this.svgCanvasController.pixelModel.getTopPixelAtCoordinate(this.svgCanvasController.mouseController.movePoint);
+            pixel && this.svgCanvasController.pixelModel.removePixelFromMapAtLayer(pixel.index, pixel.layer);
         }
 
         super.up();

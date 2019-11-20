@@ -31,9 +31,9 @@ export class AbstractSelectionTool implements Tool {
         this.svgCanvasController.selectionModel.setPoints(this.svgCanvasController.mouseController.downPoint, this.svgCanvasController.mouseController.movePoint);
     }
 
-    protected getPixelsInSelection() {
+    protected getPixelIndexesInSelection(): number[] {
         const selectionRect = this.svgCanvasController.selectionModel.getSelectionRect();
-        return this.svgCanvasController.pixelModel.getPixelsInside(selectionRect);
+        return this.svgCanvasController.pixelModel.getPixelIndexesInside(selectionRect);
     }
 
     protected getPositionsInSelection(): Point[] {

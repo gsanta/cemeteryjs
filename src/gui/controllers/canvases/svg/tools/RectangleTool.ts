@@ -3,6 +3,7 @@ import { AbstractSelectionTool } from './AbstractSelectionTool';
 import { ToolType } from './Tool';
 import { EventDispatcher } from '../../../events/EventDispatcher';
 import { Events } from '../../../events/Events';
+import { getLayerForType } from '../models/PixelModel';
 
 export class RectangleTool extends AbstractSelectionTool {
     private eventDispatcher: EventDispatcher;
@@ -21,9 +22,9 @@ export class RectangleTool extends AbstractSelectionTool {
         super.drag();
         
         this.svgCanvasController.pixelModel.removePreviews();
-        const type = this.svgCanvasController.WorldItemDefinitionForm.getModel().selectedType.typeName;
+        const type = this.svgCanvasController.worldItemDefinitionForm.getModel().selectedType.typeName;
         const positions = this.getPositionsInSelection();
-        positions.forEach(pos => this.svgCanvasController.pixelModel.addPixel(pos, type, true));
+        positions.forEach(pos => this.svgCanvasController.pixelModel.addPixel(pos, type, true, -1));
 
         this.svgCanvasController.render();
     }
@@ -32,8 +33,9 @@ export class RectangleTool extends AbstractSelectionTool {
         if (this.svgCanvasController.mouseController.isDrag) {
             this.svgCanvasController.pixelModel.commitPreviews();
         } else {
-            const type = this.svgCanvasController.WorldItemDefinitionForm.getModel().selectedType.typeName;
-            this.svgCanvasController.pixelModel.addPixel(this.svgCanvasController.mouseController.movePoint, type, false);
+            const type = this.svgCanvasController.worldItemDefinitionForm.getModel().selectedType.typeName;
+            const layer = getLayerForType(type);
+            this.svgCanvasController.pixelModel.addPixel(this.svgCanvasController.mouseController.movePoint, type, false, layer);
         }
 
         super.up();
