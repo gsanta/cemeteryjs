@@ -29,16 +29,19 @@ export class RectangleTool extends AbstractSelectionTool {
         this.svgCanvasController.render();
     }
 
-    up() {
-        if (this.svgCanvasController.mouseController.isDrag) {
-            this.svgCanvasController.pixelModel.commitPreviews();
-        } else {
-            const type = this.svgCanvasController.worldItemDefinitionForm.getModel().selectedType.typeName;
-            const layer = getLayerForType(type);
-            this.svgCanvasController.pixelModel.addPixel(this.svgCanvasController.mouseController.movePoint, type, false, layer);
-        }
+    click() {
+        super.click();
+        const type = this.svgCanvasController.worldItemDefinitionForm.getModel().selectedType.typeName;
+        const layer = getLayerForType(type);
+        this.svgCanvasController.pixelModel.addPixel(this.svgCanvasController.mouseController.movePoint, type, false, layer);
 
-        super.up();
+        this.svgCanvasController.render();
+        this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
+    }
+
+    draggedUp() {
+        super.draggedUp();
+        this.svgCanvasController.pixelModel.commitPreviews();
 
         this.svgCanvasController.render();
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);

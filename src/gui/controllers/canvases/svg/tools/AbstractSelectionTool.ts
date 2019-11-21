@@ -1,14 +1,15 @@
 import { SvgCanvasController } from '../SvgCanvasController';
 import { Tool, ToolType } from './Tool';
 import { Point } from '@nightshifts.inc/geometry';
+import { AbstractTool } from './AbstractTool';
 
-export class AbstractSelectionTool implements Tool {
+export class AbstractSelectionTool extends AbstractTool {
     type: ToolType;
     protected svgCanvasController: SvgCanvasController;
     private showSelection: boolean;
 
     constructor(bitmapEditor: SvgCanvasController, type: ToolType, showSelection: boolean) {
-        this.type = type;
+        super(type);
         this.svgCanvasController = bitmapEditor;
         this.showSelection = showSelection;
     }
@@ -19,6 +20,14 @@ export class AbstractSelectionTool implements Tool {
         }
     }
 
+    drag() {
+        this.svgCanvasController.selectionModel.setPoints(this.svgCanvasController.mouseController.downPoint, this.svgCanvasController.mouseController.movePoint);
+    }
+
+    click() {
+
+    }
+
     up() {
         if (this.showSelection) {
             this.svgCanvasController.selectionModel.isVisible = false;
@@ -27,9 +36,7 @@ export class AbstractSelectionTool implements Tool {
         this.svgCanvasController.selectionModel.bottomRightPoint = null;
     }
 
-    drag() {
-        this.svgCanvasController.selectionModel.setPoints(this.svgCanvasController.mouseController.downPoint, this.svgCanvasController.mouseController.movePoint);
-    }
+
 
     protected getPixelIndexesInSelection(): number[] {
         const selectionRect = this.svgCanvasController.selectionModel.getSelectionRect();

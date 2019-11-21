@@ -7,17 +7,20 @@ export class RoomUtils {
         const borderItems = [...room.borderItems];
 
         const startItem = this.getBottomLeftItem(borderItems);
-        let rest = without(borderItems, startItem);
 
-        const orderedItems = [startItem];
-        while (rest.length > 0) {
-            const nextItem = this.findNextBorderItem(last(orderedItems), rest);
+        if (startItem) {
+            let rest = without(borderItems, startItem);
+    
+            const orderedItems = [startItem];
+            while (rest.length > 0) {
+                const nextItem = this.findNextBorderItem(last(orderedItems), rest);
+    
+                orderedItems.push(nextItem);
+                rest = without(rest, nextItem);
+            }
 
-            orderedItems.push(nextItem);
-            rest = without(rest, nextItem);
+            room.borderItems = orderedItems;
         }
-
-        room.borderItems = orderedItems;
     }
 
     private static findNextBorderItem(currentBorderItem: WorldItem, borderItems: WorldItem[]) {
@@ -51,6 +54,6 @@ export class RoomUtils {
             return center1.x === center2.x ? center1.y - center2.y : center1.x - center2.x;
         });
 
-        return copy[0];
+        return copy.length ? copy[0] : null;
     }
 }

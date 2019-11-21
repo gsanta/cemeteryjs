@@ -135,7 +135,7 @@ export class PixelModel {
     getTopPixelAtCoordinate(coordinate: Point): Pixel {
         const index = this.getIndexAtCoordinate(coordinate);
 
-        return last(this.bitMap.get(index));
+        return this.bitMap.get(index) && last(this.bitMap.get(index));
     }
 
     private addPixelToMap(key: number, pixel: Pixel) {

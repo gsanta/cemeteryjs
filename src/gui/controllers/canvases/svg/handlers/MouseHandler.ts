@@ -43,6 +43,12 @@ export class MouseHandler {
     }    
 
     onMouseUp(e: MouseEvent): void {
+        if (this.isDrag) {
+            this.bitmapEditor.activeTool.draggedUp();
+        } else {
+            this.bitmapEditor.activeTool.click();
+        }
+        
         this.bitmapEditor.activeTool.up();
         this.isDown = false;
         this.isDrag = false;
