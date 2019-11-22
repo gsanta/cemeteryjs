@@ -8,14 +8,6 @@ import { last, without } from '../utils/Functions';
 import { PolygonRedundantPointReducer } from "./PolygonRedundantPointReducer";
 import { WorldItemBuilder } from "./WorldItemBuilder";
 
-
-enum Direction {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
-}
-
 /**
  * @hidden
  *
@@ -77,98 +69,6 @@ export class PolygonShapeBuilder implements WorldItemBuilder {
             name: this.itemName,
             isBorder: false
         });
-    }
-
-    private getStartVertex(componentGraph: WorldMapGraph) {
-        if (componentGraph.size() === 0) { return null }
-
-        const randomVertex = componentGraph.getAllVertices()[0];
-
-        const startVertex = this.findACornerVertex(randomVertex, componentGraph);
-
-        
-
-    }
-
-    private findACornerVertex(startVertex: number, componentGraph: WorldMapGraph): number {
-        let currentVertex = startVertex;
-        while(componentGraph.getLeftNeighbour(startVertex)) {
-            currentVertex = componentGraph.getLeftNeighbour(startVertex);
-        }
-
-        while (componentGraph.getTopNeighbour(currentVertex)) {
-            currentVertex = componentGraph.getTopNeighbour(currentVertex);
-        }
-
-        return currentVertex;
-    }
-
-    private findNextVertex(currentVertex: number, currentDirection: Direction, graph: WorldMapGraph): number {
-        if (this.getNextVertexAtDirection(currentVertex, currentDirection, graph) === null) {
-            currentDirection = this.chooseNewDirection(currentVertex, currentDirection, graph);
-        }
-
-
-
-        do {
-            currentVertex = this.getNextVertexAtDirection(currentVertex, currentDirection, graph);
-        } while (!this.isCornerVertex(currentVertex, currentDirection, graph));
-
-        return currentVertex;
-    }
-
-    private getNextVertexAtDirection(currentVertex: number, direction: Direction, graph: WorldMapGraph): number {
-        switch(direction) {
-            case Direction.UP:
-                return graph.getTopNeighbour(currentVertex);
-            case Direction.DOWN:
-                return graph.getBottomNeighbour(currentVertex);
-            case Direction.LEFT:
-                return graph.getLeftNeighbour(currentVertex);
-            case Direction.RIGHT:
-                return graph.getRightNeighbour(currentVertex);
-        }
-    }
-    
-    private chooseNewDirection(currVertex: number, currentDirection: Direction, graph: WorldMapGraph) {
-        switch(currentDirection) {
-            case Direction.RIGHT:
-                return graph.getTopNeighbour(currVertex) !== null ? graph.getTopNeighbour(currVertex) : graph.getBottomNeighbour(currVertex);
-            case Direction.LEFT:
-                return graph.getBottomNeighbour(currVertex) !== null ? graph.getBottomNeighbour(currVertex) : graph.getTopNeighbour(currVertex);
-            case Direction.UP:
-                return graph.getLeftNeighbour(currVertex) !== null ? graph.getLeftNeighbour(currVertex) : graph.getRightNeighbour(currVertex);
-            case Direction.DOWN:
-                return graph.getRightNeighbour(currVertex) !== null ? graph.getRightNeighbour(currVertex) : graph.getLeftNeighbour(currVertex);
-        }
-    }
-
-    private isCornerVertex(vertex: number, direction: Direction, graph: WorldMapGraph): boolean {
-        if (this.getNextVertexAtDirection(vertex, direction, graph) === null) {
-            return true;
-        }
-
-        switch(direction) {
-            case Direction.UP:
-                return this.areDirectionsFree([Direction.DOWN, Direction.LEFT, Direction.RIGHT], vertex, graph);
-            case Direction.DOWN:
-                return this.areDirectionsFree([Direction.UP, Direction.LEFT, Direction.RIGHT], vertex, graph);
-            case Direction.LEFT:
-                return this.areDirectionsFree([Direction.UP, Direction.DOWN, Direction.RIGHT], vertex, graph);
-            case Direction.RIGHT:
-                return this.areDirectionsFree([Direction.UP, Direction.DOWN, Direction.LEFT], vertex, graph);
-                        
-        }
-    }
-
-    private areDirectionsFree(directions: Direction[], vertex: number, graph: WorldMapGraph): boolean {
-        for (let i = 0; i < directions.length; i++) {
-            if (this.getNextVertexAtDirection(directions[i], vertex, graph) === null) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     /*
