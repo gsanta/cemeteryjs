@@ -33,6 +33,7 @@ export class BuildHierarchyModifier implements Modifier {
         const subareas = worldItems.filter(item => item.name === '_subarea');
         const empty = worldItems.filter(item => item.name === 'empty');
         const rooms = worldItems.filter(item => item.name === 'room');
+        const buildings = worldItems.filter(item => item.name === 'building');
         const roots = worldItems.filter(item => item.name === 'root');
         const borders = without(worldItems, ...[...rooms, ...roots, ...empty, ...furnitures, ...subareas]);
 
@@ -40,7 +41,7 @@ export class BuildHierarchyModifier implements Modifier {
         const remainingFurnitures = this.addChildren(subareas, furnitures);
         this.addChildren(rooms, [...subareas, ...remainingFurnitures, ...empty]);
 
-        roots[0].children = [...rooms, ...borders];
+        roots[0].children = [...rooms, ...borders, ...buildings];
 
         return [roots[0]];
     }

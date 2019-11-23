@@ -19,6 +19,7 @@ import { ThickenBordersModifier } from "../modifiers/ThickenBordersModifier";
 import { ServiceFacade } from './ServiceFacade';
 import { WorldMapReader } from '../readers/WorldMapReader';
 import { InputConverter } from '../readers/InputConverter';
+import { PolygonBuilder } from '../builders/polygon/PolygonBuilder';
 
 export interface WorldConfig {
     borders: string[];
@@ -61,11 +62,12 @@ export class ImporterService<M, S, T> {
             worldMap,
             new CombinedWorldItemBuilder(
                 [
-                    new FurnitureBuilder(this.services, this.worldMapReader),
-                    new BorderBuilder(this.services, this.worldMapReader),
-                    new RoomBuilder(this.services, this.worldMapReader, this.roomInputConverter),
+                    // new FurnitureBuilder(this.services, this.worldMapReader),
+                    // new BorderBuilder(this.services, this.worldMapReader),
+                    // new RoomBuilder(this.services, this.worldMapReader, this.roomInputConverter),
                     new RootWorldItemBuilder(this.services.worldItemFactoryService, this.worldMapReader),
-                    new SubareaBuilder(this.services, this.worldMapReader, this.subareaInputConverter)
+                    // new SubareaBuilder(this.services, this.worldMapReader, this.subareaInputConverter),
+                    new PolygonBuilder(this.services, this.worldMapReader)
                 ]
             )
         );

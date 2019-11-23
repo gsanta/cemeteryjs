@@ -13,6 +13,7 @@ import { RectangleFactory } from '../factories/RectangleFactory';
 import { RoomFactory } from '../factories/RoomFactory';
 import { WindowFactory } from '../factories/WindowFactory';
 import { MaterialBuilder, MaterialFactory } from '../MaterialFactory';
+import { PolygonFactory } from '../factories/PolygonFactory';
 
 export interface MeshTemplateConfig {
     checkCollisions: boolean;
@@ -86,6 +87,8 @@ export class BabylonMeshFactoryService implements MeshFactoryService<Mesh, Skele
                 return [this.createPlane(worldItemInfo, meshDescriptor)];
             case 'rect':
                 return [new RectangleFactory(this.scene, new MaterialFactory(this.scene)).createItem(worldItemInfo, meshDescriptor)];
+            case 'polygon':
+                return [new PolygonFactory(this.scene, new MaterialFactory(this.scene)).createItem(worldItemInfo, meshDescriptor)];
             default:
                 throw new Error('Unsupported shape: ' + meshDescriptor.shape);
         }

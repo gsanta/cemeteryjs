@@ -10,7 +10,7 @@ enum Direction {
 namespace Direction {
 
     export function getOppositeDirection(direction: Direction) {
-        switch(direction) {
+        switch (direction) {
             case Direction.UP:
                 return Direction.DOWN;
             case Direction.DOWN:
@@ -23,7 +23,7 @@ namespace Direction {
     }
 }
 
-export class PolygonFinderInGraph {
+export class PolygonVertexListFinder {
     private graph: WorldMapGraph;
     private newDirectionsByPriority = {
         [Direction.UP]: [Direction.LEFT, Direction.RIGHT],
@@ -38,16 +38,17 @@ export class PolygonFinderInGraph {
     }
 
     findAPolygon(): number[] {
-        let currVertex = this.getStartVertex();
         let currDirection = Direction.UP;
 
-        const visitedVertexes: number[] = [currVertex];
-        const vertexes: number[] = [currVertex];
+        const visitedVertexes: number[] = [];
+        const vertexes: number[] = [];
+        const referenceVertex = this.getStartVertex();
+        let currVertex = referenceVertex;
 
         do {
-            [currVertex, currDirection] = this.findNextVertex(currVertex, currDirection, visitedVertexes);
+            [currVertex, currDirection] = this.findNextCornerVertex(currVertex, currDirection, visitedVertexes);
             vertexes.push(currVertex);
-        } while (currVertex !== vertexes[0]);
+        } while (currVertex !== referenceVertex);
 
         return vertexes;
     }
@@ -62,7 +63,7 @@ export class PolygonFinderInGraph {
 
     private findACornerVertex(startVertex: number, componentGraph: WorldMapGraph): number {
         let currentVertex = startVertex;
-        while(componentGraph.getLeftNeighbour(startVertex)) {
+        while (componentGraph.getLeftNeighbour(startVertex)) {
             currentVertex = componentGraph.getLeftNeighbour(startVertex);
         }
 
@@ -73,16 +74,14 @@ export class PolygonFinderInGraph {
         return currentVertex;
     }
 
-    private findNextVertex(currentVertex: number, currentDirection: Direction, visitedVertexes: number[]): [number, Direction] {
-        if (this.getNextVertexAtDirection(currentVertex, currentDirection) === null) {
-            let newDirection = this.chooseNewDirection(currentVertex, currentDirection);
+    private findNextCornerVertex(currentVertex: number, currentDirection: Direction, visitedVertexes: number[]): [number, Direction] {
+        let newDirection = this.chooseNewDirection(currentVertex, currentDirection);
 
-            if (newDirection === undefined) {
-                [currentVertex, newDirection] = this.backtrackUntilNewDirectionIsFound(currentVertex, currentDirection, visitedVertexes);
-            }
-
-            currentDirection = newDirection;
+        if (newDirection === undefined) {
+            [currentVertex, newDirection] = this.backtrackUntilNewDirectionIsFound(currentVertex, currentDirection, visitedVertexes);
         }
+
+        currentDirection = newDirection;
 
         do {
             currentVertex = this.getNextVertexAtDirection(currentVertex, currentDirection);
@@ -92,7 +91,7 @@ export class PolygonFinderInGraph {
     }
 
     private getNextVertexAtDirection(currentVertex: number, direction: Direction): number {
-        switch(direction) {
+        switch (direction) {
             case Direction.UP:
                 return this.graph.getTopNeighbour(currentVertex);
             case Direction.DOWN:
@@ -103,17 +102,28 @@ export class PolygonFinderInGraph {
                 return this.graph.getRightNeighbour(currentVertex);
         }
     }
-    
+
     private chooseNewDirection(currVertex: number, currentDirection: Direction): Direction {
-        const possibleDirections = this.newDirectionsByPriority[currentDirection];
+        // const possibleDirections = this.newDirectionsByPriority[currentDirection];
 
-        for (let i = 0; i < possibleDirections.length; i++) {
-            if (this.getNextVertexAtDirection(currVertex, possibleDirections[i])) {
-                return possibleDirections[i];
-            }
+        // for (let i = 0; i < possibleDirections.length; i++) {
+        //     if (this.getNextVertexAtDirection(currVertex, possibleDirections[i])) {
+        //         return possibleDirections[i];
+        //     }
+        // }
+
+        // return undefined;
+
+        switch (currentDirection) {
+            case Direction.LEFT:
+                return this.chooseNextDirectionAfterGoingLeft(currVertex);
+            case Direction.RIGHT:
+                return this.chooseNextDirectionAfterGoingRight(currVertex);
+            case Direction.UP:
+                return this.chooseNextDirectionAfterGoingUp(currVertex);
+            case Direction.DOWN:
+                return this.chooseNextDirectionAfterGoingDown(currVertex);
         }
-
-        return undefined;
     }
 
     private backtrackUntilNewDirectionIsFound(currVertex: number, direction: Direction, visitedVertexes: number[]): [number, Direction] {
@@ -134,7 +144,7 @@ export class PolygonFinderInGraph {
             return true;
         }
 
-        switch(direction) {
+        switch (direction) {
             case Direction.UP:
                 return this.areDirectionsFree([Direction.DOWN, Direction.LEFT, Direction.RIGHT], vertex);
             case Direction.DOWN:
@@ -143,7 +153,7 @@ export class PolygonFinderInGraph {
                 return this.areDirectionsFree([Direction.UP, Direction.DOWN, Direction.RIGHT], vertex);
             case Direction.RIGHT:
                 return this.areDirectionsFree([Direction.UP, Direction.DOWN, Direction.LEFT], vertex);
-                        
+
         }
     }
 
@@ -157,4 +167,51 @@ export class PolygonFinderInGraph {
         return true;
     }
 
+    private chooseNextDirectionAfterGoingLeft(currentVertex: number) {
+        if (this.graph.getLeftNeighbour(currentVertex) !== null) {
+            if (this.graph.getBottomNeighbour(currentVertex) !== null) {
+                return Direction.DOWN;
+            }
+        } else {
+            if (this.graph.getTopNeighbour(currentVertex) !== null) {
+                return Direction.UP;
+            }
+        }
+    }
+
+    private chooseNextDirectionAfterGoingRight(currentVertex: number) {
+        if (this.graph.getRightNeighbour(currentVertex) !== null) {
+            if (this.graph.getTopNeighbour(currentVertex) !== null) {
+                return Direction.UP;
+            }
+        } else {
+            if (this.graph.getBottomNeighbour(currentVertex) !== null) {
+                return Direction.DOWN;
+            }
+        }
+    }
+
+    private chooseNextDirectionAfterGoingUp(currentVertex: number) {
+        if (this.graph.getTopNeighbour(currentVertex) !== null) {
+            if (this.graph.getLeftNeighbour(currentVertex) !== null) {
+                return Direction.LEFT;
+            }
+        } else {
+            if (this.graph.getRightNeighbour(currentVertex) !== null) {
+                return Direction.RIGHT;
+            }
+        }
+    }
+
+    private chooseNextDirectionAfterGoingDown(currentVertex: number) {
+        if (this.graph.getBottomNeighbour(currentVertex) !== null) {
+            if (this.graph.getRightNeighbour(currentVertex) !== null) {
+                return Direction.RIGHT;
+            }
+        } else {
+            if (this.graph.getLeftNeighbour(currentVertex) !== null) {
+                return Direction.LEFT;
+            }
+        }
+    }
 }

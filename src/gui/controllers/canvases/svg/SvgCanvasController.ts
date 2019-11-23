@@ -30,70 +30,18 @@ export const initialSvg =
     <wg-type is-border="false" scale="1" translate-y="0" type-name="outdoors"></wg-type>
     <wg-type is-border="false" scale="1" translate-y="0" type-name="room"></wg-type>
     <wg-type is-border="false" scale="1" translate-y="0" type-name="player"></wg-type>
+    <wg-type is-border="false" scale="1" translate-y="0" type-name="building" shape="polygon"></wg-type>
 </metadata>
-<rect width="10px" height="10px" x="50px" y="30px" fill="#7B7982" data-wg-x="50" data-wg-y="30" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="60px" y="30px" fill="#7B7982" data-wg-x="60" data-wg-y="30" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="70px" y="30px" fill="#7B7982" data-wg-x="70" data-wg-y="30" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="80px" y="30px" fill="#7B7982" data-wg-x="80" data-wg-y="30" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="90px" y="30px" fill="#7B7982" data-wg-x="90" data-wg-y="30" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="100px" y="30px" fill="#7B7982" data-wg-x="100" data-wg-y="30" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="110px" y="30px" fill="#7B7982" data-wg-x="110" data-wg-y="30" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="120px" y="30px" fill="#7B7982" data-wg-x="120" data-wg-y="30" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="50px" y="40px" fill="#7B7982" data-wg-x="50" data-wg-y="40" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="50px" y="50px" fill="#7B7982" data-wg-x="50" data-wg-y="50" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="50px" y="60px" fill="#7B7982" data-wg-x="50" data-wg-y="60" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="50px" y="70px" fill="#7B7982" data-wg-x="50" data-wg-y="70" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="50px" y="80px" fill="#7B7982" data-wg-x="50" data-wg-y="80" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="50px" y="90px" fill="#7B7982" data-wg-x="50" data-wg-y="90" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="60px" y="90px" fill="#7B7982" data-wg-x="60" data-wg-y="90" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="70px" y="90px" fill="#7B7982" data-wg-x="70" data-wg-y="90" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="80px" y="90px" fill="#7B7982" data-wg-x="80" data-wg-y="90" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="90px" y="90px" fill="#7B7982" data-wg-x="90" data-wg-y="90" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="100px" y="90px" fill="#7B7982" data-wg-x="100" data-wg-y="90" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="110px" y="90px" fill="#7B7982" data-wg-x="110" data-wg-y="90" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="120px" y="90px" fill="#7B7982" data-wg-x="120" data-wg-y="90" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="130px" y="30px" fill="#7B7982" data-wg-x="130" data-wg-y="30" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="130px" y="40px" fill="#7B7982" data-wg-x="130" data-wg-y="40" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="130px" y="50px" fill="#7B7982" data-wg-x="130" data-wg-y="50" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="130px" y="60px" fill="#7B7982" data-wg-x="130" data-wg-y="60" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="130px" y="70px" fill="#7B7982" data-wg-x="130" data-wg-y="70" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="130px" y="80px" fill="#7B7982" data-wg-x="130" data-wg-y="80" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="130px" y="90px" fill="#7B7982" data-wg-x="130" data-wg-y="90" data-wg-type="wall"></rect>
-<rect width="10px" height="10px" x="100px" y="40px" data-wg-x="100" data-wg-y="40" data-wg-type="table" fill="#c5541b"></rect>
-<rect width="10px" height="10px" x="100px" y="50px" data-wg-x="100" data-wg-y="50" data-wg-type="table" fill="#c5541b"></rect>
-<rect width="10px" height="10px" x="100px" y="60px" data-wg-x="100" data-wg-y="60" data-wg-type="table" fill="#c5541b"></rect>
-<rect width="10px" height="10px" x="110px" y="40px" data-wg-x="110" data-wg-y="40" data-wg-type="table" fill="#c5541b"></rect>
-<rect width="10px" height="10px" x="110px" y="50px" data-wg-x="110" data-wg-y="50" data-wg-type="table" fill="#c5541b"></rect>
-<rect width="10px" height="10px" x="110px" y="60px" data-wg-x="110" data-wg-y="60" data-wg-type="table" fill="#c5541b"></rect>
-<rect width="10px" height="10px" x="120px" y="40px" data-wg-x="120" data-wg-y="40" data-wg-type="table" fill="#c5541b"></rect>
-<rect width="10px" height="10px" x="120px" y="50px" data-wg-x="120" data-wg-y="50" data-wg-type="table" fill="#c5541b"></rect>
-<rect width="10px" height="10px" x="120px" y="60px" data-wg-x="120" data-wg-y="60" data-wg-type="table" fill="#c5541b"></rect>
-<rect width="10px" height="10px" x="60px" y="40px" data-wg-x="60" data-wg-y="40" data-wg-type="room"></rect>
-<rect width="10px" height="10px" x="60px" y="50px" data-wg-x="60" data-wg-y="50" data-wg-type="room"></rect>
-<rect width="10px" height="10px" x="60px" y="60px" data-wg-x="60" data-wg-y="60" data-wg-type="room"></rect>
-<rect width="10px" height="10px" x="60px" y="70px" data-wg-x="60" data-wg-y="70" data-wg-type="room"></rect>
-<rect width="10px" height="10px" x="60px" y="80px" data-wg-x="60" data-wg-y="80" data-wg-type="room"></rect>
-<rect width="10px" height="10px" x="70px" y="40px" data-wg-x="70" data-wg-y="40" data-wg-type="room"></rect>
-<rect width="10px" height="10px" x="70px" y="50px" data-wg-x="70" data-wg-y="50" data-wg-type="room"></rect>
-<rect width="10px" height="10px" x="70px" y="60px" data-wg-x="70" data-wg-y="60" data-wg-type="room"></rect>
-<rect width="10px" height="10px" x="70px" y="70px" data-wg-x="70" data-wg-y="70" data-wg-type="room"></rect>
-<rect width="10px" height="10px" x="70px" y="80px" data-wg-x="70" data-wg-y="80" data-wg-type="room"></rect>
-<rect width="10px" height="10px" x="80px" y="40px" data-wg-x="80" data-wg-y="40" data-wg-type="room"></rect>
-<rect width="10px" height="10px" x="80px" y="50px" data-wg-x="80" data-wg-y="50" data-wg-type="room"></rect>
-<rect width="10px" height="10px" x="80px" y="60px" data-wg-x="80" data-wg-y="60" data-wg-type="room"></rect>
-<rect width="10px" height="10px" x="80px" y="70px" data-wg-x="80" data-wg-y="70" data-wg-type="room"></rect>
-<rect width="10px" height="10px" x="80px" y="80px" data-wg-x="80" data-wg-y="80" data-wg-type="room"></rect>
-<rect width="10px" height="10px" x="90px" y="40px" data-wg-x="90" data-wg-y="40" data-wg-type="room"></rect>
-<rect width="10px" height="10px" x="90px" y="50px" data-wg-x="90" data-wg-y="50" data-wg-type="room"></rect>
-<rect width="10px" height="10px" x="90px" y="60px" data-wg-x="90" data-wg-y="60" data-wg-type="room"></rect>
-<rect width="10px" height="10px" x="90px" y="70px" data-wg-x="90" data-wg-y="70" data-wg-type="room"></rect>
-<rect width="10px" height="10px" x="90px" y="80px" data-wg-x="90" data-wg-y="80" data-wg-type="room"></rect>
-<rect width="10px" height="10px" x="100px" y="70px" data-wg-x="100" data-wg-y="70" data-wg-type="room"></rect>
-<rect width="10px" height="10px" x="100px" y="80px" data-wg-x="100" data-wg-y="80" data-wg-type="room"></rect>
-<rect width="10px" height="10px" x="110px" y="70px" data-wg-x="110" data-wg-y="70" data-wg-type="room"></rect>
-<rect width="10px" height="10px" x="110px" y="80px" data-wg-x="110" data-wg-y="80" data-wg-type="room"></rect>
-<rect width="10px" height="10px" x="120px" y="70px" data-wg-x="120" data-wg-y="70" data-wg-type="room"></rect>
-<rect width="10px" height="10px" x="120px" y="80px" data-wg-x="120" data-wg-y="80" data-wg-type="room"></rect>
+<rect width="10px" height="10px" x="50px" y="30px" fill="#7B7982" data-wg-x="50" data-wg-y="30" data-wg-type="building"></rect>
+<rect width="10px" height="10px" x="60px" y="30px" fill="#7B7982" data-wg-x="60" data-wg-y="30" data-wg-type="building"></rect>
+<rect width="10px" height="10px" x="70px" y="30px" fill="#7B7982" data-wg-x="70" data-wg-y="30" data-wg-type="building"></rect>
+<rect width="10px" height="10px" x="80px" y="30px" fill="#7B7982" data-wg-x="80" data-wg-y="30" data-wg-type="building"></rect>
+<rect width="10px" height="10px" x="90px" y="30px" fill="#7B7982" data-wg-x="90" data-wg-y="30" data-wg-type="building"></rect>
+<rect width="10px" height="10px" x="50px" y="40px" fill="#7B7982" data-wg-x="50" data-wg-y="40" data-wg-type="building"></rect>
+<rect width="10px" height="10px" x="60px" y="40px" fill="#7B7982" data-wg-x="60" data-wg-y="40" data-wg-type="building"></rect>
+<rect width="10px" height="10px" x="70px" y="40px" fill="#7B7982" data-wg-x="70" data-wg-y="40" data-wg-type="building"></rect>
+<rect width="10px" height="10px" x="80px" y="40px" fill="#7B7982" data-wg-x="80" data-wg-y="40" data-wg-type="building"></rect>
+<rect width="10px" height="10px" x="90px" y="40px" fill="#7B7982" data-wg-x="90" data-wg-y="40" data-wg-type="building"></rect>
 </svg>
 `;
 
