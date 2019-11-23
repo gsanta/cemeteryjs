@@ -23,15 +23,23 @@ namespace Direction {
     }
 }
 
+
+function doWhile(doFunc: () => void, whileFunc: () => boolean) {
+    let infiniteLoopCounter = 0;
+    const infiniteLoopThreshold = 100;
+
+    do {
+        doFunc();
+        infiniteLoopCounter++
+
+        if (infiniteLoopCounter > infiniteLoopThreshold) {
+            throw new Error(`Cycle did not end after ${infiniteLoopCounter} iterations, throwing error to avoid infinite loop.`);
+        }
+    } while (whileFunc());
+}
+
 export class PolygonVertexListFinder {
     private graph: WorldMapGraph;
-    private newDirectionsByPriority = {
-        [Direction.UP]: [Direction.LEFT, Direction.RIGHT],
-        [Direction.DOWN]: [Direction.LEFT, Direction.RIGHT],
-        [Direction.LEFT]: [Direction.UP, Direction.DOWN],
-        [Direction.RIGHT]: [Direction.UP, Direction.DOWN]
-    };
-
 
     constructor(graph: WorldMapGraph) {
         this.graph = graph;
@@ -45,10 +53,14 @@ export class PolygonVertexListFinder {
         const referenceVertex = this.getStartVertex();
         let currVertex = referenceVertex;
 
-        do {
-            [currVertex, currDirection] = this.findNextCornerVertex(currVertex, currDirection, visitedVertexes);
-            vertexes.push(currVertex);
-        } while (currVertex !== referenceVertex);
+
+        doWhile(
+            () => {
+                [currVertex, currDirection] = this.findNextCornerVertex(currVertex, currDirection, visitedVertexes);
+                vertexes.push(currVertex);
+            },
+            () => currVertex !== referenceVertex 
+        );
 
         return vertexes;
     }
@@ -83,9 +95,10 @@ export class PolygonVertexListFinder {
 
         currentDirection = newDirection;
 
-        do {
-            currentVertex = this.getNextVertexAtDirection(currentVertex, currentDirection);
-        } while (!this.isCornerVertex(currentVertex, currentDirection));
+        doWhile(
+            () => currentVertex = this.getNextVertexAtDirection(currentVertex, currentDirection),
+            () => !this.isCornerVertex(currentVertex, currentDirection)  
+        )
 
         return [currentVertex, currentDirection];
     }
@@ -131,10 +144,13 @@ export class PolygonVertexListFinder {
 
         let newDirection: Direction = undefined;
 
-        do {
-            currVertex = this.getNextVertexAtDirection(currVertex, oppositeDirection);
-            newDirection = this.chooseNewDirection(currVertex, direction);
-        } while (newDirection === undefined);
+        doWhile(
+            () => {
+                currVertex = this.getNextVertexAtDirection(currVertex, oppositeDirection);
+                newDirection = this.chooseNewDirection(currVertex, direction);
+            },
+            () => newDirection === undefined 
+        )
 
         return [currVertex, newDirection];
     }

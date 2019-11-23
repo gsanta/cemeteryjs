@@ -15,8 +15,8 @@ export class TransformToWorldCoordinateModifier implements Modifier {
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
                 if (item !== rootItem) {
-                    item.dimensions = this.moveToWorldCenter(item, rootItem);
-                    item.dimensions = item.dimensions.negate('y');
+                    // item.dimensions = this.moveToWorldCenter(item, rootItem);
+                    item.dimensions = item.dimensions.negate('x');
                 }
             }
         });
@@ -29,6 +29,11 @@ export class TransformToWorldCoordinateModifier implements Modifier {
         const translateX = - (root.dimensions.getBoundingInfo().extent[0] / 2);
         const translateY = - (root.dimensions.getBoundingInfo().extent[1] / 2);
 
-        return worldItemInfo.dimensions.translate(new Point(translateX, translateY));
+        // return worldItemInfo.dimensions.negate('x').negate('y')
+
+        // worldItemInfo.dimensions.negate('y')
+
+        // return worldItemInfo.dimensions.translate(new Point(translateX, translateY));
+        return worldItemInfo.dimensions;
     }
 }

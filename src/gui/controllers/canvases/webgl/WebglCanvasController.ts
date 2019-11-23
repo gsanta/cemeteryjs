@@ -1,9 +1,11 @@
-import { ArcRotateCamera, Color3, Engine, HemisphericLight, Scene, Vector3 } from "babylonjs";
+import { ArcRotateCamera, Color3, Engine, HemisphericLight, Scene, Vector3, FreeCamera, UniversalCamera } from "babylonjs";
 import { FileFormat } from '../../../../WorldGenerator';
 import { ControllerFacade } from '../../ControllerFacade';
 import { Events } from "../../events/Events";
 import { IWritableCanvas } from '../IWritableCanvas';
 import { WebglCanvasWriter } from './WebglCanvasWriter';
+import { CustomCameraInput } from './CustomCameraInput';
+import { MouseCameraInput } from './MouseCameraInput';
 (<any> window).earcut = require('earcut');
 
 export class WebglCanvasController implements IWritableCanvas {
@@ -16,7 +18,7 @@ export class WebglCanvasController implements IWritableCanvas {
     isDirty: boolean;
 
     private canvas: HTMLCanvasElement;
-    private camera: ArcRotateCamera;
+    private camera: UniversalCamera;
     private controllers: ControllerFacade;
     private renderFunc: () => void;
 
@@ -25,7 +27,7 @@ export class WebglCanvasController implements IWritableCanvas {
         this.updateContent = this.updateContent.bind(this);
         this.registerEvents();
     }
-
+    ArcRotateCamera
     registerEvents() {
         this.controllers.eventDispatcher.addEventListener(Events.CONTENT_CHANGED, this.updateContent);
     }
@@ -90,15 +92,26 @@ export class WebglCanvasController implements IWritableCanvas {
     private clearCanvas() {
         const scene = new Scene(this.engine);
 
-        const alpha = this.camera ? this.camera.alpha : 0;
-        const beta = this.camera ? this.camera.beta : 0;
-        const radius = this.camera ? this.camera.radius : 40;
-        const target = this.camera ? this.camera.target : new Vector3(0, 0, 0);
-        const position = this.camera ? this.camera.position : new Vector3(0, 40, 20);
-        this.camera = new ArcRotateCamera("Camera", alpha, beta, radius, target, scene);
-
-        this.camera.setPosition(position);
+        // const alpha = this.camera ? this.camera.alpha : 0;
+        // const beta = this.camera ? this.camera.beta : 0;
+        // const radius = this.camera ? this.camera.radius : 40;
+        // const target = this.camera ? this.camera.target : new Vector3(0, 0, 0);
+        // const position = this.camera ? this.camera.position : new Vector3(0, 40, 20);
+        // this.camera = new ArcRotateCamera("Camera", alpha, beta, radius, target, scene);
+        this.camera = new UniversalCamera('camera1', new Vector3(0, 50, 0), scene);
+        this.camera.setTarget(new Vector3(0, 0, 0));
+        this.camera.inputs.clear();
+        this.camera.inputs.add(new CustomCameraInput());
+        this.camera.inputs.add(new MouseCameraInput());
         this.camera.attachControl(this.canvas, true);
+        // this.camera.keysUp.push(38);    //W
+        // this.camera.keysDown.push(40)   //D
+        // this.camera.keysLeft.push(37);  //A
+        // this.camera.keysRight.push(39); //S
+
+
+        // this.camera.setPosition(position);
+        // this.camera.attachControl(this.canvas, true);
 
         const light = new HemisphericLight('light', new Vector3(0, 1, 0), scene);
         light.diffuse = new Color3(1, 1, 1);

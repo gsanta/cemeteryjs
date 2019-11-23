@@ -20,6 +20,7 @@ import { ServiceFacade } from './ServiceFacade';
 import { WorldMapReader } from '../readers/WorldMapReader';
 import { InputConverter } from '../readers/InputConverter';
 import { PolygonBuilder } from '../builders/polygon/PolygonBuilder';
+import { TransformToWorldCoordinateModifier } from '../modifiers/TransformToWorldCoordinateModifier';
 
 export interface WorldConfig {
     borders: string[];
@@ -82,6 +83,7 @@ export class ImporterService<M, S, T> {
             SplitWallsIntoTwoParallelChildWallsModifier.modName,
             NormalizeBorderRotationModifier.modName,
             ChangeFurnitureSizeModifier.modeName,
+            TransformToWorldCoordinateModifier.modName,
             CreateMeshModifier.modName
         ];
 

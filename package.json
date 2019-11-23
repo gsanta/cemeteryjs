@@ -20,6 +20,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/babylonjs": "^2.4.1",
+    "@types/debounce": "^1.2.0",
     "@types/jest": "^24.0.22",
     "@types/lodash": "^4.14.145",
     "@types/node": "^12.12.6",
@@ -64,6 +65,7 @@
     "babylonjs": "^4.0.3",
     "babylonjs-loaders": "^4.0.3",
     "bootstrap": "^4.3.1",
+    "debounce": "^1.2.0",
     "earcut": "^2.2.1",
     "monaco-editor": "^0.18.1",
     "monaco-editor-webpack-plugin": "^1.7.0",
