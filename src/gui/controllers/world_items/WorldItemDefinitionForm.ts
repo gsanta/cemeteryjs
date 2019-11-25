@@ -1,4 +1,3 @@
-import { ICanvasController } from '../canvases/ICanvasController';
 import { IFormController } from '../IFormController';
 import { cloneWorldItemType, WorldItemDefinitionModel } from './WorldItemDefinitionModel';
 import { IEditableCanvas } from '../canvases/IEditableCanvas';
@@ -11,7 +10,6 @@ export enum WorldItemTypeProperty {
     SCALE = 'scale',
     TRANSLATE_Y = 'translateY',
     MATERIALS = 'materials',
-    IS_BORDER = 'isBorder',
     COLOR = 'color'
 }
 
@@ -42,9 +40,6 @@ export class WorldItemDefinitionForm extends IFormController<WorldItemTypeProper
                 break;
             case WorldItemTypeProperty.TYPE_NAME:
                 this.tempString = this.getModel().selectedType.typeName;
-                break;
-            case WorldItemTypeProperty.IS_BORDER:
-                this.tempBoolean = this.getModel().selectedType.isBorder;
                 break;
             case WorldItemTypeProperty.SCALE:
                 this.tempNumber = this.getModel().selectedType.scale;
@@ -105,9 +100,6 @@ export class WorldItemDefinitionForm extends IFormController<WorldItemTypeProper
             case WorldItemTypeProperty.CHAR:
                 this.getModel().selectedType.char = this.tempString;
                 break;
-            case WorldItemTypeProperty.IS_BORDER:
-                this.getModel().selectedType.isBorder = this.tempBoolean;
-                break;
             case WorldItemTypeProperty.SCALE:
                 this.getModel().selectedType.scale = this.tempNumber;
                 break;
@@ -146,8 +138,6 @@ export class WorldItemDefinitionForm extends IFormController<WorldItemTypeProper
                 return this.focusedPropType === property ? this.tempString : this.getModel().selectedType.model;
             case WorldItemTypeProperty.CHAR:
                 return this.focusedPropType === property ? this.tempString : this.getModel().selectedType.char;
-            case WorldItemTypeProperty.IS_BORDER:
-                return this.focusedPropType === property ? this.tempBoolean : this.getModel().selectedType.isBorder;
             case WorldItemTypeProperty.SCALE:
                 return this.focusedPropType === property ? this.tempNumber : this.getModel().selectedType.scale;
             case WorldItemTypeProperty.SHAPE:

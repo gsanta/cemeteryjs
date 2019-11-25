@@ -1,5 +1,5 @@
 import * as convert from 'xml-js';
-import { WorldItemDefinition } from '../../../WorldItemDefinition';
+import { WorldItemDefinition, WorldItemRole } from '../../../WorldItemDefinition';
 import { ConfigReader } from '../ConfigReader';
 import { GlobalConfig } from '../text/GlobalSectionParser';
 import { RawWorldMapJson, WgDefinition } from './WorldMapJson';
@@ -26,16 +26,16 @@ export class SvgConfigReader implements ConfigReader {
 
     parseWorldItemDefinition(wgType: WgDefinition): WorldItemDefinition {
         const color = wgType._attributes["color"] as string;
-        const isBorder = wgType._attributes["is-border"] === "true" ? true : false;
         const model = wgType._attributes["model"];
         const shape = wgType._attributes["shape"];
         const scale = wgType._attributes["scale"] ? parseFloat(wgType._attributes["scale"]) : 1;
         const translateY = wgType._attributes["translate-y"] ? parseFloat(wgType._attributes["translate-y"]) : 0;
         const typeName = wgType._attributes["type-name"];
-        const materials = wgType._attributes["materials"] ? wgType._attributes["materials"].split(", ") : []; 
+        const materials = wgType._attributes["materials"] ? wgType._attributes["materials"].split(" ") : [];
+        const roles = wgType._attributes["roles"] ? wgType._attributes["roles"].split(" ").map(role => WorldItemRole.fromString(role)) : [];
 
 
-        return {color, isBorder, model, scale, translateY, typeName, materials, shape};
+        return {color, roles, model, scale, translateY, typeName, materials, shape};
     }
 
 

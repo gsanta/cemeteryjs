@@ -67,15 +67,6 @@ it ("Update the 'isBorder' prop", () => {
 
     const worldItemDefinitionForm = new WorldItemDefinitionForm(controllers.getActiveCanvas());
     const meshDescriptor = worldItemDefinitionForm.getModel().types[1];
-
-    testSimpleProp(worldItemDefinitionForm, meshDescriptor, WorldItemTypeProperty.IS_BORDER, false, val => worldItemDefinitionForm.updateBooleanProp(val));
-});
-
-it ("Update the 'isBorder' prop", () => {
-    const controllers = setupControllers(FileFormat.TEXT);
-
-    const worldItemDefinitionForm = new WorldItemDefinitionForm(controllers.getActiveCanvas());
-    const meshDescriptor = worldItemDefinitionForm.getModel().types[1];
     const oldMaterials = ['materials/door/door.jpg'];
     worldItemDefinitionForm.setSelectedDefinition('door');
     worldItemDefinitionForm.focusProp(WorldItemTypeProperty.MATERIALS);

@@ -5,7 +5,7 @@ export interface WgDefinition {
 
 export interface WgDefinitionAttributes {
     color: string;
-    "is-border": string;
+    "roles": string;
     "materials": string;
     model: string;
     scale: string;

@@ -38,31 +38,34 @@ ${definitions}
         return lines.join('\n');
     }
 
-    private createDefinitionLine(meshDescriptor: WorldItemDefinition): string {
-        let line = `${meshDescriptor.char} = ${meshDescriptor.typeName}`;
+    private createDefinitionLine(worldItemDefinition: WorldItemDefinition): string {
+        let line = `${worldItemDefinition.char} = ${worldItemDefinition.typeName}`;
 
-        if (meshDescriptor.isBorder) {
-            line += ' BORDER';
+        if (worldItemDefinition.roles && worldItemDefinition.roles.length > 0) {
+            let roles = '';
+
+            worldItemDefinition.roles.forEach(role => roles += ` ${role}`);
+            
+            line += ` ROLES [${roles}]`;        }
+
+        if (worldItemDefinition.model) {
+            line += ` MOD ${worldItemDefinition.model}`;
         }
 
-        if (meshDescriptor.model) {
-            line += ` MOD ${meshDescriptor.model}`;
-        }
-
-        if (meshDescriptor.materials && meshDescriptor.materials.length > 0) {
+        if (worldItemDefinition.materials && worldItemDefinition.materials.length > 0) {
             let materialPaths = '';
 
-            meshDescriptor.materials.forEach(mat => materialPaths += ` ${mat}`);
+            worldItemDefinition.materials.forEach(mat => materialPaths += ` ${mat}`);
             
             line += ` MAT [${materialPaths}]`;
         }
 
-        if (meshDescriptor.scale) {
-            line += ` SCALE ${meshDescriptor.scale}`
+        if (worldItemDefinition.scale) {
+            line += ` SCALE ${worldItemDefinition.scale}`
         }
 
-        if (meshDescriptor.translateY) {
-            line += ` TRANS_Y ${meshDescriptor.translateY}`
+        if (worldItemDefinition.translateY) {
+            line += ` TRANS_Y ${worldItemDefinition.translateY}`
         }
 
         return line;

@@ -1,7 +1,6 @@
 import { SvgCanvasController } from './SvgCanvasController';
 import { WorldItemDefinitionModel } from '../../world_items/WorldItemDefinitionModel';
 import { ICanvasReader } from '../ICanvasReader';
-import { Pixel } from './models/PixelModel';
 
 export class SvgCanvasReader implements ICanvasReader {
     private bitmapEditorController: SvgCanvasController;
@@ -53,7 +52,6 @@ export class SvgCanvasReader implements ICanvasReader {
         const wgTypeComponents = worldItemDefinitionModel.types.map(type => {
             const attributes: [string, string][] = [
                 ['color', type.color],
-                ['is-border', type.isBorder ? 'true' : 'false'],
                 ['scale', type.scale ? type.scale + '' : '1'],
                 ['translate-y', type.translateY ? type.translateY + '' : '0'],
                 ['type-name', type.typeName],
@@ -66,6 +64,10 @@ export class SvgCanvasReader implements ICanvasReader {
 
             if (type.materials) {
                 attributes.push(['materials', type.materials.join(' ')]);
+            }
+
+            if (type.roles && type.roles.length > 0) {
+                attributes.push(['roles', type.roles.join(' ')]);
             }
 
             return this.createTag('wg-type', attributes);

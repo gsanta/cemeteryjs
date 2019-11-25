@@ -4,6 +4,18 @@ export enum WorldItemRole {
     CHILD = 'child'
 }
 
+export namespace WorldItemRole {
+    
+    export function fromString(str: string) {
+        switch(str) {
+            case 'border':
+                return WorldItemRole.BORDER;
+            case 'child':
+                return WorldItemRole.CHILD;
+        }
+    }
+}
+
 export interface WorldItemDefinition {
     typeName: string;
     char?: string;
@@ -13,7 +25,6 @@ export interface WorldItemDefinition {
     scale?: number;
     translateY?: number;
     materials?: string[];
-    isBorder?: boolean;
     roles?: WorldItemRole[];
     realDimensions?: {
         width: number;

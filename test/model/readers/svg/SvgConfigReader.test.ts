@@ -25,8 +25,7 @@ it ('Read the world item definition related config from the svg file', () => {
         color: 'red',
         scale: 3,
         translateY: -4,
-        materials: ['models/door/door_material1.png', 'models/door/door_material2.png'],
-        isBorder: true
+        materials: ['models/door/door_material1.png', 'models/door/door_material2.png']
     });
 
     expect(worldItemTypes[1]).toMatchMeshDescriptor({
@@ -34,8 +33,7 @@ it ('Read the world item definition related config from the svg file', () => {
         color: 'brown',
         scale: 1,
         translateY: 0,
-        materials: [],
-        isBorder: true
+        materials: []
     });
 
     expect(worldItemTypes[2]).toMatchMeshDescriptor({
@@ -44,8 +42,7 @@ it ('Read the world item definition related config from the svg file', () => {
         scale: 1,
         model: 'models/table/table.babylon',
         translateY: 2,
-        materials: ['models/table/table.png'],
-        isBorder: false
+        materials: ['models/table/table.png']
     });
 });
 

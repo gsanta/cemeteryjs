@@ -2,7 +2,6 @@ import * as React from 'react';
 import { SvgCanvasController } from '../../controllers/canvases/svg/SvgCanvasController';
 import { WorldItemDefinitionForm, WorldItemTypeProperty } from '../../controllers/world_items/WorldItemDefinitionForm';
 import { AppContext, AppContextType } from '../Context';
-import { CheckboxComponent } from '../forms/CheckboxComponent';
 import { ConnectedColorPicker } from '../forms/ColorPicker';
 import { ConnectedDropdownComponent } from '../forms/DropdownComponent';
 import { ConnectedInputComponent, InputComponent } from '../forms/InputComponent';
@@ -52,12 +51,6 @@ export class PropertyEditorComponent extends React.Component<{worldItemDefinitio
                 <div className="properties-column">
                     <div className="property-row">
                         {windowModel.activeEditor.getId() === SvgCanvasController.id ? this.renderColorChooser(form) : this.renderCharacterDropdown(form)}
-                        <CheckboxComponent 
-                            isSelected={form.getVal(WorldItemTypeProperty.IS_BORDER) as boolean}
-                            formController={form}
-                            propertyName={WorldItemTypeProperty.IS_BORDER}
-                            propertyType='boolean'
-                        />
                     </div>
                     <div className="property-row">
                         <LabeledComponent label="Model file path" direction="vertical">

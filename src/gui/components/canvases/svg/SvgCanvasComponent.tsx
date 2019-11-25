@@ -127,7 +127,6 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
         const wgTypeComponents = worldItemDefinitionModel.types.map(type => {
             const props: Partial<WgDefinitionAttributes> = {
                 color: type.color,
-                'is-border': type.isBorder ? 'true' : 'false',
                 scale: type.scale ? type.scale + '' : '1',
                 'translate-y': type.translateY ? type.translateY + '' : '0',
                 'type-name': type.typeName
@@ -138,7 +137,11 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
             }
 
             if (props.materials) {
-                props.materials = type.materials.join(', ');
+                props.materials = type.materials.join(' ');
+            }
+
+            if (props.roles) {
+                props.materials = type.roles.join(' ');
             }
 
             return React.createElement('wg-type', props);

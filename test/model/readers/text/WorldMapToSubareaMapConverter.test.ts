@@ -19,9 +19,9 @@ describe('WorldMapToSubareaMapConverter', () => {
             definitions \`
 
             - = room
-            I = window BORDER
-            D = door BORDER
-            W = wall BORDER
+            I = window ROLES [BORDER]
+            D = door ROLES [BORDER]
+            W = wall ROLES [BORDER]
             = = _subarea
 
             \`
@@ -42,9 +42,9 @@ describe('WorldMapToSubareaMapConverter', () => {
             definitions \`
 
             - = room
-            I = window BORDER
-            D = door BORDER
-            W = wall BORDER
+            I = window ROLES [BORDER]
+            D = door ROLES [BORDER]
+            W = wall ROLES [BORDER]
             = = _subarea
 
             \`
@@ -55,9 +55,9 @@ describe('WorldMapToSubareaMapConverter', () => {
                 definitions \`
 
                 - = room
-                I = window BORDER
-                D = door BORDER
-                W = wall BORDER
+                I = window ROLES [BORDER]
+                D = door ROLES [BORDER]
+                W = wall ROLES [BORDER]
                 = = _subarea
 
                 \`
@@ -85,9 +85,9 @@ describe('WorldMapToSubareaMapConverter', () => {
             definitions \`
 
             - = room
-            I = window BORDER
-            D = door BORDER
-            W = wall BORDER
+            I = window ROLES [BORDER]
+            D = door ROLES [BORDER]
+            W = wall ROLES [BORDER]
             T = table
             H = chair
             = = _subarea
@@ -110,9 +110,9 @@ describe('WorldMapToSubareaMapConverter', () => {
             definitions \`
 
             - = room
-            I = window BORDER
-            D = door BORDER
-            W = wall BORDER
+            I = window ROLES [BORDER]
+            D = door ROLES [BORDER]
+            W = wall ROLES [BORDER]
             T = table
             H = chair
             = = _subarea
@@ -125,9 +125,9 @@ describe('WorldMapToSubareaMapConverter', () => {
                 definitions \`
 
                 - = room
-                I = window BORDER
-                D = door BORDER
-                W = wall BORDER
+                I = window ROLES [BORDER]
+                D = door ROLES [BORDER]
+                W = wall ROLES [BORDER]
                 T = table
                 H = chair
                 = = _subarea

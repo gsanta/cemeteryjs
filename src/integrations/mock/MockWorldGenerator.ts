@@ -1,5 +1,5 @@
 import { WorldGenerator, Converter, FileFormat } from '../../WorldGenerator';
-import { WorldItemDefinition } from '../../WorldItemDefinition';
+import { WorldItemDefinition, WorldItemRole } from '../../WorldItemDefinition';
 import { MeshFactoryService } from '../../model/services/MeshFactoryService';
 import { WorldItem } from '../../WorldItem';
 import { MeshTemplate } from '../../MeshTemplate';
@@ -26,17 +26,16 @@ export class MockMeshTemplateService implements MeshTemplateService<any, any> {
 
     getTemplate(type: string): MeshTemplate<any, any> {
         return null;
-        // throw new Error('Not implemented');
     }
 
     getTemplateDimensions(type: string): Point {
-        const meshDescriptor = this.templateMap.get(type);
+        const worldItemDefinition = this.templateMap.get(type);
 
-        if (meshDescriptor.realDimensions) {
-            if (meshDescriptor.isBorder) {
-                return new Point(meshDescriptor.realDimensions.width, 0);
+        if (worldItemDefinition.realDimensions) {
+            if (worldItemDefinition.roles.includes(WorldItemRole.BORDER)) {
+                return new Point(worldItemDefinition.realDimensions.width, 0);
             } else {
-                return new Point(meshDescriptor.realDimensions.width, meshDescriptor.realDimensions.height);
+                return new Point(worldItemDefinition.realDimensions.width, worldItemDefinition.realDimensions.height);
             }
         } else {
             return null;

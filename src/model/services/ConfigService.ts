@@ -1,4 +1,4 @@
-import { WorldItemDefinition } from "../../WorldItemDefinition";
+import { WorldItemDefinition, WorldItemRole } from "../../WorldItemDefinition";
 import { TextConfigReader } from "../readers/text/TextConfigReader";
 import { GlobalConfig } from '../readers/text/GlobalSectionParser';
 import { ConfigReader } from '../readers/ConfigReader';
@@ -40,8 +40,8 @@ export class ConfigService {
         this.meshDescriptorMapByChar = new Map();
         this.meshDescriptors.forEach(desc => this.meshDescriptorMapByChar.set(desc.char, desc));
         this.emptyType = 'empty';
-        this.borders = this.meshDescriptors.filter(descriptor => descriptor.isBorder);
-        this.furnitures = this.meshDescriptors.filter(descriptor => !descriptor.isBorder && !INTERNAL_TYPES.includes(descriptor.typeName));
+        this.borders = this.meshDescriptors.filter(descriptor => descriptor.roles.includes(WorldItemRole.BORDER));
+        this.furnitures = this.meshDescriptors.filter(descriptor => descriptor.roles.includes(WorldItemRole.CHILD));
 
         return this;
     }
