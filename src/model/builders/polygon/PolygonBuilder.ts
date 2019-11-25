@@ -1,11 +1,10 @@
-import { PolygonVertexListFinder } from './PolygonVertexListFinder';
-import { VertexListToPolygonConverter } from './VertexListToPolygonConverter';
-import { WorldItemBuilder } from '../WorldItemBuilder';
+import { Polygon } from '@nightshifts.inc/geometry';
+import { WorldItem } from '../../..';
 import { WorldMapReader } from '../../readers/WorldMapReader';
 import { ServiceFacade } from '../../services/ServiceFacade';
-import { WorldItem } from '../../..';
-import { Polygon } from '@nightshifts.inc/geometry';
-import { WorldMapGraph } from '../../../WorldMapGraph';
+import { WorldItemBuilder } from '../WorldItemBuilder';
+import { PolygonVertexListFinder } from './PolygonVertexListFinder';
+import { VertexListToPolygonConverter } from './VertexListToPolygonConverter';
 
 export class PolygonBuilder implements WorldItemBuilder {
     private worldMapReader: WorldMapReader;

@@ -2,33 +2,13 @@ import { WorldMapGraph } from '../../../WorldMapGraph';
 import { Polygon, Point } from '@nightshifts.inc/geometry';
 import { PolygonVertex, Direction } from './PolygonVertexListFinder';
 
-enum LineOrientation {
-    HORIZONTAL = 'horizontal',
-    VERTICAL = 'vertical'
-}
-
-namespace LineOrientation {
-    export function getOppositeOrientation(orientation: LineOrientation) {
-        return orientation === LineOrientation.HORIZONTAL ? LineOrientation.VERTICAL : LineOrientation.HORIZONTAL;
-    }
-}
-
 export class VertexListToPolygonConverter {
     convert(vertexes: PolygonVertex[], graph: WorldMapGraph): Polygon {
         const origVertexes = vertexes;
         vertexes = [...vertexes];
 
-        // const firstPosition = graph.getNodePositionInMatrix(vertexes[0]);
-        // const secondPosition = graph.getNodePositionInMatrix(vertexes[1]);
-
-        // let orientation = firstPosition.x === secondPosition.x ? LineOrientation.VERTICAL : LineOrientation.HORIZONTAL;
-
-        // const points: Point[] = [ this.getFirstPoint(vertexes, graph) ];
         const points: Point[] = [ ];
 
-        // let prevPoint = points[0];
-
-        // vertexes.shift();
         while(vertexes.length > 0) {
             const vertex = vertexes.shift();
 
@@ -38,19 +18,11 @@ export class VertexListToPolygonConverter {
                 let x = this.getX(vertex.nodeIndex, vertexPosition, graph);
                 let y = this.getY(vertex.nodeIndex, vertexPosition, graph);
     
-                // if (orientation === LineOrientation.HORIZONTAL) {
-                //     x = this.getX(vertex, vertexPosition, graph);
-                // } else {
-                //     y = this.getY(vertex, vertexPosition, graph);
-                // }
                 const newPoint = new Point(x, y);
                 points.push(newPoint);
             } else {
                 points.push(undefined);
             }
-
-            // prevPoint = newPoint;
-            // orientation = LineOrientation.getOppositeOrientation(orientation);
         }
         this.calcConcavePoints(points, origVertexes, graph);
 
@@ -81,9 +53,11 @@ export class VertexListToPolygonConverter {
     }
 
     private setConcaveCoordinateBasedOnConvexNeighbour(index: number, convexNeighbourIndex: number, vertexes: PolygonVertex[], points: Point[]) {
+        const isNextIndex = () => convexNeighbourIndex > index && !(index === 0 && convexNeighbourIndex === vertexes.length - 1);
+        
         let direction: Direction;
 
-        if (convexNeighbourIndex > index) {
+        if (isNextIndex()) {
             direction = vertexes[convexNeighbourIndex].direction;
         } else {
             direction = vertexes[index].direction;
@@ -99,18 +73,6 @@ export class VertexListToPolygonConverter {
             case Direction.RIGHT:
                 points[index].y = points[convexNeighbourIndex].y; 
                 break;
-        }
-    }
-
-    private getPrevIndex(index: number, vertexes: PolygonVertex[]): number {
-        return index === 0 ? vertexes.length - 1 : index - 1;
-    }
-
-    private getConvexNeighbourIndex(currentVertexIndex: number, vertexes: PolygonVertex[]) {
-        if (vertexes[currentVertexIndex - 1].isConvex) {
-            return currentVertexIndex - 1;
-        } else {
-            return currentVertexIndex + 1;
         }
     }
 

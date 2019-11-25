@@ -80,11 +80,11 @@ export class PolygonVertexListFinder {
     }
 
     private findAConvexStartVertex(nodeIndex: number, graph: WorldMapGraph): PolygonVertex {
-        while (graph.getLeftNeighbour(nodeIndex)) {
+        while (graph.getLeftNeighbour(nodeIndex) !== null) {
             nodeIndex = graph.getLeftNeighbour(nodeIndex);
         }
 
-        while (graph.getTopNeighbour(nodeIndex)) {
+        while (graph.getTopNeighbour(nodeIndex) !== null) {
             nodeIndex = graph.getTopNeighbour(nodeIndex);
         }
 
