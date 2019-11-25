@@ -39,8 +39,8 @@ export class PolygonShapeBuilder implements WorldItemBuilder {
             .map(componentGraph => {
                 const lines = this.segmentGraphToHorizontalLines(componentGraph);
 
-                const worldMapPositions = componentGraph.getAllVertices()
-                    .map(vertex => componentGraph.getVertexPositionInMatrix(vertex))
+                const worldMapPositions = componentGraph.getAllNodes()
+                    .map(vertex => componentGraph.getNodePositionInMatrix(vertex))
                     .map(vertexPos => this.services.geometryService.factory.point(vertexPos.x, vertexPos.y));
 
                 const points = this.polygonRedundantPointReducer.reduce(
@@ -78,9 +78,9 @@ export class PolygonShapeBuilder implements WorldItemBuilder {
     private segmentGraphToHorizontalLines(componentGraph: WorldMapGraph): Segment[] {
         const map = new Map<Number, number[]>();
 
-        componentGraph.getAllVertices()
+        componentGraph.getAllNodes()
             .forEach(vertex => {
-                const position = componentGraph.getVertexPositionInMatrix(vertex);
+                const position = componentGraph.getNodePositionInMatrix(vertex);
 
                 if (map.get(position.y) === undefined) {
                     map.set(position.y, []);

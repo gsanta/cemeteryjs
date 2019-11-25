@@ -1,9 +1,9 @@
 import { without } from './model/utils/Functions';
 
 export class WorldMapGraph {
-    private numberOfVertices = 0;
-    private vertexValues: { [key: number]: string } = {};
-    private vertices: number[] = [];
+    private numberOfNodes = 0;
+    private nodeValues: { [key: number]: string } = {};
+    private nodes: number[] = [];
     private columns: number;
     private rows: number;
     private types: Set<string>;
@@ -23,7 +23,7 @@ export class WorldMapGraph {
     }
 
     size() {
-        return this.numberOfVertices;
+        return this.numberOfNodes;
     }
 
     getRows(): number {
@@ -35,9 +35,9 @@ export class WorldMapGraph {
     }
 
 
-    getVertexPositionInMatrix(vertex: number): {x: number, y: number} {
-        const row = Math.floor(vertex / this.columns);
-        const column = vertex % this.columns;
+    getNodePositionInMatrix(node: number): {x: number, y: number} {
+        const row = Math.floor(node / this.columns);
+        const column = node % this.columns;
 
         return {
             x: column,
@@ -45,94 +45,101 @@ export class WorldMapGraph {
         };
     }
 
-    getVertexAtPosition(pos: {x: number, y: number}): number {
-        const vertex = pos.y * this.columns + pos.x;
+    getNodeAtPosition(pos: {x: number, y: number}): number {
+        const node = pos.y * this.columns + pos.x;
 
-        if (this.hasVertex(vertex)) {
-            return vertex;
+        if (this.hasNode(node)) {
+            return node;
         }
 
         return null;
     }
 
-    getVertexValue(vertex: number): string {
-        return this.vertexValues[vertex];
+    getNodeValue(node: number): string {
+        return this.nodeValues[node];
     }
 
-    getVerticesByType(type: string): number[] {
-        return this.vertices.filter(vertex => this.getVertexValue(vertex) === type);
+    getNodesByType(type: string): number[] {
+        return this.nodes.filter(node => this.getNodeValue(node) === type);
     }
 
-    addVertex(vertex: number, type: string) {
+    addNode(node: number, type: string) {
 
-        this.vertexValues[vertex] = type;
-        this.numberOfVertices += 1;
+        this.nodeValues[node] = type;
+        this.numberOfNodes += 1;
 
-        this.vertices.push(vertex);
+        this.nodes.push(node);
         this.types.add(type);
     }
 
-    setVertexType(vertex: number, type: string) {
-        this.vertexValues[vertex] = type;
+    removeNode(node: number) {
+        delete this.nodeValues[node];
+        this.numberOfNodes -= 1;
+        const index = this.nodes.indexOf(node);
+        this.nodes.splice(index, 1);
     }
 
-    getAllVertices(): number[] {
-        return this.vertices;
+    setNodeType(node: number, type: string) {
+        this.nodeValues[node] = type;
     }
 
-    private getAjacentEdges(vertex: number) {
+    getAllNodes(): number[] {
+        return this.nodes;
+    }
+
+    private getAjacentEdges(node: number) {
         return [
-            this.getTopNeighbour(vertex),
-            this.getBottomNeighbour(vertex),
-            this.getLeftNeighbour(vertex),
-            this.getRightNeighbour(vertex)
+            this.getTopNeighbour(node),
+            this.getBottomNeighbour(node),
+            this.getLeftNeighbour(node),
+            this.getRightNeighbour(node)
         ].filter(vert => vert !== null);
     }
 
-    public hasVertex(vertex: number): boolean {
-        return this.vertices.indexOf(vertex) !== -1;
+    public hasNode(node: number): boolean {
+        return this.nodes.indexOf(node) !== -1;
     }
 
     public hasEdgeBetween(v1: number, v2: number) {
-        return this.vertices.includes(v1) && this.vertices.includes(v2);
+        return this.nodes.includes(v1) && this.nodes.includes(v2);
     }
 
-    public getTopNeighbour(vertex: number): number {
-        const topNeighbourIndex = vertex - this.columns;
+    public getTopNeighbour(node: number): number {
+        const topNeighbourIndex = node - this.columns;
 
-        return this.vertices.indexOf(topNeighbourIndex) !== -1 ? topNeighbourIndex : null;
+        return this.nodes.indexOf(topNeighbourIndex) !== -1 ? topNeighbourIndex : null;
     }
 
-    public getBottomNeighbour(vertex: number): number {
-        const topNeighbourIndex = vertex + this.columns;
+    public getBottomNeighbour(node: number): number {
+        const topNeighbourIndex = node + this.columns;
 
-        return this.vertices.indexOf(topNeighbourIndex) !== -1 ? topNeighbourIndex : null;
+        return this.nodes.indexOf(topNeighbourIndex) !== -1 ? topNeighbourIndex : null;
     }
 
-    public getLeftNeighbour(vertex: number): number {
-        const leftNeighbourIndex = vertex - 1;
+    public getLeftNeighbour(node: number): number {
+        const leftNeighbourIndex = node - 1;
 
-        if (this.hasVertex(leftNeighbourIndex) && leftNeighbourIndex % this.columns !== this.columns - 1) {
+        if (this.hasNode(leftNeighbourIndex) && leftNeighbourIndex % this.columns !== this.columns - 1) {
             return leftNeighbourIndex;
         }
 
         return null;
     }
 
-    public getRightNeighbour(vertex: number): number {
-        const rightNeighbourIndex = vertex + 1;
+    public getRightNeighbour(node: number): number {
+        const rightNeighbourIndex = node + 1;
 
-        if (this.hasVertex(rightNeighbourIndex) && rightNeighbourIndex % this.columns !== 0) {
+        if (this.hasNode(rightNeighbourIndex) && rightNeighbourIndex % this.columns !== 0) {
             return rightNeighbourIndex;
         }
 
         return null;
     }
 
-    public getGraphForVertices(vertices: number[]): WorldMapGraph {
+    public getGraphForNodes(nodes: number[]): WorldMapGraph {
         const graph = new WorldMapGraph(this.columns, this.rows);
 
-        vertices.forEach(vertex => graph.addVertex(vertex, this.getVertexValue(vertex)));
+        nodes.forEach(node => graph.addNode(node, this.getNodeValue(node)));
 
         return graph;
     }
@@ -141,32 +148,34 @@ export class WorldMapGraph {
      * Reduces the graph into subgraphs, where each graph consists of only one type
      * and where each graph is a `connected-component`.
      */
-    public getConnectedComponentGraphs(): WorldMapGraph[] {
+    getConnectedComponentGraphs(): WorldMapGraph[] {
         const connectedComponents = this.findConnectedComponents();
 
-        return connectedComponents.map(component => this.getReducedGraphForVertices(component));
+        return connectedComponents.map(component => this.getReducedGraphForNodes(component));
     }
 
     getReducedGraphForTypes(types: string[]): WorldMapGraph {
         const graph = new WorldMapGraph(this.columns, this.rows);
 
-        this.vertices
-            .filter(vertex => types.includes(this.getVertexValue(vertex)))
-            .forEach(vertex => graph.addVertex(vertex, this.getVertexValue(vertex)));
+        this.nodes
+            .filter(node => types.includes(this.getNodeValue(node)))
+            .forEach(node => graph.addNode(node, this.getNodeValue(node)));
 
         return graph;
     }
 
     private findConnectedComponents(): number[][] {
+        if (this.size() === 0) { return [] }
+
         const connectedComps: Set<number>[] = [];
 
         let actComp = new Set<number>();
-        this.BFS((vertex, newRoot) => {
+        this.BFS((node, newRoot) => {
             if (newRoot) {
                 connectedComps.push(actComp);
                 actComp = new Set<number>();
             }
-            actComp.add(vertex);
+            actComp.add(node);
         });
 
         connectedComps.push(actComp);
@@ -176,35 +185,35 @@ export class WorldMapGraph {
 
     /*
      * returns with a graph of the same extent (same column and row number), but
-     * containing only the vertices passed as the `vertices` parameter and the edges between
-     * those vertices.
+     * containing only the nodes passed as the `nodes` parameter and the edges between
+     * those nodes.
      */
-    private getReducedGraphForVertices(vertices: number[]): WorldMapGraph {
+    private getReducedGraphForNodes(nodes: number[]): WorldMapGraph {
         const graph = new WorldMapGraph(this.columns, this.rows);
 
-        vertices.forEach(vertex => graph.addVertex(vertex, this.getVertexValue(vertex)));
+        nodes.forEach(node => graph.addNode(node, this.getNodeValue(node)));
 
         return graph;
     }
 
-    private BFS(callback: (vertex: number, isNewRoot: boolean) => void) {
-        let allVertices = this.getAllVertices();
-        const queue = [allVertices[0]];
+    private BFS(callback: (node: number, isNewRoot: boolean) => void, restartAtRandomRoot = true) {
+        let allNodes = this.getAllNodes();
+        const queue = [allNodes[0]];
         const visited: {[key: number]: boolean} = {
-            [allVertices[0]]: true
+            [allNodes[0]]: true
         };
 
         let isNewRoot = false;
-        while (allVertices.length > 0) {
+        while (allNodes.length > 0) {
             while (queue.length > 0) {
 
-                const vertex = queue.shift();
+                const node = queue.shift();
 
-                allVertices = without(allVertices, vertex);
-                callback(vertex, isNewRoot);
+                allNodes = without(allNodes, node);
+                callback(node, isNewRoot);
                 isNewRoot = false;
 
-                const adjacentEdges = this.getAjacentEdges(vertex);
+                const adjacentEdges = this.getAjacentEdges(node);
 
                 const notVisitedAdjacentEdges = adjacentEdges.filter(edge =>  visited[edge] !== true);
                 if (notVisitedAdjacentEdges.length === 0) {
@@ -217,8 +226,8 @@ export class WorldMapGraph {
                 }
             }
 
-            if (allVertices.length > 0) {
-                queue.push(allVertices[0]);
+            if (allNodes.length > 0) {
+                queue.push(allNodes[0]);
                 isNewRoot = true;
             }
         }

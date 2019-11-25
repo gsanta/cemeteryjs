@@ -22,7 +22,7 @@ export class SvgWorldMapReader implements WorldMapReader {
         }
 
         const graph = new WorldMapGraph(processedJson.width, processedJson.height);
-        processedJson.rects.forEach(rect => graph.addVertex(rect.y * processedJson.width + rect.x, rect.type));
+        processedJson.rects.forEach(rect => graph.addNode(rect.y * processedJson.width + rect.x, rect.type));
 
         return graph;
     }

@@ -133,22 +133,22 @@ import { Point, Polygon } from '@nightshifts.inc/geometry';
         expect(rooms).toContainWorldItem({
             isBorder: false,
             dimensions: new Polygon([
-                new Point(1, 1),
-                new Point(1, 6),
-                new Point(8, 6),
-                new Point(8, 4),
-                new Point(5, 4),
-                new Point(5, 1)
+                new Point(-5, 1),
+                new Point(-5, 4),
+                new Point(-8, 4),
+                new Point(-8, 6),
+                new Point(-1, 6),
+                new Point(-1, 1)
             ])
          });
     
          expect(rooms).toContainWorldItem({
             isBorder: false,
             dimensions: new Polygon([
-                new Point(6, 1),
-                new Point(6, 3),
-                new Point(8, 3),
-                new Point(8, 1)
+                new Point(-8, 1),
+                new Point(-8, 3),
+                new Point(-6, 3),
+                new Point(-6, 1)
             ])
          });
     });
@@ -365,7 +365,7 @@ import { Point, Polygon } from '@nightshifts.inc/geometry';
 
         const table = room.children.find(child => child.name === 'table');
         expect(table).toHaveDimensions(
-           new Polygon([new Point(5, 1), new Point(5, 4), new Point(8, 4), new Point(8, 1)])
+           new Polygon([new Point(-8, 1), new Point(-8, 4), new Point(-5, 4), new Point(-5, 1)])
         );
     });
 // });

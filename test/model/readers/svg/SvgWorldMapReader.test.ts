@@ -17,14 +17,14 @@ it ('Parse an svg world map and generate the corresponding world map graph', () 
     expect(graph.getRows()).toEqual(5);
     expect(graph.getColumns()).toEqual(10);
 
-    const vertex1 = graph.getVertexAtPosition({x: 1, y: 1});
-    expect(graph.getVertexValue(vertex1)).toEqual('wall');
+    const vertex1 = graph.getNodeAtPosition({x: 1, y: 1});
+    expect(graph.getNodeValue(vertex1)).toEqual('wall');
 
-    const vertex2 = graph.getVertexAtPosition({x: 2, y: 1});
-    expect(graph.getVertexValue(vertex2)).toEqual('door');
+    const vertex2 = graph.getNodeAtPosition({x: 2, y: 1});
+    expect(graph.getNodeValue(vertex2)).toEqual('door');
 
-    const vertex3 = graph.getVertexAtPosition({x: 3, y: 1});
-    expect(graph.getVertexValue(vertex3)).toEqual('wall');
+    const vertex3 = graph.getNodeAtPosition({x: 3, y: 1});
+    expect(graph.getNodeValue(vertex3)).toEqual('wall');
 });
 
 
@@ -45,14 +45,14 @@ it ('Configure to remove empty frame', () => {
     expect(graph.getRows()).toEqual(1);
     expect(graph.getColumns()).toEqual(3);
 
-    const vertex1 = graph.getVertexAtPosition({x: 0, y: 0});
-    expect(graph.getVertexValue(vertex1)).toEqual('wall');
+    const vertex1 = graph.getNodeAtPosition({x: 0, y: 0});
+    expect(graph.getNodeValue(vertex1)).toEqual('wall');
 
-    const vertex2 = graph.getVertexAtPosition({x: 1, y: 0});
-    expect(graph.getVertexValue(vertex2)).toEqual('door');
+    const vertex2 = graph.getNodeAtPosition({x: 1, y: 0});
+    expect(graph.getNodeValue(vertex2)).toEqual('door');
 
-    const vertex3 = graph.getVertexAtPosition({x: 2, y: 0});
-    expect(graph.getVertexValue(vertex3)).toEqual('wall');
+    const vertex3 = graph.getNodeAtPosition({x: 2, y: 0});
+    expect(graph.getNodeValue(vertex3)).toEqual('wall');
 });
 
 it ('Parse a real world svg example', () => {

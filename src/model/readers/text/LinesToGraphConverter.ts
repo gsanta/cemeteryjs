@@ -35,7 +35,7 @@ export class LinesToGraphConverter {
         range(0, vertices).forEach(val => {
             const character = findCharacter(val);
             const type = this.configService.getMeshDescriptorByChar(character).typeName;
-            this.graph.addVertex(val, type);
+            this.graph.addNode(val, type);
         });
 
     }

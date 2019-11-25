@@ -28,15 +28,15 @@ export class SvgRoomMapConverter implements InputConverter {
         const outdoorsTypeName = this.configService.meshDescriptorMap.get('outdoors') ? this.configService.meshDescriptorMap.get('outdoors').typeName : '';
 
         this.configService.borders.forEach(worldItemType => {
-            const vertices = worldMapGraph.getVerticesByType(worldItemType.typeName);
+            const vertices = worldMapGraph.getNodesByType(worldItemType.typeName);
 
-            vertices.forEach(vertex => worldMapGraph.setVertexType(vertex, wallTypeName))
+            vertices.forEach(vertex => worldMapGraph.setNodeType(vertex, wallTypeName))
         });
 
         this.configService.furnitures.forEach(worldItemType => {
-            const vertices = worldMapGraph.getVerticesByType(worldItemType.typeName);
+            const vertices = worldMapGraph.getNodesByType(worldItemType.typeName);
 
-            vertices.forEach(vertex => worldMapGraph.setVertexType(vertex, roomTypeName));
+            vertices.forEach(vertex => worldMapGraph.setNodeType(vertex, roomTypeName));
         });
 
 

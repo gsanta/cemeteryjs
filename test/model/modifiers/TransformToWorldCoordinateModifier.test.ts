@@ -36,9 +36,9 @@ describe(`TransformToWorldCoordinateModifier`, () => {
             const result = worldCoordinateTransformator.apply(items);
 
             expect(result[0]).toPartiallyEqualToWorldItem({ name: 'root', dimensions: Polygon.createRectangle(0, 0, 10, 15)});
-            expect(result[0].children[0]).toPartiallyEqualToWorldItem({ name: 'room', dimensions: Polygon.createRectangle(-5, -7.5, 5, 15)});
-            expect(result[0].children[0].children[0]).toPartiallyEqualToWorldItem({ name: 'chair', dimensions: Polygon.createRectangle(-3, 4.5, 1, 1)});
-            expect(result[0].children[1]).toPartiallyEqualToWorldItem({ name: 'room', dimensions: Polygon.createRectangle(0, -7.5, 5, 15)})
+            expect(result[0].children[0]).toPartiallyEqualToWorldItem({ name: 'room', dimensions: Polygon.createRectangle(-5, 0, 5, 15)});
+            expect(result[0].children[0].children[0]).toPartiallyEqualToWorldItem({ name: 'chair', dimensions: Polygon.createRectangle(-3, 2, 1, 1)});
+            expect(result[0].children[1]).toPartiallyEqualToWorldItem({ name: 'room', dimensions: Polygon.createRectangle(-10, 0, 5, 15)})
         });
     });
 });

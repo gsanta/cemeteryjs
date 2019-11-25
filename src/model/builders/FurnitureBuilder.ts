@@ -42,7 +42,7 @@ export class FurnitureBuilder implements WorldItemBuilder {
     }
 
     private createRectangularGameObject(componentGraph: WorldMapGraph): WorldItem {
-        const vertexPositions = componentGraph.getAllVertices().map(vertex => componentGraph.getVertexPositionInMatrix(vertex));
+        const vertexPositions = componentGraph.getAllNodes().map(vertex => componentGraph.getNodePositionInMatrix(vertex));
         const minX = minBy<{x: number, y: number}>(vertexPositions, (a, b) => a.x - b.x).x;
         const maxX = maxBy<{x: number, y: number}>(vertexPositions, (a, b) => a.x - b.x).x;
         const minY = minBy<{x: number, y: number}>(vertexPositions, (a, b) => a.y - b.y).y;
@@ -63,12 +63,12 @@ export class FurnitureBuilder implements WorldItemBuilder {
 
     private createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph: WorldMapGraph): WorldItem[] {
         const verticalSubComponents = this.findVerticalSlices(componentGraph);
-        const verticesMinusVerticalSubComponents = <number[]> without(componentGraph.getAllVertices(), ...flat(verticalSubComponents, 2));
-        const componentGraphMinusVerticalSubComponents = componentGraph.getGraphForVertices(verticesMinusVerticalSubComponents);
+        const verticesMinusVerticalSubComponents = <number[]> without(componentGraph.getAllNodes(), ...flat(verticalSubComponents, 2));
+        const componentGraphMinusVerticalSubComponents = componentGraph.getGraphForNodes(verticesMinusVerticalSubComponents);
 
         const verticalGameObjects = verticalSubComponents
             .map(slice => {
-                const gameObjectGraph = componentGraph.getGraphForVertices(slice);
+                const gameObjectGraph = componentGraph.getGraphForNodes(slice);
                 const rect = this.createRectangleFromVerticalVertices(gameObjectGraph)
                 const type = componentGraph.getTypes()[0];
 
@@ -100,7 +100,7 @@ export class FurnitureBuilder implements WorldItemBuilder {
     }
 
     private areConnectedComponentsRectangular(componentGraph: WorldMapGraph) {
-        const vertexPositions = componentGraph.getAllVertices().map(vertex => componentGraph.getVertexPositionInMatrix(vertex));
+        const vertexPositions = componentGraph.getAllNodes().map(vertex => componentGraph.getNodePositionInMatrix(vertex));
 
         const minX = minBy<{x: number, y: number}>(vertexPositions, (a, b) => a.x - b.x).x;
         const maxX = maxBy<{x: number, y: number}>(vertexPositions, (a, b) => a.x - b.x).x;
@@ -112,7 +112,7 @@ export class FurnitureBuilder implements WorldItemBuilder {
         if (maxX > minX && maxY > minY) {
             for (let x = minX; x <= maxX; x++) {
                 for (let y = minY; y <= maxY; y++) {
-                    const vertex = componentGraph.getVertexAtPosition({x, y});
+                    const vertex = componentGraph.getNodeAtPosition({x, y});
 
                     if (vertex === null) {
                         return false;
@@ -123,13 +123,13 @@ export class FurnitureBuilder implements WorldItemBuilder {
             }
         }
 
-        return without(componentGraph.getAllVertices(), ...checkedVertices).length === 0;
+        return without(componentGraph.getAllNodes(), ...checkedVertices).length === 0;
     }
 
     private findVerticalSlices(reducedGraph: WorldMapGraph): number[][] {
         const visitedVertices = [];
 
-        let componentVertices = reducedGraph.getAllVertices();
+        let componentVertices = reducedGraph.getAllNodes();
         const verticalSubCompnents = [];
 
         while (componentVertices.length > 0) {
@@ -167,11 +167,11 @@ export class FurnitureBuilder implements WorldItemBuilder {
     }
 
     private createRectangleFromVerticalVertices(graph: WorldMapGraph) {
-        const vertices = [...graph.getAllVertices()];
-        vertices.sort((a, b) => graph.getVertexPositionInMatrix(a).y - graph.getVertexPositionInMatrix(b).y);
+        const vertices = [...graph.getAllNodes()];
+        vertices.sort((a, b) => graph.getNodePositionInMatrix(a).y - graph.getNodePositionInMatrix(b).y);
 
-        const startCoord = graph.getVertexPositionInMatrix(vertices[0]);
-        const endCoord = graph.getVertexPositionInMatrix(last(vertices));
+        const startCoord = graph.getNodePositionInMatrix(vertices[0]);
+        const endCoord = graph.getNodePositionInMatrix(last(vertices));
 
         const x = startCoord.x;
         const y = startCoord.y;
@@ -182,11 +182,11 @@ export class FurnitureBuilder implements WorldItemBuilder {
     }
 
     private createRectangleFromHorizontalVertices(graph: WorldMapGraph) {
-        const vertices = [...graph.getAllVertices()];
-        vertices.sort((a, b) => graph.getVertexPositionInMatrix(a).x - graph.getVertexPositionInMatrix(b).x);
+        const vertices = [...graph.getAllNodes()];
+        vertices.sort((a, b) => graph.getNodePositionInMatrix(a).x - graph.getNodePositionInMatrix(b).x);
 
-        const startCoord = graph.getVertexPositionInMatrix(vertices[0]);
-        const endCoord = graph.getVertexPositionInMatrix(last(vertices));
+        const startCoord = graph.getNodePositionInMatrix(vertices[0]);
+        const endCoord = graph.getNodePositionInMatrix(last(vertices));
 
         const x = startCoord.x;
         const y = startCoord.y;

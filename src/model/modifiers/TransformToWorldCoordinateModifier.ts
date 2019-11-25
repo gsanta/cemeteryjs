@@ -14,26 +14,13 @@ export class TransformToWorldCoordinateModifier implements Modifier {
     apply(worldItems: WorldItem[]): WorldItem[] {
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
+                // TODO: root item should not be a special case
                 if (item !== rootItem) {
-                    // item.dimensions = this.moveToWorldCenter(item, rootItem);
                     item.dimensions = item.dimensions.negate('x');
                 }
             }
         });
 
         return worldItems;
-    }
-
-
-    private moveToWorldCenter(worldItemInfo: WorldItem, root: WorldItem): Shape {
-        const translateX = - (root.dimensions.getBoundingInfo().extent[0] / 2);
-        const translateY = - (root.dimensions.getBoundingInfo().extent[1] / 2);
-
-        // return worldItemInfo.dimensions.negate('x').negate('y')
-
-        // worldItemInfo.dimensions.negate('y')
-
-        // return worldItemInfo.dimensions.translate(new Point(translateX, translateY));
-        return worldItemInfo.dimensions;
     }
 }

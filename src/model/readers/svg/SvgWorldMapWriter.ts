@@ -17,11 +17,11 @@ export class SvgWorldMapWriter {
         
         worldItemDefinitions.forEach(def => worldItemDefinitionsByType.set(def.typeName, def));
 
-        return worldMapGraph.getAllVertices().map(vertex => {
+        return worldMapGraph.getAllNodes().map(vertex => {
             const pixelSize = 10;
-            const pos = worldMapGraph.getVertexPositionInMatrix(vertex);
+            const pos = worldMapGraph.getNodePositionInMatrix(vertex);
             const point = new Point(pos.x, pos.y).mul(pixelSize);
-            const color = worldItemDefinitionsByType.get(worldMapGraph.getVertexValue(vertex)).color;
+            const color = worldItemDefinitionsByType.get(worldMapGraph.getNodeValue(vertex)).color;
 
             const attrs: [string, string][] = [
                 ['width', '10px'],
@@ -31,7 +31,7 @@ export class SvgWorldMapWriter {
                 ['fill', color],
                 ['data-wg-x', point.x + ''],
                 ['data-wg-y', point.y + ''],
-                ['data-wg-type', worldMapGraph.getVertexValue(vertex)]
+                ['data-wg-type', worldMapGraph.getNodeValue(vertex)]
             ]
 
             return this.createTag('rect', attrs);

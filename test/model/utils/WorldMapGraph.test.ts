@@ -63,8 +63,8 @@ describe('MatrixGraph', () => {
             const connectedComponentGraphs = graph.getReducedGraphForTypes(['room']).getConnectedComponentGraphs();
 
             expect(connectedComponentGraphs.length).toEqual(2);
-            expect(connectedComponentGraphs[0].getAllVertices().length).toEqual(9)
-            expect(connectedComponentGraphs[1].getAllVertices().length).toEqual(4)
+            expect(connectedComponentGraphs[0].getAllNodes().length).toEqual(9)
+            expect(connectedComponentGraphs[1].getAllNodes().length).toEqual(4)
          });
     });
 
@@ -97,18 +97,18 @@ describe('MatrixGraph', () => {
 
             const reducedGraph = graph.getReducedGraphForTypes(['wall', 'door']);
 
-            expect(reducedGraph.getVertexAtPosition({x: 0, y: 0})).not.toBeNull();
-            expect(reducedGraph.getVertexAtPosition({x: 2, y: 0})).not.toBeNull();
-            expect(reducedGraph.getVertexAtPosition({x: 12, y: 0})).not.toBeNull();
-            expect(reducedGraph.getVertexAtPosition({x: 12, y: 1})).not.toBeNull();
-            expect(reducedGraph.getVertexAtPosition({x: 12, y: 4})).not.toBeNull();
-            expect(reducedGraph.getVertexAtPosition({x: 0, y: 4})).not.toBeNull();
-            expect(reducedGraph.getVertexAtPosition({x: 7, y: 1})).not.toBeNull();
+            expect(reducedGraph.getNodeAtPosition({x: 0, y: 0})).not.toBeNull();
+            expect(reducedGraph.getNodeAtPosition({x: 2, y: 0})).not.toBeNull();
+            expect(reducedGraph.getNodeAtPosition({x: 12, y: 0})).not.toBeNull();
+            expect(reducedGraph.getNodeAtPosition({x: 12, y: 1})).not.toBeNull();
+            expect(reducedGraph.getNodeAtPosition({x: 12, y: 4})).not.toBeNull();
+            expect(reducedGraph.getNodeAtPosition({x: 0, y: 4})).not.toBeNull();
+            expect(reducedGraph.getNodeAtPosition({x: 7, y: 1})).not.toBeNull();
 
-            expect(reducedGraph.getVertexAtPosition({x: 1, y: 1})).toBeNull();
-            expect(reducedGraph.getVertexAtPosition({x: 11, y: 1})).toBeNull();
-            expect(reducedGraph.getVertexAtPosition({x: 1, y: 3})).toBeNull();
-            expect(reducedGraph.getVertexAtPosition({x: 11, y: 3})).toBeNull();
+            expect(reducedGraph.getNodeAtPosition({x: 1, y: 1})).toBeNull();
+            expect(reducedGraph.getNodeAtPosition({x: 11, y: 1})).toBeNull();
+            expect(reducedGraph.getNodeAtPosition({x: 1, y: 3})).toBeNull();
+            expect(reducedGraph.getNodeAtPosition({x: 11, y: 3})).toBeNull();
         });
     });
 });

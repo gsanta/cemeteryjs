@@ -5,16 +5,13 @@ import { WorldMapReader } from '../../readers/WorldMapReader';
 import { ServiceFacade } from '../../services/ServiceFacade';
 import { WorldItem } from '../../..';
 import { Polygon } from '@nightshifts.inc/geometry';
-
-interface Border {
-    vertices: number[];
-    type: string;
-    direction: 'vertical' | 'horizontal'
-}
+import { WorldMapGraph } from '../../../WorldMapGraph';
 
 export class PolygonBuilder implements WorldItemBuilder {
     private worldMapReader: WorldMapReader;
     private services: ServiceFacade<any, any, any>;
+    private polygonVertexListFinder = new PolygonVertexListFinder();
+    private vertexListToPolygonConverter = new VertexListToPolygonConverter();
 
     constructor(services: ServiceFacade<any, any, any>, worldMapReader: WorldMapReader) {
         this.services = services;
@@ -24,15 +21,16 @@ export class PolygonBuilder implements WorldItemBuilder {
     parse(worldMap: string): WorldItem[] {
         const graph = this.worldMapReader.read(worldMap);
         const buildingGraph = graph.getReducedGraphForTypes(['building']);
+        const buildings = buildingGraph.getConnectedComponentGraphs();
 
-        const polygonVertexListFinder = new PolygonVertexListFinder(buildingGraph);
-        const vertexListToPolygonConverter = new VertexListToPolygonConverter(buildingGraph);
+        const polygons = buildings.map(building => {
+            const polygonVertexes = this.polygonVertexListFinder.findVertexes(building);
+            const polygon = this.vertexListToPolygonConverter.convert(polygonVertexes, building);
+            return polygon;
+        });
 
-        const polygon = vertexListToPolygonConverter.convert(polygonVertexListFinder.findAPolygon());
-
-        return [this.createWorldItemFromPolygon(polygon)];
+        return polygons.map(polygon => this.createWorldItemFromPolygon(polygon));
     }
-
 
     private createWorldItemFromPolygon(polygon: Polygon) {
         return this.services.worldItemFactoryService.create({

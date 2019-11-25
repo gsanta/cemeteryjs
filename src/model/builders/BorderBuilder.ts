@@ -29,7 +29,7 @@ export class BorderBuilder implements WorldItemBuilder {
         const borderTypes = this.services.configService.borders.map(border => border.typeName);
 
         const borderGraph = graph.getReducedGraphForTypes(borderTypes)
-        borderGraph.getAllVertices().forEach(vertex => this.positionToComponentMap.set(vertex, []));
+        borderGraph.getAllNodes().forEach(vertex => this.positionToComponentMap.set(vertex, []));
 
 
         let borders: Border[] = [];
@@ -61,7 +61,7 @@ export class BorderBuilder implements WorldItemBuilder {
             border.vertices.forEach(vertex => usedVertices.add(vertex));
         });
 
-        const allVertices = borderGraph.getAllVertices();
+        const allVertices = borderGraph.getAllNodes();
         const a = Array.from(usedVertices);
         const unusedVertices = allVertices.filter((x: number) => a.indexOf(x) === -1);
 
@@ -73,7 +73,7 @@ export class BorderBuilder implements WorldItemBuilder {
     private createWorldItemFromOneSizedBorder(vertex: number, graph: WorldMapGraph): WorldItem {
         const border: Partial<Border> = {
             vertices: [vertex],
-            type: graph.getVertexValue(vertex)
+            type: graph.getNodeValue(vertex)
         }
 
         if (graph.getLeftNeighbour(vertex) !== null && graph.getRightNeighbour(vertex) !== null) {
@@ -90,7 +90,7 @@ export class BorderBuilder implements WorldItemBuilder {
     private findVerticalSlices(borderGraph: WorldMapGraph): Border[] {
         const visitedVertices = [];
 
-        let allVertices = borderGraph.getAllVertices();
+        let allVertices = borderGraph.getAllNodes();
         const verticalSubCompnents = [];
 
         while (allVertices.length > 0) {
@@ -136,7 +136,7 @@ export class BorderBuilder implements WorldItemBuilder {
     private findHorizontalSlices(borderGraph: WorldMapGraph): Border[] {
         const visitedVertices = [];
 
-        let componentVertices = borderGraph.getAllVertices();
+        let componentVertices = borderGraph.getAllNodes();
         const horizontalSubCompnents = [];
 
         while (componentVertices.length > 0) {
@@ -181,7 +181,7 @@ export class BorderBuilder implements WorldItemBuilder {
 
     private createWorldItemFromBorder(border: Border, graph: WorldMapGraph) {
         const worldMapPositions = border.vertices.map(vertex => graph
-                .getVertexPositionInMatrix(vertex))
+                .getNodePositionInMatrix(vertex))
                 .map(vertexPosition => this.services.geometryService.factory.point(vertexPosition.x, vertexPosition.y));
 
         const segment = this.createRectangleFromBorder(border, graph);
@@ -202,8 +202,8 @@ export class BorderBuilder implements WorldItemBuilder {
     private createRectangleFromBorder(border: Border, graph: WorldMapGraph): Segment {
         const vertices = [...border.vertices]
 
-        const startCoord = graph.getVertexPositionInMatrix(vertices[0]);
-        const endCoord = graph.getVertexPositionInMatrix(last(vertices));
+        const startCoord = graph.getNodePositionInMatrix(vertices[0]);
+        const endCoord = graph.getNodePositionInMatrix(last(vertices));
 
         if (border.direction === 'vertical') {
             const y1 = graph.getTopNeighbour(vertices[0]) !== null ? startCoord.y : startCoord.y + 0.5;
