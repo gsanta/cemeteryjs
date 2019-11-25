@@ -1,3 +1,9 @@
+
+export enum WorldItemRole {
+    BORDER = 'border',
+    CHILD = 'child'
+}
+
 export interface WorldItemDefinition {
     typeName: string;
     char?: string;
@@ -8,6 +14,7 @@ export interface WorldItemDefinition {
     translateY?: number;
     materials?: string[];
     isBorder?: boolean;
+    roles?: WorldItemRole[];
     realDimensions?: {
         width: number;
         height?: number;

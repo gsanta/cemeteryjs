@@ -1,6 +1,6 @@
 import { WorldMapLineListener, TextWorldMapParser } from "./TextWorldMapParser";
 import { Point } from "@nightshifts.inc/geometry";
-import { WorldItemDefinition } from '../../../WorldItemDefinition';
+import { WorldItemDefinition, WorldItemRole } from '../../../WorldItemDefinition';
 import { ConfigReader } from '../ConfigReader';
 
 const GLOBALS_SECTION_LINE_REGEX = /^(\S*)/;
@@ -40,7 +40,7 @@ const MODEL_TEST = /\s+MOD\s+([^\s]+)/;
 const SHAPE_TEST = /\s+SHAPE\s+([^\s]+)/;
 const SCALE_TEST = /\s+SCALE\s+(\d+(?:\.\d+)?)/
 const TRANSLATE_Y_TEST = /\s+TRANS_Y\s+(-?\d+(?:\.\d+)?)/;
-const BORDER_TEST = /\s*BORDER\s*/;
+const ROLE_TEST = /\s+ROLES\s+(?:\[([^\]]+)\])/;
 
 export class TextConfigReader extends WorldMapLineListener implements ConfigReader {
     private typeToCharMap: Map<string, string>;
@@ -66,7 +66,7 @@ export class TextConfigReader extends WorldMapLineListener implements ConfigRead
         const shape = this.parseShape(line) || 'rect';
         const scale = this.parseScale(line);
         const translateY = this.parseTranslateY(line) || 0;
-        const isBorder = this.parseBorder(line);
+        const roles = this.parseRoles(line);
         this.worldItemTypes.push({
             char,
             typeName: type,
@@ -75,7 +75,7 @@ export class TextConfigReader extends WorldMapLineListener implements ConfigRead
             shape,
             scale,
             translateY,
-            isBorder,
+            roles,
             realDimensions: dimensions ? {
                 width: dimensions.x,
                 height: dimensions.y
@@ -147,14 +147,23 @@ export class TextConfigReader extends WorldMapLineListener implements ConfigRead
         }
     }
 
-    private parseBorder(line: string): boolean {
-        const borderMatch = line.match(BORDER_TEST);
+    private parseRoles(line: string): WorldItemRole[] {
+        const rolesMatch = line.match(ROLE_TEST);
 
-        if (borderMatch) {
-            return true;
+        if (rolesMatch) {
+            const roleStrings = rolesMatch[1].split(/\s+/);
+
+            return roleStrings.map(roleString => {
+                switch(roleString) {
+                    case 'BORDER':
+                        return WorldItemRole.BORDER;
+                    case 'CHILD':
+                        return WorldItemRole.CHILD 
+                }
+            });
         }
 
-        return false;
+        return [];
     }
 
     private parseNum(num: string) {
