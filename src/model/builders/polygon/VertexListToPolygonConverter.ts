@@ -58,37 +58,52 @@ export class VertexListToPolygonConverter {
     }
 
     private calcConcavePoints(points: Point[], vertexes: PolygonVertex[], graph: WorldMapGraph) {
- 
+        const prevIndex = (index: number) => index === 0 ? vertexes.length - 1 : index - 1;
+        const nextIndex = (index: number) => index === vertexes.length - 1 ? 0 : index + 1;
+
         for (let i = 0; i < points.length; i++) {
             if (points[i] === undefined) {
 
-                let x: number, y: number;
-                let convexNeighbourIndex = this.getConvexNeighbourIndex(i, vertexes);
-                let direction: Direction;
-
-                if (convexNeighbourIndex > i) {
-                    direction = vertexes[convexNeighbourIndex].direction;
-                } else {
-                    direction = vertexes[i].direction;
-                }
-
-                switch(direction) {
-                    case Direction.UP:
-                    case Direction.DOWN:
-                        x = points[this.getConvexNeighbourIndex(i, vertexes)].x;
-                        y = this.getY(vertexes[i].nodeIndex, graph.getNodePositionInMatrix(vertexes[i].nodeIndex), graph);
-                        break;
-
-                    case Direction.LEFT:
-                    case Direction.RIGHT:
-                        y = points[this.getConvexNeighbourIndex(i, vertexes)].y;
-                        x = this.getX(vertexes[i].nodeIndex, graph.getNodePositionInMatrix(vertexes[i].nodeIndex), graph);
-                        break;
-                }
+                const x = this.getX(vertexes[i].nodeIndex, graph.getNodePositionInMatrix(vertexes[i].nodeIndex), graph);
+                const y = this.getY(vertexes[i].nodeIndex, graph.getNodePositionInMatrix(vertexes[i].nodeIndex), graph);
 
                 points[i] = new Point(x, y);
+
+                if (vertexes[prevIndex(i)].isConvex) {
+                    this.setConcaveCoordinateBasedOnConvexNeighbour(i, prevIndex(i), vertexes, points);
+                }
+
+                if (vertexes[nextIndex(i)].isConvex) {
+                    this.setConcaveCoordinateBasedOnConvexNeighbour(i, nextIndex(i), vertexes, points);
+                }
             }
         }
+    }
+
+    private setConcaveCoordinateBasedOnConvexNeighbour(index: number, convexNeighbourIndex: number, vertexes: PolygonVertex[], points: Point[]) {
+        let direction: Direction;
+
+        if (convexNeighbourIndex > index) {
+            direction = vertexes[convexNeighbourIndex].direction;
+        } else {
+            direction = vertexes[index].direction;
+        }
+
+        switch(direction) {
+            case Direction.UP:
+            case Direction.DOWN:
+                points[index].x = points[convexNeighbourIndex].x; 
+                break;
+
+            case Direction.LEFT:
+            case Direction.RIGHT:
+                points[index].y = points[convexNeighbourIndex].y; 
+                break;
+        }
+    }
+
+    private getPrevIndex(index: number, vertexes: PolygonVertex[]): number {
+        return index === 0 ? vertexes.length - 1 : index - 1;
     }
 
     private getConvexNeighbourIndex(currentVertexIndex: number, vertexes: PolygonVertex[]) {
