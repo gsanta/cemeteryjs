@@ -17,7 +17,7 @@ it ('Add the correct borders to a single room', () => {
 
         definitions \`
 
-        - = room
+        - = room ROLES [CONTAINER]
         W = wall ROLES [BORDER]
 
         \`

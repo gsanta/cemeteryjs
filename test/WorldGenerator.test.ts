@@ -52,8 +52,5 @@ describe('`WorldParser`', () => {
 
         expect(root.children.length).toEqual(10);
         expect(root.children[0].name).toEqual('room');
-        const room = root.children[0];
-        expect(room.children.length).toEqual(1);
-        expect(room.children[0].name).toEqual('empty');
     });
 });

@@ -18,7 +18,7 @@ describe('MockWorldGenerator', () => {
 
             definitions \`
 
-            - = room ROLES [CONTAINER]5
+            - = room ROLES [CONTAINER]
             W = wall ROLES [BORDER]
             I = window ROLES [BORDER]
             D = door ROLES [BORDER]
@@ -39,6 +39,6 @@ describe('MockWorldGenerator', () => {
             done() {}
         });
 
-        expect(worldItems.length).toEqual(27);
+        expect(worldItems.length).toEqual(26);
     });
 });

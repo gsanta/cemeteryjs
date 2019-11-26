@@ -47,7 +47,7 @@ it ('Draw pixels with rectangle selection', () => {
     expect(canvasController.pixelModel.getPixelPosition(152)).toEqual(new Point(2, 1));
 });
 
-it ('Remove existing pixel if adding pixel to an occupied position', () => {
+it ('Do not remove existing pixel if adding pixel to an occupied position', () => {
     const controllers = setupControllers();
     const canvasController = <SvgCanvasController> controllers.getCanvasControllerById(SvgCanvasController.id);
     canvasController.pixelModel.clear();
@@ -65,7 +65,7 @@ it ('Remove existing pixel if adding pixel to an occupied position', () => {
     canvasController.mouseController.onMouseDown(<MouseEvent> {x: 5, y: 5});
     canvasController.mouseController.onMouseUp(<MouseEvent> {x: 5, y: 5});
 
-    expect(canvasController.pixelModel.pixels.length).toEqual(1);
-    pixel = canvasController.pixelModel.pixels[0];
+    expect(canvasController.pixelModel.pixels.length).toEqual(2);
+    pixel = canvasController.pixelModel.pixels[1];
     expect(pixel.type).toEqual('door');
 });

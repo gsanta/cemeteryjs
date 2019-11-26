@@ -59,7 +59,7 @@ export class BuildHierarchyModifier implements Modifier {
 
 
         const roots = worldItems.filter(item => item.name === 'root');
-        roots[0].children = [...borders, ...roots[0].children]
+        roots[0].children = [...roots[0].children, ...borders]
 
         return roots;
     }

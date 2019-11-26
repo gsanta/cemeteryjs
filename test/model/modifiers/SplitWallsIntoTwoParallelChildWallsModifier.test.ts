@@ -1,14 +1,14 @@
-import { Point, Segment, StripeView } from "@nightshifts.inc/geometry";
-import { SplitWallsIntoTwoParallelChildWallsModifier } from '../../../src/model/modifiers/SplitWallsIntoTwoParallelChildWallsModifier';
+import { Segment, StripeView } from "@nightshifts.inc/geometry";
 import { AssignBordersToRoomsModifier } from "../../../src/model/modifiers/AssignBordersToRoomsModifier";
 import { BuildHierarchyModifier } from "../../../src/model/modifiers/BuildHierarchyModifier";
+import { ChangeBorderWidthModifier } from '../../../src/model/modifiers/ChangeBorderWidthModifier';
 import { ScaleModifier } from "../../../src/model/modifiers/ScaleModifier";
 import { SegmentBordersModifier } from "../../../src/model/modifiers/SegmentBordersModifier";
+import { SplitWallsIntoTwoParallelChildWallsModifier } from '../../../src/model/modifiers/SplitWallsIntoTwoParallelChildWallsModifier';
 import { ThickenBordersModifier } from '../../../src/model/modifiers/ThickenBordersModifier';
-import { setup } from "../testUtils";
-import { ChangeBorderWidthModifier } from '../../../src/model/modifiers/ChangeBorderWidthModifier';
-import { WorldItem } from '../../../src/WorldItem';
 import { FileFormat } from "../../../src/WorldGenerator";
+import { WorldItem } from '../../../src/WorldItem';
+import { setup } from "../testUtils";
 
 function createMap(worldMap: string) {
         return `
@@ -22,7 +22,7 @@ function createMap(worldMap: string) {
 
             W = wall ROLES [BORDER]
             D = door ROLES [BORDER]
-            - = room
+            - = room ROLES [CONTAINER]
 
             \`
         `;
