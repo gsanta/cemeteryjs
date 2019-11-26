@@ -5,7 +5,7 @@ it ('Read the world item definition related config from the svg file', () => {
     var worldMap =
     `<svg data-wg-width="100" data-wg-height="50" data-wg-pixel-size="10">
         <metadata>
-            <wg-type type-name="door" color="red" model="models/door/door.babylon" scale="3" translate-y="-4" materials="models/door/door_material1.png, models/door/door_material2.png" is-border="true"/>
+            <wg-type type-name="door" color="red" model="models/door/door.babylon" scale="3" translate-y="-4" materials="models/door/door_material1.png models/door/door_material2.png" is-border="true"/>
             <wg-type type-name="wall" color="brown" is-border="true"/>
             <wg-type type-name="table" color="yellow" model="models/table/table.babylon" scale="1" translate-y="2" materials="models/table/table.png" is-border="false"/>
         </metadata>

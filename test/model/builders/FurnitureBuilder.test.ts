@@ -19,9 +19,9 @@ describe('FurnitureBuilder', () => {
 
                 definitions \`
 
-                W = wall BORDER
+                W = wall ROLES [BORDER]
                 T = table
-                - = room
+                - = room ROLES [CONTAINER]
 
                 \`
             `;
@@ -51,9 +51,9 @@ describe('FurnitureBuilder', () => {
 
                 definitions \`
 
-                W = wall BORDER
+                W = wall ROLES [BORDER]
                 T = table
-                - = room
+                - = room ROLES [CONTAINER]
 
                 \`
             `;
@@ -82,9 +82,9 @@ describe('FurnitureBuilder', () => {
 
                 definitions \`
 
-                W = wall BORDER
+                W = wall ROLES [BORDER]
                 T = table
-                - = room
+                - = room ROLES [CONTAINER]
 
                 \`
             `;
@@ -111,13 +111,13 @@ it ('Parse furnitures that are outdoors', () => {
         *WWWWWWWW*******
 
         \`
-
+ 
         definitions \`
 
-        W = wall BORDER
-        T = table
-        - = room
-        * = outdoors
+        W = wall ROLES [BORDER]
+        T = table 
+        - = room ROLES [CONTAINER]
+        * = outdoors ROLES [CONTAINER]
 
         \`
     `;

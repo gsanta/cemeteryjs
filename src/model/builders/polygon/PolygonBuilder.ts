@@ -36,6 +36,6 @@ export class PolygonBuilder implements WorldItemBuilder {
             dimensions: polygon,
             name: 'building',
             isBorder: false
-        });
+        }, this.services.configService.getMeshDescriptorByType('building'));
     }
 }

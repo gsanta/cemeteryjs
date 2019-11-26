@@ -157,8 +157,8 @@ export class TextConfigReader extends WorldMapLineListener implements ConfigRead
                 switch(roleString) {
                     case 'BORDER':
                         return WorldItemRole.BORDER;
-                    case 'CHILD':
-                        return WorldItemRole.CHILD 
+                    case 'CONTAINER':
+                        return WorldItemRole.CONTAINER; 
                 }
             });
         }

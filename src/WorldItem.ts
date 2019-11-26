@@ -1,5 +1,6 @@
 import { Point, Shape } from "@nightshifts.inc/geometry";
 import { MeshTemplate } from './MeshTemplate';
+import { WorldItemDefinition } from './WorldItemDefinition';
 
 /**
  * `WorldItem` represents any distinguishable item in the parsed world (think of it as a mesh, e.g walls, rooms, creatures).
@@ -27,6 +28,8 @@ export class WorldItem<M = any, S = any> {
     rooms: WorldItem[] = [];
     subareaId = 0;
     worldMapPositions: Point[] = [];
+
+    definition: WorldItemDefinition;
 
     constructor(id: string, type: string, dimensions: Shape, name: string, isBorder: boolean = false, rotation = 0) {
         this.type = type;

@@ -21,7 +21,7 @@ it ('Segment a vertical wall where it intersects with the horizontal walls', () 
 
     definitions \`
 
-    W = wall BORDER
+    W = wall ROLES [BORDER]
     - = room
 
     \`
@@ -66,7 +66,7 @@ it ('Segment a horizontal wall where it intersects with the vertical walls', () 
 
     definitions \`
 
-    W = wall BORDER
+    W = wall ROLES [BORDER]
     - = room
 
     \`
@@ -117,7 +117,7 @@ it ('does not add the bordering WorldItem if it only touches the room at it\'s e
         definitions \`
 
         - = room
-        W = wall BORDER
+        W = wall ROLES [BORDER]
 
         \`
     `;

@@ -53,7 +53,7 @@ export class PolygonShapeBuilder implements WorldItemBuilder {
                     name: this.itemName,
                     isBorder: false,
                     worldMapPositions: worldMapPositions
-                });
+                }, this.services.configService.getMeshDescriptorByType(this.itemName));
             });
     }
 
@@ -68,7 +68,7 @@ export class PolygonShapeBuilder implements WorldItemBuilder {
             dimensions: this.geometryService.factory.polygon(points),
             name: this.itemName,
             isBorder: false
-        });
+        }, this.services.configService.getMeshDescriptorByType(this.itemName));
     }
 
     /*

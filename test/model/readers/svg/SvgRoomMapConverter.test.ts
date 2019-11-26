@@ -8,16 +8,16 @@ it ('Convert a normal worldmap svg to an svg that only contains wall and room ty
     const inputWorldMap = `
     <svg data-wg-pixel-size="10" data-wg-width="1500" data-wg-height="1000">
         <metadata>
-            <wg-type color="#7B7982" is-border="true" scale="1" translate-y="0" type-name="wall"></wg-type>
-            <wg-type color="#BFA85C" is-border="true" scale="3" translate-y="-4" type-name="door"></wg-type>
-            <wg-type is-border="false" scale="1" translate-y="0" type-name="table" color="#5f47d3"></wg-type>
-            <wg-type color="#70C0CF" is-border="true" scale="3" translate-y="0" type-name="window"></wg-type>
-            <wg-type color="#9894eb" is-border="false" scale="3" translate-y="0" type-name="chair"></wg-type>
-            <wg-type color="#8c7f6f" is-border="false" scale="3" translate-y="1" type-name="shelves"></wg-type>
-            <wg-type color="#66553f" is-border="false" scale="3" translate-y="2" type-name="stairs"></wg-type>
-            <wg-type is-border="false" scale="1" translate-y="0" type-name="outdoors"></wg-type>
-            <wg-type is-border="false" scale="1" translate-y="0" type-name="room"></wg-type>
-            <wg-type is-border="false" scale="1" translate-y="0" type-name="player"></wg-type>
+            <wg-type color="#7B7982" roles="border" scale="1" translate-y="0" type-name="wall"></wg-type>
+            <wg-type color="#BFA85C" roles="border" scale="3" translate-y="-4" type-name="door"></wg-type>
+            <wg-type scale="1" translate-y="0" type-name="table" color="#5f47d3"></wg-type>
+            <wg-type color="#70C0CF" roles="border" scale="3" translate-y="0" type-name="window"></wg-type>
+            <wg-type color="#9894eb" scale="3" translate-y="0" type-name="chair"></wg-type>
+            <wg-type color="#8c7f6f" scale="3" translate-y="1" type-name="shelves"></wg-type>
+            <wg-type color="#66553f" scale="3" translate-y="2" type-name="stairs"></wg-type>
+            <wg-type roles="container" scale="1" translate-y="0" type-name="outdoors"></wg-type>
+            <wg-type roles="room" scale="1" translate-y="0" type-name="room"></wg-type>
+            <wg-type scale="1" translate-y="0" type-name="player"></wg-type>
         </metadata>
         <rect width="10px" height="10px" x="40px" y="20px" fill="#7B7982" data-wg-x="40" data-wg-y="20" data-wg-type="wall"></rect>
         <rect width="10px" height="10px" x="50px" y="20px" fill="#7B7982" data-wg-x="50" data-wg-y="20" data-wg-type="wall"></rect>

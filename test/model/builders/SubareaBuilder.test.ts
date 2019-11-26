@@ -22,13 +22,13 @@ describe('SubareaParser', () => {
 
             definitions \`
 
-            - = room
-            I = window BORDER
-            D = door BORDER
-            W = wall BORDER
+            - = room ROLES [CONTAINER]
+            I = window ROLES [BORDER]
+            D = door ROLES [BORDER]
+            W = wall ROLES [BORDER]
             T = table
             E = bed
-            = = _subarea
+            = = _subarea ROLES [CONTAINER]
 
             \`
         `;

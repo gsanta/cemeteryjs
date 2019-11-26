@@ -42,9 +42,9 @@ it ('Parse room with empty area around the whole world map', () => {
         \`
 
         definitions \`
-            W = wall
-            - = room
-            * = outdoors
+            W = wall ROLES [BORDER]
+            - = room ROLES [CONTAINER]
+            * = outdoors ROLES [CONTAINER]
         \`
     `;
 

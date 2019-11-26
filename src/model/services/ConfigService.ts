@@ -33,7 +33,12 @@ export class ConfigService {
 
     update(worldMap: string): ConfigService {
         const {worldItemTypes, globalConfig} = this.configReader.read(worldMap);
-        this.meshDescriptors = worldItemTypes
+        this.meshDescriptors = worldItemTypes;
+        this.meshDescriptors.push({
+            typeName: 'root',
+            shape: 'rectangle',
+            roles: [WorldItemRole.CONTAINER],
+        });
         this.globalConfig = globalConfig;
         this.meshDescriptorMap = new Map();
         this.meshDescriptors.forEach(desc => this.meshDescriptorMap.set(desc.typeName, desc));
@@ -41,7 +46,9 @@ export class ConfigService {
         this.meshDescriptors.forEach(desc => this.meshDescriptorMapByChar.set(desc.char, desc));
         this.emptyType = 'empty';
         this.borders = this.meshDescriptors.filter(descriptor => descriptor.roles.includes(WorldItemRole.BORDER));
-        this.furnitures = this.meshDescriptors.filter(descriptor => descriptor.roles.includes(WorldItemRole.CHILD));
+        this.furnitures = this.meshDescriptors.filter(descriptor => {
+            return !descriptor.roles.includes(WorldItemRole.CONTAINER) && !descriptor.roles.includes(WorldItemRole.BORDER)
+        });
 
         return this;
     }

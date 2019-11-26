@@ -21,14 +21,14 @@ map `
 
 definitions `
 
-W = wall BORDER
+W = wall ROLES [BORDER]
 - = empty
 X = player
 D = disc
 C = cupboard
-I = window BORDER
+I = window
 T = table
-B = bathtub
+B = bathtub 
 S = washbasin
 E = bed
 H = chair

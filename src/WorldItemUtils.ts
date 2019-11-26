@@ -42,20 +42,20 @@ export class WorldItemUtils {
             definitions \`
 
             W = wall BORDER
-            - = room
+            - = room ROLES [CONTAINER]
             X = player
             D = disc
             C = cupboard
-            I = window BORDER
+            I = window ROLES [BORDER]
             T = table
             B = bathtub
             S = washbasin
             E = bed
             H = chair
-            D = door BORDER
+            D = door ROLES [BORDER]
             L = double_bed
             O = shelves
-            = = subarea
+            = = subarea ROLES [CONTAINER]
 
             \`
         `;

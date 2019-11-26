@@ -15,11 +15,11 @@ function createMap(worldMap: string) {
 
         definitions \`
 
-        - = room
-        W = wall BORDER
-        I = window BORDER
+        - = room ROLES [CONTAINER]
+        W = wall ROLES [BORDER]
+        I = window ROLES [BORDER]
         T = table
-        D = door BORDER
+        D = door ROLES [BORDER]
         C = cupboard
         B = bed
 

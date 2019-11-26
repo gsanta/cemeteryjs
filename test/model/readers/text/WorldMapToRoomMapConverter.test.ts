@@ -20,10 +20,10 @@ describe('WorldMapToRoomMapConverter', () => {
                 definitions \`
 
                 - = room
-                I = window BORDER
-                D = door BORDER
-                W = wall BORDER
-                * = outdoors
+                I = window ROLES [BORDER]
+                D = door ROLES [BORDER]
+                W = wall ROLES [BORDER]
+                * = outdoors ROLES [CONTAINER]
 
                 \`
             `;
@@ -42,10 +42,10 @@ describe('WorldMapToRoomMapConverter', () => {
                 definitions \`
 
                 - = room
-                I = window BORDER
-                D = door BORDER
-                W = wall BORDER
-                * = outdoors
+                I = window ROLES [BORDER]
+                D = door ROLES [BORDER]
+                W = wall ROLES [BORDER]
+                * = outdoors ROLES [CONTAINER]
 
                 \`
             `;

@@ -18,10 +18,10 @@ describe('MockWorldGenerator', () => {
 
             definitions \`
 
-            - = room
-            W = wall BORDER
-            I = window BORDER
-            D = door BORDER
+            - = room ROLES [CONTAINER]5
+            W = wall ROLES [BORDER]
+            I = window ROLES [BORDER]
+            D = door ROLES [BORDER]
 
             \`
         `;

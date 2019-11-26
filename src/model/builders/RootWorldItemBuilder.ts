@@ -2,17 +2,17 @@ import { Polygon } from "@nightshifts.inc/geometry";
 import { WorldItem } from "../../WorldItem";
 import { WorldMapGraph } from "../../WorldMapGraph";
 import { WorldMapReader } from '../readers/WorldMapReader';
-import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 import { WorldItemBuilder } from './WorldItemBuilder';
+import { ServiceFacade } from '../services/ServiceFacade';
 
 
 export class RootWorldItemBuilder implements WorldItemBuilder {
     private worldMapReader: WorldMapReader;
-    private worldItemInfoFactory: WorldItemFactoryService;
+    private services: ServiceFacade<any, any, any>;
 
-    constructor(worldItemInfoFactory: WorldItemFactoryService, worldMapReader: WorldMapReader) {
-        this.worldItemInfoFactory = worldItemInfoFactory;
+    constructor(services: ServiceFacade<any, any, any>, worldMapReader: WorldMapReader) {
         this.worldMapReader = worldMapReader;
+        this.services = services;
     }
     
     parse(worldMap: string): WorldItem[] {
@@ -29,7 +29,7 @@ export class RootWorldItemBuilder implements WorldItemBuilder {
     }
 
     public createRootWorldItem(graph: WorldMapGraph): WorldItem {
-        return this.worldItemInfoFactory.create({
+        return this.services.worldItemFactoryService.create({
             type: 'F',
             dimensions: Polygon.createRectangle(
                 0,
@@ -39,6 +39,6 @@ export class RootWorldItemBuilder implements WorldItemBuilder {
             ),
             name: 'root',
             isBorder: false
-        });
+        }, this.services.configService.getMeshDescriptorByType('root'));
     }
 }

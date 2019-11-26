@@ -67,12 +67,12 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 definitions `
 
-W = wall BORDER
-- = room
+W = wall ROLES [BORDER]
+- = room ROLES [CONTAINER]
 X = player
-D = door BORDER
+D = door ROLES [BORDER]
 C = cupboard
-I = window BORDER
+I = window ROLES [BORDER]
 T = table
 B = bathtub
 S = washbasin

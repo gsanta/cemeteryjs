@@ -28,14 +28,12 @@ describe('BuildHierarchyModifier', () => {
             );
 
             const room1 = root.children.find(child => child.id === 'room-1');
-            expect(room1.children.length).toEqual(2);
+            expect(room1.children.length).toEqual(1);
             expect(room1.children[0].id).toEqual('bed-1');
-            expect(room1.children[1].id).toEqual('empty-1');
 
             const room2 = root.children.find(child => child.id === 'room-2');
-            expect(room2.children.length).toEqual(2);
+            expect(room2.children.length).toEqual(1);
             expect(room2.children[0].id).toEqual('table-1');
-            expect(room2.children[1].id).toEqual('empty-2');
         });
     });
 

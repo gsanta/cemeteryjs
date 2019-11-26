@@ -18,11 +18,11 @@ describe('WorldMapToSubareaMapConverter', () => {
 
             definitions \`
 
-            - = room
+            - = room ROLES [CONTAINER]
             I = window ROLES [BORDER]
             D = door ROLES [BORDER]
             W = wall ROLES [BORDER]
-            = = _subarea
+            = = _subarea ROLES [CONTAINER]
 
             \`
         `;
@@ -41,11 +41,11 @@ describe('WorldMapToSubareaMapConverter', () => {
 
             definitions \`
 
-            - = room
+            - = room ROLES [CONTAINER]
             I = window ROLES [BORDER]
             D = door ROLES [BORDER]
             W = wall ROLES [BORDER]
-            = = _subarea
+            = = _subarea ROLES [CONTAINER]
 
             \`
         `;
@@ -54,11 +54,11 @@ describe('WorldMapToSubareaMapConverter', () => {
             `
                 definitions \`
 
-                - = room
+                - = room ROLES [CONTAINER]
                 I = window ROLES [BORDER]
                 D = door ROLES [BORDER]
                 W = wall ROLES [BORDER]
-                = = _subarea
+                = = _subarea ROLES [CONTAINER]
 
                 \`
             `
@@ -84,13 +84,13 @@ describe('WorldMapToSubareaMapConverter', () => {
 
             definitions \`
 
-            - = room
+            - = room ROLES [CONTAINER]
             I = window ROLES [BORDER]
             D = door ROLES [BORDER]
             W = wall ROLES [BORDER]
             T = table
             H = chair
-            = = _subarea
+            = = _subarea ROLES [CONTAINER]
 
             \`
         `;
@@ -109,13 +109,13 @@ describe('WorldMapToSubareaMapConverter', () => {
 
             definitions \`
 
-            - = room
+            - = room ROLES [CONTAINER]
             I = window ROLES [BORDER]
             D = door ROLES [BORDER]
             W = wall ROLES [BORDER]
             T = table
             H = chair
-            = = _subarea
+            = = _subarea ROLES [CONTAINER]
 
             \`
         `;
@@ -124,13 +124,13 @@ describe('WorldMapToSubareaMapConverter', () => {
             `
                 definitions \`
 
-                - = room
+                - = room ROLES [CONTAINER]
                 I = window ROLES [BORDER]
                 D = door ROLES [BORDER]
                 W = wall ROLES [BORDER]
                 T = table
                 H = chair
-                = = _subarea
+                = = _subarea ROLES [CONTAINER]
 
                 \`
             `

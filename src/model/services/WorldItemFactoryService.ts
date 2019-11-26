@@ -1,6 +1,7 @@
 import { Polygon, Point, Shape } from '@nightshifts.inc/geometry';
 import { WorldItem } from '../../WorldItem';
 import { ServiceFacade } from './ServiceFacade';
+import { WorldItemDefinition } from '../../WorldItemDefinition';
 
 export interface WorldItemConfig {
     type?: string;
@@ -38,13 +39,14 @@ export class WorldItemFactoryService {
         return worldItem;
     }
 
-    public create(worldItemConfig: WorldItemConfig): WorldItem {
+    public create(worldItemConfig: WorldItemConfig, worldItemDefinition: WorldItemDefinition): WorldItem {
         worldItemConfig = {...defaultWorldItemConfig, ...worldItemConfig};
 
         const id = this.getNextId(worldItemConfig.name);
         const worldItem = new WorldItem(id, worldItemConfig.type, worldItemConfig.dimensions, worldItemConfig.name, worldItemConfig.isBorder);
         worldItem.worldMapPositions = worldItemConfig.worldMapPositions;
         worldItem.rotation = worldItemConfig.rotation;
+        worldItem.definition = worldItemDefinition;
         return worldItem;
     }
 
@@ -64,6 +66,7 @@ export class WorldItemFactoryService {
         clone.isBorder = worldItemInfo.isBorder;
         clone.thickness = worldItemInfo.thickness;
         clone.parent = worldItemInfo.parent;
+        clone.definition = worldItemInfo.definition;
 
         return clone;
     }

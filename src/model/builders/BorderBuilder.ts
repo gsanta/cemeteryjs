@@ -194,7 +194,7 @@ export class BorderBuilder implements WorldItemBuilder {
             isBorder: true,
             rotation: rotation.getAngle(),
             worldMapPositions,
-        });
+        }, this.services.configService.getMeshDescriptorByType(border.type));
 
         return worldItem;
     }

@@ -19,7 +19,7 @@ describe('MatrixGraph', () => {
                 definitions \`
 
                 # = empty
-                W = wall BORDER
+                W = wall ROLES [BORDER]
 
                 \`
             `

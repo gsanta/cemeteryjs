@@ -58,7 +58,7 @@ export class FurnitureBuilder implements WorldItemBuilder {
             dimensions: Polygon.createRectangle(x, y, width, height),
             name: type,
             isBorder: false
-        });
+        }, this.services.configService.getMeshDescriptorByType(type));
     }
 
     private createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph: WorldMapGraph): WorldItem[] {
@@ -77,7 +77,7 @@ export class FurnitureBuilder implements WorldItemBuilder {
                     dimensions: rect,
                     name: type,
                     isBorder: false
-                });
+                }, this.services.configService.getMeshDescriptorByType(type));
             });
 
         const horizontalGameObjects = componentGraphMinusVerticalSubComponents
@@ -93,7 +93,7 @@ export class FurnitureBuilder implements WorldItemBuilder {
                     dimensions: rect,
                     name: type,
                     isBorder: false
-                });
+                }, this.services.configService.getMeshDescriptorByType(type));
             });
 
         return [...verticalGameObjects, ...horizontalGameObjects];

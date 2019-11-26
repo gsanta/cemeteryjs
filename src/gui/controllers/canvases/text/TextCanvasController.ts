@@ -30,13 +30,13 @@ WWWWWWWW
 
 definitions \`
 
-W = wall BORDER
-D = door BORDER
-I = window BORDER
-- = room
+W = wall ROLES [BORDER]
+D = door ROLES [BORDER]
+I = window ROLES [BORDER]
+- = room ROLES [CONTAINER]
 E = bed MOD assets/models/bed.babylon
 T = table DIM 2 1 MOD assets/models/table.babylon
-= = _subarea
+= = _subarea ROLES [CONTAINER]
 H = chair
 
 \`

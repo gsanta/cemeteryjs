@@ -18,7 +18,7 @@ it ('Add the correct borders to a single room', () => {
         definitions \`
 
         - = room
-        W = wall BORDER
+        W = wall ROLES [BORDER]
 
         \`
     `;
@@ -54,7 +54,7 @@ it ('Add the correct borders to rooms with multiple roomw', () => {
         definitions \`
 
         - = room
-        W = wall BORDER
+        W = wall ROLES [BORDER]
 
         \`
     `;

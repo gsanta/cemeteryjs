@@ -18,7 +18,7 @@ it ('Create separate items for every vertical/horizontal slices of walls', () =>
         definitions \`
 
         - = room
-        W = wall BORDER
+        W = wall ROLES [BORDER]
 
         \`
     `;
@@ -50,9 +50,9 @@ it ('Create separate items for different types (represented by different charact
         definitions \`
 
         - = room
-        W = wall BORDER
-        D = door BORDER
-        I = window BORDER
+        W = wall ROLES [BORDER]
+        D = door ROLES [BORDER]
+        I = window ROLES [BORDER]
 
         \`
     `;
@@ -90,7 +90,7 @@ it ('Create separate items for every vertical/horizontal slices of walls', () =>
         definitions \`
 
         - = room
-        W = wall BORDER
+        W = wall ROLES [BORDER]
 
         \`
     `;

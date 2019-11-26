@@ -11,8 +11,8 @@ WWWWWWWWWW
 definitions `
 
 # = empty
-I = window BORDER
-W = wall BORDER
+I = window ROLES [BORDER]
+W = wall ROLES [BORDER]
 T = table
 `
 

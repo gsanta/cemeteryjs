@@ -23,11 +23,11 @@ map \`
 
 definitions \`
 
-W = wall BORDER MOD wall.babylon SHAPE rect SCALE 3 TRANSLATE_Y 2 MAT [wall.jpg]
-D = door BORDER MOD models/door/door.babylon SCALE 3 TRANSLATE_Y 2 MAT [materials/door/door.jpg]
-I = window BORDER
-- = room
-* = outdoors
+W = wall ROLES [BORDER] MOD wall.babylon SHAPE rect SCALE 3 TRANSLATE_Y 2 MAT [wall.jpg]
+D = door ROLES [BORDER] MOD models/door/door.babylon SCALE 3 TRANSLATE_Y 2 MAT [materials/door/door.jpg]
+I = window ROLES [BORDER]
+- = room ROLES [CONTAINER]
+* = outdoors ROLES [CONTAINER]
 T = table MOD table.babylon SHAPE rect SCALE 3 TRANSLATE_Y 2 MAT [table.jpg]
 
 \`

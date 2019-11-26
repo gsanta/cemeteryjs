@@ -63,11 +63,11 @@ export class ImporterService<M, S, T> {
             worldMap,
             new CombinedWorldItemBuilder(
                 [
-                    // new FurnitureBuilder(this.services, this.worldMapReader),
-                    // new BorderBuilder(this.services, this.worldMapReader),
-                    // new RoomBuilder(this.services, this.worldMapReader, this.roomInputConverter),
-                    new RootWorldItemBuilder(this.services.worldItemFactoryService, this.worldMapReader),
-                    // new SubareaBuilder(this.services, this.worldMapReader, this.subareaInputConverter),
+                    new FurnitureBuilder(this.services, this.worldMapReader),
+                    new BorderBuilder(this.services, this.worldMapReader),
+                    new RoomBuilder(this.services, this.worldMapReader, this.roomInputConverter),
+                    new RootWorldItemBuilder(this.services, this.worldMapReader),
+                    new SubareaBuilder(this.services, this.worldMapReader, this.subareaInputConverter),
                     new PolygonBuilder(this.services, this.worldMapReader)
                 ]
             )

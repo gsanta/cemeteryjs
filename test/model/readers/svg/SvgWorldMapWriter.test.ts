@@ -8,16 +8,16 @@ it ('Write an svg from the internal worldmap representation', () => {
     const inputWorldMap = `
     <svg data-wg-pixel-size="10" data-wg-width="1500" data-wg-height="1000">
         <metadata>
-            <wg-type color="#7B7982" is-border="true" scale="1" translate-y="0" type-name="wall"></wg-type>
-            <wg-type color="#BFA85C" is-border="true" scale="3" translate-y="-4" type-name="door"></wg-type>
+            <wg-type color="#7B7982" roles="border" is-border="true" scale="1" translate-y="0" type-name="wall"></wg-type>
+            <wg-type color="#BFA85C" roles="border" scale="3" translate-y="-4" type-name="door"></wg-type>
             <wg-type is-border="false" scale="1" translate-y="0" type-name="table" color="#c5541b"></wg-type>
-            <wg-type color="#70C0CF" is-border="true" scale="3" translate-y="0" type-name="window"></wg-type>
-            <wg-type color="#9894eb" is-border="false" scale="3" translate-y="0" type-name="chair"></wg-type>
-            <wg-type color="#8c7f6f" is-border="false" scale="3" translate-y="1" type-name="shelves"></wg-type>
-            <wg-type color="#66553f" is-border="false" scale="3" translate-y="2" type-name="stairs"></wg-type>
-            <wg-type is-border="false" scale="1" translate-y="0" type-name="outdoors"></wg-type>
-            <wg-type is-border="false" scale="1" translate-y="0" type-name="room"></wg-type>
-            <wg-type is-border="false" scale="1" translate-y="0" type-name="player"></wg-type>
+            <wg-type color="#70C0CF" roles="border" scale="3" translate-y="0" type-name="window"></wg-type>
+            <wg-type color="#9894eb" scale="3" translate-y="0" type-name="chair"></wg-type>
+            <wg-type color="#8c7f6f" scale="3" translate-y="1" type-name="shelves"></wg-type>
+            <wg-type color="#66553f" scale="3" translate-y="2" type-name="stairs"></wg-type>
+            <wg-type scale="1" translate-y="0" type-name="outdoors"></wg-type>
+            <wg-type scale="1" roles="container" translate-y="0" type-name="room"></wg-type>
+            <wg-type scale="1" translate-y="0" type-name="player"></wg-type>
         </metadata>
         <rect width="10px" height="10px" x="50px" y="30px" fill="#7B7982" data-wg-x="50" data-wg-y="30" data-wg-type="wall"></rect>
         <rect width="10px" height="10px" x="60px" y="30px" fill="#7B7982" data-wg-x="60" data-wg-y="30" data-wg-type="wall"></rect>
@@ -97,7 +97,7 @@ it ('Write an svg from the internal worldmap representation', () => {
     const wallType = rawJson.svg.metadata["wg-type"].find(type => type._attributes['type-name'] === 'wall');
     expect(wallType._attributes).toEqual({
         color: "#7B7982",
-        "is-border": "true",
+        roles: "border",
         materials: "",
         scale: "1",
         shape: "undefined",
@@ -109,7 +109,6 @@ it ('Write an svg from the internal worldmap representation', () => {
 
     expect(tableType._attributes).toEqual({
         color: "#c5541b",
-        "is-border": "false",
         materials: "",
         scale: "1",
         shape: "undefined",

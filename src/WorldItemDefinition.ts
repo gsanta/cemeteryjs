@@ -1,7 +1,7 @@
 
 export enum WorldItemRole {
     BORDER = 'border',
-    CHILD = 'child'
+    CONTAINER = 'container'
 }
 
 export namespace WorldItemRole {
@@ -10,8 +10,8 @@ export namespace WorldItemRole {
         switch(str) {
             case 'border':
                 return WorldItemRole.BORDER;
-            case 'child':
-                return WorldItemRole.CHILD;
+            case 'container':
+                return WorldItemRole.CONTAINER;
         }
     }
 }
