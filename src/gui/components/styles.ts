@@ -16,7 +16,7 @@ export const colors = {
     },
 
     getCanvasBackgroundLight: (canvas: ICanvasController) => {
-        return '#EDD18A';
+        return '#F2DDA7';
     } 
 }
 

@@ -4,12 +4,11 @@ import './App.scss';
 import { createCanvas } from './canvases/canvasFactory';
 import { WebglCanvasComponent } from './canvases/webgl/WebglCanvasComponent';
 import { AppContext, AppContextType } from './Context';
-import { AboutDialog } from './dialogs/AboutDialog';
-import { HowToIntegrateDialog } from './dialogs/HowToIntegrateDialog';
-import { IntegrationCodeDialog } from './dialogs/IntegrationCodeDialog';
+import { createDialog } from './dialogs/dialogFactory';
 import { Header } from './Header';
 import './misc/SplitPane.css';
 import { VerticalSplitComponent } from './misc/VerticalSplitComponent';
+import { AboutDialog } from './dialogs/AboutDialog';
 
 export interface AppState {
     isDialogOpen: boolean;
@@ -43,7 +42,7 @@ export class App extends React.Component<{}, AppState> {
                 <Header
                     openIntegrationCodeDialog={() => this.setState({isDialogOpen: true})}
                     openHowToIntegrateDialog={() => this.setState({isHowToIntegrateDialogOpen: true})}
-                    openAboutDialog={() => this.setState({isAboutDialogOpen: true})}
+                    openAboutDialog={() => this.context.controllers.settingsController.setActiveDialog(AboutDialog.dialogName)}
                     activeCanvasToolbar={canvasToolbar}
                 />
                 <div className="main-content">
@@ -53,7 +52,7 @@ export class App extends React.Component<{}, AppState> {
                     </VerticalSplitComponent>
                 </div>
 
-                <AboutDialog isOpen={this.state.isAboutDialogOpen} onClose={() => this.setState({isAboutDialogOpen: false})}/>
+                {createDialog(this.context.controllers)}
             </div>
         );
     }

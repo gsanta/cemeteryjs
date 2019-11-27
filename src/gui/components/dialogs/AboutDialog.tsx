@@ -7,20 +7,23 @@ export interface AboutDialogProps {
     onClose(): void;
 }
 
-export function AboutDialog(props: AboutDialogProps) {
+export class AboutDialog extends React.Component<AboutDialogProps> {
+    static dialogName = 'About';
 
-    return props.isOpen ? (
-        <div className="dialog-overlay">
-            <div className="dialog">
-                <div className="dialog-title">
-                    <div>About</div>
-                    <CloseIconComponent onClick={props.onClose}/>
-                </div>
-                <div className="dialog-body">
-                    version: 0.2.57 <br/>
-                    contribute:  <a href="https://github.com/gsanta/nightshifts-inc-world-generator" target="_blank">https://github.com/gsanta/nightshifts-inc-world-generator</a><br/>
+    render() {
+        return this.props.isOpen ? (
+            <div className="dialog-overlay">
+                <div className="dialog">
+                    <div className="dialog-title">
+                        <div>About</div>
+                        <CloseIconComponent onClick={this.props.onClose}/>
+                    </div>
+                    <div className="dialog-body">
+                        version: 0.2.57 <br/>
+                        contribute:  <a href="https://github.com/gsanta/nightshifts-inc-world-generator" target="_blank">https://github.com/gsanta/nightshifts-inc-world-generator</a><br/>
+                    </div>
                 </div>
             </div>
-        </div>
-    ) : null;
+        ) : null;
+    }
 }

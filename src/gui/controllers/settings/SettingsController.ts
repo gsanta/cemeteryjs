@@ -1,7 +1,6 @@
 import { IFormController } from '../IFormController';
 import { ControllerFacade } from '../ControllerFacade';
 import { IEditableCanvas } from '../canvases/IEditableCanvas';
-import { Events } from '../events/Events';
 import { SvgCanvasController } from '../canvases/svg/SvgCanvasController';
 
 export enum SettingsProperty {
@@ -20,6 +19,11 @@ export class SettingsController extends IFormController<SettingsProperty> {
         super();
         this.controllers = controllers;
         this.controllers.settingsModel.activeEditor = <IEditableCanvas> this.controllers.getCanvasControllerById(SvgCanvasController.id);
+    }
+
+    setActiveDialog(dialogName: string) {
+        this.controllers.settingsModel.activeDialog = dialogName;
+        this.controllers.updateUIController.updateUI();       
     }
 
     focusProp(propType: SettingsProperty) {

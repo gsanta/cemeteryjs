@@ -4,6 +4,9 @@ import { AppContext, AppContextType } from '../../Context';
 import { BrushIconComponent } from '../../icons/BrushIconComponent';
 import { DeleteIconComponent } from '../../icons/DeleteIconComponent';
 import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvasController';
+import { ButtonComponent } from '../../forms/ButtonComponent';
+import { ToggleButtonComponent } from '../../forms/ToggleButtonComponent';
+import { WorldItemDefinitionDialogComponent } from '../../dialogs/WorldItemDefinitionDialog';
 
 export class SvgCanvasToolbar extends React.Component<{canvasController: SvgCanvasController}> {
     static contextType = AppContext;
@@ -14,6 +17,13 @@ export class SvgCanvasToolbar extends React.Component<{canvasController: SvgCanv
             <div>
                 <BrushIconComponent isActive={this.isToolActive(ToolType.RECTANGLE)} onClick={() => this.activateTool(ToolType.RECTANGLE)}/>
                 <DeleteIconComponent isActive={this.isToolActive(ToolType.DELETE)} onClick={() => this.activateTool(ToolType.DELETE)}/>
+                <ToggleButtonComponent
+                    isActive={this.context.controllers.settingsModel.activeDialog === WorldItemDefinitionDialogComponent.dialogName}
+                    onChange={() => this.context.controllers.settingsController.setActiveDialog(WorldItemDefinitionDialogComponent.dialogName)}
+                    onFocus={() => null}
+                    onBlur={() => null}
+                    text="Manage types"
+                />
             </div>
         );
     }
