@@ -8,7 +8,7 @@ import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvas
 import { CanvasComponent } from '../CanvasComponent';
 
 const EditorComponentStyled = styled.div`
-    height: calc(100% - 35px);
+    height: 100%;
     overflow: auto;
 `;
 

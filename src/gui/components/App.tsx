@@ -36,22 +36,23 @@ export class App extends React.Component<{}, AppState> {
     }
 
     render() {
+        const [canvasToolbar, canvas] = createCanvas(this.context.controllers);
+
         return (
             <div className="style-nightshifs">
                 <Header
                     openIntegrationCodeDialog={() => this.setState({isDialogOpen: true})}
                     openHowToIntegrateDialog={() => this.setState({isHowToIntegrateDialogOpen: true})}
                     openAboutDialog={() => this.setState({isAboutDialogOpen: true})}
+                    activeCanvasToolbar={canvasToolbar}
                 />
                 <div className="main-content">
                     <VerticalSplitComponent onChange={() => this.resize()}>
-                        {createCanvas(this.context.controllers)}
+                        {canvas}
                         <WebglCanvasComponent canvasController={this.context.controllers.webglCanvasController}/>
                     </VerticalSplitComponent>
                 </div>
 
-                <IntegrationCodeDialog isOpen={this.state.isDialogOpen} onClose={() => this.setState({isDialogOpen: false})}/>
-                <HowToIntegrateDialog isOpen={this.state.isHowToIntegrateDialogOpen} onClose={() => this.setState({isHowToIntegrateDialogOpen: false})}/>
                 <AboutDialog isOpen={this.state.isAboutDialogOpen} onClose={() => this.setState({isAboutDialogOpen: false})}/>
             </div>
         );
