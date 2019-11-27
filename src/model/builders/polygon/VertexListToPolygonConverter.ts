@@ -42,27 +42,29 @@ export class VertexListToPolygonConverter {
                 points[i] = new Point(x, y);
 
                 if (vertexes[prevIndex(i)].isConvex) {
-                    this.setConcaveCoordinateBasedOnConvexNeighbour(i, prevIndex(i), vertexes, points);
+                    this.setConcaveCoordinateBasedOnPrevNeighbour(i, prevIndex(i), vertexes, points);
                 }
 
                 if (vertexes[nextIndex(i)].isConvex) {
-                    this.setConcaveCoordinateBasedOnConvexNeighbour(i, nextIndex(i), vertexes, points);
+                    this.setConcaveCoordinateBasedOnNextNeighbour(i, nextIndex(i), vertexes, points);
                 }
             }
         }
     }
 
-    private setConcaveCoordinateBasedOnConvexNeighbour(index: number, convexNeighbourIndex: number, vertexes: PolygonVertex[], points: Point[]) {
-        const isNextIndex = () => convexNeighbourIndex > index && !(index === 0 && convexNeighbourIndex === vertexes.length - 1);
-        
-        let direction: Direction;
+    private setConcaveCoordinateBasedOnPrevNeighbour(index: number, convexNeighbourIndex: number, vertexes: PolygonVertex[], points: Point[]) {
+        let direction = vertexes[index].direction;
 
-        if (isNextIndex()) {
-            direction = vertexes[convexNeighbourIndex].direction;
-        } else {
-            direction = vertexes[index].direction;
-        }
+        this.setConcaveCoordinateBasedOnConvexNeighbour(index, convexNeighbourIndex, direction, points);
+    }
 
+    private setConcaveCoordinateBasedOnNextNeighbour(index: number, convexNeighbourIndex: number, vertexes: PolygonVertex[], points: Point[]) {
+        let direction = vertexes[convexNeighbourIndex].direction;
+
+        this.setConcaveCoordinateBasedOnConvexNeighbour(index, convexNeighbourIndex, direction, points);
+    }
+
+    private setConcaveCoordinateBasedOnConvexNeighbour(index: number, convexNeighbourIndex: number, direction: Direction, points: Point[]) {
         switch(direction) {
             case Direction.UP:
             case Direction.DOWN:

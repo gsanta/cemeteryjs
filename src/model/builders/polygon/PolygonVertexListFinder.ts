@@ -67,10 +67,15 @@ export class PolygonVertexListFinder {
             }
 
             if (currentPolygonVertex.nodeIndex === referenceVertex.nodeIndex) {
-                break;
-            }
+                if (currentPolygonVertex.direction !== referenceVertex.direction) {
+                    vertexes.push(currentPolygonVertex);
+                } else {
+                    break;
+                }
 
-            vertexes.push(currentPolygonVertex);
+            } else {
+                vertexes.push(currentPolygonVertex);
+            }
         }
 
         return vertexes;
@@ -105,7 +110,7 @@ export class PolygonVertexListFinder {
             currentNode = this.getNextNodeAtDirection(currentNode, direction, graph);
 
             const nodeType = this.getNodeType(currentNode, direction, graph);
-            
+
 
             if (nodeType === NodeType.EDGE) { continue; }
 
@@ -144,53 +149,58 @@ export class PolygonVertexListFinder {
     }
 
     private backtrackUntilNewDirectionIsFound(startVertex: PolygonVertex, graph: WorldMapGraph, vertices: PolygonVertex[]): PolygonVertex {
-        let newDirection: Direction = undefined;
+        return {
+            nodeIndex: startVertex.nodeIndex,
+            isConvex: startVertex.isConvex,
+            direction: this.getBacktrackDirection(startVertex.direction)
+        };
+    }
 
-        let currentNodeIndex = startVertex.nodeIndex;
-        let direction: Direction;
-        let existingVertexForCurrentNode = startVertex;
-        doWhile(
-            () => {
-                existingVertexForCurrentNode = vertices.find(vertex => vertex.nodeIndex === currentNodeIndex);
-                if (existingVertexForCurrentNode) {
-                    direction = Direction.getOppositeDirection(existingVertexForCurrentNode.direction);
-                    vertices.push({
-                        nodeIndex: existingVertexForCurrentNode.nodeIndex,
-                        isConvex: existingVertexForCurrentNode.isConvex,
-                        direction
-                    });
-                }
+    private getBacktrackDirection(currentDirection: Direction): Direction {
 
-                currentNodeIndex = this.getNextNodeAtDirection(currentNodeIndex, direction, graph);
-                newDirection = this.chooseNewDirection(currentNodeIndex, direction, graph);
-            },
-            () => newDirection === undefined && currentNodeIndex !== vertices[0].nodeIndex
-        )
-
-        vertices.push({
-            nodeIndex: currentNodeIndex,
-            isConvex: existingVertexForCurrentNode.isConvex,
-            direction
-        });
-
-        return vertices[vertices.length - 1];
+        switch (currentDirection) {
+            case Direction.RIGHT:
+                return Direction.DOWN;
+            case Direction.LEFT:
+                return Direction.UP;
+            case Direction.UP:
+                return Direction.RIGHT;
+            case Direction.DOWN:
+                return Direction.LEFT;
+        }
     }
 
     private getNodeType(node: number, direction: Direction, graph: WorldMapGraph): NodeType {
-        if (this.getNextNodeAtDirection(node, direction, graph) === null) {
-            return NodeType.CONVEX_VERTEX;
+        if (this.isEdge(node, direction, graph)) {
+            return NodeType.EDGE;
         }
 
         switch (direction) {
             case Direction.UP:
-                return this.areDirectionsFree([Direction.DOWN, Direction.LEFT, Direction.RIGHT], node, graph) ? NodeType.CONCAVE_VERTEX : NodeType.EDGE;
+                return this.getNextNodeAtDirection(node, Direction.LEFT, graph) !== null ? NodeType.CONCAVE_VERTEX : NodeType.CONVEX_VERTEX;
             case Direction.DOWN:
-                return this.areDirectionsFree([Direction.UP, Direction.LEFT, Direction.RIGHT], node, graph) ? NodeType.CONCAVE_VERTEX : NodeType.EDGE;
+                return this.getNextNodeAtDirection(node, Direction.RIGHT, graph) !== null ? NodeType.CONCAVE_VERTEX : NodeType.CONVEX_VERTEX;
             case Direction.LEFT:
-                return this.areDirectionsFree([Direction.UP, Direction.DOWN, Direction.RIGHT], node, graph) ? NodeType.CONCAVE_VERTEX : NodeType.EDGE;
+                return this.getNextNodeAtDirection(node, Direction.DOWN, graph) !== null ? NodeType.CONCAVE_VERTEX : NodeType.CONVEX_VERTEX;
             case Direction.RIGHT:
-                return this.areDirectionsFree([Direction.UP, Direction.DOWN, Direction.LEFT], node, graph) ? NodeType.CONCAVE_VERTEX : NodeType.EDGE;
+                return this.getNextNodeAtDirection(node, Direction.UP, graph) !== null ? NodeType.CONCAVE_VERTEX : NodeType.CONVEX_VERTEX;
+        }
+    }
 
+    private isEdge(node: number, direction: Direction, graph: WorldMapGraph) {
+        const hasNodeAtDirection = this.getNextNodeAtDirection(node, direction, graph) !== null;
+
+        if (!hasNodeAtDirection) { return false; }
+
+        switch (direction) {
+            case Direction.LEFT:
+                return this.getNextNodeAtDirection(node, Direction.DOWN, graph) === null;
+            case Direction.RIGHT:
+                return this.getNextNodeAtDirection(node, Direction.UP, graph) === null;
+            case Direction.UP:
+                return this.getNextNodeAtDirection(node, Direction.LEFT, graph) === null;
+            case Direction.DOWN:
+                return this.getNextNodeAtDirection(node, Direction.RIGHT, graph) === null;
         }
     }
 
@@ -205,50 +215,34 @@ export class PolygonVertexListFinder {
     }
 
     private chooseNextDirectionAfterGoingLeft(currentVertex: number, graph: WorldMapGraph) {
-        if (graph.getLeftNeighbour(currentVertex) !== null) {
-            if (graph.getBottomNeighbour(currentVertex) !== null) {
-                return Direction.DOWN;
-            }
-        } else {
-            if (graph.getTopNeighbour(currentVertex) !== null) {
-                return Direction.UP;
-            }
+        if (graph.getBottomNeighbour(currentVertex) !== null) {
+            return Direction.DOWN;
+        } else if (graph.getTopNeighbour(currentVertex) !== null) {
+            return Direction.UP;
         }
     }
 
     private chooseNextDirectionAfterGoingRight(currentVertex: number, graph: WorldMapGraph) {
-        if (graph.getRightNeighbour(currentVertex) !== null) {
-            if (graph.getTopNeighbour(currentVertex) !== null) {
-                return Direction.UP;
-            }
-        } else {
-            if (graph.getBottomNeighbour(currentVertex) !== null) {
-                return Direction.DOWN;
-            }
+        if (graph.getTopNeighbour(currentVertex) !== null) {
+            return Direction.UP;
+        } else if (graph.getBottomNeighbour(currentVertex) !== null) {
+            return Direction.DOWN;
         }
     }
 
     private chooseNextDirectionAfterGoingUp(currentVertex: number, graph: WorldMapGraph) {
-        if (graph.getTopNeighbour(currentVertex) !== null) {
-            if (graph.getLeftNeighbour(currentVertex) !== null) {
-                return Direction.LEFT;
-            }
-        } else {
-            if (graph.getRightNeighbour(currentVertex) !== null) {
-                return Direction.RIGHT;
-            }
+        if (graph.getLeftNeighbour(currentVertex) !== null) {
+            return Direction.LEFT;
+        } else if (graph.getRightNeighbour(currentVertex) !== null) {
+            return Direction.RIGHT;
         }
     }
 
     private chooseNextDirectionAfterGoingDown(currentVertex: number, graph: WorldMapGraph) {
-        if (graph.getBottomNeighbour(currentVertex) !== null) {
-            if (graph.getRightNeighbour(currentVertex) !== null) {
-                return Direction.RIGHT;
-            }
-        } else {
-            if (graph.getLeftNeighbour(currentVertex) !== null) {
-                return Direction.LEFT;
-            }
+        if (graph.getRightNeighbour(currentVertex) !== null) {
+            return Direction.RIGHT;
+        } else if (graph.getLeftNeighbour(currentVertex) !== null) {
+            return Direction.LEFT;
         }
     }
 }
