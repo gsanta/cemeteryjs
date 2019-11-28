@@ -4,7 +4,6 @@ import { AppContext, AppContextType } from '../../Context';
 import { BrushIconComponent } from '../../icons/BrushIconComponent';
 import { DeleteIconComponent } from '../../icons/DeleteIconComponent';
 import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvasController';
-import { ButtonComponent } from '../../forms/ButtonComponent';
 import { ToggleButtonComponent } from '../../forms/ToggleButtonComponent';
 import { WorldItemDefinitionDialogComponent } from '../../dialogs/WorldItemDefinitionDialog';
 

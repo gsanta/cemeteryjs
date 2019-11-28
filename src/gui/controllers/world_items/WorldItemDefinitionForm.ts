@@ -10,13 +10,15 @@ export enum WorldItemTypeProperty {
     SCALE = 'scale',
     TRANSLATE_Y = 'translateY',
     MATERIALS = 'materials',
-    COLOR = 'color'
+    COLOR = 'color',
 }
 
 export class WorldItemDefinitionForm extends IFormController<WorldItemTypeProperty> {
     shapes: string[] = ['rect'];
 
     private canvasController: IEditableCanvas;
+    private renderFunc = () => null;
+    private selectedIndex = -1;
 
     constructor(canvasController: IEditableCanvas) {
         super();
@@ -24,12 +26,16 @@ export class WorldItemDefinitionForm extends IFormController<WorldItemTypeProper
         this.setSelectedDefinition(this.getModel().types[0].typeName);
     }
 
+    setRenderer(renderFunc: () => void) {
+        this.renderFunc = renderFunc;
+    }
+
     private tempString: string;
     private tempBoolean: boolean;
     private tempNumber: number;
     focusedPropType: WorldItemTypeProperty;
 
-    focusProp(type: WorldItemTypeProperty) {
+    focusProp(type: WorldItemTypeProperty, initialValue?: string) {
         this.focusedPropType = type;
         switch(this.focusedPropType) {
             case WorldItemTypeProperty.MODEL:
@@ -37,9 +43,6 @@ export class WorldItemDefinitionForm extends IFormController<WorldItemTypeProper
                 break;
             case WorldItemTypeProperty.CHAR:
                 this.tempString = this.getModel().selectedType.char;
-                break;
-            case WorldItemTypeProperty.TYPE_NAME:
-                this.tempString = this.getModel().selectedType.typeName;
                 break;
             case WorldItemTypeProperty.SCALE:
                 this.tempNumber = this.getModel().selectedType.scale;
@@ -56,8 +59,12 @@ export class WorldItemDefinitionForm extends IFormController<WorldItemTypeProper
             case WorldItemTypeProperty.COLOR:
                 this.tempString = this.getModel().selectedType.color;
                 break;
+            case WorldItemTypeProperty.TYPE_NAME:
+                this.tempString = this.getModel().selectedType.typeName;
+                break;
         }
-        this.canvasController.render();
+
+        this.renderFunc();
     }
 
     getFocusedProp(): WorldItemTypeProperty { 
@@ -66,17 +73,17 @@ export class WorldItemDefinitionForm extends IFormController<WorldItemTypeProper
 
     updateStringProp(value: string) {
         this.tempString = value;
-        this.canvasController.render();
+        this.renderFunc();
     }
 
     updateBooleanProp(value: boolean) {
         this.tempBoolean = value;
-        this.canvasController.render();
+        this.renderFunc();
     }
 
     updateNumberProp(value: number) {
         this.tempNumber = value;
-        this.canvasController.render();
+        this.renderFunc();
     }
 
     deletItemFromListProp(prop: WorldItemTypeProperty, index: number) {
@@ -87,7 +94,7 @@ export class WorldItemDefinitionForm extends IFormController<WorldItemTypeProper
                 break;
         } 
 
-        this.canvasController.render();
+        this.renderFunc();
     }
 
     commitProp(removeFocus = false) {
@@ -129,7 +136,7 @@ export class WorldItemDefinitionForm extends IFormController<WorldItemTypeProper
             this.focusedPropType = null;
         }
 
-        this.canvasController.render();
+        this.renderFunc();
     }
 
     getVal(property: WorldItemTypeProperty) {
@@ -153,15 +160,25 @@ export class WorldItemDefinitionForm extends IFormController<WorldItemTypeProper
         }
     }
 
+
+    getListItem(index: number) {
+        return this.getModel().types[index];
+    }
+
+    getSelectedItemIndex(): number {
+        return this.selectedIndex;
+    }
+
     setSelectedDefinition(type: string) {
         if (this.getModel().selectedType) {
             this.getModel().syncSelected(this.getModel().selectedType.typeName);
         }
 
         const meshDescriptor = this.getModel().types.find(descriptor => descriptor.typeName === type);
+        this.selectedIndex = this.getModel().types.indexOf(meshDescriptor);
         this.getModel().selectedType = cloneWorldItemType(meshDescriptor);
 
-        this.canvasController.render();
+        this.renderFunc();
     }
 
     getModel(): WorldItemDefinitionModel {

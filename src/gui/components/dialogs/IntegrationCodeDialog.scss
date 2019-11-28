@@ -16,13 +16,12 @@
     max-width: 1000px;
     height: 80%;
     max-height: 600px;
-    border-radius: 4px;
-    box-shadow: 0 4px 8px 0 $border-color;
     font-family: roboto;
     font-size: 16px;
     color: $text-color;
     background: $background01;
-    border: 1px solid $border-color;
+    display: flex;
+    flex-direction: column;
 }
 
 .dialog-title {
@@ -30,12 +29,8 @@
     justify-content: space-between;
     padding: 10px;
     background: $background03;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
 }
 
 .dialog-body {
-    margin: 10px;
     overflow: auto;
-    height: calc(100% - 60px);
 }

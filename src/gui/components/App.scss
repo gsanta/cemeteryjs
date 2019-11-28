@@ -15,10 +15,6 @@
     }
 
     .labeled-component {
-        .form-control {
-            color: $text-color;
-        }
-
         &.horizontal {
             display: flex;
 

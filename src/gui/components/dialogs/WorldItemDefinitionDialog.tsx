@@ -12,6 +12,7 @@ import { LabeledComponent } from '../forms/LabeledComponent';
 import { ConnectedDropdownComponent } from '../forms/DropdownComponent';
 import { MaterialsComponent } from '../canvases/MaterialsComponent';
 import { ConnectedColorPicker } from '../forms/ColorPicker';
+import { Dialog } from './Dialog';
 
 export interface WorldItemDefinitionDialogProps {
     isOpen: boolean;
@@ -76,21 +77,22 @@ export class WorldItemDefinitionDialogComponent extends React.Component<WorldIte
     static contextType = AppContext;
     context: AppContextType;
 
+    componentDidMount() {
+        this.context.controllers.getActiveCanvas().worldItemDefinitionForm.setRenderer(() => this.forceUpdate());
+    }
+
     render() {
-        return this.props.isOpen ? 
-            (
-                <div className="dialog-overlay">
-                    <div className="dialog">
-                        <div className="dialog-title">
-                            <div>World item definitions</div>
-                            <CloseIconComponent onClick={() => this.context.controllers.settingsController.setActiveDialog(null)}/>
-                        </div>
-                        <div className="dialog-body">
-                            {this.renderContent()}
-                        </div>
-                    </div>
-                </div>
-            ) : null;
+        return (
+            <Dialog
+                title="World item definitions"
+                isOpen={this.props.isOpen}
+                onCancel={() => this.context.controllers.settingsController.setActiveDialog(null)}
+                onSubmit={() => () => this.context.controllers.settingsController.setActiveDialog(null)}
+                showFooter={true}
+            >
+                {this.renderContent()}
+            </Dialog>
+        );
     }
 
     renderContent() {
@@ -98,11 +100,14 @@ export class WorldItemDefinitionDialogComponent extends React.Component<WorldIte
         const meshDescriptors = form.getModel().types;
         const windowModel = this.context.controllers.settingsModel;
 
-        const names = meshDescriptors.map(def => (
+        const names = meshDescriptors.map((def, index) => (
             <div>
                 <InputComponent
                     type="text"
-                    value={def.typeName} 
+                    value={
+                        form.getSelectedItemIndex() === index && form.getFocusedProp() === WorldItemTypeProperty.TYPE_NAME ?
+                            form.getVal(WorldItemTypeProperty.TYPE_NAME) as string : def.typeName
+                    }
                     placeholder="Type..."
                     onFocus={() => {
                         form.setSelectedDefinition(def.typeName);

@@ -15,10 +15,16 @@ export class SettingsController extends IFormController<SettingsProperty> {
     private tempBoolean: boolean;
     private controllers: ControllerFacade;
 
+    private renderFunc = () => null;
+
     constructor(controllers: ControllerFacade) {
         super();
         this.controllers = controllers;
         this.controllers.settingsModel.activeEditor = <IEditableCanvas> this.controllers.getCanvasControllerById(SvgCanvasController.id);
+    }
+
+    setRenderer(renderFunc: () => void) {
+        this.renderFunc = renderFunc;
     }
 
     setActiveDialog(dialogName: string) {
@@ -40,12 +46,13 @@ export class SettingsController extends IFormController<SettingsProperty> {
 
     updateStringProp(value: string) {
         this.tempString = value;        
-        this.controllers.updateUIController.updateUI();       
+        this.renderFunc();       
     }
 
     updateBooleanProp(value: boolean) {
         this.tempBoolean = value;        
-        this.controllers.updateUIController.updateUI();       
+        
+        this.renderFunc();
     }
 
 
@@ -61,7 +68,7 @@ export class SettingsController extends IFormController<SettingsProperty> {
         }
 
         this.controllers.webglCanvasController.isDirty = true;
-        this.controllers.updateUIController.updateUI();
+        this.renderFunc();
     }
 
     getVal(propType: SettingsProperty) {
