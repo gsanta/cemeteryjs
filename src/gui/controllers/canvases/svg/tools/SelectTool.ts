@@ -16,22 +16,25 @@ export class SelectTool extends AbstractSelectionTool {
     click() {
         super.click();
 
+        PixelTag.removeTag(PixelTag.SELECTED, this.canvasController.pixelModel.pixels);
+
         const pixel = this.canvasController.pixelModel.getTopPixelAtCoordinate(this.canvasController.mouseController.movePoint);
-        const graphNode = this.worldMapGraph.getNodeAtPosition(this.canvasController.pixelModel.getPixelPosition(pixel.index));
-        const comp = this.worldMapGraph.getConnectedComponentForNode(graphNode);
 
-        comp.getAllNodes().map(node => {
-            const index = this.canvasController.pixelModel.getIndexAtPosition(comp.getNodePositionInMatrix(node))
-
-            this.canvasController.pixelModel.getPixel(index).tags.push(PixelTag.SELECTED);
-        });
+        if (pixel) {
+            const graphNode = this.worldMapGraph.getNodeAtPosition(this.canvasController.pixelModel.getPixelPosition(pixel.index));
+            const comp = this.worldMapGraph.getConnectedComponentForNode(graphNode);
+    
+            comp.getAllNodes().map(node => {
+                const index = this.canvasController.pixelModel.getIndexAtPosition(comp.getNodePositionInMatrix(node))
+    
+                this.canvasController.pixelModel.getPixel(index).tags.push(PixelTag.SELECTED);
+            });
+        }
 
         this.canvasController.renderCanvas();
-        // this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
     }
 
     activate() {
         this.worldMapGraph = new SvgWorldMapReader(false).read(this.canvasController.reader.read());
-        1;
     }
 }

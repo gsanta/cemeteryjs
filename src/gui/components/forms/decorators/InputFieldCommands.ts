@@ -1,4 +1,4 @@
-import { IFormController } from '../../../controllers/IFormController';
+import { IFormController } from '../../../controllers/forms/IFormController';
 
 
 export interface InputFieldCommands<P> {

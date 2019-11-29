@@ -1,4 +1,4 @@
-import { SettingsProperty } from '../../../src/gui/controllers/settings/SettingsController';
+import { SettingsProperty } from '../../../src/gui/controllers/forms/SettingsForm';
 import { setupControllers } from "./controllerTestUtils";
 import { SvgCanvasController } from '../../../src/gui/controllers/canvases/svg/SvgCanvasController';
 import { TextCanvasController } from '../../../src/gui/controllers/canvases/text/TextCanvasController';

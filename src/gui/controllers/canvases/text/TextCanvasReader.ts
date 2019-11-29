@@ -1,5 +1,4 @@
 import { WorldItemDefinition } from '../../../../WorldItemDefinition';
-import { WorldItemDefinitionModel } from "../../world_items/WorldItemDefinitionModel";
 import { TextCanvasController } from './TextCanvasController';
 import { ICanvasReader } from '../ICanvasReader';
 

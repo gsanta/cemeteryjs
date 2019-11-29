@@ -4,8 +4,6 @@ import { defaultWorldItemDefinitions } from '../../../configs/defaultWorldItemDe
 import { MonacoConfig } from '../../../configs/MonacoConfig';
 import { ControllerFacade } from '../../ControllerFacade';
 import { Events } from '../../events/Events';
-import { WorldItemDefinitionForm } from '../../world_items/WorldItemDefinitionForm';
-import { WorldItemDefinitionModel } from '../../world_items/WorldItemDefinitionModel';
 import { ICanvasReader } from '../ICanvasReader';
 import { ICanvasWriter } from '../ICanvasWriter';
 import { IEditableCanvas } from '../IEditableCanvas';

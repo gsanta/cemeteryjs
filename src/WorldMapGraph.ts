@@ -154,12 +154,15 @@ export class WorldMapGraph {
 
     getConnectedComponentForNode(startNode: number): WorldMapGraph {
         let comp = new Set<number>();
-        this.BFS(startNode, (node, newRoot) => {
-            if (newRoot) {
-                comp = new Set<number>();
-            }
-            comp.add(node);
-        });
+        this.BFS(startNode,
+            (node, newRoot) => {
+                if (newRoot) {
+                    comp = new Set<number>();
+                }
+                comp.add(node);
+            },
+            false
+        );
 
         return this.getReducedGraphForNodes(Array.from(comp));
 
@@ -211,7 +214,7 @@ export class WorldMapGraph {
         let allNodes = this.getAllNodes();
         const queue = [startNode];
         const visited: {[key: number]: boolean} = {
-            [allNodes[0]]: true
+            [startNode]: true
         };
 
         let isNewRoot = false;
@@ -237,7 +240,11 @@ export class WorldMapGraph {
                 }
             }
 
-            if (restartAtRandomRoot && allNodes.length > 0) {
+            if (!restartAtRandomRoot) {
+                break;
+            }
+
+            if (allNodes.length > 0) {
                 queue.push(allNodes[0]);
                 isNewRoot = true;
             }

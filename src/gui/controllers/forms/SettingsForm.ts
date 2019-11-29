@@ -1,4 +1,4 @@
-import { IFormController } from '../IFormController';
+import { IFormController } from './IFormController';
 import { ControllerFacade } from '../ControllerFacade';
 import { IEditableCanvas } from '../canvases/IEditableCanvas';
 import { SvgCanvasController } from '../canvases/svg/SvgCanvasController';
@@ -8,7 +8,7 @@ export enum SettingsProperty {
     IS_WORLD_ITEM_TYPE_EDITOR_OPEN = 'is-properties-window-open'
 }
 
-export class SettingsController extends IFormController<SettingsProperty> {
+export class SettingsForm extends IFormController<SettingsProperty> {
     focusedPropType: SettingsProperty;
 
     private tempString: string;

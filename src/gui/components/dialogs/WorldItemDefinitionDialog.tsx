@@ -5,7 +5,7 @@ import { InputComponent, ConnectedInputComponent } from '../forms/InputComponent
 import styled from 'styled-components';
 import { ICanvasController } from '../../controllers/canvases/ICanvasController';
 import { colors } from '../styles';
-import { WorldItemTypeProperty, WorldItemDefinitionForm } from '../../controllers/world_items/WorldItemDefinitionForm';
+import { WorldItemTypeProperty, WorldItemDefinitionForm } from '../../controllers/forms/WorldItemDefinitionForm';
 import { SvgCanvasController } from '../../controllers/canvases/svg/SvgCanvasController';
 import { LabeledComponent } from '../forms/LabeledComponent';
 import { ConnectedDropdownComponent } from '../forms/DropdownComponent';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SvgCanvasController } from '../../controllers/canvases/svg/SvgCanvasController';
-import { WorldItemDefinitionForm, WorldItemTypeProperty } from '../../controllers/world_items/WorldItemDefinitionForm';
+import { WorldItemDefinitionForm, WorldItemTypeProperty } from '../../controllers/forms/WorldItemDefinitionForm';
 import { AppContext, AppContextType } from '../Context';
 import { ConnectedColorPicker } from '../forms/ColorPicker';
 import { ConnectedDropdownComponent } from '../forms/DropdownComponent';

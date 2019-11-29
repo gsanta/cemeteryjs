@@ -4,15 +4,15 @@ import { SvgCanvasController } from './canvases/svg/SvgCanvasController';
 import { TextCanvasController } from './canvases/text/TextCanvasController';
 import { WebglCanvasController } from './canvases/webgl/WebglCanvasController';
 import { EventDispatcher } from './events/EventDispatcher';
-import { SettingsController } from './settings/SettingsController';
-import { SettingsModel } from './settings/SettingsModel';
+import { SettingsForm } from './forms/SettingsForm';
+import { SettingsModel } from './forms/SettingsModel';
 import { UIUpdateController } from './UIUpdateController';
-import { WorldItemDefinitionForm } from './world_items/WorldItemDefinitionForm';
+import { WorldItemDefinitionForm } from './forms/WorldItemDefinitionForm';
 
 export class ControllerFacade {
     webglCanvasController: WebglCanvasController;
     updateUIController: UIUpdateController;
-    settingsController: SettingsController;
+    settingsController: SettingsForm;
     
     worldItemDefinitionForm: WorldItemDefinitionForm;
     settingsModel: SettingsModel;
@@ -27,7 +27,7 @@ export class ControllerFacade {
         
         this.updateUIController = new UIUpdateController();
         this.webglCanvasController = new WebglCanvasController(this);
-        this.settingsController = new SettingsController(this);
+        this.settingsController = new SettingsForm(this);
 
         this.worldItemDefinitionForm = new WorldItemDefinitionForm();
 

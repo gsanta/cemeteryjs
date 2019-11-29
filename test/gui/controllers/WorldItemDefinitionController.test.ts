@@ -1,5 +1,5 @@
 import { setupControllers } from "./controllerTestUtils";
-import { WorldItemTypeProperty, WorldItemDefinitionForm } from '../../../src/gui/controllers/world_items/WorldItemDefinitionForm';
+import { WorldItemTypeProperty, WorldItemDefinitionForm } from '../../../src/gui/controllers/forms/WorldItemDefinitionForm';
 import { WorldItemDefinition } from "../../../src/WorldItemDefinition";
 import { FileFormat } from '../../../src/WorldGenerator';
 

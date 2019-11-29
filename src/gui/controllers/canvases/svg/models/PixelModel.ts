@@ -7,6 +7,16 @@ export enum PixelTag {
     SELECTED = 'selected'
 }
 
+export namespace PixelTag {
+    export function removeTag(tag: PixelTag, pixels: Pixel[]) {
+        pixels
+            .filter(pixel => pixel.tags.includes(tag))
+            .forEach(pixel => {
+                pixel.tags = pixel.tags.filter(tag => tag !== tag)
+            });
+    }
+}
+
 export interface Pixel {
     type: string;
     index: number;

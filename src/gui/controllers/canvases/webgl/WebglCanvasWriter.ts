@@ -1,6 +1,5 @@
 import { ICanvasWriter } from "../ICanvasWriter";
 import { WebglCanvasController } from './WebglCanvasController';
-import { WorldItemDefinitionModel } from "../../world_items/WorldItemDefinitionModel";
 import { BabylonWorldGenerator } from "../../../../integrations/babylonjs/BabylonWorldGenerator";
 import { FileFormat } from '../../../../WorldGenerator';
 import { WorldItem } from "../../../../WorldItem";

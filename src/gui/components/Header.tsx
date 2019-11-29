@@ -4,7 +4,7 @@ import { ButtonComponent } from './forms/ButtonComponent';
 import styled from 'styled-components';
 import { ConnectedDropdownComponent } from './forms/DropdownComponent';
 import { AppContextType, AppContext } from './Context';
-import { SettingsProperty } from '../controllers/settings/SettingsController';
+import { SettingsProperty } from '../controllers/forms/SettingsForm';
 import { ConnectedToggleButtonComponent } from './forms/ToggleButtonComponent';
 import { colors } from './styles';
 import { ICanvasController } from '../controllers/canvases/ICanvasController';

@@ -1,5 +1,4 @@
 import { SvgCanvasController } from './SvgCanvasController';
-import { WorldItemDefinitionModel } from '../../world_items/WorldItemDefinitionModel';
 import { ICanvasReader } from '../ICanvasReader';
 import { WorldItemDefinition } from '../../../../WorldItemDefinition';
 import { PixelTag } from './models/PixelModel';

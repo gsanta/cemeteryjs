@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { WorldItemDefinitionForm, WorldItemTypeProperty } from '../../controllers/world_items/WorldItemDefinitionForm';
+import { WorldItemDefinitionForm, WorldItemTypeProperty } from '../../controllers/forms/WorldItemDefinitionForm';
 import { LabeledComponent } from '../forms/LabeledComponent';
 import { ButtonedInputComponent } from '../forms/ButtonedInputComponent';
 import { CloseIconComponent } from '../dialogs/CloseIconComponent';

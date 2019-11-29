@@ -1,4 +1,4 @@
-import { IFormController } from '../IFormController';
+import { IFormController } from './IFormController';
 import { WorldItemDefinition } from '../../../WorldItemDefinition';
 
 export enum WorldItemTypeProperty {
