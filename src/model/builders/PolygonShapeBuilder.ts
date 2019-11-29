@@ -35,7 +35,7 @@ export class PolygonShapeBuilder implements WorldItemBuilder {
 
         return graph
             .getReducedGraphForTypes([this.itemName])
-            .getConnectedComponentGraphs()
+            .getAllConnectedComponents()
             .map(componentGraph => {
                 const lines = this.segmentGraphToHorizontalLines(componentGraph);
 

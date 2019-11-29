@@ -5,23 +5,23 @@ import { AbstractTool } from './AbstractTool';
 
 export class AbstractSelectionTool extends AbstractTool {
     type: ToolType;
-    protected svgCanvasController: SvgCanvasController;
+    protected canvasController: SvgCanvasController;
     private showSelection: boolean;
 
     constructor(bitmapEditor: SvgCanvasController, type: ToolType, showSelection: boolean) {
         super(type);
-        this.svgCanvasController = bitmapEditor;
+        this.canvasController = bitmapEditor;
         this.showSelection = showSelection;
     }
 
     down() {
         if (this.showSelection) {
-            this.svgCanvasController.selectionModel.isVisible = true;
+            this.canvasController.selectionModel.isVisible = true;
         }
     }
 
     drag() {
-        this.svgCanvasController.selectionModel.setPoints(this.svgCanvasController.mouseController.downPoint, this.svgCanvasController.mouseController.movePoint);
+        this.canvasController.selectionModel.setPoints(this.canvasController.mouseController.downPoint, this.canvasController.mouseController.movePoint);
     }
 
     click() {
@@ -30,22 +30,22 @@ export class AbstractSelectionTool extends AbstractTool {
 
     up() {
         if (this.showSelection) {
-            this.svgCanvasController.selectionModel.isVisible = false;
+            this.canvasController.selectionModel.isVisible = false;
         }
-        this.svgCanvasController.selectionModel.topLeftPoint = null;
-        this.svgCanvasController.selectionModel.bottomRightPoint = null;
+        this.canvasController.selectionModel.topLeftPoint = null;
+        this.canvasController.selectionModel.bottomRightPoint = null;
     }
 
 
 
     protected getPixelIndexesInSelection(): number[] {
-        const selectionRect = this.svgCanvasController.selectionModel.getSelectionRect();
-        return this.svgCanvasController.pixelModel.getPixelIndexesInside(selectionRect);
+        const selectionRect = this.canvasController.selectionModel.getSelectionRect();
+        return this.canvasController.pixelModel.getPixelIndexesInside(selectionRect);
     }
 
     protected getPositionsInSelection(): Point[] {
-        const selectionRect = this.svgCanvasController.selectionModel.getSelectionRect();
-        const pixelSize = this.svgCanvasController.configModel.pixelSize;
+        const selectionRect = this.canvasController.selectionModel.getSelectionRect();
+        const pixelSize = this.canvasController.configModel.pixelSize;
         const xStart = Math.floor(selectionRect.topLeft.x / pixelSize); 
         const yStart = Math.floor(selectionRect.topLeft.y / pixelSize);
         const xEnd = Math.floor(selectionRect.bottomRight.x / pixelSize) + 1;

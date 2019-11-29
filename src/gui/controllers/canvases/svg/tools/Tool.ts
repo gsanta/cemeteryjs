@@ -1,7 +1,8 @@
 
 export enum ToolType {
     RECTANGLE = 'rectangle',
-    DELETE = 'delete'
+    DELETE = 'delete',
+    SELECT = 'select'
 }
 
 export interface Tool {
@@ -11,4 +12,5 @@ export interface Tool {
     click();
     draggedUp();
     up();
+    activate();
 }

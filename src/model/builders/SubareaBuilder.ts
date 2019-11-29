@@ -28,7 +28,7 @@ export class SubareaBuilder implements WorldItemBuilder {
         const types = without(graph.getTypes(), this.services.configService.meshDescriptorMap.get('room').typeName);
 
         const connectedCompGraphs = graph.getReducedGraphForTypes(types)
-            .getConnectedComponentGraphs()
+            .getAllConnectedComponents()
             .filter(graph => graph.getTypes().includes(subareaType));
 
         const polygonAreaParser = new PolygonShapeBuilder('_subarea', this.services, this.worldMapReader);

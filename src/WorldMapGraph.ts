@@ -1,4 +1,5 @@
 import { without } from './model/utils/Functions';
+import { Point } from '@nightshifts.inc/geometry';
 
 export class WorldMapGraph {
     private numberOfNodes = 0;
@@ -35,17 +36,14 @@ export class WorldMapGraph {
     }
 
 
-    getNodePositionInMatrix(node: number): {x: number, y: number} {
+    getNodePositionInMatrix(node: number): Point {
         const row = Math.floor(node / this.columns);
         const column = node % this.columns;
 
-        return {
-            x: column,
-            y: row
-        };
+        return new Point(column, row);
     }
 
-    getNodeAtPosition(pos: {x: number, y: number}): number {
+    getNodeAtPosition(pos: Point): number {
         const node = pos.y * this.columns + pos.x;
 
         if (this.hasNode(node)) {
@@ -96,27 +94,27 @@ export class WorldMapGraph {
         ].filter(vert => vert !== null);
     }
 
-    public hasNode(node: number): boolean {
+    hasNode(node: number): boolean {
         return this.nodes.indexOf(node) !== -1;
     }
 
-    public hasEdgeBetween(v1: number, v2: number) {
+    hasEdgeBetween(v1: number, v2: number) {
         return this.nodes.includes(v1) && this.nodes.includes(v2);
     }
 
-    public getTopNeighbour(node: number): number {
+    getTopNeighbour(node: number): number {
         const topNeighbourIndex = node - this.columns;
 
         return this.nodes.indexOf(topNeighbourIndex) !== -1 ? topNeighbourIndex : null;
     }
 
-    public getBottomNeighbour(node: number): number {
+    getBottomNeighbour(node: number): number {
         const topNeighbourIndex = node + this.columns;
 
         return this.nodes.indexOf(topNeighbourIndex) !== -1 ? topNeighbourIndex : null;
     }
 
-    public getLeftNeighbour(node: number): number {
+    getLeftNeighbour(node: number): number {
         const leftNeighbourIndex = node - 1;
 
         if (this.hasNode(leftNeighbourIndex) && leftNeighbourIndex % this.columns !== this.columns - 1) {
@@ -126,7 +124,7 @@ export class WorldMapGraph {
         return null;
     }
 
-    public getRightNeighbour(node: number): number {
+    getRightNeighbour(node: number): number {
         const rightNeighbourIndex = node + 1;
 
         if (this.hasNode(rightNeighbourIndex) && rightNeighbourIndex % this.columns !== 0) {
@@ -136,7 +134,7 @@ export class WorldMapGraph {
         return null;
     }
 
-    public getGraphForNodes(nodes: number[]): WorldMapGraph {
+    getGraphForNodes(nodes: number[]): WorldMapGraph {
         const graph = new WorldMapGraph(this.columns, this.rows);
 
         nodes.forEach(node => graph.addNode(node, this.getNodeValue(node)));
@@ -148,10 +146,23 @@ export class WorldMapGraph {
      * Reduces the graph into subgraphs, where each graph consists of only one type
      * and where each graph is a `connected-component`.
      */
-    getConnectedComponentGraphs(): WorldMapGraph[] {
+    getAllConnectedComponents(): WorldMapGraph[] {
         const connectedComponents = this.findConnectedComponents();
 
         return connectedComponents.map(component => this.getReducedGraphForNodes(component));
+    }
+
+    getConnectedComponentForNode(startNode: number): WorldMapGraph {
+        let comp = new Set<number>();
+        this.BFS(startNode, (node, newRoot) => {
+            if (newRoot) {
+                comp = new Set<number>();
+            }
+            comp.add(node);
+        });
+
+        return this.getReducedGraphForNodes(Array.from(comp));
+
     }
 
     getReducedGraphForTypes(types: string[]): WorldMapGraph {
@@ -170,7 +181,7 @@ export class WorldMapGraph {
         const connectedComps: Set<number>[] = [];
 
         let actComp = new Set<number>();
-        this.BFS((node, newRoot) => {
+        this.BFS(this.getAllNodes()[0], (node, newRoot) => {
             if (newRoot) {
                 connectedComps.push(actComp);
                 actComp = new Set<number>();
@@ -196,9 +207,9 @@ export class WorldMapGraph {
         return graph;
     }
 
-    private BFS(callback: (node: number, isNewRoot: boolean) => void, restartAtRandomRoot = true) {
+    private BFS(startNode: number, callback: (node: number, isNewRoot: boolean) => void, restartAtRandomRoot = true) {
         let allNodes = this.getAllNodes();
-        const queue = [allNodes[0]];
+        const queue = [startNode];
         const visited: {[key: number]: boolean} = {
             [allNodes[0]]: true
         };
@@ -226,7 +237,7 @@ export class WorldMapGraph {
                 }
             }
 
-            if (allNodes.length > 0) {
+            if (restartAtRandomRoot && allNodes.length > 0) {
                 queue.push(allNodes[0]);
                 isNewRoot = true;
             }

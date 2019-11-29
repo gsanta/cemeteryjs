@@ -15,35 +15,35 @@ export class RectangleTool extends AbstractSelectionTool {
 
     down() {
         super.down();
-        this.svgCanvasController.renderCanvas();
+        this.canvasController.renderCanvas();
     }
 
     drag() {
         super.drag();
         
-        this.svgCanvasController.pixelModel.removePreviews();
-        const type = this.svgCanvasController.selectedWorldItemDefinition.typeName;
+        this.canvasController.pixelModel.removePreviews();
+        const type = this.canvasController.selectedWorldItemDefinition.typeName;
         const positions = this.getPositionsInSelection();
-        positions.forEach(pos => this.svgCanvasController.pixelModel.addPixel(pos, type, true, -1));
+        positions.forEach(pos => this.canvasController.pixelModel.addPixel(pos, type, true, -1));
 
-        this.svgCanvasController.renderCanvas();
+        this.canvasController.renderCanvas();
     }
 
     click() {
         super.click();
-        const type = this.svgCanvasController.selectedWorldItemDefinition.typeName;
+        const type = this.canvasController.selectedWorldItemDefinition.typeName;
         const layer = getLayerForType(type);
-        this.svgCanvasController.pixelModel.addPixel(this.svgCanvasController.mouseController.movePoint, type, false, layer);
+        this.canvasController.pixelModel.addPixel(this.canvasController.mouseController.movePoint, type, false, layer);
 
-        this.svgCanvasController.renderCanvas();
+        this.canvasController.renderCanvas();
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
     }
 
     draggedUp() {
         super.draggedUp();
-        this.svgCanvasController.pixelModel.commitPreviews();
+        this.canvasController.pixelModel.commitPreviews();
 
-        this.svgCanvasController.renderCanvas();
+        this.canvasController.renderCanvas();
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
     }
 }

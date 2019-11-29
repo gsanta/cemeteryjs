@@ -3,10 +3,15 @@ import { Rectangle } from './Rectangle';
 import { SvgConfig } from './SvgConfig';
 import { last } from '../../../../../model/utils/Functions';
 
+export enum PixelTag {
+    SELECTED = 'selected'
+}
+
 export interface Pixel {
     type: string;
     index: number;
     isPreview: boolean;
+    tags: PixelTag[];
     layer: number;
 }
 
@@ -38,6 +43,10 @@ export class PixelModel {
         this.bitmapConfig = bitmapConfig;
     }
 
+    getPixel(index: number) {
+        return this.bitMap.get(index)[0];
+    }
+
     addPixel(coordinate: Point, type: string, isPreview: boolean, layer: number) {
         const index = this.getIndexAtCoordinate(coordinate);
 
@@ -49,7 +58,8 @@ export class PixelModel {
             type,
             index,
             isPreview,
-            layer
+            layer,
+            tags: []
         }
 
         this.addPixelToMap(index, pixel);
@@ -101,6 +111,10 @@ export class PixelModel {
         this.pixels = [];
     }
 
+    getPixelAtPosition(pos: Point) {
+
+    }
+
     getPixelPosition(pixelIndex: number): Point {
         const canvasDimensions = this.bitmapConfig.canvasDimensions;
         const pixelSize = this.bitmapConfig.pixelSize;
@@ -136,6 +150,14 @@ export class PixelModel {
         const index = this.getIndexAtCoordinate(coordinate);
 
         return this.bitMap.get(index) && last(this.bitMap.get(index));
+    }
+    
+    getIndexAtPosition(pos: Point) {
+        const canvasDimensions = this.bitmapConfig.canvasDimensions;
+        const pixelSize = this.bitmapConfig.pixelSize;
+        const xPixels = canvasDimensions.x / pixelSize;
+
+        return pos.y * xPixels + pos.x;
     }
 
     private addPixelToMap(key: number, pixel: Pixel) {

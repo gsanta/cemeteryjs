@@ -1,6 +1,7 @@
 import { LinesToGraphConverter } from '../../../src/model/readers/text/LinesToGraphConverter';
 import { ConfigService } from '../../../src/model/services/ConfigService';
 import { TextConfigReader } from '../../../src/model/readers/text/TextConfigReader';
+import { Point } from '@nightshifts.inc/geometry';
 
 
 describe('MatrixGraph', () => {
@@ -60,7 +61,7 @@ describe('MatrixGraph', () => {
             const linesToGraphConverter = new LinesToGraphConverter(configService);
             const graph = linesToGraphConverter.parse(input);
 
-            const connectedComponentGraphs = graph.getReducedGraphForTypes(['room']).getConnectedComponentGraphs();
+            const connectedComponentGraphs = graph.getReducedGraphForTypes(['room']).getAllConnectedComponents();
 
             expect(connectedComponentGraphs.length).toEqual(2);
             expect(connectedComponentGraphs[0].getAllNodes().length).toEqual(9)
@@ -97,18 +98,18 @@ describe('MatrixGraph', () => {
 
             const reducedGraph = graph.getReducedGraphForTypes(['wall', 'door']);
 
-            expect(reducedGraph.getNodeAtPosition({x: 0, y: 0})).not.toBeNull();
-            expect(reducedGraph.getNodeAtPosition({x: 2, y: 0})).not.toBeNull();
-            expect(reducedGraph.getNodeAtPosition({x: 12, y: 0})).not.toBeNull();
-            expect(reducedGraph.getNodeAtPosition({x: 12, y: 1})).not.toBeNull();
-            expect(reducedGraph.getNodeAtPosition({x: 12, y: 4})).not.toBeNull();
-            expect(reducedGraph.getNodeAtPosition({x: 0, y: 4})).not.toBeNull();
-            expect(reducedGraph.getNodeAtPosition({x: 7, y: 1})).not.toBeNull();
+            expect(reducedGraph.getNodeAtPosition(new Point(0, 0))).not.toBeNull();
+            expect(reducedGraph.getNodeAtPosition(new Point(2, 0))).not.toBeNull();
+            expect(reducedGraph.getNodeAtPosition(new Point(12, 0))).not.toBeNull();
+            expect(reducedGraph.getNodeAtPosition(new Point(12, 1))).not.toBeNull();
+            expect(reducedGraph.getNodeAtPosition(new Point(12, 4))).not.toBeNull();
+            expect(reducedGraph.getNodeAtPosition(new Point(0, 4))).not.toBeNull();
+            expect(reducedGraph.getNodeAtPosition(new Point(7, 1))).not.toBeNull();
 
-            expect(reducedGraph.getNodeAtPosition({x: 1, y: 1})).toBeNull();
-            expect(reducedGraph.getNodeAtPosition({x: 11, y: 1})).toBeNull();
-            expect(reducedGraph.getNodeAtPosition({x: 1, y: 3})).toBeNull();
-            expect(reducedGraph.getNodeAtPosition({x: 11, y: 3})).toBeNull();
+            expect(reducedGraph.getNodeAtPosition(new Point(1, 1))).toBeNull();
+            expect(reducedGraph.getNodeAtPosition(new Point(11, 1))).toBeNull();
+            expect(reducedGraph.getNodeAtPosition(new Point(1, 3))).toBeNull();
+            expect(reducedGraph.getNodeAtPosition(new Point(11, 3))).toBeNull();
         });
     });
 });

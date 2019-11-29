@@ -20,7 +20,7 @@ export class PolygonBuilder implements WorldItemBuilder {
     parse(worldMap: string): WorldItem[] {
         const graph = this.worldMapReader.read(worldMap);
         const buildingGraph = graph.getReducedGraphForTypes(['building']);
-        const buildings = buildingGraph.getConnectedComponentGraphs();
+        const buildings = buildingGraph.getAllConnectedComponents();
 
         const polygons = buildings.map(building => {
             const polygonVertexes = this.polygonVertexListFinder.findVertexes(building);

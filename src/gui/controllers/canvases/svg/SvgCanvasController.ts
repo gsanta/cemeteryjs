@@ -14,6 +14,7 @@ import { DeleteTool } from './tools/DeleteTool';
 import { RectangleTool } from './tools/RectangleTool';
 import { Tool, ToolType } from './tools/Tool';
 import { WorldItemDefinition } from '../../../../WorldItemDefinition';
+import { SelectTool } from './tools/SelectTool';
 
 export const initialSvg = 
 `
@@ -79,7 +80,8 @@ export class SvgCanvasController implements IEditableCanvas {
 
         this.tools = [
             new RectangleTool(this, this.controllers.eventDispatcher),
-            new DeleteTool(this)
+            new DeleteTool(this),
+            new SelectTool(this)
         ];
 
         this.activeTool = this.tools[0];
@@ -96,6 +98,7 @@ export class SvgCanvasController implements IEditableCanvas {
 
     setActiveTool(toolType: ToolType) {
         this.activeTool = this.tools.find(tool => tool.type === toolType);
+        this.activeTool.activate();
         this.renderToolbar();
     }
 

@@ -13,4 +13,5 @@ export class AbstractTool implements Tool {
     click() {}
     draggedUp() {}
     up() {}
+    activate() {}
 }

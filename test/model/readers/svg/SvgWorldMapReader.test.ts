@@ -1,4 +1,5 @@
 import { SvgWorldMapReader } from '../../../../src/model/readers/svg/SvgWorldMapReader';
+import { Point } from '@nightshifts.inc/geometry';
 
 it ('Parse an svg world map and generate the corresponding world map graph', () => {
     var worldMap =
@@ -17,13 +18,13 @@ it ('Parse an svg world map and generate the corresponding world map graph', () 
     expect(graph.getRows()).toEqual(5);
     expect(graph.getColumns()).toEqual(10);
 
-    const vertex1 = graph.getNodeAtPosition({x: 1, y: 1});
+    const vertex1 = graph.getNodeAtPosition(new Point(1, 1));
     expect(graph.getNodeValue(vertex1)).toEqual('wall');
 
-    const vertex2 = graph.getNodeAtPosition({x: 2, y: 1});
+    const vertex2 = graph.getNodeAtPosition(new Point(2, 1));
     expect(graph.getNodeValue(vertex2)).toEqual('door');
 
-    const vertex3 = graph.getNodeAtPosition({x: 3, y: 1});
+    const vertex3 = graph.getNodeAtPosition(new Point(3, 1));
     expect(graph.getNodeValue(vertex3)).toEqual('wall');
 });
 
@@ -45,13 +46,13 @@ it ('Configure to remove empty frame', () => {
     expect(graph.getRows()).toEqual(1);
     expect(graph.getColumns()).toEqual(3);
 
-    const vertex1 = graph.getNodeAtPosition({x: 0, y: 0});
+    const vertex1 = graph.getNodeAtPosition(new Point(0, 0));
     expect(graph.getNodeValue(vertex1)).toEqual('wall');
 
-    const vertex2 = graph.getNodeAtPosition({x: 1, y: 0});
+    const vertex2 = graph.getNodeAtPosition(new Point(1, 0));
     expect(graph.getNodeValue(vertex2)).toEqual('door');
 
-    const vertex3 = graph.getNodeAtPosition({x: 2, y: 0});
+    const vertex3 = graph.getNodeAtPosition(new Point(2, 0));
     expect(graph.getNodeValue(vertex3)).toEqual('wall');
 });
 

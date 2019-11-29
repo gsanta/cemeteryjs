@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ToolType } from '../../../controllers/canvases/svg/tools/Tool';
 import { AppContext, AppContextType } from '../../Context';
-import { BrushIconComponent } from '../../icons/BrushIconComponent';
+import { DrawIconComponent } from '../../icons/DrawIconComponent';
 import { DeleteIconComponent } from '../../icons/DeleteIconComponent';
 import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvasController';
 import { ToggleButtonComponent } from '../../forms/ToggleButtonComponent';
@@ -9,6 +9,7 @@ import { WorldItemDefinitionDialogComponent } from '../../dialogs/WorldItemDefin
 import { DropdownComponent } from '../../forms/DropdownComponent';
 import { WorldItemDefinition } from '../../../../WorldItemDefinition';
 import styled from 'styled-components';
+import { SelectIconComponent } from '../../icons/SelectIconComponent';
 
 const ToolbarStyled = styled.div`
     display: flex;
@@ -33,7 +34,8 @@ export class SvgCanvasToolbar extends React.Component<{canvasController: SvgCanv
         const worldItemDefinitions = svgCanvasController.worldItemDefinitions
         return (
             <ToolbarStyled>
-                <BrushIconComponent isActive={this.isToolActive(ToolType.RECTANGLE)} onClick={() => this.activateTool(ToolType.RECTANGLE)}/>
+                <DrawIconComponent isActive={this.isToolActive(ToolType.RECTANGLE)} onClick={() => this.activateTool(ToolType.RECTANGLE)}/>
+                <SelectIconComponent isActive={this.isToolActive(ToolType.SELECT)} onClick={() => this.activateTool(ToolType.SELECT)}/>
                 <DeleteIconComponent isActive={this.isToolActive(ToolType.DELETE)} onClick={() => this.activateTool(ToolType.DELETE)}/>
                 <DropdownComponent
                     values={dropdownValues}

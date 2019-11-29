@@ -2,24 +2,25 @@ import { SvgCanvasController } from './SvgCanvasController';
 import { WorldItemDefinitionModel } from '../../world_items/WorldItemDefinitionModel';
 import { ICanvasReader } from '../ICanvasReader';
 import { WorldItemDefinition } from '../../../../WorldItemDefinition';
+import { PixelTag } from './models/PixelModel';
 
 export class SvgCanvasReader implements ICanvasReader {
-    private bitmapEditorController: SvgCanvasController;
+    private canvasController: SvgCanvasController;
 
     constructor(bitmapEditorController: SvgCanvasController) {
-        this.bitmapEditorController = bitmapEditorController;
+        this.canvasController = bitmapEditorController;
     }
 
     read(): string {
-        const metaData = this.createMetaData(this.bitmapEditorController.worldItemDefinitions);
-        const shapes = this.createPixels(this.bitmapEditorController.worldItemDefinitions);
+        const metaData = this.createMetaData(this.canvasController.worldItemDefinitions);
+        const shapes = this.createPixels(this.canvasController.worldItemDefinitions);
 
         return `<svg data-wg-pixel-size="10" data-wg-width="1500" data-wg-height="1000">${metaData}${shapes.join('')}</svg>`;
     }
 
     private createPixels(worldItemDefinitions: WorldItemDefinition[]): string[] {
-        const pixelModel = this.bitmapEditorController.pixelModel;
-        const configModel = this.bitmapEditorController.configModel;
+        const pixelModel = this.canvasController.pixelModel;
+        const configModel = this.canvasController.configModel;
 
         const pixelArray = Array.from(pixelModel.bitMap);
 
@@ -36,7 +37,7 @@ export class SvgCanvasReader implements ICanvasReader {
                     ['height', '10px'],
                     ['x', `${pos.x}px`],
                     ['y', `${pos.y}px`],
-                    ['fill', color],
+                    ['fill', pixel.tags.includes(PixelTag.SELECTED) ? 'blue' : color],
                     ['data-wg-x', pos.x + ''],
                     ['data-wg-y', pos.y + ''],
                     ['data-wg-type', pixel.type]

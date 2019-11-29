@@ -1,4 +1,4 @@
-import { Polygon } from '@nightshifts.inc/geometry';
+import { Polygon, Point } from '@nightshifts.inc/geometry';
 import { WorldItem } from '../../WorldItem';
 import { WorldMapGraph } from '../../WorldMapGraph';
 import { WorldMapReader } from '../readers/WorldMapReader';
@@ -26,7 +26,7 @@ export class FurnitureBuilder implements WorldItemBuilder {
                 .map((type) => {
                     return graph
                         .getReducedGraphForTypes([type])
-                        .getConnectedComponentGraphs()
+                        .getAllConnectedComponents()
                         .map(connectedCompGraph => this.createGameObjectsForConnectedComponent(connectedCompGraph));
                 }),
                 2
@@ -82,7 +82,7 @@ export class FurnitureBuilder implements WorldItemBuilder {
 
         const horizontalGameObjects = componentGraphMinusVerticalSubComponents
             .getReducedGraphForTypes([componentGraphMinusVerticalSubComponents.getTypes()[0]])
-            .getConnectedComponentGraphs()
+            .getAllConnectedComponents()
             .filter(connectedCompGraph => connectedCompGraph.size() > 0)
             .map(connectedCompGraph => {
                 const rect = this.createRectangleFromHorizontalVertices(connectedCompGraph);
@@ -112,7 +112,7 @@ export class FurnitureBuilder implements WorldItemBuilder {
         if (maxX > minX && maxY > minY) {
             for (let x = minX; x <= maxX; x++) {
                 for (let y = minY; y <= maxY; y++) {
-                    const vertex = componentGraph.getNodeAtPosition({x, y});
+                    const vertex = componentGraph.getNodeAtPosition(new Point(x, y));
 
                     if (vertex === null) {
                         return false;
