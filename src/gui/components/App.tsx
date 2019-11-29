@@ -32,6 +32,7 @@ export class App extends React.Component<{}, AppState> {
     
     componentDidMount() {
         this.context.controllers.updateUIController.setUpdateFunc(() => this.forceUpdate());
+        this.context.controllers.settingsController.setRenderer(() => this.forceUpdate());
     }
 
     render() {

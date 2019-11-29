@@ -35,7 +35,7 @@ const DropdownItemStyled = styled(DropdownItem)`
     }
 `;
 
-export function DropdownComponent(props: DropdownProps) {
+export const DropdownComponent : React.SFC<DropdownProps> = (props: DropdownProps) => {
     const placeholder = <span>Select...</span>
     const options = props.values.map(char => <DropdownItemStyled eventKey={char}>{char}</DropdownItemStyled>)
 
@@ -55,4 +55,10 @@ export function DropdownComponent(props: DropdownProps) {
         </Dropdown>
     );
 }
+
+DropdownComponent.defaultProps = {
+    onFocus: () => null,
+    onBlur: () => null
+};
+
 export const ConnectedDropdownComponent = withCommitOnChange<DropdownProps>(DropdownComponent);

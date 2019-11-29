@@ -120,8 +120,14 @@ export class TextCanvasController implements IEditableCanvas {
         this.controllers.webglCanvasController.isDirty = true;
     }
 
-    setRenderer(renderFunc: () => void) {}
-    render() {}
+    renderCanvas() {}
+
+    renderToolbar() {}
+
+    setCanvasRenderer(renderFunc: () => void) {}
+
+    setToolbarRenderer(renderFunc: () => void) {}
+
     activate(): void {
         if (!this.text) {
             this.writer.write(initialText, FileFormat.TEXT);

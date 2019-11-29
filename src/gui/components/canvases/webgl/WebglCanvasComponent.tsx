@@ -17,7 +17,7 @@ export class WebglCanvasComponent extends React.Component<WebglCanvasComponentPr
         super(props);
 
         this.canvasRef = React.createRef();
-        this.props.canvasController.setRenderer(() => this.forceUpdate());
+        this.props.canvasController.setCanvasRenderer(() => this.forceUpdate());
     }
 
     componentDidMount() {

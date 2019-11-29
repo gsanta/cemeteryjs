@@ -33,7 +33,7 @@ export class SvgCanvasWriter implements ICanvasWriter {
         const {worldItemTypes: worldItemDefinitions} = this.svgConfigReader.read(file);
 
         this.svgCanvasController.worldItemDefinitions = worldItemDefinitions;
-        this.svgCanvasController.render();
+        this.svgCanvasController.renderCanvas();
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
     }
 }

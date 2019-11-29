@@ -27,7 +27,7 @@ export class WebglCanvasWriter implements ICanvasWriter {
             addBorders(item: any, borders: any[]): void {},
             done() {
                 // this.webglEditorController.engine.runRenderLoop(() => this.webglEditorController.scene.render());
-                that.webglEditorController.render();
+                that.webglEditorController.renderCanvas();
             }
         });
     }

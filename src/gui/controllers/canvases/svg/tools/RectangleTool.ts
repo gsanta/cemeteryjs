@@ -15,7 +15,7 @@ export class RectangleTool extends AbstractSelectionTool {
 
     down() {
         super.down();
-        this.svgCanvasController.render();
+        this.svgCanvasController.renderCanvas();
     }
 
     drag() {
@@ -26,7 +26,7 @@ export class RectangleTool extends AbstractSelectionTool {
         const positions = this.getPositionsInSelection();
         positions.forEach(pos => this.svgCanvasController.pixelModel.addPixel(pos, type, true, -1));
 
-        this.svgCanvasController.render();
+        this.svgCanvasController.renderCanvas();
     }
 
     click() {
@@ -35,7 +35,7 @@ export class RectangleTool extends AbstractSelectionTool {
         const layer = getLayerForType(type);
         this.svgCanvasController.pixelModel.addPixel(this.svgCanvasController.mouseController.movePoint, type, false, layer);
 
-        this.svgCanvasController.render();
+        this.svgCanvasController.renderCanvas();
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
     }
 
@@ -43,7 +43,7 @@ export class RectangleTool extends AbstractSelectionTool {
         super.draggedUp();
         this.svgCanvasController.pixelModel.commitPreviews();
 
-        this.svgCanvasController.render();
+        this.svgCanvasController.renderCanvas();
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
     }
 }

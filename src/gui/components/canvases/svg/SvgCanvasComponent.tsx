@@ -36,7 +36,7 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
     constructor(props: {canvasController: SvgCanvasController}) {
         super(props);
 
-        this.props.canvasController.setRenderer(() => this.forceUpdate());
+        this.props.canvasController.setCanvasRenderer(() => this.forceUpdate());
     }
     
     render(): JSX.Element {

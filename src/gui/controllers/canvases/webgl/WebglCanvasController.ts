@@ -20,7 +20,7 @@ export class WebglCanvasController implements IWritableCanvas {
     private canvas: HTMLCanvasElement;
     private camera: UniversalCamera;
     private controllers: ControllerFacade;
-    private renderFunc: () => void;
+    private renderCanvasFunc: () => void;
 
     constructor(controllers: ControllerFacade) {
         this.controllers = controllers;
@@ -70,13 +70,13 @@ export class WebglCanvasController implements IWritableCanvas {
         return WebglCanvasController.id;
     }
 
-    setRenderer(renderFunc: () => void) {
-        this.renderFunc = renderFunc;
+    setCanvasRenderer(renderFunc: () => void) {
+        this.renderCanvasFunc = renderFunc;
     }
 
-    render() {
+    renderCanvas() {
         this.engine.runRenderLoop(() => this.scene.render());
-        this.renderFunc();
+        this.renderCanvasFunc();
     }
 
     activate(): void {}

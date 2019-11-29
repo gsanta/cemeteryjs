@@ -5,13 +5,13 @@ export class ObjectSelectionTool extends AbstractSelectionTool {
 
     down() {
         super.down();
-        this.svgCanvasController.render();
+        this.svgCanvasController.renderCanvas();
     }
 
     drag() {
         super.drag();
         
-        this.svgCanvasController.render();
+        this.svgCanvasController.renderCanvas();
     }
 
     up() {

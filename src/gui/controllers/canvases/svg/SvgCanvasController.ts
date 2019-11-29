@@ -1,8 +1,6 @@
 import { FileFormat } from '../../../../WorldGenerator';
 import { defaultWorldItemDefinitions } from '../../../configs/defaultWorldItemDefinitions';
 import { ControllerFacade } from '../../ControllerFacade';
-import { WorldItemDefinitionForm } from '../../world_items/WorldItemDefinitionForm';
-import { WorldItemDefinitionModel } from '../../world_items/WorldItemDefinitionModel';
 import { ICanvasReader } from '../ICanvasReader';
 import { ICanvasWriter } from '../ICanvasWriter';
 import { IEditableCanvas } from '../IEditableCanvas';
@@ -63,11 +61,13 @@ export class SvgCanvasController implements IEditableCanvas {
     worldItemDefinitions: WorldItemDefinition[];
     selectedWorldItemDefinition: WorldItemDefinition;
 
-    private renderFunc: () => void;
+    private renderCanvasFunc = () => null;
+    private renderToolbarFunc = () => null;
     
     constructor(controllers: ControllerFacade) {
         this.controllers = controllers;
         this.worldItemDefinitions = [...defaultWorldItemDefinitions];
+        this.selectedWorldItemDefinition = this.worldItemDefinitions[0];
 
         this.selectionModel = new SelectionModel();
         this.configModel = new SvgConfig();
@@ -86,15 +86,17 @@ export class SvgCanvasController implements IEditableCanvas {
         this.writer.write(initialSvg, FileFormat.SVG);
     }
 
-    render() {
-        if (this.renderFunc) {
-            this.renderFunc();
-        }
+    renderCanvas() {
+        this.renderCanvasFunc();
+    }
+
+    renderToolbar() {
+        this.renderToolbarFunc();
     }
 
     setActiveTool(toolType: ToolType) {
         this.activeTool = this.tools.find(tool => tool.type === toolType);
-        this.render();
+        this.renderToolbar();
     }
 
     getId() {
@@ -103,11 +105,20 @@ export class SvgCanvasController implements IEditableCanvas {
 
     resize(): void {};
 
-    setRenderer(renderFunc: () => void) {
-        this.renderFunc = renderFunc;
+    setCanvasRenderer(renderFunc: () => void) {
+        this.renderCanvasFunc = renderFunc;
+    }
+
+    setToolbarRenderer(renderFunc: () => void) {
+        this.renderToolbarFunc = renderFunc;
     }
 
     activate(): void {
         // this.
+    }
+
+    setSelectedWorldItemDefinition(worldItemDefinition: WorldItemDefinition) {
+        this.selectedWorldItemDefinition = worldItemDefinition;
+        this.renderToolbar();
     }
 }
