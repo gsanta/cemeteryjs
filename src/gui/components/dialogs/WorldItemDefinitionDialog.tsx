@@ -1,6 +1,5 @@
 import * as React from 'react';
 import './IntegrationCodeDialog.scss';
-import { CloseIconComponent } from './CloseIconComponent';
 import { AppContextType, AppContext } from '../Context';
 import { InputComponent, ConnectedInputComponent } from '../forms/InputComponent';
 import styled from 'styled-components';
@@ -76,18 +75,32 @@ export class WorldItemDefinitionDialogComponent extends React.Component<WorldIte
     static dialogName = 'World item definitions';
     static contextType = AppContext;
     context: AppContextType;
-
+    
     componentDidMount() {
-        this.context.controllers.getActiveCanvas().worldItemDefinitionForm.setRenderer(() => this.forceUpdate());
+        this.context.controllers.worldItemDefinitionForm.setRenderer(() => this.forceUpdate());
+
+        if (this.props.isOpen) {
+            this.setInitialDialogData();
+            this.forceUpdate();
+        }
+    }
+
+    componentDidUpdate(prevProps: WorldItemDefinitionDialogProps) {
+        if (this.props.isOpen && !prevProps.isOpen) {
+            this.setInitialDialogData();
+            this.forceUpdate();
+        }
     }
 
     render() {
+        if (!this.context.controllers.worldItemDefinitionForm.getModel()) { return null; }
+
         return (
             <Dialog
                 title="World item definitions"
                 isOpen={this.props.isOpen}
                 onCancel={() => this.context.controllers.settingsController.setActiveDialog(null)}
-                onSubmit={() => () => this.context.controllers.settingsController.setActiveDialog(null)}
+                onSubmit={() => this.context.controllers.settingsController.setActiveDialog(null)}
                 showFooter={true}
             >
                 {this.renderContent()}
@@ -96,11 +109,11 @@ export class WorldItemDefinitionDialogComponent extends React.Component<WorldIte
     }
 
     renderContent() {
-        const form = this.context.controllers.getActiveCanvas().worldItemDefinitionForm;
-        const meshDescriptors = form.getModel().types;
+        const form = this.context.controllers.worldItemDefinitionForm;
+        const worldItemDefinitions = form.worldItemDefinitions;
         const windowModel = this.context.controllers.settingsModel;
 
-        const names = meshDescriptors.map((def, index) => (
+        const names = worldItemDefinitions.map((def, index) => (
             <div>
                 <InputComponent
                     type="text"
@@ -115,7 +128,7 @@ export class WorldItemDefinitionDialogComponent extends React.Component<WorldIte
                     }}
                     onChange={val => form.updateStringProp(val)}
                     onBlur={() => form.commitProp()}
-                    isMarked={def.typeName === form.getModel().selectedType.typeName}
+                    isMarked={def.typeName === form.selectedType.typeName}
                 />
             </div>
         ));
@@ -173,7 +186,7 @@ export class WorldItemDefinitionDialogComponent extends React.Component<WorldIte
                         </LabeledComponent>
                     </div>
                     <div className="property-row">
-                        <MaterialsComponent definitionController={this.context.controllers.getActiveCanvas().worldItemDefinitionForm}/>
+                        <MaterialsComponent definitionController={this.context.controllers.worldItemDefinitionForm}/>
                     </div>
                 </PropertiesColumnStyled>
             </WorldItemDefinitionStyled>
@@ -204,5 +217,9 @@ export class WorldItemDefinitionDialogComponent extends React.Component<WorldIte
                 />
             </LabeledComponent>
         );
+    }
+
+    private setInitialDialogData() {
+        this.context.controllers.worldItemDefinitionForm.setModel(this.context.controllers.getActiveCanvas().worldItemDefinitions);
     }
 }

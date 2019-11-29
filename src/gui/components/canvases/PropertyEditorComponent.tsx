@@ -65,11 +65,11 @@ const PropertiesColumnStyled = styled.div`
         color: ${colors.textColorDark};
 `;
 
-export class PropertyEditorComponent extends React.Component<{worldItemDefinitionForm: WorldItemDefinitionForm}> {
+export class PropertyEditorComponent extends React.Component<{}> {
     static contextType = AppContext;
     context: AppContextType;
 
-    constructor(props: {worldItemDefinitionForm: WorldItemDefinitionForm}) {
+    constructor(props: {}) {
         super(props);
     }
 

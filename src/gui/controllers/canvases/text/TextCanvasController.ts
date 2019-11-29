@@ -11,6 +11,7 @@ import { ICanvasWriter } from '../ICanvasWriter';
 import { IEditableCanvas } from '../IEditableCanvas';
 import { TextCanvasReader } from './TextCanvasReader';
 import { TextCanvasWriter } from './TextCanvasWriter';
+import { WorldItemDefinition } from '../../../../WorldItemDefinition';
 
 const THEME = 'nightshiftsTheme';
 const LANGUAGE = 'nightshiftsLanguage';
@@ -50,8 +51,7 @@ export class TextCanvasController implements IEditableCanvas {
     text: string = null;
     writer: ICanvasWriter;
     reader: ICanvasReader;
-    worldItemDefinitionForm: WorldItemDefinitionForm;
-    worldItemDefinitionModel: WorldItemDefinitionModel;
+    worldItemDefinitions: WorldItemDefinition[];
     
     private controllers: ControllerFacade;
 
@@ -59,8 +59,7 @@ export class TextCanvasController implements IEditableCanvas {
         this.controllers = controllers;
         this.writer = new TextCanvasWriter(this);
         this.reader = new TextCanvasReader(this);
-        this.worldItemDefinitionModel = new WorldItemDefinitionModel(defaultWorldItemDefinitions);
-        this.worldItemDefinitionForm = new WorldItemDefinitionForm(this);
+        this.worldItemDefinitions = [...defaultWorldItemDefinitions];
     }
 
     createEditor(monacoModule: any, monacoConfig: typeof MonacoConfig, element: HTMLDivElement, content: string) {

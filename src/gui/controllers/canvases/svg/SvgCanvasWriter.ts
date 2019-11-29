@@ -30,9 +30,9 @@ export class SvgCanvasWriter implements ICanvasWriter {
         this.svgCanvasController.pixelModel.clear();
         processedJson.rects.forEach(rect => this.svgCanvasController.pixelModel.addPixel(new Point(rect.x * pixelSize, rect.y * pixelSize), rect.type, false, 0));
 
-        const {worldItemTypes} = this.svgConfigReader.read(file);
+        const {worldItemTypes: worldItemDefinitions} = this.svgConfigReader.read(file);
 
-        this.svgCanvasController.worldItemDefinitionModel.setTypes(worldItemTypes);
+        this.svgCanvasController.worldItemDefinitions = worldItemDefinitions;
         this.svgCanvasController.render();
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
     }

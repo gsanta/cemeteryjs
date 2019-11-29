@@ -35,7 +35,7 @@ export class Dialog extends React.Component<DialogProps> {
                 <div className="dialog">
                     <div className="dialog-title">
                         <div>World item definitions</div>
-                        <CloseIconComponent onClick={() => this.props.onSubmit()}/>
+                        <CloseIconComponent onClick={() => this.props.onCancel()}/>
                     </div>
                     <div className="dialog-body">
                         {this.props.children}

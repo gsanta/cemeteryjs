@@ -22,7 +22,7 @@ export class RectangleTool extends AbstractSelectionTool {
         super.drag();
         
         this.svgCanvasController.pixelModel.removePreviews();
-        const type = this.svgCanvasController.worldItemDefinitionForm.getModel().selectedType.typeName;
+        const type = this.svgCanvasController.selectedWorldItemDefinition.typeName;
         const positions = this.getPositionsInSelection();
         positions.forEach(pos => this.svgCanvasController.pixelModel.addPixel(pos, type, true, -1));
 
@@ -31,7 +31,7 @@ export class RectangleTool extends AbstractSelectionTool {
 
     click() {
         super.click();
-        const type = this.svgCanvasController.worldItemDefinitionForm.getModel().selectedType.typeName;
+        const type = this.svgCanvasController.selectedWorldItemDefinition.typeName;
         const layer = getLayerForType(type);
         this.svgCanvasController.pixelModel.addPixel(this.svgCanvasController.mouseController.movePoint, type, false, layer);
 

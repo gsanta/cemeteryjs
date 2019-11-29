@@ -7,12 +7,14 @@ import { EventDispatcher } from './events/EventDispatcher';
 import { SettingsController } from './settings/SettingsController';
 import { SettingsModel } from './settings/SettingsModel';
 import { UIUpdateController } from './UIUpdateController';
+import { WorldItemDefinitionForm } from './world_items/WorldItemDefinitionForm';
 
 export class ControllerFacade {
     webglCanvasController: WebglCanvasController;
     updateUIController: UIUpdateController;
     settingsController: SettingsController;
     
+    worldItemDefinitionForm: WorldItemDefinitionForm;
     settingsModel: SettingsModel;
     editors: IEditableCanvas[];
 
@@ -26,6 +28,8 @@ export class ControllerFacade {
         this.updateUIController = new UIUpdateController();
         this.webglCanvasController = new WebglCanvasController(this);
         this.settingsController = new SettingsController(this);
+
+        this.worldItemDefinitionForm = new WorldItemDefinitionForm();
 
     }
 

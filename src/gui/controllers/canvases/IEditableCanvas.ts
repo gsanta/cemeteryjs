@@ -1,10 +1,8 @@
-import { WorldItemDefinitionForm } from '../world_items/WorldItemDefinitionForm';
-import { WorldItemDefinitionModel } from '../world_items/WorldItemDefinitionModel';
 import { IReadableCanvas } from './IReadableCanvas';
 import { IWritableCanvas } from './IWritableCanvas';
+import { WorldItemDefinition } from '../../../WorldItemDefinition';
 
 
 export interface IEditableCanvas extends IReadableCanvas, IWritableCanvas {
-    worldItemDefinitionModel: WorldItemDefinitionModel;
-    worldItemDefinitionForm: WorldItemDefinitionForm;
+    worldItemDefinitions: WorldItemDefinition[];
 }

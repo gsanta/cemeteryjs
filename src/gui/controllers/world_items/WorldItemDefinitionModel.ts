@@ -1,15 +1,15 @@
 import { WorldItemDefinition } from '../../../WorldItemDefinition';
 import { ControllerFacade } from '../ControllerFacade';
 
-export function cloneWorldItemType(descriptor: WorldItemDefinition) {
-    const clone = {...descriptor};
+// export function cloneWorldItemType(descriptor: WorldItemDefinition) {
+//     const clone = {...descriptor};
 
-    if (clone.materials) {
-        clone.materials = [...clone.materials];
-    }
+//     if (clone.materials) {
+//         clone.materials = [...clone.materials];
+//     }
 
-    return clone;
-}
+//     return clone;
+// }
 
 export class WorldItemDefinitionModel {
     types: WorldItemDefinition[];
@@ -31,7 +31,7 @@ export class WorldItemDefinitionModel {
     syncSelected(origTypeName: string) {
         const origWorldItemType = this.types.find(type => type.typeName === origTypeName);
         const clone = [...this.types];
-        clone.splice(this.types.indexOf(origWorldItemType), 1, cloneWorldItemType(this.selectedType));
+        clone.splice(this.types.indexOf(origWorldItemType), 1, WorldItemDefinition.clone(this.selectedType));
         this.types = clone;
         this.createMapByTypeName();
     }

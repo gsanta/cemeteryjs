@@ -32,7 +32,7 @@ export class MaterialsComponent extends React.Component<{definitionController: W
     }
 
     private renderAddedMaterials(): JSX.Element[] {
-        const selectedMeshDescriptor = this.props.definitionController.getModel().selectedType;
+        const selectedMeshDescriptor = this.props.definitionController.selectedType;
         const materials = selectedMeshDescriptor ? selectedMeshDescriptor.materials : [];
 
         const addedMaterials = (materials || []).map((material, index) => {

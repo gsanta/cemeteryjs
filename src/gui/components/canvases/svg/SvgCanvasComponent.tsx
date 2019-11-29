@@ -123,8 +123,7 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
     }
 
     renderMetaData(): JSX.Element {
-        const worldItemDefinitionModel = this.props.canvasController.worldItemDefinitionModel;
-        const wgTypeComponents = worldItemDefinitionModel.types.map(type => {
+        const wgTypeComponents = this.props.canvasController.worldItemDefinitions.map(type => {
             const props: Partial<WgDefinitionAttributes> = {
                 color: type.color,
                 scale: type.scale ? type.scale + '' : '1',

@@ -17,14 +17,20 @@ export class SvgConfigReader implements ConfigReader {
     private parseWorldItemDefinitions(rawJson: RawWorldMapJson): WorldItemDefinition[] {
         if (!rawJson.svg.metadata || !rawJson.svg.metadata['wg-type']) { return; }
 
+        const worldItemDefinitions: WorldItemDefinition[] = [];
+
         if (rawJson.svg.metadata['wg-type'].length) {
-            return rawJson.svg.metadata['wg-type'].map(wgType => this.parseWorldItemDefinition(wgType));
+            rawJson.svg.metadata['wg-type'].forEach(wgType => {
+                worldItemDefinitions.push(this.parseWorldItemDefinition(wgType, worldItemDefinitions));
+            })
         } else {
-            return [this.parseWorldItemDefinition(<WgDefinition> <unknown> rawJson.svg.metadata['wg-type'])];
+            worldItemDefinitions.push(this.parseWorldItemDefinition(<WgDefinition> <unknown> rawJson.svg.metadata['wg-type'], worldItemDefinitions));
         }
+
+        return worldItemDefinitions;
     }
 
-    parseWorldItemDefinition(wgType: WgDefinition): WorldItemDefinition {
+    parseWorldItemDefinition(wgType: WgDefinition, existingWorldItemDefinitions: WorldItemDefinition[]): WorldItemDefinition {
         const color = wgType._attributes["color"] as string;
         const model = wgType._attributes["model"];
         const shape = wgType._attributes["shape"];
@@ -35,7 +41,7 @@ export class SvgConfigReader implements ConfigReader {
         const roles = wgType._attributes["roles"] ? wgType._attributes["roles"].split(" ").map(role => WorldItemRole.fromString(role)) : [];
 
 
-        return {color, roles, model, scale, translateY, typeName, materials, shape};
+        return {id: WorldItemDefinition.generateId(existingWorldItemDefinitions), color, roles, model, scale, translateY, typeName, materials, shape};
     }
 
 

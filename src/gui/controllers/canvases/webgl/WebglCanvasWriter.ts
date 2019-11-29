@@ -4,14 +4,15 @@ import { WorldItemDefinitionModel } from "../../world_items/WorldItemDefinitionM
 import { BabylonWorldGenerator } from "../../../../integrations/babylonjs/BabylonWorldGenerator";
 import { FileFormat } from '../../../../WorldGenerator';
 import { WorldItem } from "../../../../WorldItem";
+import { WorldItemDefinition } from '../../../../WorldItemDefinition';
 
 export class WebglCanvasWriter implements ICanvasWriter {
     private webglEditorController: WebglCanvasController;
-    private worldItemDefinitionModel: WorldItemDefinitionModel;
+    private worldItemDefinitions: WorldItemDefinition[];
 
-    constructor(webglEditorController: WebglCanvasController, worldItemDefinitionModel: WorldItemDefinitionModel) {
+    constructor(webglEditorController: WebglCanvasController, worldItemDefinitions: WorldItemDefinition[]) {
         this.webglEditorController = webglEditorController;
-        this.worldItemDefinitionModel = worldItemDefinitionModel;
+        this.worldItemDefinitions = worldItemDefinitions;
     }
 
     write(file: string, fileFormat: FileFormat): void {

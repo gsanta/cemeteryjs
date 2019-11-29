@@ -15,6 +15,7 @@ import { SvgCanvasWriter } from './SvgCanvasWriter';
 import { DeleteTool } from './tools/DeleteTool';
 import { RectangleTool } from './tools/RectangleTool';
 import { Tool, ToolType } from './tools/Tool';
+import { WorldItemDefinition } from '../../../../WorldItemDefinition';
 
 export const initialSvg = 
 `
@@ -59,15 +60,14 @@ export class SvgCanvasController implements IEditableCanvas {
     selectionModel: SelectionModel;
     
     controllers: ControllerFacade;
-    worldItemDefinitionForm: WorldItemDefinitionForm;
-    worldItemDefinitionModel: WorldItemDefinitionModel;
+    worldItemDefinitions: WorldItemDefinition[];
+    selectedWorldItemDefinition: WorldItemDefinition;
 
     private renderFunc: () => void;
     
     constructor(controllers: ControllerFacade) {
         this.controllers = controllers;
-        this.worldItemDefinitionModel = new WorldItemDefinitionModel(defaultWorldItemDefinitions);
-        this.worldItemDefinitionForm = new WorldItemDefinitionForm(this);
+        this.worldItemDefinitions = [...defaultWorldItemDefinitions];
 
         this.selectionModel = new SelectionModel();
         this.configModel = new SvgConfig();

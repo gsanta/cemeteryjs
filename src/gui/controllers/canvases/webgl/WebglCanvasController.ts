@@ -41,7 +41,7 @@ export class WebglCanvasController implements IWritableCanvas {
     init(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
         this.engine = new Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
-        this.writer = new WebglCanvasWriter(this, this.controllers.getActiveCanvas().worldItemDefinitionModel);
+        this.writer = new WebglCanvasWriter(this, this.controllers.getActiveCanvas().worldItemDefinitions);
     }
 
     updateCanvas(worldMap: string, fileFormat: FileFormat) {

@@ -1,6 +1,5 @@
 import { IFormController } from '../IFormController';
-import { cloneWorldItemType, WorldItemDefinitionModel } from './WorldItemDefinitionModel';
-import { IEditableCanvas } from '../canvases/IEditableCanvas';
+import { WorldItemDefinition } from '../../../WorldItemDefinition';
 
 export enum WorldItemTypeProperty {
     TYPE_NAME = 'typeName',
@@ -16,15 +15,10 @@ export enum WorldItemTypeProperty {
 export class WorldItemDefinitionForm extends IFormController<WorldItemTypeProperty> {
     shapes: string[] = ['rect'];
 
-    private canvasController: IEditableCanvas;
     private renderFunc = () => null;
     private selectedIndex = -1;
-
-    constructor(canvasController: IEditableCanvas) {
-        super();
-        this.canvasController = canvasController;
-        this.setSelectedDefinition(this.getModel().types[0].typeName);
-    }
+    worldItemDefinitions: WorldItemDefinition[];
+    selectedType: WorldItemDefinition;
 
     setRenderer(renderFunc: () => void) {
         this.renderFunc = renderFunc;
@@ -39,28 +33,28 @@ export class WorldItemDefinitionForm extends IFormController<WorldItemTypeProper
         this.focusedPropType = type;
         switch(this.focusedPropType) {
             case WorldItemTypeProperty.MODEL:
-                this.tempString = this.getModel().selectedType.model;
+                this.tempString = this.selectedType.model;
                 break;
             case WorldItemTypeProperty.CHAR:
-                this.tempString = this.getModel().selectedType.char;
+                this.tempString = this.selectedType.char;
                 break;
             case WorldItemTypeProperty.SCALE:
-                this.tempNumber = this.getModel().selectedType.scale;
+                this.tempNumber = this.selectedType.scale;
                 break;
             case WorldItemTypeProperty.SHAPE:
-                this.tempString = this.getModel().selectedType.shape;
+                this.tempString = this.selectedType.shape;
                 break;
             case WorldItemTypeProperty.TRANSLATE_Y:
-                this.tempNumber = this.getModel().selectedType.translateY;
+                this.tempNumber = this.selectedType.translateY;
                 break;
             case WorldItemTypeProperty.MATERIALS:
                 this.tempString = "";
                 break;
             case WorldItemTypeProperty.COLOR:
-                this.tempString = this.getModel().selectedType.color;
+                this.tempString = this.selectedType.color;
                 break;
             case WorldItemTypeProperty.TYPE_NAME:
-                this.tempString = this.getModel().selectedType.typeName;
+                this.tempString = this.selectedType.typeName;
                 break;
         }
 
@@ -89,8 +83,8 @@ export class WorldItemDefinitionForm extends IFormController<WorldItemTypeProper
     deletItemFromListProp(prop: WorldItemTypeProperty, index: number) {
         switch(prop) {
             case WorldItemTypeProperty.MATERIALS:
-                this.getModel().selectedType.materials.splice(index, 1);
-                this.getModel().syncSelected(this.getModel().selectedType.typeName);
+                this.selectedType.materials.splice(index, 1);
+                this.syncSelected(this.selectedType.typeName);
                 break;
         } 
 
@@ -98,39 +92,39 @@ export class WorldItemDefinitionForm extends IFormController<WorldItemTypeProper
     }
 
     commitProp(removeFocus = false) {
-        const worldItemType = this.getModel().types.find(desc => desc.typeName === this.getModel().selectedType.typeName);
+        const worldItemType = this.worldItemDefinitions.find(desc => desc.typeName === this.selectedType.typeName);
 
         switch(this.focusedPropType) {
             case WorldItemTypeProperty.MODEL:
-                this.getModel().selectedType.model = this.tempString;
+                this.selectedType.model = this.tempString;
                 break;
             case WorldItemTypeProperty.CHAR:
-                this.getModel().selectedType.char = this.tempString;
+                this.selectedType.char = this.tempString;
                 break;
             case WorldItemTypeProperty.SCALE:
-                this.getModel().selectedType.scale = this.tempNumber;
+                this.selectedType.scale = this.tempNumber;
                 break;
             case WorldItemTypeProperty.SHAPE:
-                this.getModel().selectedType.shape = this.tempString;
+                this.selectedType.shape = this.tempString;
                 break;
             case WorldItemTypeProperty.TRANSLATE_Y:
-                this.getModel().selectedType.translateY = this.tempNumber;
+                this.selectedType.translateY = this.tempNumber;
                 break;
             case WorldItemTypeProperty.TYPE_NAME:
-                this.getModel().selectedType.typeName = this.tempString;
+                this.selectedType.typeName = this.tempString;
                 break;
             case WorldItemTypeProperty.MATERIALS:
-                this.getModel().selectedType.materials.push(this.tempString);
+                this.selectedType.materials.push(this.tempString);
                 this.tempString = '';
                 this.focusedPropType = null;
                 break;
             case WorldItemTypeProperty.COLOR:
-                this.getModel().selectedType.color = this.tempString;
+                this.selectedType.color = this.tempString;
                 this.tempString = '';
                 break;
         }
 
-        this.getModel().syncSelected(worldItemType.typeName);
+        this.syncSelected(worldItemType.typeName);
 
         if (removeFocus) {
             this.focusedPropType = null;
@@ -142,27 +136,27 @@ export class WorldItemDefinitionForm extends IFormController<WorldItemTypeProper
     getVal(property: WorldItemTypeProperty) {
         switch(property) {
             case WorldItemTypeProperty.MODEL:
-                return this.focusedPropType === property ? this.tempString : this.getModel().selectedType.model;
+                return this.focusedPropType === property ? this.tempString : this.selectedType.model;
             case WorldItemTypeProperty.CHAR:
-                return this.focusedPropType === property ? this.tempString : this.getModel().selectedType.char;
+                return this.focusedPropType === property ? this.tempString : this.selectedType.char;
             case WorldItemTypeProperty.SCALE:
-                return this.focusedPropType === property ? this.tempNumber : this.getModel().selectedType.scale;
+                return this.focusedPropType === property ? this.tempNumber : this.selectedType.scale;
             case WorldItemTypeProperty.SHAPE:
-                return this.focusedPropType === property ? this.tempString : this.getModel().selectedType.shape;
+                return this.focusedPropType === property ? this.tempString : this.selectedType.shape;
             case WorldItemTypeProperty.TRANSLATE_Y:
-                return this.focusedPropType === property ? this.tempNumber : this.getModel().selectedType.translateY;
+                return this.focusedPropType === property ? this.tempNumber : this.selectedType.translateY;
             case WorldItemTypeProperty.TYPE_NAME:
-                return this.focusedPropType === property ? this.tempString : this.getModel().selectedType.typeName;
+                return this.focusedPropType === property ? this.tempString : this.selectedType.typeName;
             case WorldItemTypeProperty.MATERIALS:
                 return this.focusedPropType === property ? this.tempString : '';
             case WorldItemTypeProperty.COLOR:
-                return this.focusedPropType === property ? this.tempString : this.getModel().selectedType.color;
+                return this.focusedPropType === property ? this.tempString : this.selectedType.color;
         }
     }
 
 
     getListItem(index: number) {
-        return this.getModel().types[index];
+        return this.worldItemDefinitions[index];
     }
 
     getSelectedItemIndex(): number {
@@ -170,18 +164,30 @@ export class WorldItemDefinitionForm extends IFormController<WorldItemTypeProper
     }
 
     setSelectedDefinition(type: string) {
-        if (this.getModel().selectedType) {
-            this.getModel().syncSelected(this.getModel().selectedType.typeName);
+        if (this.selectedType) {
+            this.syncSelected(this.selectedType.typeName);
         }
 
-        const meshDescriptor = this.getModel().types.find(descriptor => descriptor.typeName === type);
-        this.selectedIndex = this.getModel().types.indexOf(meshDescriptor);
-        this.getModel().selectedType = cloneWorldItemType(meshDescriptor);
+        const worldItemDefinition = this.worldItemDefinitions.find(descriptor => descriptor.typeName === type);
+        this.selectedIndex = this.worldItemDefinitions.indexOf(worldItemDefinition);
+        this.selectedType = WorldItemDefinition.clone(worldItemDefinition);
 
         this.renderFunc();
     }
 
-    getModel(): WorldItemDefinitionModel {
-        return this.canvasController.worldItemDefinitionModel;
+    getModel(): WorldItemDefinition[] {
+        return this.worldItemDefinitions;
+    }
+
+    setModel(worldItemDefinitions: WorldItemDefinition[]) {
+        this.worldItemDefinitions = WorldItemDefinition.cloneAll(worldItemDefinitions);
+        this.setSelectedDefinition(this.worldItemDefinitions[0].typeName);
+    }
+
+    private syncSelected(origTypeName: string) {
+        const origWorldItemType = this.worldItemDefinitions.find(type => type.typeName === origTypeName);
+        const clone = [...this.worldItemDefinitions];
+        clone.splice(this.worldItemDefinitions.indexOf(origWorldItemType), 1, WorldItemDefinition.clone(this.selectedType));
+        this.worldItemDefinitions = clone;
     }
 }

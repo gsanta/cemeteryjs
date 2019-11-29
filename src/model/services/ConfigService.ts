@@ -1,4 +1,4 @@
-import { WorldItemDefinition, WorldItemRole } from "../../WorldItemDefinition";
+import { WorldItemDefinition, WorldItemRole } from '../../WorldItemDefinition';
 import { TextConfigReader } from "../readers/text/TextConfigReader";
 import { GlobalConfig } from '../readers/text/GlobalSectionParser';
 import { ConfigReader } from '../readers/ConfigReader';
@@ -35,6 +35,7 @@ export class ConfigService {
         const {worldItemTypes, globalConfig} = this.configReader.read(worldMap);
         this.meshDescriptors = worldItemTypes;
         this.meshDescriptors.push({
+            id: WorldItemDefinition.generateId(this.meshDescriptors),
             typeName: 'root',
             shape: 'rectangle',
             roles: [WorldItemRole.CONTAINER],

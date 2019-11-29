@@ -1,6 +1,7 @@
 import { SvgCanvasController } from './SvgCanvasController';
 import { WorldItemDefinitionModel } from '../../world_items/WorldItemDefinitionModel';
 import { ICanvasReader } from '../ICanvasReader';
+import { WorldItemDefinition } from '../../../../WorldItemDefinition';
 
 export class SvgCanvasReader implements ICanvasReader {
     private bitmapEditorController: SvgCanvasController;
@@ -10,13 +11,13 @@ export class SvgCanvasReader implements ICanvasReader {
     }
 
     read(): string {
-        const metaData = this.createMetaData(this.bitmapEditorController.worldItemDefinitionModel);
-        const shapes = this.createPixels(this.bitmapEditorController.worldItemDefinitionModel);
+        const metaData = this.createMetaData(this.bitmapEditorController.worldItemDefinitions);
+        const shapes = this.createPixels(this.bitmapEditorController.worldItemDefinitions);
 
         return `<svg data-wg-pixel-size="10" data-wg-width="1500" data-wg-height="1000">${metaData}${shapes.join('')}</svg>`;
     }
 
-    private createPixels(worldItemDefinitionModel: WorldItemDefinitionModel): string[] {
+    private createPixels(worldItemDefinitions: WorldItemDefinition[]): string[] {
         const pixelModel = this.bitmapEditorController.pixelModel;
         const configModel = this.bitmapEditorController.configModel;
 
@@ -28,7 +29,7 @@ export class SvgCanvasReader implements ICanvasReader {
             pixels.forEach(pixel => {
                 const pixelSize = configModel.pixelSize;
                 const pos = pixelModel.getPixelPosition(index).mul(pixelSize);
-                const color = worldItemDefinitionModel.getByTypeName(pixel.type).color;
+                const color = WorldItemDefinition.getByTypeName(pixel.type, worldItemDefinitions).color;
     
                 const attrs: [string, string][] = [
                     ['width', '10px'],
@@ -48,8 +49,8 @@ export class SvgCanvasReader implements ICanvasReader {
         return elements;
     }
 
-    private createMetaData(worldItemDefinitionModel: WorldItemDefinitionModel): string {
-        const wgTypeComponents = worldItemDefinitionModel.types.map(type => {
+    private createMetaData(worldItemDefinitions: WorldItemDefinition[]): string {
+        const wgTypeComponents = worldItemDefinitions.map(type => {
             const attributes: [string, string][] = [
                 ['color', type.color],
                 ['scale', type.scale ? type.scale + '' : '1'],

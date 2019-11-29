@@ -44,16 +44,18 @@ const ROLE_TEST = /\s+ROLES\s+(?:\[([^\]]+)\])/;
 
 export class TextConfigReader extends WorldMapLineListener implements ConfigReader {
     private typeToCharMap: Map<string, string>;
-    private worldItemTypes: WorldItemDefinition[] = [];
+    private idCounter = 1;
+    private worldItemDefinitions: WorldItemDefinition[] = [];
     private globalConfig: GlobalConfig;
 
     read(worldMap: string): {worldItemTypes: WorldItemDefinition[], globalConfig: GlobalConfig} {
         this.typeToCharMap = new Map();
+        this.idCounter = 1;
         this.globalConfig = getDefaultGlobalConfig();
 
         new TextWorldMapParser(this).read(worldMap);
 
-        return {worldItemTypes: this.worldItemTypes, globalConfig: this.globalConfig};
+        return {worldItemTypes: this.worldItemDefinitions, globalConfig: this.globalConfig};
     }
 
     public addDefinitionSectionLine(line: string) {
@@ -67,7 +69,8 @@ export class TextConfigReader extends WorldMapLineListener implements ConfigRead
         const scale = this.parseScale(line);
         const translateY = this.parseTranslateY(line) || 0;
         const roles = this.parseRoles(line);
-        this.worldItemTypes.push({
+        this.worldItemDefinitions.push({
+            id: WorldItemDefinition.generateId(this.worldItemDefinitions),
             char,
             typeName: type,
             model: modelPath,
