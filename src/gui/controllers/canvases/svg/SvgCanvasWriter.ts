@@ -1,4 +1,4 @@
-import { Point } from '@nightshifts.inc/geometry';
+import { Point, Rectangle } from '@nightshifts.inc/geometry';
 import { SvgConfigReader } from '../../../../model/readers/svg/SvgConfigReader';
 import { SvgPreprocessor } from '../../../../model/readers/svg/SvgPreprocessor';
 import { FileFormat } from '../../../../WorldGenerator';
@@ -26,14 +26,17 @@ export class SvgCanvasWriter implements ICanvasWriter {
         }
 
         const processedJson = this.svgPreprocessor.process(file); 
-        const pixelSize = processedJson.pixelSize;
         this.svgCanvasController.pixelModel.clear();
-        processedJson.rects.forEach(rect => this.svgCanvasController.pixelModel.addPixel(new Point(rect.x * pixelSize, rect.y * pixelSize), rect.type, false, 0));
+        processedJson.rects.forEach(rect => {
+            const rectangle = new Rectangle(new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height));
+            this.svgCanvasController.pixelModel.addRect(rectangle, rect.type, 0, false);
+        });
 
         const {worldItemTypes: worldItemDefinitions} = this.svgConfigReader.read(file);
 
         this.svgCanvasController.worldItemDefinitions = worldItemDefinitions;
         this.svgCanvasController.renderCanvas();
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
+        
     }
 }

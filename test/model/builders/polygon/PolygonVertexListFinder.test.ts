@@ -2,6 +2,7 @@ import { Direction, PolygonVertexListFinder } from '../../../../src/model/builde
 import { TextWorldMapReader } from '../../../../src/model/readers/text/TextWorldMapReader';
 import { FileFormat } from '../../../../src/WorldGenerator';
 import { setup } from '../../testUtils';
+import { Point } from '@nightshifts.inc/geometry';
 
 describe('Find the vertices of a polygon in the graph', () => {
     function getVertices(worldMap: string): [{x: number, y: number}[], Direction[], boolean[]] {
@@ -46,14 +47,14 @@ describe('Find the vertices of a polygon in the graph', () => {
         const [positions, directions, convexness] = getVertices(worldMap);
 
         expect(positions).toEqual([
-            {x: 1, y: 1},
-            {x: 7, y: 1},
-            {x: 7, y: 2},
-            {x: 5, y: 2},
-            {x: 5, y: 5},
-            {x: 7, y: 5},
-            {x: 7, y: 6},
-            {x: 1, y: 6}
+            new Point(1, 1),
+            new Point(7, 1),
+            new Point(7, 2),
+            new Point(5, 2),
+            new Point(5, 5),
+            new Point(7, 5),
+            new Point(7, 6),
+            new Point(1, 6)
         ]);
 
         expect(directions).toEqual(['up', 'right', 'down', 'left', 'down', 'right', 'down', 'left']);
@@ -82,10 +83,10 @@ describe('Find the vertices of a polygon in the graph', () => {
         const [positions, directions, convexness] = getVertices(worldMap);
 
         expect(positions).toEqual([
-            {x: 1, y: 1},
-            {x: 2, y: 1},
-            {x: 2, y: 1},
-            {x: 1, y: 1}
+            new Point(1, 1),
+            new Point(2, 1),
+            new Point(2, 1),
+            new Point(1, 1)
         ]);
 
         expect(directions).toEqual(['up', 'right', 'down', 'left']);
@@ -114,10 +115,10 @@ describe('Find the vertices of a polygon in the graph', () => {
         const [positions, directions, convexness] = getVertices(worldMap);
 
         expect(positions).toEqual([
-            {x: 1, y: 1},
-            {x: 4, y: 1},
-            {x: 4, y: 1},
-            {x: 1, y: 1}
+            new Point(1, 1),
+            new Point(4, 1),
+            new Point(4, 1),
+            new Point(1, 1)
         ]);
 
         expect(directions).toEqual(['up', 'right', 'down', 'left']);
@@ -146,10 +147,10 @@ describe('Find the vertices of a polygon in the graph', () => {
         const [positions, directions, convexness] = getVertices(worldMap);
 
         expect(positions).toEqual([
-            {x: 1, y: 1},
-            {x: 1, y: 1},
-            {x: 1, y: 2},
-            {x: 1, y: 2}
+            new Point(1, 1),
+            new Point(1, 1),
+            new Point(1, 2),
+            new Point(1, 2)
         ]);
 
         expect(directions).toEqual(['up', 'right', 'down', 'left']);
@@ -180,10 +181,10 @@ describe('Find the vertices of a polygon in the graph', () => {
         const [positions, directions, convexness] = getVertices(worldMap);
 
         expect(positions).toEqual([
-            {x: 1, y: 1},
-            {x: 1, y: 1},
-            {x: 1, y: 4},
-            {x: 1, y: 4}
+            new Point(1, 1),
+            new Point(1, 1),
+            new Point(1, 4),
+            new Point(1, 4)
         ]);
 
         expect(directions).toEqual(['up', 'right', 'down', 'left']);
@@ -212,10 +213,10 @@ describe('Find the vertices of a polygon in the graph', () => {
         const [positions, directions, convexness] = getVertices(worldMap);
 
         expect(positions).toEqual([
-            {x: 1, y: 1},
-            {x: 1, y: 1},
-            {x: 1, y: 1},
-            {x: 1, y: 1}
+            new Point(1, 1),
+            new Point(1, 1),
+            new Point(1, 1),
+            new Point(1, 1)
         ]);
 
         expect(directions).toEqual(['up', 'right', 'down', 'left']);
@@ -245,18 +246,18 @@ describe('Find the vertices of a polygon in the graph', () => {
         const [positions, directions, convexness] = getVertices(worldMap);
 
         expect(positions).toEqual([
-            {x: 3, y: 1},
-            {x: 6, y: 1},
-            {x: 6, y: 1},
-            {x: 3, y: 1},
-            {x: 3, y: 2},
-            {x: 2, y: 2},
-            {x: 2, y: 3},
-            {x: 1, y: 3},
-            {x: 1, y: 3},
-            {x: 2, y: 3},
-            {x: 2, y: 2},
-            {x: 3, y: 2}
+            new Point(3, 1),
+            new Point(6, 1),
+            new Point(6, 1),
+            new Point(3, 1),
+            new Point(3, 2),
+            new Point(2, 2),
+            new Point(2, 3),
+            new Point(1, 3),
+            new Point(1, 3),
+            new Point(2, 3),
+            new Point(2, 2),
+            new Point(3, 2)
         ]);
 
         expect(directions).toEqual(['up', 'right', 'down', 'left', 'down', 'left', 'down', 'left', 'up', 'right', 'up', 'right']);

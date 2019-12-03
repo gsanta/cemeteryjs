@@ -4,6 +4,7 @@ import { SvgCanvasController } from "../SvgCanvasController";
 import { WorldMapGraph } from '../../../../../WorldMapGraph';
 import { SvgWorldMapReader } from '../../../../../model/readers/svg/SvgWorldMapReader';
 import { PixelTag } from "../models/PixelModel";
+import { Point } from "@nightshifts.inc/geometry";
 
 
 export class SelectTool extends AbstractSelectionTool {
@@ -16,20 +17,27 @@ export class SelectTool extends AbstractSelectionTool {
     click() {
         super.click();
 
-        PixelTag.removeTag(PixelTag.SELECTED, this.canvasController.pixelModel.pixels);
+        PixelTag.removeTag(PixelTag.SELECTED, this.canvasController.pixelModel.items);
 
-        const pixel = this.canvasController.pixelModel.getTopPixelAtCoordinate(this.canvasController.mouseController.movePoint);
+        const pixelSize = this.canvasController.configModel.pixelSize;
 
-        if (pixel) {
-            const graphNode = this.worldMapGraph.getNodeAtPosition(this.canvasController.pixelModel.getPixelPosition(pixel.index));
-            const comp = this.worldMapGraph.getConnectedComponentForNode(graphNode);
+        const gridPoint = new Point(this.canvasController.mouseController.movePoint.x / pixelSize, this.canvasController.mouseController.movePoint.y / pixelSize);
+        const items = this.canvasController.pixelModel.getIntersectingItemsAtPoint(gridPoint);
+
+        items.forEach(item => item.tags.push(PixelTag.SELECTED));
+
+        // const pixel = this.canvasController.pixelModel.getTopPixelAtCoordinate(this.canvasController.mouseController.movePoint);
+
+        // if (pixel) {
+        //     const graphNode = this.worldMapGraph.getNodeAtPosition(this.canvasController.pixelModel.getPixelPosition(pixel.index));
+        //     const comp = this.worldMapGraph.getConnectedComponentForNode(graphNode);
     
-            comp.getAllNodes().map(node => {
-                const index = this.canvasController.pixelModel.getIndexAtPosition(comp.getNodePositionInMatrix(node))
+        //     comp.getAllNodes().map(node => {
+        //         const index = this.canvasController.pixelModel.getIndexAtPosition(comp.getNodePositionInMatrix(node))
     
-                this.canvasController.pixelModel.getPixel(index).tags.push(PixelTag.SELECTED);
-            });
-        }
+        //         this.canvasController.pixelModel.getPixel(index).tags.push(PixelTag.SELECTED);
+        //     });
+        // }
 
         this.canvasController.renderCanvas();
     }

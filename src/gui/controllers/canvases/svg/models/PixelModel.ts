@@ -1,19 +1,22 @@
-import { Point } from '@nightshifts.inc/geometry';
-import { Rectangle } from './Rectangle';
+import { Point, Polygon, Rectangle } from '@nightshifts.inc/geometry';
 import { SvgConfig } from './SvgConfig';
-import { last } from '../../../../../model/utils/Functions';
+import { last, without, sortNum } from '../../../../../model/utils/Functions';
 
 export enum PixelTag {
     SELECTED = 'selected'
 }
 
 export namespace PixelTag {
-    export function removeTag(tag: PixelTag, pixels: Pixel[]) {
-        pixels
+    export function removeTag(tag: PixelTag, tagged: {tags: PixelTag[]}[]) {
+        tagged
             .filter(pixel => pixel.tags.includes(tag))
             .forEach(pixel => {
                 pixel.tags = pixel.tags.filter(tag => tag !== tag)
             });
+    }
+
+    export function getTaggedItems<T extends {tags: PixelTag[]}>(tag: PixelTag, tagged: T[]): T[] {
+        return tagged.filter(pixel => pixel.tags.includes(tag));
     }
 }
 
@@ -23,6 +26,16 @@ export interface Pixel {
     isPreview: boolean;
     tags: PixelTag[];
     layer: number;
+}
+
+export interface CanvasItem {
+    type: string;
+    color: string;
+    indexes: number[];
+    polygon: Polygon;
+    tags: PixelTag[];
+    layer: number;
+    isPreview: boolean;
 }
 
 export enum Layers {
@@ -49,12 +62,64 @@ export class PixelModel {
     indexes: number[] = [];
     private bitmapConfig: SvgConfig;
 
+    items: CanvasItem[] = [];
+
     constructor(bitmapConfig: SvgConfig) {
         this.bitmapConfig = bitmapConfig;
     }
 
     getPixel(index: number) {
         return this.bitMap.get(index)[0];
+    }
+
+    addRect(rectangle: Rectangle, type: string, layer: number, isPreview: boolean): CanvasItem {
+        const indexes: number[] = [];
+
+        for (let x = rectangle.topLeft.x; x < rectangle.bottomRight.x; x++) {
+            for (let y = rectangle.topLeft.y; y < rectangle.bottomRight.y; y++) {
+                indexes.push(this.getIndexAtPosition(new Point(x, y)));
+            }
+        }
+
+
+        const canvasItem: CanvasItem = {
+            color: 'grey',
+            indexes,
+            polygon: rectangle,
+            type,
+            layer,
+            isPreview,
+            tags: []
+        }
+
+        this.items.push(canvasItem);
+
+        return canvasItem;
+    }
+
+    addRectangle(coordinates: Point[], type: string, layer: number, isPreview: boolean): CanvasItem {
+        let indexes = coordinates.map(pos => this.getIndexAtCoordinate(pos));
+        indexes = sortNum(indexes);
+
+        const topLeft = this.getPixelPosition(indexes[0]);
+        const botRight = this.getPixelPosition(indexes[indexes.length - 1]); 
+        const canvasItem: CanvasItem = {
+            color: 'grey',
+            indexes,
+            polygon: Polygon.createRectangle(topLeft.x, topLeft.y, botRight.x - topLeft.x, botRight.y - topLeft.y),
+            type,
+            layer,
+            isPreview,
+            tags: []
+        }
+
+        this.items.push(canvasItem);
+
+        return canvasItem;
+    }
+
+    removeRectangle(rect: CanvasItem) {
+        this.items = without(this.items, rect);
     }
 
     addPixel(coordinate: Point, type: string, isPreview: boolean, layer: number) {
@@ -136,24 +201,23 @@ export class PixelModel {
         return new Point(x, y);
     }
 
-    getPixelIndexesInside(rectangle: Rectangle): number[] {
+    getIntersectingItemsInRect(rectangle: Rectangle): CanvasItem[] {
         const pixelSize = this.bitmapConfig.pixelSize;
 
-        const indexes: number[] = [];
+        const x = Math.floor(rectangle.topLeft.x / pixelSize);
+        const y = Math.floor(rectangle.topLeft.y / pixelSize);
+        const width = Math.floor((rectangle.bottomRight.x - rectangle.topLeft.x) / pixelSize);
+        const height = Math.floor((rectangle.bottomRight.y - rectangle.topLeft.y) / pixelSize);
 
-        this.bitMap.forEach((pixels, index) => {
-                const pixelPosition = this.getPixelPosition(index).mul(pixelSize);
+        const polygon = Polygon.createRectangle(x, y, width, height);
 
-                if (pixelPosition.x > rectangle.topLeft.x &&
-                    pixelPosition.y > rectangle.topLeft.y &&
-                    pixelPosition.x + pixelSize < rectangle.bottomRight.x &&
-                    pixelPosition.y + pixelSize < rectangle.bottomRight.y
-                ) {
-                    indexes.push(index);
-                }
-            });
+        return this.items.filter(item => polygon.contains(item.polygon));
+    }
 
-        return indexes;
+    getIntersectingItemsAtPoint(point: Point): CanvasItem[] {
+        const pixelSize = this.bitmapConfig.pixelSize;
+
+        return this.items.filter(item => item.polygon.containsPoint(point));
     }
 
     getTopPixelAtCoordinate(coordinate: Point): Pixel {

@@ -1,4 +1,4 @@
-import { IFormController } from './IFormController';
+import { AbstractFormController } from './AbstractFormController';
 import { WorldItemDefinition } from '../../../WorldItemDefinition';
 
 export enum WorldItemTypeProperty {
@@ -12,10 +12,9 @@ export enum WorldItemTypeProperty {
     COLOR = 'color',
 }
 
-export class WorldItemDefinitionForm extends IFormController<WorldItemTypeProperty> {
+export class WorldItemDefinitionForm extends AbstractFormController<WorldItemTypeProperty> {
     shapes: string[] = ['rect'];
 
-    private renderFunc = () => null;
     private selectedIndex = -1;
     worldItemDefinitions: WorldItemDefinition[];
     selectedType: WorldItemDefinition;
@@ -24,9 +23,6 @@ export class WorldItemDefinitionForm extends IFormController<WorldItemTypeProper
         this.renderFunc = renderFunc;
     }
 
-    private tempString: string;
-    private tempBoolean: boolean;
-    private tempNumber: number;
     focusedPropType: WorldItemTypeProperty;
 
     focusProp(type: WorldItemTypeProperty, initialValue?: string) {

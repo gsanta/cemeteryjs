@@ -12,7 +12,9 @@ export class SvgCanvasReader implements ICanvasReader {
 
     read(): string {
         const metaData = this.createMetaData(this.canvasController.worldItemDefinitions);
-        const shapes = this.createPixels(this.canvasController.worldItemDefinitions);
+        const pixels = this.createPixels(this.canvasController.worldItemDefinitions);
+        const rectangles = this.createRectangles(this.canvasController.worldItemDefinitions);
+        const shapes = [...pixels, ...rectangles];
 
         return `<svg data-wg-pixel-size="10" data-wg-width="1500" data-wg-height="1000">${metaData}${shapes.join('')}</svg>`;
     }
@@ -39,6 +41,8 @@ export class SvgCanvasReader implements ICanvasReader {
                     ['fill', pixel.tags.includes(PixelTag.SELECTED) ? 'blue' : color],
                     ['data-wg-x', pos.x + ''],
                     ['data-wg-y', pos.y + ''],
+                    ['data-wg-width', pixelSize + ''],
+                    ['data-wg-height', pixelSize + ''],    
                     ['data-wg-type', pixel.type]
                 ];
                 
@@ -47,6 +51,37 @@ export class SvgCanvasReader implements ICanvasReader {
         });
 
         return elements;
+    }
+
+    private createRectangles(worldItemDefinitions: WorldItemDefinition[]): string[] {
+        const pixelModel = this.canvasController.pixelModel;
+        const configModel = this.canvasController.configModel;
+
+        return pixelModel.items.map(item => {
+            const min = item.indexes[0];
+            const max = item.indexes[item.indexes.length - 1];
+
+            const pixelSize = configModel.pixelSize;
+            const topLeft = pixelModel.getPixelPosition(min).mul(pixelSize);
+            const botRight = pixelModel.getPixelPosition(max).mul(pixelSize).addX(pixelSize).addY(pixelSize);
+            const color = WorldItemDefinition.getByTypeName(item.type, worldItemDefinitions).color;
+
+            const attrs: [string, string][] = [
+                ['x', `${topLeft.x}px`],
+                ['y', `${topLeft.y}px`],
+                ['width', `${botRight.x - topLeft.x}px`],
+                ['height', `${botRight.y - topLeft.y}px`],
+                ['fill', item.tags.includes(PixelTag.SELECTED) ? 'blue' : color],
+                ['data-wg-x', topLeft.x + ''],
+                ['data-wg-y', topLeft.y + ''],
+                ['data-wg-width',  `${botRight.x - topLeft.x}`],
+                ['data-wg-height',  `${botRight.y - topLeft.y}`],
+                ['data-wg-type', item.type],
+                ['data-wg-shape', 'rect']
+            ];
+
+            return this.createTag('rect', attrs);
+        });
     }
 
     private createMetaData(worldItemDefinitions: WorldItemDefinition[]): string {

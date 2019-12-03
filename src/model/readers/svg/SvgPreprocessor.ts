@@ -1,4 +1,4 @@
-import { ProcessedWorldMapJson, RawWorldMapJson } from "./WorldMapJson";
+import { ProcessedWorldMapJson, RawWorldMapJson, Rect } from "./WorldMapJson";
 import * as convert from 'xml-js';
 
 export class SvgPreprocessor {
@@ -20,18 +20,36 @@ export class SvgPreprocessor {
             rects: []
         }
 
-        rawJson.svg.rect.forEach(rect => {
+        processedJson.rects = this.processRects(rawJson);
+
+        return processedJson;
+    }
+
+    processRects(rawJson: RawWorldMapJson): Rect[] {
+        if (!rawJson.svg.rect) { return []; }
+
+        if (!Array.isArray(rawJson.svg.rect)) {
+            rawJson.svg.rect = [rawJson.svg.rect];
+        }
+
+        const pixelSize = parseInt(rawJson.svg._attributes["data-wg-pixel-size"], 10);
+        
+        return rawJson.svg.rect.map(rect => {
             const type = rect._attributes["data-wg-type"];
             const x = parseInt(rect._attributes["data-wg-x"], 10) / pixelSize;
             const y = parseInt(rect._attributes["data-wg-y"], 10) / pixelSize;
+            const width = parseInt(rect._attributes["data-wg-width"], 10) / pixelSize;
+            const height = parseInt(rect._attributes["data-wg-height"], 10) / pixelSize;
+            const shape = rawJson.svg._attributes["data-wg-shape"];
 
-            processedJson.rects.push({
+            return {
                 x,
                 y,
-                type
-            });
+                width,
+                height,
+                type,
+                shape
+            };
         });
-
-        return processedJson;
     }
 }

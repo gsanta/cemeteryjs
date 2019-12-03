@@ -108,7 +108,6 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
         const selectionModel = this.props.canvasController.selectionModel;
 
         if (selectionModel.isVisible && selectionModel.topLeftPoint && selectionModel.bottomRightPoint) {
-            console.log('selection')
             return (
                 <SelectionComponentStyled 
                     x={selectionModel.topLeftPoint.x}

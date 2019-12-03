@@ -4,9 +4,9 @@ import { Point } from '@nightshifts.inc/geometry';
 it ('Parse an svg world map and generate the corresponding world map graph', () => {
     var worldMap =
     `<svg data-wg-width="100" data-wg-height="50" data-wg-pixel-size="10">
-        <rect width="10px" height="10px" x="410px" y="120px" fill="red" data-wg-x="10" data-wg-y="10" data-wg-type="wall"></rect>
-        <rect width="10px" height="10px" x="420px" y="120px" fill="red" data-wg-x="20" data-wg-y="10" data-wg-type="door"></rect>
-        <rect width="10px" height="10px" x="420px" y="120px" fill="red" data-wg-x="30" data-wg-y="10" data-wg-type="wall"></rect>
+        <rect width="10px" height="10px" x="410px" y="120px" fill="red" data-wg-x="10" data-wg-y="10" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
+        <rect width="10px" height="10px" x="420px" y="120px" fill="red" data-wg-x="20" data-wg-y="10" data-wg-width="10" data-wg-height="10" data-wg-type="door"></rect>
+        <rect width="10px" height="10px" x="420px" y="120px" fill="red" data-wg-x="30" data-wg-y="10" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
     </svg>`;
     
 
@@ -32,9 +32,9 @@ it ('Parse an svg world map and generate the corresponding world map graph', () 
 it ('Configure to remove empty frame', () => {
     var worldMap =
     `<svg data-wg-width="100" data-wg-height="50" data-wg-pixel-size="10">
-        <rect width="10px" height="10px" x="410px" y="120px" fill="red" data-wg-x="50" data-wg-y="40" data-wg-type="wall"></rect>
-        <rect width="10px" height="10px" x="420px" y="120px" fill="red" data-wg-x="60" data-wg-y="40" data-wg-type="door"></rect>
-        <rect width="10px" height="10px" x="420px" y="120px" fill="red" data-wg-x="70" data-wg-y="40" data-wg-type="wall"></rect>
+        <rect width="10px" height="10px" x="410px" y="120px" fill="red" data-wg-x="50" data-wg-y="40" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
+        <rect width="10px" height="10px" x="420px" y="120px" fill="red" data-wg-x="60" data-wg-y="40" data-wg-width="10" data-wg-height="10" data-wg-type="door"></rect>
+        <rect width="10px" height="10px" x="420px" y="120px" fill="red" data-wg-x="70" data-wg-y="40" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
     </svg>`;
     
 
@@ -310,30 +310,30 @@ it ('Parse a real world svg example', () => {
     <line x1="1470" y1="0" x2="1470" y2="1000" class="sc-ifAKCX gxgyhJ"></line>
     <line x1="1480" y1="0" x2="1480" y2="1000" class="sc-ifAKCX gxgyhJ"></line>
     <line x1="1490" y1="0" x2="1490" y2="1000" class="sc-ifAKCX gxgyhJ"></line>
-    <rect width="10px" height="10px" x="400px" y="100px" fill="#7B7982" data-wg-x="400" data-wg-y="100" data-wg-type="wall"></rect>
-    <rect width="10px" height="10px" x="410px" y="100px" fill="#7B7982" data-wg-x="410" data-wg-y="100" data-wg-type="wall"></rect>
-    <rect width="10px" height="10px" x="420px" y="100px" fill="#7B7982" data-wg-x="420" data-wg-y="100" data-wg-type="wall"></rect>
-    <rect width="10px" height="10px" x="430px" y="100px" fill="#7B7982" data-wg-x="430" data-wg-y="100" data-wg-type="wall"></rect>
-    <rect width="10px" height="10px" x="440px" y="100px" fill="#7B7982" data-wg-x="440" data-wg-y="100" data-wg-type="wall"></rect>
-    <rect width="10px" height="10px" x="450px" y="100px" fill="#7B7982" data-wg-x="450" data-wg-y="100" data-wg-type="wall"></rect>
-    <rect width="10px" height="10px" x="460px" y="100px" fill="#7B7982" data-wg-x="460" data-wg-y="100" data-wg-type="wall"></rect>
-    <rect width="10px" height="10px" x="460px" y="110px" fill="#7B7982" data-wg-x="460" data-wg-y="110" data-wg-type="wall"></rect>
-    <rect width="10px" height="10px" x="460px" y="120px" fill="#7B7982" data-wg-x="460" data-wg-y="120" data-wg-type="wall"></rect>
-    <rect width="10px" height="10px" x="460px" y="130px" fill="#7B7982" data-wg-x="460" data-wg-y="130" data-wg-type="wall"></rect>
-    <rect width="10px" height="10px" x="460px" y="140px" fill="#7B7982" data-wg-x="460" data-wg-y="140" data-wg-type="wall"></rect>
-    <rect width="10px" height="10px" x="460px" y="150px" fill="#7B7982" data-wg-x="460" data-wg-y="150" data-wg-type="wall"></rect>
-    <rect width="10px" height="10px" x="450px" y="150px" fill="#7B7982" data-wg-x="450" data-wg-y="150" data-wg-type="wall"></rect>
-    <rect width="10px" height="10px" x="440px" y="150px" fill="#7B7982" data-wg-x="440" data-wg-y="150" data-wg-type="wall"></rect>
-    <rect width="10px" height="10px" x="430px" y="150px" fill="#7B7982" data-wg-x="430" data-wg-y="150" data-wg-type="wall"></rect>
-    <rect width="10px" height="10px" x="420px" y="150px" fill="#7B7982" data-wg-x="420" data-wg-y="150" data-wg-type="wall"></rect>
-    <rect width="10px" height="10px" x="410px" y="150px" fill="#7B7982" data-wg-x="410" data-wg-y="150" data-wg-type="wall"></rect>
-    <rect width="10px" height="10px" x="400px" y="150px" fill="#7B7982" data-wg-x="400" data-wg-y="150" data-wg-type="wall"></rect>
-    <rect width="10px" height="10px" x="390px" y="150px" fill="#7B7982" data-wg-x="390" data-wg-y="150" data-wg-type="wall"></rect>
-    <rect width="10px" height="10px" x="390px" y="140px" fill="#7B7982" data-wg-x="390" data-wg-y="140" data-wg-type="wall"></rect>
-    <rect width="10px" height="10px" x="390px" y="130px" fill="#7B7982" data-wg-x="390" data-wg-y="130" data-wg-type="wall"></rect>
-    <rect width="10px" height="10px" x="390px" y="120px" fill="#7B7982" data-wg-x="390" data-wg-y="120" data-wg-type="wall"></rect>
-    <rect width="10px" height="10px" x="390px" y="110px" fill="#7B7982" data-wg-x="390" data-wg-y="110" data-wg-type="wall"></rect>
-    <rect width="10px" height="10px" x="390px" y="100px" fill="#7B7982" data-wg-x="390" data-wg-y="100" data-wg-type="wall"></rect>
+    <rect width="10px" height="10px" x="400px" y="100px" fill="#7B7982" data-wg-x="400" data-wg-y="100" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
+    <rect width="10px" height="10px" x="410px" y="100px" fill="#7B7982" data-wg-x="410" data-wg-y="100" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
+    <rect width="10px" height="10px" x="420px" y="100px" fill="#7B7982" data-wg-x="420" data-wg-y="100" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
+    <rect width="10px" height="10px" x="430px" y="100px" fill="#7B7982" data-wg-x="430" data-wg-y="100" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
+    <rect width="10px" height="10px" x="440px" y="100px" fill="#7B7982" data-wg-x="440" data-wg-y="100" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
+    <rect width="10px" height="10px" x="450px" y="100px" fill="#7B7982" data-wg-x="450" data-wg-y="100" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
+    <rect width="10px" height="10px" x="460px" y="100px" fill="#7B7982" data-wg-x="460" data-wg-y="100" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
+    <rect width="10px" height="10px" x="460px" y="110px" fill="#7B7982" data-wg-x="460" data-wg-y="110" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
+    <rect width="10px" height="10px" x="460px" y="120px" fill="#7B7982" data-wg-x="460" data-wg-y="120" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
+    <rect width="10px" height="10px" x="460px" y="130px" fill="#7B7982" data-wg-x="460" data-wg-y="130" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
+    <rect width="10px" height="10px" x="460px" y="140px" fill="#7B7982" data-wg-x="460" data-wg-y="140" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
+    <rect width="10px" height="10px" x="460px" y="150px" fill="#7B7982" data-wg-x="460" data-wg-y="150" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
+    <rect width="10px" height="10px" x="450px" y="150px" fill="#7B7982" data-wg-x="450" data-wg-y="150" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
+    <rect width="10px" height="10px" x="440px" y="150px" fill="#7B7982" data-wg-x="440" data-wg-y="150" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
+    <rect width="10px" height="10px" x="430px" y="150px" fill="#7B7982" data-wg-x="430" data-wg-y="150" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
+    <rect width="10px" height="10px" x="420px" y="150px" fill="#7B7982" data-wg-x="420" data-wg-y="150" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
+    <rect width="10px" height="10px" x="410px" y="150px" fill="#7B7982" data-wg-x="410" data-wg-y="150" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
+    <rect width="10px" height="10px" x="400px" y="150px" fill="#7B7982" data-wg-x="400" data-wg-y="150" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
+    <rect width="10px" height="10px" x="390px" y="150px" fill="#7B7982" data-wg-x="390" data-wg-y="150" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
+    <rect width="10px" height="10px" x="390px" y="140px" fill="#7B7982" data-wg-x="390" data-wg-y="140" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
+    <rect width="10px" height="10px" x="390px" y="130px" fill="#7B7982" data-wg-x="390" data-wg-y="130" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
+    <rect width="10px" height="10px" x="390px" y="120px" fill="#7B7982" data-wg-x="390" data-wg-y="120" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
+    <rect width="10px" height="10px" x="390px" y="110px" fill="#7B7982" data-wg-x="390" data-wg-y="110" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
+    <rect width="10px" height="10px" x="390px" y="100px" fill="#7B7982" data-wg-x="390" data-wg-y="100" data-wg-width="10" data-wg-height="10" data-wg-type="wall"></rect>
 </svg>
     `;
 

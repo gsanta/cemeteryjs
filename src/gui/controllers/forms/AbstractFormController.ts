@@ -1,5 +1,15 @@
 
-export abstract class IFormController<P> {
+export abstract class AbstractFormController<P> {
+    protected renderFunc = () => null;
+    protected tempString: string;
+    protected tempBoolean: boolean;
+    protected tempNumber: number;
+    focusedPropType: P;
+
+    setRenderer(renderFunc: () => void) {
+        this.renderFunc = renderFunc;
+    }
+
     focusProp(propType: P) {};
     getFocusedProp(): P { return null; };
     updateStringProp(value: string) {}

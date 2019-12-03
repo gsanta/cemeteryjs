@@ -38,14 +38,15 @@ it ('Draw pixels with rectangle selection', () => {
     canvasController.mouseController.onMouseMove(<MouseEvent> {x: 25, y: 15});
     canvasController.mouseController.onMouseUp(<MouseEvent> {x: 25, y: 15});
 
-    expect(canvasController.pixelModel.pixels.length).toEqual(6);
 
-    expect(canvasController.pixelModel.getPixelPosition(0)).toEqual(new Point(0, 0));
-    expect(canvasController.pixelModel.getPixelPosition(1)).toEqual(new Point(1, 0));
-    expect(canvasController.pixelModel.getPixelPosition(2)).toEqual(new Point(2, 0));
-    expect(canvasController.pixelModel.getPixelPosition(150)).toEqual(new Point(0, 1));
-    expect(canvasController.pixelModel.getPixelPosition(151)).toEqual(new Point(1, 1));
-    expect(canvasController.pixelModel.getPixelPosition(152)).toEqual(new Point(2, 1));
+    expect(canvasController.pixelModel.items.length).toEqual(1);
+
+    const expectedObj = { 
+        indexes: [0, 1],
+        layer: -1,
+        type: 'wall'
+    };
+    expect(canvasController.pixelModel.items[0]).toEqual(expect.objectContaining(expectedObj));
 });
 
 it ('Do not remove existing pixel if adding pixel to an occupied position', () => {

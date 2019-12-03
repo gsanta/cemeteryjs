@@ -36,20 +36,13 @@ export class AbstractSelectionTool extends AbstractTool {
         this.canvasController.selectionModel.bottomRightPoint = null;
     }
 
-
-
-    protected getPixelIndexesInSelection(): number[] {
-        const selectionRect = this.canvasController.selectionModel.getSelectionRect();
-        return this.canvasController.pixelModel.getPixelIndexesInside(selectionRect);
-    }
-
     protected getPositionsInSelection(): Point[] {
         const selectionRect = this.canvasController.selectionModel.getSelectionRect();
         const pixelSize = this.canvasController.configModel.pixelSize;
         const xStart = Math.floor(selectionRect.topLeft.x / pixelSize); 
         const yStart = Math.floor(selectionRect.topLeft.y / pixelSize);
-        const xEnd = Math.floor(selectionRect.bottomRight.x / pixelSize) + 1;
-        const yEnd = Math.floor(selectionRect.bottomRight.y / pixelSize) + 1;
+        const xEnd = Math.floor(selectionRect.bottomRight.x / pixelSize);
+        const yEnd = Math.floor(selectionRect.bottomRight.y / pixelSize);
 
         const positions: Point[] = [];
         for (let i = xStart; i < xEnd; i++) {
@@ -57,7 +50,6 @@ export class AbstractSelectionTool extends AbstractTool {
                 positions.push(new Point(i * pixelSize, j * pixelSize));
             }
         }
-
         return positions;
 
     }

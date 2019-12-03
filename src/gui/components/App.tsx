@@ -9,6 +9,7 @@ import { Header } from './Header';
 import './misc/SplitPane.css';
 import { VerticalSplitComponent } from './misc/VerticalSplitComponent';
 import { AboutDialog } from './dialogs/AboutDialog';
+import { HorizontalSplitComponent } from './misc/HorizontalSplitComponent';
 
 export interface AppState {
     isDialogOpen: boolean;
@@ -48,7 +49,11 @@ export class App extends React.Component<{}, AppState> {
                 />
                 <div className="main-content">
                     <VerticalSplitComponent onChange={() => this.resize()}>
-                        {canvas}
+                        <HorizontalSplitComponent onChange={() => this.context.controllers.getActiveCanvas().resize()}>
+                            {canvas}
+                            
+                            {/* <PropertyEditorComponent /> */}
+                        </HorizontalSplitComponent>
                         <WebglCanvasComponent canvasController={this.context.controllers.webglCanvasController}/>
                     </VerticalSplitComponent>
                 </div>

@@ -1,9 +1,9 @@
-import { IFormController } from '../../../controllers/forms/IFormController';
+import { AbstractFormController } from '../../../controllers/forms/AbstractFormController';
 
 
 export interface InputFieldCommands<P> {
     propertyName: P;
     propertyType: "boolean" | "string" | "number";
-    formController: IFormController<P>;
+    formController: AbstractFormController<P>;
 
 }

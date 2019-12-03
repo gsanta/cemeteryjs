@@ -37,7 +37,6 @@ export class MouseHandler {
         this.movePoint = this.getPointFromEvent(e);
         if (this.isDown) {
             this.isDrag = true;
-            console.log('drag')
             this.bitmapEditor.activeTool.drag();
         }
     }    

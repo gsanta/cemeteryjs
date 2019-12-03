@@ -3,10 +3,11 @@ import { AbstractSelectionTool } from './AbstractSelectionTool';
 import { ToolType } from './Tool';
 import { EventDispatcher } from '../../../events/EventDispatcher';
 import { Events } from '../../../events/Events';
-import { getLayerForType } from '../models/PixelModel';
+import { getLayerForType, CanvasItem } from '../models/PixelModel';
 
 export class RectangleTool extends AbstractSelectionTool {
     private eventDispatcher: EventDispatcher;
+    private lastPreviewRect: CanvasItem;
 
     constructor(svgCanvasController: SvgCanvasController, eventDispatcher: EventDispatcher) {
         super(svgCanvasController, ToolType.RECTANGLE, false);
@@ -21,10 +22,14 @@ export class RectangleTool extends AbstractSelectionTool {
     drag() {
         super.drag();
         
-        this.canvasController.pixelModel.removePreviews();
+        if (this.lastPreviewRect) {
+            this.canvasController.pixelModel.removeRectangle(this.lastPreviewRect);
+        }
         const type = this.canvasController.selectedWorldItemDefinition.typeName;
         const positions = this.getPositionsInSelection();
-        positions.forEach(pos => this.canvasController.pixelModel.addPixel(pos, type, true, -1));
+        // positions.forEach(pos => this.canvasController.pixelModel.addPixel(pos, type, true, -1));
+
+        this.lastPreviewRect = this.canvasController.pixelModel.addRectangle(positions, type, -1, true);
 
         this.canvasController.renderCanvas();
     }
@@ -41,7 +46,11 @@ export class RectangleTool extends AbstractSelectionTool {
 
     draggedUp() {
         super.draggedUp();
-        this.canvasController.pixelModel.commitPreviews();
+        if (this.lastPreviewRect) {
+            this.lastPreviewRect.isPreview = false;
+            this.lastPreviewRect = null;
+        }
+        // this.canvasController.pixelModel.commitPreviews();
 
         this.canvasController.renderCanvas();
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
