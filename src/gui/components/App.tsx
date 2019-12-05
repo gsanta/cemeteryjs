@@ -37,7 +37,7 @@ export class App extends React.Component<{}, AppState> {
     }
 
     render() {
-        const [canvasToolbar, canvas] = createCanvas(this.context.controllers);
+        const [canvasToolbar, canvas, itemSettings] = createCanvas(this.context.controllers);
 
         return (
             <div className="style-nightshifs">
@@ -50,9 +50,8 @@ export class App extends React.Component<{}, AppState> {
                 <div className="main-content">
                     <VerticalSplitComponent onChange={() => this.resize()}>
                         <HorizontalSplitComponent onChange={() => this.context.controllers.getActiveCanvas().resize()}>
-                            {canvas}
-                            
-                            {/* <PropertyEditorComponent /> */}
+                            {canvas}                            
+                            {itemSettings}
                         </HorizontalSplitComponent>
                         <WebglCanvasComponent canvasController={this.context.controllers.webglCanvasController}/>
                     </VerticalSplitComponent>

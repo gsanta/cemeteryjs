@@ -40,6 +40,7 @@ export class SelectTool extends AbstractSelectionTool {
         // }
 
         this.canvasController.renderCanvas();
+        this.canvasController.renderSettings();
     }
 
     activate() {

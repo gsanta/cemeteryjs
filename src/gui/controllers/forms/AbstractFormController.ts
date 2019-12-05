@@ -11,7 +11,7 @@ export abstract class AbstractFormController<P> {
     }
 
     focusProp(propType: P) {};
-    getFocusedProp(): P { return null; };
+    getFocusedProp(): P { return this.focusedPropType; };
     updateStringProp(value: string) {}
     updateBooleanProp(value: boolean) {};
     updateNumberProp(value: number) {};

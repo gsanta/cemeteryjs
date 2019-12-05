@@ -77,7 +77,8 @@ export class SvgCanvasReader implements ICanvasReader {
                 ['data-wg-width',  `${botRight.x - topLeft.x}`],
                 ['data-wg-height',  `${botRight.y - topLeft.y}`],
                 ['data-wg-type', item.type],
-                ['data-wg-shape', 'rect']
+                ['data-wg-shape', 'rect'],
+                ['data-wg-color', item.color]
             ];
 
             return this.createTag('rect', attrs);

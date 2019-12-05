@@ -17,8 +17,10 @@ import { SvgConfigReader } from '../readers/svg/SvgConfigReader';
 import { SvgWorldMapReader } from '../readers/svg/SvgWorldMapReader';
 import { NullConverter } from '../readers/InputConverter';
 import { SvgRoomMapConverter } from '../readers/svg/SvgRoomMapConverter';
+import { TextWorldItemBuilder } from '../readers/text/TextWorldItemBuilder';
+import { SvgWorldItemBuilder } from '../readers/svg/SvgWorldItemBuilder';
 
-export class ServiceFacade<M, S, T> {
+export class ServiceFacade<M = any, S = any, T = any> {
     meshFactoryService: MeshFactoryService<M, S>;
     modifierFactoryService: ModifierFactoryService;
     worldItemFactoryService: WorldItemFactoryService;
@@ -33,10 +35,12 @@ export class ServiceFacade<M, S, T> {
     constructor(meshFactoryService: MeshFactoryService<any, any>, meshTemplateService: MeshTemplateService<any, any>, fileFormat: FileFormat) {
         if (fileFormat === FileFormat.TEXT) {
             this.configService = new ConfigService(new TextConfigReader());
-            this.importerService = new ImporterService(this, new TextWorldMapReader(this.configService), new WorldMapToRoomMapConverter(this.configService), new WorldMapToSubareaMapConverter(this.configService))
+            const textWorldItemBuilder = new TextWorldItemBuilder(this, new TextWorldMapReader(this.configService), new WorldMapToRoomMapConverter(this.configService), new WorldMapToSubareaMapConverter(this.configService));
+            this.importerService = new ImporterService(this, textWorldItemBuilder);
         } else if (fileFormat === FileFormat.SVG) {
             this.configService = new ConfigService(new SvgConfigReader());
-            this.importerService = new ImporterService(this, new SvgWorldMapReader(true), new SvgRoomMapConverter(this.configService), new NullConverter());
+            const svgWorldItemBuilder = new SvgWorldItemBuilder();
+            this.importerService = new ImporterService(this, svgWorldItemBuilder);
         } else {
             throw new Error('Unknown file format: ' + fileFormat); 
         }

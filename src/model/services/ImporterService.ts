@@ -21,6 +21,7 @@ import { WorldMapReader } from '../readers/WorldMapReader';
 import { InputConverter } from '../readers/InputConverter';
 import { PolygonBuilder } from '../builders/polygon/PolygonBuilder';
 import { TransformToWorldCoordinateModifier } from '../modifiers/TransformToWorldCoordinateModifier';
+import { IWorldItemBuilder } from '../readers/IWorldItemBuilder';
 
 export interface WorldConfig {
     borders: string[];
@@ -42,36 +43,15 @@ export const defaultWorldConfig: WorldConfig = {
 export class ImporterService<M, S, T> {
     private services: ServiceFacade<M, S, T>;
 
-    private worldMapReader: WorldMapReader;
-    private roomInputConverter: InputConverter;
-    private subareaInputConverter: InputConverter;
+    private worldItemBuilder: IWorldItemBuilder;
 
-    constructor(
-        services: ServiceFacade<M, S, T>,
-        worldMapReader: WorldMapReader,
-        roomInputConverter: InputConverter,
-        subareaInputConverter: InputConverter
-    ) {
+    constructor(services: ServiceFacade<M, S, T>, worldItemBuilder: IWorldItemBuilder) {
         this.services = services;
-        this.worldMapReader = worldMapReader;
-        this.roomInputConverter = roomInputConverter;
-        this.subareaInputConverter = subareaInputConverter;
+        this.worldItemBuilder = worldItemBuilder;
     }
 
     import(worldMap: string, modNames?: string[]): WorldItem[] {
-        let worldItems = this.services.builderService.apply(
-            worldMap,
-            new CombinedWorldItemBuilder(
-                [
-                    new FurnitureBuilder(this.services, this.worldMapReader),
-                    new BorderBuilder(this.services, this.worldMapReader),
-                    new RoomBuilder(this.services, this.worldMapReader, this.roomInputConverter),
-                    new RootWorldItemBuilder(this.services, this.worldMapReader),
-                    new SubareaBuilder(this.services, this.worldMapReader, this.subareaInputConverter),
-                    new PolygonBuilder(this.services, this.worldMapReader)
-                ]
-            )
-        );
+        let worldItems = this.worldItemBuilder.build(worldMap);
 
         modNames = modNames ? modNames : [
             SegmentBordersModifier.modName,

@@ -57,10 +57,6 @@ export class WorldItemDefinitionForm extends AbstractFormController<WorldItemTyp
         this.renderFunc();
     }
 
-    getFocusedProp(): WorldItemTypeProperty { 
-        return this.focusedPropType
-    }
-
     updateStringProp(value: string) {
         this.tempString = value;
         this.renderFunc();

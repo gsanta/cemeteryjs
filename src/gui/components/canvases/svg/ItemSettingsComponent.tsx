@@ -4,10 +4,15 @@ import { CanvasItemSettings } from '../../../controllers/forms/CanvasItemSetting
 import { ConnectedColorPicker } from '../../forms/ColorPicker';
 import { LabeledComponent } from '../../forms/LabeledComponent';
 import { PixelTag } from '../../../controllers/canvases/svg/models/PixelModel';
+import styled from 'styled-components';
 
 export interface ItemSettingsProps {
     canvasController: SvgCanvasController;
 }
+
+const ItemSettingsStyled = styled.div`
+    padding: 10px;
+`;
 
 export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
 
@@ -15,6 +20,7 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
         super(props);
 
         this.props.canvasController.setSettingsRenderer(() => this.forceUpdate());
+        this.props.canvasController.canvasItemSettingsForm.setRenderer(() => this.forceUpdate());
     }
 
     render(): JSX.Element {
@@ -25,13 +31,15 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
         this.props.canvasController.canvasItemSettingsForm.canvasItem = selectedCanvasItems[0];
 
         return (
-            <LabeledComponent label="Choose color" direction="horizontal">
-                <ConnectedColorPicker
-                    formController={this.props.canvasController.canvasItemSettingsForm}
-                    propertyName={CanvasItemSettings.COLOR}
-                    propertyType='string'
-                />
-            </LabeledComponent>
+            <ItemSettingsStyled>
+                <LabeledComponent label="Choose color" direction="horizontal">
+                    <ConnectedColorPicker
+                        formController={this.props.canvasController.canvasItemSettingsForm}
+                        propertyName={CanvasItemSettings.COLOR}
+                        propertyType='string'
+                    />
+                </LabeledComponent>
+            </ItemSettingsStyled>
         );
     }
 }
