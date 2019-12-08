@@ -30,6 +30,7 @@ export class WebglCanvasController implements IWritableCanvas {
     ArcRotateCamera
     registerEvents() {
         this.controllers.eventDispatcher.addEventListener(Events.CONTENT_CHANGED, this.updateContent);
+        this.controllers.eventDispatcher.addEventListener(Events.CANVAS_ITEM_CHANGED, this.updateContent);
     }
 
     unregisterEvents() {
@@ -98,7 +99,7 @@ export class WebglCanvasController implements IWritableCanvas {
         // const target = this.camera ? this.camera.target : new Vector3(0, 0, 0);
         // const position = this.camera ? this.camera.position : new Vector3(0, 40, 20);
         // this.camera = new ArcRotateCamera("Camera", alpha, beta, radius, target, scene);
-        this.camera = new UniversalCamera('camera1', new Vector3(0, 50, 0), scene);
+        this.camera = new UniversalCamera('camera1', new Vector3(0, 50, 20), scene);
         this.camera.setTarget(new Vector3(0, 0, 0));
         this.camera.inputs.clear();
         this.camera.inputs.add(new CustomCameraInput());
@@ -113,7 +114,7 @@ export class WebglCanvasController implements IWritableCanvas {
         // this.camera.setPosition(position);
         // this.camera.attachControl(this.canvas, true);
 
-        const light = new HemisphericLight('light', new Vector3(0, 1, 0), scene);
+        const light = new HemisphericLight('light', new Vector3(0, 4, 1), scene);
         light.diffuse = new Color3(1, 1, 1);
         light.intensity = 1
 

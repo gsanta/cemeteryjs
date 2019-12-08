@@ -18,36 +18,7 @@ const defaultTestSvg = `
         <wg-type is-border="false" scale="1" translate-y="0" type-name="room" />
         <wg-type is-border="false" scale="1" translate-y="0" type-name="player" />
     </metadata>
-    <rect width="10px" height="10px" x="20px" y="20px" fill="#7B7982" data-wg-x="20" data-wg-y="20" data-wg-type="wall" />
-    <rect width="10px" height="10px" x="30px" y="20px" fill="#7B7982" data-wg-x="30" data-wg-y="20" data-wg-type="wall" />
-    <rect width="10px" height="10px" x="40px" y="20px" fill="#7B7982" data-wg-x="40" data-wg-y="20" data-wg-type="wall" />
-    <rect width="10px" height="10px" x="50px" y="20px" fill="#7B7982" data-wg-x="50" data-wg-y="20" data-wg-type="wall" />
-    <rect width="10px" height="10px" x="60px" y="20px" fill="#7B7982" data-wg-x="60" data-wg-y="20" data-wg-type="wall" />
-    <rect width="10px" height="10px" x="20px" y="30px" fill="#7B7982" data-wg-x="20" data-wg-y="30" data-wg-type="wall" />
-    <rect width="10px" height="10px" x="20px" y="40px" fill="#7B7982" data-wg-x="20" data-wg-y="40" data-wg-type="wall" />
-    <rect width="10px" height="10px" x="20px" y="50px" fill="#7B7982" data-wg-x="20" data-wg-y="50" data-wg-type="wall" />
-    <rect width="10px" height="10px" x="20px" y="60px" fill="#7B7982" data-wg-x="20" data-wg-y="60" data-wg-type="wall" />
-    <rect width="10px" height="10px" x="30px" y="60px" fill="#7B7982" data-wg-x="30" data-wg-y="60" data-wg-type="wall" />
-    <rect width="10px" height="10px" x="40px" y="60px" fill="#7B7982" data-wg-x="40" data-wg-y="60" data-wg-type="wall" />
-    <rect width="10px" height="10px" x="50px" y="60px" fill="#7B7982" data-wg-x="50" data-wg-y="60" data-wg-type="wall" />
-    <rect width="10px" height="10px" x="60px" y="60px" fill="#7B7982" data-wg-x="60" data-wg-y="60" data-wg-type="wall" />
-    <rect width="10px" height="10px" x="70px" y="20px" fill="#7B7982" data-wg-x="70" data-wg-y="20" data-wg-type="wall" />
-    <rect width="10px" height="10px" x="70px" y="30px" fill="#7B7982" data-wg-x="70" data-wg-y="30" data-wg-type="wall" />
-    <rect width="10px" height="10px" x="70px" y="40px" fill="#7B7982" data-wg-x="70" data-wg-y="40" data-wg-type="wall" />
-    <rect width="10px" height="10px" x="70px" y="50px" fill="#7B7982" data-wg-x="70" data-wg-y="50" data-wg-type="wall" />
-    <rect width="10px" height="10px" x="70px" y="60px" fill="#7B7982" data-wg-x="70" data-wg-y="60" data-wg-type="wall" />
-    <rect width="10px" height="10px" x="30px" y="30px" data-wg-x="30" data-wg-y="30" data-wg-type="room" />
-    <rect width="10px" height="10px" x="30px" y="40px" data-wg-x="30" data-wg-y="40" data-wg-type="room" />
-    <rect width="10px" height="10px" x="30px" y="50px" data-wg-x="30" data-wg-y="50" data-wg-type="room" />
-    <rect width="10px" height="10px" x="40px" y="50px" data-wg-x="40" data-wg-y="50" data-wg-type="room" />
-    <rect width="10px" height="10px" x="50px" y="50px" data-wg-x="50" data-wg-y="50" data-wg-type="room" />
-    <rect width="10px" height="10px" x="60px" y="50px" data-wg-x="60" data-wg-y="50" data-wg-type="room" />
-    <rect width="10px" height="10px" x="40px" y="30px" data-wg-x="40" data-wg-y="30" data-wg-type="room" />
-    <rect width="10px" height="10px" x="50px" y="30px" data-wg-x="50" data-wg-y="30" data-wg-type="room" />
-    <rect width="10px" height="10px" x="60px" y="30px" data-wg-x="60" data-wg-y="30" data-wg-type="room" />
-    <rect width="10px" height="10px" x="40px" y="40px" data-wg-x="40" data-wg-y="40" data-wg-type="room" />
-    <rect width="10px" height="10px" x="50px" y="40px" data-wg-x="50" data-wg-y="40" data-wg-type="room" />
-    <rect width="10px" height="10px" x="60px" y="40px" data-wg-x="60" data-wg-y="40" data-wg-type="room" />
+    <rect width="10px" height="10px" x="410px" y="120px" fill="red" data-wg-x="10" data-wg-y="10" data-wg-width="10" data-wg-height="10" data-wg-type="building"></rect>
 </svg>
 `;
 

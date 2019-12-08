@@ -3,7 +3,7 @@ import { DynamicTexture, Mesh, MeshBuilder, Scene, Skeleton, StandardMaterial, T
 import { WorldItemDefinition } from '../../../WorldItemDefinition';
 import { MeshTemplate } from '../../../MeshTemplate';
 import { MeshFactoryService } from '../../../model/services/MeshFactoryService';
-import { WorldItem } from '../../../WorldItem';
+import { WorldItem, WorldItemShape } from '../../../WorldItem';
 import { DiscFactory } from '../factories/DiscFactory';
 import { DoorFactory } from '../factories/DoorFactory';
 import { EmptyAreaFactory } from '../factories/EmptyAreaFactory';
@@ -46,7 +46,17 @@ export class BabylonMeshFactoryService implements MeshFactoryService<Mesh, Skele
     }
 
     getInstance(worldItemInfo: WorldItem, meshDescriptor: WorldItemDefinition, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
+        if (worldItemInfo.shape) {
+            return this.createFromWorldItem(worldItemInfo, meshTemplate, meshDescriptor);
+        }
         return this.createFromTemplate(worldItemInfo, meshTemplate, meshDescriptor);
+    }
+
+    private createFromWorldItem(worldItem: WorldItem, meshTemplate: MeshTemplate<Mesh, Skeleton>, meshDescriptor: WorldItemDefinition) {
+        switch(worldItem.shape) {
+            case WorldItemShape.RECTANGLE:
+                return [new PolygonFactory(this.scene, new MaterialFactory(this.scene)).createItem(worldItem, meshDescriptor)];
+        }
     }
 
     private createFromTemplate(worldItem: WorldItem, meshTemplate: MeshTemplate<Mesh, Skeleton>, meshDescriptor: WorldItemDefinition): Mesh[] {

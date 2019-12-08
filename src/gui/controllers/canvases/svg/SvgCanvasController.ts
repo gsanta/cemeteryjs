@@ -32,6 +32,7 @@ export const initialSvg =
         <wg-type is-border="false" scale="1" translate-y="0" type-name="room"></wg-type>
         <wg-type is-border="false" scale="1" translate-y="0" type-name="player"></wg-type>
         <wg-type is-border="false" scale="1" translate-y="0" type-name="building" shape="polygon"></wg-type>
+        <wg-type is-border="false" scale="1" translate-y="0" type-name="model" shape="polygon"></wg-type>
     </metadata>
     <rect width="100px" height="50px" x="50px" y="30px" fill="#7B7982" data-wg-x="50" data-wg-y="30" data-wg-width="100" data-wg-height="50" data-wg-type="building"></rect>
 </svg>
@@ -82,7 +83,7 @@ export class SvgCanvasController implements IEditableCanvas {
         this.activeTool = this.tools[0];
         this.writer.write(initialSvg, FileFormat.SVG);
 
-        this.canvasItemSettingsForm = new CanvasItemSettingsForm(this);
+        this.canvasItemSettingsForm = new CanvasItemSettingsForm(this, this.controllers.eventDispatcher);
     }
 
     renderCanvas() {

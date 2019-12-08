@@ -3,7 +3,7 @@ import { AbstractFormController } from '../../../controllers/forms/AbstractFormC
 
 export interface InputFieldCommands<P> {
     propertyName: P;
-    propertyType: "boolean" | "string" | "number";
+    propertyType: "boolean" | "string" | "number" | 'file-data';
     formController: AbstractFormController<P>;
 
 }

@@ -2,6 +2,11 @@ import { Point, Shape } from "@nightshifts.inc/geometry";
 import { MeshTemplate } from './MeshTemplate';
 import { WorldItemDefinition } from './WorldItemDefinition';
 
+export enum WorldItemShape {
+    RECTANGLE = 'rect',
+    MODEL = 'model'
+}
+
 /**
  * `WorldItem` represents any distinguishable item in the parsed world (think of it as a mesh, e.g walls, rooms, creatures).
  */
@@ -28,6 +33,8 @@ export class WorldItem<M = any, S = any> {
     rooms: WorldItem[] = [];
     subareaId = 0;
     worldMapPositions: Point[] = [];
+    color: string;
+    shape: WorldItemShape;
 
     definition: WorldItemDefinition;
 

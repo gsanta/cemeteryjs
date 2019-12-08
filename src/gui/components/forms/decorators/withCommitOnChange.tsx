@@ -11,7 +11,7 @@ export function withCommitOnChange<T extends Focusable>(WrappedComponent: React.
             return <WrappedComponent 
                 {...this.props as any}
                 onFocus={() => this.props.formController.focusProp(this.props.propertyName)}
-                onChange={(val: boolean) => {
+                onChange={(val: any) => {
                     this.updateProp(val);
                     this.props.formController.commitProp();
                 }}
@@ -29,6 +29,9 @@ export function withCommitOnChange<T extends Focusable>(WrappedComponent: React.
                     break;
                 case 'number':
                     this.props.formController.updateNumberProp(val);
+                    break;
+                case 'file-data':
+                    this.props.formController.updateFileDataProp(val);
                     break;
             }
         }

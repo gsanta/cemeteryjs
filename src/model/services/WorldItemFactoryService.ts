@@ -1,5 +1,5 @@
 import { Polygon, Point, Shape } from '@nightshifts.inc/geometry';
-import { WorldItem } from '../../WorldItem';
+import { WorldItem, WorldItemShape } from '../../WorldItem';
 import { ServiceFacade } from './ServiceFacade';
 import { WorldItemDefinition } from '../../WorldItemDefinition';
 
@@ -10,6 +10,8 @@ export interface WorldItemConfig {
     isBorder: boolean;
     rotation?: number;
     worldMapPositions?: Point[];
+    color?: string;
+    shape?: WorldItemShape;
 }
 
 export const defaultWorldItemConfig: Partial<WorldItemConfig> = {
@@ -47,6 +49,8 @@ export class WorldItemFactoryService {
         worldItem.worldMapPositions = worldItemConfig.worldMapPositions;
         worldItem.rotation = worldItemConfig.rotation;
         worldItem.definition = worldItemDefinition;
+        worldItemConfig.color && (worldItem.color = worldItemConfig.color);
+        worldItemConfig.shape && (worldItem.shape = worldItemConfig.shape);
         return worldItem;
     }
 
@@ -67,6 +71,8 @@ export class WorldItemFactoryService {
         clone.thickness = worldItemInfo.thickness;
         clone.parent = worldItemInfo.parent;
         clone.definition = worldItemInfo.definition;
+        worldItemInfo.color && (clone.color = worldItemInfo.color);
+        worldItemInfo.shape && (clone.shape = worldItemInfo.shape);
 
         return clone;
     }

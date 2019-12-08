@@ -1,29 +1,41 @@
-import { AbstractFormController } from "./AbstractFormController";
-import { CanvasItem } from '../canvases/svg/models/PixelModel';
-import { ControllerFacade } from "../ControllerFacade";
 import { IEditableCanvas } from '../canvases/IEditableCanvas';
-import { SettingsForm } from './SettingsForm';
+import { CanvasItem, FileData } from '../canvases/svg/models/PixelModel';
+import { AbstractFormController } from "./AbstractFormController";
+import { EventDispatcher } from '../events/EventDispatcher';
+import { Events } from '../events/Events';
+import { WorldItemShape } from '../../../WorldItem';
 
 
 export enum CanvasItemSettings {
     COLOR = 'color',
+    SHAPE = 'shape',
+    MODEL = 'model',
 }
 
 export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSettings> {
+    shapes: string[] = ['rect', 'model'];
     canvasItem: CanvasItem;
 
     private canvasController: IEditableCanvas;
+    private eventDispatcher: EventDispatcher;
 
-    constructor(canvasController: IEditableCanvas) {
+    constructor(canvasController: IEditableCanvas, eventDispatcher: EventDispatcher) {
         super();
         this.canvasController = canvasController;
+        this.eventDispatcher = eventDispatcher;
     }
 
     focusProp(propType: CanvasItemSettings) {
         this.focusedPropType = propType;
-        switch(this.focusedPropType) {
+        switch (this.focusedPropType) {
             case CanvasItemSettings.COLOR:
                 this.tempString = this.canvasItem.color;
+                break;
+            case CanvasItemSettings.SHAPE:
+                this.tempString = this.canvasItem.shape;
+                break;
+            case CanvasItemSettings.MODEL:
+                this.tempFileData = this.canvasItem.model;
                 break;
         }
 
@@ -31,28 +43,51 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
     }
 
     updateStringProp(value: string) {
-        this.tempString = value;        
-        this.renderFunc();       
+        this.tempString = value;
+        this.renderFunc();
+    }
+
+    updateFileDataProp(fileData: FileData) {
+        this.tempFileData = fileData;
+        this.renderFunc();
     }
 
     commitProp() {
         this.canvasController.renderCanvas();
 
-        switch(this.focusedPropType) {
+        switch (this.focusedPropType) {
             case CanvasItemSettings.COLOR:
                 this.canvasItem.color = this.tempString;
+                break;
+            case CanvasItemSettings.SHAPE:
+                this.canvasItem.shape = <WorldItemShape>this.tempString;
+                break;
+            case CanvasItemSettings.MODEL:
+                this.canvasItem.model = this.tempFileData;
+                this.tempFileData = { FileData: '', data: '' };
                 break;
         }
 
         this.focusedPropType = null;
         this.renderFunc();
+        this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
     }
 
 
-    getVal(property: CanvasItemSettings) {
-        switch(property) {
+    getVal<T>(property: CanvasItemSettings): T {
+        let ret: any;
+        switch (property) {
             case CanvasItemSettings.COLOR:
-                return this.focusedPropType === property ? this.tempString : this.canvasItem.color;
+                ret = this.focusedPropType === property ? this.tempString : this.canvasItem.color;
+                break;
+            case CanvasItemSettings.SHAPE:
+                ret = this.focusedPropType === property ? this.tempString : this.canvasItem.shape;
+                break;
+            case CanvasItemSettings.MODEL:
+                ret = this.focusedPropType === property ? this.tempFileData : this.canvasItem.model;
+                break;
         }
+
+        return <T> ret;
     }
 }

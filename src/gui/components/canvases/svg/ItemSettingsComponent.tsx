@@ -3,8 +3,11 @@ import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvas
 import { CanvasItemSettings } from '../../../controllers/forms/CanvasItemSettingsForm';
 import { ConnectedColorPicker } from '../../forms/ColorPicker';
 import { LabeledComponent } from '../../forms/LabeledComponent';
-import { PixelTag } from '../../../controllers/canvases/svg/models/PixelModel';
+import { PixelTag, FileData } from '../../../controllers/canvases/svg/models/PixelModel';
 import styled from 'styled-components';
+import { ConnectedDropdownComponent } from '../../forms/DropdownComponent';
+import { WorldItemTypeProperty } from '../../../controllers/forms/WorldItemDefinitionForm';
+import { ConnectedFileUploadComponent } from '../../forms/FileUploadComponent';
 
 export interface ItemSettingsProps {
     canvasController: SvgCanvasController;
@@ -30,6 +33,9 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
 
         this.props.canvasController.canvasItemSettingsForm.canvasItem = selectedCanvasItems[0];
 
+        const form = this.props.canvasController.canvasItemSettingsForm;
+
+        console.log('currentVal: ' + form.getVal(CanvasItemSettings.SHAPE) as string)
         return (
             <ItemSettingsStyled>
                 <LabeledComponent label="Choose color" direction="horizontal">
@@ -39,7 +45,34 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
                         propertyType='string'
                     />
                 </LabeledComponent>
+                <LabeledComponent label="Shape" direction="vertical">
+                    <ConnectedDropdownComponent
+                        values={form.shapes}
+                        currentValue={form.getVal(CanvasItemSettings.SHAPE) as string}
+                        formController={form}
+                        propertyName={WorldItemTypeProperty.SHAPE}
+                        propertyType='string'
+                    />
+                </LabeledComponent>
+                {this.renderModelFileChooser()}
             </ItemSettingsStyled>
         );
+    }
+
+    private renderModelFileChooser(): JSX.Element {
+        const form = this.props.canvasController.canvasItemSettingsForm;
+        console.log(form.getVal(CanvasItemSettings.MODEL))
+        return (
+            <React.Fragment>
+                <LabeledComponent label="Model file" direction="vertical">
+                    <ConnectedFileUploadComponent
+                        formController={form}
+                        propertyName={WorldItemTypeProperty.MODEL}
+                        propertyType="file-data"
+                    />
+                </LabeledComponent>
+                {form.getVal(CanvasItemSettings.MODEL) ? form.getVal<FileData>(CanvasItemSettings.MODEL).fileName : ''}
+            </React.Fragment>
+        )
     }
 }

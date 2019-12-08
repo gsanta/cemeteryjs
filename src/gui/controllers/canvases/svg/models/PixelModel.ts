@@ -1,6 +1,7 @@
 import { Point, Polygon, Rectangle } from '@nightshifts.inc/geometry';
 import { SvgConfig } from './SvgConfig';
 import { last, without, sortNum } from '../../../../../model/utils/Functions';
+import { WorldItemShape } from '../../../../../WorldItem';
 
 export enum PixelTag {
     SELECTED = 'selected'
@@ -28,14 +29,21 @@ export interface Pixel {
     layer: number;
 }
 
+export interface FileData {
+    fileName: string;
+    data: string;
+}
+
 export interface CanvasItem {
     type: string;
+    shape: WorldItemShape;
     color: string;
     indexes: number[];
     polygon: Polygon;
     tags: PixelTag[];
     layer: number;
     isPreview: boolean;
+    model: FileData;
 }
 
 export enum Layers {
@@ -89,7 +97,9 @@ export class PixelModel {
             type,
             layer,
             isPreview,
-            tags: []
+            tags: [],
+            shape: WorldItemShape.RECTANGLE,
+            model:  null
         }
 
         this.items.push(canvasItem);
@@ -110,7 +120,9 @@ export class PixelModel {
             type,
             layer,
             isPreview,
-            tags: []
+            tags: [],
+            shape: WorldItemShape.RECTANGLE,
+            model: null
         }
 
         this.items.push(canvasItem);
@@ -184,6 +196,7 @@ export class PixelModel {
     clear(): void {
         this.bitMap = new Map();
         this.pixels = [];
+        this.items = [];
     }
 
     getPixelAtPosition(pos: Point) {

@@ -1,5 +1,5 @@
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
-import { Axis, Mesh, MeshBuilder, Scene, Space, Vector3, PolygonMeshBuilder, Vector2 } from 'babylonjs';
+import { Axis, Mesh, MeshBuilder, Scene, Space, Vector3, PolygonMeshBuilder, Vector2, StandardMaterial, Color3 } from 'babylonjs';
 import { WorldItem } from '../../../WorldItem';
 import { MaterialFactory } from '../MaterialFactory';
 import { WorldItemDefinition } from '../../../WorldItemDefinition';
@@ -36,6 +36,12 @@ export class PolygonFactory  {
         const points = worldItemInfo.dimensions.getPoints().reverse().map(point => new Vector2(point.x, point.y));
 
         const parentMesh = new PolygonMeshBuilder('polygon', points, this.scene).build(null, 8);
+
+        if (worldItemInfo.color) {
+            const material = new StandardMaterial('box-material', this.scene);
+            material.diffuseColor = Color3.FromHexString(worldItemInfo.color);
+            parentMesh.material = material;
+        }
 
         // const parentMesh = MeshBuilder.CreateBox(
         //     `default-wall-container-${this.index}`,

@@ -27,11 +27,12 @@ export class RectangleTool extends AbstractSelectionTool {
         }
         const type = this.canvasController.selectedWorldItemDefinition.typeName;
         const positions = this.getPositionsInSelection();
-        // positions.forEach(pos => this.canvasController.pixelModel.addPixel(pos, type, true, -1));
 
-        this.lastPreviewRect = this.canvasController.pixelModel.addRectangle(positions, type, -1, true);
-
-        this.canvasController.renderCanvas();
+        if (positions.length > 0) {
+            this.lastPreviewRect = this.canvasController.pixelModel.addRectangle(positions, type, -1, true);
+    
+            this.canvasController.renderCanvas();
+        }
     }
 
     click() {

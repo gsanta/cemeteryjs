@@ -1,9 +1,11 @@
+import { FileData } from '../canvases/svg/models/PixelModel';
 
 export abstract class AbstractFormController<P> {
     protected renderFunc = () => null;
     protected tempString: string;
     protected tempBoolean: boolean;
     protected tempNumber: number;
+    protected tempFileData; FileData = {fileName: '', data: ''}
     focusedPropType: P;
 
     setRenderer(renderFunc: () => void) {
@@ -15,6 +17,7 @@ export abstract class AbstractFormController<P> {
     updateStringProp(value: string) {}
     updateBooleanProp(value: boolean) {};
     updateNumberProp(value: number) {};
+    updateFileDataProp(value: FileData) {};
     commitProp(removeFocus?: boolean) {};
     deletItemFromListProp(propType: P, index: number): void {};
     getVal(propType: P) {};

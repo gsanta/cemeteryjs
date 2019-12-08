@@ -39,7 +39,7 @@ export class ServiceFacade<M = any, S = any, T = any> {
             this.importerService = new ImporterService(this, textWorldItemBuilder);
         } else if (fileFormat === FileFormat.SVG) {
             this.configService = new ConfigService(new SvgConfigReader());
-            const svgWorldItemBuilder = new SvgWorldItemBuilder();
+            const svgWorldItemBuilder = new SvgWorldItemBuilder(this);
             this.importerService = new ImporterService(this, svgWorldItemBuilder);
         } else {
             throw new Error('Unknown file format: ' + fileFormat); 

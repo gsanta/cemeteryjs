@@ -9,7 +9,7 @@ import { ServiceFacade } from '../../services/ServiceFacade';
 import { WorldMapReader } from "../WorldMapReader";
 import { InputConverter } from "../InputConverter";
 import { PolygonBuilder } from "../../builders/polygon/PolygonBuilder";
-import { IWorldItemBuilder } from '../IWorldItemBuilder';
+import { IWorldItemBuilder } from '../../io/IWorldItemBuilder';
 
 
 export class TextWorldItemBuilder implements IWorldItemBuilder {

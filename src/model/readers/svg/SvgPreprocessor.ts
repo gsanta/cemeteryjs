@@ -40,7 +40,8 @@ export class SvgPreprocessor {
             const y = parseInt(rect._attributes["data-wg-y"], 10) / pixelSize;
             const width = parseInt(rect._attributes["data-wg-width"], 10) / pixelSize;
             const height = parseInt(rect._attributes["data-wg-height"], 10) / pixelSize;
-            const shape = rawJson.svg._attributes["data-wg-shape"];
+            const shape = rect._attributes["data-wg-shape"];
+            const color = rect._attributes["data-wg-color"];
 
             return {
                 x,
@@ -48,7 +49,8 @@ export class SvgPreprocessor {
                 width,
                 height,
                 type,
-                shape
+                shape,
+                color
             };
         });
     }

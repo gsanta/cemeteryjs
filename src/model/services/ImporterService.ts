@@ -21,7 +21,7 @@ import { WorldMapReader } from '../readers/WorldMapReader';
 import { InputConverter } from '../readers/InputConverter';
 import { PolygonBuilder } from '../builders/polygon/PolygonBuilder';
 import { TransformToWorldCoordinateModifier } from '../modifiers/TransformToWorldCoordinateModifier';
-import { IWorldItemBuilder } from '../readers/IWorldItemBuilder';
+import { IWorldItemBuilder } from '../io/IWorldItemBuilder';
 
 export interface WorldConfig {
     borders: string[];

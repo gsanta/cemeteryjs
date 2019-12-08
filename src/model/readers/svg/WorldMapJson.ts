@@ -44,6 +44,7 @@ export interface Rect {
     height: number;
     type: string;
     shape: string;
+    color: string;
 }
 
 export interface TypeMetaData {
