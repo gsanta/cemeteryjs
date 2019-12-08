@@ -19,6 +19,7 @@ import { NullConverter } from '../readers/InputConverter';
 import { SvgRoomMapConverter } from '../readers/svg/SvgRoomMapConverter';
 import { TextWorldItemBuilder } from '../readers/text/TextWorldItemBuilder';
 import { SvgWorldItemBuilder } from '../readers/svg/SvgWorldItemBuilder';
+import { ModelImportService } from './ModelImportService';
 
 export class ServiceFacade<M = any, S = any, T = any> {
     meshFactoryService: MeshFactoryService<M, S>;
@@ -31,8 +32,9 @@ export class ServiceFacade<M = any, S = any, T = any> {
     converterService: ConverterService<T>;
     importerService: ImporterService<M, S, T>;
     geometryService: GeometryService;
+    modelImportService: ModelImportService;
 
-    constructor(meshFactoryService: MeshFactoryService<any, any>, meshTemplateService: MeshTemplateService<any, any>, fileFormat: FileFormat) {
+    constructor(meshFactoryService: MeshFactoryService<any, any>, meshTemplateService: MeshTemplateService<any, any>, modelImportService: ModelImportService, fileFormat: FileFormat) {
         if (fileFormat === FileFormat.TEXT) {
             this.configService = new ConfigService(new TextConfigReader());
             const textWorldItemBuilder = new TextWorldItemBuilder(this, new TextWorldMapReader(this.configService), new WorldMapToRoomMapConverter(this.configService), new WorldMapToSubareaMapConverter(this.configService));
@@ -53,6 +55,7 @@ export class ServiceFacade<M = any, S = any, T = any> {
         this.modifierFactoryService = new ModifierFactoryService(this);
         this.modifierService = new ModifierService(this.modifierFactoryService);
         this.builderService = new BuilderService();
+        this.modelImportService = modelImportService;
     }
 
     generateWorld(worldMap: string, converter: Converter<T>) {
@@ -61,6 +64,14 @@ export class ServiceFacade<M = any, S = any, T = any> {
         .loadAll(this.configService.meshDescriptors.filter(descriptor => descriptor.model))
         .then(() => {
             const worldItems = this.importerService.import(worldMap);
+
+            const promises = worldItems
+                .filter(item => item.shape === 'model')
+                .map(item => {
+                    
+                    new ModelImportService()
+
+                });
 
             this.converterService.convert(worldItems, converter);
         })

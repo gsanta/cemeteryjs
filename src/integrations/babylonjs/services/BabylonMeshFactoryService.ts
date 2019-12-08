@@ -7,7 +7,7 @@ import { WorldItem, WorldItemShape } from '../../../WorldItem';
 import { DiscFactory } from '../factories/DiscFactory';
 import { DoorFactory } from '../factories/DoorFactory';
 import { EmptyAreaFactory } from '../factories/EmptyAreaFactory';
-import { ModelFactory } from '../factories/ModelFactory';
+import { ModelFactoryOld } from '../factories/ModelFactoryOld';
 import { PlayerFactory } from '../factories/PlayerFactory';
 import { RectangleFactory } from '../factories/RectangleFactory';
 import { RoomFactory } from '../factories/RoomFactory';
@@ -45,17 +45,20 @@ export class BabylonMeshFactoryService implements MeshFactoryService<Mesh, Skele
         this.scene = scene;
     }
 
+    create(worldItem: WorldItem, meshDescriptor: WorldItemDefinition): Promise<void> {
+        return this.createMesh(worldItem, meshDescriptor).then(mesh => {worldItem.meshTemplate.meshes = [mesh]});
+    }
+
     getInstance(worldItemInfo: WorldItem, meshDescriptor: WorldItemDefinition, meshTemplate: MeshTemplate<Mesh, Skeleton>): Mesh[] {
-        if (worldItemInfo.shape) {
-            return this.createFromWorldItem(worldItemInfo, meshTemplate, meshDescriptor);
-        }
         return this.createFromTemplate(worldItemInfo, meshTemplate, meshDescriptor);
     }
 
-    private createFromWorldItem(worldItem: WorldItem, meshTemplate: MeshTemplate<Mesh, Skeleton>, meshDescriptor: WorldItemDefinition) {
+    private createMesh(worldItem: WorldItem, meshDescriptor: WorldItemDefinition): Promise<Mesh> {
         switch(worldItem.shape) {
             case WorldItemShape.RECTANGLE:
-                return [new PolygonFactory(this.scene, new MaterialFactory(this.scene)).createItem(worldItem, meshDescriptor)];
+                return new PolygonFactory(this.scene, new MaterialFactory(this.scene)).createItem(worldItem, meshDescriptor);
+            case WorldItemShape.MODEL:
+                return new PolygonFactory(this.scene, new MaterialFactory(this.scene)).createItem(worldItem, meshDescriptor);
         }
     }
 
@@ -85,7 +88,7 @@ export class BabylonMeshFactoryService implements MeshFactoryService<Mesh, Skele
             case 'window':
                 return new WindowFactory(this.scene, MeshBuilder,  new MaterialFactory(this.scene)).createItem(worldItem, meshDescriptor, meshTemplate);
             default:
-                return new ModelFactory(this.scene, MeshBuilder).getInstance(worldItem, meshDescriptor, meshTemplate);
+                return new ModelFactoryOld(this.scene, MeshBuilder).getInstance(worldItem, meshDescriptor, meshTemplate);
         }
     }
 
@@ -97,8 +100,6 @@ export class BabylonMeshFactoryService implements MeshFactoryService<Mesh, Skele
                 return [this.createPlane(worldItemInfo, meshDescriptor)];
             case 'rect':
                 return [new RectangleFactory(this.scene, new MaterialFactory(this.scene)).createItem(worldItemInfo, meshDescriptor)];
-            case 'polygon':
-                return [new PolygonFactory(this.scene, new MaterialFactory(this.scene)).createItem(worldItemInfo, meshDescriptor)];
             default:
                 throw new Error('Unsupported shape: ' + meshDescriptor.shape);
         }

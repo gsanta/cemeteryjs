@@ -63,8 +63,7 @@ export class ImporterService<M, S, T> {
             SplitWallsIntoTwoParallelChildWallsModifier.modName,
             NormalizeBorderRotationModifier.modName,
             ChangeFurnitureSizeModifier.modeName,
-            TransformToWorldCoordinateModifier.modName,
-            CreateMeshModifier.modName
+            TransformToWorldCoordinateModifier.modName
         ];
 
         return this.services.modifierService.applyModifiers(worldItems, modNames);

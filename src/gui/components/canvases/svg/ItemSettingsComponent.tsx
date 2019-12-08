@@ -35,7 +35,6 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
 
         const form = this.props.canvasController.canvasItemSettingsForm;
 
-        console.log('currentVal: ' + form.getVal(CanvasItemSettings.SHAPE) as string)
         return (
             <ItemSettingsStyled>
                 <LabeledComponent label="Choose color" direction="horizontal">
@@ -45,23 +44,31 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
                         propertyType='string'
                     />
                 </LabeledComponent>
-                <LabeledComponent label="Shape" direction="vertical">
-                    <ConnectedDropdownComponent
-                        values={form.shapes}
-                        currentValue={form.getVal(CanvasItemSettings.SHAPE) as string}
-                        formController={form}
-                        propertyName={WorldItemTypeProperty.SHAPE}
-                        propertyType='string'
-                    />
-                </LabeledComponent>
-                {this.renderModelFileChooser()}
+                {this.renderShapeDropdown()}
+                {form.getVal(CanvasItemSettings.SHAPE) === 'model' ? this.renderModelFileChooser() : null}
             </ItemSettingsStyled>
+        );
+    }
+
+    private renderShapeDropdown(): JSX.Element {
+        const form = this.props.canvasController.canvasItemSettingsForm;
+
+        return (
+            <LabeledComponent label="Shape" direction="vertical">
+                <ConnectedDropdownComponent
+                    values={form.shapes}
+                    currentValue={form.getVal(CanvasItemSettings.SHAPE) as string}
+                    formController={form}
+                    propertyName={WorldItemTypeProperty.SHAPE}
+                    propertyType='string'
+                />
+            </LabeledComponent>
         );
     }
 
     private renderModelFileChooser(): JSX.Element {
         const form = this.props.canvasController.canvasItemSettingsForm;
-        console.log(form.getVal(CanvasItemSettings.MODEL))
+
         return (
             <React.Fragment>
                 <LabeledComponent label="Model file" direction="vertical">
@@ -73,6 +80,6 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
                 </LabeledComponent>
                 {form.getVal(CanvasItemSettings.MODEL) ? form.getVal<FileData>(CanvasItemSettings.MODEL).fileName : ''}
             </React.Fragment>
-        )
+        );
     }
 }

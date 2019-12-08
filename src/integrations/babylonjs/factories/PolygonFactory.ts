@@ -15,7 +15,7 @@ export class PolygonFactory  {
         this.materialFactory = materialFactory;
     }
 
-    createItem(worldItemInfo: WorldItem, meshDescriptor: WorldItemDefinition): Mesh {
+    createItem(worldItemInfo: WorldItem, meshDescriptor: WorldItemDefinition): Promise<Mesh> {
 
         let width: number;
         let depth: number;
@@ -64,6 +64,6 @@ export class PolygonFactory  {
         // this.index++;
 
         // parentMesh.computeWorldMatrix(true);
-        return parentMesh;
+        return Promise.resolve(parentMesh);
     }
 }
