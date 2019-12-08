@@ -1,6 +1,5 @@
 import { Shape } from '@nightshifts.inc/geometry';
 import { Scene } from 'babylonjs';
-import { MockMeshTemplateService } from '../../src/integrations/mock/MockWorldGenerator';
 import { ServiceFacade } from '../../src/model/services/ServiceFacade';
 import { TreeIteratorGenerator } from '../../src/model/utils/TreeIteratorGenerator';
 import { FileFormat } from '../../src/WorldGenerator';
@@ -9,15 +8,13 @@ import { TestMeshFactoryService } from '../setup/TestMeshFactoryService';
 
 export function setup(worldMap: string, fileFormat: FileFormat): ServiceFacade<any, any, any> {
 
-    const meshFactoryService = new TestMeshFactoryService();
-    
     const serviceFacade = new ServiceFacade<any, any, any>(
-        meshFactoryService,
+        null,
+        null,
         null,
         fileFormat
     );
     serviceFacade.configService.update(worldMap);
-    serviceFacade.meshTemplateService = new MockMeshTemplateService(serviceFacade.configService.meshDescriptorMap); 
 
     return serviceFacade;
 }

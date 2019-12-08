@@ -1,28 +1,25 @@
-import { MeshFactoryService } from './MeshFactoryService';
-import { MeshTemplateService } from './MeshTemplateService';
-import { ConfigService } from './ConfigService';
-import { ModifierFactoryService } from './ModifierFactoryService';
-import { WorldItemFactoryService } from './WorldItemFactoryService';
-import { ModifierService } from './ModifierService';
-import { BuilderService } from './BuilderService';
-import { ConverterService } from './ConverterService';
-import { ImporterService } from './ImporterService';
 import { GeometryService } from '@nightshifts.inc/geometry';
-import { FileFormat, Converter } from '../../WorldGenerator';
+import { Converter, FileFormat } from '../../WorldGenerator';
+import { SvgConfigReader } from '../readers/svg/SvgConfigReader';
+import { SvgWorldItemBuilder } from '../readers/svg/SvgWorldItemBuilder';
 import { TextConfigReader } from '../readers/text/TextConfigReader';
+import { TextWorldItemBuilder } from '../readers/text/TextWorldItemBuilder';
 import { TextWorldMapReader } from '../readers/text/TextWorldMapReader';
 import { WorldMapToRoomMapConverter } from '../readers/text/WorldMapToRoomMapConverter';
 import { WorldMapToSubareaMapConverter } from '../readers/text/WorldMapToSubareaMapConverter';
-import { SvgConfigReader } from '../readers/svg/SvgConfigReader';
-import { SvgWorldMapReader } from '../readers/svg/SvgWorldMapReader';
-import { NullConverter } from '../readers/InputConverter';
-import { SvgRoomMapConverter } from '../readers/svg/SvgRoomMapConverter';
-import { TextWorldItemBuilder } from '../readers/text/TextWorldItemBuilder';
-import { SvgWorldItemBuilder } from '../readers/svg/SvgWorldItemBuilder';
+import { BuilderService } from './BuilderService';
+import { ConfigService } from './ConfigService';
+import { ConverterService } from './ConverterService';
+import { ImporterService } from './ImporterService';
+import { MeshFactoryService } from './MeshFactoryService';
+import { MeshTemplateService } from './MeshTemplateService';
 import { ModelImportService } from './ModelImportService';
+import { ModifierFactoryService } from './ModifierFactoryService';
+import { ModifierService } from './ModifierService';
+import { WorldItemFactoryService } from './WorldItemFactoryService';
 
 export class ServiceFacade<M = any, S = any, T = any> {
-    meshFactoryService: MeshFactoryService<M, S>;
+    meshFactoryService: MeshFactoryService;
     modifierFactoryService: ModifierFactoryService;
     worldItemFactoryService: WorldItemFactoryService;
     meshTemplateService: MeshTemplateService<M, S>
@@ -34,7 +31,7 @@ export class ServiceFacade<M = any, S = any, T = any> {
     geometryService: GeometryService;
     modelImportService: ModelImportService;
 
-    constructor(meshFactoryService: MeshFactoryService<any, any>, meshTemplateService: MeshTemplateService<any, any>, modelImportService: ModelImportService, fileFormat: FileFormat) {
+    constructor(meshFactoryService: MeshFactoryService, meshTemplateService: MeshTemplateService<any, any>, modelImportService: ModelImportService, fileFormat: FileFormat) {
         if (fileFormat === FileFormat.TEXT) {
             this.configService = new ConfigService(new TextConfigReader());
             const textWorldItemBuilder = new TextWorldItemBuilder(this, new TextWorldMapReader(this.configService), new WorldMapToRoomMapConverter(this.configService), new WorldMapToSubareaMapConverter(this.configService));
@@ -65,13 +62,13 @@ export class ServiceFacade<M = any, S = any, T = any> {
         .then(() => {
             const worldItems = this.importerService.import(worldMap);
 
-            const promises = worldItems
-                .filter(item => item.shape === 'model')
-                .map(item => {
+            // const promises = worldItems
+            //     .filter(item => item.shape === 'model')
+            //     .map(item => {
                     
-                    new ModelImportService()
+            //         new ModelImportService()
 
-                });
+            //     });
 
             this.converterService.convert(worldItems, converter);
         })

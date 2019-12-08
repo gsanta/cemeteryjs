@@ -6,7 +6,6 @@ import { AssignBordersToRoomsModifier } from '../modifiers/AssignBordersToRoomsM
 import { BuildHierarchyModifier } from '../modifiers/BuildHierarchyModifier';
 import { ChangeBorderWidthModifier } from '../modifiers/ChangeBorderWidthModifier';
 import { ChangeFurnitureSizeModifier } from '../modifiers/ChangeFurnitureSizeModifier';
-import { CreateMeshModifier } from '../modifiers/CreateMeshModifier';
 import { NormalizeBorderRotationModifier } from '../modifiers/NormalizeBorderRotationModifier';
 import { ScaleModifier } from '../modifiers/ScaleModifier';
 import { ThickenBordersModifier } from '../modifiers/ThickenBordersModifier';
@@ -25,7 +24,6 @@ export class ModifierFactoryService {
             .registerInstance(new BuildHierarchyModifier(services))
             .registerInstance(new ChangeBorderWidthModifier(services.configService))
             .registerInstance(new ChangeFurnitureSizeModifier(services))
-            .registerInstance(new CreateMeshModifier(services))
             .registerInstance(new NormalizeBorderRotationModifier())
             .registerInstance(new ScaleModifier(services))
             .registerInstance(new SegmentBordersModifier(services))

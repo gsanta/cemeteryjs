@@ -1,27 +1,17 @@
 import { WorldItem } from "../../WorldItem";
 import { WorldItemDefinition } from '../../WorldItemDefinition';
-import { BorderBuilder } from '../builders/BorderBuilder';
-import { CombinedWorldItemBuilder } from "../builders/CombinedWorldItemBuilder";
-import { FurnitureBuilder } from "../builders/FurnitureBuilder";
-import { RoomBuilder } from "../builders/RoomBuilder";
-import { RootWorldItemBuilder } from "../builders/RootWorldItemBuilder";
-import { SubareaBuilder } from '../builders/SubareaBuilder';
+import { IWorldItemBuilder } from '../io/IWorldItemBuilder';
 import { AssignBordersToRoomsModifier } from "../modifiers/AssignBordersToRoomsModifier";
 import { BuildHierarchyModifier } from "../modifiers/BuildHierarchyModifier";
 import { ChangeBorderWidthModifier } from "../modifiers/ChangeBorderWidthModifier";
 import { ChangeFurnitureSizeModifier } from "../modifiers/ChangeFurnitureSizeModifier";
-import { CreateMeshModifier } from '../modifiers/CreateMeshModifier';
 import { NormalizeBorderRotationModifier } from "../modifiers/NormalizeBorderRotationModifier";
 import { ScaleModifier } from '../modifiers/ScaleModifier';
 import { SegmentBordersModifier } from '../modifiers/SegmentBordersModifier';
 import { SplitWallsIntoTwoParallelChildWallsModifier } from "../modifiers/SplitWallsIntoTwoParallelChildWallsModifier";
 import { ThickenBordersModifier } from "../modifiers/ThickenBordersModifier";
-import { ServiceFacade } from './ServiceFacade';
-import { WorldMapReader } from '../readers/WorldMapReader';
-import { InputConverter } from '../readers/InputConverter';
-import { PolygonBuilder } from '../builders/polygon/PolygonBuilder';
 import { TransformToWorldCoordinateModifier } from '../modifiers/TransformToWorldCoordinateModifier';
-import { IWorldItemBuilder } from '../io/IWorldItemBuilder';
+import { ServiceFacade } from './ServiceFacade';
 
 export interface WorldConfig {
     borders: string[];

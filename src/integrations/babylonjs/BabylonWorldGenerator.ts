@@ -4,15 +4,16 @@ import { Converter, FileFormat, WorldGenerator } from '../../WorldGenerator';
 import { BabylonMeshFactoryService } from './services/BabylonMeshFactoryService';
 import { BabylonModelImportService } from './services/BabylonModelImportService';
 import { ModelImportService } from '../../model/services/ModelImportService';
+import { MeshFactoryService } from '../../model/services/MeshFactoryService';
 
 
 export class BabylonWorldGenerator<T> implements WorldGenerator<T> {
-    private meshFactoryService: BabylonMeshFactoryService;
+    private meshFactoryService: MeshFactoryService;
     private meshLoaderService: BabylonModelImportService;
     private modelImportService: ModelImportService;
 
     constructor(scene: Scene) {
-        this.meshFactoryService = new BabylonMeshFactoryService(scene);
+        this.meshFactoryService = new MeshFactoryService(scene);
         this.meshLoaderService = new BabylonModelImportService(scene);
         this.modelImportService = new ModelImportService(scene);
     }
