@@ -57,7 +57,8 @@ export class FurnitureBuilder implements WorldItemBuilder {
             type: this.services.configService.getMeshDescriptorByType(type).char,
             dimensions: Polygon.createRectangle(x, y, width, height),
             name: type,
-            isBorder: false
+            isBorder: false,
+            modelPath: this.services.configService.getMeshDescriptorByType(type).model 
         }, this.services.configService.getMeshDescriptorByType(type));
     }
 
@@ -76,7 +77,8 @@ export class FurnitureBuilder implements WorldItemBuilder {
                     type: this.services.configService.getMeshDescriptorByType(type).char,
                     dimensions: rect,
                     name: type,
-                    isBorder: false
+                    isBorder: false,
+                    modelPath: this.services.configService.getMeshDescriptorByType(type).model 
                 }, this.services.configService.getMeshDescriptorByType(type));
             });
 
@@ -92,7 +94,8 @@ export class FurnitureBuilder implements WorldItemBuilder {
                     type: this.services.configService.getMeshDescriptorByType(type).char,
                     dimensions: rect,
                     name: type,
-                    isBorder: false
+                    isBorder: false,
+                    modelPath: this.services.configService.getMeshDescriptorByType(type).model 
                 }, this.services.configService.getMeshDescriptorByType(type));
             });
 

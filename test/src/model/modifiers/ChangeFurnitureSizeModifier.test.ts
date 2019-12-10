@@ -1,11 +1,12 @@
-import { Polygon } from '@nightshifts.inc/geometry';
+import { Polygon, Point } from '@nightshifts.inc/geometry';
 import { AssignBordersToRoomsModifier } from "../../../../src/model/modifiers/AssignBordersToRoomsModifier";
 import { BuildHierarchyModifier } from "../../../../src/model/modifiers/BuildHierarchyModifier";
 import { ChangeBorderWidthModifier } from "../../../../src/model/modifiers/ChangeBorderWidthModifier";
 import { ChangeFurnitureSizeModifier } from '../../../../src/model/modifiers/ChangeFurnitureSizeModifier';
 import { SegmentBordersModifier } from "../../../../src/model/modifiers/SegmentBordersModifier";
 import { FileFormat } from '../../../../src/WorldGenerator';
-import { setup, setupMap } from "../../../testUtils";
+import { setup, setupMap, setupTestEnv } from '../../../testUtils';
+import { FakeModelImporterService } from '../../../fakes/FakeModelImporterService';
 
 describe('ChangeFurnitureSizeModifier', () => {
     it ('transforms the sketched furniture dimensions into real mesh dimensions', () => {
@@ -21,11 +22,11 @@ describe('ChangeFurnitureSizeModifier', () => {
             `
         );
 
-        const services = setup(map, FileFormat.TEXT);
+        const fakeModelImporter = new FakeModelImporterService(new Map([['assets/models/table.babylon', new Point(2, 1)]]))
+        const services = setupTestEnv(map, FileFormat.TEXT, fakeModelImporter);
 
-        let worldItems = services.worldItemBuilderService.build(map);
-        worldItems = services.modifierService.applyModifiers(
-            worldItems,
+        const worldItems = services.modifierService.applyModifiers(
+            services.configService.worldItemHierarchy,
             [
                 SegmentBordersModifier.modName,
                 BuildHierarchyModifier.modName,
@@ -64,11 +65,17 @@ describe('ChangeFurnitureSizeModifier', () => {
         \`
         `;
 
-        let services = setup(map, FileFormat.TEXT);
+        const fakeModelImporter = new FakeModelImporterService(
+            new Map([
+                ['assets/models/cupboard.babylon', new Point(0.5, 2)],
+                ['assets/models/table.babylon', new Point(1, 2)],
+                ['assets/models/bed.babylon', new Point(3, 1)]
+            ])
+        );
+        const services = setupTestEnv(map, FileFormat.TEXT, fakeModelImporter);
 
-        let worldItems = services.worldItemBuilderService.build(map);
-        worldItems = services.modifierService.applyModifiers(
-            worldItems,
+        const worldItems = services.modifierService.applyModifiers(
+            services.configService.worldItemHierarchy,
             [
                 SegmentBordersModifier.modName,
                 BuildHierarchyModifier.modName,

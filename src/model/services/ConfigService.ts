@@ -1,6 +1,7 @@
 import { WorldItemDefinition, WorldItemRole } from '../../WorldItemDefinition';
 import { GlobalConfig } from '../readers/text/GlobalSectionParser';
 import { ConfigReader } from '../readers/ConfigReader';
+import { WorldItem } from '../../WorldItem';
 
 export class ConfigService {
     globalConfig: GlobalConfig;
@@ -10,6 +11,8 @@ export class ConfigService {
     meshDescriptors: WorldItemDefinition[];
     meshDescriptorMap: Map<string, WorldItemDefinition>;
     meshDescriptorMapByChar: Map<string, WorldItemDefinition>;
+
+    worldItemHierarchy: WorldItem[];
 
     private configReader: ConfigReader;
 

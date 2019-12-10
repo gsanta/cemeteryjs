@@ -6,16 +6,33 @@ import { FileFormat } from '../src/WorldGenerator';
 import { WorldItem } from '../src/WorldItem';
 import { FakeModelImporterService } from './fakes/FakeModelImporterService';
 
+
+/**
+ * @deprecated use setupTestEnv
+ */
 export function setup(worldMap: string, fileFormat: FileFormat): ServiceFacade<any, any, any> {
 
     const serviceFacade = new ServiceFacade<any, any, any>(
         null,
-        new FakeModelImporterService(),
+        null,
         fileFormat
     );
     serviceFacade.configService.update(worldMap);
 
     return serviceFacade;
+}
+
+export function setupTestEnv(worldMap: string, fileFormat: FileFormat, fakeModelImporter?: FakeModelImporterService): ServiceFacade<any, any, any> {
+    const services = new ServiceFacade<any, any, any>(
+        null,
+        fakeModelImporter ? fakeModelImporter : new FakeModelImporterService(new Map()),
+        fileFormat
+    );
+    services.configService.update(worldMap);
+
+    services.configService.worldItemHierarchy = services.worldItemBuilderService.build(worldMap);
+
+    return services;
 }
 
 export function setupMap(map: string): string {

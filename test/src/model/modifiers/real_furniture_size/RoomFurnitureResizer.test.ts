@@ -4,8 +4,10 @@ import { ChangeBorderWidthModifier } from "../../../../../src/model/modifiers/Ch
 import { RoomFurnitureResizer } from "../../../../../src/model/modifiers/real_furniture_size/RoomFurnitureResizer";
 import { ScaleModifier } from "../../../../../src/model/modifiers/ScaleModifier";
 import { SegmentBordersModifier } from "../../../../../src/model/modifiers/SegmentBordersModifier";
-import { setup } from "../../../../testUtils";
+import { setup, setupTestEnv } from "../../../../testUtils";
 import { FileFormat } from '../../../../../src/WorldGenerator';
+import { FakeModelImporterService } from '../../../../fakes/FakeModelImporterService';
+import { Point } from '@nightshifts.inc/geometry';
 
 it ('Resize each funrinture in the room', () => {
 
@@ -32,10 +34,15 @@ it ('Resize each funrinture in the room', () => {
     \`
     `;
 
-    const services = setup(map, FileFormat.TEXT);
+    const fakeModelImporter = new FakeModelImporterService(
+        new Map([
+            ['assets/models/table.babylon', new Point(2, 1)],
+            ['assets/models/chair.babylon', new Point(1, 1)]
+        ])
+    );
+    const services = setupTestEnv(map, FileFormat.TEXT, fakeModelImporter);
 
-    let worldItems = services.worldItemBuilderService.build(map);
-    const [root] = services.modifierService.applyModifiers(worldItems, [
+    const [root] = services.modifierService.applyModifiers(services.configService.worldItemHierarchy, [
         SegmentBordersModifier.modName,
         BuildHierarchyModifier.modName,
         AssignBordersToRoomsModifier.modName,
@@ -87,11 +94,15 @@ it ('Snap furnitures which are beside walls', () => {
         \`
     `;
 
-    const services = setup(map, FileFormat.TEXT);
+    const fakeModelImporter = new FakeModelImporterService(
+        new Map([
+            ['assets/models/table.babylon', new Point(2, 1)],
+            ['assets/models/chair.babylon', new Point(1, 1)]
+        ])
+    );
+    const services = setupTestEnv(map, FileFormat.TEXT, fakeModelImporter);
 
-
-    let worldItems = services.worldItemBuilderService.build(map);
-    const [root] = services.modifierService.applyModifiers(worldItems, [
+    const [root] = services.modifierService.applyModifiers(services.configService.worldItemHierarchy, [
         SegmentBordersModifier.modName,
         BuildHierarchyModifier.modName,
         AssignBordersToRoomsModifier.modName,

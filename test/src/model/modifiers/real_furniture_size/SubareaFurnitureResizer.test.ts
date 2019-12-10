@@ -1,9 +1,11 @@
-import { setupMap, setup } from "../../../../testUtils";
+import { setupTestEnv } from "../../../../testUtils";
 import { ScaleModifier } from "../../../../../src/model/modifiers/ScaleModifier";
 import { SegmentBordersModifier } from "../../../../../src/model/modifiers/SegmentBordersModifier";
 import { BuildHierarchyModifier } from "../../../../../src/model/modifiers/BuildHierarchyModifier";
 import { SubareaFurnitureResizer } from "../../../../../src/model/modifiers/real_furniture_size/SubareaFurnitureResizer";
 import { FileFormat } from "../../../../../src/WorldGenerator";
+import { FakeModelImporterService } from "../../../../fakes/FakeModelImporterService";
+import { Point } from "@nightshifts.inc/geometry";
 
 it ('Snap furnitures in a subarea to the biggest furniture in that subarea', () => {
     const map = `
@@ -32,11 +34,16 @@ it ('Snap furnitures in a subarea to the biggest furniture in that subarea', () 
     \`
     `;
 
-    const services = setup(map, FileFormat.TEXT);
+    const fakeModelImporter = new FakeModelImporterService(
+        new Map([
+            ['assets/models/table.babylon', new Point(2, 1)],
+            ['assets/models/chair.babylon', new Point(1, 1)]
+        ])
+    );
+    const services = setupTestEnv(map, FileFormat.TEXT, fakeModelImporter);
 
-    let worldItems = services.worldItemBuilderService.build(map);
     const [root] = services.modifierService.applyModifiers(
-        worldItems, 
+        services.configService.worldItemHierarchy, 
         [
             ScaleModifier.modName,
             SegmentBordersModifier.modName,
