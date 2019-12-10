@@ -11,7 +11,6 @@ import { ThickenBordersModifier } from './model/modifiers/ThickenBordersModifier
 export {WorldItem} from './WorldItem';
 export {WorldGenerator} from './WorldGenerator';
 export {BabylonWorldGenerator} from './integrations/babylonjs/BabylonWorldGenerator';
-export {WorldConfig} from './model/services/ImporterService';
 export {Converter} from './WorldGenerator';
 
 

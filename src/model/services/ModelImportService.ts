@@ -1,6 +1,7 @@
 import { Mesh } from "babylonjs/Meshes/mesh";
 import { Skeleton, Scene, AbstractMesh, ParticleSystem, AnimationGroup, Vector3, SceneLoader, StandardMaterial, Texture } from 'babylonjs';
 import { Point } from "@nightshifts.inc/geometry";
+import { WorldItem } from "../..";
 
 export interface ModelData {
     mesh: Mesh;
@@ -14,9 +15,22 @@ export class ModelImportService {
         this.scene = scene;
     }
 
-    private meshTemplates: Map<string, ModelData> = new Map();
+    models: Map<string, ModelData> = new Map();
+
+    private pendingModels: Set<string> = new Set();
+
+    loadAll(worldItems: WorldItem[]): Promise<void> {
+        const promises = worldItems
+            .filter(item => item.modelPath)
+            .map(item => this.load(item.modelPath));
+
+        return Promise.all(promises).then();
+    }
 
     load(path: string): Promise<ModelData> {
+        if (this.pendingModels.has(path)) { return }
+
+        this.pendingModels.add(path);
 
         return new Promise(resolve => {
             const onSuccess = (meshes: Mesh[], ps: ParticleSystem[], skeletons: Skeleton[], ag: AnimationGroup[]) => {

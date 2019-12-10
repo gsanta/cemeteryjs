@@ -12,6 +12,19 @@ import { ThickenBordersModifier } from '../modifiers/ThickenBordersModifier';
 import { TransformToWorldCoordinateModifier } from '../modifiers/TransformToWorldCoordinateModifier';
 import { SegmentBordersModifier } from '../modifiers/SegmentBordersModifier';
 
+export const defaultModifiers = [
+    SegmentBordersModifier.modName,
+    BuildHierarchyModifier.modName,
+    AssignBordersToRoomsModifier.modName,
+    ScaleModifier.modName,
+    ChangeBorderWidthModifier.modName,
+    ThickenBordersModifier.modName,
+    SplitWallsIntoTwoParallelChildWallsModifier.modName,
+    NormalizeBorderRotationModifier.modName,
+    ChangeFurnitureSizeModifier.modeName,
+    TransformToWorldCoordinateModifier.modName
+];
+
 export class ModifierFactoryService {
     private modifierMap: Map<string, Modifier> = new Map();
 

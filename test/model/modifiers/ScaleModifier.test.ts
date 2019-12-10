@@ -36,7 +36,7 @@ it ('Scale the items', () => {
     const services = setup(map, FileFormat.TEXT);
     const geometryService = services.geometryService;
 
-    let worldItems = services.importerService.import(map, []);
+    let worldItems = services.worldItemBuilderService.build(map);
 
     const table = worldItems.find(item => item.name === 'table');
     const door = worldItems.find(item => item.name === 'door');

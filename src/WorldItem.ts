@@ -36,6 +36,8 @@ export class WorldItem<M = any, S = any> {
     color: string;
     shape: WorldItemShape;
 
+    modelPath: string;
+
     definition: WorldItemDefinition;
 
     constructor(id: string, type: string, dimensions: Shape, name: string, isBorder: boolean = false, rotation = 0) {

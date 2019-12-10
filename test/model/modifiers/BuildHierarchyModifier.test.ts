@@ -16,15 +16,16 @@ describe('BuildHierarchyModifier', () => {
 
                 `
             );
+
             const services = setup(map, FileFormat.TEXT);
 
-            const [root] = services.importerService.import(
-                map,
+            const worldItems = services.worldItemBuilderService.build(map);
+            const [root] = services.modifierService.applyModifiers(
+                worldItems,
                 [
                     ScaleModifier.modName,
                     SegmentBordersModifier.modName,
-                    BuildHierarchyModifier.modName
-                ]
+                    BuildHierarchyModifier.modName                ]    
             );
 
             const room1 = root.children.find(child => child.id === 'room-1');
@@ -50,15 +51,16 @@ describe('BuildHierarchyModifier', () => {
                 WWWWWWWWWW
                 `
             );
+
             const services = setup(map, FileFormat.TEXT);
 
-            const [root] = services.importerService.import(
-                map,
+            const worldItems = services.worldItemBuilderService.build(map);
+            const [root] = services.modifierService.applyModifiers(
+                worldItems,
                 [
                     ScaleModifier.modName,
                     SegmentBordersModifier.modName,
-                    BuildHierarchyModifier.modName
-                ]
+                    BuildHierarchyModifier.modName                ]    
             );
 
             const room = root.children.find(item => item.name === 'room');

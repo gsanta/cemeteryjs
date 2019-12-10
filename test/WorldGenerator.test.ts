@@ -39,15 +39,16 @@ describe('`WorldParser`', () => {
             WWWWWWWW
             `
         );
-        let services: ServiceFacade<any, any, any> = setup(map, FileFormat.TEXT);
+        let services: ServiceFacade = setup(map, FileFormat.TEXT);
 
-        const [root] = services.importerService.import(
-            map,
+        const worldItems = services.worldItemBuilderService.build(map);
+        const [root] = services.modifierService.applyModifiers(
+            worldItems,
             [
                 SegmentBordersModifier.modName,
                 ScaleModifier.modName,
                 BuildHierarchyModifier.modName
-            ]
+            ]    
         );
 
         expect(root.children.length).toEqual(10);

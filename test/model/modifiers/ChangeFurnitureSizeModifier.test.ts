@@ -4,9 +4,8 @@ import { BuildHierarchyModifier } from "../../../src/model/modifiers/BuildHierar
 import { ChangeBorderWidthModifier } from "../../../src/model/modifiers/ChangeBorderWidthModifier";
 import { ChangeFurnitureSizeModifier } from '../../../src/model/modifiers/ChangeFurnitureSizeModifier';
 import { SegmentBordersModifier } from "../../../src/model/modifiers/SegmentBordersModifier";
-import { ServiceFacade } from "../../../src/model/services/ServiceFacade";
-import { setup, setupMap } from "../testUtils";
 import { FileFormat } from '../../../src/WorldGenerator';
+import { setup, setupMap } from "../testUtils";
 
 describe('ChangeFurnitureSizeModifier', () => {
     it ('transforms the sketched furniture dimensions into real mesh dimensions', () => {
@@ -22,21 +21,21 @@ describe('ChangeFurnitureSizeModifier', () => {
             `
         );
 
-        let services: ServiceFacade<any, any, any> = setup(map, FileFormat.TEXT);
+        const services = setup(map, FileFormat.TEXT);
 
-        const items = services.importerService.import(
-            map,
+        let worldItems = services.worldItemBuilderService.build(map);
+        worldItems = services.modifierService.applyModifiers(
+            worldItems,
             [
                 SegmentBordersModifier.modName,
                 BuildHierarchyModifier.modName,
                 AssignBordersToRoomsModifier.modName,
-                // ConvertBorderPolyToLineModifier.modName,
                 ChangeBorderWidthModifier.modName,
-                ChangeFurnitureSizeModifier.modeName
-            ]
+                ChangeFurnitureSizeModifier.modeName                
+            ]    
         );
 
-        const room = items[0].children[0];
+        const room = worldItems[0].children[0];
         expect(room.children).toHaveAnyWithDimensions(Polygon.createRectangle(7.5, 2.5, 2, 1));
     });
 
@@ -65,20 +64,21 @@ describe('ChangeFurnitureSizeModifier', () => {
         \`
         `;
 
-        let services: ServiceFacade<any, any, any> = setup(map, FileFormat.TEXT);
+        let services = setup(map, FileFormat.TEXT);
 
-        const items = services.importerService.import(
-            map,
+        let worldItems = services.worldItemBuilderService.build(map);
+        worldItems = services.modifierService.applyModifiers(
+            worldItems,
             [
                 SegmentBordersModifier.modName,
                 BuildHierarchyModifier.modName,
                 AssignBordersToRoomsModifier.modName,
                 ChangeBorderWidthModifier.modName,
-                ChangeFurnitureSizeModifier.modeName
-            ]
+                ChangeFurnitureSizeModifier.modeName             
+            ]    
         );
 
-        const room = items[0].children[0];
+        const room = worldItems[0].children[0];
 
         const tables = room.children.filter(child => child.name === 'table');
         const cupboard = room.children.filter(child => child.name === 'cupboard')[0];

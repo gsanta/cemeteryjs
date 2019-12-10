@@ -12,6 +12,7 @@ export interface WorldItemConfig {
     worldMapPositions?: Point[];
     color?: string;
     shape?: WorldItemShape;
+    modelPath?: string;
 }
 
 export const defaultWorldItemConfig: Partial<WorldItemConfig> = {
@@ -51,6 +52,8 @@ export class WorldItemFactoryService {
         worldItem.definition = worldItemDefinition;
         worldItemConfig.color && (worldItem.color = worldItemConfig.color);
         worldItemConfig.shape && (worldItem.shape = worldItemConfig.shape);
+        worldItemConfig.modelPath && (worldItem.modelPath = worldItemConfig.modelPath);
+
         return worldItem;
     }
 
@@ -73,6 +76,7 @@ export class WorldItemFactoryService {
         clone.definition = worldItemInfo.definition;
         worldItemInfo.color && (clone.color = worldItemInfo.color);
         worldItemInfo.shape && (clone.shape = worldItemInfo.shape);
+        worldItemInfo.modelPath && (clone.modelPath = worldItemInfo.modelPath);
 
         return clone;
     }

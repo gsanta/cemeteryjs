@@ -25,9 +25,13 @@ it ('Add the correct borders to a single room', () => {
 
     const services = setup(map, FileFormat.TEXT);
 
-    let items = services.importerService.import(map, []);
-
-    const [wall1, wall2, wall3, wall4, room] =  new AssignBordersToRoomsModifier(services).apply(items);
+    const worldItems = services.worldItemBuilderService.build(map);
+    const [wall1, wall2, wall3, wall4, room] = services.modifierService.applyModifiers(
+        worldItems,
+        [
+            AssignBordersToRoomsModifier.modName
+        ]    
+    );
 
     expect(room.borderItems).toHaveAnyWithDimensions(wall1.dimensions);
     expect(room.borderItems).toHaveAnyWithDimensions(wall2.dimensions);
@@ -62,11 +66,12 @@ it ('Add the correct borders to rooms with multiple roomw', () => {
     const services = setup(map, FileFormat.TEXT);
     const geometryService = services.geometryService;
 
-    let items = services.importerService.import(map, [SegmentBordersModifier.modName]);
+    let worldItems = services.worldItemBuilderService.build(map);
+    worldItems = services.modifierService.applyModifiers(worldItems, [ SegmentBordersModifier.modName ]);
 
-    items = new AssignBordersToRoomsModifier(services).apply(items);
+    worldItems = new AssignBordersToRoomsModifier(services).apply(worldItems);
 
-    const rooms = items.filter(item => item.name === 'room');
+    const rooms = worldItems.filter(item => item.name === 'room');
 
     const room1 = rooms.find(item => item.dimensions.equalTo(services.geometryService.factory.rectangle(1, 1, 3, 3)));
 

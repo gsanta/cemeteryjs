@@ -36,12 +36,9 @@ it ('Segment a vertical wall where it intersects with the horizontal walls', () 
     let services: ServiceFacade<any, any, any> = setup(map, FileFormat.TEXT);
     let geometryService = services.geometryService;
 
-    const worldItems = services.importerService.import(
-        map,
-        [
-            SegmentBordersModifier.modName,
-        ]
-    );
+    let worldItems = services.worldItemBuilderService.build(map);
+    worldItems = services.modifierService.applyModifiers(worldItems, [ SegmentBordersModifier.modName ]);
+
     expect(worldItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(0.5, 6.5), geometryService.factory.point(9.5, 6.5)));
     expect(worldItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(0.5, 3.5), geometryService.factory.point(9.5, 3.5)));
     expect(worldItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(0.5, 0.5), geometryService.factory.point(9.5, 0.5)));
@@ -81,7 +78,7 @@ it ('Segment a horizontal wall where it intersects with the vertical walls', () 
     let services: ServiceFacade<any, any, any> = setup(map, FileFormat.TEXT);
     let geometryService = services.geometryService;
 
-    let worldItems = services.importerService.import(map,[]);
+    let worldItems = services.worldItemBuilderService.build(map);
 
     let horizontalWalls = worldItems.filter(item => item.name === 'wall').filter(wall => (<Segment> wall.dimensions).getLine().isHorizontal());
 
@@ -124,8 +121,8 @@ it ('does not add the bordering WorldItem if it only touches the room at it\'s e
 
     const services = setup(map, FileFormat.TEXT);
 
-    let items = services.importerService.import(map, []);
-
+    let items = services.worldItemBuilderService.build(map);
+    
     items = new SegmentBordersModifier(services).apply(items);
     1
 });
