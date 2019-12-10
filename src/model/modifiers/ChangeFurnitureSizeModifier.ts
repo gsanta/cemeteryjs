@@ -14,12 +14,10 @@ export class ChangeFurnitureSizeModifier implements Modifier {
     static modeName = 'changeFurnitureSize';
     dependencies = [NormalizeBorderRotationModifier.modName];
 
-    private meshTemplateService: MeshTemplateService<any, any>;
     private defaultFurnitureResizer: RoomFurnitureResizer;
     private subareaFurnituerResizer: SubareaFurnitureResizer;
 
     constructor(services: ServiceFacade<any, any, any>) {
-        this.meshTemplateService = services.meshTemplateService;
         this.defaultFurnitureResizer = new RoomFurnitureResizer(services);
         this.subareaFurnituerResizer = new SubareaFurnitureResizer(services);
     }

@@ -1,11 +1,12 @@
-import { Mesh } from "babylonjs/Meshes/mesh";
-import { Skeleton, Scene, AbstractMesh, ParticleSystem, AnimationGroup, Vector3, SceneLoader, StandardMaterial, Texture } from 'babylonjs';
 import { Point } from "@nightshifts.inc/geometry";
+import { AnimationGroup, ParticleSystem, Scene, SceneLoader, Skeleton, StandardMaterial, Texture } from 'babylonjs';
+import { Mesh } from "babylonjs/Meshes/mesh";
 import { WorldItem } from "../..";
 
 export interface ModelData {
     mesh: Mesh;
     skeleton?: Skeleton;
+    dimensions: Point;
 }
 
 export class ModelImportService {
@@ -36,10 +37,10 @@ export class ModelImportService {
             const onSuccess = (meshes: Mesh[], ps: ParticleSystem[], skeletons: Skeleton[], ag: AnimationGroup[]) => {
 
                 this.configMesh(meshes[0]);
+                const modelData = this.createModelData(meshes[0]);
 
-                resolve({
-                    mesh: meshes[0]
-                });
+                this.models.set(path, modelData);
+                resolve(modelData);
             };
 
             const onError = (scene: Scene, message: string) => {
@@ -59,20 +60,8 @@ export class ModelImportService {
         });
     }
 
-    getTemplateDimensions(type: string): Point {
-        // const meshes = this.meshTemplates.get(type).meshes;
-        // for (let i = 0; i < meshes.length; i++) {
-        //     const mesh = meshes[i];
-        //     mesh.computeWorldMatrix();
-        //     mesh.getBoundingInfo().update(mesh._worldMatrix);
-
-        //     if (mesh.getBoundingInfo().boundingBox.extendSize.x > 0) {
-        //         const extend = mesh.getBoundingInfo().boundingBox.extendSizeWorld;
-        //         return new Point(extend.x * 2, extend.z * 2);
-        //     }
-        // }
-
-        return new Point(1, 1);
+    getModelByPath(path: string): ModelData {
+        return this.models.get(path);
     }
 
     private splitPathIntoBaseAndFileName(path: string): [string, string] {
@@ -89,7 +78,29 @@ export class ModelImportService {
         mesh.checkCollisions = true;
         mesh.receiveShadows = true;
         mesh.isVisible = false;
-}
+    }
+
+    private createModelData(mesh: Mesh): ModelData {
+        const dimensions = this.getMeshDimensions(mesh);
+
+        return {
+            mesh,
+            dimensions
+        }
+    }
+
+    private getMeshDimensions(mesh: Mesh): Point {
+        mesh.computeWorldMatrix();
+        mesh.getBoundingInfo().update(mesh._worldMatrix);
+
+        if (mesh.getBoundingInfo().boundingBox.extendSize.x > 0) {
+            const extend = mesh.getBoundingInfo().boundingBox.extendSizeWorld;
+            return new Point(extend.x * 2, extend.z * 2);
+        }
+
+        return new Point(1, 1);
+    }
+
 
     private loadMaterials(materialFileNames: string[]): StandardMaterial[] {
         return materialFileNames.map(file => {

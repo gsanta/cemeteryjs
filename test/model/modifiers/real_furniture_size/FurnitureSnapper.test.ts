@@ -22,7 +22,8 @@ it ('Rotates furniture to face the snapping edges if snaptype is "ROTATE_PARALLE
 
     const services = setup(map, FileFormat.TEXT);
 
-    const worldItems = services.importerService.import(map, [ ScaleModifier.modName ]);
+    let worldItems = services.worldItemBuilderService.build(map);
+    worldItems = services.modifierService.applyModifiers(worldItems, [ ScaleModifier.modName ]);
 
     const originalSnappingEdge = new Segment(new Point(4, 4), new Point(4, 8));
     const realSnappingEdge = new Segment(new Point(5, 5), new Point(5, 7));
@@ -56,7 +57,8 @@ it ('Rotate the furniture to face away from the snapping edges if snaptype is "R
 
     const services = setup(map, FileFormat.TEXT);
 
-    const worldItems = services.importerService.import(map, [ ScaleModifier.modName ]);
+    let worldItems = services.worldItemBuilderService.build(map);
+    worldItems = services.modifierService.applyModifiers(worldItems, [ ScaleModifier.modName ]);
 
     const originalSnappingEdge = new Segment(new Point(4, 4), new Point(4, 8));
     const realSnappingEdge = new Segment(new Point(5, 5), new Point(5, 7));
@@ -91,7 +93,8 @@ it ('Rotate furniture which are perpendicular to the snapping edges', () => {
 
     const services = setup(map, FileFormat.TEXT);
 
-    const worldItems = services.importerService.import(map, [ ScaleModifier.modName ]);
+    let worldItems = services.worldItemBuilderService.build(map);
+    worldItems = services.modifierService.applyModifiers(worldItems, [ ScaleModifier.modName ]);
 
     const originalSnappingEdge = new Segment(new Point(3, 8), new Point(6, 8));
     const realSnappingEdge = new Segment(new Point(3, 7), new Point(6, 7));
@@ -124,7 +127,8 @@ it ('Rotate furniture into a corner', () => {
 
     const services = setup(map, FileFormat.TEXT);
 
-    const worldItems = services.importerService.import(map, [ ScaleModifier.modName ]);
+    let worldItems = services.worldItemBuilderService.build(map);
+    worldItems = services.modifierService.applyModifiers(worldItems, [ ScaleModifier.modName ]);
 
     const originalSnappingEdges = [
         services.geometryService.factory.edge(services.geometryService.factory.point(1, 1), services.geometryService.factory.point(1, 10)),

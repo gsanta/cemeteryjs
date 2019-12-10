@@ -44,18 +44,19 @@ describe(`SplitWallsIntoTwoParallelChildWallsModifier`, () => {
 
         const serviceFacade = setup(map, FileFormat.TEXT);
 
-        const [root] = serviceFacade.importerService.import(
-            map,
+        let worldItems = serviceFacade.worldItemBuilderService.build(map);
+        const [root] = serviceFacade.modifierService.applyModifiers(
+            worldItems,
             [
                 SegmentBordersModifier.modName,
                 BuildHierarchyModifier.modName,
                 AssignBordersToRoomsModifier.modName,
                 ScaleModifier.modName,
                 ChangeBorderWidthModifier.modName,
-                ThickenBordersModifier.modName,
+                ThickenBordersModifier.modName
             ]
         )
-
+        
         expect(root.children.length).toEqual(10);
 
         const items = new SplitWallsIntoTwoParallelChildWallsModifier(serviceFacade.worldItemFactoryService, serviceFacade.geometryService).apply([root]);

@@ -34,11 +34,16 @@ it ('Snap furnitures in a subarea to the biggest furniture in that subarea', () 
 
     const services = setup(map, FileFormat.TEXT);
 
-    const [root] = services.importerService.import(map, [
-        ScaleModifier.modName,
-        SegmentBordersModifier.modName,
-        BuildHierarchyModifier.modName
-    ]);
+    let worldItems = services.worldItemBuilderService.build(map);
+    const [root] = services.modifierService.applyModifiers(
+        worldItems, 
+        [
+            ScaleModifier.modName,
+            SegmentBordersModifier.modName,
+            BuildHierarchyModifier.modName
+        ]
+    );
+
     const room = root.children.filter(item => item.name === 'room')[0];
     const subarea = room.children.filter(item => item.name === '_subarea')[0];
 

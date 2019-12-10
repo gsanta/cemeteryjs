@@ -11,7 +11,6 @@ import { BuilderService } from './BuilderService';
 import { ConfigService } from './ConfigService';
 import { ConverterService } from './ConverterService';
 import { MeshFactoryService } from './MeshFactoryService';
-import { MeshTemplateService } from './MeshTemplateService';
 import { ModelImportService } from './ModelImportService';
 import { ModifierFactoryService, defaultModifiers } from './ModifierFactoryService';
 import { ModifierService } from './ModifierService';
@@ -22,7 +21,6 @@ export class ServiceFacade<M = any, S = any, T = any> {
     meshFactoryService: MeshFactoryService;
     modifierFactoryService: ModifierFactoryService;
     worldItemFactoryService: WorldItemFactoryService;
-    meshTemplateService: MeshTemplateService<M, S>
     configService: ConfigService;
     modifierService: ModifierService;
     builderService: BuilderService;
@@ -31,7 +29,7 @@ export class ServiceFacade<M = any, S = any, T = any> {
     geometryService: GeometryService;
     modelImportService: ModelImportService;
 
-    constructor(meshFactoryService: MeshFactoryService, meshTemplateService: MeshTemplateService<any, any>, modelImportService: ModelImportService, fileFormat: FileFormat) {
+    constructor(meshFactoryService: MeshFactoryService, modelImportService: ModelImportService, fileFormat: FileFormat) {
         if (fileFormat === FileFormat.TEXT) {
             this.configService = new ConfigService(new TextConfigReader());
             this.worldItemBuilderService = new TextWorldItemBuilder(this, new TextWorldMapReader(this.configService), new WorldMapToRoomMapConverter(this.configService), new WorldMapToSubareaMapConverter(this.configService));
@@ -45,7 +43,6 @@ export class ServiceFacade<M = any, S = any, T = any> {
         this.geometryService = new GeometryService();
         this.converterService = new ConverterService();
         this.meshFactoryService = meshFactoryService;
-        this.meshTemplateService = meshTemplateService;
         this.worldItemFactoryService = new WorldItemFactoryService(this);
         this.modifierFactoryService = new ModifierFactoryService(this);
         this.modifierService = new ModifierService(this.modifierFactoryService);

@@ -1,20 +1,6 @@
 import { WorldItemDefinition, WorldItemRole } from '../../WorldItemDefinition';
-import { TextConfigReader } from "../readers/text/TextConfigReader";
 import { GlobalConfig } from '../readers/text/GlobalSectionParser';
 import { ConfigReader } from '../readers/ConfigReader';
-
-const DEFAULT_BORDERS = [
-    'wall',
-    'door',
-    'window'
-];
-
-const INTERNAL_TYPES = [
-    '_subarea',
-    'empty',
-    'room',
-    'outdoors'
-]
 
 export class ConfigService {
     globalConfig: GlobalConfig;

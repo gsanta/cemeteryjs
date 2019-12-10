@@ -21,8 +21,10 @@ export class SubareaFurnitureResizer {
         const originalReferenceFurnitureDimensions = referenceFurniture.dimensions;
 
         let mainFurnitureDimensions: Point;
-        if (this.services.meshTemplateService.hasTemplate(referenceFurniture.name)) {
-            mainFurnitureDimensions = this.services.meshTemplateService.getTemplateDimensions(referenceFurniture.name);
+        const modelData = this.services.modelImportService.getModelByPath(referenceFurniture.modelPath);
+
+        if (modelData) {
+            mainFurnitureDimensions = modelData.dimensions;
         }
 
         referenceFurniture.dimensions = mainFurnitureDimensions ? Polygon.createRectangle(0, 0, mainFurnitureDimensions.x, mainFurnitureDimensions.y) : <Polygon> referenceFurniture.dimensions;
@@ -38,8 +40,9 @@ export class SubareaFurnitureResizer {
 
         let snappingFurnitureDimensions: Point;
 
-        if (this.services.meshTemplateService.hasTemplate(snappingFurniture.name)) {
-            snappingFurnitureDimensions = this.services.meshTemplateService.getTemplateDimensions(snappingFurniture.name);
+        const modelData = this.services.modelImportService.getModelByPath(snappingFurniture.modelPath);
+        if (modelData) {
+            snappingFurnitureDimensions = modelData.dimensions;
         }
 
         const originalSnappingFurnitureDimensions = snappingFurniture.dimensions;

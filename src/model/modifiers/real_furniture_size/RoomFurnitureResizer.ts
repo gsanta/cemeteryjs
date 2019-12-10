@@ -18,10 +18,11 @@ export class RoomFurnitureResizer {
 
     resize(room: WorldItem) {
         room.children.forEach(furniture => {
-            if (this.services.meshTemplateService.hasTemplate(furniture.name)) {
+            const modelData = this.services.modelImportService.getModelByPath(furniture.modelPath);
+            if (modelData) {
                 const originalFurnitureDimensions = furniture.dimensions;
 
-                const furnitureDimensions = this.services.meshTemplateService.getTemplateDimensions(furniture.name);
+                const furnitureDimensions = modelData.dimensions;
                 furniture.dimensions = furnitureDimensions ? Polygon.createRectangle(0, 0, furnitureDimensions.x, furnitureDimensions.y) : <Polygon> furniture.dimensions;
 
                 const snappingWalls = this.getSnappingWalls(room, originalFurnitureDimensions);

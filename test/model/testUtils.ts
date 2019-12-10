@@ -11,7 +11,6 @@ export function setup(worldMap: string, fileFormat: FileFormat): ServiceFacade<a
     const serviceFacade = new ServiceFacade<any, any, any>(
         null,
         null,
-        null,
         fileFormat
     );
     serviceFacade.configService.update(worldMap);

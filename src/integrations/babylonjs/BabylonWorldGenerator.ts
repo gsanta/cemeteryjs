@@ -22,7 +22,6 @@ export class BabylonWorldGenerator<T> implements WorldGenerator<T> {
 
         const serviceFacade = new ServiceFacade<any, any, T>(
             this.meshFactoryService,
-            this.meshLoaderService,
             this.modelImportService,
             fileFormat
         );

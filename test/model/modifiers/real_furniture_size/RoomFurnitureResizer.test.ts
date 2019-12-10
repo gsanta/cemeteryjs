@@ -34,13 +34,15 @@ it ('Resize each funrinture in the room', () => {
 
     const services = setup(map, FileFormat.TEXT);
 
-    const [root] = services.importerService.import(map, [
+    let worldItems = services.worldItemBuilderService.build(map);
+    const [root] = services.modifierService.applyModifiers(worldItems, [
         SegmentBordersModifier.modName,
         BuildHierarchyModifier.modName,
         AssignBordersToRoomsModifier.modName,
         ScaleModifier.modName,
         ChangeBorderWidthModifier.modName
     ]);
+
     const rooms = root.children.filter(item => item.name === 'room');
     const table1 = rooms[0].children[0];
     const chair1 = rooms[0].children[1];
@@ -87,13 +89,16 @@ it ('Snap furnitures which are beside walls', () => {
 
     const services = setup(map, FileFormat.TEXT);
 
-    const [root] = services.importerService.import(map, [
+
+    let worldItems = services.worldItemBuilderService.build(map);
+    const [root] = services.modifierService.applyModifiers(worldItems, [
         SegmentBordersModifier.modName,
         BuildHierarchyModifier.modName,
         AssignBordersToRoomsModifier.modName,
         ScaleModifier.modName,
         ChangeBorderWidthModifier.modName
     ]);
+    
     const room = root.children.filter(item => item.name === 'room')[0];
     const table = room.children[0];
     const chair = room.children[1];
