@@ -87,9 +87,9 @@ export class SegmentBordersModifier  implements Modifier {
         let currentSegment = <Segment> border.dimensions;
 
         intersections.forEach(intersection => {
-            segments.push(this.services.geometryService.factory.edge(currentSegment.getPoints()[0], intersection));
+            segments.push(new Segment(currentSegment.getPoints()[0], intersection));
 
-            currentSegment = this.services.geometryService.factory.edge(intersection, currentSegment.getPoints()[1]);
+            currentSegment = new Segment(intersection, currentSegment.getPoints()[1]);
         });
 
         segments.push(currentSegment);

@@ -1,4 +1,4 @@
-import { Segment } from "@nightshifts.inc/geometry";
+import { Segment, Point } from "@nightshifts.inc/geometry";
 import { SegmentBordersModifier } from '../../../../src/model/modifiers/SegmentBordersModifier';
 import { ServiceFacade } from "../../../../src/model/services/ServiceFacade";
 import { setup } from "../../../testUtils";
@@ -39,13 +39,13 @@ it ('Segment a vertical wall where it intersects with the horizontal walls', () 
     let worldItems = services.worldItemBuilderService.build(map);
     worldItems = services.modifierService.applyModifiers(worldItems, [ SegmentBordersModifier.modName ]);
 
-    expect(worldItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(0.5, 6.5), geometryService.factory.point(9.5, 6.5)));
-    expect(worldItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(0.5, 3.5), geometryService.factory.point(9.5, 3.5)));
-    expect(worldItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(0.5, 0.5), geometryService.factory.point(9.5, 0.5)));
-    expect(worldItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(0.5, 0.5), geometryService.factory.point(0.5, 3.5)));
-    expect(worldItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(0.5, 3.5), geometryService.factory.point(0.5, 6.5)));
-    expect(worldItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(9.5, 0.5), geometryService.factory.point(9.5, 3.5)));
-    expect(worldItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(9.5, 3.5), geometryService.factory.point(9.5, 6.5)));
+    expect(worldItems).toHaveAnyWithDimensions(new Segment(new Point(0.5, 6.5), new Point(9.5, 6.5)));
+    expect(worldItems).toHaveAnyWithDimensions(new Segment(new Point(0.5, 3.5), new Point(9.5, 3.5)));
+    expect(worldItems).toHaveAnyWithDimensions(new Segment(new Point(0.5, 0.5), new Point(9.5, 0.5)));
+    expect(worldItems).toHaveAnyWithDimensions(new Segment(new Point(0.5, 0.5), new Point(0.5, 3.5)));
+    expect(worldItems).toHaveAnyWithDimensions(new Segment(new Point(0.5, 3.5), new Point(0.5, 6.5)));
+    expect(worldItems).toHaveAnyWithDimensions(new Segment(new Point(9.5, 0.5), new Point(9.5, 3.5)));
+    expect(worldItems).toHaveAnyWithDimensions(new Segment(new Point(9.5, 3.5), new Point(9.5, 6.5)));
 });
 
 it ('Segment a horizontal wall where it intersects with the vertical walls', () => {
@@ -89,10 +89,10 @@ it ('Segment a horizontal wall where it intersects with the vertical walls', () 
     horizontalWalls = worldItems.filter(item => item.name === 'wall').filter(wall => (<Segment> wall.dimensions).getLine().isHorizontal());
 
     expect(horizontalWalls.length).toEqual(4);
-    expect(worldItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(0.5, 2.5), geometryService.factory.point(9.5, 2.5)));
-    expect(worldItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(9.5, 2.5), geometryService.factory.point(20.5, 2.5)));
-    expect(worldItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(20.5, 2.5), geometryService.factory.point(40.5, 2.5)));
-    expect(worldItems).toHaveAnyWithDimensions(geometryService.factory.edge(geometryService.factory.point(40.5, 2.5), geometryService.factory.point(49.5, 2.5)));
+    expect(worldItems).toHaveAnyWithDimensions(new Segment(new Point(0.5, 2.5), new Point(9.5, 2.5)));
+    expect(worldItems).toHaveAnyWithDimensions(new Segment(new Point(9.5, 2.5), new Point(20.5, 2.5)));
+    expect(worldItems).toHaveAnyWithDimensions(new Segment(new Point(20.5, 2.5), new Point(40.5, 2.5)));
+    expect(worldItems).toHaveAnyWithDimensions(new Segment(new Point(40.5, 2.5), new Point(49.5, 2.5)));
 });
 
 it ('does not add the bordering WorldItem if it only touches the room at it\'s edge', () => {

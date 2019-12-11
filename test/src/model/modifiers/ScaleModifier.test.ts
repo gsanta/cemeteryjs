@@ -1,6 +1,8 @@
 import { ScaleModifier } from '../../../../src/model/modifiers/ScaleModifier';
 import { setup } from '../../../testUtils';
 import { FileFormat } from '../../../../src/WorldGenerator';
+import { Polygon, Point } from '@nightshifts.inc/geometry';
+import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 
 it ('Scale the items', () => {
     const map = `
@@ -43,13 +45,13 @@ it ('Scale the items', () => {
     const room = worldItems.find(item => item.name === 'room');
 
     
-    expect(table).toHaveDimensions(services.geometryService.factory.rectangle(2, 2, 3, 2));
-    expect(door).toHaveDimensions(geometryService.factory.edge(geometryService.factory.point(1, 0.5), geometryService.factory.point(4, 0.5)));
-    expect(room).toHaveDimensions(services.geometryService.factory.rectangle(1, 1, 6, 3));
+    expect(table).toHaveDimensions(Polygon.createRectangle(2, 2, 3, 2));
+    expect(door).toHaveDimensions(new Segment(new Point(1, 0.5), new Point(4, 0.5)));
+    expect(room).toHaveDimensions(Polygon.createRectangle(1, 1, 6, 3));
     
     new ScaleModifier(services).apply(worldItems)
 
-    expect(table).toHaveDimensions(services.geometryService.factory.rectangle(4, 4, 6, 4));
-    expect(door).toHaveDimensions(geometryService.factory.edge(geometryService.factory.point(2, 1), geometryService.factory.point(8, 1)));
-    expect(room).toHaveDimensions(services.geometryService.factory.rectangle(2, 2, 12, 6));
+    expect(table).toHaveDimensions(Polygon.createRectangle(4, 4, 6, 4));
+    expect(door).toHaveDimensions(new Segment(new Point(2, 1), new Point(8, 1)));
+    expect(room).toHaveDimensions(Polygon.createRectangle(2, 2, 12, 6));
 });

@@ -42,7 +42,7 @@ export class PolygonShapeBuilder implements WorldItemBuilder {
 
                 const worldMapPositions = componentGraph.getAllNodes()
                     .map(vertex => componentGraph.getNodePositionInMatrix(vertex))
-                    .map(vertexPos => this.services.geometryService.factory.point(vertexPos.x, vertexPos.y));
+                    .map(vertexPos => new Point(vertexPos.x, vertexPos.y));
 
                 const points = this.polygonRedundantPointReducer.reduce(
                     this.createPolygonPointsFromHorizontalLines(lines)

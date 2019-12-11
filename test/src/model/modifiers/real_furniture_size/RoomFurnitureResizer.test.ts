@@ -7,7 +7,7 @@ import { SegmentBordersModifier } from "../../../../../src/model/modifiers/Segme
 import { setup, setupTestEnv } from "../../../../testUtils";
 import { FileFormat } from '../../../../../src/WorldGenerator';
 import { FakeModelImporterService } from '../../../../fakes/FakeModelImporterService';
-import { Point } from '@nightshifts.inc/geometry';
+import { Point, Polygon } from '@nightshifts.inc/geometry';
 
 it ('Resize each funrinture in the room', () => {
 
@@ -57,16 +57,16 @@ it ('Resize each funrinture in the room', () => {
 
     const roomFurnitureResizer = new RoomFurnitureResizer(services);
 
-    expect(table1).toHaveDimensions(services.geometryService.factory.rectangle(2, 4, 2, 4));
-    expect(chair1).toHaveDimensions(services.geometryService.factory.rectangle(5, 8, 2, 2));
-    expect(table2).toHaveDimensions(services.geometryService.factory.rectangle(11, 4, 3, 4));
+    expect(table1).toHaveDimensions(Polygon.createRectangle(2, 4, 2, 4));
+    expect(chair1).toHaveDimensions(Polygon.createRectangle(5, 8, 2, 2));
+    expect(table2).toHaveDimensions(Polygon.createRectangle(11, 4, 3, 4));
 
     roomFurnitureResizer.resize(rooms[0]);
     roomFurnitureResizer.resize(rooms[1]);
 
-    expect(table1).toHaveDimensions(services.geometryService.factory.rectangle(2, 5.5, 2, 1));
-    expect(chair1).toHaveDimensions(services.geometryService.factory.rectangle(5.5, 8.5, 1, 1));
-    expect(table2).toHaveDimensions(services.geometryService.factory.rectangle(11.5, 5.5, 2, 1));
+    expect(table1).toHaveDimensions(Polygon.createRectangle(2, 5.5, 2, 1));
+    expect(chair1).toHaveDimensions(Polygon.createRectangle(5.5, 8.5, 1, 1));
+    expect(table2).toHaveDimensions(Polygon.createRectangle(11.5, 5.5, 2, 1));
 });
 
 
@@ -116,11 +116,11 @@ it ('Snap furnitures which are beside walls', () => {
 
     const roomFurnitureResizer = new RoomFurnitureResizer(services);
 
-    expect(table).toHaveDimensions(services.geometryService.factory.rectangle(1, 4, 2, 4));
-    expect(chair).toHaveDimensions(services.geometryService.factory.rectangle(7, 8, 2, 2));
+    expect(table).toHaveDimensions(Polygon.createRectangle(1, 4, 2, 4));
+    expect(chair).toHaveDimensions(Polygon.createRectangle(7, 8, 2, 2));
 
     roomFurnitureResizer.resize(room);
 
-    expect(table).toHaveDimensions(services.geometryService.factory.rectangle(0.5, 5, 1, 2));
-    expect(chair).toHaveDimensions(services.geometryService.factory.rectangle(8.5, 8.5, 1, 1));
+    expect(table).toHaveDimensions(Polygon.createRectangle(0.5, 5, 1, 2));
+    expect(chair).toHaveDimensions(Polygon.createRectangle(8.5, 8.5, 1, 1));
 });

@@ -5,7 +5,7 @@ import { BuildHierarchyModifier } from "../../../../../src/model/modifiers/Build
 import { SubareaFurnitureResizer } from "../../../../../src/model/modifiers/real_furniture_size/SubareaFurnitureResizer";
 import { FileFormat } from "../../../../../src/WorldGenerator";
 import { FakeModelImporterService } from "../../../../fakes/FakeModelImporterService";
-import { Point } from "@nightshifts.inc/geometry";
+import { Point, Polygon } from "@nightshifts.inc/geometry";
 
 it ('Snap furnitures in a subarea to the biggest furniture in that subarea', () => {
     const map = `
@@ -58,14 +58,14 @@ it ('Snap furnitures in a subarea to the biggest furniture in that subarea', () 
     const chair1 = subarea.children.find(item => item.id === 'chair-1');
     const chair2 = subarea.children.find(item => item.id === 'chair-2');
 
-    expect(table).toHaveDimensions(services.geometryService.factory.rectangle(3, 4, 3, 4));
-    expect(chair1).toHaveDimensions(services.geometryService.factory.rectangle(6, 6, 1, 2));
-    expect(chair2).toHaveDimensions(services.geometryService.factory.rectangle(3, 8, 3, 2));
+    expect(table).toHaveDimensions(Polygon.createRectangle(3, 4, 3, 4));
+    expect(chair1).toHaveDimensions(Polygon.createRectangle(6, 6, 1, 2));
+    expect(chair2).toHaveDimensions(Polygon.createRectangle(3, 8, 3, 2));
 
     const subareaFurnitureResizer = new SubareaFurnitureResizer(services);
     subareaFurnitureResizer.resize(subarea);
 
-    expect(table).toHaveDimensions(services.geometryService.factory.rectangle(3.5, 5.5, 2, 1));
-    expect(chair1).toHaveDimensions(services.geometryService.factory.rectangle(5.5, 6.5, 1, 1));
-    expect(chair2).toHaveDimensions(services.geometryService.factory.rectangle(4, 6.5, 1, 1));
+    expect(table).toHaveDimensions(Polygon.createRectangle(3.5, 5.5, 2, 1));
+    expect(chair1).toHaveDimensions(Polygon.createRectangle(5.5, 6.5, 1, 1));
+    expect(chair2).toHaveDimensions(Polygon.createRectangle(4, 6.5, 1, 1));
 });

@@ -7,7 +7,6 @@ import { TextWorldItemBuilder } from '../readers/text/TextWorldItemBuilder';
 import { TextWorldMapReader } from '../readers/text/TextWorldMapReader';
 import { WorldMapToRoomMapConverter } from '../readers/text/WorldMapToRoomMapConverter';
 import { WorldMapToSubareaMapConverter } from '../readers/text/WorldMapToSubareaMapConverter';
-import { BuilderService } from './BuilderService';
 import { WorldItemStore } from './WorldItemStore';
 import { ConverterService } from './ConverterService';
 import { ModelImportService } from './ModelImportService';

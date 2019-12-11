@@ -1,4 +1,4 @@
-import { Segment } from '@nightshifts.inc/geometry';
+import { Segment, Point } from '@nightshifts.inc/geometry';
 import { WorldItem } from '../../WorldItem';
 import { WorldMapGraph } from '../../WorldMapGraph';
 import { WorldMapReader } from '../readers/WorldMapReader';
@@ -183,7 +183,7 @@ export class BorderBuilder implements WorldItemBuilder {
     private createWorldItemFromBorder(border: Border, graph: WorldMapGraph) {
         const worldMapPositions = border.vertices.map(vertex => graph
                 .getNodePositionInMatrix(vertex))
-                .map(vertexPosition => this.services.geometryService.factory.point(vertexPosition.x, vertexPosition.y));
+                .map(vertexPosition => new Point(vertexPosition.x, vertexPosition.y));
 
         const segment = this.createRectangleFromBorder(border, graph);
         const rotation = segment.getLine().getAngleToXAxis();
@@ -211,17 +211,17 @@ export class BorderBuilder implements WorldItemBuilder {
             const y1 = graph.getTopNeighbour(vertices[0]) !== null ? startCoord.y : startCoord.y + 0.5;
             const y2 = graph.getBottomNeighbour(last(vertices)) !== null ? endCoord.y + 1 : endCoord.y + 0.5;
 
-            return this.services.geometryService.factory.edge(
-                this.services.geometryService.factory.point(startCoord.x + 0.5, y1),
-                this.services.geometryService.factory.point(startCoord.x + 0.5, y2)
+            return new Segment(
+                new Point(startCoord.x + 0.5, y1),
+                new Point(startCoord.x + 0.5, y2)
             );
         } else {
             const x1 = graph.getLeftNeighbour(vertices[0]) !== null ? startCoord.x : startCoord.x + 0.5;
             const x2 = graph.getRightNeighbour(last(vertices)) !== null ? endCoord.x + 1 : endCoord.x + 0.5;
 
-            return this.services.geometryService.factory.edge(
-                this.services.geometryService.factory.point(x1, startCoord.y + 0.5),
-                this.services.geometryService.factory.point(x2, startCoord.y + 0.5)
+            return new Segment(
+                new Point(x1, startCoord.y + 0.5),
+                new Point(x2, startCoord.y + 0.5)
             );
         }
     }

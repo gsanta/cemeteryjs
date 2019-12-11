@@ -30,7 +30,7 @@ it ('Rotates furniture to face the snapping edges if snaptype is "ROTATE_PARALLE
 
     const chair = worldItems.find(item => item.name === 'chair');
     const realChairDimensions = createRealFurnitureDimensions(services, chair, 0.4, 0.6);
-    expect(realChairDimensions.getBoundingCenter()).toEqual(services.geometryService.factory.point(3.5, 6));
+    expect(realChairDimensions.getBoundingCenter()).toEqual(new Point(3.5, 6));
 
     const furnitureSnapper = new FurnitureSnapper(SnapType.ROTATE_PARALLEL_FACE_TOWARD);
 
@@ -65,7 +65,7 @@ it ('Rotate the furniture to face away from the snapping edges if snaptype is "R
 
     const chair = worldItems.find(item => item.name === 'chair');
     const realChairDimensions = createRealFurnitureDimensions(services, chair, 0.4, 0.6);
-    expect(realChairDimensions.getBoundingCenter()).toEqual(services.geometryService.factory.point(3.5, 6));
+    expect(realChairDimensions.getBoundingCenter()).toEqual(new Point(3.5, 6));
 
 
     const furnitureSnapper = new FurnitureSnapper(SnapType.ROTATE_PARALLEL_FACE_AWAY);
@@ -100,7 +100,7 @@ it ('Rotate furniture which are perpendicular to the snapping edges', () => {
     const realSnappingEdge = new Segment(new Point(3, 7), new Point(6, 7));
     const chair = worldItems.find(item => item.name === 'chair');
     const realChairDimensions = createRealFurnitureDimensions(services, chair, 0.4, 0.6);
-    expect(realChairDimensions.getBoundingCenter()).toEqual(services.geometryService.factory.point(4.5, 9));
+    expect(realChairDimensions.getBoundingCenter()).toEqual(new Point(4.5, 9));
 
     const furnitureSnapper = new FurnitureSnapper(SnapType.ROTATE_PERPENDICULAR);
 
@@ -131,16 +131,16 @@ it ('Rotate furniture into a corner', () => {
     worldItems = services.modifierService.applyModifiers(worldItems, [ ScaleModifier.modName ]);
 
     const originalSnappingEdges = [
-        services.geometryService.factory.edge(services.geometryService.factory.point(1, 1), services.geometryService.factory.point(1, 10)),
-        services.geometryService.factory.edge(services.geometryService.factory.point(1, 2), services.geometryService.factory.point(3, 2))
+        new Segment(new Point(1, 1), new Point(1, 10)),
+        new Segment(new Point(1, 2), new Point(3, 2))
     ];
     const realSnappingEdges = [
-        services.geometryService.factory.edge(services.geometryService.factory.point(1.5, 1), services.geometryService.factory.point(1.5, 10)),
-        services.geometryService.factory.edge(services.geometryService.factory.point(1, 2.5), services.geometryService.factory.point(3, 2.5))
+        new Segment(new Point(1.5, 1), new Point(1.5, 10)),
+        new Segment(new Point(1, 2.5), new Point(3, 2.5))
     ];
     const table = worldItems.find(item => item.name === 'table');
     const realTableDimensions = createRealFurnitureDimensions(services, table, 2, 3);
-    expect(realTableDimensions.getBoundingCenter()).toEqual(services.geometryService.factory.point(2, 5));
+    expect(realTableDimensions.getBoundingCenter()).toEqual(new Point(2, 5));
 
     const furnitureSnapper = new FurnitureSnapper(SnapType.ROTATE_PARALLEL_FACE_TOWARD);
 
