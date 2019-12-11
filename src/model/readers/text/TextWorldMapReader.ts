@@ -2,8 +2,8 @@ import { LinesToGraphConverter } from './LinesToGraphConverter';
 import { WorldMapGraph } from '../../../WorldMapGraph';
 import { DetailsLineToObjectConverter, DetailsLineDataTypes } from './DetailsLineToObjectConverter';
 import { WorldMapLineListener, TextWorldMapParser } from './TextWorldMapParser';
-import { ConfigService } from '../../services/ConfigService';
 import { WorldMapReader } from '../WorldMapReader';
+import { ServiceFacade } from '../../services/ServiceFacade';
 
 export class TextWorldMapReader extends WorldMapLineListener implements WorldMapReader {
     private linesToGraphConverter: LinesToGraphConverter;
@@ -13,18 +13,18 @@ export class TextWorldMapReader extends WorldMapLineListener implements WorldMap
     private detailsLines: string[] = [];
     private vertexAdditinalData: {[key: number]: any} = {};
     private detailsLineToObjectConverter: DetailsLineToObjectConverter;
-    private configService: ConfigService;
+    private services: ServiceFacade;
 
-    constructor(configService: ConfigService) {
+    constructor(services: ServiceFacade) {
         super();
-        this.configService = configService;
+        this.services = services;
         this.worldMapReader = new TextWorldMapParser(this);
     }
 
     public read(worldmap: string): WorldMapGraph {
         this.worldMapLines = [];
 
-        this.linesToGraphConverter = new LinesToGraphConverter(this.configService);
+        this.linesToGraphConverter = new LinesToGraphConverter();
         this.detailsLineToObjectConverter = new DetailsLineToObjectConverter({
             pos: DetailsLineDataTypes.COORDINATE,
             axis: DetailsLineDataTypes.COORDINATE,
@@ -45,7 +45,7 @@ export class TextWorldMapReader extends WorldMapLineListener implements WorldMap
             this.vertexAdditinalData[vertex] = attribute
         });
 
-        return this.linesToGraphConverter.parse(this.worldMapLines);
+        return this.linesToGraphConverter.parse(this.worldMapLines, this.services.worldItemStore.worldItemTemplates);
     }
 
     private convertDetailsLineToAdditionalData(line: string): any {

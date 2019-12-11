@@ -18,7 +18,7 @@ export class RoomBuilder implements WorldItemBuilder {
     }
 
     parse(worldMap: string): WorldItem[] {
-        worldMap = this.worldMapConverter.convert(worldMap);
+        worldMap = this.worldMapConverter.convert(worldMap, this.services.worldItemStore.worldItemTemplates);
         this.polygonAreaParser = new PolygonShapeBuilder('room', this.services, this.worldMapReader);
 
         const rooms = this.polygonAreaParser.parse(worldMap);

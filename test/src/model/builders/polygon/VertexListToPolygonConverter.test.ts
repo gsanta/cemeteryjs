@@ -8,7 +8,7 @@ import { Polygon, Point } from "@nightshifts.inc/geometry";
 describe('Convert the polygon vertices in the graph to a polygon object', () => {
     function getPolygon(worldMap: string): Polygon {
         const services = setup(worldMap, FileFormat.TEXT);
-        const worldMapReader = new TextWorldMapReader(services.configService);
+        const worldMapReader = new TextWorldMapReader(services);
         const graph = worldMapReader.read(worldMap).getReducedGraphForTypes(['building']);
     
         const vertexListToPolygonConverter = new VertexListToPolygonConverter();

@@ -25,7 +25,7 @@ it ('Create separate items for every vertical/horizontal slices of walls', () =>
 
     const services = setup(worldMap, FileFormat.TEXT);
     const geometryService = services.geometryService;
-    const roomSeparatorParser = new BorderBuilder(services, new TextWorldMapReader(services.configService));
+    const roomSeparatorParser = new BorderBuilder(services, new TextWorldMapReader(services));
 
 
     const worldItems = roomSeparatorParser.parse(worldMap);
@@ -59,7 +59,7 @@ it ('Create separate items for different types (represented by different charact
 
     const services = setup(worldMap, FileFormat.TEXT);
     const geometryService = services.geometryService;
-    const roomSeparatorParser = new BorderBuilder(services, new TextWorldMapReader(services.configService));
+    const roomSeparatorParser = new BorderBuilder(services, new TextWorldMapReader(services));
 
 
     const worldItems = roomSeparatorParser.parse(worldMap);
@@ -97,7 +97,7 @@ it ('Create separate items for every vertical/horizontal slices of walls', () =>
 
     const services = setup(worldMap, FileFormat.TEXT);
     const geometryService = services.geometryService;
-    const roomSeparatorParser = new BorderBuilder(services, new TextWorldMapReader(services.configService));
+    const roomSeparatorParser = new BorderBuilder(services, new TextWorldMapReader(services));
 
 
     const borders = roomSeparatorParser.parse(worldMap);

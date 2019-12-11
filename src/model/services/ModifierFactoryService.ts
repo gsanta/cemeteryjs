@@ -37,7 +37,7 @@ export class ModifierFactoryService {
             .registerInstance(new AddRoofModifier(services.worldItemFactoryService))
             .registerInstance(new AssignBordersToRoomsModifier(services))
             .registerInstance(new BuildHierarchyModifier(services))
-            .registerInstance(new ChangeBorderWidthModifier(services.configService))
+            .registerInstance(new ChangeBorderWidthModifier(services))
             .registerInstance(new ChangeFurnitureSizeModifier(services))
             .registerInstance(new NormalizeBorderRotationModifier())
             .registerInstance(new ScaleModifier(services))

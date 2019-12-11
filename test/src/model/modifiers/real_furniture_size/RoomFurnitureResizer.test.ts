@@ -42,7 +42,7 @@ it ('Resize each funrinture in the room', () => {
     );
     const services = setupTestEnv(map, FileFormat.TEXT, fakeModelImporter);
 
-    const [root] = services.modifierService.applyModifiers(services.configService.worldItemHierarchy, [
+    const [root] = services.modifierService.applyModifiers(services.worldItemStore.worldItemHierarchy, [
         SegmentBordersModifier.modName,
         BuildHierarchyModifier.modName,
         AssignBordersToRoomsModifier.modName,
@@ -102,7 +102,7 @@ it ('Snap furnitures which are beside walls', () => {
     );
     const services = setupTestEnv(map, FileFormat.TEXT, fakeModelImporter);
 
-    const [root] = services.modifierService.applyModifiers(services.configService.worldItemHierarchy, [
+    const [root] = services.modifierService.applyModifiers(services.worldItemStore.worldItemHierarchy, [
         SegmentBordersModifier.modName,
         BuildHierarchyModifier.modName,
         AssignBordersToRoomsModifier.modName,

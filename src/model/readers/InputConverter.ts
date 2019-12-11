@@ -1,7 +1,8 @@
+import { WorldItemTemplate } from '../../WorldItemTemplate';
 
 
 export interface InputConverter {
-    convert(worldmap: string): string;
+    convert(worldmap: string, worldItemTemplates: WorldItemTemplate[]): string;
 }
 
 export class NullConverter implements InputConverter {

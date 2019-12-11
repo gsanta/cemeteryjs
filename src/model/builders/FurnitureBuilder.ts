@@ -18,7 +18,7 @@ export class FurnitureBuilder implements WorldItemBuilder {
 
     parse(worldMap: string): WorldItem[] {
         const graph = this.worldMapReader.read(worldMap);
-        const types = this.services.configService.furnitures
+        const types = WorldItemTemplate.furnitures(this.services.worldItemStore.worldItemTemplates)
             .filter(furniture => graph.hasType(furniture.typeName))
             .map(furniture => furniture.typeName);
 
@@ -55,12 +55,12 @@ export class FurnitureBuilder implements WorldItemBuilder {
         const height = (maxY - minY + 1);
         const type = componentGraph.getTypes()[0];
         return this.services.worldItemFactoryService.create({
-            type: WorldItemTemplate.getByTypeName(type, this.services.configService.worldItemTemplates).char,
+            type: WorldItemTemplate.getByTypeName(type, this.services.worldItemStore.worldItemTemplates).char,
             dimensions: Polygon.createRectangle(x, y, width, height),
             name: type,
             isBorder: false,
-            modelPath: WorldItemTemplate.getByTypeName(type, this.services.configService.worldItemTemplates).model 
-        }, WorldItemTemplate.getByTypeName(type, this.services.configService.worldItemTemplates));
+            modelPath: WorldItemTemplate.getByTypeName(type, this.services.worldItemStore.worldItemTemplates).model 
+        }, WorldItemTemplate.getByTypeName(type, this.services.worldItemStore.worldItemTemplates));
     }
 
     private createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph: WorldMapGraph): WorldItem[] {
@@ -74,7 +74,7 @@ export class FurnitureBuilder implements WorldItemBuilder {
                 const rect = this.createRectangleFromVerticalVertices(gameObjectGraph)
                 const type = componentGraph.getTypes()[0];
 
-                const template = WorldItemTemplate.getByTypeName(type, this.services.configService.worldItemTemplates);
+                const template = WorldItemTemplate.getByTypeName(type, this.services.worldItemStore.worldItemTemplates);
                 return this.services.worldItemFactoryService.create({
                     type: template.char,
                     dimensions: rect,
@@ -92,7 +92,7 @@ export class FurnitureBuilder implements WorldItemBuilder {
                 const rect = this.createRectangleFromHorizontalVertices(connectedCompGraph);
 
                 const type = componentGraph.getTypes()[0];
-                const template = WorldItemTemplate.getByTypeName(type, this.services.configService.worldItemTemplates)
+                const template = WorldItemTemplate.getByTypeName(type, this.services.worldItemStore.worldItemTemplates)
                 return this.services.worldItemFactoryService.create({
                     type: template.char,
                     dimensions: rect,

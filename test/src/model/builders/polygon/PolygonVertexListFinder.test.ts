@@ -7,7 +7,7 @@ import { Point } from '@nightshifts.inc/geometry';
 describe('Find the vertices of a polygon in the graph', () => {
     function getVertices(worldMap: string): [{x: number, y: number}[], Direction[], boolean[]] {
         const services = setup(worldMap, FileFormat.TEXT);
-        const worldMapReader = new TextWorldMapReader(services.configService);
+        const worldMapReader = new TextWorldMapReader(services);
         const graph = worldMapReader.read(worldMap).getReducedGraphForTypes(['building']);
     
         const vertices = new PolygonVertexListFinder().findVertexes(graph);
@@ -229,7 +229,7 @@ describe('Find the vertices of a polygon in the graph', () => {
     
         ----------
         ---WWWW---
-        --WW-----
+        --WW------
         -WW-------
         ----------
     

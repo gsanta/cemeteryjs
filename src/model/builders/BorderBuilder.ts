@@ -27,7 +27,7 @@ export class BorderBuilder implements WorldItemBuilder {
     parse(worldMap: string): WorldItem[] {
         this.positionToComponentMap = new Map();
         const graph = this.worldMapReader.read(worldMap);
-        const borderTypes = WorldItemTemplate.borders(this.services.configService.worldItemTemplates).map(border => border.typeName);
+        const borderTypes = WorldItemTemplate.borders(this.services.worldItemStore.worldItemTemplates).map(border => border.typeName);
 
         const borderGraph = graph.getReducedGraphForTypes(borderTypes)
         borderGraph.getAllNodes().forEach(vertex => this.positionToComponentMap.set(vertex, []));
@@ -188,7 +188,7 @@ export class BorderBuilder implements WorldItemBuilder {
         const segment = this.createRectangleFromBorder(border, graph);
         const rotation = segment.getLine().getAngleToXAxis();
 
-        const template = WorldItemTemplate.getByTypeName(border.type, this.services.configService.worldItemTemplates);
+        const template = WorldItemTemplate.getByTypeName(border.type, this.services.worldItemStore.worldItemTemplates);
         const worldItem = this.services.worldItemFactoryService.create({
             type: template.char,
             dimensions: segment,

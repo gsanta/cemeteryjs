@@ -48,7 +48,7 @@ export class PolygonShapeBuilder implements WorldItemBuilder {
                     this.createPolygonPointsFromHorizontalLines(lines)
                 );
 
-                const template = WorldItemTemplate.getByTypeName(this.itemName, this.services.configService.worldItemTemplates);
+                const template = WorldItemTemplate.getByTypeName(this.itemName, this.services.worldItemStore.worldItemTemplates);
                 return this.services.worldItemFactoryService.create({
                     dimensions: this.services.geometryService.factory.polygon(points),
                     name: this.itemName,
@@ -65,7 +65,7 @@ export class PolygonShapeBuilder implements WorldItemBuilder {
             this.createPolygonPointsFromHorizontalLines(lines)
         );
 
-        const template = WorldItemTemplate.getByTypeName(this.itemName, this.services.configService.worldItemTemplates);
+        const template = WorldItemTemplate.getByTypeName(this.itemName, this.services.worldItemStore.worldItemTemplates);
         return this.services.worldItemFactoryService.create({
             dimensions: this.geometryService.factory.polygon(points),
             name: this.itemName,

@@ -28,7 +28,7 @@ describe('FurnitureBuilder', () => {
 
             const services = setup(worldMap, FileFormat.TEXT);
 
-            const furnitureInfoParser = new FurnitureBuilder(services, new TextWorldMapReader(services.configService));
+            const furnitureInfoParser = new FurnitureBuilder(services, new TextWorldMapReader(services));
             const worldItems = furnitureInfoParser.parse(worldMap);
 
             expect(worldItems.length).toEqual(4);
@@ -60,7 +60,7 @@ describe('FurnitureBuilder', () => {
 
             const services = setup(worldMap, FileFormat.TEXT);
 
-            const furnitureInfoParser = new FurnitureBuilder(services, new TextWorldMapReader(services.configService));
+            const furnitureInfoParser = new FurnitureBuilder(services, new TextWorldMapReader(services));
             const worldItems = furnitureInfoParser.parse(worldMap);
 
             expect(worldItems.length).toEqual(3);
@@ -91,7 +91,7 @@ describe('FurnitureBuilder', () => {
 
             const services = setup(worldMap, FileFormat.TEXT);
 
-            const furnitureInfoParser = new FurnitureBuilder(services, new TextWorldMapReader(services.configService));
+            const furnitureInfoParser = new FurnitureBuilder(services, new TextWorldMapReader(services));
             const worldItems = furnitureInfoParser.parse(worldMap);
             expect(worldItems.length).toEqual(1);
             expect(worldItems).toContainWorldItem({id: 'table-1', name: 'table', dimensions: Polygon.createRectangle(1, 0, 2, 3)});
@@ -124,7 +124,7 @@ it ('Parse furnitures that are outdoors', () => {
 
     const services = setup(worldMap, FileFormat.TEXT);
 
-    const furnitureInfoParser = new FurnitureBuilder(services, new TextWorldMapReader(services.configService));
+    const furnitureInfoParser = new FurnitureBuilder(services, new TextWorldMapReader(services));
     const furnitures = furnitureInfoParser.parse(worldMap);
     expect(furnitures.length).toEqual(1);
     expect(furnitures).toContainWorldItem({id: 'table-1', name: 'table', dimensions: Polygon.createRectangle(10, 2, 4, 2)});

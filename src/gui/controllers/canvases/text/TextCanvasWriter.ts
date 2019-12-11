@@ -20,7 +20,7 @@ export class TextCanvasWriter implements ICanvasWriter {
             throw new Error('TextEditorWriter only supports text file format.');
         }
 
-        const {worldItemTypes: worldItemDefinitions} = this.textConfigReader.read(file);
+        const {worldItemTemplates} = this.textConfigReader.read(file);
 
         const lines: string[] = [];
         new TextWorldMapParser(new class extends WorldMapLineListener {
@@ -29,7 +29,7 @@ export class TextCanvasWriter implements ICanvasWriter {
             }
         }).read(file);
 
-        this.textCanvasController.worldItemDefinitions = worldItemDefinitions;
+        this.textCanvasController.worldItemDefinitions = worldItemTemplates;
         this.textCanvasController.setRendererDirty();
         this.textCanvasController.setText(lines.join('\n'));
     }

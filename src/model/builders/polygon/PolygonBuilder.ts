@@ -37,6 +37,6 @@ export class PolygonBuilder implements WorldItemBuilder {
             dimensions: polygon,
             name: 'building',
             isBorder: false
-        }, WorldItemTemplate.getByTypeName('building', this.services.configService.worldItemTemplates));
+        }, WorldItemTemplate.getByTypeName('building', this.services.worldItemStore.worldItemTemplates));
     }
 }

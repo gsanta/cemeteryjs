@@ -52,9 +52,9 @@ describe('WorldMapToRoomMapConverter', () => {
 
             const services = setup(input, FileFormat.TEXT);
 
-            const worldMapToRoomMapConverter = new WorldMapToRoomMapConverter(services.configService);
+            const worldMapToRoomMapConverter = new WorldMapToRoomMapConverter();
 
-            expect(worldMapToRoomMapConverter.convert(input)).toEqual(output);
+            expect(worldMapToRoomMapConverter.convert(input, services.worldItemStore.worldItemTemplates)).toEqual(output);
         });
     });
 });

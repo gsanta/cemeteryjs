@@ -29,7 +29,7 @@ export class ScaleModifier implements Modifier {
     private scaleItems(worldItems: WorldItem[]): WorldItem[] {
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
-                item.dimensions = item.dimensions = item.dimensions.scale(new Point(this.services.configService.globalConfig.scale.x, this.services.configService.globalConfig.scale.y));
+                item.dimensions = item.dimensions = item.dimensions.scale(new Point(this.services.worldItemStore.globalConfig.scale.x, this.services.worldItemStore.globalConfig.scale.y));
             }
         });
 

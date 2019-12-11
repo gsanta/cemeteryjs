@@ -1,5 +1,5 @@
 import { WorldMapLineListener, TextWorldMapParser } from './TextWorldMapParser';
-import { ConfigService } from '../../services/ConfigService';
+import { WorldItemStore } from '../../services/WorldItemStore';
 import { InputConverter } from '../InputConverter';
 import { WorldItem } from '../../../WorldItem';
 import { WorldItemTemplate } from '../../../WorldItemTemplate';
@@ -24,30 +24,30 @@ import { WorldItemTemplate } from '../../../WorldItemTemplate';
  */
 export class WorldMapToRoomMapConverter extends WorldMapLineListener implements InputConverter {
     private worldMapReader: TextWorldMapParser;
+    private worldItemTemplates: WorldItemTemplate[];
 
     private lines: string[] = [];
-    private configService: ConfigService;
 
-    constructor(configService: ConfigService) {
+    constructor() {
         super();
-        this.configService = configService;
         this.worldMapReader = new TextWorldMapParser(this);
     }
 
-    public convert(worldmap: string): string {
+    public convert(worldmap: string, worldItemTemplates: WorldItemTemplate[]): string {
+        this.worldItemTemplates = worldItemTemplates;
         this.worldMapReader.read(worldmap);
 
         return this.lines.join('\n');
     }
 
     public addMapSectionLine(line: string) {
-        const wallChar = WorldItemTemplate.getByTypeName('wall', this.configService.worldItemTemplates).char;
-        const roomChar = WorldItemTemplate.getByTypeName('room', this.configService.worldItemTemplates).char;
+        const wallChar = WorldItemTemplate.getByTypeName('wall', this.worldItemTemplates).char;
+        const roomChar = WorldItemTemplate.getByTypeName('room', this.worldItemTemplates).char;
         
-        const outdoors = WorldItemTemplate.getByTypeName('outdoors', this.configService.worldItemTemplates);
+        const outdoors = WorldItemTemplate.getByTypeName('outdoors', this.worldItemTemplates);
         const outdoorsChar = outdoors ? outdoors.char : '';
 
-        WorldItemTemplate.borders(this.configService.worldItemTemplates).forEach(descriptor => {
+        WorldItemTemplate.borders(this.worldItemTemplates).forEach(descriptor => {
             line = line.replace(new RegExp(descriptor.char, 'g'), wallChar);
         });
 

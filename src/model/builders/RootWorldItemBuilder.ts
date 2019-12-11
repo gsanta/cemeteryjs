@@ -31,7 +31,7 @@ export class RootWorldItemBuilder implements WorldItemBuilder {
 
     public createRootWorldItem(graph: WorldMapGraph): WorldItem {
 
-        const template = WorldItemTemplate.getByTypeName('root', this.services.configService.worldItemTemplates);
+        const template = WorldItemTemplate.getByTypeName('root', this.services.worldItemStore.worldItemTemplates);
         
         return this.services.worldItemFactoryService.create({
             type: 'F',

@@ -39,6 +39,12 @@ export namespace WorldItemTemplate {
         return templates.filter(templates => templates.roles.includes(WorldItemRole.BORDER));
     }
 
+    export function furnitures(worldItemTemplates: WorldItemTemplate[]): WorldItemTemplate[] {
+        return worldItemTemplates.filter(descriptor => {
+            return !descriptor.roles.includes(WorldItemRole.CONTAINER) && !descriptor.roles.includes(WorldItemRole.BORDER)
+        });
+    }
+
     export function generateId(exisingWorldItemDefinitions: WorldItemTemplate[]): string {
         if (exisingWorldItemDefinitions.length === 0) { return 1 + ''; }
 

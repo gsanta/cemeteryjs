@@ -28,11 +28,11 @@ describe('Read a world item definition from text', () => {
     
         const textConfigReader = new TextConfigReader();
     
-        const {worldItemTypes} = textConfigReader.read(worldMap);
+        const {worldItemTemplates} = textConfigReader.read(worldMap);
 
-        expect(worldItemTypes.length).toEqual(1);
+        expect(worldItemTemplates.length).toEqual(1);
 
-        return worldItemTypes[0];
+        return worldItemTemplates[0];
     }
 
     it ('with basic properties', () => {

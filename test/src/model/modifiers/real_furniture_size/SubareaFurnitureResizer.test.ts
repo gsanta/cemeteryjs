@@ -43,7 +43,7 @@ it ('Snap furnitures in a subarea to the biggest furniture in that subarea', () 
     const services = setupTestEnv(map, FileFormat.TEXT, fakeModelImporter);
 
     const [root] = services.modifierService.applyModifiers(
-        services.configService.worldItemHierarchy, 
+        services.worldItemStore.worldItemHierarchy, 
         [
             ScaleModifier.modName,
             SegmentBordersModifier.modName,

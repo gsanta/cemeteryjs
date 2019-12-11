@@ -8,7 +8,7 @@ import { TextWorldMapReader } from '../readers/text/TextWorldMapReader';
 import { WorldMapToRoomMapConverter } from '../readers/text/WorldMapToRoomMapConverter';
 import { WorldMapToSubareaMapConverter } from '../readers/text/WorldMapToSubareaMapConverter';
 import { BuilderService } from './BuilderService';
-import { ConfigService } from './ConfigService';
+import { WorldItemStore } from './WorldItemStore';
 import { ConverterService } from './ConverterService';
 import { ModelImportService } from './ModelImportService';
 import { ModifierFactoryService, defaultModifiers } from './ModifierFactoryService';
@@ -16,24 +16,29 @@ import { ModifierService } from './ModifierService';
 import { WorldItemFactoryService } from './WorldItemFactoryService';
 import { IWorldItemBuilder } from '../io/IWorldItemBuilder';
 import { Modifier } from '../modifiers/Modifier';
+import { ConfigReader } from '../readers/ConfigReader';
 
 export class ServiceFacade<M = any, S = any, T = any> {
+    worldItemStore: WorldItemStore;
+
     modifierFactoryService: ModifierFactoryService;
     worldItemFactoryService: WorldItemFactoryService;
-    configService: ConfigService;
     modifierService: ModifierService;
     builderService: BuilderService;
     worldItemBuilderService: IWorldItemBuilder;
     converterService: ConverterService<T>;
     geometryService: GeometryService;
     modelImportService: ModelImportService;
+    configReader: ConfigReader;
 
     constructor(modelImportService: ModelImportService, createMeshModifier: Modifier, fileFormat: FileFormat) {
         if (fileFormat === FileFormat.TEXT) {
-            this.configService = new ConfigService(new TextConfigReader());
-            this.worldItemBuilderService = new TextWorldItemBuilder(this, new TextWorldMapReader(this.configService), new WorldMapToRoomMapConverter(this.configService), new WorldMapToSubareaMapConverter(this.configService));
+            this.configReader = new TextConfigReader();
+            this.worldItemStore = new WorldItemStore();
+            this.worldItemBuilderService = new TextWorldItemBuilder(this, new TextWorldMapReader(this), new WorldMapToRoomMapConverter(), new WorldMapToSubareaMapConverter());
         } else if (fileFormat === FileFormat.SVG) {
-            this.configService = new ConfigService(new SvgConfigReader());
+            this.configReader = new SvgConfigReader();
+            this.worldItemStore = new WorldItemStore();
             this.worldItemBuilderService = new SvgWorldItemBuilder(this);
         } else {
             throw new Error('Unknown file format: ' + fileFormat); 
@@ -50,7 +55,10 @@ export class ServiceFacade<M = any, S = any, T = any> {
     }
 
     generateWorld(worldMap: string, converter: Converter<T>) {
-        this.configService.update(worldMap);
+        const {worldItemTemplates, globalConfig} = this.configReader.read(worldMap);
+
+        this.worldItemStore.worldItemTemplates = worldItemTemplates;
+        this.worldItemStore.globalConfig = globalConfig;
 
         let worldItems = this.worldItemBuilderService.build(worldMap);
         

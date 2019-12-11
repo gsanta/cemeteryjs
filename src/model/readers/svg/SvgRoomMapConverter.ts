@@ -2,7 +2,7 @@ import { InputConverter } from '../InputConverter';
 import { SvgConfigReader } from './SvgConfigReader';
 import { SvgWorldMapReader } from './SvgWorldMapReader';
 import { SvgWorldMapWriter } from './SvgWorldMapWriter';
-import { ConfigService } from '../../services/ConfigService';
+import { WorldItemStore } from '../../services/WorldItemStore';
 import { WorldItemTemplate } from '../../../WorldItemTemplate';
 
 
@@ -10,10 +10,8 @@ export class SvgRoomMapConverter implements InputConverter {
     private svgConfigReader: SvgConfigReader;
     private svgWorldMapReader: SvgWorldMapReader;
     private svgWorldMapWriter: SvgWorldMapWriter;
-    private configService: ConfigService;
 
-    constructor(configService: ConfigService) {
-        this.configService = configService;
+    constructor() {
         this.svgConfigReader = new SvgConfigReader();
         this.svgWorldMapReader = new SvgWorldMapReader();
         this.svgWorldMapWriter = new SvgWorldMapWriter();
@@ -21,25 +19,25 @@ export class SvgRoomMapConverter implements InputConverter {
 
     
     convert(worldmap: string): string {
-        const { worldItemTypes, globalConfig } = this.svgConfigReader.read(worldmap);
+        const { worldItemTemplates, globalConfig } = this.svgConfigReader.read(worldmap);
         const worldMapGraph = this.svgWorldMapReader.read(worldmap); 
 
         const wallTypeName = 'wall';;
         const roomTypeName = 'room';
 
-        WorldItemTemplate.borders(this.configService.worldItemTemplates).forEach(worldItemType => {
+        WorldItemTemplate.borders(worldItemTemplates).forEach(worldItemType => {
             const vertices = worldMapGraph.getNodesByType(worldItemType.typeName);
 
             vertices.forEach(vertex => worldMapGraph.setNodeType(vertex, wallTypeName))
         });
 
-        this.configService.furnitures.forEach(worldItemType => {
+        WorldItemTemplate.furnitures(worldItemTemplates).forEach(worldItemType => {
             const vertices = worldMapGraph.getNodesByType(worldItemType.typeName);
 
             vertices.forEach(vertex => worldMapGraph.setNodeType(vertex, roomTypeName));
         });
 
 
-        return this.svgWorldMapWriter.write(worldMapGraph, worldItemTypes, globalConfig);
+        return this.svgWorldMapWriter.write(worldMapGraph, worldItemTemplates, globalConfig);
     }
 }   

@@ -16,11 +16,11 @@ it ('Read the world item definition related config from the svg file', () => {
 
     const svgConfigReader = new SvgConfigReader();
 
-    const {worldItemTypes} = svgConfigReader.read(worldMap);
+    const {worldItemTemplates} = svgConfigReader.read(worldMap);
 
-    expect(worldItemTypes.length).toEqual(3);
+    expect(worldItemTemplates.length).toEqual(3);
 
-    expect(worldItemTypes[0]).toMatchMeshDescriptor({
+    expect(worldItemTemplates[0]).toMatchMeshDescriptor({
         typeName: 'door',
         color: 'red',
         scale: 3,
@@ -28,7 +28,7 @@ it ('Read the world item definition related config from the svg file', () => {
         materials: ['models/door/door_material1.png', 'models/door/door_material2.png']
     });
 
-    expect(worldItemTypes[1]).toMatchMeshDescriptor({
+    expect(worldItemTemplates[1]).toMatchMeshDescriptor({
         typeName: 'wall',
         color: 'brown',
         scale: 1,
@@ -36,7 +36,7 @@ it ('Read the world item definition related config from the svg file', () => {
         materials: []
     });
 
-    expect(worldItemTypes[2]).toMatchMeshDescriptor({
+    expect(worldItemTemplates[2]).toMatchMeshDescriptor({
         typeName: 'table',
         color: 'yellow',
         scale: 1,

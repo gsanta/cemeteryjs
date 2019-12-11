@@ -19,14 +19,14 @@ export class SubareaBuilder implements WorldItemBuilder {
     }
 
     parse(worldMap: string): WorldItem[] {
-        if (!WorldItemTemplate.getByTypeName('_subarea', this.services.configService.worldItemTemplates)) { return []; }
+        if (!WorldItemTemplate.getByTypeName('_subarea', this.services.worldItemStore.worldItemTemplates)) { return []; }
 
-        worldMap = this.worldMapConverter.convert(worldMap);
+        worldMap = this.worldMapConverter.convert(worldMap, this.services.worldItemStore.worldItemTemplates);
 
-        const subareaType = WorldItemTemplate.getByTypeName('_subarea', this.services.configService.worldItemTemplates).typeName;
+        const subareaType = WorldItemTemplate.getByTypeName('_subarea', this.services.worldItemStore.worldItemTemplates).typeName;
 
         let graph = this.worldMapReader.read(worldMap);
-        const types = without(graph.getTypes(), WorldItemTemplate.getByTypeName('room', this.services.configService.worldItemTemplates).typeName);
+        const types = without(graph.getTypes(), WorldItemTemplate.getByTypeName('room', this.services.worldItemStore.worldItemTemplates).typeName);
 
         const connectedCompGraphs = graph.getReducedGraphForTypes(types)
             .getAllConnectedComponents()

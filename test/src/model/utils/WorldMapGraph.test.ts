@@ -1,5 +1,5 @@
 import { LinesToGraphConverter } from '../../../../src/model/readers/text/LinesToGraphConverter';
-import { ConfigService } from '../../../../src/model/services/ConfigService';
+import { WorldItemStore } from '../../../../src/model/services/WorldItemStore';
 import { TextConfigReader } from '../../../../src/model/readers/text/TextConfigReader';
 import { Point } from '@nightshifts.inc/geometry';
 
@@ -16,19 +16,19 @@ describe('MatrixGraph', () => {
                 '##WW##',
             ];
 
-            const definitions = `
-                definitions \`
+            const {worldItemTemplates, globalConfig} = new TextConfigReader().read(
+                `
+                    definitions \`
 
-                # = empty
-                W = wall ROLES [BORDER]
+                    # = empty
+                    W = wall ROLES [BORDER]
 
-                \`
-            `
+                    \`
+                `
+            );
 
-            const configService = new ConfigService(new TextConfigReader()).update(definitions);
-
-            const linesToGraphConverter = new LinesToGraphConverter(configService);
-            const graph = linesToGraphConverter.parse(input);
+            const linesToGraphConverter = new LinesToGraphConverter();
+            const graph = linesToGraphConverter.parse(input, worldItemTemplates);
 
             const reducedGraph = graph.getReducedGraphForTypes(['wall']);
 
@@ -47,7 +47,7 @@ describe('MatrixGraph', () => {
                 '--------',
             ];
 
-            const configService = new ConfigService(new TextConfigReader()).update(
+            const {worldItemTemplates, globalConfig} = new TextConfigReader().read(
                 `
                     definitions \`
 
@@ -58,8 +58,8 @@ describe('MatrixGraph', () => {
                 `
             );
 
-            const linesToGraphConverter = new LinesToGraphConverter(configService);
-            const graph = linesToGraphConverter.parse(input);
+            const linesToGraphConverter = new LinesToGraphConverter();
+            const graph = linesToGraphConverter.parse(input, worldItemTemplates);
 
             const connectedComponentGraphs = graph.getReducedGraphForTypes(['room']).getAllConnectedComponents();
 
@@ -79,8 +79,7 @@ describe('MatrixGraph', () => {
                 '#############',
             ];
 
-
-            const configService = new ConfigService(new TextConfigReader()).update(
+            const {worldItemTemplates, globalConfig} = new TextConfigReader().read(
                 `
                     definitions \`
 
@@ -92,9 +91,9 @@ describe('MatrixGraph', () => {
                 `
             );
 
-            const linesToGraphConverter = new LinesToGraphConverter(configService);
+            const linesToGraphConverter = new LinesToGraphConverter();
 
-            const graph = linesToGraphConverter.parse(input);
+            const graph = linesToGraphConverter.parse(input, worldItemTemplates);
 
             const reducedGraph = graph.getReducedGraphForTypes(['wall', 'door']);
 

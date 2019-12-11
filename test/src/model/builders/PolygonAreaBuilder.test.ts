@@ -24,7 +24,7 @@ it ('Create items for a given type which is represented on the world map by a po
     `;
 
     const services = setup(map, FileFormat.TEXT);
-    const polygonAreaInfoParser = new PolygonShapeBuilder('empty', services, new TextWorldMapReader(services.configService));
+    const polygonAreaInfoParser = new PolygonShapeBuilder('empty', services, new TextWorldMapReader(services));
 
     const worldItems = polygonAreaInfoParser.parse(map);
 
@@ -52,7 +52,7 @@ it ('Create a more complicated polygon shape TEST 1', () => {
     `;
 
     const services = setup(map, FileFormat.TEXT);
-    const polygonAreaInfoParser = new PolygonShapeBuilder('empty', services, new TextWorldMapReader(services.configService));
+    const polygonAreaInfoParser = new PolygonShapeBuilder('empty', services, new TextWorldMapReader(services));
 
     const worldItem = polygonAreaInfoParser.parse(map);
 
@@ -89,7 +89,7 @@ it ('Create a more complicated polygon shape TEST 2', () => {
     `;
 
     const services = setup(map, FileFormat.TEXT);
-    const polygonAreaInfoParser = new PolygonShapeBuilder('empty', services, new TextWorldMapReader(services.configService));
+    const polygonAreaInfoParser = new PolygonShapeBuilder('empty', services, new TextWorldMapReader(services));
 
     const worldItem = polygonAreaInfoParser.parse(map);
 

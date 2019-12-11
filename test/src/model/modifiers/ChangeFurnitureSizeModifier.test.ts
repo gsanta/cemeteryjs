@@ -26,7 +26,7 @@ describe('ChangeFurnitureSizeModifier', () => {
         const services = setupTestEnv(map, FileFormat.TEXT, fakeModelImporter);
 
         const worldItems = services.modifierService.applyModifiers(
-            services.configService.worldItemHierarchy,
+            services.worldItemStore.worldItemHierarchy,
             [
                 SegmentBordersModifier.modName,
                 BuildHierarchyModifier.modName,
@@ -75,7 +75,7 @@ describe('ChangeFurnitureSizeModifier', () => {
         const services = setupTestEnv(map, FileFormat.TEXT, fakeModelImporter);
 
         const worldItems = services.modifierService.applyModifiers(
-            services.configService.worldItemHierarchy,
+            services.worldItemStore.worldItemHierarchy,
             [
                 SegmentBordersModifier.modName,
                 BuildHierarchyModifier.modName,

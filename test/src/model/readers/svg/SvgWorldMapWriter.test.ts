@@ -87,9 +87,9 @@ it ('Write an svg from the internal worldmap representation', () => {
 
     const svgReader = new SvgWorldMapReader();
     const graph = svgReader.read(inputWorldMap);
-    const {worldItemTypes, globalConfig} = new SvgConfigReader().read(inputWorldMap);
+    const {worldItemTemplates, globalConfig} = new SvgConfigReader().read(inputWorldMap);
 
-    const outputWorldMap = new SvgWorldMapWriter().write(graph, worldItemTypes, globalConfig);
+    const outputWorldMap = new SvgWorldMapWriter().write(graph, worldItemTemplates, globalConfig);
     const rawJson: RawWorldMapJson = JSON.parse(convert.xml2json(outputWorldMap, {compact: true, spaces: 4}));
 
     expect(rawJson.svg.metadata["wg-type"].length).toEqual(10);

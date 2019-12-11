@@ -12,7 +12,7 @@ describe('RoomParser', () => {
             const worldMap = fs.readFileSync(__dirname + '/../../../../assets/test/big_world.gwm', 'utf8');
 
             const services = setup(worldMap, FileFormat.TEXT);
-            const roomInfoParser = new RoomBuilder(services, new TextWorldMapReader(services.configService), new WorldMapToRoomMapConverter(services.configService));
+            const roomInfoParser = new RoomBuilder(services, new TextWorldMapReader(services), new WorldMapToRoomMapConverter());
 
             const worldItem = roomInfoParser.parse(worldMap);
 
@@ -50,7 +50,7 @@ it ('Parse room with empty area around the whole world map', () => {
 
 
     const services = setup(worldMap, FileFormat.TEXT);
-    const roomInfoParser = new RoomBuilder(services, new TextWorldMapReader(services.configService));
+    const roomInfoParser = new RoomBuilder(services, new TextWorldMapReader(services));
 
     const rooms = roomInfoParser.parse(worldMap);
     expect(rooms.length).toEqual(2);

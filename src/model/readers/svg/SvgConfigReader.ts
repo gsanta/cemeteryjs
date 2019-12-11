@@ -6,12 +6,12 @@ import { RawWorldMapJson, WgDefinition } from './WorldMapJson';
 import { Point } from '@nightshifts.inc/geometry';
 
 export class SvgConfigReader implements ConfigReader {
-    read(worldMap: string): {worldItemTypes: WorldItemTemplate[], globalConfig: GlobalConfig} {
+    read(worldMap: string): {worldItemTemplates: WorldItemTemplate[], globalConfig: GlobalConfig} {
         const rawJson: RawWorldMapJson = JSON.parse(convert.xml2json(worldMap, {compact: true, spaces: 4}));
 
-        const worldItemTypes = this.parseWorldItemDefinitions(rawJson);
+        const worldItemTemplates = this.parseWorldItemDefinitions(rawJson);
 
-        return {worldItemTypes, globalConfig: this.parseGlobalConfig(rawJson)};
+        return {worldItemTemplates, globalConfig: this.parseGlobalConfig(rawJson)};
     }
 
     private parseWorldItemDefinitions(rawJson: RawWorldMapJson): WorldItemTemplate[] {

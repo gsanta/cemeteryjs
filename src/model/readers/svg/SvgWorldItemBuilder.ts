@@ -32,14 +32,14 @@ export class SvgWorldItemBuilder implements IWorldItemBuilder {
     private createRect(rect: Rect, processedJson: ProcessedWorldMapJson): WorldItem {
         return this.services.worldItemFactoryService.create(
             {
-                type: WorldItemTemplate.getByTypeName(rect.type, this.services.configService.worldItemTemplates).char,
+                type: WorldItemTemplate.getByTypeName(rect.type, this.services.worldItemStore.worldItemTemplates).char,
                 dimensions: new Rectangle(new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height)),
                 name: rect.type,
                 isBorder: false,
                 color: rect.color,
                 shape: <WorldItemShape> rect.shape
             },
-            WorldItemTemplate.getByTypeName(rect.type, this.services.configService.worldItemTemplates)
+            WorldItemTemplate.getByTypeName(rect.type, this.services.worldItemStore.worldItemTemplates)
         );
     }
 
@@ -47,12 +47,12 @@ export class SvgWorldItemBuilder implements IWorldItemBuilder {
         const dim = new Rectangle(new Point(0, 0), new Point(processedJson.width, processedJson.height));
         return this.services.worldItemFactoryService.create(
             {
-                type: WorldItemTemplate.getByTypeName('root', this.services.configService.worldItemTemplates).char,
+                type: WorldItemTemplate.getByTypeName('root', this.services.worldItemStore.worldItemTemplates).char,
                 dimensions: dim,
                 name: 'root',
                 isBorder: false
             },
-            WorldItemTemplate.getByTypeName('root', this.services.configService.worldItemTemplates)
+            WorldItemTemplate.getByTypeName('root', this.services.worldItemStore.worldItemTemplates)
         );
     }
 

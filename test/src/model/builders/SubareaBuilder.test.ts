@@ -34,7 +34,7 @@ describe('SubareaParser', () => {
         `;
 
         const services = setup(worldMap, FileFormat.TEXT);
-        const subareaParser = new SubareaBuilder(services, new TextWorldMapReader(services.configService), new WorldMapToSubareaMapConverter(services.configService));
+        const subareaParser = new SubareaBuilder(services, new TextWorldMapReader(services), new WorldMapToSubareaMapConverter());
 
         const worldItems = subareaParser.parse(worldMap);
 
