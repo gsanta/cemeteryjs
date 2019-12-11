@@ -20,15 +20,15 @@ import { ConfigReader } from '../readers/ConfigReader';
 
 export class ServiceFacade<M = any, S = any, T = any> {
     worldItemStore: WorldItemStore;
-
-    modifierFactoryService: ModifierFactoryService;
-    worldItemFactoryService: WorldItemFactoryService;
-    modifierService: ModifierService;
-    builderService: BuilderService;
+    
     worldItemBuilderService: IWorldItemBuilder;
-    converterService: ConverterService<T>;
-    geometryService: GeometryService;
+    modifierService: ModifierService;
     modelImportService: ModelImportService;
+    converterService: ConverterService<T>;
+    
+    worldItemFactoryService: WorldItemFactoryService;
+    modifierFactoryService: ModifierFactoryService;
+    geometryService: GeometryService;
     configReader: ConfigReader;
 
     constructor(modelImportService: ModelImportService, createMeshModifier: Modifier, fileFormat: FileFormat) {
@@ -50,15 +50,13 @@ export class ServiceFacade<M = any, S = any, T = any> {
         this.modifierFactoryService = new ModifierFactoryService(this);
         this.modifierFactoryService.registerInstance(createMeshModifier);
         this.modifierService = new ModifierService(this.modifierFactoryService);
-        this.builderService = new BuilderService();
         this.modelImportService = modelImportService;
     }
 
     generateWorld(worldMap: string, converter: Converter<T>) {
         const {worldItemTemplates, globalConfig} = this.configReader.read(worldMap);
 
-        this.worldItemStore.worldItemTemplates = worldItemTemplates;
-        this.worldItemStore.globalConfig = globalConfig;
+        this.worldItemStore = new WorldItemStore(worldItemTemplates, globalConfig);
 
         let worldItems = this.worldItemBuilderService.build(worldMap);
         
