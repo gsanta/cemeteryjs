@@ -34,7 +34,7 @@ export class LinesToGraphConverter {
 
         range(0, vertices).forEach(val => {
             const character = findCharacter(val);
-            const template = this.configService.meshDescriptors.find(template => template.char === character);
+            const template = this.configService.worldItemTemplates.find(template => template.char === character);
             this.graph.addNode(val, template.typeName);
         });
 

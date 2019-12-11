@@ -2,7 +2,7 @@ import { WorldMapLineListener, TextWorldMapParser } from './TextWorldMapParser';
 import { ConfigService } from '../../services/ConfigService';
 import { InputConverter } from '../InputConverter';
 import { WorldItem } from '../../../WorldItem';
-import { WorldItemDefinition } from '../../../WorldItemDefinition';
+import { WorldItemTemplate } from '../../../WorldItemTemplate';
 
 /*
  * Takes a world map (gwm string) and converts the characters inside the map to contain only
@@ -41,11 +41,13 @@ export class WorldMapToRoomMapConverter extends WorldMapLineListener implements 
     }
 
     public addMapSectionLine(line: string) {
-        const wallChar = this.configService.meshDescriptorMap.get('wall').char;
-        const roomChar = this.configService.meshDescriptorMap.get('room').char;
-        const outdoorsChar = this.configService.meshDescriptorMap.get('outdoors') ? this.configService.meshDescriptorMap.get('outdoors').char : '';
+        const wallChar = WorldItemTemplate.getByTypeName('wall', this.configService.worldItemTemplates).char;
+        const roomChar = WorldItemTemplate.getByTypeName('room', this.configService.worldItemTemplates).char;
+        
+        const outdoors = WorldItemTemplate.getByTypeName('outdoors', this.configService.worldItemTemplates);
+        const outdoorsChar = outdoors ? outdoors.char : '';
 
-        WorldItemDefinition.borders(this.configService.meshDescriptors).forEach(descriptor => {
+        WorldItemTemplate.borders(this.configService.worldItemTemplates).forEach(descriptor => {
             line = line.replace(new RegExp(descriptor.char, 'g'), wallChar);
         });
 

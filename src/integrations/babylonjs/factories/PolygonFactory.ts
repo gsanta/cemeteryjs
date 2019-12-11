@@ -2,7 +2,7 @@ import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { Axis, Mesh, MeshBuilder, Scene, Space, Vector3, PolygonMeshBuilder, Vector2, StandardMaterial, Color3 } from 'babylonjs';
 import { WorldItem } from '../../../WorldItem';
 import { MaterialFactory } from '../MaterialFactory';
-import { WorldItemDefinition } from '../../../WorldItemDefinition';
+import { WorldItemTemplate } from '../../../WorldItemTemplate';
 import { Polygon } from '@nightshifts.inc/geometry';
 
 export class PolygonFactory  {

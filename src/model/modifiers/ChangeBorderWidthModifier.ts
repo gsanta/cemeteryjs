@@ -6,6 +6,7 @@ import { Modifier } from "./Modifier";
 import { ConfigService } from '../services/ConfigService';
 import { last } from '../utils/Functions';
 import { AssignBordersToRoomsModifier } from './AssignBordersToRoomsModifier';
+import { WorldItemTemplate } from '../../WorldItemTemplate';
 
 /**
  * This transformator can be used to adjust the width of a border item to it's real width.
@@ -42,8 +43,7 @@ export class ChangeBorderWidthModifier implements Modifier {
 
     private adjustBorderWidthsForRoom(room: WorldItem) {
         room.borderItems.forEach(item => {
-
-            const realItemWidth = this.configService.getRealBorderWidth(item.name);
+            const realItemWidth = WorldItemTemplate.getByTypeName(item.name, this.configService.worldItemTemplates).realDimensions;
             if (realItemWidth) {
                 this.resizeItem(item, room.borderItems, realItemWidth.width);
             }

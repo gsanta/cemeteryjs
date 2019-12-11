@@ -1,4 +1,4 @@
-import { WorldItemDefinition } from '../../../../WorldItemDefinition';
+import { WorldItemTemplate } from '../../../../WorldItemTemplate';
 import { TextCanvasController } from './TextCanvasController';
 import { ICanvasReader } from '../ICanvasReader';
 
@@ -13,7 +13,7 @@ export class TextCanvasReader implements ICanvasReader {
         return this.createFile(this.textEditorController.worldItemDefinitions);
     }
 
-    private createFile(worldItemDefinitions: WorldItemDefinition[]) {
+    private createFile(worldItemDefinitions: WorldItemTemplate[]) {
         const definitions = this.createDefinitionSection(worldItemDefinitions);
     
             return `
@@ -31,13 +31,13 @@ ${definitions}
 `;
     }
 
-    private createDefinitionSection(worldItemDefinitions: WorldItemDefinition[]) {
+    private createDefinitionSection(worldItemDefinitions: WorldItemTemplate[]) {
         const lines = worldItemDefinitions.map(descriptor => this.createDefinitionLine(descriptor));
 
         return lines.join('\n');
     }
 
-    private createDefinitionLine(worldItemDefinition: WorldItemDefinition): string {
+    private createDefinitionLine(worldItemDefinition: WorldItemTemplate): string {
         let line = `${worldItemDefinition.char} = ${worldItemDefinition.typeName}`;
 
         if (worldItemDefinition.roles && worldItemDefinition.roles.length > 0) {

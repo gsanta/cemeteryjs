@@ -1,12 +1,12 @@
 import * as convert from 'xml-js';
-import { WorldItemDefinition, WorldItemRole } from '../../../WorldItemDefinition';
+import { WorldItemTemplate, WorldItemRole } from '../../../WorldItemTemplate';
 import { ConfigReader } from '../ConfigReader';
 import { GlobalConfig } from '../text/GlobalSectionParser';
 import { RawWorldMapJson, WgDefinition } from './WorldMapJson';
 import { Point } from '@nightshifts.inc/geometry';
 
 export class SvgConfigReader implements ConfigReader {
-    read(worldMap: string): {worldItemTypes: WorldItemDefinition[], globalConfig: GlobalConfig} {
+    read(worldMap: string): {worldItemTypes: WorldItemTemplate[], globalConfig: GlobalConfig} {
         const rawJson: RawWorldMapJson = JSON.parse(convert.xml2json(worldMap, {compact: true, spaces: 4}));
 
         const worldItemTypes = this.parseWorldItemDefinitions(rawJson);
@@ -14,10 +14,10 @@ export class SvgConfigReader implements ConfigReader {
         return {worldItemTypes, globalConfig: this.parseGlobalConfig(rawJson)};
     }
 
-    private parseWorldItemDefinitions(rawJson: RawWorldMapJson): WorldItemDefinition[] {
+    private parseWorldItemDefinitions(rawJson: RawWorldMapJson): WorldItemTemplate[] {
         if (!rawJson.svg.metadata || !rawJson.svg.metadata['wg-type']) { return; }
 
-        const worldItemDefinitions: WorldItemDefinition[] = [];
+        const worldItemDefinitions: WorldItemTemplate[] = [];
 
         if (rawJson.svg.metadata['wg-type'].length) {
             rawJson.svg.metadata['wg-type'].forEach(wgType => {
@@ -30,7 +30,7 @@ export class SvgConfigReader implements ConfigReader {
         return worldItemDefinitions;
     }
 
-    parseWorldItemDefinition(wgType: WgDefinition, existingWorldItemDefinitions: WorldItemDefinition[]): WorldItemDefinition {
+    parseWorldItemDefinition(wgType: WgDefinition, existingWorldItemDefinitions: WorldItemTemplate[]): WorldItemTemplate {
         const color = wgType._attributes["color"] as string;
         const model = wgType._attributes["model"];
         const shape = wgType._attributes["shape"];
@@ -41,7 +41,7 @@ export class SvgConfigReader implements ConfigReader {
         const roles = wgType._attributes["roles"] ? wgType._attributes["roles"].split(" ").map(role => WorldItemRole.fromString(role)) : [];
 
 
-        return {id: WorldItemDefinition.generateId(existingWorldItemDefinitions), color, roles, model, scale, translateY, typeName, materials, shape};
+        return {id: WorldItemTemplate.generateId(existingWorldItemDefinitions), color, roles, model, scale, translateY, typeName, materials, shape};
     }
 
 

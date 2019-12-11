@@ -1,19 +1,19 @@
 import { WorldMapGraph } from '../../../WorldMapGraph';
-import { WorldItemDefinition } from '../../../WorldItemDefinition';
+import { WorldItemTemplate } from '../../../WorldItemTemplate';
 import { GlobalConfig } from '../text/GlobalSectionParser';
 import { Point } from '@nightshifts.inc/geometry';
 
 
 export class SvgWorldMapWriter {
-    write(worldMapGraph: WorldMapGraph, worldItemDefinitions: WorldItemDefinition[], globalConfig: GlobalConfig): string {
+    write(worldMapGraph: WorldMapGraph, worldItemDefinitions: WorldItemTemplate[], globalConfig: GlobalConfig): string {
         const metaData = this.createMetaData(worldItemDefinitions);
         const shapes = this.createShapes(worldMapGraph, worldItemDefinitions);
 
         return `<svg data-wg-pixel-size="10" data-wg-width="1500" data-wg-height="1000">${metaData}\n${shapes}</svg>`;
     }
 
-    private createShapes(worldMapGraph: WorldMapGraph, worldItemDefinitions: WorldItemDefinition[]): string[] {
-        const worldItemDefinitionsByType: Map<string, WorldItemDefinition> = new Map();
+    private createShapes(worldMapGraph: WorldMapGraph, worldItemDefinitions: WorldItemTemplate[]): string[] {
+        const worldItemDefinitionsByType: Map<string, WorldItemTemplate> = new Map();
         
         worldItemDefinitions.forEach(def => worldItemDefinitionsByType.set(def.typeName, def));
 
@@ -39,7 +39,7 @@ export class SvgWorldMapWriter {
     }
 
 
-    private createMetaData(worldItemDefinitions: WorldItemDefinition[]): string {
+    private createMetaData(worldItemDefinitions: WorldItemTemplate[]): string {
         const wgTypeComponents = worldItemDefinitions.map(type => {
             const attributes: [string, string][] = [
                 ['color', type.color],

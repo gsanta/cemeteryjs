@@ -1,14 +1,13 @@
-import { WorldItemDefinition, WorldItemRole } from '../../WorldItemDefinition';
+import { WorldItemTemplate, WorldItemRole } from '../../WorldItemTemplate';
 import { GlobalConfig } from '../readers/text/GlobalSectionParser';
 import { ConfigReader } from '../readers/ConfigReader';
 import { WorldItem } from '../../WorldItem';
 
 export class ConfigService {
     globalConfig: GlobalConfig;
-    furnitures: WorldItemDefinition[];
-    meshDescriptors: WorldItemDefinition[];
-    meshDescriptorMap: Map<string, WorldItemDefinition>;
-
+    furnitures: WorldItemTemplate[];
+    
+    worldItemTemplates: WorldItemTemplate[];
     worldItemHierarchy: WorldItem[];
 
     private configReader: ConfigReader;
@@ -19,28 +18,18 @@ export class ConfigService {
 
     update(worldMap: string): ConfigService {
         const {worldItemTypes, globalConfig} = this.configReader.read(worldMap);
-        this.meshDescriptors = worldItemTypes;
-        this.meshDescriptors.push({
-            id: WorldItemDefinition.generateId(this.meshDescriptors),
+        this.worldItemTemplates = worldItemTypes;
+        this.worldItemTemplates.push({
+            id: WorldItemTemplate.generateId(this.worldItemTemplates),
             typeName: 'root',
             shape: 'rectangle',
             roles: [WorldItemRole.CONTAINER],
         });
         this.globalConfig = globalConfig;
-        this.meshDescriptorMap = new Map();
-        this.meshDescriptors.forEach(desc => this.meshDescriptorMap.set(desc.typeName, desc));
-        this.furnitures = this.meshDescriptors.filter(descriptor => {
+        this.furnitures = this.worldItemTemplates.filter(descriptor => {
             return !descriptor.roles.includes(WorldItemRole.CONTAINER) && !descriptor.roles.includes(WorldItemRole.BORDER)
         });
 
         return this;
-    }
-
-    getMeshDescriptorByType(type: string) {
-        return this.meshDescriptorMap.get(type);
-    }
-
-    getRealBorderWidth(type: string): { width: number, height?: number } {
-        return  this.meshDescriptorMap.get(type) ? this.meshDescriptorMap.get(type).realDimensions : null;
     }
 }

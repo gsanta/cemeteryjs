@@ -1,9 +1,9 @@
-import { WorldItemDefinition } from '../../WorldItemDefinition';
+import { WorldItemTemplate } from '../../WorldItemTemplate';
 
-export const defaultWorldItemDefinitions: WorldItemDefinition[] = [];
+export const defaultWorldItemDefinitions: WorldItemTemplate[] = [];
 
 defaultWorldItemDefinitions.push({
-    id: WorldItemDefinition.generateId(defaultWorldItemDefinitions),
+    id: WorldItemTemplate.generateId(defaultWorldItemDefinitions),
     typeName: 'wall',
     char: 'W',
     shape: 'rect',
@@ -11,7 +11,7 @@ defaultWorldItemDefinitions.push({
 });
 
 defaultWorldItemDefinitions.push({
-    id: WorldItemDefinition.generateId(defaultWorldItemDefinitions),
+    id: WorldItemTemplate.generateId(defaultWorldItemDefinitions),
     typeName: 'door',
     char: 'D',
     model: 'models/door/door.babylon',
@@ -22,7 +22,7 @@ defaultWorldItemDefinitions.push({
 });
 
 defaultWorldItemDefinitions.push({
-    id: WorldItemDefinition.generateId(defaultWorldItemDefinitions),
+    id: WorldItemTemplate.generateId(defaultWorldItemDefinitions),
     typeName: 'table',
     char: 'T',
     model: 'assets/models/table.babylon',
@@ -31,7 +31,7 @@ defaultWorldItemDefinitions.push({
 });
 
 defaultWorldItemDefinitions.push({
-    id: WorldItemDefinition.generateId(defaultWorldItemDefinitions),
+    id: WorldItemTemplate.generateId(defaultWorldItemDefinitions),
     typeName: 'window',
     char: 'I',
     model: 'models/window/window.babylon',
@@ -41,7 +41,7 @@ defaultWorldItemDefinitions.push({
 });
 
 defaultWorldItemDefinitions.push({
-    id: WorldItemDefinition.generateId(defaultWorldItemDefinitions),
+    id: WorldItemTemplate.generateId(defaultWorldItemDefinitions),
     typeName: 'chair',
     char: 'H',
     model: 'models/chair.babylon',
@@ -51,7 +51,7 @@ defaultWorldItemDefinitions.push({
 });
 
 defaultWorldItemDefinitions.push({
-    id: WorldItemDefinition.generateId(defaultWorldItemDefinitions),
+    id: WorldItemTemplate.generateId(defaultWorldItemDefinitions),
     typeName: 'shelves',
     char: 'O',
     model: 'assets/models/shelves/shelves.babylon',
@@ -62,7 +62,7 @@ defaultWorldItemDefinitions.push({
 });
 
 defaultWorldItemDefinitions.push({
-    id: WorldItemDefinition.generateId(defaultWorldItemDefinitions),
+    id: WorldItemTemplate.generateId(defaultWorldItemDefinitions),
     typeName: 'stairs',
     char: 'R',
     model: 'assets/models/stairs/stairs.babylon',
@@ -73,13 +73,13 @@ defaultWorldItemDefinitions.push({
 });
 
 defaultWorldItemDefinitions.push({
-    id: WorldItemDefinition.generateId(defaultWorldItemDefinitions),
+    id: WorldItemTemplate.generateId(defaultWorldItemDefinitions),
     typeName: 'room',
     char: '-'
 });
 
 defaultWorldItemDefinitions.push({
-    id: WorldItemDefinition.generateId(defaultWorldItemDefinitions),
+    id: WorldItemTemplate.generateId(defaultWorldItemDefinitions),
     typeName: 'player',
     char: 'X',
 });

@@ -1,10 +1,10 @@
 import { IReadableCanvas } from './IReadableCanvas';
 import { IWritableCanvas } from './IWritableCanvas';
-import { WorldItemDefinition } from '../../../WorldItemDefinition';
+import { WorldItemTemplate } from '../../../WorldItemTemplate';
 
 
 export interface IEditableCanvas extends IReadableCanvas, IWritableCanvas {
-    worldItemDefinitions: WorldItemDefinition[];
+    worldItemDefinitions: WorldItemTemplate[];
     setToolbarRenderer(renderFunc: () => void);
     renderToolbar();
 }

@@ -1,7 +1,7 @@
 import { Polygon, Point, Shape } from '@nightshifts.inc/geometry';
 import { WorldItem, WorldItemShape } from '../../WorldItem';
 import { ServiceFacade } from './ServiceFacade';
-import { WorldItemDefinition } from '../../WorldItemDefinition';
+import { WorldItemTemplate } from '../../WorldItemTemplate';
 
 export interface WorldItemConfig {
     type?: string;
@@ -42,7 +42,7 @@ export class WorldItemFactoryService {
         return worldItem;
     }
 
-    public create(worldItemConfig: WorldItemConfig, worldItemDefinition: WorldItemDefinition): WorldItem {
+    public create(worldItemConfig: WorldItemConfig, worldItemDefinition: WorldItemTemplate): WorldItem {
         worldItemConfig = {...defaultWorldItemConfig, ...worldItemConfig};
 
         const id = this.getNextId(worldItemConfig.name);

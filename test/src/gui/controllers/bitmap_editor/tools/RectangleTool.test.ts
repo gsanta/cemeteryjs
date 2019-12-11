@@ -1,7 +1,7 @@
 import { setupControllers } from "../../../guiTestUtils";
 import { Point } from "@nightshifts.inc/geometry";
 import { SvgCanvasController } from "../../../../../../src/gui/controllers/canvases/svg/SvgCanvasController";
-import { WorldItemDefinition } from '../../../../../../src/WorldItemDefinition';
+import { WorldItemTemplate } from '../../../../../../src/WorldItemTemplate';
 
 it ('Draw pixels with mouse click', () => {
     const controllers = setupControllers(); 
@@ -61,7 +61,7 @@ it ('Do not remove existing pixel if adding pixel to an occupied position', () =
     expect(canvasController.pixelModel.pixels.length).toEqual(1);
     let pixel = canvasController.pixelModel.pixels[0];
     expect(pixel.type).toEqual('wall');
-    canvasController.selectedWorldItemDefinition = WorldItemDefinition.getByTypeName('door', canvasController.worldItemDefinitions);
+    canvasController.selectedWorldItemDefinition = WorldItemTemplate.getByTypeName('door', canvasController.worldItemDefinitions);
 
     canvasController.mouseController.onMouseMove(<MouseEvent> {x: 5, y: 5});
     canvasController.mouseController.onMouseDown(<MouseEvent> {x: 5, y: 5});

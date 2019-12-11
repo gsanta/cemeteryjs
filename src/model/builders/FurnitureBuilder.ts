@@ -5,6 +5,7 @@ import { WorldMapReader } from '../readers/WorldMapReader';
 import { ServiceFacade } from '../services/ServiceFacade';
 import { flat, last, maxBy, minBy, without } from '../utils/Functions';
 import { WorldItemBuilder } from './WorldItemBuilder';
+import { WorldItemTemplate } from '../../WorldItemTemplate';
 
 export class FurnitureBuilder implements WorldItemBuilder {
     private worldMapReader: WorldMapReader
@@ -54,12 +55,12 @@ export class FurnitureBuilder implements WorldItemBuilder {
         const height = (maxY - minY + 1);
         const type = componentGraph.getTypes()[0];
         return this.services.worldItemFactoryService.create({
-            type: this.services.configService.getMeshDescriptorByType(type).char,
+            type: WorldItemTemplate.getByTypeName(type, this.services.configService.worldItemTemplates).char,
             dimensions: Polygon.createRectangle(x, y, width, height),
             name: type,
             isBorder: false,
-            modelPath: this.services.configService.getMeshDescriptorByType(type).model 
-        }, this.services.configService.getMeshDescriptorByType(type));
+            modelPath: WorldItemTemplate.getByTypeName(type, this.services.configService.worldItemTemplates).model 
+        }, WorldItemTemplate.getByTypeName(type, this.services.configService.worldItemTemplates));
     }
 
     private createGameObjectsBySplittingTheComponentToVerticalAndHorizontalSlices(componentGraph: WorldMapGraph): WorldItem[] {
@@ -73,13 +74,14 @@ export class FurnitureBuilder implements WorldItemBuilder {
                 const rect = this.createRectangleFromVerticalVertices(gameObjectGraph)
                 const type = componentGraph.getTypes()[0];
 
+                const template = WorldItemTemplate.getByTypeName(type, this.services.configService.worldItemTemplates);
                 return this.services.worldItemFactoryService.create({
-                    type: this.services.configService.getMeshDescriptorByType(type).char,
+                    type: template.char,
                     dimensions: rect,
                     name: type,
                     isBorder: false,
-                    modelPath: this.services.configService.getMeshDescriptorByType(type).model 
-                }, this.services.configService.getMeshDescriptorByType(type));
+                    modelPath: template.model 
+                }, template);
             });
 
         const horizontalGameObjects = componentGraphMinusVerticalSubComponents
@@ -90,13 +92,14 @@ export class FurnitureBuilder implements WorldItemBuilder {
                 const rect = this.createRectangleFromHorizontalVertices(connectedCompGraph);
 
                 const type = componentGraph.getTypes()[0];
+                const template = WorldItemTemplate.getByTypeName(type, this.services.configService.worldItemTemplates)
                 return this.services.worldItemFactoryService.create({
-                    type: this.services.configService.getMeshDescriptorByType(type).char,
+                    type: template.char,
                     dimensions: rect,
                     name: type,
                     isBorder: false,
-                    modelPath: this.services.configService.getMeshDescriptorByType(type).model 
-                }, this.services.configService.getMeshDescriptorByType(type));
+                    modelPath: template.model 
+                }, template);
             });
 
         return [...verticalGameObjects, ...horizontalGameObjects];

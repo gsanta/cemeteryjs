@@ -5,7 +5,7 @@ import { WorldMapReader } from '../readers/WorldMapReader';
 import { ServiceFacade } from '../services/ServiceFacade';
 import { last, without, sortNum } from '../utils/Functions';
 import { WorldItemBuilder } from './WorldItemBuilder';
-import { WorldItemDefinition } from '../../WorldItemDefinition';
+import { WorldItemTemplate } from '../../WorldItemTemplate';
 
 interface Border {
     vertices: number[];
@@ -27,7 +27,7 @@ export class BorderBuilder implements WorldItemBuilder {
     parse(worldMap: string): WorldItem[] {
         this.positionToComponentMap = new Map();
         const graph = this.worldMapReader.read(worldMap);
-        const borderTypes = WorldItemDefinition.borders(this.services.configService.meshDescriptors).map(border => border.typeName);
+        const borderTypes = WorldItemTemplate.borders(this.services.configService.worldItemTemplates).map(border => border.typeName);
 
         const borderGraph = graph.getReducedGraphForTypes(borderTypes)
         borderGraph.getAllNodes().forEach(vertex => this.positionToComponentMap.set(vertex, []));
@@ -188,14 +188,15 @@ export class BorderBuilder implements WorldItemBuilder {
         const segment = this.createRectangleFromBorder(border, graph);
         const rotation = segment.getLine().getAngleToXAxis();
 
+        const template = WorldItemTemplate.getByTypeName(border.type, this.services.configService.worldItemTemplates);
         const worldItem = this.services.worldItemFactoryService.create({
-            type: this.services.configService.getMeshDescriptorByType(border.type).char,
+            type: template.char,
             dimensions: segment,
             name: border.type,
             isBorder: true,
             rotation: rotation.getAngle(),
             worldMapPositions,
-        }, this.services.configService.getMeshDescriptorByType(border.type));
+        }, template);
 
         return worldItem;
     }

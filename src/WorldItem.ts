@@ -1,6 +1,6 @@
 import { Point, Shape } from "@nightshifts.inc/geometry";
 import { MeshTemplate } from './MeshTemplate';
-import { WorldItemDefinition, WorldItemRole } from './WorldItemDefinition';
+import { WorldItemTemplate, WorldItemRole } from './WorldItemTemplate';
 import { Mesh } from "babylonjs/Meshes/mesh";
 import { Skeleton } from 'babylonjs';
 
@@ -40,7 +40,7 @@ export class WorldItem {
 
     modelPath: string;
 
-    definition: WorldItemDefinition;
+    definition: WorldItemTemplate;
 
     constructor(id: string, type: string, dimensions: Shape, name: string, isBorder: boolean = false, rotation = 0) {
         this.type = type;

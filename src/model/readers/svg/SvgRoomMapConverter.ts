@@ -3,7 +3,7 @@ import { SvgConfigReader } from './SvgConfigReader';
 import { SvgWorldMapReader } from './SvgWorldMapReader';
 import { SvgWorldMapWriter } from './SvgWorldMapWriter';
 import { ConfigService } from '../../services/ConfigService';
-import { WorldItemDefinition } from '../../../WorldItemDefinition';
+import { WorldItemTemplate } from '../../../WorldItemTemplate';
 
 
 export class SvgRoomMapConverter implements InputConverter {
@@ -24,10 +24,10 @@ export class SvgRoomMapConverter implements InputConverter {
         const { worldItemTypes, globalConfig } = this.svgConfigReader.read(worldmap);
         const worldMapGraph = this.svgWorldMapReader.read(worldmap); 
 
-        const wallTypeName = this.configService.meshDescriptorMap.get('wall').typeName;
-        const roomTypeName = this.configService.meshDescriptorMap.get('room').typeName;
+        const wallTypeName = 'wall';;
+        const roomTypeName = 'room';
 
-        WorldItemDefinition.borders(this.configService.meshDescriptors).forEach(worldItemType => {
+        WorldItemTemplate.borders(this.configService.worldItemTemplates).forEach(worldItemType => {
             const vertices = worldMapGraph.getNodesByType(worldItemType.typeName);
 
             vertices.forEach(vertex => worldMapGraph.setNodeType(vertex, wallTypeName))

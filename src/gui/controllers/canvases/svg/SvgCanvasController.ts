@@ -13,7 +13,7 @@ import { SvgCanvasWriter } from './SvgCanvasWriter';
 import { DeleteTool } from './tools/DeleteTool';
 import { RectangleTool } from './tools/RectangleTool';
 import { Tool, ToolType } from './tools/Tool';
-import { WorldItemDefinition } from '../../../../WorldItemDefinition';
+import { WorldItemTemplate } from '../../../../WorldItemTemplate';
 import { SelectTool } from './tools/SelectTool';
 import { CanvasItemSettingsForm } from '../../forms/CanvasItemSettingsForm';
 
@@ -52,8 +52,8 @@ export class SvgCanvasController implements IEditableCanvas {
     selectionModel: SelectionModel;
     
     controllers: ControllerFacade;
-    worldItemDefinitions: WorldItemDefinition[];
-    selectedWorldItemDefinition: WorldItemDefinition;
+    worldItemDefinitions: WorldItemTemplate[];
+    selectedWorldItemDefinition: WorldItemTemplate;
 
     canvasItemSettingsForm: CanvasItemSettingsForm;
 
@@ -126,7 +126,7 @@ export class SvgCanvasController implements IEditableCanvas {
         // this.
     }
 
-    setSelectedWorldItemDefinition(worldItemDefinition: WorldItemDefinition) {
+    setSelectedWorldItemDefinition(worldItemDefinition: WorldItemTemplate) {
         this.selectedWorldItemDefinition = worldItemDefinition;
         this.renderToolbar();
     }

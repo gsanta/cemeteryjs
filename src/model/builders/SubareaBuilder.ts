@@ -5,6 +5,7 @@ import { ServiceFacade } from '../services/ServiceFacade';
 import { without } from '../utils/Functions';
 import { PolygonShapeBuilder } from './PolygonShapeBuilder';
 import { WorldItemBuilder } from "./WorldItemBuilder";
+import { WorldItemTemplate } from '../../WorldItemTemplate';
 
 export class SubareaBuilder implements WorldItemBuilder {
     private services: ServiceFacade<any, any, any>;
@@ -18,14 +19,14 @@ export class SubareaBuilder implements WorldItemBuilder {
     }
 
     parse(worldMap: string): WorldItem[] {
-        if (!this.services.configService.meshDescriptorMap.has('_subarea')) { return []; }
+        if (!WorldItemTemplate.getByTypeName('_subarea', this.services.configService.worldItemTemplates)) { return []; }
 
         worldMap = this.worldMapConverter.convert(worldMap);
 
-        const subareaType = this.services.configService.meshDescriptorMap.get('_subarea').typeName;
+        const subareaType = WorldItemTemplate.getByTypeName('_subarea', this.services.configService.worldItemTemplates).typeName;
 
         let graph = this.worldMapReader.read(worldMap);
-        const types = without(graph.getTypes(), this.services.configService.meshDescriptorMap.get('room').typeName);
+        const types = without(graph.getTypes(), WorldItemTemplate.getByTypeName('room', this.services.configService.worldItemTemplates).typeName);
 
         const connectedCompGraphs = graph.getReducedGraphForTypes(types)
             .getAllConnectedComponents()

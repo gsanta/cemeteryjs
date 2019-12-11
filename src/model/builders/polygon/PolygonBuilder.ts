@@ -5,6 +5,7 @@ import { ServiceFacade } from '../../services/ServiceFacade';
 import { WorldItemBuilder } from '../WorldItemBuilder';
 import { PolygonVertexListFinder } from './PolygonVertexListFinder';
 import { VertexListToPolygonConverter } from './VertexListToPolygonConverter';
+import { WorldItemTemplate } from '../../../WorldItemTemplate';
 
 export class PolygonBuilder implements WorldItemBuilder {
     private worldMapReader: WorldMapReader;
@@ -36,6 +37,6 @@ export class PolygonBuilder implements WorldItemBuilder {
             dimensions: polygon,
             name: 'building',
             isBorder: false
-        }, this.services.configService.getMeshDescriptorByType('building'));
+        }, WorldItemTemplate.getByTypeName('building', this.services.configService.worldItemTemplates));
     }
 }

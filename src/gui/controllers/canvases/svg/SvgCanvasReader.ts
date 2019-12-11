@@ -1,6 +1,6 @@
 import { SvgCanvasController } from './SvgCanvasController';
 import { ICanvasReader } from '../ICanvasReader';
-import { WorldItemDefinition } from '../../../../WorldItemDefinition';
+import { WorldItemTemplate } from '../../../../WorldItemTemplate';
 import { PixelTag } from './models/PixelModel';
 
 export class SvgCanvasReader implements ICanvasReader {
@@ -19,7 +19,7 @@ export class SvgCanvasReader implements ICanvasReader {
         return `<svg data-wg-pixel-size="10" data-wg-width="1500" data-wg-height="1000">${metaData}${shapes.join('')}</svg>`;
     }
 
-    private createPixels(worldItemDefinitions: WorldItemDefinition[]): string[] {
+    private createPixels(worldItemDefinitions: WorldItemTemplate[]): string[] {
         const pixelModel = this.canvasController.pixelModel;
         const configModel = this.canvasController.configModel;
 
@@ -31,7 +31,7 @@ export class SvgCanvasReader implements ICanvasReader {
             pixels.forEach(pixel => {
                 const pixelSize = configModel.pixelSize;
                 const pos = pixelModel.getPixelPosition(index).mul(pixelSize);
-                const color = WorldItemDefinition.getByTypeName(pixel.type, worldItemDefinitions).color;
+                const color = WorldItemTemplate.getByTypeName(pixel.type, worldItemDefinitions).color;
     
                 const attrs: [string, string][] = [
                     ['width', '10px'],
@@ -53,7 +53,7 @@ export class SvgCanvasReader implements ICanvasReader {
         return elements;
     }
 
-    private createRectangles(worldItemDefinitions: WorldItemDefinition[]): string[] {
+    private createRectangles(worldItemDefinitions: WorldItemTemplate[]): string[] {
         const pixelModel = this.canvasController.pixelModel;
         const configModel = this.canvasController.configModel;
 
@@ -64,7 +64,7 @@ export class SvgCanvasReader implements ICanvasReader {
             const pixelSize = configModel.pixelSize;
             const topLeft = pixelModel.getPixelPosition(min).mul(pixelSize);
             const botRight = pixelModel.getPixelPosition(max).mul(pixelSize).addX(pixelSize).addY(pixelSize);
-            const color = WorldItemDefinition.getByTypeName(item.type, worldItemDefinitions).color;
+            const color = WorldItemTemplate.getByTypeName(item.type, worldItemDefinitions).color;
 
             const fill = item.tags.includes(PixelTag.SELECTED) ? 'blue' : item.color ? item.color : color;
 
@@ -87,7 +87,7 @@ export class SvgCanvasReader implements ICanvasReader {
         });
     }
 
-    private createMetaData(worldItemDefinitions: WorldItemDefinition[]): string {
+    private createMetaData(worldItemDefinitions: WorldItemTemplate[]): string {
         const wgTypeComponents = worldItemDefinitions.map(type => {
             const attributes: [string, string][] = [
                 ['color', type.color],

@@ -5,6 +5,7 @@ import { Rect, ProcessedWorldMapJson } from './WorldMapJson';
 import { Point, Rectangle } from "@nightshifts.inc/geometry";
 import { ServiceFacade } from '../../services/ServiceFacade';
 import { minBy, maxBy } from "../../utils/Functions";
+import { WorldItemTemplate } from "../../../WorldItemTemplate";
 
 export class SvgWorldItemBuilder implements IWorldItemBuilder {
     private svgPreprocessor: SvgPreprocessor;
@@ -31,14 +32,14 @@ export class SvgWorldItemBuilder implements IWorldItemBuilder {
     private createRect(rect: Rect, processedJson: ProcessedWorldMapJson): WorldItem {
         return this.services.worldItemFactoryService.create(
             {
-                type: this.services.configService.getMeshDescriptorByType(rect.type).char,
+                type: WorldItemTemplate.getByTypeName(rect.type, this.services.configService.worldItemTemplates).char,
                 dimensions: new Rectangle(new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height)),
                 name: rect.type,
                 isBorder: false,
                 color: rect.color,
                 shape: <WorldItemShape> rect.shape
             },
-            this.services.configService.getMeshDescriptorByType(rect.type)
+            WorldItemTemplate.getByTypeName(rect.type, this.services.configService.worldItemTemplates)
         );
     }
 
@@ -46,12 +47,12 @@ export class SvgWorldItemBuilder implements IWorldItemBuilder {
         const dim = new Rectangle(new Point(0, 0), new Point(processedJson.width, processedJson.height));
         return this.services.worldItemFactoryService.create(
             {
-                type: this.services.configService.getMeshDescriptorByType('root').char,
+                type: WorldItemTemplate.getByTypeName('root', this.services.configService.worldItemTemplates).char,
                 dimensions: dim,
                 name: 'root',
                 isBorder: false
             },
-            this.services.configService.getMeshDescriptorByType('root')
+            WorldItemTemplate.getByTypeName('root', this.services.configService.worldItemTemplates)
         );
     }
 

@@ -1,7 +1,7 @@
 import { Color3, StandardMaterial, Texture } from 'babylonjs';
 import { Scene } from "babylonjs/scene";
 import { WorldItem } from '../../WorldItem';
-import { WorldItemDefinition } from '../../WorldItemDefinition';
+import { WorldItemTemplate } from '../../WorldItemTemplate';
 
 export class MaterialBuilder {
     static CreateMaterial(name: string, scene: Scene): StandardMaterial {
@@ -23,7 +23,7 @@ export class MaterialFactory {
         this.materialBuilder = materialBuilder;
     }
 
-    createMaterial(worldItem: WorldItem, meshDescriptor: WorldItemDefinition): StandardMaterial {
+    createMaterial(worldItem: WorldItem, meshDescriptor: WorldItemTemplate): StandardMaterial {
         return this.createSimpleMaterial(meshDescriptor.materials[0] || meshDescriptor.color);
     }
 

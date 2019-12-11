@@ -17,7 +17,7 @@ export namespace WorldItemRole {
     }
 }
 
-export interface WorldItemDefinition {
+export interface WorldItemTemplate {
     id: string;
     typeName: string;
     char?: string;
@@ -34,20 +34,20 @@ export interface WorldItemDefinition {
     }
 }
 
-export namespace WorldItemDefinition {
-    export function borders(templates: WorldItemDefinition[]): WorldItemDefinition[] {
+export namespace WorldItemTemplate {
+    export function borders(templates: WorldItemTemplate[]): WorldItemTemplate[] {
         return templates.filter(templates => templates.roles.includes(WorldItemRole.BORDER));
     }
 
-    export function generateId(exisingWorldItemDefinitions: WorldItemDefinition[]): string {
+    export function generateId(exisingWorldItemDefinitions: WorldItemTemplate[]): string {
         if (exisingWorldItemDefinitions.length === 0) { return 1 + ''; }
 
-        const defWithMaxId = maxBy<WorldItemDefinition>(exisingWorldItemDefinitions, definition => parseInt(definition.id, 10));
+        const defWithMaxId = maxBy<WorldItemTemplate>(exisingWorldItemDefinitions, definition => parseInt(definition.id, 10));
         
         return parseInt(defWithMaxId.id, 10) + 1 + '';
     }
 
-    export function clone(worldItemDefinition: WorldItemDefinition): WorldItemDefinition {
+    export function clone(worldItemDefinition: WorldItemTemplate): WorldItemTemplate {
         const clone = {...worldItemDefinition};
         clone.realDimensions = {...clone.realDimensions};
         clone.materials = [...clone.materials];
@@ -56,11 +56,11 @@ export namespace WorldItemDefinition {
         return clone;
     }
 
-    export function cloneAll(worldItemDefinitions: WorldItemDefinition[]): WorldItemDefinition[] {
+    export function cloneAll(worldItemDefinitions: WorldItemTemplate[]): WorldItemTemplate[] {
         return worldItemDefinitions.map(def => this.clone(def));
     }
 
-    export function getByTypeName(typeName: string, worldItemDefinitions: WorldItemDefinition[]): WorldItemDefinition {
+    export function getByTypeName(typeName: string, worldItemDefinitions: WorldItemTemplate[]): WorldItemTemplate {
         return worldItemDefinitions.find(def => def.typeName === typeName);
     }
 }

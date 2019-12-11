@@ -1,7 +1,7 @@
 import { Mesh, MeshBuilder, Scene, Skeleton, StandardMaterial, Vector3 } from 'babylonjs';
 import { WorldItem } from '../../../WorldItem';
 import { MeshCreator } from '../MeshCreator';
-import { WorldItemDefinition } from '../../../WorldItemDefinition';
+import { WorldItemTemplate } from '../../../WorldItemTemplate';
 
 export class EmptyAreaFactory {
     private scene: Scene;
@@ -10,7 +10,7 @@ export class EmptyAreaFactory {
         this.scene = scene;
     }
 
-    createItem(worldItemInfo: WorldItem, meshDescriptor: WorldItemDefinition): Mesh {
+    createItem(worldItemInfo: WorldItem, meshDescriptor: WorldItemTemplate): Mesh {
 
         const y = meshDescriptor.translateY ? meshDescriptor.translateY : 0;
         const mesh = MeshBuilder.CreatePolygon(

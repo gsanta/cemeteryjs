@@ -1,6 +1,6 @@
 import { WorldItem } from '../src/WorldItem';
 import { Shape, Point } from '@nightshifts.inc/geometry';
-import { WorldItemDefinition } from '../src/WorldItemDefinition';
+import { WorldItemTemplate } from '../src/WorldItemTemplate';
 import { arraysEqual } from '../src/model/utils/Functions';
 import { ServiceFacade } from '../src/model/services/ServiceFacade';
 
@@ -14,14 +14,14 @@ declare global {
             toPartiallyEqualToWorldItem(partialWorldItem: Partial<WorldItem>),
             toContainWorldItem(partialWorldItem: Partial<WorldItem>),
             toHavePoint(point: Point);
-            toMatchMeshDescriptor(expectedMeshDescriptor: Partial<WorldItemDefinition>);
+            toMatchMeshDescriptor(expectedMeshDescriptor: Partial<WorldItemTemplate>);
             toHaveAnyWithWorldMapPositions(services: ServiceFacade<any, any, any>, positions: [number, number][]);
         }
     }
 }
 
 expect.extend({
-    toMatchMeshDescriptor(meshDescriptor: WorldItemDefinition, expectedMeshDescriptor: Partial<WorldItemDefinition>) {
+    toMatchMeshDescriptor(meshDescriptor: WorldItemTemplate, expectedMeshDescriptor: Partial<WorldItemTemplate>) {
         expect(meshDescriptor).toMatchObject(expectedMeshDescriptor);
 
         return {

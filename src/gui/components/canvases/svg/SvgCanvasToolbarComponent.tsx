@@ -7,7 +7,7 @@ import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvas
 import { ToggleButtonComponent } from '../../forms/ToggleButtonComponent';
 import { WorldItemDefinitionDialogComponent } from '../../dialogs/WorldItemDefinitionDialog';
 import { DropdownComponent } from '../../forms/DropdownComponent';
-import { WorldItemDefinition } from '../../../../WorldItemDefinition';
+import { WorldItemTemplate } from '../../../../WorldItemTemplate';
 import styled from 'styled-components';
 import { SelectIconComponent } from '../../icons/SelectIconComponent';
 
@@ -40,7 +40,7 @@ export class SvgCanvasToolbarComponent extends React.Component<{canvasController
                 <DropdownComponent
                     values={dropdownValues}
                     currentValue={svgCanvasController.selectedWorldItemDefinition.typeName}
-                    onChange={typeName => svgCanvasController.setSelectedWorldItemDefinition(WorldItemDefinition.getByTypeName(typeName, worldItemDefinitions))}
+                    onChange={typeName => svgCanvasController.setSelectedWorldItemDefinition(WorldItemTemplate.getByTypeName(typeName, worldItemDefinitions))}
                 />
                 <ToggleButtonComponent
                     isActive={this.context.controllers.settingsModel.activeDialog === WorldItemDefinitionDialogComponent.dialogName}

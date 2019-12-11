@@ -1,5 +1,5 @@
 import { TextConfigReader } from "../../../../../src/model/readers/text/TextConfigReader";
-import { WorldItemRole } from "../../../../../src/WorldItemDefinition";
+import { WorldItemRole } from "../../../../../src/WorldItemTemplate";
 
 function createWorldMap(definitionLines: string) {
     return `

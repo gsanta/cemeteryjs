@@ -1,6 +1,6 @@
 import { WorldMapLineListener, TextWorldMapParser } from "./TextWorldMapParser";
 import { Point } from "@nightshifts.inc/geometry";
-import { WorldItemDefinition, WorldItemRole } from '../../../WorldItemDefinition';
+import { WorldItemTemplate, WorldItemRole } from '../../../WorldItemTemplate';
 import { ConfigReader } from '../ConfigReader';
 
 const GLOBALS_SECTION_LINE_REGEX = /^(\S*)/;
@@ -45,10 +45,10 @@ const ROLE_TEST = /\s+ROLES\s+(?:\[([^\]]+)\])/;
 export class TextConfigReader extends WorldMapLineListener implements ConfigReader {
     private typeToCharMap: Map<string, string>;
     private idCounter = 1;
-    private worldItemDefinitions: WorldItemDefinition[] = [];
+    private worldItemDefinitions: WorldItemTemplate[] = [];
     private globalConfig: GlobalConfig;
 
-    read(worldMap: string): {worldItemTypes: WorldItemDefinition[], globalConfig: GlobalConfig} {
+    read(worldMap: string): {worldItemTypes: WorldItemTemplate[], globalConfig: GlobalConfig} {
         this.typeToCharMap = new Map();
         this.idCounter = 1;
         this.globalConfig = getDefaultGlobalConfig();
@@ -70,7 +70,7 @@ export class TextConfigReader extends WorldMapLineListener implements ConfigRead
         const translateY = this.parseTranslateY(line) || 0;
         const roles = this.parseRoles(line);
         this.worldItemDefinitions.push({
-            id: WorldItemDefinition.generateId(this.worldItemDefinitions),
+            id: WorldItemTemplate.generateId(this.worldItemDefinitions),
             char,
             typeName: type,
             model: modelPath,

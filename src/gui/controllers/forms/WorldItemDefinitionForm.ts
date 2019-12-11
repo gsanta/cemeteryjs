@@ -1,5 +1,5 @@
 import { AbstractFormController } from './AbstractFormController';
-import { WorldItemDefinition } from '../../../WorldItemDefinition';
+import { WorldItemTemplate } from '../../../WorldItemTemplate';
 
 export enum WorldItemTypeProperty {
     TYPE_NAME = 'typeName',
@@ -16,8 +16,8 @@ export class WorldItemDefinitionForm extends AbstractFormController<WorldItemTyp
     shapes: string[] = ['rect'];
 
     private selectedIndex = -1;
-    worldItemDefinitions: WorldItemDefinition[];
-    selectedType: WorldItemDefinition;
+    worldItemDefinitions: WorldItemTemplate[];
+    selectedType: WorldItemTemplate;
 
     setRenderer(renderFunc: () => void) {
         this.renderFunc = renderFunc;
@@ -162,24 +162,24 @@ export class WorldItemDefinitionForm extends AbstractFormController<WorldItemTyp
 
         const worldItemDefinition = this.worldItemDefinitions.find(descriptor => descriptor.typeName === type);
         this.selectedIndex = this.worldItemDefinitions.indexOf(worldItemDefinition);
-        this.selectedType = WorldItemDefinition.clone(worldItemDefinition);
+        this.selectedType = WorldItemTemplate.clone(worldItemDefinition);
 
         this.renderFunc();
     }
 
-    getModel(): WorldItemDefinition[] {
+    getModel(): WorldItemTemplate[] {
         return this.worldItemDefinitions;
     }
 
-    setModel(worldItemDefinitions: WorldItemDefinition[]) {
-        this.worldItemDefinitions = WorldItemDefinition.cloneAll(worldItemDefinitions);
+    setModel(worldItemDefinitions: WorldItemTemplate[]) {
+        this.worldItemDefinitions = WorldItemTemplate.cloneAll(worldItemDefinitions);
         this.setSelectedDefinition(this.worldItemDefinitions[0].typeName);
     }
 
     private syncSelected(origTypeName: string) {
         const origWorldItemType = this.worldItemDefinitions.find(type => type.typeName === origTypeName);
         const clone = [...this.worldItemDefinitions];
-        clone.splice(this.worldItemDefinitions.indexOf(origWorldItemType), 1, WorldItemDefinition.clone(this.selectedType));
+        clone.splice(this.worldItemDefinitions.indexOf(origWorldItemType), 1, WorldItemTemplate.clone(this.selectedType));
         this.worldItemDefinitions = clone;
     }
 }

@@ -7,6 +7,7 @@ import { ServiceFacade } from '../services/ServiceFacade';
 import { last, without } from '../utils/Functions';
 import { PolygonRedundantPointReducer } from "./PolygonRedundantPointReducer";
 import { WorldItemBuilder } from "./WorldItemBuilder";
+import { WorldItemTemplate } from "../../WorldItemTemplate";
 
 /**
  * @hidden
@@ -47,13 +48,13 @@ export class PolygonShapeBuilder implements WorldItemBuilder {
                     this.createPolygonPointsFromHorizontalLines(lines)
                 );
 
-
+                const template = WorldItemTemplate.getByTypeName(this.itemName, this.services.configService.worldItemTemplates);
                 return this.services.worldItemFactoryService.create({
                     dimensions: this.services.geometryService.factory.polygon(points),
                     name: this.itemName,
                     isBorder: false,
                     worldMapPositions: worldMapPositions
-                }, this.services.configService.getMeshDescriptorByType(this.itemName));
+                }, template);
             });
     }
 
@@ -64,11 +65,12 @@ export class PolygonShapeBuilder implements WorldItemBuilder {
             this.createPolygonPointsFromHorizontalLines(lines)
         );
 
+        const template = WorldItemTemplate.getByTypeName(this.itemName, this.services.configService.worldItemTemplates);
         return this.services.worldItemFactoryService.create({
             dimensions: this.geometryService.factory.polygon(points),
             name: this.itemName,
             isBorder: false
-        }, this.services.configService.getMeshDescriptorByType(this.itemName));
+        }, template);
     }
 
     /*

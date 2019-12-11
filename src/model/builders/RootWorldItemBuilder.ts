@@ -4,6 +4,7 @@ import { WorldMapGraph } from "../../WorldMapGraph";
 import { WorldMapReader } from '../readers/WorldMapReader';
 import { WorldItemBuilder } from './WorldItemBuilder';
 import { ServiceFacade } from '../services/ServiceFacade';
+import { WorldItemTemplate } from "../../WorldItemTemplate";
 
 
 export class RootWorldItemBuilder implements WorldItemBuilder {
@@ -29,6 +30,9 @@ export class RootWorldItemBuilder implements WorldItemBuilder {
     }
 
     public createRootWorldItem(graph: WorldMapGraph): WorldItem {
+
+        const template = WorldItemTemplate.getByTypeName('root', this.services.configService.worldItemTemplates);
+        
         return this.services.worldItemFactoryService.create({
             type: 'F',
             dimensions: Polygon.createRectangle(
@@ -39,6 +43,6 @@ export class RootWorldItemBuilder implements WorldItemBuilder {
             ),
             name: 'root',
             isBorder: false
-        }, this.services.configService.getMeshDescriptorByType('root'));
+        }, template);
     }
 }
