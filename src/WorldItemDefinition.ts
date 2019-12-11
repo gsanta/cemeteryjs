@@ -35,6 +35,10 @@ export interface WorldItemDefinition {
 }
 
 export namespace WorldItemDefinition {
+    export function borders(templates: WorldItemDefinition[]): WorldItemDefinition[] {
+        return templates.filter(templates => templates.roles.includes(WorldItemRole.BORDER));
+    }
+
     export function generateId(exisingWorldItemDefinitions: WorldItemDefinition[]): string {
         if (exisingWorldItemDefinitions.length === 0) { return 1 + ''; }
 

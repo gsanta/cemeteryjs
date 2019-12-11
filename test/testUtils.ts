@@ -5,6 +5,7 @@ import { TreeIteratorGenerator } from '../src/model/utils/TreeIteratorGenerator'
 import { FileFormat } from '../src/WorldGenerator';
 import { WorldItem } from '../src/WorldItem';
 import { FakeModelImporterService } from './fakes/FakeModelImporterService';
+import { FakeCreateMeshModifier } from './fakes/FakeCreateMeshModifier';
 
 
 /**
@@ -14,7 +15,7 @@ export function setup(worldMap: string, fileFormat: FileFormat): ServiceFacade<a
 
     const serviceFacade = new ServiceFacade<any, any, any>(
         null,
-        null,
+        new FakeCreateMeshModifier(),
         fileFormat
     );
     serviceFacade.configService.update(worldMap);
@@ -24,8 +25,8 @@ export function setup(worldMap: string, fileFormat: FileFormat): ServiceFacade<a
 
 export function setupTestEnv(worldMap: string, fileFormat: FileFormat, fakeModelImporter?: FakeModelImporterService): ServiceFacade<any, any, any> {
     const services = new ServiceFacade<any, any, any>(
-        null,
         fakeModelImporter ? fakeModelImporter : new FakeModelImporterService(new Map()),
+        new FakeCreateMeshModifier(),
         fileFormat
     );
     services.configService.update(worldMap);

@@ -1,6 +1,8 @@
 import { WorldMapLineListener, TextWorldMapParser } from './TextWorldMapParser';
 import { ConfigService } from '../../services/ConfigService';
 import { InputConverter } from '../InputConverter';
+import { WorldItem } from '../../../WorldItem';
+import { WorldItemDefinition } from '../../../WorldItemDefinition';
 
 /*
  * Takes a world map (gwm string) and converts the characters inside the map to contain only
@@ -43,9 +45,9 @@ export class WorldMapToRoomMapConverter extends WorldMapLineListener implements 
         const roomChar = this.configService.meshDescriptorMap.get('room').char;
         const outdoorsChar = this.configService.meshDescriptorMap.get('outdoors') ? this.configService.meshDescriptorMap.get('outdoors').char : '';
 
-        this.configService.borders.forEach(descriptor => {
-                line = line.replace(new RegExp(descriptor.char, 'g'), wallChar);
-            });
+        WorldItemDefinition.borders(this.configService.meshDescriptors).forEach(descriptor => {
+            line = line.replace(new RegExp(descriptor.char, 'g'), wallChar);
+        });
 
         line = line.replace(new RegExp(`[^${wallChar}${outdoorsChar}\\s]`, 'g'), roomChar);
 

@@ -1,10 +1,18 @@
-import { Modifier } from "./Modifier";
-import { WorldItem } from "../../WorldItem";
-import { TreeIteratorGenerator } from "../utils/TreeIteratorGenerator";
+import { Modifier } from "../../src/model/modifiers/Modifier";
+import { WorldItem } from "../../src/WorldItem";
+import { TreeIteratorGenerator } from "../../src/model/utils/TreeIteratorGenerator";
 
 
-export interface MockMeshCreator<M> {
-    (worldItem: WorldItem<M>): M[];
+export interface MockMeshCreator {
+    (worldItem: WorldItem): any[];
+}
+
+const mockMeshCreator: MockMeshCreator = (worldItem: WorldItem) => {
+    return [
+        {
+            dimensions: worldItem.dimensions
+        }
+    ]
 }
 
 /**
@@ -12,22 +20,22 @@ export interface MockMeshCreator<M> {
  * because Mesh implementations (e.g for BabylonJS) uses webgl functionality which is not available for unit-tests.
  * So this module can be used instead of `MeshCreationTransformator` which sets up mock Meshes for each `WorldItem`.
  */
-export class CreateMockMeshModifier<M> implements Modifier  {
+export class FakeCreateMeshModifier<M> implements Modifier  {
     static modName = 'createMockMesh';
 
     dependencies = [];
 
-    private mockMeshCreator: MockMeshCreator<M>;
+    private mockMeshCreator: MockMeshCreator;
 
-    constructor(mockMeshCreator: MockMeshCreator<M>) {
+    constructor() {
         this.mockMeshCreator = mockMeshCreator;
     }
 
     getName(): string {
-        return CreateMockMeshModifier.modName;
+        return FakeCreateMeshModifier.modName;
     }
 
-    apply(worldItems: WorldItem<M>[]): WorldItem<M>[] {
+    apply(worldItems: WorldItem[]): WorldItem[] {
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
                 item.meshTemplate = {

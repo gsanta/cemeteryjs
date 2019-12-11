@@ -4,7 +4,7 @@ import { SegmentBordersModifier } from './model/modifiers/SegmentBordersModifier
 import { BuildHierarchyModifier } from './model/modifiers/BuildHierarchyModifier';
 import { ChangeBorderWidthModifier } from './model/modifiers/ChangeBorderWidthModifier';
 import { ChangeFurnitureSizeModifier } from './model/modifiers/ChangeFurnitureSizeModifier';
-import { CreateMockMeshModifier } from './model/modifiers/CreateMockMeshModifier';
+import { FakeCreateMeshModifier } from '../test/fakes/FakeCreateMeshModifier';
 import { SplitWallsIntoTwoParallelChildWallsModifier } from './model/modifiers/SplitWallsIntoTwoParallelChildWallsModifier';
 import { ThickenBordersModifier } from './model/modifiers/ThickenBordersModifier';
 
@@ -21,7 +21,7 @@ export const transformators = {
     SegmentBordersModifier,
     ChangeBorderWidthModifier,
     ChangeFurnitureSizeModifier,
-    CreateMockMeshModifier,
+    FakeCreateMeshModifier,
     SplitWallsIntoTwoParallelChildWallsModifier,
     ThickenBordersModifier
 }

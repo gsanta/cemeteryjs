@@ -10,15 +10,14 @@ import { WorldMapToSubareaMapConverter } from '../readers/text/WorldMapToSubarea
 import { BuilderService } from './BuilderService';
 import { ConfigService } from './ConfigService';
 import { ConverterService } from './ConverterService';
-import { MeshFactoryService } from './MeshFactoryService';
 import { ModelImportService } from './ModelImportService';
 import { ModifierFactoryService, defaultModifiers } from './ModifierFactoryService';
 import { ModifierService } from './ModifierService';
 import { WorldItemFactoryService } from './WorldItemFactoryService';
 import { IWorldItemBuilder } from '../io/IWorldItemBuilder';
+import { Modifier } from '../modifiers/Modifier';
 
 export class ServiceFacade<M = any, S = any, T = any> {
-    meshFactoryService: MeshFactoryService;
     modifierFactoryService: ModifierFactoryService;
     worldItemFactoryService: WorldItemFactoryService;
     configService: ConfigService;
@@ -29,7 +28,7 @@ export class ServiceFacade<M = any, S = any, T = any> {
     geometryService: GeometryService;
     modelImportService: ModelImportService;
 
-    constructor(meshFactoryService: MeshFactoryService, modelImportService: ModelImportService, fileFormat: FileFormat) {
+    constructor(modelImportService: ModelImportService, createMeshModifier: Modifier, fileFormat: FileFormat) {
         if (fileFormat === FileFormat.TEXT) {
             this.configService = new ConfigService(new TextConfigReader());
             this.worldItemBuilderService = new TextWorldItemBuilder(this, new TextWorldMapReader(this.configService), new WorldMapToRoomMapConverter(this.configService), new WorldMapToSubareaMapConverter(this.configService));
@@ -42,9 +41,9 @@ export class ServiceFacade<M = any, S = any, T = any> {
 
         this.geometryService = new GeometryService();
         this.converterService = new ConverterService();
-        this.meshFactoryService = meshFactoryService;
         this.worldItemFactoryService = new WorldItemFactoryService(this);
         this.modifierFactoryService = new ModifierFactoryService(this);
+        this.modifierFactoryService.registerInstance(createMeshModifier);
         this.modifierService = new ModifierService(this.modifierFactoryService);
         this.builderService = new BuilderService();
         this.modelImportService = modelImportService;

@@ -9,7 +9,7 @@ export class ModelFactory {
         this.modelImportService = new ModelImportService(scene);
     }
 
-    public getInstance(worldItemInfo: WorldItem): Promise<Mesh> {
-        return this.modelImportService.load('').then(modelData => modelData.mesh);
+    public createMesh(worldItem: WorldItem): Mesh {
+        return this.modelImportService.getModelByPath(worldItem.modelPath).mesh;
     }
 }

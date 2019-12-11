@@ -1,6 +1,8 @@
 import { ConfigService } from '../../services/ConfigService';
 import { InputConverter } from '../InputConverter';
 import { TextWorldMapParser, WorldMapLineListener } from './TextWorldMapParser';
+import { WorldItem } from '../../../WorldItem';
+import { WorldItemDefinition } from '../../../WorldItemDefinition';
 
 export class WorldMapToSubareaMapConverter extends WorldMapLineListener implements InputConverter {
     private worldMapReader: TextWorldMapParser;
@@ -22,7 +24,7 @@ export class WorldMapToSubareaMapConverter extends WorldMapLineListener implemen
 
     public addMapSectionLine(line: string) {
         const emptyChar = this.configService.meshDescriptorMap.get('room').char
-        const borderChars = this.configService.borders.map(border => border.char);
+        const borderChars = WorldItemDefinition.borders(this.configService.meshDescriptors).map(border => border.char);
 
         borderChars.forEach(char => {
             line = line.replace(new RegExp(char, 'g'), emptyChar);

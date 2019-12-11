@@ -11,6 +11,7 @@ import { ScaleModifier } from '../modifiers/ScaleModifier';
 import { ThickenBordersModifier } from '../modifiers/ThickenBordersModifier';
 import { TransformToWorldCoordinateModifier } from '../modifiers/TransformToWorldCoordinateModifier';
 import { SegmentBordersModifier } from '../modifiers/SegmentBordersModifier';
+import { CreateMeshModifier } from '../modifiers/CreateMeshModifier';
 
 export const defaultModifiers = [
     SegmentBordersModifier.modName,
@@ -22,7 +23,8 @@ export const defaultModifiers = [
     SplitWallsIntoTwoParallelChildWallsModifier.modName,
     NormalizeBorderRotationModifier.modName,
     ChangeFurnitureSizeModifier.modeName,
-    TransformToWorldCoordinateModifier.modName
+    TransformToWorldCoordinateModifier.modName,
+    CreateMeshModifier.modName
 ];
 
 export class ModifierFactoryService {

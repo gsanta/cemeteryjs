@@ -1,8 +1,6 @@
 import { Polygon } from "@nightshifts.inc/geometry";
 import { MeshTemplate } from "../../MeshTemplate";
 import { WorldItemDefinition } from "../../WorldItemDefinition";
-import { MeshFactoryService } from "../services/MeshFactoryService";
-
 
 export interface ModifierConfig<M, S> {
     borderTypes: string[];
@@ -10,6 +8,4 @@ export interface ModifierConfig<M, S> {
     realFurnitureSizes: {[name: string]: Polygon};
     meshDescriptors: WorldItemDefinition[];
     templateMap: Map<string, MeshTemplate<M, S>>;
-
-    meshFactory: MeshFactoryService;
 }

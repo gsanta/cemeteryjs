@@ -5,12 +5,9 @@ import { WorldItem } from '../../WorldItem';
 
 export class ConfigService {
     globalConfig: GlobalConfig;
-    borders: WorldItemDefinition[];
     furnitures: WorldItemDefinition[];
-    emptyType: string;
     meshDescriptors: WorldItemDefinition[];
     meshDescriptorMap: Map<string, WorldItemDefinition>;
-    meshDescriptorMapByChar: Map<string, WorldItemDefinition>;
 
     worldItemHierarchy: WorldItem[];
 
@@ -32,19 +29,11 @@ export class ConfigService {
         this.globalConfig = globalConfig;
         this.meshDescriptorMap = new Map();
         this.meshDescriptors.forEach(desc => this.meshDescriptorMap.set(desc.typeName, desc));
-        this.meshDescriptorMapByChar = new Map();
-        this.meshDescriptors.forEach(desc => this.meshDescriptorMapByChar.set(desc.char, desc));
-        this.emptyType = 'empty';
-        this.borders = this.meshDescriptors.filter(descriptor => descriptor.roles.includes(WorldItemRole.BORDER));
         this.furnitures = this.meshDescriptors.filter(descriptor => {
             return !descriptor.roles.includes(WorldItemRole.CONTAINER) && !descriptor.roles.includes(WorldItemRole.BORDER)
         });
 
         return this;
-    }
-
-    getMeshDescriptorByChar(char: string) {
-        return this.meshDescriptorMapByChar.get(char);
     }
 
     getMeshDescriptorByType(type: string) {

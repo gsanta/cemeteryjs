@@ -6,16 +6,14 @@ import { WorldItemDefinition } from '../../../WorldItemDefinition';
 import { Polygon } from '@nightshifts.inc/geometry';
 
 export class PolygonFactory  {
-    private materialFactory: MaterialFactory;
     private scene: Scene;
     private index = 1;
 
-    constructor(scene: Scene, materialFactory: MaterialFactory) {
+    constructor(scene: Scene) {
         this.scene = scene;
-        this.materialFactory = materialFactory;
     }
 
-    createItem(worldItemInfo: WorldItem, meshDescriptor: WorldItemDefinition): Promise<Mesh> {
+    createMesh(worldItemInfo: WorldItem): Mesh {
 
         let width: number;
         let depth: number;
@@ -64,6 +62,6 @@ export class PolygonFactory  {
         // this.index++;
 
         // parentMesh.computeWorldMatrix(true);
-        return Promise.resolve(parentMesh);
+        return parentMesh;
     }
 }

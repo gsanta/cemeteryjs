@@ -1,6 +1,8 @@
 import { Point, Shape } from "@nightshifts.inc/geometry";
 import { MeshTemplate } from './MeshTemplate';
-import { WorldItemDefinition } from './WorldItemDefinition';
+import { WorldItemDefinition, WorldItemRole } from './WorldItemDefinition';
+import { Mesh } from "babylonjs/Meshes/mesh";
+import { Skeleton } from 'babylonjs';
 
 export enum WorldItemShape {
     RECTANGLE = 'rect',
@@ -10,8 +12,8 @@ export enum WorldItemShape {
 /**
  * `WorldItem` represents any distinguishable item in the parsed world (think of it as a mesh, e.g walls, rooms, creatures).
  */
-export class WorldItem<M = any, S = any> {
-    meshTemplate: MeshTemplate<M, S>;
+export class WorldItem {
+    meshTemplate: MeshTemplate<Mesh, Skeleton>;
     skeleton: any;
     id: string;
     type: string;

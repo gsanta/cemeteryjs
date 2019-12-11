@@ -5,6 +5,7 @@ import { WorldMapReader } from '../readers/WorldMapReader';
 import { ServiceFacade } from '../services/ServiceFacade';
 import { last, without, sortNum } from '../utils/Functions';
 import { WorldItemBuilder } from './WorldItemBuilder';
+import { WorldItemDefinition } from '../../WorldItemDefinition';
 
 interface Border {
     vertices: number[];
@@ -26,7 +27,7 @@ export class BorderBuilder implements WorldItemBuilder {
     parse(worldMap: string): WorldItem[] {
         this.positionToComponentMap = new Map();
         const graph = this.worldMapReader.read(worldMap);
-        const borderTypes = this.services.configService.borders.map(border => border.typeName);
+        const borderTypes = WorldItemDefinition.borders(this.services.configService.meshDescriptors).map(border => border.typeName);
 
         const borderGraph = graph.getReducedGraphForTypes(borderTypes)
         borderGraph.getAllNodes().forEach(vertex => this.positionToComponentMap.set(vertex, []));
