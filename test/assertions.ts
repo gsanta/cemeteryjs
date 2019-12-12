@@ -15,7 +15,7 @@ declare global {
             toContainWorldItem(partialWorldItem: Partial<WorldItem>),
             toHavePoint(point: Point);
             toMatchMeshDescriptor(expectedMeshDescriptor: Partial<WorldItemTemplate>);
-            toHaveAnyWithWorldMapPositions(services: ServiceFacade<any, any, any>, positions: [number, number][]);
+            toHaveAnyWithWorldMapPositions(services: ServiceFacade, positions: [number, number][]);
         }
     }
 }
@@ -142,14 +142,14 @@ expect.extend({
         }
     },
 
-    toHaveAnyWithWorldMapPositions(worldItems: WorldItem[], services: ServiceFacade<any, any, any>, positions: [number, number][]) {
+    toHaveAnyWithWorldMapPositions(worldItems: WorldItem[], services: ServiceFacade, positions: [number, number][]) {
         let pass = true;
 
         let message: string = '';
 
 
         try {
-            hasAnyWorldItemWithWorldMapPositions(worldItems, positions.map(pos => services.geometryService.factory.point(pos[0], pos[1])));
+            hasAnyWorldItemWithWorldMapPositions(worldItems, positions.map(pos => new Point(pos[0], pos[1])));
         } catch (e) {
             pass = false;
             message = e.message;

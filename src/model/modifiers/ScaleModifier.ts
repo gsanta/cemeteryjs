@@ -12,9 +12,9 @@ export class ScaleModifier implements Modifier {
     static modName = 'scale';
     dependencies = [];
 
-    private services: ServiceFacade<any, any, any>;
+    private services: ServiceFacade;
 
-    constructor(services: ServiceFacade<any, any, any>) {
+    constructor(services: ServiceFacade) {
         this.services = services;
     }
 

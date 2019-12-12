@@ -54,6 +54,6 @@ it ('Parse room with empty area around the whole world map', () => {
 
     const rooms = roomInfoParser.parse(worldMap);
     expect(rooms.length).toEqual(2);
-    expect(rooms).toContainWorldItem({name: 'room', dimensions: services.geometryService.factory.rectangle(2, 2, 6, 2)});
-    expect(rooms).toContainWorldItem({name: 'empty', dimensions: services.geometryService.factory.rectangle(2, 2, 6, 2)});
+    expect(rooms).toContainWorldItem({name: 'room', dimensions: Polygon.createRectangle(2, 2, 6, 2)});
+    expect(rooms).toContainWorldItem({name: 'empty', dimensions: Polygon.createRectangle(2, 2, 6, 2)});
 });

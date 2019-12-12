@@ -1,4 +1,4 @@
-import { Line, Point } from '@nightshifts.inc/geometry';
+import { Line, Point, Measurements, Distance } from '@nightshifts.inc/geometry';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { WorldItem } from '../../WorldItem';
 import { WorldItemUtils } from '../../WorldItemUtils';
@@ -10,9 +10,9 @@ export class AssignBordersToRoomsModifier implements Modifier {
     static modName = 'assignBordersToRooms';
     dependencies = [BuildHierarchyModifier.modName];
 
-    private services: ServiceFacade<any, any, any>;
+    private services: ServiceFacade;
 
-    constructor(services: ServiceFacade<any, any, any>) {
+    constructor(services: ServiceFacade) {
         this.services = services;
     }
 
@@ -49,9 +49,9 @@ export class AssignBordersToRoomsModifier implements Modifier {
         const borders: WorldItem[] = [];
 
         for (let i = 0; i < borderTriplets.length; i++) {
-            if (this.services.geometryService.measuerments.linesParallel(edgeLine, borderTriplets[i][2])) {
+            if (new Measurements().linesParallel(edgeLine, borderTriplets[i][2])) {
 
-                if (this.services.geometryService.distance.twoSegments(edge, <Segment> borderTriplets[i][0].dimensions) === 0.5) {
+                if (new Distance().twoSegments(edge, <Segment> borderTriplets[i][0].dimensions) === 0.5) {
                     borders.push(borderTriplets[i][0]);
                 }
             }

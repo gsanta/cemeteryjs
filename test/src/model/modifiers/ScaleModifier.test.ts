@@ -36,7 +36,6 @@ it ('Scale the items', () => {
     \`
 `
     const services = setup(map, FileFormat.TEXT);
-    const geometryService = services.geometryService;
 
     let worldItems = services.worldItemBuilderService.build(map);
 

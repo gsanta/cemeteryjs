@@ -59,7 +59,7 @@ describe(`SplitWallsIntoTwoParallelChildWallsModifier`, () => {
         
         expect(root.children.length).toEqual(10);
 
-        const items = new SplitWallsIntoTwoParallelChildWallsModifier(serviceFacade.worldItemFactoryService, serviceFacade.geometryService).apply([root]);
+        const items = new SplitWallsIntoTwoParallelChildWallsModifier(serviceFacade.worldItemFactoryService).apply([root]);
 
         const walls = root.children.filter(item => item.name === 'wall');
 

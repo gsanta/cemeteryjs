@@ -1,6 +1,6 @@
-import { GeometryService, Segment } from '@nightshifts.inc/geometry';
-import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
+import { Measurements, Segment } from '@nightshifts.inc/geometry';
 import { WorldItem } from "../../WorldItem";
+import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
 import { Modifier } from "./Modifier";
 import { ThickenBordersModifier } from "./ThickenBordersModifier";
 
@@ -9,11 +9,9 @@ export class SplitWallsIntoTwoParallelChildWallsModifier implements Modifier {
     dependencies = [ThickenBordersModifier.modName];
 
     private worldItemFactory: WorldItemFactoryService;
-    private geometryService: GeometryService;
 
-    constructor(worldItemFactory: WorldItemFactoryService, geometryService: GeometryService) {
+    constructor(worldItemFactory: WorldItemFactoryService) {
         this.worldItemFactory = worldItemFactory;
-        this.geometryService = geometryService;
     }
 
     getName(): string {
@@ -33,10 +31,10 @@ export class SplitWallsIntoTwoParallelChildWallsModifier implements Modifier {
         const poly = (<Segment> wall.dimensions).addThickness(wall.thickness / 2);
 
         const twoWallHalves = poly.getEdges()
-            .filter(edge => this.geometryService.measuerments.linesParallel(edge.getLine(), wallEdge.getLine()))
+            .filter(edge => new Measurements().linesParallel(edge.getLine(), wallEdge.getLine()))
             .map(parallelEdge => {
                 const worldItem = this.worldItemFactory.clone(wall.name, wall);
-                worldItem.dimensions = this.geometryService.factory.edge(parallelEdge.getPoints()[0], parallelEdge.getPoints()[1]);
+                worldItem.dimensions = new Segment(parallelEdge.getPoints()[0], parallelEdge.getPoints()[1]);
                 worldItem.thickness = wall.thickness / 2;
                 worldItem.children = [];
 

@@ -14,9 +14,9 @@ import { WorldItemRole } from "../../WorldItemTemplate";
 export class BuildHierarchyModifier implements Modifier {
     static modName = 'buildHierarchy';
     dependencies = [SegmentBordersModifier.modName]
-    private services: ServiceFacade<any, any, any>;
+    private services: ServiceFacade;
 
-    constructor(services: ServiceFacade<any, any, any>) {
+    constructor(services: ServiceFacade) {
         this.services = services;
     }
 

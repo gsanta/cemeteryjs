@@ -6,7 +6,7 @@ import { ModelImportService } from '../../model/services/ModelImportService';
 import { CreateMeshModifier } from '../../model/modifiers/CreateMeshModifier';
 
 
-export class BabylonWorldGenerator<T> implements WorldGenerator<T> {
+export class BabylonWorldGenerator implements WorldGenerator {
     private createMeshModifier: CreateMeshModifier;
     private meshLoaderService: BabylonModelImportService;
     private modelImportService: ModelImportService;
@@ -17,9 +17,9 @@ export class BabylonWorldGenerator<T> implements WorldGenerator<T> {
         this.modelImportService = new ModelImportService(scene);
     }
 
-    generate(worldMap: string, fileFormat: FileFormat, converter: Converter<T>) {
+    generate(worldMap: string, fileFormat: FileFormat, converter: Converter) {
 
-        const serviceFacade = new ServiceFacade<any, any, T>(
+        const serviceFacade = new ServiceFacade(
             this.modelImportService,
             this.createMeshModifier,
             fileFormat

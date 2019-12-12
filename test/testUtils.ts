@@ -12,26 +12,26 @@ import { WorldItemStore } from '../src/model/services/WorldItemStore';
 /**
  * @deprecated use setupTestEnv
  */
-export function setup(worldMap: string, fileFormat: FileFormat): ServiceFacade<any, any, any> {
-    const services = new ServiceFacade<any, any, any>(
+export function setup(worldMap: string, fileFormat: FileFormat): ServiceFacade {
+    const services = new ServiceFacade(
         null,
         new FakeCreateMeshModifier(),
         fileFormat
     );
 
-    const {worldItemTemplates, globalConfig} = services.configReader.read(worldMap);
+    const {worldItemTemplates, globalConfig} = services.generateMetaData(worldMap);
     services.worldItemStore = new WorldItemStore(worldItemTemplates, globalConfig);
 
     return services;
 }
 
-export function setupTestEnv(worldMap: string, fileFormat: FileFormat, fakeModelImporter?: FakeModelImporterService): ServiceFacade<any, any, any> {
-    const services = new ServiceFacade<any, any, any>(
+export function setupTestEnv(worldMap: string, fileFormat: FileFormat, fakeModelImporter?: FakeModelImporterService): ServiceFacade {
+    const services = new ServiceFacade(
         fakeModelImporter ? fakeModelImporter : new FakeModelImporterService(new Map()),
         new FakeCreateMeshModifier(),
         fileFormat
     );
-    const {worldItemTemplates, globalConfig} = services.configReader.read(worldMap);
+    const {worldItemTemplates, globalConfig} = services.generateMetaData(worldMap);
     services.worldItemStore = new WorldItemStore(worldItemTemplates, globalConfig);
 
     services.worldItemStore.worldItemHierarchy = services.worldItemBuilderService.build(worldMap);

@@ -33,8 +33,7 @@ it ('Segment a vertical wall where it intersects with the horizontal walls', () 
     \`
     `;
 
-    let services: ServiceFacade<any, any, any> = setup(map, FileFormat.TEXT);
-    let geometryService = services.geometryService;
+    let services: ServiceFacade = setup(map, FileFormat.TEXT);
 
     let worldItems = services.worldItemBuilderService.build(map);
     worldItems = services.modifierService.applyModifiers(worldItems, [ SegmentBordersModifier.modName ]);
@@ -75,8 +74,7 @@ it ('Segment a horizontal wall where it intersects with the vertical walls', () 
     \`
     `;
 
-    let services: ServiceFacade<any, any, any> = setup(map, FileFormat.TEXT);
-    let geometryService = services.geometryService;
+    let services: ServiceFacade = setup(map, FileFormat.TEXT);
 
     let worldItems = services.worldItemBuilderService.build(map);
 

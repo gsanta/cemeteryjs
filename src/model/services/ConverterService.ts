@@ -1,22 +1,23 @@
 import { WorldItem } from "../../WorldItem";
 import { Converter } from "../../WorldGenerator";
 import { TreeIteratorGenerator } from "../utils/TreeIteratorGenerator";
+import { Mesh } from "babylonjs";
 
-export interface Convert<T> {
-    (worldItemInfo: WorldItem): T
+export interface Convert {
+    (worldItemInfo: WorldItem): Mesh
 }
 
-export interface AddChildren<T> {
-    (parent: T, children: T[]): void;
+export interface AddChildren<Mesh> {
+    (parent: Mesh, children: Mesh[]): void;
 }
 
-export interface AddBorders<T> {
-    (item: T, borders: T[]): void;
+export interface AddBorders<Mesh> {
+    (item: Mesh, borders: Mesh[]): void;
 }
 
-export class ConverterService<T> {
-    convert(worldItemInfo: WorldItem[], converter: Converter<T>): void {
-        const map: Map<WorldItem, T> = new Map();
+export class ConverterService {
+    convert(worldItemInfo: WorldItem[], converter: Converter): void {
+        const map: Map<WorldItem, Mesh> = new Map();
 
         worldItemInfo.forEach(rootItem => {
 
@@ -25,7 +26,7 @@ export class ConverterService<T> {
             }
         });
 
-        map.forEach((val: T, key: WorldItem) => {
+        map.forEach((val: Mesh, key: WorldItem) => {
             const children = key.children.map(child => map.get(child));
 
             if (children.length > 0) {

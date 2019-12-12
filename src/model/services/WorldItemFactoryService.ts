@@ -26,9 +26,9 @@ export const defaultWorldItemConfig: Partial<WorldItemConfig> = {
  */
 export class WorldItemFactoryService {
     private countersByType: Map<string, number> = new Map();
-    private services: ServiceFacade<any, any, any>;
+    private services: ServiceFacade;
 
-    constructor(services: ServiceFacade<any, any, any>) {
+    constructor(services: ServiceFacade) {
         this.services = services;
     }
 

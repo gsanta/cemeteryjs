@@ -17,7 +17,7 @@ export class ChangeFurnitureSizeModifier implements Modifier {
     private defaultFurnitureResizer: RoomFurnitureResizer;
     private subareaFurnituerResizer: SubareaFurnitureResizer;
 
-    constructor(services: ServiceFacade<any, any, any>) {
+    constructor(services: ServiceFacade) {
         this.defaultFurnitureResizer = new RoomFurnitureResizer(services);
         this.subareaFurnituerResizer = new SubareaFurnitureResizer(services);
     }

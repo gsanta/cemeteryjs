@@ -4,8 +4,7 @@ import { ModelFactory } from '../../integrations/babylonjs/factories/ModelFactor
 import { Modifier } from "./Modifier";
 import { TreeIteratorGenerator } from "../utils/TreeIteratorGenerator";
 import { WorldItem, WorldItemShape } from '../../WorldItem';
-import { Mesh } from "babylonjs/Meshes/mesh";
-import { TransformToWorldCoordinateModifier } from "./TransformToWorldCoordinateModifier";
+import { Mesh } from "babylonjs";
 
 export class CreateMeshModifier implements Modifier  {
     static modName = 'createMesh';

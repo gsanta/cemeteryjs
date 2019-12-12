@@ -9,11 +9,11 @@ import { WorldItemTemplate } from '../../../WorldItemTemplate';
 
 export class PolygonBuilder implements WorldItemBuilder {
     private worldMapReader: WorldMapReader;
-    private services: ServiceFacade<any, any, any>;
+    private services: ServiceFacade;
     private polygonVertexListFinder = new PolygonVertexListFinder();
     private vertexListToPolygonConverter = new VertexListToPolygonConverter();
 
-    constructor(services: ServiceFacade<any, any, any>, worldMapReader: WorldMapReader) {
+    constructor(services: ServiceFacade, worldMapReader: WorldMapReader) {
         this.services = services;
         this.worldMapReader = worldMapReader;
     }

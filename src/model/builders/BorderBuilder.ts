@@ -15,11 +15,11 @@ interface Border {
 
 export class BorderBuilder implements WorldItemBuilder {
     private worldMapReader: WorldMapReader;
-    private services: ServiceFacade<any, any, any>;
+    private services: ServiceFacade;
 
     private positionToComponentMap: Map<number, Border[]>;
 
-    constructor(services: ServiceFacade<any, any, any>, worldMapReader: WorldMapReader) {
+    constructor(services: ServiceFacade, worldMapReader: WorldMapReader) {
         this.services = services;
         this.worldMapReader = worldMapReader;
     }

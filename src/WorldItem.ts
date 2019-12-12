@@ -1,8 +1,7 @@
 import { Point, Shape } from "@nightshifts.inc/geometry";
+import { Skeleton, Mesh } from 'babylonjs';
 import { MeshTemplate } from './MeshTemplate';
-import { WorldItemTemplate, WorldItemRole } from './WorldItemTemplate';
-import { Mesh } from "babylonjs/Meshes/mesh";
-import { Skeleton } from 'babylonjs';
+import { WorldItemTemplate } from './WorldItemTemplate';
 
 export enum WorldItemShape {
     RECTANGLE = 'rect',

@@ -1,6 +1,5 @@
 import { Point } from "@nightshifts.inc/geometry";
-import { AnimationGroup, ParticleSystem, Scene, SceneLoader, Skeleton, StandardMaterial, Texture } from 'babylonjs';
-import { Mesh } from "babylonjs/Meshes/mesh";
+import { AnimationGroup, ParticleSystem, Scene, SceneLoader, Skeleton, StandardMaterial, Texture, Mesh } from 'babylonjs';
 import { WorldItem } from "../..";
 
 export interface ModelData {

@@ -29,8 +29,8 @@ it ('Create items for a given type which is represented on the world map by a po
     const worldItems = polygonAreaInfoParser.parse(map);
 
     expect(worldItems.length).toEqual(2);
-    expect(worldItems).toHaveAnyWithDimensions(services.geometryService.factory.rectangle(1, 1, 3, 4));
-    expect(worldItems).toHaveAnyWithDimensions(services.geometryService.factory.rectangle(5, 1, 4, 4));
+    expect(worldItems).toHaveAnyWithDimensions(Polygon.createRectangle(1, 1, 3, 4));
+    expect(worldItems).toHaveAnyWithDimensions(Polygon.createRectangle(5, 1, 4, 4));
 });
 
 it ('Create a more complicated polygon shape TEST 1', () => {

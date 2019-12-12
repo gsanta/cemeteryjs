@@ -25,7 +25,6 @@ it ('Create separate items for every vertical/horizontal slices of walls', () =>
     `;
 
     const services = setup(worldMap, FileFormat.TEXT);
-    const geometryService = services.geometryService;
     const roomSeparatorParser = new BorderBuilder(services, new TextWorldMapReader(services));
 
 
@@ -96,9 +95,7 @@ it ('Create separate items for every vertical/horizontal slices of walls', () =>
     `;
 
     const services = setup(worldMap, FileFormat.TEXT);
-    const geometryService = services.geometryService;
     const roomSeparatorParser = new BorderBuilder(services, new TextWorldMapReader(services));
-
 
     const borders = roomSeparatorParser.parse(worldMap);
 

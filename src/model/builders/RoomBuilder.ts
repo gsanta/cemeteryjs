@@ -7,11 +7,11 @@ import { WorldItemBuilder } from './WorldItemBuilder';
 
 export class RoomBuilder implements WorldItemBuilder {
     private polygonAreaParser: PolygonShapeBuilder;
-    private services: ServiceFacade<any, any, any>;
+    private services: ServiceFacade;
     private worldMapReader: WorldMapReader;
     private worldMapConverter: InputConverter;
 
-    constructor(services: ServiceFacade<any, any, any>, worldMapReader: WorldMapReader, converter: InputConverter = new NullConverter()) {
+    constructor(services: ServiceFacade, worldMapReader: WorldMapReader, converter: InputConverter = new NullConverter()) {
         this.services = services;
         this.worldMapReader = worldMapReader;
         this.worldMapConverter = converter;

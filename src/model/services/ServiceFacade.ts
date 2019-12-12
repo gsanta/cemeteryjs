@@ -1,8 +1,7 @@
-import { GeometryService } from '@nightshifts.inc/geometry';
 import { Converter, FileFormat } from '../../WorldGenerator';
 import { SvgConfigReader } from '../readers/svg/SvgConfigReader';
 import { SvgWorldItemBuilder } from '../readers/svg/SvgWorldItemBuilder';
-import { TextConfigReader } from '../readers/text/TextConfigReader';
+import { TextConfigReader, GlobalConfig } from '../readers/text/TextConfigReader';
 import { TextWorldItemBuilder } from '../readers/text/TextWorldItemBuilder';
 import { TextWorldMapReader } from '../readers/text/TextWorldMapReader';
 import { WorldMapToRoomMapConverter } from '../readers/text/WorldMapToRoomMapConverter';
@@ -16,34 +15,25 @@ import { WorldItemFactoryService } from './WorldItemFactoryService';
 import { IWorldItemBuilder } from '../io/IWorldItemBuilder';
 import { Modifier } from '../modifiers/Modifier';
 import { ConfigReader } from '../readers/ConfigReader';
+import { WorldItemTemplate } from '../../WorldItemTemplate';
 
-export class ServiceFacade<M = any, S = any, T = any> {
+export class ServiceFacade {
     worldItemStore: WorldItemStore;
     
     worldItemBuilderService: IWorldItemBuilder;
     modifierService: ModifierService;
     modelImportService: ModelImportService;
-    converterService: ConverterService<T>;
+    converterService: ConverterService;
     
     worldItemFactoryService: WorldItemFactoryService;
     modifierFactoryService: ModifierFactoryService;
-    geometryService: GeometryService;
-    configReader: ConfigReader;
+
+    private fileFormat: FileFormat;
 
     constructor(modelImportService: ModelImportService, createMeshModifier: Modifier, fileFormat: FileFormat) {
-        if (fileFormat === FileFormat.TEXT) {
-            this.configReader = new TextConfigReader();
-            this.worldItemStore = new WorldItemStore();
-            this.worldItemBuilderService = new TextWorldItemBuilder(this, new TextWorldMapReader(this), new WorldMapToRoomMapConverter(), new WorldMapToSubareaMapConverter());
-        } else if (fileFormat === FileFormat.SVG) {
-            this.configReader = new SvgConfigReader();
-            this.worldItemStore = new WorldItemStore();
-            this.worldItemBuilderService = new SvgWorldItemBuilder(this);
-        } else {
-            throw new Error('Unknown file format: ' + fileFormat); 
-        }
-
-        this.geometryService = new GeometryService();
+        this.fileFormat = fileFormat;
+        this.worldItemStore = new WorldItemStore();
+        this.worldItemBuilderService = this.getWorldItemBuilder();
         this.converterService = new ConverterService();
         this.worldItemFactoryService = new WorldItemFactoryService(this);
         this.modifierFactoryService = new ModifierFactoryService(this);
@@ -52,8 +42,8 @@ export class ServiceFacade<M = any, S = any, T = any> {
         this.modelImportService = modelImportService;
     }
 
-    generateWorld(worldMap: string, converter: Converter<T>) {
-        const {worldItemTemplates, globalConfig} = this.configReader.read(worldMap);
+    generateWorld(worldMap: string, converter: Converter) {
+        const {worldItemTemplates, globalConfig} = this.getConfigReader().read(worldMap);
 
         this.worldItemStore = new WorldItemStore(worldItemTemplates, globalConfig);
 
@@ -65,5 +55,27 @@ export class ServiceFacade<M = any, S = any, T = any> {
                 this.converterService.convert(worldItems, converter);
             })
             .catch(e => console.log(e));
+    }
+
+    generateMetaData(worldMap: string): {worldItemTemplates: WorldItemTemplate[], globalConfig: GlobalConfig} {
+        return this.getConfigReader().read(worldMap);
+    }
+
+    private getConfigReader(): ConfigReader {
+        switch(this.fileFormat) {
+            case FileFormat.TEXT:
+                return new TextConfigReader();
+            case FileFormat.SVG:
+                return new SvgConfigReader();
+        }
+    }
+
+    private getWorldItemBuilder(): IWorldItemBuilder {
+        switch(this.fileFormat) {
+            case FileFormat.TEXT:
+                return new TextWorldItemBuilder(this, new TextWorldMapReader(this), new WorldMapToRoomMapConverter(), new WorldMapToSubareaMapConverter());
+            case FileFormat.SVG:
+                return new SvgWorldItemBuilder(this);
+        }
     }
 }

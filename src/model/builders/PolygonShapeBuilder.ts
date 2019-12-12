@@ -1,13 +1,13 @@
-import { GeometryService, Point } from "@nightshifts.inc/geometry";
+import { Point, Polygon } from "@nightshifts.inc/geometry";
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { WorldItem } from '../../WorldItem';
+import { WorldItemTemplate } from "../../WorldItemTemplate";
 import { WorldMapGraph } from '../../WorldMapGraph';
 import { WorldMapReader } from '../readers/WorldMapReader';
 import { ServiceFacade } from '../services/ServiceFacade';
 import { last, without } from '../utils/Functions';
 import { PolygonRedundantPointReducer } from "./PolygonRedundantPointReducer";
 import { WorldItemBuilder } from "./WorldItemBuilder";
-import { WorldItemTemplate } from "../../WorldItemTemplate";
 
 /**
  * @hidden
@@ -19,14 +19,12 @@ export class PolygonShapeBuilder implements WorldItemBuilder {
     private polygonRedundantPointReducer: PolygonRedundantPointReducer;
     private worldMapReader: WorldMapReader;
     private itemName: string;
-    private services: ServiceFacade<any, any, any>;
-    private geometryService: GeometryService;
+    private services: ServiceFacade;
     // TODO: the graph after running WorldMapConverter should only contain one character, so this info is redundant
 
-    constructor(itemName: string, services: ServiceFacade<any, any, any>, worldMapReader: WorldMapReader) {
+    constructor(itemName: string, services: ServiceFacade, worldMapReader: WorldMapReader) {
         this.itemName = itemName;
         this.services = services;
-        this.geometryService = services.geometryService;
         this.worldMapReader = worldMapReader;
         this.polygonRedundantPointReducer = new PolygonRedundantPointReducer();
     }
@@ -50,7 +48,7 @@ export class PolygonShapeBuilder implements WorldItemBuilder {
 
                 const template = WorldItemTemplate.getByTypeName(this.itemName, this.services.worldItemStore.worldItemTemplates);
                 return this.services.worldItemFactoryService.create({
-                    dimensions: this.services.geometryService.factory.polygon(points),
+                    dimensions: new Polygon(points),
                     name: this.itemName,
                     isBorder: false,
                     worldMapPositions: worldMapPositions
@@ -67,7 +65,7 @@ export class PolygonShapeBuilder implements WorldItemBuilder {
 
         const template = WorldItemTemplate.getByTypeName(this.itemName, this.services.worldItemStore.worldItemTemplates);
         return this.services.worldItemFactoryService.create({
-            dimensions: this.geometryService.factory.polygon(points),
+            dimensions: new Polygon(points),
             name: this.itemName,
             isBorder: false
         }, template);

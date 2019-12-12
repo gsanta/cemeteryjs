@@ -1,4 +1,4 @@
-import { Polygon, Segment, Shape, Point } from "@nightshifts.inc/geometry";
+import { Polygon, Segment, Shape, Point, Distance } from "@nightshifts.inc/geometry";
 import { WorldItem } from "../../..";
 import { ServiceFacade } from "../../services/ServiceFacade";
 import { maxBy, minBy, without } from "../../utils/Functions";
@@ -7,9 +7,9 @@ import { FurnitureSnapper, SnapType } from './FurnitureSnapper';
 
 export class SubareaFurnitureResizer {
     private furnitureSnapper: FurnitureSnapper;
-    private services: ServiceFacade<any, any, any>;
+    private services: ServiceFacade;
 
-    constructor(services: ServiceFacade<any, any, any>) {
+    constructor(services: ServiceFacade) {
         this.services = services;
         this.furnitureSnapper = new FurnitureSnapper(SnapType.ROTATE_PARALLEL_FACE_TOWARD);
     }
@@ -66,8 +66,8 @@ export class SubareaFurnitureResizer {
         });
 
         const minDistanceEdges = minBy(edgePermutations, (a, b) => {
-            const dist1 = this.services.geometryService.distance.twoSegments(a[0], a[1]);
-            const dist2 = this.services.geometryService.distance.twoSegments(b[0], b[1]);
+            const dist1 = new Distance().twoSegments(a[0], a[1]);
+            const dist2 = new Distance().twoSegments(b[0], b[1]);
 
             if (dist1 === undefined && dist2 === undefined) {
                 return 0;

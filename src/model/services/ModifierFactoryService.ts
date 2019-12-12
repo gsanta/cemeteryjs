@@ -30,10 +30,10 @@ export const defaultModifiers = [
 export class ModifierFactoryService {
     private modifierMap: Map<string, Modifier> = new Map();
 
-    constructor(services: ServiceFacade<any, any, any>) {
+    constructor(services: ServiceFacade) {
 
         this
-            .registerInstance(new SplitWallsIntoTwoParallelChildWallsModifier(services.worldItemFactoryService, services.geometryService))
+            .registerInstance(new SplitWallsIntoTwoParallelChildWallsModifier(services.worldItemFactoryService))
             .registerInstance(new AddRoofModifier(services.worldItemFactoryService))
             .registerInstance(new AssignBordersToRoomsModifier(services))
             .registerInstance(new BuildHierarchyModifier(services))

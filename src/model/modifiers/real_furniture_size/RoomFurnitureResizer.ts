@@ -1,15 +1,15 @@
 import { FurnitureSnapper, SnapType } from './FurnitureSnapper';
 import { ServiceFacade } from "../../services/ServiceFacade";
 import { WorldItem } from "../../../WorldItem";
-import { Segment, Distance, Polygon, Shape } from "@nightshifts.inc/geometry";
+import { Segment, Distance, Polygon, Shape, Measurements } from '@nightshifts.inc/geometry';
 
 
 export class RoomFurnitureResizer {
     private parallelFurnitureSnapper: FurnitureSnapper;
     private perpendicularFurnitureSnapper: FurnitureSnapper;
-    private services: ServiceFacade<any, any, any>;
+    private services: ServiceFacade;
 
-    constructor(services: ServiceFacade<any, any, any>) {
+    constructor(services: ServiceFacade) {
         this.services = services;
         this.parallelFurnitureSnapper = new FurnitureSnapper(SnapType.ROTATE_PARALLEL_FACE_AWAY);
         this.perpendicularFurnitureSnapper = new FurnitureSnapper(SnapType.ROTATE_PERPENDICULAR);
@@ -64,12 +64,11 @@ export class RoomFurnitureResizer {
 
     private isFurnitureParallelToWall(furnitureDim: Shape, wallSegment: Segment): boolean {
         const furnitureEdges = furnitureDim.getEdges();
-        const measurements = this.services.geometryService.measuerments;
 
         const furnitureLine = furnitureEdges[0].getLine();
         const wallLine = wallSegment.getLine();
 
-        const [parallelEdge, perpEdge] = measurements.linesParallel(furnitureLine, wallLine) ? [furnitureEdges[0], furnitureEdges[1]] : [furnitureEdges[1], furnitureEdges[0]];
+        const [parallelEdge, perpEdge] = new Measurements().linesParallel(furnitureLine, wallLine) ? [furnitureEdges[0], furnitureEdges[1]] : [furnitureEdges[1], furnitureEdges[0]];
 
         return parallelEdge.getLength() > perpEdge.getLength() ? true : false;
     }

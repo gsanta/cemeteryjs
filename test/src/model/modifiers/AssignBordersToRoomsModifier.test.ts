@@ -2,7 +2,7 @@ import { AssignBordersToRoomsModifier } from '../../../../src/model/modifiers/As
 import { SegmentBordersModifier } from '../../../../src/model/modifiers/SegmentBordersModifier';
 import { setup } from '../../../testUtils';
 import { FileFormat } from '../../../../src/WorldGenerator';
-import { Segment, Point } from '@nightshifts.inc/geometry';
+import { Segment, Point, Polygon } from '@nightshifts.inc/geometry';
 
 it ('Add the correct borders to a single room', () => {
     const map = `
@@ -65,7 +65,6 @@ it ('Add the correct borders to rooms with multiple roomw', () => {
     `;
 
     const services = setup(map, FileFormat.TEXT);
-    const geometryService = services.geometryService;
 
     let worldItems = services.worldItemBuilderService.build(map);
     worldItems = services.modifierService.applyModifiers(worldItems, [ SegmentBordersModifier.modName ]);
@@ -74,7 +73,7 @@ it ('Add the correct borders to rooms with multiple roomw', () => {
 
     const rooms = worldItems.filter(item => item.name === 'room');
 
-    const room1 = rooms.find(item => item.dimensions.equalTo(services.geometryService.factory.rectangle(1, 1, 3, 3)));
+    const room1 = rooms.find(item => item.dimensions.equalTo(Polygon.createRectangle(1, 1, 3, 3)));
 
     expect(room1.borderItems).toHaveAnyWithDimensions(new Segment(new Point(0.5, 0.5), new Point(0.5, 4.5)));
     expect(room1.borderItems).toHaveAnyWithDimensions(new Segment(new Point(0.5, 4.5), new Point(4.5, 4.5)));
@@ -82,7 +81,7 @@ it ('Add the correct borders to rooms with multiple roomw', () => {
     expect(room1.borderItems).toHaveAnyWithDimensions(new Segment(new Point(0.5, 0.5), new Point(4.5, 0.5)));
 
 
-    const room2 = rooms.find(item => item.dimensions.equalTo(services.geometryService.factory.rectangle(5, 1, 4, 3)));
+    const room2 = rooms.find(item => item.dimensions.equalTo(Polygon.createRectangle(5, 1, 4, 3)));
 
     expect(room2.borderItems).toHaveAnyWithDimensions(new Segment(new Point(4.5, 0.5), new Point(4.5, 4.5)));
     expect(room2.borderItems).toHaveAnyWithDimensions(new Segment(new Point(4.5, 4.5), new Point(9.5, 4.5)));
@@ -90,7 +89,7 @@ it ('Add the correct borders to rooms with multiple roomw', () => {
     expect(room2.borderItems).toHaveAnyWithDimensions(new Segment(new Point(4.5, 0.5), new Point(9.5, 0.5)));
 
 
-    const room3 = rooms.find(item => item.dimensions.equalTo(services.geometryService.factory.rectangle(1, 5, 8, 3)));
+    const room3 = rooms.find(item => item.dimensions.equalTo(Polygon.createRectangle(1, 5, 8, 3)));
 
     expect(room3.borderItems).toHaveAnyWithDimensions(new Segment(new Point(0.5, 4.5), new Point(0.5, 8.5)));
     expect(room3.borderItems).toHaveAnyWithDimensions(new Segment(new Point(0.5, 8.5), new Point(9.5, 8.5)));

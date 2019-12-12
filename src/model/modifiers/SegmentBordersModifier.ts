@@ -1,4 +1,4 @@
-import { Point } from '@nightshifts.inc/geometry';
+import { Point, Measurements } from '@nightshifts.inc/geometry';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { WorldItem } from "../../WorldItem";
 import { WorldItemUtils } from '../../WorldItemUtils';
@@ -21,9 +21,9 @@ export class SegmentBordersModifier  implements Modifier {
     static modName = 'segmentBorders';
     dependencies = []
 
-    private services: ServiceFacade<any, any, any>;
+    private services: ServiceFacade;
 
-    constructor(services: ServiceFacade<any, any, any>) {
+    constructor(services: ServiceFacade) {
         this.services = services;
     }
 
@@ -75,8 +75,8 @@ export class SegmentBordersModifier  implements Modifier {
     }
 
     private isPointAtTheEndOfSegment(segment: Segment, point: Point) {
-        return this.services.geometryService.measuerments.pointsAreVeryClose(segment.getPoints()[0], point)
-            || this.services.geometryService.measuerments.pointsAreVeryClose(segment.getPoints()[1], point);
+        return new Measurements().pointsAreVeryClose(segment.getPoints()[0], point)
+            || new Measurements().pointsAreVeryClose(segment.getPoints()[1], point);
     }
 
     private cutAtPoints(border: WorldItem, intersections: Point[]): WorldItem[] {

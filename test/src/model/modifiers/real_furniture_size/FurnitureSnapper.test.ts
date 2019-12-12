@@ -39,7 +39,7 @@ it ('Rotates furniture to face the snapping edges if snaptype is "ROTATE_PARALLE
     furnitureSnapper.snap(chair, originalChairDimensions, [realSnappingEdge], [originalSnappingEdge]);
 
     expect(chair.rotation).toBeCloseTo(Math.PI / 2);
-    expect(chair).toHaveDimensions(services.geometryService.factory.rectangle(4.4, 5.8, 0.6, 0.4));
+    expect(chair).toHaveDimensions(Polygon.createRectangle(4.4, 5.8, 0.6, 0.4));
 });
 
 it ('Rotate the furniture to face away from the snapping edges if snaptype is "ROTATE_AWAY"', () => {
@@ -75,7 +75,7 @@ it ('Rotate the furniture to face away from the snapping edges if snaptype is "R
     furnitureSnapper.snap(chair, originalChairDimensions, [realSnappingEdge], [originalSnappingEdge]);
 
     expect(chair.rotation).toBeCloseTo(3 * Math.PI / 2);
-    expect(chair).toHaveDimensions(services.geometryService.factory.rectangle(4.4, 5.8, 0.6, 0.4));
+    expect(chair).toHaveDimensions(Polygon.createRectangle(4.4, 5.8, 0.6, 0.4));
 });
 
 it ('Rotate furniture which are perpendicular to the snapping edges', () => {
@@ -109,7 +109,7 @@ it ('Rotate furniture which are perpendicular to the snapping edges', () => {
     furnitureSnapper.snap(chair, originalChairDimensions, [realSnappingEdge], [originalSnappingEdge]);
 
     expect(chair.rotation).toBeCloseTo(Math.PI / 2);
-    expect(chair).toHaveDimensions(services.geometryService.factory.rectangle(4.2, 7, 0.6, 0.4));
+    expect(chair).toHaveDimensions(Polygon.createRectangle(4.2, 7, 0.6, 0.4));
 });
 
 it ('Rotate furniture into a corner', () => {
@@ -149,11 +149,11 @@ it ('Rotate furniture into a corner', () => {
     furnitureSnapper.snap(table, originalTableDimensions, realSnappingEdges, originalSnappingEdges);
 
     expect(table.rotation).toBeCloseTo(3 * Math.PI / 2);
-    expect(table).toHaveDimensions(services.geometryService.factory.rectangle(1.5, 2.5, 3, 2));
+    expect(table).toHaveDimensions(Polygon.createRectangle(1.5, 2.5, 3, 2));
 });
 
-function createRealFurnitureDimensions(services: ServiceFacade<any, any, any>, furniture: WorldItem, width: number, height: number): Polygon {
+function createRealFurnitureDimensions(services: ServiceFacade, furniture: WorldItem, width: number, height: number): Polygon {
     const furnitureCenter = furniture.dimensions.getBoundingCenter();
 
-    return services.geometryService.factory.rectangle(furnitureCenter.x - width / 2, furnitureCenter.y - height / 2, width, height);
+    return Polygon.createRectangle(furnitureCenter.x - width / 2, furnitureCenter.y - height / 2, width, height);
 }

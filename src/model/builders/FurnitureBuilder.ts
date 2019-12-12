@@ -9,9 +9,9 @@ import { WorldItemTemplate } from '../../WorldItemTemplate';
 
 export class FurnitureBuilder implements WorldItemBuilder {
     private worldMapReader: WorldMapReader
-    private services: ServiceFacade<any, any, any>;
+    private services: ServiceFacade;
 
-    constructor(services: ServiceFacade<any, any, any>, worldMapReader: WorldMapReader) {
+    constructor(services: ServiceFacade, worldMapReader: WorldMapReader) {
         this.services = services;
         this.worldMapReader = worldMapReader;
     }
