@@ -23,8 +23,8 @@ export class MaterialFactory {
         this.materialBuilder = materialBuilder;
     }
 
-    createMaterial(worldItem: GameObject, meshDescriptor: GameObjectTemplate): StandardMaterial {
-        return this.createSimpleMaterial(meshDescriptor.materials[0] || meshDescriptor.color);
+    createMaterial(worldItem: GameObject): StandardMaterial {
+        return this.createSimpleMaterial(worldItem.color);
     }
 
     private createSimpleMaterial(material: string): StandardMaterial {

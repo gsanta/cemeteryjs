@@ -42,9 +42,12 @@ export const DropdownComponent : React.SFC<DropdownProps> = (props: DropdownProp
     return (
         <Dropdown 
             className="dropdown-component"
-            onSelect={e => props.onChange(e)}
-            onFocus={() => props.onFocus()}
-            onBlur={() => props.onBlur()}
+            onSelect={e => {
+                props.onFocus();
+                props.onChange(e);
+                props.onBlur();
+            }}
+            // onFocus={() => props.onFocus()}
         >
             <DropdownToggleStyled id="dropdown-basic">
                 {props.currentValue ? props.currentValue : placeholder}

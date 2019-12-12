@@ -58,9 +58,11 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
         switch (this.focusedPropType) {
             case CanvasItemSettings.COLOR:
                 this.canvasItem.color = this.tempString;
+                this.tempString = null;
                 break;
             case CanvasItemSettings.SHAPE:
                 this.canvasItem.shape = <WorldItemShape>this.tempString;
+                this.tempString = null;
                 break;
             case CanvasItemSettings.MODEL:
                 this.canvasItem.model = this.tempFileData;

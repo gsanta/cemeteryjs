@@ -43,4 +43,8 @@ export class CreateMeshModifier implements Modifier  {
                 return this.modelFactory.createMesh(worldItem);
         }
     }
+
+    // private createFromModel() {
+    //     this.modelImportService.getModelByPath(worldItem.modelPath).mesh;
+    // }
 }
