@@ -13,7 +13,7 @@ import { SvgCanvasWriter } from './SvgCanvasWriter';
 import { DeleteTool } from './tools/DeleteTool';
 import { RectangleTool } from './tools/RectangleTool';
 import { Tool, ToolType } from './tools/Tool';
-import { WorldItemTemplate } from '../../../../WorldItemTemplate';
+import { GameObjectTemplate } from '../../../../model/types/GameObjectTemplate';
 import { SelectTool } from './tools/SelectTool';
 import { CanvasItemSettingsForm } from '../../forms/CanvasItemSettingsForm';
 
@@ -52,8 +52,8 @@ export class SvgCanvasController implements IEditableCanvas {
     selectionModel: SelectionModel;
     
     controllers: ControllerFacade;
-    worldItemDefinitions: WorldItemTemplate[];
-    selectedWorldItemDefinition: WorldItemTemplate;
+    worldItemDefinitions: GameObjectTemplate[];
+    selectedWorldItemDefinition: GameObjectTemplate;
 
     canvasItemSettingsForm: CanvasItemSettingsForm;
 
@@ -126,7 +126,7 @@ export class SvgCanvasController implements IEditableCanvas {
         // this.
     }
 
-    setSelectedWorldItemDefinition(worldItemDefinition: WorldItemTemplate) {
+    setSelectedWorldItemDefinition(worldItemDefinition: GameObjectTemplate) {
         this.selectedWorldItemDefinition = worldItemDefinition;
         this.renderToolbar();
     }

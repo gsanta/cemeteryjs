@@ -1,7 +1,7 @@
 import { BuildHierarchyModifier } from '../../src/model/modifiers/BuildHierarchyModifier';
 import { ScaleModifier } from '../../src/model/modifiers/ScaleModifier';
 import { SegmentBordersModifier } from '../../src/model/modifiers/SegmentBordersModifier';
-import { ServiceFacade } from '../../src/model/services/ServiceFacade';
+import { WorldGeneratorServices } from '../../src/model/services/WorldGeneratorServices';
 import { setup } from '../testUtils';
 import { FileFormat } from '../../src/WorldGenerator';
 
@@ -39,10 +39,10 @@ describe('`WorldParser`', () => {
             WWWWWWWW
             `
         );
-        let services: ServiceFacade = setup(map, FileFormat.TEXT);
+        let services: WorldGeneratorServices = setup(map, FileFormat.TEXT);
 
-        const worldItems = services.worldItemBuilderService.build(map);
-        const [root] = services.modifierService.applyModifiers(
+        const worldItems = services.gameObjectBuilder.build(map);
+        const [root] = services.modifierExecutor.applyModifiers(
             worldItems,
             [
                 SegmentBordersModifier.modName,

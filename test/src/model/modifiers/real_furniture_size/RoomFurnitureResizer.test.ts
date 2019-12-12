@@ -6,7 +6,7 @@ import { ScaleModifier } from "../../../../../src/model/modifiers/ScaleModifier"
 import { SegmentBordersModifier } from "../../../../../src/model/modifiers/SegmentBordersModifier";
 import { setup, setupTestEnv } from "../../../../testUtils";
 import { FileFormat } from '../../../../../src/WorldGenerator';
-import { FakeModelImporterService } from '../../../../fakes/FakeModelImporterService';
+import { FakeModelLoader } from '../../../../fakes/FakeModelLoader';
 import { Point, Polygon } from '@nightshifts.inc/geometry';
 
 it ('Resize each funrinture in the room', () => {
@@ -34,7 +34,7 @@ it ('Resize each funrinture in the room', () => {
     \`
     `;
 
-    const fakeModelImporter = new FakeModelImporterService(
+    const fakeModelImporter = new FakeModelLoader(
         new Map([
             ['assets/models/table.babylon', new Point(2, 1)],
             ['assets/models/chair.babylon', new Point(1, 1)]
@@ -42,7 +42,7 @@ it ('Resize each funrinture in the room', () => {
     );
     const services = setupTestEnv(map, FileFormat.TEXT, fakeModelImporter);
 
-    const [root] = services.modifierService.applyModifiers(services.worldItemStore.worldItemHierarchy, [
+    const [root] = services.modifierExecutor.applyModifiers(services.gameAssetStore.gameObjects, [
         SegmentBordersModifier.modName,
         BuildHierarchyModifier.modName,
         AssignBordersToRoomsModifier.modName,
@@ -94,7 +94,7 @@ it ('Snap furnitures which are beside walls', () => {
         \`
     `;
 
-    const fakeModelImporter = new FakeModelImporterService(
+    const fakeModelImporter = new FakeModelLoader(
         new Map([
             ['assets/models/table.babylon', new Point(2, 1)],
             ['assets/models/chair.babylon', new Point(1, 1)]
@@ -102,7 +102,7 @@ it ('Snap furnitures which are beside walls', () => {
     );
     const services = setupTestEnv(map, FileFormat.TEXT, fakeModelImporter);
 
-    const [root] = services.modifierService.applyModifiers(services.worldItemStore.worldItemHierarchy, [
+    const [root] = services.modifierExecutor.applyModifiers(services.gameAssetStore.gameObjects, [
         SegmentBordersModifier.modName,
         BuildHierarchyModifier.modName,
         AssignBordersToRoomsModifier.modName,

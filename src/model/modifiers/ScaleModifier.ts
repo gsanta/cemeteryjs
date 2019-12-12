@@ -1,6 +1,6 @@
 import { Point } from '@nightshifts.inc/geometry';
-import { WorldItem } from '../../WorldItem';
-import { ServiceFacade } from '../services/ServiceFacade';
+import { GameObject } from '../types/GameObject';
+import { WorldGeneratorServices } from '../services/WorldGeneratorServices';
 import { TreeIteratorGenerator } from '../utils/TreeIteratorGenerator';
 import { Modifier } from './Modifier';
 
@@ -12,9 +12,9 @@ export class ScaleModifier implements Modifier {
     static modName = 'scale';
     dependencies = [];
 
-    private services: ServiceFacade;
+    private services: WorldGeneratorServices;
 
-    constructor(services: ServiceFacade) {
+    constructor(services: WorldGeneratorServices) {
         this.services = services;
     }
 
@@ -22,14 +22,14 @@ export class ScaleModifier implements Modifier {
         return ScaleModifier.modName;
     }
 
-    apply(gwmWorldItems: WorldItem[]): WorldItem[] {
+    apply(gwmWorldItems: GameObject[]): GameObject[] {
         return this.scaleItems(gwmWorldItems);
     }
 
-    private scaleItems(worldItems: WorldItem[]): WorldItem[] {
+    private scaleItems(worldItems: GameObject[]): GameObject[] {
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
-                item.dimensions = item.dimensions = item.dimensions.scale(new Point(this.services.worldItemStore.globalConfig.scale.x, this.services.worldItemStore.globalConfig.scale.y));
+                item.dimensions = item.dimensions = item.dimensions.scale(new Point(this.services.gameAssetStore.globalConfig.scale.x, this.services.gameAssetStore.globalConfig.scale.y));
             }
         });
 

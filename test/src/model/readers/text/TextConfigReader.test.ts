@@ -1,5 +1,5 @@
 import { TextConfigReader } from "../../../../../src/model/readers/text/TextConfigReader";
-import { WorldItemRole } from "../../../../../src/WorldItemTemplate";
+import { WorldItemRole } from "../../../../../src/model/types/GameObjectTemplate";
 
 function createWorldMap(definitionLines: string) {
     return `
@@ -28,11 +28,11 @@ describe('Read a world item definition from text', () => {
     
         const textConfigReader = new TextConfigReader();
     
-        const {worldItemTemplates} = textConfigReader.read(worldMap);
+        const {gameObjectTemplates} = textConfigReader.read(worldMap);
 
-        expect(worldItemTemplates.length).toEqual(1);
+        expect(gameObjectTemplates.length).toEqual(1);
 
-        return worldItemTemplates[0];
+        return gameObjectTemplates[0];
     }
 
     it ('with basic properties', () => {

@@ -6,7 +6,7 @@ import { ChangeFurnitureSizeModifier } from '../../../../src/model/modifiers/Cha
 import { SegmentBordersModifier } from "../../../../src/model/modifiers/SegmentBordersModifier";
 import { FileFormat } from '../../../../src/WorldGenerator';
 import { setup, setupMap, setupTestEnv } from '../../../testUtils';
-import { FakeModelImporterService } from '../../../fakes/FakeModelImporterService';
+import { FakeModelLoader } from '../../../fakes/FakeModelLoader';
 
 describe('ChangeFurnitureSizeModifier', () => {
     it ('transforms the sketched furniture dimensions into real mesh dimensions', () => {
@@ -22,11 +22,11 @@ describe('ChangeFurnitureSizeModifier', () => {
             `
         );
 
-        const fakeModelImporter = new FakeModelImporterService(new Map([['assets/models/table.babylon', new Point(2, 1)]]))
+        const fakeModelImporter = new FakeModelLoader(new Map([['assets/models/table.babylon', new Point(2, 1)]]))
         const services = setupTestEnv(map, FileFormat.TEXT, fakeModelImporter);
 
-        const worldItems = services.modifierService.applyModifiers(
-            services.worldItemStore.worldItemHierarchy,
+        const worldItems = services.modifierExecutor.applyModifiers(
+            services.gameAssetStore.gameObjects,
             [
                 SegmentBordersModifier.modName,
                 BuildHierarchyModifier.modName,
@@ -65,7 +65,7 @@ describe('ChangeFurnitureSizeModifier', () => {
         \`
         `;
 
-        const fakeModelImporter = new FakeModelImporterService(
+        const fakeModelImporter = new FakeModelLoader(
             new Map([
                 ['assets/models/cupboard.babylon', new Point(0.5, 2)],
                 ['assets/models/table.babylon', new Point(1, 2)],
@@ -74,8 +74,8 @@ describe('ChangeFurnitureSizeModifier', () => {
         );
         const services = setupTestEnv(map, FileFormat.TEXT, fakeModelImporter);
 
-        const worldItems = services.modifierService.applyModifiers(
-            services.worldItemStore.worldItemHierarchy,
+        const worldItems = services.modifierExecutor.applyModifiers(
+            services.gameAssetStore.gameObjects,
             [
                 SegmentBordersModifier.modName,
                 BuildHierarchyModifier.modName,

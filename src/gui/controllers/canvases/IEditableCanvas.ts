@@ -1,10 +1,10 @@
 import { IReadableCanvas } from './IReadableCanvas';
 import { IWritableCanvas } from './IWritableCanvas';
-import { WorldItemTemplate } from '../../../WorldItemTemplate';
+import { GameObjectTemplate } from '../../../model/types/GameObjectTemplate';
 
 
 export interface IEditableCanvas extends IReadableCanvas, IWritableCanvas {
-    worldItemDefinitions: WorldItemTemplate[];
+    worldItemDefinitions: GameObjectTemplate[];
     setToolbarRenderer(renderFunc: () => void);
     renderToolbar();
 }

@@ -1,5 +1,5 @@
 import { WorldMapToSubareaMapConverter as WorldMapToSubareaMapConverter } from '../../../../../src/model/readers/text/WorldMapToSubareaMapConverter';
-import { WorldItemStore } from '../../../../../src/model/services/WorldItemStore';
+import { GameAssetStore } from '../../../../../src/model/services/GameAssetStore';
 import { TextConfigReader } from '../../../../../src/model/readers/text/TextConfigReader';
 
 describe('WorldMapToSubareaMapConverter', () => {
@@ -50,7 +50,7 @@ describe('WorldMapToSubareaMapConverter', () => {
             \`
         `;
 
-        const {worldItemTemplates, globalConfig} = new TextConfigReader().read(
+        const {gameObjectTemplates, globalConfig} = new TextConfigReader().read(
             `
                 definitions \`
 
@@ -64,11 +64,11 @@ describe('WorldMapToSubareaMapConverter', () => {
             `
         );
 
-        const worldItemStore = new WorldItemStore(worldItemTemplates, globalConfig);
+        const worldItemStore = new GameAssetStore(gameObjectTemplates, globalConfig);
 
         const worldMapToSubareaMapConverter = new WorldMapToSubareaMapConverter();
 
-        expect(worldMapToSubareaMapConverter.convert(input, worldItemStore.worldItemTemplates)).toEqual(output);
+        expect(worldMapToSubareaMapConverter.convert(input, worldItemStore.gameObjectTemplates)).toEqual(output);
     });
 
     it ('replaces the furniture characters with section character', () => {
@@ -122,7 +122,7 @@ describe('WorldMapToSubareaMapConverter', () => {
             \`
         `;
 
-        const {worldItemTemplates, globalConfig} = new TextConfigReader().read(
+        const {gameObjectTemplates, globalConfig} = new TextConfigReader().read(
             `
                 definitions \`
 
@@ -138,10 +138,10 @@ describe('WorldMapToSubareaMapConverter', () => {
             `
         );
 
-        const worldItemStore = new WorldItemStore(worldItemTemplates, globalConfig);
+        const worldItemStore = new GameAssetStore(gameObjectTemplates, globalConfig);
 
         const worldMapToSubareaMapConverter = new WorldMapToSubareaMapConverter();
 
-        expect(worldMapToSubareaMapConverter.convert(input, worldItemStore.worldItemTemplates)).toEqual(output);
+        expect(worldMapToSubareaMapConverter.convert(input, worldItemStore.gameObjectTemplates)).toEqual(output);
     });
 });

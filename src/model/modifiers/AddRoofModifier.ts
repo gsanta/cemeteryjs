@@ -1,7 +1,7 @@
 import { Modifier } from "./Modifier";
-import { WorldItem } from "../../WorldItem";
+import { GameObject } from "../types/GameObject";
 import { WorldItemUtils } from '../../WorldItemUtils';
-import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
+import { GameObjectFactory } from '../services/GameObjectFactory';
 
 /**
  * For each `WorldItem` of type 'room' it creates a new `WorldIemInfo` of type 'roof'.
@@ -10,9 +10,9 @@ export class AddRoofModifier implements Modifier {
     static modName: 'addRoof';
     dependencies = [];
 
-    private worldItemFactory: WorldItemFactoryService;
+    private worldItemFactory: GameObjectFactory;
 
-    constructor(worldItemFactory: WorldItemFactoryService) {
+    constructor(worldItemFactory: GameObjectFactory) {
         this.worldItemFactory = worldItemFactory;
     }
 
@@ -20,7 +20,7 @@ export class AddRoofModifier implements Modifier {
         return AddRoofModifier.modName;
     }
 
-    public apply(worldItems: WorldItem[]): WorldItem[] {
+    public apply(worldItems: GameObject[]): GameObject[] {
         const root = worldItems[0];
         const rooms = WorldItemUtils.filterRooms(worldItems);
 
@@ -29,7 +29,7 @@ export class AddRoofModifier implements Modifier {
         return worldItems;
     }
 
-    private createRoof(room: WorldItem) {
+    private createRoof(room: GameObject) {
         const roof = this.worldItemFactory.clone('roof', room);
 
         return roof;

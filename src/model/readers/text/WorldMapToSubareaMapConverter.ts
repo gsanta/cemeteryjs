@@ -1,12 +1,12 @@
-import { WorldItemStore } from '../../services/WorldItemStore';
-import { InputConverter } from '../InputConverter';
+import { GameAssetStore } from '../../services/GameAssetStore';
+import { IInputConverter } from '../IInputConverter';
 import { TextWorldMapParser, WorldMapLineListener } from './TextWorldMapParser';
-import { WorldItem } from '../../../WorldItem';
-import { WorldItemTemplate } from '../../../WorldItemTemplate';
+import { GameObject } from '../../types/GameObject';
+import { GameObjectTemplate } from '../../types/GameObjectTemplate';
 
-export class WorldMapToSubareaMapConverter extends WorldMapLineListener implements InputConverter {
+export class WorldMapToSubareaMapConverter extends WorldMapLineListener implements IInputConverter {
     private worldMapReader: TextWorldMapParser;
-    private worldItemTemplates: WorldItemTemplate[];
+    private gameObjectTemplates: GameObjectTemplate[];
 
     private lines: string[] = [];
 
@@ -15,16 +15,16 @@ export class WorldMapToSubareaMapConverter extends WorldMapLineListener implemen
         this.worldMapReader = new TextWorldMapParser(this);
     }
 
-    public convert(worldmap: string, worldItemTemplates: WorldItemTemplate[]): string {
-        this.worldItemTemplates = worldItemTemplates;
+    public convert(worldmap: string, gameObjectTemplates: GameObjectTemplate[]): string {
+        this.gameObjectTemplates = gameObjectTemplates;
         this.worldMapReader.read(worldmap);
 
         return this.lines.join('\n');
     }
 
     public addMapSectionLine(line: string) {
-        const emptyChar =  WorldItemTemplate.getByTypeName('room', this.worldItemTemplates).char
-        const borderChars = WorldItemTemplate.borders(this.worldItemTemplates).map(border => border.char);
+        const emptyChar =  GameObjectTemplate.getByTypeName('room', this.gameObjectTemplates).char
+        const borderChars = GameObjectTemplate.borders(this.gameObjectTemplates).map(border => border.char);
 
         borderChars.forEach(char => {
             line = line.replace(new RegExp(char, 'g'), emptyChar);

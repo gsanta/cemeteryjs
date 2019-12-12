@@ -26,8 +26,8 @@ it ('Add the correct borders to a single room', () => {
 
     const services = setup(map, FileFormat.TEXT);
 
-    const worldItems = services.worldItemBuilderService.build(map);
-    const [wall1, wall2, wall3, wall4, room] = services.modifierService.applyModifiers(
+    const worldItems = services.gameObjectBuilder.build(map);
+    const [wall1, wall2, wall3, wall4, room] = services.modifierExecutor.applyModifiers(
         worldItems,
         [
             AssignBordersToRoomsModifier.modName
@@ -66,8 +66,8 @@ it ('Add the correct borders to rooms with multiple roomw', () => {
 
     const services = setup(map, FileFormat.TEXT);
 
-    let worldItems = services.worldItemBuilderService.build(map);
-    worldItems = services.modifierService.applyModifiers(worldItems, [ SegmentBordersModifier.modName ]);
+    let worldItems = services.gameObjectBuilder.build(map);
+    worldItems = services.modifierExecutor.applyModifiers(worldItems, [ SegmentBordersModifier.modName ]);
 
     worldItems = new AssignBordersToRoomsModifier(services).apply(worldItems);
 

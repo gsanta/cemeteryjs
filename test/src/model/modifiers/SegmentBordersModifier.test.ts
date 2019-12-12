@@ -1,6 +1,6 @@
 import { Segment, Point } from "@nightshifts.inc/geometry";
 import { SegmentBordersModifier } from '../../../../src/model/modifiers/SegmentBordersModifier';
-import { ServiceFacade } from "../../../../src/model/services/ServiceFacade";
+import { WorldGeneratorServices } from "../../../../src/model/services/WorldGeneratorServices";
 import { setup } from "../../../testUtils";
 import { FileFormat } from "../../../../src/WorldGenerator";
 
@@ -33,10 +33,10 @@ it ('Segment a vertical wall where it intersects with the horizontal walls', () 
     \`
     `;
 
-    let services: ServiceFacade = setup(map, FileFormat.TEXT);
+    let services: WorldGeneratorServices = setup(map, FileFormat.TEXT);
 
-    let worldItems = services.worldItemBuilderService.build(map);
-    worldItems = services.modifierService.applyModifiers(worldItems, [ SegmentBordersModifier.modName ]);
+    let worldItems = services.gameObjectBuilder.build(map);
+    worldItems = services.modifierExecutor.applyModifiers(worldItems, [ SegmentBordersModifier.modName ]);
 
     expect(worldItems).toHaveAnyWithDimensions(new Segment(new Point(0.5, 6.5), new Point(9.5, 6.5)));
     expect(worldItems).toHaveAnyWithDimensions(new Segment(new Point(0.5, 3.5), new Point(9.5, 3.5)));
@@ -74,9 +74,9 @@ it ('Segment a horizontal wall where it intersects with the vertical walls', () 
     \`
     `;
 
-    let services: ServiceFacade = setup(map, FileFormat.TEXT);
+    let services: WorldGeneratorServices = setup(map, FileFormat.TEXT);
 
-    let worldItems = services.worldItemBuilderService.build(map);
+    let worldItems = services.gameObjectBuilder.build(map);
 
     let horizontalWalls = worldItems.filter(item => item.name === 'wall').filter(wall => (<Segment> wall.dimensions).getLine().isHorizontal());
 
@@ -119,7 +119,7 @@ it ('does not add the bordering WorldItem if it only touches the room at it\'s e
 
     const services = setup(map, FileFormat.TEXT);
 
-    let items = services.worldItemBuilderService.build(map);
+    let items = services.gameObjectBuilder.build(map);
     
     items = new SegmentBordersModifier(services).apply(items);
     1

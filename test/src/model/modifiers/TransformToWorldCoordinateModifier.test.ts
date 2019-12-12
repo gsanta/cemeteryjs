@@ -1,28 +1,28 @@
 import { Polygon, Shape } from '@nightshifts.inc/geometry';
 import { TransformToWorldCoordinateModifier } from '../../../../src/model/modifiers/TransformToWorldCoordinateModifier';
-import { WorldItem } from '../../../../src/WorldItem';
+import { GameObject } from '../../../../src/model/types/GameObject';
 
 
 describe(`TransformToWorldCoordinateModifier`, () => {
     describe (`apply`, () => {
         it ('transforms the `WorldItem`s into world space', () => {
-            const items: WorldItem[] = [
-                <WorldItem> {
+            const items: GameObject[] = [
+                <GameObject> {
                     name: 'root',
                     dimensions: <Shape> Polygon.createRectangle(0, 0, 10, 15),
                     children: [
-                        <WorldItem> {
+                        <GameObject> {
                             name: 'room',
                             dimensions: <Shape> Polygon.createRectangle(0, 0, 5, 15),
                             children: [
-                                <WorldItem> {
+                                <GameObject> {
                                     name: 'chair',
                                     dimensions: <Shape> Polygon.createRectangle(2, 2, 1, 1),
                                     children: []
                                 }
                             ]
                         },
-                        <WorldItem> {
+                        <GameObject> {
                             name: 'room',
                             dimensions: <Shape> Polygon.createRectangle(5, 0, 5, 15),
                             children: []

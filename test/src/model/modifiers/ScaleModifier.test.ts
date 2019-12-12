@@ -37,7 +37,7 @@ it ('Scale the items', () => {
 `
     const services = setup(map, FileFormat.TEXT);
 
-    let worldItems = services.worldItemBuilderService.build(map);
+    let worldItems = services.gameObjectBuilder.build(map);
 
     const table = worldItems.find(item => item.name === 'table');
     const door = worldItems.find(item => item.name === 'door');

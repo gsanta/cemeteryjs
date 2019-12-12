@@ -1,11 +1,11 @@
 import { LinesToGraphConverter } from './LinesToGraphConverter';
-import { WorldMapGraph } from '../../../WorldMapGraph';
+import { WorldMapGraph } from '../../types/WorldMapGraph';
 import { DetailsLineToObjectConverter, DetailsLineDataTypes } from './DetailsLineToObjectConverter';
 import { WorldMapLineListener, TextWorldMapParser } from './TextWorldMapParser';
-import { WorldMapReader } from '../WorldMapReader';
-import { ServiceFacade } from '../../services/ServiceFacade';
+import { IWorldMapReader } from '../IWorldMapReader';
+import { WorldGeneratorServices } from '../../services/WorldGeneratorServices';
 
-export class TextWorldMapReader extends WorldMapLineListener implements WorldMapReader {
+export class TextWorldMapReader extends WorldMapLineListener implements IWorldMapReader {
     private linesToGraphConverter: LinesToGraphConverter;
     private worldMapReader: TextWorldMapParser;
 
@@ -13,9 +13,9 @@ export class TextWorldMapReader extends WorldMapLineListener implements WorldMap
     private detailsLines: string[] = [];
     private vertexAdditinalData: {[key: number]: any} = {};
     private detailsLineToObjectConverter: DetailsLineToObjectConverter;
-    private services: ServiceFacade;
+    private services: WorldGeneratorServices;
 
-    constructor(services: ServiceFacade) {
+    constructor(services: WorldGeneratorServices) {
         super();
         this.services = services;
         this.worldMapReader = new TextWorldMapParser(this);
@@ -45,7 +45,7 @@ export class TextWorldMapReader extends WorldMapLineListener implements WorldMap
             this.vertexAdditinalData[vertex] = attribute
         });
 
-        return this.linesToGraphConverter.parse(this.worldMapLines, this.services.worldItemStore.worldItemTemplates);
+        return this.linesToGraphConverter.parse(this.worldMapLines, this.services.gameAssetStore.gameObjectTemplates);
     }
 
     private convertDetailsLineToAdditionalData(line: string): any {

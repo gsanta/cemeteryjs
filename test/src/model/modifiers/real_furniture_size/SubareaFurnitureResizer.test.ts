@@ -4,7 +4,7 @@ import { SegmentBordersModifier } from "../../../../../src/model/modifiers/Segme
 import { BuildHierarchyModifier } from "../../../../../src/model/modifiers/BuildHierarchyModifier";
 import { SubareaFurnitureResizer } from "../../../../../src/model/modifiers/real_furniture_size/SubareaFurnitureResizer";
 import { FileFormat } from "../../../../../src/WorldGenerator";
-import { FakeModelImporterService } from "../../../../fakes/FakeModelImporterService";
+import { FakeModelLoader } from "../../../../fakes/FakeModelLoader";
 import { Point, Polygon } from "@nightshifts.inc/geometry";
 
 it ('Snap furnitures in a subarea to the biggest furniture in that subarea', () => {
@@ -34,7 +34,7 @@ it ('Snap furnitures in a subarea to the biggest furniture in that subarea', () 
     \`
     `;
 
-    const fakeModelImporter = new FakeModelImporterService(
+    const fakeModelImporter = new FakeModelLoader(
         new Map([
             ['assets/models/table.babylon', new Point(2, 1)],
             ['assets/models/chair.babylon', new Point(1, 1)]
@@ -42,8 +42,8 @@ it ('Snap furnitures in a subarea to the biggest furniture in that subarea', () 
     );
     const services = setupTestEnv(map, FileFormat.TEXT, fakeModelImporter);
 
-    const [root] = services.modifierService.applyModifiers(
-        services.worldItemStore.worldItemHierarchy, 
+    const [root] = services.modifierExecutor.applyModifiers(
+        services.gameAssetStore.gameObjects, 
         [
             ScaleModifier.modName,
             SegmentBordersModifier.modName,

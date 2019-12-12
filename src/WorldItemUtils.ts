@@ -1,9 +1,9 @@
-import { WorldItem } from "./WorldItem";
+import { GameObject } from "./model/types/GameObject";
 import { TreeIteratorGenerator } from "./model/utils/TreeIteratorGenerator";
 
 export class WorldItemUtils {
-    public static filterRooms(worldItems: WorldItem[]): WorldItem[] {
-        const rooms: WorldItem[] = [];
+    public static filterRooms(worldItems: GameObject[]): GameObject[] {
+        const rooms: GameObject[] = [];
 
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
@@ -16,8 +16,8 @@ export class WorldItemUtils {
         return rooms;
     }
 
-    public static filterBorders(worldItems: WorldItem[]): WorldItem[] {
-        const roomSeparatorItems: WorldItem[] = [];
+    public static filterBorders(worldItems: GameObject[]): GameObject[] {
+        const roomSeparatorItems: GameObject[] = [];
 
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {

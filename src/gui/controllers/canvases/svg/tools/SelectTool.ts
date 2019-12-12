@@ -1,7 +1,7 @@
 import { ToolType } from "./Tool";
 import { AbstractSelectionTool } from "./AbstractSelectionTool";
 import { SvgCanvasController } from "../SvgCanvasController";
-import { WorldMapGraph } from '../../../../../WorldMapGraph';
+import { WorldMapGraph } from '../../../../../model/types/WorldMapGraph';
 import { SvgWorldMapReader } from '../../../../../model/readers/svg/SvgWorldMapReader';
 import { PixelTag } from "../models/PixelModel";
 import { Point } from "@nightshifts.inc/geometry";

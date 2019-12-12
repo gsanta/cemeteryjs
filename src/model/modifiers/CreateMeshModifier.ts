@@ -1,9 +1,9 @@
 import { Scene } from "babylonjs/scene";
-import { PolygonFactory } from '../../integrations/babylonjs/factories/PolygonFactory';
-import { ModelFactory } from '../../integrations/babylonjs/factories/ModelFactory';
+import { PolygonFactory } from '../factories/PolygonFactory';
+import { ModelFactory } from '../factories/ModelFactory';
 import { Modifier } from "./Modifier";
 import { TreeIteratorGenerator } from "../utils/TreeIteratorGenerator";
-import { WorldItem, WorldItemShape } from '../../WorldItem';
+import { GameObject, WorldItemShape } from '../types/GameObject';
 import { Mesh } from "babylonjs";
 
 export class CreateMeshModifier implements Modifier  {
@@ -21,7 +21,7 @@ export class CreateMeshModifier implements Modifier  {
         return CreateMeshModifier.modName;
     }
 
-    apply(worldItems: WorldItem[]): WorldItem[] {
+    apply(worldItems: GameObject[]): GameObject[] {
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
                 item.meshTemplate = {
@@ -35,7 +35,7 @@ export class CreateMeshModifier implements Modifier  {
         return worldItems;
     }
 
-    private creteMesh(worldItem: WorldItem): Mesh {
+    private creteMesh(worldItem: GameObject): Mesh {
         switch(worldItem.shape) {
             case WorldItemShape.RECTANGLE:
                 return this.polygonFactory.createMesh(worldItem);

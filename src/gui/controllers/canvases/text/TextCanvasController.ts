@@ -9,7 +9,7 @@ import { ICanvasWriter } from '../ICanvasWriter';
 import { IEditableCanvas } from '../IEditableCanvas';
 import { TextCanvasReader } from './TextCanvasReader';
 import { TextCanvasWriter } from './TextCanvasWriter';
-import { WorldItemTemplate } from '../../../../WorldItemTemplate';
+import { GameObjectTemplate } from '../../../../model/types/GameObjectTemplate';
 
 const THEME = 'nightshiftsTheme';
 const LANGUAGE = 'nightshiftsLanguage';
@@ -49,7 +49,7 @@ export class TextCanvasController implements IEditableCanvas {
     text: string = null;
     writer: ICanvasWriter;
     reader: ICanvasReader;
-    worldItemDefinitions: WorldItemTemplate[];
+    worldItemDefinitions: GameObjectTemplate[];
     
     private controllers: ControllerFacade;
 

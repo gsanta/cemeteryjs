@@ -1,8 +1,8 @@
 import { WorldMapLineListener, TextWorldMapParser } from './TextWorldMapParser';
-import { WorldItemStore } from '../../services/WorldItemStore';
-import { InputConverter } from '../InputConverter';
-import { WorldItem } from '../../../WorldItem';
-import { WorldItemTemplate } from '../../../WorldItemTemplate';
+import { GameAssetStore } from '../../services/GameAssetStore';
+import { IInputConverter } from '../IInputConverter';
+import { GameObject } from '../../types/GameObject';
+import { GameObjectTemplate } from '../../types/GameObjectTemplate';
 
 /*
  * Takes a world map (gwm string) and converts the characters inside the map to contain only
@@ -22,9 +22,9 @@ import { WorldItemTemplate } from '../../../WorldItemTemplate';
  * -###-
  * -----
  */
-export class WorldMapToRoomMapConverter extends WorldMapLineListener implements InputConverter {
+export class WorldMapToRoomMapConverter extends WorldMapLineListener implements IInputConverter {
     private worldMapReader: TextWorldMapParser;
-    private worldItemTemplates: WorldItemTemplate[];
+    private gameObjectTemplates: GameObjectTemplate[];
 
     private lines: string[] = [];
 
@@ -33,21 +33,21 @@ export class WorldMapToRoomMapConverter extends WorldMapLineListener implements 
         this.worldMapReader = new TextWorldMapParser(this);
     }
 
-    public convert(worldmap: string, worldItemTemplates: WorldItemTemplate[]): string {
-        this.worldItemTemplates = worldItemTemplates;
+    public convert(worldmap: string, gameObjectTemplates: GameObjectTemplate[]): string {
+        this.gameObjectTemplates = gameObjectTemplates;
         this.worldMapReader.read(worldmap);
 
         return this.lines.join('\n');
     }
 
     public addMapSectionLine(line: string) {
-        const wallChar = WorldItemTemplate.getByTypeName('wall', this.worldItemTemplates).char;
-        const roomChar = WorldItemTemplate.getByTypeName('room', this.worldItemTemplates).char;
+        const wallChar = GameObjectTemplate.getByTypeName('wall', this.gameObjectTemplates).char;
+        const roomChar = GameObjectTemplate.getByTypeName('room', this.gameObjectTemplates).char;
         
-        const outdoors = WorldItemTemplate.getByTypeName('outdoors', this.worldItemTemplates);
+        const outdoors = GameObjectTemplate.getByTypeName('outdoors', this.gameObjectTemplates);
         const outdoorsChar = outdoors ? outdoors.char : '';
 
-        WorldItemTemplate.borders(this.worldItemTemplates).forEach(descriptor => {
+        GameObjectTemplate.borders(this.gameObjectTemplates).forEach(descriptor => {
             line = line.replace(new RegExp(descriptor.char, 'g'), wallChar);
         });
 

@@ -1,9 +1,9 @@
 import { Point, Measurements } from '@nightshifts.inc/geometry';
-import { WorldItem } from '../../WorldItem';
+import { GameObject } from '../types/GameObject';
 import { without, last } from './Functions';
 
 export class RoomUtils {
-    public static orderBorderItemsAroundRoomClockwise(room: WorldItem) {
+    public static orderBorderItemsAroundRoomClockwise(room: GameObject) {
         const borderItems = [...room.borderItems];
 
         const startItem = this.getBottomLeftItem(borderItems);
@@ -23,7 +23,7 @@ export class RoomUtils {
         }
     }
 
-    private static findNextBorderItem(currentBorderItem: WorldItem, borderItems: WorldItem[]) {
+    private static findNextBorderItem(currentBorderItem: GameObject, borderItems: GameObject[]) {
         const findByCommonPoint = (commonPoint: Point) =>
             borderItems.find(item => {
                 const point1 = item.dimensions.getPoints()[0];
@@ -44,10 +44,10 @@ export class RoomUtils {
         throw new Error('Next border item could not be determined.');
     }
 
-    private static getBottomLeftItem(items: WorldItem[]): WorldItem {
+    private static getBottomLeftItem(items: GameObject[]): GameObject {
         const copy = [...items];
 
-        copy.sort((item1: WorldItem, item2: WorldItem) => {
+        copy.sort((item1: GameObject, item2: GameObject) => {
             const center1 = item1.dimensions.getBoundingCenter();
             const center2 = item2.dimensions.getBoundingCenter();
 

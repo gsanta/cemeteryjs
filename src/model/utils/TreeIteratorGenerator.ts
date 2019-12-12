@@ -1,6 +1,6 @@
-import { WorldItem } from '../../WorldItem';
+import { GameObject } from '../types/GameObject';
 
-export function* TreeIteratorGenerator(worldItem: WorldItem): IterableIterator<WorldItem> {
+export function* TreeIteratorGenerator(worldItem: GameObject): IterableIterator<GameObject> {
 
     yield worldItem;
 

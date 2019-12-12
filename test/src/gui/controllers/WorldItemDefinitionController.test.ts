@@ -1,6 +1,6 @@
 import { setupControllers } from "./controllerTestUtils";
 import { WorldItemTypeProperty, WorldItemDefinitionForm } from '../../../../src/gui/controllers/forms/WorldItemDefinitionForm';
-import { WorldItemTemplate } from "../../../../src/WorldItemTemplate";
+import { GameObjectTemplate } from "../../../../src/model/types/GameObjectTemplate";
 import { FileFormat } from '../../../../src/WorldGenerator';
 
 it ("Update the 'type' prop", () => {
@@ -88,7 +88,7 @@ function setupTest(): WorldItemDefinitionForm {
 
 function testSimpleProp(
     worldItemTypeController: WorldItemDefinitionForm,
-    descriptor: WorldItemTemplate,
+    descriptor: GameObjectTemplate,
     property: WorldItemTypeProperty,
     newVal: any, updateProp: (val: any) => void
 ) {

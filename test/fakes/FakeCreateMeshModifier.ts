@@ -1,13 +1,13 @@
 import { Modifier } from "../../src/model/modifiers/Modifier";
-import { WorldItem } from "../../src/WorldItem";
+import { GameObject } from "../../src/model/types/GameObject";
 import { TreeIteratorGenerator } from "../../src/model/utils/TreeIteratorGenerator";
 
 
 export interface MockMeshCreator {
-    (worldItem: WorldItem): any[];
+    (worldItem: GameObject): any[];
 }
 
-const mockMeshCreator: MockMeshCreator = (worldItem: WorldItem) => {
+const mockMeshCreator: MockMeshCreator = (worldItem: GameObject) => {
     return [
         {
             dimensions: worldItem.dimensions
@@ -35,7 +35,7 @@ export class FakeCreateMeshModifier<M> implements Modifier  {
         return FakeCreateMeshModifier.modName;
     }
 
-    apply(worldItems: WorldItem[]): WorldItem[] {
+    apply(worldItems: GameObject[]): GameObject[] {
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
                 item.meshTemplate = {

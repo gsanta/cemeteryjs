@@ -1,11 +1,11 @@
 import { Point } from '@nightshifts.inc/geometry';
-import { WorldMapGraph } from '../../../WorldMapGraph';
+import { WorldMapGraph } from '../../types/WorldMapGraph';
 import { maxBy, minBy } from '../../utils/Functions';
-import { WorldMapReader } from '../WorldMapReader';
+import { IWorldMapReader } from '../IWorldMapReader';
 import { SvgPreprocessor } from './SvgPreprocessor';
 import { ProcessedWorldMapJson, Rect } from './WorldMapJson';
 
-export class SvgWorldMapReader implements WorldMapReader {
+export class SvgWorldMapReader implements IWorldMapReader {
     private removeEmptyFrame: boolean;
     private svgPreprocessor: SvgPreprocessor;
 

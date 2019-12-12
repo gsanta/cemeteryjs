@@ -1,13 +1,13 @@
 import { Point, Segment } from '@nightshifts.inc/geometry';
 import { RoomUtils } from "../utils/RoomUtils";
-import { WorldItem } from "../../WorldItem";
+import { GameObject } from "../types/GameObject";
 import { WorldItemUtils } from "../../WorldItemUtils";
 import { Modifier } from "./Modifier";
-import { WorldItemStore } from '../services/WorldItemStore';
+import { GameAssetStore } from '../services/GameAssetStore';
 import { last } from '../utils/Functions';
 import { AssignBordersToRoomsModifier } from './AssignBordersToRoomsModifier';
-import { WorldItemTemplate } from '../../WorldItemTemplate';
-import { ServiceFacade } from '../services/ServiceFacade';
+import { GameObjectTemplate } from '../types/GameObjectTemplate';
+import { WorldGeneratorServices } from '../services/WorldGeneratorServices';
 
 /**
  * This transformator can be used to adjust the width of a border item to it's real width.
@@ -18,9 +18,9 @@ export class ChangeBorderWidthModifier implements Modifier {
     static modName = 'changeBorderWidth';
     dependencies = [AssignBordersToRoomsModifier.modName];
 
-    private services: ServiceFacade;
+    private services: WorldGeneratorServices;
 
-    constructor(services: ServiceFacade) {
+    constructor(services: WorldGeneratorServices) {
         this.services = services;
     }
 
@@ -28,8 +28,8 @@ export class ChangeBorderWidthModifier implements Modifier {
         return ChangeBorderWidthModifier.modName;
     }
 
-    apply(worldItems: WorldItem[]): WorldItem[] {
-        const rooms: WorldItem[] = WorldItemUtils.filterRooms(worldItems);
+    apply(worldItems: GameObject[]): GameObject[] {
+        const rooms: GameObject[] = WorldItemUtils.filterRooms(worldItems);
 
         /**
          * The border width adjustment has to be done room by room because the adjustment algorithm needs the
@@ -42,9 +42,9 @@ export class ChangeBorderWidthModifier implements Modifier {
     }
 
 
-    private adjustBorderWidthsForRoom(room: WorldItem) {
+    private adjustBorderWidthsForRoom(room: GameObject) {
         room.borderItems.forEach(item => {
-            const realItemWidth = WorldItemTemplate.getByTypeName(item.name, this.services.worldItemStore.worldItemTemplates).realDimensions;
+            const realItemWidth = GameObjectTemplate.getByTypeName(item.name, this.services.gameAssetStore.gameObjectTemplates).realDimensions;
             if (realItemWidth) {
                 this.resizeItem(item, room.borderItems, realItemWidth.width);
             }
@@ -52,7 +52,7 @@ export class ChangeBorderWidthModifier implements Modifier {
 
     }
 
-    private resizeItem(border: WorldItem, orderedItems: WorldItem[], newSize: number) {
+    private resizeItem(border: GameObject, orderedItems: GameObject[], newSize: number) {
         const rightItem = last(orderedItems) === border ? orderedItems[0] : orderedItems[orderedItems.indexOf(border) + 1];
         const leftItem = orderedItems[0] === border ? last(orderedItems) : orderedItems[orderedItems.indexOf(border) - 1];
 
@@ -79,7 +79,7 @@ export class ChangeBorderWidthModifier implements Modifier {
         border.dimensions = new Segment(newPoints[0], newPoints[1]);
     }
 
-    private moveOnlyRightEndPoint(oldPoints: [Point, Point], newWidth: number, rightNeighbour: WorldItem): [Point, Point] {
+    private moveOnlyRightEndPoint(oldPoints: [Point, Point], newWidth: number, rightNeighbour: GameObject): [Point, Point] {
         const newPoints: [Point, Point] = oldPoints;
         const line = new Segment(oldPoints[0], oldPoints[1]).getLine();
 
@@ -96,7 +96,7 @@ export class ChangeBorderWidthModifier implements Modifier {
         return newPoints;
     }
 
-    private moveOnlyLeftEndPoint(oldPoints: [Point, Point], newWidth: number, leftNeighbour: WorldItem): [Point, Point] {
+    private moveOnlyLeftEndPoint(oldPoints: [Point, Point], newWidth: number, leftNeighbour: GameObject): [Point, Point] {
         const newPoints: [Point, Point] = oldPoints;
         const line = new Segment(oldPoints[0], oldPoints[1]).getLine();
 
@@ -113,7 +113,7 @@ export class ChangeBorderWidthModifier implements Modifier {
         return newPoints;
     }
 
-    private moveBothEndPointsEqually(oldPoints: [Point, Point], newWidth: number, leftNeighbour: WorldItem, rightNeighbour: WorldItem): [Point, Point] {
+    private moveBothEndPointsEqually(oldPoints: [Point, Point], newWidth: number, leftNeighbour: GameObject, rightNeighbour: GameObject): [Point, Point] {
         const tmpSegment = new Segment(oldPoints[0], oldPoints[1]);
         const centerPoint = tmpSegment.getBoundingCenter();
 
@@ -129,7 +129,7 @@ export class ChangeBorderWidthModifier implements Modifier {
         return newPoints;
     }
 
-    private connectModifiedBordersToNeighbour(oldPoint: Point, newPoint: Point, neighbour: WorldItem) {
+    private connectModifiedBordersToNeighbour(oldPoint: Point, newPoint: Point, neighbour: GameObject) {
         const neighbourPoints = neighbour.dimensions.getPoints();
 
         if (neighbourPoints[0].distanceTo(oldPoint) < neighbourPoints[1].distanceTo(oldPoint)) {

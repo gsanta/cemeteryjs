@@ -3,7 +3,7 @@ import { CanvasItem, FileData } from '../canvases/svg/models/PixelModel';
 import { AbstractFormController } from "./AbstractFormController";
 import { EventDispatcher } from '../events/EventDispatcher';
 import { Events } from '../events/Events';
-import { WorldItemShape } from '../../../WorldItem';
+import { WorldItemShape } from '../../../model/types/GameObject';
 
 
 export enum CanvasItemSettings {

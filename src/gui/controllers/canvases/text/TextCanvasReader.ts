@@ -1,4 +1,4 @@
-import { WorldItemTemplate } from '../../../../WorldItemTemplate';
+import { GameObjectTemplate } from '../../../../model/types/GameObjectTemplate';
 import { TextCanvasController } from './TextCanvasController';
 import { ICanvasReader } from '../ICanvasReader';
 
@@ -13,7 +13,7 @@ export class TextCanvasReader implements ICanvasReader {
         return this.createFile(this.textEditorController.worldItemDefinitions);
     }
 
-    private createFile(worldItemDefinitions: WorldItemTemplate[]) {
+    private createFile(worldItemDefinitions: GameObjectTemplate[]) {
         const definitions = this.createDefinitionSection(worldItemDefinitions);
     
             return `
@@ -31,13 +31,13 @@ ${definitions}
 `;
     }
 
-    private createDefinitionSection(worldItemDefinitions: WorldItemTemplate[]) {
+    private createDefinitionSection(worldItemDefinitions: GameObjectTemplate[]) {
         const lines = worldItemDefinitions.map(descriptor => this.createDefinitionLine(descriptor));
 
         return lines.join('\n');
     }
 
-    private createDefinitionLine(worldItemDefinition: WorldItemTemplate): string {
+    private createDefinitionLine(worldItemDefinition: GameObjectTemplate): string {
         let line = `${worldItemDefinition.char} = ${worldItemDefinition.typeName}`;
 
         if (worldItemDefinition.roles && worldItemDefinition.roles.length > 0) {

@@ -1,10 +1,10 @@
-import { WorldItem } from '../../WorldItem';
+import { GameObject } from '../types/GameObject';
 import { Modifier } from './Modifier';
 import { Polygon } from "@nightshifts.inc/geometry";
 import { SegmentBordersModifier } from './SegmentBordersModifier';
 import { without } from "../utils/Functions";
-import { ServiceFacade } from '../services/ServiceFacade';
-import { WorldItemRole } from "../../WorldItemTemplate";
+import { WorldGeneratorServices } from '../services/WorldGeneratorServices';
+import { WorldItemRole } from "../types/GameObjectTemplate";
 
 /**
  * Creates relationship between `WorldItem`'s via adding a `WorldItem` to another as
@@ -14,9 +14,9 @@ import { WorldItemRole } from "../../WorldItemTemplate";
 export class BuildHierarchyModifier implements Modifier {
     static modName = 'buildHierarchy';
     dependencies = [SegmentBordersModifier.modName]
-    private services: ServiceFacade;
+    private services: WorldGeneratorServices;
 
-    constructor(services: ServiceFacade) {
+    constructor(services: WorldGeneratorServices) {
         this.services = services;
     }
 
@@ -24,12 +24,12 @@ export class BuildHierarchyModifier implements Modifier {
         return BuildHierarchyModifier.modName;
     }
 
-    apply(gwmWorldItems: WorldItem[]): WorldItem[] {
+    apply(gwmWorldItems: GameObject[]): GameObject[] {
         return this.buildHierarchy(gwmWorldItems);
     }
 
-    private buildHierarchy(worldItems: WorldItem[]) {
-        const sizeComparer = (a: WorldItem, b: WorldItem) => (<Polygon> a.dimensions).getArea() - (<Polygon> b.dimensions).getArea(); 
+    private buildHierarchy(worldItems: GameObject[]) {
+        const sizeComparer = (a: GameObject, b: GameObject) => (<Polygon> a.dimensions).getArea() - (<Polygon> b.dimensions).getArea(); 
 
         const borders = worldItems.filter(worldItem => worldItem.definition.roles.includes(WorldItemRole.BORDER));
         //TODO: handle empties better
@@ -44,7 +44,7 @@ export class BuildHierarchyModifier implements Modifier {
         let remainingItems = [...containers, ...notContainers];
 
         sortedContainers.forEach(container => {
-            const remove: WorldItem[] = [];
+            const remove: GameObject[] = [];
 
             remainingItems.forEach(child => {
                 if (container !== child && (<Polygon>container.dimensions).contains(<Polygon> child.dimensions)) {

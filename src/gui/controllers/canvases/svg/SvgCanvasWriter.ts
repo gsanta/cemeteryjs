@@ -32,9 +32,9 @@ export class SvgCanvasWriter implements ICanvasWriter {
             this.svgCanvasController.pixelModel.addRect(rectangle, rect.type, 0, false);
         });
 
-        const {worldItemTemplates} = this.svgConfigReader.read(file);
+        const {gameObjectTemplates} = this.svgConfigReader.read(file);
 
-        this.svgCanvasController.worldItemDefinitions = worldItemTemplates;
+        this.svgCanvasController.worldItemDefinitions = gameObjectTemplates;
         this.svgCanvasController.renderCanvas();
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
         

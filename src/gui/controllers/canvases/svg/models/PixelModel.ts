@@ -1,7 +1,7 @@
 import { Point, Polygon, Rectangle } from '@nightshifts.inc/geometry';
 import { SvgConfig } from './SvgConfig';
 import { last, without, sortNum } from '../../../../../model/utils/Functions';
-import { WorldItemShape } from '../../../../../WorldItem';
+import { WorldItemShape } from '../../../../../model/types/GameObject';
 
 export enum PixelTag {
     SELECTED = 'selected'

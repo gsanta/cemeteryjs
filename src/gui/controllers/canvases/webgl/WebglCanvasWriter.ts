@@ -1,23 +1,22 @@
 import { ICanvasWriter } from "../ICanvasWriter";
 import { WebglCanvasController } from './WebglCanvasController';
-import { BabylonWorldGenerator } from "../../../../integrations/babylonjs/BabylonWorldGenerator";
-import { FileFormat } from '../../../../WorldGenerator';
-import { WorldItem } from "../../../../WorldItem";
-import { WorldItemTemplate } from '../../../../WorldItemTemplate';
+import { FileFormat, WorldGenerator } from '../../../../WorldGenerator';
+import { GameObject } from "../../../../model/types/GameObject";
+import { GameObjectTemplate } from '../../../../model/types/GameObjectTemplate';
 
 export class WebglCanvasWriter implements ICanvasWriter {
     private webglEditorController: WebglCanvasController;
-    private worldItemDefinitions: WorldItemTemplate[];
+    private worldItemDefinitions: GameObjectTemplate[];
 
-    constructor(webglEditorController: WebglCanvasController, worldItemDefinitions: WorldItemTemplate[]) {
+    constructor(webglEditorController: WebglCanvasController, worldItemDefinitions: GameObjectTemplate[]) {
         this.webglEditorController = webglEditorController;
         this.worldItemDefinitions = worldItemDefinitions;
     }
 
     write(file: string, fileFormat: FileFormat): void {
         const that = this;
-        new BabylonWorldGenerator(this.webglEditorController.scene).generate(file, fileFormat, {
-            convert(worldItem: WorldItem): any {
+        new WorldGenerator(this.webglEditorController.scene).generate(file, fileFormat, {
+            convert(worldItem: GameObject): any {
                 if (worldItem.name === 'wall' && worldItem.children.length > 0) {
                     worldItem.meshTemplate.meshes[0].isVisible = false;
                 }

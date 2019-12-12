@@ -1,8 +1,8 @@
 import { Point, Measurements } from '@nightshifts.inc/geometry';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
-import { WorldItem } from "../../WorldItem";
+import { GameObject } from "../types/GameObject";
 import { WorldItemUtils } from '../../WorldItemUtils';
-import { ServiceFacade } from '../services/ServiceFacade';
+import { WorldGeneratorServices } from '../services/WorldGeneratorServices';
 import { without } from '../utils/Functions';
 import { Modifier } from './Modifier';
 
@@ -21,9 +21,9 @@ export class SegmentBordersModifier  implements Modifier {
     static modName = 'segmentBorders';
     dependencies = []
 
-    private services: ServiceFacade;
+    private services: WorldGeneratorServices;
 
-    constructor(services: ServiceFacade) {
+    constructor(services: WorldGeneratorServices) {
         this.services = services;
     }
 
@@ -31,7 +31,7 @@ export class SegmentBordersModifier  implements Modifier {
         return SegmentBordersModifier.modName;
     }
 
-    apply(gwmWorldItems: WorldItem[]): WorldItem[] {
+    apply(gwmWorldItems: GameObject[]): GameObject[] {
         const newBorders = this.segmentBorderItemsIfNeeded(gwmWorldItems);
 
         const notBorders = gwmWorldItems.filter(item => item.isBorder === false);
@@ -39,7 +39,7 @@ export class SegmentBordersModifier  implements Modifier {
         return [...notBorders, ...newBorders];
     }
 
-    private segmentBorderItemsIfNeeded(worldItems: WorldItem[]): WorldItem[] {
+    private segmentBorderItemsIfNeeded(worldItems: GameObject[]): GameObject[] {
         const originalBorders = WorldItemUtils.filterBorders(worldItems);
         const notVisited = [...originalBorders];
         let borders = [...originalBorders];
@@ -60,7 +60,7 @@ export class SegmentBordersModifier  implements Modifier {
         return borders;
     }
 
-    private segmentBorder(border: WorldItem, allBorders: WorldItem[]) {
+    private segmentBorder(border: GameObject, allBorders: GameObject[]) {
         const intersections: Point[] = [];
 
         allBorders.forEach(otherBorder => {
@@ -79,7 +79,7 @@ export class SegmentBordersModifier  implements Modifier {
             || new Measurements().pointsAreVeryClose(segment.getPoints()[1], point);
     }
 
-    private cutAtPoints(border: WorldItem, intersections: Point[]): WorldItem[] {
+    private cutAtPoints(border: GameObject, intersections: Point[]): GameObject[] {
         intersections.sort(this.sortPointByCoordiante);
 
         const segments: Segment[] = [];
@@ -95,7 +95,7 @@ export class SegmentBordersModifier  implements Modifier {
         segments.push(currentSegment);
 
         return segments.map(segment => {
-            const clone = this.services.worldItemFactoryService.clone(border.name, border);
+            const clone = this.services.gameObjectFactory.clone(border.name, border);
 
             clone.dimensions = segment;
 

@@ -1,5 +1,5 @@
 import { SvgRoomMapConverter } from '../../../../../src/model/readers/svg/SvgRoomMapConverter';
-import { WorldItemStore } from '../../../../../src/model/services/WorldItemStore';
+import { GameAssetStore } from '../../../../../src/model/services/GameAssetStore';
 import { SvgConfigReader } from '../../../../../src/model/readers/svg/SvgConfigReader';
 import { RawWorldMapJson } from '../../../../../src/model/readers/svg/WorldMapJson';
 import * as convert from 'xml-js';
@@ -112,8 +112,8 @@ it ('Convert a normal worldmap svg to an svg that only contains wall and room ty
     </svg>
     `;
 
-    const {worldItemTemplates, globalConfig} = new SvgConfigReader().read(inputWorldMap);
-    const configService = new WorldItemStore(worldItemTemplates, globalConfig);
+    const {gameObjectTemplates, globalConfig} = new SvgConfigReader().read(inputWorldMap);
+    const configService = new GameAssetStore(gameObjectTemplates, globalConfig);
 
     const svgRoomMapConverter = new SvgRoomMapConverter();
     const outputWorldMap = svgRoomMapConverter.convert(inputWorldMap);

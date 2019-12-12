@@ -1,40 +1,40 @@
 import { Shape } from '@nightshifts.inc/geometry';
 import { Scene } from 'babylonjs';
-import { ServiceFacade } from '../src/model/services/ServiceFacade';
+import { WorldGeneratorServices } from '../src/model/services/WorldGeneratorServices';
 import { TreeIteratorGenerator } from '../src/model/utils/TreeIteratorGenerator';
 import { FileFormat } from '../src/WorldGenerator';
-import { WorldItem } from '../src/WorldItem';
-import { FakeModelImporterService } from './fakes/FakeModelImporterService';
+import { GameObject } from '../src/model/types/GameObject';
+import { FakeModelLoader } from './fakes/FakeModelLoader';
 import { FakeCreateMeshModifier } from './fakes/FakeCreateMeshModifier';
-import { WorldItemStore } from '../src/model/services/WorldItemStore';
+import { GameAssetStore } from '../src/model/services/GameAssetStore';
 
 
 /**
  * @deprecated use setupTestEnv
  */
-export function setup(worldMap: string, fileFormat: FileFormat): ServiceFacade {
-    const services = new ServiceFacade(
+export function setup(worldMap: string, fileFormat: FileFormat): WorldGeneratorServices {
+    const services = new WorldGeneratorServices(
         null,
         new FakeCreateMeshModifier(),
         fileFormat
     );
 
-    const {worldItemTemplates, globalConfig} = services.generateMetaData(worldMap);
-    services.worldItemStore = new WorldItemStore(worldItemTemplates, globalConfig);
+    const {gameObjectTemplates, globalConfig} = services.generateMetaData(worldMap);
+    services.gameAssetStore = new GameAssetStore(gameObjectTemplates, globalConfig);
 
     return services;
 }
 
-export function setupTestEnv(worldMap: string, fileFormat: FileFormat, fakeModelImporter?: FakeModelImporterService): ServiceFacade {
-    const services = new ServiceFacade(
-        fakeModelImporter ? fakeModelImporter : new FakeModelImporterService(new Map()),
+export function setupTestEnv(worldMap: string, fileFormat: FileFormat, fakeModelImporter?: FakeModelLoader): WorldGeneratorServices {
+    const services = new WorldGeneratorServices(
+        fakeModelImporter ? fakeModelImporter : new FakeModelLoader(new Map()),
         new FakeCreateMeshModifier(),
         fileFormat
     );
-    const {worldItemTemplates, globalConfig} = services.generateMetaData(worldMap);
-    services.worldItemStore = new WorldItemStore(worldItemTemplates, globalConfig);
+    const {gameObjectTemplates, globalConfig} = services.generateMetaData(worldMap);
+    services.gameAssetStore = new GameAssetStore(gameObjectTemplates, globalConfig);
 
-    services.worldItemStore.worldItemHierarchy = services.worldItemBuilderService.build(worldMap);
+    services.gameAssetStore.gameObjects = services.gameObjectBuilder.build(worldMap);
 
     return services;
 }
@@ -78,7 +78,7 @@ export abstract class MaterialBuilderStubs {
     static CreateTexture: sinon.SinonStub;
 }
 
-export function findWorldItemWithDimensions(worldItems: WorldItem[], dimensions: Shape): WorldItem {
+export function findWorldItemWithDimensions(worldItems: GameObject[], dimensions: Shape): GameObject {
 
     for (let i = 0; i < worldItems.length; i++) {
         for (const item of TreeIteratorGenerator(worldItems[i])) {

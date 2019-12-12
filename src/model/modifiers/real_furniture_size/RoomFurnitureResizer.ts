@@ -1,24 +1,24 @@
 import { FurnitureSnapper, SnapType } from './FurnitureSnapper';
-import { ServiceFacade } from "../../services/ServiceFacade";
-import { WorldItem } from "../../../WorldItem";
+import { WorldGeneratorServices } from "../../services/WorldGeneratorServices";
+import { GameObject } from "../../types/GameObject";
 import { Segment, Distance, Polygon, Shape, Measurements } from '@nightshifts.inc/geometry';
 
 
 export class RoomFurnitureResizer {
     private parallelFurnitureSnapper: FurnitureSnapper;
     private perpendicularFurnitureSnapper: FurnitureSnapper;
-    private services: ServiceFacade;
+    private services: WorldGeneratorServices;
 
-    constructor(services: ServiceFacade) {
+    constructor(services: WorldGeneratorServices) {
         this.services = services;
         this.parallelFurnitureSnapper = new FurnitureSnapper(SnapType.ROTATE_PARALLEL_FACE_AWAY);
         this.perpendicularFurnitureSnapper = new FurnitureSnapper(SnapType.ROTATE_PERPENDICULAR);
     }
 
 
-    resize(room: WorldItem) {
+    resize(room: GameObject) {
         room.children.forEach(furniture => {
-            const modelData = this.services.modelImportService.getModelByPath(furniture.modelPath);
+            const modelData = this.services.modelLoader.getModelByPath(furniture.modelPath);
             if (modelData) {
                 const originalFurnitureDimensions = furniture.dimensions;
 
@@ -36,7 +36,7 @@ export class RoomFurnitureResizer {
         });
     }
 
-    private snapFurnitureToWall(snappingWallEdges: Segment[], furniture: WorldItem, originalFurnitureDimensions: Shape) {
+    private snapFurnitureToWall(snappingWallEdges: Segment[], furniture: GameObject, originalFurnitureDimensions: Shape) {
         if (this.isFurnitureParallelToWall(originalFurnitureDimensions, snappingWallEdges[0])) {
             this.parallelFurnitureSnapper.snap(furniture, <Polygon> originalFurnitureDimensions, snappingWallEdges, snappingWallEdges);
         } else {
@@ -44,7 +44,7 @@ export class RoomFurnitureResizer {
         }
     }
 
-    private getSnappingWalls(room: WorldItem, furnitureDimensions: Shape): Segment[] {
+    private getSnappingWalls(room: GameObject, furnitureDimensions: Shape): Segment[] {
         const borders = <Segment[]> room.borderItems.map(item => item.dimensions);
         const snappingWallEdges: Segment[] = [];
         const furnitureEdges = furnitureDimensions.getEdges();

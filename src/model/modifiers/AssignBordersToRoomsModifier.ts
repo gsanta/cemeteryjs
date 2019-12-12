@@ -1,8 +1,8 @@
 import { Line, Point, Measurements, Distance } from '@nightshifts.inc/geometry';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
-import { WorldItem } from '../../WorldItem';
+import { GameObject } from '../types/GameObject';
 import { WorldItemUtils } from '../../WorldItemUtils';
-import { ServiceFacade } from '../services/ServiceFacade';
+import { WorldGeneratorServices } from '../services/WorldGeneratorServices';
 import { BuildHierarchyModifier } from './BuildHierarchyModifier';
 import { Modifier } from './Modifier';
 
@@ -10,9 +10,9 @@ export class AssignBordersToRoomsModifier implements Modifier {
     static modName = 'assignBordersToRooms';
     dependencies = [BuildHierarchyModifier.modName];
 
-    private services: ServiceFacade;
+    private services: WorldGeneratorServices;
 
-    constructor(services: ServiceFacade) {
+    constructor(services: WorldGeneratorServices) {
         this.services = services;
     }
 
@@ -20,15 +20,15 @@ export class AssignBordersToRoomsModifier implements Modifier {
         return AssignBordersToRoomsModifier.modName;
     }
 
-    apply(gwmWorldItems: WorldItem[]): WorldItem[] {
+    apply(gwmWorldItems: GameObject[]): GameObject[] {
         return this.addBoderItems(gwmWorldItems);
     }
 
-    private addBoderItems(worldItems: WorldItem[]): WorldItem[] {
+    private addBoderItems(worldItems: GameObject[]): GameObject[] {
         const rooms = WorldItemUtils.filterRooms(worldItems);
         const borders = WorldItemUtils.filterBorders(worldItems);
 
-        const triplets: [WorldItem, Point, Line][] = borders.map(border => [border, border.dimensions.getBoundingCenter(), (<Segment> border.dimensions).getLine()]);
+        const triplets: [GameObject, Point, Line][] = borders.map(border => [border, border.dimensions.getBoundingCenter(), (<Segment> border.dimensions).getLine()]);
 
         rooms.forEach(room => {
             const edges = room.dimensions.getEdges();
@@ -43,10 +43,10 @@ export class AssignBordersToRoomsModifier implements Modifier {
         return worldItems;
     }
 
-    private findBordersForEdge(edge: Segment, borderTriplets: [WorldItem, Point, Line][]): WorldItem[] {
+    private findBordersForEdge(edge: Segment, borderTriplets: [GameObject, Point, Line][]): GameObject[] {
         const edgeLine = edge.getLine();
 
-        const borders: WorldItem[] = [];
+        const borders: GameObject[] = [];
 
         for (let i = 0; i < borderTriplets.length; i++) {
             if (new Measurements().linesParallel(edgeLine, borderTriplets[i][2])) {

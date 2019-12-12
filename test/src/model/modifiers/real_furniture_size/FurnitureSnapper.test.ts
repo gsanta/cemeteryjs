@@ -3,8 +3,8 @@ import { ScaleModifier } from "../../../../../src/model/modifiers/ScaleModifier"
 import { Polygon, Point } from '@nightshifts.inc/geometry';
 import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { FurnitureSnapper, SnapType } from '../../../../../src/model/modifiers/real_furniture_size/FurnitureSnapper';
-import { WorldItem } from '../../../../../src/WorldItem';
-import { ServiceFacade } from "../../../../../src/model/services/ServiceFacade";
+import { GameObject } from '../../../../../src/model/types/GameObject';
+import { WorldGeneratorServices } from "../../../../../src/model/services/WorldGeneratorServices";
 import { FileFormat } from "../../../../../src/WorldGenerator";
 
 it ('Rotates furniture to face the snapping edges if snaptype is "ROTATE_PARALLEL_FACE_TOWARD"', () => {
@@ -22,8 +22,8 @@ it ('Rotates furniture to face the snapping edges if snaptype is "ROTATE_PARALLE
 
     const services = setup(map, FileFormat.TEXT);
 
-    let worldItems = services.worldItemBuilderService.build(map);
-    worldItems = services.modifierService.applyModifiers(worldItems, [ ScaleModifier.modName ]);
+    let worldItems = services.gameObjectBuilder.build(map);
+    worldItems = services.modifierExecutor.applyModifiers(worldItems, [ ScaleModifier.modName ]);
 
     const originalSnappingEdge = new Segment(new Point(4, 4), new Point(4, 8));
     const realSnappingEdge = new Segment(new Point(5, 5), new Point(5, 7));
@@ -57,8 +57,8 @@ it ('Rotate the furniture to face away from the snapping edges if snaptype is "R
 
     const services = setup(map, FileFormat.TEXT);
 
-    let worldItems = services.worldItemBuilderService.build(map);
-    worldItems = services.modifierService.applyModifiers(worldItems, [ ScaleModifier.modName ]);
+    let worldItems = services.gameObjectBuilder.build(map);
+    worldItems = services.modifierExecutor.applyModifiers(worldItems, [ ScaleModifier.modName ]);
 
     const originalSnappingEdge = new Segment(new Point(4, 4), new Point(4, 8));
     const realSnappingEdge = new Segment(new Point(5, 5), new Point(5, 7));
@@ -93,8 +93,8 @@ it ('Rotate furniture which are perpendicular to the snapping edges', () => {
 
     const services = setup(map, FileFormat.TEXT);
 
-    let worldItems = services.worldItemBuilderService.build(map);
-    worldItems = services.modifierService.applyModifiers(worldItems, [ ScaleModifier.modName ]);
+    let worldItems = services.gameObjectBuilder.build(map);
+    worldItems = services.modifierExecutor.applyModifiers(worldItems, [ ScaleModifier.modName ]);
 
     const originalSnappingEdge = new Segment(new Point(3, 8), new Point(6, 8));
     const realSnappingEdge = new Segment(new Point(3, 7), new Point(6, 7));
@@ -127,8 +127,8 @@ it ('Rotate furniture into a corner', () => {
 
     const services = setup(map, FileFormat.TEXT);
 
-    let worldItems = services.worldItemBuilderService.build(map);
-    worldItems = services.modifierService.applyModifiers(worldItems, [ ScaleModifier.modName ]);
+    let worldItems = services.gameObjectBuilder.build(map);
+    worldItems = services.modifierExecutor.applyModifiers(worldItems, [ ScaleModifier.modName ]);
 
     const originalSnappingEdges = [
         new Segment(new Point(1, 1), new Point(1, 10)),
@@ -152,7 +152,7 @@ it ('Rotate furniture into a corner', () => {
     expect(table).toHaveDimensions(Polygon.createRectangle(1.5, 2.5, 3, 2));
 });
 
-function createRealFurnitureDimensions(services: ServiceFacade, furniture: WorldItem, width: number, height: number): Polygon {
+function createRealFurnitureDimensions(services: WorldGeneratorServices, furniture: GameObject, width: number, height: number): Polygon {
     const furnitureCenter = furniture.dimensions.getBoundingCenter();
 
     return Polygon.createRectangle(furnitureCenter.x - width / 2, furnitureCenter.y - height / 2, width, height);

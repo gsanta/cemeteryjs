@@ -1,6 +1,6 @@
 import { Measurements, Segment } from '@nightshifts.inc/geometry';
-import { WorldItem } from "../../WorldItem";
-import { WorldItemFactoryService } from '../services/WorldItemFactoryService';
+import { GameObject } from "../types/GameObject";
+import { GameObjectFactory } from '../services/GameObjectFactory';
 import { Modifier } from "./Modifier";
 import { ThickenBordersModifier } from "./ThickenBordersModifier";
 
@@ -8,9 +8,9 @@ export class SplitWallsIntoTwoParallelChildWallsModifier implements Modifier {
     static modName = 'splitWallsIntoTwoParallelChildWalls';
     dependencies = [ThickenBordersModifier.modName];
 
-    private worldItemFactory: WorldItemFactoryService;
+    private worldItemFactory: GameObjectFactory;
 
-    constructor(worldItemFactory: WorldItemFactoryService) {
+    constructor(worldItemFactory: GameObjectFactory) {
         this.worldItemFactory = worldItemFactory;
     }
 
@@ -18,7 +18,7 @@ export class SplitWallsIntoTwoParallelChildWallsModifier implements Modifier {
         return SplitWallsIntoTwoParallelChildWallsModifier.modName;
     }
 
-    apply(rootItems: WorldItem[]): WorldItem[] {
+    apply(rootItems: GameObject[]): GameObject[] {
         rootItems[0].children
             .filter(child => child.isBorder)
             .forEach(wall => this.splitWallIntoTwoSides(wall));
@@ -26,7 +26,7 @@ export class SplitWallsIntoTwoParallelChildWallsModifier implements Modifier {
         return rootItems;
     }
 
-    private splitWallIntoTwoSides(wall: WorldItem) {
+    private splitWallIntoTwoSides(wall: GameObject) {
         const wallEdge = <Segment> wall.dimensions;
         const poly = (<Segment> wall.dimensions).addThickness(wall.thickness / 2);
 

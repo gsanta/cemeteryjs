@@ -7,7 +7,7 @@ import { SegmentBordersModifier } from "../../../../src/model/modifiers/SegmentB
 import { SplitWallsIntoTwoParallelChildWallsModifier } from '../../../../src/model/modifiers/SplitWallsIntoTwoParallelChildWallsModifier';
 import { ThickenBordersModifier } from '../../../../src/model/modifiers/ThickenBordersModifier';
 import { FileFormat } from "../../../../src/WorldGenerator";
-import { WorldItem } from '../../../../src/WorldItem';
+import { GameObject } from '../../../../src/model/types/GameObject';
 import { setup } from "../../../testUtils";
 
 function createMap(worldMap: string) {
@@ -44,8 +44,8 @@ describe(`SplitWallsIntoTwoParallelChildWallsModifier`, () => {
 
         const serviceFacade = setup(map, FileFormat.TEXT);
 
-        let worldItems = serviceFacade.worldItemBuilderService.build(map);
-        const [root] = serviceFacade.modifierService.applyModifiers(
+        let worldItems = serviceFacade.gameObjectBuilder.build(map);
+        const [root] = serviceFacade.modifierExecutor.applyModifiers(
             worldItems,
             [
                 SegmentBordersModifier.modName,
@@ -59,7 +59,7 @@ describe(`SplitWallsIntoTwoParallelChildWallsModifier`, () => {
         
         expect(root.children.length).toEqual(10);
 
-        const items = new SplitWallsIntoTwoParallelChildWallsModifier(serviceFacade.worldItemFactoryService).apply([root]);
+        const items = new SplitWallsIntoTwoParallelChildWallsModifier(serviceFacade.gameObjectFactory).apply([root]);
 
         const walls = root.children.filter(item => item.name === 'wall');
 
@@ -71,7 +71,7 @@ describe(`SplitWallsIntoTwoParallelChildWallsModifier`, () => {
     });
 });
 
-function checkIfChildrenDimensionsAddUpToParentDimensions(parentWall: WorldItem) {
+function checkIfChildrenDimensionsAddUpToParentDimensions(parentWall: GameObject) {
     const parentRect = (<Segment> parentWall.dimensions).addThickness(parentWall.thickness / 2);
     const childSegment1 = <Segment> parentWall.children[0].dimensions;
     const childSegment2 = <Segment> parentWall.children[1].dimensions;

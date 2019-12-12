@@ -1,27 +1,27 @@
-import { WorldItem } from '../src/WorldItem';
+import { GameObject } from '../src/model/types/GameObject';
 import { Shape, Point } from '@nightshifts.inc/geometry';
-import { WorldItemTemplate } from '../src/WorldItemTemplate';
+import { GameObjectTemplate } from '../src/model/types/GameObjectTemplate';
 import { arraysEqual } from '../src/model/utils/Functions';
-import { ServiceFacade } from '../src/model/services/ServiceFacade';
+import { WorldGeneratorServices } from '../src/model/services/WorldGeneratorServices';
 
 declare global {
     namespace jest {
         interface Matchers<R, T> {
-            toHaveBorders(borders: Partial<WorldItem>[]),
+            toHaveBorders(borders: Partial<GameObject>[]),
             toHaveAnyWithDimensions(dimensions: Shape),
             toHaveDimensions(dimensions: Shape),
-            toHaveAnyWithBorders(borders: Partial<WorldItem>[]);
-            toPartiallyEqualToWorldItem(partialWorldItem: Partial<WorldItem>),
-            toContainWorldItem(partialWorldItem: Partial<WorldItem>),
+            toHaveAnyWithBorders(borders: Partial<GameObject>[]);
+            toPartiallyEqualToWorldItem(partialWorldItem: Partial<GameObject>),
+            toContainWorldItem(partialWorldItem: Partial<GameObject>),
             toHavePoint(point: Point);
-            toMatchMeshDescriptor(expectedMeshDescriptor: Partial<WorldItemTemplate>);
-            toHaveAnyWithWorldMapPositions(services: ServiceFacade, positions: [number, number][]);
+            toMatchMeshDescriptor(expectedMeshDescriptor: Partial<GameObjectTemplate>);
+            toHaveAnyWithWorldMapPositions(services: WorldGeneratorServices, positions: [number, number][]);
         }
     }
 }
 
 expect.extend({
-    toMatchMeshDescriptor(meshDescriptor: WorldItemTemplate, expectedMeshDescriptor: Partial<WorldItemTemplate>) {
+    toMatchMeshDescriptor(meshDescriptor: GameObjectTemplate, expectedMeshDescriptor: Partial<GameObjectTemplate>) {
         expect(meshDescriptor).toMatchObject(expectedMeshDescriptor);
 
         return {
@@ -30,7 +30,7 @@ expect.extend({
         }
     },
 
-    toHaveDimensions(worldItem: WorldItem, dimensions: Shape) {
+    toHaveDimensions(worldItem: GameObject, dimensions: Shape) {
         for (let i = 0; i < worldItem.dimensions.getPoints().length; i++) {
             expect(dimensions).toHavePoint(worldItem.dimensions.getPoints()[i]);
         }
@@ -41,7 +41,7 @@ expect.extend({
         }
     },
 
-    toHaveBorders(room: WorldItem, borders: Partial<WorldItem>[]) {
+    toHaveBorders(room: GameObject, borders: Partial<GameObject>[]) {
         return hasBorders(room, borders);
     },
 
@@ -62,7 +62,7 @@ expect.extend({
         }
     },
 
-    toHaveAnyWithBorders(rooms: WorldItem[], worldItems: Partial<WorldItem>[]) {
+    toHaveAnyWithBorders(rooms: GameObject[], worldItems: Partial<GameObject>[]) {
         for (let i = 0; i < rooms.length; i++) {
             const res = hasBorders(rooms[i], worldItems);
 
@@ -77,7 +77,7 @@ expect.extend({
         };
     },
 
-    toHaveAnyWithDimensions(worldItems: WorldItem[], dimensions: Shape) {
+    toHaveAnyWithDimensions(worldItems: GameObject[], dimensions: Shape) {
 
         let pass = true;
 
@@ -104,11 +104,11 @@ expect.extend({
         }
     },
 
-    toContainWorldItem(worldItems: WorldItem[], partialWorldItem: Partial<WorldItem>) {
+    toContainWorldItem(worldItems: GameObject[], partialWorldItem: Partial<GameObject>) {
         return containsWorldItem(worldItems, partialWorldItem);
     },
 
-    toPartiallyEqualToWorldItem(worldItem: WorldItem, partialWorldItem: Partial<WorldItem>) {
+    toPartiallyEqualToWorldItem(worldItem: GameObject, partialWorldItem: Partial<GameObject>) {
         let pass = true;
         let message = () => '';
 
@@ -142,7 +142,7 @@ expect.extend({
         }
     },
 
-    toHaveAnyWithWorldMapPositions(worldItems: WorldItem[], services: ServiceFacade, positions: [number, number][]) {
+    toHaveAnyWithWorldMapPositions(worldItems: GameObject[], services: WorldGeneratorServices, positions: [number, number][]) {
         let pass = true;
 
         let message: string = '';
@@ -170,7 +170,7 @@ expect.extend({
 });
 
 // TODO: create custom matcher
-export function hasAnyWorldItemInfoDimension(dimension: Shape, worldItemInfos: WorldItem[]) {
+export function hasAnyWorldItemInfoDimension(dimension: Shape, worldItemInfos: GameObject[]) {
     if (worldItemInfos.find(worldItemInfo => worldItemInfo.dimensions.equalTo(dimension))) {
         return true;
     } else {
@@ -178,7 +178,7 @@ export function hasAnyWorldItemInfoDimension(dimension: Shape, worldItemInfos: W
     }
 }
 
-function containsWorldItem(worldItems: WorldItem[], partialWorldItem: Partial<WorldItem>) {
+function containsWorldItem(worldItems: GameObject[], partialWorldItem: Partial<GameObject>) {
     for (let i = 0; i < worldItems.length; i++) {
         try {
             expect(worldItems[i]).toPartiallyEqualToWorldItem(partialWorldItem);
@@ -197,7 +197,7 @@ function containsWorldItem(worldItems: WorldItem[], partialWorldItem: Partial<Wo
     }
 }
 
-function hasBorders(room: WorldItem, borders: Partial<WorldItem>[]) {
+function hasBorders(room: GameObject, borders: Partial<GameObject>[]) {
     for (let i = 0; i < borders.length; i++) {
         const res = containsWorldItem(room.borderItems, borders[i]);
 
@@ -212,7 +212,7 @@ function hasBorders(room: WorldItem, borders: Partial<WorldItem>[]) {
     };
 }
 
-export function hasAnyWorldItemWithWorldMapPositions(worldItems: WorldItem[], expectedWorldMapPositions: Point[]) {
+export function hasAnyWorldItemWithWorldMapPositions(worldItems: GameObject[], expectedWorldMapPositions: Point[]) {
     if (worldItems.find(worldItem => arraysEqual(worldItem.worldMapPositions, expectedWorldMapPositions))) {
         return true;
     } else {

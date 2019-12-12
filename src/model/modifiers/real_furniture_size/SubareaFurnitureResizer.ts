@@ -1,15 +1,15 @@
 import { Polygon, Segment, Shape, Point, Distance } from "@nightshifts.inc/geometry";
 import { WorldItem } from "../../..";
-import { ServiceFacade } from "../../services/ServiceFacade";
+import { WorldGeneratorServices } from "../../services/WorldGeneratorServices";
 import { maxBy, minBy, without } from "../../utils/Functions";
 import { FurnitureSnapper, SnapType } from './FurnitureSnapper';
 
 
 export class SubareaFurnitureResizer {
     private furnitureSnapper: FurnitureSnapper;
-    private services: ServiceFacade;
+    private services: WorldGeneratorServices;
 
-    constructor(services: ServiceFacade) {
+    constructor(services: WorldGeneratorServices) {
         this.services = services;
         this.furnitureSnapper = new FurnitureSnapper(SnapType.ROTATE_PARALLEL_FACE_TOWARD);
     }
@@ -21,7 +21,7 @@ export class SubareaFurnitureResizer {
         const originalReferenceFurnitureDimensions = referenceFurniture.dimensions;
 
         let mainFurnitureDimensions: Point;
-        const modelData = this.services.modelImportService.getModelByPath(referenceFurniture.modelPath);
+        const modelData = this.services.modelLoader.getModelByPath(referenceFurniture.modelPath);
 
         if (modelData) {
             mainFurnitureDimensions = modelData.dimensions;
@@ -40,7 +40,7 @@ export class SubareaFurnitureResizer {
 
         let snappingFurnitureDimensions: Point;
 
-        const modelData = this.services.modelImportService.getModelByPath(snappingFurniture.modelPath);
+        const modelData = this.services.modelLoader.getModelByPath(snappingFurniture.modelPath);
         if (modelData) {
             snappingFurnitureDimensions = modelData.dimensions;
         }

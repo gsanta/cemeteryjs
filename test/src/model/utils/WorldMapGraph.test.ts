@@ -1,5 +1,5 @@
 import { LinesToGraphConverter } from '../../../../src/model/readers/text/LinesToGraphConverter';
-import { WorldItemStore } from '../../../../src/model/services/WorldItemStore';
+import { GameAssetStore } from '../../../../src/model/services/GameAssetStore';
 import { TextConfigReader } from '../../../../src/model/readers/text/TextConfigReader';
 import { Point } from '@nightshifts.inc/geometry';
 
@@ -16,7 +16,7 @@ describe('MatrixGraph', () => {
                 '##WW##',
             ];
 
-            const {worldItemTemplates, globalConfig} = new TextConfigReader().read(
+            const {gameObjectTemplates, globalConfig} = new TextConfigReader().read(
                 `
                     definitions \`
 
@@ -28,7 +28,7 @@ describe('MatrixGraph', () => {
             );
 
             const linesToGraphConverter = new LinesToGraphConverter();
-            const graph = linesToGraphConverter.parse(input, worldItemTemplates);
+            const graph = linesToGraphConverter.parse(input, gameObjectTemplates);
 
             const reducedGraph = graph.getReducedGraphForTypes(['wall']);
 
@@ -47,7 +47,7 @@ describe('MatrixGraph', () => {
                 '--------',
             ];
 
-            const {worldItemTemplates, globalConfig} = new TextConfigReader().read(
+            const {gameObjectTemplates, globalConfig} = new TextConfigReader().read(
                 `
                     definitions \`
 
@@ -59,7 +59,7 @@ describe('MatrixGraph', () => {
             );
 
             const linesToGraphConverter = new LinesToGraphConverter();
-            const graph = linesToGraphConverter.parse(input, worldItemTemplates);
+            const graph = linesToGraphConverter.parse(input, gameObjectTemplates);
 
             const connectedComponentGraphs = graph.getReducedGraphForTypes(['room']).getAllConnectedComponents();
 
@@ -79,7 +79,7 @@ describe('MatrixGraph', () => {
                 '#############',
             ];
 
-            const {worldItemTemplates, globalConfig} = new TextConfigReader().read(
+            const {gameObjectTemplates, globalConfig} = new TextConfigReader().read(
                 `
                     definitions \`
 
@@ -93,7 +93,7 @@ describe('MatrixGraph', () => {
 
             const linesToGraphConverter = new LinesToGraphConverter();
 
-            const graph = linesToGraphConverter.parse(input, worldItemTemplates);
+            const graph = linesToGraphConverter.parse(input, gameObjectTemplates);
 
             const reducedGraph = graph.getReducedGraphForTypes(['wall', 'door']);
 

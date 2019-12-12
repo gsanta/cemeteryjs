@@ -1,6 +1,6 @@
-import { WorldMapGraph } from '../../../WorldMapGraph';
+import { WorldMapGraph } from '../../types/WorldMapGraph';
 import { range } from '../../utils/Functions';
-import { WorldItemTemplate } from '../../../WorldItemTemplate';
+import { GameObjectTemplate } from '../../types/GameObjectTemplate';
 
 export class LinesToGraphConverter {
     private graph: WorldMapGraph;
@@ -8,17 +8,17 @@ export class LinesToGraphConverter {
     private columns: number;
     private rows: number;
 
-    public parse(lines: string[], worldItemTemplates: WorldItemTemplate[]): WorldMapGraph {
+    public parse(lines: string[], gameObjectTemplates: GameObjectTemplate[]): WorldMapGraph {
         this.lines = lines;
         this.columns = this.lines[0].length;
         this.rows = this.lines.length;
         this.graph = new WorldMapGraph(this.columns, this.rows);
-        this.initGraph(worldItemTemplates);
+        this.initGraph(gameObjectTemplates);
 
         return this.graph;
     }
 
-    private initGraph(worldItemTemplates: WorldItemTemplate[]) {
+    private initGraph(gameObjectTemplates: GameObjectTemplate[]) {
         const vertices = this.lines[0].length * this.lines.length;
         const findCharacter = (index) => {
             const row = Math.floor(index / this.columns);
@@ -29,7 +29,7 @@ export class LinesToGraphConverter {
 
         range(0, vertices).forEach(val => {
             const character = findCharacter(val);
-            const template = worldItemTemplates.find(template => template.char === character);
+            const template = gameObjectTemplates.find(template => template.char === character);
             this.graph.addNode(val, template.typeName);
         });
 

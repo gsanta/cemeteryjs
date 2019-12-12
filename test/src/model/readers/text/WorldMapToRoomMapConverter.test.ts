@@ -54,7 +54,7 @@ describe('WorldMapToRoomMapConverter', () => {
 
             const worldMapToRoomMapConverter = new WorldMapToRoomMapConverter();
 
-            expect(worldMapToRoomMapConverter.convert(input, services.worldItemStore.worldItemTemplates)).toEqual(output);
+            expect(worldMapToRoomMapConverter.convert(input, services.gameAssetStore.gameObjectTemplates)).toEqual(output);
         });
     });
 });

@@ -1,7 +1,7 @@
 import { WorldMapLineListener, TextWorldMapParser } from "./TextWorldMapParser";
 import { Point } from "@nightshifts.inc/geometry";
-import { WorldItemTemplate, WorldItemRole } from '../../../WorldItemTemplate';
-import { ConfigReader } from '../ConfigReader';
+import { GameObjectTemplate, WorldItemRole } from '../../types/GameObjectTemplate';
+import { IConfigReader } from '../IConfigReader';
 
 const GLOBALS_SECTION_LINE_REGEX = /^(\S*)/;
 
@@ -42,20 +42,20 @@ const SCALE_TEST = /\s+SCALE\s+(\d+(?:\.\d+)?)/
 const TRANSLATE_Y_TEST = /\s+TRANS_Y\s+(-?\d+(?:\.\d+)?)/;
 const ROLE_TEST = /\s+ROLES\s+(?:\[([^\]]+)\])/;
 
-export class TextConfigReader extends WorldMapLineListener implements ConfigReader {
+export class TextConfigReader extends WorldMapLineListener implements IConfigReader {
     private typeToCharMap: Map<string, string>;
     private idCounter = 1;
-    private worldItemTemplates: WorldItemTemplate[] = [];
+    private gameObjectTemplates: GameObjectTemplate[] = [];
     private globalConfig: GlobalConfig;
 
-    read(worldMap: string): {worldItemTemplates: WorldItemTemplate[], globalConfig: GlobalConfig} {
+    read(worldMap: string): {gameObjectTemplates: GameObjectTemplate[], globalConfig: GlobalConfig} {
         this.typeToCharMap = new Map();
         this.idCounter = 1;
         this.globalConfig = getDefaultGlobalConfig();
 
         new TextWorldMapParser(this).read(worldMap);
 
-        return {worldItemTemplates: this.worldItemTemplates, globalConfig: this.globalConfig};
+        return {gameObjectTemplates: this.gameObjectTemplates, globalConfig: this.globalConfig};
     }
 
     public addDefinitionSectionLine(line: string) {
@@ -69,8 +69,8 @@ export class TextConfigReader extends WorldMapLineListener implements ConfigRead
         const scale = this.parseScale(line);
         const translateY = this.parseTranslateY(line) || 0;
         const roles = this.parseRoles(line);
-        this.worldItemTemplates.push({
-            id: WorldItemTemplate.generateId(this.worldItemTemplates),
+        this.gameObjectTemplates.push({
+            id: GameObjectTemplate.generateId(this.gameObjectTemplates),
             char,
             typeName: type,
             model: modelPath,

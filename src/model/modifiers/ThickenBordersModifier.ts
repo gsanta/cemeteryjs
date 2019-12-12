@@ -1,6 +1,6 @@
 
 import { Segment } from "@nightshifts.inc/geometry";
-import { WorldItem } from "../../WorldItem";
+import { GameObject } from "../types/GameObject";
 import { Modifier } from "./Modifier";
 import { ChangeBorderWidthModifier } from './ChangeBorderWidthModifier';
 
@@ -13,7 +13,7 @@ export class ThickenBordersModifier implements Modifier {
         return ThickenBordersModifier.modName;
     }
 
-    apply(rootItems: WorldItem[]): WorldItem[] {
+    apply(rootItems: GameObject[]): GameObject[] {
         rootItems[0].children
             .filter(child => child.isBorder)
             .forEach(wall => this.thickenWall(wall));
@@ -21,7 +21,7 @@ export class ThickenBordersModifier implements Modifier {
         return rootItems;
     }
 
-    private thickenWall(wall: WorldItem) {
+    private thickenWall(wall: GameObject) {
         if (!(wall.dimensions instanceof Segment)) {
             throw new Error('Thickening is supported only for segments.');
         }

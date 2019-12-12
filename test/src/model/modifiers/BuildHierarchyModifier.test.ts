@@ -19,8 +19,8 @@ describe('BuildHierarchyModifier', () => {
 
             const services = setup(map, FileFormat.TEXT);
 
-            const worldItems = services.worldItemBuilderService.build(map);
-            const [root] = services.modifierService.applyModifiers(
+            const worldItems = services.gameObjectBuilder.build(map);
+            const [root] = services.modifierExecutor.applyModifiers(
                 worldItems,
                 [
                     ScaleModifier.modName,
@@ -54,8 +54,8 @@ describe('BuildHierarchyModifier', () => {
 
             const services = setup(map, FileFormat.TEXT);
 
-            const worldItems = services.worldItemBuilderService.build(map);
-            const [root] = services.modifierService.applyModifiers(
+            const worldItems = services.gameObjectBuilder.build(map);
+            const [root] = services.modifierExecutor.applyModifiers(
                 worldItems,
                 [
                     ScaleModifier.modName,

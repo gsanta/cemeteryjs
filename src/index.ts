@@ -8,9 +8,8 @@ import { FakeCreateMeshModifier } from '../test/fakes/FakeCreateMeshModifier';
 import { SplitWallsIntoTwoParallelChildWallsModifier } from './model/modifiers/SplitWallsIntoTwoParallelChildWallsModifier';
 import { ThickenBordersModifier } from './model/modifiers/ThickenBordersModifier';
 
-export {WorldItem} from './WorldItem';
+export {GameObject as WorldItem} from './model/types/GameObject';
 export {WorldGenerator} from './WorldGenerator';
-export {BabylonWorldGenerator} from './integrations/babylonjs/BabylonWorldGenerator';
 export {Converter} from './WorldGenerator';
 
 
