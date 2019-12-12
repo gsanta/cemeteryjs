@@ -1,7 +1,7 @@
 import { SvgCanvasController } from './SvgCanvasController';
 import { ICanvasReader } from '../ICanvasReader';
 import { GameObjectTemplate } from '../../../../model/types/GameObjectTemplate';
-import { PixelTag } from './models/PixelModel';
+import { PixelTag } from './models/GridCanvasStore';
 
 export class SvgCanvasReader implements ICanvasReader {
     private canvasController: SvgCanvasController;

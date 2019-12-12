@@ -2,10 +2,16 @@ import { SvgCanvasController } from '../SvgCanvasController';
 import { AbstractSelectionTool } from './AbstractSelectionTool';
 import { ToolType } from './Tool';
 import { Rectangle } from '@nightshifts.inc/geometry';
+import { EventDispatcher } from '../../../events/EventDispatcher';
+import { Events } from '../../../events/Events';
 
 export class DeleteTool extends AbstractSelectionTool {
-    constructor(bitmapEditor: SvgCanvasController) {
+    private eventDispatcher: EventDispatcher;
+
+    constructor(bitmapEditor: SvgCanvasController, eventDispatcher: EventDispatcher) {
         super(bitmapEditor, ToolType.DELETE, true);
+        
+        this.eventDispatcher = eventDispatcher;
     }
 
     down() {
@@ -20,9 +26,11 @@ export class DeleteTool extends AbstractSelectionTool {
 
     click() {
         super.click();
-        const pixel = this.canvasController.pixelModel.getTopPixelAtCoordinate(this.canvasController.mouseController.movePoint);
-        pixel && this.canvasController.pixelModel.removePixelFromMapAtLayer(pixel.index, pixel.layer);
+        const items = this.canvasController.pixelModel.getIntersectingItemsAtPoint(this.canvasController.mouseController.movePoint);
+        items.length > 0 && this.canvasController.pixelModel.removeRectangle(items[0]); 
         this.canvasController.renderCanvas();
+
+        this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
     }
     
     draggedUp() {
@@ -34,5 +42,7 @@ export class DeleteTool extends AbstractSelectionTool {
         canvasItems.forEach(item => this.canvasController.pixelModel.removeRectangle(item));
 
         this.canvasController.renderCanvas();
+
+        this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
     }
 }

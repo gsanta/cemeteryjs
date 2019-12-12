@@ -3,7 +3,7 @@ import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvas
 import { CanvasItemSettings } from '../../../controllers/forms/CanvasItemSettingsForm';
 import { ConnectedColorPicker } from '../../forms/ColorPicker';
 import { LabeledComponent } from '../../forms/LabeledComponent';
-import { PixelTag, FileData } from '../../../controllers/canvases/svg/models/PixelModel';
+import { PixelTag, FileData } from '../../../controllers/canvases/svg/models/GridCanvasStore';
 import styled from 'styled-components';
 import { ConnectedDropdownComponent } from '../../forms/DropdownComponent';
 import { WorldItemTypeProperty } from '../../../controllers/forms/WorldItemDefinitionForm';

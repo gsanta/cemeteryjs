@@ -1,5 +1,5 @@
 import { IEditableCanvas } from '../canvases/IEditableCanvas';
-import { CanvasItem, FileData } from '../canvases/svg/models/PixelModel';
+import { CanvasItem, FileData } from '../canvases/svg/models/GridCanvasStore';
 import { AbstractFormController } from "./AbstractFormController";
 import { EventDispatcher } from '../events/EventDispatcher';
 import { Events } from '../events/Events';

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import FormControl from 'react-bootstrap/FormControl';
 import styled from 'styled-components';
-import { FileData } from '../../controllers/canvases/svg/models/PixelModel';
+import { FileData } from '../../controllers/canvases/svg/models/GridCanvasStore';
 import { colors } from '../styles';
 import { withCommitOnChange } from './decorators/withCommitOnChange';
 import { Focusable } from './Focusable';

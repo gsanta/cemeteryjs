@@ -1,4 +1,4 @@
-import { FileData } from '../canvases/svg/models/PixelModel';
+import { FileData } from '../canvases/svg/models/GridCanvasStore';
 
 export abstract class AbstractFormController<P> {
     protected renderFunc = () => null;

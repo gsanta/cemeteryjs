@@ -3,7 +3,7 @@ import { AbstractSelectionTool } from './AbstractSelectionTool';
 import { ToolType } from './Tool';
 import { EventDispatcher } from '../../../events/EventDispatcher';
 import { Events } from '../../../events/Events';
-import { getLayerForType, CanvasItem } from '../models/PixelModel';
+import { getLayerForType, CanvasItem } from '../models/GridCanvasStore';
 
 export class RectangleTool extends AbstractSelectionTool {
     private eventDispatcher: EventDispatcher;

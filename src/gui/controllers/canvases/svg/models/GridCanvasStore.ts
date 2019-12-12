@@ -64,7 +64,7 @@ export function getLayerForType(type: string) {
     }
 }
 
-export class PixelModel {
+export class GridCanvasStore {
     bitMap: Map<number, Pixel[]> = new Map();
     pixels: Pixel[] = [];
     indexes: number[] = [];
@@ -230,7 +230,9 @@ export class PixelModel {
     getIntersectingItemsAtPoint(point: Point): CanvasItem[] {
         const pixelSize = this.bitmapConfig.pixelSize;
 
-        return this.items.filter(item => item.polygon.containsPoint(point));
+        const gridPoint = new Point(point.x / pixelSize, point.y / pixelSize);
+
+        return this.items.filter(item => item.polygon.containsPoint(gridPoint));
     }
 
     getTopPixelAtCoordinate(coordinate: Point): Pixel {

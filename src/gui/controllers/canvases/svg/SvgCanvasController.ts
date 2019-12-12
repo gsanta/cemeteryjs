@@ -5,7 +5,7 @@ import { ICanvasReader } from '../ICanvasReader';
 import { ICanvasWriter } from '../ICanvasWriter';
 import { IEditableCanvas } from '../IEditableCanvas';
 import { MouseHandler } from './handlers/MouseHandler';
-import { PixelModel } from './models/PixelModel';
+import { GridCanvasStore } from './models/GridCanvasStore';
 import { SelectionModel } from './models/SelectionModel';
 import { SvgConfig as SvgConfig } from './models/SvgConfig';
 import { SvgCanvasReader } from './SvgCanvasReader';
@@ -48,7 +48,7 @@ export class SvgCanvasController implements IEditableCanvas {
     reader: ICanvasReader;
     
     configModel: SvgConfig;
-    pixelModel: PixelModel;
+    pixelModel: GridCanvasStore;
     selectionModel: SelectionModel;
     
     controllers: ControllerFacade;
@@ -68,7 +68,7 @@ export class SvgCanvasController implements IEditableCanvas {
 
         this.selectionModel = new SelectionModel();
         this.configModel = new SvgConfig();
-        this.pixelModel = new PixelModel(this.configModel);
+        this.pixelModel = new GridCanvasStore(this.configModel);
         
         this.mouseController = new MouseHandler(this);
         this.writer = new SvgCanvasWriter(this, controllers.eventDispatcher);
@@ -76,7 +76,7 @@ export class SvgCanvasController implements IEditableCanvas {
 
         this.tools = [
             new RectangleTool(this, this.controllers.eventDispatcher),
-            new DeleteTool(this),
+            new DeleteTool(this, this.controllers.eventDispatcher),
             new SelectTool(this)
         ];
 
