@@ -17,7 +17,8 @@ export class FakeModelLoader extends ModelLoader {
             return {
                 mesh: null,
                 skeleton: null,
-                dimensions: dim
+                dimensions: dim,
+                instanceCounter: 0
             }
         }
         return null;

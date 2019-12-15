@@ -1,5 +1,5 @@
 import { Point } from "@nightshifts.inc/geometry";
-import { AnimationGroup, ParticleSystem, Scene, SceneLoader, Skeleton, StandardMaterial, Texture, Mesh } from 'babylonjs';
+import { AnimationGroup, ParticleSystem, Scene, SceneLoader, Skeleton, StandardMaterial, Texture, Mesh, InstancedMesh, AbstractMesh } from 'babylonjs';
 import { WorldItem } from "../..";
 import { FileData } from '../../gui/controllers/canvases/svg/models/GridCanvasStore';
 
@@ -7,6 +7,7 @@ export interface ModelData {
     mesh: Mesh;
     skeleton?: Skeleton;
     dimensions: Point;
+    instanceCounter: number;
 }
 
 export class ModelLoader {
@@ -65,6 +66,14 @@ export class ModelLoader {
         return this.models.get(fileName);
     }
 
+    createInstance(fileName: string): AbstractMesh {
+        const model = this.models.get(fileName);
+        model.instanceCounter++;
+        const instance = model.mesh.instantiateHierarchy();
+
+        return <AbstractMesh> instance;
+    }
+
     private splitPathIntoBaseAndFileName(path: string): [string, string] {
         const lastSlashIndex = path.lastIndexOf('/');
         if (lastSlashIndex !== -1) {
@@ -86,7 +95,8 @@ export class ModelLoader {
 
         return {
             mesh,
-            dimensions
+            dimensions,
+            instanceCounter: 0
         }
     }
 

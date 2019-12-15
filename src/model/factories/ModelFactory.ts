@@ -20,7 +20,7 @@ export class ModelFactory {
             // return this.createPlaceHolderMesh(gameObject);
         }
 
-        const mesh = this.modelLoader.getModel(gameObject.modelFileName).mesh.createInstance(`m-${this.counter++}`);
+        const mesh = this.modelLoader.createInstance(gameObject.modelFileName);
 
         mesh.isVisible = true;
 
