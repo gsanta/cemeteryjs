@@ -75,7 +75,7 @@ export class PropertyEditorComponent extends React.Component<{}> {
 
     render() {
         return (
-            <WorldItemDefinitionStyled activeCanvas={this.context.controllers.getActiveCanvas()} className="definition-panel">
+            <WorldItemDefinitionStyled activeCanvas={this.context.controllers.svgCanvasController} className="definition-panel">
     
             </WorldItemDefinitionStyled>
         );

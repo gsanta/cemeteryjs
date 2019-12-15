@@ -24,17 +24,17 @@ export class WebglCanvasController implements IWritableCanvas {
 
     constructor(controllers: ControllerFacade) {
         this.controllers = controllers;
-        this.updateContent = this.updateContent.bind(this);
+        this.updateCanvas = this.updateCanvas.bind(this);
         this.registerEvents();
     }
     ArcRotateCamera
     registerEvents() {
-        this.controllers.eventDispatcher.addEventListener(Events.CONTENT_CHANGED, this.updateContent);
-        this.controllers.eventDispatcher.addEventListener(Events.CANVAS_ITEM_CHANGED, this.updateContent);
+        this.controllers.eventDispatcher.addEventListener(Events.CONTENT_CHANGED, this.updateCanvas);
+        this.controllers.eventDispatcher.addEventListener(Events.CANVAS_ITEM_CHANGED, this.updateCanvas);
     }
 
     unregisterEvents() {
-        this.controllers.eventDispatcher.removeEventListener(this.updateContent);
+        this.controllers.eventDispatcher.removeEventListener(this.updateCanvas);
     }
 
     resize() {}
@@ -42,28 +42,17 @@ export class WebglCanvasController implements IWritableCanvas {
     init(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
         this.engine = new Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
-        this.writer = new WebglCanvasWriter(this, this.controllers.getActiveCanvas().worldItemDefinitions);
+        this.writer = new WebglCanvasWriter(this, this.controllers.svgCanvasController.worldItemDefinitions);
     }
 
-    updateCanvas(worldMap: string, fileFormat: FileFormat) {
-        this.updateContent();
-        // this.clearCanvas();
+    updateCanvas() {
+        if (!this.engine) { return; }
 
-        // const that = this;
-
-        // new BabylonWorldGenerator(this.scene).generate(worldMap, fileFormat, {
-        //     convert(worldItem: WorldItem): any {
-        //         if (worldItem.name === 'wall' && worldItem.children.length > 0) {
-        //             worldItem.meshTemplate.meshes[0].isVisible = false;
-        //         }
-        //     },
-        //     addChildren(parent: any, children: any[]): void {},
-        //     addBorders(item: any, borders: any[]): void {},
-        //     done() {
-        //         this.engine.runRenderLoop(() => this.scene.render());
-        //         that.updateContent();
-        //     }
-        // });
+        this.clearCanvas();
+        if (this.writer) {
+            const file = this.controllers.svgCanvasController.reader.read();
+            this.writer.write(file);
+        }
     }
 
 
@@ -82,14 +71,6 @@ export class WebglCanvasController implements IWritableCanvas {
 
     activate(): void {}
 
-    private updateContent() {
-        this.clearCanvas();
-        if (this.writer) {
-            const file = this.controllers.settingsModel.activeEditor.reader.read();
-            this.writer.write(file, this.controllers.settingsModel.activeEditor.fileFormats[0]);
-        }
-    }
-
     private clearCanvas() {
         const scene = new Scene(this.engine);
 
@@ -99,7 +80,7 @@ export class WebglCanvasController implements IWritableCanvas {
         // const target = this.camera ? this.camera.target : new Vector3(0, 0, 0);
         // const position = this.camera ? this.camera.position : new Vector3(0, 40, 20);
         // this.camera = new ArcRotateCamera("Camera", alpha, beta, radius, target, scene);
-        this.camera = new UniversalCamera('camera1', new Vector3(0, 50, 20), scene);
+        this.camera = new UniversalCamera('camera1', new Vector3(0, 30, 30), scene);
         this.camera.setTarget(new Vector3(0, 0, 0));
         this.camera.inputs.clear();
         this.camera.inputs.add(new CustomCameraInput());

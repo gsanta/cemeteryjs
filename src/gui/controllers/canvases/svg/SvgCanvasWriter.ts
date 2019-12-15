@@ -20,11 +20,7 @@ export class SvgCanvasWriter implements ICanvasWriter {
         this.svgConfigReader = new SvgConfigReader();
     }
 
-    write(file: string, fileFormat: FileFormat): void {
-        if (fileFormat !== FileFormat.SVG) {
-            throw new Error('BitmapEditorWriter only supports svg file format.');
-        }
-
+    write(file: string): void {
         const processedJson = this.svgPreprocessor.process(file); 
         this.svgCanvasController.pixelModel.clear();
         processedJson.rects.forEach(rect => {

@@ -5,9 +5,9 @@ import { SvgCanvasController } from '../../../../../src/gui/controllers/canvases
 
 
 it ('Add new pixels based on their canvas position', () => {
-    const controllers = setupControllers(FileFormat.TEXT);
+    const controllers = setupControllers();
 
-    const canvasController = <SvgCanvasController> controllers.getCanvasControllerById(SvgCanvasController.id);
+    const canvasController = controllers.svgCanvasController;
     canvasController.configModel.canvasDimensions = new Point(100, 50);
     canvasController.configModel.pixelSize = 10;
 

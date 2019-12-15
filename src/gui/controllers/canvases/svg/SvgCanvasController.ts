@@ -81,7 +81,7 @@ export class SvgCanvasController implements IEditableCanvas {
         ];
 
         this.activeTool = this.tools[0];
-        this.writer.write(initialSvg, FileFormat.SVG);
+        this.writer.write(initialSvg);
 
         this.canvasItemSettingsForm = new CanvasItemSettingsForm(this, this.controllers.eventDispatcher);
     }

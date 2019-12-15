@@ -21,11 +21,11 @@ export class WorldGenerator {
     private modelImportService: ModelLoader;
 
     constructor(scene: Scene) {
-        this.createMeshModifier = new CreateMeshModifier(scene);
         this.modelImportService = new ModelLoader(scene);
+        this.createMeshModifier = new CreateMeshModifier(scene, this.modelImportService);
     }
 
-    generate(worldMap: string, fileFormat: FileFormat, converter: Converter) {
+    generate(worldMap: string, converter: Converter, fileFormat: FileFormat) {
 
         const serviceFacade = new WorldGeneratorServices(
             this.modelImportService,

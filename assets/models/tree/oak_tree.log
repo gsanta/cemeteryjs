@@ -1,0 +1,32 @@
+Exporter version: 6.2.3, Blender version: 2.80 (sub 75)
+========= Conversion from Blender to Babylon.js =========
+	Scene settings used :
+		inline textures     :  false
+		Material Type       :  PBR
+		Positions Precision :  4
+		Normals Precision   :  3
+		UVs Precision       :  3
+		Vert Color Precision:  3
+		Mat Weight Precision:  2
+		texture directory   :  /home/gsanta/dev/other/nightshifts-inc-world-generator/assets/models/tree/
+	Python World class constructor completed
+	WARNING: No active camera has been assigned, or is not in a currently selected Blender layer
+	WARNING: The following object (type - CURVE) is not currently exportable thus ignored: NurbsPath.001
+	WARNING: The following object (type - CURVE) is not currently exportable thus ignored: NurbsPath.002
+	processing begun of mesh:  NurbsPath.003
+		processing begun of material:  Tree trunk
+		processing begun of material:  Material
+		processing begun of multimaterial:  oak_tree.Multimaterial#0
+		num positions      :  1248
+		num normals        :  1248
+		num tangents       :  0
+		num uvs            :  0
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  7224
+		WARNING: # of 0 area faces found:  54
+========= Writing of JSON file started =========
+	writing mesh:  NurbsPath.003
+========= Writing of JSON file completed =========
+========= end of processing =========
+elapsed time:  0 min, 0.0954 secs

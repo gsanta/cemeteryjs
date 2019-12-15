@@ -42,6 +42,7 @@ export class SvgPreprocessor {
             const height = parseInt(rect._attributes["data-wg-height"], 10) / pixelSize;
             const shape = rect._attributes["data-wg-shape"];
             const color = rect._attributes["data-wg-color"];
+            const model = rect._attributes["data-wg-model"];
 
             return {
                 x,
@@ -50,7 +51,8 @@ export class SvgPreprocessor {
                 height,
                 type,
                 shape,
-                color
+                color,
+                model
             };
         });
     }

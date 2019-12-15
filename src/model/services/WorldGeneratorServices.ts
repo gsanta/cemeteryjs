@@ -24,11 +24,12 @@ export class WorldGeneratorServices {
     modelLoader: ModelLoader;
 
     gameObjectFactory: GameObjectFactory;
-
     private fileFormat: FileFormat;
+
 
     constructor(modelImportService: ModelLoader, createMeshModifier: Modifier, fileFormat: FileFormat) {
         this.fileFormat = fileFormat;
+        
         this.gameAssetStore = new GameAssetStore();
         this.gameObjectBuilder = this.getWorldItemBuilder();
         this.gameObjectFactory = new GameObjectFactory(this);

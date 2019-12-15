@@ -22,14 +22,14 @@ export class WebglCanvasComponent extends React.Component<WebglCanvasComponentPr
 
     componentDidMount() {
         this.context.controllers.webglCanvasController.init(this.canvasRef.current);
-        const worldMap = this.context.controllers.settingsModel.activeEditor.reader.read();
-        this.context.controllers.webglCanvasController.updateCanvas(worldMap, this.context.controllers.settingsModel.activeEditor.fileFormats[0]);
+        const worldMap = this.context.controllers.svgCanvasController.reader.read();
+        this.context.controllers.webglCanvasController.updateCanvas();
     }
 
     componentWillReceiveProps() {
         if (this.context.controllers.webglCanvasController.isDirty) {
-            this.worldMap = this.context.controllers.settingsModel.activeEditor.reader.read();
-            this.context.controllers.webglCanvasController.updateCanvas(this.worldMap, this.context.controllers.settingsModel.activeEditor.fileFormats[0]);
+            this.worldMap = this.context.controllers.svgCanvasController.reader.read();
+            this.context.controllers.webglCanvasController.updateCanvas();
             this.context.controllers.webglCanvasController.isDirty = false;
         }
     }

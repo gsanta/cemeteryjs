@@ -83,6 +83,10 @@ export class SvgCanvasReader implements ICanvasReader {
                 ['data-wg-color', item.color]
             ];
 
+            if (item.model) {
+                attrs.push(['data-wg-model', item.model]);
+            }
+
             return this.createTag('rect', attrs);
         });
     }

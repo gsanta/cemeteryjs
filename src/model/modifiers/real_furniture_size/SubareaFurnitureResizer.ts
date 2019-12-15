@@ -21,7 +21,7 @@ export class SubareaFurnitureResizer {
         const originalReferenceFurnitureDimensions = referenceFurniture.dimensions;
 
         let mainFurnitureDimensions: Point;
-        const modelData = this.services.modelLoader.getModelByPath(referenceFurniture.modelPath);
+        const modelData = this.services.modelLoader.getModel(referenceFurniture.modelFileName);
 
         if (modelData) {
             mainFurnitureDimensions = modelData.dimensions;
@@ -40,7 +40,7 @@ export class SubareaFurnitureResizer {
 
         let snappingFurnitureDimensions: Point;
 
-        const modelData = this.services.modelLoader.getModelByPath(snappingFurniture.modelPath);
+        const modelData = this.services.modelLoader.getModel(snappingFurniture.modelFileName);
         if (modelData) {
             snappingFurnitureDimensions = modelData.dimensions;
         }

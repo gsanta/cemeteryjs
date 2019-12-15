@@ -45,6 +45,7 @@ export interface Rect {
     type: string;
     shape: string;
     color: string;
+    model: string;
 }
 
 export interface TypeMetaData {

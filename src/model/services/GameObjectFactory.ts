@@ -52,7 +52,7 @@ export class GameObjectFactory {
         worldItem.definition = worldItemDefinition;
         worldItemConfig.color && (worldItem.color = worldItemConfig.color);
         worldItemConfig.shape && (worldItem.shape = worldItemConfig.shape);
-        worldItemConfig.modelPath && (worldItem.modelPath = worldItemConfig.modelPath);
+        worldItemConfig.modelPath && (worldItem.modelFileName = worldItemConfig.modelPath);
 
         return worldItem;
     }
@@ -76,7 +76,7 @@ export class GameObjectFactory {
         clone.definition = worldItemInfo.definition;
         worldItemInfo.color && (clone.color = worldItemInfo.color);
         worldItemInfo.shape && (clone.shape = worldItemInfo.shape);
-        worldItemInfo.modelPath && (clone.modelPath = worldItemInfo.modelPath);
+        worldItemInfo.modelFileName && (clone.modelFileName = worldItemInfo.modelFileName);
 
         return clone;
     }

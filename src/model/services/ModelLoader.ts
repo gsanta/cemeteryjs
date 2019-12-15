@@ -1,6 +1,7 @@
 import { Point } from "@nightshifts.inc/geometry";
 import { AnimationGroup, ParticleSystem, Scene, SceneLoader, Skeleton, StandardMaterial, Texture, Mesh } from 'babylonjs';
 import { WorldItem } from "../..";
+import { FileData } from '../../gui/controllers/canvases/svg/models/GridCanvasStore';
 
 export interface ModelData {
     mesh: Mesh;
@@ -9,28 +10,29 @@ export interface ModelData {
 }
 
 export class ModelLoader {
+    private basePath = 'assets/models/tree/';
     private scene: Scene;
 
     constructor(scene: Scene) {
         this.scene = scene;
     }
-
+    bed
     models: Map<string, ModelData> = new Map();
 
     private pendingModels: Set<string> = new Set();
 
     loadAll(worldItems: WorldItem[]): Promise<void> {
         const promises = worldItems
-            .filter(item => item.modelPath)
-            .map(item => this.load(item.modelPath));
+            .filter(item => item.modelFileName)
+            .map(item => this.load(item.modelFileName));
 
         return Promise.all(promises).then();
     }
 
-    load(path: string): Promise<ModelData> {
-        if (this.pendingModels.has(path)) { return }
+    load(fileName: string): Promise<ModelData> {
+        if (this.pendingModels.has(fileName)) { return }
 
-        this.pendingModels.add(path);
+        this.pendingModels.add(fileName);
 
         return new Promise(resolve => {
             const onSuccess = (meshes: Mesh[], ps: ParticleSystem[], skeletons: Skeleton[], ag: AnimationGroup[]) => {
@@ -38,7 +40,7 @@ export class ModelLoader {
                 this.configMesh(meshes[0]);
                 const modelData = this.createModelData(meshes[0]);
 
-                this.models.set(path, modelData);
+                this.models.set(fileName, modelData);
                 resolve(modelData);
             };
 
@@ -46,10 +48,10 @@ export class ModelLoader {
                 throw new Error(message);
             };
 
-            const [basePath, fileName] = this.splitPathIntoBaseAndFileName(path)
+            // const [basePath, fileName] = this.splitPathIntoBaseAndFileName(path)
             SceneLoader.ImportMesh(
                 '',
-                basePath,
+                this.basePath,
                 fileName,
                 this.scene,
                 onSuccess,
@@ -59,8 +61,8 @@ export class ModelLoader {
         });
     }
 
-    getModelByPath(path: string): ModelData {
-        return this.models.get(path);
+    getModel(fileName: string): ModelData {
+        return this.models.get(fileName);
     }
 
     private splitPathIntoBaseAndFileName(path: string): [string, string] {

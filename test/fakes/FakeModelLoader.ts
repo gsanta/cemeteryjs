@@ -10,7 +10,7 @@ export class FakeModelLoader extends ModelLoader {
         this.pathToDimensionMap = pathToDimensionMap;
     }
 
-    getModelByPath(path: string): ModelData {
+    getModel(path: string): ModelData {
         if (this.pathToDimensionMap.has(path)) {
             const dim = this.pathToDimensionMap.get(path);
 

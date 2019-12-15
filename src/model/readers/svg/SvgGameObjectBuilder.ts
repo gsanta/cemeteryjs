@@ -37,7 +37,8 @@ export class SvgGameObjectBuilder implements IGameObjectBuilder {
                 name: rect.type,
                 isBorder: false,
                 color: rect.color,
-                shape: <WorldItemShape> rect.shape
+                shape: <WorldItemShape> rect.shape,
+                modelPath: rect.model
             },
             GameObjectTemplate.getByTypeName(rect.type, this.services.gameAssetStore.gameObjectTemplates)
         );

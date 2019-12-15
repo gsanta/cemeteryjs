@@ -5,6 +5,7 @@ import { Modifier } from "./Modifier";
 import { TreeIteratorGenerator } from "../utils/TreeIteratorGenerator";
 import { GameObject, WorldItemShape } from '../types/GameObject';
 import { Mesh } from "babylonjs";
+import { ModelLoader } from '../services/ModelLoader';
 
 export class CreateMeshModifier implements Modifier  {
     static modName = 'createMesh';
@@ -12,9 +13,9 @@ export class CreateMeshModifier implements Modifier  {
     private modelFactory: ModelFactory;
     dependencies = [];
 
-    constructor(scene: Scene) {
+    constructor(scene: Scene, modelLoader: ModelLoader) {
         this.polygonFactory = new PolygonFactory(scene);
-        this.modelFactory = new ModelFactory(scene);
+        this.modelFactory = new ModelFactory(scene, modelLoader);
     }
 
     getName(): string {

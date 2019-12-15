@@ -6,7 +6,7 @@ import { GameObjectTemplate } from '../../../../../../src/model/types/GameObject
 it ('Draw pixels with mouse click', () => {
     const controllers = setupControllers(); 
 
-    const canvasController = <SvgCanvasController> controllers.getCanvasControllerById(SvgCanvasController.id);
+    const canvasController = controllers.svgCanvasController
     canvasController.pixelModel.clear();
 
     canvasController.mouseController.onMouseMove(<MouseEvent> {x: 5, y: 5});
@@ -30,7 +30,7 @@ it ('Draw pixels with mouse click', () => {
 
 it ('Draw pixels with rectangle selection', () => {
     const controllers = setupControllers(); 
-    const canvasController = <SvgCanvasController> controllers.getCanvasControllerById(SvgCanvasController.id);
+    const canvasController = controllers.svgCanvasController;
     canvasController.pixelModel.clear();
 
     canvasController.mouseController.onMouseMove(<MouseEvent> {x: 5, y: 5});
@@ -51,7 +51,7 @@ it ('Draw pixels with rectangle selection', () => {
 
 it ('Do not remove existing pixel if adding pixel to an occupied position', () => {
     const controllers = setupControllers();
-    const canvasController = <SvgCanvasController> controllers.getCanvasControllerById(SvgCanvasController.id);
+    const canvasController = controllers.svgCanvasController
     canvasController.pixelModel.clear();
 
     canvasController.mouseController.onMouseMove(<MouseEvent> {x: 5, y: 5});

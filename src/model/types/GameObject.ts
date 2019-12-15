@@ -2,6 +2,7 @@ import { Point, Shape } from "@nightshifts.inc/geometry";
 import { Skeleton, Mesh } from 'babylonjs';
 import { MeshTemplate } from '../../MeshTemplate';
 import { GameObjectTemplate } from './GameObjectTemplate';
+import { FileData } from '../../gui/controllers/canvases/svg/models/GridCanvasStore';
 
 export enum WorldItemShape {
     RECTANGLE = 'rect',
@@ -37,7 +38,7 @@ export class GameObject {
     color: string;
     shape: WorldItemShape;
 
-    modelPath: string;
+    modelFileName: string;
 
     definition: GameObjectTemplate;
 

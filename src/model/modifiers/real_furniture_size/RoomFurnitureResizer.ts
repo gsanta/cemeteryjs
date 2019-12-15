@@ -18,7 +18,7 @@ export class RoomFurnitureResizer {
 
     resize(room: GameObject) {
         room.children.forEach(furniture => {
-            const modelData = this.services.modelLoader.getModelByPath(furniture.modelPath);
+            const modelData = this.services.modelLoader.getModel(furniture.modelFileName);
             if (modelData) {
                 const originalFurnitureDimensions = furniture.dimensions;
 

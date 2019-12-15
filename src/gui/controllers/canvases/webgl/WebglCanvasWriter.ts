@@ -13,20 +13,24 @@ export class WebglCanvasWriter implements ICanvasWriter {
         this.worldItemDefinitions = worldItemDefinitions;
     }
 
-    write(file: string, fileFormat: FileFormat): void {
+    write(file: string): void {
         const that = this;
-        new WorldGenerator(this.webglEditorController.scene).generate(file, fileFormat, {
-            convert(worldItem: GameObject): any {
-                if (worldItem.name === 'wall' && worldItem.children.length > 0) {
-                    worldItem.meshTemplate.meshes[0].isVisible = false;
+        new WorldGenerator(this.webglEditorController.scene).generate(
+            file,
+            {
+                convert(worldItem: GameObject): any {
+                    if (worldItem.name === 'wall' && worldItem.children.length > 0) {
+                        worldItem.meshTemplate.meshes[0].isVisible = false;
+                    }
+                },
+                addChildren(parent: any, children: any[]): void {},
+                addBorders(item: any, borders: any[]): void {},
+                done() {
+                    // this.webglEditorController.engine.runRenderLoop(() => this.webglEditorController.scene.render());
+                    that.webglEditorController.renderCanvas();
                 }
             },
-            addChildren(parent: any, children: any[]): void {},
-            addBorders(item: any, borders: any[]): void {},
-            done() {
-                // this.webglEditorController.engine.runRenderLoop(() => this.webglEditorController.scene.render());
-                that.webglEditorController.renderCanvas();
-            }
-        });
+            FileFormat.SVG
+        );
     }
 }

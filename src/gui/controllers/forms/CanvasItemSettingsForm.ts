@@ -65,7 +65,7 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
                 this.tempString = null;
                 break;
             case CanvasItemSettings.MODEL:
-                this.canvasItem.model = this.tempFileData;
+                this.canvasItem.model = this.tempFileData.fileName;
                 this.tempFileData = { FileData: '', data: '' };
                 break;
         }

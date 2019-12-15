@@ -41,7 +41,7 @@ export class MockRenderController extends UIUpdateController {
 export function setupControllers(): ControllerFacade {
     const controllers = new ControllerFacade();
     controllers.webglCanvasController.unregisterEvents();
-    (<SvgCanvasController> controllers.getCanvasControllerById(SvgCanvasController.id)).writer.write(defaultTestSvg, FileFormat.SVG);
+    controllers.svgCanvasController.writer.write(defaultTestSvg);
     controllers.updateUIController = new MockRenderController();
 
     return controllers;

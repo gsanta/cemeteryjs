@@ -43,7 +43,7 @@ export interface CanvasItem {
     tags: PixelTag[];
     layer: number;
     isPreview: boolean;
-    model: FileData;
+    model: string;
 }
 
 export enum Layers {

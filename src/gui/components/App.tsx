@@ -1,15 +1,13 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as React from 'react';
 import './App.scss';
-import { createCanvas } from './canvases/canvasFactory';
 import { WebglCanvasComponent } from './canvases/webgl/WebglCanvasComponent';
 import { AppContext, AppContextType } from './Context';
-import { createDialog } from './dialogs/dialogFactory';
 import { Header } from './Header';
+import { HorizontalSplitComponent } from './misc/HorizontalSplitComponent';
 import './misc/SplitPane.css';
 import { VerticalSplitComponent } from './misc/VerticalSplitComponent';
-import { AboutDialog } from './dialogs/AboutDialog';
-import { HorizontalSplitComponent } from './misc/HorizontalSplitComponent';
+import { createSvgCanvas } from './canvases/svg/createSvgCanvas';
 
 export interface AppState {
     isDialogOpen: boolean;
@@ -33,37 +31,29 @@ export class App extends React.Component<{}, AppState> {
     
     componentDidMount() {
         this.context.controllers.updateUIController.setUpdateFunc(() => this.forceUpdate());
-        this.context.controllers.settingsController.setRenderer(() => this.forceUpdate());
     }
 
     render() {
-        const [canvasToolbar, canvas, itemSettings] = createCanvas(this.context.controllers);
+        const [canvasToolbar, canvas, itemSettings] = createSvgCanvas(this.context.controllers);
 
         return (
             <div className="style-nightshifs">
-                <Header
-                    openIntegrationCodeDialog={() => this.setState({isDialogOpen: true})}
-                    openHowToIntegrateDialog={() => this.setState({isHowToIntegrateDialogOpen: true})}
-                    openAboutDialog={() => this.context.controllers.settingsController.setActiveDialog(AboutDialog.dialogName)}
-                    activeCanvasToolbar={canvasToolbar}
-                />
+                <Header activeCanvasToolbar={canvasToolbar}/>
                 <div className="main-content">
                     <VerticalSplitComponent onChange={() => this.resize()}>
-                        <HorizontalSplitComponent onChange={() => this.context.controllers.getActiveCanvas().resize()}>
+                        <HorizontalSplitComponent onChange={() => this.context.controllers.svgCanvasController.resize()}>
                             {canvas}                            
                             {itemSettings}
                         </HorizontalSplitComponent>
                         <WebglCanvasComponent canvasController={this.context.controllers.webglCanvasController}/>
                     </VerticalSplitComponent>
                 </div>
-
-                {createDialog(this.context.controllers)}
             </div>
         );
     }
 
     private resize() {
         this.context.controllers.webglCanvasController.engine.resize();
-        this.context.controllers.settingsModel.activeEditor.resize();
+        this.context.controllers.svgCanvasController.resize();
     }
 }

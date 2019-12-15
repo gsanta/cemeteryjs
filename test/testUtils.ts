@@ -17,6 +17,7 @@ export function setup(worldMap: string, fileFormat: FileFormat): WorldGeneratorS
         null,
         new FakeCreateMeshModifier(),
         fileFormat
+
     );
 
     const {gameObjectTemplates, globalConfig} = services.generateMetaData(worldMap);
@@ -28,7 +29,7 @@ export function setup(worldMap: string, fileFormat: FileFormat): WorldGeneratorS
 export function setupTestEnv(worldMap: string, fileFormat: FileFormat, fakeModelImporter?: FakeModelLoader): WorldGeneratorServices {
     const services = new WorldGeneratorServices(
         fakeModelImporter ? fakeModelImporter : new FakeModelLoader(new Map()),
-        new FakeCreateMeshModifier(),
+        new FakeCreateMeshModifier(),        
         fileFormat
     );
     const {gameObjectTemplates, globalConfig} = services.generateMetaData(worldMap);
