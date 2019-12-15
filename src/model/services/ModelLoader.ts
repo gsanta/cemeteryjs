@@ -11,7 +11,7 @@ export interface ModelData {
 }
 
 export class ModelLoader {
-    private basePath = 'assets/models/tree/';
+    private basePath = 'assets/models/';
     private scene: Scene;
 
     constructor(scene: Scene) {
@@ -38,6 +38,7 @@ export class ModelLoader {
         return new Promise(resolve => {
             const onSuccess = (meshes: Mesh[], ps: ParticleSystem[], skeletons: Skeleton[], ag: AnimationGroup[]) => {
 
+
                 this.configMesh(meshes[0]);
                 const modelData = this.createModelData(meshes[0]);
 
@@ -50,9 +51,10 @@ export class ModelLoader {
             };
 
             // const [basePath, fileName] = this.splitPathIntoBaseAndFileName(path)
+            const folder = fileName.split('.')[0];
             SceneLoader.ImportMesh(
                 '',
-                this.basePath,
+                `${this.basePath}${folder}/`,
                 fileName,
                 this.scene,
                 onSuccess,
@@ -68,10 +70,17 @@ export class ModelLoader {
 
     createInstance(fileName: string): AbstractMesh {
         const model = this.models.get(fileName);
-        model.instanceCounter++;
-        const instance = model.mesh.instantiateHierarchy();
 
-        return <AbstractMesh> instance;
+        let clone: AbstractMesh;
+
+        if (model.instanceCounter === 0) {
+            clone = model.mesh;
+        } else {
+            clone = <AbstractMesh> model.mesh.instantiateHierarchy();
+        }
+        model.instanceCounter++;
+        
+        return clone;
     }
 
     private splitPathIntoBaseAndFileName(path: string): [string, string] {

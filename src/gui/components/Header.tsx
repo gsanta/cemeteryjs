@@ -5,6 +5,8 @@ import { AppContext, AppContextType } from './Context';
 import { ButtonComponent } from './forms/ButtonComponent';
 import './Header.scss';
 import { colors } from './styles';
+import { saveAs } from 'file-saver';
+import { FileUploader } from './forms/FileUploader';
 
 export interface HeaderProps {
     activeCanvasToolbar: JSX.Element;
@@ -48,7 +50,15 @@ export class Header extends React.Component<HeaderProps> {
                 <CanvasHeaderStyled activeCanvas={this.context.controllers.svgCanvasController}>
                     {this.props.activeCanvasToolbar}
                 </CanvasHeaderStyled>
+                <FileUploader onUpload={(file) => this.context.controllers.svgCanvasController.writer.write(file)}/>
+                <ButtonComponent text="Save file" onClick={() => this.saveFile()} type="success"/>
             </HeaderStyled>
         );
+    }
+
+    private saveFile() {
+        const file = this.context.controllers.svgCanvasController.reader.read();
+        var blob = new Blob([file], { type: "text/plain;charset=utf-8" });
+        saveAs(blob, "dynamic.txt");
     }
 }

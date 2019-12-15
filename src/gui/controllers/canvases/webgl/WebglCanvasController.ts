@@ -27,7 +27,7 @@ export class WebglCanvasController implements IWritableCanvas {
         this.updateCanvas = this.updateCanvas.bind(this);
         this.registerEvents();
     }
-    ArcRotateCamera
+
     registerEvents() {
         this.controllers.eventDispatcher.addEventListener(Events.CONTENT_CHANGED, this.updateCanvas);
         this.controllers.eventDispatcher.addEventListener(Events.CANVAS_ITEM_CHANGED, this.updateCanvas);
@@ -41,12 +41,13 @@ export class WebglCanvasController implements IWritableCanvas {
 
     init(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
-        this.engine = new Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
         this.writer = new WebglCanvasWriter(this, this.controllers.svgCanvasController.worldItemDefinitions);
+
+        this.updateCanvas();
     }
 
     updateCanvas() {
-        if (!this.engine) { return; }
+        if (!this.canvas) { return; }
 
         this.clearCanvas();
         if (this.writer) {
@@ -72,6 +73,16 @@ export class WebglCanvasController implements IWritableCanvas {
     activate(): void {}
 
     private clearCanvas() {
+
+        this.engine = new Engine(this.canvas, true, { preserveDrawingBuffer: true, stencil: true });
+
+        let cameraPos = new Vector3(0, 30, 30);
+        let target = new Vector3(0, 0, 0);
+        if (this.camera) {
+            cameraPos = this.camera.position;
+            target = this.camera.getTarget();
+        }
+
         const scene = new Scene(this.engine);
 
         // const alpha = this.camera ? this.camera.alpha : 0;
@@ -80,8 +91,8 @@ export class WebglCanvasController implements IWritableCanvas {
         // const target = this.camera ? this.camera.target : new Vector3(0, 0, 0);
         // const position = this.camera ? this.camera.position : new Vector3(0, 40, 20);
         // this.camera = new ArcRotateCamera("Camera", alpha, beta, radius, target, scene);
-        this.camera = new UniversalCamera('camera1', new Vector3(0, 30, 30), scene);
-        this.camera.setTarget(new Vector3(0, 0, 0));
+        this.camera = new UniversalCamera('camera1', cameraPos, scene);
+        this.camera.setTarget(target);
         this.camera.inputs.clear();
         this.camera.inputs.add(new CustomCameraInput());
         this.camera.inputs.add(new MouseCameraInput());

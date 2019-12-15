@@ -9,7 +9,7 @@ export class WebglCanvasWriter implements ICanvasWriter {
     private worldItemDefinitions: GameObjectTemplate[];
 
     constructor(webglEditorController: WebglCanvasController, worldItemDefinitions: GameObjectTemplate[]) {
-        this.webglEditorController = webglEditorController;
+    this.webglEditorController = webglEditorController;
         this.worldItemDefinitions = worldItemDefinitions;
     }
 
