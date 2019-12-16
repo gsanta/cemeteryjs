@@ -67,8 +67,8 @@ export class WorldItemDefinitionForm extends AbstractFormController<WorldItemTyp
         this.renderFunc();
     }
 
-    updateNumberProp(value: number) {
-        this.tempNumber = value;
+    updateNumberProp(value: string) {
+        this.tempNumber = parseInt(value, 10);
         this.renderFunc();
     }
 

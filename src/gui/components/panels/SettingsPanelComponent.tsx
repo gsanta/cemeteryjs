@@ -1,16 +1,9 @@
 import * as React from 'react';
-import { SvgCanvasController } from '../../controllers/canvases/svg/SvgCanvasController';
-import { WorldItemDefinitionForm, WorldItemTypeProperty } from '../../controllers/forms/WorldItemDefinitionForm';
-import { AppContext, AppContextType } from '../Context';
-import { ConnectedColorPicker } from '../forms/ColorPicker';
-import { ConnectedDropdownComponent } from '../forms/DropdownComponent';
-import { ConnectedInputComponent, InputComponent } from '../forms/InputComponent';
-import { LabeledComponent } from '../forms/LabeledComponent';
-import { MaterialsComponent } from './MaterialsComponent';
-import './PropertyEditorComponent.scss';
 import styled from 'styled-components';
 import { ICanvasController } from '../../controllers/canvases/ICanvasController';
+import { AppContext, AppContextType } from '../Context';
 import { colors } from '../styles';
+import './PropertyEditorComponent.scss';
 
 
 const SettingsPanelStyled = styled.div`

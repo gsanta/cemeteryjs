@@ -2,6 +2,7 @@ import { ControllerFacade } from '../../../src/gui/controllers/ControllerFacade'
 import { UIUpdateController } from '../../../src/gui/controllers/UIUpdateController';
 import { SvgCanvasController } from '../../../src/gui/controllers/canvases/svg/SvgCanvasController';
 import { FileFormat } from '../../../src/WorldGenerator';
+import { Point } from '@nightshifts.inc/geometry';
 
 
 const defaultTestSvg = `
@@ -45,4 +46,27 @@ export function setupControllers(): ControllerFacade {
     controllers.updateUIController = new MockRenderController();
 
     return controllers;
+}
+
+export function drawRectangle(controllers: ControllerFacade) {
+    const svgController = controllers.svgCanvasController;
+    svgController.mouseController.onMouseMove(<MouseEvent> {x: 50, y: 50});
+    svgController.mouseController.onMouseDown(<MouseEvent> {x: 50, y: 50});
+    svgController.mouseController.onMouseMove(<MouseEvent> {x: 250, y: 150});
+    svgController.mouseController.onMouseUp(<MouseEvent> {x: 250, y: 150});
+}
+
+export function selectWithRect(controllers: ControllerFacade, from: Point, to: Point) {
+    const svgController = controllers.svgCanvasController;
+    svgController.mouseController.onMouseMove(<MouseEvent> {x: from.x, y: from.y});
+    svgController.mouseController.onMouseDown(<MouseEvent>{x: from.x, y: from.y});
+    svgController.mouseController.onMouseMove(<MouseEvent> {x: to.x, y: to.y});
+    svgController.mouseController.onMouseUp(<MouseEvent> {x: to.x, y: to.y});
+}
+
+export function selectWithClick(controllers: ControllerFacade, p: Point) {
+    const svgController = controllers.svgCanvasController;
+    svgController.mouseController.onMouseMove(<MouseEvent> {x: p.x, y: p.y});
+    svgController.mouseController.onMouseDown(<MouseEvent>{x: p.x, y: p.y});
+    svgController.mouseController.onMouseUp(<MouseEvent> {x: p.x, y: p.y});
 }

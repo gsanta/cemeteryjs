@@ -10,6 +10,7 @@ export enum CanvasItemSettings {
     COLOR = 'color',
     SHAPE = 'shape',
     MODEL = 'model',
+    LAYER = 'layer'
 }
 
 export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSettings> {
@@ -37,6 +38,9 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
             case CanvasItemSettings.MODEL:
                 this.tempFileData = this.canvasItem.model;
                 break;
+            case CanvasItemSettings.LAYER:
+                this.tempNumber = this.canvasItem.layer;
+                break;
         }
 
         this.renderFunc();
@@ -49,6 +53,11 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
 
     updateFileDataProp(fileData: FileData) {
         this.tempFileData = fileData;
+        this.renderFunc();
+    }
+
+    updateNumberProp(value: string) {
+        this.tempNumber = parseInt(value, 10);
         this.renderFunc();
     }
 
@@ -67,6 +76,10 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
             case CanvasItemSettings.MODEL:
                 this.canvasItem.model = this.tempFileData.fileName;
                 this.tempFileData = { FileData: '', data: '' };
+                break;
+            case CanvasItemSettings.LAYER:
+                this.canvasItem.layer = this.tempNumber;
+                this.tempNumber = null;
                 break;
         }
 
@@ -87,6 +100,9 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
                 break;
             case CanvasItemSettings.MODEL:
                 ret = this.focusedPropType === property ? this.tempFileData : this.canvasItem.model;
+                break;
+            case CanvasItemSettings.LAYER:
+                ret = this.focusedPropType === property ? this.tempNumber : this.canvasItem.layer;
                 break;
         }
 

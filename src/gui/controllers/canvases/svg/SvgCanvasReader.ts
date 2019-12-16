@@ -11,53 +11,19 @@ export class SvgCanvasReader implements ICanvasReader {
     }
 
     read(): string {
-        const metaData = this.createMetaData(this.canvasController.worldItemDefinitions);
-        const pixels = this.createPixels(this.canvasController.worldItemDefinitions);
         const rectangles = this.createRectangles(this.canvasController.worldItemDefinitions);
-        const shapes = [...pixels, ...rectangles];
 
-        return `<svg data-wg-pixel-size="10" data-wg-width="1500" data-wg-height="1000">${metaData}${shapes.join('')}</svg>`;
-    }
-
-    private createPixels(worldItemDefinitions: GameObjectTemplate[]): string[] {
-        const pixelModel = this.canvasController.pixelModel;
-        const configModel = this.canvasController.configModel;
-
-        const pixelArray = Array.from(pixelModel.bitMap);
-
-        const elements: string[] = [];
-
-        pixelArray.forEach(([index, pixels]) => {
-            pixels.forEach(pixel => {
-                const pixelSize = configModel.pixelSize;
-                const pos = pixelModel.getPixelPosition(index).mul(pixelSize);
-                const color = GameObjectTemplate.getByTypeName(pixel.type, worldItemDefinitions).color;
-    
-                const attrs: [string, string][] = [
-                    ['width', '10px'],
-                    ['height', '10px'],
-                    ['x', `${pos.x}px`],
-                    ['y', `${pos.y}px`],
-                    ['fill', pixel.tags.includes(PixelTag.SELECTED) ? 'blue' : color],
-                    ['data-wg-x', pos.x + ''],
-                    ['data-wg-y', pos.y + ''],
-                    ['data-wg-width', pixelSize + ''],
-                    ['data-wg-height', pixelSize + ''],    
-                    ['data-wg-type', pixel.type]
-                ];
-                
-                elements.push(this.createTag('rect', attrs));
-            });
-        });
-
-        return elements;
+        return `<svg data-wg-pixel-size="10" data-wg-width="1500" data-wg-height="1000">${rectangles.join('')}</svg>`;
     }
 
     private createRectangles(worldItemDefinitions: GameObjectTemplate[]): string[] {
         const pixelModel = this.canvasController.pixelModel;
         const configModel = this.canvasController.configModel;
 
-        return pixelModel.items.map(item => {
+        const orderedItems = [...pixelModel.items];
+        orderedItems.sort((a, b) => a.layer - b.layer);
+
+        return orderedItems.map(item => {
             const min = item.indexes[0];
             const max = item.indexes[item.indexes.length - 1];
 
@@ -80,7 +46,8 @@ export class SvgCanvasReader implements ICanvasReader {
                 ['data-wg-height',  `${botRight.y - topLeft.y}`],
                 ['data-wg-type', item.type],
                 ['data-wg-shape', item.shape],
-                ['data-wg-color', item.color]
+                ['data-wg-color', item.color],
+                ['data-wg-layer', item.layer + '']
             ];
 
             if (item.model) {
@@ -89,34 +56,6 @@ export class SvgCanvasReader implements ICanvasReader {
 
             return this.createTag('rect', attrs);
         });
-    }
-
-    private createMetaData(worldItemDefinitions: GameObjectTemplate[]): string {
-        const wgTypeComponents = worldItemDefinitions.map(type => {
-            const attributes: [string, string][] = [
-                ['color', type.color],
-                ['scale', type.scale ? type.scale + '' : '1'],
-                ['translate-y', type.translateY ? type.translateY + '' : '0'],
-                ['type-name', type.typeName],
-                ['shape', type.shape]
-            ]
-
-            if (type.model) {
-                attributes.push(['model', type.model]);
-            }
-
-            if (type.materials) {
-                attributes.push(['materials', type.materials.join(' ')]);
-            }
-
-            if (type.roles && type.roles.length > 0) {
-                attributes.push(['roles', type.roles.join(' ')]);
-            }
-
-            return this.createTag('wg-type', attributes);
-        });
-
-        return this.createTag('metadata', [], wgTypeComponents.join(''));
     }
 
     private createTag(tagName: string, attributes: [string, string][], content: string = ''): string {

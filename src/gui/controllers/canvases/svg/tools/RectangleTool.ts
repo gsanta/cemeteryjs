@@ -29,20 +29,10 @@ export class RectangleTool extends AbstractSelectionTool {
         const positions = this.getPositionsInSelection();
 
         if (positions.length > 0) {
-            this.lastPreviewRect = this.canvasController.pixelModel.addRectangle(positions, type, -1, true);
+            this.lastPreviewRect = this.canvasController.pixelModel.addRectangle(positions, type, 0, true);
     
             this.canvasController.renderCanvas();
         }
-    }
-
-    click() {
-        super.click();
-        const type = this.canvasController.selectedWorldItemDefinition.typeName;
-        const layer = getLayerForType(type);
-        this.canvasController.pixelModel.addPixel(this.canvasController.mouseController.movePoint, type, false, layer);
-
-        this.canvasController.renderCanvas();
-        this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
     }
 
     draggedUp() {

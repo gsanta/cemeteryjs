@@ -134,25 +134,6 @@ export class GridCanvasStore {
         this.items = without(this.items, rect);
     }
 
-    addPixel(coordinate: Point, type: string, isPreview: boolean, layer: number) {
-        const index = this.getIndexAtCoordinate(coordinate);
-
-        if (this.bitMap.has(index)) {
-            // this.removePixelFromMapAtLayer(index, layer);
-        }
-        
-        const pixel: Pixel = {
-            type,
-            index,
-            isPreview,
-            layer,
-            tags: []
-        }
-
-        this.addPixelToMap(index, pixel);
-        this.pixels.push(pixel);
-    }
-
     commitPreviews() {
         this.pixels
             .filter(pixel => pixel.isPreview)
@@ -247,15 +228,6 @@ export class GridCanvasStore {
         const xPixels = canvasDimensions.x / pixelSize;
 
         return pos.y * xPixels + pos.x;
-    }
-
-    private addPixelToMap(key: number, pixel: Pixel) {
-        if (!this.bitMap.get(key)) {
-            this.bitMap.set(key, []);
-        }
-
-        this.bitMap.get(key).push(pixel);
-        this.bitMap.get(key).sort(this.sortByLayer)
     }
 
     private getIndexAtCoordinate(coordinate: Point): number {

@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { ConnectedDropdownComponent } from '../../forms/DropdownComponent';
 import { WorldItemTypeProperty } from '../../../controllers/forms/WorldItemDefinitionForm';
 import { ConnectedFileUploadComponent } from '../../forms/FileUploadComponent';
+import { ConnectedInputComponent } from '../../forms/InputComponent';
 
 export interface ItemSettingsProps {
     canvasController: SvgCanvasController;
@@ -15,6 +16,10 @@ export interface ItemSettingsProps {
 
 const ItemSettingsStyled = styled.div`
     padding: 10px;
+`;
+
+const RowStyled = styled.div`
+    display: flex;
 `;
 
 export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
@@ -37,13 +42,10 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
 
         return (
             <ItemSettingsStyled>
-                <LabeledComponent label="Choose color" direction="horizontal">
-                    <ConnectedColorPicker
-                        formController={this.props.canvasController.canvasItemSettingsForm}
-                        propertyName={CanvasItemSettings.COLOR}
-                        propertyType='string'
-                    />
-                </LabeledComponent>
+                <RowStyled>
+                    {this.renderColorChooser()}
+                    {this.renderLayerInput()}
+                </RowStyled>
                 {this.renderShapeDropdown()}
                 {form.getVal(CanvasItemSettings.SHAPE) === 'model' ? this.renderModelFileChooser() : null}
             </ItemSettingsStyled>
@@ -76,6 +78,38 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
                         formController={form}
                         propertyName={WorldItemTypeProperty.MODEL}
                         propertyType="file-data"
+                    />
+                </LabeledComponent>
+                {form.getVal(CanvasItemSettings.MODEL) ? form.getVal<FileData>(CanvasItemSettings.MODEL).fileName : ''}
+            </React.Fragment>
+        );
+    }
+
+    private renderColorChooser(): JSX.Element {
+        return (
+            <LabeledComponent label="Choose color" direction="horizontal">
+                <ConnectedColorPicker
+                    formController={this.props.canvasController.canvasItemSettingsForm}
+                    propertyName={CanvasItemSettings.COLOR}
+                    propertyType='string'
+                />
+            </LabeledComponent>
+        );
+    }
+
+    private renderLayerInput(): JSX.Element {
+        const form = this.props.canvasController.canvasItemSettingsForm;
+
+        return (
+            <React.Fragment>
+                <LabeledComponent label="Layer" direction="horizontal">
+                    <ConnectedInputComponent
+                        formController={form}
+                        propertyName={CanvasItemSettings.LAYER}
+                        propertyType="number"
+                        type="number"
+                        value={form.getVal(CanvasItemSettings.LAYER)}
+                        placeholder="0"
                     />
                 </LabeledComponent>
                 {form.getVal(CanvasItemSettings.MODEL) ? form.getVal<FileData>(CanvasItemSettings.MODEL).fileName : ''}

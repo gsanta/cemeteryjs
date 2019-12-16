@@ -16,7 +16,7 @@ export abstract class AbstractFormController<P> {
     getFocusedProp(): P { return this.focusedPropType; };
     updateStringProp(value: string) {}
     updateBooleanProp(value: boolean) {};
-    updateNumberProp(value: number) {};
+    updateNumberProp(value: string) {};
     updateFileDataProp(value: FileData) {};
     commitProp(removeFocus?: boolean) {};
     deletItemFromListProp(propType: P, index: number): void {};

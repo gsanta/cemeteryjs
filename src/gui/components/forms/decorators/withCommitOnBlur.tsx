@@ -12,7 +12,7 @@ export function withCommitOnBlur<T extends Focusable>(WrappedComponent: React.Co
                 onFocus={() => this.props.formController.focusProp(this.props.propertyName)}
                 onChange={
                     (val: string) => {
-                        if (!this.props.formController.getFocusedProp() !== this.props.propertyName) {
+                        if (this.props.formController.getFocusedProp() !== this.props.propertyName) {
                             this.props.formController.focusProp(this.props.propertyName);
                             this.updateProp(val);
                             this.props.formController.commitProp();

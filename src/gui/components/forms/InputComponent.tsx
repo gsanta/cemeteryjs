@@ -11,7 +11,6 @@ export interface InputProps extends Focusable {
     value: string | number;
     type: 'text' | 'number';
     placeholder: string;
-    isMarked?: boolean;
 }
 
 const FormControlStyled = styled(FormControl)`
@@ -23,29 +22,18 @@ const FormControlStyled = styled(FormControl)`
 
     &:focus {
         box-shadow: none;
-        border: ${({isMarked}) => isMarked ? `1px solid ${colors.grey2}` : `1px solid ${colors.grey4}`};
     }
 `
-
-const defaultProps: Partial<InputProps> = {
-    isMarked: false
-}
-
 export function InputComponent(props: InputProps) {
-    props = {...defaultProps, ...props};
-
-    const className = `${props.isMarked ? 'is-marked' : ''} override`;
 
     return (
         <FormControlStyled
-            className={className}
             type={props.type}
             onFocus={() => props.onFocus()}
             placeholder={props.placeholder}
             value={props.value && props.value.toString()}
             onChange={(e: React.ChangeEvent<any>) => props.onChange(e.target.value)}
             onBlur={() => props.onBlur()}
-            isMarked={props.isMarked}
         />
     );
 }
