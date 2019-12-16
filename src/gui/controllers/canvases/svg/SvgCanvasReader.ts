@@ -30,9 +30,8 @@ export class SvgCanvasReader implements ICanvasReader {
             const pixelSize = configModel.pixelSize;
             const topLeft = pixelModel.getPixelPosition(min).mul(pixelSize);
             const botRight = pixelModel.getPixelPosition(max).mul(pixelSize).addX(pixelSize).addY(pixelSize);
-            const color = GameObjectTemplate.getByTypeName(item.type, worldItemDefinitions).color;
 
-            const fill = item.tags.includes(PixelTag.SELECTED) ? 'blue' : item.color ? item.color : color;
+            const fill = item.tags.includes(PixelTag.SELECTED) ? 'blue' : item.color;
 
             const attrs: [string, string][] = [
                 ['x', `${topLeft.x}px`],

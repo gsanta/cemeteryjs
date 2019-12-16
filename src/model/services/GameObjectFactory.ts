@@ -1,9 +1,9 @@
 import { Polygon, Point, Shape } from '@nightshifts.inc/geometry';
 import { GameObject, WorldItemShape } from '../types/GameObject';
 import { WorldGeneratorServices } from './WorldGeneratorServices';
-import { GameObjectTemplate } from '../types/GameObjectTemplate';
+import { GameObjectTemplate, WorldItemRole } from '../types/GameObjectTemplate';
 
-export interface WorldItemConfig {
+export interface GameObjectConfig {
     type?: string;
     dimensions: Shape;
     name: string;
@@ -13,9 +13,10 @@ export interface WorldItemConfig {
     color?: string;
     shape?: WorldItemShape;
     modelPath?: string;
+    roles?: WorldItemRole[];
 }
 
-export const defaultWorldItemConfig: Partial<WorldItemConfig> = {
+export const defaultWorldItemConfig: Partial<GameObjectConfig> = {
     rotation: 0,
     worldMapPositions: []
 }
@@ -42,41 +43,44 @@ export class GameObjectFactory {
         return worldItem;
     }
 
-    public create(worldItemConfig: WorldItemConfig, worldItemDefinition: GameObjectTemplate): GameObject {
-        worldItemConfig = {...defaultWorldItemConfig, ...worldItemConfig};
+    public create(gameObjectConfig: GameObjectConfig, gameObjectTemplate: GameObjectTemplate): GameObject {
+        gameObjectConfig = {...defaultWorldItemConfig, ...gameObjectConfig};
 
-        const id = this.getNextId(worldItemConfig.name);
-        const worldItem = new GameObject(id, worldItemConfig.type, worldItemConfig.dimensions, worldItemConfig.name, worldItemConfig.isBorder);
-        worldItem.worldMapPositions = worldItemConfig.worldMapPositions;
-        worldItem.rotation = worldItemConfig.rotation;
-        worldItem.definition = worldItemDefinition;
-        worldItemConfig.color && (worldItem.color = worldItemConfig.color);
-        worldItemConfig.shape && (worldItem.shape = worldItemConfig.shape);
-        worldItemConfig.modelPath && (worldItem.modelFileName = worldItemConfig.modelPath);
+        const id = this.getNextId(gameObjectConfig.name);
+        const gameObject = new GameObject(id, gameObjectConfig.type, gameObjectConfig.dimensions, gameObjectConfig.name, gameObjectConfig.isBorder);
+        gameObject.worldMapPositions = gameObjectConfig.worldMapPositions;
+        gameObject.rotation = gameObjectConfig.rotation;
+        gameObject.definition = gameObjectTemplate;
+        gameObjectConfig.color && (gameObject.color = gameObjectConfig.color);
+        gameObjectConfig.shape && (gameObject.shape = gameObjectConfig.shape);
+        gameObjectConfig.modelPath && (gameObject.modelFileName = gameObjectConfig.modelPath);
 
-        return worldItem;
+        gameObject.roles = gameObjectTemplate ? gameObjectTemplate.roles : gameObjectConfig.roles;
+
+        return gameObject;
     }
 
-    public clone(newType: string, worldItemInfo: GameObject): GameObject {
+    public clone(newType: string, gameObject: GameObject): GameObject {
         const id = this.getNextId(newType);
 
         const clone = new GameObject(
             id,
-            worldItemInfo.type,
-            worldItemInfo.dimensions,
+            gameObject.type,
+            gameObject.dimensions,
             newType
         );
 
-        clone.children = [...worldItemInfo.children];
-        clone.borderItems = [...worldItemInfo.borderItems];
-        clone.rotation = worldItemInfo.rotation;
-        clone.isBorder = worldItemInfo.isBorder;
-        clone.thickness = worldItemInfo.thickness;
-        clone.parent = worldItemInfo.parent;
-        clone.definition = worldItemInfo.definition;
-        worldItemInfo.color && (clone.color = worldItemInfo.color);
-        worldItemInfo.shape && (clone.shape = worldItemInfo.shape);
-        worldItemInfo.modelFileName && (clone.modelFileName = worldItemInfo.modelFileName);
+        clone.children = [...gameObject.children];
+        clone.borderItems = [...gameObject.borderItems];
+        clone.rotation = gameObject.rotation;
+        clone.isBorder = gameObject.isBorder;
+        clone.thickness = gameObject.thickness;
+        clone.parent = gameObject.parent;
+        clone.definition = gameObject.definition;
+        gameObject.color && (clone.color = gameObject.color);
+        gameObject.shape && (clone.shape = gameObject.shape);
+        gameObject.modelFileName && (clone.modelFileName = gameObject.modelFileName);
+        clone.roles = gameObject.roles;
 
         return clone;
     }

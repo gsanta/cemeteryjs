@@ -32,15 +32,16 @@ export class SvgGameObjectBuilder implements IGameObjectBuilder {
     private createRect(rect: Rect, processedJson: ProcessedWorldMapJson): GameObject {
         return this.services.gameObjectFactory.create(
             {
-                type: GameObjectTemplate.getByTypeName(rect.type, this.services.gameAssetStore.gameObjectTemplates).char,
+                type: null,
                 dimensions: new Rectangle(new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height)),
                 name: rect.type,
                 isBorder: false,
                 color: rect.color,
                 shape: <WorldItemShape> rect.shape,
-                modelPath: rect.model
+                modelPath: rect.model,
+                roles: []
             },
-            GameObjectTemplate.getByTypeName(rect.type, this.services.gameAssetStore.gameObjectTemplates)
+            null
         );
     }
 

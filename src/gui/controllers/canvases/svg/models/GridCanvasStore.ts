@@ -38,7 +38,7 @@ export interface CanvasItem {
     type: string;
     shape: WorldItemShape;
     color: string;
-    indexes: number[];
+    indexes?: number[];
     polygon: Polygon;
     tags: PixelTag[];
     layer: number;
@@ -80,8 +80,10 @@ export class GridCanvasStore {
         return this.bitMap.get(index)[0];
     }
 
-    addRect(rectangle: Rectangle, type: string, layer: number, isPreview: boolean): CanvasItem {
+    addRect(canvasItem: CanvasItem): CanvasItem {
         const indexes: number[] = [];
+
+        const rectangle = <Rectangle> canvasItem.polygon;
 
         for (let x = rectangle.topLeft.x; x < rectangle.bottomRight.x; x++) {
             for (let y = rectangle.topLeft.y; y < rectangle.bottomRight.y; y++) {
@@ -89,18 +91,20 @@ export class GridCanvasStore {
             }
         }
 
+        canvasItem.indexes = indexes;
 
-        const canvasItem: CanvasItem = {
-            color: 'grey',
-            indexes,
-            polygon: rectangle,
-            type,
-            layer,
-            isPreview,
-            tags: [],
-            shape: WorldItemShape.RECTANGLE,
-            model:  null
-        }
+
+        // const canvasItem: CanvasItem = {
+        //     color: 'grey',
+        //     indexes,
+        //     polygon: rectangle,
+        //     type,
+        //     layer,
+        //     isPreview,
+        //     tags: [],
+        //     shape: WorldItemShape.RECTANGLE,
+        //     model:  null
+        // }
 
         this.items.push(canvasItem);
 

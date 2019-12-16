@@ -31,12 +31,12 @@ export class BuildHierarchyModifier implements Modifier {
     private buildHierarchy(worldItems: GameObject[]) {
         const sizeComparer = (a: GameObject, b: GameObject) => (<Polygon> a.dimensions).getArea() - (<Polygon> b.dimensions).getArea(); 
 
-        const borders = worldItems.filter(worldItem => worldItem.definition.roles.includes(WorldItemRole.BORDER));
+        const borders = worldItems.filter(worldItem => worldItem.roles.includes(WorldItemRole.BORDER));
         //TODO: handle empties better
-        let notBorders = worldItems.filter(item => item.name !== 'empty').filter(worldItem => !worldItem.definition.roles.includes(WorldItemRole.BORDER));
+        let notBorders = worldItems.filter(item => item.name !== 'empty').filter(worldItem => !worldItem.roles.includes(WorldItemRole.BORDER));
 
-        const containers = notBorders.filter(worldItem => worldItem.definition.roles.includes(WorldItemRole.CONTAINER));
-        const notContainers = notBorders.filter(worldItem => !worldItem.definition.roles.includes(WorldItemRole.CONTAINER));
+        const containers = notBorders.filter(worldItem => worldItem.roles.includes(WorldItemRole.CONTAINER));
+        const notContainers = notBorders.filter(worldItem => !worldItem.roles.includes(WorldItemRole.CONTAINER));
         
         const sortedContainers = [...containers];
         sortedContainers.sort(sizeComparer);

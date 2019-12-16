@@ -6,6 +6,8 @@ import { ICanvasWriter } from '../ICanvasWriter';
 import { SvgCanvasController } from './SvgCanvasController';
 import { EventDispatcher } from '../../events/EventDispatcher';
 import { Events } from '../../events/Events';
+import { CanvasItem } from './models/GridCanvasStore';
+import { WorldItemShape } from '../../../../model/types/GameObject';
 
 export class SvgCanvasWriter implements ICanvasWriter {
     private svgCanvasController: SvgCanvasController;
@@ -25,7 +27,19 @@ export class SvgCanvasWriter implements ICanvasWriter {
         this.svgCanvasController.pixelModel.clear();
         processedJson.rects.forEach(rect => {
             const rectangle = new Rectangle(new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height));
-            this.svgCanvasController.pixelModel.addRect(rectangle, rect.type, 0, false);
+
+            const canvasItem: CanvasItem = {
+                color: 'grey',
+                polygon: rectangle,
+                type: rect.type,
+                layer: 0,
+                isPreview: false,
+                tags: [],
+                shape: <WorldItemShape> rect.shape,
+                model: rect.model
+            }
+
+            this.svgCanvasController.pixelModel.addRect(canvasItem);
         });
 
         const {gameObjectTemplates} = this.svgConfigReader.read(file);

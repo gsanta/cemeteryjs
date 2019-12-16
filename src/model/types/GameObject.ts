@@ -1,7 +1,7 @@
 import { Point, Shape } from "@nightshifts.inc/geometry";
 import { Skeleton, Mesh } from 'babylonjs';
 import { MeshTemplate } from '../../MeshTemplate';
-import { GameObjectTemplate } from './GameObjectTemplate';
+import { GameObjectTemplate, WorldItemRole } from './GameObjectTemplate';
 import { FileData } from '../../gui/controllers/canvases/svg/models/GridCanvasStore';
 
 export enum WorldItemShape {
@@ -18,6 +18,7 @@ export class GameObject {
     id: string;
     type: string;
     name: string;
+    roles?: WorldItemRole[];
     /**
      * This property can be used to group multiple `GameObject` together, e.g some of the final GameObjects (see `Converter`) can consist
      * of multiple `GameObject` and this is the property to signal that relationship.
