@@ -8,7 +8,6 @@ import { Point } from "@nightshifts.inc/geometry";
 
 
 export class SelectTool extends AbstractSelectionTool {
-    private worldMapGraph: WorldMapGraph;
 
     constructor(canvasController: SvgCanvasController) {
         super(canvasController, ToolType.SELECT, true);
@@ -25,9 +24,5 @@ export class SelectTool extends AbstractSelectionTool {
 
         this.canvasController.renderCanvas();
         this.canvasController.renderSettings();
-    }
-
-    activate() {
-        this.worldMapGraph = new SvgWorldMapReader(false).read(this.canvasController.reader.read());
     }
 }

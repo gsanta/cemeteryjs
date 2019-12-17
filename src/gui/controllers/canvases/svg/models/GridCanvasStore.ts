@@ -4,7 +4,8 @@ import { last, without, sortNum } from '../../../../../model/utils/Functions';
 import { WorldItemShape } from '../../../../../model/types/GameObject';
 
 export enum PixelTag {
-    SELECTED = 'selected'
+    SELECTED = 'selected',
+    HOVERED = 'hovered'
 }
 
 export namespace PixelTag {
@@ -18,6 +19,14 @@ export namespace PixelTag {
 
     export function getTaggedItems<T extends {tags: PixelTag[]}>(tag: PixelTag, tagged: T[]): T[] {
         return tagged.filter(pixel => pixel.tags.includes(tag));
+    }
+
+    export function getHoveredItem<T extends {tags: PixelTag[]}>(tagged: T[]): T {
+        return tagged.filter(pixel => pixel.tags.includes(PixelTag.HOVERED))[0];
+    }
+
+    export function getSelectedItems<T extends {tags: PixelTag[]}>(tagged: T[]): T[] {
+        return tagged.filter(pixel => pixel.tags.includes(PixelTag.SELECTED));
     }
 }
 
@@ -38,7 +47,6 @@ export interface CanvasItem {
     type: string;
     shape: WorldItemShape;
     color: string;
-    indexes?: number[];
     polygon: Polygon;
     tags: PixelTag[];
     layer: number;
@@ -67,7 +75,6 @@ export function getLayerForType(type: string) {
 export class GridCanvasStore {
     bitMap: Map<number, Pixel[]> = new Map();
     pixels: Pixel[] = [];
-    indexes: number[] = [];
     private bitmapConfig: SvgConfig;
 
     items: CanvasItem[] = [];
@@ -81,31 +88,6 @@ export class GridCanvasStore {
     }
 
     addRect(canvasItem: CanvasItem): CanvasItem {
-        const indexes: number[] = [];
-
-        const rectangle = <Rectangle> canvasItem.polygon;
-
-        for (let x = rectangle.topLeft.x; x < rectangle.bottomRight.x; x++) {
-            for (let y = rectangle.topLeft.y; y < rectangle.bottomRight.y; y++) {
-                indexes.push(this.getIndexAtPosition(new Point(x, y)));
-            }
-        }
-
-        canvasItem.indexes = indexes;
-
-
-        // const canvasItem: CanvasItem = {
-        //     color: 'grey',
-        //     indexes,
-        //     polygon: rectangle,
-        //     type,
-        //     layer,
-        //     isPreview,
-        //     tags: [],
-        //     shape: WorldItemShape.RECTANGLE,
-        //     model:  null
-        // }
-
         this.items.push(canvasItem);
 
         return canvasItem;
@@ -119,7 +101,6 @@ export class GridCanvasStore {
         const botRight = this.getPixelPosition(indexes[indexes.length - 1]); 
         const canvasItem: CanvasItem = {
             color: 'grey',
-            indexes,
             polygon: Polygon.createRectangle(topLeft.x, topLeft.y, botRight.x - topLeft.x, botRight.y - topLeft.y),
             type,
             layer,

@@ -1,9 +1,9 @@
+import { EventDispatcher } from '../../../events/EventDispatcher';
+import { Events } from '../../../events/Events';
+import { CanvasItem } from '../models/GridCanvasStore';
 import { SvgCanvasController } from '../SvgCanvasController';
 import { AbstractSelectionTool } from './AbstractSelectionTool';
 import { ToolType } from './Tool';
-import { EventDispatcher } from '../../../events/EventDispatcher';
-import { Events } from '../../../events/Events';
-import { getLayerForType, CanvasItem } from '../models/GridCanvasStore';
 
 export class RectangleTool extends AbstractSelectionTool {
     private eventDispatcher: EventDispatcher;
@@ -41,7 +41,6 @@ export class RectangleTool extends AbstractSelectionTool {
             this.lastPreviewRect.isPreview = false;
             this.lastPreviewRect = null;
         }
-        // this.canvasController.pixelModel.commitPreviews();
 
         this.canvasController.renderCanvas();
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);

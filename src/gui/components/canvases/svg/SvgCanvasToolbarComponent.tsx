@@ -35,7 +35,7 @@ export class SvgCanvasToolbarComponent extends React.Component<{canvasController
     }
 
     private isToolActive(toolType: ToolType) {
-        return this.props.canvasController.activeTool.type === toolType;
+        return this.props.canvasController.getActiveTool().type === toolType;
     }
 
     private activateTool(toolType: ToolType) {

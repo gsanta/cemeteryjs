@@ -6,6 +6,8 @@ import { colors } from '../../styles';
 import { WgDefinitionAttributes } from '../../../../model/readers/svg/WorldMapJson';
 import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvasController';
 import { CanvasComponent } from '../CanvasComponent';
+import { Rectangle } from '@nightshifts.inc/geometry';
+import { PixelTag } from '../../../controllers/canvases/svg/models/GridCanvasStore';
 
 const EditorComponentStyled = styled.div`
     height: 100%;
@@ -60,16 +62,39 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
                 >
                     {horizontalLines}
                     {verticalLines}
-                    <g className="bitmap-layer" dangerouslySetInnerHTML={{__html: svg}}>
-                        {/* {this.renderMetaData()}
-                        {this.renderPixels(this.context)} */}
-                    </g>
+                    {this.renderCanvasItems()}
                     {this.renderSelection()}
                 </CanvasComponentStyled>
             </EditorComponentStyled>
         );
 
         return <CanvasComponent canvas={canvas}/>
+    }
+
+    private renderCanvasItems() {
+        return this.props.canvasController.pixelModel.items.map(item => {
+            const rectangle = item.polygon as Rectangle;
+            const pixelSize = this.props.canvasController.configModel.pixelSize;
+
+            const x = rectangle.topLeft.x * pixelSize;
+            const y = rectangle.topLeft.y * pixelSize;
+            const width = (rectangle.bottomRight.x - rectangle.topLeft.x) * pixelSize;
+            const height = (rectangle.bottomRight.y - rectangle.topLeft.y) * pixelSize;
+
+            const fill = item.tags.includes(PixelTag.SELECTED) ? 'blue' : item.color;
+
+            return (
+                <rect 
+                    x={`${x}px`}
+                    y={`${y}px`}
+                    width={`${width}px`}
+                    height={`${height}px`}
+                    fill={fill}
+                    onMouseOver={() => this.props.canvasController.mouseController.hover(item)}
+                    onMouseOut={() => this.props.canvasController.mouseController.unhover()}
+                />
+            )
+        });
     }
 
     private renderLines(lines: Segment[]): JSX.Element[] {

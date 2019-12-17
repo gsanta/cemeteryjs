@@ -24,9 +24,9 @@ export class SvgGameObjectBuilder implements IGameObjectBuilder {
         this.removeFrame(processedJson);
 
         const root = this.createRoot(processedJson);
-        const worldItems = processedJson.rects.map(rect => this.createRect(rect, processedJson));
+        const gameObjects = processedJson.rects.map(rect => this.createRect(rect, processedJson));
 
-        return [root, ...worldItems];
+        return [root, ...gameObjects];
     }
 
     private createRect(rect: Rect, processedJson: ProcessedWorldMapJson): GameObject {

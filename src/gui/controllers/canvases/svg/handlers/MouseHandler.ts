@@ -1,5 +1,6 @@
 import { Point } from '@nightshifts.inc/geometry';
 import { SvgCanvasController } from '../SvgCanvasController';
+import { CanvasItem, PixelTag } from '../models/GridCanvasStore';
 
 function calcOffsetFromDom(bitmapEditorId: string): Point {
     if (typeof document !== 'undefined') {
@@ -30,25 +31,25 @@ export class MouseHandler {
     onMouseDown(e: MouseEvent): void {
         this.isDown = true;
         this.downPoint = this.getPointFromEvent(e);
-        this.bitmapEditor.activeTool.down();
+        this.bitmapEditor.getActiveTool().down();
     }
     
     onMouseMove(e: MouseEvent): void {
         this.movePoint = this.getPointFromEvent(e);
         if (this.isDown) {
             this.isDrag = true;
-            this.bitmapEditor.activeTool.drag();
+            this.bitmapEditor.getActiveTool().drag();
         }
     }    
 
     onMouseUp(e: MouseEvent): void {
         if (this.isDrag) {
-            this.bitmapEditor.activeTool.draggedUp();
+            this.bitmapEditor.getActiveTool().draggedUp();
         } else {
-            this.bitmapEditor.activeTool.click();
+            this.bitmapEditor.getActiveTool().click();
         }
         
-        this.bitmapEditor.activeTool.up();
+        this.bitmapEditor.getActiveTool().up();
         this.isDown = false;
         this.isDrag = false;
     }
@@ -56,6 +57,14 @@ export class MouseHandler {
     onMouseOut(e: MouseEvent): void {
         this.isDown = false;
         this.isDrag = false;
+    }
+
+    hover(item: CanvasItem) {
+        item.tags.push(PixelTag.HOVERED);
+    }
+
+    unhover() {
+        PixelTag.removeTag(PixelTag.HOVERED, this.bitmapEditor.pixelModel.items);
     }
 
     private getPointFromEvent(e: MouseEvent): Point {

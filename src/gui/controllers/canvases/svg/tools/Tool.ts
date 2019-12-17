@@ -2,7 +2,8 @@
 export enum ToolType {
     RECTANGLE = 'rectangle',
     DELETE = 'delete',
-    SELECT = 'select'
+    SELECT = 'select',
+    MOVE = 'move'
 }
 
 export interface Tool {

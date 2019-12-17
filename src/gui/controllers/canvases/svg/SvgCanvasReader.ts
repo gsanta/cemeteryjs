@@ -2,6 +2,7 @@ import { SvgCanvasController } from './SvgCanvasController';
 import { ICanvasReader } from '../ICanvasReader';
 import { GameObjectTemplate } from '../../../../model/types/GameObjectTemplate';
 import { PixelTag } from './models/GridCanvasStore';
+import { Rectangle } from '@nightshifts.inc/geometry';
 
 export class SvgCanvasReader implements ICanvasReader {
     private canvasController: SvgCanvasController;
@@ -24,25 +25,26 @@ export class SvgCanvasReader implements ICanvasReader {
         orderedItems.sort((a, b) => a.layer - b.layer);
 
         return orderedItems.map(item => {
-            const min = item.indexes[0];
-            const max = item.indexes[item.indexes.length - 1];
-
+            const rectangle = <Rectangle> item.polygon;
             const pixelSize = configModel.pixelSize;
-            const topLeft = pixelModel.getPixelPosition(min).mul(pixelSize);
-            const botRight = pixelModel.getPixelPosition(max).mul(pixelSize).addX(pixelSize).addY(pixelSize);
 
             const fill = item.tags.includes(PixelTag.SELECTED) ? 'blue' : item.color;
 
+            const x = rectangle.topLeft.x * pixelSize;
+            const y = rectangle.topLeft.y * pixelSize;
+            const width = (rectangle.bottomRight.x - rectangle.topLeft.x) * pixelSize;
+            const height = (rectangle.bottomRight.y - rectangle.topLeft.y) * pixelSize;
+
             const attrs: [string, string][] = [
-                ['x', `${topLeft.x}px`],
-                ['y', `${topLeft.y}px`],
-                ['width', `${botRight.x - topLeft.x}px`],
-                ['height', `${botRight.y - topLeft.y}px`],
+                ['x', `${x}px`],
+                ['y', `${y}px`],
+                ['width', `${width}px`],
+                ['height', `${height}px`],
                 ['fill', fill],
-                ['data-wg-x', topLeft.x + ''],
-                ['data-wg-y', topLeft.y + ''],
-                ['data-wg-width',  `${botRight.x - topLeft.x}`],
-                ['data-wg-height',  `${botRight.y - topLeft.y}`],
+                ['data-wg-x', `${x}`],
+                ['data-wg-y', `${y}`],
+                ['data-wg-width',  `${width}`],
+                ['data-wg-height',  `${height}`],
                 ['data-wg-type', item.type],
                 ['data-wg-shape', item.shape],
                 ['data-wg-color', item.color],
