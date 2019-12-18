@@ -1,8 +1,9 @@
-import { Segment, Point } from "@nightshifts.inc/geometry";
 import { SegmentBordersModifier } from '../../../../src/model/modifiers/SegmentBordersModifier';
 import { WorldGeneratorServices } from "../../../../src/model/services/WorldGeneratorServices";
 import { setup } from "../../../testUtils";
 import { FileFormat } from "../../../../src/WorldGenerator";
+import { Segment } from '../../../../src/geometry/shapes/Segment';
+import { Point } from '../../../../src/geometry/shapes/Point';
 
 
 it ('Segment a vertical wall where it intersects with the horizontal walls', () => {

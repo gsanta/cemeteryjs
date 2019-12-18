@@ -1,9 +1,10 @@
-import { Point, Polygon } from '@nightshifts.inc/geometry';
 import { SubareaBuilder } from '../../../../../src/model/readers/builders/SubareaBuilder';
 import { setup } from '../../../../testUtils';
 import { TextWorldMapReader } from '../../../../../src/model/readers/text/TextWorldMapReader';
 import { WorldMapToSubareaMapConverter } from '../../../../../src/model/readers/text/WorldMapToSubareaMapConverter';
 import { FileFormat } from '../../../../../src/WorldGenerator';
+import { Polygon } from '../../../../../src/geometry/shapes/Polygon';
+import { Point } from '../../../../../src/geometry/shapes/Point';
 
 describe('SubareaParser', () => {
     it ('creates WorldItems for each subarea', () => {

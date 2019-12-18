@@ -3,6 +3,7 @@ export enum ToolType {
     RECTANGLE = 'rectangle',
     DELETE = 'delete',
     SELECT = 'select',
+    MOVE_AND_SELECT = 'move-and-select',
     MOVE = 'move'
 }
 

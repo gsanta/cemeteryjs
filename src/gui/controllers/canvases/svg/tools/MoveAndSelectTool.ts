@@ -5,15 +5,18 @@ import { PixelTag } from "../models/GridCanvasStore";
 import { MoveTool } from './MoveTool';
 import { SelectTool } from "./SelectTool";
 import { EventDispatcher } from '../../../events/EventDispatcher';
+import { AbstractTool } from './AbstractTool';
 
-export class MoveAndSelectTool extends AbstractSelectionTool {
+export class MoveAndSelectTool extends AbstractTool {
 
     private activeTool: Tool;
     private moveTool: MoveTool;
     private rectSelectTool: SelectTool;
+    private canvasController: SvgCanvasController;
 
     constructor(canvasController: SvgCanvasController, eventDispatcher: EventDispatcher) {
-        super(canvasController, ToolType.SELECT, true);
+        super(ToolType.MOVE_AND_SELECT);
+        this.canvasController = canvasController;
         this.moveTool = new MoveTool(canvasController, eventDispatcher);
         this.rectSelectTool = new SelectTool(canvasController);
 
@@ -52,8 +55,8 @@ export class MoveAndSelectTool extends AbstractSelectionTool {
         const selectedItems = PixelTag.getSelectedItems(this.canvasController.pixelModel.items);
         if (hoveredItem && selectedItems.includes(hoveredItem)) {
             this.activeTool = this.moveTool;
+        } else {
+            this.activeTool = this.rectSelectTool;
         }
-
-        this.activeTool = this.rectSelectTool;
     }
 }

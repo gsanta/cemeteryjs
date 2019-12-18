@@ -1,7 +1,9 @@
-import { Point, Polygon, Rectangle } from '@nightshifts.inc/geometry';
 import { SvgConfig } from './SvgConfig';
 import { last, without, sortNum } from '../../../../../model/utils/Functions';
 import { WorldItemShape } from '../../../../../model/types/GameObject';
+import { Point } from '../../../../../geometry/shapes/Point';
+import { Polygon } from '../../../../../geometry/shapes/Polygon';
+import { Rectangle } from '../../../../../geometry/shapes/Rectangle';
 
 export enum PixelTag {
     SELECTED = 'selected',
@@ -11,9 +13,8 @@ export enum PixelTag {
 export namespace PixelTag {
     export function removeTag(tag: PixelTag, tagged: {tags: PixelTag[]}[]) {
         tagged
-            .filter(pixel => pixel.tags.includes(tag))
             .forEach(pixel => {
-                pixel.tags = pixel.tags.filter(tag => tag !== tag)
+                pixel.tags = pixel.tags.filter(t => t !== tag)
             });
     }
 

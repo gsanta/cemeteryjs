@@ -2,7 +2,8 @@ import { BorderBuilder } from '../../../../../src/model/readers/builders/BorderB
 import { TextWorldMapReader } from '../../../../../src/model/readers/text/TextWorldMapReader';
 import { setup } from '../../../../testUtils';
 import { FileFormat } from '../../../../../src/WorldGenerator';
-import { Segment, Point } from '@nightshifts.inc/geometry';
+import { Segment } from '../../../../../src/geometry/shapes/Segment';
+import { Point } from '../../../../../src/geometry/shapes/Point';
 
 
 it ('Create separate items for every vertical/horizontal slices of walls', () => {

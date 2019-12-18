@@ -2,7 +2,7 @@ import { SvgCanvasController } from './SvgCanvasController';
 import { ICanvasReader } from '../ICanvasReader';
 import { GameObjectTemplate } from '../../../../model/types/GameObjectTemplate';
 import { PixelTag } from './models/GridCanvasStore';
-import { Rectangle } from '@nightshifts.inc/geometry';
+import { Rectangle } from '../../../../geometry/shapes/Rectangle';
 
 export class SvgCanvasReader implements ICanvasReader {
     private canvasController: SvgCanvasController;

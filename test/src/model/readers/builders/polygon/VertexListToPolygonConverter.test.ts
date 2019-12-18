@@ -3,7 +3,8 @@ import { FileFormat } from "../../../../../../src/WorldGenerator";
 import { TextWorldMapReader } from "../../../../../../src/model/readers/text/TextWorldMapReader";
 import { PolygonVertexListFinder } from "../../../../../../src/model/readers/builders/polygon/PolygonVertexListFinder";
 import { VertexListToPolygonConverter } from '../../../../../../src/model/readers/builders/polygon/VertexListToPolygonConverter';
-import { Polygon, Point } from "@nightshifts.inc/geometry";
+import { Polygon } from "../../../../../../src/geometry/shapes/Polygon";
+import { Point } from "../../../../../../src/geometry/shapes/Point";
 
 describe('Convert the polygon vertices in the graph to a polygon object', () => {
     function getPolygon(worldMap: string): Polygon {

@@ -1,5 +1,5 @@
 import { minBy, arraysEqual } from '../../../../src/model/utils/Functions';
-import { Point } from '@nightshifts.inc/geometry';
+import { Point } from '../../../../src/geometry/shapes/Point';
 
 
 describe('minBy', () => {

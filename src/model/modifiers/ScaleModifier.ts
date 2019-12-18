@@ -1,8 +1,8 @@
-import { Point } from '@nightshifts.inc/geometry';
 import { GameObject } from '../types/GameObject';
 import { WorldGeneratorServices } from '../services/WorldGeneratorServices';
 import { TreeIteratorGenerator } from '../utils/TreeIteratorGenerator';
 import { Modifier } from './Modifier';
+import { Point } from '../../geometry/shapes/Point';
 
 
 /**

@@ -1,5 +1,5 @@
 import { PolygonRedundantPointReducer } from '../../../../../src/model/readers/builders/PolygonRedundantPointReducer';
-import { Point } from '@nightshifts.inc/geometry';
+import { Point } from '../../../../../src/geometry/shapes/Point';
 
 describe('PolygonRedundantPointReducer', () => {
     describe('reduce', () => {

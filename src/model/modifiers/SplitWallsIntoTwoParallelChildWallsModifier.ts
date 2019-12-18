@@ -1,8 +1,9 @@
-import { Measurements, Segment } from '@nightshifts.inc/geometry';
 import { GameObject } from "../types/GameObject";
 import { GameObjectFactory } from '../services/GameObjectFactory';
 import { Modifier } from "./Modifier";
 import { ThickenBordersModifier } from "./ThickenBordersModifier";
+import { Segment } from "../../geometry/shapes/Segment";
+import { Measurements } from "../../geometry/utils/Measurements";
 
 export class SplitWallsIntoTwoParallelChildWallsModifier implements Modifier {
     static modName = 'splitWallsIntoTwoParallelChildWalls';

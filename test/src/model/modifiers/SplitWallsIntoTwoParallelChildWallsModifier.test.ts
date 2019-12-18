@@ -1,4 +1,3 @@
-import { Segment, StripeView } from "@nightshifts.inc/geometry";
 import { AssignBordersToRoomsModifier } from "../../../../src/model/modifiers/AssignBordersToRoomsModifier";
 import { BuildHierarchyModifier } from "../../../../src/model/modifiers/BuildHierarchyModifier";
 import { ChangeBorderWidthModifier } from '../../../../src/model/modifiers/ChangeBorderWidthModifier';
@@ -9,6 +8,8 @@ import { ThickenBordersModifier } from '../../../../src/model/modifiers/ThickenB
 import { FileFormat } from "../../../../src/WorldGenerator";
 import { GameObject } from '../../../../src/model/types/GameObject';
 import { setup } from "../../../testUtils";
+import { Segment } from "../../../../src/geometry/shapes/Segment";
+import { StripeView } from "../../../../src/geometry/shapes/StripeView";
 
 function createMap(worldMap: string) {
         return `

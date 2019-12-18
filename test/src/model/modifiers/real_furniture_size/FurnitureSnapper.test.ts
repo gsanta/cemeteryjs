@@ -1,11 +1,12 @@
 import { setupMap, setup } from "../../../../testUtils";
 import { ScaleModifier } from "../../../../../src/model/modifiers/ScaleModifier";
-import { Polygon, Point } from '@nightshifts.inc/geometry';
-import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { FurnitureSnapper, SnapType } from '../../../../../src/model/modifiers/real_furniture_size/FurnitureSnapper';
 import { GameObject } from '../../../../../src/model/types/GameObject';
 import { WorldGeneratorServices } from "../../../../../src/model/services/WorldGeneratorServices";
 import { FileFormat } from "../../../../../src/WorldGenerator";
+import { Segment } from "../../../../../src/geometry/shapes/Segment";
+import { Point } from "../../../../../src/geometry/shapes/Point";
+import { Polygon } from "../../../../../src/geometry/shapes/Polygon";
 
 it ('Rotates furniture to face the snapping edges if snaptype is "ROTATE_PARALLEL_FACE_TOWARD"', () => {
     const map = setupMap(

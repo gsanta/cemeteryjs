@@ -1,8 +1,9 @@
 import { ScaleModifier } from '../../../../src/model/modifiers/ScaleModifier';
 import { setup } from '../../../testUtils';
 import { FileFormat } from '../../../../src/WorldGenerator';
-import { Polygon, Point } from '@nightshifts.inc/geometry';
-import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
+import { Polygon } from '../../../../src/geometry/shapes/Polygon';
+import { Segment } from '../../../../src/geometry/shapes/Segment';
+import { Point } from '../../../../src/geometry/shapes/Point';
 
 it ('Scale the items', () => {
     const map = `

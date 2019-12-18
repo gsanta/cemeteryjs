@@ -3,7 +3,7 @@ import { GameObjectTemplate, WorldItemRole } from '../../types/GameObjectTemplat
 import { IConfigReader } from '../IConfigReader';
 import { GlobalConfig } from '../text/GlobalSectionParser';
 import { RawWorldMapJson, WgDefinition } from './WorldMapJson';
-import { Point } from '@nightshifts.inc/geometry';
+import { Point } from '../../../geometry/shapes/Point';
 
 export class SvgConfigReader implements IConfigReader {
     read(worldMap: string): {gameObjectTemplates: GameObjectTemplate[], globalConfig: GlobalConfig} {

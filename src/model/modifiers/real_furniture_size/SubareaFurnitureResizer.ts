@@ -1,8 +1,12 @@
-import { Polygon, Segment, Shape, Point, Distance } from "@nightshifts.inc/geometry";
 import { WorldItem } from "../../..";
 import { WorldGeneratorServices } from "../../services/WorldGeneratorServices";
 import { maxBy, minBy, without } from "../../utils/Functions";
 import { FurnitureSnapper, SnapType } from './FurnitureSnapper';
+import { Point } from "../../../geometry/shapes/Point";
+import { Polygon } from "../../../geometry/shapes/Polygon";
+import { Shape } from "../../../geometry/shapes/Shape";
+import { Segment } from "../../../geometry/shapes/Segment";
+import { Distance } from "../../../geometry/utils/Distance";
 
 
 export class SubareaFurnitureResizer {

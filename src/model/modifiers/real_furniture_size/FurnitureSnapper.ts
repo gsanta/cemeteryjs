@@ -1,5 +1,11 @@
-import { Angle, Distance, Line, Point, Polygon, Segment, Transform } from "@nightshifts.inc/geometry";
 import { WorldItem } from "../../..";
+import { Polygon } from "../../../geometry/shapes/Polygon";
+import { Segment } from "../../../geometry/shapes/Segment";
+import { Line } from "../../../geometry/shapes/Line";
+import { Distance } from "../../../geometry/utils/Distance";
+import { Transform } from "../../../geometry/utils/Transform";
+import { Angle } from "../../../geometry/shapes/Angle";
+import { Point } from "../../../geometry/shapes/Point";
 
 export enum SnapType {
     ROTATE_PARALLEL_FACE_TOWARD,

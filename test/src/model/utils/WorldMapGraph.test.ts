@@ -1,7 +1,6 @@
 import { LinesToGraphConverter } from '../../../../src/model/readers/text/LinesToGraphConverter';
-import { GameAssetStore } from '../../../../src/model/services/GameAssetStore';
 import { TextConfigReader } from '../../../../src/model/readers/text/TextConfigReader';
-import { Point } from '@nightshifts.inc/geometry';
+import { Point } from '../../../../src/geometry/shapes/Point';
 
 
 describe('MatrixGraph', () => {

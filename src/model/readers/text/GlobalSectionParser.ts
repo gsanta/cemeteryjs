@@ -1,6 +1,6 @@
 
 import { WorldMapLineListener, TextWorldMapParser } from "./TextWorldMapParser";
-import { Point } from "@nightshifts.inc/geometry";
+import { Point } from "../../../geometry/shapes/Point";
 
 const GLOBALS_SECTION_LINE_REGEX = /^(\S*)/;
 

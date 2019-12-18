@@ -1,10 +1,7 @@
-import { ToolType } from "./Tool";
-import { AbstractSelectionTool } from "./AbstractSelectionTool";
-import { SvgCanvasController } from "../SvgCanvasController";
-import { WorldMapGraph } from '../../../../../model/types/WorldMapGraph';
-import { SvgWorldMapReader } from '../../../../../model/readers/svg/SvgWorldMapReader';
 import { PixelTag } from "../models/GridCanvasStore";
-import { Point } from "@nightshifts.inc/geometry";
+import { SvgCanvasController } from "../SvgCanvasController";
+import { AbstractSelectionTool } from "./AbstractSelectionTool";
+import { ToolType } from "./Tool";
 
 
 export class SelectTool extends AbstractSelectionTool {

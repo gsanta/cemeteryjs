@@ -1,7 +1,7 @@
 import { WorldMapLineListener, TextWorldMapParser } from "./TextWorldMapParser";
-import { Point } from "@nightshifts.inc/geometry";
 import { GameObjectTemplate, WorldItemRole } from '../../types/GameObjectTemplate';
 import { IConfigReader } from '../IConfigReader';
+import { Point } from "../../../geometry/shapes/Point";
 
 const GLOBALS_SECTION_LINE_REGEX = /^(\S*)/;
 

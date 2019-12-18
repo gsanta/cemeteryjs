@@ -1,8 +1,9 @@
 
-import { Line, Segment } from "@nightshifts.inc/geometry";
 import { GameObject } from "../types/GameObject";
 import { Modifier } from "./Modifier";
 import { SplitWallsIntoTwoParallelChildWallsModifier } from './SplitWallsIntoTwoParallelChildWallsModifier';
+import { Segment } from "../../geometry/shapes/Segment";
+import { Line } from "../../geometry/shapes/Line";
 
 
 export class NormalizeBorderRotationModifier implements Modifier {

@@ -1,6 +1,6 @@
-import { Point } from '@nightshifts.inc/geometry';
 import { SvgCanvasController } from '../SvgCanvasController';
 import { CanvasItem, PixelTag } from '../models/GridCanvasStore';
+import { Point } from '../../../../../geometry/shapes/Point';
 
 function calcOffsetFromDom(bitmapEditorId: string): Point {
     if (typeof document !== 'undefined') {

@@ -1,8 +1,9 @@
-import { Point, Shape } from "@nightshifts.inc/geometry";
 import { Skeleton, Mesh } from 'babylonjs';
 import { MeshTemplate } from '../../MeshTemplate';
 import { GameObjectTemplate, WorldItemRole } from './GameObjectTemplate';
 import { FileData } from '../../gui/controllers/canvases/svg/models/GridCanvasStore';
+import { Shape } from '../../geometry/shapes/Shape';
+import { Point } from '../../geometry/shapes/Point';
 
 export enum WorldItemShape {
     RECTANGLE = 'rect',

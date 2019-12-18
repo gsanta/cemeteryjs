@@ -1,4 +1,4 @@
-import { Point } from "@nightshifts.inc/geometry";
+import { Point } from "../../../../../geometry/shapes/Point";
 
 
 export class Rectangle {

@@ -1,13 +1,13 @@
-import { Point, Segment } from '@nightshifts.inc/geometry';
-import { RoomUtils } from "../utils/RoomUtils";
-import { GameObject } from "../types/GameObject";
 import { WorldItemUtils } from "../../WorldItemUtils";
-import { Modifier } from "./Modifier";
-import { GameAssetStore } from '../services/GameAssetStore';
-import { last } from '../utils/Functions';
-import { AssignBordersToRoomsModifier } from './AssignBordersToRoomsModifier';
-import { GameObjectTemplate } from '../types/GameObjectTemplate';
 import { WorldGeneratorServices } from '../services/WorldGeneratorServices';
+import { GameObject } from "../types/GameObject";
+import { GameObjectTemplate } from '../types/GameObjectTemplate';
+import { last } from '../utils/Functions';
+import { RoomUtils } from "../utils/RoomUtils";
+import { AssignBordersToRoomsModifier } from './AssignBordersToRoomsModifier';
+import { Modifier } from "./Modifier";
+import { Segment } from "../../geometry/shapes/Segment";
+import { Point } from "../../geometry/shapes/Point";
 
 /**
  * This transformator can be used to adjust the width of a border item to it's real width.

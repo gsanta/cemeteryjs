@@ -2,7 +2,7 @@
 import { setupControllers, drawRectangle, selectWithClick } from '../../../../guiTestUtils';
 import { PixelTag } from "../../../../../../../src/gui/controllers/canvases/svg/models/GridCanvasStore";
 import { ToolType } from "../../../../../../../src/gui/controllers/canvases/svg/tools/Tool";
-import { Point } from '@nightshifts.inc/geometry';
+import { Point } from '../../../../../../../src/geometry/shapes/Point';
 
 it ('Select via clicking on an item', () => {
     const controllers = setupControllers(); 

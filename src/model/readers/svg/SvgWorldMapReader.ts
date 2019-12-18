@@ -1,9 +1,9 @@
-import { Point } from '@nightshifts.inc/geometry';
 import { WorldMapGraph } from '../../types/WorldMapGraph';
 import { maxBy, minBy } from '../../utils/Functions';
 import { IWorldMapReader } from '../IWorldMapReader';
 import { SvgPreprocessor } from './SvgPreprocessor';
 import { ProcessedWorldMapJson, Rect } from './WorldMapJson';
+import { Point } from '../../../geometry/shapes/Point';
 
 export class SvgWorldMapReader implements IWorldMapReader {
     private removeEmptyFrame: boolean;

@@ -1,9 +1,9 @@
 import { SvgCanvasController } from '../SvgCanvasController';
 import { AbstractSelectionTool } from './AbstractSelectionTool';
 import { ToolType } from './Tool';
-import { Rectangle } from '@nightshifts.inc/geometry';
 import { EventDispatcher } from '../../../events/EventDispatcher';
 import { Events } from '../../../events/Events';
+import { Rectangle } from '../../../../../geometry/shapes/Rectangle';
 
 export class DeleteTool extends AbstractSelectionTool {
     private eventDispatcher: EventDispatcher;

@@ -1,5 +1,5 @@
 import { SvgConfigReader } from '../../../../../src/model/readers/svg/SvgConfigReader';
-import { Point } from '@nightshifts.inc/geometry';
+import { Point } from '../../../../../src/geometry/shapes/Point';
 
 it ('Read the world item definition related config from the svg file', () => {
     var worldMap =

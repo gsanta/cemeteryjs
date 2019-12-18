@@ -1,5 +1,3 @@
-import { Point, Polygon } from "@nightshifts.inc/geometry";
-import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { GameObject } from '../../types/GameObject';
 import { GameObjectTemplate } from "../../types/GameObjectTemplate";
 import { WorldMapGraph } from '../../types/WorldMapGraph';
@@ -8,6 +6,9 @@ import { WorldGeneratorServices } from '../../services/WorldGeneratorServices';
 import { last, without } from '../../utils/Functions';
 import { PolygonRedundantPointReducer } from "./PolygonRedundantPointReducer";
 import { IGameObjectBuilder } from '../IGameObjectBuilder';
+import { Point } from '../../../geometry/shapes/Point';
+import { Polygon } from '../../../geometry/shapes/Polygon';
+import { Segment } from '../../../geometry/shapes/Segment';
 
 /**
  * @hidden

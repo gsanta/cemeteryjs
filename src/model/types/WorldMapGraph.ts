@@ -1,5 +1,5 @@
 import { without } from '../utils/Functions';
-import { Point } from '@nightshifts.inc/geometry';
+import { Point } from '../../geometry/shapes/Point';
 
 export class WorldMapGraph {
     private numberOfNodes = 0;

@@ -1,7 +1,9 @@
-import { Polygon, Point, Shape } from '@nightshifts.inc/geometry';
 import { GameObject, WorldItemShape } from '../types/GameObject';
 import { WorldGeneratorServices } from './WorldGeneratorServices';
 import { GameObjectTemplate, WorldItemRole } from '../types/GameObjectTemplate';
+import { Shape } from '../../geometry/shapes/Shape';
+import { Point } from '../../geometry/shapes/Point';
+import { Polygon } from '../../geometry/shapes/Polygon';
 
 export interface GameObjectConfig {
     type?: string;

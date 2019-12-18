@@ -1,4 +1,3 @@
-import { Segment, Point } from '@nightshifts.inc/geometry';
 import { GameObject } from '../../types/GameObject';
 import { WorldMapGraph } from '../../types/WorldMapGraph';
 import { IWorldMapReader } from '../IWorldMapReader';
@@ -6,6 +5,8 @@ import { WorldGeneratorServices } from '../../services/WorldGeneratorServices';
 import { last, without, sortNum } from '../../utils/Functions';
 import { GameObjectTemplate } from '../../types/GameObjectTemplate';
 import { IGameObjectBuilder } from '../IGameObjectBuilder';
+import { Point } from '../../../geometry/shapes/Point';
+import { Segment } from '../../../geometry/shapes/Segment';
 
 interface Border {
     vertices: number[];

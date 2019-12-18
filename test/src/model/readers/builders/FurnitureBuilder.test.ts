@@ -1,8 +1,8 @@
-import { Polygon } from '@nightshifts.inc/geometry';
 import { FurnitureBuilder } from '../../../../../src/model/readers/builders/FurnitureBuilder';
 import { TextWorldMapReader } from '../../../../../src/model/readers/text/TextWorldMapReader';
 import { setup } from '../../../../testUtils';
 import { FileFormat } from '../../../../../src/WorldGenerator';
+import { Polygon } from '../../../../../src/geometry/shapes/Polygon';
 
 describe('FurnitureBuilder', () => {
     describe('generate', () => {

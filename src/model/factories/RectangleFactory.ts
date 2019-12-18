@@ -1,9 +1,8 @@
-import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { Axis, Mesh, MeshBuilder, Scene, Space, Vector3 } from 'babylonjs';
 import { GameObject } from '../types/GameObject';
 import { MaterialFactory } from './MaterialFactory';
-import { GameObjectTemplate } from '../types/GameObjectTemplate';
-import { Polygon } from '@nightshifts.inc/geometry';
+import { Polygon } from '../../geometry/shapes/Polygon';
+import { Segment } from '../../geometry/shapes/Segment';
 
 export class RectangleFactory  {
     private materialFactory: MaterialFactory;

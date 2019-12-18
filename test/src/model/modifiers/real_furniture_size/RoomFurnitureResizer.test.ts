@@ -7,7 +7,8 @@ import { SegmentBordersModifier } from "../../../../../src/model/modifiers/Segme
 import { setup, setupTestEnv } from "../../../../testUtils";
 import { FileFormat } from '../../../../../src/WorldGenerator';
 import { FakeModelLoader } from '../../../../fakes/FakeModelLoader';
-import { Point, Polygon } from '@nightshifts.inc/geometry';
+import { Point } from '../../../../../src/geometry/shapes/Point';
+import { Polygon } from '../../../../../src/geometry/shapes/Polygon';
 
 it ('Resize each funrinture in the room', () => {
 

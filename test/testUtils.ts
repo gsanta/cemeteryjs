@@ -1,4 +1,3 @@
-import { Shape } from '@nightshifts.inc/geometry';
 import { Scene } from 'babylonjs';
 import { WorldGeneratorServices } from '../src/model/services/WorldGeneratorServices';
 import { TreeIteratorGenerator } from '../src/model/utils/TreeIteratorGenerator';
@@ -7,6 +6,7 @@ import { GameObject } from '../src/model/types/GameObject';
 import { FakeModelLoader } from './fakes/FakeModelLoader';
 import { FakeCreateMeshModifier } from './fakes/FakeCreateMeshModifier';
 import { GameAssetStore } from '../src/model/services/GameAssetStore';
+import { Shape } from '../src/geometry/shapes/Shape';
 
 
 /**

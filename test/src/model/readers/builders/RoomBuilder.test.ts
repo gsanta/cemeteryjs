@@ -1,10 +1,11 @@
-import { Point, Polygon } from '@nightshifts.inc/geometry';
 import * as fs from 'fs';
 import { RoomBuilder } from '../../../../../src/model/readers/builders/RoomBuilder';
 import { TextWorldMapReader } from '../../../../../src/model/readers/text/TextWorldMapReader';
 import { WorldMapToRoomMapConverter } from '../../../../../src/model/readers/text/WorldMapToRoomMapConverter';
 import { setup } from '../../../../testUtils';
 import { FileFormat } from '../../../../../src/WorldGenerator';
+import { Point } from '../../../../../src/geometry/shapes/Point';
+import { Polygon } from '../../../../../src/geometry/shapes/Polygon';
 
 describe('RoomParser', () => {
     describe ('generate', () => {

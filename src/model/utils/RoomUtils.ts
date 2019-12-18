@@ -1,6 +1,7 @@
-import { Point, Measurements } from '@nightshifts.inc/geometry';
 import { GameObject } from '../types/GameObject';
 import { without, last } from './Functions';
+import { Measurements } from '../../geometry/utils/Measurements';
+import { Point } from '../../geometry/shapes/Point';
 
 export class RoomUtils {
     public static orderBorderItemsAroundRoomClockwise(room: GameObject) {

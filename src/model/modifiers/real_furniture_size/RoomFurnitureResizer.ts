@@ -1,8 +1,11 @@
 import { FurnitureSnapper, SnapType } from './FurnitureSnapper';
 import { WorldGeneratorServices } from "../../services/WorldGeneratorServices";
 import { GameObject } from "../../types/GameObject";
-import { Segment, Distance, Polygon, Shape, Measurements } from '@nightshifts.inc/geometry';
-
+import { Polygon } from '../../../geometry/shapes/Polygon';
+import { Shape } from '../../../geometry/shapes/Shape';
+import { Segment } from '../../../geometry/shapes/Segment';
+import { Distance } from '../../../geometry/utils/Distance';
+import { Measurements } from '../../../geometry/utils/Measurements';
 
 export class RoomFurnitureResizer {
     private parallelFurnitureSnapper: FurnitureSnapper;

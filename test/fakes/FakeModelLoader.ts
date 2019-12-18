@@ -1,5 +1,5 @@
 import { ModelLoader, ModelData } from '../../src/model/services/ModelLoader';
-import { Point } from '@nightshifts.inc/geometry';
+import { Point } from '../../src/geometry/shapes/Point';
 
 export class FakeModelLoader extends ModelLoader {
 

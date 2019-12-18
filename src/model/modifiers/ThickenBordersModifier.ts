@@ -1,8 +1,8 @@
 
-import { Segment } from "@nightshifts.inc/geometry";
 import { GameObject } from "../types/GameObject";
 import { Modifier } from "./Modifier";
 import { ChangeBorderWidthModifier } from './ChangeBorderWidthModifier';
+import { Segment } from "../../geometry/shapes/Segment";
 
 
 export class ThickenBordersModifier implements Modifier {

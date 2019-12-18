@@ -1,13 +1,13 @@
-import { Point, Rectangle } from '@nightshifts.inc/geometry';
 import { SvgConfigReader } from '../../../../model/readers/svg/SvgConfigReader';
 import { SvgPreprocessor } from '../../../../model/readers/svg/SvgPreprocessor';
-import { FileFormat } from '../../../../WorldGenerator';
 import { ICanvasWriter } from '../ICanvasWriter';
 import { SvgCanvasController } from './SvgCanvasController';
 import { EventDispatcher } from '../../events/EventDispatcher';
 import { Events } from '../../events/Events';
 import { CanvasItem } from './models/GridCanvasStore';
 import { WorldItemShape } from '../../../../model/types/GameObject';
+import { Rectangle } from '../../../../geometry/shapes/Rectangle';
+import { Point } from '../../../../geometry/shapes/Point';
 
 export class SvgCanvasWriter implements ICanvasWriter {
     private svgCanvasController: SvgCanvasController;

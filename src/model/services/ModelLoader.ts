@@ -1,7 +1,7 @@
-import { Point } from "@nightshifts.inc/geometry";
 import { AnimationGroup, ParticleSystem, Scene, SceneLoader, Skeleton, StandardMaterial, Texture, Mesh, InstancedMesh, AbstractMesh } from 'babylonjs';
 import { WorldItem } from "../..";
 import { FileData } from '../../gui/controllers/canvases/svg/models/GridCanvasStore';
+import { Point } from '../../geometry/shapes/Point';
 
 export interface ModelData {
     mesh: Mesh;

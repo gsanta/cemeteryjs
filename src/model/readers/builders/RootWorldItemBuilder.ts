@@ -1,10 +1,10 @@
-import { Polygon } from "@nightshifts.inc/geometry";
 import { GameObject } from "../../types/GameObject";
 import { WorldMapGraph } from "../../types/WorldMapGraph";
 import { IWorldMapReader } from '../IWorldMapReader';
 import { WorldGeneratorServices } from '../../services/WorldGeneratorServices';
 import { GameObjectTemplate } from "../../types/GameObjectTemplate";
 import { IGameObjectBuilder } from '../IGameObjectBuilder';
+import { Polygon } from "../../../geometry/shapes/Polygon";
 
 export class RootWorldItemBuilder implements IGameObjectBuilder {
     private worldMapReader: IWorldMapReader;

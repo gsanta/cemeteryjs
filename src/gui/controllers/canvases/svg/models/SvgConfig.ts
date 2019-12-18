@@ -1,5 +1,6 @@
-import { Point, Segment } from "@nightshifts.inc/geometry";
 import { range } from "../../../../../model/utils/Functions";
+import { Point } from '../../../../../geometry/shapes/Point';
+import { Segment } from '../../../../../geometry/shapes/Segment';
 
 export class SvgConfig {
     canvasDimensions = new Point(1500, 1000);

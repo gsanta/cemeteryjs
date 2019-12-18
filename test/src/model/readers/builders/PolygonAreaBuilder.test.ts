@@ -1,8 +1,9 @@
-import { Point, Polygon } from '@nightshifts.inc/geometry';
 import { PolygonShapeBuilder } from "../../../../../src/model/readers/builders/PolygonShapeBuilder";
 import { TextWorldMapReader } from '../../../../../src/model/readers/text/TextWorldMapReader';
 import { setup } from "../../../../testUtils";
 import { FileFormat } from '../../../../../src/WorldGenerator';
+import { Polygon } from "../../../../../src/geometry/shapes/Polygon";
+import { Point } from "../../../../../src/geometry/shapes/Point";
 
 it ('Create items for a given type which is represented on the world map by a polygon shape.', () => {
     const map = `

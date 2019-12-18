@@ -1,6 +1,7 @@
 import { WorldMapGraph } from '../../../types/WorldMapGraph';
-import { Polygon, Point } from '@nightshifts.inc/geometry';
 import { PolygonVertex, Direction } from './PolygonVertexListFinder';
+import { Point } from '../../../../geometry/shapes/Point';
+import { Polygon } from '../../../../geometry/shapes/Polygon';
 
 export class VertexListToPolygonConverter {
     convert(vertexes: PolygonVertex[], graph: WorldMapGraph): Polygon {

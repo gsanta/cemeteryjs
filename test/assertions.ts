@@ -1,8 +1,9 @@
 import { GameObject } from '../src/model/types/GameObject';
-import { Shape, Point } from '@nightshifts.inc/geometry';
 import { GameObjectTemplate } from '../src/model/types/GameObjectTemplate';
 import { arraysEqual } from '../src/model/utils/Functions';
 import { WorldGeneratorServices } from '../src/model/services/WorldGeneratorServices';
+import { Shape } from '../src/geometry/shapes/Shape';
+import { Point } from '../src/geometry/shapes/Point';
 
 declare global {
     namespace jest {

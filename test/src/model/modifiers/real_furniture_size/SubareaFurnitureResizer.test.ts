@@ -5,7 +5,8 @@ import { BuildHierarchyModifier } from "../../../../../src/model/modifiers/Build
 import { SubareaFurnitureResizer } from "../../../../../src/model/modifiers/real_furniture_size/SubareaFurnitureResizer";
 import { FileFormat } from "../../../../../src/WorldGenerator";
 import { FakeModelLoader } from "../../../../fakes/FakeModelLoader";
-import { Point, Polygon } from "@nightshifts.inc/geometry";
+import { Point } from "../../../../../src/geometry/shapes/Point";
+import { Polygon } from "../../../../../src/geometry/shapes/Polygon";
 
 it ('Snap furnitures in a subarea to the biggest furniture in that subarea', () => {
     const map = `

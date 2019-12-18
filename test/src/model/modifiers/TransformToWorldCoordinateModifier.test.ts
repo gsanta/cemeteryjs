@@ -1,6 +1,7 @@
-import { Polygon, Shape } from '@nightshifts.inc/geometry';
 import { TransformToWorldCoordinateModifier } from '../../../../src/model/modifiers/TransformToWorldCoordinateModifier';
 import { GameObject } from '../../../../src/model/types/GameObject';
+import { Shape } from '../../../../src/geometry/shapes/Shape';
+import { Polygon } from '../../../../src/geometry/shapes/Polygon';
 
 
 describe(`TransformToWorldCoordinateModifier`, () => {

@@ -1,9 +1,7 @@
 import { WorldItemUtils } from "../../WorldItemUtils";
 import { GameObject } from "../types/GameObject";
-import { Polygon, Segment, Distance, Line, Angle, Transform, Measurements, Shape } from '@nightshifts.inc/geometry';
 import { Modifier } from './Modifier';
 import { NormalizeBorderRotationModifier } from "./NormalizeBorderRotationModifier";
-import { MeshTemplateService } from "../services/MeshTemplateService";
 import { RoomFurnitureResizer } from './real_furniture_size/RoomFurnitureResizer';
 import { WorldGeneratorServices } from '../services/WorldGeneratorServices';
 import { flat } from "../utils/Functions";

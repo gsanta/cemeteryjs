@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { AppContextType, AppContext } from '../../Context';
 import styled from 'styled-components';
-import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { colors } from '../../styles';
 import { WgDefinitionAttributes } from '../../../../model/readers/svg/WorldMapJson';
 import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvasController';
 import { CanvasComponent } from '../CanvasComponent';
-import { Rectangle } from '@nightshifts.inc/geometry';
 import { PixelTag } from '../../../controllers/canvases/svg/models/GridCanvasStore';
+import { Rectangle } from '../../../../geometry/shapes/Rectangle';
+import { Segment } from '../../../../geometry/shapes/Segment';
 
 const EditorComponentStyled = styled.div`
     height: 100%;

@@ -1,12 +1,13 @@
-import { Polygon, Point } from '@nightshifts.inc/geometry';
 import { AssignBordersToRoomsModifier } from "../../../../src/model/modifiers/AssignBordersToRoomsModifier";
 import { BuildHierarchyModifier } from "../../../../src/model/modifiers/BuildHierarchyModifier";
 import { ChangeBorderWidthModifier } from "../../../../src/model/modifiers/ChangeBorderWidthModifier";
 import { ChangeFurnitureSizeModifier } from '../../../../src/model/modifiers/ChangeFurnitureSizeModifier';
 import { SegmentBordersModifier } from "../../../../src/model/modifiers/SegmentBordersModifier";
 import { FileFormat } from '../../../../src/WorldGenerator';
-import { setup, setupMap, setupTestEnv } from '../../../testUtils';
 import { FakeModelLoader } from '../../../fakes/FakeModelLoader';
+import { setupMap, setupTestEnv } from '../../../testUtils';
+import { Point } from "../../../../src/geometry/shapes/Point";
+import { Polygon } from "../../../../src/geometry/shapes/Polygon";
 
 describe('ChangeFurnitureSizeModifier', () => {
     it ('transforms the sketched furniture dimensions into real mesh dimensions', () => {

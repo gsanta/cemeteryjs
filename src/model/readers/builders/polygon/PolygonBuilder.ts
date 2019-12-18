@@ -1,4 +1,3 @@
-import { Polygon } from '@nightshifts.inc/geometry';
 import { WorldItem } from '../../../..';
 import { IWorldMapReader } from '../../IWorldMapReader';
 import { WorldGeneratorServices } from '../../../services/WorldGeneratorServices';
@@ -6,6 +5,7 @@ import { PolygonVertexListFinder } from './PolygonVertexListFinder';
 import { VertexListToPolygonConverter } from './VertexListToPolygonConverter';
 import { GameObjectTemplate } from '../../../types/GameObjectTemplate';
 import { IGameObjectBuilder } from '../../IGameObjectBuilder';
+import { Polygon } from '../../../../geometry/shapes/Polygon';
 
 export class PolygonBuilder implements IGameObjectBuilder {
     private worldMapReader: IWorldMapReader;

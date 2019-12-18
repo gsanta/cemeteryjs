@@ -2,10 +2,11 @@ import { IGameObjectBuilder } from "../IGameObjectBuilder";
 import { GameObject, WorldItemShape } from '../../types/GameObject';
 import { SvgPreprocessor } from "./SvgPreprocessor";
 import { Rect, ProcessedWorldMapJson } from './WorldMapJson';
-import { Point, Rectangle } from "@nightshifts.inc/geometry";
 import { WorldGeneratorServices } from '../../services/WorldGeneratorServices';
 import { minBy, maxBy } from "../../utils/Functions";
 import { GameObjectTemplate } from "../../types/GameObjectTemplate";
+import { Rectangle } from "../../../geometry/shapes/Rectangle";
+import { Point } from "../../../geometry/shapes/Point";
 
 export class SvgGameObjectBuilder implements IGameObjectBuilder {
     private svgPreprocessor: SvgPreprocessor;

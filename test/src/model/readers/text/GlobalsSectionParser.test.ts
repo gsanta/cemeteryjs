@@ -1,5 +1,5 @@
 import { GlobalsSectionParser } from "../../../../../src/model/readers/text/GlobalSectionParser";
-import { Point } from "@nightshifts.inc/geometry";
+import { Point } from "../../../../../src/geometry/shapes/Point";
 
 it ('Parse scale property', () => {
     const worldMap = `

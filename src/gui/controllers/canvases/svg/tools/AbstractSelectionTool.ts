@@ -1,7 +1,7 @@
 import { SvgCanvasController } from '../SvgCanvasController';
-import { Tool, ToolType } from './Tool';
-import { Point } from '@nightshifts.inc/geometry';
 import { AbstractTool } from './AbstractTool';
+import { ToolType } from './Tool';
+import { Point } from '../../../../../geometry/shapes/Point';
 
 export class AbstractSelectionTool extends AbstractTool {
     type: ToolType;

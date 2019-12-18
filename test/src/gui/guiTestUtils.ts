@@ -1,8 +1,6 @@
 import { ControllerFacade } from '../../../src/gui/controllers/ControllerFacade';
 import { UIUpdateController } from '../../../src/gui/controllers/UIUpdateController';
-import { SvgCanvasController } from '../../../src/gui/controllers/canvases/svg/SvgCanvasController';
-import { FileFormat } from '../../../src/WorldGenerator';
-import { Point } from '@nightshifts.inc/geometry';
+import { Point } from '../../../src/geometry/shapes/Point';
 
 
 const defaultTestSvg = `

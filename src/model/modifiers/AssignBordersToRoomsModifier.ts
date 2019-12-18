@@ -1,10 +1,13 @@
-import { Line, Point, Measurements, Distance } from '@nightshifts.inc/geometry';
-import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { GameObject } from '../types/GameObject';
 import { WorldItemUtils } from '../../WorldItemUtils';
 import { WorldGeneratorServices } from '../services/WorldGeneratorServices';
 import { BuildHierarchyModifier } from './BuildHierarchyModifier';
 import { Modifier } from './Modifier';
+import { Segment } from '../../geometry/shapes/Segment';
+import { Measurements } from '../../geometry/utils/Measurements';
+import { Distance } from '../../geometry/utils/Distance';
+import { Point } from '../../geometry/shapes/Point';
+import { Line } from '../../geometry/shapes/Line';
 
 export class AssignBordersToRoomsModifier implements Modifier {
     static modName = 'assignBordersToRooms';

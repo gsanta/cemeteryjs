@@ -59,7 +59,6 @@ export class SvgCanvasController implements IEditableCanvas {
     canvasItemSettingsForm: CanvasItemSettingsForm;
 
     selectedTool = ToolType.RECTANGLE;
-    private activeTool: Tool;
 
     private renderCanvasFunc = () => null;
     private renderToolbarFunc = () => null;
@@ -81,7 +80,6 @@ export class SvgCanvasController implements IEditableCanvas {
         this.tools = [
             new RectangleTool(this, this.controllers.eventDispatcher),
             new DeleteTool(this, this.controllers.eventDispatcher),
-            new SelectTool(this),
             new MoveAndSelectTool(this, this.controllers.eventDispatcher)
         ];
 
@@ -104,25 +102,13 @@ export class SvgCanvasController implements IEditableCanvas {
 
     setActiveTool(toolType: ToolType) {
         this.selectedTool = toolType;
-        // this.activeTool = this.tools.find(tool => tool.type === toolType);
         this.renderToolbar();
     }
 
     getActiveTool(): Tool {
         switch(this.selectedTool) {
-
-            case ToolType.SELECT:
-                if (this.activeTool && this.activeTool.type === ToolType.MOVE) {
-                    if (this.mouseController.isDrag) {
-
-                    }
-                }
-
-                const hoveredItem = PixelTag.getHoveredItem(this.pixelModel.items);
-                if (hoveredItem && PixelTag.getSelectedItems(this.pixelModel.items).includes(hoveredItem)) {
-                    return this.findToolByType(ToolType.MOVE);
-                }
-                return this.findToolByType(ToolType.SELECT);
+            case ToolType.MOVE_AND_SELECT:
+                return this.findToolByType(ToolType.MOVE_AND_SELECT);
             case ToolType.DELETE:
                 return this.findToolByType(ToolType.DELETE);
             case ToolType.RECTANGLE:

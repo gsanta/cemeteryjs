@@ -2,7 +2,9 @@ import { AssignBordersToRoomsModifier } from '../../../../src/model/modifiers/As
 import { SegmentBordersModifier } from '../../../../src/model/modifiers/SegmentBordersModifier';
 import { setup } from '../../../testUtils';
 import { FileFormat } from '../../../../src/WorldGenerator';
-import { Segment, Point, Polygon } from '@nightshifts.inc/geometry';
+import { Segment } from '../../../../src/geometry/shapes/Segment';
+import { Point } from '../../../../src/geometry/shapes/Point';
+import { Polygon } from '../../../../src/geometry/shapes/Polygon';
 
 it ('Add the correct borders to a single room', () => {
     const map = `

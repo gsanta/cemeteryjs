@@ -1,4 +1,3 @@
-import { Polygon, Point } from '@nightshifts.inc/geometry';
 import { GameObject } from '../../types/GameObject';
 import { WorldMapGraph } from '../../types/WorldMapGraph';
 import { IWorldMapReader } from '../IWorldMapReader';
@@ -6,6 +5,8 @@ import { WorldGeneratorServices } from '../../services/WorldGeneratorServices';
 import { flat, last, maxBy, minBy, without } from '../../utils/Functions';
 import { GameObjectTemplate } from '../../types/GameObjectTemplate';
 import { IGameObjectBuilder } from '../IGameObjectBuilder';
+import { Polygon } from '../../../geometry/shapes/Polygon';
+import { Point } from '../../../geometry/shapes/Point';
 
 export class FurnitureBuilder implements IGameObjectBuilder {
     private worldMapReader: IWorldMapReader

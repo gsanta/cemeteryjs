@@ -1,8 +1,7 @@
 import { WorldMapGraph } from '../../types/WorldMapGraph';
 import { GameObjectTemplate } from '../../types/GameObjectTemplate';
 import { GlobalConfig } from '../text/GlobalSectionParser';
-import { Point } from '@nightshifts.inc/geometry';
-
+import { Point } from '../../../geometry/shapes/Point';
 
 export class SvgWorldMapWriter {
     write(worldMapGraph: WorldMapGraph, worldItemDefinitions: GameObjectTemplate[], globalConfig: GlobalConfig): string {

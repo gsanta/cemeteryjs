@@ -2,7 +2,7 @@ import { Direction, PolygonVertexListFinder } from '../../../../../../src/model/
 import { TextWorldMapReader } from '../../../../../../src/model/readers/text/TextWorldMapReader';
 import { FileFormat } from '../../../../../../src/WorldGenerator';
 import { setup } from '../../../../../testUtils';
-import { Point } from '@nightshifts.inc/geometry';
+import { Point } from '../../../../../../src/geometry/shapes/Point';
 
 describe('Find the vertices of a polygon in the graph', () => {
     function getVertices(worldMap: string): [{x: number, y: number}[], Direction[], boolean[]] {

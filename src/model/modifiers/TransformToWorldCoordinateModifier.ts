@@ -1,6 +1,5 @@
 import { GameObject } from "../types/GameObject";
 import { Modifier } from "./Modifier";
-import { Shape, Point } from "@nightshifts.inc/geometry";
 import { TreeIteratorGenerator } from "../utils/TreeIteratorGenerator";
 
 export class TransformToWorldCoordinateModifier implements Modifier {

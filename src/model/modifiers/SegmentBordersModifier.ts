@@ -1,10 +1,11 @@
-import { Point, Measurements } from '@nightshifts.inc/geometry';
-import { Segment } from '@nightshifts.inc/geometry/build/shapes/Segment';
 import { GameObject } from "../types/GameObject";
 import { WorldItemUtils } from '../../WorldItemUtils';
 import { WorldGeneratorServices } from '../services/WorldGeneratorServices';
 import { without } from '../utils/Functions';
 import { Modifier } from './Modifier';
+import { Segment } from "../../geometry/shapes/Segment";
+import { Measurements } from "../../geometry/utils/Measurements";
+import { Point } from "../../geometry/shapes/Point";
 
 /**
  * If a border spans alongside multiple rooms it cuts the border into pieces so that each piece will separate exactly two neigbouring rooms

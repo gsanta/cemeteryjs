@@ -1,5 +1,5 @@
-import { Point } from "@nightshifts.inc/geometry";
 import { Rectangle } from './Rectangle';
+import { Point } from '../../../../../geometry/shapes/Point';
 
 export class SelectionModel {
     isVisible: boolean;
