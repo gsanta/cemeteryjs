@@ -4,6 +4,7 @@ import { SvgCanvasController } from "../SvgCanvasController";
 import { AbstractTool } from './AbstractTool';
 import { ToolType } from './Tool';
 import { Polygon } from "../../../../../geometry/shapes/Polygon";
+import { Events } from '../../../events/Events';
 
 export class MoveTool extends AbstractTool {
     private eventDispatcher: EventDispatcher;
@@ -30,7 +31,7 @@ export class MoveTool extends AbstractTool {
         super.drag();
         
         const mouseController = this.canvasController.mouseController;
-        
+    
         const selectedItems = PixelTag.getSelectedItems(this.canvasController.pixelModel.items);
         const mouseDelta = mouseController.movePoint.subtract(mouseController.downPoint);
         mouseDelta.x = Math.floor(mouseDelta.x / this.canvasController.configModel.pixelSize);
@@ -39,5 +40,10 @@ export class MoveTool extends AbstractTool {
         selectedItems.forEach((item, index) => item.polygon = this.origDimensions[index].translate(mouseDelta));
 
         this.canvasController.renderCanvas();
+    }
+
+    up() {
+        super.up();
+        this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
     }
 }

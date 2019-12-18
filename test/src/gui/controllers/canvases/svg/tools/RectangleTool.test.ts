@@ -14,7 +14,6 @@ it ('Draw a rectangle shape', () => {
     expect(canvasController.pixelModel.items.length).toEqual(1);
 
     const expectedObj = { 
-        indexes: [0, 1],
         layer: 0,
         type: 'wall'
     };

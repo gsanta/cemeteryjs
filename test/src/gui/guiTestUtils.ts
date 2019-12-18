@@ -1,6 +1,7 @@
 import { ControllerFacade } from '../../../src/gui/controllers/ControllerFacade';
 import { UIUpdateController } from '../../../src/gui/controllers/UIUpdateController';
 import { Point } from '../../../src/geometry/shapes/Point';
+import { CanvasItem } from '../../../src/gui/controllers/canvases/svg/models/GridCanvasStore';
 
 
 const defaultTestSvg = `
@@ -65,6 +66,12 @@ export function selectWithRect(controllers: ControllerFacade, from: Point, to: P
 export function selectWithClick(controllers: ControllerFacade, p: Point) {
     const svgController = controllers.svgCanvasController;
     svgController.mouseController.onMouseMove(<MouseEvent> {x: p.x, y: p.y});
+    svgController.mouseController.hover(getItemAtPoint(controllers, p));
     svgController.mouseController.onMouseDown(<MouseEvent>{x: p.x, y: p.y});
     svgController.mouseController.onMouseUp(<MouseEvent> {x: p.x, y: p.y});
+}
+
+function getItemAtPoint(controllers: ControllerFacade, p: Point): CanvasItem {
+    const items = controllers.svgCanvasController.pixelModel.getIntersectingItemsAtPoint(p);
+    return items[0];
 }

@@ -13,7 +13,7 @@ it ('Select via clicking on an item', () => {
 
     expect(canvasController.pixelModel.items[0].tags.includes(PixelTag.SELECTED)).toBeFalsy();
 
-    canvasController.setActiveTool(ToolType.SELECT);
+    canvasController.setActiveTool(ToolType.MOVE_AND_SELECT);
 
     selectWithClick(controllers, new Point(100, 100));
 
