@@ -48,6 +48,7 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
                 </RowStyled>
                 {this.renderShapeDropdown()}
                 {form.getVal(CanvasItemSettings.SHAPE) === 'model' ? this.renderModelFileChooser() : null}
+                {this.renderRotationInput()}
             </ItemSettingsStyled>
         );
     }
@@ -114,6 +115,23 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
                 </LabeledComponent>
                 {form.getVal(CanvasItemSettings.MODEL) ? form.getVal<FileData>(CanvasItemSettings.MODEL).fileName : ''}
             </React.Fragment>
+        );
+    }
+
+    private renderRotationInput(): JSX.Element {
+        const form = this.props.canvasController.canvasItemSettingsForm;
+
+        return (
+            <LabeledComponent label="Rotation" direction="horizontal">
+                <ConnectedInputComponent
+                    formController={form}
+                    propertyName={CanvasItemSettings.ROTATION}
+                    propertyType="number"
+                    type="number"
+                    value={form.getVal(CanvasItemSettings.ROTATION)}
+                    placeholder="0"
+                />
+            </LabeledComponent>
         );
     }
 }

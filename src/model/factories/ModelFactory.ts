@@ -29,6 +29,8 @@ export class ModelFactory {
         // mesh.setPivotPoint(pivotPoint);
         // mesh.rotate(Axis.Y, gameObject.rotation, Space.WORLD);
         // mesh.translate(new Vector3(center.x, 0, center.y), 1);
+        mesh.rotate(Axis.Y, gameObject.rotation, Space.WORLD);
+
         mesh.position.x = center.x;
         mesh.position.z = center.y;
 

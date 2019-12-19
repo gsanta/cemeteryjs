@@ -21,7 +21,6 @@ export class MoveTool extends AbstractTool {
 
     down() {
         super.down();
-        this.canvasController.renderCanvas();
 
         const selectedItems = PixelTag.getSelectedItems(this.canvasController.pixelModel.items);
         this.origDimensions = selectedItems.map(item => item.polygon);

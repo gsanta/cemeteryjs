@@ -10,7 +10,8 @@ export enum CanvasItemSettings {
     COLOR = 'color',
     SHAPE = 'shape',
     MODEL = 'model',
-    LAYER = 'layer'
+    LAYER = 'layer',
+    ROTATION = 'rotation'
 }
 
 export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSettings> {
@@ -40,6 +41,9 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
                 break;
             case CanvasItemSettings.LAYER:
                 this.tempNumber = this.canvasItem.layer;
+                break;
+            case CanvasItemSettings.ROTATION:
+                this.tempNumber = this.canvasItem.rotation;
                 break;
         }
 
@@ -81,6 +85,10 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
                 this.canvasItem.layer = this.tempNumber;
                 this.tempNumber = null;
                 break;
+            case CanvasItemSettings.ROTATION:
+                this.canvasItem.rotation = this.tempNumber;
+                this.tempNumber = null;
+                break;
         }
 
         this.focusedPropType = null;
@@ -103,6 +111,9 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
                 break;
             case CanvasItemSettings.LAYER:
                 ret = this.focusedPropType === property ? this.tempNumber : this.canvasItem.layer;
+                break;
+            case CanvasItemSettings.ROTATION:
+                ret = this.focusedPropType === property ? this.tempNumber : this.canvasItem.rotation;
                 break;
         }
 

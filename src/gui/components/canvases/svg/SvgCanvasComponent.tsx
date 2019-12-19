@@ -81,7 +81,7 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
             const width = (rectangle.bottomRight.x - rectangle.topLeft.x) * pixelSize;
             const height = (rectangle.bottomRight.y - rectangle.topLeft.y) * pixelSize;
 
-            const fill = item.tags.includes(PixelTag.SELECTED) ? 'blue' : item.color;
+            const fill = item.tags.has(PixelTag.SELECTED) ? 'blue' : item.color;
 
             return (
                 <rect 

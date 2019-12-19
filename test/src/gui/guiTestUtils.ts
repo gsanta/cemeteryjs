@@ -1,5 +1,4 @@
 import { ControllerFacade } from '../../../src/gui/controllers/ControllerFacade';
-import { UIUpdateController } from '../../../src/gui/controllers/UIUpdateController';
 import { Point } from '../../../src/geometry/shapes/Point';
 import { CanvasItem } from '../../../src/gui/controllers/canvases/svg/models/GridCanvasStore';
 
@@ -22,37 +21,55 @@ const defaultTestSvg = `
 </svg>
 `;
 
-export class MockRenderController extends UIUpdateController {
-    private renderCounter = 0;
+class MockRenderer {
+    counter: number = 0;
 
-    getRenderCount() {
-        return this.renderCounter;
+    constructor() {
+        this.render = this.render.bind(this);
     }
 
-    resetRenderCount() {
-        this.renderCounter = 0;
+    render() {
+        this.counter++;
     }
 
-    render(): void {
-        this.renderCounter++;
+    reset() {
+        this.counter = 0;
     }
 }
 
-export function setupControllers(): ControllerFacade {
-    const controllers = new ControllerFacade();
-    controllers.webglCanvasController.unregisterEvents();
-    controllers.svgCanvasController.writer.write(defaultTestSvg);
-    controllers.updateUIController = new MockRenderController();
+export class ControllerFacadeExt extends ControllerFacade {
+    svgCanvasRenderer = new MockRenderer();
 
-    return controllers;
+    constructor() {
+        super();
+
+        this.webglCanvasController.unregisterEvents();
+        
+        this.svgCanvasController.writer.write(defaultTestSvg);
+        this.svgCanvasController.setCanvasRenderer(this.svgCanvasRenderer.render);
+    }
 }
 
-export function drawRectangle(controllers: ControllerFacade) {
+export function setupControllers(): ControllerFacadeExt {
+    return new ControllerFacadeExt();
+}
+
+export function drag(controllers: ControllerFacade, from: Point, to: Point) {
     const svgController = controllers.svgCanvasController;
-    svgController.mouseController.onMouseMove(<MouseEvent> {x: 50, y: 50});
-    svgController.mouseController.onMouseDown(<MouseEvent> {x: 50, y: 50});
-    svgController.mouseController.onMouseMove(<MouseEvent> {x: 250, y: 150});
-    svgController.mouseController.onMouseUp(<MouseEvent> {x: 250, y: 150});
+    svgController.mouseController.onMouseMove(<MouseEvent> {x: from.x, y: from.y});
+    svgController.mouseController.onMouseDown(<MouseEvent> {x: from.x, y: from.y});
+    svgController.mouseController.onMouseMove(<MouseEvent> {x: to.x, y: to.y});
+    svgController.mouseController.onMouseUp(<MouseEvent> {x: to.x, y: to.y});
+}
+
+export function drawRectangle(controllers: ControllerFacade, topLeft = new Point(50, 50), bottomRight = new Point(250, 150)): CanvasItem {
+    const svgController = controllers.svgCanvasController;
+    svgController.mouseController.onMouseMove(<MouseEvent> {x: topLeft.x, y: topLeft.y});
+    svgController.mouseController.onMouseDown(<MouseEvent> {x: topLeft.x, y: topLeft.y});
+    svgController.mouseController.onMouseMove(<MouseEvent> {x: bottomRight.x, y: bottomRight.y});
+    svgController.mouseController.onMouseUp(<MouseEvent> {x: bottomRight.x, y: bottomRight.y});
+
+    return svgController.pixelModel.items[svgController.pixelModel.items.length - 1];
 }
 
 export function selectWithRect(controllers: ControllerFacade, from: Point, to: Point) {
@@ -63,15 +80,11 @@ export function selectWithRect(controllers: ControllerFacade, from: Point, to: P
     svgController.mouseController.onMouseUp(<MouseEvent> {x: to.x, y: to.y});
 }
 
-export function selectWithClick(controllers: ControllerFacade, p: Point) {
+export function click(controllers: ControllerFacade, canvasItem: CanvasItem) {
     const svgController = controllers.svgCanvasController;
-    svgController.mouseController.onMouseMove(<MouseEvent> {x: p.x, y: p.y});
-    svgController.mouseController.hover(getItemAtPoint(controllers, p));
-    svgController.mouseController.onMouseDown(<MouseEvent>{x: p.x, y: p.y});
-    svgController.mouseController.onMouseUp(<MouseEvent> {x: p.x, y: p.y});
-}
-
-function getItemAtPoint(controllers: ControllerFacade, p: Point): CanvasItem {
-    const items = controllers.svgCanvasController.pixelModel.getIntersectingItemsAtPoint(p);
-    return items[0];
+    const center = canvasItem.polygon.getBoundingCenter().mul(controllers.svgCanvasController.configModel.pixelSize);
+    svgController.mouseController.onMouseMove(<MouseEvent> {x: center.x, y: center.y});
+    svgController.mouseController.hover(canvasItem);
+    svgController.mouseController.onMouseDown(<MouseEvent>{x: center.x, y: center.y});
+    svgController.mouseController.onMouseUp(<MouseEvent> {x: center.x, y: center.y});
 }

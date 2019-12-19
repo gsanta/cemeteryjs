@@ -7,6 +7,7 @@ import { minBy, maxBy } from "../../utils/Functions";
 import { GameObjectTemplate } from "../../types/GameObjectTemplate";
 import { Rectangle } from "../../../geometry/shapes/Rectangle";
 import { Point } from "../../../geometry/shapes/Point";
+import { toRadian } from "../../../geometry/utils/Measurements";
 
 export class SvgGameObjectBuilder implements IGameObjectBuilder {
     private svgPreprocessor: SvgPreprocessor;
@@ -40,7 +41,8 @@ export class SvgGameObjectBuilder implements IGameObjectBuilder {
                 color: rect.color,
                 shape: <WorldItemShape> rect.shape,
                 modelPath: rect.model,
-                roles: []
+                roles: [],
+                rotation: toRadian(rect.rotation ? rect.rotation : 0)
             },
             null
         );

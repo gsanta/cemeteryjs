@@ -28,7 +28,7 @@ export class SvgCanvasReader implements ICanvasReader {
             const rectangle = <Rectangle> item.polygon;
             const pixelSize = configModel.pixelSize;
 
-            const fill = item.tags.includes(PixelTag.SELECTED) ? 'blue' : item.color;
+            const fill = item.tags.has(PixelTag.SELECTED) ? 'blue' : item.color;
 
             const x = rectangle.topLeft.x * pixelSize;
             const y = rectangle.topLeft.y * pixelSize;
@@ -48,7 +48,8 @@ export class SvgCanvasReader implements ICanvasReader {
                 ['data-wg-type', item.type],
                 ['data-wg-shape', item.shape],
                 ['data-wg-color', item.color],
-                ['data-wg-layer', item.layer + '']
+                ['data-wg-layer', item.layer + ''],
+                ['data-rotation', item.rotation + '']
             ];
 
             if (item.model) {

@@ -29,10 +29,6 @@ export class App extends React.Component<{}, AppState> {
         }
     }
     
-    componentDidMount() {
-        this.context.controllers.updateUIController.setUpdateFunc(() => this.forceUpdate());
-    }
-
     render() {
         const [canvasToolbar, canvas, itemSettings] = createSvgCanvas(this.context.controllers);
 

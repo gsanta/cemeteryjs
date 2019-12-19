@@ -8,6 +8,7 @@ import { Point } from '../src/geometry/shapes/Point';
 declare global {
     namespace jest {
         interface Matchers<R, T> {
+            toBeEqualDimensions(dimension: Shape);
             toHaveBorders(borders: Partial<GameObject>[]),
             toHaveAnyWithDimensions(dimensions: Shape),
             toHaveDimensions(dimensions: Shape),
@@ -24,6 +25,17 @@ declare global {
 expect.extend({
     toMatchMeshDescriptor(meshDescriptor: GameObjectTemplate, expectedMeshDescriptor: Partial<GameObjectTemplate>) {
         expect(meshDescriptor).toMatchObject(expectedMeshDescriptor);
+
+        return {
+            pass: true,
+            message: () => ''
+        }
+    },
+
+    toBeEqualDimensions(expected: Shape, actual: Shape) {
+        for (let i = 0; i < expected.getPoints().length; i++) {
+            expect(actual).toHavePoint(expected.getPoints()[i]);
+        }
 
         return {
             pass: true,

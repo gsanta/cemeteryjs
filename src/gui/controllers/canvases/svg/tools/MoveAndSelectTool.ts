@@ -1,4 +1,3 @@
-import { AbstractSelectionTool } from "./AbstractSelectionTool";
 import { SvgCanvasController } from "../SvgCanvasController";
 import { ToolType, Tool } from "./Tool";
 import { PixelTag } from "../models/GridCanvasStore";
@@ -49,6 +48,13 @@ export class MoveAndSelectTool extends AbstractTool {
 
         this.determineActiveTool();
         this.activeTool.up();
+    }
+
+    draggedUp() {
+        super.draggedUp();
+
+        this.determineActiveTool();
+        this.activeTool.draggedUp();
     }
 
     private determineActiveTool() {

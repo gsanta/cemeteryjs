@@ -60,7 +60,7 @@ export class MouseHandler {
     }
 
     hover(item: CanvasItem) {
-        item.tags.push(PixelTag.HOVERED);
+        item.tags.add(PixelTag.HOVERED);
     }
 
     unhover() {

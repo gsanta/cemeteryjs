@@ -34,9 +34,10 @@ export class SvgCanvasWriter implements ICanvasWriter {
                 type: rect.type,
                 layer: 0,
                 isPreview: false,
-                tags: [],
+                tags: new Set(),
                 shape: <WorldItemShape> rect.shape,
-                model: rect.model
+                model: rect.model,
+                rotation: rect.rotation
             }
 
             this.svgCanvasController.pixelModel.addRect(canvasItem);

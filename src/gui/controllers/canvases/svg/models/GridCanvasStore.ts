@@ -11,23 +11,24 @@ export enum PixelTag {
 }
 
 export namespace PixelTag {
-    export function removeTag(tag: PixelTag, tagged: {tags: PixelTag[]}[]) {
-        tagged
-            .forEach(pixel => {
-                pixel.tags = pixel.tags.filter(t => t !== tag)
-            });
+    export function addTag(tag: PixelTag, tagged: {tags: Set<PixelTag>}[]) {
+        tagged.forEach(item => item.tags.add(tag));
     }
 
-    export function getTaggedItems<T extends {tags: PixelTag[]}>(tag: PixelTag, tagged: T[]): T[] {
-        return tagged.filter(pixel => pixel.tags.includes(tag));
+    export function removeTag(tag: PixelTag, tagged: {tags: Set<PixelTag>}[]) {
+        tagged.forEach(item => item.tags.delete(tag));
     }
 
-    export function getHoveredItem<T extends {tags: PixelTag[]}>(tagged: T[]): T {
-        return tagged.filter(pixel => pixel.tags.includes(PixelTag.HOVERED))[0];
+    export function getTaggedItems<T extends {tags: Set<PixelTag>}>(tag: PixelTag, tagged: T[]): T[] {
+        return tagged.filter(pixel => pixel.tags.has(tag));
     }
 
-    export function getSelectedItems<T extends {tags: PixelTag[]}>(tagged: T[]): T[] {
-        return tagged.filter(pixel => pixel.tags.includes(PixelTag.SELECTED));
+    export function getHoveredItem<T extends {tags: Set<PixelTag>}>(tagged: T[]): T {
+        return tagged.filter(pixel => pixel.tags.has(PixelTag.HOVERED))[0];
+    }
+
+    export function getSelectedItems<T extends {tags: Set<PixelTag>}>(tagged: T[]): T[] {
+        return tagged.filter(pixel => pixel.tags.has(PixelTag.SELECTED));
     }
 }
 
@@ -35,7 +36,7 @@ export interface Pixel {
     type: string;
     index: number;
     isPreview: boolean;
-    tags: PixelTag[];
+    tags: Set<PixelTag>;
     layer: number;
 }
 
@@ -49,10 +50,11 @@ export interface CanvasItem {
     shape: WorldItemShape;
     color: string;
     polygon: Polygon;
-    tags: PixelTag[];
+    tags: Set<PixelTag>;
     layer: number;
     isPreview: boolean;
     model: string;
+    rotation: number;
 }
 
 export enum Layers {
@@ -102,13 +104,14 @@ export class GridCanvasStore {
         const botRight = this.getPixelPosition(indexes[indexes.length - 1]); 
         const canvasItem: CanvasItem = {
             color: 'grey',
-            polygon: Polygon.createRectangle(topLeft.x, topLeft.y, botRight.x - topLeft.x, botRight.y - topLeft.y),
+            polygon: new Rectangle(topLeft, botRight),
             type,
             layer,
             isPreview,
-            tags: [],
+            tags: new Set(),
             shape: WorldItemShape.RECTANGLE,
-            model: null
+            model: null,
+            rotation: 0
         }
 
         this.items.push(canvasItem);
