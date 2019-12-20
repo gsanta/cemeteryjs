@@ -1,7 +1,7 @@
-import { BuildHierarchyModifier } from '../../src/model/modifiers/BuildHierarchyModifier';
-import { ScaleModifier } from '../../src/model/modifiers/ScaleModifier';
-import { SegmentBordersModifier } from '../../src/model/modifiers/SegmentBordersModifier';
-import { WorldGeneratorServices } from '../../src/model/services/WorldGeneratorServices';
+import { BuildHierarchyModifier } from '../../src/world_generator/modifiers/BuildHierarchyModifier';
+import { ScaleModifier } from '../../src/world_generator/modifiers/ScaleModifier';
+import { SegmentBordersModifier } from '../../src/world_generator/modifiers/SegmentBordersModifier';
+import { WorldGeneratorServices } from '../../src/world_generator/services/WorldGeneratorServices';
 import { setup } from '../testUtils';
 import { FileFormat } from '../../src/WorldGenerator';
 

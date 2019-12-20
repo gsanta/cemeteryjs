@@ -1,6 +1,6 @@
-import { Modifier } from "../../src/model/modifiers/Modifier";
-import { GameObject } from "../../src/model/types/GameObject";
-import { TreeIteratorGenerator } from "../../src/model/utils/TreeIteratorGenerator";
+import { Modifier } from "../../src/world_generator/modifiers/Modifier";
+import { GameObject } from "../../src/world_generator/services/GameObject";
+import { TreeIteratorGenerator } from "../../src/world_generator/utils/TreeIteratorGenerator";
 
 
 export interface MockMeshCreator {

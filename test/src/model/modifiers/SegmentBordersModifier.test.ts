@@ -1,9 +1,9 @@
-import { SegmentBordersModifier } from '../../../../src/model/modifiers/SegmentBordersModifier';
-import { WorldGeneratorServices } from "../../../../src/model/services/WorldGeneratorServices";
+import { SegmentBordersModifier } from '../../../../src/world_generator/modifiers/SegmentBordersModifier';
+import { WorldGeneratorServices } from "../../../../src/world_generator/services/WorldGeneratorServices";
 import { setup } from "../../../testUtils";
 import { FileFormat } from "../../../../src/WorldGenerator";
-import { Segment } from '../../../../src/geometry/shapes/Segment';
-import { Point } from '../../../../src/geometry/shapes/Point';
+import { Segment } from '../../../../src/model/geometry/shapes/Segment';
+import { Point } from '../../../../src/model/geometry/shapes/Point';
 
 
 it ('Segment a vertical wall where it intersects with the horizontal walls', () => {

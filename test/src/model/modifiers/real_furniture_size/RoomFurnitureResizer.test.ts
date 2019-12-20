@@ -1,14 +1,14 @@
-import { AssignBordersToRoomsModifier } from '../../../../../src/model/modifiers/AssignBordersToRoomsModifier';
-import { BuildHierarchyModifier } from "../../../../../src/model/modifiers/BuildHierarchyModifier";
-import { ChangeBorderWidthModifier } from "../../../../../src/model/modifiers/ChangeBorderWidthModifier";
-import { RoomFurnitureResizer } from "../../../../../src/model/modifiers/real_furniture_size/RoomFurnitureResizer";
-import { ScaleModifier } from "../../../../../src/model/modifiers/ScaleModifier";
-import { SegmentBordersModifier } from "../../../../../src/model/modifiers/SegmentBordersModifier";
+import { AssignBordersToRoomsModifier } from '../../../../../src/world_generator/modifiers/AssignBordersToRoomsModifier';
+import { BuildHierarchyModifier } from "../../../../../src/world_generator/modifiers/BuildHierarchyModifier";
+import { ChangeBorderWidthModifier } from "../../../../../src/world_generator/modifiers/ChangeBorderWidthModifier";
+import { RoomFurnitureResizer } from "../../../../../src/world_generator/modifiers/real_furniture_size/RoomFurnitureResizer";
+import { ScaleModifier } from "../../../../../src/world_generator/modifiers/ScaleModifier";
+import { SegmentBordersModifier } from "../../../../../src/world_generator/modifiers/SegmentBordersModifier";
 import { setup, setupTestEnv } from "../../../../testUtils";
 import { FileFormat } from '../../../../../src/WorldGenerator';
 import { FakeModelLoader } from '../../../../fakes/FakeModelLoader';
-import { Point } from '../../../../../src/geometry/shapes/Point';
-import { Polygon } from '../../../../../src/geometry/shapes/Polygon';
+import { Point } from '../../../../../src/model/geometry/shapes/Point';
+import { Polygon } from '../../../../../src/model/geometry/shapes/Polygon';
 
 it ('Resize each funrinture in the room', () => {
 

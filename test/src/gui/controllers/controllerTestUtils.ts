@@ -1,5 +1,5 @@
-import { ControllerFacade } from "../../../../src/gui/controllers/ControllerFacade";
-import { initialSvg } from "../../../../src/gui/controllers/canvases/svg/SvgCanvasController";
+import { ControllerFacade } from "../../../../src/editor/controllers/ControllerFacade";
+import { initialSvg } from "../../../../src/editor/controllers/formats/svg/SvgCanvasController";
 
 export function setupControllers(worldMap?: string): ControllerFacade {
     const controllers = new ControllerFacade();

@@ -1,7 +1,7 @@
-import { GeometryService } from "../../../../src/geometry/GeometryService";
-import { StripeView } from "../../../../src/geometry/shapes/StripeView";
-import { Point } from "../../../../src/geometry/shapes/Point";
-import { Polygon } from "../../../../src/geometry/shapes/Polygon";
+import { GeometryService } from "../../../../src/model/geometry/GeometryService";
+import { StripeView } from "../../../../src/model/geometry/shapes/StripeView";
+import { Point } from "../../../../src/model/geometry/shapes/Point";
+import { Polygon } from "../../../../src/model/geometry/shapes/Polygon";
 
 describe(`StripeView`, () => {
     const geometryService = new GeometryService();

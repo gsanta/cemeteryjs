@@ -1,6 +1,6 @@
-import { LinesToGraphConverter } from '../../../../../src/model/readers/text/LinesToGraphConverter';
-import { GameAssetStore } from '../../../../../src/model/services/GameAssetStore';
-import { TextConfigReader } from '../../../../../src/model/readers/text/TextConfigReader';
+import { LinesToGraphConverter } from '../../../../../src/world_generator/importers/text/LinesToGraphConverter';
+import { GameAssetStore } from '../../../../../src/world_generator/services/GameAssetStore';
+import { TextConfigReader } from '../../../../../src/world_generator/importers/text/TextConfigReader';
 
 describe('LinesToGraphConverter', () => {
     describe('parse', () => {

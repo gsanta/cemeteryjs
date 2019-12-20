@@ -1,12 +1,12 @@
 import { setupMap, setup } from "../../../../testUtils";
-import { ScaleModifier } from "../../../../../src/model/modifiers/ScaleModifier";
-import { FurnitureSnapper, SnapType } from '../../../../../src/model/modifiers/real_furniture_size/FurnitureSnapper';
-import { GameObject } from '../../../../../src/model/types/GameObject';
-import { WorldGeneratorServices } from "../../../../../src/model/services/WorldGeneratorServices";
+import { ScaleModifier } from "../../../../../src/world_generator/modifiers/ScaleModifier";
+import { FurnitureSnapper, SnapType } from '../../../../../src/world_generator/modifiers/real_furniture_size/FurnitureSnapper';
+import { GameObject } from '../../../../../src/world_generator/services/GameObject';
+import { WorldGeneratorServices } from "../../../../../src/world_generator/services/WorldGeneratorServices";
 import { FileFormat } from "../../../../../src/WorldGenerator";
-import { Segment } from "../../../../../src/geometry/shapes/Segment";
-import { Point } from "../../../../../src/geometry/shapes/Point";
-import { Polygon } from "../../../../../src/geometry/shapes/Polygon";
+import { Segment } from "../../../../../src/model/geometry/shapes/Segment";
+import { Point } from "../../../../../src/model/geometry/shapes/Point";
+import { Polygon } from "../../../../../src/model/geometry/shapes/Polygon";
 
 it ('Rotates furniture to face the snapping edges if snaptype is "ROTATE_PARALLEL_FACE_TOWARD"', () => {
     const map = setupMap(

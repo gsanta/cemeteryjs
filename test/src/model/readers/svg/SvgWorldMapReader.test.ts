@@ -1,5 +1,5 @@
-import { SvgWorldMapReader } from '../../../../../src/model/readers/svg/SvgWorldMapReader';
-import { Point } from '../../../../../src/geometry/shapes/Point';
+import { SvgWorldMapReader } from '../../../../../src/world_generator/importers/svg/SvgWorldMapReader';
+import { Point } from '../../../../../src/model/geometry/shapes/Point';
 
 it ('Parse an svg world map and generate the corresponding world map graph', () => {
     var worldMap =

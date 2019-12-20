@@ -1,6 +1,6 @@
-import { GeometryService } from "../../../../src/geometry/GeometryService";
-import { Line } from "../../../../src/geometry/shapes/Line";
-import { toDegree } from "../../../../src/geometry/shapes/Angle";
+import { GeometryService } from "../../../../src/model/geometry/GeometryService";
+import { Line } from "../../../../src/model/geometry/shapes/Line";
+import { toDegree } from "../../../../src/model/geometry/shapes/Angle";
 
 describe(`Line`, () => {
     const geometryService = new GeometryService();

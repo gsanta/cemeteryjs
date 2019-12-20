@@ -1,7 +1,7 @@
-import { Distance } from "../../../../src/geometry/utils/Distance";
-import { GeometryService } from "../../../../src/geometry/GeometryService";
-import { Point } from "../../../../src/geometry/shapes/Point";
-import { Segment } from "../../../../src/geometry/shapes/Segment";
+import { Distance } from "../../../../src/model/geometry/utils/Distance";
+import { GeometryService } from "../../../../src/model/geometry/GeometryService";
+import { Point } from "../../../../src/model/geometry/shapes/Point";
+import { Segment } from "../../../../src/model/geometry/shapes/Segment";
 
 
 

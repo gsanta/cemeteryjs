@@ -1,11 +1,11 @@
 import * as fs from 'fs';
-import { RoomBuilder } from '../../../../../src/model/readers/builders/RoomBuilder';
-import { TextWorldMapReader } from '../../../../../src/model/readers/text/TextWorldMapReader';
-import { WorldMapToRoomMapConverter } from '../../../../../src/model/readers/text/WorldMapToRoomMapConverter';
+import { RoomBuilder } from '../../../../../src/world_generator/importers/builders/RoomBuilder';
+import { TextWorldMapReader } from '../../../../../src/world_generator/importers/text/TextWorldMapReader';
+import { WorldMapToRoomMapConverter } from '../../../../../src/world_generator/importers/text/WorldMapToRoomMapConverter';
 import { setup } from '../../../../testUtils';
 import { FileFormat } from '../../../../../src/WorldGenerator';
-import { Point } from '../../../../../src/geometry/shapes/Point';
-import { Polygon } from '../../../../../src/geometry/shapes/Polygon';
+import { Point } from '../../../../../src/model/geometry/shapes/Point';
+import { Polygon } from '../../../../../src/model/geometry/shapes/Polygon';
 
 describe('RoomParser', () => {
     describe ('generate', () => {

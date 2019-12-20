@@ -1,9 +1,9 @@
-import { PolygonShapeBuilder } from "../../../../../src/model/readers/builders/PolygonShapeBuilder";
-import { TextWorldMapReader } from '../../../../../src/model/readers/text/TextWorldMapReader';
+import { PolygonShapeBuilder } from "../../../../../src/world_generator/importers/builders/PolygonShapeBuilder";
+import { TextWorldMapReader } from '../../../../../src/world_generator/importers/text/TextWorldMapReader';
 import { setup } from "../../../../testUtils";
 import { FileFormat } from '../../../../../src/WorldGenerator';
-import { Polygon } from "../../../../../src/geometry/shapes/Polygon";
-import { Point } from "../../../../../src/geometry/shapes/Point";
+import { Polygon } from "../../../../../src/model/geometry/shapes/Polygon";
+import { Point } from "../../../../../src/model/geometry/shapes/Point";
 
 it ('Create items for a given type which is represented on the world map by a polygon shape.', () => {
     const map = `

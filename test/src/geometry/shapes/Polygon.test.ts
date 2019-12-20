@@ -1,7 +1,7 @@
-import { GeometryService } from "../../../../src/geometry/GeometryService";
-import { Rectangle } from "../../../../src/geometry/shapes/Rectangle";
-import { Point } from "../../../../src/geometry/shapes/Point";
-import { Polygon } from "../../../../src/geometry/shapes/Polygon";
+import { GeometryService } from "../../../../src/model/geometry/GeometryService";
+import { Rectangle } from "../../../../src/model/geometry/shapes/Rectangle";
+import { Point } from "../../../../src/model/geometry/shapes/Point";
+import { Polygon } from "../../../../src/model/geometry/shapes/Polygon";
 
 describe('Polygon', () => {
 

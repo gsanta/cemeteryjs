@@ -1,10 +1,10 @@
-import { AssignBordersToRoomsModifier } from '../../../../src/model/modifiers/AssignBordersToRoomsModifier';
-import { SegmentBordersModifier } from '../../../../src/model/modifiers/SegmentBordersModifier';
+import { AssignBordersToRoomsModifier } from '../../../../src/world_generator/modifiers/AssignBordersToRoomsModifier';
+import { SegmentBordersModifier } from '../../../../src/world_generator/modifiers/SegmentBordersModifier';
 import { setup } from '../../../testUtils';
 import { FileFormat } from '../../../../src/WorldGenerator';
-import { Segment } from '../../../../src/geometry/shapes/Segment';
-import { Point } from '../../../../src/geometry/shapes/Point';
-import { Polygon } from '../../../../src/geometry/shapes/Polygon';
+import { Segment } from '../../../../src/model/geometry/shapes/Segment';
+import { Point } from '../../../../src/model/geometry/shapes/Point';
+import { Polygon } from '../../../../src/model/geometry/shapes/Polygon';
 
 it ('Add the correct borders to a single room', () => {
     const map = `

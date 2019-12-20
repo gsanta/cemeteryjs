@@ -1,9 +1,9 @@
-import { GameObject } from "./model/types/GameObject";
+import { GameObject } from "./world_generator/services/GameObject";
 import { Mesh, Scene } from 'babylonjs';
-import { CreateMeshModifier } from "./model/modifiers/CreateMeshModifier";
-import { ModelLoader } from "./model/services/ModelLoader";
-import { WorldGeneratorServices } from "./model/services/WorldGeneratorServices";
-import { ConverterService } from "./model/services/ConverterService";
+import { CreateMeshModifier } from "./world_generator/modifiers/CreateMeshModifier";
+import { ModelLoader } from "./world_generator/services/ModelLoader";
+import { WorldGeneratorServices } from "./world_generator/services/WorldGeneratorServices";
+import { ConverterService } from "./world_generator/services/ConverterService";
 
 export enum FileFormat {
     TEXT, SVG

@@ -1,8 +1,8 @@
 
 import { setupControllers, drawRectangle, click, selectWithRect } from '../../../../guiTestUtils';
-import { PixelTag } from "../../../../../../../src/gui/controllers/canvases/svg/models/GridCanvasStore";
-import { ToolType } from "../../../../../../../src/gui/controllers/canvases/svg/tools/Tool";
-import { Point } from '../../../../../../../src/geometry/shapes/Point';
+import { ToolType } from "../../../../../../../src/editor/controllers/formats/svg/tools/Tool";
+import { Point } from '../../../../../../../src/model/geometry/shapes/Point';
+import { PixelTag } from '../../../../../../../src/editor/controllers/formats/svg/models/GridCanvasStore';
 
 it ('Select via clicking on an item', () => {
     const controllers = setupControllers(); 

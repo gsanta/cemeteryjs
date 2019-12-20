@@ -1,9 +1,9 @@
-import { ScaleModifier } from '../../../../src/model/modifiers/ScaleModifier';
+import { ScaleModifier } from '../../../../src/world_generator/modifiers/ScaleModifier';
 import { setup } from '../../../testUtils';
 import { FileFormat } from '../../../../src/WorldGenerator';
-import { Polygon } from '../../../../src/geometry/shapes/Polygon';
-import { Segment } from '../../../../src/geometry/shapes/Segment';
-import { Point } from '../../../../src/geometry/shapes/Point';
+import { Polygon } from '../../../../src/model/geometry/shapes/Polygon';
+import { Segment } from '../../../../src/model/geometry/shapes/Segment';
+import { Point } from '../../../../src/model/geometry/shapes/Point';
 
 it ('Scale the items', () => {
     const map = `

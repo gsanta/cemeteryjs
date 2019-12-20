@@ -1,5 +1,5 @@
-import { GlobalsSectionParser } from "../../../../../src/model/readers/text/GlobalSectionParser";
-import { Point } from "../../../../../src/geometry/shapes/Point";
+import { GlobalsSectionParser } from "../../../../../src/world_generator/importers/text/GlobalSectionParser";
+import { Point } from "../../../../../src/model/geometry/shapes/Point";
 
 it ('Parse scale property', () => {
     const worldMap = `

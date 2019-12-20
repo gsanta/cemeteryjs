@@ -1,0 +1,47 @@
+import { GameObject } from "../../services/GameObject";
+import { WorldMapGraph } from "../../services/WorldMapGraph";
+import { IWorldMapReader } from '../IWorldMapReader';
+import { WorldGeneratorServices } from '../../services/WorldGeneratorServices';
+import { GameObjectTemplate } from "../../services/GameObjectTemplate";
+import { IGameObjectBuilder } from '../IGameObjectBuilder';
+import { Polygon } from "../../../model/geometry/shapes/Polygon";
+
+export class RootWorldItemBuilder implements IGameObjectBuilder {
+    private worldMapReader: IWorldMapReader;
+    private services: WorldGeneratorServices;
+
+    constructor(services: WorldGeneratorServices, worldMapReader: IWorldMapReader) {
+        this.worldMapReader = worldMapReader;
+        this.services = services;
+    }
+    
+    build(worldMap: string): GameObject[] {
+        return [this.createRootWorldItem(this.parseWorldMap(worldMap))];
+    }
+
+    public generateFromStringMap(strMap: string): GameObject[] {
+        const matrixGraph = this.worldMapReader.read(strMap);
+        return [this.createRootWorldItem(matrixGraph)];
+    }
+
+    private parseWorldMap(strMap: string): WorldMapGraph {
+        return this.worldMapReader.read(strMap);
+    }
+
+    public createRootWorldItem(graph: WorldMapGraph): GameObject {
+
+        const template = GameObjectTemplate.getByTypeName('root', this.services.gameAssetStore.gameObjectTemplates);
+        
+        return this.services.gameObjectFactory.create({
+            type: 'F',
+            dimensions: Polygon.createRectangle(
+                0,
+                0,
+                graph.getColumns(),
+                graph.getRows(),
+            ),
+            name: 'root',
+            isBorder: false
+        }, template);
+    }
+}

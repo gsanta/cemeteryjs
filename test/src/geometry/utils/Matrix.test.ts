@@ -1,4 +1,4 @@
-import { Matrix } from "../../../../src/geometry/utils/Matrix";
+import { Matrix } from "../../../../src/model/geometry/utils/Matrix";
 
 describe(`Matrix`, () => {
     describe(`multiply`, () => {

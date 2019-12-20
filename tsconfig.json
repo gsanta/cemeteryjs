@@ -19,7 +19,7 @@
     },
     "include": [
       "src/**/*.ts",
-      "test/**/*.ts", "src/gui/components/index.tsx", "src/gui/components/icons/Icon.tsx", "src/gui/components/canvases/canvasFactory.tsx", "src/gui/components/forms/FileUploadComponent.tsx", "src/gui/components/forms/FileUploader.tsx"
+      "test/**/*.ts"
     ],
     "exclude": [
       "node_modules"

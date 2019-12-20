@@ -1,5 +1,5 @@
-import { GeometryService } from "../../../../src/geometry/GeometryService";
-import { toRadian } from "../../../../src/geometry/utils/Measurements";
+import { GeometryService } from "../../../../src/model/geometry/GeometryService";
+import { toRadian } from "../../../../src/model/geometry/utils/Measurements";
 
 describe('`Point`', () => {
     const geometryService = new GeometryService();

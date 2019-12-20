@@ -1,5 +1,5 @@
-import { GameObject } from "./model/types/GameObject";
-import { TreeIteratorGenerator } from "./model/utils/TreeIteratorGenerator";
+import { GameObject } from "./world_generator/services/GameObject";
+import { TreeIteratorGenerator } from "./world_generator/utils/TreeIteratorGenerator";
 
 export class WorldItemUtils {
     public static filterRooms(worldItems: GameObject[]): GameObject[] {

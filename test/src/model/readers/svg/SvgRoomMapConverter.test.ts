@@ -1,7 +1,7 @@
-import { SvgRoomMapConverter } from '../../../../../src/model/readers/svg/SvgRoomMapConverter';
-import { GameAssetStore } from '../../../../../src/model/services/GameAssetStore';
-import { SvgConfigReader } from '../../../../../src/model/readers/svg/SvgConfigReader';
-import { RawWorldMapJson } from '../../../../../src/model/readers/svg/WorldMapJson';
+import { SvgRoomMapConverter } from '../../../../../src/world_generator/importers/svg/SvgRoomMapConverter';
+import { GameAssetStore } from '../../../../../src/world_generator/services/GameAssetStore';
+import { SvgConfigReader } from '../../../../../src/world_generator/importers/svg/SvgConfigReader';
+import { RawWorldMapJson } from '../../../../../src/world_generator/importers/svg/WorldMapJson';
 import * as convert from 'xml-js';
 
 it ('Convert a normal worldmap svg to an svg that only contains wall and room types', () => {

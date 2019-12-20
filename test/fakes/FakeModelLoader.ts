@@ -1,5 +1,5 @@
-import { ModelLoader, ModelData } from '../../src/model/services/ModelLoader';
-import { Point } from '../../src/geometry/shapes/Point';
+import { ModelLoader, ModelData } from '../../src/world_generator/services/ModelLoader';
+import { Point } from '../../src/model/geometry/shapes/Point';
 
 export class FakeModelLoader extends ModelLoader {
 

@@ -1,10 +1,10 @@
-import { SubareaBuilder } from '../../../../../src/model/readers/builders/SubareaBuilder';
+import { SubareaBuilder } from '../../../../../src/world_generator/importers/builders/SubareaBuilder';
 import { setup } from '../../../../testUtils';
-import { TextWorldMapReader } from '../../../../../src/model/readers/text/TextWorldMapReader';
-import { WorldMapToSubareaMapConverter } from '../../../../../src/model/readers/text/WorldMapToSubareaMapConverter';
+import { TextWorldMapReader } from '../../../../../src/world_generator/importers/text/TextWorldMapReader';
+import { WorldMapToSubareaMapConverter } from '../../../../../src/world_generator/importers/text/WorldMapToSubareaMapConverter';
 import { FileFormat } from '../../../../../src/WorldGenerator';
-import { Polygon } from '../../../../../src/geometry/shapes/Polygon';
-import { Point } from '../../../../../src/geometry/shapes/Point';
+import { Polygon } from '../../../../../src/model/geometry/shapes/Polygon';
+import { Point } from '../../../../../src/model/geometry/shapes/Point';
 
 describe('SubareaParser', () => {
     it ('creates WorldItems for each subarea', () => {

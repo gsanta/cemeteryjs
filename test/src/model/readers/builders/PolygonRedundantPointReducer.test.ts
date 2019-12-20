@@ -1,5 +1,5 @@
-import { PolygonRedundantPointReducer } from '../../../../../src/model/readers/builders/PolygonRedundantPointReducer';
-import { Point } from '../../../../../src/geometry/shapes/Point';
+import { PolygonRedundantPointReducer } from '../../../../../src/world_generator/importers/builders/PolygonRedundantPointReducer';
+import { Point } from '../../../../../src/model/geometry/shapes/Point';
 
 describe('PolygonRedundantPointReducer', () => {
     describe('reduce', () => {

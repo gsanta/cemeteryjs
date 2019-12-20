@@ -1,8 +1,8 @@
-import { Direction, PolygonVertexListFinder } from '../../../../../../src/model/readers/builders/polygon/PolygonVertexListFinder';
-import { TextWorldMapReader } from '../../../../../../src/model/readers/text/TextWorldMapReader';
+import { Direction, PolygonVertexListFinder } from '../../../../../../src/world_generator/importers/builders/polygon/PolygonVertexListFinder';
+import { TextWorldMapReader } from '../../../../../../src/world_generator/importers/text/TextWorldMapReader';
 import { FileFormat } from '../../../../../../src/WorldGenerator';
 import { setup } from '../../../../../testUtils';
-import { Point } from '../../../../../../src/geometry/shapes/Point';
+import { Point } from '../../../../../../src/model/geometry/shapes/Point';
 
 describe('Find the vertices of a polygon in the graph', () => {
     function getVertices(worldMap: string): [{x: number, y: number}[], Direction[], boolean[]] {

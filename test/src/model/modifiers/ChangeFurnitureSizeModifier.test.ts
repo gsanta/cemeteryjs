@@ -1,13 +1,13 @@
-import { AssignBordersToRoomsModifier } from "../../../../src/model/modifiers/AssignBordersToRoomsModifier";
-import { BuildHierarchyModifier } from "../../../../src/model/modifiers/BuildHierarchyModifier";
-import { ChangeBorderWidthModifier } from "../../../../src/model/modifiers/ChangeBorderWidthModifier";
-import { ChangeFurnitureSizeModifier } from '../../../../src/model/modifiers/ChangeFurnitureSizeModifier';
-import { SegmentBordersModifier } from "../../../../src/model/modifiers/SegmentBordersModifier";
+import { AssignBordersToRoomsModifier } from "../../../../src/world_generator/modifiers/AssignBordersToRoomsModifier";
+import { BuildHierarchyModifier } from "../../../../src/world_generator/modifiers/BuildHierarchyModifier";
+import { ChangeBorderWidthModifier } from "../../../../src/world_generator/modifiers/ChangeBorderWidthModifier";
+import { ChangeFurnitureSizeModifier } from '../../../../src/world_generator/modifiers/ChangeFurnitureSizeModifier';
+import { SegmentBordersModifier } from "../../../../src/world_generator/modifiers/SegmentBordersModifier";
 import { FileFormat } from '../../../../src/WorldGenerator';
 import { FakeModelLoader } from '../../../fakes/FakeModelLoader';
 import { setupMap, setupTestEnv } from '../../../testUtils';
-import { Point } from "../../../../src/geometry/shapes/Point";
-import { Polygon } from "../../../../src/geometry/shapes/Polygon";
+import { Point } from "../../../../src/model/geometry/shapes/Point";
+import { Polygon } from "../../../../src/model/geometry/shapes/Polygon";
 
 describe('ChangeFurnitureSizeModifier', () => {
     it ('transforms the sketched furniture dimensions into real mesh dimensions', () => {

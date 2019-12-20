@@ -1,8 +1,8 @@
-import { FurnitureBuilder } from '../../../../../src/model/readers/builders/FurnitureBuilder';
-import { TextWorldMapReader } from '../../../../../src/model/readers/text/TextWorldMapReader';
+import { FurnitureBuilder } from '../../../../../src/world_generator/importers/builders/FurnitureBuilder';
+import { TextWorldMapReader } from '../../../../../src/world_generator/importers/text/TextWorldMapReader';
 import { setup } from '../../../../testUtils';
 import { FileFormat } from '../../../../../src/WorldGenerator';
-import { Polygon } from '../../../../../src/geometry/shapes/Polygon';
+import { Polygon } from '../../../../../src/model/geometry/shapes/Polygon';
 
 describe('FurnitureBuilder', () => {
     describe('generate', () => {

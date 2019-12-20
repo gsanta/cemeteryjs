@@ -1,15 +1,15 @@
-import { AssignBordersToRoomsModifier } from "../../../../src/model/modifiers/AssignBordersToRoomsModifier";
-import { BuildHierarchyModifier } from "../../../../src/model/modifiers/BuildHierarchyModifier";
-import { ChangeBorderWidthModifier } from '../../../../src/model/modifiers/ChangeBorderWidthModifier';
-import { ScaleModifier } from "../../../../src/model/modifiers/ScaleModifier";
-import { SegmentBordersModifier } from "../../../../src/model/modifiers/SegmentBordersModifier";
-import { SplitWallsIntoTwoParallelChildWallsModifier } from '../../../../src/model/modifiers/SplitWallsIntoTwoParallelChildWallsModifier';
-import { ThickenBordersModifier } from '../../../../src/model/modifiers/ThickenBordersModifier';
+import { AssignBordersToRoomsModifier } from "../../../../src/world_generator/modifiers/AssignBordersToRoomsModifier";
+import { BuildHierarchyModifier } from "../../../../src/world_generator/modifiers/BuildHierarchyModifier";
+import { ChangeBorderWidthModifier } from '../../../../src/world_generator/modifiers/ChangeBorderWidthModifier';
+import { ScaleModifier } from "../../../../src/world_generator/modifiers/ScaleModifier";
+import { SegmentBordersModifier } from "../../../../src/world_generator/modifiers/SegmentBordersModifier";
+import { SplitWallsIntoTwoParallelChildWallsModifier } from '../../../../src/world_generator/modifiers/SplitWallsIntoTwoParallelChildWallsModifier';
+import { ThickenBordersModifier } from '../../../../src/world_generator/modifiers/ThickenBordersModifier';
 import { FileFormat } from "../../../../src/WorldGenerator";
-import { GameObject } from '../../../../src/model/types/GameObject';
+import { GameObject } from '../../../../src/world_generator/services/GameObject';
 import { setup } from "../../../testUtils";
-import { Segment } from "../../../../src/geometry/shapes/Segment";
-import { StripeView } from "../../../../src/geometry/shapes/StripeView";
+import { Segment } from "../../../../src/model/geometry/shapes/Segment";
+import { StripeView } from "../../../../src/model/geometry/shapes/StripeView";
 
 function createMap(worldMap: string) {
         return `

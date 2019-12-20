@@ -1,4 +1,4 @@
-import { WorldMapToRoomMapConverter } from '../../../../../src/model/readers/text/WorldMapToRoomMapConverter';
+import { WorldMapToRoomMapConverter } from '../../../../../src/world_generator/importers/text/WorldMapToRoomMapConverter';
 import * as fs from 'fs';
 import { setup } from '../../../../testUtils';
 import { FileFormat } from '../../../../../src/WorldGenerator';

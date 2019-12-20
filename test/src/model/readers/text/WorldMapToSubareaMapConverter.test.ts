@@ -1,6 +1,6 @@
-import { WorldMapToSubareaMapConverter as WorldMapToSubareaMapConverter } from '../../../../../src/model/readers/text/WorldMapToSubareaMapConverter';
-import { GameAssetStore } from '../../../../../src/model/services/GameAssetStore';
-import { TextConfigReader } from '../../../../../src/model/readers/text/TextConfigReader';
+import { WorldMapToSubareaMapConverter as WorldMapToSubareaMapConverter } from '../../../../../src/world_generator/importers/text/WorldMapToSubareaMapConverter';
+import { GameAssetStore } from '../../../../../src/world_generator/services/GameAssetStore';
+import { TextConfigReader } from '../../../../../src/world_generator/importers/text/TextConfigReader';
 
 describe('WorldMapToSubareaMapConverter', () => {
     it ('replaces the border characters with empty characters', () => {

@@ -1,9 +1,9 @@
-import { GameObject } from '../src/model/types/GameObject';
-import { GameObjectTemplate } from '../src/model/types/GameObjectTemplate';
-import { arraysEqual } from '../src/model/utils/Functions';
-import { WorldGeneratorServices } from '../src/model/services/WorldGeneratorServices';
-import { Shape } from '../src/geometry/shapes/Shape';
-import { Point } from '../src/geometry/shapes/Point';
+import { GameObject } from '../src/world_generator/services/GameObject';
+import { GameObjectTemplate } from '../src/world_generator/services/GameObjectTemplate';
+import { arraysEqual } from '../src/world_generator/utils/Functions';
+import { WorldGeneratorServices } from '../src/world_generator/services/WorldGeneratorServices';
+import { Shape } from '../src/model/geometry/shapes/Shape';
+import { Point } from '../src/model/geometry/shapes/Point';
 
 declare global {
     namespace jest {

@@ -1,6 +1,6 @@
-import { ControllerFacade } from '../../../src/gui/controllers/ControllerFacade';
-import { Point } from '../../../src/geometry/shapes/Point';
-import { CanvasItem } from '../../../src/gui/controllers/canvases/svg/models/GridCanvasStore';
+import { ControllerFacade } from '../../../src/editor/controllers/ControllerFacade';
+import { Point } from '../../../src/model/geometry/shapes/Point';
+import { CanvasItem } from '../../../src/editor/controllers/formats/svg/models/GridCanvasStore';
 
 
 const defaultTestSvg = `

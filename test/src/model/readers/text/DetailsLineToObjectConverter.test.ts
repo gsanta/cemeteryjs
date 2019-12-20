@@ -1,4 +1,4 @@
-import { DetailsLineToObjectConverter, DetailsLineDataTypes } from '../../../../../src/model/readers/text/DetailsLineToObjectConverter';
+import { DetailsLineToObjectConverter, DetailsLineDataTypes } from '../../../../../src/world_generator/importers/text/DetailsLineToObjectConverter';
 
 describe('DetailsLineToObjectConverter', () => {
     describe('convert', () => {

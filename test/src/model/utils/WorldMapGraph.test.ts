@@ -1,6 +1,6 @@
-import { LinesToGraphConverter } from '../../../../src/model/readers/text/LinesToGraphConverter';
-import { TextConfigReader } from '../../../../src/model/readers/text/TextConfigReader';
-import { Point } from '../../../../src/geometry/shapes/Point';
+import { LinesToGraphConverter } from '../../../../src/world_generator/importers/text/LinesToGraphConverter';
+import { TextConfigReader } from '../../../../src/world_generator/importers/text/TextConfigReader';
+import { Point } from '../../../../src/model/geometry/shapes/Point';
 
 
 describe('MatrixGraph', () => {

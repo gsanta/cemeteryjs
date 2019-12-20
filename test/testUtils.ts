@@ -1,12 +1,12 @@
 import { Scene } from 'babylonjs';
-import { WorldGeneratorServices } from '../src/model/services/WorldGeneratorServices';
-import { TreeIteratorGenerator } from '../src/model/utils/TreeIteratorGenerator';
+import { WorldGeneratorServices } from '../src/world_generator/services/WorldGeneratorServices';
+import { TreeIteratorGenerator } from '../src/world_generator/utils/TreeIteratorGenerator';
 import { FileFormat } from '../src/WorldGenerator';
-import { GameObject } from '../src/model/types/GameObject';
+import { GameObject } from '../src/world_generator/services/GameObject';
 import { FakeModelLoader } from './fakes/FakeModelLoader';
 import { FakeCreateMeshModifier } from './fakes/FakeCreateMeshModifier';
-import { GameAssetStore } from '../src/model/services/GameAssetStore';
-import { Shape } from '../src/geometry/shapes/Shape';
+import { GameAssetStore } from '../src/world_generator/services/GameAssetStore';
+import { Shape } from '../src/model/geometry/shapes/Shape';
 
 
 /**

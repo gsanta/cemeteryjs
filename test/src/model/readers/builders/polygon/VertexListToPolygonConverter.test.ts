@@ -1,10 +1,10 @@
 import { setup } from "../../../../../testUtils";
 import { FileFormat } from "../../../../../../src/WorldGenerator";
-import { TextWorldMapReader } from "../../../../../../src/model/readers/text/TextWorldMapReader";
-import { PolygonVertexListFinder } from "../../../../../../src/model/readers/builders/polygon/PolygonVertexListFinder";
-import { VertexListToPolygonConverter } from '../../../../../../src/model/readers/builders/polygon/VertexListToPolygonConverter';
-import { Polygon } from "../../../../../../src/geometry/shapes/Polygon";
-import { Point } from "../../../../../../src/geometry/shapes/Point";
+import { TextWorldMapReader } from "../../../../../../src/world_generator/importers/text/TextWorldMapReader";
+import { PolygonVertexListFinder } from "../../../../../../src/world_generator/importers/builders/polygon/PolygonVertexListFinder";
+import { VertexListToPolygonConverter } from '../../../../../../src/world_generator/importers/builders/polygon/VertexListToPolygonConverter';
+import { Polygon } from "../../../../../../src/model/geometry/shapes/Polygon";
+import { Point } from "../../../../../../src/model/geometry/shapes/Point";
 
 describe('Convert the polygon vertices in the graph to a polygon object', () => {
     function getPolygon(worldMap: string): Polygon {

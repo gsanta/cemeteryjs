@@ -1,7 +1,7 @@
-import { GameObject } from '../types/GameObject';
-import { without, last } from './Functions';
-import { Measurements } from '../../geometry/utils/Measurements';
-import { Point } from '../../geometry/shapes/Point';
+import { Measurements } from '../geometry/utils/Measurements';
+import { Point } from '../geometry/shapes/Point';
+import { GameObject } from '../../world_generator/services/GameObject';
+import { without, last } from '../../world_generator/utils/Functions';
 
 export class RoomUtils {
     public static orderBorderItemsAroundRoomClockwise(room: GameObject) {

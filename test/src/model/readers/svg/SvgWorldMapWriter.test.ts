@@ -1,8 +1,8 @@
-import { SvgWorldMapReader } from '../../../../../src/model/readers/svg/SvgWorldMapReader';
-import { SvgConfigReader } from '../../../../../src/model/readers/svg/SvgConfigReader';
-import { SvgWorldMapWriter } from '../../../../../src/model/readers/svg/SvgWorldMapWriter';
+import { SvgWorldMapReader } from '../../../../../src/world_generator/importers/svg/SvgWorldMapReader';
+import { SvgConfigReader } from '../../../../../src/world_generator/importers/svg/SvgConfigReader';
+import { SvgWorldMapWriter } from '../../../../../src/world_generator/importers/svg/SvgWorldMapWriter';
 import * as convert from 'xml-js';
-import { RawWorldMapJson } from '../../../../../src/model/readers/svg/WorldMapJson';
+import { RawWorldMapJson } from '../../../../../src/world_generator/importers/svg/WorldMapJson';
 
 it ('Write an svg from the internal worldmap representation', () => {
     const inputWorldMap = `

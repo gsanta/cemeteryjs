@@ -1,7 +1,7 @@
-import { Transform } from '../../../../src/geometry/utils/Transform';
-import { Polygon } from '../../../../src/geometry/shapes/Polygon';
-import { Point } from '../../../../src/geometry/shapes/Point';
-import { Segment } from '../../../../src/geometry/shapes/Segment';
+import { Transform } from '../../../../src/model/geometry/utils/Transform';
+import { Polygon } from '../../../../src/model/geometry/shapes/Polygon';
+import { Point } from '../../../../src/model/geometry/shapes/Point';
+import { Segment } from '../../../../src/model/geometry/shapes/Segment';
 
 
 describe(`Transform`, () => {

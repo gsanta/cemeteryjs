@@ -1,5 +1,5 @@
-import { GeometryService } from "../../../../src/geometry/GeometryService";
-import { Point } from "../../../../src/geometry/shapes/Point";
+import { GeometryService } from "../../../../src/model/geometry/GeometryService";
+import { Point } from "../../../../src/model/geometry/shapes/Point";
 
 describe('`Segment`', () => {
     const geometryService = new GeometryService();

@@ -1,7 +1,7 @@
-import { TransformToWorldCoordinateModifier } from '../../../../src/model/modifiers/TransformToWorldCoordinateModifier';
-import { GameObject } from '../../../../src/model/types/GameObject';
-import { Shape } from '../../../../src/geometry/shapes/Shape';
-import { Polygon } from '../../../../src/geometry/shapes/Polygon';
+import { TransformToWorldCoordinateModifier } from '../../../../src/world_generator/modifiers/TransformToWorldCoordinateModifier';
+import { GameObject } from '../../../../src/world_generator/services/GameObject';
+import { Shape } from '../../../../src/model/geometry/shapes/Shape';
+import { Polygon } from '../../../../src/model/geometry/shapes/Polygon';
 
 
 describe(`TransformToWorldCoordinateModifier`, () => {

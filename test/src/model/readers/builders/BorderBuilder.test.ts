@@ -1,9 +1,9 @@
-import { BorderBuilder } from '../../../../../src/model/readers/builders/BorderBuilder';
-import { TextWorldMapReader } from '../../../../../src/model/readers/text/TextWorldMapReader';
+import { BorderBuilder } from '../../../../../src/world_generator/importers/builders/BorderBuilder';
+import { TextWorldMapReader } from '../../../../../src/world_generator/importers/text/TextWorldMapReader';
 import { setup } from '../../../../testUtils';
 import { FileFormat } from '../../../../../src/WorldGenerator';
-import { Segment } from '../../../../../src/geometry/shapes/Segment';
-import { Point } from '../../../../../src/geometry/shapes/Point';
+import { Segment } from '../../../../../src/model/geometry/shapes/Segment';
+import { Point } from '../../../../../src/model/geometry/shapes/Point';
 
 
 it ('Create separate items for every vertical/horizontal slices of walls', () => {
