@@ -2,16 +2,16 @@ import { EventDispatcher } from "../../../events/EventDispatcher";
 import { SvgCanvasController } from "../SvgCanvasController";
 import { AbstractTool } from './AbstractTool';
 import { ToolType } from './Tool';
-import { Polygon } from "../../../../../model/geometry/shapes/Polygon";
 import { Events } from '../../../events/Events';
 import { CanvasItem, PixelTag } from "../models/GridCanvasStore";
+import { Rectangle } from "../../../../../model/geometry/shapes/Rectangle";
 
 export class MoveTool extends AbstractTool {
     private eventDispatcher: EventDispatcher;
     private lastPreviewRect: CanvasItem;
     private canvasController: SvgCanvasController;
 
-    private origDimensions: Polygon[] = [];
+    private origDimensions: Rectangle[] = [];
 
     constructor(svgCanvasController: SvgCanvasController, eventDispatcher: EventDispatcher) {
         super(ToolType.MOVE);
@@ -23,7 +23,7 @@ export class MoveTool extends AbstractTool {
         super.down();
 
         const selectedItems = PixelTag.getSelectedItems(this.canvasController.pixelModel.items);
-        this.origDimensions = selectedItems.map(item => item.polygon);
+        this.origDimensions = selectedItems.map(item => item.dimensions);
     }
 
     drag() {
@@ -36,7 +36,7 @@ export class MoveTool extends AbstractTool {
         mouseDelta.x = Math.floor(mouseDelta.x / this.canvasController.configModel.pixelSize);
         mouseDelta.y = Math.floor(mouseDelta.y / this.canvasController.configModel.pixelSize);
 
-        selectedItems.forEach((item, index) => item.polygon = this.origDimensions[index].translate(mouseDelta));
+        selectedItems.forEach((item, index) => item.dimensions = this.origDimensions[index].translate(mouseDelta));
 
         this.canvasController.renderCanvas();
     }

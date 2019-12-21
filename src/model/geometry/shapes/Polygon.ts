@@ -10,8 +10,8 @@ import { BoundingInfo, Shape, ShapeOrigin } from './Shape';
 
 
 export class Polygon implements Shape {
-    private points: Point[];
-    private orederedPoints: Point[];
+    protected points: Point[];
+    protected orederedPoints: Point[];
     private geometryService: GeometryService;
 
     constructor(points: Point[], geometryService: GeometryService = new GeometryService()) {

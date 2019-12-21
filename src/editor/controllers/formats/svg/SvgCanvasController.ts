@@ -18,6 +18,7 @@ import { MouseHandler } from './handlers/MouseHandler';
 import { SvgConfig } from './models/SvgConfig';
 import { GridCanvasStore } from './models/GridCanvasStore';
 import { SelectionModel } from './models/SelectionModel';
+import { Model3DController } from './Model3DController';
 
 export const initialSvg = 
 `
@@ -47,7 +48,8 @@ export class SvgCanvasController implements IEditableCanvas {
     tools: Tool[];
     writer: ICanvasWriter;
     reader: ICanvasReader;
-    
+    model3dController: Model3DController;
+
     configModel: SvgConfig;
     pixelModel: GridCanvasStore;
     selectionModel: SelectionModel;
@@ -76,6 +78,7 @@ export class SvgCanvasController implements IEditableCanvas {
         this.mouseController = new MouseHandler(this);
         this.writer = new SvgCanvasWriter(this, controllers.eventDispatcher);
         this.reader = new SvgCanvasReader(this);
+        this.model3dController = new Model3DController(this);
 
         this.tools = [
             new RectangleTool(this, this.controllers.eventDispatcher),

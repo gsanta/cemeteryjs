@@ -25,7 +25,7 @@ export class SvgCanvasReader implements ICanvasReader {
         orderedItems.sort((a, b) => a.layer - b.layer);
 
         return orderedItems.map(item => {
-            const rectangle = <Rectangle> item.polygon;
+            const rectangle = <Rectangle> item.dimensions;
             const pixelSize = configModel.pixelSize;
 
             const fill = item.tags.has(PixelTag.SELECTED) ? 'blue' : item.color;

@@ -1,4 +1,4 @@
-import { Rectangle } from "../../model/geometry/shapes/Rectangle";
+import { Rectangle } from "../geometry/shapes/Rectangle";
 
 export interface ModelObject {
     name: string;

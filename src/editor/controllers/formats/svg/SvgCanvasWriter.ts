@@ -30,7 +30,7 @@ export class SvgCanvasWriter implements ICanvasWriter {
 
             const canvasItem: CanvasItem = {
                 color: 'grey',
-                polygon: rectangle,
+                dimensions: rectangle,
                 type: rect.type,
                 layer: 0,
                 isPreview: false,

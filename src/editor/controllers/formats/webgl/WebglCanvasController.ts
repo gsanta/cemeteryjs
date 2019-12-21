@@ -1,4 +1,4 @@
-import { ArcRotateCamera, Color3, Engine, HemisphericLight, Scene, Vector3, FreeCamera, UniversalCamera } from "babylonjs";
+import { ArcRotateCamera, Color3, Engine, HemisphericLight, Scene, Vector3, UniversalCamera } from "babylonjs";
 import { FileFormat } from '../../../../WorldGenerator';
 import { ControllerFacade } from '../../ControllerFacade';
 import { Events } from "../../events/Events";
@@ -85,26 +85,12 @@ export class WebglCanvasController implements IWritableCanvas {
 
         const scene = new Scene(this.engine);
 
-        // const alpha = this.camera ? this.camera.alpha : 0;
-        // const beta = this.camera ? this.camera.beta : 0;
-        // const radius = this.camera ? this.camera.radius : 40;
-        // const target = this.camera ? this.camera.target : new Vector3(0, 0, 0);
-        // const position = this.camera ? this.camera.position : new Vector3(0, 40, 20);
-        // this.camera = new ArcRotateCamera("Camera", alpha, beta, radius, target, scene);
         this.camera = new UniversalCamera('camera1', cameraPos, scene);
         this.camera.setTarget(target);
         this.camera.inputs.clear();
         this.camera.inputs.add(new CustomCameraInput());
         this.camera.inputs.add(new MouseCameraInput());
         this.camera.attachControl(this.canvas, true);
-        // this.camera.keysUp.push(38);    //W
-        // this.camera.keysDown.push(40)   //D
-        // this.camera.keysLeft.push(37);  //A
-        // this.camera.keysRight.push(39); //S
-
-
-        // this.camera.setPosition(position);
-        // this.camera.attachControl(this.canvas, true);
 
         const light = new HemisphericLight('light', new Vector3(0, 4, 1), scene);
         light.diffuse = new Color3(1, 1, 1);

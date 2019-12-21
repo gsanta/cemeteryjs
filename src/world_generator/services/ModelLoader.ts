@@ -16,7 +16,6 @@ export class ModelLoader {
     constructor(scene: Scene) {
         this.scene = scene;
     }
-    bed
     models: Map<string, ModelData> = new Map();
 
     private pendingModels: Set<string> = new Set();
@@ -103,11 +102,9 @@ export class ModelLoader {
         mesh.computeWorldMatrix();
         mesh.getBoundingInfo().update(mesh._worldMatrix);
 
-        if (mesh.getBoundingInfo().boundingBox.extendSize.x > 0) {
-            const extend = mesh.getBoundingInfo().boundingBox.extendSizeWorld;
-            return new Point(extend.x * 2, extend.z * 2);
-        }
-
-        return new Point(1, 1);
+        const boundingVectors = mesh.getHierarchyBoundingVectors();
+        const width = boundingVectors.max.x - boundingVectors.min.x;
+        const height = boundingVectors.max.z - boundingVectors.min.z;
+        return new Point(width, height);
     }
 }

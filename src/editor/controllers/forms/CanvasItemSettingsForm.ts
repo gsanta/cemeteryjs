@@ -4,6 +4,7 @@ import { EventDispatcher } from '../events/EventDispatcher';
 import { Events } from '../events/Events';
 import { WorldItemShape } from '../../../world_generator/services/GameObject';
 import { CanvasItem, FileData } from '../formats/svg/models/GridCanvasStore';
+import { SvgCanvasController } from '../formats/svg/SvgCanvasController';
 
 
 export enum CanvasItemSettings {
@@ -18,10 +19,10 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
     shapes: string[] = ['rect', 'model'];
     canvasItem: CanvasItem;
 
-    private canvasController: IEditableCanvas;
+    private canvasController: SvgCanvasController;
     private eventDispatcher: EventDispatcher;
 
-    constructor(canvasController: IEditableCanvas, eventDispatcher: EventDispatcher) {
+    constructor(canvasController: SvgCanvasController, eventDispatcher: EventDispatcher) {
         super();
         this.canvasController = canvasController;
         this.eventDispatcher = eventDispatcher;
@@ -79,6 +80,7 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
                 break;
             case CanvasItemSettings.MODEL:
                 this.canvasItem.model = this.tempFileData.fileName;
+                this.canvasController.model3dController.set3dModelForCanvasItem(this.canvasItem);
                 this.tempFileData = { FileData: '', data: '' };
                 break;
             case CanvasItemSettings.LAYER:

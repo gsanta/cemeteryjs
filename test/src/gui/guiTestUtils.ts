@@ -82,7 +82,7 @@ export function selectWithRect(controllers: ControllerFacade, from: Point, to: P
 
 export function click(controllers: ControllerFacade, canvasItem: CanvasItem) {
     const svgController = controllers.svgCanvasController;
-    const center = canvasItem.polygon.getBoundingCenter().mul(controllers.svgCanvasController.configModel.pixelSize);
+    const center = canvasItem.dimensions.getBoundingCenter().mul(controllers.svgCanvasController.configModel.pixelSize);
     svgController.mouseController.onMouseMove(<MouseEvent> {x: center.x, y: center.y});
     svgController.mouseController.hover(canvasItem);
     svgController.mouseController.onMouseDown(<MouseEvent>{x: center.x, y: center.y});

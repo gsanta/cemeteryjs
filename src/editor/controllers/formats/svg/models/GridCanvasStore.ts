@@ -49,7 +49,7 @@ export interface CanvasItem {
     type: string;
     shape: WorldItemShape;
     color: string;
-    polygon: Polygon;
+    dimensions: Rectangle;
     tags: Set<PixelTag>;
     layer: number;
     isPreview: boolean;
@@ -104,7 +104,7 @@ export class GridCanvasStore {
         const botRight = this.getPixelPosition(indexes[indexes.length - 1]); 
         const canvasItem: CanvasItem = {
             color: 'grey',
-            polygon: new Rectangle(topLeft, botRight),
+            dimensions: new Rectangle(topLeft, botRight),
             type,
             layer,
             isPreview,
@@ -194,7 +194,7 @@ export class GridCanvasStore {
 
         const polygon = Polygon.createRectangle(x, y, width, height);
 
-        return this.items.filter(item => polygon.contains(item.polygon));
+        return this.items.filter(item => polygon.contains(item.dimensions));
     }
 
     getIntersectingItemsAtPoint(point: Point): CanvasItem[] {
@@ -202,7 +202,7 @@ export class GridCanvasStore {
 
         const gridPoint = new Point(point.x / pixelSize, point.y / pixelSize);
 
-        return this.items.filter(item => item.polygon.containsPoint(gridPoint));
+        return this.items.filter(item => item.dimensions.containsPoint(gridPoint));
     }
 
     getTopPixelAtCoordinate(coordinate: Point): Pixel {

@@ -12,6 +12,15 @@ export class Point {
         this.geometryService = geometryService;
     }
 
+    setX(x: number): Point {
+        return new Point(x, this.y);
+    }
+
+    setY(y: number): Point {
+        return new Point(this.x, y);
+    }
+
+
     addX(amount: number): Point {
         return this.geometryService.factory.point(this.x + amount, this.y);
     }
