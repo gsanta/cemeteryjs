@@ -1,7 +1,6 @@
 import { SvgCanvasController } from "../SvgCanvasController";
 import { AbstractSelectionTool } from "./AbstractSelectionTool";
 import { ToolType } from "./Tool";
-import { Rectangle } from "../../../../../model/geometry/shapes/Rectangle";
 import { PixelTag } from "../models/GridCanvasStore";
 
 
@@ -36,9 +35,7 @@ export class SelectTool extends AbstractSelectionTool {
 
     draggedUp() {
         super.draggedUp();
-        const selectionRect = this.canvasController.selectionModel.getSelectionRect();
-        const rectangle = new Rectangle(selectionRect.topLeft, selectionRect.bottomRight);
-        const canvasItems = this.canvasController.pixelModel.getIntersectingItemsInRect(rectangle);
+        const canvasItems = this.canvasController.pixelModel.getIntersectingItemsInRect(this.getSelectionRect());
 
         PixelTag.addTag(PixelTag.SELECTED, canvasItems);
 

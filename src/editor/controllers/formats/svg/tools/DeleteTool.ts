@@ -35,9 +35,7 @@ export class DeleteTool extends AbstractSelectionTool {
     
     draggedUp() {
         super.draggedUp();
-        const selectionRect = this.canvasController.selectionModel.getSelectionRect();
-        const rectangle = new Rectangle(selectionRect.topLeft, selectionRect.bottomRight);
-        const canvasItems = this.canvasController.pixelModel.getIntersectingItemsInRect(rectangle);
+        const canvasItems = this.canvasController.pixelModel.getIntersectingItemsInRect(this.getSelectionRect());
 
         canvasItems.forEach(item => this.canvasController.pixelModel.removeRectangle(item));
 

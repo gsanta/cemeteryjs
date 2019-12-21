@@ -8,6 +8,8 @@ export class AbstractTool implements Tool {
         this.type = type;
     }
 
+    supportsRectSelection(): boolean { return false; }
+
     down() {}
     drag() {}
     click() {}

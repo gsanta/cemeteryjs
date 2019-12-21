@@ -9,6 +9,8 @@ export enum ToolType {
 
 export interface Tool {
     type: ToolType;
+
+    supportsRectSelection(): boolean;
     down();
     drag();
     click();

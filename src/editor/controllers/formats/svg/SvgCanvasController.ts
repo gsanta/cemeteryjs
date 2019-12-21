@@ -1,24 +1,22 @@
 import { FileFormat } from '../../../../WorldGenerator';
+import { GameObjectTemplate } from '../../../../world_generator/services/GameObjectTemplate';
 import { defaultWorldItemDefinitions } from '../../../defaultWorldItemDefinitions';
 import { ControllerFacade } from '../../ControllerFacade';
+import { CanvasItemSettingsForm } from '../../forms/CanvasItemSettingsForm';
 import { ICanvasReader } from '../ICanvasReader';
 import { ICanvasWriter } from '../ICanvasWriter';
 import { IEditableCanvas } from '../IEditableCanvas';
+import { MouseHandler } from './handlers/MouseHandler';
+import { Model3DController } from './Model3DController';
+import { GridCanvasStore } from './models/GridCanvasStore';
+import { SelectionModel } from './models/SelectionModel';
+import { SvgConfig } from './models/SvgConfig';
 import { SvgCanvasReader } from './SvgCanvasReader';
 import { SvgCanvasWriter } from './SvgCanvasWriter';
 import { DeleteTool } from './tools/DeleteTool';
+import { MoveAndSelectTool } from './tools/MoveAndSelectTool';
 import { RectangleTool } from './tools/RectangleTool';
 import { Tool, ToolType } from './tools/Tool';
-import { GameObjectTemplate } from '../../../../world_generator/services/GameObjectTemplate';
-import { SelectTool } from './tools/SelectTool';
-import { CanvasItemSettingsForm } from '../../forms/CanvasItemSettingsForm';
-import { MoveTool } from './tools/MoveTool';
-import { MoveAndSelectTool } from './tools/MoveAndSelectTool';
-import { MouseHandler } from './handlers/MouseHandler';
-import { SvgConfig } from './models/SvgConfig';
-import { GridCanvasStore } from './models/GridCanvasStore';
-import { SelectionModel } from './models/SelectionModel';
-import { Model3DController } from './Model3DController';
 
 export const initialSvg = 
 `
@@ -52,7 +50,6 @@ export class SvgCanvasController implements IEditableCanvas {
 
     configModel: SvgConfig;
     pixelModel: GridCanvasStore;
-    selectionModel: SelectionModel;
     
     controllers: ControllerFacade;
     worldItemDefinitions: GameObjectTemplate[];
@@ -71,7 +68,6 @@ export class SvgCanvasController implements IEditableCanvas {
         this.worldItemDefinitions = [...defaultWorldItemDefinitions];
         this.selectedWorldItemDefinition = this.worldItemDefinitions[0];
 
-        this.selectionModel = new SelectionModel();
         this.configModel = new SvgConfig();
         this.pixelModel = new GridCanvasStore(this.configModel);
         

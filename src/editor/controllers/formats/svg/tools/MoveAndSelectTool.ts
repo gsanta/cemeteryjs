@@ -5,6 +5,7 @@ import { SelectTool } from "./SelectTool";
 import { EventDispatcher } from '../../../events/EventDispatcher';
 import { AbstractTool } from './AbstractTool';
 import { PixelTag } from "../models/GridCanvasStore";
+import { Rectangle } from "../../../../../model/geometry/shapes/Rectangle";
 
 export class MoveAndSelectTool extends AbstractTool {
 
@@ -20,6 +21,21 @@ export class MoveAndSelectTool extends AbstractTool {
         this.rectSelectTool = new SelectTool(canvasController);
 
         this.activeTool = this.rectSelectTool;
+    }
+
+    supportsRectSelection(): boolean { return true; }
+
+    displaySelectionRect(): boolean {
+        switch(this.activeTool.type) {
+            case ToolType.MOVE:
+                return false;
+            case ToolType.SELECT:
+                return true;
+        }
+    }
+
+    getSelectionRect(): Rectangle {
+        return this.rectSelectTool.getSelectionRect();
     }
 
     down() {

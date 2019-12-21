@@ -8,6 +8,7 @@ import { Rectangle } from '../../../../model/geometry/shapes/Rectangle';
 import { Segment } from '../../../../model/geometry/shapes/Segment';
 import { CanvasComponent } from '../CanvasComponent';
 import { PixelTag } from '../../../controllers/formats/svg/models/GridCanvasStore';
+import { AbstractSelectionTool } from '../../../controllers/formats/svg/tools/AbstractSelectionTool';
 
 const EditorComponentStyled = styled.div`
     height: 100%;
@@ -107,20 +108,22 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
     }
 
     private renderSelection(): JSX.Element {
-        const selectionModel = this.props.canvasController.selectionModel;
+        const tool = this.props.canvasController.getActiveTool();
 
-        if (selectionModel.isVisible && selectionModel.topLeftPoint && selectionModel.bottomRightPoint) {
+        if (tool.supportsRectSelection()) {
+            const selectionTool = tool as AbstractSelectionTool;
+            if (!selectionTool.displaySelectionRect()) { return null; }
             return (
                 <SelectionComponentStyled 
-                    x={selectionModel.topLeftPoint.x}
-                    y={selectionModel.topLeftPoint.y}
-                    width={selectionModel.bottomRightPoint.x - selectionModel.topLeftPoint.x}
-                    height={selectionModel.bottomRightPoint.y - selectionModel.topLeftPoint.y}
+                    x={selectionTool.getSelectionRect().topLeft.x}
+                    y={selectionTool.getSelectionRect().topLeft.y}
+                    width={selectionTool.getSelectionRect().bottomRight.x - selectionTool.getSelectionRect().topLeft.x}
+                    height={selectionTool.getSelectionRect().bottomRight.y - selectionTool.getSelectionRect().topLeft.y}
                 />
             );
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     renderMetaData(): JSX.Element {

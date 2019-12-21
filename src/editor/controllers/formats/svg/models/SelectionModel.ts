@@ -1,5 +1,5 @@
-import { Rectangle } from './Rectangle';
 import { Point } from '../../../../../model/geometry/shapes/Point';
+import { Rectangle } from '../../../../../model/geometry/shapes/Rectangle';
 
 export class SelectionModel {
     isVisible: boolean;
