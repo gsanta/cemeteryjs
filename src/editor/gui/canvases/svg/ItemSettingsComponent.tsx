@@ -8,7 +8,7 @@ import { ConnectedDropdownComponent } from '../../forms/DropdownComponent';
 import { WorldItemTypeProperty } from '../../../controllers/forms/WorldItemDefinitionForm';
 import { ConnectedFileUploadComponent } from '../../forms/FileUploadComponent';
 import { ConnectedInputComponent } from '../../forms/InputComponent';
-import { PixelTag, FileData } from '../../../controllers/formats/svg/models/GridCanvasStore';
+import { CanvasItemTag } from '../../../controllers/formats/svg/models/CanvasItem';
 
 export interface ItemSettingsProps {
     canvasController: SvgCanvasController;
@@ -32,7 +32,7 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
     }
 
     render(): JSX.Element {
-        const selectedCanvasItems = PixelTag.getTaggedItems(PixelTag.SELECTED, this.props.canvasController.pixelModel.items);
+        const selectedCanvasItems = CanvasItemTag.getTaggedItems(CanvasItemTag.SELECTED, this.props.canvasController.pixelModel.items);
 
         if (selectedCanvasItems.length === 0) { return null; }
 
@@ -78,10 +78,10 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
                     <ConnectedFileUploadComponent
                         formController={form}
                         propertyName={WorldItemTypeProperty.MODEL}
-                        propertyType="file-data"
+                        propertyType="string"
                     />
                 </LabeledComponent>
-                {form.getVal(CanvasItemSettings.MODEL) ? form.getVal<FileData>(CanvasItemSettings.MODEL).fileName : ''}
+                {form.getVal(CanvasItemSettings.MODEL) ? form.getVal<string>(CanvasItemSettings.MODEL) : ''}
             </React.Fragment>
         );
     }
@@ -113,7 +113,7 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
                         placeholder="0"
                     />
                 </LabeledComponent>
-                {form.getVal(CanvasItemSettings.MODEL) ? form.getVal<FileData>(CanvasItemSettings.MODEL).fileName : ''}
+                {form.getVal(CanvasItemSettings.MODEL) ? form.getVal<string>(CanvasItemSettings.MODEL) : ''}
             </React.Fragment>
         );
     }

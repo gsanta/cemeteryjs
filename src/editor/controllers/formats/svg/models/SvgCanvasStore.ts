@@ -1,56 +1,17 @@
-import { SvgConfig } from './SvgConfig';
-import { last, without, sortNum } from '../../../../../world_generator/utils/Functions';
-import { WorldItemShape } from '../../../../../world_generator/services/GameObject';
 import { Point } from '../../../../../model/geometry/shapes/Point';
 import { Polygon } from '../../../../../model/geometry/shapes/Polygon';
 import { Rectangle } from '../../../../../model/geometry/shapes/Rectangle';
-
-export enum PixelTag {
-    SELECTED = 'selected',
-    HOVERED = 'hovered'
-}
-
-export namespace PixelTag {
-    export function addTag(tag: PixelTag, tagged: {tags: Set<PixelTag>}[]) {
-        tagged.forEach(item => item.tags.add(tag));
-    }
-
-    export function removeTag(tag: PixelTag, tagged: {tags: Set<PixelTag>}[]) {
-        tagged.forEach(item => item.tags.delete(tag));
-    }
-
-    export function getTaggedItems<T extends {tags: Set<PixelTag>}>(tag: PixelTag, tagged: T[]): T[] {
-        return tagged.filter(pixel => pixel.tags.has(tag));
-    }
-
-    export function getHoveredItem<T extends {tags: Set<PixelTag>}>(tagged: T[]): T {
-        return tagged.filter(pixel => pixel.tags.has(PixelTag.HOVERED))[0];
-    }
-
-    export function getSelectedItems<T extends {tags: Set<PixelTag>}>(tagged: T[]): T[] {
-        return tagged.filter(pixel => pixel.tags.has(PixelTag.SELECTED));
-    }
-}
-
-export interface Pixel {
-    type: string;
-    index: number;
-    isPreview: boolean;
-    tags: Set<PixelTag>;
-    layer: number;
-}
-
-export interface FileData {
-    fileName: string;
-    data: string;
-}
+import { WorldItemShape } from '../../../../../world_generator/services/GameObject';
+import { sortNum, without } from '../../../../../world_generator/utils/Functions';
+import { SvgConfig } from './SvgConfig';
+import { CanvasItemTag } from './CanvasItem';
 
 export interface CanvasItem {
     type: string;
     shape: WorldItemShape;
     color: string;
     dimensions: Rectangle;
-    tags: Set<PixelTag>;
+    tags: Set<CanvasItemTag>;
     layer: number;
     isPreview: boolean;
     model: string;
@@ -75,19 +36,13 @@ export function getLayerForType(type: string) {
     }
 }
 
-export class GridCanvasStore {
-    bitMap: Map<number, Pixel[]> = new Map();
-    pixels: Pixel[] = [];
+export class SvgCanvasStore {
     private bitmapConfig: SvgConfig;
 
     items: CanvasItem[] = [];
 
     constructor(bitmapConfig: SvgConfig) {
         this.bitmapConfig = bitmapConfig;
-    }
-
-    getPixel(index: number) {
-        return this.bitMap.get(index)[0];
     }
 
     addRect(canvasItem: CanvasItem): CanvasItem {
@@ -123,49 +78,7 @@ export class GridCanvasStore {
         this.items = without(this.items, rect);
     }
 
-    commitPreviews() {
-        this.pixels
-            .filter(pixel => pixel.isPreview)
-            .forEach(pixel => {
-                pixel.isPreview = false;
-                pixel.layer = getLayerForType(pixel.type);
-
-                this.bitMap.get(pixel.index).sort(this.sortByLayer)
-            });
-    }
-    
-    removePreviews() {
-        const previews = this.pixels.filter(pixel => pixel.isPreview);
-    
-        previews.forEach(preview => this.removePixelFromMapAtLayer(preview.index, preview.layer));
-        this.pixels = this.pixels.filter(pixel => !pixel.isPreview);
-    }
-
-    removePixelFromMapAtLayer(pixelIndex: number, layer: number) {
-        const list = (this.bitMap.get(pixelIndex) || []);
-        const pixel = list.find(pixel => pixel.layer === layer);
-        if (pixel) {
-            list.splice(list.indexOf(pixel), 1);
-            if (list.length === 0) {
-                this.bitMap.delete(pixelIndex);
-            }
-            this.pixels.splice(this.pixels.indexOf(pixel), 1);
-        }
-    }
-
-    removeTopPixel(pixelIndex: number) {
-        const list = (this.bitMap.get(pixelIndex) || []);
-        if (list.length > 0) {
-            const lastItem = last(list);
-
-            list.splice(list.indexOf(lastItem), 1);
-            this.pixels.splice(this.pixels.indexOf(lastItem), 1);
-        }
-    }
-
     clear(): void {
-        this.bitMap = new Map();
-        this.pixels = [];
         this.items = [];
     }
 
@@ -204,12 +117,6 @@ export class GridCanvasStore {
 
         return this.items.filter(item => item.dimensions.containsPoint(gridPoint));
     }
-
-    getTopPixelAtCoordinate(coordinate: Point): Pixel {
-        const index = this.getIndexAtCoordinate(coordinate);
-
-        return this.bitMap.get(index) && last(this.bitMap.get(index));
-    }
     
     getIndexAtPosition(pos: Point) {
         const canvasDimensions = this.bitmapConfig.canvasDimensions;
@@ -228,16 +135,5 @@ export class GridCanvasStore {
         const yIndex = Math.floor(coordinate.y / pixelSize);
 
         return yIndex * xPixels + xIndex;
-    }
-
-
-    private sortByLayer(a: Pixel, b: Pixel) {
-        if (a.layer === -1) {
-            return 1;
-        } else if (b.layer === -1) {
-            return -1;
-        } else {
-            return a.layer - b.layer;
-        }
     }
 }

@@ -8,8 +8,7 @@ import { ICanvasWriter } from '../ICanvasWriter';
 import { IEditableCanvas } from '../IEditableCanvas';
 import { MouseHandler } from './handlers/MouseHandler';
 import { Model3DController } from './Model3DController';
-import { GridCanvasStore } from './models/GridCanvasStore';
-import { SelectionModel } from './models/SelectionModel';
+import { SvgCanvasStore } from './models/SvgCanvasStore';
 import { SvgConfig } from './models/SvgConfig';
 import { SvgCanvasReader } from './SvgCanvasReader';
 import { SvgCanvasWriter } from './SvgCanvasWriter';
@@ -49,7 +48,7 @@ export class SvgCanvasController implements IEditableCanvas {
     model3dController: Model3DController;
 
     configModel: SvgConfig;
-    pixelModel: GridCanvasStore;
+    pixelModel: SvgCanvasStore;
     
     controllers: ControllerFacade;
     worldItemDefinitions: GameObjectTemplate[];
@@ -69,7 +68,7 @@ export class SvgCanvasController implements IEditableCanvas {
         this.selectedWorldItemDefinition = this.worldItemDefinitions[0];
 
         this.configModel = new SvgConfig();
-        this.pixelModel = new GridCanvasStore(this.configModel);
+        this.pixelModel = new SvgCanvasStore(this.configModel);
         
         this.mouseController = new MouseHandler(this);
         this.writer = new SvgCanvasWriter(this, controllers.eventDispatcher);

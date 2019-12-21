@@ -36,21 +36,4 @@ export class ModelFactory {
 
         return <any> mesh;
     }
-
-    private createPlaceHolderMesh(gameObject: GameObject): Mesh {
-        const boundingInfo = gameObject.dimensions.getBoundingInfo();
-        const width = boundingInfo.max[0] - boundingInfo.min[0];
-        const depth = boundingInfo.max[1] - boundingInfo.min[1];
-
-        const plane = MeshBuilder.CreatePlane("plane", {width, height: depth}, this.scene);
-        
-        const center = gameObject.dimensions.getBoundingCenter();
-        plane.translate(new Vector3(3, 0, 3), 1);
-
-        const material = new StandardMaterial('empty-area-material', this.scene);
-        material.diffuseColor = new Color3(1, 0, 0);
-        plane.material = material;
-
-        return plane;
-    }
 }

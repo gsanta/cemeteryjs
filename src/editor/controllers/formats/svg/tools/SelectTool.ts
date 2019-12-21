@@ -1,8 +1,7 @@
 import { SvgCanvasController } from "../SvgCanvasController";
 import { AbstractSelectionTool } from "./AbstractSelectionTool";
 import { ToolType } from "./Tool";
-import { PixelTag } from "../models/GridCanvasStore";
-
+import { CanvasItemTag } from "../models/CanvasItem";
 
 export class SelectTool extends AbstractSelectionTool {
 
@@ -23,11 +22,11 @@ export class SelectTool extends AbstractSelectionTool {
     click() {
         super.click();
 
-        PixelTag.removeTag(PixelTag.SELECTED, this.canvasController.pixelModel.items);
+        CanvasItemTag.removeTag(CanvasItemTag.SELECTED, this.canvasController.pixelModel.items);
 
         const items = this.canvasController.pixelModel.getIntersectingItemsAtPoint(this.canvasController.mouseController.movePoint);
 
-        items.forEach(item => item.tags.add(PixelTag.SELECTED));
+        items.forEach(item => item.tags.add(CanvasItemTag.SELECTED));
 
         this.canvasController.renderCanvas();
         this.canvasController.renderSettings();
@@ -37,7 +36,7 @@ export class SelectTool extends AbstractSelectionTool {
         super.draggedUp();
         const canvasItems = this.canvasController.pixelModel.getIntersectingItemsInRect(this.getSelectionRect());
 
-        PixelTag.addTag(PixelTag.SELECTED, canvasItems);
+        CanvasItemTag.addTag(CanvasItemTag.SELECTED, canvasItems);
 
         this.canvasController.renderCanvas();
     }

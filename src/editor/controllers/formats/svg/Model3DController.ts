@@ -1,6 +1,6 @@
 import { Engine, Scene } from 'babylonjs';
 import { ModelLoader } from '../../../../world_generator/services/ModelLoader';
-import { CanvasItem } from './models/GridCanvasStore';
+import { CanvasItem } from './models/SvgCanvasStore';
 import { SvgCanvasController } from './SvgCanvasController';
 
 

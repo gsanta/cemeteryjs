@@ -2,7 +2,7 @@ import { SvgCanvasController } from './SvgCanvasController';
 import { ICanvasReader } from '../ICanvasReader';
 import { GameObjectTemplate } from '../../../../world_generator/services/GameObjectTemplate';
 import { Rectangle } from '../../../../model/geometry/shapes/Rectangle';
-import { PixelTag } from './models/GridCanvasStore';
+import { CanvasItemTag } from './models/CanvasItem';
 
 export class SvgCanvasReader implements ICanvasReader {
     private canvasController: SvgCanvasController;
@@ -28,7 +28,7 @@ export class SvgCanvasReader implements ICanvasReader {
             const rectangle = <Rectangle> item.dimensions;
             const pixelSize = configModel.pixelSize;
 
-            const fill = item.tags.has(PixelTag.SELECTED) ? 'blue' : item.color;
+            const fill = item.tags.has(CanvasItemTag.SELECTED) ? 'blue' : item.color;
 
             const x = rectangle.topLeft.x * pixelSize;
             const y = rectangle.topLeft.y * pixelSize;

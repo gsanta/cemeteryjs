@@ -5,10 +5,9 @@ import { colors } from '../styles';
 import { Focusable } from './Focusable';
 import './InputComponent.scss';
 import { withCommitOnChange } from './decorators/withCommitOnChange';
-import { FileData } from '../../controllers/formats/svg/models/GridCanvasStore';
 
 export interface FileUploadProps extends Focusable {
-    onChange(fileData: FileData): void;
+    onChange(fileName: string): void;
 }
 
 const FormControlStyled = styled(FormControl)`
@@ -41,11 +40,11 @@ export class FileUploadComponent extends React.Component<FileUploadProps> {
         );
     }
 
-    private loadFile(file: File): Promise<FileData> {
-        return new Promise<FileData>((resolve, reject) => {
+    private loadFile(file: File): Promise<string> {
+        return new Promise<string>((resolve, reject) => {
             const reader: FileReader = new FileReader();
 
-            reader.onload = (e: any) => resolve({fileName: file.name, data: e.target.result});
+            reader.onload = (e: any) => resolve(file.name);
             reader.readAsDataURL(file);
         });
     }

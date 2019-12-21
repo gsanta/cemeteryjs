@@ -3,8 +3,9 @@ import { SvgCanvasController } from "../SvgCanvasController";
 import { AbstractTool } from './AbstractTool';
 import { ToolType } from './Tool';
 import { Events } from '../../../events/Events';
-import { CanvasItem, PixelTag } from "../models/GridCanvasStore";
+import { CanvasItem } from "../models/SvgCanvasStore";
 import { Rectangle } from "../../../../../model/geometry/shapes/Rectangle";
+import { CanvasItemTag } from "../models/CanvasItem";
 
 export class MoveTool extends AbstractTool {
     private eventDispatcher: EventDispatcher;
@@ -22,7 +23,7 @@ export class MoveTool extends AbstractTool {
     down() {
         super.down();
 
-        const selectedItems = PixelTag.getSelectedItems(this.canvasController.pixelModel.items);
+        const selectedItems = CanvasItemTag.getSelectedItems(this.canvasController.pixelModel.items);
         this.origDimensions = selectedItems.map(item => item.dimensions);
     }
 
@@ -31,7 +32,7 @@ export class MoveTool extends AbstractTool {
         
         const mouseController = this.canvasController.mouseController;
     
-        const selectedItems = PixelTag.getSelectedItems(this.canvasController.pixelModel.items);
+        const selectedItems = CanvasItemTag.getSelectedItems(this.canvasController.pixelModel.items);
         const mouseDelta = mouseController.movePoint.subtract(mouseController.downPoint);
         mouseDelta.x = Math.floor(mouseDelta.x / this.canvasController.configModel.pixelSize);
         mouseDelta.y = Math.floor(mouseDelta.y / this.canvasController.configModel.pixelSize);

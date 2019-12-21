@@ -7,7 +7,7 @@ import { Events } from '../../events/Events';
 import { WorldItemShape } from '../../../../world_generator/services/GameObject';
 import { Rectangle } from '../../../../model/geometry/shapes/Rectangle';
 import { Point } from '../../../../model/geometry/shapes/Point';
-import { CanvasItem } from './models/GridCanvasStore';
+import { CanvasItem } from './models/SvgCanvasStore';
 
 export class SvgCanvasWriter implements ICanvasWriter {
     private svgCanvasController: SvgCanvasController;

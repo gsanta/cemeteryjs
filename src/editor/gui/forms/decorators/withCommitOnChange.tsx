@@ -30,9 +30,6 @@ export function withCommitOnChange<T extends Focusable>(WrappedComponent: React.
                 case 'number':
                     this.props.formController.updateNumberProp(val);
                     break;
-                case 'file-data':
-                    this.props.formController.updateFileDataProp(val);
-                    break;
             }
         }
     }

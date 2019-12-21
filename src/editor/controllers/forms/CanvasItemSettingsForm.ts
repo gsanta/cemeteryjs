@@ -1,9 +1,8 @@
-import { IEditableCanvas } from '../formats/IEditableCanvas';
 import { AbstractFormController } from "./AbstractFormController";
 import { EventDispatcher } from '../events/EventDispatcher';
 import { Events } from '../events/Events';
 import { WorldItemShape } from '../../../world_generator/services/GameObject';
-import { CanvasItem, FileData } from '../formats/svg/models/GridCanvasStore';
+import { CanvasItem } from '../formats/svg/models/SvgCanvasStore';
 import { SvgCanvasController } from '../formats/svg/SvgCanvasController';
 
 
@@ -38,7 +37,7 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
                 this.tempString = this.canvasItem.shape;
                 break;
             case CanvasItemSettings.MODEL:
-                this.tempFileData = this.canvasItem.model;
+                this.tempString = this.canvasItem.model;
                 break;
             case CanvasItemSettings.LAYER:
                 this.tempNumber = this.canvasItem.layer;
@@ -53,11 +52,6 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
 
     updateStringProp(value: string) {
         this.tempString = value;
-        this.renderFunc();
-    }
-
-    updateFileDataProp(fileData: FileData) {
-        this.tempFileData = fileData;
         this.renderFunc();
     }
 
@@ -79,9 +73,9 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
                 this.tempString = null;
                 break;
             case CanvasItemSettings.MODEL:
-                this.canvasItem.model = this.tempFileData.fileName;
+                this.canvasItem.model = this.tempString;
                 this.canvasController.model3dController.set3dModelForCanvasItem(this.canvasItem);
-                this.tempFileData = { FileData: '', data: '' };
+                this.tempString = null;
                 break;
             case CanvasItemSettings.LAYER:
                 this.canvasItem.layer = this.tempNumber;
@@ -109,7 +103,7 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
                 ret = this.focusedPropType === property ? this.tempString : this.canvasItem.shape;
                 break;
             case CanvasItemSettings.MODEL:
-                ret = this.focusedPropType === property ? this.tempFileData : this.canvasItem.model;
+                ret = this.focusedPropType === property ? this.tempString : this.canvasItem.model;
                 break;
             case CanvasItemSettings.LAYER:
                 ret = this.focusedPropType === property ? this.tempNumber : this.canvasItem.layer;

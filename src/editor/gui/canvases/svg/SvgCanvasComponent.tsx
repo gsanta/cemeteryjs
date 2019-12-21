@@ -7,8 +7,8 @@ import { SvgCanvasController } from '../../../controllers/formats/svg/SvgCanvasC
 import { Rectangle } from '../../../../model/geometry/shapes/Rectangle';
 import { Segment } from '../../../../model/geometry/shapes/Segment';
 import { CanvasComponent } from '../CanvasComponent';
-import { PixelTag } from '../../../controllers/formats/svg/models/GridCanvasStore';
 import { AbstractSelectionTool } from '../../../controllers/formats/svg/tools/AbstractSelectionTool';
+import { CanvasItemTag } from '../../../controllers/formats/svg/models/CanvasItem';
 
 const EditorComponentStyled = styled.div`
     height: 100%;
@@ -83,7 +83,7 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
             const width = (rectangle.bottomRight.x - rectangle.topLeft.x) * pixelSize;
             const height = (rectangle.bottomRight.y - rectangle.topLeft.y) * pixelSize;
 
-            const fill = item.tags.has(PixelTag.SELECTED) ? 'blue' : item.color;
+            const fill = item.tags.has(CanvasItemTag.SELECTED) ? 'blue' : item.color;
 
             return (
                 <rect 

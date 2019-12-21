@@ -1,6 +1,7 @@
 import { Point } from '../../../../../model/geometry/shapes/Point';
 import { SvgCanvasController } from '../SvgCanvasController';
-import { CanvasItem, PixelTag } from '../models/GridCanvasStore';
+import { CanvasItem } from '../models/SvgCanvasStore';
+import { CanvasItemTag } from '../models/CanvasItem';
 
 function calcOffsetFromDom(bitmapEditorId: string): Point {
     if (typeof document !== 'undefined') {
@@ -60,11 +61,11 @@ export class MouseHandler {
     }
 
     hover(item: CanvasItem) {
-        item.tags.add(PixelTag.HOVERED);
+        item.tags.add(CanvasItemTag.HOVERED);
     }
 
     unhover() {
-        PixelTag.removeTag(PixelTag.HOVERED, this.bitmapEditor.pixelModel.items);
+        CanvasItemTag.removeTag(CanvasItemTag.HOVERED, this.bitmapEditor.pixelModel.items);
     }
 
     private getPointFromEvent(e: MouseEvent): Point {

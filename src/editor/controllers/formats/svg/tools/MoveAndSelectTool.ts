@@ -4,8 +4,8 @@ import { MoveTool } from './MoveTool';
 import { SelectTool } from "./SelectTool";
 import { EventDispatcher } from '../../../events/EventDispatcher';
 import { AbstractTool } from './AbstractTool';
-import { PixelTag } from "../models/GridCanvasStore";
 import { Rectangle } from "../../../../../model/geometry/shapes/Rectangle";
+import { CanvasItemTag } from "../models/CanvasItem";
 
 export class MoveAndSelectTool extends AbstractTool {
 
@@ -80,8 +80,8 @@ export class MoveAndSelectTool extends AbstractTool {
             }
         }
 
-        const hoveredItem = PixelTag.getHoveredItem(this.canvasController.pixelModel.items);
-        const selectedItems = PixelTag.getSelectedItems(this.canvasController.pixelModel.items);
+        const hoveredItem = CanvasItemTag.getHoveredItem(this.canvasController.pixelModel.items);
+        const selectedItems = CanvasItemTag.getSelectedItems(this.canvasController.pixelModel.items);
         if (hoveredItem && selectedItems.includes(hoveredItem)) {
             this.activeTool = this.moveTool;
         } else {

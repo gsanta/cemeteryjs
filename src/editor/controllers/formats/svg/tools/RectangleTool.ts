@@ -3,7 +3,7 @@ import { Events } from '../../../events/Events';
 import { SvgCanvasController } from '../SvgCanvasController';
 import { AbstractSelectionTool } from './AbstractSelectionTool';
 import { ToolType } from './Tool';
-import { CanvasItem } from '../models/GridCanvasStore';
+import { CanvasItem } from '../models/SvgCanvasStore';
 
 export class RectangleTool extends AbstractSelectionTool {
     private eventDispatcher: EventDispatcher;
