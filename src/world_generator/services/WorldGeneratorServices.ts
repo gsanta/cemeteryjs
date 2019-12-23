@@ -32,7 +32,7 @@ export class WorldGeneratorServices {
         
         this.gameAssetStore = new GameAssetStore();
         this.gameObjectBuilder = this.getWorldItemBuilder();
-        this.gameObjectFactory = new GameObjectFactory(this);
+        this.gameObjectFactory = new GameObjectFactory();
         this.modifierExecutor = new ModifierExecutor(this);
         this.modifierExecutor.registerModifier(createMeshModifier);
         this.modelLoader = modelImportService;

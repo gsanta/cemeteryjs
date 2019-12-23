@@ -29,9 +29,9 @@ export class ModelLoader {
     }
 
     load(fileName: string): Promise<ModelData> {
-        if (this.pendingModels.has(fileName)) { Promise.resolve(); }
+        if (this.models.has(fileName)) { return Promise.resolve(this.models.get(fileName)); }
 
-        this.pendingModels.add(fileName);
+        // this.pendingModels.add(fileName);
 
         return new Promise(resolve => {
             const onSuccess = (meshes: Mesh[], ps: ParticleSystem[], skeletons: Skeleton[], ag: AnimationGroup[]) => {

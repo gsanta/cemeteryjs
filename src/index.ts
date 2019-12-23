@@ -9,7 +9,6 @@ import { SplitWallsIntoTwoParallelChildWallsModifier } from './world_generator/m
 import { ThickenBordersModifier } from './world_generator/modifiers/ThickenBordersModifier';
 
 export {GameObject as WorldItem} from './world_generator/services/GameObject';
-export {WorldGenerator} from './WorldGenerator';
 export {Converter} from './WorldGenerator';
 
 

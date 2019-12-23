@@ -1,5 +1,4 @@
 import { GameObject, WorldItemShape } from './GameObject';
-import { WorldGeneratorServices } from './WorldGeneratorServices';
 import { GameObjectTemplate, WorldItemRole } from './GameObjectTemplate';
 import { Shape } from '../../model/geometry/shapes/Shape';
 import { Point } from '../../model/geometry/shapes/Point';
@@ -29,11 +28,6 @@ export const defaultWorldItemConfig: Partial<GameObjectConfig> = {
  */
 export class GameObjectFactory {
     private countersByType: Map<string, number> = new Map();
-    private services: WorldGeneratorServices;
-
-    constructor(services: WorldGeneratorServices) {
-        this.services = services;
-    }
 
     public createOld(type: string, dimensions: Polygon, name: string, isBorder: boolean, rotation?: number): GameObject {
         const id = this.getNextId(name);
