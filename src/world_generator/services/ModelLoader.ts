@@ -29,7 +29,7 @@ export class ModelLoader {
     }
 
     load(fileName: string): Promise<ModelData> {
-        if (this.pendingModels.has(fileName)) { return }
+        if (this.pendingModels.has(fileName)) { Promise.resolve(); }
 
         this.pendingModels.add(fileName);
 

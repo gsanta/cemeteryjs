@@ -8,7 +8,7 @@ const IconBackgroundComponent = styled.path`
 `;
 
 const TrashComponent = styled.path`
-    fill: ${({isActive}: {isActive: boolean}) => isActive ? colors.grey2 : colors.textColor};
+    fill: ${({isActive}: {isActive: boolean}) => isActive ? colors.grey3 : colors.textColor};
 `;
 
 const TrashHoleComponent = styled.path`

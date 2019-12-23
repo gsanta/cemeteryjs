@@ -5,7 +5,6 @@ import { ConnectedColorPicker } from '../../forms/ColorPicker';
 import { LabeledComponent } from '../../forms/LabeledComponent';
 import styled from 'styled-components';
 import { ConnectedDropdownComponent } from '../../forms/DropdownComponent';
-import { WorldItemTypeProperty } from '../../../controllers/forms/WorldItemDefinitionForm';
 import { ConnectedFileUploadComponent } from '../../forms/FileUploadComponent';
 import { ConnectedInputComponent } from '../../forms/InputComponent';
 import { CanvasItemTag } from '../../../controllers/formats/svg/models/CanvasItem';
@@ -22,6 +21,10 @@ const RowStyled = styled.div`
     display: flex;
 `;
 
+const NoItemsSelectedStyled = styled.div`
+    padding: 10px;
+`;
+
 export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
 
     constructor(props: ItemSettingsProps) {
@@ -34,7 +37,7 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
     render(): JSX.Element {
         const selectedCanvasItems = CanvasItemTag.getTaggedItems(CanvasItemTag.SELECTED, this.props.canvasController.pixelModel.items);
 
-        if (selectedCanvasItems.length === 0) { return null; }
+        if (selectedCanvasItems.length === 0) { return this.renderNoItemsSelectedMessage(); }
 
         this.props.canvasController.canvasItemSettingsForm.canvasItem = selectedCanvasItems[0];
 
@@ -53,6 +56,10 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
         );
     }
 
+    private renderNoItemsSelectedMessage(): JSX.Element {
+        return <NoItemsSelectedStyled>Select an item on the canvas to edit it's properties.</NoItemsSelectedStyled>
+    }
+
     private renderShapeDropdown(): JSX.Element {
         const form = this.props.canvasController.canvasItemSettingsForm;
 
@@ -62,7 +69,7 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
                     values={form.shapes}
                     currentValue={form.getVal(CanvasItemSettings.SHAPE) as string}
                     formController={form}
-                    propertyName={WorldItemTypeProperty.SHAPE}
+                    propertyName={CanvasItemSettings.SHAPE}
                     propertyType='string'
                 />
             </LabeledComponent>
@@ -77,7 +84,7 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
                 <LabeledComponent label="Model file" direction="vertical">
                     <ConnectedFileUploadComponent
                         formController={form}
-                        propertyName={WorldItemTypeProperty.MODEL}
+                        propertyName={CanvasItemSettings.MODEL}
                         propertyType="string"
                     />
                 </LabeledComponent>

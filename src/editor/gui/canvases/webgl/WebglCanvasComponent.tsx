@@ -2,6 +2,15 @@ import * as React from 'react';
 import './WebglCanvasComponent.scss'
 import { AppContext, AppContextType } from '../../Context';
 import { WebglCanvasController } from '../../../controllers/formats/webgl/WebglCanvasController';
+import styled from 'styled-components';
+
+const CanvasEmptyStyled = styled.div`
+    padding: 10px;
+`;
+
+const CanvasStyled = styled.canvas`
+    display: ${(props: {isEmpty: boolean}) => props.isEmpty ? 'none' : 'block'};
+`;
 
 export interface WebglCanvasComponentProps {
     canvasController: WebglCanvasController;
@@ -10,7 +19,6 @@ export interface WebglCanvasComponentProps {
 export class WebglCanvasComponent extends React.Component<WebglCanvasComponentProps> {
     static contextType = AppContext;
     private canvasRef: React.RefObject<HTMLCanvasElement>;
-    private worldMap: string;
     context: AppContextType;
 
     constructor(props: WebglCanvasComponentProps) {
@@ -22,23 +30,18 @@ export class WebglCanvasComponent extends React.Component<WebglCanvasComponentPr
 
     componentDidMount() {
         this.context.controllers.webglCanvasController.init(this.canvasRef.current);
-        const worldMap = this.context.controllers.svgCanvasController.reader.read();
+        this.context.controllers.svgCanvasController.reader.read();
         this.context.controllers.webglCanvasController.updateCanvas();
     }
 
-    componentWillReceiveProps() {
-        if (this.context.controllers.webglCanvasController.isDirty) {
-            this.worldMap = this.context.controllers.svgCanvasController.reader.read();
-            this.context.controllers.webglCanvasController.updateCanvas();
-            this.context.controllers.webglCanvasController.isDirty = false;
-        }
-    }
-
     render() {
+        const isEmpty = this.context.controllers.svgCanvasController.isEmpty();
+
         return (
-            <AppContext.Consumer>
-                {value => <canvas id="canvas" ref={this.canvasRef}></canvas>}
-            </AppContext.Consumer>
+                <div>
+                    {isEmpty ? <CanvasEmptyStyled>Canvas is empty, start drawing or import scene file.</CanvasEmptyStyled> : null}
+                    <CanvasStyled isEmpty={isEmpty} id="canvas" ref={this.canvasRef}/>
+                </div>
         );
     }
 }

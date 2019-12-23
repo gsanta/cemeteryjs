@@ -1,6 +1,15 @@
 import * as React from 'react';
 import { useDropzone } from 'react-dropzone';
 import * as ab2str from 'arraybuffer-to-string';
+import styled from 'styled-components';
+import { colors } from '../styles';
+
+const FileUploaderStyled = styled.div`
+    background: ${colors.success};
+    height: 30px;
+    padding: 5px 10px;
+    cursor: pointer;
+`;
 
 export interface FileUploaderProps {
     onUpload(binString: string): void;
@@ -24,11 +33,7 @@ export const FileUploader = (props: FileUploaderProps) => {
     return (
         <div {...getRootProps()}>
             <input {...getInputProps()} />
-            {
-                isDragActive ?
-                    <p>Drop the files here ...</p> :
-                    <p>Drag 'n' drop some files here, or click to select files</p>
-            }
+            <FileUploaderStyled>{isDragActive ? 'Drop scene file' : 'Import scene file'}</FileUploaderStyled>
         </div>
     )
 }

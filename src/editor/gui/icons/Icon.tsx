@@ -13,7 +13,7 @@ export const IconStyled = styled.svg`
 `;
 
 export const IconImageStyled = styled.path`
-    fill: ${({isActive}: {isActive: boolean}) => isActive ? colors.grey2 : colors.textColor};
+    fill: ${({isActive}: {isActive: boolean}) => isActive ? colors.grey3 : colors.textColor};
 `;
 
 export const IconBackgroundStyled = styled.path`

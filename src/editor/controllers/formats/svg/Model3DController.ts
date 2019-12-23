@@ -29,6 +29,5 @@ export class Model3DController {
     private init() {
         this.engine = new Engine(this.canvas, true, { preserveDrawingBuffer: true, stencil: true });
         this.scene = new Scene(this.engine);
-        this.engine.runRenderLoop(() => this.scene.render());
     }
 }

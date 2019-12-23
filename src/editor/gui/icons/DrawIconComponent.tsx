@@ -4,7 +4,7 @@ import { colors } from '../styles';
 import { IconProps, IconStyled, IconBackgroundStyled, IconImageStyled } from './Icon';
 
 const BrushComponent = styled.path`
-    fill: ${({isActive}: {isActive: boolean}) => isActive ? colors.grey2 : colors.textColor};
+    fill: ${({isActive}: {isActive: boolean}) => isActive ? colors.grey3 : colors.textColor};
 `;
 
 const BrushHoleComponent = styled.path`

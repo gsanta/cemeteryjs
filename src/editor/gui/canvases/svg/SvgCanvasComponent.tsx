@@ -6,7 +6,6 @@ import { WgDefinitionAttributes } from '../../../../world_generator/importers/sv
 import { SvgCanvasController } from '../../../controllers/formats/svg/SvgCanvasController';
 import { Rectangle } from '../../../../model/geometry/shapes/Rectangle';
 import { Segment } from '../../../../model/geometry/shapes/Segment';
-import { CanvasComponent } from '../CanvasComponent';
 import { AbstractSelectionTool } from '../../../controllers/formats/svg/tools/AbstractSelectionTool';
 import { CanvasItemTag } from '../../../controllers/formats/svg/models/CanvasItem';
 
@@ -49,7 +48,7 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
         const horizontalLines = this.renderLines(this.props.canvasController.configModel.horizontalHelperLines);
         const verticalLines = this.renderLines(this.props.canvasController.configModel.verticalHelperLines);
 
-        const canvas = (
+        return (
             <EditorComponentStyled id={this.props.canvasController.getId()}>
                 <CanvasComponentStyled
                     w={bitmapConfig.canvasDimensions.x}
@@ -69,12 +68,10 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
                 </CanvasComponentStyled>
             </EditorComponentStyled>
         );
-
-        return <CanvasComponent canvas={canvas}/>
     }
 
     private renderCanvasItems() {
-        return this.props.canvasController.pixelModel.items.map(item => {
+        return this.props.canvasController.pixelModel.items.map((item, i) => {
             const rectangle = item.dimensions as Rectangle;
             const pixelSize = this.props.canvasController.configModel.pixelSize;
 
@@ -86,7 +83,8 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
             const fill = item.tags.has(CanvasItemTag.SELECTED) ? 'blue' : item.color;
 
             return (
-                <rect 
+                <rect
+                    key={i}
                     x={`${x}px`}
                     y={`${y}px`}
                     width={`${width}px`}
@@ -100,10 +98,10 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
     }
 
     private renderLines(lines: Segment[]): JSX.Element[] {
-        return lines.map(segment => {
+        return lines.map((segment, i) => {
             const p1 = segment.getPoints()[0];
             const p2 = segment.getPoints()[1];
-            return <LineComponent x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y}/>
+            return <LineComponent key={i} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y}/>
         });
     }
 

@@ -25,7 +25,7 @@ export class SvgCanvasWriter implements ICanvasWriter {
     write(file: string): void {
         const processedJson = this.svgPreprocessor.process(file); 
         this.svgCanvasController.pixelModel.clear();
-        processedJson.rects.forEach(rect => {
+        const canvasItems = processedJson.rects.map(rect => {
             const rectangle = new Rectangle(new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height));
 
             const canvasItem: CanvasItem = {
@@ -41,11 +41,15 @@ export class SvgCanvasWriter implements ICanvasWriter {
             }
 
             this.svgCanvasController.pixelModel.addRect(canvasItem);
+            return canvasItem;
         });
 
         const {gameObjectTemplates} = this.svgConfigReader.read(file);
 
         this.svgCanvasController.worldItemDefinitions = gameObjectTemplates;
+
+        canvasItems.filter(item => item.model).forEach(item => this.svgCanvasController.model3dController.set3dModelForCanvasItem(item));
+
         this.svgCanvasController.renderCanvas();
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
         

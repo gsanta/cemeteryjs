@@ -15,7 +15,6 @@ export class WebglCanvasController implements IWritableCanvas {
     engine: Engine;
     scene: Scene;
     writer: WebglCanvasWriter;
-    isDirty: boolean;
 
     private canvas: HTMLCanvasElement;
     private camera: UniversalCamera;
@@ -54,6 +53,8 @@ export class WebglCanvasController implements IWritableCanvas {
             const file = this.controllers.svgCanvasController.reader.read();
             this.writer.write(file);
         }
+
+        this.renderCanvas();
     }
 
 

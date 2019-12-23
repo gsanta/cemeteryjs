@@ -1,6 +1,5 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { ICanvasController } from '../controllers/formats/ICanvasController';
 import { AppContext, AppContextType } from './Context';
 import { ButtonComponent } from './forms/ButtonComponent';
 import './Header.scss';
@@ -14,7 +13,8 @@ export interface HeaderProps {
 
 const HeaderStyled = styled.div`
     height: 40px;
-    background: ${colors.grey3};
+    padding: 0 10px;
+    background: ${colors.grey2};
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -31,8 +31,14 @@ const CanvasHeaderStyled = styled.div`
     justify-content: space-between;
     width: 70%;
     height: 40px;
-    background: ${(props: {activeCanvas: ICanvasController}) => colors.getCanvasBackground(props.activeCanvas)};
-    padding: 5px 20px;
+`;
+
+const GlobalHeaderStyled = styled.div`
+    display: flex;
+
+    > *:not(last) {
+        margin-right: 10px;    
+    }
 `;
 
 export class Header extends React.Component<HeaderProps> {
@@ -47,11 +53,13 @@ export class Header extends React.Component<HeaderProps> {
     render() {
         return (
             <HeaderStyled>
-                <CanvasHeaderStyled activeCanvas={this.context.controllers.svgCanvasController}>
+                <CanvasHeaderStyled>
                     {this.props.activeCanvasToolbar}
                 </CanvasHeaderStyled>
-                <FileUploader onUpload={(file) => this.context.controllers.svgCanvasController.writer.write(file)}/>
-                <ButtonComponent text="Save file" onClick={() => this.saveFile()} type="success"/>
+                <GlobalHeaderStyled>
+                    <FileUploader onUpload={(file) => this.context.controllers.svgCanvasController.writer.write(file)}/>
+                    <ButtonComponent text="Save file" onClick={() => this.saveFile()} type="success"/>
+                </GlobalHeaderStyled>
             </HeaderStyled>
         );
     }
