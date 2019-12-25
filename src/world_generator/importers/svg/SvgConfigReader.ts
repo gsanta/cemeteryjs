@@ -46,8 +46,8 @@ export class SvgConfigReader implements IConfigReader {
 
 
     private parseGlobalConfig(rawJson: RawWorldMapJson): GlobalConfig {
-        const scaleX = rawJson.svg._attributes["data-wg-scale-x"] ? parseInt(rawJson.svg._attributes["data-wg-scale-x"], 10) : 1.5;
-        const scaleY = rawJson.svg._attributes["data-wg-scale-y"] ? parseInt(rawJson.svg._attributes["data-wg-scale-y"], 10) : 1.5;
+        const scaleX = rawJson.svg._attributes["data-wg-scale-x"] ? parseInt(rawJson.svg._attributes["data-wg-scale-x"], 10) : 2;
+        const scaleY = rawJson.svg._attributes["data-wg-scale-y"] ? parseInt(rawJson.svg._attributes["data-wg-scale-y"], 10) : 2;
 
         return {
             scale: new Point(scaleX, scaleY)

@@ -107,8 +107,7 @@ export class WebglCanvasController implements IWritableCanvas {
     private clearCanvas() {
         this.meshes.forEach(mesh => {
             if (mesh) {
-                this.scene.removeMesh(mesh);
-                mesh.dispose():
+                this.scene.removeMesh(mesh, true);
             }
         });
         this.meshes = [];

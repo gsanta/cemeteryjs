@@ -4,6 +4,7 @@ import { CanvasItem } from './models/SvgCanvasStore';
 import { SvgCanvasController } from './SvgCanvasController';
 
 
+const SCALE = 1.5;
 export class Model3DController {
     private engine: Engine;
     private scene: Scene;
@@ -21,7 +22,7 @@ export class Model3DController {
 
     set3dModelForCanvasItem(canvasItem: CanvasItem) {
         this.modelLoader.load(canvasItem.model).then(modelData => {
-            canvasItem.dimensions = canvasItem.dimensions.setWidth(modelData.dimensions.x).setHeight(modelData.dimensions.y);
+            canvasItem.dimensions = canvasItem.dimensions.setWidth(modelData.dimensions.x / SCALE).setHeight(modelData.dimensions.y / SCALE);
             this.canvasController.renderCanvas();
         });
     }
