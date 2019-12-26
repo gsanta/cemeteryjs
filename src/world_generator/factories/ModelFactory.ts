@@ -3,6 +3,7 @@ import { ModelLoader } from '../services/ModelLoader';
 import { GameObject } from '../services/GameObject';
 import { RectangleFactory } from './RectangleFactory';
 import { MaterialFactory } from './MaterialFactory';
+import { Rectangle } from '../../model/geometry/shapes/Rectangle';
 
 export class ModelFactory {
     private scene: Scene;
@@ -24,15 +25,14 @@ export class ModelFactory {
 
         mesh.isVisible = true;
 
+        const rect = <Rectangle> gameObject.dimensions;
         const center = gameObject.dimensions.getBoundingCenter();
         const pivotPoint = new Vector3(center.x, 0, center.y);
         // mesh.setPivotPoint(pivotPoint);
         // mesh.rotate(Axis.Y, gameObject.rotation, Space.WORLD);
         // mesh.translate(new Vector3(center.x, 0, center.y), 1);
+        mesh.translate(new Vector3(rect.topLeft.x, 0, -rect.topLeft.y), 1, Space.WORLD);
         mesh.rotate(Axis.Y, gameObject.rotation, Space.WORLD);
-
-        mesh.position.x = center.x;
-        mesh.position.z = center.y;
 
         return <any> mesh;
     }

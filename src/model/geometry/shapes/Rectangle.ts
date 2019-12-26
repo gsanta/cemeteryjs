@@ -49,6 +49,12 @@ export class Rectangle extends Polygon {
         return this.bottomRight.y - this.topLeft.y;
     }
 
+    scale(amount: Point): Rectangle {
+        const topLeft = this.topLeft.scaleX(amount.x).scaleY(amount.y);
+        const bottomRight = this.bottomRight.scaleX(amount.x).scaleY(amount.y);
+        return new Rectangle(topLeft, bottomRight);
+    }
+
     private initPoints() {
         this.points = [
             this.topLeft,

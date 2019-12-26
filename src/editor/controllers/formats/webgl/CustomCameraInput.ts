@@ -13,6 +13,8 @@ export class CustomCameraInput implements ICameraInput<any> {
     private element: HTMLElement;
     private pressedKey: KeyboardInput;
 
+    private allowedKeys = [KeyboardInput.UP, KeyboardInput.DOWN, KeyboardInput.LEFT, KeyboardInput.RIGHT];
+
     constructor() {
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.handleKeyUp = this.handleKeyUp.bind(this);
@@ -33,40 +35,16 @@ export class CustomCameraInput implements ICameraInput<any> {
     attachControl(element: HTMLElement, noPreventDefault?: boolean): void {
         this.element = element;
         this.registerEvents();
-        // console.log('attachcontrol called');
-
-        // element.addEventListener('keyup', (e: KeyboardEvent) => {
-
-        //     switch(e.keyCode) {
-        //         case KeyboardInput.LEFT:
-        //             this.camera._localDirection
-        //             console.log('left')
-        //             break;
-        //         case KeyboardInput.RIGHT:
-        //             console.log('right');
-        //             break;
-        //     }
-        // });
     }
 
-    //detach control must deactivate your input and release all pointers, closures or event listeners
     detachControl(element: HTMLElement): void {
         console.log('detachcontrol called')
     } 
 
-    //this optional function will get called for each rendered frame, if you want to synchronize your input to rendering,
-    //no need to use requestAnimationFrame. It's a good place for applying calculations if you have to
     checkInputs(): void {
-        // switch(this.pressedKey) {
-        //     case KeyboardInput.LEFT:
-        //         this.camera.position = 
-        // }
-
-            if (!this.pressedKey) {
+            if (this.allowedKeys.indexOf(this.pressedKey) === -1) {
                 return;
             }
-
-            console.log('check inputs');
 
             var camera = this.camera;
 
@@ -98,32 +76,11 @@ export class CustomCameraInput implements ICameraInput<any> {
         this.element.addEventListener('keyup', this.handleKeyUp);
     }
 
-    private removeEvents() {
-
-    }
-
     private handleKeyDown(e: KeyboardEvent) {
         this.pressedKey = e.keyCode;
-        // switch(e.keyCode) {
-        //     case KeyboardInput.LEFT:
-        //         this.pressedKey = Key
-        //         console.log('left')
-        //         break;
-        //     case KeyboardInput.RIGHT:
-        //         console.log('right');
-        //         break;
-        // }
     }
 
     private handleKeyUp(e: KeyboardEvent) {
         this.pressedKey = null;
-        // switch(e.keyCode) {
-        //     case KeyboardInput.LEFT:
-        //         console.log('left')
-        //         break;
-        //     case KeyboardInput.RIGHT:
-        //         console.log('right');
-        //         break;
-        // }
     }
 }

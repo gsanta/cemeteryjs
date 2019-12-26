@@ -15,7 +15,7 @@ export class TransformToWorldCoordinateModifier implements Modifier {
             for (const item of TreeIteratorGenerator(rootItem)) {
                 // TODO: root item should not be a special case
                 if (item !== rootItem) {
-                    item.dimensions = item.dimensions.negate('x');
+                    // item.dimensions = item.dimensions.negate('x');
                 }
             }
         });

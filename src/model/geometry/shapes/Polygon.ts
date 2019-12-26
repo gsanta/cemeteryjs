@@ -129,8 +129,8 @@ export class Polygon implements Shape {
         return booleanOverlaps(poly1, poly2);
     }
 
-    public scale(scalePoint: Point): Polygon {
-        const points = this.points.map(p => p.scaleX(scalePoint.x)).map(p => p.scaleY(scalePoint.y));
+    public scale(amount: Point): Polygon {
+        const points = this.points.map(p => p.scaleX(amount.x)).map(p => p.scaleY(amount.y));
         return this.geometryService.factory.polygon(points);
     }
 

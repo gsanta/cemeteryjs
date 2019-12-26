@@ -3,6 +3,7 @@ import { GameObject } from '../services/GameObject';
 import { MaterialFactory } from './MaterialFactory';
 import { Polygon } from '../../model/geometry/shapes/Polygon';
 import { Segment } from '../../model/geometry/shapes/Segment';
+import { Rectangle } from '../../model/geometry/shapes/Rectangle';
 
 export class RectangleFactory  {
     private materialFactory: MaterialFactory;
@@ -43,10 +44,11 @@ export class RectangleFactory  {
         );
 
         const center = gameObject.dimensions.getBoundingCenter();
+        const rect = <Rectangle> gameObject.dimensions;
         const pivotPoint = new Vector3(center.x, 0, center.y);
+        parentMesh.translate(new Vector3(rect.topLeft.x, 0, -rect.topLeft.y), 1, Space.WORLD);
         parentMesh.setPivotPoint(pivotPoint);
         parentMesh.rotate(Axis.Y, gameObject.rotation, Space.WORLD);
-        parentMesh.translate(new Vector3(center.x, this.height / 2, center.y), 1);
 
         parentMesh.material = this.materialFactory.createMaterial(gameObject);
 

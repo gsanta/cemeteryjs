@@ -34,6 +34,10 @@ export class WebglCanvasComponent extends React.Component<WebglCanvasComponentPr
         this.context.controllers.webglCanvasController.updateCanvas();
     }
 
+    componentDidUpdate() {
+        this.context.controllers.webglCanvasController.resize();
+    }
+
     render() {
         const isEmpty = this.context.controllers.svgCanvasController.isEmpty();
 

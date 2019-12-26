@@ -49,7 +49,7 @@ export class App extends React.Component<{}, AppState> {
     }
 
     private resize() {
-        this.context.controllers.webglCanvasController.engine.resize();
+        this.context.controllers.webglCanvasController.resize();
         this.context.controllers.svgCanvasController.resize();
     }
 }

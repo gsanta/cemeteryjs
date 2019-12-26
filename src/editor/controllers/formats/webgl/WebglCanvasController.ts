@@ -1,4 +1,4 @@
-import { ArcRotateCamera, Color3, Engine, HemisphericLight, Scene, Vector3, UniversalCamera, Mesh } from "babylonjs";
+import { ArcRotateCamera, Color3, Engine, HemisphericLight, Scene, Vector3, UniversalCamera, Mesh, MeshBuilder } from 'babylonjs';
 import { FileFormat } from '../../../../WorldGenerator';
 import { ControllerFacade } from '../../ControllerFacade';
 import { Events } from "../../events/Events";
@@ -7,6 +7,8 @@ import { WebglCanvasWriter } from './WebglCanvasWriter';
 import { CustomCameraInput } from './CustomCameraInput';
 import { MouseCameraInput } from './MouseCameraInput';
 import { ModelLoader } from '../../../../world_generator/services/ModelLoader';
+import { EditorCamera } from './EditorCamera';
+import { HelperMeshes } from './HelperMeshes';
 (<any> window).earcut = require('earcut');
 
 export class WebglCanvasController implements IWritableCanvas {
@@ -17,6 +19,7 @@ export class WebglCanvasController implements IWritableCanvas {
     scene: Scene;
     writer: WebglCanvasWriter;
     modelLoader: ModelLoader;
+    private helperMeshes: HelperMeshes;
 
     private canvas: HTMLCanvasElement;
     private camera: UniversalCamera;
@@ -39,30 +42,22 @@ export class WebglCanvasController implements IWritableCanvas {
         this.controllers.eventDispatcher.removeEventListener(this.updateCanvas);
     }
 
-    resize() {}
+    resize() {
+        this.engine.resize();
+    }
 
     init(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
         
-        
         this.engine = new Engine(this.canvas, true, { preserveDrawingBuffer: true, stencil: true });
         
-        let cameraPos = new Vector3(0, 30, 30);
-        let target = new Vector3(0, 0, 0);
-        if (this.camera) {
-            cameraPos = this.camera.position;
-            target = this.camera.getTarget();
-        }
+        let target = new Vector3(100, 0, 0);
         
         const scene = new Scene(this.engine);
+        this.camera = new EditorCamera(scene, this.canvas, target);
         
-        this.camera = new UniversalCamera('camera1', cameraPos, scene);
-        this.camera.setTarget(target);
-        this.camera.inputs.clear();
-        this.camera.inputs.add(new CustomCameraInput());
-        this.camera.inputs.add(new MouseCameraInput());
-        this.camera.attachControl(this.canvas, true);
-        
+
+        this.helperMeshes = new HelperMeshes(this.controllers, scene, MeshBuilder);
         const light = new HemisphericLight('light', new Vector3(0, 4, 1), scene);
         light.diffuse = new Color3(1, 1, 1);
         light.intensity = 1

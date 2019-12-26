@@ -54,6 +54,10 @@ export class Point {
         return this.geometryService.factory.point(this.x * x, this.y * y);
     }
 
+    div(amount: number): Point {
+        return new Point(this.x / amount, this.y / amount);
+    }
+
     perpendicularVector(): Point {
         return this.geometryService.factory.point(this.y, -this.x);
     }

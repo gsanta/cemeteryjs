@@ -1,7 +1,8 @@
-import { Color3, Mesh, PolygonMeshBuilder, Scene, StandardMaterial, Vector2 } from 'babylonjs';
+import { Color3, Mesh, PolygonMeshBuilder, Scene, StandardMaterial, Vector2, MeshBuilder, Vector3, Space } from 'babylonjs';
 import { GameObject } from '../services/GameObject';
 import { Polygon } from '../../model/geometry/shapes/Polygon';
 import { Segment } from '../../model/geometry/shapes/Segment';
+import { Rectangle } from '../../model/geometry/shapes/Rectangle';
 
 export class PolygonFactory  {
     private scene: Scene;
@@ -31,7 +32,11 @@ export class PolygonFactory  {
 
         const points = worldItemInfo.dimensions.getPoints().reverse().map(point => new Vector2(point.x, point.y));
 
-        const parentMesh = new PolygonMeshBuilder('polygon', points, this.scene).build(null, 8);
+        const rect = <Rectangle> worldItemInfo.dimensions;
+
+        const parentMesh = MeshBuilder.CreateBox('polygon', { width, depth }, this.scene);
+
+        parentMesh.translate(new Vector3(rect.topLeft.x, 0, -rect.topLeft.y), 1, Space.WORLD);
 
         if (worldItemInfo.color) {
             const material = new StandardMaterial('box-material', this.scene);
