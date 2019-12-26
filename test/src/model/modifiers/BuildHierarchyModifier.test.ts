@@ -1,7 +1,6 @@
 import { BuildHierarchyModifier } from '../../../../src/world_generator/modifiers/BuildHierarchyModifier';
 import { setupMap, setup } from '../../../testUtils';
 import { ScaleModifier } from '../../../../src/world_generator/modifiers/ScaleModifier';
-import { SegmentBordersModifier } from '../../../../src/world_generator/modifiers/SegmentBordersModifier';
 import { FileFormat } from '../../../../src/WorldGenerator';
 
 describe('BuildHierarchyModifier', () => {
@@ -24,7 +23,6 @@ describe('BuildHierarchyModifier', () => {
                 worldItems,
                 [
                     ScaleModifier.modName,
-                    SegmentBordersModifier.modName,
                     BuildHierarchyModifier.modName                ]    
             );
 
@@ -59,7 +57,6 @@ describe('BuildHierarchyModifier', () => {
                 worldItems,
                 [
                     ScaleModifier.modName,
-                    SegmentBordersModifier.modName,
                     BuildHierarchyModifier.modName                ]    
             );
 

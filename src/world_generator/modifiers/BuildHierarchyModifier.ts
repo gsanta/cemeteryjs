@@ -1,6 +1,5 @@
 import { GameObject } from '../services/GameObject';
 import { Modifier } from './Modifier';
-import { SegmentBordersModifier } from './SegmentBordersModifier';
 import { without } from "../utils/Functions";
 import { WorldGeneratorServices } from '../services/WorldGeneratorServices';
 import { WorldItemRole } from "../services/GameObjectTemplate";
@@ -13,7 +12,6 @@ import { Polygon } from '../../model/geometry/shapes/Polygon';
 
 export class BuildHierarchyModifier implements Modifier {
     static modName = 'buildHierarchy';
-    dependencies = [SegmentBordersModifier.modName]
     private services: WorldGeneratorServices;
 
     constructor(services: WorldGeneratorServices) {
