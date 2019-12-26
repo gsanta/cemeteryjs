@@ -10,7 +10,6 @@ import { NormalizeBorderRotationModifier } from '../modifiers/NormalizeBorderRot
 import { ScaleModifier } from '../modifiers/ScaleModifier';
 import { SegmentBordersModifier } from '../modifiers/SegmentBordersModifier';
 import { ThickenBordersModifier } from '../modifiers/ThickenBordersModifier';
-import { TransformToWorldCoordinateModifier } from '../modifiers/TransformToWorldCoordinateModifier';
 import { WorldGeneratorServices } from './WorldGeneratorServices';
 import { CreateMeshModifier } from '../modifiers/CreateMeshModifier';
 
@@ -24,7 +23,6 @@ export const defaultModifiers = [
     SplitWallsIntoTwoParallelChildWallsModifier.modName,
     NormalizeBorderRotationModifier.modName,
     ChangeFurnitureSizeModifier.modeName,
-    TransformToWorldCoordinateModifier.modName,
     CreateMeshModifier.modName
 ];
 
@@ -42,7 +40,6 @@ export class ModifierExecutor {
         this.registerModifier(new ScaleModifier(services));
         this.registerModifier(new SegmentBordersModifier(services));
         this.registerModifier(new ThickenBordersModifier());
-        this.registerModifier(new TransformToWorldCoordinateModifier());
     }
 
     applyModifiers(worldItems: GameObject[], modNames: string[]): GameObject[] {

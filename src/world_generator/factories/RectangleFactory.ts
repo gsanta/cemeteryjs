@@ -17,23 +17,16 @@ export class RectangleFactory  {
         this.height = height;
     }
 
-    createItem(gameObject: GameObject): Mesh {
+    createMesh(gameObject: GameObject): Mesh {
+        const boundingInfo = gameObject.dimensions.getBoundingInfo();
+        const width = boundingInfo.max[0] - boundingInfo.min[0];
+        const depth = boundingInfo.max[1] - boundingInfo.min[1];
 
-        let width: number;
-        let depth: number;
-
-        // TODO: create different factory for Segment types, it should not be rectangle
-        if (gameObject.dimensions instanceof Polygon) {
-            const boundingInfo = gameObject.dimensions.getBoundingInfo();
-            width = boundingInfo.max[0] - boundingInfo.min[0];
-            depth = boundingInfo.max[1] - boundingInfo.min[1];
-        } else {
-            width = (<Segment> gameObject.dimensions).getLength();
-            depth = gameObject.thickness;
-            gameObject.dimensions = (<Segment> gameObject.dimensions).addThickness(0.25);
-        }
-
-        const parentMesh = MeshBuilder.CreateBox(
+        const center = gameObject.dimensions.getBoundingCenter();
+        const rect = <Rectangle> gameObject.dimensions;
+        const pivotPoint = new Vector3(center.x, 0, center.y);
+        
+        const mesh = MeshBuilder.CreateBox(
             `default-wall-container-${this.index}`,
             {
                 width: width,
@@ -43,18 +36,15 @@ export class RectangleFactory  {
             this.scene
         );
 
-        const center = gameObject.dimensions.getBoundingCenter();
-        const rect = <Rectangle> gameObject.dimensions;
-        const pivotPoint = new Vector3(center.x, 0, center.y);
-        parentMesh.translate(new Vector3(rect.topLeft.x, 0, -rect.topLeft.y), 1, Space.WORLD);
-        parentMesh.setPivotPoint(pivotPoint);
-        parentMesh.rotate(Axis.Y, gameObject.rotation, Space.WORLD);
+        mesh.translate(new Vector3(rect.topLeft.x, 0, -rect.topLeft.y), 1, Space.WORLD);
+        mesh.setPivotPoint(pivotPoint);
+        mesh.rotate(Axis.Y, gameObject.rotation, Space.WORLD);
 
-        parentMesh.material = this.materialFactory.createMaterial(gameObject);
+        mesh.material = this.materialFactory.createMaterial(gameObject);
 
         this.index++;
 
-        parentMesh.computeWorldMatrix(true);
-        return parentMesh;
+        mesh.computeWorldMatrix(true);
+        return mesh;
     }
 }

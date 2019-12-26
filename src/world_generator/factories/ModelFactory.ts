@@ -8,7 +8,6 @@ import { Rectangle } from '../../model/geometry/shapes/Rectangle';
 export class ModelFactory {
     private scene: Scene;
     private modelLoader: ModelLoader;
-    private counter = 0;
 
     constructor(scene: Scene, modelLoader: ModelLoader) {
         this.modelLoader = modelLoader;
@@ -17,8 +16,7 @@ export class ModelFactory {
 
     public createMesh(gameObject: GameObject): Mesh {
         if (!gameObject.modelFileName) {
-            return new RectangleFactory(this.scene, new MaterialFactory(this.scene), 0.1).createItem(gameObject);
-            // return this.createPlaceHolderMesh(gameObject);
+            return new RectangleFactory(this.scene, new MaterialFactory(this.scene), 0.1).createMesh(gameObject);
         }
 
         const mesh = this.modelLoader.createInstance(gameObject.modelFileName);
