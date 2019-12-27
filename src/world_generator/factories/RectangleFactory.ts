@@ -37,8 +37,8 @@ export class RectangleFactory  {
         );
 
         mesh.translate(new Vector3(rect.topLeft.x, 0, -rect.topLeft.y), 1, Space.WORLD);
-        mesh.setPivotPoint(pivotPoint);
-        mesh.rotate(Axis.Y, gameObject.rotation, Space.WORLD);
+        // mesh.setPivotPoint(pivotPoint);
+        // mesh.rotate(Axis.Y, gameObject.rotation, Space.WORLD);
 
         mesh.material = this.materialFactory.createMaterial(gameObject);
 

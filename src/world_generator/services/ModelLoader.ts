@@ -1,4 +1,4 @@
-import { AnimationGroup, ParticleSystem, Scene, SceneLoader, Skeleton, StandardMaterial, Texture, Mesh, InstancedMesh, AbstractMesh } from 'babylonjs';
+import { AbstractMesh, AnimationGroup, Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, Vector3 } from 'babylonjs';
 import { WorldItem } from "../..";
 import { Point } from '../../model/geometry/shapes/Point';
 
@@ -76,6 +76,8 @@ export class ModelLoader {
         } else {
             clone = <AbstractMesh> model.mesh.instantiateHierarchy();
         }
+        clone.setAbsolutePosition(new Vector3(0, 0, 0));
+        clone.rotation = new Vector3(0, 0, 0);
         model.instanceCounter++;
         
         return clone;

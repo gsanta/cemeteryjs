@@ -4,7 +4,7 @@ import { CanvasItem } from './models/SvgCanvasStore';
 import { SvgCanvasController } from './SvgCanvasController';
 
 
-const SCALE = 1.5;
+const SCALE = 1;
 export class Model3DController {
     private engine: Engine;
     private scene: Scene;

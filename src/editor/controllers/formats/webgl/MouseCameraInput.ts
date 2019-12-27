@@ -36,57 +36,44 @@ export class MouseCameraInput implements ICameraInput<any> {
     attachControl(element: HTMLElement, noPreventDefault?: boolean): void {
         this.element = element;
         this.registerEvents();
-        // console.log('attachcontrol called');
-
-        // element.addEventListener('keyup', (e: KeyboardEvent) => {
-
-        //     switch(e.keyCode) {
-        //         case KeyboardInput.LEFT:
-        //             this.camera._localDirection
-        //             console.log('left')
-        //             break;
-        //         case KeyboardInput.RIGHT:
-        //             console.log('right');
-        //             break;
-        //     }
-        // });
     }
 
-    //detach control must deactivate your input and release all pointers, closures or event listeners
     detachControl(element: HTMLElement): void {
         console.log('detachcontrol called')
     } 
 
-    //this optional function will get called for each rendered frame, if you want to synchronize your input to rendering,
-    //no need to use requestAnimationFrame. It's a good place for applying calculations if you have to
     checkInputs(): void {
-        // switch(this.pressedKey) {
-        //     case KeyboardInput.LEFT:
-        //         this.camera.position = 
-        // }
+        if (!this.mouseInput) {
+            return;
+        }
 
-            if (!this.mouseInput) {
-                return;
-            }
+        var camera = this.camera;
 
-            console.log('check inputs');
+        var speed = camera._computeLocalCameraSpeed() / 2;
 
-            var camera = this.camera;
+        console.log(camera.position);
 
-            var speed = camera._computeLocalCameraSpeed() / 2;
-
-            switch(this.mouseInput) {
-                case MouseInput.WHEEL_DOWN:
+        switch(this.mouseInput) {
+            case MouseInput.WHEEL_DOWN:
+                if (camera.position.y < 150) {
                     camera._localDirection.copyFromFloats(0, 0, -speed);
-                    break;
-                case MouseInput.WHEEL_UP:
+                    this.moveCamera();
+                }
+                break;
+            case MouseInput.WHEEL_UP:
+                if (camera.position.y > 50) {
                     camera._localDirection.copyFromFloats(0, 0, speed);
-                    break;
-            }
+                    this.moveCamera();
+                }
+                break;
+        }
 
-            camera.getViewMatrix().invertToRef(camera._cameraTransformMatrix);
-            Vector3.TransformNormalToRef(camera._localDirection, camera._cameraTransformMatrix, camera._transformedDirection);
-            camera.cameraDirection.addInPlace(camera._transformedDirection);
+    }
+
+    private moveCamera() {
+        this.camera.getViewMatrix().invertToRef(this.camera._cameraTransformMatrix);
+        Vector3.TransformNormalToRef(this.camera._localDirection, this.camera._cameraTransformMatrix, this.camera._transformedDirection);
+        this.camera.cameraDirection.addInPlace(this.camera._transformedDirection);
     }
 
     private registerEvents() {
