@@ -1,16 +1,21 @@
 import { EventDispatcher } from '../../../events/EventDispatcher';
-import { Events } from '../../../events/Events';
 import { SvgCanvasController } from '../SvgCanvasController';
-import { AbstractSelectionTool } from './AbstractSelectionTool';
 import { ToolType } from './Tool';
 import { CanvasItem } from '../models/SvgCanvasStore';
+import { Rectangle } from '../../../../../model/geometry/shapes/Rectangle';
+import { Point } from '../../../../../model/geometry/shapes/Point';
+import { WorldItemShape } from '../../../../../world_generator/services/GameObject';
+import { AbstractTool } from './AbstractTool';
+import { Events } from '../../../events/Events';
 
-export class RectangleTool extends AbstractSelectionTool {
+export class RectangleTool extends AbstractTool {
+    private canvasController: SvgCanvasController;
     private eventDispatcher: EventDispatcher;
-    private lastPreviewRect: CanvasItem;
 
     constructor(svgCanvasController: SvgCanvasController, eventDispatcher: EventDispatcher) {
-        super(svgCanvasController, ToolType.RECTANGLE, false);
+        super(ToolType.RECTANGLE);
+
+        this.canvasController = svgCanvasController;
         this.eventDispatcher = eventDispatcher;
     }
 
@@ -19,29 +24,29 @@ export class RectangleTool extends AbstractSelectionTool {
         this.canvasController.renderCanvas();
     }
 
-    drag() {
-        super.drag();
-        
-        if (this.lastPreviewRect) {
-            this.canvasController.pixelModel.removeRectangle(this.lastPreviewRect);
-        }
+    click() {
+        const point = this.canvasController.mouseController.downPoint;
+        const pixelSize = this.canvasController.configModel.pixelSize;
+        const rectSize = new Point(10, 10).mul(pixelSize);
+        const topLeft = new Point(point.x - rectSize.x / 2, point.y - rectSize.y / 2).div(pixelSize);
+        const bottomRight = new Point(point.x + rectSize.x / 2, point.y + rectSize.y / 2).div(pixelSize);
+        const rect = new Rectangle(topLeft, bottomRight);
         const type = this.canvasController.selectedWorldItemDefinition.typeName;
-        const positions = this.getPositionsInSelection();
 
-        if (positions.length > 0) {
-            this.lastPreviewRect = this.canvasController.pixelModel.addRectangle(positions, type, 0, true);
+        const canvasItem: CanvasItem = {
+            color: 'grey',
+            dimensions: rect,
+            type: type,
+            layer: 0,
+            isPreview: false,
+            tags: new Set(),
+            shape: WorldItemShape.RECTANGLE,
+            model: null,
+            rotation: 0
+        }
+
+        this.canvasController.pixelModel.addRect(canvasItem);
     
-            this.canvasController.renderCanvas();
-        }
-    }
-
-    draggedUp() {
-        super.draggedUp();
-        if (this.lastPreviewRect) {
-            this.lastPreviewRect.isPreview = false;
-            this.lastPreviewRect = null;
-        }
-
         this.canvasController.renderCanvas();
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
     }

@@ -4,17 +4,13 @@ import { IConfigReader } from '../importers/IConfigReader';
 import { IGameObjectBuilder } from '../importers/IGameObjectBuilder';
 import { SvgConfigReader } from '../importers/svg/SvgConfigReader';
 import { SvgGameObjectBuilder } from '../importers/svg/SvgGameObjectBuilder';
-import { GlobalConfig, TextConfigReader } from '../importers/text/TextConfigReader';
-import { TextGameObjectBuilder } from '../importers/text/TextGameObjectBuilder';
-import { TextWorldMapReader } from '../importers/text/TextWorldMapReader';
-import { WorldMapToRoomMapConverter } from '../importers/text/WorldMapToRoomMapConverter';
-import { WorldMapToSubareaMapConverter } from '../importers/text/WorldMapToSubareaMapConverter';
 import { GameObject } from './GameObject';
 import { GameObjectTemplate } from './GameObjectTemplate';
 import { GameAssetStore } from './GameAssetStore';
 import { GameObjectFactory } from './GameObjectFactory';
 import { ModelLoader } from './ModelLoader';
 import { defaultModifiers, ModifierExecutor } from './ModifierExecutor';
+import { GlobalConfig } from '../importers/text/GlobalSectionParser';
 
 export class WorldGeneratorServices {
     gameAssetStore: GameAssetStore;
@@ -24,11 +20,9 @@ export class WorldGeneratorServices {
     modelLoader: ModelLoader;
 
     gameObjectFactory: GameObjectFactory;
-    private fileFormat: FileFormat;
 
 
     constructor(modelImportService: ModelLoader, createMeshModifier: Modifier, fileFormat: FileFormat) {
-        this.fileFormat = fileFormat;
         
         this.gameAssetStore = new GameAssetStore();
         this.gameObjectBuilder = this.getWorldItemBuilder();
@@ -53,20 +47,10 @@ export class WorldGeneratorServices {
     }
 
     private getConfigReader(): IConfigReader {
-        switch(this.fileFormat) {
-            case FileFormat.TEXT:
-                return new TextConfigReader();
-            case FileFormat.SVG:
-                return new SvgConfigReader();
-        }
+        return new SvgConfigReader();
     }
 
     private getWorldItemBuilder(): IGameObjectBuilder {
-        switch(this.fileFormat) {
-            case FileFormat.TEXT:
-                return new TextGameObjectBuilder(this, new TextWorldMapReader(this), new WorldMapToRoomMapConverter(), new WorldMapToSubareaMapConverter());
-            case FileFormat.SVG:
-                return new SvgGameObjectBuilder(this);
-        }
+        return new SvgGameObjectBuilder(this);
     }
 }

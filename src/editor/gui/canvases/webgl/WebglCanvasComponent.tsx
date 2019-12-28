@@ -1,8 +1,8 @@
 import * as React from 'react';
 import './WebglCanvasComponent.scss'
 import { AppContext, AppContextType } from '../../Context';
-import { WebglCanvasController } from '../../../controllers/formats/webgl/WebglCanvasController';
 import styled from 'styled-components';
+import { WebglCanvasController } from '../../../controllers/canvases/webgl/WebglCanvasController';
 
 const CanvasEmptyStyled = styled.div`
     padding: 10px;
@@ -30,7 +30,6 @@ export class WebglCanvasComponent extends React.Component<WebglCanvasComponentPr
 
     componentDidMount() {
         this.context.controllers.webglCanvasController.init(this.canvasRef.current);
-        this.context.controllers.svgCanvasController.reader.read();
         this.context.controllers.webglCanvasController.updateCanvas();
     }
 

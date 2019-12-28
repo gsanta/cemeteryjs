@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { SvgCanvasController } from '../../../controllers/formats/svg/SvgCanvasController';
 import { CanvasItemSettings } from '../../../controllers/forms/CanvasItemSettingsForm';
 import { ConnectedColorPicker } from '../../forms/ColorPicker';
 import { LabeledComponent } from '../../forms/LabeledComponent';
@@ -7,7 +6,8 @@ import styled from 'styled-components';
 import { ConnectedDropdownComponent } from '../../forms/DropdownComponent';
 import { ConnectedFileUploadComponent } from '../../forms/FileUploadComponent';
 import { ConnectedInputComponent } from '../../forms/InputComponent';
-import { CanvasItemTag } from '../../../controllers/formats/svg/models/CanvasItem';
+import { CanvasItemTag } from '../../../controllers/canvases/svg/models/CanvasItem';
+import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvasController';
 
 export interface ItemSettingsProps {
     canvasController: SvgCanvasController;

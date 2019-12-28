@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { SvgCanvasController } from '../../../controllers/formats/svg/SvgCanvasController';
 import { SvgCanvasToolbarComponent } from './SvgCanvasToolbarComponent';
 import { SvgCanvasComponent } from './SvgCanvasComponent';
 import { ItemSettingsComponent } from './ItemSettingsComponent';
 import { ControllerFacade } from '../../../controllers/ControllerFacade';
+import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvasController';
 
 
 export function createSvgCanvas(controllers: ControllerFacade): [JSX.Element, JSX.Element, JSX.Element] {

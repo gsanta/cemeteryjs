@@ -3,12 +3,12 @@ import { AppContextType, AppContext } from '../../Context';
 import styled from 'styled-components';
 import { colors } from '../../styles';
 import { WgDefinitionAttributes } from '../../../../world_generator/importers/svg/WorldMapJson';
-import { SvgCanvasController } from '../../../controllers/formats/svg/SvgCanvasController';
 import { Rectangle } from '../../../../model/geometry/shapes/Rectangle';
 import { Segment } from '../../../../model/geometry/shapes/Segment';
-import { AbstractSelectionTool } from '../../../controllers/formats/svg/tools/AbstractSelectionTool';
-import { CanvasItemTag } from '../../../controllers/formats/svg/models/CanvasItem';
 import { sort } from '../../../../model/geometry/utils/Functions';
+import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvasController';
+import { CanvasItemTag } from '../../../controllers/canvases/svg/models/CanvasItem';
+import { AbstractSelectionTool } from '../../../controllers/canvases/svg/tools/AbstractSelectionTool';
 
 const EditorComponentStyled = styled.div`
     height: 100%;

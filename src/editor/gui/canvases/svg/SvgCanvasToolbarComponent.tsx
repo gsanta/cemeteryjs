@@ -1,11 +1,11 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { SvgCanvasController } from '../../../controllers/formats/svg/SvgCanvasController';
-import { ToolType } from '../../../controllers/formats/svg/tools/Tool';
 import { AppContext, AppContextType } from '../../Context';
 import { DeleteIconComponent } from '../../icons/DeleteIconComponent';
 import { DrawIconComponent } from '../../icons/DrawIconComponent';
 import { SelectIconComponent } from '../../icons/SelectIconComponent';
+import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvasController';
+import { ToolType } from '../../../controllers/canvases/svg/tools/Tool';
 
 const ToolbarStyled = styled.div`
     display: flex;

@@ -57,7 +57,7 @@ export class Header extends React.Component<HeaderProps> {
                     {this.props.activeCanvasToolbar}
                 </CanvasHeaderStyled>
                 <GlobalHeaderStyled>
-                    <FileUploader onUpload={(file) => this.context.controllers.svgCanvasController.writer.write(file)}/>
+                    <FileUploader onUpload={(file) => this.context.controllers.svgCanvasController.writer.import(file)}/>
                     <ButtonComponent text="Save file" onClick={() => this.saveFile()} type="success"/>
                 </GlobalHeaderStyled>
             </HeaderStyled>
@@ -65,7 +65,7 @@ export class Header extends React.Component<HeaderProps> {
     }
 
     private saveFile() {
-        const file = this.context.controllers.svgCanvasController.reader.read();
+        const file = this.context.controllers.svgCanvasController.reader.export();
         var blob = new Blob([file], { type: "text/plain;charset=utf-8" });
         saveAs(blob, "dynamic.txt");
     }
