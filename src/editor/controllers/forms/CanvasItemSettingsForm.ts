@@ -40,7 +40,7 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
                 this.tempString = this.canvasItem.model;
                 break;
             case CanvasItemSettings.LAYER:
-                this.tempNumber = this.canvasItem.layer;
+                this.tempString = this.canvasItem.layer + '';
                 break;
             case CanvasItemSettings.ROTATION:
                 this.tempNumber = this.canvasItem.rotation;
@@ -78,8 +78,8 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
                 this.tempString = null;
                 break;
             case CanvasItemSettings.LAYER:
-                this.canvasItem.layer = this.tempNumber;
-                this.tempNumber = null;
+                this.canvasItem.layer = parseInt(this.tempString, 10);
+                this.tempString = null;
                 break;
             case CanvasItemSettings.ROTATION:
                 this.canvasItem.rotation = this.tempNumber;
@@ -106,7 +106,7 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
                 ret = this.focusedPropType === property ? this.tempString : this.canvasItem.model;
                 break;
             case CanvasItemSettings.LAYER:
-                ret = this.focusedPropType === property ? this.tempNumber : this.canvasItem.layer;
+                ret = this.focusedPropType === property ? this.tempString : this.canvasItem.layer;
                 break;
             case CanvasItemSettings.ROTATION:
                 ret = this.focusedPropType === property ? this.tempNumber : this.canvasItem.rotation;

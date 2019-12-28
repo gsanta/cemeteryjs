@@ -7,7 +7,7 @@ export function minBy<T>(collection: T[], callback: (a: T, b: T) => number) {
 	return collection.reduce(select, collection[0]);
 }
 
-export function maxBy<T>(collection: T[], callback: (a: T, b: T) => number) {
+export function maxBy<T>(collection: T[], callback: (a: T, b: T) => number): T {
 	if (collection.length === 0) {
 		return undefined;
 	}
@@ -26,4 +26,12 @@ export function last<T>(arr: T[]): T {
 
 export function every<T>(arr: T[], callback: (item: T, index: number) => boolean): boolean {
     return arr.filter((item, index) => callback(item, index)).length === arr.length;
+}
+
+export function sort<T>(arr: T[], sortFunction: (a: T, b: T) => number): T[] {
+	const copy = [...arr];
+
+	copy.sort(sortFunction);
+
+	return copy;
 }

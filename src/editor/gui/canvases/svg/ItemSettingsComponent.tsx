@@ -114,10 +114,9 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
                     <ConnectedInputComponent
                         formController={form}
                         propertyName={CanvasItemSettings.LAYER}
-                        propertyType="number"
+                        propertyType="string"
                         type="number"
                         value={form.getVal(CanvasItemSettings.LAYER)}
-                        placeholder="0"
                     />
                 </LabeledComponent>
                 {form.getVal(CanvasItemSettings.MODEL) ? form.getVal<string>(CanvasItemSettings.MODEL) : ''}

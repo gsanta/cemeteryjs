@@ -8,6 +8,7 @@ import { Rectangle } from '../../../../model/geometry/shapes/Rectangle';
 import { Segment } from '../../../../model/geometry/shapes/Segment';
 import { AbstractSelectionTool } from '../../../controllers/formats/svg/tools/AbstractSelectionTool';
 import { CanvasItemTag } from '../../../controllers/formats/svg/models/CanvasItem';
+import { sort } from '../../../../model/geometry/utils/Functions';
 
 const EditorComponentStyled = styled.div`
     height: 100%;
@@ -51,6 +52,7 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
         return (
             <EditorComponentStyled id={this.props.canvasController.getId()}>
                 <CanvasComponentStyled
+                    // transform="scale(0.5)"
                     w={bitmapConfig.canvasDimensions.x}
                     h={bitmapConfig.canvasDimensions.y}
                     onMouseDown={(e) => this.props.canvasController.mouseController.onMouseDown(e.nativeEvent)}
@@ -71,7 +73,9 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
     }
 
     private renderCanvasItems() {
-        return this.props.canvasController.pixelModel.items.map((item, i) => {
+        let items = [...this.props.canvasController.pixelModel.items];
+        items = sort(items, (a, b) => a.layer - b.layer);
+        return items.map((item, i) => {
             const rectangle = item.dimensions as Rectangle;
             const pixelSize = this.props.canvasController.configModel.pixelSize;
 
@@ -90,6 +94,7 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
                     width={`${width}px`}
                     height={`${height}px`}
                     fill={fill}
+                    stroke='black'
                     onMouseOver={() => this.props.canvasController.mouseController.hover(item)}
                     onMouseOut={() => this.props.canvasController.mouseController.unhover()}
                 />
@@ -98,11 +103,12 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
     }
 
     private renderLines(lines: Segment[]): JSX.Element[] {
-        return lines.map((segment, i) => {
-            const p1 = segment.getPoints()[0];
-            const p2 = segment.getPoints()[1];
-            return <LineComponent key={i} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y}/>
-        });
+        return [];
+        // return lines.map((segment, i) => {
+        //     const p1 = segment.getPoints()[0];
+        //     const p2 = segment.getPoints()[1];
+        //     return <LineComponent key={i} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y}/>
+        // });
     }
 
     private renderSelection(): JSX.Element {

@@ -10,7 +10,7 @@ export interface InputProps extends Focusable {
     onChange(text: string): void;
     value: string | number;
     type: 'text' | 'number';
-    placeholder: string;
+    placeholder?: string;
 }
 
 const FormControlStyled = styled(FormControl)`

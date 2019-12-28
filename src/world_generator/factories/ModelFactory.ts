@@ -29,7 +29,10 @@ export class ModelFactory {
         // mesh.setPivotPoint(pivotPoint);
         // mesh.rotate(Axis.Y, gameObject.rotation, Space.WORLD);
         // mesh.translate(new Vector3(center.x, 0, center.y), 1);
-        mesh.translate(new Vector3(rect.topLeft.x, 0, -rect.topLeft.y), 1, Space.WORLD);
+        const width = rect.getWidth();
+        const depth = rect.getHeight();
+
+        mesh.translate(new Vector3(rect.topLeft.x + width / 2, 0, -rect.topLeft.y - depth / 2), 1, Space.WORLD);
         mesh.rotate(Axis.Y, gameObject.rotation, Space.WORLD);
 
         return <any> mesh;

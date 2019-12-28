@@ -48,7 +48,7 @@ export class CustomCameraInput implements ICameraInput<any> {
 
             var camera = this.camera;
 
-            var speed = camera._computeLocalCameraSpeed() / 2;
+            var speed = camera._computeLocalCameraSpeed() / 4;
 
             switch(this.pressedKey) {
                 case KeyboardInput.LEFT:
