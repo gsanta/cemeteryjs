@@ -3,15 +3,15 @@ import { GameObjectTemplate } from '../../../../world_generator/services/GameObj
 import { defaultWorldItemDefinitions } from '../../../defaultWorldItemDefinitions';
 import { ControllerFacade } from '../../ControllerFacade';
 import { CanvasItemSettingsForm } from '../../forms/CanvasItemSettingsForm';
-import { ICanvasReader } from '../ICanvasReader';
-import { ICanvasWriter } from '../ICanvasWriter';
+import { ICanvasExporter } from '../ICanvasExporter';
+import { ICanvasImporter } from '../ICanvasImporter';
 import { IEditableCanvas } from '../IEditableCanvas';
 import { MouseHandler } from './handlers/MouseHandler';
 import { Model3DController } from './Model3DController';
 import { SvgCanvasStore } from './models/SvgCanvasStore';
 import { SvgConfig } from './models/SvgConfig';
-import { SvgCanvasReader } from './SvgCanvasReader';
-import { SvgCanvasWriter } from './SvgCanvasWriter';
+import { SvgCanvasExporter } from './SvgCanvasExporter';
+import { SvgCanvasImporter } from './SvgCanvasImporter';
 import { DeleteTool } from './tools/DeleteTool';
 import { MoveAndSelectTool } from './tools/MoveAndSelectTool';
 import { RectangleTool } from './tools/RectangleTool';
@@ -22,8 +22,8 @@ export class SvgCanvasController implements IEditableCanvas {
     fileFormats = [FileFormat.SVG];
     mouseController: MouseHandler;
     tools: Tool[];
-    writer: ICanvasWriter;
-    reader: ICanvasReader;
+    writer: ICanvasImporter;
+    reader: ICanvasExporter;
     model3dController: Model3DController;
 
     configModel: SvgConfig;
@@ -50,8 +50,8 @@ export class SvgCanvasController implements IEditableCanvas {
         this.pixelModel = new SvgCanvasStore(this.configModel);
         
         this.mouseController = new MouseHandler(this);
-        this.writer = new SvgCanvasWriter(this, controllers.eventDispatcher);
-        this.reader = new SvgCanvasReader(this);
+        this.writer = new SvgCanvasImporter(this, controllers.eventDispatcher);
+        this.reader = new SvgCanvasExporter(this);
         this.model3dController = new Model3DController(this);
 
         this.tools = [

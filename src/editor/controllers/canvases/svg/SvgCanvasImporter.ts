@@ -1,6 +1,6 @@
 import { SvgConfigReader } from '../../../../world_generator/importers/svg/SvgConfigReader';
 import { SvgPreprocessor } from '../../../../world_generator/importers/svg/SvgPreprocessor';
-import { ICanvasWriter } from '../ICanvasWriter';
+import { ICanvasImporter } from '../ICanvasImporter';
 import { SvgCanvasController } from './SvgCanvasController';
 import { EventDispatcher } from '../../events/EventDispatcher';
 import { Events } from '../../events/Events';
@@ -9,7 +9,7 @@ import { Rectangle } from '../../../../model/geometry/shapes/Rectangle';
 import { Point } from '../../../../model/geometry/shapes/Point';
 import { CanvasItem } from './models/SvgCanvasStore';
 
-export class SvgCanvasWriter implements ICanvasWriter {
+export class SvgCanvasImporter implements ICanvasImporter {
     private svgCanvasController: SvgCanvasController;
     private svgPreprocessor: SvgPreprocessor;
     private svgConfigReader: SvgConfigReader;
@@ -22,7 +22,7 @@ export class SvgCanvasWriter implements ICanvasWriter {
         this.svgConfigReader = new SvgConfigReader();
     }
 
-    write(file: string): void {
+    import(file: string): void {
         const processedJson = this.svgPreprocessor.process(file); 
         this.svgCanvasController.pixelModel.clear();
         const canvasItems = processedJson.rects.map(rect => {

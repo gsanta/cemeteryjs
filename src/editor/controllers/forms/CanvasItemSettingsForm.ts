@@ -2,8 +2,8 @@ import { AbstractFormController } from "./AbstractFormController";
 import { EventDispatcher } from '../events/EventDispatcher';
 import { Events } from '../events/Events';
 import { WorldItemShape } from '../../../world_generator/services/GameObject';
-import { CanvasItem } from '../formats/svg/models/SvgCanvasStore';
-import { SvgCanvasController } from '../formats/svg/SvgCanvasController';
+import { CanvasItem } from '../canvases/svg/models/SvgCanvasStore';
+import { SvgCanvasController } from '../canvases/svg/SvgCanvasController';
 
 
 export enum CanvasItemSettings {

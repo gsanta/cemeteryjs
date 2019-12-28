@@ -1,6 +1,6 @@
 import { ICanvasController } from './ICanvasController';
-import { ICanvasReader } from "./ICanvasReader";
+import { ICanvasExporter } from "./ICanvasExporter";
 
 export interface IReadableCanvas extends ICanvasController {
-    reader: ICanvasReader;
+    reader: ICanvasExporter;
 }

@@ -1,13 +1,12 @@
-import { ICanvasWriter } from "../ICanvasWriter";
+import { ICanvasImporter } from "../ICanvasImporter";
 import { WebglCanvasController } from './WebglCanvasController';
 import { FileFormat } from '../../../../WorldGenerator';
 import { GameObject } from "../../../../world_generator/services/GameObject";
-import { GameObjectTemplate } from '../../../../world_generator/services/GameObjectTemplate';
 import { ConverterService } from "../../../../world_generator/services/ConverterService";
 import { CreateMeshModifier } from "../../../../world_generator/modifiers/CreateMeshModifier";
 import { WorldGeneratorServices } from "../../../../world_generator/services/WorldGeneratorServices";
 
-export class WebglCanvasWriter implements ICanvasWriter {
+export class WebglCanvasWriter implements ICanvasImporter {
     private webglEditorController: WebglCanvasController;
 
     private createMeshModifier: CreateMeshModifier;
@@ -18,7 +17,7 @@ export class WebglCanvasWriter implements ICanvasWriter {
         this.webglEditorController = webglEditorController;
     }
 
-    write(file: string): void {
+    import(file: string): void {
         const serviceFacade = new WorldGeneratorServices(
             this.webglEditorController.modelLoader,
             this.createMeshModifier,

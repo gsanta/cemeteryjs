@@ -1,6 +1,6 @@
-import { ICanvasWriter } from './ICanvasWriter';
+import { ICanvasImporter } from './ICanvasImporter';
 import { ICanvasController } from './ICanvasController';
 
 export interface IWritableCanvas extends ICanvasController {
-    writer: ICanvasWriter;
+    writer: ICanvasImporter;
 }

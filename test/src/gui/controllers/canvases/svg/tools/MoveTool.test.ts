@@ -1,7 +1,7 @@
 import { setupControllers, drawRectangle, click, drag } from '../../../../guiTestUtils';
 import { Polygon } from '../../../../../../../src/model/geometry/shapes/Polygon';
 import { Point } from '../../../../../../../src/model/geometry/shapes/Point';
-import { ToolType } from '../../../../../../../src/editor/controllers/formats/svg/tools/Tool';
+import { ToolType } from '../../../../../../../src/editor/controllers/canvases/svg/tools/Tool';
 
 it ('Move a canvas item', () => {
     const controllers = setupControllers(); 

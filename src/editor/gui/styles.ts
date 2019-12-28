@@ -1,4 +1,4 @@
-import { ICanvasController } from '../controllers/formats/ICanvasController';
+import { ICanvasController } from '../controllers/canvases/ICanvasController';
 
 export const colors = {
     grey2: 'lightgray',

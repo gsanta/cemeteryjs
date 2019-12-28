@@ -29,7 +29,7 @@ export function setupControllers(worldMap?: string): ControllerFacade {
 
     controllers.webglCanvasController.unregisterEvents();
 
-    controllers.svgCanvasController.writer.write(worldMap);
+    controllers.svgCanvasController.writer.import(worldMap);
 
     return controllers;
 }

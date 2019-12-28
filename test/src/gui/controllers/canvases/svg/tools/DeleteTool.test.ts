@@ -1,6 +1,6 @@
 import { setupControllers, drawRectangle, selectWithRect, click } from "../../../../guiTestUtils";
 import { Point } from "../../../../../../../src/model/geometry/shapes/Point";
-import { ToolType } from "../../../../../../../src/editor/controllers/formats/svg/tools/Tool";
+import { ToolType } from "../../../../../../../src/editor/controllers/canvases/svg/tools/Tool";
 
 it ('Delete via clicking on an item', () => {
     const controllers = setupControllers(); 

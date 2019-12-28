@@ -1,6 +1,6 @@
 import { ControllerFacade } from '../../../src/editor/controllers/ControllerFacade';
 import { Point } from '../../../src/model/geometry/shapes/Point';
-import { CanvasItem } from '../../../src/editor/controllers/formats/svg/models/SvgCanvasStore';
+import { CanvasItem } from '../../../src/editor/controllers/canvases/svg/models/SvgCanvasStore';
 
 
 const defaultTestSvg = `
@@ -45,7 +45,7 @@ export class ControllerFacadeExt extends ControllerFacade {
 
         this.webglCanvasController.unregisterEvents();
         
-        this.svgCanvasController.writer.write(defaultTestSvg);
+        this.svgCanvasController.writer.import(defaultTestSvg);
         this.svgCanvasController.setCanvasRenderer(this.svgCanvasRenderer.render);
     }
 }

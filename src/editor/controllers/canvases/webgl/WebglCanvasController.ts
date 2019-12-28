@@ -3,7 +3,7 @@ import { FileFormat } from '../../../../WorldGenerator';
 import { ControllerFacade } from '../../ControllerFacade';
 import { Events } from "../../events/Events";
 import { IWritableCanvas } from '../IWritableCanvas';
-import { WebglCanvasWriter } from './WebglCanvasWriter';
+import { WebglCanvasWriter } from './WebglCanvasImporter';
 import { CustomCameraInput } from './CustomCameraInput';
 import { MouseCameraInput } from './MouseCameraInput';
 import { ModelLoader } from '../../../../world_generator/services/ModelLoader';
@@ -76,8 +76,8 @@ export class WebglCanvasController implements IWritableCanvas {
 
         this.clearCanvas();
         if (this.writer) {
-            const file = this.controllers.svgCanvasController.reader.read();
-            this.writer.write(file);
+            const file = this.controllers.svgCanvasController.reader.export();
+            this.writer.import(file);
         }
 
         this.renderCanvas();

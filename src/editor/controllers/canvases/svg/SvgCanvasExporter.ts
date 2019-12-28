@@ -1,17 +1,17 @@
 import { SvgCanvasController } from './SvgCanvasController';
-import { ICanvasReader } from '../ICanvasReader';
+import { ICanvasExporter } from '../ICanvasExporter';
 import { GameObjectTemplate } from '../../../../world_generator/services/GameObjectTemplate';
 import { Rectangle } from '../../../../model/geometry/shapes/Rectangle';
 import { CanvasItemTag } from './models/CanvasItem';
 
-export class SvgCanvasReader implements ICanvasReader {
+export class SvgCanvasExporter implements ICanvasExporter {
     private canvasController: SvgCanvasController;
 
     constructor(bitmapEditorController: SvgCanvasController) {
         this.canvasController = bitmapEditorController;
     }
 
-    read(): string {
+    export(): string {
         const rectangles = this.createRectangles(this.canvasController.worldItemDefinitions);
 
         return `<svg data-wg-pixel-size="10" data-wg-width="1500" data-wg-height="1000">${rectangles.join('')}</svg>`;

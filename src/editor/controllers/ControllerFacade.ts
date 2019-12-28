@@ -1,6 +1,6 @@
-import { IEditableCanvas } from './formats/IEditableCanvas';
-import { SvgCanvasController } from './formats/svg/SvgCanvasController';
-import { WebglCanvasController } from './formats/webgl/WebglCanvasController';
+import { IEditableCanvas } from './canvases/IEditableCanvas';
+import { SvgCanvasController } from './canvases/svg/SvgCanvasController';
+import { WebglCanvasController } from './canvases/webgl/WebglCanvasController';
 import { EventDispatcher } from './events/EventDispatcher';
 
 export class ControllerFacade {
