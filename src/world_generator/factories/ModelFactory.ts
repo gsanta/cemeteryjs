@@ -1,4 +1,4 @@
-import { Mesh, Scene, MeshBuilder, Vector3, StandardMaterial, Color3, Axis, Space } from 'babylonjs';
+import { Mesh, Scene, MeshBuilder, Vector3, StandardMaterial, Color3, Axis, Space, Skeleton } from 'babylonjs';
 import { ModelLoader } from '../services/ModelLoader';
 import { GameObject } from '../services/GameObject';
 import { RectangleFactory } from './RectangleFactory';
@@ -14,12 +14,12 @@ export class ModelFactory {
         this.scene = scene;
     }
 
-    public createMesh(gameObject: GameObject): Mesh {
+    public createMesh(gameObject: GameObject): [Mesh, Skeleton] {
         if (!gameObject.modelFileName) {
             return new RectangleFactory(this.scene, new MaterialFactory(this.scene), 0.1).createMesh(gameObject);
         }
 
-        const mesh = this.modelLoader.createInstance(gameObject.modelFileName);
+        const [mesh, skeleton] = this.modelLoader.createInstance(gameObject.modelFileName);
 
         mesh.isVisible = true;
 
@@ -35,6 +35,6 @@ export class ModelFactory {
         mesh.translate(new Vector3(rect.topLeft.x + width / 2, 0, -rect.topLeft.y - depth / 2), 1, Space.WORLD);
         mesh.rotate(Axis.Y, gameObject.rotation, Space.WORLD);
 
-        return <any> mesh;
+        return [<Mesh> mesh, skeleton];
     }
 }

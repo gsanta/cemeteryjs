@@ -1,17 +1,19 @@
 import { Modifier } from "../../src/world_generator/modifiers/Modifier";
 import { GameObject } from "../../src/world_generator/services/GameObject";
 import { TreeIteratorGenerator } from "../../src/world_generator/utils/TreeIteratorGenerator";
+import { Skeleton, Mesh } from 'babylonjs';
 
 
 export interface MockMeshCreator {
-    (worldItem: GameObject): any[];
+    (worldItem: GameObject): [Mesh, Skeleton];
 }
 
 const mockMeshCreator: MockMeshCreator = (worldItem: GameObject) => {
     return [
-        {
+        <any> {
             dimensions: worldItem.dimensions
-        }
+        },
+        null
     ]
 }
 
@@ -38,11 +40,9 @@ export class FakeCreateMeshModifier<M> implements Modifier  {
     apply(worldItems: GameObject[]): GameObject[] {
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
-                item.meshTemplate = {
-                    meshes: this.mockMeshCreator(item),
-                    skeletons: [],
-                    type: item.name
-                }
+                const [mesh, skeleton] = this.mockMeshCreator(item);
+                item.mesh = mesh;
+                item.skeleton = skeleton;
             }
         });
 

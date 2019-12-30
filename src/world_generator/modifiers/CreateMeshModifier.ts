@@ -3,7 +3,7 @@ import { ModelFactory } from '../factories/ModelFactory';
 import { Modifier } from "./Modifier";
 import { TreeIteratorGenerator } from "../utils/TreeIteratorGenerator";
 import { GameObject, WorldItemShape } from '../services/GameObject';
-import { Mesh } from "babylonjs";
+import { Mesh, Skeleton } from 'babylonjs';
 import { ModelLoader } from '../services/ModelLoader';
 import { RectangleFactory } from '../factories/RectangleFactory';
 import { MaterialFactory } from "../factories/MaterialFactory";
@@ -26,10 +26,10 @@ export class CreateMeshModifier implements Modifier  {
     apply(worldItems: GameObject[]): GameObject[] {
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
-                item.meshTemplate = {
-                    meshes: [this.creteMesh(item)],
-                    skeletons: [],
-                    type: item.name
+                if (item.shape) {
+                    const [mesh, skeleton] = this.creteMesh(item);
+                    item.mesh = mesh;
+                    item.skeleton = skeleton;
                 }
             }
         });
@@ -37,7 +37,7 @@ export class CreateMeshModifier implements Modifier  {
         return worldItems;
     }
 
-    private creteMesh(worldItem: GameObject): Mesh {
+    private creteMesh(worldItem: GameObject): [Mesh, Skeleton] {
         switch(worldItem.shape) {
             case WorldItemShape.RECTANGLE:
                 return this.rectangleFactory.createMesh(worldItem);

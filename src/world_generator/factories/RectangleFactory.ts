@@ -1,4 +1,4 @@
-import { Axis, Mesh, MeshBuilder, Scene, Space, Vector3 } from 'babylonjs';
+import { Axis, Mesh, MeshBuilder, Scene, Space, Vector3, Skeleton } from 'babylonjs';
 import { GameObject } from '../services/GameObject';
 import { MaterialFactory } from './MaterialFactory';
 import { Polygon } from '../../model/geometry/shapes/Polygon';
@@ -17,7 +17,7 @@ export class RectangleFactory  {
         this.height = height;
     }
 
-    createMesh(gameObject: GameObject): Mesh {
+    createMesh(gameObject: GameObject): [Mesh, Skeleton] {
 
         const rec = <Rectangle> gameObject.dimensions;
         const boundingInfo = gameObject.dimensions.getBoundingInfo();
@@ -47,6 +47,6 @@ export class RectangleFactory  {
         this.index++;
 
         mesh.computeWorldMatrix(true);
-        return mesh;
+        return [mesh, null];
     }
 }

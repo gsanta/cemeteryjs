@@ -13,8 +13,8 @@ export enum WorldItemShape {
  * `GameObject` represents any distinguishable item in the parsed world (think of it as a mesh, e.g walls, rooms, creatures).
  */
 export class GameObject {
-    meshTemplate: MeshTemplate<Mesh, Skeleton>;
-    skeleton: any;
+    mesh: Mesh;
+    skeleton: Skeleton;
     id: string;
     type: string;
     name: string;

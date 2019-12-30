@@ -32,7 +32,7 @@ export class WebglCanvasWriter implements ICanvasImporter {
                     gameObjects,
                     {
                         convert(worldItem: GameObject): any {
-                            that.webglEditorController.meshes.push(worldItem.meshTemplate.meshes[0]);
+                            that.webglEditorController.meshes.push(worldItem.mesh);
                         },
                         addChildren(parent: any, children: any[]): void {},
                         addBorders(item: any, borders: any[]): void {},

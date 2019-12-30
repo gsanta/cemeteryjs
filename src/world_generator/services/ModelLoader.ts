@@ -1,4 +1,4 @@
-import { AbstractMesh, AnimationGroup, Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, Vector3 } from 'babylonjs';
+import { AbstractMesh, Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, Vector3 } from 'babylonjs';
 import { WorldItem } from "../..";
 import { Point } from '../../model/geometry/shapes/Point';
 
@@ -18,18 +18,26 @@ export class ModelLoader {
     }
     models: Map<string, ModelData> = new Map();
 
-    private pendingModels: Set<string> = new Set();
+    private modelFileNames: Set<String> = new Set();
 
     loadAll(worldItems: WorldItem[]): Promise<void> {
-        const promises = worldItems
-            .filter(item => item.modelFileName)
-            .map(item => this.load(item.modelFileName));
+        const modeledItems = worldItems.filter(item => item.modelFileName);
+
+        const promises: Promise<ModelData>[] = [];
+
+        for (let i = 0; i < modeledItems.length; i++) {
+            if (!this.modelFileNames.has(modeledItems[i].modelFileName)) {
+                promises.push(this.load(modeledItems[i].modelFileName));
+            }
+        }
 
         return Promise.all(promises).then();
     }
 
     load(fileName: string): Promise<ModelData> {
         if (this.models.has(fileName)) { return Promise.resolve(this.models.get(fileName)); }
+
+        this.modelFileNames.add(fileName);
 
         return new Promise(resolve => {
             const folder = fileName.split('.')[0];
@@ -46,11 +54,7 @@ export class ModelLoader {
         });
     }
 
-    getModel(fileName: string): ModelData {
-        return this.models.get(fileName);
-    }
-
-    createInstance(fileName: string): AbstractMesh {
+    createInstance(fileName: string): [AbstractMesh, Skeleton] {
         const model = this.models.get(fileName);
 
         let clone: AbstractMesh;
@@ -59,12 +63,13 @@ export class ModelLoader {
             clone = model.mesh;
         } else {
             clone = <AbstractMesh> model.mesh.instantiateHierarchy();
+            // model.mesh.isVisible = false;
         }
         clone.setAbsolutePosition(new Vector3(0, 0, 0));
         clone.rotation = new Vector3(0, 0, 0);
         model.instanceCounter++;
         
-        return clone;
+        return [clone, model.skeleton];
     }
 
     private configMesh(mesh: Mesh) {        
@@ -85,6 +90,12 @@ export class ModelLoader {
     }
 
     private createModelData(fileName: string, meshes: Mesh[], skeletons: Skeleton[]): ModelData {
+        if (meshes.length === 0) { throw new Error('No mesh was loaded.') }
+
+        // meshes = meshes.filter(mesh => mesh.name !== '__root__');
+
+        // if (meshes.length !== 1) { throw new Error('Loading model with multiple meshes not supported yet.') }
+
         this.configMesh(meshes[0]);
         const dimensions = this.getMeshDimensions(meshes[0]);
 
