@@ -4,7 +4,7 @@ import { ControllerFacade } from '../../ControllerFacade';
 import { Events } from "../../events/Events";
 import { IWritableCanvas } from '../IWritableCanvas';
 import { WebglCanvasWriter } from './WebglCanvasImporter';
-import { CustomCameraInput } from './CustomCameraInput';
+import { KeyboardCameraInput } from './KeyboardCameraInput';
 import { MouseCameraInput } from './MouseCameraInput';
 import { ModelLoader } from '../../../../world_generator/services/ModelLoader';
 import { EditorCamera } from './EditorCamera';

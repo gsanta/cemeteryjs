@@ -7,7 +7,7 @@ export enum KeyboardInput {
     RIGHT = 39
 }
 
-export class CustomCameraInput implements ICameraInput<any> {
+export class KeyboardCameraInput implements ICameraInput<any> {
     camera: UniversalCamera;
 
     private element: HTMLElement;
@@ -48,27 +48,30 @@ export class CustomCameraInput implements ICameraInput<any> {
 
             var camera = this.camera;
 
-            var speed = camera._computeLocalCameraSpeed() / 4;
+            var speed = 0.2;
+
+            const position = camera.position;
+            const targetPosition = camera.getTarget();
+
+            const diff = targetPosition.subtract(position);
 
             switch(this.pressedKey) {
                 case KeyboardInput.LEFT:
-                    camera._localDirection.copyFromFloats(-speed, 0, 0);
+                    camera.position.copyFromFloats(position.x - speed, position.y, position.z);
                     break;
                 case KeyboardInput.RIGHT:
-                    camera._localDirection.copyFromFloats(speed, 0, 0);
+                    camera.position.copyFromFloats(position.x + speed, position.y, position.z);
                     break;
                 case KeyboardInput.UP:
-                        camera._localDirection.copyFromFloats(0, speed, 0);
+                    camera.position.copyFromFloats(position.x, position.y, position.z + speed);
                     break;
                 case KeyboardInput.DOWN:
-                    camera._localDirection.copyFromFloats(0, -speed, 0);
+                    camera.position.copyFromFloats(position.x, position.y, position.z - speed);
                     break;
-                
+                    
             }
 
-            camera.getViewMatrix().invertToRef(camera._cameraTransformMatrix);
-            Vector3.TransformNormalToRef(camera._localDirection, camera._cameraTransformMatrix, camera._transformedDirection);
-            camera.cameraDirection.addInPlace(camera._transformedDirection);
+            camera.setTarget(position.add(diff));
     }
 
     private registerEvents() {

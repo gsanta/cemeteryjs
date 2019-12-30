@@ -1,5 +1,5 @@
 import { UniversalCamera, Vector3, Scene } from 'babylonjs';
-import { CustomCameraInput } from './CustomCameraInput';
+import { KeyboardCameraInput } from './KeyboardCameraInput';
 import { MouseCameraInput } from './MouseCameraInput';
 
 export class EditorCamera extends UniversalCamera {
@@ -10,7 +10,7 @@ export class EditorCamera extends UniversalCamera {
         this.setTarget(new Vector3(0, 0, 0));
         this.rotation.y = 0;
         this.inputs.clear();
-        this.inputs.add(new CustomCameraInput());
+        this.inputs.add(new KeyboardCameraInput());
         this.inputs.add(new MouseCameraInput());
         this.attachControl(canvas, true);
     }
