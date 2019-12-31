@@ -1,5 +1,5 @@
-import { GameObjectTemplate, WorldItemRole } from './GameObjectTemplate';
-import { GlobalConfig } from '../importers/text/GlobalSectionParser';
+import { GameObjectTemplate } from './GameObjectTemplate';
+import { GlobalConfig } from '../importers/svg/GlobalSectionParser';
 import { GameObject } from './GameObject';
 
 export class GameAssetStore {
@@ -18,8 +18,7 @@ export class GameAssetStore {
         this.gameObjectTemplates.push({
             id: GameObjectTemplate.generateId(this.gameObjectTemplates),
             typeName: 'root',
-            shape: 'rectangle',
-            roles: [WorldItemRole.CONTAINER],
+            shape: 'rectangle'
         });
     }
 }

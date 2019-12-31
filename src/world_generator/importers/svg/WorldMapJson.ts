@@ -51,7 +51,6 @@ export interface Rect {
 
 export interface TypeMetaData {
     color: string;
-    isBorder: boolean;
     materials: string[];
     model: string;
     scale: number;

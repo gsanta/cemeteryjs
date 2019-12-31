@@ -1,4 +1,4 @@
-import { ArcRotateCamera, Color3, Engine, HemisphericLight, Scene, Vector3, UniversalCamera, Mesh, MeshBuilder } from 'babylonjs';
+import { ArcRotateCamera, Color3, Engine, HemisphericLight, Scene, Vector3, UniversalCamera, Mesh, MeshBuilder, DirectionalLight } from 'babylonjs';
 import { FileFormat } from '../../../../WorldGenerator';
 import { ControllerFacade } from '../../ControllerFacade';
 import { Events } from "../../events/Events";
@@ -58,10 +58,15 @@ export class WebglCanvasController implements IWritableCanvas {
         
 
         this.helperMeshes = new HelperMeshes(this.controllers, scene, MeshBuilder);
-        const light = new HemisphericLight('light', new Vector3(0, 4, 1), scene);
+        const light = new DirectionalLight('light', new Vector3(5, -10, 0), scene);
         light.diffuse = new Color3(1, 1, 1);
-        light.intensity = 1
+        light.intensity = 1;
         
+
+        // const light2 = new HemisphericLight('light2', new Vector3(0, 10, 0), scene);
+        // light2.diffuse = new Color3(1, 1, 1);
+        // light2.intensity = 1;
+
         this.scene = scene;
         
         this.modelLoader = new ModelLoader(this.scene);

@@ -2,7 +2,6 @@ import { GameObject } from '../services/GameObject';
 import { Modifier } from './Modifier';
 import { without } from "../utils/Functions";
 import { WorldGeneratorServices } from '../services/WorldGeneratorServices';
-import { WorldItemRole } from "../services/GameObjectTemplate";
 import { Polygon } from '../../model/geometry/shapes/Polygon';
 
 /**
@@ -28,18 +27,11 @@ export class BuildHierarchyModifier implements Modifier {
 
     private buildHierarchy(worldItems: GameObject[]) {
         const sizeComparer = (a: GameObject, b: GameObject) => (<Polygon> a.dimensions).getArea() - (<Polygon> b.dimensions).getArea(); 
-
-        const borders = worldItems.filter(worldItem => worldItem.roles.includes(WorldItemRole.BORDER));
-        //TODO: handle empties better
-        let notBorders = worldItems.filter(item => item.name !== 'empty').filter(worldItem => !worldItem.roles.includes(WorldItemRole.BORDER));
-
-        const containers = notBorders.filter(worldItem => worldItem.roles.includes(WorldItemRole.CONTAINER));
-        const notContainers = notBorders.filter(worldItem => !worldItem.roles.includes(WorldItemRole.CONTAINER));
         
-        const sortedContainers = [...containers];
+        const sortedContainers = [...worldItems];
         sortedContainers.sort(sizeComparer);
 
-        let remainingItems = [...containers, ...notContainers];
+        let remainingItems = [...worldItems];
 
         sortedContainers.forEach(container => {
             const remove: GameObject[] = [];
@@ -57,7 +49,7 @@ export class BuildHierarchyModifier implements Modifier {
 
 
         const roots = worldItems.filter(item => item.name === 'root');
-        roots[0].children = [...roots[0].children, ...borders]
+        roots[0].children = [...roots[0].children]
 
         return roots;
     }

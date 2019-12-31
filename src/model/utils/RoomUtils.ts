@@ -4,25 +4,7 @@ import { GameObject } from '../../world_generator/services/GameObject';
 import { without, last } from '../../world_generator/utils/Functions';
 
 export class RoomUtils {
-    public static orderBorderItemsAroundRoomClockwise(room: GameObject) {
-        const borderItems = [...room.borderItems];
 
-        const startItem = this.getBottomLeftItem(borderItems);
-
-        if (startItem) {
-            let rest = without(borderItems, startItem);
-    
-            const orderedItems = [startItem];
-            while (rest.length > 0) {
-                const nextItem = this.findNextBorderItem(last(orderedItems), rest);
-    
-                orderedItems.push(nextItem);
-                rest = without(rest, nextItem);
-            }
-
-            room.borderItems = orderedItems;
-        }
-    }
 
     private static findNextBorderItem(currentBorderItem: GameObject, borderItems: GameObject[]) {
         const findByCommonPoint = (commonPoint: Point) =>

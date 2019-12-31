@@ -1,5 +1,5 @@
 import { GameObject, WorldItemShape } from './GameObject';
-import { GameObjectTemplate, WorldItemRole } from './GameObjectTemplate';
+import { GameObjectTemplate } from './GameObjectTemplate';
 import { Shape } from '../../model/geometry/shapes/Shape';
 import { Point } from '../../model/geometry/shapes/Point';
 import { Polygon } from '../../model/geometry/shapes/Polygon';
@@ -8,13 +8,11 @@ export interface GameObjectConfig {
     type?: string;
     dimensions: Shape;
     name: string;
-    isBorder: boolean;
     rotation?: number;
     worldMapPositions?: Point[];
     color?: string;
     shape?: WorldItemShape;
     modelPath?: string;
-    roles?: WorldItemRole[];
 }
 
 export const defaultWorldItemConfig: Partial<GameObjectConfig> = {
@@ -29,54 +27,32 @@ export const defaultWorldItemConfig: Partial<GameObjectConfig> = {
 export class GameObjectFactory {
     private countersByType: Map<string, number> = new Map();
 
-    public createOld(type: string, dimensions: Polygon, name: string, isBorder: boolean, rotation?: number): GameObject {
-        const id = this.getNextId(name);
-        const worldItem = new GameObject(id, type, dimensions, name, isBorder);
-        if (rotation !== undefined) {
-            worldItem.rotation = rotation;
-        }
-
-        return worldItem;
-    }
-
-    public create(gameObjectConfig: GameObjectConfig, gameObjectTemplate: GameObjectTemplate): GameObject {
+    create(gameObjectConfig: GameObjectConfig): GameObject {
         gameObjectConfig = {...defaultWorldItemConfig, ...gameObjectConfig};
 
-        const id = this.getNextId(gameObjectConfig.name);
-        const gameObject = new GameObject(id, gameObjectConfig.type, gameObjectConfig.dimensions, gameObjectConfig.name, gameObjectConfig.isBorder);
-        gameObject.worldMapPositions = gameObjectConfig.worldMapPositions;
+        const gameObject = new GameObject(gameObjectConfig.dimensions, gameObjectConfig.name);
         gameObject.rotation = gameObjectConfig.rotation;
-        gameObject.definition = gameObjectTemplate;
         gameObjectConfig.color && (gameObject.color = gameObjectConfig.color);
         gameObjectConfig.shape && (gameObject.shape = gameObjectConfig.shape);
         gameObjectConfig.modelPath && (gameObject.modelFileName = gameObjectConfig.modelPath);
 
-        gameObject.roles = gameObjectTemplate ? gameObjectTemplate.roles : gameObjectConfig.roles;
-
         return gameObject;
     }
 
-    public clone(newType: string, gameObject: GameObject): GameObject {
+    clone(newType: string, gameObject: GameObject): GameObject {
         const id = this.getNextId(newType);
 
         const clone = new GameObject(
-            id,
-            gameObject.type,
             gameObject.dimensions,
             newType
         );
 
         clone.children = [...gameObject.children];
-        clone.borderItems = [...gameObject.borderItems];
         clone.rotation = gameObject.rotation;
-        clone.isBorder = gameObject.isBorder;
-        clone.thickness = gameObject.thickness;
         clone.parent = gameObject.parent;
-        clone.definition = gameObject.definition;
         gameObject.color && (clone.color = gameObject.color);
         gameObject.shape && (clone.shape = gameObject.shape);
         gameObject.modelFileName && (clone.modelFileName = gameObject.modelFileName);
-        clone.roles = gameObject.roles;
 
         return clone;
     }

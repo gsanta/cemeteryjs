@@ -1,9 +1,9 @@
 import * as convert from 'xml-js';
-import { GameObjectTemplate, WorldItemRole } from '../../services/GameObjectTemplate';
-import { IConfigReader } from '../IConfigReader';
-import { GlobalConfig } from '../text/GlobalSectionParser';
-import { RawWorldMapJson, WgDefinition } from './WorldMapJson';
 import { Point } from '../../../model/geometry/shapes/Point';
+import { GameObjectTemplate } from '../../services/GameObjectTemplate';
+import { IConfigReader } from '../IConfigReader';
+import { GlobalConfig } from './GlobalSectionParser';
+import { RawWorldMapJson, WgDefinition } from './WorldMapJson';
 
 export class SvgConfigReader implements IConfigReader {
     read(worldMap: string): {gameObjectTemplates: GameObjectTemplate[], globalConfig: GlobalConfig} {
@@ -38,10 +38,8 @@ export class SvgConfigReader implements IConfigReader {
         const translateY = wgType._attributes["translate-y"] ? parseFloat(wgType._attributes["translate-y"]) : 0;
         const typeName = wgType._attributes["type-name"];
         const materials = wgType._attributes["materials"] ? wgType._attributes["materials"].split(" ") : [];
-        const roles = wgType._attributes["roles"] ? wgType._attributes["roles"].split(" ").map(role => WorldItemRole.fromString(role)) : [];
 
-
-        return {id: GameObjectTemplate.generateId(existingWorldItemDefinitions), color, roles, model, scale, translateY, typeName, materials, shape};
+        return {id: GameObjectTemplate.generateId(existingWorldItemDefinitions), color, model, scale, translateY, typeName, materials, shape};
     }
 
 

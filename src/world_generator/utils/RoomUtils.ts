@@ -1,29 +1,8 @@
 import { GameObject } from '../services/GameObject';
-import { without, last } from './Functions';
 import { Measurements } from '../../model/geometry/utils/Measurements';
 import { Point } from '../../model/geometry/shapes/Point';
 
 export class RoomUtils {
-    public static orderBorderItemsAroundRoomClockwise(room: GameObject) {
-        const borderItems = [...room.borderItems];
-
-        const startItem = this.getBottomLeftItem(borderItems);
-
-        if (startItem) {
-            let rest = without(borderItems, startItem);
-    
-            const orderedItems = [startItem];
-            while (rest.length > 0) {
-                const nextItem = this.findNextBorderItem(last(orderedItems), rest);
-    
-                orderedItems.push(nextItem);
-                rest = without(rest, nextItem);
-            }
-
-            room.borderItems = orderedItems;
-        }
-    }
-
     private static findNextBorderItem(currentBorderItem: GameObject, borderItems: GameObject[]) {
         const findByCommonPoint = (commonPoint: Point) =>
             borderItems.find(item => {

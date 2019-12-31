@@ -32,12 +32,6 @@ export class ConverterService {
             if (children.length > 0) {
                 converter.addChildren(val, children);
             }
-
-            const borders = key.borderItems.map(border => map.get(border));
-
-            if (borders.length > 0) {
-                converter.addBorders(val, borders);
-            }
         });
 
         converter.done();

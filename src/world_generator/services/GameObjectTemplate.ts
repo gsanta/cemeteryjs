@@ -1,22 +1,5 @@
 import { maxBy } from '../utils/Functions';
 
-export enum WorldItemRole {
-    BORDER = 'border',
-    CONTAINER = 'container'
-}
-
-export namespace WorldItemRole {
-    
-    export function fromString(str: string) {
-        switch(str) {
-            case 'border':
-                return WorldItemRole.BORDER;
-            case 'container':
-                return WorldItemRole.CONTAINER;
-        }
-    }
-}
-
 export interface GameObjectTemplate {
     id: string;
     typeName: string;
@@ -27,7 +10,6 @@ export interface GameObjectTemplate {
     scale?: number;
     translateY?: number;
     materials?: string[];
-    roles?: WorldItemRole[];
     realDimensions?: {
         width: number;
         height?: number;
@@ -35,16 +17,6 @@ export interface GameObjectTemplate {
 }
 
 export namespace GameObjectTemplate {
-    export function borders(templates: GameObjectTemplate[]): GameObjectTemplate[] {
-        return templates.filter(templates => templates.roles.includes(WorldItemRole.BORDER));
-    }
-
-    export function furnitures(gameObjectTemplates: GameObjectTemplate[]): GameObjectTemplate[] {
-        return gameObjectTemplates.filter(descriptor => {
-            return !descriptor.roles.includes(WorldItemRole.CONTAINER) && !descriptor.roles.includes(WorldItemRole.BORDER)
-        });
-    }
-
     export function generateId(exisingWorldItemDefinitions: GameObjectTemplate[]): string {
         if (exisingWorldItemDefinitions.length === 0) { return 1 + ''; }
 
@@ -57,7 +29,6 @@ export namespace GameObjectTemplate {
         const clone = {...worldItemDefinition};
         clone.realDimensions = {...clone.realDimensions};
         clone.materials = [...clone.materials];
-        clone.roles = [...clone.roles];
 
         return clone;
     }

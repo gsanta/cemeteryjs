@@ -36,7 +36,6 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
     static contextType = AppContext;
     context: AppContextType;
     private webglModelSizeTestingElement: HTMLCanvasElement;
-    
 
     constructor(props: {canvasController: SvgCanvasController}) {
         super(props);
@@ -46,8 +45,6 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
 
     render(): JSX.Element {
         const bitmapConfig = this.props.canvasController.configModel;
-        const horizontalLines = this.renderLines(this.props.canvasController.configModel.horizontalHelperLines);
-        const verticalLines = this.renderLines(this.props.canvasController.configModel.verticalHelperLines);
 
         return (
             <EditorComponentStyled id={this.props.canvasController.getId()}>
@@ -63,8 +60,6 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
                     data-wg-width={bitmapConfig.canvasDimensions.x}
                     data-wg-height={bitmapConfig.canvasDimensions.y}
                 >
-                    {horizontalLines}
-                    {verticalLines}
                     {this.renderCanvasItems()}
                     {this.renderSelection()}
                 </CanvasComponentStyled>
@@ -102,15 +97,6 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
         });
     }
 
-    private renderLines(lines: Segment[]): JSX.Element[] {
-        return [];
-        // return lines.map((segment, i) => {
-        //     const p1 = segment.getPoints()[0];
-        //     const p2 = segment.getPoints()[1];
-        //     return <LineComponent key={i} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y}/>
-        // });
-    }
-
     private renderSelection(): JSX.Element {
         const tool = this.props.canvasController.getActiveTool();
 
@@ -145,10 +131,6 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
 
             if (props.materials) {
                 props.materials = type.materials.join(' ');
-            }
-
-            if (props.roles) {
-                props.materials = type.roles.join(' ');
             }
 
             return React.createElement('wg-type', props);

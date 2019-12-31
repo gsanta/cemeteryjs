@@ -10,7 +10,7 @@ import { GameAssetStore } from './GameAssetStore';
 import { GameObjectFactory } from './GameObjectFactory';
 import { ModelLoader } from './ModelLoader';
 import { defaultModifiers, ModifierExecutor } from './ModifierExecutor';
-import { GlobalConfig } from '../importers/text/GlobalSectionParser';
+import { GlobalConfig } from '../importers/svg/GlobalSectionParser';
 
 export class WorldGeneratorServices {
     gameAssetStore: GameAssetStore;
