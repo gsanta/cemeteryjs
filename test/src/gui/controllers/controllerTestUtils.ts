@@ -1,4 +1,4 @@
-import { ControllerFacade } from "../../../../src/editor/controllers/ControllerFacade";
+import { EditorFacade } from "../../../../src/editor/controllers/EditorFacade";
 
 export const initialSvg = 
 `
@@ -22,8 +22,8 @@ export const initialSvg =
 `;
 
 
-export function setupControllers(worldMap?: string): ControllerFacade {
-    const controllers = new ControllerFacade();
+export function setupControllers(worldMap?: string): EditorFacade {
+    const controllers = new EditorFacade();
 
     worldMap = worldMap ? worldMap : initialSvg;
 

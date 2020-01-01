@@ -2,7 +2,7 @@ import { Modifier } from '../modifiers/Modifier';
 import { GameObject } from './GameObject';
 import { BuildHierarchyModifier } from '../modifiers/BuildHierarchyModifier';
 import { ScaleModifier } from '../modifiers/ScaleModifier';
-import { WorldGeneratorServices } from './WorldGeneratorServices';
+import { WorldGeneratorFacade } from '../WorldGeneratorFacade';
 import { CreateMeshModifier } from '../modifiers/CreateMeshModifier';
 import { Mesh } from 'babylonjs';
 

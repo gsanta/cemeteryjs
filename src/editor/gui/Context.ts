@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { ControllerFacade } from '../controllers/ControllerFacade';
+import { EditorFacade } from '../controllers/EditorFacade';
 
 export interface AppContextType {
-    controllers: ControllerFacade;
+    controllers: EditorFacade;
 }
 
 export const AppContext = React.createContext<AppContextType>(undefined);

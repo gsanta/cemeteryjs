@@ -1,7 +1,7 @@
 import { FileFormat } from '../../../../WorldGenerator';
 import { GameObjectTemplate } from '../../../../world_generator/services/GameObjectTemplate';
 import { defaultWorldItemDefinitions } from '../../../defaultWorldItemDefinitions';
-import { ControllerFacade } from '../../ControllerFacade';
+import { EditorFacade } from '../../EditorFacade';
 import { CanvasItemSettingsForm } from '../../forms/CanvasItemSettingsForm';
 import { ICanvasExporter } from '../ICanvasExporter';
 import { ICanvasImporter } from '../ICanvasImporter';
@@ -29,7 +29,7 @@ export class SvgCanvasController implements IEditableCanvas {
     configModel: SvgConfig;
     pixelModel: SvgCanvasStore;
     
-    controllers: ControllerFacade;
+    controllers: EditorFacade;
     worldItemDefinitions: GameObjectTemplate[];
     selectedWorldItemDefinition: GameObjectTemplate;
 
@@ -41,7 +41,7 @@ export class SvgCanvasController implements IEditableCanvas {
     private renderToolbarFunc = () => null;
     private renderSettingsFunc = () => null;
     
-    constructor(controllers: ControllerFacade) {
+    constructor(controllers: EditorFacade) {
         this.controllers = controllers;
         this.worldItemDefinitions = [...defaultWorldItemDefinitions];
         this.selectedWorldItemDefinition = this.worldItemDefinitions[0];

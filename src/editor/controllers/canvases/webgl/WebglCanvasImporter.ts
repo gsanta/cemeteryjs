@@ -3,7 +3,7 @@ import { WebglCanvasController } from './WebglCanvasController';
 import { GameObject } from "../../../../world_generator/services/GameObject";
 import { ConverterService } from "../../../../world_generator/services/ConverterService";
 import { CreateMeshModifier } from "../../../../world_generator/modifiers/CreateMeshModifier";
-import { WorldGeneratorServices } from "../../../../world_generator/services/WorldGeneratorServices";
+import { WorldGeneratorFacade } from "../../../../world_generator/WorldGeneratorFacade";
 
 export class WebglCanvasWriter implements ICanvasImporter {
     private webglEditorController: WebglCanvasController;
@@ -19,7 +19,7 @@ export class WebglCanvasWriter implements ICanvasImporter {
     import(file: string): void {
         this.webglEditorController.gameFacade.clear();
 
-        const serviceFacade = new WorldGeneratorServices(this.webglEditorController.gameFacade, this.webglEditorController.modelLoader, this.createMeshModifier);
+        const serviceFacade = new WorldGeneratorFacade(this.webglEditorController.gameFacade, this.createMeshModifier);
         const converterService = new ConverterService();
         const that = this;
 

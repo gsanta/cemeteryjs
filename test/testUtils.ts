@@ -1,5 +1,5 @@
 import { Scene, Mesh } from 'babylonjs';
-import { WorldGeneratorServices } from '../src/world_generator/services/WorldGeneratorServices';
+import { WorldGeneratorFacade } from '../src/world_generator/WorldGeneratorFacade';
 import { TreeIteratorGenerator } from '../src/world_generator/utils/TreeIteratorGenerator';
 import { GameObject } from '../src/world_generator/services/GameObject';
 import { FakeModelLoader } from './fakes/FakeModelLoader';
@@ -12,30 +12,28 @@ import { GameFacade } from '../src/game/GameFacade';
 /**
  * @deprecated use setupTestEnv
  */
-export function setup(worldMap: string): WorldGeneratorServices<Mesh> {
+export function setup(worldMap: string): WorldGeneratorFacade {
 
-    const services = new WorldGeneratorServices<Mesh>(
+    const services = new WorldGeneratorFacade(
         new GameFacade(null),
-        null,
         new FakeCreateMeshModifier()
     );
 
     const {globalConfig} = services.generateMetaData(worldMap);
-    services.worldFacade.gameObjectStore.globalConfig = globalConfig;
+    services.gameFacade.gameObjectStore.globalConfig = globalConfig;
 
     return services;
 }
 
-export function setupTestEnv(worldMap: string, fakeModelImporter?: FakeModelLoader): WorldGeneratorServices<Mesh> {
-    const services = new WorldGeneratorServices(
+export function setupTestEnv(worldMap: string, fakeModelImporter?: FakeModelLoader): WorldGeneratorFacade {
+    const services = new WorldGeneratorFacade(
         new GameFacade(null),
-        fakeModelImporter ? fakeModelImporter : new FakeModelLoader(new Map()),
         new FakeCreateMeshModifier()
     );
     const {globalConfig} = services.generateMetaData(worldMap);
-    services.worldFacade.gameObjectStore.globalConfig = globalConfig;
+    services.gameFacade.gameObjectStore.globalConfig = globalConfig;
 
-    services.worldFacade.gameObjectStore.gameObjects = services.gameObjectBuilder.build(worldMap);
+    services.gameFacade.gameObjectStore.gameObjects = services.gameObjectBuilder.build(worldMap);
 
     return services;
 }

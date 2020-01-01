@@ -1,5 +1,5 @@
 import { GameObject } from '../services/GameObject';
-import { WorldGeneratorServices } from '../services/WorldGeneratorServices';
+import { WorldGeneratorFacade } from '../WorldGeneratorFacade';
 import { TreeIteratorGenerator } from '../utils/TreeIteratorGenerator';
 import { Modifier } from './Modifier';
 import { Point } from '../../model/geometry/shapes/Point';

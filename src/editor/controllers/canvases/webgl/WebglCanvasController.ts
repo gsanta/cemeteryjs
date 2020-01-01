@@ -1,7 +1,7 @@
 import { Color3, DirectionalLight, Engine, Mesh, MeshBuilder, Scene, UniversalCamera, Vector3 } from 'babylonjs';
 import { AbstractModelLoader } from '../../../../common/AbstractModelLoader';
 import { FileFormat } from '../../../../WorldGenerator';
-import { ControllerFacade } from '../../ControllerFacade';
+import { EditorFacade } from '../../EditorFacade';
 import { Events } from "../../events/Events";
 import { IWritableCanvas } from '../IWritableCanvas';
 import { EditorCamera } from './EditorCamera';
@@ -23,11 +23,11 @@ export class WebglCanvasController implements IWritableCanvas {
 
     private canvas: HTMLCanvasElement;
     private camera: UniversalCamera;
-    private controllers: ControllerFacade;
+    private controllers: EditorFacade;
     private renderCanvasFunc: () => void;
     meshes: Mesh[] = [];
 
-    constructor(controllers: ControllerFacade) {
+    constructor(controllers: EditorFacade) {
         this.controllers = controllers;
         this.updateCanvas = this.updateCanvas.bind(this);
         this.registerEvents();

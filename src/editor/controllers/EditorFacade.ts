@@ -3,7 +3,7 @@ import { SvgCanvasController } from './canvases/svg/SvgCanvasController';
 import { WebglCanvasController } from './canvases/webgl/WebglCanvasController';
 import { EventDispatcher } from './events/EventDispatcher';
 
-export class ControllerFacade {
+export class EditorFacade {
     webglCanvasController: WebglCanvasController;
     svgCanvasController: SvgCanvasController;
     
