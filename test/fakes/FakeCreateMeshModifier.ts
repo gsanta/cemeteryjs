@@ -40,9 +40,7 @@ export class FakeCreateMeshModifier<M> implements Modifier  {
     apply(worldItems: GameObject[]): GameObject[] {
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
-                const [mesh, skeleton] = this.mockMeshCreator(item);
-                item.mesh = mesh;
-                item.skeleton = skeleton;
+                this.mockMeshCreator(item);
             }
         });
 

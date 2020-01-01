@@ -1,25 +1,29 @@
-import { Mesh, Scene, MeshBuilder, Vector3, StandardMaterial, Color3, Axis, Space, Skeleton } from 'babylonjs';
-import { ModelLoader } from '../services/ModelLoader';
-import { GameObject } from '../services/GameObject';
-import { RectangleFactory } from './RectangleFactory';
-import { MaterialFactory } from './MaterialFactory';
+import { Axis, Mesh, Scene, Space, Vector3 } from 'babylonjs';
 import { Rectangle } from '../../model/geometry/shapes/Rectangle';
+import { AbstractModelLoader } from '../../common/AbstractModelLoader';
+import { GameObject } from '../services/GameObject';
+import { MaterialFactory } from './MaterialFactory';
+import { RectangleFactory } from './RectangleFactory';
+import { GameFacade } from '../../game/GameFacade';
 
 export class ModelFactory {
     private scene: Scene;
-    private modelLoader: ModelLoader;
+    private gameFacade: GameFacade;
 
-    constructor(scene: Scene, modelLoader: ModelLoader) {
-        this.modelLoader = modelLoader;
+    constructor(scene: Scene, gameFacade: GameFacade) {
         this.scene = scene;
+        this.gameFacade = gameFacade;
     }
 
-    public createMesh(gameObject: GameObject): [Mesh, Skeleton] {
+    public createMesh(gameObject: GameObject): void {
         if (!gameObject.modelFileName) {
-            return new RectangleFactory(this.scene, new MaterialFactory(this.scene), 0.1).createMesh(gameObject);
+            new RectangleFactory(this.scene, new MaterialFactory(this.scene), this.gameFacade, 0.1).createMesh(gameObject);
+            return;
         }
 
-        const [mesh, skeleton] = this.modelLoader.createInstance(gameObject.modelFileName);
+        const meshName = this.gameFacade.modelLoader.createInstance(gameObject.modelFileName);
+        gameObject.meshName = meshName;
+        const mesh = this.gameFacade.meshStore.getMesh(meshName);
 
         mesh.isVisible = true;
 
@@ -34,7 +38,5 @@ export class ModelFactory {
 
         mesh.translate(new Vector3(rect.topLeft.x + width / 2, 0, -rect.topLeft.y - depth / 2), 1, Space.WORLD);
         mesh.rotate(Axis.Y, gameObject.rotation, Space.WORLD);
-
-        return [<Mesh> mesh, skeleton];
     }
 }

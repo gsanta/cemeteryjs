@@ -1,30 +1,59 @@
-import { Engine, Scene } from 'babylonjs';
-import { ModelLoader } from '../../../../world_generator/services/ModelLoader';
+import { Engine, Scene, Mesh } from 'babylonjs';
+import { AbstractModelLoader } from '../../../../common/AbstractModelLoader';
 import { CanvasItem } from './models/SvgCanvasStore';
 import { SvgCanvasController } from './SvgCanvasController';
+import { Point } from '../../../../model/geometry/shapes/Point';
 
 
 const SCALE = 2;
-export class Model3DController {
+export class Model3DController extends AbstractModelLoader {
     private engine: Engine;
-    private scene: Scene;
-    private modelLoader: ModelLoader;
     private canvasController: SvgCanvasController;
 
     private canvas: HTMLCanvasElement;
 
+    private fileNameToMeshMap: Map<string, Mesh> = new Map();
+
     constructor(canvasController: SvgCanvasController) {
+        super(null);
         this.canvasController = canvasController;
         this.canvas = <HTMLCanvasElement> document.getElementById("model-size-tester");
         this.init();
-        this.modelLoader = new ModelLoader(this.scene);
     }
 
     set3dModelForCanvasItem(canvasItem: CanvasItem) {
-        this.modelLoader.load(canvasItem.model).then(modelData => {
-            canvasItem.dimensions = canvasItem.dimensions.setWidth(modelData.dimensions.x / SCALE).setHeight(modelData.dimensions.y / SCALE);
-            this.canvasController.renderCanvas();
+        if (this.fileNameToMeshMap.has(canvasItem.model)) {
+            this.setDimensions(canvasItem);
+        }
+       
+        this.load(canvasItem.model).then(mesh => {
+            this.setDimensions(canvasItem);
         });
+    }
+
+    createInstance(fileName: string): string {
+        throw new Error('Not implemented.');
+    }
+
+    setModel(fileName: string, mesh: Mesh): void {
+        this.fileNameToMeshMap.set(fileName, mesh);
+    }
+
+    private setDimensions(canvasItem: CanvasItem) {
+        const mesh = this.fileNameToMeshMap.get(canvasItem.model);
+        const dimensions = this.calcMeshDimensions(mesh);
+        canvasItem.dimensions = canvasItem.dimensions.setWidth(dimensions.x / SCALE).setHeight(dimensions.y / SCALE);
+        this.canvasController.renderCanvas();
+    }
+
+    private calcMeshDimensions(mesh: Mesh): Point {
+        mesh.computeWorldMatrix();
+        mesh.getBoundingInfo().update(mesh._worldMatrix);
+
+        const boundingVectors = mesh.getHierarchyBoundingVectors();
+        const width = boundingVectors.max.x - boundingVectors.min.x;
+        const height = boundingVectors.max.z - boundingVectors.min.z;
+        return new Point(width, height);
     }
 
     private init() {

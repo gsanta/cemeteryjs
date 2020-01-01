@@ -1,7 +1,8 @@
-import { ModelLoader, ModelData } from '../../src/world_generator/services/ModelLoader';
+import { AbstractModelLoader, ModelData } from '../../src/common/AbstractModelLoader';
 import { Point } from '../../src/model/geometry/shapes/Point';
+import { Mesh } from 'babylonjs';
 
-export class FakeModelLoader extends ModelLoader {
+export class FakeModelLoader extends AbstractModelLoader {
 
     private pathToDimensionMap: Map<string, Point> = new Map();
 
@@ -22,5 +23,13 @@ export class FakeModelLoader extends ModelLoader {
             }
         }
         return null;
+    }
+
+    createInstance(fileName: string): string {
+        return null;
+    }
+
+    protected setModel(fileName: string, mesh: Mesh): void {
+        
     }
 }

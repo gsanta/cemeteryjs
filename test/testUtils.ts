@@ -1,41 +1,41 @@
-import { Scene } from 'babylonjs';
+import { Scene, Mesh } from 'babylonjs';
 import { WorldGeneratorServices } from '../src/world_generator/services/WorldGeneratorServices';
 import { TreeIteratorGenerator } from '../src/world_generator/utils/TreeIteratorGenerator';
-import { FileFormat } from '../src/WorldGenerator';
 import { GameObject } from '../src/world_generator/services/GameObject';
 import { FakeModelLoader } from './fakes/FakeModelLoader';
 import { FakeCreateMeshModifier } from './fakes/FakeCreateMeshModifier';
-import { GameAssetStore } from '../src/world_generator/services/GameAssetStore';
+import { GameObjectStore } from '../src/game/models/GameObjectStore';
 import { Shape } from '../src/model/geometry/shapes/Shape';
+import { GameFacade } from '../src/game/GameFacade';
 
 
 /**
  * @deprecated use setupTestEnv
  */
-export function setup(worldMap: string, fileFormat: FileFormat): WorldGeneratorServices {
-    const services = new WorldGeneratorServices(
-        null,
-        new FakeCreateMeshModifier(),
-        fileFormat
+export function setup(worldMap: string): WorldGeneratorServices<Mesh> {
 
+    const services = new WorldGeneratorServices<Mesh>(
+        new GameFacade(null),
+        null,
+        new FakeCreateMeshModifier()
     );
 
-    const {gameObjectTemplates, globalConfig} = services.generateMetaData(worldMap);
-    services.gameAssetStore = new GameAssetStore(gameObjectTemplates, globalConfig);
+    const {globalConfig} = services.generateMetaData(worldMap);
+    services.worldFacade.gameObjectStore.globalConfig = globalConfig;
 
     return services;
 }
 
-export function setupTestEnv(worldMap: string, fileFormat: FileFormat, fakeModelImporter?: FakeModelLoader): WorldGeneratorServices {
+export function setupTestEnv(worldMap: string, fakeModelImporter?: FakeModelLoader): WorldGeneratorServices<Mesh> {
     const services = new WorldGeneratorServices(
+        new GameFacade(null),
         fakeModelImporter ? fakeModelImporter : new FakeModelLoader(new Map()),
-        new FakeCreateMeshModifier(),        
-        fileFormat
+        new FakeCreateMeshModifier()
     );
-    const {gameObjectTemplates, globalConfig} = services.generateMetaData(worldMap);
-    services.gameAssetStore = new GameAssetStore(gameObjectTemplates, globalConfig);
+    const {globalConfig} = services.generateMetaData(worldMap);
+    services.worldFacade.gameObjectStore.globalConfig = globalConfig;
 
-    services.gameAssetStore.gameObjects = services.gameObjectBuilder.build(worldMap);
+    services.worldFacade.gameObjectStore.gameObjects = services.gameObjectBuilder.build(worldMap);
 
     return services;
 }

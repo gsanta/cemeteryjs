@@ -1,7 +1,6 @@
 import { GameObject } from '../services/GameObject';
 import { Modifier } from './Modifier';
 import { without } from "../utils/Functions";
-import { WorldGeneratorServices } from '../services/WorldGeneratorServices';
 import { Polygon } from '../../model/geometry/shapes/Polygon';
 
 /**
@@ -11,11 +10,6 @@ import { Polygon } from '../../model/geometry/shapes/Polygon';
 
 export class BuildHierarchyModifier implements Modifier {
     static modName = 'buildHierarchy';
-    private services: WorldGeneratorServices;
-
-    constructor(services: WorldGeneratorServices) {
-        this.services = services;
-    }
 
     getName(): string {
         return BuildHierarchyModifier.modName;

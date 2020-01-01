@@ -1,4 +1,3 @@
-import { FileFormat } from '../../WorldGenerator';
 import { Modifier } from '../modifiers/Modifier';
 import { IConfigReader } from '../importers/IConfigReader';
 import { IGameObjectBuilder } from '../importers/IGameObjectBuilder';
@@ -6,40 +5,38 @@ import { SvgConfigReader } from '../importers/svg/SvgConfigReader';
 import { SvgGameObjectBuilder } from '../importers/svg/SvgGameObjectBuilder';
 import { GameObject } from './GameObject';
 import { GameObjectTemplate } from './GameObjectTemplate';
-import { GameAssetStore } from './GameAssetStore';
+import { GameObjectStore } from '../../game/models/GameObjectStore';
 import { GameObjectFactory } from './GameObjectFactory';
-import { ModelLoader } from './ModelLoader';
+import { AbstractModelLoader } from '../../common/AbstractModelLoader';
 import { defaultModifiers, ModifierExecutor } from './ModifierExecutor';
 import { GlobalConfig } from '../importers/svg/GlobalSectionParser';
+import { IWorldFacade } from '../../common/IWorldFacade';
 
-export class WorldGeneratorServices {
-    gameAssetStore: GameAssetStore;
-    
+export class WorldGeneratorServices<T> {
     gameObjectBuilder: IGameObjectBuilder;
     modifierExecutor: ModifierExecutor;
-    modelLoader: ModelLoader;
 
     gameObjectFactory: GameObjectFactory;
 
+    worldFacade: IWorldFacade<T>
 
-    constructor(modelImportService: ModelLoader, createMeshModifier: Modifier, fileFormat: FileFormat) {
-        
-        this.gameAssetStore = new GameAssetStore();
+
+    constructor(worldFacade: IWorldFacade<T>, modelImportService: AbstractModelLoader, createMeshModifier: Modifier) {
+        this.worldFacade = worldFacade;
         this.gameObjectBuilder = this.getWorldItemBuilder();
         this.gameObjectFactory = new GameObjectFactory();
-        this.modifierExecutor = new ModifierExecutor(this);
+        this.modifierExecutor = new ModifierExecutor();
         this.modifierExecutor.registerModifier(createMeshModifier);
-        this.modelLoader = modelImportService;
     }
 
     generateWorld(worldMap: string): Promise<GameObject[]> {
-        const {gameObjectTemplates, globalConfig} = this.getConfigReader().read(worldMap);
+        const {globalConfig} = this.getConfigReader().read(worldMap);
 
-        this.gameAssetStore = new GameAssetStore(gameObjectTemplates, globalConfig);
+        this.worldFacade.gameObjectStore.globalConfig = globalConfig;
 
         let worldItems = this.gameObjectBuilder.build(worldMap);
         
-        return this.modelLoader.loadAll(worldItems).then(() => this.modifierExecutor.applyModifiers(worldItems, defaultModifiers))
+        return this.worldFacade.modelLoader.loadAll(worldItems).then(() => this.modifierExecutor.applyModifiers(worldItems, defaultModifiers))
     }
 
     generateMetaData(worldMap: string): {gameObjectTemplates: GameObjectTemplate[], globalConfig: GlobalConfig} {

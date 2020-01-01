@@ -4,9 +4,10 @@ import { Modifier } from "./Modifier";
 import { TreeIteratorGenerator } from "../utils/TreeIteratorGenerator";
 import { GameObject, WorldItemShape } from '../services/GameObject';
 import { Mesh, Skeleton } from 'babylonjs';
-import { ModelLoader } from '../services/ModelLoader';
+import { AbstractModelLoader } from '../../common/AbstractModelLoader';
 import { RectangleFactory } from '../factories/RectangleFactory';
 import { MaterialFactory } from "../factories/MaterialFactory";
+import { GameFacade } from '../../game/GameFacade';
 
 export class CreateMeshModifier implements Modifier  {
     static modName = 'createMesh';
@@ -14,9 +15,9 @@ export class CreateMeshModifier implements Modifier  {
     private rectangleFactory: RectangleFactory;
     dependencies = [];
 
-    constructor(scene: Scene, modelLoader: ModelLoader) {
-        this.modelFactory = new ModelFactory(scene, modelLoader);
-        this.rectangleFactory = new RectangleFactory(scene, new MaterialFactory(scene), 0.1);
+    constructor(scene: Scene, gameFacade: GameFacade) {
+        this.modelFactory = new ModelFactory(scene, gameFacade);
+        this.rectangleFactory = new RectangleFactory(scene, new MaterialFactory(scene), gameFacade, 0.1);
     }
 
     getName(): string {
@@ -27,9 +28,7 @@ export class CreateMeshModifier implements Modifier  {
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
                 if (item.shape) {
-                    const [mesh, skeleton] = this.creteMesh(item);
-                    item.mesh = mesh;
-                    item.skeleton = skeleton;
+                    this.creteMesh(item);
                 }
             }
         });
@@ -37,12 +36,14 @@ export class CreateMeshModifier implements Modifier  {
         return worldItems;
     }
 
-    private creteMesh(worldItem: GameObject): [Mesh, Skeleton] {
+    private creteMesh(worldItem: GameObject): void {
         switch(worldItem.shape) {
             case WorldItemShape.RECTANGLE:
-                return this.rectangleFactory.createMesh(worldItem);
+                this.rectangleFactory.createMesh(worldItem);
+                break;
             case WorldItemShape.MODEL:
-                return this.modelFactory.createMesh(worldItem);
+                this.modelFactory.createMesh(worldItem);
+                break;
         }
     }
 }

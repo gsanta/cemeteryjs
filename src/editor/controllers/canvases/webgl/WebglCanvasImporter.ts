@@ -1,6 +1,5 @@
 import { ICanvasImporter } from "../ICanvasImporter";
 import { WebglCanvasController } from './WebglCanvasController';
-import { FileFormat } from '../../../../WorldGenerator';
 import { GameObject } from "../../../../world_generator/services/GameObject";
 import { ConverterService } from "../../../../world_generator/services/ConverterService";
 import { CreateMeshModifier } from "../../../../world_generator/modifiers/CreateMeshModifier";
@@ -13,17 +12,14 @@ export class WebglCanvasWriter implements ICanvasImporter {
 
 
     constructor(webglEditorController: WebglCanvasController) {
-        this.createMeshModifier = new CreateMeshModifier(webglEditorController.scene, webglEditorController.modelLoader);
+        this.createMeshModifier = new CreateMeshModifier(webglEditorController.scene, webglEditorController.gameFacade);
         this.webglEditorController = webglEditorController;
     }
 
     import(file: string): void {
-        const serviceFacade = new WorldGeneratorServices(
-            this.webglEditorController.modelLoader,
-            this.createMeshModifier,
-            FileFormat.SVG
-        );
+        this.webglEditorController.gameFacade.clear();
 
+        const serviceFacade = new WorldGeneratorServices(this.webglEditorController.gameFacade, this.webglEditorController.modelLoader, this.createMeshModifier);
         const converterService = new ConverterService();
         const that = this;
 
@@ -32,7 +28,7 @@ export class WebglCanvasWriter implements ICanvasImporter {
                     gameObjects,
                     {
                         convert(worldItem: GameObject): any {
-                            that.webglEditorController.meshes.push(worldItem.mesh);
+                            that.webglEditorController.meshes.push(that.webglEditorController.gameFacade.meshStore.getMesh(worldItem.meshName));
                         },
                         addChildren(parent: any, children: any[]): void {},
                         addBorders(item: any, borders: any[]): void {},

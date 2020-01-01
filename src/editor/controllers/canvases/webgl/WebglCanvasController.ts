@@ -1,14 +1,13 @@
-import { ArcRotateCamera, Color3, Engine, HemisphericLight, Scene, Vector3, UniversalCamera, Mesh, MeshBuilder, DirectionalLight } from 'babylonjs';
+import { Color3, DirectionalLight, Engine, Mesh, MeshBuilder, Scene, UniversalCamera, Vector3 } from 'babylonjs';
+import { AbstractModelLoader } from '../../../../common/AbstractModelLoader';
 import { FileFormat } from '../../../../WorldGenerator';
 import { ControllerFacade } from '../../ControllerFacade';
 import { Events } from "../../events/Events";
 import { IWritableCanvas } from '../IWritableCanvas';
-import { WebglCanvasWriter } from './WebglCanvasImporter';
-import { KeyboardCameraInput } from './KeyboardCameraInput';
-import { MouseCameraInput } from './MouseCameraInput';
-import { ModelLoader } from '../../../../world_generator/services/ModelLoader';
 import { EditorCamera } from './EditorCamera';
 import { HelperMeshes } from './HelperMeshes';
+import { WebglCanvasWriter } from './WebglCanvasImporter';
+import { GameFacade } from '../../../../game/GameFacade';
 (<any> window).earcut = require('earcut');
 
 export class WebglCanvasController implements IWritableCanvas {
@@ -17,8 +16,9 @@ export class WebglCanvasController implements IWritableCanvas {
 
     engine: Engine;
     scene: Scene;
+    gameFacade: GameFacade;
     writer: WebglCanvasWriter;
-    modelLoader: ModelLoader;
+    modelLoader: AbstractModelLoader;
     private helperMeshes: HelperMeshes;
 
     private canvas: HTMLCanvasElement;
@@ -69,7 +69,7 @@ export class WebglCanvasController implements IWritableCanvas {
 
         this.scene = scene;
         
-        this.modelLoader = new ModelLoader(this.scene);
+        this.gameFacade = new GameFacade(this.scene);
         this.writer = new WebglCanvasWriter(this);
         
 

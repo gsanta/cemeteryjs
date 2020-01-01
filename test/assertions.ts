@@ -4,6 +4,7 @@ import { arraysEqual } from '../src/world_generator/utils/Functions';
 import { WorldGeneratorServices } from '../src/world_generator/services/WorldGeneratorServices';
 import { Shape } from '../src/model/geometry/shapes/Shape';
 import { Point } from '../src/model/geometry/shapes/Point';
+import { Mesh } from 'babylonjs';
 
 declare global {
     namespace jest {
@@ -13,7 +14,7 @@ declare global {
             toHaveDimensions(dimensions: Shape),
             toHavePoint(point: Point);
             toMatchMeshDescriptor(expectedMeshDescriptor: Partial<GameObjectTemplate>);
-            toHaveAnyWithWorldMapPositions(services: WorldGeneratorServices, positions: [number, number][]);
+            toHaveAnyWithWorldMapPositions(services: WorldGeneratorServices<Mesh>, positions: [number, number][]);
         }
     }
 }

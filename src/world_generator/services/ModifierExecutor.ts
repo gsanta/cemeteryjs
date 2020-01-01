@@ -4,6 +4,7 @@ import { BuildHierarchyModifier } from '../modifiers/BuildHierarchyModifier';
 import { ScaleModifier } from '../modifiers/ScaleModifier';
 import { WorldGeneratorServices } from './WorldGeneratorServices';
 import { CreateMeshModifier } from '../modifiers/CreateMeshModifier';
+import { Mesh } from 'babylonjs';
 
 export const defaultModifiers = [
     BuildHierarchyModifier.modName,
@@ -14,9 +15,9 @@ export const defaultModifiers = [
 export class ModifierExecutor {
     private modifierMap: Map<string, Modifier> = new Map();
 
-    constructor(services: WorldGeneratorServices) {
-        this.registerModifier(new BuildHierarchyModifier(services));
-        this.registerModifier(new ScaleModifier(services));
+    constructor() {
+        this.registerModifier(new BuildHierarchyModifier());
+        this.registerModifier(new ScaleModifier());
     }
 
     applyModifiers(worldItems: GameObject[], modNames: string[]): GameObject[] {

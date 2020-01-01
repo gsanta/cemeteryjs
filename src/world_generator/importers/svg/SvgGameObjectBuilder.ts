@@ -3,16 +3,16 @@ import { GameObject, WorldItemShape } from '../../services/GameObject';
 import { SvgPreprocessor } from "./SvgPreprocessor";
 import { Rect, ProcessedWorldMapJson } from './WorldMapJson';
 import { WorldGeneratorServices } from '../../services/WorldGeneratorServices';
-import { GameObjectTemplate } from "../../services/GameObjectTemplate";
 import { Rectangle } from "../../../model/geometry/shapes/Rectangle";
 import { Point } from "../../../model/geometry/shapes/Point";
 import { toRadian } from "../../../model/geometry/utils/Measurements";
+import { Mesh } from "babylonjs";
 
-export class SvgGameObjectBuilder implements IGameObjectBuilder {
+export class SvgGameObjectBuilder<T> implements IGameObjectBuilder {
     private svgPreprocessor: SvgPreprocessor;
-    private services: WorldGeneratorServices;
+    private services: WorldGeneratorServices<T>;
 
-    constructor(services: WorldGeneratorServices) {
+    constructor(services: WorldGeneratorServices<T>) {
         this.svgPreprocessor = new SvgPreprocessor();
         this.services = services;
     }

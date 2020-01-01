@@ -12,12 +12,6 @@ export class ScaleModifier implements Modifier {
     static modName = 'scale';
     dependencies = [];
 
-    private services: WorldGeneratorServices;
-
-    constructor(services: WorldGeneratorServices) {
-        this.services = services;
-    }
-
     getName(): string {
         return ScaleModifier.modName;
     }
