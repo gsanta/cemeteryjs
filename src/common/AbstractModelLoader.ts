@@ -1,4 +1,4 @@
-import { Mesh, ParticleSystem, Scene, SceneLoader, Skeleton } from 'babylonjs';
+import { Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, Vector3 } from 'babylonjs';
 import { WorldItem } from "..";
 import { Point } from '../model/geometry/shapes/Point';
 
@@ -70,8 +70,10 @@ export abstract class AbstractModelLoader {
         if (meshes.length === 0) { throw new Error('No mesh was loaded.') }
 
         meshes[0].name = fileName;
-        this.configMesh(meshes[0]);        
+        this.configMesh(meshes[0]);
+        // meshes[0].scaling = new Vector3(10, 10, 10);
         this.setModel(fileName, meshes[0]);
+        // this.scene.beginAnimation(skeletons[0], 0, 24, true);
 
         return meshes[0];
     }

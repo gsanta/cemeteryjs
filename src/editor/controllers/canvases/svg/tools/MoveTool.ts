@@ -3,13 +3,11 @@ import { SvgCanvasController } from "../SvgCanvasController";
 import { AbstractTool } from './AbstractTool';
 import { ToolType } from './Tool';
 import { Events } from '../../../events/Events';
-import { CanvasItem } from "../models/SvgCanvasStore";
 import { Rectangle } from "../../../../../model/geometry/shapes/Rectangle";
 import { CanvasItemTag } from "../models/CanvasItem";
 
 export class MoveTool extends AbstractTool {
     private eventDispatcher: EventDispatcher;
-    private lastPreviewRect: CanvasItem;
     private canvasController: SvgCanvasController;
 
     private origDimensions: Rectangle[] = [];

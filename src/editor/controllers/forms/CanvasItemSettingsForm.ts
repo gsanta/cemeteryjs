@@ -2,8 +2,8 @@ import { AbstractFormController } from "./AbstractFormController";
 import { EventDispatcher } from '../events/EventDispatcher';
 import { Events } from '../events/Events';
 import { WorldItemShape } from '../../../world_generator/services/GameObject';
-import { CanvasItem } from '../canvases/svg/models/SvgCanvasStore';
 import { SvgCanvasController } from '../canvases/svg/SvgCanvasController';
+import { CanvasItem } from "../canvases/svg/models/CanvasItem";
 
 
 export enum CanvasItemSettings {
@@ -11,7 +11,8 @@ export enum CanvasItemSettings {
     SHAPE = 'shape',
     MODEL = 'model',
     LAYER = 'layer',
-    ROTATION = 'rotation'
+    ROTATION = 'rotation',
+    SCALE = 'scale'
 }
 
 export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSettings> {
@@ -44,6 +45,9 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
                 break;
             case CanvasItemSettings.ROTATION:
                 this.tempNumber = this.canvasItem.rotation;
+                break;
+            case CanvasItemSettings.SCALE:
+                this.tempNumber = this.canvasItem.scale;
                 break;
         }
 
@@ -85,6 +89,10 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
                 this.canvasItem.rotation = this.tempNumber;
                 this.tempNumber = null;
                 break;
+            case CanvasItemSettings.SCALE:
+                this.canvasItem.scale = this.tempNumber;
+                this.tempNumber = null;
+                break;
         }
 
         this.focusedPropType = null;
@@ -110,6 +118,9 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
                 break;
             case CanvasItemSettings.ROTATION:
                 ret = this.focusedPropType === property ? this.tempNumber : this.canvasItem.rotation;
+                break;
+            case CanvasItemSettings.SCALE:
+                ret = this.focusedPropType === property ? this.tempNumber : this.canvasItem.scale;
                 break;
         }
 

@@ -8,4 +8,8 @@ export class GameObjectStore {
     constructor(globalConfig?: GlobalConfig) {
         this.globalConfig = globalConfig;
     }
+
+    getPlayer(): GameObject {
+        throw new Error('not implemented.');
+    }
 }

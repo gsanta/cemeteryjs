@@ -20,6 +20,7 @@ export class GameObject {
 
     color: string;
     shape: WorldItemShape;
+    scale: number;
 
     modelFileName: string;
 

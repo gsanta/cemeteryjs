@@ -7,7 +7,7 @@ import { Events } from '../../events/Events';
 import { WorldItemShape } from '../../../../world_generator/services/GameObject';
 import { Rectangle } from '../../../../model/geometry/shapes/Rectangle';
 import { Point } from '../../../../model/geometry/shapes/Point';
-import { CanvasItem } from './models/SvgCanvasStore';
+import { CanvasItem } from './models/CanvasItem';
 
 export class SvgCanvasImporter implements ICanvasImporter {
     private svgCanvasController: SvgCanvasController;
@@ -37,7 +37,8 @@ export class SvgCanvasImporter implements ICanvasImporter {
                 tags: new Set(),
                 shape: <WorldItemShape> rect.shape,
                 model: rect.model,
-                rotation: rect.rotation
+                rotation: rect.rotation,
+                scale: 1
             }
 
             this.svgCanvasController.pixelModel.addRect(canvasItem);

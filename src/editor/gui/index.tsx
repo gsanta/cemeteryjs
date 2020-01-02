@@ -3,11 +3,11 @@ import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import { App } from './App';
 import { AppContext } from './Context';
-import { ControllerFacade } from '../controllers/ControllerFacade';
+import { EditorFacade } from '../controllers/EditorFacade';
 
 export function renderApp(element: HTMLDivElement) {
     ReactDOM.render(
-        <AppContext.Provider value={{controllers: new ControllerFacade()}}>
+        <AppContext.Provider value={{controllers: new EditorFacade()}}>
             <App/>
         </AppContext.Provider>,
         element

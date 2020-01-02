@@ -1,7 +1,6 @@
 import { Point } from '../../../../../model/geometry/shapes/Point';
 import { SvgCanvasController } from '../SvgCanvasController';
-import { CanvasItem } from '../models/SvgCanvasStore';
-import { CanvasItemTag } from '../models/CanvasItem';
+import { CanvasItemTag, CanvasItem } from '../models/CanvasItem';
 
 function calcOffsetFromDom(bitmapEditorId: string): Point {
     if (typeof document !== 'undefined') {

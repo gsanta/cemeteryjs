@@ -1,7 +1,6 @@
 import { EditorFacade } from '../../../src/editor/controllers/EditorFacade';
 import { Point } from '../../../src/model/geometry/shapes/Point';
-import { CanvasItem } from '../../../src/editor/controllers/canvases/svg/models/SvgCanvasStore';
-
+import { CanvasItem } from '../../../src/editor/controllers/canvases/svg/models/CanvasItem';
 
 const defaultTestSvg = `
 <svg data-wg-pixel-size="10" data-wg-width="1500" data-wg-height="1000">

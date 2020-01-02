@@ -1,8 +1,8 @@
 import { Engine, Scene, Mesh } from 'babylonjs';
 import { AbstractModelLoader } from '../../../../common/AbstractModelLoader';
-import { CanvasItem } from './models/SvgCanvasStore';
 import { SvgCanvasController } from './SvgCanvasController';
 import { Point } from '../../../../model/geometry/shapes/Point';
+import { CanvasItem } from './models/CanvasItem';
 
 
 const SCALE = 2;

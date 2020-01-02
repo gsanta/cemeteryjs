@@ -26,6 +26,8 @@ export class ModelFactory {
         const mesh = this.gameFacade.meshStore.getMesh(meshName);
 
         mesh.isVisible = true;
+        const scale = gameObject.scale;
+        mesh.scaling = new Vector3(scale, scale, scale);
 
         const rect = <Rectangle> gameObject.dimensions;
         const center = gameObject.dimensions.getBoundingCenter();

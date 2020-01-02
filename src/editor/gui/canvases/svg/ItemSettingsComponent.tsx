@@ -49,9 +49,14 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
                     {this.renderColorChooser()}
                     {this.renderLayerInput()}
                 </RowStyled>
+                <RowStyled>
                 {this.renderShapeDropdown()}
                 {form.getVal(CanvasItemSettings.SHAPE) === 'model' ? this.renderModelFileChooser() : null}
-                {this.renderRotationInput()}
+                </RowStyled>
+                <RowStyled>
+                    {this.renderRotationInput()}
+                    {this.renderScaleInput()}
+                </RowStyled>
             </ItemSettingsStyled>
         );
     }
@@ -64,7 +69,7 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
         const form = this.props.canvasController.canvasItemSettingsForm;
 
         return (
-            <LabeledComponent label="Shape" direction="vertical">
+            <LabeledComponent label="Shape" direction="horizontal">
                 <ConnectedDropdownComponent
                     values={form.shapes}
                     currentValue={form.getVal(CanvasItemSettings.SHAPE) as string}
@@ -81,7 +86,7 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
 
         return (
             <React.Fragment>
-                <LabeledComponent label="Model file" direction="vertical">
+                <LabeledComponent label="File" direction="horizontal">
                     <ConnectedFileUploadComponent
                         formController={form}
                         propertyName={CanvasItemSettings.MODEL}
@@ -136,6 +141,22 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
                     type="number"
                     value={form.getVal(CanvasItemSettings.ROTATION)}
                     placeholder="0"
+                />
+            </LabeledComponent>
+        );
+    }
+
+    private renderScaleInput(): JSX.Element {
+        const form = this.props.canvasController.canvasItemSettingsForm;
+
+        return (
+            <LabeledComponent label="Scale" direction="horizontal">
+                <ConnectedInputComponent
+                    formController={form}
+                    propertyName={CanvasItemSettings.SCALE}
+                    propertyType="number"
+                    type="number"
+                    value={form.getVal(CanvasItemSettings.SCALE)}
                 />
             </LabeledComponent>
         );

@@ -39,4 +39,5 @@ export interface CanvasItem {
     isPreview: boolean;
     model: string;
     rotation: number;
+    scale: number;
 }

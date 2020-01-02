@@ -1,32 +1,32 @@
 import { GameObject } from '../services/GameObject';
-import { WorldGeneratorFacade } from '../WorldGeneratorFacade';
 import { TreeIteratorGenerator } from '../utils/TreeIteratorGenerator';
 import { Modifier } from './Modifier';
-import { Point } from '../../model/geometry/shapes/Point';
 
-
-/**
- * Scales the dimensions of every `WorldItem` by the given amount in the x and y direction.
- */
 export class ScaleModifier implements Modifier {
     static modName = 'scale';
     dependencies = [];
+
+    private globalScale: number;
+
+    constructor(globalScale: number = 2) {
+        this.globalScale = globalScale;
+    }
 
     getName(): string {
         return ScaleModifier.modName;
     }
 
-    apply(gwmWorldItems: GameObject[]): GameObject[] {
-        return this.scaleItems(gwmWorldItems);
-    }
-
-    private scaleItems(worldItems: GameObject[]): GameObject[] {
+    apply(worldItems: GameObject[]): GameObject[] {
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
-                item.dimensions  = item.dimensions.scale(new Point(2, 2));
+                this.scaleGameObject(item);
             }
         });
 
         return worldItems;
+    }
+
+    private scaleGameObject(gameObject: GameObject) {
+        gameObject.scale *= this.globalScale;
     }
 }

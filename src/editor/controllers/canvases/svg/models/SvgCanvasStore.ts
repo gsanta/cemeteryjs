@@ -4,19 +4,7 @@ import { Rectangle } from '../../../../../model/geometry/shapes/Rectangle';
 import { WorldItemShape } from '../../../../../world_generator/services/GameObject';
 import { sortNum, without } from '../../../../../world_generator/utils/Functions';
 import { SvgConfig } from './SvgConfig';
-import { CanvasItemTag } from './CanvasItem';
-
-export interface CanvasItem {
-    type: string;
-    shape: WorldItemShape;
-    color: string;
-    dimensions: Rectangle;
-    tags: Set<CanvasItemTag>;
-    layer: number;
-    isPreview: boolean;
-    model: string;
-    rotation: number;
-}
+import { CanvasItem } from './CanvasItem';
 
 export enum Layers {
     PREVIEW = -1,
@@ -66,7 +54,8 @@ export class SvgCanvasStore {
             tags: new Set(),
             shape: WorldItemShape.RECTANGLE,
             model: null,
-            rotation: 0
+            rotation: 0,
+            scale: 1
         }
 
         this.items.push(canvasItem);

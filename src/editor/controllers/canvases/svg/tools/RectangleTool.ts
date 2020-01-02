@@ -1,13 +1,12 @@
 import { EventDispatcher } from '../../../events/EventDispatcher';
 import { SvgCanvasController } from '../SvgCanvasController';
 import { ToolType } from './Tool';
-import { CanvasItem } from '../models/SvgCanvasStore';
 import { Rectangle } from '../../../../../model/geometry/shapes/Rectangle';
 import { Point } from '../../../../../model/geometry/shapes/Point';
 import { WorldItemShape } from '../../../../../world_generator/services/GameObject';
-import { AbstractTool } from './AbstractTool';
 import { Events } from '../../../events/Events';
 import { AbstractSelectionTool } from './AbstractSelectionTool';
+import { CanvasItem } from '../models/CanvasItem';
 
 export class RectangleTool extends AbstractSelectionTool {
     private eventDispatcher: EventDispatcher;
@@ -43,7 +42,8 @@ export class RectangleTool extends AbstractSelectionTool {
             tags: new Set(),
             shape: WorldItemShape.RECTANGLE,
             model: null,
-            rotation: 0
+            rotation: 0,
+            scale: 1
         }
 
         this.canvasController.pixelModel.addRect(canvasItem);
