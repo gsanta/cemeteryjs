@@ -1,5 +1,5 @@
-import { GlobalConfig } from '../../world_generator/importers/svg/GlobalSectionParser';
-import { GameObject } from '../../world_generator/services/GameObject';
+import { GlobalConfig } from '../../../world_generator/importers/svg/GlobalSectionParser';
+import { GameObject } from '../../../world_generator/services/GameObject';
 
 export class GameObjectStore {
     globalConfig: GlobalConfig;

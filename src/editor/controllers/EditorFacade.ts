@@ -11,10 +11,14 @@ export class EditorFacade {
 
     eventDispatcher: EventDispatcher;
 
+    svgCanvasId: string;
+
     constructor() {
         this.eventDispatcher = new EventDispatcher();
         this.webglCanvasController = new WebglCanvasController(this);
         this.svgCanvasController = new SvgCanvasController(this);
+
+        this.svgCanvasId = 'svg-editor';
 
     }
 }

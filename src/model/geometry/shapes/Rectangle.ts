@@ -49,9 +49,24 @@ export class Rectangle extends Polygon {
         return this.bottomRight.y - this.topLeft.y;
     }
 
+    getSize(): Point {
+        return new Point(this.getWidth(), this.getHeight());
+    }
+
     scale(amount: Point): Rectangle {
         const topLeft = this.topLeft.scaleX(amount.x).scaleY(amount.y);
         const bottomRight = this.bottomRight.scaleX(amount.x).scaleY(amount.y);
+        return new Rectangle(topLeft, bottomRight);
+    }
+
+    clone(): Rectangle {
+        return new Rectangle(this.topLeft.clone(), this.bottomRight.clone());
+    }
+
+    moveTo(pos: Point): Rectangle {
+        const diff = pos.subtract(this.topLeft);
+        const topLeft = this.topLeft.add(diff);
+        const bottomRight = this.bottomRight.add(diff);
         return new Rectangle(topLeft, bottomRight);
     }
 

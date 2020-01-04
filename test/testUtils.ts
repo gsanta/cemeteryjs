@@ -4,7 +4,7 @@ import { TreeIteratorGenerator } from '../src/world_generator/utils/TreeIterator
 import { GameObject } from '../src/world_generator/services/GameObject';
 import { FakeModelLoader } from './fakes/FakeModelLoader';
 import { FakeCreateMeshModifier } from './fakes/FakeCreateMeshModifier';
-import { GameObjectStore } from '../src/game/models/GameObjectStore';
+import { GameObjectStore } from '../src/game/models/stores/GameObjectStore';
 import { Shape } from '../src/model/geometry/shapes/Shape';
 import { GameFacade } from '../src/game/GameFacade';
 

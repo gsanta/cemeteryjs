@@ -42,7 +42,7 @@ export class Model3DController extends AbstractModelLoader {
     private setDimensions(canvasItem: CanvasItem) {
         const mesh = this.fileNameToMeshMap.get(canvasItem.model);
         const dimensions = this.calcMeshDimensions(mesh);
-        canvasItem.dimensions = canvasItem.dimensions.setWidth(dimensions.x / SCALE).setHeight(dimensions.y / SCALE);
+        canvasItem.dimensions = canvasItem.dimensions.setWidth(dimensions.x).setHeight(dimensions.y);
         this.canvasController.renderCanvas();
     }
 

@@ -16,6 +16,7 @@ import { DeleteTool } from './tools/DeleteTool';
 import { MoveAndSelectTool } from './tools/MoveAndSelectTool';
 import { RectangleTool } from './tools/RectangleTool';
 import { Tool, ToolType } from './tools/Tool';
+import { CameraTool } from './tools/CameraTool';
 
 export class SvgCanvasController implements IEditableCanvas {
     static id = 'svg-canvas-controller';
@@ -41,8 +42,8 @@ export class SvgCanvasController implements IEditableCanvas {
     private renderToolbarFunc = () => null;
     private renderSettingsFunc = () => null;
     
-    constructor(controllers: EditorFacade) {
-        this.controllers = controllers;
+    constructor(editorFacade: EditorFacade) {
+        this.controllers = editorFacade;
         this.worldItemDefinitions = [...defaultWorldItemDefinitions];
         this.selectedWorldItemDefinition = this.worldItemDefinitions[0];
 
@@ -50,14 +51,15 @@ export class SvgCanvasController implements IEditableCanvas {
         this.pixelModel = new SvgCanvasStore(this.configModel);
         
         this.mouseController = new MouseHandler(this);
-        this.writer = new SvgCanvasImporter(this, controllers.eventDispatcher);
+        this.writer = new SvgCanvasImporter(this, editorFacade.eventDispatcher);
         this.reader = new SvgCanvasExporter(this);
         this.model3dController = new Model3DController(this);
 
         this.tools = [
             new RectangleTool(this, this.controllers.eventDispatcher),
             new DeleteTool(this, this.controllers.eventDispatcher),
-            new MoveAndSelectTool(this, this.controllers.eventDispatcher)
+            new MoveAndSelectTool(this, this.controllers.eventDispatcher),
+            new CameraTool(editorFacade, this.controllers.)
         ];
 
         this.canvasItemSettingsForm = new CanvasItemSettingsForm(this, this.controllers.eventDispatcher);

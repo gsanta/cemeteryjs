@@ -35,6 +35,7 @@ export class GameObjectFactory {
         gameObjectConfig.color && (gameObject.color = gameObjectConfig.color);
         gameObjectConfig.shape && (gameObject.shape = gameObjectConfig.shape);
         gameObjectConfig.modelPath && (gameObject.modelFileName = gameObjectConfig.modelPath);
+        gameObject.scale = 1;
 
         return gameObject;
     }
@@ -53,6 +54,7 @@ export class GameObjectFactory {
         gameObject.color && (clone.color = gameObject.color);
         gameObject.shape && (clone.shape = gameObject.shape);
         gameObject.modelFileName && (clone.modelFileName = gameObject.modelFileName);
+        clone.scale = gameObject.scale;
 
         return clone;
     }

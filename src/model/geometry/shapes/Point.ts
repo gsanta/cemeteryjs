@@ -20,6 +20,9 @@ export class Point {
         return new Point(this.x, y);
     }
 
+    add(point: Point): Point {
+        return this.addX(point.x).addY(point.y);
+    }
 
     addX(amount: number): Point {
         return this.geometryService.factory.point(this.x + amount, this.y);
@@ -103,6 +106,10 @@ export class Point {
         const norm1 = this.normalize();
         const norm2 = otherPoint.normalize();
         return Math.atan2(norm1.y, norm1.x) - Math.atan2(norm2.y, norm2.x);
+    }
+
+    getVectorCenter(): Point {
+        return new Point(this.x / 2, this.y / 2);
     }
 
     clone(): Point {

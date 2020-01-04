@@ -1,7 +1,10 @@
 import { GameFacade } from '../../../GameFacade';
 
 export enum KeyCode {
-    W = 87
+    w = 87,
+    a = 65,
+    d = 68,
+    s = 83
 }
 
 export class KeyboardListener {

@@ -4,7 +4,8 @@ export enum ToolType {
     DELETE = 'delete',
     SELECT = 'select',
     MOVE_AND_SELECT = 'move-and-select',
-    MOVE = 'move'
+    MOVE = 'move',
+    CAMERA = 'camera'
 }
 
 export interface Tool {

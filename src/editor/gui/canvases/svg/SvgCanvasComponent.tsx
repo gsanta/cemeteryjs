@@ -45,10 +45,13 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
 
     render(): JSX.Element {
         const bitmapConfig = this.props.canvasController.configModel;
+        const controller = this.context.controllers.svgCanvasController;
 
         return (
             <EditorComponentStyled id={this.props.canvasController.getId()}>
                 <CanvasComponentStyled
+                    viewBox={controller.tools.cameraTool.getCamera().getViewBoxAsString()}
+                    id={this.context.controllers.svgCanvasId}
                     // transform="scale(0.5)"
                     w={bitmapConfig.canvasDimensions.x}
                     h={bitmapConfig.canvasDimensions.y}

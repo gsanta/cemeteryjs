@@ -32,9 +32,9 @@ export class Interaction {
         keyCode: null,
     }
 
-    constructor(hotkeyInfo: Partial<InteractionInfo>, action: (gameFacade: GameFacade) => void) {
+    constructor(interactionInfo: Partial<InteractionInfo>, action: (gameFacade: GameFacade) => void) {
 
-        this.hotkeyInfo = {...Interaction.defaultInteractionInfo, ...hotkeyInfo};
+        this.hotkeyInfo = {...Interaction.defaultInteractionInfo, ...interactionInfo};
         this.action = action;
     }
 

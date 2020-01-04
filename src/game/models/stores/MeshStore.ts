@@ -1,6 +1,6 @@
-import { IMeshStore } from '../../common/IMeshStore';
+import { IMeshStore } from '../../../common/IMeshStore';
 import { Mesh } from 'babylonjs';
-import { GameFacade } from '../GameFacade';
+import { GameFacade } from '../../GameFacade';
 
 export class MeshStore implements IMeshStore<Mesh> {
     private gameFacade: GameFacade;

@@ -8,7 +8,7 @@ export class ScaleModifier implements Modifier {
 
     private globalScale: number;
 
-    constructor(globalScale: number = 2) {
+    constructor(globalScale: number = 1) {
         this.globalScale = globalScale;
     }
 
