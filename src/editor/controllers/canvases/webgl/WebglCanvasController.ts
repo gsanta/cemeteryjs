@@ -1,4 +1,4 @@
-import { Color3, DirectionalLight, Engine, Mesh, MeshBuilder, Scene, UniversalCamera, Vector3 } from 'babylonjs';
+import { Color3, DirectionalLight, Engine, Mesh, MeshBuilder, Scene, UniversalCamera, Vector3, HemisphericLight } from 'babylonjs';
 import { AbstractModelLoader } from '../../../../common/AbstractModelLoader';
 import { FileFormat } from '../../../../WorldGenerator';
 import { EditorFacade } from '../../EditorFacade';
@@ -58,9 +58,15 @@ export class WebglCanvasController implements IWritableCanvas {
         
 
         this.helperMeshes = new HelperMeshes(this.controllers, scene, MeshBuilder);
-        const light = new DirectionalLight('light', new Vector3(5, -10, 0), scene);
+        const light = new HemisphericLight('light', new Vector3(0, 1, 0), scene);
+        // light.radius = 300;
+        
         light.diffuse = new Color3(1, 1, 1);
-        light.intensity = 1;
+        light.specular = new Color3(0, 0, 0);
+        const lightMesh = MeshBuilder.CreateBox('light-cube', {size: 1}, scene);
+        lightMesh.translate(new Vector3(5, 200, 0), 1);
+        // light.diffuse = new Color3(1, 1, 1);
+        // light.intensity = 1;
         
 
         // const light2 = new HemisphericLight('light2', new Vector3(0, 10, 0), scene);

@@ -6,6 +6,8 @@ import { DrawIconComponent } from '../../icons/DrawIconComponent';
 import { SelectIconComponent } from '../../icons/SelectIconComponent';
 import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvasController';
 import { ToolType } from '../../../controllers/canvases/svg/tools/Tool';
+import { ZoomInIconComponent } from '../../icons/ZoomInIconComponent';
+import { ZoomOutIconComponent } from '../../icons/ZoomOutIconComponent';
 
 const ToolbarStyled = styled.div`
     display: flex;
@@ -30,6 +32,8 @@ export class SvgCanvasToolbarComponent extends React.Component<{canvasController
                 <DrawIconComponent isActive={this.isToolActive(ToolType.RECTANGLE)} onClick={() => this.activateTool(ToolType.RECTANGLE)}/>
                 <SelectIconComponent isActive={this.isToolActive(ToolType.MOVE_AND_SELECT)} onClick={() => this.activateTool(ToolType.MOVE_AND_SELECT)}/>
                 <DeleteIconComponent isActive={this.isToolActive(ToolType.DELETE)} onClick={() => this.activateTool(ToolType.DELETE)}/>
+                <ZoomInIconComponent isActive={false} onClick={() => null}/>
+                <ZoomOutIconComponent isActive={false} onClick={() => null}/>
             </ToolbarStyled>
         );
     }

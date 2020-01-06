@@ -1,13 +1,12 @@
 import { Camera, nullCamera } from "../models/Camera";
 import { AbstractTool } from './AbstractTool';
-import { SvgCanvasController } from '../SvgCanvasController';
 import { Point } from "../../../../../model/geometry/shapes/Point";
 import { EditorFacade } from '../../../EditorFacade';
 import { ToolType } from "./Tool";
 
-export function cameraInitializer() {
+export function cameraInitializer(canvasId: string) {
     if (typeof document !== 'undefined') {
-        const svg: HTMLElement = document.getElementById(this.services.canvasId);
+        const svg: HTMLElement = document.getElementById(canvasId);
 
         if (svg) {
             const rect: ClientRect = svg.getBoundingClientRect();
@@ -25,7 +24,7 @@ function ratioOfViewBox(camera: Camera, ratio: Point): Point {
 }
 
 export class CameraTool extends AbstractTool {
-    private cameraInitializerFunc: () => Camera;
+    private cameraInitializerFunc: (canvasId: string) => Camera;
     private camera: Camera = nullCamera;
 
     static readonly ZOOM_MIN = 0.1;
@@ -48,7 +47,7 @@ export class CameraTool extends AbstractTool {
         const prevScale = this.camera.getScale(); 
         const prevTranslate = this.camera.getViewBox().topLeft; 
     
-        this.camera = this.cameraInitializerFunc();
+        this.camera = this.cameraInitializerFunc(this.editorFacade.svgCanvasId);
         this.camera.moveTo(prevTranslate);
         this.camera.zoom(prevScale);
 
@@ -87,7 +86,7 @@ export class CameraTool extends AbstractTool {
 
     getCamera() {
         if (this.camera === nullCamera) {
-            this.camera = this.cameraInitializerFunc();
+            this.camera = this.cameraInitializerFunc(this.editorFacade.svgCanvasId);
         }
 
         return this.camera;

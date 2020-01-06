@@ -59,7 +59,7 @@ export class SvgCanvasController implements IEditableCanvas {
             new RectangleTool(this, this.controllers.eventDispatcher),
             new DeleteTool(this, this.controllers.eventDispatcher),
             new MoveAndSelectTool(this, this.controllers.eventDispatcher),
-            new CameraTool(editorFacade, this.controllers.)
+            new CameraTool(editorFacade)
         ];
 
         this.canvasItemSettingsForm = new CanvasItemSettingsForm(this, this.controllers.eventDispatcher);

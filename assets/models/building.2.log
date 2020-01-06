@@ -1,0 +1,28 @@
+Exporter version: 6.2.3, Blender version: 2.80 (sub 75)
+========= Conversion from Blender to Babylon.js =========
+	Scene settings used :
+		inline textures     :  false
+		Material Type       :  PBR
+		Positions Precision :  4
+		Normals Precision   :  3
+		UVs Precision       :  3
+		Vert Color Precision:  3
+		Mat Weight Precision:  2
+		texture directory   :  C:\Users\gsanta\dev\other\nightshifts-inc-world-generator\assets\models\
+	Python World class constructor completed
+	processing begun of mesh:  Cube
+		processing begun of material:  Material
+		num positions      :  314
+		num normals        :  314
+		num tangents       :  0
+		num uvs            :  628
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  396
+	processing begun of camera (UniversalCamera):  Camera
+	processing begun of light (POINT):  Light
+========= Writing of JSON file started =========
+	writing mesh:  Cube
+========= Writing of JSON file completed =========
+========= end of processing =========
+elapsed time:  0 min, 0.0339 secs

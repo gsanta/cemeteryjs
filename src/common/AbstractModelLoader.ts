@@ -1,4 +1,4 @@
-import { Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, Vector3 } from 'babylonjs';
+import { Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, Vector3, StandardMaterial, Texture } from 'babylonjs';
 import { WorldItem } from "..";
 import { Point } from '../model/geometry/shapes/Point';
 
@@ -38,7 +38,7 @@ export abstract class AbstractModelLoader {
         this.loadedFileNames.add(fileName);
 
         return new Promise(resolve => {
-            const folder = fileName.split('.')[0];
+            const folder = this.getFolderNameFromFileName(fileName);
 
             SceneLoader.ImportMesh(
                 '',
@@ -69,6 +69,11 @@ export abstract class AbstractModelLoader {
     private createModelData(fileName: string, meshes: Mesh[], skeletons: Skeleton[]): Mesh {
         if (meshes.length === 0) { throw new Error('No mesh was loaded.') }
 
+        const materialFileName = this.getMaterialFileNameFromModelFileName(fileName);
+        meshes[0].material = new StandardMaterial(fileName, this.scene);
+        (<StandardMaterial> meshes[0].material).diffuseTexture  = new Texture(`${this.basePath}${this.getFolderNameFromFileName(fileName)}/${materialFileName}`,  this.scene);
+        (<StandardMaterial> meshes[0].material).specularTexture  = new Texture(`${this.basePath}${this.getFolderNameFromFileName(fileName)}/${materialFileName}`,  this.scene);
+
         meshes[0].name = fileName;
         this.configMesh(meshes[0]);
         // meshes[0].scaling = new Vector3(10, 10, 10);
@@ -76,5 +81,13 @@ export abstract class AbstractModelLoader {
         // this.scene.beginAnimation(skeletons[0], 0, 24, true);
 
         return meshes[0];
+    }
+
+    private getMaterialFileNameFromModelFileName(fileName: string) {
+        return `${fileName.substr(0, fileName.lastIndexOf('.'))}.png`;
+    }
+
+    private getFolderNameFromFileName(fileName: string) {
+        return fileName.split('.')[0];
     }
 }

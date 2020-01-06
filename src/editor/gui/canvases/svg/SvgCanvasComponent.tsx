@@ -4,11 +4,12 @@ import styled from 'styled-components';
 import { colors } from '../../styles';
 import { WgDefinitionAttributes } from '../../../../world_generator/importers/svg/WorldMapJson';
 import { Rectangle } from '../../../../model/geometry/shapes/Rectangle';
-import { Segment } from '../../../../model/geometry/shapes/Segment';
 import { sort } from '../../../../model/geometry/utils/Functions';
 import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvasController';
 import { CanvasItemTag } from '../../../controllers/canvases/svg/models/CanvasItem';
 import { AbstractSelectionTool } from '../../../controllers/canvases/svg/tools/AbstractSelectionTool';
+import { ToolType } from '../../../controllers/canvases/svg/tools/Tool';
+import { CameraTool } from '../../../controllers/canvases/svg/tools/CameraTool';
 
 const EditorComponentStyled = styled.div`
     height: 100%;
@@ -18,12 +19,6 @@ const EditorComponentStyled = styled.div`
 const CanvasComponentStyled = styled.svg`
     width: ${({w}: {w: number, h: number}) => `${w}px`};
     height: ${({h}: {w: number, h: number}) => `${h}px`};
-`;
-
-const LineComponent = styled.line`
-    stroke: ${colors.grey3};
-    stroke-width: 1px;
-    opacity: 0.5;
 `;
 
 const SelectionComponentStyled = styled.rect`
@@ -46,11 +41,12 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
     render(): JSX.Element {
         const bitmapConfig = this.props.canvasController.configModel;
         const controller = this.context.controllers.svgCanvasController;
+        const cameraTool = controller.findToolByType(ToolType.CAMERA) as CameraTool;
 
         return (
             <EditorComponentStyled id={this.props.canvasController.getId()}>
                 <CanvasComponentStyled
-                    viewBox={controller.tools.cameraTool.getCamera().getViewBoxAsString()}
+                    viewBox={cameraTool.getCamera().getViewBoxAsString()}
                     id={this.context.controllers.svgCanvasId}
                     // transform="scale(0.5)"
                     w={bitmapConfig.canvasDimensions.x}
