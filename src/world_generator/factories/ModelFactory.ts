@@ -28,6 +28,7 @@ export class ModelFactory {
         mesh.isVisible = true;
         const scale = gameObject.scale;
         mesh.scaling = new Vector3(scale, scale, scale);
+        // this.scene.beginAnimation(mesh, 0, 24, true);
 
         const rect = <Rectangle> gameObject.dimensions;
         const center = gameObject.dimensions.getBoundingCenter();

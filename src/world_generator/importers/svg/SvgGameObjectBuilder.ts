@@ -36,7 +36,8 @@ export class SvgGameObjectBuilder<T> implements IGameObjectBuilder {
                 color: rect.color,
                 shape: <WorldItemShape> rect.shape,
                 modelPath: rect.model,
-                rotation: toRadian(rect.rotation ? rect.rotation : 0)
+                rotation: toRadian(rect.rotation ? rect.rotation : 0),
+                scale: rect.scale
             }
         );
     }

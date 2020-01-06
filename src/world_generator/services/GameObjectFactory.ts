@@ -13,6 +13,7 @@ export interface GameObjectConfig {
     color?: string;
     shape?: WorldItemShape;
     modelPath?: string;
+    scale?: number;
 }
 
 export const defaultWorldItemConfig: Partial<GameObjectConfig> = {
@@ -35,7 +36,7 @@ export class GameObjectFactory {
         gameObjectConfig.color && (gameObject.color = gameObjectConfig.color);
         gameObjectConfig.shape && (gameObject.shape = gameObjectConfig.shape);
         gameObjectConfig.modelPath && (gameObject.modelFileName = gameObjectConfig.modelPath);
-        gameObject.scale = 1;
+        gameObject.scale = gameObjectConfig.scale ? gameObjectConfig.scale : 1;
 
         return gameObject;
     }

@@ -49,7 +49,8 @@ export class SvgCanvasExporter implements ICanvasExporter {
                 ['data-wg-shape', item.shape],
                 ['data-wg-color', item.color],
                 ['data-wg-layer', item.layer + ''],
-                ['data-rotation', item.rotation + '']
+                ['data-rotation', item.rotation + ''],
+                ['data-wg-scale', item.scale + ''],
             ];
 
             if (item.model) {

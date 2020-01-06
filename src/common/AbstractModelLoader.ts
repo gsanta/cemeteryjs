@@ -76,7 +76,7 @@ export abstract class AbstractModelLoader {
 
         meshes[0].name = fileName;
         this.configMesh(meshes[0]);
-        // meshes[0].scaling = new Vector3(10, 10, 10);
+        // meshes[0].scaling = new Vector3(5, 5, 5);
         this.setModel(fileName, meshes[0]);
         // this.scene.beginAnimation(skeletons[0], 0, 24, true);
 

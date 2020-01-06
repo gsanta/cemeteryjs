@@ -47,6 +47,7 @@ export interface Rect {
     color: string;
     model: string;
     rotation: number;
+    scale: number;
 }
 
 export interface TypeMetaData {
