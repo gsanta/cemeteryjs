@@ -3,6 +3,7 @@ import { AbstractTool } from './AbstractTool';
 import { Point } from "../../../../../model/geometry/shapes/Point";
 import { EditorFacade } from '../../../EditorFacade';
 import { ToolType } from "./Tool";
+import { Rectangle } from "../../../../../model/geometry/shapes/Rectangle";
 
 export function cameraInitializer(canvasId: string) {
     if (typeof document !== 'undefined') {
@@ -26,6 +27,8 @@ function ratioOfViewBox(camera: Camera, ratio: Point): Point {
 export class CameraTool extends AbstractTool {
     private cameraInitializerFunc: (canvasId: string) => Camera;
     private camera: Camera = nullCamera;
+
+    private origDimension: Rectangle;
 
     static readonly ZOOM_MIN = 0.1;
     static readonly ZOOM_MAX = 5;
@@ -82,6 +85,34 @@ export class CameraTool extends AbstractTool {
 
             this.editorFacade.svgCanvasController.renderCanvas();
         }
+    }
+
+    down() {
+        super.down();
+
+        this.origDimension = this.editorFacade.svgCanvasController.cameraTool.getCamera().getViewBox();
+    }
+
+    drag() {
+        super.drag();
+
+        const canvasController = this.editorFacade.svgCanvasController;
+        
+        const mouseController = canvasController.mouseController;
+    
+        const deltaInScreenSize = mouseController.movePoint.subtract(mouseController.downPoint);
+        const deltaInCanvasSize = canvasController.cameraTool.getCamera().screenToCanvasPoint(deltaInScreenSize); 
+        
+        canvasController.cameraTool.getCamera().setViewBox(this.origDimension);
+        canvasController.cameraTool.getCamera().moveBy(deltaInCanvasSize.negate());
+
+        canvasController.renderCanvas();
+    }
+
+    up() {
+        super.up();
+
+        this.origDimension = null;
     }
 
     getCamera() {

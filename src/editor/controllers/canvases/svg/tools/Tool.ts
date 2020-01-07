@@ -5,6 +5,7 @@ export enum ToolType {
     SELECT = 'select',
     MOVE_AND_SELECT = 'move-and-select',
     MOVE = 'move',
+    PAN = 'pan',
     CAMERA = 'camera'
 }
 

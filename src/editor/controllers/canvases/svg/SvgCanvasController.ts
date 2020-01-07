@@ -23,6 +23,7 @@ export class SvgCanvasController implements IEditableCanvas {
     fileFormats = [FileFormat.SVG];
     mouseController: MouseHandler;
     tools: Tool[];
+    cameraTool: CameraTool;
     writer: ICanvasImporter;
     reader: ICanvasExporter;
     model3dController: Model3DController;
@@ -55,11 +56,12 @@ export class SvgCanvasController implements IEditableCanvas {
         this.reader = new SvgCanvasExporter(this);
         this.model3dController = new Model3DController(this);
 
+        this.cameraTool = new CameraTool(editorFacade);
         this.tools = [
             new RectangleTool(this, this.controllers.eventDispatcher),
             new DeleteTool(this, this.controllers.eventDispatcher),
             new MoveAndSelectTool(this, this.controllers.eventDispatcher),
-            new CameraTool(editorFacade)
+            this.cameraTool
         ];
 
         this.canvasItemSettingsForm = new CanvasItemSettingsForm(this, this.controllers.eventDispatcher);
@@ -90,6 +92,8 @@ export class SvgCanvasController implements IEditableCanvas {
                 return this.findToolByType(ToolType.DELETE);
             case ToolType.RECTANGLE:
                 return this.findToolByType(ToolType.RECTANGLE);
+            case ToolType.CAMERA:
+                return this.findToolByType(ToolType.CAMERA);
         }
     }
 
