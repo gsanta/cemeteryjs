@@ -15,10 +15,20 @@ export interface ItemSettingsProps {
 
 const ItemSettingsStyled = styled.div`
     padding: 10px;
+    display: flex;
+    justify-content: space-around;
 `;
 
-const RowStyled = styled.div`
-    display: flex;
+const TableStyled = styled.table`
+    width: 1000px;
+
+    &, tr, td {
+        border: 1px solid grey;
+    }
+
+    td {
+        padding: 3px;
+    }
 `;
 
 const NoItemsSelectedStyled = styled.div`
@@ -45,18 +55,21 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
 
         return (
             <ItemSettingsStyled>
-                <RowStyled>
-                    {this.renderColorChooser()}
-                    {this.renderLayerInput()}
-                </RowStyled>
-                <RowStyled>
-                {this.renderShapeDropdown()}
-                {form.getVal(CanvasItemSettings.SHAPE) === 'model' ? this.renderModelFileChooser() : null}
-                </RowStyled>
-                <RowStyled>
-                    {this.renderRotationInput()}
-                    {this.renderScaleInput()}
-                </RowStyled>
+                <TableStyled>
+
+                    <tr>
+                        <td>{this.renderColorChooser()}</td>
+                        <td>{this.renderLayerInput()}</td>
+                    </tr>
+                    <tr>
+                        <td>{this.renderShapeDropdown()}</td>
+                        <td>{form.getVal(CanvasItemSettings.SHAPE) === 'model' ? this.renderModelFileChooser() : null}</td>
+                    </tr>
+                    <tr>
+                        <td>{this.renderRotationInput()}</td>
+                        <td>{this.renderScaleInput()}</td>
+                    </tr>
+                </TableStyled>
             </ItemSettingsStyled>
         );
     }

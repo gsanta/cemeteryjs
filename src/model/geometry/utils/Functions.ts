@@ -1,4 +1,4 @@
-export function minBy<T>(collection: T[], callback: (a: T, b: T) => number) {
+export function minBy<T>(collection: T[], callback: (a: T, b: T) => number): T {
 	if (collection.length === 0) {
 		return undefined;
 	}
