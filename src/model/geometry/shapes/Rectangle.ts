@@ -70,6 +70,17 @@ export class Rectangle extends Polygon {
         return new Rectangle(topLeft, bottomRight);
     }
 
+    div(num: number): Rectangle {
+        return new Rectangle(this.topLeft.div(num), this.bottomRight.div(num));
+    }
+
+    static squareFromCenterPointAndRadius(centerPoint: Point, radius: number) {
+        const topLeft = centerPoint.subtract(new Point(radius, radius));
+        const bottomRight = centerPoint.add(new Point(radius, radius));
+
+        return new Rectangle(topLeft, bottomRight);
+    }
+
     private initPoints() {
         this.points = [
             this.topLeft,

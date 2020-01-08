@@ -16,4 +16,5 @@ export class AbstractTool implements Tool {
     draggedUp() {}
     up() {}
     activate() {}
+    resize() {}
 }

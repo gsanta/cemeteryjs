@@ -3,7 +3,6 @@ import { AbstractTool } from './AbstractTool';
 import { ToolType } from './Tool';
 import { Point } from '../../../../../model/geometry/shapes/Point';
 import { Rectangle } from '../../../../../model/geometry/shapes/Rectangle';
-import { selectWithRect } from '../../../../../../test/src/gui/guiTestUtils';
 
 const NULL_SELECTION = new Rectangle(new Point(0, 0), new Point(0, 0));
 
@@ -32,7 +31,8 @@ export class AbstractSelectionTool extends AbstractTool {
 
     drag() {
         super.drag();
-        this.selectionRect = new Rectangle(this.canvasController.mouseController.downPoint, this.canvasController.mouseController.movePoint);
+        const pointer = this.canvasController.mouseController.pointer;
+        this.selectionRect = new Rectangle(pointer.down, pointer.curr);
     }
 
     up() {

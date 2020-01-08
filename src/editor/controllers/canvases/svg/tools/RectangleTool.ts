@@ -25,12 +25,10 @@ export class RectangleTool extends AbstractSelectionTool {
     }
 
     click() {
-        const point = this.canvasController.mouseController.downPoint;
+        const pointer = this.canvasController.mouseController.pointer;
         const pixelSize = this.canvasController.configModel.pixelSize;
-        const rectSize = new Point(10, 10).mul(pixelSize);
-        const topLeft = new Point(point.x - rectSize.x / 2, point.y - rectSize.y / 2).div(pixelSize);
-        const bottomRight = new Point(point.x + rectSize.x / 2, point.y + rectSize.y / 2).div(pixelSize);
-        const rect = new Rectangle(topLeft, bottomRight);
+        const rect = Rectangle.squareFromCenterPointAndRadius(pointer.down, 5 * pixelSize).div(pixelSize);
+
         const type = this.canvasController.selectedWorldItemDefinition.typeName;
 
         const canvasItem: CanvasItem = {

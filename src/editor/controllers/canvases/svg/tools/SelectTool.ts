@@ -25,11 +25,11 @@ export class SelectTool extends AbstractSelectionTool {
 
         CanvasItemTag.removeTag(CanvasItemTag.SELECTED, this.canvasController.pixelModel.items);
 
-        const selectedItems = this.canvasController.pixelModel.getIntersectingItemsAtPoint(this.canvasController.mouseController.movePoint);
+        const selectedItems = this.canvasController.pixelModel.getIntersectingItemsAtPoint(this.canvasController.mouseController.pointer.curr);
 
         const topItem = maxBy(selectedItems, (a, b) => a.layer - b.layer);
 
-        topItem.tags.add(CanvasItemTag.SELECTED);
+        topItem && topItem.tags.add(CanvasItemTag.SELECTED);
 
         this.canvasController.renderCanvas();
         this.canvasController.renderSettings();
@@ -38,7 +38,7 @@ export class SelectTool extends AbstractSelectionTool {
     draggedUp() {
         super.draggedUp();
         const canvasItems = this.canvasController.pixelModel.getIntersectingItemsInRect(this.getSelectionRect());
-
+        CanvasItemTag.removeTag(CanvasItemTag.SELECTED, this.canvasController.pixelModel.items);
         CanvasItemTag.addTag(CanvasItemTag.SELECTED, canvasItems);
 
         this.canvasController.renderCanvas();

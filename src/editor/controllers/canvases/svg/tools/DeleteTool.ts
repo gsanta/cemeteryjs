@@ -26,7 +26,7 @@ export class DeleteTool extends AbstractSelectionTool {
 
     click() {
         super.click();
-        const items = this.canvasController.pixelModel.getIntersectingItemsAtPoint(this.canvasController.mouseController.movePoint);
+        const items = this.canvasController.pixelModel.getIntersectingItemsAtPoint(this.canvasController.mouseController.pointer.curr);
         items.length > 0 && this.canvasController.pixelModel.removeRectangle(items[0]); 
         this.canvasController.renderCanvas();
 

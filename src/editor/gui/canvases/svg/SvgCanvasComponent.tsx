@@ -12,13 +12,13 @@ import { ToolType } from '../../../controllers/canvases/svg/tools/Tool';
 import { CameraTool } from '../../../controllers/canvases/svg/tools/CameraTool';
 
 const EditorComponentStyled = styled.div`
+    width: 100%;
     height: 100%;
-    overflow: auto;
 `;
 
 const CanvasComponentStyled = styled.svg`
-    width: ${({w}: {w: number, h: number}) => `${w}px`};
-    height: ${({h}: {w: number, h: number}) => `${h}px`};
+    width: 100%;
+    height: 100%;
 `;
 
 const SelectionComponentStyled = styled.rect`
@@ -48,9 +48,6 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
                 <CanvasComponentStyled
                     viewBox={cameraTool.getCamera().getViewBoxAsString()}
                     id={this.context.controllers.svgCanvasId}
-                    // transform="scale(0.5)"
-                    w={bitmapConfig.canvasDimensions.x}
-                    h={bitmapConfig.canvasDimensions.y}
                     onMouseDown={(e) => this.props.canvasController.mouseController.onMouseDown(e.nativeEvent)}
                     onMouseMove={(e) => this.props.canvasController.mouseController.onMouseMove(e.nativeEvent)}
                     onMouseUp={(e) => this.props.canvasController.mouseController.onMouseUp(e.nativeEvent)}

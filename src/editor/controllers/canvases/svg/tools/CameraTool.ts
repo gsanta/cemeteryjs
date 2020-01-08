@@ -1,4 +1,4 @@
-import { Camera, nullCamera } from "../models/Camera";
+import { Camera, nullCamera } from '../models/Camera';
 import { AbstractTool } from './AbstractTool';
 import { Point } from "../../../../../model/geometry/shapes/Point";
 import { EditorFacade } from '../../../EditorFacade';
@@ -28,7 +28,7 @@ export class CameraTool extends AbstractTool {
     private cameraInitializerFunc: (canvasId: string) => Camera;
     private camera: Camera = nullCamera;
 
-    private origDimension: Rectangle;
+    private startPosition: Rectangle;
 
     static readonly ZOOM_MIN = 0.1;
     static readonly ZOOM_MAX = 5;
@@ -46,7 +46,7 @@ export class CameraTool extends AbstractTool {
         this.cameraInitializerFunc = cameraInitializerFunc;
     }
 
-    onResize() {
+    resize() {
         const prevScale = this.camera.getScale(); 
         const prevTranslate = this.camera.getViewBox().topLeft; 
     
@@ -90,7 +90,7 @@ export class CameraTool extends AbstractTool {
     down() {
         super.down();
 
-        this.origDimension = this.editorFacade.svgCanvasController.cameraTool.getCamera().getViewBox();
+        this.startPosition = this.editorFacade.svgCanvasController.cameraTool.getCamera().getViewBox();
     }
 
     drag() {
@@ -100,11 +100,9 @@ export class CameraTool extends AbstractTool {
         
         const mouseController = canvasController.mouseController;
     
-        const deltaInScreenSize = mouseController.movePoint.subtract(mouseController.downPoint);
-        const deltaInCanvasSize = canvasController.cameraTool.getCamera().screenToCanvasPoint(deltaInScreenSize); 
+        const delta = mouseController.pointer.getScreenDiff().div(this.getCamera().getScale());
         
-        canvasController.cameraTool.getCamera().setViewBox(this.origDimension);
-        canvasController.cameraTool.getCamera().moveBy(deltaInCanvasSize.negate());
+        canvasController.cameraTool.getCamera().moveBy(delta.negate());
 
         canvasController.renderCanvas();
     }
@@ -112,7 +110,7 @@ export class CameraTool extends AbstractTool {
     up() {
         super.up();
 
-        this.origDimension = null;
+        this.startPosition = null;
     }
 
     getCamera() {

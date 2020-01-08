@@ -55,7 +55,6 @@ export class MoveAndSelectTool extends AbstractTool {
     drag() {
         super.drag();
 
-        this.determineActiveTool();
         this.activeTool.drag();
     }
 

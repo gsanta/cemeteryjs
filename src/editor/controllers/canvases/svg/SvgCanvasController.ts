@@ -105,7 +105,9 @@ export class SvgCanvasController implements IEditableCanvas {
         return SvgCanvasController.id;
     }
 
-    resize(): void {};
+    resize(): void {
+        this.cameraTool.resize();
+    };
 
     setCanvasRenderer(renderFunc: () => void) {
         this.renderCanvasFunc = renderFunc;
