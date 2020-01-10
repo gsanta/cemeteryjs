@@ -4,11 +4,12 @@ export enum KeyCode {
     w = 87,
     a = 65,
     d = 68,
-    s = 83
+    s = 83,
+    e = 69
 }
 
 export class KeyboardListener {
-    downKeys: Set<KeyCode> = new Set();
+    downKeys: Set<string> = new Set();
 
     private gameFacade: GameFacade;
 
@@ -16,13 +17,13 @@ export class KeyboardListener {
         this.gameFacade = gameFacade;
     }
 
-    onKeyDown(key: KeyCode): void {
+    onKeyDown(key: string): void {
         this.downKeys.add(key);
 
         this.gameFacade.interactionManager.check();
     }
 
-    onKeyUp(key: KeyCode): void {
+    onKeyUp(key: string): void {
         this.downKeys.delete(key);
 
         this.gameFacade.interactionManager.check();

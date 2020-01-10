@@ -12,7 +12,8 @@ export enum CanvasItemSettings {
     MODEL = 'model',
     LAYER = 'layer',
     ROTATION = 'rotation',
-    SCALE = 'scale'
+    SCALE = 'scale',
+    NAME = 'name'
 }
 
 export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSettings> {
@@ -48,6 +49,9 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
                 break;
             case CanvasItemSettings.SCALE:
                 this.tempNumber = this.canvasItem.scale;
+                break;
+            case CanvasItemSettings.NAME:
+                this.tempString = this.canvasItem.name;
                 break;
         }
 
@@ -93,6 +97,9 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
                 this.canvasItem.scale = this.tempNumber;
                 this.tempNumber = null;
                 break;
+            case CanvasItemSettings.NAME:
+                this.canvasItem.name = this.tempString;
+                break;
         }
 
         this.focusedPropType = null;
@@ -121,6 +128,9 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
                 break;
             case CanvasItemSettings.SCALE:
                 ret = this.focusedPropType === property ? this.tempNumber : this.canvasItem.scale;
+                break;
+            case CanvasItemSettings.NAME:
+                ret = this.focusedPropType === property ? this.tempString : this.canvasItem.name;
                 break;
         }
 

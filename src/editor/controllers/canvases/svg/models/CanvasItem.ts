@@ -31,6 +31,7 @@ export namespace CanvasItemTag {
 
 export interface CanvasItem {
     type: string;
+    name: string;
     shape: WorldItemShape;
     color: string;
     dimensions: Rectangle;

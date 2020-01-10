@@ -45,6 +45,7 @@ export class SvgPreprocessor {
             const model = rect._attributes["data-wg-model"];
             const rotation = parseInt(rect._attributes["data-rotation"], 10);
             const scale = parseFloat(rect._attributes["data-wg-scale"]);
+            const name = rect._attributes["data-wg-name"];
 
             return {
                 x,
@@ -56,7 +57,8 @@ export class SvgPreprocessor {
                 color,
                 model,
                 rotation,
-                scale
+                scale,
+                name
             };
         });
     }

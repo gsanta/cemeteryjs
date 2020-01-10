@@ -32,12 +32,12 @@ export class SvgGameObjectBuilder<T> implements IGameObjectBuilder {
         return this.services.gameObjectFactory.create(
             {
                 dimensions: new Rectangle(new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height)),
-                name: rect.type,
+                name: rect.name,
                 color: rect.color,
                 shape: <WorldItemShape> rect.shape,
                 modelPath: rect.model,
                 rotation: toRadian(rect.rotation ? rect.rotation : 0),
-                scale: rect.scale
+                scale: rect.scale,
             }
         );
     }

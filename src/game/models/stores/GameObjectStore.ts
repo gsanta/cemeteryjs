@@ -10,6 +10,6 @@ export class GameObjectStore {
     }
 
     getPlayer(): GameObject {
-        throw new Error('not implemented.');
+        return this.gameObjects.find(gameObject => gameObject.name === 'player');
     }
 }

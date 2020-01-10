@@ -31,6 +31,8 @@ export class WorldGeneratorFacade {
         this.gameFacade.gameObjectStore.globalConfig = globalConfig;
 
         let worldItems = this.gameObjectBuilder.build(worldMap);
+
+        this.gameFacade.gameObjectStore
         
         return this.gameFacade.modelLoader.loadAll(worldItems).then(() => this.modifierExecutor.applyModifiers(worldItems, defaultModifiers))
     }

@@ -41,7 +41,8 @@ export class RectangleTool extends AbstractSelectionTool {
             shape: WorldItemShape.RECTANGLE,
             model: null,
             rotation: 0,
-            scale: 1
+            scale: 1,
+            name: ''
         }
 
         this.canvasController.pixelModel.addRect(canvasItem);

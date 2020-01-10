@@ -55,7 +55,8 @@ export class SvgCanvasStore {
             shape: WorldItemShape.RECTANGLE,
             model: null,
             rotation: 0,
-            scale: 1
+            scale: 1,
+            name: ''
         }
 
         this.items.push(canvasItem);

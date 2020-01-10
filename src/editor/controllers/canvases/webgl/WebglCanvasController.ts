@@ -76,6 +76,7 @@ export class WebglCanvasController implements IWritableCanvas {
         this.scene = scene;
         
         this.gameFacade = new GameFacade(this.scene);
+        this.gameFacade.setup();
         this.writer = new WebglCanvasWriter(this);
         
 

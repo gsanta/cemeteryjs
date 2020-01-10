@@ -1,4 +1,4 @@
-import { Skeleton, Mesh } from 'babylonjs';
+import { Skeleton, Mesh, Vector3 } from 'babylonjs';
 import { Shape } from '../../model/geometry/shapes/Shape';
 
 export enum WorldItemShape {
@@ -17,10 +17,13 @@ export class GameObject {
     rotation: number;
     children: GameObject[] = [];
     parent: GameObject;
+    frontVector: Vector3;
 
     color: string;
     shape: WorldItemShape;
     scale: number;
+
+    speed = 1;
 
     modelFileName: string;
 

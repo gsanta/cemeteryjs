@@ -6,6 +6,7 @@ import { GameModelLoader } from './services/GameModelLoader';
 import { KeyboardListener } from './services/input/listeners/KeyboardListener';
 import { InteractionManager } from './services/input/InteractionManager';
 import { KeyboardTrigger } from './services/input/triggers/KeyboardTrigger';
+import { MotionActions } from './services/actions/MotionActions';
 
 export class GameFacade implements IWorldFacade<Mesh> {
     meshStore: MeshStore;
@@ -14,6 +15,7 @@ export class GameFacade implements IWorldFacade<Mesh> {
     keyboardListener: KeyboardListener;
     keyboardTrigger: KeyboardTrigger;
     interactionManager: InteractionManager;
+    motionActions: MotionActions;
 
     scene: Scene;
 
@@ -26,9 +28,12 @@ export class GameFacade implements IWorldFacade<Mesh> {
         this.keyboardListener = new KeyboardListener(this);
         this.keyboardTrigger = new KeyboardTrigger(this);
         this.interactionManager = new InteractionManager(this);
+        this.motionActions = new MotionActions(this);
     }
-
+    
     setup() {
+        this.keyboardTrigger.activate();
+        this.motionActions.register();
         this.keyboardTrigger.activate();
     }
 

@@ -56,7 +56,10 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
         return (
             <ItemSettingsStyled>
                 <TableStyled>
-
+                    <tr>
+                        <td>{this.renderName()}</td>
+                        <td></td>
+                    </tr>
                     <tr>
                         <td>{this.renderColorChooser()}</td>
                         <td>{this.renderLayerInput()}</td>
@@ -76,6 +79,22 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
 
     private renderNoItemsSelectedMessage(): JSX.Element {
         return <NoItemsSelectedStyled>Select an item on the canvas to edit it's properties.</NoItemsSelectedStyled>
+    }
+
+    private renderName(): JSX.Element {
+        const form = this.props.canvasController.canvasItemSettingsForm;
+
+        return (
+            <LabeledComponent label="Name" direction="horizontal">
+                <ConnectedInputComponent
+                    formController={form}
+                    propertyName={CanvasItemSettings.NAME}
+                    propertyType="string"
+                    type="text"
+                    value={form.getVal(CanvasItemSettings.NAME)}
+                />
+            </LabeledComponent>
+        );        
     }
 
     private renderShapeDropdown(): JSX.Element {

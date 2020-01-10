@@ -31,7 +31,8 @@ export interface RawWorldMapJson {
             _attributes: {
                 "data-wg-x": string,
                 "data-wg-y": string,
-                "data-wg-type": string
+                "data-wg-type": string,
+                "data-wg-name": string
             }
         }[];
     }
@@ -48,6 +49,7 @@ export interface Rect {
     model: string;
     rotation: number;
     scale: number;
+    name: string;
 }
 
 export interface TypeMetaData {

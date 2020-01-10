@@ -7,7 +7,7 @@ export class InteractionManager {
     private gameFacade: GameFacade;
 
     constructor(gameFacade: GameFacade) {
-
+        this.gameFacade = gameFacade;
     }
 
     registerAction(interaction: Interaction): void {
@@ -39,6 +39,6 @@ export class Interaction {
     }
 
     matches(keyboardListener: KeyboardListener): boolean {
-        return keyboardListener.downKeys.has(this.hotkeyInfo.keyCode);
+        return keyboardListener.downKeys.has(String.fromCharCode(this.hotkeyInfo.keyCode).toLocaleLowerCase());
     }
 }

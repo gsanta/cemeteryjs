@@ -22,12 +22,16 @@ export class ModelFactory {
         }
 
         const meshName = this.gameFacade.modelLoader.createInstance(gameObject.modelFileName);
+
         gameObject.meshName = meshName;
         const mesh = this.gameFacade.meshStore.getMesh(meshName);
+        this.gameFacade.gameObjectStore.gameObjects.push(gameObject);
+        gameObject.frontVector = new Vector3(0, 0, -1);
 
         mesh.isVisible = true;
         const scale = gameObject.scale;
         mesh.scaling = new Vector3(scale, scale, scale);
+        mesh.rotationQuaternion = null;
         // this.scene.beginAnimation(mesh, 0, 24, true);
 
         const rect = <Rectangle> gameObject.dimensions;
