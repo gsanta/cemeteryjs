@@ -20,12 +20,12 @@ export class KeyboardListener {
     onKeyDown(key: string): void {
         this.downKeys.add(key);
 
-        this.gameFacade.interactionManager.check();
+        this.gameFacade.gameEventManager.trigger();
     }
 
     onKeyUp(key: string): void {
         this.downKeys.delete(key);
 
-        this.gameFacade.interactionManager.check();
+        this.gameFacade.gameEventManager.trigger();
     }
 }

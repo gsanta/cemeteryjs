@@ -31,7 +31,7 @@ export class ModelFactory {
         mesh.isVisible = true;
         const scale = gameObject.scale;
         mesh.scaling = new Vector3(scale, scale, scale);
-        mesh.rotationQuaternion = null;
+        mesh.rotationQuaternion = undefined;
         // this.scene.beginAnimation(mesh, 0, 24, true);
 
         const rect = <Rectangle> gameObject.dimensions;
@@ -44,6 +44,6 @@ export class ModelFactory {
         const depth = rect.getHeight();
 
         mesh.translate(new Vector3(rect.topLeft.x + width / 2, 0, -rect.topLeft.y - depth / 2), 1, Space.WORLD);
-        mesh.rotate(Axis.Y, gameObject.rotation, Space.WORLD);
+        mesh.rotation.y = gameObject.rotation;
     }
 }

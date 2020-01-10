@@ -4,9 +4,10 @@ import { IWorldFacade } from '../common/IWorldFacade';
 import { Mesh, Scene } from 'babylonjs';
 import { GameModelLoader } from './services/GameModelLoader';
 import { KeyboardListener } from './services/input/listeners/KeyboardListener';
-import { InteractionManager } from './services/input/InteractionManager';
+import { GameEventManager } from './services/input/GameEventManager';
 import { KeyboardTrigger } from './services/input/triggers/KeyboardTrigger';
-import { MotionActions } from './services/actions/MotionActions';
+import { PlayerMovement } from './services/behaviour/PlayerMovement';
+import { PlayerListener } from './services/actions/PlayerListener';
 
 export class GameFacade implements IWorldFacade<Mesh> {
     meshStore: MeshStore;
@@ -14,8 +15,9 @@ export class GameFacade implements IWorldFacade<Mesh> {
     modelLoader: GameModelLoader;
     keyboardListener: KeyboardListener;
     keyboardTrigger: KeyboardTrigger;
-    interactionManager: InteractionManager;
-    motionActions: MotionActions;
+    gameEventManager: GameEventManager;
+    playerMovement: PlayerMovement;
+    playerListener: PlayerListener;
 
     scene: Scene;
 
@@ -27,13 +29,15 @@ export class GameFacade implements IWorldFacade<Mesh> {
         this.modelLoader = new GameModelLoader(scene, this);
         this.keyboardListener = new KeyboardListener(this);
         this.keyboardTrigger = new KeyboardTrigger(this);
-        this.interactionManager = new InteractionManager(this);
-        this.motionActions = new MotionActions(this);
+        this.gameEventManager = new GameEventManager(this);
+        this.playerMovement = new PlayerMovement(this);
+        this.playerListener = new PlayerListener(this);
+
+        this.gameEventManager.registerListener(this.playerListener);
     }
     
     setup() {
         this.keyboardTrigger.activate();
-        this.motionActions.register();
         this.keyboardTrigger.activate();
     }
 
