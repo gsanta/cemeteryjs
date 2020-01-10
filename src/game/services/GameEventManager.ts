@@ -1,28 +1,36 @@
-import { KeyboardListener } from "./listeners/KeyboardListener";
-import { GameFacade } from '../../GameFacade';
-import { IEventListener } from "../actions/IEventListener";
+import { GameFacade } from '../GameFacade';
+import { IEventListener } from "./listeners/IEventListener";
+import { IEventTrigger } from "./triggers/IEventTrigger";
+import { InputCommand } from '../stores/InputCommandStore';
 
 
 export class GameEventManager {
     private events: GameEvent[] = [];
+    private triggers: IEventTrigger[] = [];
     private gameFacade: GameFacade;
 
     constructor(gameFacade: GameFacade) {
         this.gameFacade = gameFacade;
+        this.trigger = this.trigger.bind(this);
     }
 
     registerListener(listener: IEventListener): void {
         this.events.push(...listener.events);
     }
 
-    trigger(afterRender = false): void {
-        const interaction = this.events.find(h => h.matches(this.gameFacade.keyboardListener, afterRender));
+    registerTrigger(trigger: IEventTrigger): void {
+        this.triggers.push(trigger);
+        trigger.activate(this.trigger);
+    }
+
+    private trigger(afterRender = false): void {
+        const interaction = this.events.find(h => h.matches(this.gameFacade, afterRender));
         interaction && interaction.action(this.gameFacade);
     }
 }
 
 interface GameEventTrigger {
-    readonly keyCode: number;
+    readonly inputCommand: InputCommand;
     readonly isAfterRender: boolean;
 }
 
@@ -31,19 +39,19 @@ export class GameEvent {
     readonly action: (gameFacade: GameFacade) => void;
 
     private static readonly defaultInteractionInfo: GameEventTrigger = {
-        keyCode: null,
+        inputCommand: null,
         isAfterRender: false
     }
 
     constructor(interactionInfo: Partial<GameEventTrigger>, action: (gameFacade: GameFacade) => void) {
-
         this.trigger = {...GameEvent.defaultInteractionInfo, ...interactionInfo};
         this.action = action;
     }
 
-    matches(keyboardListener: KeyboardListener, afterRender: boolean): boolean {
+    matches(gameFacade: GameFacade, afterRender: boolean): boolean {
+        const hasCommand = gameFacade.inputCommandStore.commands.has(this.trigger.inputCommand);
         return (
-            (this.trigger.keyCode === undefined || keyboardListener.downKeys.has(String.fromCharCode(this.trigger.keyCode).toLocaleLowerCase())) &&
+            (this.trigger.inputCommand === undefined || hasCommand) &&
             afterRender === this.trigger.isAfterRender
         )
     }

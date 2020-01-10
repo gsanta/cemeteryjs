@@ -1,7 +1,7 @@
 import { GameFacade } from "../../GameFacade";
-import { GameEvent } from "../input/GameEventManager";
-import { KeyCode } from "../input/listeners/KeyboardListener";
+import { GameEvent } from "../GameEventManager";
 import { IEventListener } from "./IEventListener";
+import { InputCommand } from "../../stores/InputCommandStore";
 
 
 export class PlayerListener implements IEventListener {
@@ -16,19 +16,19 @@ export class PlayerListener implements IEventListener {
     private createInteractions() {
         const interactions: GameEvent[] = [
             new GameEvent(
-                {keyCode: KeyCode.w},
+                {inputCommand: InputCommand.Forward},
                 (gameFacade: GameFacade) => gameFacade.playerMovement.forward()
             ),
             new GameEvent(
-                {keyCode: KeyCode.s},
+                {inputCommand: InputCommand.Backward},
                 (gameFacade: GameFacade) => gameFacade.playerMovement.backward()
             ),
             new GameEvent(
-                {keyCode: KeyCode.a},
+                {inputCommand: InputCommand.TurnLeft},
                 (gameFacade: GameFacade) => gameFacade.playerMovement.backward()
             ),
             new GameEvent(
-                {keyCode: KeyCode.e},
+                {inputCommand: InputCommand.TurnRight},
                 (gameFacade: GameFacade) => gameFacade.playerMovement.right()
             )
         ];

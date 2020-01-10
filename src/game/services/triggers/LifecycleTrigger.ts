@@ -1,6 +1,6 @@
 
 
-import { GameFacade } from '../../../GameFacade';
+import { GameFacade } from '../../GameFacade';
 
 export class LifecycleTrigger {
     private gameFacade: GameFacade;
@@ -9,9 +9,9 @@ export class LifecycleTrigger {
         this.gameFacade = gameFacade;
     }
 
-    activate() {
+    activate(trigger: (isAfterRender: boolean) => void) {
         this.gameFacade.scene.registerAfterRender(() => {
-            this.gameFacade.gameEventManager.trigger(true);
+            trigger(true);
         });
     }
 }
