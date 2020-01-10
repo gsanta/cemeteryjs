@@ -38,8 +38,8 @@ export class SvgCanvasImporter implements ICanvasImporter {
                 shape: <WorldItemShape> rect.shape,
                 model: rect.model,
                 rotation: rect.rotation,
-                scale: 1,
-                name: ''
+                scale: rect.scale,
+                name: rect.name
             }
 
             this.svgCanvasController.pixelModel.addRect(canvasItem);
