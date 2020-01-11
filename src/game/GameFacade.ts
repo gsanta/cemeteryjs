@@ -20,7 +20,6 @@ export class GameFacade implements IWorldFacade<Mesh> {
     keyboardTrigger: KeyboardTrigger;
     gameEventManager: GameEventManager;
     playerMovement: PlayerMovement;
-    playerListener: PlayerListener;
 
     scene: Scene;
 
@@ -35,9 +34,8 @@ export class GameFacade implements IWorldFacade<Mesh> {
         this.keyboardTrigger = new KeyboardTrigger(this);
         this.gameEventManager = new GameEventManager(this);
         this.playerMovement = new PlayerMovement(this);
-        this.playerListener = new PlayerListener(this);
 
-        this.gameEventManager.registerListener(new PlayerListener(this));
+        this.gameEventManager.registerListener(new PlayerListener());
         this.gameEventManager.registerTrigger(new KeyboardTrigger(this));
         this.gameEventManager.registerTrigger(new LifecycleTrigger(this));
     }

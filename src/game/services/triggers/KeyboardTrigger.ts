@@ -3,11 +3,11 @@ import { ActionManager, ExecuteCodeAction } from 'babylonjs';
 import { InputCommand } from '../../stores/InputCommandStore';
 
 export enum KeyCode {
-    w = 87,
-    a = 65,
-    d = 68,
-    s = 83,
-    e = 69
+    w = 'w',
+    a = 'a',
+    d = 'd',
+    s = 's',
+    e = 'e'
 }
 
 export class KeyboardTrigger {
@@ -42,7 +42,7 @@ export class KeyboardTrigger {
         };
 
         const handler = (evt) => {
-            const command = this.keyCodeToInputCommandMap.get(evt.sourceEvent.key);
+            const command = this.keyCodeToInputCommandMap.get(KeyCode[evt.sourceEvent.key]);
             command && this.gameFacade.inputCommandStore.commands.add(command);
             this.triggerFunc();
         }

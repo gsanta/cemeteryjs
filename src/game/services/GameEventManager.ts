@@ -39,7 +39,7 @@ export class GameEvent {
     readonly action: (gameFacade: GameFacade) => void;
 
     private static readonly defaultInteractionInfo: GameEventTrigger = {
-        inputCommand: null,
+        inputCommand: undefined,
         isAfterRender: false
     }
 
