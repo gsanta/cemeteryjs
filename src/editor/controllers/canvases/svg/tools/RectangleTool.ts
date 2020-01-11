@@ -60,8 +60,25 @@ export class RectangleTool extends AbstractSelectionTool {
         const type = this.canvasController.selectedWorldItemDefinition.typeName;
         const positions = this.getPositionsInSelection();
 
+        const pixelSize = this.canvasController.configModel.pixelSize;
+        const dimensions = this.getSelectionRect().div(pixelSize);
+
+        const canvasItem: CanvasItem = {
+            color: 'grey',
+            dimensions,
+            type: type,
+            layer: 0,
+            isPreview: false,
+            tags: new Set(),
+            shape: WorldItemShape.RECTANGLE,
+            model: null,
+            rotation: 0,
+            scale: 1,
+            name: ''
+        }
+
         if (positions.length > 0) {
-            this.lastPreviewRect = this.canvasController.pixelModel.addRectangle(positions, type, 0, true);
+            this.lastPreviewRect = this.canvasController.pixelModel.addRect(canvasItem);
     
             this.canvasController.renderCanvas();
         }

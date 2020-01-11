@@ -3,7 +3,8 @@ import { ICanvasExporter } from '../ICanvasExporter';
 import { GameObjectTemplate } from '../../../../world_generator/services/GameObjectTemplate';
 import { Rectangle } from '../../../../model/geometry/shapes/Rectangle';
 import { CanvasItemTag, CanvasItem } from './models/CanvasItem';
-import { minBy } from '../../../../model/geometry/utils/Functions';
+import { minBy, maxBy } from '../../../../model/geometry/utils/Functions';
+import { Point } from '../../../../model/geometry/shapes/Point';
 
 export class SvgCanvasExporter implements ICanvasExporter {
     private canvasController: SvgCanvasController;
@@ -15,7 +16,28 @@ export class SvgCanvasExporter implements ICanvasExporter {
     export(): string {
         const rectangles = this.createRectangles();
 
-        return `<svg data-wg-pixel-size="10" data-wg-width="1500" data-wg-height="1000">${rectangles.join('')}</svg>`;
+        const rootDim = this.getRootDimensions();
+        return `<svg data-wg-pixel-size="10" data-wg-width="${rootDim.x}" data-wg-height="${rootDim.y}">${rectangles.join('')}</svg>`;
+    }
+
+    private getRootDimensions(): Point {
+        const pixelModel = this.canvasController.pixelModel;
+        const configModel = this.canvasController.configModel;
+
+        if (pixelModel.items.length === 0) {
+            return new Point(1000, 500);
+        }
+
+        const minX = minBy<CanvasItem>(pixelModel.items, (a, b) => a.dimensions.topLeft.x - b.dimensions.topLeft.x).dimensions.topLeft.x;
+        const minY = minBy<CanvasItem>(pixelModel.items, (a, b) => a.dimensions.topLeft.y - b.dimensions.topLeft.y).dimensions.topLeft.y;
+        const maxX = maxBy<CanvasItem>(pixelModel.items, (a, b) => a.dimensions.bottomRight.x - b.dimensions.bottomRight.x).dimensions.bottomRight.x;
+        const maxY = maxBy<CanvasItem>(pixelModel.items, (a, b) => a.dimensions.bottomRight.y - b.dimensions.bottomRight.y).dimensions.bottomRight.y;
+
+        const width = (maxX - minX) * configModel.pixelSize;
+        const height = (maxY - minY) * configModel.pixelSize;
+        
+
+        return new Point(width, height);
     }
 
     private createRectangles(): string[] {
