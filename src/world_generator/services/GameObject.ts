@@ -23,7 +23,7 @@ export class GameObject {
     shape: WorldItemShape;
     scale: number;
 
-    speed = 0.05;
+    speed = 0.003;
 
     modelFileName: string;
 

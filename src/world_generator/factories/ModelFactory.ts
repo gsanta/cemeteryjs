@@ -43,7 +43,7 @@ export class ModelFactory {
         const width = rect.getWidth();
         const depth = rect.getHeight();
 
-        mesh.translate(new Vector3(rect.topLeft.x + width / 2, 0, -rect.topLeft.y - depth / 2), 1, Space.WORLD);
+        mesh.translate(new Vector3(center.x, 0, center.y), 1, Space.WORLD);
         mesh.rotation.y = gameObject.rotation;
     }
 }

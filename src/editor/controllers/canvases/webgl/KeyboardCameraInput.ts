@@ -1,4 +1,5 @@
 import { ICameraInput, UniversalCamera, Vector3 } from 'babylonjs';
+import { EditorCamera } from './EditorCamera';
 
 export enum KeyboardInput {
     UP = 38,
@@ -8,10 +9,11 @@ export enum KeyboardInput {
 }
 
 export class KeyboardCameraInput implements ICameraInput<any> {
-    camera: UniversalCamera;
+    camera: EditorCamera;
 
     private element: HTMLElement;
     private pressedKey: KeyboardInput;
+    private isCtrlPressed: boolean = false;
 
     private allowedKeys = [KeyboardInput.UP, KeyboardInput.DOWN, KeyboardInput.LEFT, KeyboardInput.RIGHT];
 
@@ -57,16 +59,24 @@ export class KeyboardCameraInput implements ICameraInput<any> {
 
             switch(this.pressedKey) {
                 case KeyboardInput.LEFT:
-                    camera.position.copyFromFloats(position.x - speed, position.y, position.z);
+                    this.camera.moveLeft();
                     break;
                 case KeyboardInput.RIGHT:
-                    camera.position.copyFromFloats(position.x + speed, position.y, position.z);
+                    this.camera.moveRight();
                     break;
                 case KeyboardInput.UP:
-                    camera.position.copyFromFloats(position.x, position.y, position.z + speed);
+                    if (this.isCtrlPressed) {
+                        this.camera.zoomOut();
+                    } else {
+                        this.camera.moveUp();
+                    }
                     break;
                 case KeyboardInput.DOWN:
-                    camera.position.copyFromFloats(position.x, position.y, position.z - speed);
+                    if (this.isCtrlPressed) {
+                        this.camera.zoomIn();
+                    } else {
+                        this.camera.moveDown();
+                    }
                     break;
                     
             }
@@ -81,9 +91,11 @@ export class KeyboardCameraInput implements ICameraInput<any> {
 
     private handleKeyDown(e: KeyboardEvent) {
         this.pressedKey = e.keyCode;
+        this.isCtrlPressed = e.ctrlKey;
     }
 
     private handleKeyUp(e: KeyboardEvent) {
         this.pressedKey = null;
+        this.isCtrlPressed = e.ctrlKey;
     }
 }
