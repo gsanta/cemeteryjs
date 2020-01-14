@@ -1,11 +1,6 @@
 import { Vector3, Mesh } from 'babylonjs';
 import { GameFacade } from '../../GameFacade';
-import { GameObject } from '../../../world_generator/services/GameObject';
-
-enum AnimationType {
-    Walk = 'walk',
-    Turn = 'turn'
-} 
+import { GameObject, AnimationName } from '../../../world_generator/services/GameObject';
 
 enum MovementType {
     WalkForward = 'WalkForward',
@@ -19,47 +14,11 @@ type MoveFunc = (gameObject: GameObject, mesh: Mesh) => void;
 export class PlayerMovement {
     private gameFacade: GameFacade;
 
-    private movementToActionMap: Map<MovementType, MoveFunc>;
-    private animationTypeToActionMap: Map<AnimationType, MoveFunc>;
-    private activeAnimations: Map<AnimationType, NodeJS.Timeout> = new Map();
+    private animationTypeToActionMap: Map<AnimationName, MoveFunc>;
+    private activeAnimations: Map<AnimationName, NodeJS.Timeout> = new Map();
 
     constructor(gameFacade: GameFacade) {
         this.gameFacade = gameFacade;
-
-        this.movementToActionMap = new Map(
-            [
-                [
-                    MovementType.WalkForward,
-                    (player: GameObject, mesh: Mesh) => {
-                        mesh.moveWithCollisions(player.frontVector.multiplyByFloats(-1 * player.speed, -1 * player.speed, -1 * player.speed));
-                    }
-                ],
-                [
-                    MovementType.WalkBackward,
-                    (player: GameObject, mesh: Mesh) => {
-                        mesh.moveWithCollisions(player.frontVector.multiplyByFloats(player.speed, player.speed, player.speed));
-                    }
-                ],
-                [
-                    MovementType.TurnLeft,
-                    (player: GameObject, mesh: Mesh) => {
-                        mesh.rotation.y += 0.02;
-                        const alpha = mesh.rotation.y;
-                
-                        player.frontVector = new Vector3(Math.sin(alpha), 0, Math.cos(alpha));
-                    }
-                ],
-                [
-                    MovementType.TurnRight,
-                    (player: GameObject, mesh: Mesh) => {
-                        mesh.rotation.y -= 0.02;
-                        const alpha = mesh.rotation.y;
-                
-                        player.frontVector = new Vector3(Math.sin(alpha), 0, Math.cos(alpha));
-                    }
-                ]
-            ]
-        );
 
         this.animationTypeToActionMap = new Map(
             [
@@ -73,32 +32,34 @@ export class PlayerMovement {
         )
     }
 
-    forward() {
-        this.doAction(this.movementToActionMap.get(MovementType.WalkForward));
-        this.playAnimation(AnimationType.Walk);
+    forward(character: GameObject) {
+        const mesh = this.gameFacade.meshStore.getMesh(character.meshName);
+        mesh.moveWithCollisions(character.frontVector.multiplyByFloats(-1 * character.speed, -1 * character.speed, -1 * character.speed));
+        character.activeAnimation = AnimationName.Walk;
     }
 
-    backward() {
-        this.doAction(this.movementToActionMap.get(MovementType.WalkBackward));
-        this.playAnimation(AnimationType.Walk);
+    backward(character: GameObject) {
+        const mesh = this.gameFacade.meshStore.getMesh(character.meshName);
+        mesh.moveWithCollisions(character.frontVector.multiplyByFloats(character.speed, character.speed, character.speed));
+        character.activeAnimation = AnimationName.Walk;
     }
 
-    left() {
-        this.doAction(this.movementToActionMap.get(MovementType.TurnLeft));
+    left(character: GameObject) {
+        const mesh = this.gameFacade.meshStore.getMesh(character.meshName);
+        mesh.rotation.y += 0.02;
+        const alpha = mesh.rotation.y;
+        character.frontVector = new Vector3(Math.sin(alpha), 0, Math.cos(alpha));        
     }
 
-    right() {
-        this.doAction(this.movementToActionMap.get(MovementType.TurnRight));
+    right(character: GameObject) {
+        const mesh = this.gameFacade.meshStore.getMesh(character.meshName);
+        mesh.rotation.y -= 0.02;
+        const alpha = mesh.rotation.y;
+        character.frontVector = new Vector3(Math.sin(alpha), 0, Math.cos(alpha));      
     }
 
-    private doAction(moveFunc: MoveFunc) {
-        const player = this.gameFacade.gameObjectStore.getPlayer();
-        const mesh = this.gameFacade.meshStore.getMesh(player.meshName);
 
-        moveFunc(player, mesh);
-    }
-
-    private playAnimation(animationType: AnimationType) {
+    private playAnimation(animationType: AnimationName) {
         const player = this.gameFacade.gameObjectStore.getPlayer();
         const mesh = this.gameFacade.meshStore.getMesh(player.meshName);
 
