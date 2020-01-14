@@ -17,7 +17,7 @@ export class SvgCanvasExporter implements ICanvasExporter {
         const rectangles = this.createRectangles();
 
         const rootDim = this.getRootDimensions();
-        return `<svg data-wg-pixel-size="10" data-wg-width="${rootDim.x}" data-wg-height="${rootDim.y}">${rectangles.join('')}</svg>`;
+        return `<svg data-wg-pixel-size="10" data-wg-width="3000" data-wg-height="3000">${rectangles.join('')}</svg>`;
     }
 
     private getRootDimensions(): Point {
