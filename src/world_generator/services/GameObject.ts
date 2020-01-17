@@ -1,6 +1,7 @@
 import { Skeleton, Mesh, Vector3 } from 'babylonjs';
 import { Shape } from '../../model/geometry/shapes/Shape';
 import { MeshStore } from '../../game/models/stores/MeshStore';
+import { BehaviourType } from '../../game/services/behaviour/IBehaviour';
 
 export enum WorldItemShape {
     RECTANGLE = 'rect',
@@ -13,6 +14,7 @@ export interface Animation {
 }
 
 export enum AnimationName {
+    None = 'none',
     Walk = 'walk',
     Turn = 'turn'
 } 
@@ -39,6 +41,7 @@ export class GameObject {
     modelFileName: string;
 
     activeAnimation: AnimationName;
+    activeBehaviour: BehaviourType;
 
     constructor(dimensions: Shape, name: string, rotation = 0) {
         this.dimensions = dimensions;

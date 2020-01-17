@@ -14,10 +14,10 @@ export class PlayerListener implements IEventListener {
 
         this.commandToActionMap = new Map(
             [
-                [InputCommand.Forward, (gameFacade: GameFacade) => gameFacade.playerMovement.forward()],
-                [InputCommand.Backward, (gameFacade: GameFacade) => gameFacade.playerMovement.backward()],
-                [InputCommand.TurnLeft, (gameFacade: GameFacade) => gameFacade.playerMovement.left()],
-                [InputCommand.TurnRight, (gameFacade: GameFacade) => gameFacade.playerMovement.right()],
+                [InputCommand.Forward, (gameFacade: GameFacade) => gameFacade.characterMovement.forward(gameFacade.gameObjectStore.getPlayer())],
+                [InputCommand.Backward, (gameFacade: GameFacade) => gameFacade.characterMovement.backward(gameFacade.gameObjectStore.getPlayer())],
+                [InputCommand.TurnLeft, (gameFacade: GameFacade) => gameFacade.characterMovement.left(gameFacade.gameObjectStore.getPlayer())],
+                [InputCommand.TurnRight, (gameFacade: GameFacade) => gameFacade.characterMovement.right(gameFacade.gameObjectStore.getPlayer())],
             ]
         );
     }

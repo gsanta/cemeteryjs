@@ -12,4 +12,8 @@ export class GameObjectStore {
     getPlayer(): GameObject {
         return this.gameObjects.find(gameObject => gameObject.name === 'player');
     }
+
+    getEnemies(): GameObject[] {
+        return this.gameObjects.filter(gameObject => gameObject.name === 'enemy');
+    }
 }

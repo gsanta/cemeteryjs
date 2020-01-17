@@ -5,10 +5,12 @@ import { Mesh, Scene } from 'babylonjs';
 import { GameModelLoader } from './services/GameModelLoader';
 import { GameEventManager } from './services/GameEventManager';
 import { KeyboardTrigger } from './services/triggers/KeyboardTrigger';
-import { PlayerMovement } from './services/behaviour/PlayerMovement';
+import { CharacterMovement } from './services/behaviour/CharacterMovement';
 import { PlayerListener } from './services/listeners/PlayerListener';
 import { InputCommandStore } from './stores/InputCommandStore';
 import { LifecycleTrigger } from './services/triggers/LifecycleTrigger';
+import { AnimationPlayer } from './services/listeners/AnimationPlayer';
+import { EnemyMovementManager } from './services/behaviour/EnemyMovementManager';
 
 export class GameFacade implements IWorldFacade<Mesh> {
     meshStore: MeshStore;
@@ -19,7 +21,8 @@ export class GameFacade implements IWorldFacade<Mesh> {
     keyboardListener: KeyboardTrigger;
     keyboardTrigger: KeyboardTrigger;
     gameEventManager: GameEventManager;
-    playerMovement: PlayerMovement;
+    characterMovement: CharacterMovement;
+    animationPlayer: AnimationPlayer;
 
     scene: Scene;
 
@@ -33,9 +36,11 @@ export class GameFacade implements IWorldFacade<Mesh> {
         this.keyboardListener = new KeyboardTrigger(this);
         this.keyboardTrigger = new KeyboardTrigger(this);
         this.gameEventManager = new GameEventManager(this);
-        this.playerMovement = new PlayerMovement(this);
+        this.characterMovement = new CharacterMovement(this);
+        this.animationPlayer = new AnimationPlayer(this);
 
         this.gameEventManager.registerListener(new PlayerListener());
+        this.gameEventManager.registerListener(new EnemyMovementManager(this, []));
         this.gameEventManager.registerTrigger(new KeyboardTrigger(this));
         this.gameEventManager.registerTrigger(new LifecycleTrigger(this));
     }
