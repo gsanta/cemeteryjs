@@ -40,6 +40,10 @@ export class Point {
         return this.geometryService.factory.point(this.x, this.y * times);
     }
 
+    scale(times: number): Point {
+        return this.geometryService.factory.point(this.x * times, this.y * times);
+    }
+
     negate(): Point {
         return this.geometryService.factory.point(-this.x, - this.y);
     }
@@ -106,6 +110,18 @@ export class Point {
         const norm1 = this.normalize();
         const norm2 = otherPoint.normalize();
         return Math.atan2(norm1.y, norm1.x) - Math.atan2(norm2.y, norm2.x);
+    }
+
+    len(): number {
+        return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+    }
+
+    limit(max: number) {
+        if (this.len() > max) {
+            const p = this.mul(max / this.len());
+            this.x = p.x;
+            this.y = p.y;
+        }
     }
 
     getVectorCenter(): Point {

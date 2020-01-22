@@ -2,6 +2,7 @@ import { Skeleton, Mesh, Vector3 } from 'babylonjs';
 import { Shape } from '../../model/geometry/shapes/Shape';
 import { MeshStore } from '../../game/models/stores/MeshStore';
 import { BehaviourType } from '../../game/services/behaviour/IBehaviour';
+import { Point } from '../../model/geometry/shapes/Point';
 
 export enum WorldItemShape {
     RECTANGLE = 'rect',
@@ -42,6 +43,7 @@ export class GameObject {
 
     activeAnimation: AnimationName;
     activeBehaviour: BehaviourType;
+    wanderAngle = 0;
 
     constructor(dimensions: Shape, name: string, rotation = 0) {
         this.dimensions = dimensions;
@@ -65,10 +67,18 @@ export class GameObject {
         return this.getAnimations(meshStore).find(anim => anim.name === animationName);
     }
 
+    getVelocity(meshStore: MeshStore): Point {
+        const position = this.findMesh(meshStore) ? this.findMesh(meshStore).getAbsolutePosition()
+    }
+
     private getAnimations(meshStore: MeshStore): Animation[] {
         return meshStore.getMesh(this.name).skeleton.getAnimationRanges().map(anim => ({
             name: anim.name,
             range: [anim.from, anim.to]
         }));
+    }
+
+    private findMesh(meshStore: MeshStore) {
+        return meshStore.getMesh(this.meshName);
     }
 }

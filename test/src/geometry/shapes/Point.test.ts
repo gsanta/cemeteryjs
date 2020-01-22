@@ -1,5 +1,6 @@
 import { GeometryService } from "../../../../src/model/geometry/GeometryService";
 import { toRadian } from "../../../../src/model/geometry/utils/Measurements";
+import { Point } from "../../../../src/model/geometry/shapes/Point";
 
 describe('`Point`', () => {
     const geometryService = new GeometryService();
@@ -75,6 +76,20 @@ describe('`Point`', () => {
             
             expect(point.mul(3, 4)).toEqual(geometryService.factory.point(6, 12));
             expect(point.mul(2)).toEqual(geometryService.factory.point(4, 6));
+        });
+    });
+
+    describe('limit', () => {
+        it ('limits the len of the vector', () => {
+            const vec = new Point(5, 0);
+            vec.limit(4);
+            expect(vec.len()).toEqual(4);
+        });
+
+        it ('does nothing if the length is smaller than the limit', () => {
+            const vec = new Point(3, 0);
+            vec.limit(5);
+            expect(vec.len()).toEqual(3);
         });
     });
 });
