@@ -24,8 +24,9 @@ export class GameEventManager {
     }
 
     private trigger(afterRender = false): void {
-        const interaction = this.events.find(h => h.matches(this.gameFacade, afterRender));
-        interaction && interaction.action(this.gameFacade);
+        this.events
+            .filter(event => event.matches(this.gameFacade, afterRender))
+            .forEach(event => event.action(this.gameFacade));
     }
 }
 

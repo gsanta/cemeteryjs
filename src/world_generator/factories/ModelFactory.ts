@@ -32,7 +32,6 @@ export class ModelFactory {
         mesh.rotationQuaternion = undefined;
 
         const rect = <Rectangle> gameObject.dimensions;
-        const center = gameObject.dimensions.getBoundingCenter();
         const width = rect.getWidth();
         const depth = rect.getHeight();
 

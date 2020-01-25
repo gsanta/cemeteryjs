@@ -38,11 +38,11 @@ export class GameObject {
     shape: WorldItemShape;
     scale: number;
 
-    speed = 0.003;
+    speed = 0.01;
 
     modelFileName: string;
 
-    activeAnimation: AnimationName;
+    activeAnimation: AnimationName = AnimationName.None;
     activeBehaviour: BehaviourType;
     wanderAngle = 0;
     private getMesh: (meshName: string) => Mesh;
