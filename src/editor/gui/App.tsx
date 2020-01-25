@@ -37,10 +37,10 @@ export class App extends React.Component<{}, AppState> {
                 <Header activeCanvasToolbar={canvasToolbar}/>
                 <div className="main-content">
                     <VerticalSplitComponent onChange={() => this.resize()}>
-                        <HorizontalSplitComponent onChange={() => this.context.controllers.svgCanvasController.resize()}>
-                            {canvas}                            
+                        <VerticalSplitComponent onChange={() => this.context.controllers.svgCanvasController.resize()}>
                             {itemSettings}
-                        </HorizontalSplitComponent>
+                            {canvas}                            
+                        </VerticalSplitComponent>
                         <WebglCanvasComponent canvasController={this.context.controllers.webglCanvasController}/>
                     </VerticalSplitComponent>
                 </div>

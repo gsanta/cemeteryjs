@@ -68,7 +68,7 @@ export function drawRectangle(controllers: EditorFacade, topLeft = new Point(50,
     svgController.mouseController.onMouseMove(<MouseEvent> {x: bottomRight.x, y: bottomRight.y});
     svgController.mouseController.onMouseUp(<MouseEvent> {x: bottomRight.x, y: bottomRight.y});
 
-    return svgController.pixelModel.items[svgController.pixelModel.items.length - 1];
+    return svgController.canvasStore.items[svgController.canvasStore.items.length - 1];
 }
 
 export function selectWithRect(controllers: EditorFacade, from: Point, to: Point) {

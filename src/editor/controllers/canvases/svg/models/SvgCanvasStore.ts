@@ -5,6 +5,7 @@ import { WorldItemShape } from '../../../../../world_generator/services/GameObje
 import { sortNum, without } from '../../../../../world_generator/utils/Functions';
 import { SvgConfig } from './SvgConfig';
 import { CanvasItem } from './CanvasItem';
+import { Path } from '../tools/PathTool';
 
 export enum Layers {
     PREVIEW = -1,
@@ -28,9 +29,14 @@ export class SvgCanvasStore {
     private bitmapConfig: SvgConfig;
 
     items: CanvasItem[] = [];
+    arrows: Path[] = [];
 
     constructor(bitmapConfig: SvgConfig) {
         this.bitmapConfig = bitmapConfig;
+    }
+
+    addArrow(arrow: Path) {
+        this.arrows.push(arrow);
     }
 
     addRect(canvasItem: CanvasItem): CanvasItem {

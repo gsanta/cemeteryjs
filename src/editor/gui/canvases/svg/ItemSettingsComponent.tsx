@@ -45,7 +45,7 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
     }
 
     render(): JSX.Element {
-        const selectedCanvasItems = CanvasItemTag.getTaggedItems(CanvasItemTag.SELECTED, this.props.canvasController.pixelModel.items);
+        const selectedCanvasItems = CanvasItemTag.getTaggedItems(CanvasItemTag.SELECTED, this.props.canvasController.canvasStore.items);
 
         if (selectedCanvasItems.length === 0) { return this.renderNoItemsSelectedMessage(); }
 
@@ -55,24 +55,13 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
 
         return (
             <ItemSettingsStyled>
-                <TableStyled>
-                    <tr>
-                        <td>{this.renderName()}</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>{this.renderColorChooser()}</td>
-                        <td>{this.renderLayerInput()}</td>
-                    </tr>
-                    <tr>
-                        <td>{this.renderShapeDropdown()}</td>
-                        <td>{form.getVal(CanvasItemSettings.SHAPE) === 'model' ? this.renderModelFileChooser() : null}</td>
-                    </tr>
-                    <tr>
-                        <td>{this.renderRotationInput()}</td>
-                        <td>{this.renderScaleInput()}</td>
-                    </tr>
-                </TableStyled>
+                {this.renderName()}
+                {this.renderColorChooser()}
+                {this.renderLayerInput()}
+                {this.renderShapeDropdown()}
+                {form.getVal(CanvasItemSettings.SHAPE) === 'model' ? this.renderModelFileChooser() : null}
+                {this.renderRotationInput()}
+                {this.renderScaleInput()}
             </ItemSettingsStyled>
         );
     }

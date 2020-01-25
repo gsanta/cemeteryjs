@@ -10,7 +10,8 @@ import { PlayerListener } from './services/listeners/PlayerListener';
 import { InputCommandStore } from './stores/InputCommandStore';
 import { LifecycleTrigger } from './services/triggers/LifecycleTrigger';
 import { AnimationPlayer } from './services/listeners/AnimationPlayer';
-import { EnemyMovementManager } from './services/behaviour/EnemyMovementManager';
+import { EnemyBehaviourManager } from './services/behaviour/EnemyBehaviourManager';
+import { WanderBehaviour } from './services/behaviour/WanderBehaviour';
 
 export class GameFacade implements IWorldFacade<Mesh> {
     meshStore: MeshStore;
@@ -36,10 +37,10 @@ export class GameFacade implements IWorldFacade<Mesh> {
         this.keyboardListener = new KeyboardTrigger(this);
         this.keyboardTrigger = new KeyboardTrigger(this);
         this.gameEventManager = new GameEventManager(this);
-        this.characterMovement = new CharacterMovement(this);
+        this.characterMovement = new CharacterMovement();
 
         this.gameEventManager.registerListener(new PlayerListener());
-        this.gameEventManager.registerListener(new EnemyMovementManager(this, []));
+        this.gameEventManager.registerListener(new EnemyBehaviourManager(this, [new WanderBehaviour()]));
         this.gameEventManager.registerListener(new AnimationPlayer(this));
         this.gameEventManager.registerTrigger(new KeyboardTrigger(this));
         this.gameEventManager.registerTrigger(new LifecycleTrigger(this));

@@ -85,7 +85,7 @@ export class MouseHandler {
     }
 
     unhover() {
-        CanvasItemTag.removeTag(CanvasItemTag.HOVERED, this.controller.pixelModel.items);
+        CanvasItemTag.removeTag(CanvasItemTag.HOVERED, this.controller.canvasStore.items);
     }
 
     private getPointFromEvent(e: MouseEvent): Point {

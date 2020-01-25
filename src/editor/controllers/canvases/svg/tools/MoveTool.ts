@@ -21,7 +21,7 @@ export class MoveTool extends AbstractTool {
     down() {
         super.down();
 
-        const selectedItems = CanvasItemTag.getSelectedItems(this.canvasController.pixelModel.items);
+        const selectedItems = CanvasItemTag.getSelectedItems(this.canvasController.canvasStore.items);
         this.origDimensions = selectedItems.map(item => item.dimensions);
     }
 
@@ -30,7 +30,7 @@ export class MoveTool extends AbstractTool {
         
         const mouseController = this.canvasController.mouseController;
     
-        const selectedItems = CanvasItemTag.getSelectedItems(this.canvasController.pixelModel.items);
+        const selectedItems = CanvasItemTag.getSelectedItems(this.canvasController.canvasStore.items);
         const mouseDelta = mouseController.pointer.getDownDiff();
         mouseDelta.x = Math.floor(mouseDelta.x / this.canvasController.configModel.pixelSize);
         mouseDelta.y = Math.floor(mouseDelta.y / this.canvasController.configModel.pixelSize);

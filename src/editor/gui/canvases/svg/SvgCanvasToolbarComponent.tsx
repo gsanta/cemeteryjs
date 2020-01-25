@@ -8,8 +8,8 @@ import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvas
 import { ToolType } from '../../../controllers/canvases/svg/tools/Tool';
 import { ZoomInIconComponent } from '../../icons/ZoomInIconComponent';
 import { ZoomOutIconComponent } from '../../icons/ZoomOutIconComponent';
-import { CameraTool } from '../../../controllers/canvases/svg/tools/CameraTool';
 import { MoveIconComponent as PanIconComponent } from '../../icons/PanIconComponent';
+import { ArrowIconComponent } from '../../icons/ArrowIconComponent';
 
 const ToolbarStyled = styled.div`
     display: flex;
@@ -32,6 +32,7 @@ export class SvgCanvasToolbarComponent extends React.Component<{canvasController
         return (
             <ToolbarStyled>
                 <DrawIconComponent isActive={this.isToolActive(ToolType.RECTANGLE)} onClick={() => this.activateTool(ToolType.RECTANGLE)}/>
+                <ArrowIconComponent isActive={this.isToolActive(ToolType.PATH)} onClick={() => this.activateTool(ToolType.PATH)}/>
                 <SelectIconComponent isActive={this.isToolActive(ToolType.MOVE_AND_SELECT)} onClick={() => this.activateTool(ToolType.MOVE_AND_SELECT)}/>
                 <DeleteIconComponent isActive={this.isToolActive(ToolType.DELETE)} onClick={() => this.activateTool(ToolType.DELETE)}/>
                 <ZoomInIconComponent isActive={false} onClick={() => this.zoomIn()}/>

@@ -21,7 +21,7 @@ export class SvgCanvasExporter implements ICanvasExporter {
     }
 
     private getRootDimensions(): Point {
-        const pixelModel = this.canvasController.pixelModel;
+        const pixelModel = this.canvasController.canvasStore;
         const configModel = this.canvasController.configModel;
 
         if (pixelModel.items.length === 0) {
@@ -41,7 +41,7 @@ export class SvgCanvasExporter implements ICanvasExporter {
     }
 
     private createRectangles(): string[] {
-        const pixelModel = this.canvasController.pixelModel;
+        const pixelModel = this.canvasController.canvasStore;
         const configModel = this.canvasController.configModel;
 
         if (pixelModel.items.length === 0) { return []; }

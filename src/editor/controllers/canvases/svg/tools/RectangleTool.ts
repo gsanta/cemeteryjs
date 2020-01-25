@@ -45,7 +45,7 @@ export class RectangleTool extends AbstractSelectionTool {
             name: ''
         }
 
-        this.canvasController.pixelModel.addRect(canvasItem);
+        this.canvasController.canvasStore.addRect(canvasItem);
     
         this.canvasController.renderCanvas();
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
@@ -55,7 +55,7 @@ export class RectangleTool extends AbstractSelectionTool {
         super.drag();
         
         if (this.lastPreviewRect) {
-            this.canvasController.pixelModel.removeRectangle(this.lastPreviewRect);
+            this.canvasController.canvasStore.removeRectangle(this.lastPreviewRect);
         }
         const type = this.canvasController.selectedWorldItemDefinition.typeName;
         const positions = this.getPositionsInSelection();
@@ -78,7 +78,7 @@ export class RectangleTool extends AbstractSelectionTool {
         }
 
         if (positions.length > 0) {
-            this.lastPreviewRect = this.canvasController.pixelModel.addRect(canvasItem);
+            this.lastPreviewRect = this.canvasController.canvasStore.addRect(canvasItem);
     
             this.canvasController.renderCanvas();
         }

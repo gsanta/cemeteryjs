@@ -24,7 +24,7 @@ export class SvgCanvasImporter implements ICanvasImporter {
 
     import(file: string): void {
         const processedJson = this.svgPreprocessor.process(file); 
-        this.svgCanvasController.pixelModel.clear();
+        this.svgCanvasController.canvasStore.clear();
         const canvasItems = processedJson.rects.map(rect => {
             const rectangle = new Rectangle(new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height));
 
@@ -42,7 +42,7 @@ export class SvgCanvasImporter implements ICanvasImporter {
                 name: rect.name
             }
 
-            this.svgCanvasController.pixelModel.addRect(canvasItem);
+            this.svgCanvasController.canvasStore.addRect(canvasItem);
             return canvasItem;
         });
 

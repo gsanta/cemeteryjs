@@ -10,6 +10,8 @@ import { CanvasItemTag } from '../../../controllers/canvases/svg/models/CanvasIt
 import { AbstractSelectionTool } from '../../../controllers/canvases/svg/tools/AbstractSelectionTool';
 import { ToolType } from '../../../controllers/canvases/svg/tools/Tool';
 import { CameraTool } from '../../../controllers/canvases/svg/tools/CameraTool';
+import { PathComponent } from './PathComponent';
+import { PathMarkersComponent } from './PathMarkersComponent';
 
 const EditorComponentStyled = styled.div`
     width: 100%;
@@ -56,15 +58,21 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
                     data-wg-width={bitmapConfig.canvasDimensions.x}
                     data-wg-height={bitmapConfig.canvasDimensions.y}
                 >
+                    <defs>
+                        <PathMarkersComponent/>
+                    </defs>
                     {this.renderCanvasItems()}
+                    {this.renderArrows()}
                     {this.renderSelection()}
+
+
                 </CanvasComponentStyled>
             </EditorComponentStyled>
         );
     }
 
     private renderCanvasItems() {
-        let items = [...this.props.canvasController.pixelModel.items];
+        let items = [...this.props.canvasController.canvasStore.items];
         items = sort(items, (a, b) => a.layer - b.layer);
         return items.map((item, i) => {
             const rectangle = item.dimensions as Rectangle;
@@ -91,6 +99,10 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
                 />
             )
         });
+    }
+
+    private renderArrows() {
+        return this.props.canvasController.canvasStore.arrows.map(arrow => <PathComponent item={arrow}/>);
     }
 
     private renderSelection(): JSX.Element {

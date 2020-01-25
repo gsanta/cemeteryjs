@@ -6,7 +6,8 @@ export enum ToolType {
     MOVE_AND_SELECT = 'move-and-select',
     MOVE = 'move',
     PAN = 'pan',
-    CAMERA = 'camera'
+    CAMERA = 'camera',
+    PATH = 'arrow'
 }
 
 export interface Tool {

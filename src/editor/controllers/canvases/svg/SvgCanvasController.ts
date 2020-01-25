@@ -17,6 +17,7 @@ import { MoveAndSelectTool } from './tools/MoveAndSelectTool';
 import { RectangleTool } from './tools/RectangleTool';
 import { Tool, ToolType } from './tools/Tool';
 import { CameraTool } from './tools/CameraTool';
+import { PathTool } from './tools/PathTool';
 
 export class SvgCanvasController implements IEditableCanvas {
     static id = 'svg-canvas-controller';
@@ -29,7 +30,7 @@ export class SvgCanvasController implements IEditableCanvas {
     model3dController: Model3DController;
 
     configModel: SvgConfig;
-    pixelModel: SvgCanvasStore;
+    canvasStore: SvgCanvasStore;
     
     controllers: EditorFacade;
     worldItemDefinitions: GameObjectTemplate[];
@@ -49,7 +50,7 @@ export class SvgCanvasController implements IEditableCanvas {
         this.selectedWorldItemDefinition = this.worldItemDefinitions[0];
 
         this.configModel = new SvgConfig();
-        this.pixelModel = new SvgCanvasStore(this.configModel);
+        this.canvasStore = new SvgCanvasStore(this.configModel);
         
         this.mouseController = new MouseHandler(this);
         this.writer = new SvgCanvasImporter(this, editorFacade.eventDispatcher);
@@ -59,9 +60,10 @@ export class SvgCanvasController implements IEditableCanvas {
         this.cameraTool = new CameraTool(editorFacade);
         this.tools = [
             new RectangleTool(this, this.controllers.eventDispatcher),
+            new PathTool(this),
             new DeleteTool(this, this.controllers.eventDispatcher),
             new MoveAndSelectTool(this, this.controllers.eventDispatcher),
-            this.cameraTool
+            this.cameraTool,
         ];
 
         this.canvasItemSettingsForm = new CanvasItemSettingsForm(this, this.controllers.eventDispatcher);
@@ -94,6 +96,8 @@ export class SvgCanvasController implements IEditableCanvas {
                 return this.findToolByType(ToolType.RECTANGLE);
             case ToolType.CAMERA:
                 return this.findToolByType(ToolType.CAMERA);
+            case ToolType.PATH:
+                return this.findToolByType(ToolType.PATH);
         }
     }
 
@@ -131,6 +135,6 @@ export class SvgCanvasController implements IEditableCanvas {
     }
 
     isEmpty(): boolean {
-        return this.pixelModel.items.length === 0;
+        return this.canvasStore.items.length === 0;
     }
 }
