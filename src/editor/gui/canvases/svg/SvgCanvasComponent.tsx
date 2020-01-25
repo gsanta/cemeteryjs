@@ -61,8 +61,8 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
                     <defs>
                         <PathMarkersComponent/>
                     </defs>
-                    {this.renderCanvasItems()}
-                    {this.renderArrows()}
+                    {this.props.canvasController.toolService.getToolComponentFactory(ToolType.RECTANGLE).create()}
+                    {this.props.canvasController.toolService.getToolComponentFactory(ToolType.PATH).create()}
                     {this.renderSelection()}
 
 
@@ -102,7 +102,7 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
     }
 
     private renderArrows() {
-        return this.props.canvasController.canvasStore.arrows.map(arrow => <PathComponent item={arrow}/>);
+        return this.props.canvasController.canvasStore.pathes.map(arrow => <PathComponent item={arrow}/>);
     }
 
     private renderSelection(): JSX.Element {

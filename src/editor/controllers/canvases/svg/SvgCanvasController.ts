@@ -14,10 +14,15 @@ import { SvgCanvasExporter } from './SvgCanvasExporter';
 import { SvgCanvasImporter } from './SvgCanvasImporter';
 import { DeleteTool } from './tools/DeleteTool';
 import { MoveAndSelectTool } from './tools/MoveAndSelectTool';
-import { RectangleTool } from './tools/RectangleTool';
+import { RectangleTool } from './tools/rectangle/RectangleTool';
 import { Tool, ToolType } from './tools/Tool';
 import { CameraTool } from './tools/CameraTool';
-import { PathTool } from './tools/PathTool';
+import { PathTool } from './tools/path/PathTool';
+import { ToolService } from './tools/ToolService';
+import { RectangleExporter } from './tools/rectangle/RectangleExporter';
+import { RectangleComponentFactory } from './tools/rectangle/RectangleComponentFactory';
+import { PathExporter } from './tools/path/PathExporter';
+import { PathComponentFactory } from './tools/path/PathComponentFactory';
 
 export class SvgCanvasController implements IEditableCanvas {
     static id = 'svg-canvas-controller';
@@ -28,6 +33,7 @@ export class SvgCanvasController implements IEditableCanvas {
     writer: ICanvasImporter;
     reader: ICanvasExporter;
     model3dController: Model3DController;
+    toolService: ToolService;
 
     configModel: SvgConfig;
     canvasStore: SvgCanvasStore;
@@ -58,13 +64,35 @@ export class SvgCanvasController implements IEditableCanvas {
         this.model3dController = new Model3DController(this);
 
         this.cameraTool = new CameraTool(editorFacade);
+        const rectangleTool = new RectangleTool(this, this.controllers.eventDispatcher);
+        const pathTool = new PathTool(this);
+        const deleteTool = new DeleteTool(this, this.controllers.eventDispatcher);
+        const moveAndSelectTool = new MoveAndSelectTool(this, this.controllers.eventDispatcher); 
         this.tools = [
-            new RectangleTool(this, this.controllers.eventDispatcher),
-            new PathTool(this),
-            new DeleteTool(this, this.controllers.eventDispatcher),
-            new MoveAndSelectTool(this, this.controllers.eventDispatcher),
+            rectangleTool,
+            pathTool,
+            deleteTool,
+            moveAndSelectTool,
             this.cameraTool,
         ];
+
+        this.toolService = new ToolService(
+            [
+                rectangleTool,
+                pathTool,
+                deleteTool,
+                moveAndSelectTool,
+                this.cameraTool,
+            ],
+            [
+                new RectangleExporter(this),
+                new PathExporter(this)
+            ],
+            [
+                new RectangleComponentFactory(this),
+                new PathComponentFactory(this)
+            ]
+        )
 
         this.canvasItemSettingsForm = new CanvasItemSettingsForm(this, this.controllers.eventDispatcher);
     }

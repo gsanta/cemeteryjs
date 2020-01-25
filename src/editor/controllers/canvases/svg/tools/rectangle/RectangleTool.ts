@@ -1,12 +1,12 @@
-import { EventDispatcher } from '../../../events/EventDispatcher';
-import { SvgCanvasController } from '../SvgCanvasController';
-import { ToolType } from './Tool';
-import { Rectangle } from '../../../../../model/geometry/shapes/Rectangle';
-import { Point } from '../../../../../model/geometry/shapes/Point';
-import { WorldItemShape } from '../../../../../world_generator/services/GameObject';
-import { Events } from '../../../events/Events';
-import { AbstractSelectionTool } from './AbstractSelectionTool';
-import { CanvasItem } from '../models/CanvasItem';
+import { EventDispatcher } from '../../../../events/EventDispatcher';
+import { SvgCanvasController } from '../../SvgCanvasController';
+import { ToolType } from '../Tool';
+import { Rectangle } from '../../../../../../model/geometry/shapes/Rectangle';
+import { Point } from '../../../../../../model/geometry/shapes/Point';
+import { WorldItemShape } from '../../../../../../world_generator/services/GameObject';
+import { Events } from '../../../../events/Events';
+import { AbstractSelectionTool } from '../AbstractSelectionTool';
+import { CanvasItem } from '../../models/CanvasItem';
 
 export class RectangleTool extends AbstractSelectionTool {
     private eventDispatcher: EventDispatcher;

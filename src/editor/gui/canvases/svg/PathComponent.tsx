@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import { Path } from '../../../controllers/canvases/svg/tools/PathTool';
+import { Path } from '../../../controllers/canvases/svg/tools/path/PathTool';
 import { Point } from '../../../../model/geometry/shapes/Point';
 
 export interface ArrowComponentProps {

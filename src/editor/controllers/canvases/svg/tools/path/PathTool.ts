@@ -1,7 +1,7 @@
-import { Point } from "../../../../../model/geometry/shapes/Point";
-import { AbstractTool } from "./AbstractTool";
-import { ToolType } from "./Tool";
-import { SvgCanvasController } from "../SvgCanvasController";
+import { Point } from "../../../../../../model/geometry/shapes/Point";
+import { AbstractTool } from "../AbstractTool";
+import { ToolType } from "../Tool";
+import { SvgCanvasController } from "../../SvgCanvasController";
 
 
 export class Path {

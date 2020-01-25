@@ -1,3 +1,4 @@
+import { IToolType } from "./IToolType";
 
 export enum ToolType {
     RECTANGLE = 'rectangle',
@@ -10,9 +11,7 @@ export enum ToolType {
     PATH = 'arrow'
 }
 
-export interface Tool {
-    type: ToolType;
-
+export interface Tool extends IToolType {
     supportsRectSelection(): boolean;
     down();
     drag();
