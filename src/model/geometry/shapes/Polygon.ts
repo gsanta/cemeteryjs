@@ -2,21 +2,20 @@ import booleanContains from '@turf/boolean-contains';
 import booleanOverlaps from '@turf/boolean-overlap';
 import * as turfHelpers from '@turf/helpers';
 import polylabel from 'polylabel';
-import { GeometryService } from '../GeometryService';
 import { every, maxBy, minBy } from '../utils/Functions';
 import { Point } from './Point';
 import { Segment } from './Segment';
 import { BoundingInfo, Shape, ShapeOrigin } from './Shape';
+import { Angle } from './Angle';
+import { Measurements } from '../utils/Measurements';
 
 
 export class Polygon implements Shape {
     protected points: Point[];
     protected orederedPoints: Point[];
-    private geometryService: GeometryService;
 
-    constructor(points: Point[], geometryService: GeometryService = new GeometryService()) {
+    constructor(points: Point[]) {
         this.points = points;
-        this.geometryService = geometryService;
         this.orederedPoints = this.orderPointsToStartAtBottomLeft(this.points);
         this.points = this.orederedPoints;
         if (!this.arePointsClockwise()) {
@@ -167,7 +166,7 @@ export class Polygon implements Shape {
         const width = boudingInfo.max[0] - boudingInfo.min[0]
         const height = boudingInfo.max[1] - boudingInfo.min[1];
 
-        return this.geometryService.factory.rectangle(point.x - width / 2, point.y - height / 2, width, height);
+        return Polygon.createRectangle(point.x - width / 2, point.y - height / 2, width, height);
     }
 
     /**
@@ -176,9 +175,9 @@ export class Polygon implements Shape {
     public getSidesFromBottomLeftClockwise(): Segment[] {
         return this.orederedPoints.map((point, index) => {
             if (index < this.orederedPoints.length - 1) {
-                return this.geometryService.factory.edge(point, this.orederedPoints[index + 1]);
+                return new Segment(point, this.orederedPoints[index + 1]);
             } else {
-                return this.geometryService.factory.edge(point, this.orederedPoints[0]);
+                return new Segment(point, this.orederedPoints[0]);
             }
         });
     }
@@ -243,7 +242,7 @@ export class Polygon implements Shape {
             const a = point;
             const b = this.getPreviousPoint(point);
             const c = this.getNextPoint(point);
-            return this.geometryService.factory.angleFromThreePoints(a, b, c).isStraightAngle() === false
+            return Angle.fromThreePoints(a, b, c).isStraightAngle() === false
         });
 
         const reducedPoints: Point[] = [firstPoint];
@@ -255,7 +254,7 @@ export class Polygon implements Shape {
             const b = this.getPreviousPoint(currentPoint);
             const c = this.getNextPoint(currentPoint);
 
-            if (this.geometryService.factory.angleFromThreePoints(a, b, c).isStraightAngle() === false) {
+            if (Angle.fromThreePoints(a, b, c).isStraightAngle() === false) {
                 reducedPoints.push(currentPoint);
             }
 
@@ -275,17 +274,17 @@ export class Polygon implements Shape {
         return str;
     }
 
-    public static createRectangle(left: number, top: number,  width: number, height: number, geometryService: GeometryService = new GeometryService()): Polygon {
+    public static createRectangle(left: number, top: number,  width: number, height: number): Polygon {
         const minX = left;
         const maxX = left + width;
         const minY = top;
         const maxY = top + height;
 
         return new Polygon([
-            geometryService.factory.point(minX, minY),
-            geometryService.factory.point(minX, maxY),
-            geometryService.factory.point(maxX, maxY),
-            geometryService.factory.point(maxX, minY)
+            new Point(minX, minY),
+            new Point(minX, maxY),
+            new Point(maxX, maxY),
+            new Point(maxX, minY)
         ]);
     }
 
@@ -317,7 +316,7 @@ export class Polygon implements Shape {
     private orderPointsToStartAtBottomLeft = (points: Point[]) => {
         const minY = minBy<Point>(points, (a, b) => a.y - b.y).y;
 
-        const poinstWithYEqualToMinY = points.filter(point => this.geometryService.measuerments.coordinatesEqual(point.y, minY))
+        const poinstWithYEqualToMinY = points.filter(point => new Measurements().coordinatesEqual(point.y, minY))
         const bottomLeftPoint = minBy<Point>(poinstWithYEqualToMinY, (a, b) => a.x - b.x);
 
         while (!points[0].equalTo(bottomLeftPoint)) {

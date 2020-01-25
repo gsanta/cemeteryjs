@@ -1,11 +1,9 @@
-import { GeometryService } from "../../../../src/model/geometry/GeometryService";
 import { StripeView } from "../../../../src/model/geometry/shapes/StripeView";
 import { Point } from "../../../../src/model/geometry/shapes/Point";
 import { Polygon } from "../../../../src/model/geometry/shapes/Polygon";
+import { Segment } from "../../../../src/model/geometry/shapes/Segment";
 
 describe(`StripeView`, () => {
-    const geometryService = new GeometryService();
-
     describe(`getSlope`, () => {
         it ('returns with the slope of the longer side of the stripe', () => {
             const stripeHorizontal = new StripeView(Polygon.createRectangle(1, 1, 5, 1), 0);
@@ -49,26 +47,26 @@ describe(`StripeView`, () => {
             const rect = Polygon.createRectangle(0, 0, 5, 1);
             const stripe = new StripeView(rect, 0);
 
-            const fullOverlap = stripe.overlaps(geometryService.factory.edge(new Point(2, 1), new Point(4, 1)));
-            expect(fullOverlap).toEqual([geometryService.factory.edge(new Point(2, 1), new Point(4, 1)), 1]);
+            const fullOverlap = stripe.overlaps(new Segment(new Point(2, 1), new Point(4, 1)));
+            expect(fullOverlap).toEqual([new Segment(new Point(2, 1), new Point(4, 1)), 1]);
 
-            const partialOverlap = stripe.overlaps(geometryService.factory.edge(new Point(-1, 1), new Point(2, 1)));
-            expect(partialOverlap).toEqual([geometryService.factory.edge(new Point(0, 1), new Point(2, 1)), 1]);
+            const partialOverlap = stripe.overlaps(new Segment(new Point(-1, 1), new Point(2, 1)));
+            expect(partialOverlap).toEqual([new Segment(new Point(0, 1), new Point(2, 1)), 1]);
         });
 
         it ('returns with overlap info if there is an overlap on the other long side', () => {
             const rect = Polygon.createRectangle(0, 0, 5, 1);
             const stripe = new StripeView(rect, 0);
 
-            const fullOverlap = stripe.overlaps(geometryService.factory.edge(new Point(2, 0), new Point(4, 0)));
-            expect(fullOverlap).toEqual([geometryService.factory.edge(new Point(2, 0), new Point(4, 0)), 3]);
+            const fullOverlap = stripe.overlaps(new Segment(new Point(2, 0), new Point(4, 0)));
+            expect(fullOverlap).toEqual([new Segment(new Point(2, 0), new Point(4, 0)), 3]);
         });
 
         it ('returns undefined if there is no overlap', () => {
             const rect = Polygon.createRectangle(0, 0, 5, 1);
             const stripe = new StripeView(rect, 0);
 
-            const fullOverlap = stripe.overlaps(geometryService.factory.edge(new Point(-2, 0), new Point(-1, 0)));
+            const fullOverlap = stripe.overlaps(new Segment(new Point(-2, 0), new Point(-1, 0)));
             expect(fullOverlap).toEqual(undefined);
         });
     });

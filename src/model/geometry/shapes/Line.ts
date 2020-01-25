@@ -1,19 +1,15 @@
 import { Point } from "./Point";
 import { Angle } from "./Angle";
-import { GeometryService } from '../GeometryService';
 
 export class Line {
     slope: number;
     yIntercept: number;
     xIntercept: number;
 
-    private geometryService: GeometryService;
-
-    private constructor(slope: number, yIntercept: number, xIntercept: number, geometryService: GeometryService = new GeometryService()) {
+    private constructor(slope: number, yIntercept: number, xIntercept: number) {
         this.slope = slope;
         this.yIntercept = yIntercept;
         this.xIntercept = xIntercept;
-        this.geometryService = geometryService;
     }
 
     public getSegmentWithCenterPointAndDistance(centerPoint: Point, d: number): [Point, Point] {
@@ -97,7 +93,7 @@ export class Line {
 
     getAngleToXAxis(): Angle {
         if (this.isVertical()) {
-            return this.geometryService.factory.angleFromRadian(Math.PI / 2);
+            return Angle.fromRadian(Math.PI / 2);
         }
 
         const xAxis = Line.createHorizontalLine(0);
@@ -107,24 +103,24 @@ export class Line {
             const a = new Point(o.x + 10, this.getY(o.x + 10));
             const b = new Point(o.x + 10, 0);
 
-            return this.geometryService.factory.angleFromThreePoints(o, a, b);
+            return Angle.fromThreePoints(o, a, b);
 
         }
 
-        return this.geometryService.factory.angleFromThreePoints(
+        return Angle.fromThreePoints(
             new Point(0, 0),
             new Point(0, 0),
             new Point(0, 0)
         );
     }
 
-    static fromTwoPoints(point1: Point, point2: Point, geometryService: GeometryService = new GeometryService()): Line {
+    static fromTwoPoints(point1: Point, point2: Point): Line {
         const slope = point1.x === point2.x ? undefined : (point1.y - point2.y) / (point1.x - point2.x);
 
         return Line.fromPointSlopeForm(point1, slope);
     }
 
-    static fromPointSlopeForm(point: Point, slope: number, geometryService: GeometryService = new GeometryService()): Line {
+    static fromPointSlopeForm(point: Point, slope: number): Line {
         let yIntercept: number;
         let xIntercept: number;
 
@@ -139,14 +135,14 @@ export class Line {
             xIntercept = (-1 * yIntercept) / slope;
         }
 
-        return new Line(slope, yIntercept, xIntercept, geometryService);
+        return new Line(slope, yIntercept, xIntercept);
     }
 
-    public static createVerticalLine(x: number, geometryService: GeometryService = new GeometryService()) {
-        return new Line(undefined, undefined, x, geometryService);
+    public static createVerticalLine(x: number) {
+        return new Line(undefined, undefined, x);
     }
 
-    public static createHorizontalLine(y: number, geometryService: GeometryService = new GeometryService()) {
-        return new Line(0, y, undefined, geometryService);
+    public static createHorizontalLine(y: number) {
+        return new Line(0, y, undefined);
     }
 }

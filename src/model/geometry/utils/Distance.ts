@@ -1,16 +1,10 @@
 import { Segment } from '../shapes/Segment';
 import { Point } from '../shapes/Point';
-import { GeometryService } from '../GeometryService';
 import { Line } from '../shapes/Line';
+import { Measurements } from './Measurements';
 
 
 export class Distance {
-    private geometryService: GeometryService;
-
-    constructor(geometryService: GeometryService = new GeometryService()) {
-        this.geometryService = geometryService;
-    }
-
     pointToSegment(point: Point, segment: Segment): number {
         const [v, w] = segment.getPoints();
         const l2 = dist2(v, w);
@@ -35,7 +29,7 @@ export class Distance {
         const wallLine = segment1.getLine();
         const furniturePerpLine = segment2.getPerpendicularBisector();
 
-        if (!this.geometryService.measuerments.linesParallel(wallLine, furniturePerpLine)) {
+        if (!new Measurements().linesParallel(wallLine, furniturePerpLine)) {
             const line = Line.fromPointSlopeForm(segment2.getBoundingCenter(), furniturePerpLine.slope);
             const intersection = wallLine.intersection(line);
 

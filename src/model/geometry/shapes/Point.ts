@@ -1,15 +1,11 @@
-import { GeometryService } from '../GeometryService';
 
 export class Point {
     public x: number;
     public y: number;
 
-    private geometryService: GeometryService;
-
-    constructor(x: number, y: number, geometryService: GeometryService = new GeometryService()) {
+    constructor(x: number, y: number) {
         this.x = x;
         this.y = y;
-        this.geometryService = geometryService;
     }
 
     setX(x: number): Point {
