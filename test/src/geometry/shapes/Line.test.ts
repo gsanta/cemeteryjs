@@ -9,7 +9,7 @@ describe(`Line`, () => {
             const point = geometryService.factory.point(4, 3);
             const slope = 0.5;
 
-            const line = geometryService.factory.lineFromPointSlopeForm(point, slope);
+            const line = Line.fromPointSlopeForm(point, slope);
 
             expect(line.yIntercept).toEqual(1);
             expect(line.slope).toEqual(0.5);
@@ -19,7 +19,7 @@ describe(`Line`, () => {
             const point = geometryService.factory.point(4, 3);
             const slope = undefined;
 
-            const line = geometryService.factory.lineFromPointSlopeForm(point, slope);
+            const line = Line.fromPointSlopeForm(point, slope);
 
             expect(line.xIntercept).toEqual(4);
             expect(line.yIntercept).toEqual(undefined);
@@ -30,7 +30,7 @@ describe(`Line`, () => {
             const point = geometryService.factory.point(4, 3);
             const slope = 0;
 
-            const line = geometryService.factory.lineFromPointSlopeForm(point, slope);
+            const line = Line.fromPointSlopeForm(point, slope);
 
             expect(line.yIntercept).toEqual(3);
             expect(line.slope).toEqual(0);
@@ -58,7 +58,7 @@ describe(`Line`, () => {
             const point = geometryService.factory.point(4, 4);
             const slope = 0.5;
 
-            const line = geometryService.factory.lineFromPointSlopeForm(point, slope);
+            const line = Line.fromPointSlopeForm(point, slope);
 
             expect(line.getX(3)).toEqual(2);
         });
@@ -69,7 +69,7 @@ describe(`Line`, () => {
             const point = geometryService.factory.point(4, 4);
             const slope = 0.5;
 
-            const line = geometryService.factory.lineFromPointSlopeForm(point, slope);
+            const line = Line.fromPointSlopeForm(point, slope);
 
             expect(line.getX(2)).toEqual(0);
         });
@@ -78,23 +78,23 @@ describe(`Line`, () => {
     describe(`intersection`, () => {
         it ('calculates the intersection of two `Line`s', () => {
 
-            const line1 = geometryService.factory.lineFromPointSlopeForm(geometryService.factory.point(0, 2), 2);
-            const line2 = geometryService.factory.lineFromPointSlopeForm(geometryService.factory.point(0, -2), 3);
+            const line1 = Line.fromPointSlopeForm(geometryService.factory.point(0, 2), 2);
+            const line2 = Line.fromPointSlopeForm(geometryService.factory.point(0, -2), 3);
 
             expect(line1.intersection(line2)).toEqual(geometryService.factory.point(4, 10));
         });
 
         it ('returns undefined if the slopes are the same', () => {
 
-            const line1 = geometryService.factory.lineFromPointSlopeForm(geometryService.factory.point(0, 2), 2);
-            const line2 = geometryService.factory.lineFromPointSlopeForm(geometryService.factory.point(0, -2), 2);
+            const line1 = Line.fromPointSlopeForm(geometryService.factory.point(0, 2), 2);
+            const line2 = Line.fromPointSlopeForm(geometryService.factory.point(0, -2), 2);
 
             expect(line1.intersection(line2)).toEqual(undefined);
         });
 
         it ('works if one of the `Line`s is vertical', () => {
-            const line1 = geometryService.factory.lineFromPointSlopeForm(geometryService.factory.point(0, 2), undefined);
-            const line2 = geometryService.factory.lineFromPointSlopeForm(geometryService.factory.point(0, -2), 2);
+            const line1 = Line.fromPointSlopeForm(geometryService.factory.point(0, 2), undefined);
+            const line2 = Line.fromPointSlopeForm(geometryService.factory.point(0, -2), 2);
 
             expect(line1.intersection(line2)).toEqual(geometryService.factory.point(0, -2));
             expect(line2.intersection(line1)).toEqual(geometryService.factory.point(0, -2));
@@ -104,7 +104,7 @@ describe(`Line`, () => {
     describe(`getSegmentWithCenterPointAndDistance`, () => {
         it ('returns the two endpoints of a segment given the center `Point` and the distance from the center.', () => {
             const center1 = geometryService.factory.point(4, 3);
-            const line45deg = geometryService.factory.lineFromPointSlopeForm(center1, 1);
+            const line45deg = Line.fromPointSlopeForm(center1, 1);
 
             expect(line45deg.getSegmentWithCenterPointAndDistance(center1, Math.SQRT2)).toEqual([geometryService.factory.point(5, 4), geometryService.factory.point(3, 2)]);
 
@@ -122,7 +122,7 @@ describe(`Line`, () => {
 
     describe(`getAngleToXAxis`, () => {
         it ('returns with the line\'s angle to the x axis', () => {
-            const line45deg = geometryService.factory.lineFromPointSlopeForm(geometryService.factory.point(0, 0), 1);
+            const line45deg = Line.fromPointSlopeForm(geometryService.factory.point(0, 0), 1);
 
             expect(toDegree(line45deg.getAngleToXAxis().getAngle())).toEqual(45);
 
@@ -134,7 +134,7 @@ describe(`Line`, () => {
 
             expect(toDegree(lineVertical.getAngleToXAxis().getAngle())).toEqual(90);
 
-            const lineneg45Deg = geometryService.factory.lineFromPointSlopeForm(geometryService.factory.point(0, 0), -1);
+            const lineneg45Deg = Line.fromPointSlopeForm(geometryService.factory.point(0, 0), -1);
 
             expect(toDegree(lineneg45Deg.getAngleToXAxis().getAngle())).toEqual(315);
         });

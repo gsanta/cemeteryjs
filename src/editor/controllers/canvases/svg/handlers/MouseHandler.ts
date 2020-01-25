@@ -58,7 +58,6 @@ export class MouseHandler {
         this.pointer.currScreen = this.getScreenPointFromEvent(e);
         if (this.isDown) {
             this.isDrag = true;
-            console.log(this.pointer.getScreenDiff())
             this.controller.getActiveTool().drag();
         }
     }    

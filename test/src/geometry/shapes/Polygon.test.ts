@@ -9,7 +9,7 @@ describe('Polygon', () => {
 
     describe(`setPoint`, () => {
         it ('sets the given `Point` and returns with the new `Shape`', () => {
-            let polygon = geometryService.factory.polygon([
+            let polygon = new Polygon([
                 geometryService.factory.point(1, 1),
                 geometryService.factory.point(1, 2),
                 geometryService.factory.point(3, 2),
@@ -19,7 +19,7 @@ describe('Polygon', () => {
             polygon = polygon.setPoint(2, geometryService.factory.point(3, 3));
 
             expect(polygon.equalTo(
-                geometryService.factory.polygon([
+                new Polygon([
                     geometryService.factory.point(1, 1),
                     geometryService.factory.point(1, 2),
                     geometryService.factory.point(3, 3),
@@ -53,14 +53,14 @@ describe('Polygon', () => {
 
     describe('contains', () => {
         it ('returns true if the polygon contains the other', () => {
-            const poly1 = geometryService.factory.polygon([
+            const poly1 = new Polygon([
                 geometryService.factory.point(1, 1),
                 geometryService.factory.point(3, 1),
                 geometryService.factory.point(3, 4),
                 geometryService.factory.point(1, 4)
             ]);
 
-            const poly2 = geometryService.factory.polygon([
+            const poly2 = new Polygon([
                 geometryService.factory.point(2, 1),
                 geometryService.factory.point(3, 1),
                 geometryService.factory.point(3, 4),
@@ -71,14 +71,14 @@ describe('Polygon', () => {
         });
 
         it ('returns false if the two polygons overlap', () => {
-            const poly1 = geometryService.factory.polygon([
+            const poly1 = new Polygon([
                 geometryService.factory.point(1, 1),
                 geometryService.factory.point(3, 1),
                 geometryService.factory.point(3, 4),
                 geometryService.factory.point(1, 4)
             ]);
 
-            const poly2 = geometryService.factory.polygon([
+            const poly2 = new Polygon([
                 geometryService.factory.point(2, 1),
                 geometryService.factory.point(4, 1),
                 geometryService.factory.point(4, 4),
@@ -89,14 +89,14 @@ describe('Polygon', () => {
         });
 
         it ('returns false if the two polygons do have any common parts', () => {
-            const poly1 = geometryService.factory.polygon([
+            const poly1 = new Polygon([
                 geometryService.factory.point(1, 1),
                 geometryService.factory.point(3, 1),
                 geometryService.factory.point(3, 4),
                 geometryService.factory.point(1, 4)
             ]);
 
-            const poly2 = geometryService.factory.polygon([
+            const poly2 = new Polygon([
                 geometryService.factory.point(4, 1),
                 geometryService.factory.point(5, 1),
                 geometryService.factory.point(5, 4),
@@ -109,14 +109,14 @@ describe('Polygon', () => {
 
     describe('intersect', () => {
         it ('returns true if the two polygons overlap', () => {
-            const poly1 = geometryService.factory.polygon([
+            const poly1 = new Polygon([
                 geometryService.factory.point(1, 1),
                 geometryService.factory.point(4, 1),
                 geometryService.factory.point(4, 4),
                 geometryService.factory.point(1, 4)
             ]);
 
-            const poly2 = geometryService.factory.polygon([
+            const poly2 = new Polygon([
                 geometryService.factory.point(3, 1),
                 geometryService.factory.point(5, 1),
                 geometryService.factory.point(5, 4),
@@ -127,14 +127,14 @@ describe('Polygon', () => {
         });
 
         it ('returns true if the two polygons intersect at an edge', () => {
-            const poly1 = geometryService.factory.polygon([
+            const poly1 = new Polygon([
                 geometryService.factory.point(1, 1),
                 geometryService.factory.point(4, 1),
                 geometryService.factory.point(4, 4),
                 geometryService.factory.point(1, 4)
             ]);
 
-            const poly2 = geometryService.factory.polygon([
+            const poly2 = new Polygon([
                 geometryService.factory.point(4, 1),
                 geometryService.factory.point(5, 1),
                 geometryService.factory.point(5, 4),
@@ -145,14 +145,14 @@ describe('Polygon', () => {
         });
 
         it ('returns false if the two polygons do not intersect', () => {
-            const poly1 = geometryService.factory.polygon([
+            const poly1 = new Polygon([
                 geometryService.factory.point(1, 1),
                 geometryService.factory.point(4, 1),
                 geometryService.factory.point(4, 4),
                 geometryService.factory.point(1, 4)
             ]);
 
-            const poly2 = geometryService.factory.polygon([
+            const poly2 = new Polygon([
                 geometryService.factory.point(5, 1),
                 geometryService.factory.point(6, 1),
                 geometryService.factory.point(6, 4),
@@ -165,14 +165,14 @@ describe('Polygon', () => {
 
     describe('`getCoincidentLineSegment`', () => {
         it ('returns with the common `Segment` segment if the `Polygon` has a common edge with the other `Shape`', () => {
-            const poly1 = geometryService.factory.polygon([
+            const poly1 = new Polygon([
                 geometryService.factory.point(1, 1),
                 geometryService.factory.point(1, 4),
                 geometryService.factory.point(3, 4),
                 geometryService.factory.point(3, 1)
             ]);
 
-            const poly2 = geometryService.factory.polygon([
+            const poly2 = new Polygon([
                 geometryService.factory.point(3, 1),
                 geometryService.factory.point(3, 4),
                 geometryService.factory.point(4, 4),
@@ -183,14 +183,14 @@ describe('Polygon', () => {
         });
 
         it ('returns undefined if the two `Shape`s don\'t have common edges', () => {
-            const poly1 = geometryService.factory.polygon([
+            const poly1 = new Polygon([
                 geometryService.factory.point(1, 1),
                 geometryService.factory.point(1, 4),
                 geometryService.factory.point(3, 4),
                 geometryService.factory.point(3, 1)
             ]);
 
-            const poly2 = geometryService.factory.polygon([
+            const poly2 = new Polygon([
                 geometryService.factory.point(4, 1),
                 geometryService.factory.point(4, 4),
                 geometryService.factory.point(5, 4),
@@ -201,14 +201,14 @@ describe('Polygon', () => {
         });
 
         it ('returns undefined if the two `Shape`s touches only at a vertex.', () => {
-            const poly1 = geometryService.factory.polygon([
+            const poly1 = new Polygon([
                 geometryService.factory.point(1, 1),
                 geometryService.factory.point(1, 4),
                 geometryService.factory.point(3, 4),
                 geometryService.factory.point(3, 1)
             ]);
 
-            const poly2 = geometryService.factory.polygon([
+            const poly2 = new Polygon([
                 geometryService.factory.point(3, 4),
                 geometryService.factory.point(3, 6),
                 geometryService.factory.point(6, 6),
@@ -221,7 +221,7 @@ describe('Polygon', () => {
 
     describe(`scale`, () => {
         it ('scales the `Polygon` by the given x', () => {
-            const polygon = geometryService.factory.polygon([
+            const polygon = new Polygon([
                 geometryService.factory.point(1, 0),
                 geometryService.factory.point(1, 2),
                 geometryService.factory.point(4, 2),
@@ -229,7 +229,7 @@ describe('Polygon', () => {
             ]);
             expect(
                 polygon.scale(geometryService.factory.point(3, 1)).equalTo(
-                    geometryService.factory.polygon([
+                    new Polygon([
                         geometryService.factory.point(3, 0),
                         geometryService.factory.point(3, 2),
                         geometryService.factory.point(12, 2),
@@ -240,7 +240,7 @@ describe('Polygon', () => {
         });
 
         it ('scales the `Polygon` by the given y', () => {
-            const polygon = geometryService.factory.polygon([
+            const polygon = new Polygon([
                 geometryService.factory.point(1, 0),
                 geometryService.factory.point(1, 2),
                 geometryService.factory.point(4, 2),
@@ -249,7 +249,7 @@ describe('Polygon', () => {
 
             expect(
                 polygon.scale(geometryService.factory.point(1, 3)).equalTo(
-                    geometryService.factory.polygon([
+                    new Polygon([
                         geometryService.factory.point(1, 0),
                         geometryService.factory.point(1, 6),
                         geometryService.factory.point(4, 6),
@@ -262,22 +262,22 @@ describe('Polygon', () => {
 
     describe('equalTo', () => {
         it ('returns true if all of the points in the polygon are equal', () => {
-            const polygon1 = geometryService.factory.polygon([geometryService.factory.point(1, 2), geometryService.factory.point(3, 4), geometryService.factory.point(5, 6)]);
-            const polygon2 = geometryService.factory.polygon([geometryService.factory.point(1, 2), geometryService.factory.point(3, 4), geometryService.factory.point(5, 6)]);
+            const polygon1 = new Polygon([geometryService.factory.point(1, 2), geometryService.factory.point(3, 4), geometryService.factory.point(5, 6)]);
+            const polygon2 = new Polygon([geometryService.factory.point(1, 2), geometryService.factory.point(3, 4), geometryService.factory.point(5, 6)]);
 
             expect(polygon1.equalTo(polygon2)).toBeTruthy();
         });
 
         it ('returns false it not all the points are equal', () => {
-            const polygon1 = geometryService.factory.polygon([geometryService.factory.point(1, 2), geometryService.factory.point(5, 4), geometryService.factory.point(5, 6)]);
-            const polygon2 = geometryService.factory.polygon([geometryService.factory.point(1, 2), geometryService.factory.point(3, 4), geometryService.factory.point(5, 6)]);
+            const polygon1 = new Polygon([geometryService.factory.point(1, 2), geometryService.factory.point(5, 4), geometryService.factory.point(5, 6)]);
+            const polygon2 = new Polygon([geometryService.factory.point(1, 2), geometryService.factory.point(3, 4), geometryService.factory.point(5, 6)]);
 
             expect(polygon1.equalTo(polygon2)).toBeFalsy();
         });
 
         it ('returns false it the two polygons do not have the same number of points', () => {
-            const polygon1 = geometryService.factory.polygon([geometryService.factory.point(1, 2), geometryService.factory.point(3, 4)]);
-            const polygon2 = geometryService.factory.polygon([geometryService.factory.point(1, 2), geometryService.factory.point(3, 4), geometryService.factory.point(5, 6)]);
+            const polygon1 = new Polygon([geometryService.factory.point(1, 2), geometryService.factory.point(3, 4)]);
+            const polygon2 = new Polygon([geometryService.factory.point(1, 2), geometryService.factory.point(3, 4), geometryService.factory.point(5, 6)]);
 
             expect(polygon1.equalTo(polygon2)).toBeFalsy();
         });
@@ -285,7 +285,7 @@ describe('Polygon', () => {
 
     describe(`negate`, () => {
         it ('can negate to the x axis', () => {
-            const polygon = geometryService.factory.polygon([
+            const polygon = new Polygon([
                 geometryService.factory.point(2, 3),
                 geometryService.factory.point(5, 3),
                 geometryService.factory.point(5, 6),
@@ -293,7 +293,7 @@ describe('Polygon', () => {
                 geometryService.factory.point(2, 7)
             ]);
 
-            const expectedPolygon = geometryService.factory.polygon([
+            const expectedPolygon = new Polygon([
                 geometryService.factory.point(-2, 3),
                 geometryService.factory.point(-5, 3),
                 geometryService.factory.point(-5, 6),
@@ -305,7 +305,7 @@ describe('Polygon', () => {
         });
 
         it ('can negate to the y axis', () => {
-            const polygon = geometryService.factory.polygon([
+            const polygon = new Polygon([
                 geometryService.factory.point(2, 3),
                 geometryService.factory.point(2, 7),
                 geometryService.factory.point(4, 7),
@@ -314,7 +314,7 @@ describe('Polygon', () => {
                 geometryService.factory.point(2, 3)
             ]);
 
-            const expectedPolygon = geometryService.factory.polygon([
+            const expectedPolygon = new Polygon([
                 geometryService.factory.point(2, -3),
                 geometryService.factory.point(2, -7),
                 geometryService.factory.point(4, -7),
@@ -329,7 +329,7 @@ describe('Polygon', () => {
 
     describe(`translate`, () => {
         it ('trasnlates it by the given amount of x coordinate', () => {
-            const polygon = geometryService.factory.polygon([
+            const polygon = new Polygon([
                 geometryService.factory.point(2, 3),
                 geometryService.factory.point(5, 3),
                 geometryService.factory.point(5, 6),
@@ -337,7 +337,7 @@ describe('Polygon', () => {
                 geometryService.factory.point(2, 7)
             ]);
 
-            const expectedPolygon = geometryService.factory.polygon([
+            const expectedPolygon = new Polygon([
                 geometryService.factory.point(5, 3),
                 geometryService.factory.point(8, 3),
                 geometryService.factory.point(8, 6),
@@ -349,7 +349,7 @@ describe('Polygon', () => {
         });
 
         it ('trasnlates it by the given amount of y coordinate', () => {
-            const polygon = geometryService.factory.polygon([
+            const polygon = new Polygon([
                 geometryService.factory.point(2, 3),
                 geometryService.factory.point(5, 3),
                 geometryService.factory.point(5, 6),
@@ -357,7 +357,7 @@ describe('Polygon', () => {
                 geometryService.factory.point(2, 7)
             ]);
 
-            const expectedPolygon = geometryService.factory.polygon([
+            const expectedPolygon = new Polygon([
                 geometryService.factory.point(2, 0),
                 geometryService.factory.point(5, 0),
                 geometryService.factory.point(5, 3),
@@ -371,7 +371,7 @@ describe('Polygon', () => {
 
     describe('getArea', () => {
         it ('calculates the area of the polygon', () => {
-            const polygon = geometryService.factory.polygon([
+            const polygon = new Polygon([
                 geometryService.factory.point(4, 6),
                 geometryService.factory.point(4, -4),
                 geometryService.factory.point(8, -4),
@@ -386,7 +386,7 @@ describe('Polygon', () => {
 
     describe('`getEdges`', () => {
         it ('returns with a `Segment` array representing the `Polygon` sides from bottom left to clockwise', () => {
-            const polygon = geometryService.factory.polygon([
+            const polygon = new Polygon([
                 geometryService.factory.point(1, 1),
                 geometryService.factory.point(3, 1),
                 geometryService.factory.point(3, 3),
@@ -405,7 +405,7 @@ describe('Polygon', () => {
 
     describe('`getCoincidingSidesForLine`', () => {
         it ('returns the correct side of the `Polygon` and it\'s index which conincides with the `Segment` given as a parameter.', () => {
-            const polygon = geometryService.factory.polygon([
+            const polygon = new Polygon([
                 geometryService.factory.point(5, 5),
                 geometryService.factory.point(5, 3),
                 geometryService.factory.point(4, 3),
@@ -423,7 +423,7 @@ describe('Polygon', () => {
 
     describe('`getBoundingRectangle`', () => {
         it ('calculates the `Rectangle` which surrounds the `Polygon`', () => {
-            const polygon = geometryService.factory.polygon([
+            const polygon = new Polygon([
                 geometryService.factory.point(1, 1),
                 geometryService.factory.point(1, 3),
                 geometryService.factory.point(3, 3),
@@ -437,7 +437,7 @@ describe('Polygon', () => {
             const boundingRectangle = polygon.getBoundingRectangle();
             expect(
                 boundingRectangle.equalTo(
-                    geometryService.factory.polygon([
+                    new Polygon([
                         geometryService.factory.point(1, 1),
                         geometryService.factory.point(1, 5),
                         geometryService.factory.point(6, 5),
@@ -448,7 +448,7 @@ describe('Polygon', () => {
         });
 
         it ('gives back the same shape if the `Polygon` is already a `Rectangle`', () => {
-            const polygon = geometryService.factory.polygon([
+            const polygon = new Polygon([
                 geometryService.factory.point(1, 1),
                 geometryService.factory.point(1, 3),
                 geometryService.factory.point(3, 3),
@@ -466,7 +466,7 @@ describe('Polygon', () => {
 
             expect(
                 rectangle.equalTo(
-                    geometryService.factory.polygon([
+                    new Polygon([
                         geometryService.factory.point(3, 5),
                         geometryService.factory.point(3, 7),
                         geometryService.factory.point(6, 7),
@@ -479,7 +479,7 @@ describe('Polygon', () => {
 
     describe(`removeStraightVertices`, () => {
         it ('removes the points from the `Polygon` which form a straight angle between the prev and next `Point`s', () => {
-            const polygon = geometryService.factory.polygon([
+            const polygon = new Polygon([
                 geometryService.factory.point(1, 1),
                 geometryService.factory.point(1, 3),
                 geometryService.factory.point(1, 5),
@@ -491,7 +491,7 @@ describe('Polygon', () => {
 
             expect(
                 polygon.removeStraightVertices().equalTo(
-                    geometryService.factory.polygon([
+                    new Polygon([
                         geometryService.factory.point(1, 1),
                         geometryService.factory.point(1, 5),
                         geometryService.factory.point(7, 5),
@@ -504,7 +504,7 @@ describe('Polygon', () => {
 
     describe('toString', () => {
         it ('creates a string representation of the `Polygon`', () => {
-            const polygon = geometryService.factory.polygon([
+            const polygon = new Polygon([
                 geometryService.factory.point(3, 5),
                 geometryService.factory.point(3, 7),
                 geometryService.factory.point(6, 7),

@@ -5,8 +5,13 @@ export class WanderBehaviour {
     private static CIRCLE_RADIUS = 3;
     private static ANGLE_CHANGE = 50;
 
-    wander(gameObject: GameObject) {
-        let circleCenter = gameObject.getVelocity().clone();
+    wander(gameObject: GameObject): void {
+        const wanderForce = this.getWanderForce(gameObject);
+        gameObject.setDirection(gameObject.getDirection().add(wanderForce));
+    }
+
+    private getWanderForce(gameObject: GameObject): Point {
+        let circleCenter = gameObject.getDirection().clone();
         circleCenter = circleCenter.normalize();
         circleCenter = circleCenter.scale(gameObject.speed);
 

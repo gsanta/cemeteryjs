@@ -12,27 +12,7 @@ export class GeometryFactory {
     constructor(geometryService: GeometryService) {
         this.geometryService = geometryService;
     }
-
-    lineFromTwoPoints(point1: Point, point2: Point): Line {
-        return Line.fromTwoPoints(point1, point2)
-    }
-
-    lineFromPointSlopeForm(point: Point, slope: number): Line {
-        return Line.fromPointSlopeForm(point, slope);
-    }
-
-    lineVertical(x: number) {
-        return Line.createVerticalLine(x);
-    }
-
-    lineHorizontal(y: number) {
-        return Line.createHorizontalLine(y);
-    }
-
-    polygon(points: Point[]): Polygon {
-        return new Polygon(points);
-    }
-
+    
     rectangle(left: number, top: number,  width: number, height: number): Polygon {
         return Polygon.createRectangle(left, top, width, height, this.geometryService);
     }

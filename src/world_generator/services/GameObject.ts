@@ -3,6 +3,8 @@ import { Shape } from '../../model/geometry/shapes/Shape';
 import { MeshStore } from '../../game/models/stores/MeshStore';
 import { BehaviourType } from '../../game/services/behaviour/IBehaviour';
 import { Point } from '../../model/geometry/shapes/Point';
+import { minBy } from '../../model/geometry/utils/Functions';
+import { toVector3 } from '../../model/geometry/utils/GeomUtils';
 
 export enum WorldItemShape {
     RECTANGLE = 'rect',
@@ -31,7 +33,6 @@ export class GameObject {
     rotation: number;
     children: GameObject[] = [];
     parent: GameObject;
-    frontVector: Vector3;
 
     color: string;
     shape: WorldItemShape;
@@ -44,8 +45,10 @@ export class GameObject {
     activeAnimation: AnimationName;
     activeBehaviour: BehaviourType;
     wanderAngle = 0;
+    private getMesh: (meshName: string) => Mesh;
 
-    constructor(dimensions: Shape, name: string, rotation = 0) {
+    constructor(getMesh: (meshName: string) => Mesh, dimensions: Shape, name: string, rotation = 0) {
+        this.getMesh = getMesh;
         this.dimensions = dimensions;
         this.name = name;
         this.rotation = rotation;
@@ -67,8 +70,42 @@ export class GameObject {
         return this.getAnimations(meshStore).find(anim => anim.name === animationName);
     }
 
-    getVelocity(meshStore: MeshStore): Point {
-        const position = this.findMesh(meshStore) ? this.findMesh(meshStore).getAbsolutePosition()
+    getDirection(): Point {
+        return new Point(Math.sin(this.getRotation()), Math.cos(this.getRotation()));
+    }
+
+    setDirection(newDir: Point): void {
+        const currentDir = this.getDirection();
+        const angle1 = Math.atan2(newDir.y, newDir.x) - Math.atan2(currentDir.y, currentDir.x);
+        const angle2 = Math.atan2(currentDir.y, currentDir.x) - Math.atan2(newDir.y, newDir.x);
+        const angle = Math.min(angle1, angle2);
+        this.rotation += angle;
+    }
+
+    getPosition(): Point {
+        return this.getMesh(this.meshName) ?  to2DPoint(this.getMesh(this.meshName).getAbsolutePosition()) : this.dimensions.getBoundingCenter();
+    }
+
+    moveBy(vector: Point): void {
+        if (this.getMesh(this.meshName)) {
+            this.getMesh(this.meshName).moveWithCollisions(toVector3(vector));
+        } else {
+            this.dimensions.translate(vector);
+        }
+    }
+
+    getRotation(): number {
+        const rotation = this.getMesh(this.meshName) ? this.getMesh(this.meshName).rotation.y : this.rotation;
+
+        return rotation;
+    }
+
+    rotateBy(rad: number) {
+        if (this.getMesh(this.meshName)) {
+            this.getMesh(this.meshName).rotation.y += rad;
+        } else {
+            this.rotation += rad;
+        }
     }
 
     private getAnimations(meshStore: MeshStore): Animation[] {
@@ -77,8 +114,9 @@ export class GameObject {
             range: [anim.from, anim.to]
         }));
     }
-
-    private findMesh(meshStore: MeshStore) {
-        return meshStore.getMesh(this.meshName);
-    }
 }
+
+function to2DPoint(vector3: Vector3): Point {
+    return new Point(vector3.x, vector3.z);
+}
+

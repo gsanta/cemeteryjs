@@ -25,40 +25,40 @@ export class Point {
     }
 
     addX(amount: number): Point {
-        return this.geometryService.factory.point(this.x + amount, this.y);
+        return new Point(this.x + amount, this.y);
     }
 
     addY(amount: number): Point {
-        return this.geometryService.factory.point(this.x, this.y + amount);
+        return new Point(this.x, this.y + amount);
     }
 
     scaleX(times: number): Point {
-        return this.geometryService.factory.point(this.x * times, this.y);
+        return new Point(this.x * times, this.y);
     }
 
     scaleY(times: number): Point {
-        return this.geometryService.factory.point(this.x, this.y * times);
+        return new Point(this.x, this.y * times);
     }
 
     scale(times: number): Point {
-        return this.geometryService.factory.point(this.x * times, this.y * times);
+        return new Point(this.x * times, this.y * times);
     }
 
     negate(): Point {
-        return this.geometryService.factory.point(-this.x, - this.y);
+        return new Point(-this.x, - this.y);
     }
 
     negateX(): Point {
-        return this.geometryService.factory.point(-this.x, this.y);
+        return new Point(-this.x, this.y);
     }
 
     negateY(): Point {
-        return this.geometryService.factory.point(this.x, -this.y);
+        return new Point(this.x, -this.y);
     }
 
     mul(x: number, y?: number): Point {
         y = y === undefined ? x : y;
-        return this.geometryService.factory.point(this.x * x, this.y * y);
+        return new Point(this.x * x, this.y * y);
     }
 
     div(amount: number): Point {
@@ -66,7 +66,7 @@ export class Point {
     }
 
     perpendicularVector(): Point {
-        return this.geometryService.factory.point(this.y, -this.x);
+        return new Point(this.y, -this.x);
     }
 
     /*
@@ -93,13 +93,13 @@ export class Point {
     }
 
     subtract(otherPoint: Point): Point {
-        return this.geometryService.factory.point(this.x - otherPoint.x, this.y - otherPoint.y);
+        return new Point(this.x - otherPoint.x, this.y - otherPoint.y);
     }
 
     normalize() {
         const length = this.distanceToOrigin();
 
-        return this.geometryService.factory.point(this.x / length, this.y / length);
+        return new Point(this.x / length, this.y / length);
     }
 
     isNormalized() {
@@ -129,7 +129,7 @@ export class Point {
     }
 
     clone(): Point {
-        return this.geometryService.factory.point(this.x, this.y);
+        return new Point(this.x, this.y);
     }
 
     equalTo(otherPoint: Point) {

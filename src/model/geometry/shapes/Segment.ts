@@ -76,15 +76,15 @@ export class Segment implements Shape {
         [x1, x2] = x1 < x2 ? [x1, x2] : [x2, x1];
         [y1, y2] = y1 < y2 ? [y1, y2] : [y2, y1];
 
-        return this.geometryService.factory.polygon([
-            this.geometryService.factory.point(x1, y1),
-            this.geometryService.factory.point(x1, y2),
-            this.geometryService.factory.point(x2, y2),
-            this.geometryService.factory.point(x2, y1)]);
+        return new Polygon([
+            new Point(x1, y1),
+            new Point(x1, y2),
+            new Point(x2, y2),
+            new Point(x2, y1)]);
     }
 
     public getBoundingCenter(): Point {
-        return this.geometryService.factory.point((this.orderedPoints[0].x + this.orderedPoints[1].x) / 2, (this.orderedPoints[0].y + this.orderedPoints[1].y) / 2);
+        return new Point((this.orderedPoints[0].x + this.orderedPoints[1].x) / 2, (this.orderedPoints[0].y + this.orderedPoints[1].y) / 2);
     }
 
     public getCoincidentLineSegment(other: Shape): [Segment, number, number] {
@@ -189,11 +189,11 @@ export class Segment implements Shape {
     public getPerpendicularBisector(): Line {
         let slope = this.getSlope();
         if (slope === 0) {
-            return this.geometryService.factory.lineFromPointSlopeForm(this.getBoundingCenter(), undefined);
+            return Line.fromPointSlopeForm(this.getBoundingCenter(), undefined);
         } else if (slope === undefined) {
-            return this.geometryService.factory.lineFromPointSlopeForm(this.getBoundingCenter(), 0);
+            return Line.fromPointSlopeForm(this.getBoundingCenter(), 0);
         } else {
-            return this.geometryService.factory.lineFromPointSlopeForm(this.getBoundingCenter(), -this.getSlope());
+            return Line.fromPointSlopeForm(this.getBoundingCenter(), -this.getSlope());
         }
     }
 
@@ -216,26 +216,26 @@ export class Segment implements Shape {
             [e, f, g, h] = f < h ? [e, f, g, h] : [g, h, e, f];
 
             if (b <= f && d >= h) {
-                return this.geometryService.factory.edge(this.geometryService.factory.point(e, f), this.geometryService.factory.point(g, h));
+                return this.geometryService.factory.edge(new Point(e, f), new Point(g, h));
             } else if (f <= b && h >= d) {
-                return this.geometryService.factory.edge(this.geometryService.factory.point(a, b), this.geometryService.factory.point(c, d));
+                return this.geometryService.factory.edge(new Point(a, b), new Point(c, d));
             } else if (b < f && d > f) {
-                return this.geometryService.factory.edge(this.geometryService.factory.point(e, f), this.geometryService.factory.point(c, d));
+                return this.geometryService.factory.edge(new Point(e, f), new Point(c, d));
             } else if (f < b && h > b) {
-                return this.geometryService.factory.edge(this.geometryService.factory.point(a, b), this.geometryService.factory.point(g, h));
+                return this.geometryService.factory.edge(new Point(a, b), new Point(g, h));
             }
         } else {
             [a, b, c, d] = a < c ? [a, b, c, d] : [c, d, a, b];
             [e, f, g, h] = e < g ? [e, f, g, h] : [g, h, e, f];
 
             if (a <= e && c >= g) {
-                return this.geometryService.factory.edge(this.geometryService.factory.point(e, f), this.geometryService.factory.point(g, h));
+                return this.geometryService.factory.edge(new Point(e, f), new Point(g, h));
             } else if (e <= a && g >= c) {
-                return this.geometryService.factory.edge(this.geometryService.factory.point(a, b), this.geometryService.factory.point(c, d));
+                return this.geometryService.factory.edge(new Point(a, b), new Point(c, d));
             } else if (a < e && c > e) {
-                return this.geometryService.factory.edge(this.geometryService.factory.point(e, f), this.geometryService.factory.point(c, d));
+                return this.geometryService.factory.edge(new Point(e, f), new Point(c, d));
             } else if (e < a && g > a) {
-                return this.geometryService.factory.edge(this.geometryService.factory.point(a, b), this.geometryService.factory.point(g, h));
+                return this.geometryService.factory.edge(new Point(a, b), new Point(g, h));
             }
         }
 
@@ -270,11 +270,11 @@ export class Segment implements Shape {
     }
 
     public getB(): Point {
-        return this.geometryService.factory.point(0, this.points[0].y - this.getSlope() * this.points[0].x);
+        return new Point(0, this.points[0].y - this.getSlope() * this.points[0].x);
     }
 
     public getLine(): Line {
-        return this.geometryService.factory.lineFromPointSlopeForm(this.points[0], this.getSlope());
+        return Line.fromPointSlopeForm(this.points[0], this.getSlope());
     }
 
     public toString(): string {

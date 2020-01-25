@@ -57,7 +57,7 @@ export class Angle {
         angle = angle < 0 ? angle + 2 * Math.PI : angle;
         const slope = Math.tan(angle);
 
-        const line = geometryService.factory.lineFromPointSlopeForm(new Point(0, 0), slope);
+        const line = Line.fromPointSlopeForm(new Point(0, 0), slope);
 
         let o = geometryService.factory.point(0, 0);
         let b = geometryService.factory.point(10, 0);

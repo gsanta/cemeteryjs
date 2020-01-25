@@ -1,8 +1,7 @@
 import { GameObject, WorldItemShape } from './GameObject';
-import { GameObjectTemplate } from './GameObjectTemplate';
 import { Shape } from '../../model/geometry/shapes/Shape';
 import { Point } from '../../model/geometry/shapes/Point';
-import { Polygon } from '../../model/geometry/shapes/Polygon';
+import { GameFacade } from '../../game/GameFacade';
 
 export interface GameObjectConfig {
     type?: string;
@@ -27,11 +26,17 @@ export const defaultWorldItemConfig: Partial<GameObjectConfig> = {
  */
 export class GameObjectFactory {
     private countersByType: Map<string, number> = new Map();
+    private gameFacade: GameFacade;
+
+    constructor(gameFacade: GameFacade) {
+        this.gameFacade = gameFacade;
+    }
 
     create(gameObjectConfig: GameObjectConfig): GameObject {
         gameObjectConfig = {...defaultWorldItemConfig, ...gameObjectConfig};
 
-        const gameObject = new GameObject(gameObjectConfig.dimensions, gameObjectConfig.name);
+        const getMeshFunc = (meshName: string) => this.gameFacade.meshStore.getMesh(meshName);
+        const gameObject = new GameObject(getMeshFunc, gameObjectConfig.dimensions, gameObjectConfig.name);
         gameObject.rotation = gameObjectConfig.rotation;
         gameObjectConfig.color && (gameObject.color = gameObjectConfig.color);
         gameObjectConfig.shape && (gameObject.shape = gameObjectConfig.shape);
@@ -44,10 +49,8 @@ export class GameObjectFactory {
     clone(newType: string, gameObject: GameObject): GameObject {
         const id = this.getNextId(newType);
 
-        const clone = new GameObject(
-            gameObject.dimensions,
-            newType
-        );
+        const getMeshFunc = (meshName: string) => this.gameFacade.meshStore.getMesh(meshName);
+        const clone = new GameObject(getMeshFunc, gameObject.dimensions, newType);
 
         clone.children = [...gameObject.children];
         clone.rotation = gameObject.rotation;

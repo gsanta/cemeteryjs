@@ -1,5 +1,7 @@
 import { GeometryService } from "../../../../src/model/geometry/GeometryService";
 import { Point } from "../../../../src/model/geometry/shapes/Point";
+import { Line } from "../../../../src/model/geometry/shapes/Line";
+import { Polygon } from "../../../../src/model/geometry/shapes/Polygon";
 
 describe('`Segment`', () => {
     const geometryService = new GeometryService();
@@ -50,13 +52,13 @@ describe('`Segment`', () => {
         it ('returns with the `Line` representing the perpendicular bisector', () => {
             const segment = geometryService.factory.edge(geometryService.factory.point(1, 1), geometryService.factory.point(3, 3));
 
-            expect(segment.getPerpendicularBisector()).toEqual(geometryService.factory.lineFromPointSlopeForm(geometryService.factory.point(0, 4), -1));
+            expect(segment.getPerpendicularBisector()).toEqual(Line.fromPointSlopeForm(geometryService.factory.point(0, 4), -1));
 
             const verticalSegment = geometryService.factory.edge(geometryService.factory.point(1, 1), geometryService.factory.point(1, 3));
-            expect(verticalSegment.getPerpendicularBisector()).toEqual(geometryService.factory.lineFromPointSlopeForm(geometryService.factory.point(0, 2), 0));
+            expect(verticalSegment.getPerpendicularBisector()).toEqual(Line.fromPointSlopeForm(geometryService.factory.point(0, 2), 0));
 
             const horizontalSegment = geometryService.factory.edge(geometryService.factory.point(1, 1), geometryService.factory.point(3, 1));
-            expect(horizontalSegment.getPerpendicularBisector()).toEqual(geometryService.factory.lineFromPointSlopeForm(geometryService.factory.point(2, 0), undefined));
+            expect(horizontalSegment.getPerpendicularBisector()).toEqual(Line.fromPointSlopeForm(geometryService.factory.point(2, 0), undefined));
         });
     });
 
@@ -161,7 +163,7 @@ describe('`Segment`', () => {
             const boundingRectangle = polygon.getBoundingRectangle();
             expect(
                 boundingRectangle.equalTo(
-                    geometryService.factory.polygon([
+                    new Polygon([
                         geometryService.factory.point(1, 1),
                         geometryService.factory.point(1, 3),
                         geometryService.factory.point(3, 3),
@@ -210,7 +212,7 @@ describe('`Segment`', () => {
             const rectangle = segment.addThickness(Math.SQRT2);
             expect(
                 rectangle.equalTo(
-                    geometryService.factory.polygon([
+                    new Polygon([
                         new Point(2, 0),
                         new Point(4, 2),
                         new Point(2, 4),

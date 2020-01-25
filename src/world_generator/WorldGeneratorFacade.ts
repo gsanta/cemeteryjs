@@ -20,7 +20,7 @@ export class WorldGeneratorFacade {
     constructor(gameFacade: GameFacade, createMeshModifier: Modifier) {
         this.gameFacade = gameFacade;
         this.gameObjectBuilder = this.getWorldItemBuilder();
-        this.gameObjectFactory = new GameObjectFactory();
+        this.gameObjectFactory = new GameObjectFactory(gameFacade);
         this.modifierExecutor = new ModifierExecutor();
         this.modifierExecutor.registerModifier(createMeshModifier);
     }

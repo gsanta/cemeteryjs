@@ -32,7 +32,7 @@ export class Polygon implements Shape {
         const clonedPoints = [...this.points];
         clonedPoints.splice(index, 1, newPoint);
 
-        return this.geometryService.factory.polygon(clonedPoints);
+        return new Polygon(clonedPoints);
     }
 
     public hasPoint(point: Point): boolean {
@@ -79,12 +79,12 @@ export class Polygon implements Shape {
 
     public translate(point: Point): Polygon {
         const translatedPoints = this.points.map(p => p.addX(point.x).addY(point.y));
-        return this.geometryService.factory.polygon(translatedPoints);
+        return new Polygon(translatedPoints);
     }
 
     public negate(axis: 'x' | 'y'): Polygon {
-        const translatedPoints = this.points.map(point => this.geometryService.factory.point(axis === 'x' ? -point.x : point.x, axis === 'y' ? -point.y : point.y));
-        return this.geometryService.factory.polygon(translatedPoints);
+        const translatedPoints = this.points.map(point => new Point(axis === 'x' ? -point.x : point.x, axis === 'y' ? -point.y : point.y));
+        return new Polygon(translatedPoints);
     }
 
     public getArea() {
@@ -103,7 +103,7 @@ export class Polygon implements Shape {
     public clone(): Polygon {
         const points = this.points.map(point => point.clone());
 
-        const clone = this.geometryService.factory.polygon(points);
+        const clone = new Polygon(points);
 
         return clone;
     }
@@ -131,7 +131,7 @@ export class Polygon implements Shape {
 
     public scale(amount: Point): Polygon {
         const points = this.points.map(p => p.scaleX(amount.x)).map(p => p.scaleY(amount.y));
-        return this.geometryService.factory.polygon(points);
+        return new Polygon(points);
     }
 
     /**
@@ -139,7 +139,7 @@ export class Polygon implements Shape {
      */
     public getBoundingCenter(): Point {
         const center = polylabel([this.toTwoDimensionalArray()], 1.0);
-        return this.geometryService.factory.point(center[0], center[1]);
+        return new Point(center[0], center[1]);
     }
 
     public getBoundingRectangle(): Shape {
@@ -149,11 +149,11 @@ export class Polygon implements Shape {
         const minY = boudingInfo.min[1];
         const maxY = boudingInfo.max[1];
 
-        return this.geometryService.factory.polygon([
-            this.geometryService.factory.point(minX, minY),
-            this.geometryService.factory.point(minX, maxY),
-            this.geometryService.factory.point(maxX, maxY),
-            this.geometryService.factory.point(maxX, minY)
+        return new Polygon([
+            new Point(minX, minY),
+            new Point(minX, maxY),
+            new Point(maxX, maxY),
+            new Point(maxX, minY)
         ]);
     }
 
@@ -262,7 +262,7 @@ export class Polygon implements Shape {
             currentPoint = this.getNextPoint(currentPoint);
         }
 
-        return this.geometryService.factory.polygon(reducedPoints);
+        return new Polygon(reducedPoints);
     }
 
     public toString(): string {
@@ -281,7 +281,7 @@ export class Polygon implements Shape {
         const minY = top;
         const maxY = top + height;
 
-        return geometryService.factory.polygon([
+        return new Polygon([
             geometryService.factory.point(minX, minY),
             geometryService.factory.point(minX, maxY),
             geometryService.factory.point(maxX, maxY),

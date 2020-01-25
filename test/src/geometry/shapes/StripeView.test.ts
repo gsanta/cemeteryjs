@@ -16,7 +16,7 @@ describe(`StripeView`, () => {
 
             expect(stripeVertical.getSlope()).toEqual(undefined);
 
-            const stripe45DegreesRotated = new StripeView(geometryService.factory.polygon([
+            const stripe45DegreesRotated = new StripeView(new Polygon([
                 new Point(0, 1),
                 new Point(4, 5),
                 new Point(5, 4),
