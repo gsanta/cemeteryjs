@@ -1,6 +1,6 @@
 import { EditorFacade } from '../../../src/editor/controllers/EditorFacade';
+import { CanvasRect } from '../../../src/editor/controllers/canvases/svg/models/CanvasItem';
 import { Point } from '../../../src/model/geometry/shapes/Point';
-import { CanvasItem } from '../../../src/editor/controllers/canvases/svg/models/CanvasItem';
 
 const defaultTestSvg = `
 <svg data-wg-pixel-size="10" data-wg-width="1500" data-wg-height="1000">
@@ -61,7 +61,7 @@ export function drag(controllers: EditorFacade, from: Point, to: Point) {
     svgController.mouseController.onMouseUp(<MouseEvent> {x: to.x, y: to.y});
 }
 
-export function drawRectangle(controllers: EditorFacade, topLeft = new Point(50, 50), bottomRight = new Point(250, 150)): CanvasItem {
+export function drawRectangle(controllers: EditorFacade, topLeft = new Point(50, 50), bottomRight = new Point(250, 150)): CanvasRect {
     const svgController = controllers.svgCanvasController;
     svgController.mouseController.onMouseMove(<MouseEvent> {x: topLeft.x, y: topLeft.y});
     svgController.mouseController.onMouseDown(<MouseEvent> {x: topLeft.x, y: topLeft.y});
@@ -79,7 +79,7 @@ export function selectWithRect(controllers: EditorFacade, from: Point, to: Point
     svgController.mouseController.onMouseUp(<MouseEvent> {x: to.x, y: to.y});
 }
 
-export function click(controllers: EditorFacade, canvasItem: CanvasItem) {
+export function click(controllers: EditorFacade, canvasItem: CanvasRect) {
     const svgController = controllers.svgCanvasController;
     const center = canvasItem.dimensions.getBoundingCenter().mul(controllers.svgCanvasController.configModel.pixelSize);
     svgController.mouseController.onMouseMove(<MouseEvent> {x: center.x, y: center.y});

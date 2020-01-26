@@ -29,7 +29,7 @@ export namespace CanvasItemTag {
 }
 
 
-export interface CanvasItem {
+export interface CanvasRect {
     type: string;
     name: string;
     shape: WorldItemShape;

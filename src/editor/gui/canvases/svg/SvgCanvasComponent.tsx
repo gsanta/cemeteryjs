@@ -61,8 +61,8 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
                     <defs>
                         <PathMarkersComponent/>
                     </defs>
-                    {this.props.canvasController.toolService.getToolComponentFactory(ToolType.RECTANGLE).create()}
-                    {this.props.canvasController.toolService.getToolComponentFactory(ToolType.PATH).create()}
+                    {this.props.canvasController.toolService.getToolExporter(ToolType.RECTANGLE).export()}
+                    {this.props.canvasController.toolService.getToolExporter(ToolType.PATH).export()}
                     {this.renderSelection()}
 
 

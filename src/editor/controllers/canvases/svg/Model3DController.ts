@@ -2,7 +2,7 @@ import { Engine, Scene, Mesh } from 'babylonjs';
 import { AbstractModelLoader } from '../../../../common/AbstractModelLoader';
 import { SvgCanvasController } from './SvgCanvasController';
 import { Point } from '../../../../model/geometry/shapes/Point';
-import { CanvasItem } from './models/CanvasItem';
+import { CanvasRect } from './models/CanvasItem';
 
 
 const SCALE = 2;
@@ -21,7 +21,7 @@ export class Model3DController extends AbstractModelLoader {
         this.init();
     }
 
-    set3dModelForCanvasItem(canvasItem: CanvasItem) {
+    set3dModelForCanvasItem(canvasItem: CanvasRect) {
         if (this.fileNameToMeshMap.has(canvasItem.model)) {
             this.setDimensions(canvasItem);
         }
@@ -39,7 +39,7 @@ export class Model3DController extends AbstractModelLoader {
         this.fileNameToMeshMap.set(fileName, mesh);
     }
 
-    private setDimensions(canvasItem: CanvasItem) {
+    private setDimensions(canvasItem: CanvasRect) {
         const mesh = this.fileNameToMeshMap.get(canvasItem.model);
         const dimensions = this.calcMeshDimensions(mesh);
         canvasItem.dimensions = canvasItem.dimensions.setWidth(dimensions.x).setHeight(dimensions.y);

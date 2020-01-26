@@ -6,11 +6,11 @@ import { Point } from '../../../../../../model/geometry/shapes/Point';
 import { WorldItemShape } from '../../../../../../world_generator/services/GameObject';
 import { Events } from '../../../../events/Events';
 import { AbstractSelectionTool } from '../AbstractSelectionTool';
-import { CanvasItem } from '../../models/CanvasItem';
+import { CanvasRect } from '../../models/CanvasItem';
 
 export class RectangleTool extends AbstractSelectionTool {
     private eventDispatcher: EventDispatcher;
-    private lastPreviewRect: CanvasItem;
+    private lastPreviewRect: CanvasRect;
 
     constructor(svgCanvasController: SvgCanvasController, eventDispatcher: EventDispatcher) {
         super(svgCanvasController, ToolType.RECTANGLE, false);
@@ -31,7 +31,7 @@ export class RectangleTool extends AbstractSelectionTool {
 
         const type = this.canvasController.selectedWorldItemDefinition.typeName;
 
-        const canvasItem: CanvasItem = {
+        const canvasItem: CanvasRect = {
             color: 'grey',
             dimensions: rect,
             type: type,
@@ -63,7 +63,7 @@ export class RectangleTool extends AbstractSelectionTool {
         const pixelSize = this.canvasController.configModel.pixelSize;
         const dimensions = this.getSelectionRect().div(pixelSize);
 
-        const canvasItem: CanvasItem = {
+        const canvasItem: CanvasRect = {
             color: 'grey',
             dimensions,
             type: type,

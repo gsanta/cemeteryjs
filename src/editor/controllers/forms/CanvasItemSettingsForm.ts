@@ -3,7 +3,7 @@ import { EventDispatcher } from '../events/EventDispatcher';
 import { Events } from '../events/Events';
 import { WorldItemShape } from '../../../world_generator/services/GameObject';
 import { SvgCanvasController } from '../canvases/svg/SvgCanvasController';
-import { CanvasItem } from "../canvases/svg/models/CanvasItem";
+import { CanvasRect } from "../canvases/svg/models/CanvasItem";
 
 
 export enum CanvasItemSettings {
@@ -18,7 +18,7 @@ export enum CanvasItemSettings {
 
 export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSettings> {
     shapes: string[] = ['rect', 'model'];
-    canvasItem: CanvasItem;
+    canvasItem: CanvasRect;
 
     private canvasController: SvgCanvasController;
     private eventDispatcher: EventDispatcher;

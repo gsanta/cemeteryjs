@@ -4,18 +4,18 @@ import { ToolType } from "../Tool";
 import { SvgCanvasController } from "../../SvgCanvasController";
 
 
-export class Path {
+export class CanvasPath {
     points: Point[] = [];
     pathId: number;
 
-    constructor(startPoint: Point) {
-        this.points.push(startPoint);
+    constructor(startPoint?: Point) {
+        startPoint && this.points.push(startPoint);
     }
 }
 
 export class PathTool extends AbstractTool {
 
-    pendingArrow: Path;
+    pendingArrow: CanvasPath;
     
     private canvasController: SvgCanvasController;
     constructor(canvasController: SvgCanvasController) {
@@ -30,7 +30,7 @@ export class PathTool extends AbstractTool {
         const pointer = this.canvasController.mouseController.pointer;
 
         if (!this.pendingArrow) {
-            this.pendingArrow = new Path(pointer.down.clone());
+            this.pendingArrow = new CanvasPath(pointer.down.clone());
             this.canvasController.canvasStore.addArrow(this.pendingArrow);
         } else {
             this.pendingArrow.points.push(pointer.down.clone());

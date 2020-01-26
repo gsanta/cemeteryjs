@@ -17,13 +17,12 @@ import { MoveAndSelectTool } from './tools/MoveAndSelectTool';
 import { RectangleTool } from './tools/rectangle/RectangleTool';
 import { Tool, ToolType } from './tools/Tool';
 import { CameraTool } from './tools/CameraTool';
-import { PathTool } from './tools/path/PathTool';
+import { PathTool, CanvasPath } from './tools/path/PathTool';
 import { ToolService } from './tools/ToolService';
 import { RectangleExporter } from './tools/rectangle/RectangleExporter';
-import { RectangleComponentFactory } from './tools/rectangle/RectangleComponentFactory';
 import { PathExporter } from './tools/path/PathExporter';
-import { PathComponentFactory } from './tools/path/PathComponentFactory';
 import { RectangleImporter } from './tools/rectangle/RectangleImporter';
+import { PathImporter } from './tools/path/PathImporter';
 
 export class SvgCanvasController implements IEditableCanvas {
     static id = 'svg-canvas-controller';
@@ -86,15 +85,12 @@ export class SvgCanvasController implements IEditableCanvas {
                 this.cameraTool,
             ],
             [
+                new RectangleImporter(rect => this.canvasStore.addRect(rect)),
+                new PathImporter((path: CanvasPath) => this.canvasStore.addArrow(path))
+            ],
+            [
                 new RectangleExporter(this),
                 new PathExporter(this)
-            ],
-            [
-                new RectangleImporter(this)
-            ],
-            [
-                new RectangleComponentFactory(this),
-                new PathComponentFactory(this)
             ]
         )
 

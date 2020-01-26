@@ -1,10 +1,10 @@
 import { SvgCanvasController } from "../../SvgCanvasController";
 import { PathComponent } from "../../../../../gui/canvases/svg/PathComponent";
 import React = require("react");
-import { IToolComponentFactory } from "../IToolComponentFactory";
 import { ToolType } from "../Tool";
+import { IToolExporter } from "../IToolExporter";
 
-export class PathComponentFactory implements IToolComponentFactory {
+export class PathExporter implements IToolExporter {
     type = ToolType.PATH;
     private canvasController: SvgCanvasController;
 
@@ -12,9 +12,9 @@ export class PathComponentFactory implements IToolComponentFactory {
         this.canvasController = canvasController;
     }
 
-    create(): JSX.Element {
+    export(): JSX.Element {
         const pathes = this.canvasController.canvasStore.pathes.map(arrow => <PathComponent item={arrow}/>);
 
-        return <g>{pathes}</g>
+        return <g data-tool-type={ToolType.PATH}>{pathes}</g>
     }
 }

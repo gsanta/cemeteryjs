@@ -1,37 +1,49 @@
 import { IGameObjectBuilder } from "../IGameObjectBuilder";
 import { GameObject, WorldItemShape } from '../../services/GameObject';
-import { SvgPreprocessor } from "./SvgPreprocessor";
-import { Rect, ProcessedWorldMapJson } from './WorldMapJson';
+import { Rect, ProcessedWorldMapJson, RawWorldMapJson } from './WorldMapJson';
 import { WorldGeneratorFacade } from '../../WorldGeneratorFacade';
 import { Rectangle } from "../../../model/geometry/shapes/Rectangle";
 import { Point } from "../../../model/geometry/shapes/Point";
 import { toRadian } from "../../../model/geometry/utils/Measurements";
 import { Mesh } from "babylonjs";
+import { RectangleImporter } from "../../../editor/controllers/canvases/svg/tools/rectangle/RectangleImporter";
+import * as convert from 'xml-js';
+import { ToolType } from "../../../editor/controllers/canvases/svg/tools/Tool";
+import { getImporterByType } from "../../../editor/controllers/canvases/svg/tools/IToolImporter";
+import { CanvasRect } from "../../../editor/controllers/canvases/svg/models/CanvasItem";
 
 export class SvgGameObjectBuilder<T> implements IGameObjectBuilder {
-    private svgPreprocessor: SvgPreprocessor;
     private services: WorldGeneratorFacade;
 
     constructor(services: WorldGeneratorFacade) {
-        this.svgPreprocessor = new SvgPreprocessor();
         this.services = services;
     }
 
     build(worldMap: string): GameObject[] {
-        const processedJson = this.svgPreprocessor.process(worldMap);
+        this.services.canvasStore.clear();
+        
+        const rawJson: RawWorldMapJson = JSON.parse(convert.xml2json(worldMap, {compact: true, spaces: 4}));
+        const toolGroups = rawJson.svg.g.length ? rawJson.svg.g : [rawJson.svg.g];
 
-        if (processedJson.rects.length === 0) { return []; }
+        toolGroups.forEach(toolGroup => {
+            const toolType: ToolType = <ToolType> toolGroup._attributes["data-tool-type"];
+            getImporterByType(toolType, this.services.importers).import(toolGroup)
 
-        const root = this.createRoot(processedJson);
-        const gameObjects = processedJson.rects.map(rect => this.createRect(rect));
+        });
+
+        if (this.services.canvasStore.items.length === 0) { return []; }
+
+        const root = this.createRoot();
+
+        const gameObjects = this.services.canvasStore.items.map(rect => this.createRect(rect));
 
         return [root, ...gameObjects];
     }
 
-    private createRect(rect: Rect): GameObject {
+    private createRect(rect: CanvasRect): GameObject {
         return this.services.gameObjectFactory.create(
             {
-                dimensions: new Rectangle(new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height)),
+                dimensions: rect.dimensions,
                 name: rect.name,
                 color: rect.color,
                 shape: <WorldItemShape> rect.shape,
@@ -42,8 +54,8 @@ export class SvgGameObjectBuilder<T> implements IGameObjectBuilder {
         );
     }
 
-    private createRoot(processedJson: ProcessedWorldMapJson) {
-        const dim = new Rectangle(new Point(0, 0), new Point(processedJson.width, processedJson.height));
+    private createRoot() {
+        const dim = new Rectangle(new Point(0, 0), new Point(3000, 3000));
         return this.services.gameObjectFactory.create(
             {
                 dimensions: dim,

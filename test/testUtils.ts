@@ -25,19 +25,6 @@ export function setup(worldMap: string): WorldGeneratorFacade {
     return services;
 }
 
-export function setupTestEnv(worldMap: string, fakeModelImporter?: FakeModelLoader): WorldGeneratorFacade {
-    const services = new WorldGeneratorFacade(
-        new GameFacade(null),
-        new FakeCreateMeshModifier()
-    );
-    const {globalConfig} = services.generateMetaData(worldMap);
-    services.gameFacade.gameObjectStore.globalConfig = globalConfig;
-
-    services.gameFacade.gameObjectStore.gameObjects = services.gameObjectBuilder.build(worldMap);
-
-    return services;
-}
-
 export function setupMap(map: string): string {
     return `
     map \`

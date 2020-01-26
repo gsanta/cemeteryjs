@@ -13,6 +13,12 @@ export interface WgDefinitionAttributes {
     "type-name": string;
 }
 
+export interface ToolGroupJson<T = any> {
+    _attributes: {
+        "data-tool-type": string
+    }
+}
+
 export interface RawWorldMapJson {
     svg: {
         metadata: {
@@ -27,16 +33,18 @@ export interface RawWorldMapJson {
             "data-wg-scale-y": string;
         };
 
-        rect: {
-            _attributes: {
-                "data-wg-x": string,
-                "data-wg-y": string,
-                "data-wg-type": string,
-                "data-wg-name": string
-            }
-        }[];
+        g: ToolGroupJson[];
     }
 }
+
+// rect: {
+//     _attributes: {
+//         "data-wg-x": string,
+//         "data-wg-y": string,
+//         "data-wg-type": string,
+//         "data-wg-name": string
+//     }
+// }[];
 
 export interface Rect {
     x: number;

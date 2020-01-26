@@ -2,11 +2,11 @@ import { SvgCanvasController } from "../../SvgCanvasController";
 import React = require("react");
 import { sort, minBy } from "../../../../../../model/geometry/utils/Functions";
 import { Rectangle } from "../../../../../../model/geometry/shapes/Rectangle";
-import { CanvasItemTag, CanvasItem } from "../../models/CanvasItem";
-import { IToolComponentFactory } from "../IToolComponentFactory";
+import { CanvasItemTag, CanvasRect } from "../../models/CanvasItem";
 import { ToolType } from "../Tool";
+import { IToolExporter } from "../IToolExporter";
 
-export class RectangleComponentFactory implements IToolComponentFactory {
+export class RectangleExporter implements IToolExporter {
     type = ToolType.RECTANGLE;
     private canvasController: SvgCanvasController;
 
@@ -14,8 +14,8 @@ export class RectangleComponentFactory implements IToolComponentFactory {
         this.canvasController = canvasController;
     }
 
-    create(): JSX.Element {
-        return <g>{this.renderRectangles()}</g>;
+    export(): JSX.Element {
+        return <g data-tool-type={ToolType.RECTANGLE}>{this.renderRectangles()}</g>;
     }
 
     private renderRectangles(): JSX.Element[] {
@@ -35,8 +35,8 @@ export class RectangleComponentFactory implements IToolComponentFactory {
 
             const fill = item.tags.has(CanvasItemTag.SELECTED) ? 'blue' : item.color;
 
-            const minX = minBy<CanvasItem>(pixelModel.items, (a, b) => a.dimensions.topLeft.x - b.dimensions.topLeft.x).dimensions.topLeft.x;
-            const minY = minBy<CanvasItem>(pixelModel.items, (a, b) => a.dimensions.topLeft.y - b.dimensions.topLeft.y).dimensions.topLeft.y;
+            const minX = minBy<CanvasRect>(pixelModel.items, (a, b) => a.dimensions.topLeft.x - b.dimensions.topLeft.x).dimensions.topLeft.x;
+            const minY = minBy<CanvasRect>(pixelModel.items, (a, b) => a.dimensions.topLeft.y - b.dimensions.topLeft.y).dimensions.topLeft.y;
             
 
             const tranlateX = minX < 0 ? - minX * pixelSize : 0;

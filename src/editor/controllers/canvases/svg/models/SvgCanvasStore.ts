@@ -4,8 +4,8 @@ import { Rectangle } from '../../../../../model/geometry/shapes/Rectangle';
 import { WorldItemShape } from '../../../../../world_generator/services/GameObject';
 import { sortNum, without } from '../../../../../world_generator/utils/Functions';
 import { SvgConfig } from './SvgConfig';
-import { CanvasItem } from './CanvasItem';
-import { Path } from '../tools/path/PathTool';
+import { CanvasRect } from './CanvasItem';
+import { CanvasPath } from '../tools/path/PathTool';
 
 export enum Layers {
     PREVIEW = -1,
@@ -28,30 +28,30 @@ export function getLayerForType(type: string) {
 export class SvgCanvasStore {
     private bitmapConfig: SvgConfig;
 
-    items: CanvasItem[] = [];
-    pathes: Path[] = [];
+    items: CanvasRect[] = [];
+    pathes: CanvasPath[] = [];
 
     constructor(bitmapConfig: SvgConfig) {
         this.bitmapConfig = bitmapConfig;
     }
 
-    addArrow(arrow: Path) {
+    addArrow(arrow: CanvasPath) {
         this.pathes.push(arrow);
     }
 
-    addRect(canvasItem: CanvasItem): CanvasItem {
+    addRect(canvasItem: CanvasRect): CanvasRect {
         this.items.push(canvasItem);
 
         return canvasItem;
     }
 
-    addRectangle(coordinates: Point[], type: string, layer: number, isPreview: boolean): CanvasItem {
+    addRectangle(coordinates: Point[], type: string, layer: number, isPreview: boolean): CanvasRect {
         let indexes = coordinates.map(pos => this.getIndexAtCoordinate(pos));
         indexes = sortNum(indexes);
 
         const topLeft = this.getPixelPosition(indexes[0]);
         const botRight = this.getPixelPosition(indexes[indexes.length - 1]); 
-        const canvasItem: CanvasItem = {
+        const canvasItem: CanvasRect = {
             color: 'grey',
             dimensions: new Rectangle(topLeft, botRight),
             type,
@@ -70,7 +70,7 @@ export class SvgCanvasStore {
         return canvasItem;
     }
 
-    removeRectangle(rect: CanvasItem) {
+    removeRectangle(rect: CanvasRect) {
         this.items = without(this.items, rect);
     }
 
@@ -93,7 +93,7 @@ export class SvgCanvasStore {
         return new Point(x, y);
     }
 
-    getIntersectingItemsInRect(rectangle: Rectangle): CanvasItem[] {
+    getIntersectingItemsInRect(rectangle: Rectangle): CanvasRect[] {
         const pixelSize = this.bitmapConfig.pixelSize;
 
         const x = Math.floor(rectangle.topLeft.x / pixelSize);
@@ -106,7 +106,7 @@ export class SvgCanvasStore {
         return this.items.filter(item => polygon.contains(item.dimensions));
     }
 
-    getIntersectingItemsAtPoint(point: Point): CanvasItem[] {
+    getIntersectingItemsAtPoint(point: Point): CanvasRect[] {
         const pixelSize = this.bitmapConfig.pixelSize;
 
         const gridPoint = new Point(point.x / pixelSize, point.y / pixelSize);

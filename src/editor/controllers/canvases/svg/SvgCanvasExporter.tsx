@@ -18,7 +18,7 @@ export class SvgCanvasExporter implements ICanvasExporter {
         return (
             <svg
                 data-wg-pixel-size="10" data-wg-width="3000" data-wg-height="3000" width="1000" height="1000">
-                {this.canvasController.toolService.getAllToolComponentFactories().map(factory => factory.create())}
+                {this.canvasController.toolService.getAllToolExporters().map(factory => factory.export())}
             </svg>
         )
     }
