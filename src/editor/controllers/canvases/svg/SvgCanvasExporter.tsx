@@ -11,13 +11,14 @@ export class SvgCanvasExporter implements ICanvasExporter {
     }
 
     export(): string {
-        return ReactDOMServer.renderToString(this.renderRoot());
+        return ReactDOMServer.renderToStaticMarkup(this.renderRoot());
     }
 
     private renderRoot(): JSX.Element {
         return (
-            <svg data-wg-pixel-size="10" data-wg-width="3000" data-wg-height="3000" width="1000" height="1000">
-                {this.canvasController.toolService.getAllToolExporters()}
+            <svg
+                data-wg-pixel-size="10" data-wg-width="3000" data-wg-height="3000" width="1000" height="1000">
+                {this.canvasController.toolService.getAllToolComponentFactories().map(factory => factory.create())}
             </svg>
         )
     }

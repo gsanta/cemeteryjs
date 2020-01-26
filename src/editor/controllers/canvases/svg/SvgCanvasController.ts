@@ -23,6 +23,7 @@ import { RectangleExporter } from './tools/rectangle/RectangleExporter';
 import { RectangleComponentFactory } from './tools/rectangle/RectangleComponentFactory';
 import { PathExporter } from './tools/path/PathExporter';
 import { PathComponentFactory } from './tools/path/PathComponentFactory';
+import { RectangleImporter } from './tools/rectangle/RectangleImporter';
 
 export class SvgCanvasController implements IEditableCanvas {
     static id = 'svg-canvas-controller';
@@ -87,6 +88,9 @@ export class SvgCanvasController implements IEditableCanvas {
             [
                 new RectangleExporter(this),
                 new PathExporter(this)
+            ],
+            [
+                new RectangleImporter(this)
             ],
             [
                 new RectangleComponentFactory(this),

@@ -4,7 +4,7 @@ import { IToolExporter } from "../IToolExporter";
 import { ToolType } from "../Tool";
 
 export class RectangleExporter implements IToolExporter {
-    type: ToolType.RECTANGLE;
+    type = ToolType.RECTANGLE;
     
     private canvasController: SvgCanvasController;
 
@@ -13,9 +13,8 @@ export class RectangleExporter implements IToolExporter {
     }
 
     export(): string {
-        const pathes = this.canvasController.canvasStore.pathes;
+        const rects = this.canvasController.toolService.getToolComponentFactory(this.type).create();
 
-
-        return ReactDOMServer.renderToString(null);
+        return ReactDOMServer.renderToStaticMarkup(rects);
     }
 }

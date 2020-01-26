@@ -5,7 +5,7 @@ import { IToolExporter } from "../IToolExporter";
 import { ToolType } from "../Tool";
 
 export class PathExporter implements IToolExporter {
-    type: ToolType.PATH;
+    type = ToolType.PATH;
     private canvasController: SvgCanvasController;
 
     constructor(canvasController: SvgCanvasController) {
