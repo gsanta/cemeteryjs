@@ -7,13 +7,17 @@ import { Point } from "../../../../../../model/geometry/shapes/Point";
 
 export interface PathJson {
     circle: {
-        cx: number;
-        cy: number;
-        r: number;
+        _attributes: {
+            cx: number;
+            cy: number;
+            r: number;
+        }
     }[];
 
     polyline: {
-        points: string;
+        _attributes: {
+            points: string;
+        }
     }
 }
 
@@ -33,7 +37,7 @@ export class PathImporter implements IToolImporter {
         const pathJsons =  (<PathJson[]> group.g).length ? <PathJson[]> group.g : [<PathJson> group.g];
         
         pathJsons.forEach(json => {
-            const points = json.polyline.points
+            const points = json.polyline._attributes.points
                 .split(' ')
                 .map((p: string) => {
                     const [x, y] = p.split(',');

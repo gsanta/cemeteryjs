@@ -15,7 +15,8 @@ export class RectangleExporter implements IToolExporter {
     }
 
     export(): JSX.Element {
-        return <g data-tool-type={ToolType.RECTANGLE}>{this.renderRectangles()}</g>;
+        const rectangles = this.renderRectangles();
+        return rectangles.length > 0 ? <g data-tool-type={ToolType.RECTANGLE}>{rectangles}</g> : null;
     }
 
     private renderRectangles(): JSX.Element[] {

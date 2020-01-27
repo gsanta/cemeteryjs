@@ -13,7 +13,7 @@ import { ArrowIconComponent } from '../../icons/ArrowIconComponent';
 
 const ToolbarStyled = styled.div`
     display: flex;
-    align-items: center;
+    flex-direction: column;
 
     > *:not(:last-child) {
         margin-right: 10px;

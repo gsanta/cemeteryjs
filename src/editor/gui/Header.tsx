@@ -54,7 +54,7 @@ export class Header extends React.Component<HeaderProps> {
         return (
             <HeaderStyled>
                 <CanvasHeaderStyled>
-                    {this.props.activeCanvasToolbar}
+                    {/* {this.props.activeCanvasToolbar} */}
                 </CanvasHeaderStyled>
                 <GlobalHeaderStyled>
                     <FileUploader onUpload={(file) => this.context.controllers.svgCanvasController.writer.import(file)}/>

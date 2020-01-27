@@ -8,6 +8,9 @@ import { ConnectedFileUploadComponent } from '../../forms/FileUploadComponent';
 import { ConnectedInputComponent } from '../../forms/InputComponent';
 import { CanvasItemTag } from '../../../controllers/canvases/svg/models/CanvasItem';
 import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvasController';
+import { SvgCanvasToolbarComponent } from './SvgCanvasToolbarComponent';
+import { colors } from '../../styles';
+import { AccordionComponent } from '../../misc/AccordionComponent';
 
 export interface ItemSettingsProps {
     canvasController: SvgCanvasController;
@@ -15,25 +18,17 @@ export interface ItemSettingsProps {
 
 const ItemSettingsStyled = styled.div`
     padding: 10px;
-    display: flex;
-    justify-content: space-around;
+    height: 100%;
+    background: ${colors.panelBackground};
+    color: ${colors.textColor};
 `;
 
-const TableStyled = styled.table`
-    width: 1000px;
-
-    &, tr, td {
-        border: 1px solid grey;
-    }
-
-    td {
-        padding: 3px;
-    }
-`;
 
 const NoItemsSelectedStyled = styled.div`
     padding: 10px;
 `;
+
+
 
 export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
 
@@ -47,21 +42,44 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
     render(): JSX.Element {
         const selectedCanvasItems = CanvasItemTag.getTaggedItems(CanvasItemTag.SELECTED, this.props.canvasController.canvasStore.items);
 
-        if (selectedCanvasItems.length === 0) { return this.renderNoItemsSelectedMessage(); }
-
+        
         this.props.canvasController.canvasItemSettingsForm.canvasItem = selectedCanvasItems[0];
 
         const form = this.props.canvasController.canvasItemSettingsForm;
 
+        let itemSettings: JSX.Element = null;
+
+        if (selectedCanvasItems.length === 1) {
+            itemSettings = (
+                <table>
+                    {this.renderName()}
+                    {this.renderColorChooser()}
+                    {this.renderLayerInput()}
+                    {this.renderShapeDropdown()}
+                    {form.getVal(CanvasItemSettings.SHAPE) === 'model' ? this.renderModelFileChooser() : null}
+                    {this.renderRotationInput()}
+                    {this.renderScaleInput()}
+                </table>
+            );
+        }
+
+        // if (selectedCanvasItems.length === 0) { return this.renderNoItemsSelectedMessage(); }
+
+
         return (
             <ItemSettingsStyled>
-                {this.renderName()}
-                {this.renderColorChooser()}
-                {this.renderLayerInput()}
-                {this.renderShapeDropdown()}
-                {form.getVal(CanvasItemSettings.SHAPE) === 'model' ? this.renderModelFileChooser() : null}
-                {this.renderRotationInput()}
-                {this.renderScaleInput()}
+                <AccordionComponent
+                    elements={[
+                        {
+                            title: 'Tools',
+                            body: <SvgCanvasToolbarComponent canvasController={this.props.canvasController}/>
+                        },
+                        {
+                            title: 'Selection',
+                            body: itemSettings
+                        }
+                    ]}
+                />
             </ItemSettingsStyled>
         );
     }
@@ -74,15 +92,18 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
         const form = this.props.canvasController.canvasItemSettingsForm;
 
         return (
-            <LabeledComponent label="Name" direction="horizontal">
-                <ConnectedInputComponent
-                    formController={form}
-                    propertyName={CanvasItemSettings.NAME}
-                    propertyType="string"
-                    type="text"
-                    value={form.getVal(CanvasItemSettings.NAME)}
-                />
-            </LabeledComponent>
+            <tr>
+                <td>Name</td>
+                <td>
+                    <ConnectedInputComponent
+                        formController={form}
+                        propertyName={CanvasItemSettings.NAME}
+                        propertyType="string"
+                        type="text"
+                        value={form.getVal(CanvasItemSettings.NAME)}
+                    />
+                </td>
+            </tr>
         );        
     }
 
@@ -90,15 +111,18 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
         const form = this.props.canvasController.canvasItemSettingsForm;
 
         return (
-            <LabeledComponent label="Shape" direction="horizontal">
+            <tr>
+                <td>Shape</td>
+                <td>
                 <ConnectedDropdownComponent
                     values={form.shapes}
                     currentValue={form.getVal(CanvasItemSettings.SHAPE) as string}
                     formController={form}
                     propertyName={CanvasItemSettings.SHAPE}
                     propertyType='string'
-                />
-            </LabeledComponent>
+                />                    
+                </td>
+            </tr>
         );
     }
 
@@ -106,28 +130,32 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
         const form = this.props.canvasController.canvasItemSettingsForm;
 
         return (
-            <React.Fragment>
-                <LabeledComponent label="File" direction="horizontal">
+            <tr>
+                <td>File</td>
+                <td>
                     <ConnectedFileUploadComponent
                         formController={form}
                         propertyName={CanvasItemSettings.MODEL}
                         propertyType="string"
                     />
-                </LabeledComponent>
+                </td>
                 {form.getVal(CanvasItemSettings.MODEL) ? form.getVal<string>(CanvasItemSettings.MODEL) : ''}
-            </React.Fragment>
+            </tr>
         );
     }
 
     private renderColorChooser(): JSX.Element {
         return (
-            <LabeledComponent label="Choose color" direction="horizontal">
-                <ConnectedColorPicker
-                    formController={this.props.canvasController.canvasItemSettingsForm}
-                    propertyName={CanvasItemSettings.COLOR}
-                    propertyType='string'
-                />
-            </LabeledComponent>
+            <tr>
+                <td>Choose color</td>
+                <td>
+                    <ConnectedColorPicker
+                        formController={this.props.canvasController.canvasItemSettingsForm}
+                        propertyName={CanvasItemSettings.COLOR}
+                        propertyType='string'
+                    />
+                </td>
+            </tr>
         );
     }
 
@@ -135,8 +163,9 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
         const form = this.props.canvasController.canvasItemSettingsForm;
 
         return (
-            <React.Fragment>
-                <LabeledComponent label="Layer" direction="horizontal">
+            <tr>
+                <td>Layer</td>
+                <td>
                     <ConnectedInputComponent
                         formController={form}
                         propertyName={CanvasItemSettings.LAYER}
@@ -144,9 +173,9 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
                         type="number"
                         value={form.getVal(CanvasItemSettings.LAYER)}
                     />
-                </LabeledComponent>
+                </td>
                 {form.getVal(CanvasItemSettings.MODEL) ? form.getVal<string>(CanvasItemSettings.MODEL) : ''}
-            </React.Fragment>
+            </tr>
         );
     }
 
@@ -154,7 +183,9 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
         const form = this.props.canvasController.canvasItemSettingsForm;
 
         return (
-            <LabeledComponent label="Rotation" direction="horizontal">
+            <tr>
+                <td>Rotation</td>
+                <td>
                 <ConnectedInputComponent
                     formController={form}
                     propertyName={CanvasItemSettings.ROTATION}
@@ -163,7 +194,8 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
                     value={form.getVal(CanvasItemSettings.ROTATION)}
                     placeholder="0"
                 />
-            </LabeledComponent>
+                </td>
+            </tr>
         );
     }
 
@@ -171,7 +203,9 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
         const form = this.props.canvasController.canvasItemSettingsForm;
 
         return (
-            <LabeledComponent label="Scale" direction="horizontal">
+            <tr>
+                <td>Scale</td>
+                <td>
                 <ConnectedInputComponent
                     formController={form}
                     propertyName={CanvasItemSettings.SCALE}
@@ -179,7 +213,9 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
                     type="number"
                     value={form.getVal(CanvasItemSettings.SCALE)}
                 />
-            </LabeledComponent>
+
+                </td>
+            </tr>
         );
     }
 }

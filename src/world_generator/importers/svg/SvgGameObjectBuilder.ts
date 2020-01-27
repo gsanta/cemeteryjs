@@ -23,6 +23,11 @@ export class SvgGameObjectBuilder<T> implements IGameObjectBuilder {
         this.services.canvasStore.clear();
         
         const rawJson: RawWorldMapJson = JSON.parse(convert.xml2json(worldMap, {compact: true, spaces: 4}));
+
+        if (!rawJson.svg.g) {
+            return [];
+        }
+
         const toolGroups = rawJson.svg.g.length ? rawJson.svg.g : [rawJson.svg.g];
 
         toolGroups.forEach(toolGroup => {

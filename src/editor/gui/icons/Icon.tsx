@@ -6,6 +6,22 @@ export interface IconProps {
     onClick(): void;
 }
 
+export const ToolStyled = styled.div`
+    padding: 3px;
+    display: flex;
+    cursor: pointer;
+
+    &:hover {
+        background: ${colors.hoverBackground};
+    }
+`;
+
+export const ToolNameStyled = styled.div`
+    padding-left: 5px;
+    font-weight: bolder;
+    color: ${colors.textColor};
+`;
+
 export const IconStyled = styled.svg`
     width: 24px;
     height: 24px;

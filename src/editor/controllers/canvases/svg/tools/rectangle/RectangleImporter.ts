@@ -8,15 +8,17 @@ import { WorldItemShape } from '../../../../../../world_generator/services/GameO
 import { IToolImporter } from '../IToolImporter';
 import { ToolType } from '../Tool';
 
+export interface RectJson {
+    _attributes: {
+        "data-wg-x": string,
+        "data-wg-y": string,
+        "data-wg-type": string,
+        "data-wg-name": string
+    }
+}
+
 export interface RectangleGroupJson extends ToolGroupJson {
-    rect: {
-        _attributes: {
-            "data-wg-x": string,
-            "data-wg-y": string,
-            "data-wg-type": string,
-            "data-wg-name": string
-        }
-    }[];
+    rect: RectJson[];
 }
 
 export class RectangleImporter implements IToolImporter {
@@ -30,7 +32,9 @@ export class RectangleImporter implements IToolImporter {
     import(group: RectangleGroupJson): void {
         const pixelSize = 10;
 
-        group.rect.forEach(rect => {
+        const rectJsons =  group.rect.length ? <RectJson[]> group.rect : [<RectJson> <unknown> group.rect];
+
+        rectJsons.forEach(rect => {
             const type = rect._attributes["data-wg-type"];
             const x = parseInt(rect._attributes["data-wg-x"], 10) / pixelSize;
             const y = parseInt(rect._attributes["data-wg-y"], 10) / pixelSize;

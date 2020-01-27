@@ -15,6 +15,6 @@ export class PathExporter implements IToolExporter {
     export(): JSX.Element {
         const pathes = this.canvasController.canvasStore.pathes.map(arrow => <PathComponent item={arrow}/>);
 
-        return <g data-tool-type={ToolType.PATH}>{pathes}</g>
+        return pathes.length > 0 ? <g data-tool-type={ToolType.PATH}>{pathes}</g> : null;
     }
 }

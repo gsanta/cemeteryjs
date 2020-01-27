@@ -4,10 +4,10 @@ import './App.scss';
 import { WebglCanvasComponent } from './canvases/webgl/WebglCanvasComponent';
 import { AppContext, AppContextType } from './Context';
 import { Header } from './Header';
-import { HorizontalSplitComponent } from './misc/HorizontalSplitComponent';
 import '../../editor/gui/misc/SplitPane.css';
-import { VerticalSplitComponent } from './misc/VerticalSplitComponent';
 import { createSvgCanvas } from './canvases/svg/createSvgCanvas';
+import Split from 'split.js'
+
 
 export interface AppState {
     isDialogOpen: boolean;
@@ -28,6 +28,17 @@ export class App extends React.Component<{}, AppState> {
             isAboutDialogOpen: false
         }
     }
+
+    componentDidMount() {
+        Split(['#toolbar', "#svg-canvas", "#webgl-canvas"], {
+            elementStyle: (dimension, size, gutterSize) => ({
+                'flex-basis': `calc(${size}% - ${gutterSize}px)`,
+            }),
+            gutterStyle: (dimension, gutterSize) => ({
+                'flex-basis':  `${gutterSize}px`,
+            }),
+        })
+    }
     
     render() {
         const [canvasToolbar, canvas, itemSettings] = createSvgCanvas(this.context.controllers);
@@ -35,15 +46,12 @@ export class App extends React.Component<{}, AppState> {
         return (
             <div className="style-nightshifs">
                 <Header activeCanvasToolbar={canvasToolbar}/>
-                <div className="main-content">
-                    <VerticalSplitComponent onChange={() => this.resize()}>
-                        <VerticalSplitComponent onChange={() => this.context.controllers.svgCanvasController.resize()}>
-                            {itemSettings}
-                            {canvas}                            
-                        </VerticalSplitComponent>
-                        <WebglCanvasComponent canvasController={this.context.controllers.webglCanvasController}/>
-                    </VerticalSplitComponent>
-                </div>
+                    <div className="main-content"
+                    >
+                        <div id="toolbar" >{itemSettings}</div>
+                        <div id="svg-canvas">{canvas}</div>                            
+                        <div id="webgl-canvas"><WebglCanvasComponent canvasController={this.context.controllers.webglCanvasController}/></div>
+                    </div>
             </div>
         );
     }
