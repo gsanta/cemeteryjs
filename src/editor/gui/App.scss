@@ -31,7 +31,11 @@
     .form-control {
         // background-color: $background03;
         // color: $text-color;
-        height: 30px;
+        height: 25px;
+    }
+
+    .form-group {
+        margin-bottom: 0px;
     }
 
     .input-group {
@@ -43,4 +47,10 @@
             color: $text-color;
         }
     }
+}
+
+.gutter {
+    cursor: ew-resize;
+    flex-basis: 5px;
+    background: lightgray;
 }

@@ -18,7 +18,6 @@ export const ToolStyled = styled.div`
 
 export const ToolNameStyled = styled.div`
     padding-left: 5px;
-    font-weight: bolder;
     color: ${colors.textColor};
 `;
 

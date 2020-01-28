@@ -30,14 +30,22 @@ export class App extends React.Component<{}, AppState> {
     }
 
     componentDidMount() {
-        Split(['#toolbar', "#svg-canvas", "#webgl-canvas"], {
-            elementStyle: (dimension, size, gutterSize) => ({
-                'flex-basis': `calc(${size}% - ${gutterSize}px)`,
-            }),
-            gutterStyle: (dimension, gutterSize) => ({
-                'flex-basis':  `${gutterSize}px`,
-            }),
-        })
+        Split(['#toolbar', "#svg-canvas", "#webgl-canvas"],
+            {
+                sizes: [12, 45, 43],
+                minSize: [200, 300, 300],
+                elementStyle: (dimension, size, gutterSize) => ({
+                    'flex-basis': `calc(${size}% - ${gutterSize}px)`,
+                }),
+                gutterStyle: (dimension, gutterSize) => ({
+                    'width': '2px',
+                    'cursor': 'ew-resize'
+                }),
+                onDrag: () => {
+                    this.resize();
+                }
+            }
+        )
     }
     
     render() {
@@ -45,13 +53,11 @@ export class App extends React.Component<{}, AppState> {
 
         return (
             <div className="style-nightshifs">
-                <Header activeCanvasToolbar={canvasToolbar}/>
-                    <div className="main-content"
-                    >
-                        <div id="toolbar" >{itemSettings}</div>
-                        <div id="svg-canvas">{canvas}</div>                            
-                        <div id="webgl-canvas"><WebglCanvasComponent canvasController={this.context.controllers.webglCanvasController}/></div>
-                    </div>
+                <div className="main-content">
+                    <div id="toolbar" >{itemSettings}</div>
+                    <div id="svg-canvas">{canvas}</div>                            
+                    <div id="webgl-canvas"><WebglCanvasComponent canvasController={this.context.controllers.webglCanvasController}/></div>
+                </div>
             </div>
         );
     }

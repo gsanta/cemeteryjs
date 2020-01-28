@@ -5,7 +5,7 @@ import { ButtonComponent } from './forms/ButtonComponent';
 import './Header.scss';
 import { colors } from './styles';
 import { saveAs } from 'file-saver';
-import { FileUploader } from './forms/FileUploader';
+import { ImportFileIconComponent } from './icons/ImportFileIconComponent';
 
 export interface HeaderProps {
     activeCanvasToolbar: JSX.Element;
@@ -57,7 +57,7 @@ export class Header extends React.Component<HeaderProps> {
                     {/* {this.props.activeCanvasToolbar} */}
                 </CanvasHeaderStyled>
                 <GlobalHeaderStyled>
-                    <FileUploader onUpload={(file) => this.context.controllers.svgCanvasController.writer.import(file)}/>
+                    <ImportFileIconComponent onUpload={(file) => this.context.controllers.svgCanvasController.writer.import(file)}/>
                     <ButtonComponent text="Save file" onClick={() => this.saveFile()} type="success"/>
                 </GlobalHeaderStyled>
             </HeaderStyled>

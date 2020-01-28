@@ -21,6 +21,7 @@ const EditorComponentStyled = styled.div`
 const CanvasComponentStyled = styled.svg`
     width: 100%;
     height: 100%;
+    background: ${colors.panelBackgroundLight};
 `;
 
 const SelectionComponentStyled = styled.rect`

@@ -37,25 +37,20 @@ const DropdownItemStyled = styled(DropdownItem)`
 
 export const DropdownComponent : React.SFC<DropdownProps> = (props: DropdownProps) => {
     const placeholder = <span>Select...</span>
-    const options = props.values.map(char => <DropdownItemStyled eventKey={char}>{char}</DropdownItemStyled>)
+    const options = props.values.map(char => <option value={char}>{char}</option>)
 
     return (
-        <Dropdown 
+        <select 
             className="dropdown-component"
-            onSelect={e => {
+            onChange={(e) => {
                 props.onFocus();
-                props.onChange(e);
+                props.onChange(e.target.value);
                 props.onBlur();
             }}
             // onFocus={() => props.onFocus()}
         >
-            <DropdownToggleStyled id="dropdown-basic">
-                {props.currentValue ? props.currentValue : placeholder}
-            </DropdownToggleStyled>
-            <DropdownMenuStyled onSelect={e => props.onChange(e)}>
                 {options}
-            </DropdownMenuStyled>
-        </Dropdown>
+        </select>
     );
 }
 

@@ -14,6 +14,8 @@ const CardBodyStyled = styled(Card.Body)`
     background: ${colors.panelBackground};
     color: ${colors.textColor};
 
+    padding: 15px 5px;
+
     table {
         color: ${colors.textColor};
     }
@@ -25,6 +27,10 @@ const CardHeaderStyled = styled(Card.Header)`
 
     button, button:active, button:hover {
         color: ${colors.textColor};
+    }
+
+    .btn {
+        padding: 0 5px;
     }
 `;
 

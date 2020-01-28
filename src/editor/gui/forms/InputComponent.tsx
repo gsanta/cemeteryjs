@@ -5,6 +5,7 @@ import './InputComponent.scss';
 import styled from 'styled-components';
 import { colors } from '../styles';
 import { withCommitOnBlur } from './decorators/withCommitOnBlur';
+import { Form } from 'react-bootstrap';
 
 export interface InputProps extends Focusable {
     onChange(text: string): void;
@@ -13,7 +14,7 @@ export interface InputProps extends Focusable {
     placeholder?: string;
 }
 
-const FormControlStyled = styled(FormControl)`
+const FormControlStyled = styled(Form.Control)`
     background-color: ${colors.active};
     color: ${colors.textColorDark};
     border-radius: 0;
@@ -27,7 +28,10 @@ const FormControlStyled = styled(FormControl)`
 export function InputComponent(props: InputProps) {
 
     return (
+        <Form.Group controlId="formBasicPassword">
+            
         <FormControlStyled
+            block
             type={props.type}
             onFocus={() => props.onFocus()}
             placeholder={props.placeholder}
@@ -35,6 +39,8 @@ export function InputComponent(props: InputProps) {
             onChange={(e: React.ChangeEvent<any>) => props.onChange(e.target.value)}
             onBlur={() => props.onBlur()}
         />
+        {/* <ButtonStyled block variant="dark" className={`button override ${props.type}`} onClick={() => props.onClick()}>{props.text}</ButtonStyled> */}
+    </Form.Group>
     );
 }
 

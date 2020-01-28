@@ -41,7 +41,7 @@ export class WebglCanvasComponent extends React.Component<WebglCanvasComponentPr
         const isEmpty = this.context.controllers.svgCanvasController.isEmpty();
 
         return (
-                <div>
+                <div style={{background: '#33334C', height: '100%', color: 'white'}}>
                     {isEmpty ? <CanvasEmptyStyled>Canvas is empty, start drawing or import scene file.</CanvasEmptyStyled> : null}
                     <CanvasStyled isEmpty={isEmpty} id="canvas" ref={this.canvasRef}/>
                 </div>
