@@ -1,24 +1,28 @@
 import * as React from 'react';
 import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvasController';
-import { ImportFileIconComponent } from '../../icons/ImportFileIconComponent';
-import { ButtonComponent } from '../../forms/ButtonComponent';
+import { AppContext, AppContextType } from '../../Context';
+import { DisplayEditorIconComponent } from '../../icons/DisplayEditorIconComponent';
 import { ExportFileIconComponent } from '../../icons/ExportFileIconComponent';
+import { ImportFileIconComponent } from '../../icons/ImportFileIconComponent';
 
+export interface GlobalSettingsComponentProps {
+    isEditorOpen: boolean;
+    toggleEditorOpen: () => void;
+    canvasController: SvgCanvasController
+}
 
-export class GlobalSettingsComponent extends React.Component<{canvasController: SvgCanvasController}> {
+export class GlobalSettingsComponent extends React.Component<GlobalSettingsComponentProps> {
+    static contextType = AppContext;
+    context: AppContextType;
 
     render() {
         return (
             <div>
+                <DisplayEditorIconComponent canvasController={this.context.controllers.svgCanvasController} text={"Display 2D Canvas"}/>
+                <DisplayEditorIconComponent canvasController={this.context.controllers.webglCanvasController} text={"Display 3D Canvas"}/>
                 <ImportFileIconComponent onUpload={(file) => this.context.controllers.svgCanvasController.writer.import(file)}/>
                 <ExportFileIconComponent/>
             </div>
         )
-    }
-
-    private saveFile() {
-        const file = this.context.controllers.svgCanvasController.reader.export();
-        var blob = new Blob([file], { type: "text/plain;charset=utf-8" });
-        saveAs(blob, "dynamic.txt");
     }
 }

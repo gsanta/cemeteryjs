@@ -15,6 +15,8 @@ import { GlobalSettingsComponent } from './GlobalSettingsComponent';
 
 export interface ItemSettingsProps {
     canvasController: SvgCanvasController;
+    isEditorOpen: boolean;
+    toggleEditorOpen: () => void;
 }
 
 const ItemSettingsStyled = styled.div`
@@ -45,14 +47,6 @@ const SettingsRowStyled = styled.div`
 
 
 export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
-
-    constructor(props: ItemSettingsProps) {
-        super(props);
-
-        this.props.canvasController.setSettingsRenderer(() => this.forceUpdate());
-        this.props.canvasController.canvasItemSettingsForm.setRenderer(() => this.forceUpdate());
-    }
-
     render(): JSX.Element {
         const selectedCanvasItems = CanvasItemTag.getTaggedItems(CanvasItemTag.SELECTED, this.props.canvasController.canvasStore.items);
 
@@ -83,7 +77,7 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
                     elements={[
                         {
                             title: 'Settings',
-                            body: <GlobalSettingsComponent canvasController={this.props.canvasController}/>
+                            body: <GlobalSettingsComponent {...this.props} canvasController={this.props.canvasController}/>
                         },
                         {
                             title: 'Tools',

@@ -24,10 +24,6 @@ export class SvgCanvasToolbarComponent extends React.Component<{canvasController
     static contextType = AppContext;
     context: AppContextType;
 
-    componentDidMount() {
-        this.context.controllers.svgCanvasController.setToolbarRenderer(() => this.forceUpdate());
-    }
-
     render(): JSX.Element {
         return (
             <ToolbarStyled>

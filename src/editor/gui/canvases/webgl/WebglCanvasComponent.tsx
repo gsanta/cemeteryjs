@@ -47,4 +47,5 @@ export class WebglCanvasComponent extends React.Component<WebglCanvasComponentPr
                 </div>
         );
     }
+
 }

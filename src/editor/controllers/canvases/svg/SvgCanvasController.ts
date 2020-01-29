@@ -3,29 +3,30 @@ import { GameObjectTemplate } from '../../../../world_generator/services/GameObj
 import { defaultWorldItemDefinitions } from '../../../defaultWorldItemDefinitions';
 import { EditorFacade } from '../../EditorFacade';
 import { CanvasItemSettingsForm } from '../../forms/CanvasItemSettingsForm';
+import { CanvasViewSettings, ICanvasController } from '../ICanvasController';
 import { ICanvasExporter } from '../ICanvasExporter';
 import { ICanvasImporter } from '../ICanvasImporter';
-import { IEditableCanvas } from '../IEditableCanvas';
 import { MouseHandler } from './handlers/MouseHandler';
 import { Model3DController } from './Model3DController';
 import { SvgCanvasStore } from './models/SvgCanvasStore';
 import { SvgConfig } from './models/SvgConfig';
 import { SvgCanvasExporter } from './SvgCanvasExporter';
 import { SvgCanvasImporter } from './SvgCanvasImporter';
+import { CameraTool } from './tools/CameraTool';
 import { DeleteTool } from './tools/DeleteTool';
 import { MoveAndSelectTool } from './tools/MoveAndSelectTool';
+import { PathExporter } from './tools/path/PathExporter';
+import { PathImporter } from './tools/path/PathImporter';
+import { CanvasPath, PathTool } from './tools/path/PathTool';
+import { RectangleExporter } from './tools/rectangle/RectangleExporter';
+import { RectangleImporter } from './tools/rectangle/RectangleImporter';
 import { RectangleTool } from './tools/rectangle/RectangleTool';
 import { Tool, ToolType } from './tools/Tool';
-import { CameraTool } from './tools/CameraTool';
-import { PathTool, CanvasPath } from './tools/path/PathTool';
 import { ToolService } from './tools/ToolService';
-import { RectangleExporter } from './tools/rectangle/RectangleExporter';
-import { PathExporter } from './tools/path/PathExporter';
-import { RectangleImporter } from './tools/rectangle/RectangleImporter';
-import { PathImporter } from './tools/path/PathImporter';
 
-export class SvgCanvasController implements IEditableCanvas {
+export class SvgCanvasController implements ICanvasController {
     static id = 'svg-canvas-controller';
+    visible = true;
     fileFormats = [FileFormat.SVG];
     mouseController: MouseHandler;
     tools: Tool[];
@@ -141,16 +142,18 @@ export class SvgCanvasController implements IEditableCanvas {
         this.cameraTool.resize();
     };
 
+    setVisible(visible: boolean) {
+        this.visible = visible;
+        if (!this.visible) { this.controllers.webglCanvasController.setVisible(true);}
+        this.controllers.render();
+    }
+
+    isVisible(): boolean {
+        return this.visible;
+    }
+
     setCanvasRenderer(renderFunc: () => void) {
         this.renderCanvasFunc = renderFunc;
-    }
-
-    setToolbarRenderer(renderFunc: () => void) {
-        this.renderToolbarFunc = renderFunc;
-    }
-
-    setSettingsRenderer(renderFunc: () => void) {
-        this.renderSettingsFunc = renderFunc;
     }
 
     activate(): void {
@@ -164,5 +167,10 @@ export class SvgCanvasController implements IEditableCanvas {
 
     isEmpty(): boolean {
         return this.canvasStore.items.length === 0;
+    }
+
+    viewSettings: CanvasViewSettings = {
+        initialSizePercent: 44,
+        minSizePixel: 300
     }
 }

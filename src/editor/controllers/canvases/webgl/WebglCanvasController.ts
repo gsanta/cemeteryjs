@@ -1,17 +1,18 @@
-import { Color3, DirectionalLight, Engine, Mesh, MeshBuilder, Scene, UniversalCamera, Vector3, HemisphericLight } from 'babylonjs';
+import { Color3, Engine, HemisphericLight, Mesh, MeshBuilder, Scene, UniversalCamera, Vector3 } from 'babylonjs';
 import { AbstractModelLoader } from '../../../../common/AbstractModelLoader';
+import { GameFacade } from '../../../../game/GameFacade';
 import { FileFormat } from '../../../../WorldGenerator';
 import { EditorFacade } from '../../EditorFacade';
 import { Events } from "../../events/Events";
-import { IWritableCanvas } from '../IWritableCanvas';
 import { EditorCamera } from './EditorCamera';
 import { HelperMeshes } from './HelperMeshes';
 import { WebglCanvasWriter } from './WebglCanvasImporter';
-import { GameFacade } from '../../../../game/GameFacade';
+import { CanvasViewSettings } from '../ICanvasController';
 (<any> window).earcut = require('earcut');
 
-export class WebglCanvasController implements IWritableCanvas {
+export class WebglCanvasController {
     static id = 'webgl-editor';
+    visible = true;
     fileFormats = [FileFormat.TEXT, FileFormat.SVG];
 
     engine: Engine;
@@ -109,6 +110,16 @@ export class WebglCanvasController implements IWritableCanvas {
         this.renderCanvasFunc();
     }
 
+    setVisible(visible: boolean) {
+        this.visible = visible;
+        if (!this.visible) { this.controllers.svgCanvasController.setVisible(true);}
+        this.controllers.render();
+    }
+
+    isVisible(): boolean {
+        return this.visible;
+    }
+
     activate(): void {}
 
     private clearCanvas() {
@@ -118,5 +129,11 @@ export class WebglCanvasController implements IWritableCanvas {
             }
         });
         this.meshes = [];
+    }
+
+    
+    viewSettings: CanvasViewSettings = {
+        initialSizePercent: 44,
+        minSizePixel: 300
     }
 }
