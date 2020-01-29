@@ -1,35 +1,14 @@
 import * as React from 'react';
-import { CanvasItemSettings } from '../../../controllers/forms/CanvasItemSettingsForm';
-import { ConnectedColorPicker } from '../../forms/ColorPicker';
-import { LabeledComponent } from '../../forms/LabeledComponent';
 import styled from 'styled-components';
-import { ConnectedDropdownComponent } from '../../forms/DropdownComponent';
-import { ConnectedFileUploadComponent } from '../../forms/FileUploadComponent';
-import { ConnectedInputComponent } from '../../forms/InputComponent';
-import { CanvasItemTag } from '../../../controllers/canvases/svg/models/CanvasItem';
-import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvasController';
-import { SvgCanvasToolbarComponent } from './SvgCanvasToolbarComponent';
-import { colors } from '../../styles';
-import { AccordionComponent } from '../../misc/AccordionComponent';
-import { GlobalSettingsComponent } from './GlobalSettingsComponent';
-
-export interface ItemSettingsProps {
-    canvasController: SvgCanvasController;
-    isEditorOpen: boolean;
-    toggleEditorOpen: () => void;
-}
-
-const ItemSettingsStyled = styled.div`
-    padding: 10px;
-    height: 100%;
-    background: ${colors.panelBackground};
-    color: ${colors.textColor};
-`;
-
-
-const NoItemsSelectedStyled = styled.div`
-    padding: 10px;
-`;
+import { CanvasItemTag } from '../../controllers/canvases/svg/models/CanvasItem';
+import { SvgCanvasController } from '../../controllers/canvases/svg/SvgCanvasController';
+import { CanvasItemSettings } from '../../controllers/forms/CanvasItemSettingsForm';
+import { AppContext, AppContextType } from '../Context';
+import { ConnectedColorPicker } from '../forms/ColorPicker';
+import { ConnectedDropdownComponent } from '../forms/DropdownComponent';
+import { ConnectedFileUploadComponent } from '../forms/FileUploadComponent';
+import { ConnectedInputComponent } from '../forms/InputComponent';
+import { colors } from '../styles';
 
 const LabelStyled = styled.div`
     width: 50%;
@@ -45,20 +24,19 @@ const SettingsRowStyled = styled.div`
     border-bottom: 1px solid ${colors.panelBackgroundLight};
 `;
 
+export class GameObjectSettingsComponent extends React.Component<{canvasController: SvgCanvasController}> {
+    static contextType = AppContext;
+    context: AppContextType;
 
-export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
-    render(): JSX.Element {
+    render() {
         const selectedCanvasItems = CanvasItemTag.getTaggedItems(CanvasItemTag.SELECTED, this.props.canvasController.canvasStore.items);
-
         
         this.props.canvasController.canvasItemSettingsForm.canvasItem = selectedCanvasItems[0];
 
         const form = this.props.canvasController.canvasItemSettingsForm;
-
-        let itemSettings: JSX.Element = null;
-
+     
         if (selectedCanvasItems.length === 1) {
-            itemSettings = (
+            return (
                 <div style={{display: 'flex', flexDirection: 'column'}}>
                     {this.renderName()}
                     {this.renderColorChooser()}
@@ -71,30 +49,7 @@ export class ItemSettingsComponent extends React.Component<ItemSettingsProps> {
             );
         }
 
-        return (
-            <ItemSettingsStyled>
-                <AccordionComponent
-                    elements={[
-                        {
-                            title: 'Settings',
-                            body: <GlobalSettingsComponent {...this.props} canvasController={this.props.canvasController}/>
-                        },
-                        {
-                            title: 'Tools',
-                            body: <SvgCanvasToolbarComponent canvasController={this.props.canvasController}/>
-                        },
-                        {
-                            title: 'Selection',
-                            body: itemSettings
-                        }
-                    ]}
-                />
-            </ItemSettingsStyled>
-        );
-    }
-
-    private renderNoItemsSelectedMessage(): JSX.Element {
-        return <NoItemsSelectedStyled>Select an item on the canvas to edit it's properties.</NoItemsSelectedStyled>
+        return null;
     }
 
     private renderName(): JSX.Element {

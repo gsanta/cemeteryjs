@@ -7,10 +7,11 @@ import { Events } from "../../events/Events";
 import { EditorCamera } from './EditorCamera';
 import { HelperMeshes } from './HelperMeshes';
 import { WebglCanvasWriter } from './WebglCanvasImporter';
-import { CanvasViewSettings } from '../ICanvasController';
+import { CanvasViewSettings, ICanvasController } from '../ICanvasController';
 (<any> window).earcut = require('earcut');
 
-export class WebglCanvasController {
+export class WebglCanvasController implements ICanvasController {
+    name = '3D View';
     static id = 'webgl-editor';
     visible = true;
     fileFormats = [FileFormat.TEXT, FileFormat.SVG];

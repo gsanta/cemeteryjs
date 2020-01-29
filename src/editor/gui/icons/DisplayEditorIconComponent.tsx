@@ -5,7 +5,6 @@ import { ICanvasController } from '../../controllers/canvases/ICanvasController'
 
 export interface DisplayEditorIconProps {
     canvasController: ICanvasController;
-    text: string; 
 }
 
 export class DisplayEditorIconComponent extends React.Component<DisplayEditorIconProps> {
@@ -20,7 +19,7 @@ export class DisplayEditorIconComponent extends React.Component<DisplayEditorIco
                 </IconStyled>
                 
                 <ToolNameStyled>
-                    {this.props.text}
+                    {canvasController.isVisible() ? `Hide ${canvasController.name}` : `Display ${canvasController.name}`}
                 </ToolNameStyled>
             </ToolStyled>   
         )

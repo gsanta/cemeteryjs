@@ -2,12 +2,10 @@ import * as React from 'react';
 import { Accordion, Card, Button } from 'react-bootstrap';
 import styled from 'styled-components';
 import { colors } from '../styles';
+import { CanvasToolsProps } from '../canvases/canvasFactory';
 
 export interface AccordionProps {
-    elements: {
-        title: string;
-        body: JSX.Element | JSX.Element[];
-    }[]
+    elements: CanvasToolsProps[];
 }
 
 const CardBodyStyled = styled(Card.Body)`

@@ -1,16 +1,6 @@
 import * as React from 'react';
-import { useDropzone } from 'react-dropzone';
-import * as ab2str from 'arraybuffer-to-string';
-import styled from 'styled-components';
-import { colors } from '../styles';
 import { ToolStyled, IconStyled, IconBackgroundStyled, IconImageStyled, ToolNameStyled } from './Icon';
-
-const FileUploaderStyled = styled.div`
-    background: ${colors.success};
-    height: 30px;
-    padding: 5px 10px;
-    cursor: pointer;
-`;
+import {saveAs} from 'file-saver';
 
 export class ExportFileIconComponent extends React.Component {
 

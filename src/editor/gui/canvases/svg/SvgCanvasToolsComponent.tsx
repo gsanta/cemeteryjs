@@ -20,7 +20,7 @@ const ToolbarStyled = styled.div`
     }
 `;
 
-export class SvgCanvasToolbarComponent extends React.Component<{canvasController: SvgCanvasController}> {
+export class SvgCanvasToolsComponent extends React.Component<{canvasController: SvgCanvasController}> {
     static contextType = AppContext;
     context: AppContextType;
 
@@ -53,4 +53,6 @@ export class SvgCanvasToolbarComponent extends React.Component<{canvasController
     private zoomOut() {
         this.context.controllers.svgCanvasController.cameraTool.zoomToPrevStep();
     }
+
+    
 }

@@ -25,6 +25,7 @@ import { Tool, ToolType } from './tools/Tool';
 import { ToolService } from './tools/ToolService';
 
 export class SvgCanvasController implements ICanvasController {
+    name = '2D View';
     static id = 'svg-canvas-controller';
     visible = true;
     fileFormats = [FileFormat.SVG];

@@ -1,15 +1,12 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as React from 'react';
 import './App.scss';
-import { WebglCanvasComponent } from './canvases/webgl/WebglCanvasComponent';
 import { AppContext, AppContextType } from './Context';
-import { Header } from './Header';
 import '../../editor/gui/misc/SplitPane.css';
 import Split from 'split.js'
-import { ItemSettingsComponent } from './canvases/svg/ItemSettingsComponent';
+import { ToolbarComponent } from './toolbar/ToolbarComponent';
 import { SvgCanvasController } from '../controllers/canvases/svg/SvgCanvasController';
-import { SvgCanvasComponent } from './canvases/svg/SvgCanvasComponent';
-import { controllerFactory } from './controllerFactory';
+import { canvasFactory } from './canvases/canvasFactory';
 
 
 export interface AppState {
@@ -49,13 +46,13 @@ export class App extends React.Component<{}, AppState> {
     render() {
         const canvases = this.context.controllers.canvases
             .filter(canvas => canvas.isVisible())
-            .map(canvas => <div id={`${canvas.getId()}-split`}>{controllerFactory(canvas)}</div>)
+            .map(canvas => <div id={`${canvas.getId()}-split`}>{canvasFactory(canvas)}</div>)
 
         return (
             <div className="style-nightshifs">
                 <div className="main-content">
                     <div id="toolbar" >
-                        <ItemSettingsComponent 
+                        <ToolbarComponent 
                             isEditorOpen={this.state.isEditorOpen}
                             toggleEditorOpen={() => this.setState({isEditorOpen: !this.state.isEditorOpen})}
                             canvasController={this.context.controllers.svgCanvasController as SvgCanvasController}

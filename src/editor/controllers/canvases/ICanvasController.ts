@@ -6,6 +6,7 @@ export interface CanvasViewSettings {
 }
 
 export interface ICanvasController {
+    name: string;
     setVisible(visible: boolean): void;
     isVisible(): boolean;
     fileFormats: FileFormat[];
