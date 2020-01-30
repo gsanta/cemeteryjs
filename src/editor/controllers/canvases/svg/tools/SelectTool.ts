@@ -32,7 +32,6 @@ export class SelectTool extends AbstractSelectionTool {
         topItem && topItem.tags.add(CanvasItemTag.SELECTED);
 
         this.canvasController.renderCanvas();
-        this.canvasController.renderSettings();
     }
 
     draggedUp() {

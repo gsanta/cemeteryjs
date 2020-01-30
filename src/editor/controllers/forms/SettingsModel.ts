@@ -1,7 +1,7 @@
-import { ICanvasController } from "../canvases/ICanvasController";
+import { AbstractCanvasController } from "../canvases/AbstractCanvasController";
 
 export class SettingsModel {
-    activeEditor: ICanvasController;
+    activeEditor: AbstractCanvasController;
     activeDialog: string;
     isWorldItemTypeEditorOpen = true;
 }

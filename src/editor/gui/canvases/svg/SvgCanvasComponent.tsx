@@ -33,7 +33,6 @@ const SelectionComponentStyled = styled.rect`
 export class SvgCanvasComponent extends React.Component<{canvasController: SvgCanvasController}> {
     static contextType = AppContext;
     context: AppContextType;
-    private webglModelSizeTestingElement: HTMLCanvasElement;
 
     constructor(props: {canvasController: SvgCanvasController}) {
         super(props);

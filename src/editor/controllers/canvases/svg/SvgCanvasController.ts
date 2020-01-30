@@ -3,7 +3,7 @@ import { GameObjectTemplate } from '../../../../world_generator/services/GameObj
 import { defaultWorldItemDefinitions } from '../../../defaultWorldItemDefinitions';
 import { EditorFacade } from '../../EditorFacade';
 import { CanvasItemSettingsForm } from '../../forms/CanvasItemSettingsForm';
-import { CanvasViewSettings, ICanvasController } from '../ICanvasController';
+import { CanvasViewSettings, AbstractCanvasController } from '../AbstractCanvasController';
 import { ICanvasExporter } from '../ICanvasExporter';
 import { ICanvasImporter } from '../ICanvasImporter';
 import { MouseHandler } from './handlers/MouseHandler';
@@ -24,7 +24,7 @@ import { RectangleTool } from './tools/rectangle/RectangleTool';
 import { Tool, ToolType } from './tools/Tool';
 import { ToolService } from './tools/ToolService';
 
-export class SvgCanvasController implements ICanvasController {
+export class SvgCanvasController extends AbstractCanvasController {
     name = '2D View';
     static id = 'svg-canvas-controller';
     visible = true;
@@ -50,9 +50,10 @@ export class SvgCanvasController implements ICanvasController {
 
     private renderCanvasFunc = () => null;
     private renderToolbarFunc = () => null;
-    private renderSettingsFunc = () => null;
     
     constructor(editorFacade: EditorFacade) {
+        super();
+
         this.controllers = editorFacade;
         this.worldItemDefinitions = [...defaultWorldItemDefinitions];
         this.selectedWorldItemDefinition = this.worldItemDefinitions[0];
@@ -107,10 +108,6 @@ export class SvgCanvasController implements ICanvasController {
         this.renderToolbarFunc();
     }
 
-    renderSettings() {
-        this.renderSettingsFunc();
-    }
-
     setActiveTool(toolType: ToolType) {
         this.selectedTool = toolType;
         this.renderToolbar();
@@ -155,6 +152,10 @@ export class SvgCanvasController implements ICanvasController {
 
     setCanvasRenderer(renderFunc: () => void) {
         this.renderCanvasFunc = renderFunc;
+    }
+
+    setToolbarRenderer(renderFunc: () => void): void {
+        this.renderToolbarFunc = renderFunc;
     }
 
     activate(): void {

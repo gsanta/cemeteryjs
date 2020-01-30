@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvasController';
-import { AppContext, AppContextType } from '../../Context';
-import { DisplayEditorIconComponent } from '../../icons/DisplayEditorIconComponent';
-import { ExportFileIconComponent } from '../../icons/ExportFileIconComponent';
-import { ImportFileIconComponent } from '../../icons/ImportFileIconComponent';
+import { SvgCanvasController } from '../../controllers/canvases/svg/SvgCanvasController';
+import { AppContext, AppContextType } from '../Context';
+import { DisplayEditorIconComponent } from '../icons/DisplayEditorIconComponent';
+import { ExportFileIconComponent } from '../icons/ExportFileIconComponent';
+import { ImportFileIconComponent } from '../icons/ImportFileIconComponent';
 
 export interface GlobalSettingsComponentProps {
     isEditorOpen: boolean;

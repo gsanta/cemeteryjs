@@ -7,10 +7,10 @@ import { Events } from "../../events/Events";
 import { EditorCamera } from './EditorCamera';
 import { HelperMeshes } from './HelperMeshes';
 import { WebglCanvasWriter } from './WebglCanvasImporter';
-import { CanvasViewSettings, ICanvasController } from '../ICanvasController';
+import { CanvasViewSettings, AbstractCanvasController } from '../AbstractCanvasController';
 (<any> window).earcut = require('earcut');
 
-export class WebglCanvasController implements ICanvasController {
+export class WebglCanvasController extends AbstractCanvasController {
     name = '3D View';
     static id = 'webgl-editor';
     visible = true;
@@ -30,6 +30,7 @@ export class WebglCanvasController implements ICanvasController {
     meshes: Mesh[] = [];
 
     constructor(controllers: EditorFacade) {
+        super();
         this.controllers = controllers;
         this.updateCanvas = this.updateCanvas.bind(this);
         this.registerEvents();

@@ -1,10 +1,10 @@
 
 import * as React from 'react';
 import { ToolStyled, IconStyled, IconBackgroundStyled, IconImageStyled, ToolNameStyled, IconProps } from './Icon';
-import { ICanvasController } from '../../controllers/canvases/ICanvasController';
+import { AbstractCanvasController } from '../../controllers/canvases/AbstractCanvasController';
 
 export interface DisplayEditorIconProps {
-    canvasController: ICanvasController;
+    canvasController: AbstractCanvasController;
 }
 
 export class DisplayEditorIconComponent extends React.Component<DisplayEditorIconProps> {

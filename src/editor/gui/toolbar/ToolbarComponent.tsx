@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { SvgCanvasController } from '../../controllers/canvases/svg/SvgCanvasController';
 import { canvasToolsFactory } from '../canvases/canvasFactory';
-import { GlobalSettingsComponent } from '../canvases/svg/GlobalSettingsComponent';
+import { GlobalSettingsComponent } from './GlobalSettingsComponent';
 import { AppContext, AppContextType } from '../Context';
 import { AccordionComponent } from '../misc/AccordionComponent';
 import { colors } from '../styles';

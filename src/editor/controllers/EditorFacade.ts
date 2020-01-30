@@ -1,7 +1,7 @@
 import { SvgCanvasController } from './canvases/svg/SvgCanvasController';
 import { WebglCanvasController } from './canvases/webgl/WebglCanvasController';
 import { EventDispatcher } from './events/EventDispatcher';
-import { ICanvasController } from './canvases/ICanvasController';
+import { AbstractCanvasController } from './canvases/AbstractCanvasController';
 
 export class EditorFacade {
     webglCanvasController: WebglCanvasController;
@@ -12,7 +12,7 @@ export class EditorFacade {
     svgCanvasId: string;
     renderFunc: () => void;
 
-    canvases: ICanvasController[];
+    canvases: AbstractCanvasController[];
 
     constructor() {
         this.eventDispatcher = new EventDispatcher();

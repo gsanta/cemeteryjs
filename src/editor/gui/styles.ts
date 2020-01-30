@@ -1,4 +1,4 @@
-import { ICanvasController } from '../controllers/canvases/ICanvasController';
+import { AbstractCanvasController } from '../controllers/canvases/AbstractCanvasController';
 
 export const colors = {
     grey2: 'lightgray',

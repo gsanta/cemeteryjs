@@ -7,6 +7,7 @@ import Split from 'split.js'
 import { ToolbarComponent } from './toolbar/ToolbarComponent';
 import { SvgCanvasController } from '../controllers/canvases/svg/SvgCanvasController';
 import { canvasFactory } from './canvases/canvasFactory';
+import { AbstractCanvasController } from '../controllers/canvases/AbstractCanvasController';
 
 
 export interface AppState {
@@ -21,6 +22,7 @@ export class App extends React.Component<{}, AppState> {
     context: AppContextType;
 
     private split: any;
+    private currentVisibleCanvases: AbstractCanvasController[] = [];
     
     constructor(props: {}) {
         super(props);
@@ -35,12 +37,17 @@ export class App extends React.Component<{}, AppState> {
 
     componentDidMount() {
         this.context.controllers.setRenderer(() => this.forceUpdate());
-        this.updateCanvasVisibility();
+        if (this.hasCanvasVisibilityChanged()) {
+            this.updateCanvasVisibility();
+        }
     }
 
     componentDidUpdate() {
-        this.split.destroy();
-        this.updateCanvasVisibility();
+        if (this.hasCanvasVisibilityChanged()) {
+            this.split.destroy();
+            this.updateCanvasVisibility();
+            this.resize();
+        }
     }
     
     render() {
@@ -69,12 +76,25 @@ export class App extends React.Component<{}, AppState> {
         this.context.controllers.svgCanvasController.resize();
     }
 
+    private hasCanvasVisibilityChanged() {
+        const visibleCanvases = this.context.controllers.canvases.filter(canvas => canvas.isVisible());
+
+        if (visibleCanvases.length !== this.currentVisibleCanvases.length) { return true; }
+
+        for (let i = 0; i < visibleCanvases.length; i++) {
+            if (visibleCanvases[i] !== this.currentVisibleCanvases[i]) {
+                return true;
+            }
+        }
+    }
+
     private updateCanvasVisibility() {
         let ids = ['#toolbar']; 
         let sizes = [12];
         let minSize = [200];
 
         const visibleCanvases = this.context.controllers.canvases.filter(canvas => canvas.isVisible());
+        this.currentVisibleCanvases = visibleCanvases;
         const size = (100 - sizes[0]) / visibleCanvases.length;
 
         visibleCanvases.forEach(canvas => {
