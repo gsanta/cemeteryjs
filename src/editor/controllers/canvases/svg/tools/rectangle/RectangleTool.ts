@@ -35,14 +35,12 @@ export class RectangleTool extends AbstractSelectionTool {
             color: 'grey',
             dimensions: rect,
             type: type,
-            layer: 0,
-            isPreview: false,
-            tags: new Set(),
             shape: WorldItemShape.RECTANGLE,
-            model: null,
+            modelPath: null,
             rotation: 0,
             scale: 1,
-            name: ''
+            name: '',
+            texturePath: ''
         }
 
         this.canvasController.canvasStore.addRect(canvasItem);
@@ -67,14 +65,12 @@ export class RectangleTool extends AbstractSelectionTool {
             color: 'grey',
             dimensions,
             type: type,
-            layer: 0,
-            isPreview: false,
-            tags: new Set(),
             shape: WorldItemShape.RECTANGLE,
-            model: null,
+            modelPath: null,
             rotation: 0,
             scale: 1,
-            name: ''
+            name: '',
+            texturePath: ''
         }
 
         if (positions.length > 0) {
@@ -87,7 +83,6 @@ export class RectangleTool extends AbstractSelectionTool {
     draggedUp() {
         super.draggedUp();
         if (this.lastPreviewRect) {
-            this.lastPreviewRect.isPreview = false;
             this.lastPreviewRect = null;
         }
 

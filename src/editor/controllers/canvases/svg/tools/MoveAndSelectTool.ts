@@ -79,8 +79,10 @@ export class MoveAndSelectTool extends AbstractTool {
             }
         }
 
-        const hoveredItem = CanvasItemTag.getHoveredItem(this.canvasController.canvasStore.items);
-        const selectedItems = CanvasItemTag.getSelectedItems(this.canvasController.canvasStore.items);
+        const canvasStore = this.canvasController.canvasStore;
+
+        const hoveredItem = canvasStore.getHoveredItem();
+        const selectedItems = canvasStore.getSelectedItems();
         if (hoveredItem && selectedItems.includes(hoveredItem)) {
             this.activeTool = this.moveTool;
         } else {

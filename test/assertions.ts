@@ -10,7 +10,6 @@ declare global {
     namespace jest {
         interface Matchers<R, T> {
             toBeEqualDimensions(dimension: Shape);
-            toHaveAnyWithDimensions(dimensions: Shape),
             toHaveDimensions(dimensions: Shape),
             toHavePoint(point: Point);
             toMatchMeshDescriptor(expectedMeshDescriptor: Partial<GameObjectTemplate>);
@@ -67,40 +66,4 @@ expect.extend({
             }
         }
     },
-
-    toHaveAnyWithDimensions(worldItems: GameObject[], dimensions: Shape) {
-
-        let pass = true;
-
-        let message: string = '';
-
-
-        try {
-            hasAnyWorldItemInfoDimension(dimensions, worldItems)
-        } catch (e) {
-            pass = false;
-            message = e.message;
-        }
-
-        if (pass) {
-            return {
-                message: () => 'should not happen',
-                pass: true,
-            };
-        } else {
-            return {
-                message: () => message,
-                pass: false,
-            };
-        }
-    }
 });
-
-// TODO: create custom matcher
-export function hasAnyWorldItemInfoDimension(dimension: Shape, worldItemInfos: GameObject[]) {
-    if (worldItemInfos.find(worldItemInfo => worldItemInfo.dimensions.equalTo(dimension))) {
-        return true;
-    } else {
-        throw new Error(`${dimension.toString()} does not exist`);
-    }
-}

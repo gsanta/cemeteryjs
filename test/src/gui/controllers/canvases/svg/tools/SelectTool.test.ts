@@ -7,17 +7,19 @@ import { CanvasItemTag } from '../../../../../../../src/editor/controllers/canva
 it ('Select via clicking on an item', () => {
     const controllers = setupControllers(); 
     const canvasController = controllers.svgCanvasController;
-    canvasController.canvasStore.clear();
+    const canvasStore = canvasController.canvasStore;
+    
+    canvasStore.clear();
 
     const canvasItem = drawRectangle(controllers);
 
-    expect(canvasController.canvasStore.items[0].tags.has(CanvasItemTag.SELECTED)).toBeFalsy();
+    expect(canvasStore.getTags(canvasStore.items[0]).has(CanvasItemTag.SELECTED)).toBeFalsy();
 
     canvasController.setActiveTool(ToolType.MOVE_AND_SELECT);
 
     click(controllers, canvasItem);
 
-    expect(canvasController.canvasStore.items[0].tags.has(CanvasItemTag.SELECTED)).toBeTruthy();
+    expect(canvasStore.getTags(canvasStore.items[0]).has(CanvasItemTag.SELECTED)).toBeTruthy();
 });
 
 it ('Select via rectangle selection', () => {
@@ -35,7 +37,7 @@ it ('Select via rectangle selection', () => {
 
     selectWithRect(controllers, new Point(40, 40), new Point(180, 100));
 
-    const selectedItems = CanvasItemTag.getSelectedItems(canvasController.canvasStore.items);
+    const selectedItems = canvasController.canvasStore.getSelectedItems();
 
     expect(selectedItems.length).toEqual(2);
     expect(controllers.svgCanvasRenderer.counter).toEqual(3);

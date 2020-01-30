@@ -1,9 +1,9 @@
-import { Skeleton, Mesh, Vector3 } from 'babylonjs';
-import { Shape } from '../../model/geometry/shapes/Shape';
+import { Mesh, Vector3 } from 'babylonjs';
 import { MeshStore } from '../../game/models/stores/MeshStore';
 import { BehaviourType } from '../../game/services/behaviour/IBehaviour';
 import { Point } from '../../model/geometry/shapes/Point';
-import { minBy } from '../../model/geometry/utils/Functions';
+import { Rectangle } from '../../model/geometry/shapes/Rectangle';
+import { Shape } from '../../model/geometry/shapes/Shape';
 import { toVector3 } from '../../model/geometry/utils/GeomUtils';
 
 export enum WorldItemShape {
@@ -26,13 +26,15 @@ export enum AnimationName {
  * `GameObject` represents any distinguishable item in the parsed world (think of it as a mesh, e.g walls, rooms, creatures).
  */
 export class GameObject {
+    type: string;
     meshName: string;
-    skeleton: Skeleton;
     name: string;
-    dimensions: Shape;
+    dimensions: Rectangle;
     rotation: number;
     children: GameObject[] = [];
     parent: GameObject;
+    texturePath: string;
+    modelPath: string;
 
     color: string;
     shape: WorldItemShape;
@@ -40,14 +42,13 @@ export class GameObject {
 
     speed = 0.01;
 
-    modelFileName: string;
 
     activeAnimation: AnimationName = AnimationName.None;
     activeBehaviour: BehaviourType;
     wanderAngle = 0;
     private getMesh: (meshName: string) => Mesh;
 
-    constructor(getMesh: (meshName: string) => Mesh, dimensions: Shape, name: string, rotation = 0) {
+    constructor(getMesh: (meshName: string) => Mesh, dimensions: Rectangle, name: string, rotation = 0) {
         this.getMesh = getMesh;
         this.dimensions = dimensions;
         this.name = name;

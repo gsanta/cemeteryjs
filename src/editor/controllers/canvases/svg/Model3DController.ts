@@ -22,11 +22,11 @@ export class Model3DController extends AbstractModelLoader {
     }
 
     set3dModelForCanvasItem(canvasItem: CanvasRect) {
-        if (this.fileNameToMeshMap.has(canvasItem.model)) {
+        if (this.fileNameToMeshMap.has(canvasItem.modelPath)) {
             this.setDimensions(canvasItem);
         }
        
-        this.load(canvasItem.model).then(mesh => {
+        this.load(canvasItem).then(mesh => {
             this.setDimensions(canvasItem);
         });
     }
@@ -40,7 +40,7 @@ export class Model3DController extends AbstractModelLoader {
     }
 
     private setDimensions(canvasItem: CanvasRect) {
-        const mesh = this.fileNameToMeshMap.get(canvasItem.model);
+        const mesh = this.fileNameToMeshMap.get(canvasItem.modelPath);
         const dimensions = this.calcMeshDimensions(mesh);
         canvasItem.dimensions = canvasItem.dimensions.setWidth(dimensions.x).setHeight(dimensions.y);
         this.canvasController.renderCanvas();

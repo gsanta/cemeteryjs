@@ -71,40 +71,6 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
         );
     }
 
-    private renderCanvasItems() {
-        let items = [...this.props.canvasController.canvasStore.items];
-        items = sort(items, (a, b) => a.layer - b.layer);
-        return items.map((item, i) => {
-            const rectangle = item.dimensions as Rectangle;
-            const pixelSize = this.props.canvasController.configModel.pixelSize;
-
-            const x = rectangle.topLeft.x * pixelSize;
-            const y = rectangle.topLeft.y * pixelSize;
-            const width = (rectangle.bottomRight.x - rectangle.topLeft.x) * pixelSize;
-            const height = (rectangle.bottomRight.y - rectangle.topLeft.y) * pixelSize;
-
-            const fill = item.tags.has(CanvasItemTag.SELECTED) ? 'blue' : item.color;
-
-            return (
-                <rect
-                    key={i}
-                    x={`${x}px`}
-                    y={`${y}px`}
-                    width={`${width}px`}
-                    height={`${height}px`}
-                    fill={fill}
-                    stroke='black'
-                    onMouseOver={() => this.props.canvasController.mouseController.hover(item)}
-                    onMouseOut={() => this.props.canvasController.mouseController.unhover()}
-                />
-            )
-        });
-    }
-
-    private renderArrows() {
-        return this.props.canvasController.canvasStore.pathes.map(arrow => <PathComponent item={arrow}/>);
-    }
-
     private renderSelection(): JSX.Element {
         const tool = this.props.canvasController.getActiveTool();
 

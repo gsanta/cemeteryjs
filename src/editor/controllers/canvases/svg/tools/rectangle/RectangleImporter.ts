@@ -13,7 +13,8 @@ export interface RectJson {
         "data-wg-x": string,
         "data-wg-y": string,
         "data-wg-type": string,
-        "data-wg-name": string
+        "data-wg-name": string,
+        "data-texture": string
     }
 }
 
@@ -42,6 +43,7 @@ export class RectangleImporter implements IToolImporter {
             const height = parseInt(rect._attributes["data-wg-height"], 10) / pixelSize;
             const shape = rect._attributes["data-wg-shape"];
             const model = rect._attributes["data-wg-model"];
+            const texture = rect._attributes["data-texture"];
             const rotation = parseInt(rect._attributes["data-rotation"], 10);
             const scale = parseFloat(rect._attributes["data-wg-scale"]);
             const name = rect._attributes["data-wg-name"];
@@ -52,14 +54,12 @@ export class RectangleImporter implements IToolImporter {
                 color: 'grey',
                 dimensions: rectangle,
                 type: type,
-                layer: 0,
-                isPreview: false,
-                tags: new Set(),
                 shape: <WorldItemShape> shape,
-                model: model,
+                modelPath: model,
                 rotation: rotation,
                 scale: scale,
-                name: name
+                name: name,
+                texturePath: texture
             }
 
             this.addRect(canvasItem);

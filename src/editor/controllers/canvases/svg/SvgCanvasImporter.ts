@@ -27,7 +27,7 @@ export class SvgCanvasImporter implements ICanvasImporter {
 
         });
 
-        this.canvasController.canvasStore.items.filter(item => item.model).forEach(item => this.canvasController.model3dController.set3dModelForCanvasItem(item));
+        this.canvasController.canvasStore.items.filter(item => item.modelPath).forEach(item => this.canvasController.model3dController.set3dModelForCanvasItem(item));
 
         this.canvasController.renderCanvas();
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);

@@ -23,22 +23,27 @@ export class SelectTool extends AbstractSelectionTool {
     click() {
         super.click();
 
-        CanvasItemTag.removeTag(CanvasItemTag.SELECTED, this.canvasController.canvasStore.items);
+        const canvasStore = this.canvasController.canvasStore;
+
+        canvasStore.removeTag(this.canvasController.canvasStore.items, CanvasItemTag.SELECTED);
 
         const selectedItems = this.canvasController.canvasStore.getIntersectingItemsAtPoint(this.canvasController.mouseController.pointer.curr);
 
-        const topItem = maxBy(selectedItems, (a, b) => a.layer - b.layer);
+        const topItem = maxBy(selectedItems, (a, b) => canvasStore.getLayer(a) - canvasStore.getLayer(b));
 
-        topItem && topItem.tags.add(CanvasItemTag.SELECTED);
+        topItem && canvasStore.addTag([topItem], CanvasItemTag.SELECTED);
 
         this.canvasController.renderCanvas();
+        this.canvasController.renderToolbar();
     }
 
     draggedUp() {
         super.draggedUp();
         const canvasItems = this.canvasController.canvasStore.getIntersectingItemsInRect(this.getSelectionRect());
-        CanvasItemTag.removeTag(CanvasItemTag.SELECTED, this.canvasController.canvasStore.items);
-        CanvasItemTag.addTag(CanvasItemTag.SELECTED, canvasItems);
+        const canvasStore = this.canvasController.canvasStore;
+        
+        canvasStore.removeTag(this.canvasController.canvasStore.items, CanvasItemTag.SELECTED);
+        canvasStore.addTag(canvasItems, CanvasItemTag.SELECTED);
 
         this.canvasController.renderCanvas();
     }

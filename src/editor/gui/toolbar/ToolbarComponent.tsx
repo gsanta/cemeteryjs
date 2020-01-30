@@ -26,6 +26,12 @@ export class ToolbarComponent extends React.Component<ToolbarComponentProps> {
     static contextType = AppContext;
     context: AppContextType;
 
+    constructor(props: ToolbarComponentProps) {
+        super(props);
+
+        this.props.canvasController.setToolbarRenderer(() => this.forceUpdate());
+    }
+
     render(): JSX.Element {
         const canvasTools = this.context.controllers.canvases.map(canvas => canvasToolsFactory(canvas)).filter(tools => tools != null);
 

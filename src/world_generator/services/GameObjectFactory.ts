@@ -15,11 +15,6 @@ export interface GameObjectConfig {
     scale?: number;
 }
 
-export const defaultWorldItemConfig: Partial<GameObjectConfig> = {
-    rotation: 0,
-    worldMapPositions: []
-}
-
 /**
  * new `WorldItem` instances should be created via this class, so that a unique id can be set
  * for each new instance.
@@ -32,15 +27,14 @@ export class GameObjectFactory {
         this.gameFacade = gameFacade;
     }
 
-    create(gameObjectConfig: GameObjectConfig): GameObject {
-        gameObjectConfig = {...defaultWorldItemConfig, ...gameObjectConfig};
+    create(gameObjectConfig: Partial<GameObject>): GameObject {
 
         const getMeshFunc = (meshName: string) => this.gameFacade.meshStore.getMesh(meshName);
         const gameObject = new GameObject(getMeshFunc, gameObjectConfig.dimensions, gameObjectConfig.name);
         gameObject.rotation = gameObjectConfig.rotation;
         gameObjectConfig.color && (gameObject.color = gameObjectConfig.color);
         gameObjectConfig.shape && (gameObject.shape = gameObjectConfig.shape);
-        gameObjectConfig.modelPath && (gameObject.modelFileName = gameObjectConfig.modelPath);
+        gameObjectConfig.modelPath && (gameObject.modelPath = gameObjectConfig.modelPath);
         gameObject.scale = gameObjectConfig.scale ? gameObjectConfig.scale : 1;
 
         return gameObject;
@@ -57,8 +51,9 @@ export class GameObjectFactory {
         clone.parent = gameObject.parent;
         gameObject.color && (clone.color = gameObject.color);
         gameObject.shape && (clone.shape = gameObject.shape);
-        gameObject.modelFileName && (clone.modelFileName = gameObject.modelFileName);
+        gameObject.modelPath && (clone.modelPath = gameObject.modelPath);
         clone.scale = gameObject.scale;
+        clone.texturePath = gameObject.texturePath;
 
         return clone;
     }

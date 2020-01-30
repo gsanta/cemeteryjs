@@ -20,12 +20,12 @@ export class RectangleExporter implements IToolExporter {
     }
 
     private renderRectangles(): JSX.Element[] {
-        const pixelModel = this.canvasController.canvasStore;
+        const canvasStore = this.canvasController.canvasStore;
         const configModel = this.canvasController.configModel;
         const pixelSize = configModel.pixelSize;
 
         let items = [...this.canvasController.canvasStore.items];
-        items = sort(items, (a, b) => a.layer - b.layer);
+        items = sort(items, (a, b) => canvasStore.getLayer(a) - canvasStore.getLayer(b));
         return items.map((item, i) => {
             const rectangle = item.dimensions as Rectangle;
 
@@ -34,10 +34,10 @@ export class RectangleExporter implements IToolExporter {
             const width = (rectangle.bottomRight.x - rectangle.topLeft.x) * pixelSize;
             const height = (rectangle.bottomRight.y - rectangle.topLeft.y) * pixelSize;
 
-            const fill = item.tags.has(CanvasItemTag.SELECTED) ? 'blue' : item.color;
+            const fill = canvasStore.getTags(item).has(CanvasItemTag.SELECTED) ? 'blue' : item.color;
 
-            const minX = minBy<CanvasRect>(pixelModel.items, (a, b) => a.dimensions.topLeft.x - b.dimensions.topLeft.x).dimensions.topLeft.x;
-            const minY = minBy<CanvasRect>(pixelModel.items, (a, b) => a.dimensions.topLeft.y - b.dimensions.topLeft.y).dimensions.topLeft.y;
+            const minX = minBy<CanvasRect>(canvasStore.items, (a, b) => a.dimensions.topLeft.x - b.dimensions.topLeft.x).dimensions.topLeft.x;
+            const minY = minBy<CanvasRect>(canvasStore.items, (a, b) => a.dimensions.topLeft.y - b.dimensions.topLeft.y).dimensions.topLeft.y;
             
 
             const tranlateX = minX < 0 ? - minX * pixelSize : 0;
@@ -61,11 +61,12 @@ export class RectangleExporter implements IToolExporter {
                     data-wg-height={height}
                     data-wg-type={item.type}
                     data-wg-color={item.color}
-                    data-wg-layer={item.layer}
+                    data-wg-layer={canvasStore.getLayer(item)}
                     data-rotation={item.rotation}
                     data-wg-shape={item.shape}
                     data-wg-scale={item.scale}
                     data-wg-name={item.name}
+                    data-texture={item.texturePath}
                 />
             )
         });

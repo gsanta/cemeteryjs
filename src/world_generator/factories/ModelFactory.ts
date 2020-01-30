@@ -15,12 +15,12 @@ export class ModelFactory {
     }
 
     public createMesh(gameObject: GameObject): void {
-        if (!gameObject.modelFileName) {
+        if (!gameObject.modelPath) {
             new RectangleFactory(this.scene, new MaterialFactory(this.scene), this.gameFacade, 0.1).createMesh(gameObject);
             return;
         }
 
-        const meshName = this.gameFacade.modelLoader.createInstance(gameObject.modelFileName);
+        const meshName = this.gameFacade.modelLoader.createInstance(gameObject.modelPath);
 
         gameObject.meshName = meshName;
         const mesh = this.gameFacade.meshStore.getMesh(meshName);

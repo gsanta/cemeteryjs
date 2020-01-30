@@ -63,14 +63,3 @@ export abstract class MaterialBuilderStubs {
     static CreateMaterial: sinon.SinonStub;
     static CreateTexture: sinon.SinonStub;
 }
-
-export function findWorldItemWithDimensions(worldItems: GameObject[], dimensions: Shape): GameObject {
-
-    for (let i = 0; i < worldItems.length; i++) {
-        for (const item of TreeIteratorGenerator(worldItems[i])) {
-            if (item.dimensions.equalTo(dimensions)) {
-                return item;
-            }
-        }
-    }
-}

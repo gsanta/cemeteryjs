@@ -1,11 +1,10 @@
 import { Point } from '../../../../../model/geometry/shapes/Point';
 import { Polygon } from '../../../../../model/geometry/shapes/Polygon';
 import { Rectangle } from '../../../../../model/geometry/shapes/Rectangle';
-import { WorldItemShape } from '../../../../../world_generator/services/GameObject';
-import { sortNum, without } from '../../../../../world_generator/utils/Functions';
-import { SvgConfig } from './SvgConfig';
-import { CanvasRect } from './CanvasItem';
+import { without } from '../../../../../world_generator/utils/Functions';
 import { CanvasPath } from '../tools/path/PathTool';
+import { CanvasItemTag, CanvasRect } from './CanvasItem';
+import { SvgConfig } from './SvgConfig';
 
 export enum Layers {
     PREVIEW = -1,
@@ -28,6 +27,9 @@ export function getLayerForType(type: string) {
 export class SvgCanvasStore {
     private bitmapConfig: SvgConfig;
 
+    private layers: Map<CanvasRect, number> = new Map();
+    private tags: Map<CanvasRect, Set<CanvasItemTag>> = new Map();
+
     items: CanvasRect[] = [];
     pathes: CanvasPath[] = [];
 
@@ -42,30 +44,7 @@ export class SvgCanvasStore {
     addRect(canvasItem: CanvasRect): CanvasRect {
         this.items.push(canvasItem);
 
-        return canvasItem;
-    }
-
-    addRectangle(coordinates: Point[], type: string, layer: number, isPreview: boolean): CanvasRect {
-        let indexes = coordinates.map(pos => this.getIndexAtCoordinate(pos));
-        indexes = sortNum(indexes);
-
-        const topLeft = this.getPixelPosition(indexes[0]);
-        const botRight = this.getPixelPosition(indexes[indexes.length - 1]); 
-        const canvasItem: CanvasRect = {
-            color: 'grey',
-            dimensions: new Rectangle(topLeft, botRight),
-            type,
-            layer,
-            isPreview,
-            tags: new Set(),
-            shape: WorldItemShape.RECTANGLE,
-            model: null,
-            rotation: 0,
-            scale: 1,
-            name: ''
-        }
-
-        this.items.push(canvasItem);
+        this.layers.set(canvasItem, 0);
 
         return canvasItem;
     }
@@ -122,14 +101,35 @@ export class SvgCanvasStore {
         return pos.y * xPixels + pos.x;
     }
 
-    private getIndexAtCoordinate(coordinate: Point): number {
-        const canvasDimensions = this.bitmapConfig.canvasDimensions;
-        const pixelSize = this.bitmapConfig.pixelSize;
-        const xPixels = canvasDimensions.x / pixelSize;
+    getLayer(canvasItem: CanvasRect) {
+        return this.layers.get(canvasItem);
+    }
 
-        const xIndex = Math.floor(coordinate.x / pixelSize);
-        const yIndex = Math.floor(coordinate.y / pixelSize);
+    setLayer(canvasItem: CanvasRect, layer: number) {
+        this.layers.set(canvasItem, layer);
+    }
 
-        return yIndex * xPixels + xIndex;
+    getTags(canvasItem: CanvasRect): Set<CanvasItemTag> {
+        return this.tags.get(canvasItem);
+    }
+
+    addTag(canvasItems: CanvasRect[], tag: CanvasItemTag): void {
+        canvasItems.forEach(item => this.tags.get(item).add(tag));
+    }
+
+    removeTag(canvasItems: CanvasRect[], tag: CanvasItemTag) {
+        canvasItems.forEach(item => this.tags.get(item).delete(tag));
+    }
+
+    getTaggedItems(tag: CanvasItemTag): CanvasRect[] {
+        return this.items.filter(item => this.tags.get(item).has(tag));
+    }
+
+    getHoveredItem(): CanvasRect {
+        return this.getTaggedItems(CanvasItemTag.HOVERED)[0];
+    }
+
+    getSelectedItems(): CanvasRect[] {
+        return this.getTaggedItems(CanvasItemTag.SELECTED);
     }
 }

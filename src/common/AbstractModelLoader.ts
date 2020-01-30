@@ -1,6 +1,6 @@
 import { Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, Vector3, StandardMaterial, Texture } from 'babylonjs';
-import { WorldItem } from "..";
 import { Point } from '../model/geometry/shapes/Point';
+import { GameObject } from '../world_generator/services/GameObject';
 
 export interface ModelData {
     mesh: Mesh;
@@ -19,14 +19,14 @@ export abstract class AbstractModelLoader {
         this.scene = scene;
     }
 
-    loadAll(worldItems: WorldItem[]): Promise<Mesh[]> {
-        const modeledItems = worldItems.filter(item => item.modelFileName);
+    loadAll(worldItems: GameObject[]): Promise<Mesh[]> {
+        const modeledGameObjects = worldItems.filter(item => item.modelPath);
 
         const promises: Promise<Mesh>[] = [];
 
-        for (let i = 0; i < modeledItems.length; i++) {
-            if (!this.loadedFileNames.has(modeledItems[i].modelFileName)) {
-                const meshPromise = this.load(modeledItems[i].modelFileName);
+        for (let i = 0; i < modeledGameObjects.length; i++) {
+            if (!this.loadedFileNames.has(modeledGameObjects[i].modelPath)) {
+                const meshPromise = this.load(modeledGameObjects[i]);
                 promises.push(meshPromise);
             }
         }
@@ -34,18 +34,18 @@ export abstract class AbstractModelLoader {
         return Promise.all(promises);
     }
 
-    load(fileName: string): Promise<Mesh> {
-        this.loadedFileNames.add(fileName);
+    load(gameObject: GameObject): Promise<Mesh> {
+        this.loadedFileNames.add(gameObject.modelPath);
 
         return new Promise(resolve => {
-            const folder = this.getFolderNameFromFileName(fileName);
+            const folder = this.getFolderNameFromFileName(gameObject.modelPath);
 
             SceneLoader.ImportMesh(
                 '',
                 `${this.basePath}${folder}/`,
-                fileName,
+                gameObject.modelPath,
                 this.scene,
-                (meshes: Mesh[], ps: ParticleSystem[], skeletons: Skeleton[]) => resolve(this.createModelData(fileName, meshes, skeletons)),
+                (meshes: Mesh[], ps: ParticleSystem[], skeletons: Skeleton[]) => resolve(this.createModelData(gameObject, meshes, skeletons)),
                 () => { },
                 (scene: Scene, message: string) => { throw new Error(message); }
             );
@@ -66,18 +66,17 @@ export abstract class AbstractModelLoader {
         mesh.isVisible = false;
     }
 
-    private createModelData(fileName: string, meshes: Mesh[], skeletons: Skeleton[]): Mesh {
+    private createModelData(gameObject: GameObject, meshes: Mesh[], skeletons: Skeleton[]): Mesh {
         if (meshes.length === 0) { throw new Error('No mesh was loaded.') }
 
-        const materialFileName = this.getMaterialFileNameFromModelFileName(fileName);
-        meshes[0].material = new StandardMaterial(fileName, this.scene);
-        (<StandardMaterial> meshes[0].material).diffuseTexture  = new Texture(`${this.basePath}${this.getFolderNameFromFileName(fileName)}/${materialFileName}`,  this.scene);
-        (<StandardMaterial> meshes[0].material).specularTexture  = new Texture(`${this.basePath}${this.getFolderNameFromFileName(fileName)}/${materialFileName}`,  this.scene);
+        meshes[0].material = new StandardMaterial(gameObject.modelPath, this.scene);
+        (<StandardMaterial> meshes[0].material).diffuseTexture  = new Texture(`${this.basePath}${this.getFolderNameFromFileName(gameObject.modelPath)}/${gameObject.texturePath}`,  this.scene);
+        (<StandardMaterial> meshes[0].material).specularTexture  = new Texture(`${this.basePath}${this.getFolderNameFromFileName(gameObject.modelPath)}/${gameObject.texturePath}`,  this.scene);
 
-        meshes[0].name = fileName;
+        meshes[0].name = gameObject.modelPath;
         this.configMesh(meshes[0]);
         // meshes[0].scaling = new Vector3(5, 5, 5);
-        this.setModel(fileName, meshes[0]);
+        this.setModel(gameObject.modelPath, meshes[0]);
         // this.scene.beginAnimation(skeletons[0], 0, 24, true);
 
         return meshes[0];

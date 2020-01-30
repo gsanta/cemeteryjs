@@ -10,6 +10,7 @@ export enum CanvasItemSettings {
     COLOR = 'color',
     SHAPE = 'shape',
     MODEL = 'model',
+    TEXTURE = 'texture',
     LAYER = 'layer',
     ROTATION = 'rotation',
     SCALE = 'scale',
@@ -30,6 +31,7 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
     }
 
     focusProp(propType: CanvasItemSettings) {
+        const canvasStore = this.canvasController.canvasStore;
         this.focusedPropType = propType;
         switch (this.focusedPropType) {
             case CanvasItemSettings.COLOR:
@@ -39,10 +41,13 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
                 this.tempString = this.canvasItem.shape;
                 break;
             case CanvasItemSettings.MODEL:
-                this.tempString = this.canvasItem.model;
+                this.tempString = this.canvasItem.modelPath;
+                break;
+            case CanvasItemSettings.TEXTURE:
+                this.tempString = this.canvasItem.texturePath;
                 break;
             case CanvasItemSettings.LAYER:
-                this.tempString = this.canvasItem.layer + '';
+                this.tempString = canvasStore.getLayer(this.canvasItem) + '';
                 break;
             case CanvasItemSettings.ROTATION:
                 this.tempNumber = this.canvasItem.rotation;
@@ -70,6 +75,7 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
 
     commitProp() {
         this.canvasController.renderCanvas();
+        const canvasStore = this.canvasController.canvasStore;
 
         switch (this.focusedPropType) {
             case CanvasItemSettings.COLOR:
@@ -81,12 +87,16 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
                 this.tempString = null;
                 break;
             case CanvasItemSettings.MODEL:
-                this.canvasItem.model = this.tempString;
+                this.canvasItem.modelPath = this.tempString;
                 this.canvasController.model3dController.set3dModelForCanvasItem(this.canvasItem);
                 this.tempString = null;
                 break;
+            case CanvasItemSettings.TEXTURE:
+                this.canvasItem.texturePath = this.tempString;
+                this.tempString = null;
+                break;    
             case CanvasItemSettings.LAYER:
-                this.canvasItem.layer = parseInt(this.tempString, 10);
+                canvasStore.setLayer(this.canvasItem, parseInt(this.tempString, 10));
                 this.tempString = null;
                 break;
             case CanvasItemSettings.ROTATION:
@@ -109,6 +119,8 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
 
 
     getVal<T>(property: CanvasItemSettings): T {
+        const canvasStore = this.canvasController.canvasStore;
+
         let ret: any;
         switch (property) {
             case CanvasItemSettings.COLOR:
@@ -118,10 +130,13 @@ export class CanvasItemSettingsForm extends AbstractFormController<CanvasItemSet
                 ret = this.focusedPropType === property ? this.tempString : this.canvasItem.shape;
                 break;
             case CanvasItemSettings.MODEL:
-                ret = this.focusedPropType === property ? this.tempString : this.canvasItem.model;
+                ret = this.focusedPropType === property ? this.tempString : this.canvasItem.modelPath;
+                break;
+            case CanvasItemSettings.TEXTURE:
+                ret = this.focusedPropType === property ? this.tempString : this.canvasItem.texturePath;
                 break;
             case CanvasItemSettings.LAYER:
-                ret = this.focusedPropType === property ? this.tempString : this.canvasItem.layer;
+                ret = this.focusedPropType === property ? this.tempString : canvasStore.getLayer(this.canvasItem);
                 break;
             case CanvasItemSettings.ROTATION:
                 ret = this.focusedPropType === property ? this.tempNumber : this.canvasItem.rotation;

@@ -29,7 +29,7 @@ export class GameObjectSettingsComponent extends React.Component<{canvasControll
     context: AppContextType;
 
     render() {
-        const selectedCanvasItems = CanvasItemTag.getTaggedItems(CanvasItemTag.SELECTED, this.props.canvasController.canvasStore.items);
+        const selectedCanvasItems = this.props.canvasController.canvasStore.getSelectedItems();
         
         this.props.canvasController.canvasItemSettingsForm.canvasItem = selectedCanvasItems[0];
 
@@ -42,7 +42,8 @@ export class GameObjectSettingsComponent extends React.Component<{canvasControll
                     {this.renderColorChooser()}
                     {this.renderLayerInput()}
                     {this.renderShapeDropdown()}
-                    {form.getVal(CanvasItemSettings.SHAPE) === 'model' ? this.renderModelFileChooser() : null}
+                    {this.renderModelFileChooser()}
+                    {this.renderTextureFileChooser()}
                     {this.renderRotationInput()}
                     {this.renderScaleInput()}
                 </div>
@@ -96,6 +97,25 @@ export class GameObjectSettingsComponent extends React.Component<{canvasControll
         return (
             <SettingsRowStyled>
                 <LabelStyled>File</LabelStyled>
+                <InputStyled>
+                    <ConnectedFileUploadComponent
+                        formController={form}
+                        propertyName={CanvasItemSettings.MODEL}
+                        propertyType="string"
+                    />
+                    {form.getVal(CanvasItemSettings.MODEL) ? form.getVal<string>(CanvasItemSettings.MODEL) : ''}
+                </InputStyled>
+            </SettingsRowStyled>
+        );
+    }
+
+    
+    private renderTextureFileChooser(): JSX.Element {
+        const form = this.props.canvasController.canvasItemSettingsForm;
+
+        return (
+            <SettingsRowStyled>
+                <LabelStyled>Texture</LabelStyled>
                 <InputStyled>
                     <ConnectedFileUploadComponent
                         formController={form}
