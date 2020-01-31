@@ -34,6 +34,7 @@ export class GameObjectFactory {
         gameObject.rotation = gameObjectConfig.rotation;
         gameObjectConfig.color && (gameObject.color = gameObjectConfig.color);
         gameObjectConfig.shape && (gameObject.shape = gameObjectConfig.shape);
+        gameObjectConfig.texturePath  && (gameObject.texturePath = gameObjectConfig.texturePath);
         gameObjectConfig.modelPath && (gameObject.modelPath = gameObjectConfig.modelPath);
         gameObject.scale = gameObjectConfig.scale ? gameObjectConfig.scale : 1;
 

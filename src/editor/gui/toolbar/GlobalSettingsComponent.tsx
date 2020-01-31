@@ -21,7 +21,7 @@ export class GlobalSettingsComponent extends React.Component<GlobalSettingsCompo
                 <DisplayEditorIconComponent canvasController={this.context.controllers.svgCanvasController}/>
                 <DisplayEditorIconComponent canvasController={this.context.controllers.webglCanvasController}/>
                 <ImportFileIconComponent onUpload={(file) => this.context.controllers.svgCanvasController.writer.import(file)}/>
-                <ExportFileIconComponent/>
+                <ExportFileIconComponent canvasController={this.context.controllers.svgCanvasController}/>
             </div>
         )
     }

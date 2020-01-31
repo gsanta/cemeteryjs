@@ -1,6 +1,7 @@
 import { Point } from '../../../../../model/geometry/shapes/Point';
 import { SvgCanvasController } from '../SvgCanvasController';
-import { CanvasItemTag, CanvasRect } from '../models/CanvasItem';
+import { CanvasItemTag } from '../models/CanvasItem';
+import { GameObject } from '../../../../../world_generator/services/GameObject';
 
 function calcOffsetFromDom(bitmapEditorId: string): Point {
     if (typeof document !== 'undefined') {
@@ -80,8 +81,8 @@ export class MouseHandler {
         this.isDrag = false;
     }
 
-    hover(item: CanvasRect) {
-        this.controller.canvasStore.addTag([item], CanvasItemTag.SELECTED);
+    hover(item: GameObject) {
+        this.controller.canvasStore.addTag([item], CanvasItemTag.HOVERED);
     }
 
     unhover() {

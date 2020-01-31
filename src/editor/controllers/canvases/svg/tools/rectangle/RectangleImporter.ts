@@ -1,10 +1,8 @@
 
-import { RawWorldMapJson, ToolGroupJson } from '../../../../../../world_generator/importers/svg/WorldMapJson';
-import { SvgCanvasController } from '../../SvgCanvasController';
-import { Rectangle } from '../../../../../../model/geometry/shapes/Rectangle';
 import { Point } from '../../../../../../model/geometry/shapes/Point';
-import { CanvasRect } from '../../models/CanvasItem';
-import { WorldItemShape } from '../../../../../../world_generator/services/GameObject';
+import { Rectangle } from '../../../../../../model/geometry/shapes/Rectangle';
+import { ToolGroupJson } from '../../../../../../world_generator/importers/svg/WorldMapJson';
+import { WorldItemShape, GameObject } from '../../../../../../world_generator/services/GameObject';
 import { IToolImporter } from '../IToolImporter';
 import { ToolType } from '../Tool';
 
@@ -24,10 +22,10 @@ export interface RectangleGroupJson extends ToolGroupJson {
 
 export class RectangleImporter implements IToolImporter {
     type = ToolType.RECTANGLE;
-    private addRect: (rect: CanvasRect) => void;
+    private addGameObject: (rect: GameObject) => void;
 
-    constructor(addRect: (rect: CanvasRect) => void) {
-        this.addRect = addRect;
+    constructor(addGameObject: (gameObject: GameObject) => void) {
+        this.addGameObject = addGameObject;
     }
 
     import(group: RectangleGroupJson): void {
@@ -42,7 +40,7 @@ export class RectangleImporter implements IToolImporter {
             const width = parseInt(rect._attributes["data-wg-width"], 10) / pixelSize;
             const height = parseInt(rect._attributes["data-wg-height"], 10) / pixelSize;
             const shape = rect._attributes["data-wg-shape"];
-            const model = rect._attributes["data-wg-model"];
+            const model = rect._attributes["data-model"];
             const texture = rect._attributes["data-texture"];
             const rotation = parseInt(rect._attributes["data-rotation"], 10);
             const scale = parseFloat(rect._attributes["data-wg-scale"]);
@@ -50,19 +48,17 @@ export class RectangleImporter implements IToolImporter {
 
             const rectangle = new Rectangle(new Point(x, y), new Point(x + width, y + height));
 
-            const canvasItem: CanvasRect = {
-                color: 'grey',
-                dimensions: rectangle,
-                type: type,
-                shape: <WorldItemShape> shape,
-                modelPath: model,
-                rotation: rotation,
-                scale: scale,
-                name: name,
-                texturePath: texture
-            }
+            const gameObject: GameObject = new GameObject(null, rectangle, name);
+            gameObject.type = type;
+            gameObject.shape = <WorldItemShape> shape;
+            gameObject.rotation = rotation;
+            gameObject.modelPath = model;
+            gameObject.texturePath = texture;
+            gameObject.scale = scale;
+            gameObject.color = 'grey';
+            gameObject.thumbnailPath = rect._attributes["data-thumbnail"];
 
-            this.addRect(canvasItem);
+            this.addGameObject(gameObject);
         });
     }
 }

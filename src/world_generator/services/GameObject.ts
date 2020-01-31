@@ -35,6 +35,7 @@ export class GameObject {
     parent: GameObject;
     texturePath: string;
     modelPath: string;
+    thumbnailPath: string;
 
     color: string;
     shape: WorldItemShape;

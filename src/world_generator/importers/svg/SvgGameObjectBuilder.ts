@@ -1,16 +1,13 @@
-import { IGameObjectBuilder } from "../IGameObjectBuilder";
-import { GameObject, WorldItemShape } from '../../services/GameObject';
-import { Rect, ProcessedWorldMapJson, RawWorldMapJson } from './WorldMapJson';
-import { WorldGeneratorFacade } from '../../WorldGeneratorFacade';
-import { Rectangle } from "../../../model/geometry/shapes/Rectangle";
-import { Point } from "../../../model/geometry/shapes/Point";
-import { toRadian } from "../../../model/geometry/utils/Measurements";
-import { Mesh } from "babylonjs";
-import { RectangleImporter } from "../../../editor/controllers/canvases/svg/tools/rectangle/RectangleImporter";
 import * as convert from 'xml-js';
-import { ToolType } from "../../../editor/controllers/canvases/svg/tools/Tool";
 import { getImporterByType } from "../../../editor/controllers/canvases/svg/tools/IToolImporter";
-import { CanvasRect } from "../../../editor/controllers/canvases/svg/models/CanvasItem";
+import { ToolType } from "../../../editor/controllers/canvases/svg/tools/Tool";
+import { Point } from "../../../model/geometry/shapes/Point";
+import { Rectangle } from "../../../model/geometry/shapes/Rectangle";
+import { toRadian } from "../../../model/geometry/utils/Measurements";
+import { GameObject, WorldItemShape } from '../../services/GameObject';
+import { WorldGeneratorFacade } from '../../WorldGeneratorFacade';
+import { IGameObjectBuilder } from "../IGameObjectBuilder";
+import { RawWorldMapJson } from './WorldMapJson';
 
 export class SvgGameObjectBuilder<T> implements IGameObjectBuilder {
     private services: WorldGeneratorFacade;
@@ -33,10 +30,7 @@ export class SvgGameObjectBuilder<T> implements IGameObjectBuilder {
         toolGroups.forEach(toolGroup => {
             const toolType: ToolType = <ToolType> toolGroup._attributes["data-tool-type"];
             getImporterByType(toolType, this.services.importers).import(toolGroup)
-
         });
-
-        if (this.services.canvasStore.items.length === 0) { return []; }
 
         const root = this.createRoot();
 
@@ -45,7 +39,7 @@ export class SvgGameObjectBuilder<T> implements IGameObjectBuilder {
         return [root, ...gameObjects];
     }
 
-    private createRect(rect: CanvasRect): GameObject {
+    private createRect(rect: GameObject): GameObject {
         return this.services.gameObjectFactory.create(
             {
                 dimensions: rect.dimensions,
@@ -55,7 +49,8 @@ export class SvgGameObjectBuilder<T> implements IGameObjectBuilder {
                 modelPath: rect.modelPath,
                 rotation: toRadian(rect.rotation ? rect.rotation : 0),
                 scale: rect.scale,
-                texturePath: rect.texturePath
+                texturePath: rect.texturePath,
+                thumbnailPath: rect.thumbnailPath
             }
         );
     }

@@ -1,16 +1,14 @@
-import { EventDispatcher } from '../../../../events/EventDispatcher';
-import { SvgCanvasController } from '../../SvgCanvasController';
-import { ToolType } from '../Tool';
 import { Rectangle } from '../../../../../../model/geometry/shapes/Rectangle';
-import { Point } from '../../../../../../model/geometry/shapes/Point';
-import { WorldItemShape } from '../../../../../../world_generator/services/GameObject';
+import { WorldItemShape, GameObject } from '../../../../../../world_generator/services/GameObject';
+import { EventDispatcher } from '../../../../events/EventDispatcher';
 import { Events } from '../../../../events/Events';
+import { SvgCanvasController } from '../../SvgCanvasController';
 import { AbstractSelectionTool } from '../AbstractSelectionTool';
-import { CanvasRect } from '../../models/CanvasItem';
+import { ToolType } from '../Tool';
 
 export class RectangleTool extends AbstractSelectionTool {
     private eventDispatcher: EventDispatcher;
-    private lastPreviewRect: CanvasRect;
+    private lastPreviewRect: GameObject;
 
     constructor(svgCanvasController: SvgCanvasController, eventDispatcher: EventDispatcher) {
         super(svgCanvasController, ToolType.RECTANGLE, false);
@@ -31,19 +29,16 @@ export class RectangleTool extends AbstractSelectionTool {
 
         const type = this.canvasController.selectedWorldItemDefinition.typeName;
 
-        const canvasItem: CanvasRect = {
-            color: 'grey',
-            dimensions: rect,
-            type: type,
-            shape: WorldItemShape.RECTANGLE,
-            modelPath: null,
-            rotation: 0,
-            scale: 1,
-            name: '',
-            texturePath: ''
-        }
+        const gameObject: GameObject = new GameObject(null, rect, name);
+        gameObject.type = type;
+        gameObject.shape = <WorldItemShape> WorldItemShape.RECTANGLE;
+        gameObject.rotation = 0;
+        gameObject.modelPath = null;
+        gameObject.texturePath = null;
+        gameObject.scale = 1;
+        gameObject.color = 'grey';
 
-        this.canvasController.canvasStore.addRect(canvasItem);
+        this.canvasController.canvasStore.addRect(gameObject);
     
         this.canvasController.renderCanvas();
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
@@ -61,20 +56,17 @@ export class RectangleTool extends AbstractSelectionTool {
         const pixelSize = this.canvasController.configModel.pixelSize;
         const dimensions = this.getSelectionRect().div(pixelSize);
 
-        const canvasItem: CanvasRect = {
-            color: 'grey',
-            dimensions,
-            type: type,
-            shape: WorldItemShape.RECTANGLE,
-            modelPath: null,
-            rotation: 0,
-            scale: 1,
-            name: '',
-            texturePath: ''
-        }
+        const gameObject: GameObject = new GameObject(null, dimensions, name);
+        gameObject.type = type;
+        gameObject.shape = <WorldItemShape> WorldItemShape.RECTANGLE;
+        gameObject.rotation = 0;
+        gameObject.modelPath = null;
+        gameObject.texturePath = null;
+        gameObject.scale = 1;
+        gameObject.color = 'grey';
 
         if (positions.length > 0) {
-            this.lastPreviewRect = this.canvasController.canvasStore.addRect(canvasItem);
+            this.lastPreviewRect = this.canvasController.canvasStore.addRect(gameObject);
     
             this.canvasController.renderCanvas();
         }

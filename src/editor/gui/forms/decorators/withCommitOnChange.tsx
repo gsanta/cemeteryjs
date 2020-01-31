@@ -22,13 +22,13 @@ export function withCommitOnChange<T extends Focusable>(WrappedComponent: React.
         private updateProp(val: any) {
             switch(this.props.propertyType) {
                 case 'boolean':
-                    this.props.formController.updateBooleanProp(val);
+                    this.props.formController.updateProp(val);
                     break;
                 case 'string':
-                    this.props.formController.updateStringProp(val);
+                    this.props.formController.updateProp(val);
                     break;
                 case 'number':
-                    this.props.formController.updateNumberProp(val);
+                    this.props.formController.updateProp(parseInt(val, 10));
                     break;
             }
         }

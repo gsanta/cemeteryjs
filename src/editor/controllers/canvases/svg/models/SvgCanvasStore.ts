@@ -3,8 +3,9 @@ import { Polygon } from '../../../../../model/geometry/shapes/Polygon';
 import { Rectangle } from '../../../../../model/geometry/shapes/Rectangle';
 import { without } from '../../../../../world_generator/utils/Functions';
 import { CanvasPath } from '../tools/path/PathTool';
-import { CanvasItemTag, CanvasRect } from './CanvasItem';
+import { CanvasItemTag } from './CanvasItem';
 import { SvgConfig } from './SvgConfig';
+import { GameObject } from '../../../../../world_generator/services/GameObject';
 
 export enum Layers {
     PREVIEW = -1,
@@ -27,10 +28,10 @@ export function getLayerForType(type: string) {
 export class SvgCanvasStore {
     private bitmapConfig: SvgConfig;
 
-    private layers: Map<CanvasRect, number> = new Map();
-    private tags: Map<CanvasRect, Set<CanvasItemTag>> = new Map();
+    private layers: Map<GameObject, number> = new Map();
+    private tags: Map<GameObject, Set<CanvasItemTag>> = new Map();
 
-    items: CanvasRect[] = [];
+    items: GameObject[] = [];
     pathes: CanvasPath[] = [];
 
     constructor(bitmapConfig: SvgConfig) {
@@ -41,16 +42,17 @@ export class SvgCanvasStore {
         this.pathes.push(arrow);
     }
 
-    addRect(canvasItem: CanvasRect): CanvasRect {
-        this.items.push(canvasItem);
+    addRect(gameObject: GameObject): GameObject {
+        this.items.push(gameObject);
 
-        this.layers.set(canvasItem, 0);
+        this.layers.set(gameObject, 0);
+        this.tags.set(gameObject, new Set());
 
-        return canvasItem;
+        return gameObject;
     }
 
-    removeRectangle(rect: CanvasRect) {
-        this.items = without(this.items, rect);
+    removeRectangle(gameObject: GameObject) {
+        this.items = without(this.items, gameObject);
     }
 
     clear(): void {
@@ -72,7 +74,7 @@ export class SvgCanvasStore {
         return new Point(x, y);
     }
 
-    getIntersectingItemsInRect(rectangle: Rectangle): CanvasRect[] {
+    getIntersectingItemsInRect(rectangle: Rectangle): GameObject[] {
         const pixelSize = this.bitmapConfig.pixelSize;
 
         const x = Math.floor(rectangle.topLeft.x / pixelSize);
@@ -85,7 +87,7 @@ export class SvgCanvasStore {
         return this.items.filter(item => polygon.contains(item.dimensions));
     }
 
-    getIntersectingItemsAtPoint(point: Point): CanvasRect[] {
+    getIntersectingItemsAtPoint(point: Point): GameObject[] {
         const pixelSize = this.bitmapConfig.pixelSize;
 
         const gridPoint = new Point(point.x / pixelSize, point.y / pixelSize);
@@ -101,35 +103,35 @@ export class SvgCanvasStore {
         return pos.y * xPixels + pos.x;
     }
 
-    getLayer(canvasItem: CanvasRect) {
-        return this.layers.get(canvasItem);
+    getLayer(gameObject: GameObject) {
+        return this.layers.get(gameObject);
     }
 
-    setLayer(canvasItem: CanvasRect, layer: number) {
-        this.layers.set(canvasItem, layer);
+    setLayer(gameObject: GameObject, layer: number) {
+        this.layers.set(gameObject, layer);
     }
 
-    getTags(canvasItem: CanvasRect): Set<CanvasItemTag> {
-        return this.tags.get(canvasItem);
+    getTags(gameObject: GameObject): Set<CanvasItemTag> {
+        return this.tags.get(gameObject);
     }
 
-    addTag(canvasItems: CanvasRect[], tag: CanvasItemTag): void {
-        canvasItems.forEach(item => this.tags.get(item).add(tag));
+    addTag(gameObject: GameObject[], tag: CanvasItemTag): void {
+        gameObject.forEach(item => this.tags.get(item).add(tag));
     }
 
-    removeTag(canvasItems: CanvasRect[], tag: CanvasItemTag) {
-        canvasItems.forEach(item => this.tags.get(item).delete(tag));
+    removeTag(gameObject: GameObject[], tag: CanvasItemTag) {
+        gameObject.forEach(item => this.tags.get(item).delete(tag));
     }
 
-    getTaggedItems(tag: CanvasItemTag): CanvasRect[] {
+    getTaggedItems(tag: CanvasItemTag): GameObject[] {
         return this.items.filter(item => this.tags.get(item).has(tag));
     }
 
-    getHoveredItem(): CanvasRect {
+    getHoveredItem(): GameObject {
         return this.getTaggedItems(CanvasItemTag.HOVERED)[0];
     }
 
-    getSelectedItems(): CanvasRect[] {
+    getSelectedItems(): GameObject[] {
         return this.getTaggedItems(CanvasItemTag.SELECTED);
     }
 }

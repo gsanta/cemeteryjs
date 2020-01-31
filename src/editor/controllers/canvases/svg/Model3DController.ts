@@ -2,8 +2,7 @@ import { Engine, Scene, Mesh } from 'babylonjs';
 import { AbstractModelLoader } from '../../../../common/AbstractModelLoader';
 import { SvgCanvasController } from './SvgCanvasController';
 import { Point } from '../../../../model/geometry/shapes/Point';
-import { CanvasRect } from './models/CanvasItem';
-
+import { GameObject } from '../../../../world_generator/services/GameObject';
 
 const SCALE = 2;
 export class Model3DController extends AbstractModelLoader {
@@ -21,13 +20,13 @@ export class Model3DController extends AbstractModelLoader {
         this.init();
     }
 
-    set3dModelForCanvasItem(canvasItem: CanvasRect) {
-        if (this.fileNameToMeshMap.has(canvasItem.modelPath)) {
-            this.setDimensions(canvasItem);
+    set3dModelForCanvasItem(gameObject: GameObject) {
+        if (this.fileNameToMeshMap.has(gameObject.modelPath)) {
+            this.setDimensions(gameObject);
         }
        
-        this.load(canvasItem).then(mesh => {
-            this.setDimensions(canvasItem);
+        this.load(gameObject).then(mesh => {
+            this.setDimensions(gameObject);
         });
     }
 
@@ -39,10 +38,10 @@ export class Model3DController extends AbstractModelLoader {
         this.fileNameToMeshMap.set(fileName, mesh);
     }
 
-    private setDimensions(canvasItem: CanvasRect) {
-        const mesh = this.fileNameToMeshMap.get(canvasItem.modelPath);
+    private setDimensions(gameObject: GameObject) {
+        const mesh = this.fileNameToMeshMap.get(gameObject.modelPath);
         const dimensions = this.calcMeshDimensions(mesh);
-        canvasItem.dimensions = canvasItem.dimensions.setWidth(dimensions.x).setHeight(dimensions.y);
+        gameObject.dimensions = gameObject.dimensions.setWidth(dimensions.x).setHeight(dimensions.y);
         this.canvasController.renderCanvas();
     }
 

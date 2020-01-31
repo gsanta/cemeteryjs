@@ -1,14 +1,13 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { CanvasItemTag } from '../../controllers/canvases/svg/models/CanvasItem';
 import { SvgCanvasController } from '../../controllers/canvases/svg/SvgCanvasController';
-import { CanvasItemSettings } from '../../controllers/forms/CanvasItemSettingsForm';
 import { AppContext, AppContextType } from '../Context';
 import { ConnectedColorPicker } from '../forms/ColorPicker';
 import { ConnectedDropdownComponent } from '../forms/DropdownComponent';
 import { ConnectedFileUploadComponent } from '../forms/FileUploadComponent';
 import { ConnectedInputComponent } from '../forms/InputComponent';
 import { colors } from '../styles';
+import { GameObjectPropType } from '../../controllers/forms/GameObjectForm';
 
 const LabelStyled = styled.div`
     width: 50%;
@@ -28,10 +27,16 @@ export class GameObjectSettingsComponent extends React.Component<{canvasControll
     static contextType = AppContext;
     context: AppContextType;
 
+    constructor(props: {canvasController: SvgCanvasController}) {
+        super(props);
+
+        this.props.canvasController.canvasItemSettingsForm.setRenderer(() => this.forceUpdate());
+    }
+
     render() {
         const selectedCanvasItems = this.props.canvasController.canvasStore.getSelectedItems();
         
-        this.props.canvasController.canvasItemSettingsForm.canvasItem = selectedCanvasItems[0];
+        this.props.canvasController.canvasItemSettingsForm.gameObject = selectedCanvasItems[0];
 
         const form = this.props.canvasController.canvasItemSettingsForm;
      
@@ -62,10 +67,10 @@ export class GameObjectSettingsComponent extends React.Component<{canvasControll
                 <InputStyled>
                     <ConnectedInputComponent
                         formController={form}
-                        propertyName={CanvasItemSettings.NAME}
+                        propertyName={GameObjectPropType.NAME}
                         propertyType="string"
                         type="text"
-                        value={form.getVal(CanvasItemSettings.NAME)}
+                        value={form.getVal(GameObjectPropType.NAME)}
                     />
                 </InputStyled>
             </SettingsRowStyled>
@@ -81,9 +86,9 @@ export class GameObjectSettingsComponent extends React.Component<{canvasControll
                 <InputStyled>
                 <ConnectedDropdownComponent
                     values={form.shapes}
-                    currentValue={form.getVal(CanvasItemSettings.SHAPE) as string}
+                    currentValue={form.getVal(GameObjectPropType.SHAPE) as string}
                     formController={form}
-                    propertyName={CanvasItemSettings.SHAPE}
+                    propertyName={GameObjectPropType.SHAPE}
                     propertyType='string'
                 />                    
                 </InputStyled>
@@ -100,10 +105,10 @@ export class GameObjectSettingsComponent extends React.Component<{canvasControll
                 <InputStyled>
                     <ConnectedFileUploadComponent
                         formController={form}
-                        propertyName={CanvasItemSettings.MODEL}
+                        propertyName={GameObjectPropType.MODEL}
                         propertyType="string"
                     />
-                    {form.getVal(CanvasItemSettings.MODEL) ? form.getVal<string>(CanvasItemSettings.MODEL) : ''}
+                    {form.getVal(GameObjectPropType.MODEL) ? form.getVal<string>(GameObjectPropType.MODEL) : ''}
                 </InputStyled>
             </SettingsRowStyled>
         );
@@ -119,10 +124,10 @@ export class GameObjectSettingsComponent extends React.Component<{canvasControll
                 <InputStyled>
                     <ConnectedFileUploadComponent
                         formController={form}
-                        propertyName={CanvasItemSettings.MODEL}
+                        propertyName={GameObjectPropType.TEXTURE}
                         propertyType="string"
                     />
-                    {form.getVal(CanvasItemSettings.MODEL) ? form.getVal<string>(CanvasItemSettings.MODEL) : ''}
+                    {form.getVal(GameObjectPropType.TEXTURE) ? form.getVal<string>(GameObjectPropType.TEXTURE) : ''}
                 </InputStyled>
             </SettingsRowStyled>
         );
@@ -135,7 +140,7 @@ export class GameObjectSettingsComponent extends React.Component<{canvasControll
                 <InputStyled>
                     <ConnectedColorPicker
                         formController={this.props.canvasController.canvasItemSettingsForm}
-                        propertyName={CanvasItemSettings.COLOR}
+                        propertyName={GameObjectPropType.COLOR}
                         propertyType='string'
                     />
                 </InputStyled>
@@ -152,12 +157,12 @@ export class GameObjectSettingsComponent extends React.Component<{canvasControll
                 <InputStyled>
                     <ConnectedInputComponent
                         formController={form}
-                        propertyName={CanvasItemSettings.LAYER}
+                        propertyName={GameObjectPropType.LAYER}
                         propertyType="string"
                         type="number"
-                        value={form.getVal(CanvasItemSettings.LAYER)}
+                        value={form.getVal(GameObjectPropType.LAYER)}
                     />
-                    {form.getVal(CanvasItemSettings.MODEL) ? form.getVal<string>(CanvasItemSettings.MODEL) : ''}
+                    {form.getVal(GameObjectPropType.TEXTURE) ? form.getVal<string>(GameObjectPropType.LAYER) : ''}
                 </InputStyled>
             </SettingsRowStyled>
         );
@@ -172,10 +177,10 @@ export class GameObjectSettingsComponent extends React.Component<{canvasControll
                 <InputStyled>
                 <ConnectedInputComponent
                     formController={form}
-                    propertyName={CanvasItemSettings.ROTATION}
+                    propertyName={GameObjectPropType.ROTATION}
                     propertyType="number"
                     type="number"
-                    value={form.getVal(CanvasItemSettings.ROTATION)}
+                    value={form.getVal(GameObjectPropType.ROTATION)}
                     placeholder="0"
                 />
                 </InputStyled>
@@ -190,14 +195,13 @@ export class GameObjectSettingsComponent extends React.Component<{canvasControll
             <SettingsRowStyled>
                 <LabelStyled>Scale</LabelStyled>
                 <InputStyled>
-                <ConnectedInputComponent
-                    formController={form}
-                    propertyName={CanvasItemSettings.SCALE}
-                    propertyType="number"
-                    type="number"
-                    value={form.getVal(CanvasItemSettings.SCALE)}
-                />
-
+                    <ConnectedInputComponent
+                        formController={form}
+                        propertyName={GameObjectPropType.SCALE}
+                        propertyType="number"
+                        type="number"
+                        value={form.getVal(GameObjectPropType.SCALE)}
+                    />
                 </InputStyled>
             </SettingsRowStyled>
         );

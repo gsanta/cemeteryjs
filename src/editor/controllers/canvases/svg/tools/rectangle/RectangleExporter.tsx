@@ -2,9 +2,10 @@ import { SvgCanvasController } from "../../SvgCanvasController";
 import React = require("react");
 import { sort, minBy } from "../../../../../../model/geometry/utils/Functions";
 import { Rectangle } from "../../../../../../model/geometry/shapes/Rectangle";
-import { CanvasItemTag, CanvasRect } from "../../models/CanvasItem";
+import { CanvasItemTag } from "../../models/CanvasItem";
 import { ToolType } from "../Tool";
 import { IToolExporter } from "../IToolExporter";
+import { GameObject } from "../../../../../../world_generator/services/GameObject";
 
 export class RectangleExporter implements IToolExporter {
     type = ToolType.RECTANGLE;
@@ -36,8 +37,8 @@ export class RectangleExporter implements IToolExporter {
 
             const fill = canvasStore.getTags(item).has(CanvasItemTag.SELECTED) ? 'blue' : item.color;
 
-            const minX = minBy<CanvasRect>(canvasStore.items, (a, b) => a.dimensions.topLeft.x - b.dimensions.topLeft.x).dimensions.topLeft.x;
-            const minY = minBy<CanvasRect>(canvasStore.items, (a, b) => a.dimensions.topLeft.y - b.dimensions.topLeft.y).dimensions.topLeft.y;
+            const minX = minBy<GameObject>(canvasStore.items, (a, b) => a.dimensions.topLeft.x - b.dimensions.topLeft.x).dimensions.topLeft.x;
+            const minY = minBy<GameObject>(canvasStore.items, (a, b) => a.dimensions.topLeft.y - b.dimensions.topLeft.y).dimensions.topLeft.y;
             
 
             const tranlateX = minX < 0 ? - minX * pixelSize : 0;
@@ -66,7 +67,9 @@ export class RectangleExporter implements IToolExporter {
                     data-wg-shape={item.shape}
                     data-wg-scale={item.scale}
                     data-wg-name={item.name}
+                    data-model={item.modelPath}
                     data-texture={item.texturePath}
+                    data-thumbnail={item.thumbnailPath}
                 />
             )
         });

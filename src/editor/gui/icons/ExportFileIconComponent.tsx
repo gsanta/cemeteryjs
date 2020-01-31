@@ -1,8 +1,9 @@
+import { saveAs } from 'file-saver';
 import * as React from 'react';
-import { ToolStyled, IconStyled, IconBackgroundStyled, IconImageStyled, ToolNameStyled } from './Icon';
-import {saveAs} from 'file-saver';
+import { SvgCanvasController } from '../../controllers/canvases/svg/SvgCanvasController';
+import { IconBackgroundStyled, IconImageStyled, IconStyled, ToolNameStyled, ToolStyled } from './Icon';
 
-export class ExportFileIconComponent extends React.Component {
+export class ExportFileIconComponent extends React.Component<{canvasController: SvgCanvasController}> {
 
     render() {
         return (
@@ -19,7 +20,7 @@ export class ExportFileIconComponent extends React.Component {
     }
 
     private saveFile() {
-        const file = this.context.controllers.svgCanvasController.reader.export();
+        const file = this.props.canvasController.reader.export();
         var blob = new Blob([file], { type: "text/plain;charset=utf-8" });
         saveAs(blob, "dynamic.txt");
     }

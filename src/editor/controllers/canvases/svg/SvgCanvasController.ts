@@ -2,7 +2,7 @@ import { FileFormat } from '../../../../WorldGenerator';
 import { GameObjectTemplate } from '../../../../world_generator/services/GameObjectTemplate';
 import { defaultWorldItemDefinitions } from '../../../defaultWorldItemDefinitions';
 import { EditorFacade } from '../../EditorFacade';
-import { CanvasItemSettingsForm } from '../../forms/CanvasItemSettingsForm';
+import { GameObjectForm } from '../../forms/GameObjectForm';
 import { CanvasViewSettings, AbstractCanvasController } from '../AbstractCanvasController';
 import { ICanvasExporter } from '../ICanvasExporter';
 import { ICanvasImporter } from '../ICanvasImporter';
@@ -44,7 +44,7 @@ export class SvgCanvasController extends AbstractCanvasController {
     worldItemDefinitions: GameObjectTemplate[];
     selectedWorldItemDefinition: GameObjectTemplate;
 
-    canvasItemSettingsForm: CanvasItemSettingsForm;
+    canvasItemSettingsForm: GameObjectForm;
 
     selectedTool = ToolType.RECTANGLE;
 
@@ -97,7 +97,7 @@ export class SvgCanvasController extends AbstractCanvasController {
             ]
         )
 
-        this.canvasItemSettingsForm = new CanvasItemSettingsForm(this, this.controllers.eventDispatcher);
+        this.canvasItemSettingsForm = new GameObjectForm(this, this.controllers.eventDispatcher);
     }
 
     renderCanvas() {
