@@ -59,9 +59,8 @@ export class MoveAndSelectTool extends AbstractTool {
     }
 
     up() {
-        super.up();
-
         this.determineActiveTool();
+        super.up();
         this.activeTool.up();
     }
 

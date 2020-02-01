@@ -27,7 +27,7 @@ export class CreateMeshModifier implements Modifier  {
     apply(worldItems: GameObject[]): GameObject[] {
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
-                if (item.type !== 'root') {
+                if (item.name !== 'root') {
                     this.modelFactory.createMesh(item);
                 }
             }

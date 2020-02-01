@@ -34,6 +34,13 @@ export class GameObjectForm extends AbstractForm<GameObjectPropType> {
         this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
     }
 
+    updateProp(value: any, propType: GameObjectPropType) {
+        super.updateProp(value, propType);
+
+        this.canvasController.renderCanvas();
+        this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
+    }
+
     protected getProp(prop: GameObjectPropType) {
         switch (prop) {
             case GameObjectPropType.COLOR:

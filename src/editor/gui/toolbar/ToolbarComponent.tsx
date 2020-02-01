@@ -38,14 +38,14 @@ export class ToolbarComponent extends React.Component<ToolbarComponentProps> {
             <ToolbarStyled>
                 <AccordionComponent
                     elements={[
-                        {
-                            title: 'Global Settings',
-                            body: <GlobalSettingsComponent {...this.props} canvasController={this.props.canvasController}/>
-                        },
                         ...canvasTools,
                         {
                             title: 'Object Settings',
                             body: <GameObjectSettingsComponent canvasController={this.props.canvasController}/>
+                        },
+                        {
+                            title: 'Global Settings',
+                            body: <GlobalSettingsComponent {...this.props} canvasController={this.props.canvasController}/>
                         }
                     ]}
                 />

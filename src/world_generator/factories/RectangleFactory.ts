@@ -29,7 +29,7 @@ export class RectangleFactory  {
 
         const center = gameObject.dimensions.getBoundingCenter();
         const rect = <Rectangle> gameObject.dimensions;
-        const pivotPoint = new Vector3(rec.topLeft.x, 0, rec.topLeft.y);
+        // const pivotPoint = new Vector3(rec.topLeft.x, 0, rec.topLeft.y);
         
         const mesh = MeshBuilder.CreateBox(
             `default-wall-container-${this.index}`,
@@ -47,7 +47,7 @@ export class RectangleFactory  {
 
         const scale = gameObject.scale;
         mesh.scaling = new Vector3(scale, scale, scale);
-        mesh.setPivotPoint(pivotPoint);
+        // mesh.setPivotPoint(pivotPoint);
         mesh.translate(new Vector3(rect.topLeft.x + width / 2, 0, -rect.topLeft.y - depth / 2), 1, Space.WORLD);
         // mesh.rotate(Axis.Y, gameObject.rotation, Space.WORLD);
 
