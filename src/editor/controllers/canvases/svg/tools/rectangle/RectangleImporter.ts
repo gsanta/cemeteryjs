@@ -17,7 +17,7 @@ export interface RectJson {
 }
 
 export interface RectangleGroupJson extends ToolGroupJson {
-    rect: RectJson[];
+    g: RectJson[];
 }
 
 export class RectangleImporter implements IToolImporter {
@@ -31,7 +31,7 @@ export class RectangleImporter implements IToolImporter {
     import(group: RectangleGroupJson): void {
         const pixelSize = 10;
 
-        const rectJsons =  group.rect.length ? <RectJson[]> group.rect : [<RectJson> <unknown> group.rect];
+        const rectJsons =  group.g.length ? <RectJson[]> group.g : [<RectJson> <unknown> group.g];
 
         rectJsons.forEach(rect => {
             const type = rect._attributes["data-wg-type"];

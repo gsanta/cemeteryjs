@@ -91,7 +91,7 @@ export class App extends React.Component<{}, AppState> {
     private updateCanvasVisibility() {
         let ids = ['#toolbar']; 
         let sizes = [12];
-        let minSize = [235];
+        let minSize = [230];
 
         const visibleCanvases = this.context.controllers.canvases.filter(canvas => canvas.isVisible());
         this.currentVisibleCanvases = visibleCanvases;

@@ -6,13 +6,13 @@ import { ExportFileIconComponent } from '../icons/ExportFileIconComponent';
 import { ConnectedFileUploadComponent } from '../icons/ImportFileIconComponent';
 import { GlobalSettingsPropType } from '../../controllers/forms/GlobalSettingsForm';
 
-export interface GlobalSettingsComponentProps {
+export interface GlobalFormComponentProps {
     isEditorOpen: boolean;
     toggleEditorOpen: () => void;
     canvasController: SvgCanvasController
 }
 
-export class GlobalSettingsComponent extends React.Component<GlobalSettingsComponentProps> {
+export class GlobalFormComponent extends React.Component<GlobalFormComponentProps> {
     static contextType = AppContext;
     context: AppContextType;
 

@@ -44,18 +44,19 @@ export class RectangleExporter implements IToolExporter {
             const tranlateX = minX < 0 ? - minX * pixelSize : 0;
             const tranlateY = minY < 0 ? - minY * pixelSize : 0;
 
+            let thumbnail: JSX.Element = null;
+            
+            if (item.thumbnailPath) {
+                thumbnail =  (
+                    <image xlinkHref={item.thumbnailPath} x="0" y="0" height={`${width}px`} width={`${height}px`}/>
+                )
+            }
+
             return (
-                <rect
-                    key={i}
-                    x={`${x}px`}
-                    y={`${y}px`}
-                    width={`${width}px`}
-                    height={`${height}px`}
-                    fill={fill}
-                    stroke='black'
+                <g 
+                    transform={`translate(${x} ${y})`}
                     onMouseOver={() => this.canvasController.mouseController.hover(item)}
                     onMouseOut={() => this.canvasController.mouseController.unhover()}
-
                     data-wg-x={x + tranlateX}
                     data-wg-y={y + tranlateY}
                     data-wg-width={width}
@@ -69,7 +70,18 @@ export class RectangleExporter implements IToolExporter {
                     data-model={item.modelPath}
                     data-texture={item.texturePath}
                     data-thumbnail={item.thumbnailPath}
-                />
+                >
+                    <rect
+                        key={i}
+                        x={`0`}
+                        y={`0`}
+                        width={`${width}px`}
+                        height={`${height}px`}
+                        fill={fill}
+                        stroke='black'
+                    />
+                    {thumbnail}
+                </g>
             )
         });
     }

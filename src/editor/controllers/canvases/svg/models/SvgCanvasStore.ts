@@ -134,4 +134,8 @@ export class SvgCanvasStore {
     getSelectedItems(): GameObject[] {
         return this.getTaggedItems(CanvasItemTag.SELECTED);
     }
+
+    removeSelectionAll() {
+        this.removeTag(this.getSelectedItems(), CanvasItemTag.SELECTED);
+    }
 }

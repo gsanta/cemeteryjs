@@ -125,12 +125,7 @@ export class WebglCanvasController extends AbstractCanvasController {
     activate(): void {}
 
     private clearCanvas() {
-        this.meshes.forEach(mesh => {
-            if (mesh) {
-                this.scene.removeMesh(mesh, true);
-            }
-        });
-        this.meshes = [];
+        this.gameFacade.clear();
     }
 
     

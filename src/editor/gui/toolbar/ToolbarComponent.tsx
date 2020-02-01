@@ -2,11 +2,11 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { SvgCanvasController } from '../../controllers/canvases/svg/SvgCanvasController';
 import { canvasToolsFactory } from '../canvases/canvasFactory';
-import { GlobalSettingsComponent } from './GlobalSettingsComponent';
+import { GlobalFormComponent } from './GlobalFormComponent';
 import { AppContext, AppContextType } from '../Context';
 import { AccordionComponent } from '../misc/AccordionComponent';
 import { colors } from '../styles';
-import { GameObjectSettingsComponent } from './GameObjectSettingsComponent';
+import { GameObjectFormComponent } from './GameObjectFormComponent';
 
 export interface ToolbarComponentProps {
     canvasController: SvgCanvasController;
@@ -41,11 +41,11 @@ export class ToolbarComponent extends React.Component<ToolbarComponentProps> {
                         ...canvasTools,
                         {
                             title: 'Object Settings',
-                            body: <GameObjectSettingsComponent canvasController={this.props.canvasController}/>
+                            body: <GameObjectFormComponent canvasController={this.props.canvasController}/>
                         },
                         {
                             title: 'Global Settings',
-                            body: <GlobalSettingsComponent {...this.props} canvasController={this.props.canvasController}/>
+                            body: <GlobalFormComponent {...this.props} canvasController={this.props.canvasController}/>
                         }
                     ]}
                 />

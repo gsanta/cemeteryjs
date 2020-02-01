@@ -5,6 +5,7 @@ import { Events } from '../../../../events/Events';
 import { SvgCanvasController } from '../../SvgCanvasController';
 import { AbstractSelectionTool } from '../AbstractSelectionTool';
 import { ToolType } from '../Tool';
+import { CanvasItemTag } from '../../models/CanvasItem';
 
 export class RectangleTool extends AbstractSelectionTool {
     private eventDispatcher: EventDispatcher;
@@ -38,9 +39,12 @@ export class RectangleTool extends AbstractSelectionTool {
         gameObject.color = 'grey';
 
         this.canvasController.canvasStore.addRect(gameObject);
+        this.canvasController.canvasStore.removeSelectionAll()
+        this.canvasController.canvasStore.addTag([gameObject], CanvasItemTag.SELECTED);
     
-        this.canvasController.renderCanvas();
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
+        this.canvasController.renderCanvas();
+        this.canvasController.renderToolbar();
     }
 
     drag() {

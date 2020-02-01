@@ -50,7 +50,7 @@ export class GameObjectForm extends AbstractForm<GameObjectPropType> {
             case GameObjectPropType.TEXTURE:
                 return this.gameObject.texturePath;
             case GameObjectPropType.THUMBNAIL:
-                return this.gameObject.texturePath;
+                return this.gameObject.thumbnailPath;
             case GameObjectPropType.LAYER:
                 return this.canvasController.canvasStore.getLayer(this.gameObject) + '';
             case GameObjectPropType.ROTATION:
@@ -72,10 +72,10 @@ export class GameObjectForm extends AbstractForm<GameObjectPropType> {
                 this.canvasController.model3dController.set3dModelForCanvasItem(this.gameObject);
                 break;
             case GameObjectPropType.TEXTURE:
-                this.gameObject.texturePath = val;
+                this.gameObject.texturePath = val.path;
                 break;
             case GameObjectPropType.THUMBNAIL:
-                this.gameObject.texturePath = val;
+                this.gameObject.thumbnailPath = val.data;
                 break;
             case GameObjectPropType.LAYER:
                 this.canvasController.canvasStore.setLayer(this.gameObject, val);

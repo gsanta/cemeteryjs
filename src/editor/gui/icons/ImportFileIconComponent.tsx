@@ -16,11 +16,11 @@ export const ImportFileIconComponent = (props: ImportFileIconProps) => {
     
         reader.onabort = () => console.log('file reading was aborted')
         reader.onerror = () => console.log('file reading has failed')
-        reader.onload = () => {
+        reader.onload = (e) => {
             const binaryStr = reader.result
-            props.onChange({path: acceptedFiles[0].path, data: ab2str(binaryStr as string)});
+            props.onChange({path: acceptedFiles[0].path, data: e.target.result as string});
         }
-        reader.readAsArrayBuffer(acceptedFiles[0]);
+        reader.readAsDataURL(acceptedFiles[0]);
     }, [])
     const { getRootProps, getInputProps } = useDropzone({ onDrop })
 
