@@ -3,7 +3,6 @@ import { MeshStore } from '../../game/models/stores/MeshStore';
 import { BehaviourType } from '../../game/services/behaviour/IBehaviour';
 import { Point } from '../../model/geometry/shapes/Point';
 import { Rectangle } from '../../model/geometry/shapes/Rectangle';
-import { Shape } from '../../model/geometry/shapes/Shape';
 import { toVector3 } from '../../model/geometry/utils/GeomUtils';
 
 export enum WorldItemShape {
@@ -38,7 +37,6 @@ export class GameObject {
     thumbnailPath: string;
 
     color: string;
-    shape: WorldItemShape;
     scale: number;
 
     speed = 0.01;

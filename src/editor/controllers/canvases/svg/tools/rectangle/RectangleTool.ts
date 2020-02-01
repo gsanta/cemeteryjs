@@ -31,7 +31,6 @@ export class RectangleTool extends AbstractSelectionTool {
 
         const gameObject: GameObject = new GameObject(null, rect, name);
         gameObject.type = type;
-        gameObject.shape = <WorldItemShape> WorldItemShape.RECTANGLE;
         gameObject.rotation = 0;
         gameObject.modelPath = null;
         gameObject.texturePath = null;
@@ -58,7 +57,6 @@ export class RectangleTool extends AbstractSelectionTool {
 
         const gameObject: GameObject = new GameObject(null, dimensions, name);
         gameObject.type = type;
-        gameObject.shape = <WorldItemShape> WorldItemShape.RECTANGLE;
         gameObject.rotation = 0;
         gameObject.modelPath = null;
         gameObject.texturePath = null;

@@ -3,7 +3,8 @@ import { SvgCanvasController } from '../../controllers/canvases/svg/SvgCanvasCon
 import { AppContext, AppContextType } from '../Context';
 import { DisplayEditorIconComponent } from '../icons/DisplayEditorIconComponent';
 import { ExportFileIconComponent } from '../icons/ExportFileIconComponent';
-import { ImportFileIconComponent } from '../icons/ImportFileIconComponent';
+import { ConnectedFileUploadComponent } from '../icons/ImportFileIconComponent';
+import { GlobalSettingsPropType } from '../../controllers/forms/GlobalSettingsForm';
 
 export interface GlobalSettingsComponentProps {
     isEditorOpen: boolean;
@@ -15,12 +16,18 @@ export class GlobalSettingsComponent extends React.Component<GlobalSettingsCompo
     static contextType = AppContext;
     context: AppContextType;
 
+    componentDidMount() {
+        this.context.controllers.globalSettingsForm.setRenderer(() => this.forceUpdate());
+    }
+
     render() {
+        const form = this.context.controllers.globalSettingsForm;
+
         return (
             <div>
                 <DisplayEditorIconComponent canvasController={this.context.controllers.svgCanvasController}/>
                 <DisplayEditorIconComponent canvasController={this.context.controllers.webglCanvasController}/>
-                <ImportFileIconComponent onUpload={(file) => this.context.controllers.svgCanvasController.writer.import(file)}/>
+                <ConnectedFileUploadComponent propertyName={GlobalSettingsPropType.IMPORT_FILE} formController={form} placeholder={'Import file'}/>
                 <ExportFileIconComponent canvasController={this.context.controllers.svgCanvasController}/>
             </div>
         )

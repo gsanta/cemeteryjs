@@ -27,23 +27,12 @@ export class CreateMeshModifier implements Modifier  {
     apply(worldItems: GameObject[]): GameObject[] {
         worldItems.forEach(rootItem => {
             for (const item of TreeIteratorGenerator(rootItem)) {
-                if (item.shape) {
-                    this.creteMesh(item);
+                if (item.type !== 'root') {
+                    this.modelFactory.createMesh(item);
                 }
             }
         });
 
         return worldItems;
-    }
-
-    private creteMesh(worldItem: GameObject): void {
-        switch(worldItem.shape) {
-            case WorldItemShape.RECTANGLE:
-                this.rectangleFactory.createMesh(worldItem);
-                break;
-            case WorldItemShape.MODEL:
-                this.modelFactory.createMesh(worldItem);
-                break;
-        }
     }
 }

@@ -44,7 +44,7 @@ export class SvgCanvasController extends AbstractCanvasController {
     worldItemDefinitions: GameObjectTemplate[];
     selectedWorldItemDefinition: GameObjectTemplate;
 
-    canvasItemSettingsForm: GameObjectForm;
+    gameObjectForm: GameObjectForm;
 
     selectedTool = ToolType.RECTANGLE;
 
@@ -97,7 +97,7 @@ export class SvgCanvasController extends AbstractCanvasController {
             ]
         )
 
-        this.canvasItemSettingsForm = new GameObjectForm(this, this.controllers.eventDispatcher);
+        this.gameObjectForm = new GameObjectForm(this, this.controllers.eventDispatcher);
     }
 
     renderCanvas() {

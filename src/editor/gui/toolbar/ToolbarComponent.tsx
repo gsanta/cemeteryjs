@@ -15,7 +15,6 @@ export interface ToolbarComponentProps {
 }
 
 const ToolbarStyled = styled.div`
-    padding: 10px;
     height: 100%;
     background: ${colors.panelBackground};
     color: ${colors.textColor};
@@ -40,12 +39,12 @@ export class ToolbarComponent extends React.Component<ToolbarComponentProps> {
                 <AccordionComponent
                     elements={[
                         {
-                            title: 'Settings',
+                            title: 'Global Settings',
                             body: <GlobalSettingsComponent {...this.props} canvasController={this.props.canvasController}/>
                         },
                         ...canvasTools,
                         {
-                            title: 'Selection',
+                            title: 'Object Settings',
                             body: <GameObjectSettingsComponent canvasController={this.props.canvasController}/>
                         }
                     ]}

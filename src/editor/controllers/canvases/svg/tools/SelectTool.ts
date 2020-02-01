@@ -46,5 +46,6 @@ export class SelectTool extends AbstractSelectionTool {
         canvasStore.addTag(canvasItems, CanvasItemTag.SELECTED);
 
         this.canvasController.renderCanvas();
+        this.canvasController.renderToolbar();
     }
 }

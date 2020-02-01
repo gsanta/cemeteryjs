@@ -33,7 +33,6 @@ export class GameObjectFactory {
         const gameObject = new GameObject(getMeshFunc, gameObjectConfig.dimensions, gameObjectConfig.name);
         gameObject.rotation = gameObjectConfig.rotation;
         gameObjectConfig.color && (gameObject.color = gameObjectConfig.color);
-        gameObjectConfig.shape && (gameObject.shape = gameObjectConfig.shape);
         gameObjectConfig.texturePath  && (gameObject.texturePath = gameObjectConfig.texturePath);
         gameObjectConfig.modelPath && (gameObject.modelPath = gameObjectConfig.modelPath);
         gameObject.scale = gameObjectConfig.scale ? gameObjectConfig.scale : 1;
@@ -51,7 +50,6 @@ export class GameObjectFactory {
         clone.rotation = gameObject.rotation;
         clone.parent = gameObject.parent;
         gameObject.color && (clone.color = gameObject.color);
-        gameObject.shape && (clone.shape = gameObject.shape);
         gameObject.modelPath && (clone.modelPath = gameObject.modelPath);
         clone.scale = gameObject.scale;
         clone.texturePath = gameObject.texturePath;

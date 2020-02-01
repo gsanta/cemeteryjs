@@ -39,7 +39,6 @@ export class RectangleImporter implements IToolImporter {
             const y = parseInt(rect._attributes["data-wg-y"], 10) / pixelSize;
             const width = parseInt(rect._attributes["data-wg-width"], 10) / pixelSize;
             const height = parseInt(rect._attributes["data-wg-height"], 10) / pixelSize;
-            const shape = rect._attributes["data-wg-shape"];
             const model = rect._attributes["data-model"];
             const texture = rect._attributes["data-texture"];
             const rotation = parseInt(rect._attributes["data-rotation"], 10);
@@ -50,7 +49,6 @@ export class RectangleImporter implements IToolImporter {
 
             const gameObject: GameObject = new GameObject(null, rectangle, name);
             gameObject.type = type;
-            gameObject.shape = <WorldItemShape> shape;
             gameObject.rotation = rotation;
             gameObject.modelPath = model;
             gameObject.texturePath = texture;

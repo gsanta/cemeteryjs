@@ -19,6 +19,9 @@ export const ToolStyled = styled.div`
 export const ToolNameStyled = styled.div`
     padding-left: 5px;
     color: ${colors.textColor};
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `;
 
 export const IconStyled = styled.svg`

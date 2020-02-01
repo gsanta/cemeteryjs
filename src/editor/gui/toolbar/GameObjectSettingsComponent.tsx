@@ -4,23 +4,28 @@ import { SvgCanvasController } from '../../controllers/canvases/svg/SvgCanvasCon
 import { AppContext, AppContextType } from '../Context';
 import { ConnectedColorPicker } from '../forms/ColorPicker';
 import { ConnectedDropdownComponent } from '../forms/DropdownComponent';
-import { ConnectedFileUploadComponent } from '../forms/FileUploadComponent';
 import { ConnectedInputComponent } from '../forms/InputComponent';
 import { colors } from '../styles';
 import { GameObjectPropType } from '../../controllers/forms/GameObjectForm';
+import { ConnectedFileUploadComponent } from '../icons/ImportFileIconComponent';
 
 const LabelStyled = styled.div`
-    width: 50%;
+    width: 30%;
 `;
 
 const InputStyled = styled.div`
-    width: 50%;
+    width: 70%;
 `;
 
 const SettingsRowStyled = styled.div`
     display: flex;
     padding: 3px 5px;
     border-bottom: 1px solid ${colors.panelBackgroundLight};
+`;
+
+const PlaceHolderTextStyled = styled.div`
+    font-style: italic;
+    opacity: 0.6;
 `;
 
 export class GameObjectSettingsComponent extends React.Component<{canvasController: SvgCanvasController}> {
@@ -30,36 +35,32 @@ export class GameObjectSettingsComponent extends React.Component<{canvasControll
     constructor(props: {canvasController: SvgCanvasController}) {
         super(props);
 
-        this.props.canvasController.canvasItemSettingsForm.setRenderer(() => this.forceUpdate());
+        this.props.canvasController.gameObjectForm.setRenderer(() => this.forceUpdate());
     }
 
     render() {
         const selectedCanvasItems = this.props.canvasController.canvasStore.getSelectedItems();
         
-        this.props.canvasController.canvasItemSettingsForm.gameObject = selectedCanvasItems[0];
+        this.props.canvasController.gameObjectForm.gameObject = selectedCanvasItems[0];
 
-        const form = this.props.canvasController.canvasItemSettingsForm;
-     
         if (selectedCanvasItems.length === 1) {
             return (
                 <div style={{display: 'flex', flexDirection: 'column'}}>
                     {this.renderName()}
-                    {this.renderColorChooser()}
-                    {this.renderLayerInput()}
-                    {this.renderShapeDropdown()}
                     {this.renderModelFileChooser()}
                     {this.renderTextureFileChooser()}
+                    {this.renderLayerInput()}
                     {this.renderRotationInput()}
                     {this.renderScaleInput()}
                 </div>
             );
+        } else {
+            return <PlaceHolderTextStyled>Select an object on canvas to change it's properties</PlaceHolderTextStyled>
         }
-
-        return null;
     }
 
     private renderName(): JSX.Element {
-        const form = this.props.canvasController.canvasItemSettingsForm;
+        const form = this.props.canvasController.gameObjectForm;
 
         return (
             <SettingsRowStyled>
@@ -77,38 +78,20 @@ export class GameObjectSettingsComponent extends React.Component<{canvasControll
         );        
     }
 
-    private renderShapeDropdown(): JSX.Element {
-        const form = this.props.canvasController.canvasItemSettingsForm;
-
-        return (
-            <SettingsRowStyled>
-                <LabelStyled>Shape</LabelStyled>
-                <InputStyled>
-                <ConnectedDropdownComponent
-                    values={form.shapes}
-                    currentValue={form.getVal(GameObjectPropType.SHAPE) as string}
-                    formController={form}
-                    propertyName={GameObjectPropType.SHAPE}
-                    propertyType='string'
-                />                    
-                </InputStyled>
-            </SettingsRowStyled>
-        );
-    }
-
     private renderModelFileChooser(): JSX.Element {
-        const form = this.props.canvasController.canvasItemSettingsForm;
+        const form = this.props.canvasController.gameObjectForm;
 
         return (
             <SettingsRowStyled>
-                <LabelStyled>File</LabelStyled>
+                <LabelStyled>Model</LabelStyled>
                 <InputStyled>
                     <ConnectedFileUploadComponent
                         formController={form}
                         propertyName={GameObjectPropType.MODEL}
                         propertyType="string"
+                        placeholder={`Upload ${GameObjectPropType.MODEL}`}
+                        value={form.getVal(GameObjectPropType.MODEL)}
                     />
-                    {form.getVal(GameObjectPropType.MODEL) ? form.getVal<string>(GameObjectPropType.MODEL) : ''}
                 </InputStyled>
             </SettingsRowStyled>
         );
@@ -116,7 +99,7 @@ export class GameObjectSettingsComponent extends React.Component<{canvasControll
 
     
     private renderTextureFileChooser(): JSX.Element {
-        const form = this.props.canvasController.canvasItemSettingsForm;
+        const form = this.props.canvasController.gameObjectForm;
 
         return (
             <SettingsRowStyled>
@@ -126,22 +109,8 @@ export class GameObjectSettingsComponent extends React.Component<{canvasControll
                         formController={form}
                         propertyName={GameObjectPropType.TEXTURE}
                         propertyType="string"
-                    />
-                    {form.getVal(GameObjectPropType.TEXTURE) ? form.getVal<string>(GameObjectPropType.TEXTURE) : ''}
-                </InputStyled>
-            </SettingsRowStyled>
-        );
-    }
-
-    private renderColorChooser(): JSX.Element {
-        return (
-            <SettingsRowStyled>
-                <LabelStyled>Color</LabelStyled>
-                <InputStyled>
-                    <ConnectedColorPicker
-                        formController={this.props.canvasController.canvasItemSettingsForm}
-                        propertyName={GameObjectPropType.COLOR}
-                        propertyType='string'
+                        placeholder={`Upload ${GameObjectPropType.TEXTURE}`}
+                        value={form.getVal(GameObjectPropType.TEXTURE)}
                     />
                 </InputStyled>
             </SettingsRowStyled>
@@ -149,7 +118,7 @@ export class GameObjectSettingsComponent extends React.Component<{canvasControll
     }
 
     private renderLayerInput(): JSX.Element {
-        const form = this.props.canvasController.canvasItemSettingsForm;
+        const form = this.props.canvasController.gameObjectForm;
 
         return (
             <SettingsRowStyled>
@@ -169,7 +138,7 @@ export class GameObjectSettingsComponent extends React.Component<{canvasControll
     }
 
     private renderRotationInput(): JSX.Element {
-        const form = this.props.canvasController.canvasItemSettingsForm;
+        const form = this.props.canvasController.gameObjectForm;
 
         return (
             <SettingsRowStyled>
@@ -189,7 +158,7 @@ export class GameObjectSettingsComponent extends React.Component<{canvasControll
     }
 
     private renderScaleInput(): JSX.Element {
-        const form = this.props.canvasController.canvasItemSettingsForm;
+        const form = this.props.canvasController.gameObjectForm;
 
         return (
             <SettingsRowStyled>

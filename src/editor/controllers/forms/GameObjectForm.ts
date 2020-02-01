@@ -2,11 +2,10 @@ import { GameObject } from '../../../world_generator/services/GameObject';
 import { SvgCanvasController } from '../canvases/svg/SvgCanvasController';
 import { EventDispatcher } from '../events/EventDispatcher';
 import { Events } from '../events/Events';
-import { AbstractFormController } from "./AbstractFormController";
+import { AbstractForm } from "./AbstractForm";
 
 export enum GameObjectPropType {
     COLOR = 'color',
-    SHAPE = 'shape',
     MODEL = 'model',
     TEXTURE = 'texture',
     THUMBNAIL = 'thumbnail',
@@ -16,8 +15,7 @@ export enum GameObjectPropType {
     NAME = 'name'
 }
 
-export class GameObjectForm extends AbstractFormController<GameObjectPropType> {
-    shapes: string[] = ['rect', 'model'];
+export class GameObjectForm extends AbstractForm<GameObjectPropType> {
     gameObject: GameObject;
 
     private canvasController: SvgCanvasController;
@@ -29,8 +27,8 @@ export class GameObjectForm extends AbstractFormController<GameObjectPropType> {
         this.eventDispatcher = eventDispatcher;
     }
 
-    commitProp() {
-        super.commitProp();
+    blurProp() {
+        super.blurProp();
 
         this.canvasController.renderCanvas();
         this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
@@ -40,8 +38,6 @@ export class GameObjectForm extends AbstractFormController<GameObjectPropType> {
         switch (prop) {
             case GameObjectPropType.COLOR:
                 return this.gameObject.color;
-            case GameObjectPropType.SHAPE:
-                return this.gameObject.shape;
             case GameObjectPropType.MODEL:
                 return this.gameObject.modelPath;
             case GameObjectPropType.TEXTURE:
@@ -64,11 +60,8 @@ export class GameObjectForm extends AbstractFormController<GameObjectPropType> {
             case GameObjectPropType.COLOR:
                 this.gameObject.color = val;
                 break;
-            case GameObjectPropType.SHAPE:
-                this.gameObject.shape = val;
-                break;
             case GameObjectPropType.MODEL:
-                this.gameObject.modelPath = val;
+                this.gameObject.modelPath = val.path;
                 this.canvasController.model3dController.set3dModelForCanvasItem(this.gameObject);
                 break;
             case GameObjectPropType.TEXTURE:

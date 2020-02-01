@@ -15,26 +15,26 @@ export function withCommitOnBlur<T extends Focusable>(WrappedComponent: React.Co
                         if (this.props.formController.getFocusedProp() !== this.props.propertyName) {
                             this.props.formController.focusProp(this.props.propertyName);
                             this.updateProp(val);
-                            this.props.formController.commitProp();
+                            this.props.formController.blurProp();
                         } else {
                             this.updateProp(val);
                         }
                     }
                 }
-                onBlur={() => this.props.formController.commitProp()}
+                onBlur={() => this.props.formController.blurProp()}
             />;
         }
 
         private updateProp(val: any) {
             switch(this.props.propertyType) {
                 case 'boolean':
-                    this.props.formController.updateProp(val);
+                    this.props.formController.updateFocusedProp(val);
                     break;
                 case 'string':
-                    this.props.formController.updateProp(val);
+                    this.props.formController.updateFocusedProp(val);
                     break;
                 case 'number':
-                    this.props.formController.updateProp(parseInt(val, 10));
+                    this.props.formController.updateFocusedProp(parseInt(val, 10));
                     break;
             }
         }

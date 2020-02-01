@@ -1,6 +1,5 @@
-import { EventDispatcher } from "../events/EventDispatcher";
 
-export abstract class AbstractFormController<P> {
+export abstract class AbstractForm<P> {
     protected renderFunc = () => null;
     protected tempString: string;
     protected tempBoolean: boolean;
@@ -19,13 +18,20 @@ export abstract class AbstractFormController<P> {
         this.renderFunc();
     }
 
-    updateProp(value: any) {
+    updateFocusedProp(value: any) {
         this.tempVal = value;
         this.renderFunc();
     }
 
-    commitProp() {
+    blurProp() {
         this.setProp(this.tempVal, this.focusedPropType);
+        this.tempVal = null;
+        this.focusedPropType = null;
+        this.renderFunc();
+    }
+
+    updateProp(value: any, propType: P) {
+        this.setProp(value, propType);
         this.tempVal = null;
         this.focusedPropType = null;
         this.renderFunc();

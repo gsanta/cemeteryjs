@@ -59,8 +59,8 @@ function withController(WrappedComponent: React.ComponentType<ColorPickerProps>)
                 {...this.props as any}
                 onOpen={() => this.props.formController.focusProp(this.props.propertyName)}
                 isOpen={this.props.formController.getFocusedProp() === this.props.propertyName}
-                onColorChange={(color: string) => this.props.formController.updateProp(color)}
-                onClose={() => this.props.formController.commitProp()}
+                onColorChange={(color: string) => this.props.formController.updateFocusedProp(color)}
+                onClose={() => this.props.formController.blurProp()}
                 color={this.props.formController.getVal(this.props.propertyName)}
             />
         }

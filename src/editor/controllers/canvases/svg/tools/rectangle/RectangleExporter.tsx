@@ -64,7 +64,6 @@ export class RectangleExporter implements IToolExporter {
                     data-wg-color={item.color}
                     data-wg-layer={canvasStore.getLayer(item)}
                     data-rotation={item.rotation}
-                    data-wg-shape={item.shape}
                     data-wg-scale={item.scale}
                     data-wg-name={item.name}
                     data-model={item.modelPath}

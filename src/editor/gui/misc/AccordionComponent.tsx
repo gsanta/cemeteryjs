@@ -34,20 +34,21 @@ const CardHeaderStyled = styled(Card.Header)`
 
 const CardStyled = styled(Card)`
     border-radius: 0px;
+    border: none;
+    border-bottom: 1px solid ${colors.panelBackgroundLight}
 `;
 
 export class AccordionComponent extends React.Component<AccordionProps> {
-
     render() {
         const accordions = this.props.elements.map((element, index) => (
-            <Accordion defaultActiveKey="0">
+            <Accordion defaultActiveKey={index + ''}>
                 <CardStyled>
                     <CardHeaderStyled>
                         <Accordion.Toggle as={Button} variant="link" eventKey={index + ''}>
                             {element.title}
                         </Accordion.Toggle>
                     </CardHeaderStyled>
-                    <Accordion.Collapse eventKey="0">
+                    <Accordion.Collapse eventKey={index + ''}>
                         <CardBodyStyled>
                             {element.body}
                         </CardBodyStyled>
