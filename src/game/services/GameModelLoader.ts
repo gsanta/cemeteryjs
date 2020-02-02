@@ -14,7 +14,7 @@ export class GameModelLoader extends AbstractModelLoader {
     }
 
     protected setModel(fileName: string, mesh: Mesh): void {
-        this.gameFacade.meshStore.addMesh(mesh.name, mesh);
+        this.gameFacade.meshStore.addModel(mesh.name, mesh);
         this.instanceCounter.set(fileName, 0);
         this.fileNameToMeshNameMap.set(fileName, mesh.name);
     }

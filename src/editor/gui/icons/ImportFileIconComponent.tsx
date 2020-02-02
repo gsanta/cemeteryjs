@@ -8,6 +8,7 @@ export interface ImportFileIconProps {
     onChange(file: {path: string, data: string}): void;
     placeholder: string;
     value?: string;
+    readDataAs: 'text' | 'dataUrl'
 }
 
 export const ImportFileIconComponent = (props: ImportFileIconProps) => {
@@ -17,10 +18,13 @@ export const ImportFileIconComponent = (props: ImportFileIconProps) => {
         reader.onabort = () => console.log('file reading was aborted')
         reader.onerror = () => console.log('file reading has failed')
         reader.onload = (e) => {
-            const binaryStr = reader.result
             props.onChange({path: acceptedFiles[0].path, data: e.target.result as string});
         }
-        reader.readAsDataURL(acceptedFiles[0]);
+        if (props.readDataAs === 'text') {
+            reader.readAsText(acceptedFiles[0]);
+        } else {
+            reader.readAsDataURL(acceptedFiles[0]);
+        }
     }, [])
     const { getRootProps, getInputProps } = useDropzone({ onDrop })
 

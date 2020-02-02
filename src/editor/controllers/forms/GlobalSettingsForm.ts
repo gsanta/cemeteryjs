@@ -21,7 +21,7 @@ export class GlobalSettingsForm extends AbstractForm<GlobalSettingsPropType> {
     protected setProp(val: any, prop: GlobalSettingsPropType) {
         switch (prop) {
             case GlobalSettingsPropType.IMPORT_FILE:
-                this.canvasController.writer.import(val);
+                this.canvasController.writer.import(val.data);
         }
     }
 }

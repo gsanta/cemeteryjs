@@ -27,7 +27,7 @@ export class GlobalFormComponent extends React.Component<GlobalFormComponentProp
             <div>
                 <DisplayEditorIconComponent canvasController={this.context.controllers.svgCanvasController}/>
                 <DisplayEditorIconComponent canvasController={this.context.controllers.webglCanvasController}/>
-                <ConnectedFileUploadComponent propertyName={GlobalSettingsPropType.IMPORT_FILE} formController={form} placeholder={'Import file'}/>
+                <ConnectedFileUploadComponent propertyName={GlobalSettingsPropType.IMPORT_FILE} formController={form} placeholder={'Import file'} readDataAs="text"/>
                 <ExportFileIconComponent canvasController={this.context.controllers.svgCanvasController}/>
             </div>
         )

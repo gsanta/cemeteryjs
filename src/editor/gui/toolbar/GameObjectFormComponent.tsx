@@ -67,6 +67,7 @@ export class GameObjectFormComponent extends React.Component<{canvasController: 
                                 propertyType="string"
                                 placeholder={`Upload ${GameObjectPropType.THUMBNAIL}  123456`}
                                 value={''}
+                                readDataAs="dataUrl"
                             />
                         </InputStyled>
                     </SettingsRowStyled>
@@ -112,6 +113,7 @@ export class GameObjectFormComponent extends React.Component<{canvasController: 
                         propertyType="string"
                         placeholder={`Upload ${GameObjectPropType.MODEL}`}
                         value={form.getVal(GameObjectPropType.MODEL)}
+                        readDataAs="dataUrl"
                     />
                 </InputStyled>
             </SettingsRowStyled>
@@ -132,6 +134,7 @@ export class GameObjectFormComponent extends React.Component<{canvasController: 
                         propertyType="string"
                         placeholder={`Upload ${GameObjectPropType.TEXTURE}`}
                         value={form.getVal(GameObjectPropType.TEXTURE)}
+                        readDataAs="dataUrl"
                     />
                 </InputStyled>
             </SettingsRowStyled>
@@ -148,7 +151,7 @@ export class GameObjectFormComponent extends React.Component<{canvasController: 
                     <ConnectedInputComponent
                         formController={form}
                         propertyName={GameObjectPropType.LAYER}
-                        propertyType="string"
+                        propertyType="number"
                         type="number"
                         value={form.getVal(GameObjectPropType.LAYER)}
                     />

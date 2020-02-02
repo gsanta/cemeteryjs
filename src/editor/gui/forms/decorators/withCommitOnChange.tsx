@@ -16,14 +16,11 @@ export function withCommitOnChange<T>(WrappedComponent: React.ComponentType<T>) 
 
         private updateProp(val: any) {
             switch(this.props.propertyType) {
-                case 'boolean':
-                    this.props.formController.updateProp(val, this.props.propertyName);
-                    break;
-                case 'string':
-                    this.props.formController.updateProp(val, this.props.propertyName);
-                    break;
                 case 'number':
                     this.props.formController.updateProp(parseInt(val, 10), this.props.propertyName);
+                    break;
+                default:
+                    this.props.formController.updateProp(val, this.props.propertyName);
                     break;
             }
         }
