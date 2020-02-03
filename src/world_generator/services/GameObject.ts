@@ -4,6 +4,7 @@ import { BehaviourType } from '../../game/services/behaviour/IBehaviour';
 import { Point } from '../../model/geometry/shapes/Point';
 import { Rectangle } from '../../model/geometry/shapes/Rectangle';
 import { toVector3 } from '../../model/geometry/utils/GeomUtils';
+import { ViewType, View } from '../../model/View';
 
 export enum WorldItemShape {
     RECTANGLE = 'rect',
@@ -24,7 +25,8 @@ export enum AnimationName {
 /**
  * `GameObject` represents any distinguishable item in the parsed world (think of it as a mesh, e.g walls, rooms, creatures).
  */
-export class GameObject {
+export class GameObject implements View {
+    viewType = ViewType.GameObject;
     type: string;
     meshName: string;
     name: string;
@@ -40,7 +42,6 @@ export class GameObject {
     scale: number;
 
     speed = 0.01;
-
 
     activeAnimation: AnimationName = AnimationName.None;
     activeBehaviour: BehaviourType;

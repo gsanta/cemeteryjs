@@ -2,9 +2,11 @@ import { Point } from "../../../../../../model/geometry/shapes/Point";
 import { AbstractTool } from "../AbstractTool";
 import { ToolType } from "../Tool";
 import { SvgCanvasController } from "../../SvgCanvasController";
+import { View, ViewType } from "../../../../../../model/View";
 
 
-export class CanvasPath {
+export class PathView implements View {
+    viewType = ViewType.Path;
     points: Point[] = [];
     pathId: number;
 
@@ -15,7 +17,7 @@ export class CanvasPath {
 
 export class PathTool extends AbstractTool {
 
-    pendingArrow: CanvasPath;
+    pendingArrow: PathView;
     
     private canvasController: SvgCanvasController;
     constructor(canvasController: SvgCanvasController) {
@@ -30,7 +32,7 @@ export class PathTool extends AbstractTool {
         const pointer = this.canvasController.mouseController.pointer;
 
         if (!this.pendingArrow) {
-            this.pendingArrow = new CanvasPath(pointer.down.clone());
+            this.pendingArrow = new PathView(pointer.down.clone());
             this.canvasController.canvasStore.addArrow(this.pendingArrow);
         } else {
             this.pendingArrow.points.push(pointer.down.clone());

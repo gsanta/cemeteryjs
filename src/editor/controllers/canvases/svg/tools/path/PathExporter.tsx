@@ -3,6 +3,7 @@ import { PathComponent } from "../../../../../gui/canvases/svg/PathComponent";
 import React = require("react");
 import { ToolType } from "../Tool";
 import { IToolExporter } from "../IToolExporter";
+import { PathView } from "./PathTool";
 
 export class PathExporter implements IToolExporter {
     type = ToolType.PATH;
@@ -13,8 +14,18 @@ export class PathExporter implements IToolExporter {
     }
 
     export(): JSX.Element {
-        const pathes = this.canvasController.canvasStore.pathes.map(arrow => <PathComponent item={arrow}/>);
+        const pathes = this.canvasController.canvasStore.pathes.map(arrow => {
+            return <PathComponent 
+                item={arrow}
+                onMouseOver={(item: PathView) => this.canvasController.mouseController.hover(item)}
+                onMouseOut={() => this.canvasController.mouseController.unhover()}
+            />
+        });
 
-        return pathes.length > 0 ? <g data-tool-type={ToolType.PATH}>{pathes}</g> : null;
+        return pathes.length > 0 ? 
+            (
+                <g data-tool-type={ToolType.PATH}>{pathes}</g> 
+            )
+            : null;
     }
 }

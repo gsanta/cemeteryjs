@@ -4,8 +4,6 @@ import styled from 'styled-components';
 import { colors } from '../styles';
 import { Focusable } from './Focusable';
 import './InputComponent.scss';
-import { withCommitOnChange } from './decorators/withCommitOnChange';
-import { ImportFileIconComponent } from '../icons/ImportFileIconComponent';
 
 export interface FileUploadProps extends Focusable {
     onChange(fileName: string): void;

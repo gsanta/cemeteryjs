@@ -1,10 +1,12 @@
 
 import * as React from 'react';
-import { CanvasPath } from '../../../controllers/canvases/svg/tools/path/PathTool';
+import { PathView } from '../../../controllers/canvases/svg/tools/path/PathTool';
 import { Point } from '../../../../model/geometry/shapes/Point';
 
 export interface ArrowComponentProps {
-    item: CanvasPath;
+    item: PathView;
+    onMouseOver(path: PathView): void;
+    onMouseOut(): void;
 }
 
 export class PathComponent extends React.Component<ArrowComponentProps> {
@@ -28,6 +30,17 @@ export class PathComponent extends React.Component<ArrowComponentProps> {
 
     renderPath(): JSX.Element {
         const points = this.props.item.points.map(p => `${p.x},${p.y}`).join(' ');
-        return <polyline points={points} fill="none" stroke="grey" marker-start="url(#arrow)"  marker-mid="url(#arrow)"  marker-end="url(#arrow)"/>
+        return (
+            <polyline
+                points={points}
+                onMouseOver={() => this.props.onMouseOver(this.props.item)}
+                onMouseOut={() => this.props.onMouseOut()}
+                fill="none"
+                stroke="grey"
+                marker-start="url(#arrow)" 
+                marker-mid="url(#arrow)" 
+                marker-end="url(#arrow)"
+            />
+        );
     }
 }

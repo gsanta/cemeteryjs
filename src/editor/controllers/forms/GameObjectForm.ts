@@ -52,7 +52,7 @@ export class GameObjectForm extends AbstractForm<GameObjectPropType> {
             case GameObjectPropType.THUMBNAIL:
                 return this.gameObject.thumbnailPath;
             case GameObjectPropType.LAYER:
-                return this.canvasController.canvasStore.getLayer(this.gameObject) + '';
+                return this.canvasController.canvasStore.getLayer(this.gameObject);
             case GameObjectPropType.ROTATION:
                 return this.gameObject.rotation;
             case GameObjectPropType.SCALE:

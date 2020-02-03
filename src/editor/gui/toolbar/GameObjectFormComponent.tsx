@@ -6,6 +6,7 @@ import { ConnectedInputComponent } from '../forms/InputComponent';
 import { colors } from '../styles';
 import { GameObjectPropType } from '../../controllers/forms/GameObjectForm';
 import { ConnectedFileUploadComponent } from '../icons/ImportFileIconComponent';
+import { LayerSettingsComponent, ConnectedLayerSettingsComponent } from './LayerSettingsComponent';
 
 const LabelStyled = styled.div`
     width: 70px;
@@ -16,7 +17,8 @@ const LabelStyled = styled.div`
 `;
 
 const InputStyled = styled.div`
-    width: 120px;
+    width: calc(100% - 70px);
+    max-width: 250px;
     overflow: hidden;
     display: inline-block;
 `;
@@ -65,7 +67,7 @@ export class GameObjectFormComponent extends React.Component<{canvasController: 
                                 formController={form}
                                 propertyName={GameObjectPropType.THUMBNAIL}
                                 propertyType="string"
-                                placeholder={`Upload ${GameObjectPropType.THUMBNAIL}  123456`}
+                                placeholder={`Upload`}
                                 value={''}
                                 readDataAs="dataUrl"
                             />
@@ -111,7 +113,7 @@ export class GameObjectFormComponent extends React.Component<{canvasController: 
                         formController={form}
                         propertyName={GameObjectPropType.MODEL}
                         propertyType="string"
-                        placeholder={`Upload ${GameObjectPropType.MODEL}`}
+                        placeholder={`Upload`}
                         value={form.getVal(GameObjectPropType.MODEL)}
                         readDataAs="dataUrl"
                     />
@@ -132,7 +134,7 @@ export class GameObjectFormComponent extends React.Component<{canvasController: 
                         formController={form}
                         propertyName={GameObjectPropType.TEXTURE}
                         propertyType="string"
-                        placeholder={`Upload ${GameObjectPropType.TEXTURE}`}
+                        placeholder={`Upload`}
                         value={form.getVal(GameObjectPropType.TEXTURE)}
                         readDataAs="dataUrl"
                     />
@@ -148,13 +150,14 @@ export class GameObjectFormComponent extends React.Component<{canvasController: 
             <SettingsRowStyled>
                 <LabelStyled>Layer</LabelStyled>
                 <InputStyled>
-                    <ConnectedInputComponent
+                    {/* <ConnectedInputComponent
                         formController={form}
                         propertyName={GameObjectPropType.LAYER}
                         propertyType="number"
                         type="number"
                         value={form.getVal(GameObjectPropType.LAYER)}
-                    />
+                    /> */}
+                    <ConnectedLayerSettingsComponent formController={form} propertyName={GameObjectPropType.LAYER} value={form.getVal(GameObjectPropType.LAYER)}/>
                 </InputStyled>
             </SettingsRowStyled>
         );

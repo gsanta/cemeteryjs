@@ -2,7 +2,7 @@ import { ToolGroupJson } from "../../../../../../world_generator/importers/svg/W
 import { ToolType } from "../Tool";
 import { IToolImporter } from "../IToolImporter";
 import { SvgCanvasController } from "../../SvgCanvasController";
-import { CanvasPath } from "./PathTool";
+import { PathView } from "./PathTool";
 import { Point } from "../../../../../../model/geometry/shapes/Point";
 
 export interface PathJson {
@@ -27,9 +27,9 @@ export interface PathGroupJson extends ToolGroupJson {
 
 export class PathImporter implements IToolImporter {
     type = ToolType.PATH;
-    private addPath: (path: CanvasPath) => void;
+    private addPath: (path: PathView) => void;
 
-    constructor(addPath: (path: CanvasPath) => void) {
+    constructor(addPath: (path: PathView) => void) {
         this.addPath = addPath;
     }
 
@@ -45,7 +45,7 @@ export class PathImporter implements IToolImporter {
                     return new Point(parseInt(x, 10), parseInt(y, 10));
                 });
 
-            const path = new CanvasPath();
+            const path = new PathView();
             path.points = points;
 
             this.addPath(path);

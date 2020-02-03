@@ -2,10 +2,11 @@ import { Point } from '../../../../../model/geometry/shapes/Point';
 import { Polygon } from '../../../../../model/geometry/shapes/Polygon';
 import { Rectangle } from '../../../../../model/geometry/shapes/Rectangle';
 import { without } from '../../../../../world_generator/utils/Functions';
-import { CanvasPath } from '../tools/path/PathTool';
+import { PathView } from '../tools/path/PathTool';
 import { CanvasItemTag } from './CanvasItem';
 import { SvgConfig } from './SvgConfig';
 import { GameObject } from '../../../../../world_generator/services/GameObject';
+import { View } from '../../../../../model/View';
 
 export enum Layers {
     PREVIEW = -1,
@@ -29,23 +30,23 @@ export class SvgCanvasStore {
     private bitmapConfig: SvgConfig;
 
     private layers: Map<GameObject, number> = new Map();
-    private tags: Map<GameObject, Set<CanvasItemTag>> = new Map();
+    private tags: Map<View, Set<CanvasItemTag>> = new Map();
 
     items: GameObject[] = [];
-    pathes: CanvasPath[] = [];
+    pathes: PathView[] = [];
 
     constructor(bitmapConfig: SvgConfig) {
         this.bitmapConfig = bitmapConfig;
     }
 
-    addArrow(arrow: CanvasPath) {
+    addArrow(arrow: PathView) {
         this.pathes.push(arrow);
     }
 
     addRect(gameObject: GameObject): GameObject {
         this.items.push(gameObject);
 
-        this.layers.set(gameObject, 0);
+        this.layers.set(gameObject, 10);
         this.tags.set(gameObject, new Set());
 
         return gameObject;
@@ -115,8 +116,8 @@ export class SvgCanvasStore {
         return this.tags.get(gameObject);
     }
 
-    addTag(gameObject: GameObject[], tag: CanvasItemTag): void {
-        gameObject.forEach(item => this.tags.get(item).add(tag));
+    addTag(views: View[], tag: CanvasItemTag): void {
+        views.forEach(item => this.tags.get(item).add(tag));
     }
 
     removeTag(gameObject: GameObject[], tag: CanvasItemTag) {

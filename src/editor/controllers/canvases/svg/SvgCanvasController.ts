@@ -17,7 +17,7 @@ import { DeleteTool } from './tools/DeleteTool';
 import { MoveAndSelectTool } from './tools/MoveAndSelectTool';
 import { PathExporter } from './tools/path/PathExporter';
 import { PathImporter } from './tools/path/PathImporter';
-import { CanvasPath, PathTool } from './tools/path/PathTool';
+import { PathView, PathTool } from './tools/path/PathTool';
 import { RectangleExporter } from './tools/rectangle/RectangleExporter';
 import { RectangleImporter } from './tools/rectangle/RectangleImporter';
 import { RectangleTool } from './tools/rectangle/RectangleTool';
@@ -89,7 +89,7 @@ export class SvgCanvasController extends AbstractCanvasController {
             ],
             [
                 new RectangleImporter(rect => this.canvasStore.addRect(rect)),
-                new PathImporter((path: CanvasPath) => this.canvasStore.addArrow(path))
+                new PathImporter((path: PathView) => this.canvasStore.addArrow(path))
             ],
             [
                 new RectangleExporter(this),
