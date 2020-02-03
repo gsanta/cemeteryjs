@@ -81,7 +81,7 @@ export function selectWithRect(controllers: EditorFacade, from: Point, to: Point
 
 export function click(controllers: EditorFacade, gameObject: GameObject) {
     const svgController = controllers.svgCanvasController;
-    const center = gameObject.dimensions.getBoundingCenter().mul(controllers.svgCanvasController.configModel.pixelSize);
+    const center = gameObject.dimensions.getBoundingCenter();
     svgController.mouseController.onMouseMove(<MouseEvent> {x: center.x, y: center.y});
     svgController.mouseController.hover(gameObject);
     svgController.mouseController.onMouseDown(<MouseEvent>{x: center.x, y: center.y});

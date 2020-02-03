@@ -22,18 +22,15 @@ export class RectangleExporter implements IToolExporter {
 
     private renderRectangles(): JSX.Element[] {
         const canvasStore = this.canvasController.canvasStore;
-        const configModel = this.canvasController.configModel;
-        const pixelSize = configModel.pixelSize;
-
         let items = [...this.canvasController.canvasStore.getGameObjects()];
         items = sort(items, (a, b) => canvasStore.getLayer(a) - canvasStore.getLayer(b));
         return items.map((item, i) => {
             const rectangle = item.dimensions as Rectangle;
 
-            const x = rectangle.topLeft.x * pixelSize;
-            const y = rectangle.topLeft.y * pixelSize;
-            const width = (rectangle.bottomRight.x - rectangle.topLeft.x) * pixelSize;
-            const height = (rectangle.bottomRight.y - rectangle.topLeft.y) * pixelSize;
+            const x = rectangle.topLeft.x;
+            const y = rectangle.topLeft.y;
+            const width = (rectangle.bottomRight.x - rectangle.topLeft.x);
+            const height = (rectangle.bottomRight.y - rectangle.topLeft.y);
 
             const fill = canvasStore.getTags(item).has(CanvasItemTag.SELECTED) ? 'blue' : item.color;
 
@@ -41,8 +38,8 @@ export class RectangleExporter implements IToolExporter {
             const minY = minBy<GameObject>(canvasStore.getGameObjects(), (a, b) => a.dimensions.topLeft.y - b.dimensions.topLeft.y).dimensions.topLeft.y;
             
 
-            const tranlateX = minX < 0 ? - minX * pixelSize : 0;
-            const tranlateY = minY < 0 ? - minY * pixelSize : 0;
+            const tranlateX = minX < 0 ? - minX : 0;
+            const tranlateY = minY < 0 ? - minY : 0;
 
             let thumbnail: JSX.Element = null;
             

@@ -41,7 +41,6 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
     }
 
     render(): JSX.Element {
-        const bitmapConfig = this.props.canvasController.configModel;
         const controller = this.context.controllers.svgCanvasController;
         const cameraTool = controller.findToolByType(ToolType.CAMERA) as CameraTool;
 
@@ -54,9 +53,6 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
                     onMouseMove={(e) => this.props.canvasController.mouseController.onMouseMove(e.nativeEvent)}
                     onMouseUp={(e) => this.props.canvasController.mouseController.onMouseUp(e.nativeEvent)}
                     onMouseLeave={(e) => this.props.canvasController.mouseController.onMouseOut(e.nativeEvent)}
-                    data-wg-pixel-size={bitmapConfig.pixelSize}
-                    data-wg-width={bitmapConfig.canvasDimensions.x}
-                    data-wg-height={bitmapConfig.canvasDimensions.y}
                 >
                     <defs>
                         <PathMarkersComponent/>

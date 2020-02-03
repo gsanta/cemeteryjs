@@ -25,8 +25,7 @@ export class RectangleTool extends AbstractSelectionTool {
 
     click() {
         const pointer = this.canvasController.mouseController.pointer;
-        const pixelSize = this.canvasController.configModel.pixelSize;
-        const rect = Rectangle.squareFromCenterPointAndRadius(pointer.down, 5 * pixelSize).div(pixelSize);
+        const rect = Rectangle.squareFromCenterPointAndRadius(pointer.down, 50);
 
         const type = this.canvasController.selectedWorldItemDefinition.typeName;
 
@@ -56,8 +55,7 @@ export class RectangleTool extends AbstractSelectionTool {
         const type = this.canvasController.selectedWorldItemDefinition.typeName;
         const positions = this.getPositionsInSelection();
 
-        const pixelSize = this.canvasController.configModel.pixelSize;
-        const dimensions = this.getSelectionRect().div(pixelSize);
+        const dimensions = this.getSelectionRect();
 
         const gameObject: GameObject = new GameObject(null, dimensions, name);
         gameObject.type = type;

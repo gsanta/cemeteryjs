@@ -4,7 +4,6 @@ import { Rectangle } from '../../../../../model/geometry/shapes/Rectangle';
 import { without } from '../../../../../world_generator/utils/Functions';
 import { PathView } from '../tools/path/PathTool';
 import { CanvasItemTag } from './CanvasItem';
-import { SvgConfig } from './SvgConfig';
 import { GameObject } from '../../../../../world_generator/services/GameObject';
 import { View, ViewType } from '../../../../../model/View';
 
@@ -27,16 +26,10 @@ export function getLayerForType(type: string) {
 }
 
 export class SvgCanvasStore {
-    private bitmapConfig: SvgConfig;
-
     private layers: Map<View, number> = new Map();
     private tags: Map<View, Set<CanvasItemTag>> = new Map();
 
     private views: View[] = [];
-
-    constructor(bitmapConfig: SvgConfig) {
-        this.bitmapConfig = bitmapConfig;
-    }
 
     addPath(arrow: PathView) {
         this.views.push(arrow);
@@ -60,28 +53,11 @@ export class SvgCanvasStore {
         this.views = [];
     }
 
-    getPixelAtPosition(pos: Point) {
-
-    }
-
-    getPixelPosition(pixelIndex: number): Point {
-        const canvasDimensions = this.bitmapConfig.canvasDimensions;
-        const pixelSize = this.bitmapConfig.pixelSize;
-        const xDim = canvasDimensions.x / pixelSize;
-
-        const x = pixelIndex % xDim;
-        const y = Math.floor(pixelIndex / xDim);
-        
-        return new Point(x, y);
-    }
-
     getIntersectingItemsInRect(rectangle: Rectangle): View[] {
-        const pixelSize = this.bitmapConfig.pixelSize;
-
-        const x = Math.floor(rectangle.topLeft.x / pixelSize);
-        const y = Math.floor(rectangle.topLeft.y / pixelSize);
-        const width = Math.floor((rectangle.bottomRight.x - rectangle.topLeft.x) / pixelSize);
-        const height = Math.floor((rectangle.bottomRight.y - rectangle.topLeft.y) / pixelSize);
+        const x = rectangle.topLeft.x;
+        const y = rectangle.topLeft.y;
+        const width = Math.floor(rectangle.bottomRight.x - rectangle.topLeft.x);
+        const height = Math.floor(rectangle.bottomRight.y - rectangle.topLeft.y);
 
         const polygon = Polygon.createRectangle(x, y, width, height);
 
@@ -89,19 +65,9 @@ export class SvgCanvasStore {
     }
 
     getIntersectingItemsAtPoint(point: Point): View[] {
-        const pixelSize = this.bitmapConfig.pixelSize;
-
-        const gridPoint = new Point(point.x / pixelSize, point.y / pixelSize);
+        const gridPoint = new Point(point.x, point.y);
 
         return this.views.filter(item => item.dimensions.containsPoint(gridPoint));
-    }
-    
-    getIndexAtPosition(pos: Point) {
-        const canvasDimensions = this.bitmapConfig.canvasDimensions;
-        const pixelSize = this.bitmapConfig.pixelSize;
-        const xPixels = canvasDimensions.x / pixelSize;
-
-        return pos.y * xPixels + pos.x;
     }
 
     getLayer(view: View) {

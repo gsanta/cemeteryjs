@@ -9,7 +9,6 @@ import { ICanvasImporter } from '../ICanvasImporter';
 import { MouseHandler } from './handlers/MouseHandler';
 import { Model3DController } from './Model3DController';
 import { SvgCanvasStore } from './models/SvgCanvasStore';
-import { SvgConfig } from './models/SvgConfig';
 import { SvgCanvasExporter } from './SvgCanvasExporter';
 import { SvgCanvasImporter } from './SvgCanvasImporter';
 import { CameraTool } from './tools/CameraTool';
@@ -37,7 +36,6 @@ export class SvgCanvasController extends AbstractCanvasController {
     model3dController: Model3DController;
     toolService: ToolService;
 
-    configModel: SvgConfig;
     canvasStore: SvgCanvasStore;
     
     controllers: EditorFacade;
@@ -58,8 +56,7 @@ export class SvgCanvasController extends AbstractCanvasController {
         this.worldItemDefinitions = [...defaultWorldItemDefinitions];
         this.selectedWorldItemDefinition = this.worldItemDefinitions[0];
 
-        this.configModel = new SvgConfig();
-        this.canvasStore = new SvgCanvasStore(this.configModel);
+        this.canvasStore = new SvgCanvasStore();
         
         this.mouseController = new MouseHandler(this);
         this.writer = new SvgCanvasImporter(this, editorFacade.eventDispatcher);

@@ -15,9 +15,6 @@ export class HelperMeshes {
     }
 
     private createCenterLine() {
-        const pixelSize = this.controllers.svgCanvasController.configModel.pixelSize;
-        const dimensions = this.controllers.svgCanvasController.configModel.canvasDimensions.div(pixelSize);
-
         this.meshBuilder.CreateLines(
             'helper-line-center',
             {
