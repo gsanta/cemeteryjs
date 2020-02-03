@@ -14,7 +14,7 @@ export class PathExporter implements IToolExporter {
     }
 
     export(): JSX.Element {
-        const pathes = this.canvasController.canvasStore.pathes.map(arrow => {
+        const pathes = this.canvasController.canvasStore.getPathes().map(arrow => {
             return <PathComponent 
                 item={arrow}
                 onMouseOver={(item: PathView) => this.canvasController.mouseController.hover(item)}

@@ -25,7 +25,7 @@ export class RectangleExporter implements IToolExporter {
         const configModel = this.canvasController.configModel;
         const pixelSize = configModel.pixelSize;
 
-        let items = [...this.canvasController.canvasStore.items];
+        let items = [...this.canvasController.canvasStore.getGameObjects()];
         items = sort(items, (a, b) => canvasStore.getLayer(a) - canvasStore.getLayer(b));
         return items.map((item, i) => {
             const rectangle = item.dimensions as Rectangle;
@@ -37,8 +37,8 @@ export class RectangleExporter implements IToolExporter {
 
             const fill = canvasStore.getTags(item).has(CanvasItemTag.SELECTED) ? 'blue' : item.color;
 
-            const minX = minBy<GameObject>(canvasStore.items, (a, b) => a.dimensions.topLeft.x - b.dimensions.topLeft.x).dimensions.topLeft.x;
-            const minY = minBy<GameObject>(canvasStore.items, (a, b) => a.dimensions.topLeft.y - b.dimensions.topLeft.y).dimensions.topLeft.y;
+            const minX = minBy<GameObject>(canvasStore.getGameObjects(), (a, b) => a.dimensions.topLeft.x - b.dimensions.topLeft.x).dimensions.topLeft.x;
+            const minY = minBy<GameObject>(canvasStore.getGameObjects(), (a, b) => a.dimensions.topLeft.y - b.dimensions.topLeft.y).dimensions.topLeft.y;
             
 
             const tranlateX = minX < 0 ? - minX * pixelSize : 0;

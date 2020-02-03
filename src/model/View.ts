@@ -1,3 +1,4 @@
+import { Rectangle } from "./geometry/shapes/Rectangle";
 
 
 export enum ViewType {
@@ -7,4 +8,5 @@ export enum ViewType {
 
 export interface View {
     viewType: ViewType;
+    dimensions: Rectangle;
 }

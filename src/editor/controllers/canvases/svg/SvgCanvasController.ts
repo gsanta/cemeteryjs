@@ -89,7 +89,7 @@ export class SvgCanvasController extends AbstractCanvasController {
             ],
             [
                 new RectangleImporter(rect => this.canvasStore.addRect(rect)),
-                new PathImporter((path: PathView) => this.canvasStore.addArrow(path))
+                new PathImporter((path: PathView) => this.canvasStore.addPath(path))
             ],
             [
                 new RectangleExporter(this),
@@ -168,7 +168,7 @@ export class SvgCanvasController extends AbstractCanvasController {
     }
 
     isEmpty(): boolean {
-        return this.canvasStore.items.length === 0;
+        return this.canvasStore.getViews().length === 0;
     }
 
     viewSettings: CanvasViewSettings = {

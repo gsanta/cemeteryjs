@@ -34,7 +34,7 @@ export class WorldGeneratorFacade {
         this.modifierExecutor.registerModifier(createMeshModifier);
         this.importers = [
             new RectangleImporter(rect => this.canvasStore.addRect(rect)),
-            new PathImporter(path => this.canvasStore.addArrow(path))
+            new PathImporter(path => this.canvasStore.addPath(path))
         ]
     }
 

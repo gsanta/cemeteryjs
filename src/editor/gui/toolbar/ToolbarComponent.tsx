@@ -7,6 +7,7 @@ import { AppContext, AppContextType } from '../Context';
 import { AccordionComponent } from '../misc/AccordionComponent';
 import { colors } from '../styles';
 import { GameObjectFormComponent } from './GameObjectFormComponent';
+import { viewComponentFactory } from './viewComponentFactory';
 
 export interface ToolbarComponentProps {
     canvasController: SvgCanvasController;
@@ -41,7 +42,7 @@ export class ToolbarComponent extends React.Component<ToolbarComponentProps> {
                         ...canvasTools,
                         {
                             title: 'Object Settings',
-                            body: <GameObjectFormComponent canvasController={this.props.canvasController}/>
+                            body: viewComponentFactory(this.props.canvasController)
                         },
                         {
                             title: 'Global Settings',

@@ -6,7 +6,7 @@ import { PathView } from '../tools/path/PathTool';
 import { CanvasItemTag } from './CanvasItem';
 import { SvgConfig } from './SvgConfig';
 import { GameObject } from '../../../../../world_generator/services/GameObject';
-import { View } from '../../../../../model/View';
+import { View, ViewType } from '../../../../../model/View';
 
 export enum Layers {
     PREVIEW = -1,
@@ -29,22 +29,22 @@ export function getLayerForType(type: string) {
 export class SvgCanvasStore {
     private bitmapConfig: SvgConfig;
 
-    private layers: Map<GameObject, number> = new Map();
+    private layers: Map<View, number> = new Map();
     private tags: Map<View, Set<CanvasItemTag>> = new Map();
 
-    items: GameObject[] = [];
-    pathes: PathView[] = [];
+    private views: View[] = [];
 
     constructor(bitmapConfig: SvgConfig) {
         this.bitmapConfig = bitmapConfig;
     }
 
-    addArrow(arrow: PathView) {
-        this.pathes.push(arrow);
+    addPath(arrow: PathView) {
+        this.views.push(arrow);
+        this.tags.set(arrow, new Set());
     }
 
     addRect(gameObject: GameObject): GameObject {
-        this.items.push(gameObject);
+        this.views.push(gameObject);
 
         this.layers.set(gameObject, 10);
         this.tags.set(gameObject, new Set());
@@ -52,12 +52,12 @@ export class SvgCanvasStore {
         return gameObject;
     }
 
-    removeRectangle(gameObject: GameObject) {
-        this.items = without(this.items, gameObject);
+    remove(view: View) {
+        this.views = without(this.views, view);
     }
 
     clear(): void {
-        this.items = [];
+        this.views = [];
     }
 
     getPixelAtPosition(pos: Point) {
@@ -75,7 +75,7 @@ export class SvgCanvasStore {
         return new Point(x, y);
     }
 
-    getIntersectingItemsInRect(rectangle: Rectangle): GameObject[] {
+    getIntersectingItemsInRect(rectangle: Rectangle): View[] {
         const pixelSize = this.bitmapConfig.pixelSize;
 
         const x = Math.floor(rectangle.topLeft.x / pixelSize);
@@ -85,15 +85,15 @@ export class SvgCanvasStore {
 
         const polygon = Polygon.createRectangle(x, y, width, height);
 
-        return this.items.filter(item => polygon.contains(item.dimensions));
+        return this.views.filter(item => polygon.contains(item.dimensions));
     }
 
-    getIntersectingItemsAtPoint(point: Point): GameObject[] {
+    getIntersectingItemsAtPoint(point: Point): View[] {
         const pixelSize = this.bitmapConfig.pixelSize;
 
         const gridPoint = new Point(point.x / pixelSize, point.y / pixelSize);
 
-        return this.items.filter(item => item.dimensions.containsPoint(gridPoint));
+        return this.views.filter(item => item.dimensions.containsPoint(gridPoint));
     }
     
     getIndexAtPosition(pos: Point) {
@@ -104,15 +104,15 @@ export class SvgCanvasStore {
         return pos.y * xPixels + pos.x;
     }
 
-    getLayer(gameObject: GameObject) {
-        return this.layers.get(gameObject);
+    getLayer(view: View) {
+        return this.layers.get(view);
     }
 
-    setLayer(gameObject: GameObject, layer: number) {
-        this.layers.set(gameObject, layer);
+    setLayer(view: View, layer: number) {
+        this.layers.set(view, layer);
     }
 
-    getTags(gameObject: GameObject): Set<CanvasItemTag> {
+    getTags(gameObject: View): Set<CanvasItemTag> {
         return this.tags.get(gameObject);
     }
 
@@ -120,23 +120,39 @@ export class SvgCanvasStore {
         views.forEach(item => this.tags.get(item).add(tag));
     }
 
-    removeTag(gameObject: GameObject[], tag: CanvasItemTag) {
+    removeTag(gameObject: View[], tag: CanvasItemTag) {
         gameObject.forEach(item => this.tags.get(item).delete(tag));
     }
 
-    getTaggedItems(tag: CanvasItemTag): GameObject[] {
-        return this.items.filter(item => this.tags.get(item).has(tag));
+    getTaggedItems(tag: CanvasItemTag): View[] {
+        return this.views.filter(item => this.tags.get(item).has(tag));
     }
 
-    getHoveredItem(): GameObject {
+    getViews(): View[] {
+        return this.views;
+    }
+
+    getGameObjects(): GameObject[] {
+        return <GameObject[]> this.views.filter(view => view.viewType === ViewType.GameObject);
+    }
+
+    getPathes(): PathView[] {
+        return <PathView[]> this.views.filter(view => view.viewType === ViewType.Path);
+    }
+
+    getHoveredView(): View {
         return this.getTaggedItems(CanvasItemTag.HOVERED)[0];
     }
 
-    getSelectedItems(): GameObject[] {
+    getSelectedViews(): View[] {
         return this.getTaggedItems(CanvasItemTag.SELECTED);
     }
 
+    getSelectedGameObjects(): GameObject[] {
+        return <GameObject[]> this.getSelectedViews().filter(v => v.viewType === ViewType.GameObject);
+    }
+
     removeSelectionAll() {
-        this.removeTag(this.getSelectedItems(), CanvasItemTag.SELECTED);
+        this.removeTag(this.getSelectedViews(), CanvasItemTag.SELECTED);
     }
 }

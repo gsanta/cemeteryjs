@@ -34,7 +34,7 @@ export class SvgGameObjectBuilder<T> implements IGameObjectBuilder {
 
         const root = this.createRoot();
 
-        const gameObjects = this.services.canvasStore.items.map(rect => this.createRect(rect));
+        const gameObjects = this.services.canvasStore.getGameObjects().map(rect => this.createRect(rect));
 
         return [root, ...gameObjects];
     }

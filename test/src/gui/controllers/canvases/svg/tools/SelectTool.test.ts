@@ -13,13 +13,13 @@ it ('Select via clicking on an item', () => {
 
     const canvasItem = drawRectangle(controllers);
 
-    expect(canvasStore.getTags(canvasStore.items[0]).has(CanvasItemTag.SELECTED)).toBeFalsy();
+    expect(canvasStore.getTags(canvasStore.getViews()[0]).has(CanvasItemTag.SELECTED)).toBeFalsy();
 
     canvasController.setActiveTool(ToolType.MOVE_AND_SELECT);
 
     click(controllers, canvasItem);
 
-    expect(canvasStore.getTags(canvasStore.items[0]).has(CanvasItemTag.SELECTED)).toBeTruthy();
+    expect(canvasStore.getTags(canvasStore.getViews()[0]).has(CanvasItemTag.SELECTED)).toBeTruthy();
 });
 
 it ('Select via rectangle selection', () => {
@@ -37,7 +37,7 @@ it ('Select via rectangle selection', () => {
 
     selectWithRect(controllers, new Point(40, 40), new Point(180, 100));
 
-    const selectedItems = canvasController.canvasStore.getSelectedItems();
+    const selectedItems = canvasController.canvasStore.getSelectedViews();
 
     expect(selectedItems.length).toEqual(2);
     expect(controllers.svgCanvasRenderer.counter).toEqual(3);

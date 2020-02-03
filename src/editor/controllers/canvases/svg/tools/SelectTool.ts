@@ -25,7 +25,7 @@ export class SelectTool extends AbstractSelectionTool {
 
         const canvasStore = this.canvasController.canvasStore;
 
-        canvasStore.removeTag(this.canvasController.canvasStore.items, CanvasItemTag.SELECTED);
+        canvasStore.removeTag(this.canvasController.canvasStore.getViews(), CanvasItemTag.SELECTED);
 
         const selectedItems = this.canvasController.canvasStore.getIntersectingItemsAtPoint(this.canvasController.mouseController.pointer.curr);
 
@@ -42,7 +42,7 @@ export class SelectTool extends AbstractSelectionTool {
         const canvasItems = this.canvasController.canvasStore.getIntersectingItemsInRect(this.getSelectionRect());
         const canvasStore = this.canvasController.canvasStore;
         
-        canvasStore.removeTag(this.canvasController.canvasStore.items, CanvasItemTag.SELECTED);
+        canvasStore.removeTag(this.canvasController.canvasStore.getViews(), CanvasItemTag.SELECTED);
         canvasStore.addTag(canvasItems, CanvasItemTag.SELECTED);
 
         this.canvasController.renderCanvas();

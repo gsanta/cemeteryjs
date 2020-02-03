@@ -7,6 +7,8 @@ import { colors } from '../styles';
 import { GameObjectPropType } from '../../controllers/forms/GameObjectForm';
 import { ConnectedFileUploadComponent } from '../icons/ImportFileIconComponent';
 import { LayerSettingsComponent, ConnectedLayerSettingsComponent } from './LayerSettingsComponent';
+import { ViewFormProps } from './viewComponentFactory';
+import { GameObject } from '../../../world_generator/services/GameObject';
 
 const LabelStyled = styled.div`
     width: 70px;
@@ -31,56 +33,43 @@ const SettingsRowStyled = styled.div`
     justify-content: space-between;
 `;
 
-const PlaceHolderTextStyled = styled.div`
-    font-style: italic;
-    opacity: 0.6;
-`;
-
-export class GameObjectFormComponent extends React.Component<{canvasController: SvgCanvasController}> {
+export class GameObjectFormComponent extends React.Component<ViewFormProps<GameObject>> {
     static contextType = AppContext;
     context: AppContextType;
 
-    constructor(props: {canvasController: SvgCanvasController}) {
+    constructor(props: ViewFormProps<GameObject>) {
         super(props);
 
         this.props.canvasController.gameObjectForm.setRenderer(() => this.forceUpdate());
     }
 
     render() {
-        const selectedCanvasItems = this.props.canvasController.canvasStore.getSelectedItems();
-        
-        this.props.canvasController.gameObjectForm.gameObject = selectedCanvasItems[0];
 
+        this.props.canvasController.gameObjectForm.gameObject = this.props.view;
 
-        const form = this.props.canvasController.gameObjectForm;
-
-        if (selectedCanvasItems.length === 1) {
-            return (
-                <div>
-                    {this.renderName()}
-                    {this.renderModelFileChooser()}
-                    {this.renderTextureFileChooser()}
-                    <SettingsRowStyled>
-                        <LabelStyled>Thumbnail</LabelStyled>
-                        <InputStyled>
-                            <ConnectedFileUploadComponent
-                                formController={form}
-                                propertyName={GameObjectPropType.THUMBNAIL}
-                                propertyType="string"
-                                placeholder={`Upload`}
-                                value={''}
-                                readDataAs="dataUrl"
-                            />
-                        </InputStyled>
-                    </SettingsRowStyled>
-                    {this.renderLayerInput()}
-                    {this.renderRotationInput()}
-                    {this.renderScaleInput()}
-                </div>
-            );
-        } else {
-            return <PlaceHolderTextStyled>Select an object on canvas to change it's properties</PlaceHolderTextStyled>
-        }
+        return (
+            <div>
+                {this.renderName()}
+                {this.renderModelFileChooser()}
+                {this.renderTextureFileChooser()}
+                <SettingsRowStyled>
+                    <LabelStyled>Thumbnail</LabelStyled>
+                    <InputStyled>
+                        <ConnectedFileUploadComponent
+                            formController={this.props.canvasController.gameObjectForm}
+                            propertyName={GameObjectPropType.THUMBNAIL}
+                            propertyType="string"
+                            placeholder={`Upload`}
+                            value={''}
+                            readDataAs="dataUrl"
+                        />
+                    </InputStyled>
+                </SettingsRowStyled>
+                {this.renderLayerInput()}
+                {this.renderRotationInput()}
+                {this.renderScaleInput()}
+            </div>
+        );
     }
 
     private renderName(): JSX.Element {

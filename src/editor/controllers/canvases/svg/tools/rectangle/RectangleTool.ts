@@ -51,7 +51,7 @@ export class RectangleTool extends AbstractSelectionTool {
         super.drag();
         
         if (this.lastPreviewRect) {
-            this.canvasController.canvasStore.removeRectangle(this.lastPreviewRect);
+            this.canvasController.canvasStore.remove(this.lastPreviewRect);
         }
         const type = this.canvasController.selectedWorldItemDefinition.typeName;
         const positions = this.getPositionsInSelection();

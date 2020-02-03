@@ -11,11 +11,11 @@ it ('Delete via clicking on an item', () => {
 
     canvasController.setActiveTool(ToolType.DELETE);
 
-    expect(canvasController.canvasStore.items.length).toEqual(1);
+    expect(canvasController.canvasStore.getViews().length).toEqual(1);
 
     click(controllers, canvasItem);
 
-    expect(canvasController.canvasStore.items.length).toEqual(0);
+    expect(canvasController.canvasStore.getViews().length).toEqual(0);
 });
 
 
@@ -32,10 +32,10 @@ it ('Delete via rectangle selection', () => {
 
     controllers.svgCanvasRenderer.reset();
 
-    expect(canvasController.canvasStore.items.length).toEqual(3);
+    expect(canvasController.canvasStore.getViews().length).toEqual(3);
 
     selectWithRect(controllers, new Point(40, 40), new Point(180, 100));
 
-    expect(canvasController.canvasStore.items.length).toEqual(1);
+    expect(canvasController.canvasStore.getViews().length).toEqual(1);
     expect(controllers.svgCanvasRenderer.counter).toEqual(3);
 });

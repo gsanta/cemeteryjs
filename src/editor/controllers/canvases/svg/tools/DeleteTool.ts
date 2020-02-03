@@ -27,7 +27,7 @@ export class DeleteTool extends AbstractSelectionTool {
     click() {
         super.click();
         const items = this.canvasController.canvasStore.getIntersectingItemsAtPoint(this.canvasController.mouseController.pointer.curr);
-        items.length > 0 && this.canvasController.canvasStore.removeRectangle(items[0]); 
+        items.length > 0 && this.canvasController.canvasStore.remove(items[0]); 
         this.canvasController.renderCanvas();
 
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
@@ -37,7 +37,7 @@ export class DeleteTool extends AbstractSelectionTool {
         super.draggedUp();
         const canvasItems = this.canvasController.canvasStore.getIntersectingItemsInRect(this.getSelectionRect());
 
-        canvasItems.forEach(item => this.canvasController.canvasStore.removeRectangle(item));
+        canvasItems.forEach(item => this.canvasController.canvasStore.remove(item));
 
         this.canvasController.renderCanvas();
 
