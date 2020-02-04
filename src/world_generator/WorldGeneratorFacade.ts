@@ -12,7 +12,7 @@ import { GameFacade } from '../game/GameFacade';
 import { IToolImporter } from '../editor/controllers/canvases/svg/tools/IToolImporter';
 import { RectangleImporter } from '../editor/controllers/canvases/svg/tools/rectangle/RectangleImporter';
 import { PathImporter } from '../editor/controllers/canvases/svg/tools/path/PathImporter';
-import { SvgCanvasStore } from '../editor/controllers/canvases/svg/models/SvgCanvasStore';
+import { ViewStore } from '../editor/controllers/canvases/svg/models/ViewStore';
 
 export class WorldGeneratorFacade {
     gameObjectBuilder: IGameObjectBuilder;
@@ -23,7 +23,7 @@ export class WorldGeneratorFacade {
 
     gameFacade: GameFacade;
 
-    canvasStore: SvgCanvasStore = new SvgCanvasStore();
+    canvasStore: ViewStore = new ViewStore();
 
     constructor(gameFacade: GameFacade, createMeshModifier: Modifier) {
         this.gameFacade = gameFacade;

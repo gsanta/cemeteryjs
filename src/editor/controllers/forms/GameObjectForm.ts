@@ -3,6 +3,7 @@ import { SvgCanvasController } from '../canvases/svg/SvgCanvasController';
 import { EventDispatcher } from '../events/EventDispatcher';
 import { Events } from '../events/Events';
 import { AbstractForm } from "./AbstractForm";
+import { EditorFacade } from '../EditorFacade';
 
 export enum GameObjectPropType {
     COLOR = 'color',
@@ -18,26 +19,26 @@ export enum GameObjectPropType {
 export class GameObjectForm extends AbstractForm<GameObjectPropType> {
     gameObject: GameObject;
 
-    private canvasController: SvgCanvasController;
+    private services: EditorFacade;
     private eventDispatcher: EventDispatcher;
 
-    constructor(canvasController: SvgCanvasController, eventDispatcher: EventDispatcher) {
+    constructor(services: EditorFacade, eventDispatcher: EventDispatcher) {
         super();
-        this.canvasController = canvasController;
+        this.services = services;
         this.eventDispatcher = eventDispatcher;
     }
 
     blurProp() {
         super.blurProp();
 
-        this.canvasController.renderCanvas();
+        this.services.svgCanvasController.renderCanvas();
         this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
     }
 
     updateProp(value: any, propType: GameObjectPropType) {
         super.updateProp(value, propType);
 
-        this.canvasController.renderCanvas();
+        this.services.svgCanvasController.renderCanvas();
         this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
     }
 
@@ -52,7 +53,7 @@ export class GameObjectForm extends AbstractForm<GameObjectPropType> {
             case GameObjectPropType.THUMBNAIL:
                 return this.gameObject.thumbnailPath;
             case GameObjectPropType.LAYER:
-                return this.canvasController.canvasStore.getLayer(this.gameObject);
+                return this.services.viewStore.getLayer(this.gameObject);
             case GameObjectPropType.ROTATION:
                 return this.gameObject.rotation;
             case GameObjectPropType.SCALE:
@@ -69,7 +70,7 @@ export class GameObjectForm extends AbstractForm<GameObjectPropType> {
                 break;
             case GameObjectPropType.MODEL:
                 this.gameObject.modelPath = val.path;
-                this.canvasController.model3dController.set3dModelForCanvasItem(this.gameObject);
+                this.services.svgCanvasController.model3dController.set3dModelForCanvasItem(this.gameObject);
                 break;
             case GameObjectPropType.TEXTURE:
                 this.gameObject.texturePath = val.path;
@@ -78,7 +79,7 @@ export class GameObjectForm extends AbstractForm<GameObjectPropType> {
                 this.gameObject.thumbnailPath = val.data;
                 break;
             case GameObjectPropType.LAYER:
-                this.canvasController.canvasStore.setLayer(this.gameObject, val);
+                this.services.viewStore.setLayer(this.gameObject, val);
                 break;
             case GameObjectPropType.ROTATION:
                 this.gameObject.rotation = val;

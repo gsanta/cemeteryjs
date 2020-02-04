@@ -6,19 +6,20 @@ import { EventDispatcher } from '../../../events/EventDispatcher';
 import { AbstractTool } from './AbstractTool';
 import { Rectangle } from "../../../../../model/geometry/shapes/Rectangle";
 import { CanvasItemTag } from "../models/CanvasItem";
+import { EditorFacade } from "../../../EditorFacade";
 
 export class MoveAndSelectTool extends AbstractTool {
 
     private activeTool: Tool;
     private moveTool: MoveTool;
     private rectSelectTool: SelectTool;
-    private canvasController: SvgCanvasController;
+    private services: EditorFacade;
 
-    constructor(canvasController: SvgCanvasController, eventDispatcher: EventDispatcher) {
+    constructor(services: EditorFacade, eventDispatcher: EventDispatcher) {
         super(ToolType.MOVE_AND_SELECT);
-        this.canvasController = canvasController;
-        this.moveTool = new MoveTool(canvasController, eventDispatcher);
-        this.rectSelectTool = new SelectTool(canvasController);
+        this.services = services;
+        this.moveTool = new MoveTool(this.services, eventDispatcher);
+        this.rectSelectTool = new SelectTool(this.services);
 
         this.activeTool = this.rectSelectTool;
     }
@@ -73,12 +74,12 @@ export class MoveAndSelectTool extends AbstractTool {
 
     private determineActiveTool() {
         if (this.activeTool.type === ToolType.MOVE) {
-            if (this.canvasController.mouseController.isDrag) {
+            if (this.services.svgCanvasController.mouseController.isDrag) {
                 return;
             }
         }
 
-        const canvasStore = this.canvasController.canvasStore;
+        const canvasStore = this.services.viewStore;
 
         const hoveredItem = canvasStore.getHoveredView();
         const selectedItems = canvasStore.getSelectedViews();

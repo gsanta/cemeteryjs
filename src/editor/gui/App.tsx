@@ -59,11 +59,7 @@ export class App extends React.Component<{}, AppState> {
             <div className="style-nightshifs">
                 <div className="main-content">
                     <div id="toolbar" >
-                        <ToolbarComponent 
-                            isEditorOpen={this.state.isEditorOpen}
-                            toggleEditorOpen={() => this.setState({isEditorOpen: !this.state.isEditorOpen})}
-                            canvasController={this.context.controllers.svgCanvasController as SvgCanvasController}
-                            />
+                        <ToolbarComponent isEditorOpen={this.state.isEditorOpen} toggleEditorOpen={() => this.setState({isEditorOpen: !this.state.isEditorOpen})}/>
                     </div>
                     {canvases}
                 </div>

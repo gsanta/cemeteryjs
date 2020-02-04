@@ -25,7 +25,7 @@ export function getLayerForType(type: string) {
     }
 }
 
-export class SvgCanvasStore {
+export class ViewStore {
     private layers: Map<View, number> = new Map();
     private tags: Map<View, Set<CanvasItemTag>> = new Map();
 
@@ -96,6 +96,10 @@ export class SvgCanvasStore {
 
     getViews(): View[] {
         return this.views;
+    }
+
+    getViewsByType(viewType: ViewType): View[] {
+        return this.views.filter(v => v.viewType === viewType);
     }
 
     getGameObjects(): GameObject[] {

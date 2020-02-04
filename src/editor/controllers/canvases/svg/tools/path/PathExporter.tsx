@@ -4,22 +4,23 @@ import React = require("react");
 import { ToolType } from "../Tool";
 import { IToolExporter } from "../IToolExporter";
 import { PathView } from "./PathTool";
+import { EditorFacade } from "../../../../EditorFacade";
 
 export class PathExporter implements IToolExporter {
     type = ToolType.PATH;
-    private canvasController: SvgCanvasController;
+    private services: EditorFacade;
 
-    constructor(canvasController: SvgCanvasController, ) {
-        this.canvasController = canvasController;
+    constructor(services: EditorFacade) {
+        this.services = services;
     }
 
     export(onlyData = false): JSX.Element {
-        const pathes = this.canvasController.canvasStore.getPathes().map(arrow => {
+        const pathes = this.services.viewStore.getPathes().map(arrow => {
             return <PathComponent
                 onlyData={onlyData}
                 item={arrow}
-                onMouseOver={(item: PathView) => this.canvasController.mouseController.hover(item)}
-                onMouseOut={() => this.canvasController.mouseController.unhover()}
+                onMouseOver={(item: PathView) => this.services.svgCanvasController.mouseController.hover(item)}
+                onMouseOut={() => this.services.svgCanvasController.mouseController.unhover()}
             />
         });
 

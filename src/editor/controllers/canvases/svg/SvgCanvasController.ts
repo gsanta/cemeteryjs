@@ -1,6 +1,4 @@
 import { FileFormat } from '../../../../WorldGenerator';
-import { GameObjectTemplate } from '../../../../world_generator/services/GameObjectTemplate';
-import { defaultWorldItemDefinitions } from '../../../defaultWorldItemDefinitions';
 import { EditorFacade } from '../../EditorFacade';
 import { GameObjectForm } from '../../forms/GameObjectForm';
 import { CanvasViewSettings, AbstractCanvasController } from '../AbstractCanvasController';
@@ -8,7 +6,7 @@ import { ICanvasExporter } from '../ICanvasExporter';
 import { ICanvasImporter } from '../ICanvasImporter';
 import { MouseHandler } from './handlers/MouseHandler';
 import { Model3DController } from './Model3DController';
-import { SvgCanvasStore } from './models/SvgCanvasStore';
+import { ViewStore } from './models/ViewStore';
 import { SvgCanvasExporter } from './SvgCanvasExporter';
 import { SvgCanvasImporter } from './SvgCanvasImporter';
 import { CameraTool } from './tools/CameraTool';
@@ -36,10 +34,8 @@ export class SvgCanvasController extends AbstractCanvasController {
     reader: ICanvasExporter;
     model3dController: Model3DController;
     toolService: ToolService;
-
-    canvasStore: SvgCanvasStore;
     
-    controllers: EditorFacade;
+    services: EditorFacade;
 
     gameObjectForm: GameObjectForm;
     pathForm: PathForm;
@@ -49,23 +45,21 @@ export class SvgCanvasController extends AbstractCanvasController {
     private renderCanvasFunc = () => null;
     private renderToolbarFunc = () => null;
     
-    constructor(editorFacade: EditorFacade) {
+    constructor(services: EditorFacade) {
         super();
 
-        this.controllers = editorFacade;
-
-        this.canvasStore = new SvgCanvasStore();
+        this.services = services;
         
-        this.mouseController = new MouseHandler(this);
-        this.writer = new SvgCanvasImporter(this, editorFacade.eventDispatcher);
+        this.mouseController = new MouseHandler(this.services);
+        this.writer = new SvgCanvasImporter(this.services, services.eventDispatcher);
         this.reader = new SvgCanvasExporter(this);
         this.model3dController = new Model3DController(this);
 
-        this.cameraTool = new CameraTool(editorFacade);
-        const rectangleTool = new RectangleTool(this, this.controllers.eventDispatcher);
-        const pathTool = new PathTool(this);
-        const deleteTool = new DeleteTool(this, this.controllers.eventDispatcher);
-        const moveAndSelectTool = new MoveAndSelectTool(this, this.controllers.eventDispatcher); 
+        this.cameraTool = new CameraTool(services);
+        const rectangleTool = new RectangleTool(this.services, this.services.eventDispatcher);
+        const pathTool = new PathTool(this.services);
+        const deleteTool = new DeleteTool(this.services, this.services.eventDispatcher);
+        const moveAndSelectTool = new MoveAndSelectTool(this.services, this.services.eventDispatcher); 
         this.tools = [
             rectangleTool,
             pathTool,
@@ -83,16 +77,16 @@ export class SvgCanvasController extends AbstractCanvasController {
                 this.cameraTool,
             ],
             [
-                new RectangleImporter(rect => this.canvasStore.addRect(rect)),
-                new PathImporter((path: PathView) => this.canvasStore.addPath(path))
+                new RectangleImporter(rect => this.services.viewStore.addRect(rect)),
+                new PathImporter((path: PathView) => this.services.viewStore.addPath(path))
             ],
             [
-                new RectangleExporter(this),
-                new PathExporter(this)
+                new RectangleExporter(this.services),
+                new PathExporter(this.services)
             ]
         )
 
-        this.gameObjectForm = new GameObjectForm(this, this.controllers.eventDispatcher);
+        this.gameObjectForm = new GameObjectForm(this.services, this.services.eventDispatcher);
         this.pathForm = new PathForm();
     }
 
@@ -138,8 +132,8 @@ export class SvgCanvasController extends AbstractCanvasController {
 
     setVisible(visible: boolean) {
         this.visible = visible;
-        if (!this.visible) { this.controllers.webglCanvasController.setVisible(true);}
-        this.controllers.render();
+        if (!this.visible) { this.services.webglCanvasController.setVisible(true);}
+        this.services.render();
     }
 
     isVisible(): boolean {
@@ -159,7 +153,7 @@ export class SvgCanvasController extends AbstractCanvasController {
     }
 
     isEmpty(): boolean {
-        return this.canvasStore.getViews().length === 0;
+        return this.services.viewStore.getViews().length === 0;
     }
 
     viewSettings: CanvasViewSettings = {

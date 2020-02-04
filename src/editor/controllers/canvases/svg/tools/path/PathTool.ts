@@ -5,6 +5,7 @@ import { SvgCanvasController } from "../../SvgCanvasController";
 import { View, ViewType } from "../../../../../../model/View";
 import { Rectangle } from "../../../../../../model/geometry/shapes/Rectangle";
 import { minBy, maxBy } from "../../../../../../model/geometry/utils/Functions";
+import { EditorFacade } from "../../../../EditorFacade";
 
 const NULL_BOUNDING_BOX = new Rectangle(new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER), new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER));
 export class PathView implements View {
@@ -45,25 +46,25 @@ export class PathTool extends AbstractTool {
 
     pendingPathes: PathView;
     
-    private canvasController: SvgCanvasController;
-    constructor(canvasController: SvgCanvasController) {
+    private services: EditorFacade;
+    constructor(services: EditorFacade) {
         super(ToolType.PATH);
 
-        this.canvasController = canvasController;
+        this.services = services;
     }
 
     down() {
         super.down();
 
-        const pointer = this.canvasController.mouseController.pointer;
+        const pointer = this.services.svgCanvasController.mouseController.pointer;
 
         if (!this.pendingPathes) {
             this.pendingPathes = new PathView(pointer.down.clone());
-            this.canvasController.canvasStore.addPath(this.pendingPathes);
+            this.services.viewStore.addPath(this.pendingPathes);
         } else {
             this.pendingPathes.points.push(pointer.down.clone());
         }
 
-        this.canvasController.renderCanvas();
+        this.services.svgCanvasController.renderCanvas();
     }
 }

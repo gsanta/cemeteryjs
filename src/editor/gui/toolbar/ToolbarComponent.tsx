@@ -8,9 +8,9 @@ import { AccordionComponent } from '../misc/AccordionComponent';
 import { colors } from '../styles';
 import { GameObjectFormComponent } from './GameObjectFormComponent';
 import { viewComponentFactory } from './viewComponentFactory';
+import { EditorFacade } from '../../controllers/EditorFacade';
 
 export interface ToolbarComponentProps {
-    canvasController: SvgCanvasController;
     isEditorOpen: boolean;
     toggleEditorOpen: () => void;
 }
@@ -29,7 +29,10 @@ export class ToolbarComponent extends React.Component<ToolbarComponentProps> {
     constructor(props: ToolbarComponentProps) {
         super(props);
 
-        this.props.canvasController.setToolbarRenderer(() => this.forceUpdate());
+    }
+    
+    componentDidMount() {
+        this.context.controllers.svgCanvasController.setToolbarRenderer(() => this.forceUpdate());
     }
 
     render(): JSX.Element {
@@ -42,11 +45,11 @@ export class ToolbarComponent extends React.Component<ToolbarComponentProps> {
                         ...canvasTools,
                         {
                             title: 'Object Settings',
-                            body: viewComponentFactory(this.props.canvasController)
+                            body: viewComponentFactory(this.context.controllers)
                         },
                         {
                             title: 'Global Settings',
-                            body: <GlobalFormComponent {...this.props} canvasController={this.props.canvasController}/>
+                            body: <GlobalFormComponent {...this.props}/>
                         }
                     ]}
                 />

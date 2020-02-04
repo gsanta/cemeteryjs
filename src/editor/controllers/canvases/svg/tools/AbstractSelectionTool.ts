@@ -3,18 +3,19 @@ import { AbstractTool } from './AbstractTool';
 import { ToolType } from './Tool';
 import { Point } from '../../../../../model/geometry/shapes/Point';
 import { Rectangle } from '../../../../../model/geometry/shapes/Rectangle';
+import { EditorFacade } from '../../../EditorFacade';
 
 const NULL_SELECTION = new Rectangle(new Point(0, 0), new Point(0, 0));
 
 export class AbstractSelectionTool extends AbstractTool {
     type: ToolType;
-    protected canvasController: SvgCanvasController;
+    protected services: EditorFacade;
     private selectionRect: Rectangle = NULL_SELECTION;
     private _displaySelectionRect: boolean;
 
-    constructor(bitmapEditor: SvgCanvasController, type: ToolType, displaySelectionRect: boolean) {
+    constructor(services: EditorFacade, type: ToolType, displaySelectionRect: boolean) {
         super(type);
-        this.canvasController = bitmapEditor;
+        this.services = services;
         this._displaySelectionRect = displaySelectionRect;
     }
 
@@ -31,7 +32,7 @@ export class AbstractSelectionTool extends AbstractTool {
 
     drag() {
         super.drag();
-        const pointer = this.canvasController.mouseController.pointer;
+        const pointer = this.services.svgCanvasController.mouseController.pointer;
         this.selectionRect = new Rectangle(pointer.down, pointer.curr);
     }
 

@@ -6,13 +6,14 @@ import { CanvasItemTag } from "../../models/CanvasItem";
 import { ToolType } from "../Tool";
 import { IToolExporter } from "../IToolExporter";
 import { GameObject } from "../../../../../../world_generator/services/GameObject";
+import { EditorFacade } from "../../../../EditorFacade";
 
 export class RectangleExporter implements IToolExporter {
     type = ToolType.RECTANGLE;
-    private canvasController: SvgCanvasController;
+    private services: EditorFacade;
 
-    constructor(canvasController: SvgCanvasController) {
-        this.canvasController = canvasController;
+    constructor(services: EditorFacade) {
+        this.services = services;
     }
 
     export(): JSX.Element {
@@ -21,8 +22,8 @@ export class RectangleExporter implements IToolExporter {
     }
 
     private renderRectangles(): JSX.Element[] {
-        const canvasStore = this.canvasController.canvasStore;
-        let items = [...this.canvasController.canvasStore.getGameObjects()];
+        const canvasStore = this.services.viewStore;
+        let items = [...this.services.viewStore.getGameObjects()];
         items = sort(items, (a, b) => canvasStore.getLayer(a) - canvasStore.getLayer(b));
         return items.map((item, i) => {
             const rectangle = item.dimensions as Rectangle;
@@ -52,8 +53,8 @@ export class RectangleExporter implements IToolExporter {
             return (
                 <g 
                     transform={`translate(${x} ${y})`}
-                    onMouseOver={() => this.canvasController.mouseController.hover(item)}
-                    onMouseOut={() => this.canvasController.mouseController.unhover()}
+                    onMouseOver={() => this.services.svgCanvasController.mouseController.hover(item)}
+                    onMouseOut={() => this.services.svgCanvasController.mouseController.unhover()}
                     data-wg-x={x + tranlateX}
                     data-wg-y={y + tranlateY}
                     data-wg-width={width}

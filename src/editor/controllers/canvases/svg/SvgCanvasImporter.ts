@@ -5,31 +5,32 @@ import { Events } from '../../events/Events';
 import * as convert from 'xml-js';
 import { RawWorldMapJson } from '../../../../world_generator/importers/svg/WorldMapJson';
 import { ToolType } from './tools/Tool';
+import { EditorFacade } from '../../EditorFacade';
 
 export class SvgCanvasImporter implements ICanvasImporter {
-    private canvasController: SvgCanvasController;
+    private services: EditorFacade;
     private eventDispatcher: EventDispatcher;
 
-    constructor(svgCanvasController: SvgCanvasController, eventDispatcher: EventDispatcher) {
-        this.canvasController = svgCanvasController;
+    constructor(services: EditorFacade, eventDispatcher: EventDispatcher) {
+        this.services = services;
         this.eventDispatcher = eventDispatcher;
     }
 
     import(file: string): void {
-        this.canvasController.canvasStore.clear();
+        this.services.viewStore.clear();
         
         const rawJson: RawWorldMapJson = JSON.parse(convert.xml2json(file, {compact: true, spaces: 4}));
         const toolGroups = rawJson.svg.g.length ? rawJson.svg.g : [rawJson.svg.g];
 
         toolGroups.forEach(toolGroup => {
             const toolType: ToolType = <ToolType> toolGroup._attributes["data-tool-type"];
-            this.canvasController.toolService.getToolImporter(toolType).import(toolGroup)
+            this.services.svgCanvasController.toolService.getToolImporter(toolType).import(toolGroup)
 
         });
 
-        this.canvasController.canvasStore.getGameObjects().filter(item => item.modelPath).forEach(item => this.canvasController.model3dController.set3dModelForCanvasItem(item));
+        this.services.viewStore.getGameObjects().filter(item => item.modelPath).forEach(item => this.services.svgCanvasController.model3dController.set3dModelForCanvasItem(item));
 
-        this.canvasController.renderCanvas();
+        this.services.svgCanvasController.renderCanvas();
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
         
     }

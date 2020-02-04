@@ -3,6 +3,7 @@ import { SvgCanvasController } from '../SvgCanvasController';
 import { CanvasItemTag } from '../models/CanvasItem';
 import { GameObject } from '../../../../../world_generator/services/GameObject';
 import { View } from '../../../../../model/View';
+import { EditorFacade } from '../../../EditorFacade';
 
 function calcOffsetFromDom(bitmapEditorId: string): Point {
     if (typeof document !== 'undefined') {
@@ -34,7 +35,7 @@ export class MousePointer {
 }
 
 export class MouseHandler {
-    private controller: SvgCanvasController;
+    private services: EditorFacade;
     isDown = false;
     isDrag = false;
 
@@ -42,15 +43,15 @@ export class MouseHandler {
 
     private calcOffset: (id: string) => Point;
 
-    constructor(controller: SvgCanvasController, calcOffset: (id: string) => Point = calcOffsetFromDom) {
-        this.controller = controller;
+    constructor(services: EditorFacade, calcOffset: (id: string) => Point = calcOffsetFromDom) {
+        this.services = services;
         this.calcOffset = calcOffset;
     }
 
     onMouseDown(e: MouseEvent): void {
         this.isDown = true;
         this.pointer.down = this.getPointFromEvent(e); 
-        this.controller.getActiveTool().down();
+        this.services.svgCanvasController.getActiveTool().down();
     }
     
     onMouseMove(e: MouseEvent): void {
@@ -60,18 +61,18 @@ export class MouseHandler {
         this.pointer.currScreen = this.getScreenPointFromEvent(e);
         if (this.isDown) {
             this.isDrag = true;
-            this.controller.getActiveTool().drag();
+            this.services.svgCanvasController.getActiveTool().drag();
         }
     }    
 
     onMouseUp(e: MouseEvent): void {
         if (this.isDrag) {
-            this.controller.getActiveTool().draggedUp();
+            this.services.svgCanvasController.getActiveTool().draggedUp();
         } else {
-            this.controller.getActiveTool().click();
+            this.services.svgCanvasController.getActiveTool().click();
         }
         
-        this.controller.getActiveTool().up();
+        this.services.svgCanvasController.getActiveTool().up();
         this.isDown = false;
         this.isDrag = false;
         this.pointer.down = undefined;
@@ -84,23 +85,23 @@ export class MouseHandler {
 
     hover(item: View) {
         console.log('hover')
-        this.controller.canvasStore.addTag([item], CanvasItemTag.HOVERED);
+        this.services.viewStore.addTag([item], CanvasItemTag.HOVERED);
     }
 
     unhover() {
         console.log('unhover')
-        this.controller.canvasStore.removeTag(this.controller.canvasStore.getViews(), CanvasItemTag.HOVERED);
+        this.services.viewStore.removeTag(this.services.viewStore.getViews(), CanvasItemTag.HOVERED);
     }
 
     private getPointFromEvent(e: MouseEvent): Point {
-        const offset = this.calcOffset(this.controller.getId());
+        const offset = this.calcOffset(this.services.svgCanvasController.getId());
         const x: number = (e ? e.x - offset.x : 0);
         const y: number = (e ? e.y - offset.y : 0);
-        return this.controller.cameraTool.getCamera().screenToCanvasPoint(new Point(x, y));
+        return this.services.svgCanvasController.cameraTool.getCamera().screenToCanvasPoint(new Point(x, y));
     }
 
     private getScreenPointFromEvent(e: MouseEvent): Point {
-        const offset = this.calcOffset(this.controller.getId());
+        const offset = this.calcOffset(this.services.svgCanvasController.getId());
         const x: number = (e ? e.x - offset.x : 0);
         const y: number = (e ? e.y - offset.y : 0);
         return new Point(x, y);

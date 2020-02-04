@@ -6,25 +6,25 @@ import { SvgCanvasController } from '../../SvgCanvasController';
 import { AbstractSelectionTool } from '../AbstractSelectionTool';
 import { ToolType } from '../Tool';
 import { CanvasItemTag } from '../../models/CanvasItem';
+import { EditorFacade } from '../../../../EditorFacade';
 
 export class RectangleTool extends AbstractSelectionTool {
     private eventDispatcher: EventDispatcher;
     private lastPreviewRect: GameObject;
 
-    constructor(svgCanvasController: SvgCanvasController, eventDispatcher: EventDispatcher) {
-        super(svgCanvasController, ToolType.RECTANGLE, false);
+    constructor(editorFacade: EditorFacade, eventDispatcher: EventDispatcher) {
+        super(editorFacade, ToolType.RECTANGLE, false);
 
-        this.canvasController = svgCanvasController;
         this.eventDispatcher = eventDispatcher;
     }
 
     down() {
         super.down();
-        this.canvasController.renderCanvas();
+        this.services.svgCanvasController.renderCanvas();
     }
 
     click() {
-        const pointer = this.canvasController.mouseController.pointer;
+        const pointer = this.services.svgCanvasController.mouseController.pointer;
         const rect = Rectangle.squareFromCenterPointAndRadius(pointer.down, 50);
 
         const gameObject: GameObject = new GameObject(null, rect, name);
@@ -35,20 +35,20 @@ export class RectangleTool extends AbstractSelectionTool {
         gameObject.scale = 1;
         gameObject.color = 'grey';
 
-        this.canvasController.canvasStore.addRect(gameObject);
-        this.canvasController.canvasStore.removeSelectionAll()
-        this.canvasController.canvasStore.addTag([gameObject], CanvasItemTag.SELECTED);
+        this.services.viewStore.addRect(gameObject);
+        this.services.viewStore.removeSelectionAll()
+        this.services.viewStore.addTag([gameObject], CanvasItemTag.SELECTED);
     
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
-        this.canvasController.renderCanvas();
-        this.canvasController.renderToolbar();
+        this.services.svgCanvasController.renderCanvas();
+        this.services.svgCanvasController.renderToolbar();
     }
 
     drag() {
         super.drag();
         
         if (this.lastPreviewRect) {
-            this.canvasController.canvasStore.remove(this.lastPreviewRect);
+            this.services.viewStore.remove(this.lastPreviewRect);
         }
         const positions = this.getPositionsInSelection();
 
@@ -63,9 +63,9 @@ export class RectangleTool extends AbstractSelectionTool {
         gameObject.color = 'grey';
 
         if (positions.length > 0) {
-            this.lastPreviewRect = this.canvasController.canvasStore.addRect(gameObject);
+            this.lastPreviewRect = this.services.viewStore.addRect(gameObject);
     
-            this.canvasController.renderCanvas();
+            this.services.svgCanvasController.renderCanvas();
         }
     }
 
@@ -75,7 +75,7 @@ export class RectangleTool extends AbstractSelectionTool {
             this.lastPreviewRect = null;
         }
 
-        this.canvasController.renderCanvas();
+        this.services.svgCanvasController.renderCanvas();
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
     }
 }

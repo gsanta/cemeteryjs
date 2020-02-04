@@ -3,6 +3,8 @@ import { WebglCanvasController } from './canvases/webgl/WebglCanvasController';
 import { EventDispatcher } from './events/EventDispatcher';
 import { AbstractCanvasController } from './canvases/AbstractCanvasController';
 import { GlobalSettingsForm } from './forms/GlobalSettingsForm';
+import { ViewStore } from './canvases/svg/models/ViewStore';
+import { NamingService } from '../services/NamingService';
 
 export class EditorFacade {
     webglCanvasController: WebglCanvasController;
@@ -17,10 +19,18 @@ export class EditorFacade {
 
     globalSettingsForm: GlobalSettingsForm;
 
+    viewStore: ViewStore;
+
+    nameingService: NamingService;
+
     constructor() {
         this.eventDispatcher = new EventDispatcher();
         this.webglCanvasController = new WebglCanvasController(this);
         this.svgCanvasController = new SvgCanvasController(this);
+
+        this.viewStore = new ViewStore();
+
+        this.nameingService = new NamingService(this);
 
         this.canvases = [this.svgCanvasController, this.webglCanvasController];
 

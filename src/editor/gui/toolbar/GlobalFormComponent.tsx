@@ -9,7 +9,6 @@ import { GlobalSettingsPropType } from '../../controllers/forms/GlobalSettingsFo
 export interface GlobalFormComponentProps {
     isEditorOpen: boolean;
     toggleEditorOpen: () => void;
-    canvasController: SvgCanvasController
 }
 
 export class GlobalFormComponent extends React.Component<GlobalFormComponentProps> {
