@@ -13,7 +13,8 @@ export enum GameObjectPropType {
     LAYER = 'layer',
     ROTATION = 'rotation',
     SCALE = 'scale',
-    NAME = 'name'
+    NAME = 'name',
+    PATH = 'path'
 }
 
 export class GameObjectForm extends AbstractForm<GameObjectPropType> {
@@ -60,6 +61,8 @@ export class GameObjectForm extends AbstractForm<GameObjectPropType> {
                 return this.gameObject.scale;
             case GameObjectPropType.NAME:
                 return this.gameObject.name;
+            case GameObjectPropType.NAME:
+                return this.gameObject.path;
         }
     }
 
@@ -89,6 +92,9 @@ export class GameObjectForm extends AbstractForm<GameObjectPropType> {
                 break;
             case GameObjectPropType.NAME:
                 this.gameObject.name = val;
+                break;
+            case GameObjectPropType.NAME:
+                this.gameObject.path = val;
                 break;
         }
     }

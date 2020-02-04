@@ -37,6 +37,7 @@ export class GameObject implements View {
     texturePath: string;
     modelPath: string;
     thumbnailPath: string;
+    path: string;
 
     color: string;
     scale: number;

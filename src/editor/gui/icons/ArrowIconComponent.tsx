@@ -9,7 +9,7 @@ export function ArrowIconComponent(props: IconProps) {
                 <IconImageStyled isActive={props.isActive} d="M16.01 11H4v2h12.01v3L20 12l-3.99-4z"/>
             </IconStyled>
             <ToolNameStyled>
-                Arrow
+                Path
             </ToolNameStyled>
         </ToolStyled>  
     );

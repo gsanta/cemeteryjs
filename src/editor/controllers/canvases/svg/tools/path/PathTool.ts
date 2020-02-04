@@ -60,6 +60,7 @@ export class PathTool extends AbstractTool {
 
         if (!this.pendingPathes) {
             this.pendingPathes = new PathView(pointer.down.clone());
+            this.pendingPathes.name = this.services.nameingService.generateName(ViewType.Path);
             this.services.viewStore.addPath(this.pendingPathes);
         } else {
             this.pendingPathes.points.push(pointer.down.clone());

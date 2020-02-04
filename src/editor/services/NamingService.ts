@@ -11,7 +11,7 @@ export class NamingService {
     }
 
     generateName(type: ViewType) {
-        return `${type}${this.getMaxIndex(type)}`.toLocaleLowerCase();
+        return `${type}${this.getMaxIndex(type) + 1}`.toLocaleLowerCase();
     }
 
     private getMaxIndex(type: ViewType): number {

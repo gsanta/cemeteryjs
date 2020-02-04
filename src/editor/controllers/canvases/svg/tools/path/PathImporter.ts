@@ -3,6 +3,8 @@ import { ToolType } from "../Tool";
 import { IToolImporter } from "../IToolImporter";
 import { PathView } from "./PathTool";
 import { Point } from "../../../../../../model/geometry/shapes/Point";
+import { EditorFacade } from "../../../../EditorFacade";
+import { ViewType } from "../../../../../../model/View";
 
 export interface PathJson {
     circle: {
@@ -16,6 +18,7 @@ export interface PathJson {
     polyline: {
         _attributes: {
             points: string;
+            'data-name': string;
         }
     }
 }
@@ -45,6 +48,7 @@ export class PathImporter implements IToolImporter {
                 });
 
             const path = new PathView();
+            path.name = json.polyline._attributes['data-name'];
             path.points = points;
 
             this.addPath(path);

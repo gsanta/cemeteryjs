@@ -9,6 +9,7 @@ import { colors } from '../styles';
 import { ConnectedLayerSettingsComponent } from './LayerSettingsComponent';
 import { ViewFormProps } from './viewComponentFactory';
 import { SettingsRowStyled, LabelStyled, InputStyled } from './FormComponent';
+import { ConnectedDropdownComponent } from '../forms/DropdownComponent';
 
 export class GameObjectFormComponent extends React.Component<ViewFormProps<GameObject>> {
     static contextType = AppContext;
@@ -45,6 +46,7 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<GameO
                 {this.renderLayerInput()}
                 {this.renderRotationInput()}
                 {this.renderScaleInput()}
+                {this.renderPath()}
             </div>
         );
     }
@@ -162,6 +164,25 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<GameO
                         propertyType="number"
                         type="number"
                         value={form.getVal(GameObjectPropType.SCALE)}
+                    />
+                </InputStyled>
+            </SettingsRowStyled>
+        );
+    }
+
+    private renderPath(): JSX.Element {
+        const form = this.props.canvasController.gameObjectForm;
+        const pathNames = this.context.controllers.viewStore.getPathes().map(p => p.name);
+
+        return (
+            <SettingsRowStyled>
+                <LabelStyled>Path</LabelStyled>
+                <InputStyled>
+                    <ConnectedDropdownComponent
+                        formController={form}
+                        propertyName={GameObjectPropType.PATH}
+                        values={this.context.controllers.viewStore.getPathes().map(p => p.name)}
+                        currentValue={form.getVal(GameObjectPropType.PATH)}
                     />
                 </InputStyled>
             </SettingsRowStyled>
