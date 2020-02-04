@@ -57,8 +57,8 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
                     <defs>
                         <PathMarkersComponent/>
                     </defs>
-                    {this.props.canvasController.toolService.getToolExporter(ToolType.RECTANGLE).export()}
-                    {this.props.canvasController.toolService.getToolExporter(ToolType.PATH).export()}
+                    {this.props.canvasController.toolService.getToolExporter(ToolType.RECTANGLE).export(false)}
+                    {this.props.canvasController.toolService.getToolExporter(ToolType.PATH).export(false)}
                     {this.renderSelection()}
 
 
@@ -84,28 +84,5 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
         }
 
         return null;
-    }
-
-    renderMetaData(): JSX.Element {
-        const wgTypeComponents = this.props.canvasController.worldItemDefinitions.map(type => {
-            const props: Partial<WgDefinitionAttributes> = {
-                color: type.color,
-                scale: type.scale ? type.scale + '' : '1',
-                'translate-y': type.translateY ? type.translateY + '' : '0',
-                'type-name': type.typeName
-            };
-
-            if (props.model) {
-                props.model = type.model;
-            }
-
-            if (props.materials) {
-                props.materials = type.materials.join(' ');
-            }
-
-            return React.createElement('wg-type', props);
-        });
-
-        return <metadata>{wgTypeComponents}</metadata>
     }
 }

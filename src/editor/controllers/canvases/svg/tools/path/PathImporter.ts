@@ -1,7 +1,6 @@
 import { ToolGroupJson } from "../../../../../../world_generator/importers/svg/WorldMapJson";
 import { ToolType } from "../Tool";
 import { IToolImporter } from "../IToolImporter";
-import { SvgCanvasController } from "../../SvgCanvasController";
 import { PathView } from "./PathTool";
 import { Point } from "../../../../../../model/geometry/shapes/Point";
 

@@ -22,6 +22,7 @@ import { RectangleImporter } from './tools/rectangle/RectangleImporter';
 import { RectangleTool } from './tools/rectangle/RectangleTool';
 import { Tool, ToolType } from './tools/Tool';
 import { ToolService } from './tools/ToolService';
+import { PathForm } from '../../forms/PathForm';
 
 export class SvgCanvasController extends AbstractCanvasController {
     name = '2D View';
@@ -39,10 +40,9 @@ export class SvgCanvasController extends AbstractCanvasController {
     canvasStore: SvgCanvasStore;
     
     controllers: EditorFacade;
-    worldItemDefinitions: GameObjectTemplate[];
-    selectedWorldItemDefinition: GameObjectTemplate;
 
     gameObjectForm: GameObjectForm;
+    pathForm: PathForm;
 
     selectedTool = ToolType.RECTANGLE;
 
@@ -53,8 +53,6 @@ export class SvgCanvasController extends AbstractCanvasController {
         super();
 
         this.controllers = editorFacade;
-        this.worldItemDefinitions = [...defaultWorldItemDefinitions];
-        this.selectedWorldItemDefinition = this.worldItemDefinitions[0];
 
         this.canvasStore = new SvgCanvasStore();
         
@@ -95,6 +93,7 @@ export class SvgCanvasController extends AbstractCanvasController {
         )
 
         this.gameObjectForm = new GameObjectForm(this, this.controllers.eventDispatcher);
+        this.pathForm = new PathForm();
     }
 
     renderCanvas() {
@@ -157,11 +156,6 @@ export class SvgCanvasController extends AbstractCanvasController {
 
     activate(): void {
         // this.
-    }
-
-    setSelectedWorldItemDefinition(worldItemDefinition: GameObjectTemplate) {
-        this.selectedWorldItemDefinition = worldItemDefinition;
-        this.renderToolbar();
     }
 
     isEmpty(): boolean {

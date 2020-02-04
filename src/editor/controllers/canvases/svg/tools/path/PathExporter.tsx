@@ -9,13 +9,14 @@ export class PathExporter implements IToolExporter {
     type = ToolType.PATH;
     private canvasController: SvgCanvasController;
 
-    constructor(canvasController: SvgCanvasController) {
+    constructor(canvasController: SvgCanvasController, ) {
         this.canvasController = canvasController;
     }
 
-    export(): JSX.Element {
+    export(onlyData = false): JSX.Element {
         const pathes = this.canvasController.canvasStore.getPathes().map(arrow => {
-            return <PathComponent 
+            return <PathComponent
+                onlyData={onlyData}
                 item={arrow}
                 onMouseOver={(item: PathView) => this.canvasController.mouseController.hover(item)}
                 onMouseOut={() => this.canvasController.mouseController.unhover()}

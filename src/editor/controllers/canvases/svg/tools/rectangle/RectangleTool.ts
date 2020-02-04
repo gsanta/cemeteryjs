@@ -27,10 +27,8 @@ export class RectangleTool extends AbstractSelectionTool {
         const pointer = this.canvasController.mouseController.pointer;
         const rect = Rectangle.squareFromCenterPointAndRadius(pointer.down, 50);
 
-        const type = this.canvasController.selectedWorldItemDefinition.typeName;
-
         const gameObject: GameObject = new GameObject(null, rect, name);
-        gameObject.type = type;
+        gameObject.type = 'rect';
         gameObject.rotation = 0;
         gameObject.modelPath = null;
         gameObject.texturePath = null;
@@ -52,13 +50,12 @@ export class RectangleTool extends AbstractSelectionTool {
         if (this.lastPreviewRect) {
             this.canvasController.canvasStore.remove(this.lastPreviewRect);
         }
-        const type = this.canvasController.selectedWorldItemDefinition.typeName;
         const positions = this.getPositionsInSelection();
 
         const dimensions = this.getSelectionRect();
 
         const gameObject: GameObject = new GameObject(null, dimensions, name);
-        gameObject.type = type;
+        gameObject.type = 'rect'
         gameObject.rotation = 0;
         gameObject.modelPath = null;
         gameObject.texturePath = null;

@@ -1,37 +1,14 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { SvgCanvasController } from '../../controllers/canvases/svg/SvgCanvasController';
+import { GameObject } from '../../../world_generator/services/GameObject';
+import { GameObjectPropType } from '../../controllers/forms/GameObjectForm';
 import { AppContext, AppContextType } from '../Context';
 import { ConnectedInputComponent } from '../forms/InputComponent';
-import { colors } from '../styles';
-import { GameObjectPropType } from '../../controllers/forms/GameObjectForm';
 import { ConnectedFileUploadComponent } from '../icons/ImportFileIconComponent';
-import { LayerSettingsComponent, ConnectedLayerSettingsComponent } from './LayerSettingsComponent';
+import { colors } from '../styles';
+import { ConnectedLayerSettingsComponent } from './LayerSettingsComponent';
 import { ViewFormProps } from './viewComponentFactory';
-import { GameObject } from '../../../world_generator/services/GameObject';
-
-const LabelStyled = styled.div`
-    width: 70px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: inline-block;
-`;
-
-const InputStyled = styled.div`
-    width: calc(100% - 70px);
-    max-width: 250px;
-    overflow: hidden;
-    display: inline-block;
-`;
-
-const SettingsRowStyled = styled.div`
-    padding: 3px 5px;
-    border-bottom: 1px solid ${colors.panelBackgroundLight};
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-`;
+import { SettingsRowStyled, LabelStyled, InputStyled } from './FormComponent';
 
 export class GameObjectFormComponent extends React.Component<ViewFormProps<GameObject>> {
     static contextType = AppContext;

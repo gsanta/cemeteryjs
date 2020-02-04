@@ -7,6 +7,7 @@ export interface ArrowComponentProps {
     item: PathView;
     onMouseOver(path: PathView): void;
     onMouseOut(): void;
+    onlyData: boolean;
 }
 
 export class PathComponent extends React.Component<ArrowComponentProps> {
@@ -30,17 +31,32 @@ export class PathComponent extends React.Component<ArrowComponentProps> {
 
     renderPath(): JSX.Element {
         const points = this.props.item.points.map(p => `${p.x},${p.y}`).join(' ');
-        return (
+
+        const highlight = this.props.onlyData ? null : (
             <polyline
                 points={points}
                 onMouseOver={() => this.props.onMouseOver(this.props.item)}
                 onMouseOut={() => this.props.onMouseOut()}
                 fill="none"
-                stroke="grey"
-                marker-start="url(#arrow)" 
-                marker-mid="url(#arrow)" 
-                marker-end="url(#arrow)"
+                stroke="green"
+                stroke-width="7"
             />
+        )
+
+        return (
+            <React.Fragment>
+                {highlight}
+                <polyline
+                    points={points}
+                    fill="none"
+                    stroke="grey"
+                    stroke-width="1"
+                    marker-start="url(#arrow)" 
+                    marker-mid="url(#arrow)" 
+                    marker-end="url(#arrow)"
+                    pointerEvents="none"
+                />
+            </React.Fragment>
         );
     }
 }

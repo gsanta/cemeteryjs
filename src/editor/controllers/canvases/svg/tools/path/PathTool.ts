@@ -12,11 +12,12 @@ export class PathView implements View {
     points: Point[] = [];
     pathId: number;
     dimensions: Rectangle;
+    name: string;
 
     constructor(startPoint?: Point) {
         startPoint && this.points.push(startPoint);
 
-        this.calcBoundingBox();
+        this.dimensions = this.calcBoundingBox();
     }
 
     getPoints(): Point[] {
@@ -25,22 +26,24 @@ export class PathView implements View {
 
     addPoint(point: Point) {
         this.points.push(point);
-        this.calcBoundingBox();
+        this.dimensions = this.calcBoundingBox();
     }
 
     private calcBoundingBox() {
+        if (this.points.length === 0) { return NULL_BOUNDING_BOX; }
+
         const minX = minBy<Point>(this.points, (a, b) => a.x - b.x).x;
         const maxX = maxBy<Point>(this.points, (a, b) => a.x - b.x).x;
         const minY = minBy<Point>(this.points, (a, b) => a.y - b.y).y;
         const maxY = maxBy<Point>(this.points, (a, b) => a.y - b.y).y;
 
-        this.dimensions = this.points.length ? new Rectangle(new Point(minX, minY), new Point(maxX, maxY)) : NULL_BOUNDING_BOX;
+        return new Rectangle(new Point(minX, minY), new Point(maxX, maxY));
     }
 }
 
 export class PathTool extends AbstractTool {
 
-    pendingArrow: PathView;
+    pendingPathes: PathView;
     
     private canvasController: SvgCanvasController;
     constructor(canvasController: SvgCanvasController) {
@@ -54,11 +57,11 @@ export class PathTool extends AbstractTool {
 
         const pointer = this.canvasController.mouseController.pointer;
 
-        if (!this.pendingArrow) {
-            this.pendingArrow = new PathView(pointer.down.clone());
-            this.canvasController.canvasStore.addPath(this.pendingArrow);
+        if (!this.pendingPathes) {
+            this.pendingPathes = new PathView(pointer.down.clone());
+            this.canvasController.canvasStore.addPath(this.pendingPathes);
         } else {
-            this.pendingArrow.points.push(pointer.down.clone());
+            this.pendingPathes.points.push(pointer.down.clone());
         }
 
         this.canvasController.renderCanvas();

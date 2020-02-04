@@ -83,10 +83,12 @@ export class MouseHandler {
     }
 
     hover(item: View) {
+        console.log('hover')
         this.controller.canvasStore.addTag([item], CanvasItemTag.HOVERED);
     }
 
     unhover() {
+        console.log('unhover')
         this.controller.canvasStore.removeTag(this.controller.canvasStore.getViews(), CanvasItemTag.HOVERED);
     }
 

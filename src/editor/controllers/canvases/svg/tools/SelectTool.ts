@@ -27,11 +27,9 @@ export class SelectTool extends AbstractSelectionTool {
 
         canvasStore.removeTag(this.canvasController.canvasStore.getViews(), CanvasItemTag.SELECTED);
 
-        const selectedItems = this.canvasController.canvasStore.getIntersectingItemsAtPoint(this.canvasController.mouseController.pointer.curr);
+        const hoveredView = this.canvasController.canvasStore.getHoveredView()
 
-        const topItem = maxBy(selectedItems, (a, b) => canvasStore.getLayer(a) - canvasStore.getLayer(b));
-
-        topItem && canvasStore.addTag([topItem], CanvasItemTag.SELECTED);
+        hoveredView && canvasStore.addTag([hoveredView], CanvasItemTag.SELECTED);
 
         this.canvasController.renderCanvas();
         this.canvasController.renderToolbar();
