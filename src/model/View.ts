@@ -1,4 +1,5 @@
 import { Rectangle } from "./geometry/shapes/Rectangle";
+import { GroupContext } from "./views/GroupContext";
 
 
 export enum ViewType {
@@ -7,6 +8,7 @@ export enum ViewType {
 }
 
 export interface View {
+    groupContext: GroupContext;
     viewType: ViewType;
     dimensions: Rectangle;
 }

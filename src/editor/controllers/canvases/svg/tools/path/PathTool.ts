@@ -1,15 +1,16 @@
 import { Point } from "../../../../../../model/geometry/shapes/Point";
 import { AbstractTool } from "../AbstractTool";
 import { ToolType } from "../Tool";
-import { SvgCanvasController } from "../../SvgCanvasController";
 import { View, ViewType } from "../../../../../../model/View";
 import { Rectangle } from "../../../../../../model/geometry/shapes/Rectangle";
 import { minBy, maxBy } from "../../../../../../model/geometry/utils/Functions";
 import { EditorFacade } from "../../../../EditorFacade";
+import { GroupContext } from "../../../../../../model/views/GroupContext";
 
 const NULL_BOUNDING_BOX = new Rectangle(new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER), new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER));
 export class PathView implements View {
     viewType = ViewType.Path;
+    groupContext: GroupContext;
     points: Point[] = [];
     pathId: number;
     dimensions: Rectangle;
@@ -19,6 +20,7 @@ export class PathView implements View {
         startPoint && this.points.push(startPoint);
 
         this.dimensions = this.calcBoundingBox();
+        this.groupContext = new GroupContext();
     }
 
     getPoints(): Point[] {

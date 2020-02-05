@@ -6,6 +6,7 @@ import { PathView } from '../tools/path/PathTool';
 import { CanvasItemTag } from './CanvasItem';
 import { GameObject } from '../../../../../world_generator/services/GameObject';
 import { View, ViewType } from '../../../../../model/View';
+import { Group } from '../../../../../model/views/Group';
 
 export enum Layers {
     PREVIEW = -1,
@@ -28,6 +29,7 @@ export function getLayerForType(type: string) {
 export class ViewStore {
     private layers: Map<View, number> = new Map();
     private tags: Map<View, Set<CanvasItemTag>> = new Map();
+    private groups: Group[] = [];
 
     private views: View[] = [];
 

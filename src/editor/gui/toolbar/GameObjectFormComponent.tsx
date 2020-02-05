@@ -10,6 +10,7 @@ import { ConnectedLayerSettingsComponent } from './LayerSettingsComponent';
 import { ViewFormProps } from './viewComponentFactory';
 import { SettingsRowStyled, LabelStyled, InputStyled } from './FormComponent';
 import { ConnectedDropdownComponent } from '../forms/DropdownComponent';
+import { AccordionComponent } from '../misc/AccordionComponent';
 
 export class GameObjectFormComponent extends React.Component<ViewFormProps<GameObject>> {
     static contextType = AppContext;
@@ -28,25 +29,10 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<GameO
         return (
             <div>
                 {this.renderName()}
-                {this.renderModelFileChooser()}
-                {this.renderTextureFileChooser()}
-                <SettingsRowStyled>
-                    <LabelStyled>Thumbnail</LabelStyled>
-                    <InputStyled>
-                        <ConnectedFileUploadComponent
-                            formController={this.props.canvasController.gameObjectForm}
-                            propertyName={GameObjectPropType.THUMBNAIL}
-                            propertyType="string"
-                            placeholder={`Upload`}
-                            value={''}
-                            readDataAs="dataUrl"
-                        />
-                    </InputStyled>
-                </SettingsRowStyled>
                 {this.renderLayerInput()}
-                {this.renderRotationInput()}
-                {this.renderScaleInput()}
-                {this.renderPath()}
+                {this.renderMaterialSection()}
+                {this.renderTransformSection()}
+                {this.renderAnimationSection()}
             </div>
         );
     }
@@ -111,6 +97,26 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<GameO
         );
     }
 
+    private renderThumbnailFileChooser(): JSX.Element {
+        const form = this.props.canvasController.gameObjectForm;
+
+        return (
+            <SettingsRowStyled>
+                <LabelStyled>Thumbnail</LabelStyled>
+                <InputStyled>
+                    <ConnectedFileUploadComponent
+                        formController={this.props.canvasController.gameObjectForm}
+                        propertyName={GameObjectPropType.THUMBNAIL}
+                        propertyType="string"
+                        placeholder={`Upload`}
+                        value={''}
+                        readDataAs="dataUrl"
+                    />
+                </InputStyled>
+            </SettingsRowStyled>
+        );
+    }
+
     private renderLayerInput(): JSX.Element {
         const form = this.props.canvasController.gameObjectForm;
 
@@ -168,6 +174,66 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<GameO
                 </InputStyled>
             </SettingsRowStyled>
         );
+    }
+
+    private renderMaterialSection() {
+        const body = (
+            <React.Fragment>
+                {this.renderModelFileChooser()}
+                {this.renderTextureFileChooser()}
+                {this.renderThumbnailFileChooser()}
+            </React.Fragment>
+        )
+
+        return (
+            <AccordionComponent
+                level="secondary"
+                expanded={true}
+                elements={[
+                    {
+                        title: 'Material',
+                        body
+                    }
+                ]}
+            />
+        );
+    }
+
+    private renderTransformSection() {
+        const body = (
+            <React.Fragment>
+                {this.renderRotationInput()}
+                {this.renderScaleInput()}
+            </React.Fragment>
+        )
+
+        return (
+            <AccordionComponent
+                level="secondary"
+                expanded={false}
+                elements={[
+                    {
+                        title: 'Transform',
+                        body
+                    }
+                ]}
+            />
+        );
+    }
+
+    private renderAnimationSection() {
+        return (
+            <AccordionComponent
+                level="secondary"
+                expanded={false}
+                elements={[
+                    {
+                        title: 'Animation',
+                        body: <div>Animations</div>
+                    }
+                ]}
+            />
+        )
     }
 
     private renderPath(): JSX.Element {

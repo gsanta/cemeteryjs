@@ -6,7 +6,7 @@ export const colors = {
     grey4: '#8F8C83',
     grey5: '#BFBDB6',
     textColor: '#EDF0EE',
-    textColorDark: '#2E2E2E',
+    textColorDark: '#1c1d1f',
     active: '#F2F1ED',
     success: '#75B54A',
     info: '#5595B9',

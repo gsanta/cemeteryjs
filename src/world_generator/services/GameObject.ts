@@ -5,6 +5,7 @@ import { Point } from '../../model/geometry/shapes/Point';
 import { Rectangle } from '../../model/geometry/shapes/Rectangle';
 import { toVector3 } from '../../model/geometry/utils/GeomUtils';
 import { ViewType, View } from '../../model/View';
+import { GroupContext } from '../../model/views/GroupContext';
 
 export enum WorldItemShape {
     RECTANGLE = 'rect',
@@ -27,6 +28,7 @@ export enum AnimationName {
  */
 export class GameObject implements View {
     viewType = ViewType.GameObject;
+    groupContext: GroupContext;
     type: string;
     meshName: string;
     name: string;
@@ -54,6 +56,7 @@ export class GameObject implements View {
         this.dimensions = dimensions;
         this.name = name;
         this.rotation = rotation;
+        this.groupContext = new GroupContext();
     }
 
     addChild(worldItem: GameObject) {
