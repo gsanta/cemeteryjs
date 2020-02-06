@@ -12,6 +12,9 @@ import { SettingsRowStyled, LabelStyled, InputStyled } from './FormComponent';
 import { ConnectedDropdownComponent } from '../forms/DropdownComponent';
 import { AccordionComponent } from '../misc/AccordionComponent';
 import { ClearIconComponent } from '../icons/ClearIconComponent';
+import { PlayIconComponent } from '../icons/PlayIconComponent';
+import { PauseIconComponent } from '../icons/PauseIconComponent';
+import { StopIconComponent } from '../icons/StopIconComponent';
 
 export class GameObjectFormComponent extends React.Component<ViewFormProps<GameObject>> {
     static contextType = AppContext;
@@ -223,6 +226,13 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<GameO
     }
 
     private renderAnimationSection() {
+        const body = (
+            <React.Fragment>
+                {this.renderPath()}
+                {this.renderPlayAnimation()}
+            </React.Fragment>
+        );
+
         return (
             <AccordionComponent
                 level="secondary"
@@ -230,7 +240,7 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<GameO
                 elements={[
                     {
                         title: 'Animation',
-                        body: this.renderPath()
+                        body
                     }
                 ]}
             />
@@ -256,5 +266,15 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<GameO
                 {val ? <ClearIconComponent onClick={() => form.updateProp(undefined, GameObjectPropType.PATH)}/> : null}
             </SettingsRowStyled>
         );
+    }
+
+    private renderPlayAnimation() {
+        return (
+            <SettingsRowStyled centered={true}>
+                <PlayIconComponent onClick={() => null}/>
+                <PauseIconComponent onClick={() => null}/>
+                <StopIconComponent onClick={() => null}/>
+            </SettingsRowStyled>
+        )
     }
 }
