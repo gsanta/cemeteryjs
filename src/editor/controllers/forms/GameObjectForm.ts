@@ -61,7 +61,7 @@ export class GameObjectForm extends AbstractForm<GameObjectPropType> {
                 return this.gameObject.scale;
             case GameObjectPropType.NAME:
                 return this.gameObject.name;
-            case GameObjectPropType.NAME:
+            case GameObjectPropType.PATH:
                 return this.gameObject.path;
         }
     }
@@ -93,7 +93,7 @@ export class GameObjectForm extends AbstractForm<GameObjectPropType> {
             case GameObjectPropType.NAME:
                 this.gameObject.name = val;
                 break;
-            case GameObjectPropType.NAME:
+            case GameObjectPropType.PATH:
                 this.gameObject.path = val;
                 break;
         }

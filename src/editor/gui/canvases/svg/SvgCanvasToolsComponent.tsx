@@ -1,15 +1,15 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { AppContext, AppContextType } from '../../Context';
-import { DeleteIconComponent } from '../../icons/DeleteIconComponent';
-import { DrawIconComponent } from '../../icons/DrawIconComponent';
-import { SelectIconComponent } from '../../icons/SelectIconComponent';
+import { DeleteIconComponent } from '../../icons/tools/DeleteIconComponent';
+import { DrawIconComponent } from '../../icons/tools/DrawIconComponent';
+import { SelectIconComponent } from '../../icons/tools/SelectIconComponent';
 import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvasController';
 import { ToolType } from '../../../controllers/canvases/svg/tools/Tool';
-import { ZoomInIconComponent } from '../../icons/ZoomInIconComponent';
-import { ZoomOutIconComponent } from '../../icons/ZoomOutIconComponent';
-import { MoveIconComponent as PanIconComponent } from '../../icons/PanIconComponent';
-import { ArrowIconComponent } from '../../icons/ArrowIconComponent';
+import { ZoomInIconComponent } from '../../icons/tools/ZoomInIconComponent';
+import { ZoomOutIconComponent } from '../../icons/tools/ZoomOutIconComponent';
+import { MoveIconComponent as PanIconComponent } from '../../icons/tools/PanIconComponent';
+import { ArrowIconComponent } from '../../icons/tools/ArrowIconComponent';
 
 const ToolbarStyled = styled.div`
     display: flex;

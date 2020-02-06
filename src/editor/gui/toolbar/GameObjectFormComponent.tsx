@@ -4,13 +4,14 @@ import { GameObject } from '../../../world_generator/services/GameObject';
 import { GameObjectPropType } from '../../controllers/forms/GameObjectForm';
 import { AppContext, AppContextType } from '../Context';
 import { ConnectedInputComponent } from '../forms/InputComponent';
-import { ConnectedFileUploadComponent } from '../icons/ImportFileIconComponent';
+import { ConnectedFileUploadComponent } from '../icons/tools/ImportFileIconComponent';
 import { colors } from '../styles';
 import { ConnectedLayerSettingsComponent } from './LayerSettingsComponent';
 import { ViewFormProps } from './viewComponentFactory';
 import { SettingsRowStyled, LabelStyled, InputStyled } from './FormComponent';
 import { ConnectedDropdownComponent } from '../forms/DropdownComponent';
 import { AccordionComponent } from '../misc/AccordionComponent';
+import { ClearIconComponent } from '../icons/ClearIconComponent';
 
 export class GameObjectFormComponent extends React.Component<ViewFormProps<GameObject>> {
     static contextType = AppContext;
@@ -229,7 +230,7 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<GameO
                 elements={[
                     {
                         title: 'Animation',
-                        body: <div>Animations</div>
+                        body: this.renderPath()
                     }
                 ]}
             />
@@ -239,6 +240,7 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<GameO
     private renderPath(): JSX.Element {
         const form = this.props.canvasController.gameObjectForm;
         const pathNames = this.context.controllers.viewStore.getPathes().map(p => p.name);
+        const val: string = form.getVal(GameObjectPropType.PATH);
 
         return (
             <SettingsRowStyled>
@@ -247,10 +249,11 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<GameO
                     <ConnectedDropdownComponent
                         formController={form}
                         propertyName={GameObjectPropType.PATH}
-                        values={this.context.controllers.viewStore.getPathes().map(p => p.name)}
-                        currentValue={form.getVal(GameObjectPropType.PATH)}
+                        values={pathNames}
+                        currentValue={val}
                     />
                 </InputStyled>
+                {val ? <ClearIconComponent onClick={() => form.updateProp(undefined, GameObjectPropType.PATH)}/> : null}
             </SettingsRowStyled>
         );
     }

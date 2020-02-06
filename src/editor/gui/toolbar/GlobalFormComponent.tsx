@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { SvgCanvasController } from '../../controllers/canvases/svg/SvgCanvasController';
 import { AppContext, AppContextType } from '../Context';
-import { DisplayEditorIconComponent } from '../icons/DisplayEditorIconComponent';
-import { ExportFileIconComponent } from '../icons/ExportFileIconComponent';
-import { ConnectedFileUploadComponent } from '../icons/ImportFileIconComponent';
+import { DisplayEditorIconComponent } from '../icons/tools/DisplayEditorIconComponent';
+import { ExportFileIconComponent } from '../icons/tools/ExportFileIconComponent';
+import { ConnectedFileUploadComponent } from '../icons/tools/ImportFileIconComponent';
 import { GlobalSettingsPropType } from '../../controllers/forms/GlobalSettingsForm';
 
 export interface GlobalFormComponentProps {
