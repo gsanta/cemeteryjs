@@ -1,9 +1,11 @@
 import { GlobalConfig } from '../../../world_generator/importers/svg/GlobalSectionParser';
 import { GameObject } from '../../../world_generator/services/GameObject';
+import { PathView } from '../../../editor/controllers/canvases/svg/tools/path/PathTool';
 
-export class GameObjectStore {
+export class GameStore {
     globalConfig: GlobalConfig;
-    gameObjects: GameObject[];
+    gameObjects: GameObject[] = [];
+    paths: PathView[] = [];
 
     constructor(globalConfig?: GlobalConfig) {
         this.globalConfig = globalConfig;
@@ -15,5 +17,20 @@ export class GameObjectStore {
 
     getEnemies(): GameObject[] {
         return this.gameObjects.filter(gameObject => gameObject.name === 'enemy');
+    }
+
+    addGameObject(gameObject: GameObject): GameObject {
+        this.gameObjects.push(gameObject);
+
+        return gameObject;
+    }
+
+    addPath(arrow: PathView) {
+        this.paths.push(arrow);
+    }
+
+    clear(): void {
+        this.gameObjects = [];
+        this.paths = [];
     }
 }

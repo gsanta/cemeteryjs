@@ -1,5 +1,5 @@
-import { IconProps, ToolIconStyled, ToolIconBackgroundStyled, ToolIconImageStyled, ToolStyled, ToolNameStyled } from './Icon';
 import * as React from 'react';
+import { ToolStyled, ToolIconStyled, ToolIconBackgroundStyled, ToolIconImageStyled, ToolNameStyled, IconProps } from './ToolIcon';
 
 export function SelectIconComponent(props: IconProps) {
     return (

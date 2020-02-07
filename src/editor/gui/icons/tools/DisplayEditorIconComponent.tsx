@@ -1,7 +1,7 @@
 
 import * as React from 'react';
-import { ToolStyled, ToolIconStyled, ToolIconBackgroundStyled, ToolIconImageStyled, ToolNameStyled, IconProps } from './Icon';
 import { AbstractCanvasController } from '../../../controllers/canvases/AbstractCanvasController';
+import { ToolStyled, ToolIconStyled, ToolIconBackgroundStyled, ToolIconImageStyled, ToolNameStyled } from './ToolIcon';
 
 export interface DisplayEditorIconProps {
     canvasController: AbstractCanvasController;

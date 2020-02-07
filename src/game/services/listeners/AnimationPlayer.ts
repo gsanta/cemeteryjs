@@ -6,7 +6,7 @@ import { GameObject, AnimationName } from "../../../world_generator/services/Gam
 export class AnimationPlayer implements IEventListener {
     events: GameEvent[];
     private gameFacade: GameFacade;
-    private playingAnimations: Map<GameObject, AnimationName> = new Map();
+    private playingAnimations: Map<GameObject, string> = new Map();
 
     constructor(gameFacade: GameFacade) {
         this.gameFacade = gameFacade;

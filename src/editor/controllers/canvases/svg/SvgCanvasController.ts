@@ -21,6 +21,7 @@ import { RectangleTool } from './tools/rectangle/RectangleTool';
 import { Tool, ToolType } from './tools/Tool';
 import { ToolService } from './tools/ToolService';
 import { PathForm } from '../../forms/PathForm';
+import { GameObjectFormState } from '../../forms/GameObjectFormState';
 
 export class SvgCanvasController extends AbstractCanvasController {
     name = '2D View';
@@ -38,6 +39,7 @@ export class SvgCanvasController extends AbstractCanvasController {
     services: EditorFacade;
 
     gameObjectForm: GameObjectForm;
+    gameObjectFormState: GameObjectFormState;
     pathForm: PathForm;
 
     selectedTool = ToolType.RECTANGLE;
@@ -87,6 +89,7 @@ export class SvgCanvasController extends AbstractCanvasController {
         )
 
         this.gameObjectForm = new GameObjectForm(this.services, this.services.eventDispatcher);
+        this.gameObjectFormState = new GameObjectFormState();
         this.pathForm = new PathForm();
     }
 

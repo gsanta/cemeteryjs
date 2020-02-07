@@ -1,4 +1,4 @@
-import { IconProps, ToolIconStyled, ToolIconImageStyled, ToolIconBackgroundStyled, ToolStyled, ToolNameStyled } from "./Icon";
+import { IconProps, ToolIconStyled, ToolIconImageStyled, ToolIconBackgroundStyled, ToolStyled, ToolNameStyled } from "./ToolIcon";
 import * as React from 'react';
 
 export function MoveIconComponent(props: IconProps) {

@@ -1,5 +1,5 @@
-import { IconProps, ToolIconStyled, ToolIconImageStyled, ToolIconBackgroundStyled, ToolStyled, ToolNameStyled } from "./Icon";
 import * as React from 'react';
+import { ToolStyled, ToolIconStyled, ToolIconBackgroundStyled, ToolIconImageStyled, ToolNameStyled, IconProps } from './ToolIcon';
 
 export function ZoomOutIconComponent(props: IconProps) {
 

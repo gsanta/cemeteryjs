@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { colors } from '../../styles';
-import { IconProps, ToolIconStyled, ToolStyled, ToolNameStyled } from './Icon';
+import { ToolStyled, ToolIconStyled, ToolNameStyled, IconProps } from './ToolIcon';
 
 const IconBackgroundComponent = styled.path`
     fill: ${({isActive}: {isActive: boolean}) => isActive ? colors.active : colors.grey3};

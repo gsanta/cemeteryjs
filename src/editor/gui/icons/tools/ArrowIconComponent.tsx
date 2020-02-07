@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IconProps, ToolIconStyled, ToolIconBackgroundStyled, ToolIconImageStyled, ToolStyled, ToolNameStyled } from './Icon';
+import { ToolStyled, ToolIconStyled, ToolIconBackgroundStyled, ToolIconImageStyled, ToolNameStyled, IconProps } from './ToolIcon';
 
 export function ArrowIconComponent(props: IconProps) {
     return (

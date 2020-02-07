@@ -9,6 +9,7 @@ export interface AccordionProps {
     elements: CanvasToolsProps[];
     expanded?: boolean;
     level?: 'primary' | 'secondary';
+    onClick?: () => void;
 }
 
 const CardBodyStyled = styled(Card.Body)`
@@ -38,19 +39,20 @@ const CardHeaderStyled = styled(Card.Header)`
 const CardStyled = styled(Card)`
     border-radius: 0px;
     border: none;
-    border-bottom: 1px solid ${colors.panelBackgroundLight}
+    border-bottom: 1px solid ${colors.panelBackgroundLight};
 `;
 
 export class AccordionComponent extends React.Component<AccordionProps> {
 
     static defaultProps: Partial<AccordionProps> = {
         expanded: true,
-        level: 'primary'
+        level: 'primary',
+        onClick: () => null
     }
 
     render() {
         const accordions = this.props.elements.map((element, index) => (
-            <Accordion defaultActiveKey={this.props.expanded ? index + '' : undefined}>
+            <Accordion defaultActiveKey={this.props.expanded ? index + '' : undefined} onClick={this.props.onClick}>
                 <CardStyled>
                     <CardHeaderStyled level={this.props.level}>
                         <Accordion.Toggle as={Button} variant="link" eventKey={index + ''} style={{ width: '100%', display: 'flex', justifyContent: 'space-between'}}>

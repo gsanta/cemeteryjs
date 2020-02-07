@@ -21,7 +21,7 @@ export const SettingsRowStyled = styled.div`
     border-bottom: 1px solid ${colors.panelBackgroundLight};
     display: flex;
     flex-direction: row;
-    justify-content: ${({centered}: {centered: boolean}) => centered ? 'center' : 'space-between'};
+    justify-content: ${({centered}: {centered?: boolean}) => centered ? 'center' : 'space-between'};
 
     &:last-child {
         border-bottom: none;

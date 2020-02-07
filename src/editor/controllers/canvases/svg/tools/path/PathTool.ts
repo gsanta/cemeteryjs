@@ -69,5 +69,6 @@ export class PathTool extends AbstractTool {
         }
 
         this.services.svgCanvasController.renderCanvas();
+        this.services.svgCanvasController.renderToolbar();
     }
 }

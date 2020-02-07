@@ -236,7 +236,8 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<GameO
         return (
             <AccordionComponent
                 level="secondary"
-                expanded={false}
+                onClick={() => this.props.canvasController.gameObjectFormState.toggleAnimationSectionOpen()}
+                expanded={this.props.canvasController.gameObjectFormState.isAnimationSectionOpen}
                 elements={[
                     {
                         title: 'Animation',
@@ -271,9 +272,9 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<GameO
     private renderPlayAnimation() {
         return (
             <SettingsRowStyled centered={true}>
-                <PlayIconComponent onClick={() => null}/>
-                <PauseIconComponent onClick={() => null}/>
-                <StopIconComponent onClick={() => null}/>
+                <PlayIconComponent onClick={() => null} disabled={!this.props.view.path}/>
+                <PauseIconComponent onClick={() => null} disabled={!this.props.view.path}/>
+                <StopIconComponent onClick={() => null} disabled={!this.props.view.path}/>
             </SettingsRowStyled>
         )
     }

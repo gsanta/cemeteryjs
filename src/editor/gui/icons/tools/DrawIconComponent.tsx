@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { colors } from '../../styles';
-import { IconProps, ToolIconStyled, ToolIconBackgroundStyled, ToolIconImageStyled, ToolStyled, ToolNameStyled } from './Icon';
+import { ToolStyled, ToolIconStyled, ToolIconBackgroundStyled, ToolIconImageStyled, ToolNameStyled, IconProps } from './ToolIcon';
 
 const BrushComponent = styled.path`
     fill: ${({isActive}: {isActive: boolean}) => isActive ? colors.grey3 : colors.textColor};

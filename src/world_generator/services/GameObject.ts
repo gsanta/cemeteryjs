@@ -46,7 +46,7 @@ export class GameObject implements View {
 
     speed = 0.01;
 
-    activeAnimation: AnimationName = AnimationName.None;
+    activeAnimation: string;
     activeBehaviour: BehaviourType;
     wanderAngle = 0;
     private getMesh: (meshName: string) => Mesh;

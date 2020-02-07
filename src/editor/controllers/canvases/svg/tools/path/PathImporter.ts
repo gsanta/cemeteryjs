@@ -53,6 +53,5 @@ export class PathImporter implements IToolImporter {
 
             this.addPath(path);
         });
-
     }
 }

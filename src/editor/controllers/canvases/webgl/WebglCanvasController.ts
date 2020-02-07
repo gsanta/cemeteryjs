@@ -8,6 +8,7 @@ import { EditorCamera } from './EditorCamera';
 import { HelperMeshes } from './HelperMeshes';
 import { WebglCanvasWriter } from './WebglCanvasImporter';
 import { CanvasViewSettings, AbstractCanvasController } from '../AbstractCanvasController';
+import { CreateMeshModifier } from '../../../../world_generator/modifiers/CreateMeshModifier';
 (<any> window).earcut = require('earcut');
 
 export class WebglCanvasController extends AbstractCanvasController {
@@ -80,7 +81,7 @@ export class WebglCanvasController extends AbstractCanvasController {
         
         this.gameFacade = new GameFacade(this.scene);
         this.gameFacade.setup();
-        this.writer = new WebglCanvasWriter(this);
+        this.writer = new WebglCanvasWriter(this, this.gameFacade);
         
 
         this.updateCanvas();

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useDropzone } from 'react-dropzone';
 import * as ab2str from 'arraybuffer-to-string';
-import { ToolStyled, ToolIconStyled, ToolIconBackgroundStyled, ToolIconImageStyled, ToolNameStyled } from './Icon';
 import { withCommitOnChange } from '../../forms/decorators/withCommitOnChange';
+import { ToolStyled, ToolIconStyled, ToolIconBackgroundStyled, ToolIconImageStyled, ToolNameStyled } from './ToolIcon';
 
 export interface ImportFileIconProps {
     onChange(file: {path: string, data: string}): void;

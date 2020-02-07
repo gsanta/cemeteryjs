@@ -4,20 +4,20 @@ import { ToolType } from "../../../editor/controllers/canvases/svg/tools/Tool";
 import { Point } from "../../../model/geometry/shapes/Point";
 import { Rectangle } from "../../../model/geometry/shapes/Rectangle";
 import { toRadian } from "../../../model/geometry/utils/Measurements";
-import { GameObject, WorldItemShape } from '../../services/GameObject';
-import { WorldGeneratorFacade } from '../../WorldGeneratorFacade';
+import { GameObject } from '../../services/GameObject';
 import { IGameObjectBuilder } from "../IGameObjectBuilder";
 import { RawWorldMapJson } from './WorldMapJson';
+import { GameFacade } from '../../../game/GameFacade';
 
 export class SvgGameObjectBuilder<T> implements IGameObjectBuilder {
-    private services: WorldGeneratorFacade;
+    private services: GameFacade;
 
-    constructor(services: WorldGeneratorFacade) {
+    constructor(services: GameFacade) {
         this.services = services;
     }
 
     build(worldMap: string): GameObject[] {
-        this.services.canvasStore.clear();
+        this.services.gameObjectStore.clear();
         
         const rawJson: RawWorldMapJson = JSON.parse(convert.xml2json(worldMap, {compact: true, spaces: 4}));
 
@@ -34,7 +34,7 @@ export class SvgGameObjectBuilder<T> implements IGameObjectBuilder {
 
         const root = this.createRoot();
 
-        const gameObjects = this.services.canvasStore.getGameObjects().map(rect => this.createRect(rect));
+        const gameObjects = this.services.gameObjectStore.gameObjects.map(rect => this.createRect(rect));
 
         return [root, ...gameObjects];
     }
