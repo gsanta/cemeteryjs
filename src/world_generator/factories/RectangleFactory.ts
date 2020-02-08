@@ -5,6 +5,7 @@ import { Polygon } from '../../model/geometry/shapes/Polygon';
 import { Segment } from '../../model/geometry/shapes/Segment';
 import { Rectangle } from '../../model/geometry/shapes/Rectangle';
 import { GameFacade } from '../../game/GameFacade';
+import { MeshObject } from '../../game/models/objects/MeshObject';
 
 export class RectangleFactory  {
     private gameFacade: GameFacade;
@@ -20,15 +21,15 @@ export class RectangleFactory  {
         this.height = height;
     }
 
-    createMesh(gameObject: GameObject): void {
+    createMesh(meshObject: MeshObject): void {
 
-        const rec = <Rectangle> gameObject.dimensions;
-        const boundingInfo = gameObject.dimensions.getBoundingInfo();
+        const rec = <Rectangle> meshObject.dimensions;
+        const boundingInfo = meshObject.dimensions.getBoundingInfo();
         const width = boundingInfo.max[0] - boundingInfo.min[0];
         const depth = boundingInfo.max[1] - boundingInfo.min[1];
 
-        const center = gameObject.dimensions.getBoundingCenter();
-        const rect = <Rectangle> gameObject.dimensions;
+        const center = meshObject.dimensions.getBoundingCenter();
+        const rect = <Rectangle> meshObject.dimensions;
         // const pivotPoint = new Vector3(rec.topLeft.x, 0, rec.topLeft.y);
         
         const mesh = MeshBuilder.CreateBox(
@@ -43,15 +44,15 @@ export class RectangleFactory  {
 
         this.gameFacade.meshStore.addMesh(mesh.name, mesh);
         
-        gameObject.meshName = mesh.name;
+        meshObject.meshName = mesh.name;
 
-        const scale = gameObject.scale;
+        const scale = meshObject.scale;
         mesh.scaling = new Vector3(scale, scale, scale);
         // mesh.setPivotPoint(pivotPoint);
         mesh.translate(new Vector3(rect.topLeft.x + width / 2, 0, -rect.topLeft.y - depth / 2), 1, Space.WORLD);
         // mesh.rotate(Axis.Y, gameObject.rotation, Space.WORLD);
 
-        mesh.material = this.materialFactory.createMaterial(gameObject);
+        mesh.material = this.materialFactory.createMaterial(meshObject);
 
         this.index++;
 

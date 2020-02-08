@@ -2,11 +2,12 @@ import { GameFacade } from "../../GameFacade";
 import { IEventListener } from "./IEventListener";
 import { GameEvent } from "../GameEventManager";
 import { GameObject, AnimationName } from "../../../world_generator/services/GameObject";
+import { MeshObject } from "../../models/objects/MeshObject";
 
 export class AnimationPlayer implements IEventListener {
     events: GameEvent[];
     private gameFacade: GameFacade;
-    private playingAnimations: Map<GameObject, string> = new Map();
+    private playingAnimations: Map<MeshObject, string> = new Map();
 
     constructor(gameFacade: GameFacade) {
         this.gameFacade = gameFacade;
@@ -31,7 +32,7 @@ export class AnimationPlayer implements IEventListener {
     }
 
     private startNewAnimations() {
-        this.gameFacade.gameObjectStore.gameObjects
+        this.gameFacade.gameObjectStore.getMeshObjects()
         .filter(gameObject => gameObject.activeAnimation !== AnimationName.None)
         .forEach(gameObject => {
             if (!this.playingAnimations.has(gameObject)) {
@@ -40,14 +41,14 @@ export class AnimationPlayer implements IEventListener {
         });
     }
 
-    private stopAnimation(gameObject: GameObject) {
+    private stopAnimation(gameObject: MeshObject) {
         const mesh = this.gameFacade.meshStore.getMesh(gameObject.meshName);
 
         this.playingAnimations.delete(gameObject);
         this.gameFacade.scene.stopAnimation(mesh.skeleton);
     }
 
-    private startAnimation(gameObject: GameObject) {
+    private startAnimation(gameObject: MeshObject) {
         // const mesh = this.gameFacade.meshStore.getMesh(gameObject.meshName);
 
         // this.gameFacade.scene.beginAnimation(mesh.skeleton, 0, 24, true);

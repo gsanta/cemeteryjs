@@ -34,7 +34,7 @@ export class EditorFacade {
 
         this.canvases = [this.svgCanvasController, this.webglCanvasController];
 
-        this.globalSettingsForm = new GlobalSettingsForm(this.svgCanvasController);
+        this.globalSettingsForm = new GlobalSettingsForm(this);
 
         this.svgCanvasId = 'svg-editor';
     }

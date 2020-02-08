@@ -8,6 +8,7 @@ import { AbstractModelLoader } from '../../common/AbstractModelLoader';
 import { RectangleFactory } from '../factories/RectangleFactory';
 import { MaterialFactory } from "../factories/MaterialFactory";
 import { GameFacade } from '../../game/GameFacade';
+import { MeshObject } from "../../game/models/objects/MeshObject";
 
 export class CreateMeshModifier implements Modifier  {
     static modName = 'createMesh';
@@ -24,15 +25,11 @@ export class CreateMeshModifier implements Modifier  {
         return CreateMeshModifier.modName;
     }
 
-    apply(worldItems: GameObject[]): GameObject[] {
-        worldItems.forEach(rootItem => {
-            for (const item of TreeIteratorGenerator(rootItem)) {
-                if (item.name !== 'root') {
-                    this.modelFactory.createMesh(item);
-                }
-            }
+    apply(meshObjects: MeshObject[]): MeshObject[] {
+        meshObjects.forEach(item => {
+            this.modelFactory.createMesh(item);
         });
 
-        return worldItems;
+        return meshObjects;
     }
 }

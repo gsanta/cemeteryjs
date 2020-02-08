@@ -1,4 +1,4 @@
-import { GameObject } from "../../../world_generator/services/GameObject";
+import { MeshObject } from "../../models/objects/MeshObject";
 
 export enum BehaviourType {
     Ramble = 'Ramble'
@@ -6,6 +6,6 @@ export enum BehaviourType {
 
 export interface IBehaviour {
     type: BehaviourType;
-    update(gameObject: GameObject);
-    canActivate(gameObject: GameObject): boolean;
+    update(gameObject: MeshObject);
+    canActivate(gameObject: MeshObject): boolean;
 }

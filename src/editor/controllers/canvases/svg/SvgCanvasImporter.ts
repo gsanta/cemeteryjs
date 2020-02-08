@@ -19,7 +19,7 @@ export class SvgCanvasImporter implements ICanvasImporter {
         // this.services.viewStore.clear();
         
         const rawJson: RawWorldMapJson = JSON.parse(convert.xml2json(file, {compact: true, spaces: 4}));
-        const toolGroups = rawJson.svg.g.length ? rawJson.svg.g : [rawJson.svg.g];
+        const toolGroups = rawJson.svg.g ? rawJson.svg.g.length ? rawJson.svg.g : [rawJson.svg.g] : [];
 
         toolGroups.forEach(toolGroup => {
             const viewType: ViewType = <ViewType> toolGroup._attributes["data-view-type"];

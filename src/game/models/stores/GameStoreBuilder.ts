@@ -22,6 +22,7 @@ export class GameStoreBuilder {
     }
 
     build(file: string): GameStore {
+        this.viewStore = new ViewStore();
         const gameStore = new GameStore();
 
         this.viewImporter.import(file);

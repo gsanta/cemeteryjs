@@ -4,6 +4,7 @@ import { Rectangle } from '../../model/geometry/shapes/Rectangle';
 import { GameObject } from '../services/GameObject';
 import { MaterialFactory } from './MaterialFactory';
 import { RectangleFactory } from './RectangleFactory';
+import { MeshObject } from '../../game/models/objects/MeshObject';
 
 export class ModelFactory {
     private scene: Scene;
@@ -14,29 +15,29 @@ export class ModelFactory {
         this.gameFacade = gameFacade;
     }
 
-    public createMesh(gameObject: GameObject): void {
-        if (!gameObject.modelPath) {
-            new RectangleFactory(this.scene, new MaterialFactory(this.scene), this.gameFacade, 0.1).createMesh(gameObject);
+    public createMesh(meshObject: MeshObject): void {
+        if (!meshObject.modelPath) {
+            new RectangleFactory(this.scene, new MaterialFactory(this.scene), this.gameFacade, 0.1).createMesh(meshObject);
             return;
         }
 
-        const meshName = this.gameFacade.modelLoader.createInstance(gameObject.modelPath);
+        const meshName = this.gameFacade.modelLoader.createInstance(meshObject.modelPath);
 
-        gameObject.meshName = meshName;
+        meshObject.meshName = meshName;
         const mesh = this.gameFacade.meshStore.getMesh(meshName);
-        this.gameFacade.gameObjectStore.gameObjects.push(gameObject);
+        this.gameFacade.gameObjectStore.getMeshObjects().push(meshObject);
 
         mesh.isVisible = true;
-        const scale = gameObject.scale;
+        const scale = meshObject.scale;
         mesh.scaling = new Vector3(scale, scale, scale);
         mesh.rotationQuaternion = undefined;
 
-        const rect = <Rectangle> gameObject.dimensions;
+        const rect = <Rectangle> meshObject.dimensions;
         const width = rect.getWidth();
         const depth = rect.getHeight();
 
         mesh.translate(new Vector3(rect.topLeft.x + width / 2, 0, -rect.topLeft.y - depth / 2), 1, Space.WORLD);
 
-        mesh.rotation.y = gameObject.rotation;
+        mesh.rotation.y = meshObject.rotation;
     }
 }

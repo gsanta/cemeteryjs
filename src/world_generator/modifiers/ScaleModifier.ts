@@ -1,5 +1,4 @@
-import { GameObject } from '../services/GameObject';
-import { TreeIteratorGenerator } from '../utils/TreeIteratorGenerator';
+import { MeshObject } from '../../game/models/objects/MeshObject';
 import { Modifier } from './Modifier';
 
 export class ScaleModifier implements Modifier {
@@ -16,17 +15,15 @@ export class ScaleModifier implements Modifier {
         return ScaleModifier.modName;
     }
 
-    apply(worldItems: GameObject[]): GameObject[] {
-        worldItems.forEach(rootItem => {
-            for (const item of TreeIteratorGenerator(rootItem)) {
-                this.scaleGameObject(item);
-            }
+    apply(worldItems: MeshObject[]): MeshObject[] {
+        worldItems.forEach(item => {
+            this.scaleGameObject(item);
         });
 
         return worldItems;
     }
 
-    private scaleGameObject(gameObject: GameObject) {
+    private scaleGameObject(gameObject: MeshObject) {
         gameObject.scale *= this.globalScale;
     }
 }

@@ -3,12 +3,13 @@ import { IEventListener } from "../listeners/IEventListener";
 import { GameEvent } from "../GameEventManager";
 import { GameFacade } from "../../GameFacade";
 import { GameObject } from "../../../world_generator/services/GameObject";
+import { MeshObject } from "../../models/objects/MeshObject";
 
 export class EnemyBehaviourManager  implements IEventListener {
     events: GameEvent[];
     private behaviours: IBehaviour[];
     private gameFacade: GameFacade;
-    private behaviourTimeouts: Map<GameObject, number> = new Map();
+    private behaviourTimeouts: Map<MeshObject, number> = new Map();
 
     constructor(gameFacade: GameFacade, behaviours: IBehaviour[]) {
         this.gameFacade = gameFacade;

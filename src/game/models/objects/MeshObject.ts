@@ -19,8 +19,8 @@ export class MeshObject implements IGameObject {
     name: string;
     dimensions: Rectangle;
     rotation: number = 0;
-    children: GameObject[] = [];
-    parent: GameObject;
+    children: MeshObject[] = [];
+    parent: MeshObject;
     texturePath: string;
     modelPath: string;
     thumbnailPath: string;
@@ -42,15 +42,15 @@ export class MeshObject implements IGameObject {
         this.groupContext = new GroupContext();
     }
 
-    addChild(worldItem: GameObject) {
-        this.children.push(worldItem);
+    addChild(meshObject: MeshObject) {
+        this.children.push(meshObject);
     }
 
-    equalTo(worldItem: GameObject) {
+    equalTo(meshObject: MeshObject) {
         return (
-            this.name === worldItem.name &&
-            this.dimensions.equalTo(worldItem.dimensions) &&
-            this.rotation === worldItem.rotation
+            this.name === meshObject.name &&
+            this.dimensions.equalTo(meshObject.dimensions) &&
+            this.rotation === meshObject.rotation
         );
     }
 

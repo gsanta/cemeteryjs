@@ -53,7 +53,10 @@ export class SvgCanvasController extends AbstractCanvasController {
         this.services = services;
         
         this.mouseController = new MouseHandler(this.services);
-        this.writer = new SvgCanvasImporter();
+        this.writer = new SvgCanvasImporter([
+            new RectangleImporter(rect => this.services.viewStore.addRect(rect)),
+            new PathImporter((path: PathView) => this.services.viewStore.addPath(path))
+        ]);
         this.reader = new SvgCanvasExporter(this);
         this.model3dController = new Model3DController(this);
 
@@ -77,10 +80,6 @@ export class SvgCanvasController extends AbstractCanvasController {
                 deleteTool,
                 moveAndSelectTool,
                 this.cameraTool,
-            ],
-            [
-                new RectangleImporter(rect => this.services.viewStore.addRect(rect)),
-                new PathImporter((path: PathView) => this.services.viewStore.addPath(path))
             ],
             [
                 new RectangleExporter(this.services),

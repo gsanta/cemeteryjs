@@ -12,6 +12,7 @@ import { ToolType } from '../../../controllers/canvases/svg/tools/Tool';
 import { CameraTool } from '../../../controllers/canvases/svg/tools/CameraTool';
 import { PathComponent } from './PathComponent';
 import { PathMarkersComponent } from './PathMarkersComponent';
+import { ViewType } from '../../../../model/View';
 
 const EditorComponentStyled = styled.div`
     width: 100%;
@@ -57,8 +58,8 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
                     <defs>
                         <PathMarkersComponent/>
                     </defs>
-                    {this.props.canvasController.toolService.getToolExporter(ToolType.RECTANGLE).export(false)}
-                    {this.props.canvasController.toolService.getToolExporter(ToolType.PATH).export(false)}
+                    {this.props.canvasController.toolService.getToolExporter(ViewType.GameObject).export(false)}
+                    {this.props.canvasController.toolService.getToolExporter(ViewType.Path).export(false)}
                     {this.renderSelection()}
 
 

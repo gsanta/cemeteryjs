@@ -1,11 +1,9 @@
-import { SvgCanvasController } from "../../SvgCanvasController";
+import { ViewType } from "../../../../../../model/View";
 import { PathComponent } from "../../../../../gui/canvases/svg/PathComponent";
-import React = require("react");
-import { ToolType } from "../Tool";
+import { EditorFacade } from "../../../../EditorFacade";
 import { IViewExporter } from "../IToolExporter";
 import { PathView } from "./PathTool";
-import { EditorFacade } from "../../../../EditorFacade";
-import { ViewType } from "../../../../../../model/View";
+import React = require("react");
 
 export class PathExporter implements IViewExporter {
     type = ViewType.Path;
@@ -27,7 +25,7 @@ export class PathExporter implements IViewExporter {
 
         return pathes.length > 0 ? 
             (
-                <g data-view-type={ToolType.PATH}>{pathes}</g> 
+                <g data-view-type={ViewType.Path}>{pathes}</g> 
             )
             : null;
     }

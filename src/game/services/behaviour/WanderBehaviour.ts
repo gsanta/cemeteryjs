@@ -1,13 +1,14 @@
 import { Point } from "../../../model/geometry/shapes/Point";
 import { GameObject } from "../../../world_generator/services/GameObject";
 import { IBehaviour, BehaviourType } from "./IBehaviour";
+import { MeshObject } from "../../models/objects/MeshObject";
 
 export class WanderBehaviour implements IBehaviour {
     type = BehaviourType.Ramble;
     private static CIRCLE_RADIUS = 3;
     private static ANGLE_CHANGE = 50;
 
-    update(gameObject: GameObject): void {
+    update(gameObject: MeshObject): void {
         const wanderForce = this.getWanderForce(gameObject);
         gameObject.moveBy(wanderForce.div(30));
         // gameObject.setDirection(gameObject.getDirection().add(wanderForce));
@@ -17,7 +18,7 @@ export class WanderBehaviour implements IBehaviour {
         return true;
     }
 
-    private getWanderForce(gameObject: GameObject): Point {
+    private getWanderForce(gameObject: MeshObject): Point {
         let circleCenter = gameObject.getDirection().clone();
         circleCenter = circleCenter.normalize();
         // circleCenter = circleCenter.scale(gameObject.speed);

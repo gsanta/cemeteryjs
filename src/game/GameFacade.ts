@@ -1,36 +1,28 @@
-import { MeshStore } from './models/stores/MeshStore';
+import { Scene } from 'babylonjs';
+import { SvgCanvasImporter } from '../editor/controllers/canvases/svg/SvgCanvasImporter';
+import { IViewImporter } from '../editor/controllers/canvases/svg/tools/IToolImporter';
+import { IConfigReader } from '../world_generator/importers/IConfigReader';
+import { GlobalConfig } from '../world_generator/importers/svg/GlobalSectionParser';
+import { SvgConfigReader } from '../world_generator/importers/svg/SvgConfigReader';
+import { CreateMeshModifier } from '../world_generator/modifiers/CreateMeshModifier';
+import { GameObjectFactory } from '../world_generator/services/GameObjectFactory';
+import { GameObjectTemplate } from '../world_generator/services/GameObjectTemplate';
+import { IViewConverter } from './models/objects/IViewConverter';
+import { MeshObject } from './models/objects/MeshObject';
+import { MeshViewConverter } from './models/objects/MeshViewConverter';
 import { GameStore } from './models/stores/GameStore';
-import { IWorldFacade } from '../common/IWorldFacade';
-import { Mesh, Scene } from 'babylonjs';
-import { GameModelLoader } from './services/GameModelLoader';
-import { GameEventManager } from './services/GameEventManager';
-import { KeyboardTrigger } from './services/triggers/KeyboardTrigger';
+import { GameStoreBuilder } from './models/stores/GameStoreBuilder';
+import { MeshStore } from './models/stores/MeshStore';
 import { CharacterMovement } from './services/behaviour/CharacterMovement';
-import { PlayerListener } from './services/listeners/PlayerListener';
-import { InputCommandStore } from './stores/InputCommandStore';
-import { LifecycleTrigger } from './services/triggers/LifecycleTrigger';
-import { AnimationPlayer } from './services/listeners/AnimationPlayer';
 import { EnemyBehaviourManager } from './services/behaviour/EnemyBehaviourManager';
 import { WanderBehaviour } from './services/behaviour/WanderBehaviour';
-import { IGameObjectBuilder } from '../world_generator/importers/IGameObjectBuilder';
-import { ModifierExecutor, defaultModifiers } from '../world_generator/services/ModifierExecutor';
-import { GameObjectFactory } from '../world_generator/services/GameObjectFactory';
-import { ViewStore } from '../editor/controllers/canvases/svg/models/ViewStore';
-import { IViewImporter } from '../editor/controllers/canvases/svg/tools/IToolImporter';
-import { RectangleImporter } from '../editor/controllers/canvases/svg/tools/rectangle/RectangleImporter';
-import { PathImporter } from '../editor/controllers/canvases/svg/tools/path/PathImporter';
-import { GameObject } from '../world_generator/services/GameObject';
-import { GameObjectTemplate } from '../world_generator/services/GameObjectTemplate';
-import { GlobalConfig } from '../world_generator/importers/svg/GlobalSectionParser';
-import { IConfigReader } from '../world_generator/importers/IConfigReader';
-import { SvgConfigReader } from '../world_generator/importers/svg/SvgConfigReader';
-import { SvgGameObjectBuilder } from '../world_generator/importers/svg/SvgGameObjectBuilder';
-import { CreateMeshModifier } from '../world_generator/modifiers/CreateMeshModifier';
-import { IViewConverter } from './models/objects/IViewConverter';
-import { MeshViewConverter } from './models/objects/MeshViewConverter';
-import { SvgCanvasImporter } from '../editor/controllers/canvases/svg/SvgCanvasImporter';
-import { ViewType } from '../model/View';
-import { GameStoreBuilder } from './models/stores/GameStoreBuilder';
+import { GameEventManager } from './services/GameEventManager';
+import { GameModelLoader } from './services/GameModelLoader';
+import { AnimationPlayer } from './services/listeners/AnimationPlayer';
+import { PlayerListener } from './services/listeners/PlayerListener';
+import { KeyboardTrigger } from './services/triggers/KeyboardTrigger';
+import { LifecycleTrigger } from './services/triggers/LifecycleTrigger';
+import { InputCommandStore } from './stores/InputCommandStore';
 
 export class GameFacade {
     meshStore: MeshStore;
@@ -44,7 +36,6 @@ export class GameFacade {
     characterMovement: CharacterMovement;
     animationPlayer: AnimationPlayer;
 
-    gameObjectBuilder: IGameObjectBuilder;
     gameObjectFactory: GameObjectFactory;
 
     importers: IViewImporter[];
@@ -73,7 +64,6 @@ export class GameFacade {
         this.gameEventManager.registerTrigger(new KeyboardTrigger(this));
         this.gameEventManager.registerTrigger(new LifecycleTrigger(this));
 
-        this.gameObjectBuilder = this.getWorldItemBuilder();
         this.gameObjectFactory = new GameObjectFactory(this);
         this.gameStoreBuilder = new GameStoreBuilder(this);
         
@@ -91,7 +81,7 @@ export class GameFacade {
         this.modelLoader.clear();
     }
     
-    generateWorld(worldMap: string): Promise<GameObject[]> {
+    generateWorld(worldMap: string): Promise<MeshObject[]> {
         const {globalConfig} = this.getConfigReader().read(worldMap);
 
         this.gameObjectStore.globalConfig = globalConfig;
@@ -99,11 +89,11 @@ export class GameFacade {
         // this.gameObjectBuilder.build(worldMap);
         this.gameObjectStore = this.gameStoreBuilder.build(worldMap);
 
-        return this.modelLoader.loadAll(this.gameObjectStore.gameObjects).then(
+        return this.modelLoader.loadAll(this.gameObjectStore.getMeshObjects()).then(
             () => {
-                new CreateMeshModifier(this.scene, this).apply(this.gameObjectStore.gameObjects)
+                new CreateMeshModifier(this.scene, this).apply(this.gameObjectStore.getMeshObjects())
 
-                return this.gameObjectStore.gameObjects;
+                return this.gameObjectStore.getMeshObjects();
             }
         )
     }
@@ -114,9 +104,5 @@ export class GameFacade {
 
     private getConfigReader(): IConfigReader {
         return new SvgConfigReader();
-    }
-
-    private getWorldItemBuilder(): IGameObjectBuilder {
-        return new SvgGameObjectBuilder(this);
     }
 }

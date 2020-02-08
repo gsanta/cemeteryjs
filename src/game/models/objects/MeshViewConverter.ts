@@ -5,7 +5,7 @@ import { ViewType } from "../../../model/View";
 
 
 export class MeshViewConverter {
-    viewType: ViewType;
+    viewType: ViewType = ViewType.GameObject;
     private gameFacade: GameFacade;
 
     constructor(gameFacade: GameFacade) {
@@ -43,8 +43,6 @@ export class MeshViewConverter {
         meshObject.meshName = gameObject.meshName;
         meshObject.name = gameObject.name;
         meshObject.rotation = gameObject.rotation;
-        meshObject.children = gameObject.children;
-        meshObject.parent = gameObject.parent;
         meshObject.texturePath = gameObject.texturePath;
         meshObject.modelPath = gameObject.modelPath;
         meshObject.thumbnailPath = gameObject.thumbnailPath;

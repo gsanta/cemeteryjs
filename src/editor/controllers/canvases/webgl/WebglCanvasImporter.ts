@@ -4,6 +4,7 @@ import { GameObject } from "../../../../world_generator/services/GameObject";
 import { ConverterService } from "../../../../world_generator/services/ConverterService";
 import { CreateMeshModifier } from "../../../../world_generator/modifiers/CreateMeshModifier";
 import { GameFacade } from "../../../../game/GameFacade";
+import { MeshObject } from "../../../../game/models/objects/MeshObject";
 
 export class WebglCanvasWriter implements ICanvasImporter {
     private webglEditorController: WebglCanvasController;
@@ -25,7 +26,7 @@ export class WebglCanvasWriter implements ICanvasImporter {
             .then(gameObjects => converterService.convert(
                     gameObjects,
                     {
-                        convert(worldItem: GameObject): any {
+                        convert(worldItem: MeshObject): any {
                             that.webglEditorController.meshes.push(that.webglEditorController.gameFacade.meshStore.getMesh(worldItem.meshName));
                         },
                         addChildren(parent: any, children: any[]): void {},
