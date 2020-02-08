@@ -4,6 +4,7 @@ import { GameEvent } from "../GameEventManager";
 import { GameFacade } from "../../GameFacade";
 import { MeshView } from "../../../common/views/MeshView";
 import { MeshObject } from "../../models/objects/MeshObject";
+import { LifeCycleEvent } from "../triggers/ILifeCycleTrigger";
 
 export class EnemyBehaviourManager  implements IEventListener {
     events: GameEvent[];
@@ -17,12 +18,12 @@ export class EnemyBehaviourManager  implements IEventListener {
         this.updateBehaviours = this.updateBehaviours.bind(this);
 
         this.events = [
-            new GameEvent({isAfterRender: true}, this.updateBehaviours)
+            new GameEvent({lifeCycleEvent: LifeCycleEvent.AfterRender}, this.updateBehaviours)
         ]
     }
     
     private updateBehaviours() {
-        this.gameFacade.gameObjectStore.getEnemies().forEach(enemy => {
+        this.gameFacade.gameStore.getEnemies().forEach(enemy => {
             const behaviour = this.behaviours[0]//.find(behaviour => behaviour.type === enemy.activeBehaviour);
 
             behaviour && behaviour.update(enemy);

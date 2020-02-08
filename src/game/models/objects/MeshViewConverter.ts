@@ -2,6 +2,7 @@ import { MeshView } from "../../../common/views/MeshView";
 import { MeshObject } from "./MeshObject";
 import { GameFacade } from "../../GameFacade";
 import { ViewType } from "../../../common/views/View";
+import { RouteObject } from "./RouteObject";
 
 
 export class MeshViewConverter {
@@ -12,30 +13,7 @@ export class MeshViewConverter {
         this.gameFacade = gameFacade;
     }
 
-    convert(gameObject: MeshView): MeshObject {
-        // viewType = ViewType.GameObject;
-        // groupContext: GroupContext;
-        // type: string;
-        // meshName: string;
-        // name: string;
-        // dimensions: Rectangle;
-        // rotation: number;
-        // children: GameObject[] = [];
-        // parent: GameObject;
-        // texturePath: string;
-        // modelPath: string;
-        // thumbnailPath: string;
-        // path: string;
-    
-        // color: string;
-        // scale: number;
-    
-        // speed = 0.01;
-    
-        // activeAnimation: string;
-        // activeBehaviour: BehaviourType;
-        // wanderAngle = 0;
-
+    convert(gameObject: MeshView): void {
         const meshObject = new MeshObject((meshName: string) => this.gameFacade.meshStore.getMesh(meshName));
 
         meshObject.dimensions = gameObject.dimensions;
@@ -53,7 +31,15 @@ export class MeshViewConverter {
         meshObject.activeAnimation = gameObject.activeAnimation;
         meshObject.activeBehaviour = gameObject.activeBehaviour;
         meshObject.wanderAngle = gameObject.wanderAngle;
-        
-        return meshObject;
+
+        if (gameObject.path) {
+            const routeObject = new RouteObject();
+            routeObject.meshObjectName = gameObject.name;
+            routeObject.pathObjectName = gameObject.path;
+
+            this.gameFacade.gameStore.add(routeObject);
+        }
+
+        this.gameFacade.gameStore.add(meshObject);
     }
 }

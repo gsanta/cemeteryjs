@@ -55,6 +55,7 @@ export class MeshViewImporter implements IViewImporter {
             gameObject.scale = scale;
             gameObject.color = 'grey';
             gameObject.thumbnailPath = rect._attributes["data-thumbnail"];
+            gameObject.path = rect._attributes["data-path"];
 
             this.addGameObject(gameObject);
         });

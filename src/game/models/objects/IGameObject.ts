@@ -1,6 +1,8 @@
 
 export enum GameObjectType {
-    MeshObject = 'MeshObject'
+    MeshObject = 'MeshObject',
+    PathObject = 'PathObject',
+    RouteObject = 'RouteObject'
 }
 
 

@@ -1,5 +1,4 @@
 import { ViewStore } from "../../../editor/controllers/canvases/svg/models/ViewStore";
-import { GameStore } from "./GameStore";
 import { GameFacade } from "../../GameFacade";
 import { IViewConverter } from "../objects/IViewConverter";
 import { View } from "../../../common/views/View";
@@ -21,18 +20,12 @@ export class GameStoreBuilder {
         ]);
     }
 
-    build(file: string): GameStore {
+    build(file: string): void {
         this.viewStore = new ViewStore();
-        const gameStore = new GameStore();
 
         this.viewImporter.import(file);
 
-        this.viewStore.getViews().forEach(view => {
-            const gameOject = this.getViewConverter(view)?.convert(view);
-            gameOject && gameStore.add(gameOject);
-        });
-
-        return gameStore;
+        this.viewStore.getViews().forEach(view => this.getViewConverter(view)?.convert(view));
     }
 
     private getViewConverter(view: View): IViewConverter {

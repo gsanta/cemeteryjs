@@ -1,4 +1,4 @@
-import { Scene } from 'babylonjs';
+import { Scene, OnAfterEnteringVRObservableEvent } from 'babylonjs';
 import { ViewImporter } from '../common/importers/ViewImporter';
 import { IViewImporter } from '../editor/controllers/canvases/svg/tools/IToolImporter';
 import { CreateMeshModifier } from './import/CreateMeshModifier';
@@ -17,12 +17,15 @@ import { GameModelLoader } from './services/GameModelLoader';
 import { AnimationPlayer } from './services/listeners/AnimationPlayer';
 import { PlayerListener } from './services/listeners/PlayerListener';
 import { KeyboardTrigger } from './services/triggers/KeyboardTrigger';
-import { LifecycleTrigger } from './services/triggers/LifecycleTrigger';
+import { AfterRenderTrigger } from './services/triggers/AfterRenderTrigger';
+import { ResetTrigger } from './services/triggers/ResetTrigger';
 import { InputCommandStore } from './stores/InputCommandStore';
+import { PathViewConverter } from './models/objects/PathViewConverter';
+import { RouteWalker } from './services/walkers/RouteWalker';
 
 export class GameFacade {
     meshStore: MeshStore;
-    gameObjectStore: GameStore;
+    gameStore: GameStore;
     inputCommandStore: InputCommandStore;
 
     modelLoader: GameModelLoader;
@@ -45,7 +48,7 @@ export class GameFacade {
     constructor(scene: Scene) {
         this.scene = scene;
         this.meshStore = new MeshStore(this);
-        this.gameObjectStore = new GameStore();
+        this.gameStore = new GameStore();
         this.inputCommandStore = new InputCommandStore();
 
         this.modelLoader = new GameModelLoader(scene, this);
@@ -56,16 +59,19 @@ export class GameFacade {
 
         this.gameEventManager.registerListener(new PlayerListener());
         this.gameEventManager.registerListener(new EnemyBehaviourManager(this, [new WanderBehaviour()]));
+        this.gameEventManager.registerListener(new RouteWalker(this));
         this.gameEventManager.registerListener(new AnimationPlayer(this));
         this.gameEventManager.registerTrigger(new KeyboardTrigger(this));
-        this.gameEventManager.registerTrigger(new LifecycleTrigger(this));
+        this.gameEventManager.registerLifeCycleTrigger(new AfterRenderTrigger(this));
+        this.gameEventManager.registerLifeCycleTrigger(new ResetTrigger(this));
 
         this.gameObjectFactory = new GameObjectFactory(this);
         this.gameStoreBuilder = new GameStoreBuilder(this);
         
 
         this.viewConverters = [
-            new MeshViewConverter(this)
+            new MeshViewConverter(this),
+            new PathViewConverter(this)
         ]
     }
     
@@ -79,13 +85,13 @@ export class GameFacade {
     
     generateWorld(worldMap: string): Promise<MeshObject[]> {
         // this.gameObjectBuilder.build(worldMap);
-        this.gameObjectStore = this.gameStoreBuilder.build(worldMap);
+        this.gameStoreBuilder.build(worldMap);
 
-        return this.modelLoader.loadAll(this.gameObjectStore.getMeshObjects()).then(
+        return this.modelLoader.loadAll(this.gameStore.getMeshObjects()).then(
             () => {
-                new CreateMeshModifier(this.scene, this).apply(this.gameObjectStore.getMeshObjects())
+                new CreateMeshModifier(this.scene, this).apply(this.gameStore.getMeshObjects())
 
-                return this.gameObjectStore.getMeshObjects();
+                return this.gameStore.getMeshObjects();
             }
         )
     }

@@ -69,6 +69,7 @@ export class RectangleExporter implements IViewExporter {
                     data-model={item.modelPath}
                     data-texture={item.texturePath}
                     data-thumbnail={item.thumbnailPath}
+                    data-path={item.path}
                 >
                     <rect
                         key={i}

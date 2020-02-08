@@ -25,7 +25,7 @@ export class ModelFactory {
 
         meshObject.meshName = meshName;
         const mesh = this.gameFacade.meshStore.getMesh(meshName);
-        this.gameFacade.gameObjectStore.getMeshObjects().push(meshObject);
+        this.gameFacade.gameStore.getMeshObjects().push(meshObject);
 
         mesh.isVisible = true;
         const scale = meshObject.scale;

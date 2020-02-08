@@ -9,7 +9,7 @@ import { GameObjectType, IGameObject } from "./IGameObject";
 import { GroupContext } from "../../../common/views/GroupContext";
 
 export class MeshObject implements IGameObject {
-    objectType = GameObjectType.MeshObject;
+    readonly objectType = GameObjectType.MeshObject;
     groupContext: GroupContext;
     type: string;
     meshName: string;
@@ -49,6 +49,10 @@ export class MeshObject implements IGameObject {
             this.dimensions.equalTo(meshObject.dimensions) &&
             this.rotation === meshObject.rotation
         );
+    }
+
+    setPosition(point: Point) {
+        this.getMesh(this.meshName).setAbsolutePosition(toVector3(point));
     }
 
     // getAnimationByName(animationName: AnimationName, meshStore: MeshStore): Animation {

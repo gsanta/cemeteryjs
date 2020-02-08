@@ -3,5 +3,5 @@ import { IGameObject } from "./IGameObject";
 
 export interface IViewConverter {
     viewType: ViewType;
-    convert(view: View): IGameObject;
+    convert(view: View): void;
 }

@@ -3,6 +3,7 @@ import { IEventListener } from "./IEventListener";
 import { GameEvent } from "../GameEventManager";
 import { MeshView, AnimationName } from "../../../common/views/MeshView";
 import { MeshObject } from "../../models/objects/MeshObject";
+import { LifeCycleEvent } from "../triggers/ILifeCycleTrigger";
 
 export class AnimationPlayer implements IEventListener {
     events: GameEvent[];
@@ -14,7 +15,7 @@ export class AnimationPlayer implements IEventListener {
         this.updateAnimations = this.updateAnimations.bind(this);
 
         this.events = [
-            new GameEvent({isAfterRender: true}, this.updateAnimations)
+            new GameEvent({lifeCycleEvent: LifeCycleEvent.AfterRender}, this.updateAnimations)
         ]
     }
 
@@ -32,7 +33,7 @@ export class AnimationPlayer implements IEventListener {
     }
 
     private startNewAnimations() {
-        this.gameFacade.gameObjectStore.getMeshObjects()
+        this.gameFacade.gameStore.getMeshObjects()
         .filter(gameObject => gameObject.activeAnimation !== AnimationName.None)
         .forEach(gameObject => {
             if (!this.playingAnimations.has(gameObject)) {

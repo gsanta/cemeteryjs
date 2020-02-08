@@ -1,10 +1,13 @@
 import { MeshObject } from '../objects/MeshObject';
 import { IGameObject, GameObjectType } from '../objects/IGameObject';
 import { PathView } from '../../../common/views/PathView';
+import { RouteObject } from '../objects/RouteObject';
 
 export class GameStore {
     meshObjects: MeshObject[] = [];
     paths: PathView[] = [];
+
+    private nameToObjMap: Map<string, IGameObject> = new Map();
 
     objs: IGameObject[] = [];
 
@@ -22,10 +25,19 @@ export class GameStore {
 
     add(gameObject: IGameObject) {
         this.objs.push(gameObject);
+        this.nameToObjMap.set(gameObject.name, gameObject);
+    }
+
+    getByName<T extends IGameObject>(name: string): T {
+        return <T> this.nameToObjMap.get(name);
     }
 
     getMeshObjects(): MeshObject[] {
         return <MeshObject[]> this.objs.filter(obj => obj.objectType === GameObjectType.MeshObject);
+    }
+
+    getRouteObjects(): RouteObject[] {
+        return <RouteObject[]> this.objs.filter(obj => obj.objectType === GameObjectType.RouteObject);
     }
 
     clear(): void {

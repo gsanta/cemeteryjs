@@ -2,6 +2,7 @@ import { GameFacade } from "../../GameFacade";
 import { GameEvent } from "../GameEventManager";
 import { IEventListener } from "./IEventListener";
 import { InputCommand } from "../../stores/InputCommandStore";
+import { LifeCycleEvent } from "../triggers/ILifeCycleTrigger";
 
 
 export class PlayerListener implements IEventListener {
@@ -14,10 +15,10 @@ export class PlayerListener implements IEventListener {
 
         this.commandToActionMap = new Map(
             [
-                [InputCommand.Forward, (gameFacade: GameFacade) => gameFacade.characterMovement.forward(gameFacade.gameObjectStore.getPlayer())],
-                [InputCommand.Backward, (gameFacade: GameFacade) => gameFacade.characterMovement.backward(gameFacade.gameObjectStore.getPlayer())],
-                [InputCommand.TurnLeft, (gameFacade: GameFacade) => gameFacade.characterMovement.left(gameFacade.gameObjectStore.getPlayer())],
-                [InputCommand.TurnRight, (gameFacade: GameFacade) => gameFacade.characterMovement.right(gameFacade.gameObjectStore.getPlayer())],
+                [InputCommand.Forward, (gameFacade: GameFacade) => gameFacade.characterMovement.forward(gameFacade.gameStore.getPlayer())],
+                [InputCommand.Backward, (gameFacade: GameFacade) => gameFacade.characterMovement.backward(gameFacade.gameStore.getPlayer())],
+                [InputCommand.TurnLeft, (gameFacade: GameFacade) => gameFacade.characterMovement.left(gameFacade.gameStore.getPlayer())],
+                [InputCommand.TurnRight, (gameFacade: GameFacade) => gameFacade.characterMovement.right(gameFacade.gameStore.getPlayer())],
             ]
         );
     }
@@ -25,7 +26,7 @@ export class PlayerListener implements IEventListener {
     private createInteractions() {
         const interactions: GameEvent[] = [
             new GameEvent(
-                {isAfterRender: true},
+                {lifeCycleEvent: LifeCycleEvent.AfterRender},
                 (gameFacade: GameFacade) => {
                     Array.from(gameFacade.inputCommandStore.commands).forEach(command => {
                         this.commandToActionMap.get(command) && this.commandToActionMap.get(command)(gameFacade);

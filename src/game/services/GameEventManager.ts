@@ -2,16 +2,19 @@ import { GameFacade } from '../GameFacade';
 import { IEventListener } from "./listeners/IEventListener";
 import { IEventTrigger } from "./triggers/IEventTrigger";
 import { InputCommand } from '../stores/InputCommandStore';
+import { ILifeCycleTrigger, LifeCycleEvent } from './triggers/ILifeCycleTrigger';
 
 
 export class GameEventManager {
     private events: GameEvent[] = [];
     private triggers: IEventTrigger[] = [];
+    private lifeCycleTriggers: ILifeCycleTrigger[] = [];
     private gameFacade: GameFacade;
 
     constructor(gameFacade: GameFacade) {
         this.gameFacade = gameFacade;
-        this.trigger = this.trigger.bind(this);
+        this.triggerLifeCycleEvent = this.triggerLifeCycleEvent.bind(this);
+        this.triggerEvent = this.triggerEvent.bind(this);
     }
 
     registerListener(listener: IEventListener): void {
@@ -20,19 +23,30 @@ export class GameEventManager {
 
     registerTrigger(trigger: IEventTrigger): void {
         this.triggers.push(trigger);
-        trigger.activate(this.trigger);
+        trigger.activate(this.triggerEvent);
     }
 
-    private trigger(afterRender = false): void {
+    registerLifeCycleTrigger(trigger: ILifeCycleTrigger) {
+        this.lifeCycleTriggers.push(trigger);
+        trigger.activate(this.triggerLifeCycleEvent);
+    }
+
+    private triggerEvent(): void {
         this.events
-            .filter(event => event.matches(this.gameFacade, afterRender))
+            .filter(event => event.matches(this.gameFacade))
+            .forEach(event => event.action(this.gameFacade));
+    }
+
+    private triggerLifeCycleEvent(lifeCycleEvent?: LifeCycleEvent): void {
+        this.events
+            .filter(event => event.matches(this.gameFacade, lifeCycleEvent))
             .forEach(event => event.action(this.gameFacade));
     }
 }
 
 interface GameEventTrigger {
     readonly inputCommand: InputCommand;
-    readonly isAfterRender: boolean;
+    readonly lifeCycleEvent?: LifeCycleEvent;
 }
 
 export class GameEvent {
@@ -40,8 +54,7 @@ export class GameEvent {
     readonly action: (gameFacade: GameFacade) => void;
 
     private static readonly defaultInteractionInfo: GameEventTrigger = {
-        inputCommand: undefined,
-        isAfterRender: false
+        inputCommand: undefined
     }
 
     constructor(interactionInfo: Partial<GameEventTrigger>, action: (gameFacade: GameFacade) => void) {
@@ -49,11 +62,11 @@ export class GameEvent {
         this.action = action;
     }
 
-    matches(gameFacade: GameFacade, afterRender: boolean): boolean {
+    matches(gameFacade: GameFacade, lifeCycleEvent?: LifeCycleEvent): boolean {
         const hasCommand = gameFacade.inputCommandStore.commands.has(this.trigger.inputCommand);
         return (
             (this.trigger.inputCommand === undefined || hasCommand) &&
-            afterRender === this.trigger.isAfterRender
-        )
+            lifeCycleEvent === this.trigger.lifeCycleEvent
+        );
     }
 }
