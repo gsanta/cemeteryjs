@@ -48,9 +48,9 @@ export class AnimationPlayer implements IEventListener {
     }
 
     private startAnimation(gameObject: GameObject) {
-        const mesh = this.gameFacade.meshStore.getMesh(gameObject.meshName);
+        // const mesh = this.gameFacade.meshStore.getMesh(gameObject.meshName);
 
-        this.gameFacade.scene.beginAnimation(mesh.skeleton, 0, 24, true);
-        this.playingAnimations.set(gameObject, gameObject.activeAnimation);
+        // this.gameFacade.scene.beginAnimation(mesh.skeleton, 0, 24, true);
+        // this.playingAnimations.set(gameObject, gameObject.activeAnimation);
     }
 }

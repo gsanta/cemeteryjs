@@ -28,15 +28,13 @@ export class SvgGameObjectBuilder<T> implements IGameObjectBuilder {
         const toolGroups = rawJson.svg.g.length ? rawJson.svg.g : [rawJson.svg.g];
 
         toolGroups.forEach(toolGroup => {
-            const toolType: ToolType = <ToolType> toolGroup._attributes["data-tool-type"];
+            const toolType: ToolType = <ToolType> toolGroup._attributes["data-view-type"];
             getImporterByType(toolType, this.services.importers).import(toolGroup)
         });
 
         const root = this.createRoot();
 
-        const gameObjects = this.services.gameObjectStore.gameObjects.map(rect => this.createRect(rect));
-
-        return [root, ...gameObjects];
+        this.services.gameObjectStore.gameObjects.map(rect => this.createRect(rect));
     }
 
     private createRect(rect: GameObject): GameObject {

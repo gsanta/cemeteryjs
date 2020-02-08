@@ -1,5 +1,4 @@
 import { ICanvasImporter } from '../ICanvasImporter';
-import { SvgCanvasController } from './SvgCanvasController';
 import { EventDispatcher } from '../../events/EventDispatcher';
 import { Events } from '../../events/Events';
 import * as convert from 'xml-js';
@@ -23,7 +22,7 @@ export class SvgCanvasImporter implements ICanvasImporter {
         const toolGroups = rawJson.svg.g.length ? rawJson.svg.g : [rawJson.svg.g];
 
         toolGroups.forEach(toolGroup => {
-            const toolType: ToolType = <ToolType> toolGroup._attributes["data-tool-type"];
+            const toolType: ToolType = <ToolType> toolGroup._attributes["data-view-type"];
             this.services.svgCanvasController.toolService.getToolImporter(toolType).import(toolGroup)
 
         });

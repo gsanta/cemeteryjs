@@ -14,11 +14,6 @@ export const defaultModifiers = [
 export class ModifierExecutor {
     private modifierMap: Map<string, Modifier> = new Map();
 
-    constructor() {
-        this.registerModifier(new BuildHierarchyModifier());
-        this.registerModifier(new ScaleModifier());
-    }
-
     applyModifiers(worldItems: GameObject[], modNames: string[]): GameObject[] {
         return modNames
             .map(name => this.modifierMap.get(name))

@@ -26,6 +26,8 @@ import { IConfigReader } from '../world_generator/importers/IConfigReader';
 import { SvgConfigReader } from '../world_generator/importers/svg/SvgConfigReader';
 import { SvgGameObjectBuilder } from '../world_generator/importers/svg/SvgGameObjectBuilder';
 import { CreateMeshModifier } from '../world_generator/modifiers/CreateMeshModifier';
+import { IViewConverter } from './models/objects/IViewConverter';
+import { MeshViewConverter } from './models/objects/MeshViewConverter';
 
 export class GameFacade implements IWorldFacade<Mesh> {
     meshStore: MeshStore;
@@ -40,10 +42,10 @@ export class GameFacade implements IWorldFacade<Mesh> {
     animationPlayer: AnimationPlayer;
 
     gameObjectBuilder: IGameObjectBuilder;
-    modifierExecutor: ModifierExecutor;
     gameObjectFactory: GameObjectFactory;
 
     importers: IToolImporter[];
+    viewConverters: IViewConverter[] = [];
 
     scene: Scene;
 
@@ -67,11 +69,13 @@ export class GameFacade implements IWorldFacade<Mesh> {
 
         this.gameObjectBuilder = this.getWorldItemBuilder();
         this.gameObjectFactory = new GameObjectFactory(this);
-        this.modifierExecutor = new ModifierExecutor();
-        this.modifierExecutor.registerModifier(new CreateMeshModifier(this.scene, this));
         this.importers = [
             new RectangleImporter(rect => this.gameObjectStore.addGameObject(rect)),
             new PathImporter(path => this.gameObjectStore.addPath(path))
+        ]
+
+        this.viewConverters = [
+            new MeshViewConverter(this)
         ]
     }
     
@@ -88,11 +92,15 @@ export class GameFacade implements IWorldFacade<Mesh> {
 
         this.gameObjectStore.globalConfig = globalConfig;
 
-        let worldItems = this.gameObjectBuilder.build(worldMap);
+        this.gameObjectBuilder.build(worldMap);
 
-        this.gameObjectStore
-        
-        return this.modelLoader.loadAll(worldItems).then(() => this.modifierExecutor.applyModifiers(worldItems, defaultModifiers))
+        return this.modelLoader.loadAll(this.gameObjectStore.gameObjects).then(
+            () => {
+                new CreateMeshModifier(this.scene, this).apply(this.gameObjectStore.gameObjects)
+
+                return this.gameObjectStore.gameObjects;
+            }
+        )
     }
 
     generateMetaData(worldMap: string): {gameObjectTemplates: GameObjectTemplate[], globalConfig: GlobalConfig} {

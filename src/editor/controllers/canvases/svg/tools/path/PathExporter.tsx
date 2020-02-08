@@ -26,7 +26,7 @@ export class PathExporter implements IToolExporter {
 
         return pathes.length > 0 ? 
             (
-                <g data-tool-type={ToolType.PATH}>{pathes}</g> 
+                <g data-view-type={ToolType.PATH}>{pathes}</g> 
             )
             : null;
     }

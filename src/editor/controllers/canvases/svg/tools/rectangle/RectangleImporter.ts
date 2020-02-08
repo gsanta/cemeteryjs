@@ -1,7 +1,7 @@
 
 import { Point } from '../../../../../../model/geometry/shapes/Point';
 import { Rectangle } from '../../../../../../model/geometry/shapes/Rectangle';
-import { ToolGroupJson } from '../../../../../../world_generator/importers/svg/WorldMapJson';
+import { ViewGroupJson } from '../../../../../../world_generator/importers/svg/WorldMapJson';
 import { WorldItemShape, GameObject } from '../../../../../../world_generator/services/GameObject';
 import { IToolImporter } from '../IToolImporter';
 import { ToolType } from '../Tool';
@@ -16,7 +16,7 @@ export interface RectJson {
     }
 }
 
-export interface RectangleGroupJson extends ToolGroupJson {
+export interface RectangleGroupJson extends ViewGroupJson {
     g: RectJson[];
 }
 

@@ -13,9 +13,9 @@ export interface WgDefinitionAttributes {
     "type-name": string;
 }
 
-export interface ToolGroupJson<T = any> {
+export interface ViewGroupJson<T = any> {
     _attributes: {
-        "data-tool-type": string
+        "data-view-type": string
     }
 }
 
@@ -33,7 +33,7 @@ export interface RawWorldMapJson {
             "data-wg-scale-y": string;
         };
 
-        g: ToolGroupJson[];
+        g: ViewGroupJson[];
     }
 }
 

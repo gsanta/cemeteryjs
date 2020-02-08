@@ -1,4 +1,4 @@
-import { ToolGroupJson } from "../../../../../../world_generator/importers/svg/WorldMapJson";
+import { ViewGroupJson } from "../../../../../../world_generator/importers/svg/WorldMapJson";
 import { ToolType } from "../Tool";
 import { IToolImporter } from "../IToolImporter";
 import { PathView } from "./PathTool";
@@ -23,7 +23,7 @@ export interface PathJson {
     }
 }
 
-export interface PathGroupJson extends ToolGroupJson {
+export interface PathGroupJson extends ViewGroupJson {
     g: PathJson[] | PathJson;
 }
 
