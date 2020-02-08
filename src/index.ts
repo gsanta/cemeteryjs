@@ -1,9 +1,3 @@
-import { ScaleModifier } from './world_generator/modifiers/ScaleModifier';
 
-export {GameObject as WorldItem} from './world_generator/services/GameObject';
-export {Converter} from './WorldGenerator';
-
-
-export const transformators = {
-    ScaleModifier,
-}
+export {MeshView as WorldItem} from './common/views/MeshView';
+export {Converter} from './game/import/WorldGenerator';

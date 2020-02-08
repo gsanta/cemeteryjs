@@ -1,7 +1,7 @@
-import { Point } from "../../../../src/model/geometry/shapes/Point";
-import { Line } from "../../../../src/model/geometry/shapes/Line";
-import { Polygon } from "../../../../src/model/geometry/shapes/Polygon";
-import { Segment } from "../../../../src/model/geometry/shapes/Segment";
+import { Point } from "../../../../src/misc/geometry/shapes/Point";
+import { Line } from "../../../../src/misc/geometry/shapes/Line";
+import { Polygon } from "../../../../src/misc/geometry/shapes/Polygon";
+import { Segment } from "../../../../src/misc/geometry/shapes/Segment";
 
 describe('`Segment`', () => {
     describe('`isPointOnTheLine`', () => {

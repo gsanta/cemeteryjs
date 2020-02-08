@@ -1,6 +1,6 @@
-import { Line } from "../../../../src/model/geometry/shapes/Line";
-import { toDegree } from "../../../../src/model/geometry/shapes/Angle";
-import { Point } from "../../../../src/model/geometry/shapes/Point";
+import { Line } from "../../../../src/misc/geometry/shapes/Line";
+import { toDegree } from "../../../../src/misc/geometry/shapes/Angle";
+import { Point } from "../../../../src/misc/geometry/shapes/Point";
 
 describe(`Line`, () => {
     describe(`fromPointSlopeForm`, () => {

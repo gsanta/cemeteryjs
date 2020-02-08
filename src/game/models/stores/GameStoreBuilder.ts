@@ -2,21 +2,21 @@ import { ViewStore } from "../../../editor/controllers/canvases/svg/models/ViewS
 import { GameStore } from "./GameStore";
 import { GameFacade } from "../../GameFacade";
 import { IViewConverter } from "../objects/IViewConverter";
-import { View } from "../../../model/View";
-import { SvgCanvasImporter } from "../../../editor/controllers/canvases/svg/SvgCanvasImporter";
-import { RectangleImporter } from "../../../editor/controllers/canvases/svg/tools/rectangle/RectangleImporter";
-import { PathImporter } from "../../../editor/controllers/canvases/svg/tools/path/PathImporter";
+import { View } from "../../../common/views/View";
+import { ViewImporter } from "../../../common/importers/ViewImporter";
+import { MeshViewImporter } from "../../../common/importers/RectangleImporter";
+import { PathImporter } from "../../../common/importers/PathImporter";
 
 export class GameStoreBuilder {
     private gameFacade: GameFacade;
     private viewStore: ViewStore;
-    private viewImporter: SvgCanvasImporter;
+    private viewImporter: ViewImporter;
 
     constructor(gameFacade: GameFacade) {
         this.gameFacade = gameFacade;
 
-        this.viewImporter = new SvgCanvasImporter([
-            new RectangleImporter(rect => this.viewStore.addRect(rect)),
+        this.viewImporter = new ViewImporter([
+            new MeshViewImporter(rect => this.viewStore.addRect(rect)),
             new PathImporter(path => this.viewStore.addPath(path))
         ]);
     }

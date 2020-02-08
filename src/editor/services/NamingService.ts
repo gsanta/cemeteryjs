@@ -1,6 +1,6 @@
 import { EditorFacade } from "../controllers/EditorFacade";
-import { ViewType, View } from "../../model/View";
-import { maxBy } from "../../model/geometry/utils/Functions";
+import { ViewType, View } from "../../common/views/View";
+import { maxBy } from "../../misc/geometry/utils/Functions";
 
 
 export class NamingService {

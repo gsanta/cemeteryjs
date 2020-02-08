@@ -1,5 +1,5 @@
-import { Rectangle } from '../../../../../../model/geometry/shapes/Rectangle';
-import { WorldItemShape, GameObject } from '../../../../../../world_generator/services/GameObject';
+import { Rectangle } from '../../../../../../misc/geometry/shapes/Rectangle';
+import { WorldItemShape, MeshView } from '../../../../../../common/views/MeshView';
 import { EventDispatcher } from '../../../../events/EventDispatcher';
 import { Events } from '../../../../events/Events';
 import { SvgCanvasController } from '../../SvgCanvasController';
@@ -10,7 +10,7 @@ import { EditorFacade } from '../../../../EditorFacade';
 
 export class RectangleTool extends AbstractSelectionTool {
     private eventDispatcher: EventDispatcher;
-    private lastPreviewRect: GameObject;
+    private lastPreviewRect: MeshView;
 
     constructor(editorFacade: EditorFacade, eventDispatcher: EventDispatcher) {
         super(editorFacade, ToolType.RECTANGLE, false);
@@ -27,7 +27,7 @@ export class RectangleTool extends AbstractSelectionTool {
         const pointer = this.services.svgCanvasController.mouseController.pointer;
         const rect = Rectangle.squareFromCenterPointAndRadius(pointer.down, 50);
 
-        const gameObject: GameObject = new GameObject(null, rect, name);
+        const gameObject: MeshView = new MeshView(null, rect, name);
         gameObject.type = 'rect';
         gameObject.rotation = 0;
         gameObject.modelPath = null;
@@ -54,7 +54,7 @@ export class RectangleTool extends AbstractSelectionTool {
 
         const dimensions = this.getSelectionRect();
 
-        const gameObject: GameObject = new GameObject(null, dimensions, name);
+        const gameObject: MeshView = new MeshView(null, dimensions, name);
         gameObject.type = 'rect'
         gameObject.rotation = 0;
         gameObject.modelPath = null;

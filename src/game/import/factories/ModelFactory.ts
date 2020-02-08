@@ -1,10 +1,10 @@
 import { Scene, Space, Vector3 } from 'babylonjs';
-import { GameFacade } from '../../game/GameFacade';
-import { Rectangle } from '../../model/geometry/shapes/Rectangle';
-import { GameObject } from '../services/GameObject';
+import { GameFacade } from '../../GameFacade';
+import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
+import { MeshView } from '../../../common/views/MeshView';
 import { MaterialFactory } from './MaterialFactory';
 import { RectangleFactory } from './RectangleFactory';
-import { MeshObject } from '../../game/models/objects/MeshObject';
+import { MeshObject } from '../../models/objects/MeshObject';
 
 export class ModelFactory {
     private scene: Scene;

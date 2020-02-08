@@ -1,5 +1,5 @@
-import { Point } from "../../../../../model/geometry/shapes/Point";
-import { Rectangle } from '../../../../../model/geometry/shapes/Rectangle';
+import { Point } from "../../../../../misc/geometry/shapes/Point";
+import { Rectangle } from '../../../../../misc/geometry/shapes/Rectangle';
 
 export class Camera {
     readonly screenSize: Point;

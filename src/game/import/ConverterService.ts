@@ -1,7 +1,7 @@
-import { GameObject } from "./GameObject";
-import { Converter } from "../../WorldGenerator";
+import { MeshView } from "../../common/views/MeshView";
+import { Converter } from "./WorldGenerator";
 import { Mesh } from "babylonjs";
-import { MeshObject } from "../../game/models/objects/MeshObject";
+import { MeshObject } from "../models/objects/MeshObject";
 
 export interface Convert {
     (worldItemInfo: MeshObject): Mesh

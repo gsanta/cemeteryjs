@@ -1,6 +1,6 @@
-import { Distance } from "../../../../src/model/geometry/utils/Distance";
-import { Point } from "../../../../src/model/geometry/shapes/Point";
-import { Segment } from "../../../../src/model/geometry/shapes/Segment";
+import { Distance } from "../../../../src/misc/geometry/utils/Distance";
+import { Point } from "../../../../src/misc/geometry/shapes/Point";
+import { Segment } from "../../../../src/misc/geometry/shapes/Segment";
 
 
 

@@ -1,5 +1,5 @@
-import { minBy, arraysEqual } from '../../../../src/world_generator/utils/Functions';
-import { Point } from '../../../../src/model/geometry/shapes/Point';
+import { minBy, arraysEqual } from '../../../../src/game/import/Functions';
+import { Point } from '../../../../src/misc/geometry/shapes/Point';
 
 
 describe('minBy', () => {

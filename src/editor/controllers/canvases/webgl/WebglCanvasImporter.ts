@@ -1,8 +1,8 @@
 import { ICanvasImporter } from "../ICanvasImporter";
 import { WebglCanvasController } from './WebglCanvasController';
-import { GameObject } from "../../../../world_generator/services/GameObject";
-import { ConverterService } from "../../../../world_generator/services/ConverterService";
-import { CreateMeshModifier } from "../../../../world_generator/modifiers/CreateMeshModifier";
+import { MeshView } from "../../../../common/views/MeshView";
+import { ConverterService } from "../../../../game/import/ConverterService";
+import { CreateMeshModifier } from "../../../../game/import/CreateMeshModifier";
 import { GameFacade } from "../../../../game/GameFacade";
 import { MeshObject } from "../../../../game/models/objects/MeshObject";
 

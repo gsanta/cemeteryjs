@@ -3,7 +3,7 @@ import { AbstractSelectionTool } from './AbstractSelectionTool';
 import { ToolType } from './Tool';
 import { EventDispatcher } from '../../../events/EventDispatcher';
 import { Events } from '../../../events/Events';
-import { Rectangle } from '../../../../../model/geometry/shapes/Rectangle';
+import { Rectangle } from '../../../../../misc/geometry/shapes/Rectangle';
 import { EditorFacade } from '../../../EditorFacade';
 
 export class DeleteTool extends AbstractSelectionTool {

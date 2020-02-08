@@ -1,11 +1,8 @@
 import * as React from 'react';
-import styled from 'styled-components';
-import { GameObject } from '../../../world_generator/services/GameObject';
 import { GameObjectPropType } from '../../controllers/forms/GameObjectForm';
 import { AppContext, AppContextType } from '../Context';
 import { ConnectedInputComponent } from '../forms/InputComponent';
 import { ConnectedFileUploadComponent } from '../icons/tools/ImportFileIconComponent';
-import { colors } from '../styles';
 import { ConnectedLayerSettingsComponent } from './LayerSettingsComponent';
 import { ViewFormProps } from './viewComponentFactory';
 import { SettingsRowStyled, LabelStyled, InputStyled } from './FormComponent';
@@ -15,12 +12,13 @@ import { ClearIconComponent } from '../icons/ClearIconComponent';
 import { PlayIconComponent } from '../icons/PlayIconComponent';
 import { PauseIconComponent } from '../icons/PauseIconComponent';
 import { StopIconComponent } from '../icons/StopIconComponent';
+import { MeshView } from '../../../common/views/MeshView';
 
-export class GameObjectFormComponent extends React.Component<ViewFormProps<GameObject>> {
+export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshView>> {
     static contextType = AppContext;
     context: AppContextType;
 
-    constructor(props: ViewFormProps<GameObject>) {
+    constructor(props: ViewFormProps<MeshView>) {
         super(props);
 
         this.props.canvasController.gameObjectForm.setRenderer(() => this.forceUpdate());

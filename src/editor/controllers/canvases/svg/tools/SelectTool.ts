@@ -2,7 +2,7 @@ import { SvgCanvasController } from "../SvgCanvasController";
 import { AbstractSelectionTool } from "./AbstractSelectionTool";
 import { ToolType } from "./Tool";
 import { CanvasItemTag } from "../models/CanvasItem";
-import { maxBy } from '../../../../../model/geometry/utils/Functions';
+import { maxBy } from '../../../../../misc/geometry/utils/Functions';
 import { EditorFacade } from "../../../EditorFacade";
 
 export class SelectTool extends AbstractSelectionTool {

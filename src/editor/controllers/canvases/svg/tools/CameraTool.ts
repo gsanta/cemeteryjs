@@ -1,9 +1,9 @@
 import { Camera, nullCamera } from '../models/Camera';
 import { AbstractTool } from './AbstractTool';
-import { Point } from "../../../../../model/geometry/shapes/Point";
+import { Point } from "../../../../../misc/geometry/shapes/Point";
 import { EditorFacade } from '../../../EditorFacade';
 import { ToolType } from "./Tool";
-import { Rectangle } from "../../../../../model/geometry/shapes/Rectangle";
+import { Rectangle } from "../../../../../misc/geometry/shapes/Rectangle";
 
 export function cameraInitializer(canvasId: string) {
     if (typeof document !== 'undefined') {

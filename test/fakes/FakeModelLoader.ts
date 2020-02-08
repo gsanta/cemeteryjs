@@ -1,5 +1,5 @@
 import { AbstractModelLoader, ModelData } from '../../src/common/AbstractModelLoader';
-import { Point } from '../../src/model/geometry/shapes/Point';
+import { Point } from '../../src/misc/geometry/shapes/Point';
 import { Mesh } from 'babylonjs';
 
 export class FakeModelLoader extends AbstractModelLoader {

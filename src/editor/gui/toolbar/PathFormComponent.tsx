@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { PathView } from '../../controllers/canvases/svg/tools/path/PathTool';
 import { AppContext, AppContextType } from '../Context';
 import { ViewFormProps } from './viewComponentFactory';
 import { ConnectedInputComponent } from '../forms/InputComponent';
-import { GameObjectPropType } from '../../controllers/forms/GameObjectForm';
 import { SettingsRowStyled, LabelStyled, InputStyled } from './FormComponent';
 import { PathPropType } from '../../controllers/forms/PathForm';
+import { PathView } from '../../../common/views/PathView';
 
 export class PathFormComponent extends React.Component<ViewFormProps<PathView>> {
     static contextType = AppContext;

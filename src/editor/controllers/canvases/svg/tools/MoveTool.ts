@@ -3,7 +3,7 @@ import { SvgCanvasController } from "../SvgCanvasController";
 import { AbstractTool } from './AbstractTool';
 import { ToolType } from './Tool';
 import { Events } from '../../../events/Events';
-import { Rectangle } from "../../../../../model/geometry/shapes/Rectangle";
+import { Rectangle } from "../../../../../misc/geometry/shapes/Rectangle";
 import { CanvasItemTag } from "../models/CanvasItem";
 import { EditorFacade } from "../../../EditorFacade";
 

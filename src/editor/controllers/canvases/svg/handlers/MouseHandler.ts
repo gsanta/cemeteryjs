@@ -1,8 +1,8 @@
-import { Point } from '../../../../../model/geometry/shapes/Point';
+import { Point } from '../../../../../misc/geometry/shapes/Point';
 import { SvgCanvasController } from '../SvgCanvasController';
 import { CanvasItemTag } from '../models/CanvasItem';
-import { GameObject } from '../../../../../world_generator/services/GameObject';
-import { View } from '../../../../../model/View';
+import { MeshView } from '../../../../../common/views/MeshView';
+import { View } from '../../../../../common/views/View';
 import { EditorFacade } from '../../../EditorFacade';
 
 function calcOffsetFromDom(bitmapEditorId: string): Point {

@@ -1,5 +1,5 @@
 import { AbstractForm } from "./AbstractForm";
-import { PathView } from "../canvases/svg/tools/path/PathTool";
+import { PathView } from "../../../common/views/PathView";
 
 export enum PathPropType {
     NAME = 'name'

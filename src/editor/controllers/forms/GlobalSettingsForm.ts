@@ -1,4 +1,4 @@
-import { GameObject } from '../../../world_generator/services/GameObject';
+import { MeshView } from '../../../common/views/MeshView';
 import { SvgCanvasController } from '../canvases/svg/SvgCanvasController';
 import { AbstractForm } from './AbstractForm';
 import { EditorFacade } from '../EditorFacade';
@@ -8,7 +8,7 @@ export enum GlobalSettingsPropType {
 }
 
 export class GlobalSettingsForm extends AbstractForm<GlobalSettingsPropType> {
-    gameObject: GameObject;
+    gameObject: MeshView;
 
     private services: EditorFacade;
 

@@ -4,7 +4,7 @@ import { MoveTool } from './MoveTool';
 import { SelectTool } from "./SelectTool";
 import { EventDispatcher } from '../../../events/EventDispatcher';
 import { AbstractTool } from './AbstractTool';
-import { Rectangle } from "../../../../../model/geometry/shapes/Rectangle";
+import { Rectangle } from "../../../../../misc/geometry/shapes/Rectangle";
 import { CanvasItemTag } from "../models/CanvasItem";
 import { EditorFacade } from "../../../EditorFacade";
 

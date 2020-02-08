@@ -1,6 +1,5 @@
-import { ViewType } from "../../../../../model/View";
-import { ViewGroupJson } from "../../../../../world_generator/importers/svg/WorldMapJson";
-import { ToolType } from "./Tool";
+import { ViewType } from "../../../../../common/views/View";
+import { ViewGroupJson } from "../../../../../common/importers/ViewImporter";
 
 export interface IViewImporter {
     type: ViewType;

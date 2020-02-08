@@ -1,12 +1,8 @@
 import { Scene } from 'babylonjs';
-import { SvgCanvasImporter } from '../editor/controllers/canvases/svg/SvgCanvasImporter';
+import { ViewImporter } from '../common/importers/ViewImporter';
 import { IViewImporter } from '../editor/controllers/canvases/svg/tools/IToolImporter';
-import { IConfigReader } from '../world_generator/importers/IConfigReader';
-import { GlobalConfig } from '../world_generator/importers/svg/GlobalSectionParser';
-import { SvgConfigReader } from '../world_generator/importers/svg/SvgConfigReader';
-import { CreateMeshModifier } from '../world_generator/modifiers/CreateMeshModifier';
-import { GameObjectFactory } from '../world_generator/services/GameObjectFactory';
-import { GameObjectTemplate } from '../world_generator/services/GameObjectTemplate';
+import { CreateMeshModifier } from './import/CreateMeshModifier';
+import { GameObjectFactory } from './import/GameObjectFactory';
 import { IViewConverter } from './models/objects/IViewConverter';
 import { MeshObject } from './models/objects/MeshObject';
 import { MeshViewConverter } from './models/objects/MeshViewConverter';
@@ -39,7 +35,7 @@ export class GameFacade {
     gameObjectFactory: GameObjectFactory;
 
     importers: IViewImporter[];
-    viewImporter: SvgCanvasImporter;
+    viewImporter: ViewImporter;
     viewConverters: IViewConverter[] = [];
 
     gameStoreBuilder: GameStoreBuilder;
@@ -82,10 +78,6 @@ export class GameFacade {
     }
     
     generateWorld(worldMap: string): Promise<MeshObject[]> {
-        const {globalConfig} = this.getConfigReader().read(worldMap);
-
-        this.gameObjectStore.globalConfig = globalConfig;
-
         // this.gameObjectBuilder.build(worldMap);
         this.gameObjectStore = this.gameStoreBuilder.build(worldMap);
 
@@ -96,13 +88,5 @@ export class GameFacade {
                 return this.gameObjectStore.getMeshObjects();
             }
         )
-    }
-
-    generateMetaData(worldMap: string): {gameObjectTemplates: GameObjectTemplate[], globalConfig: GlobalConfig} {
-        return this.getConfigReader().read(worldMap);
-    }
-
-    private getConfigReader(): IConfigReader {
-        return new SvgConfigReader();
     }
 }

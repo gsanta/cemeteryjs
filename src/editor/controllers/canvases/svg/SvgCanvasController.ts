@@ -1,4 +1,4 @@
-import { FileFormat } from '../../../../WorldGenerator';
+import { FileFormat } from '../../../../game/import/WorldGenerator';
 import { EditorFacade } from '../../EditorFacade';
 import { GameObjectForm } from '../../forms/GameObjectForm';
 import { CanvasViewSettings, AbstractCanvasController } from '../AbstractCanvasController';
@@ -8,20 +8,21 @@ import { MouseHandler } from './handlers/MouseHandler';
 import { Model3DController } from './Model3DController';
 import { ViewStore } from './models/ViewStore';
 import { SvgCanvasExporter } from './SvgCanvasExporter';
-import { SvgCanvasImporter } from './SvgCanvasImporter';
+import { ViewImporter } from '../../../../common/importers/ViewImporter';
 import { CameraTool } from './tools/CameraTool';
 import { DeleteTool } from './tools/DeleteTool';
 import { MoveAndSelectTool } from './tools/MoveAndSelectTool';
 import { PathExporter } from './tools/path/PathExporter';
-import { PathImporter } from './tools/path/PathImporter';
-import { PathView, PathTool } from './tools/path/PathTool';
+import { PathImporter } from '../../../../common/importers/PathImporter';
 import { RectangleExporter } from './tools/rectangle/RectangleExporter';
-import { RectangleImporter } from './tools/rectangle/RectangleImporter';
+import { MeshViewImporter } from '../../../../common/importers/RectangleImporter';
 import { RectangleTool } from './tools/rectangle/RectangleTool';
 import { Tool, ToolType } from './tools/Tool';
 import { ToolService } from './tools/ToolService';
 import { PathForm } from '../../forms/PathForm';
 import { GameObjectFormState } from '../../forms/GameObjectFormState';
+import { PathView } from '../../../../common/views/PathView';
+import { PathTool } from './tools/path/PathTool';
 
 export class SvgCanvasController extends AbstractCanvasController {
     name = '2D View';
@@ -53,8 +54,8 @@ export class SvgCanvasController extends AbstractCanvasController {
         this.services = services;
         
         this.mouseController = new MouseHandler(this.services);
-        this.writer = new SvgCanvasImporter([
-            new RectangleImporter(rect => this.services.viewStore.addRect(rect)),
+        this.writer = new ViewImporter([
+            new MeshViewImporter(rect => this.services.viewStore.addRect(rect)),
             new PathImporter((path: PathView) => this.services.viewStore.addPath(path))
         ]);
         this.reader = new SvgCanvasExporter(this);

@@ -1,4 +1,4 @@
-import { GameObject } from '../../../world_generator/services/GameObject';
+import { MeshView } from '../../../common/views/MeshView';
 import { SvgCanvasController } from '../canvases/svg/SvgCanvasController';
 import { EventDispatcher } from '../events/EventDispatcher';
 import { Events } from '../events/Events';
@@ -18,7 +18,7 @@ export enum GameObjectPropType {
 }
 
 export class GameObjectForm extends AbstractForm<GameObjectPropType> {
-    gameObject: GameObject;
+    gameObject: MeshView;
 
     private services: EditorFacade;
     private eventDispatcher: EventDispatcher;

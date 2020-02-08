@@ -1,5 +1,5 @@
-import { WorldItemShape } from "../../../../../world_generator/services/GameObject";
-import { Rectangle } from "../../../../../model/geometry/shapes/Rectangle";
+import { WorldItemShape } from "../../../../../common/views/MeshView";
+import { Rectangle } from "../../../../../misc/geometry/shapes/Rectangle";
 
 export enum CanvasItemTag {
     SELECTED = 'selected',

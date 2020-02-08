@@ -1,4 +1,4 @@
-import { AnimationName, GameObject } from '../../../world_generator/services/GameObject';
+import { AnimationName, MeshView } from '../../../common/views/MeshView';
 import { MeshObject } from '../../models/objects/MeshObject';
 
 export class CharacterMovement {

@@ -1,9 +1,8 @@
-import { Point } from "../../../../../../model/geometry/shapes/Point";
-import { ViewGroupJson } from "../../../../../../world_generator/importers/svg/WorldMapJson";
-import { IViewImporter } from "../IToolImporter";
-import { ToolType } from "../Tool";
-import { PathView } from "./PathTool";
-import { ViewType } from "../../../../../../model/View";
+import { Point } from "../../misc/geometry/shapes/Point";
+import { IViewImporter } from "../../editor/controllers/canvases/svg/tools/IToolImporter";
+import { ViewType } from "../views/View";
+import { PathView } from "../views/PathView";
+import { ViewGroupJson } from "./ViewImporter";
 
 export interface PathJson {
     circle: {

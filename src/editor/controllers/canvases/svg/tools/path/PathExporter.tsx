@@ -1,9 +1,9 @@
-import { ViewType } from "../../../../../../model/View";
+import { ViewType } from "../../../../../../common/views/View";
 import { PathComponent } from "../../../../../gui/canvases/svg/PathComponent";
 import { EditorFacade } from "../../../../EditorFacade";
 import { IViewExporter } from "../IToolExporter";
-import { PathView } from "./PathTool";
 import React = require("react");
+import { PathView } from "../../../../../../common/views/PathView";
 
 export class PathExporter implements IViewExporter {
     type = ViewType.Path;

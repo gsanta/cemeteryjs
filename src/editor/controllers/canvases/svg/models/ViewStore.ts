@@ -1,12 +1,12 @@
-import { Point } from '../../../../../model/geometry/shapes/Point';
-import { Polygon } from '../../../../../model/geometry/shapes/Polygon';
-import { Rectangle } from '../../../../../model/geometry/shapes/Rectangle';
-import { without } from '../../../../../world_generator/utils/Functions';
-import { PathView } from '../tools/path/PathTool';
+import { Point } from '../../../../../misc/geometry/shapes/Point';
+import { Polygon } from '../../../../../misc/geometry/shapes/Polygon';
+import { Rectangle } from '../../../../../misc/geometry/shapes/Rectangle';
+import { without } from '../../../../../game/import/Functions';
 import { CanvasItemTag } from './CanvasItem';
-import { GameObject } from '../../../../../world_generator/services/GameObject';
-import { View, ViewType } from '../../../../../model/View';
-import { Group } from '../../../../../model/views/Group';
+import { MeshView } from '../../../../../common/views/MeshView';
+import { View, ViewType } from '../../../../../common/views/View';
+import { PathView } from '../../../../../common/views/PathView';
+import { Group } from '../../../../../common/views/Group';
 
 export enum Layers {
     PREVIEW = -1,
@@ -38,7 +38,7 @@ export class ViewStore {
         this.tags.set(arrow, new Set());
     }
 
-    addRect(gameObject: GameObject): GameObject {
+    addRect(gameObject: MeshView): MeshView {
         this.views.push(gameObject);
 
         this.layers.set(gameObject, 10);
@@ -104,8 +104,8 @@ export class ViewStore {
         return this.views.filter(v => v.viewType === viewType);
     }
 
-    getGameObjects(): GameObject[] {
-        return <GameObject[]> this.views.filter(view => view.viewType === ViewType.GameObject);
+    getGameObjects(): MeshView[] {
+        return <MeshView[]> this.views.filter(view => view.viewType === ViewType.GameObject);
     }
 
     getPathes(): PathView[] {
@@ -120,8 +120,8 @@ export class ViewStore {
         return this.getTaggedItems(CanvasItemTag.SELECTED);
     }
 
-    getSelectedGameObjects(): GameObject[] {
-        return <GameObject[]> this.getSelectedViews().filter(v => v.viewType === ViewType.GameObject);
+    getSelectedGameObjects(): MeshView[] {
+        return <MeshView[]> this.getSelectedViews().filter(v => v.viewType === ViewType.GameObject);
     }
 
     removeSelectionAll() {

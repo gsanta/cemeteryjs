@@ -1,14 +1,14 @@
 import { Color3, Engine, HemisphericLight, Mesh, MeshBuilder, Scene, UniversalCamera, Vector3 } from 'babylonjs';
 import { AbstractModelLoader } from '../../../../common/AbstractModelLoader';
 import { GameFacade } from '../../../../game/GameFacade';
-import { FileFormat } from '../../../../WorldGenerator';
+import { FileFormat } from '../../../../game/import/WorldGenerator';
 import { EditorFacade } from '../../EditorFacade';
 import { Events } from "../../events/Events";
 import { EditorCamera } from './EditorCamera';
 import { HelperMeshes } from './HelperMeshes';
 import { WebglCanvasWriter } from './WebglCanvasImporter';
 import { CanvasViewSettings, AbstractCanvasController } from '../AbstractCanvasController';
-import { CreateMeshModifier } from '../../../../world_generator/modifiers/CreateMeshModifier';
+import { CreateMeshModifier } from '../../../../game/import/CreateMeshModifier';
 (<any> window).earcut = require('earcut');
 
 export class WebglCanvasController extends AbstractCanvasController {

@@ -1,4 +1,4 @@
-import { ViewType, View } from "../../../model/View";
+import { ViewType, View } from "../../../common/views/View";
 import { IGameObject } from "./IGameObject";
 
 export interface IViewConverter {

@@ -1,7 +1,7 @@
 import { GameFacade } from "../../GameFacade";
 import { IEventListener } from "./IEventListener";
 import { GameEvent } from "../GameEventManager";
-import { GameObject, AnimationName } from "../../../world_generator/services/GameObject";
+import { MeshView, AnimationName } from "../../../common/views/MeshView";
 import { MeshObject } from "../../models/objects/MeshObject";
 
 export class AnimationPlayer implements IEventListener {

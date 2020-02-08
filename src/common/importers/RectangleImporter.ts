@@ -1,11 +1,10 @@
 
-import { Point } from '../../../../../../model/geometry/shapes/Point';
-import { Rectangle } from '../../../../../../model/geometry/shapes/Rectangle';
-import { ViewGroupJson } from '../../../../../../world_generator/importers/svg/WorldMapJson';
-import { WorldItemShape, GameObject } from '../../../../../../world_generator/services/GameObject';
-import { IViewImporter } from '../IToolImporter';
-import { ToolType } from '../Tool';
-import { ViewType } from '../../../../../../model/View';
+import { IViewImporter } from '../../editor/controllers/canvases/svg/tools/IToolImporter';
+import { Point } from '../../misc/geometry/shapes/Point';
+import { Rectangle } from '../../misc/geometry/shapes/Rectangle';
+import { ViewType } from '../views/View';
+import { MeshView } from '../views/MeshView';
+import { ViewGroupJson } from './ViewImporter';
 
 export interface RectJson {
     _attributes: {
@@ -21,11 +20,11 @@ export interface RectangleGroupJson extends ViewGroupJson {
     g: RectJson[];
 }
 
-export class RectangleImporter implements IViewImporter {
+export class MeshViewImporter implements IViewImporter {
     type = ViewType.GameObject;
-    private addGameObject: (rect: GameObject) => void;
+    private addGameObject: (rect: MeshView) => void;
 
-    constructor(addGameObject: (gameObject: GameObject) => void) {
+    constructor(addGameObject: (gameObject: MeshView) => void) {
         this.addGameObject = addGameObject;
     }
 
@@ -48,7 +47,7 @@ export class RectangleImporter implements IViewImporter {
 
             const rectangle = new Rectangle(new Point(x, y), new Point(x + width, y + height));
 
-            const gameObject: GameObject = new GameObject(null, rectangle, name);
+            const gameObject: MeshView = new MeshView(null, rectangle, name);
             gameObject.type = type;
             gameObject.rotation = rotation;
             gameObject.modelPath = model;

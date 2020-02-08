@@ -1,7 +1,7 @@
 import { ToolType, Tool } from "./Tool";
 import { IViewExporter } from "./IToolExporter";
 import { IViewImporter } from "./IToolImporter";
-import { ViewType } from "../../../../../model/View";
+import { ViewType } from "../../../../../common/views/View";
 
 export class ToolService {
     private tools: Tool[] = [];

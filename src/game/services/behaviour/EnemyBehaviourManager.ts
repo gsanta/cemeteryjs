@@ -2,7 +2,7 @@ import { IBehaviour } from "./IBehaviour";
 import { IEventListener } from "../listeners/IEventListener";
 import { GameEvent } from "../GameEventManager";
 import { GameFacade } from "../../GameFacade";
-import { GameObject } from "../../../world_generator/services/GameObject";
+import { MeshView } from "../../../common/views/MeshView";
 import { MeshObject } from "../../models/objects/MeshObject";
 
 export class EnemyBehaviourManager  implements IEventListener {

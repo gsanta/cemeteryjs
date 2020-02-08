@@ -1,18 +1,13 @@
 import * as React from 'react';
-import { AppContextType, AppContext } from '../../Context';
 import styled from 'styled-components';
-import { colors } from '../../styles';
-import { WgDefinitionAttributes } from '../../../../world_generator/importers/svg/WorldMapJson';
-import { Rectangle } from '../../../../model/geometry/shapes/Rectangle';
-import { sort } from '../../../../model/geometry/utils/Functions';
 import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvasController';
-import { CanvasItemTag } from '../../../controllers/canvases/svg/models/CanvasItem';
 import { AbstractSelectionTool } from '../../../controllers/canvases/svg/tools/AbstractSelectionTool';
-import { ToolType } from '../../../controllers/canvases/svg/tools/Tool';
 import { CameraTool } from '../../../controllers/canvases/svg/tools/CameraTool';
-import { PathComponent } from './PathComponent';
+import { ToolType } from '../../../controllers/canvases/svg/tools/Tool';
+import { AppContext, AppContextType } from '../../Context';
+import { colors } from '../../styles';
 import { PathMarkersComponent } from './PathMarkersComponent';
-import { ViewType } from '../../../../model/View';
+import { ViewType } from '../../../../common/views/View';
 
 const EditorComponentStyled = styled.div`
     width: 100%;

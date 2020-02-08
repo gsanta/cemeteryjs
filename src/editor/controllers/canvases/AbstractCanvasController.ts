@@ -1,4 +1,4 @@
-import { FileFormat } from '../../../WorldGenerator';
+import { FileFormat } from '../../../game/import/WorldGenerator';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;

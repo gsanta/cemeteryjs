@@ -1,7 +1,7 @@
-import { GameObject } from "../../../world_generator/services/GameObject";
+import { MeshView } from "../../../common/views/MeshView";
 import { MeshObject } from "./MeshObject";
 import { GameFacade } from "../../GameFacade";
-import { ViewType } from "../../../model/View";
+import { ViewType } from "../../../common/views/View";
 
 
 export class MeshViewConverter {
@@ -12,7 +12,7 @@ export class MeshViewConverter {
         this.gameFacade = gameFacade;
     }
 
-    convert(gameObject: GameObject): MeshObject {
+    convert(gameObject: MeshView): MeshObject {
         // viewType = ViewType.GameObject;
         // groupContext: GroupContext;
         // type: string;

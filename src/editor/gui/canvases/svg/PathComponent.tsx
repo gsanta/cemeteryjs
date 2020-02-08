@@ -1,7 +1,7 @@
 
 import * as React from 'react';
-import { PathView } from '../../../controllers/canvases/svg/tools/path/PathTool';
-import { Point } from '../../../../model/geometry/shapes/Point';
+import { Point } from '../../../../misc/geometry/shapes/Point';
+import { PathView } from '../../../../common/views/PathView';
 
 export interface ArrowComponentProps {
     item: PathView;

@@ -1,7 +1,7 @@
-import { GameObject, WorldItemShape } from './GameObject';
-import { Shape } from '../../model/geometry/shapes/Shape';
-import { Point } from '../../model/geometry/shapes/Point';
-import { GameFacade } from '../../game/GameFacade';
+import { MeshView, WorldItemShape } from '../../common/views/MeshView';
+import { Shape } from '../../misc/geometry/shapes/Shape';
+import { Point } from '../../misc/geometry/shapes/Point';
+import { GameFacade } from '../GameFacade';
 
 export interface GameObjectConfig {
     type?: string;
@@ -27,10 +27,10 @@ export class GameObjectFactory {
         this.gameFacade = gameFacade;
     }
 
-    create(gameObjectConfig: Partial<GameObject>): GameObject {
+    create(gameObjectConfig: Partial<MeshView>): MeshView {
 
         const getMeshFunc = (meshName: string) => this.gameFacade.meshStore.getMesh(meshName);
-        const gameObject = new GameObject(getMeshFunc, gameObjectConfig.dimensions, gameObjectConfig.name);
+        const gameObject = new MeshView(getMeshFunc, gameObjectConfig.dimensions, gameObjectConfig.name);
         gameObject.rotation = gameObjectConfig.rotation;
         gameObjectConfig.color && (gameObject.color = gameObjectConfig.color);
         gameObjectConfig.texturePath  && (gameObject.texturePath = gameObjectConfig.texturePath);
@@ -40,11 +40,11 @@ export class GameObjectFactory {
         return gameObject;
     }
 
-    clone(newType: string, gameObject: GameObject): GameObject {
+    clone(newType: string, gameObject: MeshView): MeshView {
         const id = this.getNextId(newType);
 
         const getMeshFunc = (meshName: string) => this.gameFacade.meshStore.getMesh(meshName);
-        const clone = new GameObject(getMeshFunc, gameObject.dimensions, newType);
+        const clone = new MeshView(getMeshFunc, gameObject.dimensions, newType);
 
         clone.children = [...gameObject.children];
         clone.rotation = gameObject.rotation;

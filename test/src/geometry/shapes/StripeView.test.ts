@@ -1,7 +1,7 @@
-import { StripeView } from "../../../../src/model/geometry/shapes/StripeView";
-import { Point } from "../../../../src/model/geometry/shapes/Point";
-import { Polygon } from "../../../../src/model/geometry/shapes/Polygon";
-import { Segment } from "../../../../src/model/geometry/shapes/Segment";
+import { StripeView } from "../../../../src/misc/geometry/shapes/StripeView";
+import { Point } from "../../../../src/misc/geometry/shapes/Point";
+import { Polygon } from "../../../../src/misc/geometry/shapes/Polygon";
+import { Segment } from "../../../../src/misc/geometry/shapes/Segment";
 
 describe(`StripeView`, () => {
     describe(`getSlope`, () => {

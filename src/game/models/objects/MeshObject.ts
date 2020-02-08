@@ -1,15 +1,12 @@
 
-import { ViewType } from "../../../model/View";
-import { GroupContext } from "../../../model/views/GroupContext";
-import { Rectangle } from "../../../model/geometry/shapes/Rectangle";
-import { GameObject, AnimationName } from "../../../world_generator/services/GameObject";
-import { BehaviourType } from "../../services/behaviour/IBehaviour";
-import { Mesh } from "babylonjs/Meshes/mesh";
-import { Point } from "../../../model/geometry/shapes/Point";
-import { toVector3 } from "../../../model/geometry/utils/GeomUtils";
 import { Vector3 } from "babylonjs";
-import { IGameObject, GameObjectType } from "./IGameObject";
-
+import { Mesh } from "babylonjs/Meshes/mesh";
+import { Point } from "../../../misc/geometry/shapes/Point";
+import { Rectangle } from "../../../misc/geometry/shapes/Rectangle";
+import { toVector3 } from "../../../misc/geometry/utils/GeomUtils";
+import { BehaviourType } from "../../services/behaviour/IBehaviour";
+import { GameObjectType, IGameObject } from "./IGameObject";
+import { GroupContext } from "../../../common/views/GroupContext";
 
 export class MeshObject implements IGameObject {
     objectType = GameObjectType.MeshObject;

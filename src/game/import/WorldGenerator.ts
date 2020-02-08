@@ -1,5 +1,5 @@
 import { Mesh } from 'babylonjs';
-import { MeshObject } from './game/models/objects/MeshObject';
+import { MeshObject } from '../models/objects/MeshObject';
 
 export enum FileFormat {
     TEXT, SVG

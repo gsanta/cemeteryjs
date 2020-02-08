@@ -1,11 +1,11 @@
 import { Mesh, Vector3 } from 'babylonjs';
 import { MeshStore } from '../../game/models/stores/MeshStore';
 import { BehaviourType } from '../../game/services/behaviour/IBehaviour';
-import { Point } from '../../model/geometry/shapes/Point';
-import { Rectangle } from '../../model/geometry/shapes/Rectangle';
-import { toVector3 } from '../../model/geometry/utils/GeomUtils';
-import { ViewType, View } from '../../model/View';
-import { GroupContext } from '../../model/views/GroupContext';
+import { Point } from '../../misc/geometry/shapes/Point';
+import { Rectangle } from '../../misc/geometry/shapes/Rectangle';
+import { toVector3 } from '../../misc/geometry/utils/GeomUtils';
+import { View, ViewType } from './View';
+import { GroupContext } from './GroupContext';
 
 export enum WorldItemShape {
     RECTANGLE = 'rect',
@@ -26,7 +26,7 @@ export enum AnimationName {
 /**
  * `GameObject` represents any distinguishable item in the parsed world (think of it as a mesh, e.g walls, rooms, creatures).
  */
-export class GameObject implements View {
+export class MeshView implements View {
     viewType = ViewType.GameObject;
     groupContext: GroupContext;
     type: string;
@@ -34,8 +34,8 @@ export class GameObject implements View {
     name: string;
     dimensions: Rectangle;
     rotation: number;
-    children: GameObject[] = [];
-    parent: GameObject;
+    children: MeshView[] = [];
+    parent: MeshView;
     texturePath: string;
     modelPath: string;
     thumbnailPath: string;
@@ -59,11 +59,11 @@ export class GameObject implements View {
         this.groupContext = new GroupContext();
     }
 
-    addChild(worldItem: GameObject) {
+    addChild(worldItem: MeshView) {
         this.children.push(worldItem);
     }
 
-    equalTo(worldItem: GameObject) {
+    equalTo(worldItem: MeshView) {
         return (
             this.name === worldItem.name &&
             this.dimensions.equalTo(worldItem.dimensions) &&
