@@ -1,6 +1,7 @@
 import { GameObject } from '../../../world_generator/services/GameObject';
 import { SvgCanvasController } from '../canvases/svg/SvgCanvasController';
 import { AbstractForm } from './AbstractForm';
+import { EditorFacade } from '../EditorFacade';
 
 export enum GlobalSettingsPropType {
     IMPORT_FILE = 'import file'
@@ -9,11 +10,11 @@ export enum GlobalSettingsPropType {
 export class GlobalSettingsForm extends AbstractForm<GlobalSettingsPropType> {
     gameObject: GameObject;
 
-    private canvasController: SvgCanvasController;
+    private services: EditorFacade;
 
-    constructor(canvasController: SvgCanvasController) {
+    constructor(services: EditorFacade) {
         super();
-        this.canvasController = canvasController;
+        this.services = services;
     }
 
     protected getProp(prop: GlobalSettingsPropType) {}
@@ -21,7 +22,9 @@ export class GlobalSettingsForm extends AbstractForm<GlobalSettingsPropType> {
     protected setProp(val: any, prop: GlobalSettingsPropType) {
         switch (prop) {
             case GlobalSettingsPropType.IMPORT_FILE:
-                this.canvasController.writer.import(val.data);
+                this.services.viewStore.clear();
+                this.services.svgCanvasController.writer.import(val.data);
+                this.services.viewStore.getGameObjects().filter(item => item.modelPath).forEach(item => this.services.svgCanvasController.model3dController.set3dModelForCanvasItem(item));
         }
     }
 }

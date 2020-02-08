@@ -1,9 +1,8 @@
-import { ViewGroupJson } from "../../../../../../world_generator/importers/svg/WorldMapJson";
-import { ToolType } from "../Tool";
-import { IToolImporter } from "../IToolImporter";
-import { PathView } from "./PathTool";
 import { Point } from "../../../../../../model/geometry/shapes/Point";
-import { EditorFacade } from "../../../../EditorFacade";
+import { ViewGroupJson } from "../../../../../../world_generator/importers/svg/WorldMapJson";
+import { IViewImporter } from "../IToolImporter";
+import { ToolType } from "../Tool";
+import { PathView } from "./PathTool";
 import { ViewType } from "../../../../../../model/View";
 
 export interface PathJson {
@@ -27,8 +26,8 @@ export interface PathGroupJson extends ViewGroupJson {
     g: PathJson[] | PathJson;
 }
 
-export class PathImporter implements IToolImporter {
-    type = ToolType.PATH;
+export class PathImporter implements IViewImporter {
+    type = ViewType.Path;
     private addPath: (path: PathView) => void;
 
     constructor(addPath: (path: PathView) => void) {

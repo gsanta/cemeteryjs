@@ -1,13 +1,13 @@
 import { ToolType, Tool } from "./Tool";
-import { IToolExporter } from "./IToolExporter";
-import { IToolImporter } from "./IToolImporter";
+import { IViewExporter } from "./IToolExporter";
+import { IViewImporter } from "./IToolImporter";
 
 export class ToolService {
     private tools: Tool[] = [];
-    private toolImporters: IToolImporter[] = [];
-    private toolExporters: IToolExporter[] = [];
+    private toolImporters: IViewImporter[] = [];
+    private toolExporters: IViewExporter[] = [];
 
-    constructor(tools: Tool[], toolImporters: IToolImporter[], toolExporters: IToolExporter[]) {
+    constructor(tools: Tool[], toolImporters: IViewImporter[], toolExporters: IViewExporter[]) {
         this.tools = tools;
         this.toolImporters = toolImporters;
         this.toolExporters = toolExporters;
@@ -17,19 +17,19 @@ export class ToolService {
         return this.tools.find(tool => tool.type === toolType);
     }
 
-    getToolImporter(toolType: ToolType): IToolImporter {
+    getToolImporter(toolType: ToolType): IViewImporter {
         return this.toolImporters.find(tool => tool.type === toolType);
     }
 
-    getAllToolImporters(): IToolImporter[] {
+    getAllToolImporters(): IViewImporter[] {
         return this.toolImporters;
     }
 
-    getToolExporter(toolType: ToolType): IToolExporter {
+    getToolExporter(toolType: ToolType): IViewExporter {
         return this.toolExporters.find(tool => tool.type === toolType);
     }
 
-    getAllToolExporters(): IToolExporter[] {
+    getAllToolExporters(): IViewExporter[] {
         return this.toolExporters;
     }
 }

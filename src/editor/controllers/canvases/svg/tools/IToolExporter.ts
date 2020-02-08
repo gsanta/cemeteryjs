@@ -1,6 +1,7 @@
-import { IToolType } from "./IToolType";
+import { ViewType } from "../../../../../model/View";
 
 
-export interface IToolExporter extends IToolType {
+export interface IViewExporter {
+    type: ViewType;
     export(onlyData: boolean): JSX.Element;
 } 

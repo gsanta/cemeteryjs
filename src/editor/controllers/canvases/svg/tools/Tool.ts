@@ -11,7 +11,8 @@ export enum ToolType {
     PATH = 'arrow'
 }
 
-export interface Tool extends IToolType {
+export interface Tool {
+    type: ToolType;
     supportsRectSelection(): boolean;
     down();
     drag();

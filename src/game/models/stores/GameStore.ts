@@ -6,7 +6,6 @@ import { IGameObject, GameObjectType } from '../objects/IGameObject';
 
 export class GameStore {
     globalConfig: GlobalConfig;
-    gameObjects: GameObject[] = [];
     meshObjects: MeshObject[] = [];
     paths: PathView[] = [];
 
@@ -16,18 +15,12 @@ export class GameStore {
         this.globalConfig = globalConfig;
     }
 
-    getPlayer(): GameObject {
-        return this.gameObjects.find(gameObject => gameObject.name === 'player');
+    getPlayer(): MeshObject {
+        return <MeshObject> this.objs.find(gameObject => gameObject.name === 'player');
     }
 
-    getEnemies(): GameObject[] {
-        return this.gameObjects.filter(gameObject => gameObject.name === 'enemy');
-    }
-
-    addGameObject(gameObject: GameObject): GameObject {
-        this.gameObjects.push(gameObject);
-
-        return gameObject;
+    getEnemies(): MeshObject[] {
+        return <MeshObject[]> this.objs.filter(gameObject => gameObject.name === 'enemy');
     }
 
     addPath(arrow: PathView) {
@@ -43,7 +36,7 @@ export class GameStore {
     }
 
     clear(): void {
-        this.gameObjects = [];
         this.paths = [];
+        this.objs = [];
     }
 }

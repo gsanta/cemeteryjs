@@ -16,7 +16,7 @@ import { IGameObjectBuilder } from '../world_generator/importers/IGameObjectBuil
 import { ModifierExecutor, defaultModifiers } from '../world_generator/services/ModifierExecutor';
 import { GameObjectFactory } from '../world_generator/services/GameObjectFactory';
 import { ViewStore } from '../editor/controllers/canvases/svg/models/ViewStore';
-import { IToolImporter } from '../editor/controllers/canvases/svg/tools/IToolImporter';
+import { IViewImporter } from '../editor/controllers/canvases/svg/tools/IToolImporter';
 import { RectangleImporter } from '../editor/controllers/canvases/svg/tools/rectangle/RectangleImporter';
 import { PathImporter } from '../editor/controllers/canvases/svg/tools/path/PathImporter';
 import { GameObject } from '../world_generator/services/GameObject';
@@ -28,8 +28,11 @@ import { SvgGameObjectBuilder } from '../world_generator/importers/svg/SvgGameOb
 import { CreateMeshModifier } from '../world_generator/modifiers/CreateMeshModifier';
 import { IViewConverter } from './models/objects/IViewConverter';
 import { MeshViewConverter } from './models/objects/MeshViewConverter';
+import { SvgCanvasImporter } from '../editor/controllers/canvases/svg/SvgCanvasImporter';
+import { ViewType } from '../model/View';
+import { GameStoreBuilder } from './models/stores/GameStoreBuilder';
 
-export class GameFacade implements IWorldFacade<Mesh> {
+export class GameFacade {
     meshStore: MeshStore;
     gameObjectStore: GameStore;
     inputCommandStore: InputCommandStore;
@@ -44,8 +47,11 @@ export class GameFacade implements IWorldFacade<Mesh> {
     gameObjectBuilder: IGameObjectBuilder;
     gameObjectFactory: GameObjectFactory;
 
-    importers: IToolImporter[];
+    importers: IViewImporter[];
+    viewImporter: SvgCanvasImporter;
     viewConverters: IViewConverter[] = [];
+
+    gameStoreBuilder: GameStoreBuilder;
 
     scene: Scene;
 
@@ -69,10 +75,8 @@ export class GameFacade implements IWorldFacade<Mesh> {
 
         this.gameObjectBuilder = this.getWorldItemBuilder();
         this.gameObjectFactory = new GameObjectFactory(this);
-        this.importers = [
-            new RectangleImporter(rect => this.gameObjectStore.addGameObject(rect)),
-            new PathImporter(path => this.gameObjectStore.addPath(path))
-        ]
+        this.gameStoreBuilder = new GameStoreBuilder(this);
+        
 
         this.viewConverters = [
             new MeshViewConverter(this)
@@ -92,7 +96,8 @@ export class GameFacade implements IWorldFacade<Mesh> {
 
         this.gameObjectStore.globalConfig = globalConfig;
 
-        this.gameObjectBuilder.build(worldMap);
+        // this.gameObjectBuilder.build(worldMap);
+        this.gameObjectStore = this.gameStoreBuilder.build(worldMap);
 
         return this.modelLoader.loadAll(this.gameObjectStore.gameObjects).then(
             () => {

@@ -2,12 +2,13 @@ import { SvgCanvasController } from "../../SvgCanvasController";
 import { PathComponent } from "../../../../../gui/canvases/svg/PathComponent";
 import React = require("react");
 import { ToolType } from "../Tool";
-import { IToolExporter } from "../IToolExporter";
+import { IViewExporter } from "../IToolExporter";
 import { PathView } from "./PathTool";
 import { EditorFacade } from "../../../../EditorFacade";
+import { ViewType } from "../../../../../../model/View";
 
-export class PathExporter implements IToolExporter {
-    type = ToolType.PATH;
+export class PathExporter implements IViewExporter {
+    type = ViewType.Path;
     private services: EditorFacade;
 
     constructor(services: EditorFacade) {

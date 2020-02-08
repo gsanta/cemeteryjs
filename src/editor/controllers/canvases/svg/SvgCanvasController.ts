@@ -53,7 +53,7 @@ export class SvgCanvasController extends AbstractCanvasController {
         this.services = services;
         
         this.mouseController = new MouseHandler(this.services);
-        this.writer = new SvgCanvasImporter(this.services, services.eventDispatcher);
+        this.writer = new SvgCanvasImporter();
         this.reader = new SvgCanvasExporter(this);
         this.model3dController = new Model3DController(this);
 

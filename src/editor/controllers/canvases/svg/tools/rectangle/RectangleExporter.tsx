@@ -4,12 +4,13 @@ import { sort, minBy } from "../../../../../../model/geometry/utils/Functions";
 import { Rectangle } from "../../../../../../model/geometry/shapes/Rectangle";
 import { CanvasItemTag } from "../../models/CanvasItem";
 import { ToolType } from "../Tool";
-import { IToolExporter } from "../IToolExporter";
+import { IViewExporter } from "../IToolExporter";
 import { GameObject } from "../../../../../../world_generator/services/GameObject";
 import { EditorFacade } from "../../../../EditorFacade";
+import { ViewType } from "../../../../../../model/View";
 
-export class RectangleExporter implements IToolExporter {
-    type = ToolType.RECTANGLE;
+export class RectangleExporter implements IViewExporter {
+    type = ViewType.GameObject;
     private services: EditorFacade;
 
     constructor(services: EditorFacade) {
