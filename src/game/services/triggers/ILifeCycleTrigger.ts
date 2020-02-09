@@ -1,7 +1,7 @@
 
 export enum LifeCycleEvent {
-    AfterRender,
-    Reset
+    AfterRender = 'AfterRender',
+    Reset = 'Reset'
 }
 
 export interface ILifeCycleTrigger {

@@ -11,11 +11,11 @@ export class RouteWalker implements IEventListener {
 
     constructor(gameFacade: GameFacade) {
         this.gameFacade = gameFacade;
-        this.initRoutes();
+        // this.initRoutes();
 
         this.events = [
             new GameEvent({lifeCycleEvent: LifeCycleEvent.AfterRender}, this.updateRoutes),
-            new GameEvent({lifeCycleEvent: LifeCycleEvent.Reset}, this.initRoutes)
+            // new GameEvent({lifeCycleEvent: LifeCycleEvent.Reset}, this.initRoutes)
         ]
     }
 
@@ -23,7 +23,7 @@ export class RouteWalker implements IEventListener {
 
     }
 
-    private initRoutes() {
+    initRoutes() {
         this.gameFacade.gameStore.getRouteObjects().forEach(route => {
             const meshObj = this.gameFacade.gameStore.getByName<MeshObject>(route.meshObjectName);
             const pathObj = this.gameFacade.gameStore.getByName<PathObject>(route.pathObjectName);

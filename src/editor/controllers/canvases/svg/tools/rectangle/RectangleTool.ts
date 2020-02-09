@@ -2,11 +2,11 @@ import { Rectangle } from '../../../../../../misc/geometry/shapes/Rectangle';
 import { WorldItemShape, MeshView } from '../../../../../../common/views/MeshView';
 import { EventDispatcher } from '../../../../events/EventDispatcher';
 import { Events } from '../../../../events/Events';
-import { SvgCanvasController } from '../../SvgCanvasController';
 import { AbstractSelectionTool } from '../AbstractSelectionTool';
 import { ToolType } from '../Tool';
 import { CanvasItemTag } from '../../models/CanvasItem';
 import { EditorFacade } from '../../../../EditorFacade';
+import { ViewType } from '../../../../../../common/views/View';
 
 export class RectangleTool extends AbstractSelectionTool {
     private eventDispatcher: EventDispatcher;
@@ -35,6 +35,9 @@ export class RectangleTool extends AbstractSelectionTool {
         gameObject.scale = 1;
         gameObject.color = 'grey';
 
+        gameObject.name = this.services.nameingService.generateName(ViewType.GameObject);
+
+
         this.services.viewStore.addRect(gameObject);
         this.services.viewStore.removeSelectionAll()
         this.services.viewStore.addTag([gameObject], CanvasItemTag.SELECTED);
@@ -61,6 +64,7 @@ export class RectangleTool extends AbstractSelectionTool {
         gameObject.texturePath = null;
         gameObject.scale = 1;
         gameObject.color = 'grey';
+        gameObject.name = this.services.nameingService.generateName(ViewType.GameObject);
 
         if (positions.length > 0) {
             this.lastPreviewRect = this.services.viewStore.addRect(gameObject);

@@ -35,7 +35,6 @@ export class PathComponent extends React.Component<ArrowComponentProps> {
         const highlight = this.props.onlyData ? null : (
             <polyline
                 points={points}
-                data-name={this.props.item.name}
                 onMouseOver={() => this.props.onMouseOver(this.props.item)}
                 onMouseOut={() => this.props.onMouseOut()}
                 fill="none"
@@ -49,9 +48,10 @@ export class PathComponent extends React.Component<ArrowComponentProps> {
                 {highlight}
                 <polyline
                     points={points}
+                    data-name={this.props.item.name}
                     fill="none"
                     stroke="grey"
-                    stroke-width="1"
+              ``      stroke-width="1"
                     marker-start="url(#arrow)" 
                     marker-mid="url(#arrow)" 
                     marker-end="url(#arrow)"

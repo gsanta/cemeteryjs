@@ -4,7 +4,7 @@ import { PathObject } from "./PathObject";
 
 
 export class RouteObject implements IGameObject {
-    readonly objectType: GameObjectType.RouteObject;
+    readonly objectType = GameObjectType.RouteObject;
     name: string;
     meshObjectName: string;
     pathObjectName: string;

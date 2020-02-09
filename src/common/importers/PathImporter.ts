@@ -49,6 +49,8 @@ export class PathImporter implements IViewImporter {
             path.name = json.polyline._attributes['data-name'];
             path.points = points;
 
+            path.points = path.points.map(p => new Point(p.x / 10, p.y / 10));
+
             this.addPath(path);
         });
     }

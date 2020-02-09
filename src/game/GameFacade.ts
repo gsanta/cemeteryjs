@@ -45,6 +45,8 @@ export class GameFacade {
 
     scene: Scene;
 
+    private routeWalker: RouteWalker;
+
     constructor(scene: Scene) {
         this.scene = scene;
         this.meshStore = new MeshStore(this);
@@ -59,7 +61,8 @@ export class GameFacade {
 
         this.gameEventManager.registerListener(new PlayerListener());
         this.gameEventManager.registerListener(new EnemyBehaviourManager(this, [new WanderBehaviour()]));
-        this.gameEventManager.registerListener(new RouteWalker(this));
+        this.routeWalker = new RouteWalker(this);
+        this.gameEventManager.registerListener(this.routeWalker);
         this.gameEventManager.registerListener(new AnimationPlayer(this));
         this.gameEventManager.registerTrigger(new KeyboardTrigger(this));
         this.gameEventManager.registerLifeCycleTrigger(new AfterRenderTrigger(this));
@@ -86,6 +89,7 @@ export class GameFacade {
     generateWorld(worldMap: string): Promise<MeshObject[]> {
         // this.gameObjectBuilder.build(worldMap);
         this.gameStoreBuilder.build(worldMap);
+        this.routeWalker.initRoutes();
 
         return this.modelLoader.loadAll(this.gameStore.getMeshObjects()).then(
             () => {
