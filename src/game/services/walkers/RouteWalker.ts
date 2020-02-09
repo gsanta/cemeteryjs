@@ -1,9 +1,8 @@
 import { IEventListener } from "../listeners/IEventListener";
 import { GameEvent } from "../GameEventManager";
 import { GameFacade } from "../../GameFacade";
-import { MeshObject } from "../../models/objects/MeshObject";
-import { PathObject } from "../../models/objects/PathObject";
 import { LifeCycleEvent } from "../triggers/ILifeCycleTrigger";
+import { RouteObject } from "../../models/objects/RouteObject";
 
 export class RouteWalker implements IEventListener {
     events: GameEvent[];
@@ -11,6 +10,7 @@ export class RouteWalker implements IEventListener {
 
     constructor(gameFacade: GameFacade) {
         this.gameFacade = gameFacade;
+        this.updateRoutes = this.updateRoutes.bind(this);
         // this.initRoutes();
 
         this.events = [
@@ -20,14 +20,41 @@ export class RouteWalker implements IEventListener {
     }
 
     private updateRoutes() {
+        this.gameFacade.gameStore.getRouteObjects()
+            .filter(route => route.isFinished === false)
+            .forEach(route => {
+                const meshObj = route.getMeshObject();
+                const pathObj = route.getPathObject();
 
+                const direction =  pathObj.points[route.currentStop].subtract(meshObj.getPosition()).normalize();
+
+                this.isNextStopReached(route) && route.currentStop++;
+                // route.currentStop === pathObj.points.length && (route.isFinished = true);
+
+                if (route.currentStop === pathObj.points.length) {
+                    route.reset();
+                }
+
+                meshObj.moveBy(direction.div(10));
+
+                // meshObj.setPosition(pathObj.points[0]);
+            });
+    }
+
+    private isNextStopReached(route: RouteObject): boolean {
+        const meshObj = route.getMeshObject();
+        const pathObj = route.getPathObject();
+
+        const meshPos = meshObj.getPosition();
+        const currentStopPos = pathObj.points[route.currentStop];
+
+        return meshPos.distanceTo(currentStopPos) < 1;
     }
 
     initRoutes() {
         this.gameFacade.gameStore.getRouteObjects().forEach(route => {
-            const meshObj = this.gameFacade.gameStore.getByName<MeshObject>(route.meshObjectName);
-            const pathObj = this.gameFacade.gameStore.getByName<PathObject>(route.pathObjectName);
-
+            const meshObj = route.getMeshObject();
+            const pathObj = route.getPathObject();
             meshObj.setPosition(pathObj.points[0]);
         });
     }

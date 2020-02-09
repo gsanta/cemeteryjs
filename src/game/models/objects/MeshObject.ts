@@ -7,6 +7,7 @@ import { toVector3 } from "../../../misc/geometry/utils/GeomUtils";
 import { BehaviourType } from "../../services/behaviour/IBehaviour";
 import { GameObjectType, IGameObject } from "./IGameObject";
 import { GroupContext } from "../../../common/views/GroupContext";
+import { RouteObject } from "./RouteObject";
 
 export class MeshObject implements IGameObject {
     readonly objectType = GameObjectType.MeshObject;
@@ -32,11 +33,13 @@ export class MeshObject implements IGameObject {
     activeBehaviour: BehaviourType;
     wanderAngle = 0;
     private getMesh: (meshName: string) => Mesh;
+    private getRouteFunc: () => RouteObject;
 
-    constructor(getMesh: (meshName: string) => Mesh) {
+    constructor(getMesh: (meshName: string) => Mesh, getRoute: () => RouteObject) {
         this.getMesh = getMesh;
         this.name = name;
         this.groupContext = new GroupContext();
+        this.getRouteFunc = getRoute;
     }
 
     addChild(meshObject: MeshObject) {
@@ -52,7 +55,8 @@ export class MeshObject implements IGameObject {
     }
 
     setPosition(point: Point) {
-        this.getMesh(this.meshName).setAbsolutePosition(toVector3(point));
+        const mesh = this.getMesh(this.name); 
+        mesh.setAbsolutePosition(toVector3(point));
     }
 
     // getAnimationByName(animationName: AnimationName, meshStore: MeshStore): Animation {
@@ -95,6 +99,10 @@ export class MeshObject implements IGameObject {
         } else {
             this.rotation += rad;
         }
+    }
+
+    getRoute(): RouteObject {
+        return this.getRouteFunc();
     }
 
     // private getAnimations(meshStore: MeshStore): Animation[] {

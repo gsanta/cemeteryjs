@@ -14,7 +14,21 @@ export class MeshViewConverter {
     }
 
     convert(gameObject: MeshView): void {
-        const meshObject = new MeshObject((meshName: string) => this.gameFacade.meshStore.getMesh(meshName));
+        if (gameObject.path) {
+            const routeObject = new RouteObject(
+                () => this.gameFacade.gameStore.getByName(gameObject.name),
+                () => this.gameFacade.gameStore.getByName(gameObject.path)
+            );
+
+            routeObject.name = `${gameObject.name}-route`;
+
+            this.gameFacade.gameStore.add(routeObject);
+        }
+
+        const meshObject = new MeshObject(
+            (meshName: string) => this.gameFacade.meshStore.getMesh(meshName),
+            () => this.gameFacade.gameStore.getByName(`${gameObject.name}-route`)
+        );
 
         meshObject.dimensions = gameObject.dimensions;
         meshObject.type = gameObject.type;
@@ -31,14 +45,6 @@ export class MeshViewConverter {
         meshObject.activeAnimation = gameObject.activeAnimation;
         meshObject.activeBehaviour = gameObject.activeBehaviour;
         meshObject.wanderAngle = gameObject.wanderAngle;
-
-        if (gameObject.path) {
-            const routeObject = new RouteObject();
-            routeObject.meshObjectName = gameObject.name;
-            routeObject.pathObjectName = gameObject.path;
-
-            this.gameFacade.gameStore.add(routeObject);
-        }
 
         this.gameFacade.gameStore.add(meshObject);
     }

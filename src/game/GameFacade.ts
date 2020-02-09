@@ -22,16 +22,18 @@ import { ResetTrigger } from './services/triggers/ResetTrigger';
 import { InputCommandStore } from './stores/InputCommandStore';
 import { PathViewConverter } from './models/objects/PathViewConverter';
 import { RouteWalker } from './services/walkers/RouteWalker';
+import { GameApi } from './GameApi';
 
 export class GameFacade {
+    gameApi: GameApi;
     meshStore: MeshStore;
     gameStore: GameStore;
     inputCommandStore: InputCommandStore;
 
     modelLoader: GameModelLoader;
-    keyboardListener: KeyboardTrigger;
-    keyboardTrigger: KeyboardTrigger;
-    gameEventManager: GameEventManager;
+    private keyboardListener: KeyboardTrigger;
+    private keyboardTrigger: KeyboardTrigger;
+    private gameEventManager: GameEventManager;
     characterMovement: CharacterMovement;
     animationPlayer: AnimationPlayer;
 
@@ -49,6 +51,7 @@ export class GameFacade {
 
     constructor(scene: Scene) {
         this.scene = scene;
+        this.gameApi = new GameApi(this);
         this.meshStore = new MeshStore(this);
         this.gameStore = new GameStore();
         this.inputCommandStore = new InputCommandStore();
@@ -87,13 +90,17 @@ export class GameFacade {
     }
     
     generateWorld(worldMap: string): Promise<MeshObject[]> {
+        this.meshStore.clear();
+        this.modelLoader.clear();
+        this.gameStore.clear();
         // this.gameObjectBuilder.build(worldMap);
         this.gameStoreBuilder.build(worldMap);
-        this.routeWalker.initRoutes();
 
         return this.modelLoader.loadAll(this.gameStore.getMeshObjects()).then(
             () => {
                 new CreateMeshModifier(this.scene, this).apply(this.gameStore.getMeshObjects())
+
+                this.routeWalker.initRoutes();
 
                 return this.gameStore.getMeshObjects();
             }

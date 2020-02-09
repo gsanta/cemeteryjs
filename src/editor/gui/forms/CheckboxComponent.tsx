@@ -6,14 +6,13 @@ import { withCommitOnChange } from './decorators/withCommitOnChange';
 export interface CheckboxProps {
     isSelected: boolean;
     onChange(isSelected: boolean): void;
-    onFocus(): void;
-    onBlur(): void;
 }
 
-export function _CheckboxComponent(props: CheckboxProps) {
+export function CheckboxComponent(props: CheckboxProps) {
     return (
         <div className="checkbox">
-            <div className="label">is border?</div>
+            <input type="checkbox"/>
+            {/* <div className="label">is border?</div>
             <FormCheck
                 checked={props.isSelected}
                 className="form-check"
@@ -21,9 +20,9 @@ export function _CheckboxComponent(props: CheckboxProps) {
                 onChange={() => props.onChange(!props.isSelected)}
                 onFocus={() => props.onFocus()}
                 onBlur={() => props.onBlur()}
-            />
+            /> */}
         </div>
     )
 }
 
-export const CheckboxComponent = withCommitOnChange(_CheckboxComponent);
+// export const CheckboxComponent = withCommitOnChange(_CheckboxComponent);

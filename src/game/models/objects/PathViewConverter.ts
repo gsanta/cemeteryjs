@@ -18,7 +18,7 @@ export class PathViewConverter {
         const pathObject = new PathObject();
 
         pathObject.name = pathView.name;
-        pathObject.points = pathView.points;
+        pathObject.points = pathView.points.map(p => p.negateY());
 
         this.gameFacade.gameStore.add(pathObject);
     }

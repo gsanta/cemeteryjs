@@ -51,7 +51,7 @@ export class PathComponent extends React.Component<ArrowComponentProps> {
                     data-name={this.props.item.name}
                     fill="none"
                     stroke="grey"
-              ``      stroke-width="1"
+                    stroke-width="1"
                     marker-start="url(#arrow)" 
                     marker-mid="url(#arrow)" 
                     marker-end="url(#arrow)"
