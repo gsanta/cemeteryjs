@@ -6,42 +6,58 @@ import { EditorFacade } from "../../../../EditorFacade";
 import { AbstractTool } from "../AbstractTool";
 import { ToolType } from "../Tool";
 import { Keyboard } from "../../handlers/KeyboardHandler";
+import { CanvasController } from "../../CanvasController";
+import { CanvasItemTag } from "../../models/CanvasItem";
 
 export class PathTool extends AbstractTool {
 
-    pendingPathes: PathView;
+    pendingPath: PathView;
     
-    private services: EditorFacade;
-    constructor(services: EditorFacade) {
+    private controller: CanvasController;
+    constructor(controller: CanvasController) {
         super(ToolType.PATH);
 
-        this.services = services;
+        this.controller = controller;
     }
 
     down() {
         super.down();
 
-        const pointer = this.services.svgCanvasController.mouseController.pointer;
-
-        if (!this.pendingPathes) {
-            this.pendingPathes = new PathView(pointer.down.clone());
-            this.pendingPathes.name = this.services.nameingService.generateName(ViewType.Path);
-            this.services.viewStore.addPath(this.pendingPathes);
+        if (this.isOtherPathHovered()) {
+            this.pendingPath = <PathView> this.controller.viewStore.getHoveredView();
+        } else if (!this.pendingPath) {
+            this.startNewPath();
         } else {
-            this.pendingPathes.points.push(pointer.down.clone());
+            const pointer = this.controller.mouseController.pointer;
+            this.pendingPath.points.push(pointer.down.clone());
         }
 
-        this.services.svgCanvasController.renderCanvas();
-        this.services.svgCanvasController.renderToolbar();
+        this.controller.viewStore.removeTag(this.controller.viewStore.getViews(), CanvasItemTag.SELECTED);
+        this.controller.viewStore.addTag([this.pendingPath], CanvasItemTag.SELECTED); 
+
+        this.controller.renderCanvas();
+        this.controller.renderToolbar();
     }
 
     exit() {
-        this.pendingPathes = undefined;
+        this.pendingPath = undefined;
     }
 
     keydown() {
-        if (this.services.svgCanvasController.keyboardHandler.downKeys.includes(Keyboard.Enter)) {
-            this.pendingPathes = undefined;
+        if (this.controller.keyboardHandler.downKeys.includes(Keyboard.Enter)) {
+            this.pendingPath = undefined;
         }
+    }
+
+    private startNewPath() {
+        const pointer = this.controller.mouseController.pointer;
+
+        this.pendingPath = new PathView(pointer.down.clone());
+        this.pendingPath.name = this.controller.nameingService.generateName(ViewType.Path);
+        this.controller.viewStore.addPath(this.pendingPath);
+    }
+
+    private isOtherPathHovered() {
+        return this.controller.viewStore.getHoveredView()?.viewType === ViewType.Path &&  this.controller.viewStore.getHoveredView() !== this.pendingPath;
     }
 }

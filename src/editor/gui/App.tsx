@@ -5,7 +5,6 @@ import { AppContext, AppContextType } from './Context';
 import '../../editor/gui/misc/SplitPane.css';
 import Split from 'split.js'
 import { ToolbarComponent } from './toolbar/ToolbarComponent';
-import { SvgCanvasController } from '../controllers/canvases/svg/SvgCanvasController';
 import { canvasFactory } from './canvases/canvasFactory';
 import { AbstractCanvasController } from '../controllers/canvases/AbstractCanvasController';
 

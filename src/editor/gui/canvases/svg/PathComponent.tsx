@@ -2,15 +2,18 @@
 import * as React from 'react';
 import { Point } from '../../../../misc/geometry/shapes/Point';
 import { PathView } from '../../../../common/views/PathView';
+import { colors } from '../../styles';
 
-export interface ArrowComponentProps {
+export interface PathComponentProps {
     item: PathView;
     onMouseOver(path: PathView): void;
     onMouseOut(): void;
     onlyData: boolean;
+    isHovered: boolean;
+    isSelected: boolean;
 }
 
-export class PathComponent extends React.Component<ArrowComponentProps> {
+export class PathComponent extends React.Component<PathComponentProps> {
 
     render(): JSX.Element {
         const points: JSX.Element[] = this.props.item.points.map(p => this.renderArrowPoint(p));
@@ -38,7 +41,8 @@ export class PathComponent extends React.Component<ArrowComponentProps> {
                 onMouseOver={() => this.props.onMouseOver(this.props.item)}
                 onMouseOut={() => this.props.onMouseOut()}
                 fill="none"
-                stroke="green"
+                stroke={colors.views.highlight}
+                stroke-opacity={this.props.isHovered || this.props.isSelected ? 0.5 : 0}
                 stroke-width="7"
             />
         )
@@ -50,7 +54,7 @@ export class PathComponent extends React.Component<ArrowComponentProps> {
                     points={points}
                     data-name={this.props.item.name}
                     fill="none"
-                    stroke="grey"
+                    stroke={colors.views.stroke}
                     stroke-width="1"
                     marker-start="url(#arrow)" 
                     marker-mid="url(#arrow)" 

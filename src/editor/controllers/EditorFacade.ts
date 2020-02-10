@@ -19,18 +19,10 @@ export class EditorFacade {
 
     globalSettingsForm: GlobalSettingsForm;
 
-    viewStore: ViewStore;
-
-    nameingService: NamingService;
-
     constructor() {
         this.eventDispatcher = new EventDispatcher();
         this.webglCanvasController = new WebglCanvasController(this);
         this.svgCanvasController = new CanvasController(this);
-
-        this.viewStore = new ViewStore();
-
-        this.nameingService = new NamingService(this);
 
         this.canvases = [this.svgCanvasController, this.webglCanvasController];
 

@@ -4,22 +4,26 @@ import { EditorFacade } from "../../../../EditorFacade";
 import { IViewExporter } from "../IToolExporter";
 import React = require("react");
 import { PathView } from "../../../../../../common/views/PathView";
+import { CanvasController } from "../../CanvasController";
+import { CanvasItemTag } from "../../models/CanvasItem";
 
 export class PathExporter implements IViewExporter {
     type = ViewType.Path;
-    private services: EditorFacade;
+    private controller: CanvasController;
 
-    constructor(services: EditorFacade) {
-        this.services = services;
+    constructor(controller: CanvasController) {
+        this.controller = controller;
     }
 
     export(onlyData = false): JSX.Element {
-        const pathes = this.services.viewStore.getPathes().map(arrow => {
+        const pathes = this.controller.viewStore.getPathes().map(path => {
             return <PathComponent
                 onlyData={onlyData}
-                item={arrow}
-                onMouseOver={(item: PathView) => this.services.svgCanvasController.mouseController.hover(item)}
-                onMouseOut={() => this.services.svgCanvasController.mouseController.unhover()}
+                item={path}
+                isHovered={this.controller.viewStore.getHoveredView() === path}
+                isSelected={this.controller.viewStore.getTags(path).has(CanvasItemTag.SELECTED)}
+                onMouseOver={(item: PathView) => this.controller.mouseController.hover(item)}
+                onMouseOut={() => this.controller.mouseController.unhover()}
             />
         });
 

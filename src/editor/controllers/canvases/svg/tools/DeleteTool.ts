@@ -9,27 +9,27 @@ import { EditorFacade } from '../../../EditorFacade';
 export class DeleteTool extends AbstractSelectionTool {
     private eventDispatcher: EventDispatcher;
 
-    constructor(services: EditorFacade, eventDispatcher: EventDispatcher) {
-        super(services, ToolType.DELETE, true);
+    constructor(controller: CanvasController, eventDispatcher: EventDispatcher) {
+        super(controller, ToolType.DELETE, true);
         
         this.eventDispatcher = eventDispatcher;
     }
 
     down() {
         super.down();
-        this.services.svgCanvasController.renderCanvas();
+        this.services.renderCanvas();
     }
 
     drag() {
         super.drag();
-        this.services.svgCanvasController.renderCanvas();
+        this.services.renderCanvas();
     }
 
     click() {
         super.click();
-        const items = this.services.viewStore.getIntersectingItemsAtPoint(this.services.svgCanvasController.mouseController.pointer.curr);
+        const items = this.services.viewStore.getIntersectingItemsAtPoint(this.services.mouseController.pointer.curr);
         items.length > 0 && this.services.viewStore.remove(items[0]); 
-        this.services.svgCanvasController.renderCanvas();
+        this.services.renderCanvas();
 
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
     }
@@ -40,7 +40,7 @@ export class DeleteTool extends AbstractSelectionTool {
 
         canvasItems.forEach(item => this.services.viewStore.remove(item));
 
-        this.services.svgCanvasController.renderCanvas();
+        this.services.renderCanvas();
 
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
     }

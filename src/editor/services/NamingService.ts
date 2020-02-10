@@ -1,12 +1,12 @@
-import { EditorFacade } from "../controllers/EditorFacade";
-import { ViewType, View } from "../../common/views/View";
+import { View, ViewType } from "../../common/views/View";
 import { maxBy } from "../../misc/geometry/utils/Functions";
+import { CanvasController } from "../controllers/canvases/svg/CanvasController";
 
 
 export class NamingService {
-    private services: EditorFacade;
+    private services: CanvasController;
 
-    constructor(services: EditorFacade) {
+    constructor(services: CanvasController) {
         this.services = services;
     }
 

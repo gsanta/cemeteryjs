@@ -7,18 +7,18 @@ import { EditorFacade } from "../../../EditorFacade";
 
 export class SelectTool extends AbstractSelectionTool {
 
-    constructor(services: EditorFacade) {
-        super(services, ToolType.SELECT, true);
+    constructor(controller: CanvasController) {
+        super(controller, ToolType.SELECT, true);
     }
 
     down() {
         super.down();
-        this.services.svgCanvasController.renderCanvas();
+        this.services.renderCanvas();
     }
 
     drag() {
         super.drag();
-        this.services.svgCanvasController.renderCanvas();
+        this.services.renderCanvas();
     }
 
     click() {
@@ -32,8 +32,8 @@ export class SelectTool extends AbstractSelectionTool {
 
         hoveredView && viewStore.addTag([hoveredView], CanvasItemTag.SELECTED);
 
-        this.services.svgCanvasController.renderCanvas();
-        this.services.svgCanvasController.renderToolbar();
+        this.services.renderCanvas();
+        this.services.renderToolbar();
     }
 
     draggedUp() {
@@ -44,7 +44,7 @@ export class SelectTool extends AbstractSelectionTool {
         canvasStore.removeTag(this.services.viewStore.getViews(), CanvasItemTag.SELECTED);
         canvasStore.addTag(canvasItems, CanvasItemTag.SELECTED);
 
-        this.services.svgCanvasController.renderCanvas();
-        this.services.svgCanvasController.renderToolbar();
+        this.services.renderCanvas();
+        this.services.renderToolbar();
     }
 }

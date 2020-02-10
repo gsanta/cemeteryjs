@@ -22,9 +22,9 @@ export class GlobalSettingsForm extends AbstractForm<GlobalSettingsPropType> {
     protected setProp(val: any, prop: GlobalSettingsPropType) {
         switch (prop) {
             case GlobalSettingsPropType.IMPORT_FILE:
-                this.services.viewStore.clear();
+                this.services.svgCanvasController.viewStore.clear();
                 this.services.svgCanvasController.writer.import(val.data);
-                this.services.viewStore.getGameObjects().filter(item => item.modelPath).forEach(item => this.services.svgCanvasController.model3dController.set3dModelForCanvasItem(item));
+                this.services.svgCanvasController.viewStore.getGameObjects().filter(item => item.modelPath).forEach(item => this.services.svgCanvasController.model3dController.set3dModelForCanvasItem(item));
         }
     }
 }

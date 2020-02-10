@@ -1,28 +1,26 @@
+import { Rectangle } from "../../../../../misc/geometry/shapes/Rectangle";
 import { EventDispatcher } from "../../../events/EventDispatcher";
+import { Events } from '../../../events/Events';
 import { CanvasController } from "../CanvasController";
 import { AbstractTool } from './AbstractTool';
 import { ToolType } from './Tool';
-import { Events } from '../../../events/Events';
-import { Rectangle } from "../../../../../misc/geometry/shapes/Rectangle";
-import { CanvasItemTag } from "../models/CanvasItem";
-import { EditorFacade } from "../../../EditorFacade";
 
 export class MoveTool extends AbstractTool {
     private eventDispatcher: EventDispatcher;
-    private services: EditorFacade;
+    private controller: CanvasController;
 
     private origDimensions: Rectangle[] = [];
 
-    constructor(services: EditorFacade, eventDispatcher: EventDispatcher) {
+    constructor(controller: CanvasController, eventDispatcher: EventDispatcher) {
         super(ToolType.MOVE);
         this.eventDispatcher = eventDispatcher;
-        this.services = services;
+        this.controller = controller;
     }
 
     down() {
         super.down();
 
-        const canvasStore = this.services.viewStore;
+        const canvasStore = this.controller.viewStore;
 
         const selectedItems = canvasStore.getSelectedViews();
         this.origDimensions = selectedItems.map(item => item.dimensions);
@@ -30,16 +28,16 @@ export class MoveTool extends AbstractTool {
 
     drag() {
         super.drag();
-        const canvasStore = this.services.viewStore;
+        const canvasStore = this.controller.viewStore;
         
-        const mouseController = this.services.svgCanvasController.mouseController;
+        const mouseController = this.controller.mouseController;
     
         const selectedItems = canvasStore.getSelectedViews();
         const mouseDelta = mouseController.pointer.getDownDiff();
 
         selectedItems.forEach((item, index) => item.dimensions = this.origDimensions[index].translate(mouseDelta));
 
-        this.services.svgCanvasController.renderCanvas();
+        this.controller.renderCanvas();
     }
 
     up() {

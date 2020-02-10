@@ -11,10 +11,10 @@ import { ViewType } from "../../../../../../common/views/View";
 
 export class RectangleExporter implements IViewExporter {
     type = ViewType.GameObject;
-    private services: EditorFacade;
+    private controller: CanvasController;
 
-    constructor(services: EditorFacade) {
-        this.services = services;
+    constructor(controller: CanvasController) {
+        this.controller = controller;
     }
 
     export(): JSX.Element {
@@ -23,8 +23,8 @@ export class RectangleExporter implements IViewExporter {
     }
 
     private renderRectangles(): JSX.Element[] {
-        const canvasStore = this.services.viewStore;
-        let items = [...this.services.viewStore.getGameObjects()];
+        const canvasStore = this.controller.viewStore;
+        let items = [...this.controller.viewStore.getGameObjects()];
         items = sort(items, (a, b) => canvasStore.getLayer(a) - canvasStore.getLayer(b));
         return items.map((item, i) => {
             const rectangle = item.dimensions as Rectangle;
@@ -54,8 +54,8 @@ export class RectangleExporter implements IViewExporter {
             return (
                 <g 
                     transform={`translate(${x} ${y})`}
-                    onMouseOver={() => this.services.svgCanvasController.mouseController.hover(item)}
-                    onMouseOut={() => this.services.svgCanvasController.mouseController.unhover()}
+                    onMouseOver={() => this.controller.mouseController.hover(item)}
+                    onMouseOut={() => this.controller.mouseController.unhover()}
                     data-wg-x={x + tranlateX}
                     data-wg-y={y + tranlateY}
                     data-wg-width={width}

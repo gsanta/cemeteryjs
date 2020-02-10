@@ -23,12 +23,19 @@ import { GameObjectFormState } from '../../forms/GameObjectFormState';
 import { PathView } from '../../../../common/views/PathView';
 import { PathTool } from './tools/path/PathTool';
 import { KeyboardHandler } from './handlers/KeyboardHandler';
+import { ViewStore } from './models/ViewStore';
+import { NamingService } from '../../../services/NamingService';
 
 export class CanvasController extends AbstractCanvasController {
     name = '2D View';
     static id = 'svg-canvas-controller';
     visible = true;
     fileFormats = [FileFormat.SVG];
+
+    viewStore: ViewStore;
+
+    nameingService: NamingService;
+
     mouseController: MouseHandler;
     keyboardHandler: KeyboardHandler;
     tools: Tool[];
@@ -53,21 +60,23 @@ export class CanvasController extends AbstractCanvasController {
         super();
 
         this.services = services;
+        this.viewStore = new ViewStore();
+        this.nameingService = new NamingService(this);
         
-        this.mouseController = new MouseHandler(this.services);
+        this.mouseController = new MouseHandler(this);
         this.keyboardHandler = new KeyboardHandler(this);
         this.writer = new ViewImporter([
-            new MeshViewImporter(rect => this.services.viewStore.addRect(rect)),
-            new PathImporter((path: PathView) => this.services.viewStore.addPath(path))
+            new MeshViewImporter(rect => this.viewStore.addRect(rect)),
+            new PathImporter((path: PathView) => this.viewStore.addPath(path))
         ]);
         this.reader = new SvgCanvasExporter(this);
         this.model3dController = new Model3DController(this);
 
         this.cameraTool = new CameraTool(services);
-        const rectangleTool = new RectangleTool(this.services, this.services.eventDispatcher);
-        const pathTool = new PathTool(this.services);
-        const deleteTool = new DeleteTool(this.services, this.services.eventDispatcher);
-        const moveAndSelectTool = new MoveAndSelectTool(this.services, this.services.eventDispatcher); 
+        const rectangleTool = new RectangleTool(this, this.services.eventDispatcher);
+        const pathTool = new PathTool(this);
+        const deleteTool = new DeleteTool(this, this.services.eventDispatcher);
+        const moveAndSelectTool = new MoveAndSelectTool(this, this.services.eventDispatcher); 
         this.tools = [
             rectangleTool,
             pathTool,
@@ -85,12 +94,12 @@ export class CanvasController extends AbstractCanvasController {
                 this.cameraTool,
             ],
             [
-                new RectangleExporter(this.services),
-                new PathExporter(this.services)
+                new RectangleExporter(this),
+                new PathExporter(this)
             ]
         )
 
-        this.gameObjectForm = new GameObjectForm(this.services, this.services.eventDispatcher);
+        this.gameObjectForm = new GameObjectForm(this, this.services.eventDispatcher);
         this.gameObjectFormState = new GameObjectFormState();
         this.pathForm = new PathForm();
     }
@@ -161,7 +170,7 @@ export class CanvasController extends AbstractCanvasController {
     }
 
     isEmpty(): boolean {
-        return this.services.viewStore.getViews().length === 0;
+        return this.viewStore.getViews().length === 0;
     }
 
     viewSettings: CanvasViewSettings = {

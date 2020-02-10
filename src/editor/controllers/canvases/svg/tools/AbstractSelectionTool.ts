@@ -9,11 +9,11 @@ const NULL_SELECTION = new Rectangle(new Point(0, 0), new Point(0, 0));
 
 export class AbstractSelectionTool extends AbstractTool {
     type: ToolType;
-    protected services: EditorFacade;
+    protected services: CanvasController;
     private selectionRect: Rectangle = NULL_SELECTION;
     private _displaySelectionRect: boolean;
 
-    constructor(services: EditorFacade, type: ToolType, displaySelectionRect: boolean) {
+    constructor(services: CanvasController, type: ToolType, displaySelectionRect: boolean) {
         super(type);
         this.services = services;
         this._displaySelectionRect = displaySelectionRect;
@@ -32,7 +32,7 @@ export class AbstractSelectionTool extends AbstractTool {
 
     drag() {
         super.drag();
-        const pointer = this.services.svgCanvasController.mouseController.pointer;
+        const pointer = this.services.mouseController.pointer;
         this.selectionRect = new Rectangle(pointer.down, pointer.curr);
     }
 

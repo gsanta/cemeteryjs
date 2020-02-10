@@ -13,13 +13,13 @@ export class MoveAndSelectTool extends AbstractTool {
     private activeTool: Tool;
     private moveTool: MoveTool;
     private rectSelectTool: SelectTool;
-    private services: EditorFacade;
+    private controller: CanvasController;
 
-    constructor(services: EditorFacade, eventDispatcher: EventDispatcher) {
+    constructor(controller: CanvasController, eventDispatcher: EventDispatcher) {
         super(ToolType.MOVE_AND_SELECT);
-        this.services = services;
-        this.moveTool = new MoveTool(this.services, eventDispatcher);
-        this.rectSelectTool = new SelectTool(this.services);
+        this.controller = controller;
+        this.moveTool = new MoveTool(this.controller, eventDispatcher);
+        this.rectSelectTool = new SelectTool(this.controller);
 
         this.activeTool = this.rectSelectTool;
     }
@@ -74,12 +74,12 @@ export class MoveAndSelectTool extends AbstractTool {
 
     private determineActiveTool() {
         if (this.activeTool.type === ToolType.MOVE) {
-            if (this.services.svgCanvasController.mouseController.isDrag) {
+            if (this.controller.mouseController.isDrag) {
                 return;
             }
         }
 
-        const canvasStore = this.services.viewStore;
+        const canvasStore = this.controller.viewStore;
 
         const hoveredItem = canvasStore.getHoveredView();
         const selectedItems = canvasStore.getSelectedViews();

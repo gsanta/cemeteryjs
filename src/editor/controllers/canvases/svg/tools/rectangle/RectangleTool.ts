@@ -7,24 +7,25 @@ import { ToolType } from '../Tool';
 import { CanvasItemTag } from '../../models/CanvasItem';
 import { EditorFacade } from '../../../../EditorFacade';
 import { ViewType } from '../../../../../../common/views/View';
+import { CanvasController } from '../../CanvasController';
 
 export class RectangleTool extends AbstractSelectionTool {
     private eventDispatcher: EventDispatcher;
     private lastPreviewRect: MeshView;
 
-    constructor(editorFacade: EditorFacade, eventDispatcher: EventDispatcher) {
-        super(editorFacade, ToolType.RECTANGLE, false);
+    constructor(services: CanvasController, eventDispatcher: EventDispatcher) {
+        super(services, ToolType.RECTANGLE, false);
 
         this.eventDispatcher = eventDispatcher;
     }
 
     down() {
         super.down();
-        this.services.svgCanvasController.renderCanvas();
+        this.services.renderCanvas();
     }
 
     click() {
-        const pointer = this.services.svgCanvasController.mouseController.pointer;
+        const pointer = this.services.mouseController.pointer;
         const rect = Rectangle.squareFromCenterPointAndRadius(pointer.down, 50);
 
         const gameObject: MeshView = new MeshView(null, rect, name);
@@ -37,14 +38,13 @@ export class RectangleTool extends AbstractSelectionTool {
 
         gameObject.name = this.services.nameingService.generateName(ViewType.GameObject);
 
-
         this.services.viewStore.addRect(gameObject);
         this.services.viewStore.removeSelectionAll()
         this.services.viewStore.addTag([gameObject], CanvasItemTag.SELECTED);
     
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
-        this.services.svgCanvasController.renderCanvas();
-        this.services.svgCanvasController.renderToolbar();
+        this.services.renderCanvas();
+        this.services.renderToolbar();
     }
 
     drag() {
@@ -69,7 +69,7 @@ export class RectangleTool extends AbstractSelectionTool {
         if (positions.length > 0) {
             this.lastPreviewRect = this.services.viewStore.addRect(gameObject);
     
-            this.services.svgCanvasController.renderCanvas();
+            this.services.renderCanvas();
         }
     }
 
@@ -79,7 +79,7 @@ export class RectangleTool extends AbstractSelectionTool {
             this.lastPreviewRect = null;
         }
 
-        this.services.svgCanvasController.renderCanvas();
+        this.services.renderCanvas();
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
     }
 }

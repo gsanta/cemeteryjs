@@ -1,14 +1,11 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { SvgCanvasController } from '../../controllers/canvases/svg/SvgCanvasController';
 import { canvasToolsFactory } from '../canvases/canvasFactory';
 import { GlobalFormComponent } from './GlobalFormComponent';
 import { AppContext, AppContextType } from '../Context';
 import { AccordionComponent } from '../misc/AccordionComponent';
 import { colors } from '../styles';
-import { GameObjectFormComponent } from './GameObjectFormComponent';
 import { viewComponentFactory } from './viewComponentFactory';
-import { EditorFacade } from '../../controllers/EditorFacade';
 
 export interface ToolbarComponentProps {
     isEditorOpen: boolean;

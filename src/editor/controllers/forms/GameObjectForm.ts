@@ -20,26 +20,26 @@ export enum GameObjectPropType {
 export class GameObjectForm extends AbstractForm<GameObjectPropType> {
     gameObject: MeshView;
 
-    private services: EditorFacade;
+    private controller: CanvasController;
     private eventDispatcher: EventDispatcher;
 
-    constructor(services: EditorFacade, eventDispatcher: EventDispatcher) {
+    constructor(controller: CanvasController, eventDispatcher: EventDispatcher) {
         super();
-        this.services = services;
+        this.controller = controller;
         this.eventDispatcher = eventDispatcher;
     }
 
     blurProp() {
         super.blurProp();
 
-        this.services.svgCanvasController.renderCanvas();
+        this.controller.renderCanvas();
         this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
     }
 
     updateProp(value: any, propType: GameObjectPropType) {
         super.updateProp(value, propType);
 
-        this.services.svgCanvasController.renderCanvas();
+        this.controller.renderCanvas();
         this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
     }
 
@@ -54,7 +54,7 @@ export class GameObjectForm extends AbstractForm<GameObjectPropType> {
             case GameObjectPropType.THUMBNAIL:
                 return this.gameObject.thumbnailPath;
             case GameObjectPropType.LAYER:
-                return this.services.viewStore.getLayer(this.gameObject);
+                return this.controller.viewStore.getLayer(this.gameObject);
             case GameObjectPropType.ROTATION:
                 return this.gameObject.rotation;
             case GameObjectPropType.SCALE:
@@ -73,7 +73,7 @@ export class GameObjectForm extends AbstractForm<GameObjectPropType> {
                 break;
             case GameObjectPropType.MODEL:
                 this.gameObject.modelPath = val.path;
-                this.services.svgCanvasController.model3dController.set3dModelForCanvasItem(this.gameObject);
+                this.controller.model3dController.set3dModelForCanvasItem(this.gameObject);
                 break;
             case GameObjectPropType.TEXTURE:
                 this.gameObject.texturePath = val.path;
@@ -82,7 +82,7 @@ export class GameObjectForm extends AbstractForm<GameObjectPropType> {
                 this.gameObject.thumbnailPath = val.data;
                 break;
             case GameObjectPropType.LAYER:
-                this.services.viewStore.setLayer(this.gameObject, val);
+                this.controller.viewStore.setLayer(this.gameObject, val);
                 break;
             case GameObjectPropType.ROTATION:
                 this.gameObject.rotation = val;

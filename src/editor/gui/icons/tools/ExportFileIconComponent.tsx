@@ -1,9 +1,9 @@
 import { saveAs } from 'file-saver';
 import * as React from 'react';
-import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvasController';
 import { ToolStyled, ToolIconStyled, ToolIconBackgroundStyled, ToolIconImageStyled, ToolNameStyled } from './ToolIcon';
+import { CanvasController } from '../../../controllers/canvases/svg/CanvasController';
 
-export class ExportFileIconComponent extends React.Component<{canvasController: SvgCanvasController}> {
+export class ExportFileIconComponent extends React.Component<{canvasController: CanvasController}> {
 
     render() {
         return (

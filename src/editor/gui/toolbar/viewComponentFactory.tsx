@@ -19,7 +19,7 @@ const PlaceHolderTextStyled = styled.div`
 `;
 
 export function viewComponentFactory(services: EditorFacade): JSX.Element {
-    const selectedViews = services.viewStore.getSelectedViews();
+    const selectedViews = services.svgCanvasController.viewStore.getSelectedViews();
     if (selectedViews.length !== 1) {
         return <PlaceHolderTextStyled>Select an object on canvas to change it's properties</PlaceHolderTextStyled>
     }

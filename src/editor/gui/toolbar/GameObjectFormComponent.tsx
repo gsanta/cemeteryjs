@@ -250,7 +250,7 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
 
     private renderPath(): JSX.Element {
         const form = this.props.canvasController.gameObjectForm;
-        const pathNames = this.context.controllers.viewStore.getPathes().map(p => p.name);
+        const pathNames = this.context.controllers.svgCanvasController.viewStore.getPathes().map(p => p.name);
         const val: string = form.getVal(GameObjectPropType.PATH);
 
         return (
@@ -272,7 +272,7 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
     
     private renderManualMovement(): JSX.Element {
         const form = this.props.canvasController.gameObjectForm;
-        const pathNames = this.context.controllers.viewStore.getPathes().map(p => p.name);
+        const pathNames = this.context.controllers.svgCanvasController.viewStore.getPathes().map(p => p.name);
         const val: string = form.getVal(GameObjectPropType.PATH);
 
         return (
