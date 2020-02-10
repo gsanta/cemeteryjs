@@ -1,4 +1,4 @@
-import { SvgCanvasController } from './canvases/svg/SvgCanvasController';
+import { CanvasController } from './canvases/svg/CanvasController';
 import { WebglCanvasController } from './canvases/webgl/WebglCanvasController';
 import { EventDispatcher } from './events/EventDispatcher';
 import { AbstractCanvasController } from './canvases/AbstractCanvasController';
@@ -8,7 +8,7 @@ import { NamingService } from '../services/NamingService';
 
 export class EditorFacade {
     webglCanvasController: WebglCanvasController;
-    svgCanvasController: SvgCanvasController;
+    svgCanvasController: CanvasController;
     
     eventDispatcher: EventDispatcher;
 
@@ -26,7 +26,7 @@ export class EditorFacade {
     constructor() {
         this.eventDispatcher = new EventDispatcher();
         this.webglCanvasController = new WebglCanvasController(this);
-        this.svgCanvasController = new SvgCanvasController(this);
+        this.svgCanvasController = new CanvasController(this);
 
         this.viewStore = new ViewStore();
 

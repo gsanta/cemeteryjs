@@ -1,19 +1,19 @@
 import { Engine, Scene, Mesh } from 'babylonjs';
 import { AbstractModelLoader } from '../../../../common/AbstractModelLoader';
-import { SvgCanvasController } from './SvgCanvasController';
+import { CanvasController } from './CanvasController';
 import { Point } from '../../../../misc/geometry/shapes/Point';
 import { MeshView } from '../../../../common/views/MeshView';
 
 const SCALE = 2;
 export class Model3DController extends AbstractModelLoader {
     private engine: Engine;
-    private canvasController: SvgCanvasController;
+    private canvasController: CanvasController;
 
     private canvas: HTMLCanvasElement;
 
     private fileNameToMeshMap: Map<string, Mesh> = new Map();
 
-    constructor(canvasController: SvgCanvasController) {
+    constructor(canvasController: CanvasController) {
         super(null);
         this.canvasController = canvasController;
         this.canvas = <HTMLCanvasElement> document.getElementById("model-size-tester");

@@ -10,4 +10,5 @@ export interface View {
     groupContext: GroupContext;
     viewType: ViewType;
     dimensions: Rectangle;
+    name: string;
 }

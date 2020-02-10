@@ -1,5 +1,5 @@
 import { EventDispatcher } from "../../../events/EventDispatcher";
-import { SvgCanvasController } from "../SvgCanvasController";
+import { CanvasController } from "../CanvasController";
 import { AbstractTool } from './AbstractTool';
 import { ToolType } from './Tool';
 import { Events } from '../../../events/Events';

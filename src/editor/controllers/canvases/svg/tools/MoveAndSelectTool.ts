@@ -1,4 +1,4 @@
-import { SvgCanvasController } from "../SvgCanvasController";
+import { CanvasController } from "../CanvasController";
 import { ToolType, Tool } from "./Tool";
 import { MoveTool } from './MoveTool';
 import { SelectTool } from "./SelectTool";

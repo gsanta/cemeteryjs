@@ -11,18 +11,19 @@ export class NamingService {
     }
 
     generateName(type: ViewType) {
-        return `${type}${this.getMaxIndex(type) + 1}`.toLocaleLowerCase();
+        const name = `${type}${this.getMaxIndex(type) + 1}`.toLocaleLowerCase();
+        return name;
     }
 
     private getMaxIndex(type: ViewType): number {
         const pattern = this.createPattern(type);
-        const views = this.services.viewStore.getViewsByType(type).filter(view => type.match(pattern));
+        const views = this.services.viewStore.getViewsByType(type).filter(view => view.name.match(pattern));
 
         if (views.length === 0) {
             return 0;
         } else {
-            const max = maxBy<View>(views, (a, b) => parseInt(a.viewType.match(pattern)[1], 10) - parseInt(b.viewType.match(pattern)[1], 10));
-            return parseInt(max.viewType.match(pattern)[1], 10);
+            const max = maxBy<View>(views, (a, b) => parseInt(a.name.match(pattern)[1], 10) - parseInt(b.name.match(pattern)[1], 10));
+            return parseInt(max.name.match(pattern)[1], 10);
         }
 
     }

@@ -1,4 +1,4 @@
-import { SvgCanvasController } from "../../SvgCanvasController";
+import { CanvasController } from "../../CanvasController";
 import React = require("react");
 import { sort, minBy } from "../../../../../../misc/geometry/utils/Functions";
 import { Rectangle } from "../../../../../../misc/geometry/shapes/Rectangle";

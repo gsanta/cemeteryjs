@@ -1,4 +1,4 @@
-import { SvgCanvasController } from '../SvgCanvasController';
+import { CanvasController } from '../CanvasController';
 import { AbstractTool } from './AbstractTool';
 import { ToolType } from './Tool';
 import { Point } from '../../../../../misc/geometry/shapes/Point';

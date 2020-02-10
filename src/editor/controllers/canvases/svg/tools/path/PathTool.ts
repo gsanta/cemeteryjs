@@ -5,6 +5,7 @@ import { ViewType } from "../../../../../../common/views/View";
 import { EditorFacade } from "../../../../EditorFacade";
 import { AbstractTool } from "../AbstractTool";
 import { ToolType } from "../Tool";
+import { Keyboard } from "../../handlers/KeyboardHandler";
 
 export class PathTool extends AbstractTool {
 
@@ -32,5 +33,15 @@ export class PathTool extends AbstractTool {
 
         this.services.svgCanvasController.renderCanvas();
         this.services.svgCanvasController.renderToolbar();
+    }
+
+    exit() {
+        this.pendingPathes = undefined;
+    }
+
+    keydown() {
+        if (this.services.svgCanvasController.keyboardHandler.downKeys.includes(Keyboard.Enter)) {
+            this.pendingPathes = undefined;
+        }
     }
 }

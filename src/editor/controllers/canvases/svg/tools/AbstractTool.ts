@@ -17,4 +17,6 @@ export class AbstractTool implements Tool {
     up() {}
     activate() {}
     resize() {}
+    exit() {}
+    keydown() {}
 }

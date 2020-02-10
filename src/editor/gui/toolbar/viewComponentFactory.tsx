@@ -1,4 +1,4 @@
-import { SvgCanvasController } from "../../controllers/canvases/svg/SvgCanvasController";
+import { CanvasController } from "../../controllers/canvases/svg/CanvasController";
 import { GameObjectFormComponent } from "./GameObjectFormComponent";
 import { PathFormComponent } from "./PathFormComponent";
 import styled from "styled-components";
@@ -9,7 +9,7 @@ import { PathView } from "../../../common/views/PathView";
 import { View, ViewType } from "../../../common/views/View";
 
 export interface ViewFormProps<T extends View> {
-    canvasController: SvgCanvasController;
+    canvasController: CanvasController;
     view: T;
 }
 

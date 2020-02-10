@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SvgCanvasController } from '../../controllers/canvases/svg/SvgCanvasController';
+import { CanvasController } from '../../controllers/canvases/svg/CanvasController';
 import { AbstractCanvasController } from '../../controllers/canvases/AbstractCanvasController';
 import { SvgCanvasComponent } from './svg/SvgCanvasComponent';
 import { WebglCanvasController } from '../../controllers/canvases/webgl/WebglCanvasController';
@@ -8,8 +8,8 @@ import { SvgCanvasToolsComponent } from './svg/SvgCanvasToolsComponent';
 
 export function canvasFactory(controller: AbstractCanvasController): JSX.Element {
     switch(controller.getId()) {
-        case SvgCanvasController.id:
-            return <SvgCanvasComponent canvasController={controller as SvgCanvasController}/>;
+        case CanvasController.id:
+            return <SvgCanvasComponent canvasController={controller as CanvasController}/>;
         case WebglCanvasController.id:
             return <WebglCanvasComponent canvasController={controller as WebglCanvasController}/>;
     }
@@ -24,10 +24,10 @@ export interface CanvasToolsProps {
 
 export function canvasToolsFactory(controller: AbstractCanvasController): CanvasToolsProps {
     switch(controller.getId()) {
-        case SvgCanvasController.id:
+        case CanvasController.id:
             return {
                 title: 'Tools',
-                body: <SvgCanvasToolsComponent canvasController={controller as SvgCanvasController}/>
+                body: <SvgCanvasToolsComponent canvasController={controller as CanvasController}/>
             }
     }
 

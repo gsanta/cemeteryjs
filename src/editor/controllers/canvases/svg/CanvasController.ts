@@ -6,7 +6,6 @@ import { ICanvasExporter } from '../ICanvasExporter';
 import { ICanvasImporter } from '../ICanvasImporter';
 import { MouseHandler } from './handlers/MouseHandler';
 import { Model3DController } from './Model3DController';
-import { ViewStore } from './models/ViewStore';
 import { SvgCanvasExporter } from './SvgCanvasExporter';
 import { ViewImporter } from '../../../../common/importers/ViewImporter';
 import { CameraTool } from './tools/CameraTool';
@@ -23,13 +22,15 @@ import { PathForm } from '../../forms/PathForm';
 import { GameObjectFormState } from '../../forms/GameObjectFormState';
 import { PathView } from '../../../../common/views/PathView';
 import { PathTool } from './tools/path/PathTool';
+import { KeyboardHandler } from './handlers/KeyboardHandler';
 
-export class SvgCanvasController extends AbstractCanvasController {
+export class CanvasController extends AbstractCanvasController {
     name = '2D View';
     static id = 'svg-canvas-controller';
     visible = true;
     fileFormats = [FileFormat.SVG];
     mouseController: MouseHandler;
+    keyboardHandler: KeyboardHandler;
     tools: Tool[];
     cameraTool: CameraTool;
     writer: ICanvasImporter;
@@ -54,6 +55,7 @@ export class SvgCanvasController extends AbstractCanvasController {
         this.services = services;
         
         this.mouseController = new MouseHandler(this.services);
+        this.keyboardHandler = new KeyboardHandler(this);
         this.writer = new ViewImporter([
             new MeshViewImporter(rect => this.services.viewStore.addRect(rect)),
             new PathImporter((path: PathView) => this.services.viewStore.addPath(path))
@@ -101,7 +103,10 @@ export class SvgCanvasController extends AbstractCanvasController {
         this.renderToolbarFunc();
     }
 
-    setActiveTool(toolType: ToolType) {
+    setSelectedTool(toolType: ToolType) {
+        if (this.selectedTool) {
+            this.getActiveTool().exit();
+        }
         this.selectedTool = toolType;
         this.renderToolbar();
     }
@@ -126,7 +131,7 @@ export class SvgCanvasController extends AbstractCanvasController {
     }
 
     getId() {
-        return SvgCanvasController.id;
+        return CanvasController.id;
     }
 
     resize(): void {

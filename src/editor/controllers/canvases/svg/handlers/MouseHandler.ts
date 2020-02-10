@@ -1,7 +1,5 @@
 import { Point } from '../../../../../misc/geometry/shapes/Point';
-import { SvgCanvasController } from '../SvgCanvasController';
 import { CanvasItemTag } from '../models/CanvasItem';
-import { MeshView } from '../../../../../common/views/MeshView';
 import { View } from '../../../../../common/views/View';
 import { EditorFacade } from '../../../EditorFacade';
 

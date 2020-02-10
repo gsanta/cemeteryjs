@@ -20,4 +20,6 @@ export interface Tool {
     draggedUp();
     up();
     activate();
+    exit();
+    keydown();
 }

@@ -4,7 +4,7 @@ import { AppContext, AppContextType } from '../../Context';
 import { DeleteIconComponent } from '../../icons/tools/DeleteIconComponent';
 import { DrawIconComponent } from '../../icons/tools/DrawIconComponent';
 import { SelectIconComponent } from '../../icons/tools/SelectIconComponent';
-import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvasController';
+import { CanvasController } from '../../../controllers/canvases/svg/CanvasController';
 import { ToolType } from '../../../controllers/canvases/svg/tools/Tool';
 import { ZoomInIconComponent } from '../../icons/tools/ZoomInIconComponent';
 import { ZoomOutIconComponent } from '../../icons/tools/ZoomOutIconComponent';
@@ -20,7 +20,7 @@ const ToolbarStyled = styled.div`
     }
 `;
 
-export class SvgCanvasToolsComponent extends React.Component<{canvasController: SvgCanvasController}> {
+export class SvgCanvasToolsComponent extends React.Component<{canvasController: CanvasController}> {
     static contextType = AppContext;
     context: AppContextType;
 
@@ -43,7 +43,7 @@ export class SvgCanvasToolsComponent extends React.Component<{canvasController: 
     }
 
     private activateTool(toolType: ToolType) {
-        this.props.canvasController.setActiveTool(toolType);
+        this.props.canvasController.setSelectedTool(toolType);
     }
 
     private zoomIn() {

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { SvgCanvasController } from '../../../controllers/canvases/svg/SvgCanvasController';
+import { CanvasController } from '../../../controllers/canvases/svg/CanvasController';
 import { AbstractSelectionTool } from '../../../controllers/canvases/svg/tools/AbstractSelectionTool';
 import { CameraTool } from '../../../controllers/canvases/svg/tools/CameraTool';
 import { ToolType } from '../../../controllers/canvases/svg/tools/Tool';
@@ -26,11 +26,11 @@ const SelectionComponentStyled = styled.rect`
     fill: transparent;
 `;
 
-export class SvgCanvasComponent extends React.Component<{canvasController: SvgCanvasController}> {
+export class SvgCanvasComponent extends React.Component<{canvasController: CanvasController}> {
     static contextType = AppContext;
     context: AppContextType;
 
-    constructor(props: {canvasController: SvgCanvasController}) {
+    constructor(props: {canvasController: CanvasController}) {
         super(props);
 
         this.props.canvasController.setCanvasRenderer(() => this.forceUpdate());
@@ -43,12 +43,15 @@ export class SvgCanvasComponent extends React.Component<{canvasController: SvgCa
         return (
             <EditorComponentStyled id={this.props.canvasController.getId()}>
                 <CanvasComponentStyled
+                    tabIndex={0}
                     viewBox={cameraTool.getCamera().getViewBoxAsString()}
                     id={this.context.controllers.svgCanvasId}
                     onMouseDown={(e) => this.props.canvasController.mouseController.onMouseDown(e.nativeEvent)}
                     onMouseMove={(e) => this.props.canvasController.mouseController.onMouseMove(e.nativeEvent)}
                     onMouseUp={(e) => this.props.canvasController.mouseController.onMouseUp(e.nativeEvent)}
                     onMouseLeave={(e) => this.props.canvasController.mouseController.onMouseOut(e.nativeEvent)}
+                    onKeyDown={e => this.props.canvasController.keyboardHandler.onKeyDown(e.nativeEvent)}
+                    onKeyUp={e => this.props.canvasController.keyboardHandler.onKeyUp(e.nativeEvent)}
                 >
                     <defs>
                         <PathMarkersComponent/>

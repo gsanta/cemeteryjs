@@ -1,4 +1,4 @@
-import { SvgCanvasController } from "../SvgCanvasController";
+import { CanvasController } from "../CanvasController";
 import { AbstractSelectionTool } from "./AbstractSelectionTool";
 import { ToolType } from "./Tool";
 import { CanvasItemTag } from "../models/CanvasItem";
