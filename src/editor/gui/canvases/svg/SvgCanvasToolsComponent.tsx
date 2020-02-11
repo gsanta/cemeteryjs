@@ -10,19 +10,26 @@ import { ZoomInIconComponent } from '../../icons/tools/ZoomInIconComponent';
 import { ZoomOutIconComponent } from '../../icons/tools/ZoomOutIconComponent';
 import { MoveIconComponent as PanIconComponent } from '../../icons/tools/PanIconComponent';
 import { ArrowIconComponent } from '../../icons/tools/ArrowIconComponent';
+import { colors } from '../../styles';
 
 const ToolbarStyled = styled.div`
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    /* flex-direction: column; */
+    border: 1px solid ${colors.panelBackgroundLight};
 
     > *:not(:last-child) {
-        margin-right: 10px;
+        margin-right: 1px;
     }
 `;
 
 export class SvgCanvasToolsComponent extends React.Component<{canvasController: CanvasController}> {
     static contextType = AppContext;
     context: AppContextType;
+
+    componentDidMount() {
+        this.context.controllers.svgCanvasController.addToolbarRenderer(() => this.forceUpdate());
+    }
 
     render(): JSX.Element {
         return (

@@ -7,7 +7,6 @@ export interface IconProps {
 }
 
 export const ToolStyled = styled.div`
-    padding: 3px;
     display: flex;
     cursor: pointer;
 

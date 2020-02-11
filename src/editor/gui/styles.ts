@@ -12,6 +12,7 @@ export const colors = {
     info: '#5595B9',
     panelBackground: '#333333',
     panelBackgroundLight: '#5f5b60',
+    panelBackgroundMedium: '#4b484d',
     hoverBackground: '#337ab7',
 
     views: {

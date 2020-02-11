@@ -276,8 +276,8 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
         const val: string = form.getVal(GameObjectPropType.PATH);
 
         return (
-            <SettingsRowStyled>
-                <div>Manual Control</div>
+            <SettingsRowStyled verticalAlign='right'>
+                <LabelStyled>Manual Control</LabelStyled>
                 <CheckboxComponent isSelected={false} onChange={() => null}/>
             </SettingsRowStyled>
         );
@@ -285,7 +285,7 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
 
     private renderPlayAnimation() {
         return (
-            <SettingsRowStyled centered={true}>
+            <SettingsRowStyled verticalAlign='center'>
                 <PlayIconComponent 
                     onClick={() => this.context.controllers.webglCanvasController.gameFacade.gameApi.resetPath(this.props.view.name)}
                     disabled={!this.props.view.path}

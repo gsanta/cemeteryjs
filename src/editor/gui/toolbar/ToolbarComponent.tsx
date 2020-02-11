@@ -29,24 +29,21 @@ export class ToolbarComponent extends React.Component<ToolbarComponentProps> {
     }
     
     componentDidMount() {
-        this.context.controllers.svgCanvasController.setToolbarRenderer(() => this.forceUpdate());
+        this.context.controllers.svgCanvasController.addToolbarRenderer(() => this.forceUpdate());
     }
 
     render(): JSX.Element {
-        const canvasTools = this.context.controllers.canvases.map(canvas => canvasToolsFactory(canvas)).filter(tools => tools != null);
-
         return (
             <ToolbarStyled>
                 <AccordionComponent
                     elements={[
-                        ...canvasTools,
-                        {
-                            title: 'Object Settings',
-                            body: viewComponentFactory(this.context.controllers)
-                        },
                         {
                             title: 'Global Settings',
                             body: <GlobalFormComponent {...this.props}/>
+                        },
+                        {
+                            title: 'Object Settings',
+                            body: viewComponentFactory(this.context.controllers)
                         }
                     ]}
                 />

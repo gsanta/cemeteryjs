@@ -54,7 +54,9 @@ export class CanvasController extends AbstractCanvasController {
     selectedTool = ToolType.RECTANGLE;
 
     private renderCanvasFunc = () => null;
-    private renderToolbarFunc = () => null;
+
+    private toolbarRenderers: Function[] = [];
+    // private renderToolbarFunc = () => null;
     
     constructor(services: EditorFacade) {
         super();
@@ -109,7 +111,7 @@ export class CanvasController extends AbstractCanvasController {
     }
 
     renderToolbar() {
-        this.renderToolbarFunc();
+        this.toolbarRenderers.forEach(renderer => renderer());
     }
 
     setSelectedTool(toolType: ToolType) {
@@ -161,8 +163,8 @@ export class CanvasController extends AbstractCanvasController {
         this.renderCanvasFunc = renderFunc;
     }
 
-    setToolbarRenderer(renderFunc: () => void): void {
-        this.renderToolbarFunc = renderFunc;
+    addToolbarRenderer(renderFunc: () => void): void {
+        this.toolbarRenderers.push(renderFunc);
     }
 
     activate(): void {
