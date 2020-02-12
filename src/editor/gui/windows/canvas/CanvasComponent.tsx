@@ -8,8 +8,8 @@ import { AppContext, AppContextType } from '../../Context';
 import { colors } from '../../styles';
 import { PathMarkersComponent } from './PathMarkersComponent';
 import { ViewType } from '../../../../common/views/View';
-import { canvasToolsFactory } from '../canvasFactory';
-import { SvgCanvasToolsComponent } from './SvgCanvasToolsComponent';
+import { CanvasToolbarComponent } from './CanvasToolbarComponent';
+import { CanvasToolbarStyled } from '../CanvasToolbar';
 
 const EditorComponentStyled = styled.div`
     width: 100%;
@@ -29,16 +29,7 @@ const SelectionComponentStyled = styled.rect`
     fill: transparent;
 `;
 
-const CanvasToolbarStyled = styled.div`
-    position: absolute;
-    top: 5px;
-    left: 10px;
-    max-width: calc(100% - 20px);
-    min-height: 20px;
-    min-width: 100px;
-`;
-
-export class SvgCanvasComponent extends React.Component<{canvasController: CanvasController}> {
+export class CanvasComponent extends React.Component<{canvasController: CanvasController}> {
     static contextType = AppContext;
     context: AppContextType;
 
@@ -54,7 +45,7 @@ export class SvgCanvasComponent extends React.Component<{canvasController: Canva
 
         return (
             <EditorComponentStyled id={this.props.canvasController.getId()}>
-                <CanvasToolbarStyled><SvgCanvasToolsComponent canvasController={controller as CanvasController}/></CanvasToolbarStyled>
+                <CanvasToolbarStyled><CanvasToolbarComponent canvasController={controller as CanvasController}/></CanvasToolbarStyled>
                 <CanvasComponentStyled
                     tabIndex={0}
                     viewBox={cameraTool.getCamera().getViewBoxAsString()}

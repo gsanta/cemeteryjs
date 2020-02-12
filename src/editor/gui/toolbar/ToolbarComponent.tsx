@@ -1,6 +1,5 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { canvasToolsFactory } from '../canvases/canvasFactory';
 import { GlobalFormComponent } from './GlobalFormComponent';
 import { AppContext, AppContextType } from '../Context';
 import { AccordionComponent } from '../misc/AccordionComponent';

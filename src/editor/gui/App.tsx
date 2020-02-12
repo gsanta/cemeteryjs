@@ -5,8 +5,8 @@ import { AppContext, AppContextType } from './Context';
 import '../../editor/gui/misc/SplitPane.css';
 import Split from 'split.js'
 import { ToolbarComponent } from './toolbar/ToolbarComponent';
-import { canvasFactory } from './canvases/canvasFactory';
 import { AbstractCanvasController } from '../controllers/canvases/AbstractCanvasController';
+import { windowFactory } from './windows/windowFactory';
 
 
 export interface AppState {
@@ -52,7 +52,7 @@ export class App extends React.Component<{}, AppState> {
     render() {
         const canvases = this.context.controllers.canvases
             .filter(canvas => canvas.isVisible())
-            .map(canvas => <div id={`${canvas.getId()}-split`}>{canvasFactory(canvas)}</div>)
+            .map(canvas => <div id={`${canvas.getId()}-split`}>{windowFactory(canvas)}</div>)
 
         return (
             <div className="style-nightshifs">

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Accordion, Card, Button } from 'react-bootstrap';
 import styled from 'styled-components';
 import { colors } from '../styles';
-import { CanvasToolsProps } from '../canvases/canvasFactory';
+import { CanvasToolsProps } from '../windows/windowFactory';
 import { ArrowDownIconComponent } from '../icons/ArrowDownIconComponent';
 
 export interface AccordionProps {

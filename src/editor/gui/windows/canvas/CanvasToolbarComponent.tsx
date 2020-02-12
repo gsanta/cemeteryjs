@@ -23,7 +23,7 @@ const ToolbarStyled = styled.div`
     }
 `;
 
-export class SvgCanvasToolsComponent extends React.Component<{canvasController: CanvasController}> {
+export class CanvasToolbarComponent extends React.Component<{canvasController: CanvasController}> {
     static contextType = AppContext;
     context: AppContextType;
 
