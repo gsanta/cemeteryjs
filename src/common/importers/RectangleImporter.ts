@@ -13,6 +13,7 @@ export interface RectJson {
         "data-wg-type": string,
         "data-wg-name": string,
         "data-texture": string
+        "data-is-manual-control": string;
     }
 }
 
@@ -44,6 +45,7 @@ export class MeshViewImporter implements IViewImporter {
             const rotation = parseInt(rect._attributes["data-rotation"], 10);
             const scale = parseFloat(rect._attributes["data-wg-scale"]);
             const name = rect._attributes["data-wg-name"];
+            const isManualControl = rect._attributes['data-is-manual-control'] === 'true' ? true : false;
 
             const rectangle = new Rectangle(new Point(x, y), new Point(x + width, y + height));
 
@@ -56,6 +58,7 @@ export class MeshViewImporter implements IViewImporter {
             gameObject.color = 'grey';
             gameObject.thumbnailPath = rect._attributes["data-thumbnail"];
             gameObject.path = rect._attributes["data-path"];
+            gameObject.isManualControl = isManualControl;
 
             this.addGameObject(gameObject);
         });

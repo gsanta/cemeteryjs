@@ -36,6 +36,7 @@ export class GameObjectFactory {
         gameObjectConfig.texturePath  && (gameObject.texturePath = gameObjectConfig.texturePath);
         gameObjectConfig.modelPath && (gameObject.modelPath = gameObjectConfig.modelPath);
         gameObject.scale = gameObjectConfig.scale ? gameObjectConfig.scale : 1;
+        gameObject.isManualControl = gameObjectConfig.isManualControl;
 
         return gameObject;
     }
@@ -53,6 +54,7 @@ export class GameObjectFactory {
         gameObject.modelPath && (clone.modelPath = gameObject.modelPath);
         clone.scale = gameObject.scale;
         clone.texturePath = gameObject.texturePath;
+        clone.isManualControl = gameObject.isManualControl;
 
         return clone;
     }

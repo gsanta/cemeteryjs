@@ -40,6 +40,7 @@ export class MeshView implements View {
     modelPath: string;
     thumbnailPath: string;
     path: string;
+    isManualControl: boolean;
 
     color: string;
     scale: number;

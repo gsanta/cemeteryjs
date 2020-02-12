@@ -11,7 +11,7 @@ export interface CheckboxProps {
 export function CheckboxComponent(props: CheckboxProps) {
     return (
         <div className="checkbox">
-            <input type="checkbox"/>
+            <input type="checkbox" checked={props.isSelected} onChange={() => props.onChange(!props.isSelected)}/>
             {/* <div className="label">is border?</div>
             <FormCheck
                 checked={props.isSelected}

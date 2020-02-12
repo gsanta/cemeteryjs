@@ -3,7 +3,7 @@ import { GameEvent } from "../GameEventManager";
 import { IEventListener } from "./IEventListener";
 import { InputCommand } from "../../stores/InputCommandStore";
 import { LifeCycleEvent } from "../triggers/ILifeCycleTrigger";
-
+import { MeshObject } from "../../models/objects/MeshObject";
 
 export class PlayerListener implements IEventListener {
     events: GameEvent[];
@@ -15,10 +15,10 @@ export class PlayerListener implements IEventListener {
 
         this.commandToActionMap = new Map(
             [
-                [InputCommand.Forward, (gameFacade: GameFacade) => gameFacade.characterMovement.forward(gameFacade.gameStore.getPlayer())],
-                [InputCommand.Backward, (gameFacade: GameFacade) => gameFacade.characterMovement.backward(gameFacade.gameStore.getPlayer())],
-                [InputCommand.TurnLeft, (gameFacade: GameFacade) => gameFacade.characterMovement.left(gameFacade.gameStore.getPlayer())],
-                [InputCommand.TurnRight, (gameFacade: GameFacade) => gameFacade.characterMovement.right(gameFacade.gameStore.getPlayer())],
+                [InputCommand.Forward, (gameFacade: GameFacade) => this.doAction(gameFacade, gameFacade.characterMovement.forward)],
+                [InputCommand.Backward, (gameFacade: GameFacade) => this.doAction(gameFacade, gameFacade.characterMovement.backward)],
+                [InputCommand.TurnLeft, (gameFacade: GameFacade) => this.doAction(gameFacade, gameFacade.characterMovement.left)],
+                [InputCommand.TurnRight, (gameFacade: GameFacade) => this.doAction(gameFacade, gameFacade.characterMovement.right)],
             ]
         );
     }
@@ -32,26 +32,18 @@ export class PlayerListener implements IEventListener {
                         this.commandToActionMap.get(command) && this.commandToActionMap.get(command)(gameFacade);
                     });
                 }
-            ),
-            // new GameEvent(
-            //     {inputCommand: InputCommand.Forward},
-            //     (gameFacade: GameFacade) => gameFacade.playerMovement.forward()
-            // ),
-            // new GameEvent(
-            //     {inputCommand: InputCommand.Backward},
-            //     (gameFacade: GameFacade) => gameFacade.playerMovement.backward()
-            // ),
-            // new GameEvent(
-            //     {inputCommand: InputCommand.TurnLeft},
-            //     (gameFacade: GameFacade) => gameFacade.playerMovement.left()
-            // ),
-            // new GameEvent(
-            //     {inputCommand: InputCommand.TurnRight},
-            //     (gameFacade: GameFacade) => gameFacade.playerMovement.right()
-            // )
+            )
         ];
 
         return interactions;
     }
 
+    private doAction(gameFacade: GameFacade, action: (obj: MeshObject) => void) {
+        const player = this.findPlayer(gameFacade);
+        player && action(player);
+    }
+
+    private findPlayer(gameFacade: GameFacade) {
+        return gameFacade.gameStore.getMeshObjects().find(obj => obj.isManualControl);
+    }
 }

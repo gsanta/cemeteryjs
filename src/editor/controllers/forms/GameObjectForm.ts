@@ -14,7 +14,8 @@ export enum GameObjectPropType {
     ROTATION = 'rotation',
     SCALE = 'scale',
     NAME = 'name',
-    PATH = 'path'
+    PATH = 'path',
+    IS_MANUAL_CONTROL = 'is_manual_control',
 }
 
 export class GameObjectForm extends AbstractForm<GameObjectPropType> {
@@ -63,6 +64,8 @@ export class GameObjectForm extends AbstractForm<GameObjectPropType> {
                 return this.gameObject.name;
             case GameObjectPropType.PATH:
                 return this.gameObject.path;
+            case GameObjectPropType.IS_MANUAL_CONTROL:
+                return this.gameObject.isManualControl;
         }
     }
 
@@ -95,6 +98,9 @@ export class GameObjectForm extends AbstractForm<GameObjectPropType> {
                 break;
             case GameObjectPropType.PATH:
                 this.gameObject.path = val;
+                break;
+            case GameObjectPropType.IS_MANUAL_CONTROL:
+                this.gameObject.isManualControl = val;
                 break;
         }
     }

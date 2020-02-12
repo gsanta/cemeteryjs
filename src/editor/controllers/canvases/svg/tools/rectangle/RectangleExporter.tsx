@@ -70,6 +70,7 @@ export class RectangleExporter implements IViewExporter {
                     data-texture={item.texturePath}
                     data-thumbnail={item.thumbnailPath}
                     data-path={item.path}
+                    data-is-manual-control={item.isManualControl ? 'true' : 'false'}
                 >
                     <rect
                         key={i}

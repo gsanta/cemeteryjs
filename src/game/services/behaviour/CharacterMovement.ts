@@ -7,8 +7,8 @@ export class CharacterMovement {
     forward(character: MeshObject) {
         character.moveBy(character.getDirection().mul(-1 * character.speed, -1 * character.speed));
         character.activeAnimation = AnimationName.Walk;
-        this.clearAnimationTimeout(character);
-        this.setAnimationTimeout(character);
+        // this.clearAnimationTimeout(character);
+        // this.setAnimationTimeout(character);
     }
 
     backward(character: MeshObject) {

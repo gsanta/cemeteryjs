@@ -23,6 +23,7 @@ export class MeshObject implements IGameObject {
     modelPath: string;
     thumbnailPath: string;
     path: string;
+    isManualControl: boolean;
 
     color: string;
     scale: number;

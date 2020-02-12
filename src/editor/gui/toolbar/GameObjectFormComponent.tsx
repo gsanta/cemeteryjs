@@ -278,7 +278,10 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
         return (
             <SettingsRowStyled verticalAlign='right'>
                 <LabelStyled>Manual Control</LabelStyled>
-                <CheckboxComponent isSelected={false} onChange={() => null}/>
+                <CheckboxComponent
+                    isSelected={form.getVal(GameObjectPropType.IS_MANUAL_CONTROL)}
+                    onChange={(selected: boolean) => form.updateProp(selected, GameObjectPropType.IS_MANUAL_CONTROL)}
+                />
             </SettingsRowStyled>
         );
     }
