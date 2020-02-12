@@ -4,11 +4,13 @@ import { colors } from "../../styles";
 export interface IconProps {
     isActive: boolean;
     onClick(): void;
+    format: 'short' | 'long';
 }
 
 export const ToolStyled = styled.div`
     display: flex;
     cursor: pointer;
+    padding: ${(props: IconProps) => props.format === 'long' ? '3px' : '0px'};
 
     &:hover {
         background: ${colors.hoverBackground};
