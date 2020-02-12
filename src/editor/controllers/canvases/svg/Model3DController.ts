@@ -4,7 +4,6 @@ import { CanvasController } from './CanvasController';
 import { Point } from '../../../../misc/geometry/shapes/Point';
 import { MeshView } from '../../../../common/views/MeshView';
 
-const SCALE = 2;
 export class Model3DController extends AbstractModelLoader {
     private engine: Engine;
     private canvasController: CanvasController;
@@ -38,14 +37,15 @@ export class Model3DController extends AbstractModelLoader {
         this.fileNameToMeshMap.set(fileName, mesh);
     }
 
-    private setDimensions(gameObject: MeshView) {
-        const mesh = this.fileNameToMeshMap.get(gameObject.modelPath);
-        const dimensions = this.calcMeshDimensions(mesh);
-        gameObject.dimensions = gameObject.dimensions.setWidth(dimensions.x).setHeight(dimensions.y);
+    private setDimensions(meshView: MeshView) {
+        const mesh = this.fileNameToMeshMap.get(meshView.modelPath);
+        const dimensions = this.getDimension(mesh);
+        meshView.dimensions = meshView.dimensions.setWidth(dimensions.x).setHeight(dimensions.y);
+        meshView.animations = this.getAnimations(meshView, mesh);
         this.canvasController.renderCanvas();
     }
 
-    private calcMeshDimensions(mesh: Mesh): Point {
+    private getDimension(mesh: Mesh): Point {
         mesh.computeWorldMatrix();
         mesh.getBoundingInfo().update(mesh._worldMatrix);
 
@@ -53,6 +53,10 @@ export class Model3DController extends AbstractModelLoader {
         const width = boundingVectors.max.x - boundingVectors.min.x;
         const height = boundingVectors.max.z - boundingVectors.min.z;
         return new Point(width, height);
+    }
+
+    private getAnimations(meshView: MeshView, mesh: Mesh) {
+        return mesh.skeleton ? mesh.skeleton.getAnimationRanges().map(range => range.name) : [];
     }
 
     private init() {

@@ -3,7 +3,6 @@ import { CanvasController } from '../canvases/svg/CanvasController';
 import { EventDispatcher } from '../events/EventDispatcher';
 import { Events } from '../events/Events';
 import { AbstractForm } from "./AbstractForm";
-import { EditorFacade } from '../EditorFacade';
 
 export enum GameObjectPropType {
     COLOR = 'color',
@@ -16,6 +15,7 @@ export enum GameObjectPropType {
     NAME = 'name',
     PATH = 'path',
     IS_MANUAL_CONTROL = 'is_manual_control',
+    ANIMATION = 'animation'
 }
 
 export class GameObjectForm extends AbstractForm<GameObjectPropType> {
@@ -66,6 +66,8 @@ export class GameObjectForm extends AbstractForm<GameObjectPropType> {
                 return this.gameObject.path;
             case GameObjectPropType.IS_MANUAL_CONTROL:
                 return this.gameObject.isManualControl;
+            case GameObjectPropType.ANIMATION:
+                return this.gameObject.activeAnimation;
         }
     }
 
@@ -101,6 +103,9 @@ export class GameObjectForm extends AbstractForm<GameObjectPropType> {
                 break;
             case GameObjectPropType.IS_MANUAL_CONTROL:
                 this.gameObject.isManualControl = val;
+                break;
+            case GameObjectPropType.ANIMATION:
+                this.gameObject.activeAnimation = val;
                 break;
         }
     }

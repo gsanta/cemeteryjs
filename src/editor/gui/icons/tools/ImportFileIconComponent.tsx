@@ -29,7 +29,7 @@ export const ImportFileIconComponent = (props: ImportFileIconProps) => {
     const { getRootProps, getInputProps } = useDropzone({ onDrop })
 
     return (
-        <ToolStyled {...getRootProps()} onClick={() => null} format="long" isActive={false}>
+        <ToolStyled {...getRootProps()} format="long" isActive={false}>
             <input {...getInputProps()} />
             <ToolIconStyled viewBox="0 0 24 24" style={{overflow: 'visible'}}>
                 <ToolIconBackgroundStyled isActive={false} d="M0 0h24v24H0z" fill="none"/>

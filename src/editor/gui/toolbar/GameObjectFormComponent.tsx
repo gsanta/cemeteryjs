@@ -5,7 +5,7 @@ import { ConnectedInputComponent } from '../forms/InputComponent';
 import { ConnectedFileUploadComponent } from '../icons/tools/ImportFileIconComponent';
 import { ConnectedLayerSettingsComponent } from './LayerSettingsComponent';
 import { ViewFormProps } from './viewComponentFactory';
-import { SettingsRowStyled, LabelStyled, InputStyled } from './FormComponent';
+import { SettingsRowStyled, LabelStyled, InputStyled, GroupedRowsStyled } from './FormComponent';
 import { ConnectedDropdownComponent } from '../forms/DropdownComponent';
 import { AccordionComponent } from '../misc/AccordionComponent';
 import { ClearIconComponent } from '../icons/ClearIconComponent';
@@ -31,8 +31,12 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
 
         return (
             <div>
-                {this.renderName()}
-                {this.renderLayerInput()}
+                <GroupedRowsStyled>
+                    {this.renderName()}
+                </GroupedRowsStyled>
+                <GroupedRowsStyled>
+                    {this.renderLayerInput()}
+                </GroupedRowsStyled>
                 {this.renderMaterialSection()}
                 {this.renderTransformSection()}
                 {this.renderAnimationSection()}
@@ -227,8 +231,11 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
     private renderAnimationSection() {
         const body = (
             <React.Fragment>
-                {this.renderManualMovement()}
-                {this.renderPath()}
+                <GroupedRowsStyled>
+                    {this.renderManualMovement()}
+                    {this.renderPath()}
+                </GroupedRowsStyled>
+                {this.renderAnimationTypes()}
                 {this.renderPlayAnimation()}
             </React.Fragment>
         );
@@ -272,8 +279,6 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
     
     private renderManualMovement(): JSX.Element {
         const form = this.props.canvasController.gameObjectForm;
-        const pathNames = this.context.controllers.svgCanvasController.viewStore.getPathes().map(p => p.name);
-        const val: string = form.getVal(GameObjectPropType.PATH);
 
         return (
             <SettingsRowStyled verticalAlign='right'>
@@ -297,5 +302,25 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
                 <StopIconComponent onClick={() => null} disabled={!this.props.view.path}/>
             </SettingsRowStyled>
         )
+    }
+
+    private renderAnimationTypes(): JSX.Element {
+        const form = this.props.canvasController.gameObjectForm;
+        const val: string = form.getVal(GameObjectPropType.ANIMATION);
+
+        return (
+            <SettingsRowStyled>
+                <LabelStyled>Animation</LabelStyled>
+                <InputStyled>
+                    <ConnectedDropdownComponent
+                        formController={form}
+                        propertyName={GameObjectPropType.ANIMATION}
+                        values={this.props.view.animations}
+                        currentValue={val}
+                    />
+                </InputStyled>
+                {val ? <ClearIconComponent onClick={() => form.updateProp(undefined, GameObjectPropType.ANIMATION)}/> : null}
+            </SettingsRowStyled>
+        );
     }
 }

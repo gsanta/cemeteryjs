@@ -50,6 +50,7 @@ export class MeshView implements View {
     activeAnimation: string;
     activeBehaviour: BehaviourType;
     wanderAngle = 0;
+    animations: string[] = [];
     private getMesh: (meshName: string) => Mesh;
 
     constructor(getMesh: (meshName: string) => Mesh, dimensions: Rectangle, name: string, rotation = 0) {

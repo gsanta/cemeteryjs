@@ -18,11 +18,15 @@ export const InputStyled = styled.div`
 
 export interface SettingsRowProps {
     verticalAlign?: 'center' | 'right' | 'space' 
-} 
+}
+
+export const GroupedRowsStyled = styled.div`
+    margin-bottom: 5px;
+`;
 
 export const SettingsRowStyled = styled.div`
-    padding: 3px 5px;
-    border-bottom: 1px solid ${colors.panelBackgroundLight};
+    padding: 1px 1px;
+    /* border-bottom: 1px solid ${colors.panelBackgroundLight}; */
     display: flex;
     flex-direction: row;
     justify-content: ${(props: SettingsRowProps) => props.verticalAlign === 'center' ? 'center' : props.verticalAlign === 'right' ? 'flex-end' : 'space-between'};
