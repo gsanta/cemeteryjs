@@ -1,5 +1,5 @@
 import { FileFormat } from '../../../../game/import/WorldGenerator';
-import { EditorFacade } from '../../EditorFacade';
+import { Controllers } from '../../Controllers';
 import { GameObjectForm } from '../../forms/GameObjectForm';
 import { CanvasViewSettings, AbstractCanvasController } from '../AbstractCanvasController';
 import { ICanvasExporter } from '../ICanvasExporter';
@@ -49,7 +49,7 @@ export class CanvasController extends AbstractCanvasController implements Window
     toolService: ToolService;
     tagService: ITagService;
     
-    services: EditorFacade;
+    services: Controllers;
 
     gameObjectForm: GameObjectForm;
     gameObjectFormState: GameObjectFormState;
@@ -62,7 +62,7 @@ export class CanvasController extends AbstractCanvasController implements Window
     private toolbarRenderers: Function[] = [];
     // private renderToolbarFunc = () => null;
     
-    constructor(services: EditorFacade) {
+    constructor(services: Controllers) {
         super();
 
         this.services = services;

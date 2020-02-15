@@ -5,8 +5,8 @@ import { AppContext, AppContextType } from './Context';
 import '../../editor/gui/misc/SplitPane.css';
 import Split from 'split.js'
 import { ToolbarComponent } from './toolbar/ToolbarComponent';
-import { AbstractCanvasController } from '../controllers/canvases/AbstractCanvasController';
 import { windowFactory } from './windows/windowFactory';
+import { AbstractCanvasController } from '../controllers/windows/AbstractCanvasController';
 
 
 export interface AppState {

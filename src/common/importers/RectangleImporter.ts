@@ -36,10 +36,10 @@ export class MeshViewImporter implements IViewImporter {
 
         rectJsons.forEach(rect => {
             const type = rect._attributes["data-wg-type"];
-            const x = parseInt(rect._attributes["data-wg-x"], 10) / pixelSize;
-            const y = parseInt(rect._attributes["data-wg-y"], 10) / pixelSize;
-            const width = parseInt(rect._attributes["data-wg-width"], 10) / pixelSize;
-            const height = parseInt(rect._attributes["data-wg-height"], 10) / pixelSize;
+            const x = parseInt(rect._attributes["data-wg-x"], 10);
+            const y = parseInt(rect._attributes["data-wg-y"], 10);
+            const width = parseInt(rect._attributes["data-wg-width"], 10);
+            const height = parseInt(rect._attributes["data-wg-height"], 10);
             const model = rect._attributes["data-model"];
             const texture = rect._attributes["data-texture"];
             const rotation = parseInt(rect._attributes["data-rotation"], 10);

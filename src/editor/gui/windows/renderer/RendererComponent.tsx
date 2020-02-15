@@ -2,7 +2,7 @@ import * as React from 'react';
 import './RendererComponent.scss'
 import { AppContext, AppContextType } from '../../Context';
 import styled from 'styled-components';
-import { WebglCanvasController } from '../../../controllers/windows/renderer/WebglCanvasController';
+import { RendererController } from '../../../controllers/windows/renderer/RendererController';
 import { WindowToolbarStyled } from '../WindowToolbar';
 import { RendererToolbarComponent } from './RendererToolbarComponent';
 
@@ -27,7 +27,7 @@ const CanvasOverlayStyled = styled.div`
 `;
 
 export interface RendererComponentProps {
-    canvasController: WebglCanvasController;
+    canvasController: RendererController;
 }
 
 export class RendererComponent extends React.Component<RendererComponentProps> {

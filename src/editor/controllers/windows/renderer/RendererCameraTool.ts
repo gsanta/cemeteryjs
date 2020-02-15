@@ -1,10 +1,10 @@
 import { EditorCamera } from './EditorCamera';
 import { CameraTool } from '../canvas/tools/CameraTool';
-import { EditorFacade } from '../../EditorFacade';
+import { Controllers } from '../../Controllers';
 import { Point } from '../../../../misc/geometry/shapes/Point';
 import { AbstractTool } from '../canvas/tools/AbstractTool';
 import { ToolType } from '../canvas/tools/Tool';
-import { WebglCanvasController } from './WebglCanvasController';
+import { RendererController } from './RendererController';
 
 
 export class RendererCameraTool extends AbstractTool {
@@ -17,10 +17,10 @@ export class RendererCameraTool extends AbstractTool {
     readonly LOG_ZOOM_MAX = Math.log(CameraTool.ZOOM_MAX);
     readonly NUM_OF_STEPS: number;
 
-    private editorFacade: EditorFacade;
-    private controller: WebglCanvasController;
+    private editorFacade: Controllers;
+    private controller: RendererController;
 
-    constructor(controller: WebglCanvasController, editorCamera: EditorCamera, numberOfSteps: number = 20) {
+    constructor(controller: RendererController, editorCamera: EditorCamera, numberOfSteps: number = 20) {
         super(ToolType.CAMERA)
         this.controller = controller;
         this.camera = editorCamera;

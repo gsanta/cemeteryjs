@@ -1,7 +1,7 @@
 import { Camera, nullCamera } from '../models/Camera';
 import { AbstractTool } from './AbstractTool';
 import { Point } from "../../../../../misc/geometry/shapes/Point";
-import { EditorFacade } from '../../../EditorFacade';
+import { Controllers } from '../../../Controllers';
 import { ToolType } from "./Tool";
 import { Rectangle } from "../../../../../misc/geometry/shapes/Rectangle";
 
@@ -37,9 +37,9 @@ export class CameraTool extends AbstractTool {
     readonly LOG_ZOOM_MAX = Math.log(CameraTool.ZOOM_MAX);
     readonly NUM_OF_STEPS: number;
 
-    private editorFacade: EditorFacade;
+    private editorFacade: Controllers;
 
-    constructor(editorFacade: EditorFacade, cameraInitializerFunc = cameraInitializer, numberOfSteps: number = 20) {
+    constructor(editorFacade: Controllers, cameraInitializerFunc = cameraInitializer, numberOfSteps: number = 20) {
         super(ToolType.CAMERA);
         this.NUM_OF_STEPS = numberOfSteps;
         this.editorFacade = editorFacade;

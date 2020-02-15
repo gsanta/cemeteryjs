@@ -4,7 +4,7 @@ import { ToolType } from './Tool';
 import { EventDispatcher } from '../../../events/EventDispatcher';
 import { Events } from '../../../events/Events';
 import { Rectangle } from '../../../../../misc/geometry/shapes/Rectangle';
-import { EditorFacade } from '../../../EditorFacade';
+import { Controllers } from '../../../Controllers';
 
 export class DeleteTool extends AbstractSelectionTool {
     private eventDispatcher: EventDispatcher;

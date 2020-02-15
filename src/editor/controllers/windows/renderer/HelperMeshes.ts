@@ -1,12 +1,12 @@
 import { MeshBuilder, Scene, Vector3, Vector2, Mesh, Color3, StandardMaterial, DynamicTexture, Space } from 'babylonjs';
-import { EditorFacade } from '../../EditorFacade';
+import { Controllers } from '../../Controllers';
 
 export class HelperMeshes {
     private meshBuilder: typeof MeshBuilder;
     private scene: Scene;
-    private controllers: EditorFacade;
+    private controllers: Controllers;
 
-    constructor(controllers: EditorFacade, scene: Scene, meshBuilder: typeof MeshBuilder) {
+    constructor(controllers: Controllers, scene: Scene, meshBuilder: typeof MeshBuilder) {
         this.controllers = controllers;
         this.scene = scene;
         this.meshBuilder = meshBuilder;

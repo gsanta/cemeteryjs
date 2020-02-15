@@ -2,7 +2,7 @@ import { PathView } from "../../../../../../common/views/PathView";
 import { Point } from "../../../../../../misc/geometry/shapes/Point";
 import { Rectangle } from "../../../../../../misc/geometry/shapes/Rectangle";
 import { ViewType } from "../../../../../../common/views/View";
-import { EditorFacade } from "../../../../EditorFacade";
+import { Controllers } from "../../../../Controllers";
 import { AbstractTool } from "../AbstractTool";
 import { ToolType } from "../Tool";
 import { Keyboard } from "../../../services/KeyboardHandler";

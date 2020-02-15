@@ -5,7 +5,7 @@ import { Events } from '../../../../events/Events';
 import { AbstractSelectionTool } from '../AbstractSelectionTool';
 import { ToolType } from '../Tool';
 import { CanvasItemTag } from '../../models/CanvasItem';
-import { EditorFacade } from '../../../../EditorFacade';
+import { Controllers } from '../../../../Controllers';
 import { ViewType } from '../../../../../../common/views/View';
 import { CanvasController } from '../../CanvasController';
 

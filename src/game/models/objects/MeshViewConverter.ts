@@ -30,7 +30,7 @@ export class MeshViewConverter {
             () => this.gameFacade.gameStore.getByName(`${meshView.name}-route`)
         );
 
-        meshObject.dimensions = meshView.dimensions;
+        meshObject.dimensions = meshView.dimensions.div(10);
         meshObject.type = meshView.type;
         meshObject.meshName = meshView.meshName;
         meshObject.name = meshView.name;

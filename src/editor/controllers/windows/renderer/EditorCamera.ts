@@ -13,9 +13,9 @@ export class EditorCamera extends UniversalCamera implements ICamera {
     private startY: number;
 
     constructor(scene: Scene, canvas: HTMLCanvasElement, target: Vector3) {
-        super('camera1', new Vector3(0, 150, -120), scene);
-        this.targetPosition = new Vector3(0, 0, 0);
-        this.startY = 150;
+        super('camera1', new Vector3(20, 50, -120), scene);
+        this.targetPosition = new Vector3(20, 0, -60);
+        this.startY = 50;
         this.setTarget(this.targetPosition.clone());
         this.rotation.y = 0;
         this.inputs.clear();

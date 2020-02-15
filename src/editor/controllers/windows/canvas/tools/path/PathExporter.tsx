@@ -1,6 +1,6 @@
 import { ViewType } from "../../../../../../common/views/View";
 import { PathComponent } from "../../../../../gui/windows/canvas/PathComponent";
-import { EditorFacade } from "../../../../EditorFacade";
+import { Controllers } from "../../../../Controllers";
 import { IViewExporter } from "../IToolExporter";
 import React = require("react");
 import { PathView } from "../../../../../../common/views/PathView";

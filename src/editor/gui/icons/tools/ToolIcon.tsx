@@ -3,7 +3,7 @@ import { colors } from "../../styles";
 
 export interface IconProps {
     isActive: boolean;
-    onClick(): void;
+    onClick?(): void;
     format: 'short' | 'long';
 }
 

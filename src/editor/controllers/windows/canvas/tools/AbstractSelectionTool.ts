@@ -3,7 +3,6 @@ import { AbstractTool } from './AbstractTool';
 import { ToolType } from './Tool';
 import { Point } from '../../../../../misc/geometry/shapes/Point';
 import { Rectangle } from '../../../../../misc/geometry/shapes/Rectangle';
-import { EditorFacade } from '../../../EditorFacade';
 
 const NULL_SELECTION = new Rectangle(new Point(0, 0), new Point(0, 0));
 

@@ -5,7 +5,7 @@ import { MoveIconComponent as PanIconComponent } from '../../icons/tools/PanIcon
 import { ZoomInIconComponent } from '../../icons/tools/ZoomInIconComponent';
 import { ZoomOutIconComponent } from '../../icons/tools/ZoomOutIconComponent';
 import { colors } from '../../styles';
-import { WebglCanvasController } from '../../../controllers/windows/renderer/WebglCanvasController';
+import { RendererController } from '../../../controllers/windows/renderer/RendererController';
 import { ToolType } from '../../../controllers/windows/canvas/tools/Tool';
 
 const ToolbarStyled = styled.div`
@@ -20,7 +20,7 @@ const ToolbarStyled = styled.div`
 `;
 
 export interface RendererToolbarProps {
-    controller: WebglCanvasController;
+    controller: RendererController;
 }
 
 export class RendererToolbarComponent extends React.Component<RendererToolbarProps> {

@@ -6,7 +6,7 @@ import { EventDispatcher } from '../../../events/EventDispatcher';
 import { AbstractTool } from './AbstractTool';
 import { Rectangle } from "../../../../../misc/geometry/shapes/Rectangle";
 import { CanvasItemTag } from "../models/CanvasItem";
-import { EditorFacade } from "../../../EditorFacade";
+import { Controllers } from "../../../Controllers";
 
 export class MoveAndSelectTool extends AbstractTool {
 

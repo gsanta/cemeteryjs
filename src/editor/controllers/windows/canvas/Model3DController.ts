@@ -39,7 +39,9 @@ export class Model3DController extends AbstractModelLoader {
 
     private setDimensions(meshView: MeshView) {
         const mesh = this.fileNameToMeshMap.get(meshView.modelPath);
-        const dimensions = this.getDimension(mesh);
+        const dimensions = this.getDimension(mesh).mul(10);
+        dimensions.x  = dimensions.x < 50 ? 50 : dimensions.x;
+        dimensions.y  = dimensions.y < 50 ? 50 : dimensions.y;
         meshView.dimensions = meshView.dimensions.setWidth(dimensions.x).setHeight(dimensions.y);
         meshView.animations = this.getAnimations(meshView, mesh);
         this.canvasController.renderWindow();

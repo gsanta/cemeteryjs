@@ -2,7 +2,7 @@ import { Color3, Engine, HemisphericLight, Mesh, MeshBuilder, Scene, UniversalCa
 import { AbstractModelLoader } from '../../../../common/AbstractModelLoader';
 import { GameFacade } from '../../../../game/GameFacade';
 import { FileFormat } from '../../../../game/import/WorldGenerator';
-import { EditorFacade } from '../../EditorFacade';
+import { Controllers } from '../../Controllers';
 import { Events } from "../../events/Events";
 import { EditorCamera } from './EditorCamera';
 import { HelperMeshes } from './HelperMeshes';
@@ -15,7 +15,7 @@ import { ITagService } from '../ITagService';
 import { MouseHandler } from '../services/MouseHandler';
 (<any> window).earcut = require('earcut');
 
-export class WebglCanvasController extends AbstractCanvasController implements WindowController {
+export class RendererController extends AbstractCanvasController implements WindowController {
     name = '3D View';
     static id = 'webgl-editor';
     visible = true;
@@ -36,11 +36,11 @@ export class WebglCanvasController extends AbstractCanvasController implements W
     cameraTool: RendererCameraTool;
     activeTool: Tool;
 
-    private controllers: EditorFacade;
+    private controllers: Controllers;
     private renderCanvasFunc: () => void;
     meshes: Mesh[] = [];
 
-    constructor(controllers: EditorFacade) {
+    constructor(controllers: Controllers) {
         super();
         this.controllers = controllers;
         this.mouseHander = new MouseHandler(this);
@@ -118,7 +118,7 @@ export class WebglCanvasController extends AbstractCanvasController implements W
 
 
     getId(): string {
-        return WebglCanvasController.id;
+        return RendererController.id;
     }
 
     getActiveTool(): Tool {

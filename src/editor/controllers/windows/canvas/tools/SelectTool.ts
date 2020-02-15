@@ -2,8 +2,6 @@ import { CanvasController } from "../CanvasController";
 import { AbstractSelectionTool } from "./AbstractSelectionTool";
 import { ToolType } from "./Tool";
 import { CanvasItemTag } from "../models/CanvasItem";
-import { maxBy } from '../../../../../misc/geometry/utils/Functions';
-import { EditorFacade } from "../../../EditorFacade";
 
 export class SelectTool extends AbstractSelectionTool {
 

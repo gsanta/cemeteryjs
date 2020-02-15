@@ -6,7 +6,7 @@ import { CanvasItemTag } from "../../models/CanvasItem";
 import { ToolType } from "../Tool";
 import { IViewExporter } from "../IToolExporter";
 import { MeshView } from "../../../../../../common/views/MeshView";
-import { EditorFacade } from "../../../../EditorFacade";
+import { Controllers } from "../../../../Controllers";
 import { ViewType } from "../../../../../../common/views/View";
 
 export class RectangleExporter implements IViewExporter {

@@ -1,13 +1,11 @@
 import { CanvasController } from './windows/canvas/CanvasController';
-import { WebglCanvasController } from './windows/renderer/WebglCanvasController';
+import { RendererController } from './windows/renderer/RendererController';
 import { EventDispatcher } from './events/EventDispatcher';
 import { AbstractCanvasController } from './windows/AbstractCanvasController';
 import { GlobalSettingsForm } from './forms/GlobalSettingsForm';
-import { ViewStore } from './windows/canvas/models/ViewStore';
-import { NamingService } from '../services/NamingService';
 
-export class EditorFacade {
-    webglCanvasController: WebglCanvasController;
+export class Controllers {
+    webglCanvasController: RendererController;
     svgCanvasController: CanvasController;
     
     eventDispatcher: EventDispatcher;
@@ -21,12 +19,12 @@ export class EditorFacade {
 
     constructor() {
         this.eventDispatcher = new EventDispatcher();
-        this.webglCanvasController = new WebglCanvasController(this);
+        this.webglCanvasController = new RendererController(this);
         this.svgCanvasController = new CanvasController(this);
 
         this.canvases = [this.svgCanvasController, this.webglCanvasController];
 
-        this.globalSettingsForm = new GlobalSettingsForm(this);
+        this.globalSettingsForm = new GlobalSettingsForm(this, this.eventDispatcher);
 
         this.svgCanvasId = 'svg-editor';
     }
