@@ -1,7 +1,7 @@
 import { ITagService } from "./ITagService";
-import { Tool } from "../canvases/svg/tools/Tool";
-import { Camera } from "../canvases/svg/models/Camera";
-import { CameraTool } from "../canvases/svg/tools/CameraTool";
+import { Tool } from "./canvas/tools/Tool";
+import { Camera } from "./canvas/models/Camera";
+import { CameraTool } from "./canvas/tools/CameraTool";
 import { ICamera } from "./ICamera";
 
 

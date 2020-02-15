@@ -1,9 +1,9 @@
-import { CanvasController } from './canvases/svg/CanvasController';
-import { WebglCanvasController } from './canvases/webgl/WebglCanvasController';
+import { CanvasController } from './windows/canvas/CanvasController';
+import { WebglCanvasController } from './windows/renderer/WebglCanvasController';
 import { EventDispatcher } from './events/EventDispatcher';
-import { AbstractCanvasController } from './canvases/AbstractCanvasController';
+import { AbstractCanvasController } from './windows/AbstractCanvasController';
 import { GlobalSettingsForm } from './forms/GlobalSettingsForm';
-import { ViewStore } from './canvases/svg/models/ViewStore';
+import { ViewStore } from './windows/canvas/models/ViewStore';
 import { NamingService } from '../services/NamingService';
 
 export class EditorFacade {

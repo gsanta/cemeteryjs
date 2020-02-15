@@ -1,7 +1,7 @@
-import { Point } from '../../../../../misc/geometry/shapes/Point';
-import { CanvasItemTag } from '../models/CanvasItem';
-import { View } from '../../../../../common/views/View';
-import { WindowController } from '../../../windows/WindowController';
+import { Point } from "../../../../misc/geometry/shapes/Point";
+import { WindowController } from "../WindowController";
+import { View } from "../../../../common/views/View";
+import { CanvasItemTag } from "../canvas/models/CanvasItem";
 
 function calcOffsetFromDom(bitmapEditorId: string): Point {
     if (typeof document !== 'undefined') {

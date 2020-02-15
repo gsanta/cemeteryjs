@@ -1,5 +1,5 @@
 import { MeshView } from '../../../common/views/MeshView';
-import { CanvasController } from '../canvases/svg/CanvasController';
+import { CanvasController } from '../windows/canvas/CanvasController';
 import { AbstractForm } from './AbstractForm';
 import { EditorFacade } from '../EditorFacade';
 

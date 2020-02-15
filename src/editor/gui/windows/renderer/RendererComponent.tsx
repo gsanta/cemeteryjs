@@ -2,7 +2,7 @@ import * as React from 'react';
 import './RendererComponent.scss'
 import { AppContext, AppContextType } from '../../Context';
 import styled from 'styled-components';
-import { WebglCanvasController } from '../../../controllers/canvases/webgl/WebglCanvasController';
+import { WebglCanvasController } from '../../../controllers/windows/renderer/WebglCanvasController';
 import { WindowToolbarStyled } from '../WindowToolbar';
 import { RendererToolbarComponent } from './RendererToolbarComponent';
 

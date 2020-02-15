@@ -1,4 +1,4 @@
-import { ViewStore } from "../../../editor/controllers/canvases/svg/models/ViewStore";
+import { ViewStore } from "../../../editor/controllers/windows/canvas/models/ViewStore";
 import { GameFacade } from "../../GameFacade";
 import { IViewConverter } from "../objects/IViewConverter";
 import { View } from "../../../common/views/View";

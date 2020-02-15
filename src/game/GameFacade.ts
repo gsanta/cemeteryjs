@@ -1,6 +1,6 @@
 import { Scene, OnAfterEnteringVRObservableEvent } from 'babylonjs';
 import { ViewImporter } from '../common/importers/ViewImporter';
-import { IViewImporter } from '../editor/controllers/canvases/svg/tools/IToolImporter';
+import { IViewImporter } from '../editor/controllers/windows/canvas/tools/IToolImporter';
 import { CreateMeshModifier } from './import/CreateMeshModifier';
 import { GameObjectFactory } from './import/GameObjectFactory';
 import { IViewConverter } from './models/objects/IViewConverter';

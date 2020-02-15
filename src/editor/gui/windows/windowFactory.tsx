@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { CanvasController } from '../../controllers/canvases/svg/CanvasController';
-import { AbstractCanvasController } from '../../controllers/canvases/AbstractCanvasController';
-import { WebglCanvasController } from '../../controllers/canvases/webgl/WebglCanvasController';
+import { CanvasController } from '../../controllers/windows/canvas/CanvasController';
+import { AbstractCanvasController } from '../../controllers/windows/AbstractCanvasController';
+import { WebglCanvasController } from '../../controllers/windows/renderer/WebglCanvasController';
 import { RendererComponent } from './renderer/RendererComponent';
 import { CanvasToolbarComponent } from './canvas/CanvasToolbarComponent';
 import { CanvasComponent } from './canvas/CanvasComponent';

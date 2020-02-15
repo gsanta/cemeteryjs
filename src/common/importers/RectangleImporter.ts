@@ -1,5 +1,5 @@
 
-import { IViewImporter } from '../../editor/controllers/canvases/svg/tools/IToolImporter';
+import { IViewImporter } from '../../editor/controllers/windows/canvas/tools/IToolImporter';
 import { Point } from '../../misc/geometry/shapes/Point';
 import { Rectangle } from '../../misc/geometry/shapes/Rectangle';
 import { ViewType } from '../views/View';

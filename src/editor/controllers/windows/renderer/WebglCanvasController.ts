@@ -9,10 +9,10 @@ import { HelperMeshes } from './HelperMeshes';
 import { WebglCanvasWriter } from './WebglCanvasImporter';
 import { CanvasViewSettings, AbstractCanvasController } from '../AbstractCanvasController';
 import { RendererCameraTool } from './RendererCameraTool';
-import { Tool } from '../svg/tools/Tool';
-import { MouseHandler } from '../svg/handlers/MouseHandler';
-import { WindowController } from '../../windows/WindowController';
-import { ITagService } from '../../windows/ITagService';
+import { Tool } from '../canvas/tools/Tool';
+import { WindowController } from '../WindowController';
+import { ITagService } from '../ITagService';
+import { MouseHandler } from '../services/MouseHandler';
 (<any> window).earcut = require('earcut');
 
 export class WebglCanvasController extends AbstractCanvasController implements WindowController {

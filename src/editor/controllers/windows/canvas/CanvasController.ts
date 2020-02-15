@@ -4,7 +4,6 @@ import { GameObjectForm } from '../../forms/GameObjectForm';
 import { CanvasViewSettings, AbstractCanvasController } from '../AbstractCanvasController';
 import { ICanvasExporter } from '../ICanvasExporter';
 import { ICanvasImporter } from '../ICanvasImporter';
-import { MouseHandler } from './handlers/MouseHandler';
 import { Model3DController } from './Model3DController';
 import { SvgCanvasExporter } from './SvgCanvasExporter';
 import { ViewImporter } from '../../../../common/importers/ViewImporter';
@@ -22,12 +21,13 @@ import { PathForm } from '../../forms/PathForm';
 import { GameObjectFormState } from '../../forms/GameObjectFormState';
 import { PathView } from '../../../../common/views/PathView';
 import { PathTool } from './tools/path/PathTool';
-import { KeyboardHandler } from './handlers/KeyboardHandler';
+import { KeyboardHandler } from '../services/KeyboardHandler';
 import { ViewStore } from './models/ViewStore';
 import { NamingService } from '../../../services/NamingService';
-import { ITagService } from '../../windows/ITagService';
-import { WindowController } from '../../windows/WindowController';
-import { ICamera } from '../../windows/ICamera';
+import { ITagService } from '../ITagService';
+import { WindowController } from '../WindowController';
+import { ICamera } from '../ICamera';
+import { MouseHandler } from '../services/MouseHandler';
 
 export class CanvasController extends AbstractCanvasController implements WindowController {
     name = '2D View';

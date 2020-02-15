@@ -1,4 +1,4 @@
-import { CanvasController } from "../../controllers/canvases/svg/CanvasController";
+import { CanvasController } from "../../controllers/windows/canvas/CanvasController";
 import { GameObjectFormComponent } from "./GameObjectFormComponent";
 import { PathFormComponent } from "./PathFormComponent";
 import styled from "styled-components";

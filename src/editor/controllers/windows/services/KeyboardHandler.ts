@@ -1,4 +1,4 @@
-import { CanvasController } from "../CanvasController";
+import { CanvasController } from "../canvas/CanvasController";
 
 
 export enum Keyboard {

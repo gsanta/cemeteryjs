@@ -5,8 +5,8 @@ import { MoveIconComponent as PanIconComponent } from '../../icons/tools/PanIcon
 import { ZoomInIconComponent } from '../../icons/tools/ZoomInIconComponent';
 import { ZoomOutIconComponent } from '../../icons/tools/ZoomOutIconComponent';
 import { colors } from '../../styles';
-import { WebglCanvasController } from '../../../controllers/canvases/webgl/WebglCanvasController';
-import { ToolType } from '../../../controllers/canvases/svg/tools/Tool';
+import { WebglCanvasController } from '../../../controllers/windows/renderer/WebglCanvasController';
+import { ToolType } from '../../../controllers/windows/canvas/tools/Tool';
 
 const ToolbarStyled = styled.div`
     display: flex;

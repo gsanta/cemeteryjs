@@ -1,7 +1,7 @@
-import { ICanvasImporter } from '../../editor/controllers/canvases/ICanvasImporter';
+import { ICanvasImporter } from '../../editor/controllers/windows/ICanvasImporter';
 import * as convert from 'xml-js';
 import { ViewType } from '../views/View';
-import { IViewImporter } from '../../editor/controllers/canvases/svg/tools/IToolImporter';
+import { IViewImporter } from '../../editor/controllers/windows/canvas/tools/IToolImporter';
 
 export interface WgDefinition {
     _attributes: WgDefinitionAttributes;

@@ -1,6 +1,6 @@
 import { View, ViewType } from "../../common/views/View";
 import { maxBy } from "../../misc/geometry/utils/Functions";
-import { CanvasController } from "../controllers/canvases/svg/CanvasController";
+import { CanvasController } from "../controllers/windows/canvas/CanvasController";
 
 
 export class NamingService {

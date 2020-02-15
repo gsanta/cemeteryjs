@@ -1,9 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { CanvasController } from '../../../controllers/canvases/svg/CanvasController';
-import { AbstractSelectionTool } from '../../../controllers/canvases/svg/tools/AbstractSelectionTool';
-import { CameraTool } from '../../../controllers/canvases/svg/tools/CameraTool';
-import { ToolType } from '../../../controllers/canvases/svg/tools/Tool';
+import { CanvasController } from '../../../controllers/windows/canvas/CanvasController';
+import { AbstractSelectionTool } from '../../../controllers/windows/canvas/tools/AbstractSelectionTool';
+import { CameraTool } from '../../../controllers/windows/canvas/tools/CameraTool';
+import { ToolType } from '../../../controllers/windows/canvas/tools/Tool';
 import { AppContext, AppContextType } from '../../Context';
 import { colors } from '../../styles';
 import { PathMarkersComponent } from './PathMarkersComponent';

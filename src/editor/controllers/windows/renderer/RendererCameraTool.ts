@@ -1,9 +1,9 @@
 import { EditorCamera } from './EditorCamera';
-import { CameraTool } from '../svg/tools/CameraTool';
+import { CameraTool } from '../canvas/tools/CameraTool';
 import { EditorFacade } from '../../EditorFacade';
 import { Point } from '../../../../misc/geometry/shapes/Point';
-import { AbstractTool } from '../svg/tools/AbstractTool';
-import { ToolType } from '../svg/tools/Tool';
+import { AbstractTool } from '../canvas/tools/AbstractTool';
+import { ToolType } from '../canvas/tools/Tool';
 import { WebglCanvasController } from './WebglCanvasController';
 
 

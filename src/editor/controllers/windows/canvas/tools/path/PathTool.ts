@@ -5,7 +5,7 @@ import { ViewType } from "../../../../../../common/views/View";
 import { EditorFacade } from "../../../../EditorFacade";
 import { AbstractTool } from "../AbstractTool";
 import { ToolType } from "../Tool";
-import { Keyboard } from "../../handlers/KeyboardHandler";
+import { Keyboard } from "../../../services/KeyboardHandler";
 import { CanvasController } from "../../CanvasController";
 import { CanvasItemTag } from "../../models/CanvasItem";
 
