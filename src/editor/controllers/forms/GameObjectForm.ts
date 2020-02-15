@@ -2,9 +2,9 @@ import { MeshView } from '../../../common/views/MeshView';
 import { CanvasController } from '../windows/canvas/CanvasController';
 import { EventDispatcher } from '../events/EventDispatcher';
 import { Events } from '../events/Events';
-import { AbstractForm } from "./AbstractForm";
+import { AbstractForm, PropertyType } from "./AbstractForm";
 
-export enum GameObjectPropType {
+export enum MeshViewPropType {
     COLOR = 'color',
     MODEL = 'model',
     TEXTURE = 'texture',
@@ -18,14 +18,19 @@ export enum GameObjectPropType {
     ANIMATION = 'animation'
 }
 
-export class GameObjectForm extends AbstractForm<GameObjectPropType> {
+const propertyTypes = {
+    [MeshViewPropType.SCALE]: PropertyType.Number,
+    [MeshViewPropType.ROTATION]: PropertyType.Number
+};
+
+export class GameObjectForm extends AbstractForm<MeshViewPropType> {
     gameObject: MeshView;
 
     private controller: CanvasController;
     private eventDispatcher: EventDispatcher;
 
     constructor(controller: CanvasController, eventDispatcher: EventDispatcher) {
-        super();
+        super(propertyTypes);
         this.controller = controller;
         this.eventDispatcher = eventDispatcher;
     }
@@ -37,74 +42,74 @@ export class GameObjectForm extends AbstractForm<GameObjectPropType> {
         this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
     }
 
-    updateProp(value: any, propType: GameObjectPropType) {
+    updateProp(value: any, propType: MeshViewPropType) {
         super.updateProp(value, propType);
 
         this.controller.renderWindow();
         this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
     }
 
-    protected getProp(prop: GameObjectPropType) {
+    protected getProp(prop: MeshViewPropType) {
         switch (prop) {
-            case GameObjectPropType.COLOR:
+            case MeshViewPropType.COLOR:
                 return this.gameObject.color;
-            case GameObjectPropType.MODEL:
+            case MeshViewPropType.MODEL:
                 return this.gameObject.modelPath;
-            case GameObjectPropType.TEXTURE:
+            case MeshViewPropType.TEXTURE:
                 return this.gameObject.texturePath;
-            case GameObjectPropType.THUMBNAIL:
+            case MeshViewPropType.THUMBNAIL:
                 return this.gameObject.thumbnailPath;
-            case GameObjectPropType.LAYER:
+            case MeshViewPropType.LAYER:
                 return this.controller.viewStore.getLayer(this.gameObject);
-            case GameObjectPropType.ROTATION:
+            case MeshViewPropType.ROTATION:
                 return this.gameObject.rotation;
-            case GameObjectPropType.SCALE:
+            case MeshViewPropType.SCALE:
                 return this.gameObject.scale;
-            case GameObjectPropType.NAME:
+            case MeshViewPropType.NAME:
                 return this.gameObject.name;
-            case GameObjectPropType.PATH:
+            case MeshViewPropType.PATH:
                 return this.gameObject.path;
-            case GameObjectPropType.IS_MANUAL_CONTROL:
+            case MeshViewPropType.IS_MANUAL_CONTROL:
                 return this.gameObject.isManualControl;
-            case GameObjectPropType.ANIMATION:
+            case MeshViewPropType.ANIMATION:
                 return this.gameObject.activeAnimation;
         }
     }
 
-    protected setProp(val: any, prop: GameObjectPropType) {
+    protected setProp(val: any, prop: MeshViewPropType) {
         switch (prop) {
-            case GameObjectPropType.COLOR:
+            case MeshViewPropType.COLOR:
                 this.gameObject.color = val;
                 break;
-            case GameObjectPropType.MODEL:
+            case MeshViewPropType.MODEL:
                 this.gameObject.modelPath = val.path;
                 this.controller.model3dController.set3dModelForCanvasItem(this.gameObject);
                 break;
-            case GameObjectPropType.TEXTURE:
+            case MeshViewPropType.TEXTURE:
                 this.gameObject.texturePath = val.path;
                 break;
-            case GameObjectPropType.THUMBNAIL:
+            case MeshViewPropType.THUMBNAIL:
                 this.gameObject.thumbnailPath = val.data;
                 break;
-            case GameObjectPropType.LAYER:
+            case MeshViewPropType.LAYER:
                 this.controller.viewStore.setLayer(this.gameObject, val);
                 break;
-            case GameObjectPropType.ROTATION:
-                this.gameObject.rotation = val;
+            case MeshViewPropType.ROTATION:
+                this.gameObject.rotation = this.convertValue(val, prop, this.gameObject.rotation);
                 break;
-            case GameObjectPropType.SCALE:
-                this.gameObject.scale = val;
+            case MeshViewPropType.SCALE:
+                this.gameObject.scale = this.convertValue(val, prop, this.gameObject.scale);
                 break;
-            case GameObjectPropType.NAME:
+            case MeshViewPropType.NAME:
                 this.gameObject.name = val;
                 break;
-            case GameObjectPropType.PATH:
+            case MeshViewPropType.PATH:
                 this.gameObject.path = val;
                 break;
-            case GameObjectPropType.IS_MANUAL_CONTROL:
+            case MeshViewPropType.IS_MANUAL_CONTROL:
                 this.gameObject.isManualControl = val;
                 break;
-            case GameObjectPropType.ANIMATION:
+            case MeshViewPropType.ANIMATION:
                 this.gameObject.activeAnimation = val;
                 break;
         }

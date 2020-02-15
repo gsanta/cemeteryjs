@@ -3,6 +3,7 @@ import { MeshObject } from "./MeshObject";
 import { GameFacade } from "../../GameFacade";
 import { ViewType } from "../../../common/views/View";
 import { RouteObject } from "./RouteObject";
+import { Tools } from "babylonjs";
 
 
 export class MeshViewConverter {
@@ -34,7 +35,7 @@ export class MeshViewConverter {
         meshObject.type = meshView.type;
         meshObject.meshName = meshView.meshName;
         meshObject.name = meshView.name;
-        meshObject.rotation = meshView.rotation;
+        meshObject.rotation = Tools.ToRadians(meshView.rotation);
         meshObject.texturePath = meshView.texturePath;
         meshObject.modelPath = meshView.modelPath;
         meshObject.thumbnailPath = meshView.thumbnailPath;

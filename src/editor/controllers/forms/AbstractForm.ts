@@ -1,4 +1,11 @@
 
+
+export enum PropertyType {
+    String = 'String',
+    Number = 'Number',
+    Boolean = 'Boolean'
+}
+
 export abstract class AbstractForm<P> {
     protected renderFunc = () => null;
     protected tempString: string;
@@ -6,6 +13,12 @@ export abstract class AbstractForm<P> {
     protected tempNumber: number;
     protected tempVal: any;
     focusedPropType: P;
+
+    private propertyTypes:  {[val: string]: PropertyType} = {};
+
+    constructor(propertyTypes:  {[val: string]: PropertyType} = {}) {
+        this.propertyTypes = propertyTypes;
+    }
 
     setRenderer(renderFunc: () => void) {
         this.renderFunc = renderFunc;
@@ -47,4 +60,19 @@ export abstract class AbstractForm<P> {
 
     protected abstract getProp(prop: P): any;
     protected abstract setProp(val: any, prop: P): void;
+
+    protected convertValue(val: string, prop: P, defaultVal: any) {
+        const propertyType = this.propertyTypes[prop as any] || PropertyType.String;
+
+        switch (propertyType) {
+            case PropertyType.Number:
+                try { 
+                    return val == "" ? 0 : parseFloat(val);
+                } catch (e) {
+                    return defaultVal;
+                }
+            default:
+                return val;
+        }
+    }
 }

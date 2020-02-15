@@ -73,8 +73,8 @@ export class EditorCamera extends UniversalCamera implements ICamera {
     }
 
     moveBy(delta: Point) {
-        this.position.x += (delta.x / 3);
-        this.position.z -= (delta.y / 3);
+        this.position.x += (delta.x / 10);
+        this.position.z -= (delta.y / 10);
     }
 
     getScale(): number {

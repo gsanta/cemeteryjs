@@ -31,10 +31,8 @@ export function withCommitOnBlur<T extends Focusable>(WrappedComponent: React.Co
                     this.props.formController.updateFocusedProp(val);
                     break;
                 case 'string':
-                    this.props.formController.updateFocusedProp(val);
-                    break;
                 case 'number':
-                    this.props.formController.updateFocusedProp(parseInt(val, 10));
+                    this.props.formController.updateFocusedProp(val);
                     break;
             }
         }

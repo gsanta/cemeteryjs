@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { GameObjectPropType } from '../../controllers/forms/GameObjectForm';
+import { MeshViewPropType } from '../../controllers/forms/GameObjectForm';
 import { AppContext, AppContextType } from '../Context';
 import { ConnectedInputComponent } from '../forms/InputComponent';
 import { ConnectedFileUploadComponent } from '../icons/tools/ImportFileIconComponent';
@@ -53,10 +53,10 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
                 <InputStyled>
                     <ConnectedInputComponent
                         formController={form}
-                        propertyName={GameObjectPropType.NAME}
+                        propertyName={MeshViewPropType.NAME}
                         propertyType="string"
                         type="text"
-                        value={form.getVal(GameObjectPropType.NAME)}
+                        value={form.getVal(MeshViewPropType.NAME)}
                     />
                 </InputStyled>
             </SettingsRowStyled>
@@ -72,10 +72,10 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
                 <InputStyled>
                     <ConnectedFileUploadComponent
                         formController={form}
-                        propertyName={GameObjectPropType.MODEL}
+                        propertyName={MeshViewPropType.MODEL}
                         propertyType="string"
                         placeholder={`Upload`}
-                        value={form.getVal(GameObjectPropType.MODEL)}
+                        value={form.getVal(MeshViewPropType.MODEL)}
                         readDataAs="dataUrl"
                     />
                 </InputStyled>
@@ -93,10 +93,10 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
                 <InputStyled>
                     <ConnectedFileUploadComponent
                         formController={form}
-                        propertyName={GameObjectPropType.TEXTURE}
+                        propertyName={MeshViewPropType.TEXTURE}
                         propertyType="string"
                         placeholder={`Upload`}
-                        value={form.getVal(GameObjectPropType.TEXTURE)}
+                        value={form.getVal(MeshViewPropType.TEXTURE)}
                         readDataAs="dataUrl"
                     />
                 </InputStyled>
@@ -113,7 +113,7 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
                 <InputStyled>
                     <ConnectedFileUploadComponent
                         formController={this.props.canvasController.gameObjectForm}
-                        propertyName={GameObjectPropType.THUMBNAIL}
+                        propertyName={MeshViewPropType.THUMBNAIL}
                         propertyType="string"
                         placeholder={`Upload`}
                         value={''}
@@ -138,7 +138,7 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
                         type="number"
                         value={form.getVal(GameObjectPropType.LAYER)}
                     /> */}
-                    <ConnectedLayerSettingsComponent formController={form} propertyName={GameObjectPropType.LAYER} value={form.getVal(GameObjectPropType.LAYER)}/>
+                    <ConnectedLayerSettingsComponent formController={form} propertyName={MeshViewPropType.LAYER} value={form.getVal(MeshViewPropType.LAYER)}/>
                 </InputStyled>
             </SettingsRowStyled>
         );
@@ -153,10 +153,10 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
                 <InputStyled>
                 <ConnectedInputComponent
                     formController={form}
-                    propertyName={GameObjectPropType.ROTATION}
+                    propertyName={MeshViewPropType.ROTATION}
                     propertyType="number"
                     type="number"
-                    value={form.getVal(GameObjectPropType.ROTATION)}
+                    value={form.getVal(MeshViewPropType.ROTATION)}
                     placeholder="0"
                 />
                 </InputStyled>
@@ -173,10 +173,10 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
                 <InputStyled>
                     <ConnectedInputComponent
                         formController={form}
-                        propertyName={GameObjectPropType.SCALE}
+                        propertyName={MeshViewPropType.SCALE}
                         propertyType="number"
                         type="number"
-                        value={form.getVal(GameObjectPropType.SCALE)}
+                        value={form.getVal(MeshViewPropType.SCALE)}
                     />
                 </InputStyled>
             </SettingsRowStyled>
@@ -258,7 +258,7 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
     private renderPath(): JSX.Element {
         const form = this.props.canvasController.gameObjectForm;
         const pathNames = this.context.controllers.svgCanvasController.viewStore.getPathes().map(p => p.name);
-        const val: string = form.getVal(GameObjectPropType.PATH);
+        const val: string = form.getVal(MeshViewPropType.PATH);
 
         return (
             <SettingsRowStyled>
@@ -266,12 +266,12 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
                 <InputStyled>
                     <ConnectedDropdownComponent
                         formController={form}
-                        propertyName={GameObjectPropType.PATH}
+                        propertyName={MeshViewPropType.PATH}
                         values={pathNames}
                         currentValue={val}
                     />
                 </InputStyled>
-                {val ? <ClearIconComponent onClick={() => form.updateProp(undefined, GameObjectPropType.PATH)}/> : null}
+                {val ? <ClearIconComponent onClick={() => form.updateProp(undefined, MeshViewPropType.PATH)}/> : null}
             </SettingsRowStyled>
         );
     }
@@ -284,8 +284,8 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
             <SettingsRowStyled verticalAlign='right'>
                 <LabelStyled>Manual Control</LabelStyled>
                 <CheckboxComponent
-                    isSelected={form.getVal(GameObjectPropType.IS_MANUAL_CONTROL)}
-                    onChange={(selected: boolean) => form.updateProp(selected, GameObjectPropType.IS_MANUAL_CONTROL)}
+                    isSelected={form.getVal(MeshViewPropType.IS_MANUAL_CONTROL)}
+                    onChange={(selected: boolean) => form.updateProp(selected, MeshViewPropType.IS_MANUAL_CONTROL)}
                 />
             </SettingsRowStyled>
         );
@@ -306,7 +306,7 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
 
     private renderAnimationTypes(): JSX.Element {
         const form = this.props.canvasController.gameObjectForm;
-        const val: string = form.getVal(GameObjectPropType.ANIMATION);
+        const val: string = form.getVal(MeshViewPropType.ANIMATION);
 
         return (
             <SettingsRowStyled>
@@ -314,12 +314,12 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
                 <InputStyled>
                     <ConnectedDropdownComponent
                         formController={form}
-                        propertyName={GameObjectPropType.ANIMATION}
+                        propertyName={MeshViewPropType.ANIMATION}
                         values={this.props.view.animations}
                         currentValue={val}
                     />
                 </InputStyled>
-                {val ? <ClearIconComponent onClick={() => form.updateProp(undefined, GameObjectPropType.ANIMATION)}/> : null}
+                {val ? <ClearIconComponent onClick={() => form.updateProp(undefined, MeshViewPropType.ANIMATION)}/> : null}
             </SettingsRowStyled>
         );
     }
