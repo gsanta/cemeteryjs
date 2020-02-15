@@ -9,7 +9,7 @@ import { colors } from '../../styles';
 import { PathMarkersComponent } from './PathMarkersComponent';
 import { ViewType } from '../../../../common/views/View';
 import { CanvasToolbarComponent } from './CanvasToolbarComponent';
-import { CanvasToolbarStyled } from '../CanvasToolbar';
+import { WindowToolbarStyled } from '../WindowToolbar';
 
 const EditorComponentStyled = styled.div`
     width: 100%;
@@ -45,7 +45,7 @@ export class CanvasComponent extends React.Component<{canvasController: CanvasCo
 
         return (
             <EditorComponentStyled id={this.props.canvasController.getId()}>
-                <CanvasToolbarStyled><CanvasToolbarComponent canvasController={controller as CanvasController}/></CanvasToolbarStyled>
+                <WindowToolbarStyled><CanvasToolbarComponent canvasController={controller as CanvasController}/></WindowToolbarStyled>
                 <CanvasComponentStyled
                     tabIndex={0}
                     viewBox={cameraTool.getCamera().getViewBoxAsString()}

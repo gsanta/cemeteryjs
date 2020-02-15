@@ -21,7 +21,7 @@ export class RectangleTool extends AbstractSelectionTool {
 
     down() {
         super.down();
-        this.services.renderCanvas();
+        this.services.renderWindow();
     }
 
     click() {
@@ -43,7 +43,7 @@ export class RectangleTool extends AbstractSelectionTool {
         this.services.viewStore.addTag([gameObject], CanvasItemTag.SELECTED);
     
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
-        this.services.renderCanvas();
+        this.services.renderWindow();
         this.services.renderToolbar();
     }
 
@@ -69,7 +69,7 @@ export class RectangleTool extends AbstractSelectionTool {
         if (positions.length > 0) {
             this.lastPreviewRect = this.services.viewStore.addRect(gameObject);
     
-            this.services.renderCanvas();
+            this.services.renderWindow();
         }
     }
 
@@ -79,7 +79,7 @@ export class RectangleTool extends AbstractSelectionTool {
             this.lastPreviewRect = null;
         }
 
-        this.services.renderCanvas();
+        this.services.renderWindow();
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
     }
 }

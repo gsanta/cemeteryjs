@@ -32,7 +32,7 @@ export class WebglCanvasWriter implements ICanvasImporter {
                         addChildren(parent: any, children: any[]): void {},
                         addBorders(item: any, borders: any[]): void {},
                         done() {
-                            that.webglEditorController.renderCanvas();
+                            that.webglEditorController.renderWindow();
                         }
                     }    
                 )

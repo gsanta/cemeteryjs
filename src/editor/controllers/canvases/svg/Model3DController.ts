@@ -42,7 +42,7 @@ export class Model3DController extends AbstractModelLoader {
         const dimensions = this.getDimension(mesh);
         meshView.dimensions = meshView.dimensions.setWidth(dimensions.x).setHeight(dimensions.y);
         meshView.animations = this.getAnimations(meshView, mesh);
-        this.canvasController.renderCanvas();
+        this.canvasController.renderWindow();
     }
 
     private getDimension(mesh: Mesh): Point {

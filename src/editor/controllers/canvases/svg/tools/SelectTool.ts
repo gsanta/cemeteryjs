@@ -13,12 +13,12 @@ export class SelectTool extends AbstractSelectionTool {
 
     down() {
         super.down();
-        this.services.renderCanvas();
+        this.services.renderWindow();
     }
 
     drag() {
         super.drag();
-        this.services.renderCanvas();
+        this.services.renderWindow();
     }
 
     click() {
@@ -32,7 +32,7 @@ export class SelectTool extends AbstractSelectionTool {
 
         hoveredView && viewStore.addTag([hoveredView], CanvasItemTag.SELECTED);
 
-        this.services.renderCanvas();
+        this.services.renderWindow();
         this.services.renderToolbar();
     }
 
@@ -44,7 +44,7 @@ export class SelectTool extends AbstractSelectionTool {
         canvasStore.removeTag(this.services.viewStore.getViews(), CanvasItemTag.SELECTED);
         canvasStore.addTag(canvasItems, CanvasItemTag.SELECTED);
 
-        this.services.renderCanvas();
+        this.services.renderWindow();
         this.services.renderToolbar();
     }
 }

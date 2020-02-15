@@ -73,7 +73,7 @@ export class KeyboardCameraInput implements ICameraInput<any> {
                     break;
                 case KeyboardInput.DOWN:
                     if (this.isCtrlPressed) {
-                        this.camera.zoomIn();
+                        this.camera.zoomIn(5);
                     } else {
                         this.camera.moveDown();
                     }

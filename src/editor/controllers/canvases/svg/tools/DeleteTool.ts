@@ -17,19 +17,19 @@ export class DeleteTool extends AbstractSelectionTool {
 
     down() {
         super.down();
-        this.services.renderCanvas();
+        this.services.renderWindow();
     }
 
     drag() {
         super.drag();
-        this.services.renderCanvas();
+        this.services.renderWindow();
     }
 
     click() {
         super.click();
         const items = this.services.viewStore.getIntersectingItemsAtPoint(this.services.mouseController.pointer.curr);
         items.length > 0 && this.services.viewStore.remove(items[0]); 
-        this.services.renderCanvas();
+        this.services.renderWindow();
 
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
     }
@@ -40,7 +40,7 @@ export class DeleteTool extends AbstractSelectionTool {
 
         canvasItems.forEach(item => this.services.viewStore.remove(item));
 
-        this.services.renderCanvas();
+        this.services.renderWindow();
 
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
     }

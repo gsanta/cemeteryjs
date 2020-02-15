@@ -35,7 +35,7 @@ export class PathTool extends AbstractTool {
         this.controller.viewStore.removeTag(this.controller.viewStore.getViews(), CanvasItemTag.SELECTED);
         this.controller.viewStore.addTag([this.pendingPath], CanvasItemTag.SELECTED); 
 
-        this.controller.renderCanvas();
+        this.controller.renderWindow();
         this.controller.renderToolbar();
     }
 

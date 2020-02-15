@@ -33,14 +33,14 @@ export class GameObjectForm extends AbstractForm<GameObjectPropType> {
     blurProp() {
         super.blurProp();
 
-        this.controller.renderCanvas();
+        this.controller.renderWindow();
         this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
     }
 
     updateProp(value: any, propType: GameObjectPropType) {
         super.updateProp(value, propType);
 
-        this.controller.renderCanvas();
+        this.controller.renderWindow();
         this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
     }
 

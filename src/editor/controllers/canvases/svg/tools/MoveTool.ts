@@ -37,7 +37,7 @@ export class MoveTool extends AbstractTool {
 
         selectedItems.forEach((item, index) => item.dimensions = this.origDimensions[index].translate(mouseDelta));
 
-        this.controller.renderCanvas();
+        this.controller.renderWindow();
     }
 
     up() {

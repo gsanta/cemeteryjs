@@ -8,24 +8,34 @@ import { EditorCamera } from './EditorCamera';
 import { HelperMeshes } from './HelperMeshes';
 import { WebglCanvasWriter } from './WebglCanvasImporter';
 import { CanvasViewSettings, AbstractCanvasController } from '../AbstractCanvasController';
-import { CreateMeshModifier } from '../../../../game/import/CreateMeshModifier';
+import { RendererCameraTool } from './RendererCameraTool';
+import { Tool } from '../svg/tools/Tool';
+import { MouseHandler } from '../svg/handlers/MouseHandler';
+import { WindowController } from '../../windows/WindowController';
+import { ITagService } from '../../windows/ITagService';
 (<any> window).earcut = require('earcut');
 
-export class WebglCanvasController extends AbstractCanvasController {
+export class WebglCanvasController extends AbstractCanvasController implements WindowController {
     name = '3D View';
     static id = 'webgl-editor';
     visible = true;
     fileFormats = [FileFormat.TEXT, FileFormat.SVG];
+
+    mouseHander: MouseHandler;
 
     engine: Engine;
     scene: Scene;
     gameFacade: GameFacade;
     writer: WebglCanvasWriter;
     modelLoader: AbstractModelLoader;
+    tagService: ITagService;
     private helperMeshes: HelperMeshes;
 
     private canvas: HTMLCanvasElement;
-    private camera: UniversalCamera;
+    camera: EditorCamera;
+    cameraTool: RendererCameraTool;
+    activeTool: Tool;
+
     private controllers: EditorFacade;
     private renderCanvasFunc: () => void;
     meshes: Mesh[] = [];
@@ -33,8 +43,13 @@ export class WebglCanvasController extends AbstractCanvasController {
     constructor(controllers: EditorFacade) {
         super();
         this.controllers = controllers;
+        this.mouseHander = new MouseHandler(this);
         this.updateCanvas = this.updateCanvas.bind(this);
         this.registerEvents();
+    }
+
+    getCamera(): EditorCamera {
+        return this.cameraTool.getCamera();
     }
 
     registerEvents() {
@@ -59,6 +74,8 @@ export class WebglCanvasController extends AbstractCanvasController {
         
         const scene = new Scene(this.engine);
         this.camera = new EditorCamera(scene, this.canvas, target);
+        this.cameraTool = new RendererCameraTool(this, this.camera);
+        this.activeTool = this.cameraTool;
         
 
         this.helperMeshes = new HelperMeshes(this.controllers, scene, MeshBuilder);
@@ -96,7 +113,7 @@ export class WebglCanvasController extends AbstractCanvasController {
             this.writer.import(file);
         }
 
-        this.renderCanvas();
+        this.renderWindow();
     }
 
 
@@ -104,11 +121,15 @@ export class WebglCanvasController extends AbstractCanvasController {
         return WebglCanvasController.id;
     }
 
+    getActiveTool(): Tool {
+        return this.activeTool;
+    }
+
     setCanvasRenderer(renderFunc: () => void) {
         this.renderCanvasFunc = renderFunc;
     }
 
-    renderCanvas() {
+    renderWindow() {
         this.engine.runRenderLoop(() => this.scene.render());
         this.renderCanvasFunc();
     }

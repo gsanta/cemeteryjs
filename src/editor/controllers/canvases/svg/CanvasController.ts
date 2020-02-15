@@ -25,8 +25,11 @@ import { PathTool } from './tools/path/PathTool';
 import { KeyboardHandler } from './handlers/KeyboardHandler';
 import { ViewStore } from './models/ViewStore';
 import { NamingService } from '../../../services/NamingService';
+import { ITagService } from '../../windows/ITagService';
+import { WindowController } from '../../windows/WindowController';
+import { ICamera } from '../../windows/ICamera';
 
-export class CanvasController extends AbstractCanvasController {
+export class CanvasController extends AbstractCanvasController implements WindowController {
     name = '2D View';
     static id = 'svg-canvas-controller';
     visible = true;
@@ -44,6 +47,7 @@ export class CanvasController extends AbstractCanvasController {
     reader: ICanvasExporter;
     model3dController: Model3DController;
     toolService: ToolService;
+    tagService: ITagService;
     
     services: EditorFacade;
 
@@ -104,9 +108,14 @@ export class CanvasController extends AbstractCanvasController {
         this.gameObjectForm = new GameObjectForm(this, this.services.eventDispatcher);
         this.gameObjectFormState = new GameObjectFormState();
         this.pathForm = new PathForm();
+        this.tagService = this.viewStore;
     }
 
-    renderCanvas() {
+    getCamera(): ICamera {
+        return this.cameraTool.getCamera();
+    }
+
+    renderWindow() {
         this.renderCanvasFunc();
     }
 

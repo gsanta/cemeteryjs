@@ -54,7 +54,7 @@ export class CameraTool extends AbstractTool {
         this.camera.moveTo(prevTranslate);
         this.camera.zoom(prevScale);
 
-        this.editorFacade.svgCanvasController.renderCanvas();
+        this.editorFacade.svgCanvasController.renderWindow();
     }
 
     zoomToNextStep(canvasPos?: Point) {
@@ -68,7 +68,7 @@ export class CameraTool extends AbstractTool {
             this.camera.setTopLeftCorner(canvasPos, nextZoomLevel);
             this.camera.moveBy(ratioOfViewBox(this.camera, pointerRatio).negate());
 
-            this.editorFacade.svgCanvasController.renderCanvas();
+            this.editorFacade.svgCanvasController.renderWindow();
         }
     }
 
@@ -83,7 +83,7 @@ export class CameraTool extends AbstractTool {
             this.camera.setTopLeftCorner(canvasPos, prevZoomLevel);
             this.camera.moveBy(ratioOfViewBox(this.camera, pointerRatio).negate());
 
-            this.editorFacade.svgCanvasController.renderCanvas();
+            this.editorFacade.svgCanvasController.renderWindow();
         }
     }
 
@@ -104,7 +104,7 @@ export class CameraTool extends AbstractTool {
         
         canvasController.cameraTool.getCamera().moveBy(delta.negate());
 
-        canvasController.renderCanvas();
+        canvasController.renderWindow();
     }
 
     up() {

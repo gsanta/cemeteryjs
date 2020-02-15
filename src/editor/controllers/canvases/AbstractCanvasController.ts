@@ -15,7 +15,7 @@ export abstract class AbstractCanvasController {
     abstract activate(): void;
     
     abstract setCanvasRenderer(renderFunc: () => void);
-    abstract renderCanvas();
+    abstract renderWindow();
 
     addToolbarRenderer(renderFunc: () => void): void {}
     renderToolbar(): void {}

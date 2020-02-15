@@ -88,8 +88,12 @@ export class ViewStore {
         views.forEach(item => this.tags.get(item).add(tag));
     }
 
-    removeTag(gameObject: View[], tag: CanvasItemTag) {
-        gameObject.forEach(item => this.tags.get(item).delete(tag));
+    removeTag(views: View[], tag: CanvasItemTag) {
+        views.forEach(item => this.tags.get(item).delete(tag));
+    }
+
+    removeTagFromAll(tag: CanvasItemTag) {
+        this.views.forEach(item => this.tags.get(item).delete(tag));
     }
 
     getTaggedItems(tag: CanvasItemTag): View[] {

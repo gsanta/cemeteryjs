@@ -3,12 +3,8 @@ import './RendererComponent.scss'
 import { AppContext, AppContextType } from '../../Context';
 import styled from 'styled-components';
 import { WebglCanvasController } from '../../../controllers/canvases/webgl/WebglCanvasController';
-import { CanvasToolbarStyled } from '../CanvasToolbar';
+import { WindowToolbarStyled } from '../WindowToolbar';
 import { RendererToolbarComponent } from './RendererToolbarComponent';
-
-const CanvasStyled = styled.canvas`
-    display: ${(props: {isEmpty: boolean}) => props.isEmpty ? 'none' : 'block'};
-`;
 
 const RendererStyled = styled.div`
     background: #33334C;
@@ -17,16 +13,29 @@ const RendererStyled = styled.div`
     position: relative;
 `;
 
-export interface WebglCanvasComponentProps {
+const CanvasStyled = styled.canvas`
+    display: ${(props: {isEmpty: boolean}) => props.isEmpty ? 'none' : 'block'};
+`;
+
+const CanvasOverlayStyled = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+`;
+
+export interface RendererComponentProps {
     canvasController: WebglCanvasController;
 }
 
-export class RendererComponent extends React.Component<WebglCanvasComponentProps> {
+export class RendererComponent extends React.Component<RendererComponentProps> {
     static contextType = AppContext;
     private canvasRef: React.RefObject<HTMLCanvasElement>;
     context: AppContextType;
 
-    constructor(props: WebglCanvasComponentProps) {
+    constructor(props: RendererComponentProps) {
         super(props);
 
         this.canvasRef = React.createRef();
@@ -47,8 +56,18 @@ export class RendererComponent extends React.Component<WebglCanvasComponentProps
 
         return (
                 <RendererStyled>
-                    <CanvasToolbarStyled><RendererToolbarComponent/></CanvasToolbarStyled>
-                    <CanvasStyled isEmpty={isEmpty} id="canvas" ref={this.canvasRef}/>
+                    <WindowToolbarStyled><RendererToolbarComponent controller={this.props.canvasController}/></WindowToolbarStyled>
+                    <CanvasStyled
+                        isEmpty={isEmpty}
+                        id="canvas"
+                        ref={this.canvasRef}
+                    />
+                    <CanvasOverlayStyled
+                        onMouseDown={(e) => this.props.canvasController.mouseHander.onMouseDown(e.nativeEvent)}
+                        onMouseMove={(e) => this.props.canvasController.mouseHander.onMouseMove(e.nativeEvent)}
+                        onMouseUp={(e) => this.props.canvasController.mouseHander.onMouseUp(e.nativeEvent)}
+                        onMouseLeave={(e) => this.props.canvasController.mouseHander.onMouseOut(e.nativeEvent)}
+                    />
                 </RendererStyled>
         );
     }

@@ -1,8 +1,7 @@
 import { Point } from '../../../../../misc/geometry/shapes/Point';
 import { CanvasItemTag } from '../models/CanvasItem';
 import { View } from '../../../../../common/views/View';
-import { EditorFacade } from '../../../EditorFacade';
-import { CanvasController } from '../CanvasController';
+import { WindowController } from '../../../windows/WindowController';
 
 function calcOffsetFromDom(bitmapEditorId: string): Point {
     if (typeof document !== 'undefined') {
@@ -34,7 +33,7 @@ export class MousePointer {
 }
 
 export class MouseHandler {
-    private controller: CanvasController;
+    private controller: WindowController;
     isDown = false;
     isDrag = false;
 
@@ -42,7 +41,7 @@ export class MouseHandler {
 
     private calcOffset: (id: string) => Point;
 
-    constructor(controller: CanvasController, calcOffset: (id: string) => Point = calcOffsetFromDom) {
+    constructor(controller: WindowController, calcOffset: (id: string) => Point = calcOffsetFromDom) {
         this.controller = controller;
         this.calcOffset = calcOffset;
     }
@@ -83,20 +82,20 @@ export class MouseHandler {
     }
 
     hover(item: View) {
-        this.controller.viewStore.addTag([item], CanvasItemTag.HOVERED);
-        this.controller.renderCanvas();
+        this.controller.tagService.addTag([item], CanvasItemTag.HOVERED);
+        this.controller.renderWindow();
     }
 
     unhover() {
-        this.controller.viewStore.removeTag(this.controller.viewStore.getViews(), CanvasItemTag.HOVERED);
-        this.controller.renderCanvas();
+        this.controller.tagService.removeTagFromAll(CanvasItemTag.HOVERED);
+        this.controller.renderWindow();
     }
 
     private getPointFromEvent(e: MouseEvent): Point {
         const offset = this.calcOffset(this.controller.getId());
         const x: number = (e ? e.x - offset.x : 0);
         const y: number = (e ? e.y - offset.y : 0);
-        return this.controller.cameraTool.getCamera().screenToCanvasPoint(new Point(x, y));
+        return this.controller.getCamera().screenToCanvasPoint(new Point(x, y));
     }
 
     private getScreenPointFromEvent(e: MouseEvent): Point {
