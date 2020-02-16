@@ -14,7 +14,9 @@ export class RouteObject implements IGameObject {
     name: string;
     currentStop = 1;
     animation: string;
-    isFinished = false
+    isFinished = false;
+    repeat = true;
+    isPaused = false;
 
     getMeshObject() {
         return this.getMeshObjectFunc();

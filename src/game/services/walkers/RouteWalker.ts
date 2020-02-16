@@ -4,9 +4,12 @@ import { GameFacade } from "../../GameFacade";
 import { LifeCycleEvent } from "../triggers/ILifeCycleTrigger";
 import { RouteObject } from "../../models/objects/RouteObject";
 
+const defaultSpeed = 1000 / 5;
+
 export class RouteWalker implements IEventListener {
     events: GameEvent[];
     private gameFacade: GameFacade;
+    private prevTime: number;
 
     constructor(gameFacade: GameFacade) {
         this.gameFacade = gameFacade;
@@ -20,8 +23,11 @@ export class RouteWalker implements IEventListener {
     }
 
     private updateRoutes() {
+        const delta = this.computeDelta();
+        const speed = delta / defaultSpeed;
+
         this.gameFacade.gameStore.getRouteObjects()
-            .filter(route => route.isFinished === false)
+            .filter(route => route.isFinished === false && route.isPaused === false)
             .forEach(route => {
                 const meshObj = route.getMeshObject();
                 const pathObj = route.getPathObject();
@@ -35,10 +41,21 @@ export class RouteWalker implements IEventListener {
                     route.reset();
                 }
 
-                meshObj.moveBy(direction.div(10));
+                meshObj.moveBy(direction.mul(speed));
 
                 // meshObj.setPosition(pathObj.points[0]);
             });
+    }
+
+    private computeDelta(): number {
+        const currentTime = Date.now();
+        this.prevTime = this.prevTime === undefined ? currentTime : this.prevTime;
+
+        const delta = currentTime - this.prevTime;
+
+        this.prevTime = currentTime;
+
+        return delta;
     }
 
     private isNextStopReached(route: RouteObject): boolean {

@@ -6,12 +6,12 @@ import { ConnectedFileUploadComponent } from '../icons/tools/ImportFileIconCompo
 import { GlobalSettingsPropType } from '../../controllers/forms/GlobalSettingsForm';
 import { saveAs } from 'file-saver';
 
-export interface GlobalFormComponentProps {
+export interface GeneralFormComponentProps {
     isEditorOpen: boolean;
     toggleEditorOpen: () => void;
 }
 
-export class GlobalFormComponent extends React.Component<GlobalFormComponentProps> {
+export class GeneralFormComponent extends React.Component<GeneralFormComponentProps> {
     static contextType = AppContext;
     context: AppContextType;
 

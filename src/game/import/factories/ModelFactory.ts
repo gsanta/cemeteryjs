@@ -21,7 +21,7 @@ export class ModelFactory {
             return;
         }
 
-        const meshName = this.gameFacade.modelLoader.createInstance(meshObject.modelPath);
+        const meshName = this.gameFacade.modelLoader.createInstance(meshObject.modelPath, meshObject.name);
 
         meshObject.meshName = meshName;
         const mesh = this.gameFacade.meshStore.getMesh(meshName);

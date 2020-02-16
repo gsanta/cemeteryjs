@@ -4,9 +4,9 @@ import './App.scss';
 import { AppContext, AppContextType } from './Context';
 import '../../editor/gui/misc/SplitPane.css';
 import Split from 'split.js'
-import { ToolbarComponent } from './toolbar/ToolbarComponent';
 import { windowFactory } from './windows/windowFactory';
 import { AbstractCanvasController } from '../controllers/windows/AbstractCanvasController';
+import { SidebarComponent } from './sidebar/SidebarComponent';
 
 
 export interface AppState {
@@ -58,7 +58,7 @@ export class App extends React.Component<{}, AppState> {
             <div className="style-nightshifs">
                 <div className="main-content">
                     <div id="toolbar" >
-                        <ToolbarComponent isEditorOpen={this.state.isEditorOpen} toggleEditorOpen={() => this.setState({isEditorOpen: !this.state.isEditorOpen})}/>
+                        <SidebarComponent isEditorOpen={this.state.isEditorOpen} toggleEditorOpen={() => this.setState({isEditorOpen: !this.state.isEditorOpen})}/>
                     </div>
                     {canvases}
                 </div>

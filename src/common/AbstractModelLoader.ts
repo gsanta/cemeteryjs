@@ -57,7 +57,7 @@ export abstract class AbstractModelLoader {
         this.loadedFileNames = new Set();
     }
 
-    abstract createInstance(fileName: string): string;
+    abstract createInstance(fileName: string, meshName: string): string;
     protected abstract setModel(fileName: string, mesh: Mesh): void;
 
     private configMesh(mesh: Mesh) {        
@@ -74,17 +74,11 @@ export abstract class AbstractModelLoader {
         (<StandardMaterial> meshes[0].material).diffuseTexture  = new Texture(`${this.basePath}${this.getFolderNameFromFileName(meshObject.modelPath)}/${meshObject.texturePath}`,  this.scene);
         (<StandardMaterial> meshes[0].material).specularTexture  = new Texture(`${this.basePath}${this.getFolderNameFromFileName(meshObject.modelPath)}/${meshObject.texturePath}`,  this.scene);
 
-        meshes[0].name = meshObject.modelPath;
+        meshes[0].name = meshObject.name;
         this.configMesh(meshes[0]);
-        // meshes[0].scaling = new Vector3(5, 5, 5);
         this.setModel(meshObject.modelPath, meshes[0]);
-        // this.scene.beginAnimation(skeletons[0], 0, 24, true);
 
         return meshes[0];
-    }
-
-    private getMaterialFileNameFromModelFileName(fileName: string) {
-        return `${fileName.substr(0, fileName.lastIndexOf('.'))}.png`;
     }
 
     private getFolderNameFromFileName(fileName: string) {

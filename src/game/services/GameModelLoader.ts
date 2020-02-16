@@ -19,7 +19,7 @@ export class GameModelLoader extends AbstractModelLoader {
         this.fileNameToMeshNameMap.set(fileName, mesh.name);
     }
 
-    createInstance(fileName: string): string {
+    createInstance(fileName: string, meshName: string): string {
         const templateMeshName = this.fileNameToMeshNameMap.get(fileName);
         const templateMesh = this.gameFacade.meshStore.getMesh(templateMeshName);
 
@@ -30,7 +30,7 @@ export class GameModelLoader extends AbstractModelLoader {
             clone = templateMesh;
         } else {
             clone = <Mesh> templateMesh.instantiateHierarchy();
-            clone.name = `${templateMesh.name}-${counter}`;
+            clone.name = meshName;
             this.gameFacade.meshStore.addClone(clone.name, clone);
         }
         clone.setAbsolutePosition(new Vector3(0, 0, 0));

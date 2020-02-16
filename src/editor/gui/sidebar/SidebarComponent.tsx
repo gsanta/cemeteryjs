@@ -1,28 +1,29 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { GlobalFormComponent } from './GlobalFormComponent';
+import { GeneralFormComponent } from './GeneralFormComponent';
 import { AppContext, AppContextType } from '../Context';
 import { AccordionComponent } from '../misc/AccordionComponent';
 import { colors } from '../styles';
 import { viewComponentFactory } from './viewComponentFactory';
+import { GlobalFormComponent } from './GlobalFormComponent';
 
-export interface ToolbarComponentProps {
+export interface SidebarComponentProps {
     isEditorOpen: boolean;
     toggleEditorOpen: () => void;
 }
 
-const ToolbarStyled = styled.div`
+const SidebarStyled = styled.div`
     height: 100%;
     background: ${colors.panelBackground};
     color: ${colors.textColor};
 `;
 
 
-export class ToolbarComponent extends React.Component<ToolbarComponentProps> {
+export class SidebarComponent extends React.Component<SidebarComponentProps> {
     static contextType = AppContext;
     context: AppContextType;
 
-    constructor(props: ToolbarComponentProps) {
+    constructor(props: SidebarComponentProps) {
         super(props);
 
     }
@@ -33,20 +34,24 @@ export class ToolbarComponent extends React.Component<ToolbarComponentProps> {
 
     render(): JSX.Element {
         return (
-            <ToolbarStyled>
+            <SidebarStyled>
                 <AccordionComponent
                     elements={[
                         {
-                            title: 'Global Settings',
-                            body: <GlobalFormComponent {...this.props}/>
+                            title: 'General Settings',
+                            body: <GeneralFormComponent {...this.props}/>
                         },
                         {
                             title: 'Object Settings',
                             body: viewComponentFactory(this.context.controllers)
+                        },
+                        {
+                            title: 'Global Settings',
+                            body: <GlobalFormComponent/>
                         }
                     ]}
                 />
-            </ToolbarStyled>
+            </SidebarStyled>
         );
     }
 }

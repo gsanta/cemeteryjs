@@ -295,11 +295,11 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
         return (
             <SettingsRowStyled verticalAlign='center'>
                 <PlayIconComponent 
-                    onClick={() => this.context.controllers.webglCanvasController.gameFacade.gameApi.resetPath(this.props.view.name)}
+                    onClick={() => this.context.controllers.webglCanvasController.gameFacade.gameApi.playMovement(this.props.view.name)}
                     disabled={!this.props.view.path}
                 />
-                <PauseIconComponent onClick={() => null} disabled={!this.props.view.path}/>
-                <StopIconComponent onClick={() => null} disabled={!this.props.view.path}/>
+                <PauseIconComponent onClick={() => this.context.controllers.webglCanvasController.gameFacade.gameApi.pauseMovement(this.props.view.name)} disabled={!this.props.view.path}/>
+                <StopIconComponent onClick={() => this.context.controllers.webglCanvasController.gameFacade.gameApi.resetPath(this.props.view.name)} disabled={!this.props.view.path}/>
             </SettingsRowStyled>
         )
     }
