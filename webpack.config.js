@@ -63,7 +63,8 @@ module.exports = env => {
         output: {
             filename: 'app.js',
             path: path.resolve(__dirname, 'build'),
-            library: 'worldGenerator'
+            library: 'worldGenerator',
+            publicPath: 'assets',
         },
         externals: {
             "babylonjs": "BABYLON"

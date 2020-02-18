@@ -14,10 +14,12 @@ export class GameStoreBuilder {
     constructor(gameFacade: GameFacade) {
         this.gameFacade = gameFacade;
 
-        this.viewImporter = new ViewImporter([
-            new MeshViewImporter(rect => this.viewStore.addRect(rect)),
-            new PathImporter(path => this.viewStore.addPath(path))
-        ]);
+        this.viewImporter = new ViewImporter(
+            [
+                new MeshViewImporter(rect => this.viewStore.addRect(rect)),
+                new PathImporter(path => this.viewStore.addPath(path))
+            ]
+        );
     }
 
     build(file: string): void {

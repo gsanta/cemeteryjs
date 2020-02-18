@@ -71,10 +71,13 @@ export class CanvasController extends AbstractCanvasController implements Window
         
         this.mouseController = new MouseHandler(this);
         this.keyboardHandler = new KeyboardHandler(this);
-        this.writer = new ViewImporter([
-            new MeshViewImporter(rect => this.viewStore.addRect(rect)),
-            new PathImporter((path: PathView) => this.viewStore.addPath(path))
-        ]);
+        this.writer = new ViewImporter(
+            [
+                new MeshViewImporter(rect => this.viewStore.addRect(rect)),
+                new PathImporter((path: PathView) => this.viewStore.addPath(path))
+            ],
+            this
+        );
         this.reader = new SvgCanvasExporter(this);
         this.model3dController = new Model3DController(this);
 

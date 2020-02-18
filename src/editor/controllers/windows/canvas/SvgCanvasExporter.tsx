@@ -16,9 +16,17 @@ export class SvgCanvasExporter implements ICanvasExporter {
 
     private renderRoot(): JSX.Element {
         const views = this.canvasController.toolService.getAllToolExporters().map(factory => factory.export(true));
+        
         return (
             <svg
-                data-wg-pixel-size="10" data-wg-width="3000" data-wg-height="3000" width="1000" height="1000">
+                data-wg-pixel-size="10"
+                data-wg-width="3000"
+                data-wg-height="3000"
+                width="1000"
+                height="1000"
+                data-zoom={this.canvasController.cameraTool.getCamera().getScale()}
+                data-viewbox={this.canvasController.cameraTool.getCamera().getViewBox().toString()}
+            >
                 {views}
             </svg>
         )

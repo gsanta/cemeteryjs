@@ -116,7 +116,7 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
                         propertyName={MeshViewPropType.THUMBNAIL}
                         propertyType="string"
                         placeholder={`Upload`}
-                        value={''}
+                        value={form.getVal(MeshViewPropType.THUMBNAIL)}
                         readDataAs="dataUrl"
                     />
                 </InputStyled>

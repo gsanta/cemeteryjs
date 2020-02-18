@@ -59,6 +59,7 @@ export class MeshViewImporter implements IViewImporter {
             gameObject.thumbnailPath = rect._attributes["data-thumbnail"];
             gameObject.path = rect._attributes["data-path"];
             gameObject.isManualControl = isManualControl;
+            gameObject.activeAnimation = rect._attributes["data-animation"];
 
             this.addGameObject(gameObject);
         });

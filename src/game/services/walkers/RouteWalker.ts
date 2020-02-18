@@ -4,7 +4,7 @@ import { GameFacade } from "../../GameFacade";
 import { LifeCycleEvent } from "../triggers/ILifeCycleTrigger";
 import { RouteObject } from "../../models/objects/RouteObject";
 
-const defaultSpeed = 1000 / 5;
+const defaultSpeed = 1000 / 4;
 
 export class RouteWalker implements IEventListener {
     events: GameEvent[];
@@ -14,11 +14,9 @@ export class RouteWalker implements IEventListener {
     constructor(gameFacade: GameFacade) {
         this.gameFacade = gameFacade;
         this.updateRoutes = this.updateRoutes.bind(this);
-        // this.initRoutes();
 
         this.events = [
             new GameEvent({lifeCycleEvent: LifeCycleEvent.AfterRender}, this.updateRoutes),
-            // new GameEvent({lifeCycleEvent: LifeCycleEvent.Reset}, this.initRoutes)
         ]
     }
 
@@ -35,15 +33,13 @@ export class RouteWalker implements IEventListener {
                 const direction =  pathObj.points[route.currentStop].subtract(meshObj.getPosition()).normalize();
 
                 this.isNextStopReached(route) && route.currentStop++;
-                // route.currentStop === pathObj.points.length && (route.isFinished = true);
 
                 if (route.currentStop === pathObj.points.length) {
                     route.reset();
                 }
 
                 meshObj.moveBy(direction.mul(speed));
-
-                // meshObj.setPosition(pathObj.points[0]);
+                meshObj.setRotation(direction);
             });
     }
 

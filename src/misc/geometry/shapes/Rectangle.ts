@@ -90,4 +90,13 @@ export class Rectangle extends Polygon {
         ];
         this.orederedPoints= this.points;
     }
+
+    toString() {
+        return `${this.topLeft.toString()} ${this.bottomRight.toString()}`
+    }
+
+    static fromString(str: string): Rectangle {
+        const points = str.split(' ');
+        return new Rectangle(Point.fromString(points[0]), Point.fromString(points[1]));
+    }
 }

@@ -8,6 +8,7 @@ import { IViewExporter } from "../IToolExporter";
 import { MeshView } from "../../../../../../common/views/MeshView";
 import { Controllers } from "../../../../Controllers";
 import { ViewType } from "../../../../../../common/views/View";
+import { colors } from "../../../../../gui/styles";
 
 export class RectangleExporter implements IViewExporter {
     type = ViewType.GameObject;
@@ -34,7 +35,7 @@ export class RectangleExporter implements IViewExporter {
             const width = (rectangle.bottomRight.x - rectangle.topLeft.x);
             const height = (rectangle.bottomRight.y - rectangle.topLeft.y);
 
-            const fill = canvasStore.getTags(item).has(CanvasItemTag.SELECTED) ? 'blue' : item.color;
+            const stroke = canvasStore.getTags(item).has(CanvasItemTag.SELECTED) ? colors.views.highlight : 'black';
 
             const minX = minBy<MeshView>(canvasStore.getGameObjects(), (a, b) => a.dimensions.topLeft.x - b.dimensions.topLeft.x).dimensions.topLeft.x;
             const minY = minBy<MeshView>(canvasStore.getGameObjects(), (a, b) => a.dimensions.topLeft.y - b.dimensions.topLeft.y).dimensions.topLeft.y;
@@ -47,7 +48,7 @@ export class RectangleExporter implements IViewExporter {
             
             if (item.thumbnailPath) {
                 thumbnail =  (
-                    <image xlinkHref={item.thumbnailPath} x="0" y="0" height={`${width}px`} width={`${height}px`}/>
+                    <image xlinkHref={`assets/models/${this.getFolderNameFromFileName(item.thumbnailPath)}/${item.thumbnailPath}`} x="0" y="0" height={`${height}px`} width={`${width}px`}/>
                 )
             }
 
@@ -71,6 +72,7 @@ export class RectangleExporter implements IViewExporter {
                     data-thumbnail={item.thumbnailPath}
                     data-path={item.path}
                     data-is-manual-control={item.isManualControl ? 'true' : 'false'}
+                    data-animation={item.activeAnimation}
                 >
                     <rect
                         key={i}
@@ -78,12 +80,16 @@ export class RectangleExporter implements IViewExporter {
                         y={`0`}
                         width={`${width}px`}
                         height={`${height}px`}
-                        fill={fill}
-                        stroke='black'
+                        fill={item.color}
+                        stroke={stroke}
                     />
                     {thumbnail}
                 </g>
             )
         });
+    }
+
+    private getFolderNameFromFileName(fileName: string) {
+        return fileName.split('.')[0];
     }
 }

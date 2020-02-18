@@ -1,9 +1,8 @@
 import { GameFacade } from "../../GameFacade";
-import { IEventListener } from "./IEventListener";
-import { GameEvent } from "../GameEventManager";
-import { MeshView, AnimationName } from "../../../common/views/MeshView";
 import { MeshObject } from "../../models/objects/MeshObject";
+import { GameEvent } from "../GameEventManager";
 import { LifeCycleEvent } from "../triggers/ILifeCycleTrigger";
+import { IEventListener } from "./IEventListener";
 
 export class AnimationPlayer implements IEventListener {
     events: GameEvent[];
@@ -34,7 +33,7 @@ export class AnimationPlayer implements IEventListener {
 
     private startNewAnimations() {
         this.gameFacade.gameStore.getMeshObjects()
-        .filter(gameObject => gameObject.activeAnimation !== AnimationName.None)
+        .filter(gameObject => gameObject.activeAnimation)
         .forEach(gameObject => {
             if (!this.playingAnimations.has(gameObject)) {
                 this.startAnimation(gameObject);
@@ -50,9 +49,13 @@ export class AnimationPlayer implements IEventListener {
     }
 
     private startAnimation(gameObject: MeshObject) {
-        // const mesh = this.gameFacade.meshStore.getMesh(gameObject.meshName);
+        const mesh = this.gameFacade.meshStore.getMesh(gameObject.meshName);
 
-        // this.gameFacade.scene.beginAnimation(mesh.skeleton, 0, 24, true);
-        // this.playingAnimations.set(gameObject, gameObject.activeAnimation);
+        if (mesh) {
+            const range = mesh.skeleton.getAnimationRange(gameObject.activeAnimation);
+            this.gameFacade.scene.beginAnimation(mesh.skeleton, range.from, range.to, true);
+            this.playingAnimations.set(gameObject, gameObject.activeAnimation);
+        }
+
     }
 }

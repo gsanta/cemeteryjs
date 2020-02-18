@@ -89,7 +89,7 @@ export class GameObjectForm extends AbstractForm<MeshViewPropType> {
                 this.gameObject.texturePath = val.path;
                 break;
             case MeshViewPropType.THUMBNAIL:
-                this.gameObject.thumbnailPath = val.data;
+                this.gameObject.thumbnailPath = val.path;
                 break;
             case MeshViewPropType.LAYER:
                 this.controller.viewStore.setLayer(this.gameObject, val);
