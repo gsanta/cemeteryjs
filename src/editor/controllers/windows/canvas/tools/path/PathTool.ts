@@ -8,6 +8,7 @@ import { ToolType } from "../Tool";
 import { Keyboard } from "../../../services/KeyboardHandler";
 import { CanvasController } from "../../CanvasController";
 import { CanvasItemTag } from "../../models/CanvasItem";
+import { ViewPoint } from "../../../../../../common/views/ViewPoint";
 
 export class PathTool extends AbstractTool {
 
@@ -28,8 +29,8 @@ export class PathTool extends AbstractTool {
         } else if (!this.pendingPath) {
             this.startNewPath();
         } else {
-            const pointer = this.controller.mouseController.pointer;
-            this.pendingPath.points.push(pointer.down.clone());
+            const pointer = this.controller.pointer.pointer;
+            this.pendingPath.addPoint(new ViewPoint(pointer.down.x, pointer.down.y, true, true));
         }
 
         this.controller.viewStore.removeTag(this.controller.viewStore.getViews(), CanvasItemTag.SELECTED);
@@ -50,7 +51,7 @@ export class PathTool extends AbstractTool {
     }
 
     private startNewPath() {
-        const pointer = this.controller.mouseController.pointer;
+        const pointer = this.controller.pointer.pointer;
 
         this.pendingPath = new PathView(pointer.down.clone());
         this.pendingPath.name = this.controller.nameingService.generateName(ViewType.Path);

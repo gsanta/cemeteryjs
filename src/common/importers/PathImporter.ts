@@ -1,8 +1,8 @@
-import { Point } from "../../misc/geometry/shapes/Point";
 import { IViewImporter } from "../../editor/controllers/windows/canvas/tools/IToolImporter";
 import { ViewType } from "../views/View";
 import { PathView } from "../views/PathView";
 import { ViewGroupJson } from "./ViewImporter";
+import { ViewPoint } from "../views/ViewPoint";
 
 export interface PathJson {
     circle: {
@@ -37,19 +37,17 @@ export class PathImporter implements IViewImporter {
         const pathJsons =  (<PathJson[]> group.g).length ? <PathJson[]> group.g : [<PathJson> group.g];
         
         pathJsons.forEach(json => {
-            const points = json.polyline._attributes.points
+            const points: ViewPoint[] = json.polyline._attributes.points
                 .split(' ')
                 .map((p: string) => {
                     const [x, y] = p.split(',');
 
-                    return new Point(parseInt(x, 10), parseInt(y, 10));
+                    return new ViewPoint(parseInt(x, 10), parseInt(y, 10));
                 });
 
             const path = new PathView();
             path.name = json.polyline._attributes['data-name'];
             path.points = points;
-
-            path.points = path.points.map(p => new Point(p.x, p.y));
 
             this.addPath(path);
         });

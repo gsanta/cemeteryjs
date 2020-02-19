@@ -27,8 +27,8 @@ export class DeleteTool extends AbstractSelectionTool {
 
     click() {
         super.click();
-        const items = this.services.viewStore.getIntersectingItemsAtPoint(this.services.mouseController.pointer.curr);
-        items.length > 0 && this.services.viewStore.remove(items[0]); 
+        const hovered = this.services.viewStore.getHoveredView();
+        hovered && this.services.viewStore.remove(hovered);
         this.services.renderWindow();
 
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);

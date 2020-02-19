@@ -74,7 +74,7 @@ export class MoveAndSelectTool extends AbstractTool {
 
     private determineActiveTool() {
         if (this.activeTool.type === ToolType.MOVE) {
-            if (this.controller.mouseController.isDrag) {
+            if (this.controller.pointer.isDrag) {
                 return;
             }
         }

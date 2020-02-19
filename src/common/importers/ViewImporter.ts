@@ -74,8 +74,7 @@ export class ViewImporter implements ICanvasImporter {
         if (rawJson.svg._attributes['data-viewbox']) {
             const viewBox = Rectangle.fromString(rawJson.svg._attributes['data-viewbox']);
             this.controller.cameraTool.getCamera().setViewBox(viewBox);
-        }
-=        
+        }        
     }
 
     private findViewImporter(viewType: ViewType): IViewImporter {

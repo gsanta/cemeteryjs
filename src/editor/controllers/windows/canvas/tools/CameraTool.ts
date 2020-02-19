@@ -98,9 +98,7 @@ export class CameraTool extends AbstractTool {
 
         const canvasController = this.editorFacade.svgCanvasController;
         
-        const mouseController = canvasController.mouseController;
-    
-        const delta = mouseController.pointer.getScreenDiff().div(this.getCamera().getScale());
+        const delta = canvasController.pointer.pointer.getScreenDiff().div(this.getCamera().getScale());
         
         canvasController.cameraTool.getCamera().moveBy(delta.negate());
 

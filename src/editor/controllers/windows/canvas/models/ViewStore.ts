@@ -7,6 +7,7 @@ import { MeshView } from '../../../../../common/views/MeshView';
 import { View, ViewType } from '../../../../../common/views/View';
 import { PathView } from '../../../../../common/views/PathView';
 import { Group } from '../../../../../common/views/Group';
+import { ITagService } from '../../ITagService';
 
 export enum Layers {
     PREVIEW = -1,
@@ -26,7 +27,7 @@ export function getLayerForType(type: string) {
     }
 }
 
-export class ViewStore {
+export class ViewStore implements ITagService {
     private layers: Map<View, number> = new Map();
     private tags: Map<View, Set<CanvasItemTag>> = new Map();
     private groups: Group[] = [];

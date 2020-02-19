@@ -50,9 +50,7 @@ export class RendererCameraTool extends AbstractTool {
     drag() {
         super.drag();
 
-        const mouseController = this.controller.mouseHander;
-    
-        const delta = mouseController.pointer.getScreenDiff().div(this.getCamera().getScale());
+        const delta = this.controller.pointer.pointer.getScreenDiff().div(this.getCamera().getScale());
         
         this.camera.moveBy(delta.negate());
     }

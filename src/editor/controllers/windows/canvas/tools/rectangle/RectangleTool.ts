@@ -25,7 +25,7 @@ export class RectangleTool extends AbstractSelectionTool {
     }
 
     click() {
-        const pointer = this.services.mouseController.pointer;
+        const pointer = this.services.pointer.pointer;
         const rect = Rectangle.squareFromCenterPointAndRadius(pointer.down, 50);
 
         const gameObject: MeshView = new MeshView(null, rect, name);

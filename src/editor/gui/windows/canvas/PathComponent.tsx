@@ -1,7 +1,6 @@
-
 import * as React from 'react';
-import { Point } from '../../../../misc/geometry/shapes/Point';
 import { PathView } from '../../../../common/views/PathView';
+import { ViewPoint } from '../../../../common/views/ViewPoint';
 import { colors } from '../../styles';
 
 export interface PathComponentProps {
@@ -28,16 +27,16 @@ export class PathComponent extends React.Component<PathComponentProps> {
         )
     }
 
-    renderArrowPoint(point: Point): JSX.Element {
-        return <circle cx={point.x} cy={point.y} r="5"/>
+    renderArrowPoint(point: ViewPoint): JSX.Element {
+        const item = this.props.item;
+        const color = item.selected === point || item.hovered === point ? colors.views.highlight : 'black';
+        return <circle cx={point.x} cy={point.y} r={this.props.item.radius} fill={color}/>
     }
 
     renderPath(): JSX.Element {
-        const points = this.props.item.points.map(p => `${p.x},${p.y}`).join(' ');
-
         const highlight = this.props.onlyData ? null : (
-            <polyline
-                points={points}
+            <path
+                d={this.props.item.toString()}
                 onMouseOver={() => this.props.onMouseOver(this.props.item)}
                 onMouseOut={() => this.props.onMouseOut()}
                 fill="none"
@@ -45,13 +44,13 @@ export class PathComponent extends React.Component<PathComponentProps> {
                 stroke-opacity={this.props.isHovered || this.props.isSelected ? 0.5 : 0}
                 stroke-width="7"
             />
-        )
+        );
 
         return (
             <React.Fragment>
                 {highlight}
-                <polyline
-                    points={points}
+                <path
+                    d={this.props.item.toString()}
                     data-name={this.props.item.name}
                     fill="none"
                     stroke={colors.views.stroke}

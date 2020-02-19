@@ -28,8 +28,11 @@ import { ITagService } from '../ITagService';
 import { WindowController } from '../WindowController';
 import { ICamera } from '../ICamera';
 import { MouseHandler } from '../services/MouseHandler';
+import { HoverService } from '../services/HoverService';
+import { IPointerService } from '../services/IPointerService';
+import { CanvasPointerService } from '../services/CanvasPointerService';
 
-export class CanvasController extends AbstractCanvasController implements WindowController {
+export class CanvasController extends AbstractCanvasController {
     name = '2D View';
     static id = 'svg-canvas-controller';
     visible = true;
@@ -48,6 +51,8 @@ export class CanvasController extends AbstractCanvasController implements Window
     model3dController: Model3DController;
     toolService: ToolService;
     tagService: ITagService;
+    hoverService: HoverService;
+    pointer: IPointerService;
     
     services: Controllers;
 
@@ -112,6 +117,8 @@ export class CanvasController extends AbstractCanvasController implements Window
         this.gameObjectFormState = new GameObjectFormState();
         this.pathForm = new PathForm();
         this.tagService = this.viewStore;
+        this.hoverService = new HoverService(this);
+        this.pointer = new CanvasPointerService(this);
     }
 
     getCamera(): ICamera {

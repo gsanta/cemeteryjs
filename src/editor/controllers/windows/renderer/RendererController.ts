@@ -13,9 +13,11 @@ import { Tool } from '../canvas/tools/Tool';
 import { WindowController } from '../WindowController';
 import { ITagService } from '../ITagService';
 import { MouseHandler } from '../services/MouseHandler';
+import { IPointerService } from '../services/IPointerService';
+import { RendererPointerService } from './RendererPointerService';
 (<any> window).earcut = require('earcut');
 
-export class RendererController extends AbstractCanvasController implements WindowController {
+export class RendererController extends AbstractCanvasController {
     name = '3D View';
     static id = 'webgl-editor';
     visible = true;
@@ -29,6 +31,7 @@ export class RendererController extends AbstractCanvasController implements Wind
     writer: WebglCanvasWriter;
     modelLoader: AbstractModelLoader;
     tagService: ITagService;
+    pointer: IPointerService;
     private helperMeshes: HelperMeshes;
 
     private canvas: HTMLCanvasElement;
@@ -44,6 +47,7 @@ export class RendererController extends AbstractCanvasController implements Wind
         super();
         this.controllers = controllers;
         this.mouseHander = new MouseHandler(this);
+        this.pointer = new RendererPointerService(this);
         this.updateCanvas = this.updateCanvas.bind(this);
         this.registerEvents();
     }

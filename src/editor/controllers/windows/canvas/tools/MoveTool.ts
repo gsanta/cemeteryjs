@@ -30,10 +30,8 @@ export class MoveTool extends AbstractTool {
         super.drag();
         const canvasStore = this.controller.viewStore;
         
-        const mouseController = this.controller.mouseController;
-    
         const selectedItems = canvasStore.getSelectedViews();
-        const mouseDelta = mouseController.pointer.getDownDiff();
+        const mouseDelta = this.controller.pointer.pointer.getDownDiff();
 
         selectedItems.forEach((item, index) => item.dimensions = this.origDimensions[index].translate(mouseDelta));
 
