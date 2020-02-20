@@ -23,7 +23,7 @@ export class RectangleTool extends AbstractSelectionTool {
     }
 
     click() {
-        const pointer = this.services.pointer.pointer;
+        const pointer = this.controller.pointer.pointer;
         const rect = Rectangle.squareFromCenterPointAndRadius(pointer.down, 50);
 
         const gameObject: MeshView = new MeshView(null, rect, name);
@@ -34,14 +34,14 @@ export class RectangleTool extends AbstractSelectionTool {
         gameObject.scale = 1;
         gameObject.color = 'grey';
 
-        gameObject.name = this.services.nameingService.generateName(ViewType.GameObject);
+        gameObject.name = this.controller.nameingService.generateName(ViewType.GameObject);
 
-        this.services.viewStore.addRect(gameObject);
-        this.services.viewStore.removeSelectionAll()
-        this.services.viewStore.addTag([gameObject], CanvasItemTag.SELECTED);
+        this.controller.viewStore.addRect(gameObject);
+        this.controller.viewStore.removeSelectionAll()
+        this.controller.viewStore.addTag([gameObject], CanvasItemTag.SELECTED);
 
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
-        this.services.renderToolbar();
+        this.controller.renderToolbar();
         return true;
     }
 
@@ -49,7 +49,7 @@ export class RectangleTool extends AbstractSelectionTool {
         super.drag();
         
         if (this.lastPreviewRect) {
-            this.services.viewStore.remove(this.lastPreviewRect);
+            this.controller.viewStore.remove(this.lastPreviewRect);
         }
         const positions = this.getPositionsInSelection();
 
@@ -62,12 +62,12 @@ export class RectangleTool extends AbstractSelectionTool {
         gameObject.texturePath = null;
         gameObject.scale = 1;
         gameObject.color = 'grey';
-        gameObject.name = this.services.nameingService.generateName(ViewType.GameObject);
+        gameObject.name = this.controller.nameingService.generateName(ViewType.GameObject);
 
         if (positions.length > 0) {
-            this.lastPreviewRect = this.services.viewStore.addRect(gameObject);
+            this.lastPreviewRect = this.controller.viewStore.addRect(gameObject);
     
-            this.services.renderWindow();
+            this.controller.renderWindow();
         }
     }
 
@@ -77,7 +77,7 @@ export class RectangleTool extends AbstractSelectionTool {
             this.lastPreviewRect = null;
         }
 
-        this.services.renderWindow();
+        this.controller.renderWindow();
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
     }
 }

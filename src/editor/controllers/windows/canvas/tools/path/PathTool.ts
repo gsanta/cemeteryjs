@@ -15,7 +15,7 @@ export class PathTool extends AbstractTool {
     
     private controller: CanvasController;
     constructor(controller: CanvasController) {
-        super(ToolType.PATH, controller.pointerTool);
+        super(ToolType.PATH, [controller.pointerTool]);
 
         this.controller = controller;
     }
@@ -24,23 +24,25 @@ export class PathTool extends AbstractTool {
         return super.move();
     }
 
-    down() {
-        super.down();
+    click() {
 
-        if (this.isOtherPathHovered()) {
-            this.pendingPath = <PathView> this.controller.viewStore.getHoveredView();
-        } else if (!this.pendingPath) {
-            this.startNewPath();
-        } else {
-            const pointer = this.controller.pointer.pointer;
-            this.pendingPath.addPoint(new Point(pointer.down.x, pointer.down.y));
+        if (!super.click()) {            
+            if (this.isOtherPathHovered()) {
+                this.pendingPath = <PathView> this.controller.viewStore.getHoveredView();
+            } else if (!this.pendingPath) {
+                this.startNewPath();
+            } else {
+                const pointer = this.controller.pointer.pointer;
+                this.pendingPath.addPoint(new Point(pointer.down.x, pointer.down.y));
+            }
+    
+            this.controller.viewStore.removeTag(this.controller.viewStore.getViews(), CanvasItemTag.SELECTED);
+            this.controller.viewStore.addTag([this.pendingPath], CanvasItemTag.SELECTED); 
+    
+            this.controller.renderWindow();
+            this.controller.renderToolbar();
+            return true;
         }
-
-        this.controller.viewStore.removeTag(this.controller.viewStore.getViews(), CanvasItemTag.SELECTED);
-        this.controller.viewStore.addTag([this.pendingPath], CanvasItemTag.SELECTED); 
-
-        this.controller.renderWindow();
-        this.controller.renderToolbar();
         return true;
     }
 

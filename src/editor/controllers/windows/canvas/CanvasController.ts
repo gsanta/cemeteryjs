@@ -32,6 +32,7 @@ import { HoverService } from '../services/HoverService';
 import { IPointerService } from '../services/IPointerService';
 import { CanvasPointerService } from '../services/CanvasPointerService';
 import { PointerTool } from './tools/PointerTool';
+import { MoveTool } from './tools/MoveTool';
 
 export class CanvasController extends AbstractCanvasController {
     name = '2D View';
@@ -48,6 +49,7 @@ export class CanvasController extends AbstractCanvasController {
     tools: Tool[];
     cameraTool: CameraTool;
     pointerTool: PointerTool;
+    moveTool: MoveTool;
     writer: ICanvasImporter;
     reader: ICanvasExporter;
     model3dController: Model3DController;
@@ -93,6 +95,7 @@ export class CanvasController extends AbstractCanvasController {
         const rectangleTool = new RectangleTool(this, this.services.eventDispatcher);
         const pathTool = new PathTool(this);
         const deleteTool = new DeleteTool(this, this.services.eventDispatcher);
+        this.moveTool = new MoveTool(this, this.services.eventDispatcher);
         const moveAndSelectTool = new MoveAndSelectTool(this, this.services.eventDispatcher);
         this.tools = [
             rectangleTool,

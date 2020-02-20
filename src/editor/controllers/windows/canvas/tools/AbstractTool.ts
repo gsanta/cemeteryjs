@@ -2,27 +2,27 @@ import { Tool, ToolType } from './Tool';
 import { View } from '../../../../../common/views/View';
 
 export class AbstractTool implements Tool {
-    private secondaryTool: Tool;
+    private subtools: Tool[] = [];
     type: ToolType;
 
-    constructor(type: ToolType, secondaryTool?: Tool) {
+    constructor(type: ToolType, subtools: Tool[] = []) {
         this.type = type;
-        this.secondaryTool = secondaryTool;
+        this.subtools = subtools;
     }
 
     supportsRectSelection(): boolean { return false; }
 
     down() {
-        return this.secondaryTool && this.secondaryTool.down();
+        return !!this.subtools.find(tool => tool.down());
     }
 
     move() {
-        return this.secondaryTool && this.secondaryTool.move();
+        return !!this.subtools.find(tool => tool.move());
     }
 
     drag() {}
     click() {
-        return this.secondaryTool && this.secondaryTool.click();
+        return !!this.subtools.find(tool => tool.click());
     }
 
     draggedUp() {}
@@ -33,10 +33,14 @@ export class AbstractTool implements Tool {
     keydown() {}
 
     over(item: View) { 
-        return this.secondaryTool && this.secondaryTool.over(item);
+        return !!this.subtools.find(tool => tool.over(item));
     }
 
     out(item: View) {
-        return this.secondaryTool && this.secondaryTool.out(item);
+        return !!this.subtools.find(tool => tool.out(item));
+    }
+
+    getSubtools(): Tool[] {
+        return [];
     }
 }

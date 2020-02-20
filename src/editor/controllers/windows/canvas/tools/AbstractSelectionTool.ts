@@ -1,6 +1,6 @@
 import { CanvasController } from '../CanvasController';
 import { AbstractTool } from './AbstractTool';
-import { ToolType } from './Tool';
+import { ToolType, Tool } from './Tool';
 import { Point } from '../../../../../misc/geometry/shapes/Point';
 import { Rectangle } from '../../../../../misc/geometry/shapes/Rectangle';
 
@@ -8,13 +8,13 @@ const NULL_SELECTION = new Rectangle(new Point(0, 0), new Point(0, 0));
 
 export class AbstractSelectionTool extends AbstractTool {
     type: ToolType;
-    protected services: CanvasController;
+    protected controller: CanvasController;
     private selectionRect: Rectangle = NULL_SELECTION;
     private _displaySelectionRect: boolean;
 
-    constructor(services: CanvasController, type: ToolType, displaySelectionRect: boolean) {
-        super(type);
-        this.services = services;
+    constructor(services: CanvasController, type: ToolType, displaySelectionRect: boolean, secondaryTool?: Tool) {
+        super(type, [secondaryTool]);
+        this.controller = services;
         this._displaySelectionRect = displaySelectionRect;
     }
 
@@ -31,7 +31,7 @@ export class AbstractSelectionTool extends AbstractTool {
 
     drag() {
         super.drag();
-        const pointer = this.services.pointer.pointer;
+        const pointer = this.controller.pointer.pointer;
         const minX = pointer.down.x < pointer.curr.x ? pointer.down.x : pointer.curr.x;
         const minY = pointer.down.y < pointer.curr.y ? pointer.down.y : pointer.curr.y;
         const maxX = pointer.down.x >= pointer.curr.x ? pointer.down.x : pointer.curr.x;
@@ -58,6 +58,5 @@ export class AbstractSelectionTool extends AbstractTool {
             }
         }
         return positions;
-
     }
 }

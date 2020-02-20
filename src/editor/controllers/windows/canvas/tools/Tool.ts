@@ -27,4 +27,6 @@ export interface Tool {
     keydown();
     over(item: View): boolean;
     out(item: View): boolean;
+
+    getSubtools(): Tool[];
 }

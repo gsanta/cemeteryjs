@@ -21,13 +21,13 @@ export class DeleteTool extends AbstractSelectionTool {
 
     drag() {
         super.drag();
-        this.services.renderWindow();
+        this.controller.renderWindow();
     }
 
     click(): boolean {
         if (!super.click()) {
-            const hovered = this.services.viewStore.getHoveredView();
-            hovered && this.services.viewStore.remove(hovered);
+            const hovered = this.controller.viewStore.getHoveredView();
+            hovered && this.controller.viewStore.remove(hovered);
             this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
             return !!hovered;
         }
@@ -37,11 +37,11 @@ export class DeleteTool extends AbstractSelectionTool {
     
     draggedUp() {
         super.draggedUp();
-        const canvasItems = this.services.viewStore.getIntersectingItemsInRect(this.getSelectionRect());
+        const canvasItems = this.controller.viewStore.getIntersectingItemsInRect(this.getSelectionRect());
 
-        canvasItems.forEach(item => this.services.viewStore.remove(item));
+        canvasItems.forEach(item => this.controller.viewStore.remove(item));
 
-        this.services.renderWindow();
+        this.controller.renderWindow();
 
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
     }
