@@ -71,8 +71,6 @@
     "earcut": "^2.2.1",
     "file-saver": "^2.0.2",
     "linear-solve": "^1.2.1",
-    "monaco-editor": "^0.18.1",
-    "monaco-editor-webpack-plugin": "^1.7.0",
     "polylabel": "^1.0.2",
     "react": "^16.12.0",
     "react-bootstrap": "^1.0.0-beta.16",

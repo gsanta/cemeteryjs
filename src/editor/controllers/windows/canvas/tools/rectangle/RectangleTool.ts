@@ -1,13 +1,12 @@
+import { MeshView } from '../../../../../../common/views/MeshView';
+import { ViewType } from '../../../../../../common/views/View';
 import { Rectangle } from '../../../../../../misc/geometry/shapes/Rectangle';
-import { WorldItemShape, MeshView } from '../../../../../../common/views/MeshView';
 import { EventDispatcher } from '../../../../events/EventDispatcher';
 import { Events } from '../../../../events/Events';
+import { CanvasController } from '../../CanvasController';
+import { CanvasItemTag } from '../../models/CanvasItem';
 import { AbstractSelectionTool } from '../AbstractSelectionTool';
 import { ToolType } from '../Tool';
-import { CanvasItemTag } from '../../models/CanvasItem';
-import { Controllers } from '../../../../Controllers';
-import { ViewType } from '../../../../../../common/views/View';
-import { CanvasController } from '../../CanvasController';
 
 export class RectangleTool extends AbstractSelectionTool {
     private eventDispatcher: EventDispatcher;
@@ -20,8 +19,7 @@ export class RectangleTool extends AbstractSelectionTool {
     }
 
     down() {
-        super.down();
-        this.services.renderWindow();
+        return super.down();
     }
 
     click() {
@@ -41,10 +39,10 @@ export class RectangleTool extends AbstractSelectionTool {
         this.services.viewStore.addRect(gameObject);
         this.services.viewStore.removeSelectionAll()
         this.services.viewStore.addTag([gameObject], CanvasItemTag.SELECTED);
-    
+
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
-        this.services.renderWindow();
         this.services.renderToolbar();
+        return true;
     }
 
     drag() {

@@ -16,8 +16,7 @@ export class DeleteTool extends AbstractSelectionTool {
     }
 
     down() {
-        super.down();
-        this.services.renderWindow();
+        return super.down();
     }
 
     drag() {
@@ -25,13 +24,15 @@ export class DeleteTool extends AbstractSelectionTool {
         this.services.renderWindow();
     }
 
-    click() {
-        super.click();
-        const hovered = this.services.viewStore.getHoveredView();
-        hovered && this.services.viewStore.remove(hovered);
-        this.services.renderWindow();
+    click(): boolean {
+        if (!super.click()) {
+            const hovered = this.services.viewStore.getHoveredView();
+            hovered && this.services.viewStore.remove(hovered);
+            this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
+            return !!hovered;
+        }
 
-        this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
+        return true;
     }
     
     draggedUp() {

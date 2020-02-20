@@ -23,7 +23,14 @@ export class MoveTool extends AbstractTool {
         const canvasStore = this.controller.viewStore;
 
         const selectedItems = canvasStore.getSelectedViews();
-        this.origDimensions = selectedItems.map(item => item.dimensions);
+        this.origDimensions = [];
+
+        if (selectedItems.length) {
+            this.origDimensions = selectedItems.map(item => item.dimensions);
+            return true;
+        }
+
+        return false;
     }
 
     drag() {

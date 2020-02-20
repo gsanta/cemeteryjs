@@ -23,7 +23,7 @@ export class PathExporter implements IViewExporter {
                 isHovered={this.controller.viewStore.getHoveredView() === path}
                 isSelected={this.controller.viewStore.getTags(path).has(CanvasItemTag.SELECTED)}
                 onMouseOver={(item: PathView) => this.controller.mouseController.hover(item)}
-                onMouseOut={() => this.controller.mouseController.unhover()}
+                onMouseOut={(item: PathView) => this.controller.mouseController.unhover(item)}
             />
         });
 

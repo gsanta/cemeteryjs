@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { PathView } from '../../../../common/views/PathView';
-import { ViewPoint } from '../../../../common/views/ViewPoint';
 import { colors } from '../../styles';
+import { Point } from '../../../../misc/geometry/shapes/Point';
 
 export interface PathComponentProps {
     item: PathView;
     onMouseOver(path: PathView): void;
-    onMouseOut(): void;
+    onMouseOut(path: PathView): void;
     onlyData: boolean;
     isHovered: boolean;
     isSelected: boolean;
@@ -27,7 +27,7 @@ export class PathComponent extends React.Component<PathComponentProps> {
         )
     }
 
-    renderArrowPoint(point: ViewPoint): JSX.Element {
+    renderArrowPoint(point: Point): JSX.Element {
         const item = this.props.item;
         const color = item.selected === point || item.hovered === point ? colors.views.highlight : 'black';
         return <circle cx={point.x} cy={point.y} r={this.props.item.radius} fill={color}/>
@@ -38,7 +38,7 @@ export class PathComponent extends React.Component<PathComponentProps> {
             <path
                 d={this.props.item.toString()}
                 onMouseOver={() => this.props.onMouseOver(this.props.item)}
-                onMouseOut={() => this.props.onMouseOut()}
+                onMouseOut={() => this.props.onMouseOut(this.props.item)}
                 fill="none"
                 stroke={colors.views.highlight}
                 stroke-opacity={this.props.isHovered || this.props.isSelected ? 0.5 : 0}

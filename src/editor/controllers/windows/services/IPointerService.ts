@@ -19,5 +19,5 @@ export interface IPointerService {
     pointerUp(e: IPointerEvent): void;
     pointerOut(e: IPointerEvent): void;
     hover(item: View): void;
-    unhover(): void;
+    unhover(item: View): void;
 }

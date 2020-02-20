@@ -88,9 +88,10 @@ export class CameraTool extends AbstractTool {
     }
 
     down() {
-        super.down();
+        const update = super.down();
 
         this.startPosition = this.editorFacade.svgCanvasController.cameraTool.getCamera().getViewBox();
+        return update;
     }
 
     drag() {

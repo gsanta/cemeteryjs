@@ -28,6 +28,7 @@ export class CanvasPointerService implements IPointerService {
 
     constructor(controller: CanvasController, calcOffset: (id: string) => Point = calcOffsetFromDom) {
         this.controller = controller;
+        this.calcOffset = calcOffset;
     }
 
     pointerDown(e: IPointerEvent): void {
@@ -35,7 +36,7 @@ export class CanvasPointerService implements IPointerService {
 
         this.isDown = true;
         this.pointer.down = this.addScreenOffset(e.pointers[0].pos); 
-        this.controller.getActiveTool().down();
+        this.controller.getActiveTool().down() && this.controller.renderWindow();
     }
 
     pointerMove(e: IPointerEvent): void {
@@ -43,23 +44,31 @@ export class CanvasPointerService implements IPointerService {
         this.pointer.curr = this.addScreenOffset(e.pointers[0].pos);
         this.pointer.prevScreen = this.pointer.currScreen;
         this.pointer.currScreen = this.controller.getCamera().screenToCanvasPoint(this.pointer.curr);
+        let updated = false;
         if (this.isDown) {
             this.isDrag = true;
             this.controller.getActiveTool().drag();
+        } else {
+            updated = this.controller.getActiveTool().move();
         }
+
+        updated && this.controller.renderWindow();
     }
 
     pointerUp(e: IPointerEvent): void {
+        let update = false;
         if (this.isDrag) {
             this.controller.getActiveTool().draggedUp();
         } else {
-            this.controller.getActiveTool().click();
+            update = this.controller.getActiveTool().click();
         }
         
         this.controller.getActiveTool().up();
         this.isDown = false;
         this.isDrag = false;
         this.pointer.down = undefined;
+
+        update && this.controller.renderWindow();
     }
 
     pointerOut(e: IPointerEvent): void {
@@ -68,13 +77,11 @@ export class CanvasPointerService implements IPointerService {
     }
 
     hover(item: View): void {
-        this.controller.tagService.addTag([item], CanvasItemTag.HOVERED);
-        this.controller.renderWindow();
+        this.controller.getActiveTool().over(item) && this.controller.renderWindow();
     }
 
-    unhover(): void {
-        this.controller.tagService.removeTagFromAll(CanvasItemTag.HOVERED);
-        this.controller.renderWindow();
+    unhover(item: View): void {
+        this.controller.getActiveTool().out(item) && this.controller.renderWindow();
     }
     
     private addScreenOffset(point: Point): Point {

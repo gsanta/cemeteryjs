@@ -1,4 +1,5 @@
 import { IToolType } from "./IToolType";
+import { View } from "../../../../../common/views/View";
 
 export enum ToolType {
     RECTANGLE = 'rectangle',
@@ -8,18 +9,22 @@ export enum ToolType {
     MOVE = 'move',
     PAN = 'pan',
     CAMERA = 'camera',
-    PATH = 'arrow'
+    PATH = 'arrow',
+    POINTER = 'pointer'
 }
 
 export interface Tool {
     type: ToolType;
     supportsRectSelection(): boolean;
-    down();
+    down(): boolean;
+    move(): boolean;
     drag();
-    click();
+    click(): boolean;
     draggedUp();
     up();
     activate();
     exit();
     keydown();
+    over(item: View): boolean;
+    out(item: View): boolean;
 }

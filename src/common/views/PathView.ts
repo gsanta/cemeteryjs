@@ -3,31 +3,29 @@ import { Point } from "../../misc/geometry/shapes/Point";
 import { Rectangle } from "../../misc/geometry/shapes/Rectangle";
 import { minBy, maxBy } from "../../misc/geometry/utils/Functions";
 import { GroupContext } from "./GroupContext";
-import { ViewPoint } from "./ViewPoint";
 
 const NULL_BOUNDING_BOX = new Rectangle(new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER), new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER));
 
 export class PathView implements View {
     viewType = ViewType.Path;
     groupContext: GroupContext;
-    points: ViewPoint[] = [];
-    edgeList: Map<ViewPoint, ViewPoint[]> = new Map();
-    rootPoint: ViewPoint;
+    points: Point[] = [];
+    edgeList: Map<Point, Point[]> = new Map();
+    rootPoint: Point;
     pathId: number;
     dimensions: Rectangle;
     name: string;
     radius = 5;
     private str: string;
-    selected: ViewPoint;
-    hovered: ViewPoint;
+    selected: Point;
+    hovered: Point;
 
     constructor(startPoint?: Point) {
         if (startPoint) {
-            const startViewPoint = new ViewPoint(startPoint.x, startPoint.y, true, true);
-            this.selected = startViewPoint;
-            this.hovered = startViewPoint;
-            this.points.push(startViewPoint);
-            this.rootPoint = startViewPoint;
+            this.selected = startPoint;
+            this.hovered = startPoint;
+            this.points.push(startPoint);
+            this.rootPoint = startPoint;
             this.edgeList.set(this.rootPoint, []);
         }
 
@@ -39,13 +37,12 @@ export class PathView implements View {
         return this.points;
     }
 
-    addPoint(point: ViewPoint) {
-        const viewPoint = new ViewPoint(point.x, point.y, true, true);
-        this.points.push(viewPoint);
-        this.edgeList.get(this.selected).push(viewPoint);
-        this.edgeList.set(viewPoint, []);
-        this.selected = viewPoint;
-        this.hovered = viewPoint;
+    addPoint(point: Point) {
+        this.points.push(point);
+        this.edgeList.get(this.selected).push(point);
+        this.edgeList.set(point, []);
+        this.selected = point;
+        this.hovered = point;
         this.dimensions = this.calcBoundingBox();
         this.str = undefined;
     }
@@ -60,27 +57,36 @@ export class PathView implements View {
 
         return new Rectangle(new Point(minX, minY), new Point(maxX, maxY));
     }
+    
+    updateSubviewHover(pos: Point): void {
+        this.hovered = undefined;
+        const hoveredOverPoint = this.getHoveredOverPoint(pos);
 
-    private getCurrentHead() {
-        return this.points.find(point => point.isSelected);
+        if (hoveredOverPoint) {
+            this.hovered = hoveredOverPoint;
+        }
     }
 
-    isOverPoint(pos: Point): Point {
-        for (let i = 0; i < this.points.length; i++) {
-            const d = this.points[i].distanceTo(pos);
+    removeSubviewHover(): void {
+        this.hovered = undefined;
+    }
 
-            if (d < this.radius) {
-                return this.points[i];
-            }
-        }
+    selectHoveredSubview() {
+        this.selected = this.hovered;
+    }
+
+    selectAt(pos: Point): void {
+        this.updateSubviewHover(pos);
+
+        this.selected = this.hovered;
     }
 
     toString() {
         if (this.str) { return this.str; }
 
         this.str = '';
-        let prev: ViewPoint = undefined;
-        this.iterateOverPoints((current: ViewPoint, parent: ViewPoint) => {
+        let prev: Point = undefined;
+        this.iterateOverPoints((current: Point, parent: Point) => {
             if (parent === undefined || prev !== parent) {
                 this.str += `M ${current.x} ${current.y}`;
             } else {
@@ -92,13 +98,23 @@ export class PathView implements View {
         return this.str;
     }
 
-    iterateOverPoints(action: (parent: ViewPoint, current: ViewPoint) => void) {
+    iterateOverPoints(action: (parent: Point, current: Point) => void) {
         this.iterateOverPointsRecursively(this.rootPoint, undefined, action);
     }
 
-    private iterateOverPointsRecursively(point: ViewPoint, parent: ViewPoint, action: (current: ViewPoint, parent: ViewPoint) => void) {
+    private iterateOverPointsRecursively(point: Point, parent: Point, action: (current: Point, parent: Point) => void) {
         action(point, parent);
 
         this.edgeList.get(point).forEach(child => this.iterateOverPointsRecursively(child, point, action));
+    }
+
+    private getHoveredOverPoint(pos: Point) {
+        for (let i = 0; i < this.points.length; i++) {
+            const d = this.points[i].distanceTo(pos);
+
+            if (d < this.radius + 3) {
+                return this.points[i];
+            }
+        }
     }
 }

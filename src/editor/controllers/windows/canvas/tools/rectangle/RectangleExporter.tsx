@@ -45,7 +45,7 @@ export class RectangleExporter implements IViewExporter {
             <g 
                 transform={`translate(${dimensions.topLeft.x} ${dimensions.topLeft.y})`}
                 onMouseOver={() => this.controller.mouseController.hover(item)}
-                onMouseOut={() => this.controller.mouseController.unhover()}
+                onMouseOut={() => this.controller.mouseController.unhover(item)}
                 data-wg-x={dimensions.topLeft.x + tranlateX}
                 data-wg-y={dimensions.topLeft.y + tranlateY}
                 data-wg-width={dimensions.getWidth()}

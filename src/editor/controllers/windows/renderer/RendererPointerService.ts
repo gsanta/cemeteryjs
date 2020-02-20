@@ -67,7 +67,7 @@ export class RendererPointerService implements IPointerService {
     }
     
     private addScreenOffset(point: Point): Point {
-        const offset = this.calcOffset(this.controller.getId());
+        const offset = new Point(0, 0);//this.calcOffset(this.controller.getId());
         return new Point(point.x - offset.x, point.y - offset.y);
     }
 }

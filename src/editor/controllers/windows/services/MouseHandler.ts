@@ -1,7 +1,5 @@
-import { Point } from "../../../../misc/geometry/shapes/Point";
-import { WindowController } from "../WindowController";
 import { View } from "../../../../common/views/View";
-import { CanvasItemTag } from "../canvas/models/CanvasItem";
+import { Point } from "../../../../misc/geometry/shapes/Point";
 import { IPointerEvent, IPointerService } from "./IPointerService";
 
 export class MousePointer {
@@ -35,8 +33,6 @@ export class MouseHandler {
     }
     
     onMouseMove(e: MouseEvent): void {
-        if (!this.isLeftButton(e)) { return }
-
         this.controller.pointer.pointerMove(this.convertEvent(e));
     }    
 
@@ -54,8 +50,8 @@ export class MouseHandler {
         this.controller.pointer.hover(item);
     }
 
-    unhover() {
-        this.controller.pointer.unhover();
+    unhover(item: View) {
+        this.controller.pointer.unhover(item);
     }
 
     private convertEvent(e: MouseEvent): IPointerEvent {

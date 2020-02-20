@@ -43,14 +43,14 @@ export class MoveAndSelectTool extends AbstractTool {
         super.down();
 
         this.determineActiveTool();
-        this.activeTool.down();
+        return this.activeTool.down();
     }
 
     click() {
         super.click();
 
         this.determineActiveTool();
-        this.activeTool.click();
+        return this.activeTool.click();
     }
 
     drag() {

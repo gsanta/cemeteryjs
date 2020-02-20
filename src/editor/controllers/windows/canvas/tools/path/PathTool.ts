@@ -8,7 +8,6 @@ import { ToolType } from "../Tool";
 import { Keyboard } from "../../../services/KeyboardHandler";
 import { CanvasController } from "../../CanvasController";
 import { CanvasItemTag } from "../../models/CanvasItem";
-import { ViewPoint } from "../../../../../../common/views/ViewPoint";
 
 export class PathTool extends AbstractTool {
 
@@ -16,9 +15,13 @@ export class PathTool extends AbstractTool {
     
     private controller: CanvasController;
     constructor(controller: CanvasController) {
-        super(ToolType.PATH);
+        super(ToolType.PATH, controller.pointerTool);
 
         this.controller = controller;
+    }
+
+    move() {
+        return super.move();
     }
 
     down() {
@@ -30,7 +33,7 @@ export class PathTool extends AbstractTool {
             this.startNewPath();
         } else {
             const pointer = this.controller.pointer.pointer;
-            this.pendingPath.addPoint(new ViewPoint(pointer.down.x, pointer.down.y, true, true));
+            this.pendingPath.addPoint(new Point(pointer.down.x, pointer.down.y));
         }
 
         this.controller.viewStore.removeTag(this.controller.viewStore.getViews(), CanvasItemTag.SELECTED);
@@ -38,6 +41,7 @@ export class PathTool extends AbstractTool {
 
         this.controller.renderWindow();
         this.controller.renderToolbar();
+        return true;
     }
 
     exit() {

@@ -10,8 +10,7 @@ export class SelectTool extends AbstractSelectionTool {
     }
 
     down() {
-        super.down();
-        this.services.renderWindow();
+        return super.down();
     }
 
     drag() {
@@ -19,20 +18,20 @@ export class SelectTool extends AbstractSelectionTool {
         this.services.renderWindow();
     }
 
-    click() {
-        super.click();
+    // click() {
+    //     super.click();
 
-        const viewStore = this.services.viewStore;
+    //     const viewStore = this.services.viewStore;
 
-        viewStore.removeTag(viewStore.getViews(), CanvasItemTag.SELECTED);
+    //     viewStore.removeTag(viewStore.getViews(), CanvasItemTag.SELECTED);
 
-        const hoveredView = viewStore.getHoveredView()
+    //     const hoveredView = viewStore.getHoveredView()
 
-        hoveredView && viewStore.addTag([hoveredView], CanvasItemTag.SELECTED);
+    //     hoveredView && viewStore.addTag([hoveredView], CanvasItemTag.SELECTED);
 
-        this.services.renderWindow();
-        this.services.renderToolbar();
-    }
+    //     this.services.renderWindow();
+    //     this.services.renderToolbar();
+    // }
 
     draggedUp() {
         super.draggedUp();
