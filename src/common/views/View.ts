@@ -13,4 +13,5 @@ export interface View {
     name: string;
     removeSubviewHover(): void;
     selectHoveredSubview(): void;
+    isSubviewHovered(): boolean;
 }

@@ -13,10 +13,11 @@ export interface PathJson {
         }
     }[];
 
-    polyline: {
+    path: {
         _attributes: {
-            points: string;
             'data-name': string;
+            'data-points': string;
+            'data-parent-relations': string;
         }
     }
 }
@@ -37,17 +38,9 @@ export class PathImporter implements IViewImporter {
         const pathJsons =  (<PathJson[]> group.g).length ? <PathJson[]> group.g : [<PathJson> group.g];
         
         pathJsons.forEach(json => {
-            const points: Point[] = json.polyline._attributes.points
-                .split(' ')
-                .map((p: string) => {
-                    const [x, y] = p.split(',');
-
-                    return new Point(parseInt(x, 10), parseInt(y, 10));
-                });
-
             const path = new PathView();
-            path.name = json.polyline._attributes['data-name'];
-            path.points = points;
+            path.name = json.path._attributes['data-name'];
+            path.deserialize(json.path._attributes['data-points'], json.path._attributes['data-point-relations']);
 
             this.addPath(path);
         });

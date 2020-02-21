@@ -15,7 +15,11 @@ export class PointerTool extends AbstractTool {
 
     click() {
         if (!super.click()) {
-            this.controller.viewStore.removeTag(this.controller.viewStore.getViews(), CanvasItemTag.SELECTED);
+            let update = false;
+            if (this.controller.viewStore.getSelectedViews().length > 0) {
+                this.controller.viewStore.removeTag(this.controller.viewStore.getViews(), CanvasItemTag.SELECTED);
+                update = true;
+            }
 
             const hoveredView = this.controller.viewStore.getHoveredView()
 
@@ -25,9 +29,9 @@ export class PointerTool extends AbstractTool {
 
                 this.controller.renderToolbar();
 
-                return true;
+                update = true;
             }
-            return false;
+            return update;
         }
 
         return true;

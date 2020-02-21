@@ -33,6 +33,7 @@ import { IPointerService } from '../services/IPointerService';
 import { CanvasPointerService } from '../services/CanvasPointerService';
 import { PointerTool } from './tools/PointerTool';
 import { MoveTool } from './tools/MoveTool';
+import { SelectTool } from './tools/SelectTool';
 
 export class CanvasController extends AbstractCanvasController {
     name = '2D View';
@@ -96,12 +97,12 @@ export class CanvasController extends AbstractCanvasController {
         const pathTool = new PathTool(this);
         const deleteTool = new DeleteTool(this, this.services.eventDispatcher);
         this.moveTool = new MoveTool(this, this.services.eventDispatcher);
-        const moveAndSelectTool = new MoveAndSelectTool(this, this.services.eventDispatcher);
+        const selectTool = new SelectTool(this);
         this.tools = [
             rectangleTool,
             pathTool,
             deleteTool,
-            moveAndSelectTool,
+            selectTool,
             this.cameraTool,
         ];
 
@@ -110,7 +111,7 @@ export class CanvasController extends AbstractCanvasController {
                 rectangleTool,
                 pathTool,
                 deleteTool,
-                moveAndSelectTool,
+                selectTool,
                 this.cameraTool,
             ],
             [
@@ -149,8 +150,8 @@ export class CanvasController extends AbstractCanvasController {
 
     getActiveTool(): Tool {
         switch(this.selectedTool) {
-            case ToolType.MOVE_AND_SELECT:
-                return this.findToolByType(ToolType.MOVE_AND_SELECT);
+            case ToolType.SELECT:
+                return this.findToolByType(ToolType.SELECT);
             case ToolType.DELETE:
                 return this.findToolByType(ToolType.DELETE);
             case ToolType.RECTANGLE:

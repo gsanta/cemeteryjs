@@ -117,6 +117,7 @@ export class MeshView implements View {
 
     removeSubviewHover() {}
     selectHoveredSubview() {}
+    isSubviewHovered(): boolean { return false; }
 
     private getAnimations(meshStore: MeshStore): Animation[] {
         return meshStore.getMesh(this.name).skeleton.getAnimationRanges().map(anim => ({

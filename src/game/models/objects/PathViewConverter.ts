@@ -18,8 +18,14 @@ export class PathViewConverter {
         const pathObject = new PathObject();
 
         pathObject.name = pathView.name;
-        pathObject.points = pathView.points.map(p => p.negateY()).map(p => p.div(10));
-
+        pathObject.points = pathView.points;
+        pathObject.tree = new Map();
+        pathObject.points.forEach(p => {
+            const index = pathObject.points.indexOf(p);
+            const childIndexes = pathView.edgeList.get(p).map(c => pathObject.points.indexOf(c));
+            pathObject.tree.set(index, childIndexes);
+        });
+        pathObject.root = pathView.rootPoint;
         this.gameFacade.gameStore.add(pathObject);
     }
 }

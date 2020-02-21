@@ -36,7 +36,7 @@ export class CanvasToolbarComponent extends React.Component<{canvasController: C
             <ToolbarStyled>
                 <DrawIconComponent isActive={this.isToolActive(ToolType.RECTANGLE)} onClick={() => this.activateTool(ToolType.RECTANGLE)} format="short"/>
                 <ArrowIconComponent isActive={this.isToolActive(ToolType.PATH)} onClick={() => this.activateTool(ToolType.PATH)} format="short"/>
-                <SelectIconComponent isActive={this.isToolActive(ToolType.MOVE_AND_SELECT)} onClick={() => this.activateTool(ToolType.MOVE_AND_SELECT)} format="short"/>
+                <SelectIconComponent isActive={this.isToolActive(ToolType.SELECT)} onClick={() => this.activateTool(ToolType.SELECT)} format="short"/>
                 <DeleteIconComponent isActive={this.isToolActive(ToolType.DELETE)} onClick={() => this.activateTool(ToolType.DELETE)} format="short"/>
                 <ZoomInIconComponent isActive={false} onClick={() => this.zoomIn()} format="short"/>
                 <ZoomOutIconComponent isActive={false} onClick={() => this.zoomOut()} format="short"/>

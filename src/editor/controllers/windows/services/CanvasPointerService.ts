@@ -45,7 +45,7 @@ export class CanvasPointerService implements IPointerService {
         this.pointer.prevScreen = this.pointer.currScreen;
         this.pointer.currScreen = this.controller.getCamera().screenToCanvasPoint(this.pointer.curr);
         let updated = false;
-        if (this.pointer.getDownDiff().len() > 2) {
+        if (this.isDown && this.pointer.getDownDiff().len() > 2) {
             this.isDrag = true;
             this.controller.getActiveTool().drag();
         } else {

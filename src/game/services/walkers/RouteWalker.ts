@@ -32,9 +32,11 @@ export class RouteWalker implements IEventListener {
 
                 const direction =  pathObj.points[route.currentStop].subtract(meshObj.getPosition()).normalize();
 
-                this.isNextStopReached(route) && route.currentStop++;
+                if (this.isNextStopReached(route)) {
+                    route.currentStop = pathObj.tree.get(route.currentStop)[0];
+                }
 
-                if (route.currentStop === pathObj.points.length) {
+                if (pathObj.tree.get(route.currentStop).length === 0) {
                     route.reset();
                 }
 
@@ -59,16 +61,16 @@ export class RouteWalker implements IEventListener {
         const pathObj = route.getPathObject();
 
         const meshPos = meshObj.getPosition();
-        const currentStopPos = pathObj.points[route.currentStop];
+        const currentStopPos = route.currentStop;
 
-        return meshPos.distanceTo(currentStopPos) < 1;
+        return meshPos.distanceTo(pathObj.points[currentStopPos]) < 1;
     }
 
     initRoutes() {
         this.gameFacade.gameStore.getRouteObjects().forEach(route => {
             const meshObj = route.getMeshObject();
             const pathObj = route.getPathObject();
-            meshObj.setPosition(pathObj.points[0]);
+            meshObj.setPosition(pathObj.root);
         });
     }
 }

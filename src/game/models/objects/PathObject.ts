@@ -6,4 +6,6 @@ export class PathObject implements IGameObject {
     readonly objectType = GameObjectType.PathObject
     name: string;
     points: Point[] = [];
+    tree: Map<number, number[]> = new Map();
+    root: Point;
 }

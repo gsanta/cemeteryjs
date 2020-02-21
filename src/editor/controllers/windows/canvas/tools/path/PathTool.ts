@@ -15,7 +15,7 @@ export class PathTool extends AbstractTool {
     
     private controller: CanvasController;
     constructor(controller: CanvasController) {
-        super(ToolType.PATH, [controller.pointerTool]);
+        super(ToolType.PATH);
 
         this.controller = controller;
     }
@@ -25,8 +25,13 @@ export class PathTool extends AbstractTool {
     }
 
     click() {
+        const hovered = this.controller.viewStore.getHoveredView();
+        if (hovered && hovered.viewType === ViewType.Path) {
+            let update = super.click();
+            this.pendingPath = <PathView> hovered;
+            return update;
+        } else {
 
-        if (!super.click()) {            
             if (this.isOtherPathHovered()) {
                 this.pendingPath = <PathView> this.controller.viewStore.getHoveredView();
             } else if (!this.pendingPath) {
@@ -39,11 +44,9 @@ export class PathTool extends AbstractTool {
             this.controller.viewStore.removeTag(this.controller.viewStore.getViews(), CanvasItemTag.SELECTED);
             this.controller.viewStore.addTag([this.pendingPath], CanvasItemTag.SELECTED); 
     
-            this.controller.renderWindow();
             this.controller.renderToolbar();
             return true;
         }
-        return true;
     }
 
     exit() {
@@ -54,6 +57,10 @@ export class PathTool extends AbstractTool {
         if (this.controller.keyboardHandler.downKeys.includes(Keyboard.Enter)) {
             this.pendingPath = undefined;
         }
+    }
+
+    getSubtools() {
+        return [this.controller.pointerTool];
     }
 
     private startNewPath() {

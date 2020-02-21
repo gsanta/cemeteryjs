@@ -5,24 +5,23 @@ export class AbstractTool implements Tool {
     private subtools: Tool[] = [];
     type: ToolType;
 
-    constructor(type: ToolType, subtools: Tool[] = []) {
+    constructor(type: ToolType) {
         this.type = type;
-        this.subtools = subtools;
     }
 
     supportsRectSelection(): boolean { return false; }
 
     down() {
-        return !!this.subtools.find(tool => tool.down());
+        return !!this.getSubtools().find(tool => tool.down());
     }
 
     move() {
-        return !!this.subtools.find(tool => tool.move());
+        return !!this.getSubtools().find(tool => tool.move());
     }
 
     drag() {}
     click() {
-        return !!this.subtools.find(tool => tool.click());
+        return !!this.getSubtools().find(tool => tool.click());
     }
 
     draggedUp() {}
@@ -33,11 +32,11 @@ export class AbstractTool implements Tool {
     keydown() {}
 
     over(item: View) { 
-        return !!this.subtools.find(tool => tool.over(item));
+        return !!this.getSubtools().find(tool => tool.over(item));
     }
 
     out(item: View) {
-        return !!this.subtools.find(tool => tool.out(item));
+        return !!this.getSubtools().find(tool => tool.out(item));
     }
 
     getSubtools(): Tool[] {

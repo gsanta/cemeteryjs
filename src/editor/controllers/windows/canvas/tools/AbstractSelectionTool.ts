@@ -12,8 +12,8 @@ export class AbstractSelectionTool extends AbstractTool {
     private selectionRect: Rectangle = NULL_SELECTION;
     private _displaySelectionRect: boolean;
 
-    constructor(services: CanvasController, type: ToolType, displaySelectionRect: boolean, secondaryTool?: Tool) {
-        super(type, [secondaryTool]);
+    constructor(services: CanvasController, type: ToolType, displaySelectionRect: boolean) {
+        super(type);
         this.controller = services;
         this._displaySelectionRect = displaySelectionRect;
     }

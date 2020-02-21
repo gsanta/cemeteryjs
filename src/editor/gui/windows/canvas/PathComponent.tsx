@@ -36,7 +36,7 @@ export class PathComponent extends React.Component<PathComponentProps> {
     renderPath(): JSX.Element {
         const highlight = this.props.onlyData ? null : (
             <path
-                d={this.props.item.toString()}
+                d={this.props.item.serializePath()}
                 onMouseOver={() => this.props.onMouseOver(this.props.item)}
                 onMouseOut={() => this.props.onMouseOut(this.props.item)}
                 fill="none"
@@ -50,8 +50,10 @@ export class PathComponent extends React.Component<PathComponentProps> {
             <React.Fragment>
                 {highlight}
                 <path
-                    d={this.props.item.toString()}
+                    d={this.props.item.serializePath()}
                     data-name={this.props.item.name}
+                    data-points={this.props.item.points.map(p => p.toString()).join(' ')}
+                    data-point-relations={this.props.item.serializeParentRelations()}
                     fill="none"
                     stroke={colors.views.stroke}
                     stroke-width="1"

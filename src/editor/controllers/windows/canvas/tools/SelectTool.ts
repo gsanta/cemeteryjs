@@ -6,7 +6,7 @@ import { CanvasItemTag } from "../models/CanvasItem";
 export class SelectTool extends AbstractSelectionTool {
 
     constructor(controller: CanvasController) {
-        super(controller, ToolType.SELECT, true, [controller. controller.pointerTool]);
+        super(controller, ToolType.SELECT, true);
     }
 
     down() {
@@ -31,6 +31,6 @@ export class SelectTool extends AbstractSelectionTool {
     }
 
     getSubtools() {
-        return [this.controller.pointerTool, this.controller.]
+        return [this.controller.pointerTool, this.controller.moveTool];
     }
 }
