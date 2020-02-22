@@ -11,7 +11,7 @@ export class AfterRenderTrigger implements ILifeCycleTrigger {
     }
 
     activate(trigger: (event: LifeCycleEvent) => void) {
-        this.gameFacade.scene.registerAfterRender(() => {
+        this.gameFacade.gameEngine.scene.registerAfterRender(() => {
             trigger(LifeCycleEvent.AfterRender);
         });
     }

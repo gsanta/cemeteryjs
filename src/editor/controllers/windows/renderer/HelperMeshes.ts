@@ -4,10 +4,8 @@ import { Controllers } from '../../Controllers';
 export class HelperMeshes {
     private meshBuilder: typeof MeshBuilder;
     private scene: Scene;
-    private controllers: Controllers;
 
-    constructor(controllers: Controllers, scene: Scene, meshBuilder: typeof MeshBuilder) {
-        this.controllers = controllers;
+    constructor(scene: Scene, meshBuilder: typeof MeshBuilder) {
         this.scene = scene;
         this.meshBuilder = meshBuilder;
         this.createCenterLine();

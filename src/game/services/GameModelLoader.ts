@@ -1,4 +1,4 @@
-import { Mesh, Scene, Vector3 } from 'babylonjs';
+import { Mesh, Vector3 } from 'babylonjs';
 import { AbstractModelLoader } from '../../common/AbstractModelLoader';
 import { GameFacade } from '../GameFacade';
 
@@ -8,8 +8,8 @@ export class GameModelLoader extends AbstractModelLoader {
     private fileNameToMeshNameMap: Map<string, string> = new Map();
     private instanceCounter: Map<string, number> = new Map();
 
-    constructor(scene: Scene, gameFacade: GameFacade) {
-        super(scene);
+    constructor(gameFacade: GameFacade) {
+        super(gameFacade.gameEngine.scene);
         this.gameFacade = gameFacade;
     }
 

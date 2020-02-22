@@ -12,7 +12,7 @@ import { ClearIconComponent } from '../icons/ClearIconComponent';
 import { PlayIconComponent } from '../icons/PlayIconComponent';
 import { PauseIconComponent } from '../icons/PauseIconComponent';
 import { StopIconComponent } from '../icons/StopIconComponent';
-import { MeshView } from '../../../common/views/MeshView';
+import { MeshView, AnimationState } from '../../../common/views/MeshView';
 import { CheckboxComponent } from '../forms/CheckboxComponent';
 
 export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshView>> {
@@ -131,13 +131,6 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
             <SettingsRowStyled>
                 <LabelStyled>Layer</LabelStyled>
                 <InputStyled>
-                    {/* <ConnectedInputComponent
-                        formController={form}
-                        propertyName={GameObjectPropType.LAYER}
-                        propertyType="number"
-                        type="number"
-                        value={form.getVal(GameObjectPropType.LAYER)}
-                    /> */}
                     <ConnectedLayerSettingsComponent formController={form} propertyName={MeshViewPropType.LAYER} value={form.getVal(MeshViewPropType.LAYER)}/>
                 </InputStyled>
             </SettingsRowStyled>
@@ -292,14 +285,22 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
     }
 
     private renderPlayAnimation() {
+        const form = this.props.canvasController.gameObjectForm;
+
+        const updateAnimationState = (state: AnimationState) => form.updateProp(state, MeshViewPropType.AnimationState);
+        const getState = (animationState: AnimationState): 'disabled' | 'active' | 'default' => {
+            if (!this.props.view.path) {
+                return 'disabled';
+            } else if (this.props.view.animationState === animationState) {
+                return 'active';
+            }
+            return 'default';
+        }
         return (
             <SettingsRowStyled verticalAlign='center'>
-                <PlayIconComponent 
-                    onClick={() => this.context.controllers.webglCanvasController.gameFacade.gameApi.playMovement(this.props.view.name)}
-                    disabled={!this.props.view.path}
-                />
-                <PauseIconComponent onClick={() => this.context.controllers.webglCanvasController.gameFacade.gameApi.pauseMovement(this.props.view.name)} disabled={!this.props.view.path}/>
-                <StopIconComponent onClick={() => this.context.controllers.webglCanvasController.gameFacade.gameApi.resetPath(this.props.view.name)} disabled={!this.props.view.path}/>
+                <PlayIconComponent onClick={() => updateAnimationState(AnimationState.Playing)} state={getState(AnimationState.Playing)}/>
+                <PauseIconComponent onClick={() => updateAnimationState(AnimationState.Paused)} state={getState(AnimationState.Paused)}/>
+                <StopIconComponent onClick={() => updateAnimationState(AnimationState.Stopped)} state={getState(AnimationState.Stopped)}/>
             </SettingsRowStyled>
         )
     }

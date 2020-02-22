@@ -44,7 +44,7 @@ export class RendererComponent extends React.Component<RendererComponentProps> {
 
     componentDidMount() {
         setTimeout(() => {
-            this.context.controllers.webglCanvasController.init(this.canvasRef.current);
+            this.context.controllers.setup(this.canvasRef.current);
             this.context.controllers.webglCanvasController.updateCanvas();
         }, 1000);
 

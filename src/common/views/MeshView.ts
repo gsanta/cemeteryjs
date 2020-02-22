@@ -21,7 +21,13 @@ export enum AnimationName {
     None = 'none',
     Walk = 'walk',
     Turn = 'turn'
-} 
+}
+
+export enum AnimationState {
+    Playing = 'playing',
+    Paused = 'paused',
+    Stopped = 'stopped'
+}
 
 /**
  * `GameObject` represents any distinguishable item in the parsed world (think of it as a mesh, e.g walls, rooms, creatures).
@@ -51,6 +57,7 @@ export class MeshView implements View {
     activeBehaviour: BehaviourType;
     wanderAngle = 0;
     animations: string[] = [];
+    animationState = AnimationState.Playing;
     private getMesh: (meshName: string) => Mesh;
 
     constructor(getMesh: (meshName: string) => Mesh, dimensions: Rectangle, name: string, rotation = 0) {

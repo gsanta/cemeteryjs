@@ -31,12 +31,9 @@ export class GlobalFormComponent extends React.Component {
     private renderMovements() {
         return (
             <SettingsRowStyled verticalAlign='center'>
-                <PlayIconComponent 
-                    onClick={() => this.context.controllers.webglCanvasController.gameFacade.gameApi.playAllMovements()}
-                    disabled={false}
-                />
-                <PauseIconComponent onClick={() => this.context.controllers.webglCanvasController.gameFacade.gameApi.pauseAllMovements()} disabled={false}/>
-                <StopIconComponent onClick={() => this.context.controllers.webglCanvasController.gameFacade.gameApi.resetAllMovements()} disabled={false}/>
+                <PlayIconComponent onClick={() => this.context.controllers.webglCanvasController.getGameApi().playAllMovements()}/>
+                <PauseIconComponent onClick={() => this.context.controllers.webglCanvasController.getGameApi().pauseAllMovements()}/>
+                <StopIconComponent onClick={() => this.context.controllers.webglCanvasController.getGameApi().resetAllMovements()}/>
             </SettingsRowStyled>
         )
     }

@@ -15,7 +15,7 @@ export class WebglCanvasWriter implements ICanvasImporter {
     }
 
     import(file: string): void {
-        this.webglEditorController.gameFacade.clear();
+        this.webglEditorController.getGameFacade().clear();
 
         const converterService = new ConverterService();
         const that = this;
@@ -25,7 +25,7 @@ export class WebglCanvasWriter implements ICanvasImporter {
                     gameObjects,
                     {
                         convert(worldItem: MeshObject): any {
-                            that.webglEditorController.meshes.push(that.webglEditorController.gameFacade.meshStore.getMesh(worldItem.meshName));
+                            that.webglEditorController.meshes.push(that.webglEditorController.getGameFacade().meshStore.getMesh(worldItem.meshName));
                         },
                         addChildren(parent: any, children: any[]): void {},
                         addBorders(item: any, borders: any[]): void {},

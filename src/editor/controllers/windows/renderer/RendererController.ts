@@ -1,33 +1,28 @@
-import { Color3, Engine, HemisphericLight, Mesh, MeshBuilder, Scene, UniversalCamera, Vector3 } from 'babylonjs';
+import { Mesh } from 'babylonjs';
 import { AbstractModelLoader } from '../../../../common/AbstractModelLoader';
 import { GameFacade } from '../../../../game/GameFacade';
-import { FileFormat } from '../../../../game/import/WorldGenerator';
 import { Controllers } from '../../Controllers';
 import { Events } from "../../events/Events";
+import { AbstractCanvasController, CanvasViewSettings } from '../AbstractCanvasController';
+import { Tool } from '../canvas/tools/Tool';
+import { ITagService } from '../ITagService';
+import { IPointerService } from '../services/IPointerService';
+import { MouseHandler } from '../services/MouseHandler';
 import { EditorCamera } from './EditorCamera';
 import { HelperMeshes } from './HelperMeshes';
-import { WebglCanvasWriter } from './WebglCanvasImporter';
-import { CanvasViewSettings, AbstractCanvasController } from '../AbstractCanvasController';
 import { RendererCameraTool } from './RendererCameraTool';
-import { Tool } from '../canvas/tools/Tool';
-import { WindowController } from '../WindowController';
-import { ITagService } from '../ITagService';
-import { MouseHandler } from '../services/MouseHandler';
-import { IPointerService } from '../services/IPointerService';
 import { RendererPointerService } from './RendererPointerService';
+import { WebglCanvasWriter } from './WebglCanvasImporter';
+import { GameApi } from '../../../../game/GameApi';
 (<any> window).earcut = require('earcut');
 
 export class RendererController extends AbstractCanvasController {
     name = '3D View';
     static id = 'webgl-editor';
     visible = true;
-    fileFormats = [FileFormat.TEXT, FileFormat.SVG];
 
     mouseHander: MouseHandler;
 
-    engine: Engine;
-    scene: Scene;
-    gameFacade: GameFacade;
     writer: WebglCanvasWriter;
     modelLoader: AbstractModelLoader;
     tagService: ITagService;
@@ -39,12 +34,11 @@ export class RendererController extends AbstractCanvasController {
     cameraTool: RendererCameraTool;
     activeTool: Tool;
 
-    private controllers: Controllers;
     private renderCanvasFunc: () => void;
     meshes: Mesh[] = [];
 
     constructor(controllers: Controllers) {
-        super();
+        super(controllers);
         this.controllers = controllers;
         this.mouseHander = new MouseHandler(this);
         this.pointer = new RendererPointerService(this);
@@ -66,51 +60,17 @@ export class RendererController extends AbstractCanvasController {
     }
 
     resize() {
-        this.engine.resize();
+        this.getGameFacade().gameEngine.engine.resize();
     }
 
-    init(canvas: HTMLCanvasElement) {
-        this.canvas = canvas;
-        
-        this.engine = new Engine(this.canvas, true, { preserveDrawingBuffer: true, stencil: true });
-        
-        let target = new Vector3(100, 0, 0);
-        
-        const scene = new Scene(this.engine);
-        this.camera = new EditorCamera(scene, this.canvas, target);
+    setup() {
         this.cameraTool = new RendererCameraTool(this, this.camera);
-        this.activeTool = this.cameraTool;
-        
-
-        this.helperMeshes = new HelperMeshes(this.controllers, scene, MeshBuilder);
-        const light = new HemisphericLight('light', new Vector3(0, 1, 0), scene);
-        // light.radius = 300;
-        
-        light.diffuse = new Color3(1, 1, 1);
-        light.specular = new Color3(0, 0, 0);
-        const lightMesh = MeshBuilder.CreateBox('light-cube', {size: 1}, scene);
-        lightMesh.translate(new Vector3(5, 200, 0), 1);
-        // light.diffuse = new Color3(1, 1, 1);
-        // light.intensity = 1;
-        
-
-        // const light2 = new HemisphericLight('light2', new Vector3(0, 10, 0), scene);
-        // light2.diffuse = new Color3(1, 1, 1);
-        // light2.intensity = 1;
-
-        this.scene = scene;
-        
-        this.gameFacade = new GameFacade(this.scene);
-        this.gameFacade.setup();
-        this.writer = new WebglCanvasWriter(this, this.gameFacade);
-        
+        this.writer = new WebglCanvasWriter(this, this.getGameFacade());
 
         this.updateCanvas();
     }
 
     updateCanvas() {
-        if (!this.canvas) { return; }
-
         this.clearCanvas();
         if (this.writer) {
             const file = this.controllers.svgCanvasController.reader.export();
@@ -134,7 +94,6 @@ export class RendererController extends AbstractCanvasController {
     }
 
     renderWindow() {
-        this.engine.runRenderLoop(() => this.scene.render());
         this.renderCanvasFunc();
     }
 
@@ -151,7 +110,7 @@ export class RendererController extends AbstractCanvasController {
     activate(): void {}
 
     private clearCanvas() {
-        this.gameFacade.clear();
+        this.getGameFacade().clear();
     }
 
     

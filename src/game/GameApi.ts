@@ -1,12 +1,16 @@
 import { GameFacade } from "./GameFacade";
 import { MeshObject } from "./models/objects/MeshObject";
+import { MeshObjectUpdater } from "./MeshObjectUpdater";
 
 
 export class GameApi {
     private gameFacade: GameFacade;
+    
+    meshObjectUpdater: MeshObjectUpdater;
 
     constructor(gameFacade: GameFacade) {
         this.gameFacade = gameFacade;
+        this.meshObjectUpdater = new MeshObjectUpdater(gameFacade);
     }
 
     resetPath(meshObjectName: string) {

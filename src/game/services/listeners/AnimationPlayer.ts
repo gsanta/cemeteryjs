@@ -45,7 +45,7 @@ export class AnimationPlayer implements IEventListener {
         const mesh = this.gameFacade.meshStore.getMesh(gameObject.meshName);
 
         this.playingAnimations.delete(gameObject);
-        this.gameFacade.scene.stopAnimation(mesh.skeleton);
+        this.gameFacade.gameEngine.scene.stopAnimation(mesh.skeleton);
     }
 
     private startAnimation(gameObject: MeshObject) {
@@ -53,7 +53,7 @@ export class AnimationPlayer implements IEventListener {
 
         if (mesh) {
             const range = mesh.skeleton.getAnimationRange(gameObject.activeAnimation);
-            this.gameFacade.scene.beginAnimation(mesh.skeleton, range.from, range.to, true);
+            this.gameFacade.gameEngine.scene.beginAnimation(mesh.skeleton, range.from, range.to, true);
             this.playingAnimations.set(gameObject, gameObject.activeAnimation);
         }
 

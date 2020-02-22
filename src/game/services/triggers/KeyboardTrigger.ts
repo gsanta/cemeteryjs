@@ -27,7 +27,7 @@ export class KeyboardTrigger {
 
     constructor(gameFacade: GameFacade) {
         this.gameFacade = gameFacade;
-        this.gameFacade.scene.actionManager = new ActionManager(this.gameFacade.scene);
+        this.gameFacade.gameEngine.scene.actionManager = new ActionManager(this.gameFacade.gameEngine.scene);
         this.registerKeyDown();
         this.registerKeyUp();
     }
@@ -47,7 +47,7 @@ export class KeyboardTrigger {
             this.triggerFunc();
         }
 
-        this.gameFacade.scene.actionManager.registerAction(new ExecuteCodeAction(trigger, handler));
+        this.gameFacade.gameEngine.scene.actionManager.registerAction(new ExecuteCodeAction(trigger, handler));
     }
 
     private registerKeyUp() {
@@ -61,6 +61,6 @@ export class KeyboardTrigger {
             this.triggerFunc();
         }
 
-        this.gameFacade.scene.actionManager.registerAction(new ExecuteCodeAction(trigger, handler));
+        this.gameFacade.gameEngine.scene.actionManager.registerAction(new ExecuteCodeAction(trigger, handler));
     }
 }

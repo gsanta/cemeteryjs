@@ -1,18 +1,20 @@
 import styled from 'styled-components';
 
+type IconState = 'default' | 'active' | 'disabled';
+
 export const IconStyled = styled.svg`
-    cursor: ${({disabled}: {disabled: boolean}) => disabled ? 'not-allowed' : 'pointer'};
+    cursor: ${({state}: {state?: IconState}) => state === 'disabled' ? 'not-allowed' : 'pointer'};
 `;
 
 interface IconForgroundProps {
     color: string;
-    disabled?: boolean;
+    state?: IconState;
 }
 
 export const IconForgroundStyled = styled.path`
-    fill: ${({color}: IconForgroundProps) => color};
-    fill-opacity: ${({disabled}: IconForgroundProps) => disabled ? 0.5 : 1};
-    cursor: ${({disabled}: IconForgroundProps) => disabled ? 'not-allowed' : 'pointer'};
+    fill: ${({color, state}: IconForgroundProps) => state === 'active' ? 'green' : color};
+    fill-opacity: ${({state}: IconForgroundProps) => state === 'disabled' ? 0.5 : 1};
+    cursor: ${({state}: IconForgroundProps) => state === 'disabled' ? 'not-allowed' : 'pointer'};
 `;
 
 export const IconBackgroundStyled = styled.path`
@@ -21,5 +23,5 @@ export const IconBackgroundStyled = styled.path`
 
 export interface IconProps {
     onClick: () => void;
-    disabled?: boolean;
+    state?: IconState;
 }

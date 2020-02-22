@@ -39,7 +39,6 @@ export class CanvasController extends AbstractCanvasController {
     name = '2D View';
     static id = 'svg-canvas-controller';
     visible = true;
-    fileFormats = [FileFormat.SVG];
 
     viewStore: ViewStore;
 
@@ -59,8 +58,6 @@ export class CanvasController extends AbstractCanvasController {
     hoverService: HoverService;
     pointer: IPointerService;
     
-    services: Controllers;
-
     gameObjectForm: GameObjectForm;
     gameObjectFormState: GameObjectFormState;
     pathForm: PathForm;
@@ -73,9 +70,8 @@ export class CanvasController extends AbstractCanvasController {
     // private renderToolbarFunc = () => null;
     
     constructor(services: Controllers) {
-        super();
+        super(services);
 
-        this.services = services;
         this.viewStore = new ViewStore();
         this.nameingService = new NamingService(this);
         
@@ -93,10 +89,10 @@ export class CanvasController extends AbstractCanvasController {
         
         this.pointerTool = new PointerTool(this);
         this.cameraTool = new CameraTool(services);
-        const rectangleTool = new RectangleTool(this, this.services.eventDispatcher);
+        const rectangleTool = new RectangleTool(this, this.controllers.eventDispatcher);
         const pathTool = new PathTool(this);
-        const deleteTool = new DeleteTool(this, this.services.eventDispatcher);
-        this.moveTool = new MoveTool(this, this.services.eventDispatcher);
+        const deleteTool = new DeleteTool(this, this.controllers.eventDispatcher);
+        this.moveTool = new MoveTool(this, this.controllers.eventDispatcher);
         const selectTool = new SelectTool(this);
         this.tools = [
             rectangleTool,
@@ -120,7 +116,7 @@ export class CanvasController extends AbstractCanvasController {
             ]
         )
 
-        this.gameObjectForm = new GameObjectForm(this, this.services.eventDispatcher);
+        this.gameObjectForm = new GameObjectForm(this, this.controllers.eventDispatcher);
         this.gameObjectFormState = new GameObjectFormState();
         this.pathForm = new PathForm();
         this.tagService = this.viewStore;
@@ -177,8 +173,8 @@ export class CanvasController extends AbstractCanvasController {
 
     setVisible(visible: boolean) {
         this.visible = visible;
-        if (!this.visible) { this.services.webglCanvasController.setVisible(true);}
-        this.services.render();
+        if (!this.visible) { this.controllers.webglCanvasController.setVisible(true);}
+        this.controllers.render();
     }
 
     isVisible(): boolean {
