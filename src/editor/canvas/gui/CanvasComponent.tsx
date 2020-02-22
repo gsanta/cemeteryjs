@@ -6,7 +6,7 @@ import { AppContext, AppContextType } from '../../gui/Context';
 import { ToolType } from '../tools/Tool';
 import { CameraTool } from '../tools/CameraTool';
 import { CanvasToolbarComponent } from './CanvasToolbarComponent';
-import { ViewType } from '../../../common/views/View';
+import { ViewType } from '../models/views/View';
 import { AbstractSelectionTool } from '../tools/AbstractSelectionTool';
 import { PathMarkersComponent } from './PathMarkersComponent';
 import { WindowToolbarStyled } from '../../gui/windows/WindowToolbar';

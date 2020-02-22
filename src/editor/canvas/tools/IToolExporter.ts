@@ -1,4 +1,4 @@
-import { ViewType } from "../../../common/views/View";
+import { ViewType } from "../models/views/View";
 
 
 export interface IViewExporter {

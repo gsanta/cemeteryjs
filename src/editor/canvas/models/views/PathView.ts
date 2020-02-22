@@ -1,14 +1,12 @@
 import { View, ViewType } from "./View";
-import { Point } from "../../misc/geometry/shapes/Point";
-import { Rectangle } from "../../misc/geometry/shapes/Rectangle";
-import { minBy, maxBy } from "../../misc/geometry/utils/Functions";
-import { GroupContext } from "./GroupContext";
+import { Point } from "../../../../misc/geometry/shapes/Point";
+import { Rectangle } from "../../../../misc/geometry/shapes/Rectangle";
+import { minBy, maxBy } from "../../../../misc/geometry/utils/Functions";
 
 const NULL_BOUNDING_BOX = new Rectangle(new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER), new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER));
 
 export class PathView implements View {
     viewType = ViewType.Path;
-    groupContext: GroupContext;
     points: Point[] = [];
     edgeList: Map<Point, Point[]> = new Map();
     parentMap: Map<Point, Point> = new Map();
@@ -31,7 +29,6 @@ export class PathView implements View {
         }
 
         this.dimensions = this.calcBoundingBox();
-        this.groupContext = new GroupContext();
     }
 
     getPoints(): Point[] {

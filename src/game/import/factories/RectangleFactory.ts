@@ -1,5 +1,5 @@
 import { Axis, Mesh, MeshBuilder, Scene, Space, Vector3, Skeleton } from 'babylonjs';
-import { MeshView } from '../../../common/views/MeshView';
+import { MeshView } from '../../../editor/canvas/models/views/MeshView';
 import { MaterialFactory } from './MaterialFactory';
 import { Polygon } from '../../../misc/geometry/shapes/Polygon';
 import { Segment } from '../../../misc/geometry/shapes/Segment';

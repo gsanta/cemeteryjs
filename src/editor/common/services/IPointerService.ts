@@ -1,5 +1,5 @@
 import { Point } from "../../../misc/geometry/shapes/Point";
-import { View } from "../../../common/views/View";
+import { View } from "../../canvas/models/views/View";
 import { MousePointer } from "./MouseHandler";
 
 

@@ -1,4 +1,4 @@
-import { MeshView } from '../../../common/views/MeshView';
+import { MeshView } from '../../canvas/models/views/MeshView';
 import { CanvasController } from '../../canvas/CanvasController';
 import { EventDispatcher } from '../events/EventDispatcher';
 import { Events } from '../events/Events';

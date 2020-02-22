@@ -1,4 +1,4 @@
-import { MeshView, WorldItemShape } from '../../common/views/MeshView';
+import { MeshView, WorldItemShape } from '../../editor/canvas/models/views/MeshView';
 import { Shape } from '../../misc/geometry/shapes/Shape';
 import { Point } from '../../misc/geometry/shapes/Point';
 import { GameFacade } from '../GameFacade';

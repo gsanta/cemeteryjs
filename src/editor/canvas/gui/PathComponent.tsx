@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PathView } from '../../../common/views/PathView';
+import { PathView } from '../models/views/PathView';
 import { Point } from '../../../misc/geometry/shapes/Point';
 import { colors } from '../../gui/styles';
 

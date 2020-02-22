@@ -1,7 +1,7 @@
-import { ViewType } from "../../../../common/views/View";
-import { IViewExporter } from "../IToolExporter";
+import { ViewType } from "../../models/views/View";
+import { IViewExporter } from "../../tools/IToolExporter";
 import React = require("react");
-import { PathView } from "../../../../common/views/PathView";
+import { PathView } from "../../models/views/PathView";
 import { CanvasItemTag } from "../../models/CanvasItem";
 import { PathComponent } from "../../gui/PathComponent";
 import { CanvasController } from "../../CanvasController";

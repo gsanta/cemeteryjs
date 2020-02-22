@@ -1,8 +1,8 @@
-import { IViewImporter } from "../../editor/canvas/tools/IToolImporter";
-import { ViewType } from "../views/View";
-import { PathView } from "../views/PathView";
+import { IViewImporter } from "../../tools/IToolImporter";
+import { ViewType } from "../../models/views/View";
+import { PathView } from "../../models/views/PathView";
 import { ViewGroupJson } from "./ViewImporter";
-import { Point } from "../../misc/geometry/shapes/Point";
+import { Point } from "../../../../misc/geometry/shapes/Point";
 
 export interface PathJson {
     circle: {

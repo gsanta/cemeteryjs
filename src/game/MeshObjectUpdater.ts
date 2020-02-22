@@ -1,4 +1,4 @@
-import { AnimationState } from "../common/views/MeshView";
+import { AnimationState } from "../editor/canvas/models/views/MeshView";
 import { MeshObject } from "./models/objects/MeshObject";
 import { GameFacade } from "./GameFacade";
 

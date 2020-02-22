@@ -1,4 +1,4 @@
-import { View, ViewType } from "../../../common/views/View";
+import { View, ViewType } from "../../canvas/models/views/View";
 import { maxBy } from "../../../misc/geometry/utils/Functions";
 import { CanvasController } from "../../canvas/CanvasController";
 

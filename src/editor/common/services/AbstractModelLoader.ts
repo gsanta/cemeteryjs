@@ -1,7 +1,7 @@
 import { Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, Vector3, StandardMaterial, Texture } from 'babylonjs';
-import { Point } from '../misc/geometry/shapes/Point';
-import { MeshView } from './views/MeshView';
-import { MeshObject } from '../game/models/objects/MeshObject';
+import { Point } from '../../../misc/geometry/shapes/Point';
+import { MeshView } from '../../canvas/models/views/MeshView';
+import { MeshObject } from '../../../game/models/objects/MeshObject';
 
 export interface ModelData {
     mesh: Mesh;

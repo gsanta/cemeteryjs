@@ -1,11 +1,10 @@
 import { Mesh, Vector3 } from 'babylonjs';
-import { MeshStore } from '../../game/models/stores/MeshStore';
-import { BehaviourType } from '../../game/services/behaviour/IBehaviour';
-import { Point } from '../../misc/geometry/shapes/Point';
-import { Rectangle } from '../../misc/geometry/shapes/Rectangle';
-import { toVector3 } from '../../misc/geometry/utils/GeomUtils';
+import { MeshStore } from '../../../../game/models/stores/MeshStore';
+import { BehaviourType } from '../../../../game/services/behaviour/IBehaviour';
+import { Point } from '../../../../misc/geometry/shapes/Point';
+import { Rectangle } from '../../../../misc/geometry/shapes/Rectangle';
+import { toVector3 } from '../../../../misc/geometry/utils/GeomUtils';
 import { View, ViewType } from './View';
-import { GroupContext } from './GroupContext';
 
 export enum WorldItemShape {
     RECTANGLE = 'rect',
@@ -34,7 +33,6 @@ export enum AnimationState {
  */
 export class MeshView implements View {
     viewType = ViewType.GameObject;
-    groupContext: GroupContext;
     type: string;
     meshName: string;
     name: string;
@@ -65,7 +63,6 @@ export class MeshView implements View {
         this.dimensions = dimensions;
         this.name = name;
         this.rotation = rotation;
-        this.groupContext = new GroupContext();
     }
 
     addChild(worldItem: MeshView) {

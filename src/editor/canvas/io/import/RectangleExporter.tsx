@@ -1,11 +1,11 @@
-import { MeshView } from "../../../../common/views/MeshView";
-import { ViewType } from "../../../../common/views/View";
+import { MeshView } from "../../models/views/MeshView";
+import { ViewType } from "../../models/views/View";
 import { Point } from "../../../../misc/geometry/shapes/Point";
 import { Rectangle } from "../../../../misc/geometry/shapes/Rectangle";
 import { minBy, sort } from "../../../../misc/geometry/utils/Functions";
 import { colors } from "../../../gui/styles";
 import { CanvasItemTag } from "../../models/CanvasItem";
-import { IViewExporter } from "../IToolExporter";
+import { IViewExporter } from "../../tools/IToolExporter";
 import React = require("react");
 import { CanvasController } from "../../CanvasController";
 

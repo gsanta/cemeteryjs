@@ -3,10 +3,9 @@ import { Polygon } from '../../../misc/geometry/shapes/Polygon';
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
 import { without } from '../../../game/import/Functions';
 import { CanvasItemTag } from './CanvasItem';
-import { MeshView } from '../../../common/views/MeshView';
-import { View, ViewType } from '../../../common/views/View';
-import { PathView } from '../../../common/views/PathView';
-import { Group } from '../../../common/views/Group';
+import { MeshView } from './views/MeshView';
+import { View, ViewType } from './views/View';
+import { PathView } from './views/PathView';
 import { ITagService } from '../../controllers/windows/ITagService';
 
 export enum Layers {
@@ -30,8 +29,6 @@ export function getLayerForType(type: string) {
 export class ViewStore implements ITagService {
     private layers: Map<View, number> = new Map();
     private tags: Map<View, Set<CanvasItemTag>> = new Map();
-    private groups: Group[] = [];
-
     private views: View[] = [];
 
     addPath(arrow: PathView) {

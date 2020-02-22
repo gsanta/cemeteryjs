@@ -1,5 +1,5 @@
 import { Point } from "../../../misc/geometry/shapes/Point";
-import { MeshView } from "../../../common/views/MeshView";
+import { MeshView } from "../../../editor/canvas/models/views/MeshView";
 import { IBehaviour, BehaviourType } from "./IBehaviour";
 import { MeshObject } from "../../models/objects/MeshObject";
 

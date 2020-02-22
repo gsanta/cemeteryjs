@@ -1,6 +1,6 @@
 import { MeshObject } from '../objects/MeshObject';
 import { IGameObject, GameObjectType } from '../objects/IGameObject';
-import { PathView } from '../../../common/views/PathView';
+import { PathView } from '../../../editor/canvas/models/views/PathView';
 import { RouteObject } from '../objects/RouteObject';
 
 export class GameStore {

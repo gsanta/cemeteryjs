@@ -1,4 +1,4 @@
-import { MeshView } from '../../../common/views/MeshView';
+import { MeshView } from '../../canvas/models/views/MeshView';
 import { AbstractForm } from './AbstractForm';
 import { Controllers } from '../Controllers';
 import { EventDispatcher } from '../events/EventDispatcher';

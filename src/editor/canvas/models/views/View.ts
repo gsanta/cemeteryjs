@@ -1,5 +1,4 @@
-import { Rectangle } from "../../misc/geometry/shapes/Rectangle";
-import { GroupContext } from "./GroupContext";
+import { Rectangle } from "../../../../misc/geometry/shapes/Rectangle";
 
 export enum ViewType {
     GameObject = 'GameObject',
@@ -7,7 +6,6 @@ export enum ViewType {
 }
 
 export interface View {
-    groupContext: GroupContext;
     viewType: ViewType;
     dimensions: Rectangle;
     name: string;

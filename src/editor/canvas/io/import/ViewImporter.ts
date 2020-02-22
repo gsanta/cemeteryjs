@@ -1,9 +1,9 @@
-import { ICanvasImporter } from '../../editor/controllers/windows/ICanvasImporter';
+import { ICanvasImporter } from '../../../controllers/windows/ICanvasImporter';
 import * as convert from 'xml-js';
-import { ViewType } from '../views/View';
-import { IViewImporter } from '../../editor/canvas/tools/IToolImporter';
-import { CanvasController } from '../../editor/canvas/CanvasController';
-import { Rectangle } from '../../misc/geometry/shapes/Rectangle';
+import { ViewType } from '../../models/views/View';
+import { IViewImporter } from '../../tools/IToolImporter';
+import { CanvasController } from '../../CanvasController';
+import { Rectangle } from '../../../../misc/geometry/shapes/Rectangle';
 
 export interface WgDefinition {
     _attributes: WgDefinitionAttributes;

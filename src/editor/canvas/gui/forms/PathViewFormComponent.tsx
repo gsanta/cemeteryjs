@@ -4,7 +4,7 @@ import { ViewFormProps } from './viewComponentFactory';
 import { ConnectedInputComponent } from '../../../gui/forms/InputComponent';
 import { SettingsRowStyled, LabelStyled, InputStyled } from './FormComponent';
 import { PathPropType } from '../../../controllers/forms/PathViewForm';
-import { PathView } from '../../../../common/views/PathView';
+import { PathView } from '../../models/views/PathView';
 
 export class PathViewFormComponent extends React.Component<ViewFormProps<PathView>> {
     static contextType = AppContext;

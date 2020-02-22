@@ -1,10 +1,10 @@
 import { ViewStore } from "../../../editor/canvas/models/ViewStore";
 import { GameFacade } from "../../GameFacade";
 import { IViewConverter } from "../objects/IViewConverter";
-import { View } from "../../../common/views/View";
-import { ViewImporter } from "../../../common/importers/ViewImporter";
-import { MeshViewImporter } from "../../../common/importers/RectangleImporter";
-import { PathImporter } from "../../../common/importers/PathImporter";
+import { View } from "../../../editor/canvas/models/views/View";
+import { ViewImporter } from "../../../editor/canvas/io/import/ViewImporter";
+import { MeshViewImporter } from "../../../editor/canvas/io/import/RectangleImporter";
+import { PathImporter } from "../../../editor/canvas/io/import/PathImporter";
 
 export class GameStoreBuilder {
     private gameFacade: GameFacade;

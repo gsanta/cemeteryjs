@@ -1,8 +1,7 @@
-import { IMeshStore } from '../../../common/IMeshStore';
 import { Mesh } from 'babylonjs';
 import { GameFacade } from '../../GameFacade';
 
-export class MeshStore implements IMeshStore<Mesh> {
+export class MeshStore {
     private gameFacade: GameFacade;
     private origMeshes: Set<string> = new Set();
     private allInstances: Mesh[] = [];

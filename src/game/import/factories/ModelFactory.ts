@@ -1,7 +1,7 @@
 import { Scene, Space, Vector3 } from 'babylonjs';
 import { GameFacade } from '../../GameFacade';
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
-import { MeshView } from '../../../common/views/MeshView';
+import { MeshView } from '../../../editor/canvas/models/views/MeshView';
 import { MaterialFactory } from './MaterialFactory';
 import { RectangleFactory } from './RectangleFactory';
 import { MeshObject } from '../../models/objects/MeshObject';

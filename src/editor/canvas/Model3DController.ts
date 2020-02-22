@@ -1,8 +1,8 @@
 import { Engine, Scene, Mesh } from 'babylonjs';
-import { AbstractModelLoader } from '../../common/AbstractModelLoader';
+import { AbstractModelLoader } from '../common/services/AbstractModelLoader';
 import { CanvasController } from './CanvasController';
 import { Point } from '../../misc/geometry/shapes/Point';
-import { MeshView } from '../../common/views/MeshView';
+import { MeshView } from './models/views/MeshView';
 
 export class Model3DController extends AbstractModelLoader {
     private engine: Engine;

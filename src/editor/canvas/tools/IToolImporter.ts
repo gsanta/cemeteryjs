@@ -1,5 +1,5 @@
-import { ViewType } from "../../../common/views/View";
-import { ViewGroupJson } from "../../../common/importers/ViewImporter";
+import { ViewType } from "../models/views/View";
+import { ViewGroupJson } from "../io/import/ViewImporter";
 
 export interface IViewImporter {
     type: ViewType;

@@ -12,7 +12,7 @@ import { ClearIconComponent } from '../../../gui/icons/ClearIconComponent';
 import { PlayIconComponent } from '../../../gui/icons/PlayIconComponent';
 import { PauseIconComponent } from '../../../gui/icons/PauseIconComponent';
 import { StopIconComponent } from '../../../gui/icons/StopIconComponent';
-import { MeshView, AnimationState } from '../../../../common/views/MeshView';
+import { MeshView, AnimationState } from '../../models/views/MeshView';
 import { CheckboxComponent } from '../../../gui/forms/CheckboxComponent';
 
 export class MeshViewFormComponent extends React.Component<ViewFormProps<MeshView>> {

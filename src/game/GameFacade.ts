@@ -1,4 +1,4 @@
-import { ViewImporter } from '../common/importers/ViewImporter';
+import { ViewImporter } from '../editor/canvas/io/import/ViewImporter';
 import { IViewImporter } from '../editor/canvas/tools/IToolImporter';
 import { GameEngine } from '../editor/renderer/GameEngine';
 import { CreateMeshModifier } from './import/CreateMeshModifier';

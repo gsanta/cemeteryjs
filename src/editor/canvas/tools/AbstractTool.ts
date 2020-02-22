@@ -1,5 +1,5 @@
 import { Tool, ToolType } from './Tool';
-import { View } from '../../../common/views/View';
+import { View } from '../models/views/View';
 
 export class AbstractTool implements Tool {
     private subtools: Tool[] = [];

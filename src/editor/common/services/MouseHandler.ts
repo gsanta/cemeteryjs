@@ -1,4 +1,4 @@
-import { View } from "../../../common/views/View";
+import { View } from "../../canvas/models/views/View";
 import { Point } from "../../../misc/geometry/shapes/Point";
 import { IPointerEvent, IPointerService } from "./IPointerService";
 

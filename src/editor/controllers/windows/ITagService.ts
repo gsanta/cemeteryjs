@@ -1,4 +1,4 @@
-import { View } from "../../../common/views/View";
+import { View } from "../../canvas/models/views/View";
 import { CanvasItemTag } from "../../canvas/models/CanvasItem";
 
 export interface ITagService {

@@ -6,12 +6,10 @@ import { Rectangle } from "../../../misc/geometry/shapes/Rectangle";
 import { toVector3 } from "../../../misc/geometry/utils/GeomUtils";
 import { BehaviourType } from "../../services/behaviour/IBehaviour";
 import { GameObjectType, IGameObject } from "./IGameObject";
-import { GroupContext } from "../../../common/views/GroupContext";
 import { RouteObject } from "./RouteObject";
 
 export class MeshObject implements IGameObject {
     readonly objectType = GameObjectType.MeshObject;
-    groupContext: GroupContext;
     type: string;
     meshName: string;
     name: string;
@@ -39,7 +37,6 @@ export class MeshObject implements IGameObject {
     constructor(getMesh: (meshName: string) => Mesh, getRoute: () => RouteObject) {
         this.getMesh = getMesh;
         this.name = name;
-        this.groupContext = new GroupContext();
         this.getRouteFunc = getRoute;
     }
 

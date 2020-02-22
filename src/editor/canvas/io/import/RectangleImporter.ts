@@ -1,9 +1,9 @@
 
-import { IViewImporter } from '../../editor/canvas/tools/IToolImporter';
-import { Point } from '../../misc/geometry/shapes/Point';
-import { Rectangle } from '../../misc/geometry/shapes/Rectangle';
-import { ViewType } from '../views/View';
-import { MeshView } from '../views/MeshView';
+import { IViewImporter } from '../../tools/IToolImporter';
+import { Point } from '../../../../misc/geometry/shapes/Point';
+import { Rectangle } from '../../../../misc/geometry/shapes/Rectangle';
+import { ViewType } from '../../models/views/View';
+import { MeshView } from '../../models/views/MeshView';
 import { ViewGroupJson } from './ViewImporter';
 
 export interface RectJson {

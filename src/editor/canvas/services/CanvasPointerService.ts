@@ -2,7 +2,7 @@ import { IPointerService, IPointerEvent } from "../../common/services/IPointerSe
 import { CanvasController } from "../CanvasController";
 import { MousePointer } from "../../common/services/MouseHandler";
 import { Point } from "../../../misc/geometry/shapes/Point";
-import { View } from "../../../common/views/View";
+import { View } from "../models/views/View";
 import { CanvasItemTag } from "../models/CanvasItem";
 
 function calcOffsetFromDom(bitmapEditorId: string): Point {

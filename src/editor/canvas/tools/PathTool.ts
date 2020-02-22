@@ -1,13 +1,13 @@
-import { PathView } from "../../../../common/views/PathView";
-import { Point } from "../../../../misc/geometry/shapes/Point";
-import { Rectangle } from "../../../../misc/geometry/shapes/Rectangle";
-import { ViewType } from "../../../../common/views/View";
-import { Controllers } from "../../../controllers/Controllers";
-import { AbstractTool } from "../AbstractTool";
-import { ToolType } from "../Tool";
-import { Keyboard } from "../../../common/services/KeyboardHandler";
-import { CanvasController } from "../../CanvasController";
-import { CanvasItemTag } from "../../models/CanvasItem";
+import { PathView } from "../models/views/PathView";
+import { Point } from "../../../misc/geometry/shapes/Point";
+import { Rectangle } from "../../../misc/geometry/shapes/Rectangle";
+import { ViewType } from "../models/views/View";
+import { Controllers } from "../../controllers/Controllers";
+import { AbstractTool } from "./AbstractTool";
+import { ToolType } from "./Tool";
+import { Keyboard } from "../../common/services/KeyboardHandler";
+import { CanvasController } from "../CanvasController";
+import { CanvasItemTag } from "../models/CanvasItem";
 
 export class PathTool extends AbstractTool {
 

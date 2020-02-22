@@ -1,7 +1,7 @@
-import { MeshView } from "../../../common/views/MeshView";
+import { MeshView } from "../../../editor/canvas/models/views/MeshView";
 import { MeshObject } from "./MeshObject";
 import { GameFacade } from "../../GameFacade";
-import { ViewType } from "../../../common/views/View";
+import { ViewType } from "../../../editor/canvas/models/views/View";
 import { RouteObject } from "./RouteObject";
 import { Tools } from "babylonjs";
 

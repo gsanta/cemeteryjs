@@ -1,5 +1,5 @@
 import { Mesh } from 'babylonjs';
-import { AbstractModelLoader } from '../../common/AbstractModelLoader';
+import { AbstractModelLoader } from '../common/services/AbstractModelLoader';
 import { Tool } from '../canvas/tools/Tool';
 import { AbstractCanvasController, CanvasViewSettings } from '../common/AbstractCanvasController';
 import { IPointerService } from '../common/services/IPointerService';

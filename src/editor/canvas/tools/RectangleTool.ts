@@ -1,12 +1,12 @@
-import { MeshView } from '../../../../common/views/MeshView';
-import { ViewType } from '../../../../common/views/View';
-import { Rectangle } from '../../../../misc/geometry/shapes/Rectangle';
-import { EventDispatcher } from '../../../controllers/events/EventDispatcher';
-import { Events } from '../../../controllers/events/Events';
-import { CanvasController } from '../../CanvasController';
-import { CanvasItemTag } from '../../models/CanvasItem';
-import { AbstractSelectionTool } from '../AbstractSelectionTool';
-import { ToolType } from '../Tool';
+import { MeshView } from '../models/views/MeshView';
+import { ViewType } from '../models/views/View';
+import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
+import { EventDispatcher } from '../../controllers/events/EventDispatcher';
+import { Events } from '../../controllers/events/Events';
+import { CanvasController } from '../CanvasController';
+import { CanvasItemTag } from '../models/CanvasItem';
+import { AbstractSelectionTool } from './AbstractSelectionTool';
+import { ToolType } from './Tool';
 
 export class RectangleTool extends AbstractSelectionTool {
     private eventDispatcher: EventDispatcher;

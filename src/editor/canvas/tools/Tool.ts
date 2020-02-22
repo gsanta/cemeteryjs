@@ -1,5 +1,5 @@
 import { IToolType } from "./IToolType";
-import { View } from "../../../common/views/View";
+import { View } from "../models/views/View";
 
 export enum ToolType {
     RECTANGLE = 'rectangle',

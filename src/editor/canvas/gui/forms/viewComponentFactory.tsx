@@ -4,9 +4,9 @@ import { PathViewFormComponent } from "./PathViewFormComponent";
 import styled from "styled-components";
 import * as React from 'react';
 import { Controllers } from "../../../controllers/Controllers";
-import { MeshView } from "../../../../common/views/MeshView";
-import { PathView } from "../../../../common/views/PathView";
-import { View, ViewType } from "../../../../common/views/View";
+import { MeshView } from "../../models/views/MeshView";
+import { PathView } from "../../models/views/PathView";
+import { View, ViewType } from "../../models/views/View";
 
 export interface ViewFormProps<T extends View> {
     canvasController: CanvasController;

@@ -1,4 +1,4 @@
-import { AnimationName, MeshView } from '../../../common/views/MeshView';
+import { AnimationName, MeshView } from '../../../editor/canvas/models/views/MeshView';
 import { MeshObject } from '../../models/objects/MeshObject';
 
 export class CharacterMovement {

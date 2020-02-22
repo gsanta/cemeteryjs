@@ -1,4 +1,4 @@
-import { AbstractModelLoader, ModelData } from '../../src/common/AbstractModelLoader';
+import { AbstractModelLoader, ModelData } from '../../src/editor/common/services/AbstractModelLoader';
 import { Point } from '../../src/misc/geometry/shapes/Point';
 import { Mesh } from 'babylonjs';
 

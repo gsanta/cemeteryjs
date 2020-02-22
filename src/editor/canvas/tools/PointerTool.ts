@@ -1,9 +1,9 @@
 import { AbstractTool } from "./AbstractTool";
-import { View, ViewType } from "../../../common/views/View";
+import { View, ViewType } from "../models/views/View";
 import { CanvasController } from "../CanvasController";
 import { ToolType } from "./Tool";
 import { CanvasItemTag } from "../models/CanvasItem";
-import { PathView } from "../../../common/views/PathView";
+import { PathView } from "../models/views/PathView";
 
 export class PointerTool extends AbstractTool {
     private controller: CanvasController;
