@@ -63,7 +63,7 @@ export class PointerTool extends AbstractTool {
 
     over(item: View) {
         if (!super.over(item)) {
-            this.controller.tagService.addTag([item], CanvasItemTag.HOVERED);
+            this.controller.viewStore.addTag([item], CanvasItemTag.HOVERED);
             this.updateSubviewHover(item);
         }
         return true;
@@ -72,7 +72,7 @@ export class PointerTool extends AbstractTool {
     out(item: View) {
         if (!super.out(item)) {
             this.controller.viewStore.getHoveredView() && this.controller.viewStore.getHoveredView().removeSubviewHover();
-            this.controller.tagService.removeTagFromAll(CanvasItemTag.HOVERED);
+            this.controller.viewStore.removeTagFromAll(CanvasItemTag.HOVERED);
         }
 
         return true;

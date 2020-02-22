@@ -1,4 +1,4 @@
-import { AbstractForm } from "../../../controllers/forms/AbstractForm";
+import { AbstractForm } from "../../../canvas/forms/AbstractForm";
 
 export interface InputFieldCommands<P> {
     propertyName: P;

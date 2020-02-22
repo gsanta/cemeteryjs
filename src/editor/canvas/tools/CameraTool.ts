@@ -1,7 +1,7 @@
 import { Camera, nullCamera } from '../models/Camera';
 import { AbstractTool } from './AbstractTool';
 import { Point } from "../../../misc/geometry/shapes/Point";
-import { Controllers } from '../../controllers/Controllers';
+import { Controllers } from '../../Controllers';
 import { ToolType } from "./Tool";
 import { Rectangle } from "../../../misc/geometry/shapes/Rectangle";
 

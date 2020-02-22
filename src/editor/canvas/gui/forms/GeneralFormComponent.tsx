@@ -3,7 +3,7 @@ import { AppContext, AppContextType } from '../../../gui/Context';
 import { DisplayEditorIconComponent } from '../../../gui/icons/tools/DisplayEditorIconComponent';
 import { ExportFileIconComponent } from '../../../gui/icons/tools/ExportFileIconComponent';
 import { ConnectedFileUploadComponent } from '../../../gui/icons/tools/ImportFileIconComponent';
-import { GlobalSettingsPropType } from '../../../controllers/forms/GlobalSettingsForm';
+import { GlobalSettingsPropType } from '../../forms/GlobalSettingsForm';
 import { saveAs } from 'file-saver';
 
 export interface GeneralFormComponentProps {

@@ -19,7 +19,7 @@
     },
     "include": [
       "src/**/*.ts",
-      "test/**/*.ts", "src/editor/canvas/SvgCanvasExporter.tsx"
+      "test/**/*.ts", "src/editor/canvas/io/export/SvgCanvasExporter.tsx"
     ],
     "exclude": [
       "node_modules"

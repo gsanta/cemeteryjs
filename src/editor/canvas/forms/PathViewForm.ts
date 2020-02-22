@@ -1,5 +1,5 @@
 import { AbstractForm } from "./AbstractForm";
-import { PathView } from "../../canvas/models/views/PathView";
+import { PathView } from "../models/views/PathView";
 
 export enum PathPropType {
     NAME = 'name'

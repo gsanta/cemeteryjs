@@ -1,10 +1,10 @@
-import { CanvasController } from '../canvas/CanvasController';
-import { RendererController } from '../renderer/RendererController';
-import { EventDispatcher } from './events/EventDispatcher';
-import { AbstractCanvasController } from '../common/AbstractCanvasController';
-import { GlobalSettingsForm } from './forms/GlobalSettingsForm';
-import { GameFacade } from '../../game/GameFacade';
-import { GameApi } from '../../game/GameApi';
+import { CanvasController } from './canvas/CanvasController';
+import { RendererController } from './renderer/RendererController';
+import { EventDispatcher } from './common/EventDispatcher';
+import { AbstractCanvasController } from './common/AbstractCanvasController';
+import { GlobalSettingsForm } from './canvas/forms/GlobalSettingsForm';
+import { GameFacade } from '../game/GameFacade';
+import { GameApi } from '../game/GameApi';
 
 export class Controllers {
     webglCanvasController: RendererController;

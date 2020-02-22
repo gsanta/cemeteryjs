@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Controllers } from '../controllers/Controllers';
+import { Controllers } from '../Controllers';
 
 export interface AppContextType {
     controllers: Controllers;

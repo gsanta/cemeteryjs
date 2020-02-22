@@ -3,7 +3,7 @@ import { MeshViewFormComponent } from "./MeshViewFormComponent";
 import { PathViewFormComponent } from "./PathViewFormComponent";
 import styled from "styled-components";
 import * as React from 'react';
-import { Controllers } from "../../../controllers/Controllers";
+import { Controllers } from "../../../Controllers";
 import { MeshView } from "../../models/views/MeshView";
 import { PathView } from "../../models/views/PathView";
 import { View, ViewType } from "../../models/views/View";

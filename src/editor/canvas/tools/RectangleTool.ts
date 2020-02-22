@@ -1,8 +1,8 @@
 import { MeshView } from '../models/views/MeshView';
 import { ViewType } from '../models/views/View';
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
-import { EventDispatcher } from '../../controllers/events/EventDispatcher';
-import { Events } from '../../controllers/events/Events';
+import { EventDispatcher } from '../../common/EventDispatcher';
+import { Events } from '../../common/Events';
 import { CanvasController } from '../CanvasController';
 import { CanvasItemTag } from '../models/CanvasItem';
 import { AbstractSelectionTool } from './AbstractSelectionTool';

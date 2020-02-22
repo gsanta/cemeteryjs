@@ -1,9 +1,8 @@
-import { CanvasController } from './CanvasController';
-import { ICanvasExporter } from '../controllers/windows/ICanvasExporter';
+import { CanvasController } from '../../CanvasController';
 import * as ReactDOMServer from 'react-dom/server';
 import * as React from 'react';
 
-export class SvgCanvasExporter implements ICanvasExporter {
+export class CanvasExporter {
     private canvasController: CanvasController;
 
     constructor(canvasController: CanvasController) {

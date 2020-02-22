@@ -1,34 +1,31 @@
 import { PathImporter } from './io/import/PathImporter';
 import { MeshViewImporter } from './io/import/RectangleImporter';
-import { ViewImporter } from './io/import/ViewImporter';
+import { CanvasImporter } from './io/import/CanvasImporter';
 import { PathView } from './models/views/PathView';
 import { NamingService } from '../common/services/NamingService';
-import { Controllers } from '../controllers/Controllers';
-import { MeshViewForm } from '../controllers/forms/MeshViewForm';
-import { PathViewForm } from '../controllers/forms/PathViewForm';
+import { Controllers } from '../Controllers';
+import { MeshViewForm } from './forms/MeshViewForm';
+import { PathViewForm } from './forms/PathViewForm';
 import { AbstractCanvasController, CanvasViewSettings } from '../common/AbstractCanvasController';
 import { ICamera } from '../common/models/ICamera';
-import { ICanvasExporter } from '../controllers/windows/ICanvasExporter';
-import { ICanvasImporter } from '../controllers/windows/ICanvasImporter';
-import { ITagService } from '../controllers/windows/ITagService';
 import { CanvasPointerService } from './services/CanvasPointerService';
 import { IPointerService } from '../common/services/IPointerService';
 import { KeyboardHandler } from '../common/services/KeyboardHandler';
 import { MouseHandler } from '../common/services/MouseHandler';
 import { Model3DController } from './Model3DController';
 import { ViewStore } from './models/ViewStore';
-import { SvgCanvasExporter } from './SvgCanvasExporter';
 import { CameraTool } from './tools/CameraTool';
 import { DeleteTool } from './tools/DeleteTool';
 import { MoveTool } from './tools/MoveTool';
-import { PathExporter } from './io/import/PathExporter';
+import { PathExporter } from './io/export/PathExporter';
 import { PathTool } from './tools/PathTool';
 import { PointerTool } from './tools/PointerTool';
-import { RectangleExporter } from './io/import/RectangleExporter';
+import { RectangleExporter } from './io/export/RectangleExporter';
 import { RectangleTool } from './tools/RectangleTool';
 import { SelectTool } from './tools/SelectTool';
 import { Tool, ToolType } from './tools/Tool';
 import { ToolService } from './tools/ToolService';
+import { CanvasExporter } from './io/export/CanvasExporter';
 
 export class CanvasController extends AbstractCanvasController {
     name = '2D View';
@@ -37,6 +34,7 @@ export class CanvasController extends AbstractCanvasController {
 
     viewStore: ViewStore;
 
+    
     nameingService: NamingService;
 
     mouseController: MouseHandler;
@@ -45,11 +43,10 @@ export class CanvasController extends AbstractCanvasController {
     cameraTool: CameraTool;
     pointerTool: PointerTool;
     moveTool: MoveTool;
-    writer: ICanvasImporter;
-    reader: ICanvasExporter;
+    writer: CanvasImporter;
+    reader: CanvasExporter;
     model3dController: Model3DController;
     toolService: ToolService;
-    tagService: ITagService;
     pointer: IPointerService;
     
     meshViewForm: MeshViewForm;
@@ -70,14 +67,14 @@ export class CanvasController extends AbstractCanvasController {
         
         this.mouseController = new MouseHandler(this);
         this.keyboardHandler = new KeyboardHandler(this);
-        this.writer = new ViewImporter(
+        this.writer = new CanvasImporter(
             [
                 new MeshViewImporter(rect => this.viewStore.addRect(rect)),
                 new PathImporter((path: PathView) => this.viewStore.addPath(path))
             ],
             this
         );
-        this.reader = new SvgCanvasExporter(this);
+        this.reader = new CanvasExporter(this);
         this.model3dController = new Model3DController(this);
         
         this.pointerTool = new PointerTool(this);
@@ -111,7 +108,6 @@ export class CanvasController extends AbstractCanvasController {
 
         this.meshViewForm = new MeshViewForm(this, this.controllers.eventDispatcher);
         this.pathForm = new PathViewForm();
-        this.tagService = this.viewStore;
         this.pointer = new CanvasPointerService(this);
     }
 

@@ -1,10 +1,9 @@
-import { ICanvasImporter } from "../controllers/windows/ICanvasImporter";
 import { RendererController } from './RendererController';
 import { ConverterService } from "../../game/import/ConverterService";
 import { GameFacade } from "../../game/GameFacade";
 import { MeshObject } from "../../game/models/objects/MeshObject";
 
-export class WebglCanvasWriter implements ICanvasImporter {
+export class WebglCanvasImporter {
     private webglEditorController: RendererController;
     private gameFacade: GameFacade;
 

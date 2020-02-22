@@ -1,8 +1,8 @@
-import { MeshView } from '../../canvas/models/views/MeshView';
+import { MeshView } from '../models/views/MeshView';
 import { AbstractForm } from './AbstractForm';
-import { Controllers } from '../Controllers';
-import { EventDispatcher } from '../events/EventDispatcher';
-import { Events } from '../events/Events';
+import { Controllers } from '../../Controllers';
+import { EventDispatcher } from '../../common/EventDispatcher';
+import { Events } from '../../common/Events';
 
 export enum GlobalSettingsPropType {
     IMPORT_FILE = 'import file'

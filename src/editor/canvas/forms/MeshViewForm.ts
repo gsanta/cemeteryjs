@@ -1,7 +1,7 @@
-import { MeshView } from '../../canvas/models/views/MeshView';
-import { CanvasController } from '../../canvas/CanvasController';
-import { EventDispatcher } from '../events/EventDispatcher';
-import { Events } from '../events/Events';
+import { MeshView } from '../models/views/MeshView';
+import { CanvasController } from '../CanvasController';
+import { EventDispatcher } from '../../common/EventDispatcher';
+import { Events } from '../../common/Events';
 import { AbstractForm, PropertyType } from "./AbstractForm";
 
 export enum MeshViewPropType {

@@ -4,13 +4,13 @@ import { Tool } from '../canvas/tools/Tool';
 import { AbstractCanvasController, CanvasViewSettings } from '../common/AbstractCanvasController';
 import { IPointerService } from '../common/services/IPointerService';
 import { MouseHandler } from '../common/services/MouseHandler';
-import { Controllers } from '../controllers/Controllers';
-import { Events } from "../controllers/events/Events";
+import { Controllers } from '../Controllers';
+import { Events } from "../common/Events";
 import { EditorCamera } from './EditorCamera';
 import { HelperMeshes } from './HelperMeshes';
 import { RendererCameraTool } from './RendererCameraTool';
 import { RendererPointerService } from './RendererPointerService';
-import { WebglCanvasWriter } from './WebglCanvasImporter';
+import { WebglCanvasImporter } from './WebglCanvasImporter';
 (<any> window).earcut = require('earcut');
 
 export class RendererController extends AbstractCanvasController {
@@ -20,7 +20,7 @@ export class RendererController extends AbstractCanvasController {
 
     mouseHander: MouseHandler;
 
-    writer: WebglCanvasWriter;
+    writer: WebglCanvasImporter;
     modelLoader: AbstractModelLoader;
     pointer: IPointerService;
     private helperMeshes: HelperMeshes;
@@ -61,7 +61,7 @@ export class RendererController extends AbstractCanvasController {
 
     setup() {
         this.cameraTool = new RendererCameraTool(this, this.camera);
-        this.writer = new WebglCanvasWriter(this, this.getGameFacade());
+        this.writer = new WebglCanvasImporter(this, this.getGameFacade());
 
         this.updateCanvas();
     }

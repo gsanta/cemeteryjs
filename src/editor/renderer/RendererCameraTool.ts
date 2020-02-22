@@ -1,6 +1,6 @@
 import { EditorCamera } from './EditorCamera';
 import { CameraTool } from '../canvas/tools/CameraTool';
-import { Controllers } from '../controllers/Controllers';
+import { Controllers } from '../Controllers';
 import { Point } from '../../misc/geometry/shapes/Point';
 import { AbstractTool } from '../canvas/tools/AbstractTool';
 import { ToolType } from '../canvas/tools/Tool';

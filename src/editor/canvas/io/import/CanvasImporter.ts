@@ -1,4 +1,3 @@
-import { ICanvasImporter } from '../../../controllers/windows/ICanvasImporter';
 import * as convert from 'xml-js';
 import { ViewType } from '../../models/views/View';
 import { IViewImporter } from '../../tools/IToolImporter';
@@ -45,7 +44,7 @@ export interface ViewGroupJson<T = any> {
     }
 }
 
-export class ViewImporter implements ICanvasImporter {
+export class CanvasImporter {
     private viewImporters: IViewImporter[];
     private controller: CanvasController;
 

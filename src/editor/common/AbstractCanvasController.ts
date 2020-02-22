@@ -1,5 +1,5 @@
 import { FileFormat } from '../../game/import/WorldGenerator';
-import { Controllers } from '../controllers/Controllers';
+import { Controllers } from '../Controllers';
 import { GameApi } from '../../game/GameApi';
 import { GameFacade } from '../../game/GameFacade';
 

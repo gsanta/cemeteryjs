@@ -1,10 +1,10 @@
 import { CanvasController } from '../CanvasController';
 import { AbstractSelectionTool } from './AbstractSelectionTool';
 import { ToolType } from './Tool';
-import { EventDispatcher } from '../../controllers/events/EventDispatcher';
-import { Events } from '../../controllers/events/Events';
+import { EventDispatcher } from '../../common/EventDispatcher';
+import { Events } from '../../common/Events';
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
-import { Controllers } from '../../controllers/Controllers';
+import { Controllers } from '../../Controllers';
 
 export class DeleteTool extends AbstractSelectionTool {
     private eventDispatcher: EventDispatcher;

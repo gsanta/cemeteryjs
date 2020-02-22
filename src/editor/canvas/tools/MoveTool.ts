@@ -1,6 +1,6 @@
 import { Rectangle } from "../../../misc/geometry/shapes/Rectangle";
-import { EventDispatcher } from "../../controllers/events/EventDispatcher";
-import { Events } from '../../controllers/events/Events';
+import { EventDispatcher } from "../../common/EventDispatcher";
+import { Events } from '../../common/Events';
 import { CanvasController } from "../CanvasController";
 import { AbstractTool } from './AbstractTool';
 import { ToolType } from './Tool';

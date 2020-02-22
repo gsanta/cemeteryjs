@@ -1,7 +1,7 @@
 import { IViewImporter } from "../../tools/IToolImporter";
 import { ViewType } from "../../models/views/View";
 import { PathView } from "../../models/views/PathView";
-import { ViewGroupJson } from "./ViewImporter";
+import { ViewGroupJson } from "./CanvasImporter";
 import { Point } from "../../../../misc/geometry/shapes/Point";
 
 export interface PathJson {

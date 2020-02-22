@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MeshViewPropType } from '../../../controllers/forms/MeshViewForm';
+import { MeshViewPropType } from '../../forms/MeshViewForm';
 import { AppContext, AppContextType } from '../../../gui/Context';
 import { ConnectedInputComponent } from '../../../gui/forms/InputComponent';
 import { ConnectedFileUploadComponent } from '../../../gui/icons/tools/ImportFileIconComponent';

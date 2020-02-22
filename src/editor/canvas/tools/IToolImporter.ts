@@ -1,5 +1,5 @@
 import { ViewType } from "../models/views/View";
-import { ViewGroupJson } from "../io/import/ViewImporter";
+import { ViewGroupJson } from "../io/import/CanvasImporter";
 
 export interface IViewImporter {
     type: ViewType;

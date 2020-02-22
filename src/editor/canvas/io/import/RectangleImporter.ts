@@ -4,7 +4,7 @@ import { Point } from '../../../../misc/geometry/shapes/Point';
 import { Rectangle } from '../../../../misc/geometry/shapes/Rectangle';
 import { ViewType } from '../../models/views/View';
 import { MeshView } from '../../models/views/MeshView';
-import { ViewGroupJson } from './ViewImporter';
+import { ViewGroupJson } from './CanvasImporter';
 
 export interface RectJson {
     _attributes: {

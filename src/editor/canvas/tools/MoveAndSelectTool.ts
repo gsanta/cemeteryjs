@@ -2,7 +2,7 @@ import { CanvasController } from "../CanvasController";
 import { ToolType, Tool } from "./Tool";
 import { MoveTool } from './MoveTool';
 import { SelectTool } from "./SelectTool";
-import { EventDispatcher } from '../../controllers/events/EventDispatcher';
+import { EventDispatcher } from '../../common/EventDispatcher';
 import { AbstractTool } from './AbstractTool';
 import { Rectangle } from "../../../misc/geometry/shapes/Rectangle";
 
