@@ -1,4 +1,4 @@
-import { IViewImporter } from "../../editor/controllers/windows/canvas/tools/IToolImporter";
+import { IViewImporter } from "../../editor/canvas/tools/IToolImporter";
 import { ViewType } from "../views/View";
 import { PathView } from "../views/PathView";
 import { ViewGroupJson } from "./ViewImporter";

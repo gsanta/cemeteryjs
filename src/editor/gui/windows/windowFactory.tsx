@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { CanvasController } from '../../controllers/windows/canvas/CanvasController';
-import { AbstractCanvasController } from '../../controllers/windows/AbstractCanvasController';
-import { RendererController } from '../../controllers/windows/renderer/RendererController';
-import { RendererComponent } from './renderer/RendererComponent';
-import { CanvasToolbarComponent } from './canvas/CanvasToolbarComponent';
-import { CanvasComponent } from './canvas/CanvasComponent';
+import { CanvasController } from '../../canvas/CanvasController';
+import { RendererController } from '../../renderer/RendererController';
+import { RendererComponent } from '../../renderer/gui/RendererComponent';
+import { CanvasComponent } from '../../canvas/gui/CanvasComponent';
+import { CanvasToolbarComponent } from '../../canvas/gui/CanvasToolbarComponent';
+import { AbstractCanvasController } from '../../common/AbstractCanvasController';
 
 export function windowFactory(controller: AbstractCanvasController): JSX.Element {
     switch(controller.getId()) {

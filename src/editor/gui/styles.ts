@@ -1,4 +1,4 @@
-import { AbstractCanvasController } from '../controllers/windows/AbstractCanvasController';
+import { AbstractCanvasController } from '../common/AbstractCanvasController';
 
 export const colors = {
     grey2: 'lightgray',

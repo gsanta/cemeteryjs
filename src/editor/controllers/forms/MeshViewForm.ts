@@ -1,5 +1,5 @@
 import { MeshView } from '../../../common/views/MeshView';
-import { CanvasController } from '../windows/canvas/CanvasController';
+import { CanvasController } from '../../canvas/CanvasController';
 import { EventDispatcher } from '../events/EventDispatcher';
 import { Events } from '../events/Events';
 import { AbstractForm, PropertyType } from "./AbstractForm";

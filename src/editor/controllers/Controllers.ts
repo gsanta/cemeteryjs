@@ -1,7 +1,7 @@
-import { CanvasController } from './windows/canvas/CanvasController';
-import { RendererController } from './windows/renderer/RendererController';
+import { CanvasController } from '../canvas/CanvasController';
+import { RendererController } from '../renderer/RendererController';
 import { EventDispatcher } from './events/EventDispatcher';
-import { AbstractCanvasController } from './windows/AbstractCanvasController';
+import { AbstractCanvasController } from '../common/AbstractCanvasController';
 import { GlobalSettingsForm } from './forms/GlobalSettingsForm';
 import { GameFacade } from '../../game/GameFacade';
 import { GameApi } from '../../game/GameApi';
