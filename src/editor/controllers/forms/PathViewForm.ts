@@ -5,7 +5,7 @@ export enum PathPropType {
     NAME = 'name'
 }
 
-export class PathForm extends AbstractForm<PathPropType> {
+export class PathViewForm extends AbstractForm<PathPropType> {
     path: PathView;
 
     protected getProp(prop: PathPropType) {

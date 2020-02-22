@@ -24,11 +24,13 @@ const propertyTypes = {
     [MeshViewPropType.ROTATION]: PropertyType.Number
 };
 
-export class GameObjectForm extends AbstractForm<MeshViewPropType> {
+export class MeshViewForm extends AbstractForm<MeshViewPropType> {
     gameObject: MeshView;
 
     private controller: CanvasController;
     private eventDispatcher: EventDispatcher;
+
+    isAnimationSectionOpen = false;
 
     constructor(controller: CanvasController, eventDispatcher: EventDispatcher) {
         super(propertyTypes);

@@ -3,10 +3,10 @@ import { AppContext, AppContextType } from '../Context';
 import { ViewFormProps } from './viewComponentFactory';
 import { ConnectedInputComponent } from '../forms/InputComponent';
 import { SettingsRowStyled, LabelStyled, InputStyled } from './FormComponent';
-import { PathPropType } from '../../controllers/forms/PathForm';
+import { PathPropType } from '../../controllers/forms/PathViewForm';
 import { PathView } from '../../../common/views/PathView';
 
-export class PathFormComponent extends React.Component<ViewFormProps<PathView>> {
+export class PathViewFormComponent extends React.Component<ViewFormProps<PathView>> {
     static contextType = AppContext;
     context: AppContextType;
 

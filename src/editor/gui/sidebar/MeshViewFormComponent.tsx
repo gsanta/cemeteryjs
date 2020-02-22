@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MeshViewPropType } from '../../controllers/forms/GameObjectForm';
+import { MeshViewPropType } from '../../controllers/forms/MeshViewForm';
 import { AppContext, AppContextType } from '../Context';
 import { ConnectedInputComponent } from '../forms/InputComponent';
 import { ConnectedFileUploadComponent } from '../icons/tools/ImportFileIconComponent';
@@ -15,19 +15,19 @@ import { StopIconComponent } from '../icons/StopIconComponent';
 import { MeshView, AnimationState } from '../../../common/views/MeshView';
 import { CheckboxComponent } from '../forms/CheckboxComponent';
 
-export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshView>> {
+export class MeshViewFormComponent extends React.Component<ViewFormProps<MeshView>> {
     static contextType = AppContext;
     context: AppContextType;
 
     constructor(props: ViewFormProps<MeshView>) {
         super(props);
 
-        this.props.canvasController.gameObjectForm.setRenderer(() => this.forceUpdate());
+        this.props.canvasController.meshViewForm.setRenderer(() => this.forceUpdate());
     }
 
     render() {
 
-        this.props.canvasController.gameObjectForm.gameObject = this.props.view;
+        this.props.canvasController.meshViewForm.gameObject = this.props.view;
 
         return (
             <div>
@@ -45,7 +45,7 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
     }
 
     private renderName(): JSX.Element {
-        const form = this.props.canvasController.gameObjectForm;
+        const form = this.props.canvasController.meshViewForm;
 
         return (
             <SettingsRowStyled>
@@ -64,7 +64,7 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
     }
 
     private renderModelFileChooser(): JSX.Element {
-        const form = this.props.canvasController.gameObjectForm;
+        const form = this.props.canvasController.meshViewForm;
 
         return (
             <SettingsRowStyled>
@@ -85,7 +85,7 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
 
     
     private renderTextureFileChooser(): JSX.Element {
-        const form = this.props.canvasController.gameObjectForm;
+        const form = this.props.canvasController.meshViewForm;
 
         return (
             <SettingsRowStyled>
@@ -105,14 +105,14 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
     }
 
     private renderThumbnailFileChooser(): JSX.Element {
-        const form = this.props.canvasController.gameObjectForm;
+        const form = this.props.canvasController.meshViewForm;
 
         return (
             <SettingsRowStyled>
                 <LabelStyled>Thumbnail</LabelStyled>
                 <InputStyled>
                     <ConnectedFileUploadComponent
-                        formController={this.props.canvasController.gameObjectForm}
+                        formController={this.props.canvasController.meshViewForm}
                         propertyName={MeshViewPropType.THUMBNAIL}
                         propertyType="string"
                         placeholder={`Upload`}
@@ -125,7 +125,7 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
     }
 
     private renderLayerInput(): JSX.Element {
-        const form = this.props.canvasController.gameObjectForm;
+        const form = this.props.canvasController.meshViewForm;
 
         return (
             <SettingsRowStyled>
@@ -138,7 +138,7 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
     }
 
     private renderRotationInput(): JSX.Element {
-        const form = this.props.canvasController.gameObjectForm;
+        const form = this.props.canvasController.meshViewForm;
 
         return (
             <SettingsRowStyled>
@@ -158,7 +158,7 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
     }
 
     private renderScaleInput(): JSX.Element {
-        const form = this.props.canvasController.gameObjectForm;
+        const form = this.props.canvasController.meshViewForm;
 
         return (
             <SettingsRowStyled>
@@ -236,8 +236,8 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
         return (
             <AccordionComponent
                 level="secondary"
-                onClick={() => this.props.canvasController.gameObjectFormState.toggleAnimationSectionOpen()}
-                expanded={this.props.canvasController.gameObjectFormState.isAnimationSectionOpen}
+                onClick={() => this.props.canvasController.meshViewForm.isAnimationSectionOpen = !this.props.canvasController.meshViewForm.isAnimationSectionOpen}
+                expanded={this.props.canvasController.meshViewForm.isAnimationSectionOpen}
                 elements={[
                     {
                         title: 'Movements',
@@ -249,7 +249,7 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
     }
 
     private renderPath(): JSX.Element {
-        const form = this.props.canvasController.gameObjectForm;
+        const form = this.props.canvasController.meshViewForm;
         const pathNames = this.context.controllers.svgCanvasController.viewStore.getPathes().map(p => p.name);
         const val: string = form.getVal(MeshViewPropType.PATH);
 
@@ -271,7 +271,7 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
 
     
     private renderManualMovement(): JSX.Element {
-        const form = this.props.canvasController.gameObjectForm;
+        const form = this.props.canvasController.meshViewForm;
 
         return (
             <SettingsRowStyled verticalAlign='right'>
@@ -285,7 +285,7 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
     }
 
     private renderPlayAnimation() {
-        const form = this.props.canvasController.gameObjectForm;
+        const form = this.props.canvasController.meshViewForm;
 
         const updateAnimationState = (state: AnimationState) => form.updateProp(state, MeshViewPropType.AnimationState);
         const getState = (animationState: AnimationState): 'disabled' | 'active' | 'default' => {
@@ -306,7 +306,7 @@ export class GameObjectFormComponent extends React.Component<ViewFormProps<MeshV
     }
 
     private renderAnimationTypes(): JSX.Element {
-        const form = this.props.canvasController.gameObjectForm;
+        const form = this.props.canvasController.meshViewForm;
         const val: string = form.getVal(MeshViewPropType.ANIMATION);
 
         return (

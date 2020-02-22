@@ -1,39 +1,35 @@
-import { FileFormat } from '../../../../game/import/WorldGenerator';
+import { PathImporter } from '../../../../common/importers/PathImporter';
+import { MeshViewImporter } from '../../../../common/importers/RectangleImporter';
+import { ViewImporter } from '../../../../common/importers/ViewImporter';
+import { PathView } from '../../../../common/views/PathView';
+import { NamingService } from '../../../services/NamingService';
 import { Controllers } from '../../Controllers';
-import { GameObjectForm } from '../../forms/GameObjectForm';
-import { CanvasViewSettings, AbstractCanvasController } from '../AbstractCanvasController';
+import { MeshViewForm } from '../../forms/MeshViewForm';
+import { PathViewForm } from '../../forms/PathViewForm';
+import { AbstractCanvasController, CanvasViewSettings } from '../AbstractCanvasController';
+import { ICamera } from '../ICamera';
 import { ICanvasExporter } from '../ICanvasExporter';
 import { ICanvasImporter } from '../ICanvasImporter';
-import { Model3DController } from './Model3DController';
-import { SvgCanvasExporter } from './SvgCanvasExporter';
-import { ViewImporter } from '../../../../common/importers/ViewImporter';
-import { CameraTool } from './tools/CameraTool';
-import { DeleteTool } from './tools/DeleteTool';
-import { MoveAndSelectTool } from './tools/MoveAndSelectTool';
-import { PathExporter } from './tools/path/PathExporter';
-import { PathImporter } from '../../../../common/importers/PathImporter';
-import { RectangleExporter } from './tools/rectangle/RectangleExporter';
-import { MeshViewImporter } from '../../../../common/importers/RectangleImporter';
-import { RectangleTool } from './tools/rectangle/RectangleTool';
-import { Tool, ToolType } from './tools/Tool';
-import { ToolService } from './tools/ToolService';
-import { PathForm } from '../../forms/PathForm';
-import { GameObjectFormState } from '../../forms/GameObjectFormState';
-import { PathView } from '../../../../common/views/PathView';
-import { PathTool } from './tools/path/PathTool';
-import { KeyboardHandler } from '../services/KeyboardHandler';
-import { ViewStore } from './models/ViewStore';
-import { NamingService } from '../../../services/NamingService';
 import { ITagService } from '../ITagService';
-import { WindowController } from '../WindowController';
-import { ICamera } from '../ICamera';
-import { MouseHandler } from '../services/MouseHandler';
+import { CanvasPointerService } from '../services/CanvasPointerService';
 import { HoverService } from '../services/HoverService';
 import { IPointerService } from '../services/IPointerService';
-import { CanvasPointerService } from '../services/CanvasPointerService';
-import { PointerTool } from './tools/PointerTool';
+import { KeyboardHandler } from '../services/KeyboardHandler';
+import { MouseHandler } from '../services/MouseHandler';
+import { Model3DController } from './Model3DController';
+import { ViewStore } from './models/ViewStore';
+import { SvgCanvasExporter } from './SvgCanvasExporter';
+import { CameraTool } from './tools/CameraTool';
+import { DeleteTool } from './tools/DeleteTool';
 import { MoveTool } from './tools/MoveTool';
+import { PathExporter } from './tools/path/PathExporter';
+import { PathTool } from './tools/path/PathTool';
+import { PointerTool } from './tools/PointerTool';
+import { RectangleExporter } from './tools/rectangle/RectangleExporter';
+import { RectangleTool } from './tools/rectangle/RectangleTool';
 import { SelectTool } from './tools/SelectTool';
+import { Tool, ToolType } from './tools/Tool';
+import { ToolService } from './tools/ToolService';
 
 export class CanvasController extends AbstractCanvasController {
     name = '2D View';
@@ -58,9 +54,8 @@ export class CanvasController extends AbstractCanvasController {
     hoverService: HoverService;
     pointer: IPointerService;
     
-    gameObjectForm: GameObjectForm;
-    gameObjectFormState: GameObjectFormState;
-    pathForm: PathForm;
+    meshViewForm: MeshViewForm;
+    pathForm: PathViewForm;
 
     selectedTool = ToolType.RECTANGLE;
 
@@ -116,9 +111,8 @@ export class CanvasController extends AbstractCanvasController {
             ]
         )
 
-        this.gameObjectForm = new GameObjectForm(this, this.controllers.eventDispatcher);
-        this.gameObjectFormState = new GameObjectFormState();
-        this.pathForm = new PathForm();
+        this.meshViewForm = new MeshViewForm(this, this.controllers.eventDispatcher);
+        this.pathForm = new PathViewForm();
         this.tagService = this.viewStore;
         this.hoverService = new HoverService(this);
         this.pointer = new CanvasPointerService(this);

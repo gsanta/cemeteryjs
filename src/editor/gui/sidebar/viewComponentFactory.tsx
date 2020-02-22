@@ -1,6 +1,6 @@
 import { CanvasController } from "../../controllers/windows/canvas/CanvasController";
-import { GameObjectFormComponent } from "./GameObjectFormComponent";
-import { PathFormComponent } from "./PathFormComponent";
+import { MeshViewFormComponent } from "./MeshViewFormComponent";
+import { PathViewFormComponent } from "./PathViewFormComponent";
 import styled from "styled-components";
 import * as React from 'react';
 import { Controllers } from "../../controllers/Controllers";
@@ -26,8 +26,8 @@ export function viewComponentFactory(services: Controllers): JSX.Element {
 
     switch(selectedViews[0].viewType) {
         case ViewType.GameObject:
-            return <GameObjectFormComponent view={selectedViews[0] as MeshView} canvasController={services.svgCanvasController}/>;
+            return <MeshViewFormComponent view={selectedViews[0] as MeshView} canvasController={services.svgCanvasController}/>;
         case ViewType.Path:
-            return <PathFormComponent view={selectedViews[0] as PathView} canvasController={services.svgCanvasController}/>;
+            return <PathViewFormComponent view={selectedViews[0] as PathView} canvasController={services.svgCanvasController}/>;
     }
 }
