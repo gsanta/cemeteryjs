@@ -1,5 +1,5 @@
 import { AbstractCanvasController } from "../common/AbstractCanvasController";
-import { Controllers } from "../Controllers";
+import { Editor } from "../Editor";
 import { WindowFactory } from "../WindowFactory";
 import { RendererComponent } from "./gui/RendererComponent";
 import { RendererController } from "./RendererController";
@@ -10,7 +10,7 @@ export class RendererFactory implements WindowFactory {
     
     private controller: RendererController;
 
-    getWindowController(editor: Controllers): AbstractCanvasController {
+    getWindowController(editor: Editor): AbstractCanvasController {
         if (!this.controller) {
             this.controller = new RendererController(editor);
         }

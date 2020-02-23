@@ -1,9 +1,7 @@
 import { Camera, nullCamera } from '../models/Camera';
 import { AbstractTool } from './AbstractTool';
 import { Point } from "../../../misc/geometry/shapes/Point";
-import { Controllers } from '../../Controllers';
 import { ToolType } from "./Tool";
-import { Rectangle } from "../../../misc/geometry/shapes/Rectangle";
 import { CanvasController } from '../CanvasController';
 
 export function cameraInitializer(canvasId: string) {
@@ -28,8 +26,6 @@ function ratioOfViewBox(camera: Camera, ratio: Point): Point {
 export class CameraTool extends AbstractTool {
     private cameraInitializerFunc: (canvasId: string) => Camera;
     private camera: Camera = nullCamera;
-
-    private startPosition: Rectangle;
 
     static readonly ZOOM_MIN = 0.1;
     static readonly ZOOM_MAX = 5;
@@ -91,7 +87,6 @@ export class CameraTool extends AbstractTool {
     down() {
         const update = super.down();
 
-        this.startPosition = this.controller.cameraTool.getCamera().getViewBox();
         return update;
     }
 
@@ -102,12 +97,6 @@ export class CameraTool extends AbstractTool {
         this.controller.cameraTool.getCamera().moveBy(delta.negate());
 
         this.controller.renderWindow();
-    }
-
-    up() {
-        super.up();
-
-        this.startPosition = null;
     }
 
     getCamera() {

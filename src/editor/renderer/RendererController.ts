@@ -4,7 +4,7 @@ import { Tool } from '../canvas/tools/Tool';
 import { AbstractCanvasController, CanvasViewSettings } from '../common/AbstractCanvasController';
 import { IPointerService } from '../common/services/IPointerService';
 import { MouseHandler } from '../common/services/MouseHandler';
-import { Controllers } from '../Controllers';
+import { Editor } from '../Editor';
 import { Events } from "../common/Events";
 import { EditorCamera } from './EditorCamera';
 import { HelperMeshes } from './HelperMeshes';
@@ -26,7 +26,6 @@ export class RendererController extends AbstractCanvasController {
     pointer: IPointerService;
     private helperMeshes: HelperMeshes;
 
-    private canvas: HTMLCanvasElement;
     camera: EditorCamera;
     cameraTool: RendererCameraTool;
     activeTool: Tool;
@@ -34,9 +33,8 @@ export class RendererController extends AbstractCanvasController {
     private renderCanvasFunc: () => void;
     meshes: Mesh[] = [];
 
-    constructor(controllers: Controllers) {
-        super(controllers);
-        this.controllers = controllers;
+    constructor(editor: Editor) {
+        super(editor);
         this.mouseHander = new MouseHandler(this);
         this.pointer = new RendererPointerService(this);
         this.update = this.update.bind(this);
@@ -48,12 +46,12 @@ export class RendererController extends AbstractCanvasController {
     }
 
     registerEvents() {
-        this.controllers.eventDispatcher.addEventListener(Events.CONTENT_CHANGED, this.update);
-        this.controllers.eventDispatcher.addEventListener(Events.CANVAS_ITEM_CHANGED, this.update);
+        this.editor.eventDispatcher.addEventListener(Events.CONTENT_CHANGED, this.update);
+        this.editor.eventDispatcher.addEventListener(Events.CANVAS_ITEM_CHANGED, this.update);
     }
 
     unregisterEvents() {
-        this.controllers.eventDispatcher.removeEventListener(this.update);
+        this.editor.eventDispatcher.removeEventListener(this.update);
     }
 
     resize() {
@@ -71,7 +69,7 @@ export class RendererController extends AbstractCanvasController {
     update() {
         this.clearCanvas();
         if (this.writer) {
-            const file = (<CanvasController> this.controllers.getWindowControllerByName('canvas')).exporter.export();
+            const file = (<CanvasController> this.editor.getWindowControllerByName('canvas')).exporter.export();
             this.writer.import(file);
         }
 

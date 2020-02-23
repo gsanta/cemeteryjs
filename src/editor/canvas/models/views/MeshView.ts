@@ -42,6 +42,7 @@ export class MeshView implements View {
     parent: MeshView;
     texturePath: string;
     modelPath: string;
+    modelData: string;
     thumbnailPath: string;
     path: string;
     isManualControl: boolean;

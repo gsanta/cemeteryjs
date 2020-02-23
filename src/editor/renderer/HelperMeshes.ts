@@ -1,5 +1,5 @@
 import { MeshBuilder, Scene, Vector3, Vector2, Mesh, Color3, StandardMaterial, DynamicTexture, Space } from 'babylonjs';
-import { Controllers } from '../Controllers';
+import { Editor } from '../Editor';
 
 export class HelperMeshes {
     private meshBuilder: typeof MeshBuilder;

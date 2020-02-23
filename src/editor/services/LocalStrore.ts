@@ -6,7 +6,7 @@ export class LocalStore {
 
     constructor() {
         const request = window.indexedDB.open(this.name, this.version);
-        request.onupgradeneeded = (event) => this.upgradeDb(event, request);
+        request.onupgradeneeded = () => this.upgradeDb(request);
     }
     
     async saveAsset(name: string, data: string) {
@@ -18,16 +18,29 @@ export class LocalStore {
         objectStore.add({name, data});
     }
 
-    async loadAsset(name: string): string {
+    async loadAsset(name: string): Promise<string> {
         if (!this.isDbSupported()) { return }
 
         const db = await this.getDb();
 
-        var objectStore = db.transaction(["assets"], "read").objectStore("assets");
-        return objectStore.get(name);
+        const objectStore = db.transaction(["assets"], "readwrite").objectStore("assets");
+
+        return await this.getData(objectStore.get(name));
     }
 
-    private upgradeDb(event: IDBVersionChangeEvent, request: IDBOpenDBRequest) {
+    private async getData(request: IDBRequest): Promise<any> {
+        return new Promise((resolve, reject) => {
+
+            request.onerror = () => {
+                console.error('Failed to load data with key from local store');
+                reject();
+            };
+
+            request.onsuccess = () => resolve(request.result.data);
+        });
+    }
+
+    private upgradeDb(request: IDBOpenDBRequest) {
         const db = request.result;
 
         db.createObjectStore("assets", { keyPath: "name" });
@@ -38,7 +51,7 @@ export class LocalStore {
             if (!('indexedDB' in window)) { throw new Error('IndexedDb not supported.')}
 
             const request = window.indexedDB.open(this.name, this.version);
-            request.onupgradeneeded = (event) => this.upgradeDb(event, request);
+            request.onupgradeneeded = (event) => this.upgradeDb(request);
             request.onsuccess = () => resolve(request.result); 
             request.onerror = () => reject(request.result); 
 

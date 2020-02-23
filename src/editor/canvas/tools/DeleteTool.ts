@@ -3,8 +3,6 @@ import { AbstractSelectionTool } from './AbstractSelectionTool';
 import { ToolType } from './Tool';
 import { EventDispatcher } from '../../common/EventDispatcher';
 import { Events } from '../../common/Events';
-import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
-import { Controllers } from '../../Controllers';
 
 export class DeleteTool extends AbstractSelectionTool {
     private eventDispatcher: EventDispatcher;

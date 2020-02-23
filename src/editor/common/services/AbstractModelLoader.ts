@@ -2,6 +2,7 @@ import { Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, Vector3, StandardMa
 import { Point } from '../../../misc/geometry/shapes/Point';
 import { MeshView } from '../../canvas/models/views/MeshView';
 import { MeshObject } from '../../../game/models/objects/MeshObject';
+import { LocalStore } from '../../services/LocalStrore';
 
 export interface ModelData {
     mesh: Mesh;
@@ -13,11 +14,13 @@ export interface ModelData {
 export abstract class AbstractModelLoader {
     private basePath = 'assets/models/';
     protected scene: Scene;
+    protected localStore: LocalStore;
 
     private loadedFileNames: Set<String> = new Set();
 
     constructor(scene: Scene) {
         this.scene = scene;
+        this.localStore = new LocalStore();
     }
 
     loadAll(meshObjects: {modelPath: string}[]): Promise<Mesh[]> {
@@ -38,13 +41,18 @@ export abstract class AbstractModelLoader {
     load(meshObject: MeshObject | MeshView): Promise<Mesh> {
         this.loadedFileNames.add(meshObject.modelPath);
 
-        return new Promise(resolve => {
-            const folder = this.getFolderNameFromFileName(meshObject.modelPath);
+        return this.localStore.loadAsset(meshObject.modelPath)
+                .then((data) => this.loadMesh(meshObject, data))
+                .catch(() => this.loadMesh(meshObject, meshObject.modelPath));
+    }
 
+    private loadMesh(meshObject: MeshObject | MeshView, dataOrFileName: string): Promise<Mesh> {
+        const folder = this.getFolderNameFromFileName(meshObject.modelPath);
+        return new Promise(resolve => {
             SceneLoader.ImportMesh(
                 '',
                 `${this.basePath}${folder}/`,
-                meshObject.modelPath,
+                dataOrFileName,
                 this.scene,
                 (meshes: Mesh[], ps: ParticleSystem[], skeletons: Skeleton[]) => resolve(this.createModelData(meshObject, meshes, skeletons)),
                 () => { },

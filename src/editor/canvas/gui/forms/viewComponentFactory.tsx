@@ -3,10 +3,10 @@ import { MeshViewFormComponent } from "./MeshViewFormComponent";
 import { PathViewFormComponent } from "./PathViewFormComponent";
 import styled from "styled-components";
 import * as React from 'react';
-import { Controllers } from "../../../Controllers";
 import { MeshView } from "../../models/views/MeshView";
 import { PathView } from "../../models/views/PathView";
 import { View, ViewType } from "../../models/views/View";
+import { Editor } from "../../../Editor";
 
 export interface ViewFormProps<T extends View> {
     canvasController: CanvasController;
@@ -18,7 +18,7 @@ const PlaceHolderTextStyled = styled.div`
     opacity: 0.6;
 `;
 
-export function viewComponentFactory(editor: Controllers): JSX.Element {
+export function viewComponentFactory(editor: Editor): JSX.Element {
     const canvasController = (editor.getWindowControllerByName('canvas') as CanvasController);
     const selectedViews = canvasController.viewStore.getSelectedViews();
     if (selectedViews.length !== 1) {

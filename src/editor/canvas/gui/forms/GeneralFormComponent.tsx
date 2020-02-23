@@ -5,13 +5,13 @@ import { ExportFileIconComponent } from '../../../gui/icons/tools/ExportFileIcon
 import { ConnectedFileUploadComponent } from '../../../gui/icons/tools/ImportFileIconComponent';
 import { GlobalSettingsPropType } from '../../forms/GlobalSettingsForm';
 import { saveAs } from 'file-saver';
-import { Controllers } from '../../../Controllers';
 import { CanvasController } from '../../CanvasController';
+import { Editor } from '../../../Editor';
 
 export interface GeneralFormComponentProps {
     isEditorOpen: boolean;
     toggleEditorOpen: () => void;
-    editor: Controllers;
+    editor: Editor;
 }
 
 export class GeneralFormComponent extends React.Component<GeneralFormComponentProps> {

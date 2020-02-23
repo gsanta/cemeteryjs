@@ -1,5 +1,5 @@
 import { FileFormat } from '../../game/import/WorldGenerator';
-import { Controllers } from '../Controllers';
+import { Editor } from '../Editor';
 import { GameApi } from '../../game/GameApi';
 import { GameFacade } from '../../game/GameFacade';
 
@@ -10,17 +10,17 @@ export interface CanvasViewSettings {
 
 export abstract class AbstractCanvasController {
     name: string;
-    protected controllers: Controllers;
-    constructor(controllers: Controllers) {
-        this.controllers = controllers;
+    protected editor: Editor;
+    constructor(controllers: Editor) {
+        this.editor = controllers;
     }
 
     getGameApi(): GameApi {
-        return this.controllers.gameApi;
+        return this.editor.gameApi;
     }
 
     getGameFacade(): GameFacade {
-        return this.controllers.gameFacade;
+        return this.editor.gameFacade;
     }
 
     abstract isVisible(): boolean;

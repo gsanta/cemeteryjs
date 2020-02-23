@@ -2,13 +2,13 @@ import * as React from 'react';
 import { CanvasController } from './canvas/CanvasController';
 import { CanvasComponent } from './canvas/gui/CanvasComponent';
 import { AbstractCanvasController } from './common/AbstractCanvasController';
-import { Controllers } from './Controllers';
+import { Editor } from './Editor';
 import { RendererComponent } from './renderer/gui/RendererComponent';
 import { RendererController } from './renderer/RendererController';
 
 export interface WindowFactory {
     name: string;
-    getWindowController(editor: Controllers): AbstractCanvasController;
+    getWindowController(editor: Editor): AbstractCanvasController;
     renderWindowComponent(controller: AbstractCanvasController): JSX.Element;
     renderToolbarComponent(): JSX.Element;
 }

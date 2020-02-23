@@ -3,6 +3,7 @@ import { CanvasController } from '../CanvasController';
 import { EventDispatcher } from '../../common/EventDispatcher';
 import { Events } from '../../common/Events';
 import { AbstractForm, PropertyType } from "./AbstractForm";
+import { LocalStore } from '../../services/LocalStrore';
 
 export enum MeshViewPropType {
     COLOR = 'color',
@@ -29,12 +30,14 @@ export class MeshViewForm extends AbstractForm<MeshViewPropType> {
 
     private controller: CanvasController;
     private eventDispatcher: EventDispatcher;
+    private localStore: LocalStore;
 
     isAnimationSectionOpen = false;
 
     constructor(controller: CanvasController, eventDispatcher: EventDispatcher) {
         super(propertyTypes);
         this.controller = controller;
+        this.localStore = new LocalStore();
         this.eventDispatcher = eventDispatcher;
     }
 
@@ -88,8 +91,11 @@ export class MeshViewForm extends AbstractForm<MeshViewPropType> {
                 break;
             case MeshViewPropType.MODEL:
                 this.gameObject.modelPath = val.path;
-                this.controller.model3dController.set3dModelForCanvasItem(this.gameObject);
-                this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
+                this.localStore.saveAsset(val.path, val.data)
+                .finally(() => {
+                    this.controller.model3dController.set3dModelForCanvasItem(this.gameObject);
+                    this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
+                });
                 break;
             case MeshViewPropType.TEXTURE:
                 this.gameObject.texturePath = val.path;

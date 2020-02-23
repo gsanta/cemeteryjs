@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { Controllers } from '../../../Controllers';
 import { AppContext, AppContextType } from '../../../gui/Context';
 import { PauseIconComponent } from '../../../gui/icons/PauseIconComponent';
 import { PlayIconComponent } from '../../../gui/icons/PlayIconComponent';
 import { StopIconComponent } from '../../../gui/icons/StopIconComponent';
 import { AccordionComponent } from '../../../gui/misc/AccordionComponent';
 import { SettingsRowStyled } from './FormComponent';
+import { Editor } from '../../../Editor';
 
-export class GlobalFormComponent extends React.Component<{editor: Controllers}> {
+export class GlobalFormComponent extends React.Component<{editor: Editor}> {
     static contextType = AppContext;
     context: AppContextType;
 

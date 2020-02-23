@@ -8,7 +8,7 @@ import { WindowFactory } from './WindowFactory';
 import { CanvasController } from './canvas/CanvasController';
 import { LocalStore } from './services/LocalStrore';
 
-export class Controllers {
+export class Editor {
     gameFacade: GameFacade;
     gameApi: GameApi;
     

@@ -3,7 +3,7 @@ import { MeshViewImporter } from './io/import/RectangleImporter';
 import { CanvasImporter } from './io/import/CanvasImporter';
 import { PathView } from './models/views/PathView';
 import { NamingService } from '../common/services/NamingService';
-import { Controllers } from '../Controllers';
+import { Editor } from '../Editor';
 import { MeshViewForm } from './forms/MeshViewForm';
 import { PathViewForm } from './forms/PathViewForm';
 import { AbstractCanvasController, CanvasViewSettings } from '../common/AbstractCanvasController';
@@ -59,7 +59,7 @@ export class CanvasController extends AbstractCanvasController {
     private toolbarRenderers: Function[] = [];
     // private renderToolbarFunc = () => null;
     
-    constructor(services: Controllers) {
+    constructor(services: Editor) {
         super(services);
 
         this.viewStore = new ViewStore();
@@ -79,10 +79,10 @@ export class CanvasController extends AbstractCanvasController {
         
         this.pointerTool = new PointerTool(this);
         this.cameraTool = new CameraTool(this);
-        const rectangleTool = new RectangleTool(this, this.controllers.eventDispatcher);
+        const rectangleTool = new RectangleTool(this, this.editor.eventDispatcher);
         const pathTool = new PathTool(this);
-        const deleteTool = new DeleteTool(this, this.controllers.eventDispatcher);
-        this.moveTool = new MoveTool(this, this.controllers.eventDispatcher);
+        const deleteTool = new DeleteTool(this, this.editor.eventDispatcher);
+        this.moveTool = new MoveTool(this, this.editor.eventDispatcher);
         const selectTool = new SelectTool(this);
         this.tools = [
             rectangleTool,
@@ -106,7 +106,7 @@ export class CanvasController extends AbstractCanvasController {
             ]
         )
 
-        this.meshViewForm = new MeshViewForm(this, this.controllers.eventDispatcher);
+        this.meshViewForm = new MeshViewForm(this, this.editor.eventDispatcher);
         this.pathForm = new PathViewForm();
         this.pointer = new CanvasPointerService(this);
     }
