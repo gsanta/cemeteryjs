@@ -5,7 +5,7 @@ import { HelperMeshes } from "./HelperMeshes";
 export class GameEngine {
     engine: Engine;
     scene: Scene;
-    camera: Camera;
+    camera: EditorCamera;
     private helperMeshes: HelperMeshes;
     private canvas: HTMLCanvasElement;
 

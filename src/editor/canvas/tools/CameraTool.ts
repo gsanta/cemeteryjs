@@ -97,7 +97,6 @@ export class CameraTool extends AbstractTool {
 
     drag() {
         super.drag();
-
         const delta = this.controller.pointer.pointer.getScreenDiff().div(this.getCamera().getScale());
         
         this.controller.cameraTool.getCamera().moveBy(delta.negate());

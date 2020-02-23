@@ -61,7 +61,8 @@ export class RendererController extends AbstractCanvasController {
     }
 
     setup() {
-        this.cameraTool = new RendererCameraTool(this, this.camera);
+        this.cameraTool = new RendererCameraTool(this, this.getGameFacade().gameEngine.camera);
+        this.activeTool = this.cameraTool;
         this.writer = new WebglCanvasImporter(this, this.getGameFacade());
 
         this.update();

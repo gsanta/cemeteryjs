@@ -35,15 +35,15 @@ export class CanvasPointerService implements IPointerService {
         if (e.button !== 'left') { return }
 
         this.isDown = true;
-        this.pointer.down = this.addScreenOffset(e.pointers[0].pos); 
+        this.pointer.down = this.getPointWithOffset(e.pointers[0].pos); 
         this.controller.getActiveTool().down() && this.controller.renderWindow();
     }
 
     pointerMove(e: IPointerEvent): void {
         this.pointer.prev = this.pointer.curr;
-        this.pointer.curr = this.addScreenOffset(e.pointers[0].pos);
+        this.pointer.curr = this.getPointWithOffset(e.pointers[0].pos);
         this.pointer.prevScreen = this.pointer.currScreen;
-        this.pointer.currScreen = this.controller.getCamera().screenToCanvasPoint(this.pointer.curr);
+        this.pointer.currScreen =  this.getScreenPointWithOffset(e.pointers[0].pos);
         let updated = false;
         if (this.isDown && this.pointer.getDownDiff().len() > 2) {
             this.isDrag = true;
@@ -84,8 +84,14 @@ export class CanvasPointerService implements IPointerService {
         this.controller.getActiveTool().out(item) && this.controller.renderWindow();
     }
     
-    private addScreenOffset(point: Point): Point {
+    private getScreenPointWithOffset(point: Point): Point {
         const offset = this.calcOffset(this.controller.getId());
         return new Point(point.x - offset.x, point.y - offset.y);
     }
+
+    private getPointWithOffset(point: Point): Point {
+        const offset = this.calcOffset(this.controller.getId());
+        return this.controller.getCamera().screenToCanvasPoint(new Point(point.x - offset.x, point.y - offset.y));
+    }
+
 }
