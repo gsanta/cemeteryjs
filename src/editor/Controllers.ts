@@ -2,30 +2,33 @@ import { GameApi } from '../game/GameApi';
 import { GameFacade } from '../game/GameFacade';
 import { CanvasFactory } from './canvas/CanvasFactory';
 import { GlobalSettingsForm } from './canvas/forms/GlobalSettingsForm';
-import { AbstractCanvasController } from './common/AbstractCanvasController';
 import { EventDispatcher } from './common/EventDispatcher';
 import { RendererFactory } from './renderer/RendererFactory';
 import { WindowFactory } from './WindowFactory';
 import { CanvasController } from './canvas/CanvasController';
+import { LocalStore } from './services/LocalStrore';
 
 export class Controllers {
     gameFacade: GameFacade;
     gameApi: GameApi;
     
+    localStore: LocalStore;
+
+    windowFactories: WindowFactory[];
+    
     eventDispatcher: EventDispatcher;
 
     svgCanvasId: string;
     renderFunc: () => void;
-
     globalSettingsForm: GlobalSettingsForm;
-
-    windowFactories: WindowFactory[];
 
     constructor() {
         this.windowFactories = [
             new CanvasFactory(),
             new RendererFactory()
         ]
+
+        this.localStore = new LocalStore();
         this.eventDispatcher = new EventDispatcher();
 
         this.globalSettingsForm = new GlobalSettingsForm(this.getWindowControllerByName('canvas') as CanvasController, this.eventDispatcher);
