@@ -11,6 +11,7 @@ import { HelperMeshes } from './HelperMeshes';
 import { RendererCameraTool } from './RendererCameraTool';
 import { RendererPointerService } from './RendererPointerService';
 import { WebglCanvasImporter } from './WebglCanvasImporter';
+import { CanvasController } from '../canvas/CanvasController';
 (<any> window).earcut = require('earcut');
 
 export class RendererController extends AbstractCanvasController {
@@ -38,7 +39,7 @@ export class RendererController extends AbstractCanvasController {
         this.controllers = controllers;
         this.mouseHander = new MouseHandler(this);
         this.pointer = new RendererPointerService(this);
-        this.updateCanvas = this.updateCanvas.bind(this);
+        this.update = this.update.bind(this);
         this.registerEvents();
     }
 
@@ -47,12 +48,12 @@ export class RendererController extends AbstractCanvasController {
     }
 
     registerEvents() {
-        this.controllers.eventDispatcher.addEventListener(Events.CONTENT_CHANGED, this.updateCanvas);
-        this.controllers.eventDispatcher.addEventListener(Events.CANVAS_ITEM_CHANGED, this.updateCanvas);
+        this.controllers.eventDispatcher.addEventListener(Events.CONTENT_CHANGED, this.update);
+        this.controllers.eventDispatcher.addEventListener(Events.CANVAS_ITEM_CHANGED, this.update);
     }
 
     unregisterEvents() {
-        this.controllers.eventDispatcher.removeEventListener(this.updateCanvas);
+        this.controllers.eventDispatcher.removeEventListener(this.update);
     }
 
     resize() {
@@ -63,13 +64,13 @@ export class RendererController extends AbstractCanvasController {
         this.cameraTool = new RendererCameraTool(this, this.camera);
         this.writer = new WebglCanvasImporter(this, this.getGameFacade());
 
-        this.updateCanvas();
+        this.update();
     }
 
-    updateCanvas() {
+    update() {
         this.clearCanvas();
         if (this.writer) {
-            const file = this.controllers.svgCanvasController.reader.export();
+            const file = (<CanvasController> this.controllers.getWindowControllerByName('canvas')).exporter.export();
             this.writer.import(file);
         }
 
@@ -93,14 +94,12 @@ export class RendererController extends AbstractCanvasController {
         this.renderCanvasFunc();
     }
 
-    setVisible(visible: boolean) {
-        this.visible = visible;
-        if (!this.visible) { this.controllers.svgCanvasController.setVisible(true);}
-        this.controllers.render();
-    }
-
     isVisible(): boolean {
         return this.visible;
+    }
+
+    setVisible(visible: boolean) {
+        this.visible = visible;
     }
 
     activate(): void {}

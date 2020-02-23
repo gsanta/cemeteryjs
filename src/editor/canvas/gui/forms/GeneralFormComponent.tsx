@@ -5,10 +5,13 @@ import { ExportFileIconComponent } from '../../../gui/icons/tools/ExportFileIcon
 import { ConnectedFileUploadComponent } from '../../../gui/icons/tools/ImportFileIconComponent';
 import { GlobalSettingsPropType } from '../../forms/GlobalSettingsForm';
 import { saveAs } from 'file-saver';
+import { Controllers } from '../../../Controllers';
+import { CanvasController } from '../../CanvasController';
 
 export interface GeneralFormComponentProps {
     isEditorOpen: boolean;
     toggleEditorOpen: () => void;
+    editor: Controllers;
 }
 
 export class GeneralFormComponent extends React.Component<GeneralFormComponentProps> {
@@ -24,25 +27,26 @@ export class GeneralFormComponent extends React.Component<GeneralFormComponentPr
 
         return (
             <div>
-                <DisplayEditorIconComponent name="2D View" format="long" onClick={() => this.toggleCanvasVisibility()} isActive={this.context.controllers.svgCanvasController.isVisible()}/>
-                <DisplayEditorIconComponent name="3D View" format="long" onClick={() => this.toggleWebglVisibility()} isActive={this.context.controllers.webglCanvasController.isVisible()}/>
+                <DisplayEditorIconComponent name="2D View" format="long" onClick={() => this.toggleWindowVisibility('canvas')} isActive={this.isVisible('canvas')}/>
+                <DisplayEditorIconComponent name="3D View" format="long" onClick={() => this.toggleWindowVisibility('renderer')} isActive={this.isVisible('renderer')}/>
                 <ConnectedFileUploadComponent propertyName={GlobalSettingsPropType.IMPORT_FILE} formController={form} placeholder={'Import file'} readDataAs="text"/>
                 <ExportFileIconComponent format="long" onClick={() => this.exportFile()} isActive={false}/>
             </div>
         )
     }
 
+    private isVisible(controllerName: string) {
+        return this.props.editor.getWindowControllerByName(controllerName).isVisible();
+    }
+
     private exportFile() {
-        const file = this.context.controllers.svgCanvasController.reader.export();
+        const canvasController = this.props.editor.getWindowControllerByName('canvas') as CanvasController;
+        const file = canvasController.exporter.export();
         var blob = new Blob([file], { type: "text/plain;charset=utf-8" });
         saveAs(blob, "dynamic.txt");
     }
 
-    private toggleCanvasVisibility() {
-        this.context.controllers.svgCanvasController.setVisible(!this.context.controllers.svgCanvasController.isVisible())
-    }
-
-    private toggleWebglVisibility() {
-        this.context.controllers.webglCanvasController.setVisible(!this.context.controllers.webglCanvasController.isVisible())
+    private toggleWindowVisibility(name: string) {
+        this.props.editor.setWindowVisibility(name, !this.props.editor.getWindowControllerByName(name).isVisible());
     }
 }

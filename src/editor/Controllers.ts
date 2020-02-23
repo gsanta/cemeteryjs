@@ -1,14 +1,14 @@
-import { CanvasController } from './canvas/CanvasController';
-import { RendererController } from './renderer/RendererController';
-import { EventDispatcher } from './common/EventDispatcher';
-import { AbstractCanvasController } from './common/AbstractCanvasController';
-import { GlobalSettingsForm } from './canvas/forms/GlobalSettingsForm';
-import { GameFacade } from '../game/GameFacade';
 import { GameApi } from '../game/GameApi';
+import { GameFacade } from '../game/GameFacade';
+import { CanvasFactory } from './canvas/CanvasFactory';
+import { GlobalSettingsForm } from './canvas/forms/GlobalSettingsForm';
+import { AbstractCanvasController } from './common/AbstractCanvasController';
+import { EventDispatcher } from './common/EventDispatcher';
+import { RendererFactory } from './renderer/RendererFactory';
+import { WindowFactory } from './WindowFactory';
+import { CanvasController } from './canvas/CanvasController';
 
 export class Controllers {
-    webglCanvasController: RendererController;
-    svgCanvasController: CanvasController;
     gameFacade: GameFacade;
     gameApi: GameApi;
     
@@ -17,18 +17,18 @@ export class Controllers {
     svgCanvasId: string;
     renderFunc: () => void;
 
-    canvases: AbstractCanvasController[];
-
     globalSettingsForm: GlobalSettingsForm;
 
+    windowFactories: WindowFactory[];
+
     constructor() {
+        this.windowFactories = [
+            new CanvasFactory(),
+            new RendererFactory()
+        ]
         this.eventDispatcher = new EventDispatcher();
-        this.webglCanvasController = new RendererController(this);
-        this.svgCanvasController = new CanvasController(this);
 
-        this.canvases = [this.svgCanvasController, this.webglCanvasController];
-
-        this.globalSettingsForm = new GlobalSettingsForm(this, this.eventDispatcher);
+        this.globalSettingsForm = new GlobalSettingsForm(this.getWindowControllerByName('canvas') as CanvasController, this.eventDispatcher);
 
         this.svgCanvasId = 'svg-editor';
     }
@@ -37,7 +37,31 @@ export class Controllers {
         this.gameFacade = new GameFacade(canvas);
         this.gameFacade.setup();
         this.gameApi = new GameApi(this.gameFacade);
-        this.webglCanvasController.setup();
+
+        this.windowFactories.forEach(factory => factory.getWindowController(this).setup());
+    }
+
+    getWindowControllerByName(name: string) {
+        return this.windowFactories.find(factory => factory.name === name).getWindowController(this);
+    }
+
+    getWindowControllers() {
+        return this.windowFactories.map(factory => factory.getWindowController(this));
+    }
+
+    getWindowFactory(name: string) {
+        return this.windowFactories.find(factory => factory.name === name);
+    }
+
+    setWindowVisibility(name: string, isVisible: boolean) {
+        this.getWindowControllerByName(name).setVisible(isVisible);
+        if (!this.getWindowControllers().find(controller => controller.isVisible())) {
+
+            const defaultWindows = [this.getWindowControllerByName('renderer'), this.getWindowControllerByName('canvas')];
+
+            defaultWindows.find(window => window.name !== name).setVisible(true);
+        }
+        this.render();
     }
 
     render() {

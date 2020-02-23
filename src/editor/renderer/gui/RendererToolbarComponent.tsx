@@ -24,11 +24,8 @@ export interface RendererToolbarProps {
 }
 
 export class RendererToolbarComponent extends React.Component<RendererToolbarProps> {
-    static contextType = AppContext;
-    context: AppContextType;
-
     componentDidMount() {
-        this.context.controllers.svgCanvasController.addToolbarRenderer(() => this.forceUpdate());
+        this.props.controller.addToolbarRenderer(() => this.forceUpdate());
     }
 
     render(): JSX.Element {

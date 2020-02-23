@@ -34,7 +34,7 @@ export class CanvasController extends AbstractCanvasController {
 
     viewStore: ViewStore;
 
-    
+
     nameingService: NamingService;
 
     mouseController: MouseHandler;
@@ -43,8 +43,8 @@ export class CanvasController extends AbstractCanvasController {
     cameraTool: CameraTool;
     pointerTool: PointerTool;
     moveTool: MoveTool;
-    writer: CanvasImporter;
-    reader: CanvasExporter;
+    importer: CanvasImporter;
+    exporter: CanvasExporter;
     model3dController: Model3DController;
     toolService: ToolService;
     pointer: IPointerService;
@@ -67,18 +67,18 @@ export class CanvasController extends AbstractCanvasController {
         
         this.mouseController = new MouseHandler(this);
         this.keyboardHandler = new KeyboardHandler(this);
-        this.writer = new CanvasImporter(
+        this.importer = new CanvasImporter(
             [
                 new MeshViewImporter(rect => this.viewStore.addRect(rect)),
                 new PathImporter((path: PathView) => this.viewStore.addPath(path))
             ],
             this
         );
-        this.reader = new CanvasExporter(this);
+        this.exporter = new CanvasExporter(this);
         this.model3dController = new Model3DController(this);
         
         this.pointerTool = new PointerTool(this);
-        this.cameraTool = new CameraTool(services);
+        this.cameraTool = new CameraTool(this);
         const rectangleTool = new RectangleTool(this, this.controllers.eventDispatcher);
         const pathTool = new PathTool(this);
         const deleteTool = new DeleteTool(this, this.controllers.eventDispatcher);
@@ -158,14 +158,12 @@ export class CanvasController extends AbstractCanvasController {
         this.cameraTool.resize();
     };
 
-    setVisible(visible: boolean) {
-        this.visible = visible;
-        if (!this.visible) { this.controllers.webglCanvasController.setVisible(true);}
-        this.controllers.render();
-    }
-
     isVisible(): boolean {
         return this.visible;
+    }
+
+    setVisible(visible: boolean) {
+        this.visible = visible;
     }
 
     setCanvasRenderer(renderFunc: () => void) {

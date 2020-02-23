@@ -4,7 +4,7 @@ import './App.scss';
 import { AppContext, AppContextType } from './Context';
 import '../../editor/gui/misc/SplitPane.css';
 import Split from 'split.js'
-import { windowFactory } from './windows/windowFactory';
+import { windowFactory } from '../WindowFactory';
 import { SidebarComponent } from '../canvas/gui/forms/SidebarComponent';
 import { AbstractCanvasController } from '../common/AbstractCanvasController';
 
@@ -50,7 +50,7 @@ export class App extends React.Component<{}, AppState> {
     }
     
     render() {
-        const canvases = this.context.controllers.canvases
+        const canvases = this.context.controllers.getWindowControllers()
             .filter(canvas => canvas.isVisible())
             .map(canvas => <div id={`${canvas.getId()}-split`}>{windowFactory(canvas)}</div>)
 
@@ -67,12 +67,11 @@ export class App extends React.Component<{}, AppState> {
     }
 
     private resize() {
-        this.context.controllers.webglCanvasController.resize();
-        this.context.controllers.svgCanvasController.resize();
+        this.context.controllers.getWindowControllers().forEach(controller => controller.resize());
     }
 
     private hasCanvasVisibilityChanged() {
-        const visibleCanvases = this.context.controllers.canvases.filter(canvas => canvas.isVisible());
+        const visibleCanvases = this.context.controllers.getWindowControllers().filter(canvas => canvas.isVisible());
 
         if (visibleCanvases.length !== this.currentVisibleCanvases.length) { return true; }
 
@@ -88,7 +87,7 @@ export class App extends React.Component<{}, AppState> {
         let sizes = [12];
         let minSize = [230];
 
-        const visibleCanvases = this.context.controllers.canvases.filter(canvas => canvas.isVisible());
+        const visibleCanvases = this.context.controllers.getWindowControllers().filter(canvas => canvas.isVisible());
         this.currentVisibleCanvases = visibleCanvases;
         const size = (100 - sizes[0]) / visibleCanvases.length;
 

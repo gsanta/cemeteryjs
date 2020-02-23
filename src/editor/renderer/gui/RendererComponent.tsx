@@ -27,7 +27,7 @@ const CanvasOverlayStyled = styled.div`
 `;
 
 export interface RendererComponentProps {
-    canvasController: RendererController;
+    controller: RendererController;
 }
 
 export class RendererComponent extends React.Component<RendererComponentProps> {
@@ -39,37 +39,37 @@ export class RendererComponent extends React.Component<RendererComponentProps> {
         super(props);
 
         this.canvasRef = React.createRef();
-        this.props.canvasController.setCanvasRenderer(() => this.forceUpdate());
+        this.props.controller.setCanvasRenderer(() => this.forceUpdate());
     }
 
     componentDidMount() {
         setTimeout(() => {
             this.context.controllers.setup(this.canvasRef.current);
-            this.context.controllers.webglCanvasController.updateCanvas();
+            this.context.controllers.getWindowControllerByName('renderer').update();
         }, 1000);
 
     }
 
     componentDidUpdate() {
-        this.context.controllers.webglCanvasController.resize();
+        this.context.controllers.getWindowControllerByName('renderer').resize();
     }
 
     render() {
-        const isEmpty = this.context.controllers.svgCanvasController.isEmpty();
+        // const isEmpty = !this.props.controller.getGameFacade() || this.props.controller.getGameFacade().gameStore.isEmpty();
 
         return (
                 <RendererStyled>
-                    <WindowToolbarStyled><RendererToolbarComponent controller={this.props.canvasController}/></WindowToolbarStyled>
+                    <WindowToolbarStyled><RendererToolbarComponent controller={this.props.controller}/></WindowToolbarStyled>
                     <CanvasStyled
-                        isEmpty={isEmpty}
+                        isEmpty={false}
                         id="canvas"
                         ref={this.canvasRef}
                     />
                     <CanvasOverlayStyled
-                        onMouseDown={(e) => this.props.canvasController.mouseHander.onMouseDown(e.nativeEvent)}
-                        onMouseMove={(e) => this.props.canvasController.mouseHander.onMouseMove(e.nativeEvent)}
-                        onMouseUp={(e) => this.props.canvasController.mouseHander.onMouseUp(e.nativeEvent)}
-                        onMouseLeave={(e) => this.props.canvasController.mouseHander.onMouseOut(e.nativeEvent)}
+                        onMouseDown={(e) => this.props.controller.mouseHander.onMouseDown(e.nativeEvent)}
+                        onMouseMove={(e) => this.props.controller.mouseHander.onMouseMove(e.nativeEvent)}
+                        onMouseUp={(e) => this.props.controller.mouseHander.onMouseUp(e.nativeEvent)}
+                        onMouseLeave={(e) => this.props.controller.mouseHander.onMouseOut(e.nativeEvent)}
                     />
                 </RendererStyled>
         );

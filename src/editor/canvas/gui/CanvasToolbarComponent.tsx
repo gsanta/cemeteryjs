@@ -12,7 +12,6 @@ import { ArrowIconComponent } from '../../gui/icons/tools/ArrowIconComponent';
 import { DeleteIconComponent } from '../../gui/icons/tools/DeleteIconComponent';
 import { PanIconComponent } from '../../gui/icons/tools/PanIconComponent';
 
-
 const ToolbarStyled = styled.div`
     display: flex;
     flex-wrap: wrap;
@@ -24,12 +23,9 @@ const ToolbarStyled = styled.div`
     }
 `;
 
-export class CanvasToolbarComponent extends React.Component<{canvasController: CanvasController}> {
-    static contextType = AppContext;
-    context: AppContextType;
-
+export class CanvasToolbarComponent extends React.Component<{controller: CanvasController}> {
     componentDidMount() {
-        this.context.controllers.svgCanvasController.addToolbarRenderer(() => this.forceUpdate());
+        this.props.controller.addToolbarRenderer(() => this.forceUpdate());
     }
 
     render(): JSX.Element {
@@ -47,18 +43,18 @@ export class CanvasToolbarComponent extends React.Component<{canvasController: C
     }
 
     private isToolActive(toolType: ToolType) {
-        return this.props.canvasController.getActiveTool().type === toolType;
+        return this.props.controller.getActiveTool().type === toolType;
     }
 
     private activateTool(toolType: ToolType) {
-        this.props.canvasController.setSelectedTool(toolType);
+        this.props.controller.setSelectedTool(toolType);
     }
 
     private zoomIn() {
-        this.context.controllers.svgCanvasController.cameraTool.zoomToNextStep();
+        this.props.controller.cameraTool.zoomToNextStep();
     }
 
     private zoomOut() {
-        this.context.controllers.svgCanvasController.cameraTool.zoomToPrevStep();
+        this.props.controller.cameraTool.zoomToPrevStep();
     }
 }

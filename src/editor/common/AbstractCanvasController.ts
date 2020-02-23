@@ -23,11 +23,14 @@ export abstract class AbstractCanvasController {
         return this.controllers.gameFacade;
     }
 
-    abstract setVisible(visible: boolean): void;
     abstract isVisible(): boolean;
+    abstract setVisible(visible: boolean): void;
     abstract getId(): string;
-    abstract resize(): void;
     abstract activate(): void;
+    
+    setup(): void {}
+    abstract resize(): void;
+    update(): void {}
     
     abstract setCanvasRenderer(renderFunc: () => void);
     abstract renderWindow();

@@ -29,7 +29,7 @@ export class SidebarComponent extends React.Component<SidebarComponentProps> {
     }
     
     componentDidMount() {
-        this.context.controllers.svgCanvasController.addToolbarRenderer(() => this.forceUpdate());
+        this.context.controllers.getWindowControllers().forEach(controller => controller.addToolbarRenderer(() => this.forceUpdate()));
     }
 
     render(): JSX.Element {
@@ -39,7 +39,7 @@ export class SidebarComponent extends React.Component<SidebarComponentProps> {
                     elements={[
                         {
                             title: 'General Settings',
-                            body: <GeneralFormComponent {...this.props}/>
+                            body: <GeneralFormComponent editor={this.context.controllers} {...this.props}/>
                         },
                         {
                             title: 'Object Settings',
@@ -47,7 +47,7 @@ export class SidebarComponent extends React.Component<SidebarComponentProps> {
                         },
                         {
                             title: 'Global Settings',
-                            body: <GlobalFormComponent/>
+                            body: <GlobalFormComponent editor={this.context.controllers}/>
                         }
                     ]}
                 />

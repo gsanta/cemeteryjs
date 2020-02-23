@@ -1,8 +1,8 @@
-import { MeshView } from '../models/views/MeshView';
-import { AbstractForm } from './AbstractForm';
-import { Controllers } from '../../Controllers';
 import { EventDispatcher } from '../../common/EventDispatcher';
 import { Events } from '../../common/Events';
+import { CanvasController } from '../CanvasController';
+import { MeshView } from '../models/views/MeshView';
+import { AbstractForm } from './AbstractForm';
 
 export enum GlobalSettingsPropType {
     IMPORT_FILE = 'import file'
@@ -11,12 +11,12 @@ export enum GlobalSettingsPropType {
 export class GlobalSettingsForm extends AbstractForm<GlobalSettingsPropType> {
     gameObject: MeshView;
 
-    private services: Controllers;
+    private controller: CanvasController;
     private eventDispatcher: EventDispatcher;
 
-    constructor(services: Controllers, eventDispatcher: EventDispatcher) {
+    constructor(controller: CanvasController, eventDispatcher: EventDispatcher) {
         super();
-        this.services = services;
+        this.controller = controller;
         this.eventDispatcher = eventDispatcher;
     }
 
@@ -25,11 +25,11 @@ export class GlobalSettingsForm extends AbstractForm<GlobalSettingsPropType> {
     protected setProp(val: any, prop: GlobalSettingsPropType) {
         switch (prop) {
             case GlobalSettingsPropType.IMPORT_FILE:
-                this.services.svgCanvasController.viewStore.clear();
-                this.services.svgCanvasController.writer.import(val.data);
-                this.services.svgCanvasController.viewStore.getGameObjects().filter(item => item.modelPath).forEach(item => this.services.svgCanvasController.model3dController.set3dModelForCanvasItem(item));
+                this.controller.viewStore.clear();
+                this.controller.importer.import(val.data);
+                this.controller.viewStore.getGameObjects().filter(item => item.modelPath).forEach(item => this.controller.model3dController.set3dModelForCanvasItem(item));
         }
-        this.services.svgCanvasController.renderWindow();
+        this.controller.renderWindow();
         this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
     }
 }

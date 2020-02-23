@@ -30,39 +30,38 @@ const SelectionComponentStyled = styled.rect`
     fill: transparent;
 `;
 
-export class CanvasComponent extends React.Component<{canvasController: CanvasController}> {
+export class CanvasComponent extends React.Component<{controller: CanvasController}> {
     static contextType = AppContext;
     context: AppContextType;
 
-    constructor(props: {canvasController: CanvasController}) {
+    constructor(props: {controller: CanvasController}) {
         super(props);
 
-        this.props.canvasController.setCanvasRenderer(() => this.forceUpdate());
+        this.props.controller.setCanvasRenderer(() => this.forceUpdate());
     }
 
     render(): JSX.Element {
-        const controller = this.context.controllers.svgCanvasController;
-        const cameraTool = controller.findToolByType(ToolType.CAMERA) as CameraTool;
+        const cameraTool = this.props.controller.findToolByType(ToolType.CAMERA) as CameraTool;
 
         return (
-            <EditorComponentStyled id={this.props.canvasController.getId()}>
-                <WindowToolbarStyled><CanvasToolbarComponent canvasController={controller as CanvasController}/></WindowToolbarStyled>
+            <EditorComponentStyled id={this.props.controller.getId()}>
+                <WindowToolbarStyled><CanvasToolbarComponent controller={this.props.controller as CanvasController}/></WindowToolbarStyled>
                 <CanvasComponentStyled
                     tabIndex={0}
                     viewBox={cameraTool.getCamera().getViewBoxAsString()}
                     id={this.context.controllers.svgCanvasId}
-                    onMouseDown={(e) => this.props.canvasController.mouseController.onMouseDown(e.nativeEvent)}
-                    onMouseMove={(e) => this.props.canvasController.mouseController.onMouseMove(e.nativeEvent)}
-                    onMouseUp={(e) => this.props.canvasController.mouseController.onMouseUp(e.nativeEvent)}
-                    onMouseLeave={(e) => this.props.canvasController.mouseController.onMouseOut(e.nativeEvent)}
-                    onKeyDown={e => this.props.canvasController.keyboardHandler.onKeyDown(e.nativeEvent)}
-                    onKeyUp={e => this.props.canvasController.keyboardHandler.onKeyUp(e.nativeEvent)}
+                    onMouseDown={(e) => this.props.controller.mouseController.onMouseDown(e.nativeEvent)}
+                    onMouseMove={(e) => this.props.controller.mouseController.onMouseMove(e.nativeEvent)}
+                    onMouseUp={(e) => this.props.controller.mouseController.onMouseUp(e.nativeEvent)}
+                    onMouseLeave={(e) => this.props.controller.mouseController.onMouseOut(e.nativeEvent)}
+                    onKeyDown={e => this.props.controller.keyboardHandler.onKeyDown(e.nativeEvent)}
+                    onKeyUp={e => this.props.controller.keyboardHandler.onKeyUp(e.nativeEvent)}
                 >
                     <defs>
                         <PathMarkersComponent/>
                     </defs>
-                    {this.props.canvasController.toolService.getToolExporter(ViewType.GameObject).export(false)}
-                    {this.props.canvasController.toolService.getToolExporter(ViewType.Path).export(false)}
+                    {this.props.controller.toolService.getToolExporter(ViewType.GameObject).export(false)}
+                    {this.props.controller.toolService.getToolExporter(ViewType.Path).export(false)}
                     {this.renderSelection()}
 
 
@@ -72,7 +71,7 @@ export class CanvasComponent extends React.Component<{canvasController: CanvasCo
     }
 
     private renderSelection(): JSX.Element {
-        const tool = this.props.canvasController.getActiveTool();
+        const tool = this.props.controller.getActiveTool();
 
         if (tool.supportsRectSelection()) {
             const selectionTool = tool as AbstractSelectionTool;

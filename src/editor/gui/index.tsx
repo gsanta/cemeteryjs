@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import { App } from './App';
 import { AppContext } from './Context';
-import { Controllers } from '../controllers/Controllers';
+import { Controllers } from '../Controllers';
 
 export function renderApp(element: HTMLDivElement) {
     ReactDOM.render(

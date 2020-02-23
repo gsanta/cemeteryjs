@@ -18,16 +18,17 @@ const PlaceHolderTextStyled = styled.div`
     opacity: 0.6;
 `;
 
-export function viewComponentFactory(services: Controllers): JSX.Element {
-    const selectedViews = services.svgCanvasController.viewStore.getSelectedViews();
+export function viewComponentFactory(editor: Controllers): JSX.Element {
+    const canvasController = (editor.getWindowControllerByName('canvas') as CanvasController);
+    const selectedViews = canvasController.viewStore.getSelectedViews();
     if (selectedViews.length !== 1) {
         return <PlaceHolderTextStyled>Select an object on canvas to change it's properties</PlaceHolderTextStyled>
     }
 
     switch(selectedViews[0].viewType) {
         case ViewType.GameObject:
-            return <MeshViewFormComponent view={selectedViews[0] as MeshView} canvasController={services.svgCanvasController}/>;
+            return <MeshViewFormComponent view={selectedViews[0] as MeshView} canvasController={canvasController}/>;
         case ViewType.Path:
-            return <PathViewFormComponent view={selectedViews[0] as PathView} canvasController={services.svgCanvasController}/>;
+            return <PathViewFormComponent view={selectedViews[0] as PathView} canvasController={canvasController}/>;
     }
 }

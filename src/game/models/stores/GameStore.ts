@@ -44,4 +44,8 @@ export class GameStore {
         this.paths = [];
         this.objs = [];
     }
+
+    isEmpty(): boolean {
+        return this.meshObjects.length === 0;
+    }
 }

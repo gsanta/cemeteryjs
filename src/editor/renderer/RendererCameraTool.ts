@@ -33,7 +33,7 @@ export class RendererCameraTool extends AbstractTool {
         if (nextZoomLevel) {
             this.camera.zoom(nextZoomLevel);
 
-            this.editorFacade.svgCanvasController.renderWindow();
+            this.controller.renderWindow();
         }
     }
 
@@ -43,7 +43,7 @@ export class RendererCameraTool extends AbstractTool {
         if (prevZoomLevel) {
             this.camera.zoom(prevZoomLevel)
 
-            this.editorFacade.svgCanvasController.renderWindow();
+            this.controller.renderWindow();
         }
     }
 

@@ -4,6 +4,7 @@ import { Point } from "../../../misc/geometry/shapes/Point";
 import { Controllers } from '../../Controllers';
 import { ToolType } from "./Tool";
 import { Rectangle } from "../../../misc/geometry/shapes/Rectangle";
+import { CanvasController } from '../CanvasController';
 
 export function cameraInitializer(canvasId: string) {
     if (typeof document !== 'undefined') {
@@ -37,12 +38,12 @@ export class CameraTool extends AbstractTool {
     readonly LOG_ZOOM_MAX = Math.log(CameraTool.ZOOM_MAX);
     readonly NUM_OF_STEPS: number;
 
-    private editorFacade: Controllers;
+    private controller: CanvasController;
 
-    constructor(editorFacade: Controllers, cameraInitializerFunc = cameraInitializer, numberOfSteps: number = 20) {
+    constructor(controller: CanvasController, cameraInitializerFunc = cameraInitializer, numberOfSteps: number = 20) {
         super(ToolType.CAMERA);
         this.NUM_OF_STEPS = numberOfSteps;
-        this.editorFacade = editorFacade;
+        this.controller = controller;
         this.cameraInitializerFunc = cameraInitializerFunc;
     }
 
@@ -50,11 +51,11 @@ export class CameraTool extends AbstractTool {
         const prevScale = this.camera.getScale(); 
         const prevTranslate = this.camera.getViewBox().topLeft; 
     
-        this.camera = this.cameraInitializerFunc(this.editorFacade.svgCanvasId);
+        this.camera = this.cameraInitializerFunc(this.controller.getId());
         this.camera.moveTo(prevTranslate);
         this.camera.zoom(prevScale);
 
-        this.editorFacade.svgCanvasController.renderWindow();
+        this.controller.renderWindow();
     }
 
     zoomToNextStep(canvasPos?: Point) {
@@ -68,7 +69,7 @@ export class CameraTool extends AbstractTool {
             this.camera.setTopLeftCorner(canvasPos, nextZoomLevel);
             this.camera.moveBy(ratioOfViewBox(this.camera, pointerRatio).negate());
 
-            this.editorFacade.svgCanvasController.renderWindow();
+            this.controller.renderWindow();
         }
     }
 
@@ -83,27 +84,25 @@ export class CameraTool extends AbstractTool {
             this.camera.setTopLeftCorner(canvasPos, prevZoomLevel);
             this.camera.moveBy(ratioOfViewBox(this.camera, pointerRatio).negate());
 
-            this.editorFacade.svgCanvasController.renderWindow();
+            this.controller.renderWindow();
         }
     }
 
     down() {
         const update = super.down();
 
-        this.startPosition = this.editorFacade.svgCanvasController.cameraTool.getCamera().getViewBox();
+        this.startPosition = this.controller.cameraTool.getCamera().getViewBox();
         return update;
     }
 
     drag() {
         super.drag();
 
-        const canvasController = this.editorFacade.svgCanvasController;
+        const delta = this.controller.pointer.pointer.getScreenDiff().div(this.getCamera().getScale());
         
-        const delta = canvasController.pointer.pointer.getScreenDiff().div(this.getCamera().getScale());
-        
-        canvasController.cameraTool.getCamera().moveBy(delta.negate());
+        this.controller.cameraTool.getCamera().moveBy(delta.negate());
 
-        canvasController.renderWindow();
+        this.controller.renderWindow();
     }
 
     up() {
@@ -114,7 +113,7 @@ export class CameraTool extends AbstractTool {
 
     getCamera() {
         if (this.camera === nullCamera) {
-            this.camera = this.cameraInitializerFunc(this.editorFacade.svgCanvasId);
+            this.camera = this.cameraInitializerFunc(this.controller.getId());
         }
 
         return this.camera;
