@@ -17,11 +17,6 @@ export class DeleteTool extends AbstractSelectionTool {
         return super.down();
     }
 
-    drag() {
-        super.drag();
-        this.controller.renderWindow();
-    }
-
     click(): boolean {
         if (!super.click()) {
             const hovered = this.controller.viewStore.getHoveredView();

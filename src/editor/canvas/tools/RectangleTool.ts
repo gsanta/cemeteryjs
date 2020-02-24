@@ -46,8 +46,7 @@ export class RectangleTool extends AbstractSelectionTool {
     }
 
     drag() {
-        super.drag();
-        
+        super.drag()
         if (this.lastPreviewRect) {
             this.controller.viewStore.remove(this.lastPreviewRect);
         }
@@ -69,6 +68,8 @@ export class RectangleTool extends AbstractSelectionTool {
     
             this.controller.renderWindow();
         }
+        
+        return true;
     }
 
     draggedUp() {

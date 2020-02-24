@@ -96,7 +96,7 @@ export class CameraTool extends AbstractTool {
         
         this.controller.cameraTool.getCamera().moveBy(delta.negate());
 
-        this.controller.renderWindow();
+        return true;
     }
 
     getCamera() {

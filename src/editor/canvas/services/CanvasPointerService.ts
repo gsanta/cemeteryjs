@@ -47,7 +47,7 @@ export class CanvasPointerService implements IPointerService {
         let updated = false;
         if (this.isDown && this.pointer.getDownDiff().len() > 2) {
             this.isDrag = true;
-            this.controller.getActiveTool().drag();
+            updated = this.controller.getActiveTool().drag();
         } else {
             updated = this.controller.getActiveTool().move();
         }

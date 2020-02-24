@@ -53,6 +53,7 @@ export class RendererCameraTool extends AbstractTool {
         const delta = this.controller.pointer.pointer.getScreenDiff().div(this.getCamera().getScale());
         
         this.camera.moveBy(delta.negate());
+        return true;
     }
 
     moveBy(delta: Point) {

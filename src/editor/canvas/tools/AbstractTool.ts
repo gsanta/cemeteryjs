@@ -19,13 +19,18 @@ export class AbstractTool implements Tool {
         return !!this.getSubtools().find(tool => tool.move());
     }
 
-    drag() {}
+    drag() {
+        return !!this.getSubtools().find(tool => tool.drag());
+    }
+
     click() {
         return !!this.getSubtools().find(tool => tool.click());
     }
 
     draggedUp() {}
-    up() {}
+    up() {
+        return !!this.getSubtools().find(tool => tool.up());
+    }
     activate() {}
     resize() {}
     exit() {}
@@ -42,4 +47,6 @@ export class AbstractTool implements Tool {
     getSubtools(): Tool[] {
         return [];
     }
+
+    execute
 }

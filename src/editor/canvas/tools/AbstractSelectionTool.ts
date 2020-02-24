@@ -30,14 +30,17 @@ export class AbstractSelectionTool extends AbstractTool {
 
 
     drag() {
-        super.drag();
-        const pointer = this.controller.pointer.pointer;
-        const minX = pointer.down.x < pointer.curr.x ? pointer.down.x : pointer.curr.x;
-        const minY = pointer.down.y < pointer.curr.y ? pointer.down.y : pointer.curr.y;
-        const maxX = pointer.down.x >= pointer.curr.x ? pointer.down.x : pointer.curr.x;
-        const maxY = pointer.down.y >= pointer.curr.y ? pointer.down.y : pointer.curr.y;
+        if (!super.drag()) {
+            const pointer = this.controller.pointer.pointer;
+            const minX = pointer.down.x < pointer.curr.x ? pointer.down.x : pointer.curr.x;
+            const minY = pointer.down.y < pointer.curr.y ? pointer.down.y : pointer.curr.y;
+            const maxX = pointer.down.x >= pointer.curr.x ? pointer.down.x : pointer.curr.x;
+            const maxY = pointer.down.y >= pointer.curr.y ? pointer.down.y : pointer.curr.y;
+    
+            this.selectionRect = new Rectangle(new Point(minX, minY), new Point(maxX, maxY));
+        }
 
-        this.selectionRect = new Rectangle(new Point(minX, minY), new Point(maxX, maxY));
+        return true;
     }
 
     up() {

@@ -18,10 +18,10 @@ export interface Tool {
     supportsRectSelection(): boolean;
     down(): boolean;
     move(): boolean;
-    drag();
+    drag(): boolean;
     click(): boolean;
     draggedUp();
-    up();
+    up(): boolean;
     activate();
     exit();
     keydown();

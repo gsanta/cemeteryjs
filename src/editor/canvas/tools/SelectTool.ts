@@ -13,13 +13,6 @@ export class SelectTool extends AbstractSelectionTool {
         return super.down();
     }
 
-    drag() {
-        if (super.drag()) {
-            
-        }
-        this.controller.renderWindow();
-    }
-
     draggedUp() {
         super.draggedUp();
         const canvasItems = this.controller.viewStore.getIntersectingItemsInRect(this.getSelectionRect());
