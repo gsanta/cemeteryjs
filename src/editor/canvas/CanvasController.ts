@@ -2,7 +2,6 @@ import { PathImporter } from './io/import/PathImporter';
 import { MeshViewImporter } from './io/import/RectangleImporter';
 import { CanvasImporter } from './io/import/CanvasImporter';
 import { PathView } from './models/views/PathView';
-import { NamingService } from '../common/services/NamingService';
 import { Editor } from '../Editor';
 import { MeshViewForm } from './forms/MeshViewForm';
 import { PathViewForm } from './forms/PathViewForm';
@@ -26,6 +25,7 @@ import { SelectTool } from './tools/SelectTool';
 import { Tool, ToolType } from './tools/Tool';
 import { ToolService } from './tools/ToolService';
 import { CanvasExporter } from './io/export/CanvasExporter';
+import { ServiceLocator } from '../ServiceLocator';
 
 export class CanvasController extends AbstractCanvasController {
     name = '2D View';
@@ -34,8 +34,6 @@ export class CanvasController extends AbstractCanvasController {
 
     viewStore: ViewStore;
 
-
-    nameingService: NamingService;
 
     mouseController: MouseHandler;
     keyboardHandler: KeyboardHandler;
@@ -59,11 +57,10 @@ export class CanvasController extends AbstractCanvasController {
     private toolbarRenderers: Function[] = [];
     // private renderToolbarFunc = () => null;
     
-    constructor(services: Editor) {
-        super(services);
+    constructor(editor: Editor, services: ServiceLocator) {
+        super(editor, services);
 
         this.viewStore = new ViewStore();
-        this.nameingService = new NamingService(this);
         
         this.mouseController = new MouseHandler(this);
         this.keyboardHandler = new KeyboardHandler(this);
@@ -106,7 +103,7 @@ export class CanvasController extends AbstractCanvasController {
             ]
         )
 
-        this.meshViewForm = new MeshViewForm(this, this.editor.eventDispatcher);
+        this.meshViewForm = new MeshViewForm(this, this.services, this.editor.eventDispatcher);
         this.pathForm = new PathViewForm();
         this.pointer = new CanvasPointerService(this);
     }

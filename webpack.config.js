@@ -51,7 +51,6 @@ module.exports = env => {
             new webpack.DefinePlugin({
                 DEBUG: env === 'debug' ? true : false
             }),
-            new MonacoWebpackPlugin(),
             // new BundleAnalyzerPlugin({
             //     analyzerPort: 8887
             // })

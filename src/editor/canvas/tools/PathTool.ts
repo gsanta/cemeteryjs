@@ -67,7 +67,7 @@ export class PathTool extends AbstractTool {
         const pointer = this.controller.pointer.pointer;
 
         this.pendingPath = new PathView(pointer.down.clone());
-        this.pendingPath.name = this.controller.nameingService.generateName(ViewType.Path);
+        this.pendingPath.name = this.controller.viewStore.generateUniqueName(ViewType.Path);
         this.controller.viewStore.addPath(this.pendingPath);
     }
 

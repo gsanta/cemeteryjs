@@ -4,6 +4,7 @@ import { EventDispatcher } from '../../common/EventDispatcher';
 import { Events } from '../../common/Events';
 import { AbstractForm, PropertyType } from "./AbstractForm";
 import { LocalStore } from '../../services/LocalStrore';
+import { ServiceLocator } from '../../ServiceLocator';
 
 export enum MeshViewPropType {
     COLOR = 'color',
@@ -29,15 +30,15 @@ export class MeshViewForm extends AbstractForm<MeshViewPropType> {
     gameObject: MeshView;
 
     private controller: CanvasController;
+    private services: ServiceLocator;
     private eventDispatcher: EventDispatcher;
-    private localStore: LocalStore;
 
     isAnimationSectionOpen = false;
 
-    constructor(controller: CanvasController, eventDispatcher: EventDispatcher) {
+    constructor(controller: CanvasController, services: ServiceLocator, eventDispatcher: EventDispatcher) {
         super(propertyTypes);
         this.controller = controller;
-        this.localStore = new LocalStore();
+        this.services = services;
         this.eventDispatcher = eventDispatcher;
     }
 
@@ -91,7 +92,7 @@ export class MeshViewForm extends AbstractForm<MeshViewPropType> {
                 break;
             case MeshViewPropType.MODEL:
                 this.gameObject.modelPath = val.path;
-                this.localStore.saveAsset(val.path, val.data)
+                this.services.storageService().saveAsset(val.path, val.data)
                 .finally(() => {
                     this.controller.model3dController.set3dModelForCanvasItem(this.gameObject);
                     this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
@@ -138,5 +139,7 @@ export class MeshViewForm extends AbstractForm<MeshViewPropType> {
                 this.controller.getGameApi().meshObjectUpdater.updateAnimationState(this.gameObject.animationState, this.gameObject.name)
                 break;
         }
+
+        this.services.storageService().saveXml(this.controller.exporter.export());
     }
 }

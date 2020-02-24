@@ -12,8 +12,8 @@ export class RectangleTool extends AbstractSelectionTool {
     private eventDispatcher: EventDispatcher;
     private lastPreviewRect: MeshView;
 
-    constructor(services: CanvasController, eventDispatcher: EventDispatcher) {
-        super(services, ToolType.RECTANGLE, false);
+    constructor(controller: CanvasController, eventDispatcher: EventDispatcher) {
+        super(controller, ToolType.RECTANGLE, false);
 
         this.eventDispatcher = eventDispatcher;
     }
@@ -34,7 +34,7 @@ export class RectangleTool extends AbstractSelectionTool {
         gameObject.scale = 1;
         gameObject.color = 'grey';
 
-        gameObject.name = this.controller.nameingService.generateName(ViewType.GameObject);
+        gameObject.name = this.controller.viewStore.generateUniqueName(ViewType.GameObject);
 
         this.controller.viewStore.addRect(gameObject);
         this.controller.viewStore.removeSelectionAll()
@@ -62,7 +62,7 @@ export class RectangleTool extends AbstractSelectionTool {
         gameObject.texturePath = null;
         gameObject.scale = 1;
         gameObject.color = 'grey';
-        gameObject.name = this.controller.nameingService.generateName(ViewType.GameObject);
+        gameObject.name = this.controller.viewStore.generateUniqueName(ViewType.GameObject);
 
         if (positions.length > 0) {
             this.lastPreviewRect = this.controller.viewStore.addRect(gameObject);

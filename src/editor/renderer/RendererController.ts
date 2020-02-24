@@ -12,6 +12,7 @@ import { RendererCameraTool } from './RendererCameraTool';
 import { RendererPointerService } from './RendererPointerService';
 import { WebglCanvasImporter } from './WebglCanvasImporter';
 import { CanvasController } from '../canvas/CanvasController';
+import { ServiceLocator } from '../ServiceLocator';
 (<any> window).earcut = require('earcut');
 
 export class RendererController extends AbstractCanvasController {
@@ -33,8 +34,8 @@ export class RendererController extends AbstractCanvasController {
     private renderCanvasFunc: () => void;
     meshes: Mesh[] = [];
 
-    constructor(editor: Editor) {
-        super(editor);
+    constructor(editor: Editor, services: ServiceLocator) {
+        super(editor, services);
         this.mouseHander = new MouseHandler(this);
         this.pointer = new RendererPointerService(this);
         this.update = this.update.bind(this);

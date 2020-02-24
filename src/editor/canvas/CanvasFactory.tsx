@@ -4,15 +4,16 @@ import { CanvasComponent } from "./gui/CanvasComponent";
 import { CanvasController } from "./CanvasController";
 import { AbstractCanvasController } from "../common/AbstractCanvasController";
 import { Editor } from "../Editor";
+import { ServiceLocator } from "../ServiceLocator";
 
 export class CanvasFactory implements WindowFactory {
     name = 'canvas';
     
     private controller: CanvasController;
 
-    getWindowController(editor: Editor): AbstractCanvasController {
+    getWindowController(editor: Editor, services: ServiceLocator): AbstractCanvasController {
         if (!this.controller) {
-            this.controller = new CanvasController(editor);
+            this.controller = new CanvasController(editor, services);
         }
         return this.controller;
     }

@@ -7,6 +7,8 @@ import Split from 'split.js'
 import { windowFactory } from '../WindowFactory';
 import { SidebarComponent } from '../canvas/gui/forms/SidebarComponent';
 import { AbstractCanvasController } from '../common/AbstractCanvasController';
+import { SpinnerComponent } from './misc/SpinnerComponent';
+import { SpinnerOverlayComponent } from './misc/SpinnerOverlayComponent';
 
 
 export interface AppState {
@@ -52,7 +54,7 @@ export class App extends React.Component<{}, AppState> {
     render() {
         const canvases = this.context.controllers.getWindowControllers()
             .filter(canvas => canvas.isVisible())
-            .map(canvas => <div id={`${canvas.getId()}-split`}>{windowFactory(canvas)}</div>)
+            .map(canvas => <div id={`${canvas.getId()}-split`}>{windowFactory(canvas)}</div>);
 
         return (
             <div className="style-nightshifs">
@@ -62,6 +64,7 @@ export class App extends React.Component<{}, AppState> {
                     </div>
                     {canvases}
                 </div>
+                {this.context.controllers.isLoading ? <SpinnerOverlayComponent/> : null}
             </div>
         );
     }

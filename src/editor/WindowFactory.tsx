@@ -5,10 +5,11 @@ import { AbstractCanvasController } from './common/AbstractCanvasController';
 import { Editor } from './Editor';
 import { RendererComponent } from './renderer/gui/RendererComponent';
 import { RendererController } from './renderer/RendererController';
+import { ServiceLocator } from './ServiceLocator';
 
 export interface WindowFactory {
     name: string;
-    getWindowController(editor: Editor): AbstractCanvasController;
+    getWindowController(editor: Editor, services: ServiceLocator): AbstractCanvasController;
     renderWindowComponent(controller: AbstractCanvasController): JSX.Element;
     renderToolbarComponent(): JSX.Element;
 }

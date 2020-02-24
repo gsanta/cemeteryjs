@@ -7,13 +7,12 @@ import { RendererFactory } from './renderer/RendererFactory';
 import { WindowFactory } from './WindowFactory';
 import { CanvasController } from './canvas/CanvasController';
 import { LocalStore } from './services/LocalStrore';
+import { ServiceLocator } from './ServiceLocator';
 
 export class Editor {
     gameFacade: GameFacade;
     gameApi: GameApi;
     
-    localStore: LocalStore;
-
     windowFactories: WindowFactory[];
     
     eventDispatcher: EventDispatcher;
@@ -21,14 +20,18 @@ export class Editor {
     svgCanvasId: string;
     renderFunc: () => void;
     globalSettingsForm: GlobalSettingsForm;
+    isLoading = true;
 
-    constructor() {
+    private services: ServiceLocator;
+
+    constructor(serviceLocator: ServiceLocator) {
         this.windowFactories = [
             new CanvasFactory(),
             new RendererFactory()
-        ]
+        ];
 
-        this.localStore = new LocalStore();
+        this.services = serviceLocator;
+
         this.eventDispatcher = new EventDispatcher();
 
         this.globalSettingsForm = new GlobalSettingsForm(this.getWindowControllerByName('canvas') as CanvasController, this.eventDispatcher);
@@ -41,15 +44,22 @@ export class Editor {
         this.gameFacade.setup();
         this.gameApi = new GameApi(this.gameFacade);
 
-        this.windowFactories.forEach(factory => factory.getWindowController(this).setup());
+        this.windowFactories.forEach(factory => factory.getWindowController(this, this.services).setup());
+        this.services.storageService().loadXml().then((str: string) => {
+            (this.getWindowControllerByName('canvas') as CanvasController).importer.import(str);
+        })
+        .finally(() => {
+            this.isLoading = false;
+            this.render();
+        });
     }
 
     getWindowControllerByName(name: string) {
-        return this.windowFactories.find(factory => factory.name === name).getWindowController(this);
+        return this.windowFactories.find(factory => factory.name === name).getWindowController(this, this.services);
     }
 
     getWindowControllers() {
-        return this.windowFactories.map(factory => factory.getWindowController(this));
+        return this.windowFactories.map(factory => factory.getWindowController(this, this.services));
     }
 
     getWindowFactory(name: string) {

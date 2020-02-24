@@ -4,15 +4,16 @@ import { WindowFactory } from "../WindowFactory";
 import { RendererComponent } from "./gui/RendererComponent";
 import { RendererController } from "./RendererController";
 import * as React from 'react';
+import { ServiceLocator } from "../ServiceLocator";
 
 export class RendererFactory implements WindowFactory {
     name = 'renderer';
     
     private controller: RendererController;
 
-    getWindowController(editor: Editor): AbstractCanvasController {
+    getWindowController(editor: Editor, services: ServiceLocator): AbstractCanvasController {
         if (!this.controller) {
-            this.controller = new RendererController(editor);
+            this.controller = new RendererController(editor, services);
         }
         return this.controller;
     }

@@ -1,12 +1,32 @@
 
 
 export class LocalStore {
-    private version = 1;
+    serviceName = 'local-store'
+    private version = 2;
     private name = 'editor';
 
     constructor() {
         const request = window.indexedDB.open(this.name, this.version);
         request.onupgradeneeded = () => this.upgradeDb(request);
+    }
+
+    async saveXml(xml: string) {
+        if (!this.isDbSupported()) { return }
+
+        const db = await this.getDb();
+
+        var objectStore = db.transaction(["xmls"], "readwrite").objectStore("xmls");
+        objectStore.add({id: '1', data: xml});
+    }
+
+    async loadXml(): Promise<string> {
+        if (!this.isDbSupported()) { return }
+
+        const db = await this.getDb();
+
+        const objectStore = db.transaction(["xmls"], "readwrite").objectStore("xmls");
+
+        return await this.getData(objectStore.get('1'));
     }
     
     async saveAsset(name: string, data: string) {
@@ -44,6 +64,7 @@ export class LocalStore {
         const db = request.result;
 
         db.createObjectStore("assets", { keyPath: "name" });
+        db.createObjectStore("xmls", { keyPath: "id" });
     }
 
     private getDb(): Promise<IDBDatabase> {

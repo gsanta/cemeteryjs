@@ -14,7 +14,9 @@ export class SelectTool extends AbstractSelectionTool {
     }
 
     drag() {
-        super.drag();
+        if (super.drag()) {
+            
+        }
         this.controller.renderWindow();
     }
 

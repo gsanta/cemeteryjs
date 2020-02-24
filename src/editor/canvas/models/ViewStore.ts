@@ -1,7 +1,7 @@
 import { Point } from '../../../misc/geometry/shapes/Point';
 import { Polygon } from '../../../misc/geometry/shapes/Polygon';
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
-import { without } from '../../../game/import/Functions';
+import { without, maxBy } from '../../../game/import/Functions';
 import { CanvasItemTag } from './CanvasItem';
 import { MeshView } from './views/MeshView';
 import { View, ViewType } from './views/View';
@@ -29,6 +29,11 @@ export class ViewStore{
     private layers: Map<View, number> = new Map();
     private tags: Map<View, Set<CanvasItemTag>> = new Map();
     private views: View[] = [];
+    private naming: Naming;
+
+    constructor() {
+        this.naming = new Naming(this);
+    }
 
     addPath(arrow: PathView) {
         this.views.push(arrow);
@@ -127,5 +132,39 @@ export class ViewStore{
 
     removeSelectionAll() {
         this.removeTag(this.getSelectedViews(), CanvasItemTag.SELECTED);
+    }
+
+    generateUniqueName(viewType: ViewType) {
+        return this.naming.generateName(viewType);
+    }
+}
+
+export class Naming {
+    private viewStore: ViewStore;
+
+    constructor(viewStore: ViewStore) {
+        this.viewStore = viewStore;
+    }
+
+    generateName(type: ViewType) {
+        const name = `${type}${this.getMaxIndex(type) + 1}`.toLocaleLowerCase();
+        return name;
+    }
+
+    private getMaxIndex(type: ViewType): number {
+        const pattern = this.createPattern(type);
+        const views = this.viewStore.getViewsByType(type).filter(view => view.name.match(pattern));
+
+        if (views.length === 0) {
+            return 0;
+        } else {
+            const max = maxBy<View>(views, (a, b) => parseInt(a.name.match(pattern)[1], 10) - parseInt(b.name.match(pattern)[1], 10));
+            return parseInt(max.name.match(pattern)[1], 10);
+        }
+
+    }
+
+    private createPattern(type: ViewType) {
+        return new RegExp(`${type}(\\d+)`, 'i');
     }
 }

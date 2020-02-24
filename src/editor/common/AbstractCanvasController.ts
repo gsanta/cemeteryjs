@@ -2,6 +2,7 @@ import { FileFormat } from '../../game/import/WorldGenerator';
 import { Editor } from '../Editor';
 import { GameApi } from '../../game/GameApi';
 import { GameFacade } from '../../game/GameFacade';
+import { ServiceLocator } from '../ServiceLocator';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;
@@ -11,8 +12,10 @@ export interface CanvasViewSettings {
 export abstract class AbstractCanvasController {
     name: string;
     protected editor: Editor;
-    constructor(controllers: Editor) {
+    protected services: ServiceLocator;
+    constructor(controllers: Editor, services: ServiceLocator) {
         this.editor = controllers;
+        this.services = services;
     }
 
     getGameApi(): GameApi {
