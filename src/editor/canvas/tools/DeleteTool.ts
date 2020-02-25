@@ -33,19 +33,19 @@ export class DeleteTool extends AbstractTool {
         return true;
     }
 
-    up() {
-        this.rectSelector.finish();
-        return true;
-    }
     
     draggedUp() {
-        super.draggedUp();
         const canvasItems = this.controller.viewStore.getIntersectingItemsInRect(this.controller.feedbackStore.rectSelectFeedback.rect);
 
         canvasItems.forEach(item => this.controller.viewStore.remove(item));
 
-        this.controller.renderWindow();
+        this.rectSelector.finish();
 
+        this.controller.renderWindow();
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
+    }
+
+    leave() {
+        this.rectSelector.finish();
     }
 }
