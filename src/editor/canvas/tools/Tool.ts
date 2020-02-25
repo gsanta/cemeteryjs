@@ -24,6 +24,7 @@ export interface Tool {
     up(): boolean;
     activate();
     exit();
+    leave();
     keydown();
     over(item: View): boolean;
     out(item: View): boolean;

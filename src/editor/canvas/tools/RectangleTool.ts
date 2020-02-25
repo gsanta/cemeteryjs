@@ -1,25 +1,26 @@
-import { MeshView } from '../models/views/MeshView';
-import { ViewType } from '../models/views/View';
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
 import { EventDispatcher } from '../../common/EventDispatcher';
 import { Events } from '../../common/Events';
 import { CanvasController } from '../CanvasController';
 import { CanvasItemTag } from '../models/CanvasItem';
-import { AbstractSelectionTool } from './AbstractSelectionTool';
+import { MeshView } from '../models/views/MeshView';
+import { ViewType } from '../models/views/View';
+import { AbstractTool } from './AbstractTool';
 import { ToolType } from './Tool';
+import { RectangleSelector } from './selection/RectangleSelector';
 
-export class RectangleTool extends AbstractSelectionTool {
+export class RectangleTool extends AbstractTool {
     private eventDispatcher: EventDispatcher;
     private lastPreviewRect: MeshView;
+    private rectSelector: RectangleSelector;
+    private controller: CanvasController;
 
     constructor(controller: CanvasController, eventDispatcher: EventDispatcher) {
-        super(controller, ToolType.RECTANGLE, false);
+        super(ToolType.RECTANGLE);
 
         this.eventDispatcher = eventDispatcher;
-    }
-
-    down() {
-        return super.down();
+        this.controller = controller;
+        this.rectSelector = new RectangleSelector(controller);
     }
 
     click() {
@@ -50,9 +51,11 @@ export class RectangleTool extends AbstractSelectionTool {
         if (this.lastPreviewRect) {
             this.controller.viewStore.remove(this.lastPreviewRect);
         }
-        const positions = this.getPositionsInSelection();
+        this.rectSelector.updateRect(this.controller.pointer.pointer);
+        this.controller.feedbackStore.rectSelectFeedback.isVisible = false;
+        const positions = this.rectSelector.getPositionsInSelection();
 
-        const dimensions = this.getSelectionRect();
+        const dimensions = this.controller.feedbackStore.rectSelectFeedback.rect;
 
         const gameObject: MeshView = new MeshView(null, dimensions, name);
         gameObject.type = 'rect'

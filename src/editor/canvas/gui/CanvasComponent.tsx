@@ -7,7 +7,6 @@ import { ToolType } from '../tools/Tool';
 import { CameraTool } from '../tools/CameraTool';
 import { CanvasToolbarComponent } from './CanvasToolbarComponent';
 import { ViewType } from '../models/views/View';
-import { AbstractSelectionTool } from '../tools/AbstractSelectionTool';
 import { PathMarkersComponent } from './PathMarkersComponent';
 import { WindowToolbarStyled } from '../../gui/windows/WindowToolbar';
 
@@ -62,7 +61,7 @@ export class CanvasComponent extends React.Component<{controller: CanvasControll
                     </defs>
                     {this.props.controller.toolService.getToolExporter(ViewType.GameObject).export(false)}
                     {this.props.controller.toolService.getToolExporter(ViewType.Path).export(false)}
-                    {this.renderSelection()}
+                    {this.renderFeedbacks()}
 
 
                 </CanvasComponentStyled>
@@ -70,18 +69,17 @@ export class CanvasComponent extends React.Component<{controller: CanvasControll
         );
     }
 
-    private renderSelection(): JSX.Element {
-        const tool = this.props.controller.getActiveTool();
+    private renderFeedbacks(): JSX.Element {
+        const feedback = this.props.controller.feedbackStore.rectSelectFeedback;
 
-        if (tool.supportsRectSelection()) {
-            const selectionTool = tool as AbstractSelectionTool;
-            if (!selectionTool.displaySelectionRect()) { return null; }
+        if (feedback && feedback.isVisible) {
+            const rect = this.props.controller.feedbackStore.rectSelectFeedback.rect;
             return (
                 <SelectionComponentStyled 
-                    x={selectionTool.getSelectionRect().topLeft.x}
-                    y={selectionTool.getSelectionRect().topLeft.y}
-                    width={selectionTool.getSelectionRect().bottomRight.x - selectionTool.getSelectionRect().topLeft.x}
-                    height={selectionTool.getSelectionRect().bottomRight.y - selectionTool.getSelectionRect().topLeft.y}
+                    x={rect.topLeft.x}
+                    y={rect.topLeft.y}
+                    width={rect.getWidth()}
+                    height={rect.getHeight()}
                 />
             );
         }

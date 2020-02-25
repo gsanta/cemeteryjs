@@ -1,20 +1,25 @@
 import { CanvasController } from '../CanvasController';
-import { AbstractSelectionTool } from './AbstractSelectionTool';
 import { ToolType } from './Tool';
 import { EventDispatcher } from '../../common/EventDispatcher';
 import { Events } from '../../common/Events';
+import { AbstractTool } from './AbstractTool';
+import { RectangleSelector } from './selection/RectangleSelector';
 
-export class DeleteTool extends AbstractSelectionTool {
+export class DeleteTool extends AbstractTool {
     private eventDispatcher: EventDispatcher;
+    private controller: CanvasController;
+    private rectSelector: RectangleSelector;
 
     constructor(controller: CanvasController, eventDispatcher: EventDispatcher) {
-        super(controller, ToolType.DELETE, true);
-        
+        super(ToolType.DELETE);
+        this.controller = controller;
         this.eventDispatcher = eventDispatcher;
+        this.rectSelector = new RectangleSelector(controller);
     }
 
-    down() {
-        return super.down();
+    drag() {
+        this.rectSelector.updateRect(this.controller.pointer.pointer);
+        return true;
     }
 
     click(): boolean {
@@ -27,10 +32,15 @@ export class DeleteTool extends AbstractSelectionTool {
 
         return true;
     }
+
+    up() {
+        this.rectSelector.finish();
+        return true;
+    }
     
     draggedUp() {
         super.draggedUp();
-        const canvasItems = this.controller.viewStore.getIntersectingItemsInRect(this.getSelectionRect());
+        const canvasItems = this.controller.viewStore.getIntersectingItemsInRect(this.controller.feedbackStore.rectSelectFeedback.rect);
 
         canvasItems.forEach(item => this.controller.viewStore.remove(item));
 

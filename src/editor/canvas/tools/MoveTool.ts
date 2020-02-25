@@ -12,6 +12,7 @@ export class MoveTool extends AbstractTool {
     private origDimensions: Rectangle[] = [];
 
     private isMoving = false;
+    private isDragStart = true;
 
     constructor(controller: CanvasController, eventDispatcher: EventDispatcher) {
         super(ToolType.MOVE);
@@ -41,7 +42,7 @@ export class MoveTool extends AbstractTool {
         if (this.isMoving) {
             this.moveItems();
             return true;
-        } else {
+        } else if (this.isDragStart) {
             const hovered = this.controller.viewStore.getHoveredView();
             const selected = this.controller.viewStore.getSelectedViews();
             
@@ -52,13 +53,22 @@ export class MoveTool extends AbstractTool {
             }
         }
 
+        this.isDragStart = false;
+
         return false;
     }
 
     up() {
         super.up();
+        this.isDragStart = true;
         this.isMoving = false;
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
+        return true;
+    }
+
+    leave() {
+        this.isDragStart = true;
+        this.isMoving = false;
     }
 
     private moveItems() {

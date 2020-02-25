@@ -26,6 +26,7 @@ import { Tool, ToolType } from './tools/Tool';
 import { ToolService } from './tools/ToolService';
 import { CanvasExporter } from './io/export/CanvasExporter';
 import { ServiceLocator } from '../ServiceLocator';
+import { FeedbackStore } from './models/FeedbackStore';
 
 export class CanvasController extends AbstractCanvasController {
     name = '2D View';
@@ -33,7 +34,7 @@ export class CanvasController extends AbstractCanvasController {
     visible = true;
 
     viewStore: ViewStore;
-
+    feedbackStore: FeedbackStore;
 
     mouseController: MouseHandler;
     keyboardHandler: KeyboardHandler;
@@ -61,6 +62,7 @@ export class CanvasController extends AbstractCanvasController {
         super(editor, services);
 
         this.viewStore = new ViewStore();
+        this.feedbackStore = new FeedbackStore();
         
         this.mouseController = new MouseHandler(this);
         this.keyboardHandler = new KeyboardHandler(this);

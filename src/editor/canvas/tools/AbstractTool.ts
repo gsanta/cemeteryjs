@@ -44,9 +44,9 @@ export class AbstractTool implements Tool {
         return !!this.getSubtools().find(tool => tool.out(item));
     }
 
+    leave() {}
+
     getSubtools(): Tool[] {
         return [];
     }
-
-    execute
 }
