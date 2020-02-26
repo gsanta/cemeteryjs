@@ -4,6 +4,7 @@ import { Events } from '../../common/Events';
 import { CanvasController } from "../CanvasController";
 import { AbstractTool } from './AbstractTool';
 import { ToolType } from './Tool';
+import { View } from "../models/views/View";
 
 export class MoveTool extends AbstractTool {
     private eventDispatcher: EventDispatcher;
@@ -13,6 +14,7 @@ export class MoveTool extends AbstractTool {
 
     private isMoving = false;
     private isDragStart = true;
+    private hoveredAtDown: View;
 
     constructor(controller: CanvasController, eventDispatcher: EventDispatcher) {
         super(ToolType.MOVE);
@@ -20,21 +22,11 @@ export class MoveTool extends AbstractTool {
         this.controller = controller;
     }
 
-    // down() {
-    //     super.down();
+    down() {
+        this.hoveredAtDown = this.controller.viewStore.getHoveredView(); 
 
-    //     const canvasStore = this.controller.viewStore;
-
-    //     const selectedItems = canvasStore.getSelectedViews();
-    //     this.origDimensions = [];
-
-    //     if (selectedItems.length) {
-    //         this.origDimensions = selectedItems.map(item => item.dimensions);
-    //         return true;
-    //     }
-
-    //     return false;
-    // }
+        return false;
+    }
 
     drag() {
         super.drag();
@@ -43,14 +35,7 @@ export class MoveTool extends AbstractTool {
             this.moveItems();
             return true;
         } else if (this.isDragStart) {
-            const hovered = this.controller.viewStore.getHoveredView();
-            const selected = this.controller.viewStore.getSelectedViews();
-            
-            if (selected.includes(hovered)) {
-                this.isMoving = true;
-                this.moveItems();
-                return true;
-            }
+            return this.initMove();
         }
 
         this.isDragStart = false;
@@ -58,17 +43,37 @@ export class MoveTool extends AbstractTool {
         return false;
     }
 
-    up() {
-        super.up();
+    draggedUp() {
+        super.draggedUp();
+        let update = false;
+
+        if (!this.isDragStart) {
+            this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
+            update = true;
+        }
+
         this.isDragStart = true;
         this.isMoving = false;
-        this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
-        return true;
+
+        return update;
     }
 
     leave() {
         this.isDragStart = true;
         this.isMoving = false;
+    }
+
+    private initMove(): boolean {
+        const selected = this.controller.viewStore.getSelectedViews();
+        this.origDimensions = [];
+        
+        if (selected.includes(this.hoveredAtDown)) {
+            this.origDimensions = selected.map(item => item.dimensions);
+
+            this.isMoving = true;
+            this.moveItems();
+            return true;
+        }
     }
 
     private moveItems() {

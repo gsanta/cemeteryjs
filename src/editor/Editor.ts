@@ -45,13 +45,16 @@ export class Editor {
         this.gameApi = new GameApi(this.gameFacade);
 
         this.windowFactories.forEach(factory => factory.getWindowController(this, this.services).setup());
-        this.services.storageService().loadXml().then((str: string) => {
-            (this.getWindowControllerByName('canvas') as CanvasController).importer.import(str);
-        })
-        .finally(() => {
-            this.isLoading = false;
-            this.render();
-        });
+        this.services.storageService().loadXml()
+            .then((str: string) => {
+                (this.getWindowControllerByName('canvas') as CanvasController).importer.import(str);
+                this.isLoading = false;
+                this.render();
+            })
+            .catch(() => {
+                this.isLoading = false;
+                this.render();
+            });
     }
 
     getWindowControllerByName(name: string) {

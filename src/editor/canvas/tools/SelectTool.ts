@@ -20,7 +20,10 @@ export class SelectTool extends MultiTool {
     }
 
     doDraggedUp() {
-        const canvasItems = this.controller.viewStore.getIntersectingItemsInRect(this.controller.feedbackStore.rectSelectFeedback.rect);
+        const feedback = this.controller.feedbackStore.rectSelectFeedback;
+        if (!feedback) { return }
+
+        const canvasItems = this.controller.viewStore.getIntersectingItemsInRect(feedback.rect);
         const canvasStore = this.controller.viewStore;
         
         canvasStore.removeTag(this.controller.viewStore.getViews(), CanvasItemTag.SELECTED);
@@ -35,6 +38,6 @@ export class SelectTool extends MultiTool {
     }
 
     getSubtools() {
-        return [this.controller.pointerTool, this.controller.moveTool];
+        return [this.controller.moveTool, this.controller.pointerTool];
     }
 }

@@ -56,7 +56,7 @@ export class LocalStore {
                 reject();
             };
 
-            request.onsuccess = () => resolve(request.result.data);
+            request.onsuccess = () => request.result ? resolve(request.result.data) : resolve(null);
         });
     }
 
