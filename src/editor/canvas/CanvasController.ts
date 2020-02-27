@@ -124,9 +124,10 @@ export class CanvasController extends AbstractCanvasController {
 
     setSelectedTool(toolType: ToolType) {
         if (this.selectedTool) {
-            this.getActiveTool().exit();
+            this.getActiveTool().unselect();
         }
         this.selectedTool = toolType;
+        this.getActiveTool().select();
         this.renderToolbar();
     }
 

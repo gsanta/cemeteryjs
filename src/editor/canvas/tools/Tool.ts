@@ -5,7 +5,6 @@ export enum ToolType {
     RECTANGLE = 'rectangle',
     DELETE = 'delete',
     SELECT = 'select',
-    MOVE_AND_SELECT = 'move-and-select',
     MOVE = 'move',
     PAN = 'pan',
     CAMERA = 'camera',
@@ -15,19 +14,20 @@ export enum ToolType {
 
 export interface Tool {
     type: ToolType;
-    supportsRectSelection(): boolean;
     down(): boolean;
     move(): boolean;
     drag(): boolean;
     click(): boolean;
-    draggedUp();
+    draggedUp(): boolean;
     up(): boolean;
-    activate();
-    exit();
-    leave();
-    keydown();
+    activate(): boolean;
+    leave(): boolean;
+    keydown(): boolean;
     over(item: View): boolean;
     out(item: View): boolean;
+
+    select(): void;
+    unselect(): void;
 
     getSubtools(): Tool[];
 }

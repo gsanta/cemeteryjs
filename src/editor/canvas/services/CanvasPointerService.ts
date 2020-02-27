@@ -56,6 +56,7 @@ export class CanvasPointerService implements IPointerService {
     }
 
     pointerUp(e: IPointerEvent): void {
+        console.log(this.controller.getActiveTool())
         let update = false;
         if (this.isDrag) {
             update = this.controller.getActiveTool().draggedUp();

@@ -14,6 +14,15 @@ export class SelectTool extends MultiTool {
         this.rectSelector = new RectangleSelector(controller);
     }
 
+    doClick() {
+        if (this.controller.viewStore.getSelectedViews().length > 0) {
+            this.controller.viewStore.removeTag(this.controller.viewStore.getViews(), CanvasItemTag.SELECTED);
+            return true;
+        }
+
+        return false;
+    }
+
     doDrag() {
         this.rectSelector.updateRect(this.controller.pointer.pointer);
         return true; 

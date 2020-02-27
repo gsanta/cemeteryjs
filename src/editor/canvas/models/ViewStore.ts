@@ -126,6 +126,10 @@ export class ViewStore{
         return this.getTaggedItems(CanvasItemTag.SELECTED);
     }
 
+    getSelectedPathes(): PathView[] {
+        return <PathView[]> this.getSelectedViews().filter(v => v.viewType === ViewType.Path);
+    }
+
     getSelectedGameObjects(): MeshView[] {
         return <MeshView[]> this.getSelectedViews().filter(v => v.viewType === ViewType.GameObject);
     }

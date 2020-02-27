@@ -43,9 +43,11 @@ export class DeleteTool extends AbstractTool {
 
         this.controller.renderWindow();
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
+        return true;
     }
 
     leave() {
         this.rectSelector.finish();
+        return true;
     }
 }

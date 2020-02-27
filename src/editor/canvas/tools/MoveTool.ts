@@ -61,6 +61,7 @@ export class MoveTool extends AbstractTool {
     leave() {
         this.isDragStart = true;
         this.isMoving = false;
+        return undefined;
     }
 
     private initMove(): boolean {

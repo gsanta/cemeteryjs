@@ -83,11 +83,14 @@ export class RectangleTool extends AbstractTool {
             this.lastPreviewRect = null;
         }
 
-        this.controller.renderWindow();
         this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
+        return true;
+
+        // this.controller.renderWindow();
     }
 
     leave() {
         this.rectSelector.finish();
+        return true;
     }
 }

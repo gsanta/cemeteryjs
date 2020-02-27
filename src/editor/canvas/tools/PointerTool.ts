@@ -8,6 +8,8 @@ import { PathView } from "../models/views/PathView";
 export class PointerTool extends AbstractTool {
     private controller: CanvasController;
 
+    private selectableViews: ViewType[];
+
     constructor(controller: CanvasController) {
         super(ToolType.POINTER);
         this.controller = controller;
@@ -16,14 +18,12 @@ export class PointerTool extends AbstractTool {
     click() {
         if (!super.click()) {
             let update = false;
-            if (this.controller.viewStore.getSelectedViews().length > 0) {
-                this.controller.viewStore.removeTag(this.controller.viewStore.getViews(), CanvasItemTag.SELECTED);
-                update = true;
-            }
+
 
             const hoveredView = this.controller.viewStore.getHoveredView()
 
-            if (hoveredView) {
+            if (hoveredView && (!this.selectableViews || this.selectableViews.includes(hoveredView.viewType))) {
+                this.controller.viewStore.removeSelectionAll();
                 this.controller.viewStore.addTag([hoveredView], CanvasItemTag.SELECTED);
                 hoveredView.selectHoveredSubview();
 
@@ -34,19 +34,6 @@ export class PointerTool extends AbstractTool {
             return update;
         }
 
-        return true;
-    }
-
-    move() {
-        // if (!super.move()) {
-        //     if (this.controller.viewStore.getHoveredView()) {
-        //         this.updateSubviewHover(this.controller.viewStore.getHoveredView());
-        //         return true;
-        //     }
-        //     return false;
-        // }
-
-        // return true;
         return false;
     }
 
@@ -76,6 +63,10 @@ export class PointerTool extends AbstractTool {
         }
 
         return true;
+    }
+
+    setSelectableViews(views: ViewType[]) {
+        this.selectableViews = views;
     }
 
     private updateSubviewHover(item: View) {

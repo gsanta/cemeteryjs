@@ -15,16 +15,13 @@ export abstract class MultiTool extends AbstractTool {
         return !!(this.getSubtools().find(tool => tool.click()) || this.doClick());
     }
     draggedUp() {
-        return this.getSubtools().find(tool => tool.draggedUp()) || this.doDraggedUp();
+        return !!this.getSubtools().find(tool => tool.draggedUp()) || this.doDraggedUp();
     }
     up() {
         return !!(this.getSubtools().find(tool => tool.up()) || this.doUp());
     }
-    exit() {
-        return this.getSubtools().find(tool => tool.exit()) || this.doExit();
-    }
     keydown() {
-        return this.getSubtools().find(tool => tool.keydown()) || this.doKeydown();
+        return !!this.getSubtools().find(tool => tool.keydown()) || this.doKeydown();
     }
     over(item: View): boolean {
         return !!(this.getSubtools().find(tool => tool.over(item)) || this.doOver(item));
@@ -33,14 +30,13 @@ export abstract class MultiTool extends AbstractTool {
         return !!(this.getSubtools().find(tool => tool.out(item)) || this.doOut(item));
     }
 
-    doUp() { return false; }
-    doDown() { return false; }
-    doMove() { return false; }
-    doDrag() { return false; }
-    doClick() { return false; }
-    doDraggedUp() { return false; }
-    doExit() { return false; }
-    doKeydown() { return false; }
-    doOver(item: View) { return false; }
-    doOut(item: View) { return false; }
+    doUp(): boolean { return false; }
+    doDown(): boolean { return false; }
+    doMove(): boolean { return false; }
+    doDrag(): boolean { return false; }
+    doClick(): boolean { return false; }
+    doDraggedUp(): boolean { return false; }
+    doKeydown(): boolean { return false; }
+    doOver(item: View): boolean { return false; }
+    doOut(item: View): boolean { return false; }
 }
