@@ -3,7 +3,7 @@ import { EventDispatcher } from "../../common/EventDispatcher";
 import { Events } from '../../common/Events';
 import { CanvasController } from "../CanvasController";
 import { AbstractTool } from './AbstractTool';
-import { ToolType } from './Tool';
+import { ToolType, ToolReturnType } from './Tool';
 import { View } from "../models/views/View";
 
 export class MoveTool extends AbstractTool {
@@ -24,8 +24,6 @@ export class MoveTool extends AbstractTool {
 
     down() {
         this.hoveredAtDown = this.controller.viewStore.getHoveredView(); 
-
-        return false;
     }
 
     drag() {
@@ -33,35 +31,29 @@ export class MoveTool extends AbstractTool {
 
         if (this.isMoving) {
             this.moveItems();
-            return true;
+            this.controller.updateContent();
         } else if (this.isDragStart) {
-            return this.initMove();
+            this.initMove() && this.controller.updateContent();
         }
 
         this.isDragStart = false;
-
-        return false;
     }
 
     draggedUp() {
         super.draggedUp();
-        let update = false;
+        const ret = new ToolReturnType();
 
         if (!this.isDragStart) {
-            this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
-            update = true;
+            this.controller.updateContent();
         }
 
         this.isDragStart = true;
         this.isMoving = false;
-
-        return update;
     }
 
     leave() {
         this.isDragStart = true;
         this.isMoving = false;
-        return undefined;
     }
 
     private initMove(): boolean {

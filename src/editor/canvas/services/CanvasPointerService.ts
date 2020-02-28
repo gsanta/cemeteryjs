@@ -36,7 +36,7 @@ export class CanvasPointerService implements IPointerService {
 
         this.isDown = true;
         this.pointer.down = this.getPointWithOffset(e.pointers[0].pos); 
-        this.controller.getActiveTool().down() && this.controller.renderWindow();
+        this.controller.getActiveTool().down();
     }
 
     pointerMove(e: IPointerEvent): void {
@@ -44,32 +44,26 @@ export class CanvasPointerService implements IPointerService {
         this.pointer.curr = this.getPointWithOffset(e.pointers[0].pos);
         this.pointer.prevScreen = this.pointer.currScreen;
         this.pointer.currScreen =  this.getScreenPointWithOffset(e.pointers[0].pos);
-        let updated = false;
         if (this.isDown && this.pointer.getDownDiff().len() > 2) {
             this.isDrag = true;
-            updated = this.controller.getActiveTool().drag();
+            this.controller.getActiveTool().drag();
         } else {
-            updated = this.controller.getActiveTool().move();
+            this.controller.getActiveTool().move();
         }
-
-        updated && this.controller.renderWindow();
     }
 
     pointerUp(e: IPointerEvent): void {
         console.log(this.controller.getActiveTool())
-        let update = false;
         if (this.isDrag) {
-            update = this.controller.getActiveTool().draggedUp();
+            this.controller.getActiveTool().draggedUp();
         } else {
-            update = this.controller.getActiveTool().click();
+            this.controller.getActiveTool().click();
         }
         
         this.controller.getActiveTool().up();
         this.isDown = false;
         this.isDrag = false;
         this.pointer.down = undefined;
-
-        update && this.controller.renderWindow()
     }
 
     pointerOut(e: IPointerEvent): void {
@@ -78,11 +72,11 @@ export class CanvasPointerService implements IPointerService {
     }
 
     hover(item: View): void {
-        this.controller.getActiveTool().over(item) && this.controller.renderWindow();
+        this.controller.getActiveTool().over(item);
     }
 
     unhover(item: View): void {
-        this.controller.getActiveTool().out(item) && this.controller.renderWindow();
+        this.controller.getActiveTool().out(item);
     }
     
     private getScreenPointWithOffset(point: Point): Point {

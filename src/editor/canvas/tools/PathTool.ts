@@ -1,13 +1,13 @@
 import { PathView } from "../models/views/PathView";
 import { Point } from "../../../misc/geometry/shapes/Point";
-import { ViewType } from "../models/views/View";
+import { ViewType, View } from "../models/views/View";
 import { ToolType } from "./Tool";
 import { Keyboard } from "../../common/services/KeyboardHandler";
 import { CanvasController } from "../CanvasController";
 import { CanvasItemTag } from "../models/CanvasItem";
-import { MultiTool } from "./MultiTool";
+import { AbstractTool } from "./AbstractTool";
 
-export class PathTool extends MultiTool {
+export class PathTool extends AbstractTool {
     private controller: CanvasController;
     constructor(controller: CanvasController) {
         super(ToolType.PATH);
@@ -15,44 +15,25 @@ export class PathTool extends MultiTool {
         this.controller = controller;
     }
 
-    doClick() {
+    click() {
+        if (this.controller.pointerTool.click()) { return }
+        
         const selectedPathes = this.controller.viewStore.getSelectedPathes();
 
         if (selectedPathes.length === 0) {
             this.startNewPath();
-            return true;
+            this.controller.renderWindow();
         } else if (selectedPathes.length === 1) {
             const pointer = this.controller.pointer.pointer;
             selectedPathes[0].addPoint(new Point(pointer.down.x, pointer.down.y));
-            return true;
+            this.controller.renderWindow();
         }
-
-        // if (hovered && hovered.viewType === ViewType.Path) {
-        //     let update = super.click();
-        //     this.pendingPath = <PathView> hovered;
-        //     return update;
-        // } else if (this.isOtherPathHovered()) {
-        //     if (this.isOtherPathHovered()) {
-        //         this.pendingPath = <PathView> this.controller.viewStore.getHoveredView();
-        //     } else if (!this.pendingPath) {
-        //         this.startNewPath();
-        //     } else {
-        //         const pointer = this.controller.pointer.pointer;
-        //         this.pendingPath.addPoint(new Point(pointer.down.x, pointer.down.y));
-        //     }
-    
-        //     this.controller.viewStore.removeTag(this.controller.viewStore.getViews(), CanvasItemTag.SELECTED);
-        //     this.controller.viewStore.addTag([this.pendingPath], CanvasItemTag.SELECTED); 
-    
-        //     this.controller.renderToolbar();
-        //     return true;
-        // }
     }
 
     keydown() {
         if (this.controller.keyboardHandler.downKeys.includes(Keyboard.Enter)) {
             this.controller.viewStore.removeSelectionAll();
-            return true;
+            this.controller.renderWindow();
         }
     }
 
@@ -64,9 +45,12 @@ export class PathTool extends MultiTool {
         this.controller.pointerTool.setSelectableViews(undefined);
     }
 
-    
-    getSubtools() {
-        return [this.controller.pointerTool];
+    over(item: View) {
+        this.controller.pointerTool.over(item);
+    }
+
+    out(item: View) {
+        this.controller.pointerTool.out(item);
     }
 
     private startNewPath() {

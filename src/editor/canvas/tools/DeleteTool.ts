@@ -1,9 +1,10 @@
 import { CanvasController } from '../CanvasController';
-import { ToolType } from './Tool';
+import { ToolType, ToolReturnType } from './Tool';
 import { EventDispatcher } from '../../common/EventDispatcher';
 import { Events } from '../../common/Events';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './selection/RectangleSelector';
+import { View } from '../models/views/View';
 
 export class DeleteTool extends AbstractTool {
     private eventDispatcher: EventDispatcher;
@@ -19,18 +20,15 @@ export class DeleteTool extends AbstractTool {
 
     drag() {
         this.rectSelector.updateRect(this.controller.pointer.pointer);
-        return true;
+        this.controller.renderWindow();
     }
 
-    click(): boolean {
-        if (!super.click()) {
-            const hovered = this.controller.viewStore.getHoveredView();
-            hovered && this.controller.viewStore.remove(hovered);
-            this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
-            return !!hovered;
-        }
-
-        return true;
+    click() {
+        this.controller.pointerTool.click()
+        const hovered = this.controller.viewStore.getHoveredView();
+        hovered && this.controller.viewStore.remove(hovered);
+        
+        hovered && this.controller.updateContent();
     }
 
     
@@ -41,13 +39,19 @@ export class DeleteTool extends AbstractTool {
 
         this.rectSelector.finish();
 
-        this.controller.renderWindow();
-        this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
-        return true;
+        this.controller.updateContent();
     }
 
     leave() {
         this.rectSelector.finish();
-        return true;
+        this.controller.renderWindow();
+    }
+
+    over(item: View) {
+        this.controller.pointerTool.over(item);
+    }
+
+    out(item: View) {
+        this.controller.pointerTool.out(item);
     }
 }

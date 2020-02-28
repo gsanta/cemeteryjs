@@ -12,19 +12,37 @@ export enum ToolType {
     POINTER = 'pointer'
 }
 
+export class ToolReturnType {
+    _lookDirty: boolean = false;
+    _contentDirty?: boolean = false;
+    _dirty?: boolean = false
+
+    lookDirty() {
+        this._lookDirty = true;
+        this._dirty = true;
+        return this;
+    }
+
+    contentDirty() {
+        this._contentDirty = true;
+        this._dirty = true;
+        return this;
+    }
+}
+
 export interface Tool {
     type: ToolType;
-    down(): boolean;
-    move(): boolean;
-    drag(): boolean;
-    click(): boolean;
-    draggedUp(): boolean;
-    up(): boolean;
-    activate(): boolean;
-    leave(): boolean;
-    keydown(): boolean;
-    over(item: View): boolean;
-    out(item: View): boolean;
+    down(): void;
+    move(): void;
+    drag(): void;
+    click(): void;
+    draggedUp(): void;
+    up(): void;
+    activate(): void;
+    leave(): void;
+    keydown(): void;
+    over(item: View): void;
+    out(item: View): void;
 
     select(): void;
     unselect(): void;

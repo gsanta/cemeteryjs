@@ -15,54 +15,42 @@ export class PointerTool extends AbstractTool {
         this.controller = controller;
     }
 
-    click() {
-        if (!super.click()) {
-            let update = false;
+    click(): boolean {
+        const hoveredView = this.controller.viewStore.getHoveredView()
 
+        if (
+            hoveredView &&
+            (!this.selectableViews || this.selectableViews.includes(hoveredView.viewType))
+        ) {
+            this.controller.viewStore.removeSelectionAll();
+            this.controller.viewStore.addTag([hoveredView], CanvasItemTag.SELECTED);
+            hoveredView.selectHoveredSubview();
 
-            const hoveredView = this.controller.viewStore.getHoveredView()
-
-            if (hoveredView && (!this.selectableViews || this.selectableViews.includes(hoveredView.viewType))) {
-                this.controller.viewStore.removeSelectionAll();
-                this.controller.viewStore.addTag([hoveredView], CanvasItemTag.SELECTED);
-                hoveredView.selectHoveredSubview();
-
-                this.controller.renderToolbar();
-
-                update = true;
-            }
-            return update;
+            this.controller.renderToolbar();
+            this.controller.renderWindow();
+            return true;
         }
-
         return false;
     }
 
     down() {
-        if (!super.down()) {
-            const hoveredView = this.controller.viewStore.getHoveredView();
-            if (hoveredView) {
-                hoveredView.selectHoveredSubview();
-            }
+        const hoveredView = this.controller.viewStore.getHoveredView();
+        if (hoveredView) {
+            hoveredView.selectHoveredSubview();
+            this.controller.renderWindow();
         }
-
-        return true;
     }
 
     over(item: View) {
-        if (!super.over(item)) {
-            this.controller.viewStore.addTag([item], CanvasItemTag.HOVERED);
-            this.updateSubviewHover(item);
-        }
-        return true;
+        this.controller.viewStore.addTag([item], CanvasItemTag.HOVERED);
+        this.updateSubviewHover(item);
+        this.controller.renderWindow();
     }
 
     out(item: View) {
-        if (!super.out(item)) {
-            this.controller.viewStore.getHoveredView() && this.controller.viewStore.getHoveredView().removeSubviewHover();
-            this.controller.viewStore.removeTagFromAll(CanvasItemTag.HOVERED);
-        }
-
-        return true;
+        this.controller.viewStore.getHoveredView() && this.controller.viewStore.getHoveredView().removeSubviewHover();
+        this.controller.viewStore.removeTagFromAll(CanvasItemTag.HOVERED);
+        this.controller.renderWindow();
     }
 
     setSelectableViews(views: ViewType[]) {

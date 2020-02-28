@@ -1,6 +1,5 @@
 import { ToolType, Tool } from "./Tool";
 import { IViewExporter } from "./IToolExporter";
-import { IViewImporter } from "./IToolImporter";
 import { ViewType } from "../models/views/View";
 
 export class ToolService {

@@ -41,9 +41,7 @@ export class RectangleTool extends AbstractTool {
         this.controller.viewStore.removeSelectionAll()
         this.controller.viewStore.addTag([gameObject], CanvasItemTag.SELECTED);
 
-        this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
-        this.controller.renderToolbar();
-        return true;
+        this.controller.updateContent();
     }
 
     drag() {
@@ -71,8 +69,6 @@ export class RectangleTool extends AbstractTool {
     
             this.controller.renderWindow();
         }
-        
-        return true;
     }
 
     draggedUp() {
@@ -83,10 +79,7 @@ export class RectangleTool extends AbstractTool {
             this.lastPreviewRect = null;
         }
 
-        this.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
-        return true;
-
-        // this.controller.renderWindow();
+        this.controller.updateContent();
     }
 
     leave() {

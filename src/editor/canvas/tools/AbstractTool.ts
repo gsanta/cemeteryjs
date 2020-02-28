@@ -1,4 +1,4 @@
-import { Tool, ToolType } from './Tool';
+import { Tool, ToolType, ToolReturnType } from './Tool';
 import { View } from '../models/views/View';
 
 export class AbstractTool implements Tool {
@@ -8,18 +8,18 @@ export class AbstractTool implements Tool {
         this.type = type;
     }
 
-    down() { return false; }
-    move() { return false; }
-    drag() { return false; }
-    click() { return false; }
-    draggedUp() { return false; }
-    up() { return false; }
-    activate() { return false; }
-    resize() {}
-    keydown() { return false; }
-    over(item: View) { return false; }
-    out(item: View) { return false; }
-    leave() { return false; }
+    down() { }
+    move() { }
+    drag() { }
+    click() { }
+    draggedUp() { }
+    up() { }
+    activate() { }
+    resize() { }
+    keydown() { }
+    over(item: View) { }
+    out(item: View) { }
+    leave() { }
 
     select(): void {}
     unselect(): void {}

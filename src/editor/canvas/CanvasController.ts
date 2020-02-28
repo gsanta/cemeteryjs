@@ -27,6 +27,7 @@ import { ToolService } from './tools/ToolService';
 import { CanvasExporter } from './io/export/CanvasExporter';
 import { ServiceLocator } from '../ServiceLocator';
 import { FeedbackStore } from './models/FeedbackStore';
+import { Events } from '../common/Events';
 
 export class CanvasController extends AbstractCanvasController {
     name = '2D View';
@@ -120,6 +121,13 @@ export class CanvasController extends AbstractCanvasController {
 
     renderToolbar() {
         this.toolbarRenderers.forEach(renderer => renderer());
+    }
+
+    updateContent() {
+        this.renderToolbar();
+        this.renderWindow();
+        this.editor.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
+        this.services.storageService().saveXml(this.exporter.export());
     }
 
     setSelectedTool(toolType: ToolType) {

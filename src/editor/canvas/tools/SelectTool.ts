@@ -1,10 +1,11 @@
 import { CanvasController } from "../CanvasController";
 import { CanvasItemTag } from "../models/CanvasItem";
-import { MultiTool } from "./MultiTool";
 import { RectangleSelector } from "./selection/RectangleSelector";
 import { ToolType } from "./Tool";
+import { AbstractTool } from "./AbstractTool";
+import { View } from "../models/views/View";
 
-export class SelectTool extends MultiTool {
+export class SelectTool extends AbstractTool {
     protected controller: CanvasController;
     private rectSelector: RectangleSelector;
 
@@ -14,21 +15,21 @@ export class SelectTool extends MultiTool {
         this.rectSelector = new RectangleSelector(controller);
     }
 
-    doClick() {
-        if (this.controller.viewStore.getSelectedViews().length > 0) {
+    click() {
+        if (this.controller.viewStore.getHoveredView()) {
+            this.controller.pointerTool.click();
+        } else if (this.controller.viewStore.getSelectedViews().length > 0) {
             this.controller.viewStore.removeTag(this.controller.viewStore.getViews(), CanvasItemTag.SELECTED);
-            return true;
+            this.controller.renderWindow();
         }
-
-        return false;
     }
 
-    doDrag() {
+    drag() {
         this.rectSelector.updateRect(this.controller.pointer.pointer);
-        return true; 
+        this.controller.renderWindow();
     }
 
-    doDraggedUp() {
+    draggedUp() {
         const feedback = this.controller.feedbackStore.rectSelectFeedback;
         if (!feedback) { return }
 
@@ -39,14 +40,14 @@ export class SelectTool extends MultiTool {
         canvasStore.addTag(canvasItems, CanvasItemTag.SELECTED);
 
         this.rectSelector.finish();
-
         this.controller.renderWindow();
-        this.controller.renderToolbar();
-
-        return true;
     }
 
-    getSubtools() {
-        return [this.controller.moveTool, this.controller.pointerTool];
+    over(item: View) {
+        this.controller.pointerTool.over(item);
+    }
+
+    out(item: View) {
+        this.controller.pointerTool.out(item);
     }
 }
