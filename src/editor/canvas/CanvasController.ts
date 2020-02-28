@@ -81,7 +81,7 @@ export class CanvasController extends AbstractCanvasController {
         this.cameraTool = new CameraTool(this);
         const rectangleTool = new RectangleTool(this, this.editor.eventDispatcher);
         const pathTool = new PathTool(this);
-        const deleteTool = new DeleteTool(this, this.editor.eventDispatcher);
+        const deleteTool = new DeleteTool(this, this.services);
         this.moveTool = new MoveTool(this, this.editor.eventDispatcher);
         const selectTool = new SelectTool(this);
         this.tools = [

@@ -2,7 +2,6 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { colors } from '../../gui/styles';
 import { CanvasController } from '../CanvasController';
-import { AppContext, AppContextType } from '../../gui/Context';
 import { ToolType } from '../tools/Tool';
 import { ZoomInIconComponent } from '../../gui/icons/tools/ZoomInIconComponent';
 import { ZoomOutIconComponent } from '../../gui/icons/tools/ZoomOutIconComponent';
@@ -11,6 +10,8 @@ import { DrawIconComponent } from '../../gui/icons/tools/DrawIconComponent';
 import { ArrowIconComponent } from '../../gui/icons/tools/ArrowIconComponent';
 import { DeleteIconComponent } from '../../gui/icons/tools/DeleteIconComponent';
 import { PanIconComponent } from '../../gui/icons/tools/PanIconComponent';
+import { BlankIconComponent } from '../../gui/icons/tools/BlankIconComponent';
+import { DeleteTool } from '../tools/DeleteTool';
 
 const ToolbarStyled = styled.div`
     display: flex;
@@ -38,6 +39,7 @@ export class CanvasToolbarComponent extends React.Component<{controller: CanvasC
                 <ZoomInIconComponent isActive={false} onClick={() => this.zoomIn()} format="short"/>
                 <ZoomOutIconComponent isActive={false} onClick={() => this.zoomOut()} format="short"/>
                 <PanIconComponent isActive={this.isToolActive(ToolType.CAMERA)} onClick={() => this.activateTool(ToolType.CAMERA)} format="short"/>
+                <BlankIconComponent isActive={false} onClick={() => this.blank()} format="short"/>
             </ToolbarStyled>
         );
     }
@@ -56,5 +58,9 @@ export class CanvasToolbarComponent extends React.Component<{controller: CanvasC
 
     private zoomOut() {
         this.props.controller.cameraTool.zoomToPrevStep();
+    }
+
+    private blank() {
+        (this.props.controller.toolService.getTool(ToolType.DELETE) as DeleteTool).eraseAll();
     }
 }

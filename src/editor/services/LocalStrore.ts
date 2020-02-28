@@ -4,6 +4,7 @@ export class LocalStore {
     serviceName = 'local-store'
     private version = 2;
     private name = 'editor';
+    private db: IDBDatabase;
 
     constructor() {
         const request = window.indexedDB.open(this.name, this.version);
@@ -16,7 +17,7 @@ export class LocalStore {
         const db = await this.getDb();
 
         var objectStore = db.transaction(["xmls"], "readwrite").objectStore("xmls");
-        objectStore.add({id: '1', data: xml});
+        objectStore.put({id: '1', data: xml});
     }
 
     async loadXml(): Promise<string> {
@@ -48,6 +49,17 @@ export class LocalStore {
         return await this.getData(objectStore.get(name));
     }
 
+    async clearAll() {
+        
+        const db = await this.getDb();
+
+        const assets = db.transaction(["assets"], "readwrite").objectStore("assets");
+        assets.clear();
+
+        const xmls = db.transaction(["xmls"], "readwrite").objectStore("xmls");
+        xmls.clear();
+    }
+
     private async getData(request: IDBRequest): Promise<any> {
         return new Promise((resolve, reject) => {
 
@@ -68,12 +80,17 @@ export class LocalStore {
     }
 
     private getDb(): Promise<IDBDatabase> {
+        if (this.db) { return Promise.resolve(this.db); }
+
         return new Promise((resolve, reject) => {
             if (!('indexedDB' in window)) { throw new Error('IndexedDb not supported.')}
 
             const request = window.indexedDB.open(this.name, this.version);
             request.onupgradeneeded = (event) => this.upgradeDb(request);
-            request.onsuccess = () => resolve(request.result); 
+            request.onsuccess = () => {
+                this.db = request.result;
+                resolve(request.result);
+            } 
             request.onerror = () => reject(request.result); 
 
         });

@@ -41,6 +41,10 @@ export class App extends React.Component<{}, AppState> {
         if (this.hasCanvasVisibilityChanged()) {
             this.updateCanvasVisibility();
         }
+
+        window.addEventListener('resize', () => {
+            this.context.controllers.getWindowControllers().forEach(controller => controller.resize());
+        });
     }
 
     componentDidUpdate() {

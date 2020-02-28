@@ -5,16 +5,17 @@ import { Events } from '../../common/Events';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './selection/RectangleSelector';
 import { View } from '../models/views/View';
+import { ServiceLocator } from '../../ServiceLocator';
 
 export class DeleteTool extends AbstractTool {
-    private eventDispatcher: EventDispatcher;
     private controller: CanvasController;
     private rectSelector: RectangleSelector;
+    private services: ServiceLocator;
 
-    constructor(controller: CanvasController, eventDispatcher: EventDispatcher) {
+    constructor(controller: CanvasController, services: ServiceLocator) {
         super(ToolType.DELETE);
         this.controller = controller;
-        this.eventDispatcher = eventDispatcher;
+        this.services = services;
         this.rectSelector = new RectangleSelector(controller);
     }
 
@@ -53,5 +54,11 @@ export class DeleteTool extends AbstractTool {
 
     out(item: View) {
         this.controller.pointerTool.out(item);
+    }
+
+    eraseAll() {
+        this.services.storageService().clearAll();
+        this.controller.viewStore.clear();
+        this.controller.updateContent();
     }
 }

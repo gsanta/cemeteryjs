@@ -55,6 +55,8 @@ export class ViewStore{
 
     clear(): void {
         this.views = [];
+        this.tags = new Map();
+        this.layers = new Map();
     }
 
     getIntersectingItemsInRect(rectangle: Rectangle): View[] {
