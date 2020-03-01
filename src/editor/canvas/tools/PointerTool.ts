@@ -1,30 +1,30 @@
 import { AbstractTool } from "./AbstractTool";
 import { View, ViewType } from "../models/views/View";
-import { CanvasController } from "../CanvasController";
+import { CanvasWindow } from "../CanvasWindow";
 import { ToolType } from "./Tool";
 import { CanvasItemTag } from "../models/CanvasItem";
 import { PathView } from "../models/views/PathView";
 import { UpdateTask } from "../../common/services/UpdateServices";
 
 export class PointerTool extends AbstractTool {
-    private controller: CanvasController;
+    private controller: CanvasWindow;
 
     private selectableViews: ViewType[];
 
-    constructor(controller: CanvasController) {
+    constructor(controller: CanvasWindow) {
         super(ToolType.POINTER);
         this.controller = controller;
     }
 
     click(): boolean {
-        const hoveredView = this.controller.viewStore.getHoveredView()
+        const hoveredView = this.controller.stores.viewStore.getHoveredView()
 
         if (
             hoveredView &&
             (!this.selectableViews || this.selectableViews.includes(hoveredView.viewType))
         ) {
-            this.controller.viewStore.removeSelectionAll();
-            this.controller.viewStore.addTag([hoveredView], CanvasItemTag.SELECTED);
+            this.controller.stores.viewStore.removeSelectionAll();
+            this.controller.stores.viewStore.addTag([hoveredView], CanvasItemTag.SELECTED);
             hoveredView.selectHoveredSubview();
 
             this.controller.updateService.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas);
@@ -35,7 +35,7 @@ export class PointerTool extends AbstractTool {
     }
 
     down() {
-        const hoveredView = this.controller.viewStore.getHoveredView();
+        const hoveredView = this.controller.stores.viewStore.getHoveredView();
         if (hoveredView) {
             hoveredView.selectHoveredSubview();
             this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
@@ -43,14 +43,14 @@ export class PointerTool extends AbstractTool {
     }
 
     over(item: View) {
-        this.controller.viewStore.addTag([item], CanvasItemTag.HOVERED);
+        this.controller.stores.viewStore.addTag([item], CanvasItemTag.HOVERED);
         this.updateSubviewHover(item);
         this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     out(item: View) {
-        this.controller.viewStore.getHoveredView() && this.controller.viewStore.getHoveredView().removeSubviewHover();
-        this.controller.viewStore.removeTagFromAll(CanvasItemTag.HOVERED);
+        this.controller.stores.viewStore.getHoveredView() && this.controller.stores.viewStore.getHoveredView().removeSubviewHover();
+        this.controller.stores.viewStore.removeTagFromAll(CanvasItemTag.HOVERED);
         this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 

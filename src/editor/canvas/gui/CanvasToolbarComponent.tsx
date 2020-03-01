@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { colors } from '../../gui/styles';
-import { CanvasController } from '../CanvasController';
+import { CanvasWindow } from '../CanvasWindow';
 import { ToolType } from '../tools/Tool';
 import { ZoomInIconComponent } from '../../gui/icons/tools/ZoomInIconComponent';
 import { ZoomOutIconComponent } from '../../gui/icons/tools/ZoomOutIconComponent';
@@ -24,7 +24,7 @@ const ToolbarStyled = styled.div`
     }
 `;
 
-export class CanvasToolbarComponent extends React.Component<{controller: CanvasController}> {
+export class CanvasToolbarComponent extends React.Component<{controller: CanvasWindow}> {
     componentDidMount() {
         this.props.controller.updateService.addSettingsRepainter(() => this.forceUpdate());
     }

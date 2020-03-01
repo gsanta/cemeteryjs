@@ -28,6 +28,7 @@ export enum AnimationState {
     Stopped = 'stopped'
 }
 
+
 /**
  * `GameObject` represents any distinguishable item in the parsed world (think of it as a mesh, e.g walls, rooms, creatures).
  */

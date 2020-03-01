@@ -1,7 +1,7 @@
-import { CanvasController } from "../../canvas/CanvasController";
+import { CanvasWindow } from "../../canvas/CanvasWindow";
 import { ServiceLocator } from "../../ServiceLocator";
 import { Events } from "../Events";
-import { AbstractCanvasController } from "../AbstractCanvasController";
+import { WindowController } from "../WindowController";
 
 export enum UpdateTask {
     RepaintCanvas = 'RepaintCanvas',
@@ -17,10 +17,10 @@ export class UpdateService {
     private canvasRepainter: Function = () => undefined;
     private settingsRepainters: Function[] = [];
 
-    private controller: AbstractCanvasController;
+    private controller: WindowController;
     private services: ServiceLocator;
 
-    constructor(controller: AbstractCanvasController, services: ServiceLocator) {
+    constructor(controller: WindowController, services: ServiceLocator) {
         this.controller = controller;
         this.services = services;
     }

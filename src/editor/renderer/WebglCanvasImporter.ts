@@ -1,14 +1,14 @@
-import { RendererController } from './RendererController';
+import { RendererWindow } from './RendererWindow';
 import { ConverterService } from "../../game/import/ConverterService";
 import { GameFacade } from "../../game/GameFacade";
 import { MeshObject } from "../../game/models/objects/MeshObject";
 
 export class WebglCanvasImporter {
-    private webglEditorController: RendererController;
+    private webglEditorController: RendererWindow;
     private gameFacade: GameFacade;
 
 
-    constructor(webglEditorController: RendererController, gameFacade: GameFacade) {
+    constructor(webglEditorController: RendererWindow, gameFacade: GameFacade) {
         this.gameFacade = gameFacade;
         this.webglEditorController = webglEditorController;
     }

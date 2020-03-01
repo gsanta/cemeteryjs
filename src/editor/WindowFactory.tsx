@@ -1,25 +1,26 @@
 import * as React from 'react';
-import { CanvasController } from './canvas/CanvasController';
+import { CanvasWindow } from './canvas/CanvasWindow';
 import { CanvasComponent } from './canvas/gui/CanvasComponent';
-import { AbstractCanvasController } from './common/AbstractCanvasController';
+import { WindowController } from './common/WindowController';
 import { Editor } from './Editor';
 import { RendererComponent } from './renderer/gui/RendererComponent';
-import { RendererController } from './renderer/RendererController';
+import { RendererWindow } from './renderer/RendererWindow';
 import { ServiceLocator } from './ServiceLocator';
+import { Stores } from './Stores';
 
 export interface WindowFactory {
     name: string;
-    getWindowController(editor: Editor, services: ServiceLocator): AbstractCanvasController;
-    renderWindowComponent(controller: AbstractCanvasController): JSX.Element;
+    getWindowController(editor: Editor, services: ServiceLocator, stores: Stores): WindowController;
+    renderWindowComponent(controller: WindowController): JSX.Element;
     renderToolbarComponent(): JSX.Element;
 }
 
-export function windowFactory(controller: AbstractCanvasController): JSX.Element {
+export function windowFactory(controller: WindowController): JSX.Element {
     switch(controller.getId()) {
-        case CanvasController.id:
-            return <CanvasComponent controller={controller as CanvasController}/>;
-        case RendererController.id:
-            return <RendererComponent controller={controller as RendererController}/>;
+        case CanvasWindow.id:
+            return <CanvasComponent controller={controller as CanvasWindow}/>;
+        case RendererWindow.id:
+            return <RendererComponent controller={controller as RendererWindow}/>;
     }
 
     return null;

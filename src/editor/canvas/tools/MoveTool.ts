@@ -1,18 +1,19 @@
 import { Rectangle } from "../../../misc/geometry/shapes/Rectangle";
 import { UpdateTask } from "../../common/services/UpdateServices";
-import { CanvasController } from "../CanvasController";
+import { CanvasWindow } from "../CanvasWindow";
 import { AbstractTool } from './AbstractTool';
 import { ToolType } from './Tool';
+import { Stores } from "../../Stores";
 
 export class MoveTool extends AbstractTool {
-    private controller: CanvasController;
+    private controller: CanvasWindow;
 
     private origDimensions: Rectangle[] = [];
 
     private isMoving = false;
     private isDragStart = true;
 
-    constructor(controller: CanvasController) {
+    constructor(controller: CanvasWindow) {
         super(ToolType.MOVE);
         this.controller = controller;
     }
@@ -47,7 +48,7 @@ export class MoveTool extends AbstractTool {
     }
 
     private initMove(): boolean {
-        const selected = this.controller.viewStore.getSelectedViews();
+        const selected = this.controller.stores.viewStore.getSelectedViews();
         this.origDimensions = [];
         
             this.origDimensions = selected.map(item => item.dimensions);
@@ -58,7 +59,7 @@ export class MoveTool extends AbstractTool {
     }
 
     private moveItems() {
-        const selectedItems = this.controller.viewStore.getSelectedViews();
+        const selectedItems = this.controller.stores.viewStore.getSelectedViews();
         const mouseDelta = this.controller.pointer.pointer.getDownDiff();
 
         selectedItems.forEach((item, index) => item.dimensions = this.origDimensions[index].translate(mouseDelta));

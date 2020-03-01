@@ -3,14 +3,14 @@ import { Point } from "../../../misc/geometry/shapes/Point";
 import { ViewType, View } from "../models/views/View";
 import { ToolType } from "./Tool";
 import { Keyboard } from "../../common/services/KeyboardHandler";
-import { CanvasController } from "../CanvasController";
+import { CanvasWindow } from "../CanvasWindow";
 import { CanvasItemTag } from "../models/CanvasItem";
 import { AbstractTool } from "./AbstractTool";
 import { UpdateTask } from "../../common/services/UpdateServices";
 
 export class PathTool extends AbstractTool {
-    private controller: CanvasController;
-    constructor(controller: CanvasController) {
+    private controller: CanvasWindow;
+    constructor(controller: CanvasWindow) {
         super(ToolType.PATH);
 
         this.controller = controller;
@@ -19,7 +19,7 @@ export class PathTool extends AbstractTool {
     click() {
         if (this.controller.toolService.pointerTool.click()) { return }
         
-        const selectedPathes = this.controller.viewStore.getSelectedPathes();
+        const selectedPathes = this.controller.stores.viewStore.getSelectedPathes();
 
         if (selectedPathes.length === 0) {
             this.startNewPath();
@@ -33,7 +33,7 @@ export class PathTool extends AbstractTool {
 
     keydown() {
         if (this.controller.keyboardHandler.downKeys.includes(Keyboard.Enter)) {
-            this.controller.viewStore.removeSelectionAll();
+            this.controller.stores.viewStore.removeSelectionAll();
             this.controller.updateService.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         }
     }
@@ -56,10 +56,10 @@ export class PathTool extends AbstractTool {
 
     private startNewPath() {
         const pointer = this.controller.pointer.pointer;
-        this.controller.viewStore.removeSelectionAll();
+        this.controller.stores.viewStore.removeSelectionAll();
         const path = new PathView(pointer.down.clone());
-        path.name = this.controller.viewStore.generateUniqueName(ViewType.Path);
-        this.controller.viewStore.addPath(path);
-        this.controller.viewStore.addTag([path], CanvasItemTag.SELECTED);
+        path.name = this.controller.stores.viewStore.generateUniqueName(ViewType.Path);
+        this.controller.stores.viewStore.addPath(path);
+        this.controller.stores.viewStore.addTag([path], CanvasItemTag.SELECTED);
     }
 }

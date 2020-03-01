@@ -1,7 +1,7 @@
 import { Mesh } from 'babylonjs';
 import { AbstractModelLoader } from '../common/services/AbstractModelLoader';
 import { Tool } from '../canvas/tools/Tool';
-import { AbstractCanvasController, CanvasViewSettings } from '../common/AbstractCanvasController';
+import { WindowController, CanvasViewSettings } from '../common/WindowController';
 import { IPointerService } from '../common/services/IPointerService';
 import { MouseHandler } from '../common/services/MouseHandler';
 import { Editor } from '../Editor';
@@ -11,12 +11,12 @@ import { HelperMeshes } from './HelperMeshes';
 import { RendererCameraTool } from './RendererCameraTool';
 import { RendererPointerService } from './RendererPointerService';
 import { WebglCanvasImporter } from './WebglCanvasImporter';
-import { CanvasController } from '../canvas/CanvasController';
+import { CanvasWindow } from '../canvas/CanvasWindow';
 import { ServiceLocator } from '../ServiceLocator';
 import { UpdateService } from '../common/services/UpdateServices';
 (<any> window).earcut = require('earcut');
 
-export class RendererController extends AbstractCanvasController {
+export class RendererWindow extends WindowController {
     name = '3D View';
     static id = 'webgl-editor';
     visible = true;
@@ -37,7 +37,7 @@ export class RendererController extends AbstractCanvasController {
     meshes: Mesh[] = [];
 
     constructor(editor: Editor, services: ServiceLocator) {
-        super(editor, services);
+        super(editor, services, editor.stores);
         this.updateService = new UpdateService(this, this.services);
         this.mouseHander = new MouseHandler(this);
         this.pointer = new RendererPointerService(this);
@@ -73,7 +73,7 @@ export class RendererController extends AbstractCanvasController {
     update() {
         this.clearCanvas();
         if (this.writer) {
-            const file = (<CanvasController> this.editor.getWindowControllerByName('canvas')).exporter.export();
+            const file = (<CanvasWindow> this.editor.getWindowControllerByName('canvas')).exporter.export();
             this.writer.import(file);
         }
 
@@ -82,7 +82,7 @@ export class RendererController extends AbstractCanvasController {
 
 
     getId(): string {
-        return RendererController.id;
+        return RendererWindow.id;
     }
 
     getActiveTool(): Tool {

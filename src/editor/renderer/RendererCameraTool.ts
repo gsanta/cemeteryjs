@@ -4,7 +4,7 @@ import { Editor } from '../Editor';
 import { Point } from '../../misc/geometry/shapes/Point';
 import { AbstractTool } from '../canvas/tools/AbstractTool';
 import { ToolType } from '../canvas/tools/Tool';
-import { RendererController } from './RendererController';
+import { RendererWindow } from './RendererWindow';
 
 
 export class RendererCameraTool extends AbstractTool {
@@ -18,9 +18,9 @@ export class RendererCameraTool extends AbstractTool {
     readonly NUM_OF_STEPS: number;
 
     private editorFacade: Editor;
-    private controller: RendererController;
+    private controller: RendererWindow;
 
-    constructor(controller: RendererController, editorCamera: EditorCamera, numberOfSteps: number = 20) {
+    constructor(controller: RendererWindow, editorCamera: EditorCamera, numberOfSteps: number = 20) {
         super(ToolType.CAMERA)
         this.controller = controller;
         this.camera = editorCamera;

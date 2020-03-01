@@ -1,5 +1,5 @@
 import { ServiceLocator } from "../../ServiceLocator";
-import { CanvasController } from "../CanvasController";
+import { CanvasWindow } from "../CanvasWindow";
 import { CameraTool } from "./CameraTool";
 import { DeleteTool } from "./DeleteTool";
 import { IViewExporter } from "./IToolExporter";
@@ -24,10 +24,10 @@ export class ToolService {
 
     selectedTool = ToolType.RECTANGLE;
 
-    private controller: CanvasController;
+    private controller: CanvasWindow;
     private services: ServiceLocator;
 
-    constructor(controller: CanvasController, services: ServiceLocator) {
+    constructor(controller: CanvasWindow, services: ServiceLocator) {
         this.controller = controller;
         this.services = services;
 

@@ -1,14 +1,14 @@
-import { CanvasController } from '../../CanvasController';
+import { CanvasWindow } from '../../CanvasWindow';
 import * as ReactDOMServer from 'react-dom/server';
 import * as React from 'react';
 import { IViewExporter } from '../../tools/IToolExporter';
 import { ViewType } from '../../models/views/View';
 
 export class CanvasExporter {
-    private canvasController: CanvasController;
+    private canvasController: CanvasWindow;
     private viewExporters: IViewExporter[];
 
-    constructor(canvasController: CanvasController, viewExporters: IViewExporter[]) {
+    constructor(canvasController: CanvasWindow, viewExporters: IViewExporter[]) {
         this.canvasController = canvasController;
         this.viewExporters = viewExporters;
     }

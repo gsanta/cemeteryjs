@@ -1,6 +1,6 @@
 import { Engine, Scene, Mesh } from 'babylonjs';
 import { AbstractModelLoader } from '../common/services/AbstractModelLoader';
-import { CanvasController } from './CanvasController';
+import { CanvasWindow } from './CanvasWindow';
 import { Point } from '../../misc/geometry/shapes/Point';
 import { MeshView } from './models/views/MeshView';
 import { ServiceLocator } from '../ServiceLocator';
@@ -8,13 +8,13 @@ import { UpdateTask } from '../common/services/UpdateServices';
 
 export class Model3DController extends AbstractModelLoader {
     private engine: Engine;
-    private canvasController: CanvasController;
+    private canvasController: CanvasWindow;
 
     private canvas: HTMLCanvasElement;
 
     private fileNameToMeshMap: Map<string, Mesh> = new Map();
 
-    constructor(canvasController: CanvasController, services: ServiceLocator) {
+    constructor(canvasController: CanvasWindow, services: ServiceLocator) {
         super(null, services);
         this.canvasController = canvasController;
         this.canvas = <HTMLCanvasElement> document.getElementById("model-size-tester");

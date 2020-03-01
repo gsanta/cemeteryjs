@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { colors } from '../../gui/styles';
-import { CanvasController } from '../CanvasController';
+import { CanvasWindow } from '../CanvasWindow';
 import { AppContext, AppContextType } from '../../gui/Context';
 import { ToolType } from '../tools/Tool';
 import { CameraTool } from '../tools/CameraTool';
@@ -29,11 +29,11 @@ const SelectionComponentStyled = styled.rect`
     fill: transparent;
 `;
 
-export class CanvasComponent extends React.Component<{controller: CanvasController}> {
+export class CanvasComponent extends React.Component<{controller: CanvasWindow}> {
     static contextType = AppContext;
     context: AppContextType;
 
-    constructor(props: {controller: CanvasController}) {
+    constructor(props: {controller: CanvasWindow}) {
         super(props);
 
         this.props.controller.updateService.setCanvasRepainter(() => this.forceUpdate())
@@ -44,7 +44,7 @@ export class CanvasComponent extends React.Component<{controller: CanvasControll
 
         return (
             <EditorComponentStyled id={this.props.controller.getId()}>
-                <WindowToolbarStyled><CanvasToolbarComponent controller={this.props.controller as CanvasController}/></WindowToolbarStyled>
+                <WindowToolbarStyled><CanvasToolbarComponent controller={this.props.controller as CanvasWindow}/></WindowToolbarStyled>
                 <CanvasComponentStyled
                     tabIndex={0}
                     viewBox={cameraTool.getCamera().getViewBoxAsString()}

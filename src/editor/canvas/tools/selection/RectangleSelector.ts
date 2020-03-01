@@ -1,14 +1,14 @@
 import { Rectangle } from "../../../../misc/geometry/shapes/Rectangle";
 import { Point } from "../../../../misc/geometry/shapes/Point";
 import { MousePointer } from "../../../common/services/MouseHandler";
-import { CanvasController } from "../../CanvasController";
+import { CanvasWindow } from "../../CanvasWindow";
 import { RectSelectFeedback } from "../../models/feedbacks/RectSelectFeedback";
 
 export class RectangleSelector {
     private _displaySelectionRect: boolean;
-    private canvasController: CanvasController;
+    private canvasController: CanvasWindow;
 
-    constructor(canvasController: CanvasController) {
+    constructor(canvasController: CanvasWindow) {
         this.canvasController = canvasController;
     }
 

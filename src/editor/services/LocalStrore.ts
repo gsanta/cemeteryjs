@@ -1,4 +1,4 @@
-import { CanvasController } from "../canvas/CanvasController";
+import { CanvasWindow } from "../canvas/CanvasWindow";
 import { Editor } from "../Editor";
 
 
@@ -22,7 +22,7 @@ export class LocalStore {
 
         var objectStore = db.transaction(["xmls"], "readwrite").objectStore("xmls");
 
-        const controller = <CanvasController> this.editor.getWindowControllerByName('canvas')
+        const controller = <CanvasWindow> this.editor.getWindowControllerByName('canvas')
         objectStore.put({id: '1', data: controller.exporter.export()});
     }
 
@@ -34,7 +34,7 @@ export class LocalStore {
         const objectStore = db.transaction(["xmls"], "readwrite").objectStore("xmls");
 
         const data = await this.getData(objectStore.get('1'));
-        const controller = <CanvasController> this.editor.getWindowControllerByName('canvas')
+        const controller = <CanvasWindow> this.editor.getWindowControllerByName('canvas')
         controller.importer.import(data);
     }
     

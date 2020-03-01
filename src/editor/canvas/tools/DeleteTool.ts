@@ -1,19 +1,17 @@
-import { CanvasController } from '../CanvasController';
-import { ToolType, ToolReturnType } from './Tool';
-import { EventDispatcher } from '../../common/EventDispatcher';
-import { Events } from '../../common/Events';
+import { UpdateTask } from '../../common/services/UpdateServices';
+import { ServiceLocator } from '../../ServiceLocator';
+import { CanvasWindow } from '../CanvasWindow';
+import { View } from '../models/views/View';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './selection/RectangleSelector';
-import { View } from '../models/views/View';
-import { ServiceLocator } from '../../ServiceLocator';
-import { UpdateTask } from '../../common/services/UpdateServices';
+import { ToolType } from './Tool';
 
 export class DeleteTool extends AbstractTool {
-    private controller: CanvasController;
+    private controller: CanvasWindow;
     private rectSelector: RectangleSelector;
     private services: ServiceLocator;
 
-    constructor(controller: CanvasController, services: ServiceLocator) {
+    constructor(controller: CanvasWindow, services: ServiceLocator) {
         super(ToolType.DELETE);
         this.controller = controller;
         this.services = services;
@@ -27,17 +25,17 @@ export class DeleteTool extends AbstractTool {
 
     click() {
         this.controller.toolService.pointerTool.click()
-        const hovered = this.controller.viewStore.getHoveredView();
-        hovered && this.controller.viewStore.remove(hovered);
+        const hovered = this.controller.stores.viewStore.getHoveredView();
+        hovered && this.controller.stores.viewStore.remove(hovered);
         
         hovered && this.controller.updateService.scheduleTasks(UpdateTask.All);
     }
 
     
     draggedUp() {
-        const canvasItems = this.controller.viewStore.getIntersectingItemsInRect(this.controller.feedbackStore.rectSelectFeedback.rect);
+        const canvasItems = this.controller.stores.viewStore.getIntersectingItemsInRect(this.controller.feedbackStore.rectSelectFeedback.rect);
 
-        canvasItems.forEach(item => this.controller.viewStore.remove(item));
+        canvasItems.forEach(item => this.controller.stores.viewStore.remove(item));
 
         this.rectSelector.finish();
 
@@ -59,7 +57,7 @@ export class DeleteTool extends AbstractTool {
 
     eraseAll() {
         this.services.storageService().clearAll();
-        this.controller.viewStore.clear();
+        this.controller.stores.viewStore.clear();
         this.controller.updateService.runImmediately(UpdateTask.All);
     }
 }

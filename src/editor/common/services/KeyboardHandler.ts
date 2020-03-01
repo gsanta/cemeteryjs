@@ -1,4 +1,4 @@
-import { CanvasController } from "../../canvas/CanvasController";
+import { CanvasWindow } from "../../canvas/CanvasWindow";
 
 
 export enum Keyboard {
@@ -8,9 +8,9 @@ export enum Keyboard {
 export class KeyboardHandler {
     downKeys: number[] = [];
 
-    private services: CanvasController;
+    private services: CanvasWindow;
 
-    constructor(services: CanvasController) {
+    constructor(services: CanvasWindow) {
         this.services = services;
     }
 

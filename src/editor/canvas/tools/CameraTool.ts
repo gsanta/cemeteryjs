@@ -2,7 +2,7 @@ import { Camera, nullCamera } from '../models/Camera';
 import { AbstractTool } from './AbstractTool';
 import { Point } from "../../../misc/geometry/shapes/Point";
 import { ToolType } from "./Tool";
-import { CanvasController } from '../CanvasController';
+import { CanvasWindow } from '../CanvasWindow';
 import { UpdateTask } from '../../common/services/UpdateServices';
 
 export function cameraInitializer(canvasId: string) {
@@ -35,9 +35,9 @@ export class CameraTool extends AbstractTool {
     readonly LOG_ZOOM_MAX = Math.log(CameraTool.ZOOM_MAX);
     readonly NUM_OF_STEPS: number;
 
-    private controller: CanvasController;
+    private controller: CanvasWindow;
 
-    constructor(controller: CanvasController, cameraInitializerFunc = cameraInitializer, numberOfSteps: number = 20) {
+    constructor(controller: CanvasWindow, cameraInitializerFunc = cameraInitializer, numberOfSteps: number = 20) {
         super(ToolType.CAMERA);
         this.NUM_OF_STEPS = numberOfSteps;
         this.controller = controller;

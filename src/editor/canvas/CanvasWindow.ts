@@ -1,4 +1,4 @@
-import { AbstractCanvasController, CanvasViewSettings } from '../common/AbstractCanvasController';
+import { WindowController, CanvasViewSettings } from '../common/WindowController';
 import { IPointerService } from '../common/services/IPointerService';
 import { KeyboardHandler } from '../common/services/KeyboardHandler';
 import { MouseHandler } from '../common/services/MouseHandler';
@@ -20,13 +20,13 @@ import { CanvasPointerService } from './services/CanvasPointerService';
 import { UpdateService, UpdateTask } from '../common/services/UpdateServices';
 import { ToolType } from './tools/Tool';
 import { ToolService } from './tools/ToolService';
+import { Stores } from '../Stores';
 
-export class CanvasController extends AbstractCanvasController {
+export class CanvasWindow extends WindowController {
     name = '2D View';
     static id = 'svg-canvas-controller';
     visible = true;
 
-    viewStore: ViewStore;
     feedbackStore: FeedbackStore;
 
     mouseController: MouseHandler;
@@ -34,26 +34,26 @@ export class CanvasController extends AbstractCanvasController {
     importer: CanvasImporter;
     exporter: CanvasExporter;
     model3dController: Model3DController;
+
     toolService: ToolService;
     updateService: UpdateService;
     pointer: IPointerService;
     
     meshViewForm: MeshViewForm;
     pathForm: PathViewForm;
-    
-    constructor(editor: Editor, services: ServiceLocator) {
-        super(editor, services);
+
+    constructor(editor: Editor, services: ServiceLocator, stores: Stores) {
+        super(editor, services, stores);
 
         this.updateService = new UpdateService(this, services);
-        this.viewStore = new ViewStore();
         this.feedbackStore = new FeedbackStore();
         
         this.mouseController = new MouseHandler(this);
         this.keyboardHandler = new KeyboardHandler(this);
         this.importer = new CanvasImporter(
             [
-                new MeshViewImporter(rect => this.viewStore.addRect(rect)),
-                new PathImporter((path: PathView) => this.viewStore.addPath(path))
+                new MeshViewImporter(rect => this.stores.viewStore.addRect(rect)),
+                new PathImporter((path: PathView) => this.stores.viewStore.addPath(path))
             ],
             this
         );
@@ -77,7 +77,7 @@ export class CanvasController extends AbstractCanvasController {
     }
 
     getId() {
-        return CanvasController.id;
+        return CanvasWindow.id;
     }
 
     resize(): void {
@@ -97,7 +97,7 @@ export class CanvasController extends AbstractCanvasController {
     }
 
     isEmpty(): boolean {
-        return this.viewStore.getViews().length === 0;
+        return this.stores.viewStore.getViews().length === 0;
     }
 
     viewSettings: CanvasViewSettings = {

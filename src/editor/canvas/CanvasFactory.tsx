@@ -1,25 +1,26 @@
 import { WindowFactory } from "../WindowFactory";
 import * as React from 'react';
 import { CanvasComponent } from "./gui/CanvasComponent";
-import { CanvasController } from "./CanvasController";
-import { AbstractCanvasController } from "../common/AbstractCanvasController";
+import { CanvasWindow } from "./CanvasWindow";
+import { WindowController } from "../common/WindowController";
 import { Editor } from "../Editor";
 import { ServiceLocator } from "../ServiceLocator";
+import { Stores } from "../Stores";
 
 export class CanvasFactory implements WindowFactory {
     name = 'canvas';
     
-    private controller: CanvasController;
+    private controller: CanvasWindow;
 
-    getWindowController(editor: Editor, services: ServiceLocator): AbstractCanvasController {
+    getWindowController(editor: Editor, services: ServiceLocator, stores: Stores): WindowController {
         if (!this.controller) {
-            this.controller = new CanvasController(editor, services);
+            this.controller = new CanvasWindow(editor, services, stores);
         }
         return this.controller;
     }
 
-    renderWindowComponent(controller: AbstractCanvasController): JSX.Element {
-        return <CanvasComponent controller={controller as CanvasController}/>;
+    renderWindowComponent(controller: WindowController): JSX.Element {
+        return <CanvasComponent controller={controller as CanvasWindow}/>;
     }
 
     renderToolbarComponent(): JSX.Element {

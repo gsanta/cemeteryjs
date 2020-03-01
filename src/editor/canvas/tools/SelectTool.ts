@@ -1,4 +1,4 @@
-import { CanvasController } from "../CanvasController";
+import { CanvasWindow } from "../CanvasWindow";
 import { CanvasItemTag } from "../models/CanvasItem";
 import { RectangleSelector } from "./selection/RectangleSelector";
 import { ToolType, Tool } from "./Tool";
@@ -7,20 +7,20 @@ import { View } from "../models/views/View";
 import { UpdateTask } from "../../common/services/UpdateServices";
 
 export class SelectTool extends AbstractTool {
-    protected controller: CanvasController;
+    protected controller: CanvasWindow;
     private rectSelector: RectangleSelector;
 
     private activeTool: Tool;
 
-    constructor(controller: CanvasController) {
+    constructor(controller: CanvasWindow) {
         super(ToolType.SELECT);
         this.controller = controller;
         this.rectSelector = new RectangleSelector(controller);
     }
 
     down() {
-        const hovered = this.controller.viewStore.getHoveredView();
-        const selected = this.controller.viewStore.getSelectedViews();
+        const hovered = this.controller.stores.viewStore.getHoveredView();
+        const selected = this.controller.stores.viewStore.getSelectedViews();
 
         if (hovered && selected.includes(hovered)) {
             this.activeTool = this.controller.toolService.moveTool;
@@ -28,10 +28,10 @@ export class SelectTool extends AbstractTool {
     }
 
     click() {
-        if (this.controller.viewStore.getHoveredView()) {
+        if (this.controller.stores.viewStore.getHoveredView()) {
             this.controller.toolService.pointerTool.click();
-        } else if (this.controller.viewStore.getSelectedViews().length > 0) {
-            this.controller.viewStore.removeTag(this.controller.viewStore.getViews(), CanvasItemTag.SELECTED);
+        } else if (this.controller.stores.viewStore.getSelectedViews().length > 0) {
+            this.controller.stores.viewStore.removeTag(this.controller.stores.viewStore.getViews(), CanvasItemTag.SELECTED);
             this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
         }
     }
@@ -55,10 +55,10 @@ export class SelectTool extends AbstractTool {
         const feedback = this.controller.feedbackStore.rectSelectFeedback;
         if (!feedback) { return }
 
-        const canvasItems = this.controller.viewStore.getIntersectingItemsInRect(feedback.rect);
-        const canvasStore = this.controller.viewStore;
+        const canvasItems = this.controller.stores.viewStore.getIntersectingItemsInRect(feedback.rect);
+        const canvasStore = this.controller.stores.viewStore;
         
-        canvasStore.removeTag(this.controller.viewStore.getViews(), CanvasItemTag.SELECTED);
+        canvasStore.removeTag(this.controller.stores.viewStore.getViews(), CanvasItemTag.SELECTED);
         canvasStore.addTag(canvasItems, CanvasItemTag.SELECTED);
 
         this.rectSelector.finish();

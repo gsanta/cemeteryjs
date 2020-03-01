@@ -5,16 +5,18 @@ import { GlobalSettingsForm } from './canvas/forms/GlobalSettingsForm';
 import { EventDispatcher } from './common/EventDispatcher';
 import { RendererFactory } from './renderer/RendererFactory';
 import { WindowFactory } from './WindowFactory';
-import { CanvasController } from './canvas/CanvasController';
-import { LocalStore } from './services/LocalStrore';
+import { CanvasWindow } from './canvas/CanvasWindow';
 import { ServiceLocator } from './ServiceLocator';
+import { ViewStore } from './canvas/models/ViewStore';
+import { Stores } from './Stores';
 
 export class Editor {
     gameFacade: GameFacade;
     gameApi: GameApi;
+
+    stores: Stores;
     
     windowFactories: WindowFactory[];
-    
     eventDispatcher: EventDispatcher;
 
     svgCanvasId: string;
@@ -25,8 +27,9 @@ export class Editor {
     private services: ServiceLocator;
 
     constructor(eventDispatcher: EventDispatcher) {
+        this.stores = new Stores();
         this.services = new ServiceLocator(this, eventDispatcher);
-        
+
         this.windowFactories = [
             new CanvasFactory(),
             new RendererFactory()
@@ -35,7 +38,7 @@ export class Editor {
 
         this.eventDispatcher = eventDispatcher;
 
-        this.globalSettingsForm = new GlobalSettingsForm(this.getWindowControllerByName('canvas') as CanvasController, this.eventDispatcher);
+        this.globalSettingsForm = new GlobalSettingsForm(this.getWindowControllerByName('canvas') as CanvasWindow, this.eventDispatcher);
 
         this.svgCanvasId = 'svg-editor';
     }
@@ -45,10 +48,11 @@ export class Editor {
         this.gameFacade.setup();
         this.gameApi = new GameApi(this.gameFacade);
 
-        this.windowFactories.forEach(factory => factory.getWindowController(this, this.services).setup());
+        this.windowFactories.forEach(factory => factory.getWindowController(this, this.services, this.stores).setup());
+
         this.services.storageService().loadEditorState()
             .then((str: string) => {
-                (this.getWindowControllerByName('canvas') as CanvasController).importer.import(str);
+                (this.getWindowControllerByName('canvas') as CanvasWindow).importer.import(str);
                 this.isLoading = false;
                 this.render();
             })
@@ -59,11 +63,11 @@ export class Editor {
     }
 
     getWindowControllerByName(name: string) {
-        return this.windowFactories.find(factory => factory.name === name).getWindowController(this, this.services);
+        return this.windowFactories.find(factory => factory.name === name).getWindowController(this, this.services, this.stores);
     }
 
     getWindowControllers() {
-        return this.windowFactories.map(factory => factory.getWindowController(this, this.services));
+        return this.windowFactories.map(factory => factory.getWindowController(this, this.services, this.stores));
     }
 
     getWindowFactory(name: string) {

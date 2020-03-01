@@ -2,10 +2,10 @@ import { View } from "../canvas/models/views/View";
 import { Point } from "../../misc/geometry/shapes/Point";
 import { IPointerEvent, IPointerService } from "../common/services/IPointerService";
 import { MousePointer } from "../common/services/MouseHandler";
-import { RendererController } from "./RendererController";
+import { RendererWindow } from "./RendererWindow";
 
 export class RendererPointerService implements IPointerService {
-    private controller: RendererController;
+    private controller: RendererWindow;
     isDown = false;
     isDrag = false;
 
@@ -13,7 +13,7 @@ export class RendererPointerService implements IPointerService {
 
     private calcOffset: (id: string) => Point;
 
-    constructor(controller: RendererController) {
+    constructor(controller: RendererWindow) {
         this.controller = controller;
     }
 

@@ -1,4 +1,4 @@
-import { CanvasController } from "../../CanvasController";
+import { CanvasWindow } from "../../CanvasWindow";
 import { MeshViewFormComponent } from "./MeshViewFormComponent";
 import { PathViewFormComponent } from "./PathViewFormComponent";
 import styled from "styled-components";
@@ -9,7 +9,7 @@ import { View, ViewType } from "../../models/views/View";
 import { Editor } from "../../../Editor";
 
 export interface ViewFormProps<T extends View> {
-    canvasController: CanvasController;
+    canvasController: CanvasWindow;
     view: T;
 }
 
@@ -19,8 +19,8 @@ const PlaceHolderTextStyled = styled.div`
 `;
 
 export function viewComponentFactory(editor: Editor): JSX.Element {
-    const canvasController = (editor.getWindowControllerByName('canvas') as CanvasController);
-    const selectedViews = canvasController.viewStore.getSelectedViews();
+    const canvasController = (editor.getWindowControllerByName('canvas') as CanvasWindow);
+    const selectedViews = canvasController.stores.viewStore.getSelectedViews();
     if (selectedViews.length !== 1) {
         return <PlaceHolderTextStyled>Select an object on canvas to change it's properties</PlaceHolderTextStyled>
     }

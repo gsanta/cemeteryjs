@@ -5,7 +5,7 @@ import { PanIconComponent } from '../../gui/icons/tools/PanIconComponent';
 import { ZoomInIconComponent } from '../../gui/icons/tools/ZoomInIconComponent';
 import { ZoomOutIconComponent } from '../../gui/icons/tools/ZoomOutIconComponent';
 import { colors } from '../../gui/styles';
-import { RendererController } from '../RendererController';
+import { RendererWindow } from '../RendererWindow';
 import { ToolType } from '../../canvas/tools/Tool';
 
 const ToolbarStyled = styled.div`
@@ -20,7 +20,7 @@ const ToolbarStyled = styled.div`
 `;
 
 export interface RendererToolbarProps {
-    controller: RendererController;
+    controller: RendererWindow;
 }
 
 export class RendererToolbarComponent extends React.Component<RendererToolbarProps> {

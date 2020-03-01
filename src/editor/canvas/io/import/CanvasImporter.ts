@@ -1,7 +1,7 @@
 import * as convert from 'xml-js';
 import { ViewType } from '../../models/views/View';
 import { IViewImporter } from '../../tools/IToolImporter';
-import { CanvasController } from '../../CanvasController';
+import { CanvasWindow } from '../../CanvasWindow';
 import { Rectangle } from '../../../../misc/geometry/shapes/Rectangle';
 
 export interface WgDefinition {
@@ -46,9 +46,9 @@ export interface ViewGroupJson<T = any> {
 
 export class CanvasImporter {
     private viewImporters: IViewImporter[];
-    private controller: CanvasController;
+    private controller: CanvasWindow;
 
-    constructor(viewImporters: IViewImporter[], controller?: CanvasController) {
+    constructor(viewImporters: IViewImporter[], controller?: CanvasWindow) {
         this.controller = controller;
         this.viewImporters = viewImporters;
     }

@@ -1,7 +1,7 @@
 import { EventDispatcher } from '../../common/EventDispatcher';
 import { Events } from '../../common/Events';
 import { ServiceLocator } from '../../ServiceLocator';
-import { CanvasController } from '../CanvasController';
+import { CanvasWindow } from '../CanvasWindow';
 import { MeshView } from '../models/views/MeshView';
 import { AbstractForm, PropertyType } from "./AbstractForm";
 import { UpdateTask } from '../../common/services/UpdateServices';
@@ -29,13 +29,13 @@ const propertyTypes = {
 export class MeshViewForm extends AbstractForm<MeshViewPropType> {
     gameObject: MeshView;
 
-    private controller: CanvasController;
+    private controller: CanvasWindow;
     private services: ServiceLocator;
     private eventDispatcher: EventDispatcher;
 
     isAnimationSectionOpen = false;
 
-    constructor(controller: CanvasController, services: ServiceLocator, eventDispatcher: EventDispatcher) {
+    constructor(controller: CanvasWindow, services: ServiceLocator, eventDispatcher: EventDispatcher) {
         super(propertyTypes);
         this.controller = controller;
         this.services = services;
@@ -65,7 +65,7 @@ export class MeshViewForm extends AbstractForm<MeshViewPropType> {
             case MeshViewPropType.THUMBNAIL:
                 return this.gameObject.thumbnailPath;
             case MeshViewPropType.LAYER:
-                return this.controller.viewStore.getLayer(this.gameObject);
+                return this.controller.stores.viewStore.getLayer(this.gameObject);
             case MeshViewPropType.ROTATION:
                 return this.gameObject.rotation;
             case MeshViewPropType.SCALE:
@@ -106,7 +106,7 @@ export class MeshViewForm extends AbstractForm<MeshViewPropType> {
                 this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
                 break;
             case MeshViewPropType.LAYER:
-                this.controller.viewStore.setLayer(this.gameObject, val);
+                this.controller.stores.viewStore.setLayer(this.gameObject, val);
                 this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
                 break;
             case MeshViewPropType.ROTATION:

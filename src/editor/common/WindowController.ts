@@ -4,20 +4,23 @@ import { GameApi } from '../../game/GameApi';
 import { GameFacade } from '../../game/GameFacade';
 import { ServiceLocator } from '../ServiceLocator';
 import { UpdateService } from './services/UpdateServices';
+import { Stores } from '../Stores';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;
     minSizePixel: number;
 }
 
-export abstract class AbstractCanvasController {
+export abstract class WindowController {
     name: string;
     editor: Editor;
+    stores: Stores;
     updateService: UpdateService;
 
     protected services: ServiceLocator;
-    constructor(controllers: Editor, services: ServiceLocator) {
+    constructor(controllers: Editor, services: ServiceLocator, stores: Stores) {
         this.editor = controllers;
+        this.stores = stores;
         this.services = services;
     }
 
