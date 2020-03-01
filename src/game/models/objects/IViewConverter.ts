@@ -1,5 +1,4 @@
-import { ViewType, View } from "../../../editor/canvas/models/views/View";
-import { IGameObject } from "./IGameObject";
+import { ViewType, View } from "../../../editor/windows/canvas/models/views/View";
 
 export interface IViewConverter {
     viewType: ViewType;

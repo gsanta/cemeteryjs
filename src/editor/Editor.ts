@@ -1,13 +1,12 @@
 import { GameApi } from '../game/GameApi';
 import { GameFacade } from '../game/GameFacade';
-import { CanvasFactory } from './canvas/CanvasFactory';
-import { GlobalSettingsForm } from './canvas/forms/GlobalSettingsForm';
+import { CanvasFactory } from './windows/canvas/CanvasFactory';
+import { GlobalSettingsForm } from './windows/canvas/forms/GlobalSettingsForm';
 import { EventDispatcher } from './common/EventDispatcher';
-import { RendererFactory } from './renderer/RendererFactory';
+import { RendererFactory } from './windows/renderer/RendererFactory';
 import { WindowFactory } from './WindowFactory';
-import { CanvasWindow } from './canvas/CanvasWindow';
+import { CanvasWindow } from './windows/canvas/CanvasWindow';
 import { ServiceLocator } from './ServiceLocator';
-import { ViewStore } from './canvas/models/ViewStore';
 import { Stores } from './Stores';
 
 export class Editor {

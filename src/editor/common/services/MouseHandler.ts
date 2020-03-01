@@ -1,6 +1,6 @@
-import { View } from "../../canvas/models/views/View";
 import { Point } from "../../../misc/geometry/shapes/Point";
 import { IPointerEvent, IPointerService } from "./IPointerService";
+import { View } from "../../windows/canvas/models/views/View";
 
 export class MousePointer {
     down: Point;

@@ -1,11 +1,8 @@
-import { Axis, Mesh, MeshBuilder, Scene, Space, Vector3, Skeleton } from 'babylonjs';
-import { MeshView } from '../../../editor/canvas/models/views/MeshView';
-import { MaterialFactory } from './MaterialFactory';
-import { Polygon } from '../../../misc/geometry/shapes/Polygon';
-import { Segment } from '../../../misc/geometry/shapes/Segment';
+import { MeshBuilder, Scene, Space, Vector3 } from 'babylonjs';
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
 import { GameFacade } from '../../GameFacade';
 import { MeshObject } from '../../models/objects/MeshObject';
+import { MaterialFactory } from './MaterialFactory';
 
 export class RectangleFactory  {
     private gameFacade: GameFacade;

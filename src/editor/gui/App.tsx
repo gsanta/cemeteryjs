@@ -5,7 +5,7 @@ import { AppContext, AppContextType } from './Context';
 import '../../editor/gui/misc/SplitPane.css';
 import Split from 'split.js'
 import { windowFactory } from '../WindowFactory';
-import { SidebarComponent } from '../canvas/gui/forms/SidebarComponent';
+import { SidebarComponent } from '../windows/canvas/gui/forms/SidebarComponent';
 import { WindowController } from '../common/WindowController';
 import { SpinnerComponent } from './misc/SpinnerComponent';
 import { SpinnerOverlayComponent } from './misc/SpinnerOverlayComponent';

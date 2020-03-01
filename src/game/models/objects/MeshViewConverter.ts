@@ -1,9 +1,9 @@
-import { MeshView } from "../../../editor/canvas/models/views/MeshView";
 import { MeshObject } from "./MeshObject";
 import { GameFacade } from "../../GameFacade";
-import { ViewType } from "../../../editor/canvas/models/views/View";
+import { ViewType } from "../../../editor/windows/canvas/models/views/View";
 import { RouteObject } from "./RouteObject";
 import { Tools } from "babylonjs";
+import { MeshView } from "../../../editor/windows/canvas/models/views/MeshView";
 
 
 export class MeshViewConverter {

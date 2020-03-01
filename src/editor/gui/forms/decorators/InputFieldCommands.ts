@@ -1,4 +1,4 @@
-import { AbstractForm } from "../../../canvas/forms/AbstractForm";
+import { AbstractForm } from "../../../windows/canvas/forms/AbstractForm";
 
 export interface InputFieldCommands<P> {
     propertyName: P;

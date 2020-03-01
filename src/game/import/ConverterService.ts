@@ -1,4 +1,3 @@
-import { MeshView } from "../../editor/canvas/models/views/MeshView";
 import { Converter } from "./WorldGenerator";
 import { Mesh } from "babylonjs";
 import { MeshObject } from "../models/objects/MeshObject";

@@ -2,7 +2,6 @@ import { IBehaviour } from "./IBehaviour";
 import { IEventListener } from "../listeners/IEventListener";
 import { GameEvent } from "../GameEventManager";
 import { GameFacade } from "../../GameFacade";
-import { MeshView } from "../../../editor/canvas/models/views/MeshView";
 import { MeshObject } from "../../models/objects/MeshObject";
 import { LifeCycleEvent } from "../triggers/ILifeCycleTrigger";
 

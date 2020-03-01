@@ -1,4 +1,4 @@
-import { ViewStore } from "./canvas/models/ViewStore";
+import { ViewStore } from "./windows/canvas/models/ViewStore";
 
 
 export class Stores {

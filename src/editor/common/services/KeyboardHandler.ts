@@ -1,4 +1,4 @@
-import { CanvasWindow } from "../../canvas/CanvasWindow";
+import { CanvasWindow } from "../../windows/canvas/CanvasWindow";
 
 
 export enum Keyboard {

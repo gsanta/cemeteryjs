@@ -1,7 +1,7 @@
-import { MeshView, WorldItemShape } from '../../editor/canvas/models/views/MeshView';
 import { Shape } from '../../misc/geometry/shapes/Shape';
 import { Point } from '../../misc/geometry/shapes/Point';
 import { GameFacade } from '../GameFacade';
+import { WorldItemShape, MeshView } from '../../editor/windows/canvas/models/views/MeshView';
 
 export interface GameObjectConfig {
     type?: string;

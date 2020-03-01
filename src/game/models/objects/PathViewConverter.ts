@@ -1,9 +1,8 @@
-import { ViewType } from "../../../editor/canvas/models/views/View";
 import { GameFacade } from "../../GameFacade";
-import { MeshView } from "../../../editor/canvas/models/views/MeshView";
 import { MeshObject } from "./MeshObject";
 import { PathObject } from "./PathObject";
-import { PathView } from "../../../editor/canvas/models/views/PathView";
+import { ViewType } from "../../../editor/windows/canvas/models/views/View";
+import { PathView } from "../../../editor/windows/canvas/models/views/PathView";
 
 
 export class PathViewConverter {
