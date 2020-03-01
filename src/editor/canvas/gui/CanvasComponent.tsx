@@ -40,7 +40,7 @@ export class CanvasComponent extends React.Component<{controller: CanvasControll
     }
 
     render(): JSX.Element {
-        const cameraTool = this.props.controller.findToolByType(ToolType.CAMERA) as CameraTool;
+        const cameraTool = this.props.controller.toolService.getTool(ToolType.CAMERA) as CameraTool;
 
         return (
             <EditorComponentStyled id={this.props.controller.getId()}>
@@ -59,8 +59,8 @@ export class CanvasComponent extends React.Component<{controller: CanvasControll
                     <defs>
                         <PathMarkersComponent/>
                     </defs>
-                    {this.props.controller.toolService.getToolExporter(ViewType.GameObject).export(false)}
-                    {this.props.controller.toolService.getToolExporter(ViewType.Path).export(false)}
+                    {this.props.controller.exporter.getViewExporter(ViewType.GameObject).export(false)}
+                    {this.props.controller.exporter.getViewExporter(ViewType.Path).export(false)}
                     {this.renderFeedbacks()}
 
 

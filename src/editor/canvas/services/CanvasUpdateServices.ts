@@ -31,19 +31,21 @@ export class CanvasUpdateService {
         this.toolUpdateTasks.forEach(task => {
             switch(task) {
                 case UpdateTask.RepaintCanvas:
-                case UpdateTask.All:
                     this.controller.renderWindow();
                 break;
                 case UpdateTask.RepaintSettings:
-                case UpdateTask.All:
                     this.controller.renderToolbar();
                 break;
                 case UpdateTask.UpdateRenderer:
-                case UpdateTask.All:
                     this.controller.editor.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
                 break;
                 case UpdateTask.SaveData:
+                    this.services.storageService().saveXml(this.controller.exporter.export());
+                break;
                 case UpdateTask.All:
+                    this.controller.renderWindow();
+                    this.controller.renderToolbar();
+                    this.controller.editor.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
                     this.services.storageService().saveXml(this.controller.exporter.export());
                 break;
             }

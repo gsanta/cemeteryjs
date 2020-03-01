@@ -68,11 +68,11 @@ export class CanvasImporter {
 
     private applyGlobalSettings(rawJson: RawWorldMapJson) {
         const zoom = rawJson.svg._attributes['data-zoom'] ? parseFloat(rawJson.svg._attributes['data-zoom']) : 1;
-        this.controller.cameraTool.getCamera().zoom(zoom);
+        this.controller.toolService.cameraTool.getCamera().zoom(zoom);
 
         if (rawJson.svg._attributes['data-viewbox']) {
             const viewBox = Rectangle.fromString(rawJson.svg._attributes['data-viewbox']);
-            this.controller.cameraTool.getCamera().setViewBox(viewBox);
+            this.controller.toolService.cameraTool.getCamera().setViewBox(viewBox);
         }        
     }
 

@@ -17,7 +17,7 @@ export class PathTool extends AbstractTool {
     }
 
     click() {
-        if (this.controller.pointerTool.click()) { return }
+        if (this.controller.toolService.pointerTool.click()) { return }
         
         const selectedPathes = this.controller.viewStore.getSelectedPathes();
 
@@ -39,19 +39,19 @@ export class PathTool extends AbstractTool {
     }
 
     select() {
-        this.controller.pointerTool.setSelectableViews([ViewType.Path]);
+        this.controller.toolService.pointerTool.setSelectableViews([ViewType.Path]);
     }
 
     unselect() {
-        this.controller.pointerTool.setSelectableViews(undefined);
+        this.controller.toolService.pointerTool.setSelectableViews(undefined);
     }
 
     over(item: View) {
-        this.controller.pointerTool.over(item);
+        this.controller.toolService.pointerTool.over(item);
     }
 
     out(item: View) {
-        this.controller.pointerTool.out(item);
+        this.controller.toolService.pointerTool.out(item);
     }
 
     private startNewPath() {

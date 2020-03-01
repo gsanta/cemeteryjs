@@ -24,7 +24,7 @@ export class Editor {
 
     private services: ServiceLocator;
 
-    constructor(serviceLocator: ServiceLocator) {
+    constructor(serviceLocator: ServiceLocator, eventDispatcher: EventDispatcher) {
         this.windowFactories = [
             new CanvasFactory(),
             new RendererFactory()
@@ -32,7 +32,7 @@ export class Editor {
 
         this.services = serviceLocator;
 
-        this.eventDispatcher = new EventDispatcher();
+        this.eventDispatcher = eventDispatcher;
 
         this.globalSettingsForm = new GlobalSettingsForm(this.getWindowControllerByName('canvas') as CanvasController, this.eventDispatcher);
 

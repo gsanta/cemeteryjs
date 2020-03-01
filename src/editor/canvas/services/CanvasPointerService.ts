@@ -36,7 +36,7 @@ export class CanvasPointerService implements IPointerService {
 
         this.isDown = true;
         this.pointer.down = this.getPointWithOffset(e.pointers[0].pos); 
-        this.controller.getActiveTool().down();
+        this.controller.toolService.getActiveTool().down();
         this.controller.updateService.runUpdateTaks();
     }
 
@@ -47,22 +47,22 @@ export class CanvasPointerService implements IPointerService {
         this.pointer.currScreen =  this.getScreenPointWithOffset(e.pointers[0].pos);
         if (this.isDown && this.pointer.getDownDiff().len() > 2) {
             this.isDrag = true;
-            this.controller.getActiveTool().drag();
+            this.controller.toolService.getActiveTool().drag();
         } else {
-            this.controller.getActiveTool().move();
+            this.controller.toolService.getActiveTool().move();
         }
         this.controller.updateService.runUpdateTaks();
     }
 
     pointerUp(e: IPointerEvent): void {
-        console.log(this.controller.getActiveTool())
+        console.log(this.controller.toolService.getActiveTool())
         if (this.isDrag) {
-            this.controller.getActiveTool().draggedUp();
+            this.controller.toolService.getActiveTool().draggedUp();
         } else {
-            this.controller.getActiveTool().click();
+            this.controller.toolService.getActiveTool().click();
         }
         
-        this.controller.getActiveTool().up();
+        this.controller.toolService.getActiveTool().up();
         this.isDown = false;
         this.isDrag = false;
         this.pointer.down = undefined;
@@ -75,12 +75,12 @@ export class CanvasPointerService implements IPointerService {
     }
 
     hover(item: View): void {
-        this.controller.getActiveTool().over(item);
+        this.controller.toolService.getActiveTool().over(item);
         this.controller.updateService.runUpdateTaks();
     }
 
     unhover(item: View): void {
-        this.controller.getActiveTool().out(item);
+        this.controller.toolService.getActiveTool().out(item);
         this.controller.updateService.runUpdateTaks();
     }
     
@@ -91,7 +91,7 @@ export class CanvasPointerService implements IPointerService {
 
     private getPointWithOffset(point: Point): Point {
         const offset = this.calcOffset(this.controller.getId());
-        return this.controller.getCamera().screenToCanvasPoint(new Point(point.x - offset.x, point.y - offset.y));
+        return this.controller.toolService.cameraTool.getCamera().screenToCanvasPoint(new Point(point.x - offset.x, point.y - offset.y));
     }
 
 }

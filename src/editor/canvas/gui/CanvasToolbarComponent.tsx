@@ -45,7 +45,7 @@ export class CanvasToolbarComponent extends React.Component<{controller: CanvasC
     }
 
     private isToolActive(toolType: ToolType) {
-        return this.props.controller.getActiveTool().type === toolType;
+        return this.props.controller.toolService.getActiveTool().type === toolType;
     }
 
     private activateTool(toolType: ToolType) {
@@ -53,11 +53,11 @@ export class CanvasToolbarComponent extends React.Component<{controller: CanvasC
     }
 
     private zoomIn() {
-        this.props.controller.cameraTool.zoomToNextStep();
+        this.props.controller.toolService.cameraTool.zoomToNextStep();
     }
 
     private zoomOut() {
-        this.props.controller.cameraTool.zoomToPrevStep();
+        this.props.controller.toolService.cameraTool.zoomToPrevStep();
     }
 
     private blank() {

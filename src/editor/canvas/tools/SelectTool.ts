@@ -23,13 +23,13 @@ export class SelectTool extends AbstractTool {
         const selected = this.controller.viewStore.getSelectedViews();
 
         if (hovered && selected.includes(hovered)) {
-            this.activeTool = this.controller.moveTool;
+            this.activeTool = this.controller.toolService.moveTool;
         }
     }
 
     click() {
         if (this.controller.viewStore.getHoveredView()) {
-            this.controller.pointerTool.click();
+            this.controller.toolService.pointerTool.click();
         } else if (this.controller.viewStore.getSelectedViews().length > 0) {
             this.controller.viewStore.removeTag(this.controller.viewStore.getViews(), CanvasItemTag.SELECTED);
             this.controller.updateService.addUpdateTasks(UpdateTask.RepaintCanvas);
@@ -66,10 +66,10 @@ export class SelectTool extends AbstractTool {
     }
 
     over(item: View) {
-        this.controller.pointerTool.over(item);
+        this.controller.toolService.pointerTool.over(item);
     }
 
     out(item: View) {
-        this.controller.pointerTool.out(item);
+        this.controller.toolService.pointerTool.out(item);
     }
 }

@@ -40,10 +40,6 @@ export class CanvasController extends AbstractCanvasController {
 
     mouseController: MouseHandler;
     keyboardHandler: KeyboardHandler;
-    tools: Tool[];
-    cameraTool: CameraTool;
-    pointerTool: PointerTool;
-    moveTool: MoveTool;
     importer: CanvasImporter;
     exporter: CanvasExporter;
     model3dController: Model3DController;
@@ -53,8 +49,6 @@ export class CanvasController extends AbstractCanvasController {
     
     meshViewForm: MeshViewForm;
     pathForm: PathViewForm;
-
-    selectedTool = ToolType.RECTANGLE;
 
     private renderCanvasFunc = () => null;
 
@@ -77,45 +71,14 @@ export class CanvasController extends AbstractCanvasController {
             ],
             this
         );
-        this.exporter = new CanvasExporter(this);
+        this.exporter = new CanvasExporter(this, [new RectangleExporter(this), new PathExporter(this)]);
         this.model3dController = new Model3DController(this);
-        
-        this.pointerTool = new PointerTool(this);
-        this.cameraTool = new CameraTool(this);
-        const rectangleTool = new RectangleTool(this, this.editor.eventDispatcher);
-        const pathTool = new PathTool(this);
-        const deleteTool = new DeleteTool(this, this.services);
-        this.moveTool = new MoveTool(this, this.editor.eventDispatcher);
-        const selectTool = new SelectTool(this);
-        this.tools = [
-            rectangleTool,
-            pathTool,
-            deleteTool,
-            selectTool,
-            this.cameraTool,
-        ];
 
-        this.toolService = new ToolService(
-            [
-                rectangleTool,
-                pathTool,
-                deleteTool,
-                selectTool,
-                this.cameraTool,
-            ],
-            [
-                new RectangleExporter(this),
-                new PathExporter(this)
-            ]
-        )
+        this.toolService = new ToolService(this, this.services);
 
         this.meshViewForm = new MeshViewForm(this, this.services, this.editor.eventDispatcher);
         this.pathForm = new PathViewForm();
         this.pointer = new CanvasPointerService(this);
-    }
-
-    getCamera(): ICamera {
-        return this.cameraTool.getCamera();
     }
 
     renderWindow() {
@@ -126,39 +89,13 @@ export class CanvasController extends AbstractCanvasController {
         this.toolbarRenderers.forEach(renderer => renderer());
     }
 
-    updateContent() {
-        this.renderToolbar();
-        this.renderWindow();
-        this.editor.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
-        this.services.storageService().saveXml(this.exporter.export());
-    }
-
     setSelectedTool(toolType: ToolType) {
-        if (this.selectedTool) {
-            this.getActiveTool().unselect();
+        if (this.toolService.selectedTool) {
+            this.toolService.getActiveTool().unselect();
         }
-        this.selectedTool = toolType;
-        this.getActiveTool().select();
+        this.toolService.selectedTool = toolType;
+        this.toolService.getActiveTool().select();
         this.renderToolbar();
-    }
-
-    getActiveTool(): Tool {
-        switch(this.selectedTool) {
-            case ToolType.SELECT:
-                return this.findToolByType(ToolType.SELECT);
-            case ToolType.DELETE:
-                return this.findToolByType(ToolType.DELETE);
-            case ToolType.RECTANGLE:
-                return this.findToolByType(ToolType.RECTANGLE);
-            case ToolType.CAMERA:
-                return this.findToolByType(ToolType.CAMERA);
-            case ToolType.PATH:
-                return this.findToolByType(ToolType.PATH);
-        }
-    }
-
-    findToolByType(toolType: ToolType) {
-        return this.tools.find(tool => tool.type === toolType);
     }
 
     getId() {
@@ -166,7 +103,7 @@ export class CanvasController extends AbstractCanvasController {
     }
 
     resize(): void {
-        this.cameraTool.resize();
+        this.toolService.cameraTool.resize();
     };
 
     isVisible(): boolean {

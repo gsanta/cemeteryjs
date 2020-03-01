@@ -16,7 +16,7 @@ export class KeyboardHandler {
 
     onKeyDown(e: KeyboardEvent): void {
         this.downKeys.push(e.keyCode);
-        this.services.getActiveTool()?.keydown();
+        this.services.toolService.getActiveTool()?.keydown();
     }
 
     onKeyUp(e: KeyboardEvent): void {

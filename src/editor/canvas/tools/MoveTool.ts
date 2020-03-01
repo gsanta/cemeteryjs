@@ -8,7 +8,6 @@ import { View } from "../models/views/View";
 import { UpdateTask } from "../services/CanvasUpdateServices";
 
 export class MoveTool extends AbstractTool {
-    private eventDispatcher: EventDispatcher;
     private controller: CanvasController;
 
     private origDimensions: Rectangle[] = [];
@@ -16,9 +15,8 @@ export class MoveTool extends AbstractTool {
     private isMoving = false;
     private isDragStart = true;
 
-    constructor(controller: CanvasController, eventDispatcher: EventDispatcher) {
+    constructor(controller: CanvasController) {
         super(ToolType.MOVE);
-        this.eventDispatcher = eventDispatcher;
         this.controller = controller;
     }
 
@@ -39,7 +37,7 @@ export class MoveTool extends AbstractTool {
         super.draggedUp();
 
         if (!this.isDragStart) {
-            this.controller.updateContent();
+            this.controller.updateService.addUpdateTasks(UpdateTask.All);
         }
 
         this.isDragStart = true;

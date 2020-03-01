@@ -1,10 +1,16 @@
 import { LocalStore } from "./services/LocalStrore";
+import { EventDispatcher } from "./common/EventDispatcher";
 
 export class ServiceLocator {
     private services: {serviceName: string}[] = [];
+
+    //todo: get rid of it
+    private eventDispatcher: EventDispatcher;
     
-    constructor() {
+    constructor(eventDispatcher: EventDispatcher) {
         this.services.push(new LocalStore());
+
+        this.eventDispatcher = eventDispatcher;
     }
 
     getService(serviceName: string) {
@@ -13,5 +19,9 @@ export class ServiceLocator {
 
     storageService(): LocalStore {
         return <LocalStore> this.getService('local-store');
+    }
+
+    dispatchService(): EventDispatcher {
+        return this.eventDispatcher;
     }
 }

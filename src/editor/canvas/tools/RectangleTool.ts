@@ -9,17 +9,16 @@ import { AbstractTool } from './AbstractTool';
 import { ToolType } from './Tool';
 import { RectangleSelector } from './selection/RectangleSelector';
 import { UpdateTask } from '../services/CanvasUpdateServices';
+import { ServiceLocator } from '../../ServiceLocator';
 
 export class RectangleTool extends AbstractTool {
-    private eventDispatcher: EventDispatcher;
     private lastPreviewRect: MeshView;
     private rectSelector: RectangleSelector;
     private controller: CanvasController;
 
-    constructor(controller: CanvasController, eventDispatcher: EventDispatcher) {
+    constructor(controller: CanvasController) {
         super(ToolType.RECTANGLE);
 
-        this.eventDispatcher = eventDispatcher;
         this.controller = controller;
         this.rectSelector = new RectangleSelector(controller);
     }

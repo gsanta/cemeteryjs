@@ -26,7 +26,7 @@ export class DeleteTool extends AbstractTool {
     }
 
     click() {
-        this.controller.pointerTool.click()
+        this.controller.toolService.pointerTool.click()
         const hovered = this.controller.viewStore.getHoveredView();
         hovered && this.controller.viewStore.remove(hovered);
         
@@ -50,17 +50,16 @@ export class DeleteTool extends AbstractTool {
     }
 
     over(item: View) {
-        this.controller.pointerTool.over(item);
+        this.controller.toolService.pointerTool.over(item);
     }
 
     out(item: View) {
-        this.controller.pointerTool.out(item);
+        this.controller.toolService.pointerTool.out(item);
     }
 
     eraseAll() {
         this.services.storageService().clearAll();
         this.controller.viewStore.clear();
-        this.controller.updateContent();
         this.controller.updateService.addUpdateTasks(UpdateTask.All);
     }
 }
