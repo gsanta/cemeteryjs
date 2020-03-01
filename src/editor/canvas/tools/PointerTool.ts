@@ -4,7 +4,7 @@ import { CanvasController } from "../CanvasController";
 import { ToolType } from "./Tool";
 import { CanvasItemTag } from "../models/CanvasItem";
 import { PathView } from "../models/views/PathView";
-import { UpdateTask } from "../services/CanvasUpdateServices";
+import { UpdateTask } from "../../common/services/UpdateServices";
 
 export class PointerTool extends AbstractTool {
     private controller: CanvasController;
@@ -27,7 +27,7 @@ export class PointerTool extends AbstractTool {
             this.controller.viewStore.addTag([hoveredView], CanvasItemTag.SELECTED);
             hoveredView.selectHoveredSubview();
 
-            this.controller.updateService.addUpdateTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas);
+            this.controller.updateService.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas);
             
             return true;
         }
@@ -38,20 +38,20 @@ export class PointerTool extends AbstractTool {
         const hoveredView = this.controller.viewStore.getHoveredView();
         if (hoveredView) {
             hoveredView.selectHoveredSubview();
-            this.controller.updateService.addUpdateTasks(UpdateTask.RepaintCanvas);
+            this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
         }
     }
 
     over(item: View) {
         this.controller.viewStore.addTag([item], CanvasItemTag.HOVERED);
         this.updateSubviewHover(item);
-        this.controller.updateService.addUpdateTasks(UpdateTask.RepaintCanvas);
+        this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     out(item: View) {
         this.controller.viewStore.getHoveredView() && this.controller.viewStore.getHoveredView().removeSubviewHover();
         this.controller.viewStore.removeTagFromAll(CanvasItemTag.HOVERED);
-        this.controller.updateService.addUpdateTasks(UpdateTask.RepaintCanvas);
+        this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     setSelectableViews(views: ViewType[]) {

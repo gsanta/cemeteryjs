@@ -4,7 +4,7 @@ import { RectangleSelector } from "./selection/RectangleSelector";
 import { ToolType, Tool } from "./Tool";
 import { AbstractTool } from "./AbstractTool";
 import { View } from "../models/views/View";
-import { UpdateTask } from "../services/CanvasUpdateServices";
+import { UpdateTask } from "../../common/services/UpdateServices";
 
 export class SelectTool extends AbstractTool {
     protected controller: CanvasController;
@@ -32,7 +32,7 @@ export class SelectTool extends AbstractTool {
             this.controller.toolService.pointerTool.click();
         } else if (this.controller.viewStore.getSelectedViews().length > 0) {
             this.controller.viewStore.removeTag(this.controller.viewStore.getViews(), CanvasItemTag.SELECTED);
-            this.controller.updateService.addUpdateTasks(UpdateTask.RepaintCanvas);
+            this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
         }
     }
 
@@ -41,7 +41,7 @@ export class SelectTool extends AbstractTool {
             this.activeTool.drag();
         } else {
             this.rectSelector.updateRect(this.controller.pointer.pointer);
-            this.controller.updateService.addUpdateTasks(UpdateTask.RepaintCanvas);
+            this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
         }
     }
 
@@ -62,7 +62,7 @@ export class SelectTool extends AbstractTool {
         canvasStore.addTag(canvasItems, CanvasItemTag.SELECTED);
 
         this.rectSelector.finish();
-        this.controller.updateService.addUpdateTasks(UpdateTask.RepaintCanvas);
+        this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     over(item: View) {

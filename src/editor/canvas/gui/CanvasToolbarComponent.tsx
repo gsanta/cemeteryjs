@@ -26,7 +26,7 @@ const ToolbarStyled = styled.div`
 
 export class CanvasToolbarComponent extends React.Component<{controller: CanvasController}> {
     componentDidMount() {
-        this.props.controller.addToolbarRenderer(() => this.forceUpdate());
+        this.props.controller.updateService.addSettingsRepainter(() => this.forceUpdate());
     }
 
     render(): JSX.Element {

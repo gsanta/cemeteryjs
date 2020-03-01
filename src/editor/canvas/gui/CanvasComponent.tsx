@@ -36,7 +36,7 @@ export class CanvasComponent extends React.Component<{controller: CanvasControll
     constructor(props: {controller: CanvasController}) {
         super(props);
 
-        this.props.controller.setCanvasRenderer(() => this.forceUpdate());
+        this.props.controller.updateService.setCanvasRepainter(() => this.forceUpdate())
     }
 
     render(): JSX.Element {

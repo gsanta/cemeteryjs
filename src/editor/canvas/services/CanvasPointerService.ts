@@ -37,7 +37,7 @@ export class CanvasPointerService implements IPointerService {
         this.isDown = true;
         this.pointer.down = this.getPointWithOffset(e.pointers[0].pos); 
         this.controller.toolService.getActiveTool().down();
-        this.controller.updateService.runUpdateTaks();
+        this.controller.updateService.runScheduledTasks();
     }
 
     pointerMove(e: IPointerEvent): void {
@@ -51,7 +51,7 @@ export class CanvasPointerService implements IPointerService {
         } else {
             this.controller.toolService.getActiveTool().move();
         }
-        this.controller.updateService.runUpdateTaks();
+        this.controller.updateService.runScheduledTasks();
     }
 
     pointerUp(e: IPointerEvent): void {
@@ -66,7 +66,7 @@ export class CanvasPointerService implements IPointerService {
         this.isDown = false;
         this.isDrag = false;
         this.pointer.down = undefined;
-        this.controller.updateService.runUpdateTaks();
+        this.controller.updateService.runScheduledTasks();
     }
 
     pointerOut(e: IPointerEvent): void {
@@ -76,12 +76,12 @@ export class CanvasPointerService implements IPointerService {
 
     hover(item: View): void {
         this.controller.toolService.getActiveTool().over(item);
-        this.controller.updateService.runUpdateTaks();
+        this.controller.updateService.runScheduledTasks();
     }
 
     unhover(item: View): void {
         this.controller.toolService.getActiveTool().out(item);
-        this.controller.updateService.runUpdateTaks();
+        this.controller.updateService.runScheduledTasks();
     }
     
     private getScreenPointWithOffset(point: Point): Point {

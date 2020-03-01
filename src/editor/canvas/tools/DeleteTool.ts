@@ -6,7 +6,7 @@ import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './selection/RectangleSelector';
 import { View } from '../models/views/View';
 import { ServiceLocator } from '../../ServiceLocator';
-import { UpdateTask } from '../services/CanvasUpdateServices';
+import { UpdateTask } from '../../common/services/UpdateServices';
 
 export class DeleteTool extends AbstractTool {
     private controller: CanvasController;
@@ -22,7 +22,7 @@ export class DeleteTool extends AbstractTool {
 
     drag() {
         this.rectSelector.updateRect(this.controller.pointer.pointer);
-        this.controller.updateService.addUpdateTasks(UpdateTask.RepaintCanvas);
+        this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     click() {
@@ -30,7 +30,7 @@ export class DeleteTool extends AbstractTool {
         const hovered = this.controller.viewStore.getHoveredView();
         hovered && this.controller.viewStore.remove(hovered);
         
-        hovered && this.controller.updateService.addUpdateTasks(UpdateTask.All);
+        hovered && this.controller.updateService.scheduleTasks(UpdateTask.All);
     }
 
     
@@ -41,12 +41,12 @@ export class DeleteTool extends AbstractTool {
 
         this.rectSelector.finish();
 
-        this.controller.updateService.addUpdateTasks(UpdateTask.All);
+        this.controller.updateService.scheduleTasks(UpdateTask.All);
     }
 
     leave() {
         this.rectSelector.finish();
-        this.controller.updateService.addUpdateTasks(UpdateTask.RepaintCanvas);
+        this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     over(item: View) {
@@ -60,6 +60,6 @@ export class DeleteTool extends AbstractTool {
     eraseAll() {
         this.services.storageService().clearAll();
         this.controller.viewStore.clear();
-        this.controller.updateService.addUpdateTasks(UpdateTask.All);
+        this.controller.updateService.runImmediately(UpdateTask.All);
     }
 }

@@ -9,9 +9,8 @@ import { EventDispatcher } from '../common/EventDispatcher';
 
 export function renderApp(element: HTMLDivElement) {
     const eventDispatcher = new EventDispatcher();
-    const serviceLocator = new ServiceLocator(eventDispatcher);
     ReactDOM.render(
-        <AppContext.Provider value={{controllers: new Editor(serviceLocator, eventDispatcher)}}>
+        <AppContext.Provider value={{controllers: new Editor(eventDispatcher)}}>
             <App/>
         </AppContext.Provider>,
         element

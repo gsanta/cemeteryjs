@@ -1,5 +1,6 @@
 import { LocalStore } from "./services/LocalStrore";
 import { EventDispatcher } from "./common/EventDispatcher";
+import { Editor } from "./Editor";
 
 export class ServiceLocator {
     private services: {serviceName: string}[] = [];
@@ -7,8 +8,8 @@ export class ServiceLocator {
     //todo: get rid of it
     private eventDispatcher: EventDispatcher;
     
-    constructor(eventDispatcher: EventDispatcher) {
-        this.services.push(new LocalStore());
+    constructor(editor: Editor, eventDispatcher: EventDispatcher) {
+        this.services.push(new LocalStore(editor));
 
         this.eventDispatcher = eventDispatcher;
     }

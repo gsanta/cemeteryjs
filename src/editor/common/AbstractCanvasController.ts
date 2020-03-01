@@ -3,6 +3,7 @@ import { Editor } from '../Editor';
 import { GameApi } from '../../game/GameApi';
 import { GameFacade } from '../../game/GameFacade';
 import { ServiceLocator } from '../ServiceLocator';
+import { UpdateService } from './services/UpdateServices';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;
@@ -12,6 +13,8 @@ export interface CanvasViewSettings {
 export abstract class AbstractCanvasController {
     name: string;
     editor: Editor;
+    updateService: UpdateService;
+
     protected services: ServiceLocator;
     constructor(controllers: Editor, services: ServiceLocator) {
         this.editor = controllers;
@@ -35,11 +38,5 @@ export abstract class AbstractCanvasController {
     abstract resize(): void;
     update(): void {}
     
-    abstract setCanvasRenderer(renderFunc: () => void);
-    abstract renderWindow();
-
-    addToolbarRenderer(renderFunc: () => void): void {}
-    renderToolbar(): void {}
-
     viewSettings: CanvasViewSettings;
 }

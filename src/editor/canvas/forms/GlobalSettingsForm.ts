@@ -3,6 +3,7 @@ import { Events } from '../../common/Events';
 import { CanvasController } from '../CanvasController';
 import { MeshView } from '../models/views/MeshView';
 import { AbstractForm } from './AbstractForm';
+import { UpdateTask } from '../../common/services/UpdateServices';
 
 export enum GlobalSettingsPropType {
     IMPORT_FILE = 'import file'
@@ -29,7 +30,6 @@ export class GlobalSettingsForm extends AbstractForm<GlobalSettingsPropType> {
                 this.controller.importer.import(val.data);
                 this.controller.viewStore.getGameObjects().filter(item => item.modelPath).forEach(item => this.controller.model3dController.set3dModelForCanvasItem(item));
         }
-        this.controller.renderWindow();
-        this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
+        this.controller.updateService.runImmediately(UpdateTask.RepaintCanvas, UpdateTask.UpdateRenderer);
     }
 }

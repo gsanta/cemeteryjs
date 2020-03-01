@@ -1,3 +1,5 @@
+import { CanvasController } from "../canvas/CanvasController";
+import { Editor } from "../Editor";
 
 
 export class LocalStore {
@@ -5,29 +7,35 @@ export class LocalStore {
     private version = 2;
     private name = 'editor';
     private db: IDBDatabase;
+    private editor: Editor;
 
-    constructor() {
+    constructor(editor: Editor) {
+        this.editor = editor;
         const request = window.indexedDB.open(this.name, this.version);
         request.onupgradeneeded = () => this.upgradeDb(request);
     }
 
-    async saveXml(xml: string) {
+    async storeEditorState() {
         if (!this.isDbSupported()) { return }
 
         const db = await this.getDb();
 
         var objectStore = db.transaction(["xmls"], "readwrite").objectStore("xmls");
-        objectStore.put({id: '1', data: xml});
+
+        const controller = <CanvasController> this.editor.getWindowControllerByName('canvas')
+        objectStore.put({id: '1', data: controller.exporter.export()});
     }
 
-    async loadXml(): Promise<string> {
+    async loadEditorState(): Promise<null> {
         if (!this.isDbSupported()) { return }
 
         const db = await this.getDb();
 
         const objectStore = db.transaction(["xmls"], "readwrite").objectStore("xmls");
 
-        return await this.getData(objectStore.get('1'));
+        const data = await this.getData(objectStore.get('1'));
+        const controller = <CanvasController> this.editor.getWindowControllerByName('canvas')
+        controller.importer.import(data);
     }
     
     async saveAsset(name: string, data: string) {

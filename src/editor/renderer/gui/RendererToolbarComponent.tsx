@@ -25,7 +25,7 @@ export interface RendererToolbarProps {
 
 export class RendererToolbarComponent extends React.Component<RendererToolbarProps> {
     componentDidMount() {
-        this.props.controller.addToolbarRenderer(() => this.forceUpdate());
+        this.props.controller.updateService.addSettingsRepainter(() => this.forceUpdate());
     }
 
     render(): JSX.Element {

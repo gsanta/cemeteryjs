@@ -3,7 +3,7 @@ import { AbstractTool } from './AbstractTool';
 import { Point } from "../../../misc/geometry/shapes/Point";
 import { ToolType } from "./Tool";
 import { CanvasController } from '../CanvasController';
-import { UpdateTask } from '../services/CanvasUpdateServices';
+import { UpdateTask } from '../../common/services/UpdateServices';
 
 export function cameraInitializer(canvasId: string) {
     if (typeof document !== 'undefined') {
@@ -52,7 +52,7 @@ export class CameraTool extends AbstractTool {
         this.camera.moveTo(prevTranslate);
         this.camera.zoom(prevScale);
 
-        this.controller.updateService.addUpdateTasks(UpdateTask.RepaintCanvas);
+        this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     zoomToNextStep(canvasPos?: Point) {
@@ -66,7 +66,7 @@ export class CameraTool extends AbstractTool {
             this.camera.setTopLeftCorner(canvasPos, nextZoomLevel);
             this.camera.moveBy(ratioOfViewBox(this.camera, pointerRatio).negate());
 
-            this.controller.updateService.addUpdateTasks(UpdateTask.RepaintCanvas);
+            this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
         }
     }
 
@@ -81,7 +81,7 @@ export class CameraTool extends AbstractTool {
             this.camera.setTopLeftCorner(canvasPos, prevZoomLevel);
             this.camera.moveBy(ratioOfViewBox(this.camera, pointerRatio).negate());
 
-            this.controller.updateService.addUpdateTasks(UpdateTask.RepaintCanvas);
+            this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
         }
     }
 
@@ -97,7 +97,7 @@ export class CameraTool extends AbstractTool {
         
         this.controller.toolService.cameraTool.getCamera().moveBy(delta.negate());
 
-        this.controller.updateService.addUpdateTasks(UpdateTask.RepaintCanvas);
+        this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     getCamera() {

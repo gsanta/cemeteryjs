@@ -8,7 +8,7 @@ import { ViewType } from '../models/views/View';
 import { AbstractTool } from './AbstractTool';
 import { ToolType } from './Tool';
 import { RectangleSelector } from './selection/RectangleSelector';
-import { UpdateTask } from '../services/CanvasUpdateServices';
+import { UpdateTask } from '../../common/services/UpdateServices';
 import { ServiceLocator } from '../../ServiceLocator';
 
 export class RectangleTool extends AbstractTool {
@@ -41,7 +41,7 @@ export class RectangleTool extends AbstractTool {
         this.controller.viewStore.removeSelectionAll()
         this.controller.viewStore.addTag([gameObject], CanvasItemTag.SELECTED);
 
-        this.controller.updateService.addUpdateTasks(UpdateTask.All);
+        this.controller.updateService.scheduleTasks(UpdateTask.All);
     }
 
     drag() {
@@ -67,7 +67,7 @@ export class RectangleTool extends AbstractTool {
         if (positions.length > 0) {
             this.lastPreviewRect = this.controller.viewStore.addRect(gameObject);
     
-            this.controller.updateService.addUpdateTasks(UpdateTask.RepaintCanvas);
+            this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
         }
     }
 
@@ -79,7 +79,7 @@ export class RectangleTool extends AbstractTool {
             this.lastPreviewRect = null;
         }
 
-        this.controller.updateService.addUpdateTasks(UpdateTask.All);
+        this.controller.updateService.scheduleTasks(UpdateTask.All);
     }
 
     leave() {

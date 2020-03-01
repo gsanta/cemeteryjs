@@ -13,12 +13,14 @@ import { RendererPointerService } from './RendererPointerService';
 import { WebglCanvasImporter } from './WebglCanvasImporter';
 import { CanvasController } from '../canvas/CanvasController';
 import { ServiceLocator } from '../ServiceLocator';
+import { UpdateService } from '../common/services/UpdateServices';
 (<any> window).earcut = require('earcut');
 
 export class RendererController extends AbstractCanvasController {
     name = '3D View';
     static id = 'webgl-editor';
     visible = true;
+    updateService: UpdateService;
 
     mouseHander: MouseHandler;
 
@@ -36,6 +38,7 @@ export class RendererController extends AbstractCanvasController {
 
     constructor(editor: Editor, services: ServiceLocator) {
         super(editor, services);
+        this.updateService = new UpdateService(this, this.services);
         this.mouseHander = new MouseHandler(this);
         this.pointer = new RendererPointerService(this);
         this.update = this.update.bind(this);

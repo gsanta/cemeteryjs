@@ -3,6 +3,8 @@ import { AbstractModelLoader } from '../common/services/AbstractModelLoader';
 import { CanvasController } from './CanvasController';
 import { Point } from '../../misc/geometry/shapes/Point';
 import { MeshView } from './models/views/MeshView';
+import { ServiceLocator } from '../ServiceLocator';
+import { UpdateTask } from '../common/services/UpdateServices';
 
 export class Model3DController extends AbstractModelLoader {
     private engine: Engine;
@@ -12,8 +14,8 @@ export class Model3DController extends AbstractModelLoader {
 
     private fileNameToMeshMap: Map<string, Mesh> = new Map();
 
-    constructor(canvasController: CanvasController) {
-        super(null);
+    constructor(canvasController: CanvasController, services: ServiceLocator) {
+        super(null, services);
         this.canvasController = canvasController;
         this.canvas = <HTMLCanvasElement> document.getElementById("model-size-tester");
         this.init();
@@ -44,7 +46,8 @@ export class Model3DController extends AbstractModelLoader {
         dimensions.y  = dimensions.y < 50 ? 50 : dimensions.y;
         meshView.dimensions = meshView.dimensions.setWidth(dimensions.x).setHeight(dimensions.y);
         meshView.animations = this.getAnimations(meshView, mesh);
-        this.canvasController.renderWindow();
+
+        this.canvasController.updateService.runImmediately(UpdateTask.RepaintCanvas);
     }
 
     private getDimension(mesh: Mesh): Point {

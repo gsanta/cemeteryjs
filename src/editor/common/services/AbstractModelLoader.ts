@@ -3,6 +3,7 @@ import { Point } from '../../../misc/geometry/shapes/Point';
 import { MeshView } from '../../canvas/models/views/MeshView';
 import { MeshObject } from '../../../game/models/objects/MeshObject';
 import { LocalStore } from '../../services/LocalStrore';
+import { ServiceLocator } from '../../ServiceLocator';
 
 export interface ModelData {
     mesh: Mesh;
@@ -14,13 +15,13 @@ export interface ModelData {
 export abstract class AbstractModelLoader {
     private basePath = 'assets/models/';
     protected scene: Scene;
-    protected localStore: LocalStore;
 
     private loadedFileNames: Set<String> = new Set();
+    private services: ServiceLocator;
 
-    constructor(scene: Scene) {
+    constructor(scene: Scene, services: ServiceLocator) {
         this.scene = scene;
-        this.localStore = new LocalStore();
+        this.services = services;
     }
 
     loadAll(meshObjects: {modelPath: string}[]): Promise<Mesh[]> {
@@ -41,7 +42,7 @@ export abstract class AbstractModelLoader {
     load(meshObject: MeshObject | MeshView): Promise<Mesh> {
         this.loadedFileNames.add(meshObject.modelPath);
 
-        return this.localStore.loadAsset(meshObject.modelPath)
+        return this.services.storageService().loadAsset(meshObject.modelPath)
                 .then((data) => this.loadMesh(meshObject, data))
                 .catch(() => this.loadMesh(meshObject, meshObject.modelPath));
     }

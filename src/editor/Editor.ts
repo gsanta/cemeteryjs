@@ -24,13 +24,14 @@ export class Editor {
 
     private services: ServiceLocator;
 
-    constructor(serviceLocator: ServiceLocator, eventDispatcher: EventDispatcher) {
+    constructor(eventDispatcher: EventDispatcher) {
+        this.services = new ServiceLocator(this, eventDispatcher);
+        
         this.windowFactories = [
             new CanvasFactory(),
             new RendererFactory()
         ];
 
-        this.services = serviceLocator;
 
         this.eventDispatcher = eventDispatcher;
 
@@ -40,12 +41,12 @@ export class Editor {
     }
 
     setup(canvas: HTMLCanvasElement) {
-        this.gameFacade = new GameFacade(canvas);
+        this.gameFacade = new GameFacade(canvas, this.services);
         this.gameFacade.setup();
         this.gameApi = new GameApi(this.gameFacade);
 
         this.windowFactories.forEach(factory => factory.getWindowController(this, this.services).setup());
-        this.services.storageService().loadXml()
+        this.services.storageService().loadEditorState()
             .then((str: string) => {
                 (this.getWindowControllerByName('canvas') as CanvasController).importer.import(str);
                 this.isLoading = false;

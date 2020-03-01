@@ -1,11 +1,8 @@
 import { Rectangle } from "../../../misc/geometry/shapes/Rectangle";
-import { EventDispatcher } from "../../common/EventDispatcher";
-import { Events } from '../../common/Events';
+import { UpdateTask } from "../../common/services/UpdateServices";
 import { CanvasController } from "../CanvasController";
 import { AbstractTool } from './AbstractTool';
-import { ToolType, ToolReturnType } from './Tool';
-import { View } from "../models/views/View";
-import { UpdateTask } from "../services/CanvasUpdateServices";
+import { ToolType } from './Tool';
 
 export class MoveTool extends AbstractTool {
     private controller: CanvasController;
@@ -25,9 +22,9 @@ export class MoveTool extends AbstractTool {
 
         if (this.isMoving) {
             this.moveItems();
-            this.controller.updateService.addUpdateTasks(UpdateTask.RepaintCanvas);
+            this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
         } else if (this.isDragStart) {
-            this.initMove() && this.controller.updateService.addUpdateTasks(UpdateTask.RepaintCanvas);
+            this.initMove() && this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
         }
 
         this.isDragStart = false;
@@ -37,7 +34,7 @@ export class MoveTool extends AbstractTool {
         super.draggedUp();
 
         if (!this.isDragStart) {
-            this.controller.updateService.addUpdateTasks(UpdateTask.All);
+            this.controller.updateService.scheduleTasks(UpdateTask.All);
         }
 
         this.isDragStart = true;
@@ -66,6 +63,6 @@ export class MoveTool extends AbstractTool {
 
         selectedItems.forEach((item, index) => item.dimensions = this.origDimensions[index].translate(mouseDelta));
 
-        this.controller.renderWindow();
+        this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 }

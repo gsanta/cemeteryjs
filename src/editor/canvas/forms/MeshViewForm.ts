@@ -1,10 +1,10 @@
-import { MeshView } from '../models/views/MeshView';
-import { CanvasController } from '../CanvasController';
 import { EventDispatcher } from '../../common/EventDispatcher';
 import { Events } from '../../common/Events';
-import { AbstractForm, PropertyType } from "./AbstractForm";
-import { LocalStore } from '../../services/LocalStrore';
 import { ServiceLocator } from '../../ServiceLocator';
+import { CanvasController } from '../CanvasController';
+import { MeshView } from '../models/views/MeshView';
+import { AbstractForm, PropertyType } from "./AbstractForm";
+import { UpdateTask } from '../../common/services/UpdateServices';
 
 export enum MeshViewPropType {
     COLOR = 'color',
@@ -45,14 +45,13 @@ export class MeshViewForm extends AbstractForm<MeshViewPropType> {
     blurProp() {
         super.blurProp();
 
-        this.controller.renderWindow();
-        // this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
+        this.controller.updateService.runImmediately(UpdateTask.RepaintCanvas);
     }
 
     updateProp(value: any, propType: MeshViewPropType) {
         super.updateProp(value, propType);
 
-        this.controller.renderWindow();
+        this.controller.updateService.runImmediately(UpdateTask.RepaintCanvas);
     }
 
     protected getProp(prop: MeshViewPropType) {
@@ -140,6 +139,6 @@ export class MeshViewForm extends AbstractForm<MeshViewPropType> {
                 break;
         }
 
-        this.services.storageService().saveXml(this.controller.exporter.export());
+        this.services.storageService().storeEditorState();
     }
 }

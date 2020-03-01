@@ -1,34 +1,25 @@
-import { PathImporter } from './io/import/PathImporter';
-import { MeshViewImporter } from './io/import/RectangleImporter';
-import { CanvasImporter } from './io/import/CanvasImporter';
-import { PathView } from './models/views/PathView';
-import { Editor } from '../Editor';
-import { MeshViewForm } from './forms/MeshViewForm';
-import { PathViewForm } from './forms/PathViewForm';
 import { AbstractCanvasController, CanvasViewSettings } from '../common/AbstractCanvasController';
-import { ICamera } from '../common/models/ICamera';
-import { CanvasPointerService } from './services/CanvasPointerService';
 import { IPointerService } from '../common/services/IPointerService';
 import { KeyboardHandler } from '../common/services/KeyboardHandler';
 import { MouseHandler } from '../common/services/MouseHandler';
-import { Model3DController } from './Model3DController';
-import { ViewStore } from './models/ViewStore';
-import { CameraTool } from './tools/CameraTool';
-import { DeleteTool } from './tools/DeleteTool';
-import { MoveTool } from './tools/MoveTool';
-import { PathExporter } from './io/export/PathExporter';
-import { PathTool } from './tools/PathTool';
-import { PointerTool } from './tools/PointerTool';
-import { RectangleExporter } from './io/export/RectangleExporter';
-import { RectangleTool } from './tools/RectangleTool';
-import { SelectTool } from './tools/SelectTool';
-import { Tool, ToolType } from './tools/Tool';
-import { ToolService } from './tools/ToolService';
-import { CanvasExporter } from './io/export/CanvasExporter';
+import { Editor } from '../Editor';
 import { ServiceLocator } from '../ServiceLocator';
+import { MeshViewForm } from './forms/MeshViewForm';
+import { PathViewForm } from './forms/PathViewForm';
+import { CanvasExporter } from './io/export/CanvasExporter';
+import { PathExporter } from './io/export/PathExporter';
+import { RectangleExporter } from './io/export/RectangleExporter';
+import { CanvasImporter } from './io/import/CanvasImporter';
+import { PathImporter } from './io/import/PathImporter';
+import { MeshViewImporter } from './io/import/RectangleImporter';
+import { Model3DController } from './Model3DController';
 import { FeedbackStore } from './models/FeedbackStore';
-import { Events } from '../common/Events';
-import { CanvasUpdateService } from './services/CanvasUpdateServices';
+import { PathView } from './models/views/PathView';
+import { ViewStore } from './models/ViewStore';
+import { CanvasPointerService } from './services/CanvasPointerService';
+import { UpdateService, UpdateTask } from '../common/services/UpdateServices';
+import { ToolType } from './tools/Tool';
+import { ToolService } from './tools/ToolService';
 
 export class CanvasController extends AbstractCanvasController {
     name = '2D View';
@@ -44,21 +35,16 @@ export class CanvasController extends AbstractCanvasController {
     exporter: CanvasExporter;
     model3dController: Model3DController;
     toolService: ToolService;
-    updateService: CanvasUpdateService;
+    updateService: UpdateService;
     pointer: IPointerService;
     
     meshViewForm: MeshViewForm;
     pathForm: PathViewForm;
-
-    private renderCanvasFunc = () => null;
-
-    private toolbarRenderers: Function[] = [];
-    // private renderToolbarFunc = () => null;
     
     constructor(editor: Editor, services: ServiceLocator) {
         super(editor, services);
 
-        this.updateService = new CanvasUpdateService(this, services);
+        this.updateService = new UpdateService(this, services);
         this.viewStore = new ViewStore();
         this.feedbackStore = new FeedbackStore();
         
@@ -72,7 +58,7 @@ export class CanvasController extends AbstractCanvasController {
             this
         );
         this.exporter = new CanvasExporter(this, [new RectangleExporter(this), new PathExporter(this)]);
-        this.model3dController = new Model3DController(this);
+        this.model3dController = new Model3DController(this, this.services);
 
         this.toolService = new ToolService(this, this.services);
 
@@ -81,21 +67,13 @@ export class CanvasController extends AbstractCanvasController {
         this.pointer = new CanvasPointerService(this);
     }
 
-    renderWindow() {
-        this.renderCanvasFunc();
-    }
-
-    renderToolbar() {
-        this.toolbarRenderers.forEach(renderer => renderer());
-    }
-
     setSelectedTool(toolType: ToolType) {
         if (this.toolService.selectedTool) {
             this.toolService.getActiveTool().unselect();
         }
         this.toolService.selectedTool = toolType;
         this.toolService.getActiveTool().select();
-        this.renderToolbar();
+        this.updateService.runImmediately(UpdateTask.RepaintSettings);
     }
 
     getId() {
@@ -112,14 +90,6 @@ export class CanvasController extends AbstractCanvasController {
 
     setVisible(visible: boolean) {
         this.visible = visible;
-    }
-
-    setCanvasRenderer(renderFunc: () => void) {
-        this.renderCanvasFunc = renderFunc;
-    }
-
-    addToolbarRenderer(renderFunc: () => void): void {
-        this.toolbarRenderers.push(renderFunc);
     }
 
     activate(): void {

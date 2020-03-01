@@ -22,6 +22,7 @@ import { KeyboardTrigger } from './services/triggers/KeyboardTrigger';
 import { ResetTrigger } from './services/triggers/ResetTrigger';
 import { RouteWalker } from './services/walkers/RouteWalker';
 import { InputCommandStore } from './stores/InputCommandStore';
+import { ServiceLocator } from '../editor/ServiceLocator';
 
 export class GameFacade {
     gameEngine: GameEngine;
@@ -45,8 +46,10 @@ export class GameFacade {
     gameStoreBuilder: GameStoreBuilder;
 
     private routeWalker: RouteWalker;
+    services: ServiceLocator;
 
-    constructor(canvas: HTMLCanvasElement) {
+    constructor(canvas: HTMLCanvasElement, services: ServiceLocator) {
+        this.services = services;
         this.gameEngine = new GameEngine(canvas);
         this.meshStore = new MeshStore(this);
         this.gameStore = new GameStore();
