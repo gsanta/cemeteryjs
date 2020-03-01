@@ -4,6 +4,7 @@ import { CanvasController } from "../CanvasController";
 import { ToolType } from "./Tool";
 import { CanvasItemTag } from "../models/CanvasItem";
 import { PathView } from "../models/views/PathView";
+import { UpdateTask } from "../services/CanvasUpdateServices";
 
 export class PointerTool extends AbstractTool {
     private controller: CanvasController;
@@ -26,8 +27,8 @@ export class PointerTool extends AbstractTool {
             this.controller.viewStore.addTag([hoveredView], CanvasItemTag.SELECTED);
             hoveredView.selectHoveredSubview();
 
-            this.controller.renderToolbar();
-            this.controller.renderWindow();
+            this.controller.updateService.addUpdateTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas);
+            
             return true;
         }
         return false;
@@ -37,20 +38,20 @@ export class PointerTool extends AbstractTool {
         const hoveredView = this.controller.viewStore.getHoveredView();
         if (hoveredView) {
             hoveredView.selectHoveredSubview();
-            this.controller.renderWindow();
+            this.controller.updateService.addUpdateTasks(UpdateTask.RepaintCanvas);
         }
     }
 
     over(item: View) {
         this.controller.viewStore.addTag([item], CanvasItemTag.HOVERED);
         this.updateSubviewHover(item);
-        this.controller.renderWindow();
+        this.controller.updateService.addUpdateTasks(UpdateTask.RepaintCanvas);
     }
 
     out(item: View) {
         this.controller.viewStore.getHoveredView() && this.controller.viewStore.getHoveredView().removeSubviewHover();
         this.controller.viewStore.removeTagFromAll(CanvasItemTag.HOVERED);
-        this.controller.renderWindow();
+        this.controller.updateService.addUpdateTasks(UpdateTask.RepaintCanvas);
     }
 
     setSelectableViews(views: ViewType[]) {

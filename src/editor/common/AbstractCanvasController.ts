@@ -11,7 +11,7 @@ export interface CanvasViewSettings {
 
 export abstract class AbstractCanvasController {
     name: string;
-    protected editor: Editor;
+    editor: Editor;
     protected services: ServiceLocator;
     constructor(controllers: Editor, services: ServiceLocator) {
         this.editor = controllers;

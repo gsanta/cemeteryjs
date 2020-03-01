@@ -5,6 +5,7 @@ import { CanvasController } from "../CanvasController";
 import { AbstractTool } from './AbstractTool';
 import { ToolType, ToolReturnType } from './Tool';
 import { View } from "../models/views/View";
+import { UpdateTask } from "../services/CanvasUpdateServices";
 
 export class MoveTool extends AbstractTool {
     private eventDispatcher: EventDispatcher;
@@ -14,7 +15,6 @@ export class MoveTool extends AbstractTool {
 
     private isMoving = false;
     private isDragStart = true;
-    private hoveredAtDown: View;
 
     constructor(controller: CanvasController, eventDispatcher: EventDispatcher) {
         super(ToolType.MOVE);
@@ -22,18 +22,14 @@ export class MoveTool extends AbstractTool {
         this.controller = controller;
     }
 
-    down() {
-        this.hoveredAtDown = this.controller.viewStore.getHoveredView(); 
-    }
-
     drag() {
         super.drag();
 
         if (this.isMoving) {
             this.moveItems();
-            this.controller.updateContent();
+            this.controller.updateService.addUpdateTasks(UpdateTask.RepaintCanvas);
         } else if (this.isDragStart) {
-            this.initMove() && this.controller.updateContent();
+            this.initMove() && this.controller.updateService.addUpdateTasks(UpdateTask.RepaintCanvas);
         }
 
         this.isDragStart = false;
@@ -41,7 +37,6 @@ export class MoveTool extends AbstractTool {
 
     draggedUp() {
         super.draggedUp();
-        const ret = new ToolReturnType();
 
         if (!this.isDragStart) {
             this.controller.updateContent();
@@ -60,13 +55,11 @@ export class MoveTool extends AbstractTool {
         const selected = this.controller.viewStore.getSelectedViews();
         this.origDimensions = [];
         
-        if (selected.includes(this.hoveredAtDown)) {
             this.origDimensions = selected.map(item => item.dimensions);
 
             this.isMoving = true;
             this.moveItems();
             return true;
-        }
     }
 
     private moveItems() {

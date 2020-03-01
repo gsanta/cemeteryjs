@@ -1,6 +1,9 @@
 import { ToolType, Tool } from "./Tool";
 import { IViewExporter } from "./IToolExporter";
 import { ViewType } from "../models/views/View";
+import { CanvasController } from "../CanvasController";
+import { Events } from "../../common/Events";
+import { ServiceLocator } from "../../ServiceLocator";
 
 export class ToolService {
     private tools: Tool[] = [];

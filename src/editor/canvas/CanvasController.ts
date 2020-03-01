@@ -28,6 +28,7 @@ import { CanvasExporter } from './io/export/CanvasExporter';
 import { ServiceLocator } from '../ServiceLocator';
 import { FeedbackStore } from './models/FeedbackStore';
 import { Events } from '../common/Events';
+import { CanvasUpdateService } from './services/CanvasUpdateServices';
 
 export class CanvasController extends AbstractCanvasController {
     name = '2D View';
@@ -47,6 +48,7 @@ export class CanvasController extends AbstractCanvasController {
     exporter: CanvasExporter;
     model3dController: Model3DController;
     toolService: ToolService;
+    updateService: CanvasUpdateService;
     pointer: IPointerService;
     
     meshViewForm: MeshViewForm;
@@ -62,6 +64,7 @@ export class CanvasController extends AbstractCanvasController {
     constructor(editor: Editor, services: ServiceLocator) {
         super(editor, services);
 
+        this.updateService = new CanvasUpdateService(this, services);
         this.viewStore = new ViewStore();
         this.feedbackStore = new FeedbackStore();
         

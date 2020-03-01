@@ -1,13 +1,16 @@
 import { CanvasController } from "../CanvasController";
 import { CanvasItemTag } from "../models/CanvasItem";
 import { RectangleSelector } from "./selection/RectangleSelector";
-import { ToolType } from "./Tool";
+import { ToolType, Tool } from "./Tool";
 import { AbstractTool } from "./AbstractTool";
 import { View } from "../models/views/View";
+import { UpdateTask } from "../services/CanvasUpdateServices";
 
 export class SelectTool extends AbstractTool {
     protected controller: CanvasController;
     private rectSelector: RectangleSelector;
+
+    private activeTool: Tool;
 
     constructor(controller: CanvasController) {
         super(ToolType.SELECT);
@@ -15,21 +18,40 @@ export class SelectTool extends AbstractTool {
         this.rectSelector = new RectangleSelector(controller);
     }
 
+    down() {
+        const hovered = this.controller.viewStore.getHoveredView();
+        const selected = this.controller.viewStore.getSelectedViews();
+
+        if (hovered && selected.includes(hovered)) {
+            this.activeTool = this.controller.moveTool;
+        }
+    }
+
     click() {
         if (this.controller.viewStore.getHoveredView()) {
             this.controller.pointerTool.click();
         } else if (this.controller.viewStore.getSelectedViews().length > 0) {
             this.controller.viewStore.removeTag(this.controller.viewStore.getViews(), CanvasItemTag.SELECTED);
-            this.controller.renderWindow();
+            this.controller.updateService.addUpdateTasks(UpdateTask.RepaintCanvas);
         }
     }
 
     drag() {
-        this.rectSelector.updateRect(this.controller.pointer.pointer);
-        this.controller.renderWindow();
+        if (this.activeTool) {
+            this.activeTool.drag();
+        } else {
+            this.rectSelector.updateRect(this.controller.pointer.pointer);
+            this.controller.updateService.addUpdateTasks(UpdateTask.RepaintCanvas);
+        }
     }
 
     draggedUp() {
+        if (this.activeTool) {
+            this.activeTool.draggedUp();
+            this.activeTool = undefined;
+            return;
+        }
+
         const feedback = this.controller.feedbackStore.rectSelectFeedback;
         if (!feedback) { return }
 
@@ -40,7 +62,7 @@ export class SelectTool extends AbstractTool {
         canvasStore.addTag(canvasItems, CanvasItemTag.SELECTED);
 
         this.rectSelector.finish();
-        this.controller.renderWindow();
+        this.controller.updateService.addUpdateTasks(UpdateTask.RepaintCanvas);
     }
 
     over(item: View) {

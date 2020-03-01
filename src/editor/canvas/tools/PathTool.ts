@@ -6,6 +6,7 @@ import { Keyboard } from "../../common/services/KeyboardHandler";
 import { CanvasController } from "../CanvasController";
 import { CanvasItemTag } from "../models/CanvasItem";
 import { AbstractTool } from "./AbstractTool";
+import { UpdateTask } from "../services/CanvasUpdateServices";
 
 export class PathTool extends AbstractTool {
     private controller: CanvasController;
@@ -22,18 +23,18 @@ export class PathTool extends AbstractTool {
 
         if (selectedPathes.length === 0) {
             this.startNewPath();
-            this.controller.renderWindow();
+            this.controller.updateService.addUpdateTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         } else if (selectedPathes.length === 1) {
             const pointer = this.controller.pointer.pointer;
             selectedPathes[0].addPoint(new Point(pointer.down.x, pointer.down.y));
-            this.controller.renderWindow();
+            this.controller.updateService.addUpdateTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         }
     }
 
     keydown() {
         if (this.controller.keyboardHandler.downKeys.includes(Keyboard.Enter)) {
             this.controller.viewStore.removeSelectionAll();
-            this.controller.renderWindow();
+            this.controller.updateService.addUpdateTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         }
     }
 
