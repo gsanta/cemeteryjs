@@ -52,13 +52,13 @@ export class UpdateService {
                     this.controller.editor.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
                 break;
                 case UpdateTask.SaveData:
-                    this.services.storageService().storeEditorState();
+                    this.services.storageService().storeLevel(this.controller.stores.levelStore.currentLevel.index);
                 break;
                 case UpdateTask.All:
                     this.canvasRepainter();
                     this.settingsRepainters.forEach(repaint => repaint());
                     this.controller.editor.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
-                    this.services.storageService().storeEditorState();
+                    this.services.storageService().storeLevel(this.controller.stores.levelStore.currentLevel.index);
                 break;
             }
         });

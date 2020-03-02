@@ -20,6 +20,7 @@ import { ToolService } from './tools/ToolService';
 import { Stores } from '../../Stores';
 import { FeedbackStore } from './models/FeedbackStore';
 import { PathView } from './models/views/PathView';
+import { LevelForm } from './forms/LevelForm';
 
 export class CanvasWindow extends WindowController {
     name = '2D View';
@@ -40,6 +41,7 @@ export class CanvasWindow extends WindowController {
     
     meshViewForm: MeshViewForm;
     pathForm: PathViewForm;
+    levelForm: LevelForm;
 
     constructor(editor: Editor, services: ServiceLocator, stores: Stores) {
         super(editor, services, stores);
@@ -63,6 +65,7 @@ export class CanvasWindow extends WindowController {
 
         this.meshViewForm = new MeshViewForm(this, this.services, this.editor.eventDispatcher);
         this.pathForm = new PathViewForm();
+        this.levelForm = new LevelForm(this, this.services);
         this.pointer = new CanvasPointerService(this);
     }
 

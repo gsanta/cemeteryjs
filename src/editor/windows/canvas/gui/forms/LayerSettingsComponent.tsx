@@ -3,19 +3,6 @@ import styled from 'styled-components';
 import { colors } from '../../../../gui/styles';
 import { withCommitOnChange } from '../../../../gui/forms/decorators/withCommitOnChange';
 
-const GridItemWrapper = styled.div`
-  flex: 0 0 33.3%;
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
-  box-sizing: border-box;
-  :before {
-    content: "";
-    display: table;
-    padding-top: 100%;
-  }
-`;
-
 const GridStyled = styled.div`
     border: 1px solid black;
     width: 15px;

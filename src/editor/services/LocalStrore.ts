@@ -15,7 +15,7 @@ export class LocalStore {
         request.onupgradeneeded = () => this.upgradeDb(request);
     }
 
-    async storeEditorState() {
+    async storeLevel(level: number) {
         if (!this.isDbSupported()) { return }
 
         const db = await this.getDb();
@@ -23,19 +23,43 @@ export class LocalStore {
         var objectStore = db.transaction(["xmls"], "readwrite").objectStore("xmls");
 
         const controller = <CanvasWindow> this.editor.getWindowControllerByName('canvas')
-        objectStore.put({id: '1', data: controller.exporter.export()});
+        objectStore.put({id: level, data: controller.exporter.export()});
     }
 
-    async loadEditorState(): Promise<null> {
+    async loadLevel(level: number): Promise<null> {
         if (!this.isDbSupported()) { return }
 
         const db = await this.getDb();
 
         const objectStore = db.transaction(["xmls"], "readwrite").objectStore("xmls");
 
-        const data = await this.getData(objectStore.get('1'));
-        const controller = <CanvasWindow> this.editor.getWindowControllerByName('canvas')
+        const controller = <CanvasWindow> this.editor.getWindowControllerByName('canvas');
+        const data = await this.getData(objectStore.get(level));
         controller.importer.import(data);
+    }
+
+    async loadLevelIndexes(): Promise<number[]> {
+        const db = await this.getDb();
+
+        const objectStore = db.transaction(["xmls"], "readwrite").objectStore("xmls");
+        const myIndex = objectStore.index('idIndex');
+        const getAllKeysRequest = myIndex.getAllKeys();
+
+        return new Promise((resolve, reject) => {
+
+            getAllKeysRequest.onerror = () => {
+                console.error('Failed to load level keys');
+                reject();
+            };
+
+            getAllKeysRequest.onsuccess = () => {
+                const result = getAllKeysRequest.result || [];
+                const levels = result.map(level => parseInt(level as string, 10));
+                levels.sort((a, b) => a - b);
+
+                resolve(levels);
+            }
+        });
     }
     
     async saveAsset(name: string, data: string) {
@@ -84,7 +108,7 @@ export class LocalStore {
         const db = request.result;
 
         db.createObjectStore("assets", { keyPath: "name" });
-        db.createObjectStore("xmls", { keyPath: "id" });
+        db.createObjectStore("xmls", { keyPath: "id" }).createIndex('idIndex', 'id', { unique: true })
     }
 
     private getDb(): Promise<IDBDatabase> {

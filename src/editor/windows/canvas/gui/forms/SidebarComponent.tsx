@@ -6,6 +6,8 @@ import { AccordionComponent } from '../../../../gui/misc/AccordionComponent';
 import { colors } from '../../../../gui/styles';
 import { viewComponentFactory } from './viewComponentFactory';
 import { GlobalFormComponent } from './GlobalFormComponent';
+import { LevelComponent } from './LevelComponent';
+import { CanvasWindow } from '../../CanvasWindow';
 
 export interface SidebarComponentProps {
     isEditorOpen: boolean;
@@ -40,6 +42,10 @@ export class SidebarComponent extends React.Component<SidebarComponentProps> {
                         {
                             title: 'General Settings',
                             body: <GeneralFormComponent editor={this.context.controllers} {...this.props}/>
+                        },
+                        {
+                            title: 'Level Settings',
+                            body: <LevelComponent window={this.context.controllers.getWindowControllerByName('canvas') as CanvasWindow} {...this.props}/>
                         },
                         {
                             title: 'Object Settings',

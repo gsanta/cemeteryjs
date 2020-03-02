@@ -48,10 +48,15 @@ export class Editor {
         this.gameApi = new GameApi(this.gameFacade);
 
         this.windowFactories.forEach(factory => factory.getWindowController(this, this.services, this.stores).setup());
-
-        this.services.storageService().loadEditorState()
-            .then((str: string) => {
-                (this.getWindowControllerByName('canvas') as CanvasWindow).importer.import(str);
+        
+        this.services.storageService().loadLevelIndexes()
+            .then((indexes: number[]) => {
+                if (indexes.length) {
+                    this.stores.levelStore.setLevels(indexes);
+                    return this.services.storageService().loadLevel(indexes[0]);
+                }
+            })
+            .then(() => {
                 this.isLoading = false;
                 this.render();
             })

@@ -139,6 +139,6 @@ export class MeshViewForm extends AbstractForm<MeshViewPropType> {
                 break;
         }
 
-        this.services.storageService().storeEditorState();
+        this.services.storageService().storeLevel(this.controller.stores.levelStore.currentLevel.index);
     }
 }
