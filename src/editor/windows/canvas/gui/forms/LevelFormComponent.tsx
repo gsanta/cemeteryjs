@@ -5,6 +5,7 @@ import { LevelFormPropType } from '../../forms/LevelForm';
 import { SettingsRowStyled, LabelStyled, InputStyled } from './FormComponent';
 import { ConnectedInputComponent } from '../../../../gui/inputs/InputComponent';
 import { PathPropType } from '../../forms/PathForm';
+import { ButtonComponent } from '../../../../gui/inputs/ButtonComponent';
 
 export interface LevelProps {
     window: CanvasWindow;
@@ -15,15 +16,17 @@ export class LevelFormComponent extends React.Component<LevelProps> {
 
     render() {
         const level = this.props.window.levelForm.getVal(LevelFormPropType.Level);
-        const levelIndexes = this.props.window.stores.levelStore.levels.map(level => level.index);
+        const levelIndexes = this.props.window.stores.levelStore.levels.filter(level => !level.isEmpty).map(level => level.index);
         return (
             <div>
                 <SettingsRowStyled>
                     <LabelStyled>Level</LabelStyled>
                     <InputStyled>
-                        <GridComponent markedValues={levelIndexes} value={level as number} onChange={(val) => this.props.window.levelForm.updateProp(val, LevelFormPropType.Level)}/>
+                        <GridComponent isReversed={false} markedValues={levelIndexes} value={level as number} onChange={(val) => this.props.window.levelForm.updateProp(val, LevelFormPropType.Level)}/>
                     </InputStyled>
                 </SettingsRowStyled>
+
+                <ButtonComponent text="Clear current" type="info" onClick={() => this.props.window.levelForm.updateProp(level, LevelFormPropType.ClearLevel)}/>
 
                 <SettingsRowStyled>
                     <LabelStyled>Level name</LabelStyled>

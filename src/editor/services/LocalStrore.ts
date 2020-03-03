@@ -15,6 +15,22 @@ export class LocalStore {
         request.onupgradeneeded = () => this.upgradeDb(request);
     }
 
+    async removeLevel(level: number): Promise<undefined> {
+        if (!this.isDbSupported()) { return }
+
+        const db = await this.getDb();
+
+        const objectStore = db.transaction(["xmls"], "readwrite").objectStore("xmls");
+        
+        const deleteRequest = objectStore.delete(Number(level));
+
+        return new Promise((resolve, reject) => {
+            deleteRequest.onsuccess = () => resolve();
+            deleteRequest.onerror = () => reject();
+        });
+
+    }
+
     async storeLevel(level: number) {
         if (!this.isDbSupported()) { return }
 

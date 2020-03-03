@@ -2,23 +2,25 @@
 export interface Level {
     index: number;
     name?: string;
+    isEmpty: boolean;
 }
 
 export class LevelStore {
     levels: Level[] = [];
 
     constructor() {
-        this.levels.push({
-            index: 0
-        });
+        this.currentLevel = {
+            index: 10,
+            isEmpty: true
+        }
+
+        this.levels.push(this.currentLevel);
     }
 
-    currentLevel: Level = {
-        index: 10
-    }
+    currentLevel: Level;
 
     setLevels(indexes: number[]) {
-        this.levels = indexes.map(index => ({index}));
+        this.levels = indexes.map(index => ({index, isEmpty: false}));
         this.currentLevel = this.levels[0];
     }
 
@@ -33,8 +35,10 @@ export class LevelStore {
             this.currentLevel = level;
         } else {
             this.currentLevel = {
-                index
+                index,
+                isEmpty: true
             }
+            this.levels.push(this.currentLevel);
         }
     }
 }

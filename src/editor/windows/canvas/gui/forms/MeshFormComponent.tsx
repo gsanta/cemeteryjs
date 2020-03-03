@@ -3,7 +3,6 @@ import { MeshViewPropType } from '../../forms/MeshForm';
 import { AppContext, AppContextType } from '../../../../gui/Context';
 import { ConnectedInputComponent } from '../../../../gui/inputs/InputComponent';
 import { ConnectedFileUploadComponent } from '../../../../gui/icons/tools/ImportFileIconComponent';
-import { ConnectedLayerSettingsComponent } from './LayerSettingsComponent';
 import { ViewFormProps } from './formComponentFactory';
 import { SettingsRowStyled, LabelStyled, InputStyled, GroupedRowsStyled } from './FormComponent';
 import { ConnectedDropdownComponent } from '../../../../gui/inputs/DropdownComponent';
@@ -132,7 +131,7 @@ export class MeshFormComponent extends React.Component<ViewFormProps<MeshView>> 
             <SettingsRowStyled>
                 <LabelStyled>Layer</LabelStyled>
                 <InputStyled>
-                    <ConnectedGridComponent markedValues={[]} formController={form} propertyName={MeshViewPropType.LAYER} value={form.getVal(MeshViewPropType.LAYER)}/>
+                    <ConnectedGridComponent isReversed={true} markedValues={[]} formController={form} propertyName={MeshViewPropType.LAYER} value={form.getVal(MeshViewPropType.LAYER)}/>
                 </InputStyled>
             </SettingsRowStyled>
         );

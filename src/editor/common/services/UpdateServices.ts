@@ -58,7 +58,6 @@ export class UpdateService {
                     this.canvasRepainter();
                     this.settingsRepainters.forEach(repaint => repaint());
                     this.controller.editor.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
-                    this.services.storageService().storeLevel(this.controller.stores.levelStore.currentLevel.index);
                 break;
             }
         });

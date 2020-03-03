@@ -12,6 +12,7 @@ export interface GridProps {
     onChange(index: number): void;
     value: number;
     markedValues: number[];
+    isReversed: boolean;
 }
 
 export class GridComponent extends React.Component<GridProps> {
@@ -23,8 +24,12 @@ export class GridComponent extends React.Component<GridProps> {
 
     private renderGridItems(): JSX.Element[] {
         const items: JSX.Element[] = [];
-        for (let i = 19; i >= 0; i--) {
-            items.push(<GridItem marked={this.props.markedValues.includes(i)} active={i === this.props.value} onClick={() => this.props.onChange(i)}/>);
+        let start = this.props.isReversed ? 19 : 0;
+        const end = this.props.isReversed ? 0 : 19;
+        const step = start < end ? 1 : -1;
+        while (start !== end) {
+            items.push(<GridItem marked={this.props.markedValues.includes(start)} active={start === this.props.value} index={start} onClick={(ind) => this.props.onChange(ind)}/>);
+            start += step;
         }
 
         return items;
@@ -42,12 +47,13 @@ const GridItemStyled = styled.div`
 export interface GridItemProps {
     active: boolean;
     marked: boolean;
-    onClick(): void;
+    onClick(ind: number): void;
+    index: number;
 }
 
 function GridItem(props: GridItemProps) {
     return (
-        <GridItemStyled draggable="true" {...props} onClick={props.onClick}/>
+        <GridItemStyled draggable="true" {...props} onClick={() => props.onClick(props.index)}/>
     );
 }
 

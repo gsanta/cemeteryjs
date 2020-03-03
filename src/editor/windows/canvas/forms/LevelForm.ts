@@ -7,7 +7,8 @@ import { ServiceLocator } from '../../../ServiceLocator';
 
 export enum LevelFormPropType {
     Level = 'Level',
-    LevelName = 'LevelName'
+    LevelName = 'LevelName',
+    ClearLevel = 'ClearLevel'
 }
 
 export class LevelForm extends AbstractForm<LevelFormPropType> {
@@ -26,7 +27,7 @@ export class LevelForm extends AbstractForm<LevelFormPropType> {
         switch (prop) {
             case LevelFormPropType.Level:
                 return this.controller.stores.levelStore.currentLevel.index;
-            case LevelFormPropType.Level:
+            case LevelFormPropType.LevelName:
                 return this.controller.stores.levelStore.currentLevel.name;
         }
     }
@@ -34,18 +35,20 @@ export class LevelForm extends AbstractForm<LevelFormPropType> {
     protected setProp(val: any, prop: LevelFormPropType) {
         switch (prop) {
             case LevelFormPropType.Level:
+                this.services.levelService().changeLevel(val)
+                    .then(() => this.controller.updateService.runImmediately(UpdateTask.All))
+                    .catch(() => this.controller.updateService.runImmediately(UpdateTask.All))
 
-                if (this.controller.stores.levelStore.hasLevel(val)) {
-                    this.services.storageService().loadLevel(val);
-                } else {
-                    this.controller.stores.viewStore.clear();
-                }
-
-                this.controller.stores.levelStore.setCurrentLevel(val);
-                this.controller.updateService.runImmediately(UpdateTask.All);
-            case LevelFormPropType.Level:
+                break;
+            case LevelFormPropType.LevelName:
                 this.controller.stores.levelStore.currentLevel.name = val;
                 this.controller.updateService.runImmediately(UpdateTask.RepaintSettings);
+                break;
+            case LevelFormPropType.ClearLevel:
+                this.services.levelService().removeLevel()
+                .then(() => this.controller.updateService.runImmediately(UpdateTask.All))
+                .catch(() => this.controller.updateService.runImmediately(UpdateTask.All))
+                break;
         }
     }
 }

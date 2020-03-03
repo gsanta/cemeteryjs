@@ -27,7 +27,7 @@ export class Editor {
 
     constructor(eventDispatcher: EventDispatcher) {
         this.stores = new Stores();
-        this.services = new ServiceLocator(this, eventDispatcher);
+        this.services = new ServiceLocator(this, eventDispatcher, () => this.stores);
 
         this.windowFactories = [
             new CanvasFactory(),

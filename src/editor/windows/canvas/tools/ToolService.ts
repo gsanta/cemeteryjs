@@ -33,7 +33,7 @@ export class ToolService {
 
         this.pointerTool = new PointerTool(this.controller);
         this.cameraTool = new CameraTool(this.controller);
-        this.rectangleTool = new RectangleTool(this.controller);
+        this.rectangleTool = new RectangleTool(this.controller, services);
         this.pathTool = new PathTool(this.controller);
         this.deleteTool = new DeleteTool(this.controller, this.services);
         this.moveTool = new MoveTool(this.controller);

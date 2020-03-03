@@ -7,16 +7,19 @@ import { ToolType } from './Tool';
 import { MeshView } from '../models/views/MeshView';
 import { ViewType } from '../models/views/View';
 import { CanvasItemTag } from '../models/CanvasItem';
+import { ServiceLocator } from '../../../ServiceLocator';
 
 export class RectangleTool extends AbstractTool {
     private lastPreviewRect: MeshView;
     private rectSelector: RectangleSelector;
     private controller: CanvasWindow;
+    private services: ServiceLocator;
 
-    constructor(controller: CanvasWindow) {
+    constructor(controller: CanvasWindow, services: ServiceLocator) {
         super(ToolType.RECTANGLE);
 
         this.controller = controller;
+        this.services = services;
         this.rectSelector = new RectangleSelector(controller);
     }
 
@@ -38,6 +41,7 @@ export class RectangleTool extends AbstractTool {
         this.controller.stores.viewStore.removeSelectionAll()
         this.controller.stores.viewStore.addTag([gameObject], CanvasItemTag.SELECTED);
 
+        this.services.levelService().updateLevel();
         this.controller.updateService.scheduleTasks(UpdateTask.All);
     }
 
