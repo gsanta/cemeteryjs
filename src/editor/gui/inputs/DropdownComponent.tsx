@@ -7,7 +7,7 @@ import './DropdownComponent.scss';
 import { Focusable } from "./Focusable";
 import styled from 'styled-components';
 import { colors } from "../styles";
-import { withCommitOnChange } from './decorators/withCommitOnChange';
+import { withCommitOnChange } from '../forms/decorators/withCommitOnChange';
 
 export interface DropdownProps extends Focusable {
     values: string[];

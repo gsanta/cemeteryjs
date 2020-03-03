@@ -2,7 +2,7 @@ import * as React from 'react';
 import { SketchPicker } from 'react-color';
 import styled from 'styled-components';
 import { colors } from '../styles';
-import { InputFieldCommands } from './decorators/InputFieldCommands';
+import { InputFieldCommands } from '../forms/decorators/InputFieldCommands';
  
 const ColorPickerStyled = styled.div`
     width: 20px;

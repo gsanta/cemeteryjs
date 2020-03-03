@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Focusable } from '../../../../editor/gui/forms/Focusable';
+import { Focusable } from '../../inputs/Focusable';
 import { InputFieldCommands } from "./InputFieldCommands";
 
 export function withCommitOnBlur<T extends Focusable>(WrappedComponent: React.ComponentType<T>) {

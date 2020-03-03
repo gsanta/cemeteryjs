@@ -4,8 +4,8 @@ import { KeyboardHandler } from '../../common/services/KeyboardHandler';
 import { MouseHandler } from '../../common/services/MouseHandler';
 import { Editor } from '../../Editor';
 import { ServiceLocator } from '../../ServiceLocator';
-import { MeshViewForm } from './forms/MeshViewForm';
-import { PathViewForm } from './forms/PathViewForm';
+import { MeshForm } from './forms/MeshForm';
+import { PathForm } from './forms/PathForm';
 import { CanvasExporter } from './io/export/CanvasExporter';
 import { PathExporter } from './io/export/PathExporter';
 import { RectangleExporter } from './io/export/RectangleExporter';
@@ -39,8 +39,8 @@ export class CanvasWindow extends WindowController {
     updateService: UpdateService;
     pointer: IPointerService;
     
-    meshViewForm: MeshViewForm;
-    pathForm: PathViewForm;
+    meshViewForm: MeshForm;
+    pathForm: PathForm;
     levelForm: LevelForm;
 
     constructor(editor: Editor, services: ServiceLocator, stores: Stores) {
@@ -63,8 +63,8 @@ export class CanvasWindow extends WindowController {
 
         this.toolService = new ToolService(this, this.services);
 
-        this.meshViewForm = new MeshViewForm(this, this.services, this.editor.eventDispatcher);
-        this.pathForm = new PathViewForm();
+        this.meshViewForm = new MeshForm(this, this.services, this.editor.eventDispatcher);
+        this.pathForm = new PathForm();
         this.levelForm = new LevelForm(this, this.services);
         this.pointer = new CanvasPointerService(this);
     }

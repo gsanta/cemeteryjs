@@ -1,13 +1,13 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { GeneralFormComponent } from './GeneralFormComponent';
-import { AppContext, AppContextType } from '../../../../gui/Context';
-import { AccordionComponent } from '../../../../gui/misc/AccordionComponent';
-import { colors } from '../../../../gui/styles';
-import { viewComponentFactory } from './viewComponentFactory';
-import { GlobalFormComponent } from './GlobalFormComponent';
-import { LevelComponent } from './LevelComponent';
-import { CanvasWindow } from '../../CanvasWindow';
+import { GeneralFormComponent } from '../windows/canvas/gui/forms/GeneralFormComponent';
+import { AppContext, AppContextType } from './Context';
+import { AccordionComponent } from './misc/AccordionComponent';
+import { colors } from './styles';
+import { formComponentFactory } from '../windows/canvas/gui/forms/formComponentFactory';
+import { GlobalFormComponent } from '../windows/canvas/gui/forms/GlobalFormComponent';
+import { LevelFormComponent } from '../windows/canvas/gui/forms/LevelFormComponent';
+import { CanvasWindow } from '../windows/canvas/CanvasWindow';
 
 export interface SidebarComponentProps {
     isEditorOpen: boolean;
@@ -45,11 +45,11 @@ export class SidebarComponent extends React.Component<SidebarComponentProps> {
                         },
                         {
                             title: 'Level Settings',
-                            body: <LevelComponent window={this.context.controllers.getWindowControllerByName('canvas') as CanvasWindow} {...this.props}/>
+                            body: <LevelFormComponent window={this.context.controllers.getWindowControllerByName('canvas') as CanvasWindow} {...this.props}/>
                         },
                         {
                             title: 'Object Settings',
-                            body: viewComponentFactory(this.context.controllers)
+                            body: formComponentFactory(this.context.controllers)
                         },
                         {
                             title: 'Global Settings',

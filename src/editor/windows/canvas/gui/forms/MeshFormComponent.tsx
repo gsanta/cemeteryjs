@@ -1,21 +1,22 @@
 import * as React from 'react';
-import { MeshViewPropType } from '../../forms/MeshViewForm';
+import { MeshViewPropType } from '../../forms/MeshForm';
 import { AppContext, AppContextType } from '../../../../gui/Context';
-import { ConnectedInputComponent } from '../../../../gui/forms/InputComponent';
+import { ConnectedInputComponent } from '../../../../gui/inputs/InputComponent';
 import { ConnectedFileUploadComponent } from '../../../../gui/icons/tools/ImportFileIconComponent';
 import { ConnectedLayerSettingsComponent } from './LayerSettingsComponent';
-import { ViewFormProps } from './viewComponentFactory';
+import { ViewFormProps } from './formComponentFactory';
 import { SettingsRowStyled, LabelStyled, InputStyled, GroupedRowsStyled } from './FormComponent';
-import { ConnectedDropdownComponent } from '../../../../gui/forms/DropdownComponent';
+import { ConnectedDropdownComponent } from '../../../../gui/inputs/DropdownComponent';
 import { AccordionComponent } from '../../../../gui/misc/AccordionComponent';
 import { ClearIconComponent } from '../../../../gui/icons/ClearIconComponent';
 import { PlayIconComponent } from '../../../../gui/icons/PlayIconComponent';
 import { PauseIconComponent } from '../../../../gui/icons/PauseIconComponent';
 import { StopIconComponent } from '../../../../gui/icons/StopIconComponent';
-import { CheckboxComponent } from '../../../../gui/forms/CheckboxComponent';
+import { CheckboxComponent } from '../../../../gui/inputs/CheckboxComponent';
 import { MeshView, AnimationState } from '../../models/views/MeshView';
+import { ConnectedGridComponent } from './GridComponent';
 
-export class MeshViewFormComponent extends React.Component<ViewFormProps<MeshView>> {
+export class MeshFormComponent extends React.Component<ViewFormProps<MeshView>> {
     static contextType = AppContext;
     context: AppContextType;
 
@@ -131,7 +132,7 @@ export class MeshViewFormComponent extends React.Component<ViewFormProps<MeshVie
             <SettingsRowStyled>
                 <LabelStyled>Layer</LabelStyled>
                 <InputStyled>
-                    <ConnectedLayerSettingsComponent formController={form} propertyName={MeshViewPropType.LAYER} value={form.getVal(MeshViewPropType.LAYER)}/>
+                    <ConnectedGridComponent markedValues={[]} formController={form} propertyName={MeshViewPropType.LAYER} value={form.getVal(MeshViewPropType.LAYER)}/>
                 </InputStyled>
             </SettingsRowStyled>
         );

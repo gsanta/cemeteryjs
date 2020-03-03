@@ -1,6 +1,6 @@
 import { CanvasWindow } from "../../CanvasWindow";
-import { MeshViewFormComponent } from "./MeshViewFormComponent";
-import { PathViewFormComponent } from "./PathViewFormComponent";
+import { MeshFormComponent } from "./MeshFormComponent";
+import { PathFormComponent } from "./PathFormComponent";
 import styled from "styled-components";
 import * as React from 'react';
 import { Editor } from "../../../../Editor";
@@ -18,7 +18,7 @@ const PlaceHolderTextStyled = styled.div`
     opacity: 0.6;
 `;
 
-export function viewComponentFactory(editor: Editor): JSX.Element {
+export function formComponentFactory(editor: Editor): JSX.Element {
     const canvasController = (editor.getWindowControllerByName('canvas') as CanvasWindow);
     const selectedViews = canvasController.stores.viewStore.getSelectedViews();
     if (selectedViews.length !== 1) {
@@ -27,8 +27,8 @@ export function viewComponentFactory(editor: Editor): JSX.Element {
 
     switch(selectedViews[0].viewType) {
         case ViewType.GameObject:
-            return <MeshViewFormComponent view={selectedViews[0] as MeshView} canvasController={canvasController}/>;
+            return <MeshFormComponent view={selectedViews[0] as MeshView} canvasController={canvasController}/>;
         case ViewType.Path:
-            return <PathViewFormComponent view={selectedViews[0] as PathView} canvasController={canvasController}/>;
+            return <PathFormComponent view={selectedViews[0] as PathView} canvasController={canvasController}/>;
     }
 }

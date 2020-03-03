@@ -6,7 +6,8 @@ import { MeshView } from '../models/views/MeshView';
 import { ServiceLocator } from '../../../ServiceLocator';
 
 export enum LevelFormPropType {
-    Level = 'Level'
+    Level = 'Level',
+    LevelName = 'LevelName'
 }
 
 export class LevelForm extends AbstractForm<LevelFormPropType> {
@@ -25,6 +26,8 @@ export class LevelForm extends AbstractForm<LevelFormPropType> {
         switch (prop) {
             case LevelFormPropType.Level:
                 return this.controller.stores.levelStore.currentLevel.index;
+            case LevelFormPropType.Level:
+                return this.controller.stores.levelStore.currentLevel.name;
         }
     }
 
@@ -39,7 +42,10 @@ export class LevelForm extends AbstractForm<LevelFormPropType> {
                 }
 
                 this.controller.stores.levelStore.setCurrentLevel(val);
+                this.controller.updateService.runImmediately(UpdateTask.All);
+            case LevelFormPropType.Level:
+                this.controller.stores.levelStore.currentLevel.name = val;
+                this.controller.updateService.runImmediately(UpdateTask.RepaintSettings);
         }
-        this.controller.updateService.runImmediately(UpdateTask.All);
     }
 }

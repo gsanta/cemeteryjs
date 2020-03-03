@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
 import { sizes, colors } from '../styles';
 import { Focusable } from './Focusable';
-import { withCommitOnChange } from './decorators/withCommitOnChange';
+import { withCommitOnChange } from '../forms/decorators/withCommitOnChange';
 
 export interface ToggleButtonProps extends Focusable {
     text: string;

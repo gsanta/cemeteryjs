@@ -26,7 +26,7 @@ const propertyTypes = {
     [MeshViewPropType.ROTATION]: PropertyType.Number
 };
 
-export class MeshViewForm extends AbstractForm<MeshViewPropType> {
+export class MeshForm extends AbstractForm<MeshViewPropType> {
     gameObject: MeshView;
 
     private controller: CanvasWindow;

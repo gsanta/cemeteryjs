@@ -4,7 +4,7 @@ import { Focusable } from './Focusable';
 import './InputComponent.scss';
 import styled from 'styled-components';
 import { colors } from '../styles';
-import { withCommitOnBlur } from './decorators/withCommitOnBlur';
+import { withCommitOnBlur } from '../forms/decorators/withCommitOnBlur';
 import { Form } from 'react-bootstrap';
 
 export interface InputProps extends Focusable {

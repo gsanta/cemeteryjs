@@ -1,7 +1,7 @@
 import * as React from 'react';
 import FormCheck from 'react-bootstrap/FormCheck';
 import './CheckboxComponent.scss';
-import { withCommitOnChange } from './decorators/withCommitOnChange';
+import { withCommitOnChange } from '../forms/decorators/withCommitOnChange';
 
 export interface CheckboxProps {
     isSelected: boolean;
