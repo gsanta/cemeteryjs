@@ -2,6 +2,7 @@ import { CanvasWindow } from "../../windows/canvas/CanvasWindow";
 import { ServiceLocator } from "../../ServiceLocator";
 import { Events } from "../Events";
 import { WindowController } from "../WindowController";
+import { Stores } from '../../Stores';
 
 export enum UpdateTask {
     RepaintCanvas = 'RepaintCanvas',
@@ -18,11 +19,13 @@ export class UpdateService {
     private settingsRepainters: Function[] = [];
 
     private controller: WindowController;
-    private services: ServiceLocator;
+    private getServices: () => ServiceLocator;
+    private getStores: () => Stores;
 
-    constructor(controller: WindowController, services: ServiceLocator) {
+    constructor(controller: WindowController, getServices: () => ServiceLocator, getStores: () => Stores) {
         this.controller = controller;
-        this.services = services;
+        this.getServices = getServices;
+        this.getStores = getStores;
     }
 
 
@@ -52,7 +55,7 @@ export class UpdateService {
                     this.controller.editor.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
                 break;
                 case UpdateTask.SaveData:
-                    this.services.storageService().storeLevel(this.controller.stores.levelStore.currentLevel.index);
+                    this.getServices().storageService().storeLevel(this.getStores().levelStore.currentLevel.index);
                 break;
                 case UpdateTask.All:
                     this.canvasRepainter();

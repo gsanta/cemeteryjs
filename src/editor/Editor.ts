@@ -37,7 +37,7 @@ export class Editor {
 
         this.eventDispatcher = eventDispatcher;
 
-        this.globalSettingsForm = new GlobalSettingsForm(this.getWindowControllerByName('canvas') as CanvasWindow, this.eventDispatcher);
+        this.globalSettingsForm = new GlobalSettingsForm(this.getWindowControllerByName('canvas') as CanvasWindow, () => this.stores);
 
         this.svgCanvasId = 'svg-editor';
     }

@@ -5,26 +5,29 @@ import { UpdateTask } from "../../../common/services/UpdateServices";
 import { ViewType, View } from "../models/views/View";
 import { CanvasItemTag } from "../models/CanvasItem";
 import { PathView } from "../models/views/PathView";
+import { Stores } from '../../../Stores';
 
 export class PointerTool extends AbstractTool {
     private controller: CanvasWindow;
 
     private selectableViews: ViewType[];
+    private getStores: () => Stores;
 
-    constructor(controller: CanvasWindow) {
+    constructor(controller: CanvasWindow, getStores: () => Stores) {
         super(ToolType.POINTER);
         this.controller = controller;
+        this.getStores = getStores;
     }
 
     click(): boolean {
-        const hoveredView = this.controller.stores.viewStore.getHoveredView()
+        const hoveredView = this.getStores().viewStore.getHoveredView()
 
         if (
             hoveredView &&
             (!this.selectableViews || this.selectableViews.includes(hoveredView.viewType))
         ) {
-            this.controller.stores.viewStore.removeSelectionAll();
-            this.controller.stores.viewStore.addTag([hoveredView], CanvasItemTag.SELECTED);
+            this.getStores().viewStore.removeSelectionAll();
+            this.getStores().viewStore.addTag([hoveredView], CanvasItemTag.SELECTED);
             hoveredView.selectHoveredSubview();
 
             this.controller.updateService.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas);
@@ -35,7 +38,7 @@ export class PointerTool extends AbstractTool {
     }
 
     down() {
-        const hoveredView = this.controller.stores.viewStore.getHoveredView();
+        const hoveredView = this.getStores().viewStore.getHoveredView();
         if (hoveredView) {
             hoveredView.selectHoveredSubview();
             this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
@@ -43,14 +46,14 @@ export class PointerTool extends AbstractTool {
     }
 
     over(item: View) {
-        this.controller.stores.viewStore.addTag([item], CanvasItemTag.HOVERED);
+        this.getStores().viewStore.addTag([item], CanvasItemTag.HOVERED);
         this.updateSubviewHover(item);
         this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     out(item: View) {
-        this.controller.stores.viewStore.getHoveredView() && this.controller.stores.viewStore.getHoveredView().removeSubviewHover();
-        this.controller.stores.viewStore.removeTagFromAll(CanvasItemTag.HOVERED);
+        this.getStores().viewStore.getHoveredView() && this.getStores().viewStore.getHoveredView().removeSubviewHover();
+        this.getStores().viewStore.removeTagFromAll(CanvasItemTag.HOVERED);
         this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 

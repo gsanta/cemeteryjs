@@ -43,29 +43,29 @@ export class CanvasWindow extends WindowController {
     pathForm: PathForm;
     levelForm: LevelForm;
 
-    constructor(editor: Editor, services: ServiceLocator, stores: Stores) {
-        super(editor, services, stores);
+    constructor(editor: Editor, getServices: () => ServiceLocator, getStores: () => Stores) {
+        super(editor, getServices, getStores);
 
-        this.updateService = new UpdateService(this, services);
+        this.updateService = new UpdateService(this, getServices, getStores);
         this.feedbackStore = new FeedbackStore();
         
         this.mouseController = new MouseHandler(this);
         this.keyboardHandler = new KeyboardHandler(this);
         this.importer = new CanvasImporter(
             [
-                new MeshViewImporter(rect => this.stores.viewStore.addRect(rect)),
-                new PathImporter((path: PathView) => this.stores.viewStore.addPath(path))
+                new MeshViewImporter(rect => this.getStores().viewStore.addRect(rect)),
+                new PathImporter((path: PathView) => this.getStores().viewStore.addPath(path))
             ],
             this
         );
-        this.exporter = new CanvasExporter(this, [new RectangleExporter(this), new PathExporter(this)]);
-        this.model3dController = new Model3DController(this, this.services);
+        this.exporter = new CanvasExporter(this, [new RectangleExporter(this, this.getStores), new PathExporter(this, this.getStores)]);
+        this.model3dController = new Model3DController(this, this.getServices());
 
-        this.toolService = new ToolService(this, this.services);
+        this.toolService = new ToolService(this, this.getServices, this.getStores);
 
-        this.meshViewForm = new MeshForm(this, this.services, this.editor.eventDispatcher);
+        this.meshViewForm = new MeshForm(this, this.getServices, this.getStores, this.editor.eventDispatcher);
         this.pathForm = new PathForm();
-        this.levelForm = new LevelForm(this, this.services);
+        this.levelForm = new LevelForm(this, this.getServices, this.getStores);
         this.pointer = new CanvasPointerService(this);
     }
 
@@ -99,7 +99,7 @@ export class CanvasWindow extends WindowController {
     }
 
     isEmpty(): boolean {
-        return this.stores.viewStore.getViews().length === 0;
+        return this.getStores().viewStore.getViews().length === 0;
     }
 
     viewSettings: CanvasViewSettings = {

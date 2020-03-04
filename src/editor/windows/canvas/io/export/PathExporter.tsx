@@ -5,22 +5,25 @@ import { CanvasWindow } from "../../CanvasWindow";
 import { CanvasItemTag } from "../../models/CanvasItem";
 import { PathView } from "../../models/views/PathView";
 import { ViewType } from "../../models/views/View";
+import { Stores } from '../../../../Stores';
 
 export class PathExporter implements IViewExporter {
     type = ViewType.Path;
     private controller: CanvasWindow;
+    private getStores: () => Stores;
 
-    constructor(controller: CanvasWindow) {
+    constructor(controller: CanvasWindow, getStores: () => Stores) {
         this.controller = controller;
+        this.getStores = getStores;
     }
 
     export(onlyData = false): JSX.Element {
-        const pathes = this.controller.stores.viewStore.getPathes().map(path => {
+        const pathes = this.getStores().viewStore.getPathes().map(path => {
             return <PathComponent
                 onlyData={onlyData}
                 item={path}
-                isHovered={this.controller.stores.viewStore.getHoveredView() === path}
-                isSelected={this.controller.stores.viewStore.getTags(path).has(CanvasItemTag.SELECTED)}
+                isHovered={this.getStores().viewStore.getHoveredView() === path}
+                isSelected={this.getStores().viewStore.getTags(path).has(CanvasItemTag.SELECTED)}
                 onMouseOver={(item: PathView) => this.controller.mouseController.hover(item)}
                 onMouseOut={(item: PathView) => this.controller.mouseController.unhover(item)}
             />

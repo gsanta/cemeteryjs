@@ -1,10 +1,28 @@
 import * as React from 'react';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
+import { colors } from '../styles';
 
 const ButtonStyled = styled(Button)`
-    height: 30px;
-    line-height: 1;
+    &.button.override {
+        height: 24px;
+        line-height: 0.9;
+
+        background: ${colors.grey2};
+        border: ${colors.grey2};
+        color: ${colors.textColorDark};
+
+        &:active, &:focus, &:hover {
+            background-color: ${colors.grey2};
+            border-color: ${colors.grey2};
+            color: ${colors.textColorDark};
+        }
+
+        
+        &:active {
+            box-shadow: none;
+        }
+    }
 `;
 
 export interface ButtonProps {

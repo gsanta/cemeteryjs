@@ -37,8 +37,8 @@ export class RendererWindow extends WindowController {
     meshes: Mesh[] = [];
 
     constructor(editor: Editor, services: ServiceLocator) {
-        super(editor, services, editor.stores);
-        this.updateService = new UpdateService(this, this.services);
+        super(editor, () => services, () => editor.stores);
+        this.updateService = new UpdateService(this, () => services, () => editor.stores);
         this.mouseHander = new MouseHandler(this);
         this.pointer = new RendererPointerService(this);
         this.update = this.update.bind(this);

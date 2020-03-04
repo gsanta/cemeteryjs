@@ -66,7 +66,7 @@ export class CameraTool extends AbstractTool {
             this.camera.setTopLeftCorner(canvasPos, nextZoomLevel);
             this.camera.moveBy(ratioOfViewBox(this.camera, pointerRatio).negate());
 
-            this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
+            this.controller.updateService.runImmediately(UpdateTask.RepaintCanvas);
         }
     }
 
@@ -81,7 +81,7 @@ export class CameraTool extends AbstractTool {
             this.camera.setTopLeftCorner(canvasPos, prevZoomLevel);
             this.camera.moveBy(ratioOfViewBox(this.camera, pointerRatio).negate());
 
-            this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
+            this.controller.updateService.runImmediately(UpdateTask.RepaintCanvas);
         }
     }
 

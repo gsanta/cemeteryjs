@@ -7,13 +7,16 @@ import { CanvasWindow } from "../../CanvasWindow";
 import { ViewType } from "../../models/views/View";
 import { MeshView } from "../../models/views/MeshView";
 import { CanvasItemTag } from "../../models/CanvasItem";
+import { Stores } from '../../../../Stores';
 
 export class RectangleExporter implements IViewExporter {
     type = ViewType.GameObject;
     private controller: CanvasWindow;
+    private getStores: () => Stores;
 
-    constructor(controller: CanvasWindow) {
+    constructor(controller: CanvasWindow, getStores: () => Stores) {
         this.controller = controller;
+        this.getStores = getStores;
     }
 
     export(): JSX.Element {
@@ -22,7 +25,7 @@ export class RectangleExporter implements IViewExporter {
     }
 
     private renderRectangles(): JSX.Element[] {
-        const viewStore = this.controller.stores.viewStore;
+        const viewStore = this.getStores().viewStore;
         let items = [...viewStore.getGameObjects()];
         items = sort(items, (a, b) => viewStore.getLayer(a) - viewStore.getLayer(b));
 
@@ -34,8 +37,8 @@ export class RectangleExporter implements IViewExporter {
     }
 
     private renderGroup(item: MeshView, dimensions: Rectangle, children: JSX.Element[]) {
-        const minX = minBy<MeshView>(this.controller.stores.viewStore.getGameObjects(), (a, b) => a.dimensions.topLeft.x - b.dimensions.topLeft.x).dimensions.topLeft.x;
-        const minY = minBy<MeshView>(this.controller.stores.viewStore.getGameObjects(), (a, b) => a.dimensions.topLeft.y - b.dimensions.topLeft.y).dimensions.topLeft.y;
+        const minX = minBy<MeshView>(this.getStores().viewStore.getGameObjects(), (a, b) => a.dimensions.topLeft.x - b.dimensions.topLeft.x).dimensions.topLeft.x;
+        const minY = minBy<MeshView>(this.getStores().viewStore.getGameObjects(), (a, b) => a.dimensions.topLeft.y - b.dimensions.topLeft.y).dimensions.topLeft.y;
 
         const tranlateX = minX < 0 ? - minX : 0;
         const tranlateY = minY < 0 ? - minY : 0;
@@ -51,7 +54,7 @@ export class RectangleExporter implements IViewExporter {
                 data-wg-height={dimensions.getHeight()}
                 data-wg-type={item.type}
                 data-wg-color={item.color}
-                data-wg-layer={this.controller.stores.viewStore.getLayer(item)}
+                data-wg-layer={this.getStores().viewStore.getLayer(item)}
                 data-rotation={item.rotation}
                 data-wg-scale={item.scale}
                 data-wg-name={item.name}
@@ -68,7 +71,7 @@ export class RectangleExporter implements IViewExporter {
     }
 
     private renderRect(item: MeshView, dimensions: Rectangle, key: string) {
-        const viewStore = this.controller.stores.viewStore;
+        const viewStore = this.getStores().viewStore;
 
         const stroke = viewStore.getTags(item).has(CanvasItemTag.SELECTED) || viewStore.getTags(item).has(CanvasItemTag.HOVERED) ? colors.views.highlight : 'black';
 

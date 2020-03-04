@@ -9,6 +9,7 @@ import { PointerTool } from "./PointerTool";
 import { RectangleTool } from "./RectangleTool";
 import { SelectTool } from "./SelectTool";
 import { Tool, ToolType } from "./Tool";
+import { Stores } from '../../../Stores';
 
 export class ToolService {
     private tools: Tool[] = [];
@@ -25,19 +26,21 @@ export class ToolService {
     selectedTool = ToolType.RECTANGLE;
 
     private controller: CanvasWindow;
-    private services: ServiceLocator;
+    private getServices: () => ServiceLocator;
+    private getStores: () => Stores;
 
-    constructor(controller: CanvasWindow, services: ServiceLocator) {
+    constructor(controller: CanvasWindow, getServices: () => ServiceLocator, getStores: () => Stores) {
         this.controller = controller;
-        this.services = services;
+        this.getServices = getServices;
+        this.getStores = getStores;
 
-        this.pointerTool = new PointerTool(this.controller);
+        this.pointerTool = new PointerTool(this.controller, this.getStores);
         this.cameraTool = new CameraTool(this.controller);
-        this.rectangleTool = new RectangleTool(this.controller, services);
-        this.pathTool = new PathTool(this.controller);
-        this.deleteTool = new DeleteTool(this.controller, this.services);
-        this.moveTool = new MoveTool(this.controller);
-        this.selectTool = new SelectTool(this.controller);
+        this.rectangleTool = new RectangleTool(this.controller, this.getServices, this.getStores);
+        this.pathTool = new PathTool(this.controller, this.getStores);
+        this.deleteTool = new DeleteTool(this.controller, this.getServices, this.getStores);
+        this.moveTool = new MoveTool(this.controller, this.getStores);
+        this.selectTool = new SelectTool(this.controller, this.getStores);
 
         this.tools = [
             this.pointerTool,

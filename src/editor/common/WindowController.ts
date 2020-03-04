@@ -14,14 +14,14 @@ export interface CanvasViewSettings {
 export abstract class WindowController {
     name: string;
     editor: Editor;
-    stores: Stores;
     updateService: UpdateService;
 
-    protected services: ServiceLocator;
-    constructor(controllers: Editor, services: ServiceLocator, stores: Stores) {
+    protected getServices: () => ServiceLocator;
+    protected getStores: () => Stores;
+    constructor(controllers: Editor, getServices: () => ServiceLocator, getStores: () => Stores) {
         this.editor = controllers;
-        this.stores = stores;
-        this.services = services;
+        this.getServices = getServices;
+        this.getStores = getStores;
     }
 
     getGameApi(): GameApi {

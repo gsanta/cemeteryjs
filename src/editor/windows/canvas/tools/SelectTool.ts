@@ -5,22 +5,25 @@ import { AbstractTool } from "./AbstractTool";
 import { UpdateTask } from "../../../common/services/UpdateServices";
 import { CanvasItemTag } from "../models/CanvasItem";
 import { View } from "../models/views/View";
+import { Stores } from '../../../Stores';
 
 export class SelectTool extends AbstractTool {
     protected controller: CanvasWindow;
     private rectSelector: RectangleSelector;
 
     private activeTool: Tool;
+    private getStores: () => Stores;
 
-    constructor(controller: CanvasWindow) {
+    constructor(controller: CanvasWindow, getStores: () => Stores) {
         super(ToolType.SELECT);
         this.controller = controller;
+        this.getStores = getStores;
         this.rectSelector = new RectangleSelector(controller);
     }
 
     down() {
-        const hovered = this.controller.stores.viewStore.getHoveredView();
-        const selected = this.controller.stores.viewStore.getSelectedViews();
+        const hovered = this.getStores().viewStore.getHoveredView();
+        const selected = this.getStores().viewStore.getSelectedViews();
 
         if (hovered && selected.includes(hovered)) {
             this.activeTool = this.controller.toolService.moveTool;
@@ -28,10 +31,10 @@ export class SelectTool extends AbstractTool {
     }
 
     click() {
-        if (this.controller.stores.viewStore.getHoveredView()) {
+        if (this.getStores().viewStore.getHoveredView()) {
             this.controller.toolService.pointerTool.click();
-        } else if (this.controller.stores.viewStore.getSelectedViews().length > 0) {
-            this.controller.stores.viewStore.removeTag(this.controller.stores.viewStore.getViews(), CanvasItemTag.SELECTED);
+        } else if (this.getStores().viewStore.getSelectedViews().length > 0) {
+            this.getStores().viewStore.removeTag(this.getStores().viewStore.getViews(), CanvasItemTag.SELECTED);
             this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
         }
     }
@@ -55,10 +58,10 @@ export class SelectTool extends AbstractTool {
         const feedback = this.controller.feedbackStore.rectSelectFeedback;
         if (!feedback) { return }
 
-        const canvasItems = this.controller.stores.viewStore.getIntersectingItemsInRect(feedback.rect);
-        const canvasStore = this.controller.stores.viewStore;
+        const canvasItems = this.getStores().viewStore.getIntersectingItemsInRect(feedback.rect);
+        const canvasStore = this.getStores().viewStore;
         
-        canvasStore.removeTag(this.controller.stores.viewStore.getViews(), CanvasItemTag.SELECTED);
+        canvasStore.removeTag(this.getStores().viewStore.getViews(), CanvasItemTag.SELECTED);
         canvasStore.addTag(canvasItems, CanvasItemTag.SELECTED);
 
         this.rectSelector.finish();

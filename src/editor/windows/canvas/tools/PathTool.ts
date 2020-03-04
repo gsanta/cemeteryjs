@@ -7,19 +7,23 @@ import { UpdateTask } from "../../../common/services/UpdateServices";
 import { ViewType, View } from "../models/views/View";
 import { PathView } from "../models/views/PathView";
 import { CanvasItemTag } from "../models/CanvasItem";
+import { Stores } from "../../../Stores";
 
 export class PathTool extends AbstractTool {
     private controller: CanvasWindow;
-    constructor(controller: CanvasWindow) {
+    private getStores: () => Stores;
+    
+    constructor(controller: CanvasWindow, getStores: () => Stores) {
         super(ToolType.PATH);
 
         this.controller = controller;
+        this.getStores = getStores;
     }
 
     click() {
         if (this.controller.toolService.pointerTool.click()) { return }
         
-        const selectedPathes = this.controller.stores.viewStore.getSelectedPathes();
+        const selectedPathes = this.getStores().viewStore.getSelectedPathes();
 
         if (selectedPathes.length === 0) {
             this.startNewPath();
@@ -33,7 +37,7 @@ export class PathTool extends AbstractTool {
 
     keydown() {
         if (this.controller.keyboardHandler.downKeys.includes(Keyboard.Enter)) {
-            this.controller.stores.viewStore.removeSelectionAll();
+            this.getStores().viewStore.removeSelectionAll();
             this.controller.updateService.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         }
     }
@@ -56,10 +60,10 @@ export class PathTool extends AbstractTool {
 
     private startNewPath() {
         const pointer = this.controller.pointer.pointer;
-        this.controller.stores.viewStore.removeSelectionAll();
+        this.getStores().viewStore.removeSelectionAll();
         const path = new PathView(pointer.down.clone());
-        path.name = this.controller.stores.viewStore.generateUniqueName(ViewType.Path);
-        this.controller.stores.viewStore.addPath(path);
-        this.controller.stores.viewStore.addTag([path], CanvasItemTag.SELECTED);
+        path.name = this.getStores().viewStore.generateUniqueName(ViewType.Path);
+        this.getStores().viewStore.addPath(path);
+        this.getStores().viewStore.addTag([path], CanvasItemTag.SELECTED);
     }
 }

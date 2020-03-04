@@ -8,18 +8,21 @@ import { MeshView } from '../models/views/MeshView';
 import { ViewType } from '../models/views/View';
 import { CanvasItemTag } from '../models/CanvasItem';
 import { ServiceLocator } from '../../../ServiceLocator';
+import { Stores } from '../../../Stores';
 
 export class RectangleTool extends AbstractTool {
     private lastPreviewRect: MeshView;
     private rectSelector: RectangleSelector;
     private controller: CanvasWindow;
-    private services: ServiceLocator;
-
-    constructor(controller: CanvasWindow, services: ServiceLocator) {
+    private getServices: () => ServiceLocator;
+    private getStores: () => Stores;
+    
+    constructor(controller: CanvasWindow, getServices: () => ServiceLocator, getStores: () => Stores) {
         super(ToolType.RECTANGLE);
 
         this.controller = controller;
-        this.services = services;
+        this.getServices = getServices;
+        this.getStores = getStores;
         this.rectSelector = new RectangleSelector(controller);
     }
 
@@ -35,20 +38,20 @@ export class RectangleTool extends AbstractTool {
         gameObject.scale = 1;
         gameObject.color = 'grey';
 
-        gameObject.name = this.controller.stores.viewStore.generateUniqueName(ViewType.GameObject);
+        gameObject.name = this.getStores().viewStore.generateUniqueName(ViewType.GameObject);
 
-        this.controller.stores.viewStore.addRect(gameObject);
-        this.controller.stores.viewStore.removeSelectionAll()
-        this.controller.stores.viewStore.addTag([gameObject], CanvasItemTag.SELECTED);
+        this.getStores().viewStore.addRect(gameObject);
+        this.getStores().viewStore.removeSelectionAll()
+        this.getStores().viewStore.addTag([gameObject], CanvasItemTag.SELECTED);
 
-        this.services.levelService().updateLevel();
+        this.getServices().levelService().updateCurrentLevel();
         this.controller.updateService.scheduleTasks(UpdateTask.All);
     }
 
     drag() {
         super.drag()
         if (this.lastPreviewRect) {
-            this.controller.stores.viewStore.remove(this.lastPreviewRect);
+            this.getStores().viewStore.remove(this.lastPreviewRect);
         }
         this.rectSelector.updateRect(this.controller.pointer.pointer);
         this.controller.feedbackStore.rectSelectFeedback.isVisible = false;
@@ -63,10 +66,10 @@ export class RectangleTool extends AbstractTool {
         gameObject.texturePath = null;
         gameObject.scale = 1;
         gameObject.color = 'grey';
-        gameObject.name = this.controller.stores.viewStore.generateUniqueName(ViewType.GameObject);
+        gameObject.name = this.getStores().viewStore.generateUniqueName(ViewType.GameObject);
 
         if (positions.length > 0) {
-            this.lastPreviewRect = this.controller.stores.viewStore.addRect(gameObject);
+            this.lastPreviewRect = this.getStores().viewStore.addRect(gameObject);
     
             this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
         }

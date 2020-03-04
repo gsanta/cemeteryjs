@@ -45,11 +45,11 @@ export class SidebarComponent extends React.Component<SidebarComponentProps> {
                         },
                         {
                             title: 'Level Settings',
-                            body: <LevelFormComponent window={this.context.controllers.getWindowControllerByName('canvas') as CanvasWindow} {...this.props}/>
+                            body: <LevelFormComponent getStores={() => this.context.controllers.stores} window={this.context.controllers.getWindowControllerByName('canvas') as CanvasWindow} {...this.props}/>
                         },
                         {
                             title: 'Object Settings',
-                            body: formComponentFactory(this.context.controllers)
+                            body: formComponentFactory(this.context.controllers, () => this.context.controllers.stores)
                         },
                         {
                             title: 'Global Settings',

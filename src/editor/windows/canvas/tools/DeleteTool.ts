@@ -5,16 +5,19 @@ import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './selection/RectangleSelector';
 import { ToolType } from './Tool';
 import { View } from '../models/views/View';
+import { Stores } from '../../../Stores';
 
 export class DeleteTool extends AbstractTool {
     private controller: CanvasWindow;
     private rectSelector: RectangleSelector;
-    private services: ServiceLocator;
+    private getServices: () => ServiceLocator;
+    private getStores: () => Stores;
 
-    constructor(controller: CanvasWindow, services: ServiceLocator) {
+    constructor(controller: CanvasWindow, getServices: () => ServiceLocator, getStores: () => Stores) {
         super(ToolType.DELETE);
         this.controller = controller;
-        this.services = services;
+        this.getServices = getServices;
+        this.getStores = getStores;
         this.rectSelector = new RectangleSelector(controller);
     }
 
@@ -25,17 +28,17 @@ export class DeleteTool extends AbstractTool {
 
     click() {
         this.controller.toolService.pointerTool.click()
-        const hovered = this.controller.stores.viewStore.getHoveredView();
-        hovered && this.controller.stores.viewStore.remove(hovered);
+        const hovered = this.getStores().viewStore.getHoveredView();
+        hovered && this.getStores().viewStore.remove(hovered);
         
         hovered && this.controller.updateService.scheduleTasks(UpdateTask.All);
     }
 
     
     draggedUp() {
-        const canvasItems = this.controller.stores.viewStore.getIntersectingItemsInRect(this.controller.feedbackStore.rectSelectFeedback.rect);
+        const canvasItems = this.getStores().viewStore.getIntersectingItemsInRect(this.controller.feedbackStore.rectSelectFeedback.rect);
 
-        canvasItems.forEach(item => this.controller.stores.viewStore.remove(item));
+        canvasItems.forEach(item => this.getStores().viewStore.remove(item));
 
         this.rectSelector.finish();
 
@@ -56,8 +59,8 @@ export class DeleteTool extends AbstractTool {
     }
 
     eraseAll() {
-        this.services.storageService().clearAll();
-        this.controller.stores.viewStore.clear();
+        this.getServices().storageService().clearAll();
+        this.getStores().viewStore.clear();
         this.controller.updateService.runImmediately(UpdateTask.All);
     }
 }

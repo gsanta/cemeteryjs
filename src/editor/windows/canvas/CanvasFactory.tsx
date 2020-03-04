@@ -14,7 +14,7 @@ export class CanvasFactory implements WindowFactory {
 
     getWindowController(editor: Editor, services: ServiceLocator, stores: Stores): WindowController {
         if (!this.controller) {
-            this.controller = new CanvasWindow(editor, services, stores);
+            this.controller = new CanvasWindow(editor, () => services, () => stores);
         }
         return this.controller;
     }
