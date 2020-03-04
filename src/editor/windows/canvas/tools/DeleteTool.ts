@@ -31,6 +31,7 @@ export class DeleteTool extends AbstractTool {
         const hovered = this.getStores().viewStore.getHoveredView();
         hovered && this.getStores().viewStore.remove(hovered);
         
+        this.getServices().levelService().updateCurrentLevel();
         hovered && this.controller.updateService.scheduleTasks(UpdateTask.All);
     }
 
@@ -42,6 +43,7 @@ export class DeleteTool extends AbstractTool {
 
         this.rectSelector.finish();
 
+        this.getServices().levelService().updateCurrentLevel();
         this.controller.updateService.scheduleTasks(UpdateTask.All);
     }
 
@@ -61,6 +63,7 @@ export class DeleteTool extends AbstractTool {
     eraseAll() {
         this.getServices().storageService().clearAll();
         this.getStores().viewStore.clear();
+        this.getServices().levelService().updateCurrentLevel();
         this.controller.updateService.runImmediately(UpdateTask.All);
     }
 }

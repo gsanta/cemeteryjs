@@ -4,6 +4,7 @@ import { CanvasWindow } from "../CanvasWindow";
 import { AbstractTool } from './AbstractTool';
 import { ToolType } from './Tool';
 import { Stores } from '../../../Stores';
+import { ServiceLocator } from '../../../ServiceLocator';
 
 export class MoveTool extends AbstractTool {
     private controller: CanvasWindow;
@@ -13,11 +14,13 @@ export class MoveTool extends AbstractTool {
     private isMoving = false;
     private isDragStart = true;
     private getStores: () => Stores;
+    private getServices: () => ServiceLocator;
 
-    constructor(controller: CanvasWindow, getStores: () => Stores) {
+    constructor(controller: CanvasWindow, getServices: () => ServiceLocator, getStores: () => Stores) {
         super(ToolType.MOVE);
         this.controller = controller;
         this.getStores = getStores;
+        this.getServices = getServices;
     }
 
     drag() {
@@ -42,6 +45,8 @@ export class MoveTool extends AbstractTool {
 
         this.isDragStart = true;
         this.isMoving = false;
+
+        this.getServices().levelService().updateCurrentLevel();
     }
 
     leave() {

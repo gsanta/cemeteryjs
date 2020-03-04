@@ -27,7 +27,7 @@ export class RectangleExporter implements IViewExporter {
     private renderRectangles(): JSX.Element[] {
         const viewStore = this.getStores().viewStore;
         let items = [...viewStore.getGameObjects()];
-        items = sort(items, (a, b) => viewStore.getLayer(a) - viewStore.getLayer(b));
+        items = sort(items, (a, b) => a.layer - b.layer);
 
         return items.map((item, i) => {
             const rectangle = item.dimensions as Rectangle;
@@ -54,7 +54,7 @@ export class RectangleExporter implements IViewExporter {
                 data-wg-height={dimensions.getHeight()}
                 data-wg-type={item.type}
                 data-wg-color={item.color}
-                data-wg-layer={this.getStores().viewStore.getLayer(item)}
+                data-wg-layer={item.layer}
                 data-rotation={item.rotation}
                 data-wg-scale={item.scale}
                 data-wg-name={item.name}

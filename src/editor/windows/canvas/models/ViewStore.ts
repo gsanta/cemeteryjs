@@ -14,19 +14,7 @@ export enum Layers {
     DEFAULT = 2
 }
 
-export function getLayerForType(type: string) {
-    switch(type) {
-        case 'room':
-            return Layers.ROOM;
-        case '_subarea':
-            return Layers.SUBAREA;
-        default:
-            return Layers.DEFAULT;
-    }
-}
-
 export class ViewStore{
-    private layers: Map<View, number> = new Map();
     private tags: Map<View, Set<CanvasItemTag>> = new Map();
     private views: View[] = [];
     private naming: Naming;
@@ -43,7 +31,6 @@ export class ViewStore{
     addRect(gameObject: MeshView): MeshView {
         this.views.push(gameObject);
 
-        this.layers.set(gameObject, 10);
         this.tags.set(gameObject, new Set());
 
         return gameObject;
@@ -56,7 +43,6 @@ export class ViewStore{
     clear(): void {
         this.views = [];
         this.tags = new Map();
-        this.layers = new Map();
     }
 
     getIntersectingItemsInRect(rectangle: Rectangle): View[] {
@@ -74,14 +60,6 @@ export class ViewStore{
         const gridPoint = new Point(point.x, point.y);
 
         return this.views.filter(item => item.dimensions.containsPoint(gridPoint));
-    }
-
-    getLayer(view: View) {
-        return this.layers.get(view);
-    }
-
-    setLayer(view: View, layer: number) {
-        this.layers.set(view, layer);
     }
 
     getTags(gameObject: View): Set<CanvasItemTag> {

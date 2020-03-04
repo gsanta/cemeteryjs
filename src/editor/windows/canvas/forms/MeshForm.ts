@@ -31,7 +31,6 @@ export class MeshForm extends AbstractForm<MeshViewPropType> {
     gameObject: MeshView;
 
     private controller: CanvasWindow;
-    private services: ServiceLocator;
     private eventDispatcher: EventDispatcher;
 
     isAnimationSectionOpen = false;
@@ -43,6 +42,7 @@ export class MeshForm extends AbstractForm<MeshViewPropType> {
         this.controller = controller;
         this.getServices = getServices;
         this.getStores = getStores;
+        this.getServices = getServices;
         this.eventDispatcher = eventDispatcher;
     }
 
@@ -69,7 +69,7 @@ export class MeshForm extends AbstractForm<MeshViewPropType> {
             case MeshViewPropType.THUMBNAIL:
                 return this.gameObject.thumbnailPath;
             case MeshViewPropType.LAYER:
-                return this.getStores().viewStore.getLayer(this.gameObject);
+                return this.gameObject.layer;
             case MeshViewPropType.ROTATION:
                 return this.gameObject.rotation;
             case MeshViewPropType.SCALE:
@@ -95,7 +95,7 @@ export class MeshForm extends AbstractForm<MeshViewPropType> {
                 break;
             case MeshViewPropType.MODEL:
                 this.gameObject.modelPath = val.path;
-                this.services.storageService().saveAsset(val.path, val.data)
+                this.getServices().storageService().saveAsset(val.path, val.data)
                 .finally(() => {
                     this.controller.model3dController.set3dModelForCanvasItem(this.gameObject);
                     this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
@@ -110,7 +110,7 @@ export class MeshForm extends AbstractForm<MeshViewPropType> {
                 this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
                 break;
             case MeshViewPropType.LAYER:
-                this.getStores().viewStore.setLayer(this.gameObject, val);
+                this.gameObject.layer = val;
                 this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
                 break;
             case MeshViewPropType.ROTATION:
@@ -143,6 +143,6 @@ export class MeshForm extends AbstractForm<MeshViewPropType> {
                 break;
         }
 
-        this.services.storageService().storeLevel(this.getStores().levelStore.currentLevel.index);
+        this.getServices().storageService().storeLevel(this.getStores().levelStore.currentLevel.index);
     }
 }

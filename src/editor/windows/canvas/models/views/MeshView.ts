@@ -58,6 +58,7 @@ export class MeshView implements View {
     wanderAngle = 0;
     animations: string[] = [];
     animationState = AnimationState.Playing;
+    layer: number = 10;
     private getMesh: (meshName: string) => Mesh;
 
     constructor(getMesh: (meshName: string) => Mesh, dimensions: Rectangle, name: string, rotation = 0) {
