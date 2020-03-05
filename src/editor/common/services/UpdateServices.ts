@@ -55,7 +55,7 @@ export class UpdateService {
                     this.settingsRepainters.forEach(repaint => repaint());
                 break;
                 case UpdateTask.UpdateRenderer:
-                    (<RendererWindow> this.editor.getWindowControllerByName('render')).update();
+                    (<RendererWindow> this.editor.getWindowControllerByName('renderer')).update();
                 break;
                 case UpdateTask.SaveData:
                     this.getServices().storageService().storeLevel(this.getStores().levelStore.currentLevel.index);
@@ -63,7 +63,7 @@ export class UpdateService {
                 case UpdateTask.All:
                     this.canvasRepainter();
                     this.settingsRepainters.forEach(repaint => repaint());
-                    (<RendererWindow> this.editor.getWindowControllerByName('render')).update();
+                    (<RendererWindow> this.editor.getWindowControllerByName('renderer')).update();
                 break;
             }
         });

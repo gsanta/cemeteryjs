@@ -3,6 +3,7 @@ import { IViewImporter } from '../../tools/IToolImporter';
 import { CanvasWindow } from '../../CanvasWindow';
 import { Rectangle } from '../../../../../misc/geometry/shapes/Rectangle';
 import { ViewType } from '../../models/views/View';
+import { Point } from '../../../../../misc/geometry/shapes/Point';
 
 export interface WgDefinition {
     _attributes: WgDefinitionAttributes;
@@ -67,13 +68,13 @@ export class CanvasImporter {
     }
 
     private applyGlobalSettings(rawJson: RawWorldMapJson) {
+        if (rawJson.svg._attributes['data-translate']) {
+            const topLeft = Point.fromString(rawJson.svg._attributes['data-translate']);
+            this.controller.toolService.cameraTool.getCamera().moveTo(topLeft);
+        }        
         const zoom = rawJson.svg._attributes['data-zoom'] ? parseFloat(rawJson.svg._attributes['data-zoom']) : 1;
         this.controller.toolService.cameraTool.getCamera().zoom(zoom);
 
-        // if (rawJson.svg._attributes['data-viewbox']) {
-        //     const viewBox = Rectangle.fromString(rawJson.svg._attributes['data-viewbox']);
-        //     this.controller.toolService.cameraTool.getCamera().setViewBox(viewBox);
-        // }        
     }
 
     private findViewImporter(viewType: ViewType): IViewImporter {

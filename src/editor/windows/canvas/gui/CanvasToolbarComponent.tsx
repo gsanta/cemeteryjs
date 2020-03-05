@@ -40,7 +40,6 @@ export class CanvasToolbarComponent extends React.Component<{controller: CanvasW
                 <ZoomInIconComponent isActive={false} onClick={() => this.zoomIn()} format="short"/>
                 <ZoomOutIconComponent isActive={false} onClick={() => this.zoomOut()} format="short"/>
                 <PanIconComponent isActive={this.isToolActive(ToolType.CAMERA)} onClick={() => this.activateTool(ToolType.CAMERA)} format="short"/>
-                <BlankIconComponent isActive={false} onClick={() => this.blank()} format="short"/>
             </ToolbarStyled>
         );
     }

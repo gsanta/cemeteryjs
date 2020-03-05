@@ -10,7 +10,7 @@ export class ServiceLocator {
     constructor(editor: Editor, getStores: () => Stores) {
         this.services = [
             new LocalStore(editor),
-            new LevelService(this, getStores),
+            new LevelService(() => this, getStores),
             new UpdateService(editor, () => this, getStores)
         ];
     }

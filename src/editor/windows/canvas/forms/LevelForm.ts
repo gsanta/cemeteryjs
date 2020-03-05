@@ -34,10 +34,7 @@ export class LevelForm extends AbstractForm<LevelFormPropType> {
     protected setProp(val: any, prop: LevelFormPropType) {
         switch (prop) {
             case LevelFormPropType.Level:
-                this.getServices().levelService().changeLevel(val)
-                    .then(() => this.getServices().updateService().runImmediately(UpdateTask.All))
-                    .catch(() => this.getServices().updateService().runImmediately(UpdateTask.All))
-
+                this.getServices().levelService().changeLevel(val);
                 break;
             case LevelFormPropType.LevelName:
                 this.getStores().levelStore.currentLevel.name = val;

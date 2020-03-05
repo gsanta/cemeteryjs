@@ -48,7 +48,7 @@ export class Editor {
             .then((indexes: number[]) => {
                 if (indexes.length) {
                     this.stores.levelStore.setLevels(indexes);
-                    return this.services.storageService().loadLevel(indexes[0]);
+                    return this.services.levelService().changeLevel(indexes[0]);
                 }
             })
             .then(() => {

@@ -32,7 +32,7 @@ export class CanvasExporter {
                 width="1000"
                 height="1000"
                 data-zoom={this.canvasController.toolService.cameraTool.getCamera().getScale()}
-                data-viewbox={this.canvasController.toolService.cameraTool.getCamera().getViewBox().toString()}
+                data-translate={this.canvasController.toolService.cameraTool.getCamera().getViewBox().topLeft.negate().toString()}
             >
                 {views}
             </svg>
