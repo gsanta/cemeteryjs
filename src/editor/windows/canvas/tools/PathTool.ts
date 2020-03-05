@@ -8,16 +8,19 @@ import { ViewType, View } from "../models/views/View";
 import { PathView } from "../models/views/PathView";
 import { CanvasItemTag } from "../models/CanvasItem";
 import { Stores } from "../../../Stores";
+import { ServiceLocator } from '../../../ServiceLocator';
 
 export class PathTool extends AbstractTool {
     private controller: CanvasWindow;
     private getStores: () => Stores;
+    private getServices: () => ServiceLocator;
     
-    constructor(controller: CanvasWindow, getStores: () => Stores) {
+    constructor(controller: CanvasWindow, getServices: () => ServiceLocator, getStores: () => Stores) {
         super(ToolType.PATH);
 
         this.controller = controller;
         this.getStores = getStores;
+        this.getServices = getServices;
     }
 
     click() {
@@ -27,18 +30,18 @@ export class PathTool extends AbstractTool {
 
         if (selectedPathes.length === 0) {
             this.startNewPath();
-            this.controller.updateService.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
+            this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         } else if (selectedPathes.length === 1) {
             const pointer = this.controller.pointer.pointer;
             selectedPathes[0].addPoint(new Point(pointer.down.x, pointer.down.y));
-            this.controller.updateService.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
+            this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         }
     }
 
     keydown() {
         if (this.controller.keyboardHandler.downKeys.includes(Keyboard.Enter)) {
             this.getStores().viewStore.removeSelectionAll();
-            this.controller.updateService.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
+            this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         }
     }
 

@@ -23,7 +23,7 @@ export class DeleteTool extends AbstractTool {
 
     drag() {
         this.rectSelector.updateRect(this.controller.pointer.pointer);
-        this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
+        this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     click() {
@@ -32,7 +32,7 @@ export class DeleteTool extends AbstractTool {
         hovered && this.getStores().viewStore.remove(hovered);
         
         this.getServices().levelService().updateCurrentLevel();
-        hovered && this.controller.updateService.scheduleTasks(UpdateTask.All);
+        hovered && this.getServices().updateService().scheduleTasks(UpdateTask.All);
     }
 
     
@@ -44,12 +44,12 @@ export class DeleteTool extends AbstractTool {
         this.rectSelector.finish();
 
         this.getServices().levelService().updateCurrentLevel();
-        this.controller.updateService.scheduleTasks(UpdateTask.All);
+        this.getServices().updateService().scheduleTasks(UpdateTask.All);
     }
 
     leave() {
         this.rectSelector.finish();
-        this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
+        this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     over(item: View) {
@@ -64,6 +64,6 @@ export class DeleteTool extends AbstractTool {
         this.getServices().storageService().clearAll();
         this.getStores().viewStore.clear();
         this.getServices().levelService().updateCurrentLevel();
-        this.controller.updateService.runImmediately(UpdateTask.All);
+        this.getServices().updateService().runImmediately(UpdateTask.All);
     }
 }

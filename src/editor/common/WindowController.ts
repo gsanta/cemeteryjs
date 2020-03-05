@@ -1,9 +1,7 @@
-import { FileFormat } from '../../game/import/WorldGenerator';
-import { Editor } from '../Editor';
 import { GameApi } from '../../game/GameApi';
 import { GameFacade } from '../../game/GameFacade';
+import { Editor } from '../Editor';
 import { ServiceLocator } from '../ServiceLocator';
-import { UpdateService } from './services/UpdateServices';
 import { Stores } from '../Stores';
 
 export interface CanvasViewSettings {
@@ -14,7 +12,6 @@ export interface CanvasViewSettings {
 export abstract class WindowController {
     name: string;
     editor: Editor;
-    updateService: UpdateService;
 
     protected getServices: () => ServiceLocator;
     protected getStores: () => Stores;

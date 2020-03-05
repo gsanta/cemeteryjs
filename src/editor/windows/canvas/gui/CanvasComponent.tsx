@@ -33,10 +33,8 @@ export class CanvasComponent extends React.Component<{controller: CanvasWindow}>
     static contextType = AppContext;
     context: AppContextType;
 
-    constructor(props: {controller: CanvasWindow}) {
-        super(props);
-
-        this.props.controller.updateService.setCanvasRepainter(() => this.forceUpdate())
+    componentDidMount() {
+        this.context.getServices().updateService().setCanvasRepainter(() => this.forceUpdate())
     }
 
     render(): JSX.Element {
@@ -44,7 +42,7 @@ export class CanvasComponent extends React.Component<{controller: CanvasWindow}>
 
         return (
             <EditorComponentStyled id={this.props.controller.getId()}>
-                <WindowToolbarStyled><CanvasToolbarComponent controller={this.props.controller as CanvasWindow}/></WindowToolbarStyled>
+                <WindowToolbarStyled><CanvasToolbarComponent services={this.context.getServices()} controller={this.props.controller as CanvasWindow}/></WindowToolbarStyled>
                 <CanvasComponentStyled
                     tabIndex={0}
                     viewBox={cameraTool.getCamera().getViewBoxAsString()}

@@ -34,13 +34,13 @@ export class ToolService {
         this.getServices = getServices;
         this.getStores = getStores;
 
-        this.pointerTool = new PointerTool(this.controller, this.getStores);
-        this.cameraTool = new CameraTool(this.controller);
+        this.pointerTool = new PointerTool(this.controller, this.getServices, this.getStores);
+        this.cameraTool = new CameraTool(this.controller, this.getServices);
         this.rectangleTool = new RectangleTool(this.controller, this.getServices, this.getStores);
-        this.pathTool = new PathTool(this.controller, this.getStores);
+        this.pathTool = new PathTool(this.controller, this.getServices, this.getStores);
         this.deleteTool = new DeleteTool(this.controller, this.getServices, this.getStores);
         this.moveTool = new MoveTool(this.controller, this.getServices, this.getStores);
-        this.selectTool = new SelectTool(this.controller, this.getStores);
+        this.selectTool = new SelectTool(this.controller, this.getServices, this.getStores);
 
         this.tools = [
             this.pointerTool,

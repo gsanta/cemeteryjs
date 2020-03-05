@@ -12,6 +12,7 @@ import { SelectIconComponent } from '../../../gui/icons/tools/SelectIconComponen
 import { DeleteIconComponent } from '../../../gui/icons/tools/DeleteIconComponent';
 import { BlankIconComponent } from '../../../gui/icons/tools/BlankIconComponent';
 import { DeleteTool } from '../tools/DeleteTool';
+import { ServiceLocator } from '../../../ServiceLocator';
 
 const ToolbarStyled = styled.div`
     display: flex;
@@ -24,9 +25,9 @@ const ToolbarStyled = styled.div`
     }
 `;
 
-export class CanvasToolbarComponent extends React.Component<{controller: CanvasWindow}> {
+export class CanvasToolbarComponent extends React.Component<{controller: CanvasWindow, services: ServiceLocator}> {
     componentDidMount() {
-        this.props.controller.updateService.addSettingsRepainter(() => this.forceUpdate());
+        this.props.services.updateService().addSettingsRepainter(() => this.forceUpdate());
     }
 
     render(): JSX.Element {

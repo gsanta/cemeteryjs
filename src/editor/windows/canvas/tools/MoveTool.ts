@@ -28,9 +28,9 @@ export class MoveTool extends AbstractTool {
 
         if (this.isMoving) {
             this.moveItems();
-            this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
+            this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
         } else if (this.isDragStart) {
-            this.initMove() && this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
+            this.initMove() && this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
         }
 
         this.isDragStart = false;
@@ -40,7 +40,7 @@ export class MoveTool extends AbstractTool {
         super.draggedUp();
 
         if (!this.isDragStart) {
-            this.controller.updateService.scheduleTasks(UpdateTask.All);
+            this.getServices().updateService().scheduleTasks(UpdateTask.All);
         }
 
         this.isDragStart = true;
@@ -71,6 +71,6 @@ export class MoveTool extends AbstractTool {
 
         selectedItems.forEach((item, index) => item.dimensions = this.origDimensions[index].translate(mouseDelta));
 
-        this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
+        this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 }

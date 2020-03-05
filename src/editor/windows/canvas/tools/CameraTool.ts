@@ -4,6 +4,7 @@ import { ToolType } from "./Tool";
 import { CanvasWindow } from '../CanvasWindow';
 import { UpdateTask } from '../../../common/services/UpdateServices';
 import { Camera, nullCamera } from '../models/Camera';
+import { ServiceLocator } from '../../../ServiceLocator';
 
 export function cameraInitializer(canvasId: string) {
     if (typeof document !== 'undefined') {
@@ -36,11 +37,13 @@ export class CameraTool extends AbstractTool {
     readonly NUM_OF_STEPS: number;
 
     private controller: CanvasWindow;
+    private getServices: () => ServiceLocator;
 
-    constructor(controller: CanvasWindow, cameraInitializerFunc = cameraInitializer, numberOfSteps: number = 20) {
+    constructor(controller: CanvasWindow, getServices: () => ServiceLocator, cameraInitializerFunc = cameraInitializer, numberOfSteps: number = 20) {
         super(ToolType.CAMERA);
         this.NUM_OF_STEPS = numberOfSteps;
         this.controller = controller;
+        this.getServices = getServices;
         this.cameraInitializerFunc = cameraInitializerFunc;
     }
 
@@ -52,7 +55,7 @@ export class CameraTool extends AbstractTool {
         this.camera.moveTo(prevTranslate);
         this.camera.zoom(prevScale);
 
-        this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
+        this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     zoomToNextStep(canvasPos?: Point) {
@@ -66,7 +69,7 @@ export class CameraTool extends AbstractTool {
             this.camera.setTopLeftCorner(canvasPos, nextZoomLevel);
             this.camera.moveBy(ratioOfViewBox(this.camera, pointerRatio).negate());
 
-            this.controller.updateService.runImmediately(UpdateTask.RepaintCanvas);
+            this.getServices().updateService().runImmediately(UpdateTask.RepaintCanvas);
         }
     }
 
@@ -81,7 +84,7 @@ export class CameraTool extends AbstractTool {
             this.camera.setTopLeftCorner(canvasPos, prevZoomLevel);
             this.camera.moveBy(ratioOfViewBox(this.camera, pointerRatio).negate());
 
-            this.controller.updateService.runImmediately(UpdateTask.RepaintCanvas);
+            this.getServices().updateService().runImmediately(UpdateTask.RepaintCanvas);
         }
     }
 
@@ -97,7 +100,7 @@ export class CameraTool extends AbstractTool {
         
         this.controller.toolService.cameraTool.getCamera().moveBy(delta.negate());
 
-        this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
+        this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     getCamera() {

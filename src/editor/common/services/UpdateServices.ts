@@ -3,6 +3,8 @@ import { ServiceLocator } from "../../ServiceLocator";
 import { Events } from "../Events";
 import { WindowController } from "../WindowController";
 import { Stores } from '../../Stores';
+import { RendererWindow } from "../../windows/renderer/RendererWindow";
+import { Editor } from '../../Editor';
 
 export enum UpdateTask {
     RepaintCanvas = 'RepaintCanvas',
@@ -13,17 +15,18 @@ export enum UpdateTask {
 }
 
 export class UpdateService {
+    serviceName = 'update-service';
     updateTasks: UpdateTask[] = [];
 
     private canvasRepainter: Function = () => undefined;
     private settingsRepainters: Function[] = [];
 
-    private controller: WindowController;
+    private editor: Editor;
     private getServices: () => ServiceLocator;
     private getStores: () => Stores;
 
-    constructor(controller: WindowController, getServices: () => ServiceLocator, getStores: () => Stores) {
-        this.controller = controller;
+    constructor(editor: Editor, getServices: () => ServiceLocator, getStores: () => Stores) {
+        this.editor = editor;
         this.getServices = getServices;
         this.getStores = getStores;
     }
@@ -52,7 +55,7 @@ export class UpdateService {
                     this.settingsRepainters.forEach(repaint => repaint());
                 break;
                 case UpdateTask.UpdateRenderer:
-                    this.controller.editor.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
+                    (<RendererWindow> this.editor.getWindowControllerByName('render')).update();
                 break;
                 case UpdateTask.SaveData:
                     this.getServices().storageService().storeLevel(this.getStores().levelStore.currentLevel.index);
@@ -60,7 +63,7 @@ export class UpdateService {
                 case UpdateTask.All:
                     this.canvasRepainter();
                     this.settingsRepainters.forEach(repaint => repaint());
-                    this.controller.editor.eventDispatcher.dispatchEvent(Events.CONTENT_CHANGED);
+                    (<RendererWindow> this.editor.getWindowControllerByName('render')).update();
                 break;
             }
         });

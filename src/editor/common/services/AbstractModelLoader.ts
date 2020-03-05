@@ -16,11 +16,11 @@ export abstract class AbstractModelLoader {
     protected scene: Scene;
 
     private loadedFileNames: Set<String> = new Set();
-    private services: ServiceLocator;
+    protected getServices: () => ServiceLocator;
 
-    constructor(scene: Scene, services: ServiceLocator) {
+    constructor(scene: Scene, getServices: () => ServiceLocator) {
         this.scene = scene;
-        this.services = services;
+        this.getServices = getServices;
     }
 
     loadAll(meshObjects: {modelPath: string}[]): Promise<Mesh[]> {
@@ -41,7 +41,7 @@ export abstract class AbstractModelLoader {
     load(meshObject: MeshObject | MeshView): Promise<Mesh> {
         this.loadedFileNames.add(meshObject.modelPath);
 
-        return this.services.storageService().loadAsset(meshObject.modelPath)
+        return this.getServices().storageService().loadAsset(meshObject.modelPath)
                 .then((data) => this.loadMesh(meshObject, data))
                 .catch(() => this.loadMesh(meshObject, meshObject.modelPath));
     }

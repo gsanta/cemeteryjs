@@ -45,7 +45,7 @@ export class RectangleTool extends AbstractTool {
         this.getStores().viewStore.addTag([gameObject], CanvasItemTag.SELECTED);
 
         this.getServices().levelService().updateCurrentLevel();
-        this.controller.updateService.scheduleTasks(UpdateTask.All);
+        this.getServices().updateService().scheduleTasks(UpdateTask.All);
     }
 
     drag() {
@@ -71,7 +71,7 @@ export class RectangleTool extends AbstractTool {
         if (positions.length > 0) {
             this.lastPreviewRect = this.getStores().viewStore.addRect(gameObject);
     
-            this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
+            this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
         }
     }
 
@@ -83,7 +83,7 @@ export class RectangleTool extends AbstractTool {
             this.lastPreviewRect = null;
         }
 
-        this.controller.updateService.scheduleTasks(UpdateTask.All);
+        this.getServices().updateService().scheduleTasks(UpdateTask.All);
     }
 
     leave() {

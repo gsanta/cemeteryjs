@@ -1,5 +1,3 @@
-import { EventDispatcher } from '../../../common/EventDispatcher';
-import { Events } from '../../../common/Events';
 import { ServiceLocator } from '../../../ServiceLocator';
 import { CanvasWindow } from '../CanvasWindow';
 import { AbstractForm, PropertyType } from "./AbstractForm";
@@ -31,31 +29,29 @@ export class MeshForm extends AbstractForm<MeshViewPropType> {
     gameObject: MeshView;
 
     private controller: CanvasWindow;
-    private eventDispatcher: EventDispatcher;
 
     isAnimationSectionOpen = false;
     private getServices: () => ServiceLocator;
     private getStores: () => Stores;
 
-    constructor(controller: CanvasWindow, getServices: () => ServiceLocator, getStores: () => Stores, eventDispatcher: EventDispatcher) {
+    constructor(controller: CanvasWindow, getServices: () => ServiceLocator, getStores: () => Stores) {
         super(propertyTypes);
         this.controller = controller;
         this.getServices = getServices;
         this.getStores = getStores;
         this.getServices = getServices;
-        this.eventDispatcher = eventDispatcher;
     }
 
     blurProp() {
         super.blurProp();
 
-        this.controller.updateService.runImmediately(UpdateTask.RepaintCanvas);
+        this.getServices().updateService().runImmediately(UpdateTask.RepaintCanvas);
     }
 
     updateProp(value: any, propType: MeshViewPropType) {
         super.updateProp(value, propType);
 
-        this.controller.updateService.runImmediately(UpdateTask.RepaintCanvas);
+        this.getServices().updateService().runImmediately(UpdateTask.RepaintCanvas);
     }
 
     protected getProp(prop: MeshViewPropType) {
@@ -98,44 +94,44 @@ export class MeshForm extends AbstractForm<MeshViewPropType> {
                 this.getServices().storageService().saveAsset(val.path, val.data)
                 .finally(() => {
                     this.controller.model3dController.set3dModelForCanvasItem(this.gameObject);
-                    this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
+                    this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
                 });
                 break;
             case MeshViewPropType.TEXTURE:
                 this.gameObject.texturePath = val.path;
-                this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
+                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
                 break;
             case MeshViewPropType.THUMBNAIL:
                 this.gameObject.thumbnailPath = val.path;
-                this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
+                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
                 break;
             case MeshViewPropType.LAYER:
                 this.gameObject.layer = val;
-                this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
+                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
                 break;
             case MeshViewPropType.ROTATION:
                 this.gameObject.rotation = this.convertValue(val, prop, this.gameObject.rotation);
-                this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
+                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
                 break;
             case MeshViewPropType.SCALE:
                 this.gameObject.scale = this.convertValue(val, prop, this.gameObject.scale);
-                this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
+                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
                 break;
             case MeshViewPropType.NAME:
                 this.gameObject.name = val;
-                this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
+                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
                 break;
             case MeshViewPropType.PATH:
                 this.gameObject.path = val;
-                this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
+                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
                 break;
             case MeshViewPropType.IS_MANUAL_CONTROL:
                 this.gameObject.isManualControl = val;
-                this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
+                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
                 break;
             case MeshViewPropType.ANIMATION:
                 this.gameObject.activeAnimation = val;
-                this.eventDispatcher.dispatchEvent(Events.CANVAS_ITEM_CHANGED);
+                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
                 break;
             case MeshViewPropType.AnimationState:
                 this.gameObject.animationState = val;

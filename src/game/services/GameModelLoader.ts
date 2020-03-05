@@ -9,7 +9,7 @@ export class GameModelLoader extends AbstractModelLoader {
     private instanceCounter: Map<string, number> = new Map();
 
     constructor(gameFacade: GameFacade) {
-        super(gameFacade.gameEngine.scene, gameFacade.services);
+        super(gameFacade.gameEngine.scene, () => gameFacade.services);
         this.gameFacade = gameFacade;
     }
 

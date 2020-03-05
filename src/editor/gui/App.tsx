@@ -7,7 +7,6 @@ import Split from 'split.js'
 import { windowFactory } from '../WindowFactory';
 import { SidebarComponent } from './SidebarComponent';
 import { WindowController } from '../common/WindowController';
-import { SpinnerComponent } from './misc/SpinnerComponent';
 import { SpinnerOverlayComponent } from './misc/SpinnerOverlayComponent';
 
 

@@ -6,6 +6,7 @@ import { UpdateTask } from "../../../common/services/UpdateServices";
 import { CanvasItemTag } from "../models/CanvasItem";
 import { View } from "../models/views/View";
 import { Stores } from '../../../Stores';
+import { ServiceLocator } from '../../../ServiceLocator';
 
 export class SelectTool extends AbstractTool {
     protected controller: CanvasWindow;
@@ -13,11 +14,13 @@ export class SelectTool extends AbstractTool {
 
     private activeTool: Tool;
     private getStores: () => Stores;
+    private getServices: () => ServiceLocator;
 
-    constructor(controller: CanvasWindow, getStores: () => Stores) {
+    constructor(controller: CanvasWindow, getServices: () => ServiceLocator, getStores: () => Stores) {
         super(ToolType.SELECT);
         this.controller = controller;
         this.getStores = getStores;
+        this.getServices = getServices;
         this.rectSelector = new RectangleSelector(controller);
     }
 
@@ -35,7 +38,7 @@ export class SelectTool extends AbstractTool {
             this.controller.toolService.pointerTool.click();
         } else if (this.getStores().viewStore.getSelectedViews().length > 0) {
             this.getStores().viewStore.removeTag(this.getStores().viewStore.getViews(), CanvasItemTag.SELECTED);
-            this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
+            this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
         }
     }
 
@@ -44,7 +47,7 @@ export class SelectTool extends AbstractTool {
             this.activeTool.drag();
         } else {
             this.rectSelector.updateRect(this.controller.pointer.pointer);
-            this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
+            this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
         }
     }
 
@@ -65,7 +68,7 @@ export class SelectTool extends AbstractTool {
         canvasStore.addTag(canvasItems, CanvasItemTag.SELECTED);
 
         this.rectSelector.finish();
-        this.controller.updateService.scheduleTasks(UpdateTask.RepaintCanvas);
+        this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     over(item: View) {

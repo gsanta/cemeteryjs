@@ -38,24 +38,14 @@ export class RendererWindow extends WindowController {
 
     constructor(editor: Editor, services: ServiceLocator) {
         super(editor, () => services, () => editor.stores);
-        this.updateService = new UpdateService(this, () => services, () => editor.stores);
+        this.updateService = new UpdateService(this.editor, () => services, () => editor.stores);
         this.mouseHander = new MouseHandler(this);
         this.pointer = new RendererPointerService(this);
         this.update = this.update.bind(this);
-        this.registerEvents();
     }
 
     getCamera(): EditorCamera {
         return this.cameraTool.getCamera();
-    }
-
-    registerEvents() {
-        this.editor.eventDispatcher.addEventListener(Events.CONTENT_CHANGED, this.update);
-        this.editor.eventDispatcher.addEventListener(Events.CANVAS_ITEM_CHANGED, this.update);
-    }
-
-    unregisterEvents() {
-        this.editor.eventDispatcher.removeEventListener(this.update);
     }
 
     resize() {

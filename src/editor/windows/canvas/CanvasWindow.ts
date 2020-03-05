@@ -36,7 +36,6 @@ export class CanvasWindow extends WindowController {
     model3dController: Model3DController;
 
     toolService: ToolService;
-    updateService: UpdateService;
     pointer: IPointerService;
     
     meshViewForm: MeshForm;
@@ -46,7 +45,6 @@ export class CanvasWindow extends WindowController {
     constructor(editor: Editor, getServices: () => ServiceLocator, getStores: () => Stores) {
         super(editor, getServices, getStores);
 
-        this.updateService = new UpdateService(this, getServices, getStores);
         this.feedbackStore = new FeedbackStore();
         
         this.mouseController = new MouseHandler(this);
@@ -59,14 +57,14 @@ export class CanvasWindow extends WindowController {
             this
         );
         this.exporter = new CanvasExporter(this, [new RectangleExporter(this, this.getStores), new PathExporter(this, this.getStores)]);
-        this.model3dController = new Model3DController(this, this.getServices());
+        this.model3dController = new Model3DController(this, this.getServices);
 
         this.toolService = new ToolService(this, this.getServices, this.getStores);
 
-        this.meshViewForm = new MeshForm(this, this.getServices, this.getStores, this.editor.eventDispatcher);
+        this.meshViewForm = new MeshForm(this, this.getServices, this.getStores);
         this.pathForm = new PathForm();
-        this.levelForm = new LevelForm(this, this.getServices, this.getStores);
-        this.pointer = new CanvasPointerService(this);
+        this.levelForm = new LevelForm(this.getServices, this.getStores);
+        this.pointer = new CanvasPointerService(this, this.getServices);
     }
 
     setSelectedTool(toolType: ToolType) {
@@ -75,7 +73,7 @@ export class CanvasWindow extends WindowController {
         }
         this.toolService.selectedTool = toolType;
         this.toolService.getActiveTool().select();
-        this.updateService.runImmediately(UpdateTask.RepaintSettings);
+        this.getServices().updateService().runImmediately(UpdateTask.RepaintSettings);
     }
 
     getId() {

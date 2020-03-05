@@ -3,6 +3,7 @@ import { CanvasWindow } from "../CanvasWindow";
 import { MousePointer } from "../../../common/services/MouseHandler";
 import { Point } from "../../../../misc/geometry/shapes/Point";
 import { View } from "../models/views/View";
+import { ServiceLocator } from '../../../ServiceLocator';
 
 function calcOffsetFromDom(bitmapEditorId: string): Point {
     if (typeof document !== 'undefined') {
@@ -24,10 +25,12 @@ export class CanvasPointerService implements IPointerService {
     pointer: MousePointer = new MousePointer();
 
     private calcOffset: (id: string) => Point;
+    private getServices: () => ServiceLocator;
 
-    constructor(controller: CanvasWindow, calcOffset: (id: string) => Point = calcOffsetFromDom) {
+    constructor(controller: CanvasWindow, getServices: () => ServiceLocator, calcOffset: (id: string) => Point = calcOffsetFromDom) {
         this.controller = controller;
         this.calcOffset = calcOffset;
+        this.getServices = getServices;
     }
 
     pointerDown(e: IPointerEvent): void {
@@ -36,7 +39,7 @@ export class CanvasPointerService implements IPointerService {
         this.isDown = true;
         this.pointer.down = this.getPointWithOffset(e.pointers[0].pos); 
         this.controller.toolService.getActiveTool().down();
-        this.controller.updateService.runScheduledTasks();
+        this.getServices().updateService().runScheduledTasks();
     }
 
     pointerMove(e: IPointerEvent): void {
@@ -50,7 +53,7 @@ export class CanvasPointerService implements IPointerService {
         } else {
             this.controller.toolService.getActiveTool().move();
         }
-        this.controller.updateService.runScheduledTasks();
+        this.getServices().updateService().runScheduledTasks();
     }
 
     pointerUp(e: IPointerEvent): void {
@@ -64,7 +67,7 @@ export class CanvasPointerService implements IPointerService {
         this.isDown = false;
         this.isDrag = false;
         this.pointer.down = undefined;
-        this.controller.updateService.runScheduledTasks();
+        this.getServices().updateService().runScheduledTasks();
     }
 
     pointerOut(e: IPointerEvent): void {
@@ -74,12 +77,12 @@ export class CanvasPointerService implements IPointerService {
 
     hover(item: View): void {
         this.controller.toolService.getActiveTool().over(item);
-        this.controller.updateService.runScheduledTasks();
+        this.getServices().updateService().runScheduledTasks();
     }
 
     unhover(item: View): void {
         this.controller.toolService.getActiveTool().out(item);
-        this.controller.updateService.runScheduledTasks();
+        this.getServices().updateService().runScheduledTasks();
     }
     
     private getScreenPointWithOffset(point: Point): Point {

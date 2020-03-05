@@ -2,7 +2,6 @@ import { GameApi } from '../game/GameApi';
 import { GameFacade } from '../game/GameFacade';
 import { CanvasFactory } from './windows/canvas/CanvasFactory';
 import { GlobalSettingsForm } from './windows/canvas/forms/GlobalSettingsForm';
-import { EventDispatcher } from './common/EventDispatcher';
 import { RendererFactory } from './windows/renderer/RendererFactory';
 import { WindowFactory } from './WindowFactory';
 import { CanvasWindow } from './windows/canvas/CanvasWindow';
@@ -16,28 +15,24 @@ export class Editor {
     stores: Stores;
     
     windowFactories: WindowFactory[];
-    eventDispatcher: EventDispatcher;
 
     svgCanvasId: string;
     renderFunc: () => void;
     globalSettingsForm: GlobalSettingsForm;
     isLoading = true;
 
-    private services: ServiceLocator;
+    services: ServiceLocator;
 
-    constructor(eventDispatcher: EventDispatcher) {
+    constructor() {
         this.stores = new Stores();
-        this.services = new ServiceLocator(this, eventDispatcher, () => this.stores);
+        this.services = new ServiceLocator(this, () => this.stores);
 
         this.windowFactories = [
             new CanvasFactory(),
             new RendererFactory()
         ];
 
-
-        this.eventDispatcher = eventDispatcher;
-
-        this.globalSettingsForm = new GlobalSettingsForm(this.getWindowControllerByName('canvas') as CanvasWindow, () => this.stores);
+        this.globalSettingsForm = new GlobalSettingsForm(this.getWindowControllerByName('canvas') as CanvasWindow, () => this.services, () => this.stores);
 
         this.svgCanvasId = 'svg-editor';
     }
