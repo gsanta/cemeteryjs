@@ -50,7 +50,7 @@ export class CanvasWindow extends WindowController {
         this.mouseController = new MouseHandler(this);
         this.keyboardHandler = new KeyboardHandler(this);
         this.importer = new ImportService(this.getStores);
-        this.exporter = new CanvasExporter(this, [new RectangleExporter(this, this.getStores), new PathExporter(this, this.getStores)]);
+        this.exporter = new CanvasExporter([new RectangleExporter(this, this.getStores), new PathExporter(this, this.getStores)], this.getStores);
         this.model3dController = new Model3DController(this, this.getServices);
 
         this.toolService = new ToolService(this, this.getServices, this.getStores);

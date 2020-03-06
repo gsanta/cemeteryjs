@@ -5,24 +5,24 @@ import { MeshViewImporter } from "../../../editor/windows/canvas/io/import/Recta
 import { PathImporter } from "../../../editor/windows/canvas/io/import/PathImporter";
 import { View } from "../../../editor/windows/canvas/models/views/View";
 import { ViewStore } from "../../../editor/windows/canvas/models/ViewStore";
+import { Stores } from "../../../editor/Stores";
 
 export class GameStoreBuilder {
     private gameFacade: GameFacade;
-    private viewStore: ViewStore;
     private viewImporter: ImportService;
+    private getStores: () => Stores;
 
-    constructor(gameFacade: GameFacade) {
+    constructor(gameFacade: GameFacade, getStores: () => Stores) {
         this.gameFacade = gameFacade;
+        this.getStores = getStores;
 
-        this.viewImporter = new ImportService(gameFacade);
+        this.viewImporter = new ImportService(getStores);
     }
 
     build(file: string): void {
-        this.viewStore = new ViewStore();
-
         this.viewImporter.import(file);
 
-        this.viewStore.getViews().forEach(view => this.getViewConverter(view)?.convert(view));
+        this.getStores().viewStore.getViews().forEach(view => this.getViewConverter(view)?.convert(view));
     }
 
     private getViewConverter(view: View): IViewConverter {

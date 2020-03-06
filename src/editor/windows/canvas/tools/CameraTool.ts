@@ -6,14 +6,13 @@ import { CanvasWindow } from '../CanvasWindow';
 import { Camera } from '../models/Camera';
 import { AbstractTool } from './AbstractTool';
 import { ToolType } from "./Tool";
+import { cameraInitializer } from "../models/CameraStore";
 
 function ratioOfViewBox(camera: Camera, ratio: Point): Point {
     return camera.getViewBox().getSize().mul(ratio.x, ratio.y);
 }
 
 export class CameraTool extends AbstractTool {
-    private cameraInitializerFunc: (canvasId: string) => Camera;
-
     static readonly ZOOM_MIN = 0.1;
     static readonly ZOOM_MAX = 5;
 
@@ -37,7 +36,7 @@ export class CameraTool extends AbstractTool {
         const prevScale = this.getStores().cameraStore.getCamera().getScale(); 
         const prevTranslate = this.getStores().cameraStore.getCamera().getViewBox().topLeft; 
     
-        this.getStores().cameraStore.setCamera(this.cameraInitializerFunc(this.controller.getId()));
+        this.getStores().cameraStore.setCamera(cameraInitializer(this.controller.getId()));
         this.getStores().cameraStore.getCamera().moveTo(prevTranslate);
         this.getStores().cameraStore.getCamera().zoom(prevScale);
 

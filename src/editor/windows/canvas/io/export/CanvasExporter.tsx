@@ -3,14 +3,15 @@ import * as ReactDOMServer from 'react-dom/server';
 import * as React from 'react';
 import { IViewExporter } from '../../tools/IToolExporter';
 import { ViewType } from '../../models/views/View';
+import { Stores } from '../../../../Stores';
 
 export class CanvasExporter {
-    private canvasController: CanvasWindow;
     private viewExporters: IViewExporter[];
+    private getStores: () => Stores;
 
-    constructor(canvasController: CanvasWindow, viewExporters: IViewExporter[]) {
-        this.canvasController = canvasController;
+    constructor(viewExporters: IViewExporter[], getStores: () => Stores) {
         this.viewExporters = viewExporters;
+        this.getStores = getStores;
     }
 
     export(): string {
@@ -23,7 +24,7 @@ export class CanvasExporter {
 
     private renderRoot(): JSX.Element {
         const views = this.viewExporters.map(exporter => exporter.export(true));
-        
+        const camera = this.getStores().cameraStore.getCamera();
         return (
             <svg
                 data-wg-pixel-size="10"
@@ -31,8 +32,8 @@ export class CanvasExporter {
                 data-wg-height="3000"
                 width="1000"
                 height="1000"
-                data-zoom={this.canvasController.toolService.cameraTool.getCamera().getScale()}
-                data-translate={this.canvasController.toolService.cameraTool.getCamera().getViewBox().topLeft.negate().toString()}
+                data-zoom={camera.getScale()}
+                data-translate={camera.getViewBox().topLeft.negate().toString()}
             >
                 {views}
             </svg>

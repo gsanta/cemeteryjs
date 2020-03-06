@@ -8,8 +8,10 @@ export class Stores {
     levelStore = new LevelStore();
     cameraStore: CameraStore;
 
-    constructor(canvasId: string) {
-        this.cameraStore = new CameraStore(canvasId);
+    constructor(canvasId?: string) {
+        if (canvasId) {
+            this.cameraStore = new CameraStore(canvasId);
+        }
     }
 
 }

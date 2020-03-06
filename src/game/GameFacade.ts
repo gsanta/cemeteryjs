@@ -23,6 +23,7 @@ import { ResetTrigger } from './services/triggers/ResetTrigger';
 import { RouteWalker } from './services/walkers/RouteWalker';
 import { InputCommandStore } from './stores/InputCommandStore';
 import { ServiceLocator } from '../editor/ServiceLocator';
+import { Stores } from '../editor/Stores';
 
 export class GameFacade {
     gameEngine: GameEngine;
@@ -47,9 +48,11 @@ export class GameFacade {
 
     private routeWalker: RouteWalker;
     services: ServiceLocator;
+    stores: Stores;
 
     constructor(canvas: HTMLCanvasElement, services: ServiceLocator) {
         this.services = services;
+        this.stores = new Stores();
         this.gameEngine = new GameEngine(canvas);
         this.meshStore = new MeshStore(this);
         this.gameStore = new GameStore();
@@ -71,7 +74,7 @@ export class GameFacade {
         this.gameEventManager.registerLifeCycleTrigger(new ResetTrigger(this));
 
         this.gameObjectFactory = new GameObjectFactory(this);
-        this.gameStoreBuilder = new GameStoreBuilder(this);
+        this.gameStoreBuilder = new GameStoreBuilder(this, () => this.stores);
         
 
         this.viewConverters = [
@@ -85,6 +88,7 @@ export class GameFacade {
 
     clear(): void {
         this.meshStore.clear();
+        this.stores.viewStore.clear();
         this.modelLoader.clear();
     }
     
