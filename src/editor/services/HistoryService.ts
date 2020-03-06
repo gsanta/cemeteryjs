@@ -14,18 +14,16 @@ export class HistoryService {
 
     undo() {
         if (this.hasUndoHistory()) {
-            this.services.layers.feedback.clear();
-            this.services.tags.untagAll();
-            this.setActiveSnapshot(this.snapshots[this.getSnapshotPointerIndex() - 1]);
-            this.services.layers.main.views = this.restoreFromSnapshot(this.snapshotPointer);
-            this.services.render.reRender();
-            this.services.log.logInfo('Undo.');
-            this.getServices().
+            this.index = this.index - 1;
+            this.getServices().importService().import(this.history[this.index]);
         }
     }
 
     redo() {
-
+        if (this.hasRedoHistory()) {
+            this.index = this.index + 1;
+            this.getServices().importService().import(this.history[this.index]);
+        }
     }
 
     hasRedoHistory(): boolean {
@@ -37,8 +35,6 @@ export class HistoryService {
     }
 
     saveState(state: string) {
-        const historyPointerIndex = this.history[this.index];
-
         this.history = this.history.slice(0, this.index + 1);
         this.history = this.history.length > this.memoryLimit ? this.history.slice(this.history.length - this.memoryLimit) : this.history;
         this.history.push(state);

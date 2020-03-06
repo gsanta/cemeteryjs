@@ -1,25 +1,11 @@
-import { AbstractTool } from './AbstractTool';
 import { Point } from "../../../../misc/geometry/shapes/Point";
-import { ToolType } from "./Tool";
-import { CanvasWindow } from '../CanvasWindow';
 import { UpdateTask } from '../../../common/services/UpdateServices';
-import { Camera, nullCamera } from '../models/Camera';
 import { ServiceLocator } from '../../../ServiceLocator';
-
-export function cameraInitializer(canvasId: string) {
-    if (typeof document !== 'undefined') {
-        const svg: HTMLElement = document.getElementById(canvasId);
-
-        if (svg) {
-            const rect: ClientRect = svg.getBoundingClientRect();
-            return new Camera(new Point(rect.width, rect.height));
-        } else {
-            return nullCamera;
-        }
-    } else {
-        return nullCamera;
-    }
-}
+import { Stores } from '../../../Stores';
+import { CanvasWindow } from '../CanvasWindow';
+import { Camera } from '../models/Camera';
+import { AbstractTool } from './AbstractTool';
+import { ToolType } from "./Tool";
 
 function ratioOfViewBox(camera: Camera, ratio: Point): Point {
     return camera.getViewBox().getSize().mul(ratio.x, ratio.y);
@@ -27,7 +13,6 @@ function ratioOfViewBox(camera: Camera, ratio: Point): Point {
 
 export class CameraTool extends AbstractTool {
     private cameraInitializerFunc: (canvasId: string) => Camera;
-    private camera: Camera = nullCamera;
 
     static readonly ZOOM_MIN = 0.1;
     static readonly ZOOM_MAX = 5;
@@ -38,51 +23,54 @@ export class CameraTool extends AbstractTool {
 
     private controller: CanvasWindow;
     private getServices: () => ServiceLocator;
+    private getStores: () => Stores;
 
-    constructor(controller: CanvasWindow, getServices: () => ServiceLocator, cameraInitializerFunc = cameraInitializer, numberOfSteps: number = 20) {
+    constructor(controller: CanvasWindow, getServices: () => ServiceLocator, getStores: () => Stores, numberOfSteps: number = 20) {
         super(ToolType.CAMERA);
         this.NUM_OF_STEPS = numberOfSteps;
         this.controller = controller;
         this.getServices = getServices;
-        this.cameraInitializerFunc = cameraInitializerFunc;
+        this.getStores = getStores;
     }
 
     resize() {
-        const prevScale = this.camera.getScale(); 
-        const prevTranslate = this.camera.getViewBox().topLeft; 
+        const prevScale = this.getStores().cameraStore.getCamera().getScale(); 
+        const prevTranslate = this.getStores().cameraStore.getCamera().getViewBox().topLeft; 
     
-        this.camera = this.cameraInitializerFunc(this.controller.getId());
-        this.camera.moveTo(prevTranslate);
-        this.camera.zoom(prevScale);
+        this.getStores().cameraStore.setCamera(this.cameraInitializerFunc(this.controller.getId()));
+        this.getStores().cameraStore.getCamera().moveTo(prevTranslate);
+        this.getStores().cameraStore.getCamera().zoom(prevScale);
 
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     zoomToNextStep(canvasPos?: Point) {
-        canvasPos = canvasPos ? canvasPos : this.camera.screenToCanvasPoint(this.camera.screenSize.getVectorCenter());
+        const camera = this.getStores().cameraStore.getCamera();
+        canvasPos = canvasPos ? canvasPos : camera.screenToCanvasPoint(camera.screenSize.getVectorCenter());
         
-        const screenPoint = this.camera.canvasToScreenPoint(canvasPos);
-        const pointerRatio = new Point(screenPoint.x / this.camera.screenSize.x, screenPoint.y / this.camera.screenSize.y);
+        const screenPoint = camera.canvasToScreenPoint(canvasPos);
+        const pointerRatio = new Point(screenPoint.x / camera.screenSize.x, screenPoint.y / camera.screenSize.y);
         const nextZoomLevel = this.getNextManualZoomStep();
 
         if (nextZoomLevel) {
-            this.camera.setTopLeftCorner(canvasPos, nextZoomLevel);
-            this.camera.moveBy(ratioOfViewBox(this.camera, pointerRatio).negate());
+            camera.setTopLeftCorner(canvasPos, nextZoomLevel);
+            camera.moveBy(ratioOfViewBox(camera, pointerRatio).negate());
 
             this.getServices().updateService().runImmediately(UpdateTask.RepaintCanvas);
         }
     }
 
     zoomToPrevStep(canvasPos?: Point) {
-        canvasPos = canvasPos ? canvasPos : this.camera.screenToCanvasPoint(this.camera.screenSize.getVectorCenter());
+        const camera = this.getStores().cameraStore.getCamera();
+        canvasPos = canvasPos ? canvasPos : camera.screenToCanvasPoint(camera.screenSize.getVectorCenter());
 
-        const screenPoint = this.camera.canvasToScreenPoint(canvasPos);
-        const pointerRatio = new Point(screenPoint.x / this.camera.screenSize.x, screenPoint.y / this.camera.screenSize.y);
+        const screenPoint = camera.canvasToScreenPoint(canvasPos);
+        const pointerRatio = new Point(screenPoint.x / camera.screenSize.x, screenPoint.y / camera.screenSize.y);
         const prevZoomLevel = this.getPrevManualZoomLevel();
         
         if (prevZoomLevel) {
-            this.camera.setTopLeftCorner(canvasPos, prevZoomLevel);
-            this.camera.moveBy(ratioOfViewBox(this.camera, pointerRatio).negate());
+            camera.setTopLeftCorner(canvasPos, prevZoomLevel);
+            camera.moveBy(ratioOfViewBox(camera, pointerRatio).negate());
 
             this.getServices().updateService().runImmediately(UpdateTask.RepaintCanvas);
         }
@@ -96,30 +84,28 @@ export class CameraTool extends AbstractTool {
 
     drag() {
         super.drag();
-        const delta = this.controller.pointer.pointer.getScreenDiff().div(this.getCamera().getScale());
+        const camera = this.getStores().cameraStore.getCamera();
+
+        const delta = this.controller.pointer.pointer.getScreenDiff().div(camera.getScale());
         
-        this.controller.toolService.cameraTool.getCamera().moveBy(delta.negate());
+        camera.moveBy(delta.negate());
 
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
-    getCamera() {
-        if (this.camera === nullCamera) {
-            this.camera = this.cameraInitializerFunc(this.controller.getId());
-        }
-
-        return this.camera;
-    }
-
     private getNextManualZoomStep(): number {
-        let currentStep = this.calcLogarithmicStep(this.camera.getScale());
+        const camera = this.getStores().cameraStore.getCamera();
+
+        let currentStep = this.calcLogarithmicStep(camera.getScale());
         currentStep = currentStep >= this.NUM_OF_STEPS - 1 ? this.NUM_OF_STEPS - 1 : currentStep
 
         return this.calcLogarithmicZoom(currentStep + 1);
     }
 
     private getPrevManualZoomLevel(): number {
-        let currentStep = this.calcLogarithmicStep(this.camera.getScale());
+        const camera = this.getStores().cameraStore.getCamera();
+
+        let currentStep = this.calcLogarithmicStep(camera.getScale());
         currentStep = currentStep <= 1 ? 1 : currentStep
 
         return this.calcLogarithmicZoom(currentStep - 1);

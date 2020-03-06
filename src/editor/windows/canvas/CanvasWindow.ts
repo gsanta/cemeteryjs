@@ -49,13 +49,7 @@ export class CanvasWindow extends WindowController {
         
         this.mouseController = new MouseHandler(this);
         this.keyboardHandler = new KeyboardHandler(this);
-        this.importer = new ImportService(
-            [
-                new MeshViewImporter(rect => this.getStores().viewStore.addRect(rect)),
-                new PathImporter((path: PathView) => this.getStores().viewStore.addPath(path))
-            ],
-            this
-        );
+        this.importer = new ImportService(this.getStores);
         this.exporter = new CanvasExporter(this, [new RectangleExporter(this, this.getStores), new PathExporter(this, this.getStores)]);
         this.model3dController = new Model3DController(this, this.getServices);
 
@@ -64,7 +58,7 @@ export class CanvasWindow extends WindowController {
         this.meshViewForm = new MeshForm(this, this.getServices, this.getStores);
         this.pathForm = new PathForm();
         this.levelForm = new LevelForm(this.getServices, this.getStores);
-        this.pointer = new CanvasPointerService(this, this.getServices);
+        this.pointer = new CanvasPointerService(this, this.getServices, this.getStores);
     }
 
     setSelectedTool(toolType: ToolType) {

@@ -13,7 +13,7 @@ export class ServiceLocator {
             new LocalStore(editor),
             new LevelService(() => this, getStores),
             new UpdateService(editor, () => this, getStores),
-            new ImportService()
+            new ImportService(getStores)
         ];
     }
 
@@ -31,5 +31,9 @@ export class ServiceLocator {
 
     updateService(): UpdateService {
         return <UpdateService> this.getService('update-service');
+    }
+
+    importService(): ImportService {
+        return <ImportService> this.getService('import-service');
     }
 }

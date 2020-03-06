@@ -4,6 +4,7 @@ import { MousePointer } from "../../../common/services/MouseHandler";
 import { Point } from "../../../../misc/geometry/shapes/Point";
 import { View } from "../models/views/View";
 import { ServiceLocator } from '../../../ServiceLocator';
+import { Stores } from "../../../Stores";
 
 function calcOffsetFromDom(bitmapEditorId: string): Point {
     if (typeof document !== 'undefined') {
@@ -26,11 +27,13 @@ export class CanvasPointerService implements IPointerService {
 
     private calcOffset: (id: string) => Point;
     private getServices: () => ServiceLocator;
+    private getStores: () => Stores;
 
-    constructor(controller: CanvasWindow, getServices: () => ServiceLocator, calcOffset: (id: string) => Point = calcOffsetFromDom) {
+    constructor(controller: CanvasWindow, getServices: () => ServiceLocator, getStores: () => Stores, calcOffset: (id: string) => Point = calcOffsetFromDom) {
         this.controller = controller;
         this.calcOffset = calcOffset;
         this.getServices = getServices;
+        this.getStores = getStores;
     }
 
     pointerDown(e: IPointerEvent): void {
@@ -92,7 +95,7 @@ export class CanvasPointerService implements IPointerService {
 
     private getPointWithOffset(point: Point): Point {
         const offset = this.calcOffset(this.controller.getId());
-        return this.controller.toolService.cameraTool.getCamera().screenToCanvasPoint(new Point(point.x - offset.x, point.y - offset.y));
+        return this.getStores().cameraStore.getCamera().screenToCanvasPoint(new Point(point.x - offset.x, point.y - offset.y));
     }
 
 }

@@ -34,18 +34,20 @@ export class CanvasComponent extends React.Component<{controller: CanvasWindow}>
     context: AppContextType;
 
     componentDidMount() {
-        this.context.getServices().updateService().setCanvasRepainter(() => this.forceUpdate())
+        this.context.getServices().updateService().setCanvasRepainter(() => this.forceUpdate());
     }
 
     render(): JSX.Element {
         const cameraTool = this.props.controller.toolService.getTool(ToolType.CAMERA) as CameraTool;
+        const services = this.context.getServices();
+        const stores = this.context.getStores();
 
         return (
             <EditorComponentStyled id={this.props.controller.getId()}>
-                <WindowToolbarStyled><CanvasToolbarComponent services={this.context.getServices()} controller={this.props.controller as CanvasWindow}/></WindowToolbarStyled>
+                <WindowToolbarStyled><CanvasToolbarComponent services={this.context.getServices()} window={this.props.controller as CanvasWindow}/></WindowToolbarStyled>
                 <CanvasComponentStyled
                     tabIndex={0}
-                    viewBox={cameraTool.getCamera().getViewBoxAsString()}
+                    viewBox={stores.cameraStore.getCamera().getViewBoxAsString()}
                     id={this.context.controllers.svgCanvasId}
                     onMouseDown={(e) => this.props.controller.mouseController.onMouseDown(e.nativeEvent)}
                     onMouseMove={(e) => this.props.controller.mouseController.onMouseMove(e.nativeEvent)}

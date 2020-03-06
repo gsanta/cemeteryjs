@@ -24,7 +24,8 @@ export class Editor {
     services: ServiceLocator;
 
     constructor() {
-        this.stores = new Stores();
+        this.svgCanvasId = 'svg-editor';
+        this.stores = new Stores(this.svgCanvasId);
         this.services = new ServiceLocator(this, () => this.stores);
 
         this.windowFactories = [
@@ -34,7 +35,6 @@ export class Editor {
 
         this.globalSettingsForm = new GlobalSettingsForm(this.getWindowControllerByName('canvas') as CanvasWindow, () => this.services, () => this.stores);
 
-        this.svgCanvasId = 'svg-editor';
     }
 
     setup(canvas: HTMLCanvasElement) {
