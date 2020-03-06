@@ -9,7 +9,7 @@ import { PathForm } from './forms/PathForm';
 import { CanvasExporter } from './io/export/CanvasExporter';
 import { PathExporter } from './io/export/PathExporter';
 import { RectangleExporter } from './io/export/RectangleExporter';
-import { CanvasImporter } from './io/import/CanvasImporter';
+import { ImportService } from './io/import/ImportService';
 import { PathImporter } from './io/import/PathImporter';
 import { MeshViewImporter } from './io/import/RectangleImporter';
 import { Model3DController } from './Model3DController';
@@ -31,7 +31,7 @@ export class CanvasWindow extends WindowController {
 
     mouseController: MouseHandler;
     keyboardHandler: KeyboardHandler;
-    importer: CanvasImporter;
+    importer: ImportService;
     exporter: CanvasExporter;
     model3dController: Model3DController;
 
@@ -49,7 +49,7 @@ export class CanvasWindow extends WindowController {
         
         this.mouseController = new MouseHandler(this);
         this.keyboardHandler = new KeyboardHandler(this);
-        this.importer = new CanvasImporter(
+        this.importer = new ImportService(
             [
                 new MeshViewImporter(rect => this.getStores().viewStore.addRect(rect)),
                 new PathImporter((path: PathView) => this.getStores().viewStore.addPath(path))

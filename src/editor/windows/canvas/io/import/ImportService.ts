@@ -45,7 +45,7 @@ export interface ViewGroupJson<T = any> {
     }
 }
 
-export class CanvasImporter {
+export class ImportService {
     private viewImporters: IViewImporter[];
     private controller: CanvasWindow;
 

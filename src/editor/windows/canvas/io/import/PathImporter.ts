@@ -1,5 +1,5 @@
 import { IViewImporter } from "../../tools/IToolImporter";
-import { ViewGroupJson } from "./CanvasImporter";
+import { ViewGroupJson } from "./ImportService";
 import { PathView } from "../../models/views/PathView";
 import { ViewType } from "../../models/views/View";
 

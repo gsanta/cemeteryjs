@@ -1,4 +1,4 @@
-import { CanvasImporter } from '../editor/windows/canvas/io/import/CanvasImporter';
+import { ImportService } from '../editor/windows/canvas/io/import/ImportService';
 import { IViewImporter } from '../editor/windows/canvas/tools/IToolImporter';
 import { GameEngine } from '../editor/windows/renderer/GameEngine';
 import { CreateMeshModifier } from './import/CreateMeshModifier';
@@ -40,7 +40,7 @@ export class GameFacade {
     gameObjectFactory: GameObjectFactory;
 
     importers: IViewImporter[];
-    viewImporter: CanvasImporter;
+    viewImporter: ImportService;
     viewConverters: IViewConverter[] = [];
 
     gameStoreBuilder: GameStoreBuilder;

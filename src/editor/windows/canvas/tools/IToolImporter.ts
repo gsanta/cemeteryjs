@@ -1,4 +1,4 @@
-import { ViewGroupJson } from "../io/import/CanvasImporter";
+import { ViewGroupJson } from "../io/import/ImportService";
 import { ViewType } from "../models/views/View";
 
 export interface IViewImporter {

@@ -1,6 +1,6 @@
 import { GameFacade } from "../../GameFacade";
 import { IViewConverter } from "../objects/IViewConverter";
-import { CanvasImporter } from "../../../editor/windows/canvas/io/import/CanvasImporter";
+import { ImportService } from "../../../editor/windows/canvas/io/import/ImportService";
 import { MeshViewImporter } from "../../../editor/windows/canvas/io/import/RectangleImporter";
 import { PathImporter } from "../../../editor/windows/canvas/io/import/PathImporter";
 import { View } from "../../../editor/windows/canvas/models/views/View";
@@ -9,12 +9,12 @@ import { ViewStore } from "../../../editor/windows/canvas/models/ViewStore";
 export class GameStoreBuilder {
     private gameFacade: GameFacade;
     private viewStore: ViewStore;
-    private viewImporter: CanvasImporter;
+    private viewImporter: ImportService;
 
     constructor(gameFacade: GameFacade) {
         this.gameFacade = gameFacade;
 
-        this.viewImporter = new CanvasImporter(
+        this.viewImporter = new ImportService(
             [
                 new MeshViewImporter(rect => this.viewStore.addRect(rect)),
                 new PathImporter(path => this.viewStore.addPath(path))
