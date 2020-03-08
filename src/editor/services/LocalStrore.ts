@@ -1,5 +1,6 @@
 import { CanvasWindow } from "../windows/canvas/CanvasWindow";
 import { Editor } from "../Editor";
+import { ServiceLocator } from "../ServiceLocator";
 
 
 export class LocalStore {
@@ -8,9 +9,11 @@ export class LocalStore {
     private name = 'editor';
     private db: IDBDatabase;
     private editor: Editor;
+    private getServices: () => ServiceLocator;
 
-    constructor(editor: Editor) {
+    constructor(editor: Editor, getServices: () => ServiceLocator) {
         this.editor = editor;
+        this.getServices = getServices;
         const request = window.indexedDB.open(this.name, this.version);
         request.onupgradeneeded = () => this.upgradeDb(request);
     }
@@ -31,15 +34,14 @@ export class LocalStore {
 
     }
 
-    async storeLevel(level: number) {
+    async storeLevel(level: number, data: string) {
         if (!this.isDbSupported()) { return }
 
         const db = await this.getDb();
 
         var objectStore = db.transaction(["xmls"], "readwrite").objectStore("xmls");
 
-        const controller = <CanvasWindow> this.editor.getWindowControllerByName('canvas')
-        objectStore.put({id: level, data: controller.exporter.export()});
+        objectStore.put({id: level, data: data});
     }
 
     async loadLevel(level: number): Promise<null> {
@@ -51,7 +53,7 @@ export class LocalStore {
 
         const controller = <CanvasWindow> this.editor.getWindowControllerByName('canvas');
         const data = await this.getData(objectStore.get(level));
-        controller.importer.import(data);
+        this.getServices().importService().import(data);
     }
 
     async loadLevelIndexes(): Promise<number[]> {

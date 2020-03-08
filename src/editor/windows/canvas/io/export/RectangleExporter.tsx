@@ -1,42 +1,33 @@
-import { Rectangle } from "../../../../../misc/geometry/shapes/Rectangle";
 import { minBy, sort } from "../../../../../misc/geometry/utils/Functions";
 import { colors } from "../../../../gui/styles";
 import { IViewExporter } from "../../tools/IToolExporter";
 import React = require("react");
-import { CanvasWindow } from "../../CanvasWindow";
-import { ViewType } from "../../models/views/View";
+import { ViewType, View } from "../../models/views/View";
 import { MeshView } from "../../models/views/MeshView";
 import { CanvasItemTag } from "../../models/CanvasItem";
 import { Stores } from '../../../../Stores';
 
 export class RectangleExporter implements IViewExporter {
     type = ViewType.GameObject;
-    private controller: CanvasWindow;
     private getStores: () => Stores;
 
-    constructor(controller: CanvasWindow, getStores: () => Stores) {
-        this.controller = controller;
+    constructor(getStores: () => Stores) {
         this.getStores = getStores;
     }
 
-    export(): JSX.Element {
-        const rectangles = this.renderRectangles();
-        return rectangles.length > 0 ? <g data-view-type={ViewType.GameObject}>{rectangles}</g> : null;
+    export(hover?: (view: View) => void, unhover?: (view: View) => void): JSX.Element {
+        const meshGroups = this.getSortedMeshViews().map(item => this.renderGroup(item, hover, unhover));
+
+        return meshGroups.length > 0 ? <g data-view-type={ViewType.GameObject}>{meshGroups}</g> : null;
     }
 
-    private renderRectangles(): JSX.Element[] {
+    private getSortedMeshViews() {
         const viewStore = this.getStores().viewStore;
         let items = [...viewStore.getGameObjects()];
-        items = sort(items, (a, b) => a.layer - b.layer);
-
-        return items.map((item, i) => {
-            const rectangle = item.dimensions as Rectangle;
-            
-            return this.renderGroup(item, rectangle, [this.renderRect(item, rectangle, i + ''), this.renderThumbnail(item, rectangle)]);
-        });
+        return sort(items, (a, b) => a.layer - b.layer);
     }
 
-    private renderGroup(item: MeshView, dimensions: Rectangle, children: JSX.Element[]) {
+    private renderGroup(item: MeshView, hover?: (view: View) => void, unhover?: (view: View) => void) {
         const minX = minBy<MeshView>(this.getStores().viewStore.getGameObjects(), (a, b) => a.dimensions.topLeft.x - b.dimensions.topLeft.x).dimensions.topLeft.x;
         const minY = minBy<MeshView>(this.getStores().viewStore.getGameObjects(), (a, b) => a.dimensions.topLeft.y - b.dimensions.topLeft.y).dimensions.topLeft.y;
 
@@ -45,13 +36,13 @@ export class RectangleExporter implements IViewExporter {
 
         return (
             <g 
-                transform={`translate(${dimensions.topLeft.x} ${dimensions.topLeft.y})`}
-                onMouseOver={() => this.controller.mouseController.hover(item)}
-                onMouseOut={() => this.controller.mouseController.unhover(item)}
-                data-wg-x={dimensions.topLeft.x + tranlateX}
-                data-wg-y={dimensions.topLeft.y + tranlateY}
-                data-wg-width={dimensions.getWidth()}
-                data-wg-height={dimensions.getHeight()}
+                transform={`translate(${item.dimensions.topLeft.x} ${item.dimensions.topLeft.y})`}
+                onMouseOver={() => hover ? hover(item) : () => undefined}
+                onMouseOut={() => unhover ? unhover(item) : () => undefined}
+                data-wg-x={item.dimensions.topLeft.x + tranlateX}
+                data-wg-y={item.dimensions.topLeft.y + tranlateY}
+                data-wg-width={item.dimensions.getWidth()}
+                data-wg-height={item.dimensions.getHeight()}
                 data-wg-type={item.type}
                 data-wg-color={item.color}
                 data-wg-layer={item.layer}
@@ -65,35 +56,36 @@ export class RectangleExporter implements IViewExporter {
                 data-is-manual-control={item.isManualControl ? 'true' : 'false'}
                 data-animation={item.activeAnimation}
             >
-                {children}
+                {this.renderRect(item)}
+                {this.renderThumbnail(item)}
             </g>
         )
     }
 
-    private renderRect(item: MeshView, dimensions: Rectangle, key: string) {
+    private renderRect(item: MeshView) {
         const viewStore = this.getStores().viewStore;
 
         const stroke = viewStore.getTags(item).has(CanvasItemTag.SELECTED) || viewStore.getTags(item).has(CanvasItemTag.HOVERED) ? colors.views.highlight : 'black';
 
         return (
             <rect
-                key={key}
+                key={item.name}
                 x={`0`}
                 y={`0`}
-                width={`${dimensions.getWidth()}px`}
-                height={`${dimensions.getHeight()}px`}
+                width={`${item.dimensions.getWidth()}px`}
+                height={`${item.dimensions.getHeight()}px`}
                 fill={item.color}
                 stroke={stroke}
             />
         );
     }
 
-    private renderThumbnail(item: MeshView, dimensions: Rectangle) {
+    private renderThumbnail(item: MeshView) {
         let thumbnail: JSX.Element = null;
             
         if (item.thumbnailPath) {
             thumbnail =  (
-                <image xlinkHref={`assets/models/${this.getFolderNameFromFileName(item.thumbnailPath)}/${item.thumbnailPath}`} x="0" y="0" height={`${dimensions.getHeight()}px`} width={`${dimensions.getWidth()}px`}/>
+                <image xlinkHref={`assets/models/${this.getFolderNameFromFileName(item.thumbnailPath)}/${item.thumbnailPath}`} x="0" y="0" height={`${item.dimensions.getHeight()}px`} width={`${item.dimensions.getWidth()}px`}/>
             )
         }
 

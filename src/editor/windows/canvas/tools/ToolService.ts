@@ -13,7 +13,6 @@ import { Stores } from '../../../Stores';
 
 export class ToolService {
     private tools: Tool[] = [];
-    private toolExporters: IViewExporter[] = [];
 
     cameraTool: CameraTool;
     pointerTool: PointerTool;

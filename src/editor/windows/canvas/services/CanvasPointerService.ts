@@ -1,6 +1,6 @@
 import { IPointerService, IPointerEvent } from "../../../common/services/IPointerService";
 import { CanvasWindow } from "../CanvasWindow";
-import { MousePointer } from "../../../common/services/MouseHandler";
+import { MousePointer } from "../../../common/services/MouseService";
 import { Point } from "../../../../misc/geometry/shapes/Point";
 import { View } from "../models/views/View";
 import { ServiceLocator } from '../../../ServiceLocator';

@@ -1,10 +1,8 @@
-import { CanvasWindow } from "../../windows/canvas/CanvasWindow";
-import { ServiceLocator } from "../../ServiceLocator";
-import { Events } from "../Events";
-import { WindowController } from "../WindowController";
-import { Stores } from '../../Stores';
-import { RendererWindow } from "../../windows/renderer/RendererWindow";
 import { Editor } from '../../Editor';
+import { ServiceLocator } from "../../ServiceLocator";
+import { Stores } from '../../Stores';
+import { CanvasWindow } from "../../windows/canvas/CanvasWindow";
+import { RendererWindow } from "../../windows/renderer/RendererWindow";
 
 export enum UpdateTask {
     RepaintCanvas = 'RepaintCanvas',
@@ -58,7 +56,8 @@ export class UpdateService {
                     (<RendererWindow> this.editor.getWindowControllerByName('renderer')).update();
                 break;
                 case UpdateTask.SaveData:
-                    this.getServices().storageService().storeLevel(this.getStores().levelStore.currentLevel.index);
+                    const map = this.getServices().exportService().export();
+                    this.getServices().storageService().storeLevel(this.getStores().levelStore.currentLevel.index, map);
                 break;
                 case UpdateTask.All:
                     this.canvasRepainter();

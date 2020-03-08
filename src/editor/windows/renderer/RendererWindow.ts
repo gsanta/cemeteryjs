@@ -1,19 +1,18 @@
 import { Mesh } from 'babylonjs';
 import { AbstractModelLoader } from '../../common/services/AbstractModelLoader';
-import { Tool } from '../canvas/tools/Tool';
-import { WindowController, CanvasViewSettings } from '../../common/WindowController';
 import { IPointerService } from '../../common/services/IPointerService';
-import { MouseHandler } from '../../common/services/MouseHandler';
+import { MouseService } from '../../common/services/MouseService';
+import { UpdateService } from '../../common/services/UpdateServices';
+import { CanvasViewSettings, WindowController } from '../../common/WindowController';
 import { Editor } from '../../Editor';
-import { Events } from "../../common/Events";
+import { ServiceLocator } from '../../ServiceLocator';
+import { CanvasWindow } from '../canvas/CanvasWindow';
+import { Tool } from '../canvas/tools/Tool';
 import { EditorCamera } from './EditorCamera';
 import { HelperMeshes } from './HelperMeshes';
 import { RendererCameraTool } from './RendererCameraTool';
 import { RendererPointerService } from './RendererPointerService';
 import { WebglCanvasImporter } from './WebglCanvasImporter';
-import { CanvasWindow } from '../canvas/CanvasWindow';
-import { ServiceLocator } from '../../ServiceLocator';
-import { UpdateService } from '../../common/services/UpdateServices';
 (<any> window).earcut = require('earcut');
 
 export class RendererWindow extends WindowController {
@@ -22,7 +21,7 @@ export class RendererWindow extends WindowController {
     visible = true;
     updateService: UpdateService;
 
-    mouseHander: MouseHandler;
+    mouseHander: MouseService;
 
     writer: WebglCanvasImporter;
     modelLoader: AbstractModelLoader;
@@ -39,7 +38,7 @@ export class RendererWindow extends WindowController {
     constructor(editor: Editor, services: ServiceLocator) {
         super(editor, () => services, () => editor.stores);
         this.updateService = new UpdateService(this.editor, () => services, () => editor.stores);
-        this.mouseHander = new MouseHandler(this);
+        this.mouseHander = new MouseService(this);
         this.pointer = new RendererPointerService(this);
         this.update = this.update.bind(this);
     }
@@ -63,7 +62,7 @@ export class RendererWindow extends WindowController {
     update() {
         this.clearCanvas();
         if (this.writer) {
-            const file = (<CanvasWindow> this.editor.getWindowControllerByName('canvas')).exporter.export();
+            const file = this.getServices().exportService().export();
             this.writer.import(file);
         }
 

@@ -2,6 +2,7 @@ import { ServiceLocator } from '../ServiceLocator';
 
 
 export class HistoryService {
+    serviceName = 'history-service';
     private history: string[] = [];
     private index = 0;
     private memoryLimit = 20;

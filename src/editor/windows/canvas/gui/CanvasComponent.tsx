@@ -5,10 +5,8 @@ import { PathMarkersComponent } from './PathMarkersComponent';
 import { colors } from '../../../gui/styles';
 import { CanvasWindow } from '../CanvasWindow';
 import { AppContext, AppContextType } from '../../../gui/Context';
-import { ToolType } from '../tools/Tool';
-import { CameraTool } from '../tools/CameraTool';
 import { WindowToolbarStyled } from '../../../gui/windows/WindowToolbar';
-import { ViewType } from '../models/views/View';
+import { ViewType, View } from '../models/views/View';
 
 
 const EditorComponentStyled = styled.div`
@@ -38,9 +36,10 @@ export class CanvasComponent extends React.Component<{controller: CanvasWindow}>
     }
 
     render(): JSX.Element {
-        const cameraTool = this.props.controller.toolService.getTool(ToolType.CAMERA) as CameraTool;
-        const services = this.context.getServices();
         const stores = this.context.getStores();
+
+        const hover = (view: View) => this.props.controller.mouseController.hover(view);
+        const unhover = (view: View) => this.props.controller.mouseController.unhover(view);
 
         return (
             <EditorComponentStyled id={this.props.controller.getId()}>
@@ -59,11 +58,9 @@ export class CanvasComponent extends React.Component<{controller: CanvasWindow}>
                     <defs>
                         <PathMarkersComponent/>
                     </defs>
-                    {this.props.controller.exporter.getViewExporter(ViewType.GameObject).export(false)}
-                    {this.props.controller.exporter.getViewExporter(ViewType.Path).export(false)}
+                    {this.context.getServices().exportService().getViewExporter(ViewType.GameObject).export(hover, unhover)}
+                    {this.context.getServices().exportService().getViewExporter(ViewType.Path).export(hover, unhover)}
                     {this.renderFeedbacks()}
-
-
                 </CanvasComponentStyled>
             </EditorComponentStyled>
         );

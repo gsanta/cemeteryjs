@@ -1,31 +1,28 @@
 import { IViewExporter } from "../../tools/IToolExporter";
 import React = require("react");
 import { PathComponent } from "../../gui/PathComponent";
-import { CanvasWindow } from "../../CanvasWindow";
 import { CanvasItemTag } from "../../models/CanvasItem";
 import { PathView } from "../../models/views/PathView";
-import { ViewType } from "../../models/views/View";
+import { ViewType, View } from "../../models/views/View";
 import { Stores } from '../../../../Stores';
 
 export class PathExporter implements IViewExporter {
     type = ViewType.Path;
-    private controller: CanvasWindow;
     private getStores: () => Stores;
 
-    constructor(controller: CanvasWindow, getStores: () => Stores) {
-        this.controller = controller;
+    constructor(getStores: () => Stores) {
         this.getStores = getStores;
     }
 
-    export(onlyData = false): JSX.Element {
+    export(hover?: (view: View) => void, unhover?: (view: View) => void): JSX.Element {
         const pathes = this.getStores().viewStore.getPathes().map(path => {
             return <PathComponent
-                onlyData={onlyData}
+                onlyData={!hover}
                 item={path}
                 isHovered={this.getStores().viewStore.getHoveredView() === path}
                 isSelected={this.getStores().viewStore.getTags(path).has(CanvasItemTag.SELECTED)}
-                onMouseOver={(item: PathView) => this.controller.mouseController.hover(item)}
-                onMouseOut={(item: PathView) => this.controller.mouseController.unhover(item)}
+                onMouseOver={(item: PathView) => hover ?  hover(item) : () => undefined}
+                onMouseOut={(item: PathView) => unhover ? unhover(item) : () => undefined}
             />
         });
 

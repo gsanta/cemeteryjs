@@ -19,7 +19,7 @@ export class MousePointer {
     }
 }
 
-export class MouseHandler {
+export class MouseService {
     private controller: {pointer: IPointerService};
 
     constructor(controller: {pointer: IPointerService}) {

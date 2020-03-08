@@ -30,7 +30,8 @@ export class LevelService {
 
     updateCurrentLevel() {
         this.getStores().levelStore.currentLevel.isEmpty = false;
-        this.getServices().storageService().storeLevel(this.getStores().levelStore.currentLevel.index);
+        const map = this.getServices().exportService().export();
+        this.getServices().storageService().storeLevel(this.getStores().levelStore.currentLevel.index, map);
     }
 
     removeCurrentLevel() {

@@ -1,16 +1,18 @@
-import { CanvasWindow } from '../../CanvasWindow';
 import * as ReactDOMServer from 'react-dom/server';
 import * as React from 'react';
 import { IViewExporter } from '../../tools/IToolExporter';
 import { ViewType } from '../../models/views/View';
 import { Stores } from '../../../../Stores';
+import { RectangleExporter } from './RectangleExporter';
+import { PathExporter } from './PathExporter';
 
-export class CanvasExporter {
+export class ExportService {
+    serviceName = 'export-service';
     private viewExporters: IViewExporter[];
     private getStores: () => Stores;
 
-    constructor(viewExporters: IViewExporter[], getStores: () => Stores) {
-        this.viewExporters = viewExporters;
+    constructor(getStores: () => Stores) {
+        this.viewExporters = [new RectangleExporter(getStores), new PathExporter(getStores)];
         this.getStores = getStores;
     }
 
@@ -23,7 +25,7 @@ export class CanvasExporter {
     }
 
     private renderRoot(): JSX.Element {
-        const views = this.viewExporters.map(exporter => exporter.export(true));
+        const views = this.viewExporters.map(exporter => exporter.export());
         const camera = this.getStores().cameraStore.getCamera();
         return (
             <svg

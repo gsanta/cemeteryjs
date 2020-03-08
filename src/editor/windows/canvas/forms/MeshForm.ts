@@ -139,6 +139,7 @@ export class MeshForm extends AbstractForm<MeshViewPropType> {
                 break;
         }
 
-        this.getServices().storageService().storeLevel(this.getStores().levelStore.currentLevel.index);
+        const map = this.getServices().exportService().export();
+        this.getServices().storageService().storeLevel(this.getStores().levelStore.currentLevel.index, map);
     }
 }

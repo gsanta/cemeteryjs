@@ -4,16 +4,20 @@ import { Stores } from "./Stores";
 import { LevelService } from "./services/LevelService";
 import { UpdateService } from "./common/services/UpdateServices";
 import { ImportService } from './windows/canvas/io/import/ImportService';
+import { HistoryService } from "./services/HistoryService";
+import { ExportService } from "./windows/canvas/io/export/ExportService";
 
 export class ServiceLocator {
     private services: {serviceName: string}[] = [];
 
     constructor(editor: Editor, getStores: () => Stores) {
         this.services = [
-            new LocalStore(editor),
+            new LocalStore(editor, () => this),
             new LevelService(() => this, getStores),
             new UpdateService(editor, () => this, getStores),
-            new ImportService(getStores)
+            new ImportService(getStores),
+            new ExportService(getStores),
+            new HistoryService(() => this)
         ];
     }
 
@@ -35,5 +39,13 @@ export class ServiceLocator {
 
     importService(): ImportService {
         return <ImportService> this.getService('import-service');
+    }
+
+    exportService(): ExportService {
+        return <ExportService> this.getService('export-service');
+    }
+
+    historyService(): HistoryService {
+        return <HistoryService> this.getService('history-service');
     }
 }
