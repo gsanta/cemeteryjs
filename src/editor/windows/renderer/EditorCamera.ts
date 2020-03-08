@@ -2,7 +2,7 @@ import { UniversalCamera, Vector3, Scene } from 'babylonjs';
 import { KeyboardCameraInput } from './KeyboardCameraInput';
 import { MouseCameraInput } from './MouseCameraInput';
 import { Point } from '../../../misc/geometry/shapes/Point';
-import { ICamera } from '../../common/models/ICamera';
+import { ICamera } from './ICamera';
 
 const MIN_Y = 30;
 const MAX_Y = 150;

@@ -1,4 +1,4 @@
-import { ViewGroupJson } from "../io/import/ImportService";
+import { ViewGroupJson } from "../../../services/import/ImportService";
 import { ViewType } from "../models/views/View";
 
 export interface IViewImporter {

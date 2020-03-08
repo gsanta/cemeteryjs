@@ -1,4 +1,4 @@
-import { ImportService } from '../editor/windows/canvas/io/import/ImportService';
+import { ImportService } from '../editor/services/import/ImportService';
 import { IViewImporter } from '../editor/windows/canvas/tools/IToolImporter';
 import { GameEngine } from '../editor/windows/renderer/GameEngine';
 import { CreateMeshModifier } from './import/CreateMeshModifier';
@@ -22,8 +22,8 @@ import { KeyboardTrigger } from './services/triggers/KeyboardTrigger';
 import { ResetTrigger } from './services/triggers/ResetTrigger';
 import { RouteWalker } from './services/walkers/RouteWalker';
 import { InputCommandStore } from './stores/InputCommandStore';
-import { ServiceLocator } from '../editor/ServiceLocator';
-import { Stores } from '../editor/Stores';
+import { ServiceLocator } from '../editor/services/ServiceLocator';
+import { Stores } from '../editor/stores/Stores';
 
 export class GameFacade {
     gameEngine: GameEngine;

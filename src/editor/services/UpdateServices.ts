@@ -1,8 +1,8 @@
-import { Editor } from '../../Editor';
-import { ServiceLocator } from "../../ServiceLocator";
-import { Stores } from '../../Stores';
-import { CanvasWindow } from "../../windows/canvas/CanvasWindow";
-import { RendererWindow } from "../../windows/renderer/RendererWindow";
+import { Editor } from '../Editor';
+import { ServiceLocator } from "./ServiceLocator";
+import { Stores } from '../stores/Stores';
+import { CanvasWindow } from "../windows/canvas/CanvasWindow";
+import { RendererWindow } from "../windows/renderer/RendererWindow";
 
 export enum UpdateTask {
     RepaintCanvas = 'RepaintCanvas',

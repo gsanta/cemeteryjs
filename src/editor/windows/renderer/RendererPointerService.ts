@@ -1,10 +1,10 @@
 import { Point } from "../../../misc/geometry/shapes/Point";
-import { IPointerEvent, IPointerService } from "../../common/services/IPointerService";
-import { MousePointer } from "../../common/services/MouseService";
+import { IPointerEvent, IPointerHandler } from "../IPointerHandler";
+import { MousePointer } from "../MouseHandler";
 import { RendererWindow } from "./RendererWindow";
 import { View } from "../canvas/models/views/View";
 
-export class RendererPointerService implements IPointerService {
+export class RendererPointerService implements IPointerHandler {
     private controller: RendererWindow;
     isDown = false;
     isDrag = false;

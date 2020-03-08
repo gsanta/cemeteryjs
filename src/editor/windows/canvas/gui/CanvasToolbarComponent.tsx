@@ -14,7 +14,7 @@ import { BlankIconComponent } from '../../../gui/icons/tools/BlankIconComponent'
 import { UndoIconComponent } from '../../../gui/icons/tools/UndoIconComponent';
 import { RedoIconComponent } from '../../../gui/icons/tools/RedoIconComponent';
 import { DeleteTool } from '../tools/DeleteTool';
-import { ServiceLocator } from '../../../ServiceLocator';
+import { ServiceLocator } from '../../../services/ServiceLocator';
 
 const ToolbarStyled = styled.div`
     display: flex;

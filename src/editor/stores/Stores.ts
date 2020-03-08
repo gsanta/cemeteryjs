@@ -1,6 +1,6 @@
-import { LevelStore } from "./common/stores/LevelStore";
-import { CameraStore } from "./windows/canvas/models/CameraStore";
-import { ViewStore } from "./windows/canvas/models/ViewStore";
+import { LevelStore } from "./LevelStore";
+import { CameraStore } from "./CameraStore";
+import { ViewStore } from "./ViewStore";
 
 
 export class Stores {

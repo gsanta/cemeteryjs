@@ -1,10 +1,10 @@
 import { Rectangle } from "../../../../misc/geometry/shapes/Rectangle";
-import { UpdateTask } from "../../../common/services/UpdateServices";
+import { UpdateTask } from "../../../services/UpdateServices";
 import { CanvasWindow } from "../CanvasWindow";
 import { AbstractTool } from './AbstractTool';
 import { ToolType } from './Tool';
-import { Stores } from '../../../Stores';
-import { ServiceLocator } from '../../../ServiceLocator';
+import { Stores } from '../../../stores/Stores';
+import { ServiceLocator } from '../../../services/ServiceLocator';
 
 export class MoveTool extends AbstractTool {
     private controller: CanvasWindow;

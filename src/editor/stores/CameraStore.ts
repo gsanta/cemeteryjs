@@ -1,5 +1,5 @@
-import { nullCamera, Camera } from "./Camera";
-import { Point } from "../../../../misc/geometry/shapes/Point";
+import { nullCamera, Camera } from "../windows/canvas/models/Camera";
+import { Point } from "../../misc/geometry/shapes/Point";
 
 export function cameraInitializer(canvasId: string) {
     if (typeof document !== 'undefined') {

@@ -1,8 +1,8 @@
 import { GameApi } from '../../game/GameApi';
 import { GameFacade } from '../../game/GameFacade';
 import { Editor } from '../Editor';
-import { ServiceLocator } from '../ServiceLocator';
-import { Stores } from '../Stores';
+import { ServiceLocator } from '../services/ServiceLocator';
+import { Stores } from '../stores/Stores';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;

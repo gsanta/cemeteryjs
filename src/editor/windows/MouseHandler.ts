@@ -1,6 +1,6 @@
-import { Point } from "../../../misc/geometry/shapes/Point";
-import { IPointerEvent, IPointerService } from "./IPointerService";
-import { View } from "../../windows/canvas/models/views/View";
+import { Point } from "../../misc/geometry/shapes/Point";
+import { IPointerEvent, IPointerHandler } from "./IPointerHandler";
+import { View } from "./canvas/models/views/View";
 
 export class MousePointer {
     down: Point;
@@ -19,10 +19,10 @@ export class MousePointer {
     }
 }
 
-export class MouseService {
-    private controller: {pointer: IPointerService};
+export class MouseHandler {
+    private controller: {pointer: IPointerHandler};
 
-    constructor(controller: {pointer: IPointerService}) {
+    constructor(controller: {pointer: IPointerHandler}) {
         this.controller = controller;
     }
 

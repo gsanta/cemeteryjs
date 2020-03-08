@@ -1,6 +1,6 @@
-import { Point } from "../../../misc/geometry/shapes/Point";
-import { MousePointer } from "./MouseService";
-import { View } from "../../windows/canvas/models/views/View";
+import { Point } from "../../misc/geometry/shapes/Point";
+import { MousePointer } from "./MouseHandler";
+import { View } from "./canvas/models/views/View";
 
 
 export interface IPointerEvent {
@@ -10,7 +10,7 @@ export interface IPointerEvent {
     button: 'left' | 'right';
 }
 
-export interface IPointerService {
+export interface IPointerHandler {
     isDown: boolean;
     isDrag: boolean;
     pointer: MousePointer;

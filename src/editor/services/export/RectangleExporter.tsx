@@ -1,11 +1,11 @@
-import { minBy, sort } from "../../../../../misc/geometry/utils/Functions";
-import { colors } from "../../../../gui/styles";
-import { IViewExporter } from "../../tools/IToolExporter";
+import { minBy, sort } from "../../../misc/geometry/utils/Functions";
+import { colors } from "../../gui/styles";
+import { IViewExporter } from "../../windows/canvas/tools/IToolExporter";
 import React = require("react");
-import { ViewType, View } from "../../models/views/View";
-import { MeshView } from "../../models/views/MeshView";
-import { CanvasItemTag } from "../../models/CanvasItem";
-import { Stores } from '../../../../Stores';
+import { ViewType, View } from "../../windows/canvas/models/views/View";
+import { MeshView } from "../../windows/canvas/models/views/MeshView";
+import { CanvasItemTag } from "../../windows/canvas/models/CanvasItem";
+import { Stores } from '../../stores/Stores';
 
 export class RectangleExporter implements IViewExporter {
     type = ViewType.GameObject;

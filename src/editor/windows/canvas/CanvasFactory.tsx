@@ -1,10 +1,10 @@
 import { WindowFactory } from "../../WindowFactory";
 import * as React from 'react';
 import { CanvasWindow } from "./CanvasWindow";
-import { WindowController } from "../../common/WindowController";
+import { WindowController } from "../WindowController";
 import { Editor } from "../../Editor";
-import { ServiceLocator } from "../../ServiceLocator";
-import { Stores } from "../../Stores";
+import { ServiceLocator } from "../../services/ServiceLocator";
+import { Stores } from "../../stores/Stores";
 import { CanvasComponent } from "./gui/CanvasComponent";
 
 export class CanvasFactory implements WindowFactory {

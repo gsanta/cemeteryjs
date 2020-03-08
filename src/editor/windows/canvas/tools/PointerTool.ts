@@ -1,12 +1,12 @@
 import { AbstractTool } from "./AbstractTool";
 import { CanvasWindow } from "../CanvasWindow";
 import { ToolType } from "./Tool";
-import { UpdateTask } from "../../../common/services/UpdateServices";
+import { UpdateTask } from "../../../services/UpdateServices";
 import { ViewType, View } from "../models/views/View";
 import { CanvasItemTag } from "../models/CanvasItem";
 import { PathView } from "../models/views/PathView";
-import { Stores } from '../../../Stores';
-import { ServiceLocator } from '../../../ServiceLocator';
+import { Stores } from '../../../stores/Stores';
+import { ServiceLocator } from '../../../services/ServiceLocator';
 
 export class PointerTool extends AbstractTool {
     private controller: CanvasWindow;

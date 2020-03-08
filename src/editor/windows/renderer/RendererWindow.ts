@@ -1,11 +1,11 @@
 import { Mesh } from 'babylonjs';
-import { AbstractModelLoader } from '../../common/services/AbstractModelLoader';
-import { IPointerService } from '../../common/services/IPointerService';
-import { MouseService } from '../../common/services/MouseService';
-import { UpdateService } from '../../common/services/UpdateServices';
-import { CanvasViewSettings, WindowController } from '../../common/WindowController';
+import { AbstractModelLoader } from '../../AbstractModelLoader';
+import { IPointerHandler } from '../IPointerHandler';
+import { MouseHandler } from '../MouseHandler';
+import { UpdateService } from '../../services/UpdateServices';
+import { CanvasViewSettings, WindowController } from '../WindowController';
 import { Editor } from '../../Editor';
-import { ServiceLocator } from '../../ServiceLocator';
+import { ServiceLocator } from '../../services/ServiceLocator';
 import { CanvasWindow } from '../canvas/CanvasWindow';
 import { Tool } from '../canvas/tools/Tool';
 import { EditorCamera } from './EditorCamera';
@@ -21,11 +21,11 @@ export class RendererWindow extends WindowController {
     visible = true;
     updateService: UpdateService;
 
-    mouseHander: MouseService;
+    mouseHander: MouseHandler;
 
     writer: WebglCanvasImporter;
     modelLoader: AbstractModelLoader;
-    pointer: IPointerService;
+    pointer: IPointerHandler;
     private helperMeshes: HelperMeshes;
 
     camera: EditorCamera;
@@ -38,7 +38,7 @@ export class RendererWindow extends WindowController {
     constructor(editor: Editor, services: ServiceLocator) {
         super(editor, () => services, () => editor.stores);
         this.updateService = new UpdateService(this.editor, () => services, () => editor.stores);
-        this.mouseHander = new MouseService(this);
+        this.mouseHander = new MouseHandler(this);
         this.pointer = new RendererPointerService(this);
         this.update = this.update.bind(this);
     }

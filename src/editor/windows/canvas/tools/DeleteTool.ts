@@ -1,11 +1,11 @@
-import { UpdateTask } from '../../../common/services/UpdateServices';
-import { ServiceLocator } from '../../../ServiceLocator';
+import { UpdateTask } from '../../../services/UpdateServices';
+import { ServiceLocator } from '../../../services/ServiceLocator';
 import { CanvasWindow } from '../CanvasWindow';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './selection/RectangleSelector';
 import { ToolType } from './Tool';
 import { View } from '../models/views/View';
-import { Stores } from '../../../Stores';
+import { Stores } from '../../../stores/Stores';
 
 export class DeleteTool extends AbstractTool {
     private controller: CanvasWindow;

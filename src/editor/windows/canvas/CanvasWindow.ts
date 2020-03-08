@@ -1,18 +1,18 @@
-import { IPointerService } from '../../common/services/IPointerService';
-import { KeyboardHandler } from '../../common/services/KeyboardHandler';
-import { MouseService } from '../../common/services/MouseService';
-import { UpdateTask } from '../../common/services/UpdateServices';
-import { CanvasViewSettings, WindowController } from '../../common/WindowController';
+import { IPointerHandler } from '../IPointerHandler';
+import { KeyboardHandler } from '../KeyboardHandler';
+import { MouseHandler } from '../MouseHandler';
+import { UpdateTask } from '../../services/UpdateServices';
+import { CanvasViewSettings, WindowController } from '../WindowController';
 import { Editor } from '../../Editor';
-import { ServiceLocator } from '../../ServiceLocator';
-import { Stores } from '../../Stores';
+import { ServiceLocator } from '../../services/ServiceLocator';
+import { Stores } from '../../stores/Stores';
 import { LevelForm } from './forms/LevelForm';
 import { MeshForm } from './forms/MeshForm';
 import { PathForm } from './forms/PathForm';
-import { ExportService } from './io/export/ExportService';
-import { PathExporter } from './io/export/PathExporter';
-import { RectangleExporter } from './io/export/RectangleExporter';
-import { ImportService } from './io/import/ImportService';
+import { ExportService } from '../../services/export/ExportService';
+import { PathExporter } from '../../services/export/PathExporter';
+import { RectangleExporter } from '../../services/export/RectangleExporter';
+import { ImportService } from '../../services/import/ImportService';
 import { Model3DController } from './Model3DController';
 import { FeedbackStore } from './models/FeedbackStore';
 import { CanvasPointerService } from './services/CanvasPointerService';
@@ -26,12 +26,12 @@ export class CanvasWindow extends WindowController {
 
     feedbackStore: FeedbackStore;
 
-    mouseController: MouseService;
+    mouseController: MouseHandler;
     keyboardHandler: KeyboardHandler;
     model3dController: Model3DController;
 
     toolService: ToolService;
-    pointer: IPointerService;
+    pointer: IPointerHandler;
     
     meshViewForm: MeshForm;
     pathForm: PathForm;
@@ -42,7 +42,7 @@ export class CanvasWindow extends WindowController {
 
         this.feedbackStore = new FeedbackStore();
         
-        this.mouseController = new MouseService(this);
+        this.mouseController = new MouseHandler(this);
         this.keyboardHandler = new KeyboardHandler(this);
         this.model3dController = new Model3DController(this, this.getServices);
 

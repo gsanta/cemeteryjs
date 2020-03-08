@@ -1,10 +1,10 @@
 
-import { IViewImporter } from '../../tools/IToolImporter';
-import { Point } from '../../../../../misc/geometry/shapes/Point';
-import { Rectangle } from '../../../../../misc/geometry/shapes/Rectangle';
+import { IViewImporter } from '../../windows/canvas/tools/IToolImporter';
+import { Point } from '../../../misc/geometry/shapes/Point';
+import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
 import { ViewGroupJson } from './ImportService';
-import { MeshView } from '../../models/views/MeshView';
-import { ViewType } from '../../models/views/View';
+import { MeshView } from '../../windows/canvas/models/views/MeshView';
+import { ViewType } from '../../windows/canvas/models/views/View';
 
 export interface RectJson {
     _attributes: {

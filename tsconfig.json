@@ -19,7 +19,7 @@
     },
     "include": [
       "src/**/*.ts",
-      "test/**/*.ts", "src/editor/windows/canvas/io/export/SvgCanvasExporter.tsx", "src/editor/gui/misc/SpinnerComponent.tsx"
+      "test/**/*.ts", "src/editor/services/export/SvgCanvasExporter.tsx", "src/editor/gui/misc/SpinnerComponent.tsx"
     ],
     "exclude": [
       "node_modules"

@@ -5,8 +5,8 @@ import { GlobalSettingsForm } from './windows/canvas/forms/GlobalSettingsForm';
 import { RendererFactory } from './windows/renderer/RendererFactory';
 import { WindowFactory } from './WindowFactory';
 import { CanvasWindow } from './windows/canvas/CanvasWindow';
-import { ServiceLocator } from './ServiceLocator';
-import { Stores } from './Stores';
+import { ServiceLocator } from './services/ServiceLocator';
+import { Stores } from './stores/Stores';
 
 export class Editor {
     gameFacade: GameFacade;

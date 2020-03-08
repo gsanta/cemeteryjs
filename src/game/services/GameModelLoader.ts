@@ -1,5 +1,5 @@
 import { Mesh, Vector3 } from 'babylonjs';
-import { AbstractModelLoader } from '../../editor/common/services/AbstractModelLoader';
+import { AbstractModelLoader } from '../../editor/AbstractModelLoader';
 import { GameFacade } from '../GameFacade';
 
 export class GameModelLoader extends AbstractModelLoader {

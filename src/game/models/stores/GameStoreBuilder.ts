@@ -1,11 +1,11 @@
 import { GameFacade } from "../../GameFacade";
 import { IViewConverter } from "../objects/IViewConverter";
-import { ImportService } from "../../../editor/windows/canvas/io/import/ImportService";
-import { MeshViewImporter } from "../../../editor/windows/canvas/io/import/RectangleImporter";
-import { PathImporter } from "../../../editor/windows/canvas/io/import/PathImporter";
+import { ImportService } from "../../../editor/services/import/ImportService";
+import { MeshViewImporter } from "../../../editor/services/import/RectangleImporter";
+import { PathImporter } from "../../../editor/services/import/PathImporter";
 import { View } from "../../../editor/windows/canvas/models/views/View";
-import { ViewStore } from "../../../editor/windows/canvas/models/ViewStore";
-import { Stores } from "../../../editor/Stores";
+import { ViewStore } from "../../../editor/stores/ViewStore";
+import { Stores } from "../../../editor/stores/Stores";
 
 export class GameStoreBuilder {
     private gameFacade: GameFacade;

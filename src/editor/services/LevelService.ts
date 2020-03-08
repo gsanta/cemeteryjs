@@ -1,6 +1,6 @@
-import { ServiceLocator } from "../ServiceLocator";
-import { Stores } from "../Stores";
-import { UpdateTask } from "../common/services/UpdateServices";
+import { ServiceLocator } from "./ServiceLocator";
+import { Stores } from "../stores/Stores";
+import { UpdateTask } from "./UpdateServices";
 
 export class LevelService {
     serviceName = 'level-service';

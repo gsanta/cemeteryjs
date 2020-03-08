@@ -1,9 +1,9 @@
 import { CanvasWindow } from '../CanvasWindow';
 import { AbstractForm } from './AbstractForm';
-import { UpdateTask } from '../../../common/services/UpdateServices';
+import { UpdateTask } from '../../../services/UpdateServices';
 import { MeshView } from '../models/views/MeshView';
-import { Stores } from '../../../Stores';
-import { ServiceLocator } from '../../../ServiceLocator';
+import { Stores } from '../../../stores/Stores';
+import { ServiceLocator } from '../../../services/ServiceLocator';
 
 export enum GlobalSettingsPropType {
     IMPORT_FILE = 'import file'

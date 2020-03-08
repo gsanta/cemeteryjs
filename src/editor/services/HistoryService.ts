@@ -1,4 +1,4 @@
-import { ServiceLocator } from '../ServiceLocator';
+import { ServiceLocator } from './ServiceLocator';
 
 
 export class HistoryService {

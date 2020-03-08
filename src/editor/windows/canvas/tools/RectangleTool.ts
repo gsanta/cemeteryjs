@@ -1,5 +1,5 @@
 import { Rectangle } from '../../../../misc/geometry/shapes/Rectangle';
-import { UpdateTask } from '../../../common/services/UpdateServices';
+import { UpdateTask } from '../../../services/UpdateServices';
 import { CanvasWindow } from '../CanvasWindow';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './selection/RectangleSelector';
@@ -7,8 +7,8 @@ import { ToolType } from './Tool';
 import { MeshView } from '../models/views/MeshView';
 import { ViewType } from '../models/views/View';
 import { CanvasItemTag } from '../models/CanvasItem';
-import { ServiceLocator } from '../../../ServiceLocator';
-import { Stores } from '../../../Stores';
+import { ServiceLocator } from '../../../services/ServiceLocator';
+import { Stores } from '../../../stores/Stores';
 
 export class RectangleTool extends AbstractTool {
     private lastPreviewRect: MeshView;

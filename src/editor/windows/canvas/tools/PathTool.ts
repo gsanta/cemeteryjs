@@ -1,14 +1,14 @@
 import { Point } from "../../../../misc/geometry/shapes/Point";
 import { ToolType } from "./Tool";
-import { Keyboard } from "../../../common/services/KeyboardHandler";
+import { Keyboard } from "../../KeyboardHandler";
 import { CanvasWindow } from "../CanvasWindow";
 import { AbstractTool } from "./AbstractTool";
-import { UpdateTask } from "../../../common/services/UpdateServices";
+import { UpdateTask } from "../../../services/UpdateServices";
 import { ViewType, View } from "../models/views/View";
 import { PathView } from "../models/views/PathView";
 import { CanvasItemTag } from "../models/CanvasItem";
-import { Stores } from "../../../Stores";
-import { ServiceLocator } from '../../../ServiceLocator';
+import { Stores } from "../../../stores/Stores";
+import { ServiceLocator } from '../../../services/ServiceLocator';
 
 export class PathTool extends AbstractTool {
     private controller: CanvasWindow;

@@ -1,10 +1,10 @@
-import { WindowController } from "../../common/WindowController";
+import { WindowController } from "../WindowController";
 import { Editor } from "../../Editor";
 import { WindowFactory } from "../../WindowFactory";
 import { RendererComponent } from "./gui/RendererComponent";
 import { RendererWindow } from "./RendererWindow";
 import * as React from 'react';
-import { ServiceLocator } from "../../ServiceLocator";
+import { ServiceLocator } from "../../services/ServiceLocator";
 
 export class RendererFactory implements WindowFactory {
     name = 'renderer';

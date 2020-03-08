@@ -1,9 +1,9 @@
 import * as convert from 'xml-js';
-import { IViewImporter } from '../../tools/IToolImporter';
-import { CanvasWindow } from '../../CanvasWindow';
-import { ViewType } from '../../models/views/View';
-import { Point } from '../../../../../misc/geometry/shapes/Point';
-import { Stores } from '../../../../Stores';
+import { IViewImporter } from '../../windows/canvas/tools/IToolImporter';
+import { CanvasWindow } from '../../windows/canvas/CanvasWindow';
+import { ViewType } from '../../windows/canvas/models/views/View';
+import { Point } from '../../../misc/geometry/shapes/Point';
+import { Stores } from '../../stores/Stores';
 import { MeshViewImporter } from './RectangleImporter';
 import { PathImporter } from './PathImporter';
 

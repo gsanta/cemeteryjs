@@ -1,4 +1,4 @@
-import { ServiceLocator } from "../../../ServiceLocator";
+import { ServiceLocator } from "../../../services/ServiceLocator";
 import { CanvasWindow } from "../CanvasWindow";
 import { CameraTool } from "./CameraTool";
 import { DeleteTool } from "./DeleteTool";
@@ -9,7 +9,7 @@ import { PointerTool } from "./PointerTool";
 import { RectangleTool } from "./RectangleTool";
 import { SelectTool } from "./SelectTool";
 import { Tool, ToolType } from "./Tool";
-import { Stores } from '../../../Stores';
+import { Stores } from '../../../stores/Stores';
 
 export class ToolService {
     private tools: Tool[] = [];

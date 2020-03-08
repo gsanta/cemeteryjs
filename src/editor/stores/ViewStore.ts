@@ -1,11 +1,11 @@
-import { CanvasItemTag } from './CanvasItem';
-import { MeshView } from './views/MeshView';
-import { View, ViewType } from './views/View';
-import { PathView } from './views/PathView';
-import { without, maxBy } from '../../../../misc/geometry/utils/Functions';
-import { Rectangle } from '../../../../misc/geometry/shapes/Rectangle';
-import { Point } from '../../../../misc/geometry/shapes/Point';
-import { Polygon } from '../../../../misc/geometry/shapes/Polygon';
+import { CanvasItemTag } from '../windows/canvas/models/CanvasItem';
+import { MeshView } from '../windows/canvas/models/views/MeshView';
+import { View, ViewType } from '../windows/canvas/models/views/View';
+import { PathView } from '../windows/canvas/models/views/PathView';
+import { without, maxBy } from '../../misc/geometry/utils/Functions';
+import { Rectangle } from '../../misc/geometry/shapes/Rectangle';
+import { Point } from '../../misc/geometry/shapes/Point';
+import { Polygon } from '../../misc/geometry/shapes/Polygon';
 
 export enum Layers {
     PREVIEW = -1,

@@ -1,8 +1,8 @@
 import * as ReactDOMServer from 'react-dom/server';
 import * as React from 'react';
-import { IViewExporter } from '../../tools/IToolExporter';
-import { ViewType } from '../../models/views/View';
-import { Stores } from '../../../../Stores';
+import { IViewExporter } from '../../windows/canvas/tools/IToolExporter';
+import { ViewType } from '../../windows/canvas/models/views/View';
+import { Stores } from '../../stores/Stores';
 import { RectangleExporter } from './RectangleExporter';
 import { PathExporter } from './PathExporter';
 

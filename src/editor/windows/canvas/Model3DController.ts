@@ -1,9 +1,9 @@
 import { Engine, Scene, Mesh } from 'babylonjs';
-import { AbstractModelLoader } from '../../common/services/AbstractModelLoader';
+import { AbstractModelLoader } from '../../AbstractModelLoader';
 import { CanvasWindow } from './CanvasWindow';
 import { Point } from '../../../misc/geometry/shapes/Point';
-import { ServiceLocator } from '../../ServiceLocator';
-import { UpdateTask } from '../../common/services/UpdateServices';
+import { ServiceLocator } from '../../services/ServiceLocator';
+import { UpdateTask } from '../../services/UpdateServices';
 import { MeshView } from './models/views/MeshView';
 
 export class Model3DController extends AbstractModelLoader {

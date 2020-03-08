@@ -1,10 +1,10 @@
-import { IPointerService, IPointerEvent } from "../../../common/services/IPointerService";
+import { IPointerHandler, IPointerEvent } from "../../IPointerHandler";
 import { CanvasWindow } from "../CanvasWindow";
-import { MousePointer } from "../../../common/services/MouseService";
+import { MousePointer } from "../../MouseHandler";
 import { Point } from "../../../../misc/geometry/shapes/Point";
 import { View } from "../models/views/View";
-import { ServiceLocator } from '../../../ServiceLocator';
-import { Stores } from "../../../Stores";
+import { ServiceLocator } from '../../../services/ServiceLocator';
+import { Stores } from "../../../stores/Stores";
 
 function calcOffsetFromDom(bitmapEditorId: string): Point {
     if (typeof document !== 'undefined') {
@@ -18,7 +18,7 @@ function calcOffsetFromDom(bitmapEditorId: string): Point {
     return new Point(0, 0);
 }
 
-export class CanvasPointerService implements IPointerService {
+export class CanvasPointerService implements IPointerHandler {
     private controller: CanvasWindow;
     isDown = false;
     isDrag = false;

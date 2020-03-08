@@ -1,8 +1,8 @@
 import { AbstractForm } from './AbstractForm';
-import { UpdateTask } from '../../../common/services/UpdateServices';
+import { UpdateTask } from '../../../services/UpdateServices';
 import { MeshView } from '../models/views/MeshView';
-import { ServiceLocator } from '../../../ServiceLocator';
-import { Stores } from '../../../Stores';
+import { ServiceLocator } from '../../../services/ServiceLocator';
+import { Stores } from '../../../stores/Stores';
 
 export enum LevelFormPropType {
     Level = 'Level',

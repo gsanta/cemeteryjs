@@ -1,9 +1,8 @@
 import { CanvasWindow } from "../windows/canvas/CanvasWindow";
 import { Editor } from "../Editor";
-import { ServiceLocator } from "../ServiceLocator";
+import { ServiceLocator } from "./ServiceLocator";
 
-
-export class LocalStore {
+export class LocalStoreService {
     serviceName = 'local-store'
     private version = 2;
     private name = 'editor';

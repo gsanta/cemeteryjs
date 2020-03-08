@@ -1,12 +1,12 @@
 import { Point } from "../../../../misc/geometry/shapes/Point";
-import { UpdateTask } from '../../../common/services/UpdateServices';
-import { ServiceLocator } from '../../../ServiceLocator';
-import { Stores } from '../../../Stores';
+import { UpdateTask } from '../../../services/UpdateServices';
+import { ServiceLocator } from '../../../services/ServiceLocator';
+import { Stores } from '../../../stores/Stores';
 import { CanvasWindow } from '../CanvasWindow';
 import { Camera } from '../models/Camera';
 import { AbstractTool } from './AbstractTool';
 import { ToolType } from "./Tool";
-import { cameraInitializer } from "../models/CameraStore";
+import { cameraInitializer } from "../../../stores/CameraStore";
 
 function ratioOfViewBox(camera: Camera, ratio: Point): Point {
     return camera.getViewBox().getSize().mul(ratio.x, ratio.y);

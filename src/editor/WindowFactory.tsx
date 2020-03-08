@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { CanvasWindow } from './windows/canvas/CanvasWindow';
-import { WindowController } from './common/WindowController';
+import { WindowController } from './windows/WindowController';
 import { Editor } from './Editor';
 import { RendererComponent } from './windows/renderer/gui/RendererComponent';
 import { CanvasComponent } from './windows/canvas/gui/CanvasComponent';
 import { RendererWindow } from './windows/renderer/RendererWindow';
-import { ServiceLocator } from './ServiceLocator';
-import { Stores } from './Stores';
+import { ServiceLocator } from './services/ServiceLocator';
+import { Stores } from './stores/Stores';
 
 export interface WindowFactory {
     name: string;

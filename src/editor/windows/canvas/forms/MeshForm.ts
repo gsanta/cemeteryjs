@@ -1,9 +1,9 @@
-import { ServiceLocator } from '../../../ServiceLocator';
+import { ServiceLocator } from '../../../services/ServiceLocator';
 import { CanvasWindow } from '../CanvasWindow';
 import { AbstractForm, PropertyType } from "./AbstractForm";
-import { UpdateTask } from '../../../common/services/UpdateServices';
+import { UpdateTask } from '../../../services/UpdateServices';
 import { MeshView } from '../models/views/MeshView';
-import { Stores } from '../../../Stores';
+import { Stores } from '../../../stores/Stores';
 
 export enum MeshViewPropType {
     COLOR = 'color',

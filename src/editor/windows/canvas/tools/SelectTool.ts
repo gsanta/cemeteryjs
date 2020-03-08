@@ -2,11 +2,11 @@ import { CanvasWindow } from "../CanvasWindow";
 import { RectangleSelector } from "./selection/RectangleSelector";
 import { ToolType, Tool } from "./Tool";
 import { AbstractTool } from "./AbstractTool";
-import { UpdateTask } from "../../../common/services/UpdateServices";
+import { UpdateTask } from "../../../services/UpdateServices";
 import { CanvasItemTag } from "../models/CanvasItem";
 import { View } from "../models/views/View";
-import { Stores } from '../../../Stores';
-import { ServiceLocator } from '../../../ServiceLocator';
+import { Stores } from '../../../stores/Stores';
+import { ServiceLocator } from '../../../services/ServiceLocator';
 
 export class SelectTool extends AbstractTool {
     protected controller: CanvasWindow;

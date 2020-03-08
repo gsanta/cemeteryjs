@@ -1,10 +1,10 @@
-import { IViewExporter } from "../../tools/IToolExporter";
+import { IViewExporter } from "../../windows/canvas/tools/IToolExporter";
 import React = require("react");
-import { PathComponent } from "../../gui/PathComponent";
-import { CanvasItemTag } from "../../models/CanvasItem";
-import { PathView } from "../../models/views/PathView";
-import { ViewType, View } from "../../models/views/View";
-import { Stores } from '../../../../Stores';
+import { PathComponent } from "../../windows/canvas/gui/PathComponent";
+import { CanvasItemTag } from "../../windows/canvas/models/CanvasItem";
+import { PathView } from "../../windows/canvas/models/views/PathView";
+import { ViewType, View } from "../../windows/canvas/models/views/View";
+import { Stores } from '../../stores/Stores';
 
 export class PathExporter implements IViewExporter {
     type = ViewType.Path;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Editor } from '../Editor';
-import { ServiceLocator } from '../ServiceLocator';
-import { Stores } from '../Stores';
+import { ServiceLocator } from '../services/ServiceLocator';
+import { Stores } from '../stores/Stores';
 
 export interface AppContextType {
     controllers: Editor;
