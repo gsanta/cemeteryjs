@@ -43,7 +43,7 @@ export class CanvasComponent extends React.Component<{controller: CanvasWindow}>
 
         return (
             <EditorComponentStyled id={this.props.controller.getId()}>
-                <WindowToolbarStyled><CanvasToolbarComponent services={this.context.getServices()} window={this.props.controller as CanvasWindow}/></WindowToolbarStyled>
+                <WindowToolbarStyled><CanvasToolbarComponent window={this.props.controller as CanvasWindow}/></WindowToolbarStyled>
                 <CanvasComponentStyled
                     tabIndex={0}
                     viewBox={stores.cameraStore.getCamera().getViewBoxAsString()}

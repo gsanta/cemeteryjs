@@ -5,7 +5,7 @@ import { LevelFormPropType } from '../../forms/LevelForm';
 import { SettingsRowStyled, LabelStyled, InputStyled } from './FormComponent';
 import { ConnectedInputComponent } from '../../../../gui/inputs/InputComponent';
 import { ButtonComponent } from '../../../../gui/inputs/ButtonComponent';
-import { Stores } from '../../../../Stores';
+import { Stores } from '../../../../stores/Stores';
 
 export interface LevelProps {
     window: CanvasWindow;

@@ -15,6 +15,8 @@ import { UndoIconComponent } from '../../../gui/icons/tools/UndoIconComponent';
 import { RedoIconComponent } from '../../../gui/icons/tools/RedoIconComponent';
 import { DeleteTool } from '../tools/DeleteTool';
 import { ServiceLocator } from '../../../services/ServiceLocator';
+import { UpdateTask } from '../../../services/UpdateServices';
+import { AppContext, AppContextType } from '../../../gui/Context';
 
 const ToolbarStyled = styled.div`
     display: flex;
@@ -27,9 +29,12 @@ const ToolbarStyled = styled.div`
     }
 `;
 
-export class CanvasToolbarComponent extends React.Component<{services: ServiceLocator, window: CanvasWindow}> {
+export class CanvasToolbarComponent extends React.Component<{window: CanvasWindow}> {
+    static contextType = AppContext;
+    context: AppContextType;
+    
     componentDidMount() {
-        this.props.services.updateService().addSettingsRepainter(() => this.forceUpdate());
+        this.context.getServices().updateService().addSettingsRepainter(() => this.forceUpdate());
     }
 
     render(): JSX.Element {
@@ -43,11 +48,22 @@ export class CanvasToolbarComponent extends React.Component<{services: ServiceLo
                 <ZoomOutIconComponent isActive={false} onClick={() => this.zoomOut()} format="short"/>
                 <PanIconComponent isActive={this.isToolActive(ToolType.CAMERA)} onClick={() => this.activateTool(ToolType.CAMERA)} format="short"/>
                 <BlankIconComponent isActive={false} onClick={() => this.blank()} format="short"/>
-                <UndoIconComponent isActive={false} onClick={() => undefined} format="short"/>
-                <RedoIconComponent isActive={false} onClick={() => undefined} format="short"/>
+                <UndoIconComponent isActive={false} onClick={() => this.undo()} format="short"/>
+                <RedoIconComponent isActive={false} onClick={() => this.redo()} format="short"/>
             </ToolbarStyled>
         );
     }
+
+    private undo() {
+        this.context.getServices().historyService().undo();
+        this.context.getServices().updateService().runImmediately(UpdateTask.All);
+    }
+
+    private redo() {
+        this.context.getServices().historyService().redo();
+        this.context.getServices().updateService().runImmediately(UpdateTask.All);
+    }
+
 
     private isToolActive(toolType: ToolType) {
         return this.props.window.toolService.getActiveTool().type === toolType;

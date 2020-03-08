@@ -7,12 +7,12 @@ import { Editor } from "../../../../Editor";
 import { View, ViewType } from "../../models/views/View";
 import { MeshView } from "../../models/views/MeshView";
 import { PathView } from "../../models/views/PathView";
-import { Stores } from '../../../../Stores';
+import { Stores } from "../../../../stores/Stores";
 
 export interface ViewFormProps<T extends View> {
     canvasController: CanvasWindow;
     view: T;
-    getStores: () => Stores
+    getStores: () => Stores;
 }
 
 const PlaceHolderTextStyled = styled.div`

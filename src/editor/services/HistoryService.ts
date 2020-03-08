@@ -1,4 +1,5 @@
 import { ServiceLocator } from './ServiceLocator';
+import { Stores } from '../stores/Stores';
 
 
 export class HistoryService {
@@ -8,14 +9,17 @@ export class HistoryService {
     private memoryLimit = 20;
 
     private getServices: () => ServiceLocator;
+    private getStores: () => Stores;
 
-    constructor(getServices: () => ServiceLocator) {
+    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
         this.getServices = getServices;
+        this.getStores = getStores;
     }
 
     undo() {
         if (this.hasUndoHistory()) {
             this.index = this.index - 1;
+            this.getStores().viewStore.clear();
             this.getServices().importService().import(this.history[this.index]);
         }
     }
@@ -23,6 +27,7 @@ export class HistoryService {
     redo() {
         if (this.hasRedoHistory()) {
             this.index = this.index + 1;
+            this.getStores().viewStore.clear();
             this.getServices().importService().import(this.history[this.index]);
         }
     }

@@ -6,9 +6,8 @@ import '../../editor/gui/misc/SplitPane.css';
 import Split from 'split.js'
 import { windowFactory } from '../WindowFactory';
 import { SidebarComponent } from './SidebarComponent';
-import { WindowController } from '../common/WindowController';
 import { SpinnerOverlayComponent } from './misc/SpinnerOverlayComponent';
-
+import { WindowController } from '../windows/WindowController';
 
 export interface AppState {
     isDialogOpen: boolean;

@@ -5,7 +5,6 @@ import { ExportFileIconComponent } from '../../../../gui/icons/tools/ExportFileI
 import { ConnectedFileUploadComponent } from '../../../../gui/icons/tools/ImportFileIconComponent';
 import { GlobalSettingsPropType } from '../../forms/GlobalSettingsForm';
 import { saveAs } from 'file-saver';
-import { CanvasWindow } from '../../CanvasWindow';
 import { Editor } from '../../../../Editor';
 
 export interface GeneralFormComponentProps {
@@ -40,8 +39,7 @@ export class GeneralFormComponent extends React.Component<GeneralFormComponentPr
     }
 
     private exportFile() {
-        const canvasController = this.props.editor.getWindowControllerByName('canvas') as CanvasWindow;
-        const file = canvasController.exporter.export();
+        const file = this.context.getServices().exportService().export();
         var blob = new Blob([file], { type: "text/plain;charset=utf-8" });
         saveAs(blob, "dynamic.txt");
     }

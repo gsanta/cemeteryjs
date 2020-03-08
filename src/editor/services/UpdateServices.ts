@@ -58,6 +58,7 @@ export class UpdateService {
                 case UpdateTask.SaveData:
                     const map = this.getServices().exportService().export();
                     this.getServices().storageService().storeLevel(this.getStores().levelStore.currentLevel.index, map);
+                    this.getServices().historyService().saveState(map);
                 break;
                 case UpdateTask.All:
                     this.canvasRepainter();

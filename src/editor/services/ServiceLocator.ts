@@ -17,7 +17,7 @@ export class ServiceLocator {
             new UpdateService(editor, () => this, getStores),
             new ImportService(getStores),
             new ExportService(getStores),
-            new HistoryService(() => this)
+            new HistoryService(() => this, getStores)
         ];
     }
 
