@@ -97,7 +97,6 @@ export class RendererView extends View {
     private clearCanvas() {
         this.getGameFacade().clear();
     }
-
     
     viewSettings: CanvasViewSettings = {
         initialSizePercent: 44,

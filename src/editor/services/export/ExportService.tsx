@@ -1,4 +1,6 @@
 import { Stores } from '../../stores/Stores';
+import { Camera } from '../../views/canvas/models/Camera';
+import { CanvasView } from '../../views/canvas/CanvasView';
 
 export interface ViewExporter {
     export(): string;
@@ -23,7 +25,7 @@ export class ExportService {
     }
 
     private createRoot(content: string): string {
-        const camera = this.getStores().cameraStore.getCamera();
+        const camera = this.getStores().viewStore.getViewById(CanvasView.id).getCamera() as Camera;
 
         const root = (
             '<svg data-wg-width="3000" data-wg-height="3000" width="1000" height="1000"' + 

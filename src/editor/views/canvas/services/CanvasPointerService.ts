@@ -95,6 +95,6 @@ export class CanvasPointerService implements IPointerHandler {
 
     private getPointWithOffset(point: Point): Point {
         const offset = this.calcOffset(this.controller.getId());
-        return this.getStores().cameraStore.getCamera().screenToCanvasPoint(new Point(point.x - offset.x, point.y - offset.y));
+        return this.getStores().viewStore.getActiveView().getCamera().screenToCanvasPoint(new Point(point.x - offset.x, point.y - offset.y));
     }
 }

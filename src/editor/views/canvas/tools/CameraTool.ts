@@ -2,11 +2,10 @@ import { Point } from "../../../../misc/geometry/shapes/Point";
 import { UpdateTask } from '../../../services/UpdateServices';
 import { ServiceLocator } from '../../../services/ServiceLocator';
 import { Stores } from '../../../stores/Stores';
-import { CanvasView } from '../CanvasView';
+import { CanvasView, cameraInitializer } from '../CanvasView';
 import { Camera } from '../models/Camera';
 import { AbstractTool } from './AbstractTool';
 import { ToolType } from "./Tool";
-import { cameraInitializer } from "../../../stores/CameraStore";
 
 function ratioOfViewBox(camera: Camera, ratio: Point): Point {
     return camera.getViewBox().getSize().mul(ratio.x, ratio.y);
@@ -20,31 +19,33 @@ export class CameraTool extends AbstractTool {
     readonly LOG_ZOOM_MAX = Math.log(CameraTool.ZOOM_MAX);
     readonly NUM_OF_STEPS: number;
 
-    private controller: CanvasView;
+    private view: CanvasView;
     private getServices: () => ServiceLocator;
     private getStores: () => Stores;
 
-    constructor(controller: CanvasView, getServices: () => ServiceLocator, getStores: () => Stores, numberOfSteps: number = 20) {
+    constructor(view: CanvasView, getServices: () => ServiceLocator, getStores: () => Stores, numberOfSteps: number = 20) {
         super(ToolType.CAMERA);
         this.NUM_OF_STEPS = numberOfSteps;
-        this.controller = controller;
+        this.view = view;
         this.getServices = getServices;
         this.getStores = getStores;
     }
 
     resize() {
-        const prevScale = this.getStores().cameraStore.getCamera().getScale(); 
-        const prevTranslate = this.getStores().cameraStore.getCamera().getViewBox().topLeft; 
+        const camera = this.view.getCamera();
+
+        const prevScale = camera.getScale(); 
+        const prevTranslate = camera.getViewBox().topLeft; 
     
-        this.getStores().cameraStore.setCamera(cameraInitializer(this.controller.getId()));
-        this.getStores().cameraStore.getCamera().moveTo(prevTranslate);
-        this.getStores().cameraStore.getCamera().zoom(prevScale);
+        this.view.setCamera(cameraInitializer(this.view.getId()));
+        camera.moveTo(prevTranslate);
+        camera.zoom(prevScale);
 
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     zoomToNextStep(canvasPos?: Point) {
-        const camera = this.getStores().cameraStore.getCamera();
+        const camera = this.view.getCamera();
         canvasPos = canvasPos ? canvasPos : camera.screenToCanvasPoint(camera.screenSize.getVectorCenter());
         
         const screenPoint = camera.canvasToScreenPoint(canvasPos);
@@ -60,7 +61,7 @@ export class CameraTool extends AbstractTool {
     }
 
     zoomToPrevStep(canvasPos?: Point) {
-        const camera = this.getStores().cameraStore.getCamera();
+        const camera = this.view.getCamera();
         canvasPos = canvasPos ? canvasPos : camera.screenToCanvasPoint(camera.screenSize.getVectorCenter());
 
         const screenPoint = camera.canvasToScreenPoint(canvasPos);
@@ -83,9 +84,9 @@ export class CameraTool extends AbstractTool {
 
     drag() {
         super.drag();
-        const camera = this.getStores().cameraStore.getCamera();
+        const camera = this.view.getCamera();
 
-        const delta = this.controller.pointer.pointer.getScreenDiff().div(camera.getScale());
+        const delta = this.view.pointer.pointer.getScreenDiff().div(camera.getScale());
         
         camera.moveBy(delta.negate());
 
@@ -93,7 +94,7 @@ export class CameraTool extends AbstractTool {
     }
 
     private getNextManualZoomStep(): number {
-        const camera = this.getStores().cameraStore.getCamera();
+        const camera = this.view.getCamera();
 
         let currentStep = this.calcLogarithmicStep(camera.getScale());
         currentStep = currentStep >= this.NUM_OF_STEPS - 1 ? this.NUM_OF_STEPS - 1 : currentStep
@@ -102,7 +103,7 @@ export class CameraTool extends AbstractTool {
     }
 
     private getPrevManualZoomLevel(): number {
-        const camera = this.getStores().cameraStore.getCamera();
+        const camera = this.view.getCamera();
 
         let currentStep = this.calcLogarithmicStep(camera.getScale());
         currentStep = currentStep <= 1 ? 1 : currentStep

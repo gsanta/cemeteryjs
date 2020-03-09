@@ -6,6 +6,7 @@ import { Point } from '../../../misc/geometry/shapes/Point';
 import { Stores } from '../../stores/Stores';
 import { MeshViewImporter } from './RectangleImporter';
 import { PathImporter } from './PathImporter';
+import { Camera } from '../../views/canvas/models/Camera';
 
 export interface WgDefinition {
     _attributes: WgDefinitionAttributes;
@@ -77,10 +78,12 @@ export class ImportService {
     private applyGlobalSettings(rawJson: RawWorldMapJson) {
         if (rawJson.svg._attributes['data-translate']) {
             const topLeft = Point.fromString(rawJson.svg._attributes['data-translate']);
-            this.getStores().cameraStore.getCamera().moveTo(topLeft);
+            const camera = <Camera> this.getStores().viewStore.getViewById(CanvasView.id).getCamera();
+            camera.moveTo(topLeft);
         }        
         const zoom = rawJson.svg._attributes['data-zoom'] ? parseFloat(rawJson.svg._attributes['data-zoom']) : 1;
-        this.getStores().cameraStore.getCamera().zoom(zoom);
+        const camera = <Camera> this.getStores().viewStore.getViewById(CanvasView.id).getCamera();
+        camera.zoom(zoom);
 
     }
 

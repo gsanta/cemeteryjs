@@ -3,6 +3,7 @@ import { GameFacade } from '../../game/GameFacade';
 import { Editor } from '../Editor';
 import { ServiceLocator } from '../services/ServiceLocator';
 import { Stores } from '../stores/Stores';
+import { ICamera } from './renderer/ICamera';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;
@@ -39,6 +40,8 @@ export abstract class View {
     update(): void {}
     over(): void {}
     out(): void {}
+
+    abstract getCamera(): ICamera;
     
     viewSettings: CanvasViewSettings;
 }

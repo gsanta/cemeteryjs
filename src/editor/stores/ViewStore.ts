@@ -15,4 +15,8 @@ export class ViewStore {
     getActiveView(): View {
         return this.activeView;
     }
+
+    getViewById(id: string): View {
+        return this.views.find(view => view.getId() === id);
+    }
 }

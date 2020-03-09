@@ -46,7 +46,7 @@ export class CanvasComponent extends React.Component<{controller: CanvasView}> {
                 <WindowToolbarStyled><CanvasToolbarComponent window={this.props.controller as CanvasView}/></WindowToolbarStyled>
                 <CanvasComponentStyled
                     tabIndex={0}
-                    viewBox={stores.cameraStore.getCamera().getViewBoxAsString()}
+                    viewBox={this.props.controller.getCamera().getViewBoxAsString()}
                     id={this.context.controllers.svgCanvasId}
                     onMouseDown={(e) => this.props.controller.mouseController.onMouseDown(e.nativeEvent)}
                     onMouseMove={(e) => this.props.controller.mouseController.onMouseMove(e.nativeEvent)}

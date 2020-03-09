@@ -25,7 +25,7 @@ export class Editor {
 
     constructor() {
         this.svgCanvasId = 'svg-editor';
-        this.stores = new Stores(this.svgCanvasId);
+        this.stores = new Stores();
         this.services = new ServiceLocator(this, () => this.stores);
 
         this.windowFactories = [

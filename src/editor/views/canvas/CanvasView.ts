@@ -15,18 +15,35 @@ import { CanvasPointerService } from './services/CanvasPointerService';
 import { ToolType } from './tools/Tool';
 import { ToolService } from './tools/ToolService';
 import { CanvasExporter } from './CanvasExporter';
+import { Camera, nullCamera } from './models/Camera';
+import { Point } from '../../../misc/geometry/shapes/Point';
+
+export function cameraInitializer(canvasId: string) {
+    if (typeof document !== 'undefined') {
+        const svg: HTMLElement = document.getElementById(canvasId);
+
+        if (svg) {
+            const rect: ClientRect = svg.getBoundingClientRect();
+            return new Camera(new Point(rect.width, rect.height));
+        } else {
+            return nullCamera;
+        }
+    } else {
+        return nullCamera;
+    }
+}
 
 export class CanvasView extends View {
     name = '2D View';
     static id = 'svg-canvas-controller';
     visible = true;
-
+    
     feedbackStore: FeedbackStore;
-
+    
     mouseController: MouseHandler;
     keyboardHandler: KeyboardHandler;
     model3dController: Model3DController;
-
+    
     toolService: ToolService;
     pointer: IPointerHandler;
     
@@ -34,9 +51,12 @@ export class CanvasView extends View {
     pathForm: PathForm;
     levelForm: LevelForm;
     exporter: CanvasExporter;
+    private camera: Camera = nullCamera;
 
     constructor(editor: Editor, getServices: () => ServiceLocator, getStores: () => Stores) {
         super(editor, getServices, getStores);
+
+        this.getStores().viewStore.setActiveView(this);
         
         this.exporter = new CanvasExporter(this.getStores);
         this.getServices().exportService().registerViewExporter(this.exporter);
@@ -81,6 +101,18 @@ export class CanvasView extends View {
 
     isEmpty(): boolean {
         return this.getStores().conceptStore.getViews().length === 0;
+    }
+
+    getCamera() {
+        if (this.camera === nullCamera) {
+            this.camera = cameraInitializer(CanvasView.id);
+        }
+
+        return this.camera;
+    }
+
+    setCamera(camera: Camera) {
+        this.camera = camera;
     }
 
     viewSettings: CanvasViewSettings = {

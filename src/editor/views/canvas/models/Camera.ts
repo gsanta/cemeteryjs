@@ -1,7 +1,8 @@
 import { Point } from "../../../../misc/geometry/shapes/Point";
 import { Rectangle } from "../../../../misc/geometry/shapes/Rectangle";
+import { ICamera } from '../../renderer/ICamera';
 
-export class Camera {
+export class Camera implements ICamera {
     readonly screenSize: Point;
     private viewBox: Rectangle;
 
