@@ -1,10 +1,10 @@
 import { minBy, sort } from "../../../misc/geometry/utils/Functions";
 import { colors } from "../../gui/styles";
-import { IViewExporter } from "../../windows/canvas/tools/IToolExporter";
+import { IViewExporter } from "../../views/canvas/tools/IToolExporter";
 import React = require("react");
-import { ConceptType, Concept } from "../../windows/canvas/models/concepts/Concept";
-import { MeshConcept } from "../../windows/canvas/models/concepts/MeshConcept";
-import { CanvasItemTag } from "../../windows/canvas/models/CanvasItem";
+import { ConceptType, Concept } from "../../views/canvas/models/concepts/Concept";
+import { MeshConcept } from "../../views/canvas/models/concepts/MeshConcept";
+import { CanvasItemTag } from "../../views/canvas/models/CanvasItem";
 import { Stores } from '../../stores/Stores';
 
 export class RectangleExporter implements IViewExporter {

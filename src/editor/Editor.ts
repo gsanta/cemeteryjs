@@ -1,10 +1,10 @@
 import { GameApi } from '../game/GameApi';
 import { GameFacade } from '../game/GameFacade';
-import { CanvasFactory } from './windows/canvas/CanvasFactory';
-import { GlobalSettingsForm } from './windows/canvas/forms/GlobalSettingsForm';
-import { RendererFactory } from './windows/renderer/RendererFactory';
+import { CanvasFactory } from './views/canvas/CanvasFactory';
+import { GlobalSettingsForm } from './views/canvas/forms/GlobalSettingsForm';
+import { RendererFactory } from './views/renderer/RendererFactory';
 import { WindowFactory } from './WindowFactory';
-import { CanvasWindow } from './windows/canvas/CanvasWindow';
+import { CanvasView } from './views/canvas/CanvasView';
 import { ServiceLocator } from './services/ServiceLocator';
 import { Stores } from './stores/Stores';
 
@@ -33,7 +33,7 @@ export class Editor {
             new RendererFactory()
         ];
 
-        this.globalSettingsForm = new GlobalSettingsForm(this.getWindowControllerByName('canvas') as CanvasWindow, () => this.services, () => this.stores);
+        this.globalSettingsForm = new GlobalSettingsForm(this.getWindowControllerByName('canvas') as CanvasView, () => this.services, () => this.stores);
 
     }
 

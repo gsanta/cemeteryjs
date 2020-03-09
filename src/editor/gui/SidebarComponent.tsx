@@ -1,13 +1,13 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { GeneralFormComponent } from '../windows/canvas/gui/forms/GeneralFormComponent';
 import { AppContext, AppContextType } from './Context';
 import { AccordionComponent } from './misc/AccordionComponent';
 import { colors } from './styles';
-import { formComponentFactory } from '../windows/canvas/gui/forms/formComponentFactory';
-import { GlobalFormComponent } from '../windows/canvas/gui/forms/GlobalFormComponent';
-import { LevelFormComponent } from '../windows/canvas/gui/forms/LevelFormComponent';
-import { CanvasWindow } from '../windows/canvas/CanvasWindow';
+import { GeneralFormComponent } from '../views/canvas/gui/forms/GeneralFormComponent';
+import { LevelFormComponent } from '../views/canvas/gui/forms/LevelFormComponent';
+import { formComponentFactory } from '../views/canvas/gui/forms/formComponentFactory';
+import { GlobalFormComponent } from '../views/canvas/gui/forms/GlobalFormComponent';
+import { CanvasView } from '../views/canvas/CanvasView';
 
 export interface SidebarComponentProps {
     isEditorOpen: boolean;
@@ -45,7 +45,7 @@ export class SidebarComponent extends React.Component<SidebarComponentProps> {
                         },
                         {
                             title: 'Level Settings',
-                            body: <LevelFormComponent getStores={() => this.context.controllers.stores} window={this.context.controllers.getWindowControllerByName('canvas') as CanvasWindow} {...this.props}/>
+                            body: <LevelFormComponent getStores={() => this.context.controllers.stores} window={this.context.controllers.getWindowControllerByName('canvas') as CanvasView} {...this.props}/>
                         },
                         {
                             title: 'Object Settings',

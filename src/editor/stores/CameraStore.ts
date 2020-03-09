@@ -1,4 +1,4 @@
-import { nullCamera, Camera } from "../windows/canvas/models/Camera";
+import { nullCamera, Camera } from "../views/canvas/models/Camera";
 import { Point } from "../../misc/geometry/shapes/Point";
 
 export function cameraInitializer(canvasId: string) {

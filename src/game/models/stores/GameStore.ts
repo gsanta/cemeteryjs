@@ -1,7 +1,7 @@
 import { MeshObject } from '../objects/MeshObject';
 import { IGameObject, GameObjectType } from '../objects/IGameObject';
 import { RouteObject } from '../objects/RouteObject';
-import { PathConcept } from '../../../editor/windows/canvas/models/concepts/PathConcept';
+import { PathConcept } from '../../../editor/views/canvas/models/concepts/PathConcept';
 
 export class GameStore {
     meshObjects: MeshObject[] = [];

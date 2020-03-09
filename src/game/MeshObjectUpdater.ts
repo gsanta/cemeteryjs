@@ -1,6 +1,6 @@
 import { MeshObject } from "./models/objects/MeshObject";
 import { GameFacade } from "./GameFacade";
-import { AnimationState } from "../editor/windows/canvas/models/concepts/MeshConcept";
+import { AnimationState } from "../editor/views/canvas/models/concepts/MeshConcept";
 
 export class MeshObjectUpdater {
     private gameFacade: GameFacade;

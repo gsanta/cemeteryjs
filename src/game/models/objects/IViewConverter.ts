@@ -1,4 +1,4 @@
-import { ConceptType, Concept } from "../../../editor/windows/canvas/models/concepts/Concept";
+import { ConceptType, Concept } from "../../../editor/views/canvas/models/concepts/Concept";
 
 export interface IViewConverter {
     viewType: ConceptType;

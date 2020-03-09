@@ -1,7 +1,7 @@
 import * as convert from 'xml-js';
-import { IViewImporter } from '../../windows/canvas/tools/IToolImporter';
-import { CanvasWindow } from '../../windows/canvas/CanvasWindow';
-import { ConceptType } from '../../windows/canvas/models/concepts/Concept';
+import { IViewImporter } from '../../views/canvas/tools/IToolImporter';
+import { CanvasView } from '../../views/canvas/CanvasView';
+import { ConceptType } from '../../views/canvas/models/concepts/Concept';
 import { Point } from '../../../misc/geometry/shapes/Point';
 import { Stores } from '../../stores/Stores';
 import { MeshViewImporter } from './RectangleImporter';
@@ -50,7 +50,7 @@ export interface ViewGroupJson<T = any> {
 export class ImportService {
     serviceName = 'import-service';
     private viewImporters: IViewImporter[];
-    private controller: CanvasWindow;
+    private controller: CanvasView;
     private getStores: () => Stores;
 
     constructor(getStores: () => Stores) {

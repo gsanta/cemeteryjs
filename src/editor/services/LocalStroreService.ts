@@ -1,4 +1,4 @@
-import { CanvasWindow } from "../windows/canvas/CanvasWindow";
+import { CanvasView } from "../views/canvas/CanvasView";
 import { Editor } from "../Editor";
 import { ServiceLocator } from "./ServiceLocator";
 
@@ -50,7 +50,7 @@ export class LocalStoreService {
 
         const objectStore = db.transaction(["xmls"], "readwrite").objectStore("xmls");
 
-        const controller = <CanvasWindow> this.editor.getWindowControllerByName('canvas');
+        const controller = <CanvasView> this.editor.getWindowControllerByName('canvas');
         const data = await this.getData(objectStore.get(level));
         this.getServices().importService().import(data);
     }

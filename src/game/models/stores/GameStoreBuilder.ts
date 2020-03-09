@@ -3,7 +3,7 @@ import { IViewConverter } from "../objects/IViewConverter";
 import { ImportService } from "../../../editor/services/import/ImportService";
 import { MeshViewImporter } from "../../../editor/services/import/RectangleImporter";
 import { PathImporter } from "../../../editor/services/import/PathImporter";
-import { Concept } from "../../../editor/windows/canvas/models/concepts/Concept";
+import { Concept } from "../../../editor/views/canvas/models/concepts/Concept";
 import { ConceptStore } from "../../../editor/stores/ConceptStore";
 import { Stores } from "../../../editor/stores/Stores";
 

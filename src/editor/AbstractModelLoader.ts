@@ -2,7 +2,7 @@ import { Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, Vector3, StandardMa
 import { Point } from '../misc/geometry/shapes/Point';
 import { MeshObject } from '../game/models/objects/MeshObject';
 import { ServiceLocator } from './services/ServiceLocator';
-import { MeshConcept } from './windows/canvas/models/concepts/MeshConcept';
+import { MeshConcept } from './views/canvas/models/concepts/MeshConcept';
 
 export interface ModelData {
     mesh: Mesh;

@@ -1,7 +1,7 @@
 import { Shape } from '../../misc/geometry/shapes/Shape';
 import { Point } from '../../misc/geometry/shapes/Point';
 import { GameFacade } from '../GameFacade';
-import { WorldItemShape, MeshConcept } from '../../editor/windows/canvas/models/concepts/MeshConcept';
+import { WorldItemShape, MeshConcept } from '../../editor/views/canvas/models/concepts/MeshConcept';
 
 export interface GameObjectConfig {
     type?: string;

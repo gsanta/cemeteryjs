@@ -1,7 +1,7 @@
 import * as ReactDOMServer from 'react-dom/server';
 import * as React from 'react';
-import { IViewExporter } from '../../windows/canvas/tools/IToolExporter';
-import { ConceptType } from '../../windows/canvas/models/concepts/Concept';
+import { IViewExporter } from '../../views/canvas/tools/IToolExporter';
+import { ConceptType } from '../../views/canvas/models/concepts/Concept';
 import { Stores } from '../../stores/Stores';
 import { RectangleExporter } from './RectangleExporter';
 import { PathExporter } from './PathExporter';

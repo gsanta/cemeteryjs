@@ -1,9 +1,9 @@
 import { MeshObject } from "./MeshObject";
 import { GameFacade } from "../../GameFacade";
-import { ConceptType } from "../../../editor/windows/canvas/models/concepts/Concept";
+import { ConceptType } from "../../../editor/views/canvas/models/concepts/Concept";
 import { RouteObject } from "./RouteObject";
 import { Tools } from "babylonjs";
-import { MeshConcept } from "../../../editor/windows/canvas/models/concepts/MeshConcept";
+import { MeshConcept } from "../../../editor/views/canvas/models/concepts/MeshConcept";
 
 
 export class MeshConceptConverter {

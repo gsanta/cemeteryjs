@@ -1,7 +1,7 @@
-import { CanvasItemTag } from '../windows/canvas/models/CanvasItem';
-import { MeshConcept } from '../windows/canvas/models/concepts/MeshConcept';
-import { Concept, ConceptType } from '../windows/canvas/models/concepts/Concept';
-import { PathConcept } from '../windows/canvas/models/concepts/PathConcept';
+import { CanvasItemTag } from '../views/canvas/models/CanvasItem';
+import { MeshConcept } from '../views/canvas/models/concepts/MeshConcept';
+import { Concept, ConceptType } from '../views/canvas/models/concepts/Concept';
+import { PathConcept } from '../views/canvas/models/concepts/PathConcept';
 import { without, maxBy } from '../../misc/geometry/utils/Functions';
 import { Rectangle } from '../../misc/geometry/shapes/Rectangle';
 import { Point } from '../../misc/geometry/shapes/Point';

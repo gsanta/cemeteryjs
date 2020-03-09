@@ -1,7 +1,7 @@
 import { GameFacade } from "../../GameFacade";
 import { PathObject } from "./PathObject";
-import { ConceptType } from "../../../editor/windows/canvas/models/concepts/Concept";
-import { PathConcept } from "../../../editor/windows/canvas/models/concepts/PathConcept";
+import { ConceptType } from "../../../editor/views/canvas/models/concepts/Concept";
+import { PathConcept } from "../../../editor/views/canvas/models/concepts/PathConcept";
 
 
 export class PathConceptConverter {

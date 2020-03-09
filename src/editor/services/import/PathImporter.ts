@@ -1,7 +1,7 @@
-import { IViewImporter } from "../../windows/canvas/tools/IToolImporter";
+import { IViewImporter } from "../../views/canvas/tools/IToolImporter";
 import { ViewGroupJson } from "./ImportService";
-import { PathConcept } from "../../windows/canvas/models/concepts/PathConcept";
-import { ConceptType } from "../../windows/canvas/models/concepts/Concept";
+import { PathConcept } from "../../views/canvas/models/concepts/PathConcept";
+import { ConceptType } from "../../views/canvas/models/concepts/Concept";
 
 export interface PathJson {
     circle: {

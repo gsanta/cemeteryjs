@@ -1,6 +1,6 @@
 import { ImportService } from '../editor/services/import/ImportService';
-import { IViewImporter } from '../editor/windows/canvas/tools/IToolImporter';
-import { GameEngine } from '../editor/windows/renderer/GameEngine';
+import { IViewImporter } from '../editor/views/canvas/tools/IToolImporter';
+import { GameEngine } from '../editor/views/renderer/GameEngine';
 import { CreateMeshModifier } from './import/CreateMeshModifier';
 import { GameObjectFactory } from './import/GameObjectFactory';
 import { IViewConverter } from './models/objects/IViewConverter';
