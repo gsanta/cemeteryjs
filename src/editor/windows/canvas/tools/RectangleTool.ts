@@ -4,14 +4,14 @@ import { CanvasWindow } from '../CanvasWindow';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './selection/RectangleSelector';
 import { ToolType } from './Tool';
-import { MeshView } from '../models/views/MeshView';
-import { ViewType } from '../models/views/View';
+import { MeshConcept } from '../models/concepts/MeshConcept';
+import { ConceptType } from '../models/concepts/Concept';
 import { CanvasItemTag } from '../models/CanvasItem';
 import { ServiceLocator } from '../../../services/ServiceLocator';
 import { Stores } from '../../../stores/Stores';
 
 export class RectangleTool extends AbstractTool {
-    private lastPreviewRect: MeshView;
+    private lastPreviewRect: MeshConcept;
     private rectSelector: RectangleSelector;
     private controller: CanvasWindow;
     private getServices: () => ServiceLocator;
@@ -30,7 +30,7 @@ export class RectangleTool extends AbstractTool {
         const pointer = this.controller.pointer.pointer;
         const rect = Rectangle.squareFromCenterPointAndRadius(pointer.down, 50);
 
-        const gameObject: MeshView = new MeshView(null, rect, name);
+        const gameObject: MeshConcept = new MeshConcept(null, rect, name);
         gameObject.type = 'rect';
         gameObject.rotation = 0;
         gameObject.modelPath = null;
@@ -38,7 +38,7 @@ export class RectangleTool extends AbstractTool {
         gameObject.scale = 1;
         gameObject.color = 'grey';
 
-        gameObject.name = this.getStores().viewStore.generateUniqueName(ViewType.GameObject);
+        gameObject.name = this.getStores().viewStore.generateUniqueName(ConceptType.Mesh);
 
         this.getStores().viewStore.addRect(gameObject);
         this.getStores().viewStore.removeSelectionAll()
@@ -59,14 +59,14 @@ export class RectangleTool extends AbstractTool {
 
         const dimensions = this.controller.feedbackStore.rectSelectFeedback.rect;
 
-        const gameObject: MeshView = new MeshView(null, dimensions, name);
+        const gameObject: MeshConcept = new MeshConcept(null, dimensions, name);
         gameObject.type = 'rect'
         gameObject.rotation = 0;
         gameObject.modelPath = null;
         gameObject.texturePath = null;
         gameObject.scale = 1;
         gameObject.color = 'grey';
-        gameObject.name = this.getStores().viewStore.generateUniqueName(ViewType.GameObject);
+        gameObject.name = this.getStores().viewStore.generateUniqueName(ConceptType.Mesh);
 
         if (positions.length > 0) {
             this.lastPreviewRect = this.getStores().viewStore.addRect(gameObject);

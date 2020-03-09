@@ -2,16 +2,16 @@ import { AbstractTool } from "./AbstractTool";
 import { CanvasWindow } from "../CanvasWindow";
 import { ToolType } from "./Tool";
 import { UpdateTask } from "../../../services/UpdateServices";
-import { ViewType, View } from "../models/views/View";
+import { ConceptType, Concept } from "../models/concepts/Concept";
 import { CanvasItemTag } from "../models/CanvasItem";
-import { PathView } from "../models/views/PathView";
+import { PathConcept } from "../models/concepts/PathConcept";
 import { Stores } from '../../../stores/Stores';
 import { ServiceLocator } from '../../../services/ServiceLocator';
 
 export class PointerTool extends AbstractTool {
     private controller: CanvasWindow;
 
-    private selectableViews: ViewType[];
+    private selectableViews: ConceptType[];
     private getStores: () => Stores;
     private getServices: () => ServiceLocator;
 
@@ -27,7 +27,7 @@ export class PointerTool extends AbstractTool {
 
         if (
             hoveredView &&
-            (!this.selectableViews || this.selectableViews.includes(hoveredView.viewType))
+            (!this.selectableViews || this.selectableViews.includes(hoveredView.conceptType))
         ) {
             this.getStores().viewStore.removeSelectionAll();
             this.getStores().viewStore.addTag([hoveredView], CanvasItemTag.SELECTED);
@@ -48,26 +48,26 @@ export class PointerTool extends AbstractTool {
         }
     }
 
-    over(item: View) {
+    over(item: Concept) {
         this.getStores().viewStore.addTag([item], CanvasItemTag.HOVERED);
         this.updateSubviewHover(item);
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
-    out(item: View) {
+    out(item: Concept) {
         this.getStores().viewStore.getHoveredView() && this.getStores().viewStore.getHoveredView().removeSubviewHover();
         this.getStores().viewStore.removeTagFromAll(CanvasItemTag.HOVERED);
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
-    setSelectableViews(views: ViewType[]) {
+    setSelectableViews(views: ConceptType[]) {
         this.selectableViews = views;
     }
 
-    private updateSubviewHover(item: View) {
-        switch(item.viewType) {
-            case ViewType.Path:
-                (<PathView> item).updateSubviewHover(this.controller.pointer.pointer.curr);
+    private updateSubviewHover(item: Concept) {
+        switch(item.conceptType) {
+            case ConceptType.Path:
+                (<PathConcept> item).updateSubviewHover(this.controller.pointer.pointer.curr);
                 break;
         }
     }

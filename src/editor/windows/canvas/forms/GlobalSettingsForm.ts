@@ -1,7 +1,7 @@
 import { CanvasWindow } from '../CanvasWindow';
 import { AbstractForm } from './AbstractForm';
 import { UpdateTask } from '../../../services/UpdateServices';
-import { MeshView } from '../models/views/MeshView';
+import { MeshConcept } from '../models/concepts/MeshConcept';
 import { Stores } from '../../../stores/Stores';
 import { ServiceLocator } from '../../../services/ServiceLocator';
 
@@ -10,7 +10,7 @@ export enum GlobalSettingsPropType {
 }
 
 export class GlobalSettingsForm extends AbstractForm<GlobalSettingsPropType> {
-    gameObject: MeshView;
+    gameObject: MeshConcept;
 
     private controller: CanvasWindow;
     private getStores: () => Stores;

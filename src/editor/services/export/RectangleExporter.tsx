@@ -2,23 +2,23 @@ import { minBy, sort } from "../../../misc/geometry/utils/Functions";
 import { colors } from "../../gui/styles";
 import { IViewExporter } from "../../windows/canvas/tools/IToolExporter";
 import React = require("react");
-import { ViewType, View } from "../../windows/canvas/models/views/View";
-import { MeshView } from "../../windows/canvas/models/views/MeshView";
+import { ConceptType, Concept } from "../../windows/canvas/models/concepts/Concept";
+import { MeshConcept } from "../../windows/canvas/models/concepts/MeshConcept";
 import { CanvasItemTag } from "../../windows/canvas/models/CanvasItem";
 import { Stores } from '../../stores/Stores';
 
 export class RectangleExporter implements IViewExporter {
-    type = ViewType.GameObject;
+    type = ConceptType.Mesh;
     private getStores: () => Stores;
 
     constructor(getStores: () => Stores) {
         this.getStores = getStores;
     }
 
-    export(hover?: (view: View) => void, unhover?: (view: View) => void): JSX.Element {
+    export(hover?: (view: Concept) => void, unhover?: (view: Concept) => void): JSX.Element {
         const meshGroups = this.getSortedMeshViews().map(item => this.renderGroup(item, hover, unhover));
 
-        return meshGroups.length > 0 ? <g data-view-type={ViewType.GameObject}>{meshGroups}</g> : null;
+        return meshGroups.length > 0 ? <g data-view-type={ConceptType.Mesh}>{meshGroups}</g> : null;
     }
 
     private getSortedMeshViews() {
@@ -27,9 +27,9 @@ export class RectangleExporter implements IViewExporter {
         return sort(items, (a, b) => a.layer - b.layer);
     }
 
-    private renderGroup(item: MeshView, hover?: (view: View) => void, unhover?: (view: View) => void) {
-        const minX = minBy<MeshView>(this.getStores().viewStore.getGameObjects(), (a, b) => a.dimensions.topLeft.x - b.dimensions.topLeft.x).dimensions.topLeft.x;
-        const minY = minBy<MeshView>(this.getStores().viewStore.getGameObjects(), (a, b) => a.dimensions.topLeft.y - b.dimensions.topLeft.y).dimensions.topLeft.y;
+    private renderGroup(item: MeshConcept, hover?: (view: Concept) => void, unhover?: (view: Concept) => void) {
+        const minX = minBy<MeshConcept>(this.getStores().viewStore.getGameObjects(), (a, b) => a.dimensions.topLeft.x - b.dimensions.topLeft.x).dimensions.topLeft.x;
+        const minY = minBy<MeshConcept>(this.getStores().viewStore.getGameObjects(), (a, b) => a.dimensions.topLeft.y - b.dimensions.topLeft.y).dimensions.topLeft.y;
 
         const tranlateX = minX < 0 ? - minX : 0;
         const tranlateY = minY < 0 ? - minY : 0;
@@ -62,7 +62,7 @@ export class RectangleExporter implements IViewExporter {
         )
     }
 
-    private renderRect(item: MeshView) {
+    private renderRect(item: MeshConcept) {
         const viewStore = this.getStores().viewStore;
 
         const stroke = viewStore.getTags(item).has(CanvasItemTag.SELECTED) || viewStore.getTags(item).has(CanvasItemTag.HOVERED) ? colors.views.highlight : 'black';
@@ -80,7 +80,7 @@ export class RectangleExporter implements IViewExporter {
         );
     }
 
-    private renderThumbnail(item: MeshView) {
+    private renderThumbnail(item: MeshConcept) {
         let thumbnail: JSX.Element = null;
             
         if (item.thumbnailPath) {

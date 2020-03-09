@@ -2,7 +2,7 @@ import { Point } from "../../../misc/geometry/shapes/Point";
 import { IPointerEvent, IPointerHandler } from "../IPointerHandler";
 import { MousePointer } from "../MouseHandler";
 import { RendererWindow } from "./RendererWindow";
-import { View } from "../canvas/models/views/View";
+import { Concept } from "../canvas/models/concepts/Concept";
 
 export class RendererPointerService implements IPointerHandler {
     private controller: RendererWindow;
@@ -54,7 +54,7 @@ export class RendererPointerService implements IPointerHandler {
         this.isDrag = false;
     }
 
-    hover(item: View): void {}
+    hover(item: Concept): void {}
     unhover(): void {}
     
     private addScreenOffset(point: Point): Point {

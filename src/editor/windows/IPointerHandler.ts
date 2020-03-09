@@ -1,6 +1,6 @@
 import { Point } from "../../misc/geometry/shapes/Point";
 import { MousePointer } from "./MouseHandler";
-import { View } from "./canvas/models/views/View";
+import { Concept } from "./canvas/models/concepts/Concept";
 
 
 export interface IPointerEvent {
@@ -18,6 +18,6 @@ export interface IPointerHandler {
     pointerMove(e: IPointerEvent): void;
     pointerUp(e: IPointerEvent): void;
     pointerOut(e: IPointerEvent): void;
-    hover(item: View): void;
-    unhover(item: View): void;
+    hover(item: Concept): void;
+    unhover(item: Concept): void;
 }

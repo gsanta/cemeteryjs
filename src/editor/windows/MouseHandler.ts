@@ -1,6 +1,6 @@
 import { Point } from "../../misc/geometry/shapes/Point";
 import { IPointerEvent, IPointerHandler } from "./IPointerHandler";
-import { View } from "./canvas/models/views/View";
+import { Concept } from "./canvas/models/concepts/Concept";
 
 export class MousePointer {
     down: Point;
@@ -46,11 +46,11 @@ export class MouseHandler {
         this.controller.pointer.pointerOut(this.convertEvent(e));
     }
 
-    hover(item: View) {
+    hover(item: Concept) {
         this.controller.pointer.hover(item);
     }
 
-    unhover(item: View) {
+    unhover(item: Concept) {
         this.controller.pointer.unhover(item);
     }
 

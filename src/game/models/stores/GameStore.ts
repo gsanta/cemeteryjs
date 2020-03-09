@@ -1,11 +1,11 @@
 import { MeshObject } from '../objects/MeshObject';
 import { IGameObject, GameObjectType } from '../objects/IGameObject';
 import { RouteObject } from '../objects/RouteObject';
-import { PathView } from '../../../editor/windows/canvas/models/views/PathView';
+import { PathConcept } from '../../../editor/windows/canvas/models/concepts/PathConcept';
 
 export class GameStore {
     meshObjects: MeshObject[] = [];
-    paths: PathView[] = [];
+    paths: PathConcept[] = [];
 
     private nameToObjMap: Map<string, IGameObject> = new Map();
 
@@ -19,7 +19,7 @@ export class GameStore {
         return <MeshObject[]> this.objs.filter(gameObject => gameObject.name === 'enemy');
     }
 
-    addPath(arrow: PathView) {
+    addPath(arrow: PathConcept) {
         this.paths.push(arrow);
     }
 

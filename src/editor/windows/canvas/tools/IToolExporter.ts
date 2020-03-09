@@ -1,7 +1,7 @@
-import { ViewType, View } from "../models/views/View";
+import { ConceptType, Concept } from "../models/concepts/Concept";
 
 
 export interface IViewExporter {
-    type: ViewType;
-    export(hover?: (view: View) => void, unhover?: (view: View) => void): JSX.Element;
+    type: ConceptType;
+    export(hover?: (view: Concept) => void, unhover?: (view: Concept) => void): JSX.Element;
 } 

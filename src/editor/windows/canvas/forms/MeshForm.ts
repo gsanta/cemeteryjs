@@ -2,7 +2,7 @@ import { ServiceLocator } from '../../../services/ServiceLocator';
 import { CanvasWindow } from '../CanvasWindow';
 import { AbstractForm, PropertyType } from "./AbstractForm";
 import { UpdateTask } from '../../../services/UpdateServices';
-import { MeshView } from '../models/views/MeshView';
+import { MeshConcept } from '../models/concepts/MeshConcept';
 import { Stores } from '../../../stores/Stores';
 
 export enum MeshViewPropType {
@@ -26,7 +26,7 @@ const propertyTypes = {
 };
 
 export class MeshForm extends AbstractForm<MeshViewPropType> {
-    gameObject: MeshView;
+    gameObject: MeshConcept;
 
     private controller: CanvasWindow;
 

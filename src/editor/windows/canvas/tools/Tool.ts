@@ -1,4 +1,4 @@
-import { View } from "../models/views/View";
+import { Concept } from "../models/concepts/Concept";
 
 export enum ToolType {
     RECTANGLE = 'rectangle',
@@ -40,8 +40,8 @@ export interface Tool {
     activate(): void;
     leave(): void;
     keydown(): void;
-    over(item: View): void;
-    out(item: View): void;
+    over(item: Concept): void;
+    out(item: Concept): void;
 
     select(): void;
     unselect(): void;

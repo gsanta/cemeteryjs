@@ -1,10 +1,10 @@
 import { LevelStore } from "./LevelStore";
 import { CameraStore } from "./CameraStore";
-import { ViewStore } from "./ViewStore";
+import { ConceptStore } from "./ConceptStore";
 
 
 export class Stores {
-    viewStore = new ViewStore();
+    viewStore = new ConceptStore();
     levelStore = new LevelStore();
     cameraStore: CameraStore;
 

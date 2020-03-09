@@ -1,11 +1,11 @@
 import { ViewGroupJson } from "../../../services/import/ImportService";
-import { ViewType } from "../models/views/View";
+import { ConceptType } from "../models/concepts/Concept";
 
 export interface IViewImporter {
-    type: ViewType;
+    type: ConceptType;
     import(group: ViewGroupJson): void;
 } 
 
-export function getImporterByType(toolType: ViewType, importers: IViewImporter[]) {
+export function getImporterByType(toolType: ConceptType, importers: IViewImporter[]) {
     return importers.find(tool => tool.type === toolType);
 }

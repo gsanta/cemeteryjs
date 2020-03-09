@@ -1,12 +1,12 @@
 import { Rectangle } from "../../../../../misc/geometry/shapes/Rectangle";
 
-export enum ViewType {
-    GameObject = 'GameObject',
+export enum ConceptType {
+    Mesh = 'Mesh',
     Path = 'Path'
 }
 
-export interface View {
-    viewType: ViewType;
+export interface Concept {
+    conceptType: ConceptType;
     dimensions: Rectangle;
     name: string;
     removeSubviewHover(): void;

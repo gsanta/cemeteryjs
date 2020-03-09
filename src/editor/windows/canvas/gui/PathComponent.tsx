@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Point } from '../../../../misc/geometry/shapes/Point';
 import { colors } from '../../../gui/styles';
-import { PathView } from '../models/views/PathView';
+import { PathConcept } from '../models/concepts/PathConcept';
 
 export interface PathComponentProps {
-    item: PathView;
-    onMouseOver(path: PathView): void;
-    onMouseOut(path: PathView): void;
+    item: PathConcept;
+    onMouseOver(path: PathConcept): void;
+    onMouseOut(path: PathConcept): void;
     onlyData: boolean;
     isHovered: boolean;
     isSelected: boolean;

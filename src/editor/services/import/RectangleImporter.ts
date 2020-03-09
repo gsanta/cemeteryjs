@@ -3,8 +3,8 @@ import { IViewImporter } from '../../windows/canvas/tools/IToolImporter';
 import { Point } from '../../../misc/geometry/shapes/Point';
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
 import { ViewGroupJson } from './ImportService';
-import { MeshView } from '../../windows/canvas/models/views/MeshView';
-import { ViewType } from '../../windows/canvas/models/views/View';
+import { MeshConcept } from '../../windows/canvas/models/concepts/MeshConcept';
+import { ConceptType } from '../../windows/canvas/models/concepts/Concept';
 
 export interface RectJson {
     _attributes: {
@@ -22,10 +22,10 @@ export interface RectangleGroupJson extends ViewGroupJson {
 }
 
 export class MeshViewImporter implements IViewImporter {
-    type = ViewType.GameObject;
-    private addGameObject: (rect: MeshView) => void;
+    type = ConceptType.Mesh;
+    private addGameObject: (rect: MeshConcept) => void;
 
-    constructor(addGameObject: (gameObject: MeshView) => void) {
+    constructor(addGameObject: (gameObject: MeshConcept) => void) {
         this.addGameObject = addGameObject;
     }
 
@@ -49,7 +49,7 @@ export class MeshViewImporter implements IViewImporter {
 
             const rectangle = new Rectangle(new Point(x, y), new Point(x + width, y + height));
 
-            const gameObject: MeshView = new MeshView(null, rectangle, name);
+            const gameObject: MeshConcept = new MeshConcept(null, rectangle, name);
             gameObject.type = type;
             gameObject.rotation = rotation;
             gameObject.modelPath = model;

@@ -1,7 +1,7 @@
 import { IViewImporter } from "../../windows/canvas/tools/IToolImporter";
 import { ViewGroupJson } from "./ImportService";
-import { PathView } from "../../windows/canvas/models/views/PathView";
-import { ViewType } from "../../windows/canvas/models/views/View";
+import { PathConcept } from "../../windows/canvas/models/concepts/PathConcept";
+import { ConceptType } from "../../windows/canvas/models/concepts/Concept";
 
 export interface PathJson {
     circle: {
@@ -26,10 +26,10 @@ export interface PathGroupJson extends ViewGroupJson {
 }
 
 export class PathImporter implements IViewImporter {
-    type = ViewType.Path;
-    private addPath: (path: PathView) => void;
+    type = ConceptType.Path;
+    private addPath: (path: PathConcept) => void;
 
-    constructor(addPath: (path: PathView) => void) {
+    constructor(addPath: (path: PathConcept) => void) {
         this.addPath = addPath;
     }
 
@@ -37,7 +37,7 @@ export class PathImporter implements IViewImporter {
         const pathJsons =  (<PathJson[]> group.g).length ? <PathJson[]> group.g : [<PathJson> group.g];
         
         pathJsons.forEach(json => {
-            const path = new PathView();
+            const path = new PathConcept();
             path.name = json.path._attributes['data-name'];
             path.deserialize(json.path._attributes['data-points'], json.path._attributes['data-point-relations']);
 

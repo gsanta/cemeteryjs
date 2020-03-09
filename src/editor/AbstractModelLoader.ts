@@ -2,7 +2,7 @@ import { Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, Vector3, StandardMa
 import { Point } from '../misc/geometry/shapes/Point';
 import { MeshObject } from '../game/models/objects/MeshObject';
 import { ServiceLocator } from './services/ServiceLocator';
-import { MeshView } from './windows/canvas/models/views/MeshView';
+import { MeshConcept } from './windows/canvas/models/concepts/MeshConcept';
 
 export interface ModelData {
     mesh: Mesh;
@@ -38,7 +38,7 @@ export abstract class AbstractModelLoader {
         return Promise.all(promises);
     }
 
-    load(meshObject: MeshObject | MeshView): Promise<Mesh> {
+    load(meshObject: MeshObject | MeshConcept): Promise<Mesh> {
         this.loadedFileNames.add(meshObject.modelPath);
 
         return this.getServices().storageService().loadAsset(meshObject.modelPath)
@@ -46,7 +46,7 @@ export abstract class AbstractModelLoader {
                 .catch(() => this.loadMesh(meshObject, meshObject.modelPath));
     }
 
-    private loadMesh(meshObject: MeshObject | MeshView, dataOrFileName: string): Promise<Mesh> {
+    private loadMesh(meshObject: MeshObject | MeshConcept, dataOrFileName: string): Promise<Mesh> {
         const folder = this.getFolderNameFromFileName(meshObject.modelPath);
         return new Promise(resolve => {
             SceneLoader.ImportMesh(
@@ -75,7 +75,7 @@ export abstract class AbstractModelLoader {
         mesh.isVisible = false;
     }
 
-    private createModelData(meshObject: MeshObject | MeshView, meshes: Mesh[], skeletons: Skeleton[]): Mesh {
+    private createModelData(meshObject: MeshObject | MeshConcept, meshes: Mesh[], skeletons: Skeleton[]): Mesh {
         if (meshes.length === 0) { throw new Error('No mesh was loaded.') }
 
         meshes[0].material = new StandardMaterial(meshObject.modelPath, this.scene);

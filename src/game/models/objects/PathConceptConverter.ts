@@ -1,19 +1,18 @@
 import { GameFacade } from "../../GameFacade";
-import { MeshObject } from "./MeshObject";
 import { PathObject } from "./PathObject";
-import { ViewType } from "../../../editor/windows/canvas/models/views/View";
-import { PathView } from "../../../editor/windows/canvas/models/views/PathView";
+import { ConceptType } from "../../../editor/windows/canvas/models/concepts/Concept";
+import { PathConcept } from "../../../editor/windows/canvas/models/concepts/PathConcept";
 
 
-export class PathViewConverter {
-    viewType: ViewType = ViewType.Path;
+export class PathConceptConverter {
+    viewType: ConceptType = ConceptType.Path;
     private gameFacade: GameFacade;
 
     constructor(gameFacade: GameFacade) {
         this.gameFacade = gameFacade;
     }
 
-    convert(pathView: PathView): void {
+    convert(pathView: PathConcept): void {
         const pathObject = new PathObject();
 
         pathObject.name = pathView.name;

@@ -1,20 +1,20 @@
 import { MeshObject } from "./MeshObject";
 import { GameFacade } from "../../GameFacade";
-import { ViewType } from "../../../editor/windows/canvas/models/views/View";
+import { ConceptType } from "../../../editor/windows/canvas/models/concepts/Concept";
 import { RouteObject } from "./RouteObject";
 import { Tools } from "babylonjs";
-import { MeshView } from "../../../editor/windows/canvas/models/views/MeshView";
+import { MeshConcept } from "../../../editor/windows/canvas/models/concepts/MeshConcept";
 
 
-export class MeshViewConverter {
-    viewType: ViewType = ViewType.GameObject;
+export class MeshConceptConverter {
+    viewType: ConceptType = ConceptType.Mesh;
     private gameFacade: GameFacade;
 
     constructor(gameFacade: GameFacade) {
         this.gameFacade = gameFacade;
     }
 
-    convert(meshView: MeshView): void {
+    convert(meshView: MeshConcept): void {
         if (meshView.path) {
             const routeObject = new RouteObject(
                 () => this.gameFacade.gameStore.getByName(meshView.name),

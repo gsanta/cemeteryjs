@@ -1,6 +1,6 @@
 import { AbstractForm } from './AbstractForm';
 import { UpdateTask } from '../../../services/UpdateServices';
-import { MeshView } from '../models/views/MeshView';
+import { MeshConcept } from '../models/concepts/MeshConcept';
 import { ServiceLocator } from '../../../services/ServiceLocator';
 import { Stores } from '../../../stores/Stores';
 
@@ -11,7 +11,7 @@ export enum LevelFormPropType {
 }
 
 export class LevelForm extends AbstractForm<LevelFormPropType> {
-    gameObject: MeshView;
+    gameObject: MeshConcept;
 
     private getServices: () => ServiceLocator;
     private getStores: () => Stores;

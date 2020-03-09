@@ -1,5 +1,5 @@
 import { Tool, ToolType, ToolReturnType } from './Tool';
-import { View } from '../models/views/View';
+import { Concept } from '../models/concepts/Concept';
 
 export class AbstractTool implements Tool {
     type: ToolType;
@@ -17,8 +17,8 @@ export class AbstractTool implements Tool {
     activate() { }
     resize() { }
     keydown() { }
-    over(item: View) { }
-    out(item: View) { }
+    over(item: Concept) { }
+    out(item: Concept) { }
     leave() { }
 
     select(): void {}

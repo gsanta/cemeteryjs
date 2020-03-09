@@ -1,12 +1,12 @@
-import { View, ViewType } from "./View";
+import { Concept, ConceptType } from "./Concept";
 import { Rectangle } from "../../../../../misc/geometry/shapes/Rectangle";
 import { Point } from "../../../../../misc/geometry/shapes/Point";
 import { minBy, maxBy } from "../../../../../misc/geometry/utils/Functions";
 
 const NULL_BOUNDING_BOX = new Rectangle(new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER), new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER));
 
-export class PathView implements View {
-    viewType = ViewType.Path;
+export class PathConcept implements Concept {
+    conceptType = ConceptType.Path;
     points: Point[] = [];
     edgeList: Map<Point, Point[]> = new Map();
     parentMap: Map<Point, Point> = new Map();

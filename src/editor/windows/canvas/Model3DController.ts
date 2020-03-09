@@ -4,7 +4,7 @@ import { CanvasWindow } from './CanvasWindow';
 import { Point } from '../../../misc/geometry/shapes/Point';
 import { ServiceLocator } from '../../services/ServiceLocator';
 import { UpdateTask } from '../../services/UpdateServices';
-import { MeshView } from './models/views/MeshView';
+import { MeshConcept } from './models/concepts/MeshConcept';
 
 export class Model3DController extends AbstractModelLoader {
     private engine: Engine;
@@ -21,7 +21,7 @@ export class Model3DController extends AbstractModelLoader {
         this.init();
     }
 
-    set3dModelForCanvasItem(gameObject: MeshView) {
+    set3dModelForCanvasItem(gameObject: MeshConcept) {
         if (this.fileNameToMeshMap.has(gameObject.modelPath)) {
             this.setDimensions(gameObject);
         }
@@ -39,7 +39,7 @@ export class Model3DController extends AbstractModelLoader {
         this.fileNameToMeshMap.set(fileName, mesh);
     }
 
-    private setDimensions(meshView: MeshView) {
+    private setDimensions(meshView: MeshConcept) {
         const mesh = this.fileNameToMeshMap.get(meshView.modelPath);
         const dimensions = this.getDimension(mesh).mul(10);
         dimensions.x  = dimensions.x < 50 ? 50 : dimensions.x;
@@ -60,7 +60,7 @@ export class Model3DController extends AbstractModelLoader {
         return new Point(width, height);
     }
 
-    private getAnimations(meshView: MeshView, mesh: Mesh) {
+    private getAnimations(meshView: MeshConcept, mesh: Mesh) {
         return mesh.skeleton ? mesh.skeleton.getAnimationRanges().map(range => range.name) : [];
     }
 

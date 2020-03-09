@@ -1,5 +1,5 @@
 import { Mesh, Vector3 } from 'babylonjs';
-import { View, ViewType } from './View';
+import { Concept, ConceptType } from './Concept';
 import { Rectangle } from '../../../../../misc/geometry/shapes/Rectangle';
 import { BehaviourType } from '../../../../../game/services/behaviour/IBehaviour';
 import { MeshStore } from '../../../../../game/models/stores/MeshStore';
@@ -32,15 +32,15 @@ export enum AnimationState {
 /**
  * `GameObject` represents any distinguishable item in the parsed world (think of it as a mesh, e.g walls, rooms, creatures).
  */
-export class MeshView implements View {
-    viewType = ViewType.GameObject;
+export class MeshConcept implements Concept {
+    conceptType = ConceptType.Mesh;
     type: string;
     meshName: string;
     name: string;
     dimensions: Rectangle;
     rotation: number;
-    children: MeshView[] = [];
-    parent: MeshView;
+    children: MeshConcept[] = [];
+    parent: MeshConcept;
     texturePath: string;
     modelPath: string;
     modelData: string;
@@ -68,11 +68,11 @@ export class MeshView implements View {
         this.rotation = rotation;
     }
 
-    addChild(worldItem: MeshView) {
+    addChild(worldItem: MeshConcept) {
         this.children.push(worldItem);
     }
 
-    equalTo(worldItem: MeshView) {
+    equalTo(worldItem: MeshConcept) {
         return (
             this.name === worldItem.name &&
             this.dimensions.equalTo(worldItem.dimensions) &&

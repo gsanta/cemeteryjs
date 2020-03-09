@@ -4,7 +4,7 @@ import { CanvasWindow } from '../CanvasWindow';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './selection/RectangleSelector';
 import { ToolType } from './Tool';
-import { View } from '../models/views/View';
+import { Concept } from '../models/concepts/Concept';
 import { Stores } from '../../../stores/Stores';
 
 export class DeleteTool extends AbstractTool {
@@ -52,11 +52,11 @@ export class DeleteTool extends AbstractTool {
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
-    over(item: View) {
+    over(item: Concept) {
         this.controller.toolService.pointerTool.over(item);
     }
 
-    out(item: View) {
+    out(item: Concept) {
         this.controller.toolService.pointerTool.out(item);
     }
 

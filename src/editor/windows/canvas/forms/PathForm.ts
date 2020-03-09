@@ -1,12 +1,12 @@
 import { AbstractForm } from "./AbstractForm";
-import { PathView } from "../models/views/PathView";
+import { PathConcept } from "../models/concepts/PathConcept";
 
 export enum PathPropType {
     NAME = 'name'
 }
 
 export class PathForm extends AbstractForm<PathPropType> {
-    path: PathView;
+    path: PathConcept;
 
     protected getProp(prop: PathPropType) {
         switch (prop) {

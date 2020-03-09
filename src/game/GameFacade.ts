@@ -5,8 +5,8 @@ import { CreateMeshModifier } from './import/CreateMeshModifier';
 import { GameObjectFactory } from './import/GameObjectFactory';
 import { IViewConverter } from './models/objects/IViewConverter';
 import { MeshObject } from './models/objects/MeshObject';
-import { MeshViewConverter } from './models/objects/MeshViewConverter';
-import { PathViewConverter } from './models/objects/PathViewConverter';
+import { MeshConceptConverter } from './models/objects/MeshConceptConverter';
+import { PathConceptConverter } from './models/objects/PathConceptConverter';
 import { GameStore } from './models/stores/GameStore';
 import { GameStoreBuilder } from './models/stores/GameStoreBuilder';
 import { MeshStore } from './models/stores/MeshStore';
@@ -78,8 +78,8 @@ export class GameFacade {
         
 
         this.viewConverters = [
-            new MeshViewConverter(this),
-            new PathViewConverter(this)
+            new MeshConceptConverter(this),
+            new PathConceptConverter(this)
         ]
     }
     

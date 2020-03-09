@@ -1,6 +1,6 @@
-import { ViewType } from "../models/views/View";
+import { ConceptType } from "../models/concepts/Concept";
 
 
 export interface IToolType {
-    type: ViewType;
+    type: ConceptType;
 }

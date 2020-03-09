@@ -4,7 +4,7 @@ import { ToolType, Tool } from "./Tool";
 import { AbstractTool } from "./AbstractTool";
 import { UpdateTask } from "../../../services/UpdateServices";
 import { CanvasItemTag } from "../models/CanvasItem";
-import { View } from "../models/views/View";
+import { Concept } from "../models/concepts/Concept";
 import { Stores } from '../../../stores/Stores';
 import { ServiceLocator } from '../../../services/ServiceLocator';
 
@@ -71,11 +71,11 @@ export class SelectTool extends AbstractTool {
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
-    over(item: View) {
+    over(item: Concept) {
         this.controller.toolService.pointerTool.over(item);
     }
 
-    out(item: View) {
+    out(item: Concept) {
         this.controller.toolService.pointerTool.out(item);
     }
 }

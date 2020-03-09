@@ -3,8 +3,8 @@ import { IViewConverter } from "../objects/IViewConverter";
 import { ImportService } from "../../../editor/services/import/ImportService";
 import { MeshViewImporter } from "../../../editor/services/import/RectangleImporter";
 import { PathImporter } from "../../../editor/services/import/PathImporter";
-import { View } from "../../../editor/windows/canvas/models/views/View";
-import { ViewStore } from "../../../editor/stores/ViewStore";
+import { Concept } from "../../../editor/windows/canvas/models/concepts/Concept";
+import { ConceptStore } from "../../../editor/stores/ConceptStore";
 import { Stores } from "../../../editor/stores/Stores";
 
 export class GameStoreBuilder {
@@ -25,7 +25,7 @@ export class GameStoreBuilder {
         this.getStores().viewStore.getViews().forEach(view => this.getViewConverter(view)?.convert(view));
     }
 
-    private getViewConverter(view: View): IViewConverter {
-        return this.gameFacade.viewConverters.find(converter => converter.viewType === view.viewType);
+    private getViewConverter(view: Concept): IViewConverter {
+        return this.gameFacade.viewConverters.find(converter => converter.viewType === view.conceptType);
     }
 }

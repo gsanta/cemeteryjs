@@ -1,5 +1,5 @@
 import { MeshObject } from '../../models/objects/MeshObject';
-import { AnimationName } from '../../../editor/windows/canvas/models/views/MeshView';
+import { AnimationName } from '../../../editor/windows/canvas/models/concepts/MeshConcept';
 
 export class CharacterMovement {
     private animationTimeouts: Map<MeshObject, number> = new Map();

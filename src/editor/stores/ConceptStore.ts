@@ -1,34 +1,27 @@
 import { CanvasItemTag } from '../windows/canvas/models/CanvasItem';
-import { MeshView } from '../windows/canvas/models/views/MeshView';
-import { View, ViewType } from '../windows/canvas/models/views/View';
-import { PathView } from '../windows/canvas/models/views/PathView';
+import { MeshConcept } from '../windows/canvas/models/concepts/MeshConcept';
+import { Concept, ConceptType } from '../windows/canvas/models/concepts/Concept';
+import { PathConcept } from '../windows/canvas/models/concepts/PathConcept';
 import { without, maxBy } from '../../misc/geometry/utils/Functions';
 import { Rectangle } from '../../misc/geometry/shapes/Rectangle';
 import { Point } from '../../misc/geometry/shapes/Point';
 import { Polygon } from '../../misc/geometry/shapes/Polygon';
 
-export enum Layers {
-    PREVIEW = -1,
-    ROOM = 0,
-    SUBAREA = 1,
-    DEFAULT = 2
-}
-
-export class ViewStore{
-    private tags: Map<View, Set<CanvasItemTag>> = new Map();
-    private views: View[] = [];
+export class ConceptStore {
+    private tags: Map<Concept, Set<CanvasItemTag>> = new Map();
+    private views: Concept[] = [];
     private naming: Naming;
 
     constructor() {
         this.naming = new Naming(this);
     }
 
-    addPath(arrow: PathView) {
+    addPath(arrow: PathConcept) {
         this.views.push(arrow);
         this.tags.set(arrow, new Set());
     }
 
-    addRect(gameObject: MeshView): MeshView {
+    addRect(gameObject: MeshConcept): MeshConcept {
         this.views.push(gameObject);
 
         this.tags.set(gameObject, new Set());
@@ -36,7 +29,7 @@ export class ViewStore{
         return gameObject;
     }
 
-    remove(view: View) {
+    remove(view: Concept) {
         this.views = without(this.views, view);
     }
 
@@ -45,7 +38,7 @@ export class ViewStore{
         this.tags = new Map();
     }
 
-    getIntersectingItemsInRect(rectangle: Rectangle): View[] {
+    getIntersectingItemsInRect(rectangle: Rectangle): Concept[] {
         const x = rectangle.topLeft.x;
         const y = rectangle.topLeft.y;
         const width = Math.floor(rectangle.bottomRight.x - rectangle.topLeft.x);
@@ -56,21 +49,21 @@ export class ViewStore{
         return this.views.filter(item => polygon.contains(item.dimensions));
     }
 
-    getIntersectingItemsAtPoint(point: Point): View[] {
+    getIntersectingItemsAtPoint(point: Point): Concept[] {
         const gridPoint = new Point(point.x, point.y);
 
         return this.views.filter(item => item.dimensions.containsPoint(gridPoint));
     }
 
-    getTags(gameObject: View): Set<CanvasItemTag> {
+    getTags(gameObject: Concept): Set<CanvasItemTag> {
         return this.tags.get(gameObject);
     }
 
-    addTag(views: View[], tag: CanvasItemTag): void {
+    addTag(views: Concept[], tag: CanvasItemTag): void {
         views.forEach(item => this.tags.get(item).add(tag));
     }
 
-    removeTag(views: View[], tag: CanvasItemTag) {
+    removeTag(views: Concept[], tag: CanvasItemTag) {
         views.forEach(item => this.tags.get(item).delete(tag));
     }
 
@@ -78,77 +71,77 @@ export class ViewStore{
         this.views.forEach(item => this.tags.get(item).delete(tag));
     }
 
-    getTaggedItems(tag: CanvasItemTag): View[] {
+    getTaggedItems(tag: CanvasItemTag): Concept[] {
         return this.views.filter(item => this.tags.get(item).has(tag));
     }
 
-    getViews(): View[] {
+    getViews(): Concept[] {
         return this.views;
     }
 
-    getViewsByType(viewType: ViewType): View[] {
-        return this.views.filter(v => v.viewType === viewType);
+    getViewsByType(viewType: ConceptType): Concept[] {
+        return this.views.filter(v => v.conceptType === viewType);
     }
 
-    getGameObjects(): MeshView[] {
-        return <MeshView[]> this.views.filter(view => view.viewType === ViewType.GameObject);
+    getGameObjects(): MeshConcept[] {
+        return <MeshConcept[]> this.views.filter(view => view.conceptType === ConceptType.Mesh);
     }
 
-    getPathes(): PathView[] {
-        return <PathView[]> this.views.filter(view => view.viewType === ViewType.Path);
+    getPathes(): PathConcept[] {
+        return <PathConcept[]> this.views.filter(view => view.conceptType === ConceptType.Path);
     }
 
-    getHoveredView(): View {
+    getHoveredView(): Concept {
         return this.getTaggedItems(CanvasItemTag.HOVERED)[0];
     }
 
-    getSelectedViews(): View[] {
+    getSelectedViews(): Concept[] {
         return this.getTaggedItems(CanvasItemTag.SELECTED);
     }
 
-    getSelectedPathes(): PathView[] {
-        return <PathView[]> this.getSelectedViews().filter(v => v.viewType === ViewType.Path);
+    getSelectedPathes(): PathConcept[] {
+        return <PathConcept[]> this.getSelectedViews().filter(v => v.conceptType === ConceptType.Path);
     }
 
-    getSelectedGameObjects(): MeshView[] {
-        return <MeshView[]> this.getSelectedViews().filter(v => v.viewType === ViewType.GameObject);
+    getSelectedGameObjects(): MeshConcept[] {
+        return <MeshConcept[]> this.getSelectedViews().filter(v => v.conceptType === ConceptType.Mesh);
     }
 
     removeSelectionAll() {
         this.removeTag(this.getSelectedViews(), CanvasItemTag.SELECTED);
     }
 
-    generateUniqueName(viewType: ViewType) {
+    generateUniqueName(viewType: ConceptType) {
         return this.naming.generateName(viewType);
     }
 }
 
 export class Naming {
-    private viewStore: ViewStore;
+    private viewStore: ConceptStore;
 
-    constructor(viewStore: ViewStore) {
+    constructor(viewStore: ConceptStore) {
         this.viewStore = viewStore;
     }
 
-    generateName(type: ViewType) {
+    generateName(type: ConceptType) {
         const name = `${type}${this.getMaxIndex(type) + 1}`.toLocaleLowerCase();
         return name;
     }
 
-    private getMaxIndex(type: ViewType): number {
+    private getMaxIndex(type: ConceptType): number {
         const pattern = this.createPattern(type);
         const views = this.viewStore.getViewsByType(type).filter(view => view.name.match(pattern));
 
         if (views.length === 0) {
             return 0;
         } else {
-            const max = maxBy<View>(views, (a, b) => parseInt(a.name.match(pattern)[1], 10) - parseInt(b.name.match(pattern)[1], 10));
+            const max = maxBy<Concept>(views, (a, b) => parseInt(a.name.match(pattern)[1], 10) - parseInt(b.name.match(pattern)[1], 10));
             return parseInt(max.name.match(pattern)[1], 10);
         }
 
     }
 
-    private createPattern(type: ViewType) {
+    private createPattern(type: ConceptType) {
         return new RegExp(`${type}(\\d+)`, 'i');
     }
 }

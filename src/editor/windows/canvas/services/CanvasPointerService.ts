@@ -2,7 +2,7 @@ import { IPointerHandler, IPointerEvent } from "../../IPointerHandler";
 import { CanvasWindow } from "../CanvasWindow";
 import { MousePointer } from "../../MouseHandler";
 import { Point } from "../../../../misc/geometry/shapes/Point";
-import { View } from "../models/views/View";
+import { Concept } from "../models/concepts/Concept";
 import { ServiceLocator } from '../../../services/ServiceLocator';
 import { Stores } from "../../../stores/Stores";
 
@@ -78,12 +78,12 @@ export class CanvasPointerService implements IPointerHandler {
         this.isDrag = false;
     }
 
-    hover(item: View): void {
+    hover(item: Concept): void {
         this.controller.toolService.getActiveTool().over(item);
         this.getServices().updateService().runScheduledTasks();
     }
 
-    unhover(item: View): void {
+    unhover(item: Concept): void {
         this.controller.toolService.getActiveTool().out(item);
         this.getServices().updateService().runScheduledTasks();
     }

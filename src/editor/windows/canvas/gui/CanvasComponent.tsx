@@ -6,7 +6,7 @@ import { colors } from '../../../gui/styles';
 import { CanvasWindow } from '../CanvasWindow';
 import { AppContext, AppContextType } from '../../../gui/Context';
 import { WindowToolbarStyled } from '../../../gui/windows/WindowToolbar';
-import { ViewType, View } from '../models/views/View';
+import { ConceptType, Concept } from '../models/concepts/Concept';
 
 
 const EditorComponentStyled = styled.div`
@@ -38,8 +38,8 @@ export class CanvasComponent extends React.Component<{controller: CanvasWindow}>
     render(): JSX.Element {
         const stores = this.context.getStores();
 
-        const hover = (view: View) => this.props.controller.mouseController.hover(view);
-        const unhover = (view: View) => this.props.controller.mouseController.unhover(view);
+        const hover = (view: Concept) => this.props.controller.mouseController.hover(view);
+        const unhover = (view: Concept) => this.props.controller.mouseController.unhover(view);
 
         return (
             <EditorComponentStyled id={this.props.controller.getId()}>
@@ -58,8 +58,8 @@ export class CanvasComponent extends React.Component<{controller: CanvasWindow}>
                     <defs>
                         <PathMarkersComponent/>
                     </defs>
-                    {this.context.getServices().exportService().getViewExporter(ViewType.GameObject).export(hover, unhover)}
-                    {this.context.getServices().exportService().getViewExporter(ViewType.Path).export(hover, unhover)}
+                    {this.context.getServices().exportService().getViewExporter(ConceptType.Mesh).export(hover, unhover)}
+                    {this.context.getServices().exportService().getViewExporter(ConceptType.Path).export(hover, unhover)}
                     {this.renderFeedbacks()}
                 </CanvasComponentStyled>
             </EditorComponentStyled>

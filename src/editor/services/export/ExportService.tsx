@@ -1,7 +1,7 @@
 import * as ReactDOMServer from 'react-dom/server';
 import * as React from 'react';
 import { IViewExporter } from '../../windows/canvas/tools/IToolExporter';
-import { ViewType } from '../../windows/canvas/models/views/View';
+import { ConceptType } from '../../windows/canvas/models/concepts/Concept';
 import { Stores } from '../../stores/Stores';
 import { RectangleExporter } from './RectangleExporter';
 import { PathExporter } from './PathExporter';
@@ -20,7 +20,7 @@ export class ExportService {
         return ReactDOMServer.renderToStaticMarkup(this.renderRoot());
     }
 
-    getViewExporter(viewType: ViewType) {
+    getViewExporter(viewType: ConceptType) {
         return this.viewExporters.find(exporter => exporter.type === viewType);
     }
 
