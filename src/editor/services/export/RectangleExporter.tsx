@@ -1,13 +1,13 @@
 import { minBy, sort } from "../../../misc/geometry/utils/Functions";
 import { colors } from "../../gui/styles";
-import { IViewExporter } from "../../views/canvas/tools/IToolExporter";
+import { IConceptExporter } from "../../views/canvas/tools/IConceptExporter";
 import React = require("react");
 import { ConceptType, Concept } from "../../views/canvas/models/concepts/Concept";
 import { MeshConcept } from "../../views/canvas/models/concepts/MeshConcept";
 import { CanvasItemTag } from "../../views/canvas/models/CanvasItem";
 import { Stores } from '../../stores/Stores';
 
-export class RectangleExporter implements IViewExporter {
+export class RectangleExporter implements IConceptExporter {
     type = ConceptType.Mesh;
     private getStores: () => Stores;
 
@@ -22,14 +22,14 @@ export class RectangleExporter implements IViewExporter {
     }
 
     private getSortedMeshViews() {
-        const viewStore = this.getStores().viewStore;
+        const viewStore = this.getStores().conceptStore;
         let items = [...viewStore.getGameObjects()];
         return sort(items, (a, b) => a.layer - b.layer);
     }
 
     private renderGroup(item: MeshConcept, hover?: (view: Concept) => void, unhover?: (view: Concept) => void) {
-        const minX = minBy<MeshConcept>(this.getStores().viewStore.getGameObjects(), (a, b) => a.dimensions.topLeft.x - b.dimensions.topLeft.x).dimensions.topLeft.x;
-        const minY = minBy<MeshConcept>(this.getStores().viewStore.getGameObjects(), (a, b) => a.dimensions.topLeft.y - b.dimensions.topLeft.y).dimensions.topLeft.y;
+        const minX = minBy<MeshConcept>(this.getStores().conceptStore.getGameObjects(), (a, b) => a.dimensions.topLeft.x - b.dimensions.topLeft.x).dimensions.topLeft.x;
+        const minY = minBy<MeshConcept>(this.getStores().conceptStore.getGameObjects(), (a, b) => a.dimensions.topLeft.y - b.dimensions.topLeft.y).dimensions.topLeft.y;
 
         const tranlateX = minX < 0 ? - minX : 0;
         const tranlateY = minY < 0 ? - minY : 0;
@@ -63,7 +63,7 @@ export class RectangleExporter implements IViewExporter {
     }
 
     private renderRect(item: MeshConcept) {
-        const viewStore = this.getStores().viewStore;
+        const viewStore = this.getStores().conceptStore;
 
         const stroke = viewStore.getTags(item).has(CanvasItemTag.SELECTED) || viewStore.getTags(item).has(CanvasItemTag.HOVERED) ? colors.views.highlight : 'black';
 

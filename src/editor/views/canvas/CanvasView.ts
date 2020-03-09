@@ -5,7 +5,7 @@ import { Stores } from '../../stores/Stores';
 import { IPointerHandler } from '../IPointerHandler';
 import { KeyboardHandler } from '../KeyboardHandler';
 import { MouseHandler } from '../MouseHandler';
-import { CanvasViewSettings, ViewController } from '../ViewController';
+import { CanvasViewSettings, View } from '../View';
 import { LevelForm } from './forms/LevelForm';
 import { MeshForm } from './forms/MeshForm';
 import { PathForm } from './forms/PathForm';
@@ -14,8 +14,9 @@ import { FeedbackStore } from './models/FeedbackStore';
 import { CanvasPointerService } from './services/CanvasPointerService';
 import { ToolType } from './tools/Tool';
 import { ToolService } from './tools/ToolService';
+import { CanvasExporter } from './CanvasExporter';
 
-export class CanvasView extends ViewController {
+export class CanvasView extends View {
     name = '2D View';
     static id = 'svg-canvas-controller';
     visible = true;
@@ -32,10 +33,13 @@ export class CanvasView extends ViewController {
     meshViewForm: MeshForm;
     pathForm: PathForm;
     levelForm: LevelForm;
+    exporter: CanvasExporter;
 
     constructor(editor: Editor, getServices: () => ServiceLocator, getStores: () => Stores) {
         super(editor, getServices, getStores);
-
+        
+        this.exporter = new CanvasExporter(this.getStores);
+        this.getServices().exportService().registerViewExporter(this.exporter);
         this.feedbackStore = new FeedbackStore();
         
         this.mouseController = new MouseHandler(this);
@@ -75,12 +79,8 @@ export class CanvasView extends ViewController {
         this.visible = visible;
     }
 
-    activate(): void {
-        // this.
-    }
-
     isEmpty(): boolean {
-        return this.getStores().viewStore.getViews().length === 0;
+        return this.getStores().conceptStore.getViews().length === 0;
     }
 
     viewSettings: CanvasViewSettings = {

@@ -78,12 +78,12 @@ export class CanvasPointerService implements IPointerHandler {
         this.isDrag = false;
     }
 
-    hover(item: Concept): void {
+    hover(item: any): void {
         this.controller.toolService.getActiveTool().over(item);
         this.getServices().updateService().runScheduledTasks();
     }
 
-    unhover(item: Concept): void {
+    unhover(item: any): void {
         this.controller.toolService.getActiveTool().out(item);
         this.getServices().updateService().runScheduledTasks();
     }
@@ -97,5 +97,4 @@ export class CanvasPointerService implements IPointerHandler {
         const offset = this.calcOffset(this.controller.getId());
         return this.getStores().cameraStore.getCamera().screenToCanvasPoint(new Point(point.x - offset.x, point.y - offset.y));
     }
-
 }

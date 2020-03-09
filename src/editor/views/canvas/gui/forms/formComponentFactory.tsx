@@ -22,7 +22,7 @@ const PlaceHolderTextStyled = styled.div`
 
 export function formComponentFactory(editor: Editor, getStores: () => Stores): JSX.Element {
     const canvasController = (editor.getWindowControllerByName('canvas') as CanvasView);
-    const selectedViews = getStores().viewStore.getSelectedViews();
+    const selectedViews = getStores().conceptStore.getSelectedViews();
     if (selectedViews.length !== 1) {
         return <PlaceHolderTextStyled>Select an object on canvas to change it's properties</PlaceHolderTextStyled>
     }

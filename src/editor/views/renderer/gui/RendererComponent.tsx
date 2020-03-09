@@ -70,6 +70,8 @@ export class RendererComponent extends React.Component<RendererComponentProps> {
                         onMouseMove={(e) => this.props.controller.mouseHander.onMouseMove(e.nativeEvent)}
                         onMouseUp={(e) => this.props.controller.mouseHander.onMouseUp(e.nativeEvent)}
                         onMouseLeave={(e) => this.props.controller.mouseHander.onMouseOut(e.nativeEvent)}
+                        onMouseOver={() => this.props.controller.over()}
+                        onMouseOut={() => this.props.controller.out()}
                     />
                 </RendererStyled>
         );

@@ -38,11 +38,11 @@ export class RectangleTool extends AbstractTool {
         gameObject.scale = 1;
         gameObject.color = 'grey';
 
-        gameObject.name = this.getStores().viewStore.generateUniqueName(ConceptType.Mesh);
+        gameObject.name = this.getStores().conceptStore.generateUniqueName(ConceptType.Mesh);
 
-        this.getStores().viewStore.addRect(gameObject);
-        this.getStores().viewStore.removeSelectionAll()
-        this.getStores().viewStore.addTag([gameObject], CanvasItemTag.SELECTED);
+        this.getStores().conceptStore.addRect(gameObject);
+        this.getStores().conceptStore.removeSelectionAll()
+        this.getStores().conceptStore.addTag([gameObject], CanvasItemTag.SELECTED);
 
         this.getServices().levelService().updateCurrentLevel();
         this.getServices().updateService().scheduleTasks(UpdateTask.All);
@@ -51,7 +51,7 @@ export class RectangleTool extends AbstractTool {
     drag() {
         super.drag()
         if (this.lastPreviewRect) {
-            this.getStores().viewStore.remove(this.lastPreviewRect);
+            this.getStores().conceptStore.remove(this.lastPreviewRect);
         }
         this.rectSelector.updateRect(this.controller.pointer.pointer);
         this.controller.feedbackStore.rectSelectFeedback.isVisible = false;
@@ -66,10 +66,10 @@ export class RectangleTool extends AbstractTool {
         gameObject.texturePath = null;
         gameObject.scale = 1;
         gameObject.color = 'grey';
-        gameObject.name = this.getStores().viewStore.generateUniqueName(ConceptType.Mesh);
+        gameObject.name = this.getStores().conceptStore.generateUniqueName(ConceptType.Mesh);
 
         if (positions.length > 0) {
-            this.lastPreviewRect = this.getStores().viewStore.addRect(gameObject);
+            this.lastPreviewRect = this.getStores().conceptStore.addRect(gameObject);
     
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
         }

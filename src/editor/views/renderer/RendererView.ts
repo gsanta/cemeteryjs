@@ -1,13 +1,12 @@
 import { Mesh } from 'babylonjs';
 import { AbstractModelLoader } from '../../AbstractModelLoader';
-import { IPointerHandler } from '../IPointerHandler';
-import { MouseHandler } from '../MouseHandler';
-import { UpdateService } from '../../services/UpdateServices';
-import { CanvasViewSettings, ViewController } from '../ViewController';
 import { Editor } from '../../Editor';
 import { ServiceLocator } from '../../services/ServiceLocator';
-import { CanvasView } from '../canvas/CanvasView';
+import { UpdateService } from '../../services/UpdateServices';
 import { Tool } from '../canvas/tools/Tool';
+import { IPointerHandler } from '../IPointerHandler';
+import { MouseHandler } from '../MouseHandler';
+import { CanvasViewSettings, View } from '../View';
 import { EditorCamera } from './EditorCamera';
 import { HelperMeshes } from './HelperMeshes';
 import { RendererCameraTool } from './RendererCameraTool';
@@ -15,7 +14,7 @@ import { RendererPointerService } from './RendererPointerService';
 import { WebglCanvasImporter } from './WebglCanvasImporter';
 (<any> window).earcut = require('earcut');
 
-export class RendererView extends ViewController {
+export class RendererView extends View {
     name = '3D View';
     static id = 'webgl-editor';
     visible = true;
@@ -37,6 +36,7 @@ export class RendererView extends ViewController {
 
     constructor(editor: Editor, services: ServiceLocator) {
         super(editor, () => services, () => editor.stores);
+
         this.updateService = new UpdateService(this.editor, () => services, () => editor.stores);
         this.mouseHander = new MouseHandler(this);
         this.pointer = new RendererPointerService(this);
@@ -93,8 +93,6 @@ export class RendererView extends ViewController {
     setVisible(visible: boolean) {
         this.visible = visible;
     }
-
-    activate(): void {}
 
     private clearCanvas() {
         this.getGameFacade().clear();

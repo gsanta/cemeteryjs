@@ -28,8 +28,8 @@ export class DeleteTool extends AbstractTool {
 
     click() {
         this.controller.toolService.pointerTool.click()
-        const hovered = this.getStores().viewStore.getHoveredView();
-        hovered && this.getStores().viewStore.remove(hovered);
+        const hovered = this.getStores().conceptStore.getHoveredView();
+        hovered && this.getStores().conceptStore.remove(hovered);
         
         this.getServices().levelService().updateCurrentLevel();
         hovered && this.getServices().updateService().scheduleTasks(UpdateTask.All);
@@ -37,9 +37,9 @@ export class DeleteTool extends AbstractTool {
 
     
     draggedUp() {
-        const canvasItems = this.getStores().viewStore.getIntersectingItemsInRect(this.controller.feedbackStore.rectSelectFeedback.rect);
+        const canvasItems = this.getStores().conceptStore.getIntersectingItemsInRect(this.controller.feedbackStore.rectSelectFeedback.rect);
 
-        canvasItems.forEach(item => this.getStores().viewStore.remove(item));
+        canvasItems.forEach(item => this.getStores().conceptStore.remove(item));
 
         this.rectSelector.finish();
 
@@ -62,7 +62,7 @@ export class DeleteTool extends AbstractTool {
 
     eraseAll() {
         this.getServices().storageService().clearAll();
-        this.getStores().viewStore.clear();
+        this.getStores().conceptStore.clear();
         this.getServices().levelService().updateCurrentLevel();
         this.getServices().updateService().runImmediately(UpdateTask.All);
     }

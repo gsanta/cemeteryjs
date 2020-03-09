@@ -1,4 +1,4 @@
-import { ViewController } from "../ViewController";
+import { View } from "../View";
 import { Editor } from "../../Editor";
 import { WindowFactory } from "../../WindowFactory";
 import { RendererComponent } from "./gui/RendererComponent";
@@ -11,14 +11,14 @@ export class RendererFactory implements WindowFactory {
     
     private controller: RendererView;
 
-    getWindowController(editor: Editor, services: ServiceLocator): ViewController {
+    getWindowController(editor: Editor, services: ServiceLocator): View {
         if (!this.controller) {
             this.controller = new RendererView(editor, services);
         }
         return this.controller;
     }
 
-    renderWindowComponent(controller: ViewController): JSX.Element {
+    renderWindowComponent(controller: View): JSX.Element {
         return <RendererComponent controller={controller as RendererView}/>;
     }
 

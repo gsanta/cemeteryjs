@@ -7,7 +7,7 @@ import Split from 'split.js'
 import { windowFactory } from '../WindowFactory';
 import { SidebarComponent } from './SidebarComponent';
 import { SpinnerOverlayComponent } from './misc/SpinnerOverlayComponent';
-import { ViewController } from '../views/ViewController';
+import { View } from '../views/View';
 
 export interface AppState {
     isDialogOpen: boolean;
@@ -21,7 +21,7 @@ export class App extends React.Component<{}, AppState> {
     context: AppContextType;
 
     private split: any;
-    private currentVisibleCanvases: ViewController[] = [];
+    private currentVisibleCanvases: View[] = [];
     
     constructor(props: {}) {
         super(props);

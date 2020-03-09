@@ -22,7 +22,7 @@ export class GameStoreBuilder {
     build(file: string): void {
         this.viewImporter.import(file);
 
-        this.getStores().viewStore.getViews().forEach(view => this.getViewConverter(view)?.convert(view));
+        this.getStores().conceptStore.getViews().forEach(view => this.getViewConverter(view)?.convert(view));
     }
 
     private getViewConverter(view: Concept): IViewConverter {

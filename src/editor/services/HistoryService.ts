@@ -19,7 +19,7 @@ export class HistoryService {
     undo() {
         if (this.hasUndoHistory()) {
             this.index = this.index - 1;
-            this.getStores().viewStore.clear();
+            this.getStores().conceptStore.clear();
             this.getServices().importService().import(this.history[this.index]);
         }
     }
@@ -27,7 +27,7 @@ export class HistoryService {
     redo() {
         if (this.hasRedoHistory()) {
             this.index = this.index + 1;
-            this.getStores().viewStore.clear();
+            this.getStores().conceptStore.clear();
             this.getServices().importService().import(this.history[this.index]);
         }
     }

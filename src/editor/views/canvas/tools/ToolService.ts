@@ -2,7 +2,7 @@ import { ServiceLocator } from "../../../services/ServiceLocator";
 import { CanvasView } from "../CanvasView";
 import { CameraTool } from "./CameraTool";
 import { DeleteTool } from "./DeleteTool";
-import { IViewExporter } from "./IToolExporter";
+import { IConceptExporter } from "./IConceptExporter";
 import { MoveTool } from "./MoveTool";
 import { PathTool } from "./PathTool";
 import { PointerTool } from "./PointerTool";

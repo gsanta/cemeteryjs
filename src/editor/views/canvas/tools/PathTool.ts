@@ -26,7 +26,7 @@ export class PathTool extends AbstractTool {
     click() {
         if (this.controller.toolService.pointerTool.click()) { return }
         
-        const selectedPathes = this.getStores().viewStore.getSelectedPathes();
+        const selectedPathes = this.getStores().conceptStore.getSelectedPathes();
 
         if (selectedPathes.length === 0) {
             this.startNewPath();
@@ -40,7 +40,7 @@ export class PathTool extends AbstractTool {
 
     keydown() {
         if (this.controller.keyboardHandler.downKeys.includes(Keyboard.Enter)) {
-            this.getStores().viewStore.removeSelectionAll();
+            this.getStores().conceptStore.removeSelectionAll();
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         }
     }
@@ -63,10 +63,10 @@ export class PathTool extends AbstractTool {
 
     private startNewPath() {
         const pointer = this.controller.pointer.pointer;
-        this.getStores().viewStore.removeSelectionAll();
+        this.getStores().conceptStore.removeSelectionAll();
         const path = new PathConcept(pointer.down.clone());
-        path.name = this.getStores().viewStore.generateUniqueName(ConceptType.Path);
-        this.getStores().viewStore.addPath(path);
-        this.getStores().viewStore.addTag([path], CanvasItemTag.SELECTED);
+        path.name = this.getStores().conceptStore.generateUniqueName(ConceptType.Path);
+        this.getStores().conceptStore.addPath(path);
+        this.getStores().conceptStore.addTag([path], CanvasItemTag.SELECTED);
     }
 }

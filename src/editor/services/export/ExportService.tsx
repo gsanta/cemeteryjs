@@ -1,44 +1,37 @@
-import * as ReactDOMServer from 'react-dom/server';
-import * as React from 'react';
-import { IViewExporter } from '../../views/canvas/tools/IToolExporter';
-import { ConceptType } from '../../views/canvas/models/concepts/Concept';
 import { Stores } from '../../stores/Stores';
-import { RectangleExporter } from './RectangleExporter';
-import { PathExporter } from './PathExporter';
+
+export interface ViewExporter {
+    export(): string;
+}
 
 export class ExportService {
     serviceName = 'export-service';
-    private viewExporters: IViewExporter[];
+    private viewExporters: ViewExporter[] = [];
     private getStores: () => Stores;
 
     constructor(getStores: () => Stores) {
-        this.viewExporters = [new RectangleExporter(getStores), new PathExporter(getStores)];
         this.getStores = getStores;
     }
 
     export(): string {
-        return ReactDOMServer.renderToStaticMarkup(this.renderRoot());
+        const exports = this.viewExporters.map(exporter => exporter.export());
+        return this.createRoot(exports.join(''));
     }
 
-    getViewExporter(viewType: ConceptType) {
-        return this.viewExporters.find(exporter => exporter.type === viewType);
+    registerViewExporter(viewExporter: ViewExporter) {
+        this.viewExporters.push(viewExporter)
     }
 
-    private renderRoot(): JSX.Element {
-        const views = this.viewExporters.map(exporter => exporter.export());
+    private createRoot(content: string): string {
         const camera = this.getStores().cameraStore.getCamera();
-        return (
-            <svg
-                data-wg-pixel-size="10"
-                data-wg-width="3000"
-                data-wg-height="3000"
-                width="1000"
-                height="1000"
-                data-zoom={camera.getScale()}
-                data-translate={camera.getViewBox().topLeft.negate().toString()}
-            >
-                {views}
-            </svg>
-        )
+
+        const root = (
+            '<svg data-wg-width="3000" data-wg-height="3000" width="1000" height="1000"' + 
+            ` data-zoom="${camera.getScale()}" data-translate="${camera.getViewBox().topLeft.negate().toString()}">`
+        );
+
+        const rootClose = '</svg>';
+
+        return `${root}${content}${rootClose}`;
     }
 }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { CanvasView } from './views/canvas/CanvasView';
-import { ViewController } from './views/ViewController';
+import { View } from './views/View';
 import { Editor } from './Editor';
 import { RendererComponent } from './views/renderer/gui/RendererComponent';
 import { CanvasComponent } from './views/canvas/gui/CanvasComponent';
@@ -10,12 +10,12 @@ import { Stores } from './stores/Stores';
 
 export interface WindowFactory {
     name: string;
-    getWindowController(editor: Editor, services: ServiceLocator, stores: Stores): ViewController;
-    renderWindowComponent(controller: ViewController): JSX.Element;
+    getWindowController(editor: Editor, services: ServiceLocator, stores: Stores): View;
+    renderWindowComponent(controller: View): JSX.Element;
     renderToolbarComponent(): JSX.Element;
 }
 
-export function windowFactory(controller: ViewController): JSX.Element {
+export function windowFactory(controller: View): JSX.Element {
     switch(controller.getId()) {
         case CanvasView.id:
             return <CanvasComponent controller={controller as CanvasView}/>;

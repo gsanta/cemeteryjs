@@ -25,8 +25,8 @@ export class SelectTool extends AbstractTool {
     }
 
     down() {
-        const hovered = this.getStores().viewStore.getHoveredView();
-        const selected = this.getStores().viewStore.getSelectedViews();
+        const hovered = this.getStores().conceptStore.getHoveredView();
+        const selected = this.getStores().conceptStore.getSelectedViews();
 
         if (hovered && selected.includes(hovered)) {
             this.activeTool = this.controller.toolService.moveTool;
@@ -34,10 +34,10 @@ export class SelectTool extends AbstractTool {
     }
 
     click() {
-        if (this.getStores().viewStore.getHoveredView()) {
+        if (this.getStores().conceptStore.getHoveredView()) {
             this.controller.toolService.pointerTool.click();
-        } else if (this.getStores().viewStore.getSelectedViews().length > 0) {
-            this.getStores().viewStore.removeTag(this.getStores().viewStore.getViews(), CanvasItemTag.SELECTED);
+        } else if (this.getStores().conceptStore.getSelectedViews().length > 0) {
+            this.getStores().conceptStore.removeTag(this.getStores().conceptStore.getViews(), CanvasItemTag.SELECTED);
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
         }
     }
@@ -61,10 +61,10 @@ export class SelectTool extends AbstractTool {
         const feedback = this.controller.feedbackStore.rectSelectFeedback;
         if (!feedback) { return }
 
-        const canvasItems = this.getStores().viewStore.getIntersectingItemsInRect(feedback.rect);
-        const canvasStore = this.getStores().viewStore;
+        const canvasItems = this.getStores().conceptStore.getIntersectingItemsInRect(feedback.rect);
+        const canvasStore = this.getStores().conceptStore;
         
-        canvasStore.removeTag(this.getStores().viewStore.getViews(), CanvasItemTag.SELECTED);
+        canvasStore.removeTag(this.getStores().conceptStore.getViews(), CanvasItemTag.SELECTED);
         canvasStore.addTag(canvasItems, CanvasItemTag.SELECTED);
 
         this.rectSelector.finish();

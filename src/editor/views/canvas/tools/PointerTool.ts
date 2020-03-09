@@ -23,14 +23,14 @@ export class PointerTool extends AbstractTool {
     }
 
     click(): boolean {
-        const hoveredView = this.getStores().viewStore.getHoveredView()
+        const hoveredView = this.getStores().conceptStore.getHoveredView()
 
         if (
             hoveredView &&
             (!this.selectableViews || this.selectableViews.includes(hoveredView.conceptType))
         ) {
-            this.getStores().viewStore.removeSelectionAll();
-            this.getStores().viewStore.addTag([hoveredView], CanvasItemTag.SELECTED);
+            this.getStores().conceptStore.removeSelectionAll();
+            this.getStores().conceptStore.addTag([hoveredView], CanvasItemTag.SELECTED);
             hoveredView.selectHoveredSubview();
 
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas);
@@ -41,7 +41,7 @@ export class PointerTool extends AbstractTool {
     }
 
     down() {
-        const hoveredView = this.getStores().viewStore.getHoveredView();
+        const hoveredView = this.getStores().conceptStore.getHoveredView();
         if (hoveredView) {
             hoveredView.selectHoveredSubview();
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
@@ -49,14 +49,14 @@ export class PointerTool extends AbstractTool {
     }
 
     over(item: Concept) {
-        this.getStores().viewStore.addTag([item], CanvasItemTag.HOVERED);
+        this.getStores().conceptStore.addTag([item], CanvasItemTag.HOVERED);
         this.updateSubviewHover(item);
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     out(item: Concept) {
-        this.getStores().viewStore.getHoveredView() && this.getStores().viewStore.getHoveredView().removeSubviewHover();
-        this.getStores().viewStore.removeTagFromAll(CanvasItemTag.HOVERED);
+        this.getStores().conceptStore.getHoveredView() && this.getStores().conceptStore.getHoveredView().removeSubviewHover();
+        this.getStores().conceptStore.removeTagFromAll(CanvasItemTag.HOVERED);
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 

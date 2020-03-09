@@ -9,7 +9,7 @@ export interface CanvasViewSettings {
     minSizePixel: number;
 }
 
-export abstract class ViewController {
+export abstract class View {
     name: string;
     editor: Editor;
 
@@ -19,6 +19,7 @@ export abstract class ViewController {
         this.editor = controllers;
         this.getServices = getServices;
         this.getStores = getStores;
+        getStores().viewStore.registerView(this);
     }
 
     getGameApi(): GameApi {
@@ -32,11 +33,12 @@ export abstract class ViewController {
     abstract isVisible(): boolean;
     abstract setVisible(visible: boolean): void;
     abstract getId(): string;
-    abstract activate(): void;
     
     setup(): void {}
     abstract resize(): void;
     update(): void {}
+    over(): void {}
+    out(): void {}
     
     viewSettings: CanvasViewSettings;
 }

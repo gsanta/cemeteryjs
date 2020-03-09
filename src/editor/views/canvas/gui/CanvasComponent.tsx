@@ -54,12 +54,13 @@ export class CanvasComponent extends React.Component<{controller: CanvasView}> {
                     onMouseLeave={(e) => this.props.controller.mouseController.onMouseOut(e.nativeEvent)}
                     onKeyDown={e => this.props.controller.keyboardHandler.onKeyDown(e.nativeEvent)}
                     onKeyUp={e => this.props.controller.keyboardHandler.onKeyUp(e.nativeEvent)}
+                    onMouseOver={() => this.props.controller.over()}
+                    onMouseOut={() => this.props.controller.out()}
                 >
                     <defs>
                         <PathMarkersComponent/>
                     </defs>
-                    {this.context.getServices().exportService().getViewExporter(ConceptType.Mesh).export(hover, unhover)}
-                    {this.context.getServices().exportService().getViewExporter(ConceptType.Path).export(hover, unhover)}
+                    {this.props.controller.exporter.getAllViewExporter().map(exporter => exporter.export(hover, unhover))}
                     {this.renderFeedbacks()}
                 </CanvasComponentStyled>
             </EditorComponentStyled>

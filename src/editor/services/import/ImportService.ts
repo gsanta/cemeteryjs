@@ -56,8 +56,8 @@ export class ImportService {
     constructor(getStores: () => Stores) {
         this.getStores = getStores;
         this.viewImporters = [
-            new MeshViewImporter(rect => this.getStores().viewStore.addRect(rect)),
-            new PathImporter(path => this.getStores().viewStore.addPath(path))
+            new MeshViewImporter(rect => this.getStores().conceptStore.addRect(rect)),
+            new PathImporter(path => this.getStores().conceptStore.addPath(path))
         ]
     }
 

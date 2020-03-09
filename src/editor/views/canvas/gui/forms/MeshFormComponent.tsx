@@ -250,7 +250,7 @@ export class MeshFormComponent extends React.Component<ViewFormProps<MeshConcept
 
     private renderPath(): JSX.Element {
         const form = this.props.canvasController.meshViewForm;
-        const pathNames = this.props.getStores().viewStore.getPathes().map(p => p.name);
+        const pathNames = this.props.getStores().conceptStore.getPathes().map(p => p.name);
         const val: string = form.getVal(MeshViewPropType.PATH);
 
         return (

@@ -1,7 +1,7 @@
 import { WindowFactory } from "../../WindowFactory";
 import * as React from 'react';
 import { CanvasView } from "./CanvasView";
-import { ViewController } from "../ViewController";
+import { View } from "../View";
 import { Editor } from "../../Editor";
 import { ServiceLocator } from "../../services/ServiceLocator";
 import { Stores } from "../../stores/Stores";
@@ -12,14 +12,14 @@ export class CanvasFactory implements WindowFactory {
     
     private controller: CanvasView;
 
-    getWindowController(editor: Editor, services: ServiceLocator, stores: Stores): ViewController {
+    getWindowController(editor: Editor, services: ServiceLocator, stores: Stores): View {
         if (!this.controller) {
             this.controller = new CanvasView(editor, () => services, () => stores);
         }
         return this.controller;
     }
 
-    renderWindowComponent(controller: ViewController): JSX.Element {
+    renderWindowComponent(controller: View): JSX.Element {
         return <CanvasComponent controller={controller as CanvasView}/>;
     }
 

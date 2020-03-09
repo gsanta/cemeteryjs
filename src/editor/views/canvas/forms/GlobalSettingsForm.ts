@@ -28,9 +28,9 @@ export class GlobalSettingsForm extends AbstractForm<GlobalSettingsPropType> {
     protected setProp(val: any, prop: GlobalSettingsPropType) {
         switch (prop) {
             case GlobalSettingsPropType.IMPORT_FILE:
-                this.getStores().viewStore.clear();
+                this.getStores().conceptStore.clear();
                 this.getServices().importService().import(val.data)
-                this.getStores().viewStore.getGameObjects().filter(item => item.modelPath).forEach(item => this.controller.model3dController.set3dModelForCanvasItem(item));
+                this.getStores().conceptStore.getGameObjects().filter(item => item.modelPath).forEach(item => this.controller.model3dController.set3dModelForCanvasItem(item));
         }
         this.getServices().updateService().runImmediately(UpdateTask.RepaintCanvas, UpdateTask.UpdateRenderer);
     }
