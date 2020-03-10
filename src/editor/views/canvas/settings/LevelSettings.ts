@@ -1,4 +1,4 @@
-import { AbstractForm } from './AbstractForm';
+import { AbstractSettings } from './AbstractSettings';
 import { UpdateTask } from '../../../services/UpdateServices';
 import { MeshConcept } from '../models/concepts/MeshConcept';
 import { ServiceLocator } from '../../../services/ServiceLocator';
@@ -10,8 +10,9 @@ export enum LevelFormPropType {
     ClearLevel = 'ClearLevel'
 }
 
-export class LevelForm extends AbstractForm<LevelFormPropType> {
-    gameObject: MeshConcept;
+export class LevelSettings extends AbstractSettings<LevelFormPropType> {
+    name = 'level-settings';
+    meshConcept: MeshConcept;
 
     private getServices: () => ServiceLocator;
     private getStores: () => Stores;

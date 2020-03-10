@@ -1,12 +1,12 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { CanvasToolbarComponent } from './CanvasToolbarComponent';
-import { PathMarkersComponent } from '../../../services/export/PathMarkersComponent';
-import { colors } from '../../../gui/styles';
-import { CanvasView } from '../CanvasView';
 import { AppContext, AppContextType } from '../../../gui/Context';
+import { colors } from '../../../gui/styles';
 import { WindowToolbarStyled } from '../../../gui/windows/WindowToolbar';
-import { ConceptType, Concept } from '../models/concepts/Concept';
+import { PathMarkersComponent } from '../../../services/export/PathMarkersComponent';
+import { CanvasView } from '../CanvasView';
+import { Concept } from '../models/concepts/Concept';
+import { CanvasToolbarComponent } from './CanvasToolbarComponent';
 
 
 const EditorComponentStyled = styled.div`
@@ -27,7 +27,7 @@ const SelectionComponentStyled = styled.rect`
     fill: transparent;
 `;
 
-export class CanvasComponent extends React.Component<{controller: CanvasView}> {
+export class CanvasComponent extends React.Component {
     static contextType = AppContext;
     context: AppContextType;
 
@@ -36,17 +36,17 @@ export class CanvasComponent extends React.Component<{controller: CanvasView}> {
     }
 
     render(): JSX.Element {
-        const stores = this.context.getStores();
-
         const hover = (view: Concept) => this.context.getServices().mouseService().hover(view);
         const unhover = (view: Concept) => this.context.getServices().mouseService().unhover(view);
 
+        const view = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id);
+
         return (
-            <EditorComponentStyled id={this.props.controller.getId()}>
-                <WindowToolbarStyled><CanvasToolbarComponent window={this.props.controller as CanvasView}/></WindowToolbarStyled>
+            <EditorComponentStyled id={view.getId()}>
+                <WindowToolbarStyled><CanvasToolbarComponent/></WindowToolbarStyled>
                 <CanvasComponentStyled
                     tabIndex={0}
-                    viewBox={this.props.controller.getCamera().getViewBoxAsString()}
+                    viewBox={view.getCamera().getViewBoxAsString()}
                     id={this.context.controllers.svgCanvasId}
                     onMouseDown={(e) => this.context.getServices().mouseService().onMouseDown(e.nativeEvent)}
                     onMouseMove={(e) => this.context.getServices().mouseService().onMouseMove(e.nativeEvent)}
@@ -54,13 +54,13 @@ export class CanvasComponent extends React.Component<{controller: CanvasView}> {
                     onMouseLeave={(e) => this.context.getServices().mouseService().onMouseOut(e.nativeEvent)}
                     onKeyDown={e => this.context.getServices().keyboardService().onKeyDown(e.nativeEvent)}
                     onKeyUp={e => this.context.getServices().keyboardService().onKeyUp(e.nativeEvent)}
-                    onMouseOver={() => this.props.controller.over()}
-                    onMouseOut={() => this.props.controller.out()}
+                    onMouseOver={() => view.over()}
+                    onMouseOut={() => view.out()}
                 >
                     <defs>
                         <PathMarkersComponent/>
                     </defs>
-                    {this.props.controller.exporter.getAllViewExporter().map(exporter => exporter.export(hover, unhover))}
+                    {view.exporter.getAllViewExporter().map(exporter => exporter.export(hover, unhover))}
                     {this.renderFeedbacks()}
                 </CanvasComponentStyled>
             </EditorComponentStyled>
@@ -68,10 +68,12 @@ export class CanvasComponent extends React.Component<{controller: CanvasView}> {
     }
 
     private renderFeedbacks(): JSX.Element {
-        const feedback = this.props.controller.feedbackStore.rectSelectFeedback;
+        const view = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id);
+
+        const feedback = view.feedbackStore.rectSelectFeedback;
 
         if (feedback && feedback.isVisible) {
-            const rect = this.props.controller.feedbackStore.rectSelectFeedback.rect;
+            const rect = view.feedbackStore.rectSelectFeedback.rect;
             return (
                 <SelectionComponentStyled 
                     x={rect.topLeft.x}

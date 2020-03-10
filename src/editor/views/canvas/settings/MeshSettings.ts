@@ -1,6 +1,6 @@
 import { ServiceLocator } from '../../../services/ServiceLocator';
 import { CanvasView } from '../CanvasView';
-import { AbstractForm, PropertyType } from "./AbstractForm";
+import { AbstractSettings, PropertyType } from "./AbstractSettings";
 import { UpdateTask } from '../../../services/UpdateServices';
 import { MeshConcept } from '../models/concepts/MeshConcept';
 import { Stores } from '../../../stores/Stores';
@@ -25,8 +25,9 @@ const propertyTypes = {
     [MeshViewPropType.ROTATION]: PropertyType.Number
 };
 
-export class MeshForm extends AbstractForm<MeshViewPropType> {
-    gameObject: MeshConcept;
+export class MeshSettings extends AbstractSettings<MeshViewPropType> {
+    name = 'mesh-settings';
+    meshConcept: MeshConcept;
 
     private controller: CanvasView;
 
@@ -57,29 +58,29 @@ export class MeshForm extends AbstractForm<MeshViewPropType> {
     protected getProp(prop: MeshViewPropType) {
         switch (prop) {
             case MeshViewPropType.COLOR:
-                return this.gameObject.color;
+                return this.meshConcept.color;
             case MeshViewPropType.MODEL:
-                return this.gameObject.modelPath;
+                return this.meshConcept.modelPath;
             case MeshViewPropType.TEXTURE:
-                return this.gameObject.texturePath;
+                return this.meshConcept.texturePath;
             case MeshViewPropType.THUMBNAIL:
-                return this.gameObject.thumbnailPath;
+                return this.meshConcept.thumbnailPath;
             case MeshViewPropType.LAYER:
-                return this.gameObject.layer;
+                return this.meshConcept.layer;
             case MeshViewPropType.ROTATION:
-                return this.gameObject.rotation;
+                return this.meshConcept.rotation;
             case MeshViewPropType.SCALE:
-                return this.gameObject.scale;
+                return this.meshConcept.scale;
             case MeshViewPropType.NAME:
-                return this.gameObject.name;
+                return this.meshConcept.name;
             case MeshViewPropType.PATH:
-                return this.gameObject.path;
+                return this.meshConcept.path;
             case MeshViewPropType.IS_MANUAL_CONTROL:
-                return this.gameObject.isManualControl;
+                return this.meshConcept.isManualControl;
             case MeshViewPropType.ANIMATION:
-                return this.gameObject.activeAnimation;
+                return this.meshConcept.activeAnimation;
             case MeshViewPropType.AnimationState:
-                return this.gameObject.animationState;
+                return this.meshConcept.animationState;
     
         }
     }
@@ -87,55 +88,55 @@ export class MeshForm extends AbstractForm<MeshViewPropType> {
     protected setProp(val: any, prop: MeshViewPropType) {
         switch (prop) {
             case MeshViewPropType.COLOR:
-                this.gameObject.color = val;
+                this.meshConcept.color = val;
                 break;
             case MeshViewPropType.MODEL:
-                this.gameObject.modelPath = val.path;
+                this.meshConcept.modelPath = val.path;
                 this.getServices().storageService().saveAsset(val.path, val.data)
                 .finally(() => {
-                    this.controller.model3dController.set3dModelForCanvasItem(this.gameObject);
+                    this.controller.model3dController.set3dModelForCanvasItem(this.meshConcept);
                     this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
                 });
                 break;
             case MeshViewPropType.TEXTURE:
-                this.gameObject.texturePath = val.path;
+                this.meshConcept.texturePath = val.path;
                 this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
                 break;
             case MeshViewPropType.THUMBNAIL:
-                this.gameObject.thumbnailPath = val.path;
+                this.meshConcept.thumbnailPath = val.path;
                 this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
                 break;
             case MeshViewPropType.LAYER:
-                this.gameObject.layer = val;
+                this.meshConcept.layer = val;
                 this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
                 break;
             case MeshViewPropType.ROTATION:
-                this.gameObject.rotation = this.convertValue(val, prop, this.gameObject.rotation);
+                this.meshConcept.rotation = this.convertValue(val, prop, this.meshConcept.rotation);
                 this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
                 break;
             case MeshViewPropType.SCALE:
-                this.gameObject.scale = this.convertValue(val, prop, this.gameObject.scale);
+                this.meshConcept.scale = this.convertValue(val, prop, this.meshConcept.scale);
                 this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
                 break;
             case MeshViewPropType.NAME:
-                this.gameObject.name = val;
+                this.meshConcept.name = val;
                 this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
                 break;
             case MeshViewPropType.PATH:
-                this.gameObject.path = val;
+                this.meshConcept.path = val;
                 this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
                 break;
             case MeshViewPropType.IS_MANUAL_CONTROL:
-                this.gameObject.isManualControl = val;
+                this.meshConcept.isManualControl = val;
                 this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
                 break;
             case MeshViewPropType.ANIMATION:
-                this.gameObject.activeAnimation = val;
+                this.meshConcept.activeAnimation = val;
                 this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
                 break;
             case MeshViewPropType.AnimationState:
-                this.gameObject.animationState = val;
-                this.controller.getGameApi().meshObjectUpdater.updateAnimationState(this.gameObject.animationState, this.gameObject.name)
+                this.meshConcept.animationState = val;
+                this.controller.getGameApi().meshObjectUpdater.updateAnimationState(this.meshConcept.animationState, this.meshConcept.name)
                 break;
         }
 

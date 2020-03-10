@@ -3,7 +3,7 @@ import { AppContext, AppContextType } from '../../../../gui/Context';
 import { DisplayEditorIconComponent } from '../../../../gui/icons/tools/DisplayEditorIconComponent';
 import { ExportFileIconComponent } from '../../../../gui/icons/tools/ExportFileIconComponent';
 import { ConnectedFileUploadComponent } from '../../../../gui/icons/tools/ImportFileIconComponent';
-import { GlobalSettingsPropType } from '../../forms/GlobalSettingsForm';
+import { GlobalSettingsPropType } from '../../settings/GlobalSettings';
 import { saveAs } from 'file-saver';
 import { Editor } from '../../../../Editor';
 
@@ -13,7 +13,7 @@ export interface GeneralFormComponentProps {
     editor: Editor;
 }
 
-export class GeneralFormComponent extends React.Component<GeneralFormComponentProps> {
+export class GeneralSettingsComponent extends React.Component<GeneralFormComponentProps> {
     static contextType = AppContext;
     context: AppContextType;
 

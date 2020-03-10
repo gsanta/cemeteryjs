@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { colors } from '../../../gui/styles';
-import { CanvasView } from '../CanvasView';
 import { ToolType } from '../tools/Tool';
 import { ZoomInIconComponent } from '../../../gui/icons/tools/ZoomInIconComponent';
 import { ZoomOutIconComponent } from '../../../gui/icons/tools/ZoomOutIconComponent';
@@ -29,7 +28,7 @@ const ToolbarStyled = styled.div`
     }
 `;
 
-export class CanvasToolbarComponent extends React.Component<{window: CanvasView}> {
+export class CanvasToolbarComponent extends React.Component {
     static contextType = AppContext;
     context: AppContextType;
     
@@ -66,22 +65,22 @@ export class CanvasToolbarComponent extends React.Component<{window: CanvasView}
 
 
     private isToolActive(toolType: ToolType) {
-        return this.props.window.getActiveTool().type === toolType;
+        return this.context.getStores().viewStore.getActiveView().getActiveTool().type === toolType;
     }
 
     private activateTool(toolType: ToolType) {
-        this.props.window.setActiveTool(toolType);
+        this.context.getStores().viewStore.getActiveView().setActiveTool(toolType);
     }
 
     private zoomIn() {
-        this.props.window.getToolByType<CameraTool>(ToolType.CAMERA).zoomToNextStep();
+        this.context.getStores().viewStore.getActiveView().getToolByType<CameraTool>(ToolType.CAMERA).zoomToNextStep();
     }
 
     private zoomOut() {
-        this.props.window.getToolByType<CameraTool>(ToolType.CAMERA).zoomToPrevStep();
+        this.context.getStores().viewStore.getActiveView().getToolByType<CameraTool>(ToolType.CAMERA).zoomToPrevStep();
     }
 
     private blank() {
-        this.props.window.getToolByType<DeleteTool>(ToolType.DELETE).eraseAll();
+        this.context.getStores().viewStore.getActiveView().getToolByType<DeleteTool>(ToolType.DELETE).eraseAll();
     }
 }

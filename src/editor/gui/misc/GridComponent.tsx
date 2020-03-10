@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { colors } from '../../../../gui/styles';
-import { withCommitOnChange } from '../../../../gui/forms/decorators/withCommitOnChange';
+import { colors } from '../styles';
+import { withCommitOnChange } from '../forms/decorators/withCommitOnChange';
 
 const GridStyled = styled.div`
     display: flex;

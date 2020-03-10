@@ -1,7 +1,7 @@
 import { GameApi } from '../game/GameApi';
 import { GameFacade } from '../game/GameFacade';
 import { CanvasFactory } from './views/canvas/CanvasFactory';
-import { GlobalSettingsForm } from './views/canvas/forms/GlobalSettingsForm';
+import { GlobalSettings } from './views/canvas/settings/GlobalSettings';
 import { RendererFactory } from './views/renderer/RendererFactory';
 import { ViewFactory } from './ViewFactory';
 import { CanvasView } from './views/canvas/CanvasView';
@@ -18,7 +18,7 @@ export class Editor {
 
     svgCanvasId: string;
     renderFunc: () => void;
-    globalSettingsForm: GlobalSettingsForm;
+    globalSettingsForm: GlobalSettings;
     isLoading = true;
 
     services: ServiceLocator;
@@ -33,7 +33,7 @@ export class Editor {
             new RendererFactory()
         ];
 
-        this.globalSettingsForm = new GlobalSettingsForm(this.getWindowControllerByName('canvas') as CanvasView, () => this.services, () => this.stores);
+        this.globalSettingsForm = new GlobalSettings(this.getWindowControllerByName('canvas') as CanvasView, () => this.services, () => this.stores);
 
     }
 

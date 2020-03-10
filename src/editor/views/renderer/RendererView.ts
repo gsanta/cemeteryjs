@@ -12,7 +12,6 @@ import { WebglCanvasImporter } from './WebglCanvasImporter';
 (<any> window).earcut = require('earcut');
 
 export class RendererView extends View {
-    name = '3D View';
     static id = 'webgl-editor';
     visible = true;
     updateService: UpdateService;

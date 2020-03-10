@@ -18,8 +18,8 @@ export class RendererFactory implements ViewFactory {
         return this.controller;
     }
 
-    renderWindowComponent(controller: View): JSX.Element {
-        return <RendererComponent controller={controller as RendererView}/>;
+    renderWindowComponent(): JSX.Element {
+        return <RendererComponent/>;
     }
 
     renderToolbarComponent(): JSX.Element {

@@ -11,16 +11,16 @@ import { Stores } from './stores/Stores';
 export interface ViewFactory {
     name: string;
     getWindowController(editor: Editor, services: ServiceLocator, stores: Stores): View;
-    renderWindowComponent(controller: View): JSX.Element;
+    renderWindowComponent(): JSX.Element;
     renderToolbarComponent(): JSX.Element;
 }
 
 export function viewFactory(controller: View): JSX.Element {
     switch(controller.getId()) {
         case CanvasView.id:
-            return <CanvasComponent controller={controller as CanvasView}/>;
+            return <CanvasComponent/>;
         case RendererView.id:
-            return <RendererComponent controller={controller as RendererView}/>;
+            return <RendererComponent/>;
     }
 
     return null;

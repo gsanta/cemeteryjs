@@ -4,10 +4,10 @@ import { PauseIconComponent } from '../../../../gui/icons/PauseIconComponent';
 import { PlayIconComponent } from '../../../../gui/icons/PlayIconComponent';
 import { StopIconComponent } from '../../../../gui/icons/StopIconComponent';
 import { AccordionComponent } from '../../../../gui/misc/AccordionComponent';
-import { SettingsRowStyled } from './FormComponent';
+import { SettingsRowStyled } from './SettingsComponent';
 import { Editor } from '../../../../Editor';
 
-export class GlobalFormComponent extends React.Component<{editor: Editor}> {
+export class GlobalSettingsComponent extends React.Component<{editor: Editor}> {
     static contextType = AppContext;
     context: AppContextType;
 

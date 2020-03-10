@@ -6,7 +6,8 @@ export enum PropertyType {
     Boolean = 'Boolean'
 }
 
-export abstract class AbstractForm<P> {
+export abstract class AbstractSettings<P> {
+    name: string;
     protected renderFunc = () => null;
     protected tempString: string;
     protected tempBoolean: boolean;

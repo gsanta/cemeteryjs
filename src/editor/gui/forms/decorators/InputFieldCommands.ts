@@ -1,7 +1,7 @@
-import { AbstractForm } from "../../../views/canvas/forms/AbstractForm";
+import { AbstractSettings } from "../../../views/canvas/settings/AbstractSettings";
 
 export interface InputFieldCommands<P> {
     propertyName: P;
     propertyType?: "boolean" | "string" | "number" | 'file-data';
-    formController: AbstractForm<P>;
+    formController: AbstractSettings<P>;
 }

@@ -7,6 +7,7 @@ import { ICamera } from './renderer/ICamera';
 import { Tool, ToolType } from './canvas/tools/Tool';
 import { UpdateTask } from '../services/UpdateServices';
 import { Point } from '../../misc/geometry/shapes/Point';
+import { AbstractSettings } from './canvas/settings/AbstractSettings';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;
@@ -19,6 +20,7 @@ export abstract class View {
 
     protected tools: Tool[] = [];
     protected activeTool: Tool;
+    protected settings: AbstractSettings<any>[] = [];
 
     protected getServices: () => ServiceLocator;
     protected getStores: () => Stores;
@@ -60,6 +62,10 @@ export abstract class View {
 
     getToolByType<T extends Tool = Tool>(type: ToolType): T {
         return <T> this.tools.find(tool => tool.type === type);
+    }
+
+    getSettingsByName<T extends AbstractSettings<any> = AbstractSettings<any>>(name: string) {
+        return <T> this.settings.find(setting => setting.name === name);
     }
 
     getOffset(): Point { return new Point(0, 0) }

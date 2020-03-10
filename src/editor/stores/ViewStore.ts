@@ -16,7 +16,7 @@ export class ViewStore {
         return this.activeView;
     }
 
-    getViewById(id: string): View {
-        return this.views.find(view => view.getId() === id);
+    getViewById<T extends View = View>(id: string): T {
+        return <T> this.views.find(view => view.getId() === id);
     }
 }

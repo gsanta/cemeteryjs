@@ -1,8 +1,7 @@
-import { MeshFormComponent } from "./MeshFormComponent";
-import { PathFormComponent } from "./PathFormComponent";
+import { MeshSettingsComponent } from "./MeshSettingsComponent";
+import { PathSettingsComponent } from "./PathSettingsComponent";
 import styled from "styled-components";
 import * as React from 'react';
-import { Editor } from "../../../../Editor";
 import { Stores } from "../../../../stores/Stores";
 import { CanvasView } from '../../CanvasView';
 import { Concept, ConceptType } from '../../models/concepts/Concept';
@@ -20,8 +19,7 @@ const PlaceHolderTextStyled = styled.div`
     opacity: 0.6;
 `;
 
-export function formComponentFactory(editor: Editor, getStores: () => Stores): JSX.Element {
-    const canvasController = (editor.getWindowControllerByName('canvas') as CanvasView);
+export function settingsFactory(getStores: () => Stores): JSX.Element {
     const selectedViews = getStores().conceptStore.getSelectedViews();
     if (selectedViews.length !== 1) {
         return <PlaceHolderTextStyled>Select an object on canvas to change it's properties</PlaceHolderTextStyled>
@@ -29,8 +27,8 @@ export function formComponentFactory(editor: Editor, getStores: () => Stores): J
 
     switch(selectedViews[0].conceptType) {
         case ConceptType.Mesh:
-            return <MeshFormComponent getStores={getStores} view={selectedViews[0] as MeshConcept} canvasController={canvasController}/>;
+            return <MeshSettingsComponent concept={selectedViews[0] as MeshConcept}/>;
         case ConceptType.Path:
-            return <PathFormComponent getStores={getStores} view={selectedViews[0] as PathConcept} canvasController={canvasController}/>;
+            return <PathSettingsComponent concept={selectedViews[0] as PathConcept}/>;
     }
 }

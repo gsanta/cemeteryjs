@@ -20,13 +20,12 @@ const ToolbarStyled = styled.div`
     }
 `;
 
-export interface RendererToolbarProps {
-    controller: RendererView;
-}
+export class RendererToolbarComponent extends React.Component {
+    static contextType = AppContext;
+    context: AppContextType;
 
-export class RendererToolbarComponent extends React.Component<RendererToolbarProps> {
     componentDidMount() {
-        this.props.controller.updateService.addSettingsRepainter(() => this.forceUpdate());
+        this.context.getServices().updateService().addSettingsRepainter(() => this.forceUpdate());
     }
 
     render(): JSX.Element {
@@ -40,14 +39,14 @@ export class RendererToolbarComponent extends React.Component<RendererToolbarPro
     }
 
     private zoomIn() {
-        this.props.controller.getToolByType<CameraTool>(ToolType.CAMERA).zoomToNextStep();
+        this.context.getStores().viewStore.getViewById<RendererView>(RendererView.id).getToolByType<CameraTool>(ToolType.CAMERA).zoomToNextStep();
     }
 
     private zoomOut() {
-        this.props.controller.getToolByType<CameraTool>(ToolType.CAMERA).zoomToPrevStep();
+        this.context.getStores().viewStore.getViewById<RendererView>(RendererView.id).getToolByType<CameraTool>(ToolType.CAMERA).zoomToPrevStep();
     }
 
     private isToolActive(toolType: ToolType) {
-        return this.props.controller.getActiveTool() && this.props.controller.getActiveTool().type === toolType;
+        return this.context.getStores().viewStore.getActiveView().getActiveTool().type === toolType;
     }
 }

@@ -3,11 +3,10 @@ import styled from 'styled-components';
 import { AppContext, AppContextType } from './Context';
 import { AccordionComponent } from './misc/AccordionComponent';
 import { colors } from './styles';
-import { GeneralFormComponent } from '../views/canvas/gui/forms/GeneralFormComponent';
-import { LevelFormComponent } from '../views/canvas/gui/forms/LevelFormComponent';
-import { formComponentFactory } from '../views/canvas/gui/forms/formComponentFactory';
-import { GlobalFormComponent } from '../views/canvas/gui/forms/GlobalFormComponent';
-import { CanvasView } from '../views/canvas/CanvasView';
+import { GeneralSettingsComponent } from '../views/canvas/gui/settings/GeneralSettingsComponent';
+import { LevelSettingsComponent } from '../views/canvas/gui/settings/LevelSettingsComponent';
+import { settingsFactory } from '../views/canvas/gui/settings/settingsFactory';
+import { GlobalSettingsComponent } from '../views/canvas/gui/settings/GlobalSettingsComponent';
 
 export interface SidebarComponentProps {
     isEditorOpen: boolean;
@@ -41,19 +40,19 @@ export class SidebarComponent extends React.Component<SidebarComponentProps> {
                     elements={[
                         {
                             title: 'General Settings',
-                            body: <GeneralFormComponent editor={this.context.controllers} {...this.props}/>
+                            body: <GeneralSettingsComponent editor={this.context.controllers} {...this.props}/>
                         },
                         {
                             title: 'Level Settings',
-                            body: <LevelFormComponent getStores={() => this.context.controllers.stores} window={this.context.controllers.getWindowControllerByName('canvas') as CanvasView} {...this.props}/>
+                            body: <LevelSettingsComponent/>
                         },
                         {
                             title: 'Object Settings',
-                            body: formComponentFactory(this.context.controllers, () => this.context.controllers.stores)
+                            body: settingsFactory(() => this.context.controllers.stores)
                         },
                         {
                             title: 'Global Settings',
-                            body: <GlobalFormComponent editor={this.context.controllers}/>
+                            body: <GlobalSettingsComponent editor={this.context.controllers}/>
                         }
                     ]}
                 />

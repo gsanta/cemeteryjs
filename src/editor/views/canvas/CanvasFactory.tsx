@@ -19,8 +19,8 @@ export class CanvasFactory implements ViewFactory {
         return this.controller;
     }
 
-    renderWindowComponent(controller: View): JSX.Element {
-        return <CanvasComponent controller={controller as CanvasView}/>;
+    renderWindowComponent(): JSX.Element {
+        return <CanvasComponent/>;
     }
 
     renderToolbarComponent(): JSX.Element {

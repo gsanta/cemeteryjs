@@ -1,33 +1,34 @@
 import * as React from 'react';
-import { MeshViewPropType } from '../../forms/MeshForm';
 import { AppContext, AppContextType } from '../../../../gui/Context';
-import { ConnectedInputComponent } from '../../../../gui/inputs/InputComponent';
-import { ConnectedFileUploadComponent } from '../../../../gui/icons/tools/ImportFileIconComponent';
-import { ViewFormProps } from './formComponentFactory';
-import { SettingsRowStyled, LabelStyled, InputStyled, GroupedRowsStyled } from './FormComponent';
-import { ConnectedDropdownComponent } from '../../../../gui/inputs/DropdownComponent';
-import { AccordionComponent } from '../../../../gui/misc/AccordionComponent';
 import { ClearIconComponent } from '../../../../gui/icons/ClearIconComponent';
-import { PlayIconComponent } from '../../../../gui/icons/PlayIconComponent';
 import { PauseIconComponent } from '../../../../gui/icons/PauseIconComponent';
+import { PlayIconComponent } from '../../../../gui/icons/PlayIconComponent';
 import { StopIconComponent } from '../../../../gui/icons/StopIconComponent';
+import { ConnectedFileUploadComponent } from '../../../../gui/icons/tools/ImportFileIconComponent';
 import { CheckboxComponent } from '../../../../gui/inputs/CheckboxComponent';
-import { ConnectedGridComponent } from './GridComponent';
-import { MeshConcept, AnimationState } from '../../models/concepts/MeshConcept';
+import { ConnectedDropdownComponent } from '../../../../gui/inputs/DropdownComponent';
+import { ConnectedInputComponent } from '../../../../gui/inputs/InputComponent';
+import { AccordionComponent } from '../../../../gui/misc/AccordionComponent';
+import { CanvasView } from '../../CanvasView';
+import { MeshViewPropType, MeshSettings } from '../../settings/MeshSettings';
+import { AnimationState, MeshConcept } from '../../models/concepts/MeshConcept';
+import { GroupedRowsStyled, InputStyled, LabelStyled, SettingsRowStyled } from './SettingsComponent';
+import { ConnectedGridComponent } from '../../../../gui/misc/GridComponent';
 
-export class MeshFormComponent extends React.Component<ViewFormProps<MeshConcept>> {
+export class MeshSettingsComponent extends React.Component<{concept: MeshConcept}> {
     static contextType = AppContext;
     context: AppContextType;
 
-    constructor(props: ViewFormProps<MeshConcept>) {
-        super(props);
+    componentDidMount() {
+        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.name);
 
-        this.props.canvasController.meshViewForm.setRenderer(() => this.forceUpdate());
+        meshSettings.setRenderer(() => this.forceUpdate());
     }
-
+    
     render() {
+        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.name);
 
-        this.props.canvasController.meshViewForm.gameObject = this.props.view;
+        meshSettings.meshConcept = this.props.concept;
 
         return (
             <div>
@@ -45,18 +46,18 @@ export class MeshFormComponent extends React.Component<ViewFormProps<MeshConcept
     }
 
     private renderName(): JSX.Element {
-        const form = this.props.canvasController.meshViewForm;
+        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.name);
 
         return (
             <SettingsRowStyled>
                 <LabelStyled>Name</LabelStyled>
                 <InputStyled>
                     <ConnectedInputComponent
-                        formController={form}
+                        formController={meshSettings}
                         propertyName={MeshViewPropType.NAME}
                         propertyType="string"
                         type="text"
-                        value={form.getVal(MeshViewPropType.NAME)}
+                        value={meshSettings.getVal(MeshViewPropType.NAME)}
                     />
                 </InputStyled>
             </SettingsRowStyled>
@@ -64,18 +65,18 @@ export class MeshFormComponent extends React.Component<ViewFormProps<MeshConcept
     }
 
     private renderModelFileChooser(): JSX.Element {
-        const form = this.props.canvasController.meshViewForm;
+        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.name);
 
         return (
             <SettingsRowStyled>
                 <LabelStyled>Model</LabelStyled>
                 <InputStyled>
                     <ConnectedFileUploadComponent
-                        formController={form}
+                        formController={meshSettings}
                         propertyName={MeshViewPropType.MODEL}
                         propertyType="string"
                         placeholder={`Upload`}
-                        value={form.getVal(MeshViewPropType.MODEL)}
+                        value={meshSettings.getVal(MeshViewPropType.MODEL)}
                         readDataAs="dataUrl"
                     />
                 </InputStyled>
@@ -85,18 +86,18 @@ export class MeshFormComponent extends React.Component<ViewFormProps<MeshConcept
 
     
     private renderTextureFileChooser(): JSX.Element {
-        const form = this.props.canvasController.meshViewForm;
+        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.name);
 
         return (
             <SettingsRowStyled>
                 <LabelStyled>Texture</LabelStyled>
                 <InputStyled>
                     <ConnectedFileUploadComponent
-                        formController={form}
+                        formController={meshSettings}
                         propertyName={MeshViewPropType.TEXTURE}
                         propertyType="string"
                         placeholder={`Upload`}
-                        value={form.getVal(MeshViewPropType.TEXTURE)}
+                        value={meshSettings.getVal(MeshViewPropType.TEXTURE)}
                         readDataAs="dataUrl"
                     />
                 </InputStyled>
@@ -105,18 +106,18 @@ export class MeshFormComponent extends React.Component<ViewFormProps<MeshConcept
     }
 
     private renderThumbnailFileChooser(): JSX.Element {
-        const form = this.props.canvasController.meshViewForm;
+        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.name);
 
         return (
             <SettingsRowStyled>
                 <LabelStyled>Thumbnail</LabelStyled>
                 <InputStyled>
                     <ConnectedFileUploadComponent
-                        formController={this.props.canvasController.meshViewForm}
+                        formController={meshSettings}
                         propertyName={MeshViewPropType.THUMBNAIL}
                         propertyType="string"
                         placeholder={`Upload`}
-                        value={form.getVal(MeshViewPropType.THUMBNAIL)}
+                        value={meshSettings.getVal(MeshViewPropType.THUMBNAIL)}
                         readDataAs="dataUrl"
                     />
                 </InputStyled>
@@ -125,31 +126,31 @@ export class MeshFormComponent extends React.Component<ViewFormProps<MeshConcept
     }
 
     private renderLayerInput(): JSX.Element {
-        const form = this.props.canvasController.meshViewForm;
+        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.name);
 
         return (
             <SettingsRowStyled>
                 <LabelStyled>Layer</LabelStyled>
                 <InputStyled>
-                    <ConnectedGridComponent isReversed={true} markedValues={[]} formController={form} propertyName={MeshViewPropType.LAYER} value={form.getVal(MeshViewPropType.LAYER)}/>
+                    <ConnectedGridComponent isReversed={true} markedValues={[]} formController={meshSettings} propertyName={MeshViewPropType.LAYER} value={meshSettings.getVal(MeshViewPropType.LAYER)}/>
                 </InputStyled>
             </SettingsRowStyled>
         );
     }
 
     private renderRotationInput(): JSX.Element {
-        const form = this.props.canvasController.meshViewForm;
+        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.name);
 
         return (
             <SettingsRowStyled>
                 <LabelStyled>Rotation</LabelStyled>
                 <InputStyled>
                 <ConnectedInputComponent
-                    formController={form}
+                    formController={meshSettings}
                     propertyName={MeshViewPropType.ROTATION}
                     propertyType="number"
                     type="number"
-                    value={form.getVal(MeshViewPropType.ROTATION)}
+                    value={meshSettings.getVal(MeshViewPropType.ROTATION)}
                     placeholder="0"
                 />
                 </InputStyled>
@@ -158,18 +159,18 @@ export class MeshFormComponent extends React.Component<ViewFormProps<MeshConcept
     }
 
     private renderScaleInput(): JSX.Element {
-        const form = this.props.canvasController.meshViewForm;
+        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.name);
 
         return (
             <SettingsRowStyled>
                 <LabelStyled>Scale</LabelStyled>
                 <InputStyled>
                     <ConnectedInputComponent
-                        formController={form}
+                        formController={meshSettings}
                         propertyName={MeshViewPropType.SCALE}
                         propertyType="number"
                         type="number"
-                        value={form.getVal(MeshViewPropType.SCALE)}
+                        value={meshSettings.getVal(MeshViewPropType.SCALE)}
                     />
                 </InputStyled>
             </SettingsRowStyled>
@@ -222,6 +223,8 @@ export class MeshFormComponent extends React.Component<ViewFormProps<MeshConcept
     }
 
     private renderAnimationSection() {
+        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.name);
+
         const body = (
             <React.Fragment>
                 <GroupedRowsStyled>
@@ -236,8 +239,8 @@ export class MeshFormComponent extends React.Component<ViewFormProps<MeshConcept
         return (
             <AccordionComponent
                 level="secondary"
-                onClick={() => this.props.canvasController.meshViewForm.isAnimationSectionOpen = !this.props.canvasController.meshViewForm.isAnimationSectionOpen}
-                expanded={this.props.canvasController.meshViewForm.isAnimationSectionOpen}
+                onClick={() => meshSettings.isAnimationSectionOpen = !meshSettings.isAnimationSectionOpen}
+                expanded={meshSettings.isAnimationSectionOpen}
                 elements={[
                     {
                         title: 'Movements',
@@ -249,49 +252,50 @@ export class MeshFormComponent extends React.Component<ViewFormProps<MeshConcept
     }
 
     private renderPath(): JSX.Element {
-        const form = this.props.canvasController.meshViewForm;
-        const pathNames = this.props.getStores().conceptStore.getPathes().map(p => p.name);
-        const val: string = form.getVal(MeshViewPropType.PATH);
+        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.name);
+
+        const pathNames = this.context.getStores().conceptStore.getPathes().map(p => p.name);
+        const val: string = meshSettings.getVal(MeshViewPropType.PATH);
 
         return (
             <SettingsRowStyled>
                 <LabelStyled>Path</LabelStyled>
                 <InputStyled>
                     <ConnectedDropdownComponent
-                        formController={form}
+                        formController={meshSettings}
                         propertyName={MeshViewPropType.PATH}
                         values={pathNames}
                         currentValue={val}
                     />
                 </InputStyled>
-                {val ? <ClearIconComponent onClick={() => form.updateProp(undefined, MeshViewPropType.PATH)}/> : null}
+                {val ? <ClearIconComponent onClick={() => meshSettings.updateProp(undefined, MeshViewPropType.PATH)}/> : null}
             </SettingsRowStyled>
         );
     }
 
     
     private renderManualMovement(): JSX.Element {
-        const form = this.props.canvasController.meshViewForm;
+        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.name);
 
         return (
             <SettingsRowStyled verticalAlign='right'>
                 <LabelStyled>Manual Control</LabelStyled>
                 <CheckboxComponent
-                    isSelected={form.getVal(MeshViewPropType.IS_MANUAL_CONTROL)}
-                    onChange={(selected: boolean) => form.updateProp(selected, MeshViewPropType.IS_MANUAL_CONTROL)}
+                    isSelected={meshSettings.getVal(MeshViewPropType.IS_MANUAL_CONTROL)}
+                    onChange={(selected: boolean) => meshSettings.updateProp(selected, MeshViewPropType.IS_MANUAL_CONTROL)}
                 />
             </SettingsRowStyled>
         );
     }
 
     private renderPlayAnimation() {
-        const form = this.props.canvasController.meshViewForm;
+        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.name);
 
-        const updateAnimationState = (state: AnimationState) => form.updateProp(state, MeshViewPropType.AnimationState);
+        const updateAnimationState = (state: AnimationState) => meshSettings.updateProp(state, MeshViewPropType.AnimationState);
         const getState = (animationState: AnimationState): 'disabled' | 'active' | 'default' => {
-            if (!this.props.view.path) {
+            if (!this.props.concept.path) {
                 return 'disabled';
-            } else if (this.props.view.animationState === animationState) {
+            } else if (this.props.concept.animationState === animationState) {
                 return 'active';
             }
             return 'default';
@@ -306,21 +310,22 @@ export class MeshFormComponent extends React.Component<ViewFormProps<MeshConcept
     }
 
     private renderAnimationTypes(): JSX.Element {
-        const form = this.props.canvasController.meshViewForm;
-        const val: string = form.getVal(MeshViewPropType.ANIMATION);
+        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.name);
+
+        const val: string = meshSettings.getVal(MeshViewPropType.ANIMATION);
 
         return (
             <SettingsRowStyled>
                 <LabelStyled>Animation</LabelStyled>
                 <InputStyled>
                     <ConnectedDropdownComponent
-                        formController={form}
+                        formController={meshSettings}
                         propertyName={MeshViewPropType.ANIMATION}
-                        values={this.props.view.animations}
+                        values={this.props.concept.animations}
                         currentValue={val}
                     />
                 </InputStyled>
-                {val ? <ClearIconComponent onClick={() => form.updateProp(undefined, MeshViewPropType.ANIMATION)}/> : null}
+                {val ? <ClearIconComponent onClick={() => meshSettings.updateProp(undefined, MeshViewPropType.ANIMATION)}/> : null}
             </SettingsRowStyled>
         );
     }

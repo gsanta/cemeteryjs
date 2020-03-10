@@ -6,9 +6,9 @@ import { Stores } from '../../stores/Stores';
 import { KeyboardService } from '../../services/KeyboardService';
 import { CanvasViewSettings, View } from '../View';
 import { CanvasExporter } from './CanvasExporter';
-import { LevelForm } from './forms/LevelForm';
-import { MeshForm } from './forms/MeshForm';
-import { PathForm } from './forms/PathForm';
+import { LevelSettings } from './settings/LevelSettings';
+import { MeshSettings } from './settings/MeshSettings';
+import { PathSettings } from './settings/PathSettings';
 import { Model3DController } from './Model3DController';
 import { Camera, nullCamera } from './models/Camera';
 import { FeedbackStore } from './models/FeedbackStore';
@@ -54,7 +54,6 @@ export enum CanvasTag {
 }
 
 export class CanvasView extends View {
-    name = '2D View';
     static id = 'svg-canvas-controller';
     
     visible = true;
@@ -62,9 +61,6 @@ export class CanvasView extends View {
     
     model3dController: Model3DController;
     
-    meshViewForm: MeshForm;
-    pathForm: PathForm;
-    levelForm: LevelForm;
     exporter: CanvasExporter;
     private camera: Camera = nullCamera;
 
@@ -79,10 +75,6 @@ export class CanvasView extends View {
         
         this.model3dController = new Model3DController(this, this.getServices);
 
-        this.meshViewForm = new MeshForm(this, this.getServices, this.getStores);
-        this.pathForm = new PathForm();
-        this.levelForm = new LevelForm(this.getServices, this.getStores);
-
         this.tools = [
             new PointerTool(this, this.getServices, this.getStores),
             new CameraTool(this, this.getServices, this.getStores),
@@ -94,6 +86,12 @@ export class CanvasView extends View {
         ];
 
         this.activeTool = this.getToolByType(ToolType.RECTANGLE);
+
+        this.settings = [
+            new MeshSettings(this, this.getServices, this.getStores),
+            new PathSettings(),
+            new LevelSettings(this.getServices, this.getStores)
+        ];
     }
 
     getId() {

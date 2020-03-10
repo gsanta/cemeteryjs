@@ -1,5 +1,5 @@
 import { CanvasView } from '../CanvasView';
-import { AbstractForm } from './AbstractForm';
+import { AbstractSettings } from './AbstractSettings';
 import { UpdateTask } from '../../../services/UpdateServices';
 import { MeshConcept } from '../models/concepts/MeshConcept';
 import { Stores } from '../../../stores/Stores';
@@ -9,8 +9,9 @@ export enum GlobalSettingsPropType {
     IMPORT_FILE = 'import file'
 }
 
-export class GlobalSettingsForm extends AbstractForm<GlobalSettingsPropType> {
-    gameObject: MeshConcept;
+export class GlobalSettings extends AbstractSettings<GlobalSettingsPropType> {
+    name = 'global-settings';
+    meshConcept: MeshConcept;
 
     private controller: CanvasView;
     private getStores: () => Stores;

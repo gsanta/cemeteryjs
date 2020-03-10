@@ -26,23 +26,20 @@ const CanvasOverlayStyled = styled.div`
     background-color: transparent;
 `;
 
-export interface RendererComponentProps {
-    controller: RendererView;
-}
-
-export class RendererComponent extends React.Component<RendererComponentProps> {
+export class RendererComponent extends React.Component {
     static contextType = AppContext;
     private canvasRef: React.RefObject<HTMLCanvasElement>;
     context: AppContextType;
 
-    constructor(props: RendererComponentProps) {
-        super(props);
+    constructor() {
+        super(null);
 
         this.canvasRef = React.createRef();
-        this.props.controller.setCanvasRenderer(() => this.forceUpdate());
     }
 
     componentDidMount() {
+        this.context.getStores().viewStore.getViewById<RendererView>(RendererView.id).setCanvasRenderer(() => this.forceUpdate());
+
         setTimeout(() => {
             this.context.controllers.setup(this.canvasRef.current);
             this.context.controllers.getWindowControllerByName('renderer').update();
@@ -55,11 +52,11 @@ export class RendererComponent extends React.Component<RendererComponentProps> {
     }
 
     render() {
-        // const isEmpty = !this.props.controller.getGameFacade() || this.props.controller.getGameFacade().gameStore.isEmpty();
+        const view = this.context.getStores().viewStore.getViewById<RendererView>(RendererView.id);
 
         return (
                 <RendererStyled>
-                    <WindowToolbarStyled><RendererToolbarComponent controller={this.props.controller}/></WindowToolbarStyled>
+                    <WindowToolbarStyled><RendererToolbarComponent/></WindowToolbarStyled>
                     <CanvasStyled
                         isEmpty={false}
                         id="canvas"
@@ -70,8 +67,8 @@ export class RendererComponent extends React.Component<RendererComponentProps> {
                         onMouseMove={(e) => this.context.getServices().mouseService().onMouseMove(e.nativeEvent)}
                         onMouseUp={(e) => this.context.getServices().mouseService().onMouseUp(e.nativeEvent)}
                         onMouseLeave={(e) => this.context.getServices().mouseService().onMouseOut(e.nativeEvent)}
-                        onMouseOver={() => this.props.controller.over()}
-                        onMouseOut={() => this.props.controller.out()}
+                        onMouseOver={() => view.over()}
+                        onMouseOut={() => view.out()}
                     />
                 </RendererStyled>
         );
