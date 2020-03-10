@@ -8,15 +8,15 @@ export enum Keyboard {
 export class KeyboardHandler {
     downKeys: number[] = [];
 
-    private services: CanvasView;
+    private view: CanvasView;
 
-    constructor(services: CanvasView) {
-        this.services = services;
+    constructor(view: CanvasView) {
+        this.view = view;
     }
 
     onKeyDown(e: KeyboardEvent): void {
         this.downKeys.push(e.keyCode);
-        this.services.toolService.getActiveTool()?.keydown();
+        this.view.getActiveTool()?.keydown();
     }
 
     onKeyUp(e: KeyboardEvent): void {

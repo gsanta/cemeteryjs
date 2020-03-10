@@ -3,6 +3,7 @@ import { IPointerEvent, IPointerHandler } from "../IPointerHandler";
 import { MousePointer } from "../MouseHandler";
 import { RendererView } from "./RendererView";
 import { Concept } from "../canvas/models/concepts/Concept";
+import { Stores } from '../../stores/Stores';
 
 export class RendererPointerService implements IPointerHandler {
     private controller: RendererView;
@@ -11,25 +12,27 @@ export class RendererPointerService implements IPointerHandler {
 
     pointer: MousePointer = new MousePointer();
 
-    private calcOffset: (id: string) => Point;
+    private calcOffset: (id: string) => Point = () => new Point(0, 0);
+    private getStores: () => Stores;
 
-    constructor(controller: RendererView) {
+    constructor(controller: RendererView, getStores: () => Stores) {
         this.controller = controller;
+        this.getStores = getStores;
     }
 
     pointerDown(e: IPointerEvent): void {
         if (e.button !== 'left') { return }
 
         this.isDown = true;
-        this.pointer.down = this.addScreenOffset(e.pointers[0].pos); 
+        this.pointer.down = this.getPointWithOffset(e.pointers[0].pos); 
         this.controller.getActiveTool().down();
     }
 
     pointerMove(e: IPointerEvent): void {
         this.pointer.prev = this.pointer.curr;
-        this.pointer.curr = this.addScreenOffset(e.pointers[0].pos);
+        this.pointer.curr = this.getPointWithOffset(e.pointers[0].pos);
         this.pointer.prevScreen = this.pointer.currScreen;
-        this.pointer.currScreen = this.controller.getCamera().screenToCanvasPoint(this.pointer.curr);
+        this.pointer.currScreen =  this.getScreenPointWithOffset(e.pointers[0].pos);
         if (this.isDown) {
             this.isDrag = true;
             this.controller.getActiveTool().drag();
@@ -57,8 +60,13 @@ export class RendererPointerService implements IPointerHandler {
     hover(item: Concept): void {}
     unhover(): void {}
     
-    private addScreenOffset(point: Point): Point {
-        const offset = new Point(0, 0);//this.calcOffset(this.controller.getId());
+    private getPointWithOffset(point: Point): Point {
+        const offset = this.calcOffset(this.controller.getId());
+        return this.getStores().viewStore.getActiveView().getCamera().screenToCanvasPoint(new Point(point.x - offset.x, point.y - offset.y));
+    }
+
+    private getScreenPointWithOffset(point: Point): Point {
+        const offset = this.calcOffset(this.controller.getId());
         return new Point(point.x - offset.x, point.y - offset.y);
     }
 }

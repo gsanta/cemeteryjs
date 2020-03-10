@@ -3,7 +3,7 @@ import { AbstractModelLoader } from '../../AbstractModelLoader';
 import { Editor } from '../../Editor';
 import { ServiceLocator } from '../../services/ServiceLocator';
 import { UpdateService } from '../../services/UpdateServices';
-import { Tool } from '../canvas/tools/Tool';
+import { Tool, ToolType } from '../canvas/tools/Tool';
 import { IPointerHandler } from '../IPointerHandler';
 import { MouseHandler } from '../MouseHandler';
 import { CanvasViewSettings, View } from '../View';
@@ -28,8 +28,6 @@ export class RendererView extends View {
     private helperMeshes: HelperMeshes;
 
     camera: EditorCamera;
-    cameraTool: RendererCameraTool;
-    activeTool: Tool;
 
     private renderCanvasFunc: () => void;
     meshes: Mesh[] = [];
@@ -39,12 +37,12 @@ export class RendererView extends View {
 
         this.updateService = new UpdateService(this.editor, () => services, () => editor.stores);
         this.mouseHander = new MouseHandler(this);
-        this.pointer = new RendererPointerService(this);
+        this.pointer = new RendererPointerService(this, this.getStores);
         this.update = this.update.bind(this);
     }
 
     getCamera(): EditorCamera {
-        return this.cameraTool.getCamera();
+        return this.camera;
     }
 
     resize() {
@@ -52,8 +50,10 @@ export class RendererView extends View {
     }
 
     setup() {
-        this.cameraTool = new RendererCameraTool(this, this.getGameFacade().gameEngine.camera);
-        this.activeTool = this.cameraTool;
+        this.tools = [
+            new RendererCameraTool(this, this.getGameFacade().gameEngine.camera)
+        ]
+        this.activeTool = this.getToolByType(ToolType.CAMERA);
         this.writer = new WebglCanvasImporter(this, this.getGameFacade());
 
         this.update();

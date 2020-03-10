@@ -14,9 +14,9 @@ import { BlankIconComponent } from '../../../gui/icons/tools/BlankIconComponent'
 import { UndoIconComponent } from '../../../gui/icons/tools/UndoIconComponent';
 import { RedoIconComponent } from '../../../gui/icons/tools/RedoIconComponent';
 import { DeleteTool } from '../tools/DeleteTool';
-import { ServiceLocator } from '../../../services/ServiceLocator';
 import { UpdateTask } from '../../../services/UpdateServices';
 import { AppContext, AppContextType } from '../../../gui/Context';
+import { CameraTool } from '../tools/CameraTool';
 
 const ToolbarStyled = styled.div`
     display: flex;
@@ -66,22 +66,22 @@ export class CanvasToolbarComponent extends React.Component<{window: CanvasView}
 
 
     private isToolActive(toolType: ToolType) {
-        return this.props.window.toolService.getActiveTool().type === toolType;
+        return this.props.window.getActiveTool().type === toolType;
     }
 
     private activateTool(toolType: ToolType) {
-        this.props.window.setSelectedTool(toolType);
+        this.props.window.setActiveTool(toolType);
     }
 
     private zoomIn() {
-        this.props.window.toolService.cameraTool.zoomToNextStep();
+        this.props.window.getToolByType<CameraTool>(ToolType.CAMERA).zoomToNextStep();
     }
 
     private zoomOut() {
-        this.props.window.toolService.cameraTool.zoomToPrevStep();
+        this.props.window.getToolByType<CameraTool>(ToolType.CAMERA).zoomToPrevStep();
     }
 
     private blank() {
-        (this.props.window.toolService.getTool(ToolType.DELETE) as DeleteTool).eraseAll();
+        this.props.window.getToolByType<DeleteTool>(ToolType.DELETE).eraseAll();
     }
 }

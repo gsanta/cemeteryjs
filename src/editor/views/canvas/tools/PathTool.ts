@@ -9,22 +9,23 @@ import { PathConcept } from "../models/concepts/PathConcept";
 import { CanvasItemTag } from "../models/CanvasItem";
 import { Stores } from "../../../stores/Stores";
 import { ServiceLocator } from '../../../services/ServiceLocator';
+import { PointerTool } from "./PointerTool";
 
 export class PathTool extends AbstractTool {
-    private controller: CanvasView;
+    private view: CanvasView;
     private getStores: () => Stores;
     private getServices: () => ServiceLocator;
     
-    constructor(controller: CanvasView, getServices: () => ServiceLocator, getStores: () => Stores) {
+    constructor(view: CanvasView, getServices: () => ServiceLocator, getStores: () => Stores) {
         super(ToolType.PATH);
 
-        this.controller = controller;
+        this.view = view;
         this.getStores = getStores;
         this.getServices = getServices;
     }
 
     click() {
-        if (this.controller.toolService.pointerTool.click()) { return }
+        if (this.view.getToolByType<PointerTool>(ToolType.POINTER).click()) { return }
         
         const selectedPathes = this.getStores().conceptStore.getSelectedPathes();
 
@@ -32,37 +33,37 @@ export class PathTool extends AbstractTool {
             this.startNewPath();
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         } else if (selectedPathes.length === 1) {
-            const pointer = this.controller.pointer.pointer;
+            const pointer = this.view.pointer.pointer;
             selectedPathes[0].addPoint(new Point(pointer.down.x, pointer.down.y));
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         }
     }
 
     keydown() {
-        if (this.controller.keyboardHandler.downKeys.includes(Keyboard.Enter)) {
+        if (this.view.keyboardHandler.downKeys.includes(Keyboard.Enter)) {
             this.getStores().conceptStore.removeSelectionAll();
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         }
     }
 
     select() {
-        this.controller.toolService.pointerTool.setSelectableViews([ConceptType.Path]);
+        this.view.getToolByType<PointerTool>(ToolType.POINTER).setSelectableViews([ConceptType.Path]);
     }
 
     unselect() {
-        this.controller.toolService.pointerTool.setSelectableViews(undefined);
+        this.view.getToolByType<PointerTool>(ToolType.POINTER).setSelectableViews(undefined);
     }
 
     over(item: Concept) {
-        this.controller.toolService.pointerTool.over(item);
+        this.view.getToolByType<PointerTool>(ToolType.POINTER).over(item);
     }
 
     out(item: Concept) {
-        this.controller.toolService.pointerTool.out(item);
+        this.view.getToolByType<PointerTool>(ToolType.POINTER).out(item);
     }
 
     private startNewPath() {
-        const pointer = this.controller.pointer.pointer;
+        const pointer = this.view.pointer.pointer;
         this.getStores().conceptStore.removeSelectionAll();
         const path = new PathConcept(pointer.down.clone());
         path.name = this.getStores().conceptStore.generateUniqueName(ConceptType.Path);

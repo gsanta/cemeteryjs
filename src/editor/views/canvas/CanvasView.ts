@@ -12,11 +12,17 @@ import { PathForm } from './forms/PathForm';
 import { Model3DController } from './Model3DController';
 import { FeedbackStore } from './models/FeedbackStore';
 import { CanvasPointerService } from './services/CanvasPointerService';
-import { ToolType } from './tools/Tool';
-import { ToolService } from './tools/ToolService';
+import { ToolType, Tool } from './tools/Tool';
 import { CanvasExporter } from './CanvasExporter';
 import { Camera, nullCamera } from './models/Camera';
 import { Point } from '../../../misc/geometry/shapes/Point';
+import { PointerTool } from './tools/PointerTool';
+import { CameraTool } from './tools/CameraTool';
+import { RectangleTool } from './tools/RectangleTool';
+import { PathTool } from './tools/PathTool';
+import { DeleteTool } from './tools/DeleteTool';
+import { MoveTool } from './tools/MoveTool';
+import { SelectTool } from './tools/SelectTool';
 
 export function cameraInitializer(canvasId: string) {
     if (typeof document !== 'undefined') {
@@ -44,7 +50,6 @@ export class CanvasView extends View {
     keyboardHandler: KeyboardHandler;
     model3dController: Model3DController;
     
-    toolService: ToolService;
     pointer: IPointerHandler;
     
     meshViewForm: MeshForm;
@@ -66,21 +71,22 @@ export class CanvasView extends View {
         this.keyboardHandler = new KeyboardHandler(this);
         this.model3dController = new Model3DController(this, this.getServices);
 
-        this.toolService = new ToolService(this, this.getServices, this.getStores);
-
         this.meshViewForm = new MeshForm(this, this.getServices, this.getStores);
         this.pathForm = new PathForm();
         this.levelForm = new LevelForm(this.getServices, this.getStores);
         this.pointer = new CanvasPointerService(this, this.getServices, this.getStores);
-    }
 
-    setSelectedTool(toolType: ToolType) {
-        if (this.toolService.selectedTool) {
-            this.toolService.getActiveTool().unselect();
-        }
-        this.toolService.selectedTool = toolType;
-        this.toolService.getActiveTool().select();
-        this.getServices().updateService().runImmediately(UpdateTask.RepaintSettings);
+        this.tools = [
+            new PointerTool(this, this.getServices, this.getStores),
+            new CameraTool(this, this.getServices, this.getStores),
+            new RectangleTool(this, this.getServices, this.getStores),
+            new PathTool(this, this.getServices, this.getStores),
+            new DeleteTool(this, this.getServices, this.getStores),
+            new MoveTool(this, this.getServices, this.getStores),
+            new SelectTool(this, this.getServices, this.getStores)
+        ];
+
+        this.activeTool = this.getToolByType(ToolType.RECTANGLE);
     }
 
     getId() {
@@ -88,7 +94,7 @@ export class CanvasView extends View {
     }
 
     resize(): void {
-        this.toolService.cameraTool.resize();
+        (<CameraTool> this.getToolByType(ToolType.CAMERA)).resize();
     };
 
     isVisible(): boolean {

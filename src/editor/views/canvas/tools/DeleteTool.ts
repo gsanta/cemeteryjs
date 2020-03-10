@@ -6,28 +6,29 @@ import { RectangleSelector } from './selection/RectangleSelector';
 import { ToolType } from './Tool';
 import { Concept } from '../models/concepts/Concept';
 import { Stores } from '../../../stores/Stores';
+import { PointerTool } from './PointerTool';
 
 export class DeleteTool extends AbstractTool {
-    private controller: CanvasView;
+    private view: CanvasView;
     private rectSelector: RectangleSelector;
     private getServices: () => ServiceLocator;
     private getStores: () => Stores;
 
-    constructor(controller: CanvasView, getServices: () => ServiceLocator, getStores: () => Stores) {
+    constructor(view: CanvasView, getServices: () => ServiceLocator, getStores: () => Stores) {
         super(ToolType.DELETE);
-        this.controller = controller;
+        this.view = view;
         this.getServices = getServices;
         this.getStores = getStores;
-        this.rectSelector = new RectangleSelector(controller);
+        this.rectSelector = new RectangleSelector(view);
     }
 
     drag() {
-        this.rectSelector.updateRect(this.controller.pointer.pointer);
+        this.rectSelector.updateRect(this.view.pointer.pointer);
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     click() {
-        this.controller.toolService.pointerTool.click()
+        this.view.getToolByType<PointerTool>(ToolType.POINTER).click()
         const hovered = this.getStores().conceptStore.getHoveredView();
         hovered && this.getStores().conceptStore.remove(hovered);
         
@@ -37,7 +38,7 @@ export class DeleteTool extends AbstractTool {
 
     
     draggedUp() {
-        const canvasItems = this.getStores().conceptStore.getIntersectingItemsInRect(this.controller.feedbackStore.rectSelectFeedback.rect);
+        const canvasItems = this.getStores().conceptStore.getIntersectingItemsInRect(this.view.feedbackStore.rectSelectFeedback.rect);
 
         canvasItems.forEach(item => this.getStores().conceptStore.remove(item));
 
@@ -53,11 +54,11 @@ export class DeleteTool extends AbstractTool {
     }
 
     over(item: Concept) {
-        this.controller.toolService.pointerTool.over(item);
+        this.view.getToolByType<PointerTool>(ToolType.POINTER).over(item);
     }
 
     out(item: Concept) {
-        this.controller.toolService.pointerTool.out(item);
+        this.view.getToolByType<PointerTool>(ToolType.POINTER).out(item);
     }
 
     eraseAll() {

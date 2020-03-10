@@ -9,19 +9,19 @@ import { Stores } from '../../../stores/Stores';
 import { ServiceLocator } from '../../../services/ServiceLocator';
 
 export class SelectTool extends AbstractTool {
-    protected controller: CanvasView;
+    protected view: CanvasView;
     private rectSelector: RectangleSelector;
 
     private activeTool: Tool;
     private getStores: () => Stores;
     private getServices: () => ServiceLocator;
 
-    constructor(controller: CanvasView, getServices: () => ServiceLocator, getStores: () => Stores) {
+    constructor(view: CanvasView, getServices: () => ServiceLocator, getStores: () => Stores) {
         super(ToolType.SELECT);
-        this.controller = controller;
+        this.view = view;
         this.getStores = getStores;
         this.getServices = getServices;
-        this.rectSelector = new RectangleSelector(controller);
+        this.rectSelector = new RectangleSelector(view);
     }
 
     down() {
@@ -29,13 +29,13 @@ export class SelectTool extends AbstractTool {
         const selected = this.getStores().conceptStore.getSelectedViews();
 
         if (hovered && selected.includes(hovered)) {
-            this.activeTool = this.controller.toolService.moveTool;
+            this.activeTool = this.view.getToolByType(ToolType.MOVE);
         }
     }
 
     click() {
         if (this.getStores().conceptStore.getHoveredView()) {
-            this.controller.toolService.pointerTool.click();
+            this.view.getToolByType(ToolType.POINTER).click();
         } else if (this.getStores().conceptStore.getSelectedViews().length > 0) {
             this.getStores().conceptStore.removeTag(this.getStores().conceptStore.getViews(), CanvasItemTag.SELECTED);
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
@@ -46,7 +46,7 @@ export class SelectTool extends AbstractTool {
         if (this.activeTool) {
             this.activeTool.drag();
         } else {
-            this.rectSelector.updateRect(this.controller.pointer.pointer);
+            this.rectSelector.updateRect(this.view.pointer.pointer);
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
         }
     }
@@ -58,11 +58,11 @@ export class SelectTool extends AbstractTool {
             return;
         }
 
-        const feedback = this.controller.feedbackStore.rectSelectFeedback;
+        const feedback = this.view.feedbackStore.rectSelectFeedback;
         if (!feedback) { return }
 
         const canvasItems = this.getStores().conceptStore.getIntersectingItemsInRect(feedback.rect);
-        const canvasStore = this.getStores().conceptStore;
+        const canvasStore = this.getStores().conceptStore;this.view.getToolByType(ToolType.POINTER)
         
         canvasStore.removeTag(this.getStores().conceptStore.getViews(), CanvasItemTag.SELECTED);
         canvasStore.addTag(canvasItems, CanvasItemTag.SELECTED);
@@ -72,10 +72,10 @@ export class SelectTool extends AbstractTool {
     }
 
     over(item: Concept) {
-        this.controller.toolService.pointerTool.over(item);
+        this.view.getToolByType(ToolType.POINTER).over(item);
     }
 
     out(item: Concept) {
-        this.controller.toolService.pointerTool.out(item);
+        this.view.getToolByType(ToolType.POINTER).out(item);
     }
 }

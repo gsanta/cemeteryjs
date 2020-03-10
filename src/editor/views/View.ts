@@ -4,6 +4,8 @@ import { Editor } from '../Editor';
 import { ServiceLocator } from '../services/ServiceLocator';
 import { Stores } from '../stores/Stores';
 import { ICamera } from './renderer/ICamera';
+import { Tool, ToolType } from './canvas/tools/Tool';
+import { UpdateTask } from '../services/UpdateServices';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;
@@ -13,6 +15,9 @@ export interface CanvasViewSettings {
 export abstract class View {
     name: string;
     editor: Editor;
+
+    protected tools: Tool[] = [];
+    protected activeTool: Tool;
 
     protected getServices: () => ServiceLocator;
     protected getStores: () => Stores;
@@ -40,6 +45,21 @@ export abstract class View {
     update(): void {}
     over(): void {}
     out(): void {}
+
+    setActiveTool(toolType: ToolType) {
+        this.activeTool && this.activeTool.unselect();
+        this.activeTool = this.getToolByType(toolType);
+        this.activeTool.select();
+        this.getServices().updateService().runImmediately(UpdateTask.RepaintSettings);
+    }
+
+    getActiveTool(): Tool {
+        return this.activeTool;
+    }
+
+    getToolByType<T extends Tool = Tool>(type: ToolType): T {
+        return <T> this.tools.find(tool => tool.type === type);
+    }
 
     abstract getCamera(): ICamera;
     

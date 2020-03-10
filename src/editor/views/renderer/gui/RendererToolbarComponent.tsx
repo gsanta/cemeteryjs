@@ -7,6 +7,7 @@ import { ZoomOutIconComponent } from '../../../gui/icons/tools/ZoomOutIconCompon
 import { colors } from '../../../gui/styles';
 import { RendererView } from '../RendererView';
 import { ToolType } from '../../canvas/tools/Tool';
+import { CameraTool } from '../../canvas/tools/CameraTool';
 
 const ToolbarStyled = styled.div`
     display: flex;
@@ -39,14 +40,14 @@ export class RendererToolbarComponent extends React.Component<RendererToolbarPro
     }
 
     private zoomIn() {
-        this.props.controller.cameraTool.zoomToNextStep();
+        this.props.controller.getToolByType<CameraTool>(ToolType.CAMERA).zoomToNextStep();
     }
 
     private zoomOut() {
-        this.props.controller.cameraTool.zoomToPrevStep();
+        this.props.controller.getToolByType<CameraTool>(ToolType.CAMERA).zoomToPrevStep();
     }
 
     private isToolActive(toolType: ToolType) {
-        return this.props.controller.activeTool && this.props.controller.activeTool.type === toolType;
+        return this.props.controller.getActiveTool() && this.props.controller.getActiveTool().type === toolType;
     }
 }
