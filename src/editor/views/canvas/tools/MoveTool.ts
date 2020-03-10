@@ -67,7 +67,7 @@ export class MoveTool extends AbstractTool {
 
     private moveItems() {
         const selectedItems = this.getStores().conceptStore.getSelectedViews();
-        const mouseDelta = this.controller.pointer.pointer.getDownDiff();
+        const mouseDelta = this.getServices().pointerService().pointer.getDownDiff();
 
         selectedItems.forEach((item, index) => item.dimensions = this.origDimensions[index].translate(mouseDelta));
 

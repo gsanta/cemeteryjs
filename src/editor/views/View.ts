@@ -6,6 +6,7 @@ import { Stores } from '../stores/Stores';
 import { ICamera } from './renderer/ICamera';
 import { Tool, ToolType } from './canvas/tools/Tool';
 import { UpdateTask } from '../services/UpdateServices';
+import { Point } from '../../misc/geometry/shapes/Point';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;
@@ -43,7 +44,7 @@ export abstract class View {
     setup(): void {}
     abstract resize(): void;
     update(): void {}
-    over(): void {}
+    over(): void { this.getStores().viewStore.setActiveView(this) }
     out(): void {}
 
     setActiveTool(toolType: ToolType) {
@@ -61,6 +62,7 @@ export abstract class View {
         return <T> this.tools.find(tool => tool.type === type);
     }
 
+    getOffset(): Point { return new Point(0, 0) }
     abstract getCamera(): ICamera;
     
     viewSettings: CanvasViewSettings;

@@ -1,6 +1,6 @@
 import { Rectangle } from "../../../../../misc/geometry/shapes/Rectangle";
 import { Point } from "../../../../../misc/geometry/shapes/Point";
-import { MousePointer } from "../../../MouseHandler";
+import { MousePointer } from "../../../../services/MouseService";
 import { CanvasView } from "../../CanvasView";
 import { RectSelectFeedback } from "../../models/feedbacks/RectSelectFeedback";
 

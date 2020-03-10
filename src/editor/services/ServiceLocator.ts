@@ -6,6 +6,9 @@ import { UpdateService } from "./UpdateServices";
 import { ImportService } from './import/ImportService';
 import { HistoryService } from "./HistoryService";
 import { ExportService } from "./export/ExportService";
+import { PointerService } from './PointerService';
+import { MouseService } from './MouseService';
+import { KeyboardService } from '../views/KeyboardService';
 
 export class ServiceLocator {
     private services: {serviceName: string}[] = [];
@@ -17,7 +20,10 @@ export class ServiceLocator {
             new UpdateService(editor, () => this, getStores),
             new ImportService(getStores),
             new ExportService(getStores),
-            new HistoryService(() => this, getStores)
+            new HistoryService(() => this, getStores),
+            new PointerService(() => this, getStores),
+            new MouseService(() => this),
+            new KeyboardService(getStores)
         ];
     }
 
@@ -47,5 +53,17 @@ export class ServiceLocator {
 
     historyService(): HistoryService {
         return <HistoryService> this.getService('history-service');
+    }
+
+    pointerService(): PointerService {
+        return <PointerService> this.getService('pointer-service');
+    }
+
+    mouseService(): MouseService {
+        return <MouseService> this.getService('mouse-service');
+    }
+
+    keyboardService(): KeyboardService {
+        return <KeyboardService> this.getService('keyboard-service');
     }
 }

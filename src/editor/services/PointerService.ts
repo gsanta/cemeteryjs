@@ -1,36 +1,26 @@
-import { Point } from "../../../../misc/geometry/shapes/Point";
-import { ServiceLocator } from '../../../services/ServiceLocator';
-import { Stores } from "../../../stores/Stores";
-import { IPointerEvent, IPointerHandler } from "../../IPointerHandler";
-import { MousePointer } from "../../MouseHandler";
-import { CanvasView } from "../CanvasView";
+import { Point } from "../../misc/geometry/shapes/Point";
+import { ServiceLocator } from './ServiceLocator';
+import { Stores } from "../stores/Stores";
+import { MousePointer } from "./MouseService";
 
-function calcOffsetFromDom(bitmapEditorId: string): Point {
-    if (typeof document !== 'undefined') {
-        const editorElement: HTMLElement = document.getElementById(bitmapEditorId);
-        if (editorElement) {
-            const rect: ClientRect = editorElement.getBoundingClientRect();
-            return new Point(rect.left - editorElement.scrollLeft, rect.top - editorElement.scrollTop);
-        }
-    }
-
-    return new Point(0, 0);
+export interface IPointerEvent {
+    pointers: {id: number, pos: Point}[];
+    deltaY?: number;
+    preventDefault: () => void;
+    button: 'left' | 'right';
 }
 
-export class CanvasPointerService implements IPointerHandler {
-    private view: CanvasView;
+export class PointerService {
+    serviceName = 'pointer-service';
     isDown = false;
     isDrag = false;
 
     pointer: MousePointer = new MousePointer();
 
-    private calcOffset: (id: string) => Point;
     private getServices: () => ServiceLocator;
     private getStores: () => Stores;
 
-    constructor(view: CanvasView, getServices: () => ServiceLocator, getStores: () => Stores, calcOffset: (id: string) => Point = calcOffsetFromDom) {
-        this.view = view;
-        this.calcOffset = calcOffset;
+    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
         this.getServices = getServices;
         this.getStores = getStores;
     }
@@ -40,7 +30,7 @@ export class CanvasPointerService implements IPointerHandler {
 
         this.isDown = true;
         this.pointer.down = this.getPointWithOffset(e.pointers[0].pos); 
-        this.view.getActiveTool().down();
+        this.getStores().viewStore.getActiveView().getActiveTool().down();
         this.getServices().updateService().runScheduledTasks();
     }
 
@@ -51,21 +41,21 @@ export class CanvasPointerService implements IPointerHandler {
         this.pointer.currScreen =  this.getScreenPointWithOffset(e.pointers[0].pos);
         if (this.isDown && this.pointer.getDownDiff().len() > 2) {
             this.isDrag = true;
-            this.view.getActiveTool().drag();
+            this.getStores().viewStore.getActiveView().getActiveTool().drag();
         } else {
-            this.view.getActiveTool().move();
+            this.getStores().viewStore.getActiveView().getActiveTool().move();
         }
         this.getServices().updateService().runScheduledTasks();
     }
 
     pointerUp(e: IPointerEvent): void {
         if (this.isDrag) {
-            this.view.getActiveTool().draggedUp();
+            this.getStores().viewStore.getActiveView().getActiveTool().draggedUp();
         } else {
-            this.view.getActiveTool().click();
+            this.getStores().viewStore.getActiveView().getActiveTool().click();
         }
         
-        this.view.getActiveTool().up();
+        this.getStores().viewStore.getActiveView().getActiveTool().up();
         this.isDown = false;
         this.isDrag = false;
         this.pointer.down = undefined;
@@ -78,22 +68,22 @@ export class CanvasPointerService implements IPointerHandler {
     }
 
     hover(item: any): void {
-        this.view.getActiveTool().over(item);
+        this.getStores().viewStore.getActiveView().getActiveTool().over(item);
         this.getServices().updateService().runScheduledTasks();
     }
 
     unhover(item: any): void {
-        this.view.getActiveTool().out(item);
+        this.getStores().viewStore.getActiveView().getActiveTool().out(item);
         this.getServices().updateService().runScheduledTasks();
     }
     
     private getScreenPointWithOffset(point: Point): Point {
-        const offset = this.calcOffset(this.view.getId());
+        const offset = this.getStores().viewStore.getActiveView().getOffset();
         return new Point(point.x - offset.x, point.y - offset.y);
     }
 
     private getPointWithOffset(point: Point): Point {
-        const offset = this.calcOffset(this.view.getId());
+        const offset = this.getStores().viewStore.getActiveView().getOffset();
         return this.getStores().viewStore.getActiveView().getCamera().screenToCanvasPoint(new Point(point.x - offset.x, point.y - offset.y));
     }
 }

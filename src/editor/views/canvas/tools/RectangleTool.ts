@@ -27,7 +27,7 @@ export class RectangleTool extends AbstractTool {
     }
 
     click() {
-        const pointer = this.controller.pointer.pointer;
+        const pointer = this.getServices().pointerService().pointer;
         const rect = Rectangle.squareFromCenterPointAndRadius(pointer.down, 50);
 
         const gameObject: MeshConcept = new MeshConcept(null, rect, name);
@@ -53,7 +53,7 @@ export class RectangleTool extends AbstractTool {
         if (this.lastPreviewRect) {
             this.getStores().conceptStore.remove(this.lastPreviewRect);
         }
-        this.rectSelector.updateRect(this.controller.pointer.pointer);
+        this.rectSelector.updateRect(this.getServices().pointerService().pointer);
         this.controller.feedbackStore.rectSelectFeedback.isVisible = false;
         const positions = this.rectSelector.getPositionsInSelection();
 

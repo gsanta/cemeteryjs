@@ -1,28 +1,25 @@
+import { Point } from '../../../misc/geometry/shapes/Point';
 import { Editor } from '../../Editor';
+import { MouseService } from '../../services/MouseService';
 import { ServiceLocator } from '../../services/ServiceLocator';
-import { UpdateTask } from '../../services/UpdateServices';
 import { Stores } from '../../stores/Stores';
-import { IPointerHandler } from '../IPointerHandler';
-import { KeyboardHandler } from '../KeyboardHandler';
-import { MouseHandler } from '../MouseHandler';
+import { KeyboardService } from '../KeyboardService';
 import { CanvasViewSettings, View } from '../View';
+import { CanvasExporter } from './CanvasExporter';
 import { LevelForm } from './forms/LevelForm';
 import { MeshForm } from './forms/MeshForm';
 import { PathForm } from './forms/PathForm';
 import { Model3DController } from './Model3DController';
-import { FeedbackStore } from './models/FeedbackStore';
-import { CanvasPointerService } from './services/CanvasPointerService';
-import { ToolType, Tool } from './tools/Tool';
-import { CanvasExporter } from './CanvasExporter';
 import { Camera, nullCamera } from './models/Camera';
-import { Point } from '../../../misc/geometry/shapes/Point';
-import { PointerTool } from './tools/PointerTool';
+import { FeedbackStore } from './models/FeedbackStore';
 import { CameraTool } from './tools/CameraTool';
-import { RectangleTool } from './tools/RectangleTool';
-import { PathTool } from './tools/PathTool';
 import { DeleteTool } from './tools/DeleteTool';
 import { MoveTool } from './tools/MoveTool';
+import { PathTool } from './tools/PathTool';
+import { PointerTool } from './tools/PointerTool';
+import { RectangleTool } from './tools/RectangleTool';
 import { SelectTool } from './tools/SelectTool';
+import { ToolType } from './tools/Tool';
 
 export function cameraInitializer(canvasId: string) {
     if (typeof document !== 'undefined') {
@@ -39,18 +36,27 @@ export function cameraInitializer(canvasId: string) {
     }
 }
 
+function calcOffsetFromDom(bitmapEditorId: string): Point {
+    if (typeof document !== 'undefined') {
+        const editorElement: HTMLElement = document.getElementById(bitmapEditorId);
+        if (editorElement) {
+            const rect: ClientRect = editorElement.getBoundingClientRect();
+            return new Point(rect.left - editorElement.scrollLeft, rect.top - editorElement.scrollTop);
+        }
+    }
+
+    return new Point(0, 0);
+}
+
+
 export class CanvasView extends View {
     name = '2D View';
     static id = 'svg-canvas-controller';
-    visible = true;
     
+    visible = true;
     feedbackStore: FeedbackStore;
     
-    mouseController: MouseHandler;
-    keyboardHandler: KeyboardHandler;
     model3dController: Model3DController;
-    
-    pointer: IPointerHandler;
     
     meshViewForm: MeshForm;
     pathForm: PathForm;
@@ -67,14 +73,11 @@ export class CanvasView extends View {
         this.getServices().exportService().registerViewExporter(this.exporter);
         this.feedbackStore = new FeedbackStore();
         
-        this.mouseController = new MouseHandler(this);
-        this.keyboardHandler = new KeyboardHandler(this);
         this.model3dController = new Model3DController(this, this.getServices);
 
         this.meshViewForm = new MeshForm(this, this.getServices, this.getStores);
         this.pathForm = new PathForm();
         this.levelForm = new LevelForm(this.getServices, this.getStores);
-        this.pointer = new CanvasPointerService(this, this.getServices, this.getStores);
 
         this.tools = [
             new PointerTool(this, this.getServices, this.getStores),
@@ -107,6 +110,10 @@ export class CanvasView extends View {
 
     isEmpty(): boolean {
         return this.getStores().conceptStore.getViews().length === 0;
+    }
+
+    getOffset() {
+        return calcOffsetFromDom(this.getId());
     }
 
     getCamera() {

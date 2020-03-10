@@ -1,6 +1,6 @@
 import { Point } from "../../../../misc/geometry/shapes/Point";
 import { ToolType } from "./Tool";
-import { Keyboard } from "../../KeyboardHandler";
+import { Keyboard } from "../../KeyboardService";
 import { CanvasView } from "../CanvasView";
 import { AbstractTool } from "./AbstractTool";
 import { UpdateTask } from "../../../services/UpdateServices";
@@ -33,14 +33,14 @@ export class PathTool extends AbstractTool {
             this.startNewPath();
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         } else if (selectedPathes.length === 1) {
-            const pointer = this.view.pointer.pointer;
+            const pointer = this.getServices().pointerService().pointer;
             selectedPathes[0].addPoint(new Point(pointer.down.x, pointer.down.y));
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         }
     }
 
     keydown() {
-        if (this.view.keyboardHandler.downKeys.includes(Keyboard.Enter)) {
+        if (this.getServices().keyboardService().downKeys.includes(Keyboard.Enter)) {
             this.getStores().conceptStore.removeSelectionAll();
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         }
@@ -63,7 +63,7 @@ export class PathTool extends AbstractTool {
     }
 
     private startNewPath() {
-        const pointer = this.view.pointer.pointer;
+        const pointer = this.getServices().pointerService().pointer;
         this.getStores().conceptStore.removeSelectionAll();
         const path = new PathConcept(pointer.down.clone());
         path.name = this.getStores().conceptStore.generateUniqueName(ConceptType.Path);

@@ -67,7 +67,7 @@ export class PointerTool extends AbstractTool {
     private updateSubviewHover(item: Concept) {
         switch(item.conceptType) {
             case ConceptType.Path:
-                (<PathConcept> item).updateSubviewHover(this.controller.pointer.pointer.curr);
+                (<PathConcept> item).updateSubviewHover(this.getServices().pointerService().pointer.curr);
                 break;
         }
     }

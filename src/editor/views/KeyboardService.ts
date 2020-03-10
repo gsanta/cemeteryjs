@@ -1,22 +1,24 @@
 import { CanvasView } from "./canvas/CanvasView";
+import { Stores } from '../stores/Stores';
 
 
 export enum Keyboard {
     Enter = 13
 }
 
-export class KeyboardHandler {
+export class KeyboardService {
+    serviceName = 'keyboard-service'
     downKeys: number[] = [];
 
-    private view: CanvasView;
+    private getStores: () => Stores;
 
-    constructor(view: CanvasView) {
-        this.view = view;
+    constructor(getStores: () => Stores) {
+        this.getStores = getStores;
     }
 
     onKeyDown(e: KeyboardEvent): void {
         this.downKeys.push(e.keyCode);
-        this.view.getActiveTool()?.keydown();
+        this.getStores().viewStore.getActiveView().getActiveTool()?.keydown();
     }
 
     onKeyUp(e: KeyboardEvent): void {

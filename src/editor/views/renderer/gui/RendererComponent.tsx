@@ -66,10 +66,10 @@ export class RendererComponent extends React.Component<RendererComponentProps> {
                         ref={this.canvasRef}
                     />
                     <CanvasOverlayStyled
-                        onMouseDown={(e) => this.props.controller.mouseHander.onMouseDown(e.nativeEvent)}
-                        onMouseMove={(e) => this.props.controller.mouseHander.onMouseMove(e.nativeEvent)}
-                        onMouseUp={(e) => this.props.controller.mouseHander.onMouseUp(e.nativeEvent)}
-                        onMouseLeave={(e) => this.props.controller.mouseHander.onMouseOut(e.nativeEvent)}
+                        onMouseDown={(e) => this.context.getServices().mouseService().onMouseDown(e.nativeEvent)}
+                        onMouseMove={(e) => this.context.getServices().mouseService().onMouseMove(e.nativeEvent)}
+                        onMouseUp={(e) => this.context.getServices().mouseService().onMouseUp(e.nativeEvent)}
+                        onMouseLeave={(e) => this.context.getServices().mouseService().onMouseOut(e.nativeEvent)}
                         onMouseOver={() => this.props.controller.over()}
                         onMouseOut={() => this.props.controller.out()}
                     />

@@ -5,6 +5,7 @@ import { Point } from '../../../misc/geometry/shapes/Point';
 import { AbstractTool } from '../canvas/tools/AbstractTool';
 import { ToolType } from '../canvas/tools/Tool';
 import { RendererView } from './RendererView';
+import { ServiceLocator } from '../../services/ServiceLocator';
 
 
 export class RendererCameraTool extends AbstractTool {
@@ -19,10 +20,12 @@ export class RendererCameraTool extends AbstractTool {
 
     private editorFacade: Editor;
     private controller: RendererView;
+    private getServices: () => ServiceLocator;
 
-    constructor(controller: RendererView, editorCamera: EditorCamera, numberOfSteps: number = 20) {
+    constructor(controller: RendererView, getServices: () => ServiceLocator, editorCamera: EditorCamera, numberOfSteps: number = 20) {
         super(ToolType.CAMERA)
         this.controller = controller;
+        this.getServices = getServices;
         this.camera = editorCamera;
         this.NUM_OF_STEPS = numberOfSteps;
     }
@@ -50,7 +53,7 @@ export class RendererCameraTool extends AbstractTool {
     drag() {
         super.drag();
 
-        const delta = this.controller.pointer.pointer.getScreenDiff().div(this.getCamera().getScale());
+        const delta = this.getServices().pointerService().pointer.getScreenDiff().div(this.getCamera().getScale());
         
         this.camera.moveBy(delta.negate());
         return true;

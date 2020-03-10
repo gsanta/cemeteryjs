@@ -4,13 +4,10 @@ import { Editor } from '../../Editor';
 import { ServiceLocator } from '../../services/ServiceLocator';
 import { UpdateService } from '../../services/UpdateServices';
 import { Tool, ToolType } from '../canvas/tools/Tool';
-import { IPointerHandler } from '../IPointerHandler';
-import { MouseHandler } from '../MouseHandler';
 import { CanvasViewSettings, View } from '../View';
 import { EditorCamera } from './EditorCamera';
 import { HelperMeshes } from './HelperMeshes';
 import { RendererCameraTool } from './RendererCameraTool';
-import { RendererPointerService } from './RendererPointerService';
 import { WebglCanvasImporter } from './WebglCanvasImporter';
 (<any> window).earcut = require('earcut');
 
@@ -20,14 +17,9 @@ export class RendererView extends View {
     visible = true;
     updateService: UpdateService;
 
-    mouseHander: MouseHandler;
-
     writer: WebglCanvasImporter;
     modelLoader: AbstractModelLoader;
-    pointer: IPointerHandler;
     private helperMeshes: HelperMeshes;
-
-    camera: EditorCamera;
 
     private renderCanvasFunc: () => void;
     meshes: Mesh[] = [];
@@ -36,13 +28,11 @@ export class RendererView extends View {
         super(editor, () => services, () => editor.stores);
 
         this.updateService = new UpdateService(this.editor, () => services, () => editor.stores);
-        this.mouseHander = new MouseHandler(this);
-        this.pointer = new RendererPointerService(this, this.getStores);
         this.update = this.update.bind(this);
     }
 
     getCamera(): EditorCamera {
-        return this.camera;
+        return this.getGameFacade().gameEngine.camera;
     }
 
     resize() {
@@ -51,7 +41,7 @@ export class RendererView extends View {
 
     setup() {
         this.tools = [
-            new RendererCameraTool(this, this.getGameFacade().gameEngine.camera)
+            new RendererCameraTool(this, this.getServices, this.getGameFacade().gameEngine.camera)
         ]
         this.activeTool = this.getToolByType(ToolType.CAMERA);
         this.writer = new WebglCanvasImporter(this, this.getGameFacade());

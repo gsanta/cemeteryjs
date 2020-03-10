@@ -46,7 +46,7 @@ export class SelectTool extends AbstractTool {
         if (this.activeTool) {
             this.activeTool.drag();
         } else {
-            this.rectSelector.updateRect(this.view.pointer.pointer);
+            this.rectSelector.updateRect(this.getServices().pointerService().pointer);
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
         }
     }

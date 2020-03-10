@@ -23,7 +23,7 @@ export class DeleteTool extends AbstractTool {
     }
 
     drag() {
-        this.rectSelector.updateRect(this.view.pointer.pointer);
+        this.rectSelector.updateRect(this.getServices().pointerService().pointer);
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 

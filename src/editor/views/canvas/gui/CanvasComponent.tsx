@@ -38,8 +38,8 @@ export class CanvasComponent extends React.Component<{controller: CanvasView}> {
     render(): JSX.Element {
         const stores = this.context.getStores();
 
-        const hover = (view: Concept) => this.props.controller.mouseController.hover(view);
-        const unhover = (view: Concept) => this.props.controller.mouseController.unhover(view);
+        const hover = (view: Concept) => this.context.getServices().mouseService().hover(view);
+        const unhover = (view: Concept) => this.context.getServices().mouseService().unhover(view);
 
         return (
             <EditorComponentStyled id={this.props.controller.getId()}>
@@ -48,12 +48,12 @@ export class CanvasComponent extends React.Component<{controller: CanvasView}> {
                     tabIndex={0}
                     viewBox={this.props.controller.getCamera().getViewBoxAsString()}
                     id={this.context.controllers.svgCanvasId}
-                    onMouseDown={(e) => this.props.controller.mouseController.onMouseDown(e.nativeEvent)}
-                    onMouseMove={(e) => this.props.controller.mouseController.onMouseMove(e.nativeEvent)}
-                    onMouseUp={(e) => this.props.controller.mouseController.onMouseUp(e.nativeEvent)}
-                    onMouseLeave={(e) => this.props.controller.mouseController.onMouseOut(e.nativeEvent)}
-                    onKeyDown={e => this.props.controller.keyboardHandler.onKeyDown(e.nativeEvent)}
-                    onKeyUp={e => this.props.controller.keyboardHandler.onKeyUp(e.nativeEvent)}
+                    onMouseDown={(e) => this.context.getServices().mouseService().onMouseDown(e.nativeEvent)}
+                    onMouseMove={(e) => this.context.getServices().mouseService().onMouseMove(e.nativeEvent)}
+                    onMouseUp={(e) => this.context.getServices().mouseService().onMouseUp(e.nativeEvent)}
+                    onMouseLeave={(e) => this.context.getServices().mouseService().onMouseOut(e.nativeEvent)}
+                    onKeyDown={e => this.context.getServices().keyboardService().onKeyDown(e.nativeEvent)}
+                    onKeyUp={e => this.context.getServices().keyboardService().onKeyUp(e.nativeEvent)}
                     onMouseOver={() => this.props.controller.over()}
                     onMouseOut={() => this.props.controller.out()}
                 >

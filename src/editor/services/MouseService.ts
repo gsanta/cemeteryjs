@@ -1,6 +1,7 @@
 import { Point } from "../../misc/geometry/shapes/Point";
-import { IPointerEvent, IPointerHandler } from "./IPointerHandler";
-import { Concept } from "./canvas/models/concepts/Concept";
+import { Concept } from "../views/canvas/models/concepts/Concept";
+import { ServiceLocator } from './ServiceLocator';
+import { IPointerEvent } from "./PointerService";
 
 export class MousePointer {
     down: Point;
@@ -19,39 +20,40 @@ export class MousePointer {
     }
 }
 
-export class MouseHandler {
-    private controller: {pointer: IPointerHandler};
+export class MouseService {
+    serviceName = 'mouse-service';
+    private getServices: () => ServiceLocator;
 
-    constructor(controller: {pointer: IPointerHandler}) {
-        this.controller = controller;
+    constructor(getServices: () => ServiceLocator) {
+        this.getServices = getServices;
     }
 
     onMouseDown(e: MouseEvent): void {
         if (!this.isLeftButton(e)) { return }
 
-        this.controller.pointer.pointerDown(this.convertEvent(e));
+        this.getServices().pointerService().pointerDown(this.convertEvent(e));
     }
     
     onMouseMove(e: MouseEvent): void {
-        this.controller.pointer.pointerMove(this.convertEvent(e));
+        this.getServices().pointerService().pointerMove(this.convertEvent(e));
     }    
 
     onMouseUp(e: MouseEvent): void {
         if (!this.isLeftButton(e)) { return }
 
-        this.controller.pointer.pointerUp(this.convertEvent(e));
+        this.getServices().pointerService().pointerUp(this.convertEvent(e));
     }
 
     onMouseOut(e: MouseEvent): void {
-        this.controller.pointer.pointerOut(this.convertEvent(e));
+        this.getServices().pointerService().pointerOut(this.convertEvent(e));
     }
 
     hover(item: Concept) {
-        this.controller.pointer.hover(item);
+        this.getServices().pointerService().hover(item);
     }
 
     unhover(item: Concept) {
-        this.controller.pointer.unhover(item);
+        this.getServices().pointerService().unhover(item);
     }
 
     private convertEvent(e: MouseEvent): IPointerEvent {
