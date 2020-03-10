@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Point } from '../../../../misc/geometry/shapes/Point';
-import { colors } from '../../../gui/styles';
-import { PathConcept } from '../models/concepts/PathConcept';
+import { Point } from '../../../misc/geometry/shapes/Point';
+import { colors } from '../../gui/styles';
+import { PathConcept } from '../../views/canvas/models/concepts/PathConcept';
 
 export interface PathComponentProps {
     item: PathConcept;

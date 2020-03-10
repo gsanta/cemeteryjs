@@ -4,10 +4,10 @@ import './App.scss';
 import { AppContext, AppContextType } from './Context';
 import '../../editor/gui/misc/SplitPane.css';
 import Split from 'split.js'
-import { windowFactory } from '../WindowFactory';
 import { SidebarComponent } from './SidebarComponent';
 import { SpinnerOverlayComponent } from './misc/SpinnerOverlayComponent';
 import { View } from '../views/View';
+import { viewFactory } from '../ViewFactory';
 
 export interface AppState {
     isDialogOpen: boolean;
@@ -56,7 +56,7 @@ export class App extends React.Component<{}, AppState> {
     render() {
         const canvases = this.context.controllers.getWindowControllers()
             .filter(canvas => canvas.isVisible())
-            .map(canvas => <div id={`${canvas.getId()}-split`}>{windowFactory(canvas)}</div>);
+            .map(canvas => <div id={`${canvas.getId()}-split`}>{viewFactory(canvas)}</div>);
 
         return (
             <div className="style-nightshifs">

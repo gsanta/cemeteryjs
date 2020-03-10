@@ -1,12 +1,11 @@
 import { Point } from "../../../../misc/geometry/shapes/Point";
 import { ToolType } from "./Tool";
-import { Keyboard } from "../../KeyboardService";
-import { CanvasView } from "../CanvasView";
+import { Keyboard } from "../../../services/KeyboardService";
+import { CanvasView, CanvasTag } from "../CanvasView";
 import { AbstractTool } from "./AbstractTool";
 import { UpdateTask } from "../../../services/UpdateServices";
 import { ConceptType, Concept } from "../models/concepts/Concept";
 import { PathConcept } from "../models/concepts/PathConcept";
-import { CanvasItemTag } from "../models/CanvasItem";
 import { Stores } from "../../../stores/Stores";
 import { ServiceLocator } from '../../../services/ServiceLocator';
 import { PointerTool } from "./PointerTool";
@@ -68,6 +67,6 @@ export class PathTool extends AbstractTool {
         const path = new PathConcept(pointer.down.clone());
         path.name = this.getStores().conceptStore.generateUniqueName(ConceptType.Path);
         this.getStores().conceptStore.addPath(path);
-        this.getStores().conceptStore.addTag([path], CanvasItemTag.SELECTED);
+        this.getStores().conceptStore.addTag([path], CanvasTag.Selected);
     }
 }

@@ -1,4 +1,4 @@
-import { WindowFactory } from "../../WindowFactory";
+import { ViewFactory } from "../../ViewFactory";
 import * as React from 'react';
 import { CanvasView } from "./CanvasView";
 import { View } from "../View";
@@ -7,7 +7,7 @@ import { ServiceLocator } from "../../services/ServiceLocator";
 import { Stores } from "../../stores/Stores";
 import { CanvasComponent } from "./gui/CanvasComponent";
 
-export class CanvasFactory implements WindowFactory {
+export class CanvasFactory implements ViewFactory {
     name = 'canvas';
     
     private controller: CanvasView;

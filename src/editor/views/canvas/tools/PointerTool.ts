@@ -1,9 +1,8 @@
 import { AbstractTool } from "./AbstractTool";
-import { CanvasView } from "../CanvasView";
+import { CanvasView, CanvasTag } from "../CanvasView";
 import { ToolType } from "./Tool";
 import { UpdateTask } from "../../../services/UpdateServices";
 import { ConceptType, Concept } from "../models/concepts/Concept";
-import { CanvasItemTag } from "../models/CanvasItem";
 import { PathConcept } from "../models/concepts/PathConcept";
 import { Stores } from '../../../stores/Stores';
 import { ServiceLocator } from '../../../services/ServiceLocator';
@@ -30,7 +29,7 @@ export class PointerTool extends AbstractTool {
             (!this.selectableViews || this.selectableViews.includes(hoveredView.conceptType))
         ) {
             this.getStores().conceptStore.removeSelectionAll();
-            this.getStores().conceptStore.addTag([hoveredView], CanvasItemTag.SELECTED);
+            this.getStores().conceptStore.addTag([hoveredView], CanvasTag.Selected);
             hoveredView.selectHoveredSubview();
 
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas);
@@ -49,14 +48,14 @@ export class PointerTool extends AbstractTool {
     }
 
     over(item: Concept) {
-        this.getStores().conceptStore.addTag([item], CanvasItemTag.HOVERED);
+        this.getStores().conceptStore.addTag([item], CanvasTag.Hovered);
         this.updateSubviewHover(item);
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     out(item: Concept) {
         this.getStores().conceptStore.getHoveredView() && this.getStores().conceptStore.getHoveredView().removeSubviewHover();
-        this.getStores().conceptStore.removeTagFromAll(CanvasItemTag.HOVERED);
+        this.getStores().conceptStore.removeTagFromAll(CanvasTag.Hovered);
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 

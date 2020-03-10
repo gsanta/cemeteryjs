@@ -1,9 +1,8 @@
-import { CanvasView } from "../CanvasView";
+import { CanvasView, CanvasTag } from '../CanvasView';
 import { RectangleSelector } from "./selection/RectangleSelector";
 import { ToolType, Tool } from "./Tool";
 import { AbstractTool } from "./AbstractTool";
 import { UpdateTask } from "../../../services/UpdateServices";
-import { CanvasItemTag } from "../models/CanvasItem";
 import { Concept } from "../models/concepts/Concept";
 import { Stores } from '../../../stores/Stores';
 import { ServiceLocator } from '../../../services/ServiceLocator';
@@ -37,7 +36,7 @@ export class SelectTool extends AbstractTool {
         if (this.getStores().conceptStore.getHoveredView()) {
             this.view.getToolByType(ToolType.POINTER).click();
         } else if (this.getStores().conceptStore.getSelectedViews().length > 0) {
-            this.getStores().conceptStore.removeTag(this.getStores().conceptStore.getViews(), CanvasItemTag.SELECTED);
+            this.getStores().conceptStore.removeTag(this.getStores().conceptStore.getViews(), CanvasTag.Selected);
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
         }
     }
@@ -64,8 +63,8 @@ export class SelectTool extends AbstractTool {
         const canvasItems = this.getStores().conceptStore.getIntersectingItemsInRect(feedback.rect);
         const canvasStore = this.getStores().conceptStore;this.view.getToolByType(ToolType.POINTER)
         
-        canvasStore.removeTag(this.getStores().conceptStore.getViews(), CanvasItemTag.SELECTED);
-        canvasStore.addTag(canvasItems, CanvasItemTag.SELECTED);
+        canvasStore.removeTag(this.getStores().conceptStore.getViews(), CanvasTag.Selected);
+        canvasStore.addTag(canvasItems, CanvasTag.Selected);
 
         this.rectSelector.finish();
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);

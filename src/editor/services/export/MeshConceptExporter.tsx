@@ -4,10 +4,10 @@ import { IConceptExporter } from "../../views/canvas/tools/IConceptExporter";
 import React = require("react");
 import { ConceptType, Concept } from "../../views/canvas/models/concepts/Concept";
 import { MeshConcept } from "../../views/canvas/models/concepts/MeshConcept";
-import { CanvasItemTag } from "../../views/canvas/models/CanvasItem";
 import { Stores } from '../../stores/Stores';
+import { CanvasTag } from "../../views/canvas/CanvasView";
 
-export class RectangleExporter implements IConceptExporter {
+export class MeshConceptExporter implements IConceptExporter {
     type = ConceptType.Mesh;
     private getStores: () => Stores;
 
@@ -65,7 +65,7 @@ export class RectangleExporter implements IConceptExporter {
     private renderRect(item: MeshConcept) {
         const viewStore = this.getStores().conceptStore;
 
-        const stroke = viewStore.getTags(item).has(CanvasItemTag.SELECTED) || viewStore.getTags(item).has(CanvasItemTag.HOVERED) ? colors.views.highlight : 'black';
+        const stroke = viewStore.getTags(item).has(CanvasTag.Selected) || viewStore.getTags(item).has(CanvasTag.Hovered) ? colors.views.highlight : 'black';
 
         return (
             <rect

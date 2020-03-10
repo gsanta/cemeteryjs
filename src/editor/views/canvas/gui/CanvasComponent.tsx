@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { CanvasToolbarComponent } from './CanvasToolbarComponent';
-import { PathMarkersComponent } from './PathMarkersComponent';
+import { PathMarkersComponent } from '../../../services/export/PathMarkersComponent';
 import { colors } from '../../../gui/styles';
 import { CanvasView } from '../CanvasView';
 import { AppContext, AppContextType } from '../../../gui/Context';

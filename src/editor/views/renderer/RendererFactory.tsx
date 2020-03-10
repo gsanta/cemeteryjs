@@ -1,12 +1,12 @@
 import { View } from "../View";
 import { Editor } from "../../Editor";
-import { WindowFactory } from "../../WindowFactory";
+import { ViewFactory } from "../../ViewFactory";
 import { RendererComponent } from "./gui/RendererComponent";
 import { RendererView } from "./RendererView";
 import * as React from 'react';
 import { ServiceLocator } from "../../services/ServiceLocator";
 
-export class RendererFactory implements WindowFactory {
+export class RendererFactory implements ViewFactory {
     name = 'renderer';
     
     private controller: RendererView;

@@ -1,4 +1,3 @@
-import { CanvasItemTag } from '../views/canvas/models/CanvasItem';
 import { MeshConcept } from '../views/canvas/models/concepts/MeshConcept';
 import { Concept, ConceptType } from '../views/canvas/models/concepts/Concept';
 import { PathConcept } from '../views/canvas/models/concepts/PathConcept';
@@ -6,9 +5,10 @@ import { without, maxBy } from '../../misc/geometry/utils/Functions';
 import { Rectangle } from '../../misc/geometry/shapes/Rectangle';
 import { Point } from '../../misc/geometry/shapes/Point';
 import { Polygon } from '../../misc/geometry/shapes/Polygon';
+import { CanvasTag } from '../views/canvas/CanvasView';
 
 export class ConceptStore {
-    private tags: Map<Concept, Set<CanvasItemTag>> = new Map();
+    private tags: Map<Concept, Set<CanvasTag>> = new Map();
     private views: Concept[] = [];
     private naming: Naming;
 
@@ -55,23 +55,23 @@ export class ConceptStore {
         return this.views.filter(item => item.dimensions.containsPoint(gridPoint));
     }
 
-    getTags(gameObject: Concept): Set<CanvasItemTag> {
+    getTags(gameObject: Concept): Set<CanvasTag> {
         return this.tags.get(gameObject);
     }
 
-    addTag(views: Concept[], tag: CanvasItemTag): void {
+    addTag(views: Concept[], tag: CanvasTag): void {
         views.forEach(item => this.tags.get(item).add(tag));
     }
 
-    removeTag(views: Concept[], tag: CanvasItemTag) {
+    removeTag(views: Concept[], tag: CanvasTag) {
         views.forEach(item => this.tags.get(item).delete(tag));
     }
 
-    removeTagFromAll(tag: CanvasItemTag) {
+    removeTagFromAll(tag: CanvasTag) {
         this.views.forEach(item => this.tags.get(item).delete(tag));
     }
 
-    getTaggedItems(tag: CanvasItemTag): Concept[] {
+    getTaggedItems(tag: CanvasTag): Concept[] {
         return this.views.filter(item => this.tags.get(item).has(tag));
     }
 
@@ -92,11 +92,11 @@ export class ConceptStore {
     }
 
     getHoveredView(): Concept {
-        return this.getTaggedItems(CanvasItemTag.HOVERED)[0];
+        return this.getTaggedItems(CanvasTag.Hovered)[0];
     }
 
     getSelectedViews(): Concept[] {
-        return this.getTaggedItems(CanvasItemTag.SELECTED);
+        return this.getTaggedItems(CanvasTag.Selected);
     }
 
     getSelectedPathes(): PathConcept[] {
@@ -108,7 +108,7 @@ export class ConceptStore {
     }
 
     removeSelectionAll() {
-        this.removeTag(this.getSelectedViews(), CanvasItemTag.SELECTED);
+        this.removeTag(this.getSelectedViews(), CanvasTag.Selected);
     }
 
     generateUniqueName(viewType: ConceptType) {

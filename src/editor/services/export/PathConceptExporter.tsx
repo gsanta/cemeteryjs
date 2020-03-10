@@ -1,12 +1,12 @@
 import { IConceptExporter } from "../../views/canvas/tools/IConceptExporter";
 import React = require("react");
-import { PathComponent } from "../../views/canvas/gui/PathComponent";
-import { CanvasItemTag } from "../../views/canvas/models/CanvasItem";
+import { PathComponent } from "./PathComponent";
 import { PathConcept } from "../../views/canvas/models/concepts/PathConcept";
 import { ConceptType, Concept } from "../../views/canvas/models/concepts/Concept";
 import { Stores } from '../../stores/Stores';
+import { CanvasTag } from "../../views/canvas/CanvasView";
 
-export class PathExporter implements IConceptExporter {
+export class PathConceptExporter implements IConceptExporter {
     type = ConceptType.Path;
     private getStores: () => Stores;
 
@@ -20,7 +20,7 @@ export class PathExporter implements IConceptExporter {
                 onlyData={!hover}
                 item={path}
                 isHovered={this.getStores().conceptStore.getHoveredView() === path}
-                isSelected={this.getStores().conceptStore.getTags(path).has(CanvasItemTag.SELECTED)}
+                isSelected={this.getStores().conceptStore.getTags(path).has(CanvasTag.Selected)}
                 onMouseOver={(item: PathConcept) => hover ?  hover(item) : () => undefined}
                 onMouseOut={(item: PathConcept) => unhover ? unhover(item) : () => undefined}
             />

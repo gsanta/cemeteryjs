@@ -1,4 +1,4 @@
-import { CanvasView } from "./canvas/CanvasView";
+import { CanvasView } from "../views/canvas/CanvasView";
 import { Stores } from '../stores/Stores';
 
 

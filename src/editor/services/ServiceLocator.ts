@@ -8,7 +8,7 @@ import { HistoryService } from "./HistoryService";
 import { ExportService } from "./export/ExportService";
 import { PointerService } from './PointerService';
 import { MouseService } from './MouseService';
-import { KeyboardService } from '../views/KeyboardService';
+import { KeyboardService } from './KeyboardService';
 
 export class ServiceLocator {
     private services: {serviceName: string}[] = [];

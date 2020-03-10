@@ -1,7 +1,7 @@
 import { IConceptExporter } from "./tools/IConceptExporter";
 import { Stores } from "../../stores/Stores";
-import { RectangleExporter } from "../../services/export/RectangleExporter";
-import { PathExporter } from "../../services/export/PathExporter";
+import { MeshConceptExporter } from "../../services/export/MeshConceptExporter";
+import { PathConceptExporter } from "../../services/export/PathConceptExporter";
 import { ConceptType } from "./models/concepts/Concept";
 import * as ReactDOMServer from 'react-dom/server';
 
@@ -9,7 +9,7 @@ export class CanvasExporter {
     private conceptExporters: IConceptExporter[];
 
     constructor(getStores: () => Stores) {
-        this.conceptExporters = [new RectangleExporter(getStores), new PathExporter(getStores)];
+        this.conceptExporters = [new MeshConceptExporter(getStores), new PathConceptExporter(getStores)];
     }
 
     export(): string {

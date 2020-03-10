@@ -3,7 +3,7 @@ import { Editor } from '../../Editor';
 import { MouseService } from '../../services/MouseService';
 import { ServiceLocator } from '../../services/ServiceLocator';
 import { Stores } from '../../stores/Stores';
-import { KeyboardService } from '../KeyboardService';
+import { KeyboardService } from '../../services/KeyboardService';
 import { CanvasViewSettings, View } from '../View';
 import { CanvasExporter } from './CanvasExporter';
 import { LevelForm } from './forms/LevelForm';
@@ -48,6 +48,10 @@ function calcOffsetFromDom(bitmapEditorId: string): Point {
     return new Point(0, 0);
 }
 
+export enum CanvasTag {
+    Selected = 'selected',
+    Hovered = 'hovered'
+}
 
 export class CanvasView extends View {
     name = '2D View';

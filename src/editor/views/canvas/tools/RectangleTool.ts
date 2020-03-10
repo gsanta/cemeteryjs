@@ -1,12 +1,11 @@
 import { Rectangle } from '../../../../misc/geometry/shapes/Rectangle';
 import { UpdateTask } from '../../../services/UpdateServices';
-import { CanvasView } from '../CanvasView';
+import { CanvasView, CanvasTag } from '../CanvasView';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './selection/RectangleSelector';
 import { ToolType } from './Tool';
 import { MeshConcept } from '../models/concepts/MeshConcept';
 import { ConceptType } from '../models/concepts/Concept';
-import { CanvasItemTag } from '../models/CanvasItem';
 import { ServiceLocator } from '../../../services/ServiceLocator';
 import { Stores } from '../../../stores/Stores';
 
@@ -42,7 +41,7 @@ export class RectangleTool extends AbstractTool {
 
         this.getStores().conceptStore.addRect(gameObject);
         this.getStores().conceptStore.removeSelectionAll()
-        this.getStores().conceptStore.addTag([gameObject], CanvasItemTag.SELECTED);
+        this.getStores().conceptStore.addTag([gameObject], CanvasTag.Selected);
 
         this.getServices().levelService().updateCurrentLevel();
         this.getServices().updateService().scheduleTasks(UpdateTask.All);

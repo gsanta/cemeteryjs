@@ -3,7 +3,7 @@ import { GameFacade } from '../game/GameFacade';
 import { CanvasFactory } from './views/canvas/CanvasFactory';
 import { GlobalSettingsForm } from './views/canvas/forms/GlobalSettingsForm';
 import { RendererFactory } from './views/renderer/RendererFactory';
-import { WindowFactory } from './WindowFactory';
+import { ViewFactory } from './ViewFactory';
 import { CanvasView } from './views/canvas/CanvasView';
 import { ServiceLocator } from './services/ServiceLocator';
 import { Stores } from './stores/Stores';
@@ -14,7 +14,7 @@ export class Editor {
 
     stores: Stores;
     
-    windowFactories: WindowFactory[];
+    windowFactories: ViewFactory[];
 
     svgCanvasId: string;
     renderFunc: () => void;

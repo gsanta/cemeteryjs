@@ -8,14 +8,14 @@ import { RendererView } from './views/renderer/RendererView';
 import { ServiceLocator } from './services/ServiceLocator';
 import { Stores } from './stores/Stores';
 
-export interface WindowFactory {
+export interface ViewFactory {
     name: string;
     getWindowController(editor: Editor, services: ServiceLocator, stores: Stores): View;
     renderWindowComponent(controller: View): JSX.Element;
     renderToolbarComponent(): JSX.Element;
 }
 
-export function windowFactory(controller: View): JSX.Element {
+export function viewFactory(controller: View): JSX.Element {
     switch(controller.getId()) {
         case CanvasView.id:
             return <CanvasComponent controller={controller as CanvasView}/>;
