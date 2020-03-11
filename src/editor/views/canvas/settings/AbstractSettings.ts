@@ -7,7 +7,7 @@ export enum PropertyType {
 }
 
 export abstract class AbstractSettings<P> {
-    name: string;
+    abstract getType(): string;
     protected renderFunc = () => null;
     protected tempString: string;
     protected tempBoolean: boolean;

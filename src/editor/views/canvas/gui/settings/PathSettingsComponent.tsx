@@ -1,24 +1,23 @@
 import * as React from 'react';
 import { AppContext, AppContextType } from '../../../../gui/Context';
-import { ViewFormProps } from './settingsFactory';
 import { ConnectedInputComponent } from '../../../../gui/inputs/InputComponent';
-import { SettingsRowStyled, LabelStyled, InputStyled } from './SettingsComponent';
-import { PathPropType, PathSettings } from '../../settings/PathSettings';
-import { PathConcept } from '../../models/concepts/PathConcept';
 import { CanvasView } from '../../CanvasView';
+import { PathConcept } from '../../models/concepts/PathConcept';
+import { PathPropType, PathSettings } from '../../settings/PathSettings';
+import { InputStyled, LabelStyled, SettingsRowStyled } from './SettingsComponent';
 
 export class PathSettingsComponent extends React.Component<{concept: PathConcept}> {
     static contextType = AppContext;
     context: AppContextType;
 
     componentDidMount() {
-        const pathSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<PathSettings>(PathSettings.name);
+        const pathSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<PathSettings>(PathSettings.type);
 
         pathSettings.setRenderer(() => this.forceUpdate());
     }
 
     render() {
-        const pathSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<PathSettings>(PathSettings.name);
+        const pathSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<PathSettings>(PathSettings.type);
 
         pathSettings.path = this.props.concept;
 
@@ -30,7 +29,7 @@ export class PathSettingsComponent extends React.Component<{concept: PathConcept
     }
 
     private renderName(): JSX.Element {
-        const pathSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<PathSettings>(PathSettings.name);
+        const pathSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<PathSettings>(PathSettings.type);
 
         return (
             <SettingsRowStyled>

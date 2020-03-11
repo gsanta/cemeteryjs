@@ -26,7 +26,8 @@ const propertyTypes = {
 };
 
 export class MeshSettings extends AbstractSettings<MeshViewPropType> {
-    name = 'mesh-settings';
+    static type = 'mesh-settings';
+    getType() { return MeshSettings.type; }
     meshConcept: MeshConcept;
 
     private controller: CanvasView;

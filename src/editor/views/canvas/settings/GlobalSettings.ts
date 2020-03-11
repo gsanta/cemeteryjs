@@ -10,7 +10,9 @@ export enum GlobalSettingsPropType {
 }
 
 export class GlobalSettings extends AbstractSettings<GlobalSettingsPropType> {
-    name = 'global-settings';
+    static type = 'global-settings';
+    getType() { return GlobalSettings.type; }
+
     meshConcept: MeshConcept;
 
     private controller: CanvasView;
