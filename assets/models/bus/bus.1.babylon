@@ -1,0 +1,21 @@
+{"producer":{"name":"Blender","version":"2.81 (sub 16)","exporter_version":"6.2.3","file":"bus_1.babylon"},
+"autoClear":true,"clearColor":[0.0509,0.0509,0.0509],"gravity":[0,-9.81,0],
+"materials":[{"name":"Material","id":"Material","customType":"BABYLON.PBRMaterial","backFaceCulling":true,"checkReadyOnlyOnce":false,"maxSimultaneousLights":4,"environmentIntensity":1,"albedo":[0.8,0.8,0.8],"reflectivity":[0.5,0.5,0.5],"roughness":0.4,"alpha":1,"transparencyMode":0,"alphaCutOff":0.4,"metallic":0}],
+"multiMaterials":[],
+"skeletons":[],
+"meshes":[{"name":"Cube","id":"Cube","materialId":"Material","billboardMode":0,"position":[-0.0071,0.2045,-1.7612],"rotation":[0,0,0],"scaling":[1,1,1],"isVisible":true,"freezeWorldMatrix":false,"isEnabled":true,"checkCollisions":false,"receiveShadows":false,"pickable":true,"tags":""
+,"positions":[-4.5,1.8046,2.7245,4.5,1.8046,0.7245,4.5,1.8046,2.7245,4.5,1.8046,0.7245,-4.5,-0.1954,0.7245,4.5,-0.1954,0.7245,-4.5,1.8046,0.7245,-4.5,-0.1954,2.7245,-4.5,-0.1954,0.7245,4.5,-0.1954,2.7245,-4.5,-0.1954,0.7245,-4.5,-0.1954,2.7245,4.5,1.8046,2.7245,4.5,-0.1954,0.7245,4.5,-0.1954,2.7245,-4.5,1.8046,2.7245,4.5,-0.1954,2.7245
+,-4.5,-0.1954,2.7245,-4.5,1.8046,0.7245,4.5,1.8046,0.7245,-4.5,1.8046,0.7245,-4.5,1.8046,2.7245,4.5,-0.1954,0.7245,-4.5,-0.1954,0.7245,4.5,1.8046,2.7245,4.5,1.8046,0.7245,4.5,-0.1954,0.7245,-4.5,1.8046,2.7245,4.5,1.8046,2.7245,4.5,-0.1954,2.7245]
+,"normals":[0,1,0,0,1,0,0,1,0,0,0,-1,0,0,-1,0,0,-1,-1,0,0,-1,0,0,-1,0,0,0,-1,0,0,-1,0,0,-1,0,1,0,0,1,0,0,1,0,0,0,0,1,0,0,1
+,0,0,1,0,1,0,0,0,-1,0,0,-1,-1,0,0,0,-1,0,0,-1,0,1,0,0,1,0,0,1,0,0,0,0,1,0,0,1,0,0,1]
+,"uvs":[0.875,0.5,0.625,0.75,0.625,0.5,0.625,0.75,0.375,1,0.375,0.75,0.625,0,0.375,0.25,0.375,0,0.375,0.5,0.125,0.75,0.125,0.5,0.625,0.5,0.375,0.75,0.375,0.5,0.625,0.25,0.375,0.5,0.375,0.25,0.875,0.75,0.625,0.75,0.625,1,0.625,0.25,0.375,0.75,0.125,0.75,0.625,0.5
+,0.625,0.75,0.375,0.75,0.625,0.25,0.625,0.5,0.375,0.5]
+,"indices":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,0,18,1,19,20,4,6,21,7,9,22,23,24,25,26,27,28,29]
+,"subMeshes":[{"materialIndex":0,"verticesStart":0,"verticesCount":30,"indexStart":0,"indexCount":36}]
+,"instances":[]}
+],
+"morphTargetManagers":[],
+"cameras":[],"activeCameraID":"Camera",
+"lights":[{"name":"Light","id":"Light","type":0,"position":[4.0762,5.9039,1.0055],"range":40,"intensityMode":0,"intensity":1,"diffuse":[1,1,1],"specular":[1,1,1],"radius":0.1}],
+"shadowGenerators":[]
+}

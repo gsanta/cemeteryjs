@@ -42,17 +42,28 @@ export abstract class AbstractModelLoader {
         this.loadedFileNames.add(meshObject.modelPath);
 
         return this.getServices().storageService().loadAsset(meshObject.modelPath)
-                .then((data) => this.loadMesh(meshObject, data))
-                .catch(() => this.loadMesh(meshObject, meshObject.modelPath));
+            .then((data) => {
+                if (data) {
+                    return this.loadMesh(meshObject, data);
+                } else {
+                    return this.loadMesh(meshObject, meshObject.modelPath);
+                }
+            });
     }
 
     private loadMesh(meshObject: MeshObject | MeshConcept, dataOrFileName: string): Promise<Mesh> {
-        const folder = this.getFolderNameFromFileName(meshObject.modelPath);
+        let folder = this.getFolderNameFromFileName(meshObject.modelPath);
+        let path = `${this.basePath}${folder}/`;
+        let fileName = dataOrFileName;
+        if (dataOrFileName.startsWith('data:')) {
+            path = dataOrFileName;
+            fileName = undefined;
+        }
         return new Promise(resolve => {
             SceneLoader.ImportMesh(
                 '',
-                `${this.basePath}${folder}/`,
-                dataOrFileName,
+                path,
+                fileName,
                 this.scene,
                 (meshes: Mesh[], ps: ParticleSystem[], skeletons: Skeleton[]) => resolve(this.createModelData(meshObject, meshes, skeletons)),
                 () => { },

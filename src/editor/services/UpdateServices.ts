@@ -56,9 +56,7 @@ export class UpdateService {
                     (<RendererView> this.editor.getWindowControllerByName('renderer')).update();
                 break;
                 case UpdateTask.SaveData:
-                    const map = this.getServices().exportService().export();
-                    this.getServices().storageService().storeLevel(this.getStores().levelStore.currentLevel.index, map);
-                    this.getServices().historyService().saveState(map);
+                    this.saveData();
                 break;
                 case UpdateTask.All:
                     this.canvasRepainter();
@@ -67,6 +65,12 @@ export class UpdateService {
                 break;
             }
         });
+    }
+
+    private saveData() {
+        const map = this.getServices().exportService().export();
+        this.getServices().storageService().storeLevel(this.getStores().levelStore.currentLevel.index, map);
+        this.getServices().historyService().saveState(map);
     }
 
     setCanvasRepainter(repaint: Function) {

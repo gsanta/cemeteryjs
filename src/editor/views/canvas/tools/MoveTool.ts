@@ -40,7 +40,7 @@ export class MoveTool extends AbstractTool {
         super.draggedUp();
 
         if (!this.isDragStart) {
-            this.getServices().updateService().scheduleTasks(UpdateTask.All);
+            this.getServices().updateService().scheduleTasks(UpdateTask.SaveData, UpdateTask.All);
         }
 
         this.isDragStart = true;
