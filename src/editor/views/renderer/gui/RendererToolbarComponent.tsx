@@ -47,6 +47,7 @@ export class RendererToolbarComponent extends React.Component {
     }
 
     private isToolActive(toolType: ToolType) {
-        return this.context.getStores().viewStore.getActiveView().getActiveTool().type === toolType;
+        const view = this.context.getStores().viewStore.getViewById<RendererView>(RendererView.id);
+        return view.getActiveTool() && view.getActiveTool().type === toolType;
     }
 }

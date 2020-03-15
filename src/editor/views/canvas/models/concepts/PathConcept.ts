@@ -117,6 +117,11 @@ export class PathConcept implements Concept {
         this.deserializeParentRelations(relations);
     }
 
+    move(point: Point) {
+        this.points.forEach(p => p.add(point));
+        this.str = undefined;
+    }
+
     private deserializePoints(points: string) {
         this.points = points.split(' ')
             .map(p => {

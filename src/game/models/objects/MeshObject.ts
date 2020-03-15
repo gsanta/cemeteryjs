@@ -86,7 +86,7 @@ export class MeshObject implements IGameObject {
     }
 
     setRotation(direction: Point) {
-        const rotation = Math.atan2(direction.y, direction.x) - Math.PI / 2;
+        const rotation = 2 * Math.PI -  Math.atan2(direction.y, direction.x);
 
         if (this.getMesh(this.meshName)) {
             this.getMesh(this.meshName).rotation.y = rotation;

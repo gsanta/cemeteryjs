@@ -40,8 +40,8 @@ export class MeshDimensionService extends AbstractModelLoader {
     private setMeshDimensions(meshView: MeshConcept) {
         const mesh = this.fileNameToMeshMap.get(meshView.modelPath);
         const dimensions = this.getDimension(mesh).mul(10);
-        dimensions.x  = dimensions.x < 50 ? 50 : dimensions.x;
-        dimensions.y  = dimensions.y < 50 ? 50 : dimensions.y;
+        dimensions.x  = dimensions.x < 10 ? 10 : dimensions.x;
+        dimensions.y  = dimensions.y < 10 ? 10 : dimensions.y;
         meshView.dimensions = meshView.dimensions.setWidth(dimensions.x).setHeight(dimensions.y);
         meshView.animations = this.getAnimations(meshView, mesh);
 

@@ -58,18 +58,17 @@ export class MoveTool extends AbstractTool {
         const selected = this.getStores().conceptStore.getSelectedViews();
         this.origDimensions = [];
         
-            this.origDimensions = selected.map(item => item.dimensions);
+        this.origDimensions = selected.map(item => item.dimensions);
 
-            this.isMoving = true;
-            this.moveItems();
-            return true;
+        this.isMoving = true;
+        this.moveItems();
+        return true;
     }
 
     private moveItems() {
         const selectedItems = this.getStores().conceptStore.getSelectedViews();
-        const mouseDelta = this.getServices().pointerService().pointer.getDownDiff();
 
-        selectedItems.forEach((item, index) => item.dimensions = this.origDimensions[index].translate(mouseDelta));
+        selectedItems.forEach((item, index) => item.move(this.getServices().pointerService().pointer.getDiff()));
 
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }

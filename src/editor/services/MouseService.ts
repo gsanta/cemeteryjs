@@ -11,6 +11,10 @@ export class MousePointer {
     currScreen: Point;
     prevScreen: Point;
 
+    getDiff() {
+        return this.curr.subtract(this.prev);
+    }
+
     getDownDiff() {
         return this.curr.subtract(this.down);
     }

@@ -1,4 +1,5 @@
 import { Rectangle } from "../../../../../misc/geometry/shapes/Rectangle";
+import { Point } from "../../../../../misc/geometry/shapes/Point";
 
 export enum ConceptType {
     Mesh = 'Mesh',
@@ -12,4 +13,5 @@ export interface Concept {
     removeSubviewHover(): void;
     selectHoveredSubview(): void;
     isSubviewHovered(): boolean;
+    move(point: Point): void;
 }

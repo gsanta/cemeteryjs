@@ -17,7 +17,10 @@ export class Point {
     }
 
     add(point: Point): Point {
-        return this.addX(point.x).addY(point.y);
+        this.x += point.x;
+        this.y += point.y;
+
+        return this;
     }
 
     addX(amount: number): Point {

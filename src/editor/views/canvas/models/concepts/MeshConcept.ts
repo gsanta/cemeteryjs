@@ -126,6 +126,10 @@ export class MeshConcept implements Concept {
     selectHoveredSubview() {}
     isSubviewHovered(): boolean { return false; }
 
+    move(point: Point) {
+        this.dimensions = this.dimensions.translate(point);
+    }
+
     private getAnimations(meshStore: MeshStore): Animation[] {
         return meshStore.getMesh(this.name).skeleton.getAnimationRanges().map(anim => ({
             name: anim.name,

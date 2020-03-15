@@ -28,8 +28,8 @@ export class WanderBehaviour implements IBehaviour {
         this.setAngle(displacement, gameObject.wanderAngle);
         gameObject.wanderAngle += Math.random() * WanderBehaviour.ANGLE_CHANGE - WanderBehaviour.ANGLE_CHANGE * .5;
 
-        const wanderForce = circleCenter.add(displacement);
-        return wanderForce.normalize();
+        circleCenter.add(displacement);
+        return circleCenter.normalize();
     }
 
     private setAngle(vector: Point, value: number) {
