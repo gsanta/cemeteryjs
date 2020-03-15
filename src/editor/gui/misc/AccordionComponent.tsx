@@ -52,7 +52,7 @@ export class AccordionComponent extends React.Component<AccordionProps> {
 
     render() {
         const accordions = this.props.elements.map((element, index) => (
-            <Accordion defaultActiveKey={this.props.expanded ? index + '' : undefined} onClick={this.props.onClick}>
+            <Accordion key={index} defaultActiveKey={this.props.expanded ? index + '' : undefined} onClick={this.props.onClick}>
                 <CardStyled>
                     <CardHeaderStyled level={this.props.level}>
                         <Accordion.Toggle as={Button} variant="link" eventKey={index + ''} style={{ width: '100%', display: 'flex', justifyContent: 'space-between'}}>

@@ -1,22 +1,22 @@
 import { GameFacade } from "../../GameFacade";
 import { IViewConverter } from "../objects/IViewConverter";
 import { ImportService } from "../../../editor/services/import/ImportService";
-import { MeshViewImporter } from "../../../editor/services/import/RectangleImporter";
-import { PathImporter } from "../../../editor/services/import/PathImporter";
 import { Concept } from "../../../editor/views/canvas/models/concepts/Concept";
-import { ConceptStore } from "../../../editor/stores/ConceptStore";
 import { Stores } from "../../../editor/stores/Stores";
+import { ServiceLocator } from "../../../editor/services/ServiceLocator";
 
 export class GameStoreBuilder {
     private gameFacade: GameFacade;
     private viewImporter: ImportService;
     private getStores: () => Stores;
+    private getServices: () => ServiceLocator;
 
-    constructor(gameFacade: GameFacade, getStores: () => Stores) {
+    constructor(gameFacade: GameFacade, getServices: () => ServiceLocator, getStores: () => Stores) {
         this.gameFacade = gameFacade;
         this.getStores = getStores;
+        this.getServices = getServices;
 
-        this.viewImporter = new ImportService(getStores);
+        this.viewImporter = new ImportService(getServices, getStores);
     }
 
     build(file: string): void {

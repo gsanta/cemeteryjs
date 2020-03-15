@@ -21,6 +21,7 @@ export class HistoryService {
             this.index = this.index - 1;
             this.getStores().conceptStore.clear();
             this.getServices().importService().import(this.history[this.index]);
+            this.getServices().levelService().updateCurrentLevel();
         }
     }
 
@@ -29,6 +30,7 @@ export class HistoryService {
             this.index = this.index + 1;
             this.getStores().conceptStore.clear();
             this.getServices().importService().import(this.history[this.index]);
+            this.getServices().levelService().updateCurrentLevel();
         }
     }
 

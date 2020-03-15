@@ -33,7 +33,6 @@ export class GlobalSettings extends AbstractSettings<GlobalSettingsPropType> {
             case GlobalSettingsPropType.IMPORT_FILE:
                 this.getStores().conceptStore.clear();
                 this.getServices().importService().import(val.data)
-                this.getStores().conceptStore.getGameObjects().filter(item => item.modelPath).forEach(item => this.controller.model3dController.set3dModelForCanvasItem(item));
         }
         this.getServices().updateService().runImmediately(UpdateTask.RepaintCanvas, UpdateTask.UpdateRenderer);
     }

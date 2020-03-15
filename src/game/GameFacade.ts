@@ -74,7 +74,7 @@ export class GameFacade {
         this.gameEventManager.registerLifeCycleTrigger(new ResetTrigger(this));
 
         this.gameObjectFactory = new GameObjectFactory(this);
-        this.gameStoreBuilder = new GameStoreBuilder(this, () => this.stores);
+        this.gameStoreBuilder = new GameStoreBuilder(this, () => this.services, () => this.stores);
         
 
         this.viewConverters = [

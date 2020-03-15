@@ -36,6 +36,7 @@ export class MeshConceptExporter implements IConceptExporter {
 
         return (
             <g 
+                key={item.name}
                 transform={`translate(${item.dimensions.topLeft.x} ${item.dimensions.topLeft.y})`}
                 onMouseOver={() => hover ? hover(item) : () => undefined}
                 onMouseOut={() => unhover ? unhover(item) : () => undefined}

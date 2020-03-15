@@ -17,6 +17,7 @@ export class PathConceptExporter implements IConceptExporter {
     export(hover?: (view: Concept) => void, unhover?: (view: Concept) => void): JSX.Element {
         const pathes = this.getStores().conceptStore.getPathes().map(path => {
             return <PathComponent
+                key={path.name}
                 onlyData={!hover}
                 item={path}
                 isHovered={this.getStores().conceptStore.getHoveredView() === path}

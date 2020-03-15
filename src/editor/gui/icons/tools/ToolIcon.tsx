@@ -5,12 +5,14 @@ export interface IconProps {
     isActive: boolean;
     onClick?(): void;
     format: 'short' | 'long';
+    disabled?: boolean;
 }
 
 export const ToolStyled = styled.div`
     display: flex;
-    cursor: pointer;
+    cursor: ${(props: IconProps) => props.disabled ? 'default' : 'pointer'};
     padding: ${(props: IconProps) => props.format === 'long' ? '3px' : '0px'};
+    opacity: ${(props: IconProps) => props.disabled ? '0.4' : '1'};
 
     &:hover {
         background: ${colors.hoverBackground};
@@ -28,7 +30,6 @@ export const ToolNameStyled = styled.div`
 export const ToolIconStyled = styled.svg`
     width: 24px;
     height: 24px;
-    cursor: pointer;
 `;
 
 export const ToolIconImageStyled = styled.path`

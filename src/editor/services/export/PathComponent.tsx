@@ -30,7 +30,7 @@ export class PathComponent extends React.Component<PathComponentProps> {
     renderArrowPoint(point: Point): JSX.Element {
         const item = this.props.item;
         const color = item.selected === point || item.hovered === point ? colors.views.highlight : 'black';
-        return <circle cx={point.x} cy={point.y} r={this.props.item.radius} fill={color}/>
+        return <circle key={point.toString()} cx={point.x} cy={point.y} r={this.props.item.radius} fill={color}/>
     }
 
     renderPath(): JSX.Element {
@@ -56,10 +56,10 @@ export class PathComponent extends React.Component<PathComponentProps> {
                     data-point-relations={this.props.item.serializeParentRelations()}
                     fill="none"
                     stroke={colors.views.stroke}
-                    stroke-width="1"
-                    marker-start="url(#arrow)" 
-                    marker-mid="url(#arrow)" 
-                    marker-end="url(#arrow)"
+                    strokeWidth="1"
+                    markerStart="url(#arrow)" 
+                    markerMid="url(#arrow)" 
+                    markerEnd="url(#arrow)"
                     pointerEvents="none"
                 />
             </React.Fragment>

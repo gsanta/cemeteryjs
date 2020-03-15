@@ -7,6 +7,7 @@ import { Stores } from '../../stores/Stores';
 import { MeshViewImporter } from './RectangleImporter';
 import { PathImporter } from './PathImporter';
 import { Camera } from '../../views/canvas/models/Camera';
+import { ServiceLocator } from '../ServiceLocator';
 
 export interface WgDefinition {
     _attributes: WgDefinitionAttributes;
@@ -51,10 +52,11 @@ export interface ViewGroupJson<T = any> {
 export class ImportService {
     serviceName = 'import-service';
     private viewImporters: IViewImporter[];
-    private controller: CanvasView;
     private getStores: () => Stores;
+    private getServices: () => ServiceLocator;
 
-    constructor(getStores: () => Stores) {
+    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
+        this.getServices = getServices;
         this.getStores = getStores;
         this.viewImporters = [
             new MeshViewImporter(rect => this.getStores().conceptStore.addRect(rect)),
@@ -72,7 +74,8 @@ export class ImportService {
             this.findViewImporter(viewType).import(toolGroup)
         });
 
-        this.controller && this.applyGlobalSettings(rawJson);
+        // this.applyGlobalSettings(rawJson);
+        this.getStores().conceptStore.getGameObjects().filter(item => item.modelPath).forEach(item => this.getServices().meshDimensionService().setDimensions(item));
     }
 
     private applyGlobalSettings(rawJson: RawWorldMapJson) {
@@ -84,7 +87,6 @@ export class ImportService {
         const zoom = rawJson.svg._attributes['data-zoom'] ? parseFloat(rawJson.svg._attributes['data-zoom']) : 1;
         const camera = <Camera> this.getStores().viewStore.getViewById(CanvasView.id).getCamera();
         camera.zoom(zoom);
-
     }
 
     private findViewImporter(viewType: ConceptType): IViewImporter {

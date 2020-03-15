@@ -9,6 +9,7 @@ import { ExportService } from "./export/ExportService";
 import { PointerService } from './PointerService';
 import { MouseService } from './MouseService';
 import { KeyboardService } from './KeyboardService';
+import { MeshDimensionService } from "../views/canvas/MeshDimensionService";
 
 export class ServiceLocator {
     private services: {serviceName: string}[] = [];
@@ -18,12 +19,13 @@ export class ServiceLocator {
             new LocalStoreService(editor, () => this),
             new LevelService(() => this, getStores),
             new UpdateService(editor, () => this, getStores),
-            new ImportService(getStores),
+            new ImportService(() => this, getStores),
             new ExportService(getStores),
             new HistoryService(() => this, getStores),
             new PointerService(() => this, getStores),
             new MouseService(() => this),
-            new KeyboardService(getStores)
+            new KeyboardService(getStores),
+            new MeshDimensionService(() => this)
         ];
     }
 
@@ -65,5 +67,9 @@ export class ServiceLocator {
 
     keyboardService(): KeyboardService {
         return <KeyboardService> this.getService('keyboard-service');
+    }
+
+    meshDimensionService(): MeshDimensionService {
+        return <MeshDimensionService> this.getService('mesh-dimension-service');
     }
 }

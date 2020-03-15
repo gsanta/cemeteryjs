@@ -1,33 +1,31 @@
 import { Engine, Scene, Mesh } from 'babylonjs';
 import { AbstractModelLoader } from '../../AbstractModelLoader';
-import { CanvasView } from './CanvasView';
 import { Point } from '../../../misc/geometry/shapes/Point';
 import { ServiceLocator } from '../../services/ServiceLocator';
 import { UpdateTask } from '../../services/UpdateServices';
 import { MeshConcept } from './models/concepts/MeshConcept';
 
-export class Model3DController extends AbstractModelLoader {
+export class MeshDimensionService extends AbstractModelLoader {
+    serviceName = 'mesh-dimension-service';
     private engine: Engine;
-    private canvasController: CanvasView;
 
     private canvas: HTMLCanvasElement;
 
     private fileNameToMeshMap: Map<string, Mesh> = new Map();
 
-    constructor(canvasController: CanvasView, getServices: () => ServiceLocator) {
+    constructor(getServices: () => ServiceLocator) {
         super(null, getServices);
-        this.canvasController = canvasController;
         this.canvas = <HTMLCanvasElement> document.getElementById("model-size-tester");
         this.init();
     }
 
-    set3dModelForCanvasItem(gameObject: MeshConcept) {
+    setDimensions(gameObject: MeshConcept) {
         if (this.fileNameToMeshMap.has(gameObject.modelPath)) {
-            this.setDimensions(gameObject);
+            this.setMeshDimensions(gameObject);
         }
        
         this.load(gameObject).then(mesh => {
-            this.setDimensions(gameObject);
+            this.setMeshDimensions(gameObject);
         });
     }
 
@@ -39,7 +37,7 @@ export class Model3DController extends AbstractModelLoader {
         this.fileNameToMeshMap.set(fileName, mesh);
     }
 
-    private setDimensions(meshView: MeshConcept) {
+    private setMeshDimensions(meshView: MeshConcept) {
         const mesh = this.fileNameToMeshMap.get(meshView.modelPath);
         const dimensions = this.getDimension(mesh).mul(10);
         dimensions.x  = dimensions.x < 50 ? 50 : dimensions.x;

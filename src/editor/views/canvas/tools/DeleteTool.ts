@@ -33,7 +33,7 @@ export class DeleteTool extends AbstractTool {
         hovered && this.getStores().conceptStore.remove(hovered);
         
         this.getServices().levelService().updateCurrentLevel();
-        hovered && this.getServices().updateService().scheduleTasks(UpdateTask.All);
+        hovered && this.getServices().updateService().scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
     }
 
     
@@ -45,7 +45,7 @@ export class DeleteTool extends AbstractTool {
         this.rectSelector.finish();
 
         this.getServices().levelService().updateCurrentLevel();
-        this.getServices().updateService().scheduleTasks(UpdateTask.All);
+        this.getServices().updateService().scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
     }
 
     leave() {

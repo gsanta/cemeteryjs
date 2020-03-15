@@ -53,10 +53,12 @@ export class Editor {
             })
             .then(() => {
                 this.isLoading = false;
+                this.services.historyService().saveState(this.services.exportService().export());
                 this.render();
             })
             .catch(() => {
                 this.isLoading = false;
+                this.services.historyService().saveState(this.services.exportService().export());
                 this.render();
             });
     }

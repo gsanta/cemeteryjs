@@ -44,7 +44,7 @@ export class RectangleTool extends AbstractTool {
         this.getStores().conceptStore.addTag([gameObject], CanvasTag.Selected);
 
         this.getServices().levelService().updateCurrentLevel();
-        this.getServices().updateService().scheduleTasks(UpdateTask.SaveData, UpdateTask.All);
+        this.getServices().updateService().scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
     }
 
     drag() {
@@ -82,7 +82,7 @@ export class RectangleTool extends AbstractTool {
             this.lastPreviewRect = null;
         }
 
-        this.getServices().updateService().scheduleTasks(UpdateTask.All);
+        this.getServices().updateService().scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
     }
 
     leave() {

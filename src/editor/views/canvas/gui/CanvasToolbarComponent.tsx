@@ -37,6 +37,8 @@ export class CanvasToolbarComponent extends React.Component {
     }
 
     render(): JSX.Element {
+        const historyService = this.context.getServices().historyService();
+
         return (
             <ToolbarStyled>
                 <DrawIconComponent isActive={this.isToolActive(ToolType.RECTANGLE)} onClick={() => this.activateTool(ToolType.RECTANGLE)} format="short"/>
@@ -47,8 +49,8 @@ export class CanvasToolbarComponent extends React.Component {
                 <ZoomOutIconComponent isActive={false} onClick={() => this.zoomOut()} format="short"/>
                 <PanIconComponent isActive={this.isToolActive(ToolType.CAMERA)} onClick={() => this.activateTool(ToolType.CAMERA)} format="short"/>
                 <BlankIconComponent isActive={false} onClick={() => this.blank()} format="short"/>
-                <UndoIconComponent isActive={false} onClick={() => this.undo()} format="short"/>
-                <RedoIconComponent isActive={false} onClick={() => this.redo()} format="short"/>
+                <UndoIconComponent isActive={false} disabled={!historyService.hasUndoHistory()} onClick={() => this.undo()} format="short"/>
+                <RedoIconComponent isActive={false} disabled={!historyService.hasRedoHistory()} onClick={() => this.redo()} format="short"/>
             </ToolbarStyled>
         );
     }

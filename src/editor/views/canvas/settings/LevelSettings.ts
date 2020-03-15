@@ -44,8 +44,8 @@ export class LevelSettings extends AbstractSettings<LevelFormPropType> {
                 break;
             case LevelFormPropType.ClearLevel:
                 this.getServices().levelService().removeCurrentLevel()
-                .then(() => this.getServices().updateService().runImmediately(UpdateTask.All))
-                .catch(() => this.getServices().updateService().runImmediately(UpdateTask.All))
+                .then(() => this.getServices().updateService().runImmediately(UpdateTask.All, UpdateTask.SaveData))
+                .catch(() => this.getServices().updateService().runImmediately(UpdateTask.All, UpdateTask.SaveData))
                 break;
         }
     }

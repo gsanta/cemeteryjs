@@ -95,45 +95,45 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                 this.meshConcept.modelPath = val.path;
                 this.getServices().storageService().saveAsset(val.path, val.data)
                 .finally(() => {
-                    this.controller.model3dController.set3dModelForCanvasItem(this.meshConcept);
-                    this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
+                    this.controller.model3dController.setDimensions(this.meshConcept);
+                    this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 });
                 break;
             case MeshViewPropType.TEXTURE:
                 this.meshConcept.texturePath = val.path;
-                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
+                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
             case MeshViewPropType.THUMBNAIL:
                 this.meshConcept.thumbnailPath = val.path;
-                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
+                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
             case MeshViewPropType.LAYER:
                 this.meshConcept.layer = val;
-                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
+                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
             case MeshViewPropType.ROTATION:
                 this.meshConcept.rotation = this.convertValue(val, prop, this.meshConcept.rotation);
-                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
+                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
             case MeshViewPropType.SCALE:
                 this.meshConcept.scale = this.convertValue(val, prop, this.meshConcept.scale);
-                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
+                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
             case MeshViewPropType.NAME:
                 this.meshConcept.name = val;
-                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
+                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
             case MeshViewPropType.PATH:
                 this.meshConcept.path = val;
-                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
+                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
             case MeshViewPropType.IS_MANUAL_CONTROL:
                 this.meshConcept.isManualControl = val;
-                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
+                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
             case MeshViewPropType.ANIMATION:
                 this.meshConcept.activeAnimation = val;
-                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer);
+                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
             case MeshViewPropType.AnimationState:
                 this.meshConcept.animationState = val;

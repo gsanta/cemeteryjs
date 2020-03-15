@@ -28,7 +28,7 @@ export class GridComponent extends React.Component<GridProps> {
         const end = this.props.isReversed ? 0 : 19;
         const step = start < end ? 1 : -1;
         while (start !== end) {
-            items.push(<GridItem marked={this.props.markedValues.includes(start)} active={start === this.props.value} index={start} onClick={(ind) => this.props.onChange(ind)}/>);
+            items.push(<GridItem key={start} marked={this.props.markedValues.includes(start)} active={start === this.props.value} index={start} onClick={(ind) => this.props.onChange(ind)}/>);
             start += step;
         }
 

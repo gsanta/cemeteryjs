@@ -9,7 +9,7 @@ import { CanvasExporter } from './CanvasExporter';
 import { LevelSettings } from './settings/LevelSettings';
 import { MeshSettings } from './settings/MeshSettings';
 import { PathSettings } from './settings/PathSettings';
-import { Model3DController } from './Model3DController';
+import { MeshDimensionService } from './MeshDimensionService';
 import { Camera, nullCamera } from './models/Camera';
 import { FeedbackStore } from './models/FeedbackStore';
 import { CameraTool } from './tools/CameraTool';
@@ -59,7 +59,7 @@ export class CanvasView extends View {
     visible = true;
     feedbackStore: FeedbackStore;
     
-    model3dController: Model3DController;
+    model3dController: MeshDimensionService;
     
     exporter: CanvasExporter;
     private camera: Camera = nullCamera;
@@ -73,7 +73,7 @@ export class CanvasView extends View {
         this.getServices().exportService().registerViewExporter(this.exporter);
         this.feedbackStore = new FeedbackStore();
         
-        this.model3dController = new Model3DController(this, this.getServices);
+        this.model3dController = new MeshDimensionService(this.getServices);
 
         this.tools = [
             new PointerTool(this, this.getServices, this.getStores),
