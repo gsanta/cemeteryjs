@@ -35,6 +35,7 @@ export class App extends React.Component<{}, AppState> {
     }
 
     componentDidMount() {
+        this.context.getServices().updateService().setFullRepainter(() => this.forceUpdate());
         this.context.controllers.setRenderer(() => this.forceUpdate());
         if (this.hasCanvasVisibilityChanged()) {
             this.updateCanvasVisibility();
@@ -54,9 +55,7 @@ export class App extends React.Component<{}, AppState> {
     }
     
     render() {
-        const canvases = this.context.controllers.getWindowControllers()
-            .filter(canvas => canvas.isVisible())
-            .map(canvas => <div id={`${canvas.getId()}-split`}>{viewFactory(canvas)}</div>);
+        const fullScreen = this.context.getStores().viewStore.getFullScreen();
 
         return (
             <div className="style-nightshifs">
@@ -64,11 +63,21 @@ export class App extends React.Component<{}, AppState> {
                     <div id="toolbar" >
                         <SidebarComponent isEditorOpen={this.state.isEditorOpen} toggleEditorOpen={() => this.setState({isEditorOpen: !this.state.isEditorOpen})}/>
                     </div>
-                    {canvases}
+                    {fullScreen ? this.renderFullScreenCanvas() : this.renderCanvases()}
                 </div>
                 {this.context.controllers.isLoading ? <SpinnerOverlayComponent/> : null}
             </div>
         );
+    }
+
+    private renderFullScreenCanvas(): JSX.Element {
+        const fullScreen = this.context.getStores().viewStore.getFullScreen();
+        return <div>{viewFactory(fullScreen)}</div>;
+    }
+
+    private renderCanvases(): JSX.Element[] {
+        return this.context.controllers.getWindowControllers()
+            .map(canvas => <div id={`${canvas.getId()}-split`}>{viewFactory(canvas)}</div>);
     }
 
     private resize() {

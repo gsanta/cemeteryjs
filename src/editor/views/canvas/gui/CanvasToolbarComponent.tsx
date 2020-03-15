@@ -12,20 +12,27 @@ import { DeleteIconComponent } from '../../../gui/icons/tools/DeleteIconComponen
 import { BlankIconComponent } from '../../../gui/icons/tools/BlankIconComponent';
 import { UndoIconComponent } from '../../../gui/icons/tools/UndoIconComponent';
 import { RedoIconComponent } from '../../../gui/icons/tools/RedoIconComponent';
+import { FullScreenIconComponent } from '../../../gui/icons/FullScreenIconComponent';
 import { DeleteTool } from '../tools/DeleteTool';
 import { UpdateTask } from '../../../services/UpdateServices';
 import { AppContext, AppContextType } from '../../../gui/Context';
 import { CameraTool } from '../tools/CameraTool';
+import { CanvasView } from '../CanvasView';
 
 const ToolbarStyled = styled.div`
     display: flex;
+    justify-content: space-between;
     flex-wrap: wrap;
-    /* flex-direction: column; */
-    border: 1px solid ${colors.panelBackgroundLight};
+    width: 100%;
 
     > *:not(:last-child) {
         margin-right: 1px;
     }
+`;
+
+const ToolGroupStyled = styled.div`
+    display: flex;
+    border: 1px solid ${colors.panelBackgroundLight};
 `;
 
 export class CanvasToolbarComponent extends React.Component {
@@ -41,16 +48,21 @@ export class CanvasToolbarComponent extends React.Component {
 
         return (
             <ToolbarStyled>
-                <DrawIconComponent isActive={this.isToolActive(ToolType.RECTANGLE)} onClick={() => this.activateTool(ToolType.RECTANGLE)} format="short"/>
-                <ArrowIconComponent isActive={this.isToolActive(ToolType.PATH)} onClick={() => this.activateTool(ToolType.PATH)} format="short"/>
-                <SelectIconComponent isActive={this.isToolActive(ToolType.SELECT)} onClick={() => this.activateTool(ToolType.SELECT)} format="short"/>
-                <DeleteIconComponent isActive={this.isToolActive(ToolType.DELETE)} onClick={() => this.activateTool(ToolType.DELETE)} format="short"/>
-                <ZoomInIconComponent isActive={false} onClick={() => this.zoomIn()} format="short"/>
-                <ZoomOutIconComponent isActive={false} onClick={() => this.zoomOut()} format="short"/>
-                <PanIconComponent isActive={this.isToolActive(ToolType.CAMERA)} onClick={() => this.activateTool(ToolType.CAMERA)} format="short"/>
-                <BlankIconComponent isActive={false} onClick={() => this.blank()} format="short"/>
-                <UndoIconComponent isActive={false} disabled={!historyService.hasUndoHistory()} onClick={() => this.undo()} format="short"/>
-                <RedoIconComponent isActive={false} disabled={!historyService.hasRedoHistory()} onClick={() => this.redo()} format="short"/>
+                <ToolGroupStyled>
+                    <DrawIconComponent isActive={this.isToolActive(ToolType.RECTANGLE)} onClick={() => this.activateTool(ToolType.RECTANGLE)} format="short"/>
+                    <ArrowIconComponent isActive={this.isToolActive(ToolType.PATH)} onClick={() => this.activateTool(ToolType.PATH)} format="short"/>
+                    <SelectIconComponent isActive={this.isToolActive(ToolType.SELECT)} onClick={() => this.activateTool(ToolType.SELECT)} format="short"/>
+                    <DeleteIconComponent isActive={this.isToolActive(ToolType.DELETE)} onClick={() => this.activateTool(ToolType.DELETE)} format="short"/>
+                    <ZoomInIconComponent isActive={false} onClick={() => this.zoomIn()} format="short"/>
+                    <ZoomOutIconComponent isActive={false} onClick={() => this.zoomOut()} format="short"/>
+                    <PanIconComponent isActive={this.isToolActive(ToolType.CAMERA)} onClick={() => this.activateTool(ToolType.CAMERA)} format="short"/>
+                    <BlankIconComponent isActive={false} onClick={() => this.blank()} format="short"/>
+                    <UndoIconComponent isActive={false} disabled={!historyService.hasUndoHistory()} onClick={() => this.undo()} format="short"/>
+                    <RedoIconComponent isActive={false} disabled={!historyService.hasRedoHistory()} onClick={() => this.redo()} format="short"/>
+                </ToolGroupStyled>
+                <ToolGroupStyled>
+                    <FullScreenIconComponent isActive={false} onClick={() => this.setFullScreen()} format="short"/>
+                </ToolGroupStyled>
             </ToolbarStyled>
         );
     }
@@ -84,5 +96,11 @@ export class CanvasToolbarComponent extends React.Component {
 
     private blank() {
         this.context.getStores().viewStore.getActiveView().getToolByType<DeleteTool>(ToolType.DELETE).eraseAll();
+    }
+
+    private setFullScreen() {
+        const view = this.context.getStores().viewStore.getViewById(CanvasView.id);
+        this.context.getStores().viewStore.setFullScreen(view);
+        this.context.getServices().updateService().runImmediately(UpdateTask.Full);
     }
 }

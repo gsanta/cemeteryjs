@@ -1,7 +1,6 @@
 import { Editor } from '../Editor';
 import { ServiceLocator } from "./ServiceLocator";
 import { Stores } from '../stores/Stores';
-import { CanvasView } from "../views/canvas/CanvasView";
 import { RendererView } from "../views/renderer/RendererView";
 
 export enum UpdateTask {
@@ -9,7 +8,8 @@ export enum UpdateTask {
     RepaintSettings = 'RepaintSettings',
     UpdateRenderer = 'UpdateRenderer',
     SaveData = 'SaveData',
-    All = 'All'
+    All = 'All',
+    Full = 'Full'
 }
 
 export class UpdateService {
@@ -18,6 +18,7 @@ export class UpdateService {
 
     private canvasRepainter: Function = () => undefined;
     private settingsRepainters: Function[] = [];
+    private fullRepainter: Function;
 
     private editor: Editor;
     private getServices: () => ServiceLocator;
@@ -63,6 +64,9 @@ export class UpdateService {
                     this.settingsRepainters.forEach(repaint => repaint());
                     (<RendererView> this.editor.getWindowControllerByName('renderer')).update();
                 break;
+                case UpdateTask.Full:
+                    this.fullRepainter();
+                break;
             }
         });
     }
@@ -75,6 +79,10 @@ export class UpdateService {
 
     setCanvasRepainter(repaint: Function) {
         this.canvasRepainter = repaint;
+    }
+
+    setFullRepainter(repaint: Function) {
+        this.fullRepainter = repaint;
     }
 
     addSettingsRepainter(repaint: Function) {

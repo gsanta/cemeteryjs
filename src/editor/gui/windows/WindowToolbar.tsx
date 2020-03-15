@@ -8,4 +8,5 @@ export const WindowToolbarStyled = styled.div`
     max-width: calc(100% - 20px);
     min-height: 20px;
     z-index: 100;
+    width: 100%;
 `;
