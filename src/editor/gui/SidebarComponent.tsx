@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { AppContext, AppContextType } from './Context';
 import { AccordionComponent } from './misc/AccordionComponent';
 import { colors } from './styles';
-import { GeneralSettingsComponent } from '../views/canvas/gui/settings/GeneralSettingsComponent';
+import { FileSettingsComponent } from '../views/canvas/gui/settings/FileSettingsComponent';
 import { LevelSettingsComponent } from '../views/canvas/gui/settings/LevelSettingsComponent';
 import { settingsFactory } from '../views/canvas/gui/settings/settingsFactory';
 import { GlobalSettingsComponent } from '../views/canvas/gui/settings/GlobalSettingsComponent';
@@ -39,8 +39,8 @@ export class SidebarComponent extends React.Component<SidebarComponentProps> {
                 <AccordionComponent
                     elements={[
                         {
-                            title: 'General Settings',
-                            body: <GeneralSettingsComponent editor={this.context.controllers} {...this.props}/>
+                            title: 'File Settings',
+                            body: <FileSettingsComponent editor={this.context.controllers} {...this.props}/>
                         },
                         {
                             title: 'Level Settings',

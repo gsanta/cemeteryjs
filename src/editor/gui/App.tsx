@@ -47,22 +47,25 @@ export class App extends React.Component<{}, AppState> {
     }
 
     componentDidUpdate() {
-        if (this.hasCanvasVisibilityChanged()) {
+        // if (this.hasCanvasVisibilityChanged()) {
             this.split.destroy();
             this.updateCanvasVisibility();
             this.resize();
-        }
+        // }
     }
     
     render() {
         const fullScreen = this.context.getStores().viewStore.getFullScreen();
+        const toolbar = !fullScreen ? (
+            <div id="toolbar" >
+                <SidebarComponent isEditorOpen={this.state.isEditorOpen} toggleEditorOpen={() => this.setState({isEditorOpen: !this.state.isEditorOpen})}/>
+            </div>
+        ) : null;
 
         return (
             <div className="style-nightshifs">
                 <div className="main-content">
-                    <div id="toolbar" >
-                        <SidebarComponent isEditorOpen={this.state.isEditorOpen} toggleEditorOpen={() => this.setState({isEditorOpen: !this.state.isEditorOpen})}/>
-                    </div>
+                    {toolbar}
                     {fullScreen ? this.renderFullScreenCanvas() : this.renderCanvases()}
                 </div>
                 {this.context.controllers.isLoading ? <SpinnerOverlayComponent/> : null}
@@ -72,7 +75,7 @@ export class App extends React.Component<{}, AppState> {
 
     private renderFullScreenCanvas(): JSX.Element {
         const fullScreen = this.context.getStores().viewStore.getFullScreen();
-        return <div>{viewFactory(fullScreen)}</div>;
+        return <div id={`${fullScreen.getId()}-split`}>{viewFactory(fullScreen)}</div>;
     }
 
     private renderCanvases(): JSX.Element[] {
@@ -98,18 +101,21 @@ export class App extends React.Component<{}, AppState> {
 
     private updateCanvasVisibility() {
         let ids = ['#toolbar']; 
-        let sizes = [12];
-        let minSize = [230];
+        let sizes: number[];
+        let minSize: number[];
 
-        const visibleCanvases = this.context.controllers.getWindowControllers().filter(canvas => canvas.isVisible());
-        this.currentVisibleCanvases = visibleCanvases;
-        const size = (100 - sizes[0]) / visibleCanvases.length;
+        const fullScreen = this.context.getStores().viewStore.getFullScreen();
 
-        visibleCanvases.forEach(canvas => {
-                ids.push(`#${canvas.getId()}-split`);
-                sizes.push(size);
-                minSize.push(canvas.viewSettings.minSizePixel);
-            });
+        if (fullScreen) {
+            sizes = [100];
+            ids = [`#${fullScreen.getId()}-split`];
+            minSize = [];
+        } else {
+            sizes = [12, 44, 44];
+            minSize = [230, 300, 300];
+            const canvasIds = this.context.controllers.getWindowControllers().map(canvas => `#${canvas.getId()}-split`);
+            ids = ['#toolbar', ...canvasIds];
+        }
 
         this.split = Split(ids,
             {

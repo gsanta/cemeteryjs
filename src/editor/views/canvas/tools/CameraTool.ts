@@ -41,7 +41,7 @@ export class CameraTool extends AbstractTool {
         camera.moveTo(prevTranslate);
         camera.zoom(prevScale);
 
-        this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
+        this.getServices().updateService().runImmediately(UpdateTask.RepaintCanvas);
     }
 
     zoomToNextStep(canvasPos?: Point) {

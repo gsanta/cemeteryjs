@@ -13,7 +13,7 @@ export interface GeneralFormComponentProps {
     editor: Editor;
 }
 
-export class GeneralSettingsComponent extends React.Component<GeneralFormComponentProps> {
+export class FileSettingsComponent extends React.Component<GeneralFormComponentProps> {
     static contextType = AppContext;
     context: AppContextType;
 
@@ -26,8 +26,6 @@ export class GeneralSettingsComponent extends React.Component<GeneralFormCompone
 
         return (
             <div>
-                <DisplayEditorIconComponent name="2D View" format="long" onClick={() => this.toggleWindowVisibility('canvas')} isActive={this.isVisible('canvas')}/>
-                <DisplayEditorIconComponent name="3D View" format="long" onClick={() => this.toggleWindowVisibility('renderer')} isActive={this.isVisible('renderer')}/>
                 <ConnectedFileUploadComponent propertyName={GlobalSettingsPropType.IMPORT_FILE} formController={form} placeholder={'Import file'} readDataAs="text"/>
                 <ExportFileIconComponent format="long" onClick={() => this.exportFile()} isActive={false}/>
             </div>
