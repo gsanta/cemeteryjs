@@ -11,7 +11,6 @@ export interface Concept {
     conceptType: ConceptType;
     dimensions: Rectangle;
     name: string;
-    removeSubviewHover(): void;
     selectHoveredSubview(): void;
     isSubviewHovered(): boolean;
     move(point: Point): void;

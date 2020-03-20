@@ -40,8 +40,8 @@ export interface Tool {
     activate(): void;
     leave(): void;
     keydown(): void;
-    over(item: Concept | Subconcept): void;
-    out(item: Concept | Subconcept): void;
+    over(concept: Concept, subconcept?: Subconcept): void;
+    out(concept: Concept, subconcept?: Subconcept): void;
 
     select(): void;
     unselect(): void;

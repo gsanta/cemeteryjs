@@ -7,25 +7,25 @@ const NULL_BOUNDING_BOX = new Rectangle(new Point(Number.MAX_SAFE_INTEGER, Numbe
 
 export class PathConcept implements Concept {
     conceptType = ConceptType.Path;
-    points: Point[] = [];
-    edgeList: Map<Point, Point[]> = new Map();
-    parentMap: Map<Point, Point> = new Map();
-    rootPoint: Point;
+    points: PathPointConcept[] = [];
+    edgeList: Map<PathPointConcept, PathPointConcept[]> = new Map();
+    parentMap: Map<PathPointConcept, PathPointConcept> = new Map();
+    rootPoint: PathPointConcept;
     pathId: number;
     dimensions: Rectangle;
     name: string;
     radius = 5;
     private str: string;
-    selected: Point;
-    hovered: Point;
+    selected: PathPointConcept;
+    hovered: PathPointConcept;
 
     constructor(startPoint?: Point) {
         if (startPoint) {
-            startPoint = new PathPointConcept(startPoint, this);
-            this.selected = startPoint;
-            this.hovered = startPoint;
-            this.points.push(startPoint);
-            this.rootPoint = startPoint;
+            const pathPointConcept = new PathPointConcept(startPoint, this);
+            this.selected = pathPointConcept;
+            this.hovered = pathPointConcept;
+            this.points.push(pathPointConcept);
+            this.rootPoint = pathPointConcept;
             this.edgeList.set(this.rootPoint, []);
         }
 
@@ -36,18 +36,18 @@ export class PathConcept implements Concept {
         return this.points;
     }
 
-    getParentPoint(point: Point): Point {
-        return this.parentMap.get(point);
+    getParentPoint(subconcept: PathPointConcept): Point {
+        return this.parentMap.get(subconcept);
     } 
 
-    addPoint(point: Point) {
-        point = new PathPointConcept(point, this);
-        this.points.push(point);
-        this.edgeList.get(this.selected).push(point);
-        this.parentMap.set(point, this.selected);
-        this.edgeList.set(point, []);
-        this.selected = point;
-        this.hovered = point;
+    addPoint(subconcept: PathPointConcept) {
+        subconcept = new PathPointConcept(subconcept, this);
+        this.points.push(subconcept);
+        this.edgeList.get(this.selected).push(subconcept);
+        this.parentMap.set(subconcept, this.selected);
+        this.edgeList.set(subconcept, []);
+        this.selected = subconcept;
+        this.hovered = subconcept;
         this.dimensions = this.calcBoundingBox();
         this.str = undefined;
     }
@@ -62,19 +62,6 @@ export class PathConcept implements Concept {
 
         return new Rectangle(new Point(minX, minY), new Point(maxX, maxY));
     }
-    
-    updateSubviewHover(pos: Point): void {
-        // this.hovered = undefined;
-        // const hoveredOverPoint = this.getHoveredOverPoint(pos);
-
-        // if (hoveredOverPoint) {
-        //     this.hovered = hoveredOverPoint;
-        // }
-    }
-
-    removeSubviewHover(): void {
-        this.hovered = undefined;
-    }
 
     selectHoveredSubview() {
         this.selected = this.hovered;
@@ -82,12 +69,6 @@ export class PathConcept implements Concept {
 
     isSubviewHovered(): boolean {
         return !!this.hovered;
-    }
-
-    selectAt(pos: Point): void {
-        this.updateSubviewHover(pos);
-
-        this.selected = this.hovered;
     }
 
     serializePath() {
@@ -120,7 +101,6 @@ export class PathConcept implements Concept {
     }
 
     move(point: Point) {
-        console.log('moooooove');
         if (this.selected) {
             this.selected.add(point);
         } else {
@@ -134,7 +114,7 @@ export class PathConcept implements Concept {
         this.points = points.split(' ')
             .map(p => {
                 const [x, y] = p.split(':');
-                const point = new Point(parseFloat(x), parseFloat(y));
+                const point = new PathPointConcept(new Point(parseFloat(x), parseFloat(y)), this);
                 this.edgeList.set(point, []);
                 return point;
             });
@@ -149,24 +129,14 @@ export class PathConcept implements Concept {
         })
     }
 
-    iterateOverPoints(action: (parent: Point, current: Point) => void) {
+    iterateOverPoints(action: (parent: PathPointConcept, current: PathPointConcept) => void) {
         this.iterateOverPointsRecursively(this.rootPoint, undefined, action);
     }
 
-    private iterateOverPointsRecursively(point: Point, parent: Point, action: (current: Point, parent: Point) => void) {
+    private iterateOverPointsRecursively(point: PathPointConcept, parent: PathPointConcept, action: (current: PathPointConcept, parent: PathPointConcept) => void) {
         action(point, parent);
 
         this.edgeList.get(point).forEach(child => this.iterateOverPointsRecursively(child, point, action));
-    }
-
-    private getHoveredOverPoint(pos: Point) {
-        for (let i = 0; i < this.points.length; i++) {
-            const d = this.points[i].distanceTo(pos);
-
-            if (d < this.radius + 3) {
-                return this.points[i];
-            }
-        }
     }
 }
 

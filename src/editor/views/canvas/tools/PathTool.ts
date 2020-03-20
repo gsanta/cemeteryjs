@@ -5,7 +5,7 @@ import { CanvasView, CanvasTag } from "../CanvasView";
 import { AbstractTool } from "./AbstractTool";
 import { UpdateTask } from "../../../services/UpdateServices";
 import { ConceptType, Concept } from "../models/concepts/Concept";
-import { PathConcept } from "../models/concepts/PathConcept";
+import { PathConcept, PathPointConcept } from "../models/concepts/PathConcept";
 import { Stores } from "../../../stores/Stores";
 import { ServiceLocator } from '../../../services/ServiceLocator';
 import { PointerTool } from "./PointerTool";
@@ -33,7 +33,7 @@ export class PathTool extends AbstractTool {
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         } else if (selectedPathes.length === 1) {
             const pointer = this.getServices().pointerService().pointer;
-            selectedPathes[0].addPoint(new Point(pointer.down.x, pointer.down.y));
+            selectedPathes[0].addPoint(new PathPointConcept(new Point(pointer.down.x, pointer.down.y), selectedPathes[0]));
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         }
     }

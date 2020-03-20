@@ -122,7 +122,6 @@ export class MeshConcept implements Concept {
         }
     }
 
-    removeSubviewHover() {}
     selectHoveredSubview() {}
     isSubviewHovered(): boolean { return false; }
 

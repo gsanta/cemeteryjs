@@ -47,41 +47,24 @@ export class PointerTool extends AbstractTool {
         }
     }
 
-    over(item: Concept | Subconcept) {
-        let concept: Concept; 
-        if (item.conceptType === ConceptType.Subconcept) {
-            concept = (<Subconcept> item).parentConcept;
-            (<Subconcept> item).over();
-            this.getStores().conceptStore.addTag([(<Subconcept> item).parentConcept], CanvasTag.Hovered);
-        } else {
-            concept = <Concept> item;
-            this.getStores().conceptStore.addTag([item as Concept], CanvasTag.Hovered);
+    over(concept: Concept, subconcept?: Subconcept) {
+        if (subconcept) {
+            subconcept.over();
         }
+        
+        this.getStores().conceptStore.addTag([concept], CanvasTag.Hovered);
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
-    out(item: Concept | Subconcept) {
-        let concept: Concept; 
-        if (item.conceptType === ConceptType.Subconcept) {
-            concept = (<Subconcept> item).parentConcept;
-            (<Subconcept> item).out();
-            this.getStores().conceptStore.removeTagFromAll(CanvasTag.Hovered);
-        } else {
-            concept = <Concept> item;
-            this.getStores().conceptStore.removeTagFromAll(CanvasTag.Hovered);
+    out(concept: Concept, subconcept?: Subconcept) {
+        if (subconcept) {
+            subconcept.out();
         }
+        this.getStores().conceptStore.removeTagFromAll(CanvasTag.Hovered);
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     setSelectableViews(views: ConceptType[]) {
         this.selectableViews = views;
-    }
-
-    private updateSubviewHover(item: Concept) {
-        switch(item.conceptType) {
-            case ConceptType.Path:
-                (<PathConcept> item).updateSubviewHover(this.getServices().pointerService().pointer.curr);
-                break;
-        }
     }
 }

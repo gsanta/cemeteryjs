@@ -2,6 +2,7 @@ import { Point } from "../../misc/geometry/shapes/Point";
 import { ServiceLocator } from './ServiceLocator';
 import { Stores } from "../stores/Stores";
 import { MousePointer } from "./MouseService";
+import { Subconcept } from "../views/canvas/models/concepts/Concept";
 
 export interface IPointerEvent {
     pointers: {id: number, pos: Point}[];
@@ -67,13 +68,13 @@ export class PointerService {
         this.isDrag = false;
     }
 
-    hover(item: any): void {
-        this.getStores().viewStore.getActiveView().getActiveTool().over(item);
+    hover(item: any, subconcept?: Subconcept): void {
+        this.getStores().viewStore.getActiveView().getActiveTool().over(item, subconcept);
         this.getServices().updateService().runScheduledTasks();
     }
 
-    unhover(item: any): void {
-        this.getStores().viewStore.getActiveView().getActiveTool().out(item);
+    unhover(item: any, subconcept?: Subconcept): void {
+        this.getStores().viewStore.getActiveView().getActiveTool().out(item, subconcept);
         this.getServices().updateService().runScheduledTasks();
     }
     

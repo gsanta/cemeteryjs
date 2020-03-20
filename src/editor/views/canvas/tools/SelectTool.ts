@@ -3,7 +3,7 @@ import { RectangleSelector } from "./selection/RectangleSelector";
 import { ToolType, Tool } from "./Tool";
 import { AbstractTool } from "./AbstractTool";
 import { UpdateTask } from "../../../services/UpdateServices";
-import { Concept } from "../models/concepts/Concept";
+import { Concept, Subconcept } from "../models/concepts/Concept";
 import { Stores } from '../../../stores/Stores';
 import { ServiceLocator } from '../../../services/ServiceLocator';
 
@@ -71,11 +71,11 @@ export class SelectTool extends AbstractTool {
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
-    over(item: Concept) {
-        this.view.getToolByType(ToolType.POINTER).over(item);
+    over(concept: Concept, subconcept?: Subconcept) {
+        this.view.getToolByType(ToolType.POINTER).over(concept, subconcept);
     }
 
-    out(item: Concept) {
-        this.view.getToolByType(ToolType.POINTER).out(item);
+    out(concept: Concept, subconcept?: Subconcept) {
+        this.view.getToolByType(ToolType.POINTER).out(concept, subconcept);
     }
 }
