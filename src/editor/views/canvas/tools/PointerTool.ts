@@ -2,7 +2,7 @@ import { AbstractTool } from "./AbstractTool";
 import { CanvasView, CanvasTag } from "../CanvasView";
 import { ToolType } from "./Tool";
 import { UpdateTask } from "../../../services/UpdateServices";
-import { ConceptType, Concept } from "../models/concepts/Concept";
+import { ConceptType, Concept, Subconcept } from "../models/concepts/Concept";
 import { PathConcept } from "../models/concepts/PathConcept";
 import { Stores } from '../../../stores/Stores';
 import { ServiceLocator } from '../../../services/ServiceLocator';
@@ -47,15 +47,29 @@ export class PointerTool extends AbstractTool {
         }
     }
 
-    over(item: Concept) {
-        this.getStores().conceptStore.addTag([item], CanvasTag.Hovered);
-        this.updateSubviewHover(item);
+    over(item: Concept | Subconcept) {
+        let concept: Concept; 
+        if (item.conceptType === ConceptType.Subconcept) {
+            concept = (<Subconcept> item).parentConcept;
+            (<Subconcept> item).over();
+            this.getStores().conceptStore.addTag([(<Subconcept> item).parentConcept], CanvasTag.Hovered);
+        } else {
+            concept = <Concept> item;
+            this.getStores().conceptStore.addTag([item as Concept], CanvasTag.Hovered);
+        }
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
-    out(item: Concept) {
-        this.getStores().conceptStore.getHoveredView() && this.getStores().conceptStore.getHoveredView().removeSubviewHover();
-        this.getStores().conceptStore.removeTagFromAll(CanvasTag.Hovered);
+    out(item: Concept | Subconcept) {
+        let concept: Concept; 
+        if (item.conceptType === ConceptType.Subconcept) {
+            concept = (<Subconcept> item).parentConcept;
+            (<Subconcept> item).out();
+            this.getStores().conceptStore.removeTagFromAll(CanvasTag.Hovered);
+        } else {
+            concept = <Concept> item;
+            this.getStores().conceptStore.removeTagFromAll(CanvasTag.Hovered);
+        }
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 

@@ -43,6 +43,7 @@ export class SelectTool extends AbstractTool {
 
     drag() {
         if (this.activeTool) {
+            console.log('draaaaaaaag');
             this.activeTool.drag();
         } else {
             this.rectSelector.updateRect(this.getServices().pointerService().pointer);

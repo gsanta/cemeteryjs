@@ -2,7 +2,7 @@ import { IConceptExporter } from "../../views/canvas/tools/IConceptExporter";
 import React = require("react");
 import { PathComponent } from "./PathComponent";
 import { PathConcept } from "../../views/canvas/models/concepts/PathConcept";
-import { ConceptType, Concept } from "../../views/canvas/models/concepts/Concept";
+import { ConceptType, Concept, Subconcept } from "../../views/canvas/models/concepts/Concept";
 import { Stores } from '../../stores/Stores';
 import { CanvasTag } from "../../views/canvas/CanvasView";
 
@@ -14,7 +14,7 @@ export class PathConceptExporter implements IConceptExporter {
         this.getStores = getStores;
     }
 
-    export(hover?: (view: Concept) => void, unhover?: (view: Concept) => void): JSX.Element {
+    export(hover?: (view: Concept | Subconcept) => void, unhover?: (view: Concept | Subconcept) => void): JSX.Element {
         const pathes = this.getStores().conceptStore.getPathes().map(path => {
             return <PathComponent
                 key={path.name}

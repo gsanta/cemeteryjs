@@ -3,7 +3,8 @@ import { Point } from "../../../../../misc/geometry/shapes/Point";
 
 export enum ConceptType {
     Mesh = 'Mesh',
-    Path = 'Path'
+    Path = 'Path',
+    Subconcept = 'Subconcept'
 }
 
 export interface Concept {
@@ -14,4 +15,11 @@ export interface Concept {
     selectHoveredSubview(): void;
     isSubviewHovered(): boolean;
     move(point: Point): void;
+}
+
+export interface Subconcept {
+    parentConcept: Concept;
+    conceptType: ConceptType;
+    over(): void;
+    out(): void;
 }

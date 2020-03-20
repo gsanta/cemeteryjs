@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Point } from '../../../misc/geometry/shapes/Point';
 import { colors } from '../../gui/styles';
-import { PathConcept } from '../../views/canvas/models/concepts/PathConcept';
+import { PathConcept, PathPointConcept } from '../../views/canvas/models/concepts/PathConcept';
 
 export interface PathComponentProps {
     item: PathConcept;
-    onMouseOver(path: PathConcept): void;
-    onMouseOut(path: PathConcept): void;
+    onMouseOver(path: PathConcept | PathPointConcept): void;
+    onMouseOut(path: PathConcept | PathPointConcept): void;
     onlyData: boolean;
     isHovered: boolean;
     isSelected: boolean;
@@ -23,14 +23,24 @@ export class PathComponent extends React.Component<PathComponentProps> {
         }
 
         return (
-            <g>{points}{arrow}</g>
+            <g>{arrow}{points}</g>
         )
     }
 
     renderArrowPoint(point: Point): JSX.Element {
         const item = this.props.item;
         const color = item.selected === point || item.hovered === point ? colors.views.highlight : 'black';
-        return <circle key={point.toString()} cx={point.x} cy={point.y} r={this.props.item.radius} fill={color}/>
+        return (
+            <circle
+                key={point.toString()}
+                cx={point.x}
+                cy={point.y}
+                r={this.props.item.radius}
+                fill={color}
+                onMouseOver={() => this.props.onMouseOver(point as PathPointConcept)}
+                onMouseOut={() => this.props.onMouseOut(point as PathPointConcept)}
+            />
+        );
     }
 
     renderPath(): JSX.Element {

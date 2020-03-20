@@ -55,10 +55,12 @@ export class PathTool extends AbstractTool {
 
     over(item: Concept) {
         this.view.getToolByType<PointerTool>(ToolType.POINTER).over(item);
+        this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     out(item: Concept) {
         this.view.getToolByType<PointerTool>(ToolType.POINTER).out(item);
+        this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     private startNewPath() {

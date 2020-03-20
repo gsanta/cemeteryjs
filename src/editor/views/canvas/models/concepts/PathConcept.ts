@@ -1,4 +1,4 @@
-import { Concept, ConceptType } from "./Concept";
+import { Concept, ConceptType, Subconcept } from "./Concept";
 import { Rectangle } from "../../../../../misc/geometry/shapes/Rectangle";
 import { Point } from "../../../../../misc/geometry/shapes/Point";
 import { minBy, maxBy } from "../../../../../misc/geometry/utils/Functions";
@@ -21,6 +21,7 @@ export class PathConcept implements Concept {
 
     constructor(startPoint?: Point) {
         if (startPoint) {
+            startPoint = new PathPointConcept(startPoint, this);
             this.selected = startPoint;
             this.hovered = startPoint;
             this.points.push(startPoint);
@@ -40,6 +41,7 @@ export class PathConcept implements Concept {
     } 
 
     addPoint(point: Point) {
+        point = new PathPointConcept(point, this);
         this.points.push(point);
         this.edgeList.get(this.selected).push(point);
         this.parentMap.set(point, this.selected);
@@ -62,12 +64,12 @@ export class PathConcept implements Concept {
     }
     
     updateSubviewHover(pos: Point): void {
-        this.hovered = undefined;
-        const hoveredOverPoint = this.getHoveredOverPoint(pos);
+        // this.hovered = undefined;
+        // const hoveredOverPoint = this.getHoveredOverPoint(pos);
 
-        if (hoveredOverPoint) {
-            this.hovered = hoveredOverPoint;
-        }
+        // if (hoveredOverPoint) {
+        //     this.hovered = hoveredOverPoint;
+        // }
     }
 
     removeSubviewHover(): void {
@@ -118,7 +120,13 @@ export class PathConcept implements Concept {
     }
 
     move(point: Point) {
-        this.points.forEach(p => p.add(point));
+        console.log('moooooove');
+        if (this.selected) {
+            this.selected.add(point);
+        } else {
+            this.points.forEach(p => p.add(point));
+        }
+
         this.str = undefined;
     }
 
@@ -160,4 +168,24 @@ export class PathConcept implements Concept {
             }
         }
     }
+}
+
+export class PathPointConcept extends Point implements Subconcept {
+    parentConcept: PathConcept;
+    conceptType = ConceptType.Subconcept;
+
+    constructor(point: Point, parentConcept: PathConcept) {
+        super(point.x, point.y);
+        this.parentConcept = parentConcept;
+    }
+
+    over(): void {
+        this.parentConcept.hovered = this;
+    }
+
+    out(): void {
+        this.parentConcept.hovered = undefined;
+    }
+
+    parent: Concept;
 }
