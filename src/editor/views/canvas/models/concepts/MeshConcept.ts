@@ -1,5 +1,5 @@
 import { Mesh, Vector3 } from 'babylonjs';
-import { Concept, ConceptType } from './Concept';
+import { Concept, ConceptType, Subconcept } from './Concept';
 import { Rectangle } from '../../../../../misc/geometry/shapes/Rectangle';
 import { BehaviourType } from '../../../../../game/services/behaviour/IBehaviour';
 import { MeshStore } from '../../../../../game/models/stores/MeshStore';
@@ -123,7 +123,7 @@ export class MeshConcept implements Concept {
     }
 
     selectHoveredSubview() {}
-    isSubviewHovered(): boolean { return false; }
+    deleteSubconcept(subconcept: Subconcept): void {}
 
     move(point: Point) {
         this.dimensions = this.dimensions.translate(point);

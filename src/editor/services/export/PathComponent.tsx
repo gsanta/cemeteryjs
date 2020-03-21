@@ -28,7 +28,7 @@ export class PathComponent extends React.Component<PathComponentProps> {
 
     renderArrowPoint(point: PathPointConcept): JSX.Element {
         const item = this.props.item;
-        const color = item.selected === point || item.hovered === point ? colors.views.highlight : 'black';
+        const color = item.selected === point || item.hoveredSubconcept === point ? colors.views.highlight : 'black';
         return (
             <circle
                 key={point.toString()}

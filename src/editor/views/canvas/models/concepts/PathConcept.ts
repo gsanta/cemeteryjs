@@ -8,7 +8,7 @@ const NULL_BOUNDING_BOX = new Rectangle(new Point(Number.MAX_SAFE_INTEGER, Numbe
 export class PathConcept implements Concept {
     conceptType = ConceptType.Path;
     points: PathPointConcept[] = [];
-    edgeList: Map<PathPointConcept, PathPointConcept[]> = new Map();
+    childMap: Map<PathPointConcept, PathPointConcept[]> = new Map();
     parentMap: Map<PathPointConcept, PathPointConcept> = new Map();
     rootPoint: PathPointConcept;
     pathId: number;
@@ -17,16 +17,16 @@ export class PathConcept implements Concept {
     radius = 5;
     private str: string;
     selected: PathPointConcept;
-    hovered: PathPointConcept;
+    hoveredSubconcept: PathPointConcept;
 
     constructor(startPoint?: Point) {
         if (startPoint) {
             const pathPointConcept = new PathPointConcept(startPoint, this);
             this.selected = pathPointConcept;
-            this.hovered = pathPointConcept;
+            this.hoveredSubconcept = pathPointConcept;
             this.points.push(pathPointConcept);
             this.rootPoint = pathPointConcept;
-            this.edgeList.set(this.rootPoint, []);
+            this.childMap.set(this.rootPoint, []);
         }
 
         this.dimensions = this.calcBoundingBox();
@@ -43,11 +43,11 @@ export class PathConcept implements Concept {
     addPoint(subconcept: PathPointConcept) {
         subconcept = new PathPointConcept(subconcept, this);
         this.points.push(subconcept);
-        this.edgeList.get(this.selected).push(subconcept);
+        this.childMap.get(this.selected).push(subconcept);
         this.parentMap.set(subconcept, this.selected);
-        this.edgeList.set(subconcept, []);
+        this.childMap.set(subconcept, []);
         this.selected = subconcept;
-        this.hovered = subconcept;
+        this.hoveredSubconcept = subconcept;
         this.dimensions = this.calcBoundingBox();
         this.str = undefined;
     }
@@ -64,11 +64,29 @@ export class PathConcept implements Concept {
     }
 
     selectHoveredSubview() {
-        this.selected = this.hovered;
+        this.selected = this.hoveredSubconcept;
     }
 
-    isSubviewHovered(): boolean {
-        return !!this.hovered;
+    deleteSubconcept(subconcept: PathPointConcept): void {
+        if (subconcept !== this.rootPoint) {
+            this.points = this.points.filter(p => p !== subconcept);
+            const newParent = this.parentMap.get(subconcept);
+            const children = this.childMap.get(subconcept) || [];
+
+            children.forEach(child => {
+                this.parentMap.set(child, newParent);
+                this.childMap.get(newParent).push(child);
+            });
+
+            const newChildren = this.childMap.get(newParent).filter(item => item !== subconcept);
+            this.childMap.set(newParent, newChildren);
+            this.parentMap.delete(subconcept);
+            this.childMap.delete(subconcept);
+
+            if (subconcept === this.hoveredSubconcept) { this.hoveredSubconcept = undefined }
+            if (subconcept === this.selected) { this.selected = undefined }
+            this.str = undefined;
+        }
     }
 
     serializePath() {
@@ -115,7 +133,7 @@ export class PathConcept implements Concept {
             .map(p => {
                 const [x, y] = p.split(':');
                 const point = new PathPointConcept(new Point(parseFloat(x), parseFloat(y)), this);
-                this.edgeList.set(point, []);
+                this.childMap.set(point, []);
                 return point;
             });
         this.rootPoint = this.points[0];
@@ -124,7 +142,7 @@ export class PathConcept implements Concept {
     private deserializeParentRelations(relations: string) {
         relations.split(' ').forEach(relation => {
             const [index, parentIndex] = relation.split(':');
-            parentIndex !== '-1' && this.edgeList.get(this.points[parentIndex]).push(this.points[index]);
+            parentIndex !== '-1' && this.childMap.get(this.points[parentIndex]).push(this.points[index]);
             this.parentMap.set(this.points[index], this.points[parentIndex]);
         })
     }
@@ -136,7 +154,7 @@ export class PathConcept implements Concept {
     private iterateOverPointsRecursively(point: PathPointConcept, parent: PathPointConcept, action: (current: PathPointConcept, parent: PathPointConcept) => void) {
         action(point, parent);
 
-        this.edgeList.get(point).forEach(child => this.iterateOverPointsRecursively(child, point, action));
+        this.childMap.get(point).forEach(child => this.iterateOverPointsRecursively(child, point, action));
     }
 }
 
@@ -150,11 +168,11 @@ export class PathPointConcept extends Point implements Subconcept {
     }
 
     over(): void {
-        this.parentConcept.hovered = this;
+        this.parentConcept.hoveredSubconcept = this;
     }
 
     out(): void {
-        this.parentConcept.hovered = undefined;
+        this.parentConcept.hoveredSubconcept = undefined;
     }
 
     parent: Concept;

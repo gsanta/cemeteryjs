@@ -4,7 +4,7 @@ import { Keyboard } from "../../../services/KeyboardService";
 import { CanvasView, CanvasTag } from "../CanvasView";
 import { AbstractTool } from "./AbstractTool";
 import { UpdateTask } from "../../../services/UpdateServices";
-import { ConceptType, Concept } from "../models/concepts/Concept";
+import { ConceptType, Concept, Subconcept } from "../models/concepts/Concept";
 import { PathConcept, PathPointConcept } from "../models/concepts/PathConcept";
 import { Stores } from "../../../stores/Stores";
 import { ServiceLocator } from '../../../services/ServiceLocator';
@@ -53,13 +53,13 @@ export class PathTool extends AbstractTool {
         this.view.getToolByType<PointerTool>(ToolType.POINTER).setSelectableViews(undefined);
     }
 
-    over(item: Concept) {
-        this.view.getToolByType<PointerTool>(ToolType.POINTER).over(item);
+    over(item: Concept, subconcept: Subconcept) {
+        this.view.getToolByType<PointerTool>(ToolType.POINTER).over(item, subconcept);
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
-    out(item: Concept) {
-        this.view.getToolByType<PointerTool>(ToolType.POINTER).out(item);
+    out(item: Concept, subconcept: Subconcept) {
+        this.view.getToolByType<PointerTool>(ToolType.POINTER).out(item, subconcept);
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 

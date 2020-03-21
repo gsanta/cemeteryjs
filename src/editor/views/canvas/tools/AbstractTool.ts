@@ -1,5 +1,5 @@
 import { Tool, ToolType } from './Tool';
-import { Concept } from '../models/concepts/Concept';
+import { Concept, Subconcept } from '../models/concepts/Concept';
 
 export class AbstractTool implements Tool {
     type: ToolType;
@@ -17,8 +17,8 @@ export class AbstractTool implements Tool {
     activate() { }
     resize() { }
     keydown() { }
-    over(item: Concept) { }
-    out(item: Concept) { }
+    over(item: Concept, subconcept?: Subconcept) { }
+    out(item: Concept, subconcept?: Subconcept) { }
     leave() { }
 
     select(): void {}

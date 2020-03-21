@@ -19,7 +19,7 @@ export class PathConceptConverter {
         pathObject.points = pathView.points;
         pathObject.tree = new Map();
         pathView.points.forEach((p, index) => {
-            const childIndexes = pathView.edgeList.get(p).map(c => pathObject.points.indexOf(c));
+            const childIndexes = pathView.childMap.get(p).map(c => pathObject.points.indexOf(c));
             pathObject.tree.set(index, childIndexes);
         });
         pathObject.points = pathObject.points.map(p => p.negateY()).map(p => p.div(10));

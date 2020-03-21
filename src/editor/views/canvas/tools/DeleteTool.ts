@@ -4,7 +4,7 @@ import { CanvasView } from '../CanvasView';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './selection/RectangleSelector';
 import { ToolType } from './Tool';
-import { Concept } from '../models/concepts/Concept';
+import { Concept, Subconcept } from '../models/concepts/Concept';
 import { Stores } from '../../../stores/Stores';
 import { PointerTool } from './PointerTool';
 
@@ -30,10 +30,17 @@ export class DeleteTool extends AbstractTool {
     click() {
         this.view.getToolByType<PointerTool>(ToolType.POINTER).click()
         const hovered = this.getStores().conceptStore.getHoveredView();
-        hovered && this.getStores().conceptStore.remove(hovered);
-        
-        this.getServices().levelService().updateCurrentLevel();
-        hovered && this.getServices().updateService().scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
+
+        if (hovered) {
+            if (hovered.hoveredSubconcept) {
+                hovered.deleteSubconcept(hovered.hoveredSubconcept);
+            } else {
+                this.getStores().conceptStore.remove(hovered);
+            }
+            
+            this.getServices().levelService().updateCurrentLevel();
+            hovered && this.getServices().updateService().scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
+        }
     }
 
     
@@ -53,12 +60,12 @@ export class DeleteTool extends AbstractTool {
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
-    over(item: Concept) {
-        this.view.getToolByType<PointerTool>(ToolType.POINTER).over(item);
+    over(item: Concept, subconcept: Subconcept) {
+        this.view.getToolByType<PointerTool>(ToolType.POINTER).over(item, subconcept);
     }
 
-    out(item: Concept) {
-        this.view.getToolByType<PointerTool>(ToolType.POINTER).out(item);
+    out(item: Concept, subconcept: Subconcept) {
+        this.view.getToolByType<PointerTool>(ToolType.POINTER).out(item, subconcept);
     }
 
     eraseAll() {
