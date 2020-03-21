@@ -102,7 +102,7 @@ export class MeshConcept implements Concept {
 
     moveBy(vector: Point): void {
         if (this.getMesh(this.meshName)) {
-            this.getMesh(this.meshName).moveWithCollisions(toVector3(vector));
+            this.getMesh(this.meshName).translate(toVector3(vector), 1) //moveWithCollisions(toVector3(vector));
         } else {
             this.dimensions.translate(vector);
         }

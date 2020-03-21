@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useDropzone } from 'react-dropzone';
-import * as ab2str from 'arraybuffer-to-string';
 import { withCommitOnChange } from '../../forms/decorators/withCommitOnChange';
 import { ToolStyled, ToolIconStyled, ToolIconBackgroundStyled, ToolIconImageStyled, ToolNameStyled } from './ToolIcon';
 

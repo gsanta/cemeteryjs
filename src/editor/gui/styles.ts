@@ -9,6 +9,7 @@ export const colors = {
     active: '#F2F1ED',
     success: '#75B54A',
     info: '#5595B9',
+    danger: '#FF6B6B',
     panelBackground: '#333333',
     panelBackgroundLight: '#5f5b60',
     panelBackgroundMedium: '#4b484d',

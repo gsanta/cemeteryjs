@@ -40,8 +40,8 @@ export class MeshConceptExporter implements IConceptExporter {
                 transform={`translate(${item.dimensions.topLeft.x} ${item.dimensions.topLeft.y})`}
                 onMouseOver={() => hover ? hover(item) : () => undefined}
                 onMouseOut={() => unhover ? unhover(item) : () => undefined}
-                data-wg-x={item.dimensions.topLeft.x + tranlateX}
-                data-wg-y={item.dimensions.topLeft.y + tranlateY}
+                data-wg-x={item.dimensions.topLeft.x}
+                data-wg-y={item.dimensions.topLeft.y}
                 data-wg-width={item.dimensions.getWidth()}
                 data-wg-height={item.dimensions.getHeight()}
                 data-wg-type={item.type}

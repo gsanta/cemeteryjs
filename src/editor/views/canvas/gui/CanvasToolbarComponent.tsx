@@ -34,7 +34,6 @@ export class CanvasToolbarComponent extends AbstractToolbarComponent {
                 <ZoomInIconComponent isActive={false} onClick={() => this.zoomIn()} format="short"/>
                 <ZoomOutIconComponent isActive={false} onClick={() => this.zoomOut()} format="short"/>
                 <PanIconComponent isActive={this.isToolActive(ToolType.CAMERA)} onClick={() => this.activateTool(ToolType.CAMERA)} format="short"/>
-                <BlankIconComponent isActive={false} onClick={() => this.blank()} format="short"/>
                 <UndoIconComponent isActive={false} disabled={!historyService.hasUndoHistory()} onClick={() => this.undo()} format="short"/>
                 <RedoIconComponent isActive={false} disabled={!historyService.hasRedoHistory()} onClick={() => this.redo()} format="short"/>
             </React.Fragment>
@@ -70,9 +69,5 @@ export class CanvasToolbarComponent extends AbstractToolbarComponent {
 
     private zoomOut() {
         this.context.getStores().viewStore.getActiveView().getToolByType<CameraTool>(ToolType.CAMERA).zoomToPrevStep();
-    }
-
-    private blank() {
-        this.context.getStores().viewStore.getActiveView().getToolByType<DeleteTool>(ToolType.DELETE).eraseAll();
     }
 }

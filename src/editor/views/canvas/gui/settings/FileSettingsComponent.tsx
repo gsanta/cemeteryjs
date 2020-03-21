@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { AppContext, AppContextType } from '../../../../gui/Context';
-import { DisplayEditorIconComponent } from '../../../../gui/icons/tools/DisplayEditorIconComponent';
 import { ExportFileIconComponent } from '../../../../gui/icons/tools/ExportFileIconComponent';
 import { ConnectedFileUploadComponent } from '../../../../gui/icons/tools/ImportFileIconComponent';
 import { GlobalSettingsPropType } from '../../settings/GlobalSettings';
 import { saveAs } from 'file-saver';
 import { Editor } from '../../../../Editor';
+import { BlankIconComponent } from '../../../../gui/icons/tools/BlankIconComponent';
+import { DeleteTool } from '../../tools/DeleteTool';
+import { ToolType } from '../../tools/Tool';
+import { colors } from '../../../../gui/styles';
 
 export interface GeneralFormComponentProps {
     isEditorOpen: boolean;
@@ -28,12 +31,9 @@ export class FileSettingsComponent extends React.Component<GeneralFormComponentP
             <div>
                 <ConnectedFileUploadComponent propertyName={GlobalSettingsPropType.IMPORT_FILE} formController={form} placeholder={'Import file'} readDataAs="text"/>
                 <ExportFileIconComponent format="long" onClick={() => this.exportFile()} isActive={false}/>
+                <BlankIconComponent format="long" color={colors.danger} isActive={false} onClick={() => this.blank()}/>
             </div>
         )
-    }
-
-    private isVisible(controllerName: string) {
-        return this.props.editor.getWindowControllerByName(controllerName).isVisible();
     }
 
     private exportFile() {
@@ -42,7 +42,7 @@ export class FileSettingsComponent extends React.Component<GeneralFormComponentP
         saveAs(blob, "dynamic.txt");
     }
 
-    private toggleWindowVisibility(name: string) {
-        this.props.editor.setWindowVisibility(name, !this.props.editor.getWindowControllerByName(name).isVisible());
+    private blank() {
+        this.context.getStores().viewStore.getActiveView().getToolByType<DeleteTool>(ToolType.DELETE).eraseAll();
     }
 }
