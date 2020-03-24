@@ -2,12 +2,13 @@ import { IConceptExporter } from "../../views/canvas/tools/IConceptExporter";
 import React = require("react");
 import { PathComponent } from "./PathComponent";
 import { PathConcept, PathPointConcept } from "../../views/canvas/models/concepts/PathConcept";
-import { ConceptType, Concept, Subconcept } from "../../views/canvas/models/concepts/Concept";
+import { Concept, Subconcept } from "../../views/canvas/models/concepts/Concept";
 import { Stores } from '../../stores/Stores';
 import { CanvasTag } from "../../views/canvas/CanvasView";
+import { CanvasItemType } from "../../views/canvas/models/CanvasItem";
 
 export class PathConceptExporter implements IConceptExporter {
-    type = ConceptType.Path;
+    type = CanvasItemType.PathConcept;
     private getStores: () => Stores;
 
     constructor(getStores: () => Stores) {
@@ -29,7 +30,7 @@ export class PathConceptExporter implements IConceptExporter {
 
         return pathes.length > 0 ? 
             (
-                <g data-view-type={ConceptType.Path}>{pathes}</g> 
+                <g data-view-type={CanvasItemType.PathConcept}>{pathes}</g> 
             )
             : null;
     }

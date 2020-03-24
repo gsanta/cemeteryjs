@@ -1,11 +1,11 @@
 import { GameFacade } from "../../GameFacade";
 import { PathObject } from "./PathObject";
-import { ConceptType } from "../../../editor/views/canvas/models/concepts/Concept";
 import { PathConcept } from "../../../editor/views/canvas/models/concepts/PathConcept";
+import { CanvasItemType } from "../../../editor/views/canvas/models/CanvasItem";
 
 
 export class PathConceptConverter {
-    viewType: ConceptType = ConceptType.Path;
+    viewType: CanvasItemType = CanvasItemType.PathConcept;
     private gameFacade: GameFacade;
 
     constructor(gameFacade: GameFacade) {

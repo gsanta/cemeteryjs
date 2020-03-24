@@ -45,7 +45,7 @@ export class RendererView extends View {
         this.activeTool = this.getToolByType(ToolType.CAMERA);
         this.writer = new WebglCanvasImporter(this, this.getGameFacade());
 
-        this.update();
+        // this.update();
     }
 
     update() {

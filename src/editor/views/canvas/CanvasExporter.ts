@@ -2,8 +2,8 @@ import { IConceptExporter } from "./tools/IConceptExporter";
 import { Stores } from "../../stores/Stores";
 import { MeshConceptExporter } from "../../services/export/MeshConceptExporter";
 import { PathConceptExporter } from "../../services/export/PathConceptExporter";
-import { ConceptType } from "./models/concepts/Concept";
 import * as ReactDOMServer from 'react-dom/server';
+import { CanvasItemType } from "./models/CanvasItem";
 
 export class CanvasExporter {
     private conceptExporters: IConceptExporter[];
@@ -16,7 +16,7 @@ export class CanvasExporter {
         return this.conceptExporters.map(exporter => ReactDOMServer.renderToStaticMarkup(exporter.export())).join('');
     }
 
-    getViewExporter(viewType: ConceptType) {
+    getViewExporter(viewType: CanvasItemType) {
         return this.conceptExporters.find(exporter => exporter.type === viewType);
     }
 

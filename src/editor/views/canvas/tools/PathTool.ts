@@ -4,11 +4,12 @@ import { Keyboard } from "../../../services/KeyboardService";
 import { CanvasView, CanvasTag } from "../CanvasView";
 import { AbstractTool } from "./AbstractTool";
 import { UpdateTask } from "../../../services/UpdateServices";
-import { ConceptType, Concept, Subconcept } from "../models/concepts/Concept";
+import { Concept, Subconcept } from "../models/concepts/Concept";
 import { PathConcept, PathPointConcept } from "../models/concepts/PathConcept";
 import { Stores } from "../../../stores/Stores";
 import { ServiceLocator } from '../../../services/ServiceLocator';
 import { PointerTool } from "./PointerTool";
+import { CanvasItemType } from "../models/CanvasItem";
 
 export class PathTool extends AbstractTool {
     private view: CanvasView;
@@ -46,7 +47,7 @@ export class PathTool extends AbstractTool {
     }
 
     select() {
-        this.view.getToolByType<PointerTool>(ToolType.POINTER).setSelectableViews([ConceptType.Path]);
+        this.view.getToolByType<PointerTool>(ToolType.POINTER).setSelectableViews([CanvasItemType.PathConcept]);
     }
 
     unselect() {
@@ -67,7 +68,7 @@ export class PathTool extends AbstractTool {
         const pointer = this.getServices().pointerService().pointer;
         this.getStores().conceptStore.removeSelectionAll();
         const path = new PathConcept(pointer.down.clone());
-        path.name = this.getStores().conceptStore.generateUniqueName(ConceptType.Path);
+        path.name = this.getStores().conceptStore.generateUniqueName(CanvasItemType.PathConcept);
         this.getStores().conceptStore.addPath(path);
         this.getStores().conceptStore.addTag([path], CanvasTag.Selected);
     }

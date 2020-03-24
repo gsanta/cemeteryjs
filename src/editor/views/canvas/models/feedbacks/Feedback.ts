@@ -1,8 +1,4 @@
+import { CanvasItem } from "../CanvasItem";
 
-export enum FeedbackType {
-    RectSelection = 'RectSelection'
-}
 
-export interface Feedback {
-    type: FeedbackType;
-}
+export interface Feedback extends CanvasItem {}

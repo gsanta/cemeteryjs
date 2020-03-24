@@ -5,9 +5,9 @@ import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './selection/RectangleSelector';
 import { ToolType } from './Tool';
 import { MeshConcept } from '../models/concepts/MeshConcept';
-import { ConceptType } from '../models/concepts/Concept';
 import { ServiceLocator } from '../../../services/ServiceLocator';
 import { Stores } from '../../../stores/Stores';
+import { CanvasItemType } from '../models/CanvasItem';
 
 export class RectangleTool extends AbstractTool {
     private lastPreviewRect: MeshConcept;
@@ -30,14 +30,13 @@ export class RectangleTool extends AbstractTool {
         const rect = Rectangle.squareFromCenterPointAndRadius(pointer.down, 50);
 
         const gameObject: MeshConcept = new MeshConcept(null, rect, name);
-        gameObject.type = 'rect';
         gameObject.rotation = 0;
         gameObject.modelPath = null;
         gameObject.texturePath = null;
         gameObject.scale = 1;
         gameObject.color = 'grey';
 
-        gameObject.name = this.getStores().conceptStore.generateUniqueName(ConceptType.Mesh);
+        gameObject.name = this.getStores().conceptStore.generateUniqueName(CanvasItemType.MeshConcept);
 
         this.getStores().conceptStore.addRect(gameObject);
         this.getStores().conceptStore.removeSelectionAll()
@@ -59,13 +58,12 @@ export class RectangleTool extends AbstractTool {
         const dimensions = this.controller.feedbackStore.rectSelectFeedback.rect;
 
         const gameObject: MeshConcept = new MeshConcept(null, dimensions, name);
-        gameObject.type = 'rect'
         gameObject.rotation = 0;
         gameObject.modelPath = null;
         gameObject.texturePath = null;
         gameObject.scale = 1;
         gameObject.color = 'grey';
-        gameObject.name = this.getStores().conceptStore.generateUniqueName(ConceptType.Mesh);
+        gameObject.name = this.getStores().conceptStore.generateUniqueName(CanvasItemType.MeshConcept);
 
         if (positions.length > 0) {
             this.lastPreviewRect = this.getStores().conceptStore.addRect(gameObject);

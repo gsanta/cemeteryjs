@@ -1,6 +1,6 @@
-import { ConceptType } from "../models/concepts/Concept";
+import { CanvasItemType } from "../models/CanvasItem";
 
 
 export interface IToolType {
-    type: ConceptType;
+    type: CanvasItemType;
 }

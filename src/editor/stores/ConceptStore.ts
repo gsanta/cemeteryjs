@@ -1,11 +1,12 @@
 import { MeshConcept } from '../views/canvas/models/concepts/MeshConcept';
-import { Concept, ConceptType } from '../views/canvas/models/concepts/Concept';
+import { Concept } from '../views/canvas/models/concepts/Concept';
 import { PathConcept } from '../views/canvas/models/concepts/PathConcept';
 import { without, maxBy } from '../../misc/geometry/utils/Functions';
 import { Rectangle } from '../../misc/geometry/shapes/Rectangle';
 import { Point } from '../../misc/geometry/shapes/Point';
 import { Polygon } from '../../misc/geometry/shapes/Polygon';
 import { CanvasTag } from '../views/canvas/CanvasView';
+import { CanvasItemType } from '../views/canvas/models/CanvasItem';
 
 export class ConceptStore {
     private tags: Map<Concept, Set<CanvasTag>> = new Map();
@@ -79,16 +80,16 @@ export class ConceptStore {
         return this.views;
     }
 
-    getViewsByType(viewType: ConceptType): Concept[] {
-        return this.views.filter(v => v.conceptType === viewType);
+    getViewsByType(viewType: CanvasItemType): Concept[] {
+        return this.views.filter(v => v.type === viewType);
     }
 
     getGameObjects(): MeshConcept[] {
-        return <MeshConcept[]> this.views.filter(view => view.conceptType === ConceptType.Mesh);
+        return <MeshConcept[]> this.views.filter(view => view.type === CanvasItemType.MeshConcept);
     }
 
     getPathes(): PathConcept[] {
-        return <PathConcept[]> this.views.filter(view => view.conceptType === ConceptType.Path);
+        return <PathConcept[]> this.views.filter(view => view.type === CanvasItemType.PathConcept);
     }
 
     getHoveredView(): Concept {
@@ -100,18 +101,18 @@ export class ConceptStore {
     }
 
     getSelectedPathes(): PathConcept[] {
-        return <PathConcept[]> this.getSelectedViews().filter(v => v.conceptType === ConceptType.Path);
+        return <PathConcept[]> this.getSelectedViews().filter(v => v.type === CanvasItemType.PathConcept);
     }
 
     getSelectedGameObjects(): MeshConcept[] {
-        return <MeshConcept[]> this.getSelectedViews().filter(v => v.conceptType === ConceptType.Mesh);
+        return <MeshConcept[]> this.getSelectedViews().filter(v => v.type === CanvasItemType.MeshConcept);
     }
 
     removeSelectionAll() {
         this.removeTag(this.getSelectedViews(), CanvasTag.Selected);
     }
 
-    generateUniqueName(viewType: ConceptType) {
+    generateUniqueName(viewType: CanvasItemType) {
         return this.naming.generateName(viewType);
     }
 }
@@ -123,12 +124,12 @@ export class Naming {
         this.viewStore = viewStore;
     }
 
-    generateName(type: ConceptType) {
+    generateName(type: CanvasItemType) {
         const name = `${type}${this.getMaxIndex(type) + 1}`.toLocaleLowerCase();
         return name;
     }
 
-    private getMaxIndex(type: ConceptType): number {
+    private getMaxIndex(type: CanvasItemType): number {
         const pattern = this.createPattern(type);
         const views = this.viewStore.getViewsByType(type).filter(view => view.name.match(pattern));
 
@@ -141,7 +142,7 @@ export class Naming {
 
     }
 
-    private createPattern(type: ConceptType) {
+    private createPattern(type: CanvasItemType) {
         return new RegExp(`${type}(\\d+)`, 'i');
     }
 }

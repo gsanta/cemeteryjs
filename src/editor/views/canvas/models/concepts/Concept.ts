@@ -1,14 +1,9 @@
 import { Rectangle } from "../../../../../misc/geometry/shapes/Rectangle";
 import { Point } from "../../../../../misc/geometry/shapes/Point";
+import { CanvasItem } from "../CanvasItem";
 
-export enum ConceptType {
-    Mesh = 'Mesh',
-    Path = 'Path',
-    Subconcept = 'Subconcept'
-}
-
-export interface Concept {
-    conceptType: ConceptType;
+export interface Concept extends CanvasItem {
+    editPoints: Point[];
     dimensions: Rectangle;
     name: string;
     selectHoveredSubview(): void;
@@ -17,9 +12,8 @@ export interface Concept {
     move(point: Point): void;
 }
 
-export interface Subconcept {
+export interface Subconcept extends CanvasItem {
     parentConcept: Concept;
-    conceptType: ConceptType;
     over(): void;
     out(): void;
 }

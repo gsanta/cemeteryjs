@@ -1,12 +1,14 @@
-import { Concept, ConceptType, Subconcept } from "./Concept";
+import { Concept, Subconcept } from "./Concept";
 import { Rectangle } from "../../../../../misc/geometry/shapes/Rectangle";
 import { Point } from "../../../../../misc/geometry/shapes/Point";
 import { minBy, maxBy } from "../../../../../misc/geometry/utils/Functions";
+import { CanvasItemType } from "../CanvasItem";
 
 const NULL_BOUNDING_BOX = new Rectangle(new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER), new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER));
 
 export class PathConcept implements Concept {
-    conceptType = ConceptType.Path;
+    type = CanvasItemType.PathConcept;
+    editPoints = [];
     points: PathPointConcept[] = [];
     childMap: Map<PathPointConcept, PathPointConcept[]> = new Map();
     parentMap: Map<PathPointConcept, PathPointConcept> = new Map();
@@ -160,7 +162,7 @@ export class PathConcept implements Concept {
 
 export class PathPointConcept extends Point implements Subconcept {
     parentConcept: PathConcept;
-    conceptType = ConceptType.Subconcept;
+    type = CanvasItemType.Subconcept;
 
     constructor(point: Point, parentConcept: PathConcept) {
         super(point.x, point.y);

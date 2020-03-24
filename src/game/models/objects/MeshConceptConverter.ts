@@ -1,13 +1,13 @@
 import { MeshObject } from "./MeshObject";
 import { GameFacade } from "../../GameFacade";
-import { ConceptType } from "../../../editor/views/canvas/models/concepts/Concept";
 import { RouteObject } from "./RouteObject";
 import { Tools } from "babylonjs";
 import { MeshConcept } from "../../../editor/views/canvas/models/concepts/MeshConcept";
+import { CanvasItemType } from "../../../editor/views/canvas/models/CanvasItem";
 
 
 export class MeshConceptConverter {
-    viewType: ConceptType = ConceptType.Mesh;
+    viewType: CanvasItemType = CanvasItemType.MeshConcept;
     private gameFacade: GameFacade;
 
     constructor(gameFacade: GameFacade) {

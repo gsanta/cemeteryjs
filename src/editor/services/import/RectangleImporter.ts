@@ -4,7 +4,7 @@ import { Point } from '../../../misc/geometry/shapes/Point';
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
 import { ViewGroupJson } from './ImportService';
 import { MeshConcept } from '../../views/canvas/models/concepts/MeshConcept';
-import { ConceptType } from '../../views/canvas/models/concepts/Concept';
+import { CanvasItemType } from '../../views/canvas/models/CanvasItem';
 
 export interface RectJson {
     _attributes: {
@@ -22,7 +22,7 @@ export interface RectangleGroupJson extends ViewGroupJson {
 }
 
 export class MeshViewImporter implements IViewImporter {
-    type = ConceptType.Mesh;
+    type = CanvasItemType.MeshConcept;
     private addGameObject: (rect: MeshConcept) => void;
 
     constructor(addGameObject: (gameObject: MeshConcept) => void) {
@@ -49,19 +49,19 @@ export class MeshViewImporter implements IViewImporter {
 
             const rectangle = new Rectangle(new Point(x, y), new Point(x + width, y + height));
 
-            const gameObject: MeshConcept = new MeshConcept(null, rectangle, name);
-            gameObject.type = type;
-            gameObject.rotation = rotation;
-            gameObject.modelPath = model;
-            gameObject.texturePath = texture;
-            gameObject.scale = scale;
-            gameObject.color = 'grey';
-            gameObject.thumbnailPath = rect._attributes["data-thumbnail"];
-            gameObject.path = rect._attributes["data-path"];
-            gameObject.isManualControl = isManualControl;
-            gameObject.activeAnimation = rect._attributes["data-animation"];
+            const meshConcept: MeshConcept = new MeshConcept(null, rectangle, name);
+            meshConcept.type = <CanvasItemType> type;
+            meshConcept.rotation = rotation;
+            meshConcept.modelPath = model;
+            meshConcept.texturePath = texture;
+            meshConcept.scale = scale;
+            meshConcept.color = 'grey';
+            meshConcept.thumbnailPath = rect._attributes["data-thumbnail"];
+            meshConcept.path = rect._attributes["data-path"];
+            meshConcept.isManualControl = isManualControl;
+            meshConcept.activeAnimation = rect._attributes["data-animation"];
 
-            this.addGameObject(gameObject);
+            this.addGameObject(meshConcept);
         });
     }
 }

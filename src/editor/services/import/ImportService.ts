@@ -1,13 +1,13 @@
 import * as convert from 'xml-js';
 import { IViewImporter } from '../../views/canvas/tools/IToolImporter';
 import { CanvasView } from '../../views/canvas/CanvasView';
-import { ConceptType } from '../../views/canvas/models/concepts/Concept';
 import { Point } from '../../../misc/geometry/shapes/Point';
 import { Stores } from '../../stores/Stores';
 import { MeshViewImporter } from './RectangleImporter';
 import { PathImporter } from './PathImporter';
 import { Camera } from '../../views/canvas/models/Camera';
 import { ServiceLocator } from '../ServiceLocator';
+import { CanvasItemType } from '../../views/canvas/models/CanvasItem';
 
 export interface WgDefinition {
     _attributes: WgDefinitionAttributes;
@@ -70,15 +70,17 @@ export class ImportService {
 
         toolGroups
         .forEach(toolGroup => {
-            const viewType: ConceptType = <ConceptType> toolGroup._attributes["data-view-type"];
+            const viewType = <CanvasItemType> toolGroup._attributes["data-view-type"];
             this.findViewImporter(viewType).import(toolGroup)
         });
 
-        // this.applyGlobalSettings(rawJson);
+        this.applyGlobalSettings(rawJson);
         this.getStores().conceptStore.getGameObjects().filter(item => item.modelPath).forEach(item => this.getServices().meshDimensionService().setDimensions(item));
     }
 
     private applyGlobalSettings(rawJson: RawWorldMapJson) {
+        this.getStores().viewStore.getViewById(CanvasView.id);
+        // const camera = 
         if (rawJson.svg._attributes['data-translate']) {
             const topLeft = Point.fromString(rawJson.svg._attributes['data-translate']);
             const camera = <Camera> this.getStores().viewStore.getViewById(CanvasView.id).getCamera();
@@ -89,7 +91,7 @@ export class ImportService {
         camera.zoom(zoom);
     }
 
-    private findViewImporter(viewType: ConceptType): IViewImporter {
+    private findViewImporter(viewType: CanvasItemType): IViewImporter {
         return this.viewImporters.find(view => view.type === viewType);
     }
 }

@@ -1,7 +1,7 @@
 import { IViewImporter } from "../../views/canvas/tools/IToolImporter";
 import { ViewGroupJson } from "./ImportService";
 import { PathConcept } from "../../views/canvas/models/concepts/PathConcept";
-import { ConceptType } from "../../views/canvas/models/concepts/Concept";
+import { CanvasItemType } from "../../views/canvas/models/CanvasItem";
 
 export interface PathJson {
     circle: {
@@ -26,7 +26,7 @@ export interface PathGroupJson extends ViewGroupJson {
 }
 
 export class PathImporter implements IViewImporter {
-    type = ConceptType.Path;
+    type = CanvasItemType.PathConcept;
     private addPath: (path: PathConcept) => void;
 
     constructor(addPath: (path: PathConcept) => void) {

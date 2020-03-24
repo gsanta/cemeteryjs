@@ -2,15 +2,15 @@ import { AbstractTool } from "./AbstractTool";
 import { CanvasView, CanvasTag } from "../CanvasView";
 import { ToolType } from "./Tool";
 import { UpdateTask } from "../../../services/UpdateServices";
-import { ConceptType, Concept, Subconcept } from "../models/concepts/Concept";
-import { PathConcept } from "../models/concepts/PathConcept";
+import { Concept, Subconcept } from "../models/concepts/Concept";
 import { Stores } from '../../../stores/Stores';
 import { ServiceLocator } from '../../../services/ServiceLocator';
+import { CanvasItemType } from "../models/CanvasItem";
 
 export class PointerTool extends AbstractTool {
     private controller: CanvasView;
 
-    private selectableViews: ConceptType[];
+    private selectableViews: CanvasItemType[];
     private getStores: () => Stores;
     private getServices: () => ServiceLocator;
 
@@ -26,7 +26,7 @@ export class PointerTool extends AbstractTool {
 
         if (
             hoveredView &&
-            (!this.selectableViews || this.selectableViews.includes(hoveredView.conceptType))
+            (!this.selectableViews || this.selectableViews.includes(hoveredView.type))
         ) {
             this.getStores().conceptStore.removeSelectionAll();
             this.getStores().conceptStore.addTag([hoveredView], CanvasTag.Selected);
@@ -64,7 +64,7 @@ export class PointerTool extends AbstractTool {
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
-    setSelectableViews(views: ConceptType[]) {
+    setSelectableViews(views: CanvasItemType[]) {
         this.selectableViews = views;
     }
 }

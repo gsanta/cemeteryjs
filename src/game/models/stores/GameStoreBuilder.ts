@@ -26,6 +26,6 @@ export class GameStoreBuilder {
     }
 
     private getViewConverter(view: Concept): IViewConverter {
-        return this.gameFacade.viewConverters.find(converter => converter.viewType === view.conceptType);
+        return this.gameFacade.viewConverters.find(converter => converter.viewType === view.type);
     }
 }

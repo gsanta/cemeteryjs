@@ -1,10 +1,11 @@
 import { Mesh, Vector3 } from 'babylonjs';
-import { Concept, ConceptType, Subconcept } from './Concept';
+import { Concept, Subconcept } from './Concept';
 import { Rectangle } from '../../../../../misc/geometry/shapes/Rectangle';
 import { BehaviourType } from '../../../../../game/services/behaviour/IBehaviour';
 import { MeshStore } from '../../../../../game/models/stores/MeshStore';
 import { Point } from '../../../../../misc/geometry/shapes/Point';
 import { toVector3 } from '../../../../../misc/geometry/utils/GeomUtils';
+import { CanvasItemType } from '../CanvasItem';
 
 export enum WorldItemShape {
     RECTANGLE = 'rect',
@@ -29,12 +30,9 @@ export enum AnimationState {
 }
 
 
-/**
- * `GameObject` represents any distinguishable item in the parsed world (think of it as a mesh, e.g walls, rooms, creatures).
- */
 export class MeshConcept implements Concept {
-    conceptType = ConceptType.Mesh;
-    type: string;
+    type = CanvasItemType.MeshConcept;
+    editPoints = [];
     meshName: string;
     name: string;
     dimensions: Rectangle;
