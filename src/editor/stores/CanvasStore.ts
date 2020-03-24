@@ -5,13 +5,21 @@ import { without } from "../../misc/geometry/utils/Functions";
 import { CanvasItemType } from "../views/canvas/models/CanvasItem";
 import { MeshConcept } from "../views/canvas/models/concepts/MeshConcept";
 import { PathConcept } from "../views/canvas/models/concepts/PathConcept";
-
+import { Stores } from "./Stores";
+import { Polygon } from "../../misc/geometry/shapes/Polygon";
+import { Point } from "../../misc/geometry/shapes/Point";
+import { Rectangle } from "../../misc/geometry/shapes/Rectangle";
 
 export class CanvasStore {
     concepts: Concept[] = [];
     feedbacks: Feedback[] = [];
 
     private naming: Naming;
+    private getStores: () => Stores;
+
+    constructor(getStores: () => Stores) {
+        this.getStores = getStores;
+    }
 
     addConcept(concept: Concept) {
         this.concepts.push(concept);
@@ -23,6 +31,8 @@ export class CanvasStore {
 
     removeConcept(concept: Concept) {
         this.concepts = without(this.concepts, concept);
+        this.getStores().hoverStore.removeItem(concept);
+        this.getStores().selectionStore.removeItem(concept);
     }
 
     clear(): void {
@@ -44,5 +54,26 @@ export class CanvasStore {
 
     getPathConcepts(): PathConcept[] {
         return <PathConcept[]> this.concepts.filter(view => view.type === CanvasItemType.PathConcept);
+    }
+
+    getIntersectingItemsInRect(rectangle: Rectangle): Concept[] {
+        const x = rectangle.topLeft.x;
+        const y = rectangle.topLeft.y;
+        const width = Math.floor(rectangle.bottomRight.x - rectangle.topLeft.x);
+        const height = Math.floor(rectangle.bottomRight.y - rectangle.topLeft.y);
+
+        const polygon = Polygon.createRectangle(x, y, width, height);
+
+        return this.concepts.filter(item => polygon.contains(item.dimensions));
+    }
+
+    getIntersectingItemsAtPoint(point: Point): Concept[] {
+        const gridPoint = new Point(point.x, point.y);
+
+        return this.concepts.filter(item => item.dimensions.containsPoint(gridPoint));
+    }
+
+    generateUniqueName(viewType: CanvasItemType) {
+        return this.naming.generateName(viewType);
     }
 }

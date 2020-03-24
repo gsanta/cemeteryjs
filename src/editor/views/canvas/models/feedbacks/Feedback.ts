@@ -1,4 +1,6 @@
-import { CanvasItem } from "../CanvasItem";
+import { CanvasItem, CanvasItemType } from "../CanvasItem";
 
 
-export interface Feedback extends CanvasItem {}
+export interface Feedback extends CanvasItem {
+    parent: CanvasItem;
+}

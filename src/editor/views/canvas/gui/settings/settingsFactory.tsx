@@ -21,7 +21,7 @@ const PlaceHolderTextStyled = styled.div`
 `;
 
 export function settingsFactory(getStores: () => Stores): JSX.Element {
-    const selectedViews = getStores().conceptStore.getSelectedViews();
+    const selectedViews = getStores().selectionStore.getAll();
     if (selectedViews.length !== 1) {
         return <PlaceHolderTextStyled>Select an object on canvas to change it's properties</PlaceHolderTextStyled>
     }

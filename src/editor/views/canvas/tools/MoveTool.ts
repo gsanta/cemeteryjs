@@ -55,7 +55,7 @@ export class MoveTool extends AbstractTool {
     }
 
     private initMove(): boolean {
-        const selected = this.getStores().conceptStore.getSelectedViews();
+        const selected = this.getStores().selectionStore.getAllConcepts();
         this.origDimensions = [];
         
         this.origDimensions = selected.map(item => item.dimensions);
@@ -66,7 +66,7 @@ export class MoveTool extends AbstractTool {
     }
 
     private moveItems() {
-        const selectedItems = this.getStores().conceptStore.getSelectedViews();
+        const selectedItems = this.getStores().selectionStore.getAllConcepts();
 
         selectedItems.forEach((item, index) => item.move(this.getServices().pointerService().pointer.getDiff()));
 

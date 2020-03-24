@@ -1,4 +1,5 @@
 import { Concept, Subconcept } from "../models/concepts/Concept";
+import { CanvasItem } from "../models/CanvasItem";
 
 export enum ToolType {
     RECTANGLE = 'rectangle',
@@ -40,8 +41,8 @@ export interface Tool {
     activate(): void;
     leave(): void;
     keydown(): void;
-    over(concept: Concept, subconcept?: Subconcept): void;
-    out(concept: Concept, subconcept?: Subconcept): void;
+    over(canvasItem: CanvasItem): void;
+    out(canvasItem: CanvasItem): void;
 
     select(): void;
     unselect(): void;

@@ -23,14 +23,13 @@ export class MeshConceptExporter implements IConceptExporter {
     }
 
     private getSortedMeshViews() {
-        const viewStore = this.getStores().conceptStore;
-        let items = [...viewStore.getGameObjects()];
+        let items = [...this.getStores().canvasStore.getMeshConcepts()];
         return sort(items, (a, b) => a.layer - b.layer);
     }
 
     private renderGroup(item: MeshConcept, hover?: (view: Concept) => void, unhover?: (view: Concept) => void) {
-        const minX = minBy<MeshConcept>(this.getStores().conceptStore.getGameObjects(), (a, b) => a.dimensions.topLeft.x - b.dimensions.topLeft.x).dimensions.topLeft.x;
-        const minY = minBy<MeshConcept>(this.getStores().conceptStore.getGameObjects(), (a, b) => a.dimensions.topLeft.y - b.dimensions.topLeft.y).dimensions.topLeft.y;
+        const minX = minBy<MeshConcept>(this.getStores().canvasStore.getMeshConcepts(), (a, b) => a.dimensions.topLeft.x - b.dimensions.topLeft.x).dimensions.topLeft.x;
+        const minY = minBy<MeshConcept>(this.getStores().canvasStore.getMeshConcepts(), (a, b) => a.dimensions.topLeft.y - b.dimensions.topLeft.y).dimensions.topLeft.y;
 
         const tranlateX = minX < 0 ? - minX : 0;
         const tranlateY = minY < 0 ? - minY : 0;
@@ -65,9 +64,7 @@ export class MeshConceptExporter implements IConceptExporter {
     }
 
     private renderRect(item: MeshConcept) {
-        const viewStore = this.getStores().conceptStore;
-
-        const stroke = viewStore.getTags(item).has(CanvasTag.Selected) || viewStore.getTags(item).has(CanvasTag.Hovered) ? colors.views.highlight : 'black';
+        const stroke = this.getStores().selectionStore.contains(item) || this.getStores().hoverStore.contains(item) ? colors.views.highlight : 'black';
 
         return (
             <rect

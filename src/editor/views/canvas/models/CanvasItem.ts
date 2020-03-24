@@ -3,7 +3,8 @@ export enum CanvasItemType {
     MeshConcept = 'MeshConcept',
     PathConcept = 'PathConcept',
     Subconcept = 'Subconcept',
-    RectSelectFeedback = 'RectSelectFeedback'
+    RectSelectFeedback = 'RectSelectFeedback',
+    EditPointFeedback = 'EditPointFeedback'
 }
 
 export interface CanvasItem {

@@ -31,7 +31,9 @@ export class GlobalSettings extends AbstractSettings<GlobalSettingsPropType> {
     protected setProp(val: any, prop: GlobalSettingsPropType) {
         switch (prop) {
             case GlobalSettingsPropType.IMPORT_FILE:
-                this.getStores().conceptStore.clear();
+                this.getStores().canvasStore.clear();
+                this.getStores().hoverStore.clear();
+                this.getStores().selectionStore.clear();
                 this.getServices().importService().import(val.data)
         }
         this.getServices().updateService().runImmediately(UpdateTask.RepaintCanvas, UpdateTask.UpdateRenderer);

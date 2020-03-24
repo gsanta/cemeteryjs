@@ -1,32 +1,30 @@
-import { Concept, Subconcept } from "./Concept";
+import { Concept } from "./Concept";
 import { Rectangle } from "../../../../../misc/geometry/shapes/Rectangle";
 import { Point } from "../../../../../misc/geometry/shapes/Point";
 import { minBy, maxBy } from "../../../../../misc/geometry/utils/Functions";
 import { CanvasItemType } from "../CanvasItem";
+import { EditPoint } from "../feedbacks/EditPoint";
 
 const NULL_BOUNDING_BOX = new Rectangle(new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER), new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER));
 
 export class PathConcept implements Concept {
     type = CanvasItemType.PathConcept;
     editPoints = [];
-    points: PathPointConcept[] = [];
-    childMap: Map<PathPointConcept, PathPointConcept[]> = new Map();
-    parentMap: Map<PathPointConcept, PathPointConcept> = new Map();
-    rootPoint: PathPointConcept;
+    childMap: Map<EditPoint, EditPoint[]> = new Map();
+    parentMap: Map<EditPoint, EditPoint> = new Map();
+    rootPoint: EditPoint;
     pathId: number;
     dimensions: Rectangle;
     name: string;
     radius = 5;
     private str: string;
-    selected: PathPointConcept;
-    hoveredSubconcept: PathPointConcept;
+    selected: EditPoint;
 
     constructor(startPoint?: Point) {
         if (startPoint) {
-            const pathPointConcept = new PathPointConcept(startPoint, this);
+            const pathPointConcept = new EditPoint(startPoint, this);
             this.selected = pathPointConcept;
-            this.hoveredSubconcept = pathPointConcept;
-            this.points.push(pathPointConcept);
+            this.editPoints.push(pathPointConcept);
             this.rootPoint = pathPointConcept;
             this.childMap.set(this.rootPoint, []);
         }
@@ -34,59 +32,48 @@ export class PathConcept implements Concept {
         this.dimensions = this.calcBoundingBox();
     }
 
-    getPoints(): Point[] {
-        return this.points;
-    }
-
-    getParentPoint(subconcept: PathPointConcept): Point {
-        return this.parentMap.get(subconcept);
+    getParentPoint(editPoint: EditPoint): EditPoint {
+        return this.parentMap.get(editPoint);
     } 
 
-    addPoint(subconcept: PathPointConcept) {
-        subconcept = new PathPointConcept(subconcept, this);
-        this.points.push(subconcept);
-        this.childMap.get(this.selected).push(subconcept);
-        this.parentMap.set(subconcept, this.selected);
-        this.childMap.set(subconcept, []);
-        this.selected = subconcept;
-        this.hoveredSubconcept = subconcept;
+    addEditPoint(editPoint: EditPoint) {
+        this.editPoints.push(editPoint);
+        this.childMap.get(this.selected).push(editPoint);
+        this.parentMap.set(editPoint, this.selected);
+        this.childMap.set(editPoint, []);
+        this.selected = editPoint;
         this.dimensions = this.calcBoundingBox();
         this.str = undefined;
     }
 
     private calcBoundingBox() {
-        if (this.points.length === 0) { return NULL_BOUNDING_BOX; }
+        if (this.editPoints.length === 0) { return NULL_BOUNDING_BOX; }
 
-        const minX = minBy<Point>(this.points, (a, b) => a.x - b.x).x;
-        const maxX = maxBy<Point>(this.points, (a, b) => a.x - b.x).x;
-        const minY = minBy<Point>(this.points, (a, b) => a.y - b.y).y;
-        const maxY = maxBy<Point>(this.points, (a, b) => a.y - b.y).y;
+        const minX = minBy<Point>(this.editPoints, (a, b) => a.x - b.x).x;
+        const maxX = maxBy<Point>(this.editPoints, (a, b) => a.x - b.x).x;
+        const minY = minBy<Point>(this.editPoints, (a, b) => a.y - b.y).y;
+        const maxY = maxBy<Point>(this.editPoints, (a, b) => a.y - b.y).y;
 
         return new Rectangle(new Point(minX, minY), new Point(maxX, maxY));
     }
 
-    selectHoveredSubview() {
-        this.selected = this.hoveredSubconcept;
-    }
-
-    deleteSubconcept(subconcept: PathPointConcept): void {
-        if (subconcept !== this.rootPoint) {
-            this.points = this.points.filter(p => p !== subconcept);
-            const newParent = this.parentMap.get(subconcept);
-            const children = this.childMap.get(subconcept) || [];
+    deleteEditPoint(editPoint: EditPoint): void {
+        if (editPoint !== this.rootPoint) {
+            this.editPoints = this.editPoints.filter(p => p !== editPoint);
+            const newParent = this.parentMap.get(editPoint);
+            const children = this.childMap.get(editPoint) || [];
 
             children.forEach(child => {
                 this.parentMap.set(child, newParent);
                 this.childMap.get(newParent).push(child);
             });
 
-            const newChildren = this.childMap.get(newParent).filter(item => item !== subconcept);
+            const newChildren = this.childMap.get(newParent).filter(item => item !== editPoint);
             this.childMap.set(newParent, newChildren);
-            this.parentMap.delete(subconcept);
-            this.childMap.delete(subconcept);
+            this.parentMap.delete(editPoint);
+            this.childMap.delete(editPoint);
 
-            if (subconcept === this.hoveredSubconcept) { this.hoveredSubconcept = undefined }
-            if (subconcept === this.selected) { this.selected = undefined }
+            if (editPoint === this.selected) { this.selected = undefined }
             this.str = undefined;
         }
     }
@@ -95,15 +82,15 @@ export class PathConcept implements Concept {
         if (this.str) { return this.str; }
 
         this.str = '';
-        let prev: Point = undefined;
-        this.iterateOverPoints((current: Point, parent: Point) => {
+        let prev: EditPoint = undefined;
+        this.iterateOverPoints((current: EditPoint, parent: EditPoint) => {
             if (parent === undefined) {
-                this.str += `M ${current.x} ${current.y}`;
+                this.str += `M ${current.point.x} ${current.point.y}`;
             } else if (prev !== parent) {
-                this.str += `M ${parent.x} ${parent.y}`;
-                this.str += `L ${current.x} ${current.y}`;
+                this.str += `M ${parent.point.x} ${parent.point.y}`;
+                this.str += `L ${current.point.x} ${current.point.y}`;
             } else {
-                this.str += `L ${current.x} ${current.y}`;
+                this.str += `L ${current.point.x} ${current.point.y}`;
             }
             prev = current;
         });
@@ -112,7 +99,7 @@ export class PathConcept implements Concept {
     }
 
     serializeParentRelations() {
-        return this.points.map(p => `${this.points.indexOf(p)}:${this.points.indexOf(this.parentMap.get(p))}`).join(' ');
+        return this.editPoints.map(p => `${this.editPoints.indexOf(p)}:${this.editPoints.indexOf(this.parentMap.get(p))}`).join(' ');
     }
 
     deserialize(points: string, relations: string) {
@@ -122,60 +109,40 @@ export class PathConcept implements Concept {
 
     move(point: Point) {
         if (this.selected) {
-            this.selected.add(point);
+            this.selected.point.add(point);
         } else {
-            this.points.forEach(p => p.add(point));
+            this.editPoints.forEach(p => p.add(point));
         }
 
         this.str = undefined;
     }
 
     private deserializePoints(points: string) {
-        this.points = points.split(' ')
+        this.editPoints = points.split(' ')
             .map(p => {
                 const [x, y] = p.split(':');
-                const point = new PathPointConcept(new Point(parseFloat(x), parseFloat(y)), this);
+                const point = new EditPoint(new Point(parseFloat(x), parseFloat(y)), this);
                 this.childMap.set(point, []);
                 return point;
             });
-        this.rootPoint = this.points[0];
+        this.rootPoint = this.editPoints[0];
     }
 
     private deserializeParentRelations(relations: string) {
         relations.split(' ').forEach(relation => {
             const [index, parentIndex] = relation.split(':');
-            parentIndex !== '-1' && this.childMap.get(this.points[parentIndex]).push(this.points[index]);
-            this.parentMap.set(this.points[index], this.points[parentIndex]);
+            parentIndex !== '-1' && this.childMap.get(this.editPoints[parentIndex]).push(this.editPoints[index]);
+            this.parentMap.set(this.editPoints[index], this.editPoints[parentIndex]);
         })
     }
 
-    iterateOverPoints(action: (parent: PathPointConcept, current: PathPointConcept) => void) {
+    iterateOverPoints(action: (parent: EditPoint, current: EditPoint) => void) {
         this.iterateOverPointsRecursively(this.rootPoint, undefined, action);
     }
 
-    private iterateOverPointsRecursively(point: PathPointConcept, parent: PathPointConcept, action: (current: PathPointConcept, parent: PathPointConcept) => void) {
+    private iterateOverPointsRecursively(point: EditPoint, parent: EditPoint, action: (current: EditPoint, parent: EditPoint) => void) {
         action(point, parent);
 
         this.childMap.get(point).forEach(child => this.iterateOverPointsRecursively(child, point, action));
     }
-}
-
-export class PathPointConcept extends Point implements Subconcept {
-    parentConcept: PathConcept;
-    type = CanvasItemType.Subconcept;
-
-    constructor(point: Point, parentConcept: PathConcept) {
-        super(point.x, point.y);
-        this.parentConcept = parentConcept;
-    }
-
-    over(): void {
-        this.parentConcept.hoveredSubconcept = this;
-    }
-
-    out(): void {
-        this.parentConcept.hoveredSubconcept = undefined;
-    }
-
-    parent: Concept;
 }

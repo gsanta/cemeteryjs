@@ -1,23 +1,27 @@
 import * as React from 'react';
 import { colors } from '../../gui/styles';
-import { PathConcept, PathPointConcept } from '../../views/canvas/models/concepts/PathConcept';
+import { PathConcept } from '../../views/canvas/models/concepts/PathConcept';
+import { CanvasItem } from '../../views/canvas/models/CanvasItem';
+import { EditPoint } from '../../views/canvas/models/feedbacks/EditPoint';
+import { Stores } from '../../stores/Stores';
 
 export interface PathComponentProps {
     item: PathConcept;
-    onMouseOver(path: PathConcept, pathPoint?: PathPointConcept): void;
-    onMouseOut(path: PathConcept, pathPoint?: PathPointConcept): void;
+    onMouseOver(canvasItem: CanvasItem): void;
+    onMouseOut(canvasItem: CanvasItem): void;
     onlyData: boolean;
     isHovered: boolean;
     isSelected: boolean;
+    stores: Stores;
 }
 
 export class PathComponent extends React.Component<PathComponentProps> {
 
     render(): JSX.Element {
-        const points: JSX.Element[] = this.props.item.points.map(p => this.renderArrowPoint(p));
+        const points: JSX.Element[] = this.props.item.editPoints.map(p => this.renderArrowPoint(p));
 
         let arrow: JSX.Element = null;
-        if (this.props.item.points.length > 1) {
+        if (this.props.item.editPoints.length > 1) {
             arrow = this.renderPath();
         }
 
@@ -26,18 +30,19 @@ export class PathComponent extends React.Component<PathComponentProps> {
         )
     }
 
-    renderArrowPoint(point: PathPointConcept): JSX.Element {
-        const item = this.props.item;
-        const color = item.selected === point || item.hoveredSubconcept === point ? colors.views.highlight : 'black';
+    renderArrowPoint(editPoint: EditPoint): JSX.Element {
+        const selected = this.props.stores.selectionStore.contains(editPoint);
+        const hovered = this.props.stores.hoverStore.contains(editPoint);
+        const color = selected || hovered ? colors.views.highlight : 'black';
         return (
             <circle
-                key={point.toString()}
-                cx={point.x}
-                cy={point.y}
+                key={editPoint.toString()}
+                cx={editPoint.point.x}
+                cy={editPoint.point.y}
                 r={this.props.item.radius}
                 fill={color}
-                onMouseOver={() => this.props.onMouseOver(this.props.item, point)}
-                onMouseOut={() => this.props.onMouseOut(this.props.item, point)}
+                onMouseOver={() => this.props.onMouseOver(editPoint)}
+                onMouseOut={() => this.props.onMouseOut(editPoint)}
             />
         );
     }
@@ -61,7 +66,7 @@ export class PathComponent extends React.Component<PathComponentProps> {
                 <path
                     d={this.props.item.serializePath()}
                     data-name={this.props.item.name}
-                    data-points={this.props.item.points.map(p => p.toString()).join(' ')}
+                    data-points={this.props.item.editPoints.map(p => p.point.toString()).join(' ')}
                     data-point-relations={this.props.item.serializeParentRelations()}
                     fill="none"
                     stroke={colors.views.stroke}

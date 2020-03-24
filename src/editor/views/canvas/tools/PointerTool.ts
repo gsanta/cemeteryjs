@@ -5,7 +5,7 @@ import { UpdateTask } from "../../../services/UpdateServices";
 import { Concept, Subconcept } from "../models/concepts/Concept";
 import { Stores } from '../../../stores/Stores';
 import { ServiceLocator } from '../../../services/ServiceLocator';
-import { CanvasItemType } from "../models/CanvasItem";
+import { CanvasItemType, CanvasItem } from "../models/CanvasItem";
 
 export class PointerTool extends AbstractTool {
     private controller: CanvasView;
@@ -22,45 +22,30 @@ export class PointerTool extends AbstractTool {
     }
 
     click(): boolean {
-        const hoveredView = this.getStores().conceptStore.getHoveredView()
+        const hoverStore = this.getStores().hoverStore;
+        const selectionStore = this.getStores().selectionStore;
 
-        if (
-            hoveredView &&
-            (!this.selectableViews || this.selectableViews.includes(hoveredView.type))
-        ) {
-            this.getStores().conceptStore.removeSelectionAll();
-            this.getStores().conceptStore.addTag([hoveredView], CanvasTag.Selected);
-            hoveredView.selectHoveredSubview();
-
+        if (hoverStore.hasFeedback()) {
+            if (selectionStore.hasConcept() && selectionStore.getConcept() !== hoverStore.getFeedback().parent) {
+                this.getStores().selectionStore.clear();
+                this.getStores().selectionStore.addItem(hoverStore.getFeedback().parent);
+            }
+            this.getStores().selectionStore.addItem(hoverStore.getFeedback());
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas);
             
             return true;
         }
+
         return false;
     }
 
-    down() {
-        const hoveredView = this.getStores().conceptStore.getHoveredView();
-        if (hoveredView) {
-            hoveredView.selectHoveredSubview();
-            this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
-        }
-    }
-
-    over(concept: Concept, subconcept?: Subconcept) {
-        if (subconcept) {
-            subconcept.over();
-        }
-        
-        this.getStores().conceptStore.addTag([concept], CanvasTag.Hovered);
+    over(canvasItem: CanvasItem) {
+        this.getStores().hoverStore.addItem(canvasItem);
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
-    out(concept: Concept, subconcept?: Subconcept) {
-        if (subconcept) {
-            subconcept.out();
-        }
-        this.getStores().conceptStore.removeTagFromAll(CanvasTag.Hovered);
+    out(canvasItem: CanvasItem) {
+        this.getStores().hoverStore.removeItem(canvasItem);
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 

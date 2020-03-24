@@ -36,11 +36,11 @@ export class RectangleTool extends AbstractTool {
         gameObject.scale = 1;
         gameObject.color = 'grey';
 
-        gameObject.name = this.getStores().conceptStore.generateUniqueName(CanvasItemType.MeshConcept);
+        gameObject.name = this.getStores().canvasStore.generateUniqueName(CanvasItemType.MeshConcept);
 
-        this.getStores().conceptStore.addRect(gameObject);
-        this.getStores().conceptStore.removeSelectionAll()
-        this.getStores().conceptStore.addTag([gameObject], CanvasTag.Selected);
+        this.getStores().canvasStore.addConcept(gameObject);
+        this.getStores().selectionStore.clear()
+        this.getStores().selectionStore.addItem(gameObject);
 
         this.getServices().levelService().updateCurrentLevel();
         this.getServices().updateService().scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
@@ -49,7 +49,7 @@ export class RectangleTool extends AbstractTool {
     drag() {
         super.drag()
         if (this.lastPreviewRect) {
-            this.getStores().conceptStore.remove(this.lastPreviewRect);
+            this.getStores().canvasStore.removeConcept(this.lastPreviewRect);
         }
         this.rectSelector.updateRect(this.getServices().pointerService().pointer);
         this.controller.feedbackStore.rectSelectFeedback.isVisible = false;
@@ -63,10 +63,11 @@ export class RectangleTool extends AbstractTool {
         gameObject.texturePath = null;
         gameObject.scale = 1;
         gameObject.color = 'grey';
-        gameObject.name = this.getStores().conceptStore.generateUniqueName(CanvasItemType.MeshConcept);
+        gameObject.name = this.getStores().canvasStore.generateUniqueName(CanvasItemType.MeshConcept);
 
         if (positions.length > 0) {
-            this.lastPreviewRect = this.getStores().conceptStore.addRect(gameObject);
+            this.getStores().canvasStore.addConcept(gameObject);
+            this.lastPreviewRect = gameObject;
     
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
         }

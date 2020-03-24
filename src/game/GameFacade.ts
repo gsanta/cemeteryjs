@@ -88,7 +88,7 @@ export class GameFacade {
 
     clear(): void {
         this.meshStore.clear();
-        this.stores.conceptStore.clear();
+        this.stores.canvasStore.clear();
         this.modelLoader.clear();
     }
     

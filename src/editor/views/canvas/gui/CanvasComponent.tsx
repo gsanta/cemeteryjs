@@ -7,6 +7,7 @@ import { PathMarkersComponent } from '../../../services/export/PathMarkersCompon
 import { CanvasView } from '../CanvasView';
 import { Concept, Subconcept } from '../models/concepts/Concept';
 import { CanvasToolbarComponent } from './CanvasToolbarComponent';
+import { CanvasItem } from '../models/CanvasItem';
 
 
 const EditorComponentStyled = styled.div`
@@ -36,8 +37,8 @@ export class CanvasComponent extends React.Component {
     }
 
     render(): JSX.Element {
-        const hover = (view: Concept, subconcept?: Subconcept) => this.context.getServices().mouseService().hover(view, subconcept);
-        const unhover = (view: Concept, subconcept?: Subconcept) => this.context.getServices().mouseService().unhover(view, subconcept);
+        const hover = (canvasItem: CanvasItem) => this.context.getServices().mouseService().hover(canvasItem);
+        const unhover = (canvasItem: CanvasItem) => this.context.getServices().mouseService().unhover(canvasItem);
 
         const view = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id);
 

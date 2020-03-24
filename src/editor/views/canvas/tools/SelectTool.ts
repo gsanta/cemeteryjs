@@ -1,11 +1,11 @@
-import { CanvasView, CanvasTag } from '../CanvasView';
+import { CanvasView } from '../CanvasView';
 import { RectangleSelector } from "./selection/RectangleSelector";
 import { ToolType, Tool } from "./Tool";
 import { AbstractTool } from "./AbstractTool";
 import { UpdateTask } from "../../../services/UpdateServices";
-import { Concept, Subconcept } from "../models/concepts/Concept";
 import { Stores } from '../../../stores/Stores';
 import { ServiceLocator } from '../../../services/ServiceLocator';
+import { CanvasItem } from '../models/CanvasItem';
 
 export class SelectTool extends AbstractTool {
     protected view: CanvasView;
@@ -24,19 +24,18 @@ export class SelectTool extends AbstractTool {
     }
 
     down() {
-        const hovered = this.getStores().conceptStore.getHoveredView();
-        const selected = this.getStores().conceptStore.getSelectedViews();
+        const hovered = this.getStores().hoverStore.getConcept();
 
-        if (hovered && selected.includes(hovered)) {
+        if (hovered && this.getStores().selectionStore.contains(hovered)) {
             this.activeTool = this.view.getToolByType(ToolType.MOVE);
         }
     }
 
     click() {
-        if (this.getStores().conceptStore.getHoveredView()) {
+        if (this.getStores().hoverStore.hasAny()) {
             this.view.getToolByType(ToolType.POINTER).click();
-        } else if (this.getStores().conceptStore.getSelectedViews().length > 0) {
-            this.getStores().conceptStore.removeTag(this.getStores().conceptStore.getViews(), CanvasTag.Selected);
+        } else if (this.getStores().selectionStore.getAll().length > 0) {
+            this.getStores().selectionStore.clear();
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
         }
     }
@@ -61,21 +60,21 @@ export class SelectTool extends AbstractTool {
         const feedback = this.view.feedbackStore.rectSelectFeedback;
         if (!feedback) { return }
 
-        const canvasItems = this.getStores().conceptStore.getIntersectingItemsInRect(feedback.rect);
-        const canvasStore = this.getStores().conceptStore;this.view.getToolByType(ToolType.POINTER)
+        const canvasItems = this.getStores().canvasStore.getIntersectingItemsInRect(feedback.rect);
+        this.view.getToolByType(ToolType.POINTER)
         
-        canvasStore.removeTag(this.getStores().conceptStore.getViews(), CanvasTag.Selected);
-        canvasStore.addTag(canvasItems, CanvasTag.Selected);
+        this.getStores().selectionStore.clear();
+        this.getStores().selectionStore.addItem(...canvasItems)
 
         this.rectSelector.finish();
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
-    over(concept: Concept, subconcept?: Subconcept) {
-        this.view.getToolByType(ToolType.POINTER).over(concept, subconcept);
+    over(canvasItem: CanvasItem) {
+        this.view.getToolByType(ToolType.POINTER).over(canvasItem);
     }
 
-    out(concept: Concept, subconcept?: Subconcept) {
-        this.view.getToolByType(ToolType.POINTER).out(concept, subconcept);
+    out(canvasItem: CanvasItem) {
+        this.view.getToolByType(ToolType.POINTER).out(canvasItem);
     }
 }

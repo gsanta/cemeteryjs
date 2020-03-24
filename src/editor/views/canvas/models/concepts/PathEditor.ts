@@ -9,6 +9,6 @@ export class PathEditor {
     }
 
     move(point: Point) {
-        this.pathConcept.selected.add(point);
+        // this.pathConcept.selected.add(point);
     }
 }

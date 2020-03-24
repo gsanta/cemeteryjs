@@ -59,8 +59,8 @@ export class ImportService {
         this.getServices = getServices;
         this.getStores = getStores;
         this.viewImporters = [
-            new MeshViewImporter(rect => this.getStores().conceptStore.addRect(rect)),
-            new PathImporter(path => this.getStores().conceptStore.addPath(path))
+            new MeshViewImporter(rect => this.getStores().canvasStore.addConcept(rect)),
+            new PathImporter(path => this.getStores().canvasStore.addConcept(path))
         ]
     }
 
@@ -75,7 +75,7 @@ export class ImportService {
         });
 
         this.applyGlobalSettings(rawJson);
-        this.getStores().conceptStore.getGameObjects().filter(item => item.modelPath).forEach(item => this.getServices().meshDimensionService().setDimensions(item));
+        this.getStores().canvasStore.getMeshConcepts().filter(item => item.modelPath).forEach(item => this.getServices().meshDimensionService().setDimensions(item));
     }
 
     private applyGlobalSettings(rawJson: RawWorldMapJson) {

@@ -14,14 +14,18 @@ export class LevelService {
 
     changeLevel(level: number): Promise<void> {
         if (this.getStores().levelStore.hasLevel(level)) {
-            this.getStores().conceptStore.clear();
+            this.getStores().canvasStore.clear();
+            this.getStores().hoverStore.clear();
+            this.getStores().selectionStore.clear();
             return this.getServices().storageService().loadLevel(level)
                 .finally(() => {
                     this.getStores().levelStore.setCurrentLevel(level)
                     this.getServices().updateService().runImmediately(UpdateTask.All);
                 });
         } else {
-            this.getStores().conceptStore.clear();
+            this.getStores().canvasStore.clear();
+            this.getStores().hoverStore.clear();
+            this.getStores().selectionStore.clear();
             this.getStores().levelStore.setCurrentLevel(level);
             this.getServices().updateService().runImmediately(UpdateTask.All)
             return Promise.resolve();
@@ -38,7 +42,9 @@ export class LevelService {
         return this.getServices().storageService()
             .removeLevel(this.getStores().levelStore.currentLevel.index)
             .then(() => {
-                this.getStores().conceptStore.clear();
+                this.getStores().canvasStore.clear();
+                this.getStores().hoverStore.clear();
+                this.getStores().selectionStore.clear();
                 this.getStores().levelStore.currentLevel.isEmpty = true;
             });
     }

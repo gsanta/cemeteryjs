@@ -1,9 +1,7 @@
 import { Point } from '../../../misc/geometry/shapes/Point';
 import { Editor } from '../../Editor';
-import { MouseService } from '../../services/MouseService';
 import { ServiceLocator } from '../../services/ServiceLocator';
 import { Stores } from '../../stores/Stores';
-import { KeyboardService } from '../../services/KeyboardService';
 import { CanvasViewSettings, View } from '../View';
 import { CanvasExporter } from './CanvasExporter';
 import { LevelSettings } from './settings/LevelSettings';
@@ -111,7 +109,7 @@ export class CanvasView extends View {
     }
 
     isEmpty(): boolean {
-        return this.getStores().conceptStore.getViews().length === 0;
+        return this.getStores().canvasStore.getAllConcepts().length === 0;
     }
 
     getOffset() {

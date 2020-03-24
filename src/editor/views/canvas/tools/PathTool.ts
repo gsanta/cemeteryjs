@@ -1,15 +1,16 @@
 import { Point } from "../../../../misc/geometry/shapes/Point";
 import { ToolType } from "./Tool";
 import { Keyboard } from "../../../services/KeyboardService";
-import { CanvasView, CanvasTag } from "../CanvasView";
+import { CanvasView } from "../CanvasView";
 import { AbstractTool } from "./AbstractTool";
 import { UpdateTask } from "../../../services/UpdateServices";
 import { Concept, Subconcept } from "../models/concepts/Concept";
-import { PathConcept, PathPointConcept } from "../models/concepts/PathConcept";
+import { PathConcept } from "../models/concepts/PathConcept";
 import { Stores } from "../../../stores/Stores";
 import { ServiceLocator } from '../../../services/ServiceLocator';
 import { PointerTool } from "./PointerTool";
-import { CanvasItemType } from "../models/CanvasItem";
+import { CanvasItemType, CanvasItem } from "../models/CanvasItem";
+import { EditPoint } from "../models/feedbacks/EditPoint";
 
 export class PathTool extends AbstractTool {
     private view: CanvasView;
@@ -27,21 +28,21 @@ export class PathTool extends AbstractTool {
     click() {
         if (this.view.getToolByType<PointerTool>(ToolType.POINTER).click()) { return }
         
-        const selectedPathes = this.getStores().conceptStore.getSelectedPathes();
+        const selectedPathes = this.getStores().selectionStore.getPathConcepts();
 
         if (selectedPathes.length === 0) {
             this.startNewPath();
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         } else if (selectedPathes.length === 1) {
             const pointer = this.getServices().pointerService().pointer;
-            selectedPathes[0].addPoint(new PathPointConcept(new Point(pointer.down.x, pointer.down.y), selectedPathes[0]));
+            selectedPathes[0].addEditPoint(new EditPoint(new Point(pointer.down.x, pointer.down.y), selectedPathes[0]));
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         }
     }
 
     keydown() {
         if (this.getServices().keyboardService().downKeys.includes(Keyboard.Enter)) {
-            this.getStores().conceptStore.removeSelectionAll();
+            this.getStores().selectionStore.clear();
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         }
     }
@@ -54,22 +55,22 @@ export class PathTool extends AbstractTool {
         this.view.getToolByType<PointerTool>(ToolType.POINTER).setSelectableViews(undefined);
     }
 
-    over(item: Concept, subconcept: Subconcept) {
-        this.view.getToolByType<PointerTool>(ToolType.POINTER).over(item, subconcept);
+    over(canvasItem: CanvasItem) {
+        this.view.getToolByType<PointerTool>(ToolType.POINTER).over(canvasItem);
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
-    out(item: Concept, subconcept: Subconcept) {
-        this.view.getToolByType<PointerTool>(ToolType.POINTER).out(item, subconcept);
+    out(canvasItem: CanvasItem) {
+        this.view.getToolByType<PointerTool>(ToolType.POINTER).out(canvasItem);
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     private startNewPath() {
         const pointer = this.getServices().pointerService().pointer;
-        this.getStores().conceptStore.removeSelectionAll();
+        this.getStores().selectionStore.clear();
         const path = new PathConcept(pointer.down.clone());
-        path.name = this.getStores().conceptStore.generateUniqueName(CanvasItemType.PathConcept);
-        this.getStores().conceptStore.addPath(path);
-        this.getStores().conceptStore.addTag([path], CanvasTag.Selected);
+        path.name = this.getStores().canvasStore.generateUniqueName(CanvasItemType.PathConcept);
+        this.getStores().canvasStore.addConcept(path);
+        this.getStores().selectionStore.addItem(path);
     }
 }

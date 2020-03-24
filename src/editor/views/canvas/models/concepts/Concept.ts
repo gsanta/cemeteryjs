@@ -1,14 +1,15 @@
 import { Rectangle } from "../../../../../misc/geometry/shapes/Rectangle";
 import { Point } from "../../../../../misc/geometry/shapes/Point";
 import { CanvasItem } from "../CanvasItem";
+import { Feedback } from "../feedbacks/Feedback";
+import { EditPoint } from "../feedbacks/EditPoint";
 
 export interface Concept extends CanvasItem {
-    editPoints: Point[];
+    editPoints: EditPoint[];
     dimensions: Rectangle;
     name: string;
-    selectHoveredSubview(): void;
     hoveredSubconcept?: Subconcept;
-    deleteSubconcept(subconcept: Subconcept): void;
+    deleteEditPoint(editPoint: EditPoint): void;
     move(point: Point): void;
 }
 

@@ -7,8 +7,7 @@ import { SelectionStore } from "./SelectionStore";
 
 
 export class Stores {
-    conceptStore = new ConceptStore();
-    canvasStore = new CanvasStore();
+    canvasStore = new CanvasStore(() => this);
     hoverStore = new HoverStore();
     selectionStore = new SelectionStore();
     levelStore = new LevelStore();

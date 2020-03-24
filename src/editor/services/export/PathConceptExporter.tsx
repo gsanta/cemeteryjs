@@ -1,11 +1,8 @@
 import { IConceptExporter } from "../../views/canvas/tools/IConceptExporter";
 import React = require("react");
 import { PathComponent } from "./PathComponent";
-import { PathConcept, PathPointConcept } from "../../views/canvas/models/concepts/PathConcept";
-import { Concept, Subconcept } from "../../views/canvas/models/concepts/Concept";
 import { Stores } from '../../stores/Stores';
-import { CanvasTag } from "../../views/canvas/CanvasView";
-import { CanvasItemType } from "../../views/canvas/models/CanvasItem";
+import { CanvasItemType, CanvasItem } from "../../views/canvas/models/CanvasItem";
 
 export class PathConceptExporter implements IConceptExporter {
     type = CanvasItemType.PathConcept;
@@ -15,16 +12,17 @@ export class PathConceptExporter implements IConceptExporter {
         this.getStores = getStores;
     }
 
-    export(hover?: (concept: Concept, subconcept?: Subconcept) => void, unhover?: (concept: Concept, subconcept?: Subconcept) => void): JSX.Element {
-        const pathes = this.getStores().conceptStore.getPathes().map(path => {
+    export(hover?: (canvasItem: CanvasItem) => void, unhover?: (canvasItem: CanvasItem) => void): JSX.Element {
+        const pathes = this.getStores().canvasStore.getPathConcepts().map(path => {
             return <PathComponent
                 key={path.name}
                 onlyData={!hover}
                 item={path}
-                isHovered={this.getStores().conceptStore.getHoveredView() === path}
-                isSelected={this.getStores().conceptStore.getTags(path).has(CanvasTag.Selected)}
-                onMouseOver={(item: PathConcept, pathPoint?: PathPointConcept) => hover ?  hover(item, pathPoint) : () => undefined}
-                onMouseOut={(item: PathConcept, pathPoint?: PathPointConcept) => unhover ? unhover(item, pathPoint) : () => undefined}
+                isHovered={this.getStores().hoverStore.contains(path)}
+                isSelected={this.getStores().selectionStore.contains(path)}
+                onMouseOver={(item: CanvasItem) => hover ?  hover(item) : () => undefined}
+                onMouseOut={(item: CanvasItem) => unhover ? unhover(item) : () => undefined}
+                stores={this.getStores()}
             />
         });
 

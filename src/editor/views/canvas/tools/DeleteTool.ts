@@ -7,6 +7,7 @@ import { ToolType } from './Tool';
 import { Concept, Subconcept } from '../models/concepts/Concept';
 import { Stores } from '../../../stores/Stores';
 import { PointerTool } from './PointerTool';
+import { CanvasItem } from '../models/CanvasItem';
 
 export class DeleteTool extends AbstractTool {
     private view: CanvasView;
@@ -29,25 +30,25 @@ export class DeleteTool extends AbstractTool {
 
     click() {
         this.view.getToolByType<PointerTool>(ToolType.POINTER).click()
-        const hovered = this.getStores().conceptStore.getHoveredView();
+        const hoverStore = this.getStores().hoverStore;
 
-        if (hovered) {
-            if (hovered.hoveredSubconcept) {
-                hovered.deleteSubconcept(hovered.hoveredSubconcept);
+        if (hoverStore.hasAny()) {
+            if (hoverStore.hasEditPoint()) {
+                hoverStore.getConcept().deleteEditPoint(hoverStore.getEditPoint());
             } else {
-                this.getStores().conceptStore.remove(hovered);
+                this.getStores().canvasStore.removeConcept(hoverStore.getConcept());
             }
             
             this.getServices().levelService().updateCurrentLevel();
-            hovered && this.getServices().updateService().scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
+            hoverStore.hasAny() && this.getServices().updateService().scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
         }
     }
 
     
     draggedUp() {
-        const canvasItems = this.getStores().conceptStore.getIntersectingItemsInRect(this.view.feedbackStore.rectSelectFeedback.rect);
+        const canvasItems = this.getStores().canvasStore.getIntersectingItemsInRect(this.view.feedbackStore.rectSelectFeedback.rect);
 
-        canvasItems.forEach(item => this.getStores().conceptStore.remove(item));
+        canvasItems.forEach(item => this.getStores().canvasStore.removeConcept(item));
 
         this.rectSelector.finish();
 
@@ -60,17 +61,17 @@ export class DeleteTool extends AbstractTool {
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
-    over(item: Concept, subconcept: Subconcept) {
-        this.view.getToolByType<PointerTool>(ToolType.POINTER).over(item, subconcept);
+    over(canvasItem: CanvasItem) {
+        this.view.getToolByType<PointerTool>(ToolType.POINTER).over(canvasItem);
     }
 
-    out(item: Concept, subconcept: Subconcept) {
-        this.view.getToolByType<PointerTool>(ToolType.POINTER).out(item, subconcept);
+    out(canvasItem: CanvasItem) {
+        this.view.getToolByType<PointerTool>(ToolType.POINTER).out(canvasItem);
     }
 
     eraseAll() {
         this.getServices().storageService().clearAll();
-        this.getStores().conceptStore.clear();
+        this.getStores().canvasStore.clear();
         this.getServices().levelService().updateCurrentLevel();
         this.getServices().updateService().runImmediately(UpdateTask.All);
     }

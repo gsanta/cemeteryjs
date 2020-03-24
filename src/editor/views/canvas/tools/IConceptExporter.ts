@@ -1,8 +1,6 @@
-import { Concept, Subconcept } from "../models/concepts/Concept";
-import { CanvasItemType } from "../models/CanvasItem";
-
+import { CanvasItemType, CanvasItem } from "../models/CanvasItem";
 
 export interface IConceptExporter {
     type: CanvasItemType;
-    export(hover?: (view: Concept | Subconcept) => void, unhover?: (view: Concept | Subconcept) => void): JSX.Element;
+    export(hover?: (canvasItem: CanvasItem) => void, unhover?: (canvasItem: CanvasItem) => void): JSX.Element;
 } 
