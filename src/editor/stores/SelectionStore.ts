@@ -2,6 +2,7 @@ import { CanvasItem, CanvasItemType } from "../views/canvas/models/CanvasItem";i
 import { Concept } from "../views/canvas/models/concepts/Concept";
 import { PathConcept } from "../views/canvas/models/concepts/PathConcept";
 import { Feedback } from "../views/canvas/models/feedbacks/Feedback";
+import { EditPoint } from "../views/canvas/models/feedbacks/EditPoint";
 
 
 export class SelectionStore {
@@ -49,6 +50,14 @@ export class SelectionStore {
 
     getFeedback(): Feedback {
         return <Feedback> this.items.find(item => item.type.endsWith('Feedback'));
+    }
+
+    getEditPoint(): EditPoint {
+        return <EditPoint> this.items.find(item => item.type === CanvasItemType.EditPointFeedback);
+    }
+
+    hasEditPoint() {
+        return this.getEditPoint() !== undefined;
     }
 
     clear() {

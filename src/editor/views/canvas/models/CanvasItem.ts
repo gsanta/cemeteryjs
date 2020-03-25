@@ -10,3 +10,11 @@ export enum CanvasItemType {
 export interface CanvasItem {
     type: CanvasItemType;
 }
+
+export function isFeedback(canvasItem: CanvasItem) {
+    return canvasItem.type.endsWith('Feedback');
+}
+
+export function isConcept(canvasItem: CanvasItem) {
+    return canvasItem.type.endsWith('Concept');
+}

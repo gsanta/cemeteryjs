@@ -5,34 +5,34 @@ import { AbstractTool } from './AbstractTool';
 import { ToolType } from './Tool';
 import { Stores } from '../../../stores/Stores';
 import { ServiceLocator } from '../../../services/ServiceLocator';
+import { isFeedback, isConcept } from "../models/CanvasItem";
 
 export class MoveTool extends AbstractTool {
-    private controller: CanvasView;
-
-    private origDimensions: Rectangle[] = [];
-
-    private isMoving = false;
+    private movingItem = undefined;
     private isDragStart = true;
     private getStores: () => Stores;
     private getServices: () => ServiceLocator;
 
     constructor(controller: CanvasView, getServices: () => ServiceLocator, getStores: () => Stores) {
         super(ToolType.MOVE);
-        this.controller = controller;
         this.getStores = getStores;
         this.getServices = getServices;
+    }
+
+    down() {
+        super.down();
+
+        this.initMove() && this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     drag() {
         super.drag();
 
-        if (this.isMoving) {
+        if (this.movingItem) {
             this.moveItems();
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
-        } else if (this.isDragStart) {
-            this.initMove() && this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
         }
-
+        
         this.isDragStart = false;
     }
 
@@ -44,31 +44,31 @@ export class MoveTool extends AbstractTool {
         }
 
         this.isDragStart = true;
-        this.isMoving = false;
+        this.movingItem = undefined;
 
         this.getServices().levelService().updateCurrentLevel();
     }
 
     leave() {
         this.isDragStart = true;
-        this.isMoving = false;
+        this.movingItem = undefined;
     }
 
     private initMove(): boolean {
-        const selected = this.getStores().selectionStore.getAllConcepts();
-        this.origDimensions = [];
-        
-        this.origDimensions = selected.map(item => item.dimensions);
-
-        this.isMoving = true;
+        const hovered = this.getStores().hoverStore.getAny();
+        this.movingItem = hovered;
         this.moveItems();
         return true;
     }
 
     private moveItems() {
-        const selectedItems = this.getStores().selectionStore.getAllConcepts();
+        const concepts = this.getStores().selectionStore.getAllConcepts();
 
-        selectedItems.forEach((item, index) => item.move(this.getServices().pointerService().pointer.getDiff()));
+        if (isFeedback(this.movingItem)) {
+            concepts[0].moveEditPoint(this.getStores().selectionStore.getEditPoint(), this.getServices().pointerService().pointer.getDiff());
+        } else if (isConcept(this.movingItem)) {
+            concepts.forEach((item, index) => item.move(this.getServices().pointerService().pointer.getDiff()));
+        }
 
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }

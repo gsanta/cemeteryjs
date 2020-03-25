@@ -74,7 +74,7 @@ export class ImportService {
             this.findViewImporter(viewType).import(toolGroup)
         });
 
-        this.applyGlobalSettings(rawJson);
+        // this.applyGlobalSettings(rawJson);
         this.getStores().canvasStore.getMeshConcepts().filter(item => item.modelPath).forEach(item => this.getServices().meshDimensionService().setDimensions(item));
     }
 

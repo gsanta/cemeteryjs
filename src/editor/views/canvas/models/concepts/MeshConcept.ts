@@ -7,6 +7,7 @@ import { Point } from '../../../../../misc/geometry/shapes/Point';
 import { toVector3 } from '../../../../../misc/geometry/utils/GeomUtils';
 import { CanvasItemType } from '../CanvasItem';
 import { Feedback } from '../feedbacks/Feedback';
+import { EditPoint } from '../feedbacks/EditPoint';
 
 export enum WorldItemShape {
     RECTANGLE = 'rect',
@@ -123,6 +124,8 @@ export class MeshConcept implements Concept {
 
     selectHoveredSubview() {}
     deleteEditPoint(feedback: Feedback): void {}
+
+    moveEditPoint(editPoint: EditPoint, delta: Point) {}
 
     move(point: Point) {
         this.dimensions = this.dimensions.translate(point);

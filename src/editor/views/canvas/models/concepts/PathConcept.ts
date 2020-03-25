@@ -9,7 +9,7 @@ const NULL_BOUNDING_BOX = new Rectangle(new Point(Number.MAX_SAFE_INTEGER, Numbe
 
 export class PathConcept implements Concept {
     type = CanvasItemType.PathConcept;
-    editPoints = [];
+    editPoints: EditPoint[] = [];
     childMap: Map<EditPoint, EditPoint[]> = new Map();
     parentMap: Map<EditPoint, EditPoint> = new Map();
     rootPoint: EditPoint;
@@ -18,12 +18,10 @@ export class PathConcept implements Concept {
     name: string;
     radius = 5;
     private str: string;
-    selected: EditPoint;
 
     constructor(startPoint?: Point) {
         if (startPoint) {
             const pathPointConcept = new EditPoint(startPoint, this);
-            this.selected = pathPointConcept;
             this.editPoints.push(pathPointConcept);
             this.rootPoint = pathPointConcept;
             this.childMap.set(this.rootPoint, []);
@@ -36,12 +34,11 @@ export class PathConcept implements Concept {
         return this.parentMap.get(editPoint);
     } 
 
-    addEditPoint(editPoint: EditPoint) {
+    addEditPoint(editPoint: EditPoint, parentEditPoint: EditPoint) {
         this.editPoints.push(editPoint);
-        this.childMap.get(this.selected).push(editPoint);
-        this.parentMap.set(editPoint, this.selected);
+        this.childMap.get(parentEditPoint).push(editPoint);
+        this.parentMap.set(editPoint, parentEditPoint);
         this.childMap.set(editPoint, []);
-        this.selected = editPoint;
         this.dimensions = this.calcBoundingBox();
         this.str = undefined;
     }
@@ -49,10 +46,10 @@ export class PathConcept implements Concept {
     private calcBoundingBox() {
         if (this.editPoints.length === 0) { return NULL_BOUNDING_BOX; }
 
-        const minX = minBy<Point>(this.editPoints, (a, b) => a.x - b.x).x;
-        const maxX = maxBy<Point>(this.editPoints, (a, b) => a.x - b.x).x;
-        const minY = minBy<Point>(this.editPoints, (a, b) => a.y - b.y).y;
-        const maxY = maxBy<Point>(this.editPoints, (a, b) => a.y - b.y).y;
+        const minX = minBy<EditPoint>(this.editPoints, (a, b) => a.point.x - b.point.x).point.x;
+        const maxX = maxBy<EditPoint>(this.editPoints, (a, b) => a.point.x - b.point.x).point.x;
+        const minY = minBy<EditPoint>(this.editPoints, (a, b) => a.point.y - b.point.y).point.y;
+        const maxY = maxBy<EditPoint>(this.editPoints, (a, b) => a.point.y - b.point.y).point.y;
 
         return new Rectangle(new Point(minX, minY), new Point(maxX, maxY));
     }
@@ -73,7 +70,6 @@ export class PathConcept implements Concept {
             this.parentMap.delete(editPoint);
             this.childMap.delete(editPoint);
 
-            if (editPoint === this.selected) { this.selected = undefined }
             this.str = undefined;
         }
     }
@@ -107,12 +103,13 @@ export class PathConcept implements Concept {
         this.deserializeParentRelations(relations);
     }
 
+    moveEditPoint(editPoint: EditPoint, delta: Point) {
+        editPoint.point.add(delta);
+        this.str = undefined;
+    }
+
     move(point: Point) {
-        if (this.selected) {
-            this.selected.point.add(point);
-        } else {
-            this.editPoints.forEach(p => p.add(point));
-        }
+        this.editPoints.forEach(p => p.point.add(point));
 
         this.str = undefined;
     }

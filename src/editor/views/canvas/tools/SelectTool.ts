@@ -24,10 +24,11 @@ export class SelectTool extends AbstractTool {
     }
 
     down() {
-        const hovered = this.getStores().hoverStore.getConcept();
+        const hovered = this.getStores().hoverStore.getAny();
 
         if (hovered && this.getStores().selectionStore.contains(hovered)) {
             this.activeTool = this.view.getToolByType(ToolType.MOVE);
+            this.activeTool.down();
         }
     }
 
@@ -42,7 +43,6 @@ export class SelectTool extends AbstractTool {
 
     drag() {
         if (this.activeTool) {
-            console.log('draaaaaaaag');
             this.activeTool.drag();
         } else {
             this.rectSelector.updateRect(this.getServices().pointerService().pointer);

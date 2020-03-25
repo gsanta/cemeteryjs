@@ -36,7 +36,11 @@ export class HoverStore {
     }
 
     hasAny(): boolean {
-        return this.items.length > 0;
+        return this.getAny() !== undefined;
+    }
+
+    getAny(): CanvasItem {
+        return this.items.length > 0 ? this.items[0] : undefined;
     }
 
     getConcept(): Concept {

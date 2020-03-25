@@ -10,7 +10,8 @@ export interface Concept extends CanvasItem {
     name: string;
     hoveredSubconcept?: Subconcept;
     deleteEditPoint(editPoint: EditPoint): void;
-    move(point: Point): void;
+    move(delta: Point): void;
+    moveEditPoint(editPoint: EditPoint, delta: Point): void;
 }
 
 export interface Subconcept extends CanvasItem {

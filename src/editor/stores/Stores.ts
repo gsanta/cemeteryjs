@@ -1,5 +1,4 @@
 import { LevelStore } from "./LevelStore";
-import { ConceptStore } from "./ConceptStore";
 import { ViewStore } from './ViewStore';
 import { CanvasStore } from "./CanvasStore";
 import { HoverStore } from "./HoverStore";

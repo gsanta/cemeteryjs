@@ -1,7 +1,6 @@
 import { Concept } from "../views/canvas/models/concepts/Concept";
 import { Feedback } from "../views/canvas/models/feedbacks/Feedback";
-import { Naming } from "./ConceptStore";
-import { without } from "../../misc/geometry/utils/Functions";
+import { without, maxBy } from "../../misc/geometry/utils/Functions";
 import { CanvasItemType } from "../views/canvas/models/CanvasItem";
 import { MeshConcept } from "../views/canvas/models/concepts/MeshConcept";
 import { PathConcept } from "../views/canvas/models/concepts/PathConcept";
@@ -19,6 +18,7 @@ export class CanvasStore {
 
     constructor(getStores: () => Stores) {
         this.getStores = getStores;
+        this.naming = new Naming(this);
     }
 
     addConcept(concept: Concept) {
@@ -75,5 +75,35 @@ export class CanvasStore {
 
     generateUniqueName(viewType: CanvasItemType) {
         return this.naming.generateName(viewType);
+    }
+}
+
+export class Naming {
+    private canvasStore: CanvasStore;
+
+    constructor(canvasStore: CanvasStore) {
+        this.canvasStore = canvasStore;
+    }
+
+    generateName(type: CanvasItemType) {
+        const name = `${type}${this.getMaxIndex(type) + 1}`.toLocaleLowerCase();
+        return name;
+    }
+
+    private getMaxIndex(type: CanvasItemType): number {
+        const pattern = this.createPattern(type);
+        const views = this.canvasStore.getConceptsByType(type).filter(view => view.name.match(pattern));
+
+        if (views.length === 0) {
+            return 0;
+        } else {
+            const max = maxBy<Concept>(views, (a, b) => parseInt(a.name.match(pattern)[1], 10) - parseInt(b.name.match(pattern)[1], 10));
+            return parseInt(max.name.match(pattern)[1], 10);
+        }
+
+    }
+
+    private createPattern(type: CanvasItemType) {
+        return new RegExp(`${type}(\\d+)`, 'i');
     }
 }

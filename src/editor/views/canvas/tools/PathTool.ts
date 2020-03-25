@@ -28,14 +28,24 @@ export class PathTool extends AbstractTool {
     click() {
         if (this.view.getToolByType<PointerTool>(ToolType.POINTER).click()) { return }
         
-        const selectedPathes = this.getStores().selectionStore.getPathConcepts();
+        const pathes = this.getStores().selectionStore.getPathConcepts();
 
-        if (selectedPathes.length === 0) {
-            this.startNewPath();
-            this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
-        } else if (selectedPathes.length === 1) {
+        if (pathes.length > 1) { return }
+
+        const path = pathes.length > 0 ? pathes[0] : undefined;
+        const editPoint = this.getStores().selectionStore.getEditPoint();
+
+        if (path && editPoint) {
             const pointer = this.getServices().pointerService().pointer;
-            selectedPathes[0].addEditPoint(new EditPoint(new Point(pointer.down.x, pointer.down.y), selectedPathes[0]));
+            const selectedEditPoint = this.getStores().selectionStore.getEditPoint();
+            const newEditPoint = (new EditPoint(new Point(pointer.down.x, pointer.down.y), path));
+            path.addEditPoint(newEditPoint, selectedEditPoint);
+            this.getStores().selectionStore.removeItem(selectedEditPoint);
+            this.getStores().selectionStore.addItem(newEditPoint);
+
+            this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
+        } else {
+            this.startNewPath();
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         }
     }
@@ -72,5 +82,6 @@ export class PathTool extends AbstractTool {
         path.name = this.getStores().canvasStore.generateUniqueName(CanvasItemType.PathConcept);
         this.getStores().canvasStore.addConcept(path);
         this.getStores().selectionStore.addItem(path);
+        this.getStores().selectionStore.addItem(path.editPoints[0]);
     }
 }

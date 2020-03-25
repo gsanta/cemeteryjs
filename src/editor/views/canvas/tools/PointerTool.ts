@@ -25,15 +25,23 @@ export class PointerTool extends AbstractTool {
         const hoverStore = this.getStores().hoverStore;
         const selectionStore = this.getStores().selectionStore;
 
-        if (hoverStore.hasFeedback()) {
-            if (selectionStore.hasConcept() && selectionStore.getConcept() !== hoverStore.getFeedback().parent) {
-                this.getStores().selectionStore.clear();
-                this.getStores().selectionStore.addItem(hoverStore.getFeedback().parent);
-            }
-            this.getStores().selectionStore.addItem(hoverStore.getFeedback());
+        const feedback = hoverStore.getFeedback();
+        let concept = hoverStore.getConcept(); 
+        if (feedback) {
+            const concept = hoverStore.getFeedback().parent;
+            this.getStores().selectionStore.clear();
+            this.getStores().selectionStore.addItem(concept);
+            this.getStores().selectionStore.addItem(feedback);
+
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas);
             
             return true;
+        } else if (concept) {
+            this.getStores().selectionStore.clear();
+            this.getStores().selectionStore.addItem(concept);
+
+            this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas);
+
         }
 
         return false;
