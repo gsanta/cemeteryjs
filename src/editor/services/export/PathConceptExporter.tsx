@@ -1,4 +1,4 @@
-import { IConceptExporter } from "../../views/canvas/tools/IConceptExporter";
+import { IConceptExporter } from "./IConceptExporter";
 import React = require("react");
 import { PathComponent } from "./PathComponent";
 import { Stores } from '../../stores/Stores';
@@ -28,7 +28,7 @@ export class PathConceptExporter implements IConceptExporter {
 
         return pathes.length > 0 ? 
             (
-                <g data-view-type={CanvasItemType.PathConcept}>{pathes}</g> 
+                <g data-concept-type={CanvasItemType.PathConcept}>{pathes}</g> 
             )
             : null;
     }

@@ -8,6 +8,8 @@ import { Tool, ToolType } from './canvas/tools/Tool';
 import { UpdateTask } from '../services/UpdateServices';
 import { Point } from '../../misc/geometry/shapes/Point';
 import { AbstractSettings } from './canvas/settings/AbstractSettings';
+import { IViewExporter } from '../services/export/IViewExporter';
+import { IViewImporter } from '../services/import/IViewImporter';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;
@@ -17,6 +19,9 @@ export interface CanvasViewSettings {
 export abstract class View {
     name: string;
     editor: Editor;
+
+    exporter: IViewExporter;
+    importer: IViewImporter;
 
     protected tools: Tool[] = [];
     protected activeTool: Tool;

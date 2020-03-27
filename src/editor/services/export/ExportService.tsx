@@ -1,6 +1,8 @@
 import { Stores } from '../../stores/Stores';
-import { Camera } from '../../views/canvas/models/Camera';
-import { CanvasView } from '../../views/canvas/CanvasView';
+import { IConceptExporter } from './IConceptExporter';
+import { MeshConceptExporter } from './MeshConceptExporter';
+import { PathConceptExporter } from './PathConceptExporter';
+import ReactDOMServer = require('react-dom/server');
 
 export interface ViewExporter {
     export(): string;
@@ -8,32 +10,27 @@ export interface ViewExporter {
 
 export class ExportService {
     serviceName = 'export-service';
-    private viewExporters: ViewExporter[] = [];
     private getStores: () => Stores;
+    conceptExporters: IConceptExporter[] = [];
 
     constructor(getStores: () => Stores) {
         this.getStores = getStores;
+        this.conceptExporters = [new MeshConceptExporter(getStores), new PathConceptExporter(getStores)];
     }
 
     export(): string {
-        const exports = this.viewExporters.map(exporter => exporter.export());
-        return this.createRoot(exports.join(''));
-    }
+        const viewExporters = this.getStores().viewStore.getAllViews().filter(v => v.exporter).map(v => v.exporter);
 
-    registerViewExporter(viewExporter: ViewExporter) {
-        this.viewExporters.push(viewExporter)
-    }
+        const views = viewExporters.map(exporter => ReactDOMServer.renderToStaticMarkup(exporter.export())).join('');
+        const concepts = this.conceptExporters.map(exporter => ReactDOMServer.renderToStaticMarkup(exporter.export())).join('');
 
-    private createRoot(content: string): string {
-        const camera = this.getStores().viewStore.getViewById(CanvasView.id).getCamera() as Camera;
-
-        const root = (
-            '<svg data-wg-width="3000" data-wg-height="3000" width="1000" height="1000"' + 
-            ` data-zoom="${camera.getScale()}" data-translate="${camera.getViewBox().topLeft.negate().toString()}">`
+        const startTag = '<svg data-wg-width="3000" data-wg-height="3000" width="1000" height="1000">';
+        const closeTag =  '</svg>';
+        return (
+            `${startTag}` +
+            `<g data-export-group="view">${views}</g>` +
+            `<g data-export-group="concept">${concepts}</g>` +
+            `${closeTag}`
         );
-
-        const rootClose = '</svg>';
-
-        return `${root}${content}${rootClose}`;
     }
 }

@@ -5,7 +5,6 @@ import { colors } from '../../../gui/styles';
 import { WindowToolbarStyled } from '../../../gui/windows/WindowToolbar';
 import { PathMarkersComponent } from '../../../services/export/PathMarkersComponent';
 import { CanvasView } from '../CanvasView';
-import { Concept, Subconcept } from '../models/concepts/Concept';
 import { CanvasToolbarComponent } from './CanvasToolbarComponent';
 import { CanvasItem } from '../models/CanvasItem';
 
@@ -61,7 +60,7 @@ export class CanvasComponent extends React.Component {
                     <defs>
                         <PathMarkersComponent/>
                     </defs>
-                    {view.exporter.getAllViewExporter().map(exporter => exporter.export(hover, unhover))}
+                    {this.context.getServices().exportService().conceptExporters.map(exporter => exporter.export(hover, unhover))}
                     {this.renderFeedbacks()}
                 </CanvasComponentStyled>
             </EditorComponentStyled>

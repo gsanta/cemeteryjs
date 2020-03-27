@@ -1,4 +1,4 @@
-import { CanvasItemType, CanvasItem } from "../models/CanvasItem";
+import { CanvasItemType, CanvasItem } from "../../views/canvas/models/CanvasItem";
 
 export interface IConceptExporter {
     type: CanvasItemType;

@@ -3,7 +3,6 @@ import { Editor } from '../../Editor';
 import { ServiceLocator } from '../../services/ServiceLocator';
 import { Stores } from '../../stores/Stores';
 import { CanvasViewSettings, View } from '../View';
-import { CanvasExporter } from './CanvasExporter';
 import { LevelSettings } from './settings/LevelSettings';
 import { MeshSettings } from './settings/MeshSettings';
 import { PathSettings } from './settings/PathSettings';
@@ -18,6 +17,10 @@ import { PointerTool } from './tools/PointerTool';
 import { RectangleTool } from './tools/RectangleTool';
 import { SelectTool } from './tools/SelectTool';
 import { ToolType } from './tools/Tool';
+import { IViewExporter } from '../../services/export/IViewExporter';
+import { CanvasViewExporter } from '../../services/export/CanvasViewExporter';
+import { IViewImporter } from '../../services/import/IViewImporter';
+import { CanvasViewImporter } from '../../services/import/CanvasViewImporter';
 
 export function cameraInitializer(canvasId: string) {
     if (typeof document !== 'undefined') {
@@ -59,7 +62,8 @@ export class CanvasView extends View {
     
     model3dController: MeshDimensionService;
     
-    exporter: CanvasExporter;
+    exporter: IViewExporter;
+    importer: IViewImporter;
     private camera: Camera = nullCamera;
 
     constructor(editor: Editor, getServices: () => ServiceLocator, getStores: () => Stores) {
@@ -67,8 +71,6 @@ export class CanvasView extends View {
 
         this.getStores().viewStore.setActiveView(this);
         
-        this.exporter = new CanvasExporter(this.getStores);
-        this.getServices().exportService().registerViewExporter(this.exporter);
         this.feedbackStore = new FeedbackStore();
         
         this.model3dController = new MeshDimensionService(this.getServices);
@@ -90,6 +92,9 @@ export class CanvasView extends View {
             new PathSettings(),
             new LevelSettings(this.getServices, this.getStores)
         ];
+
+        this.exporter = new CanvasViewExporter(getStores);
+        this.importer = new CanvasViewImporter(getStores);
     }
 
     getId() {

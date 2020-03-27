@@ -1,8 +1,8 @@
 
-import { IViewImporter } from '../../views/canvas/tools/IToolImporter';
+import { IConceptImporter } from './IConceptImporter';
 import { Point } from '../../../misc/geometry/shapes/Point';
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
-import { ViewGroupJson } from './ImportService';
+import { ConceptGroupJson } from './ImportService';
 import { MeshConcept } from '../../views/canvas/models/concepts/MeshConcept';
 import { CanvasItemType } from '../../views/canvas/models/CanvasItem';
 
@@ -17,11 +17,11 @@ export interface RectJson {
     }
 }
 
-export interface RectangleGroupJson extends ViewGroupJson {
+export interface RectangleGroupJson extends ConceptGroupJson {
     g: RectJson[];
 }
 
-export class MeshViewImporter implements IViewImporter {
+export class MeshConceptImporter implements IConceptImporter {
     type = CanvasItemType.MeshConcept;
     private addGameObject: (rect: MeshConcept) => void;
 

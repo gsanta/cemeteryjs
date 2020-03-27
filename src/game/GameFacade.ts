@@ -1,5 +1,5 @@
 import { ImportService } from '../editor/services/import/ImportService';
-import { IViewImporter } from '../editor/views/canvas/tools/IToolImporter';
+import { IConceptImporter } from '../editor/services/import/IConceptImporter';
 import { GameEngine } from '../editor/views/renderer/GameEngine';
 import { CreateMeshModifier } from './import/CreateMeshModifier';
 import { GameObjectFactory } from './import/GameObjectFactory';
@@ -40,7 +40,7 @@ export class GameFacade {
 
     gameObjectFactory: GameObjectFactory;
 
-    importers: IViewImporter[];
+    importers: IConceptImporter[];
     viewImporter: ImportService;
     viewConverters: IViewConverter[] = [];
 

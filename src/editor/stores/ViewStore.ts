@@ -25,6 +25,10 @@ export class ViewStore {
         return this.fullScreen;
     }
 
+    getAllViews(): View[] {
+        return this.views;
+    }
+
     getViewById<T extends View = View>(id: string): T {
         return <T> this.views.find(view => view.getId() === id);
     }

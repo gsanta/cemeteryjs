@@ -1,6 +1,6 @@
 import { minBy, sort } from "../../../misc/geometry/utils/Functions";
 import { colors } from "../../gui/styles";
-import { IConceptExporter } from "../../views/canvas/tools/IConceptExporter";
+import { IConceptExporter } from "./IConceptExporter";
 import React = require("react");
 import { Concept } from "../../views/canvas/models/concepts/Concept";
 import { MeshConcept } from "../../views/canvas/models/concepts/MeshConcept";
@@ -19,7 +19,7 @@ export class MeshConceptExporter implements IConceptExporter {
     export(hover?: (view: Concept) => void, unhover?: (view: Concept) => void): JSX.Element {
         const meshGroups = this.getSortedMeshViews().map(item => this.renderGroup(item, hover, unhover));
 
-        return meshGroups.length > 0 ? <g data-view-type={CanvasItemType.MeshConcept}>{meshGroups}</g> : null;
+        return meshGroups.length > 0 ? <g data-concept-type={CanvasItemType.MeshConcept}>{meshGroups}</g> : null;
     }
 
     private getSortedMeshViews() {

@@ -1,5 +1,5 @@
-import { IViewImporter } from "../../views/canvas/tools/IToolImporter";
-import { ViewGroupJson } from "./ImportService";
+import { IConceptImporter } from "./IConceptImporter";
+import { ConceptGroupJson } from "./ImportService";
 import { PathConcept } from "../../views/canvas/models/concepts/PathConcept";
 import { CanvasItemType } from "../../views/canvas/models/CanvasItem";
 
@@ -21,11 +21,11 @@ export interface PathJson {
     }
 }
 
-export interface PathGroupJson extends ViewGroupJson {
+export interface PathGroupJson extends ConceptGroupJson {
     g: PathJson[] | PathJson;
 }
 
-export class PathImporter implements IViewImporter {
+export class PathConceptImporter implements IConceptImporter {
     type = CanvasItemType.PathConcept;
     private addPath: (path: PathConcept) => void;
 
