@@ -41,7 +41,6 @@ export class RendererComponent extends React.Component {
         this.context.getStores().viewStore.getViewById<RendererView>(RendererView.id).setCanvasRenderer(() => this.forceUpdate());
 
         setTimeout(() => {
-            this.context.controllers.setup(this.canvasRef.current);
             this.context.controllers.getWindowControllerByName('renderer').update();
         }, 1000);
 
@@ -59,7 +58,7 @@ export class RendererComponent extends React.Component {
                     <WindowToolbarStyled><RendererToolbarComponent/></WindowToolbarStyled>
                     <CanvasStyled
                         isEmpty={false}
-                        id="canvas"
+                        id={RendererView.id}
                         ref={this.canvasRef}
                     />
                     <CanvasOverlayStyled

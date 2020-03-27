@@ -20,6 +20,7 @@ export class Camera implements ICamera {
     }
 
     setTopLeftCorner(canvasPoint: Point, scale: number) {
+        console.log('set top left corner')
         let width = this.screenSize.x / scale;
         let height = this.screenSize.y / scale;
 
@@ -32,7 +33,7 @@ export class Camera implements ICamera {
     }
 
     moveTo(translate: Point): void {
-        this.setViewBox(this.viewBox.clone().moveTo(new Point(-translate.x, -translate.y)));
+        this.setViewBox(this.viewBox.clone().moveTo(new Point(translate.x, translate.y)));
     }
 
     screenToCanvasPoint(screenPoint: Point): Point {
@@ -60,7 +61,6 @@ export class Camera implements ICamera {
     }
 
     setViewBox(newViewBox: Rectangle): void {
-        const currentRatio = this.getAspectRatio();
         this.viewBox = newViewBox;
     }
 

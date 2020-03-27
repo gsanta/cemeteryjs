@@ -29,6 +29,10 @@ export class ViewStore {
         return this.views;
     }
 
+    getVisibleViews(): View[] {
+        return this.fullScreen ? [this.fullScreen] : this.views;
+    }
+
     getViewById<T extends View = View>(id: string): T {
         return <T> this.views.find(view => view.getId() === id);
     }

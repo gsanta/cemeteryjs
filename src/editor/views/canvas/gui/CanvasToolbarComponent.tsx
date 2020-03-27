@@ -56,18 +56,18 @@ export class CanvasToolbarComponent extends AbstractToolbarComponent {
 
 
     private isToolActive(toolType: ToolType) {
-        return this.context.getStores().viewStore.getActiveView().getActiveTool().type === toolType;
+        return this.context.getStores().viewStore.getViewById(CanvasView.id).getActiveTool().type === toolType;
     }
 
     private activateTool(toolType: ToolType) {
-        this.context.getStores().viewStore.getActiveView().setActiveTool(toolType);
+        this.context.getStores().viewStore.getViewById(CanvasView.id).setActiveTool(toolType);
     }
 
     private zoomIn() {
-        this.context.getStores().viewStore.getActiveView().getToolByType<CameraTool>(ToolType.CAMERA).zoomToNextStep();
+        this.context.getStores().viewStore.getViewById(CanvasView.id).getToolByType<CameraTool>(ToolType.CAMERA).zoomToNextStep();
     }
 
     private zoomOut() {
-        this.context.getStores().viewStore.getActiveView().getToolByType<CameraTool>(ToolType.CAMERA).zoomToPrevStep();
+        this.context.getStores().viewStore.getViewById(CanvasView.id).getToolByType<CameraTool>(ToolType.CAMERA).zoomToPrevStep();
     }
 }

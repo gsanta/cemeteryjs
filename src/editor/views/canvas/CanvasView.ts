@@ -125,7 +125,6 @@ export class CanvasView extends View {
         if (this.camera === nullCamera) {
             this.camera = cameraInitializer(CanvasView.id);
         }
-
         return this.camera;
     }
 

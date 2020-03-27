@@ -8,6 +8,7 @@ import { SidebarComponent } from './SidebarComponent';
 import { SpinnerOverlayComponent } from './misc/SpinnerOverlayComponent';
 import { View } from '../views/View';
 import { viewFactory } from '../ViewFactory';
+import { RendererView } from '../views/renderer/RendererView';
 
 export interface AppState {
     isDialogOpen: boolean;
@@ -44,6 +45,8 @@ export class App extends React.Component<{}, AppState> {
         window.addEventListener('resize', () => {
             this.context.controllers.getWindowControllers().forEach(controller => controller.resize());
         });
+
+        this.context.controllers.setup(document.querySelector(`#${RendererView.id}`));
     }
 
     componentDidUpdate() {
@@ -84,7 +87,7 @@ export class App extends React.Component<{}, AppState> {
     }
 
     private resize() {
-        this.context.controllers.getWindowControllers().forEach(controller => controller.resize());
+        this.context.getStores().viewStore.getVisibleViews().forEach(controller => controller.resize());
     }
 
     private hasCanvasVisibilityChanged() {
