@@ -80,12 +80,18 @@ export class ImportService {
 
     import(file: string): void {
         const rawJson: RawWorldMapJson = JSON.parse(convert.xml2json(file, {compact: true, spaces: 4}));
-        const viewGroups = <ViewGroupJson[]> (rawJson.svg.g[0].g as any).length ? rawJson.svg.g[0].g : [rawJson.svg.g[0].g];
-        const conceptGroups = <ConceptGroupJson[]> (rawJson.svg.g[1].g as any).length ? rawJson.svg.g[1].g : [rawJson.svg.g[1].g];
+        const viewGroups = <ViewGroupJson[]> (rawJson.svg.g[0].g as any)?.length ? rawJson.svg.g[0].g : [rawJson.svg.g[0].g];
+
+        let conceptGroups: ConceptGroupJson[] = [];
+        if (rawJson.svg.g[1] && rawJson.svg.g[1].g) {
+            conceptGroups = <ConceptGroupJson[]> ((rawJson.svg.g[1].g as any)?.length ? rawJson.svg.g[1].g : [rawJson.svg.g[1].g]);
+        }
 
         viewGroups.forEach(group => {
             const viewType = <CanvasItemType> group._attributes["data-view-type"];
-            this.getStores().viewStore.getViewById(viewType).importer.import(group);
+            if (this.getStores().viewStore.getViewById(viewType)) {
+                this.getStores().viewStore.getViewById(viewType).importer.import(group);
+            }
         });
 
         conceptGroups

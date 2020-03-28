@@ -26,10 +26,9 @@ export class CanvasViewImporter implements IViewImporter {
         if (json._attributes['data-translate']) {
             const topLeft = Point.fromString(json._attributes['data-translate']);
             const camera = <Camera> this.getStores().viewStore.getViewById(CanvasView.id).getCamera();
+            const zoom = json._attributes['data-zoom'] ? parseFloat(json._attributes['data-zoom']) : 1;
+            camera.zoom(zoom);
             camera.moveTo(topLeft);
         }        
-        // const zoom = json._attributes['data-zoom'] ? parseFloat(json._attributes['data-zoom']) : 1;
-        const camera = <Camera> this.getStores().viewStore.getViewById(CanvasView.id).getCamera();
-        // camera.zoom(zoom);
     }
 }

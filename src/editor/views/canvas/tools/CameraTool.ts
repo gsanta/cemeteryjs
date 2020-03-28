@@ -38,8 +38,7 @@ export class CameraTool extends AbstractTool {
         const prevTranslate = camera.getViewBox().topLeft; 
     
         this.view.setCamera(cameraInitializer(this.view.getId()));
-        console.log(prevTranslate.toString());
-        // camera.zoom(prevScale);
+        this.view.getCamera().zoom(prevScale);
         this.view.getCamera().moveTo(prevTranslate.clone());
 
         this.getServices().updateService().runImmediately(UpdateTask.RepaintCanvas);

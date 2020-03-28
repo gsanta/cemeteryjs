@@ -15,6 +15,8 @@ const RendererStyled = styled.div`
 
 const CanvasStyled = styled.canvas`
     display: ${(props: {isEmpty: boolean}) => props.isEmpty ? 'none' : 'block'};
+    width: 100%;
+    height: 100%;
 `;
 
 const CanvasOverlayStyled = styled.div`
