@@ -32,7 +32,7 @@ export class EditorCamera extends UniversalCamera implements ICamera {
             // this._localDirection.copyFromFloats(0, 0, -speed);
             // this.zoomTemp();
         // }
-    }
+}
 
     zoomOut() {
         var speed = this._computeLocalCameraSpeed() / 2;

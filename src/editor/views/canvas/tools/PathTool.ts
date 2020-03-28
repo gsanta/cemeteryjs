@@ -66,8 +66,21 @@ export class PathTool extends AbstractTool {
     }
 
     over(canvasItem: CanvasItem) {
-        this.view.getToolByType<PointerTool>(ToolType.POINTER).over(canvasItem);
-        this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
+        let hover = false;
+        if (canvasItem.type === CanvasItemType.PathConcept) {
+            hover = true;
+        }
+
+        if (canvasItem.type === CanvasItemType.EditPointFeedback) {
+            if ((<EditPoint> canvasItem).parent.type === CanvasItemType.PathConcept) {
+                hover = true;
+            }
+        }
+
+        if (hover) {
+            this.view.getToolByType<PointerTool>(ToolType.POINTER).over(canvasItem);
+            this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
+        }
     }
 
     out(canvasItem: CanvasItem) {
