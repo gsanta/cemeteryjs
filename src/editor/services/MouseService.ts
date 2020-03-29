@@ -53,6 +53,18 @@ export class MouseService {
         this.getServices().pointerService().pointerOut(this.convertEvent(e));
     }
 
+    onMouseWheel(e: WheelEvent): void {
+        this.services.pointers.pointerWheel({
+            isAltDown: !!e.altKey,
+            isShiftDown: !!e.shiftKey,
+            isCtrlDown: !!e.ctrlKey,
+            isMetaDown: !!e.metaKey,
+            deltaY: e.deltaY,
+            pointers: [],
+            preventDefault: () => null
+        });
+    }
+
     hover(canvasItem: CanvasItem) {
         this.getServices().pointerService().hover(canvasItem);
     }

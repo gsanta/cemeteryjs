@@ -1,14 +1,19 @@
-import { CanvasView } from "../views/canvas/CanvasView";
 import { Stores } from '../stores/Stores';
-
 
 export enum Keyboard {
     Enter = 13
 }
 
+export interface IKeyboardEvent {
+    keyCode: number;
+    isAltDown: boolean;
+    isShiftDown: boolean;
+    isCtrlDown: boolean;
+    isMetaDown: boolean;
+}
+
 export class KeyboardService {
     serviceName = 'keyboard-service'
-    downKeys: number[] = [];
 
     private getStores: () => Stores;
 
@@ -17,11 +22,16 @@ export class KeyboardService {
     }
 
     onKeyDown(e: KeyboardEvent): void {
-        this.downKeys.push(e.keyCode);
-        this.getStores().viewStore.getActiveView().getActiveTool()?.keydown();
+        this.getStores().viewStore.getActiveView().getActiveTool()?.keydown(this.convertEvent(e));
     }
 
-    onKeyUp(e: KeyboardEvent): void {
-        this.downKeys = this.downKeys.filter(k => k !== e.keyCode);
+    private convertEvent(event: KeyboardEvent): IKeyboardEvent {
+        return {
+            keyCode: event.keyCode,
+            isAltDown: !!event.altKey,
+            isShiftDown: !!event.shiftKey,
+            isCtrlDown: !!event.ctrlKey,
+            isMetaDown: !!event.metaKey
+        }
     }
 }

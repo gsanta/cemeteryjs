@@ -1,5 +1,6 @@
 import { Concept, Subconcept } from "../models/concepts/Concept";
 import { CanvasItem } from "../models/CanvasItem";
+import { IKeyboardEvent } from "../../../services/KeyboardService";
 
 export enum ToolType {
     RECTANGLE = 'rectangle',
@@ -40,7 +41,7 @@ export interface Tool {
     up(): void;
     activate(): void;
     leave(): void;
-    keydown(): void;
+    keydown(e: IKeyboardEvent): void;
     over(canvasItem: CanvasItem): void;
     out(canvasItem: CanvasItem): void;
 

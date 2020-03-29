@@ -2,8 +2,11 @@ import { Point } from "../../misc/geometry/shapes/Point";
 import { ServiceLocator } from './ServiceLocator';
 import { Stores } from "../stores/Stores";
 import { MousePointer } from "./MouseService";
-import { Subconcept } from "../views/canvas/models/concepts/Concept";
 import { CanvasItem } from "../views/canvas/models/CanvasItem";
+
+export enum Wheel {
+    IDLE = 'idle', UP = 'up', DOWN = 'down'
+}
 
 export interface IPointerEvent {
     pointers: {id: number, pos: Point}[];
@@ -67,6 +70,10 @@ export class PointerService {
     pointerOut(e: IPointerEvent): void {
         this.isDown = false;
         this.isDrag = false;
+    }
+
+    pointerWheel() {
+
     }
 
     hover(canvasItem: CanvasItem): void {
