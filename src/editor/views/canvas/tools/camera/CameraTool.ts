@@ -1,17 +1,12 @@
 import { Point } from "../../../../../misc/geometry/shapes/Point";
-import { UpdateTask } from '../../../../services/UpdateServices';
+import { Hotkey } from "../../../../services/HotkeyService";
 import { ServiceLocator } from '../../../../services/ServiceLocator';
+import { UpdateTask } from '../../../../services/UpdateServices';
 import { Stores } from '../../../../stores/Stores';
-import { CanvasView, cameraInitializer } from '../../CanvasView';
-import { Camera } from '../../models/Camera';
+import { cameraInitializer } from '../../CanvasView';
 import { AbstractTool } from '../AbstractTool';
 import { ToolType } from "../Tool";
-import { Hotkey } from "../../../../services/HotkeyService";
 import { WheelZoomHotkey } from "./WheelZoomHotkey";
-
-function ratioOfViewBox(camera: Camera, ratio: Point): Point {
-    return camera.getViewBox().getSize().mul(ratio.x, ratio.y);
-}
 
 export class CameraTool extends AbstractTool {
     static readonly ZOOM_MIN = 0.1;
@@ -21,16 +16,14 @@ export class CameraTool extends AbstractTool {
     readonly LOG_ZOOM_MAX = Math.log(CameraTool.ZOOM_MAX);
     readonly NUM_OF_STEPS: number;
 
-    private view: CanvasView;
     private getServices: () => ServiceLocator;
     private getStores: () => Stores;
 
     private hotkeys: Hotkey[] = [];
 
-    constructor(view: CanvasView, getServices: () => ServiceLocator, getStores: () => Stores, numberOfSteps: number = 20) {
+    constructor(getServices: () => ServiceLocator, getStores: () => Stores, numberOfSteps: number = 20) {
         super(ToolType.CAMERA);
         this.NUM_OF_STEPS = numberOfSteps;
-        this.view = view;
         this.getServices = getServices;
         this.getStores = getStores;
         this.hotkeys = [new WheelZoomHotkey(getStores, getServices)];
@@ -38,59 +31,47 @@ export class CameraTool extends AbstractTool {
     }
 
     resize() {
-        const camera = this.view.getCamera();
+        const camera = this.getStores().viewStore.getActiveView().getCamera();
 
         const prevScale = camera.getScale(); 
         const prevTranslate = camera.getViewBox().topLeft; 
     
-        this.view.setCamera(cameraInitializer(this.view.getId()));
-        this.view.getCamera().zoom(prevScale);
-        this.view.getCamera().moveTo(prevTranslate.clone());
+        this.getStores().viewStore.getActiveView().setCamera(cameraInitializer(this.view.getId()));
+        this.getStores().viewStore.getActiveView().getCamera().zoom(prevScale);
+        this.getStores().viewStore.getActiveView().getCamera().moveTo(prevTranslate.clone());
 
         this.getServices().updateService().runImmediately(UpdateTask.RepaintCanvas);
     }
 
     zoomToNextStep(canvasPos?: Point) {
-        const camera = this.view.getCamera();
-        canvasPos = canvasPos ? canvasPos : camera.screenToCanvasPoint(camera.screenSize.getVectorCenter());
+        const camera = this.getStores().viewStore.getActiveView().getCamera();
+        canvasPos = canvasPos ? canvasPos : camera.screenToCanvasPoint(camera.getCenterPoint());
         
-        const screenPoint = camera.canvasToScreenPoint(canvasPos);
-        const pointerRatio = new Point(screenPoint.x / camera.screenSize.x, screenPoint.y / camera.screenSize.y);
         const nextZoomLevel = this.getNextManualZoomStep();
 
         if (nextZoomLevel) {
-            camera.setTopLeftCorner(canvasPos, nextZoomLevel);
-            camera.moveBy(ratioOfViewBox(camera, pointerRatio).negate());
+            camera.zoomToPosition(canvasPos, nextZoomLevel);
 
             this.getServices().updateService().runImmediately(UpdateTask.RepaintCanvas);
         }
     }
 
     zoomToPrevStep(canvasPos?: Point) {
-        const camera = this.view.getCamera();
-        canvasPos = canvasPos ? canvasPos : camera.screenToCanvasPoint(camera.screenSize.getVectorCenter());
+        const camera = this.getStores().viewStore.getActiveView().getCamera();
+        canvasPos = canvasPos ? canvasPos : camera.screenToCanvasPoint(camera.getCenterPoint());
 
-        const screenPoint = camera.canvasToScreenPoint(canvasPos);
-        const pointerRatio = new Point(screenPoint.x / camera.screenSize.x, screenPoint.y / camera.screenSize.y);
         const prevZoomLevel = this.getPrevManualZoomLevel();
         
         if (prevZoomLevel) {
-            camera.setTopLeftCorner(canvasPos, prevZoomLevel);
-            camera.moveBy(ratioOfViewBox(camera, pointerRatio).negate());
+            camera.zoomToPosition(canvasPos, prevZoomLevel);
 
             this.getServices().updateService().runImmediately(UpdateTask.RepaintCanvas);
         }
     }
 
-    down() {
-        const update = super.down();
-
-        return update;
-    }
-
     drag() {
         super.drag();
-        const camera = this.view.getCamera();
+        const camera = this.getStores().viewStore.getActiveView().getCamera();
 
         const delta = this.getServices().pointerService().pointer.getScreenDiff().div(camera.getScale());
         
@@ -100,7 +81,7 @@ export class CameraTool extends AbstractTool {
     }
 
     private getNextManualZoomStep(): number {
-        const camera = this.view.getCamera();
+        const camera = this.getStores().viewStore.getActiveView().getCamera();
 
         let currentStep = this.calcLogarithmicStep(camera.getScale());
         currentStep = currentStep >= this.NUM_OF_STEPS - 1 ? this.NUM_OF_STEPS - 1 : currentStep
@@ -109,7 +90,7 @@ export class CameraTool extends AbstractTool {
     }
 
     private getPrevManualZoomLevel(): number {
-        const camera = this.view.getCamera();
+        const camera = this.getStores().viewStore.getActiveView().getCamera();
 
         let currentStep = this.calcLogarithmicStep(camera.getScale());
         currentStep = currentStep <= 1 ? 1 : currentStep

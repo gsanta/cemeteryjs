@@ -11,6 +11,7 @@ const MOVE_SPEED = 0.2;
 export class EditorCamera extends UniversalCamera implements ICamera {
     private targetPosition: Vector3;
     private startY: number;
+    readonly screenSize: Point;
 
     constructor(scene: Scene, canvas: HTMLCanvasElement, target: Vector3) {
         super('camera1', new Vector3(20, 50, -120), scene);
@@ -72,6 +73,10 @@ export class EditorCamera extends UniversalCamera implements ICamera {
         this.position.y = this.startY / scale;  
     }
 
+    zoomToPosition(canvasPoint: Point, scale: number) {
+        this.position.y = this.startY / scale;
+    }
+
     moveBy(delta: Point) {
         this.position.x += (delta.x / 10);
         this.position.z -= (delta.y / 10);
@@ -85,6 +90,10 @@ export class EditorCamera extends UniversalCamera implements ICamera {
         const scale = this.getScale();
 
         return screenPoint;
+    }
+
+    getCenterPoint(): Point {
+        return new Point(0, 0);
     }
 
     private zoomTemp() {

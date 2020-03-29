@@ -2,6 +2,10 @@ import { Point } from "../../../../misc/geometry/shapes/Point";
 import { Rectangle } from "../../../../misc/geometry/shapes/Rectangle";
 import { ICamera } from '../../renderer/ICamera';
 
+function ratioOfViewBox(camera: Camera, ratio: Point): Point {
+    return camera.getViewBox().getSize().mul(ratio.x, ratio.y);
+}
+
 export class Camera implements ICamera {
     readonly screenSize: Point;
     private viewBox: Rectangle;
@@ -19,8 +23,16 @@ export class Camera implements ICamera {
         this.viewBox = new Rectangle(topLeft, new Point(topLeft.x + width, topLeft.y + height));
     }
 
+    zoomToPosition(canvasPoint: Point, scale: number) {
+        const screenPoint = this.canvasToScreenPoint(canvasPoint);
+        const pointerRatio = new Point(screenPoint.x / this.screenSize.x, screenPoint.y / this.screenSize.y);
+
+
+        this.setTopLeftCorner(canvasPoint, scale);
+        this.moveBy(ratioOfViewBox(this, pointerRatio).negate());
+    }
+
     setTopLeftCorner(canvasPoint: Point, scale: number) {
-        console.log('set top left corner')
         let width = this.screenSize.x / scale;
         let height = this.screenSize.y / scale;
 
@@ -64,8 +76,8 @@ export class Camera implements ICamera {
         this.viewBox = newViewBox;
     }
 
-    private getAspectRatio(): number {
-        return this.viewBox.getWidth() / this.viewBox.getHeight();
+    getCenterPoint(): Point {
+        return this.screenSize.getVectorCenter()
     }
 }
 
