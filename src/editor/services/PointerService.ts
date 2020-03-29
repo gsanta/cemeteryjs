@@ -11,14 +11,20 @@ export enum Wheel {
 export interface IPointerEvent {
     pointers: {id: number, pos: Point}[];
     deltaY?: number;
-    preventDefault: () => void;
     button: 'left' | 'right';
+    isAltDown: boolean;
+    isShiftDown: boolean;
+    isCtrlDown: boolean;
+    isMetaDown: boolean;
+    preventDefault: () => void;
 }
 
 export class PointerService {
     serviceName = 'pointer-service';
     isDown = false;
     isDrag = false;
+    wheel: Wheel = Wheel.IDLE;
+    wheelState: number = 0;
 
     pointer: MousePointer = new MousePointer();
 
@@ -72,8 +78,22 @@ export class PointerService {
         this.isDrag = false;
     }
 
-    pointerWheel() {
+    pointerWheel(e: IPointerEvent): void {
+        this.wheelState += e.deltaY;
 
+        if (e.deltaY < 0) {
+            this.wheel = Wheel.UP;
+        } else if (e.deltaY > 0) {
+            this.wheel = Wheel.DOWN;
+        } else {
+            this.wheel = Wheel.IDLE;
+        }
+
+        this.getServices().hotkeyService().executePointerEvent(e)
+    }
+
+    pointerWheelEnd() {
+        this.wheel = Wheel.IDLE;
     }
 
     hover(canvasItem: CanvasItem): void {

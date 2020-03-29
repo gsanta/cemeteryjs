@@ -1,11 +1,13 @@
-import { Point } from "../../../../misc/geometry/shapes/Point";
-import { UpdateTask } from '../../../services/UpdateServices';
-import { ServiceLocator } from '../../../services/ServiceLocator';
-import { Stores } from '../../../stores/Stores';
-import { CanvasView, cameraInitializer } from '../CanvasView';
-import { Camera } from '../models/Camera';
-import { AbstractTool } from './AbstractTool';
-import { ToolType } from "./Tool";
+import { Point } from "../../../../../misc/geometry/shapes/Point";
+import { UpdateTask } from '../../../../services/UpdateServices';
+import { ServiceLocator } from '../../../../services/ServiceLocator';
+import { Stores } from '../../../../stores/Stores';
+import { CanvasView, cameraInitializer } from '../../CanvasView';
+import { Camera } from '../../models/Camera';
+import { AbstractTool } from '../AbstractTool';
+import { ToolType } from "../Tool";
+import { Hotkey } from "../../../../services/HotkeyService";
+import { WheelZoomHotkey } from "./WheelZoomHotkey";
 
 function ratioOfViewBox(camera: Camera, ratio: Point): Point {
     return camera.getViewBox().getSize().mul(ratio.x, ratio.y);
@@ -23,12 +25,16 @@ export class CameraTool extends AbstractTool {
     private getServices: () => ServiceLocator;
     private getStores: () => Stores;
 
+    private hotkeys: Hotkey[] = [];
+
     constructor(view: CanvasView, getServices: () => ServiceLocator, getStores: () => Stores, numberOfSteps: number = 20) {
         super(ToolType.CAMERA);
         this.NUM_OF_STEPS = numberOfSteps;
         this.view = view;
         this.getServices = getServices;
         this.getStores = getStores;
+        this.hotkeys = [new WheelZoomHotkey(getStores, getServices)];
+        this.hotkeys.forEach(hk => this.getServices().hotkeyService().registerHotkey(hk));
     }
 
     resize() {

@@ -1,6 +1,6 @@
 import { Point } from "../../../../misc/geometry/shapes/Point";
 import { ToolType } from "./Tool";
-import { Keyboard } from "../../../services/KeyboardService";
+import { Keyboard, IKeyboardEvent } from "../../../services/KeyboardService";
 import { CanvasView } from "../CanvasView";
 import { AbstractTool } from "./AbstractTool";
 import { UpdateTask } from "../../../services/UpdateServices";
@@ -50,8 +50,8 @@ export class PathTool extends AbstractTool {
         }
     }
 
-    keydown() {
-        if (this.getServices().keyboardService().downKeys.includes(Keyboard.Enter)) {
+    keydown(e: IKeyboardEvent) {
+        if (e.keyCode === Keyboard.Enter) {
             this.getStores().selectionStore.clear();
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         }

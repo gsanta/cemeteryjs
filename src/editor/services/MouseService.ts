@@ -1,5 +1,4 @@
 import { Point } from "../../misc/geometry/shapes/Point";
-import { Concept, Subconcept } from "../views/canvas/models/concepts/Concept";
 import { ServiceLocator } from './ServiceLocator';
 import { IPointerEvent } from "./PointerService";
 import { CanvasItem } from "../views/canvas/models/CanvasItem";
@@ -54,15 +53,13 @@ export class MouseService {
     }
 
     onMouseWheel(e: WheelEvent): void {
-        this.services.pointers.pointerWheel({
-            isAltDown: !!e.altKey,
-            isShiftDown: !!e.shiftKey,
-            isCtrlDown: !!e.ctrlKey,
-            isMetaDown: !!e.metaKey,
-            deltaY: e.deltaY,
-            pointers: [],
-            preventDefault: () => null
-        });
+        const pointerEvent = this.convertEvent(e);
+        pointerEvent.deltaY = e.deltaY;
+        this.getServices().pointerService().pointerWheel(pointerEvent);
+    }
+
+    onMouseWheelEnd(): void {
+        this.getServices().pointerService().pointerWheelEnd();
     }
 
     hover(canvasItem: CanvasItem) {
@@ -77,7 +74,11 @@ export class MouseService {
         return {
             pointers: [{id: 1, pos: new Point(e.x, e.y)}],
             preventDefault: () => e.preventDefault(),
-            button: this.isLeftButton(e) ? 'left' : 'right'
+            button: this.isLeftButton(e) ? 'left' : 'right',
+            isAltDown: !!e.altKey,
+            isShiftDown: !!e.shiftKey,
+            isCtrlDown: !!e.ctrlKey,
+            isMetaDown: !!e.metaKey
         };
     }
 

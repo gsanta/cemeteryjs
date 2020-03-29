@@ -1,11 +1,12 @@
 import { ServiceLocator } from './ServiceLocator';
-import { IKeyboardEvent } from './KeyboardService';
-import { IPointerEvent, PointerService } from './PointerService';
+import { IKeyboardEvent, isCtrlOrCommandDown } from './KeyboardService';
+import { IPointerEvent, PointerService, Wheel } from './PointerService';
 import { Point } from '../../misc/geometry/shapes/Point';
 
 export type IHotkeyAction = (hotkeyEvent: IHotkeyEvent, getServices: () => ServiceLocator) => boolean;
 
 export class HotkeyService {
+    serviceName = 'hotkey-service'
     private inputs: HTMLElement[] = [];
     private primaryInput: HTMLElement;
     private hotkeys: Hotkey[] = [];
@@ -58,7 +59,7 @@ export class HotkeyService {
     }
 
     private executeIfMatches(hotkeyEvent: IHotkeyEvent): boolean {
-        const hotkey = this.hotkeys.find(h => h.matches(hotkeyEvent, this.services));
+        const hotkey = this.hotkeys.find(h => h.matches(hotkeyEvent, this.getServices));
 
         if (this.lastExecutedHotkey && hotkey !== this.lastExecutedHotkey) {
             this.lastExecutedHotkey.finalize();
@@ -82,7 +83,7 @@ export class HotkeyService {
 
     private executeHotkey(hotKey: Hotkey, hotkeyEvent: IHotkeyEvent): boolean {
         this.focus();
-        return hotKey.action(hotkeyEvent, this.services);
+        return hotKey.action(hotkeyEvent, this.getServices);
     }
 }
 
@@ -134,18 +135,12 @@ export class Hotkey {
 
     matches(hotkeyEvent: IHotkeyEvent, getServices: () => ServiceLocator): boolean {
         const b = (
-            this.worksOnOverlayMatch(services) &&
-            this.worksDuringMouseDownMatch(hotkeyEvent, services) &&
             (this.trigger.keyCode === undefined || hotkeyEvent.keyCode === this.trigger.keyCode) &&
             hotkeyEvent.isAltDown === this.trigger.alt &&
             (this.trigger.shift === undefined || hotkeyEvent.isShiftDown === this.trigger.shift) &&
             isCtrlOrCommandDown(<IKeyboardEvent> hotkeyEvent) === this.trigger.ctrlOrCommand &&
-            this.wheelMatch(services.pointers) === this.trigger.wheel &&
-            this.pinchMatch(services.pointers) === this.trigger.pinch &&
-            this.hoveredOrSelectedMatch(services) && 
-            this.hoverMatch(services) &&
-            this.excludeSelectedMatch(services) &&
-            this.keyCodeFuncMatch(hotkeyEvent, services)
+            this.wheelMatch(getServices().pointerService()) === this.trigger.wheel &&
+            this.keyCodeFuncMatch(hotkeyEvent)
         );
         return b;
     }
@@ -154,33 +149,7 @@ export class Hotkey {
         return pointerService.wheel !== Wheel.IDLE;
     }
 
-    private pinchMatch(pointerService: PointerService): boolean {
-        const pinch = !!(
-            pointerService.pointerTracker.pointers.length === 2 &&
-            pointerService.pointerTracker.pointers[0].down &&
-            pointerService.pointerTracker.pointers[1].down
-        );
-
-        return pinch;
-    }
-
-    private worksOnOverlayMatch(services: Services) {
-        if (this.trigger.worksOnOverlays) { 
-            return true; 
-        }
-
-        return !services.getOverlayServices().find(overlay => overlay.isOpen());
-    }
-
-    private worksDuringMouseDownMatch(hotkeyEvent: IHotkeyEvent, services: Services) {
-        if (this.trigger.worksDuringMouseDown) { 
-            return true; 
-        }
-
-        return !services.pointers.pointerTracker.isDown;
-    }
-
-    private keyCodeFuncMatch(hotkeyEvent: IHotkeyEvent, services: Services) {
+    private keyCodeFuncMatch(hotkeyEvent: IHotkeyEvent) {
         if (!this.trigger.keyCodeFunc) { return true; }
 
         return hotkeyEvent.keyCode !== undefined && this.trigger.keyCodeFunc(hotkeyEvent);

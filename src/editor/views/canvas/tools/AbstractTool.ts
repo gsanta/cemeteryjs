@@ -1,5 +1,6 @@
 import { Tool, ToolType } from './Tool';
 import { Concept, Subconcept } from '../models/concepts/Concept';
+import { IKeyboardEvent } from '../../../services/KeyboardService';
 
 export class AbstractTool implements Tool {
     type: ToolType;
@@ -16,7 +17,7 @@ export class AbstractTool implements Tool {
     up() { }
     activate() { }
     resize() { }
-    keydown() { }
+    keydown(e: IKeyboardEvent) { }
     over(item: Concept, subconcept?: Subconcept) { }
     out(item: Concept, subconcept?: Subconcept) { }
     leave() { }

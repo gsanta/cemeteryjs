@@ -9,7 +9,7 @@ import { PathSettings } from './settings/PathSettings';
 import { MeshDimensionService } from './MeshDimensionService';
 import { Camera, nullCamera } from './models/Camera';
 import { FeedbackStore } from './models/FeedbackStore';
-import { CameraTool } from './tools/CameraTool';
+import { CameraTool } from './tools/camera/CameraTool';
 import { DeleteTool } from './tools/DeleteTool';
 import { MoveTool } from './tools/MoveTool';
 import { PathTool } from './tools/PathTool';

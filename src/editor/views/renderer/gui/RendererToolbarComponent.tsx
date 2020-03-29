@@ -4,7 +4,7 @@ import { ZoomInIconComponent } from '../../../gui/icons/tools/ZoomInIconComponen
 import { ZoomOutIconComponent } from '../../../gui/icons/tools/ZoomOutIconComponent';
 import { RendererView } from '../RendererView';
 import { ToolType } from '../../canvas/tools/Tool';
-import { CameraTool } from '../../canvas/tools/CameraTool';
+import { CameraTool } from '../../canvas/tools/camera/CameraTool';
 import { AbstractToolbarComponent } from '../../AbstractToolbarComponent';
 
 export class RendererToolbarComponent extends AbstractToolbarComponent {

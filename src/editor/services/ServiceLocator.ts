@@ -10,6 +10,7 @@ import { PointerService } from './PointerService';
 import { MouseService } from './MouseService';
 import { KeyboardService } from './KeyboardService';
 import { MeshDimensionService } from "../views/canvas/MeshDimensionService";
+import { HotkeyService, Hotkey } from "./HotkeyService";
 
 export class ServiceLocator {
     private services: {serviceName: string}[] = [];
@@ -25,6 +26,7 @@ export class ServiceLocator {
             new PointerService(() => this, getStores),
             new MouseService(() => this),
             new KeyboardService(getStores),
+            new HotkeyService(() => this),
             new MeshDimensionService(() => this)
         ];
     }
@@ -67,6 +69,10 @@ export class ServiceLocator {
 
     keyboardService(): KeyboardService {
         return <KeyboardService> this.getService('keyboard-service');
+    }
+
+    hotkeyService(): HotkeyService {
+        return <HotkeyService> this.getService('hotkey-service');
     }
 
     meshDimensionService(): MeshDimensionService {

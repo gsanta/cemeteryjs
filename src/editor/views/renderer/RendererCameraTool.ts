@@ -1,5 +1,5 @@
 import { EditorCamera } from './EditorCamera';
-import { CameraTool } from '../canvas/tools/CameraTool';
+import { CameraTool } from '../canvas/tools/camera/CameraTool';
 import { Editor } from '../../Editor';
 import { Point } from '../../../misc/geometry/shapes/Point';
 import { AbstractTool } from '../canvas/tools/AbstractTool';

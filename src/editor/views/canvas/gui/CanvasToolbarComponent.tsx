@@ -12,7 +12,7 @@ import { UndoIconComponent } from '../../../gui/icons/tools/UndoIconComponent';
 import { RedoIconComponent } from '../../../gui/icons/tools/RedoIconComponent';
 import { DeleteTool } from '../tools/DeleteTool';
 import { UpdateTask } from '../../../services/UpdateServices';
-import { CameraTool } from '../tools/CameraTool';
+import { CameraTool } from '../tools/camera/CameraTool';
 import { CanvasView } from '../CanvasView';
 import { AbstractToolbarComponent } from '../../AbstractToolbarComponent';
 

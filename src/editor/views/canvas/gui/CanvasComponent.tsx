@@ -7,6 +7,7 @@ import { PathMarkersComponent } from '../../../services/export/PathMarkersCompon
 import { CanvasView } from '../CanvasView';
 import { CanvasToolbarComponent } from './CanvasToolbarComponent';
 import { CanvasItem } from '../models/CanvasItem';
+import { WheelListener } from '../../../services/WheelListener';
 
 
 const EditorComponentStyled = styled.div`
@@ -30,8 +31,10 @@ const SelectionComponentStyled = styled.rect`
 export class CanvasComponent extends React.Component {
     static contextType = AppContext;
     context: AppContextType;
+    private wheelListener: WheelListener;
 
     componentDidMount() {
+        this.wheelListener = new WheelListener(() => this.context.getServices());
         this.context.getServices().updateService().setCanvasRepainter(() => this.forceUpdate());
     }
 
@@ -53,9 +56,9 @@ export class CanvasComponent extends React.Component {
                     onMouseUp={(e) => this.context.getServices().mouseService().onMouseUp(e.nativeEvent)}
                     onMouseLeave={(e) => this.context.getServices().mouseService().onMouseOut(e.nativeEvent)}
                     onKeyDown={e => this.context.getServices().keyboardService().onKeyDown(e.nativeEvent)}
-                    onKeyUp={e => this.context.getServices().keyboardService().onKeyUp(e.nativeEvent)}
                     onMouseOver={() => view.over()}
                     onMouseOut={() => view.out()}
+                    onWheel={(e) => this.wheelListener.onWheel(e.nativeEvent)}
                 >
                     <defs>
                         <PathMarkersComponent/>
