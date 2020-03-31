@@ -11,6 +11,7 @@ import { MouseService } from './MouseService';
 import { KeyboardService } from './KeyboardService';
 import { MeshDimensionService } from "../views/canvas/MeshDimensionService";
 import { HotkeyService, Hotkey } from "./HotkeyService";
+import { DialogService } from "./DialogService";
 
 export class ServiceLocator {
     private services: {serviceName: string}[] = [];
@@ -27,7 +28,8 @@ export class ServiceLocator {
             new MouseService(() => this),
             new KeyboardService(getStores),
             new HotkeyService(() => this),
-            new MeshDimensionService(() => this)
+            new MeshDimensionService(() => this),
+            new DialogService(() => this)
         ];
     }
 
@@ -77,5 +79,9 @@ export class ServiceLocator {
 
     meshDimensionService(): MeshDimensionService {
         return <MeshDimensionService> this.getService('mesh-dimension-service');
+    }
+
+    dialogService(): DialogService {
+        return <DialogService> this.getService('dialog-service');
     }
 }

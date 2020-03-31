@@ -14,6 +14,7 @@ import { MeshViewPropType, MeshSettings } from '../../settings/MeshSettings';
 import { AnimationState, MeshConcept } from '../../models/concepts/MeshConcept';
 import { GroupedRowsStyled, InputStyled, LabelStyled, SettingsRowStyled } from './SettingsComponent';
 import { ConnectedGridComponent } from '../../../../gui/misc/GridComponent';
+import { ButtonComponent } from '../../../../gui/inputs/ButtonComponent';
 
 export class MeshSettingsComponent extends React.Component<{concept: MeshConcept}> {
     static contextType = AppContext;
@@ -230,6 +231,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
                 <GroupedRowsStyled>
                     {this.renderManualMovement()}
                     {this.renderPath()}
+
                 </GroupedRowsStyled>
                 {this.renderAnimationTypes()}
                 {this.renderPlayAnimation()}
@@ -284,6 +286,17 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
                     isSelected={meshSettings.getVal(MeshViewPropType.IS_MANUAL_CONTROL)}
                     onChange={(selected: boolean) => meshSettings.updateProp(selected, MeshViewPropType.IS_MANUAL_CONTROL)}
                 />
+            </SettingsRowStyled>
+        );
+    }
+
+    renderOpenCustomAnimationButton(): JSX.Element {
+        return (
+            <SettingsRowStyled>
+              <LabelStyled></LabelStyled>
+                <InputStyled>
+                    <ButtonComponent text="Custom animation" type="info" onClick={() => this.context.getServices().dialogService().openDialog('animation-dialog')}/>
+                </InputStyled>
             </SettingsRowStyled>
         );
     }
