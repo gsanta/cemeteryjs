@@ -2,7 +2,8 @@ import { Point } from "../../misc/geometry/shapes/Point";
 import { ServiceLocator } from './ServiceLocator';
 import { Stores } from "../stores/Stores";
 import { MousePointer } from "./MouseService";
-import { CanvasItem } from "../views/canvas/models/CanvasItem";
+import { Concept } from "../views/canvas/models/concepts/Concept";
+import { Feedback } from "../views/canvas/models/feedbacks/Feedback";
 
 export enum Wheel {
     IDLE = 'idle', UP = 'up', DOWN = 'down'
@@ -96,13 +97,13 @@ export class PointerService {
         this.wheel = Wheel.IDLE;
     }
 
-    hover(canvasItem: CanvasItem): void {
-        this.getStores().viewStore.getActiveView().getActiveTool().over(canvasItem);
+    hover(item: Concept | Feedback): void {
+        this.getStores().viewStore.getActiveView().getActiveTool().over(item);
         this.getServices().updateService().runScheduledTasks();
     }
 
-    unhover(canvasItem: CanvasItem): void {
-        this.getStores().viewStore.getActiveView().getActiveTool().out(canvasItem);
+    unhover(item: Concept | Feedback): void {
+        this.getStores().viewStore.getActiveView().getActiveTool().out(item);
         this.getServices().updateService().runScheduledTasks();
     }
     

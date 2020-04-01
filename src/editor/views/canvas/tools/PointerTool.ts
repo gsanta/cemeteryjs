@@ -1,22 +1,17 @@
-import { AbstractTool } from "./AbstractTool";
-import { CanvasView, CanvasTag } from "../CanvasView";
-import { ToolType } from "./Tool";
-import { UpdateTask } from "../../../services/UpdateServices";
-import { Concept, Subconcept } from "../models/concepts/Concept";
-import { Stores } from '../../../stores/Stores';
 import { ServiceLocator } from '../../../services/ServiceLocator';
-import { CanvasItemType, CanvasItem } from "../models/CanvasItem";
+import { UpdateTask } from "../../../services/UpdateServices";
+import { Stores } from '../../../stores/Stores';
+import { AbstractTool } from "./AbstractTool";
+import { ToolType } from "./Tool";
+import { Concept } from '../models/concepts/Concept';
+import { Feedback } from '../models/feedbacks/Feedback';
 
 export class PointerTool extends AbstractTool {
-    private controller: CanvasView;
-
-    private selectableViews: CanvasItemType[];
     private getStores: () => Stores;
     private getServices: () => ServiceLocator;
 
-    constructor(controller: CanvasView, getServices: () => ServiceLocator, getStores: () => Stores) {
+    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
         super(ToolType.POINTER);
-        this.controller = controller;
         this.getStores = getStores;
         this.getServices = getServices;
     }
@@ -47,17 +42,13 @@ export class PointerTool extends AbstractTool {
         return false;
     }
 
-    over(canvasItem: CanvasItem) {
-        this.getStores().hoverStore.addItem(canvasItem);
+    over(item: Concept | Feedback) {
+        this.getStores().hoverStore.addItem(item);
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
-    out(canvasItem: CanvasItem) {
-        this.getStores().hoverStore.removeItem(canvasItem);
+    out(item: Concept | Feedback) {
+        this.getStores().hoverStore.removeItem(item);
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
-    }
-
-    setSelectableViews(views: CanvasItemType[]) {
-        this.selectableViews = views;
     }
 }

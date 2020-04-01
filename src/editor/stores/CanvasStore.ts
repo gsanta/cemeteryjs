@@ -1,7 +1,6 @@
-import { Concept } from "../views/canvas/models/concepts/Concept";
+import { Concept, ConceptType } from "../views/canvas/models/concepts/Concept";
 import { Feedback } from "../views/canvas/models/feedbacks/Feedback";
 import { without, maxBy } from "../../misc/geometry/utils/Functions";
-import { CanvasItemType } from "../views/canvas/models/CanvasItem";
 import { MeshConcept } from "../views/canvas/models/concepts/MeshConcept";
 import { PathConcept } from "../views/canvas/models/concepts/PathConcept";
 import { Stores } from "./Stores";
@@ -9,9 +8,22 @@ import { Polygon } from "../../misc/geometry/shapes/Polygon";
 import { Point } from "../../misc/geometry/shapes/Point";
 import { Rectangle } from "../../misc/geometry/shapes/Rectangle";
 
+export interface TypedItem {
+    type: string;
+}
+
+export function isFeedback(item: TypedItem) {
+    return item.type.endsWith('Feedback');
+}
+
+export function isConcept(item: TypedItem) {
+    return item.type.endsWith('Concept');
+}
+
 export class CanvasStore {
     concepts: Concept[] = [];
     feedbacks: Feedback[] = [];
+    // animations: 
 
     private naming: Naming;
     private getStores: () => Stores;
@@ -44,16 +56,16 @@ export class CanvasStore {
         return this.concepts;
     }
 
-    getConceptsByType(type: CanvasItemType): Concept[] {
+    getConceptsByType(type: ConceptType): Concept[] {
         return this.concepts.filter(v => v.type === type);
     }
 
     getMeshConcepts(): MeshConcept[] {
-        return <MeshConcept[]> this.concepts.filter(view => view.type === CanvasItemType.MeshConcept);
+        return <MeshConcept[]> this.concepts.filter(view => view.type === ConceptType.MeshConcept);
     }
 
     getPathConcepts(): PathConcept[] {
-        return <PathConcept[]> this.concepts.filter(view => view.type === CanvasItemType.PathConcept);
+        return <PathConcept[]> this.concepts.filter(view => view.type === ConceptType.PathConcept);
     }
 
     getIntersectingItemsInRect(rectangle: Rectangle): Concept[] {
@@ -73,7 +85,7 @@ export class CanvasStore {
         return this.concepts.filter(item => item.dimensions.containsPoint(gridPoint));
     }
 
-    generateUniqueName(viewType: CanvasItemType) {
+    generateUniqueName(viewType: ConceptType) {
         return this.naming.generateName(viewType);
     }
 }
@@ -85,12 +97,12 @@ export class Naming {
         this.canvasStore = canvasStore;
     }
 
-    generateName(type: CanvasItemType) {
+    generateName(type: ConceptType) {
         const name = `${type}${this.getMaxIndex(type) + 1}`.toLocaleLowerCase();
         return name;
     }
 
-    private getMaxIndex(type: CanvasItemType): number {
+    private getMaxIndex(type: ConceptType): number {
         const pattern = this.createPattern(type);
         const views = this.canvasStore.getConceptsByType(type).filter(view => view.name.match(pattern));
 
@@ -103,7 +115,7 @@ export class Naming {
 
     }
 
-    private createPattern(type: CanvasItemType) {
+    private createPattern(type: ConceptType) {
         return new RegExp(`${type}(\\d+)`, 'i');
     }
 }

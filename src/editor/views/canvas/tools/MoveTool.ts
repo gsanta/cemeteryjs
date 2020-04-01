@@ -5,7 +5,7 @@ import { AbstractTool } from './AbstractTool';
 import { ToolType } from './Tool';
 import { Stores } from '../../../stores/Stores';
 import { ServiceLocator } from '../../../services/ServiceLocator';
-import { isFeedback, isConcept } from "../models/CanvasItem";
+import { isFeedback, isConcept } from "../../../stores/CanvasStore";
 
 export class MoveTool extends AbstractTool {
     private movingItem = undefined;

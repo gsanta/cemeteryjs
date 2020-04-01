@@ -1,13 +1,10 @@
 import * as convert from 'xml-js';
-import { IConceptImporter } from './IConceptImporter';
-import { CanvasView } from '../../views/canvas/CanvasView';
-import { Point } from '../../../misc/geometry/shapes/Point';
 import { Stores } from '../../stores/Stores';
+import { ServiceLocator } from '../ServiceLocator';
+import { IConceptImporter } from './IConceptImporter';
 import { MeshConceptImporter } from './MeshConceptImporter';
 import { PathConceptImporter } from './PathConceptImporter';
-import { Camera } from '../../views/canvas/models/Camera';
-import { ServiceLocator } from '../ServiceLocator';
-import { CanvasItemType } from '../../views/canvas/models/CanvasItem';
+import { ConceptType } from '../../views/canvas/models/concepts/Concept';
 
 export interface WgDefinition {
     _attributes: WgDefinitionAttributes;
@@ -88,7 +85,7 @@ export class ImportService {
         }
 
         viewGroups.forEach(group => {
-            const viewType = <CanvasItemType> group._attributes["data-view-type"];
+            const viewType = <ConceptType> group._attributes["data-view-type"];
             if (this.getStores().viewStore.getViewById(viewType)) {
                 this.getStores().viewStore.getViewById(viewType).importer.import(group);
             }
@@ -96,14 +93,14 @@ export class ImportService {
 
         conceptGroups
         .forEach(group => {
-            const conceptType = <CanvasItemType> group._attributes["data-concept-type"];
+            const conceptType = <ConceptType> group._attributes["data-concept-type"];
             this.findViewImporter(conceptType).import(group)
         });
 
         this.getStores().canvasStore.getMeshConcepts().filter(item => item.modelPath).forEach(item => this.getServices().meshDimensionService().setDimensions(item));
     }
 
-    private findViewImporter(viewType: CanvasItemType): IConceptImporter {
+    private findViewImporter(viewType: ConceptType): IConceptImporter {
         return this.viewImporters.find(view => view.type === viewType);
     }
 }

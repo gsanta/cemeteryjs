@@ -11,9 +11,9 @@ export class SettingsProviderService {
 
     constructor(getStores: () => Stores, getServices: () => ServiceLocator) {
         this.settings = [
-            new MeshSettings(this, getServices, getStores),
+            new MeshSettings(getServices, getStores),
             new PathSettings(),
-            new LevelSettings(getServices, this.getStores)
+            new LevelSettings(getServices, getStores)
         ];
     }
 

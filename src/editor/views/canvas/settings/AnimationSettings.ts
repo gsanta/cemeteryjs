@@ -11,7 +11,7 @@ export enum AnimationSettingsProps {
 }
 
 export class AnimationSettings extends AbstractSettings<AnimationSettingsProps> {
-    static type = 'level-settings';
+    static type = 'animation-settings';
     getType() { return AnimationSettings.type; }
     meshConcept: MeshConcept;
 
@@ -27,7 +27,7 @@ export class AnimationSettings extends AbstractSettings<AnimationSettingsProps> 
     protected getProp(prop: AnimationSettingsProps) {
         switch (prop) {
             case AnimationSettingsProps.Level:
-                return this.().levelStore.currentLevel.index;
+                return this.getStores().levelStore.currentLevel.index;
             case AnimationSettingsProps.LevelName:
                 return this.getStores().levelStore.currentLevel.name;
         }

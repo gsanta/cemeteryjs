@@ -1,6 +1,7 @@
-import { Tool, ToolType } from './Tool';
-import { Concept, Subconcept } from '../models/concepts/Concept';
 import { IKeyboardEvent } from '../../../services/KeyboardService';
+import { Concept } from '../models/concepts/Concept';
+import { Feedback } from '../models/feedbacks/Feedback';
+import { Tool, ToolType } from './Tool';
 
 export class AbstractTool implements Tool {
     type: ToolType;
@@ -18,8 +19,8 @@ export class AbstractTool implements Tool {
     activate() { }
     resize() { }
     keydown(e: IKeyboardEvent) { }
-    over(item: Concept, subconcept?: Subconcept) { }
-    out(item: Concept, subconcept?: Subconcept) { }
+    over(item: Concept | Feedback) { }
+    out(item: Concept | Feedback) { }
     leave() { }
 
     select(): void {}

@@ -1,4 +1,4 @@
-import { GameApi } from '../../game/GameApi';
+import { GameService } from '../../game/GameService';
 import { GameFacade } from '../../game/GameFacade';
 import { Editor } from '../Editor';
 import { ServiceLocator } from '../services/ServiceLocator';
@@ -36,7 +36,7 @@ export abstract class View {
         getStores().viewStore.registerView(this);
     }
 
-    getGameApi(): GameApi {
+    getGameApi(): GameService {
         return this.editor.gameApi;
     }
 

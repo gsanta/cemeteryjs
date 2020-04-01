@@ -1,7 +1,8 @@
 import { Point } from "../../misc/geometry/shapes/Point";
 import { ServiceLocator } from './ServiceLocator';
 import { IPointerEvent } from "./PointerService";
-import { CanvasItem } from "../views/canvas/models/CanvasItem";
+import { Concept } from "../views/canvas/models/concepts/Concept";
+import { Feedback } from "../views/canvas/models/feedbacks/Feedback";
 
 export class MousePointer {
     down: Point;
@@ -62,12 +63,12 @@ export class MouseService {
         this.getServices().pointerService().pointerWheelEnd();
     }
 
-    hover(canvasItem: CanvasItem) {
-        this.getServices().pointerService().hover(canvasItem);
+    hover(item: Concept | Feedback) {
+        this.getServices().pointerService().hover(item);
     }
 
-    unhover(canvasItem: CanvasItem) {
-        this.getServices().pointerService().unhover(canvasItem);
+    unhover(item: Concept | Feedback) {
+        this.getServices().pointerService().unhover(item);
     }
 
     private convertEvent(e: MouseEvent): IPointerEvent {

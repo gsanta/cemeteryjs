@@ -1,13 +1,13 @@
-import { UpdateTask } from '../../../services/UpdateServices';
 import { ServiceLocator } from '../../../services/ServiceLocator';
+import { UpdateTask } from '../../../services/UpdateServices';
+import { Stores } from '../../../stores/Stores';
 import { CanvasView } from '../CanvasView';
+import { Concept } from '../models/concepts/Concept';
+import { Feedback } from '../models/feedbacks/Feedback';
 import { AbstractTool } from './AbstractTool';
+import { PointerTool } from './PointerTool';
 import { RectangleSelector } from './selection/RectangleSelector';
 import { ToolType } from './Tool';
-import { Concept, Subconcept } from '../models/concepts/Concept';
-import { Stores } from '../../../stores/Stores';
-import { PointerTool } from './PointerTool';
-import { CanvasItem } from '../models/CanvasItem';
 
 export class DeleteTool extends AbstractTool {
     private view: CanvasView;
@@ -61,12 +61,12 @@ export class DeleteTool extends AbstractTool {
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
-    over(canvasItem: CanvasItem) {
-        this.view.getToolByType<PointerTool>(ToolType.POINTER).over(canvasItem);
+    over(item: Concept | Feedback) {
+        this.view.getToolByType<PointerTool>(ToolType.POINTER).over(item);
     }
 
-    out(canvasItem: CanvasItem) {
-        this.view.getToolByType<PointerTool>(ToolType.POINTER).out(canvasItem);
+    out(item: Concept | Feedback) {
+        this.view.getToolByType<PointerTool>(ToolType.POINTER).out(item);
     }
 
     eraseAll() {

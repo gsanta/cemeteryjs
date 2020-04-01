@@ -3,7 +3,8 @@ import { MeshObject } from "./models/objects/MeshObject";
 import { MeshObjectUpdater } from "./MeshObjectUpdater";
 
 
-export class GameApi {
+export class GameService {
+    serviceName = 'game-service';
     private gameFacade: GameFacade;
     
     meshObjectUpdater: MeshObjectUpdater;

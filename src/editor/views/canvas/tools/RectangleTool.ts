@@ -1,13 +1,13 @@
 import { Rectangle } from '../../../../misc/geometry/shapes/Rectangle';
+import { ServiceLocator } from '../../../services/ServiceLocator';
 import { UpdateTask } from '../../../services/UpdateServices';
-import { CanvasView, CanvasTag } from '../CanvasView';
+import { Stores } from '../../../stores/Stores';
+import { CanvasView } from '../CanvasView';
+import { MeshConcept } from '../models/concepts/MeshConcept';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './selection/RectangleSelector';
 import { ToolType } from './Tool';
-import { MeshConcept } from '../models/concepts/MeshConcept';
-import { ServiceLocator } from '../../../services/ServiceLocator';
-import { Stores } from '../../../stores/Stores';
-import { CanvasItemType } from '../models/CanvasItem';
+import { ConceptType } from '../models/concepts/Concept';
 
 export class RectangleTool extends AbstractTool {
     private lastPreviewRect: MeshConcept;
@@ -36,7 +36,7 @@ export class RectangleTool extends AbstractTool {
         gameObject.scale = 1;
         gameObject.color = 'grey';
 
-        gameObject.name = this.getStores().canvasStore.generateUniqueName(CanvasItemType.MeshConcept);
+        gameObject.name = this.getStores().canvasStore.generateUniqueName(ConceptType.MeshConcept);
 
         this.getStores().canvasStore.addConcept(gameObject);
         this.getStores().selectionStore.clear()
@@ -63,7 +63,7 @@ export class RectangleTool extends AbstractTool {
         gameObject.texturePath = null;
         gameObject.scale = 1;
         gameObject.color = 'grey';
-        gameObject.name = this.getStores().canvasStore.generateUniqueName(CanvasItemType.MeshConcept);
+        gameObject.name = this.getStores().canvasStore.generateUniqueName(ConceptType.MeshConcept);
 
         if (positions.length > 0) {
             this.getStores().canvasStore.addConcept(gameObject);

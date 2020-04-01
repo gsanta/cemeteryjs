@@ -9,12 +9,13 @@ import { ExportService } from "./export/ExportService";
 import { PointerService } from './PointerService';
 import { MouseService } from './MouseService';
 import { KeyboardService } from './KeyboardService';
-import { MeshDimensionService } from "../views/canvas/MeshDimensionService";
+import { MeshDimensionService } from "./MeshDimensionService";
 import { HotkeyService, Hotkey } from "./HotkeyService";
 import { DialogService } from "./DialogService";
+import { GameService } from "../../game/GameService";
 
 export class ServiceLocator {
-    private services: {serviceName: string}[] = [];
+    services: {serviceName: string}[] = [];
 
     constructor(editor: Editor, getStores: () => Stores) {
         this.services = [
@@ -29,7 +30,7 @@ export class ServiceLocator {
             new KeyboardService(getStores),
             new HotkeyService(() => this),
             new MeshDimensionService(() => this),
-            new DialogService(() => this)
+            new DialogService(() => this, getStores)
         ];
     }
 
@@ -83,5 +84,9 @@ export class ServiceLocator {
 
     dialogService(): DialogService {
         return <DialogService> this.getService('dialog-service');
+    }
+
+    gameService(): GameService {
+        return <GameService> this.getService('game-service');
     }
 }

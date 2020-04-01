@@ -1,16 +1,16 @@
 import { Point } from "../../../../misc/geometry/shapes/Point";
-import { ToolType } from "./Tool";
-import { Keyboard, IKeyboardEvent } from "../../../services/KeyboardService";
-import { CanvasView } from "../CanvasView";
-import { AbstractTool } from "./AbstractTool";
-import { UpdateTask } from "../../../services/UpdateServices";
-import { Concept, Subconcept } from "../models/concepts/Concept";
-import { PathConcept } from "../models/concepts/PathConcept";
-import { Stores } from "../../../stores/Stores";
+import { IKeyboardEvent, Keyboard } from "../../../services/KeyboardService";
 import { ServiceLocator } from '../../../services/ServiceLocator';
-import { PointerTool } from "./PointerTool";
-import { CanvasItemType, CanvasItem } from "../models/CanvasItem";
+import { UpdateTask } from "../../../services/UpdateServices";
+import { Stores } from "../../../stores/Stores";
+import { CanvasView } from "../CanvasView";
+import { PathConcept } from "../models/concepts/PathConcept";
 import { EditPoint } from "../models/feedbacks/EditPoint";
+import { AbstractTool } from "./AbstractTool";
+import { PointerTool } from "./PointerTool";
+import { ToolType } from "./Tool";
+import { ConceptType, Concept } from "../models/concepts/Concept";
+import { Feedback, FeedbackType } from "../models/feedbacks/Feedback";
 
 export class PathTool extends AbstractTool {
     private view: CanvasView;
@@ -57,34 +57,26 @@ export class PathTool extends AbstractTool {
         }
     }
 
-    select() {
-        this.view.getToolByType<PointerTool>(ToolType.POINTER).setSelectableViews([CanvasItemType.PathConcept]);
-    }
-
-    unselect() {
-        this.view.getToolByType<PointerTool>(ToolType.POINTER).setSelectableViews(undefined);
-    }
-
-    over(canvasItem: CanvasItem) {
+    over(item: Concept | Feedback) {
         let hover = false;
-        if (canvasItem.type === CanvasItemType.PathConcept) {
+        if (item.type === ConceptType.PathConcept) {
             hover = true;
         }
 
-        if (canvasItem.type === CanvasItemType.EditPointFeedback) {
-            if ((<EditPoint> canvasItem).parent.type === CanvasItemType.PathConcept) {
+        if (item.type === FeedbackType.EditPointFeedback) {
+            if ((<EditPoint> item).parent.type === ConceptType.PathConcept) {
                 hover = true;
             }
         }
 
         if (hover) {
-            this.view.getToolByType<PointerTool>(ToolType.POINTER).over(canvasItem);
+            this.view.getToolByType<PointerTool>(ToolType.POINTER).over(item);
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
         }
     }
 
-    out(canvasItem: CanvasItem) {
-        this.view.getToolByType<PointerTool>(ToolType.POINTER).out(canvasItem);
+    out(item: Concept | Feedback) {
+        this.view.getToolByType<PointerTool>(ToolType.POINTER).out(item);
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
@@ -92,7 +84,7 @@ export class PathTool extends AbstractTool {
         const pointer = this.getServices().pointerService().pointer;
         this.getStores().selectionStore.clear();
         const path = new PathConcept(pointer.down.clone());
-        path.name = this.getStores().canvasStore.generateUniqueName(CanvasItemType.PathConcept);
+        path.name = this.getStores().canvasStore.generateUniqueName(ConceptType.PathConcept);
         this.getStores().canvasStore.addConcept(path);
         this.getStores().selectionStore.addItem(path);
         this.getStores().selectionStore.addItem(path.editPoints[0]);

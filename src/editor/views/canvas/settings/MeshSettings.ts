@@ -30,15 +30,12 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
     getType() { return MeshSettings.type; }
     meshConcept: MeshConcept;
 
-    private controller: CanvasView;
-
     isAnimationSectionOpen = false;
     private getServices: () => ServiceLocator;
     private getStores: () => Stores;
 
-    constructor(controller: CanvasView, getServices: () => ServiceLocator, getStores: () => Stores) {
+    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
         super(propertyTypes);
-        this.controller = controller;
         this.getServices = getServices;
         this.getStores = getStores;
         this.getServices = getServices;
@@ -95,7 +92,7 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                 this.meshConcept.modelPath = val.path;
                 this.getServices().storageService().saveAsset(val.path, val.data)
                 .finally(() => {
-                    this.controller.model3dController.setDimensions(this.meshConcept);
+                    this.getServices().meshDimensionService().setDimensions(this.meshConcept);
                     this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 });
                 break;
@@ -137,7 +134,7 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                 break;
             case MeshViewPropType.AnimationState:
                 this.meshConcept.animationState = val;
-                this.controller.getGameApi().meshObjectUpdater.updateAnimationState(this.meshConcept.animationState, this.meshConcept.name)
+                this.getServices().gameService().meshObjectUpdater.updateAnimationState(this.meshConcept.animationState, this.meshConcept.name)
                 break;
         }
 

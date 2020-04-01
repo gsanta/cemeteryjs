@@ -1,6 +1,8 @@
 import { AbstractSettings } from "../views/canvas/settings/AbstractSettings";
 import { ServiceLocator } from "./ServiceLocator";
 import { UpdateTask } from "./UpdateServices";
+import { AnimationSettings } from "../views/canvas/settings/AnimationSettings";
+import { Stores } from "../stores/Stores";
 
 export class DialogService {
     serviceName = 'dialog-service';
@@ -10,10 +12,10 @@ export class DialogService {
 
     private getServices: () => ServiceLocator;
 
-    constructor(getServices: () => ServiceLocator) {
+    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
         this.getServices = getServices;
         this.dialogs = [
-            // new PeriodicTable(services),
+            new AnimationSettings(getServices, getStores)
         ];
     }
 

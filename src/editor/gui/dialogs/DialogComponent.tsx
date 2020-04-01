@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { CloseIconComponent } from '../icons/tools/CloseIconComponent';
+import { colors } from '../styles';
 
 export interface DialogProps {
     title: string;
@@ -26,9 +27,8 @@ const DialogOverlayStyled = styled.div`
 const DialogStyled = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     border-radius: 4px;
-    background-color: grey;
+    background-color: ${colors.panelBackground};
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.14);
     padding: 15px;
     font-size: 16px;
@@ -37,13 +37,14 @@ const DialogStyled = styled.div`
     left: 50%;
     transform: translate(-50%, 0);
     position: absolute;
+    height: 500px;
 `;
 
 const DialogTitleStyled = styled.div`
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
-    color: #5A6A72;
+    color: ${colors.textColor};
     font-size: 16px;
 `;
 
@@ -53,14 +54,7 @@ const DialogBodyStyled = styled.div`
     justify-content: space-between;
 `;
 
-const DialogFooterStyled = styled.div`
-    height: 10px;
-    font-size: 10px;
-`;
-
 export function DialogComponent(props: DialogProps) {
-    const footer = props.footer ? <DialogFooterStyled>{props.footer}</DialogFooterStyled> : null;
-
     const dialogClassName = `dialog ${props.className ? props.className : ''}`.trim();
 
     return (
@@ -72,7 +66,6 @@ export function DialogComponent(props: DialogProps) {
                     <div><CloseIconComponent onClick={props.closeDialog} /></div>
                 </DialogTitleStyled>
                 <DialogBodyStyled>{props.children}</DialogBodyStyled>
-                {footer}
             </DialogStyled>
         </div>
     );

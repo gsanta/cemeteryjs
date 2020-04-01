@@ -5,7 +5,8 @@ import { AbstractTool } from "./AbstractTool";
 import { UpdateTask } from "../../../services/UpdateServices";
 import { Stores } from '../../../stores/Stores';
 import { ServiceLocator } from '../../../services/ServiceLocator';
-import { CanvasItem } from '../models/CanvasItem';
+import { Concept } from '../models/concepts/Concept';
+import { Feedback } from '../models/feedbacks/Feedback';
 
 export class SelectTool extends AbstractTool {
     protected view: CanvasView;
@@ -70,11 +71,11 @@ export class SelectTool extends AbstractTool {
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
-    over(canvasItem: CanvasItem) {
-        this.view.getToolByType(ToolType.POINTER).over(canvasItem);
+    over(item: Concept | Feedback) {
+        this.view.getToolByType(ToolType.POINTER).over(item);
     }
 
-    out(canvasItem: CanvasItem) {
-        this.view.getToolByType(ToolType.POINTER).out(canvasItem);
+    out(item: Concept | Feedback) {
+        this.view.getToolByType(ToolType.POINTER).out(item);
     }
 }

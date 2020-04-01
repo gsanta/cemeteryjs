@@ -234,6 +234,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
 
                 </GroupedRowsStyled>
                 {this.renderAnimationTypes()}
+                {this.renderOpenCustomAnimationButton()}
                 {this.renderPlayAnimation()}
             </React.Fragment>
         );
@@ -290,12 +291,12 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
         );
     }
 
-    renderOpenCustomAnimationButton(): JSX.Element {
+    private renderOpenCustomAnimationButton(): JSX.Element {
         return (
             <SettingsRowStyled>
               <LabelStyled></LabelStyled>
                 <InputStyled>
-                    <ButtonComponent text="Custom animation" type="info" onClick={() => this.context.getServices().dialogService().openDialog('animation-dialog')}/>
+                    <ButtonComponent text="Custom animation" type="info" onClick={() => this.context.getServices().dialogService().openDialog('animation-settings')}/>
                 </InputStyled>
             </SettingsRowStyled>
         );

@@ -1,9 +1,9 @@
 import { Engine, Scene, Mesh } from 'babylonjs';
-import { AbstractModelLoader } from '../../AbstractModelLoader';
-import { Point } from '../../../misc/geometry/shapes/Point';
-import { ServiceLocator } from '../../services/ServiceLocator';
-import { UpdateTask } from '../../services/UpdateServices';
-import { MeshConcept } from './models/concepts/MeshConcept';
+import { AbstractModelLoader } from '../AbstractModelLoader';
+import { Point } from '../../misc/geometry/shapes/Point';
+import { ServiceLocator } from './ServiceLocator';
+import { UpdateTask } from './UpdateServices';
+import { MeshConcept } from '../views/canvas/models/concepts/MeshConcept';
 
 export class MeshDimensionService extends AbstractModelLoader {
     serviceName = 'mesh-dimension-service';
