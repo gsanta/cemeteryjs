@@ -4,7 +4,7 @@ import { Point } from "../../../misc/geometry/shapes/Point";
 
 export class PathObject implements IGameObject {
     readonly objectType = GameObjectType.PathObject
-    name: string;
+    id: string;
     points: Point[] = [];
     tree: Map<number, number[]> = new Map();
     root: Point;

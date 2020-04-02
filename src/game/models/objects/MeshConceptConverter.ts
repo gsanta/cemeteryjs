@@ -21,7 +21,7 @@ export class MeshConceptConverter {
                 () => this.gameFacade.gameStore.getByName(meshView.path)
             );
 
-            routeObject.name = `${meshView.id}-route`;
+            routeObject.id = `${meshView.id}-route`;
 
             this.gameFacade.gameStore.add(routeObject);
         }
@@ -34,7 +34,7 @@ export class MeshConceptConverter {
         meshObject.dimensions = meshView.dimensions.div(10);
         meshObject.type = meshView.type;
         meshObject.meshName = meshView.meshName;
-        meshObject.name = meshView.id;
+        meshObject.id = meshView.id;
         meshObject.rotation = Tools.ToRadians(meshView.rotation);
         meshObject.texturePath = meshView.texturePath;
         meshObject.modelPath = meshView.modelPath;

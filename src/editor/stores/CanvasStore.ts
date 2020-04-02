@@ -7,6 +7,7 @@ import { Stores } from "./Stores";
 import { Polygon } from "../../misc/geometry/shapes/Polygon";
 import { Point } from "../../misc/geometry/shapes/Point";
 import { Rectangle } from "../../misc/geometry/shapes/Rectangle";
+import { MetaConcept } from "../views/canvas/models/meta/MetaConcept";
 
 export interface TypedItem {
     type: string;
@@ -23,7 +24,7 @@ export function isConcept(item: TypedItem) {
 export class CanvasStore {
     concepts: Concept[] = [];
     feedbacks: Feedback[] = [];
-    // animations: 
+    metas: MetaConcept[] = [];
 
     private naming: Naming;
     private getStores: () => Stores;

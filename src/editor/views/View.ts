@@ -70,7 +70,7 @@ export abstract class View {
     }
 
     getSettingsByName<T extends AbstractSettings<any> = AbstractSettings<any>>(name: string) {
-        return <T> this.settings.find(setting => setting.getType() === name);
+        return <T> this.settings.find(setting => setting.getName() === name);
     }
 
     getOffset(): Point { return new Point(0, 0) }

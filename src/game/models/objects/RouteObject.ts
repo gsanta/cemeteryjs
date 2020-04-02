@@ -12,7 +12,7 @@ export class RouteObject implements IGameObject {
         this.getMeshObjectFunc = getMeshObject;
         this.getPathObjectFunc = getPathObject;
     }
-    name: string;
+    id: string;
     currentStop: number = 0;
     animation: string;
     isFinished = false;

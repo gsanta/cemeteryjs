@@ -3,16 +3,20 @@ import { UpdateTask } from '../../../services/UpdateServices';
 import { MeshConcept } from '../models/concepts/MeshConcept';
 import { ServiceLocator } from '../../../services/ServiceLocator';
 import { Stores } from '../../../stores/Stores';
+import { ConceptType } from '../models/concepts/Concept';
+import { AnimationConcept, AnimationCondition } from '../models/meta/AnimationConcept';
 
 export enum AnimationSettingsProps {
-    Level = 'Level',
-    LevelName = 'LevelName',
-    ClearLevel = 'ClearLevel'
+    Name = 'Name',
+    DefaultAnimation = 'DefaultAnimation',
+    RotateLeftAnimation = 'RotateLeftAnimation',
+    RotateRightAnimation = 'RotateRightAnimation',
 }
 
 export class AnimationSettings extends AbstractSettings<AnimationSettingsProps> {
-    static type = 'animation-settings';
-    getType() { return AnimationSettings.type; }
+    static settingsName = 'animation-settings';
+    getName() { return AnimationSettings.settingsName; }
+    animationConcept: AnimationConcept;
     meshConcept: MeshConcept;
 
     private getServices: () => ServiceLocator;
@@ -22,30 +26,41 @@ export class AnimationSettings extends AbstractSettings<AnimationSettingsProps> 
         super();
         this.getServices = getServices;
         this.getStores = getStores;
+
+        this.animationConcept = new AnimationConcept();
+        this.animationConcept.id = getStores().canvasStore.generateUniqueName(ConceptType.AnimationConcept);
     }
 
     protected getProp(prop: AnimationSettingsProps) {
         switch (prop) {
-            case AnimationSettingsProps.Level:
-                return this.getStores().levelStore.currentLevel.index;
-            case AnimationSettingsProps.LevelName:
-                return this.getStores().levelStore.currentLevel.name;
+            case AnimationSettingsProps.Name:
+                return this.animationConcept.id;
+            case AnimationSettingsProps.RotateLeftAnimation:
+                return this.animationConcept.getAnimationByCond(AnimationCondition.RotateLeft);
+            case AnimationSettingsProps.RotateRightAnimation:
+                return this.animationConcept.getAnimationByCond(AnimationCondition.RotateRight);
+            case AnimationSettingsProps.DefaultAnimation:
+                return this.animationConcept.getAnimationByCond(AnimationCondition.Default);
         }
     }
 
     protected setProp(val: any, prop: AnimationSettingsProps) {
         switch (prop) {
-            case AnimationSettingsProps.Level:
-                this.getServices().levelService().changeLevel(val);
-                break;
-            case AnimationSettingsProps.LevelName:
-                this.getStores().levelStore.currentLevel.name = val;
+            case AnimationSettingsProps.Name:
+                this.animationConcept.id = val;
                 this.getServices().updateService().runImmediately(UpdateTask.RepaintSettings);
                 break;
-            case AnimationSettingsProps.ClearLevel:
-                this.getServices().levelService().removeCurrentLevel()
-                .then(() => this.getServices().updateService().runImmediately(UpdateTask.All, UpdateTask.SaveData))
-                .catch(() => this.getServices().updateService().runImmediately(UpdateTask.All, UpdateTask.SaveData))
+            case AnimationSettingsProps.RotateLeftAnimation:
+                this.animationConcept.addAnimation({name: val, condition: AnimationCondition.RotateLeft});
+                this.getServices().updateService().runImmediately(UpdateTask.RepaintSettings);
+                break;
+            case AnimationSettingsProps.RotateRightAnimation:
+                this.animationConcept.addAnimation({name: val, condition: AnimationCondition.RotateRight});
+                this.getServices().updateService().runImmediately(UpdateTask.RepaintSettings);
+                break;
+            case AnimationSettingsProps.DefaultAnimation:
+                this.animationConcept.addAnimation({name: val, condition: AnimationCondition.Default});
+                this.getServices().updateService().runImmediately(UpdateTask.RepaintSettings);
                 break;
         }
     }

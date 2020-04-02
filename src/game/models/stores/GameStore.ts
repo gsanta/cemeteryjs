@@ -12,11 +12,11 @@ export class GameStore {
     objs: IGameObject[] = [];
 
     getPlayer(): MeshObject {
-        return <MeshObject> this.objs.find(gameObject => gameObject.name === 'player');
+        return <MeshObject> this.objs.find(gameObject => gameObject.id === 'player');
     }
 
     getEnemies(): MeshObject[] {
-        return <MeshObject[]> this.objs.filter(gameObject => gameObject.name === 'enemy');
+        return <MeshObject[]> this.objs.filter(gameObject => gameObject.id === 'enemy');
     }
 
     addPath(arrow: PathConcept) {
@@ -25,7 +25,7 @@ export class GameStore {
 
     add(gameObject: IGameObject) {
         this.objs.push(gameObject);
-        this.nameToObjMap.set(gameObject.name, gameObject);
+        this.nameToObjMap.set(gameObject.id, gameObject);
     }
 
     getByName<T extends IGameObject>(name: string): T {

@@ -14,7 +14,7 @@ export class PathConceptConverter {
     convert(pathView: PathConcept): void {
         const pathObject = new PathObject();
 
-        pathObject.name = pathView.id;
+        pathObject.id = pathView.id;
         pathObject.points = pathView.editPoints.map(p => p.point);
         pathObject.tree = new Map();
         pathView.editPoints.forEach((p, index) => {

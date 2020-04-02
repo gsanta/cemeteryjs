@@ -12,7 +12,7 @@ export class MeshObject implements IGameObject {
     readonly objectType = GameObjectType.MeshObject;
     type: string;
     meshName: string;
-    name: string;
+    id: string;
     dimensions: Rectangle;
     rotation: number = 0;
     children: MeshObject[] = [];
@@ -36,7 +36,7 @@ export class MeshObject implements IGameObject {
 
     constructor(getMesh: (meshName: string) => Mesh, getRoute: () => RouteObject) {
         this.getMesh = getMesh;
-        this.name = name;
+        this.id = name;
         this.getRouteFunc = getRoute;
     }
 
@@ -46,14 +46,14 @@ export class MeshObject implements IGameObject {
 
     equalTo(meshObject: MeshObject) {
         return (
-            this.name === meshObject.name &&
+            this.id === meshObject.id &&
             this.dimensions.equalTo(meshObject.dimensions) &&
             this.rotation === meshObject.rotation
         );
     }
 
     setPosition(point: Point) {
-        const mesh = this.getMesh(this.name); 
+        const mesh = this.getMesh(this.id); 
         mesh.setAbsolutePosition(toVector3(point));
     }
 

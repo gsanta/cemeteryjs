@@ -2,20 +2,20 @@ import { AbstractSettings } from "../views/canvas/settings/AbstractSettings";
 import { ServiceLocator } from "./ServiceLocator";
 import { UpdateTask } from "./UpdateServices";
 import { AnimationSettings } from "../views/canvas/settings/AnimationSettings";
-import { Stores } from "../stores/Stores";
 
 export class DialogService {
     serviceName = 'dialog-service';
-    private dialogs: AbstractSettings<any>[] = [];
-
     activeDialog: AbstractSettings<any> = null;
 
     private getServices: () => ServiceLocator;
 
-    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
+    constructor(getServices: () => ServiceLocator) {
         this.getServices = getServices;
-        this.dialogs = [
-            new AnimationSettings(getServices, getStores)
+    }
+
+    getDialogs() : AbstractSettings<any>[] {
+        return [
+            this.getServices().settingsService().getSettingsByName(AnimationSettings.settingsName)
         ];
     }
 
@@ -34,12 +34,12 @@ export class DialogService {
         return ret;
     }
 
-    getDialogByName(dialogType: string): AbstractSettings<any> {
-        return this.dialogs.find(dialog => dialog.getType() === dialogType);
+    getDialogByName<T extends AbstractSettings<any>>(dialogType: string): T {
+        return <T> this.getDialogs().find(dialog => dialog.getName() === dialogType);
     }
 
     isActiveDialog(dialogType: string): boolean {
-        return this.activeDialog && this.activeDialog.getType() === dialogType;
+        return this.activeDialog && this.activeDialog.getName() === dialogType;
     }
 
     isOpen(): boolean {

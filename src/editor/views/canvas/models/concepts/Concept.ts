@@ -6,7 +6,7 @@ import { TypedItem } from "../../../../stores/CanvasStore";
 export enum ConceptType {
     MeshConcept = 'MeshConcept',
     PathConcept = 'PathConcept',
-    Animation = 'Animation'
+    AnimationConcept = 'AnimationConcept'
 }
 
 export interface Concept extends TypedItem {

@@ -8,5 +8,5 @@ export enum GameObjectType {
 
 export interface IGameObject {
     objectType: GameObjectType;
-    name: string;
+    id: string;
 }

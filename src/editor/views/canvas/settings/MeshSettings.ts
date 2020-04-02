@@ -27,7 +27,7 @@ const propertyTypes = {
 
 export class MeshSettings extends AbstractSettings<MeshViewPropType> {
     static type = 'mesh-settings';
-    getType() { return MeshSettings.type; }
+    getName() { return MeshSettings.type; }
     meshConcept: MeshConcept;
 
     isAnimationSectionOpen = false;

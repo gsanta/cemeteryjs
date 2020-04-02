@@ -30,7 +30,7 @@ export class RectangleFactory  {
         // const pivotPoint = new Vector3(rec.topLeft.x, 0, rec.topLeft.y);
         
         const mesh = MeshBuilder.CreateBox(
-            meshObject.name,
+            meshObject.id,
             {
                 width: rec.getWidth(),
                 depth: rec.getHeight(),
@@ -39,7 +39,7 @@ export class RectangleFactory  {
             this.scene
         );
 
-        this.gameFacade.meshStore.addMesh(meshObject.name, mesh);
+        this.gameFacade.meshStore.addMesh(meshObject.id, mesh);
         
         meshObject.meshName = mesh.name;
 

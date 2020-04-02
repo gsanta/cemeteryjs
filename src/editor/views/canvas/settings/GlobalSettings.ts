@@ -11,7 +11,7 @@ export enum GlobalSettingsPropType {
 
 export class GlobalSettings extends AbstractSettings<GlobalSettingsPropType> {
     static type = 'global-settings';
-    getType() { return GlobalSettings.type; }
+    getName() { return GlobalSettings.type; }
 
     meshConcept: MeshConcept;
 
