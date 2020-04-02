@@ -30,7 +30,7 @@ export class GameObjectFactory {
     create(gameObjectConfig: Partial<MeshConcept>): MeshConcept {
 
         const getMeshFunc = (meshName: string) => this.gameFacade.meshStore.getMesh(meshName);
-        const gameObject = new MeshConcept(getMeshFunc, gameObjectConfig.dimensions, gameObjectConfig.name);
+        const gameObject = new MeshConcept(getMeshFunc, gameObjectConfig.dimensions, gameObjectConfig.id);
         gameObject.rotation = gameObjectConfig.rotation;
         gameObjectConfig.color && (gameObject.color = gameObjectConfig.color);
         gameObjectConfig.texturePath  && (gameObject.texturePath = gameObjectConfig.texturePath);

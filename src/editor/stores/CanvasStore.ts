@@ -104,13 +104,13 @@ export class Naming {
 
     private getMaxIndex(type: ConceptType): number {
         const pattern = this.createPattern(type);
-        const views = this.canvasStore.getConceptsByType(type).filter(view => view.name.match(pattern));
+        const views = this.canvasStore.getConceptsByType(type).filter(view => view.id.match(pattern));
 
         if (views.length === 0) {
             return 0;
         } else {
-            const max = maxBy<Concept>(views, (a, b) => parseInt(a.name.match(pattern)[1], 10) - parseInt(b.name.match(pattern)[1], 10));
-            return parseInt(max.name.match(pattern)[1], 10);
+            const max = maxBy<Concept>(views, (a, b) => parseInt(a.id.match(pattern)[1], 10) - parseInt(b.id.match(pattern)[1], 10));
+            return parseInt(max.id.match(pattern)[1], 10);
         }
 
     }

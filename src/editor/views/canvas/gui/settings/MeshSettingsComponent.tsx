@@ -257,7 +257,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
     private renderPath(): JSX.Element {
         const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
-        const pathNames = this.context.getStores().canvasStore.getPathConcepts().map(p => p.name);
+        const pathNames = this.context.getStores().canvasStore.getPathConcepts().map(p => p.id);
         const val: string = meshSettings.getVal(MeshViewPropType.PATH);
 
         return (

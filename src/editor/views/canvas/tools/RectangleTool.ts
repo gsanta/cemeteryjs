@@ -36,7 +36,7 @@ export class RectangleTool extends AbstractTool {
         gameObject.scale = 1;
         gameObject.color = 'grey';
 
-        gameObject.name = this.getStores().canvasStore.generateUniqueName(ConceptType.MeshConcept);
+        gameObject.id = this.getStores().canvasStore.generateUniqueName(ConceptType.MeshConcept);
 
         this.getStores().canvasStore.addConcept(gameObject);
         this.getStores().selectionStore.clear()
@@ -63,7 +63,7 @@ export class RectangleTool extends AbstractTool {
         gameObject.texturePath = null;
         gameObject.scale = 1;
         gameObject.color = 'grey';
-        gameObject.name = this.getStores().canvasStore.generateUniqueName(ConceptType.MeshConcept);
+        gameObject.id = this.getStores().canvasStore.generateUniqueName(ConceptType.MeshConcept);
 
         if (positions.length > 0) {
             this.getStores().canvasStore.addConcept(gameObject);

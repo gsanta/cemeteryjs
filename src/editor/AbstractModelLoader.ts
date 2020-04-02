@@ -93,7 +93,7 @@ export abstract class AbstractModelLoader {
         (<StandardMaterial> meshes[0].material).diffuseTexture  = new Texture(`${this.basePath}${this.getFolderNameFromFileName(meshObject.modelPath)}/${meshObject.texturePath}`,  this.scene);
         (<StandardMaterial> meshes[0].material).specularTexture  = new Texture(`${this.basePath}${this.getFolderNameFromFileName(meshObject.modelPath)}/${meshObject.texturePath}`,  this.scene);
 
-        meshes[0].name = meshObject.name;
+        meshes[0].name = meshObject.id;
         this.configMesh(meshes[0]);
         this.setModel(meshObject.modelPath, meshes[0]);
 

@@ -1,21 +1,20 @@
-import { Concept } from "./Concept";
+import { Concept, ConceptType } from "./Concept";
 import { Rectangle } from "../../../../../misc/geometry/shapes/Rectangle";
 import { Point } from "../../../../../misc/geometry/shapes/Point";
 import { minBy, maxBy } from "../../../../../misc/geometry/utils/Functions";
-import { CanvasItemType } from "../CanvasItem";
 import { EditPoint } from "../feedbacks/EditPoint";
 
 const NULL_BOUNDING_BOX = new Rectangle(new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER), new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER));
 
 export class PathConcept implements Concept {
-    type = CanvasItemType.PathConcept;
+    type = ConceptType.PathConcept;
     editPoints: EditPoint[] = [];
     childMap: Map<EditPoint, EditPoint[]> = new Map();
     parentMap: Map<EditPoint, EditPoint> = new Map();
     rootPoint: EditPoint;
     pathId: number;
     dimensions: Rectangle;
-    name: string;
+    id: string;
     radius = 5;
     private str: string;
 

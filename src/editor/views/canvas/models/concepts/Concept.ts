@@ -10,9 +10,9 @@ export enum ConceptType {
 }
 
 export interface Concept extends TypedItem {
+    id: string;
     editPoints: EditPoint[];
     dimensions: Rectangle;
-    name: string;
     deleteEditPoint(editPoint: EditPoint): void;
     move(delta: Point): void;
     moveEditPoint(editPoint: EditPoint, delta: Point): void;

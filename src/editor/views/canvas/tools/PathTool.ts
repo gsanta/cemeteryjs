@@ -84,7 +84,7 @@ export class PathTool extends AbstractTool {
         const pointer = this.getServices().pointerService().pointer;
         this.getStores().selectionStore.clear();
         const path = new PathConcept(pointer.down.clone());
-        path.name = this.getStores().canvasStore.generateUniqueName(ConceptType.PathConcept);
+        path.id = this.getStores().canvasStore.generateUniqueName(ConceptType.PathConcept);
         this.getStores().canvasStore.addConcept(path);
         this.getStores().selectionStore.addItem(path);
         this.getStores().selectionStore.addItem(path.editPoints[0]);

@@ -70,7 +70,7 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
             case MeshViewPropType.SCALE:
                 return this.meshConcept.scale;
             case MeshViewPropType.NAME:
-                return this.meshConcept.name;
+                return this.meshConcept.id;
             case MeshViewPropType.PATH:
                 return this.meshConcept.path;
             case MeshViewPropType.IS_MANUAL_CONTROL:
@@ -117,7 +117,7 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                 this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
             case MeshViewPropType.NAME:
-                this.meshConcept.name = val;
+                this.meshConcept.id = val;
                 this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
             case MeshViewPropType.PATH:
@@ -134,7 +134,7 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                 break;
             case MeshViewPropType.AnimationState:
                 this.meshConcept.animationState = val;
-                this.getServices().gameService().meshObjectUpdater.updateAnimationState(this.meshConcept.animationState, this.meshConcept.name)
+                this.getServices().gameService().meshObjectUpdater.updateAnimationState(this.meshConcept.animationState, this.meshConcept.id)
                 break;
         }
 

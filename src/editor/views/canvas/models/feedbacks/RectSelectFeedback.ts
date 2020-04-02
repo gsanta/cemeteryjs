@@ -1,9 +1,8 @@
 import { Rectangle } from "../../../../../misc/geometry/shapes/Rectangle";
-import { CanvasItemType } from "../CanvasItem";
-
+import { FeedbackType } from "./Feedback";
 
 export class RectSelectFeedback {
-    type = CanvasItemType.RectSelectFeedback;
+    type = FeedbackType.RectSelectFeedback;
     rect: Rectangle;
     isVisible: boolean;
 

@@ -35,7 +35,7 @@ export class MeshConcept implements Concept {
     type = ConceptType.MeshConcept;
     editPoints = [];
     meshName: string;
-    name: string;
+    id: string;
     dimensions: Rectangle;
     rotation: number;
     children: MeshConcept[] = [];
@@ -63,7 +63,7 @@ export class MeshConcept implements Concept {
     constructor(getMesh: (meshName: string) => Mesh, dimensions: Rectangle, name: string, rotation = 0) {
         this.getMesh = getMesh;
         this.dimensions = dimensions;
-        this.name = name;
+        this.id = name;
         this.rotation = rotation;
     }
 
@@ -73,7 +73,7 @@ export class MeshConcept implements Concept {
 
     equalTo(worldItem: MeshConcept) {
         return (
-            this.name === worldItem.name &&
+            this.id === worldItem.id &&
             this.dimensions.equalTo(worldItem.dimensions) &&
             this.rotation === worldItem.rotation
         );
@@ -131,7 +131,7 @@ export class MeshConcept implements Concept {
     }
 
     private getAnimations(meshStore: MeshStore): Animation[] {
-        return meshStore.getMesh(this.name).skeleton.getAnimationRanges().map(anim => ({
+        return meshStore.getMesh(this.id).skeleton.getAnimationRanges().map(anim => ({
             name: anim.name,
             range: [anim.from, anim.to]
         }));

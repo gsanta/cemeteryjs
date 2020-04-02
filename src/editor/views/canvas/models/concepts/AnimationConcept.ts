@@ -1,4 +1,4 @@
-import { MetaConcept } from "./MetaConcept";
+import { MetaConcept } from "../meta/MetaConcept";
 
 
 export class AnimationConcept implements MetaConcept {

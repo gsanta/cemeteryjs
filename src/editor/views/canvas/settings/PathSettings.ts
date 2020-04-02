@@ -13,14 +13,14 @@ export class PathSettings extends AbstractSettings<PathPropType> {
     protected getProp(prop: PathPropType) {
         switch (prop) {
             case PathPropType.NAME:
-                return this.path.name;
+                return this.path.id;
         }
     }
 
     protected setProp(val: any, prop: PathPropType) {
         switch (prop) {
             case PathPropType.NAME:
-                this.path.name = val;
+                this.path.id = val;
                 break;
         }
     }

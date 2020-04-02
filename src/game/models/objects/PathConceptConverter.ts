@@ -1,11 +1,10 @@
 import { GameFacade } from "../../GameFacade";
 import { PathObject } from "./PathObject";
 import { PathConcept } from "../../../editor/views/canvas/models/concepts/PathConcept";
-import { CanvasItemType } from "../../../editor/views/canvas/models/CanvasItem";
-
+import { ConceptType } from "../../../editor/views/canvas/models/concepts/Concept";
 
 export class PathConceptConverter {
-    viewType: CanvasItemType = CanvasItemType.PathConcept;
+    viewType = ConceptType.PathConcept;
     private gameFacade: GameFacade;
 
     constructor(gameFacade: GameFacade) {
@@ -15,7 +14,7 @@ export class PathConceptConverter {
     convert(pathView: PathConcept): void {
         const pathObject = new PathObject();
 
-        pathObject.name = pathView.name;
+        pathObject.name = pathView.id;
         pathObject.points = pathView.editPoints.map(p => p.point);
         pathObject.tree = new Map();
         pathView.editPoints.forEach((p, index) => {
