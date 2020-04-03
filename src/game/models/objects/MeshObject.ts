@@ -7,7 +7,7 @@ import { toVector3 } from "../../../misc/geometry/utils/GeomUtils";
 import { BehaviourType } from "../../services/behaviour/IBehaviour";
 import { GameObjectType, IGameObject } from "./IGameObject";
 import { RouteObject } from "./RouteObject";
-import { AnimationConcept } from "../../../editor/views/canvas/models/meta/AnimationConcept";
+import { AnimationConcept, ElementalAnimation } from "../../../editor/views/canvas/models/meta/AnimationConcept";
 
 export class MeshObject implements IGameObject {
     readonly objectType = GameObjectType.MeshObject;
@@ -32,6 +32,7 @@ export class MeshObject implements IGameObject {
     activeBehaviour: BehaviourType;
     wanderAngle = 0;
     animation: AnimationConcept;
+    activeElementalAnimation: ElementalAnimation;
     private getMesh: (meshName: string) => Mesh;
     private getRouteFunc: () => RouteObject;
 

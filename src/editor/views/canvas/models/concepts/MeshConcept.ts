@@ -52,7 +52,6 @@ export class MeshConcept implements Concept {
 
     speed = 0.01;
 
-    activeAnimation: string;
     activeBehaviour: BehaviourType;
     wanderAngle = 0;
     animations: string[] = [];

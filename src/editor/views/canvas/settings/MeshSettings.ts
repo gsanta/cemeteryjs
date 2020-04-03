@@ -4,25 +4,27 @@ import { AbstractSettings, PropertyType } from "./AbstractSettings";
 import { UpdateTask } from '../../../services/UpdateServices';
 import { MeshConcept } from '../models/concepts/MeshConcept';
 import { Stores } from '../../../stores/Stores';
+import { AnimationCondition, AnimationConcept } from '../models/meta/AnimationConcept';
+import { ConceptType } from '../models/concepts/Concept';
 
 export enum MeshViewPropType {
-    COLOR = 'color',
-    MODEL = 'model',
-    TEXTURE = 'texture',
-    THUMBNAIL = 'thumbnail',
-    LAYER = 'layer',
-    ROTATION = 'rotation',
-    SCALE = 'scale',
-    NAME = 'name',
-    PATH = 'path',
-    IS_MANUAL_CONTROL = 'is_manual_control',
-    ANIMATION = 'animation',
+    Color = 'color',
+    Model = 'model',
+    Texture = 'texture',
+    Thumbnail = 'thumbnail',
+    Layer = 'layer',
+    Rotation = 'rotation',
+    Scale = 'scale',
+    Name = 'name',
+    Path = 'path',
+    IsManualControl = 'is_manual_control',
+    DefaultAnimation = 'animation',
     AnimationState = 'animation_state'
 }
 
 const propertyTypes = {
-    [MeshViewPropType.SCALE]: PropertyType.Number,
-    [MeshViewPropType.ROTATION]: PropertyType.Number
+    [MeshViewPropType.Scale]: PropertyType.Number,
+    [MeshViewPropType.Rotation]: PropertyType.Number
 };
 
 export class MeshSettings extends AbstractSettings<MeshViewPropType> {
@@ -55,28 +57,30 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
 
     protected getProp(prop: MeshViewPropType) {
         switch (prop) {
-            case MeshViewPropType.COLOR:
+            case MeshViewPropType.Color:
                 return this.meshConcept.color;
-            case MeshViewPropType.MODEL:
+            case MeshViewPropType.Model:
                 return this.meshConcept.modelPath;
-            case MeshViewPropType.TEXTURE:
+            case MeshViewPropType.Texture:
                 return this.meshConcept.texturePath;
-            case MeshViewPropType.THUMBNAIL:
+            case MeshViewPropType.Thumbnail:
                 return this.meshConcept.thumbnailPath;
-            case MeshViewPropType.LAYER:
+            case MeshViewPropType.Layer:
                 return this.meshConcept.layer;
-            case MeshViewPropType.ROTATION:
+            case MeshViewPropType.Rotation:
                 return this.meshConcept.rotation;
-            case MeshViewPropType.SCALE:
+            case MeshViewPropType.Scale:
                 return this.meshConcept.scale;
-            case MeshViewPropType.NAME:
+            case MeshViewPropType.Name:
                 return this.meshConcept.id;
-            case MeshViewPropType.PATH:
+            case MeshViewPropType.Path:
                 return this.meshConcept.path;
-            case MeshViewPropType.IS_MANUAL_CONTROL:
+            case MeshViewPropType.IsManualControl:
                 return this.meshConcept.isManualControl;
-            case MeshViewPropType.ANIMATION:
-                return this.meshConcept.activeAnimation;
+            case MeshViewPropType.DefaultAnimation:
+                if (this.meshConcept.animationId) {
+                    this.getStores().canvasStore.getAnimationConceptById(this.meshConcept.animationId).getAnimationByCond(AnimationCondition.Default);
+                }
             case MeshViewPropType.AnimationState:
                 return this.meshConcept.animationState;
     
@@ -85,10 +89,10 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
 
     protected setProp(val: any, prop: MeshViewPropType) {
         switch (prop) {
-            case MeshViewPropType.COLOR:
+            case MeshViewPropType.Color:
                 this.meshConcept.color = val;
                 break;
-            case MeshViewPropType.MODEL:
+            case MeshViewPropType.Model:
                 this.meshConcept.modelPath = val.path;
                 this.getServices().storageService().saveAsset(val.path, val.data)
                 .finally(() => {
@@ -96,40 +100,51 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                     this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 });
                 break;
-            case MeshViewPropType.TEXTURE:
+            case MeshViewPropType.Texture:
                 this.meshConcept.texturePath = val.path;
                 this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
-            case MeshViewPropType.THUMBNAIL:
+            case MeshViewPropType.Thumbnail:
                 this.meshConcept.thumbnailPath = val.path;
                 this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
-            case MeshViewPropType.LAYER:
+            case MeshViewPropType.Layer:
                 this.meshConcept.layer = val;
                 this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
-            case MeshViewPropType.ROTATION:
+            case MeshViewPropType.Rotation:
                 this.meshConcept.rotation = this.convertValue(val, prop, this.meshConcept.rotation);
                 this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
-            case MeshViewPropType.SCALE:
+            case MeshViewPropType.Scale:
                 this.meshConcept.scale = this.convertValue(val, prop, this.meshConcept.scale);
                 this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
-            case MeshViewPropType.NAME:
+            case MeshViewPropType.Name:
                 this.meshConcept.id = val;
                 this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
-            case MeshViewPropType.PATH:
+            case MeshViewPropType.Path:
                 this.meshConcept.path = val;
                 this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
-            case MeshViewPropType.IS_MANUAL_CONTROL:
+            case MeshViewPropType.IsManualControl:
                 this.meshConcept.isManualControl = val;
                 this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
-            case MeshViewPropType.ANIMATION:
-                this.meshConcept.activeAnimation = val;
+            case MeshViewPropType.DefaultAnimation:
+                if (!this.meshConcept.animationId) {
+                    const animationConcept = new AnimationConcept();
+                    animationConcept.id = this.getStores().canvasStore.generateUniqueName(ConceptType.AnimationConcept);
+                    this.getStores().canvasStore.addMeta(animationConcept);
+                    this.meshConcept.animationId = animationConcept.id;
+            
+                }
+
+                this.getStores().canvasStore.getAnimationConceptById(this.meshConcept.animationId).addAnimation({
+                    name: val,
+                    condition: AnimationCondition.Default
+                })
                 this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
             case MeshViewPropType.AnimationState:

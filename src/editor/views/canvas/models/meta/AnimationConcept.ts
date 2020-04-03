@@ -7,6 +7,7 @@ export enum AnimationCondition {
     Default = 'Default',
     RotateLeft =  'RotateLeft',
     RotateRight =  'RotateRight',
+    Move = 'Move'
 }
 
 export interface ElementalAnimation {
