@@ -21,6 +21,7 @@ export class DialogService {
 
     openDialog(dialogType: string) {
         this.activeDialog = this.getDialogByName(dialogType);
+        this.loadDialog();
         this.getServices().updateService().runImmediately(UpdateTask.All);
     }
 
@@ -29,6 +30,7 @@ export class DialogService {
         if (this.activeDialog) {
             ret = true;
         }
+        this.saveDialog();
         this.activeDialog = null;
         this.getServices().updateService().runImmediately(UpdateTask.All);
         return ret;
@@ -44,5 +46,19 @@ export class DialogService {
 
     isOpen(): boolean {
         return !!this.activeDialog;
+    }
+
+    private loadDialog() {
+        switch(this.activeDialog.getName()) {
+            case AnimationSettings.settingsName:
+                (<AnimationSettings> this.activeDialog).load();
+        }
+    }
+
+    private saveDialog() {
+        switch(this.activeDialog.getName()) {
+            case AnimationSettings.settingsName:
+                (<AnimationSettings> this.activeDialog).save();
+        }
     }
 }

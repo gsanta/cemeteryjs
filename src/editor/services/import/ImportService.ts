@@ -5,6 +5,7 @@ import { IConceptImporter } from './IConceptImporter';
 import { MeshConceptImporter } from './MeshConceptImporter';
 import { PathConceptImporter } from './PathConceptImporter';
 import { ConceptType } from '../../views/canvas/models/concepts/Concept';
+import { AnimationConceptImporter } from './AnimationConceptImporter';
 
 export interface WgDefinition {
     _attributes: WgDefinitionAttributes;
@@ -62,16 +63,17 @@ export interface ViewGroupJson {
 
 export class ImportService {
     serviceName = 'import-service';
-    private viewImporters: IConceptImporter[];
+    private conceptImporters: IConceptImporter[];
     private getStores: () => Stores;
     private getServices: () => ServiceLocator;
 
     constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
         this.getServices = getServices;
         this.getStores = getStores;
-        this.viewImporters = [
+        this.conceptImporters = [
             new MeshConceptImporter(rect => this.getStores().canvasStore.addConcept(rect)),
-            new PathConceptImporter(path => this.getStores().canvasStore.addConcept(path))
+            new PathConceptImporter(path => this.getStores().canvasStore.addConcept(path)),
+            new AnimationConceptImporter(animation => this.getStores().canvasStore.addMeta(animation))
         ]
     }
 
@@ -100,7 +102,7 @@ export class ImportService {
         this.getStores().canvasStore.getMeshConcepts().filter(item => item.modelPath).forEach(item => this.getServices().meshDimensionService().setDimensions(item));
     }
 
-    private findViewImporter(viewType: ConceptType): IConceptImporter {
-        return this.viewImporters.find(view => view.type === viewType);
+    private findViewImporter(conceptType: ConceptType): IConceptImporter {
+        return this.conceptImporters.find(conceptImporter => conceptImporter.type === conceptType);
     }
 }

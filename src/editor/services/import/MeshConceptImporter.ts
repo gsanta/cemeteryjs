@@ -14,6 +14,7 @@ export interface RectJson {
         "data-wg-name": string,
         "data-texture": string
         "data-is-manual-control": string;
+        'data-animation-id': string;
     }
 }
 
@@ -60,6 +61,7 @@ export class MeshConceptImporter implements IConceptImporter {
             meshConcept.path = rect._attributes["data-path"];
             meshConcept.isManualControl = isManualControl;
             meshConcept.activeAnimation = rect._attributes["data-animation"];
+            meshConcept.animationId = rect._attributes['data-animation-id'];
 
             this.addGameObject(meshConcept);
         });

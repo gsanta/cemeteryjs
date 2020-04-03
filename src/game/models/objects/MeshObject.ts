@@ -7,6 +7,7 @@ import { toVector3 } from "../../../misc/geometry/utils/GeomUtils";
 import { BehaviourType } from "../../services/behaviour/IBehaviour";
 import { GameObjectType, IGameObject } from "./IGameObject";
 import { RouteObject } from "./RouteObject";
+import { AnimationConcept } from "../../../editor/views/canvas/models/meta/AnimationConcept";
 
 export class MeshObject implements IGameObject {
     readonly objectType = GameObjectType.MeshObject;
@@ -28,9 +29,9 @@ export class MeshObject implements IGameObject {
 
     speed = 0.01;
 
-    activeAnimation: string;
     activeBehaviour: BehaviourType;
     wanderAngle = 0;
+    animation: AnimationConcept;
     private getMesh: (meshName: string) => Mesh;
     private getRouteFunc: () => RouteObject;
 
@@ -57,10 +58,6 @@ export class MeshObject implements IGameObject {
         mesh.setAbsolutePosition(toVector3(point));
     }
 
-    // getAnimationByName(animationName: AnimationName, meshStore: MeshStore): Animation {
-    //     return this.getAnimations(meshStore).find(anim => anim.name === animationName);
-    // }
-
     getDirection(): Point {
         return new Point(Math.sin(this.getRotation()), Math.cos(this.getRotation()));
     }
@@ -79,7 +76,7 @@ export class MeshObject implements IGameObject {
 
     moveBy(vector: Point): void {
         if (this.getMesh(this.meshName)) {
-            this.getMesh(this.meshName).translate(toVector3(vector), 1); //moveWithCollisions(toVector3(vector));
+            this.getMesh(this.meshName).translate(toVector3(vector), 1);
         } else {
             this.dimensions.translate(vector);
         }
@@ -112,13 +109,6 @@ export class MeshObject implements IGameObject {
     getRoute(): RouteObject {
         return this.getRouteFunc();
     }
-
-    // private getAnimations(meshStore: MeshStore): Animation[] {
-    //     return meshStore.getMesh(this.name).skeleton.getAnimationRanges().map(anim => ({
-    //         name: anim.name,
-    //         range: [anim.from, anim.to]
-    //     }));
-    // }
 }
 
 function to2DPoint(vector3: Vector3): Point {

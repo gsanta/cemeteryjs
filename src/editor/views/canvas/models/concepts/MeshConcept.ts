@@ -57,6 +57,7 @@ export class MeshConcept implements Concept {
     wanderAngle = 0;
     animations: string[] = [];
     animationState = AnimationState.Playing;
+    animationId: string;
     layer: number = 10;
     private getMesh: (meshName: string) => Mesh;
 

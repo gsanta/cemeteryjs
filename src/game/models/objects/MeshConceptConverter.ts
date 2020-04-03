@@ -4,14 +4,17 @@ import { RouteObject } from "./RouteObject";
 import { Tools } from "babylonjs";
 import { MeshConcept } from "../../../editor/views/canvas/models/concepts/MeshConcept";
 import { ConceptType } from "../../../editor/views/canvas/models/concepts/Concept";
+import { Stores } from "../../../editor/stores/Stores";
 
 
 export class MeshConceptConverter {
     viewType = ConceptType.MeshConcept;
     private gameFacade: GameFacade;
+    private getStores: () => Stores;
 
-    constructor(gameFacade: GameFacade) {
+    constructor(gameFacade: GameFacade, getStores: () => Stores) {
         this.gameFacade = gameFacade;
+        this.getStores = getStores;
     }
 
     convert(meshView: MeshConcept): void {
@@ -43,10 +46,13 @@ export class MeshConceptConverter {
         meshObject.color = meshView.color;
         meshObject.scale = meshView.scale;
         meshObject.speed = meshView.speed;
-        meshObject.activeAnimation = meshView.activeAnimation;
         meshObject.activeBehaviour = meshView.activeBehaviour;
         meshObject.wanderAngle = meshView.wanderAngle;
         meshObject.isManualControl = meshView.isManualControl;
+
+        if (meshView.animationId) {
+            meshObject.animation = this.getStores().canvasStore.getAnimationConceptById(meshView.animationId);
+        }
 
         this.gameFacade.gameStore.add(meshObject);
     }

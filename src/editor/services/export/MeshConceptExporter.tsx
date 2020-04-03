@@ -54,6 +54,7 @@ export class MeshConceptExporter implements IConceptExporter {
                 data-path={item.path}
                 data-is-manual-control={item.isManualControl ? 'true' : 'false'}
                 data-animation={item.activeAnimation}
+                data-animation-id={item.animationId}
             >
                 {this.renderRect(item)}
                 {this.renderThumbnail(item)}

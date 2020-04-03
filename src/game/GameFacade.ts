@@ -78,7 +78,7 @@ export class GameFacade {
         
 
         this.viewConverters = [
-            new MeshConceptConverter(this),
+            new MeshConceptConverter(this, () => this.stores),
             new PathConceptConverter(this)
         ]
     }

@@ -9,7 +9,7 @@ export enum AnimationCondition {
     RotateRight =  'RotateRight',
 }
 
-export interface SimpleAnimation {
+export interface ElementalAnimation {
     name: string;
     condition: AnimationCondition;
 }
@@ -19,19 +19,19 @@ export class AnimationConcept implements MetaConcept {
     type = ConceptType.AnimationConcept;
     id: string;
 
-    animations: SimpleAnimation[] = [];
+    elementalAnimations: ElementalAnimation[] = [];
 
     getAnimationByCond(cond: AnimationCondition) {
-        return this.animations.find(anim => anim.condition === cond);
+        return this.elementalAnimations.find(anim => anim.condition === cond);
     }
 
-    addAnimation(simpleAnimation: SimpleAnimation) {
-        const index = this.animations.findIndex(anim => anim.condition === simpleAnimation.condition);
+    addAnimation(simpleAnimation: ElementalAnimation) {
+        const index = this.elementalAnimations.findIndex(anim => anim.condition === simpleAnimation.condition);
 
         if (index !== -1) {
-            this.animations[index] = simpleAnimation;
+            this.elementalAnimations[index] = simpleAnimation;
         } else {
-            this.animations.push(simpleAnimation);
+            this.elementalAnimations.push(simpleAnimation);
         }
     }
     

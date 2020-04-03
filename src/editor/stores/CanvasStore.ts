@@ -8,6 +8,7 @@ import { Polygon } from "../../misc/geometry/shapes/Polygon";
 import { Point } from "../../misc/geometry/shapes/Point";
 import { Rectangle } from "../../misc/geometry/shapes/Rectangle";
 import { MetaConcept } from "../views/canvas/models/meta/MetaConcept";
+import { AnimationConcept } from "../views/canvas/models/meta/AnimationConcept";
 
 export interface TypedItem {
     type: string;
@@ -42,6 +43,10 @@ export class CanvasStore {
         this.feedbacks.push(feedback);
     }
 
+    addMeta(metaConcept: MetaConcept) {
+        this.metas.push(metaConcept);
+    }
+
     removeConcept(concept: Concept) {
         this.concepts = without(this.concepts, concept);
         this.getStores().hoverStore.removeItem(concept);
@@ -51,6 +56,10 @@ export class CanvasStore {
     clear(): void {
         this.concepts = [];
         this.feedbacks = [];
+    }
+
+    hasMeta(concept: MetaConcept) {
+        return this.metas.indexOf(concept) !== -1;
     }
 
     getAllConcepts(): Concept[] {
@@ -67,6 +76,14 @@ export class CanvasStore {
 
     getPathConcepts(): PathConcept[] {
         return <PathConcept[]> this.concepts.filter(view => view.type === ConceptType.PathConcept);
+    }
+
+    getAnimationConcepts(): AnimationConcept[] {
+        return <AnimationConcept[]> this.metas.filter(view => view.type === ConceptType.AnimationConcept);
+    }
+
+    getAnimationConceptById(id: string): AnimationConcept {
+        return <AnimationConcept> this.metas.find(meta => meta.id === id);
     }
 
     getIntersectingItemsInRect(rectangle: Rectangle): Concept[] {

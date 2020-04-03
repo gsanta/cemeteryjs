@@ -8,7 +8,7 @@ import { ConnectedDropdownComponent } from '../inputs/DropdownComponent';
 import { AccordionComponent } from '../misc/AccordionComponent';
 import { DialogComponent } from './DialogComponent';
 import { ConnectedInputComponent } from '../inputs/InputComponent';
-import { SimpleAnimation } from '../../views/canvas/models/meta/AnimationConcept';
+import { ElementalAnimation } from '../../views/canvas/models/meta/AnimationConcept';
 
 const AnimationDialogStyled = styled(DialogComponent)`
     width: 400px;
@@ -25,7 +25,6 @@ export class AnimationDialogComponent extends React.Component {
     render(): JSX.Element {
         const dialogSettings = this.context.getServices().dialogService().getDialogByName<AnimationSettings>(AnimationSettings.settingsName);
         const meshConcept = this.context.getStores().selectionStore.getConcept() as MeshConcept;
-        dialogSettings.meshConcept = meshConcept;
 
         return this.context.getServices().dialogService().isActiveDialog('animation-settings') ?
             (
@@ -88,7 +87,7 @@ export class AnimationDialogComponent extends React.Component {
     
     private renderDefaultAnimation(): JSX.Element {
         const settings = this.context.getServices().dialogService().getDialogByName<AnimationSettings>(AnimationSettings.settingsName);
-        const val: SimpleAnimation = settings.getVal(AnimationSettingsProps.DefaultAnimation);
+        const val: ElementalAnimation = settings.getVal(AnimationSettingsProps.DefaultAnimation);
 
         return (
             <SettingsRowStyled>
@@ -130,7 +129,7 @@ export class AnimationDialogComponent extends React.Component {
 
     private renderLeftRotation(): JSX.Element {
         const settings = this.context.getServices().dialogService().getDialogByName<AnimationSettings>(AnimationSettings.settingsName);
-        const val: SimpleAnimation = settings.getVal(AnimationSettingsProps.RotateLeftAnimation);
+        const val: ElementalAnimation = settings.getVal(AnimationSettingsProps.RotateLeftAnimation);
 
         return (
             <SettingsRowStyled>
@@ -150,7 +149,7 @@ export class AnimationDialogComponent extends React.Component {
 
     private renderRightRotation(): JSX.Element {
         const settings = this.context.getServices().dialogService().getDialogByName<AnimationSettings>(AnimationSettings.settingsName);
-        const val: SimpleAnimation = settings.getVal(AnimationSettingsProps.RotateRightAnimation);
+        const val: ElementalAnimation = settings.getVal(AnimationSettingsProps.RotateRightAnimation);
 
         return (
             <SettingsRowStyled>

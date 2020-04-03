@@ -64,4 +64,21 @@ export class AnimationSettings extends AbstractSettings<AnimationSettingsProps> 
                 break;
         }
     }
+
+    load() {
+        this.meshConcept = this.getStores().selectionStore.getConcept() as MeshConcept;
+        if (this.meshConcept.animationId) {
+            this.animationConcept = this.getStores().canvasStore.getAnimationConceptById(this.meshConcept.animationId);            
+        }
+        this.getServices().updateService().runImmediately(UpdateTask.RepaintSettings);
+    }
+
+    save() {
+        if (this.animationConcept.elementalAnimations.length > 0) {
+            this.meshConcept.animationId = this.animationConcept.id;
+            if (!this.getStores().canvasStore.hasMeta(this.animationConcept)) {
+                this.getStores().canvasStore.addMeta(this.animationConcept);
+            }
+        }
+    }
 }
