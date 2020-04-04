@@ -38,7 +38,7 @@ export class SelectTool extends AbstractTool {
             this.view.getToolByType(ToolType.POINTER).click();
         } else if (this.getStores().selectionStore.getAll().length > 0) {
             this.getStores().selectionStore.clear();
-            this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
+            this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas, UpdateTask.RepaintSettings);
         }
     }
 
@@ -68,7 +68,7 @@ export class SelectTool extends AbstractTool {
         this.getStores().selectionStore.addItem(...canvasItems)
 
         this.rectSelector.finish();
-        this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
+        this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas, UpdateTask.RepaintSettings);
     }
 
     over(item: Concept | Feedback) {

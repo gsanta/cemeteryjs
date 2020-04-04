@@ -46,7 +46,7 @@ export class AnimationDialogComponent extends React.Component {
         const body = (
             <React.Fragment>
                 {this.renderName()}
-                {this.renderDefaultAnimation()}
+                {this.renderMoveAnimation()}
             </React.Fragment>
         )
 
@@ -85,17 +85,17 @@ export class AnimationDialogComponent extends React.Component {
     }
 
     
-    private renderDefaultAnimation(): JSX.Element {
+    private renderMoveAnimation(): JSX.Element {
         const settings = this.context.getServices().dialogService().getDialogByName<AnimationSettings>(AnimationSettings.settingsName);
-        const val: ElementalAnimation = settings.getVal(AnimationSettingsProps.DefaultAnimation);
+        const val: ElementalAnimation = settings.getVal(AnimationSettingsProps.MoveAnimation);
 
         return (
             <SettingsRowStyled>
-                <LabelColumnStyled>Default anim.</LabelColumnStyled>
+                <LabelColumnStyled>Movement</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedDropdownComponent
                         formController={settings}
-                        propertyName={AnimationSettingsProps.DefaultAnimation}
+                        propertyName={AnimationSettingsProps.MoveAnimation}
                         values={settings.meshConcept.animations}
                         currentValue={val ? val.name : undefined}
                         placeholder="Select animation"

@@ -42,6 +42,8 @@ export class Editor {
         this.gameFacade.setup();
         this.gameApi = new GameService(this.gameFacade);
 
+        this.services.services.push(this.gameApi);
+
         this.windowFactories.forEach(factory => factory.getWindowController(this, this.services, this.stores).setup());
         
         this.services.storageService().loadLevelIndexes()

@@ -8,7 +8,7 @@ import { AnimationConcept, AnimationCondition } from '../models/meta/AnimationCo
 
 export enum AnimationSettingsProps {
     Name = 'Name',
-    DefaultAnimation = 'DefaultAnimation',
+    MoveAnimation = 'MoveAnimation',
     RotateLeftAnimation = 'RotateLeftAnimation',
     RotateRightAnimation = 'RotateRightAnimation',
 }
@@ -39,8 +39,8 @@ export class AnimationSettings extends AbstractSettings<AnimationSettingsProps> 
                 return this.animationConcept.getAnimationByCond(AnimationCondition.RotateLeft);
             case AnimationSettingsProps.RotateRightAnimation:
                 return this.animationConcept.getAnimationByCond(AnimationCondition.RotateRight);
-            case AnimationSettingsProps.DefaultAnimation:
-                return this.animationConcept.getAnimationByCond(AnimationCondition.Default);
+            case AnimationSettingsProps.MoveAnimation:
+                return this.animationConcept.getAnimationByCond(AnimationCondition.Move);
         }
     }
 
@@ -58,8 +58,8 @@ export class AnimationSettings extends AbstractSettings<AnimationSettingsProps> 
                 this.animationConcept.addAnimation({name: val, condition: AnimationCondition.RotateRight});
                 this.getServices().updateService().runImmediately(UpdateTask.RepaintSettings);
                 break;
-            case AnimationSettingsProps.DefaultAnimation:
-                this.animationConcept.addAnimation({name: val, condition: AnimationCondition.Default});
+            case AnimationSettingsProps.MoveAnimation:
+                this.animationConcept.addAnimation({name: val, condition: AnimationCondition.Move});
                 this.getServices().updateService().runImmediately(UpdateTask.RepaintSettings);
                 break;
         }

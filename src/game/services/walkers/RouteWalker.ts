@@ -5,6 +5,7 @@ import { LifeCycleEvent } from "../triggers/ILifeCycleTrigger";
 import { RouteObject } from "../../models/objects/RouteObject";
 import { PathObject } from "../../models/objects/PathObject";
 import { Point } from "../../../misc/geometry/shapes/Point";
+import { AnimationCondition } from "../../../editor/views/canvas/models/meta/AnimationConcept";
 
 const defaultSpeed = 1000 / 4;
 
@@ -79,6 +80,10 @@ export class RouteWalker implements IEventListener {
         this.gameFacade.gameStore.getRouteObjects().forEach(route => {
             const meshObj = route.getMeshObject();
             const pathObj = route.getPathObject();
+            
+            if (meshObj.animation) {
+                meshObj.activeElementalAnimation = meshObj.animation.getAnimationByCond(AnimationCondition.Move);
+            }
             meshObj.setPosition(pathObj.root);
         });
     }
