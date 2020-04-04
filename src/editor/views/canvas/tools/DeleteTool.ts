@@ -72,7 +72,6 @@ export class DeleteTool extends AbstractTool {
     eraseAll() {
         this.getServices().storageService().clearAll();
         this.getStores().canvasStore.clear();
-        this.getServices().levelService().updateCurrentLevel();
         this.getServices().updateService().runImmediately(UpdateTask.All);
     }
 }

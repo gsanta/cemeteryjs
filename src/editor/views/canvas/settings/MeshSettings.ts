@@ -1,5 +1,4 @@
 import { ServiceLocator } from '../../../services/ServiceLocator';
-import { CanvasView } from '../CanvasView';
 import { AbstractSettings, PropertyType } from "./AbstractSettings";
 import { UpdateTask } from '../../../services/UpdateServices';
 import { MeshConcept } from '../models/concepts/MeshConcept';
@@ -17,9 +16,9 @@ export enum MeshViewPropType {
     Scale = 'scale',
     Name = 'name',
     Path = 'path',
-    IsManualControl = 'is_manual_control',
-    DefaultAnimation = 'animation',
-    AnimationState = 'animation_state'
+    IsManualControl = 'is-manual-control',
+    DefaultAnimation = 'default-animation',
+    AnimationState = 'animation-state'
 }
 
 const propertyTypes = {
@@ -79,8 +78,9 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                 return this.meshConcept.isManualControl;
             case MeshViewPropType.DefaultAnimation:
                 if (this.meshConcept.animationId) {
-                    this.getStores().canvasStore.getAnimationConceptById(this.meshConcept.animationId).getAnimationByCond(AnimationCondition.Default);
+                    return this.getStores().canvasStore.getAnimationConceptById(this.meshConcept.animationId).getAnimationByCond(AnimationCondition.Default);
                 }
+                break;
             case MeshViewPropType.AnimationState:
                 return this.meshConcept.animationState;
     
@@ -133,18 +133,27 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                 this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
             case MeshViewPropType.DefaultAnimation:
-                if (!this.meshConcept.animationId) {
-                    const animationConcept = new AnimationConcept();
-                    animationConcept.id = this.getStores().canvasStore.generateUniqueName(ConceptType.AnimationConcept);
-                    this.getStores().canvasStore.addMeta(animationConcept);
-                    this.meshConcept.animationId = animationConcept.id;
-            
+                if (val === undefined) {
+                    if (this.meshConcept.animationId) {
+                        const animationConcept = this.getStores().canvasStore.getAnimationConceptById(this.meshConcept.animationId);
+                        this.getStores().canvasStore.removeMeta(animationConcept);
+                        this.meshConcept.animationId = undefined;
+                    }
+                } else {
+                    if (!this.meshConcept.animationId) {
+                        const animationConcept = new AnimationConcept();
+                        animationConcept.id = this.getStores().canvasStore.generateUniqueName(ConceptType.AnimationConcept);
+                        this.getStores().canvasStore.addMeta(animationConcept);
+                        this.meshConcept.animationId = animationConcept.id;
+                
+                    }
+    
+                    this.getStores().canvasStore.getAnimationConceptById(this.meshConcept.animationId).addAnimation({
+                        name: val,
+                        condition: AnimationCondition.Default
+                    })
                 }
 
-                this.getStores().canvasStore.getAnimationConceptById(this.meshConcept.animationId).addAnimation({
-                    name: val,
-                    condition: AnimationCondition.Default
-                })
                 this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
             case MeshViewPropType.AnimationState:

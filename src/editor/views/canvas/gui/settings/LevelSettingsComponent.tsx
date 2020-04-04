@@ -3,7 +3,7 @@ import { AppContext, AppContextType } from '../../../../gui/Context';
 import { ButtonComponent } from '../../../../gui/inputs/ButtonComponent';
 import { ConnectedInputComponent } from '../../../../gui/inputs/InputComponent';
 import { LevelFormPropType, LevelSettings } from '../../settings/LevelSettings';
-import { InputStyled, LabelStyled, SettingsRowStyled } from './SettingsComponent';
+import { SettingsRowStyled, LabelColumnStyled, FieldColumnStyled } from './SettingsComponent';
 import { GridComponent } from '../../../../gui/misc/GridComponent';
 import { CanvasView } from '../../CanvasView';
 
@@ -19,22 +19,22 @@ export class LevelSettingsComponent extends React.Component {
         return (
             <div>
                 <SettingsRowStyled>
-                    <LabelStyled>Level</LabelStyled>
-                    <InputStyled>
+                    <LabelColumnStyled>Level</LabelColumnStyled>
+                    <FieldColumnStyled>
                         <GridComponent isReversed={false} markedValues={levelIndexes} value={level as number} onChange={(val) => levelSettings.updateProp(val, LevelFormPropType.Level)}/>
-                    </InputStyled>
+                    </FieldColumnStyled>
                 </SettingsRowStyled>
 
                 <SettingsRowStyled>
-                    <LabelStyled></LabelStyled>
-                    <InputStyled>
+                    <LabelColumnStyled></LabelColumnStyled>
+                    <FieldColumnStyled>
                         <ButtonComponent text="Clear level" type="info" onClick={() => levelSettings.updateProp(level, LevelFormPropType.ClearLevel)}/>
-                    </InputStyled>
+                    </FieldColumnStyled>
                 </SettingsRowStyled>
 
                 <SettingsRowStyled>
-                    <LabelStyled>Level name</LabelStyled>
-                    <InputStyled>
+                    <LabelColumnStyled>Level name</LabelColumnStyled>
+                    <FieldColumnStyled>
                         <ConnectedInputComponent
                             formController={levelSettings}
                             propertyName={LevelFormPropType.LevelName}
@@ -42,7 +42,7 @@ export class LevelSettingsComponent extends React.Component {
                             type="text"
                             value={levelSettings.getVal(LevelFormPropType.LevelName)}
                         />
-                    </InputStyled>
+                    </FieldColumnStyled>
                 </SettingsRowStyled>
             </div>
         );

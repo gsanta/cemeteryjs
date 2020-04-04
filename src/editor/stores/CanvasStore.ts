@@ -47,6 +47,10 @@ export class CanvasStore {
         this.metas.push(metaConcept);
     }
 
+    removeMeta(metaConcept: MetaConcept) {
+        this.metas = without(this.metas, metaConcept);
+    }
+
     removeConcept(concept: Concept) {
         this.concepts = without(this.concepts, concept);
         this.getStores().hoverStore.removeItem(concept);

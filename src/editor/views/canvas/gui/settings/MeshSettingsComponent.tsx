@@ -12,7 +12,7 @@ import { AccordionComponent } from '../../../../gui/misc/AccordionComponent';
 import { CanvasView } from '../../CanvasView';
 import { MeshViewPropType, MeshSettings } from '../../settings/MeshSettings';
 import { AnimationState, MeshConcept } from '../../models/concepts/MeshConcept';
-import { GroupedRowsStyled, InputStyled, LabelStyled, SettingsRowStyled } from './SettingsComponent';
+import { GroupedRowsStyled, FieldColumnStyled, LabelColumnStyled, SettingsRowStyled, MultiFieldColumnStyled } from './SettingsComponent';
 import { ConnectedGridComponent } from '../../../../gui/misc/GridComponent';
 import { ButtonComponent } from '../../../../gui/inputs/ButtonComponent';
 import { AnimationCondition, ElementalAnimation } from '../../models/meta/AnimationConcept';
@@ -52,8 +52,8 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
 
         return (
             <SettingsRowStyled>
-                <LabelStyled>Name</LabelStyled>
-                <InputStyled>
+                <LabelColumnStyled>Name</LabelColumnStyled>
+                <FieldColumnStyled>
                     <ConnectedInputComponent
                         formController={meshSettings}
                         propertyName={MeshViewPropType.Name}
@@ -61,7 +61,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
                         type="text"
                         value={meshSettings.getVal(MeshViewPropType.Name)}
                     />
-                </InputStyled>
+                </FieldColumnStyled>
             </SettingsRowStyled>
         );        
     }
@@ -71,8 +71,8 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
 
         return (
             <SettingsRowStyled>
-                <LabelStyled>Model</LabelStyled>
-                <InputStyled>
+                <LabelColumnStyled>Model</LabelColumnStyled>
+                <FieldColumnStyled>
                     <ConnectedFileUploadComponent
                         formController={meshSettings}
                         propertyName={MeshViewPropType.Model}
@@ -81,7 +81,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
                         value={meshSettings.getVal(MeshViewPropType.Model)}
                         readDataAs="dataUrl"
                     />
-                </InputStyled>
+                </FieldColumnStyled>
             </SettingsRowStyled>
         );
     }
@@ -92,8 +92,8 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
 
         return (
             <SettingsRowStyled>
-                <LabelStyled>Texture</LabelStyled>
-                <InputStyled>
+                <LabelColumnStyled>Texture</LabelColumnStyled>
+                <FieldColumnStyled>
                     <ConnectedFileUploadComponent
                         formController={meshSettings}
                         propertyName={MeshViewPropType.Texture}
@@ -102,7 +102,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
                         value={meshSettings.getVal(MeshViewPropType.Texture)}
                         readDataAs="dataUrl"
                     />
-                </InputStyled>
+                </FieldColumnStyled>
             </SettingsRowStyled>
         );
     }
@@ -112,8 +112,8 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
 
         return (
             <SettingsRowStyled>
-                <LabelStyled>Thumbnail</LabelStyled>
-                <InputStyled>
+                <LabelColumnStyled>Thumbnail</LabelColumnStyled>
+                <FieldColumnStyled>
                     <ConnectedFileUploadComponent
                         formController={meshSettings}
                         propertyName={MeshViewPropType.Thumbnail}
@@ -122,7 +122,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
                         value={meshSettings.getVal(MeshViewPropType.Thumbnail)}
                         readDataAs="dataUrl"
                     />
-                </InputStyled>
+                </FieldColumnStyled>
             </SettingsRowStyled>
         );
     }
@@ -132,10 +132,10 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
 
         return (
             <SettingsRowStyled>
-                <LabelStyled>Layer</LabelStyled>
-                <InputStyled>
+                <LabelColumnStyled>Layer</LabelColumnStyled>
+                <FieldColumnStyled>
                     <ConnectedGridComponent isReversed={true} markedValues={[]} formController={meshSettings} propertyName={MeshViewPropType.Layer} value={meshSettings.getVal(MeshViewPropType.Layer)}/>
-                </InputStyled>
+                </FieldColumnStyled>
             </SettingsRowStyled>
         );
     }
@@ -145,8 +145,8 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
 
         return (
             <SettingsRowStyled>
-                <LabelStyled>Rotation</LabelStyled>
-                <InputStyled>
+                <LabelColumnStyled>Rotation</LabelColumnStyled>
+                <FieldColumnStyled>
                 <ConnectedInputComponent
                     formController={meshSettings}
                     propertyName={MeshViewPropType.Rotation}
@@ -155,7 +155,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
                     value={meshSettings.getVal(MeshViewPropType.Rotation)}
                     placeholder="0"
                 />
-                </InputStyled>
+                </FieldColumnStyled>
             </SettingsRowStyled>
         );
     }
@@ -165,8 +165,8 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
 
         return (
             <SettingsRowStyled>
-                <LabelStyled>Scale</LabelStyled>
-                <InputStyled>
+                <LabelColumnStyled>Scale</LabelColumnStyled>
+                <FieldColumnStyled>
                     <ConnectedInputComponent
                         formController={meshSettings}
                         propertyName={MeshViewPropType.Scale}
@@ -174,7 +174,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
                         type="number"
                         value={meshSettings.getVal(MeshViewPropType.Scale)}
                     />
-                </InputStyled>
+                </FieldColumnStyled>
             </SettingsRowStyled>
         );
     }
@@ -263,16 +263,17 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
 
         return (
             <SettingsRowStyled>
-                <LabelStyled>Path</LabelStyled>
-                <InputStyled>
+                <LabelColumnStyled>Path</LabelColumnStyled>
+                <MultiFieldColumnStyled>
                     <ConnectedDropdownComponent
                         formController={meshSettings}
                         propertyName={MeshViewPropType.Path}
                         values={pathNames}
                         currentValue={val}
+                        placeholder="Select path"
                     />
-                </InputStyled>
-                {val ? <ClearIconComponent onClick={() => meshSettings.updateProp(undefined, MeshViewPropType.Path)}/> : null}
+                    {val ? <ClearIconComponent onClick={() => meshSettings.updateProp(undefined, MeshViewPropType.Path)}/> : null}
+                </MultiFieldColumnStyled>
             </SettingsRowStyled>
         );
     }
@@ -283,7 +284,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
 
         return (
             <SettingsRowStyled verticalAlign='right'>
-                <LabelStyled>Manual Control</LabelStyled>
+                <LabelColumnStyled>Manual Control</LabelColumnStyled>
                 <CheckboxComponent
                     isSelected={meshSettings.getVal(MeshViewPropType.IsManualControl)}
                     onChange={(selected: boolean) => meshSettings.updateProp(selected, MeshViewPropType.IsManualControl)}
@@ -295,10 +296,10 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
     private renderOpenCustomAnimationButton(): JSX.Element {
         return (
             <SettingsRowStyled>
-              <LabelStyled></LabelStyled>
-                <InputStyled>
+              <LabelColumnStyled></LabelColumnStyled>
+                <FieldColumnStyled>
                     <ButtonComponent text="Custom animation" type="info" onClick={() => this.context.getServices().dialogService().openDialog('animation-settings')}/>
-                </InputStyled>
+                </FieldColumnStyled>
             </SettingsRowStyled>
         );
     }
@@ -331,16 +332,17 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
 
         return (
             <SettingsRowStyled>
-                <LabelStyled>Animation</LabelStyled>
-                <InputStyled>
+                <LabelColumnStyled>Animation</LabelColumnStyled>
+                <MultiFieldColumnStyled>
                     <ConnectedDropdownComponent
                         formController={meshSettings}
                         propertyName={MeshViewPropType.DefaultAnimation}
                         values={this.props.concept.animations}
-                        currentValue={val.name}
+                        currentValue={val ? val.name : undefined}
+                        placeholder="Select animation"
                     />
-                </InputStyled>
-                {val ? <ClearIconComponent onClick={() => meshSettings.updateProp(undefined, MeshViewPropType.DefaultAnimation)}/> : null}
+                    {val ? <ClearIconComponent onClick={() => meshSettings.updateProp(undefined, MeshViewPropType.DefaultAnimation)}/> : null}
+                </MultiFieldColumnStyled>
             </SettingsRowStyled>
         );
     }

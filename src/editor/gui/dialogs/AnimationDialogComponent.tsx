@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { InputStyled, LabelStyled, SettingsRowStyled } from '../../views/canvas/gui/settings/SettingsComponent';
+import { SettingsRowStyled, LabelColumnStyled, FieldColumnStyled } from '../../views/canvas/gui/settings/SettingsComponent';
 import { MeshConcept } from '../../views/canvas/models/concepts/MeshConcept';
 import { AnimationSettings, AnimationSettingsProps } from '../../views/canvas/settings/AnimationSettings';
 import { AppContext, AppContextType } from '../Context';
@@ -70,8 +70,8 @@ export class AnimationDialogComponent extends React.Component {
 
         return (
             <SettingsRowStyled>
-                <LabelStyled>Name</LabelStyled>
-                <InputStyled>
+                <LabelColumnStyled>Name</LabelColumnStyled>
+                <FieldColumnStyled>
                     <ConnectedInputComponent
                         formController={settings}
                         propertyName={AnimationSettingsProps.Name}
@@ -79,7 +79,7 @@ export class AnimationDialogComponent extends React.Component {
                         type="text"
                         value={settings.getVal(AnimationSettingsProps.Name)}
                     />
-                </InputStyled>
+                </FieldColumnStyled>
             </SettingsRowStyled>
         );        
     }
@@ -91,15 +91,16 @@ export class AnimationDialogComponent extends React.Component {
 
         return (
             <SettingsRowStyled>
-                <LabelStyled>Default anim.</LabelStyled>
-                <InputStyled>
+                <LabelColumnStyled>Default anim.</LabelColumnStyled>
+                <FieldColumnStyled>
                     <ConnectedDropdownComponent
                         formController={settings}
                         propertyName={AnimationSettingsProps.DefaultAnimation}
                         values={settings.meshConcept.animations}
                         currentValue={val ? val.name : undefined}
+                        placeholder="Select animation"
                     />
-                </InputStyled>
+                </FieldColumnStyled>
                 {/* {val ? <ClearIconComponent onClick={() => meshSettings.updateProp(undefined, MeshViewPropType.ANIMATION)}/> : null} */}
             </SettingsRowStyled>
         );
@@ -133,15 +134,16 @@ export class AnimationDialogComponent extends React.Component {
 
         return (
             <SettingsRowStyled>
-                <LabelStyled>Left rotation anim.</LabelStyled>
-                <InputStyled>
+                <LabelColumnStyled>Left rotation anim.</LabelColumnStyled>
+                <FieldColumnStyled>
                     <ConnectedDropdownComponent
                         formController={settings}
                         propertyName={AnimationSettingsProps.RotateLeftAnimation}
                         values={settings.meshConcept.animations}
                         currentValue={val ? val.name : undefined}
+                        placeholder="Select animation"
                     />
-                </InputStyled>
+                </FieldColumnStyled>
                 {/* {val ? <ClearIconComponent onClick={() => meshSettings.updateProp(undefined, MeshViewPropType.ANIMATION)}/> : null} */}
             </SettingsRowStyled>
         );
@@ -153,15 +155,16 @@ export class AnimationDialogComponent extends React.Component {
 
         return (
             <SettingsRowStyled>
-                <LabelStyled>Right rotation anim.</LabelStyled>
-                <InputStyled>
+                <LabelColumnStyled>Right rotation anim.</LabelColumnStyled>
+                <FieldColumnStyled>
                     <ConnectedDropdownComponent
                         formController={settings}
                         propertyName={AnimationSettingsProps.RotateRightAnimation}
                         values={settings.meshConcept.animations}
                         currentValue={val ? val.name : undefined}
+                        placeholder="Select animation"
                     />
-                </InputStyled>
+                </FieldColumnStyled>
                 {/* {val ? <ClearIconComponent onClick={() => meshSettings.updateProp(undefined, MeshViewPropType.ANIMATION)}/> : null} */}
             </SettingsRowStyled>
         );

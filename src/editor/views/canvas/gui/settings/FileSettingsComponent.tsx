@@ -9,6 +9,7 @@ import { BlankIconComponent } from '../../../../gui/icons/tools/BlankIconCompone
 import { DeleteTool } from '../../tools/DeleteTool';
 import { ToolType } from '../../tools/Tool';
 import { colors } from '../../../../gui/styles';
+import { CanvasView } from '../../CanvasView';
 
 export interface GeneralFormComponentProps {
     isEditorOpen: boolean;
@@ -43,6 +44,6 @@ export class FileSettingsComponent extends React.Component<GeneralFormComponentP
     }
 
     private blank() {
-        this.context.getStores().viewStore.getActiveView().getToolByType<DeleteTool>(ToolType.DELETE).eraseAll();
+        this.context.getStores().viewStore.getViewById(CanvasView.id).getToolByType<DeleteTool>(ToolType.DELETE).eraseAll();
     }
 }

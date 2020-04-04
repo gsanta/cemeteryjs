@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { colors } from "../../../../gui/styles";
 
-export const LabelStyled = styled.div`
+export const LabelColumnStyled = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -9,11 +9,18 @@ export const LabelStyled = styled.div`
     font-size: 12px;
 `;
 
-export const InputStyled = styled.div`
+export const FieldColumnStyled = styled.div`
     width: calc(100% - 70px);
     max-width: 250px;
     overflow: hidden;
     display: inline-block;
+`;
+
+export const MultiFieldColumnStyled = styled.div`
+    width: calc(100% - 70px);
+    max-width: 250px;
+    overflow: hidden;
+    display: flex;
 `;
 
 export interface SettingsRowProps {
