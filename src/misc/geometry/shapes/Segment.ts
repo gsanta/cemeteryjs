@@ -7,14 +7,15 @@ import { StripeView } from './StripeView';
 export class Segment implements Shape {
     private points: [Point, Point] = [null, null];
     private orderedPoints: [Point, Point] = [null, null];
-
+    
     constructor(endPoint1: Point, endPoint2: Point) {
         [this.points[0], this.points[1]] = [endPoint1, endPoint2];
         this.orderedPoints = this.points;
     }
 
+
     public getPoints(): Point[] {
-        return this.orderedPoints;
+        return this.points;
     }
 
     public setPoint(index: number, newPoint: Point): Shape {

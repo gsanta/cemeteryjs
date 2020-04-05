@@ -13,7 +13,7 @@ export class RouteObject implements IGameObject {
         this.getPathObjectFunc = getPathObject;
     }
     id: string;
-    currentStop: number = 0;
+    currentStop: number = undefined;
     animation: string;
     isFinished = false;
     repeat = true;
@@ -28,7 +28,7 @@ export class RouteObject implements IGameObject {
     }
 
     reset() {
-        this.currentStop = 1;
+        this.currentStop = undefined;
         this.isFinished = false;
         this.getMeshObject().setPosition(this.getPathObject().root);
     }

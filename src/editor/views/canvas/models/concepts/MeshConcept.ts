@@ -7,6 +7,7 @@ import { toVector3 } from '../../../../../misc/geometry/utils/GeomUtils';
 import { EditPoint } from '../feedbacks/EditPoint';
 import { Feedback } from '../feedbacks/Feedback';
 import { Concept, ConceptType } from './Concept';
+import { toDegree } from '../../../../../misc/geometry/utils/Measurements';
 
 export enum WorldItemShape {
     RECTANGLE = 'rect',
@@ -90,6 +91,7 @@ export class MeshConcept implements Concept {
     setDirection(newDir: Point): void {
         const currentDir = this.getDirection();
         const angle1 = Math.atan2(newDir.y, newDir.x) - Math.atan2(currentDir.y, currentDir.x);
+        console.log(toDegree(angle1));
         const angle2 = Math.atan2(currentDir.y, currentDir.x) - Math.atan2(newDir.y, newDir.x);
         const angle = Math.min(angle1, angle2);
         this.rotation += angle;

@@ -102,8 +102,8 @@ export class GameFacade {
         return this.modelLoader.loadAll(this.gameStore.getMeshObjects()).then(
             () => {
                 new CreateMeshModifier(this.gameEngine.scene, this).apply(this.gameStore.getMeshObjects())
-
-                this.routeWalker.initRoutes();
+                this.routeWalker.start();
+                // this.routeWalker.initRoutes();
 
                 return this.gameStore.getMeshObjects();
             }

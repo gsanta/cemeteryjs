@@ -8,6 +8,7 @@ import { BehaviourType } from "../../services/behaviour/IBehaviour";
 import { GameObjectType, IGameObject } from "./IGameObject";
 import { RouteObject } from "./RouteObject";
 import { AnimationConcept, ElementalAnimation } from "../../../editor/views/canvas/models/meta/AnimationConcept";
+import { toDegree } from "../../../misc/geometry/utils/Measurements";
 
 export class MeshObject implements IGameObject {
     readonly objectType = GameObjectType.MeshObject;
@@ -40,6 +41,10 @@ export class MeshObject implements IGameObject {
         this.getMesh = getMesh;
         this.id = name;
         this.getRouteFunc = getRoute;
+    }
+
+    hasMesh() {
+        return this.getMesh(this.id);
     }
 
     addChild(meshObject: MeshObject) {
@@ -84,10 +89,11 @@ export class MeshObject implements IGameObject {
     }
 
     setRotation(direction: Point) {
-        const rotation = 2 * Math.PI -  Math.atan2(direction.y, direction.x);
+        const rotation = Math.atan2(direction.y, direction.x) + Math.PI / 2;
 
         if (this.getMesh(this.meshName)) {
-            this.getMesh(this.meshName).rotation.y = rotation;
+            console.log(toDegree(rotation));
+            this.getMesh(this.meshName).rotation.y = - rotation;
         } else {
             this.rotation = rotation;
         }
