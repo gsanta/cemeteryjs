@@ -3,10 +3,11 @@ import { GameEvent } from "../GameEventManager";
 import { GameFacade } from "../../GameFacade";
 import { LifeCycleEvent } from "../triggers/ILifeCycleTrigger";
 import { RouteObject } from "../../models/objects/RouteObject";
-import { PathObject } from "../../models/objects/PathObject";
+import { PathObject, PathCorner } from "../../models/objects/PathObject";
 import { Point } from "../../../misc/geometry/shapes/Point";
 import { AnimationCondition } from "../../../editor/views/canvas/models/meta/AnimationConcept";
 import { Vector3 } from "babylonjs";
+import { Segment } from "../../../misc/geometry/shapes/Segment";
 
 const defaultSpeed = 1000 / 4;
 
@@ -53,7 +54,7 @@ export class RouteWalker implements IEventListener {
     }
 
     private updateRoute(route: RouteObject) {
-        if (route.currentStop === undefined) {
+        if (route.currentGoal === undefined) {
             this.initRoute(route);
         } else {
             this.moveRoute(route);
@@ -62,12 +63,11 @@ export class RouteWalker implements IEventListener {
 
     private isNextStopReached(route: RouteObject): boolean {
         const meshObj = route.getMeshObject();
-        const pathObj = route.getPathObject();
-
         const meshPos = meshObj.getPosition();
-        const currentStopPos = route.currentStop;
 
-        return meshPos.distanceTo(pathObj.points[currentStopPos]) < 1;
+        let point = route.isTurning ? route.currentGoal.point2 : route.currentGoal.point1;
+
+        return meshPos.distanceTo(point) < 1;
     }
 
     private moveRoute(route: RouteObject) {
@@ -79,13 +79,13 @@ export class RouteWalker implements IEventListener {
 
         
         if (this.isNextStopReached(route)) {
-            if (pathObj.tree.get(route.currentStop).length === 0) {
+            if (route.currentGoal === route.path[route.path.length - 1]) {
                 route.reset();
             } else {
-                const currentStop = route.currentStop;
-                const nextStop = this.chooseRandomBranch(pathObj, route.currentStop);
-                const direction =  pathObj.points[nextStop].subtract(pathObj.points[currentStop]).normalize();
-                route.currentStop = nextStop;
+                // const nextStop = this.chooseRandomBranch(pathObj, route.currentStop);
+                const prevGoal = route.path[route.path.indexOf(route.currentGoal) - 1];
+                const direction =  prevGoal.point2.subtract(route.currentGoal.point1).normalize();
+                route.currentGoal = nextStop;
                 meshObj.setRotation(direction);
             }
         }
@@ -101,8 +101,10 @@ export class RouteWalker implements IEventListener {
             meshObj.activeElementalAnimation = meshObj.animation.getAnimationByCond(AnimationCondition.Move);
         }
 
-        route.currentStop = this.chooseRandomBranch(pathObj, 0);
-        const direction =  pathObj.points[route.currentStop].subtract(pathObj.points[0]).normalize();
+        route.path = this.createPathCorners(pathObj);
+
+        route.currentGoal = 0;
+        const direction =  route.path[1].point1.subtract(route.path[0].controlPoint).normalize();
 
         meshObj.setPosition(pathObj.root);
         meshObj.setRotation(direction);
@@ -113,5 +115,20 @@ export class RouteWalker implements IEventListener {
         const randomBranch = Math.floor(Math.random() * len);
 
         return pathObj.tree.get(currentPoint)[randomBranch];
+    }
+
+    private createPathCorners(pathObject: PathObject): PathCorner[] {
+        const pathCorners: PathCorner[] = [];
+        pathCorners.push(new PathCorner(pathObject.points[0]));
+        for (let i = 1; i < pathObject.points.length - 1; i++) {
+            const corner: PathCorner = new PathCorner()
+            let vector = new Segment(pathObject.points[i - 1], pathObject.points[i]).toVector().mul(0.9);
+            corner.point1 = pathObject.points[i - 1].clone().add(vector);
+            corner.controlPoint = pathObject.points[i];
+            vector = new Segment(pathObject.points[i], pathObject.points[i + 1]).toVector().mul(0.1);
+            corner.point2 = pathObject.points[i].clone().add(vector);
+        }
+        pathCorners.push(new PathCorner(pathObject.points[pathObject.points.length - 1]));
+        return pathCorners;
     }
 }

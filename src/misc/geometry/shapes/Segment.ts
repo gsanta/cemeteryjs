@@ -136,7 +136,7 @@ export class Segment implements Shape {
     }
 
     toVector(): Point {
-        return new Point(this.getPoints()[0].x - this.getPoints()[1].x, this.getPoints()[0].y - this.getPoints()[1].y);
+        return new Point(this.getPoints()[1].x - this.getPoints()[0].x, this.getPoints()[1].y - this.getPoints()[0].y);
     }
 
     private isXWithinSegment(x: number): boolean {
