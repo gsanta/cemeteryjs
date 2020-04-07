@@ -111,6 +111,10 @@ export class Point {
         return Math.atan2(norm1.y, norm1.x) - Math.atan2(norm2.y, norm2.x);
     }
 
+    vectorAngle(): number {
+        return Math.atan2(this.y, this.x) + Math.PI / 2;
+    }
+
     len(): number {
         return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
     }

@@ -235,9 +235,15 @@ export class Segment implements Shape {
                 return new Segment(new Point(a, b), new Point(g, h));
             }
         }
-
-
     }
+
+    getPointAtRatio(ratio: number) {
+        const vector = this.toVector();
+        const x = vector.x * ratio + this.points[0].x;
+        const y = vector.y * ratio + this.points[0].y;
+        return new Point(x, y);
+    }
+
 
     /**
      * Calculates the slope of the `Segment` or undefined if vertical line.

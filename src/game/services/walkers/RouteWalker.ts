@@ -16,6 +16,7 @@ export class RouteWalker implements IEventListener {
     private gameFacade: GameFacade;
     private prevTime: number;
     private started = false;
+    private bezierRotator = new BezierRotator();
 
     constructor(gameFacade: GameFacade) {
         this.gameFacade = gameFacade;
@@ -61,13 +62,17 @@ export class RouteWalker implements IEventListener {
         }
     }
 
-    private isNextStopReached(route: RouteObject): boolean {
+    private getPointWithinRange(route: RouteObject): Point {
         const meshObj = route.getMeshObject();
         const meshPos = meshObj.getPosition();
 
-        let point = route.isTurning ? route.currentGoal.point2 : route.currentGoal.point1;
+        if (route.currentGoal.point1 && meshPos.distanceTo(route.currentGoal.point1) < 1) {
+            return route.currentGoal.point1;
+        } else if (route.currentGoal.point2 && meshPos.distanceTo(route.currentGoal.point2) < 1) {
+            return route.currentGoal.point2;
+        }
 
-        return meshPos.distanceTo(point) < 1;
+        return undefined;
     }
 
     private moveRoute(route: RouteObject) {
@@ -75,19 +80,44 @@ export class RouteWalker implements IEventListener {
         const speed = delta / defaultSpeed;
 
         const meshObj = route.getMeshObject();
-        const pathObj = route.getPathObject();
 
-        
-        if (this.isNextStopReached(route)) {
-            if (route.currentGoal === route.path[route.path.length - 1]) {
-                route.reset();
+        const reachedPoint = this.getPointWithinRange(route);
+
+        if (reachedPoint === route.currentGoal.point1) {
+
+            if (route.currentGoal.point2) {
+                route.isTurning = true;
             } else {
-                // const nextStop = this.chooseRandomBranch(pathObj, route.currentStop);
-                const prevGoal = route.path[route.path.indexOf(route.currentGoal) - 1];
-                const direction =  prevGoal.point2.subtract(route.currentGoal.point1).normalize();
-                route.currentGoal = nextStop;
-                meshObj.setRotation(direction);
+                this.initRoute(route);
             }
+        } else if (reachedPoint === route.currentGoal.point2) {
+            // console.log('reachedPoint index: ' + route.path.indexOf(route.currentGoal));
+            // // route.isTurning = false;
+            // const currentGoalIndex = route.path.indexOf(route.currentGoal);
+            // if (currentGoalIndex === route.path.length - 1) {
+            //     this.initRoute(route);
+            // } else {
+            //     route.currentGoal = route.path[currentGoalIndex + 1];
+            // }
+        }
+
+        if (route.isTurning) {
+            const rotation = this.bezierRotator.getRotation(route.currentGoal, meshObj.getPosition());
+            const nextGoal = route.path[route.path.indexOf(route.currentGoal) + 1];
+            const finalRotation = nextGoal.point1.subtract(route.currentGoal.point2).normalize().vectorAngle();
+
+            if (Math.abs(rotation - finalRotation) < 0.1) {
+                meshObj.setRotation(finalRotation);
+                route.isTurning = false;
+                const currentGoalIndex = route.path.indexOf(route.currentGoal);
+                route.currentGoal = route.path[currentGoalIndex + 1];
+            } else {
+                meshObj.setRotation(rotation);
+            }
+        } else {
+            const prevGoal = route.path[route.path.indexOf(route.currentGoal) - 1];
+            const rotation = route.currentGoal.point1.subtract(prevGoal.point2).normalize().vectorAngle();
+            meshObj.setRotation(rotation);
         }
         
         meshObj.moveBy(new Point(0, -1).mul(speed));
@@ -103,23 +133,19 @@ export class RouteWalker implements IEventListener {
 
         route.path = this.createPathCorners(pathObj);
 
-        route.currentGoal = 0;
-        const direction =  route.path[1].point1.subtract(route.path[0].controlPoint).normalize();
+        route.currentGoal = route.path[1];
+        const direction =  route.path[1].point1.subtract(route.path[0].point2).normalize().vectorAngle();
 
         meshObj.setPosition(pathObj.root);
         meshObj.setRotation(direction);
     }
 
-    private chooseRandomBranch(pathObj: PathObject, currentPoint: number) {
-        const len = pathObj.tree.get(currentPoint).length;
-        const randomBranch = Math.floor(Math.random() * len);
-
-        return pathObj.tree.get(currentPoint)[randomBranch];
-    }
-
     private createPathCorners(pathObject: PathObject): PathCorner[] {
         const pathCorners: PathCorner[] = [];
-        pathCorners.push(new PathCorner(pathObject.points[0]));
+
+        const startCorner = new PathCorner();
+        startCorner.point2 = pathObject.points[0];
+        pathCorners.push(startCorner);
         for (let i = 1; i < pathObject.points.length - 1; i++) {
             const corner: PathCorner = new PathCorner()
             let vector = new Segment(pathObject.points[i - 1], pathObject.points[i]).toVector().mul(0.9);
@@ -127,8 +153,36 @@ export class RouteWalker implements IEventListener {
             corner.controlPoint = pathObject.points[i];
             vector = new Segment(pathObject.points[i], pathObject.points[i + 1]).toVector().mul(0.1);
             corner.point2 = pathObject.points[i].clone().add(vector);
+            pathCorners.push(corner);
         }
         pathCorners.push(new PathCorner(pathObject.points[pathObject.points.length - 1]));
         return pathCorners;
+    }
+}
+
+class BezierRotator {
+    getRotation(pathCorner: PathCorner, currentPoint: Point): number {
+        const bezierPoint = this.getBezierPoint(pathCorner, currentPoint);
+
+        return bezierPoint.subtract(currentPoint).normalize().vectorAngle();
+    }
+
+    private getBezierPoint(pathCorner: PathCorner, currentPoint: Point): Point {
+        const ratio = this.getCurrentPointRatio(pathCorner, currentPoint);
+        const bezierLine1 = new Segment(pathCorner.point1, pathCorner.controlPoint);
+        const bezierPoint1 = bezierLine1.getPointAtRatio(ratio);
+        const bezierLine2 = new Segment(pathCorner.controlPoint, pathCorner.point2);
+        const bezierPoint2 = bezierLine2.getPointAtRatio(ratio);
+        const connectedLine = new Segment(bezierPoint1, bezierPoint2);
+        const connectedPoint = connectedLine.getPointAtRatio(ratio);
+
+        return connectedPoint;
+    }
+
+    private getCurrentPointRatio(pathCorner: PathCorner, currentPoint: Point) {
+        const point1Dist = currentPoint.distanceTo(pathCorner.point1);
+        const fullDist = pathCorner.point1.distanceTo(pathCorner.point2);
+
+        return point1Dist / fullDist;
     }
 }

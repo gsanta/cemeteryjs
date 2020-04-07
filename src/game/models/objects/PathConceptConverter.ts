@@ -24,8 +24,6 @@ export class PathConceptConverter {
         });
 
         pathObject.points = pathObject.points.map(p => p.negateY()).map(p => p.div(10));
-        this.createPathTurningPoints(pathObject);
-
         pathObject.root = pathObject.points[0];
         this.gameFacade.gameStore.add(pathObject);
     }

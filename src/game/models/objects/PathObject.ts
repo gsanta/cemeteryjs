@@ -2,7 +2,7 @@ import { IGameObject, GameObjectType } from "./IGameObject";
 import { Point } from "../../../misc/geometry/shapes/Point";
 
 export class PathCorner {
-    point1: Point;
+    point1?: Point;
     point2?: Point;
     controlPoint?: Point;
 
