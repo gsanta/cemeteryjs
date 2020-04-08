@@ -1,27 +1,21 @@
 import { IBehaviour } from "./IBehaviour";
-import { IEventListener } from "../listeners/IEventListener";
-import { GameEvent } from "../GameEventManager";
+import { IEventListener, IAfterRender } from "../listeners/IEventListener";
+import { GameEvent, EventType } from "../GameEventManager";
 import { GameFacade } from "../../GameFacade";
 import { MeshObject } from "../../models/objects/MeshObject";
 import { LifeCycleEvent } from "../triggers/ILifeCycleTrigger";
 
-export class EnemyBehaviourManager  implements IEventListener {
-    events: GameEvent[];
+export class EnemyBehaviourManager  implements IAfterRender {
+    eventType = EventType.AfterRender;
     private behaviours: IBehaviour[];
     private gameFacade: GameFacade;
-    private behaviourTimeouts: Map<MeshObject, number> = new Map();
 
     constructor(gameFacade: GameFacade, behaviours: IBehaviour[]) {
         this.gameFacade = gameFacade;
         this.behaviours = behaviours;
-        this.updateBehaviours = this.updateBehaviours.bind(this);
-
-        this.events = [
-            new GameEvent({lifeCycleEvent: LifeCycleEvent.AfterRender}, this.updateBehaviours)
-        ]
     }
     
-    private updateBehaviours() {
+    afterRender() {
         this.gameFacade.gameStore.getEnemies().forEach(enemy => {
             const behaviour = this.behaviours[0]//.find(behaviour => behaviour.type === enemy.activeBehaviour);
 

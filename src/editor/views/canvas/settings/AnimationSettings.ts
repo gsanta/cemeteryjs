@@ -52,15 +52,15 @@ export class AnimationSettings extends AbstractSettings<AnimationSettingsProps> 
                 break;
             case AnimationSettingsProps.RotateLeftAnimation:
                 this.animationConcept.addAnimation({name: val, condition: AnimationCondition.RotateLeft});
-                this.getServices().updateService().runImmediately(UpdateTask.RepaintSettings);
+                this.getServices().updateService().runImmediately(UpdateTask.RepaintSettings, UpdateTask.SaveData);
                 break;
             case AnimationSettingsProps.RotateRightAnimation:
                 this.animationConcept.addAnimation({name: val, condition: AnimationCondition.RotateRight});
-                this.getServices().updateService().runImmediately(UpdateTask.RepaintSettings);
+                this.getServices().updateService().runImmediately(UpdateTask.RepaintSettings, UpdateTask.SaveData);
                 break;
             case AnimationSettingsProps.MoveAnimation:
                 this.animationConcept.addAnimation({name: val, condition: AnimationCondition.Move});
-                this.getServices().updateService().runImmediately(UpdateTask.RepaintSettings);
+                this.getServices().updateService().runImmediately(UpdateTask.RepaintSettings, UpdateTask.SaveData);
                 break;
         }
     }

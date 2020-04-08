@@ -6,41 +6,21 @@ import { RouteObject } from "../../models/objects/RouteObject";
 import { PathObject, PathCorner } from "../../models/objects/PathObject";
 import { Point } from "../../../misc/geometry/shapes/Point";
 import { AnimationCondition } from "../../../editor/views/canvas/models/meta/AnimationConcept";
-import { Vector3 } from "babylonjs";
 import { Segment } from "../../../misc/geometry/shapes/Segment";
 
 const defaultSpeed = 1000 / 4;
 
-export class RouteWalker implements IEventListener {
+export class RouteWalker {
     events: GameEvent[];
-    private gameFacade: GameFacade;
     private prevTime: number;
-    private started = false;
     private bezierRotator = new BezierRotator();
 
-    constructor(gameFacade: GameFacade) {
-        this.gameFacade = gameFacade;
-        this.updateRoutes = this.updateRoutes.bind(this);
-
-        this.events = [
-            new GameEvent({lifeCycleEvent: LifeCycleEvent.AfterRender}, this.updateRoutes),
-        ]
-    }
-
-    start() {
-        this.started = true;
-    }
-
-    private updateRoutes() {
-        if (!this.started) { return }
-
-        this.gameFacade.gameStore.getRouteObjects()
-            .filter(route => {
-                const meshObj = route.getMeshObject();
-
-                return route.isFinished === false && route.isPaused === false && meshObj.hasMesh()
-            })
-            .forEach(route => this.updateRoute(route));
+    walk(route: RouteObject) {
+        if (route.currentGoal === undefined) {
+            this.initRoute(route);
+        } else {
+            this.moveRoute(route);
+        }
     }
 
     private computeDelta(): number {
@@ -52,14 +32,6 @@ export class RouteWalker implements IEventListener {
         this.prevTime = currentTime;
 
         return delta;
-    }
-
-    private updateRoute(route: RouteObject) {
-        if (route.currentGoal === undefined) {
-            this.initRoute(route);
-        } else {
-            this.moveRoute(route);
-        }
     }
 
     private getPointWithinRange(route: RouteObject): Point {
@@ -84,21 +56,12 @@ export class RouteWalker implements IEventListener {
         const reachedPoint = this.getPointWithinRange(route);
 
         if (reachedPoint === route.currentGoal.point1) {
-
             if (route.currentGoal.point2) {
                 route.isTurning = true;
+                meshObj.activeElementalAnimation = meshObj.animation.getAnimationByCond(AnimationCondition.RotateLeft);
             } else {
                 this.initRoute(route);
             }
-        } else if (reachedPoint === route.currentGoal.point2) {
-            // console.log('reachedPoint index: ' + route.path.indexOf(route.currentGoal));
-            // // route.isTurning = false;
-            // const currentGoalIndex = route.path.indexOf(route.currentGoal);
-            // if (currentGoalIndex === route.path.length - 1) {
-            //     this.initRoute(route);
-            // } else {
-            //     route.currentGoal = route.path[currentGoalIndex + 1];
-            // }
         }
 
         if (route.isTurning) {
@@ -108,6 +71,7 @@ export class RouteWalker implements IEventListener {
 
             if (Math.abs(rotation - finalRotation) < 0.1) {
                 meshObj.setRotation(finalRotation);
+                meshObj.activeElementalAnimation = meshObj.animation.getAnimationByCond(AnimationCondition.Move);
                 route.isTurning = false;
                 const currentGoalIndex = route.path.indexOf(route.currentGoal);
                 route.currentGoal = route.path[currentGoalIndex + 1];

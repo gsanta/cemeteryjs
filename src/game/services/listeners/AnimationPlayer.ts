@@ -5,21 +5,15 @@ import { LifeCycleEvent } from "../triggers/ILifeCycleTrigger";
 import { IEventListener } from "./IEventListener";
 import { ElementalAnimation } from "../../../editor/views/canvas/models/meta/AnimationConcept";
 
-export class AnimationPlayer implements IEventListener {
-    events: GameEvent[];
+export class AnimationPlayer {
     private gameFacade: GameFacade;
     private playingAnimations: Map<MeshObject, ElementalAnimation> = new Map();
 
     constructor(gameFacade: GameFacade) {
         this.gameFacade = gameFacade;
-        this.updateAnimations = this.updateAnimations.bind(this);
-
-        this.events = [
-            new GameEvent({lifeCycleEvent: LifeCycleEvent.AfterRender}, this.updateAnimations)
-        ]
     }
 
-    private updateAnimations() {
+    updateAnimations() {
         this.stopChangedAnimations();
         this.startNewAnimations();
     }
