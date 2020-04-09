@@ -12,14 +12,14 @@ export class MeshObjectUpdater {
     updateAnimationState(state: AnimationState, meshObjectName: string) {
         switch(state) {
             case AnimationState.Paused:
-                this.gameFacade.gameStore.getByName<MeshObject>(meshObjectName).getRoute().isPaused = true;
+                this.gameFacade.stores.gameStore.getByName<MeshObject>(meshObjectName).getRoute().isPaused = true;
                 break;
             case AnimationState.Playing:
-                this.gameFacade.gameStore.getByName<MeshObject>(meshObjectName).getRoute().isPaused = false;
+                this.gameFacade.stores.gameStore.getByName<MeshObject>(meshObjectName).getRoute().isPaused = false;
                 break;
             case AnimationState.Stopped:
-                this.gameFacade.gameStore.getByName<MeshObject>(meshObjectName).getRoute().reset();
-                this.gameFacade.gameStore.getByName<MeshObject>(meshObjectName).getRoute().isPaused = true;
+                this.gameFacade.stores.gameStore.getByName<MeshObject>(meshObjectName).getRoute().reset();
+                this.gameFacade.stores.gameStore.getByName<MeshObject>(meshObjectName).getRoute().isPaused = true;
                 break;
         }
     }

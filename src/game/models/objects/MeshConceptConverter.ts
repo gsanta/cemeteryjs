@@ -20,18 +20,18 @@ export class MeshConceptConverter {
     convert(meshView: MeshConcept): void {
         if (meshView.path) {
             const routeObject = new RouteObject(
-                () => this.gameFacade.gameStore.getByName(meshView.id),
-                () => this.gameFacade.gameStore.getByName(meshView.path)
+                () => this.gameFacade.stores.gameStore.getByName(meshView.id),
+                () => this.gameFacade.stores.gameStore.getByName(meshView.path)
             );
 
             routeObject.id = `${meshView.id}-route`;
 
-            this.gameFacade.gameStore.add(routeObject);
+            this.gameFacade.stores.gameStore.add(routeObject);
         }
 
         const meshObject = new MeshObject(
             (meshName: string) => this.gameFacade.meshStore.getMesh(meshName),
-            () => this.gameFacade.gameStore.getByName(`${meshView.id}-route`)
+            () => this.gameFacade.stores.gameStore.getByName(`${meshView.id}-route`)
         );
 
         meshObject.dimensions = meshView.dimensions.div(10);
@@ -54,6 +54,6 @@ export class MeshConceptConverter {
             meshObject.animation = this.getStores().canvasStore.getAnimationConceptById(meshView.animationId);
         }
 
-        this.gameFacade.gameStore.add(meshObject);
+        this.gameFacade.stores.gameStore.add(meshObject);
     }
 }

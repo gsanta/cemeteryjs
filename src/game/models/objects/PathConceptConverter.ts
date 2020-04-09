@@ -25,6 +25,6 @@ export class PathConceptConverter {
 
         pathObject.points = pathObject.points.map(p => p.negateY()).map(p => p.div(10));
         pathObject.root = pathObject.points[0];
-        this.gameFacade.gameStore.add(pathObject);
+        this.gameFacade.stores.gameStore.add(pathObject);
     }
 }

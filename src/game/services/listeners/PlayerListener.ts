@@ -37,6 +37,6 @@ export class PlayerListener implements IGamepadListener {
     }
 
     private findPlayer(gameFacade: GameFacade) {
-        return gameFacade.gameStore.getMeshObjects().find(obj => obj.isManualControl);
+        return gameFacade.stores.gameStore.getMeshObjects().find(obj => obj.isManualControl);
     }
 }

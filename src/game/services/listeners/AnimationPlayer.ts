@@ -27,7 +27,7 @@ export class AnimationPlayer {
     }
 
     private startNewAnimations() {
-        this.gameFacade.gameStore.getMeshObjects()
+        this.gameFacade.stores.gameStore.getMeshObjects()
         .filter(gameObject => gameObject.activeElementalAnimation)
         .forEach(gameObject => {
             if (!this.playingAnimations.has(gameObject)) {

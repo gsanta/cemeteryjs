@@ -16,7 +16,7 @@ export class EnemyBehaviourManager  implements IAfterRender {
     }
     
     afterRender() {
-        this.gameFacade.gameStore.getEnemies().forEach(enemy => {
+        this.gameFacade.stores.gameStore.getEnemies().forEach(enemy => {
             const behaviour = this.behaviours[0]//.find(behaviour => behaviour.type === enemy.activeBehaviour);
 
             behaviour && behaviour.update(enemy);

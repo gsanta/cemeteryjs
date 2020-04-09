@@ -3,6 +3,7 @@ import { ViewStore } from './ViewStore';
 import { CanvasStore } from "./CanvasStore";
 import { HoverStore } from "./HoverStore";
 import { SelectionStore } from "./SelectionStore";
+import { GameStore } from "../../game/models/stores/GameStore";
 
 
 export class Stores {
@@ -11,4 +12,5 @@ export class Stores {
     selectionStore = new SelectionStore();
     levelStore = new LevelStore();
     viewStore = new ViewStore();
+    gameStore = new GameStore();
 }

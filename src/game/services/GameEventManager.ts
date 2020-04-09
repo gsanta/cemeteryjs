@@ -26,38 +26,15 @@ export class GameEventListener {
     }
 }
 
-export class AfterRenderListener implements IEventListener {
-
-    constructor()
-}
-
 export class GameEventManager {
-    private events: IEventListener[] = [];
-    private triggers: IEventTrigger[] = [];
-    private lifeCycleTriggers: ILifeCycleTrigger[] = [];
-    private gameFacade: GameFacade;
     listeners: Listeners = new Listeners();
 
-    constructor(gameFacade: GameFacade) {
-        this.gameFacade = gameFacade;
-    }
-
     triggerGamepadEvent(gamepadEvent: GamepadEvent) {
-        const events = this.events.filter(event => event.eventType === EventType.Keyboard);
-
-        events.forEach(event => (<IGamepadListener> event).gamepadEvent(gamepadEvent));
+        this.listeners.getGamepadListeners().forEach(listener => listener(gamepadEvent));
     }
 
     triggerAfterRenderEvent(): void {
-        const events = this.events.filter(event => event.eventType === EventType.AfterRender);
-
-        events.forEach(event => (<IAfterRender> event).afterRender());
-    }
-
-    triggerResetEvent(): void {
-        const events = this.events.filter(event => event.eventType === EventType.AfterRender);
-
-        events.forEach(event => (<IAfterRender> event).afterRender());
+        this.listeners.getAfterRenderListeners().forEach(listener => listener());
     }
 }
 
