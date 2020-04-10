@@ -96,7 +96,7 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                 this.meshConcept.modelPath = val.path;
                 this.getServices().storageService().saveAsset(val.path, val.data)
                 .finally(() => {
-                    this.getServices().meshDimensionService().setDimensions(this.meshConcept);
+                    this.getServices().modelLoaderService().setDimensions(this.meshConcept);
                     this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 });
                 break;

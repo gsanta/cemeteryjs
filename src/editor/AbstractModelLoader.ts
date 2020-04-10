@@ -1,4 +1,4 @@
-import { Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, Vector3, StandardMaterial, Texture } from 'babylonjs';
+import { Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, StandardMaterial, Texture } from 'babylonjs';
 import { Point } from '../misc/geometry/shapes/Point';
 import { MeshObject } from '../game/models/objects/MeshObject';
 import { ServiceLocator } from './services/ServiceLocator';
@@ -13,13 +13,11 @@ export interface ModelData {
 
 export abstract class AbstractModelLoader {
     private basePath = 'assets/models/';
-    protected scene: Scene;
 
     private loadedFileNames: Set<String> = new Set();
     protected getServices: () => ServiceLocator;
 
-    constructor(scene: Scene, getServices: () => ServiceLocator) {
-        this.scene = scene;
+    constructor(getServices: () => ServiceLocator) {
         this.getServices = getServices;
     }
 
@@ -39,6 +37,10 @@ export abstract class AbstractModelLoader {
     }
 
     load(meshObject: MeshObject | MeshConcept): Promise<Mesh> {
+        if (this.loadedFileNames.has(meshObject.modelPath)) {
+            return Promise.resolve(null);
+        }
+        
         this.loadedFileNames.add(meshObject.modelPath);
 
         return this.getServices().storageService().loadAsset(meshObject.modelPath)
@@ -64,7 +66,7 @@ export abstract class AbstractModelLoader {
                 '',
                 path,
                 fileName,
-                this.scene,
+                this.getServices().gameService().gameEngine.scene,
                 (meshes: Mesh[], ps: ParticleSystem[], skeletons: Skeleton[]) => resolve(this.createModelData(meshObject, meshes, skeletons)),
                 () => { },
                 (scene: Scene, message: string) => { throw new Error(message); }
@@ -76,7 +78,6 @@ export abstract class AbstractModelLoader {
         this.loadedFileNames = new Set();
     }
 
-    abstract createInstance(fileName: string, meshName: string): string;
     protected abstract setModel(fileName: string, mesh: Mesh): void;
 
     private configMesh(mesh: Mesh) {        
@@ -89,9 +90,11 @@ export abstract class AbstractModelLoader {
     private createModelData(meshObject: MeshObject | MeshConcept, meshes: Mesh[], skeletons: Skeleton[]): Mesh {
         if (meshes.length === 0) { throw new Error('No mesh was loaded.') }
 
-        meshes[0].material = new StandardMaterial(meshObject.modelPath, this.scene);
-        (<StandardMaterial> meshes[0].material).diffuseTexture  = new Texture(`${this.basePath}${this.getFolderNameFromFileName(meshObject.modelPath)}/${meshObject.texturePath}`,  this.scene);
-        (<StandardMaterial> meshes[0].material).specularTexture  = new Texture(`${this.basePath}${this.getFolderNameFromFileName(meshObject.modelPath)}/${meshObject.texturePath}`,  this.scene);
+        const scene = this.getServices().gameService().gameEngine.scene;
+
+        meshes[0].material = new StandardMaterial(meshObject.modelPath, scene);
+        (<StandardMaterial> meshes[0].material).diffuseTexture  = new Texture(`${this.basePath}${this.getFolderNameFromFileName(meshObject.modelPath)}/${meshObject.texturePath}`,  scene);
+        (<StandardMaterial> meshes[0].material).specularTexture  = new Texture(`${this.basePath}${this.getFolderNameFromFileName(meshObject.modelPath)}/${meshObject.texturePath}`,  scene);
 
         meshes[0].name = meshObject.id;
         this.configMesh(meshes[0]);

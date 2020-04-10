@@ -9,29 +9,27 @@ import { Stores } from "../../../editor/stores/Stores";
 
 export class MeshConceptConverter {
     viewType = ConceptType.MeshConcept;
-    private gameFacade: GameFacade;
     private getStores: () => Stores;
 
-    constructor(gameFacade: GameFacade, getStores: () => Stores) {
-        this.gameFacade = gameFacade;
+    constructor(getStores: () => Stores) {
         this.getStores = getStores;
     }
 
     convert(meshView: MeshConcept): void {
         if (meshView.path) {
             const routeObject = new RouteObject(
-                () => this.gameFacade.stores.gameStore.getByName(meshView.id),
-                () => this.gameFacade.stores.gameStore.getByName(meshView.path)
+                () => this.getStores().gameStore.getByName(meshView.id),
+                () => this.getStores().gameStore.getByName(meshView.path)
             );
 
             routeObject.id = `${meshView.id}-route`;
 
-            this.gameFacade.stores.gameStore.add(routeObject);
+            this.getStores().gameStore.add(routeObject);
         }
 
         const meshObject = new MeshObject(
-            (meshName: string) => this.gameFacade.meshStore.getMesh(meshName),
-            () => this.gameFacade.stores.gameStore.getByName(`${meshView.id}-route`)
+            (meshName: string) => this.getStores().meshStore.getMesh(meshName),
+            () => this.getStores().gameStore.getByName(`${meshView.id}-route`)
         );
 
         meshObject.dimensions = meshView.dimensions.div(10);
@@ -54,6 +52,6 @@ export class MeshConceptConverter {
             meshObject.animation = this.getStores().canvasStore.getAnimationConceptById(meshView.animationId);
         }
 
-        this.gameFacade.stores.gameStore.add(meshObject);
+        this.getStores().gameStore.add(meshObject);
     }
 }

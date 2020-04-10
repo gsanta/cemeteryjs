@@ -1,19 +1,20 @@
-import { LocalStoreService } from "./LocalStroreService";
+import { GameService } from "../../game/GameService";
+import { ModelLoaderService } from "../../game/services/ModelLoaderService";
 import { Editor } from "../Editor";
 import { Stores } from "../stores/Stores";
-import { LevelService } from "./LevelService";
-import { UpdateService } from "./UpdateServices";
-import { ImportService } from './import/ImportService';
-import { HistoryService } from "./HistoryService";
-import { ExportService } from "./export/ExportService";
-import { PointerService } from './PointerService';
-import { MouseService } from './MouseService';
-import { KeyboardService } from './KeyboardService';
-import { MeshDimensionService } from "./MeshDimensionService";
-import { HotkeyService, Hotkey } from "./HotkeyService";
 import { DialogService } from "./DialogService";
-import { GameService } from "../../game/GameService";
+import { ExportService } from "./export/ExportService";
+import { HistoryService } from "./HistoryService";
+import { HotkeyService } from "./HotkeyService";
+import { ImportService } from './import/ImportService';
+import { KeyboardService } from './KeyboardService';
+import { LevelService } from "./LevelService";
+import { LocalStoreService } from "./LocalStroreService";
+import { MouseService } from './MouseService';
+import { PointerService } from './PointerService';
 import { SettingsService } from "./SettingsService";
+import { UpdateService } from "./UpdateServices";
+import { ConceptConvertService } from "./ConceptConvertService";
 
 export class ServiceLocator {
     services: {serviceName: string}[] = [];
@@ -30,9 +31,10 @@ export class ServiceLocator {
             new MouseService(() => this),
             new KeyboardService(getStores),
             new HotkeyService(() => this),
-            new MeshDimensionService(() => this),
             new DialogService(() => this),
-            new SettingsService(() => this, getStores)
+            new SettingsService(() => this, getStores),
+            new ModelLoaderService(() => this, getStores),
+            new ConceptConvertService(() => this, getStores)
         ];
     }
 
@@ -80,10 +82,6 @@ export class ServiceLocator {
         return <HotkeyService> this.getService('hotkey-service');
     }
 
-    meshDimensionService(): MeshDimensionService {
-        return <MeshDimensionService> this.getService('mesh-dimension-service');
-    }
-
     dialogService(): DialogService {
         return <DialogService> this.getService('dialog-service');
     }
@@ -92,7 +90,15 @@ export class ServiceLocator {
         return <GameService> this.getService('game-service');
     }
 
+    modelLoaderService(): ModelLoaderService {
+        return <ModelLoaderService> this.getService('model-loader-service');
+    }
+
     settingsService(): SettingsService {
         return <SettingsService> this.getService('settings-service');
+    }
+
+    conceptConvertService(): ConceptConvertService {
+        return <ConceptConvertService> this.getService('concept-convert-service');
     }
 }

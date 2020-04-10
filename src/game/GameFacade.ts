@@ -3,17 +3,11 @@ import { ImportService } from '../editor/services/import/ImportService';
 import { ServiceLocator } from '../editor/services/ServiceLocator';
 import { Stores } from '../editor/stores/Stores';
 import { GameEngine } from '../editor/views/renderer/GameEngine';
-import { CreateMeshModifier } from './import/CreateMeshModifier';
 import { GameObjectFactory } from './import/GameObjectFactory';
-import { IViewConverter } from './models/objects/IViewConverter';
-import { MeshConceptConverter } from './models/objects/MeshConceptConverter';
-import { MeshObject } from './models/objects/MeshObject';
-import { PathConceptConverter } from './models/objects/PathConceptConverter';
-import { GameStoreBuilder } from './models/stores/GameStoreBuilder';
+import { IConceptConverter } from './models/objects/IConceptConverter';
 import { MeshStore } from './models/stores/MeshStore';
 import { CharacterMovement } from './services/behaviour/CharacterMovement';
 import { GameEventManager, GamepadEvent } from './services/GameEventManager';
-import { GameModelLoader } from './services/GameModelLoader';
 import { AnimationPlayer } from './services/listeners/AnimationPlayer';
 import { PlayerListener } from './services/listeners/PlayerListener';
 import { AfterRenderTrigger } from './services/triggers/AfterRenderTrigger';
@@ -26,7 +20,6 @@ export class GameFacade {
     meshStore: MeshStore;
     inputCommandStore: InputCommandStore;
 
-    modelLoader: GameModelLoader;
     private keyboardListener: KeyboardTrigger;
     private keyboardTrigger: KeyboardTrigger;
     private afterRenderTrigger: AfterRenderTrigger;
@@ -38,9 +31,7 @@ export class GameFacade {
 
     importers: IConceptImporter[];
     viewImporter: ImportService;
-    viewConverters: IViewConverter[] = [];
-
-    gameStoreBuilder: GameStoreBuilder;
+    viewConverters: IConceptConverter[] = [];
 
     private walkers: Walkers;
     services: ServiceLocator;
@@ -50,10 +41,9 @@ export class GameFacade {
         this.services = services;
         this.stores = new Stores();
         this.gameEngine = new GameEngine(canvas);
-        this.meshStore = new MeshStore(this);
+        this.meshStore = new MeshStore();
         this.inputCommandStore = new InputCommandStore();
 
-        this.modelLoader = new GameModelLoader(this);
         this.keyboardListener = new KeyboardTrigger(this);
         this.keyboardTrigger = new KeyboardTrigger(this);
         this.gameEventManager = new GameEventManager();
@@ -69,38 +59,32 @@ export class GameFacade {
         this.afterRenderTrigger = new AfterRenderTrigger(this)
 
         this.gameObjectFactory = new GameObjectFactory(this);
-        this.gameStoreBuilder = new GameStoreBuilder(this, () => this.services, () => this.stores);
         this.walkers = new Walkers(() => this.stores);        
-
-        this.viewConverters = [
-            new MeshConceptConverter(this, () => this.stores),
-            new PathConceptConverter(this)
-        ]
     }
     
     setup() {
     }
 
-    clear(): void {
-        this.meshStore.clear();
-        this.stores.canvasStore.clear();
-        this.modelLoader.clear();
-    }
+    // clear(): void {
+    //     this.meshStore.clear();
+    //     this.stores.canvasStore.clear();
+    //     this.modelLoader.clear();
+    // }
     
-    generateWorld(worldMap: string): Promise<MeshObject[]> {
-        this.meshStore.clear();
-        this.modelLoader.clear();
-        this.stores.gameStore.clear();
-        // this.gameObjectBuilder.build(worldMap);
-        this.gameStoreBuilder.build(worldMap);
+    // generateWorld(worldMap: string): Promise<MeshObject[]> {
+    //     this.meshStore.clear();
+    //     this.modelLoader.clear();
+    //     this.stores.gameStore.clear();
+    //     // this.gameObjectBuilder.build(worldMap);
+    //     this.gameStoreBuilder.build(worldMap);
 
-        return this.modelLoader.loadAll(this.stores.gameStore.getMeshObjects()).then(
-            () => {
-                new CreateMeshModifier(this.gameEngine.scene, this).apply(this.stores.gameStore.getMeshObjects())
-                // this.routeWalker.initRoutes();
+    //     return this.modelLoader.loadAll(this.stores.gameStore.getMeshObjects()).then(
+    //         () => {
+    //             new CreateMeshModifier(this.gameEngine.scene, this).apply(this.stores.gameStore.getMeshObjects())
+    //             // this.routeWalker.initRoutes();
 
-                return this.stores.gameStore.getMeshObjects();
-            }
-        )
-    }
+    //             return this.stores.gameStore.getMeshObjects();
+    //         }
+    //     )
+    // }
 }

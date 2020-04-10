@@ -9,7 +9,7 @@ export enum UpdateTask {
     UpdateRenderer = 'UpdateRenderer',
     SaveData = 'SaveData',
     All = 'All',
-    Full = 'Full'
+    Full = 'Full',
 }
 
 export class UpdateService {
@@ -52,9 +52,6 @@ export class UpdateService {
                 break;
                 case UpdateTask.RepaintSettings:
                     this.settingsRepainters.forEach(repaint => repaint());
-                break;
-                case UpdateTask.UpdateRenderer:
-                    (<RendererView> this.editor.getWindowControllerByName('renderer')).update();
                 break;
                 case UpdateTask.SaveData:
                     this.saveData();

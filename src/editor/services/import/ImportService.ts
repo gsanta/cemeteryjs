@@ -74,7 +74,7 @@ export class ImportService {
             new MeshConceptImporter(rect => this.getStores().canvasStore.addConcept(rect)),
             new PathConceptImporter(path => this.getStores().canvasStore.addConcept(path)),
             new AnimationConceptImporter(animation => this.getStores().canvasStore.addMeta(animation))
-        ]
+        ];
     }
 
     import(file: string): void {
@@ -99,7 +99,8 @@ export class ImportService {
             this.findViewImporter(conceptType).import(group)
         });
 
-        this.getStores().canvasStore.getMeshConcepts().filter(item => item.modelPath).forEach(item => this.getServices().meshDimensionService().setDimensions(item));
+        this.getStores().canvasStore.getMeshConcepts().filter(item => item.modelPath).forEach(item => this.getServices().modelLoaderService().setDimensions(item));
+        this.getServices().gameService().importAllConcepts();
     }
 
     private findViewImporter(conceptType: ConceptType): IConceptImporter {

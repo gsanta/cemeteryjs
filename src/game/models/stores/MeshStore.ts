@@ -2,14 +2,9 @@ import { Mesh } from 'babylonjs';
 import { GameFacade } from '../../GameFacade';
 
 export class MeshStore {
-    private gameFacade: GameFacade;
     private origMeshes: Set<string> = new Set();
     private allInstances: Mesh[] = [];
     private meshMap: Map<string, Mesh> = new Map();
-
-    constructor(gameFacade: GameFacade) {
-        this.gameFacade = gameFacade;
-    }
 
     addModel(uniqueId: string, mesh: Mesh) {
         this.meshMap.set(uniqueId, mesh);

@@ -1,15 +1,14 @@
-import { GameFacade } from "../../GameFacade";
-import { PathObject, PathCorner } from "./PathObject";
-import { PathConcept } from "../../../editor/views/canvas/models/concepts/PathConcept";
+import { Stores } from "../../../editor/stores/Stores";
 import { ConceptType } from "../../../editor/views/canvas/models/concepts/Concept";
-import { Segment } from "../../../misc/geometry/shapes/Segment";
+import { PathConcept } from "../../../editor/views/canvas/models/concepts/PathConcept";
+import { PathObject } from "./PathObject";
 
 export class PathConceptConverter {
     viewType = ConceptType.PathConcept;
-    private gameFacade: GameFacade;
+    private getStores: () => Stores;
 
-    constructor(gameFacade: GameFacade) {
-        this.gameFacade = gameFacade;
+    constructor(getStores: () => Stores) {
+        this.getStores = getStores;
     }
 
     convert(pathView: PathConcept): void {
@@ -25,6 +24,6 @@ export class PathConceptConverter {
 
         pathObject.points = pathObject.points.map(p => p.negateY()).map(p => p.div(10));
         pathObject.root = pathObject.points[0];
-        this.gameFacade.stores.gameStore.add(pathObject);
+        this.getStores().gameStore.add(pathObject);
     }
 }
