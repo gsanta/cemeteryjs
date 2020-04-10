@@ -2,13 +2,12 @@ import { MeshObject } from '../objects/MeshObject';
 import { IGameObject, GameObjectType } from '../objects/IGameObject';
 import { RouteObject } from '../objects/RouteObject';
 import { PathConcept } from '../../../editor/views/canvas/models/concepts/PathConcept';
+import { Concept } from '../../../editor/views/canvas/models/concepts/Concept';
 
 export class GameStore {
-    meshObjects: MeshObject[] = [];
-    paths: PathConcept[] = [];
-
+    
     private nameToObjMap: Map<string, IGameObject> = new Map();
-
+    
     objs: IGameObject[] = [];
 
     getPlayer(): MeshObject {
@@ -17,10 +16,6 @@ export class GameStore {
 
     getEnemies(): MeshObject[] {
         return <MeshObject[]> this.objs.filter(gameObject => gameObject.id === 'enemy');
-    }
-
-    addPath(arrow: PathConcept) {
-        this.paths.push(arrow);
     }
 
     add(gameObject: IGameObject) {
@@ -40,12 +35,15 @@ export class GameStore {
         return <RouteObject[]> this.objs.filter(obj => obj.objectType === GameObjectType.RouteObject);
     }
 
+    deleteById(id: string) {
+        this.objs = this.objs.filter(obj => obj.id !== id);
+    }
+
     clear(): void {
-        this.paths = [];
         this.objs = [];
     }
 
     isEmpty(): boolean {
-        return this.meshObjects.length === 0;
+        return this.objs.length === 0;
     }
 }

@@ -36,7 +36,9 @@ export class DeleteTool extends AbstractTool {
             if (hoverStore.hasEditPoint()) {
                 hoverStore.getConcept().deleteEditPoint(hoverStore.getEditPoint());
             } else {
-                this.getStores().canvasStore.removeConcept(hoverStore.getConcept());
+                const concept = hoverStore.getConcept();
+                this.getStores().canvasStore.removeConcept(concept);
+                this.getServices().gameService().deleteConcepts([concept]);
             }
             
             this.getServices().levelService().updateCurrentLevel();
@@ -46,13 +48,14 @@ export class DeleteTool extends AbstractTool {
 
     
     draggedUp() {
-        const canvasItems = this.getStores().canvasStore.getIntersectingItemsInRect(this.view.feedbackStore.rectSelectFeedback.rect);
+        const concepts = this.getStores().canvasStore.getIntersectingItemsInRect(this.view.feedbackStore.rectSelectFeedback.rect);
 
-        canvasItems.forEach(item => this.getStores().canvasStore.removeConcept(item));
+        concepts.forEach(item => this.getStores().canvasStore.removeConcept(item));
 
         this.rectSelector.finish();
 
         this.getServices().levelService().updateCurrentLevel();
+        this.getServices().gameService().deleteConcepts(concepts);
         this.getServices().updateService().scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
     }
 

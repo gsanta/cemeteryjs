@@ -1,4 +1,5 @@
 import { ServiceLocator } from "./ServiceLocator";import { Stores } from "../stores/Stores";import { IConceptConverter } from "../../game/models/objects/IConceptConverter";import { MeshConceptConverter } from "../../game/models/objects/MeshConceptConverter";import { PathConceptConverter } from "../../game/models/objects/PathConceptConverter";import { Concept } from "../views/canvas/models/concepts/Concept";
+import { IGameObject } from "../../game/models/objects/IGameObject";
 
 
 export class ConceptConvertService {
@@ -18,8 +19,8 @@ export class ConceptConvertService {
         ];
     }
 
-    convert() {
-        this.getStores().canvasStore.getAllConcepts().forEach(view => this.getConceptConverter(view)?.convert(view));
+    convert(concept: Concept): IGameObject {
+        return this.getConceptConverter(concept).convert(concept);
     }
 
     private getConceptConverter(view: Concept): IConceptConverter {

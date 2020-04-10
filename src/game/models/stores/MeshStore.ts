@@ -1,5 +1,4 @@
 import { Mesh } from 'babylonjs';
-import { GameFacade } from '../../GameFacade';
 
 export class MeshStore {
     private origMeshes: Set<string> = new Set();
@@ -20,6 +19,13 @@ export class MeshStore {
     addClone(uniqueId: string, mesh: Mesh) {
         this.meshMap.set(uniqueId, mesh);
         this.allInstances.push(mesh);
+    }
+
+    deleteMesh(id: string) {
+        const mesh = this.meshMap.get(id);
+        this.meshMap.delete(id);
+        this.allInstances = this.allInstances.filter(instance => instance !== mesh);
+        mesh.dispose();
     }
 
     getMesh(uniqueId: string): Mesh {

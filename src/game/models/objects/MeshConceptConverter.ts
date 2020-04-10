@@ -5,9 +5,11 @@ import { Tools } from "babylonjs";
 import { MeshConcept } from "../../../editor/views/canvas/models/concepts/MeshConcept";
 import { ConceptType } from "../../../editor/views/canvas/models/concepts/Concept";
 import { Stores } from "../../../editor/stores/Stores";
+import { IConceptConverter } from "./IConceptConverter";
+import { IGameObject } from "./IGameObject";
 
 
-export class MeshConceptConverter {
+export class MeshConceptConverter implements IConceptConverter {
     viewType = ConceptType.MeshConcept;
     private getStores: () => Stores;
 
@@ -15,7 +17,7 @@ export class MeshConceptConverter {
         this.getStores = getStores;
     }
 
-    convert(meshView: MeshConcept): void {
+    convert(meshView: MeshConcept): IGameObject {
         if (meshView.path) {
             const routeObject = new RouteObject(
                 () => this.getStores().gameStore.getByName(meshView.id),
@@ -53,5 +55,7 @@ export class MeshConceptConverter {
         }
 
         this.getStores().gameStore.add(meshObject);
+
+        return meshObject;
     }
 }

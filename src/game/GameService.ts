@@ -8,6 +8,9 @@ import { MeshConceptConverter } from "./models/objects/MeshConceptConverter";
 import { PathConceptConverter } from "./models/objects/PathConceptConverter";
 import { RectangleFactory } from "./import/factories/RectangleFactory";
 import { MaterialFactory } from "./import/factories/MaterialFactory";
+import { Concept, ConceptType } from "../editor/views/canvas/models/concepts/Concept";
+import { MeshConcept } from "../editor/views/canvas/models/concepts/MeshConcept";
+import { GameObjectType } from "./models/objects/IGameObject";
 
 export class GameService {
     serviceName = 'game-service';
@@ -59,9 +62,9 @@ export class GameService {
     importAllConcepts() {
         this.getStores().gameStore.clear();
 
-        this.getServices().conceptConvertService().convert();
+        this.getStores().canvasStore.getAllConcepts().forEach(concept => this.getServices().conceptConvertService().convert(concept));
 
-        return this.getServices().modelLoaderService().loadAll(this.getStores().gameStore.getMeshObjects())
+        this.getServices().modelLoaderService().loadAll(this.getStores().gameStore.getMeshObjects())
             .then(() => {
                 this.getStores().gameStore.getMeshObjects().forEach(meshObject => {
                     if (!meshObject.modelPath) {
@@ -71,5 +74,39 @@ export class GameService {
                     }
                 });
             });
+    }
+
+    deleteConcepts(concepts: Concept[]) {
+        concepts.forEach(concept => {
+            this.getStores().gameStore.deleteById(concept.id);
+
+            if (concept.type === ConceptType.MeshConcept) {
+                this.getStores().meshStore.deleteMesh((<MeshConcept> concept).id);
+            }
+        });
+    }
+
+    addConcept(concept: Concept) {
+        const gameObject = this.getServices().conceptConvertService().convert(concept);
+
+        switch(gameObject.objectType) {
+            case GameObjectType.MeshObject:
+                const meshObject = <MeshObject> gameObject;
+                this.getServices().modelLoaderService().load(<MeshObject> gameObject)
+                    .then(() => {
+                        //todo duplicate
+                        if (!meshObject.modelPath) {
+                            new RectangleFactory(this.getServices, this.getStores, 0.1).createMesh(meshObject);
+                        } else {
+                            this.getServices().modelLoaderService().createInstance(meshObject)
+                        }
+                    });
+            break;
+        }
+    }
+
+    updateConcept(concept: Concept) {
+        this.deleteConcepts([concept]);
+        this.addConcept(concept);
     }
 }

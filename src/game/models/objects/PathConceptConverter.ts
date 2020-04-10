@@ -2,8 +2,10 @@ import { Stores } from "../../../editor/stores/Stores";
 import { ConceptType } from "../../../editor/views/canvas/models/concepts/Concept";
 import { PathConcept } from "../../../editor/views/canvas/models/concepts/PathConcept";
 import { PathObject } from "./PathObject";
+import { IConceptConverter } from "./IConceptConverter";
+import { IGameObject } from "./IGameObject";
 
-export class PathConceptConverter {
+export class PathConceptConverter implements IConceptConverter {
     viewType = ConceptType.PathConcept;
     private getStores: () => Stores;
 
@@ -11,7 +13,7 @@ export class PathConceptConverter {
         this.getStores = getStores;
     }
 
-    convert(pathView: PathConcept): void {
+    convert(pathView: PathConcept): IGameObject {
         const pathObject = new PathObject();
 
         pathObject.id = pathView.id;
@@ -25,5 +27,7 @@ export class PathConceptConverter {
         pathObject.points = pathObject.points.map(p => p.negateY()).map(p => p.div(10));
         pathObject.root = pathObject.points[0];
         this.getStores().gameStore.add(pathObject);
+
+        return pathObject;
     }
 }
