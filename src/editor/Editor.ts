@@ -13,6 +13,7 @@ export class Editor {
     gameApi: GameService;
 
     stores: Stores;
+    services: ServiceLocator;
     
     windowFactories: ViewFactory[];
 
@@ -21,7 +22,6 @@ export class Editor {
     globalSettingsForm: GlobalSettings;
     isLoading = true;
 
-    services: ServiceLocator;
 
     constructor() {
         this.svgCanvasId = 'svg-editor';

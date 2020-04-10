@@ -58,7 +58,9 @@ export class RouteWalker {
         if (reachedPoint === route.currentGoal.point1) {
             if (route.currentGoal.point2) {
                 route.isTurning = true;
-                meshObj.activeElementalAnimation = meshObj.animation.getAnimationByCond(AnimationCondition.RotateLeft);
+                if (meshObj.animation) {
+                    meshObj.activeElementalAnimation = meshObj.animation.getAnimationByCond(AnimationCondition.RotateLeft);
+                }
             } else {
                 this.initRoute(route);
             }
@@ -71,7 +73,9 @@ export class RouteWalker {
 
             if (Math.abs(rotation - finalRotation) < 0.1) {
                 meshObj.setRotation(finalRotation);
-                meshObj.activeElementalAnimation = meshObj.animation.getAnimationByCond(AnimationCondition.Move);
+                if (meshObj.animation) {
+                    meshObj.activeElementalAnimation = meshObj.animation.getAnimationByCond(AnimationCondition.Move);
+                }
                 route.isTurning = false;
                 const currentGoalIndex = route.path.indexOf(route.currentGoal);
                 route.currentGoal = route.path[currentGoalIndex + 1];
@@ -90,6 +94,7 @@ export class RouteWalker {
     private initRoute(route: RouteObject) {
         const meshObj = route.getMeshObject();
         const pathObj = route.getPathObject();
+        if (!meshObj.hasMesh()) { return; }
         
         if (meshObj.animation) {
             meshObj.activeElementalAnimation = meshObj.animation.getAnimationByCond(AnimationCondition.Move);
