@@ -1,6 +1,6 @@
 import { GameFacade } from '../../GameFacade';
 import { ActionManager, ExecuteCodeAction } from 'babylonjs';
-import { InputCommand } from '../../stores/InputCommandStore';
+import { GamepadEvent } from '../GameEventManager';
 
 export enum KeyCode {
     w = 'w',
@@ -14,14 +14,12 @@ export class KeyboardTrigger {
     downKeys: Set<string> = new Set();
 
     private gameFacade: GameFacade;
-    private triggerFunc: (isAfterRender?: boolean) => void
-
-    private keyCodeToInputCommandMap: Map<KeyCode, InputCommand> = new Map(
+    private keyCodeToInputCommandMap: Map<KeyCode, GamepadEvent> = new Map(
         [
-            [KeyCode.w, InputCommand.Forward],
-            [KeyCode.s, InputCommand.Backward],
-            [KeyCode.a, InputCommand.TurnLeft],
-            [KeyCode.e, InputCommand.TurnRight],
+            [KeyCode.w, GamepadEvent.Forward],
+            [KeyCode.s, GamepadEvent.Backward],
+            [KeyCode.a, GamepadEvent.TurnLeft],
+            [KeyCode.e, GamepadEvent.TurnRight],
         ]
     )
 
@@ -29,11 +27,6 @@ export class KeyboardTrigger {
         this.gameFacade = gameFacade;
         this.gameFacade.gameEngine.scene.actionManager = new ActionManager(this.gameFacade.gameEngine.scene);
         this.registerKeyDown();
-        this.registerKeyUp();
-    }
-
-    activate(triggerFunc: (isAfterRender: boolean) => void) {
-        this.triggerFunc = triggerFunc;
     }
 
     private registerKeyDown() {
@@ -43,22 +36,7 @@ export class KeyboardTrigger {
 
         const handler = (evt) => {
             const command = this.keyCodeToInputCommandMap.get(KeyCode[evt.sourceEvent.key]);
-            command && this.gameFacade.inputCommandStore.commands.add(command);
-            this.triggerFunc();
-        }
-
-        this.gameFacade.gameEngine.scene.actionManager.registerAction(new ExecuteCodeAction(trigger, handler));
-    }
-
-    private registerKeyUp() {
-        const trigger = {
-            trigger: ActionManager.OnKeyUpTrigger
-        };
-
-        const handler = (evt) => {
-            const command = this.keyCodeToInputCommandMap.get(evt.sourceEvent.key);
-            command && this.gameFacade.inputCommandStore.commands.delete(command);
-            this.triggerFunc();
+            command && this.gameFacade.gameEventManager.triggerGamepadEvent(command);
         }
 
         this.gameFacade.gameEngine.scene.actionManager.registerAction(new ExecuteCodeAction(trigger, handler));

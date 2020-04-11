@@ -1,13 +1,11 @@
 import * as convert from 'xml-js';
-import { IConceptImporter } from './IConceptImporter';
-import { CanvasView } from '../../views/canvas/CanvasView';
-import { Point } from '../../../misc/geometry/shapes/Point';
 import { Stores } from '../../stores/Stores';
+import { ServiceLocator } from '../ServiceLocator';
+import { IConceptImporter } from './IConceptImporter';
 import { MeshConceptImporter } from './MeshConceptImporter';
 import { PathConceptImporter } from './PathConceptImporter';
-import { Camera } from '../../views/canvas/models/Camera';
-import { ServiceLocator } from '../ServiceLocator';
-import { CanvasItemType } from '../../views/canvas/models/CanvasItem';
+import { ConceptType } from '../../views/canvas/models/concepts/Concept';
+import { AnimationConceptImporter } from './AnimationConceptImporter';
 
 export interface WgDefinition {
     _attributes: WgDefinitionAttributes;
@@ -65,17 +63,18 @@ export interface ViewGroupJson {
 
 export class ImportService {
     serviceName = 'import-service';
-    private viewImporters: IConceptImporter[];
+    private conceptImporters: IConceptImporter[];
     private getStores: () => Stores;
     private getServices: () => ServiceLocator;
 
     constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
         this.getServices = getServices;
         this.getStores = getStores;
-        this.viewImporters = [
+        this.conceptImporters = [
             new MeshConceptImporter(rect => this.getStores().canvasStore.addConcept(rect)),
-            new PathConceptImporter(path => this.getStores().canvasStore.addConcept(path))
-        ]
+            new PathConceptImporter(path => this.getStores().canvasStore.addConcept(path)),
+            new AnimationConceptImporter(animation => this.getStores().canvasStore.addMeta(animation))
+        ];
     }
 
     import(file: string): void {
@@ -88,7 +87,7 @@ export class ImportService {
         }
 
         viewGroups.forEach(group => {
-            const viewType = <CanvasItemType> group._attributes["data-view-type"];
+            const viewType = <ConceptType> group._attributes["data-view-type"];
             if (this.getStores().viewStore.getViewById(viewType)) {
                 this.getStores().viewStore.getViewById(viewType).importer.import(group);
             }
@@ -96,14 +95,15 @@ export class ImportService {
 
         conceptGroups
         .forEach(group => {
-            const conceptType = <CanvasItemType> group._attributes["data-concept-type"];
+            const conceptType = <ConceptType> group._attributes["data-concept-type"];
             this.findViewImporter(conceptType).import(group)
         });
 
-        this.getStores().canvasStore.getMeshConcepts().filter(item => item.modelPath).forEach(item => this.getServices().meshDimensionService().setDimensions(item));
+        this.getStores().canvasStore.getMeshConcepts().filter(item => item.modelPath).forEach(item => this.getServices().meshLoaderService().setDimensions(item));
+        this.getServices().gameService().importAllConcepts();
     }
 
-    private findViewImporter(viewType: CanvasItemType): IConceptImporter {
-        return this.viewImporters.find(view => view.type === viewType);
+    private findViewImporter(conceptType: ConceptType): IConceptImporter {
+        return this.conceptImporters.find(conceptImporter => conceptImporter.type === conceptType);
     }
 }

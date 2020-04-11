@@ -6,7 +6,6 @@ import { CanvasViewSettings, View } from '../View';
 import { LevelSettings } from './settings/LevelSettings';
 import { MeshSettings } from './settings/MeshSettings';
 import { PathSettings } from './settings/PathSettings';
-import { MeshDimensionService } from './MeshDimensionService';
 import { Camera, nullCamera } from './models/Camera';
 import { FeedbackStore } from './models/FeedbackStore';
 import { CameraTool } from './tools/camera/CameraTool';
@@ -60,8 +59,6 @@ export class CanvasView extends View {
     visible = true;
     feedbackStore: FeedbackStore;
     
-    model3dController: MeshDimensionService;
-    
     exporter: IViewExporter;
     importer: IViewImporter;
     private camera: Camera = nullCamera;
@@ -73,10 +70,8 @@ export class CanvasView extends View {
         
         this.feedbackStore = new FeedbackStore();
         
-        this.model3dController = new MeshDimensionService(this.getServices);
-
         this.tools = [
-            new PointerTool(this, this.getServices, this.getStores),
+            new PointerTool(this.getServices, this.getStores),
             new CameraTool(this, this.getServices, this.getStores),
             new RectangleTool(this, this.getServices, this.getStores),
             new PathTool(this, this.getServices, this.getStores),
@@ -88,7 +83,7 @@ export class CanvasView extends View {
         this.activeTool = this.getToolByType(ToolType.RECTANGLE);
 
         this.settings = [
-            new MeshSettings(this, this.getServices, this.getStores),
+            new MeshSettings(this.getServices, this.getStores),
             new PathSettings(),
             new LevelSettings(this.getServices, this.getStores)
         ];

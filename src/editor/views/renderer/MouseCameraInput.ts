@@ -1,7 +1,7 @@
 
 
 import { ICameraInput, UniversalCamera, Vector3 } from 'babylonjs';
-import { debounce } from '../../../game/import/Functions';
+import { debounce } from '../../../misc/Functions';
 
 export enum MouseInput {
     WHEEL_DOWN = 'wheel-down',

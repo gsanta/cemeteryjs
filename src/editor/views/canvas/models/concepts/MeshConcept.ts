@@ -1,13 +1,13 @@
 import { Mesh, Vector3 } from 'babylonjs';
-import { Concept, Subconcept } from './Concept';
-import { Rectangle } from '../../../../../misc/geometry/shapes/Rectangle';
-import { BehaviourType } from '../../../../../game/services/behaviour/IBehaviour';
 import { MeshStore } from '../../../../../game/models/stores/MeshStore';
+import { BehaviourType } from '../../../../../game/services/behaviour/IBehaviour';
 import { Point } from '../../../../../misc/geometry/shapes/Point';
+import { Rectangle } from '../../../../../misc/geometry/shapes/Rectangle';
 import { toVector3 } from '../../../../../misc/geometry/utils/GeomUtils';
-import { CanvasItemType } from '../CanvasItem';
-import { Feedback } from '../feedbacks/Feedback';
 import { EditPoint } from '../feedbacks/EditPoint';
+import { Feedback } from '../feedbacks/Feedback';
+import { Concept, ConceptType } from './Concept';
+import { toDegree } from '../../../../../misc/geometry/utils/Measurements';
 
 export enum WorldItemShape {
     RECTANGLE = 'rect',
@@ -33,10 +33,10 @@ export enum AnimationState {
 
 
 export class MeshConcept implements Concept {
-    type = CanvasItemType.MeshConcept;
+    type = ConceptType.MeshConcept;
     editPoints = [];
     meshName: string;
-    name: string;
+    id: string;
     dimensions: Rectangle;
     rotation: number;
     children: MeshConcept[] = [];
@@ -53,18 +53,18 @@ export class MeshConcept implements Concept {
 
     speed = 0.01;
 
-    activeAnimation: string;
     activeBehaviour: BehaviourType;
     wanderAngle = 0;
     animations: string[] = [];
     animationState = AnimationState.Playing;
+    animationId: string;
     layer: number = 10;
     private getMesh: (meshName: string) => Mesh;
 
     constructor(getMesh: (meshName: string) => Mesh, dimensions: Rectangle, name: string, rotation = 0) {
         this.getMesh = getMesh;
         this.dimensions = dimensions;
-        this.name = name;
+        this.id = name;
         this.rotation = rotation;
     }
 
@@ -74,7 +74,7 @@ export class MeshConcept implements Concept {
 
     equalTo(worldItem: MeshConcept) {
         return (
-            this.name === worldItem.name &&
+            this.id === worldItem.id &&
             this.dimensions.equalTo(worldItem.dimensions) &&
             this.rotation === worldItem.rotation
         );
@@ -91,6 +91,7 @@ export class MeshConcept implements Concept {
     setDirection(newDir: Point): void {
         const currentDir = this.getDirection();
         const angle1 = Math.atan2(newDir.y, newDir.x) - Math.atan2(currentDir.y, currentDir.x);
+        console.log(toDegree(angle1));
         const angle2 = Math.atan2(currentDir.y, currentDir.x) - Math.atan2(newDir.y, newDir.x);
         const angle = Math.min(angle1, angle2);
         this.rotation += angle;
@@ -132,7 +133,7 @@ export class MeshConcept implements Concept {
     }
 
     private getAnimations(meshStore: MeshStore): Animation[] {
-        return meshStore.getMesh(this.name).skeleton.getAnimationRanges().map(anim => ({
+        return meshStore.getMesh(this.id).skeleton.getAnimationRanges().map(anim => ({
             name: anim.name,
             range: [anim.from, anim.to]
         }));

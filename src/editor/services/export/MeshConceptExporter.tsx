@@ -1,15 +1,13 @@
 import { minBy, sort } from "../../../misc/geometry/utils/Functions";
 import { colors } from "../../gui/styles";
+import { Stores } from '../../stores/Stores';
+import { Concept, ConceptType } from "../../views/canvas/models/concepts/Concept";
+import { MeshConcept } from "../../views/canvas/models/concepts/MeshConcept";
 import { IConceptExporter } from "./IConceptExporter";
 import React = require("react");
-import { Concept } from "../../views/canvas/models/concepts/Concept";
-import { MeshConcept } from "../../views/canvas/models/concepts/MeshConcept";
-import { Stores } from '../../stores/Stores';
-import { CanvasTag } from "../../views/canvas/CanvasView";
-import { CanvasItemType } from "../../views/canvas/models/CanvasItem";
 
 export class MeshConceptExporter implements IConceptExporter {
-    type = CanvasItemType.MeshConcept;
+    type = ConceptType.MeshConcept;
     private getStores: () => Stores;
 
     constructor(getStores: () => Stores) {
@@ -19,7 +17,7 @@ export class MeshConceptExporter implements IConceptExporter {
     export(hover?: (view: Concept) => void, unhover?: (view: Concept) => void): JSX.Element {
         const meshGroups = this.getSortedMeshViews().map(item => this.renderGroup(item, hover, unhover));
 
-        return meshGroups.length > 0 ? <g data-concept-type={CanvasItemType.MeshConcept}>{meshGroups}</g> : null;
+        return meshGroups.length > 0 ? <g data-concept-type={ConceptType.MeshConcept}>{meshGroups}</g> : null;
     }
 
     private getSortedMeshViews() {
@@ -35,8 +33,8 @@ export class MeshConceptExporter implements IConceptExporter {
         const tranlateY = minY < 0 ? - minY : 0;
 
         return (
-            <g 
-                key={item.name}
+            <g
+                key={item.id}
                 transform={`translate(${item.dimensions.topLeft.x} ${item.dimensions.topLeft.y})`}
                 onMouseOver={() => hover ? hover(item) : () => undefined}
                 onMouseOut={() => unhover ? unhover(item) : () => undefined}
@@ -49,13 +47,13 @@ export class MeshConceptExporter implements IConceptExporter {
                 data-wg-layer={item.layer}
                 data-rotation={item.rotation}
                 data-wg-scale={item.scale}
-                data-wg-name={item.name}
+                data-wg-name={item.id}
                 data-model={item.modelPath}
                 data-texture={item.texturePath}
                 data-thumbnail={item.thumbnailPath}
                 data-path={item.path}
                 data-is-manual-control={item.isManualControl ? 'true' : 'false'}
-                data-animation={item.activeAnimation}
+                data-animation-id={item.animationId}
             >
                 {this.renderRect(item)}
                 {this.renderThumbnail(item)}
@@ -68,7 +66,7 @@ export class MeshConceptExporter implements IConceptExporter {
 
         return (
             <rect
-                key={item.name}
+                key={item.id}
                 x={`0`}
                 y={`0`}
                 width={`${item.dimensions.getWidth()}px`}
@@ -81,10 +79,10 @@ export class MeshConceptExporter implements IConceptExporter {
 
     private renderThumbnail(item: MeshConcept) {
         let thumbnail: JSX.Element = null;
-            
+
         if (item.thumbnailPath) {
-            thumbnail =  (
-                <image xlinkHref={`assets/models/${this.getFolderNameFromFileName(item.thumbnailPath)}/${item.thumbnailPath}`} x="0" y="0" height={`${item.dimensions.getHeight()}px`} width={`${item.dimensions.getWidth()}px`}/>
+            thumbnail = (
+                <image xlinkHref={`assets/models/${this.getFolderNameFromFileName(item.thumbnailPath)}/${item.thumbnailPath}`} x="0" y="0" height={`${item.dimensions.getHeight()}px`} width={`${item.dimensions.getWidth()}px`} />
             )
         }
 

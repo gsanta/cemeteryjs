@@ -4,7 +4,7 @@ import { Point } from '../../../misc/geometry/shapes/Point';
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
 import { ConceptGroupJson } from './ImportService';
 import { MeshConcept } from '../../views/canvas/models/concepts/MeshConcept';
-import { CanvasItemType } from '../../views/canvas/models/CanvasItem';
+import { ConceptType } from '../../views/canvas/models/concepts/Concept';
 
 export interface RectJson {
     _attributes: {
@@ -14,6 +14,7 @@ export interface RectJson {
         "data-wg-name": string,
         "data-texture": string
         "data-is-manual-control": string;
+        'data-animation-id': string;
     }
 }
 
@@ -22,7 +23,7 @@ export interface RectangleGroupJson extends ConceptGroupJson {
 }
 
 export class MeshConceptImporter implements IConceptImporter {
-    type = CanvasItemType.MeshConcept;
+    type = ConceptType.MeshConcept;
     private addGameObject: (rect: MeshConcept) => void;
 
     constructor(addGameObject: (gameObject: MeshConcept) => void) {
@@ -50,7 +51,7 @@ export class MeshConceptImporter implements IConceptImporter {
             const rectangle = new Rectangle(new Point(x, y), new Point(x + width, y + height));
 
             const meshConcept: MeshConcept = new MeshConcept(null, rectangle, name);
-            meshConcept.type = <CanvasItemType> type;
+            meshConcept.type = <ConceptType> type;
             meshConcept.rotation = rotation;
             meshConcept.modelPath = model;
             meshConcept.texturePath = texture;
@@ -59,7 +60,7 @@ export class MeshConceptImporter implements IConceptImporter {
             meshConcept.thumbnailPath = rect._attributes["data-thumbnail"];
             meshConcept.path = rect._attributes["data-path"];
             meshConcept.isManualControl = isManualControl;
-            meshConcept.activeAnimation = rect._attributes["data-animation"];
+            meshConcept.animationId = rect._attributes['data-animation-id'];
 
             this.addGameObject(meshConcept);
         });

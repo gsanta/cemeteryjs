@@ -1,26 +1,26 @@
-import { CanvasItem, CanvasItemType } from "../views/canvas/models/CanvasItem";import { without } from "../../misc/geometry/utils/Functions";
-import { Concept } from "../views/canvas/models/concepts/Concept";
+import { without } from "../../misc/geometry/utils/Functions";
+import { Concept, ConceptType } from "../views/canvas/models/concepts/Concept";
 import { PathConcept } from "../views/canvas/models/concepts/PathConcept";
-import { Feedback } from "../views/canvas/models/feedbacks/Feedback";
+import { Feedback, FeedbackType } from "../views/canvas/models/feedbacks/Feedback";
 import { EditPoint } from "../views/canvas/models/feedbacks/EditPoint";
 
 
 export class SelectionStore {
-    items: CanvasItem[] = [];
+    items: (Concept | Feedback)[] = [];
 
-    addItem(...item: CanvasItem[]) {
+    addItem(...item: (Concept | Feedback)[]) {
         this.items.push(...item);
     }
 
-    removeItem(item: CanvasItem) {
+    removeItem(item: Concept | Feedback) {
         this.items = without(this.items, item);
     }
 
-    contains(item: CanvasItem): boolean {
+    contains(item: Concept | Feedback): boolean {
         return this.items.includes(item);
     }
 
-    getAll(): CanvasItem[] {
+    getAll(): (Concept | Feedback)[] {
         return this.items;
     }
 
@@ -29,7 +29,7 @@ export class SelectionStore {
     }
 
     getPathConcepts(): PathConcept[] {
-        return <PathConcept[]> this.items.filter(view => view.type === CanvasItemType.PathConcept);
+        return <PathConcept[]> this.items.filter(view => view.type === ConceptType.PathConcept);
     }
 
     hasConcept(): boolean {
@@ -53,7 +53,7 @@ export class SelectionStore {
     }
 
     getEditPoint(): EditPoint {
-        return <EditPoint> this.items.find(item => item.type === CanvasItemType.EditPointFeedback);
+        return <EditPoint> this.items.find(item => item.type === FeedbackType.EditPointFeedback);
     }
 
     hasEditPoint() {

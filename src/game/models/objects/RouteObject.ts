@@ -1,8 +1,6 @@
 import { MeshObject } from "./MeshObject";
 import { IGameObject, GameObjectType } from "./IGameObject";
-import { PathObject } from "./PathObject";
-import { Point } from "../../../misc/geometry/shapes/Point";
-
+import { PathObject, PathCorner } from "./PathObject";
 
 export class RouteObject implements IGameObject {
     readonly objectType = GameObjectType.RouteObject;
@@ -12,12 +10,14 @@ export class RouteObject implements IGameObject {
         this.getMeshObjectFunc = getMeshObject;
         this.getPathObjectFunc = getPathObject;
     }
-    name: string;
-    currentStop: number = 0;
+    id: string;
+    currentGoal: PathCorner = undefined;
+    isTurning = false;
     animation: string;
     isFinished = false;
     repeat = true;
     isPaused = false;
+    path: PathCorner[] = [];
 
     getMeshObject() {
         return this.getMeshObjectFunc();
@@ -28,7 +28,7 @@ export class RouteObject implements IGameObject {
     }
 
     reset() {
-        this.currentStop = 1;
+        this.currentGoal = undefined;
         this.isFinished = false;
         this.getMeshObject().setPosition(this.getPathObject().root);
     }

@@ -6,8 +6,10 @@ import { WindowToolbarStyled } from '../../../gui/windows/WindowToolbar';
 import { PathMarkersComponent } from '../../../services/export/PathMarkersComponent';
 import { CanvasView } from '../CanvasView';
 import { CanvasToolbarComponent } from './CanvasToolbarComponent';
-import { CanvasItem } from '../models/CanvasItem';
 import { WheelListener } from '../../../services/WheelListener';
+import { TypedItem } from '../../../stores/CanvasStore';
+import { Concept } from '../models/concepts/Concept';
+import { Feedback } from '../models/feedbacks/Feedback';
 
 
 const EditorComponentStyled = styled.div`
@@ -39,8 +41,8 @@ export class CanvasComponent extends React.Component {
     }
 
     render(): JSX.Element {
-        const hover = (canvasItem: CanvasItem) => this.context.getServices().mouseService().hover(canvasItem);
-        const unhover = (canvasItem: CanvasItem) => this.context.getServices().mouseService().unhover(canvasItem);
+        const hover = (item: Concept | Feedback) => this.context.getServices().mouseService().hover(item);
+        const unhover = (canvasItem: Concept | Feedback) => this.context.getServices().mouseService().unhover(canvasItem);
 
         const view = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id);
 

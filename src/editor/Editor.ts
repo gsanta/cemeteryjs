@@ -1,4 +1,4 @@
-import { GameApi } from '../game/GameApi';
+import { GameService } from './services/GameService';
 import { GameFacade } from '../game/GameFacade';
 import { CanvasFactory } from './views/canvas/CanvasFactory';
 import { GlobalSettings } from './views/canvas/settings/GlobalSettings';
@@ -10,9 +10,10 @@ import { Stores } from './stores/Stores';
 
 export class Editor {
     gameFacade: GameFacade;
-    gameApi: GameApi;
+    gameApi: GameService;
 
     stores: Stores;
+    services: ServiceLocator;
     
     windowFactories: ViewFactory[];
 
@@ -21,7 +22,6 @@ export class Editor {
     globalSettingsForm: GlobalSettings;
     isLoading = true;
 
-    services: ServiceLocator;
 
     constructor() {
         this.svgCanvasId = 'svg-editor';
@@ -40,7 +40,9 @@ export class Editor {
     setup(canvas: HTMLCanvasElement) {
         this.gameFacade = new GameFacade(canvas, this.services);
         this.gameFacade.setup();
-        this.gameApi = new GameApi(this.gameFacade);
+        this.gameApi = new GameService(canvas, () => this.services, () => this.stores);
+
+        this.services.services.push(this.gameApi);
 
         this.windowFactories.forEach(factory => factory.getWindowController(this, this.services, this.stores).setup());
         

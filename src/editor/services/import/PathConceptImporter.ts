@@ -1,7 +1,7 @@
 import { IConceptImporter } from "./IConceptImporter";
 import { ConceptGroupJson } from "./ImportService";
 import { PathConcept } from "../../views/canvas/models/concepts/PathConcept";
-import { CanvasItemType } from "../../views/canvas/models/CanvasItem";
+import { ConceptType } from "../../views/canvas/models/concepts/Concept";
 
 export interface PathJson {
     circle: {
@@ -26,7 +26,7 @@ export interface PathGroupJson extends ConceptGroupJson {
 }
 
 export class PathConceptImporter implements IConceptImporter {
-    type = CanvasItemType.PathConcept;
+    type = ConceptType.PathConcept;
     private addPath: (path: PathConcept) => void;
 
     constructor(addPath: (path: PathConcept) => void) {
@@ -38,7 +38,7 @@ export class PathConceptImporter implements IConceptImporter {
         
         pathJsons.forEach(json => {
             const path = new PathConcept();
-            path.name = json.path._attributes['data-name'];
+            path.id = json.path._attributes['data-name'];
             path.deserialize(json.path._attributes['data-points'], json.path._attributes['data-point-relations']);
 
             this.addPath(path);

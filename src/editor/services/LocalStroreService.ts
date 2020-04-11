@@ -59,19 +59,18 @@ export class LocalStoreService {
         const db = await this.getDb();
 
         const objectStore = db.transaction(["xmls"], "readwrite").objectStore("xmls");
-        const myIndex = objectStore.index('idIndex');
-        const getAllKeysRequest = myIndex.getAllKeys();
+        const allRecords = objectStore.getAll();
 
         return new Promise((resolve, reject) => {
 
-            getAllKeysRequest.onerror = () => {
-                console.error('Failed to load level keys');
+            allRecords.onerror = () => {
+                console.error('Failed to load levels');
                 reject();
             };
 
-            getAllKeysRequest.onsuccess = () => {
-                const result = getAllKeysRequest.result || [];
-                const levels = result.map(level => parseInt(level as string, 10));
+            allRecords.onsuccess = () => {
+                const result = allRecords.result || [];
+                const levels = result.map(level => parseInt(level.id as string, 10));
                 levels.sort((a, b) => a - b);
 
                 resolve(levels);
@@ -102,11 +101,13 @@ export class LocalStoreService {
         
         const db = await this.getDb();
 
-        const assets = db.transaction(["assets"], "readwrite").objectStore("assets");
-        assets.clear();
-
         const xmls = db.transaction(["xmls"], "readwrite").objectStore("xmls");
-        xmls.clear();
+        const clearXmlRequest = xmls.clear();
+
+        clearXmlRequest.onsuccess = function(e) {
+            const assets = db.transaction(["assets"], "readwrite").objectStore("assets");
+            assets.clear();
+        }
     }
 
     private async getData(request: IDBRequest): Promise<any> {
@@ -125,7 +126,7 @@ export class LocalStoreService {
         const db = request.result;
 
         db.createObjectStore("assets", { keyPath: "name" });
-        db.createObjectStore("xmls", { keyPath: "id" }).createIndex('idIndex', 'id', { unique: true })
+        db.createObjectStore("xmls", { keyPath: "id" });
     }
 
     private getDb(): Promise<IDBDatabase> {

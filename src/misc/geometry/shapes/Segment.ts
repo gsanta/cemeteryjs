@@ -7,14 +7,15 @@ import { StripeView } from './StripeView';
 export class Segment implements Shape {
     private points: [Point, Point] = [null, null];
     private orderedPoints: [Point, Point] = [null, null];
-
+    
     constructor(endPoint1: Point, endPoint2: Point) {
         [this.points[0], this.points[1]] = [endPoint1, endPoint2];
         this.orderedPoints = this.points;
     }
 
+
     public getPoints(): Point[] {
-        return this.orderedPoints;
+        return this.points;
     }
 
     public setPoint(index: number, newPoint: Point): Shape {
@@ -135,7 +136,7 @@ export class Segment implements Shape {
     }
 
     toVector(): Point {
-        return new Point(this.getPoints()[0].x - this.getPoints()[1].x, this.getPoints()[0].y - this.getPoints()[1].y);
+        return new Point(this.getPoints()[1].x - this.getPoints()[0].x, this.getPoints()[1].y - this.getPoints()[0].y);
     }
 
     private isXWithinSegment(x: number): boolean {
@@ -234,9 +235,15 @@ export class Segment implements Shape {
                 return new Segment(new Point(a, b), new Point(g, h));
             }
         }
-
-
     }
+
+    getPointAtRatio(ratio: number) {
+        const vector = this.toVector();
+        const x = vector.x * ratio + this.points[0].x;
+        const y = vector.y * ratio + this.points[0].y;
+        return new Point(x, y);
+    }
+
 
     /**
      * Calculates the slope of the `Segment` or undefined if vertical line.

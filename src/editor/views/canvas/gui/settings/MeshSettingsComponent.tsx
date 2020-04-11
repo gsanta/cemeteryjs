@@ -12,8 +12,10 @@ import { AccordionComponent } from '../../../../gui/misc/AccordionComponent';
 import { CanvasView } from '../../CanvasView';
 import { MeshViewPropType, MeshSettings } from '../../settings/MeshSettings';
 import { AnimationState, MeshConcept } from '../../models/concepts/MeshConcept';
-import { GroupedRowsStyled, InputStyled, LabelStyled, SettingsRowStyled } from './SettingsComponent';
+import { GroupedRowsStyled, FieldColumnStyled, LabelColumnStyled, SettingsRowStyled, MultiFieldColumnStyled } from './SettingsComponent';
 import { ConnectedGridComponent } from '../../../../gui/misc/GridComponent';
+import { ButtonComponent } from '../../../../gui/inputs/ButtonComponent';
+import { AnimationCondition, ElementalAnimation } from '../../models/meta/AnimationConcept';
 
 export class MeshSettingsComponent extends React.Component<{concept: MeshConcept}> {
     static contextType = AppContext;
@@ -50,16 +52,16 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
 
         return (
             <SettingsRowStyled>
-                <LabelStyled>Name</LabelStyled>
-                <InputStyled>
+                <LabelColumnStyled>Name</LabelColumnStyled>
+                <FieldColumnStyled>
                     <ConnectedInputComponent
                         formController={meshSettings}
-                        propertyName={MeshViewPropType.NAME}
+                        propertyName={MeshViewPropType.Name}
                         propertyType="string"
                         type="text"
-                        value={meshSettings.getVal(MeshViewPropType.NAME)}
+                        value={meshSettings.getVal(MeshViewPropType.Name)}
                     />
-                </InputStyled>
+                </FieldColumnStyled>
             </SettingsRowStyled>
         );        
     }
@@ -69,17 +71,17 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
 
         return (
             <SettingsRowStyled>
-                <LabelStyled>Model</LabelStyled>
-                <InputStyled>
+                <LabelColumnStyled>Model</LabelColumnStyled>
+                <FieldColumnStyled>
                     <ConnectedFileUploadComponent
                         formController={meshSettings}
-                        propertyName={MeshViewPropType.MODEL}
+                        propertyName={MeshViewPropType.Model}
                         propertyType="string"
                         placeholder={`Upload`}
-                        value={meshSettings.getVal(MeshViewPropType.MODEL)}
+                        value={meshSettings.getVal(MeshViewPropType.Model)}
                         readDataAs="dataUrl"
                     />
-                </InputStyled>
+                </FieldColumnStyled>
             </SettingsRowStyled>
         );
     }
@@ -90,17 +92,17 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
 
         return (
             <SettingsRowStyled>
-                <LabelStyled>Texture</LabelStyled>
-                <InputStyled>
+                <LabelColumnStyled>Texture</LabelColumnStyled>
+                <FieldColumnStyled>
                     <ConnectedFileUploadComponent
                         formController={meshSettings}
-                        propertyName={MeshViewPropType.TEXTURE}
+                        propertyName={MeshViewPropType.Texture}
                         propertyType="string"
                         placeholder={`Upload`}
-                        value={meshSettings.getVal(MeshViewPropType.TEXTURE)}
+                        value={meshSettings.getVal(MeshViewPropType.Texture)}
                         readDataAs="dataUrl"
                     />
-                </InputStyled>
+                </FieldColumnStyled>
             </SettingsRowStyled>
         );
     }
@@ -110,17 +112,17 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
 
         return (
             <SettingsRowStyled>
-                <LabelStyled>Thumbnail</LabelStyled>
-                <InputStyled>
+                <LabelColumnStyled>Thumbnail</LabelColumnStyled>
+                <FieldColumnStyled>
                     <ConnectedFileUploadComponent
                         formController={meshSettings}
-                        propertyName={MeshViewPropType.THUMBNAIL}
+                        propertyName={MeshViewPropType.Thumbnail}
                         propertyType="string"
                         placeholder={`Upload`}
-                        value={meshSettings.getVal(MeshViewPropType.THUMBNAIL)}
+                        value={meshSettings.getVal(MeshViewPropType.Thumbnail)}
                         readDataAs="dataUrl"
                     />
-                </InputStyled>
+                </FieldColumnStyled>
             </SettingsRowStyled>
         );
     }
@@ -130,10 +132,10 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
 
         return (
             <SettingsRowStyled>
-                <LabelStyled>Layer</LabelStyled>
-                <InputStyled>
-                    <ConnectedGridComponent isReversed={true} markedValues={[]} formController={meshSettings} propertyName={MeshViewPropType.LAYER} value={meshSettings.getVal(MeshViewPropType.LAYER)}/>
-                </InputStyled>
+                <LabelColumnStyled>Layer</LabelColumnStyled>
+                <FieldColumnStyled>
+                    <ConnectedGridComponent isReversed={true} markedValues={[]} formController={meshSettings} propertyName={MeshViewPropType.Layer} value={meshSettings.getVal(MeshViewPropType.Layer)}/>
+                </FieldColumnStyled>
             </SettingsRowStyled>
         );
     }
@@ -143,17 +145,17 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
 
         return (
             <SettingsRowStyled>
-                <LabelStyled>Rotation</LabelStyled>
-                <InputStyled>
+                <LabelColumnStyled>Rotation</LabelColumnStyled>
+                <FieldColumnStyled>
                 <ConnectedInputComponent
                     formController={meshSettings}
-                    propertyName={MeshViewPropType.ROTATION}
+                    propertyName={MeshViewPropType.Rotation}
                     propertyType="number"
                     type="number"
-                    value={meshSettings.getVal(MeshViewPropType.ROTATION)}
+                    value={meshSettings.getVal(MeshViewPropType.Rotation)}
                     placeholder="0"
                 />
-                </InputStyled>
+                </FieldColumnStyled>
             </SettingsRowStyled>
         );
     }
@@ -163,16 +165,16 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
 
         return (
             <SettingsRowStyled>
-                <LabelStyled>Scale</LabelStyled>
-                <InputStyled>
+                <LabelColumnStyled>Scale</LabelColumnStyled>
+                <FieldColumnStyled>
                     <ConnectedInputComponent
                         formController={meshSettings}
-                        propertyName={MeshViewPropType.SCALE}
+                        propertyName={MeshViewPropType.Scale}
                         propertyType="number"
                         type="number"
-                        value={meshSettings.getVal(MeshViewPropType.SCALE)}
+                        value={meshSettings.getVal(MeshViewPropType.Scale)}
                     />
-                </InputStyled>
+                </FieldColumnStyled>
             </SettingsRowStyled>
         );
     }
@@ -230,8 +232,10 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
                 <GroupedRowsStyled>
                     {this.renderManualMovement()}
                     {this.renderPath()}
+
                 </GroupedRowsStyled>
                 {this.renderAnimationTypes()}
+                {this.renderOpenCustomAnimationButton()}
                 {this.renderPlayAnimation()}
             </React.Fragment>
         );
@@ -254,21 +258,22 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
     private renderPath(): JSX.Element {
         const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
-        const pathNames = this.context.getStores().canvasStore.getPathConcepts().map(p => p.name);
-        const val: string = meshSettings.getVal(MeshViewPropType.PATH);
+        const pathNames = this.context.getStores().canvasStore.getPathConcepts().map(p => p.id);
+        const val: string = meshSettings.getVal(MeshViewPropType.Path);
 
         return (
             <SettingsRowStyled>
-                <LabelStyled>Path</LabelStyled>
-                <InputStyled>
+                <LabelColumnStyled>Path</LabelColumnStyled>
+                <MultiFieldColumnStyled>
                     <ConnectedDropdownComponent
                         formController={meshSettings}
-                        propertyName={MeshViewPropType.PATH}
+                        propertyName={MeshViewPropType.Path}
                         values={pathNames}
                         currentValue={val}
+                        placeholder="Select path"
                     />
-                </InputStyled>
-                {val ? <ClearIconComponent onClick={() => meshSettings.updateProp(undefined, MeshViewPropType.PATH)}/> : null}
+                    {val ? <ClearIconComponent onClick={() => meshSettings.updateProp(undefined, MeshViewPropType.Path)}/> : null}
+                </MultiFieldColumnStyled>
             </SettingsRowStyled>
         );
     }
@@ -279,11 +284,22 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
 
         return (
             <SettingsRowStyled verticalAlign='right'>
-                <LabelStyled>Manual Control</LabelStyled>
+                <LabelColumnStyled>Manual Control</LabelColumnStyled>
                 <CheckboxComponent
-                    isSelected={meshSettings.getVal(MeshViewPropType.IS_MANUAL_CONTROL)}
-                    onChange={(selected: boolean) => meshSettings.updateProp(selected, MeshViewPropType.IS_MANUAL_CONTROL)}
+                    isSelected={meshSettings.getVal(MeshViewPropType.IsManualControl)}
+                    onChange={(selected: boolean) => meshSettings.updateProp(selected, MeshViewPropType.IsManualControl)}
                 />
+            </SettingsRowStyled>
+        );
+    }
+
+    private renderOpenCustomAnimationButton(): JSX.Element {
+        return (
+            <SettingsRowStyled>
+              <LabelColumnStyled></LabelColumnStyled>
+                <FieldColumnStyled>
+                    <ButtonComponent text="Custom animation" type="info" onClick={() => this.context.getServices().dialogService().openDialog('animation-settings')}/>
+                </FieldColumnStyled>
             </SettingsRowStyled>
         );
     }
@@ -312,20 +328,21 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
     private renderAnimationTypes(): JSX.Element {
         const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
-        const val: string = meshSettings.getVal(MeshViewPropType.ANIMATION);
+        const val: ElementalAnimation = meshSettings.getVal(MeshViewPropType.DefaultAnimation);
 
         return (
             <SettingsRowStyled>
-                <LabelStyled>Animation</LabelStyled>
-                <InputStyled>
+                <LabelColumnStyled>Animation</LabelColumnStyled>
+                <MultiFieldColumnStyled>
                     <ConnectedDropdownComponent
                         formController={meshSettings}
-                        propertyName={MeshViewPropType.ANIMATION}
+                        propertyName={MeshViewPropType.DefaultAnimation}
                         values={this.props.concept.animations}
-                        currentValue={val}
+                        currentValue={val ? val.name : undefined}
+                        placeholder="Select animation"
                     />
-                </InputStyled>
-                {val ? <ClearIconComponent onClick={() => meshSettings.updateProp(undefined, MeshViewPropType.ANIMATION)}/> : null}
+                    {val ? <ClearIconComponent onClick={() => meshSettings.updateProp(undefined, MeshViewPropType.DefaultAnimation)}/> : null}
+                </MultiFieldColumnStyled>
             </SettingsRowStyled>
         );
     }

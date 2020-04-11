@@ -4,7 +4,7 @@ import { ConnectedInputComponent } from '../../../../gui/inputs/InputComponent';
 import { CanvasView } from '../../CanvasView';
 import { PathConcept } from '../../models/concepts/PathConcept';
 import { PathPropType, PathSettings } from '../../settings/PathSettings';
-import { InputStyled, LabelStyled, SettingsRowStyled } from './SettingsComponent';
+import { SettingsRowStyled, FieldColumnStyled, LabelColumnStyled } from './SettingsComponent';
 
 export class PathSettingsComponent extends React.Component<{concept: PathConcept}> {
     static contextType = AppContext;
@@ -33,8 +33,8 @@ export class PathSettingsComponent extends React.Component<{concept: PathConcept
 
         return (
             <SettingsRowStyled>
-                <LabelStyled>Name</LabelStyled>
-                <InputStyled>
+                <LabelColumnStyled>Name</LabelColumnStyled>
+                <FieldColumnStyled>
                     <ConnectedInputComponent
                         formController={pathSettings}
                         propertyName={PathPropType.NAME}
@@ -42,7 +42,7 @@ export class PathSettingsComponent extends React.Component<{concept: PathConcept
                         type="text"
                         value={pathSettings.getVal(PathPropType.NAME)}
                     />
-                </InputStyled>
+                </FieldColumnStyled>
             </SettingsRowStyled>
         );        
     }

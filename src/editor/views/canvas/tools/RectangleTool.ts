@@ -1,13 +1,13 @@
 import { Rectangle } from '../../../../misc/geometry/shapes/Rectangle';
+import { ServiceLocator } from '../../../services/ServiceLocator';
 import { UpdateTask } from '../../../services/UpdateServices';
-import { CanvasView, CanvasTag } from '../CanvasView';
+import { Stores } from '../../../stores/Stores';
+import { CanvasView } from '../CanvasView';
+import { MeshConcept } from '../models/concepts/MeshConcept';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './selection/RectangleSelector';
 import { ToolType } from './Tool';
-import { MeshConcept } from '../models/concepts/MeshConcept';
-import { ServiceLocator } from '../../../services/ServiceLocator';
-import { Stores } from '../../../stores/Stores';
-import { CanvasItemType } from '../models/CanvasItem';
+import { ConceptType } from '../models/concepts/Concept';
 
 export class RectangleTool extends AbstractTool {
     private lastPreviewRect: MeshConcept;
@@ -29,20 +29,21 @@ export class RectangleTool extends AbstractTool {
         const pointer = this.getServices().pointerService().pointer;
         const rect = Rectangle.squareFromCenterPointAndRadius(pointer.down, 50);
 
-        const gameObject: MeshConcept = new MeshConcept(null, rect, name);
-        gameObject.rotation = 0;
-        gameObject.modelPath = null;
-        gameObject.texturePath = null;
-        gameObject.scale = 1;
-        gameObject.color = 'grey';
+        const meshConcept: MeshConcept = new MeshConcept(null, rect, name);
+        meshConcept.rotation = 0;
+        meshConcept.modelPath = null;
+        meshConcept.texturePath = null;
+        meshConcept.scale = 1;
+        meshConcept.color = 'grey';
 
-        gameObject.name = this.getStores().canvasStore.generateUniqueName(CanvasItemType.MeshConcept);
+        meshConcept.id = this.getStores().canvasStore.generateUniqueName(ConceptType.MeshConcept);
 
-        this.getStores().canvasStore.addConcept(gameObject);
+        this.getStores().canvasStore.addConcept(meshConcept);
         this.getStores().selectionStore.clear()
-        this.getStores().selectionStore.addItem(gameObject);
+        this.getStores().selectionStore.addItem(meshConcept);
 
         this.getServices().levelService().updateCurrentLevel();
+        this.getServices().gameService().addConcept(meshConcept);
         this.getServices().updateService().scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
     }
 
@@ -57,17 +58,17 @@ export class RectangleTool extends AbstractTool {
 
         const dimensions = this.controller.feedbackStore.rectSelectFeedback.rect;
 
-        const gameObject: MeshConcept = new MeshConcept(null, dimensions, name);
-        gameObject.rotation = 0;
-        gameObject.modelPath = null;
-        gameObject.texturePath = null;
-        gameObject.scale = 1;
-        gameObject.color = 'grey';
-        gameObject.name = this.getStores().canvasStore.generateUniqueName(CanvasItemType.MeshConcept);
+        const meshConcept: MeshConcept = new MeshConcept(null, dimensions, name);
+        meshConcept.rotation = 0;
+        meshConcept.modelPath = null;
+        meshConcept.texturePath = null;
+        meshConcept.scale = 1;
+        meshConcept.color = 'grey';
+        meshConcept.id = this.getStores().canvasStore.generateUniqueName(ConceptType.MeshConcept);
 
         if (positions.length > 0) {
-            this.getStores().canvasStore.addConcept(gameObject);
-            this.lastPreviewRect = gameObject;
+            this.getStores().canvasStore.addConcept(meshConcept);
+            this.lastPreviewRect = meshConcept;
     
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
         }
@@ -77,6 +78,7 @@ export class RectangleTool extends AbstractTool {
         super.draggedUp();
 
         this.rectSelector.finish();
+        this.getServices().gameService().addConcept(this.lastPreviewRect);
         if (this.lastPreviewRect) {
             this.lastPreviewRect = null;
         }

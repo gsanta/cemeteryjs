@@ -1,4 +1,4 @@
-import { GameApi } from '../../game/GameApi';
+import { GameService } from '../services/GameService';
 import { GameFacade } from '../../game/GameFacade';
 import { Editor } from '../Editor';
 import { ServiceLocator } from '../services/ServiceLocator';
@@ -36,7 +36,7 @@ export abstract class View {
         getStores().viewStore.registerView(this);
     }
 
-    getGameApi(): GameApi {
+    getGameApi(): GameService {
         return this.editor.gameApi;
     }
 
@@ -70,7 +70,7 @@ export abstract class View {
     }
 
     getSettingsByName<T extends AbstractSettings<any> = AbstractSettings<any>>(name: string) {
-        return <T> this.settings.find(setting => setting.getType() === name);
+        return <T> this.settings.find(setting => setting.getName() === name);
     }
 
     getOffset(): Point { return new Point(0, 0) }

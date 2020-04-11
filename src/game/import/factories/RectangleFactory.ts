@@ -1,21 +1,22 @@
-import { MeshBuilder, Scene, Space, Vector3 } from 'babylonjs';
+import { MeshBuilder, Space, Vector3 } from 'babylonjs';
+import { ServiceLocator } from '../../../editor/services/ServiceLocator';
+import { Stores } from '../../../editor/stores/Stores';
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
-import { GameFacade } from '../../GameFacade';
 import { MeshObject } from '../../models/objects/MeshObject';
 import { MaterialFactory } from './MaterialFactory';
 
 export class RectangleFactory  {
-    private gameFacade: GameFacade;
-    private materialFactory: MaterialFactory;
-    private scene: Scene;
-    private index = 1;
     private height: number;
 
-    constructor(scene: Scene, materialFactory: MaterialFactory, gameFacade: GameFacade, height: number) {
-        this.gameFacade = gameFacade;
-        this.scene = scene;
-        this.materialFactory = materialFactory;
+    private getServices: () => ServiceLocator;
+    private getStores: () => Stores;
+    private materialFactory: MaterialFactory;
+
+    constructor(getServices: () => ServiceLocator, getStores: () => Stores, height: number) {
+        this.getServices = getServices;
+        this.getStores = getStores;
         this.height = height;
+        this.materialFactory = new MaterialFactory(this.getServices().gameService().gameEngine.scene);
     }
 
     createMesh(meshObject: MeshObject): void {
@@ -25,33 +26,27 @@ export class RectangleFactory  {
         const width = boundingInfo.max[0] - boundingInfo.min[0];
         const depth = boundingInfo.max[1] - boundingInfo.min[1];
 
-        const center = meshObject.dimensions.getBoundingCenter();
         const rect = <Rectangle> meshObject.dimensions;
-        // const pivotPoint = new Vector3(rec.topLeft.x, 0, rec.topLeft.y);
         
         const mesh = MeshBuilder.CreateBox(
-            meshObject.name,
+            meshObject.id,
             {
                 width: rec.getWidth(),
                 depth: rec.getHeight(),
                 height: this.height
             },
-            this.scene
+            this.getServices().gameService().gameEngine.scene
         );
 
-        this.gameFacade.meshStore.addMesh(meshObject.name, mesh);
+        this.getStores().meshStore.addMesh(meshObject.id, mesh);
         
         meshObject.meshName = mesh.name;
 
         const scale = meshObject.scale;
         mesh.scaling = new Vector3(scale, scale, scale);
-        // mesh.setPivotPoint(pivotPoint);
         mesh.translate(new Vector3(rect.topLeft.x + width / 2, 0, -rect.topLeft.y - depth / 2), 1, Space.WORLD);
-        // mesh.rotate(Axis.Y, gameObject.rotation, Space.WORLD);
 
         mesh.material = this.materialFactory.createMaterial(meshObject);
-
-        this.index++;
 
         mesh.computeWorldMatrix(true);
     }

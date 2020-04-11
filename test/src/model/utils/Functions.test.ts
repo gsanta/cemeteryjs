@@ -1,4 +1,4 @@
-import { minBy, arraysEqual } from '../../../../src/game/import/Functions';
+import { minBy, arraysEqual } from '../../../../src/misc/Functions';
 import { Point } from '../../../../src/misc/geometry/shapes/Point';
 
 

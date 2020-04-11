@@ -9,6 +9,7 @@ import { SpinnerOverlayComponent } from './misc/SpinnerOverlayComponent';
 import { View } from '../views/View';
 import { viewFactory } from '../ViewFactory';
 import { RendererView } from '../views/renderer/RendererView';
+import { AnimationDialogComponent } from './dialogs/AnimationDialogComponent';
 
 export interface AppState {
     isDialogOpen: boolean;
@@ -72,6 +73,7 @@ export class App extends React.Component<{}, AppState> {
                     {fullScreen ? this.renderFullScreenCanvas() : this.renderCanvases()}
                 </div>
                 {this.context.controllers.isLoading ? <SpinnerOverlayComponent/> : null}
+                <AnimationDialogComponent/>
             </div>
         );
     }

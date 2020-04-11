@@ -7,12 +7,14 @@ import { toVector3 } from "../../../misc/geometry/utils/GeomUtils";
 import { BehaviourType } from "../../services/behaviour/IBehaviour";
 import { GameObjectType, IGameObject } from "./IGameObject";
 import { RouteObject } from "./RouteObject";
+import { AnimationConcept, ElementalAnimation } from "../../../editor/views/canvas/models/meta/AnimationConcept";
+import { toDegree } from "../../../misc/geometry/utils/Measurements";
 
 export class MeshObject implements IGameObject {
     readonly objectType = GameObjectType.MeshObject;
     type: string;
     meshName: string;
-    name: string;
+    id: string;
     dimensions: Rectangle;
     rotation: number = 0;
     children: MeshObject[] = [];
@@ -28,16 +30,21 @@ export class MeshObject implements IGameObject {
 
     speed = 0.01;
 
-    activeAnimation: string;
     activeBehaviour: BehaviourType;
     wanderAngle = 0;
+    animation: AnimationConcept;
+    activeElementalAnimation: ElementalAnimation;
     private getMesh: (meshName: string) => Mesh;
     private getRouteFunc: () => RouteObject;
 
     constructor(getMesh: (meshName: string) => Mesh, getRoute: () => RouteObject) {
         this.getMesh = getMesh;
-        this.name = name;
+        this.id = name;
         this.getRouteFunc = getRoute;
+    }
+
+    hasMesh() {
+        return this.getMesh(this.id);
     }
 
     addChild(meshObject: MeshObject) {
@@ -46,20 +53,16 @@ export class MeshObject implements IGameObject {
 
     equalTo(meshObject: MeshObject) {
         return (
-            this.name === meshObject.name &&
+            this.id === meshObject.id &&
             this.dimensions.equalTo(meshObject.dimensions) &&
             this.rotation === meshObject.rotation
         );
     }
 
     setPosition(point: Point) {
-        const mesh = this.getMesh(this.name); 
+        const mesh = this.getMesh(this.id); 
         mesh.setAbsolutePosition(toVector3(point));
     }
-
-    // getAnimationByName(animationName: AnimationName, meshStore: MeshStore): Animation {
-    //     return this.getAnimations(meshStore).find(anim => anim.name === animationName);
-    // }
 
     getDirection(): Point {
         return new Point(Math.sin(this.getRotation()), Math.cos(this.getRotation()));
@@ -79,19 +82,17 @@ export class MeshObject implements IGameObject {
 
     moveBy(vector: Point): void {
         if (this.getMesh(this.meshName)) {
-            this.getMesh(this.meshName).translate(toVector3(vector), 1); //moveWithCollisions(toVector3(vector));
+            this.getMesh(this.meshName).translate(toVector3(vector), 1);
         } else {
             this.dimensions.translate(vector);
         }
     }
 
-    setRotation(direction: Point) {
-        const rotation = 2 * Math.PI -  Math.atan2(direction.y, direction.x);
-
+    setRotation(angle: number) {
         if (this.getMesh(this.meshName)) {
-            this.getMesh(this.meshName).rotation.y = rotation;
+            this.getMesh(this.meshName).rotation.y = - angle;
         } else {
-            this.rotation = rotation;
+            this.rotation = angle;
         }
     }
 
@@ -112,13 +113,6 @@ export class MeshObject implements IGameObject {
     getRoute(): RouteObject {
         return this.getRouteFunc();
     }
-
-    // private getAnimations(meshStore: MeshStore): Animation[] {
-    //     return meshStore.getMesh(this.name).skeleton.getAnimationRanges().map(anim => ({
-    //         name: anim.name,
-    //         range: [anim.from, anim.to]
-    //     }));
-    // }
 }
 
 function to2DPoint(vector3: Vector3): Point {

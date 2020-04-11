@@ -1,14 +1,15 @@
 import * as React from 'react';
 import { colors } from '../../gui/styles';
 import { PathConcept } from '../../views/canvas/models/concepts/PathConcept';
-import { CanvasItem } from '../../views/canvas/models/CanvasItem';
 import { EditPoint } from '../../views/canvas/models/feedbacks/EditPoint';
 import { Stores } from '../../stores/Stores';
+import { Concept } from '../../views/canvas/models/concepts/Concept';
+import { Feedback } from '../../views/canvas/models/feedbacks/Feedback';
 
 export interface PathComponentProps {
     item: PathConcept;
-    onMouseOver(canvasItem: CanvasItem): void;
-    onMouseOut(canvasItem: CanvasItem): void;
+    onMouseOver(item: Concept | Feedback): void;
+    onMouseOut(item: Concept | Feedback): void;
     onlyData: boolean;
     isHovered: boolean;
     isSelected: boolean;
@@ -65,7 +66,7 @@ export class PathComponent extends React.Component<PathComponentProps> {
                 {highlight}
                 <path
                     d={this.props.item.serializePath()}
-                    data-name={this.props.item.name}
+                    data-name={this.props.item.id}
                     data-points={this.props.item.editPoints.map(p => p.point.toString()).join(' ')}
                     data-point-relations={this.props.item.serializeParentRelations()}
                     fill="none"

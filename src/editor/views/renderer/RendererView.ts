@@ -1,5 +1,3 @@
-import { Mesh } from 'babylonjs';
-import { AbstractModelLoader } from '../../AbstractModelLoader';
 import { Editor } from '../../Editor';
 import { ServiceLocator } from '../../services/ServiceLocator';
 import { UpdateService } from '../../services/UpdateServices';
@@ -8,7 +6,6 @@ import { CanvasViewSettings, View } from '../View';
 import { EditorCamera } from './EditorCamera';
 import { HelperMeshes } from './HelperMeshes';
 import { RendererCameraTool } from './RendererCameraTool';
-import { WebglCanvasImporter } from './WebglCanvasImporter';
 (<any> window).earcut = require('earcut');
 
 export class RendererView extends View {
@@ -16,12 +13,9 @@ export class RendererView extends View {
     visible = true;
     updateService: UpdateService;
 
-    writer: WebglCanvasImporter;
-    modelLoader: AbstractModelLoader;
     private helperMeshes: HelperMeshes;
 
     private renderCanvasFunc: () => void;
-    meshes: Mesh[] = [];
 
     constructor(editor: Editor, services: ServiceLocator) {
         super(editor, () => services, () => editor.stores);
@@ -43,18 +37,11 @@ export class RendererView extends View {
             new RendererCameraTool(this, this.getServices, this.getGameFacade().gameEngine.camera)
         ]
         this.activeTool = this.getToolByType(ToolType.CAMERA);
-        this.writer = new WebglCanvasImporter(this, this.getGameFacade());
 
         this.update();
     }
 
     update() {
-        this.clearCanvas();
-        if (this.writer) {
-            const file = this.getServices().exportService().export();
-            this.writer.import(file);
-        }
-
         this.renderWindow();
     }
 
@@ -81,10 +68,6 @@ export class RendererView extends View {
 
     setVisible(visible: boolean) {
         this.visible = visible;
-    }
-
-    private clearCanvas() {
-        this.getGameFacade().clear();
     }
     
     viewSettings: CanvasViewSettings = {
