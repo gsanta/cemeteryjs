@@ -97,41 +97,31 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                 this.getServices().storageService().saveAsset(val.path, val.data)
                 .finally(() => {
                     this.getServices().modelLoaderService().setDimensions(this.meshConcept);
-                    this.getServices().gameService().updateConcept(this.meshConcept);
-                    this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 });
                 break;
             case MeshViewPropType.Texture:
                 this.meshConcept.texturePath = val.path;
-                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
             case MeshViewPropType.Thumbnail:
                 this.meshConcept.thumbnailPath = val.path;
-                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
             case MeshViewPropType.Layer:
                 this.meshConcept.layer = val;
-                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
             case MeshViewPropType.Rotation:
                 this.meshConcept.rotation = this.convertValue(val, prop, this.meshConcept.rotation);
-                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
             case MeshViewPropType.Scale:
                 this.meshConcept.scale = this.convertValue(val, prop, this.meshConcept.scale);
-                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
             case MeshViewPropType.Name:
                 this.meshConcept.id = val;
-                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
             case MeshViewPropType.Path:
                 this.meshConcept.path = val;
-                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
             case MeshViewPropType.IsManualControl:
                 this.meshConcept.isManualControl = val;
-                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
             case MeshViewPropType.DefaultAnimation:
                 if (val === undefined) {
@@ -154,16 +144,15 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                         condition: AnimationCondition.Default
                     })
                 }
-
-                this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
                 break;
             case MeshViewPropType.AnimationState:
                 this.meshConcept.animationState = val;
-                this.getServices().gameService().meshObjectUpdater.updateAnimationState(this.meshConcept.animationState, this.meshConcept.id)
                 break;
         }
 
         const map = this.getServices().exportService().export();
+        this.getServices().gameService().updateConcept(this.meshConcept);
+        this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
         this.getServices().storageService().storeLevel(this.getStores().levelStore.currentLevel.index, map);
     }
 }

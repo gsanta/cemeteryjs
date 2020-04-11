@@ -73,6 +73,8 @@ export class DeleteTool extends AbstractTool {
     }
 
     eraseAll() {
+        const concepts = this.getStores().canvasStore.getAllConcepts();
+        this.getServices().gameService().deleteConcepts(concepts);
         this.getServices().storageService().clearAll();
         this.getStores().canvasStore.clear();
         this.getServices().updateService().runImmediately(UpdateTask.All);

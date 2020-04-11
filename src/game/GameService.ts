@@ -92,15 +92,11 @@ export class GameService {
         switch(gameObject.objectType) {
             case GameObjectType.MeshObject:
                 const meshObject = <MeshObject> gameObject;
-                this.getServices().modelLoaderService().load(<MeshObject> gameObject)
-                    .then(() => {
-                        //todo duplicate
-                        if (!meshObject.modelPath) {
-                            new RectangleFactory(this.getServices, this.getStores, 0.1).createMesh(meshObject);
-                        } else {
-                            this.getServices().modelLoaderService().createInstance(meshObject)
-                        }
-                    });
+                if (!meshObject.modelPath) {
+                    new RectangleFactory(this.getServices, this.getStores, 0.1).createMesh(meshObject);
+                } else {
+                    this.getServices().modelLoaderService().load(<MeshObject> gameObject).then(() => this.getServices().modelLoaderService().createInstance(meshObject));
+                }
             break;
         }
     }

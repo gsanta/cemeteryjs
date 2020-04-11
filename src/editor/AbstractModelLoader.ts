@@ -15,6 +15,8 @@ export abstract class AbstractModelLoader {
     private basePath = 'assets/models/';
 
     private loadedFileNames: Set<String> = new Set();
+    private pendingFileNames: Map<string, Promise<any>> = new Map();
+
     protected getServices: () => ServiceLocator;
 
     constructor(getServices: () => ServiceLocator) {
@@ -27,30 +29,31 @@ export abstract class AbstractModelLoader {
         const promises: Promise<Mesh>[] = [];
 
         for (let i = 0; i < modeledGameObjects.length; i++) {
-            if (!this.loadedFileNames.has(modeledGameObjects[i].modelPath)) {
-                const meshPromise = this.load(<any> modeledGameObjects[i]);
-                promises.push(meshPromise);
-            }
+            promises.push(this.load(<any> modeledGameObjects[i]));
         }
 
         return Promise.all(promises);
     }
 
     load(meshObject: MeshObject | MeshConcept): Promise<Mesh> {
-        if (this.loadedFileNames.has(meshObject.modelPath)) {
-            return Promise.resolve(null);
+        if (this.pendingFileNames.has(meshObject.modelPath)) {
+            return this.pendingFileNames.get(meshObject.modelPath);
         }
-        
+
         this.loadedFileNames.add(meshObject.modelPath);
 
-        return this.getServices().storageService().loadAsset(meshObject.modelPath)
+        const promise = this.getServices().storageService().loadAsset(meshObject.modelPath)
             .then((data) => {
                 if (data) {
                     return this.loadMesh(meshObject, data);
                 } else {
                     return this.loadMesh(meshObject, meshObject.modelPath);
                 }
-            });
+            })
+            .catch(e => console.log(e))
+
+        this.pendingFileNames.set(meshObject.modelPath, promise);
+        return <Promise<Mesh>> promise;
     }
 
     private loadMesh(meshObject: MeshObject | MeshConcept, dataOrFileName: string): Promise<Mesh> {

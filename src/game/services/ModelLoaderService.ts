@@ -1,6 +1,5 @@
 import { Mesh, Vector3, Space } from 'babylonjs';
 import { AbstractModelLoader } from '../../editor/AbstractModelLoader';
-import { GameFacade } from '../GameFacade';
 import { Stores } from '../../editor/stores/Stores';
 import { ServiceLocator } from '../../editor/services/ServiceLocator';
 import { MeshConcept } from '../../editor/views/canvas/models/concepts/MeshConcept';
@@ -8,6 +7,8 @@ import { UpdateTask } from '../../editor/services/UpdateServices';
 import { Point } from '../../misc/geometry/shapes/Point';
 import { MeshObject } from '../models/objects/MeshObject';
 import { Rectangle } from '../../misc/geometry/shapes/Rectangle';
+
+let c = 0;
 
 export class ModelLoaderService extends AbstractModelLoader {
     serviceName = 'model-loader-service'
@@ -70,7 +71,7 @@ export class ModelLoaderService extends AbstractModelLoader {
             clone = templateMesh;
         } else {
             clone = <Mesh> templateMesh.instantiateHierarchy();
-            clone.name = meshObject.id;
+            clone.name = meshObject.id + '_' + c++;
             this.getStores().meshStore.addClone(clone.name, clone);
         }
         clone.setAbsolutePosition(new Vector3(0, 0, 0));
