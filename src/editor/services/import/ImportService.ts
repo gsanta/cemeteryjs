@@ -99,7 +99,7 @@ export class ImportService {
             this.findViewImporter(conceptType).import(group)
         });
 
-        this.getStores().canvasStore.getMeshConcepts().filter(item => item.modelPath).forEach(item => this.getServices().modelLoaderService().setDimensions(item));
+        this.getStores().canvasStore.getMeshConcepts().filter(item => item.modelPath).forEach(item => this.getServices().meshLoaderService().setDimensions(item));
         this.getServices().gameService().importAllConcepts();
     }
 

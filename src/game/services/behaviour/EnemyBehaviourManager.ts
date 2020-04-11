@@ -1,9 +1,7 @@
-import { IBehaviour } from "./IBehaviour";
-import { IEventListener, IAfterRender } from "../listeners/IEventListener";
-import { GameEvent, EventType } from "../GameEventManager";
 import { GameFacade } from "../../GameFacade";
-import { MeshObject } from "../../models/objects/MeshObject";
-import { LifeCycleEvent } from "../triggers/ILifeCycleTrigger";
+import { EventType } from "../GameEventManager";
+import { IAfterRender } from "../listeners/IEventListener";
+import { IBehaviour } from "./IBehaviour";
 
 export class EnemyBehaviourManager  implements IAfterRender {
     eventType = EventType.AfterRender;
@@ -17,7 +15,7 @@ export class EnemyBehaviourManager  implements IAfterRender {
     
     afterRender() {
         this.gameFacade.stores.gameStore.getEnemies().forEach(enemy => {
-            const behaviour = this.behaviours[0]//.find(behaviour => behaviour.type === enemy.activeBehaviour);
+            const behaviour = this.behaviours[0]
 
             behaviour && behaviour.update(enemy);
         });

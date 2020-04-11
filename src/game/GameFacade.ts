@@ -3,8 +3,7 @@ import { ImportService } from '../editor/services/import/ImportService';
 import { ServiceLocator } from '../editor/services/ServiceLocator';
 import { Stores } from '../editor/stores/Stores';
 import { GameEngine } from '../editor/views/renderer/GameEngine';
-import { GameObjectFactory } from './import/GameObjectFactory';
-import { IConceptConverter } from './models/objects/IConceptConverter';
+import { IConceptConverter } from '../editor/services/convert/IConceptConverter';
 import { MeshStore } from './models/stores/MeshStore';
 import { CharacterMovement } from './services/behaviour/CharacterMovement';
 import { GameEventManager, GamepadEvent } from './services/GameEventManager';
@@ -13,12 +12,10 @@ import { PlayerListener } from './services/listeners/PlayerListener';
 import { AfterRenderTrigger } from './services/triggers/AfterRenderTrigger';
 import { KeyboardTrigger } from './services/triggers/KeyboardTrigger';
 import { Walkers } from './services/walkers/Walkers';
-import { InputCommandStore } from './stores/InputCommandStore';
 
 export class GameFacade {
     gameEngine: GameEngine;
     meshStore: MeshStore;
-    inputCommandStore: InputCommandStore;
 
     private keyboardListener: KeyboardTrigger;
     private keyboardTrigger: KeyboardTrigger;
@@ -26,8 +23,6 @@ export class GameFacade {
     gameEventManager: GameEventManager;
     characterMovement: CharacterMovement;
     animationPlayer: AnimationPlayer;
-
-    gameObjectFactory: GameObjectFactory;
 
     importers: IConceptImporter[];
     viewImporter: ImportService;
@@ -42,7 +37,6 @@ export class GameFacade {
         this.stores = new Stores();
         this.gameEngine = new GameEngine(canvas);
         this.meshStore = new MeshStore();
-        this.inputCommandStore = new InputCommandStore();
 
         this.keyboardListener = new KeyboardTrigger(this);
         this.keyboardTrigger = new KeyboardTrigger(this);
@@ -58,7 +52,6 @@ export class GameFacade {
         this.keyboardTrigger = new KeyboardTrigger(this);
         this.afterRenderTrigger = new AfterRenderTrigger(this)
 
-        this.gameObjectFactory = new GameObjectFactory(this);
         this.walkers = new Walkers(() => this.stores);        
     }
     

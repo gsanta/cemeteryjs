@@ -1,17 +1,12 @@
-import { IEventListener } from "../listeners/IEventListener";
-import { GameEvent } from "../GameEventManager";
-import { GameFacade } from "../../GameFacade";
-import { LifeCycleEvent } from "../triggers/ILifeCycleTrigger";
-import { RouteObject } from "../../models/objects/RouteObject";
-import { PathObject, PathCorner } from "../../models/objects/PathObject";
-import { Point } from "../../../misc/geometry/shapes/Point";
 import { AnimationCondition } from "../../../editor/views/canvas/models/meta/AnimationConcept";
+import { Point } from "../../../misc/geometry/shapes/Point";
 import { Segment } from "../../../misc/geometry/shapes/Segment";
+import { PathCorner, PathObject } from "../../models/objects/PathObject";
+import { RouteObject } from "../../models/objects/RouteObject";
 
 const defaultSpeed = 1000 / 4;
 
 export class RouteWalker {
-    events: GameEvent[];
     private prevTime: number;
     private bezierRotator = new BezierRotator();
 

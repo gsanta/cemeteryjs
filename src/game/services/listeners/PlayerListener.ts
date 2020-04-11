@@ -1,13 +1,11 @@
 import { GameFacade } from "../../GameFacade";
 import { MeshObject } from "../../models/objects/MeshObject";
-import { InputCommand } from "../../stores/InputCommandStore";
 import { EventType, GamepadEvent } from "../GameEventManager";
 import { IGamepadListener } from "./IEventListener";
 
 export class PlayerListener implements IGamepadListener {
     eventType = EventType.Keyboard;
 
-    private commandToActionMap: Map<InputCommand, (gameFacade: GameFacade) => any>;
     private gameFacade: GameFacade;
 
     constructor(gameFacade: GameFacade) {

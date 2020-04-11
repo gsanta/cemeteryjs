@@ -1,5 +1,3 @@
-import { Mesh } from 'babylonjs';
-import { AbstractModelLoader } from '../../AbstractModelLoader';
 import { Editor } from '../../Editor';
 import { ServiceLocator } from '../../services/ServiceLocator';
 import { UpdateService } from '../../services/UpdateServices';
@@ -15,7 +13,6 @@ export class RendererView extends View {
     visible = true;
     updateService: UpdateService;
 
-    modelLoader: AbstractModelLoader;
     private helperMeshes: HelperMeshes;
 
     private renderCanvasFunc: () => void;

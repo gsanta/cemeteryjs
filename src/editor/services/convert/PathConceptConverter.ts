@@ -1,9 +1,9 @@
-import { Stores } from "../../../editor/stores/Stores";
-import { ConceptType } from "../../../editor/views/canvas/models/concepts/Concept";
-import { PathConcept } from "../../../editor/views/canvas/models/concepts/PathConcept";
-import { PathObject } from "./PathObject";
+import { Stores } from "../../stores/Stores";
+import { ConceptType } from "../../views/canvas/models/concepts/Concept";
+import { PathConcept } from "../../views/canvas/models/concepts/PathConcept";
+import { PathObject } from "../../../game/models/objects/PathObject";
 import { IConceptConverter } from "./IConceptConverter";
-import { IGameObject } from "./IGameObject";
+import { IGameObject } from "../../../game/models/objects/IGameObject";
 
 export class PathConceptConverter implements IConceptConverter {
     viewType = ConceptType.PathConcept;

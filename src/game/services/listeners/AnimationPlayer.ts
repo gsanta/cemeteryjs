@@ -1,9 +1,6 @@
+import { ElementalAnimation } from "../../../editor/views/canvas/models/meta/AnimationConcept";
 import { GameFacade } from "../../GameFacade";
 import { MeshObject } from "../../models/objects/MeshObject";
-import { GameEvent } from "../GameEventManager";
-import { LifeCycleEvent } from "../triggers/ILifeCycleTrigger";
-import { IEventListener } from "./IEventListener";
-import { ElementalAnimation } from "../../../editor/views/canvas/models/meta/AnimationConcept";
 
 export class AnimationPlayer {
     private gameFacade: GameFacade;

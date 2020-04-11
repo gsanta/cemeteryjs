@@ -1,4 +1,4 @@
-import { GameService } from '../game/GameService';
+import { GameService } from './services/GameService';
 import { GameFacade } from '../game/GameFacade';
 import { CanvasFactory } from './views/canvas/CanvasFactory';
 import { GlobalSettings } from './views/canvas/settings/GlobalSettings';

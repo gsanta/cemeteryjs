@@ -1,4 +1,4 @@
-import { ServiceLocator } from "./ServiceLocator";import { Stores } from "../stores/Stores";import { IConceptConverter } from "../../game/models/objects/IConceptConverter";import { MeshConceptConverter } from "../../game/models/objects/MeshConceptConverter";import { PathConceptConverter } from "../../game/models/objects/PathConceptConverter";import { Concept } from "../views/canvas/models/concepts/Concept";
+import { ServiceLocator } from "./ServiceLocator";import { Stores } from "../stores/Stores";import { IConceptConverter } from "./convert/IConceptConverter";import { MeshConceptConverter } from "./convert/MeshConceptConverter";import { PathConceptConverter } from "./convert/PathConceptConverter";import { Concept } from "../views/canvas/models/concepts/Concept";
 import { IGameObject } from "../../game/models/objects/IGameObject";
 
 

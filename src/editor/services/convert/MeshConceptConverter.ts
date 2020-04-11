@@ -1,12 +1,12 @@
-import { MeshObject } from "./MeshObject";
-import { GameFacade } from "../../GameFacade";
-import { RouteObject } from "./RouteObject";
+import { MeshObject } from "../../../game/models/objects/MeshObject";
+import { GameFacade } from "../../../game/GameFacade";
+import { RouteObject } from "../../../game/models/objects/RouteObject";
 import { Tools } from "babylonjs";
-import { MeshConcept } from "../../../editor/views/canvas/models/concepts/MeshConcept";
-import { ConceptType } from "../../../editor/views/canvas/models/concepts/Concept";
-import { Stores } from "../../../editor/stores/Stores";
+import { MeshConcept } from "../../views/canvas/models/concepts/MeshConcept";
+import { ConceptType } from "../../views/canvas/models/concepts/Concept";
+import { Stores } from "../../stores/Stores";
 import { IConceptConverter } from "./IConceptConverter";
-import { IGameObject } from "./IGameObject";
+import { IGameObject } from "../../../game/models/objects/IGameObject";
 
 
 export class MeshConceptConverter implements IConceptConverter {

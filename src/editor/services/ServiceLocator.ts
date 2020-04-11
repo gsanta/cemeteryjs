@@ -1,5 +1,5 @@
-import { GameService } from "../../game/GameService";
-import { ModelLoaderService } from "../../game/services/ModelLoaderService";
+import { GameService } from "./GameService";
+import { MeshLoaderService } from "./MeshLoaderService";
 import { Editor } from "../Editor";
 import { Stores } from "../stores/Stores";
 import { DialogService } from "./DialogService";
@@ -33,7 +33,7 @@ export class ServiceLocator {
             new HotkeyService(() => this),
             new DialogService(() => this),
             new SettingsService(() => this, getStores),
-            new ModelLoaderService(() => this, getStores),
+            new MeshLoaderService(() => this, getStores),
             new ConceptConvertService(() => this, getStores)
         ];
     }
@@ -90,8 +90,8 @@ export class ServiceLocator {
         return <GameService> this.getService('game-service');
     }
 
-    modelLoaderService(): ModelLoaderService {
-        return <ModelLoaderService> this.getService('model-loader-service');
+    meshLoaderService(): MeshLoaderService {
+        return <MeshLoaderService> this.getService('mesh-loader-service');
     }
 
     settingsService(): SettingsService {

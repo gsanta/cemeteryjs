@@ -1,38 +1,23 @@
-import { MeshObject } from "./models/objects/MeshObject";
-import { MeshObjectUpdater } from "./MeshObjectUpdater";
-import { GameEngine } from "../editor/views/renderer/GameEngine";
-import { ServiceLocator } from "../editor/services/ServiceLocator";
-import { Stores } from "../editor/stores/Stores";
-import { IConceptConverter } from "./models/objects/IConceptConverter";
-import { MeshConceptConverter } from "./models/objects/MeshConceptConverter";
-import { PathConceptConverter } from "./models/objects/PathConceptConverter";
-import { RectangleFactory } from "./import/factories/RectangleFactory";
-import { MaterialFactory } from "./import/factories/MaterialFactory";
-import { Concept, ConceptType } from "../editor/views/canvas/models/concepts/Concept";
-import { MeshConcept } from "../editor/views/canvas/models/concepts/MeshConcept";
-import { GameObjectType } from "./models/objects/IGameObject";
+import { ServiceLocator } from "./ServiceLocator";
+import { Stores } from "../stores/Stores";
+import { Concept, ConceptType } from "../views/canvas/models/concepts/Concept";
+import { MeshConcept } from "../views/canvas/models/concepts/MeshConcept";
+import { GameEngine } from "../views/renderer/GameEngine";
+import { RectangleFactory } from "../../game/import/factories/RectangleFactory";
+import { GameObjectType } from "../../game/models/objects/IGameObject";
+import { MeshObject } from "../../game/models/objects/MeshObject";
 
 export class GameService {
     serviceName = 'game-service';
     gameEngine: GameEngine;
     
-    meshObjectUpdater: MeshObjectUpdater;
-
     private getServices: () => ServiceLocator;
     private getStores: () => Stores;
-
-    private conceptConverters: IConceptConverter[] = []
 
     constructor(canvas: HTMLCanvasElement, getServices: () => ServiceLocator, getStores: () => Stores) {
         this.getServices = getServices;
         this.getStores = getStores;
-        this.meshObjectUpdater = new MeshObjectUpdater(this.getStores);
         this.gameEngine = new GameEngine(canvas);
-
-        this.conceptConverters = [
-            new MeshConceptConverter(getStores),
-            new PathConceptConverter(getStores)
-        ]
     }
 
     resetPath(meshObjectName: string) {
@@ -64,13 +49,13 @@ export class GameService {
 
         this.getStores().canvasStore.getAllConcepts().forEach(concept => this.getServices().conceptConvertService().convert(concept));
 
-        this.getServices().modelLoaderService().loadAll(this.getStores().gameStore.getMeshObjects())
+        this.getServices().meshLoaderService().loadAll(this.getStores().gameStore.getMeshObjects())
             .then(() => {
                 this.getStores().gameStore.getMeshObjects().forEach(meshObject => {
                     if (!meshObject.modelPath) {
                         new RectangleFactory(this.getServices, this.getStores, 0.1).createMesh(meshObject);
                     } else {
-                        this.getServices().modelLoaderService().createInstance(meshObject)
+                        this.getServices().meshLoaderService().createInstance(meshObject)
                     }
                 });
             });
@@ -95,7 +80,7 @@ export class GameService {
                 if (!meshObject.modelPath) {
                     new RectangleFactory(this.getServices, this.getStores, 0.1).createMesh(meshObject);
                 } else {
-                    this.getServices().modelLoaderService().load(<MeshObject> gameObject).then(() => this.getServices().modelLoaderService().createInstance(meshObject));
+                    this.getServices().meshLoaderService().load(<MeshObject> gameObject).then(() => this.getServices().meshLoaderService().createInstance(meshObject));
                 }
             break;
         }

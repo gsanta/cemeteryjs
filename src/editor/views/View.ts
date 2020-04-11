@@ -1,4 +1,4 @@
-import { GameService } from '../../game/GameService';
+import { GameService } from '../services/GameService';
 import { GameFacade } from '../../game/GameFacade';
 import { Editor } from '../Editor';
 import { ServiceLocator } from '../services/ServiceLocator';
