@@ -33,8 +33,8 @@ export class RendererComponent extends React.Component {
     private canvasRef: React.RefObject<HTMLCanvasElement>;
     context: AppContextType;
 
-    constructor() {
-        super(null);
+    constructor(props: {}) {
+        super(props);
 
         this.canvasRef = React.createRef();
     }

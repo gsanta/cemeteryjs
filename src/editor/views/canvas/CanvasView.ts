@@ -72,7 +72,7 @@ export class CanvasView extends View {
         
         this.tools = [
             new PointerTool(this.getServices, this.getStores),
-            new CameraTool(this, this.getServices, this.getStores),
+            new CameraTool(this.getServices, this.getStores),
             new RectangleTool(this, this.getServices, this.getStores),
             new PathTool(this, this.getServices, this.getStores),
             new DeleteTool(this, this.getServices, this.getStores),

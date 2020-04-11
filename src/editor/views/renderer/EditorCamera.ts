@@ -12,6 +12,7 @@ export class EditorCamera extends UniversalCamera implements ICamera {
     private targetPosition: Vector3;
     private startY: number;
     readonly screenSize: Point;
+    private origPosition = this.position.clone();
 
     constructor(scene: Scene, canvas: HTMLCanvasElement, target: Vector3) {
         super('camera1', new Vector3(20, 50, -120), scene);
@@ -82,8 +83,17 @@ export class EditorCamera extends UniversalCamera implements ICamera {
         this.position.z -= (delta.y / 10);
     }
 
+    moveTo(pos: Point) {
+        this.position.x = (pos.x / 10);
+        this.position.z = (pos.y / 10);
+    }
+
     getScale(): number {
         return this.startY / this.position.y;
+    }
+
+    getTranslate(): Point {
+        return null;
     }
 
     screenToCanvasPoint(screenPoint: Point): Point {

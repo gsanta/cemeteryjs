@@ -11,4 +11,8 @@ export class EditPoint implements Feedback {
         this.point = point;
         this.parent = parent;
     }
+
+    toString() {
+        return `EditPoint: ${this.parent.id} ${this.point.toString()}`
+    }
 }

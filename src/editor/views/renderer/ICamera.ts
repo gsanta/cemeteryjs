@@ -8,4 +8,5 @@ export interface ICamera {
     moveTo(point: Point);
     getCenterPoint(): Point;
     getScale(): number;
+    getTranslate(): Point;
 }

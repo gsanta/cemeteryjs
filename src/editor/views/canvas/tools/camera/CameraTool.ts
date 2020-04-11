@@ -3,7 +3,7 @@ import { Hotkey } from "../../../../services/HotkeyService";
 import { ServiceLocator } from '../../../../services/ServiceLocator';
 import { UpdateTask } from '../../../../services/UpdateServices';
 import { Stores } from '../../../../stores/Stores';
-import { cameraInitializer } from '../../CanvasView';
+import { cameraInitializer, CanvasView } from '../../CanvasView';
 import { AbstractTool } from '../AbstractTool';
 import { ToolType } from "../Tool";
 import { WheelZoomHotkey } from "./WheelZoomHotkey";
@@ -31,14 +31,16 @@ export class CameraTool extends AbstractTool {
     }
 
     resize() {
-        const camera = this.getStores().viewStore.getActiveView().getCamera();
+        const view = this.getStores().viewStore.getViewById<CanvasView>(CanvasView.id);
+
+        const camera = view.getCamera();
 
         const prevScale = camera.getScale(); 
-        const prevTranslate = camera.getViewBox().topLeft; 
+        const prevTranslate = camera.getTranslate(); 
     
-        this.getStores().viewStore.getActiveView().setCamera(cameraInitializer(this.view.getId()));
-        this.getStores().viewStore.getActiveView().getCamera().zoom(prevScale);
-        this.getStores().viewStore.getActiveView().getCamera().moveTo(prevTranslate.clone());
+        view.setCamera(cameraInitializer(view.getId()));
+        view.getCamera().zoom(prevScale);
+        view.getCamera().moveTo(prevTranslate.clone());
 
         this.getServices().updateService().runImmediately(UpdateTask.RepaintCanvas);
     }

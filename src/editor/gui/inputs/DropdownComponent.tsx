@@ -18,17 +18,15 @@ export interface DropdownProps extends Focusable {
 
 export const DropdownComponent : React.SFC<DropdownProps> = (props: DropdownProps) => {
     const options = props.values.map(val => {
-        return <option value={val} selected={props.currentValue === val}>{val}</option>
+        return <option value={val}>{val}</option>
     });
-    const placeholder = <option value="" selected={true}>{props.placeholder}</option>
+    const placeholder = <option value="">{props.placeholder}</option>
 
     return (
         <select 
             className="dropdown-component"
             onChange={(e) => {
-                // props.onFocus();
                 props.onChange(e.target.value);
-                // props.onBlur();
             }}
             value={props.currentValue ? props.currentValue : ''}
         >

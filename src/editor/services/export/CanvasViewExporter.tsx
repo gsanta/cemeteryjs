@@ -19,7 +19,7 @@ export class CanvasViewExporter implements IViewExporter {
             <g
                 data-view-type={CanvasView.id}
                 data-zoom={(canvasView.getCamera() as Camera).getScale()}
-                data-translate={(canvasView.getCamera() as Camera).getViewBox().topLeft.toString()}
+                data-translate={(canvasView.getCamera() as Camera).getTranslate().toString()}
             />
         )
     }

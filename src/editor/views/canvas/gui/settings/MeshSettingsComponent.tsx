@@ -5,17 +5,17 @@ import { PauseIconComponent } from '../../../../gui/icons/PauseIconComponent';
 import { PlayIconComponent } from '../../../../gui/icons/PlayIconComponent';
 import { StopIconComponent } from '../../../../gui/icons/StopIconComponent';
 import { ConnectedFileUploadComponent } from '../../../../gui/icons/tools/ImportFileIconComponent';
+import { ButtonComponent } from '../../../../gui/inputs/ButtonComponent';
 import { CheckboxComponent } from '../../../../gui/inputs/CheckboxComponent';
 import { ConnectedDropdownComponent } from '../../../../gui/inputs/DropdownComponent';
 import { ConnectedInputComponent } from '../../../../gui/inputs/InputComponent';
 import { AccordionComponent } from '../../../../gui/misc/AccordionComponent';
-import { CanvasView } from '../../CanvasView';
-import { MeshViewPropType, MeshSettings } from '../../settings/MeshSettings';
-import { AnimationState, MeshConcept } from '../../models/concepts/MeshConcept';
-import { GroupedRowsStyled, FieldColumnStyled, LabelColumnStyled, SettingsRowStyled, MultiFieldColumnStyled } from './SettingsComponent';
 import { ConnectedGridComponent } from '../../../../gui/misc/GridComponent';
-import { ButtonComponent } from '../../../../gui/inputs/ButtonComponent';
-import { AnimationCondition, ElementalAnimation } from '../../models/meta/AnimationConcept';
+import { CanvasView } from '../../CanvasView';
+import { AnimationState, MeshConcept } from '../../models/concepts/MeshConcept';
+import { ElementalAnimation } from '../../models/meta/AnimationConcept';
+import { MeshSettings, MeshViewPropType } from '../../settings/MeshSettings';
+import { FieldColumnStyled, GroupedRowsStyled, LabelColumnStyled, MultiFieldColumnStyled, SettingsRowStyled } from './SettingsComponent';
 
 export class MeshSettingsComponent extends React.Component<{concept: MeshConcept}> {
     static contextType = AppContext;
@@ -34,10 +34,10 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
 
         return (
             <div>
-                <GroupedRowsStyled>
+                <GroupedRowsStyled key="name">
                     {this.renderName()}
                 </GroupedRowsStyled>
-                <GroupedRowsStyled>
+                <GroupedRowsStyled key="layer">
                     {this.renderLayerInput()}
                 </GroupedRowsStyled>
                 {this.renderMaterialSection()}
@@ -70,7 +70,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
         const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         return (
-            <SettingsRowStyled>
+            <SettingsRowStyled key="model-file">
                 <LabelColumnStyled>Model</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedFileUploadComponent
@@ -91,7 +91,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
         const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         return (
-            <SettingsRowStyled>
+            <SettingsRowStyled key="texture-file">
                 <LabelColumnStyled>Texture</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedFileUploadComponent
@@ -111,7 +111,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
         const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         return (
-            <SettingsRowStyled>
+            <SettingsRowStyled key="thumbnail-file">
                 <LabelColumnStyled>Thumbnail</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedFileUploadComponent
@@ -190,6 +190,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
 
         return (
             <AccordionComponent
+                key="material"
                 level="secondary"
                 expanded={true}
                 elements={[
@@ -212,6 +213,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
 
         return (
             <AccordionComponent
+                key="transform"
                 level="secondary"
                 expanded={false}
                 elements={[
@@ -242,6 +244,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
 
         return (
             <AccordionComponent
+                key="animation"
                 level="secondary"
                 onClick={() => meshSettings.isAnimationSectionOpen = !meshSettings.isAnimationSectionOpen}
                 expanded={meshSettings.isAnimationSectionOpen}

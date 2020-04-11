@@ -85,7 +85,7 @@ export class App extends React.Component<{}, AppState> {
 
     private renderCanvases(): JSX.Element[] {
         return this.context.controllers.getWindowControllers()
-            .map(canvas => <div id={`${canvas.getId()}-split`}>{viewFactory(canvas)}</div>);
+            .map(canvas => <div key={canvas.getId()} id={`${canvas.getId()}-split`}>{viewFactory(canvas)}</div>);
     }
 
     private resize() {
