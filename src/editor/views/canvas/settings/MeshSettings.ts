@@ -151,7 +151,7 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
         }
 
         const map = this.getServices().exportService().export();
-        this.getServices().gameService().updateConcept(this.meshConcept);
+        this.getServices().gameService().updateConcepts([this.meshConcept]);
         this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
         this.getServices().storageService().storeLevel(this.getStores().levelStore.currentLevel.index, map);
     }

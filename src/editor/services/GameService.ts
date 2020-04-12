@@ -55,7 +55,7 @@ export class GameService {
                     if (!meshObject.modelPath) {
                         new RectangleFactory(this.getServices, this.getStores, 0.1).createMesh(meshObject);
                     } else {
-                        this.getServices().meshLoaderService().createInstance(meshObject)
+                        this.getStores().meshStore.createInstance(meshObject)
                     }
                 });
             });
@@ -80,14 +80,15 @@ export class GameService {
                 if (!meshObject.modelPath) {
                     new RectangleFactory(this.getServices, this.getStores, 0.1).createMesh(meshObject);
                 } else {
-                    this.getServices().meshLoaderService().load(<MeshObject> gameObject).then(() => this.getServices().meshLoaderService().createInstance(meshObject));
+                    this.getServices().meshLoaderService().load(<MeshObject> gameObject).then(() => this.getStores().meshStore.createInstance(meshObject));
                 }
             break;
         }
     }
 
-    updateConcept(concept: Concept) {
-        this.deleteConcepts([concept]);
-        this.addConcept(concept);
+    updateConcepts(concepts: Concept[]) {
+        this.deleteConcepts(concepts);
+
+        concepts.forEach(concept => this.addConcept(concept))
     }
 }

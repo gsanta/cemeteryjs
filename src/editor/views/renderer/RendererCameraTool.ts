@@ -9,7 +9,6 @@ import { ServiceLocator } from '../../services/ServiceLocator';
 
 
 export class RendererCameraTool extends AbstractTool {
-    private camera: EditorCamera;
 
     static readonly ZOOM_MIN = 0.1;
     static readonly ZOOM_MAX = 5;
@@ -26,7 +25,6 @@ export class RendererCameraTool extends AbstractTool {
         super(ToolType.CAMERA)
         this.controller = controller;
         this.getServices = getServices;
-        this.camera = editorCamera;
         this.NUM_OF_STEPS = numberOfSteps;
     }
 
@@ -34,7 +32,7 @@ export class RendererCameraTool extends AbstractTool {
         const nextZoomLevel = this.getNextManualZoomStep();
 
         if (nextZoomLevel) {
-            this.camera.zoom(nextZoomLevel);
+            this.getServices().gameService().gameEngine.camera.zoom(nextZoomLevel);
 
             this.controller.renderWindow();
         }
@@ -44,7 +42,7 @@ export class RendererCameraTool extends AbstractTool {
         const prevZoomLevel = this.getPrevManualZoomLevel();
         
         if (prevZoomLevel) {
-            this.camera.zoom(prevZoomLevel)
+            this.getServices().gameService().gameEngine.camera.zoom(prevZoomLevel)
 
             this.controller.renderWindow();
         }
@@ -55,27 +53,27 @@ export class RendererCameraTool extends AbstractTool {
 
         const delta = this.getServices().pointerService().pointer.getScreenDiff().div(this.getCamera().getScale());
         
-        this.camera.moveBy(delta.negate());
+        this.getServices().gameService().gameEngine.camera.moveBy(delta.negate());
         return true;
     }
 
     moveBy(delta: Point) {
-        this.camera.moveBy(delta);
+        this.getServices().gameService().gameEngine.camera.moveBy(delta);
     }
 
     getCamera() {
-        return this.camera;
+        return this.getServices().gameService().gameEngine.camera;
     }
 
     private getNextManualZoomStep(): number {
-        let currentStep = this.calcLogarithmicStep(this.camera.getScale());
+        let currentStep = this.calcLogarithmicStep(this.getServices().gameService().gameEngine.camera.getScale());
         currentStep = currentStep >= this.NUM_OF_STEPS - 1 ? this.NUM_OF_STEPS - 1 : currentStep
 
         return this.calcLogarithmicZoom(currentStep + 1);
     }
 
     private getPrevManualZoomLevel(): number {
-        let currentStep = this.calcLogarithmicStep(this.camera.getScale());
+        let currentStep = this.calcLogarithmicStep(this.getServices().gameService().gameEngine.camera.getScale());
         currentStep = currentStep <= 1 ? 1 : currentStep
 
         return this.calcLogarithmicZoom(currentStep - 1);

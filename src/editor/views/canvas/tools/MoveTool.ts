@@ -6,6 +6,8 @@ import { ToolType } from './Tool';
 import { Stores } from '../../../stores/Stores';
 import { ServiceLocator } from '../../../services/ServiceLocator';
 import { isFeedback, isConcept } from "../../../stores/CanvasStore";
+import { Concept } from "../models/concepts/Concept";
+import { Feedback } from "../models/feedbacks/Feedback";
 
 export class MoveTool extends AbstractTool {
     private movingItem = undefined;
@@ -44,8 +46,9 @@ export class MoveTool extends AbstractTool {
         }
 
         this.isDragStart = true;
+        
+        this.updateGameObjects();
         this.movingItem = undefined;
-
         this.getServices().levelService().updateCurrentLevel();
     }
 
@@ -71,5 +74,17 @@ export class MoveTool extends AbstractTool {
         }
 
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
+    }
+
+    private updateGameObjects() {
+        let concepts: Concept[];
+
+        if (isFeedback(this.movingItem)) {
+            concepts = [(<Feedback> this.movingItem).parent];
+        } else {
+            concepts = this.getStores().selectionStore.getAllConcepts();
+        }
+
+        this.getServices().gameService().updateConcepts(concepts);
     }
 }

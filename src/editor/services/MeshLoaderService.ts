@@ -18,7 +18,6 @@ export class MeshLoaderService {
     private getStores: () => Stores;
 
     private fileNameToMeshNameMap: Map<string, string> = new Map();
-    private instanceCounter: Map<string, number> = new Map();
 
     constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
         this.getServices = getServices;
@@ -32,8 +31,7 @@ export class MeshLoaderService {
     }
 
     protected setModel(fileName: string, mesh: Mesh): void {
-        this.getStores().meshStore.addModel(mesh.name, mesh);
-        this.instanceCounter.set(fileName, 0);
+        this.getStores().meshStore.addModel(mesh.name, fileName, mesh);
         this.fileNameToMeshNameMap.set(fileName, mesh.name);
     }
 
@@ -60,43 +58,6 @@ export class MeshLoaderService {
 
     private getAnimations(meshView: MeshConcept, mesh: Mesh) {
         return mesh.skeleton ? mesh.skeleton.getAnimationRanges().map(range => range.name) : [];
-    }
-
-    createInstance(meshObject: MeshObject): void {
-        const templateMeshName = this.fileNameToMeshNameMap.get(meshObject.modelPath);
-        const templateMesh = this.getStores().meshStore.getMesh(templateMeshName);
-
-        let clone: Mesh;
-        const counter = this.instanceCounter.get(meshObject.modelPath);
-
-        if (counter === 0) {
-            clone = templateMesh;
-        } else {
-            clone = <Mesh> templateMesh.instantiateHierarchy();
-            clone.name = meshObject.id;
-            this.getStores().meshStore.addClone(clone.name, clone);
-        }
-        clone.setAbsolutePosition(new Vector3(0, 0, 0));
-        clone.rotation = new Vector3(0, 0, 0);
-        this.instanceCounter.set(meshObject.modelPath, counter + 1);
-        
-        meshObject.meshName = clone.name;
-
-        const mesh = this.getStores().meshStore.getMesh(meshObject.meshName);
-        this.getStores().gameStore.getMeshObjects().push(meshObject);
-
-        mesh.isVisible = true;
-        const scale = meshObject.scale;
-        mesh.scaling = new Vector3(scale, scale, scale);
-        mesh.rotationQuaternion = undefined;
-
-        const rect = <Rectangle> meshObject.dimensions;
-        const width = rect.getWidth();
-        const depth = rect.getHeight();
-
-        mesh.translate(new Vector3(rect.topLeft.x + width / 2, 0, -rect.topLeft.y - depth / 2), 1, Space.WORLD);
-
-        mesh.rotation.y = meshObject.rotation;
     }
 
     loadAll(meshObjects: {modelPath: string}[]): Promise<Mesh[]> {
