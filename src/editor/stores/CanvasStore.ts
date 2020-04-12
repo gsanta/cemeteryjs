@@ -9,6 +9,7 @@ import { Point } from "../../misc/geometry/shapes/Point";
 import { Rectangle } from "../../misc/geometry/shapes/Rectangle";
 import { MetaConcept } from "../views/canvas/models/meta/MetaConcept";
 import { AnimationConcept } from "../views/canvas/models/meta/AnimationConcept";
+import { VisualConcept } from "../views/canvas/models/concepts/VisualConcept";
 
 export interface TypedItem {
     type: string;
@@ -23,7 +24,7 @@ export function isConcept(item: TypedItem) {
 }
 
 export class CanvasStore {
-    concepts: Concept[] = [];
+    concepts: VisualConcept[] = [];
     feedbacks: Feedback[] = [];
     metas: MetaConcept[] = [];
 
@@ -35,7 +36,7 @@ export class CanvasStore {
         this.naming = new Naming(this);
     }
 
-    addConcept(concept: Concept) {
+    addConcept(concept: VisualConcept) {
         this.concepts.push(concept);
     }
 
@@ -51,7 +52,7 @@ export class CanvasStore {
         this.metas = without(this.metas, metaConcept);
     }
 
-    removeConcept(concept: Concept) {
+    removeConcept(concept: VisualConcept) {
         this.concepts = without(this.concepts, concept);
         this.getStores().hoverStore.removeItem(concept);
         this.getStores().selectionStore.removeItem(concept);
@@ -90,7 +91,7 @@ export class CanvasStore {
         return <AnimationConcept> this.metas.find(meta => meta.id === id);
     }
 
-    getIntersectingItemsInRect(rectangle: Rectangle): Concept[] {
+    getIntersectingItemsInRect(rectangle: Rectangle): VisualConcept[] {
         const x = rectangle.topLeft.x;
         const y = rectangle.topLeft.y;
         const width = Math.floor(rectangle.bottomRight.x - rectangle.topLeft.x);
@@ -101,7 +102,7 @@ export class CanvasStore {
         return this.concepts.filter(item => polygon.contains(item.dimensions));
     }
 
-    getIntersectingItemsAtPoint(point: Point): Concept[] {
+    getIntersectingItemsAtPoint(point: Point): VisualConcept[] {
         const gridPoint = new Point(point.x, point.y);
 
         return this.concepts.filter(item => item.dimensions.containsPoint(gridPoint));

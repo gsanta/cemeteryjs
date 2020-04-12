@@ -3,20 +3,21 @@ import { Concept, ConceptType } from "../views/canvas/models/concepts/Concept";
 import { PathConcept } from "../views/canvas/models/concepts/PathConcept";
 import { Feedback, FeedbackType } from "../views/canvas/models/feedbacks/Feedback";
 import { EditPoint } from "../views/canvas/models/feedbacks/EditPoint";
+import { VisualConcept } from "../views/canvas/models/concepts/VisualConcept";
 
 
 export class SelectionStore {
-    items: (Concept | Feedback)[] = [];
+    items: (VisualConcept | Feedback)[] = [];
 
-    addItem(...item: (Concept | Feedback)[]) {
+    addItem(...item: (VisualConcept | Feedback)[]) {
         this.items.push(...item);
     }
 
-    removeItem(item: Concept | Feedback) {
+    removeItem(item: VisualConcept | Feedback) {
         this.items = without(this.items, item);
     }
 
-    contains(item: Concept | Feedback): boolean {
+    contains(item: VisualConcept | Feedback): boolean {
         return this.items.includes(item);
     }
 
@@ -24,8 +25,8 @@ export class SelectionStore {
         return this.items;
     }
 
-    getAllConcepts(): Concept[] {
-        return <Concept[]> this.items.filter(item => item.type.endsWith('Concept'));
+    getAllConcepts(): VisualConcept[] {
+        return <VisualConcept[]> this.items.filter(item => item.type.endsWith('Concept'));
     }
 
     getPathConcepts(): PathConcept[] {

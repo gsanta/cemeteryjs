@@ -4,13 +4,14 @@ import { ServiceLocator } from '../../../services/ServiceLocator';
 import { UpdateTask } from "../../../services/UpdateServices";
 import { Stores } from "../../../stores/Stores";
 import { CanvasView } from "../CanvasView";
+import { ConceptType } from "../models/concepts/Concept";
 import { PathConcept } from "../models/concepts/PathConcept";
+import { VisualConcept } from "../models/concepts/VisualConcept";
 import { EditPoint } from "../models/feedbacks/EditPoint";
+import { Feedback, FeedbackType } from "../models/feedbacks/Feedback";
 import { AbstractTool } from "./AbstractTool";
 import { PointerTool } from "./PointerTool";
 import { ToolType } from "./Tool";
-import { ConceptType, Concept } from "../models/concepts/Concept";
-import { Feedback, FeedbackType } from "../models/feedbacks/Feedback";
 
 export class PathTool extends AbstractTool {
     private view: CanvasView;
@@ -57,7 +58,7 @@ export class PathTool extends AbstractTool {
         }
     }
 
-    over(item: Concept | Feedback) {
+    over(item: VisualConcept | Feedback) {
         let hover = false;
         if (item.type === ConceptType.PathConcept) {
             hover = true;
@@ -75,7 +76,7 @@ export class PathTool extends AbstractTool {
         }
     }
 
-    out(item: Concept | Feedback) {
+    out(item: VisualConcept | Feedback) {
         this.view.getToolByType<PointerTool>(ToolType.POINTER).out(item);
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }

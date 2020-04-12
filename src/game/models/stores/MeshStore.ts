@@ -1,13 +1,16 @@
-import { Mesh, Vector3, Space } from 'babylonjs';
+import { Mesh, Vector3, Space, StandardMaterial, Texture, Scene } from 'babylonjs';
 import { MeshObject } from '../objects/MeshObject';
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
+import { MeshLoaderService } from '../../../editor/services/MeshLoaderService';
 
 export class MeshStore {
+    private basePath = 'assets/models/';
     private allInstances: Mesh[] = [];
     private meshMap: Map<string, Mesh> = new Map();
     private templates: Set<Mesh> = new Set();
     private templatesByFileName: Map<string, Mesh> = new Map();
     private templateFileNames: Map<Mesh, string> = new Map();
+    private texturePathes: Map<string, string> = new Map();
 
     private instanceCounter: Map<string, number> = new Map();
 
@@ -52,7 +55,11 @@ export class MeshStore {
         return this.meshMap.get(uniqueId);
     }
 
-    createInstance(meshObject: MeshObject): void {
+    createInstance(meshObject: MeshObject, scene: Scene): void {
+        if (meshObject.texturePath) {
+            this.texturePathes.set(meshObject.modelPath, meshObject.texturePath);
+        }
+        
         const templateMesh = this.getTemplate(meshObject.modelPath);
 
         let clone: Mesh;
@@ -73,6 +80,13 @@ export class MeshStore {
 
         const mesh =this.meshMap.get(meshObject.meshName);
 
+        if (this.texturePathes.get(meshObject.modelPath)) {
+            const texturePath = `${this.basePath}${MeshLoaderService.getFolderNameFromFileName(meshObject.modelPath)}/${this.texturePathes.get(meshObject.modelPath)}`;
+            (<StandardMaterial> mesh.material).diffuseTexture  = new Texture(texturePath,  scene);
+            (<StandardMaterial> mesh.material).specularTexture  = new Texture(texturePath,  scene);
+            meshObject.texturePath = texturePath;
+        }
+
         mesh.isVisible = true;
         const scale = meshObject.scale;
         mesh.scaling = new Vector3(scale, scale, scale);
@@ -86,6 +100,7 @@ export class MeshStore {
 
         mesh.rotation.y = meshObject.rotation;
     }
+
     clear(): void {
         // this.meshMap.forEach((mesh, key) => {
         //     this.gameFacade.scene.removeMesh(this.meshMap.get(key));

@@ -2,19 +2,20 @@ import { without } from "../../misc/geometry/utils/Functions";
 import { Concept } from "../views/canvas/models/concepts/Concept";
 import { Feedback, FeedbackType } from "../views/canvas/models/feedbacks/Feedback";
 import { EditPoint } from "../views/canvas/models/feedbacks/EditPoint";
+import { VisualConcept } from "../views/canvas/models/concepts/VisualConcept";
 
 export class HoverStore {
-    items: (Concept | Feedback)[] = [];
+    items: (VisualConcept | Feedback)[] = [];
 
-    addItem(item: Concept | Feedback) {
+    addItem(item: VisualConcept | Feedback) {
         this.items.push(item);
     }
 
-    removeItem(item: Concept | Feedback) {
+    removeItem(item: VisualConcept | Feedback) {
         this.items = without(this.items, item);
     }
 
-    contains(item: Concept | Feedback): boolean {
+    contains(item: VisualConcept | Feedback): boolean {
         return this.items.includes(item);
     }
     
@@ -38,12 +39,12 @@ export class HoverStore {
         return this.getAny() !== undefined;
     }
 
-    getAny(): Concept | Feedback {
+    getAny(): VisualConcept | Feedback {
         return this.items.length > 0 ? this.items[0] : undefined;
     }
 
-    getConcept(): Concept {
-        return <Concept> this.items.find(item => item.type.endsWith('Concept'));
+    getConcept(): VisualConcept {
+        return <VisualConcept> this.items.find(item => item.type.endsWith('Concept'));
     }
 
     getFeedback(): Feedback {

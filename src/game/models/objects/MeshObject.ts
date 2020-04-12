@@ -8,7 +8,8 @@ import { BehaviourType } from "../../services/behaviour/IBehaviour";
 import { GameObjectType, IGameObject } from "./IGameObject";
 import { RouteObject } from "./RouteObject";
 import { AnimationConcept, ElementalAnimation } from "../../../editor/views/canvas/models/meta/AnimationConcept";
-import { toDegree } from "../../../misc/geometry/utils/Measurements";
+
+
 
 export class MeshObject implements IGameObject {
     readonly objectType = GameObjectType.MeshObject;

@@ -8,6 +8,7 @@ import { ServiceLocator } from '../../../services/ServiceLocator';
 import { isFeedback, isConcept } from "../../../stores/CanvasStore";
 import { Concept } from "../models/concepts/Concept";
 import { Feedback } from "../models/feedbacks/Feedback";
+import { VisualConcept } from "../models/concepts/VisualConcept";
 
 export class MoveTool extends AbstractTool {
     private movingItem = undefined;

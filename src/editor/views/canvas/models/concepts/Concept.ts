@@ -5,15 +5,11 @@ import { TypedItem } from "../../../../stores/CanvasStore";
 
 export enum ConceptType {
     MeshConcept = 'MeshConcept',
+    ModelConcept = 'ModelConcept',
     PathConcept = 'PathConcept',
     AnimationConcept = 'AnimationConcept'
 }
 
 export interface Concept extends TypedItem {
     id: string;
-    editPoints: EditPoint[];
-    dimensions: Rectangle;
-    deleteEditPoint(editPoint: EditPoint): void;
-    move(delta: Point): void;
-    moveEditPoint(editPoint: EditPoint, delta: Point): void;
 }

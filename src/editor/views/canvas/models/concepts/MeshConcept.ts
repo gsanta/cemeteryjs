@@ -4,10 +4,10 @@ import { BehaviourType } from '../../../../../game/services/behaviour/IBehaviour
 import { Point } from '../../../../../misc/geometry/shapes/Point';
 import { Rectangle } from '../../../../../misc/geometry/shapes/Rectangle';
 import { toVector3 } from '../../../../../misc/geometry/utils/GeomUtils';
-import { EditPoint } from '../feedbacks/EditPoint';
-import { Feedback } from '../feedbacks/Feedback';
-import { Concept, ConceptType } from './Concept';
 import { toDegree } from '../../../../../misc/geometry/utils/Measurements';
+import { EditPoint } from '../feedbacks/EditPoint';
+import { ConceptType } from './Concept';
+import { VisualConcept } from './VisualConcept';
 
 export enum WorldItemShape {
     RECTANGLE = 'rect',
@@ -32,7 +32,7 @@ export enum AnimationState {
 }
 
 
-export class MeshConcept implements Concept {
+export class MeshConcept implements VisualConcept {
     type = ConceptType.MeshConcept;
     editPoints = [];
     meshName: string;
@@ -45,6 +45,8 @@ export class MeshConcept implements Concept {
     modelPath: string;
     modelData: string;
     thumbnailPath: string;
+
+    modelId: string;
     path: string;
     isManualControl: boolean;
 
@@ -124,13 +126,13 @@ export class MeshConcept implements Concept {
     }
 
     selectHoveredSubview() {}
-    deleteEditPoint(feedback: Feedback): void {}
-
     moveEditPoint(editPoint: EditPoint, delta: Point) {}
 
     move(point: Point) {
         this.dimensions = this.dimensions.translate(point);
     }
+
+    deleteEditPoint(editPoint: EditPoint): void {}
 
     private getAnimations(meshStore: MeshStore): Animation[] {
         return meshStore.getMesh(this.id).skeleton.getAnimationRanges().map(anim => ({

@@ -5,6 +5,7 @@ import { AbstractTool } from "./AbstractTool";
 import { ToolType } from "./Tool";
 import { Concept } from '../models/concepts/Concept';
 import { Feedback } from '../models/feedbacks/Feedback';
+import { VisualConcept } from '../models/concepts/VisualConcept';
 
 export class PointerTool extends AbstractTool {
     private getStores: () => Stores;
@@ -42,12 +43,12 @@ export class PointerTool extends AbstractTool {
         return false;
     }
 
-    over(item: Concept | Feedback) {
+    over(item: VisualConcept | Feedback) {
         this.getStores().hoverStore.addItem(item);
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
-    out(item: Concept | Feedback) {
+    out(item: VisualConcept | Feedback) {
         this.getStores().hoverStore.removeItem(item);
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }

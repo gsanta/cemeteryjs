@@ -94,7 +94,7 @@ export class MeshLoaderService {
     }
 
     private loadMesh(meshObject: MeshObject | MeshConcept, dataOrFileName: string): Promise<Mesh> {
-        let folder = this.getFolderNameFromFileName(meshObject.modelPath);
+        let folder = MeshLoaderService.getFolderNameFromFileName(meshObject.modelPath);
         let path = `${this.basePath}${folder}/`;
         let fileName = dataOrFileName;
         if (dataOrFileName.startsWith('data:')) {
@@ -131,9 +131,7 @@ export class MeshLoaderService {
         const scene = this.getServices().gameService().gameEngine.scene;
 
         meshes[0].material = new StandardMaterial(meshObject.modelPath, scene);
-        (<StandardMaterial> meshes[0].material).diffuseTexture  = new Texture(`${this.basePath}${this.getFolderNameFromFileName(meshObject.modelPath)}/${meshObject.texturePath}`,  scene);
-        (<StandardMaterial> meshes[0].material).specularTexture  = new Texture(`${this.basePath}${this.getFolderNameFromFileName(meshObject.modelPath)}/${meshObject.texturePath}`,  scene);
-
+   
         meshes[0].name = meshObject.id;
         this.configMesh(meshes[0]);
         this.setModel(meshObject.modelPath, meshes[0]);
@@ -141,7 +139,7 @@ export class MeshLoaderService {
         return meshes[0];
     }
 
-    private getFolderNameFromFileName(fileName: string) {
+    static getFolderNameFromFileName(fileName: string) {
         return fileName.split('.')[0];
     }
 }

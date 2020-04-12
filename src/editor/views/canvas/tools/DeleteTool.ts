@@ -8,6 +8,7 @@ import { AbstractTool } from './AbstractTool';
 import { PointerTool } from './PointerTool';
 import { RectangleSelector } from './selection/RectangleSelector';
 import { ToolType } from './Tool';
+import { VisualConcept } from '../models/concepts/VisualConcept';
 
 export class DeleteTool extends AbstractTool {
     private view: CanvasView;
@@ -50,7 +51,7 @@ export class DeleteTool extends AbstractTool {
     draggedUp() {
         const concepts = this.getStores().canvasStore.getIntersectingItemsInRect(this.view.feedbackStore.rectSelectFeedback.rect);
 
-        concepts.forEach(item => this.getStores().canvasStore.removeConcept(item));
+        concepts.forEach((item: VisualConcept) => this.getStores().canvasStore.removeConcept(item));
 
         this.rectSelector.finish();
 
@@ -64,11 +65,11 @@ export class DeleteTool extends AbstractTool {
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
-    over(item: Concept | Feedback) {
+    over(item: VisualConcept | Feedback) {
         this.view.getToolByType<PointerTool>(ToolType.POINTER).over(item);
     }
 
-    out(item: Concept | Feedback) {
+    out(item: VisualConcept | Feedback) {
         this.view.getToolByType<PointerTool>(ToolType.POINTER).out(item);
     }
 

@@ -6,6 +6,7 @@ import { GameEngine } from "../views/renderer/GameEngine";
 import { RectangleFactory } from "../../game/import/factories/RectangleFactory";
 import { GameObjectType } from "../../game/models/objects/IGameObject";
 import { MeshObject } from "../../game/models/objects/MeshObject";
+import { Scene } from "babylonjs/scene";
 
 export class GameService {
     serviceName = 'game-service';
@@ -18,6 +19,10 @@ export class GameService {
         this.getServices = getServices;
         this.getStores = getStores;
         this.gameEngine = new GameEngine(canvas);
+    }
+
+    getScene(): Scene {
+        return this.gameEngine.scene; 
     }
 
     resetPath(meshObjectName: string) {
@@ -55,7 +60,7 @@ export class GameService {
                     if (!meshObject.modelPath) {
                         new RectangleFactory(this.getServices, this.getStores, 0.1).createMesh(meshObject);
                     } else {
-                        this.getStores().meshStore.createInstance(meshObject)
+                        this.getStores().meshStore.createInstance(meshObject, this.getServices().gameService().getScene());
                     }
                 });
             });
@@ -80,7 +85,7 @@ export class GameService {
                 if (!meshObject.modelPath) {
                     new RectangleFactory(this.getServices, this.getStores, 0.1).createMesh(meshObject);
                 } else {
-                    this.getServices().meshLoaderService().load(<MeshObject> gameObject).then(() => this.getStores().meshStore.createInstance(meshObject));
+                    this.getServices().meshLoaderService().load(<MeshObject> gameObject).then(() => this.getStores().meshStore.createInstance(meshObject, this.getServices().gameService().getScene()));
                 }
             break;
         }

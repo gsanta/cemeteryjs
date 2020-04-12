@@ -3,7 +3,6 @@ import { IGameObject, GameObjectType } from '../objects/IGameObject';
 import { RouteObject } from '../objects/RouteObject';
 
 export class GameStore {
-    
     private nameToObjMap: Map<string, IGameObject> = new Map();
     
     objs: IGameObject[] = [];
