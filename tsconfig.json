@@ -19,7 +19,7 @@
     },
     "include": [
       "src/**/*.ts",
-      "test/**/*.ts", "src/editor/services/export/SvgCanvasExporter.tsx", "src/editor/gui/misc/SpinnerComponent.tsx", "src/editor/services/export/CanvasViewExporter.tsx", "src/editor/services/export/AnimationConceptExporter.tsx"
+      "test/**/*.ts", "src/editor/services/export/SvgCanvasExporter.tsx", "src/editor/gui/misc/SpinnerComponent.tsx", "src/editor/services/export/CanvasViewExporter.tsx", "src/editor/services/export/AnimationConceptExporter.tsx", "src/editor/services/export/ModelConceptExporter.tsx"
     ],
     "exclude": [
       "node_modules"

@@ -4,6 +4,7 @@ import { MeshConceptExporter } from './MeshConceptExporter';
 import { PathConceptExporter } from './PathConceptExporter';
 import ReactDOMServer = require('react-dom/server');
 import { AnimationConceptExporter } from './AnimationConceptExporter';
+import { ModelConceptExporter } from './ModelConceptExporter';
 
 export interface ViewExporter {
     export(): string;
@@ -16,7 +17,7 @@ export class ExportService {
 
     constructor(getStores: () => Stores) {
         this.getStores = getStores;
-        this.conceptExporters = [new MeshConceptExporter(getStores), new PathConceptExporter(getStores), new AnimationConceptExporter(getStores)];
+        this.conceptExporters = [new ModelConceptExporter(getStores), new MeshConceptExporter(getStores), new PathConceptExporter(getStores), new AnimationConceptExporter(getStores)];
     }
 
     export(): string {

@@ -2,6 +2,7 @@ import { IConceptImporter } from "./IConceptImporter";
 import { ConceptGroupJson } from "./ImportService";
 import { PathConcept } from "../../views/canvas/models/concepts/PathConcept";
 import { ConceptType } from "../../views/canvas/models/concepts/Concept";
+import { Stores } from "../../stores/Stores";
 
 export interface PathJson {
     circle: {
@@ -27,10 +28,10 @@ export interface PathGroupJson extends ConceptGroupJson {
 
 export class PathConceptImporter implements IConceptImporter {
     type = ConceptType.PathConcept;
-    private addPath: (path: PathConcept) => void;
+    private getStores: () => Stores
 
-    constructor(addPath: (path: PathConcept) => void) {
-        this.addPath = addPath;
+    constructor(getStores: () => Stores) {
+        this.getStores = getStores;
     }
 
     import(group: PathGroupJson): void {
@@ -41,7 +42,7 @@ export class PathConceptImporter implements IConceptImporter {
             path.id = json.path._attributes['data-name'];
             path.deserialize(json.path._attributes['data-points'], json.path._attributes['data-point-relations']);
 
-            this.addPath(path);
+            this.getStores().canvasStore.addConcept(path);
         });
     }
 }

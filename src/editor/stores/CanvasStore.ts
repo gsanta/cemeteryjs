@@ -10,6 +10,7 @@ import { Rectangle } from "../../misc/geometry/shapes/Rectangle";
 import { MetaConcept } from "../views/canvas/models/meta/MetaConcept";
 import { AnimationConcept } from "../views/canvas/models/meta/AnimationConcept";
 import { VisualConcept } from "../views/canvas/models/concepts/VisualConcept";
+import { ModelConcept } from "../views/canvas/models/concepts/ModelConcept";
 
 export interface TypedItem {
     type: string;
@@ -89,6 +90,14 @@ export class CanvasStore {
 
     getAnimationConceptById(id: string): AnimationConcept {
         return <AnimationConcept> this.metas.find(meta => meta.id === id);
+    }
+
+    getModelConcepts(): ModelConcept[] {
+        return <ModelConcept[]> this.metas.filter(view => view.type === ConceptType.ModelConcept);
+    }
+
+    getModelConceptById(id: string): ModelConcept {
+        return <ModelConcept> this.metas.find(meta => meta.id === id);
     }
 
     getIntersectingItemsInRect(rectangle: Rectangle): VisualConcept[] {

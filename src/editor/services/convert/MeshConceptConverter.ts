@@ -1,13 +1,11 @@
-import { MeshObject } from "../../../game/models/objects/MeshObject";
-import { GameFacade } from "../../../game/GameFacade";
-import { RouteObject } from "../../../game/models/objects/RouteObject";
 import { Tools } from "babylonjs";
-import { MeshConcept } from "../../views/canvas/models/concepts/MeshConcept";
-import { ConceptType } from "../../views/canvas/models/concepts/Concept";
-import { Stores } from "../../stores/Stores";
-import { IConceptConverter } from "./IConceptConverter";
 import { IGameObject } from "../../../game/models/objects/IGameObject";
-
+import { MeshObject } from "../../../game/models/objects/MeshObject";
+import { RouteObject } from "../../../game/models/objects/RouteObject";
+import { Stores } from "../../stores/Stores";
+import { ConceptType } from "../../views/canvas/models/concepts/Concept";
+import { MeshConcept } from "../../views/canvas/models/concepts/MeshConcept";
+import { IConceptConverter } from "./IConceptConverter";
 
 export class MeshConceptConverter implements IConceptConverter {
     viewType = ConceptType.MeshConcept;
@@ -39,8 +37,10 @@ export class MeshConceptConverter implements IConceptConverter {
         meshObject.meshName = meshView.meshName;
         meshObject.id = meshView.id;
         meshObject.rotation = Tools.ToRadians(meshView.rotation);
-        meshObject.texturePath = meshView.texturePath;
-        meshObject.modelPath = meshView.modelPath;
+        const modelConcept = this.getStores().canvasStore.getModelConceptById(meshView.modelId);
+        meshObject.texturePath = modelConcept && modelConcept.texturePath;
+        meshObject.modelPath = modelConcept && modelConcept.modelPath;
+
         meshObject.thumbnailPath = meshView.thumbnailPath;
         meshObject.path = meshView.path;
         meshObject.color = meshView.color;

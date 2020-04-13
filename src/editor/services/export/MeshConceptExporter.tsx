@@ -1,4 +1,4 @@
-import { minBy, sort } from "../../../misc/geometry/utils/Functions";
+import { sort } from "../../../misc/geometry/utils/Functions";
 import { colors } from "../../gui/styles";
 import { Stores } from '../../stores/Stores';
 import { Concept, ConceptType } from "../../views/canvas/models/concepts/Concept";
@@ -42,8 +42,7 @@ export class MeshConceptExporter implements IConceptExporter {
                 data-rotation={item.rotation}
                 data-wg-scale={item.scale}
                 data-wg-name={item.id}
-                data-model={item.modelPath}
-                data-texture={item.texturePath}
+                data-model-id={item.modelId}
                 data-thumbnail={item.thumbnailPath}
                 data-path={item.path}
                 data-is-manual-control={item.isManualControl ? 'true' : 'false'}

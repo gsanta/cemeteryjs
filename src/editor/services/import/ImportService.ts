@@ -6,6 +6,7 @@ import { MeshConceptImporter } from './MeshConceptImporter';
 import { PathConceptImporter } from './PathConceptImporter';
 import { ConceptType } from '../../views/canvas/models/concepts/Concept';
 import { AnimationConceptImporter } from './AnimationConceptImporter';
+import { ModelConceptImporter } from './ModelConceptImporter';
 
 export interface WgDefinition {
     _attributes: WgDefinitionAttributes;
@@ -71,9 +72,10 @@ export class ImportService {
         this.getServices = getServices;
         this.getStores = getStores;
         this.conceptImporters = [
-            new MeshConceptImporter(rect => this.getStores().canvasStore.addConcept(rect)),
-            new PathConceptImporter(path => this.getStores().canvasStore.addConcept(path)),
-            new AnimationConceptImporter(animation => this.getStores().canvasStore.addMeta(animation))
+            new ModelConceptImporter(getStores),
+            new MeshConceptImporter(getStores),
+            new PathConceptImporter(getStores),
+            new AnimationConceptImporter(getStores)
         ];
     }
 
@@ -99,7 +101,15 @@ export class ImportService {
             this.findViewImporter(conceptType).import(group)
         });
 
-        this.getStores().canvasStore.getMeshConcepts().filter(item => item.modelPath).forEach(item => this.getServices().meshLoaderService().setDimensions(item));
+        this.getStores().canvasStore.getMeshConcepts().filter(item => item.modelId)
+            .forEach(item => {
+                const modelConcept = this.getStores().canvasStore.getModelConceptById(item.modelId);
+                this.getServices().meshLoaderService().getDimensions(modelConcept.modelPath)
+                    .then(dim => {
+                        item.dimensions.setWidth(dim.x);
+                        item.dimensions.setHeight(dim.y);
+                    })
+            });
         this.getServices().gameService().importAllConcepts();
     }
 

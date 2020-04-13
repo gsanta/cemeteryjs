@@ -3,6 +3,7 @@ import { ConceptType } from '../../views/canvas/models/concepts/Concept';
 import { AnimationConcept, AnimationCondition } from '../../views/canvas/models/meta/AnimationConcept';
 import { IConceptImporter } from './IConceptImporter';
 import { ConceptGroupJson } from './ImportService';
+import { Stores } from '../../stores/Stores';
 
 export interface AnimationJson {
     _attributes: {
@@ -26,10 +27,10 @@ export interface AnimationGroupJson extends ConceptGroupJson {
 
 export class AnimationConceptImporter implements IConceptImporter {
     type = ConceptType.AnimationConcept;
-    private addConcept: (concept: AnimationConcept) => void;
+    private getStores: () => Stores;
 
-    constructor(addConcept: (concept: AnimationConcept) => void) {
-        this.addConcept = addConcept;
+    constructor(getStores: () => Stores) {
+        this.getStores = getStores;
     }
 
     import(group: AnimationGroupJson): void {
@@ -48,8 +49,7 @@ export class AnimationConceptImporter implements IConceptImporter {
                 });
             });
 
-
-            this.addConcept(animationConcept);
+            this.getStores().canvasStore.addMeta(animationConcept);
         });
     }
 }

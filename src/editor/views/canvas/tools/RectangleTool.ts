@@ -31,8 +31,6 @@ export class RectangleTool extends AbstractTool {
 
         const meshConcept: MeshConcept = new MeshConcept(null, rect, name);
         meshConcept.rotation = 0;
-        meshConcept.modelPath = null;
-        meshConcept.texturePath = null;
         meshConcept.scale = 1;
         meshConcept.color = 'grey';
 
@@ -60,8 +58,6 @@ export class RectangleTool extends AbstractTool {
 
         const meshConcept: MeshConcept = new MeshConcept(null, dimensions, name);
         meshConcept.rotation = 0;
-        meshConcept.modelPath = null;
-        meshConcept.texturePath = null;
         meshConcept.scale = 1;
         meshConcept.color = 'grey';
         meshConcept.id = this.getStores().canvasStore.generateUniqueName(ConceptType.MeshConcept);

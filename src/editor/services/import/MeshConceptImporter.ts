@@ -5,6 +5,7 @@ import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
 import { ConceptGroupJson } from './ImportService';
 import { MeshConcept } from '../../views/canvas/models/concepts/MeshConcept';
 import { ConceptType } from '../../views/canvas/models/concepts/Concept';
+import { Stores } from '../../stores/Stores';
 
 export interface RectJson {
     _attributes: {
@@ -12,7 +13,7 @@ export interface RectJson {
         "data-wg-y": string,
         "data-wg-type": string,
         "data-wg-name": string,
-        "data-texture": string
+        "data-model-id": string;
         "data-is-manual-control": string;
         'data-animation-id': string;
     }
@@ -24,25 +25,22 @@ export interface RectangleGroupJson extends ConceptGroupJson {
 
 export class MeshConceptImporter implements IConceptImporter {
     type = ConceptType.MeshConcept;
-    private addGameObject: (rect: MeshConcept) => void;
+    private getStores: () => Stores;
 
-    constructor(addGameObject: (gameObject: MeshConcept) => void) {
-        this.addGameObject = addGameObject;
+    constructor(getStores: () => Stores) {
+        this.getStores = getStores;
     }
 
     import(group: RectangleGroupJson): void {
-        const pixelSize = 10;
-
         const rectJsons =  group.g.length ? <RectJson[]> group.g : [<RectJson> <unknown> group.g];
 
         rectJsons.forEach(rect => {
             const type = rect._attributes["data-wg-type"];
             const x = parseInt(rect._attributes["data-wg-x"], 10);
             const y = parseInt(rect._attributes["data-wg-y"], 10);
+            const modelId = rect._attributes["data-model-id"];
             const width = parseInt(rect._attributes["data-wg-width"], 10);
             const height = parseInt(rect._attributes["data-wg-height"], 10);
-            const model = rect._attributes["data-model"];
-            const texture = rect._attributes["data-texture"];
             const rotation = parseInt(rect._attributes["data-rotation"], 10);
             const scale = parseFloat(rect._attributes["data-wg-scale"]);
             const name = rect._attributes["data-wg-name"];
@@ -53,8 +51,7 @@ export class MeshConceptImporter implements IConceptImporter {
             const meshConcept: MeshConcept = new MeshConcept(null, rectangle, name);
             meshConcept.type = <ConceptType> type;
             meshConcept.rotation = rotation;
-            meshConcept.modelPath = model;
-            meshConcept.texturePath = texture;
+            meshConcept.modelId = modelId;
             meshConcept.scale = scale;
             meshConcept.color = 'grey';
             meshConcept.thumbnailPath = rect._attributes["data-thumbnail"];
@@ -62,7 +59,7 @@ export class MeshConceptImporter implements IConceptImporter {
             meshConcept.isManualControl = isManualControl;
             meshConcept.animationId = rect._attributes['data-animation-id'];
 
-            this.addGameObject(meshConcept);
+            this.getStores().canvasStore.addConcept(meshConcept);
         });
     }
 }

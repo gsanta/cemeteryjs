@@ -5,6 +5,7 @@ import { MeshConcept } from '../models/concepts/MeshConcept';
 import { Stores } from '../../../stores/Stores';
 import { AnimationCondition, AnimationConcept } from '../models/meta/AnimationConcept';
 import { ConceptType } from '../models/concepts/Concept';
+import { ModelConcept } from '../models/concepts/ModelConcept';
 
 export enum MeshViewPropType {
     Color = 'color',
@@ -55,13 +56,14 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
     }
 
     protected getProp(prop: MeshViewPropType) {
+        let modelConcept = this.getStores().canvasStore.getModelConceptById(this.meshConcept.modelId);
         switch (prop) {
             case MeshViewPropType.Color:
                 return this.meshConcept.color;
             case MeshViewPropType.Model:
-                return this.meshConcept.modelPath;
+                return modelConcept && modelConcept.modelPath;
             case MeshViewPropType.Texture:
-                return this.meshConcept.texturePath;
+                return modelConcept && modelConcept.texturePath;
             case MeshViewPropType.Thumbnail:
                 return this.meshConcept.thumbnailPath;
             case MeshViewPropType.Layer:
@@ -93,14 +95,20 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                 this.meshConcept.color = val;
                 break;
             case MeshViewPropType.Model:
-                this.meshConcept.modelPath = val.path;
+                this.updateModelPath(val.path);
+                const modelPath = this.getStores().canvasStore.getModelConceptById(this.meshConcept.modelId).modelPath;
+
                 this.getServices().storageService().saveAsset(val.path, val.data)
-                .finally(() => {
-                    this.getServices().meshLoaderService().setDimensions(this.meshConcept);
-                });
+                    .then(() => {
+                        return this.getServices().meshLoaderService().getDimensions(modelPath);
+                    })
+                    .then(dim => {
+                        this.meshConcept.dimensions.setWidth(dim.x);
+                        this.meshConcept.dimensions.setHeight(dim.y);
+                    })
                 break;
             case MeshViewPropType.Texture:
-                this.meshConcept.texturePath = val.path;
+                this.updateTexturePath(val.path);
                 break;
             case MeshViewPropType.Thumbnail:
                 this.meshConcept.thumbnailPath = val.path;
@@ -155,4 +163,28 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
         this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
         this.getServices().storageService().storeLevel(this.getStores().levelStore.currentLevel.index, map);
     }
+
+    private updateModelPath(path: string) {
+        let modelConcept = ModelConcept.getByModelPath(this.getStores().canvasStore.getModelConcepts(), path);
+        if (!modelConcept) {
+            modelConcept = new ModelConcept();
+            this.getStores().canvasStore.addMeta(modelConcept);
+        }
+        modelConcept.modelPath = path;
+        this.meshConcept.modelId = modelConcept.id;
+    }
+
+    private updateTexturePath(path: string) {
+        let modelConcept: ModelConcept;
+        if (this.meshConcept.modelId) {
+            modelConcept = this.getStores().canvasStore.getModelConceptById(this.meshConcept.modelId);
+        } else {
+            modelConcept = new ModelConcept();
+            this.getStores().canvasStore.addMeta(modelConcept);
+        }
+        modelConcept.texturePath = path;
+        this.meshConcept.modelId = modelConcept.id;   
+    }
+
+
 }

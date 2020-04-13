@@ -41,11 +41,7 @@ export class MeshConcept implements VisualConcept {
     rotation: number;
     children: MeshConcept[] = [];
     parent: MeshConcept;
-    texturePath: string;
-    modelPath: string;
-    modelData: string;
     thumbnailPath: string;
-
     modelId: string;
     path: string;
     isManualControl: boolean;
