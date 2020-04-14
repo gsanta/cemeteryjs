@@ -1,4 +1,4 @@
-import { MeshBuilder, Space, Vector3 } from 'babylonjs';
+import { MeshBuilder, Space, Vector3, Mesh } from 'babylonjs';
 import { ServiceLocator } from '../../../editor/services/ServiceLocator';
 import { Stores } from '../../../editor/stores/Stores';
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
@@ -19,8 +19,7 @@ export class RectangleFactory  {
         this.materialFactory = new MaterialFactory(this.getServices().gameService().gameEngine.scene);
     }
 
-    createMesh(meshObject: MeshObject): void {
-
+    createMesh(meshObject: MeshObject): Mesh {
         const rec = <Rectangle> meshObject.dimensions;
         const boundingInfo = meshObject.dimensions.getBoundingInfo();
         const width = boundingInfo.max[0] - boundingInfo.min[0];
@@ -38,8 +37,6 @@ export class RectangleFactory  {
             this.getServices().gameService().gameEngine.scene
         );
 
-        this.getStores().meshStore.addMesh(meshObject.id, mesh);
-        
         meshObject.meshName = mesh.name;
 
         const scale = meshObject.scale;
@@ -49,5 +46,7 @@ export class RectangleFactory  {
         mesh.material = this.materialFactory.createMaterial(meshObject);
 
         mesh.computeWorldMatrix(true);
+
+        return mesh;
     }
 }

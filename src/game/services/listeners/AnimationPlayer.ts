@@ -33,20 +33,16 @@ export class AnimationPlayer {
         });
     }
 
-    private stopAnimation(gameObject: MeshObject) {
-        const mesh = this.gameFacade.meshStore.getMesh(gameObject.meshName);
-
-        this.playingAnimations.delete(gameObject);
-        this.gameFacade.gameEngine.scene.stopAnimation(mesh.skeleton);
+    private stopAnimation(meshObject: MeshObject) {
+        this.playingAnimations.delete(meshObject);
+        this.gameFacade.gameEngine.scene.stopAnimation(meshObject.getMesh().skeleton);
     }
 
-    private startAnimation(gameObject: MeshObject) {
-        const mesh = this.gameFacade.meshStore.getMesh(gameObject.meshName);
-
-        if (mesh) {
-            const range = mesh.skeleton.getAnimationRange(gameObject.activeElementalAnimation.name);
-            this.gameFacade.gameEngine.scene.beginAnimation(mesh.skeleton, range.from, range.to, true);
-            this.playingAnimations.set(gameObject, gameObject.activeElementalAnimation);
+    private startAnimation(meshObject: MeshObject) {
+        if (meshObject.getMesh()) {
+            const range = meshObject.getMesh().skeleton.getAnimationRange(meshObject.activeElementalAnimation.name);
+            this.gameFacade.gameEngine.scene.beginAnimation(meshObject.getMesh().skeleton, range.from, range.to, true);
+            this.playingAnimations.set(meshObject, meshObject.activeElementalAnimation);
         }
 
     }

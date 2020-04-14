@@ -58,9 +58,9 @@ export class GameService {
             .then(() => {
                 this.getStores().gameStore.getMeshObjects().forEach(meshObject => {
                     if (!meshObject.modelPath) {
-                        new RectangleFactory(this.getServices, this.getStores, 0.1).createMesh(meshObject);
+                        meshObject.setMesh(new RectangleFactory(this.getServices, this.getStores, 0.1).createMesh(meshObject));
                     } else {
-                        this.getStores().meshStore.createInstance(meshObject, this.getServices().gameService().getScene());
+                        meshObject.setMesh(this.getStores().meshStore.createInstance(meshObject, this.getServices().gameService().getScene()));
                     }
                 });
             });
@@ -71,7 +71,7 @@ export class GameService {
             this.getStores().gameStore.deleteById(concept.id);
 
             if (concept.type === ConceptType.MeshConcept) {
-                this.getStores().meshStore.deleteMesh((<MeshConcept> concept).id);
+                this.getStores().meshStore.deleteTemplate((<MeshConcept> concept).id);
             }
         });
     }

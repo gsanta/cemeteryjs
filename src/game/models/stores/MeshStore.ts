@@ -5,8 +5,6 @@ import { MeshLoaderService } from '../../../editor/services/MeshLoaderService';
 
 export class MeshStore {
     private basePath = 'assets/models/';
-    private allInstances: Mesh[] = [];
-    private meshMap: Map<string, Mesh> = new Map();
     private templates: Set<Mesh> = new Set();
     private templatesByFileName: Map<string, Mesh> = new Map();
     private templateFileNames: Map<Mesh, string> = new Map();
@@ -14,36 +12,20 @@ export class MeshStore {
 
     private instanceCounter: Map<string, number> = new Map();
 
-    addModel(uniqueId: string, fileName: string, mesh: Mesh) {
-        this.meshMap.set(uniqueId, mesh);
-        this.allInstances.push(mesh);
+    addTemplate(fileName: string, mesh: Mesh) {
         this.templates.add(mesh);
         this.templatesByFileName.set(fileName, mesh);
         this.templateFileNames.set(mesh, fileName);
         this.instanceCounter.set(fileName, 0);
     }
 
-    addMesh(uniqueId: string, mesh: Mesh) {
-        this.meshMap.set(uniqueId, mesh);
-        this.allInstances.push(mesh);
-    }
-
-    addClone(uniqueId: string, mesh: Mesh) {
-        this.meshMap.set(uniqueId, mesh);
-        this.allInstances.push(mesh);
-    }
-
-    deleteMesh(id: string) {
-        const mesh = this.meshMap.get(id);
+    deleteTemplate(fileName: string) {
+        const mesh = this.templatesByFileName.get(fileName);
         
         if (this.templates.has(mesh)) {
             mesh.isVisible = false;
             const fileName = this.templateFileNames.get(mesh);
             this.instanceCounter.set(fileName, 0);
-        } else {
-            this.meshMap.delete(id);
-            this.allInstances = this.allInstances.filter(instance => instance !== mesh);
-            mesh.dispose();
         }
     }
 
@@ -51,11 +33,7 @@ export class MeshStore {
         return this.templatesByFileName.get(fileName);
     }
 
-    getMesh(uniqueId: string): Mesh {
-        return this.meshMap.get(uniqueId);
-    }
-
-    createInstance(meshObject: MeshObject, scene: Scene): void {
+    createInstance(meshObject: MeshObject, scene: Scene): Mesh {
         if (meshObject.texturePath) {
             this.texturePathes.set(meshObject.modelPath, meshObject.texturePath);
         }
@@ -70,7 +48,6 @@ export class MeshStore {
         } else {
             clone = <Mesh> templateMesh.instantiateHierarchy();
             clone.name = meshObject.id;
-            this.addClone(clone.name, clone);
         }
         clone.setAbsolutePosition(new Vector3(0, 0, 0));
         clone.rotation = new Vector3(0, 0, 0);
@@ -78,40 +55,31 @@ export class MeshStore {
         
         meshObject.meshName = clone.name;
 
-        const mesh =this.meshMap.get(meshObject.meshName);
-
         if (this.texturePathes.get(meshObject.modelPath)) {
             const texturePath = `${this.basePath}${MeshLoaderService.getFolderNameFromFileName(meshObject.modelPath)}/${this.texturePathes.get(meshObject.modelPath)}`;
-            (<StandardMaterial> mesh.material).diffuseTexture  = new Texture(texturePath,  scene);
-            (<StandardMaterial> mesh.material).specularTexture  = new Texture(texturePath,  scene);
+            (<StandardMaterial> clone.material).diffuseTexture  = new Texture(texturePath,  scene);
+            (<StandardMaterial> clone.material).specularTexture  = new Texture(texturePath,  scene);
             meshObject.texturePath = texturePath;
         }
 
-        mesh.isVisible = true;
+        clone.isVisible = true;
         const scale = meshObject.scale;
-        mesh.scaling = new Vector3(scale, scale, scale);
-        mesh.rotationQuaternion = undefined;
+        clone.scaling = new Vector3(scale, scale, scale);
+        clone.rotationQuaternion = undefined;
 
         const rect = <Rectangle> meshObject.dimensions;
         const width = rect.getWidth();
         const depth = rect.getHeight();
 
-        mesh.translate(new Vector3(rect.topLeft.x + width / 2, 0, -rect.topLeft.y - depth / 2), 1, Space.WORLD);
+        clone.translate(new Vector3(rect.topLeft.x + width / 2, 0, -rect.topLeft.y - depth / 2), 1, Space.WORLD);
 
-        mesh.rotation.y = meshObject.rotation;
+        clone.rotation.y = meshObject.rotation;
+
+        return clone;
     }
 
     clear(): void {
-        // this.meshMap.forEach((mesh, key) => {
-        //     this.gameFacade.scene.removeMesh(this.meshMap.get(key));
-        //     this.meshMap.delete(key);
-        // });
-
-        this.allInstances.forEach(mesh => {
-            mesh.dispose();
-        })
-        this.allInstances = [];
-        this.meshMap = new Map();
+        this.templates.forEach(template => template.dispose());
         this.templates.clear();
         this.templatesByFileName = new Map();
     }

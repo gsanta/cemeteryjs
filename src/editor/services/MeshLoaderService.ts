@@ -1,7 +1,6 @@
 import { Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, StandardMaterial } from 'babylonjs';
 import { Point } from '../../misc/geometry/shapes/Point';
 import { Stores } from '../stores/Stores';
-import { MeshConcept } from '../views/canvas/models/concepts/MeshConcept';
 import { ServiceLocator } from './ServiceLocator';
 import { MeshObject } from '../../game/models/objects/MeshObject';
 
@@ -41,38 +40,8 @@ export class MeshLoaderService {
     }
 
     protected setModel(fileName: string, mesh: Mesh): void {
-        this.getStores().meshStore.addModel(mesh.name, fileName, mesh);
+        this.getStores().meshStore.addTemplate(fileName, mesh);
         this.fileNameToMeshNameMap.set(fileName, mesh.name);
-    }
-
-    private setMeshDimensions(meshConcept: MeshConcept): Point {
-        const mesh = this.getStores().meshStore.getMesh(meshConcept.id);
-
-        mesh.computeWorldMatrix();
-        mesh.getBoundingInfo().update(mesh._worldMatrix);
-
-        const boundingVectors = mesh.getHierarchyBoundingVectors();
-        const width = boundingVectors.max.x - boundingVectors.min.x;
-        const height = boundingVectors.max.z - boundingVectors.min.z;
-        let dimensions = new Point(width, height).mul(10);
-
-        dimensions.x  = dimensions.x < 10 ? 10 : dimensions.x;
-        dimensions.y  = dimensions.y < 10 ? 10 : dimensions.y;
-        return dimensions;
-    }
-
-    private getDimension(mesh: Mesh): Point {
-        mesh.computeWorldMatrix();
-        mesh.getBoundingInfo().update(mesh._worldMatrix);
-
-        const boundingVectors = mesh.getHierarchyBoundingVectors();
-        const width = boundingVectors.max.x - boundingVectors.min.x;
-        const height = boundingVectors.max.z - boundingVectors.min.z;
-        return new Point(width, height);
-    }
-
-    private getAnimations(meshView: MeshConcept, mesh: Mesh) {
-        return mesh.skeleton ? mesh.skeleton.getAnimationRanges().map(range => range.name) : [];
     }
 
     loadAll(meshObjects: MeshObject[]): Promise<Mesh[]> {

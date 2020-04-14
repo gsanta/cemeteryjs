@@ -27,10 +27,7 @@ export class MeshConceptConverter implements IConceptConverter {
             this.getStores().gameStore.add(routeObject);
         }
 
-        const meshObject = new MeshObject(
-            (meshName: string) => this.getStores().meshStore.getMesh(meshName),
-            () => this.getStores().gameStore.getByName(`${meshView.id}-route`)
-        );
+        const meshObject = new MeshObject(() => this.getStores().gameStore.getByName(`${meshView.id}-route`));
 
         meshObject.dimensions = meshView.dimensions.div(10);
         meshObject.type = meshView.type;

@@ -78,10 +78,6 @@ export class MeshConcept implements VisualConcept {
         );
     }
 
-    getAnimationByName(animationName: AnimationName, meshStore: MeshStore): Animation {
-        return this.getAnimations(meshStore).find(anim => anim.name === animationName);
-    }
-
     getDirection(): Point {
         return new Point(Math.sin(this.getRotation()), Math.cos(this.getRotation()));
     }
@@ -129,13 +125,6 @@ export class MeshConcept implements VisualConcept {
     }
 
     deleteEditPoint(editPoint: EditPoint): void {}
-
-    private getAnimations(meshStore: MeshStore): Animation[] {
-        return meshStore.getMesh(this.id).skeleton.getAnimationRanges().map(anim => ({
-            name: anim.name,
-            range: [anim.from, anim.to]
-        }));
-    }
 }
 
 function to2DPoint(vector3: Vector3): Point {
