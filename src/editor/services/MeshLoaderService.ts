@@ -3,7 +3,7 @@ import { Point } from '../../misc/geometry/shapes/Point';
 import { Stores } from '../stores/Stores';
 import { MeshConcept } from '../views/canvas/models/concepts/MeshConcept';
 import { ServiceLocator } from './ServiceLocator';
-import { UpdateTask } from './UpdateServices';
+import { MeshObject } from '../../game/models/objects/MeshObject';
 
 export class MeshLoaderService {
     serviceName = 'mesh-loader-service'
@@ -22,9 +22,9 @@ export class MeshLoaderService {
         this.getStores = getStores;
     }
 
-    getDimensions(modelPath: string): Promise<Point> {
+    getDimensions(path: string, id: string): Promise<Point> {
         return this
-            .load(modelPath)
+            .load(path, id)
             .then(mesh => {
                 mesh.computeWorldMatrix();
                 mesh.getBoundingInfo().update(mesh._worldMatrix);
@@ -75,19 +75,19 @@ export class MeshLoaderService {
         return mesh.skeleton ? mesh.skeleton.getAnimationRanges().map(range => range.name) : [];
     }
 
-    loadAll(meshObjects: {modelPath: string}[]): Promise<Mesh[]> {
-        const modeledGameObjects = meshObjects.filter(item => item.modelPath);
+    loadAll(meshObjects: MeshObject[]): Promise<Mesh[]> {
+        const modeledMeshObjets = meshObjects.filter(item => item.modelPath);
 
         const promises: Promise<Mesh>[] = [];
 
-        for (let i = 0; i < modeledGameObjects.length; i++) {
-            promises.push(this.load(<any> modeledGameObjects[i]));
+        for (let i = 0; i < modeledMeshObjets.length; i++) {
+            promises.push(this.load(modeledMeshObjets[i].modelPath, modeledMeshObjets[i].id));
         }
 
         return Promise.all(promises);
     }
 
-    load(path: string): Promise<Mesh> {
+    load(path: string, id: string): Promise<Mesh> {
         if (this.pendingFileNames.has(path)) {
             return this.pendingFileNames.get(path);
         }
@@ -97,35 +97,28 @@ export class MeshLoaderService {
         const promise = this.getServices().storageService().loadAsset(path)
             .then((data) => {
                 if (data) {
-                    return this.loadMesh(data);
+                    return this.loadMesh(path, id, data);
                 } else {
-                    return this.loadMesh(path);
+                    return this.loadMesh(path, id);
                 }
             })
-            .catch(e => console.log(e))
+            .catch(e => this.loadMesh(path, id));
 
         this.pendingFileNames.set(path, promise);
         return <Promise<Mesh>> promise;
     }
 
-    private loadMesh(dataOrFileName: string): Promise<Mesh> {
-        let folder: string;
+    private loadMesh(file: string, id: string, data?: string): Promise<Mesh> {
+        let folder = MeshLoaderService.getFolderNameFromFileName(file);
         let path = `${this.basePath}${folder}/`;
-        let fileName = dataOrFileName;
-        if (dataOrFileName.startsWith('data:')) {
-            path = dataOrFileName;
-            fileName = undefined;
-        } else {
-            folder = MeshLoaderService.getFolderNameFromFileName(dataOrFileName);
-        }
 
         return new Promise(resolve => {
             SceneLoader.ImportMesh(
                 '',
-                path,
-                fileName,
+                data ? data : folder,
+                data ? undefined : file,
                 this.getServices().gameService().gameEngine.scene,
-                (meshes: Mesh[], ps: ParticleSystem[], skeletons: Skeleton[]) => resolve(this.createModelData(dataOrFileName, meshes, skeletons)),
+                (meshes: Mesh[], ps: ParticleSystem[], skeletons: Skeleton[]) => resolve(this.createModelData(file, id, meshes, skeletons)),
                 () => { },
                 (scene: Scene, message: string) => { throw new Error(message); }
             );
@@ -143,14 +136,14 @@ export class MeshLoaderService {
         mesh.isVisible = false;
     }
 
-    private createModelData(path: string, meshes: Mesh[], skeletons: Skeleton[]): Mesh {
+    private createModelData(path: string, id: string, meshes: Mesh[], skeletons: Skeleton[]): Mesh {
         if (meshes.length === 0) { throw new Error('No mesh was loaded.') }
 
         const scene = this.getServices().gameService().gameEngine.scene;
 
         meshes[0].material = new StandardMaterial(path, scene);
    
-        meshes[0].name = path;
+        meshes[0].name = id;
         this.configMesh(meshes[0]);
         this.setModel(path, meshes[0]);
 

@@ -85,7 +85,7 @@ export class GameService {
                 if (!meshObject.modelPath) {
                     new RectangleFactory(this.getServices, this.getStores, 0.1).createMesh(meshObject);
                 } else {
-                    this.getServices().meshLoaderService().load(meshObject.modelPath).then(() => this.getStores().meshStore.createInstance(meshObject, this.getServices().gameService().getScene()));
+                    this.getServices().meshLoaderService().load(meshObject.modelPath, meshObject.id).then(() => this.getStores().meshStore.createInstance(meshObject, this.getServices().gameService().getScene()));
                 }
             break;
         }

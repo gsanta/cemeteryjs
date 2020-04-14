@@ -93,6 +93,7 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
         switch (prop) {
             case MeshViewPropType.Color:
                 this.meshConcept.color = val;
+                this.update();
                 break;
             case MeshViewPropType.Model:
                 this.updateModelPath(val.path);
@@ -100,36 +101,50 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
 
                 this.getServices().storageService().saveAsset(val.path, val.data)
                     .then(() => {
-                        return this.getServices().meshLoaderService().getDimensions(modelPath);
+                        return this.getServices().meshLoaderService().getDimensions(modelPath, this.meshConcept.id);
                     })
                     .then(dim => {
                         this.meshConcept.dimensions.setWidth(dim.x);
                         this.meshConcept.dimensions.setHeight(dim.y);
                     })
+                    .finally(() => {
+                        const data = this.getServices().exportService().export();
+                        this.getServices().gameService().updateConcepts([this.meshConcept]);
+                        this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData, UpdateTask.RepaintCanvas);
+                        this.getServices().storageService().storeLevel(this.getStores().levelStore.currentLevel.index, data);
+                    });
                 break;
             case MeshViewPropType.Texture:
                 this.updateTexturePath(val.path);
+                this.update();
                 break;
             case MeshViewPropType.Thumbnail:
                 this.meshConcept.thumbnailPath = val.path;
+                this.update();
                 break;
             case MeshViewPropType.Layer:
                 this.meshConcept.layer = val;
+                this.update();
                 break;
             case MeshViewPropType.Rotation:
                 this.meshConcept.rotation = this.convertValue(val, prop, this.meshConcept.rotation);
+                this.update();
                 break;
             case MeshViewPropType.Scale:
                 this.meshConcept.scale = this.convertValue(val, prop, this.meshConcept.scale);
+                this.update();
                 break;
             case MeshViewPropType.Name:
                 this.meshConcept.id = val;
+                this.update();
                 break;
             case MeshViewPropType.Path:
                 this.meshConcept.path = val;
+                this.update();
                 break;
             case MeshViewPropType.IsManualControl:
                 this.meshConcept.isManualControl = val;
+                this.update();
                 break;
             case MeshViewPropType.DefaultAnimation:
                 if (val === undefined) {
@@ -152,22 +167,20 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                         condition: AnimationCondition.Default
                     })
                 }
+                this.update();
                 break;
             case MeshViewPropType.AnimationState:
                 this.meshConcept.animationState = val;
+                this.update();
                 break;
         }
-
-        const map = this.getServices().exportService().export();
-        this.getServices().gameService().updateConcepts([this.meshConcept]);
-        this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
-        this.getServices().storageService().storeLevel(this.getStores().levelStore.currentLevel.index, map);
     }
 
     private updateModelPath(path: string) {
         let modelConcept = ModelConcept.getByModelPath(this.getStores().canvasStore.getModelConcepts(), path);
         if (!modelConcept) {
             modelConcept = new ModelConcept();
+            modelConcept.id = this.getStores().canvasStore.generateUniqueName(ConceptType.AnimationConcept);
             this.getStores().canvasStore.addMeta(modelConcept);
         }
         modelConcept.modelPath = path;
@@ -180,11 +193,18 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
             modelConcept = this.getStores().canvasStore.getModelConceptById(this.meshConcept.modelId);
         } else {
             modelConcept = new ModelConcept();
+            modelConcept.id = this.getStores().canvasStore.generateUniqueName(ConceptType.AnimationConcept);
             this.getStores().canvasStore.addMeta(modelConcept);
         }
         modelConcept.texturePath = path;
         this.meshConcept.modelId = modelConcept.id;   
     }
 
+    private update() {
+        const data = this.getServices().exportService().export();
+        this.getServices().gameService().updateConcepts([this.meshConcept]);
+        this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
+        this.getServices().storageService().storeLevel(this.getStores().levelStore.currentLevel.index, data);
 
+    }
 }
