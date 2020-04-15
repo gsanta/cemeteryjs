@@ -7,7 +7,6 @@ import { PathMarkersComponent } from '../../../services/export/PathMarkersCompon
 import { CanvasView } from '../CanvasView';
 import { CanvasToolbarComponent } from './CanvasToolbarComponent';
 import { WheelListener } from '../../../services/WheelListener';
-import { TypedItem } from '../../../stores/CanvasStore';
 import { Concept } from '../models/concepts/Concept';
 import { Feedback } from '../models/feedbacks/Feedback';
 

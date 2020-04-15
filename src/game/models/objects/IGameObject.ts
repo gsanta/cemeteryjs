@@ -9,4 +9,5 @@ export enum GameObjectType {
 export interface IGameObject {
     objectType: GameObjectType;
     id: string;
+    dispose(): void;
 }

@@ -180,7 +180,7 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
         let modelConcept = ModelConcept.getByModelPath(this.getStores().canvasStore.getModelConcepts(), path);
         if (!modelConcept) {
             modelConcept = new ModelConcept();
-            modelConcept.id = this.getStores().canvasStore.generateUniqueName(ConceptType.AnimationConcept);
+            modelConcept.id = this.getStores().canvasStore.generateUniqueName(ConceptType.ModelConcept);
             this.getStores().canvasStore.addMeta(modelConcept);
         }
         modelConcept.modelPath = path;
@@ -193,7 +193,7 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
             modelConcept = this.getStores().canvasStore.getModelConceptById(this.meshConcept.modelId);
         } else {
             modelConcept = new ModelConcept();
-            modelConcept.id = this.getStores().canvasStore.generateUniqueName(ConceptType.AnimationConcept);
+            modelConcept.id = this.getStores().canvasStore.generateUniqueName(ConceptType.ModelConcept);
             this.getStores().canvasStore.addMeta(modelConcept);
         }
         modelConcept.texturePath = path;

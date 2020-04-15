@@ -1,17 +1,15 @@
-import { Rectangle } from "../../../../misc/geometry/shapes/Rectangle";
-import { UpdateTask } from "../../../services/UpdateServices";
-import { CanvasView } from "../CanvasView";
-import { AbstractTool } from './AbstractTool';
-import { ToolType } from './Tool';
-import { Stores } from '../../../stores/Stores';
 import { ServiceLocator } from '../../../services/ServiceLocator';
-import { isFeedback, isConcept } from "../../../stores/CanvasStore";
+import { UpdateTask } from "../../../services/UpdateServices";
+import { isConcept, isFeedback } from "../../../stores/CanvasStore";
+import { Stores } from '../../../stores/Stores';
+import { CanvasView } from "../CanvasView";
 import { Concept } from "../models/concepts/Concept";
 import { Feedback } from "../models/feedbacks/Feedback";
-import { VisualConcept } from "../models/concepts/VisualConcept";
+import { AbstractTool } from './AbstractTool';
+import { ToolType } from './Tool';
 
 export class MoveTool extends AbstractTool {
-    private movingItem = undefined;
+    private movingItem: Concept | Feedback = undefined;
     private isDragStart = true;
     private getStores: () => Stores;
     private getServices: () => ServiceLocator;
@@ -68,9 +66,9 @@ export class MoveTool extends AbstractTool {
     private moveItems() {
         const concepts = this.getStores().selectionStore.getAllConcepts();
 
-        if (isFeedback(this.movingItem)) {
+        if (isFeedback(this.movingItem.type)) {
             concepts[0].moveEditPoint(this.getStores().selectionStore.getEditPoint(), this.getServices().pointerService().pointer.getDiff());
-        } else if (isConcept(this.movingItem)) {
+        } else if (isConcept(this.movingItem.type)) {
             concepts.forEach((item, index) => item.move(this.getServices().pointerService().pointer.getDiff()));
         }
 
@@ -80,7 +78,7 @@ export class MoveTool extends AbstractTool {
     private updateGameObjects() {
         let concepts: Concept[];
 
-        if (isFeedback(this.movingItem)) {
+        if (isFeedback(this.movingItem.type)) {
             concepts = [(<Feedback> this.movingItem).parent];
         } else {
             concepts = this.getStores().selectionStore.getAllConcepts();

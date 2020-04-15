@@ -12,16 +12,16 @@ import { AnimationConcept } from "../views/canvas/models/meta/AnimationConcept";
 import { VisualConcept } from "../views/canvas/models/concepts/VisualConcept";
 import { ModelConcept } from "../views/canvas/models/concepts/ModelConcept";
 
-export interface TypedItem {
-    type: string;
+export function isFeedback(type: string) {
+    return type.endsWith('Feedback');
 }
 
-export function isFeedback(item: TypedItem) {
-    return item.type.endsWith('Feedback');
+export function isConcept(type: string) {
+    return type.endsWith('Concept');
 }
 
-export function isConcept(item: TypedItem) {
-    return item.type.endsWith('Concept');
+export function isMeta(type: string) {
+    return type === ConceptType.ModelConcept;
 }
 
 export class CanvasStore {
@@ -73,7 +73,11 @@ export class CanvasStore {
     }
 
     getConceptsByType(type: ConceptType): Concept[] {
-        return this.concepts.filter(v => v.type === type);
+        if (isMeta(type)) {
+            return this.metas.filter(v => v.type === type);
+        } else if (isConcept(type)) {
+            return this.concepts.filter(v => v.type === type);
+        }
     }
 
     getMeshConcepts(): MeshConcept[] {

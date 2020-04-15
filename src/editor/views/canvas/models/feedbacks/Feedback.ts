@@ -1,5 +1,3 @@
-import { Concept } from "../concepts/Concept";
-import { TypedItem } from "../../../../stores/CanvasStore";
 import { VisualConcept } from "../concepts/VisualConcept";
 
 export enum FeedbackType {
@@ -7,6 +5,7 @@ export enum FeedbackType {
     EditPointFeedback = 'EditPointFeedback'
 }
 
-export interface Feedback extends TypedItem {
+export interface Feedback {
     parent: VisualConcept;
+    type: string;
 }

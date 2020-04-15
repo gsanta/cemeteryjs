@@ -10,9 +10,13 @@ export class MeshStore {
     private templateFileNames: Map<Mesh, string> = new Map();
     private texturePathes: Map<string, string> = new Map();
 
+    private instances: Set<Mesh> = new Set();
+
+
     private instanceCounter: Map<string, number> = new Map();
 
     addTemplate(fileName: string, mesh: Mesh) {
+        mesh.name = `template-${fileName}`;
         this.templates.add(mesh);
         this.templatesByFileName.set(fileName, mesh);
         this.templateFileNames.set(mesh, fileName);
@@ -33,6 +37,16 @@ export class MeshStore {
         return this.templatesByFileName.get(fileName);
     }
 
+    deleteInstance(mesh: Mesh) {
+        if (this.templates.has(mesh)) {
+            mesh.isVisible = false;
+        } else {
+            mesh.dispose();
+        }
+
+        this.instances.delete(mesh);
+    }
+
     createInstance(meshObject: MeshObject, scene: Scene): Mesh {
         if (meshObject.texturePath) {
             this.texturePathes.set(meshObject.modelPath, meshObject.texturePath);
@@ -43,12 +57,13 @@ export class MeshStore {
         let clone: Mesh;
         const counter = this.instanceCounter.get(meshObject.modelPath);
 
-        if (counter === 0) {
+        if (!this.instances.has(templateMesh)) {
             clone = templateMesh;
         } else {
             clone = <Mesh> templateMesh.instantiateHierarchy();
             clone.name = meshObject.id;
         }
+        this.instances.add(clone);
         clone.setAbsolutePosition(new Vector3(0, 0, 0));
         clone.rotation = new Vector3(0, 0, 0);
         this.instanceCounter.set(meshObject.modelPath, counter + 1);

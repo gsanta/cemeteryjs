@@ -1,7 +1,3 @@
-import { Rectangle } from "../../../../../misc/geometry/shapes/Rectangle";
-import { Point } from "../../../../../misc/geometry/shapes/Point";
-import { EditPoint } from "../feedbacks/EditPoint";
-import { TypedItem } from "../../../../stores/CanvasStore";
 
 export enum ConceptType {
     MeshConcept = 'MeshConcept',
@@ -10,6 +6,7 @@ export enum ConceptType {
     AnimationConcept = 'AnimationConcept'
 }
 
-export interface Concept extends TypedItem {
+export interface Concept {
     id: string;
+    type: string;
 }

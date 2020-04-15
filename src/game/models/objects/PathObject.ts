@@ -20,4 +20,6 @@ export class PathObject implements IGameObject {
     points: Point[] = [];
     tree: Map<number, number[]> = new Map();
     root: Point;
+
+    dispose() {}
 }

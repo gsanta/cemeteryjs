@@ -126,6 +126,16 @@ export class MeshObject implements IGameObject {
     getMesh(): Mesh {
         return this.mesh;
     }
+
+    dispose() {
+        if (this.mesh) {
+            if (this.mesh.name.startsWith('template')) {
+                this.mesh.isVisible = false;
+            } else {
+                this.mesh.dispose();
+            }
+        } 
+    }
 }
 
 function to2DPoint(vector3: Vector3): Point {

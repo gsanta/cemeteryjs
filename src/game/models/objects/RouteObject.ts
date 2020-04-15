@@ -32,4 +32,6 @@ export class RouteObject implements IGameObject {
         this.isFinished = false;
         this.getMeshObject().setPosition(this.getPathObject().root);
     }
+
+    dispose() {}
 }

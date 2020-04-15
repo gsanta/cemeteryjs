@@ -13,6 +13,6 @@ export class Stores {
     selectionStore = new SelectionStore();
     levelStore = new LevelStore();
     viewStore = new ViewStore();
-    gameStore = new GameStore();
+    gameStore = new GameStore(() => this);
     meshStore = new MeshStore();
 }

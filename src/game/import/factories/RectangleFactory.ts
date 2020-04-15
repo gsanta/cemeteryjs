@@ -37,6 +37,8 @@ export class RectangleFactory  {
             this.getServices().gameService().gameEngine.scene
         );
 
+        meshObject.setMesh(mesh);
+
         meshObject.meshName = mesh.name;
 
         const scale = meshObject.scale;

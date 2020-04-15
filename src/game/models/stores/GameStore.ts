@@ -1,11 +1,18 @@
 import { MeshObject } from '../objects/MeshObject';
 import { IGameObject, GameObjectType } from '../objects/IGameObject';
 import { RouteObject } from '../objects/RouteObject';
+import { without } from '../../../misc/geometry/utils/Functions';
+import { Stores } from '../../../editor/stores/Stores';
 
 export class GameStore {
     private nameToObjMap: Map<string, IGameObject> = new Map();
-    
+    private getStores: () => Stores;
+
     objs: IGameObject[] = [];
+
+    constructor(getStores: () => Stores) {
+        this.getStores = getStores;
+    }
 
     getPlayer(): MeshObject {
         return <MeshObject> this.objs.find(gameObject => gameObject.id === 'player');
@@ -33,6 +40,15 @@ export class GameStore {
     }
 
     deleteById(id: string) {
+        const obj = this.objs.find(obj => obj.id === id);
+
+        switch(obj.objectType) {
+            case GameObjectType.MeshObject:
+                this.getStores().meshStore.deleteInstance((<MeshObject> obj).getMesh());
+            break;
+        }
+
+        this.nameToObjMap.delete(id);
         this.objs = this.objs.filter(obj => obj.id !== id);
     }
 
