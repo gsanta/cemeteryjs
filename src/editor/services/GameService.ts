@@ -51,18 +51,13 @@ export class GameService {
 
     importAllConcepts() {
         this.getStores().gameStore.clear();
+        this.getServices().meshLoaderService().clear();
 
         this.getStores().canvasStore.getAllConcepts().forEach(concept => this.getServices().conceptConvertService().convert(concept));
 
         this.getServices().meshLoaderService().loadAll(this.getStores().gameStore.getMeshObjects())
             .then(() => {
-                this.getStores().gameStore.getMeshObjects().forEach(meshObject => {
-                    if (!meshObject.modelPath) {
-                        meshObject.setMesh(new RectangleFactory(this.getServices, this.getStores, 0.1).createMesh(meshObject));
-                    } else {
-                        meshObject.setMesh(this.getStores().meshStore.createInstance(meshObject, this.getServices().gameService().getScene()));
-                    }
-                });
+                this.getStores().gameStore.getMeshObjects().forEach(meshObject => this.getStores().meshStore.createInstance(meshObject, this.getServices().gameService().getScene()));
             });
     }
 
@@ -77,10 +72,10 @@ export class GameService {
             case GameObjectType.MeshObject:
                 const meshObject = <MeshObject> gameObject;
                 if (!meshObject.modelPath) {
-                    new RectangleFactory(this.getServices, this.getStores, 0.1).createMesh(meshObject);
+                    this.getStores().meshStore.createInstance(meshObject, this.getServices().gameService().getScene());
                 } else {
                     this.getServices().meshLoaderService().load(meshObject.modelPath, meshObject.id)
-                        .then(() => meshObject.setMesh(this.getStores().meshStore.createInstance(meshObject, this.getServices().gameService().getScene())));
+                        .then(() => this.getStores().meshStore.createInstance(meshObject, this.getServices().gameService().getScene()));
                 }
             break;
         }

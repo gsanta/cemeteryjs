@@ -36,7 +36,7 @@ export class GameFacade {
         this.services = services;
         this.stores = new Stores();
         this.gameEngine = new GameEngine(canvas);
-        this.meshStore = new MeshStore();
+        this.meshStore = new MeshStore(() => this.stores);
 
         this.keyboardListener = new KeyboardTrigger(this);
         this.keyboardTrigger = new KeyboardTrigger(this);

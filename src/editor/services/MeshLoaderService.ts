@@ -96,6 +96,7 @@ export class MeshLoaderService {
 
     clear(): void {
         this.loadedFileNames = new Set();
+        this.pendingFileNames = new Map();
     }
 
     private configMesh(mesh: Mesh) {        

@@ -1,25 +1,23 @@
-import { MeshBuilder, Space, Vector3, Mesh } from 'babylonjs';
-import { ServiceLocator } from '../../../editor/services/ServiceLocator';
+import { Color3, Mesh, MeshBuilder, Scene, Space, StandardMaterial, Vector3 } from 'babylonjs';
 import { Stores } from '../../../editor/stores/Stores';
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
 import { MeshObject } from '../../models/objects/MeshObject';
-import { MaterialFactory } from './MaterialFactory';
+import { MaterialBuilder } from './MaterialFactory';
 
 export class RectangleFactory  {
     private height: number;
 
-    private getServices: () => ServiceLocator;
     private getStores: () => Stores;
-    private materialFactory: MaterialFactory;
+    private materialBuilder: typeof MaterialBuilder;
+    private materialIndex = 0;
 
-    constructor(getServices: () => ServiceLocator, getStores: () => Stores, height: number) {
-        this.getServices = getServices;
+    constructor(getStores: () => Stores, height: number) {
         this.getStores = getStores;
         this.height = height;
-        this.materialFactory = new MaterialFactory(this.getServices().gameService().gameEngine.scene);
+        this.materialBuilder = MaterialBuilder;
     }
 
-    createMesh(meshObject: MeshObject): Mesh {
+    createMesh(meshObject: MeshObject, scene: Scene): Mesh {
         const rec = <Rectangle> meshObject.dimensions;
         const boundingInfo = meshObject.dimensions.getBoundingInfo();
         const width = boundingInfo.max[0] - boundingInfo.min[0];
@@ -34,7 +32,7 @@ export class RectangleFactory  {
                 depth: rec.getHeight(),
                 height: this.height
             },
-            this.getServices().gameService().gameEngine.scene
+            scene
         );
 
         meshObject.setMesh(mesh);
@@ -45,10 +43,17 @@ export class RectangleFactory  {
         mesh.scaling = new Vector3(scale, scale, scale);
         mesh.translate(new Vector3(rect.topLeft.x + width / 2, 0, -rect.topLeft.y - depth / 2), 1, Space.WORLD);
 
-        mesh.material = this.materialFactory.createMaterial(meshObject);
+        mesh.material = this.createSimpleMaterial(scene);
 
         mesh.computeWorldMatrix(true);
 
         return mesh;
+    }
+
+    
+    private createSimpleMaterial(scene: Scene): StandardMaterial {
+        const mat =  this.materialBuilder.CreateMaterial(`${this.materialIndex++}`, scene);
+        mat.diffuseColor = Color3.FromHexString('#000000');
+        return mat;
     }
 }

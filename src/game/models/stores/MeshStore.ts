@@ -2,6 +2,8 @@ import { Mesh, Vector3, Space, StandardMaterial, Texture, Scene } from 'babylonj
 import { MeshObject } from '../objects/MeshObject';
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
 import { MeshLoaderService } from '../../../editor/services/MeshLoaderService';
+import { RectangleFactory } from '../../import/factories/RectangleFactory';
+import { Stores } from '../../../editor/stores/Stores';
 
 export class MeshStore {
     private basePath = 'assets/models/';
@@ -12,9 +14,14 @@ export class MeshStore {
 
     private instances: Set<Mesh> = new Set();
 
-
     private instanceCounter: Map<string, number> = new Map();
 
+    private rectangleFactory: RectangleFactory;
+
+    constructor(getStores: () => Stores) {
+        this.rectangleFactory = new RectangleFactory(getStores, 0.1);
+    }
+    
     addTemplate(fileName: string, mesh: Mesh) {
         mesh.name = `template-${fileName}`;
         this.templates.add(mesh);
@@ -47,7 +54,14 @@ export class MeshStore {
         this.instances.delete(mesh);
     }
 
-    createInstance(meshObject: MeshObject, scene: Scene): Mesh {
+    createInstance(meshObject: MeshObject, scene: Scene): void {
+        if (!meshObject.modelPath) {
+            const mesh = this.rectangleFactory.createMesh(meshObject, scene);
+            this.instances.add(mesh);
+            meshObject.setMesh(mesh);
+            return;
+        }
+
         if (meshObject.texturePath) {
             this.texturePathes.set(meshObject.modelPath, meshObject.texturePath);
         }
@@ -90,12 +104,16 @@ export class MeshStore {
 
         clone.rotation.y = meshObject.rotation;
 
-        return clone;
+        meshObject.setMesh(clone);
     }
 
     clear(): void {
         this.templates.forEach(template => template.dispose());
         this.templates.clear();
+        this.instances.forEach(instance => instance.dispose());
+        this.instances.clear();
         this.templatesByFileName = new Map();
+        this.templateFileNames = new Map();
+        this.texturePathes = new Map();
     }
 }

@@ -54,6 +54,7 @@ export class GameStore {
 
     clear(): void {
         this.objs = [];
+        this.getStores().meshStore.clear();
     }
 
     isEmpty(): boolean {

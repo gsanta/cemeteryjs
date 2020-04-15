@@ -6,7 +6,6 @@ import { SelectionStore } from "./SelectionStore";
 import { GameStore } from "../../game/models/stores/GameStore";
 import { MeshStore } from "../../game/models/stores/MeshStore";
 
-
 export class Stores {
     canvasStore = new CanvasStore(() => this);
     hoverStore = new HoverStore();
@@ -14,5 +13,5 @@ export class Stores {
     levelStore = new LevelStore();
     viewStore = new ViewStore();
     gameStore = new GameStore(() => this);
-    meshStore = new MeshStore();
+    meshStore = new MeshStore(() => this);
 }
