@@ -38,8 +38,7 @@ export class Editor {
     }
 
     setup(canvas: HTMLCanvasElement) {
-        this.gameFacade = new GameFacade(canvas, this.services);
-        this.gameFacade.setup();
+        this.gameFacade = new GameFacade(canvas, this.services, () => this.stores);
         this.gameApi = new GameService(canvas, () => this.services, () => this.stores);
 
         this.services.services.push(this.gameApi);

@@ -34,7 +34,7 @@ export class ServiceLocator {
             new DialogService(() => this),
             new SettingsService(() => this, getStores),
             new MeshLoaderService(() => this, getStores),
-            new ConceptConvertService(() => this, getStores)
+            new ConceptConvertService(getStores)
         ];
     }
 

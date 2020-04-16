@@ -116,10 +116,6 @@ export class MeshObject implements IGameObject {
     }
 
     setMesh(mesh: Mesh) {
-        if (this.mesh) {
-            this.mesh.dispose();
-        }
-
         this.mesh = mesh;
     }
 

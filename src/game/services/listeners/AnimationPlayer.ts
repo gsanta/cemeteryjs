@@ -1,13 +1,15 @@
 import { ElementalAnimation } from "../../../editor/views/canvas/models/meta/AnimationConcept";
 import { GameFacade } from "../../GameFacade";
 import { MeshObject } from "../../models/objects/MeshObject";
+import { Stores } from "../../../editor/stores/Stores";
 
 export class AnimationPlayer {
     private gameFacade: GameFacade;
     private playingAnimations: Map<MeshObject, ElementalAnimation> = new Map();
+    private getStores: () => Stores;
 
-    constructor(gameFacade: GameFacade) {
-        this.gameFacade = gameFacade;
+    constructor(getStores: () => Stores) {
+        this.getStores = getStores;
     }
 
     updateAnimations() {
@@ -24,7 +26,7 @@ export class AnimationPlayer {
     }
 
     private startNewAnimations() {
-        this.gameFacade.stores.gameStore.getMeshObjects()
+        this.getStores().gameStore.getMeshObjects()
         .filter(gameObject => gameObject.activeElementalAnimation)
         .forEach(gameObject => {
             if (!this.playingAnimations.has(gameObject)) {

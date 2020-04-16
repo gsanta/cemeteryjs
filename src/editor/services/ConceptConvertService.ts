@@ -4,15 +4,10 @@ import { IGameObject } from "../../game/models/objects/IGameObject";
 
 export class ConceptConvertService {
     serviceName = 'concept-convert-service';
-    private getServices: () => ServiceLocator;
-    private getStores: () => Stores;
 
     private conceptConverters: IConceptConverter[] = []
 
-    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
-        this.getServices = getServices;
-        this.getStores = getStores;
-
+    constructor(getStores: () => Stores) {
         this.conceptConverters = [
             new MeshConceptConverter(getStores),
             new PathConceptConverter(getStores)

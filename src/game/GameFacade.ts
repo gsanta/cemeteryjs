@@ -30,54 +30,29 @@ export class GameFacade {
 
     private walkers: Walkers;
     services: ServiceLocator;
-    stores: Stores;
 
-    constructor(canvas: HTMLCanvasElement, services: ServiceLocator) {
+    private getStores: () => Stores;
+
+    constructor(canvas: HTMLCanvasElement, services: ServiceLocator, getStores: () => Stores) {
+        this.getStores = getStores;
         this.services = services;
-        this.stores = new Stores();
         this.gameEngine = new GameEngine(canvas);
-        this.meshStore = new MeshStore(() => this.stores);
+        this.meshStore = new MeshStore(this.getStores);
 
         this.keyboardListener = new KeyboardTrigger(this);
         this.keyboardTrigger = new KeyboardTrigger(this);
         this.gameEventManager = new GameEventManager();
         this.characterMovement = new CharacterMovement();
 
-        const playerListener = new PlayerListener(this);
+        const playerListener = new PlayerListener(this, this.getStores);
         this.gameEventManager.listeners.registerGamepadListener((gamepadEvent: GamepadEvent) => playerListener.gamepadEvent(gamepadEvent));
         // this.gameEventManager.registerListener(new EnemyBehaviourManager(this, [new WanderBehaviour()]));
         this.gameEventManager.listeners.registerAfterRenderListener(() => this.walkers.walk());
-        const animationPlayer = new AnimationPlayer(this);
+        const animationPlayer = new AnimationPlayer(this.getStores);
         this.gameEventManager.listeners.registerAfterRenderListener(() => animationPlayer.updateAnimations());
         this.keyboardTrigger = new KeyboardTrigger(this);
         this.afterRenderTrigger = new AfterRenderTrigger(this)
 
-        this.walkers = new Walkers(() => this.stores);        
+        this.walkers = new Walkers(this.getStores);        
     }
-    
-    setup() {
-    }
-
-    // clear(): void {
-    //     this.meshStore.clear();
-    //     this.stores.canvasStore.clear();
-    //     this.modelLoader.clear();
-    // }
-    
-    // generateWorld(worldMap: string): Promise<MeshObject[]> {
-    //     this.meshStore.clear();
-    //     this.modelLoader.clear();
-    //     this.stores.gameStore.clear();
-    //     // this.gameObjectBuilder.build(worldMap);
-    //     this.gameStoreBuilder.build(worldMap);
-
-    //     return this.modelLoader.loadAll(this.stores.gameStore.getMeshObjects()).then(
-    //         () => {
-    //             new CreateMeshModifier(this.gameEngine.scene, this).apply(this.stores.gameStore.getMeshObjects())
-    //             // this.routeWalker.initRoutes();
-
-    //             return this.stores.gameStore.getMeshObjects();
-    //         }
-    //     )
-    // }
 }
