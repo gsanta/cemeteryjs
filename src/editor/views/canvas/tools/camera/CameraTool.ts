@@ -1,5 +1,5 @@
 import { Point } from "../../../../../misc/geometry/shapes/Point";
-import { Hotkey } from "../../../../services/HotkeyService";
+import { Hotkey } from "../../../../services/input/HotkeyService";
 import { ServiceLocator } from '../../../../services/ServiceLocator';
 import { UpdateTask } from '../../../../services/UpdateServices';
 import { Stores } from '../../../../stores/Stores';
@@ -16,13 +16,10 @@ export class CameraTool extends AbstractTool {
     readonly LOG_ZOOM_MAX = Math.log(CameraTool.ZOOM_MAX);
     readonly NUM_OF_STEPS: number;
 
-    private getServices: () => ServiceLocator;
-    private getStores: () => Stores;
-
     private hotkeys: Hotkey[] = [];
 
     constructor(getServices: () => ServiceLocator, getStores: () => Stores, numberOfSteps: number = 20) {
-        super(ToolType.CAMERA);
+        super(ToolType.CAMERA, getServices, getStores);
         this.NUM_OF_STEPS = numberOfSteps;
         this.getServices = getServices;
         this.getStores = getStores;

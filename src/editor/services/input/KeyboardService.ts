@@ -1,4 +1,4 @@
-import { Stores } from '../stores/Stores';
+import { Stores } from '../../stores/Stores';
 
 export enum Platform {
     WINDOWS = 'Windows',
@@ -46,7 +46,7 @@ export class KeyboardService {
     }
 
     onKeyDown(e: KeyboardEvent): void {
-        this.getStores().viewStore.getActiveView().getActiveTool()?.keydown(this.convertEvent(e));
+        this.getStores().viewStore.getActiveView().getSelectedTool()?.keydown(this.convertEvent(e));
     }
 
     private convertEvent(event: KeyboardEvent): IKeyboardEvent {

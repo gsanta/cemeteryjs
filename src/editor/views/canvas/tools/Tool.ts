@@ -1,4 +1,4 @@
-import { IKeyboardEvent } from "../../../services/KeyboardService";
+import { IKeyboardEvent } from "../../../services/input/KeyboardService";
 import { Concept } from "../models/concepts/Concept";
 import { Feedback } from "../models/feedbacks/Feedback";
 
@@ -46,7 +46,5 @@ export interface Tool {
     out(item: Concept | Feedback): void;
 
     select(): void;
-    unselect(): void;
-
-    getSubtools(): Tool[];
+    deselect(): void;
 }

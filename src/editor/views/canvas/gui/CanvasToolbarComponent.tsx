@@ -56,11 +56,11 @@ export class CanvasToolbarComponent extends AbstractToolbarComponent {
 
 
     private isToolActive(toolType: ToolType) {
-        return this.context.getStores().viewStore.getViewById(CanvasView.id).getActiveTool().type === toolType;
+        return this.context.getStores().viewStore.getViewById(CanvasView.id).getSelectedTool().type === toolType;
     }
 
     private activateTool(toolType: ToolType) {
-        this.context.getStores().viewStore.getViewById(CanvasView.id).setActiveTool(toolType);
+        this.context.getStores().viewStore.getViewById(CanvasView.id).setSelectedTool(toolType);
     }
 
     private zoomIn() {

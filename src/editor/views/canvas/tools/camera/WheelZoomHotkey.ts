@@ -1,6 +1,6 @@
 import { ServiceLocator } from "../../../../services/ServiceLocator";
-import { Hotkey } from "../../../../services/HotkeyService";
-import { Wheel } from "../../../../services/PointerService";
+import { Hotkey } from "../../../../services/input/HotkeyService";
+import { Wheel } from "../../../../services/input/PointerService";
 import { Stores } from "../../../../stores/Stores";
 import { CanvasView } from "../../CanvasView";
 import { ToolType } from "../Tool";

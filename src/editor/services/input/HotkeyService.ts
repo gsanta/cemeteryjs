@@ -1,7 +1,7 @@
-import { ServiceLocator } from './ServiceLocator';
+import { ServiceLocator } from '../ServiceLocator';
 import { IKeyboardEvent, isCtrlOrCommandDown } from './KeyboardService';
 import { IPointerEvent, PointerService, Wheel } from './PointerService';
-import { Point } from '../../misc/geometry/shapes/Point';
+import { Point } from '../../../misc/geometry/shapes/Point';
 
 export type IHotkeyAction = (hotkeyEvent: IHotkeyEvent, getServices: () => ServiceLocator) => boolean;
 

@@ -1,8 +1,10 @@
 import { without } from "../../misc/geometry/utils/Functions";
-import { Concept } from "../views/canvas/models/concepts/Concept";
+import { Concept, ConceptType } from "../views/canvas/models/concepts/Concept";
 import { Feedback, FeedbackType } from "../views/canvas/models/feedbacks/Feedback";
 import { EditPoint } from "../views/canvas/models/feedbacks/EditPoint";
 import { VisualConcept } from "../views/canvas/models/concepts/VisualConcept";
+import { PathConcept } from "../views/canvas/models/concepts/PathConcept";
+import { isFeedback } from "./CanvasStore";
 
 export class HoverStore {
     items: (VisualConcept | Feedback)[] = [];
@@ -27,10 +29,6 @@ export class HoverStore {
         return this.getEditPoint() !== undefined;
     }
 
-    hasConcept(): boolean {
-        return this.getConcept() !== undefined;
-    }
-
     hasFeedback(): boolean {
         return this.getFeedback() !== undefined;
     }
@@ -46,9 +44,29 @@ export class HoverStore {
     getConcept(): VisualConcept {
         return <VisualConcept> this.items.find(item => item.type.endsWith('Concept'));
     }
+    
+    hasConcept(): boolean {
+        return this.getConcept() !== undefined;
+    }
 
     getFeedback(): Feedback {
         return <Feedback> this.items.find(item => item.type.endsWith('Feedback'));
+    }
+
+    hasPath(): boolean {
+        return this.getPath() !== undefined;
+    }
+
+    getPath(): PathConcept {
+        return <PathConcept> this.items.find(item => item.type === ConceptType.PathConcept);
+    }
+
+    hasEditPointOf(conceptType: ConceptType) {
+        return this.getEditPointOf(conceptType) !== undefined;
+    }
+
+    getEditPointOf(conceptType: ConceptType) {
+        return this.items.find(item =>  isFeedback(item.type) && (<Feedback> item).parent.type === conceptType);
     }
 
     clear() {

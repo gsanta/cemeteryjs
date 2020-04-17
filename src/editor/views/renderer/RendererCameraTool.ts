@@ -6,6 +6,7 @@ import { AbstractTool } from '../canvas/tools/AbstractTool';
 import { ToolType } from '../canvas/tools/Tool';
 import { RendererView } from './RendererView';
 import { ServiceLocator } from '../../services/ServiceLocator';
+import { Stores } from '../../stores/Stores';
 
 
 export class RendererCameraTool extends AbstractTool {
@@ -17,12 +18,10 @@ export class RendererCameraTool extends AbstractTool {
     readonly LOG_ZOOM_MAX = Math.log(CameraTool.ZOOM_MAX);
     readonly NUM_OF_STEPS: number;
 
-    private editorFacade: Editor;
     private controller: RendererView;
-    private getServices: () => ServiceLocator;
 
-    constructor(controller: RendererView, getServices: () => ServiceLocator, editorCamera: EditorCamera, numberOfSteps: number = 20) {
-        super(ToolType.CAMERA)
+    constructor(controller: RendererView, getServices: () => ServiceLocator, getStores: () => Stores, numberOfSteps: number = 20) {
+        super(ToolType.CAMERA, getServices, getStores)
         this.controller = controller;
         this.getServices = getServices;
         this.NUM_OF_STEPS = numberOfSteps;

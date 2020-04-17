@@ -37,6 +37,6 @@ export class RendererToolbarComponent extends AbstractToolbarComponent {
 
     private isToolActive(toolType: ToolType) {
         const view = this.context.getStores().viewStore.getViewById<RendererView>(RendererView.id);
-        return view.getActiveTool() && view.getActiveTool().type === toolType;
+        return view.getSelectedTool() && view.getSelectedTool().type === toolType;
     }
 }

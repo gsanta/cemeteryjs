@@ -24,9 +24,12 @@ export abstract class View {
     importer: IViewImporter;
 
     protected tools: Tool[] = [];
-    protected activeTool: Tool;
     protected settings: AbstractSettings<any>[] = [];
-
+    
+    protected selectedTool: Tool;
+    fallbackTool: Tool;
+    priorityTool: Tool;
+    
     protected getServices: () => ServiceLocator;
     protected getStores: () => Stores;
     constructor(controllers: Editor, getServices: () => ServiceLocator, getStores: () => Stores) {
@@ -54,15 +57,15 @@ export abstract class View {
     over(): void { this.getStores().viewStore.setActiveView(this) }
     out(): void {}
 
-    setActiveTool(toolType: ToolType) {
-        this.activeTool && this.activeTool.unselect();
-        this.activeTool = this.getToolByType(toolType);
-        this.activeTool.select();
+    setSelectedTool(toolType: ToolType) {
+        this.selectedTool && this.selectedTool.deselect();
+        this.selectedTool = this.getToolByType(toolType);
+        this.selectedTool.select();
         this.getServices().updateService().runImmediately(UpdateTask.RepaintSettings);
     }
 
-    getActiveTool(): Tool {
-        return this.activeTool;
+    getSelectedTool(): Tool {
+        return this.selectedTool;
     }
 
     getToolByType<T extends Tool = Tool>(type: ToolType): T {
@@ -75,6 +78,4 @@ export abstract class View {
 
     getOffset(): Point { return new Point(0, 0) }
     abstract getCamera(): ICamera;
-    
-    viewSettings: CanvasViewSettings;
 }

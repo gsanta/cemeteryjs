@@ -13,11 +13,9 @@ export class RectangleTool extends AbstractTool {
     private lastPreviewRect: MeshConcept;
     private rectSelector: RectangleSelector;
     private controller: CanvasView;
-    private getServices: () => ServiceLocator;
-    private getStores: () => Stores;
     
     constructor(controller: CanvasView, getServices: () => ServiceLocator, getStores: () => Stores) {
-        super(ToolType.RECTANGLE);
+        super(ToolType.RECTANGLE, getServices, getStores);
 
         this.controller = controller;
         this.getServices = getServices;

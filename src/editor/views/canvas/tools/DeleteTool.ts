@@ -13,11 +13,9 @@ import { VisualConcept } from '../models/concepts/VisualConcept';
 export class DeleteTool extends AbstractTool {
     private view: CanvasView;
     private rectSelector: RectangleSelector;
-    private getServices: () => ServiceLocator;
-    private getStores: () => Stores;
 
     constructor(view: CanvasView, getServices: () => ServiceLocator, getStores: () => Stores) {
-        super(ToolType.DELETE);
+        super(ToolType.DELETE, getServices, getStores);
         this.view = view;
         this.getServices = getServices;
         this.getStores = getStores;

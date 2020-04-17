@@ -1,23 +1,19 @@
-import { CanvasView } from '../CanvasView';
-import { RectangleSelector } from "./selection/RectangleSelector";
-import { ToolType, Tool } from "./Tool";
-import { AbstractTool } from "./AbstractTool";
+import { ServiceLocator } from '../../../services/ServiceLocator';
 import { UpdateTask } from "../../../services/UpdateServices";
 import { Stores } from '../../../stores/Stores';
-import { ServiceLocator } from '../../../services/ServiceLocator';
+import { CanvasView } from '../CanvasView';
 import { Concept } from '../models/concepts/Concept';
 import { Feedback } from '../models/feedbacks/Feedback';
+import { PointerTool } from './PointerTool';
+import { RectangleSelector } from "./selection/RectangleSelector";
+import { ToolType } from "./Tool";
 
-export class SelectTool extends AbstractTool {
+export class SelectTool extends PointerTool {
     protected view: CanvasView;
     private rectSelector: RectangleSelector;
 
-    private activeTool: Tool;
-    private getStores: () => Stores;
-    private getServices: () => ServiceLocator;
-
     constructor(view: CanvasView, getServices: () => ServiceLocator, getStores: () => Stores) {
-        super(ToolType.SELECT);
+        super(getServices, getStores, ToolType.SELECT);
         this.view = view;
         this.getStores = getStores;
         this.getServices = getServices;
@@ -25,17 +21,14 @@ export class SelectTool extends AbstractTool {
     }
 
     down() {
-        const hovered = this.getStores().hoverStore.getAny();
-
-        if (hovered && this.getStores().selectionStore.contains(hovered)) {
-            this.activeTool = this.view.getToolByType(ToolType.MOVE);
-            this.activeTool.down();
+        if (this.getStores().selectionStore.contains(this.getStores().hoverStore.getAny())) {
+            super.down();
         }
     }
 
     click() {
         if (this.getStores().hoverStore.hasAny()) {
-            this.view.getToolByType(ToolType.POINTER).click();
+            super.click();
         } else if (this.getStores().selectionStore.getAll().length > 0) {
             this.getStores().selectionStore.clear();
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas, UpdateTask.RepaintSettings);
@@ -43,8 +36,8 @@ export class SelectTool extends AbstractTool {
     }
 
     drag() {
-        if (this.activeTool) {
-            this.activeTool.drag();
+        if (this.movingItem) {
+            super.drag();
         } else {
             this.rectSelector.updateRect(this.getServices().pointerService().pointer);
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
@@ -52,23 +45,22 @@ export class SelectTool extends AbstractTool {
     }
 
     draggedUp() {
-        if (this.activeTool) {
-            this.activeTool.draggedUp();
-            this.activeTool = undefined;
-            return;
+        if (this.movingItem) {
+            super.draggedUp();
+        } else {
+            const feedback = this.view.feedbackStore.rectSelectFeedback;
+            if (!feedback) { return }
+    
+            const canvasItems = this.getStores().canvasStore.getIntersectingItemsInRect(feedback.rect);
+            this.view.getToolByType(ToolType.POINTER)
+            
+            this.getStores().selectionStore.clear();
+            this.getStores().selectionStore.addItem(...canvasItems)
+    
+            this.rectSelector.finish();
+            this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas, UpdateTask.RepaintSettings);
         }
 
-        const feedback = this.view.feedbackStore.rectSelectFeedback;
-        if (!feedback) { return }
-
-        const canvasItems = this.getStores().canvasStore.getIntersectingItemsInRect(feedback.rect);
-        this.view.getToolByType(ToolType.POINTER)
-        
-        this.getStores().selectionStore.clear();
-        this.getStores().selectionStore.addItem(...canvasItems)
-
-        this.rectSelector.finish();
-        this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas, UpdateTask.RepaintSettings);
     }
 
     over(item: Concept | Feedback) {

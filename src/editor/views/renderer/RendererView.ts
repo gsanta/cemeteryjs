@@ -2,7 +2,7 @@ import { Editor } from '../../Editor';
 import { ServiceLocator } from '../../services/ServiceLocator';
 import { UpdateService } from '../../services/UpdateServices';
 import { Tool, ToolType } from '../canvas/tools/Tool';
-import { CanvasViewSettings, View } from '../View';
+import { View } from '../View';
 import { EditorCamera } from './EditorCamera';
 import { HelperMeshes } from './HelperMeshes';
 import { RendererCameraTool } from './RendererCameraTool';
@@ -34,9 +34,9 @@ export class RendererView extends View {
 
     setup() {
         this.tools = [
-            new RendererCameraTool(this, this.getServices, this.getGameFacade().gameEngine.camera)
+            new RendererCameraTool(this, this.getServices, this.getStores)
         ]
-        this.activeTool = this.getToolByType(ToolType.CAMERA);
+        this.selectedTool = this.getToolByType(ToolType.CAMERA);
 
         this.update();
     }
@@ -50,8 +50,8 @@ export class RendererView extends View {
         return RendererView.id;
     }
 
-    getActiveTool(): Tool {
-        return this.activeTool;
+    getSelectedTool(): Tool {
+        return this.selectedTool;
     }
 
     setCanvasRenderer(renderFunc: () => void) {
@@ -68,10 +68,5 @@ export class RendererView extends View {
 
     setVisible(visible: boolean) {
         this.visible = visible;
-    }
-    
-    viewSettings: CanvasViewSettings = {
-        initialSizePercent: 44,
-        minSizePixel: 300
-    }
+    }    
 }

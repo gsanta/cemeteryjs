@@ -1,8 +1,8 @@
-import { Point } from "../../misc/geometry/shapes/Point";
-import { ServiceLocator } from './ServiceLocator';
+import { Point } from "../../../misc/geometry/shapes/Point";
+import { ServiceLocator } from '../ServiceLocator';
 import { IPointerEvent } from "./PointerService";
-import { Concept } from "../views/canvas/models/concepts/Concept";
-import { Feedback } from "../views/canvas/models/feedbacks/Feedback";
+import { Concept } from "../../views/canvas/models/concepts/Concept";
+import { Feedback } from "../../views/canvas/models/feedbacks/Feedback";
 
 export class MousePointer {
     down: Point;

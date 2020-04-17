@@ -46,7 +46,6 @@ export class GameFacade {
 
         const playerListener = new PlayerListener(this, this.getStores);
         this.gameEventManager.listeners.registerGamepadListener((gamepadEvent: GamepadEvent) => playerListener.gamepadEvent(gamepadEvent));
-        // this.gameEventManager.registerListener(new EnemyBehaviourManager(this, [new WanderBehaviour()]));
         this.gameEventManager.listeners.registerAfterRenderListener(() => this.walkers.walk());
         const animationPlayer = new AnimationPlayer(this.getStores);
         this.gameEventManager.listeners.registerAfterRenderListener(() => animationPlayer.updateAnimations());
