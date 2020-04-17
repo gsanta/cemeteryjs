@@ -1,15 +1,16 @@
-import { GameService } from '../services/GameService';
 import { GameFacade } from '../../game/GameFacade';
-import { Editor } from '../Editor';
-import { ServiceLocator } from '../services/ServiceLocator';
-import { Stores } from '../stores/Stores';
-import { ICamera } from './renderer/ICamera';
-import { Tool, ToolType } from './canvas/tools/Tool';
-import { UpdateTask } from '../services/UpdateServices';
 import { Point } from '../../misc/geometry/shapes/Point';
-import { AbstractSettings } from './canvas/settings/AbstractSettings';
+import { Editor } from '../Editor';
 import { IViewExporter } from '../services/export/IViewExporter';
+import { GameService } from '../services/GameService';
 import { IViewImporter } from '../services/import/IViewImporter';
+import { ServiceLocator } from '../services/ServiceLocator';
+import { AbstractTool } from '../services/tools/AbstractTool';
+import { Tool } from '../services/tools/Tool';
+import { UpdateTask } from '../services/UpdateServices';
+import { Stores } from '../stores/Stores';
+import { AbstractSettings } from './canvas/settings/AbstractSettings';
+import { ICamera } from './renderer/ICamera';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;
@@ -23,7 +24,6 @@ export abstract class View {
     exporter: IViewExporter;
     importer: IViewImporter;
 
-    protected tools: Tool[] = [];
     protected settings: AbstractSettings<any>[] = [];
     
     protected selectedTool: Tool;
@@ -57,19 +57,15 @@ export abstract class View {
     over(): void { this.getStores().viewStore.setActiveView(this) }
     out(): void {}
 
-    setSelectedTool(toolType: ToolType) {
+    setSelectedTool(tool: AbstractTool) {
         this.selectedTool && this.selectedTool.deselect();
-        this.selectedTool = this.getToolByType(toolType);
+        this.selectedTool = tool;
         this.selectedTool.select();
         this.getServices().updateService().runImmediately(UpdateTask.RepaintSettings);
     }
 
     getSelectedTool(): Tool {
         return this.selectedTool;
-    }
-
-    getToolByType<T extends Tool = Tool>(type: ToolType): T {
-        return <T> this.tools.find(tool => tool.type === type);
     }
 
     getSettingsByName<T extends AbstractSettings<any> = AbstractSettings<any>>(name: string) {

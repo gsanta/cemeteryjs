@@ -1,45 +1,23 @@
-import { Point } from "../../../../../misc/geometry/shapes/Point";
-import { Hotkey } from "../../../../services/input/HotkeyService";
-import { ServiceLocator } from '../../../../services/ServiceLocator';
-import { UpdateTask } from '../../../../services/UpdateServices';
-import { Stores } from '../../../../stores/Stores';
-import { cameraInitializer, CanvasView } from '../../CanvasView';
-import { AbstractTool } from '../AbstractTool';
-import { ToolType } from "../Tool";
-import { WheelZoomHotkey } from "./WheelZoomHotkey";
+import { Point } from "../../../misc/geometry/shapes/Point";
+import { Stores } from "../../stores/Stores";
+import { ServiceLocator } from "../ServiceLocator";
+import { UpdateTask } from "../UpdateServices";
 
-export class CameraTool extends AbstractTool {
+export class CameraService {
+    serviceName = 'camera-service';
     static readonly ZOOM_MIN = 0.1;
     static readonly ZOOM_MAX = 5;
 
-    readonly LOG_ZOOM_MIN = Math.log(CameraTool.ZOOM_MIN);
-    readonly LOG_ZOOM_MAX = Math.log(CameraTool.ZOOM_MAX);
+    readonly LOG_ZOOM_MIN = Math.log(CameraService.ZOOM_MIN);
+    readonly LOG_ZOOM_MAX = Math.log(CameraService.ZOOM_MAX);
     readonly NUM_OF_STEPS: number;
-
-    private hotkeys: Hotkey[] = [];
+    private getServices: () => ServiceLocator;
+    private getStores: () => Stores;
 
     constructor(getServices: () => ServiceLocator, getStores: () => Stores, numberOfSteps: number = 20) {
-        super(ToolType.CAMERA, getServices, getStores);
         this.NUM_OF_STEPS = numberOfSteps;
         this.getServices = getServices;
         this.getStores = getStores;
-        this.hotkeys = [new WheelZoomHotkey(getStores, getServices)];
-        this.hotkeys.forEach(hk => this.getServices().hotkeyService().registerHotkey(hk));
-    }
-
-    resize() {
-        const view = this.getStores().viewStore.getViewById<CanvasView>(CanvasView.id);
-
-        const camera = view.getCamera();
-
-        const prevScale = camera.getScale(); 
-        const prevTranslate = camera.getTranslate(); 
-    
-        view.setCamera(cameraInitializer(view.getId()));
-        view.getCamera().zoom(prevScale);
-        view.getCamera().moveTo(prevTranslate.clone());
-
-        this.getServices().updateService().runImmediately(UpdateTask.RepaintCanvas);
     }
 
     zoomToNextStep(canvasPos?: Point) {
@@ -66,17 +44,6 @@ export class CameraTool extends AbstractTool {
 
             this.getServices().updateService().runImmediately(UpdateTask.RepaintCanvas);
         }
-    }
-
-    drag() {
-        super.drag();
-        const camera = this.getStores().viewStore.getActiveView().getCamera();
-
-        const delta = this.getServices().pointerService().pointer.getScreenDiff().div(camera.getScale());
-        
-        camera.moveBy(delta.negate());
-
-        this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     private getNextManualZoomStep(): number {

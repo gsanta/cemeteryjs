@@ -1,12 +1,10 @@
-import { ServiceLocator } from "./ServiceLocator";
-import { Stores } from "../stores/Stores";
-import { Concept, ConceptType } from "../views/canvas/models/concepts/Concept";
-import { MeshConcept } from "../views/canvas/models/concepts/MeshConcept";
-import { GameEngine } from "../views/renderer/GameEngine";
-import { RectangleFactory } from "../../game/import/factories/RectangleFactory";
+import { Scene } from "babylonjs/scene";
 import { GameObjectType } from "../../game/models/objects/IGameObject";
 import { MeshObject } from "../../game/models/objects/MeshObject";
-import { Scene } from "babylonjs/scene";
+import { Stores } from "../stores/Stores";
+import { Concept } from "../views/canvas/models/concepts/Concept";
+import { GameEngine } from "../views/renderer/GameEngine";
+import { ServiceLocator } from "./ServiceLocator";
 
 export class GameService {
     serviceName = 'game-service';

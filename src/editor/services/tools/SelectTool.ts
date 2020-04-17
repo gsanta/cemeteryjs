@@ -1,23 +1,21 @@
-import { ServiceLocator } from '../../../services/ServiceLocator';
-import { UpdateTask } from "../../../services/UpdateServices";
-import { Stores } from '../../../stores/Stores';
-import { CanvasView } from '../CanvasView';
-import { Concept } from '../models/concepts/Concept';
-import { Feedback } from '../models/feedbacks/Feedback';
+import { ServiceLocator } from '../ServiceLocator';
+import { UpdateTask } from "../UpdateServices";
+import { Stores } from '../../stores/Stores';
+import { CanvasView } from '../../views/canvas/CanvasView';
+import { Concept } from '../../views/canvas/models/concepts/Concept';
+import { Feedback } from '../../views/canvas/models/feedbacks/Feedback';
 import { PointerTool } from './PointerTool';
-import { RectangleSelector } from "./selection/RectangleSelector";
+import { RectangleSelector } from "./RectangleSelector";
 import { ToolType } from "./Tool";
 
 export class SelectTool extends PointerTool {
-    protected view: CanvasView;
     private rectSelector: RectangleSelector;
 
-    constructor(view: CanvasView, getServices: () => ServiceLocator, getStores: () => Stores) {
+    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
         super(getServices, getStores, ToolType.SELECT);
-        this.view = view;
         this.getStores = getStores;
         this.getServices = getServices;
-        this.rectSelector = new RectangleSelector(view);
+        this.rectSelector = new RectangleSelector(getStores);
     }
 
     down() {
@@ -48,11 +46,10 @@ export class SelectTool extends PointerTool {
         if (this.movingItem) {
             super.draggedUp();
         } else {
-            const feedback = this.view.feedbackStore.rectSelectFeedback;
+            const feedback = this.getStores().feedback.rectSelectFeedback;
             if (!feedback) { return }
     
             const canvasItems = this.getStores().canvasStore.getIntersectingItemsInRect(feedback.rect);
-            this.view.getToolByType(ToolType.POINTER)
             
             this.getStores().selectionStore.clear();
             this.getStores().selectionStore.addItem(...canvasItems)
@@ -61,13 +58,5 @@ export class SelectTool extends PointerTool {
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas, UpdateTask.RepaintSettings);
         }
 
-    }
-
-    over(item: Concept | Feedback) {
-        this.view.getToolByType(ToolType.POINTER).over(item);
-    }
-
-    out(item: Concept | Feedback) {
-        this.view.getToolByType(ToolType.POINTER).out(item);
     }
 }

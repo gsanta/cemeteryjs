@@ -72,12 +72,10 @@ export class CanvasComponent extends React.Component {
     }
 
     private renderFeedbacks(): JSX.Element {
-        const view = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id);
-
-        const feedback = view.feedbackStore.rectSelectFeedback;
+        const feedback = this.context.getStores().feedback.rectSelectFeedback;
 
         if (feedback && feedback.isVisible) {
-            const rect = view.feedbackStore.rectSelectFeedback.rect;
+            const rect = this.context.getStores().feedback.rectSelectFeedback.rect;
             return (
                 <SelectionComponentStyled 
                     x={rect.topLeft.x}

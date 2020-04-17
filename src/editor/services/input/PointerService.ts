@@ -90,7 +90,7 @@ export class PointerService {
             this.wheel = Wheel.IDLE;
         }
 
-        this.getServices().hotkeyService().executePointerEvent(e)
+        this.getServices().hotkey.executePointerEvent(e)
     }
 
     pointerWheelEnd() {

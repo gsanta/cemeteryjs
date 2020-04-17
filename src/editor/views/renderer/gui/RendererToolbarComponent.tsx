@@ -3,8 +3,8 @@ import { PanIconComponent } from '../../../gui/icons/tools/PanIconComponent';
 import { ZoomInIconComponent } from '../../../gui/icons/tools/ZoomInIconComponent';
 import { ZoomOutIconComponent } from '../../../gui/icons/tools/ZoomOutIconComponent';
 import { RendererView } from '../RendererView';
-import { ToolType } from '../../canvas/tools/Tool';
-import { CameraTool } from '../../canvas/tools/camera/CameraTool';
+import { ToolType } from '../../../services/tools/Tool';
+import { ZoomTool } from '../../../services/tools/ZoomTool';
 import { AbstractToolbarComponent } from '../../AbstractToolbarComponent';
 
 export class RendererToolbarComponent extends AbstractToolbarComponent {
@@ -18,7 +18,7 @@ export class RendererToolbarComponent extends AbstractToolbarComponent {
             <React.Fragment>
                 <ZoomInIconComponent isActive={false} onClick={() => this.zoomIn()} format="short"/>
                 <ZoomOutIconComponent isActive={false} onClick={() => this.zoomOut()} format="short"/>
-                <PanIconComponent isActive={this.isToolActive(ToolType.CAMERA)} onClick={() => null} format="short"/>
+                <PanIconComponent isActive={this.isToolActive(ToolType.Zoom)} onClick={() => null} format="short"/>
             </React.Fragment>
         )
     }
@@ -28,11 +28,11 @@ export class RendererToolbarComponent extends AbstractToolbarComponent {
     }
 
     private zoomIn() {
-        this.context.getStores().viewStore.getViewById<RendererView>(RendererView.id).getToolByType<CameraTool>(ToolType.CAMERA).zoomToNextStep();
+        this.context.getServices().camera.zoomToNextStep();
     }
 
     private zoomOut() {
-        this.context.getStores().viewStore.getViewById<RendererView>(RendererView.id).getToolByType<CameraTool>(ToolType.CAMERA).zoomToPrevStep();
+        this.context.getServices().camera.zoomToPrevStep();
     }
 
     private isToolActive(toolType: ToolType) {

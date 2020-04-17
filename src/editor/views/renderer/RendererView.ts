@@ -1,11 +1,11 @@
 import { Editor } from '../../Editor';
 import { ServiceLocator } from '../../services/ServiceLocator';
 import { UpdateService } from '../../services/UpdateServices';
-import { Tool, ToolType } from '../canvas/tools/Tool';
+import { Tool, ToolType } from '../../services/tools/Tool';
 import { View } from '../View';
 import { EditorCamera } from './EditorCamera';
 import { HelperMeshes } from './HelperMeshes';
-import { RendererCameraTool } from './RendererCameraTool';
+import { ZoomTool } from '../../services/tools/ZoomTool';
 (<any> window).earcut = require('earcut');
 
 export class RendererView extends View {
@@ -33,10 +33,7 @@ export class RendererView extends View {
     }
 
     setup() {
-        this.tools = [
-            new RendererCameraTool(this, this.getServices, this.getStores)
-        ]
-        this.selectedTool = this.getToolByType(ToolType.CAMERA);
+        this.selectedTool = this.getServices().tools.zoom;
 
         this.update();
     }

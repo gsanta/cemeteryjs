@@ -1,15 +1,16 @@
-import { Rectangle } from "../../../../../misc/geometry/shapes/Rectangle";
-import { Point } from "../../../../../misc/geometry/shapes/Point";
-import { MousePointer } from "../../../../services/input/MouseService";
-import { CanvasView } from "../../CanvasView";
-import { RectSelectFeedback } from "../../models/feedbacks/RectSelectFeedback";
+import { Rectangle } from "../../../misc/geometry/shapes/Rectangle";
+import { Point } from "../../../misc/geometry/shapes/Point";
+import { MousePointer } from "../input/MouseService";
+import { CanvasView } from "../../views/canvas/CanvasView";
+import { RectSelectFeedback } from "../../views/canvas/models/feedbacks/RectSelectFeedback";
+import { Stores } from "../../stores/Stores";
 
 export class RectangleSelector {
     private _displaySelectionRect: boolean;
-    private canvasController: CanvasView;
+    private getStores: () => Stores;
 
-    constructor(canvasController: CanvasView) {
-        this.canvasController = canvasController;
+    constructor(getStores: () => Stores) {
+        this.getStores = getStores;
     }
 
     updateRect(pointer: MousePointer) {
@@ -19,15 +20,15 @@ export class RectangleSelector {
         const maxY = pointer.down.y >= pointer.curr.y ? pointer.down.y : pointer.curr.y;
         const rect = new Rectangle(new Point(minX, minY), new Point(maxX, maxY));
 
-        if (!this.canvasController.feedbackStore.rectSelectFeedback) {
-            this.canvasController.feedbackStore.rectSelectFeedback = new RectSelectFeedback(rect);
+        if (!this.getStores().feedback.rectSelectFeedback) {
+            this.getStores().feedback.rectSelectFeedback = new RectSelectFeedback(rect);
         } else {
-            this.canvasController.feedbackStore.rectSelectFeedback.rect = rect;
+            this.getStores().feedback.rectSelectFeedback.rect = rect;
         }
     }
 
     finish() {
-        this.canvasController.feedbackStore.rectSelectFeedback = undefined;
+        this.getStores().feedback.rectSelectFeedback = undefined;
     }
 
     displaySelectionRect(): boolean {
@@ -35,7 +36,7 @@ export class RectangleSelector {
     }
 
     getPositionsInSelection(): Point[] {
-        const rect = this.canvasController.feedbackStore.rectSelectFeedback.rect;
+        const rect = this.getStores().feedback.rectSelectFeedback.rect;
         const xStart = rect.topLeft.x; 
         const yStart = rect.topLeft.y;
         const xEnd = rect.bottomRight.x;

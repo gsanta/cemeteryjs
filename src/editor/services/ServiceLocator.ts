@@ -1,25 +1,35 @@
-import { GameService } from "./GameService";
-import { MeshLoaderService } from "./MeshLoaderService";
 import { Editor } from "../Editor";
 import { Stores } from "../stores/Stores";
+import { ConceptConvertService } from "./ConceptConvertService";
 import { DialogService } from "./DialogService";
 import { ExportService } from "./export/ExportService";
+import { GameService } from "./GameService";
 import { HistoryService } from "./HistoryService";
-import { HotkeyService } from "./input/HotkeyService";
 import { ImportService } from './import/ImportService';
+import { HotkeyService, Hotkey } from "./input/HotkeyService";
 import { KeyboardService } from './input/KeyboardService';
-import { LevelService } from "./LevelService";
-import { LocalStoreService } from "./LocalStroreService";
 import { MouseService } from './input/MouseService';
 import { PointerService } from './input/PointerService';
+import { LevelService } from "./LevelService";
+import { LocalStoreService } from "./LocalStroreService";
+import { MeshLoaderService } from "./MeshLoaderService";
+import { CameraService } from "./navigation/CameraService";
 import { SettingsService } from "./SettingsService";
+import { ToolService } from "./tools/ToolService";
 import { UpdateService } from "./UpdateServices";
-import { ConceptConvertService } from "./ConceptConvertService";
 
 export class ServiceLocator {
     services: {serviceName: string}[] = [];
 
+    camera: CameraService;
+    hotkey: HotkeyService;
+    tools: ToolService;
+
     constructor(editor: Editor, getStores: () => Stores) {
+        this.camera = new CameraService(() => this, getStores);
+        this.hotkey = new HotkeyService(() => this);
+        this.tools = new ToolService(() => this, getStores);
+        
         this.services = [
             new LocalStoreService(editor, () => this),
             new LevelService(() => this, getStores),
@@ -30,7 +40,6 @@ export class ServiceLocator {
             new PointerService(() => this, getStores),
             new MouseService(() => this),
             new KeyboardService(getStores),
-            new HotkeyService(() => this),
             new DialogService(() => this),
             new SettingsService(() => this, getStores),
             new MeshLoaderService(() => this, getStores),
@@ -76,10 +85,6 @@ export class ServiceLocator {
 
     keyboardService(): KeyboardService {
         return <KeyboardService> this.getService('keyboard-service');
-    }
-
-    hotkeyService(): HotkeyService {
-        return <HotkeyService> this.getService('hotkey-service');
     }
 
     dialogService(): DialogService {

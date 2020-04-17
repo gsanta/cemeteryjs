@@ -1,20 +1,18 @@
 import * as React from 'react';
-import { ToolType } from '../tools/Tool';
-import { ZoomInIconComponent } from '../../../gui/icons/tools/ZoomInIconComponent';
-import { ZoomOutIconComponent } from '../../../gui/icons/tools/ZoomOutIconComponent';
 import { ArrowIconComponent } from '../../../gui/icons/tools/ArrowIconComponent';
+import { DeleteIconComponent } from '../../../gui/icons/tools/DeleteIconComponent';
 import { DrawIconComponent } from '../../../gui/icons/tools/DrawIconComponent';
 import { PanIconComponent } from '../../../gui/icons/tools/PanIconComponent';
-import { SelectIconComponent } from '../../../gui/icons/tools/SelectIconComponent';
-import { DeleteIconComponent } from '../../../gui/icons/tools/DeleteIconComponent';
-import { BlankIconComponent } from '../../../gui/icons/tools/BlankIconComponent';
-import { UndoIconComponent } from '../../../gui/icons/tools/UndoIconComponent';
 import { RedoIconComponent } from '../../../gui/icons/tools/RedoIconComponent';
-import { DeleteTool } from '../tools/DeleteTool';
+import { SelectIconComponent } from '../../../gui/icons/tools/SelectIconComponent';
+import { UndoIconComponent } from '../../../gui/icons/tools/UndoIconComponent';
+import { ZoomInIconComponent } from '../../../gui/icons/tools/ZoomInIconComponent';
+import { ZoomOutIconComponent } from '../../../gui/icons/tools/ZoomOutIconComponent';
+import { ToolType } from '../../../services/tools/Tool';
 import { UpdateTask } from '../../../services/UpdateServices';
-import { CameraTool } from '../tools/camera/CameraTool';
-import { CanvasView } from '../CanvasView';
 import { AbstractToolbarComponent } from '../../AbstractToolbarComponent';
+import { CanvasView } from '../CanvasView';
+import { AbstractTool } from '../../../services/tools/AbstractTool';
 
 export class CanvasToolbarComponent extends AbstractToolbarComponent {
 
@@ -27,13 +25,13 @@ export class CanvasToolbarComponent extends AbstractToolbarComponent {
 
         return (
             <React.Fragment>
-                <DrawIconComponent isActive={this.isToolActive(ToolType.RECTANGLE)} onClick={() => this.activateTool(ToolType.RECTANGLE)} format="short"/>
-                <ArrowIconComponent isActive={this.isToolActive(ToolType.PATH)} onClick={() => this.activateTool(ToolType.PATH)} format="short"/>
-                <SelectIconComponent isActive={this.isToolActive(ToolType.SELECT)} onClick={() => this.activateTool(ToolType.SELECT)} format="short"/>
-                <DeleteIconComponent isActive={this.isToolActive(ToolType.DELETE)} onClick={() => this.activateTool(ToolType.DELETE)} format="short"/>
+                <DrawIconComponent isActive={this.isToolActive(ToolType.RECTANGLE)} onClick={() => this.activateTool(this.context.getServices().tools.rectangle)} format="short"/>
+                <ArrowIconComponent isActive={this.isToolActive(ToolType.PATH)} onClick={() => this.activateTool(this.context.getServices().tools.path)} format="short"/>
+                <SelectIconComponent isActive={this.isToolActive(ToolType.SELECT)} onClick={() => this.activateTool(this.context.getServices().tools.select)} format="short"/>
+                <DeleteIconComponent isActive={this.isToolActive(ToolType.DELETE)} onClick={() => this.activateTool(this.context.getServices().tools.delete)} format="short"/>
                 <ZoomInIconComponent isActive={false} onClick={() => this.zoomIn()} format="short"/>
                 <ZoomOutIconComponent isActive={false} onClick={() => this.zoomOut()} format="short"/>
-                <PanIconComponent isActive={this.isToolActive(ToolType.CAMERA)} onClick={() => this.activateTool(ToolType.CAMERA)} format="short"/>
+                <PanIconComponent isActive={this.isToolActive(ToolType.Zoom)} onClick={() => this.activateTool(this.context.getServices().tools.zoom)} format="short"/>
                 <UndoIconComponent isActive={false} disabled={!historyService.hasUndoHistory()} onClick={() => this.undo()} format="short"/>
                 <RedoIconComponent isActive={false} disabled={!historyService.hasRedoHistory()} onClick={() => this.redo()} format="short"/>
             </React.Fragment>
@@ -59,15 +57,15 @@ export class CanvasToolbarComponent extends AbstractToolbarComponent {
         return this.context.getStores().viewStore.getViewById(CanvasView.id).getSelectedTool().type === toolType;
     }
 
-    private activateTool(toolType: ToolType) {
-        this.context.getStores().viewStore.getViewById(CanvasView.id).setSelectedTool(toolType);
+    private activateTool(tool: AbstractTool) {
+        this.context.getStores().viewStore.getViewById(CanvasView.id).setSelectedTool(tool);
     }
 
     private zoomIn() {
-        this.context.getStores().viewStore.getViewById(CanvasView.id).getToolByType<CameraTool>(ToolType.CAMERA).zoomToNextStep();
+        this.context.getServices().camera.zoomToNextStep();
     }
 
     private zoomOut() {
-        this.context.getStores().viewStore.getViewById(CanvasView.id).getToolByType<CameraTool>(ToolType.CAMERA).zoomToPrevStep();
+        this.context.getServices().camera.zoomToPrevStep();
     }
 }

@@ -1,25 +1,23 @@
-import { ServiceLocator } from '../../../services/ServiceLocator';
-import { UpdateTask } from '../../../services/UpdateServices';
-import { Stores } from '../../../stores/Stores';
-import { CanvasView } from '../CanvasView';
-import { Concept } from '../models/concepts/Concept';
-import { Feedback } from '../models/feedbacks/Feedback';
+import { ServiceLocator } from '../ServiceLocator';
+import { UpdateTask } from '../UpdateServices';
+import { Stores } from '../../stores/Stores';
+import { CanvasView } from '../../views/canvas/CanvasView';
+import { Concept } from '../../views/canvas/models/concepts/Concept';
+import { Feedback } from '../../views/canvas/models/feedbacks/Feedback';
 import { AbstractTool } from './AbstractTool';
 import { PointerTool } from './PointerTool';
-import { RectangleSelector } from './selection/RectangleSelector';
+import { RectangleSelector } from './RectangleSelector';
 import { ToolType } from './Tool';
-import { VisualConcept } from '../models/concepts/VisualConcept';
+import { VisualConcept } from '../../views/canvas/models/concepts/VisualConcept';
 
 export class DeleteTool extends AbstractTool {
-    private view: CanvasView;
     private rectSelector: RectangleSelector;
 
-    constructor(view: CanvasView, getServices: () => ServiceLocator, getStores: () => Stores) {
+    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
         super(ToolType.DELETE, getServices, getStores);
-        this.view = view;
         this.getServices = getServices;
         this.getStores = getStores;
-        this.rectSelector = new RectangleSelector(view);
+        this.rectSelector = new RectangleSelector(getStores);
     }
 
     drag() {
@@ -28,7 +26,7 @@ export class DeleteTool extends AbstractTool {
     }
 
     click() {
-        this.view.getToolByType<PointerTool>(ToolType.POINTER).click()
+        this.getServices().tools.pointer.click();
         const hoverStore = this.getStores().hoverStore;
 
         if (hoverStore.hasAny()) {
@@ -47,7 +45,7 @@ export class DeleteTool extends AbstractTool {
 
     
     draggedUp() {
-        const concepts = this.getStores().canvasStore.getIntersectingItemsInRect(this.view.feedbackStore.rectSelectFeedback.rect);
+        const concepts = this.getStores().canvasStore.getIntersectingItemsInRect(this.getStores().feedback.rectSelectFeedback.rect);
 
         concepts.forEach((item: VisualConcept) => this.getStores().canvasStore.removeConcept(item));
 
@@ -64,11 +62,11 @@ export class DeleteTool extends AbstractTool {
     }
 
     over(item: VisualConcept | Feedback) {
-        this.view.getToolByType<PointerTool>(ToolType.POINTER).over(item);
+        this.getServices().tools.pointer.over(item);
     }
 
     out(item: VisualConcept | Feedback) {
-        this.view.getToolByType<PointerTool>(ToolType.POINTER).out(item);
+        this.getServices().tools.pointer.out(item);
     }
 
     eraseAll() {

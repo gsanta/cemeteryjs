@@ -1,26 +1,24 @@
-import { Rectangle } from '../../../../misc/geometry/shapes/Rectangle';
-import { ServiceLocator } from '../../../services/ServiceLocator';
-import { UpdateTask } from '../../../services/UpdateServices';
-import { Stores } from '../../../stores/Stores';
-import { CanvasView } from '../CanvasView';
-import { MeshConcept } from '../models/concepts/MeshConcept';
+import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
+import { ServiceLocator } from '../ServiceLocator';
+import { UpdateTask } from '../UpdateServices';
+import { Stores } from '../../stores/Stores';
+import { CanvasView } from '../../views/canvas/CanvasView';
+import { MeshConcept } from '../../views/canvas/models/concepts/MeshConcept';
 import { AbstractTool } from './AbstractTool';
-import { RectangleSelector } from './selection/RectangleSelector';
+import { RectangleSelector } from './RectangleSelector';
 import { ToolType } from './Tool';
-import { ConceptType } from '../models/concepts/Concept';
+import { ConceptType } from '../../views/canvas/models/concepts/Concept';
 
 export class RectangleTool extends AbstractTool {
     private lastPreviewRect: MeshConcept;
     private rectSelector: RectangleSelector;
-    private controller: CanvasView;
     
-    constructor(controller: CanvasView, getServices: () => ServiceLocator, getStores: () => Stores) {
+    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
         super(ToolType.RECTANGLE, getServices, getStores);
 
-        this.controller = controller;
         this.getServices = getServices;
         this.getStores = getStores;
-        this.rectSelector = new RectangleSelector(controller);
+        this.rectSelector = new RectangleSelector(getStores);
     }
 
     click() {
@@ -49,10 +47,10 @@ export class RectangleTool extends AbstractTool {
             this.getStores().canvasStore.removeConcept(this.lastPreviewRect);
         }
         this.rectSelector.updateRect(this.getServices().pointerService().pointer);
-        this.controller.feedbackStore.rectSelectFeedback.isVisible = false;
+        this.getStores().feedback.rectSelectFeedback.isVisible = false;
         const positions = this.rectSelector.getPositionsInSelection();
 
-        const dimensions = this.controller.feedbackStore.rectSelectFeedback.rect;
+        const dimensions = this.getStores().feedback.rectSelectFeedback.rect;
 
         const meshConcept: MeshConcept = new MeshConcept(null, dimensions, name);
         meshConcept.rotation = 0;

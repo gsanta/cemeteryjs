@@ -1,15 +1,12 @@
+import { saveAs } from 'file-saver';
 import * as React from 'react';
+import { Editor } from '../../../../Editor';
 import { AppContext, AppContextType } from '../../../../gui/Context';
+import { BlankIconComponent } from '../../../../gui/icons/tools/BlankIconComponent';
 import { ExportFileIconComponent } from '../../../../gui/icons/tools/ExportFileIconComponent';
 import { ConnectedFileUploadComponent } from '../../../../gui/icons/tools/ImportFileIconComponent';
-import { GlobalSettingsPropType } from '../../settings/GlobalSettings';
-import { saveAs } from 'file-saver';
-import { Editor } from '../../../../Editor';
-import { BlankIconComponent } from '../../../../gui/icons/tools/BlankIconComponent';
-import { DeleteTool } from '../../tools/DeleteTool';
-import { ToolType } from '../../tools/Tool';
 import { colors } from '../../../../gui/styles';
-import { CanvasView } from '../../CanvasView';
+import { GlobalSettingsPropType } from '../../settings/GlobalSettings';
 
 export interface GeneralFormComponentProps {
     isEditorOpen: boolean;
@@ -44,6 +41,6 @@ export class FileSettingsComponent extends React.Component<GeneralFormComponentP
     }
 
     private blank() {
-        this.context.getStores().viewStore.getViewById(CanvasView.id).getToolByType<DeleteTool>(ToolType.DELETE).eraseAll();
+        this.context.getServices().tools.delete.eraseAll();
     }
 }

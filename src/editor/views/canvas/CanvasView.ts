@@ -5,20 +5,13 @@ import { IViewExporter } from '../../services/export/IViewExporter';
 import { CanvasViewImporter } from '../../services/import/CanvasViewImporter';
 import { IViewImporter } from '../../services/import/IViewImporter';
 import { ServiceLocator } from '../../services/ServiceLocator';
+import { ToolType } from '../../services/tools/Tool';
 import { Stores } from '../../stores/Stores';
 import { View } from '../View';
 import { Camera, nullCamera } from './models/Camera';
-import { FeedbackStore } from './models/FeedbackStore';
 import { LevelSettings } from './settings/LevelSettings';
 import { MeshSettings } from './settings/MeshSettings';
 import { PathSettings } from './settings/PathSettings';
-import { CameraTool } from './tools/camera/CameraTool';
-import { DeleteTool } from './tools/DeleteTool';
-import { PathTool } from './tools/PathTool';
-import { PointerTool } from './tools/PointerTool';
-import { RectangleTool } from './tools/RectangleTool';
-import { SelectTool } from './tools/SelectTool';
-import { ToolType } from './tools/Tool';
 
 export function cameraInitializer(canvasId: string) {
     if (typeof document !== 'undefined') {
@@ -56,7 +49,6 @@ export class CanvasView extends View {
     static id = 'svg-canvas-controller';
     
     visible = true;
-    feedbackStore: FeedbackStore;
     
     exporter: IViewExporter;
     importer: IViewImporter;
@@ -66,19 +58,8 @@ export class CanvasView extends View {
         super(editor, getServices, getStores);
 
         this.getStores().viewStore.setActiveView(this);
-        
-        this.feedbackStore = new FeedbackStore();
-        
-        this.tools = [
-            new PointerTool(this.getServices, this.getStores, ToolType.POINTER),
-            new CameraTool(this.getServices, this.getStores),
-            new RectangleTool(this, this.getServices, this.getStores),
-            new PathTool(this, this.getServices, this.getStores),
-            new DeleteTool(this, this.getServices, this.getStores),
-            new SelectTool(this, this.getServices, this.getStores)
-        ];
 
-        this.selectedTool = this.getToolByType(ToolType.RECTANGLE);
+        this.selectedTool = this.getServices().tools.rectangle;
 
         this.settings = [
             new MeshSettings(this.getServices, this.getStores),
@@ -95,7 +76,7 @@ export class CanvasView extends View {
     }
 
     resize(): void {
-        (<CameraTool> this.getToolByType(ToolType.CAMERA)).resize();
+        this.getServices().tools.zoom.resize();
     };
 
     isVisible(): boolean {

@@ -1,10 +1,10 @@
-import { ServiceLocator } from "../../../../services/ServiceLocator";
-import { Hotkey } from "../../../../services/input/HotkeyService";
-import { Wheel } from "../../../../services/input/PointerService";
-import { Stores } from "../../../../stores/Stores";
-import { CanvasView } from "../../CanvasView";
-import { ToolType } from "../Tool";
-import { CameraTool } from "./CameraTool";
+import { ServiceLocator } from "../ServiceLocator";
+import { Hotkey } from "../input/HotkeyService";
+import { Wheel } from "../input/PointerService";
+import { Stores } from "../../stores/Stores";
+import { CanvasView } from "../../views/canvas/CanvasView";
+import { ToolType } from "./Tool";
+import { ZoomTool } from "./ZoomTool";
 
 export class WheelZoomHotkey extends Hotkey {
 
@@ -26,15 +26,12 @@ export class WheelZoomHotkey extends Hotkey {
 
         const point = this.getServices().pointerService().pointer.curr;
 
-        // TODO: make it work for general camera tool (both canvas and renderer camera tools)
-        const cameraTool = <CameraTool> (<CanvasView> this.getStores().viewStore.getViewById(CanvasView.id)).getToolByType(ToolType.CAMERA);
-        
         switch(this.getServices().pointerService().wheel) {
             case Wheel.UP:
-                cameraTool.zoomToNextStep(point);
+                this.getServices().camera.zoomToNextStep(point);
                 break;
             case Wheel.DOWN:
-                cameraTool.zoomToPrevStep(point);
+                this.getServices().camera.zoomToPrevStep(point);
                 break;
         }
     

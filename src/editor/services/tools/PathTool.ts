@@ -1,25 +1,22 @@
-import { Point } from "../../../../misc/geometry/shapes/Point";
-import { IKeyboardEvent, Keyboard } from "../../../services/input/KeyboardService";
-import { ServiceLocator } from '../../../services/ServiceLocator';
-import { UpdateTask } from "../../../services/UpdateServices";
-import { Stores } from "../../../stores/Stores";
-import { CanvasView } from "../CanvasView";
-import { ConceptType } from "../models/concepts/Concept";
-import { PathConcept } from "../models/concepts/PathConcept";
-import { VisualConcept } from "../models/concepts/VisualConcept";
-import { EditPoint } from "../models/feedbacks/EditPoint";
-import { Feedback, FeedbackType } from "../models/feedbacks/Feedback";
-import { AbstractTool } from "./AbstractTool";
+import { Point } from "../../../misc/geometry/shapes/Point";
+import { IKeyboardEvent, Keyboard } from "../input/KeyboardService";
+import { ServiceLocator } from '../ServiceLocator';
+import { UpdateTask } from "../UpdateServices";
+import { Stores } from "../../stores/Stores";
+import { CanvasView } from "../../views/canvas/CanvasView";
+import { ConceptType } from "../../views/canvas/models/concepts/Concept";
+import { PathConcept } from "../../views/canvas/models/concepts/PathConcept";
+import { VisualConcept } from "../../views/canvas/models/concepts/VisualConcept";
+import { EditPoint } from "../../views/canvas/models/feedbacks/EditPoint";
+import { Feedback, FeedbackType } from "../../views/canvas/models/feedbacks/Feedback";
 import { PointerTool } from "./PointerTool";
 import { ToolType } from "./Tool";
 
-export class PathTool extends AbstractTool {
-    private view: CanvasView;
+export class PathTool extends PointerTool {
     
-    constructor(view: CanvasView, getServices: () => ServiceLocator, getStores: () => Stores) {
-        super(ToolType.PATH, getServices, getStores);
+    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
+        super(getServices, getStores, ToolType.PATH);
 
-        this.view = view;
         this.getStores = getStores;
         this.getServices = getServices;
     }
@@ -52,13 +49,13 @@ export class PathTool extends AbstractTool {
         }
 
         if (hover) {
-            this.view.getToolByType<PointerTool>(ToolType.POINTER).over(item);
+            super.over(item);
             this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
         }
     }
 
     out(item: VisualConcept | Feedback) {
-        this.view.getToolByType<PointerTool>(ToolType.POINTER).out(item);
+        super.out(item);
         this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
     }
 

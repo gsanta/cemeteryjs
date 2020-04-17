@@ -1,9 +1,9 @@
-import { IKeyboardEvent } from '../../../services/input/KeyboardService';
-import { Concept } from '../models/concepts/Concept';
-import { Feedback } from '../models/feedbacks/Feedback';
+import { IKeyboardEvent } from '../input/KeyboardService';
+import { Concept } from '../../views/canvas/models/concepts/Concept';
+import { Feedback } from '../../views/canvas/models/feedbacks/Feedback';
 import { Tool, ToolType } from './Tool';
-import { Stores } from '../../../stores/Stores';
-import { ServiceLocator } from '../../../services/ServiceLocator';
+import { Stores } from '../../stores/Stores';
+import { ServiceLocator } from '../ServiceLocator';
 
 export class AbstractTool implements Tool {
     type: ToolType;
