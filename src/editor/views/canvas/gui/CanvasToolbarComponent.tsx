@@ -21,7 +21,7 @@ export class CanvasToolbarComponent extends AbstractToolbarComponent {
     }
 
     protected renderLeftToolGroup(): JSX.Element {
-        const historyService = this.context.getServices().historyService();
+        const historyService = this.context.getServices().history;
 
         return (
             <React.Fragment>
@@ -43,13 +43,13 @@ export class CanvasToolbarComponent extends AbstractToolbarComponent {
     }
 
     private undo() {
-        this.context.getServices().historyService().undo();
-        this.context.getServices().updateService().runImmediately(UpdateTask.All);
+        this.context.getServices().history.undo();
+        this.context.getServices().update.runImmediately(UpdateTask.All);
     }
 
     private redo() {
-        this.context.getServices().historyService().redo();
-        this.context.getServices().updateService().runImmediately(UpdateTask.All);
+        this.context.getServices().history.redo();
+        this.context.getServices().update.runImmediately(UpdateTask.All);
     }
 
 

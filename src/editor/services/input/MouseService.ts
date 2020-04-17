@@ -36,39 +36,39 @@ export class MouseService {
     onMouseDown(e: MouseEvent): void {
         if (!this.isLeftButton(e)) { return }
 
-        this.getServices().pointerService().pointerDown(this.convertEvent(e));
+        this.getServices().pointer.pointerDown(this.convertEvent(e));
     }
     
     onMouseMove(e: MouseEvent): void {
-        this.getServices().pointerService().pointerMove(this.convertEvent(e));
+        this.getServices().pointer.pointerMove(this.convertEvent(e));
     }    
 
     onMouseUp(e: MouseEvent): void {
         if (!this.isLeftButton(e)) { return }
 
-        this.getServices().pointerService().pointerUp(this.convertEvent(e));
+        this.getServices().pointer.pointerUp(this.convertEvent(e));
     }
 
     onMouseOut(e: MouseEvent): void {
-        this.getServices().pointerService().pointerOut(this.convertEvent(e));
+        this.getServices().pointer.pointerOut(this.convertEvent(e));
     }
 
     onMouseWheel(e: WheelEvent): void {
         const pointerEvent = this.convertEvent(e);
         pointerEvent.deltaY = e.deltaY;
-        this.getServices().pointerService().pointerWheel(pointerEvent);
+        this.getServices().pointer.pointerWheel(pointerEvent);
     }
 
     onMouseWheelEnd(): void {
-        this.getServices().pointerService().pointerWheelEnd();
+        this.getServices().pointer.pointerWheelEnd();
     }
 
     hover(item: Concept | Feedback) {
-        this.getServices().pointerService().hover(item);
+        this.getServices().pointer.hover(item);
     }
 
     unhover(item: Concept | Feedback) {
-        this.getServices().pointerService().unhover(item);
+        this.getServices().pointer.unhover(item);
     }
 
     private convertEvent(e: MouseEvent): IPointerEvent {

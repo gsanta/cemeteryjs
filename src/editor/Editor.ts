@@ -40,26 +40,25 @@ export class Editor {
     setup(canvas: HTMLCanvasElement) {
         this.gameFacade = new GameFacade(canvas, this.services, () => this.stores);
         this.gameApi = new GameService(canvas, () => this.services, () => this.stores);
-
-        this.services.services.push(this.gameApi);
+        this.services.game = this.gameApi;
 
         this.windowFactories.forEach(factory => factory.getWindowController(this, this.services, this.stores).setup());
         
-        this.services.storageService().loadLevelIndexes()
+        this.services.storage.loadLevelIndexes()
             .then((indexes: number[]) => {
                 if (indexes.length) {
                     this.stores.levelStore.setLevels(indexes);
-                    return this.services.levelService().changeLevel(indexes[0]);
+                    return this.services.level.changeLevel(indexes[0]);
                 }
             })
             .then(() => {
                 this.isLoading = false;
-                this.services.historyService().saveState(this.services.exportService().export());
+                this.services.history.saveState(this.services.export.export());
                 this.render();
             })
             .catch(() => {
                 this.isLoading = false;
-                this.services.historyService().saveState(this.services.exportService().export());
+                this.services.history.saveState(this.services.export.export());
                 this.render();
             });
     }

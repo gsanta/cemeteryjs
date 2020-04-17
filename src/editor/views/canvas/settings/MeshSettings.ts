@@ -46,13 +46,13 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
     blurProp() {
         super.blurProp();
 
-        this.getServices().updateService().runImmediately(UpdateTask.RepaintCanvas);
+        this.getServices().update.runImmediately(UpdateTask.RepaintCanvas);
     }
 
     updateProp(value: any, propType: MeshViewPropType) {
         super.updateProp(value, propType);
 
-        this.getServices().updateService().runImmediately(UpdateTask.RepaintCanvas);
+        this.getServices().update.runImmediately(UpdateTask.RepaintCanvas);
     }
 
     protected getProp(prop: MeshViewPropType) {
@@ -99,19 +99,19 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                 this.updateModelPath(val.path);
                 const modelPath = this.getStores().canvasStore.getModelConceptById(this.meshConcept.modelId).modelPath;
 
-                this.getServices().storageService().saveAsset(val.path, val.data)
+                this.getServices().storage.saveAsset(val.path, val.data)
                     .then(() => {
-                        return this.getServices().meshLoaderService().getDimensions(modelPath, this.meshConcept.id);
+                        return this.getServices().meshLoader.getDimensions(modelPath, this.meshConcept.id);
                     })
                     .then(dim => {
                         this.meshConcept.dimensions.setWidth(dim.x);
                         this.meshConcept.dimensions.setHeight(dim.y);
                     })
                     .finally(() => {
-                        const data = this.getServices().exportService().export();
-                        this.getServices().gameService().updateConcepts([this.meshConcept]);
-                        this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData, UpdateTask.RepaintCanvas);
-                        this.getServices().storageService().storeLevel(this.getStores().levelStore.currentLevel.index, data);
+                        const data = this.getServices().export.export();
+                        this.getServices().game.updateConcepts([this.meshConcept]);
+                        this.getServices().update.runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData, UpdateTask.RepaintCanvas);
+                        this.getServices().storage.storeLevel(this.getStores().levelStore.currentLevel.index, data);
                     });
                 break;
             case MeshViewPropType.Texture:
@@ -201,10 +201,10 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
     }
 
     private update() {
-        const data = this.getServices().exportService().export();
-        this.getServices().gameService().updateConcepts([this.meshConcept]);
-        this.getServices().updateService().runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
-        this.getServices().storageService().storeLevel(this.getStores().levelStore.currentLevel.index, data);
+        const data = this.getServices().export.export();
+        this.getServices().game.updateConcepts([this.meshConcept]);
+        this.getServices().update.runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
+        this.getServices().storage.storeLevel(this.getStores().levelStore.currentLevel.index, data);
 
     }
 }

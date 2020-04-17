@@ -15,14 +15,14 @@ export class DialogService {
 
     getDialogs() : AbstractSettings<any>[] {
         return [
-            this.getServices().settingsService().getSettingsByName(AnimationSettings.settingsName)
+            this.getServices().settings.getSettingsByName(AnimationSettings.settingsName)
         ];
     }
 
     openDialog(dialogType: string) {
         this.activeDialog = this.getDialogByName(dialogType);
         this.loadDialog();
-        this.getServices().updateService().runImmediately(UpdateTask.All);
+        this.getServices().update.runImmediately(UpdateTask.All);
     }
 
     close(): boolean {
@@ -32,7 +32,7 @@ export class DialogService {
         }
         this.saveDialog();
         this.activeDialog = null;
-        this.getServices().updateService().runImmediately(UpdateTask.All);
+        this.getServices().update.runImmediately(UpdateTask.All);
         return ret;
     }
 

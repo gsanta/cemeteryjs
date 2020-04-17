@@ -29,7 +29,7 @@ export class SelectTool extends PointerTool {
             super.click();
         } else if (this.getStores().selectionStore.getAll().length > 0) {
             this.getStores().selectionStore.clear();
-            this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas, UpdateTask.RepaintSettings);
+            this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas, UpdateTask.RepaintSettings);
         }
     }
 
@@ -37,8 +37,8 @@ export class SelectTool extends PointerTool {
         if (this.movingItem) {
             super.drag();
         } else {
-            this.rectSelector.updateRect(this.getServices().pointerService().pointer);
-            this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
+            this.rectSelector.updateRect(this.getServices().pointer.pointer);
+            this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas);
         }
     }
 
@@ -55,7 +55,7 @@ export class SelectTool extends PointerTool {
             this.getStores().selectionStore.addItem(...canvasItems)
     
             this.rectSelector.finish();
-            this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas, UpdateTask.RepaintSettings);
+            this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas, UpdateTask.RepaintSettings);
         }
 
     }

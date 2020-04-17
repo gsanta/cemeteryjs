@@ -22,8 +22,8 @@ export class HistoryService {
             this.getStores().canvasStore.clear();
             this.getStores().hoverStore.clear();
             this.getStores().selectionStore.clear();
-            this.getServices().importService().import(this.history[this.index]);
-            this.getServices().levelService().updateCurrentLevel();
+            this.getServices().import.import(this.history[this.index]);
+            this.getServices().level.updateCurrentLevel();
         }
     }
 
@@ -33,8 +33,8 @@ export class HistoryService {
             this.getStores().canvasStore.clear();
             this.getStores().hoverStore.clear();
             this.getStores().selectionStore.clear();
-            this.getServices().importService().import(this.history[this.index]);
-            this.getServices().levelService().updateCurrentLevel();
+            this.getServices().import.import(this.history[this.index]);
+            this.getServices().level.updateCurrentLevel();
         }
     }
 

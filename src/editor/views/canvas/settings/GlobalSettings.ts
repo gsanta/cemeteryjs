@@ -34,8 +34,8 @@ export class GlobalSettings extends AbstractSettings<GlobalSettingsPropType> {
                 this.getStores().canvasStore.clear();
                 this.getStores().hoverStore.clear();
                 this.getStores().selectionStore.clear();
-                this.getServices().importService().import(val.data)
+                this.getServices().import.import(val.data)
         }
-        this.getServices().updateService().runImmediately(UpdateTask.RepaintCanvas, UpdateTask.UpdateRenderer);
+        this.getServices().update.runImmediately(UpdateTask.RepaintCanvas, UpdateTask.UpdateRenderer);
     }
 }

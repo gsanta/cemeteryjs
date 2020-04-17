@@ -52,7 +52,7 @@ export class LocalStoreService {
 
         const controller = <CanvasView> this.editor.getWindowControllerByName('canvas');
         const data = await this.getData(objectStore.get(level));
-        this.getServices().importService().import(data);
+        this.getServices().import.import(data);
     }
 
     async loadLevelIndexes(): Promise<number[]> {

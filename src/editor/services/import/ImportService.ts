@@ -104,13 +104,13 @@ export class ImportService {
         this.getStores().canvasStore.getMeshConcepts().filter(item => item.modelId)
             .forEach(item => {
                 const modelConcept = this.getStores().canvasStore.getModelConceptById(item.modelId);
-                this.getServices().meshLoaderService().getDimensions(modelConcept.modelPath, item.id)
+                this.getServices().meshLoader.getDimensions(modelConcept.modelPath, item.id)
                     .then(dim => {
                         item.dimensions.setWidth(dim.x);
                         item.dimensions.setHeight(dim.y);
                     })
             });
-        this.getServices().gameService().importAllConcepts();
+        this.getServices().game.importAllConcepts();
     }
 
     private findViewImporter(conceptType: ConceptType): IConceptImporter {

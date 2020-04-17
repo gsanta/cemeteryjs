@@ -19,91 +19,40 @@ import { ToolService } from "./tools/ToolService";
 import { UpdateService } from "./UpdateServices";
 
 export class ServiceLocator {
-    services: {serviceName: string}[] = [];
-
     camera: CameraService;
     hotkey: HotkeyService;
     tools: ToolService;
+    storage: LocalStoreService;
+    level: LevelService;
+    update: UpdateService;
+    import: ImportService;
+    export: ExportService;
+    history: HistoryService;
+    pointer: PointerService;
+    mouse: MouseService;
+    keyboard: KeyboardService;
+    dialog: DialogService;
+    settings: SettingsService;
+    meshLoader: MeshLoaderService;
+    conceptConverter: ConceptConvertService;
+    game: GameService;
 
     constructor(editor: Editor, getStores: () => Stores) {
         this.camera = new CameraService(() => this, getStores);
         this.hotkey = new HotkeyService(() => this);
         this.tools = new ToolService(() => this, getStores);
-        
-        this.services = [
-            new LocalStoreService(editor, () => this),
-            new LevelService(() => this, getStores),
-            new UpdateService(editor, () => this, getStores),
-            new ImportService(() => this, getStores),
-            new ExportService(getStores),
-            new HistoryService(() => this, getStores),
-            new PointerService(() => this, getStores),
-            new MouseService(() => this),
-            new KeyboardService(getStores),
-            new DialogService(() => this),
-            new SettingsService(() => this, getStores),
-            new MeshLoaderService(() => this, getStores),
-            new ConceptConvertService(getStores)
-        ];
-    }
-
-    getService(serviceName: string) {
-        return this.services.find(service => service.serviceName === serviceName);
-    }
-
-    storageService(): LocalStoreService {
-        return <LocalStoreService> this.getService('local-store');
-    }
-
-    levelService(): LevelService {
-        return <LevelService> this.getService('level-service');
-    }
-
-    updateService(): UpdateService {
-        return <UpdateService> this.getService('update-service');
-    }
-
-    importService(): ImportService {
-        return <ImportService> this.getService('import-service');
-    }
-
-    exportService(): ExportService {
-        return <ExportService> this.getService('export-service');
-    }
-
-    historyService(): HistoryService {
-        return <HistoryService> this.getService('history-service');
-    }
-
-    pointerService(): PointerService {
-        return <PointerService> this.getService('pointer-service');
-    }
-
-    mouseService(): MouseService {
-        return <MouseService> this.getService('mouse-service');
-    }
-
-    keyboardService(): KeyboardService {
-        return <KeyboardService> this.getService('keyboard-service');
-    }
-
-    dialogService(): DialogService {
-        return <DialogService> this.getService('dialog-service');
-    }
-
-    gameService(): GameService {
-        return <GameService> this.getService('game-service');
-    }
-
-    meshLoaderService(): MeshLoaderService {
-        return <MeshLoaderService> this.getService('mesh-loader-service');
-    }
-
-    settingsService(): SettingsService {
-        return <SettingsService> this.getService('settings-service');
-    }
-
-    conceptConvertService(): ConceptConvertService {
-        return <ConceptConvertService> this.getService('concept-convert-service');
+        this.storage = new LocalStoreService(editor, () => this);
+        this.level = new LevelService(() => this, getStores);
+        this.update = new UpdateService(editor, () => this, getStores);
+        this.import = new ImportService(() => this, getStores);
+        this.export = new ExportService(getStores);
+        this.history = new HistoryService(() => this, getStores);
+        this.pointer = new PointerService(() => this, getStores);
+        this.mouse = new MouseService(() => this);
+        this.keyboard = new KeyboardService(getStores);
+        this.dialog = new DialogService(() => this);
+        this.settings = new SettingsService(() => this, getStores);
+        this.meshLoader = new MeshLoaderService(() => this, getStores);
+        this.conceptConverter = new ConceptConvertService(getStores);
     }
 }

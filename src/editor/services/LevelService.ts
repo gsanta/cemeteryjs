@@ -16,26 +16,26 @@ export class LevelService {
         this.clearStores();
 
         if (this.getStores().levelStore.hasLevel(level)) {
-            return this.getServices().storageService().loadLevel(level)
+            return this.getServices().storage.loadLevel(level)
                 .finally(() => {
                     this.getStores().levelStore.setCurrentLevel(level)
-                    this.getServices().updateService().runImmediately(UpdateTask.All);
+                    this.getServices().update.runImmediately(UpdateTask.All);
                 });
         } else {
             this.getStores().levelStore.setCurrentLevel(level);
-            this.getServices().updateService().runImmediately(UpdateTask.All)
+            this.getServices().update.runImmediately(UpdateTask.All)
             return Promise.resolve();
         }
     }
 
     updateCurrentLevel() {
         this.getStores().levelStore.currentLevel.isEmpty = false;
-        const map = this.getServices().exportService().export();
-        this.getServices().storageService().storeLevel(this.getStores().levelStore.currentLevel.index, map);
+        const map = this.getServices().export.export();
+        this.getServices().storage.storeLevel(this.getStores().levelStore.currentLevel.index, map);
     }
 
     clearLevel() {
-        return this.getServices().storageService()
+        return this.getServices().storage
             .removeLevel(this.getStores().levelStore.currentLevel.index)
             .then(() => {
                 this.clearStores();
@@ -44,7 +44,7 @@ export class LevelService {
     }
 
     private clearStores() {
-        this.getServices().gameService().deleteConcepts(this.getStores().canvasStore.getAllConcepts());
+        this.getServices().game.deleteConcepts(this.getStores().canvasStore.getAllConcepts());
         this.getStores().canvasStore.clear();
         this.getStores().hoverStore.clear();
         this.getStores().selectionStore.clear();

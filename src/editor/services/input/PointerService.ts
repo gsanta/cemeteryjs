@@ -43,7 +43,7 @@ export class PointerService {
         this.isDown = true;
         this.pointer.down = this.getPointWithOffset(e.pointers[0].pos); 
         this.getStores().viewStore.getActiveView().getSelectedTool().down();
-        this.getServices().updateService().runScheduledTasks();
+        this.getServices().update.runScheduledTasks();
     }
 
     pointerMove(e: IPointerEvent): void {
@@ -57,7 +57,7 @@ export class PointerService {
         } else {
             this.getStores().viewStore.getActiveView().getSelectedTool().move();
         }
-        this.getServices().updateService().runScheduledTasks();
+        this.getServices().update.runScheduledTasks();
     }
 
     pointerUp(e: IPointerEvent): void {
@@ -71,7 +71,7 @@ export class PointerService {
         this.isDown = false;
         this.isDrag = false;
         this.pointer.down = undefined;
-        this.getServices().updateService().runScheduledTasks();
+        this.getServices().update.runScheduledTasks();
     }
 
     pointerOut(e: IPointerEvent): void {
@@ -99,12 +99,12 @@ export class PointerService {
 
     hover(item: Concept | Feedback): void {
         this.getStores().viewStore.getActiveView().getSelectedTool().over(item);
-        this.getServices().updateService().runScheduledTasks();
+        this.getServices().update.runScheduledTasks();
     }
 
     unhover(item: Concept | Feedback): void {
         this.getStores().viewStore.getActiveView().getSelectedTool().out(item);
-        this.getServices().updateService().runScheduledTasks();
+        this.getServices().update.runScheduledTasks();
     }
     
     private getScreenPointWithOffset(point: Point): Point {

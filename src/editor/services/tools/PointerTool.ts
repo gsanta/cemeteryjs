@@ -29,18 +29,18 @@ export class PointerTool extends AbstractTool {
             this.getStores().selectionStore.addItem(concept);
             this.getStores().selectionStore.addItem(feedback);
 
-            this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas);
+            this.getServices().update.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas);
         } else if (concept) {
             this.getStores().selectionStore.clear();
             this.getStores().selectionStore.addItem(concept);
 
-            this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas);
+            this.getServices().update.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas);
 
         }
     }
 
     down() {
-        this.initMove() && this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
+        this.initMove() && this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     drag() {
@@ -48,7 +48,7 @@ export class PointerTool extends AbstractTool {
 
         if (this.movingItem) {
             this.moveItems();
-            this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
+            this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas);
         }
         
         this.isDragStart = false;
@@ -58,14 +58,14 @@ export class PointerTool extends AbstractTool {
         super.draggedUp();
 
         if (!this.isDragStart) {
-            this.getServices().updateService().scheduleTasks(UpdateTask.SaveData, UpdateTask.All);
+            this.getServices().update.scheduleTasks(UpdateTask.SaveData, UpdateTask.All);
         }
 
         this.isDragStart = true;
         
         this.updateGameObjects();
         this.movingItem = undefined;
-        this.getServices().levelService().updateCurrentLevel();
+        this.getServices().level.updateCurrentLevel();
     }
 
     leave() {
@@ -75,12 +75,12 @@ export class PointerTool extends AbstractTool {
 
     over(item: VisualConcept | Feedback) {
         this.getStores().hoverStore.addItem(item);
-        this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
+        this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     out(item: VisualConcept | Feedback) {
         this.getStores().hoverStore.removeItem(item);
-        this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
+        this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     private initMove(): boolean {
@@ -94,12 +94,12 @@ export class PointerTool extends AbstractTool {
         const concepts = this.getStores().selectionStore.getAllConcepts();
 
         if (isFeedback(this.movingItem.type)) {
-            concepts[0].moveEditPoint(this.getStores().selectionStore.getEditPoint(), this.getServices().pointerService().pointer.getDiff());
+            concepts[0].moveEditPoint(this.getStores().selectionStore.getEditPoint(), this.getServices().pointer.pointer.getDiff());
         } else if (isConcept(this.movingItem.type)) {
-            concepts.forEach((item, index) => item.move(this.getServices().pointerService().pointer.getDiff()));
+            concepts.forEach((item, index) => item.move(this.getServices().pointer.pointer.getDiff()));
         }
 
-        this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
+        this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     private updateGameObjects() {
@@ -111,6 +111,6 @@ export class PointerTool extends AbstractTool {
             concepts = this.getStores().selectionStore.getAllConcepts();
         }
 
-        this.getServices().gameService().updateConcepts(concepts);
+        this.getServices().game.updateConcepts(concepts);
     }
 }

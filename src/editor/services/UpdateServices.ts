@@ -69,9 +69,9 @@ export class UpdateService {
     }
 
     private saveData() {
-        const map = this.getServices().exportService().export();
-        this.getServices().storageService().storeLevel(this.getStores().levelStore.currentLevel.index, map);
-        this.getServices().historyService().saveState(map);
+        const map = this.getServices().export.export();
+        this.getServices().storage.storeLevel(this.getStores().levelStore.currentLevel.index, map);
+        this.getServices().history.saveState(map);
     }
 
     setCanvasRepainter(repaint: Function) {

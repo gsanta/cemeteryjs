@@ -34,7 +34,7 @@ export abstract class AbstractToolbarComponent extends React.Component {
     }
     
     componentDidMount() {
-        this.context.getServices().updateService().addSettingsRepainter(() => this.forceUpdate());
+        this.context.getServices().update.addSettingsRepainter(() => this.forceUpdate());
     }
 
     render(): JSX.Element {
@@ -67,11 +67,11 @@ export abstract class AbstractToolbarComponent extends React.Component {
         const view = this.context.getStores().viewStore.getViewById(this.viewId);
 
         this.context.getStores().viewStore.setFullScreen(view);
-        this.context.getServices().updateService().runImmediately(UpdateTask.Full);
+        this.context.getServices().update.runImmediately(UpdateTask.Full);
     }
 
     private exitFullScreen() {
         this.context.getStores().viewStore.setFullScreen(undefined);
-        this.context.getServices().updateService().runImmediately(UpdateTask.Full);
+        this.context.getServices().update.runImmediately(UpdateTask.Full);
     }
 }

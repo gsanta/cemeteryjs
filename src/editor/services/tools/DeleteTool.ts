@@ -21,8 +21,8 @@ export class DeleteTool extends AbstractTool {
     }
 
     drag() {
-        this.rectSelector.updateRect(this.getServices().pointerService().pointer);
-        this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
+        this.rectSelector.updateRect(this.getServices().pointer.pointer);
+        this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     click() {
@@ -35,11 +35,11 @@ export class DeleteTool extends AbstractTool {
             } else {
                 const concept = hoverStore.getConcept();
                 this.getStores().canvasStore.removeConcept(concept);
-                this.getServices().gameService().deleteConcepts([concept]);
+                this.getServices().game.deleteConcepts([concept]);
             }
             
-            this.getServices().levelService().updateCurrentLevel();
-            hoverStore.hasAny() && this.getServices().updateService().scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
+            this.getServices().level.updateCurrentLevel();
+            hoverStore.hasAny() && this.getServices().update.scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
         }
     }
 
@@ -51,14 +51,14 @@ export class DeleteTool extends AbstractTool {
 
         this.rectSelector.finish();
 
-        this.getServices().levelService().updateCurrentLevel();
-        this.getServices().gameService().deleteConcepts(concepts);
-        this.getServices().updateService().scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
+        this.getServices().level.updateCurrentLevel();
+        this.getServices().game.deleteConcepts(concepts);
+        this.getServices().update.scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
     }
 
     leave() {
         this.rectSelector.finish();
-        this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
+        this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     over(item: VisualConcept | Feedback) {
@@ -71,9 +71,9 @@ export class DeleteTool extends AbstractTool {
 
     eraseAll() {
         const concepts = this.getStores().canvasStore.getAllConcepts();
-        this.getServices().gameService().deleteConcepts(concepts);
-        this.getServices().storageService().clearAll();
+        this.getServices().game.deleteConcepts(concepts);
+        this.getServices().storage.clearAll();
         this.getStores().canvasStore.clear();
-        this.getServices().updateService().runImmediately(UpdateTask.All);
+        this.getServices().update.runImmediately(UpdateTask.All);
     }
 }

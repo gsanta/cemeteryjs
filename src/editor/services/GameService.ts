@@ -49,13 +49,13 @@ export class GameService {
 
     importAllConcepts() {
         this.getStores().gameStore.clear();
-        this.getServices().meshLoaderService().clear();
+        this.getServices().meshLoader.clear();
 
-        this.getStores().canvasStore.getAllConcepts().forEach(concept => this.getServices().conceptConvertService().convert(concept));
+        this.getStores().canvasStore.getAllConcepts().forEach(concept => this.getServices().conceptConverter.convert(concept));
 
-        this.getServices().meshLoaderService().loadAll(this.getStores().gameStore.getMeshObjects())
+        this.getServices().meshLoader.loadAll(this.getStores().gameStore.getMeshObjects())
             .then(() => {
-                this.getStores().gameStore.getMeshObjects().forEach(meshObject => this.getStores().meshStore.createInstance(meshObject, this.getServices().gameService().getScene()));
+                this.getStores().gameStore.getMeshObjects().forEach(meshObject => this.getStores().meshStore.createInstance(meshObject, this.getServices().game.getScene()));
             });
     }
 
@@ -64,16 +64,16 @@ export class GameService {
     }
 
     addConcept(concept: Concept) {
-        const gameObject = this.getServices().conceptConvertService().convert(concept);
+        const gameObject = this.getServices().conceptConverter.convert(concept);
 
         switch(gameObject.objectType) {
             case GameObjectType.MeshObject:
                 const meshObject = <MeshObject> gameObject;
                 if (!meshObject.modelPath) {
-                    this.getStores().meshStore.createInstance(meshObject, this.getServices().gameService().getScene());
+                    this.getStores().meshStore.createInstance(meshObject, this.getServices().game.getScene());
                 } else {
-                    this.getServices().meshLoaderService().load(meshObject.modelPath, meshObject.id)
-                        .then(() => this.getStores().meshStore.createInstance(meshObject, this.getServices().gameService().getScene()));
+                    this.getServices().meshLoader.load(meshObject.modelPath, meshObject.id)
+                        .then(() => this.getStores().meshStore.createInstance(meshObject, this.getServices().game.getScene()));
                 }
             break;
         }

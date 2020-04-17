@@ -29,7 +29,7 @@ export class CameraService {
         if (nextZoomLevel) {
             camera.zoomToPosition(canvasPos, nextZoomLevel);
 
-            this.getServices().updateService().runImmediately(UpdateTask.RepaintCanvas);
+            this.getServices().update.runImmediately(UpdateTask.RepaintCanvas);
         }
     }
 
@@ -42,7 +42,7 @@ export class CameraService {
         if (prevZoomLevel) {
             camera.zoomToPosition(canvasPos, prevZoomLevel);
 
-            this.getServices().updateService().runImmediately(UpdateTask.RepaintCanvas);
+            this.getServices().update.runImmediately(UpdateTask.RepaintCanvas);
         }
     }
 

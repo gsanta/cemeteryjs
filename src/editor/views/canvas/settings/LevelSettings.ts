@@ -36,16 +36,16 @@ export class LevelSettings extends AbstractSettings<LevelFormPropType> {
     protected setProp(val: any, prop: LevelFormPropType) {
         switch (prop) {
             case LevelFormPropType.Level:
-                this.getServices().levelService().changeLevel(val);
+                this.getServices().level.changeLevel(val);
                 break;
             case LevelFormPropType.LevelName:
                 this.getStores().levelStore.currentLevel.name = val;
-                this.getServices().updateService().runImmediately(UpdateTask.RepaintSettings);
+                this.getServices().update.runImmediately(UpdateTask.RepaintSettings);
                 break;
             case LevelFormPropType.ClearLevel:
-                this.getServices().levelService().clearLevel()
-                .then(() => this.getServices().updateService().runImmediately(UpdateTask.All, UpdateTask.SaveData))
-                .catch(() => this.getServices().updateService().runImmediately(UpdateTask.All, UpdateTask.SaveData))
+                this.getServices().level.clearLevel()
+                .then(() => this.getServices().update.runImmediately(UpdateTask.All, UpdateTask.SaveData))
+                .catch(() => this.getServices().update.runImmediately(UpdateTask.All, UpdateTask.SaveData))
                 break;
         }
     }

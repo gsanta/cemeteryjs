@@ -26,7 +26,7 @@ export class WheelListener {
             this.wheelCounter++;
         }
 
-        this.getServices().mouseService().onMouseWheel(e);
+        this.getServices().mouse.onMouseWheel(e);
     }
 
     private listenToWheelEnd() {
@@ -35,7 +35,7 @@ export class WheelListener {
         this.timeout(() => {
             if (actCounter === this.wheelCounter) {
                 this.wheelInProgress = false;
-                this.getServices().mouseService().onMouseWheelEnd();
+                this.getServices().mouse.onMouseWheelEnd();
             } else {
                 this.listenToWheelEnd();
             }

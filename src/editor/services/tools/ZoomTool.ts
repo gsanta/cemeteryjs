@@ -31,17 +31,17 @@ export class ZoomTool extends AbstractTool {
         view.getCamera().zoom(prevScale);
         view.getCamera().moveTo(prevTranslate.clone());
 
-        this.getServices().updateService().runImmediately(UpdateTask.RepaintCanvas);
+        this.getServices().update.runImmediately(UpdateTask.RepaintCanvas);
     }
 
     drag() {
         super.drag();
         const camera = this.getStores().viewStore.getActiveView().getCamera();
 
-        const delta = this.getServices().pointerService().pointer.getScreenDiff().div(camera.getScale());
+        const delta = this.getServices().pointer.pointer.getScreenDiff().div(camera.getScale());
         
         camera.moveBy(delta.negate());
 
-        this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
+        this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 }

@@ -64,10 +64,10 @@ export class RendererComponent extends React.Component {
                         ref={this.canvasRef}
                     />
                     <CanvasOverlayStyled
-                        onMouseDown={(e) => this.context.getServices().mouseService().onMouseDown(e.nativeEvent)}
-                        onMouseMove={(e) => this.context.getServices().mouseService().onMouseMove(e.nativeEvent)}
-                        onMouseUp={(e) => this.context.getServices().mouseService().onMouseUp(e.nativeEvent)}
-                        onMouseLeave={(e) => this.context.getServices().mouseService().onMouseOut(e.nativeEvent)}
+                        onMouseDown={(e) => this.context.getServices().mouse.onMouseDown(e.nativeEvent)}
+                        onMouseMove={(e) => this.context.getServices().mouse.onMouseMove(e.nativeEvent)}
+                        onMouseUp={(e) => this.context.getServices().mouse.onMouseUp(e.nativeEvent)}
+                        onMouseLeave={(e) => this.context.getServices().mouse.onMouseOut(e.nativeEvent)}
                         onMouseOver={() => view.over()}
                         onMouseOut={() => view.out()}
                     />

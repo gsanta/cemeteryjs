@@ -35,7 +35,7 @@ export class FileSettingsComponent extends React.Component<GeneralFormComponentP
     }
 
     private exportFile() {
-        const file = this.context.getServices().exportService().export();
+        const file = this.context.getServices().export.export();
         var blob = new Blob([file], { type: "text/plain;charset=utf-8" });
         saveAs(blob, "dynamic.txt");
     }

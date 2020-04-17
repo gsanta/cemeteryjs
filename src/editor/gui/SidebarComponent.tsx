@@ -30,7 +30,7 @@ export class SidebarComponent extends React.Component<SidebarComponentProps> {
     }
     
     componentDidMount() {
-        this.context.controllers.getWindowControllers().forEach(controller => this.context.getServices().updateService().addSettingsRepainter(() => this.forceUpdate()));
+        this.context.controllers.getWindowControllers().forEach(controller => this.context.getServices().update.addSettingsRepainter(() => this.forceUpdate()));
     }
 
     render(): JSX.Element {

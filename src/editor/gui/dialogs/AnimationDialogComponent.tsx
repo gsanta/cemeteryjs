@@ -19,19 +19,19 @@ export class AnimationDialogComponent extends React.Component {
     context: AppContextType;
 
     componentDidMount() {
-        this.context.getServices().updateService().addSettingsRepainter(() => this.forceUpdate());
+        this.context.getServices().update.addSettingsRepainter(() => this.forceUpdate());
     }
 
     render(): JSX.Element {
-        const dialogSettings = this.context.getServices().dialogService().getDialogByName<AnimationSettings>(AnimationSettings.settingsName);
+        const dialogSettings = this.context.getServices().dialog.getDialogByName<AnimationSettings>(AnimationSettings.settingsName);
         const meshConcept = this.context.getStores().selectionStore.getConcept() as MeshConcept;
 
-        return this.context.getServices().dialogService().isActiveDialog('animation-settings') ?
+        return this.context.getServices().dialog.isActiveDialog('animation-settings') ?
             (
                 <AnimationDialogStyled
                     className="about-dialog"
                     title="Custom animation"
-                    closeDialog={() => this.context.getServices().dialogService().close()}
+                    closeDialog={() => this.context.getServices().dialog.close()}
                 >
                     <div>
                         {this.renderBasicSettingsAccordion()}
@@ -65,7 +65,7 @@ export class AnimationDialogComponent extends React.Component {
     }
 
     private renderName(): JSX.Element {
-        const settings = this.context.getServices().dialogService().getDialogByName<AnimationSettings>(AnimationSettings.settingsName);
+        const settings = this.context.getServices().dialog.getDialogByName<AnimationSettings>(AnimationSettings.settingsName);
         const val: string = settings.getVal(AnimationSettingsProps.RotateLeftAnimation);
 
         return (
@@ -86,7 +86,7 @@ export class AnimationDialogComponent extends React.Component {
 
     
     private renderMoveAnimation(): JSX.Element {
-        const settings = this.context.getServices().dialogService().getDialogByName<AnimationSettings>(AnimationSettings.settingsName);
+        const settings = this.context.getServices().dialog.getDialogByName<AnimationSettings>(AnimationSettings.settingsName);
         const val: ElementalAnimation = settings.getVal(AnimationSettingsProps.MoveAnimation);
 
         return (
@@ -129,7 +129,7 @@ export class AnimationDialogComponent extends React.Component {
     }
 
     private renderLeftRotation(): JSX.Element {
-        const settings = this.context.getServices().dialogService().getDialogByName<AnimationSettings>(AnimationSettings.settingsName);
+        const settings = this.context.getServices().dialog.getDialogByName<AnimationSettings>(AnimationSettings.settingsName);
         const val: ElementalAnimation = settings.getVal(AnimationSettingsProps.RotateLeftAnimation);
 
         return (
@@ -150,7 +150,7 @@ export class AnimationDialogComponent extends React.Component {
     }
 
     private renderRightRotation(): JSX.Element {
-        const settings = this.context.getServices().dialogService().getDialogByName<AnimationSettings>(AnimationSettings.settingsName);
+        const settings = this.context.getServices().dialog.getDialogByName<AnimationSettings>(AnimationSettings.settingsName);
         const val: ElementalAnimation = settings.getVal(AnimationSettingsProps.RotateRightAnimation);
 
         return (

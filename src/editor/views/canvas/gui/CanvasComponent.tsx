@@ -36,12 +36,12 @@ export class CanvasComponent extends React.Component {
 
     componentDidMount() {
         this.wheelListener = new WheelListener(() => this.context.getServices());
-        this.context.getServices().updateService().setCanvasRepainter(() => this.forceUpdate());
+        this.context.getServices().update.setCanvasRepainter(() => this.forceUpdate());
     }
 
     render(): JSX.Element {
-        const hover = (item: Concept | Feedback) => this.context.getServices().mouseService().hover(item);
-        const unhover = (canvasItem: Concept | Feedback) => this.context.getServices().mouseService().unhover(canvasItem);
+        const hover = (item: Concept | Feedback) => this.context.getServices().mouse.hover(item);
+        const unhover = (canvasItem: Concept | Feedback) => this.context.getServices().mouse.unhover(canvasItem);
 
         const view = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id);
 
@@ -52,11 +52,11 @@ export class CanvasComponent extends React.Component {
                     tabIndex={0}
                     viewBox={view.getCamera().getViewBoxAsString()}
                     id={this.context.controllers.svgCanvasId}
-                    onMouseDown={(e) => this.context.getServices().mouseService().onMouseDown(e.nativeEvent)}
-                    onMouseMove={(e) => this.context.getServices().mouseService().onMouseMove(e.nativeEvent)}
-                    onMouseUp={(e) => this.context.getServices().mouseService().onMouseUp(e.nativeEvent)}
-                    onMouseLeave={(e) => this.context.getServices().mouseService().onMouseOut(e.nativeEvent)}
-                    onKeyDown={e => this.context.getServices().keyboardService().onKeyDown(e.nativeEvent)}
+                    onMouseDown={(e) => this.context.getServices().mouse.onMouseDown(e.nativeEvent)}
+                    onMouseMove={(e) => this.context.getServices().mouse.onMouseMove(e.nativeEvent)}
+                    onMouseUp={(e) => this.context.getServices().mouse.onMouseUp(e.nativeEvent)}
+                    onMouseLeave={(e) => this.context.getServices().mouse.onMouseOut(e.nativeEvent)}
+                    onKeyDown={e => this.context.getServices().keyboard.onKeyDown(e.nativeEvent)}
                     onMouseOver={() => view.over()}
                     onMouseOut={() => view.out()}
                     onWheel={(e) => this.wheelListener.onWheel(e.nativeEvent)}
@@ -64,7 +64,7 @@ export class CanvasComponent extends React.Component {
                     <defs>
                         <PathMarkersComponent/>
                     </defs>
-                    {this.context.getServices().exportService().conceptExporters.map(exporter => exporter.export(hover, unhover))}
+                    {this.context.getServices().export.conceptExporters.map(exporter => exporter.export(hover, unhover))}
                     {this.renderFeedbacks()}
                 </CanvasComponentStyled>
             </EditorComponentStyled>

@@ -32,7 +32,7 @@ export class PathTool extends PointerTool {
     keydown(e: IKeyboardEvent) {
         if (e.keyCode === Keyboard.Enter) {
             this.getStores().selectionStore.clear();
-            this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
+            this.getServices().update.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         }
     }
 
@@ -50,13 +50,13 @@ export class PathTool extends PointerTool {
 
         if (hover) {
             super.over(item);
-            this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
+            this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas);
         }
     }
 
     out(item: VisualConcept | Feedback) {
         super.out(item);
-        this.getServices().updateService().scheduleTasks(UpdateTask.RepaintCanvas);
+        this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     private createPath() {
@@ -68,22 +68,22 @@ export class PathTool extends PointerTool {
         const editPoint = this.getStores().selectionStore.getEditPoint();
 
         if (path && editPoint) {
-            const pointer = this.getServices().pointerService().pointer;
+            const pointer = this.getServices().pointer.pointer;
             const selectedEditPoint = this.getStores().selectionStore.getEditPoint();
             const newEditPoint = (new EditPoint(new Point(pointer.down.x, pointer.down.y), path));
             path.addEditPoint(newEditPoint, selectedEditPoint);
             this.getStores().selectionStore.removeItem(selectedEditPoint);
             this.getStores().selectionStore.addItem(newEditPoint);
 
-            this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
+            this.getServices().update.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         } else {
             this.startNewPath();
-            this.getServices().updateService().scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
+            this.getServices().update.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         }
     }
 
     private startNewPath() {
-        const pointer = this.getServices().pointerService().pointer;
+        const pointer = this.getServices().pointer.pointer;
         this.getStores().selectionStore.clear();
         const path = new PathConcept(pointer.down.clone());
         path.id = this.getStores().canvasStore.generateUniqueName(ConceptType.PathConcept);

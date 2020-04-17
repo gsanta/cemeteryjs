@@ -301,7 +301,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
             <SettingsRowStyled>
               <LabelColumnStyled></LabelColumnStyled>
                 <FieldColumnStyled>
-                    <ButtonComponent text="Custom animation" type="info" onClick={() => this.context.getServices().dialogService().openDialog('animation-settings')}/>
+                    <ButtonComponent text="Custom animation" type="info" onClick={() => this.context.getServices().dialog.openDialog('animation-settings')}/>
                 </FieldColumnStyled>
             </SettingsRowStyled>
         );

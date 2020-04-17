@@ -24,7 +24,7 @@ export class HotkeyService {
         }
 
         input.addEventListener('keydown', (e: KeyboardEvent) => {
-            this.getServices().keyboardService().onKeyDown(e);
+            this.getServices().keyboard.onKeyDown(e);
             e.preventDefault();
             e.stopPropagation();
             return false;
@@ -139,7 +139,7 @@ export class Hotkey {
             hotkeyEvent.isAltDown === this.trigger.alt &&
             (this.trigger.shift === undefined || hotkeyEvent.isShiftDown === this.trigger.shift) &&
             isCtrlOrCommandDown(<IKeyboardEvent> hotkeyEvent) === this.trigger.ctrlOrCommand &&
-            this.wheelMatch(getServices().pointerService()) === this.trigger.wheel &&
+            this.wheelMatch(getServices().pointer) === this.trigger.wheel &&
             this.keyCodeFuncMatch(hotkeyEvent)
         );
         return b;

@@ -63,7 +63,7 @@ export class MeshLoaderService {
 
         this.loadedFileNames.add(path);
 
-        const promise = this.getServices().storageService().loadAsset(path)
+        const promise = this.getServices().storage.loadAsset(path)
             .then((data) => {
                 if (data) {
                     return this.loadMesh(path, id, data);
@@ -86,7 +86,7 @@ export class MeshLoaderService {
                 '',
                 data ? data : folder,
                 data ? undefined : file,
-                this.getServices().gameService().gameEngine.scene,
+                this.getServices().game.gameEngine.scene,
                 (meshes: Mesh[], ps: ParticleSystem[], skeletons: Skeleton[]) => resolve(this.createModelData(file, id, meshes, skeletons)),
                 () => { },
                 (scene: Scene, message: string) => { throw new Error(message); }
@@ -109,7 +109,7 @@ export class MeshLoaderService {
     private createModelData(path: string, id: string, meshes: Mesh[], skeletons: Skeleton[]): Mesh {
         if (meshes.length === 0) { throw new Error('No mesh was loaded.') }
 
-        const scene = this.getServices().gameService().gameEngine.scene;
+        const scene = this.getServices().game.gameEngine.scene;
 
         meshes[0].material = new StandardMaterial(path, scene);
    

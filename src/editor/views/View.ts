@@ -61,7 +61,7 @@ export abstract class View {
         this.selectedTool && this.selectedTool.deselect();
         this.selectedTool = tool;
         this.selectedTool.select();
-        this.getServices().updateService().runImmediately(UpdateTask.RepaintSettings);
+        this.getServices().update.runImmediately(UpdateTask.RepaintSettings);
     }
 
     getSelectedTool(): Tool {
