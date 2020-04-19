@@ -1,17 +1,17 @@
 
 
-import { GameFacade } from '../../GameFacade';
 import { ILifeCycleTrigger, LifeCycleEvent } from './ILifeCycleTrigger';
+import { ServiceLocator } from '../../../editor/services/ServiceLocator';
 
 export class ResetTrigger implements ILifeCycleTrigger {
-    private gameFacade: GameFacade;
+    private getServices: () => ServiceLocator;
 
-    constructor(gameFacade: GameFacade) {
-        this.gameFacade = gameFacade;
+    constructor(getServices: () => ServiceLocator) {
+        this.getServices = getServices;
     }
 
     activate(trigger: (event: LifeCycleEvent) => void) {
-        this.gameFacade.gameEngine.scene.registerAfterRender(() => {
+        this.getServices().game.gameEngine.scene.registerAfterRender(() => {
             trigger(LifeCycleEvent.Reset);
         });
     }

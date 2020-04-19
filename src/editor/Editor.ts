@@ -1,5 +1,4 @@
 import { GameService } from './services/GameService';
-import { GameFacade } from '../game/GameFacade';
 import { CanvasFactory } from './views/canvas/CanvasFactory';
 import { GlobalSettings } from './views/canvas/settings/GlobalSettings';
 import { RendererFactory } from './views/renderer/RendererFactory';
@@ -9,7 +8,6 @@ import { ServiceLocator } from './services/ServiceLocator';
 import { Stores } from './stores/Stores';
 
 export class Editor {
-    gameFacade: GameFacade;
     gameApi: GameService;
 
     stores: Stores;
@@ -38,9 +36,7 @@ export class Editor {
     }
 
     setup(canvas: HTMLCanvasElement) {
-        this.gameFacade = new GameFacade(canvas, this.services, () => this.stores);
         this.gameApi = new GameService(canvas, () => this.services, () => this.stores);
-        this.services.game = this.gameApi;
 
         this.windowFactories.forEach(factory => factory.getWindowController(this, this.services, this.stores).setup());
         

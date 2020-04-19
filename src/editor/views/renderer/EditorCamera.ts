@@ -79,6 +79,7 @@ export class EditorCamera extends UniversalCamera implements ICamera {
     }
 
     moveBy(delta: Point) {
+        console.log(this.position)
         this.position.x += (delta.x / 10);
         this.position.z -= (delta.y / 10);
     }

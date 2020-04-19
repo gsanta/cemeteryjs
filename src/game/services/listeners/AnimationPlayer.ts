@@ -1,15 +1,16 @@
 import { ElementalAnimation } from "../../../editor/views/canvas/models/meta/AnimationConcept";
-import { GameFacade } from "../../GameFacade";
 import { MeshObject } from "../../models/objects/MeshObject";
 import { Stores } from "../../../editor/stores/Stores";
+import { ServiceLocator } from "../../../editor/services/ServiceLocator";
 
 export class AnimationPlayer {
-    private gameFacade: GameFacade;
     private playingAnimations: Map<MeshObject, ElementalAnimation> = new Map();
     private getStores: () => Stores;
+    private getServices: () => ServiceLocator;
 
-    constructor(getStores: () => Stores) {
+    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
         this.getStores = getStores;
+        this.getServices = getServices;
     }
 
     updateAnimations() {
@@ -37,13 +38,13 @@ export class AnimationPlayer {
 
     private stopAnimation(meshObject: MeshObject) {
         this.playingAnimations.delete(meshObject);
-        this.gameFacade.gameEngine.scene.stopAnimation(meshObject.getMesh().skeleton);
+        this.getServices().game.gameEngine.scene.stopAnimation(meshObject.getMesh().skeleton);
     }
 
     private startAnimation(meshObject: MeshObject) {
         if (meshObject.getMesh()) {
             const range = meshObject.getMesh().skeleton.getAnimationRange(meshObject.activeElementalAnimation.name);
-            this.gameFacade.gameEngine.scene.beginAnimation(meshObject.getMesh().skeleton, range.from, range.to, true);
+            this.getServices().game.gameEngine.scene.beginAnimation(meshObject.getMesh().skeleton, range.from, range.to, true);
             this.playingAnimations.set(meshObject, meshObject.activeElementalAnimation);
         }
 

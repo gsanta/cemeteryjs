@@ -1,4 +1,3 @@
-import { GameFacade } from "../../GameFacade";
 import { EventType } from "../GameEventManager";
 import { IAfterRender } from "../listeners/IEventListener";
 import { IBehaviour } from "./IBehaviour";

@@ -1,33 +1,33 @@
-import { GameFacade } from "../../GameFacade";
 import { MeshObject } from "../../models/objects/MeshObject";
 import { EventType, GamepadEvent } from "../GameEventManager";
 import { IGamepadListener } from "./IEventListener";
 import { Stores } from "../../../editor/stores/Stores";
+import { ServiceLocator } from "../../../editor/services/ServiceLocator";
 
 export class PlayerListener implements IGamepadListener {
     eventType = EventType.Keyboard;
 
-    private gameFacade: GameFacade;
+    private getServices: () => ServiceLocator;
     private getStores: () => Stores;
 
-    constructor(gameFacade: GameFacade, getStores: () => Stores) {
-        this.gameFacade = gameFacade;
+    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
+        this.getServices = getServices;
         this.getStores = getStores;
     }
 
     gamepadEvent(gamepadEvent: GamepadEvent) {
         switch(gamepadEvent) {
             case GamepadEvent.Forward:
-                this.doAction(this.gameFacade.characterMovement.forward);
+                this.doAction(this.getServices().game.characterMovement.forward);
             break;
             case GamepadEvent.Backward:
-                this.doAction(this.gameFacade.characterMovement.backward);
+                this.doAction(this.getServices().game.characterMovement.backward);
             break;
             case GamepadEvent.TurnLeft:
-                this.doAction(this.gameFacade.characterMovement.left);
+                this.doAction(this.getServices().game.characterMovement.left);
             break;
             case GamepadEvent.TurnRight:
-                this.doAction(this.gameFacade.characterMovement.right);
+                this.doAction(this.getServices().game.characterMovement.right);
             break;
         }
     }

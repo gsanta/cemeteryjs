@@ -5,10 +5,33 @@ import { Stores } from "../stores/Stores";
 import { Concept } from "../views/canvas/models/concepts/Concept";
 import { GameEngine } from "../views/renderer/GameEngine";
 import { ServiceLocator } from "./ServiceLocator";
+import { KeyboardTrigger } from "../../game/services/triggers/KeyboardTrigger";
+import { AfterRenderTrigger } from "../../game/services/triggers/AfterRenderTrigger";
+import { GamepadEvent, GameEventManager } from "../../game/services/GameEventManager";
+import { CharacterMovement } from "../../game/services/behaviour/CharacterMovement";
+import { AnimationPlayer } from "../../game/services/listeners/AnimationPlayer";
+import { IConceptImporter } from "./import/IConceptImporter";
+import { ImportService } from "./import/ImportService";
+import { IConceptConverter } from "./convert/IConceptConverter";
+import { Walkers } from "../../game/services/walkers/Walkers";
+import { PlayerListener } from "../../game/services/listeners/PlayerListener";
 
 export class GameService {
     serviceName = 'game-service';
     gameEngine: GameEngine;
+    
+    private keyboardListener: KeyboardTrigger;
+    private keyboardTrigger: KeyboardTrigger;
+    private afterRenderTrigger: AfterRenderTrigger;
+    gameEventManager: GameEventManager;
+    characterMovement: CharacterMovement;
+    animationPlayer: AnimationPlayer;
+
+    importers: IConceptImporter[];
+    viewImporter: ImportService;
+    viewConverters: IConceptConverter[] = [];
+
+    private walkers: Walkers;
     
     private getServices: () => ServiceLocator;
     private getStores: () => Stores;
@@ -16,7 +39,24 @@ export class GameService {
     constructor(canvas: HTMLCanvasElement, getServices: () => ServiceLocator, getStores: () => Stores) {
         this.getServices = getServices;
         this.getStores = getStores;
+
+        this.getServices().game = this;
+        
         this.gameEngine = new GameEngine(canvas);
+        this.keyboardListener = new KeyboardTrigger(getServices);
+        this.keyboardTrigger = new KeyboardTrigger(getServices);
+        this.gameEventManager = new GameEventManager();
+        this.characterMovement = new CharacterMovement();
+
+        const playerListener = new PlayerListener(getServices, this.getStores);
+        this.gameEventManager.listeners.registerGamepadListener((gamepadEvent: GamepadEvent) => playerListener.gamepadEvent(gamepadEvent));
+        this.gameEventManager.listeners.registerAfterRenderListener(() => this.walkers.walk());
+        const animationPlayer = new AnimationPlayer(getServices, this.getStores);
+        this.gameEventManager.listeners.registerAfterRenderListener(() => animationPlayer.updateAnimations());
+        this.keyboardTrigger = new KeyboardTrigger(getServices);
+        this.afterRenderTrigger = new AfterRenderTrigger(getServices)
+
+        this.walkers = new Walkers(this.getStores);     
     }
 
     getScene(): Scene {

@@ -1,11 +1,10 @@
 import { Editor } from '../../Editor';
 import { ServiceLocator } from '../../services/ServiceLocator';
+import { Tool } from '../../services/tools/Tool';
 import { UpdateService } from '../../services/UpdateServices';
-import { Tool, ToolType } from '../../services/tools/Tool';
 import { View } from '../View';
 import { EditorCamera } from './EditorCamera';
 import { HelperMeshes } from './HelperMeshes';
-import { ZoomTool } from '../../services/tools/ZoomTool';
 (<any> window).earcut = require('earcut');
 
 export class RendererView extends View {
@@ -25,11 +24,11 @@ export class RendererView extends View {
     }
 
     getCamera(): EditorCamera {
-        return this.getGameFacade().gameEngine.camera;
+        return this.getServices().game.gameEngine.camera;
     }
 
     resize() {
-        this.getGameFacade().gameEngine.engine.resize();
+        this.getServices().game.gameEngine.engine.resize();
     }
 
     setup() {

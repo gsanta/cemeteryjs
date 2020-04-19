@@ -1,4 +1,3 @@
-import { GameFacade } from '../../game/GameFacade';
 import { Point } from '../../misc/geometry/shapes/Point';
 import { Editor } from '../Editor';
 import { IViewExporter } from '../services/export/IViewExporter';
@@ -41,10 +40,6 @@ export abstract class View {
 
     getGameApi(): GameService {
         return this.editor.gameApi;
-    }
-
-    getGameFacade(): GameFacade {
-        return this.editor.gameFacade;
     }
 
     abstract isVisible(): boolean;

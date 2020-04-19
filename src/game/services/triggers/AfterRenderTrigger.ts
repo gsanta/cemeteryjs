@@ -1,15 +1,13 @@
-
-
-import { GameFacade } from '../../GameFacade';
+import { ServiceLocator } from '../../../editor/services/ServiceLocator';
 
 export class AfterRenderTrigger {
-    private gameFacade: GameFacade;
+    private getServices: () => ServiceLocator;
 
-    constructor(gameFacade: GameFacade) {
-        this.gameFacade = gameFacade;
+    constructor(getServices: () => ServiceLocator) {
+        this.getServices = getServices;
 
-        this.gameFacade.gameEngine.scene.registerAfterRender(() => {
-            this.gameFacade.gameEventManager.triggerAfterRenderEvent();
+        this.getServices().game.gameEngine.scene.registerAfterRender(() => {
+            this.getServices().game.gameEventManager.triggerAfterRenderEvent();
         });
     }
 }
