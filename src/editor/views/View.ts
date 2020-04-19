@@ -16,6 +16,18 @@ export interface CanvasViewSettings {
     minSizePixel: number;
 }
 
+export function calcOffsetFromDom(id: string): Point {
+    if (typeof document !== 'undefined') {
+        const editorElement: HTMLElement = document.getElementById(id);
+        if (editorElement) {
+            const rect: ClientRect = editorElement.getBoundingClientRect();
+            return new Point(rect.left - editorElement.scrollLeft, rect.top - editorElement.scrollTop);
+        }
+    }
+
+    return new Point(0, 0);
+}
+
 export abstract class View {
     name: string;
     editor: Editor;

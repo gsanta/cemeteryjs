@@ -1,5 +1,5 @@
 import { ICameraInput, UniversalCamera, Vector3 } from 'babylonjs';
-import { EditorCamera } from './EditorCamera';
+import { RendererCamera } from './RendererCamera';
 
 export enum KeyboardInput {
     UP = 38,
@@ -9,7 +9,7 @@ export enum KeyboardInput {
 }
 
 export class KeyboardCameraInput implements ICameraInput<any> {
-    camera: EditorCamera;
+    camera: RendererCamera;
 
     private element: HTMLElement;
     private pressedKey: KeyboardInput;

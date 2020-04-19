@@ -1,11 +1,11 @@
 import { Color3, HemisphericLight, MeshBuilder, Vector3, Engine, Scene, Camera } from "babylonjs";
-import { EditorCamera } from "./EditorCamera";
+import { RendererCamera } from "./RendererCamera";
 import { HelperMeshes } from "./HelperMeshes";
 
 export class GameEngine {
     engine: Engine;
     scene: Scene;
-    camera: EditorCamera;
+    camera: RendererCamera;
     private helperMeshes: HelperMeshes;
     private canvas: HTMLCanvasElement;
 
@@ -17,7 +17,7 @@ export class GameEngine {
         let target = new Vector3(100, 0, 0);
         
         const scene = new Scene(this.engine);
-        this.camera = new EditorCamera(scene, this.canvas, target);
+        this.camera = new RendererCamera(this.engine, scene, this.canvas, target);
 
         this.helperMeshes = new HelperMeshes(this.scene, MeshBuilder);
         const light = new HemisphericLight('light', new Vector3(0, 1, 0), scene);

@@ -1,8 +1,8 @@
-import { Point } from "../../../../misc/geometry/shapes/Point";
-import { Rectangle } from "../../../../misc/geometry/shapes/Rectangle";
-import { ICamera } from '../../renderer/ICamera';
+import { Point } from "../../../misc/geometry/shapes/Point";
+import { Rectangle } from "../../../misc/geometry/shapes/Rectangle";
+import { ICamera } from '../renderer/ICamera';
 
-export class Camera implements ICamera {
+export class CanvasCamera implements ICamera {
     readonly screenSize: Point;
     private viewBox: Rectangle;
 
@@ -76,10 +76,10 @@ export class Camera implements ICamera {
         return this.screenSize.getVectorCenter()
     }
 
-    private getRatioOfViewBox(camera: Camera, ratio: Point): Point {
+    private getRatioOfViewBox(camera: CanvasCamera, ratio: Point): Point {
         return camera.viewBox.getSize().mul(ratio.x, ratio.y);
     }
     
 }
 
-export const nullCamera = new Camera(new Point(100, 100));
+export const nullCamera = new CanvasCamera(new Point(100, 100));

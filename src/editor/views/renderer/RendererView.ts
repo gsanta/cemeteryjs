@@ -2,8 +2,8 @@ import { Editor } from '../../Editor';
 import { ServiceLocator } from '../../services/ServiceLocator';
 import { Tool } from '../../services/tools/Tool';
 import { UpdateService } from '../../services/UpdateServices';
-import { View } from '../View';
-import { EditorCamera } from './EditorCamera';
+import { View, calcOffsetFromDom } from '../View';
+import { RendererCamera } from './RendererCamera';
 import { HelperMeshes } from './HelperMeshes';
 (<any> window).earcut = require('earcut');
 
@@ -23,7 +23,7 @@ export class RendererView extends View {
         this.update = this.update.bind(this);
     }
 
-    getCamera(): EditorCamera {
+    getCamera(): RendererCamera {
         return this.getServices().game.gameEngine.camera;
     }
 
@@ -65,4 +65,8 @@ export class RendererView extends View {
     setVisible(visible: boolean) {
         this.visible = visible;
     }    
+
+    getOffset() {
+        return calcOffsetFromDom(this.getId());
+    }
 }

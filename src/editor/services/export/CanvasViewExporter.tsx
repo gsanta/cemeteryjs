@@ -1,7 +1,7 @@
 import { IViewExporter } from "./IViewExporter";
 import { Stores } from "../../stores/Stores";
 import { CanvasView } from "../../views/canvas/CanvasView";
-import { Camera } from "../../views/canvas/models/Camera";
+import { CanvasCamera } from "../../views/canvas/CanvasCamera";
 import * as React from 'react';
 
 export class CanvasViewExporter implements IViewExporter {
@@ -18,8 +18,8 @@ export class CanvasViewExporter implements IViewExporter {
         return (
             <g
                 data-view-type={CanvasView.id}
-                data-zoom={(canvasView.getCamera() as Camera).getScale()}
-                data-translate={(canvasView.getCamera() as Camera).getTranslate().toString()}
+                data-zoom={(canvasView.getCamera() as CanvasCamera).getScale()}
+                data-translate={(canvasView.getCamera() as CanvasCamera).getTranslate().toString()}
             />
         )
     }

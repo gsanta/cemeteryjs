@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { RendererView } from '../RendererView';
 import { WindowToolbarStyled } from '../../../gui/windows/WindowToolbar';
 import { RendererToolbarComponent } from './RendererToolbarComponent';
+import { WheelListener } from '../../../services/WheelListener';
 
 const RendererStyled = styled.div`
     background: #33334C;
@@ -32,9 +33,11 @@ export class RendererComponent extends React.Component {
     static contextType = AppContext;
     private canvasRef: React.RefObject<HTMLCanvasElement>;
     context: AppContextType;
+    private wheelListener: WheelListener;
 
     constructor(props: {}) {
         super(props);
+        this.wheelListener = new WheelListener(() => this.context.getServices());
 
         this.canvasRef = React.createRef();
     }
@@ -70,6 +73,7 @@ export class RendererComponent extends React.Component {
                         onMouseLeave={(e) => this.context.getServices().mouse.onMouseOut(e.nativeEvent)}
                         onMouseOver={() => view.over()}
                         onMouseOut={() => view.out()}
+                        onWheel={(e) => this.wheelListener.onWheel(e.nativeEvent)}
                     />
                 </RendererStyled>
         );

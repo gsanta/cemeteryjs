@@ -5,10 +5,9 @@ import { IViewExporter } from '../../services/export/IViewExporter';
 import { CanvasViewImporter } from '../../services/import/CanvasViewImporter';
 import { IViewImporter } from '../../services/import/IViewImporter';
 import { ServiceLocator } from '../../services/ServiceLocator';
-import { ToolType } from '../../services/tools/Tool';
 import { Stores } from '../../stores/Stores';
-import { View } from '../View';
-import { Camera, nullCamera } from './models/Camera';
+import { View, calcOffsetFromDom } from '../View';
+import { CanvasCamera, nullCamera } from './CanvasCamera';
 import { LevelSettings } from './settings/LevelSettings';
 import { MeshSettings } from './settings/MeshSettings';
 import { PathSettings } from './settings/PathSettings';
@@ -19,25 +18,13 @@ export function cameraInitializer(canvasId: string) {
 
         if (svg) {
             const rect: ClientRect = svg.getBoundingClientRect();
-            return new Camera(new Point(rect.width, rect.height));
+            return new CanvasCamera(new Point(rect.width, rect.height));
         } else {
             return nullCamera;
         }
     } else {
         return nullCamera;
     }
-}
-
-function calcOffsetFromDom(bitmapEditorId: string): Point {
-    if (typeof document !== 'undefined') {
-        const editorElement: HTMLElement = document.getElementById(bitmapEditorId);
-        if (editorElement) {
-            const rect: ClientRect = editorElement.getBoundingClientRect();
-            return new Point(rect.left - editorElement.scrollLeft, rect.top - editorElement.scrollTop);
-        }
-    }
-
-    return new Point(0, 0);
 }
 
 export enum CanvasTag {
@@ -52,7 +39,7 @@ export class CanvasView extends View {
     
     exporter: IViewExporter;
     importer: IViewImporter;
-    private camera: Camera = nullCamera;
+    private camera: CanvasCamera = nullCamera;
 
     constructor(editor: Editor, getServices: () => ServiceLocator, getStores: () => Stores) {
         super(editor, getServices, getStores);
@@ -98,7 +85,7 @@ export class CanvasView extends View {
         return this.camera;
     }
 
-    setCamera(camera: Camera) {
+    setCamera(camera: CanvasCamera) {
         this.camera = camera;
     }
 }
