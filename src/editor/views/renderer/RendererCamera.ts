@@ -14,6 +14,7 @@ export class RendererCamera extends UniversalCamera implements ICamera {
     private origPosition = this.position.clone();
     private engine: Engine;
     private scene: Scene;
+    private diff: Vector3;
 
     constructor(engine: Engine, scene: Scene, canvas: HTMLCanvasElement, target: Vector3) {
         super('camera1', new Vector3(20, 50, -120), scene);
@@ -22,6 +23,8 @@ export class RendererCamera extends UniversalCamera implements ICamera {
         this.targetPosition = new Vector3(20, 0, -60);
         this.startY = 50;
         this.setTarget(this.targetPosition.clone());
+        this.diff = this.targetPosition.subtract(this.position);
+        this.diff.y = 0;
         this.rotation.y = 0;
         this.inputs.clear();
         this.inputs.add(new KeyboardCameraInput());
@@ -83,11 +86,13 @@ export class RendererCamera extends UniversalCamera implements ICamera {
 
 
         this.setTopLeftCorner(canvasPoint, scale);
+        // this.zoom(scale);
         // this.moveBy(this.getRatioOfViewBox(this, pointerRatio).negate());
     }
 
     setTopLeftCorner(canvasPoint: Point, scale: number) {
-        this.position = new Vector3(canvasPoint.x, this.position.y, canvasPoint.y);
+        const direction =  new Vector3(-canvasPoint.x, 0, -canvasPoint.y).normalize();
+        this.position.subtractInPlace(direction.multiplyByFloats(2, 2, 2));
     }
 
     moveBy(delta: Point) {
