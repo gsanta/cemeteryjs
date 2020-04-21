@@ -8,6 +8,7 @@ export enum KeyboardInput {
     RIGHT = 39
 }
 
+// TODO: get rid of this class
 export class KeyboardCameraInput implements ICameraInput<any> {
     camera: RendererCamera;
 
@@ -56,30 +57,6 @@ export class KeyboardCameraInput implements ICameraInput<any> {
             const targetPosition = camera.getTarget();
 
             const diff = targetPosition.subtract(position);
-
-            switch(this.pressedKey) {
-                case KeyboardInput.LEFT:
-                    this.camera.moveLeft();
-                    break;
-                case KeyboardInput.RIGHT:
-                    this.camera.moveRight();
-                    break;
-                case KeyboardInput.UP:
-                    if (this.isCtrlPressed) {
-                        this.camera.zoomOut();
-                    } else {
-                        this.camera.moveUp();
-                    }
-                    break;
-                case KeyboardInput.DOWN:
-                    if (this.isCtrlPressed) {
-                        this.camera.zoomIn(5);
-                    } else {
-                        this.camera.moveDown();
-                    }
-                    break;
-                    
-            }
 
             camera.setTarget(position.add(diff));
     }

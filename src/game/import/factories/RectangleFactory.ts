@@ -3,6 +3,7 @@ import { Stores } from '../../../editor/stores/Stores';
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
 import { MeshObject } from '../../models/objects/MeshObject';
 import { MaterialBuilder } from './MaterialFactory';
+import { Point } from '../../../misc/geometry/shapes/Point';
 
 export class RectangleFactory  {
     private height: number;
@@ -15,6 +16,21 @@ export class RectangleFactory  {
         this.getStores = getStores;
         this.height = height;
         this.materialBuilder = MaterialBuilder;
+    }
+
+    createMesh2(scene: Scene, point: Point) {
+        const mesh = MeshBuilder.CreateBox(
+            'abcd',
+            {
+                width: 1,
+                depth: 1,
+                height: 1
+            },
+            scene
+        );
+
+        mesh.translate(new Vector3(point.x, 0, point.y), 1, Space.WORLD);
+
     }
 
     createMesh(meshObject: MeshObject, scene: Scene): Mesh {

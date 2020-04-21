@@ -79,7 +79,6 @@ export class CanvasCamera implements ICamera {
     private getRatioOfViewBox(camera: CanvasCamera, ratio: Point): Point {
         return camera.viewBox.getSize().mul(ratio.x, ratio.y);
     }
-    
 }
 
 export const nullCamera = new CanvasCamera(new Point(100, 100));

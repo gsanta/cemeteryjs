@@ -42,8 +42,7 @@ export class PointerService {
 
         this.isDown = true;
         this.pointer.down = this.getPointWithOffset(e.pointers[0].pos); 
-        // this.getStores().viewStore.getActiveView().getSelectedTool().down();
-        this.getServices().camera.zoomToNextStep(this.pointer.down);
+        this.getStores().viewStore.getActiveView().getSelectedTool().down();
         this.getServices().update.runScheduledTasks();
     }
 

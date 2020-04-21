@@ -14,7 +14,7 @@ export class CameraService {
     private getServices: () => ServiceLocator;
     private getStores: () => Stores;
 
-    constructor(getServices: () => ServiceLocator, getStores: () => Stores, numberOfSteps: number = 20) {
+    constructor(getServices: () => ServiceLocator, getStores: () => Stores, numberOfSteps: number = 100) {
         this.NUM_OF_STEPS = numberOfSteps;
         this.getServices = getServices;
         this.getStores = getStores;
