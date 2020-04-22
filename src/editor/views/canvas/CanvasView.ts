@@ -7,23 +7,19 @@ import { IViewImporter } from '../../services/import/IViewImporter';
 import { ServiceLocator } from '../../services/ServiceLocator';
 import { Stores } from '../../stores/Stores';
 import { View, calcOffsetFromDom } from '../View';
-import { CanvasCamera, nullCamera } from './CanvasCamera';
+import { CanvasCamera } from './CanvasCamera';
 import { LevelSettings } from './settings/LevelSettings';
 import { MeshSettings } from './settings/MeshSettings';
 import { PathSettings } from './settings/PathSettings';
 
-export function cameraInitializer(canvasId: string) {
+export function cameraInitializer(canvasId: string, getServices: () => ServiceLocator, getStores: () => Stores) {
     if (typeof document !== 'undefined') {
         const svg: HTMLElement = document.getElementById(canvasId);
 
         if (svg) {
             const rect: ClientRect = svg.getBoundingClientRect();
-            return new CanvasCamera(new Point(rect.width, rect.height));
-        } else {
-            return nullCamera;
+            return new CanvasCamera(getServices, getStores, new Point(rect.width, rect.height));
         }
-    } else {
-        return nullCamera;
     }
 }
 
@@ -39,7 +35,7 @@ export class CanvasView extends View {
     
     exporter: IViewExporter;
     importer: IViewImporter;
-    private camera: CanvasCamera = nullCamera;
+    private camera: CanvasCamera;
 
     constructor(editor: Editor, getServices: () => ServiceLocator, getStores: () => Stores) {
         super(editor, getServices, getStores);
@@ -79,8 +75,8 @@ export class CanvasView extends View {
     }
 
     getCamera() {
-        if (this.camera === nullCamera) {
-            this.camera = cameraInitializer(CanvasView.id);
+        if (!this.camera) {
+            this.camera = cameraInitializer(CanvasView.id, this.getServices, this.getStores);
         }
         return this.camera;
     }
