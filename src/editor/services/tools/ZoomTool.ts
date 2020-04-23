@@ -27,7 +27,7 @@ export class ZoomTool extends AbstractTool {
         const prevScale = camera.getScale(); 
         const prevTranslate = camera.getTranslate(); 
     
-        view.setCamera(cameraInitializer(view.getId(), this.getServices, this.getStores));
+        view.updateCamera();
         view.getCamera().zoom(prevScale);
         view.getCamera().moveTo(prevTranslate.clone());
 

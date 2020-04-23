@@ -13,13 +13,11 @@ import { PointerService } from './input/PointerService';
 import { LevelService } from "./LevelService";
 import { LocalStoreService } from "./LocalStroreService";
 import { MeshLoaderService } from "./MeshLoaderService";
-import { CameraService } from "./navigation/CameraService";
 import { SettingsService } from "./SettingsService";
 import { ToolService } from "./tools/ToolService";
 import { UpdateService } from "./UpdateServices";
 
 export class ServiceLocator {
-    camera: CameraService;
     hotkey: HotkeyService;
     tools: ToolService;
     storage: LocalStoreService;
@@ -38,7 +36,6 @@ export class ServiceLocator {
     game: GameService;
 
     constructor(editor: Editor, getStores: () => Stores) {
-        this.camera = new CameraService(() => this, getStores);
         this.hotkey = new HotkeyService(() => this);
         this.tools = new ToolService(() => this, getStores);
         this.storage = new LocalStoreService(editor, () => this);

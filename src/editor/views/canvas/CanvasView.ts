@@ -21,6 +21,8 @@ export function cameraInitializer(canvasId: string, getServices: () => ServiceLo
             return new CanvasCamera(getServices, getStores, new Point(rect.width, rect.height));
         }
     }
+
+    return new CanvasCamera(getServices, getStores, new Point(100, 100));
 }
 
 export enum CanvasTag {
@@ -39,6 +41,8 @@ export class CanvasView extends View {
 
     constructor(editor: Editor, getServices: () => ServiceLocator, getStores: () => Stores) {
         super(editor, getServices, getStores);
+
+        this.camera = cameraInitializer(CanvasView.id, this.getServices, this.getStores);
 
         this.getStores().viewStore.setActiveView(this);
 
@@ -75,13 +79,10 @@ export class CanvasView extends View {
     }
 
     getCamera() {
-        if (!this.camera) {
-            this.camera = cameraInitializer(CanvasView.id, this.getServices, this.getStores);
-        }
         return this.camera;
     }
 
-    setCamera(camera: CanvasCamera) {
-        this.camera = camera;
+    updateCamera() {
+        this.camera = cameraInitializer(CanvasView.id, this.getServices, this.getStores);
     }
 }

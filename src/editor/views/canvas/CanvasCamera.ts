@@ -14,7 +14,7 @@ export class CanvasCamera implements ICamera {
 
     readonly LOG_ZOOM_MIN = Math.log(CanvasCamera.ZOOM_MIN);
     readonly LOG_ZOOM_MAX = Math.log(CanvasCamera.ZOOM_MAX);
-    readonly NUM_OF_STEPS: number;
+    readonly NUM_OF_STEPS: number = 100;
     private getServices: () => ServiceLocator;
     private getStores: () => Stores;
 

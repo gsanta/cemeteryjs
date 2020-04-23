@@ -4,7 +4,6 @@ import { ZoomInIconComponent } from '../../../gui/icons/tools/ZoomInIconComponen
 import { ZoomOutIconComponent } from '../../../gui/icons/tools/ZoomOutIconComponent';
 import { RendererView } from '../RendererView';
 import { ToolType } from '../../../services/tools/Tool';
-import { ZoomTool } from '../../../services/tools/ZoomTool';
 import { AbstractToolbarComponent } from '../../AbstractToolbarComponent';
 
 export class RendererToolbarComponent extends AbstractToolbarComponent {
@@ -28,11 +27,11 @@ export class RendererToolbarComponent extends AbstractToolbarComponent {
     }
 
     private zoomIn() {
-        this.context.getServices().camera.zoomToNextStep();
+        this.context.getStores().viewStore.getActiveView().getCamera().zoomIn(false);
     }
 
     private zoomOut() {
-        this.context.getServices().camera.zoomToPrevStep();
+        this.context.getStores().viewStore.getActiveView().getCamera().zoomOut(false);
     }
 
     private isToolActive(toolType: ToolType) {

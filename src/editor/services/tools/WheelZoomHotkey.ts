@@ -25,13 +25,14 @@ export class WheelZoomHotkey extends Hotkey {
         this.prevWheelState = this.getServices().pointer.wheelState;
 
         const point = this.getServices().pointer.pointer.curr;
-
+        
+        
         switch(this.getServices().pointer.wheel) {
             case Wheel.UP:
-                this.getServices().camera.zoomToNextStep(point);
+                this.getStores().viewStore.getActiveView().getCamera().zoomIn(true);
                 break;
             case Wheel.DOWN:
-                this.getServices().camera.zoomToPrevStep(point);
+                this.getStores().viewStore.getActiveView().getCamera().zoomOut(true);
                 break;
         }
     
