@@ -10,7 +10,7 @@ import { Stores } from './stores/Stores';
 
 export interface ViewFactory {
     name: string;
-    getWindowController(editor: Editor, services: ServiceLocator, stores: Stores): View;
+    getWindowController(editor: Editor, getServices: () => ServiceLocator, getStores: () => Stores): View;
     renderWindowComponent(): JSX.Element;
     renderToolbarComponent(): JSX.Element;
 }

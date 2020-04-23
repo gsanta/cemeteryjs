@@ -4,7 +4,6 @@ import { HelperMeshes } from "./HelperMeshes";
 export class GameEngine {
     engine: Engine;
     scene: Scene;
-    camera: ArcRotateCamera;
     private helperMeshes: HelperMeshes;
     private canvas: HTMLCanvasElement;
 
@@ -16,9 +15,7 @@ export class GameEngine {
         let target = new Vector3(100, 0, 0);
         
         const scene = new Scene(this.engine);
-        this.camera = new ArcRotateCamera("Camera", -Math.PI / 2, 0, 150, Vector3.Zero(), scene);
-        
-        // this.camera = new RendererCamera(this.engine, scene, this.canvas, target);
+
 
         this.helperMeshes = new HelperMeshes(this.scene, MeshBuilder);
         const light = new HemisphericLight('light', new Vector3(0, 1, 0), scene);

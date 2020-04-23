@@ -6,7 +6,17 @@ import { View, calcOffsetFromDom } from '../View';
 // import { RendererCamera } from './RendererCamera';
 import { HelperMeshes } from './HelperMeshes';
 import { ICamera } from './ICamera';
+import { RendererCamera } from './RendererCamera';
+import { Stores } from '../../stores/Stores';
 (<any> window).earcut = require('earcut');
+
+export function cameraInitializer(getServices: () => ServiceLocator, getStores: () => Stores) {
+    if (getServices().game) {
+        return new RendererCamera(getServices, getStores);
+    }
+
+    return null;
+}
 
 export class RendererView extends View {
     static id = 'webgl-editor';
@@ -16,17 +26,21 @@ export class RendererView extends View {
     private helperMeshes: HelperMeshes;
 
     private renderCanvasFunc: () => void;
+    private camera: RendererCamera;
 
-    constructor(editor: Editor, services: ServiceLocator) {
-        super(editor, () => services, () => editor.stores);
+    constructor(editor: Editor, getServices: () => ServiceLocator, getStores: () => Stores) {
+        super(editor, getServices, getStores);
 
-        this.updateService = new UpdateService(this.editor, () => services, () => editor.stores);
+        this.updateService = new UpdateService(this.editor, getServices, getStores);
         this.update = this.update.bind(this);
     }
 
     getCamera(): ICamera {
-        return null;
-        // return this.getServices().game.gameEngine.camera;
+        if (!this.camera) {
+            this.camera = cameraInitializer(this.getServices, this.getStores);
+        }
+
+        return this.camera;
     }
 
     resize() {
@@ -36,6 +50,7 @@ export class RendererView extends View {
     setup() {
         this.selectedTool = this.getServices().tools.zoom;
 
+        this.updateCamera();
         this.update();
     }
 
@@ -70,5 +85,11 @@ export class RendererView extends View {
 
     getOffset() {
         return calcOffsetFromDom(this.getId());
+    }
+
+    updateCamera() {
+        if (!this.camera) {
+            this.camera = cameraInitializer(this.getServices, this.getStores);
+        }
     }
 }

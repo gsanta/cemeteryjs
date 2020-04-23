@@ -12,9 +12,9 @@ export class CanvasFactory implements ViewFactory {
     
     private controller: CanvasView;
 
-    getWindowController(editor: Editor, services: ServiceLocator, stores: Stores): View {
+    getWindowController(editor: Editor, getServices: () => ServiceLocator, getStores: () => Stores): View {
         if (!this.controller) {
-            this.controller = new CanvasView(editor, () => services, () => stores);
+            this.controller = new CanvasView(editor, getServices, getStores);
         }
         return this.controller;
     }

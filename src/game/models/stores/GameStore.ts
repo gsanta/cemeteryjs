@@ -1,7 +1,6 @@
 import { MeshObject } from '../objects/MeshObject';
 import { IGameObject, GameObjectType } from '../objects/IGameObject';
 import { RouteObject } from '../objects/RouteObject';
-import { without } from '../../../misc/geometry/utils/Functions';
 import { Stores } from '../../../editor/stores/Stores';
 
 export class GameStore {

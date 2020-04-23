@@ -38,7 +38,7 @@ export class Editor {
     setup(canvas: HTMLCanvasElement) {
         this.gameApi = new GameService(canvas, () => this.services, () => this.stores);
 
-        this.windowFactories.forEach(factory => factory.getWindowController(this, this.services, this.stores).setup());
+        this.windowFactories.forEach(factory => factory.getWindowController(this, () => this.services, () => this.stores).setup());
         
         this.services.storage.loadLevelIndexes()
             .then((indexes: number[]) => {
@@ -60,11 +60,11 @@ export class Editor {
     }
 
     getWindowControllerByName(name: string) {
-        return this.windowFactories.find(factory => factory.name === name).getWindowController(this, this.services, this.stores);
+        return this.windowFactories.find(factory => factory.name === name).getWindowController(this, () => this.services, () => this.stores);
     }
 
     getWindowControllers() {
-        return this.windowFactories.map(factory => factory.getWindowController(this, this.services, this.stores));
+        return this.windowFactories.map(factory => factory.getWindowController(this, () => this.services, () => this.stores));
     }
 
     getWindowFactory(name: string) {

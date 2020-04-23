@@ -33,7 +33,7 @@ export class CanvasCamera implements ICamera {
         this.viewBox = new Rectangle(topLeft, new Point(topLeft.x + width, topLeft.y + height));
     }
 
-    zoomToPosition(canvasPoint: Point, scale: number) {
+    private zoomToPosition(canvasPoint: Point, scale: number) {
         const screenPoint = this.canvasToScreenPoint(canvasPoint);
         const pointerRatio = new Point(screenPoint.x / this.screenSize.x, screenPoint.y / this.screenSize.y);
 
@@ -95,26 +95,24 @@ export class CanvasCamera implements ICamera {
     }
 
     zoomIn(zoomToPointer: boolean) {
-        const camera = this.getStores().viewStore.getActiveView().getCamera();
-        const canvasPos = zoomToPointer ? this.getServices().pointer.pointer.curr : camera.screenToCanvasPoint(camera.getCenterPoint());
+        const canvasPos = zoomToPointer ? this.getServices().pointer.pointer.curr : this.screenToCanvasPoint(this.getCenterPoint());
         
         const nextZoomLevel = this.getNextManualZoomStep();
 
         if (nextZoomLevel) {
-            camera.zoomToPosition(canvasPos, nextZoomLevel);
+            this.zoomToPosition(canvasPos, nextZoomLevel);
 
             this.getServices().update.runImmediately(UpdateTask.RepaintCanvas);
         }
     }
 
     zoomOut(zoomToPointer: boolean) {
-        const camera = this.getStores().viewStore.getActiveView().getCamera();
-        const canvasPos = zoomToPointer ? this.getServices().pointer.pointer.curr : camera.screenToCanvasPoint(camera.getCenterPoint());
+        const canvasPos = zoomToPointer ? this.getServices().pointer.pointer.curr : this.screenToCanvasPoint(this.getCenterPoint());
 
         const prevZoomLevel = this.getPrevManualZoomLevel();
         
         if (prevZoomLevel) {
-            camera.zoomToPosition(canvasPos, prevZoomLevel);
+            this.zoomToPosition(canvasPos, prevZoomLevel);
 
             this.getServices().update.runImmediately(UpdateTask.RepaintCanvas);
         }

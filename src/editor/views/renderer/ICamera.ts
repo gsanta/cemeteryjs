@@ -2,7 +2,6 @@ import { Point } from "../../../misc/geometry/shapes/Point";
 
 export interface ICamera {
     zoom(scale: number);
-    zoomToPosition(canvasPoint: Point, scale: number);
     zoomIn(zoomToPointer: boolean);
     zoomOut(zoomToPointer: boolean);
     screenToCanvasPoint(screenPoint: Point): Point;
@@ -11,4 +10,5 @@ export interface ICamera {
     getCenterPoint(): Point;
     getScale(): number;
     getTranslate(): Point;
+    pan(): void;
 }

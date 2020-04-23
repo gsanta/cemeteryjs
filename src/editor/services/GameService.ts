@@ -15,6 +15,7 @@ import { ImportService } from "./import/ImportService";
 import { IConceptConverter } from "./convert/IConceptConverter";
 import { Walkers } from "../../game/services/walkers/Walkers";
 import { PlayerListener } from "../../game/services/listeners/PlayerListener";
+import { Engine } from "babylonjs";
 
 export class GameService {
     serviceName = 'game-service';
@@ -57,10 +58,6 @@ export class GameService {
         this.afterRenderTrigger = new AfterRenderTrigger(getServices)
 
         this.walkers = new Walkers(this.getStores);     
-    }
-
-    getScene(): Scene {
-        return this.gameEngine.scene; 
     }
 
     resetPath(meshObjectName: string) {
@@ -123,5 +120,13 @@ export class GameService {
         this.deleteConcepts(concepts);
 
         concepts.forEach(concept => this.addConcept(concept))
+    }
+
+    getEngine(): Engine {
+        return this.gameEngine.engine;
+    }
+
+    getScene(): Scene {
+        return this.gameEngine.scene;
     }
 }

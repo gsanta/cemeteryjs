@@ -26,6 +26,8 @@ export class PointerService {
     isDrag = false;
     wheel: Wheel = Wheel.IDLE;
     wheelState: number = 0;
+    prevWheelState: number = undefined;
+    wheelDiff: number = undefined;
 
     pointer: MousePointer = new MousePointer();
 
@@ -80,7 +82,9 @@ export class PointerService {
     }
 
     pointerWheel(e: IPointerEvent): void {
+        this.prevWheelState = this.wheelState;
         this.wheelState += e.deltaY;
+        this.wheelDiff = this.wheelState - this.prevWheelState;
 
         if (e.deltaY < 0) {
             this.wheel = Wheel.UP;
