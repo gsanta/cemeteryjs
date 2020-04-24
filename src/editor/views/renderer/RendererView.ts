@@ -12,7 +12,7 @@ import { Stores } from '../../stores/Stores';
 
 export function cameraInitializer(getServices: () => ServiceLocator, getStores: () => Stores) {
     if (getServices().game) {
-        return new RendererCamera(getServices, getStores);
+        return new RendererCamera(getServices);
     }
 
     return null;

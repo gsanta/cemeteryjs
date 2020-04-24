@@ -1,10 +1,9 @@
 import { Point } from "../../../misc/geometry/shapes/Point";
 import { Rectangle } from "../../../misc/geometry/shapes/Rectangle";
-import { ICamera } from '../renderer/ICamera';
-import { Stores } from "../../stores/Stores";
+import { MousePointer } from "../../services/input/MouseService";
 import { ServiceLocator } from "../../services/ServiceLocator";
 import { UpdateTask } from "../../services/UpdateServices";
-import { MousePointer } from "../../services/input/MouseService";
+import { ICamera } from '../renderer/ICamera';
 
 export class CanvasCamera implements ICamera {
     readonly screenSize: Point;
@@ -17,11 +16,9 @@ export class CanvasCamera implements ICamera {
     readonly LOG_ZOOM_MAX = Math.log(CanvasCamera.ZOOM_MAX);
     readonly NUM_OF_STEPS: number = 100;
     private getServices: () => ServiceLocator;
-    private getStores: () => Stores;
 
-    constructor(getServices: () => ServiceLocator, getStores: () => Stores, canvasSize: Point) {
+    constructor(getServices: () => ServiceLocator, canvasSize: Point) {
         this.getServices = getServices;
-        this.getStores = getStores;
         this.screenSize = canvasSize;
         this.viewBox = new Rectangle(new Point(0, 0), new Point(canvasSize.x, canvasSize.y));
     }
@@ -29,14 +26,6 @@ export class CanvasCamera implements ICamera {
     pan(pointer: MousePointer) {
         const delta = pointer.getScreenDiff().div(this.getScale());
         this.setViewBox(this.viewBox.clone().translate(new Point(-delta.x, -delta.y)));
-    }
-
-    zoom(scale: number) {
-        let width = this.screenSize.x / scale;
-        let height = this.screenSize.y / scale;
-
-        const topLeft = this.viewBox.topLeft;
-        this.viewBox = new Rectangle(topLeft, new Point(topLeft.x + width, topLeft.y + height));
     }
 
     private zoomToPosition(canvasPoint: Point, scale: number) {
@@ -100,10 +89,15 @@ export class CanvasCamera implements ICamera {
         return camera.viewBox.getSize().mul(ratio.x, ratio.y);
     }
 
-    zoomIn(zoomToPointer: boolean) {
-        const canvasPos = zoomToPointer ? this.getServices().pointer.pointer.curr : this.screenToCanvasPoint(this.getCenterPoint());
-        
-        const nextZoomLevel = this.getNextManualZoomStep();
+    zoomWheel() {
+        const canvasPos = this.getServices().pointer.pointer.curr;        
+        let nextZoomLevel: number
+
+        if (this.getServices().pointer.prevWheelState - this.getServices().pointer.wheelState > 0) {
+            nextZoomLevel = this.getNextManualZoomStep();
+        } else {
+            nextZoomLevel = this.getPrevManualZoomLevel();
+        }
 
         if (nextZoomLevel) {
             this.zoomToPosition(canvasPos, nextZoomLevel);
@@ -112,8 +106,20 @@ export class CanvasCamera implements ICamera {
         }
     }
 
-    zoomOut(zoomToPointer: boolean) {
-        const canvasPos = zoomToPointer ? this.getServices().pointer.pointer.curr : this.screenToCanvasPoint(this.getCenterPoint());
+    zoomIn() {
+        const canvasPos = this.screenToCanvasPoint(this.getCenterPoint());
+
+        const prevZoomLevel = this.getNextManualZoomStep();
+        
+        if (prevZoomLevel) {
+            this.zoomToPosition(canvasPos, prevZoomLevel);
+
+            this.getServices().update.runImmediately(UpdateTask.RepaintCanvas);
+        }
+    }
+
+    zoomOut() {
+        const canvasPos = this.screenToCanvasPoint(this.getCenterPoint());
 
         const prevZoomLevel = this.getPrevManualZoomLevel();
         
@@ -125,18 +131,14 @@ export class CanvasCamera implements ICamera {
     }
 
     private getNextManualZoomStep(): number {
-        const camera = this.getStores().viewStore.getActiveView().getCamera();
-
-        let currentStep = this.calcLogarithmicStep(camera.getScale());
+        let currentStep = this.calcLogarithmicStep(this.getScale());
         currentStep = currentStep >= this.NUM_OF_STEPS - 1 ? this.NUM_OF_STEPS - 1 : currentStep
 
         return this.calcLogarithmicZoom(currentStep + 1);
     }
 
     private getPrevManualZoomLevel(): number {
-        const camera = this.getStores().viewStore.getActiveView().getCamera();
-
-        let currentStep = this.calcLogarithmicStep(camera.getScale());
+        let currentStep = this.calcLogarithmicStep(this.getScale());
         currentStep = currentStep <= 1 ? 1 : currentStep
 
         return this.calcLogarithmicZoom(currentStep - 1);

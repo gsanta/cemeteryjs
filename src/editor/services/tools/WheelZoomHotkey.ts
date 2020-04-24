@@ -1,10 +1,6 @@
-import { ServiceLocator } from "../ServiceLocator";
-import { Hotkey } from "../input/HotkeyService";
-import { Wheel } from "../input/PointerService";
 import { Stores } from "../../stores/Stores";
-import { CanvasView } from "../../views/canvas/CanvasView";
-import { ToolType } from "./Tool";
-import { ZoomTool } from "./ZoomTool";
+import { Hotkey } from "../input/HotkeyService";
+import { ServiceLocator } from "../ServiceLocator";
 
 export class WheelZoomHotkey extends Hotkey {
 
@@ -24,17 +20,9 @@ export class WheelZoomHotkey extends Hotkey {
 
         this.prevWheelState = this.getServices().pointer.wheelState;
 
-        const point = this.getServices().pointer.pointer.curr;
-        
-        
-        switch(this.getServices().pointer.wheel) {
-            case Wheel.UP:
-                this.getStores().viewStore.getActiveView().getCamera().zoomIn(true);
-                break;
-            case Wheel.DOWN:
-                this.getStores().viewStore.getActiveView().getCamera().zoomOut(true);
-                break;
-        }
+        console.log(this.getServices().pointer.wheelState)
+
+        this.getStores().viewStore.getActiveView().getCamera().zoomWheel();
     
         return true;
     }

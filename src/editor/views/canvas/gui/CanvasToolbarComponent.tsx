@@ -62,10 +62,10 @@ export class CanvasToolbarComponent extends AbstractToolbarComponent {
     }
 
     private zoomIn() {
-        this.context.getStores().viewStore.getActiveView().getCamera().zoomIn(false);
+        this.context.getStores().viewStore.getActiveView().getCamera().zoomIn();
     }
 
     private zoomOut() {
-        this.context.getStores().viewStore.getActiveView().getCamera().zoomOut(false);
+        this.context.getStores().viewStore.getActiveView().getCamera().zoomOut();
     }
 }

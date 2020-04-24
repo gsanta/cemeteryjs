@@ -26,7 +26,7 @@ export class PointerService {
     isDrag = false;
     wheel: Wheel = Wheel.IDLE;
     wheelState: number = 0;
-    prevWheelState: number = undefined;
+    prevWheelState: number = 0;
     wheelDiff: number = undefined;
 
     pointer: MousePointer = new MousePointer();

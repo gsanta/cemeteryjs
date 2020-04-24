@@ -18,11 +18,11 @@ export function cameraInitializer(canvasId: string, getServices: () => ServiceLo
 
         if (svg) {
             const rect: ClientRect = svg.getBoundingClientRect();
-            return new CanvasCamera(getServices, getStores, new Point(rect.width, rect.height));
+            return new CanvasCamera(getServices, new Point(rect.width, rect.height));
         }
     }
 
-    return new CanvasCamera(getServices, getStores, new Point(100, 100));
+    return new CanvasCamera(getServices, new Point(100, 100));
 }
 
 export enum CanvasTag {
