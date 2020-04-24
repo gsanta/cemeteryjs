@@ -5,6 +5,7 @@ import { ICamera } from './ICamera';
 import { ServiceLocator } from '../../services/ServiceLocator';
 import { Stores } from '../../stores/Stores';
 import { PointerService } from '../../services/input/PointerService';
+import { MousePointer } from '../../services/input/MouseService';
 
 export class RendererCamera implements ICamera {
     // private targetPosition: Vector3;
@@ -18,7 +19,8 @@ export class RendererCamera implements ICamera {
     private getServices: () => ServiceLocator;
     private getStores: () => Stores;
     private plane = Plane.FromPositionAndNormal(Vector3.Zero(), Axis.Y);
-    private inertialPanning = BABYLON.Vector3.Zero();
+    private inertialPanning = Vector3.Zero();
+    private initialPos: Point;
 
     constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
         this.getServices = getServices;
@@ -32,6 +34,23 @@ export class RendererCamera implements ICamera {
         this.camera.upperRadiusLimit = 1000;
         this.camera.upperBetaLimit = Math.PI / 2 - 0.1;
         this.camera.angularSensibilityX = this.camera.angularSensibilityY = 500;
+
+        scene.onBeforeRenderObservable.add(
+            () => {
+                if (this.inertialPanning.x !== 0 || this.inertialPanning.y !== 0 || this.inertialPanning.z !== 0) {
+                    this.camera.target.addInPlace(this.inertialPanning);
+                    this.inertialPanning.scaleInPlace(this.camera.inertia);
+                    zeroIfClose(this.inertialPanning);
+                }
+            }
+        );
+
+        scene.onPointerObservable.add((p, e) => {
+            if (p.event.button === 0) {
+                this.initialPos = this.screenToCanvasPoint(this.getServices().pointer.pointer.downScreen);
+            } else {
+            }
+        }, BABYLON.PointerEventTypes.POINTERDOWN);
 
         // this.engine = engine; 
         // this.scene = scene;
@@ -51,11 +70,12 @@ export class RendererCamera implements ICamera {
     // const delta = zoomWheel(p,e,camera);
     // zooming(delta, scene, camera, plane, inertialPanning);
 
-    pan(downPoint: Point, currentPoint: Point) {
-        const down = this.screenToCanvasPoint(downPoint);
-        const current = this.screenToCanvasPoint(currentPoint);
-
-        panning(current, down, this.camera.inertia, this.inertialPanning);
+    pan(pointer: MousePointer) {
+        const directionToZoomLocation = pointer.down.subtract(pointer.curr);
+        const panningX = directionToZoomLocation.x * (1-this.camera.inertia);
+        const panningY = directionToZoomLocation.y * (1-this.camera.inertia);
+        this.inertialPanning.copyFromFloats(panningX, 0, panningY);
+        console.log(directionToZoomLocation);
     }
 
     zoom(scale?: number) {
@@ -63,15 +83,40 @@ export class RendererCamera implements ICamera {
     }
 
     zoomIn(zoomToPointer: boolean) {
-        const delta = zoomWheel(this.camera, this.getServices().pointer);
+        const pointer = this.getServices().pointer.pointer;
+        let delta = zoomWheel(this.camera, this.getServices().pointer);
         const scene = this.getServices().game.getScene();
-        zooming(delta, scene, this.camera, this.plane, this.inertialPanning);
+        if (this.camera.radius - this.camera.lowerRadiusLimit < 1 && delta > 0) {
+            return;
+        } else if (this.camera.upperRadiusLimit - this.camera.radius < 1 && delta < 0) {
+            return;
+        }
+        const inertiaComp = 1 - this.camera.inertia;
+        if (this.camera.radius - (this.camera.inertialRadiusOffset + delta) / inertiaComp < this.camera.lowerRadiusLimit) {
+            delta = (this.camera.radius - this.camera.lowerRadiusLimit) * inertiaComp - this.camera.inertialRadiusOffset;
+        } else if (this.camera.radius - (this.camera.inertialRadiusOffset + delta) / inertiaComp > this.camera.upperRadiusLimit) {
+            delta = (this.camera.radius - this.camera.upperRadiusLimit) * inertiaComp - this.camera.inertialRadiusOffset;
+        }
+    
+        const zoomDistance = delta / inertiaComp;
+        const ratio = zoomDistance / this.camera.radius;
+
+        const vec = new Vector3(pointer.curr.x, 0, pointer.curr.y);
+    
+        const directionToZoomLocation = vec.subtract(this.camera.target);
+        const offset = directionToZoomLocation.scale(ratio);
+        offset.scaleInPlace(inertiaComp);
+        this.inertialPanning.addInPlace(offset);
+    
+        this.camera.inertialRadiusOffset += delta;
     }
 
     zoomOut(zoomToPointer: boolean) {
-        const delta = zoomWheel(this.camera, this.getServices().pointer);
-        const scene = this.getServices().game.getScene();
-        zooming(delta, scene, this.camera, this.plane, this.inertialPanning);
+        this.zoomIn(zoomToPointer);
+        // const point = this.getServices().pointer.pointer.curr;
+        // const delta = zoomWheel(this.camera, this.getServices().pointer);
+        // const scene = this.getServices().game.getScene();
+        // zooming(point, delta, scene, this.camera, this.plane, this.inertialPanning);
     }
 
     moveBy(delta: Point) {
@@ -95,29 +140,12 @@ export class RendererCamera implements ICamera {
     screenToCanvasPoint(screenPoint: Point): Point {
         const scene = this.getServices().game.getScene();
 
-        return getPosition(scene, this.camera, this.plane, screenPoint);
-        // const scene = this.getServices().game.getScene();
-        // const engine = this.getServices().game.getEngine();
-
-        // var viewport = this.camera.viewport.toGlobal(engine.getRenderWidth(), engine.getRenderHeight());
-
-        // var target = Vector3.Unproject(
-        //         new Vector3(screenPoint.x, screenPoint.y, 0),
-        //         viewport.width,
-        //         viewport.height,
-        //         Matrix.Identity(),
-        //         scene.activeCamera.getViewMatrix(),
-        //         scene.activeCamera.getProjectionMatrix()
-        // );
-        
-
-        // target.x = scene.activeCamera.position.x - target.x;
-        // target.y = scene.activeCamera.position.y - target.y;
-        // target.z = scene.activeCamera.position.z - target.z;
-
-        // const canvasPoint = this.getZeroPlaneVector(scene.activeCamera.position, target);
-
-        // return new Point(canvasPoint.x, canvasPoint.z);
+        const ray = scene.createPickingRay(screenPoint.x, screenPoint.y, Matrix.Identity(), this.camera, false);
+        const distance = ray.intersectsPlane(this.plane);
+    
+        // not using this ray again, so modifying its vectors here is fine
+        const vector3 = distance !== null ? ray.origin.addInPlace(ray.direction.scaleInPlace(distance)) : null;
+        return vector3 ? new Point(vector3.x, vector3.z) : null;
    }
 
     getCenterPoint(): Point {
@@ -155,20 +183,6 @@ export class RendererCamera implements ICamera {
     }
 }
 
-/** Get pos on plane.
- * @param {BABYLON.Scene} scene
- * @param {BABYLON.ArcRotateCamera} camera
- * @param {BABYLON.Plane} plane
- */
-function getPosition(scene, camera, plane, screenPoint: Point) {
-    const ray = scene.createPickingRay(screenPoint.x, screenPoint.y, Matrix.Identity(), camera, false);
-    const distance = ray.intersectsPlane(plane);
-
-    // not using this ray again, so modifying its vectors here is fine
-    return distance !== null ?
-        ray.origin.addInPlace(ray.direction.scaleInPlace(distance)) : null;
-}
-
 /** Return offsets for inertial panning given initial and current
  * pointer positions.
  * @param {BABYLON.Vector3} newPos
@@ -190,7 +204,7 @@ function panning(newPos: Point, initialPos: Point, inertia, ref) {
  * @param {BABYLON.ArcRotateCamera} camera
  */
 function zoomWheel(camera: ArcRotateCamera, pointerService: PointerService) {
-    return pointerService.wheelDiff / camera.wheelPrecision;
+    return -pointerService.wheelDiff / camera.wheelPrecision;
 }
 
 /** Zoom to pointer position. Zoom amount determined by delta.
@@ -200,7 +214,7 @@ function zoomWheel(camera: ArcRotateCamera, pointerService: PointerService) {
  * @param {BABYLON.Plane} plane
  * @param {BABYLON.Vector3} ref
  */
-function zooming(delta, scene, camera, plane, ref) {
+function zooming(screenPoint: Point, delta, scene, camera, plane, ref) {
     if (camera.radius - camera.lowerRadiusLimit < 1 && delta > 0) {
         return;
     } else if (camera.upperRadiusLimit - camera.radius < 1 && delta < 0) {
@@ -217,7 +231,7 @@ function zooming(delta, scene, camera, plane, ref) {
 
     const zoomDistance = delta / inertiaComp;
     const ratio = zoomDistance / camera.radius;
-    const vec = getPosition(scene, camera, plane);
+    const vec = this.screenToCanvasPoint(screenPoint);
 
     const directionToZoomLocation = vec.subtract(camera.target);
     const offset = directionToZoomLocation.scale(ratio);

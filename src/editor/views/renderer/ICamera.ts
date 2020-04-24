@@ -1,4 +1,5 @@
 import { Point } from "../../../misc/geometry/shapes/Point";
+import { MousePointer } from "../../services/input/MouseService";
 
 export interface ICamera {
     zoom(scale: number);
@@ -10,5 +11,5 @@ export interface ICamera {
     getCenterPoint(): Point;
     getScale(): number;
     getTranslate(): Point;
-    pan(): void;
+    pan(pointer: MousePointer): void;
 }

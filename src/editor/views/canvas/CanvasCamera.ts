@@ -4,6 +4,7 @@ import { ICamera } from '../renderer/ICamera';
 import { Stores } from "../../stores/Stores";
 import { ServiceLocator } from "../../services/ServiceLocator";
 import { UpdateTask } from "../../services/UpdateServices";
+import { MousePointer } from "../../services/input/MouseService";
 
 export class CanvasCamera implements ICamera {
     readonly screenSize: Point;
@@ -23,6 +24,11 @@ export class CanvasCamera implements ICamera {
         this.getStores = getStores;
         this.screenSize = canvasSize;
         this.viewBox = new Rectangle(new Point(0, 0), new Point(canvasSize.x, canvasSize.y));
+    }
+
+    pan(pointer: MousePointer) {
+        const delta = pointer.getScreenDiff().div(this.getScale());
+        this.setViewBox(this.viewBox.clone().translate(new Point(-delta.x, -delta.y)));
     }
 
     zoom(scale: number) {

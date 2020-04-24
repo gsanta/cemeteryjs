@@ -41,18 +41,19 @@ export class PointerService {
 
     pointerDown(e: IPointerEvent): void {
         if (e.button !== 'left') { return }
-
+        console.log('pointer down')
         this.isDown = true;
-        this.pointer.down = this.getPointWithOffset(e.pointers[0].pos); 
+        this.pointer.down = this.getCanvasPoint(e.pointers[0].pos); 
+        this.pointer.downScreen = this.getScreenPoint(e.pointers[0].pos); 
         this.getStores().viewStore.getActiveView().getSelectedTool().down();
         this.getServices().update.runScheduledTasks();
     }
 
     pointerMove(e: IPointerEvent): void {
         this.pointer.prev = this.pointer.curr;
-        this.pointer.curr = this.getPointWithOffset(e.pointers[0].pos);
+        this.pointer.curr = this.getCanvasPoint(e.pointers[0].pos);
         this.pointer.prevScreen = this.pointer.currScreen;
-        this.pointer.currScreen =  this.getScreenPointWithOffset(e.pointers[0].pos);
+        this.pointer.currScreen =  this.getScreenPoint(e.pointers[0].pos);
         if (this.isDown && this.pointer.getDownDiff().len() > 2) {
             this.isDrag = true;
             this.getStores().viewStore.getActiveView().getSelectedTool().drag();
@@ -111,12 +112,12 @@ export class PointerService {
         this.getServices().update.runScheduledTasks();
     }
     
-    private getScreenPointWithOffset(point: Point): Point {
+    private getScreenPoint(point: Point): Point {
         const offset = this.getStores().viewStore.getActiveView().getOffset();
         return new Point(point.x - offset.x, point.y - offset.y);
     }
-
-    private getPointWithOffset(point: Point): Point {
+    
+    private getCanvasPoint(point: Point): Point {
         const offset = this.getStores().viewStore.getActiveView().getOffset();
         return this.getStores().viewStore.getActiveView().getCamera().screenToCanvasPoint(new Point(point.x - offset.x, point.y - offset.y));
     }

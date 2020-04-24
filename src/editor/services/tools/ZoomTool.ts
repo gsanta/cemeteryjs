@@ -6,6 +6,7 @@ import { cameraInitializer, CanvasView } from '../../views/canvas/CanvasView';
 import { AbstractTool } from './AbstractTool';
 import { ToolType } from "./Tool";
 import { WheelZoomHotkey } from "./WheelZoomHotkey";
+import { MousePointer } from "../input/MouseService";
 
 export class ZoomTool extends AbstractTool {
     private hotkeys: Hotkey[] = [];
@@ -39,8 +40,10 @@ export class ZoomTool extends AbstractTool {
         const camera = this.getStores().viewStore.getActiveView().getCamera();
 
         const delta = this.getServices().pointer.pointer.getScreenDiff().div(camera.getScale());
+        const down = this.getServices().pointer.pointer.down;
+        const curr = this.getServices().pointer.pointer.curr;
         
-        camera.moveBy(delta.negate());
+        camera.pan(this.getServices().pointer.pointer);
 
         this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas);
     }
