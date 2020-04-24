@@ -10,7 +10,6 @@ export class HotkeyService {
     private inputs: HTMLElement[] = [];
     private primaryInput: HTMLElement;
     private hotkeys: Hotkey[] = [];
-    lastExecutedHotkey: Hotkey;
     getServices: () => ServiceLocator;
 
     constructor(getServices: () => ServiceLocator) {
@@ -60,11 +59,6 @@ export class HotkeyService {
 
     private executeIfMatches(hotkeyEvent: IHotkeyEvent): boolean {
         const hotkey = this.hotkeys.find(h => h.matches(hotkeyEvent, this.getServices));
-
-        if (this.lastExecutedHotkey && hotkey !== this.lastExecutedHotkey) {
-            this.lastExecutedHotkey.finalize();
-        }
-        this.lastExecutedHotkey = hotkey;
 
         return hotkey && this.executeHotkey(hotkey, hotkeyEvent);
     }
@@ -154,6 +148,4 @@ export class Hotkey {
 
         return hotkeyEvent.keyCode !== undefined && this.trigger.keyCodeFunc(hotkeyEvent);
     }
-
-    finalize() {}
 }

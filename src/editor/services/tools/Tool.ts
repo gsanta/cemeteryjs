@@ -44,6 +44,8 @@ export interface Tool {
     keydown(e: IKeyboardEvent): void;
     over(item: Concept | Feedback): void;
     out(item: Concept | Feedback): void;
+    wheel(): void;
+    wheelEnd(): void;
 
     select(): void;
     deselect(): void;

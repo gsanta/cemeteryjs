@@ -4,7 +4,7 @@ import { ServiceLocator } from '../ServiceLocator';
 import { UpdateTask } from '../UpdateServices';
 import { AbstractTool } from './AbstractTool';
 import { ToolType } from "./Tool";
-import { WheelZoomHotkey } from "./WheelZoomHotkey";
+import { HotkeyWheelZoomStart } from "./HotkeyWheelZoomStart";
 
 export class ZoomTool extends AbstractTool {
     private hotkeys: Hotkey[] = [];
@@ -14,8 +14,16 @@ export class ZoomTool extends AbstractTool {
         this.getServices = getServices;
         this.getStores = getStores;
 
-        this.hotkeys = [new WheelZoomHotkey(getStores, getServices)];
+        this.hotkeys = [new HotkeyWheelZoomStart(getStores, getServices)];
         this.hotkeys.forEach(hk => this.getServices().hotkey.registerHotkey(hk));
+    }
+
+    wheel() {
+        this.getStores().viewStore.getActiveView().getCamera().zoomWheel();
+    }
+
+    wheelEnd() {
+        this.getStores().viewStore.getActiveView().removePriorityTool(this.getServices().tools.zoom);
     }
 
     drag() {

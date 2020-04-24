@@ -25,6 +25,8 @@ export class AbstractTool implements Tool {
     up() { }
     activate() { }
     resize() { }
+    wheel() {}
+    wheelEnd() {}
     keydown(e: IKeyboardEvent) { }
     over(item: Concept | Feedback) { }
     out(item: Concept | Feedback) { }

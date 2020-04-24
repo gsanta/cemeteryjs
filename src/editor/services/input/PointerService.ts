@@ -45,7 +45,7 @@ export class PointerService {
         this.isDown = true;
         this.pointer.down = this.getCanvasPoint(e.pointers[0].pos); 
         this.pointer.downScreen = this.getScreenPoint(e.pointers[0].pos); 
-        this.getStores().viewStore.getActiveView().getSelectedTool().down();
+        this.getStores().viewStore.getActiveView().getActiveTool().down();
         this.getServices().update.runScheduledTasks();
     }
 
@@ -56,21 +56,21 @@ export class PointerService {
         this.pointer.currScreen =  this.getScreenPoint(e.pointers[0].pos);
         if (this.isDown && this.pointer.getDownDiff().len() > 2) {
             this.isDrag = true;
-            this.getStores().viewStore.getActiveView().getSelectedTool().drag();
+            this.getStores().viewStore.getActiveView().getActiveTool().drag();
         } else {
-            this.getStores().viewStore.getActiveView().getSelectedTool().move();
+            this.getStores().viewStore.getActiveView().getActiveTool().move();
         }
         this.getServices().update.runScheduledTasks();
     }
 
     pointerUp(e: IPointerEvent): void {
         if (this.isDrag) {
-            this.getStores().viewStore.getActiveView().getSelectedTool().draggedUp();
+            this.getStores().viewStore.getActiveView().getActiveTool().draggedUp();
         } else {
-            this.getStores().viewStore.getActiveView().getSelectedTool().click();
+            this.getStores().viewStore.getActiveView().getActiveTool().click();
         }
         
-        this.getStores().viewStore.getActiveView().getSelectedTool().up();
+        this.getStores().viewStore.getActiveView().getActiveTool().up();
         this.isDown = false;
         this.isDrag = false;
         this.pointer.down = undefined;
@@ -95,7 +95,8 @@ export class PointerService {
             this.wheel = Wheel.IDLE;
         }
 
-        this.getServices().hotkey.executePointerEvent(e)
+        this.getServices().hotkey.executePointerEvent(e);
+        this.getStores().viewStore.getActiveView().getActiveTool().wheel();
     }
 
     pointerWheelEnd() {
@@ -103,12 +104,12 @@ export class PointerService {
     }
 
     hover(item: Concept | Feedback): void {
-        this.getStores().viewStore.getActiveView().getSelectedTool().over(item);
+        this.getStores().viewStore.getActiveView().getActiveTool().over(item);
         this.getServices().update.runScheduledTasks();
     }
 
     unhover(item: Concept | Feedback): void {
-        this.getStores().viewStore.getActiveView().getSelectedTool().out(item);
+        this.getStores().viewStore.getActiveView().getActiveTool().out(item);
         this.getServices().update.runScheduledTasks();
     }
     

@@ -38,7 +38,6 @@ export abstract class View {
     protected settings: AbstractSettings<any>[] = [];
     
     protected selectedTool: Tool;
-    fallbackTool: Tool;
     priorityTool: Tool;
     
     protected getServices: () => ServiceLocator;
@@ -73,6 +72,25 @@ export abstract class View {
 
     getSelectedTool(): Tool {
         return this.selectedTool;
+    }
+
+    getActiveTool(): Tool {
+        return this.priorityTool ? this.priorityTool : this.selectedTool;
+    }
+
+    setPriorityTool(priorityTool: Tool) {
+        if (this.priorityTool !== priorityTool) {
+            this.getActiveTool().leave();
+            this.priorityTool = priorityTool;
+            this.getServices().update.runImmediately(UpdateTask.RepaintSettings);
+        }
+    }
+
+    removePriorityTool(priorityTool: Tool) {
+        if (this.priorityTool === priorityTool) {
+            this.priorityTool = null;
+            this.getServices().update.runImmediately(UpdateTask.RepaintSettings);
+        }
     }
 
     getSettingsByName<T extends AbstractSettings<any> = AbstractSettings<any>>(name: string) {

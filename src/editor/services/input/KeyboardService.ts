@@ -46,7 +46,7 @@ export class KeyboardService {
     }
 
     onKeyDown(e: KeyboardEvent): void {
-        this.getStores().viewStore.getActiveView().getSelectedTool()?.keydown(this.convertEvent(e));
+        this.getStores().viewStore.getActiveView().getActiveTool()?.keydown(this.convertEvent(e));
     }
 
     private convertEvent(event: KeyboardEvent): IKeyboardEvent {
