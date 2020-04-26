@@ -11,6 +11,7 @@ import { CanvasCamera } from './CanvasCamera';
 import { LevelSettings } from './settings/LevelSettings';
 import { MeshSettings } from './settings/MeshSettings';
 import { PathSettings } from './settings/PathSettings';
+import { UpdateTask } from '../../services/UpdateServices';
 
 export function cameraInitializer(canvasId: string, getServices: () => ServiceLocator, getStores: () => Stores) {
     if (typeof document !== 'undefined') {
@@ -84,5 +85,6 @@ export class CanvasView extends View {
 
     updateCamera() {
         this.camera = cameraInitializer(CanvasView.id, this.getServices, this.getStores);
+        this.getServices().update.runImmediately(UpdateTask.RepaintCanvas);
     }
 }

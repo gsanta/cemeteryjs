@@ -38,7 +38,9 @@ export class CanvasComponent extends React.Component {
         this.wheelListener = new WheelListener(() => this.context.getServices());
         this.context.getServices().update.setCanvasRepainter(() => this.forceUpdate());
 
-        this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).updateCamera();
+        setTimeout(() => {
+            this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).updateCamera();
+        }, 0);
     }
 
     render(): JSX.Element {

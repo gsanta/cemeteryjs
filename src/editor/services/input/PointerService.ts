@@ -101,6 +101,8 @@ export class PointerService {
 
     pointerWheelEnd() {
         this.wheel = Wheel.IDLE;
+
+        this.getStores().viewStore.getActiveView().getActiveTool().wheelEnd();
     }
 
     hover(item: Concept | Feedback): void {
