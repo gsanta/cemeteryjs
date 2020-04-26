@@ -39,7 +39,7 @@ export class CanvasComponent extends React.Component {
         this.context.getServices().update.setCanvasRepainter(() => this.forceUpdate());
 
         setTimeout(() => {
-            this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).updateCamera();
+            this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).resize();
         }, 0);
     }
 

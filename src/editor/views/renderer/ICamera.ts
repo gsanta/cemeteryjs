@@ -12,4 +12,5 @@ export interface ICamera {
     getScale(): number;
     getTranslate(): Point;
     pan(pointer: MousePointer): void;
+    resize(screenSize: Point): void;
 }

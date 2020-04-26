@@ -13,17 +13,25 @@ import { MeshSettings } from './settings/MeshSettings';
 import { PathSettings } from './settings/PathSettings';
 import { UpdateTask } from '../../services/UpdateServices';
 
-export function cameraInitializer(canvasId: string, getServices: () => ServiceLocator, getStores: () => Stores) {
+function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
         const svg: HTMLElement = document.getElementById(canvasId);
 
         if (svg) {
             const rect: ClientRect = svg.getBoundingClientRect();
-            return new CanvasCamera(getServices, new Point(rect.width, rect.height));
+            return new Point(rect.width, rect.height);
         }
     }
+    return undefined;
+}
 
-    return new CanvasCamera(getServices, new Point(100, 100));
+function cameraInitializer(canvasId: string, getServices: () => ServiceLocator, getStores: () => Stores) {
+    const screenSize = getScreenSize(canvasId);
+    if (screenSize) {
+        return new CanvasCamera(getServices, new Point(screenSize.x, screenSize.y));
+    } else {
+        return new CanvasCamera(getServices, new Point(100, 100));
+    }
 }
 
 export enum CanvasTag {
@@ -64,7 +72,9 @@ export class CanvasView extends View {
     }
 
     resize(): void {
+        this.camera.resize(getScreenSize(CanvasView.id));
         this.getServices().tools.zoom.resize();
+        this.getServices().update.runImmediately(UpdateTask.RepaintCanvas);
     };
 
     isVisible(): boolean {

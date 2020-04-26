@@ -6,7 +6,7 @@ import { UpdateTask } from "../../services/UpdateServices";
 import { ICamera } from '../renderer/ICamera';
 
 export class CanvasCamera implements ICamera {
-    readonly screenSize: Point;
+    private screenSize: Point;
     private viewBox: Rectangle;
     serviceName = 'camera-service';
     static readonly ZOOM_MIN = 0.1;
@@ -17,10 +17,30 @@ export class CanvasCamera implements ICamera {
     readonly NUM_OF_STEPS: number = 100;
     private getServices: () => ServiceLocator;
 
-    constructor(getServices: () => ServiceLocator, canvasSize: Point) {
+    constructor(getServices: () => ServiceLocator, screenSize: Point) {
         this.getServices = getServices;
-        this.screenSize = canvasSize;
-        this.viewBox = new Rectangle(new Point(0, 0), new Point(canvasSize.x, canvasSize.y));
+        this.screenSize = screenSize;
+        this.viewBox = new Rectangle(new Point(0, 0), new Point(screenSize.x, screenSize.y));
+    }
+
+    resize(screenSize: Point) {
+        const scale = this.getScale();
+        this.screenSize = screenSize;
+        const topLeft = this.viewBox.topLeft;
+        this.setTopLeftCorner(topLeft, scale);
+        console.log(this.viewBox.toString())
+        // const view = this.getStores().viewStore.getViewById<CanvasView>(CanvasView.id);
+
+        // const camera = view.getCamera();
+
+        // const prevScale = camera.getScale(); 
+        // const prevTranslate = camera.getTranslate(); 
+    
+        // view.setCamera(cameraInitializer(view.getId()));
+        // view.getCamera().zoom(prevScale);
+        // view.getCamera().moveTo(prevTranslate.clone());
+
+        // this.getServices().update.runImmediately(UpdateTask.RepaintCanvas);
     }
 
     pan(pointer: MousePointer) {

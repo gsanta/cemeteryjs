@@ -46,7 +46,8 @@ export class RendererComponent extends React.Component {
         this.context.getStores().viewStore.getViewById<RendererView>(RendererView.id).setCanvasRenderer(() => this.forceUpdate());
 
         setTimeout(() => {
-            this.context.controllers.getWindowControllerByName('renderer').update();
+            // this.context.controllers.getWindowControllerByName('renderer').update();
+            this.context.controllers.getWindowControllerByName('renderer').resize();
         }, 1000);
 
     }

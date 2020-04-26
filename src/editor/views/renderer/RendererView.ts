@@ -44,6 +44,8 @@ export class RendererView extends View {
     }
 
     resize() {
+        this.camera && this.camera.camera.dispose();
+        this.camera = cameraInitializer(this.getServices, this.getStores);
         this.getServices().game.gameEngine.engine.resize();
     }
 
@@ -55,6 +57,7 @@ export class RendererView extends View {
     }
 
     update() {
+        this.camera = cameraInitializer(this.getServices, this.getStores);
         this.renderWindow();
     }
 
