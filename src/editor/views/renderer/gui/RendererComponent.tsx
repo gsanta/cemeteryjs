@@ -44,6 +44,7 @@ export class RendererComponent extends React.Component {
 
     componentDidMount() {
         this.context.getStores().viewStore.getViewById<RendererView>(RendererView.id).setCanvasRenderer(() => this.forceUpdate());
+        this.context.controllers.getWindowControllerByName('renderer').setup();
 
         setTimeout(() => {
             // this.context.controllers.getWindowControllerByName('renderer').update();
@@ -53,14 +54,14 @@ export class RendererComponent extends React.Component {
     }
 
     componentDidUpdate() {
-        this.context.controllers.getWindowControllerByName('renderer').resize();
+        // this.context.controllers.getWindowControllerByName('renderer').resize();
     }
 
     render() {
         const view = this.context.getStores().viewStore.getViewById<RendererView>(RendererView.id);
 
         return (
-                <RendererStyled>
+                <RendererStyled id={view.getId()}>
                     <WindowToolbarStyled><RendererToolbarComponent/></WindowToolbarStyled>
                     <CanvasStyled
                         isEmpty={false}

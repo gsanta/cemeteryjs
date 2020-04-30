@@ -7,9 +7,10 @@ export class GameEngine {
     private helperMeshes: HelperMeshes;
     private canvas: HTMLCanvasElement;
 
-    constructor(canvas: HTMLCanvasElement) {
+    init(canvas: HTMLCanvasElement) {
+        if (this.engine) { this.engine.dispose(); }
+
         this.canvas = canvas;
-        
         this.engine = new Engine(this.canvas, true, { preserveDrawingBuffer: true, stencil: true });
         
         let target = new Vector3(100, 0, 0);

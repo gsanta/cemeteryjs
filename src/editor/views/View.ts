@@ -49,15 +49,12 @@ export abstract class View {
         getStores().viewStore.registerView(this);
     }
 
-    getGameApi(): GameService {
-        return this.editor.gameApi;
-    }
-
     abstract isVisible(): boolean;
     abstract setVisible(visible: boolean): void;
     abstract getId(): string;
     
     setup(): void {}
+    destroy(): void {}
     abstract resize(): void;
     update(): void {}
     over(): void { this.getStores().viewStore.setActiveView(this) }

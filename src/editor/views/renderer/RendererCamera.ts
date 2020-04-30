@@ -3,7 +3,6 @@ import { Point } from '../../../misc/geometry/shapes/Point';
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
 import { MousePointer } from '../../services/input/MouseService';
 import { ServiceLocator } from '../../services/ServiceLocator';
-import { Stores } from '../../stores/Stores';
 import { ICamera } from './ICamera';
 
 export class RendererCamera implements ICamera {
@@ -35,6 +34,10 @@ export class RendererCamera implements ICamera {
                 }
             }
         );
+    }
+
+    resize() {
+        
     }
 
     pan(pointer: MousePointer) {

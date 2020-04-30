@@ -3,11 +3,11 @@ import { ServiceLocator } from '../../services/ServiceLocator';
 import { Tool } from '../../services/tools/Tool';
 import { UpdateService } from '../../services/UpdateServices';
 import { View, calcOffsetFromDom } from '../View';
-// import { RendererCamera } from './RendererCamera';
 import { HelperMeshes } from './HelperMeshes';
 import { ICamera } from './ICamera';
 import { RendererCamera } from './RendererCamera';
 import { Stores } from '../../stores/Stores';
+import { GameService } from '../../services/GameService';
 (<any> window).earcut = require('earcut');
 
 export function cameraInitializer(getServices: () => ServiceLocator, getStores: () => Stores) {
@@ -17,6 +17,15 @@ export function cameraInitializer(getServices: () => ServiceLocator, getStores: 
 
     return null;
 }
+
+export function getCanvasElement(viewId: string): HTMLCanvasElement {
+    if (typeof document !== 'undefined') {
+        const canvas: HTMLCanvasElement = document.querySelector(`#${viewId} canvas`);
+
+        return canvas;
+    }
+}
+
 
 export class RendererView extends View {
     static id = 'webgl-editor';
@@ -31,34 +40,37 @@ export class RendererView extends View {
     constructor(editor: Editor, getServices: () => ServiceLocator, getStores: () => Stores) {
         super(editor, getServices, getStores);
 
+        this.getServices().game = new GameService(getServices, getStores);
+
         this.updateService = new UpdateService(this.editor, getServices, getStores);
         this.update = this.update.bind(this);
     }
 
     getCamera(): ICamera {
-        if (!this.camera) {
-            this.camera = cameraInitializer(this.getServices, this.getStores);
-        }
-
         return this.camera;
     }
 
     resize() {
-        this.camera && this.camera.camera.dispose();
-        this.camera = cameraInitializer(this.getServices, this.getStores);
         this.getServices().game.gameEngine.engine.resize();
     }
 
     setup() {
+        this.getServices().game.init(getCanvasElement(this.getId()));
+        this.camera = cameraInitializer(this.getServices, this.getStores);
+        this.getServices().game.importAllConcepts();
+
         this.selectedTool = this.getServices().tools.zoom;
 
-        this.updateCamera();
         this.update();
     }
 
+
+    destroy() {
+
+    }
+
     update() {
-        this.camera = cameraInitializer(this.getServices, this.getStores);
-        this.renderWindow();
+        this.renderCanvasFunc();
     }
 
 
@@ -74,10 +86,6 @@ export class RendererView extends View {
         this.renderCanvasFunc = renderFunc;
     }
 
-    renderWindow() {
-        this.renderCanvasFunc();
-    }
-
     isVisible(): boolean {
         return this.visible;
     }
@@ -88,11 +96,5 @@ export class RendererView extends View {
 
     getOffset() {
         return calcOffsetFromDom(this.getId());
-    }
-
-    updateCamera() {
-        if (!this.camera) {
-            this.camera = cameraInitializer(this.getServices, this.getStores);
-        }
     }
 }

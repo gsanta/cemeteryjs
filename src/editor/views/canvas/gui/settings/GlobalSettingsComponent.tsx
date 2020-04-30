@@ -32,9 +32,9 @@ export class GlobalSettingsComponent extends React.Component<{editor: Editor}> {
     private renderMovements() {
         return (
             <SettingsRowStyled verticalAlign='center'>
-                <PlayIconComponent onClick={() => this.props.editor.gameApi.playAllMovements()}/>
-                <PauseIconComponent onClick={() => this.props.editor.gameApi.pauseAllMovements()}/>
-                <StopIconComponent onClick={() => this.props.editor.gameApi.resetAllMovements()}/>
+                <PlayIconComponent onClick={() => this.context.getServices().game.playAllMovements()}/>
+                <PauseIconComponent onClick={() => this.context.getServices().game.pauseAllMovements()}/>
+                <StopIconComponent onClick={() => this.context.getServices().game.resetAllMovements()}/>
             </SettingsRowStyled>
         )
     }

@@ -8,8 +8,6 @@ import { ServiceLocator } from './services/ServiceLocator';
 import { Stores } from './stores/Stores';
 
 export class Editor {
-    gameApi: GameService;
-
     stores: Stores;
     services: ServiceLocator;
     
@@ -36,8 +34,6 @@ export class Editor {
     }
 
     setup(canvas: HTMLCanvasElement) {
-        this.gameApi = new GameService(canvas, () => this.services, () => this.stores);
-
         this.windowFactories.forEach(factory => factory.getWindowController(this, () => this.services, () => this.stores).setup());
         
         this.services.storage.loadLevelIndexes()

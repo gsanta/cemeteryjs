@@ -37,27 +37,30 @@ export class GameService {
     private getServices: () => ServiceLocator;
     private getStores: () => Stores;
 
-    constructor(canvas: HTMLCanvasElement, getServices: () => ServiceLocator, getStores: () => Stores) {
+    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
         this.getServices = getServices;
         this.getStores = getStores;
 
-        this.getServices().game = this;
-        
-        this.gameEngine = new GameEngine(canvas);
-        this.keyboardListener = new KeyboardTrigger(getServices);
-        this.keyboardTrigger = new KeyboardTrigger(getServices);
+        this.getServices().game = this; 
+    }
+
+    init(canvas: HTMLCanvasElement) {
+        this.gameEngine = new GameEngine();
+        this.gameEngine.init(canvas);
+        this.keyboardListener = new KeyboardTrigger(this.getServices);
+        this.keyboardTrigger = new KeyboardTrigger(this.getServices);
         this.gameEventManager = new GameEventManager();
         this.characterMovement = new CharacterMovement();
 
-        const playerListener = new PlayerListener(getServices, this.getStores);
+        const playerListener = new PlayerListener(this.getServices, this.getStores);
         this.gameEventManager.listeners.registerGamepadListener((gamepadEvent: GamepadEvent) => playerListener.gamepadEvent(gamepadEvent));
         this.gameEventManager.listeners.registerAfterRenderListener(() => this.walkers.walk());
-        const animationPlayer = new AnimationPlayer(getServices, this.getStores);
+        const animationPlayer = new AnimationPlayer(this.getServices, this.getStores);
         this.gameEventManager.listeners.registerAfterRenderListener(() => animationPlayer.updateAnimations());
-        this.keyboardTrigger = new KeyboardTrigger(getServices);
-        this.afterRenderTrigger = new AfterRenderTrigger(getServices)
+        this.keyboardTrigger = new KeyboardTrigger(this.getServices);
+        this.afterRenderTrigger = new AfterRenderTrigger(this.getServices)
 
-        this.walkers = new Walkers(this.getStores);     
+        this.walkers = new Walkers(this.getStores);    
     }
 
     resetPath(meshObjectName: string) {
