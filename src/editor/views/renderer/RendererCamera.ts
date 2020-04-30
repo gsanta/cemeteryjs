@@ -128,6 +128,21 @@ export class RendererCamera implements ICamera {
         const engine = this.getServices().game.getEngine();
         return new Rectangle(new Point(0, 0), new Point(engine.getRenderWidth(), engine.getRenderHeight()));
     }
+
+    rotate(pointer: MousePointer) {
+        const scene = this.getServices().game.getScene();
+
+        const offsetX = pointer.currScreen.x - pointer.prevScreen.x;
+        const offsetY = pointer.currScreen.y - pointer.prevScreen.y;
+        this.changeInertialAlphaBetaFromOffsets(offsetX, offsetY, this.camera);
+    }
+
+    private changeInertialAlphaBetaFromOffsets(offsetX, offsetY, camera) {
+        const alphaOffsetDelta = offsetX / camera.angularSensibilityX;
+        const betaOffsetDelta = offsetY / camera.angularSensibilityY;
+        camera.inertialAlphaOffset -= alphaOffsetDelta;
+        camera.inertialBetaOffset -= betaOffsetDelta;
+    }
 }
 
 function zeroIfClose(vec) {

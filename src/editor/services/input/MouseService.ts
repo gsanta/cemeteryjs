@@ -37,25 +37,25 @@ export class MouseService {
     onMouseDown(e: MouseEvent): void {
         if (!this.isLeftButton(e)) { return }
 
-        this.getServices().pointer.pointerDown(this.convertEvent(e));
+        this.getServices().pointer.pointerDown(this.convertEvent(e, true));
     }
     
     onMouseMove(e: MouseEvent): void {
-        this.getServices().pointer.pointerMove(this.convertEvent(e));
+        this.getServices().pointer.pointerMove(this.convertEvent(e, this.getServices().pointer.isDown));
     }    
 
     onMouseUp(e: MouseEvent): void {
         if (!this.isLeftButton(e)) { return }
 
-        this.getServices().pointer.pointerUp(this.convertEvent(e));
+        this.getServices().pointer.pointerUp(this.convertEvent(e, false));
     }
 
     onMouseOut(e: MouseEvent): void {
-        this.getServices().pointer.pointerOut(this.convertEvent(e));
+        this.getServices().pointer.pointerOut(this.convertEvent(e, false));
     }
 
     onMouseWheel(e: WheelEvent): void {
-        const pointerEvent = this.convertEvent(e);
+        const pointerEvent = this.convertEvent(e, false);
         pointerEvent.deltaY = e.deltaY;
         this.getServices().pointer.pointerWheel(pointerEvent);
     }
@@ -72,9 +72,9 @@ export class MouseService {
         this.getServices().pointer.unhover(item);
     }
 
-    private convertEvent(e: MouseEvent): IPointerEvent {
+    private convertEvent(e: MouseEvent, isPointerDown: boolean): IPointerEvent {
         return {
-            pointers: [{id: 1, pos: new Point(e.x, e.y)}],
+            pointers: [{id: 1, pos: new Point(e.x, e.y), isDown: isPointerDown}],
             preventDefault: () => e.preventDefault(),
             button: this.isLeftButton(e) ? 'left' : 'right',
             isAltDown: !!e.altKey,

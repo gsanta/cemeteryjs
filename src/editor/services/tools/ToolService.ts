@@ -7,6 +7,7 @@ import { ToolType } from "./Tool";
 import { PathTool } from "./PathTool";
 import { RectangleTool } from "./RectangleTool";
 import { SelectTool } from "./SelectTool";
+import { CameraRotationTool } from "./CameraRotationTool";
 
 export class ToolService {
     zoom: ZoomTool;
@@ -15,6 +16,7 @@ export class ToolService {
     path: PathTool;
     rectangle: RectangleTool;
     select: SelectTool;
+    cameraRotate: CameraRotationTool;
 
     constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
 
@@ -24,5 +26,6 @@ export class ToolService {
         this.path = new PathTool(getServices, getStores);
         this.rectangle = new RectangleTool(getServices, getStores);
         this.select = new SelectTool(getServices, getStores);
+        this.cameraRotate = new CameraRotationTool(getServices, getStores);
     }
 }

@@ -150,6 +150,8 @@ export class CanvasCamera implements ICamera {
         }
     }
 
+    rotate(pointer: MousePointer): void { throw new Error("Rotation is for 3d cameras, this camera does not support it."); }
+
     private getNextManualZoomStep(): number {
         let currentStep = this.calcLogarithmicStep(this.getScale());
         currentStep = currentStep >= this.NUM_OF_STEPS - 1 ? this.NUM_OF_STEPS - 1 : currentStep

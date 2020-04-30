@@ -108,6 +108,11 @@ export class ImportService {
                     .then(dim => {
                         item.dimensions.setWidth(dim.x);
                         item.dimensions.setHeight(dim.y);
+                    });
+
+                this.getServices().meshLoader.getAnimations(modelConcept.modelPath, item.id)
+                    .then(animations => {
+                        item.animations = animations;
                     })
             });
         this.getServices().game.importAllConcepts();

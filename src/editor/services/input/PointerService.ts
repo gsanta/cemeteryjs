@@ -10,7 +10,7 @@ export enum Wheel {
 }
 
 export interface IPointerEvent {
-    pointers: {id: number, pos: Point}[];
+    pointers: {id: number, pos: Point, isDown: boolean}[];
     deltaY?: number;
     button: 'left' | 'right';
     isAltDown: boolean;
@@ -60,6 +60,7 @@ export class PointerService {
         } else {
             this.getStores().viewStore.getActiveView().getActiveTool().move();
         }
+        this.getServices().hotkey.executePointerEvent(e);
         this.getServices().update.runScheduledTasks();
     }
 

@@ -88,6 +88,7 @@ export interface HotkeyTrigger {
     readonly shift: boolean;
     readonly ctrlOrCommand: boolean;
     readonly wheel: boolean;
+    readonly mouseDown: boolean;
     readonly pinch: boolean;
     readonly worksOnOverlays: boolean;
     readonly worksDuringMouseDown: boolean;
@@ -99,7 +100,7 @@ export interface IHotkeyEvent {
     isShiftDown: boolean;
     isCtrlDown: boolean;
     isMetaDown: boolean;
-    pointers?: {id: number, pos: Point}[];
+    pointers?: {id: number, pos: Point, isDown: boolean}[];
     deltaY?: number;
 }
 
@@ -117,7 +118,8 @@ export class Hotkey {
         wheel: false,
         pinch: false,
         worksOnOverlays: false,
-        worksDuringMouseDown: false
+        worksDuringMouseDown: false,
+        mouseDown: false
     }
 
     constructor(id: string, trigger: Partial<HotkeyTrigger>, action: IHotkeyAction) {
@@ -134,6 +136,7 @@ export class Hotkey {
             (this.trigger.shift === undefined || hotkeyEvent.isShiftDown === this.trigger.shift) &&
             isCtrlOrCommandDown(<IKeyboardEvent> hotkeyEvent) === this.trigger.ctrlOrCommand &&
             this.wheelMatch(getServices().pointer) === this.trigger.wheel &&
+            this.mouseDownMatch(hotkeyEvent) &&
             this.keyCodeFuncMatch(hotkeyEvent)
         );
         return b;
@@ -147,5 +150,9 @@ export class Hotkey {
         if (!this.trigger.keyCodeFunc) { return true; }
 
         return hotkeyEvent.keyCode !== undefined && this.trigger.keyCodeFunc(hotkeyEvent);
+    }
+
+    private mouseDownMatch(hotkeyEvent: IHotkeyEvent) {
+        return this.trigger.mouseDown === hotkeyEvent.pointers[0].isDown
     }
 }

@@ -39,6 +39,14 @@ export class MeshLoaderService {
             });
     }
 
+    getAnimations(path: string, id: string): Promise<string[]> {
+        return this
+            .load(path, id)
+            .then(mesh => {
+                return mesh.skeleton ? mesh.skeleton.getAnimationRanges().map(range => range.name) : [];
+            });
+    }
+
     protected setModel(fileName: string, mesh: Mesh): void {
         this.getStores().meshStore.addTemplate(fileName, mesh);
         this.fileNameToMeshNameMap.set(fileName, mesh.name);

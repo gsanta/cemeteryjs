@@ -107,6 +107,10 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                         this.meshConcept.dimensions.setWidth(dim.x);
                         this.meshConcept.dimensions.setHeight(dim.y);
                     })
+                    .then(() => this.getServices().meshLoader.getAnimations(modelPath, this.meshConcept.id))
+                    .then(animations => {
+                        this.meshConcept.animations = animations;
+                    })
                     .finally(() => {
                         const data = this.getServices().export.export();
                         this.getServices().game.updateConcepts([this.meshConcept]);

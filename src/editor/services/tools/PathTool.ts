@@ -74,6 +74,7 @@ export class PathTool extends PointerTool {
             path.addEditPoint(newEditPoint, selectedEditPoint);
             this.getStores().selectionStore.removeItem(selectedEditPoint);
             this.getStores().selectionStore.addItem(newEditPoint);
+            this.getServices().game.updateConcepts([path]);
 
             this.getServices().update.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         } else {
@@ -88,6 +89,7 @@ export class PathTool extends PointerTool {
         const path = new PathConcept(pointer.down.clone());
         path.id = this.getStores().canvasStore.generateUniqueName(ConceptType.PathConcept);
         this.getStores().canvasStore.addConcept(path);
+        this.getServices().game.addConcept(path);
         this.getStores().selectionStore.addItem(path);
         this.getStores().selectionStore.addItem(path.editPoints[0]);
     }
