@@ -45,7 +45,6 @@ export class RendererCamera implements ICamera {
         const panningX = directionToZoomLocation.x * (1-this.camera.inertia);
         const panningY = directionToZoomLocation.y * (1-this.camera.inertia);
         this.inertialPanning.copyFromFloats(panningX, 0, panningY);
-        console.log(directionToZoomLocation);
     }
 
     zoomWheel() {

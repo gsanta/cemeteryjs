@@ -23,9 +23,6 @@ export class GameEngine {
         
         light.diffuse = new Color3(1, 1, 1);
         light.specular = new Color3(0, 0, 0);
-        const lightMesh = MeshBuilder.CreateBox('light-cube', {size: 1}, scene);
-        lightMesh.translate(new Vector3(5, 200, 0), 1);
-
         this.scene = scene;
 
         this.engine.runRenderLoop(() => this.scene.render());
