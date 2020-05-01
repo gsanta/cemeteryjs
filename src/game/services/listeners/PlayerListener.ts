@@ -12,20 +12,20 @@ export class PlayerListener implements IGamepadListener {
     }
 
     gamepadEvent(gamepadEvent: GamepadEvent) {
-        switch(gamepadEvent) {
-            case GamepadEvent.Forward:
-                this.doAction(this.registry.services.game.characterMovement.forward);
-            break;
-            case GamepadEvent.Backward:
-                this.doAction(this.registry.services.game.characterMovement.backward);
-            break;
-            case GamepadEvent.TurnLeft:
-                this.doAction(this.registry.services.game.characterMovement.left);
-            break;
-            case GamepadEvent.TurnRight:
-                this.doAction(this.registry.services.game.characterMovement.right);
-            break;
-        }
+        // switch(gamepadEvent) {
+        //     case GamepadEvent.Forward:
+        //         this.doAction(this.registry.services.game.characterMovement.forward);
+        //     break;
+        //     case GamepadEvent.Backward:
+        //         this.doAction(this.registry.services.game.characterMovement.backward);
+        //     break;
+        //     case GamepadEvent.TurnLeft:
+        //         this.doAction(this.registry.services.game.characterMovement.left);
+        //     break;
+        //     case GamepadEvent.TurnRight:
+        //         this.doAction(this.registry.services.game.characterMovement.right);
+        //     break;
+        // }
     }
 
     private doAction(action: (obj: MeshObject) => void) {

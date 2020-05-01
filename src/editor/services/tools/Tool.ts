@@ -10,7 +10,8 @@ export enum ToolType {
     PAN = 'pan',
     Zoom = 'zoom',
     PATH = 'arrow',
-    Pointer = 'pointer'
+    Pointer = 'pointer',
+    Gamepad = 'gamepad'
 }
 
 export class ToolReturnType {
@@ -42,6 +43,7 @@ export interface Tool {
     activate(): void;
     leave(): void;
     keydown(e: IKeyboardEvent): void;
+    keyup(e: IKeyboardEvent): void;
     over(item: Concept | Feedback): void;
     out(item: Concept | Feedback): void;
     wheel(): void;

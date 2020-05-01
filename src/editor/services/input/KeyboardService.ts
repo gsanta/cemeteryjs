@@ -25,7 +25,12 @@ function getPlatform(): Platform {
 
 
 export enum Keyboard {
-    Enter = 13
+    Enter = 13,
+    w = 87,
+    a = 65,
+    d = 68,
+    s = 83,
+    e = 69
 }
 
 export interface IKeyboardEvent {
@@ -46,7 +51,12 @@ export class KeyboardService {
     }
     
     onKeyDown(e: KeyboardEvent): void {
+        this.registry.services.hotkey.executeKeyboardEvent(this.convertEvent(e));
         this.registry.stores.viewStore.getActiveView().getActiveTool()?.keydown(this.convertEvent(e));
+    }
+
+    onKeyUp(e: KeyboardEvent): void {
+        this.registry.stores.viewStore.getActiveView().getActiveTool()?.keyup(this.convertEvent(e));
     }
 
     private convertEvent(event: KeyboardEvent): IKeyboardEvent {

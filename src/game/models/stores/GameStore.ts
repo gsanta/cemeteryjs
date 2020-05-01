@@ -14,10 +14,6 @@ export class GameStore {
         this.registry = registry;
     }
 
-    getPlayer(): MeshObject {
-        return <MeshObject> this.objs.find(gameObject => gameObject.id === 'player');
-    }
-
     getEnemies(): MeshObject[] {
         return <MeshObject[]> this.objs.filter(gameObject => gameObject.id === 'enemy');
     }
@@ -33,6 +29,10 @@ export class GameStore {
 
     getMeshObjects(): MeshObject[] {
         return <MeshObject[]> this.objs.filter(obj => obj.type === ConceptType.MeshConcept);
+    }
+
+    getPlayer(): MeshObject {
+        return this.getMeshObjects().find(obj => obj.isManualControl);
     }
 
     getRouteObjects(): RouteObject[] {

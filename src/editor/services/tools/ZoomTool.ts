@@ -2,8 +2,8 @@ import { Registry } from '../../Registry';
 import { Hotkey } from "../input/HotkeyService";
 import { UpdateTask } from '../UpdateServices';
 import { AbstractTool } from './AbstractTool';
-import { HotkeyWheelZoomStart } from "./HotkeyWheelZoomStart";
 import { ToolType } from "./Tool";
+import { HotkeyWheelZoomStart } from './hotkeys/HotkeyWheelZoomStart';
 
 export class ZoomTool extends AbstractTool {
     private hotkeys: Hotkey[] = [];

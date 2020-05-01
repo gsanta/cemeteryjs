@@ -61,6 +61,7 @@ export class CanvasComponent extends React.Component {
                     onMouseUp={(e) => this.context.registry.services.mouse.onMouseUp(e.nativeEvent)}
                     onMouseLeave={(e) => this.context.registry.services.mouse.onMouseOut(e.nativeEvent)}
                     onKeyDown={e => this.context.registry.services.keyboard.onKeyDown(e.nativeEvent)}
+                    onKeyUp={e => this.context.registry.services.keyboard.onKeyUp(e.nativeEvent)}
                     onMouseOver={() => view.over()}
                     onMouseOut={() => view.out()}
                     onWheel={(e) => this.wheelListener.onWheel(e.nativeEvent)}

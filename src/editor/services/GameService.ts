@@ -1,27 +1,24 @@
+import { Engine } from "babylonjs";
 import { Scene } from "babylonjs/scene";
 import { MeshObject } from "../../game/models/objects/MeshObject";
-import { Stores } from "../stores/Stores";
+import { CharacterMovement } from "../../game/services/behaviour/CharacterMovement";
+import { GameEventManager, GamepadEvent } from "../../game/services/GameEventManager";
+import { AnimationPlayer } from "../../game/services/listeners/AnimationPlayer";
+import { PlayerListener } from "../../game/services/listeners/PlayerListener";
+import { AfterRenderTrigger } from "../../game/services/triggers/AfterRenderTrigger";
+import { KeyboardTrigger } from "../../game/services/triggers/KeyboardTrigger";
+import { Walkers } from "../../game/services/walkers/Walkers";
+import { Registry } from "../Registry";
 import { Concept, ConceptType } from "../views/canvas/models/concepts/Concept";
 import { GameEngine } from "../views/renderer/GameEngine";
-import { ServiceLocator } from "./ServiceLocator";
-import { KeyboardTrigger } from "../../game/services/triggers/KeyboardTrigger";
-import { AfterRenderTrigger } from "../../game/services/triggers/AfterRenderTrigger";
-import { GamepadEvent, GameEventManager } from "../../game/services/GameEventManager";
-import { CharacterMovement } from "../../game/services/behaviour/CharacterMovement";
-import { AnimationPlayer } from "../../game/services/listeners/AnimationPlayer";
+import { IConceptConverter } from "./convert/IConceptConverter";
 import { IConceptImporter } from "./import/IConceptImporter";
 import { ImportService } from "./import/ImportService";
-import { IConceptConverter } from "./convert/IConceptConverter";
-import { Walkers } from "../../game/services/walkers/Walkers";
-import { PlayerListener } from "../../game/services/listeners/PlayerListener";
-import { Engine } from "babylonjs";
-import { Registry } from "../Registry";
 
 export class GameService {
     serviceName = 'game-service';
     gameEngine: GameEngine;
     
-    private keyboardListener: KeyboardTrigger;
     private keyboardTrigger: KeyboardTrigger;
     private afterRenderTrigger: AfterRenderTrigger;
     gameEventManager: GameEventManager;
@@ -44,10 +41,8 @@ export class GameService {
     init(canvas: HTMLCanvasElement) {
         this.gameEngine = new GameEngine();
         this.gameEngine.init(canvas);
-        this.keyboardListener = new KeyboardTrigger(this.registry);
-        this.keyboardTrigger = new KeyboardTrigger(this.registry);
         this.gameEventManager = new GameEventManager();
-        this.characterMovement = new CharacterMovement();
+        this.characterMovement = new CharacterMovement(this.registry);
 
         const playerListener = new PlayerListener(this.registry);
         this.gameEventManager.listeners.registerGamepadListener((gamepadEvent: GamepadEvent) => playerListener.gamepadEvent(gamepadEvent));
@@ -114,6 +109,10 @@ export class GameService {
         this.deleteConcepts(concepts);
 
         concepts.forEach(concept => this.addConcept(concept))
+    }
+
+    playerAction(gamepadEvent: GamepadEvent) {
+        this.characterMovement.action(gamepadEvent);
     }
 
     getEngine(): Engine {

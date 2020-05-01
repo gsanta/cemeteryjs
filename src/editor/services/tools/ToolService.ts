@@ -1,6 +1,4 @@
 import { ZoomTool } from "./ZoomTool";
-import { ServiceLocator } from "../ServiceLocator";
-import { Stores } from "../../stores/Stores";
 import { DeleteTool } from "./DeleteTool";
 import { PointerTool } from "./PointerTool";
 import { ToolType, Tool } from "./Tool";
@@ -9,6 +7,7 @@ import { RectangleTool } from "./RectangleTool";
 import { SelectTool } from "./SelectTool";
 import { CameraRotationTool } from "./CameraRotationTool";
 import { Registry } from "../../Registry";
+import { GamepadTool } from "./GamepadTool";
 
 export class ToolService {
     zoom: ZoomTool;
@@ -18,6 +17,7 @@ export class ToolService {
     rectangle: RectangleTool;
     select: SelectTool;
     cameraRotate: CameraRotationTool;
+    gamepad: GamepadTool;
 
     tools: Tool[] = [];
 
@@ -32,6 +32,7 @@ export class ToolService {
         this.rectangle = new RectangleTool(this.registry);
         this.select = new SelectTool(this.registry);
         this.cameraRotate = new CameraRotationTool(this.registry);
+        this.gamepad = new GamepadTool(this.registry);
 
         this.tools.push(this.zoom);
         this.tools.push(this.delete);
@@ -40,5 +41,6 @@ export class ToolService {
         this.tools.push(this.rectangle);
         this.tools.push(this.select);
         this.tools.push(this.cameraRotate);
+        this.tools.push(this.gamepad);
     }
 }

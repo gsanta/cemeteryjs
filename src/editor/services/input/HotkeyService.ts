@@ -83,7 +83,7 @@ export class HotkeyService {
 }
 
 export interface HotkeyTrigger {
-    readonly keyCode: number;
+    readonly keyCodes: number[];
     readonly keyCodeFunc: (hotkeyEvent: IHotkeyEvent) => boolean;
     readonly alt: boolean;
     readonly shift: boolean;
@@ -111,7 +111,7 @@ export class Hotkey {
     readonly action: IHotkeyAction;
 
     private static readonly defaultHotkeyTrigger: HotkeyTrigger = {
-        keyCode: undefined,
+        keyCodes: [],
         keyCodeFunc: undefined,
         alt: false,
         shift: false,
@@ -132,7 +132,7 @@ export class Hotkey {
 
     matches(hotkeyEvent: IHotkeyEvent, regitry: Registry): boolean {
         const b = (
-            (this.trigger.keyCode === undefined || hotkeyEvent.keyCode === this.trigger.keyCode) &&
+            this.keyCodesMatch(hotkeyEvent) &&
             hotkeyEvent.isAltDown === this.trigger.alt &&
             (this.trigger.shift === undefined || hotkeyEvent.isShiftDown === this.trigger.shift) &&
             isCtrlOrCommandDown(<IKeyboardEvent> hotkeyEvent) === this.trigger.ctrlOrCommand &&
@@ -154,6 +154,10 @@ export class Hotkey {
     }
 
     private mouseDownMatch(hotkeyEvent: IHotkeyEvent) {
-        return this.trigger.mouseDown === hotkeyEvent.pointers[0].isDown
+        return this.trigger.mouseDown === false || this.trigger.mouseDown === hotkeyEvent.pointers[0].isDown
+    }
+
+    private keyCodesMatch(hotkeyEvent: IHotkeyEvent): boolean {
+        return this.trigger.keyCodes.length === 0 || this.trigger.keyCodes.find(keyCode => keyCode === hotkeyEvent.keyCode) !== undefined;
     }
 }

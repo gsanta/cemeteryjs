@@ -2,8 +2,8 @@ import { Registry } from '../../Registry';
 import { Hotkey } from "../input/HotkeyService";
 import { UpdateTask } from '../UpdateServices';
 import { AbstractTool } from './AbstractTool';
-import { HotkeyCameraRotationStart } from './HotkeyCameraRotationStart';
 import { ToolType } from "./Tool";
+import { HotkeyCameraRotationStart } from './hotkeys/HotkeyCameraRotationStart';
 
 export class CameraRotationTool extends AbstractTool {
     private hotkeys: Hotkey[] = [];

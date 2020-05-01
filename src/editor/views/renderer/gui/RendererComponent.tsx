@@ -76,6 +76,8 @@ export class RendererComponent extends React.Component {
                         onMouseOver={() => view.over()}
                         onMouseOut={() => view.out()}
                         onWheel={(e) => this.wheelListener.onWheel(e.nativeEvent)}
+                        onKeyDown={e => this.context.registry.services.keyboard.onKeyDown(e.nativeEvent)}
+                        onKeyUp={e => this.context.registry.services.keyboard.onKeyUp(e.nativeEvent)}    
                     />
                 </RendererStyled>
         );
