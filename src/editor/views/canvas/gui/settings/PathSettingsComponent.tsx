@@ -11,13 +11,13 @@ export class PathSettingsComponent extends React.Component<{concept: PathConcept
     context: AppContextType;
 
     componentDidMount() {
-        const pathSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<PathSettings>(PathSettings.type);
+        const pathSettings = this.context.registry.stores.viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<PathSettings>(PathSettings.type);
 
         pathSettings.setRenderer(() => this.forceUpdate());
     }
 
     render() {
-        const pathSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<PathSettings>(PathSettings.type);
+        const pathSettings = this.context.registry.stores.viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<PathSettings>(PathSettings.type);
 
         pathSettings.path = this.props.concept;
 
@@ -29,7 +29,7 @@ export class PathSettingsComponent extends React.Component<{concept: PathConcept
     }
 
     private renderName(): JSX.Element {
-        const pathSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<PathSettings>(PathSettings.type);
+        const pathSettings = this.context.registry.stores.viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<PathSettings>(PathSettings.type);
 
         return (
             <SettingsRowStyled>

@@ -37,13 +37,13 @@ export class RendererComponent extends React.Component {
 
     constructor(props: {}) {
         super(props);
-        this.wheelListener = new WheelListener(() => this.context.getServices());
-
+        
         this.canvasRef = React.createRef();
     }
-
+    
     componentDidMount() {
-        this.context.getStores().viewStore.getViewById<RendererView>(RendererView.id).setCanvasRenderer(() => this.forceUpdate());
+        this.wheelListener = new WheelListener(this.context.registry);
+        this.context.registry.stores.viewStore.getViewById<RendererView>(RendererView.id).setCanvasRenderer(() => this.forceUpdate());
         
         setTimeout(() => {
             // this.context.controllers.getWindowControllerByName('renderer').update();
@@ -58,7 +58,7 @@ export class RendererComponent extends React.Component {
     }
 
     render() {
-        const view = this.context.getStores().viewStore.getViewById<RendererView>(RendererView.id);
+        const view = this.context.registry.stores.viewStore.getViewById<RendererView>(RendererView.id);
 
         return (
                 <RendererStyled id={view.getId()}>
@@ -69,10 +69,10 @@ export class RendererComponent extends React.Component {
                         ref={this.canvasRef}
                     />
                     <CanvasOverlayStyled
-                        onMouseDown={(e) => this.context.getServices().mouse.onMouseDown(e.nativeEvent)}
-                        onMouseMove={(e) => this.context.getServices().mouse.onMouseMove(e.nativeEvent)}
-                        onMouseUp={(e) => this.context.getServices().mouse.onMouseUp(e.nativeEvent)}
-                        onMouseLeave={(e) => this.context.getServices().mouse.onMouseOut(e.nativeEvent)}
+                        onMouseDown={(e) => this.context.registry.services.mouse.onMouseDown(e.nativeEvent)}
+                        onMouseMove={(e) => this.context.registry.services.mouse.onMouseMove(e.nativeEvent)}
+                        onMouseUp={(e) => this.context.registry.services.mouse.onMouseUp(e.nativeEvent)}
+                        onMouseLeave={(e) => this.context.registry.services.mouse.onMouseOut(e.nativeEvent)}
                         onMouseOver={() => view.over()}
                         onMouseOut={() => view.out()}
                         onWheel={(e) => this.wheelListener.onWheel(e.nativeEvent)}

@@ -1,16 +1,14 @@
 import * as React from 'react';
+import { Registry } from './Registry';
 import { CanvasView } from './views/canvas/CanvasView';
-import { View } from './views/View';
-import { Editor } from './Editor';
-import { RendererComponent } from './views/renderer/gui/RendererComponent';
 import { CanvasComponent } from './views/canvas/gui/CanvasComponent';
+import { RendererComponent } from './views/renderer/gui/RendererComponent';
 import { RendererView } from './views/renderer/RendererView';
-import { ServiceLocator } from './services/ServiceLocator';
-import { Stores } from './stores/Stores';
+import { View } from './views/View';
 
 export interface ViewFactory {
     name: string;
-    getWindowController(editor: Editor, getServices: () => ServiceLocator, getStores: () => Stores): View;
+    getWindowController(registry: Registry): View;
     renderWindowComponent(): JSX.Element;
     renderToolbarComponent(): JSX.Element;
 }

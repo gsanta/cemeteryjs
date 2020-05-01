@@ -1,8 +1,8 @@
+import { Registry } from "../../Registry";
+import { ConceptType } from "../../views/canvas/models/concepts/Concept";
+import { PathConcept } from "../../views/canvas/models/concepts/PathConcept";
 import { IConceptImporter } from "./IConceptImporter";
 import { ConceptGroupJson } from "./ImportService";
-import { PathConcept } from "../../views/canvas/models/concepts/PathConcept";
-import { ConceptType } from "../../views/canvas/models/concepts/Concept";
-import { Stores } from "../../stores/Stores";
 
 export interface PathJson {
     circle: {
@@ -28,10 +28,10 @@ export interface PathGroupJson extends ConceptGroupJson {
 
 export class PathConceptImporter implements IConceptImporter {
     type = ConceptType.PathConcept;
-    private getStores: () => Stores
+    private registry: Registry
 
-    constructor(getStores: () => Stores) {
-        this.getStores = getStores;
+    constructor(registry: Registry) {
+        this.registry = registry;
     }
 
     import(group: PathGroupJson): void {

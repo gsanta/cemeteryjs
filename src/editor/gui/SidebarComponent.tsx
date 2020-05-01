@@ -30,7 +30,7 @@ export class SidebarComponent extends React.Component<SidebarComponentProps> {
     }
     
     componentDidMount() {
-        this.context.controllers.getWindowControllers().forEach(controller => this.context.getServices().update.addSettingsRepainter(() => this.forceUpdate()));
+        this.context.controllers.getWindowControllers().forEach(controller => this.context.registry.services.update.addSettingsRepainter(() => this.forceUpdate()));
     }
 
     render(): JSX.Element {
@@ -48,7 +48,7 @@ export class SidebarComponent extends React.Component<SidebarComponentProps> {
                         },
                         {
                             title: 'Object Settings',
-                            body: settingsFactory(() => this.context.controllers.stores)
+                            body: settingsFactory(this.context.registry)
                         },
                         {
                             title: 'Global Settings',

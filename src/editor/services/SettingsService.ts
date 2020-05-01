@@ -5,18 +5,19 @@ import { LevelSettings } from "../views/canvas/settings/LevelSettings";
 import { Stores } from "../stores/Stores";
 import { ServiceLocator } from "./ServiceLocator";
 import { AnimationSettings } from "../views/canvas/settings/AnimationSettings";
+import { Registry } from "../Registry";
 
 
 export class SettingsService {
     serviceName = 'settings-service'
     protected settings: AbstractSettings<any>[] = [];
 
-    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
+    constructor(registry: Registry) {
         this.settings = [
-            new MeshSettings(getServices, getStores),
+            new MeshSettings(registry),
             new PathSettings(),
-            new LevelSettings(getServices, getStores),
-            new AnimationSettings(getServices, getStores)
+            new LevelSettings(registry),
+            new AnimationSettings(registry)
         ];
     }
 

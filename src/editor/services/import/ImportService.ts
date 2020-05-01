@@ -1,13 +1,11 @@
 import * as convert from 'xml-js';
-import { Stores } from '../../stores/Stores';
-import { ServiceLocator } from '../ServiceLocator';
-import { IConceptImporter } from './IConceptImporter';
-import { MeshConceptImporter } from './MeshConceptImporter';
-import { PathConceptImporter } from './PathConceptImporter';
+import { Registry } from '../../Registry';
 import { ConceptType } from '../../views/canvas/models/concepts/Concept';
 import { AnimationConceptImporter } from './AnimationConceptImporter';
+import { IConceptImporter } from './IConceptImporter';
+import { MeshConceptImporter } from './MeshConceptImporter';
 import { ModelConceptImporter } from './ModelConceptImporter';
-import { Registry } from '../../Registry';
+import { PathConceptImporter } from './PathConceptImporter';
 
 export interface WgDefinition {
     _attributes: WgDefinitionAttributes;

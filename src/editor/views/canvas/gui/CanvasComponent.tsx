@@ -35,19 +35,19 @@ export class CanvasComponent extends React.Component {
     private wheelListener: WheelListener;
 
     componentDidMount() {
-        this.wheelListener = new WheelListener(() => this.context.getServices());
-        this.context.getServices().update.setCanvasRepainter(() => this.forceUpdate());
+        this.wheelListener = new WheelListener(this.context.registry);
+        this.context.registry.services.update.setCanvasRepainter(() => this.forceUpdate());
 
         setTimeout(() => {
-            this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).resize();
+            this.context.registry.stores.viewStore.getViewById<CanvasView>(CanvasView.id).resize();
         }, 0);
     }
 
     render(): JSX.Element {
-        const hover = (item: Concept | Feedback) => this.context.getServices().mouse.hover(item);
-        const unhover = (canvasItem: Concept | Feedback) => this.context.getServices().mouse.unhover(canvasItem);
+        const hover = (item: Concept | Feedback) => this.context.registry.services.mouse.hover(item);
+        const unhover = (canvasItem: Concept | Feedback) => this.context.registry.services.mouse.unhover(canvasItem);
 
-        const view = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id);
+        const view = this.context.registry.stores.viewStore.getViewById<CanvasView>(CanvasView.id);
 
         return (
             <EditorComponentStyled id={view.getId()}>
@@ -56,11 +56,11 @@ export class CanvasComponent extends React.Component {
                     tabIndex={0}
                     viewBox={view.getCamera().getViewBoxAsString()}
                     id={this.context.controllers.svgCanvasId}
-                    onMouseDown={(e) => this.context.getServices().mouse.onMouseDown(e.nativeEvent)}
-                    onMouseMove={(e) => this.context.getServices().mouse.onMouseMove(e.nativeEvent)}
-                    onMouseUp={(e) => this.context.getServices().mouse.onMouseUp(e.nativeEvent)}
-                    onMouseLeave={(e) => this.context.getServices().mouse.onMouseOut(e.nativeEvent)}
-                    onKeyDown={e => this.context.getServices().keyboard.onKeyDown(e.nativeEvent)}
+                    onMouseDown={(e) => this.context.registry.services.mouse.onMouseDown(e.nativeEvent)}
+                    onMouseMove={(e) => this.context.registry.services.mouse.onMouseMove(e.nativeEvent)}
+                    onMouseUp={(e) => this.context.registry.services.mouse.onMouseUp(e.nativeEvent)}
+                    onMouseLeave={(e) => this.context.registry.services.mouse.onMouseOut(e.nativeEvent)}
+                    onKeyDown={e => this.context.registry.services.keyboard.onKeyDown(e.nativeEvent)}
                     onMouseOver={() => view.over()}
                     onMouseOut={() => view.out()}
                     onWheel={(e) => this.wheelListener.onWheel(e.nativeEvent)}
@@ -68,7 +68,7 @@ export class CanvasComponent extends React.Component {
                     <defs>
                         <PathMarkersComponent/>
                     </defs>
-                    {this.context.getServices().export.conceptExporters.map(exporter => exporter.export(hover, unhover))}
+                    {this.context.registry.services.export.conceptExporters.map(exporter => exporter.export(hover, unhover))}
                     {this.renderFeedbacks()}
                 </CanvasComponentStyled>
             </EditorComponentStyled>
@@ -76,10 +76,10 @@ export class CanvasComponent extends React.Component {
     }
 
     private renderFeedbacks(): JSX.Element {
-        const feedback = this.context.getStores().feedback.rectSelectFeedback;
+        const feedback = this.context.registry.stores.feedback.rectSelectFeedback;
 
         if (feedback && feedback.isVisible) {
-            const rect = this.context.getStores().feedback.rectSelectFeedback.rect;
+            const rect = this.context.registry.stores.feedback.rectSelectFeedback.rect;
             return (
                 <SelectionComponentStyled 
                     x={rect.topLeft.x}

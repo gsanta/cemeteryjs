@@ -13,14 +13,22 @@ export class Stores {
 
     constructor(registry: Registry) {
         this.registry = registry;
+        this.canvasStore = new CanvasStore(this.registry);
+        this.hoverStore = new HoverStore();
+        this.selectionStore = new SelectionStore();
+        this.levelStore = new LevelStore();
+        this.viewStore = new ViewStore();
+        this.gameStore = new GameStore(this.registry);
+        this.meshStore = new MeshStore(this.registry);
+        this.feedback = new FeedbackStore();
     }
 
-    canvasStore = new CanvasStore(this.registry);
-    hoverStore = new HoverStore();
-    selectionStore = new SelectionStore();
-    levelStore = new LevelStore();
-    viewStore = new ViewStore();
-    gameStore = new GameStore(this.registry);
-    meshStore = new MeshStore(this.registry);
-    feedback = new FeedbackStore();
+    canvasStore: CanvasStore;
+    hoverStore: HoverStore;
+    selectionStore: SelectionStore;
+    levelStore: LevelStore;
+    viewStore: ViewStore;
+    gameStore: GameStore;
+    meshStore: MeshStore;
+    feedback: FeedbackStore;
 }

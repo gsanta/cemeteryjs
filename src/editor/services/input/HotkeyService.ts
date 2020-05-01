@@ -4,7 +4,7 @@ import { IPointerEvent, PointerService, Wheel } from './PointerService';
 import { Point } from '../../../misc/geometry/shapes/Point';
 import { Registry } from '../../Registry';
 
-export type IHotkeyAction = (hotkeyEvent: IHotkeyEvent, getServices: () => ServiceLocator) => boolean;
+export type IHotkeyAction = (hotkeyEvent: IHotkeyEvent, registry: Registry) => boolean;
 
 export class HotkeyService {
     serviceName = 'hotkey-service'
@@ -130,13 +130,13 @@ export class Hotkey {
         this.action = action;
     }
 
-    matches(hotkeyEvent: IHotkeyEvent, getServices: () => ServiceLocator): boolean {
+    matches(hotkeyEvent: IHotkeyEvent, regitry: Registry): boolean {
         const b = (
             (this.trigger.keyCode === undefined || hotkeyEvent.keyCode === this.trigger.keyCode) &&
             hotkeyEvent.isAltDown === this.trigger.alt &&
             (this.trigger.shift === undefined || hotkeyEvent.isShiftDown === this.trigger.shift) &&
             isCtrlOrCommandDown(<IKeyboardEvent> hotkeyEvent) === this.trigger.ctrlOrCommand &&
-            this.wheelMatch(getServices().pointer) === this.trigger.wheel &&
+            this.wheelMatch(regitry.services.pointer) === this.trigger.wheel &&
             this.mouseDownMatch(hotkeyEvent) &&
             this.keyCodeFuncMatch(hotkeyEvent)
         );

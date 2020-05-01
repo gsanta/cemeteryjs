@@ -12,10 +12,10 @@ export class LevelSettingsComponent extends React.Component {
     context: AppContextType;
 
     render() {
-        const levelSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<LevelSettings>(LevelSettings.type);
+        const levelSettings = this.context.registry.stores.viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<LevelSettings>(LevelSettings.type);
         
         const level = levelSettings.getVal(LevelFormPropType.Level);
-        const levelIndexes = this.context.getStores().levelStore.levels.filter(level => !level.isEmpty).map(level => level.index);
+        const levelIndexes = this.context.registry.stores.levelStore.levels.filter(level => !level.isEmpty).map(level => level.index);
         return (
             <div>
                 <SettingsRowStyled>

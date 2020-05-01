@@ -1,16 +1,16 @@
-import { IConceptExporter } from "./IConceptExporter";
-import React = require("react");
-import { PathComponent } from "./PathComponent";
-import { Stores } from '../../stores/Stores';
-import { ConceptType, Concept } from "../../views/canvas/models/concepts/Concept";
+import { Registry } from "../../Registry";
+import { Concept, ConceptType } from "../../views/canvas/models/concepts/Concept";
 import { Feedback } from "../../views/canvas/models/feedbacks/Feedback";
+import { IConceptExporter } from "./IConceptExporter";
+import { PathComponent } from "./PathComponent";
+import React = require("react");
 
 export class PathConceptExporter implements IConceptExporter {
     type = ConceptType.PathConcept;
-    private getStores: () => Stores;
+    private registry: Registry;
 
-    constructor(getStores: () => Stores) {
-        this.getStores = getStores;
+    constructor(registry: Registry) {
+        this.registry = registry;
     }
 
     export(hover?: (item: Concept | Feedback) => void, unhover?: (item: Concept | Feedback) => void): JSX.Element {

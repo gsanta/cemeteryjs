@@ -42,4 +42,7 @@ export class AbstractTool implements Tool {
      * Called when the tool is deselected.
      */
     deselect(): void {}
+
+    setup(): void {};
+    teardown(): void {};
 }

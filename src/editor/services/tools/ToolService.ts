@@ -3,7 +3,7 @@ import { ServiceLocator } from "../ServiceLocator";
 import { Stores } from "../../stores/Stores";
 import { DeleteTool } from "./DeleteTool";
 import { PointerTool } from "./PointerTool";
-import { ToolType } from "./Tool";
+import { ToolType, Tool } from "./Tool";
 import { PathTool } from "./PathTool";
 import { RectangleTool } from "./RectangleTool";
 import { SelectTool } from "./SelectTool";
@@ -19,6 +19,8 @@ export class ToolService {
     select: SelectTool;
     cameraRotate: CameraRotationTool;
 
+    tools: Tool[] = [];
+
     private registry: Registry;
 
     constructor(registry: Registry) {
@@ -30,5 +32,13 @@ export class ToolService {
         this.rectangle = new RectangleTool(this.registry);
         this.select = new SelectTool(this.registry);
         this.cameraRotate = new CameraRotationTool(this.registry);
+
+        this.tools.push(this.zoom);
+        this.tools.push(this.delete);
+        this.tools.push(this.pointer);
+        this.tools.push(this.path);
+        this.tools.push(this.rectangle);
+        this.tools.push(this.select);
+        this.tools.push(this.cameraRotate);
     }
 }

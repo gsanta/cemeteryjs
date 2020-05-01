@@ -9,7 +9,7 @@ export function renderApp(element: HTMLDivElement) {
     const editor = new Editor();
     
     ReactDOM.render(
-        <AppContext.Provider value={{controllers: editor, getServices: () => editor.services, getStores: () => editor.stores}}>
+        <AppContext.Provider value={{controllers: editor, registry: editor.registry}}>
             <App/>
         </AppContext.Provider>,
         element

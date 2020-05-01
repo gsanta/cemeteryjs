@@ -8,11 +8,12 @@ import { ICamera } from './ICamera';
 import { RendererCamera } from './RendererCamera';
 import { Stores } from '../../stores/Stores';
 import { GameService } from '../../services/GameService';
+import { Registry } from '../../Registry';
 (<any> window).earcut = require('earcut');
 
-export function cameraInitializer(getServices: () => ServiceLocator, getStores: () => Stores) {
-    if (getServices().game) {
-        return new RendererCamera(getServices);
+export function cameraInitializer(registry: Registry) {
+    if (registry.services.game) {
+        return new RendererCamera(registry);
     }
 
     return null;
@@ -37,12 +38,12 @@ export class RendererView extends View {
     private renderCanvasFunc: () => void;
     private camera: RendererCamera;
 
-    constructor(editor: Editor, getServices: () => ServiceLocator, getStores: () => Stores) {
-        super(editor, getServices, getStores);
+    constructor(registry: Registry) {
+        super(registry);
 
-        this.registry.services.game = new GameService(getServices, getStores);
+        this.registry.services.game = new GameService(registry);
 
-        this.updateService = new UpdateService(this.editor, getServices, getStores);
+        this.updateService = new UpdateService(registry);
         this.update = this.update.bind(this);
     }
 
@@ -56,7 +57,7 @@ export class RendererView extends View {
 
     setup() {
         this.registry.services.game.init(getCanvasElement(this.getId()));
-        this.camera = cameraInitializer(this.getServices, this.getStores);
+        this.camera = cameraInitializer(this.registry);
         this.registry.services.game.importAllConcepts();
 
         this.selectedTool = this.registry.services.tools.zoom;

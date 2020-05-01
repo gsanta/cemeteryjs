@@ -1,12 +1,10 @@
 import * as React from 'react';
 import { Editor } from '../Editor';
-import { ServiceLocator } from '../services/ServiceLocator';
-import { Stores } from '../stores/Stores';
+import { Registry } from '../Registry';
 
 export interface AppContextType {
     controllers: Editor;
-    getServices(): ServiceLocator;
-    getStores(): Stores;
+    registry: Registry;
 }
 
 export const AppContext = React.createContext<AppContextType>(undefined);

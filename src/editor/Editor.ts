@@ -1,14 +1,11 @@
+import { Registry } from './Registry';
+import { ViewFactory } from './ViewFactory';
 import { CanvasFactory } from './views/canvas/CanvasFactory';
 import { GlobalSettings } from './views/canvas/settings/GlobalSettings';
 import { RendererFactory } from './views/renderer/RendererFactory';
-import { ViewFactory } from './ViewFactory';
-import { CanvasView } from './views/canvas/CanvasView';
-import { ServiceLocator } from './services/ServiceLocator';
-import { Stores } from './stores/Stores';
 
 export class Editor {
-    stores: Stores;
-    services: ServiceLocator;
+    registry: Registry;
     
     windowFactories: ViewFactory[];
 
@@ -20,46 +17,46 @@ export class Editor {
 
     constructor() {
         this.svgCanvasId = 'svg-editor';
-        this.stores = new Stores();
-        this.services = new ServiceLocator(this, () => this.stores);
+        this.registry = new Registry();
+        this.registry.services.tools.tools.forEach(tool => tool.setup());
 
         this.windowFactories = [
             new CanvasFactory(),
             new RendererFactory()
         ];
 
-        this.globalSettingsForm = new GlobalSettings(this.getWindowControllerByName('canvas') as CanvasView, () => this.services, () => this.stores);
+        this.globalSettingsForm = new GlobalSettings(this.registry);
 
     }
 
     setup(canvas: HTMLCanvasElement) {
-        this.windowFactories.forEach(factory => factory.getWindowController(this, () => this.services, () => this.stores).setup());
+        this.windowFactories.forEach(factory => factory.getWindowController(this.registry));
         
-        this.services.storage.loadLevelIndexes()
+        this.registry.services.storage.loadLevelIndexes()
             .then((indexes: number[]) => {
                 if (indexes.length) {
-                    this.stores.levelStore.setLevels(indexes);
-                    return this.services.level.changeLevel(indexes[0]);
+                    this.registry.stores.levelStore.setLevels(indexes);
+                    return this.registry.services.level.changeLevel(indexes[0]);
                 }
             })
             .then(() => {
                 this.isLoading = false;
-                this.services.history.saveState(this.services.export.export());
+                this.registry.services.history.saveState(this.registry.services.export.export());
                 this.render();
             })
             .catch(() => {
                 this.isLoading = false;
-                this.services.history.saveState(this.services.export.export());
+                this.registry.services.history.saveState(this.registry.services.export.export());
                 this.render();
             });
     }
 
     getWindowControllerByName(name: string) {
-        return this.windowFactories.find(factory => factory.name === name).getWindowController(this, () => this.services, () => this.stores);
+        return this.windowFactories.find(factory => factory.name === name).getWindowController(this.registry);
     }
 
     getWindowControllers() {
-        return this.windowFactories.map(factory => factory.getWindowController(this, () => this.services, () => this.stores));
+        return this.windowFactories.map(factory => factory.getWindowController(this.registry));
     }
 
     getWindowFactory(name: string) {

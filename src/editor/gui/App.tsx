@@ -37,7 +37,7 @@ export class App extends React.Component<{}, AppState> {
     }
 
     componentDidMount() {
-        this.context.getServices().update.setFullRepainter(() => this.forceUpdate());
+        this.context.registry.services.update.setFullRepainter(() => this.forceUpdate());
         this.context.controllers.setRenderer(() => this.forceUpdate());
         if (this.hasCanvasVisibilityChanged()) {
             this.updateCanvasVisibility();
@@ -59,7 +59,7 @@ export class App extends React.Component<{}, AppState> {
     }
     
     render() {
-        const fullScreen = this.context.getStores().viewStore.getFullScreen();
+        const fullScreen = this.context.registry.stores.viewStore.getFullScreen();
         const toolbar = !fullScreen ? (
             <div id="toolbar" >
                 <SidebarComponent isEditorOpen={this.state.isEditorOpen} toggleEditorOpen={() => this.setState({isEditorOpen: !this.state.isEditorOpen})}/>
@@ -79,7 +79,7 @@ export class App extends React.Component<{}, AppState> {
     }
 
     private renderFullScreenCanvas(): JSX.Element {
-        const fullScreen = this.context.getStores().viewStore.getFullScreen();
+        const fullScreen = this.context.registry.stores.viewStore.getFullScreen();
         return <div id={`${fullScreen.getId()}-split`}>{viewFactory(fullScreen)}</div>;
     }
 
@@ -89,7 +89,7 @@ export class App extends React.Component<{}, AppState> {
     }
 
     private resize() {
-        this.context.getStores().viewStore.getVisibleViews().forEach(controller => controller.resize());
+        this.context.registry.stores.viewStore.getVisibleViews().forEach(controller => controller.resize());
     }
 
     private hasCanvasVisibilityChanged() {
@@ -109,7 +109,7 @@ export class App extends React.Component<{}, AppState> {
         let sizes: number[];
         let minSize: number[];
 
-        const fullScreen = this.context.getStores().viewStore.getFullScreen();
+        const fullScreen = this.context.registry.stores.viewStore.getFullScreen();
 
         if (fullScreen) {
             sizes = [100];

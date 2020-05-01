@@ -22,13 +22,13 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
     context: AppContextType;
 
     componentDidMount() {
-        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const meshSettings = this.context.registry.stores.viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         meshSettings.setRenderer(() => this.forceUpdate());
     }
     
     render() {
-        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const meshSettings = this.context.registry.stores.viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         meshSettings.meshConcept = this.props.concept;
 
@@ -48,7 +48,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
     }
 
     private renderName(): JSX.Element {
-        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const meshSettings = this.context.registry.stores.viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         return (
             <SettingsRowStyled>
@@ -67,7 +67,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
     }
 
     private renderModelFileChooser(): JSX.Element {
-        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const meshSettings = this.context.registry.stores.viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         return (
             <SettingsRowStyled key="model-file">
@@ -88,7 +88,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
 
     
     private renderTextureFileChooser(): JSX.Element {
-        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const meshSettings = this.context.registry.stores.viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         return (
             <SettingsRowStyled key="texture-file">
@@ -108,7 +108,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
     }
 
     private renderThumbnailFileChooser(): JSX.Element {
-        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const meshSettings = this.context.registry.stores.viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         return (
             <SettingsRowStyled key="thumbnail-file">
@@ -128,7 +128,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
     }
 
     private renderLayerInput(): JSX.Element {
-        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const meshSettings = this.context.registry.stores.viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         return (
             <SettingsRowStyled>
@@ -141,7 +141,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
     }
 
     private renderRotationInput(): JSX.Element {
-        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const meshSettings = this.context.registry.stores.viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         return (
             <SettingsRowStyled>
@@ -161,7 +161,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
     }
 
     private renderScaleInput(): JSX.Element {
-        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const meshSettings = this.context.registry.stores.viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         return (
             <SettingsRowStyled>
@@ -227,7 +227,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
     }
 
     private renderAnimationSection() {
-        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const meshSettings = this.context.registry.stores.viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         const body = (
             <React.Fragment>
@@ -259,9 +259,9 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
     }
 
     private renderPath(): JSX.Element {
-        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const meshSettings = this.context.registry.stores.viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
-        const pathNames = this.context.getStores().canvasStore.getPathConcepts().map(p => p.id);
+        const pathNames = this.context.registry.stores.canvasStore.getPathConcepts().map(p => p.id);
         const val: string = meshSettings.getVal(MeshViewPropType.Path);
 
         return (
@@ -283,7 +283,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
 
     
     private renderManualMovement(): JSX.Element {
-        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const meshSettings = this.context.registry.stores.viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         return (
             <SettingsRowStyled verticalAlign='right'>
@@ -301,14 +301,14 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
             <SettingsRowStyled>
               <LabelColumnStyled></LabelColumnStyled>
                 <FieldColumnStyled>
-                    <ButtonComponent text="Custom animation" type="info" onClick={() => this.context.getServices().dialog.openDialog('animation-settings')}/>
+                    <ButtonComponent text="Custom animation" type="info" onClick={() => this.context.registry.services.dialog.openDialog('animation-settings')}/>
                 </FieldColumnStyled>
             </SettingsRowStyled>
         );
     }
 
     private renderPlayAnimation() {
-        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const meshSettings = this.context.registry.stores.viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         const updateAnimationState = (state: AnimationState) => meshSettings.updateProp(state, MeshViewPropType.AnimationState);
         const getState = (animationState: AnimationState): 'disabled' | 'active' | 'default' => {
@@ -329,7 +329,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
     }
 
     private renderAnimationTypes(): JSX.Element {
-        const meshSettings = this.context.getStores().viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const meshSettings = this.context.registry.stores.viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         const val: ElementalAnimation = meshSettings.getVal(MeshViewPropType.DefaultAnimation);
 

@@ -7,6 +7,7 @@ import { CanvasView } from '../../CanvasView';
 import { Concept, ConceptType } from '../../models/concepts/Concept';
 import { MeshConcept } from '../../models/concepts/MeshConcept';
 import { PathConcept } from '../../models/concepts/PathConcept';
+import { Registry } from "../../../../Registry";
 
 export interface ViewFormProps<T extends Concept> {
     canvasController: CanvasView;
@@ -19,8 +20,8 @@ const PlaceHolderTextStyled = styled.div`
     opacity: 0.6;
 `;
 
-export function settingsFactory(getStores: () => Stores): JSX.Element {
-    const selectedViews = getStores().selectionStore.getAll();
+export function settingsFactory(registry: Registry): JSX.Element {
+    const selectedViews = registry.stores.selectionStore.getAll();
     if (selectedViews.length !== 1) {
         return <PlaceHolderTextStyled>Select an object on canvas to change it's properties</PlaceHolderTextStyled>
     }

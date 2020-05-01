@@ -1,18 +1,15 @@
 import { Point } from '../../../misc/geometry/shapes/Point';
-import { Editor } from '../../Editor';
+import { Registry } from '../../Registry';
 import { CanvasViewExporter } from '../../services/export/CanvasViewExporter';
 import { IViewExporter } from '../../services/export/IViewExporter';
 import { CanvasViewImporter } from '../../services/import/CanvasViewImporter';
 import { IViewImporter } from '../../services/import/IViewImporter';
-import { ServiceLocator } from '../../services/ServiceLocator';
-import { Stores } from '../../stores/Stores';
-import { View, calcOffsetFromDom } from '../View';
+import { UpdateTask } from '../../services/UpdateServices';
+import { calcOffsetFromDom, View } from '../View';
 import { CanvasCamera } from './CanvasCamera';
 import { LevelSettings } from './settings/LevelSettings';
 import { MeshSettings } from './settings/MeshSettings';
 import { PathSettings } from './settings/PathSettings';
-import { UpdateTask } from '../../services/UpdateServices';
-import { Registry } from '../../Registry';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -49,23 +46,23 @@ export class CanvasView extends View {
     importer: IViewImporter;
     private camera: CanvasCamera;
 
-    constructor(editor: Editor, registry: Registry) {
-        super(editor, registry);
+    constructor(registry: Registry) {
+        super(registry);
 
-        this.camera = cameraInitializer(CanvasView.id, this.getServices, this.getStores);
+        this.camera = cameraInitializer(CanvasView.id, registry);
 
         this.registry.stores.viewStore.setActiveView(this);
 
         this.selectedTool = this.registry.services.tools.rectangle;
 
         this.settings = [
-            new MeshSettings(this.getServices, this.getStores),
+            new MeshSettings(this.registry),
             new PathSettings(),
-            new LevelSettings(this.getServices, this.getStores)
+            new LevelSettings(this.registry)
         ];
 
-        this.exporter = new CanvasViewExporter(getStores);
-        this.importer = new CanvasViewImporter(getStores);
+        this.exporter = new CanvasViewExporter(this.registry);
+        this.importer = new CanvasViewImporter(this.registry);
     }
 
     getId() {
@@ -95,7 +92,7 @@ export class CanvasView extends View {
     }
 
     updateCamera() {
-        this.camera = cameraInitializer(CanvasView.id, this.getServices, this.getStores);
+        this.camera = cameraInitializer(CanvasView.id, this.registry);
         this.registry.services.update.runImmediately(UpdateTask.RepaintCanvas);
     }
 }

@@ -1,12 +1,12 @@
 import { Editor } from "../Editor";
-import { Stores } from "../stores/Stores";
+import { Registry } from "../Registry";
 import { ConceptConvertService } from "./ConceptConvertService";
 import { DialogService } from "./DialogService";
 import { ExportService } from "./export/ExportService";
 import { GameService } from "./GameService";
 import { HistoryService } from "./HistoryService";
 import { ImportService } from './import/ImportService';
-import { HotkeyService, Hotkey } from "./input/HotkeyService";
+import { HotkeyService } from "./input/HotkeyService";
 import { KeyboardService } from './input/KeyboardService';
 import { MouseService } from './input/MouseService';
 import { PointerService } from './input/PointerService';
@@ -16,7 +16,6 @@ import { MeshLoaderService } from "./MeshLoaderService";
 import { SettingsService } from "./SettingsService";
 import { ToolService } from "./tools/ToolService";
 import { UpdateService } from "./UpdateServices";
-import { Registry } from "../Registry";
 
 export class ServiceLocator {
     hotkey: HotkeyService;
@@ -36,15 +35,12 @@ export class ServiceLocator {
     conceptConverter: ConceptConvertService;
     game: GameService;
 
-    private registry: Registry;
-
-    constructor(editor: Editor, registry: Registry) {
-        this.registry = registry;
+    constructor(registry: Registry) {
         this.hotkey = new HotkeyService(registry);
         this.tools = new ToolService(registry);
-        this.storage = new LocalStoreService(editor, registry);
+        this.storage = new LocalStoreService(registry);
         this.level = new LevelService(registry);
-        this.update = new UpdateService(editor, registry);
+        this.update = new UpdateService(registry);
         this.import = new ImportService(registry);
         this.export = new ExportService(registry);
         this.history = new HistoryService(registry);

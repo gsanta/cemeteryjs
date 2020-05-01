@@ -4,16 +4,17 @@ import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
 import { MousePointer } from '../../services/input/MouseService';
 import { ServiceLocator } from '../../services/ServiceLocator';
 import { ICamera } from './ICamera';
+import { Registry } from '../../Registry';
 
 export class RendererCamera implements ICamera {
     private startY: number;
     camera: ArcRotateCamera;
-    private getServices: () => ServiceLocator;
     private plane = Plane.FromPositionAndNormal(Vector3.Zero(), Axis.Y);
     private inertialPanning = Vector3.Zero();
+    private registry: Registry;
 
-    constructor(getServices: () => ServiceLocator) {
-        this.getServices = getServices;
+    constructor(registry: Registry) {
+        this.registry = registry;
         const scene = this.registry.services.game.getScene();
         this.camera = new ArcRotateCamera("Camera", -Math.PI / 2, 0, 150, Vector3.Zero(), scene);
 

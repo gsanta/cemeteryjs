@@ -1,10 +1,8 @@
-import { ViewFactory } from "../../ViewFactory";
 import * as React from 'react';
-import { CanvasView } from "./CanvasView";
+import { Registry } from "../../Registry";
+import { ViewFactory } from "../../ViewFactory";
 import { View } from "../View";
-import { Editor } from "../../Editor";
-import { ServiceLocator } from "../../services/ServiceLocator";
-import { Stores } from "../../stores/Stores";
+import { CanvasView } from "./CanvasView";
 import { CanvasComponent } from "./gui/CanvasComponent";
 
 export class CanvasFactory implements ViewFactory {
@@ -12,9 +10,9 @@ export class CanvasFactory implements ViewFactory {
     
     private controller: CanvasView;
 
-    getWindowController(editor: Editor, getServices: () => ServiceLocator, getStores: () => Stores): View {
+    getWindowController(registry: Registry): View {
         if (!this.controller) {
-            this.controller = new CanvasView(editor, getServices, getStores);
+            this.controller = new CanvasView(registry);
         }
         return this.controller;
     }

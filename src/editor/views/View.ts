@@ -31,7 +31,6 @@ export function calcOffsetFromDom(id: string): Point {
 
 export abstract class View {
     name: string;
-    editor: Editor;
 
     exporter: IViewExporter;
     importer: IViewImporter;
@@ -41,10 +40,9 @@ export abstract class View {
     protected selectedTool: Tool;
     priorityTool: Tool;
 
-    private registry: Registry;
+    protected registry: Registry;
     
-    constructor(controllers: Editor, registry: Registry) {
-        this.editor = controllers;
+    constructor(registry: Registry) {
         this.registry = registry;
         this.registry.stores.viewStore.registerView(this);
     }

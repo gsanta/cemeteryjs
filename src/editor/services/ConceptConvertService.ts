@@ -1,16 +1,19 @@
-import { ServiceLocator } from "./ServiceLocator";import { Stores } from "../stores/Stores";import { IConceptConverter } from "./convert/IConceptConverter";import { MeshConceptConverter } from "./convert/MeshConceptConverter";import { PathConceptConverter } from "./convert/PathConceptConverter";import { Concept } from "../views/canvas/models/concepts/Concept";
 import { IGameObject } from "../../game/models/objects/IGameObject";
-
+import { Registry } from "../Registry";
+import { Concept } from "../views/canvas/models/concepts/Concept";
+import { IConceptConverter } from "./convert/IConceptConverter";
+import { MeshConceptConverter } from "./convert/MeshConceptConverter";
+import { PathConceptConverter } from "./convert/PathConceptConverter";
 
 export class ConceptConvertService {
     serviceName = 'concept-convert-service';
 
     private conceptConverters: IConceptConverter[] = []
 
-    constructor(getStores: () => Stores) {
+    constructor(registry: Registry) {
         this.conceptConverters = [
-            new MeshConceptConverter(getStores),
-            new PathConceptConverter(getStores)
+            new MeshConceptConverter(registry),
+            new PathConceptConverter(registry)
         ];
     }
 

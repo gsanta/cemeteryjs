@@ -49,4 +49,7 @@ export interface Tool {
 
     select(): void;
     deselect(): void;
+
+    setup(): void;
+    teardown(): void;
 }

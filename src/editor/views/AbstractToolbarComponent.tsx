@@ -34,7 +34,7 @@ export abstract class AbstractToolbarComponent extends React.Component {
     }
     
     componentDidMount() {
-        this.context.getServices().update.addSettingsRepainter(() => this.forceUpdate());
+        this.context.registry.services.update.addSettingsRepainter(() => this.forceUpdate());
     }
 
     render(): JSX.Element {
@@ -55,8 +55,8 @@ export abstract class AbstractToolbarComponent extends React.Component {
     protected abstract renderRightToolGroup(): JSX.Element;
     
     renderFullScreenIcon(): JSX.Element {
-        const viewStore = this.context.getStores().viewStore;
-        const view = this.context.getStores().viewStore.getViewById(this.viewId);
+        const viewStore = this.context.registry.stores.viewStore;
+        const view = this.context.registry.stores.viewStore.getViewById(this.viewId);
 
         return viewStore.getFullScreen() === view ? 
             <FullScreenExitIconComponent isActive={false} onClick={() => this.exitFullScreen()} format="short"/> :
@@ -64,14 +64,14 @@ export abstract class AbstractToolbarComponent extends React.Component {
     }
     
     private enterFullScreen() {
-        const view = this.context.getStores().viewStore.getViewById(this.viewId);
+        const view = this.context.registry.stores.viewStore.getViewById(this.viewId);
 
-        this.context.getStores().viewStore.setFullScreen(view);
-        this.context.getServices().update.runImmediately(UpdateTask.Full);
+        this.context.registry.stores.viewStore.setFullScreen(view);
+        this.context.registry.services.update.runImmediately(UpdateTask.Full);
     }
 
     private exitFullScreen() {
-        this.context.getStores().viewStore.setFullScreen(undefined);
-        this.context.getServices().update.runImmediately(UpdateTask.Full);
+        this.context.registry.stores.viewStore.setFullScreen(undefined);
+        this.context.registry.services.update.runImmediately(UpdateTask.Full);
     }
 }

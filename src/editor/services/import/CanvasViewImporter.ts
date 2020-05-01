@@ -3,6 +3,7 @@ import { CanvasView } from "../../views/canvas/CanvasView";
 import { Stores } from "../../stores/Stores";
 import { Point } from "../../../misc/geometry/shapes/Point";
 import { CanvasCamera } from "../../views/canvas/CanvasCamera";
+import { Registry } from "../../Registry";
 
 export interface CanvasViewJson {
     _attributes: {
@@ -14,10 +15,10 @@ export interface CanvasViewJson {
 
 export class CanvasViewImporter implements IViewImporter {
     viewType = CanvasView.id;
-    private getStores: () => Stores
+    private registry: Registry;
 
-    constructor(getStores: () => Stores) {
-        this.getStores = getStores;
+    constructor(registry: Registry) {
+        this.registry = registry;
     }
 
     import(json: CanvasViewJson): void {

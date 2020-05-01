@@ -6,15 +6,16 @@ import { RendererView } from "./RendererView";
 import * as React from 'react';
 import { ServiceLocator } from "../../services/ServiceLocator";
 import { Stores } from "../../stores/Stores";
+import { Registry } from "../../Registry";
 
 export class RendererFactory implements ViewFactory {
     name = 'renderer';
     
     private view: RendererView;
 
-    getWindowController(editor: Editor, getServices: () => ServiceLocator, getStores: () => Stores): View {
+    getWindowController(registry: Registry): View {
         if (!this.view) {
-            this.view = new RendererView(editor, getServices, getStores);
+            this.view = new RendererView(registry);
         }
         return this.view;
     }

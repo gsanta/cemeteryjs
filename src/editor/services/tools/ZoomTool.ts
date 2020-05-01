@@ -1,11 +1,9 @@
-import { Stores } from '../../stores/Stores';
+import { Registry } from '../../Registry';
 import { Hotkey } from "../input/HotkeyService";
-import { ServiceLocator } from '../ServiceLocator';
 import { UpdateTask } from '../UpdateServices';
 import { AbstractTool } from './AbstractTool';
-import { ToolType } from "./Tool";
 import { HotkeyWheelZoomStart } from "./HotkeyWheelZoomStart";
-import { Registry } from '../../Registry';
+import { ToolType } from "./Tool";
 
 export class ZoomTool extends AbstractTool {
     private hotkeys: Hotkey[] = [];
@@ -14,6 +12,9 @@ export class ZoomTool extends AbstractTool {
         super(ToolType.Zoom, registry);
 
         this.hotkeys = [new HotkeyWheelZoomStart(registry)];
+    }
+
+    setup() {
         this.hotkeys.forEach(hk => this.registry.services.hotkey.registerHotkey(hk));
     }
 
