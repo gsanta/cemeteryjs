@@ -13,6 +13,7 @@ export enum GamepadEvent {
 }
 
 export class GamepadTool extends AbstractTool {
+    private downKeys: Set<GamepadEvent> = new Set();
     private hotkeys: Hotkey[] = [];
     private keyCodeToInputCommandMap: Map<Keyboard, GamepadEvent> = new Map(
         [
@@ -35,10 +36,13 @@ export class GamepadTool extends AbstractTool {
 
     keydown(e: IKeyboardEvent) {
         const action = this.keyCodeToInputCommandMap.get(e.keyCode);
-        this.registry.services.game.playerAction(action);
+        this.downKeys.add(action);
+        this.registry.services.game.playerAction(Array.from(this.downKeys));
     }
 
-    keyup() {
+    keyup(e: IKeyboardEvent) {
+        const action = this.keyCodeToInputCommandMap.get(e.keyCode);
+        this.downKeys.delete(action)
         this.registry.stores.viewStore.getActiveView().removePriorityTool(this);
     }
 }

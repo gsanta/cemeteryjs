@@ -31,7 +31,7 @@ export class MeshObject implements IGameObject {
     color: string;
     scale: number;
 
-    speed = 0.01;
+    speed: number;
 
     activeBehaviour: BehaviourType;
     wanderAngle = 0;
@@ -82,6 +82,7 @@ export class MeshObject implements IGameObject {
 
     moveBy(vector: Point): void {
         if (this.mesh) {
+            console.log(vector)
             this.mesh.translate(toVector3(vector), 1);
         } else {
             this.dimensions.translate(vector);

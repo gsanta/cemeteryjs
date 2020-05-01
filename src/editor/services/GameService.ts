@@ -111,7 +111,7 @@ export class GameService {
         concepts.forEach(concept => this.addConcept(concept))
     }
 
-    playerAction(gamepadEvent: GamepadEvent) {
+    playerAction(gamepadEvent: GamepadEvent[]) {
         this.characterMovement.action(gamepadEvent);
     }
 

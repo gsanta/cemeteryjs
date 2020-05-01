@@ -6,7 +6,7 @@ export class HotkeyGamepadStart extends Hotkey {
     private registry: Registry;
     
     constructor(registry: Registry) {
-        super('GamepadStart',  {keyCodes: [Keyboard.a, Keyboard.d, Keyboard.w, Keyboard.s], worksDuringMouseDown: true}, () => this.hotKeyAction());
+        super('GamepadStart',  {keyCodes: [Keyboard.a, Keyboard.d, Keyboard.e, Keyboard.w, Keyboard.s], worksDuringMouseDown: true}, () => this.hotKeyAction());
 
         this.registry = registry;
     }

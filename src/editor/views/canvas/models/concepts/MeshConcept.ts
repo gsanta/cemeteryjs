@@ -49,7 +49,7 @@ export class MeshConcept implements VisualConcept {
     color: string;
     scale: number;
 
-    speed = 0.01;
+    speed = 0.1;
 
     activeBehaviour: BehaviourType;
     wanderAngle = 0;
