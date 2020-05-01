@@ -1,22 +1,18 @@
-import { Stores } from "../../stores/Stores";
+import { Registry } from "../../Registry";
 import { Hotkey } from "../input/HotkeyService";
-import { ServiceLocator } from "../ServiceLocator";
 
 export class HotkeyCameraRotationStart extends Hotkey {
+    private registry: Registry;
 
-    private getServices: () => ServiceLocator;
-    private getStores: () => Stores;
-
-    constructor(getStores: () => Stores,getServices: () => ServiceLocator) {
+    constructor(registry: Registry) {
         super('CameraRotationStart',  {mouseDown: true, worksDuringMouseDown: true, ctrlOrCommand: true}, () => this.hotKeyAction());
 
-        this.getServices = getServices;
-        this.getStores = getStores;
+        this.registry = registry;
     }
 
     private hotKeyAction(): boolean {
-        if (this.getStores().viewStore.getActiveView().getActiveTool() !== this.getServices().tools.cameraRotate) {
-            this.getStores().viewStore.getActiveView().setPriorityTool(this.getServices().tools.cameraRotate);
+        if (this.registry.stores.viewStore.getActiveView().getActiveTool() !== this.registry.services.tools.cameraRotate) {
+            this.registry.stores.viewStore.getActiveView().setPriorityTool(this.registry.services.tools.cameraRotate);
             return true;
         }
     }

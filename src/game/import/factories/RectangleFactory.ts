@@ -1,19 +1,19 @@
 import { Color3, Mesh, MeshBuilder, Scene, Space, StandardMaterial, Vector3 } from 'babylonjs';
-import { Stores } from '../../../editor/stores/Stores';
+import { Registry } from '../../../editor/Registry';
+import { Point } from '../../../misc/geometry/shapes/Point';
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
 import { MeshObject } from '../../models/objects/MeshObject';
 import { MaterialBuilder } from './MaterialFactory';
-import { Point } from '../../../misc/geometry/shapes/Point';
 
 export class RectangleFactory  {
     private height: number;
 
-    private getStores: () => Stores;
+    private registry: Registry;
     private materialBuilder: typeof MaterialBuilder;
     private materialIndex = 0;
 
-    constructor(getStores: () => Stores, height: number) {
-        this.getStores = getStores;
+    constructor(registry: Registry, height: number) {
+        this.registry = registry;
         this.height = height;
         this.materialBuilder = MaterialBuilder;
     }

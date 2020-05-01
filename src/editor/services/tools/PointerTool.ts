@@ -7,40 +7,39 @@ import { Concept } from '../../views/canvas/models/concepts/Concept';
 import { Feedback } from '../../views/canvas/models/feedbacks/Feedback';
 import { VisualConcept } from '../../views/canvas/models/concepts/VisualConcept';
 import { isFeedback, isConcept } from '../../stores/CanvasStore';
+import { Registry } from '../../Registry';
 
 export class PointerTool extends AbstractTool {
     protected movingItem: Concept | Feedback = undefined;
     private isDragStart = true;
 
-    constructor(getServices: () => ServiceLocator, getStores: () => Stores, toolType: ToolType) {
-        super(toolType, getServices, getStores);
-        this.getStores = getStores;
-        this.getServices = getServices;
+    constructor(toolType: ToolType, registry: Registry) {
+        super(toolType, registry);
     }
 
     click(): void {
-        const hoverStore = this.getStores().hoverStore;
+        const hoverStore = this.registry.stores.hoverStore;
 
         const feedback = hoverStore.getFeedback();
         let concept = hoverStore.getConcept(); 
         if (feedback) {
             const concept = hoverStore.getFeedback().parent;
-            this.getStores().selectionStore.clear();
-            this.getStores().selectionStore.addItem(concept);
-            this.getStores().selectionStore.addItem(feedback);
+            this.registry.stores.selectionStore.clear();
+            this.registry.stores.selectionStore.addItem(concept);
+            this.registry.stores.selectionStore.addItem(feedback);
 
-            this.getServices().update.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas);
+            this.registry.services.update.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas);
         } else if (concept) {
-            this.getStores().selectionStore.clear();
-            this.getStores().selectionStore.addItem(concept);
+            this.registry.stores.selectionStore.clear();
+            this.registry.stores.selectionStore.addItem(concept);
 
-            this.getServices().update.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas);
+            this.registry.services.update.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas);
 
         }
     }
 
     down() {
-        this.initMove() && this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas);
+        this.initMove() && this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     drag() {
@@ -48,7 +47,7 @@ export class PointerTool extends AbstractTool {
 
         if (this.movingItem) {
             this.moveItems();
-            this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas);
+            this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
         }
         
         this.isDragStart = false;
@@ -58,14 +57,14 @@ export class PointerTool extends AbstractTool {
         super.draggedUp();
 
         if (!this.isDragStart) {
-            this.getServices().update.scheduleTasks(UpdateTask.SaveData, UpdateTask.All);
+            this.registry.services.update.scheduleTasks(UpdateTask.SaveData, UpdateTask.All);
         }
 
         this.isDragStart = true;
         
         this.updateGameObjects();
         this.movingItem = undefined;
-        this.getServices().level.updateCurrentLevel();
+        this.registry.services.level.updateCurrentLevel();
     }
 
     leave() {
@@ -74,32 +73,32 @@ export class PointerTool extends AbstractTool {
     }
 
     over(item: VisualConcept | Feedback) {
-        this.getStores().hoverStore.addItem(item);
-        this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas);
+        this.registry.stores.hoverStore.addItem(item);
+        this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     out(item: VisualConcept | Feedback) {
-        this.getStores().hoverStore.removeItem(item);
-        this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas);
+        this.registry.stores.hoverStore.removeItem(item);
+        this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     private initMove(): boolean {
-        const hovered = this.getStores().hoverStore.getAny();
+        const hovered = this.registry.stores.hoverStore.getAny();
         this.movingItem = hovered;
         this.moveItems();
         return true;
     }
 
     private moveItems() {
-        const concepts = this.getStores().selectionStore.getAllConcepts();
+        const concepts = this.registry.stores.selectionStore.getAllConcepts();
 
         if (isFeedback(this.movingItem.type)) {
-            concepts[0].moveEditPoint(this.getStores().selectionStore.getEditPoint(), this.getServices().pointer.pointer.getDiff());
+            concepts[0].moveEditPoint(this.registry.stores.selectionStore.getEditPoint(), this.registry.services.pointer.pointer.getDiff());
         } else if (isConcept(this.movingItem.type)) {
-            concepts.forEach((item, index) => item.move(this.getServices().pointer.pointer.getDiff()));
+            concepts.forEach((item, index) => item.move(this.registry.services.pointer.pointer.getDiff()));
         }
 
-        this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas);
+        this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     private updateGameObjects() {
@@ -108,9 +107,9 @@ export class PointerTool extends AbstractTool {
         if (isFeedback(this.movingItem.type)) {
             concepts = [(<Feedback> this.movingItem).parent];
         } else {
-            concepts = this.getStores().selectionStore.getAllConcepts();
+            concepts = this.registry.stores.selectionStore.getAllConcepts();
         }
 
-        this.getServices().game.updateConcepts(concepts);
+        this.registry.services.game.updateConcepts(concepts);
     }
 }

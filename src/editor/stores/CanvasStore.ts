@@ -11,6 +11,7 @@ import { MetaConcept } from "../views/canvas/models/meta/MetaConcept";
 import { AnimationConcept } from "../views/canvas/models/meta/AnimationConcept";
 import { VisualConcept } from "../views/canvas/models/concepts/VisualConcept";
 import { ModelConcept } from "../views/canvas/models/concepts/ModelConcept";
+import { Registry } from "../Registry";
 
 export function isFeedback(type: string) {
     return type.endsWith('Feedback');
@@ -30,10 +31,10 @@ export class CanvasStore {
     metas: MetaConcept[] = [];
 
     private naming: Naming;
-    private getStores: () => Stores;
+    private registry: Registry;
 
-    constructor(getStores: () => Stores) {
-        this.getStores = getStores;
+    constructor(registry: Registry) {
+        this.registry = registry;
         this.naming = new Naming(this);
     }
 
@@ -55,8 +56,8 @@ export class CanvasStore {
 
     removeConcept(concept: VisualConcept) {
         this.concepts = without(this.concepts, concept);
-        this.getStores().hoverStore.removeItem(concept);
-        this.getStores().selectionStore.removeItem(concept);
+        this.registry.stores.hoverStore.removeItem(concept);
+        this.registry.stores.selectionStore.removeItem(concept);
     }
 
     clear(): void {

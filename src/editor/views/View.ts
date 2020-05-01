@@ -10,6 +10,7 @@ import { UpdateTask } from '../services/UpdateServices';
 import { Stores } from '../stores/Stores';
 import { AbstractSettings } from './canvas/settings/AbstractSettings';
 import { ICamera } from './renderer/ICamera';
+import { Registry } from '../Registry';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;
@@ -39,14 +40,13 @@ export abstract class View {
     
     protected selectedTool: Tool;
     priorityTool: Tool;
+
+    private registry: Registry;
     
-    protected getServices: () => ServiceLocator;
-    protected getStores: () => Stores;
-    constructor(controllers: Editor, getServices: () => ServiceLocator, getStores: () => Stores) {
+    constructor(controllers: Editor, registry: Registry) {
         this.editor = controllers;
-        this.getServices = getServices;
-        this.getStores = getStores;
-        getStores().viewStore.registerView(this);
+        this.registry = registry;
+        this.registry.stores.viewStore.registerView(this);
     }
 
     abstract isVisible(): boolean;
@@ -57,14 +57,14 @@ export abstract class View {
     destroy(): void {}
     abstract resize(): void;
     update(): void {}
-    over(): void { this.getStores().viewStore.setActiveView(this) }
+    over(): void { this.registry.stores.viewStore.setActiveView(this) }
     out(): void {}
 
     setSelectedTool(tool: AbstractTool) {
         this.selectedTool && this.selectedTool.deselect();
         this.selectedTool = tool;
         this.selectedTool.select();
-        this.getServices().update.runImmediately(UpdateTask.RepaintSettings);
+        this.registry.services.update.runImmediately(UpdateTask.RepaintSettings);
     }
 
     getSelectedTool(): Tool {
@@ -79,14 +79,14 @@ export abstract class View {
         if (this.priorityTool !== priorityTool) {
             this.getActiveTool().leave();
             this.priorityTool = priorityTool;
-            this.getServices().update.runImmediately(UpdateTask.RepaintSettings);
+            this.registry.services.update.runImmediately(UpdateTask.RepaintSettings);
         }
     }
 
     removePriorityTool(priorityTool: Tool) {
         if (this.priorityTool === priorityTool) {
             this.priorityTool = null;
-            this.getServices().update.runImmediately(UpdateTask.RepaintSettings);
+            this.registry.services.update.runImmediately(UpdateTask.RepaintSettings);
         }
     }
 

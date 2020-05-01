@@ -4,6 +4,7 @@ import { PathConcept } from "../../views/canvas/models/concepts/PathConcept";
 import { ConceptType } from "../../views/canvas/models/concepts/Concept";
 import { Stores } from "../../stores/Stores";
 import { ModelConcept } from "../../views/canvas/models/concepts/ModelConcept";
+import { Registry } from "../../Registry";
 
 export interface ModelJson {
     _attributes: {
@@ -20,10 +21,10 @@ export interface ModelGroupJson extends ConceptGroupJson {
 export class ModelConceptImporter implements IConceptImporter {
     type = ConceptType.ModelConcept;
 
-    private getStores: () => Stores;
+    private registry: Registry;
 
-    constructor(getStores: () => Stores) {
-        this.getStores = getStores;
+    constructor(registry: Registry) {
+        this.registry = registry;
     }
 
     import(group: ModelGroupJson): void {
@@ -35,7 +36,7 @@ export class ModelConceptImporter implements IConceptImporter {
             modelConcept.modelPath = json._attributes['data-model-path'];
             modelConcept.texturePath = json._attributes['data-texture-path'];
 
-            this.getStores().canvasStore.addMeta(modelConcept);
+            this.registry.stores.canvasStore.addMeta(modelConcept);
         });
     }
 }

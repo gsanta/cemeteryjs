@@ -12,6 +12,7 @@ import { LevelSettings } from './settings/LevelSettings';
 import { MeshSettings } from './settings/MeshSettings';
 import { PathSettings } from './settings/PathSettings';
 import { UpdateTask } from '../../services/UpdateServices';
+import { Registry } from '../../Registry';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -25,12 +26,12 @@ function getScreenSize(canvasId: string): Point {
     return undefined;
 }
 
-function cameraInitializer(canvasId: string, getServices: () => ServiceLocator, getStores: () => Stores) {
+function cameraInitializer(canvasId: string, registry: Registry) {
     const screenSize = getScreenSize(canvasId);
     if (screenSize) {
-        return new CanvasCamera(getServices, new Point(screenSize.x, screenSize.y));
+        return new CanvasCamera(registry, new Point(screenSize.x, screenSize.y));
     } else {
-        return new CanvasCamera(getServices, new Point(100, 100));
+        return new CanvasCamera(registry, new Point(100, 100));
     }
 }
 
@@ -48,14 +49,14 @@ export class CanvasView extends View {
     importer: IViewImporter;
     private camera: CanvasCamera;
 
-    constructor(editor: Editor, getServices: () => ServiceLocator, getStores: () => Stores) {
-        super(editor, getServices, getStores);
+    constructor(editor: Editor, registry: Registry) {
+        super(editor, registry);
 
         this.camera = cameraInitializer(CanvasView.id, this.getServices, this.getStores);
 
-        this.getStores().viewStore.setActiveView(this);
+        this.registry.stores.viewStore.setActiveView(this);
 
-        this.selectedTool = this.getServices().tools.rectangle;
+        this.selectedTool = this.registry.services.tools.rectangle;
 
         this.settings = [
             new MeshSettings(this.getServices, this.getStores),
@@ -73,8 +74,8 @@ export class CanvasView extends View {
 
     resize(): void {
         this.camera.resize(getScreenSize(CanvasView.id));
-        this.getServices().tools.zoom.resize();
-        this.getServices().update.runImmediately(UpdateTask.RepaintCanvas);
+        this.registry.services.tools.zoom.resize();
+        this.registry.services.update.runImmediately(UpdateTask.RepaintCanvas);
     };
 
     isVisible(): boolean {
@@ -95,6 +96,6 @@ export class CanvasView extends View {
 
     updateCamera() {
         this.camera = cameraInitializer(CanvasView.id, this.getServices, this.getStores);
-        this.getServices().update.runImmediately(UpdateTask.RepaintCanvas);
+        this.registry.services.update.runImmediately(UpdateTask.RepaintCanvas);
     }
 }

@@ -3,7 +3,7 @@ import { MeshObject } from '../objects/MeshObject';
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
 import { MeshLoaderService } from '../../../editor/services/MeshLoaderService';
 import { RectangleFactory } from '../../import/factories/RectangleFactory';
-import { Stores } from '../../../editor/stores/Stores';
+import { Registry } from '../../../editor/Registry';
 
 export class MeshStore {
     private basePath = 'assets/models/';
@@ -18,8 +18,8 @@ export class MeshStore {
 
     private rectangleFactory: RectangleFactory;
 
-    constructor(getStores: () => Stores) {
-        this.rectangleFactory = new RectangleFactory(getStores, 0.1);
+    constructor(registry: Registry) {
+        this.rectangleFactory = new RectangleFactory(registry, 0.1);
     }
     
     addTemplate(fileName: string, mesh: Mesh) {

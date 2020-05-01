@@ -4,6 +4,7 @@ import { MousePointer } from "../../services/input/MouseService";
 import { ServiceLocator } from "../../services/ServiceLocator";
 import { UpdateTask } from "../../services/UpdateServices";
 import { ICamera } from '../renderer/ICamera';
+import { Registry } from "../../Registry";
 
 export class CanvasCamera implements ICamera {
     private screenSize: Point;
@@ -15,10 +16,10 @@ export class CanvasCamera implements ICamera {
     readonly LOG_ZOOM_MIN = Math.log(CanvasCamera.ZOOM_MIN);
     readonly LOG_ZOOM_MAX = Math.log(CanvasCamera.ZOOM_MAX);
     readonly NUM_OF_STEPS: number = 100;
-    private getServices: () => ServiceLocator;
+    private registry: Registry;
 
-    constructor(getServices: () => ServiceLocator, screenSize: Point) {
-        this.getServices = getServices;
+    constructor(registry: Registry, screenSize: Point) {
+        this.registry = registry;
         this.screenSize = screenSize;
         this.viewBox = new Rectangle(new Point(0, 0), new Point(screenSize.x, screenSize.y));
     }
@@ -28,19 +29,6 @@ export class CanvasCamera implements ICamera {
         this.screenSize = screenSize;
         const topLeft = this.viewBox.topLeft;
         this.setTopLeftCorner(topLeft, scale);
-        console.log(this.viewBox.toString())
-        // const view = this.getStores().viewStore.getViewById<CanvasView>(CanvasView.id);
-
-        // const camera = view.getCamera();
-
-        // const prevScale = camera.getScale(); 
-        // const prevTranslate = camera.getTranslate(); 
-    
-        // view.setCamera(cameraInitializer(view.getId()));
-        // view.getCamera().zoom(prevScale);
-        // view.getCamera().moveTo(prevTranslate.clone());
-
-        // this.getServices().update.runImmediately(UpdateTask.RepaintCanvas);
     }
 
     pan(pointer: MousePointer) {
@@ -54,7 +42,9 @@ export class CanvasCamera implements ICamera {
 
 
         this.setTopLeftCorner(canvasPoint, scale);
-        this.moveBy(this.getRatioOfViewBox(this, pointerRatio).negate());
+        const moveAmount = this.getRatioOfViewBox(this, pointerRatio).negate();
+        this.setViewBox(this.viewBox.clone().translate(new Point(moveAmount.x, moveAmount.y)));
+
     }
 
     setTopLeftCorner(canvasPoint: Point, scale: number) {
@@ -63,14 +53,6 @@ export class CanvasCamera implements ICamera {
 
         const topLeft = new Point(canvasPoint.x, canvasPoint.y);
         this.viewBox = new Rectangle(topLeft, new Point(topLeft.x + width, topLeft.y + height));
-    }
-
-    moveBy(amount: Point) {
-        this.setViewBox(this.viewBox.clone().translate(new Point(amount.x, amount.y)));
-    }
-
-    moveTo(translate: Point): void {
-        this.setViewBox(this.viewBox.clone().moveTo(new Point(translate.x, translate.y)));
     }
 
     screenToCanvasPoint(screenPoint: Point): Point {
@@ -110,10 +92,10 @@ export class CanvasCamera implements ICamera {
     }
 
     zoomWheel() {
-        const canvasPos = this.getServices().pointer.pointer.curr;        
+        const canvasPos = this.registry.services.pointer.pointer.curr;        
         let nextZoomLevel: number
 
-        if (this.getServices().pointer.prevWheelState - this.getServices().pointer.wheelState > 0) {
+        if (this.registry.services.pointer.prevWheelState - this.registry.services.pointer.wheelState > 0) {
             nextZoomLevel = this.getNextManualZoomStep();
         } else {
             nextZoomLevel = this.getPrevManualZoomLevel();
@@ -122,7 +104,7 @@ export class CanvasCamera implements ICamera {
         if (nextZoomLevel) {
             this.zoomToPosition(canvasPos, nextZoomLevel);
 
-            this.getServices().update.runImmediately(UpdateTask.RepaintCanvas);
+            this.registry.services.update.runImmediately(UpdateTask.RepaintCanvas);
         }
     }
 
@@ -134,7 +116,7 @@ export class CanvasCamera implements ICamera {
         if (prevZoomLevel) {
             this.zoomToPosition(canvasPos, prevZoomLevel);
 
-            this.getServices().update.runImmediately(UpdateTask.RepaintCanvas);
+            this.registry.services.update.runImmediately(UpdateTask.RepaintCanvas);
         }
     }
 
@@ -146,7 +128,7 @@ export class CanvasCamera implements ICamera {
         if (prevZoomLevel) {
             this.zoomToPosition(canvasPos, prevZoomLevel);
 
-            this.getServices().update.runImmediately(UpdateTask.RepaintCanvas);
+            this.registry.services.update.runImmediately(UpdateTask.RepaintCanvas);
         }
     }
 

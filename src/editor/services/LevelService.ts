@@ -1,52 +1,49 @@
-import { ServiceLocator } from "./ServiceLocator";
-import { Stores } from "../stores/Stores";
+import { Registry } from "../Registry";
 import { UpdateTask } from "./UpdateServices";
 
 export class LevelService {
     serviceName = 'level-service';
-    private getServices: () => ServiceLocator;
-    private getStores: () => Stores;
+    private registry: Registry;
 
-    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
-        this.getServices = getServices;
-        this.getStores = getStores;
+    constructor(registry: Registry) {
+        this.registry = registry;
     }
-
+    
     changeLevel(level: number): Promise<void> {
         this.clearStores();
 
-        if (this.getStores().levelStore.hasLevel(level)) {
-            return this.getServices().storage.loadLevel(level)
+        if (this.registry.stores.levelStore.hasLevel(level)) {
+            return this.registry.services.storage.loadLevel(level)
                 .finally(() => {
-                    this.getStores().levelStore.setCurrentLevel(level)
-                    this.getServices().update.runImmediately(UpdateTask.All);
+                    this.registry.stores.levelStore.setCurrentLevel(level)
+                    this.registry.services.update.runImmediately(UpdateTask.All);
                 });
         } else {
-            this.getStores().levelStore.setCurrentLevel(level);
-            this.getServices().update.runImmediately(UpdateTask.All)
+            this.registry.stores.levelStore.setCurrentLevel(level);
+            this.registry.services.update.runImmediately(UpdateTask.All)
             return Promise.resolve();
         }
     }
 
     updateCurrentLevel() {
-        this.getStores().levelStore.currentLevel.isEmpty = false;
-        const map = this.getServices().export.export();
-        this.getServices().storage.storeLevel(this.getStores().levelStore.currentLevel.index, map);
+        this.registry.stores.levelStore.currentLevel.isEmpty = false;
+        const map = this.registry.services.export.export();
+        this.registry.services.storage.storeLevel(this.registry.stores.levelStore.currentLevel.index, map);
     }
 
     clearLevel() {
-        return this.getServices().storage
-            .removeLevel(this.getStores().levelStore.currentLevel.index)
+        return this.registry.services.storage
+            .removeLevel(this.registry.stores.levelStore.currentLevel.index)
             .then(() => {
                 this.clearStores();
-                this.getStores().levelStore.currentLevel.isEmpty = true;
+                this.registry.stores.levelStore.currentLevel.isEmpty = true;
             });
     }
 
     private clearStores() {
-        this.getServices().game.deleteConcepts(this.getStores().canvasStore.getAllConcepts());
-        this.getStores().canvasStore.clear();
-        this.getStores().hoverStore.clear();
-        this.getStores().selectionStore.clear();
+        this.registry.services.game.deleteConcepts(this.registry.stores.canvasStore.getAllConcepts());
+        this.registry.stores.canvasStore.clear();
+        this.registry.stores.hoverStore.clear();
+        this.registry.stores.selectionStore.clear();
     }
 }

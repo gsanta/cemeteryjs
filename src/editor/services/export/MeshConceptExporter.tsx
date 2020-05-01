@@ -5,13 +5,14 @@ import { Concept, ConceptType } from "../../views/canvas/models/concepts/Concept
 import { MeshConcept } from "../../views/canvas/models/concepts/MeshConcept";
 import { IConceptExporter } from "./IConceptExporter";
 import React = require("react");
+import { Registry } from "../../Registry";
 
 export class MeshConceptExporter implements IConceptExporter {
     type = ConceptType.MeshConcept;
-    private getStores: () => Stores;
+    private registry: Registry;
 
-    constructor(getStores: () => Stores) {
-        this.getStores = getStores;
+    constructor(registry: Registry) {
+        this.registry = registry;
     }
 
     export(hover?: (view: Concept) => void, unhover?: (view: Concept) => void): JSX.Element {
@@ -21,7 +22,7 @@ export class MeshConceptExporter implements IConceptExporter {
     }
 
     private getSortedMeshViews() {
-        let items = [...this.getStores().canvasStore.getMeshConcepts()];
+        let items = [...this.registry.stores.canvasStore.getMeshConcepts()];
         return sort(items, (a, b) => a.layer - b.layer);
     }
 
@@ -55,7 +56,7 @@ export class MeshConceptExporter implements IConceptExporter {
     }
 
     private renderRect(item: MeshConcept) {
-        const stroke = this.getStores().selectionStore.contains(item) || this.getStores().hoverStore.contains(item) ? colors.views.highlight : 'black';
+        const stroke = this.registry.stores.selectionStore.contains(item) || this.registry.stores.hoverStore.contains(item) ? colors.views.highlight : 'black';
 
         return (
             <rect

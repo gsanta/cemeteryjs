@@ -2,27 +2,28 @@ import { AbstractSettings } from "../views/canvas/settings/AbstractSettings";
 import { ServiceLocator } from "./ServiceLocator";
 import { UpdateTask } from "./UpdateServices";
 import { AnimationSettings } from "../views/canvas/settings/AnimationSettings";
+import { Registry } from "../Registry";
 
 export class DialogService {
     serviceName = 'dialog-service';
     activeDialog: AbstractSettings<any> = null;
 
-    private getServices: () => ServiceLocator;
+    private registry: Registry;
 
-    constructor(getServices: () => ServiceLocator) {
-        this.getServices = getServices;
+    constructor(registry: Registry) {
+        this.registry = registry;
     }
 
     getDialogs() : AbstractSettings<any>[] {
         return [
-            this.getServices().settings.getSettingsByName(AnimationSettings.settingsName)
+            this.registry.services.settings.getSettingsByName(AnimationSettings.settingsName)
         ];
     }
 
     openDialog(dialogType: string) {
         this.activeDialog = this.getDialogByName(dialogType);
         this.loadDialog();
-        this.getServices().update.runImmediately(UpdateTask.All);
+        this.registry.services.update.runImmediately(UpdateTask.All);
     }
 
     close(): boolean {
@@ -32,7 +33,7 @@ export class DialogService {
         }
         this.saveDialog();
         this.activeDialog = null;
-        this.getServices().update.runImmediately(UpdateTask.All);
+        this.registry.services.update.runImmediately(UpdateTask.All);
         return ret;
     }
 

@@ -1,9 +1,5 @@
-import { ServiceLocator } from '../ServiceLocator';
+import { Registry } from '../../Registry';
 import { UpdateTask } from "../UpdateServices";
-import { Stores } from '../../stores/Stores';
-import { CanvasView } from '../../views/canvas/CanvasView';
-import { Concept } from '../../views/canvas/models/concepts/Concept';
-import { Feedback } from '../../views/canvas/models/feedbacks/Feedback';
 import { PointerTool } from './PointerTool';
 import { RectangleSelector } from "./RectangleSelector";
 import { ToolType } from "./Tool";
@@ -11,25 +7,23 @@ import { ToolType } from "./Tool";
 export class SelectTool extends PointerTool {
     private rectSelector: RectangleSelector;
 
-    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
-        super(getServices, getStores, ToolType.SELECT);
-        this.getStores = getStores;
-        this.getServices = getServices;
-        this.rectSelector = new RectangleSelector(getStores);
+    constructor(registry: Registry) {
+        super(ToolType.SELECT, registry);
+        this.rectSelector = new RectangleSelector(registry);
     }
 
     down() {
-        if (this.getStores().selectionStore.contains(this.getStores().hoverStore.getAny())) {
+        if (this.registry.stores.selectionStore.contains(this.registry.stores.hoverStore.getAny())) {
             super.down();
         }
     }
 
     click() {
-        if (this.getStores().hoverStore.hasAny()) {
+        if (this.registry.stores.hoverStore.hasAny()) {
             super.click();
-        } else if (this.getStores().selectionStore.getAll().length > 0) {
-            this.getStores().selectionStore.clear();
-            this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas, UpdateTask.RepaintSettings);
+        } else if (this.registry.stores.selectionStore.getAll().length > 0) {
+            this.registry.stores.selectionStore.clear();
+            this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas, UpdateTask.RepaintSettings);
         }
     }
 
@@ -37,8 +31,8 @@ export class SelectTool extends PointerTool {
         if (this.movingItem) {
             super.drag();
         } else {
-            this.rectSelector.updateRect(this.getServices().pointer.pointer);
-            this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas);
+            this.rectSelector.updateRect(this.registry.services.pointer.pointer);
+            this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
         }
     }
 
@@ -46,16 +40,16 @@ export class SelectTool extends PointerTool {
         if (this.movingItem) {
             super.draggedUp();
         } else {
-            const feedback = this.getStores().feedback.rectSelectFeedback;
+            const feedback = this.registry.stores.feedback.rectSelectFeedback;
             if (!feedback) { return }
     
-            const canvasItems = this.getStores().canvasStore.getIntersectingItemsInRect(feedback.rect);
+            const canvasItems = this.registry.stores.canvasStore.getIntersectingItemsInRect(feedback.rect);
             
-            this.getStores().selectionStore.clear();
-            this.getStores().selectionStore.addItem(...canvasItems)
+            this.registry.stores.selectionStore.clear();
+            this.registry.stores.selectionStore.addItem(...canvasItems)
     
             this.rectSelector.finish();
-            this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas, UpdateTask.RepaintSettings);
+            this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas, UpdateTask.RepaintSettings);
         }
 
     }

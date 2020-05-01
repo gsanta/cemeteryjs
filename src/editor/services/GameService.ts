@@ -1,8 +1,7 @@
 import { Scene } from "babylonjs/scene";
-import { GameObjectType } from "../../game/models/objects/IGameObject";
 import { MeshObject } from "../../game/models/objects/MeshObject";
 import { Stores } from "../stores/Stores";
-import { Concept } from "../views/canvas/models/concepts/Concept";
+import { Concept, ConceptType } from "../views/canvas/models/concepts/Concept";
 import { GameEngine } from "../views/renderer/GameEngine";
 import { ServiceLocator } from "./ServiceLocator";
 import { KeyboardTrigger } from "../../game/services/triggers/KeyboardTrigger";
@@ -16,6 +15,7 @@ import { IConceptConverter } from "./convert/IConceptConverter";
 import { Walkers } from "../../game/services/walkers/Walkers";
 import { PlayerListener } from "../../game/services/listeners/PlayerListener";
 import { Engine } from "babylonjs";
+import { Registry } from "../Registry";
 
 export class GameService {
     serviceName = 'game-service';
@@ -33,87 +33,84 @@ export class GameService {
     viewConverters: IConceptConverter[] = [];
 
     private walkers: Walkers;
-    
-    private getServices: () => ServiceLocator;
-    private getStores: () => Stores;
+    private registry: Registry;
 
-    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
-        this.getServices = getServices;
-        this.getStores = getStores;
+    constructor(registry: Registry) {
+        this.registry = registry;
 
-        this.getServices().game = this; 
+        this.registry.services.game = this; 
     }
 
     init(canvas: HTMLCanvasElement) {
         this.gameEngine = new GameEngine();
         this.gameEngine.init(canvas);
-        this.keyboardListener = new KeyboardTrigger(this.getServices);
-        this.keyboardTrigger = new KeyboardTrigger(this.getServices);
+        this.keyboardListener = new KeyboardTrigger(this.registry);
+        this.keyboardTrigger = new KeyboardTrigger(this.registry);
         this.gameEventManager = new GameEventManager();
         this.characterMovement = new CharacterMovement();
 
-        const playerListener = new PlayerListener(this.getServices, this.getStores);
+        const playerListener = new PlayerListener(this.registry);
         this.gameEventManager.listeners.registerGamepadListener((gamepadEvent: GamepadEvent) => playerListener.gamepadEvent(gamepadEvent));
         this.gameEventManager.listeners.registerAfterRenderListener(() => this.walkers.walk());
-        const animationPlayer = new AnimationPlayer(this.getServices, this.getStores);
+        const animationPlayer = new AnimationPlayer(this.registry);
         this.gameEventManager.listeners.registerAfterRenderListener(() => animationPlayer.updateAnimations());
-        this.keyboardTrigger = new KeyboardTrigger(this.getServices);
-        this.afterRenderTrigger = new AfterRenderTrigger(this.getServices)
+        this.keyboardTrigger = new KeyboardTrigger(this.registry);
+        this.afterRenderTrigger = new AfterRenderTrigger(this.registry)
 
-        this.walkers = new Walkers(this.getStores);    
+        this.walkers = new Walkers(this.registry);    
     }
 
     resetPath(meshObjectName: string) {
-        this.getStores().gameStore.getByName<MeshObject>(meshObjectName).getRoute().reset();
+        this.registry.stores.gameStore.getByName<MeshObject>(meshObjectName).getRoute().reset();
     }
 
     resetAllMovements() {
-        this.getStores().gameStore.getRouteObjects().forEach(route => route.reset());
+        this.registry.stores.gameStore.getRouteObjects().forEach(route => route.reset());
     }
 
     pauseMovement(meshObjectName: string) {
-        this.getStores().gameStore.getByName<MeshObject>(meshObjectName).getRoute().isPaused = true;
+        this.registry.stores.gameStore.getByName<MeshObject>(meshObjectName).getRoute().isPaused = true;
     }
 
     pauseAllMovements() {
-        this.getStores().gameStore.getRouteObjects().forEach(route => route.isPaused = true);
+        this.registry.stores.gameStore.getRouteObjects().forEach(route => route.isPaused = true);
     }
 
     playMovement(meshObjectName: string) {
-        this.getStores().gameStore.getByName<MeshObject>(meshObjectName).getRoute().isPaused = false;
+        this.registry.stores.gameStore.getByName<MeshObject>(meshObjectName).getRoute().isPaused = false;
     }
 
     playAllMovements() {
-        this.getStores().gameStore.getRouteObjects().forEach(route => route.isPaused = false);
+        this.registry.stores.gameStore.getRouteObjects().forEach(route => route.isPaused = false);
     }
 
     importAllConcepts() {
-        this.getStores().gameStore.clear();
-        this.getServices().meshLoader.clear();
+        this.registry.stores.gameStore.clear();
+        this.registry.services.meshLoader.clear();
 
-        this.getStores().canvasStore.getAllConcepts().forEach(concept => this.getServices().conceptConverter.convert(concept));
+        this.registry.stores.canvasStore.getAllConcepts().forEach(concept => this.registry.services.conceptConverter.convert(concept));
 
-        this.getServices().meshLoader.loadAll(this.getStores().gameStore.getMeshObjects())
+        this.registry.services.meshLoader.loadAll(this.registry.stores.gameStore.getMeshObjects())
             .then(() => {
-                this.getStores().gameStore.getMeshObjects().forEach(meshObject => this.getStores().meshStore.createInstance(meshObject, this.getServices().game.getScene()));
+                this.registry.stores.gameStore.getMeshObjects().forEach(meshObject => this.registry.stores.meshStore.createInstance(meshObject, this.registry.services.game.getScene()));
             });
     }
 
     deleteConcepts(concepts: Concept[]) {
-        concepts.forEach(concept => this.getStores().gameStore.deleteById(concept.id));
+        concepts.forEach(concept => this.registry.stores.gameStore.deleteById(concept.id));
     }
 
     addConcept(concept: Concept) {
-        const gameObject = this.getServices().conceptConverter.convert(concept);
+        const gameObject = this.registry.services.conceptConverter.convert(concept);
 
-        switch(gameObject.objectType) {
-            case GameObjectType.MeshObject:
+        switch(gameObject.type) {
+            case ConceptType.MeshConcept:
                 const meshObject = <MeshObject> gameObject;
                 if (!meshObject.modelPath) {
-                    this.getStores().meshStore.createInstance(meshObject, this.getServices().game.getScene());
+                    this.registry.stores.meshStore.createInstance(meshObject, this.registry.services.game.getScene());
                 } else {
-                    this.getServices().meshLoader.load(meshObject.modelPath, meshObject.id)
-                        .then(() => this.getStores().meshStore.createInstance(meshObject, this.getServices().game.getScene()));
+                    this.registry.services.meshLoader.load(meshObject.modelPath, meshObject.id)
+                        .then(() => this.registry.stores.meshStore.createInstance(meshObject, this.registry.services.game.getScene()));
                 }
             break;
         }

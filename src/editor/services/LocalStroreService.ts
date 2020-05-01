@@ -1,6 +1,7 @@
 import { CanvasView } from "../views/canvas/CanvasView";
 import { Editor } from "../Editor";
 import { ServiceLocator } from "./ServiceLocator";
+import { Registry } from "../Registry";
 
 export class LocalStoreService {
     serviceName = 'local-store'
@@ -8,11 +9,11 @@ export class LocalStoreService {
     private name = 'editor';
     private db: IDBDatabase;
     private editor: Editor;
-    private getServices: () => ServiceLocator;
+    private registry: Registry;
 
-    constructor(editor: Editor, getServices: () => ServiceLocator) {
+    constructor(editor: Editor, registry: Registry) {
         this.editor = editor;
-        this.getServices = getServices;
+        this.registry = registry;
         const request = window.indexedDB.open(this.name, this.version);
         request.onupgradeneeded = () => this.upgradeDb(request);
     }
@@ -52,7 +53,7 @@ export class LocalStoreService {
 
         const controller = <CanvasView> this.editor.getWindowControllerByName('canvas');
         const data = await this.getData(objectStore.get(level));
-        this.getServices().import.import(data);
+        this.registry.services.import.import(data);
     }
 
     async loadLevelIndexes(): Promise<number[]> {

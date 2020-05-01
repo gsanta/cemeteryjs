@@ -1,10 +1,9 @@
-import { AbstractSettings } from './AbstractSettings';
+import { Registry } from '../../../Registry';
 import { UpdateTask } from '../../../services/UpdateServices';
-import { MeshConcept } from '../models/concepts/MeshConcept';
-import { ServiceLocator } from '../../../services/ServiceLocator';
-import { Stores } from '../../../stores/Stores';
 import { ConceptType } from '../models/concepts/Concept';
+import { MeshConcept } from '../models/concepts/MeshConcept';
 import { AnimationConcept, AnimationCondition } from '../models/meta/AnimationConcept';
+import { AbstractSettings } from './AbstractSettings';
 
 export enum AnimationSettingsProps {
     Name = 'Name',
@@ -19,16 +18,13 @@ export class AnimationSettings extends AbstractSettings<AnimationSettingsProps> 
     animationConcept: AnimationConcept;
     meshConcept: MeshConcept;
 
-    private getServices: () => ServiceLocator;
-    private getStores: () => Stores;
+    private registry: Registry;
 
-    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
+    constructor(registry: Registry) {
         super();
-        this.getServices = getServices;
-        this.getStores = getStores;
-
+        this.registry = registry;
         this.animationConcept = new AnimationConcept();
-        this.animationConcept.id = getStores().canvasStore.generateUniqueName(ConceptType.AnimationConcept);
+        this.animationConcept.id = registry.stores.canvasStore.generateUniqueName(ConceptType.AnimationConcept);
     }
 
     protected getProp(prop: AnimationSettingsProps) {
@@ -48,36 +44,36 @@ export class AnimationSettings extends AbstractSettings<AnimationSettingsProps> 
         switch (prop) {
             case AnimationSettingsProps.Name:
                 this.animationConcept.id = val;
-                this.getServices().update.runImmediately(UpdateTask.RepaintSettings);
+                this.registry.services.update.runImmediately(UpdateTask.RepaintSettings);
                 break;
             case AnimationSettingsProps.RotateLeftAnimation:
                 this.animationConcept.addAnimation({name: val, condition: AnimationCondition.RotateLeft});
-                this.getServices().update.runImmediately(UpdateTask.RepaintSettings, UpdateTask.SaveData);
+                this.registry.services.update.runImmediately(UpdateTask.RepaintSettings, UpdateTask.SaveData);
                 break;
             case AnimationSettingsProps.RotateRightAnimation:
                 this.animationConcept.addAnimation({name: val, condition: AnimationCondition.RotateRight});
-                this.getServices().update.runImmediately(UpdateTask.RepaintSettings, UpdateTask.SaveData);
+                this.registry.services.update.runImmediately(UpdateTask.RepaintSettings, UpdateTask.SaveData);
                 break;
             case AnimationSettingsProps.MoveAnimation:
                 this.animationConcept.addAnimation({name: val, condition: AnimationCondition.Move});
-                this.getServices().update.runImmediately(UpdateTask.RepaintSettings, UpdateTask.SaveData);
+                this.registry.services.update.runImmediately(UpdateTask.RepaintSettings, UpdateTask.SaveData);
                 break;
         }
     }
 
     load() {
-        this.meshConcept = this.getStores().selectionStore.getConcept() as MeshConcept;
+        this.meshConcept = this.registry.stores.selectionStore.getConcept() as MeshConcept;
         if (this.meshConcept.animationId) {
-            this.animationConcept = this.getStores().canvasStore.getAnimationConceptById(this.meshConcept.animationId);            
+            this.animationConcept = this.registry.stores.canvasStore.getAnimationConceptById(this.meshConcept.animationId);            
         }
-        this.getServices().update.runImmediately(UpdateTask.RepaintSettings);
+        this.registry.services.update.runImmediately(UpdateTask.RepaintSettings);
     }
 
     save() {
         if (this.animationConcept.elementalAnimations.length > 0) {
             this.meshConcept.animationId = this.animationConcept.id;
-            if (!this.getStores().canvasStore.hasMeta(this.animationConcept)) {
-                this.getStores().canvasStore.addMeta(this.animationConcept);
+            if (!this.registry.stores.canvasStore.hasMeta(this.animationConcept)) {
+                this.registry.stores.canvasStore.addMeta(this.animationConcept);
             }
         }
     }

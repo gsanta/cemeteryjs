@@ -1,33 +1,29 @@
+import { Registry } from "../../../editor/Registry";
 import { MeshObject } from "../../models/objects/MeshObject";
 import { EventType, GamepadEvent } from "../GameEventManager";
 import { IGamepadListener } from "./IEventListener";
-import { Stores } from "../../../editor/stores/Stores";
-import { ServiceLocator } from "../../../editor/services/ServiceLocator";
 
 export class PlayerListener implements IGamepadListener {
     eventType = EventType.Keyboard;
+    private registry: Registry;
 
-    private getServices: () => ServiceLocator;
-    private getStores: () => Stores;
-
-    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
-        this.getServices = getServices;
-        this.getStores = getStores;
+    constructor(registry: Registry) {
+        this.registry = registry;
     }
 
     gamepadEvent(gamepadEvent: GamepadEvent) {
         switch(gamepadEvent) {
             case GamepadEvent.Forward:
-                this.doAction(this.getServices().game.characterMovement.forward);
+                this.doAction(this.registry.services.game.characterMovement.forward);
             break;
             case GamepadEvent.Backward:
-                this.doAction(this.getServices().game.characterMovement.backward);
+                this.doAction(this.registry.services.game.characterMovement.backward);
             break;
             case GamepadEvent.TurnLeft:
-                this.doAction(this.getServices().game.characterMovement.left);
+                this.doAction(this.registry.services.game.characterMovement.left);
             break;
             case GamepadEvent.TurnRight:
-                this.doAction(this.getServices().game.characterMovement.right);
+                this.doAction(this.registry.services.game.characterMovement.right);
             break;
         }
     }
@@ -38,6 +34,6 @@ export class PlayerListener implements IGamepadListener {
     }
 
     private findPlayer() {
-        return this.getStores().gameStore.getMeshObjects().find(obj => obj.isManualControl);
+        return this.registry.stores.gameStore.getMeshObjects().find(obj => obj.isManualControl);
     }
 }

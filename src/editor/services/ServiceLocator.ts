@@ -16,6 +16,7 @@ import { MeshLoaderService } from "./MeshLoaderService";
 import { SettingsService } from "./SettingsService";
 import { ToolService } from "./tools/ToolService";
 import { UpdateService } from "./UpdateServices";
+import { Registry } from "../Registry";
 
 export class ServiceLocator {
     hotkey: HotkeyService;
@@ -35,21 +36,24 @@ export class ServiceLocator {
     conceptConverter: ConceptConvertService;
     game: GameService;
 
-    constructor(editor: Editor, getStores: () => Stores) {
-        this.hotkey = new HotkeyService(() => this);
-        this.tools = new ToolService(() => this, getStores);
-        this.storage = new LocalStoreService(editor, () => this);
-        this.level = new LevelService(() => this, getStores);
-        this.update = new UpdateService(editor, () => this, getStores);
-        this.import = new ImportService(() => this, getStores);
-        this.export = new ExportService(getStores);
-        this.history = new HistoryService(() => this, getStores);
-        this.pointer = new PointerService(() => this, getStores);
-        this.mouse = new MouseService(() => this);
-        this.keyboard = new KeyboardService(getStores);
-        this.dialog = new DialogService(() => this);
-        this.settings = new SettingsService(() => this, getStores);
-        this.meshLoader = new MeshLoaderService(() => this, getStores);
-        this.conceptConverter = new ConceptConvertService(getStores);
+    private registry: Registry;
+
+    constructor(editor: Editor, registry: Registry) {
+        this.registry = registry;
+        this.hotkey = new HotkeyService(registry);
+        this.tools = new ToolService(registry);
+        this.storage = new LocalStoreService(editor, registry);
+        this.level = new LevelService(registry);
+        this.update = new UpdateService(editor, registry);
+        this.import = new ImportService(registry);
+        this.export = new ExportService(registry);
+        this.history = new HistoryService(registry);
+        this.pointer = new PointerService(registry);
+        this.mouse = new MouseService(registry);
+        this.keyboard = new KeyboardService(registry);
+        this.dialog = new DialogService(registry);
+        this.settings = new SettingsService(registry);
+        this.meshLoader = new MeshLoaderService(registry);
+        this.conceptConverter = new ConceptConvertService(registry);
     }
 }

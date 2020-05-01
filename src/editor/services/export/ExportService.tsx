@@ -1,10 +1,10 @@
-import { Stores } from '../../stores/Stores';
+import { Registry } from '../../Registry';
+import { AnimationConceptExporter } from './AnimationConceptExporter';
 import { IConceptExporter } from './IConceptExporter';
 import { MeshConceptExporter } from './MeshConceptExporter';
+import { ModelConceptExporter } from './ModelConceptExporter';
 import { PathConceptExporter } from './PathConceptExporter';
 import ReactDOMServer = require('react-dom/server');
-import { AnimationConceptExporter } from './AnimationConceptExporter';
-import { ModelConceptExporter } from './ModelConceptExporter';
 
 export interface ViewExporter {
     export(): string;
@@ -12,16 +12,17 @@ export interface ViewExporter {
 
 export class ExportService {
     serviceName = 'export-service';
-    private getStores: () => Stores;
     conceptExporters: IConceptExporter[] = [];
 
-    constructor(getStores: () => Stores) {
-        this.getStores = getStores;
-        this.conceptExporters = [new ModelConceptExporter(getStores), new MeshConceptExporter(getStores), new PathConceptExporter(getStores), new AnimationConceptExporter(getStores)];
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        this.registry = registry;
+        this.conceptExporters = [new ModelConceptExporter(registry), new MeshConceptExporter(registry), new PathConceptExporter(registry), new AnimationConceptExporter(registry)];
     }
 
     export(): string {
-        const viewExporters = this.getStores().viewStore.getAllViews().filter(v => v.exporter).map(v => v.exporter);
+        const viewExporters = this.registry.stores.viewStore.getAllViews().filter(v => v.exporter).map(v => v.exporter);
 
         const views = viewExporters.map(exporter => ReactDOMServer.renderToStaticMarkup(exporter.export())).join('');
         const concepts = this.conceptExporters.map(exporter => ReactDOMServer.renderToStaticMarkup(exporter.export())).join('');

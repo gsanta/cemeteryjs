@@ -1,4 +1,4 @@
-import { Stores } from '../../stores/Stores';
+import { Registry } from '../../Registry';
 
 export enum Platform {
     WINDOWS = 'Windows',
@@ -39,14 +39,14 @@ export interface IKeyboardEvent {
 export class KeyboardService {
     serviceName = 'keyboard-service'
 
-    private getStores: () => Stores;
+    private registry: Registry;
 
-    constructor(getStores: () => Stores) {
-        this.getStores = getStores;
+    constructor(registry: Registry) {
+        this.registry = registry;
     }
-
+    
     onKeyDown(e: KeyboardEvent): void {
-        this.getStores().viewStore.getActiveView().getActiveTool()?.keydown(this.convertEvent(e));
+        this.registry.stores.viewStore.getActiveView().getActiveTool()?.keydown(this.convertEvent(e));
     }
 
     private convertEvent(event: KeyboardEvent): IKeyboardEvent {

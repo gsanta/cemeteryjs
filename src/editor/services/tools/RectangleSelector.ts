@@ -4,13 +4,14 @@ import { MousePointer } from "../input/MouseService";
 import { CanvasView } from "../../views/canvas/CanvasView";
 import { RectSelectFeedback } from "../../views/canvas/models/feedbacks/RectSelectFeedback";
 import { Stores } from "../../stores/Stores";
+import { Registry } from "../../Registry";
 
 export class RectangleSelector {
     private _displaySelectionRect: boolean;
-    private getStores: () => Stores;
+    private registry: Registry;
 
-    constructor(getStores: () => Stores) {
-        this.getStores = getStores;
+    constructor(registry: Registry) {
+        this.registry = registry;
     }
 
     updateRect(pointer: MousePointer) {
@@ -20,15 +21,15 @@ export class RectangleSelector {
         const maxY = pointer.down.y >= pointer.curr.y ? pointer.down.y : pointer.curr.y;
         const rect = new Rectangle(new Point(minX, minY), new Point(maxX, maxY));
 
-        if (!this.getStores().feedback.rectSelectFeedback) {
-            this.getStores().feedback.rectSelectFeedback = new RectSelectFeedback(rect);
+        if (!this.registry.stores.feedback.rectSelectFeedback) {
+            this.registry.stores.feedback.rectSelectFeedback = new RectSelectFeedback(rect);
         } else {
-            this.getStores().feedback.rectSelectFeedback.rect = rect;
+            this.registry.stores.feedback.rectSelectFeedback.rect = rect;
         }
     }
 
     finish() {
-        this.getStores().feedback.rectSelectFeedback = undefined;
+        this.registry.stores.feedback.rectSelectFeedback = undefined;
     }
 
     displaySelectionRect(): boolean {
@@ -36,7 +37,7 @@ export class RectangleSelector {
     }
 
     getPositionsInSelection(): Point[] {
-        const rect = this.getStores().feedback.rectSelectFeedback.rect;
+        const rect = this.registry.stores.feedback.rectSelectFeedback.rect;
         const xStart = rect.topLeft.x; 
         const yStart = rect.topLeft.y;
         const xEnd = rect.bottomRight.x;

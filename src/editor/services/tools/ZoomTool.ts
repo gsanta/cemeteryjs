@@ -5,33 +5,32 @@ import { UpdateTask } from '../UpdateServices';
 import { AbstractTool } from './AbstractTool';
 import { ToolType } from "./Tool";
 import { HotkeyWheelZoomStart } from "./HotkeyWheelZoomStart";
+import { Registry } from '../../Registry';
 
 export class ZoomTool extends AbstractTool {
     private hotkeys: Hotkey[] = [];
 
-    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
-        super(ToolType.Zoom, getServices, getStores);
-        this.getServices = getServices;
-        this.getStores = getStores;
+    constructor(registry: Registry) {
+        super(ToolType.Zoom, registry);
 
-        this.hotkeys = [new HotkeyWheelZoomStart(getStores, getServices)];
-        this.hotkeys.forEach(hk => this.getServices().hotkey.registerHotkey(hk));
+        this.hotkeys = [new HotkeyWheelZoomStart(registry)];
+        this.hotkeys.forEach(hk => this.registry.services.hotkey.registerHotkey(hk));
     }
 
     wheel() {
-        this.getStores().viewStore.getActiveView().getCamera().zoomWheel();
+        this.registry.stores.viewStore.getActiveView().getCamera().zoomWheel();
     }
 
     wheelEnd() {
-        this.getStores().viewStore.getActiveView().removePriorityTool(this.getServices().tools.zoom);
+        this.registry.stores.viewStore.getActiveView().removePriorityTool(this.registry.services.tools.zoom);
     }
 
     drag() {
         super.drag();
-        const camera = this.getStores().viewStore.getActiveView().getCamera();
+        const camera = this.registry.stores.viewStore.getActiveView().getCamera();
         
-        camera.pan(this.getServices().pointer.pointer);
+        camera.pan(this.registry.services.pointer.pointer);
 
-        this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas);
+        this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 }

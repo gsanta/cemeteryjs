@@ -21,11 +21,11 @@ export class CanvasViewImporter implements IViewImporter {
     }
 
     import(json: CanvasViewJson): void {
-        this.getStores().viewStore.getViewById(CanvasView.id);
+        this.registry.stores.viewStore.getViewById(CanvasView.id);
 
         if (json._attributes['data-translate']) {
             const topLeft = Point.fromString(json._attributes['data-translate']);
-            const camera = <CanvasCamera> this.getStores().viewStore.getViewById(CanvasView.id).getCamera();
+            const camera = <CanvasCamera> this.registry.stores.viewStore.getViewById(CanvasView.id).getCamera();
             // implement later
         }        
     }

@@ -1,4 +1,4 @@
-import { ServiceLocator } from "./ServiceLocator";
+import { Registry } from "../Registry";
 
 function defaultTimeout(callback: Function) {
     setTimeout(callback, 200);
@@ -7,12 +7,12 @@ function defaultTimeout(callback: Function) {
 export class WheelListener {
     private wheelInProgress = false;
     private wheelCounter = 0;
-    private getServices: () => ServiceLocator;
-
+    private registry: Registry;
+    
     private timeout: (callback: Function) => void;
 
-    constructor(getServices: () => ServiceLocator, timeout: (callback: Function) => void = defaultTimeout) {
-        this.getServices = getServices;
+    constructor(registry: Registry, timeout: (callback: Function) => void = defaultTimeout) {
+        this.registry = registry;
         this.timeout = timeout;
     }
 
@@ -26,7 +26,7 @@ export class WheelListener {
             this.wheelCounter++;
         }
 
-        this.getServices().mouse.onMouseWheel(e);
+        this.registry.services.mouse.onMouseWheel(e);
     }
 
     private listenToWheelEnd() {
@@ -35,7 +35,7 @@ export class WheelListener {
         this.timeout(() => {
             if (actCounter === this.wheelCounter) {
                 this.wheelInProgress = false;
-                this.getServices().mouse.onMouseWheelEnd();
+                this.registry.services.mouse.onMouseWheelEnd();
             } else {
                 this.listenToWheelEnd();
             }

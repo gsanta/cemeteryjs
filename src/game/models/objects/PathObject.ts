@@ -1,5 +1,6 @@
-import { IGameObject, GameObjectType } from "./IGameObject";
+import { ConceptType } from "../../../editor/views/canvas/models/concepts/Concept";
 import { Point } from "../../../misc/geometry/shapes/Point";
+import { IGameObject } from "./IGameObject";
 
 export class PathCorner {
     point1?: Point;
@@ -14,7 +15,7 @@ export class PathCorner {
 }
 
 export class PathObject implements IGameObject {
-    readonly objectType = GameObjectType.PathObject
+    readonly type = ConceptType.PathConcept;
     id: string;
     corners: PathCorner[] = [];
     points: Point[] = [];

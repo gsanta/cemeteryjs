@@ -2,6 +2,7 @@ import { ServiceLocator } from '../ServiceLocator';
 import { IKeyboardEvent, isCtrlOrCommandDown } from './KeyboardService';
 import { IPointerEvent, PointerService, Wheel } from './PointerService';
 import { Point } from '../../../misc/geometry/shapes/Point';
+import { Registry } from '../../Registry';
 
 export type IHotkeyAction = (hotkeyEvent: IHotkeyEvent, getServices: () => ServiceLocator) => boolean;
 
@@ -10,10 +11,10 @@ export class HotkeyService {
     private inputs: HTMLElement[] = [];
     private primaryInput: HTMLElement;
     private hotkeys: Hotkey[] = [];
-    getServices: () => ServiceLocator;
+    private registry: Registry;
 
-    constructor(getServices: () => ServiceLocator) {
-        this.getServices = getServices;
+    constructor(registry: Registry) {
+        this.registry = registry;
     }
 
     registerInput(input: HTMLElement, isPrimaryInput = false) {
@@ -23,7 +24,7 @@ export class HotkeyService {
         }
 
         input.addEventListener('keydown', (e: KeyboardEvent) => {
-            this.getServices().keyboard.onKeyDown(e);
+            this.registry.services.keyboard.onKeyDown(e);
             e.preventDefault();
             e.stopPropagation();
             return false;
@@ -58,7 +59,7 @@ export class HotkeyService {
     }
 
     private executeIfMatches(hotkeyEvent: IHotkeyEvent): boolean {
-        const hotkey = this.hotkeys.find(h => h.matches(hotkeyEvent, this.getServices));
+        const hotkey = this.hotkeys.find(h => h.matches(hotkeyEvent, this.registry));
 
         return hotkey && this.executeHotkey(hotkey, hotkeyEvent);
     }
@@ -77,7 +78,7 @@ export class HotkeyService {
 
     private executeHotkey(hotKey: Hotkey, hotkeyEvent: IHotkeyEvent): boolean {
         this.focus();
-        return hotKey.action(hotkeyEvent, this.getServices);
+        return hotKey.action(hotkeyEvent, this.registry);
     }
 }
 

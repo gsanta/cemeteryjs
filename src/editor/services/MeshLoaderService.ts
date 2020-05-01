@@ -1,8 +1,7 @@
 import { Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, StandardMaterial } from 'babylonjs';
 import { Point } from '../../misc/geometry/shapes/Point';
-import { Stores } from '../stores/Stores';
-import { ServiceLocator } from './ServiceLocator';
 import { MeshObject } from '../../game/models/objects/MeshObject';
+import { Registry } from '../Registry';
 
 export class MeshLoaderService {
     serviceName = 'mesh-loader-service'
@@ -11,14 +10,12 @@ export class MeshLoaderService {
     private loadedFileNames: Set<String> = new Set();
     private pendingFileNames: Map<string, Promise<any>> = new Map();
 
-    protected getServices: () => ServiceLocator;
-    private getStores: () => Stores;
-
     private fileNameToMeshNameMap: Map<string, string> = new Map();
+    
+    private registry: Registry;
 
-    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
-        this.getServices = getServices;
-        this.getStores = getStores;
+    constructor(registry: Registry) {
+        this.registry = registry;
     }
 
     getDimensions(path: string, id: string): Promise<Point> {
@@ -48,7 +45,7 @@ export class MeshLoaderService {
     }
 
     protected setModel(fileName: string, mesh: Mesh): void {
-        this.getStores().meshStore.addTemplate(fileName, mesh);
+        this.registry.stores.meshStore.addTemplate(fileName, mesh);
         this.fileNameToMeshNameMap.set(fileName, mesh.name);
     }
 
@@ -71,7 +68,7 @@ export class MeshLoaderService {
 
         this.loadedFileNames.add(path);
 
-        const promise = this.getServices().storage.loadAsset(path)
+        const promise = this.registry.services.storage.loadAsset(path)
             .then((data) => {
                 if (data) {
                     return this.loadMesh(path, id, data);
@@ -94,7 +91,7 @@ export class MeshLoaderService {
                 '',
                 data ? data : folder,
                 data ? undefined : file,
-                this.getServices().game.gameEngine.scene,
+                this.registry.services.game.gameEngine.scene,
                 (meshes: Mesh[], ps: ParticleSystem[], skeletons: Skeleton[]) => resolve(this.createModelData(file, id, meshes, skeletons)),
                 () => { },
                 (scene: Scene, message: string) => { throw new Error(message); }
@@ -117,7 +114,7 @@ export class MeshLoaderService {
     private createModelData(path: string, id: string, meshes: Mesh[], skeletons: Skeleton[]): Mesh {
         if (meshes.length === 0) { throw new Error('No mesh was loaded.') }
 
-        const scene = this.getServices().game.gameEngine.scene;
+        const scene = this.registry.services.game.gameEngine.scene;
 
         meshes[0].material = new StandardMaterial(path, scene);
    

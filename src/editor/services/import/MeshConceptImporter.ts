@@ -6,6 +6,7 @@ import { ConceptGroupJson } from './ImportService';
 import { MeshConcept } from '../../views/canvas/models/concepts/MeshConcept';
 import { ConceptType } from '../../views/canvas/models/concepts/Concept';
 import { Stores } from '../../stores/Stores';
+import { Registry } from '../../Registry';
 
 export interface RectJson {
     _attributes: {
@@ -25,10 +26,10 @@ export interface RectangleGroupJson extends ConceptGroupJson {
 
 export class MeshConceptImporter implements IConceptImporter {
     type = ConceptType.MeshConcept;
-    private getStores: () => Stores;
+    private registry: Registry;
 
-    constructor(getStores: () => Stores) {
-        this.getStores = getStores;
+    constructor(registry: Registry) {
+        this.registry = registry;
     }
 
     import(group: RectangleGroupJson): void {
@@ -59,7 +60,7 @@ export class MeshConceptImporter implements IConceptImporter {
             meshConcept.isManualControl = isManualControl;
             meshConcept.animationId = rect._attributes['data-animation-id'];
 
-            this.getStores().canvasStore.addConcept(meshConcept);
+            this.registry.stores.canvasStore.addConcept(meshConcept);
         });
     }
 }

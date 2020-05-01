@@ -1,22 +1,18 @@
-import { Stores } from "../../stores/Stores";
+import { Registry } from "../../Registry";
 import { Hotkey } from "../input/HotkeyService";
-import { ServiceLocator } from "../ServiceLocator";
 
 export class HotkeyWheelZoomStart extends Hotkey {
-
-    private getServices: () => ServiceLocator;
-    private getStores: () => Stores;
-
-    constructor(getStores: () => Stores,getServices: () => ServiceLocator) {
+    private registry: Registry;
+    
+    constructor(registry: Registry) {
         super('WheelZoom',  {wheel: true, worksDuringMouseDown: true}, () => this.hotKeyAction());
 
-        this.getServices = getServices;
-        this.getStores = getStores;
+        this.registry = registry;
     }
 
     private hotKeyAction(): boolean {
-        if (this.getStores().viewStore.getActiveView().getActiveTool() !== this.getServices().tools.zoom) {
-            this.getStores().viewStore.getActiveView().setPriorityTool(this.getServices().tools.zoom);
+        if (this.registry.stores.viewStore.getActiveView().getActiveTool() !== this.registry.services.tools.zoom) {
+            this.registry.stores.viewStore.getActiveView().setPriorityTool(this.registry.services.tools.zoom);
             return true;
         }
     }

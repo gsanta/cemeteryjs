@@ -1,16 +1,17 @@
 import { MeshObject } from '../objects/MeshObject';
-import { IGameObject, GameObjectType } from '../objects/IGameObject';
+import { IGameObject } from '../objects/IGameObject';
 import { RouteObject } from '../objects/RouteObject';
-import { Stores } from '../../../editor/stores/Stores';
+import { ConceptType } from '../../../editor/views/canvas/models/concepts/Concept';
+import { Registry } from '../../../editor/Registry';
 
 export class GameStore {
     private nameToObjMap: Map<string, IGameObject> = new Map();
-    private getStores: () => Stores;
+    private registry: Registry;
 
     objs: IGameObject[] = [];
 
-    constructor(getStores: () => Stores) {
-        this.getStores = getStores;
+    constructor(registry: Registry) {
+        this.registry = registry;
     }
 
     getPlayer(): MeshObject {
@@ -31,19 +32,19 @@ export class GameStore {
     }
 
     getMeshObjects(): MeshObject[] {
-        return <MeshObject[]> this.objs.filter(obj => obj.objectType === GameObjectType.MeshObject);
+        return <MeshObject[]> this.objs.filter(obj => obj.type === ConceptType.MeshConcept);
     }
 
     getRouteObjects(): RouteObject[] {
-        return <RouteObject[]> this.objs.filter(obj => obj.objectType === GameObjectType.RouteObject);
+        return <RouteObject[]> this.objs.filter(obj => obj.type === ConceptType.RouteConcept);
     }
 
     deleteById(id: string) {
         const obj = this.objs.find(obj => obj.id === id);
 
-        switch(obj.objectType) {
-            case GameObjectType.MeshObject:
-                this.getStores().meshStore.deleteInstance((<MeshObject> obj).getMesh());
+        switch(obj.type) {
+            case ConceptType.MeshConcept:
+                this.registry.stores.meshStore.deleteInstance((<MeshObject> obj).getMesh());
             break;
         }
 
@@ -53,7 +54,7 @@ export class GameStore {
 
     clear(): void {
         this.objs = [];
-        this.getStores().meshStore.clear();
+        this.registry.stores.meshStore.clear();
     }
 
     isEmpty(): boolean {

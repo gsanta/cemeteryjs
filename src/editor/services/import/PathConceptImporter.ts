@@ -42,7 +42,7 @@ export class PathConceptImporter implements IConceptImporter {
             path.id = json.path._attributes['data-name'];
             path.deserialize(json.path._attributes['data-points'], json.path._attributes['data-point-relations']);
 
-            this.getStores().canvasStore.addConcept(path);
+            this.registry.stores.canvasStore.addConcept(path);
         });
     }
 }

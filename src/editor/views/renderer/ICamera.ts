@@ -6,8 +6,6 @@ export interface ICamera {
     zoomOut(): void;
     zoomWheel(): void;
     screenToCanvasPoint(screenPoint: Point): Point;
-    moveBy(amount: Point);
-    moveTo(point: Point);
     getCenterPoint(): Point;
     getScale(): number;
     getTranslate(): Point;

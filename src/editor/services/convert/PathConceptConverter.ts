@@ -4,14 +4,16 @@ import { PathConcept } from "../../views/canvas/models/concepts/PathConcept";
 import { PathObject } from "../../../game/models/objects/PathObject";
 import { IConceptConverter } from "./IConceptConverter";
 import { IGameObject } from "../../../game/models/objects/IGameObject";
+import { Registry } from "../../Registry";
 
 export class PathConceptConverter implements IConceptConverter {
     viewType = ConceptType.PathConcept;
-    private getStores: () => Stores;
+    private registry: Registry;
 
-    constructor(getStores: () => Stores) {
-        this.getStores = getStores;
+    constructor(registry: Registry) {
+        this.registry = registry;
     }
+
 
     convert(pathView: PathConcept): IGameObject {
         const pathObject = new PathObject();
@@ -26,7 +28,7 @@ export class PathConceptConverter implements IConceptConverter {
 
         pathObject.points = pathObject.points.map(p => p.negateY()).map(p => p.div(10));
         pathObject.root = pathObject.points[0];
-        this.getStores().gameStore.add(pathObject);
+        this.registry.stores.gameStore.add(pathObject);
 
         return pathObject;
     }

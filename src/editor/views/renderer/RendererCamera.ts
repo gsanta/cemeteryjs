@@ -7,7 +7,6 @@ import { ICamera } from './ICamera';
 
 export class RendererCamera implements ICamera {
     private startY: number;
-    private viewBox: Rectangle;
     camera: ArcRotateCamera;
     private getServices: () => ServiceLocator;
     private plane = Plane.FromPositionAndNormal(Vector3.Zero(), Axis.Y);
@@ -15,7 +14,7 @@ export class RendererCamera implements ICamera {
 
     constructor(getServices: () => ServiceLocator) {
         this.getServices = getServices;
-        const scene = this.getServices().game.getScene();
+        const scene = this.registry.services.game.getScene();
         this.camera = new ArcRotateCamera("Camera", -Math.PI / 2, 0, 150, Vector3.Zero(), scene);
 
         this.startY = this.camera.position.y;
@@ -48,7 +47,7 @@ export class RendererCamera implements ICamera {
     }
 
     zoomWheel() {
-        const zoomRatio = -this.getServices().pointer.wheelDiff / this.camera.wheelPrecision;
+        const zoomRatio = -this.registry.services.pointer.wheelDiff / this.camera.wheelPrecision;
         this.zoom(zoomRatio);
     }
 
@@ -61,7 +60,7 @@ export class RendererCamera implements ICamera {
     }
 
     zoom(delta: number) {
-        const pointer = this.getServices().pointer.pointer;
+        const pointer = this.registry.services.pointer.pointer;
         if (this.camera.radius - this.camera.lowerRadiusLimit < 1 && delta > 0) {
             return;
         } else if (this.camera.upperRadiusLimit - this.camera.radius < 1 && delta < 0) {
@@ -87,16 +86,6 @@ export class RendererCamera implements ICamera {
         this.camera.inertialRadiusOffset += delta;
     }
 
-    moveBy(delta: Point) {
-        this.camera.position.x += delta.x / this.getScreenToCanvasRatio();
-        this.camera.position.z -= delta.y / this.getScreenToCanvasRatio();
-    }
-
-    moveTo(pos: Point) {
-        this.camera.position.x = (pos.x / this.getScreenToCanvasRatio());
-        this.camera.position.z = (pos.y / this.getScreenToCanvasRatio());
-    }
-
     getScale(): number {
         return this.startY / this.camera.position.y;
     }
@@ -106,7 +95,7 @@ export class RendererCamera implements ICamera {
     }
 
     screenToCanvasPoint(screenPoint: Point): Point {
-        const scene = this.getServices().game.getScene();
+        const scene = this.registry.services.game.getScene();
 
         const ray = scene.createPickingRay(screenPoint.x, screenPoint.y, Matrix.Identity(), this.camera, false);
         const distance = ray.intersectsPlane(this.plane);
@@ -119,17 +108,13 @@ export class RendererCamera implements ICamera {
         return this.getScreenBox().getBoundingCenter();
     }
 
-    private getScreenToCanvasRatio(): number {
-        return this.getScreenBox().getWidth() /  this.viewBox.getWidth()
-    }
-
     private getScreenBox(): Rectangle {
-        const engine = this.getServices().game.getEngine();
+        const engine = this.registry.services.game.getEngine();
         return new Rectangle(new Point(0, 0), new Point(engine.getRenderWidth(), engine.getRenderHeight()));
     }
 
     rotate(pointer: MousePointer) {
-        const scene = this.getServices().game.getScene();
+        const scene = this.registry.services.game.getScene();
 
         const offsetX = pointer.currScreen.x - pointer.prevScreen.x;
         const offsetY = pointer.currScreen.y - pointer.prevScreen.y;

@@ -14,16 +14,16 @@ export class PathConceptExporter implements IConceptExporter {
     }
 
     export(hover?: (item: Concept | Feedback) => void, unhover?: (item: Concept | Feedback) => void): JSX.Element {
-        const pathes = this.getStores().canvasStore.getPathConcepts().map(path => {
+        const pathes = this.registry.stores.canvasStore.getPathConcepts().map(path => {
             return <PathComponent
                 key={path.id}
                 onlyData={!hover}
                 item={path}
-                isHovered={this.getStores().hoverStore.contains(path)}
-                isSelected={this.getStores().selectionStore.contains(path)}
+                isHovered={this.registry.stores.hoverStore.contains(path)}
+                isSelected={this.registry.stores.selectionStore.contains(path)}
                 onMouseOver={(item: Concept | Feedback) => hover ?  hover(item) : () => undefined}
                 onMouseOut={(item: Concept | Feedback) => unhover ? unhover(item) : () => undefined}
-                stores={this.getStores()}
+                stores={this.registry.stores}
             />
         });
 

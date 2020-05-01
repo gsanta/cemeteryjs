@@ -1,5 +1,4 @@
-import { ServiceLocator } from './ServiceLocator';
-import { Stores } from '../stores/Stores';
+import { Registry } from '../Registry';
 
 
 export class HistoryService {
@@ -8,33 +7,31 @@ export class HistoryService {
     private index = 0;
     private memoryLimit = 20;
 
-    private getServices: () => ServiceLocator;
-    private getStores: () => Stores;
+    private registry: Registry;
 
-    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
-        this.getServices = getServices;
-        this.getStores = getStores;
+    constructor(registry: Registry) {
+        this.registry = registry;
     }
 
     undo() {
         if (this.hasUndoHistory()) {
             this.index = this.index - 1;
-            this.getStores().canvasStore.clear();
-            this.getStores().hoverStore.clear();
-            this.getStores().selectionStore.clear();
-            this.getServices().import.import(this.history[this.index]);
-            this.getServices().level.updateCurrentLevel();
+            this.registry.stores.canvasStore.clear();
+            this.registry.stores.hoverStore.clear();
+            this.registry.stores.selectionStore.clear();
+            this.registry.services.import.import(this.history[this.index]);
+            this.registry.services.level.updateCurrentLevel();
         }
     }
 
     redo() {
         if (this.hasRedoHistory()) {
             this.index = this.index + 1;
-            this.getStores().canvasStore.clear();
-            this.getStores().hoverStore.clear();
-            this.getStores().selectionStore.clear();
-            this.getServices().import.import(this.history[this.index]);
-            this.getServices().level.updateCurrentLevel();
+            this.registry.stores.canvasStore.clear();
+            this.registry.stores.hoverStore.clear();
+            this.registry.stores.selectionStore.clear();
+            this.registry.services.import.import(this.history[this.index]);
+            this.registry.services.level.updateCurrentLevel();
         }
     }
 

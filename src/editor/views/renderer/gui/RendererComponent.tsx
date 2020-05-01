@@ -49,7 +49,7 @@ export class RendererComponent extends React.Component {
             // this.context.controllers.getWindowControllerByName('renderer').update();
             this.context.controllers.getWindowControllerByName('renderer').setup();
             this.context.controllers.getWindowControllerByName('renderer').resize();
-        }, 5000);
+        }, 100);
 
     }
 

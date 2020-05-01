@@ -3,6 +3,7 @@ import { ServiceLocator } from '../ServiceLocator';
 import { IPointerEvent } from "./PointerService";
 import { Concept } from "../../views/canvas/models/concepts/Concept";
 import { Feedback } from "../../views/canvas/models/feedbacks/Feedback";
+import { Registry } from "../../Registry";
 
 export class MousePointer {
     down: Point;
@@ -28,48 +29,48 @@ export class MousePointer {
 
 export class MouseService {
     serviceName = 'mouse-service';
-    private getServices: () => ServiceLocator;
+    private registry: Registry;
 
-    constructor(getServices: () => ServiceLocator) {
-        this.getServices = getServices;
+    constructor(registry: Registry) {
+        this.registry = registry;
     }
 
     onMouseDown(e: MouseEvent): void {
         if (!this.isLeftButton(e)) { return }
 
-        this.getServices().pointer.pointerDown(this.convertEvent(e, true));
+        this.registry.services.pointer.pointerDown(this.convertEvent(e, true));
     }
     
     onMouseMove(e: MouseEvent): void {
-        this.getServices().pointer.pointerMove(this.convertEvent(e, this.getServices().pointer.isDown));
+        this.registry.services.pointer.pointerMove(this.convertEvent(e, this.registry.services.pointer.isDown));
     }    
 
     onMouseUp(e: MouseEvent): void {
         if (!this.isLeftButton(e)) { return }
 
-        this.getServices().pointer.pointerUp(this.convertEvent(e, false));
+        this.registry.services.pointer.pointerUp(this.convertEvent(e, false));
     }
 
     onMouseOut(e: MouseEvent): void {
-        this.getServices().pointer.pointerOut(this.convertEvent(e, false));
+        this.registry.services.pointer.pointerOut(this.convertEvent(e, false));
     }
 
     onMouseWheel(e: WheelEvent): void {
         const pointerEvent = this.convertEvent(e, false);
         pointerEvent.deltaY = e.deltaY;
-        this.getServices().pointer.pointerWheel(pointerEvent);
+        this.registry.services.pointer.pointerWheel(pointerEvent);
     }
 
     onMouseWheelEnd(): void {
-        this.getServices().pointer.pointerWheelEnd();
+        this.registry.services.pointer.pointerWheelEnd();
     }
 
     hover(item: Concept | Feedback) {
-        this.getServices().pointer.hover(item);
+        this.registry.services.pointer.hover(item);
     }
 
     unhover(item: Concept | Feedback) {
-        this.getServices().pointer.unhover(item);
+        this.registry.services.pointer.unhover(item);
     }
 
     private convertEvent(e: MouseEvent, isPointerDown: boolean): IPointerEvent {

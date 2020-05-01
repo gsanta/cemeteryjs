@@ -2,6 +2,7 @@ import { Editor } from '../Editor';
 import { ServiceLocator } from "./ServiceLocator";
 import { Stores } from '../stores/Stores';
 import { RendererView } from "../views/renderer/RendererView";
+import { Registry } from '../Registry';
 
 export enum UpdateTask {
     RepaintCanvas = 'RepaintCanvas',
@@ -21,13 +22,11 @@ export class UpdateService {
     private fullRepainter: Function;
 
     private editor: Editor;
-    private getServices: () => ServiceLocator;
-    private getStores: () => Stores;
+    private registry: Registry;
 
-    constructor(editor: Editor, getServices: () => ServiceLocator, getStores: () => Stores) {
+    constructor(editor: Editor, registry: Registry) {
         this.editor = editor;
-        this.getServices = getServices;
-        this.getStores = getStores;
+        this.registry = registry;
     }
 
 
@@ -69,9 +68,9 @@ export class UpdateService {
     }
 
     private saveData() {
-        const map = this.getServices().export.export();
-        this.getServices().storage.storeLevel(this.getStores().levelStore.currentLevel.index, map);
-        this.getServices().history.saveState(map);
+        const map = this.registry.services.export.export();
+        this.registry.services.storage.storeLevel(this.registry.stores.levelStore.currentLevel.index, map);
+        this.registry.services.history.saveState(map);
     }
 
     setCanvasRepainter(repaint: Function) {

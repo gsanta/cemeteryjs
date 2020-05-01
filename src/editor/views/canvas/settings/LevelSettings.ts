@@ -3,6 +3,7 @@ import { UpdateTask } from '../../../services/UpdateServices';
 import { MeshConcept } from '../models/concepts/MeshConcept';
 import { ServiceLocator } from '../../../services/ServiceLocator';
 import { Stores } from '../../../stores/Stores';
+import { Registry } from '../../../Registry';
 
 export enum LevelFormPropType {
     Level = 'Level',
@@ -15,37 +16,35 @@ export class LevelSettings extends AbstractSettings<LevelFormPropType> {
     getName() { return LevelSettings.type; }
     meshConcept: MeshConcept;
 
-    private getServices: () => ServiceLocator;
-    private getStores: () => Stores;
+    private registry: Registry;
 
-    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
+    constructor(registry: Registry) {
         super();
-        this.getServices = getServices;
-        this.getStores = getStores;
+        this.registry = registry;
     }
 
     protected getProp(prop: LevelFormPropType) {
         switch (prop) {
             case LevelFormPropType.Level:
-                return this.getStores().levelStore.currentLevel.index;
+                return this.registry.stores.levelStore.currentLevel.index;
             case LevelFormPropType.LevelName:
-                return this.getStores().levelStore.currentLevel.name;
+                return this.registry.stores.levelStore.currentLevel.name;
         }
     }
 
     protected setProp(val: any, prop: LevelFormPropType) {
         switch (prop) {
             case LevelFormPropType.Level:
-                this.getServices().level.changeLevel(val);
+                this.registry.services.level.changeLevel(val);
                 break;
             case LevelFormPropType.LevelName:
-                this.getStores().levelStore.currentLevel.name = val;
-                this.getServices().update.runImmediately(UpdateTask.RepaintSettings);
+                this.registry.stores.levelStore.currentLevel.name = val;
+                this.registry.services.update.runImmediately(UpdateTask.RepaintSettings);
                 break;
             case LevelFormPropType.ClearLevel:
-                this.getServices().level.clearLevel()
-                .then(() => this.getServices().update.runImmediately(UpdateTask.All, UpdateTask.SaveData))
-                .catch(() => this.getServices().update.runImmediately(UpdateTask.All, UpdateTask.SaveData))
+                this.registry.services.level.clearLevel()
+                .then(() => this.registry.services.update.runImmediately(UpdateTask.All, UpdateTask.SaveData))
+                .catch(() => this.registry.services.update.runImmediately(UpdateTask.All, UpdateTask.SaveData))
                 break;
         }
     }

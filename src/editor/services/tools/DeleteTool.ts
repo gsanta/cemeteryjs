@@ -9,71 +9,70 @@ import { PointerTool } from './PointerTool';
 import { RectangleSelector } from './RectangleSelector';
 import { ToolType } from './Tool';
 import { VisualConcept } from '../../views/canvas/models/concepts/VisualConcept';
+import { Registry } from '../../Registry';
 
 export class DeleteTool extends AbstractTool {
     private rectSelector: RectangleSelector;
 
-    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
-        super(ToolType.DELETE, getServices, getStores);
-        this.getServices = getServices;
-        this.getStores = getStores;
-        this.rectSelector = new RectangleSelector(getStores);
+    constructor(registry: Registry) {
+        super(ToolType.DELETE, registry);
+        this.rectSelector = new RectangleSelector(registry);
     }
 
     drag() {
-        this.rectSelector.updateRect(this.getServices().pointer.pointer);
-        this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas);
+        this.rectSelector.updateRect(this.registry.services.pointer.pointer);
+        this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     click() {
-        this.getServices().tools.pointer.click();
-        const hoverStore = this.getStores().hoverStore;
+        this.registry.services.tools.pointer.click();
+        const hoverStore = this.registry.stores.hoverStore;
 
         if (hoverStore.hasAny()) {
             if (hoverStore.hasEditPoint()) {
                 hoverStore.getConcept().deleteEditPoint(hoverStore.getEditPoint());
             } else {
                 const concept = hoverStore.getConcept();
-                this.getStores().canvasStore.removeConcept(concept);
-                this.getServices().game.deleteConcepts([concept]);
+                this.registry.stores.canvasStore.removeConcept(concept);
+                this.registry.services.game.deleteConcepts([concept]);
             }
             
-            this.getServices().level.updateCurrentLevel();
-            hoverStore.hasAny() && this.getServices().update.scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
+            this.registry.services.level.updateCurrentLevel();
+            hoverStore.hasAny() && this.registry.services.update.scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
         }
     }
 
     
     draggedUp() {
-        const concepts = this.getStores().canvasStore.getIntersectingItemsInRect(this.getStores().feedback.rectSelectFeedback.rect);
+        const concepts = this.registry.stores.canvasStore.getIntersectingItemsInRect(this.registry.stores.feedback.rectSelectFeedback.rect);
 
-        concepts.forEach((item: VisualConcept) => this.getStores().canvasStore.removeConcept(item));
+        concepts.forEach((item: VisualConcept) => this.registry.stores.canvasStore.removeConcept(item));
 
         this.rectSelector.finish();
 
-        this.getServices().level.updateCurrentLevel();
-        this.getServices().game.deleteConcepts(concepts);
-        this.getServices().update.scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
+        this.registry.services.level.updateCurrentLevel();
+        this.registry.services.game.deleteConcepts(concepts);
+        this.registry.services.update.scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
     }
 
     leave() {
         this.rectSelector.finish();
-        this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas);
+        this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     over(item: VisualConcept | Feedback) {
-        this.getServices().tools.pointer.over(item);
+        this.registry.services.tools.pointer.over(item);
     }
 
     out(item: VisualConcept | Feedback) {
-        this.getServices().tools.pointer.out(item);
+        this.registry.services.tools.pointer.out(item);
     }
 
     eraseAll() {
-        const concepts = this.getStores().canvasStore.getAllConcepts();
-        this.getServices().game.deleteConcepts(concepts);
-        this.getServices().storage.clearAll();
-        this.getStores().canvasStore.clear();
-        this.getServices().update.runImmediately(UpdateTask.All);
+        const concepts = this.registry.stores.canvasStore.getAllConcepts();
+        this.registry.services.game.deleteConcepts(concepts);
+        this.registry.services.storage.clearAll();
+        this.registry.stores.canvasStore.clear();
+        this.registry.services.update.runImmediately(UpdateTask.All);
     }
 }

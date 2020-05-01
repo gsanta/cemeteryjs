@@ -7,6 +7,7 @@ import { PathConceptImporter } from './PathConceptImporter';
 import { ConceptType } from '../../views/canvas/models/concepts/Concept';
 import { AnimationConceptImporter } from './AnimationConceptImporter';
 import { ModelConceptImporter } from './ModelConceptImporter';
+import { Registry } from '../../Registry';
 
 export interface WgDefinition {
     _attributes: WgDefinitionAttributes;
@@ -65,17 +66,15 @@ export interface ViewGroupJson {
 export class ImportService {
     serviceName = 'import-service';
     private conceptImporters: IConceptImporter[];
-    private getStores: () => Stores;
-    private getServices: () => ServiceLocator;
+    private registry: Registry;
 
-    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
-        this.getServices = getServices;
-        this.getStores = getStores;
+    constructor(registry: Registry) {
+        this.registry = registry;
         this.conceptImporters = [
-            new ModelConceptImporter(getStores),
-            new MeshConceptImporter(getStores),
-            new PathConceptImporter(getStores),
-            new AnimationConceptImporter(getStores)
+            new ModelConceptImporter(registry),
+            new MeshConceptImporter(registry),
+            new PathConceptImporter(registry),
+            new AnimationConceptImporter(registry)
         ];
     }
 
@@ -90,8 +89,8 @@ export class ImportService {
 
         viewGroups.forEach(group => {
             const viewType = <ConceptType> group._attributes["data-view-type"];
-            if (this.getStores().viewStore.getViewById(viewType)) {
-                this.getStores().viewStore.getViewById(viewType).importer.import(group);
+            if (this.registry.stores.viewStore.getViewById(viewType)) {
+                this.registry.stores.viewStore.getViewById(viewType).importer.import(group);
             }
         });
 
@@ -101,21 +100,21 @@ export class ImportService {
             this.findViewImporter(conceptType).import(group)
         });
 
-        this.getStores().canvasStore.getMeshConcepts().filter(item => item.modelId)
+        this.registry.stores.canvasStore.getMeshConcepts().filter(item => item.modelId)
             .forEach(item => {
-                const modelConcept = this.getStores().canvasStore.getModelConceptById(item.modelId);
-                this.getServices().meshLoader.getDimensions(modelConcept.modelPath, item.id)
+                const modelConcept = this.registry.stores.canvasStore.getModelConceptById(item.modelId);
+                this.registry.services.meshLoader.getDimensions(modelConcept.modelPath, item.id)
                     .then(dim => {
                         item.dimensions.setWidth(dim.x);
                         item.dimensions.setHeight(dim.y);
                     });
 
-                this.getServices().meshLoader.getAnimations(modelConcept.modelPath, item.id)
+                this.registry.services.meshLoader.getAnimations(modelConcept.modelPath, item.id)
                     .then(animations => {
                         item.animations = animations;
                     })
             });
-        this.getServices().game.importAllConcepts();
+        this.registry.services.game.importAllConcepts();
     }
 
     private findViewImporter(conceptType: ConceptType): IConceptImporter {

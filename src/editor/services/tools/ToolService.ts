@@ -8,6 +8,7 @@ import { PathTool } from "./PathTool";
 import { RectangleTool } from "./RectangleTool";
 import { SelectTool } from "./SelectTool";
 import { CameraRotationTool } from "./CameraRotationTool";
+import { Registry } from "../../Registry";
 
 export class ToolService {
     zoom: ZoomTool;
@@ -18,14 +19,16 @@ export class ToolService {
     select: SelectTool;
     cameraRotate: CameraRotationTool;
 
-    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
+    private registry: Registry;
 
-        this.zoom = new ZoomTool(getServices, getStores);
-        this.delete = new DeleteTool(getServices, getStores);
-        this.pointer = new PointerTool(getServices, getStores, ToolType.Pointer);
-        this.path = new PathTool(getServices, getStores);
-        this.rectangle = new RectangleTool(getServices, getStores);
-        this.select = new SelectTool(getServices, getStores);
-        this.cameraRotate = new CameraRotationTool(getServices, getStores);
+    constructor(registry: Registry) {
+        this.registry = registry;
+        this.zoom = new ZoomTool(this.registry);
+        this.delete = new DeleteTool(this.registry);
+        this.pointer = new PointerTool(ToolType.Pointer, registry);
+        this.path = new PathTool(this.registry);
+        this.rectangle = new RectangleTool(this.registry);
+        this.select = new SelectTool(this.registry);
+        this.cameraRotate = new CameraRotationTool(this.registry);
     }
 }

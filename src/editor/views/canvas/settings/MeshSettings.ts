@@ -1,11 +1,10 @@
-import { ServiceLocator } from '../../../services/ServiceLocator';
-import { AbstractSettings, PropertyType } from "./AbstractSettings";
+import { Registry } from '../../../Registry';
 import { UpdateTask } from '../../../services/UpdateServices';
-import { MeshConcept } from '../models/concepts/MeshConcept';
-import { Stores } from '../../../stores/Stores';
-import { AnimationCondition, AnimationConcept } from '../models/meta/AnimationConcept';
 import { ConceptType } from '../models/concepts/Concept';
+import { MeshConcept } from '../models/concepts/MeshConcept';
 import { ModelConcept } from '../models/concepts/ModelConcept';
+import { AnimationConcept, AnimationCondition } from '../models/meta/AnimationConcept';
+import { AbstractSettings, PropertyType } from "./AbstractSettings";
 
 export enum MeshViewPropType {
     Color = 'color',
@@ -33,30 +32,27 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
     meshConcept: MeshConcept;
 
     isAnimationSectionOpen = false;
-    private getServices: () => ServiceLocator;
-    private getStores: () => Stores;
+    private registry: Registry;
 
-    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
+    constructor(registry: Registry) {
         super(propertyTypes);
-        this.getServices = getServices;
-        this.getStores = getStores;
-        this.getServices = getServices;
+        this.registry = registry;
     }
 
     blurProp() {
         super.blurProp();
 
-        this.getServices().update.runImmediately(UpdateTask.RepaintCanvas);
+        this.registry.services.update.runImmediately(UpdateTask.RepaintCanvas);
     }
 
     updateProp(value: any, propType: MeshViewPropType) {
         super.updateProp(value, propType);
 
-        this.getServices().update.runImmediately(UpdateTask.RepaintCanvas);
+        this.registry.services.update.runImmediately(UpdateTask.RepaintCanvas);
     }
 
     protected getProp(prop: MeshViewPropType) {
-        let modelConcept = this.getStores().canvasStore.getModelConceptById(this.meshConcept.modelId);
+        let modelConcept = this.registry.stores.canvasStore.getModelConceptById(this.meshConcept.modelId);
         switch (prop) {
             case MeshViewPropType.Color:
                 return this.meshConcept.color;
@@ -80,7 +76,7 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                 return this.meshConcept.isManualControl;
             case MeshViewPropType.DefaultAnimation:
                 if (this.meshConcept.animationId) {
-                    return this.getStores().canvasStore.getAnimationConceptById(this.meshConcept.animationId).getAnimationByCond(AnimationCondition.Default);
+                    return this.registry.stores.canvasStore.getAnimationConceptById(this.meshConcept.animationId).getAnimationByCond(AnimationCondition.Default);
                 }
                 break;
             case MeshViewPropType.AnimationState:
@@ -97,25 +93,25 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                 break;
             case MeshViewPropType.Model:
                 this.updateModelPath(val.path);
-                const modelPath = this.getStores().canvasStore.getModelConceptById(this.meshConcept.modelId).modelPath;
+                const modelPath = this.registry.stores.canvasStore.getModelConceptById(this.meshConcept.modelId).modelPath;
 
-                this.getServices().storage.saveAsset(val.path, val.data)
+                this.registry.services.storage.saveAsset(val.path, val.data)
                     .then(() => {
-                        return this.getServices().meshLoader.getDimensions(modelPath, this.meshConcept.id);
+                        return this.registry.services.meshLoader.getDimensions(modelPath, this.meshConcept.id);
                     })
                     .then(dim => {
                         this.meshConcept.dimensions.setWidth(dim.x);
                         this.meshConcept.dimensions.setHeight(dim.y);
                     })
-                    .then(() => this.getServices().meshLoader.getAnimations(modelPath, this.meshConcept.id))
+                    .then(() => this.registry.services.meshLoader.getAnimations(modelPath, this.meshConcept.id))
                     .then(animations => {
                         this.meshConcept.animations = animations;
                     })
                     .finally(() => {
-                        const data = this.getServices().export.export();
-                        this.getServices().game.updateConcepts([this.meshConcept]);
-                        this.getServices().update.runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData, UpdateTask.RepaintCanvas);
-                        this.getServices().storage.storeLevel(this.getStores().levelStore.currentLevel.index, data);
+                        const data = this.registry.services.export.export();
+                        this.registry.services.game.updateConcepts([this.meshConcept]);
+                        this.registry.services.update.runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData, UpdateTask.RepaintCanvas);
+                        this.registry.services.storage.storeLevel(this.registry.stores.levelStore.currentLevel.index, data);
                     });
                 break;
             case MeshViewPropType.Texture:
@@ -153,20 +149,20 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
             case MeshViewPropType.DefaultAnimation:
                 if (val === undefined) {
                     if (this.meshConcept.animationId) {
-                        const animationConcept = this.getStores().canvasStore.getAnimationConceptById(this.meshConcept.animationId);
-                        this.getStores().canvasStore.removeMeta(animationConcept);
+                        const animationConcept = this.registry.stores.canvasStore.getAnimationConceptById(this.meshConcept.animationId);
+                        this.registry.stores.canvasStore.removeMeta(animationConcept);
                         this.meshConcept.animationId = undefined;
                     }
                 } else {
                     if (!this.meshConcept.animationId) {
                         const animationConcept = new AnimationConcept();
-                        animationConcept.id = this.getStores().canvasStore.generateUniqueName(ConceptType.AnimationConcept);
-                        this.getStores().canvasStore.addMeta(animationConcept);
+                        animationConcept.id = this.registry.stores.canvasStore.generateUniqueName(ConceptType.AnimationConcept);
+                        this.registry.stores.canvasStore.addMeta(animationConcept);
                         this.meshConcept.animationId = animationConcept.id;
                 
                     }
     
-                    this.getStores().canvasStore.getAnimationConceptById(this.meshConcept.animationId).addAnimation({
+                    this.registry.stores.canvasStore.getAnimationConceptById(this.meshConcept.animationId).addAnimation({
                         name: val,
                         condition: AnimationCondition.Default
                     })
@@ -181,11 +177,11 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
     }
 
     private updateModelPath(path: string) {
-        let modelConcept = ModelConcept.getByModelPath(this.getStores().canvasStore.getModelConcepts(), path);
+        let modelConcept = ModelConcept.getByModelPath(this.registry.stores.canvasStore.getModelConcepts(), path);
         if (!modelConcept) {
             modelConcept = new ModelConcept();
-            modelConcept.id = this.getStores().canvasStore.generateUniqueName(ConceptType.ModelConcept);
-            this.getStores().canvasStore.addMeta(modelConcept);
+            modelConcept.id = this.registry.stores.canvasStore.generateUniqueName(ConceptType.ModelConcept);
+            this.registry.stores.canvasStore.addMeta(modelConcept);
         }
         modelConcept.modelPath = path;
         this.meshConcept.modelId = modelConcept.id;
@@ -194,21 +190,21 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
     private updateTexturePath(path: string) {
         let modelConcept: ModelConcept;
         if (this.meshConcept.modelId) {
-            modelConcept = this.getStores().canvasStore.getModelConceptById(this.meshConcept.modelId);
+            modelConcept = this.registry.stores.canvasStore.getModelConceptById(this.meshConcept.modelId);
         } else {
             modelConcept = new ModelConcept();
-            modelConcept.id = this.getStores().canvasStore.generateUniqueName(ConceptType.ModelConcept);
-            this.getStores().canvasStore.addMeta(modelConcept);
+            modelConcept.id = this.registry.stores.canvasStore.generateUniqueName(ConceptType.ModelConcept);
+            this.registry.stores.canvasStore.addMeta(modelConcept);
         }
         modelConcept.texturePath = path;
         this.meshConcept.modelId = modelConcept.id;   
     }
 
     private update() {
-        const data = this.getServices().export.export();
-        this.getServices().game.updateConcepts([this.meshConcept]);
-        this.getServices().update.runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
-        this.getServices().storage.storeLevel(this.getStores().levelStore.currentLevel.index, data);
+        const data = this.registry.services.export.export();
+        this.registry.services.game.updateConcepts([this.meshConcept]);
+        this.registry.services.update.runImmediately(UpdateTask.UpdateRenderer, UpdateTask.SaveData);
+        this.registry.services.storage.storeLevel(this.registry.stores.levelStore.currentLevel.index, data);
 
     }
 }

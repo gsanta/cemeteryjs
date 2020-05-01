@@ -7,21 +7,20 @@ import { UpdateTask } from '../UpdateServices';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './RectangleSelector';
 import { ToolType } from './Tool';
+import { Registry } from '../../Registry';
 
 export class RectangleTool extends AbstractTool {
     private lastPreviewRect: MeshConcept;
     private rectSelector: RectangleSelector;
-    
-    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
-        super(ToolType.RECTANGLE, getServices, getStores);
 
-        this.getServices = getServices;
-        this.getStores = getStores;
-        this.rectSelector = new RectangleSelector(getStores);
+    constructor(registry: Registry) {
+        super(ToolType.RECTANGLE, registry);
+
+        this.rectSelector = new RectangleSelector(registry);
     }
 
     click() {
-        const pointer = this.getServices().pointer.pointer;
+        const pointer = this.registry.services.pointer.pointer;
         const rect = Rectangle.squareFromCenterPointAndRadius(pointer.down, 50);
 
         const meshConcept: MeshConcept = new MeshConcept(null, rect, name);
@@ -29,39 +28,39 @@ export class RectangleTool extends AbstractTool {
         meshConcept.scale = 1;
         meshConcept.color = 'grey';
 
-        meshConcept.id = this.getStores().canvasStore.generateUniqueName(ConceptType.MeshConcept);
+        meshConcept.id = this.registry.stores.canvasStore.generateUniqueName(ConceptType.MeshConcept);
 
-        this.getStores().canvasStore.addConcept(meshConcept);
-        this.getStores().selectionStore.clear()
-        this.getStores().selectionStore.addItem(meshConcept);
+        this.registry.stores.canvasStore.addConcept(meshConcept);
+        this.registry.stores.selectionStore.clear()
+        this.registry.stores.selectionStore.addItem(meshConcept);
 
-        this.getServices().level.updateCurrentLevel();
-        this.getServices().game.addConcept(meshConcept);
-        this.getServices().update.scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
+        this.registry.services.level.updateCurrentLevel();
+        this.registry.services.game.addConcept(meshConcept);
+        this.registry.services.update.scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
     }
 
     drag() {
         super.drag()
         if (this.lastPreviewRect) {
-            this.getStores().canvasStore.removeConcept(this.lastPreviewRect);
+            this.registry.stores.canvasStore.removeConcept(this.lastPreviewRect);
         }
-        this.rectSelector.updateRect(this.getServices().pointer.pointer);
-        this.getStores().feedback.rectSelectFeedback.isVisible = false;
+        this.rectSelector.updateRect(this.registry.services.pointer.pointer);
+        this.registry.stores.feedback.rectSelectFeedback.isVisible = false;
         const positions = this.rectSelector.getPositionsInSelection();
 
-        const dimensions = this.getStores().feedback.rectSelectFeedback.rect;
+        const dimensions = this.registry.stores.feedback.rectSelectFeedback.rect;
 
         const meshConcept: MeshConcept = new MeshConcept(null, dimensions, name);
         meshConcept.rotation = 0;
         meshConcept.scale = 1;
         meshConcept.color = 'grey';
-        meshConcept.id = this.getStores().canvasStore.generateUniqueName(ConceptType.MeshConcept);
+        meshConcept.id = this.registry.stores.canvasStore.generateUniqueName(ConceptType.MeshConcept);
 
         if (positions.length > 0) {
-            this.getStores().canvasStore.addConcept(meshConcept);
+            this.registry.stores.canvasStore.addConcept(meshConcept);
             this.lastPreviewRect = meshConcept;
     
-            this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas);
+            this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
         }
     }
 
@@ -69,12 +68,12 @@ export class RectangleTool extends AbstractTool {
         super.draggedUp();
 
         this.rectSelector.finish();
-        this.getServices().game.addConcept(this.lastPreviewRect);
+        this.registry.services.game.addConcept(this.lastPreviewRect);
         if (this.lastPreviewRect) {
             this.lastPreviewRect = null;
         }
 
-        this.getServices().update.scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
+        this.registry.services.update.scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
     }
 
     leave() {

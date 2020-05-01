@@ -2,16 +2,17 @@
 
 import { ILifeCycleTrigger, LifeCycleEvent } from './ILifeCycleTrigger';
 import { ServiceLocator } from '../../../editor/services/ServiceLocator';
+import { Registry } from '../../../editor/Registry';
 
 export class ResetTrigger implements ILifeCycleTrigger {
-    private getServices: () => ServiceLocator;
+    private registry: Registry;
 
-    constructor(getServices: () => ServiceLocator) {
-        this.getServices = getServices;
+    constructor(registry: Registry) {
+        this.registry = registry;
     }
 
     activate(trigger: (event: LifeCycleEvent) => void) {
-        this.getServices().game.gameEngine.scene.registerAfterRender(() => {
+        this.registry.services.game.gameEngine.scene.registerAfterRender(() => {
             trigger(LifeCycleEvent.Reset);
         });
     }

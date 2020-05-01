@@ -3,17 +3,19 @@ import { Concept, ConceptType } from "../../views/canvas/models/concepts/Concept
 import { AnimationConcept, ElementalAnimation } from "../../views/canvas/models/meta/AnimationConcept";
 import { IConceptExporter } from "./IConceptExporter";
 import React = require("react");
+import { Registry } from '../../Registry';
 
 export class AnimationConceptExporter implements IConceptExporter {
     type = ConceptType.MeshConcept;
-    private getStores: () => Stores;
+    private registry: Registry;
 
-    constructor(getStores: () => Stores) {
-        this.getStores = getStores;
+    constructor(registry: Registry) {
+        this.registry = registry;
     }
 
+
     export(hover?: (view: Concept) => void, unhover?: (view: Concept) => void): JSX.Element {
-        const animationConcepts = [...this.getStores().canvasStore.getAnimationConcepts()].map(animConcept => this.exportAnimationConcept(animConcept));
+        const animationConcepts = [...this.registry.stores.canvasStore.getAnimationConcepts()].map(animConcept => this.exportAnimationConcept(animConcept));
 
         return animationConcepts.length > 0 ? <g data-concept-type={ConceptType.AnimationConcept}>{animationConcepts}</g> : null;
     }

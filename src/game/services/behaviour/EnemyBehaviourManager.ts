@@ -2,19 +2,20 @@ import { EventType } from "../GameEventManager";
 import { IAfterRender } from "../listeners/IEventListener";
 import { IBehaviour } from "./IBehaviour";
 import { Stores } from "../../../editor/stores/Stores";
+import { Registry } from "../../../editor/Registry";
 
 export class EnemyBehaviourManager  implements IAfterRender {
     eventType = EventType.AfterRender;
     private behaviours: IBehaviour[];
-    private getStores: () => Stores;
+    private registry: Registry;
 
-    constructor(getStores: () => Stores, behaviours: IBehaviour[]) {
-        this.getStores = getStores;
+    constructor(registry: Registry, behaviours: IBehaviour[]) {
+        this.registry = registry;
         this.behaviours = behaviours;
     }
     
     afterRender() {
-        this.getStores().gameStore.getEnemies().forEach(enemy => {
+        this.registry.stores.gameStore.getEnemies().forEach(enemy => {
             const behaviour = this.behaviours[0]
 
             behaviour && behaviour.update(enemy);

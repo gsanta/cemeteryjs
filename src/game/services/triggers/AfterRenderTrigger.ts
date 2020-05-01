@@ -1,13 +1,11 @@
 import { ServiceLocator } from '../../../editor/services/ServiceLocator';
+import { Registry } from '../../../editor/Registry';
 
 export class AfterRenderTrigger {
-    private getServices: () => ServiceLocator;
 
-    constructor(getServices: () => ServiceLocator) {
-        this.getServices = getServices;
-
-        this.getServices().game.gameEngine.scene.registerAfterRender(() => {
-            this.getServices().game.gameEventManager.triggerAfterRenderEvent();
+    constructor(registry: Registry) {
+        registry.services.game.gameEngine.scene.registerAfterRender(() => {
+            registry.services.game.gameEventManager.triggerAfterRenderEvent();
         });
     }
 }

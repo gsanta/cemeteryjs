@@ -1,16 +1,16 @@
+import { Registry } from "../../../editor/Registry";
 import { RouteWalker } from "./RouteWalker";
-import { Stores } from "../../../editor/stores/Stores";
 
 export class Walkers {
-    private getStores: () => Stores;
+    private registry: Registry;
     private routeWalker: RouteWalker;
 
-    constructor(getStores: () => Stores) {
-        this.getStores = getStores;
+    constructor(registry: Registry) {
+        this.registry = registry;
         this.routeWalker = new RouteWalker();
     }
 
     walk() {
-        this.getStores().gameStore.getRouteObjects().forEach(route => this.routeWalker.walk(route));
+        this.registry.stores.gameStore.getRouteObjects().forEach(route => this.routeWalker.walk(route));
     }
 }

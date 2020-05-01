@@ -11,18 +11,16 @@ import { EditPoint } from "../../views/canvas/models/feedbacks/EditPoint";
 import { Feedback, FeedbackType } from "../../views/canvas/models/feedbacks/Feedback";
 import { PointerTool } from "./PointerTool";
 import { ToolType } from "./Tool";
+import { Registry } from "../../Registry";
 
 export class PathTool extends PointerTool {
     
-    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
-        super(getServices, getStores, ToolType.PATH);
-
-        this.getStores = getStores;
-        this.getServices = getServices;
+    constructor(registry: Registry) {
+        super(ToolType.PATH, registry);
     }
 
     click() {
-        if (this.getStores().hoverStore.hasPath() || this.getStores().hoverStore.hasEditPointOf(ConceptType.PathConcept)) {
+        if (this.registry.stores.hoverStore.hasPath() || this.registry.stores.hoverStore.hasEditPointOf(ConceptType.PathConcept)) {
             super.click();
         } else {
             this.createPath();
@@ -31,8 +29,8 @@ export class PathTool extends PointerTool {
 
     keydown(e: IKeyboardEvent) {
         if (e.keyCode === Keyboard.Enter) {
-            this.getStores().selectionStore.clear();
-            this.getServices().update.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
+            this.registry.stores.selectionStore.clear();
+            this.registry.services.update.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         }
     }
 
@@ -50,47 +48,47 @@ export class PathTool extends PointerTool {
 
         if (hover) {
             super.over(item);
-            this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas);
+            this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
         }
     }
 
     out(item: VisualConcept | Feedback) {
         super.out(item);
-        this.getServices().update.scheduleTasks(UpdateTask.RepaintCanvas);
+        this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     private createPath() {
-        const pathes = this.getStores().selectionStore.getPathConcepts();
+        const pathes = this.registry.stores.selectionStore.getPathConcepts();
 
         if (pathes.length > 1) { return }
 
         const path = pathes.length > 0 ? pathes[0] : undefined;
-        const editPoint = this.getStores().selectionStore.getEditPoint();
+        const editPoint = this.registry.stores.selectionStore.getEditPoint();
 
         if (path && editPoint) {
-            const pointer = this.getServices().pointer.pointer;
-            const selectedEditPoint = this.getStores().selectionStore.getEditPoint();
+            const pointer = this.registry.services.pointer.pointer;
+            const selectedEditPoint = this.registry.stores.selectionStore.getEditPoint();
             const newEditPoint = (new EditPoint(new Point(pointer.down.x, pointer.down.y), path));
             path.addEditPoint(newEditPoint, selectedEditPoint);
-            this.getStores().selectionStore.removeItem(selectedEditPoint);
-            this.getStores().selectionStore.addItem(newEditPoint);
-            this.getServices().game.updateConcepts([path]);
+            this.registry.stores.selectionStore.removeItem(selectedEditPoint);
+            this.registry.stores.selectionStore.addItem(newEditPoint);
+            this.registry.services.game.updateConcepts([path]);
 
-            this.getServices().update.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
+            this.registry.services.update.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         } else {
             this.startNewPath();
-            this.getServices().update.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
+            this.registry.services.update.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         }
     }
 
     private startNewPath() {
-        const pointer = this.getServices().pointer.pointer;
-        this.getStores().selectionStore.clear();
+        const pointer = this.registry.services.pointer.pointer;
+        this.registry.stores.selectionStore.clear();
         const path = new PathConcept(pointer.down.clone());
-        path.id = this.getStores().canvasStore.generateUniqueName(ConceptType.PathConcept);
-        this.getStores().canvasStore.addConcept(path);
-        this.getServices().game.addConcept(path);
-        this.getStores().selectionStore.addItem(path);
-        this.getStores().selectionStore.addItem(path.editPoints[0]);
+        path.id = this.registry.stores.canvasStore.generateUniqueName(ConceptType.PathConcept);
+        this.registry.stores.canvasStore.addConcept(path);
+        this.registry.services.game.addConcept(path);
+        this.registry.stores.selectionStore.addItem(path);
+        this.registry.stores.selectionStore.addItem(path.editPoints[0]);
     }
 }

@@ -1,21 +1,21 @@
 
 import { Vector3 } from "babylonjs";
 import { Mesh } from "babylonjs/Meshes/mesh";
+import { ConceptType } from "../../../editor/views/canvas/models/concepts/Concept";
+import { AnimationConcept, ElementalAnimation } from "../../../editor/views/canvas/models/meta/AnimationConcept";
 import { Point } from "../../../misc/geometry/shapes/Point";
 import { Rectangle } from "../../../misc/geometry/shapes/Rectangle";
 import { toVector3 } from "../../../misc/geometry/utils/GeomUtils";
 import { BehaviourType } from "../../services/behaviour/IBehaviour";
-import { GameObjectType, IGameObject } from "./IGameObject";
+import { IGameObject } from "./IGameObject";
 import { RouteObject } from "./RouteObject";
-import { AnimationConcept, ElementalAnimation } from "../../../editor/views/canvas/models/meta/AnimationConcept";
 
 
 
 export class MeshObject implements IGameObject {
-    readonly objectType = GameObjectType.MeshObject;
+    readonly type = ConceptType.MeshConcept;
 
     private mesh: Mesh;
-    type: string;
     meshName: string;
     id: string;
     dimensions: Rectangle;
@@ -23,8 +23,7 @@ export class MeshObject implements IGameObject {
     children: MeshObject[] = [];
     parent: MeshObject;
     texturePath: string;
-    modelPath: string;
-    modelData: string;
+    modelPath: string
     thumbnailPath: string;
     path: string;
     isManualControl: boolean;

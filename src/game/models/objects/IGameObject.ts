@@ -1,13 +1,7 @@
-
-export enum GameObjectType {
-    MeshObject = 'MeshObject',
-    PathObject = 'PathObject',
-    RouteObject = 'RouteObject'
-}
-
+import { ConceptType } from "../../../editor/views/canvas/models/concepts/Concept";
 
 export interface IGameObject {
-    objectType: GameObjectType;
+    type: ConceptType;
     id: string;
     dispose(): void;
 }

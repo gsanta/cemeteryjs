@@ -40,7 +40,7 @@ export class RendererView extends View {
     constructor(editor: Editor, getServices: () => ServiceLocator, getStores: () => Stores) {
         super(editor, getServices, getStores);
 
-        this.getServices().game = new GameService(getServices, getStores);
+        this.registry.services.game = new GameService(getServices, getStores);
 
         this.updateService = new UpdateService(this.editor, getServices, getStores);
         this.update = this.update.bind(this);
@@ -51,15 +51,15 @@ export class RendererView extends View {
     }
 
     resize() {
-        this.getServices().game.gameEngine.engine.resize();
+        this.registry.services.game.gameEngine.engine.resize();
     }
 
     setup() {
-        this.getServices().game.init(getCanvasElement(this.getId()));
+        this.registry.services.game.init(getCanvasElement(this.getId()));
         this.camera = cameraInitializer(this.getServices, this.getStores);
-        this.getServices().game.importAllConcepts();
+        this.registry.services.game.importAllConcepts();
 
-        this.selectedTool = this.getServices().tools.zoom;
+        this.selectedTool = this.registry.services.tools.zoom;
 
         this.update();
     }

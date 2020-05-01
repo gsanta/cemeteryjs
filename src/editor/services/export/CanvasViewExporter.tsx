@@ -1,19 +1,19 @@
-import { IViewExporter } from "./IViewExporter";
-import { Stores } from "../../stores/Stores";
-import { CanvasView } from "../../views/canvas/CanvasView";
-import { CanvasCamera } from "../../views/canvas/CanvasCamera";
 import * as React from 'react';
+import { Registry } from "../../Registry";
+import { CanvasCamera } from "../../views/canvas/CanvasCamera";
+import { CanvasView } from "../../views/canvas/CanvasView";
+import { IViewExporter } from "./IViewExporter";
 
 export class CanvasViewExporter implements IViewExporter {
-    private getStores: () => Stores;
+    private registry: Registry;
 
-    constructor(getStores: () => Stores) {
-        this.getStores = getStores;
+    constructor(registry: Registry) {
+        this.registry = registry;
     }
 
 
     export(): JSX.Element {
-        const canvasView = this.getStores().viewStore.getViewById(CanvasView.id);
+        const canvasView = this.registry.stores.viewStore.getViewById(CanvasView.id);
 
         return (
             <g

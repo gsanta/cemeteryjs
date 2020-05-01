@@ -1,6 +1,6 @@
 import { ActionManager, ExecuteCodeAction } from 'babylonjs';
+import { Registry } from '../../../editor/Registry';
 import { GamepadEvent } from '../GameEventManager';
-import { ServiceLocator } from '../../../editor/services/ServiceLocator';
 
 export enum KeyCode {
     w = 'w',
@@ -13,7 +13,7 @@ export enum KeyCode {
 export class KeyboardTrigger {
     downKeys: Set<string> = new Set();
 
-    private getServices: () => ServiceLocator;
+    private registry: Registry;
     private keyCodeToInputCommandMap: Map<KeyCode, GamepadEvent> = new Map(
         [
             [KeyCode.w, GamepadEvent.Forward],
@@ -23,9 +23,9 @@ export class KeyboardTrigger {
         ]
     )
 
-    constructor(getServices: () => ServiceLocator) {
-        this.getServices = getServices;
-        this.getServices().game.gameEngine.scene.actionManager = new ActionManager(this.getServices().game.gameEngine.scene);
+    constructor(registry: Registry) {
+        this.registry = registry;
+        this.registry.services.game.gameEngine.scene.actionManager = new ActionManager(this.registry.services.game.gameEngine.scene);
         this.registerKeyDown();
     }
 
@@ -36,9 +36,9 @@ export class KeyboardTrigger {
 
         const handler = (evt) => {
             const command = this.keyCodeToInputCommandMap.get(KeyCode[evt.sourceEvent.key]);
-            command && this.getServices().game.gameEventManager.triggerGamepadEvent(command);
+            command && this.registry.services.game.gameEventManager.triggerGamepadEvent(command);
         }
 
-        this.getServices().game.gameEngine.scene.actionManager.registerAction(new ExecuteCodeAction(trigger, handler));
+        this.registry.services.game.gameEngine.scene.actionManager.registerAction(new ExecuteCodeAction(trigger, handler));
     }
 }

@@ -1,20 +1,17 @@
-import { IKeyboardEvent } from '../input/KeyboardService';
+import { Registry } from '../../Registry';
 import { Concept } from '../../views/canvas/models/concepts/Concept';
 import { Feedback } from '../../views/canvas/models/feedbacks/Feedback';
+import { IKeyboardEvent } from '../input/KeyboardService';
 import { Tool, ToolType } from './Tool';
-import { Stores } from '../../stores/Stores';
-import { ServiceLocator } from '../ServiceLocator';
 
 export class AbstractTool implements Tool {
     type: ToolType;
 
-    protected getStores: () => Stores;
-    protected getServices: () => ServiceLocator;
+    protected registry: Registry;
 
-    constructor(type: ToolType, getServices: () => ServiceLocator, getStores: () => Stores) {
+    constructor(type: ToolType, registry: Registry) {
         this.type = type;
-        this.getServices = getServices;
-        this.getStores = getStores;
+        this.registry = registry;
     }
 
     down() { }

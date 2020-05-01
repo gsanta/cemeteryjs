@@ -4,6 +4,7 @@ import { Stores } from "../../stores/Stores";
 import { MousePointer } from "./MouseService";
 import { Concept } from "../../views/canvas/models/concepts/Concept";
 import { Feedback } from "../../views/canvas/models/feedbacks/Feedback";
+import { Registry } from "../../Registry";
 
 export enum Wheel {
     IDLE = 'idle', UP = 'up', DOWN = 'down'
@@ -31,12 +32,10 @@ export class PointerService {
 
     pointer: MousePointer = new MousePointer();
 
-    private getServices: () => ServiceLocator;
-    private getStores: () => Stores;
+    private registry: Registry;
 
-    constructor(getServices: () => ServiceLocator, getStores: () => Stores) {
-        this.getServices = getServices;
-        this.getStores = getStores;
+    constructor(registry: Registry) {
+        this.registry = registry;
     }
 
     pointerDown(e: IPointerEvent): void {
@@ -45,8 +44,8 @@ export class PointerService {
         this.isDown = true;
         this.pointer.down = this.getCanvasPoint(e.pointers[0].pos); 
         this.pointer.downScreen = this.getScreenPoint(e.pointers[0].pos); 
-        this.getStores().viewStore.getActiveView().getActiveTool().down();
-        this.getServices().update.runScheduledTasks();
+        this.registry.stores.viewStore.getActiveView().getActiveTool().down();
+        this.registry.services.update.runScheduledTasks();
     }
 
     pointerMove(e: IPointerEvent): void {
@@ -56,26 +55,26 @@ export class PointerService {
         this.pointer.currScreen =  this.getScreenPoint(e.pointers[0].pos);
         if (this.isDown && this.pointer.getDownDiff().len() > 2) {
             this.isDrag = true;
-            this.getStores().viewStore.getActiveView().getActiveTool().drag();
+            this.registry.stores.viewStore.getActiveView().getActiveTool().drag();
         } else {
-            this.getStores().viewStore.getActiveView().getActiveTool().move();
+            this.registry.stores.viewStore.getActiveView().getActiveTool().move();
         }
-        this.getServices().hotkey.executePointerEvent(e);
-        this.getServices().update.runScheduledTasks();
+        this.registry.services.hotkey.executePointerEvent(e);
+        this.registry.services.update.runScheduledTasks();
     }
 
     pointerUp(e: IPointerEvent): void {
         if (this.isDrag) {
-            this.getStores().viewStore.getActiveView().getActiveTool().draggedUp();
+            this.registry.stores.viewStore.getActiveView().getActiveTool().draggedUp();
         } else {
-            this.getStores().viewStore.getActiveView().getActiveTool().click();
+            this.registry.stores.viewStore.getActiveView().getActiveTool().click();
         }
         
-        this.getStores().viewStore.getActiveView().getActiveTool().up();
+        this.registry.stores.viewStore.getActiveView().getActiveTool().up();
         this.isDown = false;
         this.isDrag = false;
         this.pointer.down = undefined;
-        this.getServices().update.runScheduledTasks();
+        this.registry.services.update.runScheduledTasks();
     }
 
     pointerOut(e: IPointerEvent): void {
@@ -96,33 +95,33 @@ export class PointerService {
             this.wheel = Wheel.IDLE;
         }
 
-        this.getServices().hotkey.executePointerEvent(e);
-        this.getStores().viewStore.getActiveView().getActiveTool().wheel();
+        this.registry.services.hotkey.executePointerEvent(e);
+        this.registry.stores.viewStore.getActiveView().getActiveTool().wheel();
     }
 
     pointerWheelEnd() {
         this.wheel = Wheel.IDLE;
 
-        this.getStores().viewStore.getActiveView().getActiveTool().wheelEnd();
+        this.registry.stores.viewStore.getActiveView().getActiveTool().wheelEnd();
     }
 
     hover(item: Concept | Feedback): void {
-        this.getStores().viewStore.getActiveView().getActiveTool().over(item);
-        this.getServices().update.runScheduledTasks();
+        this.registry.stores.viewStore.getActiveView().getActiveTool().over(item);
+        this.registry.services.update.runScheduledTasks();
     }
 
     unhover(item: Concept | Feedback): void {
-        this.getStores().viewStore.getActiveView().getActiveTool().out(item);
-        this.getServices().update.runScheduledTasks();
+        this.registry.stores.viewStore.getActiveView().getActiveTool().out(item);
+        this.registry.services.update.runScheduledTasks();
     }
     
     private getScreenPoint(point: Point): Point {
-        const offset = this.getStores().viewStore.getActiveView().getOffset();
+        const offset = this.registry.stores.viewStore.getActiveView().getOffset();
         return new Point(point.x - offset.x, point.y - offset.y);
     }
     
     private getCanvasPoint(point: Point): Point {
-        const offset = this.getStores().viewStore.getActiveView().getOffset();
-        return this.getStores().viewStore.getActiveView().getCamera().screenToCanvasPoint(new Point(point.x - offset.x, point.y - offset.y));
+        const offset = this.registry.stores.viewStore.getActiveView().getOffset();
+        return this.registry.stores.viewStore.getActiveView().getCamera().screenToCanvasPoint(new Point(point.x - offset.x, point.y - offset.y));
     }
 }
