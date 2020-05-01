@@ -17,8 +17,10 @@ export class MeshStore {
     private instanceCounter: Map<string, number> = new Map();
 
     private rectangleFactory: RectangleFactory;
+    private registry: Registry;
 
     constructor(registry: Registry) {
+        this.registry = registry;
         this.rectangleFactory = new RectangleFactory(registry, 0.1);
     }
     
@@ -55,21 +57,31 @@ export class MeshStore {
     }
 
     createInstance(meshObject: MeshObject, scene: Scene): void {
-        if (!meshObject.modelPath) {
+        if (!meshObject.modelId) {
             const mesh = this.rectangleFactory.createMesh(meshObject, scene);
             this.instances.add(mesh);
             meshObject.setMesh(mesh);
             return;
         }
 
+        const modelConcept = this.registry.stores.canvasStore.getModelConceptById(meshObject.modelId);
+
+        this.registry.services.meshLoader.load(modelConcept, meshObject.id)
+            .then(() => this.setupInstance(meshObject, scene));
+    }
+
+    private setupInstance(meshObject: MeshObject, scene: Scene) {
+        const modelConcept = this.registry.stores.canvasStore.getModelConceptById(meshObject.modelId);
+
         if (meshObject.texturePath) {
-            this.texturePathes.set(meshObject.modelPath, meshObject.texturePath);
+            this.texturePathes.set(modelConcept.modelPath, meshObject.texturePath);
         }
+
         
-        const templateMesh = this.getTemplate(meshObject.modelPath);
+        const templateMesh = this.getTemplate(modelConcept.modelPath);
 
         let clone: Mesh;
-        const counter = this.instanceCounter.get(meshObject.modelPath);
+        const counter = this.instanceCounter.get(modelConcept.modelPath);
 
         if (!this.instances.has(templateMesh)) {
             clone = templateMesh;
@@ -80,12 +92,12 @@ export class MeshStore {
         this.instances.add(clone);
         clone.setAbsolutePosition(new Vector3(0, 0, 0));
         clone.rotation = new Vector3(0, 0, 0);
-        this.instanceCounter.set(meshObject.modelPath, counter + 1);
+        this.instanceCounter.set(modelConcept.modelPath, counter + 1);
         
         meshObject.meshName = clone.name;
 
-        if (this.texturePathes.get(meshObject.modelPath)) {
-            const texturePath = `${this.basePath}${MeshLoaderService.getFolderNameFromFileName(meshObject.modelPath)}/${this.texturePathes.get(meshObject.modelPath)}`;
+        if (this.texturePathes.get(modelConcept.modelPath)) {
+            const texturePath = `${this.basePath}${MeshLoaderService.getFolderNameFromFileName(modelConcept.modelPath)}/${this.texturePathes.get(modelConcept.modelPath)}`;
             (<StandardMaterial> clone.material).diffuseTexture  = new Texture(texturePath,  scene);
             (<StandardMaterial> clone.material).specularTexture  = new Texture(texturePath,  scene);
             meshObject.texturePath = texturePath;

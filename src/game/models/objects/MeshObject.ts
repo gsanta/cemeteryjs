@@ -23,7 +23,7 @@ export class MeshObject implements IGameObject {
     children: MeshObject[] = [];
     parent: MeshObject;
     texturePath: string;
-    modelPath: string
+    modelId: string
     thumbnailPath: string;
     path: string;
     isManualControl: boolean;

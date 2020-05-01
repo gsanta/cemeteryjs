@@ -101,13 +101,13 @@ export class ImportService {
         this.registry.stores.canvasStore.getMeshConcepts().filter(item => item.modelId)
             .forEach(item => {
                 const modelConcept = this.registry.stores.canvasStore.getModelConceptById(item.modelId);
-                this.registry.services.meshLoader.getDimensions(modelConcept.modelPath, item.id)
+                this.registry.services.meshLoader.getDimensions(modelConcept, item.id)
                     .then(dim => {
                         item.dimensions.setWidth(dim.x);
                         item.dimensions.setHeight(dim.y);
                     });
 
-                this.registry.services.meshLoader.getAnimations(modelConcept.modelPath, item.id)
+                this.registry.services.meshLoader.getAnimations(modelConcept, item.id)
                     .then(animations => {
                         item.animations = animations;
                     })

@@ -93,17 +93,17 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                 break;
             case MeshViewPropType.Model:
                 this.updateModelPath(val.path);
-                const modelPath = this.registry.stores.canvasStore.getModelConceptById(this.meshConcept.modelId).modelPath;
+                const modelConcept = this.registry.stores.canvasStore.getModelConceptById(this.meshConcept.modelId);
 
                 this.registry.services.storage.saveAsset(val.path, val.data)
                     .then(() => {
-                        return this.registry.services.meshLoader.getDimensions(modelPath, this.meshConcept.id);
+                        return this.registry.services.meshLoader.getDimensions(modelConcept, this.meshConcept.id);
                     })
                     .then(dim => {
                         this.meshConcept.dimensions.setWidth(dim.x);
                         this.meshConcept.dimensions.setHeight(dim.y);
                     })
-                    .then(() => this.registry.services.meshLoader.getAnimations(modelPath, this.meshConcept.id))
+                    .then(() => this.registry.services.meshLoader.getAnimations(modelConcept, this.meshConcept.id))
                     .then(animations => {
                         this.meshConcept.animations = animations;
                     })

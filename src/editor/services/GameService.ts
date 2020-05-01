@@ -105,13 +105,7 @@ export class GameService {
 
         switch(gameObject.type) {
             case ConceptType.MeshConcept:
-                const meshObject = <MeshObject> gameObject;
-                if (!meshObject.modelPath) {
-                    this.registry.stores.meshStore.createInstance(meshObject, this.registry.services.game.getScene());
-                } else {
-                    this.registry.services.meshLoader.load(meshObject.modelPath, meshObject.id)
-                        .then(() => this.registry.stores.meshStore.createInstance(meshObject, this.registry.services.game.getScene()));
-                }
+                this.registry.stores.meshStore.createInstance(<MeshObject> gameObject, this.registry.services.game.getScene())
             break;
         }
     }
