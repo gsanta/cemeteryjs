@@ -105,6 +105,7 @@ export class MeshStore {
         clone.isVisible = true;
         const scale = meshObject.scale;
         clone.scaling = new Vector3(scale, scale, scale);
+        clone.position.y = meshObject.yPos;
         clone.rotationQuaternion = undefined;
 
         const rect = <Rectangle> meshObject.dimensions.div(10);

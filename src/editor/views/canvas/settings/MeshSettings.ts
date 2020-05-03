@@ -15,6 +15,7 @@ export enum MeshViewPropType {
     Layer = 'layer',
     Rotation = 'rotation',
     Scale = 'scale',
+    YPos = 'y-pos',
     Name = 'name',
     Path = 'path',
     IsManualControl = 'is-manual-control',
@@ -69,6 +70,8 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                 return Math.round(toDegree(this.meshConcept.rotation));
             case MeshViewPropType.Scale:
                 return this.meshConcept.scale;
+            case MeshViewPropType.YPos:
+                return this.meshConcept.yPos;
             case MeshViewPropType.Name:
                 return this.meshConcept.id;
             case MeshViewPropType.Path:
@@ -133,6 +136,10 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                 break;
             case MeshViewPropType.Scale:
                 this.meshConcept.scale = this.convertValue(val, prop, this.meshConcept.scale);
+                this.update();
+                break;
+            case MeshViewPropType.YPos:
+                this.meshConcept.yPos = this.convertValue(val, prop, this.meshConcept.yPos);
                 this.update();
                 break;
             case MeshViewPropType.Name:

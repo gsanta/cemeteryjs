@@ -42,6 +42,7 @@ export class MeshConceptExporter implements IConceptExporter {
                 data-wg-layer={item.layer}
                 data-rotation={item.rotation}
                 data-wg-scale={item.scale}
+                data-y-pos={item.yPos}
                 data-wg-name={item.id}
                 data-model-id={item.modelId}
                 data-thumbnail={item.thumbnailPath}

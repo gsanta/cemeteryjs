@@ -12,6 +12,7 @@ export interface RectJson {
     _attributes: {
         "data-wg-x": string,
         "data-wg-y": string,
+        "data-y-pos": string;
         "data-wg-type": string,
         "data-wg-name": string,
         "data-model-id": string;
@@ -54,6 +55,7 @@ export class MeshConceptImporter implements IConceptImporter {
             meshConcept.rotation = rotation;
             meshConcept.modelId = modelId;
             meshConcept.scale = scale;
+            meshConcept.yPos = parseFloat(rect._attributes["data-y-pos"]); 
             meshConcept.color = 'grey';
             meshConcept.thumbnailPath = rect._attributes["data-thumbnail"];
             meshConcept.path = rect._attributes["data-path"];

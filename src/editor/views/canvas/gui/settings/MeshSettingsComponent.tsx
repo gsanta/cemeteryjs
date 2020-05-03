@@ -179,6 +179,25 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
         );
     }
 
+    private renderYPosInput(): JSX.Element {
+        const meshSettings = this.context.registry.stores.viewStore.getViewById<CanvasView>(CanvasView.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+
+        return (
+            <SettingsRowStyled>
+                <LabelColumnStyled>Y Pos</LabelColumnStyled>
+                <FieldColumnStyled>
+                    <ConnectedInputComponent
+                        formController={meshSettings}
+                        propertyName={MeshViewPropType.YPos}
+                        propertyType="number"
+                        type="number"
+                        value={meshSettings.getVal(MeshViewPropType.YPos)}
+                    />
+                </FieldColumnStyled>
+            </SettingsRowStyled>
+        );
+    }
+
     private renderMaterialSection() {
         const body = (
             <React.Fragment>
@@ -208,6 +227,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshConcept
             <React.Fragment>
                 {this.renderRotationInput()}
                 {this.renderScaleInput()}
+                {this.renderYPosInput()}
             </React.Fragment>
         )
 

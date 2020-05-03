@@ -33,6 +33,7 @@ export interface RawWorldMapJson {
             "data-wg-pixel-size": string;
             "data-wg-scale-x": string;
             "data-wg-scale-y": string;
+            "data-y-pos": string;
             "data-zoom": string;
             "data-viewbox": string;
         };
