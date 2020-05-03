@@ -1,5 +1,5 @@
 
-import { Vector3 } from "babylonjs";
+import { Vector3, Space } from "babylonjs";
 import { Mesh } from "babylonjs/Meshes/mesh";
 import { ConceptType } from "../../../editor/views/canvas/models/concepts/Concept";
 import { AnimationConcept, ElementalAnimation } from "../../../editor/views/canvas/models/meta/AnimationConcept";
@@ -9,6 +9,7 @@ import { toVector3 } from "../../../misc/geometry/utils/GeomUtils";
 import { BehaviourType } from "../../services/behaviour/IBehaviour";
 import { IGameObject } from "./IGameObject";
 import { RouteObject } from "./RouteObject";
+import { toDegree } from "../../../misc/geometry/utils/Measurements";
 
 
 
@@ -82,8 +83,7 @@ export class MeshObject implements IGameObject {
 
     moveBy(vector: Point): void {
         if (this.mesh) {
-            console.log(vector)
-            this.mesh.translate(toVector3(vector), 1);
+            this.mesh.translate(toVector3(vector), 1, Space.WORLD);
         } else {
             this.dimensions.translate(vector);
         }
