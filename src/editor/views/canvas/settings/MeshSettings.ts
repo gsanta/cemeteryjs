@@ -66,7 +66,7 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
             case MeshViewPropType.Layer:
                 return this.meshConcept.layer;
             case MeshViewPropType.Rotation:
-                return toDegree(this.meshConcept.rotation);
+                return Math.round(toDegree(this.meshConcept.rotation));
             case MeshViewPropType.Scale:
                 return this.meshConcept.scale;
             case MeshViewPropType.Name:

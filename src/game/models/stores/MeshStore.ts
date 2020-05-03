@@ -100,7 +100,6 @@ export class MeshStore {
             const texturePath = `${this.basePath}${MeshLoaderService.getFolderNameFromFileName(modelConcept.modelPath)}/${this.texturePathes.get(modelConcept.modelPath)}`;
             (<StandardMaterial> clone.material).diffuseTexture  = new Texture(texturePath,  scene);
             (<StandardMaterial> clone.material).specularTexture  = new Texture(texturePath,  scene);
-            modelConcept.texturePath = texturePath;
         }
 
         clone.isVisible = true;

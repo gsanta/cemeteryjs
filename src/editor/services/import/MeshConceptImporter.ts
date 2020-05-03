@@ -42,7 +42,7 @@ export class MeshConceptImporter implements IConceptImporter {
             const modelId = rect._attributes["data-model-id"];
             const width = parseInt(rect._attributes["data-wg-width"], 10);
             const height = parseInt(rect._attributes["data-wg-height"], 10);
-            const rotation = parseInt(rect._attributes["data-rotation"], 10);
+            const rotation = parseFloat(rect._attributes["data-rotation"]);
             const scale = parseFloat(rect._attributes["data-wg-scale"]);
             const name = rect._attributes["data-wg-name"];
             const isManualControl = rect._attributes['data-is-manual-control'] === 'true' ? true : false;
