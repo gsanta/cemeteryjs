@@ -35,14 +35,16 @@ export enum AnimationState {
 export class MeshConcept implements VisualConcept {
     type = ConceptType.MeshConcept;
     editPoints = [];
+    mesh: Mesh;
+
     meshName: string;
     id: string;
     dimensions: Rectangle;
     rotation: number;
     children: MeshConcept[] = [];
     parent: MeshConcept;
-    thumbnailPath: string;
     modelId: string;
+    thumbnailPath: string;
     path: string;
     isManualControl: boolean;
 
@@ -52,15 +54,12 @@ export class MeshConcept implements VisualConcept {
     speed = 0.1;
 
     activeBehaviour: BehaviourType;
-    wanderAngle = 0;
     animations: string[] = [];
     animationState = AnimationState.Playing;
     animationId: string;
     layer: number = 10;
-    private getMesh: (meshName: string) => Mesh;
 
-    constructor(getMesh: (meshName: string) => Mesh, dimensions: Rectangle, name: string, rotation = 0) {
-        this.getMesh = getMesh;
+    constructor(dimensions: Rectangle, name: string, rotation = 0) {
         this.dimensions = dimensions;
         this.id = name;
         this.rotation = rotation;
@@ -92,26 +91,26 @@ export class MeshConcept implements VisualConcept {
     }
 
     getPosition(): Point {
-        return this.getMesh(this.meshName) ?  to2DPoint(this.getMesh(this.meshName).getAbsolutePosition()) : this.dimensions.getBoundingCenter();
+        return this.mesh ? to2DPoint(this.mesh.getAbsolutePosition()) : this.dimensions.getBoundingCenter();
     }
 
     moveBy(vector: Point): void {
-        if (this.getMesh(this.meshName)) {
-            this.getMesh(this.meshName).translate(toVector3(vector), 1) //moveWithCollisions(toVector3(vector));
+        if (this.mesh) {
+            this.mesh.translate(toVector3(vector), 1) //moveWithCollisions(toVector3(vector));
         } else {
             this.dimensions.translate(vector);
         }
     }
 
     getRotation(): number {
-        const rotation = this.getMesh(this.meshName) ? this.getMesh(this.meshName).rotation.y : this.rotation;
+        const rotation = this.mesh ? this.mesh.rotation.y : this.rotation;
 
         return rotation;
     }
 
     rotateBy(rad: number) {
-        if (this.getMesh(this.meshName)) {
-            this.getMesh(this.meshName).rotation.y += rad;
+        if (this.mesh) {
+            this.mesh.rotation.y += rad;
         } else {
             this.rotation += rad;
         }

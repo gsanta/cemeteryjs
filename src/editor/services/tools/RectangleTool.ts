@@ -1,13 +1,11 @@
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
-import { Stores } from '../../stores/Stores';
+import { Registry } from '../../Registry';
 import { ConceptType } from '../../views/canvas/models/concepts/Concept';
 import { MeshConcept } from '../../views/canvas/models/concepts/MeshConcept';
-import { ServiceLocator } from '../ServiceLocator';
 import { UpdateTask } from '../UpdateServices';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './RectangleSelector';
 import { ToolType } from './Tool';
-import { Registry } from '../../Registry';
 
 export class RectangleTool extends AbstractTool {
     private lastPreviewRect: MeshConcept;
@@ -23,7 +21,7 @@ export class RectangleTool extends AbstractTool {
         const pointer = this.registry.services.pointer.pointer;
         const rect = Rectangle.squareFromCenterPointAndRadius(pointer.down, 50);
 
-        const meshConcept: MeshConcept = new MeshConcept(null, rect, name);
+        const meshConcept: MeshConcept = new MeshConcept(rect, name);
         meshConcept.rotation = 0;
         meshConcept.scale = 1;
         meshConcept.color = 'grey';
@@ -50,7 +48,7 @@ export class RectangleTool extends AbstractTool {
 
         const dimensions = this.registry.stores.feedback.rectSelectFeedback.rect;
 
-        const meshConcept: MeshConcept = new MeshConcept(null, dimensions, name);
+        const meshConcept: MeshConcept = new MeshConcept(dimensions, name);
         meshConcept.rotation = 0;
         meshConcept.scale = 1;
         meshConcept.color = 'grey';

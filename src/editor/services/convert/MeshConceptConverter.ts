@@ -2,7 +2,6 @@ import { Tools } from "babylonjs";
 import { IGameObject } from "../../../game/models/objects/IGameObject";
 import { MeshObject } from "../../../game/models/objects/MeshObject";
 import { RouteObject } from "../../../game/models/objects/RouteObject";
-import { Stores } from "../../stores/Stores";
 import { ConceptType } from "../../views/canvas/models/concepts/Concept";
 import { MeshConcept } from "../../views/canvas/models/concepts/MeshConcept";
 import { IConceptConverter } from "./IConceptConverter";
@@ -35,7 +34,6 @@ export class MeshConceptConverter implements IConceptConverter {
         meshObject.id = meshConcept.id;
         meshObject.rotation = Tools.ToRadians(meshConcept.rotation);
         const modelConcept = this.registry.stores.canvasStore.getModelConceptById(meshConcept.modelId);
-        meshObject.texturePath = modelConcept && modelConcept.texturePath;
         meshObject.modelId = meshConcept.modelId;
 
         meshObject.thumbnailPath = meshConcept.thumbnailPath;
@@ -44,7 +42,6 @@ export class MeshConceptConverter implements IConceptConverter {
         meshObject.scale = meshConcept.scale;
         meshObject.speed = meshConcept.speed;
         meshObject.activeBehaviour = meshConcept.activeBehaviour;
-        meshObject.wanderAngle = meshConcept.wanderAngle;
         meshObject.isManualControl = meshConcept.isManualControl;
 
         if (meshConcept.animationId) {

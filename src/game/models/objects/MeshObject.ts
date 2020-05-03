@@ -9,21 +9,19 @@ import { toVector3 } from "../../../misc/geometry/utils/GeomUtils";
 import { BehaviourType } from "../../services/behaviour/IBehaviour";
 import { IGameObject } from "./IGameObject";
 import { RouteObject } from "./RouteObject";
-import { toDegree } from "../../../misc/geometry/utils/Measurements";
-
-
+import { EditPoint } from "../../../editor/views/canvas/models/feedbacks/EditPoint";
 
 export class MeshObject implements IGameObject {
     readonly type = ConceptType.MeshConcept;
-
-    private mesh: Mesh;
+    
+    editPoints: EditPoint[];
+mesh: Mesh;
     meshName: string;
     id: string;
     dimensions: Rectangle;
     rotation: number = 0;
     children: MeshObject[] = [];
     parent: MeshObject;
-    texturePath: string;
     modelId: string
     thumbnailPath: string;
     path: string;
@@ -35,7 +33,6 @@ export class MeshObject implements IGameObject {
     speed: number;
 
     activeBehaviour: BehaviourType;
-    wanderAngle = 0;
     animation: AnimationConcept;
     activeElementalAnimation: ElementalAnimation;
     private getRouteFunc: () => RouteObject;

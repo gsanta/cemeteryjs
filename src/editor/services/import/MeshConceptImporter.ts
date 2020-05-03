@@ -49,7 +49,7 @@ export class MeshConceptImporter implements IConceptImporter {
 
             const rectangle = new Rectangle(new Point(x, y), new Point(x + width, y + height));
 
-            const meshConcept: MeshConcept = new MeshConcept(null, rectangle, name);
+            const meshConcept: MeshConcept = new MeshConcept(rectangle, name);
             meshConcept.type = <ConceptType> type;
             meshConcept.rotation = rotation;
             meshConcept.modelId = modelId;
