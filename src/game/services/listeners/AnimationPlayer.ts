@@ -1,9 +1,9 @@
 import { Registry } from "../../../editor/Registry";
 import { ElementalAnimation } from "../../../editor/views/canvas/models/meta/AnimationConcept";
-import { MeshObject } from "../../models/objects/MeshObject";
+import { MeshConcept } from "../../../editor/views/canvas/models/concepts/MeshConcept";
 
 export class AnimationPlayer {
-    private playingAnimations: Map<MeshObject, ElementalAnimation> = new Map();
+    private playingAnimations: Map<MeshConcept, ElementalAnimation> = new Map();
     private registry: Registry;
 
     constructor(registry: Registry) {
@@ -33,15 +33,15 @@ export class AnimationPlayer {
         });
     }
 
-    private stopAnimation(meshObject: MeshObject) {
+    private stopAnimation(meshObject: MeshConcept) {
         this.playingAnimations.delete(meshObject);
-        this.registry.services.game.gameEngine.scene.stopAnimation(meshObject.getMesh().skeleton);
+        this.registry.services.game.gameEngine.scene.stopAnimation(meshObject.mesh.skeleton);
     }
 
-    private startAnimation(meshObject: MeshObject) {
-        if (meshObject.getMesh()) {
-            const range = meshObject.getMesh().skeleton.getAnimationRange(meshObject.activeElementalAnimation.name);
-            this.registry.services.game.gameEngine.scene.beginAnimation(meshObject.getMesh().skeleton, range.from, range.to, true);
+    private startAnimation(meshObject: MeshConcept) {
+        if (meshObject.mesh) {
+            const range = meshObject.mesh.skeleton.getAnimationRange(meshObject.activeElementalAnimation.name);
+            this.registry.services.game.gameEngine.scene.beginAnimation(meshObject.mesh.skeleton, range.from, range.to, true);
             this.playingAnimations.set(meshObject, meshObject.activeElementalAnimation);
         }
 

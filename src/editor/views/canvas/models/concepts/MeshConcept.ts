@@ -8,6 +8,8 @@ import { toDegree } from '../../../../../misc/geometry/utils/Measurements';
 import { EditPoint } from '../feedbacks/EditPoint';
 import { ConceptType } from './Concept';
 import { VisualConcept } from './VisualConcept';
+import { IGameObject } from '../../../../../game/models/objects/IGameObject';
+import { AnimationConcept, ElementalAnimation } from '../meta/AnimationConcept';
 
 export enum WorldItemShape {
     RECTANGLE = 'rect',
@@ -32,7 +34,7 @@ export enum AnimationState {
 }
 
 
-export class MeshConcept implements VisualConcept {
+export class MeshConcept implements VisualConcept, IGameObject {
     type = ConceptType.MeshConcept;
     editPoints = [];
     mesh: Mesh;
@@ -44,6 +46,7 @@ export class MeshConcept implements VisualConcept {
     children: MeshConcept[] = [];
     parent: MeshConcept;
     modelId: string;
+    routeId: string;
     thumbnailPath: string;
     path: string;
     isManualControl: boolean;
@@ -54,6 +57,8 @@ export class MeshConcept implements VisualConcept {
     speed = 0.1;
 
     activeBehaviour: BehaviourType;
+    activeElementalAnimation: ElementalAnimation;
+    animation: AnimationConcept;
     animations: string[] = [];
     animationState = AnimationState.Playing;
     animationId: string;
@@ -94,6 +99,10 @@ export class MeshConcept implements VisualConcept {
         return this.mesh ? to2DPoint(this.mesh.getAbsolutePosition()) : this.dimensions.getBoundingCenter();
     }
 
+    setPosition(point: Point) {
+        this.mesh && this.mesh.setAbsolutePosition(toVector3(point));
+    }
+
     moveBy(vector: Point): void {
         if (this.mesh) {
             this.mesh.translate(toVector3(vector), 1) //moveWithCollisions(toVector3(vector));
@@ -116,6 +125,14 @@ export class MeshConcept implements VisualConcept {
         }
     }
 
+    setRotation(angle: number) {
+        if (this.mesh) {
+            this.mesh.rotation.y = - angle;
+        } else {
+            this.rotation = angle;
+        }
+    }
+
     selectHoveredSubview() {}
     moveEditPoint(editPoint: EditPoint, delta: Point) {}
 
@@ -124,6 +141,8 @@ export class MeshConcept implements VisualConcept {
     }
 
     deleteEditPoint(editPoint: EditPoint): void {}
+
+    dispose() {}
 }
 
 function to2DPoint(vector3: Vector3): Point {

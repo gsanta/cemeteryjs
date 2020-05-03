@@ -2,8 +2,8 @@ import { Color3, Mesh, MeshBuilder, Scene, Space, StandardMaterial, Vector3 } fr
 import { Registry } from '../../../editor/Registry';
 import { Point } from '../../../misc/geometry/shapes/Point';
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
-import { MeshObject } from '../../models/objects/MeshObject';
 import { MaterialBuilder } from './MaterialFactory';
+import { MeshConcept } from '../../../editor/views/canvas/models/concepts/MeshConcept';
 
 export class RectangleFactory  {
     private height: number;
@@ -33,7 +33,7 @@ export class RectangleFactory  {
 
     }
 
-    createMesh(meshObject: MeshObject, scene: Scene): Mesh {
+    createMesh(meshObject: MeshConcept, scene: Scene): Mesh {
         const rec = <Rectangle> meshObject.dimensions;
         const boundingInfo = meshObject.dimensions.getBoundingInfo();
         const width = boundingInfo.max[0] - boundingInfo.min[0];
@@ -51,7 +51,7 @@ export class RectangleFactory  {
             scene
         );
 
-        meshObject.setMesh(mesh);
+        meshObject.mesh = mesh;
 
         meshObject.meshName = mesh.name;
 

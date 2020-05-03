@@ -1,8 +1,8 @@
-import { MeshObject } from '../objects/MeshObject';
 import { IGameObject } from '../objects/IGameObject';
 import { RouteObject } from '../objects/RouteObject';
 import { ConceptType } from '../../../editor/views/canvas/models/concepts/Concept';
 import { Registry } from '../../../editor/Registry';
+import { MeshConcept } from '../../../editor/views/canvas/models/concepts/MeshConcept';
 
 export class GameStore {
     private nameToObjMap: Map<string, IGameObject> = new Map();
@@ -14,8 +14,8 @@ export class GameStore {
         this.registry = registry;
     }
 
-    getEnemies(): MeshObject[] {
-        return <MeshObject[]> this.objs.filter(gameObject => gameObject.id === 'enemy');
+    getEnemies(): MeshConcept[] {
+        return <MeshConcept[]> this.objs.filter(gameObject => gameObject.id === 'enemy');
     }
 
     add(gameObject: IGameObject) {
@@ -27,12 +27,16 @@ export class GameStore {
         return <T> this.nameToObjMap.get(name);
     }
 
-    getMeshObjects(): MeshObject[] {
-        return <MeshObject[]> this.objs.filter(obj => obj.type === ConceptType.MeshConcept);
+    getMeshObjects(): MeshConcept[] {
+        return <MeshConcept[]> this.objs.filter(obj => obj.type === ConceptType.MeshConcept);
     }
 
-    getPlayer(): MeshObject {
+    getPlayer(): MeshConcept {
         return this.getMeshObjects().find(obj => obj.isManualControl);
+    }
+
+    getRouteById(id: string): RouteObject {
+        return <RouteObject> this.nameToObjMap.get(id);
     }
 
     getRouteObjects(): RouteObject[] {
@@ -44,7 +48,7 @@ export class GameStore {
 
         switch(obj.type) {
             case ConceptType.MeshConcept:
-                this.registry.stores.meshStore.deleteInstance((<MeshObject> obj).getMesh());
+                this.registry.stores.meshStore.deleteInstance((<MeshConcept> obj).mesh);
             break;
         }
 

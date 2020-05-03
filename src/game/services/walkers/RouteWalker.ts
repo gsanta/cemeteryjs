@@ -89,7 +89,7 @@ export class RouteWalker {
     private initRoute(route: RouteObject) {
         const meshObj = route.getMeshObject();
         const pathObj = route.getPathObject();
-        if (!meshObj.hasMesh()) { return; }
+        if (!meshObj.mesh) { return; }
         
         if (meshObj.animation) {
             meshObj.activeElementalAnimation = meshObj.animation.getAnimationByCond(AnimationCondition.Move);

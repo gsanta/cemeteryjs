@@ -1,6 +1,6 @@
 import { Color3, StandardMaterial, Texture } from 'babylonjs';
 import { Scene } from "babylonjs/scene";
-import { MeshObject } from '../../models/objects/MeshObject';
+import { MeshConcept } from '../../../editor/views/canvas/models/concepts/MeshConcept';
 
 export class MaterialBuilder {
     static CreateMaterial(name: string, scene: Scene): StandardMaterial {
@@ -22,7 +22,7 @@ export class MaterialFactory {
         this.materialBuilder = materialBuilder;
     }
 
-    createMaterial(meshObject: MeshObject): StandardMaterial {
+    createMaterial(meshObject: MeshConcept): StandardMaterial {
         return this.createSimpleMaterial(meshObject.color);
     }
 

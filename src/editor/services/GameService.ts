@@ -1,6 +1,5 @@
 import { Engine } from "babylonjs";
 import { Scene } from "babylonjs/scene";
-import { MeshObject } from "../../game/models/objects/MeshObject";
 import { CharacterMovement } from "../../game/services/behaviour/CharacterMovement";
 import { GameEventManager, GamepadEvent } from "../../game/services/GameEventManager";
 import { AnimationPlayer } from "../../game/services/listeners/AnimationPlayer";
@@ -14,6 +13,7 @@ import { GameEngine } from "../views/renderer/GameEngine";
 import { IConceptConverter } from "./convert/IConceptConverter";
 import { IConceptImporter } from "./import/IConceptImporter";
 import { ImportService } from "./import/ImportService";
+import { MeshConcept } from "../views/canvas/models/concepts/MeshConcept";
 
 export class GameService {
     serviceName = 'game-service';
@@ -56,7 +56,8 @@ export class GameService {
     }
 
     resetPath(meshObjectName: string) {
-        this.registry.stores.gameStore.getByName<MeshObject>(meshObjectName).getRoute().reset();
+        const route = this.registry.stores.gameStore.getRouteById(meshObjectName);
+        route.reset();
     }
 
     resetAllMovements() {
@@ -64,7 +65,8 @@ export class GameService {
     }
 
     pauseMovement(meshObjectName: string) {
-        this.registry.stores.gameStore.getByName<MeshObject>(meshObjectName).getRoute().isPaused = true;
+        const route = this.registry.stores.gameStore.getRouteById(meshObjectName);
+        route.isPaused = true;
     }
 
     pauseAllMovements() {
@@ -72,7 +74,8 @@ export class GameService {
     }
 
     playMovement(meshObjectName: string) {
-        this.registry.stores.gameStore.getByName<MeshObject>(meshObjectName).getRoute().isPaused = false;
+        const route = this.registry.stores.gameStore.getRouteById(meshObjectName);
+        route.isPaused = false;
     }
 
     playAllMovements() {
@@ -100,7 +103,7 @@ export class GameService {
 
         switch(gameObject.type) {
             case ConceptType.MeshConcept:
-                this.registry.stores.meshStore.createInstance(<MeshObject> gameObject, this.registry.services.game.getScene())
+                this.registry.stores.meshStore.createInstance(<MeshConcept> gameObject, this.registry.services.game.getScene())
             break;
         }
     }

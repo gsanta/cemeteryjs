@@ -1,9 +1,9 @@
 import { Mesh, Vector3, Space, StandardMaterial, Texture, Scene } from 'babylonjs';
-import { MeshObject } from '../objects/MeshObject';
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
 import { MeshLoaderService } from '../../../editor/services/MeshLoaderService';
 import { RectangleFactory } from '../../import/factories/RectangleFactory';
 import { Registry } from '../../../editor/Registry';
+import { MeshConcept } from '../../../editor/views/canvas/models/concepts/MeshConcept';
 
 export class MeshStore {
     private basePath = 'assets/models/';
@@ -56,11 +56,11 @@ export class MeshStore {
         this.instances.delete(mesh);
     }
 
-    createInstance(meshObject: MeshObject, scene: Scene): void {
+    createInstance(meshObject: MeshConcept, scene: Scene): void {
         if (!meshObject.modelId) {
             const mesh = this.rectangleFactory.createMesh(meshObject, scene);
             this.instances.add(mesh);
-            meshObject.setMesh(mesh);
+            meshObject.mesh = mesh;
             return;
         }
 
@@ -70,7 +70,7 @@ export class MeshStore {
             .then(() => this.setupInstance(meshObject, scene));
     }
 
-    private setupInstance(meshObject: MeshObject, scene: Scene) {
+    private setupInstance(meshObject: MeshConcept, scene: Scene) {
         const modelConcept = this.registry.stores.canvasStore.getModelConceptById(meshObject.modelId);
 
         if (modelConcept.texturePath) {
@@ -116,7 +116,7 @@ export class MeshStore {
 
         clone.rotation.y = meshObject.rotation;
 
-        meshObject.setMesh(clone);
+        meshObject.mesh = clone;
     }
 
     clear(): void {

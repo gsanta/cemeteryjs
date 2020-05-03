@@ -1,8 +1,8 @@
 import { Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, StandardMaterial } from 'babylonjs';
 import { Point } from '../../misc/geometry/shapes/Point';
-import { MeshObject } from '../../game/models/objects/MeshObject';
 import { Registry } from '../Registry';
 import { ModelConcept } from '../views/canvas/models/concepts/ModelConcept';
+import { MeshConcept } from '../views/canvas/models/concepts/MeshConcept';
 
 export class MeshLoaderService {
     serviceName = 'mesh-loader-service'
@@ -50,7 +50,7 @@ export class MeshLoaderService {
         this.fileNameToMeshNameMap.set(fileName, mesh.name);
     }
 
-    loadAll(meshObjects: MeshObject[]): Promise<Mesh[]> {
+    loadAll(meshObjects: MeshConcept[]): Promise<Mesh[]> {
         const modeledMeshObjets = meshObjects.filter(item => item.modelId);
 
         const promises: Promise<Mesh>[] = [];

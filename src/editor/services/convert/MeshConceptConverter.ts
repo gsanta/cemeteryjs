@@ -1,6 +1,5 @@
 import { Tools } from "babylonjs";
 import { IGameObject } from "../../../game/models/objects/IGameObject";
-import { MeshObject } from "../../../game/models/objects/MeshObject";
 import { RouteObject } from "../../../game/models/objects/RouteObject";
 import { ConceptType } from "../../views/canvas/models/concepts/Concept";
 import { MeshConcept } from "../../views/canvas/models/concepts/MeshConcept";
@@ -27,7 +26,9 @@ export class MeshConceptConverter implements IConceptConverter {
             this.registry.stores.gameStore.add(routeObject);
         }
 
-        const meshObject = new MeshObject(() => this.registry.stores.gameStore.getByName(`${meshConcept.id}-route`));
+        // const meshObject = new MeshObject(() => this.registry.stores.gameStore.getByName(`${meshConcept.id}-route`));
+        const meshObject = new MeshConcept(meshConcept.dimensions.div(10), meshConcept.id, meshConcept.rotation);
+        meshObject.routeId = `${meshConcept.id}-route`;
 
         meshObject.dimensions = meshConcept.dimensions.div(10);
         meshObject.meshName = meshConcept.meshName;
