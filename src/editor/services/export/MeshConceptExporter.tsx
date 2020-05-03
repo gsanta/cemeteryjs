@@ -6,6 +6,7 @@ import { MeshConcept } from "../../models/concepts/MeshConcept";
 import { IConceptExporter } from "./IConceptExporter";
 import React = require("react");
 import { Registry } from "../../Registry";
+import { toDegree } from "../../../misc/geometry/utils/Measurements";
 
 export class MeshConceptExporter implements IConceptExporter {
     type = ConceptType.MeshConcept;
@@ -30,7 +31,7 @@ export class MeshConceptExporter implements IConceptExporter {
         return (
             <g
                 key={item.id}
-                transform={`translate(${item.dimensions.topLeft.x} ${item.dimensions.topLeft.y})`}
+                transform={`translate(${item.dimensions.topLeft.x} ${item.dimensions.topLeft.y}) rotate(${toDegree(item.rotation)} ${item.dimensions.getWidth() / 2} ${item.dimensions.getHeight() / 2})`}
                 onMouseOver={() => hover ? hover(item) : () => undefined}
                 onMouseOut={() => unhover ? unhover(item) : () => undefined}
                 data-wg-x={item.dimensions.topLeft.x}
