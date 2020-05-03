@@ -1,7 +1,7 @@
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
 import { Registry } from '../../Registry';
-import { ConceptType } from '../../views/canvas/models/concepts/Concept';
-import { MeshConcept } from '../../views/canvas/models/concepts/MeshConcept';
+import { ConceptType } from '../../models/concepts/Concept';
+import { MeshConcept } from '../../models/concepts/MeshConcept';
 import { UpdateTask } from '../UpdateServices';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './RectangleSelector';

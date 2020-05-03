@@ -1,6 +1,6 @@
 
-import { ConceptType } from '../../views/canvas/models/concepts/Concept';
-import { AnimationConcept, AnimationCondition } from '../../views/canvas/models/meta/AnimationConcept';
+import { ConceptType } from '../../models/concepts/Concept';
+import { AnimationConcept, AnimationCondition } from '../../models/meta/AnimationConcept';
 import { IConceptImporter } from './IConceptImporter';
 import { ConceptGroupJson } from './ImportService';
 import { Stores } from '../../stores/Stores';

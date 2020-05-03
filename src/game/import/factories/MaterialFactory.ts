@@ -1,6 +1,6 @@
 import { Color3, StandardMaterial, Texture } from 'babylonjs';
 import { Scene } from "babylonjs/scene";
-import { MeshConcept } from '../../../editor/views/canvas/models/concepts/MeshConcept';
+import { MeshConcept } from '../../../editor/models/concepts/MeshConcept';
 
 export class MaterialBuilder {
     static CreateMaterial(name: string, scene: Scene): StandardMaterial {

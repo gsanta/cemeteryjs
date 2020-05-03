@@ -1,8 +1,8 @@
 import { sort } from "../../../misc/geometry/utils/Functions";
 import { colors } from "../../gui/styles";
 import { Stores } from '../../stores/Stores';
-import { Concept, ConceptType } from "../../views/canvas/models/concepts/Concept";
-import { MeshConcept } from "../../views/canvas/models/concepts/MeshConcept";
+import { Concept, ConceptType } from "../../models/concepts/Concept";
+import { MeshConcept } from "../../models/concepts/MeshConcept";
 import { IConceptExporter } from "./IConceptExporter";
 import React = require("react");
 import { Registry } from "../../Registry";

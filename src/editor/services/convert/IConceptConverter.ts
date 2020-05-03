@@ -1,4 +1,4 @@
-import { Concept, ConceptType } from "../../views/canvas/models/concepts/Concept";
+import { Concept, ConceptType } from "../../models/concepts/Concept";
 import { IGameObject } from "../../../game/models/objects/IGameObject";
 
 export interface IConceptConverter {

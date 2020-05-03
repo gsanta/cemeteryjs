@@ -1,12 +1,13 @@
 import { Concept, ConceptType } from "./Concept";
-import { Rectangle } from "../../../../../misc/geometry/shapes/Rectangle";
-import { Point } from "../../../../../misc/geometry/shapes/Point";
-import { minBy, maxBy } from "../../../../../misc/geometry/utils/Functions";
+import { Rectangle } from "../../../misc/geometry/shapes/Rectangle";
+import { Point } from "../../../misc/geometry/shapes/Point";
+import { minBy, maxBy } from "../../../misc/geometry/utils/Functions";
 import { EditPoint } from "../feedbacks/EditPoint";
+import { IGameObject } from "../../../game/models/objects/IGameObject";
 
 const NULL_BOUNDING_BOX = new Rectangle(new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER), new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER));
 
-export class PathConcept implements Concept {
+export class PathConcept implements Concept, IGameObject {
     type = ConceptType.PathConcept;
     editPoints: EditPoint[] = [];
     childMap: Map<EditPoint, EditPoint[]> = new Map();
@@ -135,6 +136,8 @@ export class PathConcept implements Concept {
     iterateOverPoints(action: (parent: EditPoint, current: EditPoint) => void) {
         this.iterateOverPointsRecursively(this.rootPoint, undefined, action);
     }
+
+    dispose() {}
 
     private iterateOverPointsRecursively(point: EditPoint, parent: EditPoint, action: (current: EditPoint, parent: EditPoint) => void) {
         action(point, parent);

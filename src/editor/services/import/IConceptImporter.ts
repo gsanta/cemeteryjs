@@ -1,5 +1,5 @@
 import { ConceptGroupJson } from "./ImportService";
-import { Concept, ConceptType } from "../../views/canvas/models/concepts/Concept";
+import { Concept, ConceptType } from "../../models/concepts/Concept";
 
 export interface IConceptImporter {
     type: ConceptType;

@@ -1,8 +1,8 @@
 import { Tools } from "babylonjs";
 import { IGameObject } from "../../../game/models/objects/IGameObject";
 import { RouteObject } from "../../../game/models/objects/RouteObject";
-import { ConceptType } from "../../views/canvas/models/concepts/Concept";
-import { MeshConcept } from "../../views/canvas/models/concepts/MeshConcept";
+import { ConceptType } from "../../models/concepts/Concept";
+import { MeshConcept } from "../../models/concepts/MeshConcept";
 import { IConceptConverter } from "./IConceptConverter";
 import { Registry } from "../../Registry";
 
@@ -26,24 +26,7 @@ export class MeshConceptConverter implements IConceptConverter {
             this.registry.stores.gameStore.add(routeObject);
         }
 
-        // const meshObject = new MeshObject(() => this.registry.stores.gameStore.getByName(`${meshConcept.id}-route`));
-        const meshObject = new MeshConcept(meshConcept.dimensions.div(10), meshConcept.id, meshConcept.rotation);
-        meshObject.routeId = `${meshConcept.id}-route`;
-
-        meshObject.dimensions = meshConcept.dimensions.div(10);
-        meshObject.meshName = meshConcept.meshName;
-        meshObject.id = meshConcept.id;
-        meshObject.rotation = Tools.ToRadians(meshConcept.rotation);
-        const modelConcept = this.registry.stores.canvasStore.getModelConceptById(meshConcept.modelId);
-        meshObject.modelId = meshConcept.modelId;
-
-        meshObject.thumbnailPath = meshConcept.thumbnailPath;
-        meshObject.path = meshConcept.path;
-        meshObject.color = meshConcept.color;
-        meshObject.scale = meshConcept.scale;
-        meshObject.speed = meshConcept.speed;
-        meshObject.activeBehaviour = meshConcept.activeBehaviour;
-        meshObject.isManualControl = meshConcept.isManualControl;
+        const meshObject = meshConcept;
 
         if (meshConcept.animationId) {
             meshObject.animation = this.registry.stores.canvasStore.getAnimationConceptById(meshConcept.animationId);

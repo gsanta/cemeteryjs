@@ -1,6 +1,6 @@
 import { IGameObject } from "../../game/models/objects/IGameObject";
 import { Registry } from "../Registry";
-import { Concept } from "../views/canvas/models/concepts/Concept";
+import { Concept } from "../models/concepts/Concept";
 import { IConceptConverter } from "./convert/IConceptConverter";
 import { MeshConceptConverter } from "./convert/MeshConceptConverter";
 import { PathConceptConverter } from "./convert/PathConceptConverter";

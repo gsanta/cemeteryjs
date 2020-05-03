@@ -1,6 +1,6 @@
 import * as convert from 'xml-js';
 import { Registry } from '../../Registry';
-import { ConceptType } from '../../views/canvas/models/concepts/Concept';
+import { ConceptType } from '../../models/concepts/Concept';
 import { AnimationConceptImporter } from './AnimationConceptImporter';
 import { IConceptImporter } from './IConceptImporter';
 import { MeshConceptImporter } from './MeshConceptImporter';

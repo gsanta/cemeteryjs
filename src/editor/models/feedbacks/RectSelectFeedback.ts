@@ -1,4 +1,4 @@
-import { Rectangle } from "../../../../../misc/geometry/shapes/Rectangle";
+import { Rectangle } from "../../../misc/geometry/shapes/Rectangle";
 import { FeedbackType } from "./Feedback";
 
 export class RectSelectFeedback {

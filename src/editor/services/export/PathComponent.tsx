@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { colors } from '../../gui/styles';
-import { PathConcept } from '../../views/canvas/models/concepts/PathConcept';
-import { EditPoint } from '../../views/canvas/models/feedbacks/EditPoint';
+import { PathConcept } from '../../models/concepts/PathConcept';
+import { EditPoint } from '../../models/feedbacks/EditPoint';
 import { Stores } from '../../stores/Stores';
-import { Concept } from '../../views/canvas/models/concepts/Concept';
-import { Feedback } from '../../views/canvas/models/feedbacks/Feedback';
+import { Concept } from '../../models/concepts/Concept';
+import { Feedback } from '../../models/feedbacks/Feedback';
 
 export interface PathComponentProps {
     item: PathConcept;

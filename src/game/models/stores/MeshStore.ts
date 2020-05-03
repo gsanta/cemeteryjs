@@ -3,7 +3,7 @@ import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
 import { MeshLoaderService } from '../../../editor/services/MeshLoaderService';
 import { RectangleFactory } from '../../import/factories/RectangleFactory';
 import { Registry } from '../../../editor/Registry';
-import { MeshConcept } from '../../../editor/views/canvas/models/concepts/MeshConcept';
+import { MeshConcept } from '../../../editor/models/concepts/MeshConcept';
 
 export class MeshStore {
     private basePath = 'assets/models/';
@@ -108,7 +108,7 @@ export class MeshStore {
         clone.scaling = new Vector3(scale, scale, scale);
         clone.rotationQuaternion = undefined;
 
-        const rect = <Rectangle> meshObject.dimensions;
+        const rect = <Rectangle> meshObject.dimensions.div(10);
         const width = rect.getWidth();
         const depth = rect.getHeight();
 

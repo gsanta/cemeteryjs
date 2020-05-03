@@ -1,4 +1,4 @@
-import { Point } from "../../../../../misc/geometry/shapes/Point";
+import { Point } from "../../../misc/geometry/shapes/Point";
 import { VisualConcept } from "../concepts/VisualConcept";
 import { Feedback, FeedbackType } from "./Feedback";
 

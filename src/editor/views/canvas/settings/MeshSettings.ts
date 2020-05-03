@@ -1,10 +1,11 @@
 import { Registry } from '../../../Registry';
 import { UpdateTask } from '../../../services/UpdateServices';
-import { ConceptType } from '../models/concepts/Concept';
-import { MeshConcept } from '../models/concepts/MeshConcept';
-import { ModelConcept } from '../models/concepts/ModelConcept';
-import { AnimationConcept, AnimationCondition } from '../models/meta/AnimationConcept';
+import { ConceptType } from '../../../models/concepts/Concept';
+import { MeshConcept } from '../../../models/concepts/MeshConcept';
+import { ModelConcept } from '../../../models/concepts/ModelConcept';
+import { AnimationConcept, AnimationCondition } from '../../../models/meta/AnimationConcept';
 import { AbstractSettings, PropertyType } from "./AbstractSettings";
+import { toDegree, toRadian } from '../../../../misc/geometry/utils/Measurements';
 
 export enum MeshViewPropType {
     Color = 'color',
@@ -65,7 +66,7 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
             case MeshViewPropType.Layer:
                 return this.meshConcept.layer;
             case MeshViewPropType.Rotation:
-                return this.meshConcept.rotation;
+                return toDegree(this.meshConcept.rotation);
             case MeshViewPropType.Scale:
                 return this.meshConcept.scale;
             case MeshViewPropType.Name:
@@ -127,7 +128,7 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                 this.update();
                 break;
             case MeshViewPropType.Rotation:
-                this.meshConcept.rotation = this.convertValue(val, prop, this.meshConcept.rotation);
+                this.meshConcept.rotation = toRadian(this.convertValue(val, prop, this.meshConcept.rotation));
                 this.update();
                 break;
             case MeshViewPropType.Scale:

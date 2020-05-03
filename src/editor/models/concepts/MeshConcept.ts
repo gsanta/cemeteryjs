@@ -1,14 +1,14 @@
 import { Mesh, Vector3 } from 'babylonjs';
-import { MeshStore } from '../../../../../game/models/stores/MeshStore';
-import { BehaviourType } from '../../../../../game/services/behaviour/IBehaviour';
-import { Point } from '../../../../../misc/geometry/shapes/Point';
-import { Rectangle } from '../../../../../misc/geometry/shapes/Rectangle';
-import { toVector3 } from '../../../../../misc/geometry/utils/GeomUtils';
-import { toDegree } from '../../../../../misc/geometry/utils/Measurements';
+import { MeshStore } from '../../../game/models/stores/MeshStore';
+import { BehaviourType } from '../../../game/services/behaviour/IBehaviour';
+import { Point } from '../../../misc/geometry/shapes/Point';
+import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
+import { toVector3 } from '../../../misc/geometry/utils/GeomUtils';
+import { toDegree } from '../../../misc/geometry/utils/Measurements';
 import { EditPoint } from '../feedbacks/EditPoint';
 import { ConceptType } from './Concept';
 import { VisualConcept } from './VisualConcept';
-import { IGameObject } from '../../../../../game/models/objects/IGameObject';
+import { IGameObject } from '../../../game/models/objects/IGameObject';
 import { AnimationConcept, ElementalAnimation } from '../meta/AnimationConcept';
 
 export enum WorldItemShape {
@@ -100,15 +100,13 @@ export class MeshConcept implements VisualConcept, IGameObject {
     }
 
     setPosition(point: Point) {
-        this.mesh && this.mesh.setAbsolutePosition(toVector3(point));
+        this.mesh && this.mesh.setAbsolutePosition(toVector3(point.negateY().div(10)));
     }
 
     moveBy(vector: Point): void {
-        if (this.mesh) {
-            this.mesh.translate(toVector3(vector), 1) //moveWithCollisions(toVector3(vector));
-        } else {
-            this.dimensions.translate(vector);
-        }
+        this.dimensions.translate(vector);
+
+        this.mesh && this.mesh.translate(toVector3(vector), 1);
     }
 
     getRotation(): number {

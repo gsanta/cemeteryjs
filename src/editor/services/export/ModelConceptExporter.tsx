@@ -1,5 +1,5 @@
 import { Registry } from '../../Registry';
-import { ConceptType } from "../../views/canvas/models/concepts/Concept";
+import { ConceptType } from "../../models/concepts/Concept";
 import { IConceptExporter } from "./IConceptExporter";
 import React = require("react");
 

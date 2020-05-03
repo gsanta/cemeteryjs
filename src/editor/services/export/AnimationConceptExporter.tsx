@@ -1,6 +1,6 @@
 import { Stores } from '../../stores/Stores';
-import { Concept, ConceptType } from "../../views/canvas/models/concepts/Concept";
-import { AnimationConcept, ElementalAnimation } from "../../views/canvas/models/meta/AnimationConcept";
+import { Concept, ConceptType } from "../../models/concepts/Concept";
+import { AnimationConcept, ElementalAnimation } from "../../models/meta/AnimationConcept";
 import { IConceptExporter } from "./IConceptExporter";
 import React = require("react");
 import { Registry } from '../../Registry';

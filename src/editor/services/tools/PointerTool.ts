@@ -3,9 +3,9 @@ import { UpdateTask } from "../UpdateServices";
 import { Stores } from '../../stores/Stores';
 import { AbstractTool } from "./AbstractTool";
 import { ToolType } from "./Tool";
-import { Concept } from '../../views/canvas/models/concepts/Concept';
-import { Feedback } from '../../views/canvas/models/feedbacks/Feedback';
-import { VisualConcept } from '../../views/canvas/models/concepts/VisualConcept';
+import { Concept } from '../../models/concepts/Concept';
+import { Feedback } from '../../models/feedbacks/Feedback';
+import { VisualConcept } from '../../models/concepts/VisualConcept';
 import { isFeedback, isConcept } from '../../stores/CanvasStore';
 import { Registry } from '../../Registry';
 

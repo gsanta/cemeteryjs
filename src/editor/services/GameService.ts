@@ -8,12 +8,12 @@ import { AfterRenderTrigger } from "../../game/services/triggers/AfterRenderTrig
 import { KeyboardTrigger } from "../../game/services/triggers/KeyboardTrigger";
 import { Walkers } from "../../game/services/walkers/Walkers";
 import { Registry } from "../Registry";
-import { Concept, ConceptType } from "../views/canvas/models/concepts/Concept";
+import { Concept, ConceptType } from "../models/concepts/Concept";
 import { GameEngine } from "../views/renderer/GameEngine";
 import { IConceptConverter } from "./convert/IConceptConverter";
 import { IConceptImporter } from "./import/IConceptImporter";
 import { ImportService } from "./import/ImportService";
-import { MeshConcept } from "../views/canvas/models/concepts/MeshConcept";
+import { MeshConcept } from "../models/concepts/MeshConcept";
 
 export class GameService {
     serviceName = 'game-service';

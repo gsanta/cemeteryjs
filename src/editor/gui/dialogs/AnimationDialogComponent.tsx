@@ -1,14 +1,13 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { SettingsRowStyled, LabelColumnStyled, FieldColumnStyled } from '../../views/canvas/gui/settings/SettingsComponent';
-import { MeshConcept } from '../../views/canvas/models/concepts/MeshConcept';
 import { AnimationSettings, AnimationSettingsProps } from '../../views/canvas/settings/AnimationSettings';
 import { AppContext, AppContextType } from '../Context';
 import { ConnectedDropdownComponent } from '../inputs/DropdownComponent';
 import { AccordionComponent } from '../misc/AccordionComponent';
 import { DialogComponent } from './DialogComponent';
 import { ConnectedInputComponent } from '../inputs/InputComponent';
-import { ElementalAnimation } from '../../views/canvas/models/meta/AnimationConcept';
+import { ElementalAnimation } from '../../models/meta/AnimationConcept';
 
 const AnimationDialogStyled = styled(DialogComponent)`
     width: 400px;
@@ -23,9 +22,6 @@ export class AnimationDialogComponent extends React.Component {
     }
 
     render(): JSX.Element {
-        const dialogSettings = this.context.registry.services.dialog.getDialogByName<AnimationSettings>(AnimationSettings.settingsName);
-        const meshConcept = this.context.registry.stores.selectionStore.getConcept() as MeshConcept;
-
         return this.context.registry.services.dialog.isActiveDialog('animation-settings') ?
             (
                 <AnimationDialogStyled

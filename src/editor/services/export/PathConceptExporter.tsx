@@ -1,6 +1,6 @@
 import { Registry } from "../../Registry";
-import { Concept, ConceptType } from "../../views/canvas/models/concepts/Concept";
-import { Feedback } from "../../views/canvas/models/feedbacks/Feedback";
+import { Concept, ConceptType } from "../../models/concepts/Concept";
+import { Feedback } from "../../models/feedbacks/Feedback";
 import { IConceptExporter } from "./IConceptExporter";
 import { PathComponent } from "./PathComponent";
 import React = require("react");

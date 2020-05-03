@@ -2,7 +2,7 @@ import { Rectangle } from "../../../misc/geometry/shapes/Rectangle";
 import { Point } from "../../../misc/geometry/shapes/Point";
 import { MousePointer } from "../input/MouseService";
 import { CanvasView } from "../../views/canvas/CanvasView";
-import { RectSelectFeedback } from "../../views/canvas/models/feedbacks/RectSelectFeedback";
+import { RectSelectFeedback } from "../../models/feedbacks/RectSelectFeedback";
 import { Stores } from "../../stores/Stores";
 import { Registry } from "../../Registry";
 

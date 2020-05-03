@@ -2,13 +2,13 @@ import { ServiceLocator } from '../ServiceLocator';
 import { UpdateTask } from '../UpdateServices';
 import { Stores } from '../../stores/Stores';
 import { CanvasView } from '../../views/canvas/CanvasView';
-import { Concept } from '../../views/canvas/models/concepts/Concept';
-import { Feedback } from '../../views/canvas/models/feedbacks/Feedback';
+import { Concept } from '../../models/concepts/Concept';
+import { Feedback } from '../../models/feedbacks/Feedback';
 import { AbstractTool } from './AbstractTool';
 import { PointerTool } from './PointerTool';
 import { RectangleSelector } from './RectangleSelector';
 import { ToolType } from './Tool';
-import { VisualConcept } from '../../views/canvas/models/concepts/VisualConcept';
+import { VisualConcept } from '../../models/concepts/VisualConcept';
 import { Registry } from '../../Registry';
 
 export class DeleteTool extends AbstractTool {

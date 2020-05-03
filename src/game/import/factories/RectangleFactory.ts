@@ -3,7 +3,7 @@ import { Registry } from '../../../editor/Registry';
 import { Point } from '../../../misc/geometry/shapes/Point';
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
 import { MaterialBuilder } from './MaterialFactory';
-import { MeshConcept } from '../../../editor/views/canvas/models/concepts/MeshConcept';
+import { MeshConcept } from '../../../editor/models/concepts/MeshConcept';
 
 export class RectangleFactory  {
     private height: number;
@@ -34,13 +34,11 @@ export class RectangleFactory  {
     }
 
     createMesh(meshObject: MeshConcept, scene: Scene): Mesh {
-        const rec = <Rectangle> meshObject.dimensions;
-        const boundingInfo = meshObject.dimensions.getBoundingInfo();
+        const rec = <Rectangle> meshObject.dimensions.div(10);
+        const boundingInfo = rec.getBoundingInfo();
         const width = boundingInfo.max[0] - boundingInfo.min[0];
         const depth = boundingInfo.max[1] - boundingInfo.min[1];
 
-        const rect = <Rectangle> meshObject.dimensions;
-        
         const mesh = MeshBuilder.CreateBox(
             meshObject.id,
             {
@@ -57,7 +55,7 @@ export class RectangleFactory  {
 
         const scale = meshObject.scale;
         mesh.scaling = new Vector3(scale, scale, scale);
-        mesh.translate(new Vector3(rect.topLeft.x + width / 2, 0, -rect.topLeft.y - depth / 2), 1, Space.WORLD);
+        mesh.translate(new Vector3(rec.topLeft.x + width / 2, 0, -rec.topLeft.y - depth / 2), 1, Space.WORLD);
 
         mesh.material = this.createSimpleMaterial(meshObject.color, scene);
 

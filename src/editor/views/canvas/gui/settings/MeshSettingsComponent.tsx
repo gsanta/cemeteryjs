@@ -12,10 +12,10 @@ import { ConnectedInputComponent } from '../../../../gui/inputs/InputComponent';
 import { AccordionComponent } from '../../../../gui/misc/AccordionComponent';
 import { ConnectedGridComponent } from '../../../../gui/misc/GridComponent';
 import { CanvasView } from '../../CanvasView';
-import { AnimationState, MeshConcept } from '../../models/concepts/MeshConcept';
-import { ElementalAnimation } from '../../models/meta/AnimationConcept';
 import { MeshSettings, MeshViewPropType } from '../../settings/MeshSettings';
 import { FieldColumnStyled, GroupedRowsStyled, LabelColumnStyled, MultiFieldColumnStyled, SettingsRowStyled } from './SettingsComponent';
+import { MeshConcept, AnimationState } from '../../../../models/concepts/MeshConcept';
+import { ElementalAnimation } from '../../../../models/meta/AnimationConcept';
 
 export class MeshSettingsComponent extends React.Component<{concept: MeshConcept}> {
     static contextType = AppContext;

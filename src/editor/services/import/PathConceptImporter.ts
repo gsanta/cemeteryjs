@@ -1,6 +1,6 @@
 import { Registry } from "../../Registry";
-import { ConceptType } from "../../views/canvas/models/concepts/Concept";
-import { PathConcept } from "../../views/canvas/models/concepts/PathConcept";
+import { ConceptType } from "../../models/concepts/Concept";
+import { PathConcept } from "../../models/concepts/PathConcept";
 import { IConceptImporter } from "./IConceptImporter";
 import { ConceptGroupJson } from "./ImportService";
 

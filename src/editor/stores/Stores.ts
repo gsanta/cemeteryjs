@@ -5,7 +5,7 @@ import { HoverStore } from "./HoverStore";
 import { SelectionStore } from "./SelectionStore";
 import { GameStore } from "../../game/models/stores/GameStore";
 import { MeshStore } from "../../game/models/stores/MeshStore";
-import { FeedbackStore } from "../views/canvas/models/FeedbackStore";
+import { FeedbackStore } from "./FeedbackStore";
 import { Registry } from "../Registry";
 
 export class Stores {

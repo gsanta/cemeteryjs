@@ -3,8 +3,8 @@ import { IConceptImporter } from './IConceptImporter';
 import { Point } from '../../../misc/geometry/shapes/Point';
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
 import { ConceptGroupJson } from './ImportService';
-import { MeshConcept } from '../../views/canvas/models/concepts/MeshConcept';
-import { ConceptType } from '../../views/canvas/models/concepts/Concept';
+import { MeshConcept } from '../../models/concepts/MeshConcept';
+import { ConceptType } from '../../models/concepts/Concept';
 import { Stores } from '../../stores/Stores';
 import { Registry } from '../../Registry';
 

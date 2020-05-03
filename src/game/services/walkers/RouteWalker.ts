@@ -1,8 +1,9 @@
-import { AnimationCondition } from "../../../editor/views/canvas/models/meta/AnimationConcept";
+import { AnimationCondition } from "../../../editor/models/meta/AnimationConcept";
 import { Point } from "../../../misc/geometry/shapes/Point";
 import { Segment } from "../../../misc/geometry/shapes/Segment";
-import { PathCorner, PathObject } from "../../models/objects/PathObject";
+import { PathCorner } from "../../models/objects/PathObject";
 import { RouteObject } from "../../models/objects/RouteObject";
+import { PathConcept } from "../../../editor/models/concepts/PathConcept";
 
 const defaultSpeed = 1000 / 4;
 
@@ -100,26 +101,27 @@ export class RouteWalker {
         route.currentGoal = route.path[1];
         const direction =  route.path[1].point1.subtract(route.path[0].point2).normalize().vectorAngle();
 
-        meshObj.setPosition(pathObj.root);
+        meshObj.setPosition(pathObj.editPoints[0].point);
         meshObj.setRotation(direction);
     }
 
-    private createPathCorners(pathObject: PathObject): PathCorner[] {
+    private createPathCorners(pathObject: PathConcept): PathCorner[] {
         const pathCorners: PathCorner[] = [];
+        const points = pathObject.editPoints.map(p => p.point).map(p => p.negateY()).map(point => point.div(10));
 
         const startCorner = new PathCorner();
-        startCorner.point2 = pathObject.points[0];
+        startCorner.point2 = points[0];
         pathCorners.push(startCorner);
-        for (let i = 1; i < pathObject.points.length - 1; i++) {
+        for (let i = 1; i < points.length - 1; i++) {
             const corner: PathCorner = new PathCorner()
-            let vector = new Segment(pathObject.points[i - 1], pathObject.points[i]).toVector().mul(0.9);
-            corner.point1 = pathObject.points[i - 1].clone().add(vector);
-            corner.controlPoint = pathObject.points[i];
-            vector = new Segment(pathObject.points[i], pathObject.points[i + 1]).toVector().mul(0.1);
-            corner.point2 = pathObject.points[i].clone().add(vector);
+            let vector = new Segment(points[i - 1], points[i]).toVector().mul(0.9);
+            corner.point1 = points[i - 1].clone().add(vector);
+            corner.controlPoint = points[i];
+            vector = new Segment(points[i], points[i + 1]).toVector().mul(0.1);
+            corner.point2 = points[i].clone().add(vector);
             pathCorners.push(corner);
         }
-        pathCorners.push(new PathCorner(pathObject.points[pathObject.points.length - 1]));
+        pathCorners.push(new PathCorner(points[points.length - 1]));
         return pathCorners;
     }
 }

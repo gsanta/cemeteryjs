@@ -2,8 +2,8 @@ import { Point } from "../../../misc/geometry/shapes/Point";
 import { ServiceLocator } from '../ServiceLocator';
 import { Stores } from "../../stores/Stores";
 import { MousePointer } from "./MouseService";
-import { Concept } from "../../views/canvas/models/concepts/Concept";
-import { Feedback } from "../../views/canvas/models/feedbacks/Feedback";
+import { Concept } from "../../models/concepts/Concept";
+import { Feedback } from "../../models/feedbacks/Feedback";
 import { Registry } from "../../Registry";
 
 export enum Wheel {

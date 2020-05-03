@@ -1,4 +1,4 @@
-import { MeshConcept } from "../../../editor/views/canvas/models/concepts/MeshConcept";
+import { MeshConcept } from "../../../editor/models/concepts/MeshConcept";
 
 export enum BehaviourType {
     Ramble = 'Ramble'

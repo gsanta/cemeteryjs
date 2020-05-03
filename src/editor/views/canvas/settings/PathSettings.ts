@@ -1,5 +1,5 @@
 import { AbstractSettings } from "./AbstractSettings";
-import { PathConcept } from "../models/concepts/PathConcept";
+import { PathConcept } from "../../../models/concepts/PathConcept";
 
 export enum PathPropType {
     NAME = 'name'

@@ -4,10 +4,10 @@ import styled from "styled-components";
 import * as React from 'react';
 import { Stores } from "../../../../stores/Stores";
 import { CanvasView } from '../../CanvasView';
-import { Concept, ConceptType } from '../../models/concepts/Concept';
-import { MeshConcept } from '../../models/concepts/MeshConcept';
-import { PathConcept } from '../../models/concepts/PathConcept';
 import { Registry } from "../../../../Registry";
+import { Concept, ConceptType } from "../../../../models/concepts/Concept";
+import { MeshConcept } from "../../../../models/concepts/MeshConcept";
+import { PathConcept } from "../../../../models/concepts/PathConcept";
 
 export interface ViewFormProps<T extends Concept> {
     canvasController: CanvasView;

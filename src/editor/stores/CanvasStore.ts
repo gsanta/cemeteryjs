@@ -1,16 +1,16 @@
-import { Concept, ConceptType } from "../views/canvas/models/concepts/Concept";
-import { Feedback } from "../views/canvas/models/feedbacks/Feedback";
+import { Concept, ConceptType } from "../models/concepts/Concept";
+import { Feedback } from "../models/feedbacks/Feedback";
 import { without, maxBy } from "../../misc/geometry/utils/Functions";
-import { MeshConcept } from "../views/canvas/models/concepts/MeshConcept";
-import { PathConcept } from "../views/canvas/models/concepts/PathConcept";
+import { MeshConcept } from "../models/concepts/MeshConcept";
+import { PathConcept } from "../models/concepts/PathConcept";
 import { Stores } from "./Stores";
 import { Polygon } from "../../misc/geometry/shapes/Polygon";
 import { Point } from "../../misc/geometry/shapes/Point";
 import { Rectangle } from "../../misc/geometry/shapes/Rectangle";
-import { MetaConcept } from "../views/canvas/models/meta/MetaConcept";
-import { AnimationConcept } from "../views/canvas/models/meta/AnimationConcept";
-import { VisualConcept } from "../views/canvas/models/concepts/VisualConcept";
-import { ModelConcept } from "../views/canvas/models/concepts/ModelConcept";
+import { MetaConcept } from "../models/meta/MetaConcept";
+import { AnimationConcept } from "../models/meta/AnimationConcept";
+import { VisualConcept } from "../models/concepts/VisualConcept";
+import { ModelConcept } from "../models/concepts/ModelConcept";
 import { Registry } from "../Registry";
 
 export function isFeedback(type: string) {

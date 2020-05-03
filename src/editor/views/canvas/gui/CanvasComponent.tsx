@@ -7,8 +7,8 @@ import { PathMarkersComponent } from '../../../services/export/PathMarkersCompon
 import { CanvasView } from '../CanvasView';
 import { CanvasToolbarComponent } from './CanvasToolbarComponent';
 import { WheelListener } from '../../../services/WheelListener';
-import { Concept } from '../models/concepts/Concept';
-import { Feedback } from '../models/feedbacks/Feedback';
+import { Concept } from '../../../models/concepts/Concept';
+import { Feedback } from '../../../models/feedbacks/Feedback';
 
 
 const EditorComponentStyled = styled.div`

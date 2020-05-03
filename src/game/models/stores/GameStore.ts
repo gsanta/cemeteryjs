@@ -1,8 +1,8 @@
 import { IGameObject } from '../objects/IGameObject';
 import { RouteObject } from '../objects/RouteObject';
-import { ConceptType } from '../../../editor/views/canvas/models/concepts/Concept';
+import { ConceptType } from '../../../editor/models/concepts/Concept';
 import { Registry } from '../../../editor/Registry';
-import { MeshConcept } from '../../../editor/views/canvas/models/concepts/MeshConcept';
+import { MeshConcept } from '../../../editor/models/concepts/MeshConcept';
 
 export class GameStore {
     private nameToObjMap: Map<string, IGameObject> = new Map();

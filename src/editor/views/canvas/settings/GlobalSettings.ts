@@ -1,7 +1,7 @@
 import { CanvasView } from '../CanvasView';
 import { AbstractSettings } from './AbstractSettings';
 import { UpdateTask } from '../../../services/UpdateServices';
-import { MeshConcept } from '../models/concepts/MeshConcept';
+import { MeshConcept } from '../../../models/concepts/MeshConcept';
 import { Stores } from '../../../stores/Stores';
 import { ServiceLocator } from '../../../services/ServiceLocator';
 import { Registry } from '../../../Registry';

@@ -1,5 +1,5 @@
-import { ConceptType, Concept } from "../../views/canvas/models/concepts/Concept";
-import { Feedback } from "../../views/canvas/models/feedbacks/Feedback";
+import { ConceptType, Concept } from "../../models/concepts/Concept";
+import { Feedback } from "../../models/feedbacks/Feedback";
 
 export interface IConceptExporter {
     type: ConceptType;

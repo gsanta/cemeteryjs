@@ -1,8 +1,8 @@
 import { Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, StandardMaterial } from 'babylonjs';
 import { Point } from '../../misc/geometry/shapes/Point';
 import { Registry } from '../Registry';
-import { ModelConcept } from '../views/canvas/models/concepts/ModelConcept';
-import { MeshConcept } from '../views/canvas/models/concepts/MeshConcept';
+import { ModelConcept } from '../models/concepts/ModelConcept';
+import { MeshConcept } from '../models/concepts/MeshConcept';
 
 export class MeshLoaderService {
     serviceName = 'mesh-loader-service'
