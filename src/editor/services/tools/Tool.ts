@@ -7,7 +7,7 @@ export enum ToolType {
     DELETE = 'delete',
     SELECT = 'select',
     MOVE = 'move',
-    PAN = 'pan',
+    Pan = 'pan',
     Zoom = 'zoom',
     PATH = 'arrow',
     Pointer = 'pointer',
@@ -32,7 +32,13 @@ export class ToolReturnType {
     }
 }
 
+export enum Cursor {
+    Default = 'default',
+    Grab = 'grab',
+}
+
 export interface Tool {
+    cursor: Cursor;
     type: ToolType;
     down(): void;
     move(): void;

@@ -17,7 +17,7 @@ export class RendererToolbarComponent extends AbstractToolbarComponent {
             <React.Fragment>
                 <ZoomInIconComponent isActive={false} onClick={() => this.zoomIn()} format="short"/>
                 <ZoomOutIconComponent isActive={false} onClick={() => this.zoomOut()} format="short"/>
-                <PanIconComponent isActive={this.isToolActive(ToolType.Zoom)} onClick={() => null} format="short"/>
+                <PanIconComponent isActive={this.isToolActive(ToolType.Pan)} onClick={() => null} format="short"/>
             </React.Fragment>
         )
     }

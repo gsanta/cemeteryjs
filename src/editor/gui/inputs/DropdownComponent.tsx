@@ -23,7 +23,7 @@ export const DropdownComponent : React.SFC<DropdownProps> = (props: DropdownProp
     const placeholder = <option value="">{props.placeholder}</option>
 
     return (
-        <select 
+        <select
             className="dropdown-component"
             onChange={(e) => {
                 props.onChange(e.target.value);

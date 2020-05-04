@@ -2,11 +2,12 @@ import { Registry } from '../../Registry';
 import { Concept } from '../../models/concepts/Concept';
 import { Feedback } from '../../models/feedbacks/Feedback';
 import { IKeyboardEvent } from '../input/KeyboardService';
-import { Tool, ToolType } from './Tool';
+import { Tool, ToolType, Cursor } from './Tool';
 
 export class AbstractTool implements Tool {
     type: ToolType;
-
+    cursor = Cursor.Default;
+    
     protected registry: Registry;
 
     constructor(type: ToolType, registry: Registry) {

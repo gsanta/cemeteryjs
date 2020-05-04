@@ -30,7 +30,8 @@ export enum Keyboard {
     a = 65,
     d = 68,
     s = 83,
-    e = 69
+    e = 69,
+    Space = 32
 }
 
 export interface IKeyboardEvent {
@@ -53,10 +54,13 @@ export class KeyboardService {
     onKeyDown(e: KeyboardEvent): void {
         this.registry.services.hotkey.executeKeyboardEvent(this.convertEvent(e));
         this.registry.stores.viewStore.getActiveView().getActiveTool()?.keydown(this.convertEvent(e));
+        this.registry.services.update.runScheduledTasks();
+
     }
 
     onKeyUp(e: KeyboardEvent): void {
         this.registry.stores.viewStore.getActiveView().getActiveTool()?.keyup(this.convertEvent(e));
+        this.registry.services.update.runScheduledTasks();
     }
 
     private convertEvent(event: KeyboardEvent): IKeyboardEvent {

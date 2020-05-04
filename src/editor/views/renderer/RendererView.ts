@@ -42,6 +42,7 @@ export class RendererView extends View {
         super(registry);
 
         this.registry.services.game = new GameService(registry);
+        this.selectedTool = this.registry.services.tools.pan;
 
         this.updateService = new UpdateService(registry);
         this.update = this.update.bind(this);
@@ -59,8 +60,6 @@ export class RendererView extends View {
         this.registry.services.game.init(getCanvasElement(this.getId()));
         this.camera = cameraInitializer(this.registry);
         this.registry.services.game.importAllConcepts();
-
-        this.selectedTool = this.registry.services.tools.zoom;
 
         this.update();
     }

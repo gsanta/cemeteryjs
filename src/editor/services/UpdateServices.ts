@@ -3,6 +3,7 @@ import { RendererView } from "../views/renderer/RendererView";
 
 export enum UpdateTask {
     RepaintCanvas = 'RepaintCanvas',
+    RepaintActiveView = 'RepaintActiveView',
     RepaintSettings = 'RepaintSettings',
     UpdateRenderer = 'UpdateRenderer',
     SaveData = 'SaveData',
@@ -43,6 +44,9 @@ export class UpdateService {
             switch(task) {
                 case UpdateTask.RepaintCanvas:
                     this.canvasRepainter();
+                break;
+                case UpdateTask.RepaintActiveView:
+                    this.registry.stores.viewStore.getActiveView().repainter();
                 break;
                 case UpdateTask.RepaintSettings:
                     this.settingsRepainters.forEach(repaint => repaint());

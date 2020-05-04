@@ -63,6 +63,7 @@ export class CanvasStore {
     clear(): void {
         this.concepts = [];
         this.feedbacks = [];
+        this.metas = [];
     }
 
     hasMeta(concept: MetaConcept) {

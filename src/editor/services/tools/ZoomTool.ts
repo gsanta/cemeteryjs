@@ -25,13 +25,4 @@ export class ZoomTool extends AbstractTool {
     wheelEnd() {
         this.registry.stores.viewStore.getActiveView().removePriorityTool(this.registry.services.tools.zoom);
     }
-
-    drag() {
-        super.drag();
-        const camera = this.registry.stores.viewStore.getActiveView().getCamera();
-        
-        camera.pan(this.registry.services.pointer.pointer);
-
-        this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
-    }
 }

@@ -30,7 +30,7 @@ export class MeshConceptExporter implements IConceptExporter {
     private renderGroup(item: MeshConcept, hover?: (view: Concept) => void, unhover?: (view: Concept) => void) {
         return (
             <g
-                key={item.id}
+                key={`${item.id}-group`}
                 transform={`translate(${item.dimensions.topLeft.x} ${item.dimensions.topLeft.y}) rotate(${toDegree(item.rotation)} ${item.dimensions.getWidth() / 2} ${item.dimensions.getHeight() / 2})`}
                 onMouseOver={() => hover ? hover(item) : () => undefined}
                 onMouseOut={() => unhover ? unhover(item) : () => undefined}
@@ -62,7 +62,7 @@ export class MeshConceptExporter implements IConceptExporter {
 
         return (
             <rect
-                key={item.id}
+                key={`${item.id}-rect`}
                 x={`0`}
                 y={`0`}
                 width={`${item.dimensions.getWidth()}px`}

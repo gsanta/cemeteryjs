@@ -37,6 +37,7 @@ export class CanvasComponent extends React.Component {
     componentDidMount() {
         this.wheelListener = new WheelListener(this.context.registry);
         this.context.registry.services.update.setCanvasRepainter(() => this.forceUpdate());
+        this.context.registry.stores.viewStore.getViewById(CanvasView.id).repainter = () => {this.forceUpdate()};
 
         setTimeout(() => {
             this.context.registry.stores.viewStore.getViewById<CanvasView>(CanvasView.id).resize();
@@ -46,11 +47,12 @@ export class CanvasComponent extends React.Component {
     render(): JSX.Element {
         const hover = (item: Concept | Feedback) => this.context.registry.services.mouse.hover(item);
         const unhover = (canvasItem: Concept | Feedback) => this.context.registry.services.mouse.unhover(canvasItem);
-
+        
         const view = this.context.registry.stores.viewStore.getViewById<CanvasView>(CanvasView.id);
+        console.log('canvas render: ' + view.getActiveTool().cursor)
 
         return (
-            <EditorComponentStyled id={view.getId()}>
+            <EditorComponentStyled id={view.getId()} style={{cursor: view.getActiveTool().cursor}}>
                 <WindowToolbarStyled><CanvasToolbarComponent/></WindowToolbarStyled>
                 <CanvasComponentStyled
                     tabIndex={0}

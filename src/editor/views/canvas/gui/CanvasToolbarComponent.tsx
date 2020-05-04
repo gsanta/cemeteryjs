@@ -31,7 +31,7 @@ export class CanvasToolbarComponent extends AbstractToolbarComponent {
                 <DeleteIconComponent isActive={this.isToolActive(ToolType.DELETE)} onClick={() => this.activateTool(this.context.registry.services.tools.delete)} format="short"/>
                 <ZoomInIconComponent isActive={false} onClick={() => this.zoomIn()} format="short"/>
                 <ZoomOutIconComponent isActive={false} onClick={() => this.zoomOut()} format="short"/>
-                <PanIconComponent isActive={this.isToolActive(ToolType.Zoom)} onClick={() => this.activateTool(this.context.registry.services.tools.zoom)} format="short"/>
+                <PanIconComponent isActive={this.isToolActive(ToolType.Pan)} onClick={() => this.activateTool(this.context.registry.services.tools.pan)} format="short"/>
                 <UndoIconComponent isActive={false} disabled={!historyService.hasUndoHistory()} onClick={() => this.undo()} format="short"/>
                 <RedoIconComponent isActive={false} disabled={!historyService.hasRedoHistory()} onClick={() => this.redo()} format="short"/>
             </React.Fragment>
@@ -58,7 +58,9 @@ export class CanvasToolbarComponent extends AbstractToolbarComponent {
     }
 
     private activateTool(tool: AbstractTool) {
-        this.context.registry.stores.viewStore.getViewById(CanvasView.id).setSelectedTool(tool);
+        const view = this.context.registry.stores.viewStore.getViewById(CanvasView.id);
+        view.setSelectedTool(tool);
+        view.repainter();
     }
 
     private zoomIn() {

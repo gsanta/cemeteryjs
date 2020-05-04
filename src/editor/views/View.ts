@@ -34,6 +34,7 @@ export abstract class View {
 
     exporter: IViewExporter;
     importer: IViewImporter;
+    repainter: Function = () => undefined;
 
     protected settings: AbstractSettings<any>[] = [];
     

@@ -44,6 +44,7 @@ export class RendererComponent extends React.Component {
     componentDidMount() {
         this.wheelListener = new WheelListener(this.context.registry);
         this.context.registry.stores.viewStore.getViewById<RendererView>(RendererView.id).setCanvasRenderer(() => this.forceUpdate());
+        this.context.registry.stores.viewStore.getViewById(RendererView.id).repainter = () => {this.forceUpdate()};
         
         setTimeout(() => {
             // this.context.controllers.getWindowControllerByName('renderer').update();
@@ -61,7 +62,7 @@ export class RendererComponent extends React.Component {
         const view = this.context.registry.stores.viewStore.getViewById<RendererView>(RendererView.id);
 
         return (
-                <RendererStyled id={view.getId()}>
+                <RendererStyled id={view.getId()} style={{cursor: view.getActiveTool().cursor}}>
                     <WindowToolbarStyled><RendererToolbarComponent/></WindowToolbarStyled>
                     <CanvasStyled
                         isEmpty={false}
@@ -69,6 +70,7 @@ export class RendererComponent extends React.Component {
                         ref={this.canvasRef}
                     />
                     <CanvasOverlayStyled
+                        tabIndex={0}
                         onMouseDown={(e) => this.context.registry.services.mouse.onMouseDown(e.nativeEvent)}
                         onMouseMove={(e) => this.context.registry.services.mouse.onMouseMove(e.nativeEvent)}
                         onMouseUp={(e) => this.context.registry.services.mouse.onMouseUp(e.nativeEvent)}
