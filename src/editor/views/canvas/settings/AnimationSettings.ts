@@ -76,5 +76,6 @@ export class AnimationSettings extends AbstractSettings<AnimationSettingsProps> 
                 this.registry.stores.canvasStore.addMeta(this.animationConcept);
             }
         }
+        this.animationConcept = undefined;
     }
 }

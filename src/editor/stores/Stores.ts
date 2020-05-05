@@ -7,6 +7,7 @@ import { GameStore } from "../../game/models/stores/GameStore";
 import { MeshStore } from "../../game/models/stores/MeshStore";
 import { FeedbackStore } from "./FeedbackStore";
 import { Registry } from "../Registry";
+import { ActionStore } from './ActionStore';
 
 export class Stores {
     private registry: Registry
@@ -21,6 +22,7 @@ export class Stores {
         this.gameStore = new GameStore(this.registry);
         this.meshStore = new MeshStore(this.registry);
         this.feedback = new FeedbackStore();
+        this.actionStore = new ActionStore(this.registry);
     }
 
     canvasStore: CanvasStore;
@@ -31,4 +33,5 @@ export class Stores {
     gameStore: GameStore;
     meshStore: MeshStore;
     feedback: FeedbackStore;
+    actionStore: ActionStore;
 }

@@ -1,17 +1,17 @@
-import { Concept, ConceptType } from "../models/concepts/Concept";
-import { Feedback } from "../models/feedbacks/Feedback";
-import { without, maxBy } from "../../misc/geometry/utils/Functions";
-import { MeshConcept } from "../models/concepts/MeshConcept";
-import { PathConcept } from "../models/concepts/PathConcept";
-import { Stores } from "./Stores";
-import { Polygon } from "../../misc/geometry/shapes/Polygon";
 import { Point } from "../../misc/geometry/shapes/Point";
+import { Polygon } from "../../misc/geometry/shapes/Polygon";
 import { Rectangle } from "../../misc/geometry/shapes/Rectangle";
-import { MetaConcept } from "../models/meta/MetaConcept";
-import { AnimationConcept } from "../models/meta/AnimationConcept";
-import { VisualConcept } from "../models/concepts/VisualConcept";
+import { without } from "../../misc/geometry/utils/Functions";
+import { Concept, ConceptType } from "../models/concepts/Concept";
+import { MeshConcept } from "../models/concepts/MeshConcept";
 import { ModelConcept } from "../models/concepts/ModelConcept";
+import { PathConcept } from "../models/concepts/PathConcept";
+import { VisualConcept } from "../models/concepts/VisualConcept";
+import { Feedback } from "../models/feedbacks/Feedback";
+import { AnimationConcept } from "../models/meta/AnimationConcept";
+import { MetaConcept } from "../models/meta/MetaConcept";
 import { Registry } from "../Registry";
+import { AbstractStore } from './AbstractStore';
 
 export function isFeedback(type: string) {
     return type.endsWith('Feedback');
@@ -25,17 +25,16 @@ export function isMeta(type: string) {
     return type === ConceptType.ModelConcept;
 }
 
-export class CanvasStore {
+export class CanvasStore extends AbstractStore {
     concepts: VisualConcept[] = [];
     feedbacks: Feedback[] = [];
     metas: MetaConcept[] = [];
 
-    private naming: Naming;
     private registry: Registry;
 
     constructor(registry: Registry) {
+        super();
         this.registry = registry;
-        this.naming = new Naming(this);
     }
 
     addConcept(concept: VisualConcept) {
@@ -121,39 +120,5 @@ export class CanvasStore {
         const gridPoint = new Point(point.x, point.y);
 
         return this.concepts.filter(item => item.dimensions.containsPoint(gridPoint));
-    }
-
-    generateUniqueName(viewType: ConceptType) {
-        return this.naming.generateName(viewType);
-    }
-}
-
-export class Naming {
-    private canvasStore: CanvasStore;
-
-    constructor(canvasStore: CanvasStore) {
-        this.canvasStore = canvasStore;
-    }
-
-    generateName(type: ConceptType) {
-        const name = `${type}${this.getMaxIndex(type) + 1}`.toLocaleLowerCase();
-        return name;
-    }
-
-    private getMaxIndex(type: ConceptType): number {
-        const pattern = this.createPattern(type);
-        const views = this.canvasStore.getConceptsByType(type).filter(view => view.id.match(pattern));
-
-        if (views.length === 0) {
-            return 0;
-        } else {
-            const max = maxBy<Concept>(views, (a, b) => parseInt(a.id.match(pattern)[1], 10) - parseInt(b.id.match(pattern)[1], 10));
-            return parseInt(max.id.match(pattern)[1], 10);
-        }
-
-    }
-
-    private createPattern(type: ConceptType) {
-        return new RegExp(`${type}(\\d+)`, 'i');
     }
 }

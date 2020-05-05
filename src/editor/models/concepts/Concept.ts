@@ -4,7 +4,8 @@ export enum ConceptType {
     ModelConcept = 'ModelConcept',
     PathConcept = 'PathConcept',
     AnimationConcept = 'AnimationConcept',
-    RouteConcept = 'RouteConcept'
+    RouteConcept = 'RouteConcept',
+    ActionConcept = 'ActionConcept'
 }
 
 export interface Concept {

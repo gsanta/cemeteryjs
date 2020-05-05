@@ -13,7 +13,7 @@ const AnimationDialogStyled = styled(DialogComponent)`
     width: 400px;
 `;
 
-export class AnimationDialogComponent extends React.Component {
+export class AnimationDialogComponent extends React.Component<{settings: AnimationSettings}> {
     static contextType = AppContext;
     context: AppContextType;
 
@@ -22,13 +22,13 @@ export class AnimationDialogComponent extends React.Component {
     }
 
     render(): JSX.Element {
+        if (!this.props.settings.animationConcept) {
+            this.props.settings.load();
+        }
+
         return this.context.registry.services.dialog.isActiveDialog('animation-settings') ?
             (
-                <AnimationDialogStyled
-                    className="about-dialog"
-                    title="Custom animation"
-                    closeDialog={() => this.context.registry.services.dialog.close()}
-                >
+                <AnimationDialogStyled className="about-dialog" title="Custom animation" closeDialog={() => this.close()}>
                     <div>
                         {this.renderBasicSettingsAccordion()}
                         {this.renderRotationAccordion()}
@@ -36,6 +36,11 @@ export class AnimationDialogComponent extends React.Component {
                 </AnimationDialogStyled>
             )
             : null;
+    }
+
+    private close() {
+        this.props.settings.save();
+        this.context.registry.services.dialog.close();
     }
 
     private renderBasicSettingsAccordion() {
@@ -61,19 +66,16 @@ export class AnimationDialogComponent extends React.Component {
     }
 
     private renderName(): JSX.Element {
-        const settings = this.context.registry.services.dialog.getDialogByName<AnimationSettings>(AnimationSettings.settingsName);
-        const val: string = settings.getVal(AnimationSettingsProps.RotateLeftAnimation);
-
         return (
             <SettingsRowStyled>
                 <LabelColumnStyled>Name</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedInputComponent
-                        formController={settings}
+                        formController={this.props.settings}
                         propertyName={AnimationSettingsProps.Name}
                         propertyType="string"
                         type="text"
-                        value={settings.getVal(AnimationSettingsProps.Name)}
+                        value={this.props.settings.getVal(AnimationSettingsProps.Name)}
                     />
                 </FieldColumnStyled>
             </SettingsRowStyled>
@@ -82,17 +84,16 @@ export class AnimationDialogComponent extends React.Component {
 
     
     private renderMoveAnimation(): JSX.Element {
-        const settings = this.context.registry.services.dialog.getDialogByName<AnimationSettings>(AnimationSettings.settingsName);
-        const val: ElementalAnimation = settings.getVal(AnimationSettingsProps.MoveAnimation);
+        const val: ElementalAnimation = this.props.settings.getVal(AnimationSettingsProps.MoveAnimation);
 
         return (
             <SettingsRowStyled>
                 <LabelColumnStyled>Movement</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedDropdownComponent
-                        formController={settings}
+                        formController={this.props.settings}
                         propertyName={AnimationSettingsProps.MoveAnimation}
-                        values={settings.meshConcept.animations}
+                        values={this.props.settings.meshConcept.animations}
                         currentValue={val ? val.name : undefined}
                         placeholder="Select animation"
                     />
@@ -125,17 +126,16 @@ export class AnimationDialogComponent extends React.Component {
     }
 
     private renderLeftRotation(): JSX.Element {
-        const settings = this.context.registry.services.dialog.getDialogByName<AnimationSettings>(AnimationSettings.settingsName);
-        const val: ElementalAnimation = settings.getVal(AnimationSettingsProps.RotateLeftAnimation);
+        const val: ElementalAnimation = this.props.settings.getVal(AnimationSettingsProps.RotateLeftAnimation);
 
         return (
             <SettingsRowStyled>
                 <LabelColumnStyled>Left rotation anim.</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedDropdownComponent
-                        formController={settings}
+                        formController={this.props.settings}
                         propertyName={AnimationSettingsProps.RotateLeftAnimation}
-                        values={settings.meshConcept.animations}
+                        values={this.props.settings.meshConcept.animations}
                         currentValue={val ? val.name : undefined}
                         placeholder="Select animation"
                     />
@@ -146,17 +146,16 @@ export class AnimationDialogComponent extends React.Component {
     }
 
     private renderRightRotation(): JSX.Element {
-        const settings = this.context.registry.services.dialog.getDialogByName<AnimationSettings>(AnimationSettings.settingsName);
-        const val: ElementalAnimation = settings.getVal(AnimationSettingsProps.RotateRightAnimation);
+        const val: ElementalAnimation = this.props.settings.getVal(AnimationSettingsProps.RotateRightAnimation);
 
         return (
             <SettingsRowStyled>
                 <LabelColumnStyled>Right rotation anim.</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedDropdownComponent
-                        formController={settings}
+                        formController={this.props.settings}
                         propertyName={AnimationSettingsProps.RotateRightAnimation}
-                        values={settings.meshConcept.animations}
+                        values={this.props.settings.meshConcept.animations}
                         currentValue={val ? val.name : undefined}
                         placeholder="Select animation"
                     />

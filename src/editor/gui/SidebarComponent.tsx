@@ -7,6 +7,7 @@ import { FileSettingsComponent } from '../views/canvas/gui/settings/FileSettings
 import { LevelSettingsComponent } from '../views/canvas/gui/settings/LevelSettingsComponent';
 import { settingsFactory } from '../views/canvas/gui/settings/settingsFactory';
 import { GlobalSettingsComponent } from '../views/canvas/gui/settings/GlobalSettingsComponent';
+import { ActionSettingsComponent } from '../views/canvas/gui/settings/ActionSettingsComponent';
 
 export interface SidebarComponentProps {
     isEditorOpen: boolean;
@@ -24,13 +25,8 @@ export class SidebarComponent extends React.Component<SidebarComponentProps> {
     static contextType = AppContext;
     context: AppContextType;
 
-    constructor(props: SidebarComponentProps) {
-        super(props);
-
-    }
-    
     componentDidMount() {
-        this.context.controllers.getWindowControllers().forEach(controller => this.context.registry.services.update.addSettingsRepainter(() => this.forceUpdate()));
+        this.context.controllers.getWindowControllers().forEach(() => this.context.registry.services.update.addSettingsRepainter(() => this.forceUpdate()));
     }
 
     render(): JSX.Element {
@@ -41,6 +37,10 @@ export class SidebarComponent extends React.Component<SidebarComponentProps> {
                         {
                             title: 'File Settings',
                             body: <FileSettingsComponent editor={this.context.controllers} {...this.props}/>
+                        },
+                        {
+                            title: 'Action Settings',
+                            body: <ActionSettingsComponent/>
                         },
                         {
                             title: 'Level Settings',

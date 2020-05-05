@@ -1,12 +1,15 @@
-import { AbstractSettings } from "../views/canvas/settings/AbstractSettings";
-import { ServiceLocator } from "./ServiceLocator";
-import { UpdateTask } from "./UpdateServices";
-import { AnimationSettings } from "../views/canvas/settings/AnimationSettings";
 import { Registry } from "../Registry";
+import { AnimationSettings } from "../views/canvas/settings/AnimationSettings";
+import { UpdateTask } from "./UpdateServices";
+import { ActionSettings } from '../views/canvas/settings/ActionSettings';
 
 export class DialogService {
     serviceName = 'dialog-service';
-    activeDialog: AbstractSettings<any> = null;
+    dialogs: string[] = [
+        AnimationSettings.settingsName,
+        ActionSettings.settingsName
+    ];
+    activeDialog: string;
 
     private registry: Registry;
 
@@ -14,52 +17,43 @@ export class DialogService {
         this.registry = registry;
     }
 
-    getDialogs() : AbstractSettings<any>[] {
-        return [
-            this.registry.services.settings.getSettingsByName(AnimationSettings.settingsName)
-        ];
-    }
-
     openDialog(dialogType: string) {
-        this.activeDialog = this.getDialogByName(dialogType);
-        this.loadDialog();
+        this.activeDialog = dialogType;
         this.registry.services.update.runImmediately(UpdateTask.All);
     }
 
     close(): boolean {
         let ret = false;
-        if (this.activeDialog) {
-            ret = true;
-        }
-        this.saveDialog();
+        if (this.activeDialog) { ret = true; }
+        
         this.activeDialog = null;
         this.registry.services.update.runImmediately(UpdateTask.All);
         return ret;
     }
 
-    getDialogByName<T extends AbstractSettings<any>>(dialogType: string): T {
-        return <T> this.getDialogs().find(dialog => dialog.getName() === dialogType);
+    getDialogByName(dialogName: string): string {
+        return this.dialogs.find(dialog => dialog === dialogName);
     }
 
     isActiveDialog(dialogType: string): boolean {
-        return this.activeDialog && this.activeDialog.getName() === dialogType;
+        return this.activeDialog === dialogType;
     }
 
     isOpen(): boolean {
         return !!this.activeDialog;
     }
 
-    private loadDialog() {
-        switch(this.activeDialog.getName()) {
-            case AnimationSettings.settingsName:
-                (<AnimationSettings> this.activeDialog).load();
-        }
-    }
+    // private loadDialog() {
+    //     switch(this.activeDialog.getName()) {
+    //         case AnimationSettings.settingsName:
+    //             (<AnimationSettings> this.activeDialog).load();
+    //     }
+    // }
 
-    private saveDialog() {
-        switch(this.activeDialog.getName()) {
-            case AnimationSettings.settingsName:
-                (<AnimationSettings> this.activeDialog).save();
-        }
-    }
+    // private saveDialog() {
+    //     switch(this.activeDialog.getName()) {
+    //         case AnimationSettings.settingsName:
+    //             (<AnimationSettings> this.activeDialog).save();
+    //     }
+    // }
 }

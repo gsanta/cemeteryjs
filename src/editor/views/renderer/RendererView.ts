@@ -1,14 +1,11 @@
-import { Editor } from '../../Editor';
-import { ServiceLocator } from '../../services/ServiceLocator';
+import { Registry } from '../../Registry';
+import { GameService } from '../../services/GameService';
 import { Tool } from '../../services/tools/Tool';
 import { UpdateService } from '../../services/UpdateServices';
-import { View, calcOffsetFromDom } from '../View';
+import { calcOffsetFromDom, View } from '../View';
 import { HelperMeshes } from './HelperMeshes';
 import { ICamera } from './ICamera';
 import { RendererCamera } from './RendererCamera';
-import { Stores } from '../../stores/Stores';
-import { GameService } from '../../services/GameService';
-import { Registry } from '../../Registry';
 (<any> window).earcut = require('earcut');
 
 export function cameraInitializer(registry: Registry) {
@@ -53,7 +50,9 @@ export class RendererView extends View {
     }
 
     resize() {
-        this.registry.services.game.gameEngine.engine.resize();
+        if (this.registry.services.game.gameEngine) {
+            this.registry.services.game.gameEngine.engine.resize();
+        }
     }
 
     setup() {

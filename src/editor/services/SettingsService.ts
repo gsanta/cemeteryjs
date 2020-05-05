@@ -6,18 +6,25 @@ import { Stores } from "../stores/Stores";
 import { ServiceLocator } from "./ServiceLocator";
 import { AnimationSettings } from "../views/canvas/settings/AnimationSettings";
 import { Registry } from "../Registry";
+import { ActionSettings } from '../views/canvas/settings/ActionSettings';
 
 
 export class SettingsService {
     serviceName = 'settings-service'
+    animationSettings: AnimationSettings;
+    actionSettings: ActionSettings;
+
     protected settings: AbstractSettings<any>[] = [];
 
     constructor(registry: Registry) {
+        this.animationSettings = new AnimationSettings(registry);
+        this.actionSettings = new ActionSettings(registry);
         this.settings = [
             new MeshSettings(registry),
             new PathSettings(),
             new LevelSettings(registry),
-            new AnimationSettings(registry)
+            this.animationSettings,
+            this.actionSettings
         ];
     }
 
