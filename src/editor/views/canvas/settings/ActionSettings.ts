@@ -4,7 +4,11 @@ import { UpdateTask } from '../../../services/UpdateServices';
 import { AbstractSettings } from './AbstractSettings';
 
 export enum ActionSettingsProps {
-    Trigger = 'Trigger'
+    Trigger = 'Trigger',
+    Source = 'Source',
+    Target = 'Target',
+    Result = 'Result',
+    Data = 'Data'
 }
 
 export class ActionSettings extends AbstractSettings<ActionSettingsProps> {

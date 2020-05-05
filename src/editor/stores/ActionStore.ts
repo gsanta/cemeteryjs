@@ -8,7 +8,7 @@ export class ActionStore extends AbstractStore {
         'Area intersection'
     ];
 
-    actionTypes: string[] = [
+    resultTypes: string[] = [
         'Change level'
     ]
 
