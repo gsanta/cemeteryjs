@@ -12,6 +12,7 @@ export interface InputProps extends Focusable {
     value: string | number;
     type: 'text' | 'number';
     placeholder?: string;
+    label?: string;
 }
 
 const FormControlStyled = styled(Form.Control)`
@@ -25,23 +26,45 @@ const FormControlStyled = styled(Form.Control)`
         box-shadow: none;
     }
 `
+
+const LabeledInputStyled = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+`;
+
+const LabelStyled = styled.div`
+    font-size: 12px;
+`;
+
 export function InputComponent(props: InputProps) {
 
-    return (
+    let input = (
         <Form.Group controlId="formBasicPassword">
             
-        <FormControlStyled
-            block
-            type={props.type}
-            onFocus={() => props.onFocus()}
-            placeholder={props.placeholder}
-            value={props.value && props.value.toString()}
-            onChange={(e: React.ChangeEvent<any>) => props.onChange(e.target.value)}
-            onBlur={() => props.onBlur()}
-        />
-        {/* <ButtonStyled block variant="dark" className={`button override ${props.type}`} onClick={() => props.onClick()}>{props.text}</ButtonStyled> */}
-    </Form.Group>
+            <FormControlStyled
+                block
+                type={props.type}
+                onFocus={() => props.onFocus()}
+                placeholder={props.placeholder}
+                value={props.value && props.value.toString()}
+                onChange={(e: React.ChangeEvent<any>) => props.onChange(e.target.value)}
+                onBlur={() => props.onBlur()}
+            />
+            {/* <ButtonStyled block variant="dark" className={`button override ${props.type}`} onClick={() => props.onClick()}>{props.text}</ButtonStyled> */}
+        </Form.Group>
     );
+
+    if (props.label) {
+        input = (
+            <LabeledInputStyled>
+                <LabelStyled>{props.label}</LabelStyled>
+                {input}
+            </LabeledInputStyled>
+        )
+    }
+
+    return input;
 }
 
 export const ConnectedInputComponent = withCommitOnBlur<InputProps>(InputComponent);

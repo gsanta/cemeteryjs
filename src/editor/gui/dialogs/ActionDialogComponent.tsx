@@ -6,8 +6,8 @@ import { ActionSettings, ActionSettingsProps } from '../../views/canvas/settings
 import { ActionConcept } from '../../models/concepts/ActionConcept';
 import { ConceptType } from '../../models/concepts/Concept';
 import { ConnectedDropdownComponent } from '../inputs/DropdownComponent';
-import { ClearIconComponent } from '../icons/ClearIconComponent';
 import { colors } from '../styles';
+import { ConnectedInputComponent } from '../inputs/InputComponent';
 
 const ActionDialogStyled = styled(DialogComponent)`
     width: 500px;
@@ -43,9 +43,10 @@ const SectionStyled = styled.div`
 const ColspanStyled = styled.div`
     display: flex;
     flex-direction: column;
+    width: 100%;
 
     > :not(:last-child) {
-        margin-bottom: 20px;
+        margin-bottom: 10px;
     }
 `;
 
@@ -90,17 +91,38 @@ export class ActionDialogComponent extends React.Component<{settings: ActionSett
             <RowStyled>
                 <ColumnStyled>{this.props.settings.triggerDoc}</ColumnStyled>
                 <ColumnStyled>
-                    <ConnectedDropdownComponent
-                        formController={this.props.settings}
-                        propertyName={ActionSettingsProps.Trigger}
-                        values={types}
-                        currentValue={val}
-                        placeholder="Select animation"
-                    />
-                    {val ? <ClearIconComponent onClick={() => this.props.settings.updateProp(undefined, ActionSettingsProps.Trigger)}/> : null}
+                    <ColspanStyled>
+                        {this.renderActionId()}
+                        <ConnectedDropdownComponent
+                            formController={this.props.settings}
+                            propertyName={ActionSettingsProps.Trigger}
+                            values={types}
+                            currentValue={val}
+                            placeholder="Select action"
+                            label="Action type"
+                            clear={() => this.props.settings.updateProp(undefined, ActionSettingsProps.Trigger)}
+                        />
+                    </ColspanStyled>
                 </ColumnStyled>
             </RowStyled>
         );
+    }
+
+    private renderActionId(): JSX.Element {
+        const id = this.props.settings.getVal(ActionSettingsProps.Id) as string;
+        
+        return (
+            <ColumnStyled>
+                <ConnectedInputComponent
+                    formController={this.props.settings}
+                    propertyName={ActionSettingsProps.Id}
+                    propertyType="string"
+                    type="text"
+                    value={id}
+                    label="Id"
+                />
+            </ColumnStyled>
+        )
     }
 
     private renderActionMeshes(): JSX.Element {
@@ -120,8 +142,9 @@ export class ActionDialogComponent extends React.Component<{settings: ActionSett
                                 values={meshIds}
                                 currentValue={source}
                                 placeholder="Select mesh source"
+                                label="Source mesh"
+                                clear={() => this.props.settings.updateProp(undefined, ActionSettingsProps.Source)}
                             />
-                            {source ? <ClearIconComponent onClick={() => this.props.settings.updateProp(undefined, ActionSettingsProps.Source)}/> : null}
                         </ColumnStyled>
                         <ColumnStyled>
                             <ConnectedDropdownComponent
@@ -130,8 +153,9 @@ export class ActionDialogComponent extends React.Component<{settings: ActionSett
                                 values={meshIds}
                                 currentValue={target}
                                 placeholder="Select mesh target"
+                                label="Target mesh"
+                                clear={() => this.props.settings.updateProp(undefined, ActionSettingsProps.Target)}
                             />
-                            {target ? <ClearIconComponent onClick={() => this.props.settings.updateProp(undefined, ActionSettingsProps.Target)}/> : null}
                         </ColumnStyled>
                     </ColspanStyled>
                 </ColumnStyled>
@@ -155,8 +179,9 @@ export class ActionDialogComponent extends React.Component<{settings: ActionSett
                                 values={types}
                                 currentValue={result}
                                 placeholder="Select action result"
+                                label="Action result"
+                                clear={() => this.props.settings.updateProp(undefined, ActionSettingsProps.Result)}
                             />
-                            {result ? <ClearIconComponent onClick={() => this.props.settings.updateProp(undefined, ActionSettingsProps.Result)}/> : null}
                         </ColumnStyled>
                         {this.renderLevels()}
                     </ColspanStyled>
@@ -177,12 +202,13 @@ export class ActionDialogComponent extends React.Component<{settings: ActionSett
             <ColumnStyled>
                 <ConnectedDropdownComponent
                     formController={this.props.settings}
-                    propertyName={ActionSettingsProps.Result}
+                    propertyName={ActionSettingsProps.Data}
                     values={levels}
                     currentValue={data}
                     placeholder="Select level"
+                    label="Action data"
+                    clear={() => this.props.settings.updateProp(undefined, ActionSettingsProps.Data)}
                 />
-                {data ? <ClearIconComponent onClick={() => this.props.settings.updateProp(undefined, ActionSettingsProps.Result)}/> : null}
             </ColumnStyled>
         )
     }

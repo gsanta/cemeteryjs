@@ -4,6 +4,7 @@ import { UpdateTask } from '../../../services/UpdateServices';
 import { AbstractSettings } from './AbstractSettings';
 
 export enum ActionSettingsProps {
+    Id = 'Id',
     Trigger = 'Trigger',
     Source = 'Source',
     Target = 'Target',
@@ -31,6 +32,16 @@ export class ActionSettings extends AbstractSettings<ActionSettingsProps> {
         switch (prop) {
             case ActionSettingsProps.Trigger:
                 return this.actionConcept.trigger;
+            case ActionSettingsProps.Source:
+                return this.actionConcept.sourceConceptId;
+            case ActionSettingsProps.Target:
+                return this.actionConcept.targetConceptId;
+            case ActionSettingsProps.Result:
+                return this.actionConcept.result;
+            case ActionSettingsProps.Data:
+                return this.actionConcept.resultData;
+            case ActionSettingsProps.Id:
+                return this.actionConcept.id;
         }
     }
 
@@ -40,6 +51,26 @@ export class ActionSettings extends AbstractSettings<ActionSettingsProps> {
                 this.actionConcept.trigger = val;
                 this.registry.services.update.runImmediately(UpdateTask.RepaintSettings);
                 break;
+            case ActionSettingsProps.Source:
+                this.actionConcept.sourceConceptId = val;
+                this.registry.services.update.runImmediately(UpdateTask.RepaintSettings);
+                break;
+            case ActionSettingsProps.Target:
+                this.actionConcept.targetConceptId = val;
+                this.registry.services.update.runImmediately(UpdateTask.RepaintSettings);
+                break;
+            case ActionSettingsProps.Result:
+                this.actionConcept.result = val;
+                this.registry.services.update.runImmediately(UpdateTask.RepaintSettings);
+                break;
+            case ActionSettingsProps.Data:
+                this.actionConcept.resultData = val;
+                this.registry.services.update.runImmediately(UpdateTask.RepaintSettings);
+                break;
+            case ActionSettingsProps.Id:
+                this.actionConcept.id = val;
+                this.registry.services.update.runImmediately(UpdateTask.RepaintSettings);
+                break;               
         }
     }
 }
