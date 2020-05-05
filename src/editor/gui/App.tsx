@@ -11,6 +11,7 @@ import { viewFactory } from '../ViewFactory';
 import { RendererView } from '../views/renderer/RendererView';
 import { AnimationDialogComponent } from './dialogs/AnimationDialogComponent';
 import { ActionDialogComponent } from './dialogs/ActionDialogComponent';
+import { ListActionsDialogComponent } from './dialogs/ListActionsDialogComponent';
 
 export interface AppState {
     isDialogOpen: boolean;
@@ -76,6 +77,7 @@ export class App extends React.Component<{}, AppState> {
                 {this.context.controllers.isLoading ? <SpinnerOverlayComponent/> : null}
                 <AnimationDialogComponent settings={this.context.registry.services.settings.animationSettings}/>
                 <ActionDialogComponent settings={this.context.registry.services.settings.actionSettings}/>
+                <ListActionsDialogComponent/>
             </div>
         );
     }

@@ -2,12 +2,14 @@ import { Registry } from "../Registry";
 import { AnimationSettings } from "../views/canvas/settings/AnimationSettings";
 import { UpdateTask } from "./UpdateServices";
 import { ActionSettings } from '../views/canvas/settings/ActionSettings';
+import { ListActionsSettings } from '../views/canvas/settings/ListActionsSettings';
 
 export class DialogService {
     serviceName = 'dialog-service';
     dialogs: string[] = [
         AnimationSettings.settingsName,
-        ActionSettings.settingsName
+        ActionSettings.settingsName,
+        ListActionsSettings.settingsName
     ];
     activeDialog: string;
 
@@ -25,7 +27,7 @@ export class DialogService {
     close(): boolean {
         let ret = false;
         if (this.activeDialog) { ret = true; }
-        
+
         this.activeDialog = null;
         this.registry.services.update.runImmediately(UpdateTask.All);
         return ret;
