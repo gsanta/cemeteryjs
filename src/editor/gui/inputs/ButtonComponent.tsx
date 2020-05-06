@@ -18,6 +18,10 @@ const ButtonStyled = styled(Button)`
             color: ${colors.textColorDark};
         }
 
+        &.success {
+            background: ${colors.success};
+        }
+
         
         &:active {
             box-shadow: none;

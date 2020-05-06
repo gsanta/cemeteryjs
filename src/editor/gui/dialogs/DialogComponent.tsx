@@ -37,7 +37,6 @@ const DialogStyled = styled.div`
     left: 50%;
     transform: translate(-50%, 0);
     position: absolute;
-    height: 500px;
 `;
 
 const DialogTitleStyled = styled.div`
@@ -54,8 +53,19 @@ const DialogBodyStyled = styled.div`
     justify-content: space-between;
 `;
 
+const DialogFooterStyled = styled.div`
+    display: flex;
+    justify-content: center;
+
+    > button {
+        margin-right: 10px;
+    }
+`;
+
 export function DialogComponent(props: DialogProps) {
     const dialogClassName = `dialog ${props.className ? props.className : ''}`.trim();
+
+    const footer = props.footer ? <DialogFooterStyled>{props.footer}</DialogFooterStyled> : null;
 
     return (
         <div onClick={e => e.stopPropagation()}>
@@ -66,6 +76,7 @@ export function DialogComponent(props: DialogProps) {
                     <div><CloseIconComponent onClick={props.closeDialog} /></div>
                 </DialogTitleStyled>
                 <DialogBodyStyled>{props.children}</DialogBodyStyled>
+                {footer}
             </DialogStyled>
         </div>
     );

@@ -8,6 +8,7 @@ import { ConceptType } from '../../models/concepts/Concept';
 import { ConnectedDropdownComponent } from '../inputs/DropdownComponent';
 import { colors } from '../styles';
 import { ConnectedInputComponent } from '../inputs/InputComponent';
+import { ButtonComponent } from '../inputs/ButtonComponent';
 
 const ActionDialogStyled = styled(DialogComponent)`
     width: 500px;
@@ -66,7 +67,11 @@ export class ActionDialogComponent extends React.Component<{settings: ActionSett
 
         return this.context.registry.services.dialog.isActiveDialog(ActionSettings.name) ?
         (
-            <ActionDialogStyled title="Add action" closeDialog={() => this.close()}>
+            <ActionDialogStyled 
+                title="Add action"
+                closeDialog={() => this.close()}
+                footer={this.renderFooterButtons()}
+            >
                 <div>
                     <SectionStyled>
                         {this.renderActionTypes()}
@@ -211,6 +216,15 @@ export class ActionDialogComponent extends React.Component<{settings: ActionSett
                 />
             </ColumnStyled>
         )
+    }
+
+    private renderFooterButtons(): JSX.Element {
+        return (
+            <SectionStyled>
+                <ButtonComponent text="Cancel" type="info" onClick={() => this.context.registry.services.dialog.openDialog('animation-settings')}/>
+                <ButtonComponent text="Save" type="success" onClick={() => this.context.registry.services.dialog.openDialog('animation-settings')}/>
+            </SectionStyled>
+        );
     }
 
     private close() {
