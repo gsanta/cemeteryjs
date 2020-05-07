@@ -43,13 +43,13 @@ export class RendererComponent extends React.Component {
     
     componentDidMount() {
         this.wheelListener = new WheelListener(this.context.registry);
-        this.context.registry.stores.viewStore.getViewById<RendererView>(RendererView.id).setCanvasRenderer(() => this.forceUpdate());
-        this.context.registry.stores.viewStore.getViewById(RendererView.id).repainter = () => {this.forceUpdate()};
+        this.context.registry.services.view.getViewById<RendererView>(RendererView.id).setCanvasRenderer(() => this.forceUpdate());
+        this.context.registry.services.view.getViewById(RendererView.id).repainter = () => {this.forceUpdate()};
         
         setTimeout(() => {
             // this.context.controllers.getWindowControllerByName('renderer').update();
-            this.context.registry.stores.viewStore.getViewById(RendererView.id).setup();
-            this.context.registry.stores.viewStore.getViewById(RendererView.id).resize();
+            this.context.registry.services.view.getViewById(RendererView.id).setup();
+            this.context.registry.services.view.getViewById(RendererView.id).resize();
         }, 100);
 
     }
@@ -59,7 +59,7 @@ export class RendererComponent extends React.Component {
     }
 
     render() {
-        const view = this.context.registry.stores.viewStore.getViewById<RendererView>(RendererView.id);
+        const view = this.context.registry.services.view.getViewById<RendererView>(RendererView.id);
 
         return (
                 <RendererStyled id={view.getId()} style={{cursor: view.getActiveTool().cursor}}>

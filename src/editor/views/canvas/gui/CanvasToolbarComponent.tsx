@@ -54,20 +54,20 @@ export class CanvasToolbarComponent extends AbstractToolbarComponent {
 
 
     private isToolActive(toolType: ToolType) {
-        return this.context.registry.stores.viewStore.getViewById(CanvasView.id).getSelectedTool().type === toolType;
+        return this.context.registry.services.view.getViewById(CanvasView.id).getSelectedTool().type === toolType;
     }
 
     private activateTool(tool: AbstractTool) {
-        const view = this.context.registry.stores.viewStore.getViewById(CanvasView.id);
+        const view = this.context.registry.services.view.getViewById(CanvasView.id);
         view.setSelectedTool(tool);
         view.repainter();
     }
 
     private zoomIn() {
-        this.context.registry.stores.viewStore.getActiveView().getCamera().zoomIn();
+        this.context.registry.services.view.getActiveView().getCamera().zoomIn();
     }
 
     private zoomOut() {
-        this.context.registry.stores.viewStore.getActiveView().getCamera().zoomOut();
+        this.context.registry.services.view.getActiveView().getCamera().zoomOut();
     }
 }

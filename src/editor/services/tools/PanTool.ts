@@ -22,7 +22,7 @@ export class PanTool extends AbstractTool {
 
     drag() {
         super.drag();
-        const camera = this.registry.stores.viewStore.getActiveView().getCamera();
+        const camera = this.registry.services.view.getActiveView().getCamera();
         
         camera.pan(this.registry.services.pointer.pointer);
 
@@ -30,8 +30,8 @@ export class PanTool extends AbstractTool {
     }
 
     keyup(e: IKeyboardEvent): void {
-        if (e.keyCode === Keyboard.Space && this.registry.stores.viewStore.getActiveView().getActiveTool() === this) {
-            this.registry.stores.viewStore.getActiveView().removePriorityTool(this);
+        if (e.keyCode === Keyboard.Space && this.registry.services.view.getActiveView().getActiveTool() === this) {
+            this.registry.services.view.getActiveView().removePriorityTool(this);
             this.registry.services.update.scheduleTasks(UpdateTask.RepaintActiveView);
         }
     }

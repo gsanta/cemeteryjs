@@ -41,12 +41,12 @@ export class App extends React.Component<{}, AppState> {
     componentDidMount() {
         this.context.registry.services.update.setFullRepainter(() => this.forceUpdate());
         this.context.controllers.setRenderer(() => this.forceUpdate());
-        if (this.context.registry.stores.viewStore.visibilityDirty) {
+        if (this.context.registry.services.view.visibilityDirty) {
             this.updateCanvasVisibility();
-            this.context.registry.stores.viewStore.visibilityDirty = false;
+            this.context.registry.services.view.visibilityDirty = false;
         }
 
-        window.addEventListener('resize', () => this.context.registry.stores.viewStore.getVisibleViews().forEach(controller => controller.resize()));
+        window.addEventListener('resize', () => this.context.registry.services.view.getVisibleViews().forEach(controller => controller.resize()));
         this.context.controllers.setup(document.querySelector(`#${RendererView.id}`));
     }
 
@@ -59,7 +59,7 @@ export class App extends React.Component<{}, AppState> {
     }
     
     render() {
-        const fullScreen = this.context.registry.stores.viewStore.getFullScreen();
+        const fullScreen = this.context.registry.services.view.getFullScreen();
         const toolbar = !fullScreen ? (
             <div id="toolbar" >
                 <SidebarComponent isEditorOpen={this.state.isEditorOpen} toggleEditorOpen={() => this.setState({isEditorOpen: !this.state.isEditorOpen})}/>
@@ -81,20 +81,20 @@ export class App extends React.Component<{}, AppState> {
     }
 
     private renderFullScreenCanvas(): JSX.Element {
-        const fullScreen = this.context.registry.stores.viewStore.getFullScreen();
+        const fullScreen = this.context.registry.services.view.getFullScreen();
         return <div id={`${fullScreen.getId()}-split`}>{viewFactory(fullScreen)}</div>;
     }
 
     private renderViews(): JSX.Element[] {
-        return this.context.registry.stores.viewStore.getVisibleViews().map(canvas => <div key={canvas.getId()} id={`${canvas.getId()}-split`}>{viewFactory(canvas)}</div>);
+        return this.context.registry.services.view.getVisibleViews().map(canvas => <div key={canvas.getId()} id={`${canvas.getId()}-split`}>{viewFactory(canvas)}</div>);
     }
 
     private resize() {
-        this.context.registry.stores.viewStore.getVisibleViews().forEach(controller => controller.resize());
+        this.context.registry.services.view.getVisibleViews().forEach(controller => controller.resize());
     }
 
     private updateCanvasVisibility() {
-        const config = this.context.registry.stores.viewStore.getViewConfigs();
+        const config = this.context.registry.services.view.getViewConfigs();
 
         this.split = Split(config.ids,
             {

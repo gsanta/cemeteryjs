@@ -15,6 +15,7 @@ import { MeshLoaderService } from "./MeshLoaderService";
 import { SettingsService } from "./SettingsService";
 import { ToolService } from "./tools/ToolService";
 import { UpdateService } from "./UpdateServices";
+import { ViewService } from "./ViewService";
 
 export class ServiceLocator {
     hotkey: HotkeyService;
@@ -33,6 +34,7 @@ export class ServiceLocator {
     meshLoader: MeshLoaderService;
     conceptConverter: ConceptConvertService;
     game: GameService;
+    view: ViewService;
 
     constructor(registry: Registry) {
         this.hotkey = new HotkeyService(registry);
@@ -50,5 +52,6 @@ export class ServiceLocator {
         this.settings = new SettingsService(registry);
         this.meshLoader = new MeshLoaderService(registry);
         this.conceptConverter = new ConceptConvertService(registry);
+        this.view = new ViewService(registry);
     }
 }

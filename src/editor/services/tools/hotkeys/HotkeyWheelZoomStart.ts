@@ -11,8 +11,8 @@ export class HotkeyWheelZoomStart extends Hotkey {
     }
 
     private hotKeyAction(): boolean {
-        if (this.registry.stores.viewStore.getActiveView().getActiveTool() !== this.registry.services.tools.zoom) {
-            this.registry.stores.viewStore.getActiveView().setPriorityTool(this.registry.services.tools.zoom);
+        if (this.registry.services.view.getActiveView().getActiveTool() !== this.registry.services.tools.zoom) {
+            this.registry.services.view.getActiveView().setPriorityTool(this.registry.services.tools.zoom);
             return true;
         }
     }

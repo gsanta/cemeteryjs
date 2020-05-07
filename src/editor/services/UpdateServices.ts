@@ -46,7 +46,7 @@ export class UpdateService {
                     this.canvasRepainter();
                 break;
                 case UpdateTask.RepaintActiveView:
-                    this.registry.stores.viewStore.getActiveView().repainter();
+                    this.registry.services.view.getActiveView().repainter();
                 break;
                 case UpdateTask.RepaintSettings:
                     this.settingsRepainters.forEach(repaint => repaint());
@@ -57,7 +57,7 @@ export class UpdateService {
                 case UpdateTask.All:
                     this.canvasRepainter();
                     this.settingsRepainters.forEach(repaint => repaint());
-                    this.registry.stores.viewStore.getViewById(RendererView.id).update();
+                    this.registry.services.view.getViewById(RendererView.id).update();
                 break;
                 case UpdateTask.Full:
                     this.fullRepainter();

@@ -37,10 +37,10 @@ export class CanvasComponent extends React.Component {
     componentDidMount() {
         this.wheelListener = new WheelListener(this.context.registry);
         this.context.registry.services.update.setCanvasRepainter(() => this.forceUpdate());
-        this.context.registry.stores.viewStore.getViewById(CanvasView.id).repainter = () => {this.forceUpdate()};
+        this.context.registry.services.view.getViewById(CanvasView.id).repainter = () => {this.forceUpdate()};
 
         setTimeout(() => {
-            this.context.registry.stores.viewStore.getViewById<CanvasView>(CanvasView.id).resize();
+            this.context.registry.services.view.getViewById<CanvasView>(CanvasView.id).resize();
         }, 0);
     }
 
@@ -48,7 +48,7 @@ export class CanvasComponent extends React.Component {
         const hover = (item: Concept | Feedback) => this.context.registry.services.mouse.hover(item);
         const unhover = (canvasItem: Concept | Feedback) => this.context.registry.services.mouse.unhover(canvasItem);
         
-        const view = this.context.registry.stores.viewStore.getViewById<CanvasView>(CanvasView.id);
+        const view = this.context.registry.services.view.getViewById<CanvasView>(CanvasView.id);
         console.log('canvas render: ' + view.getActiveTool().cursor)
 
         return (

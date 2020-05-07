@@ -27,15 +27,15 @@ export class RendererToolbarComponent extends AbstractToolbarComponent {
     }
 
     private zoomIn() {
-        this.context.registry.stores.viewStore.getActiveView().getCamera().zoomIn();
+        this.context.registry.services.view.getActiveView().getCamera().zoomIn();
     }
 
     private zoomOut() {
-        this.context.registry.stores.viewStore.getActiveView().getCamera().zoomOut();
+        this.context.registry.services.view.getActiveView().getCamera().zoomOut();
     }
 
     private isToolActive(toolType: ToolType) {
-        const view = this.context.registry.stores.viewStore.getViewById<RendererView>(RendererView.id);
+        const view = this.context.registry.services.view.getViewById<RendererView>(RendererView.id);
         return view.getSelectedTool() && view.getSelectedTool().type === toolType;
     }
 }

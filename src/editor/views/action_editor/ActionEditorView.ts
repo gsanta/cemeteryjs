@@ -42,7 +42,7 @@ export class ActionEditorView extends View {
 
         this.camera = cameraInitializer(ActionEditorView.id, registry);
 
-        this.registry.stores.viewStore.setActiveView(this);
+        this.registry.services.view.setActiveView(this);
 
         this.selectedTool = this.registry.services.tools.rectangle;
     }

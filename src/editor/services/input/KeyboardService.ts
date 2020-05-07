@@ -53,13 +53,13 @@ export class KeyboardService {
     
     onKeyDown(e: KeyboardEvent): void {
         this.registry.services.hotkey.executeKeyboardEvent(this.convertEvent(e));
-        this.registry.stores.viewStore.getActiveView().getActiveTool()?.keydown(this.convertEvent(e));
+        this.registry.services.view.getActiveView().getActiveTool()?.keydown(this.convertEvent(e));
         this.registry.services.update.runScheduledTasks();
 
     }
 
     onKeyUp(e: KeyboardEvent): void {
-        this.registry.stores.viewStore.getActiveView().getActiveTool()?.keyup(this.convertEvent(e));
+        this.registry.services.view.getActiveView().getActiveTool()?.keyup(this.convertEvent(e));
         this.registry.services.update.runScheduledTasks();
     }
 

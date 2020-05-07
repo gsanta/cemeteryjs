@@ -45,7 +45,7 @@ export abstract class View {
     
     constructor(registry: Registry) {
         this.registry = registry;
-        this.registry.stores.viewStore.registerView(this);
+        this.registry.services.view.registerView(this);
     }
 
     abstract isVisible(): boolean;
@@ -56,7 +56,7 @@ export abstract class View {
     destroy(): void {}
     abstract resize(): void;
     update(): void {}
-    over(): void { this.registry.stores.viewStore.setActiveView(this) }
+    over(): void { this.registry.services.view.setActiveView(this) }
     out(): void {}
 
     setSelectedTool(tool: AbstractTool) {

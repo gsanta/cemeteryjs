@@ -1,4 +1,5 @@
 import { View } from '../views/View';
+import { Registry } from '../Registry';
 
 export interface ViewConfig {
     sizes: number[];
@@ -6,11 +7,18 @@ export interface ViewConfig {
     minSizes: number[];
 }
 
-export class ViewStore {
+export class ViewService {
     private views: View[] = [];
     private activeView: View;
+    private visibleViews: View[] = [];
     private fullScreen: View;
     visibilityDirty = true;
+
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
     
     registerView(view: View) {
         this.views.push(view);
