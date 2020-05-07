@@ -1,9 +1,16 @@
 import { View } from '../views/View';
 
+export interface ViewConfig {
+    sizes: number[];
+    ids: number[];
+    minSizes: number[];
+}
+
 export class ViewStore {
     private views: View[] = [];
     private activeView: View;
     private fullScreen: View;
+    visibilityDirty = true;
     
     registerView(view: View) {
         this.views.push(view);
@@ -18,6 +25,7 @@ export class ViewStore {
     }
 
     setFullScreen(view: View) {
+        this.visibilityDirty = true;
         this.fullScreen = view;
     }
 
@@ -35,5 +43,25 @@ export class ViewStore {
 
     getViewById<T extends View = View>(id: string): T {
         return <T> this.views.find(view => view.getId() === id);
+    }
+
+    getViewConfigs() {
+        const fullScreen = this.getFullScreen();
+
+        if (fullScreen) {
+            return {
+                sizes: [100],
+                ids: [`#${fullScreen.getId()}-split`],
+                minSize: []
+            }
+        } else {
+            const viewIds = this.getVisibleViews().map(view => `#${view.getId()}-split`);
+            
+            return {
+                sizes: [12, 44, 44],
+                minSize: [230, 300, 300],
+                ids: ['#toolbar', ...viewIds]
+            }
+        }
     }
 }

@@ -1,18 +1,18 @@
 import { Registry } from './Registry';
-import { ViewFactory } from './ViewFactory';
-import { CanvasFactory } from './views/canvas/CanvasFactory';
 import { GlobalSettings } from './views/canvas/settings/GlobalSettings';
-import { RendererFactory } from './views/renderer/RendererFactory';
+import { View } from './views/View';
+import { CanvasView } from './views/canvas/CanvasView';
+import { RendererView } from './views/renderer/RendererView';
+import { ActionEditorView } from './views/action_editor/ActionEditorView';
 
 export class Editor {
     registry: Registry;
     
-    windowFactories: ViewFactory[];
-
     svgCanvasId: string;
     renderFunc: () => void;
     globalSettingsForm: GlobalSettings;
     isLoading = true;
+    private views: View[]
 
 
     constructor() {
@@ -20,18 +20,15 @@ export class Editor {
         this.registry = new Registry();
         this.registry.services.tools.tools.forEach(tool => tool.setup());
 
-        this.windowFactories = [
-            new CanvasFactory(),
-            new RendererFactory()
-        ];
-
         this.globalSettingsForm = new GlobalSettings(this.registry);
-
+        this.views = [
+            new CanvasView(this.registry),
+            new RendererView(this.registry),
+            // new ActionEditorView(this.registry)
+        ]
     }
 
-    setup(canvas: HTMLCanvasElement) {
-        this.windowFactories.forEach(factory => factory.getWindowController(this.registry));
-        
+    setup(canvas: HTMLCanvasElement) {        
         this.registry.services.storage.loadLevelIndexes()
             .then((indexes: number[]) => {
                 if (indexes.length) {
@@ -49,29 +46,6 @@ export class Editor {
                 this.registry.services.history.saveState(this.registry.services.export.export());
                 this.render();
             });
-    }
-
-    getWindowControllerByName(name: string) {
-        return this.windowFactories.find(factory => factory.name === name).getWindowController(this.registry);
-    }
-
-    getWindowControllers() {
-        return this.windowFactories.map(factory => factory.getWindowController(this.registry));
-    }
-
-    getWindowFactory(name: string) {
-        return this.windowFactories.find(factory => factory.name === name);
-    }
-
-    setWindowVisibility(name: string, isVisible: boolean) {
-        this.getWindowControllerByName(name).setVisible(isVisible);
-        if (!this.getWindowControllers().find(controller => controller.isVisible())) {
-
-            const defaultWindows = [this.getWindowControllerByName('renderer'), this.getWindowControllerByName('canvas')];
-
-            defaultWindows.find(window => window.name !== name).setVisible(true);
-        }
-        this.render();
     }
 
     render() {

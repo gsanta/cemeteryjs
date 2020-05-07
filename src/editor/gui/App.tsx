@@ -41,14 +41,12 @@ export class App extends React.Component<{}, AppState> {
     componentDidMount() {
         this.context.registry.services.update.setFullRepainter(() => this.forceUpdate());
         this.context.controllers.setRenderer(() => this.forceUpdate());
-        if (this.hasCanvasVisibilityChanged()) {
+        if (this.context.registry.stores.viewStore.visibilityDirty) {
             this.updateCanvasVisibility();
+            this.context.registry.stores.viewStore.visibilityDirty = false;
         }
 
-        window.addEventListener('resize', () => {
-            this.context.controllers.getWindowControllers().forEach(controller => controller.resize());
-        });
-
+        window.addEventListener('resize', () => this.context.registry.stores.viewStore.getVisibleViews().forEach(controller => controller.resize()));
         this.context.controllers.setup(document.querySelector(`#${RendererView.id}`));
     }
 
@@ -72,7 +70,7 @@ export class App extends React.Component<{}, AppState> {
             <div className="style-nightshifs">
                 <div className="main-content">
                     {toolbar}
-                    {fullScreen ? this.renderFullScreenCanvas() : this.renderCanvases()}
+                    {fullScreen ? this.renderFullScreenCanvas() : this.renderViews()}
                 </div>
                 {this.context.controllers.isLoading ? <SpinnerOverlayComponent/> : null}
                 <AnimationDialogComponent settings={this.context.registry.services.settings.animationSettings}/>
@@ -87,49 +85,21 @@ export class App extends React.Component<{}, AppState> {
         return <div id={`${fullScreen.getId()}-split`}>{viewFactory(fullScreen)}</div>;
     }
 
-    private renderCanvases(): JSX.Element[] {
-        return this.context.controllers.getWindowControllers()
-            .map(canvas => <div key={canvas.getId()} id={`${canvas.getId()}-split`}>{viewFactory(canvas)}</div>);
+    private renderViews(): JSX.Element[] {
+        return this.context.registry.stores.viewStore.getVisibleViews().map(canvas => <div key={canvas.getId()} id={`${canvas.getId()}-split`}>{viewFactory(canvas)}</div>);
     }
 
     private resize() {
         this.context.registry.stores.viewStore.getVisibleViews().forEach(controller => controller.resize());
     }
 
-    private hasCanvasVisibilityChanged() {
-        const visibleCanvases = this.context.controllers.getWindowControllers().filter(canvas => canvas.isVisible());
-
-        if (visibleCanvases.length !== this.currentVisibleCanvases.length) { return true; }
-
-        for (let i = 0; i < visibleCanvases.length; i++) {
-            if (visibleCanvases[i] !== this.currentVisibleCanvases[i]) {
-                return true;
-            }
-        }
-    }
-
     private updateCanvasVisibility() {
-        let ids = ['#toolbar']; 
-        let sizes: number[];
-        let minSize: number[];
+        const config = this.context.registry.stores.viewStore.getViewConfigs();
 
-        const fullScreen = this.context.registry.stores.viewStore.getFullScreen();
-
-        if (fullScreen) {
-            sizes = [100];
-            ids = [`#${fullScreen.getId()}-split`];
-            minSize = [];
-        } else {
-            sizes = [12, 44, 44];
-            minSize = [230, 300, 300];
-            const canvasIds = this.context.controllers.getWindowControllers().map(canvas => `#${canvas.getId()}-split`);
-            ids = ['#toolbar', ...canvasIds];
-        }
-
-        this.split = Split(ids,
+        this.split = Split(config.ids,
             {
-                sizes,
-                minSize,
+                sizes: config.sizes,
+                minSize: config.minSize,
                 elementStyle: (dimension, size, gutterSize) => ({
                     'flex-basis': `calc(${size}% - ${gutterSize}px)`,
                 }),

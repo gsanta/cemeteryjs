@@ -26,7 +26,7 @@ export class SidebarComponent extends React.Component<SidebarComponentProps> {
     context: AppContextType;
 
     componentDidMount() {
-        this.context.controllers.getWindowControllers().forEach(() => this.context.registry.services.update.addSettingsRepainter(() => this.forceUpdate()));
+        this.context.registry.services.update.addSettingsRepainter(() => this.forceUpdate());
     }
 
     render(): JSX.Element {

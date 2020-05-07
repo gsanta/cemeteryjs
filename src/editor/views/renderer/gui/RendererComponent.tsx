@@ -48,8 +48,8 @@ export class RendererComponent extends React.Component {
         
         setTimeout(() => {
             // this.context.controllers.getWindowControllerByName('renderer').update();
-            this.context.controllers.getWindowControllerByName('renderer').setup();
-            this.context.controllers.getWindowControllerByName('renderer').resize();
+            this.context.registry.stores.viewStore.getViewById(RendererView.id).setup();
+            this.context.registry.stores.viewStore.getViewById(RendererView.id).resize();
         }, 100);
 
     }
