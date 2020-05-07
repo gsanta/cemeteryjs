@@ -51,8 +51,6 @@ export class CanvasView extends View {
 
         this.camera = cameraInitializer(CanvasView.id, registry);
 
-        this.registry.services.view.setActiveView(this);
-
         this.selectedTool = this.registry.services.tools.rectangle;
 
         this.settings = [

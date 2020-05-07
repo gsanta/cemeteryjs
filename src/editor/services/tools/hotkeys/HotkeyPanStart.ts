@@ -13,8 +13,8 @@ export class HotkeyPanStart extends Hotkey {
     }
 
     private hotKeyAction(): boolean {
-        if (this.registry.services.view.getActiveView().getActiveTool() !== this.registry.services.tools.pan) {
-            this.registry.services.view.getActiveView().setPriorityTool(this.registry.services.tools.pan);
+        if (this.registry.services.view.getHoveredView().getActiveTool() !== this.registry.services.tools.pan) {
+            this.registry.services.view.getHoveredView().setPriorityTool(this.registry.services.tools.pan);
             this.registry.services.update.scheduleTasks(UpdateTask.RepaintActiveView);
             return true;
         }

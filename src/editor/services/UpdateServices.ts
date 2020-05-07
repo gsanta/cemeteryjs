@@ -46,7 +46,7 @@ export class UpdateService {
                     this.canvasRepainter();
                 break;
                 case UpdateTask.RepaintActiveView:
-                    this.registry.services.view.getActiveView().repainter();
+                    this.registry.services.view.getHoveredView().repainter();
                 break;
                 case UpdateTask.RepaintSettings:
                     this.settingsRepainters.forEach(repaint => repaint());

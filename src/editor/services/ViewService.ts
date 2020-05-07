@@ -1,35 +1,75 @@
 import { View } from '../views/View';
 import { Registry } from '../Registry';
+import { CanvasView } from '../views/canvas/CanvasView';
+import { RendererView } from '../views/renderer/RendererView';
+import { ActionEditorView } from '../views/action_editor/ActionEditorView';
 
-export interface ViewConfig {
+export interface LayoutConfig {
     sizes: number[];
-    ids: number[];
-    minSizes: number[];
+    ids: string[];
+    minSize: number[];
+    name?: string;
 }
 
 export class ViewService {
     private views: View[] = [];
-    private activeView: View;
-    private visibleViews: View[] = [];
+    private hoveredView: View;
     private fullScreen: View;
     visibilityDirty = true;
+
+    activeLayout: LayoutConfig;
+    layouts: LayoutConfig[];
 
     private registry: Registry;
 
     constructor(registry: Registry) {
         this.registry = registry;
+
+        this.views = [
+            new CanvasView(this.registry),
+            new RendererView(this.registry),
+            new ActionEditorView(this.registry)
+        ];
+
+        this.hoveredView = this.views[0];
+
+        this.layouts = [
+            {
+                sizes: [12, 44, 44],
+                minSize: [230, 300, 300],
+                ids: ['#toolbar', CanvasView.id, RendererView.id],
+                name: 'Scene Editor'
+            },
+            {
+                sizes: [12, 88],
+                minSize: [230, 500],
+                ids: ['#toolbar', ActionEditorView.id],
+                name: 'Action Editor'
+            }
+        ];
+
+        this.activeLayout = this.layouts[0];
     }
     
     registerView(view: View) {
         this.views.push(view);
     }
 
-    setActiveView(view: View) {
-        this.activeView = view;
+    setHoveredView(view: View) {
+        this.hoveredView = view;
     }
 
-    getActiveView(): View {
-        return this.activeView;
+    getHoveredView(): View {
+        return this.hoveredView;
+    }
+
+    setActiveLayout(layout: LayoutConfig) {
+        this.activeLayout = layout;
+        this.visibilityDirty = true;
+    }
+
+    getActiveViews(): View[] {
+        return this.fullScreen ? [this.fullScreen] : this.views.filter(view => this.activeLayout.ids.find(id => view.getId() === id));
     }
 
     setFullScreen(view: View) {
@@ -43,10 +83,6 @@ export class ViewService {
 
     getAllViews(): View[] {
         return this.views;
-    }
-
-    getVisibleViews(): View[] {
-        return this.fullScreen ? [this.fullScreen] : this.views;
     }
 
     getViewById<T extends View = View>(id: string): T {
@@ -63,7 +99,7 @@ export class ViewService {
                 minSize: []
             }
         } else {
-            const viewIds = this.getVisibleViews().map(view => `#${view.getId()}-split`);
+            const viewIds = this.getActiveViews().map(view => `#${view.getId()}-split`);
             
             return {
                 sizes: [12, 44, 44],

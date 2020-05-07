@@ -1,9 +1,6 @@
 import { Registry } from './Registry';
 import { GlobalSettings } from './views/canvas/settings/GlobalSettings';
-import { View } from './views/View';
-import { CanvasView } from './views/canvas/CanvasView';
-import { RendererView } from './views/renderer/RendererView';
-import { ActionEditorView } from './views/action_editor/ActionEditorView';
+import { LayoutSettings } from './views/canvas/settings/LayoutSettings';
 
 export class Editor {
     registry: Registry;
@@ -11,9 +8,8 @@ export class Editor {
     svgCanvasId: string;
     renderFunc: () => void;
     globalSettingsForm: GlobalSettings;
+    layoutSettings: LayoutSettings;
     isLoading = true;
-    private views: View[]
-
 
     constructor() {
         this.svgCanvasId = 'svg-editor';
@@ -21,11 +17,7 @@ export class Editor {
         this.registry.services.tools.tools.forEach(tool => tool.setup());
 
         this.globalSettingsForm = new GlobalSettings(this.registry);
-        this.views = [
-            new CanvasView(this.registry),
-            new RendererView(this.registry),
-            // new ActionEditorView(this.registry)
-        ]
+        this.layoutSettings = new LayoutSettings(this.registry);
     }
 
     setup(canvas: HTMLCanvasElement) {        

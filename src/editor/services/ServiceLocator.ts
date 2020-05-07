@@ -36,22 +36,28 @@ export class ServiceLocator {
     game: GameService;
     view: ViewService;
 
+    private registry: Registry;
+
     constructor(registry: Registry) {
-        this.hotkey = new HotkeyService(registry);
-        this.tools = new ToolService(registry);
-        this.storage = new LocalStoreService(registry);
-        this.level = new LevelService(registry);
-        this.update = new UpdateService(registry);
-        this.import = new ImportService(registry);
-        this.export = new ExportService(registry);
-        this.history = new HistoryService(registry);
-        this.pointer = new PointerService(registry);
-        this.mouse = new MouseService(registry);
-        this.keyboard = new KeyboardService(registry);
-        this.dialog = new DialogService(registry);
-        this.settings = new SettingsService(registry);
-        this.meshLoader = new MeshLoaderService(registry);
-        this.conceptConverter = new ConceptConvertService(registry);
-        this.view = new ViewService(registry);
+        this.registry = registry;
+    }
+
+    setup() {
+        this.hotkey = new HotkeyService(this.registry);
+        this.tools = new ToolService(this.registry);
+        this.storage = new LocalStoreService(this.registry);
+        this.level = new LevelService(this.registry);
+        this.update = new UpdateService(this.registry);
+        this.import = new ImportService(this.registry);
+        this.export = new ExportService(this.registry);
+        this.history = new HistoryService(this.registry);
+        this.pointer = new PointerService(this.registry);
+        this.mouse = new MouseService(this.registry);
+        this.keyboard = new KeyboardService(this.registry);
+        this.dialog = new DialogService(this.registry);
+        this.settings = new SettingsService(this.registry);
+        this.meshLoader = new MeshLoaderService(this.registry);
+        this.conceptConverter = new ConceptConvertService(this.registry);
+        this.view = new ViewService(this.registry);
     }
 }

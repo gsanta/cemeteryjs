@@ -19,7 +19,7 @@
     },
     "include": [
       "src/**/*.ts",
-      "test/**/*.ts",
+      "test/**/*.ts", "src/editor/views/action_editor/ActionEditorComponent.tsx",
     ],
     "exclude": [
       "node_modules"

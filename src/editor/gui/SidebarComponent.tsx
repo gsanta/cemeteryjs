@@ -8,6 +8,7 @@ import { LevelSettingsComponent } from '../views/canvas/gui/settings/LevelSettin
 import { settingsFactory } from '../views/canvas/gui/settings/settingsFactory';
 import { GlobalSettingsComponent } from '../views/canvas/gui/settings/GlobalSettingsComponent';
 import { ActionSettingsComponent } from '../views/canvas/gui/settings/ActionSettingsComponent';
+import { LayoutSettingsComponent } from '../views/canvas/gui/settings/LayoutSettingsComponent';
 
 export interface SidebarComponentProps {
     isEditorOpen: boolean;
@@ -37,6 +38,10 @@ export class SidebarComponent extends React.Component<SidebarComponentProps> {
                         {
                             title: 'File Settings',
                             body: <FileSettingsComponent editor={this.context.controllers} {...this.props}/>
+                        },
+                        {
+                            title: 'Layout Settings',
+                            body: <LayoutSettingsComponent editor={this.context.controllers} {...this.props}/>
                         },
                         {
                             title: 'Action Settings',

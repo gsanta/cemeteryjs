@@ -46,7 +46,7 @@ export class App extends React.Component<{}, AppState> {
             this.context.registry.services.view.visibilityDirty = false;
         }
 
-        window.addEventListener('resize', () => this.context.registry.services.view.getVisibleViews().forEach(controller => controller.resize()));
+        window.addEventListener('resize', () => this.context.registry.services.view.getActiveViews().forEach(controller => controller.resize()));
         this.context.controllers.setup(document.querySelector(`#${RendererView.id}`));
     }
 
@@ -86,11 +86,11 @@ export class App extends React.Component<{}, AppState> {
     }
 
     private renderViews(): JSX.Element[] {
-        return this.context.registry.services.view.getVisibleViews().map(canvas => <div key={canvas.getId()} id={`${canvas.getId()}-split`}>{viewFactory(canvas)}</div>);
+        return this.context.registry.services.view.getActiveViews().map(canvas => <div key={canvas.getId()} id={`${canvas.getId()}-split`}>{viewFactory(canvas)}</div>);
     }
 
     private resize() {
-        this.context.registry.services.view.getVisibleViews().forEach(controller => controller.resize());
+        this.context.registry.services.view.getActiveViews().forEach(controller => controller.resize());
     }
 
     private updateCanvasVisibility() {

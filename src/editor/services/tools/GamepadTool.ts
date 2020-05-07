@@ -43,6 +43,6 @@ export class GamepadTool extends AbstractTool {
     keyup(e: IKeyboardEvent) {
         const action = this.keyCodeToInputCommandMap.get(e.keyCode);
         this.downKeys.delete(action)
-        this.registry.services.view.getActiveView().removePriorityTool(this);
+        this.registry.services.view.getHoveredView().removePriorityTool(this);
     }
 }

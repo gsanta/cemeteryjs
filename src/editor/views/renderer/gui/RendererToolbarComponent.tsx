@@ -27,11 +27,11 @@ export class RendererToolbarComponent extends AbstractToolbarComponent {
     }
 
     private zoomIn() {
-        this.context.registry.services.view.getActiveView().getCamera().zoomIn();
+        this.context.registry.services.view.getHoveredView().getCamera().zoomIn();
     }
 
     private zoomOut() {
-        this.context.registry.services.view.getActiveView().getCamera().zoomOut();
+        this.context.registry.services.view.getHoveredView().getCamera().zoomOut();
     }
 
     private isToolActive(toolType: ToolType) {
