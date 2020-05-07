@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { RendererView } from '../RendererView';
 import { WindowToolbarStyled } from '../../../gui/windows/WindowToolbar';
 import { RendererToolbarComponent } from './RendererToolbarComponent';
-import { WheelListener } from '../../../services/WheelListener';
+import { WheelListener } from '../../../../core/services/WheelListener';
 
 const RendererStyled = styled.div`
     background: #33334C;

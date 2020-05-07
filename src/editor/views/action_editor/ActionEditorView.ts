@@ -1,6 +1,6 @@
 import { Point } from '../../../misc/geometry/shapes/Point';
 import { Registry } from '../../Registry';
-import { UpdateTask } from '../../services/UpdateServices';
+import { UpdateTask } from '../../../core/services/UpdateServices';
 import { calcOffsetFromDom, View } from '../View';
 import { CanvasCamera } from '../canvas/CanvasCamera';
 

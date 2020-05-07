@@ -1,7 +1,7 @@
 import { AbstractSettings } from './AbstractSettings';
-import { UpdateTask } from '../../../services/UpdateServices';
+import { UpdateTask } from '../../../../core/services/UpdateServices';
 import { MeshConcept } from '../../../models/concepts/MeshConcept';
-import { ServiceLocator } from '../../../services/ServiceLocator';
+import { ServiceLocator } from '../../../../core/services/ServiceLocator';
 import { Stores } from '../../../stores/Stores';
 import { Registry } from '../../../Registry';
 

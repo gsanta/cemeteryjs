@@ -1,5 +1,5 @@
 import { Registry } from '../../../Registry';
-import { UpdateTask } from '../../../services/UpdateServices';
+import { UpdateTask } from '../../../../core/services/UpdateServices';
 import { ConceptType } from '../../../models/concepts/Concept';
 import { MeshConcept } from '../../../models/concepts/MeshConcept';
 import { ModelConcept } from '../../../models/concepts/ModelConcept';

@@ -2,7 +2,7 @@ import * as React from "react";
 import { AppContext, AppContextType } from "../gui/Context";
 import { FullScreenExitIconComponent } from "../gui/icons/FullScreenExitIconComponent";
 import { FullScreenIconComponent } from "../gui/icons/FullScreenIconComponent";
-import { UpdateTask } from "../services/UpdateServices";
+import { UpdateTask } from "../../core/services/UpdateServices";
 import styled from 'styled-components';
 import { colors } from '../gui/styles';
 

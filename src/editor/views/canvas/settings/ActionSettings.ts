@@ -1,6 +1,6 @@
 import { ActionConcept } from '../../../models/concepts/ActionConcept';
 import { Registry } from '../../../Registry';
-import { UpdateTask } from '../../../services/UpdateServices';
+import { UpdateTask } from '../../../../core/services/UpdateServices';
 import { AbstractSettings } from './AbstractSettings';
 
 export enum ActionSettingsProps {

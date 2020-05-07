@@ -1,7 +1,7 @@
 
 
 import { ILifeCycleTrigger, LifeCycleEvent } from './ILifeCycleTrigger';
-import { ServiceLocator } from '../../../editor/services/ServiceLocator';
+import { ServiceLocator } from '../../../core/services/ServiceLocator';
 import { Registry } from '../../../editor/Registry';
 
 export class ResetTrigger implements ILifeCycleTrigger {

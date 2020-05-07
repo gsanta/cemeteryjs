@@ -3,7 +3,7 @@ import { PanIconComponent } from '../../../gui/icons/tools/PanIconComponent';
 import { ZoomInIconComponent } from '../../../gui/icons/tools/ZoomInIconComponent';
 import { ZoomOutIconComponent } from '../../../gui/icons/tools/ZoomOutIconComponent';
 import { RendererView } from '../RendererView';
-import { ToolType } from '../../../services/tools/Tool';
+import { ToolType } from '../../../../core/tools/Tool';
 import { AbstractToolbarComponent } from '../../AbstractToolbarComponent';
 
 export class RendererToolbarComponent extends AbstractToolbarComponent {

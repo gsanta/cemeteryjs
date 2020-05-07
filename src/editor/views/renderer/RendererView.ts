@@ -1,7 +1,7 @@
 import { Registry } from '../../Registry';
-import { GameService } from '../../services/GameService';
-import { Tool } from '../../services/tools/Tool';
-import { UpdateService } from '../../services/UpdateServices';
+import { GameService } from '../../../core/services/GameService';
+import { Tool } from '../../../core/tools/Tool';
+import { UpdateService } from '../../../core/services/UpdateServices';
 import { calcOffsetFromDom, View } from '../View';
 import { HelperMeshes } from './HelperMeshes';
 import { ICamera } from './ICamera';

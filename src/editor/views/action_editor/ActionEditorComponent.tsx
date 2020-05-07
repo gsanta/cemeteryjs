@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { colors } from '../../gui/styles';
 import { AppContext, AppContextType } from '../../gui/Context';
-import { WheelListener } from '../../services/WheelListener';
+import { WheelListener } from '../../../core/services/WheelListener';
 import { ActionEditorView } from './ActionEditorView';
 import { Concept } from '../../models/concepts/Concept';
 import { Feedback } from '../../models/feedbacks/Feedback';

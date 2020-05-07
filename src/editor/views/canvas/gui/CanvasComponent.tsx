@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import { AppContext, AppContextType } from '../../../gui/Context';
 import { colors } from '../../../gui/styles';
 import { WindowToolbarStyled } from '../../../gui/windows/WindowToolbar';
-import { PathMarkersComponent } from '../../../services/export/PathMarkersComponent';
+import { PathMarkersComponent } from '../../../../core/services/export/PathMarkersComponent';
 import { CanvasView } from '../CanvasView';
 import { CanvasToolbarComponent } from './CanvasToolbarComponent';
-import { WheelListener } from '../../../services/WheelListener';
+import { WheelListener } from '../../../../core/services/WheelListener';
 import { Concept } from '../../../models/concepts/Concept';
 import { Feedback } from '../../../models/feedbacks/Feedback';
 

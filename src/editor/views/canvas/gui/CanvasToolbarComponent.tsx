@@ -8,11 +8,11 @@ import { SelectIconComponent } from '../../../gui/icons/tools/SelectIconComponen
 import { UndoIconComponent } from '../../../gui/icons/tools/UndoIconComponent';
 import { ZoomInIconComponent } from '../../../gui/icons/tools/ZoomInIconComponent';
 import { ZoomOutIconComponent } from '../../../gui/icons/tools/ZoomOutIconComponent';
-import { ToolType } from '../../../services/tools/Tool';
-import { UpdateTask } from '../../../services/UpdateServices';
+import { ToolType } from '../../../../core/tools/Tool';
+import { UpdateTask } from '../../../../core/services/UpdateServices';
 import { AbstractToolbarComponent } from '../../AbstractToolbarComponent';
 import { CanvasView } from '../CanvasView';
-import { AbstractTool } from '../../../services/tools/AbstractTool';
+import { AbstractTool } from '../../../../core/tools/AbstractTool';
 
 export class CanvasToolbarComponent extends AbstractToolbarComponent {
 

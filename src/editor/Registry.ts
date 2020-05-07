@@ -1,4 +1,4 @@
-import { ServiceLocator } from "./services/ServiceLocator";
+import { ServiceLocator } from "../core/services/ServiceLocator";
 import { Stores } from "./stores/Stores";
 
 export class Registry {

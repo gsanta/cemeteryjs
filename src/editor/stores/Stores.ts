@@ -1,5 +1,5 @@
 import { LevelStore } from "./LevelStore";
-import { ViewService } from '../services/ViewService';
+import { ViewService } from '../../core/services/ViewService';
 import { CanvasStore } from "./CanvasStore";
 import { HoverStore } from "./HoverStore";
 import { SelectionStore } from "./SelectionStore";
