@@ -7,7 +7,7 @@ import { ServiceLocator } from '../../core/services/ServiceLocator';
 import { AbstractTool } from '../../core/tools/AbstractTool';
 import { Tool } from '../../core/tools/Tool';
 import { UpdateTask } from '../../core/services/UpdateServices';
-import { Stores } from '../stores/Stores';
+import { Stores } from '../../core/stores/Stores';
 import { AbstractSettings } from './canvas/settings/AbstractSettings';
 import { ICamera } from './renderer/ICamera';
 import { Registry } from '../Registry';

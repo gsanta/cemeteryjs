@@ -1,6 +1,6 @@
 import { Point } from "../../../misc/geometry/shapes/Point";
 import { ServiceLocator } from '../ServiceLocator';
-import { Stores } from "../../../editor/stores/Stores";
+import { Stores } from "../../stores/Stores";
 import { MousePointer } from "./MouseService";
 import { Concept } from "../../../editor/models/concepts/Concept";
 import { Feedback } from "../../../editor/models/feedbacks/Feedback";

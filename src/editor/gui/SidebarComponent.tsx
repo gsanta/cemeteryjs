@@ -7,8 +7,9 @@ import { FileSettingsComponent } from '../views/canvas/gui/settings/FileSettings
 import { LevelSettingsComponent } from '../views/canvas/gui/settings/LevelSettingsComponent';
 import { settingsFactory } from '../views/canvas/gui/settings/settingsFactory';
 import { GlobalSettingsComponent } from '../views/canvas/gui/settings/GlobalSettingsComponent';
-import { ActionSettingsComponent } from '../views/canvas/gui/settings/ActionSettingsComponent';
+import { ActionEditorSettingsComponent } from '../../plugins/action_editor/gui/ActionEditorSettingsComponent';
 import { LayoutSettingsComponent } from '../views/canvas/gui/settings/LayoutSettingsComponent';
+import { Layout } from '../../core/services/ViewService';
 
 export interface SidebarComponentProps {
     isEditorOpen: boolean;
@@ -30,36 +31,54 @@ export class SidebarComponent extends React.Component<SidebarComponentProps> {
         this.context.registry.services.update.addSettingsRepainter(() => this.forceUpdate());
     }
 
+    
     render(): JSX.Element {
+        //TODO refactor this
+        let layoutSettings: {title: string, body: JSX.Element}[];
+        
+        switch(this.context.registry.services.view.activeLayout.name) {
+            case Layout.SceneEditor:
+                layoutSettings = [
+                    {
+                        title: 'Level Settings',
+                        body: <LevelSettingsComponent/>
+                    },
+                    {
+                        title: 'Object Settings',
+                        body: settingsFactory(this.context.registry)
+                    },
+                    {
+                        title: 'Global Settings',
+                        body: <GlobalSettingsComponent editor={this.context.controllers}/>
+                    }
+                ]
+                break;
+            case Layout.ActionEditor:
+                layoutSettings = [
+                    {
+                        title: 'Action Settings',
+                        body: <ActionEditorSettingsComponent/>
+                    },
+                ]
+                break;
+        }
+        
         return (
             <SidebarStyled>
                 <AccordionComponent
-                    elements={[
-                        {
-                            title: 'File Settings',
-                            body: <FileSettingsComponent editor={this.context.controllers} {...this.props}/>
-                        },
-                        {
-                            title: 'Layout Settings',
-                            body: <LayoutSettingsComponent editor={this.context.controllers} {...this.props}/>
-                        },
-                        {
-                            title: 'Action Settings',
-                            body: <ActionSettingsComponent/>
-                        },
-                        {
-                            title: 'Level Settings',
-                            body: <LevelSettingsComponent/>
-                        },
-                        {
-                            title: 'Object Settings',
-                            body: settingsFactory(this.context.registry)
-                        },
-                        {
-                            title: 'Global Settings',
-                            body: <GlobalSettingsComponent editor={this.context.controllers}/>
-                        }
-                    ]}
+                    elements={
+                        [
+                            {
+                                title: 'File Settings',
+                                body: <FileSettingsComponent editor={this.context.controllers} {...this.props}/>
+                            },
+                            {
+                                title: 'Layout Settings',
+                                body: <LayoutSettingsComponent editor={this.context.controllers} {...this.props}/>
+                            },
+                            ...layoutSettings
+                        ]
+                    }
                 />
             </SidebarStyled>
         );

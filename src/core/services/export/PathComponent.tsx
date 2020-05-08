@@ -2,7 +2,7 @@ import * as React from 'react';
 import { colors } from '../../../editor/gui/styles';
 import { PathConcept } from '../../../editor/models/concepts/PathConcept';
 import { EditPoint } from '../../../editor/models/feedbacks/EditPoint';
-import { Stores } from '../../../editor/stores/Stores';
+import { Stores } from '../../stores/Stores';
 import { Concept } from '../../../editor/models/concepts/Concept';
 import { Feedback } from '../../../editor/models/feedbacks/Feedback';
 

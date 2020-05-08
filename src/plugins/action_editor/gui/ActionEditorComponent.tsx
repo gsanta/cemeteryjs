@@ -1,11 +1,11 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { colors } from '../../gui/styles';
-import { AppContext, AppContextType } from '../../gui/Context';
+import { colors } from '../../../editor/gui/styles';
+import { AppContext, AppContextType } from '../../../editor/gui/Context';
 import { WheelListener } from '../../../core/services/WheelListener';
-import { ActionEditorView } from './ActionEditorView';
-import { Concept } from '../../models/concepts/Concept';
-import { Feedback } from '../../models/feedbacks/Feedback';
+import { ActionEditorView } from '../ActionEditorView';
+import { Concept } from '../../../editor/models/concepts/Concept';
+import { Feedback } from '../../../editor/models/feedbacks/Feedback';
 
 const EditorComponentStyled = styled.div`
     width: 100%;
@@ -45,7 +45,6 @@ export class ActionEditorComponent extends React.Component {
         const unhover = (canvasItem: Concept | Feedback) => this.context.registry.services.mouse.unhover(canvasItem);
         
         const view = this.context.registry.services.view.getViewById<ActionEditorView>(ActionEditorView.id);
-        console.log('canvas render: ' + view.getActiveTool().cursor)
 
         return (
             <EditorComponentStyled id={view.getId()} style={{cursor: view.getActiveTool().cursor}}>

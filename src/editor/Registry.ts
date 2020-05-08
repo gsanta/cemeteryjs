@@ -1,5 +1,5 @@
 import { ServiceLocator } from "../core/services/ServiceLocator";
-import { Stores } from "./stores/Stores";
+import { Stores } from "../core/stores/Stores";
 
 export class Registry {
     stores: Stores;

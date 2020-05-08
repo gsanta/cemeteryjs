@@ -1,8 +1,9 @@
-import { Point } from '../../../misc/geometry/shapes/Point';
-import { Registry } from '../../Registry';
-import { UpdateTask } from '../../../core/services/UpdateServices';
-import { calcOffsetFromDom, View } from '../View';
-import { CanvasCamera } from '../canvas/CanvasCamera';
+import { Point } from '../../misc/geometry/shapes/Point';
+import { Registry } from '../../editor/Registry';
+import { UpdateTask } from '../../core/services/UpdateServices';
+import { calcOffsetFromDom, View } from '../../editor/views/View';
+import { CanvasCamera } from '../../editor/views/canvas/CanvasCamera';
+import { ActionSettings } from './settings/ActionEditorSettings';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -37,12 +38,15 @@ export class ActionEditorView extends View {
     
     private camera: CanvasCamera;
 
+    actionSettings: ActionSettings;
+
     constructor(registry: Registry) {
         super(registry);
 
         this.camera = cameraInitializer(ActionEditorView.id, registry);
 
         this.selectedTool = this.registry.services.tools.rectangle;
+        this.actionSettings = new ActionSettings(registry);
     }
 
     getId() {

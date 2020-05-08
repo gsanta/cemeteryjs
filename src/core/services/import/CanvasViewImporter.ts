@@ -1,6 +1,6 @@
 import { IViewImporter } from "./IViewImporter";
 import { CanvasView } from "../../../editor/views/canvas/CanvasView";
-import { Stores } from "../../../editor/stores/Stores";
+import { Stores } from "../../stores/Stores";
 import { Point } from "../../../misc/geometry/shapes/Point";
 import { CanvasCamera } from "../../../editor/views/canvas/CanvasCamera";
 import { Registry } from "../../../editor/Registry";

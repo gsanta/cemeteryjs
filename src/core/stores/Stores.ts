@@ -1,12 +1,12 @@
 import { LevelStore } from "./LevelStore";
-import { ViewService } from '../../core/services/ViewService';
+import { ViewService } from '../services/ViewService';
 import { CanvasStore } from "./CanvasStore";
 import { HoverStore } from "./HoverStore";
 import { SelectionStore } from "./SelectionStore";
-import { GameStore } from "../../game/models/stores/GameStore";
-import { MeshStore } from "../../game/models/stores/MeshStore";
+import { GameStore } from "./GameStore";
+import { MeshStore } from "./MeshStore";
 import { FeedbackStore } from "./FeedbackStore";
-import { Registry } from "../Registry";
+import { Registry } from "../../editor/Registry";
 import { ActionStore } from './ActionStore';
 
 export class Stores {

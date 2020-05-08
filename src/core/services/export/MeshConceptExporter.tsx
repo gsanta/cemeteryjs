@@ -1,6 +1,6 @@
 import { sort } from "../../../misc/geometry/utils/Functions";
 import { colors } from "../../../editor/gui/styles";
-import { Stores } from '../../../editor/stores/Stores';
+import { Stores } from '../../stores/Stores';
 import { Concept, ConceptType } from "../../../editor/models/concepts/Concept";
 import { MeshConcept } from "../../../editor/models/concepts/MeshConcept";
 import { IConceptExporter } from "./IConceptExporter";

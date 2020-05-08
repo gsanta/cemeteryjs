@@ -2,7 +2,7 @@ import { MeshSettingsComponent } from "./MeshSettingsComponent";
 import { PathSettingsComponent } from "./PathSettingsComponent";
 import styled from "styled-components";
 import * as React from 'react';
-import { Stores } from "../../../../stores/Stores";
+import { Stores } from "../../../../../core/stores/Stores";
 import { CanvasView } from '../../CanvasView';
 import { Registry } from "../../../../Registry";
 import { Concept, ConceptType } from "../../../../models/concepts/Concept";

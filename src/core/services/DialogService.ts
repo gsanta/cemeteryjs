@@ -1,7 +1,7 @@
 import { Registry } from "../../editor/Registry";
 import { AnimationSettings } from "../../editor/views/canvas/settings/AnimationSettings";
 import { UpdateTask } from "./UpdateServices";
-import { ActionSettings } from '../../editor/views/canvas/settings/ActionSettings';
+import { ActionSettings } from '../../plugins/action_editor/settings/ActionEditorSettings';
 import { ListActionsSettings } from '../../editor/views/canvas/settings/ListActionsSettings';
 
 export class DialogService {

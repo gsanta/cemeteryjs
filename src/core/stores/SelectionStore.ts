@@ -1,9 +1,9 @@
 import { without } from "../../misc/geometry/utils/Functions";
-import { Concept, ConceptType } from "../models/concepts/Concept";
-import { PathConcept } from "../models/concepts/PathConcept";
-import { Feedback, FeedbackType } from "../models/feedbacks/Feedback";
-import { EditPoint } from "../models/feedbacks/EditPoint";
-import { VisualConcept } from "../models/concepts/VisualConcept";
+import { Concept, ConceptType } from "../../editor/models/concepts/Concept";
+import { PathConcept } from "../../editor/models/concepts/PathConcept";
+import { Feedback, FeedbackType } from "../../editor/models/feedbacks/Feedback";
+import { EditPoint } from "../../editor/models/feedbacks/EditPoint";
+import { VisualConcept } from "../../editor/models/concepts/VisualConcept";
 
 
 export class SelectionStore {

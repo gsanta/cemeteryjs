@@ -2,7 +2,7 @@ import { IConceptImporter } from "./IConceptImporter";
 import { ConceptGroupJson } from "./ImportService";
 import { PathConcept } from "../../../editor/models/concepts/PathConcept";
 import { ConceptType } from "../../../editor/models/concepts/Concept";
-import { Stores } from "../../../editor/stores/Stores";
+import { Stores } from "../../stores/Stores";
 import { ModelConcept } from "../../../editor/models/concepts/ModelConcept";
 import { Registry } from "../../../editor/Registry";
 

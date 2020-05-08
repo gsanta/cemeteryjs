@@ -1,9 +1,9 @@
 import { Mesh, Vector3, Space, StandardMaterial, Texture, Scene } from 'babylonjs';
-import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
-import { MeshLoaderService } from '../../../core/services/MeshLoaderService';
-import { RectangleFactory } from '../../import/factories/RectangleFactory';
-import { Registry } from '../../../editor/Registry';
-import { MeshConcept } from '../../../editor/models/concepts/MeshConcept';
+import { Rectangle } from '../../misc/geometry/shapes/Rectangle';
+import { MeshLoaderService } from '../services/MeshLoaderService';
+import { RectangleFactory } from '../../game/import/factories/RectangleFactory';
+import { Registry } from '../../editor/Registry';
+import { MeshConcept } from '../../editor/models/concepts/MeshConcept';
 
 export class MeshStore {
     private basePath = 'assets/models/';

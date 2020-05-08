@@ -1,4 +1,4 @@
-import { Stores } from '../../../editor/stores/Stores';
+import { Stores } from '../../stores/Stores';
 import { Concept, ConceptType } from "../../../editor/models/concepts/Concept";
 import { AnimationConcept, ElementalAnimation } from "../../../editor/models/meta/AnimationConcept";
 import { IConceptExporter } from "./IConceptExporter";

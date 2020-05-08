@@ -5,7 +5,7 @@ import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
 import { ConceptGroupJson } from './ImportService';
 import { MeshConcept } from '../../../editor/models/concepts/MeshConcept';
 import { ConceptType } from '../../../editor/models/concepts/Concept';
-import { Stores } from '../../../editor/stores/Stores';
+import { Stores } from '../../stores/Stores';
 import { Registry } from '../../../editor/Registry';
 
 export interface RectJson {

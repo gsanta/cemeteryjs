@@ -2,15 +2,15 @@ import { Point } from "../../misc/geometry/shapes/Point";
 import { Polygon } from "../../misc/geometry/shapes/Polygon";
 import { Rectangle } from "../../misc/geometry/shapes/Rectangle";
 import { without } from "../../misc/geometry/utils/Functions";
-import { Concept, ConceptType } from "../models/concepts/Concept";
-import { MeshConcept } from "../models/concepts/MeshConcept";
-import { ModelConcept } from "../models/concepts/ModelConcept";
-import { PathConcept } from "../models/concepts/PathConcept";
-import { VisualConcept } from "../models/concepts/VisualConcept";
-import { Feedback } from "../models/feedbacks/Feedback";
-import { AnimationConcept } from "../models/meta/AnimationConcept";
-import { MetaConcept } from "../models/meta/MetaConcept";
-import { Registry } from "../Registry";
+import { Concept, ConceptType } from "../../editor/models/concepts/Concept";
+import { MeshConcept } from "../../editor/models/concepts/MeshConcept";
+import { ModelConcept } from "../../editor/models/concepts/ModelConcept";
+import { PathConcept } from "../../editor/models/concepts/PathConcept";
+import { VisualConcept } from "../../editor/models/concepts/VisualConcept";
+import { Feedback } from "../../editor/models/feedbacks/Feedback";
+import { AnimationConcept } from "../../editor/models/meta/AnimationConcept";
+import { MetaConcept } from "../../editor/models/meta/MetaConcept";
+import { Registry } from "../../editor/Registry";
 import { AbstractStore } from './AbstractStore';
 
 export function isFeedback(type: string) {

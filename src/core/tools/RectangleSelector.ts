@@ -3,7 +3,7 @@ import { Point } from "../../misc/geometry/shapes/Point";
 import { MousePointer } from "../services/input/MouseService";
 import { CanvasView } from "../../editor/views/canvas/CanvasView";
 import { RectSelectFeedback } from "../../editor/models/feedbacks/RectSelectFeedback";
-import { Stores } from "../../editor/stores/Stores";
+import { Stores } from "../stores/Stores";
 import { Registry } from "../../editor/Registry";
 
 export class RectangleSelector {

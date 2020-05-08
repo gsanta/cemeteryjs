@@ -1,22 +1,29 @@
-import { ActionConcept } from '../models/concepts/ActionConcept';
-import { Registry } from '../Registry';
+import { ActionConcept } from '../../editor/models/concepts/ActionConcept';
+import { Registry } from '../../editor/Registry';
 import { AbstractStore } from './AbstractStore';
+
+export enum ActionType {
+    Keyboard = 'Keyboard',
+    Move = 'Move',
+    Add = 'Add',
+    Mesh = 'Mesh'
+}
 
 export class ActionStore extends AbstractStore {
     actions: ActionConcept[] = [];
-    triggerTypes: string[] = [
-        'Area intersection'
-    ];
-
-    resultTypes: string[] = [
-        'Change level'
-    ]
+    actionTypes: string[] = [];
 
     private registry: Registry;
 
     constructor(registry: Registry) {
         super();
         this.registry = registry;
+
+        for (let item in ActionType) {
+            if (isNaN(Number(item))) {
+                this.actionTypes.push(item);
+            }
+        }
     }
 
     addAction(action: ActionConcept) {

@@ -2,7 +2,7 @@ import { Point } from "../../misc/geometry/shapes/Point";
 import { IKeyboardEvent, Keyboard } from "../services/input/KeyboardService";
 import { ServiceLocator } from '../services/ServiceLocator';
 import { UpdateTask } from "../services/UpdateServices";
-import { Stores } from "../../editor/stores/Stores";
+import { Stores } from "../stores/Stores";
 import { CanvasView } from "../../editor/views/canvas/CanvasView";
 import { ConceptType } from "../../editor/models/concepts/Concept";
 import { PathConcept } from "../../editor/models/concepts/PathConcept";

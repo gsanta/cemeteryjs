@@ -1,6 +1,6 @@
 import { ServiceLocator } from '../services/ServiceLocator';
 import { UpdateTask } from '../services/UpdateServices';
-import { Stores } from '../../editor/stores/Stores';
+import { Stores } from '../stores/Stores';
 import { CanvasView } from '../../editor/views/canvas/CanvasView';
 import { Concept } from '../../editor/models/concepts/Concept';
 import { Feedback } from '../../editor/models/feedbacks/Feedback';

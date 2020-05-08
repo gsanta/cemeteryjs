@@ -1,4 +1,4 @@
-import { CanvasStore } from "../../editor/stores/CanvasStore";
+import { CanvasStore } from "../stores/CanvasStore";
 import { ConceptType, Concept } from "../../editor/models/concepts/Concept";
 import { maxBy } from "../../misc/geometry/utils/Functions";
 

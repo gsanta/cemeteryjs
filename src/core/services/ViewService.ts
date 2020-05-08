@@ -2,13 +2,18 @@ import { View } from '../../editor/views/View';
 import { Registry } from '../../editor/Registry';
 import { CanvasView } from '../../editor/views/canvas/CanvasView';
 import { RendererView } from '../../editor/views/renderer/RendererView';
-import { ActionEditorView } from '../../editor/views/action_editor/ActionEditorView';
+import { ActionEditorView } from '../../plugins/action_editor/ActionEditorView';
 
 export interface LayoutConfig {
     sizes: number[];
     ids: string[];
     minSize: number[];
     name?: string;
+}
+
+export enum Layout {
+    SceneEditor = 'Scene Editor',
+    ActionEditor = 'Action Editor'
 }
 
 export class ViewService {
@@ -37,14 +42,14 @@ export class ViewService {
             {
                 sizes: [12, 44, 44],
                 minSize: [230, 300, 300],
-                ids: ['#toolbar', CanvasView.id, RendererView.id],
-                name: 'Scene Editor'
+                ids: ['toolbar', CanvasView.id, RendererView.id],
+                name: Layout.SceneEditor
             },
             {
                 sizes: [12, 88],
                 minSize: [230, 500],
-                ids: ['#toolbar', ActionEditorView.id],
-                name: 'Action Editor'
+                ids: ['toolbar', ActionEditorView.id],
+                name: Layout.ActionEditor
             }
         ];
 

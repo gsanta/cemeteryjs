@@ -1,13 +1,23 @@
-import { MetaConcept } from "../meta/MetaConcept";
 import { ConceptType } from "./Concept";
+import { VisualConcept } from "./VisualConcept";
+import { Rectangle } from "../../../misc/geometry/shapes/Rectangle";
+import { EditPoint } from "../feedbacks/EditPoint";
+import { Point } from "../../../misc/geometry/shapes/Point";
 
-export class ActionConcept implements MetaConcept {
-    type = ConceptType.ModelConcept;
-
+export class ActionConcept implements VisualConcept {
+    type = ConceptType.ActionConcept;
     id: string;
-    trigger: string;
-    sourceConceptId: string;
-    targetConceptId: string;
-    result: string;
-    resultData: string;
+    
+    actionType: string;
+    inputs: ActionConcept[];
+    outputs: ActionConcept[];
+
+    dimensions: Rectangle;
+
+    move(point: Point) {
+        this.dimensions = this.dimensions.translate(point);
+    }
+    editPoints = [];
+    deleteEditPoint(editPoint: EditPoint): void {}
+    moveEditPoint(editPoint: EditPoint, delta: Point): void {}
 }

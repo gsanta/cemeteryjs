@@ -3,7 +3,7 @@ import { ConceptType } from '../../../editor/models/concepts/Concept';
 import { AnimationConcept, AnimationCondition } from '../../../editor/models/meta/AnimationConcept';
 import { IConceptImporter } from './IConceptImporter';
 import { ConceptGroupJson } from './ImportService';
-import { Stores } from '../../../editor/stores/Stores';
+import { Stores } from '../../stores/Stores';
 import { Registry } from '../../../editor/Registry';
 
 export interface AnimationJson {

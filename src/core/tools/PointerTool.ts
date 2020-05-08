@@ -1,12 +1,12 @@
 import { ServiceLocator } from '../services/ServiceLocator';
 import { UpdateTask } from "../services/UpdateServices";
-import { Stores } from '../../editor/stores/Stores';
+import { Stores } from '../stores/Stores';
 import { AbstractTool } from "./AbstractTool";
 import { ToolType } from "./Tool";
 import { Concept } from '../../editor/models/concepts/Concept';
 import { Feedback } from '../../editor/models/feedbacks/Feedback';
 import { VisualConcept } from '../../editor/models/concepts/VisualConcept';
-import { isFeedback, isConcept } from '../../editor/stores/CanvasStore';
+import { isFeedback, isConcept } from '../stores/CanvasStore';
 import { Registry } from '../../editor/Registry';
 
 export class PointerTool extends AbstractTool {

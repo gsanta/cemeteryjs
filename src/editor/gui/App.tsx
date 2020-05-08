@@ -10,7 +10,6 @@ import { View } from '../views/View';
 import { viewFactory } from '../ViewFactory';
 import { RendererView } from '../views/renderer/RendererView';
 import { AnimationDialogComponent } from './dialogs/AnimationDialogComponent';
-import { ActionDialogComponent } from './dialogs/ActionDialogComponent';
 import { ListActionsDialogComponent } from './dialogs/ListActionsDialogComponent';
 
 export interface AppState {
@@ -51,12 +50,12 @@ export class App extends React.Component<{}, AppState> {
     }
 
     componentDidUpdate() {
-        // if (this.hasCanvasVisibilityChanged()) {
+        if (this.context.registry.services.view.visibilityDirty) {
             this.split.destroy();
             this.updateCanvasVisibility();
-            this.resize();
-        // }
-    }
+            this.context.registry.services.view.visibilityDirty = false;
+        }
+    }e
     
     render() {
         const fullScreen = this.context.registry.services.view.getFullScreen();
@@ -74,7 +73,6 @@ export class App extends React.Component<{}, AppState> {
                 </div>
                 {this.context.controllers.isLoading ? <SpinnerOverlayComponent/> : null}
                 <AnimationDialogComponent settings={this.context.registry.services.settings.animationSettings}/>
-                <ActionDialogComponent settings={this.context.registry.services.settings.actionSettings}/>
                 <ListActionsDialogComponent/>
             </div>
         );
@@ -86,7 +84,7 @@ export class App extends React.Component<{}, AppState> {
     }
 
     private renderViews(): JSX.Element[] {
-        return this.context.registry.services.view.getActiveViews().map(canvas => <div key={canvas.getId()} id={`${canvas.getId()}-split`}>{viewFactory(canvas)}</div>);
+        return this.context.registry.services.view.getActiveViews().map(canvas => viewFactory(canvas));
     }
 
     private resize() {
@@ -94,9 +92,9 @@ export class App extends React.Component<{}, AppState> {
     }
 
     private updateCanvasVisibility() {
-        const config = this.context.registry.services.view.getViewConfigs();
+        const config = this.context.registry.services.view.activeLayout;
 
-        this.split = Split(config.ids,
+        this.split = Split(config.ids.map(id => `#${id}`),
             {
                 sizes: config.sizes,
                 minSize: config.minSize,
