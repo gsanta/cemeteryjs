@@ -23,20 +23,29 @@ export class ActionEditorSettingsComponent extends React.Component {
     }
 
     renderActionTypes() {
+        const view = this.context.registry.services.view.getViewById(ActionEditorView.id);
         const settings = this.context.registry.services.view.getViewById<ActionEditorView>(ActionEditorView.id).actionSettings;
 
         const actionTypes = settings.getVal<string[]>(ActionSettingsProps.ActionTypes);
         
-        return actionTypes.map(type => <ActionButton type={type}/>);
+        return actionTypes.map(type => (
+            <ActionButton 
+                type={type} 
+                onDragStart={() => view.setPriorityTool(this.context.registry.services.tools.dragAndDrop)}
+                onDragEnd={() => this.context.registry.services.tools.dragAndDrop.up()}
+            />
+        ));
     }
 }
 
-const ActionButton = (props: {type: string}) => {
+const ActionButton = (props: {type: string, onDragStart: () => void, onDragEnd: () => void}) => {
     const [{isDragging}, drag] = useDrag({
         item: { type: props.type },
             collect: monitor => ({
                 isDragging: !!monitor.isDragging(),
             }),
+            begin: () => props.onDragStart(),
+            end: () => props.onDragEnd()
       })
     
     return (

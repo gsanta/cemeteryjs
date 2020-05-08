@@ -77,6 +77,7 @@ export abstract class View {
         if (this.priorityTool !== priorityTool) {
             this.getActiveTool().leave();
             this.priorityTool = priorityTool;
+            this.priorityTool.select();
             this.registry.services.update.runImmediately(UpdateTask.RepaintSettings);
         }
     }

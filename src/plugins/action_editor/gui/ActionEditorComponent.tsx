@@ -31,7 +31,7 @@ const DropLayerStyled = styled.div`
     width: 100%;
     height: 100%;
     background: transparent;
-    pointer-events: ${(props: {isOver: boolean}) => props.isOver ? 'none' : 'auto'};
+    pointer-events: ${(props: {isDragging: boolean}) => props.isDragging ? 'auto' : 'none'};
     position: absolute;
     top: 0;
     left: 0;
@@ -58,11 +58,11 @@ export class ActionEditorComponent extends React.Component {
         
         const view = this.context.registry.services.view.getViewById<ActionEditorView>(ActionEditorView.id);
 
-        const dropLayer = this.context.registry.services.tools.dragAndDrop ? <DropLayer/> : null;
+        // const dropLayer = ?  : null;
 
         return (
             <EditorComponentStyled id={view.getId()} style={{cursor: view.getActiveTool().cursor}}>
-                {dropLayer}
+                <DropLayer isDragging={this.context.registry.services.tools.dragAndDrop.isDragging}/>
                 <CanvasComponentStyled
                     tabIndex={0}
                     viewBox={view.getCamera().getViewBoxAsString()}
@@ -76,7 +76,7 @@ export class ActionEditorComponent extends React.Component {
                     // onMouseOver={() => view.over()}
                     // onMouseOut={() => view.out()}
                     // onWheel={(e) => this.wheelListener.onWheel(e.nativeEvent)}
-                    onMouseUp={() => alert('onclick')}
+                    onMouseUp={() => alert('mouseup')}
                 >
                 </CanvasComponentStyled>
             </EditorComponentStyled>
@@ -84,14 +84,13 @@ export class ActionEditorComponent extends React.Component {
     }
 }
 
-const DropLayer = () => {
+const DropLayer = (props: {isDragging: boolean}) => {
 	const [{ isOver }, drop] = useDrop({
 		accept: [ActionType.Add],
-		drop: () => alert('dropped'),
 		collect: monitor => ({
 			isOver: !!monitor.isOver(),
 		}),
 	})
 
-    return  <DropLayerStyled ref={drop} className='drop-layer' isOver={isOver}/>
+    return  <DropLayerStyled ref={drop} className='drop-layer' {...props}/>
 }
