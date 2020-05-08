@@ -8,6 +8,7 @@ export enum ToolType {
     SELECT = 'select',
     MOVE = 'move',
     Pan = 'pan',
+    DragAndDrop = 'drag-and-drop',
     Zoom = 'zoom',
     PATH = 'arrow',
     Pointer = 'pointer',

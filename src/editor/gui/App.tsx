@@ -11,6 +11,8 @@ import { viewFactory } from '../ViewFactory';
 import { RendererView } from '../views/renderer/RendererView';
 import { AnimationDialogComponent } from './dialogs/AnimationDialogComponent';
 import { ListActionsDialogComponent } from './dialogs/ListActionsDialogComponent';
+import { DndProvider } from 'react-dnd';
+import Backend from 'react-dnd-html5-backend';
 
 export interface AppState {
     isDialogOpen: boolean;
@@ -67,13 +69,15 @@ export class App extends React.Component<{}, AppState> {
 
         return (
             <div className="style-nightshifs">
-                <div className="main-content">
-                    {toolbar}
-                    {fullScreen ? this.renderFullScreenCanvas() : this.renderViews()}
-                </div>
-                {this.context.controllers.isLoading ? <SpinnerOverlayComponent/> : null}
-                <AnimationDialogComponent settings={this.context.registry.services.settings.animationSettings}/>
-                <ListActionsDialogComponent/>
+                <DndProvider backend={Backend}>
+                    <div className="main-content">
+                        {toolbar}
+                        {fullScreen ? this.renderFullScreenCanvas() : this.renderViews()}
+                    </div>
+                    {this.context.controllers.isLoading ? <SpinnerOverlayComponent/> : null}
+                    <AnimationDialogComponent settings={this.context.registry.services.settings.animationSettings}/>
+                    <ListActionsDialogComponent/>
+                </DndProvider>
             </div>
         );
     }

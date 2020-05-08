@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { AppContext, AppContextType } from '../../../editor/gui/Context';
 import { ActionEditorView } from '../ActionEditorView';
 import { ActionSettingsProps } from '../settings/ActionEditorSettings';
-import { useDrop } from 'react-dnd';
+import { useDrop, useDrag } from 'react-dnd';
 
 const ActionButtonStyled = styled.div`
     border: 1px solid white;
@@ -27,24 +27,21 @@ export class ActionEditorSettingsComponent extends React.Component {
 
         const actionTypes = settings.getVal<string[]>(ActionSettingsProps.ActionTypes);
         
-        return actionTypes.map(type => (
-            <ActionButtonStyled>
-                {type}
-            </ActionButtonStyled>
-        ));
+        return actionTypes.map(type => <ActionButton type={type}/>);
     }
 }
 
-// const ActionButton = () => {
-//     const [{ isOver }, drop] = useDrop({
-// 		accept: ItemTypes.KNIGHT,
-// 		drop: () => moveKnight(x, y),
-// 		collect: monitor => ({
-// 			isOver: !!monitor.isOver(),
-// 		}),
-//     })
+const ActionButton = (props: {type: string}) => {
+    const [{isDragging}, drag] = useDrag({
+        item: { type: props.type },
+            collect: monitor => ({
+                isDragging: !!monitor.isDragging(),
+            }),
+      })
     
-//     return (
-
-//     )
-// }
+    return (
+        <ActionButtonStyled ref={drag}>
+            {props.type}
+        </ActionButtonStyled>
+    )
+}

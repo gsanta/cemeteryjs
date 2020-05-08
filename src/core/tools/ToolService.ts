@@ -9,6 +9,7 @@ import { CameraRotationTool } from "./CameraRotationTool";
 import { Registry } from "../../editor/Registry";
 import { GamepadTool } from "./GamepadTool";
 import { PanTool } from "./PanTool";
+import { DraggAndDropTool } from "./DragAndDropTool";
 
 export class ToolService {
     zoom: ZoomTool;
@@ -20,6 +21,7 @@ export class ToolService {
     cameraRotate: CameraRotationTool;
     gamepad: GamepadTool;
     pan: PanTool;
+    dragAndDrop: DraggAndDropTool;
 
     tools: Tool[] = [];
 
@@ -36,6 +38,7 @@ export class ToolService {
         this.cameraRotate = new CameraRotationTool(this.registry);
         this.gamepad = new GamepadTool(this.registry);
         this.pan = new PanTool(this.registry);
+        this.dragAndDrop = new DraggAndDropTool(this.registry);
 
         this.tools.push(this.zoom);
         this.tools.push(this.delete);
@@ -46,5 +49,6 @@ export class ToolService {
         this.tools.push(this.cameraRotate);
         this.tools.push(this.gamepad);
         this.tools.push(this.pan);
+        this.tools.push(this.dragAndDrop);
     }
 }
