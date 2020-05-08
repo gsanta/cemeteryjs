@@ -4,6 +4,7 @@ import { AppContext, AppContextType } from '../../../editor/gui/Context';
 import { ActionEditorView } from '../ActionEditorView';
 import { ActionSettingsProps } from '../settings/ActionEditorSettings';
 import { useDrop, useDrag } from 'react-dnd';
+import { Point } from '../../../misc/geometry/shapes/Point';
 
 const ActionButtonStyled = styled.div`
     border: 1px solid white;
@@ -28,13 +29,19 @@ export class ActionEditorSettingsComponent extends React.Component {
 
         const actionTypes = settings.getVal<string[]>(ActionSettingsProps.ActionTypes);
         
-        return actionTypes.map(type => (
-            <ActionButton 
-                type={type} 
-                onDragStart={() => view.setPriorityTool(this.context.registry.services.tools.dragAndDrop)}
-                onDragEnd={() => this.context.registry.services.tools.dragAndDrop.up()}
-            />
-        ));
+        return actionTypes.map(type => {
+            return (
+                <ActionButton 
+                    type={type} 
+                    onDragStart={() => view.setPriorityTool(this.context.registry.services.tools.dragAndDrop)}
+                    onDragEnd={() => {
+                        const currentMousePos = this.context.registry.services.pointer.pointer.curr;
+                        this.context.registry.services.mouse.onMouseUp({x: currentMousePos.x, y: currentMousePos.y, which: 1} as MouseEvent)
+                    }}
+                    // }}
+                />
+            );
+        });
     }
 }
 
@@ -45,7 +52,7 @@ const ActionButton = (props: {type: string, onDragStart: () => void, onDragEnd: 
                 isDragging: !!monitor.isDragging(),
             }),
             begin: () => props.onDragStart(),
-            end: () => props.onDragEnd()
+            end: (item, monitor) => props.onDragEnd()
       })
     
     return (

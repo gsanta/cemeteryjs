@@ -8,6 +8,7 @@ import { Concept } from '../../../editor/models/concepts/Concept';
 import { Feedback } from '../../../editor/models/feedbacks/Feedback';
 import { useDrop } from 'react-dnd';
 import { ActionType } from '../../../core/stores/ActionStore';
+import { Point } from '../../../misc/geometry/shapes/Point';
 
 const EditorComponentStyled = styled.div`
     width: 100%;
@@ -31,7 +32,7 @@ const DropLayerStyled = styled.div`
     width: 100%;
     height: 100%;
     background: transparent;
-    pointer-events: ${(props: {isDragging: boolean}) => props.isDragging ? 'auto' : 'none'};
+    pointer-events: ${(props: {isDragging: boolean}) => props.isDragging ? 'auto' : 'auto'};
     position: absolute;
     top: 0;
     left: 0;
@@ -62,7 +63,11 @@ export class ActionEditorComponent extends React.Component {
 
         return (
             <EditorComponentStyled id={view.getId()} style={{cursor: view.getActiveTool().cursor}}>
-                <DropLayer isDragging={this.context.registry.services.tools.dragAndDrop.isDragging}/>
+                <DropLayer 
+                    isDragging={this.context.registry.services.tools.dragAndDrop.isDragging}
+                    onDrop={p => {}}
+                    onMouseMove={(e) => this.context.registry.services.mouse.onMouseMove(e)}
+                />
                 <CanvasComponentStyled
                     tabIndex={0}
                     viewBox={view.getCamera().getViewBoxAsString()}
@@ -76,7 +81,7 @@ export class ActionEditorComponent extends React.Component {
                     // onMouseOver={() => view.over()}
                     // onMouseOut={() => view.out()}
                     // onWheel={(e) => this.wheelListener.onWheel(e.nativeEvent)}
-                    onMouseUp={() => alert('mouseup')}
+                    // onMouseUp={() => alert('mouseup')}
                 >
                 </CanvasComponentStyled>
             </EditorComponentStyled>
@@ -84,13 +89,14 @@ export class ActionEditorComponent extends React.Component {
     }
 }
 
-const DropLayer = (props: {isDragging: boolean}) => {
+const DropLayer = (props: {isDragging: boolean, onDrop: (point: Point) => void, onMouseMove: (e: MouseEvent) => void}) => {
 	const [{ isOver }, drop] = useDrop({
-		accept: [ActionType.Add],
+        accept: [ActionType.Add],
+        drop: (item, monitor) => props.onDrop(new Point(monitor.getClientOffset().x, monitor.getClientOffset().y)), 
 		collect: monitor => ({
 			isOver: !!monitor.isOver(),
 		}),
 	})
 
-    return  <DropLayerStyled ref={drop} className='drop-layer' {...props}/>
+    return  <DropLayerStyled onMouseMove={(e) => props.onMouseMove(e.nativeEvent)} ref={drop} className='drop-layer' isDragging={props.isDragging}/>
 }
