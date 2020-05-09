@@ -65,8 +65,10 @@ export class ActionEditorComponent extends React.Component {
             <EditorComponentStyled id={view.getId()} style={{cursor: view.getActiveTool().cursor}}>
                 <DropLayer 
                     isDragging={this.context.registry.services.tools.dragAndDrop.isDragging}
-                    onDrop={p => {}}
+                    onDrop={p => this.context.registry.services.mouse.onMouseUp({x: p.x, y: p.y, which: 1} as MouseEvent)}
                     onMouseMove={(e) => this.context.registry.services.mouse.onMouseMove(e)}
+                    onMouseOver={() => view.over()}
+                    onMouseOut={() => view.out()}
                 />
                 <CanvasComponentStyled
                     tabIndex={0}
@@ -78,18 +80,27 @@ export class ActionEditorComponent extends React.Component {
                     // onMouseLeave={(e) => this.context.registry.services.mouse.onMouseOut(e.nativeEvent)}
                     // onKeyDown={e => this.context.registry.services.keyboard.onKeyDown(e.nativeEvent)}
                     // onKeyUp={e => this.context.registry.services.keyboard.onKeyUp(e.nativeEvent)}
-                    // onMouseOver={() => view.over()}
+                    onMouseOver={() => view.over()}
                     // onMouseOut={() => view.out()}
                     // onWheel={(e) => this.wheelListener.onWheel(e.nativeEvent)}
                     // onMouseUp={() => alert('mouseup')}
                 >
+                    {this.context.registry.services.export.actionConceptExporter.export(hover, unhover)}
                 </CanvasComponentStyled>
             </EditorComponentStyled>
         );
     }
 }
 
-const DropLayer = (props: {isDragging: boolean, onDrop: (point: Point) => void, onMouseMove: (e: MouseEvent) => void}) => {
+interface DropLayerProps {
+    onMouseOver: () => void;
+    onMouseOut: () => void;
+    onMouseMove: (e: MouseEvent) => void;
+    onDrop: (point: Point) => void;
+    isDragging: boolean;
+}
+
+const DropLayer = (props: DropLayerProps) => {
 	const [{ isOver }, drop] = useDrop({
         accept: [ActionType.Add],
         drop: (item, monitor) => props.onDrop(new Point(monitor.getClientOffset().x, monitor.getClientOffset().y)), 
@@ -98,5 +109,14 @@ const DropLayer = (props: {isDragging: boolean, onDrop: (point: Point) => void, 
 		}),
 	})
 
-    return  <DropLayerStyled onMouseMove={(e) => props.onMouseMove(e.nativeEvent)} ref={drop} className='drop-layer' isDragging={props.isDragging}/>
+    return  (
+        <DropLayerStyled
+            onMouseMove={(e) => props.onMouseMove(e.nativeEvent)}
+            onMouseOver={() => props.onMouseOver()}
+            onMouseOut={() => props.onMouseOut()}
+            ref={drop}
+            className='drop-layer'
+            isDragging={props.isDragging}
+        />
+    );
 }

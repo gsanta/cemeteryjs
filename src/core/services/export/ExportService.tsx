@@ -2,6 +2,7 @@ import { Registry } from '../../../editor/Registry';
 import { AnimationConceptExporter } from './AnimationConceptExporter';
 import { IConceptExporter } from './IConceptExporter';
 import { MeshConceptExporter } from './MeshConceptExporter';
+import { ActionConceptExporter } from './ActionConceptExporter';
 import { ModelConceptExporter } from './ModelConceptExporter';
 import { PathConceptExporter } from './PathConceptExporter';
 import ReactDOMServer = require('react-dom/server');
@@ -16,9 +17,24 @@ export class ExportService {
 
     private registry: Registry;
 
+    meshConceptExporter: MeshConceptExporter;
+    pathConceptExporter: PathConceptExporter;
+    actionConceptExporter: ActionConceptExporter;
+
     constructor(registry: Registry) {
         this.registry = registry;
-        this.conceptExporters = [new ModelConceptExporter(registry), new MeshConceptExporter(registry), new PathConceptExporter(registry), new AnimationConceptExporter(registry)];
+
+        this.meshConceptExporter = new MeshConceptExporter(registry);
+        this.pathConceptExporter = new PathConceptExporter(registry);
+        this.actionConceptExporter = new ActionConceptExporter(registry);
+
+        this.conceptExporters = [
+            new ModelConceptExporter(registry),
+            this.meshConceptExporter,
+            this.pathConceptExporter,
+            new AnimationConceptExporter(registry),
+            this.actionConceptExporter
+        ];
     }
 
     export(): string {

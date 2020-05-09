@@ -71,7 +71,8 @@ export class CanvasComponent extends React.Component {
                     <defs>
                         <PathMarkersComponent/>
                     </defs>
-                    {this.context.registry.services.export.conceptExporters.map(exporter => exporter.export(hover, unhover))}
+                    {this.context.registry.services.export.meshConceptExporter.export(hover, unhover)}
+                    {this.context.registry.services.export.pathConceptExporter.export(hover, unhover)}
                     {this.renderFeedbacks()}
                 </CanvasComponentStyled>
             </EditorComponentStyled>

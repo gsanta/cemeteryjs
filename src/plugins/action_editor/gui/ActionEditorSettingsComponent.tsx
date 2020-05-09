@@ -36,7 +36,7 @@ export class ActionEditorSettingsComponent extends React.Component {
                     onDragStart={() => view.setPriorityTool(this.context.registry.services.tools.dragAndDrop)}
                     onDragEnd={() => {
                         const currentMousePos = this.context.registry.services.pointer.pointer.curr;
-                        this.context.registry.services.mouse.onMouseUp({x: currentMousePos.x, y: currentMousePos.y, which: 1} as MouseEvent)
+                        // this.context.registry.services.mouse.onMouseUp({x: currentMousePos.x, y: currentMousePos.y, which: 1} as MouseEvent)
                     }}
                     // }}
                 />

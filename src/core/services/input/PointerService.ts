@@ -64,6 +64,11 @@ export class PointerService {
     }
 
     pointerUp(e: IPointerEvent): void {
+        this.pointer.prev = this.pointer.curr;
+        this.pointer.curr = this.getCanvasPoint(e.pointers[0].pos);
+        this.pointer.prevScreen = this.pointer.currScreen;
+        this.pointer.currScreen =  this.getScreenPoint(e.pointers[0].pos);
+
         if (this.isDrag) {
             this.registry.services.view.getHoveredView().getActiveTool().draggedUp();
         } else {
