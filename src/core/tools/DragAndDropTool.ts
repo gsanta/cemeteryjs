@@ -18,8 +18,13 @@ export class DragAndDropTool extends AbstractTool {
 
     select() {
         this.isDragging = true;
-        this.registry.services.update.scheduleTasks(UpdateTask.All);
+        this.registry.services.update.runImmediately(UpdateTask.RepaintActiveView);
     }
+
+    deselect() {
+        this.isDragging = false;
+    }
+
 
     up() {
         this.isDragging = false;
@@ -29,7 +34,7 @@ export class DragAndDropTool extends AbstractTool {
         const bottomRight = topLeft.clone().add(new Point(200, 100));
         action.dimensions = new Rectangle(topLeft, bottomRight);
         this.registry.stores.actionStore.addAction(action);
-        this.registry.services.view.getHoveredView().removePriorityTool(this);
+        // this.registry.services.view.getHoveredView().removePriorityTool(this);
         this.registry.services.update.scheduleTasks(UpdateTask.RepaintActiveView);
     }
 }

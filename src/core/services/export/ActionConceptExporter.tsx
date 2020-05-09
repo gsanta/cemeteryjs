@@ -35,6 +35,7 @@ export class ActionConceptExporter implements IConceptExporter {
                 data-wg-name={item.id}
             >
                 {this.renderRect(item)}
+                {this.renderContent(item)}
             </g>
         )
     }
@@ -52,5 +53,23 @@ export class ActionConceptExporter implements IConceptExporter {
                 stroke={stroke}
             />
         );
+    }
+
+    private renderContent(item: ActionConcept) {
+        return (
+            <foreignObject
+                key={`${item.id}-content`}
+                x={`0`}
+                y={`0`}
+                width={`${item.dimensions.getWidth()}px`}
+                height={`${item.dimensions.getHeight()}px`}
+            >
+                <select>
+                    <option>Option 1</option>
+                    <option>Option 2</option>
+                </select>
+
+            </foreignObject>
+        )
     }
 }

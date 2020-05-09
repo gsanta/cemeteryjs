@@ -16,8 +16,13 @@ export class ActionEditorSettingsComponent extends React.Component {
     context: AppContextType;
 
     render() {
+        const view = this.context.registry.services.view.getViewById(ActionEditorView.id);
+
         return (
-            <div>
+            <div 
+                onMouseOver={() => view.setPriorityTool(this.context.registry.services.tools.dragAndDrop)}
+                onMouseOut={() => view.removePriorityTool(this.context.registry.services.tools.dragAndDrop)}
+            >
                 {this.renderActionTypes()}
             </div>
         );
@@ -33,7 +38,7 @@ export class ActionEditorSettingsComponent extends React.Component {
             return (
                 <ActionButton 
                     type={type} 
-                    onDragStart={() => view.setPriorityTool(this.context.registry.services.tools.dragAndDrop)}
+                    onDragStart={() => undefined/*view.setPriorityTool(this.context.registry.services.tools.dragAndDrop)*/}
                     onDragEnd={() => {
                         const currentMousePos = this.context.registry.services.pointer.pointer.curr;
                         // this.context.registry.services.mouse.onMouseUp({x: currentMousePos.x, y: currentMousePos.y, which: 1} as MouseEvent)

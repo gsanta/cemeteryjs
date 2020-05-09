@@ -5,6 +5,7 @@ import { FullScreenIconComponent } from "../gui/icons/FullScreenIconComponent";
 import { UpdateTask } from "../../core/services/UpdateServices";
 import styled from 'styled-components';
 import { colors } from '../gui/styles';
+import { View } from "./View";
 
 const ToolbarStyled = styled.div`
     display: flex;
@@ -22,12 +23,16 @@ const ToolGroupStyled = styled.div`
     border: 1px solid ${colors.panelBackgroundLight};
 `;
 
-export abstract class AbstractToolbarComponent extends React.Component {
+export interface ToolbarComponentProps<T extends View> {
+    view: T;
+}
+
+export abstract class AbstractToolbarComponent<T extends View> extends React.Component<ToolbarComponentProps<T>> {
     static contextType = AppContext;
     context: AppContextType;
     protected viewId: string;
 
-    constructor(viewId: string, props: {}) {
+    constructor(viewId: string, props: ToolbarComponentProps<T>) {
         super(props);
 
         this.viewId = viewId;

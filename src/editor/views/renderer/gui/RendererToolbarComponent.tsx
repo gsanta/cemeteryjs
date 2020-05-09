@@ -4,11 +4,11 @@ import { ZoomInIconComponent } from '../../../gui/icons/tools/ZoomInIconComponen
 import { ZoomOutIconComponent } from '../../../gui/icons/tools/ZoomOutIconComponent';
 import { RendererView } from '../RendererView';
 import { ToolType } from '../../../../core/tools/Tool';
-import { AbstractToolbarComponent } from '../../AbstractToolbarComponent';
+import { AbstractToolbarComponent, ToolbarComponentProps } from '../../AbstractToolbarComponent';
 
-export class RendererToolbarComponent extends AbstractToolbarComponent {
+export class RendererToolbarComponent extends AbstractToolbarComponent<RendererView> {
 
-    constructor(props: {}) {
+    constructor(props: ToolbarComponentProps<RendererView>) {
         super(RendererView.id, props);
     }
 

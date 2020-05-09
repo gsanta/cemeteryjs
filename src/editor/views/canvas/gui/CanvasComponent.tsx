@@ -49,11 +49,10 @@ export class CanvasComponent extends React.Component {
         const unhover = (canvasItem: Concept | Feedback) => this.context.registry.services.mouse.unhover(canvasItem);
         
         const view = this.context.registry.services.view.getViewById<CanvasView>(CanvasView.id);
-        console.log('canvas render: ' + view.getActiveTool().cursor)
 
         return (
             <EditorComponentStyled id={view.getId()} style={{cursor: view.getActiveTool().cursor}}>
-                <WindowToolbarStyled><CanvasToolbarComponent/></WindowToolbarStyled>
+                <WindowToolbarStyled><CanvasToolbarComponent view={view}/></WindowToolbarStyled>
                 <CanvasComponentStyled
                     tabIndex={0}
                     viewBox={view.getCamera().getViewBoxAsString()}

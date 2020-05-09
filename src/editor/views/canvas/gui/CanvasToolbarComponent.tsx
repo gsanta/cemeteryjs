@@ -10,13 +10,13 @@ import { ZoomInIconComponent } from '../../../gui/icons/tools/ZoomInIconComponen
 import { ZoomOutIconComponent } from '../../../gui/icons/tools/ZoomOutIconComponent';
 import { ToolType } from '../../../../core/tools/Tool';
 import { UpdateTask } from '../../../../core/services/UpdateServices';
-import { AbstractToolbarComponent } from '../../AbstractToolbarComponent';
+import { AbstractToolbarComponent, ToolbarComponentProps } from '../../AbstractToolbarComponent';
 import { CanvasView } from '../CanvasView';
 import { AbstractTool } from '../../../../core/tools/AbstractTool';
 
-export class CanvasToolbarComponent extends AbstractToolbarComponent {
+export class CanvasToolbarComponent extends AbstractToolbarComponent<CanvasView> {
 
-    constructor(props: {}) {
+    constructor(props: ToolbarComponentProps<CanvasView>) {
         super(CanvasView.id, props);
     }
 

@@ -84,8 +84,9 @@ export abstract class View {
 
     removePriorityTool(priorityTool: Tool) {
         if (this.priorityTool === priorityTool) {
+            this.priorityTool.deselect();
             this.priorityTool = null;
-            this.registry.services.update.runImmediately(UpdateTask.RepaintSettings);
+            this.registry.services.update.runImmediately(UpdateTask.RepaintSettings, UpdateTask.RepaintActiveView);
         }
     }
 

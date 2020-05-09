@@ -63,7 +63,7 @@ export class RendererComponent extends React.Component {
 
         return (
                 <RendererStyled id={view.getId()} style={{cursor: view.getActiveTool().cursor}}>
-                    <WindowToolbarStyled><RendererToolbarComponent/></WindowToolbarStyled>
+                    <WindowToolbarStyled><RendererToolbarComponent view={view}/></WindowToolbarStyled>
                     <CanvasStyled
                         isEmpty={false}
                         id={RendererView.id}
