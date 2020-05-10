@@ -1,9 +1,9 @@
-import { Registry } from "../../../editor/Registry";
-import { Concept, ConceptType } from "../../../editor/models/concepts/Concept";
-import { Feedback } from "../../../editor/models/feedbacks/Feedback";
+import { Registry } from "../../Registry";
+import { Feedback } from "../../models/feedbacks/Feedback";
 import { IConceptExporter } from "./IConceptExporter";
 import { PathComponent } from "./PathComponent";
 import React = require("react");
+import { ConceptType, Concept } from "../../models/concepts/Concept";
 
 export class PathConceptExporter implements IConceptExporter {
     type = ConceptType.PathConcept;

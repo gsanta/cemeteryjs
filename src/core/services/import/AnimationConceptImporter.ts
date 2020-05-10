@@ -1,10 +1,9 @@
 
-import { ConceptType } from '../../../editor/models/concepts/Concept';
-import { AnimationConcept, AnimationCondition } from '../../../editor/models/meta/AnimationConcept';
+import { Registry } from '../../Registry';
+import { AnimationConcept, AnimationCondition } from '../../models/meta/AnimationConcept';
 import { IConceptImporter } from './IConceptImporter';
 import { ConceptGroupJson } from './ImportService';
-import { Stores } from '../../stores/Stores';
-import { Registry } from '../../../editor/Registry';
+import { ConceptType } from '../../models/concepts/Concept';
 
 export interface AnimationJson {
     _attributes: {

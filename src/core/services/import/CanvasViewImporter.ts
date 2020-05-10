@@ -3,7 +3,7 @@ import { CanvasView } from "../../../plugins/scene_editor/CanvasView";
 import { Stores } from "../../stores/Stores";
 import { Point } from "../../../misc/geometry/shapes/Point";
 import { CanvasCamera } from "../../../plugins/scene_editor/CanvasCamera";
-import { Registry } from "../../../editor/Registry";
+import { Registry } from "../../Registry";
 
 export interface CanvasViewJson {
     _attributes: {

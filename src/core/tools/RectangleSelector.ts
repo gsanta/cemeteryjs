@@ -2,9 +2,9 @@ import { Rectangle } from "../../misc/geometry/shapes/Rectangle";
 import { Point } from "../../misc/geometry/shapes/Point";
 import { MousePointer } from "../services/input/MouseService";
 import { CanvasView } from "../../plugins/scene_editor/CanvasView";
-import { RectSelectFeedback } from "../../editor/models/feedbacks/RectSelectFeedback";
+import { RectSelectFeedback } from "../models/feedbacks/RectSelectFeedback";
 import { Stores } from "../stores/Stores";
-import { Registry } from "../../editor/Registry";
+import { Registry } from "../Registry";
 
 export class RectangleSelector {
     private _displaySelectionRect: boolean;

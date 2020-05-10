@@ -1,17 +1,14 @@
+import { Registry } from "../Registry";
 import { Point } from "../../misc/geometry/shapes/Point";
+import { PathConcept } from "../models/concepts/PathConcept";
+import { VisualConcept } from "../models/concepts/VisualConcept";
+import { EditPoint } from "../models/feedbacks/EditPoint";
+import { Feedback, FeedbackType } from "../models/feedbacks/Feedback";
 import { IKeyboardEvent, Keyboard } from "../services/input/KeyboardService";
-import { ServiceLocator } from '../services/ServiceLocator';
 import { UpdateTask } from "../services/UpdateServices";
-import { Stores } from "../stores/Stores";
-import { CanvasView } from "../../plugins/scene_editor/CanvasView";
-import { ConceptType } from "../../editor/models/concepts/Concept";
-import { PathConcept } from "../../editor/models/concepts/PathConcept";
-import { VisualConcept } from "../../editor/models/concepts/VisualConcept";
-import { EditPoint } from "../../editor/models/feedbacks/EditPoint";
-import { Feedback, FeedbackType } from "../../editor/models/feedbacks/Feedback";
 import { PointerTool } from "./PointerTool";
 import { ToolType } from "./Tool";
-import { Registry } from "../../editor/Registry";
+import { ConceptType } from "../models/concepts/Concept";
 
 export class PathTool extends PointerTool {
     

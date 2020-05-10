@@ -1,8 +1,8 @@
 import { IGameObject } from "./IGameObject";
 import { PathCorner } from "./PathObject";
-import { ConceptType } from "../../../editor/models/concepts/Concept";
-import { MeshConcept } from "../../../editor/models/concepts/MeshConcept";
-import { PathConcept } from "../../../editor/models/concepts/PathConcept";
+import { MeshConcept } from "../../../core/models/concepts/MeshConcept";
+import { PathConcept } from "../../../core/models/concepts/PathConcept";
+import { ConceptType } from "../../../core/models/concepts/Concept";
 
 export class RouteObject implements IGameObject {
     readonly type = ConceptType.RouteConcept;

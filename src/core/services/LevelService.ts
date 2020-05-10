@@ -1,4 +1,4 @@
-import { Registry } from "../../editor/Registry";
+import { Registry } from "../Registry";
 import { UpdateTask } from "./UpdateServices";
 
 export class LevelService {

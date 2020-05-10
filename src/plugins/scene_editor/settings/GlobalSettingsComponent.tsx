@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { AppContext, AppContextType } from '../../../editor/gui/Context';
-import { PauseIconComponent } from '../../../editor/gui/icons/PauseIconComponent';
-import { PlayIconComponent } from '../../../editor/gui/icons/PlayIconComponent';
-import { StopIconComponent } from '../../../editor/gui/icons/StopIconComponent';
-import { AccordionComponent } from '../../../editor/gui/misc/AccordionComponent';
+import { PauseIconComponent } from '../../../core/gui/icons/PauseIconComponent';
+import { PlayIconComponent } from '../../../core/gui/icons/PlayIconComponent';
+import { StopIconComponent } from '../../../core/gui/icons/StopIconComponent';
+import { AccordionComponent } from '../../../core/gui/misc/AccordionComponent';
 import { SettingsRowStyled } from './SettingsComponent';
-import { Editor } from '../../../editor/Editor';
+import { Editor } from '../../../core/Editor';
+import { AppContext, AppContextType } from '../../../core/gui/Context';
 
 export class GlobalSettingsComponent extends React.Component<{editor: Editor}> {
     static contextType = AppContext;

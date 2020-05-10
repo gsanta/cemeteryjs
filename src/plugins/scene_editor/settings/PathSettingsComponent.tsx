@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { AppContext, AppContextType } from '../../../editor/gui/Context';
-import { ConnectedInputComponent } from '../../../editor/gui/inputs/InputComponent';
+import { ConnectedInputComponent } from '../../../core/gui/inputs/InputComponent';
 import { SettingsRowStyled, FieldColumnStyled, LabelColumnStyled } from './SettingsComponent';
-import { PathConcept } from '../../../editor/models/concepts/PathConcept';
+import { PathConcept } from '../../../core/models/concepts/PathConcept';
 import { CanvasView } from '../CanvasView';
 import { PathSettings, PathPropType } from './PathSettings';
+import { AppContext, AppContextType } from '../../../core/gui/Context';
 
 export class PathSettingsComponent extends React.Component<{concept: PathConcept}> {
     static contextType = AppContext;

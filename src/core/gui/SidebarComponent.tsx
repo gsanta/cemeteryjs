@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { AppContext, AppContextType } from './Context';
-import { AccordionComponent } from '../../editor/gui/misc/AccordionComponent';
+import { AccordionComponent } from './misc/AccordionComponent';
 import { colors } from './styles';
 import { Layout } from '../services/ViewService';
 import { LevelSettingsComponent } from '../../plugins/scene_editor/settings/LevelSettingsComponent';

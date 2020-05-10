@@ -1,9 +1,8 @@
-import { Stores } from '../../stores/Stores';
-import { Concept, ConceptType } from "../../../editor/models/concepts/Concept";
-import { AnimationConcept, ElementalAnimation } from "../../../editor/models/meta/AnimationConcept";
+import { Registry } from '../../Registry';
+import { AnimationConcept, ElementalAnimation } from "../../models/meta/AnimationConcept";
 import { IConceptExporter } from "./IConceptExporter";
 import React = require("react");
-import { Registry } from '../../../editor/Registry';
+import { ConceptType, Concept } from '../../models/concepts/Concept';
 
 export class AnimationConceptExporter implements IConceptExporter {
     type = ConceptType.MeshConcept;

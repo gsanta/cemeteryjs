@@ -1,5 +1,5 @@
 import { Hotkey } from "../../services/input/HotkeyService";
-import { Registry } from "../../../editor/Registry";
+import { Registry } from "../../Registry";
 
 export class HotkeyCameraRotationStart extends Hotkey {
     private registry: Registry;

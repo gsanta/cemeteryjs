@@ -1,4 +1,4 @@
-import { Registry } from '../../editor/Registry';
+import { Registry } from '../Registry';
 import { Hotkey } from "../services/input/HotkeyService";
 import { AbstractTool } from './AbstractTool';
 import { ToolType } from "./Tool";

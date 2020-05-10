@@ -1,5 +1,5 @@
 import { ActionManager, ExecuteCodeAction } from 'babylonjs';
-import { Registry } from '../../../editor/Registry';
+import { Registry } from '../../../core/Registry';
 import { GamepadEvent } from '../GameEventManager';
 
 export enum KeyCode {

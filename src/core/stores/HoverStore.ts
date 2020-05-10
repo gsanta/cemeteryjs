@@ -1,10 +1,10 @@
 import { without } from "../../misc/geometry/utils/Functions";
-import { ConceptType } from "../../editor/models/concepts/Concept";
-import { PathConcept } from "../../editor/models/concepts/PathConcept";
-import { VisualConcept } from "../../editor/models/concepts/VisualConcept";
-import { EditPoint } from "../../editor/models/feedbacks/EditPoint";
-import { Feedback, FeedbackType } from "../../editor/models/feedbacks/Feedback";
+import { PathConcept } from "../models/concepts/PathConcept";
+import { VisualConcept } from "../models/concepts/VisualConcept";
+import { EditPoint } from "../models/feedbacks/EditPoint";
+import { Feedback, FeedbackType } from "../models/feedbacks/Feedback";
 import { isFeedback } from "./CanvasStore";
+import { ConceptType } from "../models/concepts/Concept";
 
 export class HoverStore {
     items: (VisualConcept | Feedback)[] = [];

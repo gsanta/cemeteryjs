@@ -1,4 +1,4 @@
-import { Registry } from "../../../editor/Registry";
+import { Registry } from "../../../core/Registry";
 import { RouteWalker } from "./RouteWalker";
 
 export class Walkers {

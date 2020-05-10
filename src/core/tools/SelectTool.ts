@@ -1,4 +1,4 @@
-import { Registry } from '../../editor/Registry';
+import { Registry } from '../Registry';
 import { UpdateTask } from "../services/UpdateServices";
 import { PointerTool } from './PointerTool';
 import { RectangleSelector } from "./RectangleSelector";

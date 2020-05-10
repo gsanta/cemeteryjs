@@ -1,13 +1,11 @@
-import { ServiceLocator } from '../services/ServiceLocator';
+import { Registry } from '../Registry';
+import { VisualConcept } from '../models/concepts/VisualConcept';
+import { Feedback } from '../models/feedbacks/Feedback';
 import { UpdateTask } from "../services/UpdateServices";
-import { Stores } from '../stores/Stores';
+import { isConcept, isFeedback } from '../stores/CanvasStore';
 import { AbstractTool } from "./AbstractTool";
 import { ToolType } from "./Tool";
-import { Concept } from '../../editor/models/concepts/Concept';
-import { Feedback } from '../../editor/models/feedbacks/Feedback';
-import { VisualConcept } from '../../editor/models/concepts/VisualConcept';
-import { isFeedback, isConcept } from '../stores/CanvasStore';
-import { Registry } from '../../editor/Registry';
+import { Concept } from '../models/concepts/Concept';
 
 export class PointerTool extends AbstractTool {
     protected movingItem: Concept | Feedback = undefined;

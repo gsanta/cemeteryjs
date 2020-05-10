@@ -4,7 +4,7 @@ import { MousePointer } from "../../core/services/input/MouseService";
 import { ServiceLocator } from "../../core/services/ServiceLocator";
 import { UpdateTask } from "../../core/services/UpdateServices";
 import { ICamera } from '../game_view/ICamera';
-import { Registry } from "../../editor/Registry";
+import { Registry } from "../../core/Registry";
 
 export class CanvasCamera implements ICamera {
     private screenSize: Point;

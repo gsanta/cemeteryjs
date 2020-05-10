@@ -3,9 +3,9 @@ import { AnimationConceptImporter } from '../../../core/services/import/Animatio
 import { IConceptImporter } from '../../../core/services/import/IConceptImporter';
 import { MeshConceptImporter } from './MeshConceptImporter';
 import { ModelConceptImporter } from './ModelConceptImporter';
-import { Registry } from '../../../editor/Registry';
+import { Registry } from '../../Registry';
 import { PathConceptImporter } from './PathConceptImporter';
-import { ConceptType } from '../../../editor/models/concepts/Concept';
+import { ConceptType } from '../../models/concepts/Concept';
 
 export interface WgDefinition {
     _attributes: WgDefinitionAttributes;

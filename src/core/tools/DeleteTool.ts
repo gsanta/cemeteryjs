@@ -1,15 +1,10 @@
-import { ServiceLocator } from '../services/ServiceLocator';
+import { Registry } from '../Registry';
+import { VisualConcept } from '../models/concepts/VisualConcept';
+import { Feedback } from '../models/feedbacks/Feedback';
 import { UpdateTask } from '../services/UpdateServices';
-import { Stores } from '../stores/Stores';
-import { CanvasView } from '../../plugins/scene_editor/CanvasView';
-import { Concept } from '../../editor/models/concepts/Concept';
-import { Feedback } from '../../editor/models/feedbacks/Feedback';
 import { AbstractTool } from './AbstractTool';
-import { PointerTool } from './PointerTool';
 import { RectangleSelector } from './RectangleSelector';
 import { ToolType } from './Tool';
-import { VisualConcept } from '../../editor/models/concepts/VisualConcept';
-import { Registry } from '../../editor/Registry';
 
 export class DeleteTool extends AbstractTool {
     private rectSelector: RectangleSelector;

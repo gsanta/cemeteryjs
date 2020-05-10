@@ -1,9 +1,8 @@
+import { Registry } from "../../Registry";
 import { Point } from "../../../misc/geometry/shapes/Point";
-import { ServiceLocator } from '../ServiceLocator';
+import { Feedback } from "../../models/feedbacks/Feedback";
 import { IPointerEvent } from "./PointerService";
-import { Concept } from "../../../editor/models/concepts/Concept";
-import { Feedback } from "../../../editor/models/feedbacks/Feedback";
-import { Registry } from "../../../editor/Registry";
+import { Concept } from "../../models/concepts/Concept";
 
 export class MousePointer {
     down: Point;

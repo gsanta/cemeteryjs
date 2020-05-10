@@ -5,7 +5,7 @@ import { LevelSettings } from "../../plugins/scene_editor/settings/LevelSettings
 import { Stores } from "../stores/Stores";
 import { ServiceLocator } from "./ServiceLocator";
 import { AnimationSettings } from "../../plugins/scene_editor/settings/AnimationSettings";
-import { Registry } from "../../editor/Registry";
+import { Registry } from "../Registry";
 import { ActionSettings } from '../../plugins/action_editor/settings/ActionEditorSettings';
 
 

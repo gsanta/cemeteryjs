@@ -1,5 +1,5 @@
-import { View } from '../../editor/views/View';
-import { Registry } from '../../editor/Registry';
+import { View } from '../View';
+import { Registry } from '../Registry';
 import { CanvasView } from '../../plugins/scene_editor/CanvasView';
 import { RendererView } from '../../plugins/game_view/RendererView';
 import { ActionEditorView } from '../../plugins/action_editor/ActionEditorView';

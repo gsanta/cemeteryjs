@@ -1,4 +1,4 @@
-import { MeshConcept } from "../../../editor/models/concepts/MeshConcept";
+import { MeshConcept } from "../../../core/models/concepts/MeshConcept";
 
 export enum BehaviourType {
     Ramble = 'Ramble'

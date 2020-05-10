@@ -1,6 +1,6 @@
 import { AbstractSettings } from './AbstractSettings';
-import { MeshConcept } from '../../../editor/models/concepts/MeshConcept';
-import { Registry } from '../../../editor/Registry';
+import { MeshConcept } from '../../../core/models/concepts/MeshConcept';
+import { Registry } from '../../../core/Registry';
 import { UpdateTask } from '../../../core/services/UpdateServices';
 
 export enum LayoutPropType {

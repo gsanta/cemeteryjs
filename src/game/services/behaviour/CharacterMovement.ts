@@ -1,6 +1,6 @@
 import { GamepadEvent } from '../GameEventManager';
-import { Registry } from '../../../editor/Registry';
-import { MeshConcept } from '../../../editor/models/concepts/MeshConcept';
+import { Registry } from '../../../core/Registry';
+import { MeshConcept } from '../../../core/models/concepts/MeshConcept';
 
 export class CharacterMovement {
     private registry: Registry;

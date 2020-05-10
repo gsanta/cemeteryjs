@@ -1,5 +1,5 @@
-import { ConceptType, Concept } from "../../../editor/models/concepts/Concept";
-import { Feedback } from "../../../editor/models/feedbacks/Feedback";
+import { Feedback } from "../../models/feedbacks/Feedback";
+import { ConceptType, Concept } from "../../models/concepts/Concept";
 
 export interface IConceptExporter {
     type: ConceptType;

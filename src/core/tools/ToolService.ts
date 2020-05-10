@@ -6,7 +6,7 @@ import { PathTool } from "./PathTool";
 import { RectangleTool } from "./RectangleTool";
 import { SelectTool } from "./SelectTool";
 import { CameraRotationTool } from "./CameraRotationTool";
-import { Registry } from "../../editor/Registry";
+import { Registry } from "../Registry";
 import { GamepadTool } from "./GamepadTool";
 import { PanTool } from "./PanTool";
 import { DragAndDropTool } from "./DragAndDropTool";

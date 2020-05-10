@@ -1,9 +1,9 @@
 import { AbstractSettings } from './AbstractSettings';
 import { UpdateTask } from '../../../core/services/UpdateServices';
-import { MeshConcept } from '../../../editor/models/concepts/MeshConcept';
+import { MeshConcept } from '../../../core/models/concepts/MeshConcept';
 import { ServiceLocator } from '../../../core/services/ServiceLocator';
 import { Stores } from '../../../core/stores/Stores';
-import { Registry } from '../../../editor/Registry';
+import { Registry } from '../../../core/Registry';
 
 export enum LevelFormPropType {
     Level = 'Level',

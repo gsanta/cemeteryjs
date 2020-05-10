@@ -1,8 +1,8 @@
-import { Registry } from "../../../editor/Registry";
-import { ConceptType } from "../../../editor/models/concepts/Concept";
-import { PathConcept } from "../../../editor/models/concepts/PathConcept";
+import { Registry } from "../../Registry";
+import { PathConcept } from "../../models/concepts/PathConcept";
 import { IConceptImporter } from "./IConceptImporter";
 import { ConceptGroupJson } from "./ImportService";
+import { ConceptType } from "../../models/concepts/Concept";
 
 export interface PathJson {
     circle: {

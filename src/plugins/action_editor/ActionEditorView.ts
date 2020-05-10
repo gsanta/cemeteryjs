@@ -1,7 +1,7 @@
 import { Point } from '../../misc/geometry/shapes/Point';
-import { Registry } from '../../editor/Registry';
+import { Registry } from '../../core/Registry';
 import { UpdateTask } from '../../core/services/UpdateServices';
-import { calcOffsetFromDom, View } from '../../editor/views/View';
+import { calcOffsetFromDom, View } from '../../core/View';
 import { CanvasCamera } from '../scene_editor/CanvasCamera';
 import { ActionSettings } from './settings/ActionEditorSettings';
 

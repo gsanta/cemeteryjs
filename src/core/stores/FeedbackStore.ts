@@ -1,4 +1,4 @@
-import { RectSelectFeedback } from "../../editor/models/feedbacks/RectSelectFeedback";
+import { RectSelectFeedback } from "../models/feedbacks/RectSelectFeedback";
 
 export class FeedbackStore {
     rectSelectFeedback: RectSelectFeedback;

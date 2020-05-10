@@ -1,4 +1,4 @@
-import { Registry } from '../../editor/Registry';
+import { Registry } from '../Registry';
 import { RendererView } from "../../plugins/game_view/RendererView";
 
 export enum UpdateTask {

@@ -1,6 +1,4 @@
-import { ConceptType } from "../../../editor/models/concepts/Concept";
 import { Point } from "../../../misc/geometry/shapes/Point";
-import { IGameObject } from "./IGameObject";
 
 export class PathCorner {
     point1?: Point;

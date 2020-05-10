@@ -1,5 +1,5 @@
 import { ServiceLocator } from '../../../core/services/ServiceLocator';
-import { Registry } from '../../../editor/Registry';
+import { Registry } from '../../../core/Registry';
 
 export class AfterRenderTrigger {
 

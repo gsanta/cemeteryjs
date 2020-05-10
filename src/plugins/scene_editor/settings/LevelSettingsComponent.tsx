@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { AppContext, AppContextType } from '../../../editor/gui/Context';
-import { ButtonComponent } from '../../../editor/gui/inputs/ButtonComponent';
-import { ConnectedInputComponent } from '../../../editor/gui/inputs/InputComponent';
+import { ButtonComponent } from '../../../core/gui/inputs/ButtonComponent';
+import { ConnectedInputComponent } from '../../../core/gui/inputs/InputComponent';
 import { SettingsRowStyled, LabelColumnStyled, FieldColumnStyled } from './SettingsComponent';
-import { GridComponent } from '../../../editor/gui/misc/GridComponent';
+import { GridComponent } from '../../../core/gui/misc/GridComponent';
 import { CanvasView } from '../CanvasView';
 import { LevelSettings, LevelFormPropType } from './LevelSettings';
+import { AppContext, AppContextType } from '../../../core/gui/Context';
 
 export class LevelSettingsComponent extends React.Component {
     static contextType = AppContext;

@@ -1,8 +1,8 @@
-import { Registry } from '../../editor/Registry';
+import { Registry } from '../Registry';
 import { AbstractTool } from './AbstractTool';
 import { Cursor, ToolType } from "./Tool";
 import { UpdateTask } from '../services/UpdateServices';
-import { ActionConcept } from '../../editor/models/concepts/ActionConcept';
+import { ActionConcept } from '../models/concepts/ActionConcept';
 import { Rectangle } from '../../misc/geometry/shapes/Rectangle';
 import { Point } from '../../misc/geometry/shapes/Point';
 

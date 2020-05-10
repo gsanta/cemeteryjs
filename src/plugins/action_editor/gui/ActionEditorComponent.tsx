@@ -1,16 +1,16 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { colors } from '../../../core/gui/styles';
-import { WindowToolbarStyled } from '../../../editor/gui/windows/WindowToolbar';
+import { WindowToolbarStyled } from '../../../core/WindowToolbar';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { WheelListener } from '../../../core/services/WheelListener';
 import { ActionEditorView } from '../ActionEditorView';
-import { Concept } from '../../../editor/models/concepts/Concept';
-import { Feedback } from '../../../editor/models/feedbacks/Feedback';
+import { Feedback } from '../../../core/models/feedbacks/Feedback';
 import { useDrop } from 'react-dnd';
 import { ActionType } from '../../../core/stores/ActionStore';
 import { Point } from '../../../misc/geometry/shapes/Point';
 import { ActionEditorToolbarComponent } from './ActionEditorToolbarComponent';
+import { Concept } from '../../../core/models/concepts/Concept';
 
 const EditorComponentStyled = styled.div`
     width: 100%;

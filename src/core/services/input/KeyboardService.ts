@@ -1,4 +1,4 @@
-import { Registry } from '../../../editor/Registry';
+import { Registry } from '../../Registry';
 
 export enum Platform {
     WINDOWS = 'Windows',

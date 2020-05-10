@@ -1,5 +1,5 @@
 import { Hotkey } from "../../services/input/HotkeyService";
-import { Registry } from "../../../editor/Registry";
+import { Registry } from "../../Registry";
 import { Keyboard } from "../../services/input/KeyboardService";
 
 export class HotkeyGamepadStart extends Hotkey {

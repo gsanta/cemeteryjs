@@ -1,11 +1,11 @@
-import { Registry } from '../../../editor/Registry';
+import { Registry } from '../../../core/Registry';
 import { UpdateTask } from '../../../core/services/UpdateServices';
-import { ConceptType } from '../../../editor/models/concepts/Concept';
-import { MeshConcept } from '../../../editor/models/concepts/MeshConcept';
-import { ModelConcept } from '../../../editor/models/concepts/ModelConcept';
-import { AnimationConcept, AnimationCondition } from '../../../editor/models/meta/AnimationConcept';
+import { MeshConcept } from '../../../core/models/concepts/MeshConcept';
+import { ModelConcept } from '../../../core/models/concepts/ModelConcept';
+import { AnimationConcept, AnimationCondition } from '../../../core/models/meta/AnimationConcept';
 import { AbstractSettings, PropertyType } from "./AbstractSettings";
 import { toDegree, toRadian } from '../../../misc/geometry/utils/Measurements';
+import { ConceptType } from '../../../core/models/concepts/Concept';
 
 export enum MeshViewPropType {
     Color = 'color',

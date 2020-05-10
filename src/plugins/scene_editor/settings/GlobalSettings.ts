@@ -1,10 +1,10 @@
 import { CanvasView } from '../CanvasView';
 import { AbstractSettings } from './AbstractSettings';
 import { UpdateTask } from '../../../core/services/UpdateServices';
-import { MeshConcept } from '../../../editor/models/concepts/MeshConcept';
+import { MeshConcept } from '../../../core/models/concepts/MeshConcept';
 import { Stores } from '../../../core/stores/Stores';
 import { ServiceLocator } from '../../../core/services/ServiceLocator';
-import { Registry } from '../../../editor/Registry';
+import { Registry } from '../../../core/Registry';
 
 export enum GlobalSettingsPropType {
     IMPORT_FILE = 'import file'

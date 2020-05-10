@@ -1,8 +1,8 @@
-import { Registry } from '../../editor/Registry';
-import { Concept } from '../../editor/models/concepts/Concept';
-import { Feedback } from '../../editor/models/feedbacks/Feedback';
+import { Registry } from '../Registry';
+import { Feedback } from '../models/feedbacks/Feedback';
 import { IKeyboardEvent } from '../services/input/KeyboardService';
 import { Tool, ToolType, Cursor } from './Tool';
+import { Concept } from '../models/concepts/Concept';
 
 export class AbstractTool implements Tool {
     type: ToolType;

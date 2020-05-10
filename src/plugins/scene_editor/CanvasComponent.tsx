@@ -2,13 +2,13 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { AppContext, AppContextType } from '../../core/gui/Context';
 import { colors } from '../../core/gui/styles';
-import { WindowToolbarStyled } from '../../editor/gui/windows/WindowToolbar';
+import { WindowToolbarStyled } from '../../core/WindowToolbar';
 import { PathMarkersComponent } from '../../core/services/export/PathMarkersComponent';
 import { CanvasView } from './CanvasView';
 import { CanvasToolbarComponent } from './CanvasToolbarComponent';
 import { WheelListener } from '../../core/services/WheelListener';
-import { Concept } from '../../editor/models/concepts/Concept';
-import { Feedback } from '../../editor/models/feedbacks/Feedback';
+import { Concept } from '../../core/models/concepts/Concept';
+import { Feedback } from '../../core/models/feedbacks/Feedback';
 
 
 const EditorComponentStyled = styled.div`

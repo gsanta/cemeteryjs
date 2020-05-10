@@ -1,5 +1,5 @@
-import { ActionConcept } from '../../editor/models/concepts/ActionConcept';
-import { Registry } from '../../editor/Registry';
+import { ActionConcept } from '../models/concepts/ActionConcept';
+import { Registry } from '../Registry';
 import { AbstractStore } from './AbstractStore';
 
 export enum ActionType {

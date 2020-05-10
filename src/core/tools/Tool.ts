@@ -1,6 +1,6 @@
 import { IKeyboardEvent } from "../services/input/KeyboardService";
-import { Concept } from "../../editor/models/concepts/Concept";
-import { Feedback } from "../../editor/models/feedbacks/Feedback";
+import { Feedback } from "../models/feedbacks/Feedback";
+import { Concept } from "../models/concepts/Concept";
 
 export enum ToolType {
     RECTANGLE = 'rectangle',

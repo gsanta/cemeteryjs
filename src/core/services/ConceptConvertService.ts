@@ -1,9 +1,9 @@
 import { IGameObject } from "../../game/models/objects/IGameObject";
-import { Registry } from "../../editor/Registry";
-import { Concept } from "../../editor/models/concepts/Concept";
+import { Registry } from "../Registry";
 import { MeshConceptConverter } from "./convert/MeshConceptConverter";
 import { PathConceptConverter } from "./convert/PathConceptConverter";
 import { IConceptConverter } from "./convert/IConceptConverter";
+import { Concept } from "../models/concepts/Concept";
 
 export class ConceptConvertService {
     serviceName = 'concept-convert-service';

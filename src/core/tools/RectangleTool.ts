@@ -1,11 +1,11 @@
 import { Rectangle } from '../../misc/geometry/shapes/Rectangle';
-import { Registry } from '../../editor/Registry';
-import { ConceptType } from '../../editor/models/concepts/Concept';
-import { MeshConcept } from '../../editor/models/concepts/MeshConcept';
+import { Registry } from '../Registry';
+import { MeshConcept } from '../models/concepts/MeshConcept';
 import { UpdateTask } from '../services/UpdateServices';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './RectangleSelector';
 import { ToolType } from './Tool';
+import { ConceptType } from '../models/concepts/Concept';
 
 export class RectangleTool extends AbstractTool {
     private lastPreviewRect: MeshConcept;

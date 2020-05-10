@@ -1,7 +1,7 @@
-import { Registry } from "../../../editor/Registry";
+import { Registry } from "../../../core/Registry";
 import { EventType, GamepadEvent } from "../GameEventManager";
 import { IGamepadListener } from "./IEventListener";
-import { MeshConcept } from "../../../editor/models/concepts/MeshConcept";
+import { MeshConcept } from "../../../core/models/concepts/MeshConcept";
 
 export class PlayerListener implements IGamepadListener {
     eventType = EventType.Keyboard;

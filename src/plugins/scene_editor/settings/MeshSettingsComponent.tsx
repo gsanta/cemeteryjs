@@ -1,21 +1,21 @@
 import * as React from 'react';
-import { AppContext, AppContextType } from '../../../editor/gui/Context';
-import { ClearIconComponent } from '../../../editor/gui/icons/ClearIconComponent';
-import { PauseIconComponent } from '../../../editor/gui/icons/PauseIconComponent';
-import { PlayIconComponent } from '../../../editor/gui/icons/PlayIconComponent';
-import { StopIconComponent } from '../../../editor/gui/icons/StopIconComponent';
-import { ConnectedFileUploadComponent } from '../../../editor/gui/icons/tools/ImportFileIconComponent';
-import { ButtonComponent } from '../../../editor/gui/inputs/ButtonComponent';
-import { CheckboxComponent } from '../../../editor/gui/inputs/CheckboxComponent';
-import { ConnectedDropdownComponent } from '../../../editor/gui/inputs/DropdownComponent';
-import { ConnectedInputComponent } from '../../../editor/gui/inputs/InputComponent';
-import { AccordionComponent } from '../../../editor/gui/misc/AccordionComponent';
-import { ConnectedGridComponent } from '../../../editor/gui/misc/GridComponent';
+import { ClearIconComponent } from '../../../core/gui/icons/ClearIconComponent';
+import { PauseIconComponent } from '../../../core/gui/icons/PauseIconComponent';
+import { PlayIconComponent } from '../../../core/gui/icons/PlayIconComponent';
+import { StopIconComponent } from '../../../core/gui/icons/StopIconComponent';
+import { ConnectedFileUploadComponent } from '../../../core/gui/icons/tools/ImportFileIconComponent';
+import { ButtonComponent } from '../../../core/gui/inputs/ButtonComponent';
+import { CheckboxComponent } from '../../../core/gui/inputs/CheckboxComponent';
+import { ConnectedDropdownComponent } from '../../../core/gui/inputs/DropdownComponent';
+import { ConnectedInputComponent } from '../../../core/gui/inputs/InputComponent';
+import { AccordionComponent } from '../../../core/gui/misc/AccordionComponent';
+import { ConnectedGridComponent } from '../../../core/gui/misc/GridComponent';
 import { FieldColumnStyled, GroupedRowsStyled, LabelColumnStyled, MultiFieldColumnStyled, SettingsRowStyled } from './SettingsComponent';
-import { MeshConcept, AnimationState } from '../../../editor/models/concepts/MeshConcept';
-import { ElementalAnimation } from '../../../editor/models/meta/AnimationConcept';
+import { MeshConcept, AnimationState } from '../../../core/models/concepts/MeshConcept';
+import { ElementalAnimation } from '../../../core/models/meta/AnimationConcept';
 import { CanvasView } from '../CanvasView';
 import { MeshSettings, MeshViewPropType } from './MeshSettings';
+import { AppContext, AppContextType } from '../../../core/gui/Context';
 
 export class MeshSettingsComponent extends React.Component<{concept: MeshConcept}> {
     static contextType = AppContext;

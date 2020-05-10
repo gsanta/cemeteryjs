@@ -3,11 +3,11 @@ import { PathSettingsComponent } from "./PathSettingsComponent";
 import styled from "styled-components";
 import * as React from 'react';
 import { Stores } from "../../../core/stores/Stores";
-import { Registry } from "../../../editor/Registry";
-import { Concept, ConceptType } from "../../../editor/models/concepts/Concept";
-import { MeshConcept } from "../../../editor/models/concepts/MeshConcept";
-import { PathConcept } from "../../../editor/models/concepts/PathConcept";
+import { Registry } from "../../../core/Registry";
+import { MeshConcept } from "../../../core/models/concepts/MeshConcept";
+import { PathConcept } from "../../../core/models/concepts/PathConcept";
 import { CanvasView } from "../CanvasView";
+import { Concept, ConceptType } from "../../../core/models/concepts/Concept";
 
 export interface ViewFormProps<T extends Concept> {
     canvasController: CanvasView;

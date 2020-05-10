@@ -1,4 +1,4 @@
-import { Registry } from "../../editor/Registry";
+import { Registry } from "../Registry";
 import { AnimationSettings } from "../../plugins/scene_editor/settings/AnimationSettings";
 import { UpdateTask } from "./UpdateServices";
 import { ActionSettings } from '../../plugins/action_editor/settings/ActionEditorSettings';

@@ -1,12 +1,11 @@
+import { Registry } from "../../Registry";
 import { sort } from "../../../misc/geometry/utils/Functions";
+import { toDegree } from "../../../misc/geometry/utils/Measurements";
 import { colors } from "../../gui/styles";
-import { Stores } from '../../stores/Stores';
-import { Concept, ConceptType } from "../../../editor/models/concepts/Concept";
-import { MeshConcept } from "../../../editor/models/concepts/MeshConcept";
+import { MeshConcept } from "../../models/concepts/MeshConcept";
 import { IConceptExporter } from "./IConceptExporter";
 import React = require("react");
-import { Registry } from "../../../editor/Registry";
-import { toDegree } from "../../../misc/geometry/utils/Measurements";
+import { ConceptType, Concept } from "../../models/concepts/Concept";
 
 export class MeshConceptExporter implements IConceptExporter {
     type = ConceptType.MeshConcept;

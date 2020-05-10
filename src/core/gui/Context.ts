@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Editor } from '../../editor/Editor';
-import { Registry } from '../../editor/Registry';
+import { Editor } from '../Editor';
+import { Registry } from '../Registry';
 
 export interface AppContextType {
     controllers: Editor;

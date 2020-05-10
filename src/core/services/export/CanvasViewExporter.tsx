@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Registry } from "../../../editor/Registry";
+import { Registry } from "../../Registry";
 import { CanvasCamera } from "../../../plugins/scene_editor/CanvasCamera";
 import { IViewExporter } from "./IViewExporter";
 import { CanvasView } from '../../../plugins/scene_editor/CanvasView';

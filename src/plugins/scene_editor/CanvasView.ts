@@ -1,11 +1,11 @@
 import { Point } from '../../misc/geometry/shapes/Point';
-import { Registry } from '../../editor/Registry';
+import { Registry } from '../../core/Registry';
 import { CanvasViewExporter } from '../../core/services/export/CanvasViewExporter';
 import { IViewExporter } from '../../core/services/export/IViewExporter';
 import { CanvasViewImporter } from '../../core/services/import/CanvasViewImporter';
 import { IViewImporter } from '../../core/services/import/IViewImporter';
 import { UpdateTask } from '../../core/services/UpdateServices';
-import { calcOffsetFromDom, View } from '../../editor/views/View';
+import { calcOffsetFromDom, View } from '../../core/View';
 import { CanvasCamera } from './CanvasCamera';
 import { LevelSettings } from './settings/LevelSettings';
 import { MeshSettings } from './settings/MeshSettings';

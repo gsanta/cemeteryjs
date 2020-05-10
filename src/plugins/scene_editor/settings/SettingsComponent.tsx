@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { colors } from "../../../editor/gui/styles";
 
 export const LabelColumnStyled = styled.div`
     white-space: nowrap;
@@ -33,7 +32,6 @@ export const GroupedRowsStyled = styled.div`
 
 export const SettingsRowStyled = styled.div`
     padding: 1px 1px;
-    /* border-bottom: 1px solid ${colors.panelBackgroundLight}; */
     display: flex;
     flex-direction: row;
     justify-content: ${(props: SettingsRowProps) => props.verticalAlign === 'center' ? 'center' : props.verticalAlign === 'right' ? 'flex-end' : 'space-between'};

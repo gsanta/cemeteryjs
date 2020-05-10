@@ -1,16 +1,16 @@
 import * as React from 'react';
-import { ArrowIconComponent } from '../../editor/gui/icons/tools/ArrowIconComponent';
-import { DeleteIconComponent } from '../../editor/gui/icons/tools/DeleteIconComponent';
-import { DrawIconComponent } from '../../editor/gui/icons/tools/DrawIconComponent';
-import { PanIconComponent } from '../../editor/gui/icons/tools/PanIconComponent';
-import { RedoIconComponent } from '../../editor/gui/icons/tools/RedoIconComponent';
-import { SelectIconComponent } from '../../editor/gui/icons/tools/SelectIconComponent';
-import { UndoIconComponent } from '../../editor/gui/icons/tools/UndoIconComponent';
-import { ZoomInIconComponent } from '../../editor/gui/icons/tools/ZoomInIconComponent';
-import { ZoomOutIconComponent } from '../../editor/gui/icons/tools/ZoomOutIconComponent';
+import { ArrowIconComponent } from '../../core/gui/icons/tools/ArrowIconComponent';
+import { DeleteIconComponent } from '../../core/gui/icons/tools/DeleteIconComponent';
+import { DrawIconComponent } from '../../core/gui/icons/tools/DrawIconComponent';
+import { PanIconComponent } from '../../core/gui/icons/tools/PanIconComponent';
+import { RedoIconComponent } from '../../core/gui/icons/tools/RedoIconComponent';
+import { SelectIconComponent } from '../../core/gui/icons/tools/SelectIconComponent';
+import { UndoIconComponent } from '../../core/gui/icons/tools/UndoIconComponent';
+import { ZoomInIconComponent } from '../../core/gui/icons/tools/ZoomInIconComponent';
+import { ZoomOutIconComponent } from '../../core/gui/icons/tools/ZoomOutIconComponent';
 import { ToolType } from '../../core/tools/Tool';
 import { UpdateTask } from '../../core/services/UpdateServices';
-import { AbstractToolbarComponent, ToolbarComponentProps } from '../../editor/views/AbstractToolbarComponent';
+import { AbstractToolbarComponent, ToolbarComponentProps } from '../../core/gui/AbstractToolbarComponent';
 import { CanvasView } from './CanvasView';
 import { AbstractTool } from '../../core/tools/AbstractTool';
 

@@ -1,4 +1,4 @@
-import { Registry } from "../../../editor/Registry";
+import { Registry } from "../../Registry";
 import { Hotkey } from "../../services/input/HotkeyService";
 import { Keyboard } from "../../services/input/KeyboardService";
 import { UpdateTask } from "../../services/UpdateServices";

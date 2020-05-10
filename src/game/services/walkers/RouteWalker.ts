@@ -1,9 +1,9 @@
-import { AnimationCondition } from "../../../editor/models/meta/AnimationConcept";
+import { AnimationCondition } from "../../../core/models/meta/AnimationConcept";
 import { Point } from "../../../misc/geometry/shapes/Point";
 import { Segment } from "../../../misc/geometry/shapes/Segment";
 import { PathCorner } from "../../models/objects/PathObject";
 import { RouteObject } from "../../models/objects/RouteObject";
-import { PathConcept } from "../../../editor/models/concepts/PathConcept";
+import { PathConcept } from "../../../core/models/concepts/PathConcept";
 
 const defaultSpeed = 1000 / 4;
 

@@ -1,8 +1,8 @@
 import { IConceptConverter } from "./IConceptConverter";
 import { IGameObject } from "../../../game/models/objects/IGameObject";
-import { ConceptType } from "../../../editor/models/concepts/Concept";
-import { Registry } from "../../../editor/Registry";
-import { PathConcept } from "../../../editor/models/concepts/PathConcept";
+import { Registry } from "../../Registry";
+import { PathConcept } from "../../models/concepts/PathConcept";
+import { ConceptType } from "../../models/concepts/Concept";
 
 export class PathConceptConverter implements IConceptConverter {
     viewType = ConceptType.PathConcept;

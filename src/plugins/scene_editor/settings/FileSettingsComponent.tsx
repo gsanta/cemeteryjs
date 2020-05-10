@@ -1,12 +1,12 @@
 import { saveAs } from 'file-saver';
 import * as React from 'react';
-import { Editor } from '../../../editor/Editor';
-import { AppContext, AppContextType } from '../../../editor/gui/Context';
-import { BlankIconComponent } from '../../../editor/gui/icons/tools/BlankIconComponent';
-import { ExportFileIconComponent } from '../../../editor/gui/icons/tools/ExportFileIconComponent';
-import { ConnectedFileUploadComponent } from '../../../editor/gui/icons/tools/ImportFileIconComponent';
-import { colors } from '../../../editor/gui/styles';
+import { Editor } from '../../../core/Editor';
+import { BlankIconComponent } from '../../../core/gui/icons/tools/BlankIconComponent';
+import { ExportFileIconComponent } from '../../../core/gui/icons/tools/ExportFileIconComponent';
+import { ConnectedFileUploadComponent } from '../../../core/gui/icons/tools/ImportFileIconComponent';
 import { GlobalSettingsPropType } from './GlobalSettings';
+import { AppContext, AppContextType } from '../../../core/gui/Context';
+import { colors } from '../../../core/gui/styles';
 
 export interface GeneralFormComponentProps {
     isEditorOpen: boolean;

@@ -1,4 +1,4 @@
-import { Registry } from "../../editor/Registry";
+import { Registry } from "../Registry";
 
 function defaultTimeout(callback: Function) {
     setTimeout(callback, 200);

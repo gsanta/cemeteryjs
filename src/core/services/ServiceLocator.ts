@@ -1,4 +1,4 @@
-import { Registry } from "../../editor/Registry";
+import { Registry } from "../Registry";
 import { ConceptConvertService } from "./ConceptConvertService";
 import { DialogService } from "./DialogService";
 import { ExportService } from "./export/ExportService";

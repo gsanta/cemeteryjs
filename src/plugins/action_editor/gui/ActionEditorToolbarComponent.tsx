@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { AbstractToolbarComponent, ToolbarComponentProps } from '../../../editor/views/AbstractToolbarComponent';
+import { AbstractToolbarComponent, ToolbarComponentProps } from '../../../core/gui/AbstractToolbarComponent';
 import { RendererView } from '../../game_view/RendererView';
-import { ZoomInIconComponent } from '../../../editor/gui/icons/tools/ZoomInIconComponent';
-import { ZoomOutIconComponent } from '../../../editor/gui/icons/tools/ZoomOutIconComponent';
-import { PanIconComponent } from '../../../editor/gui/icons/tools/PanIconComponent';
-import { SelectIconComponent } from '../../../editor/gui/icons/tools/SelectIconComponent';
+import { ZoomInIconComponent } from '../../../core/gui/icons/tools/ZoomInIconComponent';
+import { ZoomOutIconComponent } from '../../../core/gui/icons/tools/ZoomOutIconComponent';
+import { PanIconComponent } from '../../../core/gui/icons/tools/PanIconComponent';
+import { SelectIconComponent } from '../../../core/gui/icons/tools/SelectIconComponent';
 import { ToolType } from '../../../core/tools/Tool';
 import { AbstractTool } from '../../../core/tools/AbstractTool';
 import { ActionEditorView } from '../ActionEditorView';

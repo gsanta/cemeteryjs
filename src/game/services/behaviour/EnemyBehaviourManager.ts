@@ -2,7 +2,7 @@ import { EventType } from "../GameEventManager";
 import { IAfterRender } from "../listeners/IEventListener";
 import { IBehaviour } from "./IBehaviour";
 import { Stores } from "../../../core/stores/Stores";
-import { Registry } from "../../../editor/Registry";
+import { Registry } from "../../../core/Registry";
 
 export class EnemyBehaviourManager  implements IAfterRender {
     eventType = EventType.AfterRender;

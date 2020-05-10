@@ -1,9 +1,9 @@
 import { colors } from "../../gui/styles";
-import { ActionConcept } from "../../../editor/models/concepts/ActionConcept";
-import { Concept, ConceptType } from "../../../editor/models/concepts/Concept";
-import { Registry } from "../../../editor/Registry";
+import { ActionConcept } from "../../models/concepts/ActionConcept";
+import { Registry } from "../../Registry";
 import { IConceptExporter } from "./IConceptExporter";
 import React = require("react");
+import { ConceptType, Concept } from "../../models/concepts/Concept";
 
 export class ActionConceptExporter implements IConceptExporter {
     type = ConceptType.MeshConcept;

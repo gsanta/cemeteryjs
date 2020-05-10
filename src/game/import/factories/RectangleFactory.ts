@@ -1,9 +1,9 @@
 import { Color3, Mesh, MeshBuilder, Scene, Space, StandardMaterial, Vector3 } from 'babylonjs';
-import { Registry } from '../../../editor/Registry';
+import { Registry } from '../../../core/Registry';
 import { Point } from '../../../misc/geometry/shapes/Point';
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
 import { MaterialBuilder } from './MaterialFactory';
-import { MeshConcept } from '../../../editor/models/concepts/MeshConcept';
+import { MeshConcept } from '../../../core/models/concepts/MeshConcept';
 
 export class RectangleFactory  {
     private height: number;

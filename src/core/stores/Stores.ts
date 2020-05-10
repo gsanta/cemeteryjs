@@ -6,7 +6,7 @@ import { SelectionStore } from "./SelectionStore";
 import { GameStore } from "./GameStore";
 import { MeshStore } from "./MeshStore";
 import { FeedbackStore } from "./FeedbackStore";
-import { Registry } from "../../editor/Registry";
+import { Registry } from "../Registry";
 import { ActionStore } from './ActionStore';
 
 export class Stores {

@@ -1,10 +1,8 @@
+import { Registry } from "../../Registry";
+import { ModelConcept } from "../../models/concepts/ModelConcept";
 import { IConceptImporter } from "./IConceptImporter";
 import { ConceptGroupJson } from "./ImportService";
-import { PathConcept } from "../../../editor/models/concepts/PathConcept";
-import { ConceptType } from "../../../editor/models/concepts/Concept";
-import { Stores } from "../../stores/Stores";
-import { ModelConcept } from "../../../editor/models/concepts/ModelConcept";
-import { Registry } from "../../../editor/Registry";
+import { ConceptType } from "../../models/concepts/Concept";
 
 export interface ModelJson {
     _attributes: {

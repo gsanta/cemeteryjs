@@ -1,9 +1,9 @@
-import { Registry } from '../../../editor/Registry';
+import { Registry } from '../../../core/Registry';
 import { UpdateTask } from '../../../core/services/UpdateServices';
-import { ConceptType } from '../../../editor/models/concepts/Concept';
-import { MeshConcept } from '../../../editor/models/concepts/MeshConcept';
-import { AnimationConcept, AnimationCondition } from '../../../editor/models/meta/AnimationConcept';
+import { MeshConcept } from '../../../core/models/concepts/MeshConcept';
+import { AnimationConcept, AnimationCondition } from '../../../core/models/meta/AnimationConcept';
 import { AbstractSettings } from './AbstractSettings';
+import { ConceptType } from '../../../core/models/concepts/Concept';
 
 export enum AnimationSettingsProps {
     Name = 'Name',

@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { PanIconComponent } from '../../../gui/icons/tools/PanIconComponent';
-import { ZoomInIconComponent } from '../../../gui/icons/tools/ZoomInIconComponent';
-import { ZoomOutIconComponent } from '../../../gui/icons/tools/ZoomOutIconComponent';
-import { RendererView } from '../RendererView';
-import { ToolType } from '../../../../core/tools/Tool';
-import { AbstractToolbarComponent, ToolbarComponentProps } from '../../AbstractToolbarComponent';
+import { AbstractToolbarComponent, ToolbarComponentProps } from '../../core/gui/AbstractToolbarComponent';
+import { RendererView } from './RendererView';
+import { ZoomInIconComponent } from '../../core/gui/icons/tools/ZoomInIconComponent';
+import { ZoomOutIconComponent } from '../../core/gui/icons/tools/ZoomOutIconComponent';
+import { PanIconComponent } from '../../core/gui/icons/tools/PanIconComponent';
+import { ToolType } from '../../core/tools/Tool';
 
 export class RendererToolbarComponent extends AbstractToolbarComponent<RendererView> {
 

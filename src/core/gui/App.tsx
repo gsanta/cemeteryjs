@@ -2,17 +2,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import * as React from 'react';
 import './App.scss';
 import { AppContext, AppContextType } from './Context';
-import '../../editor/gui/misc/SplitPane.css';
+import '../gui/misc/Splitpane.css';
 import Split from 'split.js'
 import { SidebarComponent } from './SidebarComponent';
-import { SpinnerOverlayComponent } from '../../editor/gui/misc/SpinnerOverlayComponent';
-import { View } from '../../editor/views/View';
-import { viewFactory } from '../../editor/ViewFactory';
-import { RendererView } from '../views/renderer/RendererView';
-import { AnimationDialogComponent } from '../../editor/gui/dialogs/AnimationDialogComponent';
-import { ListActionsDialogComponent } from '../../editor/gui/dialogs/ListActionsDialogComponent';
+import { SpinnerOverlayComponent } from './misc/SpinnerOverlayComponent';
+import { View } from '../View';
+import { viewFactory } from '../ViewFactory';
+import { AnimationDialogComponent } from './dialogs/AnimationDialogComponent';
+import { ListActionsDialogComponent } from './dialogs/ListActionsDialogComponent';
 import { DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
+import { RendererView } from '../../plugins/game_view/RendererView';
 
 export interface AppState {
     isDialogOpen: boolean;

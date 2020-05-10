@@ -1,6 +1,6 @@
-import { Registry } from "../../../editor/Registry";
-import { ElementalAnimation } from "../../../editor/models/meta/AnimationConcept";
-import { MeshConcept } from "../../../editor/models/concepts/MeshConcept";
+import { Registry } from "../../../core/Registry";
+import { ElementalAnimation } from "../../../core/models/meta/AnimationConcept";
+import { MeshConcept } from "../../../core/models/concepts/MeshConcept";
 
 export class AnimationPlayer {
     private playingAnimations: Map<MeshConcept, ElementalAnimation> = new Map();

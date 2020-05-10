@@ -2,7 +2,7 @@ import { ServiceLocator } from '../ServiceLocator';
 import { IKeyboardEvent, isCtrlOrCommandDown } from './KeyboardService';
 import { IPointerEvent, PointerService, Wheel } from './PointerService';
 import { Point } from '../../../misc/geometry/shapes/Point';
-import { Registry } from '../../../editor/Registry';
+import { Registry } from '../../Registry';
 
 export type IHotkeyAction = (hotkeyEvent: IHotkeyEvent, registry: Registry) => boolean;
 

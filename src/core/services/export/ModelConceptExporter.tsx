@@ -1,7 +1,7 @@
-import { Registry } from '../../../editor/Registry';
-import { ConceptType } from "../../../editor/models/concepts/Concept";
+import { Registry } from '../../Registry';
 import { IConceptExporter } from "./IConceptExporter";
 import React = require("react");
+import { ConceptType } from '../../models/concepts/Concept';
 
 export class ModelConceptExporter implements IConceptExporter {
     type = ConceptType.ModelConcept;

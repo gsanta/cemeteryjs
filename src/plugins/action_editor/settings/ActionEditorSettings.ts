@@ -1,5 +1,5 @@
-import { ActionConcept } from '../../../editor/models/concepts/ActionConcept';
-import { Registry } from '../../../editor/Registry';
+import { ActionConcept } from '../../../core/models/concepts/ActionConcept';
+import { Registry } from '../../../core/Registry';
 import { UpdateTask } from '../../../core/services/UpdateServices';
 import { AbstractSettings } from '../../scene_editor/settings/AbstractSettings';
 

@@ -4,7 +4,7 @@ import { Rectangle } from '../../misc/geometry/shapes/Rectangle';
 import { MousePointer } from '../../core/services/input/MouseService';
 import { ServiceLocator } from '../../core/services/ServiceLocator';
 import { ICamera } from './ICamera';
-import { Registry } from '../../editor/Registry';
+import { Registry } from '../../core/Registry';
 
 export class RendererCamera implements ICamera {
     private startY: number;

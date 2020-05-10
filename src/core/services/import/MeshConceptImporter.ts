@@ -1,12 +1,11 @@
 
-import { IConceptImporter } from './IConceptImporter';
+import { Registry } from '../../Registry';
 import { Point } from '../../../misc/geometry/shapes/Point';
 import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
+import { MeshConcept } from '../../models/concepts/MeshConcept';
+import { IConceptImporter } from './IConceptImporter';
 import { ConceptGroupJson } from './ImportService';
-import { MeshConcept } from '../../../editor/models/concepts/MeshConcept';
-import { ConceptType } from '../../../editor/models/concepts/Concept';
-import { Stores } from '../../stores/Stores';
-import { Registry } from '../../../editor/Registry';
+import { ConceptType } from '../../models/concepts/Concept';
 
 export interface RectJson {
     _attributes: {

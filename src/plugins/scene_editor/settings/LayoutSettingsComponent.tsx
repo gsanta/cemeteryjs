@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Editor } from '../../../editor/Editor';
-import { AppContext, AppContextType } from '../../../editor/gui/Context';
-import { ConnectedDropdownComponent } from '../../../editor/gui/inputs/DropdownComponent';
+import { Editor } from '../../../core/Editor';
+import { ConnectedDropdownComponent } from '../../../core/gui/inputs/DropdownComponent';
 import { LabelColumnStyled, MultiFieldColumnStyled, SettingsRowStyled } from './SettingsComponent';
 import { LayoutPropType } from './LayoutSettings';
+import { AppContext, AppContextType } from '../../../core/gui/Context';
 
 export interface GeneralFormComponentProps {
     isEditorOpen: boolean;

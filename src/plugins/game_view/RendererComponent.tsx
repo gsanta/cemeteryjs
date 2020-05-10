@@ -3,7 +3,7 @@ import './RendererComponent.scss'
 import { AppContext, AppContextType } from '../../core/gui/Context';
 import styled from 'styled-components';
 import { RendererView } from './RendererView';
-import { WindowToolbarStyled } from '../../editor/gui/windows/WindowToolbar';
+import { WindowToolbarStyled } from '../../core/WindowToolbar';
 import { RendererToolbarComponent } from './RendererToolbarComponent';
 import { WheelListener } from '../../core/services/WheelListener';
 
