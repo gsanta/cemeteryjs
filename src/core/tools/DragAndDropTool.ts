@@ -3,8 +3,8 @@ import { AbstractTool } from './AbstractTool';
 import { Cursor, ToolType } from "./Tool";
 import { UpdateTask } from '../services/UpdateServices';
 import { ActionConcept } from '../models/concepts/ActionConcept';
-import { Rectangle } from '../../misc/geometry/shapes/Rectangle';
-import { Point } from '../../misc/geometry/shapes/Point';
+import { Rectangle } from '../geometry/shapes/Rectangle';
+import { Point } from '../geometry/shapes/Point';
 
 export class DragAndDropTool extends AbstractTool {
     cursor = Cursor.Grab;

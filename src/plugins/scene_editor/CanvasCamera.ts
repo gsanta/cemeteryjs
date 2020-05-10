@@ -1,9 +1,9 @@
-import { Point } from "../../misc/geometry/shapes/Point";
-import { Rectangle } from "../../misc/geometry/shapes/Rectangle";
+import { Point } from "../../core/geometry/shapes/Point";
+import { Rectangle } from "../../core/geometry/shapes/Rectangle";
 import { MousePointer } from "../../core/services/input/MouseService";
 import { ServiceLocator } from "../../core/services/ServiceLocator";
 import { UpdateTask } from "../../core/services/UpdateServices";
-import { ICamera } from '../game_view/ICamera';
+import { ICamera } from '../game_viewer/ICamera';
 import { Registry } from "../../core/Registry";
 
 export class CanvasCamera implements ICamera {

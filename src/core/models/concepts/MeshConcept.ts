@@ -1,10 +1,10 @@
 import { Mesh, Vector3 } from 'babylonjs';
 import { IGameObject } from '../../../game/models/objects/IGameObject';
 import { BehaviourType } from '../../../game/services/behaviour/IBehaviour';
-import { Point } from '../../../misc/geometry/shapes/Point';
-import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
-import { toVector3 } from '../../../misc/geometry/utils/GeomUtils';
-import { toDegree } from '../../../misc/geometry/utils/Measurements';
+import { Point } from '../../geometry/shapes/Point';
+import { Rectangle } from '../../geometry/shapes/Rectangle';
+import { toVector3 } from '../../geometry/utils/GeomUtils';
+import { toDegree } from '../../geometry/utils/Measurements';
 import { EditPoint } from '../feedbacks/EditPoint';
 import { AnimationConcept, ElementalAnimation } from '../meta/AnimationConcept';
 import { ConceptType } from './Concept';

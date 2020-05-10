@@ -1,4 +1,4 @@
-import { Point } from "../../../misc/geometry/shapes/Point";
+import { Point } from "../../geometry/shapes/Point";
 import { EditPoint } from "../feedbacks/EditPoint";
 import { ConceptType } from "../concepts/Concept";
 import { MetaConcept } from "./MetaConcept";

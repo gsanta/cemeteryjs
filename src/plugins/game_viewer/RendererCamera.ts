@@ -1,6 +1,6 @@
 import { ArcRotateCamera, Axis, Epsilon, Matrix, Plane, Vector3 } from 'babylonjs';
-import { Point } from '../../misc/geometry/shapes/Point';
-import { Rectangle } from '../../misc/geometry/shapes/Rectangle';
+import { Point } from '../../core/geometry/shapes/Point';
+import { Rectangle } from '../../core/geometry/shapes/Rectangle';
 import { MousePointer } from '../../core/services/input/MouseService';
 import { ServiceLocator } from '../../core/services/ServiceLocator';
 import { ICamera } from './ICamera';

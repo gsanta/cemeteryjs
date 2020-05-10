@@ -1,7 +1,7 @@
 
 import { Registry } from '../../Registry';
-import { Point } from '../../../misc/geometry/shapes/Point';
-import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
+import { Point } from '../../geometry/shapes/Point';
+import { Rectangle } from '../../geometry/shapes/Rectangle';
 import { MeshConcept } from '../../models/concepts/MeshConcept';
 import { IConceptImporter } from './IConceptImporter';
 import { ConceptGroupJson } from './ImportService';

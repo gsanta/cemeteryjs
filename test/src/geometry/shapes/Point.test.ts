@@ -1,5 +1,5 @@
-import { toRadian } from "../../../../src/misc/geometry/utils/Measurements";
-import { Point } from "../../../../src/misc/geometry/shapes/Point";
+import { toRadian } from "../../../../src/core/geometry/utils/Measurements";
+import { Point } from "../../../../src/core/geometry/shapes/Point";
 
 describe('`Point`', () => {
     describe('`distanceTo`', () => {

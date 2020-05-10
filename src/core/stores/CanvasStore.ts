@@ -1,7 +1,7 @@
-import { Point } from "../../misc/geometry/shapes/Point";
-import { Polygon } from "../../misc/geometry/shapes/Polygon";
-import { Rectangle } from "../../misc/geometry/shapes/Rectangle";
-import { without } from "../../misc/geometry/utils/Functions";
+import { Point } from "../geometry/shapes/Point";
+import { Polygon } from "../geometry/shapes/Polygon";
+import { Rectangle } from "../geometry/shapes/Rectangle";
+import { without } from "../geometry/utils/Functions";
 import { MeshConcept } from "../models/concepts/MeshConcept";
 import { ModelConcept } from "../models/concepts/ModelConcept";
 import { PathConcept } from "../models/concepts/PathConcept";

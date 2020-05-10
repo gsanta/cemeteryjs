@@ -1,6 +1,6 @@
 import { Registry } from "../../Registry";
-import { sort } from "../../../misc/geometry/utils/Functions";
-import { toDegree } from "../../../misc/geometry/utils/Measurements";
+import { sort } from "../../geometry/utils/Functions";
+import { toDegree } from "../../geometry/utils/Measurements";
 import { colors } from "../../gui/styles";
 import { MeshConcept } from "../../models/concepts/MeshConcept";
 import { IConceptExporter } from "./IConceptExporter";

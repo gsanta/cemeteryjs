@@ -12,7 +12,7 @@ import { AnimationDialogComponent } from './dialogs/AnimationDialogComponent';
 import { ListActionsDialogComponent } from './dialogs/ListActionsDialogComponent';
 import { DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
-import { RendererView } from '../../plugins/game_view/RendererView';
+import { RendererView } from '../../plugins/game_viewer/RendererView';
 
 export interface AppState {
     isDialogOpen: boolean;

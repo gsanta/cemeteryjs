@@ -4,7 +4,7 @@ import { MeshConcept } from '../../../core/models/concepts/MeshConcept';
 import { ModelConcept } from '../../../core/models/concepts/ModelConcept';
 import { AnimationConcept, AnimationCondition } from '../../../core/models/meta/AnimationConcept';
 import { AbstractSettings, PropertyType } from "./AbstractSettings";
-import { toDegree, toRadian } from '../../../misc/geometry/utils/Measurements';
+import { toDegree, toRadian } from '../../../core/geometry/utils/Measurements';
 import { ConceptType } from '../../../core/models/concepts/Concept';
 
 export enum MeshViewPropType {

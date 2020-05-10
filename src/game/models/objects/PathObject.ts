@@ -1,4 +1,4 @@
-import { Point } from "../../../misc/geometry/shapes/Point";
+import { Point } from "../../../core/geometry/shapes/Point";
 
 export class PathCorner {
     point1?: Point;

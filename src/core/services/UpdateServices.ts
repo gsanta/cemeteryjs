@@ -1,5 +1,5 @@
 import { Registry } from '../Registry';
-import { RendererView } from "../../plugins/game_view/RendererView";
+import { RendererView } from "../../plugins/game_viewer/RendererView";
 
 export enum UpdateTask {
     RepaintCanvas = 'RepaintCanvas',

@@ -1,5 +1,5 @@
 import { Mesh, Vector3, Space, StandardMaterial, Texture, Scene } from 'babylonjs';
-import { Rectangle } from '../../misc/geometry/shapes/Rectangle';
+import { Rectangle } from '../geometry/shapes/Rectangle';
 import { MeshLoaderService } from '../services/MeshLoaderService';
 import { RectangleFactory } from '../../game/import/factories/RectangleFactory';
 import { Registry } from '../Registry';

@@ -1,4 +1,4 @@
-import { Rectangle } from '../../misc/geometry/shapes/Rectangle';
+import { Rectangle } from '../geometry/shapes/Rectangle';
 import { Registry } from '../Registry';
 import { MeshConcept } from '../models/concepts/MeshConcept';
 import { UpdateTask } from '../services/UpdateServices';

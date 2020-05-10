@@ -1,4 +1,4 @@
-import { Point } from '../misc/geometry/shapes/Point';
+import { Point } from './geometry/shapes/Point';
 import { Editor } from './Editor';
 import { IViewExporter } from './services/export/IViewExporter';
 import { GameService } from './services/GameService';
@@ -9,7 +9,7 @@ import { Tool } from './tools/Tool';
 import { UpdateTask } from './services/UpdateServices';
 import { Stores } from './stores/Stores';
 import { AbstractSettings } from '../plugins/scene_editor/settings/AbstractSettings';
-import { ICamera } from '../plugins/game_view/ICamera';
+import { ICamera } from '../plugins/game_viewer/ICamera';
 import { Registry } from './Registry';
 
 export interface CanvasViewSettings {

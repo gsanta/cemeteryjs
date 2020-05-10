@@ -1,7 +1,7 @@
 import { Color3, Mesh, MeshBuilder, Scene, Space, StandardMaterial, Vector3 } from 'babylonjs';
 import { Registry } from '../../../core/Registry';
-import { Point } from '../../../misc/geometry/shapes/Point';
-import { Rectangle } from '../../../misc/geometry/shapes/Rectangle';
+import { Point } from '../../../core/geometry/shapes/Point';
+import { Rectangle } from '../../../core/geometry/shapes/Rectangle';
 import { MaterialBuilder } from './MaterialFactory';
 import { MeshConcept } from '../../../core/models/concepts/MeshConcept';
 

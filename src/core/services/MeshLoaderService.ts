@@ -1,5 +1,5 @@
 import { Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, StandardMaterial } from 'babylonjs';
-import { Point } from '../../misc/geometry/shapes/Point';
+import { Point } from '../geometry/shapes/Point';
 import { Registry } from '../Registry';
 import { ModelConcept } from '../models/concepts/ModelConcept';
 import { MeshConcept } from '../models/concepts/MeshConcept';

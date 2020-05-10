@@ -1,7 +1,7 @@
 import { Concept } from "./Concept";
 import { EditPoint } from "../feedbacks/EditPoint";
-import { Rectangle } from "../../../misc/geometry/shapes/Rectangle";
-import { Point } from "../../../misc/geometry/shapes/Point";
+import { Rectangle } from "../../geometry/shapes/Rectangle";
+import { Point } from "../../geometry/shapes/Point";
 
 
 export interface VisualConcept extends Concept {

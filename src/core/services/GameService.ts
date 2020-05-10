@@ -8,7 +8,7 @@ import { AfterRenderTrigger } from "../../game/services/triggers/AfterRenderTrig
 import { KeyboardTrigger } from "../../game/services/triggers/KeyboardTrigger";
 import { Walkers } from "../../game/services/walkers/Walkers";
 import { Registry } from "../Registry";
-import { GameEngine } from "../../plugins/game_view/GameEngine";
+import { GameEngine } from "../../plugins/game_viewer/GameEngine";
 import { IConceptImporter } from "./import/IConceptImporter";
 import { ImportService } from "./import/ImportService";
 import { MeshConcept } from "../models/concepts/MeshConcept";

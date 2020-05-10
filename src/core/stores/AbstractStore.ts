@@ -1,4 +1,4 @@
-import { maxBy } from '../../misc/geometry/utils/Functions';
+import { maxBy } from '../geometry/utils/Functions';
 import { ConceptType, Concept } from '../models/concepts/Concept';
 
 

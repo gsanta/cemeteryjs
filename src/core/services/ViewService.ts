@@ -1,7 +1,7 @@
 import { View } from '../View';
 import { Registry } from '../Registry';
 import { CanvasView } from '../../plugins/scene_editor/CanvasView';
-import { RendererView } from '../../plugins/game_view/RendererView';
+import { RendererView } from '../../plugins/game_viewer/RendererView';
 import { ActionEditorView } from '../../plugins/action_editor/ActionEditorView';
 
 export interface LayoutConfig {

@@ -4,7 +4,7 @@ import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { ActionEditorView } from '../ActionEditorView';
 import { ActionSettingsProps } from '../settings/ActionEditorSettings';
 import { useDrop, useDrag } from 'react-dnd';
-import { Point } from '../../../misc/geometry/shapes/Point';
+import { Point } from '../../../core/geometry/shapes/Point';
 
 const ActionButtonStyled = styled.div`
     border: 1px solid white;

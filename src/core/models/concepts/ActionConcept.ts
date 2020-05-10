@@ -1,8 +1,8 @@
 import { ConceptType } from "./Concept";
 import { VisualConcept } from "./VisualConcept";
-import { Rectangle } from "../../../misc/geometry/shapes/Rectangle";
+import { Rectangle } from "../../geometry/shapes/Rectangle";
 import { EditPoint } from "../feedbacks/EditPoint";
-import { Point } from "../../../misc/geometry/shapes/Point";
+import { Point } from "../../geometry/shapes/Point";
 
 export class ActionConcept implements VisualConcept {
     type = ConceptType.ActionConcept;

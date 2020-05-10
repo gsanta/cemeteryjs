@@ -1,5 +1,5 @@
 import { PathConcept } from "./PathConcept";
-import { Point } from "../../../misc/geometry/shapes/Point";
+import { Point } from "../../geometry/shapes/Point";
 
 export class PathEditor {
     private pathConcept: PathConcept;

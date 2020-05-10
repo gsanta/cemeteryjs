@@ -1,5 +1,5 @@
 import { Registry } from "../Registry";
-import { Point } from "../../misc/geometry/shapes/Point";
+import { Point } from "../geometry/shapes/Point";
 import { PathConcept } from "../models/concepts/PathConcept";
 import { VisualConcept } from "../models/concepts/VisualConcept";
 import { EditPoint } from "../models/feedbacks/EditPoint";

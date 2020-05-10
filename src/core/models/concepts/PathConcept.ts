@@ -1,7 +1,7 @@
 import { Concept, ConceptType } from "./Concept";
-import { Rectangle } from "../../../misc/geometry/shapes/Rectangle";
-import { Point } from "../../../misc/geometry/shapes/Point";
-import { minBy, maxBy } from "../../../misc/geometry/utils/Functions";
+import { Rectangle } from "../../geometry/shapes/Rectangle";
+import { Point } from "../../geometry/shapes/Point";
+import { minBy, maxBy } from "../../geometry/utils/Functions";
 import { EditPoint } from "../feedbacks/EditPoint";
 import { IGameObject } from "../../../game/models/objects/IGameObject";
 

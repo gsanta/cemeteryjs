@@ -1,8 +1,8 @@
-import { toDegree, Angle } from "../../../../src/misc/geometry/shapes/Angle";
-import { toRadian, Measurements } from "../../../../src/misc/geometry/utils/Measurements";
-import { Line } from '../../../../src/misc/geometry/shapes/Line';
-import { Point } from "../../../../src/misc/geometry/shapes/Point";
-import { Segment } from "../../../../src/misc/geometry/shapes/Segment";
+import { toDegree, Angle } from "../../../../src/core/geometry/shapes/Angle";
+import { toRadian, Measurements } from "../../../../src/core/geometry/utils/Measurements";
+import { Line } from '../../../../src/core/geometry/shapes/Line';
+import { Point } from "../../../../src/core/geometry/shapes/Point";
+import { Segment } from "../../../../src/core/geometry/shapes/Segment";
 
 describe(`Angle`, () => {
 

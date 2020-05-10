@@ -1,5 +1,5 @@
-import { Rectangle } from "../../misc/geometry/shapes/Rectangle";
-import { Point } from "../../misc/geometry/shapes/Point";
+import { Rectangle } from "../geometry/shapes/Rectangle";
+import { Point } from "../geometry/shapes/Point";
 import { MousePointer } from "../services/input/MouseService";
 import { CanvasView } from "../../plugins/scene_editor/CanvasView";
 import { RectSelectFeedback } from "../models/feedbacks/RectSelectFeedback";

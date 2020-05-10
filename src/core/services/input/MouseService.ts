@@ -1,5 +1,5 @@
 import { Registry } from "../../Registry";
-import { Point } from "../../../misc/geometry/shapes/Point";
+import { Point } from "../../geometry/shapes/Point";
 import { Feedback } from "../../models/feedbacks/Feedback";
 import { IPointerEvent } from "./PointerService";
 import { Concept } from "../../models/concepts/Concept";

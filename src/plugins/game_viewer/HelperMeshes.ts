@@ -1,5 +1,5 @@
 import { MeshBuilder, Scene, Vector3, Mesh, Color3, StandardMaterial, DynamicTexture, Space } from 'babylonjs';
-import { Point } from '../../misc/geometry/shapes/Point';
+import { Point } from '../../core/geometry/shapes/Point';
 
 export class HelperMeshes {
     private meshBuilder: typeof MeshBuilder;

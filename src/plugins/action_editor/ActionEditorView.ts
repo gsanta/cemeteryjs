@@ -1,4 +1,4 @@
-import { Point } from '../../misc/geometry/shapes/Point';
+import { Point } from '../../core/geometry/shapes/Point';
 import { Registry } from '../../core/Registry';
 import { UpdateTask } from '../../core/services/UpdateServices';
 import { calcOffsetFromDom, View } from '../../core/View';

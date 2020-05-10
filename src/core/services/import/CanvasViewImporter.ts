@@ -1,7 +1,7 @@
 import { IViewImporter } from "./IViewImporter";
 import { CanvasView } from "../../../plugins/scene_editor/CanvasView";
 import { Stores } from "../../stores/Stores";
-import { Point } from "../../../misc/geometry/shapes/Point";
+import { Point } from "../../geometry/shapes/Point";
 import { CanvasCamera } from "../../../plugins/scene_editor/CanvasCamera";
 import { Registry } from "../../Registry";
 

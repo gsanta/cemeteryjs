@@ -8,7 +8,7 @@ import { ActionEditorView } from '../ActionEditorView';
 import { Feedback } from '../../../core/models/feedbacks/Feedback';
 import { useDrop } from 'react-dnd';
 import { ActionType } from '../../../core/stores/ActionStore';
-import { Point } from '../../../misc/geometry/shapes/Point';
+import { Point } from '../../../core/geometry/shapes/Point';
 import { ActionEditorToolbarComponent } from './ActionEditorToolbarComponent';
 import { Concept } from '../../../core/models/concepts/Concept';
 

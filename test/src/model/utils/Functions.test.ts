@@ -1,5 +1,5 @@
-import { minBy, arraysEqual } from '../../../../src/misc/Functions';
-import { Point } from '../../../../src/misc/geometry/shapes/Point';
+import { minBy, arraysEqual } from '../../../../src/core/geometry/Functions';
+import { Point } from '../../../../src/core/geometry/shapes/Point';
 
 
 describe('minBy', () => {

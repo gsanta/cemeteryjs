@@ -1,4 +1,4 @@
-import { without } from "../../misc/geometry/utils/Functions";
+import { without } from "../geometry/utils/Functions";
 import { PathConcept } from "../models/concepts/PathConcept";
 import { VisualConcept } from "../models/concepts/VisualConcept";
 import { EditPoint } from "../models/feedbacks/EditPoint";

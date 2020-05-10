@@ -1,4 +1,4 @@
-import { Point } from '../../misc/geometry/shapes/Point';
+import { Point } from '../../core/geometry/shapes/Point';
 import { Registry } from '../../core/Registry';
 import { CanvasViewExporter } from '../../core/services/export/CanvasViewExporter';
 import { IViewExporter } from '../../core/services/export/IViewExporter';

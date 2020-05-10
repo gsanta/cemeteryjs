@@ -1,6 +1,6 @@
 import { AnimationCondition } from "../../../core/models/meta/AnimationConcept";
-import { Point } from "../../../misc/geometry/shapes/Point";
-import { Segment } from "../../../misc/geometry/shapes/Segment";
+import { Point } from "../../../core/geometry/shapes/Point";
+import { Segment } from "../../../core/geometry/shapes/Segment";
 import { PathCorner } from "../../models/objects/PathObject";
 import { RouteObject } from "../../models/objects/RouteObject";
 import { PathConcept } from "../../../core/models/concepts/PathConcept";
