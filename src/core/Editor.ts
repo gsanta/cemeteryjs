@@ -14,7 +14,7 @@ export class Editor {
     constructor() {
         this.svgCanvasId = 'svg-editor';
         this.registry = new Registry();
-        this.registry.services.tools.tools.forEach(tool => tool.setup());
+        this.registry.tools.tools.forEach(tool => tool.setup());
 
         this.globalSettingsForm = new GlobalSettings(this.registry);
         this.layoutSettings = new LayoutSettings(this.registry);

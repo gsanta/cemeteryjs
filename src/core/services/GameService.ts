@@ -34,8 +34,6 @@ export class GameService {
 
     constructor(registry: Registry) {
         this.registry = registry;
-
-        this.registry.services.game = this; 
     }
 
     init(canvas: HTMLCanvasElement) {

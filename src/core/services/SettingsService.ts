@@ -3,10 +3,10 @@ import { MeshSettings } from "../../plugins/scene_editor/settings/MeshSettings";
 import { PathSettings } from "../../plugins/scene_editor/settings/PathSettings";
 import { LevelSettings } from "../../plugins/scene_editor/settings/LevelSettings";
 import { Stores } from "../stores/Stores";
-import { ServiceLocator } from "./ServiceLocator";
+import { Services } from "./ServiceLocator";
 import { AnimationSettings } from "../../plugins/scene_editor/settings/AnimationSettings";
 import { Registry } from "../Registry";
-import { ActionSettings } from '../../plugins/action_editor/settings/ActionEditorSettings';
+import { ActionEditorSettings } from '../../plugins/action_editor/settings/ActionEditorSettings';
 
 
 export class SettingsService {

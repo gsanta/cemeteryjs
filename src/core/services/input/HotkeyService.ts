@@ -1,4 +1,4 @@
-import { ServiceLocator } from '../ServiceLocator';
+import { Services } from '../ServiceLocator';
 import { IKeyboardEvent, isCtrlOrCommandDown } from './KeyboardService';
 import { IPointerEvent, PointerService, Wheel } from './PointerService';
 import { Point } from '../../geometry/shapes/Point';

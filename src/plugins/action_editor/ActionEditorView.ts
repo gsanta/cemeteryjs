@@ -3,7 +3,7 @@ import { Registry } from '../../core/Registry';
 import { UpdateTask } from '../../core/services/UpdateServices';
 import { calcOffsetFromDom, View } from '../../core/View';
 import { Camera2D } from '../common/camera/Camera2D';
-import { ActionSettings } from './settings/ActionEditorSettings';
+import { ActionEditorSettings } from './settings/ActionEditorSettings';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -38,15 +38,15 @@ export class ActionEditorView extends View {
     
     private camera: Camera2D;
 
-    actionSettings: ActionSettings;
+    actionSettings: ActionEditorSettings;
 
     constructor(registry: Registry) {
         super(registry);
 
         this.camera = cameraInitializer(ActionEditorView.id, registry);
 
-        this.selectedTool = this.registry.services.tools.pan;
-        this.actionSettings = new ActionSettings(registry);
+        this.selectedTool = this.registry.tools.pan;
+        this.actionSettings = new ActionEditorSettings(registry);
     }
 
     getId() {
@@ -55,7 +55,7 @@ export class ActionEditorView extends View {
 
     resize(): void {
         this.camera.resize(getScreenSize(ActionEditorView.id));
-        this.registry.services.tools.zoom.resize();
+        this.registry.tools.zoom.resize();
         this.registry.services.update.runImmediately(UpdateTask.RepaintCanvas);
     };
 

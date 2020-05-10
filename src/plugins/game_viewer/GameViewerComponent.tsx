@@ -43,13 +43,13 @@ export class GameViewerComponent extends React.Component {
     
     componentDidMount() {
         this.wheelListener = new WheelListener(this.context.registry);
-        this.context.registry.services.view.getViewById<GameView>(GameView.id).setCanvasRenderer(() => this.forceUpdate());
-        this.context.registry.services.view.getViewById(GameView.id).repainter = () => {this.forceUpdate()};
+        this.context.registry.services.layout.getViewById<GameView>(GameView.id).setCanvasRenderer(() => this.forceUpdate());
+        this.context.registry.services.layout.getViewById(GameView.id).repainter = () => {this.forceUpdate()};
         
         setTimeout(() => {
             // this.context.controllers.getWindowControllerByName('renderer').update();
-            this.context.registry.services.view.getViewById(GameView.id).setup();
-            this.context.registry.services.view.getViewById(GameView.id).resize();
+            this.context.registry.services.layout.getViewById(GameView.id).setup();
+            this.context.registry.services.layout.getViewById(GameView.id).resize();
         }, 100);
 
     }
@@ -59,7 +59,7 @@ export class GameViewerComponent extends React.Component {
     }
 
     render() {
-        const view = this.context.registry.services.view.getViewById<GameView>(GameView.id);
+        const view = this.context.registry.services.layout.getViewById<GameView>(GameView.id);
 
         return (
                 <GameViewerStyled id={view.getId()} style={{cursor: view.getActiveTool().cursor}}>

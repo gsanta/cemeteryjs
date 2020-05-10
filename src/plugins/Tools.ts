@@ -1,17 +1,17 @@
-import { ZoomTool } from "./ZoomTool";
-import { DeleteTool } from "./DeleteTool";
-import { PointerTool } from "./PointerTool";
-import { ToolType, Tool } from "./Tool";
-import { PathTool } from "./PathTool";
-import { RectangleTool } from "./RectangleTool";
-import { SelectTool } from "./SelectTool";
-import { CameraRotationTool } from "./CameraRotationTool";
-import { Registry } from "../../../core/Registry";
-import { GamepadTool } from "./GamepadTool";
-import { PanTool } from "./PanTool";
-import { DragAndDropTool } from "./DragAndDropTool";
+import { ZoomTool } from "./common/tools/ZoomTool";
+import { DeleteTool } from "./common/tools/DeleteTool";
+import { PointerTool } from "./common/tools/PointerTool";
+import { ToolType, Tool } from "./common/tools/Tool";
+import { PathTool } from "./common/tools/PathTool";
+import { RectangleTool } from "./common/tools/RectangleTool";
+import { SelectTool } from "./common/tools/SelectTool";
+import { CameraRotationTool } from "./common/tools/CameraRotationTool";
+import { Registry } from "../core/Registry";
+import { GamepadTool } from "./common/tools/GamepadTool";
+import { PanTool } from "./common/tools/PanTool";
+import { DragAndDropTool } from "./common/tools/DragAndDropTool";
 
-export class ToolService {
+export class Tools {
     zoom: ZoomTool;
     delete: DeleteTool;
     pointer: PointerTool;

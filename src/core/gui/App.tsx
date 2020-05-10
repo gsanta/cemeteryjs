@@ -42,25 +42,25 @@ export class App extends React.Component<{}, AppState> {
     componentDidMount() {
         this.context.registry.services.update.setFullRepainter(() => this.forceUpdate());
         this.context.controllers.setRenderer(() => this.forceUpdate());
-        if (this.context.registry.services.view.visibilityDirty) {
+        if (this.context.registry.services.layout.visibilityDirty) {
             this.updateCanvasVisibility();
-            this.context.registry.services.view.visibilityDirty = false;
+            this.context.registry.services.layout.visibilityDirty = false;
         }
 
-        window.addEventListener('resize', () => this.context.registry.services.view.getActiveViews().forEach(controller => controller.resize()));
+        window.addEventListener('resize', () => this.context.registry.services.layout.getActiveViews().forEach(controller => controller.resize()));
         this.context.controllers.setup(document.querySelector(`#${GameView.id}`));
     }
 
     componentDidUpdate() {
-        if (this.context.registry.services.view.visibilityDirty) {
+        if (this.context.registry.services.layout.visibilityDirty) {
             this.split.destroy();
             this.updateCanvasVisibility();
-            this.context.registry.services.view.visibilityDirty = false;
+            this.context.registry.services.layout.visibilityDirty = false;
         }
     }e
     
     render() {
-        const fullScreen = this.context.registry.services.view.getFullScreen();
+        const fullScreen = this.context.registry.services.layout.getFullScreen();
         const toolbar = !fullScreen ? (
             <div id="toolbar" >
                 <SidebarComponent isEditorOpen={this.state.isEditorOpen} toggleEditorOpen={() => this.setState({isEditorOpen: !this.state.isEditorOpen})}/>
@@ -83,20 +83,20 @@ export class App extends React.Component<{}, AppState> {
     }
 
     private renderFullScreenCanvas(): JSX.Element {
-        const fullScreen = this.context.registry.services.view.getFullScreen();
+        const fullScreen = this.context.registry.services.layout.getFullScreen();
         return <div id={`${fullScreen.getId()}-split`}>{viewFactory(fullScreen)}</div>;
     }
 
     private renderViews(): JSX.Element[] {
-        return this.context.registry.services.view.getActiveViews().map(canvas => viewFactory(canvas));
+        return this.context.registry.services.layout.getActiveViews().map(canvas => viewFactory(canvas));
     }
 
     private resize() {
-        this.context.registry.services.view.getActiveViews().forEach(controller => controller.resize());
+        this.context.registry.services.layout.getActiveViews().forEach(controller => controller.resize());
     }
 
     private updateCanvasVisibility() {
-        const config = this.context.registry.services.view.activeLayout;
+        const config = this.context.registry.services.layout.activeLayout;
 
         this.split = Split(config.ids.map(id => `#${id}`),
             {

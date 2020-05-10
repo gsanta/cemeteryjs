@@ -20,7 +20,7 @@ export class DeleteTool extends AbstractTool {
     }
 
     click() {
-        this.registry.services.tools.pointer.click();
+        this.registry.tools.pointer.click();
         const hoverStore = this.registry.stores.hoverStore;
 
         if (hoverStore.hasAny()) {
@@ -56,11 +56,11 @@ export class DeleteTool extends AbstractTool {
     }
 
     over(item: VisualConcept | Feedback) {
-        this.registry.services.tools.pointer.over(item);
+        this.registry.tools.pointer.over(item);
     }
 
     out(item: VisualConcept | Feedback) {
-        this.registry.services.tools.pointer.out(item);
+        this.registry.tools.pointer.out(item);
     }
 
     eraseAll() {

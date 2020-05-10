@@ -3,7 +3,7 @@ import { Editor } from './Editor';
 import { IViewExporter } from './services/export/IViewExporter';
 import { GameService } from './services/GameService';
 import { IViewImporter } from './services/import/IViewImporter';
-import { ServiceLocator } from './services/ServiceLocator';
+import { Services } from './services/ServiceLocator';
 import { AbstractTool } from '../plugins/common/tools/AbstractTool';
 import { Tool } from '../plugins/common/tools/Tool';
 import { UpdateTask } from './services/UpdateServices';
@@ -55,7 +55,7 @@ export abstract class View {
     destroy(): void {}
     abstract resize(): void;
     update(): void {}
-    over(): void { this.registry.services.view.setHoveredView(this) }
+    over(): void { this.registry.services.layout.setHoveredView(this) }
     out(): void {}
 
     setSelectedTool(tool: AbstractTool) {

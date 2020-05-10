@@ -31,7 +31,7 @@ export class LayoutSettingsComponent extends React.Component<GeneralFormComponen
 
     private renderLayoutDropdown(): JSX.Element {
         const layoutSettings = this.context.controllers.layoutSettings;
-        const viewService = this.context.registry.services.view;
+        const viewService = this.context.registry.services.layout;
 
         return (
             <SettingsRowStyled>

@@ -1,14 +1,14 @@
 import { Registry } from "../Registry";
 import { AnimationSettings } from "../../plugins/scene_editor/settings/AnimationSettings";
 import { UpdateTask } from "./UpdateServices";
-import { ActionSettings } from '../../plugins/action_editor/settings/ActionEditorSettings';
+import { ActionEditorSettings } from '../../plugins/action_editor/settings/ActionEditorSettings';
 import { ListActionsSettings } from '../../plugins/scene_editor/settings/ListActionsSettings';
 
 export class DialogService {
     serviceName = 'dialog-service';
     dialogs: string[] = [
         AnimationSettings.settingsName,
-        ActionSettings.settingsName,
+        ActionEditorSettings.settingsName,
         ListActionsSettings.settingsName
     ];
     activeDialog: string;

@@ -12,8 +12,8 @@ export class HotkeyGamepadStart extends Hotkey {
     }
 
     private hotKeyAction(): boolean {
-        if (this.registry.services.view.getHoveredView().getActiveTool() !== this.registry.services.tools.gamepad) {
-            this.registry.services.view.getHoveredView().setPriorityTool(this.registry.services.tools.gamepad);
+        if (this.registry.services.layout.getHoveredView().getActiveTool() !== this.registry.tools.gamepad) {
+            this.registry.services.layout.getHoveredView().setPriorityTool(this.registry.tools.gamepad);
             return true;
         }
     }

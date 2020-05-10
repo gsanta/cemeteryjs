@@ -1,5 +1,4 @@
 import { Registry } from '../../core/Registry';
-import { GameService } from '../../core/services/GameService';
 import { Tool } from '../common/tools/Tool';
 import { UpdateService } from '../../core/services/UpdateServices';
 import { calcOffsetFromDom, View } from '../../core/View';
@@ -38,8 +37,7 @@ export class GameView extends View {
     constructor(registry: Registry) {
         super(registry);
 
-        this.registry.services.game = new GameService(registry);
-        this.selectedTool = this.registry.services.tools.pan;
+        this.selectedTool = this.registry.tools.pan;
 
         this.updateService = new UpdateService(registry);
         this.update = this.update.bind(this);

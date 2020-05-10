@@ -3,7 +3,7 @@ import { AbstractSettings } from './AbstractSettings';
 import { UpdateTask } from '../../../core/services/UpdateServices';
 import { MeshConcept } from '../../../core/models/concepts/MeshConcept';
 import { Stores } from '../../../core/stores/Stores';
-import { ServiceLocator } from '../../../core/services/ServiceLocator';
+import { Services } from '../../../core/services/ServiceLocator';
 import { Registry } from '../../../core/Registry';
 
 export enum GlobalSettingsPropType {

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { AppContext, AppContextType } from '../../core/gui/Context';
-import { ActionEditorView } from './ActionEditorView';
-import { ActionSettingsProps } from './settings/ActionEditorSettings';
+import { AppContext, AppContextType } from '../../../core/gui/Context';
+import { ActionEditorView } from '../ActionEditorView';
+import { ActionEditorSettingsProps } from './ActionEditorSettings';
 import { useDrop, useDrag } from 'react-dnd';
-import { Point } from '../../core/geometry/shapes/Point';
+import { Point } from '../../../core/geometry/shapes/Point';
 
 const ActionButtonStyled = styled.div`
     border: 1px solid white;
@@ -16,12 +16,12 @@ export class ActionEditorSettingsComponent extends React.Component {
     context: AppContextType;
 
     render() {
-        const view = this.context.registry.services.view.getViewById(ActionEditorView.id);
+        const view = this.context.registry.services.layout.getViewById(ActionEditorView.id);
 
         return (
             <div 
-                onMouseOver={() => view.setPriorityTool(this.context.registry.services.tools.dragAndDrop)}
-                onMouseOut={() => view.removePriorityTool(this.context.registry.services.tools.dragAndDrop)}
+                onMouseOver={() => view.setPriorityTool(this.context.registry.tools.dragAndDrop)}
+                onMouseOut={() => view.removePriorityTool(this.context.registry.tools.dragAndDrop)}
             >
                 {this.renderActionTypes()}
             </div>
@@ -29,16 +29,16 @@ export class ActionEditorSettingsComponent extends React.Component {
     }
 
     renderActionTypes() {
-        const view = this.context.registry.services.view.getViewById(ActionEditorView.id);
-        const settings = this.context.registry.services.view.getViewById<ActionEditorView>(ActionEditorView.id).actionSettings;
+        const view = this.context.registry.services.layout.getViewById(ActionEditorView.id);
+        const settings = this.context.registry.services.layout.getViewById<ActionEditorView>(ActionEditorView.id).actionSettings;
 
-        const actionTypes = settings.getVal<string[]>(ActionSettingsProps.ActionTypes);
+        const actionTypes = settings.getVal<string[]>(ActionEditorSettingsProps.ActionTypes);
         
         return actionTypes.map(type => {
             return (
                 <ActionButton 
                     type={type} 
-                    onDragStart={() => undefined/*view.setPriorityTool(this.context.registry.services.tools.dragAndDrop)*/}
+                    onDragStart={() => undefined/*view.setPriorityTool(this.context.registry.tools.dragAndDrop)*/}
                     onDragEnd={() => {
                         const currentMousePos = this.context.registry.services.pointer.pointer.curr;
                         // this.context.registry.services.mouse.onMouseUp({x: currentMousePos.x, y: currentMousePos.y, which: 1} as MouseEvent)

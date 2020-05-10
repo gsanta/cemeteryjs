@@ -1,4 +1,4 @@
-import { ServiceLocator } from '../../../core/services/ServiceLocator';
+import { Services } from '../../../core/services/ServiceLocator';
 import { Registry } from '../../../core/Registry';
 
 export class AfterRenderTrigger {

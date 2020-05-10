@@ -16,8 +16,7 @@ export enum Layout {
     ActionEditor = 'Action Editor'
 }
 
-export class ViewService {
-    private views: View[] = [];
+export class LayoutService {
     private hoveredView: View;
     private fullScreen: View;
     visibilityDirty = true;
@@ -30,13 +29,7 @@ export class ViewService {
     constructor(registry: Registry) {
         this.registry = registry;
 
-        this.views = [
-            new CanvasView(this.registry),
-            new GameView(this.registry),
-            new ActionEditorView(this.registry)
-        ];
-
-        this.hoveredView = this.views[0];
+        this.hoveredView = this.registry.views.sceneEditorView;
 
         this.layouts = [
             {
@@ -56,10 +49,6 @@ export class ViewService {
         this.activeLayout = this.layouts[0];
     }
     
-    registerView(view: View) {
-        this.views.push(view);
-    }
-
     setHoveredView(view: View) {
         this.hoveredView = view;
     }
@@ -74,7 +63,7 @@ export class ViewService {
     }
 
     getActiveViews(): View[] {
-        return this.fullScreen ? [this.fullScreen] : this.views.filter(view => this.activeLayout.ids.find(id => view.getId() === id));
+        return this.fullScreen ? [this.fullScreen] : this.registry.views.views.filter(view => this.activeLayout.ids.find(id => view.getId() === id));
     }
 
     setFullScreen(view: View) {
@@ -87,11 +76,11 @@ export class ViewService {
     }
 
     getAllViews(): View[] {
-        return this.views;
+        return this.registry.views.views;
     }
 
     getViewById<T extends View = View>(id: string): T {
-        return <T> this.views.find(view => view.getId() === id);
+        return <T> this.registry.views.views.find(view => view.getId() === id);
     }
 
     getViewConfigs() {

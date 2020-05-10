@@ -1,7 +1,7 @@
 import { Point } from "../../../core/geometry/shapes/Point";
 import { Rectangle } from "../../../core/geometry/shapes/Rectangle";
 import { MousePointer } from "../../../core/services/input/MouseService";
-import { ServiceLocator } from "../../../core/services/ServiceLocator";
+import { Services } from "../../../core/services/ServiceLocator";
 import { UpdateTask } from "../../../core/services/UpdateServices";
 import { ICamera } from './ICamera';
 import { Registry } from "../../../core/Registry";

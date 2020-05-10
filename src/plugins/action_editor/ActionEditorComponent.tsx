@@ -50,10 +50,10 @@ export class ActionEditorComponent extends React.Component {
     componentDidMount() {
         this.wheelListener = new WheelListener(this.context.registry);
         this.context.registry.services.update.setCanvasRepainter(() => this.forceUpdate());
-        this.context.registry.services.view.getViewById(ActionEditorView.id).repainter = () => {this.forceUpdate()};
+        this.context.registry.services.layout.getViewById(ActionEditorView.id).repainter = () => {this.forceUpdate()};
 
         setTimeout(() => {
-            this.context.registry.services.view.getViewById<ActionEditorView>(ActionEditorView.id).resize();
+            this.context.registry.services.layout.getViewById<ActionEditorView>(ActionEditorView.id).resize();
         }, 0);
     }
 
@@ -61,7 +61,7 @@ export class ActionEditorComponent extends React.Component {
         const hover = (item: Concept | Feedback) => this.context.registry.services.mouse.hover(item);
         const unhover = (canvasItem: Concept | Feedback) => this.context.registry.services.mouse.unhover(canvasItem);
         
-        const view = this.context.registry.services.view.getViewById<ActionEditorView>(ActionEditorView.id);
+        const view = this.context.registry.services.layout.getViewById<ActionEditorView>(ActionEditorView.id);
 
         return (
             <EditorComponentStyled id={view.getId()} style={{cursor: view.getActiveTool().cursor}}>
@@ -72,7 +72,7 @@ export class ActionEditorComponent extends React.Component {
                     />
                 </WindowToolbarStyled>
                 <DropLayer 
-                    isDragging={this.context.registry.services.tools.dragAndDrop.isDragging}
+                    isDragging={this.context.registry.tools.dragAndDrop.isDragging}
                     onDrop={p => this.context.registry.services.mouse.onMouseUp({x: p.x, y: p.y, which: 1} as MouseEvent)}
                     onMouseMove={(e) => this.context.registry.services.mouse.onMouseMove(e)}
                     onMouseOver={() => view.over()}

@@ -3,13 +3,13 @@ import styled from 'styled-components';
 import { AppContext, AppContextType } from './Context';
 import { AccordionComponent } from './misc/AccordionComponent';
 import { colors } from './styles';
-import { Layout } from '../services/ViewService';
+import { Layout } from '../services/LayoutService';
 import { LevelSettingsComponent } from '../../plugins/scene_editor/settings/LevelSettingsComponent';
 import { GlobalSettingsComponent } from '../../plugins/scene_editor/settings/GlobalSettingsComponent';
 import { LayoutSettingsComponent } from '../../plugins/scene_editor/settings/LayoutSettingsComponent';
 import { settingsFactory } from '../../plugins/scene_editor/settings/settingsFactory';
 import { FileSettingsComponent } from '../../plugins/scene_editor/settings/FileSettingsComponent';
-import { ActionEditorSettingsComponent } from '../../plugins/action_editor/ActionEditorSettingsComponent';
+import { ActionEditorSettingsComponent } from '../../plugins/action_editor/settings/ActionEditorSettingsComponent';
 
 
 export interface SidebarComponentProps {
@@ -37,7 +37,7 @@ export class SidebarComponent extends React.Component<SidebarComponentProps> {
         //TODO refactor this
         let layoutSettings: {title: string, body: JSX.Element}[];
         
-        switch(this.context.registry.services.view.activeLayout.name) {
+        switch(this.context.registry.services.layout.activeLayout.name) {
             case Layout.SceneEditor:
                 layoutSettings = [
                     {

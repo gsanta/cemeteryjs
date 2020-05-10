@@ -13,13 +13,11 @@ import { LevelService } from "./LevelService";
 import { LocalStoreService } from "./LocalStroreService";
 import { MeshLoaderService } from "./MeshLoaderService";
 import { SettingsService } from "./SettingsService";
-import { ToolService } from "../../plugins/common/tools/ToolService";
 import { UpdateService } from "./UpdateServices";
-import { ViewService } from "./ViewService";
+import { LayoutService } from "./LayoutService";
 
-export class ServiceLocator {
+export class Services {
     hotkey: HotkeyService;
-    tools: ToolService;
     storage: LocalStoreService;
     level: LevelService;
     update: UpdateService;
@@ -34,7 +32,7 @@ export class ServiceLocator {
     meshLoader: MeshLoaderService;
     conceptConverter: ConceptConvertService;
     game: GameService;
-    view: ViewService;
+    layout: LayoutService;
 
     private registry: Registry;
 
@@ -44,7 +42,6 @@ export class ServiceLocator {
 
     setup() {
         this.hotkey = new HotkeyService(this.registry);
-        this.tools = new ToolService(this.registry);
         this.storage = new LocalStoreService(this.registry);
         this.level = new LevelService(this.registry);
         this.update = new UpdateService(this.registry);
@@ -58,6 +55,7 @@ export class ServiceLocator {
         this.settings = new SettingsService(this.registry);
         this.meshLoader = new MeshLoaderService(this.registry);
         this.conceptConverter = new ConceptConvertService(this.registry);
-        this.view = new ViewService(this.registry);
+        this.layout = new LayoutService(this.registry);
+        this.game = new GameService(this.registry);
     }
 }

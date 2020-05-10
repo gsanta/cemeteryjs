@@ -13,7 +13,7 @@ export class CanvasViewExporter implements IViewExporter {
 
 
     export(): JSX.Element {
-        const canvasView = this.registry.services.view.getViewById(CanvasView.id);
+        const canvasView = this.registry.services.layout.getViewById(CanvasView.id);
 
         return (
             <g

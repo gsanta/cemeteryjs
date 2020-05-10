@@ -60,8 +60,8 @@ export abstract class AbstractToolbarComponent<T extends View> extends React.Com
     protected abstract renderRightToolGroup(): JSX.Element;
     
     renderFullScreenIcon(): JSX.Element {
-        const viewStore = this.context.registry.services.view;
-        const view = this.context.registry.services.view.getViewById(this.viewId);
+        const viewStore = this.context.registry.services.layout;
+        const view = this.context.registry.services.layout.getViewById(this.viewId);
 
         return viewStore.getFullScreen() === view ? 
             <FullScreenExitIconComponent isActive={false} onClick={() => this.exitFullScreen()} format="short"/> :
@@ -69,14 +69,14 @@ export abstract class AbstractToolbarComponent<T extends View> extends React.Com
     }
     
     private enterFullScreen() {
-        const view = this.context.registry.services.view.getViewById(this.viewId);
+        const view = this.context.registry.services.layout.getViewById(this.viewId);
 
-        this.context.registry.services.view.setFullScreen(view);
+        this.context.registry.services.layout.setFullScreen(view);
         this.context.registry.services.update.runImmediately(UpdateTask.Full);
     }
 
     private exitFullScreen() {
-        this.context.registry.services.view.setFullScreen(undefined);
+        this.context.registry.services.layout.setFullScreen(undefined);
         this.context.registry.services.update.runImmediately(UpdateTask.Full);
     }
 }

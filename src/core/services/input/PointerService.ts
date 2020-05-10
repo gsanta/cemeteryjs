@@ -42,7 +42,7 @@ export class PointerService {
         this.isDown = true;
         this.pointer.down = this.getCanvasPoint(e.pointers[0].pos); 
         this.pointer.downScreen = this.getScreenPoint(e.pointers[0].pos); 
-        this.registry.services.view.getHoveredView().getActiveTool().down();
+        this.registry.services.layout.getHoveredView().getActiveTool().down();
         this.registry.services.update.runScheduledTasks();
     }
 
@@ -53,9 +53,9 @@ export class PointerService {
         this.pointer.currScreen =  this.getScreenPoint(e.pointers[0].pos);
         if (this.isDown && this.pointer.getDownDiff().len() > 2) {
             this.isDrag = true;
-            this.registry.services.view.getHoveredView().getActiveTool().drag();
+            this.registry.services.layout.getHoveredView().getActiveTool().drag();
         } else {
-            this.registry.services.view.getHoveredView().getActiveTool().move();
+            this.registry.services.layout.getHoveredView().getActiveTool().move();
         }
         this.registry.services.hotkey.executePointerEvent(e);
         this.registry.services.update.runScheduledTasks();
@@ -68,12 +68,12 @@ export class PointerService {
         this.pointer.currScreen =  this.getScreenPoint(e.pointers[0].pos);
 
         if (this.isDrag) {
-            this.registry.services.view.getHoveredView().getActiveTool().draggedUp();
+            this.registry.services.layout.getHoveredView().getActiveTool().draggedUp();
         } else {
-            this.registry.services.view.getHoveredView().getActiveTool().click();
+            this.registry.services.layout.getHoveredView().getActiveTool().click();
         }
         
-        this.registry.services.view.getHoveredView().getActiveTool().up();
+        this.registry.services.layout.getHoveredView().getActiveTool().up();
         this.isDown = false;
         this.isDrag = false;
         this.pointer.down = undefined;
@@ -99,32 +99,32 @@ export class PointerService {
         }
 
         this.registry.services.hotkey.executePointerEvent(e);
-        this.registry.services.view.getHoveredView().getActiveTool().wheel();
+        this.registry.services.layout.getHoveredView().getActiveTool().wheel();
     }
 
     pointerWheelEnd() {
         this.wheel = Wheel.IDLE;
 
-        this.registry.services.view.getHoveredView().getActiveTool().wheelEnd();
+        this.registry.services.layout.getHoveredView().getActiveTool().wheelEnd();
     }
 
     hover(item: Concept | Feedback): void {
-        this.registry.services.view.getHoveredView().getActiveTool().over(item);
+        this.registry.services.layout.getHoveredView().getActiveTool().over(item);
         this.registry.services.update.runScheduledTasks();
     }
 
     unhover(item: Concept | Feedback): void {
-        this.registry.services.view.getHoveredView().getActiveTool().out(item);
+        this.registry.services.layout.getHoveredView().getActiveTool().out(item);
         this.registry.services.update.runScheduledTasks();
     }
     
     private getScreenPoint(point: Point): Point {
-        const offset = this.registry.services.view.getHoveredView().getOffset();
+        const offset = this.registry.services.layout.getHoveredView().getOffset();
         return new Point(point.x - offset.x, point.y - offset.y);
     }
     
     private getCanvasPoint(point: Point): Point {
-        const offset = this.registry.services.view.getHoveredView().getOffset();
-        return this.registry.services.view.getHoveredView().getCamera().screenToCanvasPoint(new Point(point.x - offset.x, point.y - offset.y));
+        const offset = this.registry.services.layout.getHoveredView().getOffset();
+        return this.registry.services.layout.getHoveredView().getCamera().screenToCanvasPoint(new Point(point.x - offset.x, point.y - offset.y));
     }
 }

@@ -51,7 +51,7 @@ export class CanvasView extends View {
 
         this.camera = cameraInitializer(CanvasView.id, registry);
 
-        this.selectedTool = this.registry.services.tools.rectangle;
+        this.selectedTool = this.registry.tools.rectangle;
 
         this.settings = [
             new MeshSettings(this.registry),
@@ -69,7 +69,7 @@ export class CanvasView extends View {
 
     resize(): void {
         this.camera.resize(getScreenSize(CanvasView.id));
-        this.registry.services.tools.zoom.resize();
+        this.registry.tools.zoom.resize();
         this.registry.services.update.runImmediately(UpdateTask.RepaintCanvas);
     };
 

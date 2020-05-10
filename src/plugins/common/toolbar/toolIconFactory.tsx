@@ -35,5 +35,5 @@ function isToolActive(toolType: ToolType, view: View) {
 }
 
 function activateTool(toolType: ToolType, view: View, registry: Registry) {
-    view.setSelectedTool(registry.services.tools.getByType(toolType) as AbstractTool);
+    view.setSelectedTool(registry.tools.getByType(toolType) as AbstractTool);
 }

@@ -41,6 +41,6 @@ export class FileSettingsComponent extends React.Component<GeneralFormComponentP
     }
 
     private blank() {
-        this.context.registry.services.tools.delete.eraseAll();
+        this.context.registry.tools.delete.eraseAll();
     }
 }

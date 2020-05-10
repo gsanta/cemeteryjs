@@ -49,7 +49,7 @@ export class ToolbarComponent extends React.Component<ToolbarProps> {
                     {this.props.children}
                 </ToolGroupStyled>
                 <ToolGroupStyled>
-                    {this.context.registry.services.view.getFullScreen() === this.props.view ? this.renderEnterFullScreenIcon() : this.renderExitFullScreenIcon()}
+                    {this.context.registry.services.layout.getFullScreen() === this.props.view ? this.renderEnterFullScreenIcon() : this.renderExitFullScreenIcon()}
                 </ToolGroupStyled>
             </ToolbarStyled>
         )
@@ -60,9 +60,9 @@ export class ToolbarComponent extends React.Component<ToolbarProps> {
             <FullScreenExitIconComponent 
                 isActive={false} 
                 onClick={() => {
-                    const view = this.context.registry.services.view.getViewById(this.props.view.getId());
+                    const view = this.context.registry.services.layout.getViewById(this.props.view.getId());
 
-                    this.context.registry.services.view.setFullScreen(view);
+                    this.context.registry.services.layout.setFullScreen(view);
                     this.context.registry.services.update.runImmediately(UpdateTask.Full);
                 }} 
                 format="short"
@@ -75,7 +75,7 @@ export class ToolbarComponent extends React.Component<ToolbarProps> {
             <FullScreenIconComponent
                 isActive={false}
                 onClick={() => {
-                    this.context.registry.services.view.setFullScreen(undefined);
+                    this.context.registry.services.layout.setFullScreen(undefined);
                     this.context.registry.services.update.runImmediately(UpdateTask.Full);            
                 }}
                 format="short"

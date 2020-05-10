@@ -1,15 +1,18 @@
 import { ActionNodeConcept } from '../../../core/models/concepts/ActionNodeConcept';
+import { getAllKeys } from '../../../core/models/concepts/action_node/KeyboardActionNode';
 import { Registry } from '../../../core/Registry';
-import { UpdateTask } from '../../../core/services/UpdateServices';
 import { AbstractSettings } from '../../scene_editor/settings/AbstractSettings';
 
-export enum ActionSettingsProps {
-    ActionTypes = 'ActionTypes'
+export enum ActionEditorSettingsProps {
+    ActionTypes = 'ActionTypes',
+    AllKeyboardKeys = 'AllKeyboardKeys',
+    KeyboardKey = 'KeyboardKey'
+
 }
 
-export class ActionSettings extends AbstractSettings<ActionSettingsProps> {
+export class ActionEditorSettings extends AbstractSettings<ActionEditorSettingsProps> {
     static settingsName = 'action-settings';
-    getName() { return ActionSettings.settingsName; }
+    getName() { return ActionEditorSettings.settingsName; }
     actionConcept: ActionNodeConcept;
 
     triggerDoc: string = 'The type of Action to add';
@@ -23,14 +26,16 @@ export class ActionSettings extends AbstractSettings<ActionSettingsProps> {
         this.registry = registry;
     }
 
-    protected getProp(prop: ActionSettingsProps) {
+    protected getProp(prop: ActionEditorSettingsProps) {
         switch (prop) {
-            case ActionSettingsProps.ActionTypes:
+            case ActionEditorSettingsProps.ActionTypes:
                 return this.registry.stores.actionStore.actionTypes;
+            case ActionEditorSettingsProps.AllKeyboardKeys:
+                return getAllKeys();
         }
     }
 
-    protected setProp(val: any, prop: ActionSettingsProps) {
+    protected setProp(val: any, prop: ActionEditorSettingsProps) {
         switch (prop) {
             default:
                 throw new Error(`${prop} is not a writeable property.`)

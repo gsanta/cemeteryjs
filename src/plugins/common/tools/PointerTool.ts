@@ -102,7 +102,7 @@ export class PointerTool extends AbstractTool {
     }
 
     private updateDraggedConcept() {
-        const view = this.registry.services.view.getHoveredView();
+        const view = this.registry.services.layout.getHoveredView();
 
         switch(view.getId()) {
             case CanvasView.id:

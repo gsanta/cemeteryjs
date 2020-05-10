@@ -19,10 +19,10 @@ export class ZoomTool extends AbstractTool {
     }
 
     wheel() {
-        this.registry.services.view.getHoveredView().getCamera().zoomWheel();
+        this.registry.services.layout.getHoveredView().getCamera().zoomWheel();
     }
 
     wheelEnd() {
-        this.registry.services.view.getHoveredView().removePriorityTool(this.registry.services.tools.zoom);
+        this.registry.services.layout.getHoveredView().removePriorityTool(this.registry.tools.zoom);
     }
 }
