@@ -3,7 +3,7 @@ import { ClearIconComponent } from '../../../core/gui/icons/ClearIconComponent';
 import { PauseIconComponent } from '../../../core/gui/icons/PauseIconComponent';
 import { PlayIconComponent } from '../../../core/gui/icons/PlayIconComponent';
 import { StopIconComponent } from '../../../core/gui/icons/StopIconComponent';
-import { ConnectedFileUploadComponent } from '../../../core/gui/icons/tools/ImportFileIconComponent';
+import { ConnectedFileUploadComponent } from '../../common/toolbar/icons/ImportFileIconComponent';
 import { ButtonComponent } from '../../../core/gui/inputs/ButtonComponent';
 import { CheckboxComponent } from '../../../core/gui/inputs/CheckboxComponent';
 import { ConnectedDropdownComponent } from '../../../core/gui/inputs/DropdownComponent';

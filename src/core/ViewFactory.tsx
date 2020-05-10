@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Registry } from './Registry';
-import { ActionEditorComponent } from '../plugins/action_editor/gui/ActionEditorComponent';
+import { ActionEditorComponent } from '../plugins/action_editor/ActionEditorComponent';
 import { CanvasComponent } from '../plugins/scene_editor/CanvasComponent';
-import { RendererComponent } from '../plugins/game_viewer/RendererComponent';
-import { RendererView } from '../plugins/game_viewer/RendererView';
+import { GameViewerComponent } from '../plugins/game_viewer/GameViewerComponent';
+import { GameView } from '../plugins/game_viewer/GameView';
 import { View } from './View';
 import { ActionEditorView } from '../plugins/action_editor/ActionEditorView';
 import { CanvasView } from '../plugins/scene_editor/CanvasView';
@@ -19,8 +19,8 @@ export function viewFactory(controller: View): JSX.Element {
     switch(controller.getId()) {
         case CanvasView.id:
             return <CanvasComponent/>;
-        case RendererView.id:
-            return <RendererComponent/>;
+        case GameView.id:
+            return <GameViewerComponent/>;
         case ActionEditorView.id:
             return <ActionEditorComponent/>;    
     }

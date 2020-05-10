@@ -1,5 +1,5 @@
 import { Registry } from '../Registry';
-import { RendererView } from "../../plugins/game_viewer/RendererView";
+import { GameView } from "../../plugins/game_viewer/GameView";
 
 export enum UpdateTask {
     RepaintCanvas = 'RepaintCanvas',
@@ -57,7 +57,7 @@ export class UpdateService {
                 case UpdateTask.All:
                     this.canvasRepainter();
                     this.settingsRepainters.forEach(repaint => repaint());
-                    this.registry.services.view.getViewById(RendererView.id).update();
+                    this.registry.services.view.getViewById(GameView.id).update();
                 break;
                 case UpdateTask.Full:
                     this.fullRepainter();

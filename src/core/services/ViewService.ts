@@ -1,7 +1,7 @@
 import { View } from '../View';
 import { Registry } from '../Registry';
 import { CanvasView } from '../../plugins/scene_editor/CanvasView';
-import { RendererView } from '../../plugins/game_viewer/RendererView';
+import { GameView } from '../../plugins/game_viewer/GameView';
 import { ActionEditorView } from '../../plugins/action_editor/ActionEditorView';
 
 export interface LayoutConfig {
@@ -32,7 +32,7 @@ export class ViewService {
 
         this.views = [
             new CanvasView(this.registry),
-            new RendererView(this.registry),
+            new GameView(this.registry),
             new ActionEditorView(this.registry)
         ];
 
@@ -42,7 +42,7 @@ export class ViewService {
             {
                 sizes: [12, 44, 44],
                 minSize: [230, 300, 300],
-                ids: ['toolbar', CanvasView.id, RendererView.id],
+                ids: ['toolbar', CanvasView.id, GameView.id],
                 name: Layout.SceneEditor
             },
             {

@@ -2,7 +2,7 @@ import { Point } from '../../core/geometry/shapes/Point';
 import { Registry } from '../../core/Registry';
 import { UpdateTask } from '../../core/services/UpdateServices';
 import { calcOffsetFromDom, View } from '../../core/View';
-import { CanvasCamera } from '../scene_editor/CanvasCamera';
+import { Camera2D } from '../common/camera/Camera2D';
 import { ActionSettings } from './settings/ActionEditorSettings';
 
 function getScreenSize(canvasId: string): Point {
@@ -20,9 +20,9 @@ function getScreenSize(canvasId: string): Point {
 function cameraInitializer(canvasId: string, registry: Registry) {
     const screenSize = getScreenSize(canvasId);
     if (screenSize) {
-        return new CanvasCamera(registry, new Point(screenSize.x, screenSize.y));
+        return new Camera2D(registry, new Point(screenSize.x, screenSize.y));
     } else {
-        return new CanvasCamera(registry, new Point(100, 100));
+        return new Camera2D(registry, new Point(100, 100));
     }
 }
 
@@ -36,7 +36,7 @@ export class ActionEditorView extends View {
     
     visible = true;
     
-    private camera: CanvasCamera;
+    private camera: Camera2D;
 
     actionSettings: ActionSettings;
 

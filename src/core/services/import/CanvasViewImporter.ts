@@ -2,7 +2,7 @@ import { IViewImporter } from "./IViewImporter";
 import { CanvasView } from "../../../plugins/scene_editor/CanvasView";
 import { Stores } from "../../stores/Stores";
 import { Point } from "../../geometry/shapes/Point";
-import { CanvasCamera } from "../../../plugins/scene_editor/CanvasCamera";
+import { Camera2D } from "../../../plugins/common/camera/Camera2D";
 import { Registry } from "../../Registry";
 
 export interface CanvasViewJson {
@@ -26,7 +26,7 @@ export class CanvasViewImporter implements IViewImporter {
 
         if (json._attributes['data-translate']) {
             const topLeft = Point.fromString(json._attributes['data-translate']);
-            const camera = <CanvasCamera> this.registry.services.view.getViewById(CanvasView.id).getCamera();
+            const camera = <Camera2D> this.registry.services.view.getViewById(CanvasView.id).getCamera();
             // implement later
         }        
     }

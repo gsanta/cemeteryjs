@@ -13,7 +13,7 @@ import { LevelService } from "./LevelService";
 import { LocalStoreService } from "./LocalStroreService";
 import { MeshLoaderService } from "./MeshLoaderService";
 import { SettingsService } from "./SettingsService";
-import { ToolService } from "../tools/ToolService";
+import { ToolService } from "../../plugins/common/tools/ToolService";
 import { UpdateService } from "./UpdateServices";
 import { ViewService } from "./ViewService";
 

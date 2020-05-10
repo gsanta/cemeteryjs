@@ -1,4 +1,5 @@
 import { Registry } from '../Registry';
+import { UpdateTask } from './UpdateServices';
 
 
 export class HistoryService {
@@ -21,6 +22,7 @@ export class HistoryService {
             this.registry.stores.selectionStore.clear();
             this.registry.services.import.import(this.history[this.index]);
             this.registry.services.level.updateCurrentLevel();
+            this.registry.services.update.runImmediately(UpdateTask.All);
         }
     }
 
@@ -32,6 +34,7 @@ export class HistoryService {
             this.registry.stores.selectionStore.clear();
             this.registry.services.import.import(this.history[this.index]);
             this.registry.services.level.updateCurrentLevel();
+            this.registry.services.update.runImmediately(UpdateTask.All);
         }
     }
 

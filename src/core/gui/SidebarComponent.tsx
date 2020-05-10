@@ -9,7 +9,7 @@ import { GlobalSettingsComponent } from '../../plugins/scene_editor/settings/Glo
 import { LayoutSettingsComponent } from '../../plugins/scene_editor/settings/LayoutSettingsComponent';
 import { settingsFactory } from '../../plugins/scene_editor/settings/settingsFactory';
 import { FileSettingsComponent } from '../../plugins/scene_editor/settings/FileSettingsComponent';
-import { ActionEditorSettingsComponent } from '../../plugins/action_editor/gui/ActionEditorSettingsComponent';
+import { ActionEditorSettingsComponent } from '../../plugins/action_editor/ActionEditorSettingsComponent';
 
 
 export interface SidebarComponentProps {

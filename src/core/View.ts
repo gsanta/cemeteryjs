@@ -4,12 +4,12 @@ import { IViewExporter } from './services/export/IViewExporter';
 import { GameService } from './services/GameService';
 import { IViewImporter } from './services/import/IViewImporter';
 import { ServiceLocator } from './services/ServiceLocator';
-import { AbstractTool } from './tools/AbstractTool';
-import { Tool } from './tools/Tool';
+import { AbstractTool } from '../plugins/common/tools/AbstractTool';
+import { Tool } from '../plugins/common/tools/Tool';
 import { UpdateTask } from './services/UpdateServices';
 import { Stores } from './stores/Stores';
 import { AbstractSettings } from '../plugins/scene_editor/settings/AbstractSettings';
-import { ICamera } from '../plugins/game_viewer/ICamera';
+import { ICamera } from '../plugins/common/camera/ICamera';
 import { Registry } from './Registry';
 
 export interface CanvasViewSettings {
@@ -62,7 +62,7 @@ export abstract class View {
         this.selectedTool && this.selectedTool.deselect();
         this.selectedTool = tool;
         this.selectedTool.select();
-        this.registry.services.update.runImmediately(UpdateTask.RepaintSettings);
+        this.registry.services.update.runImmediately(UpdateTask.RepaintSettings, UpdateTask.RepaintActiveView);
     }
 
     getSelectedTool(): Tool {

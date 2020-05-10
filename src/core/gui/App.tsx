@@ -12,7 +12,7 @@ import { AnimationDialogComponent } from './dialogs/AnimationDialogComponent';
 import { ListActionsDialogComponent } from './dialogs/ListActionsDialogComponent';
 import { DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
-import { RendererView } from '../../plugins/game_viewer/RendererView';
+import { GameView } from '../../plugins/game_viewer/GameView';
 
 export interface AppState {
     isDialogOpen: boolean;
@@ -48,7 +48,7 @@ export class App extends React.Component<{}, AppState> {
         }
 
         window.addEventListener('resize', () => this.context.registry.services.view.getActiveViews().forEach(controller => controller.resize()));
-        this.context.controllers.setup(document.querySelector(`#${RendererView.id}`));
+        this.context.controllers.setup(document.querySelector(`#${GameView.id}`));
     }
 
     componentDidUpdate() {

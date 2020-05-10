@@ -6,7 +6,7 @@ import { CanvasViewImporter } from '../../core/services/import/CanvasViewImporte
 import { IViewImporter } from '../../core/services/import/IViewImporter';
 import { UpdateTask } from '../../core/services/UpdateServices';
 import { calcOffsetFromDom, View } from '../../core/View';
-import { CanvasCamera } from './CanvasCamera';
+import { Camera2D } from '../common/camera/Camera2D';
 import { LevelSettings } from './settings/LevelSettings';
 import { MeshSettings } from './settings/MeshSettings';
 import { PathSettings } from './settings/PathSettings';
@@ -26,9 +26,9 @@ function getScreenSize(canvasId: string): Point {
 function cameraInitializer(canvasId: string, registry: Registry) {
     const screenSize = getScreenSize(canvasId);
     if (screenSize) {
-        return new CanvasCamera(registry, new Point(screenSize.x, screenSize.y));
+        return new Camera2D(registry, new Point(screenSize.x, screenSize.y));
     } else {
-        return new CanvasCamera(registry, new Point(100, 100));
+        return new Camera2D(registry, new Point(100, 100));
     }
 }
 
@@ -44,7 +44,7 @@ export class CanvasView extends View {
     
     exporter: IViewExporter;
     importer: IViewImporter;
-    private camera: CanvasCamera;
+    private camera: Camera2D;
 
     constructor(registry: Registry) {
         super(registry);
