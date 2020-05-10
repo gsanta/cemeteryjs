@@ -1,4 +1,4 @@
-import { ActionConcept } from '../models/concepts/ActionConcept';
+import { ActionNodeConcept } from '../models/concepts/ActionNodeConcept';
 import { Registry } from '../Registry';
 import { AbstractStore } from './AbstractStore';
 
@@ -10,7 +10,7 @@ export enum ActionType {
 }
 
 export class ActionStore extends AbstractStore {
-    actions: ActionConcept[] = [];
+    actions: ActionNodeConcept[] = [];
     actionTypes: string[] = [];
 
     private registry: Registry;
@@ -26,7 +26,7 @@ export class ActionStore extends AbstractStore {
         }
     }
 
-    addAction(action: ActionConcept) {
+    addAction(action: ActionNodeConcept) {
         this.actions.push(action);
     }
 

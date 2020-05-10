@@ -1,4 +1,4 @@
-import { ActionConcept } from '../../../core/models/concepts/ActionConcept';
+import { ActionNodeConcept } from '../../../core/models/concepts/ActionNodeConcept';
 import { Registry } from '../../../core/Registry';
 import { UpdateTask } from '../../../core/services/UpdateServices';
 import { AbstractSettings } from '../../scene_editor/settings/AbstractSettings';
@@ -10,7 +10,7 @@ export enum ActionSettingsProps {
 export class ActionSettings extends AbstractSettings<ActionSettingsProps> {
     static settingsName = 'action-settings';
     getName() { return ActionSettings.settingsName; }
-    actionConcept: ActionConcept;
+    actionConcept: ActionNodeConcept;
 
     triggerDoc: string = 'The type of Action to add';
     meshDoc: string = "The source mesh will trigger the interaction when intersecting with the target mesh.";

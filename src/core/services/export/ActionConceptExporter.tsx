@@ -1,5 +1,5 @@
 import { colors } from "../../gui/styles";
-import { ActionConcept } from "../../models/concepts/ActionConcept";
+import { ActionNodeConcept } from "../../models/concepts/ActionNodeConcept";
 import { Registry } from "../../Registry";
 import { IConceptExporter } from "./IConceptExporter";
 import React = require("react");
@@ -19,7 +19,7 @@ export class ActionConceptExporter implements IConceptExporter {
         return actionConcepts.length > 0 ? <g data-concept-type={ConceptType.ActionConcept} key={ConceptType.ActionConcept}>{actionConcepts}</g> : null;
     }
 
-    private renderActionConcepts(item: ActionConcept, hover?: (view: Concept) => void, unhover?: (view: Concept) => void) {
+    private renderActionConcepts(item: ActionNodeConcept, hover?: (view: Concept) => void, unhover?: (view: Concept) => void) {
         return (
             <g
                 key={`${item.id}-group`}
@@ -40,7 +40,7 @@ export class ActionConceptExporter implements IConceptExporter {
         )
     }
 
-    private renderRect(item: ActionConcept) {
+    private renderRect(item: ActionNodeConcept) {
         const stroke = this.registry.stores.selectionStore.contains(item) || this.registry.stores.hoverStore.contains(item) ? colors.views.highlight : 'black';
 
         return (
@@ -55,7 +55,7 @@ export class ActionConceptExporter implements IConceptExporter {
         );
     }
 
-    private renderContent(item: ActionConcept) {
+    private renderContent(item: ActionNodeConcept) {
         return (
             <foreignObject
                 key={`${item.id}-content`}

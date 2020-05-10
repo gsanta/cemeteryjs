@@ -12,6 +12,7 @@ import { Point } from '../../core/geometry/shapes/Point';
 import { Concept } from '../../core/models/concepts/Concept';
 import { ToolType } from '../common/tools/Tool';
 import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
+import { Registry } from '../../core/Registry';
 
 const EditorComponentStyled = styled.div`
     width: 100%;
@@ -57,13 +58,10 @@ export class ActionEditorComponent extends React.Component {
     }
 
     render(): JSX.Element {
-        console.log('action editor render: ' + this.context.registry.services.tools.dragAndDrop.isDragging)
         const hover = (item: Concept | Feedback) => this.context.registry.services.mouse.hover(item);
         const unhover = (canvasItem: Concept | Feedback) => this.context.registry.services.mouse.unhover(canvasItem);
         
         const view = this.context.registry.services.view.getViewById<ActionEditorView>(ActionEditorView.id);
-
-        // const dropLayer = ?  : null;
 
         return (
             <EditorComponentStyled id={view.getId()} style={{cursor: view.getActiveTool().cursor}}>
@@ -79,6 +77,7 @@ export class ActionEditorComponent extends React.Component {
                     onMouseMove={(e) => this.context.registry.services.mouse.onMouseMove(e)}
                     onMouseOver={() => view.over()}
                     onMouseOut={() => view.out()}
+                    registry={this.context.registry}
                 />
                 <CanvasComponentStyled
                     tabIndex={0}
@@ -107,11 +106,13 @@ interface DropLayerProps {
     onMouseMove: (e: MouseEvent) => void;
     onDrop: (point: Point) => void;
     isDragging: boolean;
+    registry: Registry;
 }
 
 const DropLayer = (props: DropLayerProps) => {
+    const actionTypes = props.registry.stores.actionStore.actionTypes;
 	const [{ isOver }, drop] = useDrop({
-        accept: [ActionType.Add],
+        accept: actionTypes,
         drop: (item, monitor) => props.onDrop(new Point(monitor.getClientOffset().x, monitor.getClientOffset().y)), 
 		collect: monitor => ({
 			isOver: !!monitor.isOver(),

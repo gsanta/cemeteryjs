@@ -6,6 +6,8 @@ import { isConcept, isFeedback } from '../../../core/stores/CanvasStore';
 import { AbstractTool } from "./AbstractTool";
 import { ToolType } from "./Tool";
 import { Concept } from '../../../core/models/concepts/Concept';
+import { CanvasView } from '../../scene_editor/CanvasView';
+import { ActionEditorView } from '../../action_editor/ActionEditorView';
 
 export class PointerTool extends AbstractTool {
     protected movingItem: Concept | Feedback = undefined;
@@ -60,7 +62,7 @@ export class PointerTool extends AbstractTool {
 
         this.isDragStart = true;
         
-        this.updateGameObjects();
+        this.updateDraggedConcept();
         this.movingItem = undefined;
         this.registry.services.level.updateCurrentLevel();
     }
@@ -99,7 +101,22 @@ export class PointerTool extends AbstractTool {
         this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
-    private updateGameObjects() {
+    private updateDraggedConcept() {
+        const view = this.registry.services.view.getHoveredView();
+
+        switch(view.getId()) {
+            case CanvasView.id:
+                this.updateSceneConcepts();
+                break;
+            case ActionEditorView.id:
+                this.updateActionEditorConcepts();
+                break;
+        }
+
+
+    }
+
+    private updateSceneConcepts() {
         let concepts: Concept[];
 
         if (isFeedback(this.movingItem.type)) {
@@ -109,5 +126,9 @@ export class PointerTool extends AbstractTool {
         }
 
         this.registry.services.game.updateConcepts(concepts);
+    }
+
+    private updateActionEditorConcepts() {
+
     }
 }
