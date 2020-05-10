@@ -3,7 +3,7 @@ import { IKeyboardEvent, Keyboard } from "../services/input/KeyboardService";
 import { ServiceLocator } from '../services/ServiceLocator';
 import { UpdateTask } from "../services/UpdateServices";
 import { Stores } from "../stores/Stores";
-import { CanvasView } from "../../editor/views/canvas/CanvasView";
+import { CanvasView } from "../../plugins/scene_editor/CanvasView";
 import { ConceptType } from "../../editor/models/concepts/Concept";
 import { PathConcept } from "../../editor/models/concepts/PathConcept";
 import { VisualConcept } from "../../editor/models/concepts/VisualConcept";

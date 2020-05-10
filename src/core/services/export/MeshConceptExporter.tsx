@@ -1,5 +1,5 @@
 import { sort } from "../../../misc/geometry/utils/Functions";
-import { colors } from "../../../editor/gui/styles";
+import { colors } from "../../gui/styles";
 import { Stores } from '../../stores/Stores';
 import { Concept, ConceptType } from "../../../editor/models/concepts/Concept";
 import { MeshConcept } from "../../../editor/models/concepts/MeshConcept";

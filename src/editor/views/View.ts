@@ -8,8 +8,8 @@ import { AbstractTool } from '../../core/tools/AbstractTool';
 import { Tool } from '../../core/tools/Tool';
 import { UpdateTask } from '../../core/services/UpdateServices';
 import { Stores } from '../../core/stores/Stores';
-import { AbstractSettings } from './canvas/settings/AbstractSettings';
-import { ICamera } from './renderer/ICamera';
+import { AbstractSettings } from '../../plugins/scene_editor/settings/AbstractSettings';
+import { ICamera } from '../../plugins/game_view/ICamera';
 import { Registry } from '../Registry';
 
 export interface CanvasViewSettings {

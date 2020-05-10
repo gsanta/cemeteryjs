@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { AppContext, AppContextType } from '../../../editor/gui/Context';
+import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { ActionEditorView } from '../ActionEditorView';
 import { ActionSettingsProps } from '../settings/ActionEditorSettings';
 import { useDrop, useDrag } from 'react-dnd';

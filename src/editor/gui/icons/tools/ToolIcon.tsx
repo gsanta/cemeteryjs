@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors } from "../../styles";
+import { colors } from "../../../../core/gui/styles";
 
 export interface IconProps {
     isActive: boolean;

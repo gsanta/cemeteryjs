@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { colors } from '../../../editor/gui/styles';
+import { colors } from '../../gui/styles';
 import { PathConcept } from '../../../editor/models/concepts/PathConcept';
 import { EditPoint } from '../../../editor/models/feedbacks/EditPoint';
 import { Stores } from '../../stores/Stores';

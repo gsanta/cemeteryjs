@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { colors } from '../../../editor/gui/styles';
+import { colors } from '../../../core/gui/styles';
 import { WindowToolbarStyled } from '../../../editor/gui/windows/WindowToolbar';
-import { AppContext, AppContextType } from '../../../editor/gui/Context';
+import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { WheelListener } from '../../../core/services/WheelListener';
 import { ActionEditorView } from '../ActionEditorView';
 import { Concept } from '../../../editor/models/concepts/Concept';

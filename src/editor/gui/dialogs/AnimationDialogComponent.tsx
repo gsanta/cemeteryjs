@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { SettingsRowStyled, LabelColumnStyled, FieldColumnStyled } from '../../views/canvas/gui/settings/SettingsComponent';
 import { AnimationSettings, AnimationSettingsProps } from '../../views/canvas/settings/AnimationSettings';
-import { AppContext, AppContextType } from '../Context';
+import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { ConnectedDropdownComponent } from '../inputs/DropdownComponent';
 import { AccordionComponent } from '../misc/AccordionComponent';
 import { DialogComponent } from './DialogComponent';

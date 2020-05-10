@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Accordion, Card, Button } from 'react-bootstrap';
 import styled from 'styled-components';
-import { colors } from '../styles';
+import { colors } from '../../../core/gui/styles';
 import { ArrowDownIconComponent } from '../icons/ArrowDownIconComponent';
 import { CanvasToolsProps } from '../../ViewFactory';
 

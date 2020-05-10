@@ -1,10 +1,10 @@
-import { AbstractSettings } from "../../editor/views/canvas/settings/AbstractSettings";
-import { MeshSettings } from "../../editor/views/canvas/settings/MeshSettings";
-import { PathSettings } from "../../editor/views/canvas/settings/PathSettings";
-import { LevelSettings } from "../../editor/views/canvas/settings/LevelSettings";
+import { AbstractSettings } from "../../plugins/scene_editor/settings/AbstractSettings";
+import { MeshSettings } from "../../plugins/scene_editor/settings/MeshSettings";
+import { PathSettings } from "../../plugins/scene_editor/settings/PathSettings";
+import { LevelSettings } from "../../plugins/scene_editor/settings/LevelSettings";
 import { Stores } from "../stores/Stores";
 import { ServiceLocator } from "./ServiceLocator";
-import { AnimationSettings } from "../../editor/views/canvas/settings/AnimationSettings";
+import { AnimationSettings } from "../../plugins/scene_editor/settings/AnimationSettings";
 import { Registry } from "../../editor/Registry";
 import { ActionSettings } from '../../plugins/action_editor/settings/ActionEditorSettings';
 

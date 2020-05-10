@@ -1,10 +1,10 @@
 import * as React from "react";
-import { AppContext, AppContextType } from "../gui/Context";
+import { AppContext, AppContextType } from "../../core/gui/Context";
 import { FullScreenExitIconComponent } from "../gui/icons/FullScreenExitIconComponent";
 import { FullScreenIconComponent } from "../gui/icons/FullScreenIconComponent";
 import { UpdateTask } from "../../core/services/UpdateServices";
 import styled from 'styled-components';
-import { colors } from '../gui/styles';
+import { colors } from '../../core/gui/styles';
 import { View } from "./View";
 
 const ToolbarStyled = styled.div`

@@ -1,6 +1,6 @@
 import { Registry } from './Registry';
-import { GlobalSettings } from './views/canvas/settings/GlobalSettings';
-import { LayoutSettings } from './views/canvas/settings/LayoutSettings';
+import { GlobalSettings } from '../plugins/scene_editor/settings/GlobalSettings';
+import { LayoutSettings } from '../plugins/scene_editor/settings/LayoutSettings';
 
 export class Editor {
     registry: Registry;

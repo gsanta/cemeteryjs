@@ -9,7 +9,7 @@ import { KeyboardTrigger } from "../../game/services/triggers/KeyboardTrigger";
 import { Walkers } from "../../game/services/walkers/Walkers";
 import { Registry } from "../../editor/Registry";
 import { Concept, ConceptType } from "../../editor/models/concepts/Concept";
-import { GameEngine } from "../../editor/views/renderer/GameEngine";
+import { GameEngine } from "../../plugins/game_view/GameEngine";
 import { IConceptImporter } from "./import/IConceptImporter";
 import { ImportService } from "./import/ImportService";
 import { MeshConcept } from "../../editor/models/concepts/MeshConcept";

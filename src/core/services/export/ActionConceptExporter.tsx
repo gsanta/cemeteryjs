@@ -1,4 +1,4 @@
-import { colors } from "../../../editor/gui/styles";
+import { colors } from "../../gui/styles";
 import { ActionConcept } from "../../../editor/models/concepts/ActionConcept";
 import { Concept, ConceptType } from "../../../editor/models/concepts/Concept";
 import { Registry } from "../../../editor/Registry";

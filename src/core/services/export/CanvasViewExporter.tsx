@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Registry } from "../../../editor/Registry";
-import { CanvasCamera } from "../../../editor/views/canvas/CanvasCamera";
-import { CanvasView } from "../../../editor/views/canvas/CanvasView";
+import { CanvasCamera } from "../../../plugins/scene_editor/CanvasCamera";
 import { IViewExporter } from "./IViewExporter";
+import { CanvasView } from '../../../plugins/scene_editor/CanvasView';
 
 export class CanvasViewExporter implements IViewExporter {
     private registry: Registry;

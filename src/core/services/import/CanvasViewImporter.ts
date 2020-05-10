@@ -1,8 +1,8 @@
 import { IViewImporter } from "./IViewImporter";
-import { CanvasView } from "../../../editor/views/canvas/CanvasView";
+import { CanvasView } from "../../../plugins/scene_editor/CanvasView";
 import { Stores } from "../../stores/Stores";
 import { Point } from "../../../misc/geometry/shapes/Point";
-import { CanvasCamera } from "../../../editor/views/canvas/CanvasCamera";
+import { CanvasCamera } from "../../../plugins/scene_editor/CanvasCamera";
 import { Registry } from "../../../editor/Registry";
 
 export interface CanvasViewJson {

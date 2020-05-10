@@ -1,9 +1,15 @@
 import { Point } from '../../misc/geometry/shapes/Point';
 import { Registry } from '../../editor/Registry';
+import { CanvasViewExporter } from '../../core/services/export/CanvasViewExporter';
+import { IViewExporter } from '../../core/services/export/IViewExporter';
+import { CanvasViewImporter } from '../../core/services/import/CanvasViewImporter';
+import { IViewImporter } from '../../core/services/import/IViewImporter';
 import { UpdateTask } from '../../core/services/UpdateServices';
 import { calcOffsetFromDom, View } from '../../editor/views/View';
-import { CanvasCamera } from '../scene_editor/CanvasCamera';
-import { ActionSettings } from './settings/ActionEditorSettings';
+import { CanvasCamera } from './CanvasCamera';
+import { LevelSettings } from './settings/LevelSettings';
+import { MeshSettings } from './settings/MeshSettings';
+import { PathSettings } from './settings/PathSettings';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -31,30 +37,38 @@ export enum CanvasTag {
     Hovered = 'hovered'
 }
 
-export class ActionEditorView extends View {
-    static id = 'action-editor-view';
+export class CanvasView extends View {
+    static id = 'svg-canvas-controller';
     
     visible = true;
     
+    exporter: IViewExporter;
+    importer: IViewImporter;
     private camera: CanvasCamera;
-
-    actionSettings: ActionSettings;
 
     constructor(registry: Registry) {
         super(registry);
 
-        this.camera = cameraInitializer(ActionEditorView.id, registry);
+        this.camera = cameraInitializer(CanvasView.id, registry);
 
-        this.selectedTool = this.registry.services.tools.pan;
-        this.actionSettings = new ActionSettings(registry);
+        this.selectedTool = this.registry.services.tools.rectangle;
+
+        this.settings = [
+            new MeshSettings(this.registry),
+            new PathSettings(),
+            new LevelSettings(this.registry)
+        ];
+
+        this.exporter = new CanvasViewExporter(this.registry);
+        this.importer = new CanvasViewImporter(this.registry);
     }
 
     getId() {
-        return ActionEditorView.id;
+        return CanvasView.id;
     }
 
     resize(): void {
-        this.camera.resize(getScreenSize(ActionEditorView.id));
+        this.camera.resize(getScreenSize(CanvasView.id));
         this.registry.services.tools.zoom.resize();
         this.registry.services.update.runImmediately(UpdateTask.RepaintCanvas);
     };
@@ -76,7 +90,7 @@ export class ActionEditorView extends View {
     }
 
     updateCamera() {
-        this.camera = cameraInitializer(ActionEditorView.id, this.registry);
+        this.camera = cameraInitializer(CanvasView.id, this.registry);
         this.registry.services.update.runImmediately(UpdateTask.RepaintCanvas);
     }
 }

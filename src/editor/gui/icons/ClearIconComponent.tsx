@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { colors } from '../styles';
+import { colors } from '../../../core/gui/styles';
 
 import {IconForgroundStyled, IconBackgroundStyled, IconStyled} from './Icon';
 

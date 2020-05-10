@@ -1,7 +1,7 @@
 import { ServiceLocator } from '../services/ServiceLocator';
 import { UpdateTask } from '../services/UpdateServices';
 import { Stores } from '../stores/Stores';
-import { CanvasView } from '../../editor/views/canvas/CanvasView';
+import { CanvasView } from '../../plugins/scene_editor/CanvasView';
 import { Concept } from '../../editor/models/concepts/Concept';
 import { Feedback } from '../../editor/models/feedbacks/Feedback';
 import { AbstractTool } from './AbstractTool';

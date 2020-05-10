@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { AppContext, AppContextType } from '../Context';
-import { colors } from '../styles';
+import { AppContext, AppContextType } from '../../../core/gui/Context';
+import { colors } from '../../../core/gui/styles';
 import { DialogComponent } from './DialogComponent';
 import { ListActionsSettings } from '../../views/canvas/settings/ListActionsSettings';
 

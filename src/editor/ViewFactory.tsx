@@ -2,9 +2,9 @@ import * as React from 'react';
 import { Registry } from './Registry';
 import { CanvasView } from './views/canvas/CanvasView';
 import { ActionEditorComponent } from '../plugins/action_editor/gui/ActionEditorComponent';
-import { CanvasComponent } from './views/canvas/gui/CanvasComponent';
-import { RendererComponent } from './views/renderer/gui/RendererComponent';
-import { RendererView } from './views/renderer/RendererView';
+import { CanvasComponent } from '../plugins/scene_editor/CanvasComponent';
+import { RendererComponent } from '../plugins/game_view/RendererComponent';
+import { RendererView } from '../plugins/game_view/RendererView';
 import { View } from './views/View';
 import { ActionEditorView } from '../plugins/action_editor/ActionEditorView';
 

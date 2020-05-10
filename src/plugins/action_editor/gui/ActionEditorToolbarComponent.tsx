@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { AbstractToolbarComponent, ToolbarComponentProps } from '../../../editor/views/AbstractToolbarComponent';
-import { RendererView } from '../../../editor/views/renderer/RendererView';
+import { RendererView } from '../../game_view/RendererView';
 import { ZoomInIconComponent } from '../../../editor/gui/icons/tools/ZoomInIconComponent';
 import { ZoomOutIconComponent } from '../../../editor/gui/icons/tools/ZoomOutIconComponent';
 import { PanIconComponent } from '../../../editor/gui/icons/tools/PanIconComponent';

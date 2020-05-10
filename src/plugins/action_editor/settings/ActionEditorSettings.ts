@@ -1,7 +1,7 @@
 import { ActionConcept } from '../../../editor/models/concepts/ActionConcept';
 import { Registry } from '../../../editor/Registry';
 import { UpdateTask } from '../../../core/services/UpdateServices';
-import { AbstractSettings } from '../../../editor/views/canvas/settings/AbstractSettings';
+import { AbstractSettings } from '../../scene_editor/settings/AbstractSettings';
 
 export enum ActionSettingsProps {
     ActionTypes = 'ActionTypes'

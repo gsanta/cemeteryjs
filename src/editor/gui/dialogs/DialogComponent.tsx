@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { CloseIconComponent } from '../icons/tools/CloseIconComponent';
-import { colors } from '../styles';
+import { colors } from '../../../core/gui/styles';
 
 export interface DialogProps {
     title: string;

@@ -1,8 +1,8 @@
 import { Registry } from "../../editor/Registry";
-import { AnimationSettings } from "../../editor/views/canvas/settings/AnimationSettings";
+import { AnimationSettings } from "../../plugins/scene_editor/settings/AnimationSettings";
 import { UpdateTask } from "./UpdateServices";
 import { ActionSettings } from '../../plugins/action_editor/settings/ActionEditorSettings';
-import { ListActionsSettings } from '../../editor/views/canvas/settings/ListActionsSettings';
+import { ListActionsSettings } from '../../plugins/scene_editor/settings/ListActionsSettings';
 
 export class DialogService {
     serviceName = 'dialog-service';
