@@ -3,6 +3,7 @@ import { AnimationConcept, ElementalAnimation } from "../../models/meta/Animatio
 import { IConceptExporter } from "./IConceptExporter";
 import React = require("react");
 import { ConceptType, Concept } from '../../models/concepts/Concept';
+import { Feedback } from '../../models/feedbacks/Feedback';
 
 export class AnimationConceptExporter implements IConceptExporter {
     type = ConceptType.MeshConcept;
@@ -17,6 +18,10 @@ export class AnimationConceptExporter implements IConceptExporter {
         const animationConcepts = [...this.registry.stores.canvasStore.getAnimationConcepts()].map(animConcept => this.exportAnimationConcept(animConcept));
 
         return animationConcepts.length > 0 ? <g data-concept-type={ConceptType.AnimationConcept}>{animationConcepts}</g> : null;
+    }
+
+    exportToFile(hover?: (item: Concept | Feedback) => void, unhover?: (item: Concept | Feedback) => void): JSX.Element {
+        return this.export(hover, unhover);
     }
 
     private exportAnimationConcept(animationConcept: AnimationConcept) {

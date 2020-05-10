@@ -28,4 +28,8 @@ export class ModelConceptExporter implements IConceptExporter {
             )
             : null;
     }
+
+    exportToFile(): JSX.Element {
+        return this.export();
+    }
 }

@@ -16,6 +16,7 @@ export interface IPointerEvent {
     isShiftDown: boolean;
     isCtrlDown: boolean;
     isMetaDown: boolean;
+    droppedItemId?: string;
     preventDefault: () => void;
 }
 
@@ -62,6 +63,7 @@ export class PointerService {
     }
 
     pointerUp(e: IPointerEvent): void {
+        this.pointer.droppedItemType = e.droppedItemId;
         this.pointer.prev = this.pointer.curr;
         this.pointer.curr = this.getCanvasPoint(e.pointers[0].pos);
         this.pointer.prevScreen = this.pointer.currScreen;

@@ -73,7 +73,7 @@ export class ActionEditorComponent extends React.Component {
                 </WindowToolbarStyled>
                 <DropLayer 
                     isDragging={this.context.registry.tools.dragAndDrop.isDragging}
-                    onDrop={p => this.context.registry.services.mouse.onMouseUp({x: p.x, y: p.y, which: 1} as MouseEvent)}
+                    onDrop={(p, droppedItemType) => this.context.registry.services.mouse.onMouseUp({x: p.x, y: p.y, which: 1} as MouseEvent, droppedItemType)}
                     onMouseMove={(e) => this.context.registry.services.mouse.onMouseMove(e)}
                     onMouseOver={() => view.over()}
                     onMouseOut={() => view.out()}
@@ -104,7 +104,7 @@ interface DropLayerProps {
     onMouseOver: () => void;
     onMouseOut: () => void;
     onMouseMove: (e: MouseEvent) => void;
-    onDrop: (point: Point) => void;
+    onDrop: (point: Point, droppedItemType: string) => void;
     isDragging: boolean;
     registry: Registry;
 }
@@ -113,7 +113,7 @@ const DropLayer = (props: DropLayerProps) => {
     const actionTypes = props.registry.stores.actionStore.actionTypes;
 	const [{ isOver }, drop] = useDrop({
         accept: actionTypes,
-        drop: (item, monitor) => props.onDrop(new Point(monitor.getClientOffset().x, monitor.getClientOffset().y)), 
+        drop: (item, monitor) => props.onDrop(new Point(monitor.getClientOffset().x, monitor.getClientOffset().y), monitor.getItem().type), 
 		collect: monitor => ({
 			isOver: !!monitor.isOver(),
 		}),

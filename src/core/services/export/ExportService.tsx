@@ -41,7 +41,7 @@ export class ExportService {
         const viewExporters = this.registry.services.layout.getAllViews().filter(v => v.exporter).map(v => v.exporter);
 
         const views = viewExporters.map(exporter => ReactDOMServer.renderToStaticMarkup(exporter.export())).join('');
-        const concepts = this.conceptExporters.map(exporter => ReactDOMServer.renderToStaticMarkup(exporter.export())).join('');
+        const concepts = this.conceptExporters.map(exporter => ReactDOMServer.renderToStaticMarkup(exporter.exportToFile())).join('');
 
         const startTag = '<svg data-wg-width="3000" data-wg-height="3000" width="1000" height="1000">';
         const closeTag =  '</svg>';

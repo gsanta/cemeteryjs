@@ -33,4 +33,8 @@ export class PathConceptExporter implements IConceptExporter {
             )
             : null;
     }
+
+    exportToFile(hover?: (item: Concept | Feedback) => void, unhover?: (item: Concept | Feedback) => void): JSX.Element {
+        return this.export(hover, unhover);
+    }
 }

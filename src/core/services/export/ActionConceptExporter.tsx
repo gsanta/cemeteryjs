@@ -4,6 +4,8 @@ import { Registry } from "../../Registry";
 import { IConceptExporter } from "./IConceptExporter";
 import React = require("react");
 import { ConceptType, Concept } from "../../models/concepts/Concept";
+import { Feedback } from "../../models/feedbacks/Feedback";
+import { createActionNodeSettings } from '../../../plugins/action_editor/settings/actionNodeSettingsFactory';
 
 export class ActionConceptExporter implements IConceptExporter {
     type = ConceptType.MeshConcept;
@@ -14,12 +16,22 @@ export class ActionConceptExporter implements IConceptExporter {
     }
 
     export(hover?: (view: Concept) => void, unhover?: (view: Concept) => void): JSX.Element {
-        const actionConcepts = this.registry.stores.actionStore.actions.map(actionConcept => this.renderActionConcepts(actionConcept, hover, unhover));
-
-        return actionConcepts.length > 0 ? <g data-concept-type={ConceptType.ActionConcept} key={ConceptType.ActionConcept}>{actionConcepts}</g> : null;
+        return this.render(true, hover, unhover);
     }
 
-    private renderActionConcepts(item: ActionNodeConcept, hover?: (view: Concept) => void, unhover?: (view: Concept) => void) {
+    exportToFile(hover?: (item: Concept | Feedback) => void, unhover?: (item: Concept | Feedback) => void): JSX.Element {
+        return this.render(false, hover, unhover);
+
+    }
+
+    private render(renderWithSettings: boolean, hover?: (item: Concept | Feedback) => void, unhover?: (item: Concept | Feedback) => void) {
+        const actionConcepts = this.registry.stores.actionStore.actions.map(actionConcept => this.renderActionConcepts(actionConcept, renderWithSettings, hover, unhover));
+
+        return actionConcepts.length > 0 ? <g data-concept-type={ConceptType.ActionConcept} key={ConceptType.ActionConcept}>{actionConcepts}</g> : null;
+
+    }
+
+    private renderActionConcepts(item: ActionNodeConcept, renderWithSettings: boolean, hover?: (view: Concept) => void, unhover?: (view: Concept) => void) {
         return (
             <g
                 key={`${item.id}-group`}
@@ -35,7 +47,7 @@ export class ActionConceptExporter implements IConceptExporter {
                 data-wg-name={item.id}
             >
                 {this.renderRect(item)}
-                {this.renderContent(item)}
+                {renderWithSettings ? this.renderContent(item) : null}
             </g>
         )
     }
@@ -64,11 +76,7 @@ export class ActionConceptExporter implements IConceptExporter {
                 width={`${item.dimensions.getWidth()}px`}
                 height={`${item.dimensions.getHeight()}px`}
             >
-                <select>
-                    <option>Option 1</option>
-                    <option>Option 2</option>
-                </select>
-
+                {createActionNodeSettings(item.data.type, this.registry)}
             </foreignObject>
         )
     }

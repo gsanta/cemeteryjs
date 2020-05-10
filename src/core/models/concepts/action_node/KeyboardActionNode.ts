@@ -2,8 +2,6 @@ import { ActionType } from "../../../stores/ActionStore";
 import { IActionNode } from "./IActionNode";
 import { Keyboard } from "../../../services/input/KeyboardService";
 
-
-
 export function getAllKeys() {
     const keys: string[] = [];
 
@@ -12,6 +10,8 @@ export function getAllKeys() {
             keys.push(item);
         }
     }
+
+    return keys;
 }
 
 export class KeyboardActionNode implements IActionNode {

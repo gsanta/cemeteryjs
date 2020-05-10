@@ -12,6 +12,7 @@ export class MousePointer {
     currScreen: Point;
     prevScreen: Point;
     downScreen: Point;
+    droppedItemType: string;
 
     getDiff() {
         return this.curr.subtract(this.prev);
@@ -44,10 +45,10 @@ export class MouseService {
         this.registry.services.pointer.pointerMove(this.convertEvent(e, this.registry.services.pointer.isDown));
     }    
 
-    onMouseUp(e: MouseEvent): void {
+    onMouseUp(e: MouseEvent, droppedItemType?: string): void {
         if (!this.isLeftButton(e)) { return }
 
-        this.registry.services.pointer.pointerUp(this.convertEvent(e, false));
+        this.registry.services.pointer.pointerUp(this.convertEvent(e, false, droppedItemType));
     }
 
     onMouseOut(e: MouseEvent): void {
@@ -72,7 +73,7 @@ export class MouseService {
         this.registry.services.pointer.unhover(item);
     }
 
-    private convertEvent(e: MouseEvent, isPointerDown: boolean): IPointerEvent {
+    private convertEvent(e: MouseEvent, isPointerDown: boolean, droppedItemId?: string): IPointerEvent {
         return {
             pointers: [{id: 1, pos: new Point(e.x, e.y), isDown: isPointerDown}],
             preventDefault: () => e.preventDefault(),
@@ -80,7 +81,8 @@ export class MouseService {
             isAltDown: !!e.altKey,
             isShiftDown: !!e.shiftKey,
             isCtrlDown: !!e.ctrlKey,
-            isMetaDown: !!e.metaKey
+            isMetaDown: !!e.metaKey,
+            droppedItemId: droppedItemId
         };
     }
 
