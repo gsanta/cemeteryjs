@@ -1,11 +1,33 @@
+import * as React from 'react';
 import { colors } from "../../gui/styles";
 import { ActionNodeConcept } from "../../models/concepts/ActionNodeConcept";
 import { Registry } from "../../Registry";
 import { IConceptExporter } from "./IConceptExporter";
-import React = require("react");
 import { ConceptType, Concept } from "../../models/concepts/Concept";
 import { Feedback } from "../../models/feedbacks/Feedback";
 import { createActionNodeSettings } from '../../../plugins/action_editor/settings/actionNodeSettingsFactory';
+import styled from "styled-components";
+
+const NodeStyled = styled.div`
+    background-color: ${(props: {concept: ActionNodeConcept}) => props.concept.data.color};
+    width: 100%;
+    height: 100%;
+`;
+
+const NodeHeaderStyled = styled.div`
+    color: ${colors.textColor};
+    background-color: ${colors.panelBackground};
+    padding: 3px 5px;
+`;
+
+const NodeBodyStyled = styled.div`
+    padding: 0px 5px 3px 5px;
+    font-size: 12px;
+
+    .input-label {
+        font-weight: bold;
+    }
+`;
 
 export class ActionConceptExporter implements IConceptExporter {
     type = ConceptType.MeshConcept;
@@ -47,7 +69,7 @@ export class ActionConceptExporter implements IConceptExporter {
                 data-wg-name={item.id}
             >
                 {this.renderRect(item)}
-                {renderWithSettings ? this.renderContent(item) : null}
+                {renderWithSettings ? this.renderNode(item) : null}
             </g>
         )
     }
@@ -67,7 +89,7 @@ export class ActionConceptExporter implements IConceptExporter {
         );
     }
 
-    private renderContent(item: ActionNodeConcept) {
+    private renderNode(item: ActionNodeConcept) {
         return (
             <foreignObject
                 key={`${item.id}-content`}
@@ -76,8 +98,24 @@ export class ActionConceptExporter implements IConceptExporter {
                 width={`${item.dimensions.getWidth()}px`}
                 height={`${item.dimensions.getHeight()}px`}
             >
-                {createActionNodeSettings(item.data.type, this.registry)}
+                <NodeStyled concept={item}>
+                    {this.renderNodeHeader(item)}
+                    {this.renderNodeBody(item)}
+                    {}
+                </NodeStyled>
             </foreignObject>
         )
+    }
+
+    private renderNodeHeader(item: ActionNodeConcept): JSX.Element {
+        return (
+            <NodeHeaderStyled>{item.data.title}</NodeHeaderStyled>
+        );
+    } 
+
+    private renderNodeBody(item: ActionNodeConcept): JSX.Element {
+        return (
+            <NodeBodyStyled>{createActionNodeSettings(item.data.type, this.registry)}</NodeBodyStyled>
+        );
     }
 }

@@ -16,5 +16,7 @@ export function getAllKeys() {
 
 export class KeyboardActionNode implements IActionNode {
     type = ActionType.Keyboard;
+    title = "Keyboard input";
     key: string;
+    color = '#89BD88';
 }
