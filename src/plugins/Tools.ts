@@ -10,6 +10,7 @@ import { Registry } from "../core/Registry";
 import { GamepadTool } from "./common/tools/GamepadTool";
 import { PanTool } from "./common/tools/PanTool";
 import { DragAndDropTool } from "./common/tools/DragAndDropTool";
+import { JoinTool } from "./common/tools/JoinTool";
 
 export class Tools {
     zoom: ZoomTool;
@@ -22,6 +23,7 @@ export class Tools {
     gamepad: GamepadTool;
     pan: PanTool;
     dragAndDrop: DragAndDropTool;
+    join: JoinTool;
 
     tools: Tool[] = [];
 
@@ -39,6 +41,7 @@ export class Tools {
         this.gamepad = new GamepadTool(this.registry);
         this.pan = new PanTool(this.registry);
         this.dragAndDrop = new DragAndDropTool(this.registry);
+        this.join = new JoinTool(this.registry);
 
         this.tools.push(this.zoom);
         this.tools.push(this.delete);
@@ -50,6 +53,7 @@ export class Tools {
         this.tools.push(this.gamepad);
         this.tools.push(this.pan);
         this.tools.push(this.dragAndDrop);
+        this.tools.push(this.join);
     }
 
     getByType(toolType: ToolType) {

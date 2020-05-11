@@ -10,9 +10,10 @@ export enum ToolType {
     Pan = 'pan',
     DragAndDrop = 'drag-and-drop',
     Zoom = 'zoom',
-    Path = 'arrow',
+    Path = 'path',
     Pointer = 'pointer',
-    Gamepad = 'gamepad'
+    Gamepad = 'gamepad',
+    Join = 'join'
 }
 
 export class ToolReturnType {

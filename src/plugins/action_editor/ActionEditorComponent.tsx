@@ -1,23 +1,23 @@
 import * as React from 'react';
-import styled from 'styled-components';
-import { colors } from '../../core/gui/styles';
-import { WindowToolbarStyled } from '../../core/WindowToolbar';
-import { AppContext, AppContextType } from '../../core/gui/Context';
-import { WheelListener } from '../../core/services/WheelListener';
-import { ActionEditorView } from './ActionEditorView';
-import { Feedback } from '../../core/models/feedbacks/Feedback';
 import { useDrop } from 'react-dnd';
-import { ActionType } from '../../core/stores/ActionStore';
+import styled from 'styled-components';
 import { Point } from '../../core/geometry/shapes/Point';
+import { AppContext, AppContextType } from '../../core/gui/Context';
+import { colors } from '../../core/gui/styles';
 import { Concept } from '../../core/models/concepts/Concept';
-import { ToolType } from '../common/tools/Tool';
-import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
+import { Feedback } from '../../core/models/feedbacks/Feedback';
 import { Registry } from '../../core/Registry';
+import { WheelListener } from '../../core/services/WheelListener';
+import { WindowToolbarStyled } from '../../core/WindowToolbar';
+import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
+import { ToolType } from '../common/tools/Tool';
+import { ActionEditorView } from './ActionEditorView';
 
 const EditorComponentStyled = styled.div`
     width: 100%;
     height: 100%;
     position: relative;
+    user-select: none;
 `;
 
 const CanvasComponentStyled = styled.svg`
@@ -67,7 +67,7 @@ export class ActionEditorComponent extends React.Component {
             <EditorComponentStyled id={view.getId()} style={{cursor: view.getActiveTool().cursor}}>
                 <WindowToolbarStyled>
                     <ToolbarComponent
-                            tools={[ToolType.Select, ToolType.Pan, ToolType.Zoom]}
+                            tools={[ToolType.Select, ToolType.Pan, ToolType.Zoom, ToolType.Join]}
                             view={view}
                     />
                 </WindowToolbarStyled>
@@ -94,9 +94,27 @@ export class ActionEditorComponent extends React.Component {
                     onWheel={(e) => this.wheelListener.onWheel(e.nativeEvent)}
                 >
                     {this.context.registry.services.export.actionConceptExporter.export(hover, unhover)}
+                    {this.renderFeedback()}
                 </CanvasComponentStyled>
             </EditorComponentStyled>
         );
+    }
+
+    private renderFeedback(): JSX.Element {
+        const joinTool = this.context.registry.tools.join;
+        if (joinTool.start && joinTool.end) {
+            return (
+                <line 
+                    x1={joinTool.start.x}
+                    y1={joinTool.start.y}
+                    x2={joinTool.end.x}
+                    y2={joinTool.end.y}
+                    stroke={colors.panelBackground}
+                    strokeWidth="3"
+                    strokeDasharray="12 3"
+                />
+            );
+        }
     }
 }
 

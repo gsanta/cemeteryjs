@@ -2,6 +2,7 @@ import { ActionNodeConcept } from '../models/concepts/ActionNodeConcept';
 import { Registry } from '../Registry';
 import { AbstractStore } from './AbstractStore';
 import { ActionNodeSettings } from '../../plugins/action_editor/settings/ActionNodeSettings';
+import { Segment } from '../geometry/shapes/Segment';
 
 export enum ActionType {
     Keyboard = 'Keyboard',
