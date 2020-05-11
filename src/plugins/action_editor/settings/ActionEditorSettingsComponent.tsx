@@ -1,10 +1,9 @@
 import * as React from 'react';
+import { useDrag } from 'react-dnd';
 import styled from 'styled-components';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { ActionEditorView } from '../ActionEditorView';
 import { ActionEditorSettingsProps } from './ActionEditorSettings';
-import { useDrop, useDrag } from 'react-dnd';
-import { Point } from '../../../core/geometry/shapes/Point';
 
 const ActionButtonStyled = styled.div`
     border: 1px solid white;

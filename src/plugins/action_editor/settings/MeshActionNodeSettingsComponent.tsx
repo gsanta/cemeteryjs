@@ -5,32 +5,32 @@ import { FieldColumnStyled, LabelColumnStyled, SettingsRowStyled } from '../../s
 import { ActionNodeProps } from './actionNodeSettingsFactory';
 import { ActionNodeSettingsProps } from './ActionNodeSettings';
 
-export class KeyboardActionNodeSettingsComponent extends React.Component<ActionNodeProps> {
+export class MeshActionNodeSettingsComponent extends React.Component<ActionNodeProps> {
     static contextType = AppContext;
     context: AppContextType;
 
     render() {
         return (
             <div>
-                {this.renderKeyboardKeysDropdown()}
+                {this.renderMeshDropdown()}
             </div>
         )
     }
 
-    private renderKeyboardKeysDropdown() {
-        const keys: string[] = this.props.settings.getVal(ActionNodeSettingsProps.AllKeyboardKeys);
-        const val: string = this.props.settings.getVal(ActionNodeSettingsProps.KeyboardKey);
+    private renderMeshDropdown() {
+        const meshes: string[] = this.props.settings.getVal(ActionNodeSettingsProps.AllMeshes);
+        const val: string = this.props.settings.getVal(ActionNodeSettingsProps.Mesh);
 
         return (
             <SettingsRowStyled>
-                <LabelColumnStyled className="input-label">Key</LabelColumnStyled>
+                <LabelColumnStyled className="input-label">Mesh</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedDropdownComponent
                         formController={this.props.settings}
-                        propertyName={ActionNodeSettingsProps.KeyboardKey}
-                        values={keys}
+                        propertyName={ActionNodeSettingsProps.Mesh}
+                        values={meshes}
                         currentValue={val}
-                        placeholder="Select key"
+                        placeholder="Select mesh"
                     />
                 </FieldColumnStyled>
             </SettingsRowStyled>

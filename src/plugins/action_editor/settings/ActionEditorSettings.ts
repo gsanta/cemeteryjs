@@ -1,13 +1,9 @@
 import { ActionNodeConcept } from '../../../core/models/concepts/ActionNodeConcept';
-import { getAllKeys } from '../../../core/models/concepts/action_node/KeyboardActionNode';
 import { Registry } from '../../../core/Registry';
 import { AbstractSettings } from '../../scene_editor/settings/AbstractSettings';
 
 export enum ActionEditorSettingsProps {
     ActionTypes = 'ActionTypes',
-    AllKeyboardKeys = 'AllKeyboardKeys',
-    KeyboardKey = 'KeyboardKey'
-
 }
 
 export class ActionEditorSettings extends AbstractSettings<ActionEditorSettingsProps> {
@@ -30,8 +26,6 @@ export class ActionEditorSettings extends AbstractSettings<ActionEditorSettingsP
         switch (prop) {
             case ActionEditorSettingsProps.ActionTypes:
                 return this.registry.stores.actionStore.actionTypes;
-            case ActionEditorSettingsProps.AllKeyboardKeys:
-                return getAllKeys();
         }
     }
 

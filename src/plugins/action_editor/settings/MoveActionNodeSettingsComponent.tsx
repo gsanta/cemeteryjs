@@ -2,38 +2,39 @@ import * as React from 'react';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { ConnectedDropdownComponent } from '../../../core/gui/inputs/DropdownComponent';
 import { FieldColumnStyled, LabelColumnStyled, SettingsRowStyled } from '../../scene_editor/settings/SettingsComponent';
-import { ActionNodeProps } from './actionNodeSettingsFactory';
 import { ActionNodeSettingsProps } from './ActionNodeSettings';
+import { ActionNodeProps } from './actionNodeSettingsFactory';
 
-export class KeyboardActionNodeSettingsComponent extends React.Component<ActionNodeProps> {
+export class MoveActionNodeSettingsComponent extends React.Component<ActionNodeProps> {
     static contextType = AppContext;
     context: AppContextType;
+
 
     render() {
         return (
             <div>
-                {this.renderKeyboardKeysDropdown()}
+                {this.renderMoveDirectionDropdown()}
             </div>
         )
     }
 
-    private renderKeyboardKeysDropdown() {
-        const keys: string[] = this.props.settings.getVal(ActionNodeSettingsProps.AllKeyboardKeys);
-        const val: string = this.props.settings.getVal(ActionNodeSettingsProps.KeyboardKey);
+    private renderMoveDirectionDropdown() {
+        const movementTypes: string[] = this.props.settings.getVal(ActionNodeSettingsProps.AllMovements);
+        const val: string = this.props.settings.getVal(ActionNodeSettingsProps.Movement);
 
         return (
             <SettingsRowStyled>
-                <LabelColumnStyled className="input-label">Key</LabelColumnStyled>
+                <LabelColumnStyled className="input-label">Movement</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedDropdownComponent
                         formController={this.props.settings}
-                        propertyName={ActionNodeSettingsProps.KeyboardKey}
-                        values={keys}
+                        propertyName={ActionNodeSettingsProps.Movement}
+                        values={movementTypes}
                         currentValue={val}
-                        placeholder="Select key"
+                        placeholder="Select Movement"
                     />
                 </FieldColumnStyled>
             </SettingsRowStyled>
-        )
+        );
     }
 }

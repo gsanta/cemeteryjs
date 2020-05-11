@@ -25,6 +25,31 @@ export abstract class AbstractSettings<P> {
         this.renderFunc = renderFunc;
     }
 
+    getVal<T>(property: P): T {
+        const val = this.focusedPropType === property ? this.tempVal : this.getProp(property);
+        return val;
+    }
+
+    getFocusedProp(): P { return this.focusedPropType; };
+    deletItemFromListProp(propType: P, index: number): void {};
+
+    protected abstract getProp(prop: P): any;
+    protected abstract setProp(val: any, prop: P): void;
+
+    updateProp(value: any, propType: P) {
+        this.setProp(value, propType);
+        this.tempVal = null;
+        this.focusedPropType = null;
+        this.renderFunc();
+    }
+
+    blurProp() {
+        this.setProp(this.tempVal, this.focusedPropType);
+        this.tempVal = null;
+        this.focusedPropType = null;
+        this.renderFunc();
+    }
+
     focusProp(propType: P) {
         this.tempVal = this.getProp(propType);
         this.focusedPropType = propType;
@@ -36,31 +61,6 @@ export abstract class AbstractSettings<P> {
         this.tempVal = value;
         this.renderFunc();
     }
-
-    blurProp() {
-        this.setProp(this.tempVal, this.focusedPropType);
-        this.tempVal = null;
-        this.focusedPropType = null;
-        this.renderFunc();
-    }
-
-    updateProp(value: any, propType: P) {
-        this.setProp(value, propType);
-        this.tempVal = null;
-        this.focusedPropType = null;
-        this.renderFunc();
-    }
-
-    getVal<T>(property: P): T {
-        const val = this.focusedPropType === property ? this.tempVal : this.getProp(property);
-        return val;
-    }
-
-    getFocusedProp(): P { return this.focusedPropType; };
-    deletItemFromListProp(propType: P, index: number): void {};
-
-    protected abstract getProp(prop: P): any;
-    protected abstract setProp(val: any, prop: P): void;
 
     protected convertValue(val: string, prop: P, defaultVal: any) {
         const propertyType = this.propertyTypes[prop as any] || PropertyType.String;

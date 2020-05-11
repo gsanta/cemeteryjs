@@ -115,7 +115,7 @@ export class ActionConceptExporter implements IConceptExporter {
 
     private renderNodeBody(item: ActionNodeConcept): JSX.Element {
         return (
-            <NodeBodyStyled>{createActionNodeSettings(item.data.type, this.registry)}</NodeBodyStyled>
+            <NodeBodyStyled>{createActionNodeSettings(item, this.registry)}</NodeBodyStyled>
         );
     }
 }

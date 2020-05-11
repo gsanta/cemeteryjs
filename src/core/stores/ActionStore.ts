@@ -1,16 +1,18 @@
 import { ActionNodeConcept } from '../models/concepts/ActionNodeConcept';
 import { Registry } from '../Registry';
 import { AbstractStore } from './AbstractStore';
+import { ActionNodeSettings } from '../../plugins/action_editor/settings/ActionNodeSettings';
 
 export enum ActionType {
     Keyboard = 'Keyboard',
     Move = 'Move',
-    Add = 'Add',
+    And = 'And',
     Mesh = 'Mesh'
 }
 
 export class ActionStore extends AbstractStore {
     actions: ActionNodeConcept[] = [];
+    settings: Map<string, ActionNodeSettings> = new Map();
     actionTypes: string[] = [];
 
     private registry: Registry;
@@ -28,6 +30,11 @@ export class ActionStore extends AbstractStore {
 
     addAction(action: ActionNodeConcept) {
         this.actions.push(action);
+        this.settings.set(action.id, new ActionNodeSettings(action));
+    }
+
+    getSettings(action: ActionNodeConcept) {
+        return this.settings.get(action.id);
     }
 
     protected getConceptsByType() {
