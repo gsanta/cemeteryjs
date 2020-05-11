@@ -7,4 +7,6 @@ export class MeshActionNode implements IActionNode {
     meshId: string;
     isActiveMesh: boolean;
     color = '#D39D9D';
+    inputSlots = 2;
+    outputSlots = 1;
 }

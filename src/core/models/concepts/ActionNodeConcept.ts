@@ -11,8 +11,8 @@ export class ActionNodeConcept implements VisualConcept {
     data: IActionNode;
 
     dimensions: Rectangle;
-    inputs: ActionNodeConcept[];
-    outputs: ActionNodeConcept[];
+    inputs: Map<number/* slotIndex */, ActionNodeConcept> = new Map();
+    outputs: Map<number/* slotIndex */, ActionNodeConcept> = new Map();
 
     move(point: Point) {
         this.dimensions = this.dimensions.translate(point);

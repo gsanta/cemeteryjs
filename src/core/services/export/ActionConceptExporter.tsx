@@ -21,7 +21,7 @@ const NodeHeaderStyled = styled.div`
 `;
 
 const NodeBodyStyled = styled.div`
-    padding: 0px 5px 3px 5px;
+    padding: 0px 10px 3px 10px;
     font-size: 12px;
 
     .input-label {
@@ -70,6 +70,8 @@ export class ActionConceptExporter implements IConceptExporter {
             >
                 {this.renderRect(item)}
                 {renderWithSettings ? this.renderNode(item) : null}
+                {this.renderInputSlots(item)}
+                {this.renderOutputSlots(item)}
             </g>
         )
     }
@@ -87,6 +89,44 @@ export class ActionConceptExporter implements IConceptExporter {
                 stroke={stroke}
             />
         );
+    }
+
+    private renderInputSlots(item: ActionNodeConcept): JSX.Element[] {
+        const slots: JSX.Element[] = [];
+        const yStart = 50;
+
+        for (let i = 0; i < item.data.inputSlots; i++) {
+            slots.push(
+                <circle 
+                    cx={0} 
+                    cy={i * 20 + yStart} 
+                    r={4}
+                    stroke={colors.panelBackground}
+                    fill={colors.grey4}
+                />
+            )
+        }
+
+        return slots;
+    }
+
+    private renderOutputSlots(item: ActionNodeConcept): JSX.Element[] {
+        const slots: JSX.Element[] = [];
+        const yStart = 50;
+
+        for (let i = 0; i < item.data.outputSlots; i++) {
+            slots.push(
+                <circle 
+                    cx={item.dimensions.getWidth()} 
+                    cy={i * 20 + yStart} 
+                    r={4}
+                    stroke={colors.panelBackground}
+                    fill={colors.grey4}
+                />
+            )
+        }
+
+        return slots;
     }
 
     private renderNode(item: ActionNodeConcept) {

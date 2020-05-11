@@ -25,4 +25,6 @@ export class MoveActionNode implements IActionNode {
     title = "Move";
     movement: string;
     color = 'A194EC';
+    inputSlots = 2;
+    outputSlots = 1;
 }

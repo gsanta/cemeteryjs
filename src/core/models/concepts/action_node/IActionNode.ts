@@ -4,4 +4,6 @@ export interface IActionNode {
     type: ActionType;
     title: string;
     color: string;
+    inputSlots: number;
+    outputSlots: number;
 }

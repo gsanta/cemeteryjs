@@ -19,4 +19,6 @@ export class KeyboardActionNode implements IActionNode {
     title = "Keyboard input";
     key: string;
     color = '#89BD88';
+    inputSlots = 2;
+    outputSlots = 1;
 }
