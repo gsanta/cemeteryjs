@@ -35,7 +35,6 @@ export enum AnimationState {
 
 export class MeshConcept implements VisualConcept, IGameObject {
     type = ConceptType.MeshConcept;
-    editPoints = [];
     mesh: Mesh;
 
     meshName: string;
@@ -132,13 +131,10 @@ export class MeshConcept implements VisualConcept, IGameObject {
     }
 
     selectHoveredSubview() {}
-    moveEditPoint(editPoint: EditPoint, delta: Point) {}
 
     move(point: Point) {
         this.dimensions = this.dimensions.translate(point);
     }
-
-    deleteEditPoint(editPoint: EditPoint): void {}
 
     dispose() {}
 }

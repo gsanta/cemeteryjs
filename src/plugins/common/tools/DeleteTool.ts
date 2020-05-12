@@ -1,11 +1,11 @@
-import { Registry } from '../../../core/Registry';
 import { VisualConcept } from '../../../core/models/concepts/VisualConcept';
-import { IControl } from '../../../core/models/controls/IControl';
+import { Hoverable } from '../../../core/models/Hoverable';
+import { Registry } from '../../../core/Registry';
 import { UpdateTask } from '../../../core/services/UpdateServices';
+import { isConcept, isControl } from '../../../core/stores/CanvasStore';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './RectangleSelector';
 import { ToolType } from './Tool';
-import { Hoverable } from '../../../core/models/Hoverable';
 
 export class DeleteTool extends AbstractTool {
     private rectSelector: RectangleSelector;
@@ -24,18 +24,18 @@ export class DeleteTool extends AbstractTool {
         this.registry.tools.pointer.click();
         const hoverStore = this.registry.stores.hoverStore;
 
-        if (hoverStore.hasAny()) {
-            if (hoverStore.hasEditPoint()) {
-                hoverStore.getConcept().deleteEditPoint(hoverStore.getEditPoint());
-            } else {
-                const concept = hoverStore.getConcept();
-                this.registry.stores.canvasStore.removeConcept(concept);
-                this.registry.services.game.deleteConcepts([concept]);
-            }
-            
-            this.registry.services.level.updateCurrentLevel();
-            hoverStore.hasAny() && this.registry.services.update.scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
+        if (!hoverStore.hasAny()) { return; }
+
+        if (isControl(hoverStore.getAny().type)) {
+            hoverStore.getEditPoint().delete();
+        } else if (isConcept(hoverStore.getAny().type)) {
+            const concept = hoverStore.getConcept();
+            this.registry.stores.canvasStore.removeConcept(concept);
+            this.registry.services.game.deleteConcepts([concept]);
         }
+        
+        this.registry.services.level.updateCurrentLevel();
+        hoverStore.hasAny() && this.registry.services.update.scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
     }
 
     

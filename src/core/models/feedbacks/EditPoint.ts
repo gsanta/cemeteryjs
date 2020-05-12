@@ -1,5 +1,4 @@
 import { Point } from "../../geometry/shapes/Point";
-import { VisualConcept } from "../concepts/VisualConcept";
 import { IControl, FeedbackType } from "../controls/IControl";
 import { PathConcept } from "../concepts/PathConcept";
 
@@ -11,6 +10,14 @@ export class EditPoint implements IControl<PathConcept> {
     constructor(point: Point, parent: PathConcept) {
         this.point = point;
         this.parent = parent;
+    }
+
+    delete() {
+        this.parent.deleteEditPoint(this);
+    }
+
+    move(delta: Point) {
+        this.parent.moveEditPoint(this, delta);
     }
 
     toString() {

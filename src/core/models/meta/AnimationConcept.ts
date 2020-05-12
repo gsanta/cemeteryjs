@@ -38,7 +38,5 @@ export class AnimationConcept implements MetaConcept {
     
     editPoints: EditPoint[] = []
     dimensions = undefined;
-    deleteEditPoint(editPoint: EditPoint): void {}
     move(delta: Point): void {}
-    moveEditPoint(editPoint: EditPoint, delta: Point): void {}
 }

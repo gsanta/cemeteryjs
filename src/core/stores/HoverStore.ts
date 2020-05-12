@@ -3,7 +3,7 @@ import { PathConcept } from "../models/concepts/PathConcept";
 import { VisualConcept } from "../models/concepts/VisualConcept";
 import { EditPoint } from "../models/feedbacks/EditPoint";
 import { IControl, FeedbackType } from "../models/controls/IControl";
-import { isFeedback } from "./CanvasStore";
+import { isControl } from "./CanvasStore";
 import { ConceptType } from "../models/concepts/Concept";
 import { Hoverable } from "../models/Hoverable";
 
@@ -67,7 +67,7 @@ export class HoverStore {
     }
 
     getEditPointOf(conceptType: ConceptType) {
-        return this.items.find(item =>  isFeedback(item.type) && (<IControl<any>> item).parent.type === conceptType);
+        return this.items.find(item =>  isControl(item.type) && (<IControl<any>> item).parent.type === conceptType);
     }
 
     clear() {

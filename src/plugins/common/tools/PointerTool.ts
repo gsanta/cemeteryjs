@@ -2,7 +2,7 @@ import { Registry } from '../../../core/Registry';
 import { VisualConcept } from '../../../core/models/concepts/VisualConcept';
 import { IControl } from '../../../core/models/controls/IControl';
 import { UpdateTask } from "../../../core/services/UpdateServices";
-import { isConcept, isFeedback } from '../../../core/stores/CanvasStore';
+import { isConcept, isControl } from '../../../core/stores/CanvasStore';
 import { AbstractTool } from "./AbstractTool";
 import { ToolType } from "./Tool";
 import { Concept } from '../../../core/models/concepts/Concept';
@@ -93,8 +93,8 @@ export class PointerTool extends AbstractTool {
     private moveItems() {
         const concepts = this.registry.stores.selectionStore.getAllConcepts();
 
-        if (isFeedback(this.movingItem.type)) {
-            concepts[0].moveEditPoint(this.registry.stores.selectionStore.getEditPoint(), this.registry.services.pointer.pointer.getDiff());
+        if (isControl(this.movingItem.type)) {
+            (<IControl<any>> this.movingItem).move(this.registry.services.pointer.pointer.getDiff())
         } else if (isConcept(this.movingItem.type)) {
             concepts.forEach((item, index) => item.move(this.registry.services.pointer.pointer.getDiff()));
         }
@@ -120,7 +120,7 @@ export class PointerTool extends AbstractTool {
     private updateSceneConcepts() {
         let concepts: Concept[];
 
-        if (isFeedback(this.movingItem.type)) {
+        if (isControl(this.movingItem.type)) {
             concepts = [(<IControl<any>> this.movingItem).parent];
         } else {
             concepts = this.registry.stores.selectionStore.getAllConcepts();

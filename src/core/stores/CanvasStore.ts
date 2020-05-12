@@ -13,7 +13,7 @@ import { Registry } from "../Registry";
 import { AbstractStore } from './AbstractStore';
 import { ConceptType, Concept } from "../models/concepts/Concept";
 
-export function isFeedback(type: string) {
+export function isControl(type: string) {
     return type.endsWith('Feedback');
 }
 

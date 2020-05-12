@@ -1,9 +1,9 @@
+import { Point } from "../../geometry/shapes/Point";
+import { Rectangle } from "../../geometry/shapes/Rectangle";
+import { NodeConnectorControl } from "../controls/NodeConnectorControl";
+import { IActionNode } from "./action_node/IActionNode";
 import { ConceptType } from "./Concept";
 import { VisualConcept } from "./VisualConcept";
-import { Rectangle } from "../../geometry/shapes/Rectangle";
-import { EditPoint } from "../feedbacks/EditPoint";
-import { Point } from "../../geometry/shapes/Point";
-import { IActionNode } from "./action_node/IActionNode";
 
 export class ActionNodeConcept implements VisualConcept {
     type = ConceptType.ActionConcept;
@@ -11,13 +11,12 @@ export class ActionNodeConcept implements VisualConcept {
     data: IActionNode;
 
     dimensions: Rectangle;
-    inputs: Map<number/* slotIndex */, ActionNodeConcept> = new Map();
-    outputs: Map<number/* slotIndex */, ActionNodeConcept> = new Map();
+    inputs: NodeConnectorControl[];
+    outputs: NodeConnectorControl[];
 
     move(point: Point) {
         this.dimensions = this.dimensions.translate(point);
     }
+
     editPoints = [];
-    deleteEditPoint(editPoint: EditPoint): void {}
-    moveEditPoint(editPoint: EditPoint, delta: Point): void {}
 }
