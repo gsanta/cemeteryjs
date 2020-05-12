@@ -1,9 +1,9 @@
+import { ConceptType } from "../../models/concepts/Concept";
+import { Hoverable } from "../../models/Hoverable";
 import { Registry } from "../../Registry";
-import { Feedback } from "../../models/feedbacks/Feedback";
 import { IConceptExporter } from "./IConceptExporter";
 import { PathComponent } from "./PathComponent";
 import React = require("react");
-import { ConceptType, Concept } from "../../models/concepts/Concept";
 
 export class PathConceptExporter implements IConceptExporter {
     type = ConceptType.PathConcept;
@@ -13,7 +13,7 @@ export class PathConceptExporter implements IConceptExporter {
         this.registry = registry;
     }
 
-    export(hover?: (item: Concept | Feedback) => void, unhover?: (item: Concept | Feedback) => void): JSX.Element {
+    export(hover?: (item: Hoverable) => void, unhover?: (item: Hoverable) => void): JSX.Element {
         const pathes = this.registry.stores.canvasStore.getPathConcepts().map(path => {
             return <PathComponent
                 key={path.id}
@@ -21,8 +21,8 @@ export class PathConceptExporter implements IConceptExporter {
                 item={path}
                 isHovered={this.registry.stores.hoverStore.contains(path)}
                 isSelected={this.registry.stores.selectionStore.contains(path)}
-                onMouseOver={(item: Concept | Feedback) => hover ?  hover(item) : () => undefined}
-                onMouseOut={(item: Concept | Feedback) => unhover ? unhover(item) : () => undefined}
+                onMouseOver={(item: Hoverable) => hover ?  hover(item) : () => undefined}
+                onMouseOut={(item: Hoverable) => unhover ? unhover(item) : () => undefined}
                 stores={this.registry.stores}
             />
         });
@@ -34,7 +34,7 @@ export class PathConceptExporter implements IConceptExporter {
             : null;
     }
 
-    exportToFile(hover?: (item: Concept | Feedback) => void, unhover?: (item: Concept | Feedback) => void): JSX.Element {
+    exportToFile(hover?: (item: Hoverable) => void, unhover?: (item: Hoverable) => void): JSX.Element {
         return this.export(hover, unhover);
     }
 }

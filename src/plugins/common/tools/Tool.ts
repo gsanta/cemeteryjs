@@ -1,6 +1,7 @@
 import { IKeyboardEvent } from "../../../core/services/input/KeyboardService";
-import { Feedback } from "../../../core/models/feedbacks/Feedback";
+import { IControl } from "../../../core/models/controls/IControl";
 import { Concept } from "../../../core/models/concepts/Concept";
+import { Hoverable } from "../../../core/models/Hoverable";
 
 export enum ToolType {
     Rectangle = 'rectangle',
@@ -52,8 +53,8 @@ export interface Tool {
     leave(): void;
     keydown(e: IKeyboardEvent): void;
     keyup(e: IKeyboardEvent): void;
-    over(item: Concept | Feedback): void;
-    out(item: Concept | Feedback): void;
+    over(item: Hoverable): void;
+    out(item: Hoverable): void;
     wheel(): void;
     wheelEnd(): void;
 

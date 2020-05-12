@@ -1,8 +1,9 @@
 import { Registry } from "../../Registry";
 import { Point } from "../../geometry/shapes/Point";
-import { Feedback } from "../../models/feedbacks/Feedback";
+import { IControl } from "../../models/controls/IControl";
 import { MousePointer } from "./MouseService";
 import { Concept } from "../../models/concepts/Concept";
+import { Hoverable } from "../../models/Hoverable";
 
 export enum Wheel {
     IDLE = 'idle', UP = 'up', DOWN = 'down'
@@ -110,12 +111,12 @@ export class PointerService {
         this.registry.services.layout.getHoveredView().getActiveTool().wheelEnd();
     }
 
-    hover(item: Concept | Feedback): void {
+    hover(item: Hoverable): void {
         this.registry.services.layout.getHoveredView().getActiveTool().over(item);
         this.registry.services.update.runScheduledTasks();
     }
 
-    unhover(item: Concept | Feedback): void {
+    unhover(item: Hoverable): void {
         this.registry.services.layout.getHoveredView().getActiveTool().out(item);
         this.registry.services.update.runScheduledTasks();
     }

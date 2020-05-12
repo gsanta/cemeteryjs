@@ -4,8 +4,7 @@ import styled from 'styled-components';
 import { Point } from '../../core/geometry/shapes/Point';
 import { AppContext, AppContextType } from '../../core/gui/Context';
 import { colors } from '../../core/gui/styles';
-import { Concept } from '../../core/models/concepts/Concept';
-import { Feedback } from '../../core/models/feedbacks/Feedback';
+import { Hoverable } from '../../core/models/Hoverable';
 import { Registry } from '../../core/Registry';
 import { WheelListener } from '../../core/services/WheelListener';
 import { WindowToolbarStyled } from '../../core/WindowToolbar';
@@ -58,8 +57,8 @@ export class ActionEditorComponent extends React.Component {
     }
 
     render(): JSX.Element {
-        const hover = (item: Concept | Feedback) => this.context.registry.services.mouse.hover(item);
-        const unhover = (canvasItem: Concept | Feedback) => this.context.registry.services.mouse.unhover(canvasItem);
+        const hover = (item: Hoverable) => this.context.registry.services.mouse.hover(item);
+        const unhover = (canvasItem: Hoverable) => this.context.registry.services.mouse.unhover(canvasItem);
         
         const view = this.context.registry.services.layout.getViewById<ActionEditorView>(ActionEditorView.id);
 

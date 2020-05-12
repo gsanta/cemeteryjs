@@ -1,6 +1,6 @@
 import { Registry } from '../../../core/Registry';
 import { VisualConcept } from '../../../core/models/concepts/VisualConcept';
-import { Feedback } from '../../../core/models/feedbacks/Feedback';
+import { IControl } from '../../../core/models/controls/IControl';
 import { UpdateTask } from "../../../core/services/UpdateServices";
 import { isConcept, isFeedback } from '../../../core/stores/CanvasStore';
 import { AbstractTool } from "./AbstractTool";
@@ -8,9 +8,10 @@ import { ToolType } from "./Tool";
 import { Concept } from '../../../core/models/concepts/Concept';
 import { CanvasView } from '../../scene_editor/CanvasView';
 import { ActionEditorView } from '../../action_editor/ActionEditorView';
+import { Hoverable } from '../../../core/models/Hoverable';
 
 export class PointerTool extends AbstractTool {
-    protected movingItem: Concept | Feedback = undefined;
+    protected movingItem: Hoverable = undefined;
     private isDragStart = true;
 
     constructor(toolType: ToolType, registry: Registry) {
@@ -72,12 +73,12 @@ export class PointerTool extends AbstractTool {
         this.movingItem = undefined;
     }
 
-    over(item: VisualConcept | Feedback) {
+    over(item: Hoverable) {
         this.registry.stores.hoverStore.addItem(item);
         this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
-    out(item: VisualConcept | Feedback) {
+    out(item: Hoverable) {
         this.registry.stores.hoverStore.removeItem(item);
         this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
     }
@@ -120,7 +121,7 @@ export class PointerTool extends AbstractTool {
         let concepts: Concept[];
 
         if (isFeedback(this.movingItem.type)) {
-            concepts = [(<Feedback> this.movingItem).parent];
+            concepts = [(<IControl<any>> this.movingItem).parent];
         } else {
             concepts = this.registry.stores.selectionStore.getAllConcepts();
         }

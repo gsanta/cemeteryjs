@@ -1,13 +1,14 @@
 import { Point } from "../../geometry/shapes/Point";
 import { VisualConcept } from "../concepts/VisualConcept";
-import { Feedback, FeedbackType } from "./Feedback";
+import { IControl, FeedbackType } from "../controls/IControl";
+import { PathConcept } from "../concepts/PathConcept";
 
-export class EditPoint implements Feedback {
+export class EditPoint implements IControl<PathConcept> {
     type = FeedbackType.EditPointFeedback;
     point: Point;
-    parent: VisualConcept;
+    parent: PathConcept;
 
-    constructor(point: Point, parent: VisualConcept) {
+    constructor(point: Point, parent: PathConcept) {
         this.point = point;
         this.parent = parent;
     }

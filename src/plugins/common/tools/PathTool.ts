@@ -3,12 +3,13 @@ import { Point } from "../../../core/geometry/shapes/Point";
 import { PathConcept } from "../../../core/models/concepts/PathConcept";
 import { VisualConcept } from "../../../core/models/concepts/VisualConcept";
 import { EditPoint } from "../../../core/models/feedbacks/EditPoint";
-import { Feedback, FeedbackType } from "../../../core/models/feedbacks/Feedback";
+import { IControl, FeedbackType } from "../../../core/models/controls/IControl";
 import { IKeyboardEvent, Keyboard } from "../../../core/services/input/KeyboardService";
 import { UpdateTask } from "../../../core/services/UpdateServices";
 import { PointerTool } from "./PointerTool";
 import { ToolType } from "./Tool";
 import { ConceptType } from "../../../core/models/concepts/Concept";
+import { Hoverable } from "../../../core/models/Hoverable";
 
 export class PathTool extends PointerTool {
     
@@ -31,7 +32,7 @@ export class PathTool extends PointerTool {
         }
     }
 
-    over(item: VisualConcept | Feedback) {
+    over(item: Hoverable) {
         let hover = false;
         if (item.type === ConceptType.PathConcept) {
             hover = true;
@@ -49,7 +50,7 @@ export class PathTool extends PointerTool {
         }
     }
 
-    out(item: VisualConcept | Feedback) {
+    out(item: Hoverable) {
         super.out(item);
         this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
     }

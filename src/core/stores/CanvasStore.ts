@@ -6,7 +6,7 @@ import { MeshConcept } from "../models/concepts/MeshConcept";
 import { ModelConcept } from "../models/concepts/ModelConcept";
 import { PathConcept } from "../models/concepts/PathConcept";
 import { VisualConcept } from "../models/concepts/VisualConcept";
-import { Feedback } from "../models/feedbacks/Feedback";
+import { IControl } from "../models/controls/IControl";
 import { AnimationConcept } from "../models/meta/AnimationConcept";
 import { MetaConcept } from "../models/meta/MetaConcept";
 import { Registry } from "../Registry";
@@ -27,7 +27,7 @@ export function isMeta(type: string) {
 
 export class CanvasStore extends AbstractStore {
     concepts: VisualConcept[] = [];
-    feedbacks: Feedback[] = [];
+    feedbacks: IControl<any>[] = [];
     metas: MetaConcept[] = [];
 
     private registry: Registry;
@@ -41,7 +41,7 @@ export class CanvasStore extends AbstractStore {
         this.concepts.push(concept);
     }
 
-    addFeedback(feedback: Feedback) {
+    addFeedback(feedback: IControl<any>) {
         this.feedbacks.push(feedback);
     }
 

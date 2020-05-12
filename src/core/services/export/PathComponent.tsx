@@ -3,13 +3,14 @@ import { colors } from '../../gui/styles';
 import { PathConcept } from '../../models/concepts/PathConcept';
 import { EditPoint } from '../../models/feedbacks/EditPoint';
 import { Stores } from '../../stores/Stores';
-import { Feedback } from '../../models/feedbacks/Feedback';
+import { IControl } from '../../models/controls/IControl';
 import { Concept } from '../../models/concepts/Concept';
+import { Hoverable } from '../../models/Hoverable';
 
 export interface PathComponentProps {
     item: PathConcept;
-    onMouseOver(item: Concept | Feedback): void;
-    onMouseOut(item: Concept | Feedback): void;
+    onMouseOver(item: Hoverable): void;
+    onMouseOut(item: Hoverable): void;
     onlyData: boolean;
     isHovered: boolean;
     isSelected: boolean;

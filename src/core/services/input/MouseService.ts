@@ -1,8 +1,9 @@
 import { Registry } from "../../Registry";
 import { Point } from "../../geometry/shapes/Point";
-import { Feedback } from "../../models/feedbacks/Feedback";
+import { IControl } from "../../models/controls/IControl";
 import { IPointerEvent } from "./PointerService";
 import { Concept } from "../../models/concepts/Concept";
+import { Hoverable } from "../../models/Hoverable";
 
 export class MousePointer {
     down: Point;
@@ -65,11 +66,11 @@ export class MouseService {
         this.registry.services.pointer.pointerWheelEnd();
     }
 
-    hover(item: Concept | Feedback) {
+    hover(item: Hoverable) {
         this.registry.services.pointer.hover(item);
     }
 
-    unhover(item: Concept | Feedback) {
+    unhover(item: Hoverable) {
         this.registry.services.pointer.unhover(item);
     }
 

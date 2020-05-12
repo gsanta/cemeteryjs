@@ -1,8 +1,9 @@
 import { Registry } from '../../../core/Registry';
-import { Feedback } from '../../../core/models/feedbacks/Feedback';
+import { IControl } from '../../../core/models/controls/IControl';
 import { IKeyboardEvent } from '../../../core/services/input/KeyboardService';
 import { Tool, ToolType, Cursor } from './Tool';
 import { Concept } from '../../../core/models/concepts/Concept';
+import { Hoverable } from '../../../core/models/Hoverable';
 
 export class AbstractTool implements Tool {
     type: ToolType;
@@ -27,8 +28,8 @@ export class AbstractTool implements Tool {
     wheelEnd() {}
     keydown(e: IKeyboardEvent) { }
     keyup(e: IKeyboardEvent){ }
-    over(item: Concept | Feedback) { }
-    out(item: Concept | Feedback) { }
+    over(item: Hoverable) { }
+    out(item: Hoverable) { }
     
     /**
      * Called when the mouse leaves the canvas.

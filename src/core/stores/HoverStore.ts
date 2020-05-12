@@ -2,22 +2,23 @@ import { without } from "../geometry/utils/Functions";
 import { PathConcept } from "../models/concepts/PathConcept";
 import { VisualConcept } from "../models/concepts/VisualConcept";
 import { EditPoint } from "../models/feedbacks/EditPoint";
-import { Feedback, FeedbackType } from "../models/feedbacks/Feedback";
+import { IControl, FeedbackType } from "../models/controls/IControl";
 import { isFeedback } from "./CanvasStore";
 import { ConceptType } from "../models/concepts/Concept";
+import { Hoverable } from "../models/Hoverable";
 
 export class HoverStore {
-    items: (VisualConcept | Feedback)[] = [];
+    items: Hoverable[] = [];
 
-    addItem(item: VisualConcept | Feedback) {
+    addItem(item: Hoverable) {
         this.items.push(item);
     }
 
-    removeItem(item: VisualConcept | Feedback) {
+    removeItem(item: Hoverable) {
         this.items = without(this.items, item);
     }
 
-    contains(item: VisualConcept | Feedback): boolean {
+    contains(item: Hoverable): boolean {
         return this.items.includes(item);
     }
     
@@ -37,7 +38,7 @@ export class HoverStore {
         return this.getAny() !== undefined;
     }
 
-    getAny(): VisualConcept | Feedback {
+    getAny(): Hoverable {
         return this.items.length > 0 ? this.items[0] : undefined;
     }
 
@@ -49,8 +50,8 @@ export class HoverStore {
         return this.getConcept() !== undefined;
     }
 
-    getFeedback(): Feedback {
-        return <Feedback> this.items.find(item => item.type.endsWith('Feedback'));
+    getFeedback(): IControl<any> {
+        return <IControl<any>> this.items.find(item => item.type.endsWith('Feedback'));
     }
 
     hasPath(): boolean {
@@ -66,7 +67,7 @@ export class HoverStore {
     }
 
     getEditPointOf(conceptType: ConceptType) {
-        return this.items.find(item =>  isFeedback(item.type) && (<Feedback> item).parent.type === conceptType);
+        return this.items.find(item =>  isFeedback(item.type) && (<IControl<any>> item).parent.type === conceptType);
     }
 
     clear() {

@@ -1,10 +1,11 @@
 import { Registry } from '../../../core/Registry';
 import { VisualConcept } from '../../../core/models/concepts/VisualConcept';
-import { Feedback } from '../../../core/models/feedbacks/Feedback';
+import { IControl } from '../../../core/models/controls/IControl';
 import { UpdateTask } from '../../../core/services/UpdateServices';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './RectangleSelector';
 import { ToolType } from './Tool';
+import { Hoverable } from '../../../core/models/Hoverable';
 
 export class DeleteTool extends AbstractTool {
     private rectSelector: RectangleSelector;
@@ -55,11 +56,11 @@ export class DeleteTool extends AbstractTool {
         this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
-    over(item: VisualConcept | Feedback) {
+    over(item: Hoverable) {
         this.registry.tools.pointer.over(item);
     }
 
-    out(item: VisualConcept | Feedback) {
+    out(item: Hoverable) {
         this.registry.tools.pointer.out(item);
     }
 

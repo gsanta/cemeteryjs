@@ -4,9 +4,10 @@ import { ActionNodeConcept } from "../../models/concepts/ActionNodeConcept";
 import { Registry } from "../../Registry";
 import { IConceptExporter } from "./IConceptExporter";
 import { ConceptType, Concept } from "../../models/concepts/Concept";
-import { Feedback } from "../../models/feedbacks/Feedback";
+import { IControl } from "../../models/controls/IControl";
 import { createActionNodeSettings } from '../../../plugins/action_editor/settings/actionNodeSettingsFactory';
 import styled from "styled-components";
+import { Hoverable } from '../../models/Hoverable';
 
 const NodeStyled = styled.div`
     background-color: ${(props: {concept: ActionNodeConcept}) => props.concept.data.color};
@@ -41,12 +42,12 @@ export class ActionConceptExporter implements IConceptExporter {
         return this.render(true, hover, unhover);
     }
 
-    exportToFile(hover?: (item: Concept | Feedback) => void, unhover?: (item: Concept | Feedback) => void): JSX.Element {
+    exportToFile(hover?: (item: Hoverable) => void, unhover?: (item: Hoverable) => void): JSX.Element {
         return this.render(false, hover, unhover);
 
     }
 
-    private render(renderWithSettings: boolean, hover?: (item: Concept | Feedback) => void, unhover?: (item: Concept | Feedback) => void) {
+    private render(renderWithSettings: boolean, hover?: (item: Hoverable) => void, unhover?: (item: Hoverable) => void) {
         const actionConcepts = this.registry.stores.actionStore.actions.map(actionConcept => this.renderActionConcepts(actionConcept, renderWithSettings, hover, unhover));
 
         return actionConcepts.length > 0 ? <g data-concept-type={ConceptType.ActionConcept} key={ConceptType.ActionConcept}>{actionConcepts}</g> : null;

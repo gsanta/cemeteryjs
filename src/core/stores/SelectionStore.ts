@@ -1,27 +1,28 @@
 import { without } from "../geometry/utils/Functions";
 import { PathConcept } from "../models/concepts/PathConcept";
-import { Feedback, FeedbackType } from "../models/feedbacks/Feedback";
+import { IControl, FeedbackType } from "../models/controls/IControl";
 import { EditPoint } from "../models/feedbacks/EditPoint";
 import { VisualConcept } from "../models/concepts/VisualConcept";
 import { Concept, ConceptType } from "../models/concepts/Concept";
+import { Hoverable } from "../models/Hoverable";
 
 
 export class SelectionStore {
-    items: (VisualConcept | Feedback)[] = [];
+    items: Hoverable[] = [];
 
-    addItem(...item: (VisualConcept | Feedback)[]) {
+    addItem(...item: Hoverable[]) {
         this.items.push(...item);
     }
 
-    removeItem(item: VisualConcept | Feedback) {
+    removeItem(item: Hoverable) {
         this.items = without(this.items, item);
     }
 
-    contains(item: VisualConcept | Feedback): boolean {
+    contains(item: Hoverable): boolean {
         return this.items.includes(item);
     }
 
-    getAll(): (Concept | Feedback)[] {
+    getAll(): Hoverable[] {
         return this.items;
     }
 
@@ -49,8 +50,8 @@ export class SelectionStore {
         return <Concept> this.items.find(item => item.type.endsWith('Concept'));
     }
 
-    getFeedback(): Feedback {
-        return <Feedback> this.items.find(item => item.type.endsWith('Feedback'));
+    getFeedback(): IControl<any> {
+        return <IControl<any>> this.items.find(item => item.type.endsWith('Feedback'));
     }
 
     getEditPoint(): EditPoint {

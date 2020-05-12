@@ -7,11 +7,12 @@ import { PathMarkersComponent } from '../../core/services/export/PathMarkersComp
 import { CanvasView } from './CanvasView';
 import { WheelListener } from '../../core/services/WheelListener';
 import { Concept } from '../../core/models/concepts/Concept';
-import { Feedback } from '../../core/models/feedbacks/Feedback';
+import { IControl } from '../../core/models/controls/IControl';
 import { ToolType } from '../common/tools/Tool';
 import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
 import { UndoIconComponent } from '../common/toolbar/icons/UndoIconComponent';
 import { RedoIconComponent } from '../common/toolbar/icons/RedoIconComponent';
+import { Hoverable } from '../../core/models/Hoverable';
 
 
 const EditorComponentStyled = styled.div`
@@ -48,8 +49,8 @@ export class CanvasComponent extends React.Component {
     }
 
     render(): JSX.Element {
-        const hover = (item: Concept | Feedback) => this.context.registry.services.mouse.hover(item);
-        const unhover = (canvasItem: Concept | Feedback) => this.context.registry.services.mouse.unhover(canvasItem);
+        const hover = (item: Hoverable) => this.context.registry.services.mouse.hover(item);
+        const unhover = (canvasItem: Hoverable) => this.context.registry.services.mouse.unhover(canvasItem);
         
         const view = this.context.registry.services.layout.getViewById<CanvasView>(CanvasView.id);
         const history = this.context.registry.services.history;

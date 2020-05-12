@@ -6,7 +6,8 @@ import { MeshConcept } from "../../models/concepts/MeshConcept";
 import { IConceptExporter } from "./IConceptExporter";
 import React = require("react");
 import { ConceptType, Concept } from "../../models/concepts/Concept";
-import { Feedback } from "../../models/feedbacks/Feedback";
+import { IControl } from "../../models/controls/IControl";
+import { Hoverable } from "../../models/Hoverable";
 
 export class MeshConceptExporter implements IConceptExporter {
     type = ConceptType.MeshConcept;
@@ -22,7 +23,7 @@ export class MeshConceptExporter implements IConceptExporter {
         return meshGroups.length > 0 ? <g data-concept-type={ConceptType.MeshConcept} key={ConceptType.MeshConcept}>{meshGroups}</g> : null;
     }
 
-    exportToFile(hover?: (item: Concept | Feedback) => void, unhover?: (item: Concept | Feedback) => void): JSX.Element {
+    exportToFile(hover?: (item: Hoverable) => void, unhover?: (item: Hoverable) => void): JSX.Element {
         return this.export(hover, unhover);
     }
 
