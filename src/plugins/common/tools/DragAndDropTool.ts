@@ -29,12 +29,11 @@ export class DragAndDropTool extends AbstractTool {
 
     up() {
         this.isDragging = false;
-        const action = new ActionNodeConcept();
+        const action = new ActionNodeConcept(this.registry.services.pointer.pointer.droppedItemType);
         action.id = 'action-0';
         const topLeft = this.registry.services.pointer.pointer.curr.clone();
         const bottomRight = topLeft.clone().add(new Point(200, 100));
         action.dimensions = new Rectangle(topLeft, bottomRight);
-        action.data = createActionNode(this.registry.services.pointer.pointer.droppedItemType);
         this.registry.stores.actionStore.addAction(action);
         // this.registry.services.view.getHoveredView().removePriorityTool(this);
         this.registry.services.update.scheduleTasks(UpdateTask.RepaintActiveView);

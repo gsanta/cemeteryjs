@@ -4,6 +4,8 @@ import { colors } from '../../../core/gui/styles';
 import { ActionNodeConcept } from '../../../core/models/concepts/ActionNodeConcept';
 import { InstanceProps } from '../../InstanceProps';
 import { createActionNodeSettings } from '../settings/actionNodeSettingsFactory';
+import { NodeConnectionComponent } from './NodeConnectionComponent';
+import { Point } from '../../../core/geometry/shapes/Point';
 
 const NodeStyled = styled.div`
     background-color: ${(props: {concept: ActionNodeConcept}) => props.concept.data.color};
@@ -45,8 +47,8 @@ export class ActionNodeComponent extends React.Component<InstanceProps<ActionNod
             >
                 {this.renderRect(this.props.item)}
                 {this.props.renderWithSettings ? this.renderNode(this.props.item) : null}
-                {this.renderInputSlots(this.props.item)}
-                {this.renderOutputSlots(this.props.item)}
+                {this.renderInputs(this.props.item)}
+                {this.renderOutputs(this.props.item)}
             </g>
         )
     }
@@ -66,42 +68,23 @@ export class ActionNodeComponent extends React.Component<InstanceProps<ActionNod
         );
     }
 
-    private renderInputSlots(item: ActionNodeConcept): JSX.Element[] {
-        const slots: JSX.Element[] = [];
+    private renderInputs(item: ActionNodeConcept): JSX.Element[] {
         const yStart = 50;
 
-        for (let i = 0; i < item.data.inputSlots; i++) {
-            slots.push(
-                <circle 
-                    cx={0} 
-                    cy={i * 20 + yStart} 
-                    r={4}
-                    stroke={colors.panelBackground}
-                    fill={colors.grey4}
-                />
+        return item.inputs.map((input, index) => (
+                <NodeConnectionComponent  item={input} position={new Point(0, index * 20 + yStart)} hover={this.props.hover} unhover={this.props.unhover}/>
             )
-        }
-
-        return slots;
+        );
     }
 
-    private renderOutputSlots(item: ActionNodeConcept): JSX.Element[] {
-        const slots: JSX.Element[] = [];
+    private renderOutputs(item: ActionNodeConcept): JSX.Element[] {
         const yStart = 50;
+        const x = item.dimensions.getWidth();
 
-        for (let i = 0; i < item.data.outputSlots; i++) {
-            slots.push(
-                <circle 
-                    cx={item.dimensions.getWidth()} 
-                    cy={i * 20 + yStart} 
-                    r={4}
-                    stroke={colors.panelBackground}
-                    fill={colors.grey4}
-                />
-            )
-        }
-
-        return slots;
+        return item.outputs.map((input, index) => {
+            const y = index * 20 + yStart; 
+            return <NodeConnectionComponent  item={input} position={new Point(x, y)} hover={this.props.hover} unhover={this.props.unhover}/>;
+        });
     }
 
     private renderNode(item: ActionNodeConcept) {

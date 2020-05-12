@@ -19,6 +19,5 @@ export class ActionConceptExporter implements IConceptExporter {
 
     exportToFile(hover?: (item: Hoverable) => void, unhover?: (item: Hoverable) => void): JSX.Element {
         return <ActionNodeGroupComponent registry={this.registry} renderWithSettings={false} hover={hover} unhover={unhover}/>
-
     }
 }
