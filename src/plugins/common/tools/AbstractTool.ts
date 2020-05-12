@@ -4,6 +4,7 @@ import { IKeyboardEvent } from '../../../core/services/input/KeyboardService';
 import { Tool, ToolType, Cursor } from './Tool';
 import { Concept } from '../../../core/models/concepts/Concept';
 import { Hoverable } from '../../../core/models/Hoverable';
+import { IHotkeyEvent } from '../../../core/services/input/HotkeyService';
 
 export class AbstractTool implements Tool {
     type: ToolType;
@@ -48,4 +49,5 @@ export class AbstractTool implements Tool {
 
     setup(): void {};
     teardown(): void {};
+    hotkey(hotkeyEvent: IHotkeyEvent): boolean { return false; }
 }

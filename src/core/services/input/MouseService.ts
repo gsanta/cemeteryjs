@@ -2,7 +2,6 @@ import { Registry } from "../../Registry";
 import { Point } from "../../geometry/shapes/Point";
 import { IControl } from "../../models/controls/IControl";
 import { IPointerEvent } from "./PointerService";
-import { Concept } from "../../models/concepts/Concept";
 import { Hoverable } from "../../models/Hoverable";
 
 export class MousePointer {
@@ -67,6 +66,7 @@ export class MouseService {
     }
 
     hover(item: Hoverable) {
+        console.log(item.type)
         this.registry.services.pointer.hover(item);
     }
 

@@ -48,20 +48,14 @@ export class HotkeyService {
         return this.hotkeys.find(hk => hk.id === hotkeyId) !== undefined;
     }
 
-    executeKeyboardEvent(keyboardEvent: IKeyboardEvent): boolean {
-        const hotkeyEvent = this.convertKeyboardEvent(keyboardEvent);
-        return this.executeIfMatches(hotkeyEvent);
-    }
+    executeHotkey(hotkeyEvent: IHotkeyEvent): boolean {
+        const hotkey = [...this.hotkeys, ...this.registry.tools.tools].find(h => h.hotkey(hotkeyEvent));
 
-    executePointerEvent(mouseEvent: IPointerEvent): boolean {
-        const hotkeyEvent = <IHotkeyEvent> mouseEvent;
-        return this.executeIfMatches(hotkeyEvent);
-    }
-
-    private executeIfMatches(hotkeyEvent: IHotkeyEvent): boolean {
-        const hotkey = this.hotkeys.find(h => h.matches(hotkeyEvent, this.registry));
-
-        return hotkey && this.executeHotkey(hotkey, hotkeyEvent);
+        if (hotkey) {
+            this.focus();
+            return true;
+        }
+        return false;
     }
 
     focus(): void {
@@ -70,15 +64,6 @@ export class HotkeyService {
 
     blur(): void {
         this.primaryInput && this.primaryInput.blur();
-    }
-
-    private convertKeyboardEvent(event: IKeyboardEvent): IHotkeyEvent {
-        return event;
-    }
-
-    private executeHotkey(hotKey: Hotkey, hotkeyEvent: IHotkeyEvent): boolean {
-        this.focus();
-        return hotKey.action(hotkeyEvent, this.registry);
     }
 }
 
@@ -93,53 +78,71 @@ export interface HotkeyTrigger {
     readonly pinch: boolean;
     readonly worksOnOverlays: boolean;
     readonly worksDuringMouseDown: boolean;
+    readonly hover: boolean;
+    readonly unhover: boolean;
 }
 
 export interface IHotkeyEvent {
     keyCode?: number;
-    isAltDown: boolean;
-    isShiftDown: boolean;
-    isCtrlDown: boolean;
-    isMetaDown: boolean;
+    isAltDown?: boolean;
+    isShiftDown?: boolean;
+    isCtrlDown?: boolean;
+    isMetaDown?: boolean;
     pointers?: {id: number, pos: Point, isDown: boolean}[];
     deltaY?: number;
+    isHover?: boolean;
+    isUnhover?: boolean;
 }
 
-export class Hotkey {
+export interface IHotkey {
+    hotkey(hotkeyEvent: IHotkeyEvent): boolean;
+}
+
+export const defaultHotkeyTrigger: HotkeyTrigger = {
+    keyCodes: [],
+    keyCodeFunc: undefined,
+    alt: false,
+    shift: false,
+    ctrlOrCommand: false,
+    wheel: false,
+    pinch: false,
+    worksOnOverlays: false,
+    worksDuringMouseDown: false,
+    mouseDown: false,
+    hover: false,
+    unhover: false
+}
+
+export class Hotkey implements IHotkey {
     readonly id: string;
     readonly trigger: HotkeyTrigger;
     readonly action: IHotkeyAction;
+    protected registry: Registry;
 
-    private static readonly defaultHotkeyTrigger: HotkeyTrigger = {
-        keyCodes: [],
-        keyCodeFunc: undefined,
-        alt: false,
-        shift: false,
-        ctrlOrCommand: false,
-        wheel: false,
-        pinch: false,
-        worksOnOverlays: false,
-        worksDuringMouseDown: false,
-        mouseDown: false
-    }
+    private static readonly 
 
-    constructor(id: string, trigger: Partial<HotkeyTrigger>, action: IHotkeyAction) {
+    constructor(id: string, trigger: Partial<HotkeyTrigger>, action: IHotkeyAction, registry: Registry) {
         this.id = id;
+        this.registry = registry;
 
-        this.trigger = {...Hotkey.defaultHotkeyTrigger, ...trigger};
+        this.trigger = {...defaultHotkeyTrigger, ...trigger};
         this.action = action;
     }
 
-    matches(hotkeyEvent: IHotkeyEvent, regitry: Registry): boolean {
+    hotkey(hotkeyEvent: IHotkeyEvent): boolean {
         const b = (
             this.keyCodesMatch(hotkeyEvent) &&
             hotkeyEvent.isAltDown === this.trigger.alt &&
             (this.trigger.shift === undefined || hotkeyEvent.isShiftDown === this.trigger.shift) &&
             isCtrlOrCommandDown(<IKeyboardEvent> hotkeyEvent) === this.trigger.ctrlOrCommand &&
-            this.wheelMatch(regitry.services.pointer) === this.trigger.wheel &&
+            this.wheelMatch(this.registry.services.pointer) === this.trigger.wheel &&
             this.mouseDownMatch(hotkeyEvent) &&
             this.keyCodeFuncMatch(hotkeyEvent)
         );
+
+        if (b) {
+            this.action(hotkeyEvent, this.registry);
+        }
         return b;
     }
 

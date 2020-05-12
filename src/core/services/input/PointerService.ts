@@ -29,6 +29,7 @@ export class PointerService {
     wheelState: number = 0;
     prevWheelState: number = 0;
     wheelDiff: number = undefined;
+    hoveredItem: Hoverable;
 
     pointer: MousePointer = new MousePointer();
 
@@ -59,7 +60,7 @@ export class PointerService {
         } else {
             this.registry.services.layout.getHoveredView().getActiveTool().move();
         }
-        this.registry.services.hotkey.executePointerEvent(e);
+        this.registry.services.hotkey.executeHotkey(e);
         this.registry.services.update.runScheduledTasks();
     }
 
@@ -101,7 +102,7 @@ export class PointerService {
             this.wheel = Wheel.IDLE;
         }
 
-        this.registry.services.hotkey.executePointerEvent(e);
+        this.registry.services.hotkey.executeHotkey(e);
         this.registry.services.layout.getHoveredView().getActiveTool().wheel();
     }
 
@@ -112,11 +113,18 @@ export class PointerService {
     }
 
     hover(item: Hoverable): void {
+        this.hoveredItem = item;
+        this.registry.services.hotkey.executeHotkey({
+            isHover: true
+        });
         this.registry.services.layout.getHoveredView().getActiveTool().over(item);
         this.registry.services.update.runScheduledTasks();
     }
 
     unhover(item: Hoverable): void {
+        this.registry.services.hotkey.executeHotkey({
+            isUnhover: true
+        });
         this.registry.services.layout.getHoveredView().getActiveTool().out(item);
         this.registry.services.update.runScheduledTasks();
     }

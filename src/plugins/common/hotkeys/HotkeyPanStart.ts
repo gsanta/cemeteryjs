@@ -4,10 +4,8 @@ import { Keyboard } from "../../../core/services/input/KeyboardService";
 import { UpdateTask } from "../../../core/services/UpdateServices";
 
 export class HotkeyPanStart extends Hotkey {
-    private registry: Registry;
-    
     constructor(registry: Registry) {
-        super('HotkeyPanStart',  {keyCodes: [Keyboard.Space], worksDuringMouseDown: true}, () => this.hotKeyAction());
+        super('HotkeyPanStart',  {keyCodes: [Keyboard.Space], worksDuringMouseDown: true}, () => this.hotKeyAction(), registry);
 
         this.registry = registry;
     }

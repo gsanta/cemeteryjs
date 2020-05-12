@@ -2,12 +2,8 @@ import { Hotkey } from "../../../core/services/input/HotkeyService";
 import { Registry } from "../../../core/Registry";
 
 export class HotkeyCameraRotationStart extends Hotkey {
-    private registry: Registry;
-
     constructor(registry: Registry) {
-        super('CameraRotationStart',  {mouseDown: true, worksDuringMouseDown: true, ctrlOrCommand: true}, () => this.hotKeyAction());
-
-        this.registry = registry;
+        super('CameraRotationStart',  {mouseDown: true, worksDuringMouseDown: true, ctrlOrCommand: true}, () => this.hotKeyAction(), registry);
     }
 
     private hotKeyAction(): boolean {

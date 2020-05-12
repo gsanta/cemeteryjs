@@ -113,8 +113,6 @@ export class PointerTool extends AbstractTool {
                 this.updateActionEditorConcepts();
                 break;
         }
-
-
     }
 
     private updateSceneConcepts() {

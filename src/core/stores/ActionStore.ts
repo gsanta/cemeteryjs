@@ -2,7 +2,7 @@ import { ActionNodeConcept } from '../models/concepts/ActionNodeConcept';
 import { Registry } from '../Registry';
 import { AbstractStore } from './AbstractStore';
 import { ActionNodeSettings } from '../../plugins/action_editor/settings/ActionNodeSettings';
-import { Segment } from '../geometry/shapes/Segment';
+import { NodeConnectionControl } from '../models/controls/NodeConnectionControl';
 
 export enum ActionType {
     Keyboard = 'Keyboard',
@@ -13,6 +13,7 @@ export enum ActionType {
 
 export class ActionStore extends AbstractStore {
     actions: ActionNodeConcept[] = [];
+    connections: [NodeConnectionControl, NodeConnectionControl][] = [];
     settings: Map<string, ActionNodeSettings> = new Map();
     actionTypes: string[] = [];
 
@@ -32,6 +33,10 @@ export class ActionStore extends AbstractStore {
     addAction(action: ActionNodeConcept) {
         this.actions.push(action);
         this.settings.set(action.id, new ActionNodeSettings(action));
+    }
+
+    addConnection(start: NodeConnectionControl, end: NodeConnectionControl) {
+        this.connections.push([start, end]);
     }
 
     getSettings(action: ActionNodeConcept) {

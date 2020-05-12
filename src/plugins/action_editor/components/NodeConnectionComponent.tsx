@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { Point } from '../../../core/geometry/shapes/Point';
 import { colors } from '../../../core/gui/styles';
 import { NodeConnectionControl } from '../../../core/models/controls/NodeConnectionControl';
-import { ControlProps } from '../../InstanceProps';
 
-export interface NodeConnectionProps extends ControlProps<NodeConnectionControl> {
-    position: Point;
+export interface NodeConnectionProps {
+    start: NodeConnectionControl;
+    end: NodeConnectionControl;
 }
 
 export class NodeConnectionComponent extends React.Component<NodeConnectionProps> {
@@ -13,13 +12,14 @@ export class NodeConnectionComponent extends React.Component<NodeConnectionProps
     render() {
         
         return (
-            <circle 
-                cx={this.props.position.x} 
-                cy={this.props.position.y} 
-                r={4}
+            <line 
+                x1={this.props.start.point.x}
+                y1={this.props.start.point.y}
+                x2={this.props.end.point.x}
+                y2={this.props.end.point.y}
                 stroke={colors.panelBackground}
-                fill={colors.grey4}
+                strokeWidth="3"
             />
-        )
+        );
     }
 }

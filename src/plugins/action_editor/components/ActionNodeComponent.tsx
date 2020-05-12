@@ -4,7 +4,7 @@ import { colors } from '../../../core/gui/styles';
 import { ActionNodeConcept } from '../../../core/models/concepts/ActionNodeConcept';
 import { InstanceProps } from '../../InstanceProps';
 import { createActionNodeSettings } from '../settings/actionNodeSettingsFactory';
-import { NodeConnectionComponent } from './NodeConnectionComponent';
+import { NodeConnectionControlComponent } from './NodeConnectionControlComponent';
 import { Point } from '../../../core/geometry/shapes/Point';
 
 const NodeStyled = styled.div`
@@ -72,7 +72,7 @@ export class ActionNodeComponent extends React.Component<InstanceProps<ActionNod
         const yStart = 50;
 
         return item.inputs.map((input, index) => (
-                <NodeConnectionComponent  item={input} position={new Point(0, index * 20 + yStart)} hover={this.props.hover} unhover={this.props.unhover}/>
+                <NodeConnectionControlComponent  item={input} position={new Point(0, index * 20 + yStart)} hover={this.props.hover} unhover={this.props.unhover}/>
             )
         );
     }
@@ -83,7 +83,7 @@ export class ActionNodeComponent extends React.Component<InstanceProps<ActionNod
 
         return item.outputs.map((input, index) => {
             const y = index * 20 + yStart; 
-            return <NodeConnectionComponent  item={input} position={new Point(x, y)} hover={this.props.hover} unhover={this.props.unhover}/>;
+            return <NodeConnectionControlComponent  item={input} position={new Point(x, y)} hover={this.props.hover} unhover={this.props.unhover}/>;
         });
     }
 

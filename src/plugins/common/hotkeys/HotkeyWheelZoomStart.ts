@@ -2,10 +2,8 @@ import { Hotkey } from "../../../core/services/input/HotkeyService";
 import { Registry } from "../../../core/Registry";
 
 export class HotkeyWheelZoomStart extends Hotkey {
-    private registry: Registry;
-    
     constructor(registry: Registry) {
-        super('WheelZoom',  {wheel: true, worksDuringMouseDown: true}, () => this.hotKeyAction());
+        super('WheelZoom',  {wheel: true, worksDuringMouseDown: true}, () => this.hotKeyAction(), registry);
 
         this.registry = registry;
     }

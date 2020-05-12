@@ -52,7 +52,7 @@ export class KeyboardService {
     }
     
     onKeyDown(e: KeyboardEvent): void {
-        this.registry.services.hotkey.executeKeyboardEvent(this.convertEvent(e));
+        this.registry.services.hotkey.executeHotkey(this.convertEvent(e));
         this.registry.services.layout.getHoveredView().getActiveTool()?.keydown(this.convertEvent(e));
         this.registry.services.update.runScheduledTasks();
 

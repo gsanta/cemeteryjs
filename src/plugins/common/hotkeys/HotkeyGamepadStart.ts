@@ -3,12 +3,9 @@ import { Registry } from "../../../core/Registry";
 import { Keyboard } from "../../../core/services/input/KeyboardService";
 
 export class HotkeyGamepadStart extends Hotkey {
-    private registry: Registry;
-    
     constructor(registry: Registry) {
-        super('GamepadStart',  {keyCodes: [Keyboard.a, Keyboard.d, Keyboard.e, Keyboard.w, Keyboard.s], worksDuringMouseDown: true}, () => this.hotKeyAction());
+        super('GamepadStart',  {keyCodes: [Keyboard.a, Keyboard.d, Keyboard.e, Keyboard.w, Keyboard.s], worksDuringMouseDown: true}, () => this.hotKeyAction(), registry);
 
-        this.registry = registry;
     }
 
     private hotKeyAction(): boolean {

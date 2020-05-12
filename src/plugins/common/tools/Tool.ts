@@ -1,7 +1,6 @@
-import { IKeyboardEvent } from "../../../core/services/input/KeyboardService";
-import { IControl } from "../../../core/models/controls/IControl";
-import { Concept } from "../../../core/models/concepts/Concept";
 import { Hoverable } from "../../../core/models/Hoverable";
+import { IHotkey, IHotkeyEvent } from "../../../core/services/input/HotkeyService";
+import { IKeyboardEvent } from "../../../core/services/input/KeyboardService";
 
 export enum ToolType {
     Rectangle = 'rectangle',
@@ -40,7 +39,7 @@ export enum Cursor {
     Grab = 'grab',
 }
 
-export interface Tool {
+export interface Tool extends IHotkey {
     cursor: Cursor;
     type: ToolType;
     down(): void;
@@ -63,4 +62,5 @@ export interface Tool {
 
     setup(): void;
     teardown(): void;
+    hotkey(hotkeyEvent: IHotkeyEvent);
 }
