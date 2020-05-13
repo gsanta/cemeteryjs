@@ -5,7 +5,6 @@ import { ActionNodeConcept } from '../../../core/models/concepts/ActionNodeConce
 import { InstanceProps } from '../../InstanceProps';
 import { createActionNodeSettings } from '../settings/actionNodeSettingsFactory';
 import { NodeConnectionControlComponent } from './NodeConnectionControlComponent';
-import { Point } from '../../../core/geometry/shapes/Point';
 
 const NodeStyled = styled.div`
     background-color: ${(props: {concept: ActionNodeConcept}) => props.concept.data.color};
@@ -32,21 +31,23 @@ export class ActionNodeComponent extends React.Component<InstanceProps<ActionNod
     
     render() {
         return (
-            <g
-                key={`${this.props.item.id}-group`}
+            <g>
+                <g
+                    key={`${this.props.item.id}-group`}
 
-                transform={`translate(${this.props.item.dimensions.topLeft.x} ${this.props.item.dimensions.topLeft.y})`}
-                onMouseOver={() => this.props.hover ? this.props.hover(this.props.item) : () => undefined}
-                onMouseOut={() => this.props.unhover ? this.props.unhover(this.props.item) : () => undefined}
-                data-wg-x={this.props.item.dimensions.topLeft.x}
-                data-wg-y={this.props.item.dimensions.topLeft.y}
-                data-wg-width={this.props.item.dimensions.getWidth()}
-                data-wg-height={this.props.item.dimensions.getHeight()}
-                data-wg-type={this.props.item.type}
-                data-wg-name={this.props.item.id}
-            >
-                {this.renderRect(this.props.item)}
-                {this.props.renderWithSettings ? this.renderNode(this.props.item) : null}
+                    transform={`translate(${this.props.item.dimensions.topLeft.x} ${this.props.item.dimensions.topLeft.y})`}
+                    onMouseOver={() => this.props.hover ? this.props.hover(this.props.item) : () => undefined}
+                    onMouseOut={() => this.props.unhover ? this.props.unhover(this.props.item) : () => undefined}
+                    data-wg-x={this.props.item.dimensions.topLeft.x}
+                    data-wg-y={this.props.item.dimensions.topLeft.y}
+                    data-wg-width={this.props.item.dimensions.getWidth()}
+                    data-wg-height={this.props.item.dimensions.getHeight()}
+                    data-wg-type={this.props.item.type}
+                    data-wg-name={this.props.item.id}
+                >
+                    {this.renderRect(this.props.item)}
+                    {this.props.renderWithSettings ? this.renderNode(this.props.item) : null}
+                </g>
                 {this.renderInputs(this.props.item)}
                 {this.renderOutputs(this.props.item)}
             </g>
@@ -69,22 +70,11 @@ export class ActionNodeComponent extends React.Component<InstanceProps<ActionNod
     }
 
     private renderInputs(item: ActionNodeConcept): JSX.Element[] {
-        const yStart = 50;
-
-        return item.inputs.map((input, index) => (
-                <NodeConnectionControlComponent  item={input} position={new Point(0, index * 20 + yStart)} hover={this.props.hover} unhover={this.props.unhover}/>
-            )
-        );
+        return item.inputs.map(input => <NodeConnectionControlComponent  item={input} hover={this.props.hover} unhover={this.props.unhover}/>);
     }
 
     private renderOutputs(item: ActionNodeConcept): JSX.Element[] {
-        const yStart = 50;
-        const x = item.dimensions.getWidth();
-
-        return item.outputs.map((input, index) => {
-            const y = index * 20 + yStart; 
-            return <NodeConnectionControlComponent  item={input} position={new Point(x, y)} hover={this.props.hover} unhover={this.props.unhover}/>;
-        });
+        return item.outputs.map(input => <NodeConnectionControlComponent  item={input} hover={this.props.hover} unhover={this.props.unhover}/>);
     }
 
     private renderNode(item: ActionNodeConcept) {

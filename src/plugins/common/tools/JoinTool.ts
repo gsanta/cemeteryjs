@@ -42,6 +42,12 @@ export class JoinTool extends AbstractTool {
         }
     }
 
+    out() {
+        if (!this.registry.services.pointer.isDown) {
+            this.registry.services.layout.getHoveredView().removePriorityTool(this);
+        }
+    }
+
     hotkey(event: IHotkeyEvent) {
         if (event.isHover && isNodeConnectionControl(this.registry.services.pointer.hoveredItem)) {
             this.registry.services.layout.getHoveredView().setPriorityTool(this);

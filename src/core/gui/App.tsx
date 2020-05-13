@@ -2,7 +2,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import * as React from 'react';
 import './App.scss';
 import { AppContext, AppContextType } from './Context';
-import '../gui/misc/Splitpane.css';
 import Split from 'split.js'
 import { SidebarComponent } from './SidebarComponent';
 import { SpinnerOverlayComponent } from './misc/SpinnerOverlayComponent';

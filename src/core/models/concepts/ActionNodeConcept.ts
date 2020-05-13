@@ -15,20 +15,38 @@ export class ActionNodeConcept implements VisualConcept {
     inputs: NodeConnectionControl[] = [];
     outputs: NodeConnectionControl[] = [];
 
-    constructor(nodeType: string) {
+    constructor(nodeType: string, dimensions: Rectangle) {
+        this.dimensions = dimensions;
         this.data = createActionNode(nodeType);
-        for (let i = 0; i < this.data.inputSlots; i++) {
-            this.inputs.push(new NodeConnectionControl(this));
-        }
-
-        for (let i = 0; i < this.data.outputSlots; i++) {
-            this.outputs.push(new NodeConnectionControl(this));
-        }
+        this.initInputNodeConnectionControls();
+        this.initOutputNodeConnectionControls();
     }
 
     move(point: Point) {
         this.dimensions = this.dimensions.translate(point);
+        this.inputs.forEach(input => input.move(point));
+        this.outputs.forEach(output => output.move(point));
     }
+
+    private initInputNodeConnectionControls() {
+        const yStart = this.dimensions.topLeft.y + 50;
+        const x = this.dimensions.topLeft.x;
+
+        for (let i = 0; i < this.data.inputSlots; i++) {
+            const y = i * 20 + yStart; 
+            this.inputs.push(new NodeConnectionControl(this, i, true));
+        }
+    }
+
+    private initOutputNodeConnectionControls() {
+        const yStart = this.dimensions.topLeft.y + 50;
+        const x = this.dimensions.bottomRight.x;
+
+        for (let i = 0; i < this.data.outputSlots; i++) {
+            const y = i * 20 + yStart; 
+            this.outputs.push(new NodeConnectionControl(this, i, false));
+        }
+    } 
 
     editPoints = [];
 }

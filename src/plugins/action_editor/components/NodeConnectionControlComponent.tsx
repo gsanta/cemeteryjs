@@ -4,18 +4,14 @@ import { colors } from '../../../core/gui/styles';
 import { NodeConnectionControl } from '../../../core/models/controls/NodeConnectionControl';
 import { ControlProps } from '../../InstanceProps';
 
-export interface NodeConnectionControlProps extends ControlProps<NodeConnectionControl> {
-    position: Point;
-}
-
-export class NodeConnectionControlComponent extends React.Component<NodeConnectionControlProps> {
+export class NodeConnectionControlComponent extends React.Component<ControlProps<NodeConnectionControl>> {
     
     render() {
         
         return (
             <circle 
-                cx={this.props.position.x} 
-                cy={this.props.position.y} 
+                cx={this.props.item.point.x} 
+                cy={this.props.item.point.y} 
                 r={4}
                 stroke={colors.panelBackground}
                 fill={colors.grey4}

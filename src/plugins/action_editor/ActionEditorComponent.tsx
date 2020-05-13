@@ -61,7 +61,7 @@ export class ActionEditorComponent extends React.Component {
         const unhover = (canvasItem: Hoverable) => this.context.registry.services.mouse.unhover(canvasItem);
         
         const view = this.context.registry.services.layout.getViewById<ActionEditorView>(ActionEditorView.id);
-
+        console.log(view.getActiveTool().cursor);
         return (
             <EditorComponentStyled id={view.getId()} style={{cursor: view.getActiveTool().cursor}}>
                 <WindowToolbarStyled>
