@@ -1,17 +1,17 @@
-import { AbstractTool } from "./AbstractTool";
-import { Registry } from "../../../core/Registry";
-import { ToolType } from "./Tool";
 import { Point } from "../../../core/geometry/shapes/Point";
-import { UpdateTask } from "../../../core/services/UpdateServices";
-import { defaultHotkeyTrigger, IHotkeyEvent } from "../../../core/services/input/HotkeyService";
-import { isConcept } from "../../../core/stores/CanvasStore";
 import { isNodeConnectionControl, NodeConnectionControl } from "../../../core/models/controls/NodeConnectionControl";
+import { Registry } from "../../../core/Registry";
+import { IHotkeyEvent } from "../../../core/services/input/HotkeyService";
+import { UpdateTask } from "../../../core/services/UpdateServices";
+import { AbstractTool } from "./AbstractTool";
+import { ToolType, Cursor } from './Tool';
 
 export class JoinTool extends AbstractTool {
     start: Point;
     end: Point;
     startItem: NodeConnectionControl;
     endItem: NodeConnectionControl;
+    cursor = Cursor.Crosshair;
 
     constructor(registry: Registry) {
         super(ToolType.Join, registry);
@@ -39,6 +39,8 @@ export class JoinTool extends AbstractTool {
         if (isNodeConnectionControl(this.registry.services.pointer.hoveredItem)) {
             const endItem = <NodeConnectionControl> this.registry.services.pointer.hoveredItem;
             this.registry.stores.actionStore.addConnection(this.startItem, endItem);
+            this.start = undefined;
+            this.end = undefined;
         }
     }
 

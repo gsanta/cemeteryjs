@@ -25,6 +25,7 @@ export class ActionNodeConcept implements VisualConcept {
     move(point: Point) {
         this.dimensions = this.dimensions.translate(point);
         this.inputs.forEach(input => input.move(point));
+        
         this.outputs.forEach(output => output.move(point));
     }
 

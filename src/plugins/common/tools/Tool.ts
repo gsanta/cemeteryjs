@@ -37,6 +37,7 @@ export class ToolReturnType {
 export enum Cursor {
     Default = 'default',
     Grab = 'grab',
+    Crosshair = 'crosshair'
 }
 
 export interface Tool extends IHotkey {
