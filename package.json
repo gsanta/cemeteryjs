@@ -86,6 +86,7 @@
     "split.js": "^1.5.11",
     "splitjs": "0.0.1",
     "styled-components": "^4.4.1",
+    "tippy.js": "^6.2.3",
     "xml-js": "^1.6.11"
   }
 }

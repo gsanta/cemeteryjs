@@ -62,7 +62,7 @@ export class GameViewerComponent extends React.Component {
         const view = this.context.registry.services.layout.getViewById<GameView>(GameView.id);
 
         return (
-                <GameViewerStyled id={view.getId()} style={{cursor: view.getActiveTool().cursor}}>
+                <GameViewerStyled id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>
                     <WindowToolbarStyled>
                         <ToolbarComponent
                             tools={[ToolType.Zoom, ToolType.Pan]}

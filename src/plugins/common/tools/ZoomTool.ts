@@ -2,11 +2,12 @@ import { Registry } from '../../../core/Registry';
 import { Hotkey } from "../../../core/services/input/HotkeyService";
 import { UpdateTask } from '../../../core/services/UpdateServices';
 import { AbstractTool } from './AbstractTool';
-import { ToolType } from "./Tool";
+import { ToolType, Cursor } from "./Tool";
 import { HotkeyWheelZoomStart } from '../hotkeys/HotkeyWheelZoomStart';
 
 export class ZoomTool extends AbstractTool {
     private hotkeys: Hotkey[] = [];
+    private cursor: Cursor;
 
     constructor(registry: Registry) {
         super(ToolType.Zoom, registry);
@@ -19,10 +20,16 @@ export class ZoomTool extends AbstractTool {
     }
 
     wheel() {
+        this.cursor = Cursor.ZoomIn;
         this.registry.services.layout.getHoveredView().getCamera().zoomWheel();
     }
 
     wheelEnd() {
+        this.cursor = Cursor.Default;
         this.registry.services.layout.getHoveredView().removePriorityTool(this.registry.tools.zoom);
+    }
+
+    getCursor() {
+        return this.cursor;
     }
 }

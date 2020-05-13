@@ -8,7 +8,8 @@ import { IHotkeyEvent } from '../../../core/services/input/HotkeyService';
 
 export class AbstractTool implements Tool {
     type: ToolType;
-    cursor = Cursor.Default;
+
+    getCursor() { return Cursor.Default; }
     
     protected registry: Registry;
 

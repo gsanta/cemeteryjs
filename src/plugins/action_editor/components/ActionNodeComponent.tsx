@@ -36,8 +36,6 @@ export class ActionNodeComponent extends React.Component<InstanceProps<ActionNod
                     key={`${this.props.item.id}-group`}
 
                     transform={`translate(${this.props.item.dimensions.topLeft.x} ${this.props.item.dimensions.topLeft.y})`}
-                    onMouseOver={() => this.props.hover ? this.props.hover(this.props.item) : () => undefined}
-                    onMouseOut={() => this.props.unhover ? this.props.unhover(this.props.item) : () => undefined}
                     data-wg-x={this.props.item.dimensions.topLeft.x}
                     data-wg-y={this.props.item.dimensions.topLeft.y}
                     data-wg-width={this.props.item.dimensions.getWidth()}
@@ -86,7 +84,11 @@ export class ActionNodeComponent extends React.Component<InstanceProps<ActionNod
                 width={`${item.dimensions.getWidth()}px`}
                 height={`${item.dimensions.getHeight()}px`}
             >
-                <NodeStyled concept={item}>
+                <NodeStyled
+                    onMouseEnter={() => this.props.hover ? this.props.hover(this.props.item) : () => undefined}
+                    onMouseLeave={() => this.props.unhover ? this.props.unhover(this.props.item) : () => undefined}                
+                    concept={item}
+                >
                     {this.renderNodeHeader(item)}
                     {this.renderNodeBody(item)}
                     {}

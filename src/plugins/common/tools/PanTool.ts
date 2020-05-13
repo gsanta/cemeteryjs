@@ -8,7 +8,6 @@ import { Keyboard, IKeyboardEvent } from '../../../core/services/input/KeyboardS
 
 export class PanTool extends AbstractTool {
     private hotkeys: Hotkey[] = [];
-    cursor = Cursor.Grab;
 
     constructor(registry: Registry) {
         super(ToolType.Pan, registry);
@@ -34,5 +33,9 @@ export class PanTool extends AbstractTool {
             this.registry.services.layout.getHoveredView().removePriorityTool(this);
             this.registry.services.update.scheduleTasks(UpdateTask.RepaintActiveView);
         }
+    }
+
+    getCursor() {
+        return Cursor.Move;
     }
 }

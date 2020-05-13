@@ -61,9 +61,8 @@ export class ActionEditorComponent extends React.Component {
         const unhover = (canvasItem: Hoverable) => this.context.registry.services.mouse.unhover(canvasItem);
         
         const view = this.context.registry.services.layout.getViewById<ActionEditorView>(ActionEditorView.id);
-        console.log(view.getActiveTool().cursor);
         return (
-            <EditorComponentStyled id={view.getId()} style={{cursor: view.getActiveTool().cursor}}>
+            <EditorComponentStyled id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>
                 <WindowToolbarStyled>
                     <ToolbarComponent
                             tools={[ToolType.Select, ToolType.Pan, ToolType.Zoom, ToolType.Join]}
@@ -94,6 +93,7 @@ export class ActionEditorComponent extends React.Component {
                 >
                     {this.context.registry.services.export.actionConceptExporter.export(hover, unhover)}
                     {this.renderFeedback()}
+                    {this.renderFeedbacks()}
                 </CanvasComponentStyled>
             </EditorComponentStyled>
         );
@@ -111,9 +111,28 @@ export class ActionEditorComponent extends React.Component {
                     stroke={colors.panelBackground}
                     strokeWidth="3"
                     strokeDasharray="12 3"
+                    style={{pointerEvents: 'none'}}
                 />
             );
         }
+    }
+
+    private renderFeedbacks(): JSX.Element {
+        const feedback = this.context.registry.stores.feedback.rectSelectFeedback;
+
+        if (feedback && feedback.isVisible) {
+            const rect = this.context.registry.stores.feedback.rectSelectFeedback.rect;
+            return (
+                <SelectionComponentStyled 
+                    x={rect.topLeft.x}
+                    y={rect.topLeft.y}
+                    width={rect.getWidth()}
+                    height={rect.getHeight()}
+                />
+            );
+        }
+
+        return null;
     }
 }
 

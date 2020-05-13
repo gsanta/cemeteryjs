@@ -11,7 +11,6 @@ export class JoinTool extends AbstractTool {
     end: Point;
     startItem: NodeConnectionControl;
     endItem: NodeConnectionControl;
-    cursor = Cursor.Crosshair;
 
     constructor(registry: Registry) {
         super(ToolType.Join, registry);
@@ -56,5 +55,9 @@ export class JoinTool extends AbstractTool {
             return true;
         }
         return false;
+    }
+
+    getCursor() {
+        return Cursor.Crosshair;
     }
 }

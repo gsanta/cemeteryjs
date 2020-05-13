@@ -12,6 +12,7 @@ import { ListActionsDialogComponent } from './dialogs/ListActionsDialogComponent
 import { DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
 import { GameView } from '../../plugins/game_viewer/GameView';
+import 'tippy.js/dist/tippy.css';
 
 export interface AppState {
     isDialogOpen: boolean;

@@ -8,7 +8,6 @@ import { Point } from '../../../core/geometry/shapes/Point';
 import { createActionNode } from '../../../core/models/concepts/action_node/actionNodeFactory';
 
 export class DragAndDropTool extends AbstractTool {
-    cursor = Cursor.Grab;
 
     isDragging = false;
 
@@ -36,5 +35,9 @@ export class DragAndDropTool extends AbstractTool {
         this.registry.stores.actionStore.addAction(action);
         // this.registry.services.view.getHoveredView().removePriorityTool(this);
         this.registry.services.update.scheduleTasks(UpdateTask.RepaintActiveView);
+    }
+
+    getCursor() {
+        return Cursor.Grab;
     }
 }

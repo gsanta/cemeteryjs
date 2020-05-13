@@ -2,7 +2,7 @@ import { Registry } from '../../../core/Registry';
 import { UpdateTask } from "../../../core/services/UpdateServices";
 import { PointerTool } from './PointerTool';
 import { RectangleSelector } from "./RectangleSelector";
-import { ToolType } from "./Tool";
+import { ToolType, Cursor } from "./Tool";
 
 export class SelectTool extends PointerTool {
     private rectSelector: RectangleSelector;
@@ -51,6 +51,13 @@ export class SelectTool extends PointerTool {
             this.rectSelector.finish();
             this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas, UpdateTask.RepaintSettings);
         }
+    }
 
+    getCursor() {
+        if (this.registry.services.pointer.hoveredItem) {
+            return Cursor.Pointer;
+        }
+
+        return Cursor.Default;
     }
 }

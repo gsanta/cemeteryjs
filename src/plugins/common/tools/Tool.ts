@@ -36,12 +36,15 @@ export class ToolReturnType {
 
 export enum Cursor {
     Default = 'default',
+    Pointer = 'pointer',
     Grab = 'grab',
-    Crosshair = 'crosshair'
+    Crosshair = 'crosshair',
+    Move = 'move',
+    ZoomIn = 'zoom-in'
 }
 
 export interface Tool extends IHotkey {
-    cursor: Cursor;
+    getCursor(): Cursor;
     type: ToolType;
     down(): void;
     move(): void;

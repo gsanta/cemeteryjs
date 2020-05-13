@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Point } from '../../../core/geometry/shapes/Point';
 import { colors } from '../../../core/gui/styles';
 import { NodeConnectionControl } from '../../../core/models/controls/NodeConnectionControl';
 import { ControlProps } from '../../InstanceProps';

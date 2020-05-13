@@ -56,7 +56,7 @@ export class CanvasComponent extends React.Component {
         const history = this.context.registry.services.history;
 
         return (
-            <EditorComponentStyled id={view.getId()} style={{cursor: view.getActiveTool().cursor}}>
+            <EditorComponentStyled id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>
                 <WindowToolbarStyled>
                     <ToolbarComponent
                         tools={[ToolType.Rectangle, ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Zoom, ToolType.Pan]}

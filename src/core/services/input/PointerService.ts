@@ -113,6 +113,7 @@ export class PointerService {
     }
 
     hover(item: Hoverable): void {
+        console.log('hover: ' + item.type)
         this.hoveredItem = item;
         this.registry.services.hotkey.executeHotkey({
             isHover: true
@@ -122,9 +123,13 @@ export class PointerService {
     }
 
     unhover(item: Hoverable): void {
+        console.log('unhover: ' + item.type)
         this.registry.services.hotkey.executeHotkey({
             isUnhover: true
         });
+        if (this.hoveredItem === item) {
+            this.hoveredItem = undefined;
+        }
         this.registry.services.layout.getHoveredView().getActiveTool().out(item);
         this.registry.services.update.runScheduledTasks();
     }
