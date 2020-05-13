@@ -10,8 +10,10 @@ import { PointerTool } from "./PointerTool";
 import { ToolType } from "./Tool";
 import { ConceptType } from "../../../core/models/concepts/Concept";
 import { Hoverable } from "../../../core/models/Hoverable";
+import { IHotkeyEvent, HotkeyTrigger } from "../../../core/services/input/HotkeyService";
 
 export class PathTool extends PointerTool {
+    private hotkeyTrigger: Partial<HotkeyTrigger> = {keyCodes: [Keyboard.p]}
     
     constructor(registry: Registry) {
         super(ToolType.Path, registry);
@@ -88,5 +90,14 @@ export class PathTool extends PointerTool {
         this.registry.services.game.addConcept(path);
         this.registry.stores.selectionStore.addItem(path);
         this.registry.stores.selectionStore.addItem(path.editPoints[0]);
+    }
+
+    hotkey(hotkeyEvent: IHotkeyEvent) {
+        return false;
+        // if (event.isHover && isNodeConnectionControl(this.registry.services.pointer.hoveredItem)) {
+        //     this.registry.services.layout.getHoveredView().setPriorityTool(this);
+        //     return true;
+        // }
+        // return false;
     }
 }

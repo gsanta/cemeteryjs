@@ -1,22 +1,15 @@
 import * as React from 'react';
 import { ToolStyled, ToolIconStyled, ToolIconBackgroundStyled, ToolIconImageStyled, ToolNameStyled, IconProps } from './ToolIcon';
-import tippy from 'tippy.js';
+import { AbstractIconComponent } from './AbstractIconComponent';
 
-export class SelectIconComponent extends React.Component<IconProps> {
-    private ref: React.RefObject<HTMLDivElement>;
+export class SelectIconComponent extends AbstractIconComponent {
 
     constructor(props: IconProps) {
         super(props);
 
-        this.ref = React.createRef();
+        this.tooltipText = 'Select tool <b>(Ctrl + Mouse drag)</b>';
     }
 
-    componentDidMount() {
-        tippy(this.ref.current, {
-            content: "I'm a Tippy tooltip!",
-        });
-    }
-    
     render() {
         const toolName =  this.props.format === 'long' ? <ToolNameStyled>Select</ToolNameStyled> : null;
     

@@ -31,6 +31,7 @@ export enum Keyboard {
     d = 68,
     s = 83,
     e = 69,
+    p = 80,
     Space = 32
 }
 

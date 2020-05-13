@@ -4,7 +4,7 @@ import { RectangleIconComponent } from "./icons/RectangleIconComponent";
 import { DeleteIconComponent } from "./icons/DeleteIconComponent";
 import { SelectIconComponent } from "./icons/SelectIconComponent";
 import { PanIconComponent } from "./icons/PanIconComponent";
-import { ArrowIconComponent } from "./icons/ArrowIconComponent";
+import { PathIconComponent } from "./icons/PathIconComponent";
 import { ZoomInIconComponent } from "./icons/ZoomInIconComponent";
 import { ZoomOutIconComponent } from "./icons/ZoomOutIconComponent";
 import { View } from "../../../core/View";
@@ -24,7 +24,7 @@ export function createToolIcon(toolType: ToolType, view: View, registry: Registr
             return [<PanIconComponent isActive={isToolActive(ToolType.Pan, view)} onClick={() => activateTool(toolType, view, registry)} format="short"/>]
         case ToolType.Path:
         case ToolType.Join:
-            return [<ArrowIconComponent isActive={isToolActive(toolType, view)} onClick={() => activateTool(toolType, view, registry)} format="short"/>]    
+            return [<PathIconComponent isActive={isToolActive(toolType, view)} onClick={() => activateTool(toolType, view, registry)} format="short"/>]    
         case ToolType.Zoom:
             return [
                 <ZoomInIconComponent isActive={false} onClick={() => view.getCamera().zoomIn()} format="short"/>,

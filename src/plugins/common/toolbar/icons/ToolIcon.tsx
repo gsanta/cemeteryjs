@@ -7,6 +7,7 @@ export interface IconProps {
     format: 'short' | 'long';
     disabled?: boolean;
     color?: string;
+    tooltipText?: string;
 }
 
 export const ToolStyled = styled.div`

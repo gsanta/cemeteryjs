@@ -2,17 +2,15 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { AppContext, AppContextType } from '../../core/gui/Context';
 import { colors } from '../../core/gui/styles';
-import { WindowToolbarStyled } from '../../core/WindowToolbar';
-import { PathMarkersComponent } from '../../core/services/export/PathMarkersComponent';
-import { CanvasView } from './CanvasView';
-import { WheelListener } from '../../core/services/WheelListener';
-import { Concept } from '../../core/models/concepts/Concept';
-import { IControl } from '../../core/models/controls/IControl';
-import { ToolType } from '../common/tools/Tool';
-import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
-import { UndoIconComponent } from '../common/toolbar/icons/UndoIconComponent';
-import { RedoIconComponent } from '../common/toolbar/icons/RedoIconComponent';
 import { Hoverable } from '../../core/models/Hoverable';
+import { PathMarkersComponent } from '../../core/services/export/PathMarkersComponent';
+import { WheelListener } from '../../core/services/WheelListener';
+import { WindowToolbarStyled } from '../../core/WindowToolbar';
+import { RedoIconComponent } from '../common/toolbar/icons/RedoIconComponent';
+import { UndoIconComponent } from '../common/toolbar/icons/UndoIconComponent';
+import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
+import { ToolType } from '../common/tools/Tool';
+import { CanvasView } from './CanvasView';
 
 
 const EditorComponentStyled = styled.div`
