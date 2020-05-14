@@ -1,16 +1,15 @@
-import { Registry } from "../../../core/Registry";
 import { Point } from "../../../core/geometry/shapes/Point";
+import { ConceptType } from "../../../core/models/concepts/Concept";
 import { PathConcept } from "../../../core/models/concepts/PathConcept";
-import { VisualConcept } from "../../../core/models/concepts/VisualConcept";
+import { FeedbackType } from "../../../core/models/controls/IControl";
 import { EditPoint } from "../../../core/models/feedbacks/EditPoint";
-import { IControl, FeedbackType } from "../../../core/models/controls/IControl";
+import { Hoverable } from "../../../core/models/Hoverable";
+import { Registry } from "../../../core/Registry";
+import { HotkeyTrigger, IHotkeyEvent } from "../../../core/services/input/HotkeyService";
 import { IKeyboardEvent, Keyboard } from "../../../core/services/input/KeyboardService";
 import { UpdateTask } from "../../../core/services/UpdateServices";
 import { PointerTool } from "./PointerTool";
 import { ToolType } from "./Tool";
-import { ConceptType } from "../../../core/models/concepts/Concept";
-import { Hoverable } from "../../../core/models/Hoverable";
-import { IHotkeyEvent, HotkeyTrigger } from "../../../core/services/input/HotkeyService";
 
 export class PathTool extends PointerTool {
     private hotkeyTrigger: Partial<HotkeyTrigger> = {keyCodes: [Keyboard.p]}
@@ -68,7 +67,8 @@ export class PathTool extends PointerTool {
         if (path && editPoint) {
             const pointer = this.registry.services.pointer.pointer;
             const selectedEditPoint = this.registry.stores.selectionStore.getEditPoint();
-            const newEditPoint = (new EditPoint(new Point(pointer.down.x, pointer.down.y), path));
+            const newEditPointId = this.registry.views.getActiveView().getStore().generateUniqueName(FeedbackType.EditPointFeedback); 
+            const newEditPoint = new EditPoint(newEditPointId, new Point(pointer.down.x, pointer.down.y), path);
             path.addEditPoint(newEditPoint, selectedEditPoint);
             this.registry.stores.selectionStore.removeItem(selectedEditPoint);
             this.registry.stores.selectionStore.addItem(newEditPoint);
@@ -84,7 +84,11 @@ export class PathTool extends PointerTool {
     private startNewPath() {
         const pointer = this.registry.services.pointer.pointer;
         this.registry.stores.selectionStore.clear();
-        const path = new PathConcept(pointer.down.clone());
+
+        const editPointId = this.registry.stores.canvasStore.generateUniqueName(FeedbackType.EditPointFeedback); 
+        const path = new PathConcept();
+        const editPoint = new EditPoint(editPointId, pointer.down.clone(), path);
+        path.addEditPoint(editPoint)
         path.id = this.registry.stores.canvasStore.generateUniqueName(ConceptType.PathConcept);
         this.registry.stores.canvasStore.addConcept(path);
         this.registry.services.game.addConcept(path);

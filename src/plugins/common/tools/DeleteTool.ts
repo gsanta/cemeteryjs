@@ -6,6 +6,7 @@ import { isConcept, isControl } from '../../../core/stores/CanvasStore';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './RectangleSelector';
 import { ToolType } from './Tool';
+import { IControl } from '../../../core/models/controls/IControl';
 
 export class DeleteTool extends AbstractTool {
     private rectSelector: RectangleSelector;
@@ -23,15 +24,14 @@ export class DeleteTool extends AbstractTool {
     click() {
         this.registry.tools.pointer.click();
         const hoverStore = this.registry.stores.hoverStore;
+        const hoveredItem = this.registry.services.pointer.hoveredItem;
 
-        if (!hoverStore.hasAny()) { return; }
+        if (!hoveredItem) { return; }
 
-        if (isControl(hoverStore.getAny().type)) {
-            hoverStore.getEditPoint().delete();
-        } else if (isConcept(hoverStore.getAny().type)) {
-            const concept = hoverStore.getConcept();
-            this.registry.stores.canvasStore.removeConcept(concept);
-            this.registry.services.game.deleteConcepts([concept]);
+        if (isControl(hoveredItem.type)) {
+            (<IControl<any>> hoveredItem).delete();
+        } else if (isConcept(hoveredItem.type)) {
+            this.registry.views.getActiveView().getStore().removeItemById(hoveredItem.id);
         }
         
         this.registry.services.level.updateCurrentLevel();

@@ -65,7 +65,7 @@ export class ActionEditorComponent extends React.Component {
             <EditorComponentStyled id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>
                 <WindowToolbarStyled>
                     <ToolbarComponent
-                            tools={[ToolType.Select, ToolType.Pan, ToolType.Zoom, ToolType.Join]}
+                            tools={[ToolType.Select, ToolType.Delete, ToolType.Pan, ToolType.Zoom]}
                             view={view}
                     />
                 </WindowToolbarStyled>

@@ -6,7 +6,8 @@ export enum ConceptType {
     PathConcept = 'PathConcept',
     AnimationConcept = 'AnimationConcept',
     RouteConcept = 'RouteConcept',
-    ActionConcept = 'ActionConcept'
+    ActionConcept = 'ActionConcept',
+    ActionNodeConnectionConcept = 'ActionNodeConnectionConcept' 
 }
 
 export interface Concept extends Hoverable {

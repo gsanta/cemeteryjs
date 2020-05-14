@@ -16,7 +16,7 @@ export class Naming {
 
     private getMaxIndex(type: ConceptType): number {
         const pattern = this.createPattern(type);
-        const views = this.canvasStore.getConceptsByType(type).filter(view => view.id.match(pattern));
+        const views = this.canvasStore.getItemsByType(type).filter(view => view.id.match(pattern));
 
         if (views.length === 0) {
             return 0;

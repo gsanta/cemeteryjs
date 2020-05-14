@@ -27,7 +27,7 @@ export function isMeta(type: string) {
 
 export class CanvasStore extends AbstractStore {
     concepts: VisualConcept[] = [];
-    feedbacks: IControl<any>[] = [];
+    controls: IControl<any>[] = [];
     metas: MetaConcept[] = [];
 
     private registry: Registry;
@@ -41,8 +41,8 @@ export class CanvasStore extends AbstractStore {
         this.concepts.push(concept);
     }
 
-    addFeedback(feedback: IControl<any>) {
-        this.feedbacks.push(feedback);
+    addControl(control: IControl<any>) {
+        this.controls.push(control);
     }
 
     addMeta(metaConcept: MetaConcept) {
@@ -57,11 +57,17 @@ export class CanvasStore extends AbstractStore {
         this.concepts = without(this.concepts, concept);
         this.registry.stores.hoverStore.removeItem(concept);
         this.registry.stores.selectionStore.removeItem(concept);
+        this.registry.services.game.deleteConcepts([concept]);
+    }
+
+    removeItemById(id: string) {
+        const concept = this.concepts.find(concept => concept.id === id);
+        this.removeConcept(concept);
     }
 
     clear(): void {
         this.concepts = [];
-        this.feedbacks = [];
+        this.controls = [];
         this.metas = [];
     }
 
@@ -73,9 +79,11 @@ export class CanvasStore extends AbstractStore {
         return this.concepts;
     }
 
-    getConceptsByType(type: ConceptType): Concept[] {
+    getItemsByType(type: string): Concept[] {
         if (isMeta(type)) {
             return this.metas.filter(v => v.type === type);
+        } else if (isControl(type)) {
+            return this.controls.filter(c => c.type === type);
         } else if (isConcept(type)) {
             return this.concepts.filter(v => v.type === type);
         }

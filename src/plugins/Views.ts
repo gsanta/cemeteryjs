@@ -11,7 +11,10 @@ export class Views {
 
     views: View[];
 
+    private registry: Registry;
+
     constructor(registry: Registry) {
+        this.registry = registry;
         this.sceneEditorView = new CanvasView(registry);
         this.gameView = new GameView(registry);
         this.actionEditorView = new ActionEditorView(registry);
@@ -21,5 +24,9 @@ export class Views {
             this.gameView,
             this.actionEditorView
         ]
+    }
+
+    getActiveView() {
+        return this.registry.services.layout.getHoveredView();
     }
 }

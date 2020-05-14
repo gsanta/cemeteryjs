@@ -11,6 +11,7 @@ import { Stores } from './stores/Stores';
 import { AbstractSettings } from '../plugins/scene_editor/settings/AbstractSettings';
 import { ICamera } from '../plugins/common/camera/ICamera';
 import { Registry } from './Registry';
+import { AbstractStore } from './stores/AbstractStore';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;
@@ -50,6 +51,7 @@ export abstract class View {
     abstract isVisible(): boolean;
     abstract setVisible(visible: boolean): void;
     abstract getId(): string;
+    abstract getStore(): AbstractStore;
     
     setup(): void {}
     destroy(): void {}

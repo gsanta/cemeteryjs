@@ -2,7 +2,8 @@ import { ActionNodeConcept } from '../models/concepts/ActionNodeConcept';
 import { Registry } from '../Registry';
 import { AbstractStore } from './AbstractStore';
 import { ActionNodeSettings } from '../../plugins/action_editor/settings/ActionNodeSettings';
-import { NodeConnectionControl } from '../models/controls/NodeConnectionControl';
+import { JoinPointControl } from '../models/controls/JoinPointControl';
+import { ActionNodeConnectionConcept } from '../models/concepts/ActionNodeConnectionConcept';
 
 export enum ActionType {
     Keyboard = 'Keyboard',
@@ -13,7 +14,7 @@ export enum ActionType {
 
 export class ActionStore extends AbstractStore {
     actions: ActionNodeConcept[] = [];
-    connections: [NodeConnectionControl, NodeConnectionControl][] = [];
+    connections: ActionNodeConnectionConcept[] = [];
     settings: Map<string, ActionNodeSettings> = new Map();
     actionTypes: string[] = [];
 
@@ -35,15 +36,19 @@ export class ActionStore extends AbstractStore {
         this.settings.set(action.id, new ActionNodeSettings(action));
     }
 
-    addConnection(start: NodeConnectionControl, end: NodeConnectionControl) {
-        this.connections.push([start, end]);
+    addConnection(connection: ActionNodeConnectionConcept) {
+        this.connections.push(connection);
+    }
+
+    removeItemById(id: string) {
+        const item = this.actions.find(action => action.id === id) || this.connections.find(connection => connection.id === id);
     }
 
     getSettings(action: ActionNodeConcept) {
         return this.settings.get(action.id);
     }
 
-    protected getConceptsByType() {
+    protected getItemsByType() {
         return this.actions;
     }
 }

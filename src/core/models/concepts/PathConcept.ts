@@ -19,14 +19,7 @@ export class PathConcept implements Concept, IGameObject {
     radius = 5;
     private str: string;
 
-    constructor(startPoint?: Point) {
-        if (startPoint) {
-            const pathPointConcept = new EditPoint(startPoint, this);
-            this.editPoints.push(pathPointConcept);
-            this.rootPoint = pathPointConcept;
-            this.childMap.set(this.rootPoint, []);
-        }
-
+    constructor() {
         this.dimensions = this.calcBoundingBox();
     }
 
@@ -34,10 +27,15 @@ export class PathConcept implements Concept, IGameObject {
         return this.parentMap.get(editPoint);
     } 
 
-    addEditPoint(editPoint: EditPoint, parentEditPoint: EditPoint) {
+    addEditPoint(editPoint: EditPoint, parentEditPoint?: EditPoint) {
+        if (!parentEditPoint) {
+            this.rootPoint = editPoint;
+        } else {
+            this.childMap.get(parentEditPoint).push(editPoint);
+            this.parentMap.set(editPoint, parentEditPoint);
+        }
+
         this.editPoints.push(editPoint);
-        this.childMap.get(parentEditPoint).push(editPoint);
-        this.parentMap.set(editPoint, parentEditPoint);
         this.childMap.set(editPoint, []);
         this.dimensions = this.calcBoundingBox();
         this.str = undefined;
@@ -98,10 +96,6 @@ export class PathConcept implements Concept, IGameObject {
         return this.editPoints.map(p => `${this.editPoints.indexOf(p)}:${this.editPoints.indexOf(this.parentMap.get(p))}`).join(' ');
     }
 
-    deserialize(points: string, relations: string) {
-        this.deserializePoints(points);
-        this.deserializeParentRelations(relations);
-    }
 
     moveEditPoint(editPoint: EditPoint, delta: Point) {
         editPoint.point.add(delta);
@@ -114,24 +108,7 @@ export class PathConcept implements Concept, IGameObject {
         this.str = undefined;
     }
 
-    private deserializePoints(points: string) {
-        this.editPoints = points.split(' ')
-            .map(p => {
-                const [x, y] = p.split(':');
-                const point = new EditPoint(new Point(parseFloat(x), parseFloat(y)), this);
-                this.childMap.set(point, []);
-                return point;
-            });
-        this.rootPoint = this.editPoints[0];
-    }
 
-    private deserializeParentRelations(relations: string) {
-        relations.split(' ').forEach(relation => {
-            const [index, parentIndex] = relation.split(':');
-            parentIndex !== '-1' && this.childMap.get(this.editPoints[parentIndex]).push(this.editPoints[index]);
-            this.parentMap.set(this.editPoints[index], this.editPoints[parentIndex]);
-        })
-    }
 
     iterateOverPoints(action: (parent: EditPoint, current: EditPoint) => void) {
         this.iterateOverPointsRecursively(this.rootPoint, undefined, action);

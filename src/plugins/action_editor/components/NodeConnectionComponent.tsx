@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { colors } from '../../../core/gui/styles';
-import { NodeConnectionControl } from '../../../core/models/controls/NodeConnectionControl';
+import { JoinPointControl } from '../../../core/models/controls/JoinPointControl';
 
 export interface NodeConnectionProps {
-    start: NodeConnectionControl;
-    end: NodeConnectionControl;
+    start: JoinPointControl;
+    end: JoinPointControl;
 }
 
 export class NodeConnectionComponent extends React.Component<NodeConnectionProps> {

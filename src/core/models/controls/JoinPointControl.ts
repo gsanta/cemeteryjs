@@ -7,8 +7,9 @@ export function isNodeConnectionControl(hoverable: Hoverable) {
     return hoverable && hoverable.type === FeedbackType.NodeConnectorFeedback;
 }
 
-export class NodeConnectionControl implements IControl<ActionNodeConcept> {
+export class JoinPointControl implements IControl<ActionNodeConcept> {
     type = FeedbackType.NodeConnectorFeedback;
+    id: string;
     point: Point;
     parent: ActionNodeConcept;
     other: ActionNodeConcept;

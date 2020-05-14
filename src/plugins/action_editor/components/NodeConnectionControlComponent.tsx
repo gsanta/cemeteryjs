@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { colors } from '../../../core/gui/styles';
-import { NodeConnectionControl } from '../../../core/models/controls/NodeConnectionControl';
+import { JoinPointControl } from '../../../core/models/controls/JoinPointControl';
 import { ControlProps } from '../../InstanceProps';
 
-export class NodeConnectionControlComponent extends React.Component<ControlProps<NodeConnectionControl>> {
+export class NodeConnectionControlComponent extends React.Component<ControlProps<JoinPointControl>> {
     
     render() {
         

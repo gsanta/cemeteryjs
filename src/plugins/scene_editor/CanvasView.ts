@@ -63,6 +63,10 @@ export class CanvasView extends View {
         this.importer = new CanvasViewImporter(this.registry);
     }
 
+    getStore() {
+        return this.registry.stores.canvasStore;
+    }
+
     getId() {
         return CanvasView.id;
     }

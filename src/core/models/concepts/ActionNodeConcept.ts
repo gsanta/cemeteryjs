@@ -1,21 +1,22 @@
 import { Point } from "../../geometry/shapes/Point";
 import { Rectangle } from "../../geometry/shapes/Rectangle";
-import { NodeConnectionControl } from "../controls/NodeConnectionControl";
+import { JoinPointControl } from "../controls/JoinPointControl";
 import { IActionNode } from "./action_node/IActionNode";
 import { ConceptType } from "./Concept";
 import { VisualConcept } from "./VisualConcept";
 import { createActionNode } from "./action_node/actionNodeFactory";
 
 export class ActionNodeConcept implements VisualConcept {
-    type = ConceptType.ActionConcept;
-    id: string;
+    readonly  type = ConceptType.ActionConcept;
+    readonly id: string;
     data: IActionNode;
 
     dimensions: Rectangle;
-    inputs: NodeConnectionControl[] = [];
-    outputs: NodeConnectionControl[] = [];
+    inputs: JoinPointControl[] = [];
+    outputs: JoinPointControl[] = [];
 
-    constructor(nodeType: string, dimensions: Rectangle) {
+    constructor(id: string, nodeType: string, dimensions: Rectangle) {
+        this.id = id;
         this.dimensions = dimensions;
         this.data = createActionNode(nodeType);
         this.initInputNodeConnectionControls();
@@ -35,7 +36,7 @@ export class ActionNodeConcept implements VisualConcept {
 
         for (let i = 0; i < this.data.inputSlots; i++) {
             const y = i * 20 + yStart; 
-            this.inputs.push(new NodeConnectionControl(this, i, true));
+            this.inputs.push(new JoinPointControl(this, i, true));
         }
     }
 
@@ -45,7 +46,7 @@ export class ActionNodeConcept implements VisualConcept {
 
         for (let i = 0; i < this.data.outputSlots; i++) {
             const y = i * 20 + yStart; 
-            this.outputs.push(new NodeConnectionControl(this, i, false));
+            this.outputs.push(new JoinPointControl(this, i, false));
         }
     } 
 

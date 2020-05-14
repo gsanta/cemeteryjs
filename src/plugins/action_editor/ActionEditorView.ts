@@ -4,6 +4,7 @@ import { UpdateTask } from '../../core/services/UpdateServices';
 import { calcOffsetFromDom, View } from '../../core/View';
 import { Camera2D } from '../common/camera/Camera2D';
 import { ActionEditorSettings } from './settings/ActionEditorSettings';
+import { ActionStore } from '../../core/stores/ActionStore';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -47,6 +48,10 @@ export class ActionEditorView extends View {
 
         this.selectedTool = this.registry.tools.pan;
         this.actionSettings = new ActionEditorSettings(registry);
+    }
+
+    getStore(): ActionStore {
+        return this.registry.stores.actionStore;
     }
 
     getId() {

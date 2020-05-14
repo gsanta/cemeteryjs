@@ -1,19 +1,22 @@
 import { maxBy } from '../geometry/utils/Functions';
 import { ConceptType, Concept } from '../models/concepts/Concept';
+import { FeedbackType } from '../models/controls/IControl';
+import { Hoverable } from '../models/Hoverable';
 
 
 export abstract class AbstractStore {
 
-    protected abstract getConceptsByType(type: ConceptType): Concept[];
+    protected abstract getItemsByType(type: string): Hoverable[];
+    abstract removeItemById(id: string);
 
-    generateUniqueName(type: ConceptType) {
+    generateUniqueName(type: string) {
         const name = `${type}${this.getMaxIndex(type) + 1}`.toLocaleLowerCase();
         return name;
     }
 
-    private getMaxIndex(type: ConceptType): number {
+    private getMaxIndex(type: string): number {
         const pattern = this.createPattern(type);
-        const views = this.getConceptsByType(type).filter(view => view.id.match(pattern));
+        const views = this.getItemsByType(type).filter(view => view.id.match(pattern));
 
         if (views.length === 0) {
             return 0;
@@ -24,7 +27,7 @@ export abstract class AbstractStore {
 
     }
 
-    private createPattern(type: ConceptType) {
+    private createPattern(type: string) {
         return new RegExp(`${type}(\\d+)`, 'i');
     }
 }

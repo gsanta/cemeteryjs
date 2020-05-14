@@ -5,6 +5,8 @@ import { calcOffsetFromDom, View } from '../../core/View';
 import { HelperMeshes } from './HelperMeshes';
 import { ICamera } from '../common/camera/ICamera';
 import { Camera3D } from '../common/camera/Camera3D';
+import { AbstractStore } from '../../core/stores/AbstractStore';
+import { ActionStore } from '../../core/stores/ActionStore';
 (<any> window).earcut = require('earcut');
 
 export function cameraInitializer(registry: Registry) {
@@ -41,6 +43,10 @@ export class GameView extends View {
 
         this.updateService = new UpdateService(registry);
         this.update = this.update.bind(this);
+    }
+
+    getStore() {
+        return this.registry.stores.canvasStore;
     }
 
     getCamera(): ICamera {
