@@ -1,3 +1,4 @@
+import { Concept } from "../../../core/models/concepts/Concept";
 
 
 export enum PropertyType {
@@ -76,4 +77,8 @@ export abstract class AbstractSettings<P> {
                 return val;
         }
     }
+}
+
+export abstract class ViewSettings<P, V extends Concept> extends AbstractSettings<P> {
+    view: V;
 }

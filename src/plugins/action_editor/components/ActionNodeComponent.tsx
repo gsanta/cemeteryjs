@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { colors } from '../../../core/gui/styles';
 import { ActionNodeConcept } from '../../../core/models/concepts/ActionNodeConcept';
 import { InstanceProps } from '../../InstanceProps';
-import { createActionNodeSettings } from '../settings/actionNodeSettingsFactory';
 import { NodeConnectionControlComponent } from './NodeConnectionControlComponent';
+import { createActionNodeSettingsComponent } from '../settings/nodes/actionNodeSettingsFactory';
 
 const NodeStyled = styled.div`
     background-color: ${(props: {concept: ActionNodeConcept}) => props.concept.data.color};
@@ -105,7 +105,7 @@ export class ActionNodeComponent extends React.Component<InstanceProps<ActionNod
 
     private renderNodeBody(item: ActionNodeConcept): JSX.Element {
         return (
-            <NodeBodyStyled>{createActionNodeSettings(item, this.props.registry)}</NodeBodyStyled>
+            <NodeBodyStyled>{createActionNodeSettingsComponent(item, this.props.registry)}</NodeBodyStyled>
         );
     }
 }

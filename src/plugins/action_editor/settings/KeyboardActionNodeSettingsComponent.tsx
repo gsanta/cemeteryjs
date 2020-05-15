@@ -2,8 +2,8 @@ import * as React from 'react';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { ConnectedDropdownComponent } from '../../../core/gui/inputs/DropdownComponent';
 import { FieldColumnStyled, LabelColumnStyled, SettingsRowStyled } from '../../scene_editor/settings/SettingsComponent';
-import { ActionNodeProps } from './actionNodeSettingsFactory';
-import { ActionNodeSettingsProps } from './ActionNodeSettings';
+import { ActionNodeProps } from './nodes/actionNodeSettingsFactory';
+import { KeyboardInputNodeProps } from './nodes/KeyboardInputNodeSettings';
 
 export class KeyboardActionNodeSettingsComponent extends React.Component<ActionNodeProps> {
     static contextType = AppContext;
@@ -18,8 +18,8 @@ export class KeyboardActionNodeSettingsComponent extends React.Component<ActionN
     }
 
     private renderKeyboardKeysDropdown() {
-        const keys: string[] = this.props.settings.getVal(ActionNodeSettingsProps.AllKeyboardKeys);
-        const val: string = this.props.settings.getVal(ActionNodeSettingsProps.KeyboardKey);
+        const keys: string[] = this.props.settings.getVal(KeyboardInputNodeProps.AllKeyboardKeys);
+        const val: string = this.props.settings.getVal(KeyboardInputNodeProps.KeyboardKey);
 
         return (
             <SettingsRowStyled>
@@ -27,7 +27,7 @@ export class KeyboardActionNodeSettingsComponent extends React.Component<ActionN
                 <FieldColumnStyled>
                     <ConnectedDropdownComponent
                         formController={this.props.settings}
-                        propertyName={ActionNodeSettingsProps.KeyboardKey}
+                        propertyName={KeyboardInputNodeProps.KeyboardKey}
                         values={keys}
                         currentValue={val}
                         placeholder="Select key"

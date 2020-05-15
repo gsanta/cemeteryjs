@@ -1,7 +1,6 @@
 import { ActionNodeConcept } from '../../../core/models/concepts/ActionNodeConcept';
 import { getAllKeys } from '../../../core/models/concepts/action_node/KeyboardActionNode';
-import { Registry } from '../../../core/Registry';
-import { AbstractSettings } from '../../scene_editor/settings/AbstractSettings';
+import { AbstractSettings, ViewSettings } from '../../scene_editor/settings/AbstractSettings';
 import { getAllMovements } from '../../../core/models/concepts/action_node/MoveActionNode';
 
 export enum ActionNodeSettingsProps {
@@ -13,14 +12,14 @@ export enum ActionNodeSettingsProps {
     Mesh = 'Mesh'
 }
 
-export class ActionNodeSettings extends AbstractSettings<ActionNodeSettingsProps> {
+export class ActionNodeSettings extends ViewSettings<ActionNodeSettingsProps, any> {
     static settingsName = 'action-settings';
     getName() { return ActionNodeSettings.settingsName; }
-    actionNodeConcept: ActionNodeConcept;
+    view: ActionNodeConcept;
 
     constructor(actionNodeConcept: ActionNodeConcept) {
         super();
-        this.actionNodeConcept = actionNodeConcept;
+        this.view = actionNodeConcept;
     }
 
     protected getProp(prop: ActionNodeSettingsProps) {

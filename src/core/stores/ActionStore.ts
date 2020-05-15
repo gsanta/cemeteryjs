@@ -1,9 +1,9 @@
+import { createActionNodeSettings } from '../../plugins/action_editor/settings/nodes/actionNodeSettingsFactory';
+import { ViewSettings } from '../../plugins/scene_editor/settings/AbstractSettings';
 import { ActionNodeConcept } from '../models/concepts/ActionNodeConcept';
+import { ActionNodeConnectionConcept } from '../models/concepts/ActionNodeConnectionConcept';
 import { Registry } from '../Registry';
 import { AbstractStore } from './AbstractStore';
-import { ActionNodeSettings } from '../../plugins/action_editor/settings/ActionNodeSettings';
-import { JoinPointControl } from '../models/controls/JoinPointControl';
-import { ActionNodeConnectionConcept } from '../models/concepts/ActionNodeConnectionConcept';
 
 export enum ActionType {
     Keyboard = 'Keyboard',
@@ -15,7 +15,7 @@ export enum ActionType {
 export class ActionStore extends AbstractStore {
     actions: ActionNodeConcept[] = [];
     connections: ActionNodeConnectionConcept[] = [];
-    settings: Map<string, ActionNodeSettings> = new Map();
+    settings: Map<string, ViewSettings<any, any>> = new Map();
     actionTypes: string[] = [];
 
     private registry: Registry;
@@ -31,9 +31,9 @@ export class ActionStore extends AbstractStore {
         }
     }
 
-    addAction(action: ActionNodeConcept) {
+    addAction(action: ActionNodeConcept, settings: ViewSettings<any, any>) {
         this.actions.push(action);
-        this.settings.set(action.id, new ActionNodeSettings(action));
+        this.settings.set(action.id, settings);
     }
 
     addConnection(connection: ActionNodeConnectionConcept) {
@@ -44,7 +44,7 @@ export class ActionStore extends AbstractStore {
         const item = this.actions.find(action => action.id === id) || this.connections.find(connection => connection.id === id);
     }
 
-    getSettings(action: ActionNodeConcept) {
+    getSettings(action: ActionNodeConcept): ViewSettings<any, any> {
         return this.settings.get(action.id);
     }
 

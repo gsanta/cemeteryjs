@@ -2,8 +2,8 @@ import * as React from 'react';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { ConnectedDropdownComponent } from '../../../core/gui/inputs/DropdownComponent';
 import { FieldColumnStyled, LabelColumnStyled, SettingsRowStyled } from '../../scene_editor/settings/SettingsComponent';
-import { ActionNodeProps } from './actionNodeSettingsFactory';
-import { ActionNodeSettingsProps } from './ActionNodeSettings';
+import { ActionNodeProps } from './nodes/actionNodeSettingsFactory';
+import { MeshNodeProps } from './nodes/MeshNodeSettings';
 
 export class MeshActionNodeSettingsComponent extends React.Component<ActionNodeProps> {
     static contextType = AppContext;
@@ -18,8 +18,8 @@ export class MeshActionNodeSettingsComponent extends React.Component<ActionNodeP
     }
 
     private renderMeshDropdown() {
-        const meshes: string[] = this.props.settings.getVal(ActionNodeSettingsProps.AllMeshes);
-        const val: string = this.props.settings.getVal(ActionNodeSettingsProps.Mesh);
+        const meshes: string[] = this.props.settings.getVal(MeshNodeProps.AllMeshes);
+        const val: string = this.props.settings.getVal(MeshNodeProps.MeshId);
 
         return (
             <SettingsRowStyled>
@@ -27,7 +27,7 @@ export class MeshActionNodeSettingsComponent extends React.Component<ActionNodeP
                 <FieldColumnStyled>
                     <ConnectedDropdownComponent
                         formController={this.props.settings}
-                        propertyName={ActionNodeSettingsProps.Mesh}
+                        propertyName={MeshNodeProps.MeshId}
                         values={meshes}
                         currentValue={val}
                         placeholder="Select mesh"

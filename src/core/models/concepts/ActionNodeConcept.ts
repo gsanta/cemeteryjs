@@ -6,10 +6,10 @@ import { ConceptType } from "./Concept";
 import { VisualConcept } from "./VisualConcept";
 import { createActionNode } from "./action_node/actionNodeFactory";
 
-export class ActionNodeConcept implements VisualConcept {
+export class ActionNodeConcept<T extends IActionNode = any> implements VisualConcept {
     readonly  type = ConceptType.ActionConcept;
     readonly id: string;
-    data: IActionNode;
+    data: T;
 
     dimensions: Rectangle;
     inputs: JoinPointControl[] = [];
@@ -18,7 +18,7 @@ export class ActionNodeConcept implements VisualConcept {
     constructor(id: string, nodeType: string, dimensions: Rectangle) {
         this.id = id;
         this.dimensions = dimensions;
-        this.data = createActionNode(nodeType);
+        this.data = <T> createActionNode(nodeType);
         this.initInputNodeConnectionControls();
         this.initOutputNodeConnectionControls();
     }

@@ -7,8 +7,8 @@ export class ActionNodeConnectionConcept implements VisualConcept {
     readonly  type = ConceptType.ActionNodeConnectionConcept;
     readonly id: string;
 
-    private readonly joinPoint1: JoinPointControl;
-    private readonly joinPoint2: JoinPointControl;
+    readonly joinPoint1: JoinPointControl;
+    readonly joinPoint2: JoinPointControl;
     dimensions = undefined;
 
     constructor(id: string, joinPoint1: JoinPointControl, joinPoint2: JoinPointControl) {
