@@ -7,6 +7,15 @@ import { IGameObject } from "../../../game/models/objects/IGameObject";
 
 const NULL_BOUNDING_BOX = new Rectangle(new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER), new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER));
 
+export interface PathProps {
+    editPoints: {
+        index: number;
+        parent: number;
+        point: string;
+    }[];
+}
+
+
 export class PathConcept implements Concept, IGameObject {
     type = ConceptType.PathConcept;
     editPoints: EditPoint[] = [];
@@ -90,6 +99,39 @@ export class PathConcept implements Concept, IGameObject {
         });
 
         return this.str;
+    }
+
+    serializeJson(): string {
+        const json: PathProps = {
+            editPoints: []
+        }
+
+        const editPointIndexes: Map<EditPoint, number> = new Map();
+
+        this.iterateOverPoints((current, parent) => {
+            const index = json.editPoints.length;
+            editPointIndexes.set(current, index);
+            json.editPoints.push({
+                index,
+                parent: parent ? editPointIndexes.get(parent) : undefined,
+                point: current.toString()  
+            });
+        });
+
+        return JSON.stringify(json);
+    }
+
+    parseJson(json: string, generateEditPointId: () => string) {
+        const parsedJson: PathProps = JSON.parse(json);
+        const editpointIndexToEditPointMap: Map<number, EditPoint> = new Map();
+        
+        parsedJson.editPoints.forEach((ep) => {
+            const point = Point.fromString(ep.point);
+            const id = generateEditPointId();
+            const editPoint = new EditPoint(id, point, this);
+            editpointIndexToEditPointMap.set(ep.index, editPoint);
+            this.addEditPoint(editPoint, editpointIndexToEditPointMap.get(ep.parent));
+        })
     }
 
     serializeParentRelations() {

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ConnectedInputComponent } from '../../../core/gui/inputs/InputComponent';
 import { SettingsRowStyled, FieldColumnStyled, LabelColumnStyled } from './SettingsComponent';
 import { PathConcept } from '../../../core/models/concepts/PathConcept';
-import { CanvasView } from '../CanvasView';
+import { SceneEditorPlugin } from '../SceneEditorPlugin';
 import { PathSettings, PathPropType } from './PathSettings';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
 
@@ -11,13 +11,13 @@ export class PathSettingsComponent extends React.Component<{concept: PathConcept
     context: AppContextType;
 
     componentDidMount() {
-        const pathSettings = this.context.registry.services.layout.getViewById<CanvasView>(CanvasView.id).getSettingsByName<PathSettings>(PathSettings.type);
+        const pathSettings = this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<PathSettings>(PathSettings.type);
 
         pathSettings.setRenderer(() => this.forceUpdate());
     }
 
     render() {
-        const pathSettings = this.context.registry.services.layout.getViewById<CanvasView>(CanvasView.id).getSettingsByName<PathSettings>(PathSettings.type);
+        const pathSettings = this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<PathSettings>(PathSettings.type);
 
         pathSettings.path = this.props.concept;
 
@@ -29,7 +29,7 @@ export class PathSettingsComponent extends React.Component<{concept: PathConcept
     }
 
     private renderName(): JSX.Element {
-        const pathSettings = this.context.registry.services.layout.getViewById<CanvasView>(CanvasView.id).getSettingsByName<PathSettings>(PathSettings.type);
+        const pathSettings = this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<PathSettings>(PathSettings.type);
 
         return (
             <SettingsRowStyled>

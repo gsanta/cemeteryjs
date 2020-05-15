@@ -6,11 +6,11 @@ import { Stores } from "../../../core/stores/Stores";
 import { Registry } from "../../../core/Registry";
 import { MeshConcept } from "../../../core/models/concepts/MeshConcept";
 import { PathConcept } from "../../../core/models/concepts/PathConcept";
-import { CanvasView } from "../CanvasView";
+import { SceneEditorPlugin } from "../SceneEditorPlugin";
 import { Concept, ConceptType } from "../../../core/models/concepts/Concept";
 
 export interface ViewFormProps<T extends Concept> {
-    canvasController: CanvasView;
+    canvasController: SceneEditorPlugin;
     view: T;
     getStores: () => Stores;
 }

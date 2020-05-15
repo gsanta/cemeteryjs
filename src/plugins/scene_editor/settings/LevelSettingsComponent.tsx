@@ -3,7 +3,7 @@ import { ButtonComponent } from '../../../core/gui/inputs/ButtonComponent';
 import { ConnectedInputComponent } from '../../../core/gui/inputs/InputComponent';
 import { SettingsRowStyled, LabelColumnStyled, FieldColumnStyled } from './SettingsComponent';
 import { GridComponent } from '../../../core/gui/misc/GridComponent';
-import { CanvasView } from '../CanvasView';
+import { SceneEditorPlugin } from '../SceneEditorPlugin';
 import { LevelSettings, LevelFormPropType } from './LevelSettings';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
 
@@ -12,7 +12,7 @@ export class LevelSettingsComponent extends React.Component {
     context: AppContextType;
 
     render() {
-        const levelSettings = this.context.registry.services.layout.getViewById<CanvasView>(CanvasView.id).getSettingsByName<LevelSettings>(LevelSettings.type);
+        const levelSettings = this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<LevelSettings>(LevelSettings.type);
         
         const level = levelSettings.getVal(LevelFormPropType.Level);
         const levelIndexes = this.context.registry.stores.levelStore.levels.filter(level => !level.isEmpty).map(level => level.index);

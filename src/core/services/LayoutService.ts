@@ -1,8 +1,8 @@
-import { View } from '../View';
+import { AbstractPlugin } from '../View';
 import { Registry } from '../Registry';
-import { CanvasView } from '../../plugins/scene_editor/CanvasView';
-import { GameView } from '../../plugins/game_viewer/GameView';
-import { ActionEditorView } from '../../plugins/action_editor/ActionEditorView';
+import { SceneEditorPlugin } from '../../plugins/scene_editor/SceneEditorPlugin';
+import { GameViewerPlugin } from '../../plugins/game_viewer/GameViewerPlugin';
+import { ActionEditorPlugin } from '../../plugins/action_editor/ActionEditorPlugin';
 
 export interface LayoutConfig {
     sizes: number[];
@@ -17,8 +17,8 @@ export enum Layout {
 }
 
 export class LayoutService {
-    private hoveredView: View;
-    private fullScreen: View;
+    private hoveredView: AbstractPlugin;
+    private fullScreen: AbstractPlugin;
     visibilityDirty = true;
 
     activeLayout: LayoutConfig;
@@ -35,13 +35,13 @@ export class LayoutService {
             {
                 sizes: [12, 44, 44],
                 minSize: [230, 300, 300],
-                ids: ['toolbar', CanvasView.id, GameView.id],
+                ids: ['toolbar', SceneEditorPlugin.id, GameViewerPlugin.id],
                 name: Layout.SceneEditor
             },
             {
                 sizes: [12, 88],
                 minSize: [230, 500],
-                ids: ['toolbar', ActionEditorView.id],
+                ids: ['toolbar', ActionEditorPlugin.id],
                 name: Layout.ActionEditor
             }
         ];
@@ -49,11 +49,11 @@ export class LayoutService {
         this.activeLayout = this.layouts[0];
     }
     
-    setHoveredView(view: View) {
+    setHoveredView(view: AbstractPlugin) {
         this.hoveredView = view;
     }
 
-    getHoveredView(): View {
+    getHoveredView(): AbstractPlugin {
         return this.hoveredView;
     }
 
@@ -62,24 +62,24 @@ export class LayoutService {
         this.visibilityDirty = true;
     }
 
-    getActiveViews(): View[] {
+    getActiveViews(): AbstractPlugin[] {
         return this.fullScreen ? [this.fullScreen] : this.registry.views.views.filter(view => this.activeLayout.ids.find(id => view.getId() === id));
     }
 
-    setFullScreen(view: View) {
+    setFullScreen(view: AbstractPlugin) {
         this.visibilityDirty = true;
         this.fullScreen = view;
     }
 
-    getFullScreen(): View {
+    getFullScreen(): AbstractPlugin {
         return this.fullScreen;
     }
 
-    getAllViews(): View[] {
+    getAllViews(): AbstractPlugin[] {
         return this.registry.views.views;
     }
 
-    getViewById<T extends View = View>(id: string): T {
+    getViewById<T extends AbstractPlugin = AbstractPlugin>(id: string): T {
         return <T> this.registry.views.views.find(view => view.getId() === id);
     }
 

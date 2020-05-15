@@ -3,8 +3,6 @@ import { colors } from '../../gui/styles';
 import { PathConcept } from '../../models/concepts/PathConcept';
 import { EditPoint } from '../../models/feedbacks/EditPoint';
 import { Stores } from '../../stores/Stores';
-import { IControl } from '../../models/controls/IControl';
-import { Concept } from '../../models/concepts/Concept';
 import { Hoverable } from '../../models/Hoverable';
 
 export interface PathComponentProps {
@@ -70,8 +68,7 @@ export class PathComponent extends React.Component<PathComponentProps> {
                     key="path"
                     d={this.props.item.serializePath()}
                     data-name={this.props.item.id}
-                    data-points={this.props.item.editPoints.map(p => p.point.toString()).join(' ')}
-                    data-point-relations={this.props.item.serializeParentRelations()}
+                    data-json={this.props.item.serializeJson()}
                     fill="none"
                     stroke={colors.views.stroke}
                     strokeWidth="1"

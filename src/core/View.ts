@@ -30,7 +30,7 @@ export function calcOffsetFromDom(id: string): Point {
     return new Point(0, 0);
 }
 
-export abstract class View {
+export abstract class AbstractPlugin {
     name: string;
 
     exporter: IViewExporter;

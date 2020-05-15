@@ -4,6 +4,7 @@ import { IConceptImporter } from "./IConceptImporter";
 import { ConceptGroupJson } from "./ImportService";
 import { ConceptType } from "../../models/concepts/Concept";
 import { EditPoint } from "../../models/feedbacks/EditPoint";
+import { FeedbackType } from '../../models/controls/IControl';
 
 export interface PathJson {
     circle: {
@@ -17,8 +18,7 @@ export interface PathJson {
     path: {
         _attributes: {
             'data-name': string;
-            'data-points': string;
-            'data-parent-relations': string;
+            'data-json': string;
         }
     }
 }
@@ -41,34 +41,9 @@ export class PathConceptImporter implements IConceptImporter {
         pathJsons.forEach(json => {
             const path = new PathConcept();
             path.id = json.path._attributes['data-name'];
-            this.createEditPoints(json.path._attributes['data-points'], json.path._attributes['data-point-relations']);
+            path.parseJson(json.path._attributes['data-json'], () => this.registry.stores.canvasStore.generateUniqueName(FeedbackType.EditPointFeedback));
 
             this.registry.stores.canvasStore.addConcept(path);
         });
-    }
-
-    private createEditPoints(path: PathConcept, pathJson: PathJson) {
-        const editPointhis.deserializePoints(points);
-        this.deserializeParentRelations(relations);
-    }
-
-
-    private deserializePoints(points: string): EditPoint {
-        this.editPoints = points.split(' ')
-            .map(p => {
-                const [x, y] = p.split(':');
-                const point = new EditPoint(new Point(parseFloat(x), parseFloat(y)), this);
-                this.childMap.set(point, []);
-                return point;
-            });
-        this.rootPoint = this.editPoints[0];
-    }
-
-    private deserializeParentRelations(relations: string) {
-        relations.split(' ').forEach(relation => {
-            const [index, parentIndex] = relation.split(':');
-            parentIndex !== '-1' && this.childMap.get(this.editPoints[parentIndex]).push(this.editPoints[index]);
-            this.parentMap.set(this.editPoints[index], this.editPoints[parentIndex]);
-        })
     }
 }

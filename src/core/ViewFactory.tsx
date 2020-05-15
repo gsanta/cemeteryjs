@@ -1,27 +1,27 @@
 import * as React from 'react';
 import { Registry } from './Registry';
 import { ActionEditorComponent } from '../plugins/action_editor/ActionEditorComponent';
-import { CanvasComponent } from '../plugins/scene_editor/CanvasComponent';
+import { SceneEditorComponent } from '../plugins/scene_editor/SceneEditorComponent';
 import { GameViewerComponent } from '../plugins/game_viewer/GameViewerComponent';
-import { GameView } from '../plugins/game_viewer/GameView';
-import { View } from './View';
-import { ActionEditorView } from '../plugins/action_editor/ActionEditorView';
-import { CanvasView } from '../plugins/scene_editor/CanvasView';
+import { GameViewerPlugin } from '../plugins/game_viewer/GameViewerPlugin';
+import { AbstractPlugin } from './View';
+import { ActionEditorPlugin } from '../plugins/action_editor/ActionEditorPlugin';
+import { SceneEditorPlugin } from '../plugins/scene_editor/SceneEditorPlugin';
 
 export interface ViewFactory {
     name: string;
-    getWindowController(registry: Registry): View;
+    getWindowController(registry: Registry): AbstractPlugin;
     renderWindowComponent(): JSX.Element;
     renderToolbarComponent(): JSX.Element;
 }
 
-export function viewFactory(controller: View): JSX.Element {
+export function viewFactory(controller: AbstractPlugin): JSX.Element {
     switch(controller.getId()) {
-        case CanvasView.id:
-            return <CanvasComponent/>;
-        case GameView.id:
+        case SceneEditorPlugin.id:
+            return <SceneEditorComponent/>;
+        case GameViewerPlugin.id:
             return <GameViewerComponent/>;
-        case ActionEditorView.id:
+        case ActionEditorPlugin.id:
             return <ActionEditorComponent/>;    
     }
 

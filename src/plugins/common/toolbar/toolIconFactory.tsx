@@ -7,11 +7,11 @@ import { PanIconComponent } from "./icons/PanIconComponent";
 import { PathIconComponent } from "./icons/PathIconComponent";
 import { ZoomInIconComponent } from "./icons/ZoomInIconComponent";
 import { ZoomOutIconComponent } from "./icons/ZoomOutIconComponent";
-import { View } from "../../../core/View";
+import { AbstractPlugin } from "../../../core/View";
 import { Registry } from "../../../core/Registry";
 import { AbstractTool } from "../tools/AbstractTool";
 
-export function createToolIcon(toolType: ToolType, view: View, registry: Registry): JSX.Element[] {
+export function createToolIcon(toolType: ToolType, view: AbstractPlugin, registry: Registry): JSX.Element[] {
 
     switch(toolType) {
         case ToolType.Rectangle:
@@ -34,10 +34,10 @@ export function createToolIcon(toolType: ToolType, view: View, registry: Registr
     }
 }
 
-function isToolActive(toolType: ToolType, view: View) {
+function isToolActive(toolType: ToolType, view: AbstractPlugin) {
         return view.getSelectedTool() && view.getSelectedTool().type === toolType;
 }
 
-function activateTool(toolType: ToolType, view: View, registry: Registry) {
+function activateTool(toolType: ToolType, view: AbstractPlugin, registry: Registry) {
     view.setSelectedTool(registry.tools.getByType(toolType) as AbstractTool);
 }

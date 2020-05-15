@@ -69,7 +69,6 @@ export class PathComponent extends React.Component<PathComponentProps> {
                     key="path"
                     d={this.props.item.serializePath()}
                     data-name={this.props.item.id}
-                    data-points={this.props.item.editPoints.map(p => p.point.toString()).join(' ')}
                     data-point-relations={this.props.item.serializeParentRelations()}
                     fill="none"
                     stroke={colors.views.stroke}

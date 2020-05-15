@@ -10,7 +10,7 @@ import { WheelListener } from '../../core/services/WheelListener';
 import { WindowToolbarStyled } from '../../core/WindowToolbar';
 import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
 import { ToolType } from '../common/tools/Tool';
-import { ActionEditorView } from './ActionEditorView';
+import { ActionEditorPlugin } from './ActionEditorPlugin';
 
 const EditorComponentStyled = styled.div`
     width: 100%;
@@ -49,10 +49,10 @@ export class ActionEditorComponent extends React.Component {
     componentDidMount() {
         this.wheelListener = new WheelListener(this.context.registry);
         this.context.registry.services.update.setCanvasRepainter(() => this.forceUpdate());
-        this.context.registry.services.layout.getViewById(ActionEditorView.id).repainter = () => {this.forceUpdate()};
+        this.context.registry.services.layout.getViewById(ActionEditorPlugin.id).repainter = () => {this.forceUpdate()};
 
         setTimeout(() => {
-            this.context.registry.services.layout.getViewById<ActionEditorView>(ActionEditorView.id).resize();
+            this.context.registry.services.layout.getViewById<ActionEditorPlugin>(ActionEditorPlugin.id).resize();
         }, 0);
     }
 
@@ -60,7 +60,7 @@ export class ActionEditorComponent extends React.Component {
         const hover = (item: Hoverable) => this.context.registry.services.mouse.hover(item);
         const unhover = (canvasItem: Hoverable) => this.context.registry.services.mouse.unhover(canvasItem);
         
-        const view = this.context.registry.services.layout.getViewById<ActionEditorView>(ActionEditorView.id);
+        const view = this.context.registry.services.layout.getViewById<ActionEditorPlugin>(ActionEditorPlugin.id);
         return (
             <EditorComponentStyled id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>
                 <WindowToolbarStyled>

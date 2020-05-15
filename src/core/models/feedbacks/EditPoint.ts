@@ -9,7 +9,7 @@ export class EditPoint implements IControl<PathConcept> {
     parent: PathConcept;
 
     constructor(id: string, point: Point, parent: PathConcept) {
-        this.id =
+        this.id = id;
         this.point = point;
         this.parent = parent;
     }

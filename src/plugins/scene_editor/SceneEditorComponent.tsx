@@ -10,7 +10,7 @@ import { RedoIconComponent } from '../common/toolbar/icons/RedoIconComponent';
 import { UndoIconComponent } from '../common/toolbar/icons/UndoIconComponent';
 import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
 import { ToolType } from '../common/tools/Tool';
-import { CanvasView } from './CanvasView';
+import { SceneEditorPlugin } from './SceneEditorPlugin';
 
 
 const EditorComponentStyled = styled.div`
@@ -19,7 +19,7 @@ const EditorComponentStyled = styled.div`
     position: relative;
 `;
 
-const CanvasComponentStyled = styled.svg`
+const SceneEditorComponentStyled = styled.svg`
     width: 100%;
     height: 100%;
     background: ${colors.panelBackgroundMedium};
@@ -31,7 +31,7 @@ const SelectionComponentStyled = styled.rect`
     fill: transparent;
 `;
 
-export class CanvasComponent extends React.Component {
+export class SceneEditorComponent extends React.Component {
     static contextType = AppContext;
     context: AppContextType;
     private wheelListener: WheelListener;
@@ -39,10 +39,10 @@ export class CanvasComponent extends React.Component {
     componentDidMount() {
         this.wheelListener = new WheelListener(this.context.registry);
         this.context.registry.services.update.setCanvasRepainter(() => this.forceUpdate());
-        this.context.registry.services.layout.getViewById(CanvasView.id).repainter = () => {this.forceUpdate()};
+        this.context.registry.services.layout.getViewById(SceneEditorPlugin.id).repainter = () => {this.forceUpdate()};
 
         setTimeout(() => {
-            this.context.registry.services.layout.getViewById<CanvasView>(CanvasView.id).resize();
+            this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).resize();
         }, 0);
     }
 
@@ -50,7 +50,7 @@ export class CanvasComponent extends React.Component {
         const hover = (item: Hoverable) => this.context.registry.services.mouse.hover(item);
         const unhover = (canvasItem: Hoverable) => this.context.registry.services.mouse.unhover(canvasItem);
         
-        const view = this.context.registry.services.layout.getViewById<CanvasView>(CanvasView.id);
+        const view = this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id);
         const history = this.context.registry.services.history;
 
         return (
@@ -65,7 +65,7 @@ export class CanvasComponent extends React.Component {
     
                     </ToolbarComponent>
                 </WindowToolbarStyled>
-                <CanvasComponentStyled
+                <SceneEditorComponentStyled
                     tabIndex={0}
                     viewBox={view.getCamera().getViewBoxAsString()}
                     id={this.context.controllers.svgCanvasId}
@@ -85,7 +85,7 @@ export class CanvasComponent extends React.Component {
                     {this.context.registry.services.export.meshConceptExporter.export(hover, unhover)}
                     {this.context.registry.services.export.pathConceptExporter.export(hover, unhover)}
                     {this.renderFeedbacks()}
-                </CanvasComponentStyled>
+                </SceneEditorComponentStyled>
             </EditorComponentStyled>
         );
     }

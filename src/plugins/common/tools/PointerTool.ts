@@ -6,8 +6,8 @@ import { isConcept, isControl } from '../../../core/stores/CanvasStore';
 import { AbstractTool } from "./AbstractTool";
 import { ToolType } from "./Tool";
 import { Concept } from '../../../core/models/concepts/Concept';
-import { CanvasView } from '../../scene_editor/CanvasView';
-import { ActionEditorView } from '../../action_editor/ActionEditorView';
+import { SceneEditorPlugin } from '../../scene_editor/SceneEditorPlugin';
+import { ActionEditorPlugin } from '../../action_editor/ActionEditorPlugin';
 import { Hoverable } from '../../../core/models/Hoverable';
 
 export class PointerTool extends AbstractTool {
@@ -106,10 +106,10 @@ export class PointerTool extends AbstractTool {
         const view = this.registry.services.layout.getHoveredView();
 
         switch(view.getId()) {
-            case CanvasView.id:
+            case SceneEditorPlugin.id:
                 this.updateSceneConcepts();
                 break;
-            case ActionEditorView.id:
+            case ActionEditorPlugin.id:
                 this.updateActionEditorConcepts();
                 break;
         }

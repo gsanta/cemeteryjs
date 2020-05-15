@@ -1,7 +1,7 @@
 import { Registry } from '../../core/Registry';
 import { Tool } from '../common/tools/Tool';
 import { UpdateService } from '../../core/services/UpdateServices';
-import { calcOffsetFromDom, View } from '../../core/View';
+import { calcOffsetFromDom, AbstractPlugin } from '../../core/View';
 import { HelperMeshes } from './HelperMeshes';
 import { ICamera } from '../common/camera/ICamera';
 import { Camera3D } from '../common/camera/Camera3D';
@@ -26,8 +26,8 @@ export function getCanvasElement(viewId: string): HTMLCanvasElement {
 }
 
 
-export class GameView extends View {
-    static id = 'game-viewer';
+export class GameViewerPlugin extends AbstractPlugin {
+    static id = 'game-viewer-plugin';
     visible = true;
     updateService: UpdateService;
 
@@ -78,7 +78,7 @@ export class GameView extends View {
 
 
     getId(): string {
-        return GameView.id;
+        return GameViewerPlugin.id;
     }
 
     getSelectedTool(): Tool {

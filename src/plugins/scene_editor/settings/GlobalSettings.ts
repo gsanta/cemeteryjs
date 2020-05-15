@@ -1,4 +1,4 @@
-import { CanvasView } from '../CanvasView';
+import { SceneEditorPlugin } from '../SceneEditorPlugin';
 import { AbstractSettings } from './AbstractSettings';
 import { UpdateTask } from '../../../core/services/UpdateServices';
 import { MeshConcept } from '../../../core/models/concepts/MeshConcept';

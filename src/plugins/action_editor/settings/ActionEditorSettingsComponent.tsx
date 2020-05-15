@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useDrag } from 'react-dnd';
 import styled from 'styled-components';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
-import { ActionEditorView } from '../ActionEditorView';
+import { ActionEditorPlugin } from '../ActionEditorPlugin';
 import { ActionEditorSettingsProps } from './ActionEditorSettings';
 
 const ActionButtonStyled = styled.div`
@@ -15,7 +15,7 @@ export class ActionEditorSettingsComponent extends React.Component {
     context: AppContextType;
 
     render() {
-        const view = this.context.registry.services.layout.getViewById(ActionEditorView.id);
+        const view = this.context.registry.services.layout.getViewById(ActionEditorPlugin.id);
 
         return (
             <div 
@@ -28,8 +28,8 @@ export class ActionEditorSettingsComponent extends React.Component {
     }
 
     renderActionTypes() {
-        const view = this.context.registry.services.layout.getViewById(ActionEditorView.id);
-        const settings = this.context.registry.services.layout.getViewById<ActionEditorView>(ActionEditorView.id).actionSettings;
+        const view = this.context.registry.services.layout.getViewById(ActionEditorPlugin.id);
+        const settings = this.context.registry.services.layout.getViewById<ActionEditorPlugin>(ActionEditorPlugin.id).actionSettings;
 
         const actionTypes = settings.getVal<string[]>(ActionEditorSettingsProps.ActionTypes);
         

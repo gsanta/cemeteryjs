@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { AppContext, AppContextType } from '../../core/gui/Context';
 import styled from 'styled-components';
-import { GameView } from './GameView';
+import { GameViewerPlugin } from './GameViewerPlugin';
 import { WindowToolbarStyled } from '../../core/WindowToolbar';
 import { WheelListener } from '../../core/services/WheelListener';
 import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
@@ -43,13 +43,13 @@ export class GameViewerComponent extends React.Component {
     
     componentDidMount() {
         this.wheelListener = new WheelListener(this.context.registry);
-        this.context.registry.services.layout.getViewById<GameView>(GameView.id).setCanvasRenderer(() => this.forceUpdate());
-        this.context.registry.services.layout.getViewById(GameView.id).repainter = () => {this.forceUpdate()};
+        this.context.registry.services.layout.getViewById<GameViewerPlugin>(GameViewerPlugin.id).setCanvasRenderer(() => this.forceUpdate());
+        this.context.registry.services.layout.getViewById(GameViewerPlugin.id).repainter = () => {this.forceUpdate()};
         
         setTimeout(() => {
             // this.context.controllers.getWindowControllerByName('renderer').update();
-            this.context.registry.services.layout.getViewById(GameView.id).setup();
-            this.context.registry.services.layout.getViewById(GameView.id).resize();
+            this.context.registry.services.layout.getViewById(GameViewerPlugin.id).setup();
+            this.context.registry.services.layout.getViewById(GameViewerPlugin.id).resize();
         }, 100);
 
     }
@@ -59,7 +59,7 @@ export class GameViewerComponent extends React.Component {
     }
 
     render() {
-        const view = this.context.registry.services.layout.getViewById<GameView>(GameView.id);
+        const view = this.context.registry.services.layout.getViewById<GameViewerPlugin>(GameViewerPlugin.id);
 
         return (
                 <GameViewerStyled id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>

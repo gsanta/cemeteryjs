@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FullScreenIconComponent } from '../../../core/gui/icons/FullScreenIconComponent';
 import { FullScreenExitIconComponent } from '../../../core/gui/icons/FullScreenExitIconComponent';
 import { ToolType } from '../tools/Tool';
-import { View } from '../../../core/View';
+import { AbstractPlugin } from '../../../core/View';
 import { createToolIcon } from './toolIconFactory';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
 import styled from 'styled-components';
@@ -10,7 +10,7 @@ import { colors } from '../../../core/gui/styles';
 import { UpdateTask } from '../../../core/services/UpdateServices';
 
 export interface ToolbarProps {
-    view: View;
+    view: AbstractPlugin;
     tools: ToolType[];
     children?: JSX.Element | JSX.Element[];
 }

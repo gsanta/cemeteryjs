@@ -5,13 +5,13 @@ import { AppContext, AppContextType } from './Context';
 import Split from 'split.js'
 import { SidebarComponent } from './SidebarComponent';
 import { SpinnerOverlayComponent } from './misc/SpinnerOverlayComponent';
-import { View } from '../View';
+import { AbstractPlugin } from '../View';
 import { viewFactory } from '../ViewFactory';
 import { AnimationDialogComponent } from './dialogs/AnimationDialogComponent';
 import { ListActionsDialogComponent } from './dialogs/ListActionsDialogComponent';
 import { DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
-import { GameView } from '../../plugins/game_viewer/GameView';
+import { GameViewerPlugin } from '../../plugins/game_viewer/GameViewerPlugin';
 import 'tippy.js/dist/tippy.css';
 
 export interface AppState {
@@ -26,7 +26,7 @@ export class App extends React.Component<{}, AppState> {
     context: AppContextType;
 
     private split: any;
-    private currentVisibleCanvases: View[] = [];
+    private currentVisibleCanvases: AbstractPlugin[] = [];
     
     constructor(props: {}) {
         super(props);
@@ -48,7 +48,7 @@ export class App extends React.Component<{}, AppState> {
         }
 
         window.addEventListener('resize', () => this.context.registry.services.layout.getActiveViews().forEach(controller => controller.resize()));
-        this.context.controllers.setup(document.querySelector(`#${GameView.id}`));
+        this.context.controllers.setup(document.querySelector(`#${GameViewerPlugin.id}`));
     }
 
     componentDidUpdate() {
