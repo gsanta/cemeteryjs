@@ -1,6 +1,6 @@
-import { ActionType } from "../../../stores/ActionStore";
-import { INode } from "./INode";
+import { INode, NodeType } from "./INode";
 import { Keyboard } from "../../../services/input/KeyboardService";
+import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
 
 export function getAllKeys() {
     const keys: string[] = [];
@@ -15,7 +15,8 @@ export function getAllKeys() {
 }
 
 export class KeyboardNode implements INode {
-    type = ActionType.Keyboard;
+    type = NodeType.Keyboard;
+    group = NodeGroupName.Default;
     title = "Keyboard input";
     key: string;
     color = '#89BD88';

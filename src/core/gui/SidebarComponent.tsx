@@ -11,7 +11,6 @@ import { settingsFactory } from '../../plugins/scene_editor/settings/settingsFac
 import { FileSettingsComponent } from '../../plugins/scene_editor/settings/FileSettingsComponent';
 import { ActionEditorSettingsComponent } from '../../plugins/action_editor/settings/ActionEditorSettingsComponent';
 
-
 export interface SidebarComponentProps {
     isEditorOpen: boolean;
     toggleEditorOpen: () => void;
@@ -57,8 +56,8 @@ export class SidebarComponent extends React.Component<SidebarComponentProps> {
             case Layout.ActionEditor:
                 layoutSettings = [
                     {
-                        title: 'Action Settings',
-                        body: <ActionEditorSettingsComponent/>
+                        title: 'Node types',
+                        body: <ActionEditorSettingsComponent settings={this.context.registry.views.actionEditorView.actionSettings}/>
                     },
                 ]
                 break;

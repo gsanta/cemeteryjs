@@ -1,17 +1,10 @@
-import { createActionNodeSettings } from '../../plugins/action_editor/settings/nodes/actionNodeSettingsFactory';
 import { ViewSettings } from '../../plugins/scene_editor/settings/AbstractSettings';
-import { NodeView } from '../models/views/NodeView';
+import { ConceptType } from '../models/concepts/Concept';
 import { NodeConnectionView } from '../models/views/NodeConnectionView';
+import { NodeType } from '../models/views/nodes/INode';
+import { NodeView } from '../models/views/NodeView';
 import { Registry } from '../Registry';
 import { AbstractStore } from './AbstractStore';
-import { ConceptType, Concept } from '../models/concepts/Concept';
-
-export enum ActionType {
-    Keyboard = 'Keyboard',
-    Move = 'Move',
-    And = 'And',
-    Mesh = 'Mesh'
-}
 
 export class ActionStore extends AbstractStore {
     settings: Map<string, ViewSettings<any, any>> = new Map();
@@ -23,7 +16,7 @@ export class ActionStore extends AbstractStore {
         super();
         this.registry = registry;
 
-        for (let item in ActionType) {
+        for (let item in NodeType) {
             if (isNaN(Number(item))) {
                 this.actionTypes.push(item);
             }

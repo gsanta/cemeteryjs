@@ -1,16 +1,24 @@
 import * as React from 'react';
 import { useDrag } from 'react-dnd';
 import styled from 'styled-components';
+import { AccordionComponent } from '../../../core/gui//misc/AccordionComponent';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { ActionEditorPlugin } from '../ActionEditorPlugin';
-import { ActionEditorSettingsProps } from './ActionEditorSettings';
+import { ActionEditorSettingsProps, ActionEditorSettings } from './ActionEditorSettings';
+import { CanvasToolsProps } from '../../../core/ViewFactory';
+import { colors } from '../../../core/gui/styles';
 
-const ActionButtonStyled = styled.div`
-    border: 1px solid white;
+const NodeButtonStyled = styled.div`
+    border-bottom: 1px solid ${colors.textColor};
+    padding: 2px 3px;
     cursor: pointer;
+
+    &:hover {
+        background: ${colors.hoverBackground};
+    }
 `;
 
-export class ActionEditorSettingsComponent extends React.Component {
+export class ActionEditorSettingsComponent extends React.Component<{settings: ActionEditorSettings}> {
     static contextType = AppContext;
     context: AppContextType;
 
@@ -22,46 +30,39 @@ export class ActionEditorSettingsComponent extends React.Component {
                 onMouseOver={() => view.setPriorityTool(this.context.registry.tools.dragAndDrop)}
                 onMouseOut={() => view.removePriorityTool(this.context.registry.tools.dragAndDrop)}
             >
-                {this.renderActionTypes()}
+                {this.renderActionGroups()}
             </div>
         );
     }
 
-    renderActionTypes() {
-        const view = this.context.registry.services.layout.getViewById(ActionEditorPlugin.id);
-        const settings = this.context.registry.services.layout.getViewById<ActionEditorPlugin>(ActionEditorPlugin.id).actionSettings;
+    renderActionGroups() {
+        const nodeTypes = this.props.settings.getVal<string[]>(ActionEditorSettingsProps.ActionTypes);
+        const groups: CanvasToolsProps[] = this.props.settings.nodeGroups.map(group => {
+            const items = group.members.map((nodeType) => (
+                <NodeButton type={nodeType} />
+            ));
 
-        const actionTypes = settings.getVal<string[]>(ActionEditorSettingsProps.ActionTypes);
-        
-        return actionTypes.map(type => {
-            return (
-                <ActionButton 
-                    type={type} 
-                    onDragStart={() => undefined/*view.setPriorityTool(this.context.registry.tools.dragAndDrop)*/}
-                    onDragEnd={() => {
-                        const currentMousePos = this.context.registry.services.pointer.pointer.curr;
-                        // this.context.registry.services.mouse.onMouseUp({x: currentMousePos.x, y: currentMousePos.y, which: 1} as MouseEvent)
-                    }}
-                    // }}
-                />
-            );
+            return {
+                title: group.name,
+                body: items
+            }
         });
+
+        return <AccordionComponent elements={groups}/>;
     }
 }
 
-const ActionButton = (props: {type: string, onDragStart: () => void, onDragEnd: () => void}) => {
+const NodeButton = (props: {type: string}) => {
     const [{isDragging}, drag] = useDrag({
-        item: { type: props.type },
+            item: { type: props.type },
             collect: monitor => ({
                 isDragging: !!monitor.isDragging(),
             }),
-            begin: () => props.onDragStart(),
-            end: (item, monitor) => props.onDragEnd()
       })
     
     return (
-        <ActionButtonStyled ref={drag}>
+        <NodeButtonStyled ref={drag}>
             {props.type}
-        </ActionButtonStyled>
+        </NodeButtonStyled>
     )
 }

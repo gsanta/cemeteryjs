@@ -1,9 +1,22 @@
 import { NodeView } from '../../../core/models/views/NodeView';
 import { Registry } from '../../../core/Registry';
 import { AbstractSettings } from '../../scene_editor/settings/AbstractSettings';
+import { NodeType } from '../../../core/models/views/nodes/INode';
 
 export enum ActionEditorSettingsProps {
     ActionTypes = 'ActionTypes',
+}
+
+export enum NodeGroupName {
+    Input = 'Input',
+    Boolean = 'Boolean',
+    Default = 'Default'
+}
+
+export interface NodeGroup {
+    name: NodeGroupName;
+    color: string;
+    members: NodeType[];
 }
 
 export class ActionEditorSettings extends AbstractSettings<ActionEditorSettingsProps> {
@@ -16,6 +29,11 @@ export class ActionEditorSettings extends AbstractSettings<ActionEditorSettingsP
     resultDoc: string = "Define what should happen when the action is activated.";
 
     private registry: Registry;
+
+    nodeGroups: NodeGroup[] = [
+        {name: NodeGroupName.Default, color: 'blue', members: [NodeType.Keyboard, NodeType.Mesh, NodeType.Move]},
+        {name: NodeGroupName.Boolean, color: 'green', members: [NodeType.And]},
+    ]
 
     constructor(registry: Registry) {
         super();

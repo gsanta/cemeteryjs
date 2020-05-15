@@ -1,5 +1,5 @@
-import { ActionType } from "../../../stores/ActionStore";
-import { INode } from "./INode";
+import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
+import { INode, NodeType } from "./INode";
 
 export enum Movement {
     Left = 'Move Left',
@@ -21,7 +21,8 @@ export function getAllMovements() {
 }
 
 export class MoveNode implements INode {
-    type = ActionType.Move;
+    type = NodeType.Move;
+    group = NodeGroupName.Default;
     title = "Move";
     movement: string;
     color = 'A194EC';
