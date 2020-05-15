@@ -2,10 +2,10 @@ import { Registry } from '../../../core/Registry';
 import { AbstractTool } from './AbstractTool';
 import { Cursor, ToolType } from "./Tool";
 import { UpdateTask } from '../../../core/services/UpdateServices';
-import { ActionNodeConcept } from '../../../core/models/concepts/ActionNodeConcept';
+import { NodeView } from '../../../core/models/views/NodeView';
 import { Rectangle } from '../../../core/geometry/shapes/Rectangle';
 import { Point } from '../../../core/geometry/shapes/Point';
-import { createActionNode } from '../../../core/models/concepts/action_node/actionNodeFactory';
+import { createNode } from '../../../core/models/views/nodes/nodeFactory';
 import { ConceptType } from '../../../core/models/concepts/Concept';
 import { createActionNodeSettings } from '../../action_editor/settings/nodes/actionNodeSettingsFactory';
 
@@ -34,7 +34,7 @@ export class DragAndDropTool extends AbstractTool {
         const bottomRight = topLeft.clone().add(new Point(200, 100));
         const id = this.registry.stores.actionStore.generateUniqueName(ConceptType.ActionConcept);
         const nodeType = this.registry.services.pointer.pointer.droppedItemType;
-        const action = new ActionNodeConcept(id, nodeType, new Rectangle(topLeft, bottomRight));
+        const action = new NodeView(id, nodeType, new Rectangle(topLeft, bottomRight));
         this.registry.stores.actionStore.addAction(action, createActionNodeSettings(action, this.registry));
         // this.registry.services.view.getHoveredView().removePriorityTool(this);
         this.registry.services.update.scheduleTasks(UpdateTask.RepaintActiveView);

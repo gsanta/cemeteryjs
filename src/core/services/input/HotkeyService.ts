@@ -119,8 +119,6 @@ export class Hotkey implements IHotkey {
     readonly action: IHotkeyAction;
     protected registry: Registry;
 
-    private static readonly 
-
     constructor(id: string, trigger: Partial<HotkeyTrigger>, action: IHotkeyAction, registry: Registry) {
         this.id = id;
         this.registry = registry;

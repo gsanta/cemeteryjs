@@ -1,6 +1,6 @@
-import { ActionNodeConcept } from "../../../../core/models/concepts/ActionNodeConcept";
-import { MeshActionNode } from "../../../../core/models/concepts/action_node/MeshActionNode";
-import { getAllMovements } from "../../../../core/models/concepts/action_node/MoveActionNode";
+import { NodeView } from "../../../../core/models/views/NodeView";
+import { MeshNode } from "../../../../core/models/views/nodes/MeshNode";
+import { getAllMovements } from "../../../../core/models/views/nodes/MoveNode";
 import { Registry } from "../../../../core/Registry";
 import { UpdateTask } from "../../../../core/services/UpdateServices";
 import { ViewSettings } from "../../../scene_editor/settings/AbstractSettings";
@@ -9,13 +9,13 @@ export enum MeshNodeProps {
     AllMeshes = 'AllMeshes',
     MeshId = 'MeshId',
 }
-export class MeshNodeSettings extends ViewSettings<MeshNodeProps, ActionNodeConcept> {
+export class MeshNodeSettings extends ViewSettings<MeshNodeProps, NodeView> {
     static settingsName = 'mesh-node-settings';
     getName() { return MeshNodeSettings.settingsName; }
-    view: ActionNodeConcept<MeshActionNode>;
+    view: NodeView<MeshNode>;
     private registry: Registry;
 
-    constructor(actionNodeConcept: ActionNodeConcept<MeshActionNode>, registry: Registry) {
+    constructor(actionNodeConcept: NodeView<MeshNode>, registry: Registry) {
         super();
         this.view = actionNodeConcept;
         this.registry = registry;

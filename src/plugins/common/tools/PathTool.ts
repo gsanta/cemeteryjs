@@ -1,6 +1,6 @@
 import { Point } from "../../../core/geometry/shapes/Point";
 import { ConceptType } from "../../../core/models/concepts/Concept";
-import { PathConcept } from "../../../core/models/concepts/PathConcept";
+import { PathView } from "../../../core/models/views/PathView";
 import { FeedbackType } from "../../../core/models/controls/IControl";
 import { EditPoint } from "../../../core/models/feedbacks/EditPoint";
 import { Hoverable } from "../../../core/models/Hoverable";
@@ -86,7 +86,7 @@ export class PathTool extends PointerTool {
         this.registry.stores.selectionStore.clear();
 
         const editPointId = this.registry.stores.canvasStore.generateUniqueName(FeedbackType.EditPointFeedback); 
-        const path = new PathConcept();
+        const path = new PathView();
         const editPoint = new EditPoint(editPointId, pointer.down.clone(), path);
         path.addEditPoint(editPoint)
         path.id = this.registry.stores.canvasStore.generateUniqueName(ConceptType.PathConcept);

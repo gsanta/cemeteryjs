@@ -1,5 +1,5 @@
 import { AbstractSettings } from "./AbstractSettings";
-import { PathConcept } from "../../../core/models/concepts/PathConcept";
+import { PathView } from "../../../core/models/views/PathView";
 
 export enum PathPropType {
     NAME = 'name'
@@ -8,7 +8,7 @@ export enum PathPropType {
 export class PathSettings extends AbstractSettings<PathPropType> {
     static type = 'path-settings';
     getName() { return PathSettings.type; }
-    path: PathConcept;
+    path: PathView;
 
     protected getProp(prop: PathPropType) {
         switch (prop) {

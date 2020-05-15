@@ -5,7 +5,7 @@ import { UpdateTask } from '../../../core/services/UpdateServices';
 import { isConcept, isControl } from '../../../core/stores/CanvasStore';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './RectangleSelector';
-import { ToolType } from './Tool';
+import { ToolType, Cursor } from './Tool';
 import { IControl } from '../../../core/models/controls/IControl';
 
 export class DeleteTool extends AbstractTool {
@@ -40,14 +40,15 @@ export class DeleteTool extends AbstractTool {
 
     
     draggedUp() {
-        const concepts = this.registry.stores.canvasStore.getIntersectingItemsInRect(this.registry.stores.feedback.rectSelectFeedback.rect);
+        const store = this.registry.views.getActiveView().getStore();
 
-        concepts.forEach((item: VisualConcept) => this.registry.stores.canvasStore.removeConcept(item));
+        const views = store.getIntersectingItemsInRect(this.registry.stores.feedback.rectSelectFeedback.rect);
+        views.forEach((item: VisualConcept) => store.removeItemById(item.id));
 
         this.rectSelector.finish();
 
         this.registry.services.level.updateCurrentLevel();
-        this.registry.services.game.deleteConcepts(concepts);
+        this.registry.services.game.deleteConcepts(views);
         this.registry.services.update.scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
     }
 
@@ -70,5 +71,9 @@ export class DeleteTool extends AbstractTool {
         this.registry.services.storage.clearAll();
         this.registry.stores.canvasStore.clear();
         this.registry.services.update.runImmediately(UpdateTask.All);
+    }
+
+    getCursor() {
+        return this.registry.services.pointer.hoveredItem ? Cursor.Pointer : Cursor.Default;
     }
 }

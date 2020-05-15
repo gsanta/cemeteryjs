@@ -21,4 +21,5 @@ export interface ControlProps<T extends IControl<any>> {
     item: T;
     hover?: (item: Hoverable) => void;
     unhover?: (item: Hoverable) => void;
+    registry: Registry;
 }

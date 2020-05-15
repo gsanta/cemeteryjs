@@ -1,6 +1,6 @@
 import { ActionType } from "../../../stores/ActionStore";
 
-export interface IActionNode {
+export interface INode {
     type: ActionType;
     title: string;
     color: string;

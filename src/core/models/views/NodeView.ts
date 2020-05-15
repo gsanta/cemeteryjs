@@ -1,12 +1,12 @@
 import { Point } from "../../geometry/shapes/Point";
 import { Rectangle } from "../../geometry/shapes/Rectangle";
 import { JoinPointControl } from "../controls/JoinPointControl";
-import { IActionNode } from "./action_node/IActionNode";
-import { ConceptType } from "./Concept";
-import { VisualConcept } from "./VisualConcept";
-import { createActionNode } from "./action_node/actionNodeFactory";
+import { INode } from "./nodes/INode";
+import { ConceptType } from "../concepts/Concept";
+import { VisualConcept } from "../concepts/VisualConcept";
+import { createNode } from "./nodes/nodeFactory";
 
-export class ActionNodeConcept<T extends IActionNode = any> implements VisualConcept {
+export class NodeView<T extends INode = any> implements VisualConcept {
     readonly  type = ConceptType.ActionConcept;
     readonly id: string;
     data: T;
@@ -18,7 +18,7 @@ export class ActionNodeConcept<T extends IActionNode = any> implements VisualCon
     constructor(id: string, nodeType: string, dimensions: Rectangle) {
         this.id = id;
         this.dimensions = dimensions;
-        this.data = <T> createActionNode(nodeType);
+        this.data = <T> createNode(nodeType);
         this.initInputNodeConnectionControls();
         this.initOutputNodeConnectionControls();
     }

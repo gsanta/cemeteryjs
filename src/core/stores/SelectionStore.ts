@@ -1,5 +1,5 @@
 import { without } from "../geometry/utils/Functions";
-import { PathConcept } from "../models/concepts/PathConcept";
+import { PathView } from "../models/views/PathView";
 import { IControl, FeedbackType } from "../models/controls/IControl";
 import { EditPoint } from "../models/feedbacks/EditPoint";
 import { VisualConcept } from "../models/concepts/VisualConcept";
@@ -30,8 +30,8 @@ export class SelectionStore {
         return <VisualConcept[]> this.items.filter(item => item.type.endsWith('Concept'));
     }
 
-    getPathConcepts(): PathConcept[] {
-        return <PathConcept[]> this.items.filter(view => view.type === ConceptType.PathConcept);
+    getPathConcepts(): PathView[] {
+        return <PathView[]> this.items.filter(view => view.type === ConceptType.PathConcept);
     }
 
     hasConcept(): boolean {

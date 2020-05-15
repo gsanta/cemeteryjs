@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { ConnectedInputComponent } from '../../../core/gui/inputs/InputComponent';
 import { SettingsRowStyled, FieldColumnStyled, LabelColumnStyled } from './SettingsComponent';
-import { PathConcept } from '../../../core/models/concepts/PathConcept';
+import { PathView } from '../../../core/models/views/PathView';
 import { SceneEditorPlugin } from '../SceneEditorPlugin';
 import { PathSettings, PathPropType } from './PathSettings';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
 
-export class PathSettingsComponent extends React.Component<{concept: PathConcept}> {
+export class PathSettingsComponent extends React.Component<{concept: PathView}> {
     static contextType = AppContext;
     context: AppContextType;
 

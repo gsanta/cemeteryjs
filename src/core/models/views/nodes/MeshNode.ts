@@ -1,7 +1,7 @@
 import { ActionType } from "../../../stores/ActionStore";
-import { IActionNode } from "./IActionNode";
+import { INode } from "./INode";
 
-export class MeshActionNode implements IActionNode {
+export class MeshNode implements INode {
     type = ActionType.Mesh;
     title = "Mesh";
     meshId: string;

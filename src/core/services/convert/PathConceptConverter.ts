@@ -1,7 +1,7 @@
 import { IConceptConverter } from "./IConceptConverter";
 import { IGameObject } from "../../../game/models/objects/IGameObject";
 import { Registry } from "../../Registry";
-import { PathConcept } from "../../models/concepts/PathConcept";
+import { PathView } from "../../models/views/PathView";
 import { ConceptType } from "../../models/concepts/Concept";
 
 export class PathConceptConverter implements IConceptConverter {
@@ -13,7 +13,7 @@ export class PathConceptConverter implements IConceptConverter {
     }
 
 
-    convert(pathConcept: PathConcept): IGameObject {
+    convert(pathConcept: PathView): IGameObject {
 
         // pathObject.points = pathView.editPoints.map(p => p.point);
 

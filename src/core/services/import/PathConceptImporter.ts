@@ -1,5 +1,5 @@
 import { Registry } from "../../Registry";
-import { PathConcept } from "../../models/concepts/PathConcept";
+import { PathView } from "../../models/views/PathView";
 import { IConceptImporter } from "./IConceptImporter";
 import { ConceptGroupJson } from "./ImportService";
 import { ConceptType } from "../../models/concepts/Concept";
@@ -39,7 +39,7 @@ export class PathConceptImporter implements IConceptImporter {
         const pathJsons =  (<PathJson[]> group.g).length ? <PathJson[]> group.g : [<PathJson> group.g];
         
         pathJsons.forEach(json => {
-            const path = new PathConcept();
+            const path = new PathView();
             path.id = json.path._attributes['data-name'];
             path.parseJson(json.path._attributes['data-json'], () => this.registry.stores.canvasStore.generateUniqueName(FeedbackType.EditPointFeedback));
 

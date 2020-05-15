@@ -1,7 +1,7 @@
 import { ActionType } from "../../../stores/ActionStore";
-import { IActionNode } from "./IActionNode";
+import { INode } from "./INode";
 
-export class AndActionNode implements IActionNode {
+export class AndNode implements INode {
     type = ActionType.And;
     title = "And";
     color = '#A19F99';

@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { colors } from '../../gui/styles';
-import { PathConcept } from '../../models/concepts/PathConcept';
+import { PathView } from '../../models/views/PathView';
 import { EditPoint } from '../../models/feedbacks/EditPoint';
 import { Stores } from '../../stores/Stores';
 import { Hoverable } from '../../models/Hoverable';
 
 export interface PathComponentProps {
-    item: PathConcept;
+    item: PathView;
     onMouseOver(item: Hoverable): void;
     onMouseOut(item: Hoverable): void;
     onlyData: boolean;

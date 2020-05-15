@@ -5,7 +5,7 @@ import { IHotkeyEvent } from "../../../core/services/input/HotkeyService";
 import { UpdateTask } from "../../../core/services/UpdateServices";
 import { AbstractTool } from "./AbstractTool";
 import { ToolType, Cursor } from './Tool';
-import { ActionNodeConnectionConcept } from "../../../core/models/concepts/ActionNodeConnectionConcept";
+import { NodeConnectionView } from "../../../core/models/views/NodeConnectionView";
 import { ConceptType } from "../../../core/models/concepts/Concept";
 
 export class JoinTool extends AbstractTool {
@@ -40,7 +40,7 @@ export class JoinTool extends AbstractTool {
         if (isNodeConnectionControl(this.registry.services.pointer.hoveredItem)) {
             const endItem = <JoinPointControl> this.registry.services.pointer.hoveredItem;
             const id = this.registry.stores.actionStore.generateUniqueName(ConceptType.ActionNodeConnectionConcept);
-            const connection = new ActionNodeConnectionConcept(id, this.startItem, endItem);
+            const connection = new NodeConnectionView(id, this.startItem, endItem);
             this.registry.stores.actionStore.addConnection(connection);
             this.start = undefined;
             this.end = undefined;

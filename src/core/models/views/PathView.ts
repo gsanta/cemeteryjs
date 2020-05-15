@@ -1,4 +1,4 @@
-import { Concept, ConceptType } from "./Concept";
+import { Concept, ConceptType } from "../concepts/Concept";
 import { Rectangle } from "../../geometry/shapes/Rectangle";
 import { Point } from "../../geometry/shapes/Point";
 import { minBy, maxBy } from "../../geometry/utils/Functions";
@@ -16,7 +16,7 @@ export interface PathProps {
 }
 
 
-export class PathConcept implements Concept, IGameObject {
+export class PathView implements Concept, IGameObject {
     type = ConceptType.PathConcept;
     editPoints: EditPoint[] = [];
     childMap: Map<EditPoint, EditPoint[]> = new Map();

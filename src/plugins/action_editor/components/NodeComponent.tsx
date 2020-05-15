@@ -1,13 +1,15 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { colors } from '../../../core/gui/styles';
-import { ActionNodeConcept } from '../../../core/models/concepts/ActionNodeConcept';
-import { InstanceProps } from '../../InstanceProps';
-import { NodeConnectionControlComponent } from './NodeConnectionControlComponent';
+import { ConceptType } from '../../../core/models/concepts/Concept';
+import { NodeView } from '../../../core/models/views/NodeView';
+import { CanvasComponent } from '../../common/CanvasComponent';
+import { GroupProps } from '../../InstanceProps';
 import { createActionNodeSettingsComponent } from '../settings/nodes/actionNodeSettingsFactory';
+import { JoinPointComponent } from './JoinPointComponent';
 
 const NodeStyled = styled.div`
-    background-color: ${(props: {concept: ActionNodeConcept}) => props.concept.data.color};
+    background-color: ${(props: {concept: NodeView}) => props.concept.data.color};
     width: 100%;
     height: 100%;
 `;
@@ -27,7 +29,7 @@ const NodeBodyStyled = styled.div`
     }
 `;
 
-export class ActionNodeComponent extends React.Component<InstanceProps<ActionNodeConcept>> {
+export class NodeComponent extends CanvasComponent<NodeView> {
     
     render() {
         return (
@@ -52,9 +54,7 @@ export class ActionNodeComponent extends React.Component<InstanceProps<ActionNod
         )
     }
 
-    private renderRect(item: ActionNodeConcept) {
-        const stroke = this.props.registry.stores.selectionStore.contains(item) || this.props.registry.stores.hoverStore.contains(item) ? colors.views.highlight : 'black';
-
+    private renderRect(item: NodeView) {
         return (
             <rect
                 key={`${item.id}-rect`}
@@ -62,20 +62,20 @@ export class ActionNodeComponent extends React.Component<InstanceProps<ActionNod
                 y={`0`}
                 width={`${item.dimensions.getWidth()}px`}
                 height={`${item.dimensions.getHeight()}px`}
-                stroke={stroke}
+                stroke={this.getStrokeColor()}
             />
         );
     }
 
-    private renderInputs(item: ActionNodeConcept): JSX.Element[] {
-        return item.inputs.map(input => <NodeConnectionControlComponent  item={input} hover={this.props.hover} unhover={this.props.unhover}/>);
+    private renderInputs(item: NodeView): JSX.Element[] {
+        return item.inputs.map(input => <JoinPointComponent  item={input} registry={this.props.registry} hover={this.props.hover} unhover={this.props.unhover}/>);
     }
 
-    private renderOutputs(item: ActionNodeConcept): JSX.Element[] {
-        return item.outputs.map(input => <NodeConnectionControlComponent  item={input} hover={this.props.hover} unhover={this.props.unhover}/>);
+    private renderOutputs(item: NodeView): JSX.Element[] {
+        return item.outputs.map(input => <JoinPointComponent  item={input} registry={this.props.registry} hover={this.props.hover} unhover={this.props.unhover}/>);
     }
 
-    private renderNode(item: ActionNodeConcept) {
+    private renderNode(item: NodeView) {
         return (
             <foreignObject
                 key={`${item.id}-content`}
@@ -97,15 +97,32 @@ export class ActionNodeComponent extends React.Component<InstanceProps<ActionNod
         )
     }
 
-    private renderNodeHeader(item: ActionNodeConcept): JSX.Element {
+    private renderNodeHeader(item: NodeView): JSX.Element {
         return (
             <NodeHeaderStyled>{item.data.title}</NodeHeaderStyled>
         );
     } 
 
-    private renderNodeBody(item: ActionNodeConcept): JSX.Element {
+    private renderNodeBody(item: NodeView): JSX.Element {
         return (
             <NodeBodyStyled>{createActionNodeSettingsComponent(item, this.props.registry)}</NodeBodyStyled>
         );
     }
+}
+
+export function AllActionNodesComponent(props: GroupProps) {
+    const actionConcepts = props.registry.stores.actionStore.getNodes();
+    const components = actionConcepts.map(actionConcept => (
+            <NodeComponent 
+                item={actionConcept}
+                renderWithSettings={props.renderWithSettings}
+                registry={props.registry}
+                hover={props.hover}
+                unhover={props.unhover}
+            />
+        )
+    );
+
+    return actionConcepts.length > 0 ? <g data-concept-type={ConceptType.ActionConcept} key={ConceptType.ActionConcept}>{components}</g> : null;
+
 }

@@ -1,5 +1,5 @@
-import { ActionNodeConcept } from "../../../../core/models/concepts/ActionNodeConcept";
-import { getAllKeys, KeyboardActionNode } from "../../../../core/models/concepts/action_node/KeyboardActionNode";
+import { NodeView } from "../../../../core/models/views/NodeView";
+import { getAllKeys, KeyboardNode } from "../../../../core/models/views/nodes/KeyboardNode";
 import { ViewSettings } from "../../../scene_editor/settings/AbstractSettings";
 import { Registry } from "../../../../core/Registry";
 import { UpdateTask } from "../../../../core/services/UpdateServices";
@@ -9,13 +9,13 @@ export enum KeyboardInputNodeProps {
     KeyboardKey = 'KeyboardKey',
 }
 
-export class KeyboardInputNodeSettings extends ViewSettings<KeyboardInputNodeProps, ActionNodeConcept> {
+export class KeyboardInputNodeSettings extends ViewSettings<KeyboardInputNodeProps, NodeView> {
     static settingsName = 'keyboard-input-node-settings';
     getName() { return KeyboardInputNodeSettings.settingsName; }
-    view: ActionNodeConcept<KeyboardActionNode>;
+    view: NodeView<KeyboardNode>;
     private registry: Registry;
 
-    constructor(actionNodeConcept: ActionNodeConcept<KeyboardActionNode>, registry: Registry) {
+    constructor(actionNodeConcept: NodeView<KeyboardNode>, registry: Registry) {
         super();
         this.view = actionNodeConcept;
         this.registry = registry;

@@ -4,7 +4,7 @@ import { Rectangle } from "../geometry/shapes/Rectangle";
 import { without } from "../geometry/utils/Functions";
 import { MeshConcept } from "../models/concepts/MeshConcept";
 import { ModelConcept } from "../models/concepts/ModelConcept";
-import { PathConcept } from "../models/concepts/PathConcept";
+import { PathView } from "../models/views/PathView";
 import { VisualConcept } from "../models/concepts/VisualConcept";
 import { IControl } from "../models/controls/IControl";
 import { AnimationConcept } from "../models/meta/AnimationConcept";
@@ -26,7 +26,7 @@ export function isMeta(type: string) {
 }
 
 export class CanvasStore extends AbstractStore {
-    concepts: VisualConcept[] = [];
+    views: VisualConcept[] = [];
     controls: IControl<any>[] = [];
     metas: MetaConcept[] = [];
 
@@ -38,7 +38,7 @@ export class CanvasStore extends AbstractStore {
     }
 
     addConcept(concept: VisualConcept) {
-        this.concepts.push(concept);
+        this.views.push(concept);
     }
 
     addControl(control: IControl<any>) {
@@ -54,19 +54,19 @@ export class CanvasStore extends AbstractStore {
     }
 
     removeConcept(concept: VisualConcept) {
-        this.concepts = without(this.concepts, concept);
+        this.views = without(this.views, concept);
         this.registry.stores.hoverStore.removeItem(concept);
         this.registry.stores.selectionStore.removeItem(concept);
         this.registry.services.game.deleteConcepts([concept]);
     }
 
     removeItemById(id: string) {
-        const concept = this.concepts.find(concept => concept.id === id);
+        const concept = this.views.find(concept => concept.id === id);
         this.removeConcept(concept);
     }
 
     clear(): void {
-        this.concepts = [];
+        this.views = [];
         this.controls = [];
         this.metas = [];
     }
@@ -76,7 +76,7 @@ export class CanvasStore extends AbstractStore {
     }
 
     getAllConcepts(): Concept[] {
-        return this.concepts;
+        return this.views;
     }
 
     getItemsByType(type: string): Concept[] {
@@ -85,16 +85,16 @@ export class CanvasStore extends AbstractStore {
         } else if (isControl(type)) {
             return this.controls.filter(c => c.type === type);
         } else if (isConcept(type)) {
-            return this.concepts.filter(v => v.type === type);
+            return this.views.filter(v => v.type === type);
         }
     }
 
     getMeshConcepts(): MeshConcept[] {
-        return <MeshConcept[]> this.concepts.filter(view => view.type === ConceptType.MeshConcept);
+        return <MeshConcept[]> this.views.filter(view => view.type === ConceptType.MeshConcept);
     }
 
-    getPathConcepts(): PathConcept[] {
-        return <PathConcept[]> this.concepts.filter(view => view.type === ConceptType.PathConcept);
+    getPathConcepts(): PathView[] {
+        return <PathView[]> this.views.filter(view => view.type === ConceptType.PathConcept);
     }
 
     getAnimationConcepts(): AnimationConcept[] {
@@ -113,20 +113,9 @@ export class CanvasStore extends AbstractStore {
         return <ModelConcept> this.metas.find(meta => meta.id === id);
     }
 
-    getIntersectingItemsInRect(rectangle: Rectangle): VisualConcept[] {
-        const x = rectangle.topLeft.x;
-        const y = rectangle.topLeft.y;
-        const width = Math.floor(rectangle.bottomRight.x - rectangle.topLeft.x);
-        const height = Math.floor(rectangle.bottomRight.y - rectangle.topLeft.y);
-
-        const polygon = Polygon.createRectangle(x, y, width, height);
-
-        return this.concepts.filter(item => polygon.contains(item.dimensions));
-    }
-
     getIntersectingItemsAtPoint(point: Point): VisualConcept[] {
         const gridPoint = new Point(point.x, point.y);
 
-        return this.concepts.filter(item => item.dimensions.containsPoint(gridPoint));
+        return this.views.filter(item => item.dimensions.containsPoint(gridPoint));
     }
 }

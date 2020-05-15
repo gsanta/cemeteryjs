@@ -17,7 +17,8 @@ export const colors = {
 
     views: {
         highlight: '#5e5ad1',
-        stroke: 'black'
+        stroke: 'black',
+        delete: 'red'
     }
 }
 

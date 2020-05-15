@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ActionNodeGroupComponent } from '../../../plugins/action_editor/components/ActionNodeGroupComponent';
-import { NodeConnectionGroupComponent } from '../../../plugins/action_editor/components/NodeConnectionGroupComponent';
+import { AllNodeConnectionsComponent } from '../../../plugins/action_editor/components/NodeConnectionComponent';
 import { Concept, ConceptType } from "../../models/concepts/Concept";
 import { Hoverable } from '../../models/Hoverable';
 import { Registry } from "../../Registry";
@@ -18,7 +18,7 @@ export class ActionConceptExporter implements IConceptExporter {
         return (
             <React.Fragment>
                 <ActionNodeGroupComponent registry={this.registry} renderWithSettings={true} hover={hover} unhover={unhover}/>
-                <NodeConnectionGroupComponent registry={this.registry} renderWithSettings={false} hover={hover} unhover={unhover}/>
+                <AllNodeConnectionsComponent registry={this.registry} renderWithSettings={false} hover={hover} unhover={unhover}/>
             </React.Fragment>
         );
     }
@@ -27,7 +27,7 @@ export class ActionConceptExporter implements IConceptExporter {
         return (
             <React.Fragment>
                 <ActionNodeGroupComponent registry={this.registry} renderWithSettings={false} hover={hover} unhover={unhover}/>
-                <NodeConnectionGroupComponent registry={this.registry} renderWithSettings={false} hover={hover} unhover={unhover}/>
+                <AllNodeConnectionsComponent registry={this.registry} renderWithSettings={false} hover={hover} unhover={unhover}/>
             </React.Fragment>
         );
     }

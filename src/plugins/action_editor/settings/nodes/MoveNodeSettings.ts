@@ -1,6 +1,6 @@
-import { ActionNodeConcept } from "../../../../core/models/concepts/ActionNodeConcept";
-import { getAllKeys } from "../../../../core/models/concepts/action_node/KeyboardActionNode";
-import { MoveActionNode, getAllMovements } from "../../../../core/models/concepts/action_node/MoveActionNode";
+import { NodeView } from "../../../../core/models/views/NodeView";
+import { getAllKeys } from "../../../../core/models/views/nodes/KeyboardNode";
+import { MoveNode, getAllMovements } from "../../../../core/models/views/nodes/MoveNode";
 import { Registry } from "../../../../core/Registry";
 import { UpdateTask } from "../../../../core/services/UpdateServices";
 import { ViewSettings } from "../../../scene_editor/settings/AbstractSettings";
@@ -9,13 +9,13 @@ export enum MoveNodeProps {
     AllMovements = 'AllMovements',
     Movement = 'Movement',
 }
-export class MoveNodeSettings extends ViewSettings<MoveNodeProps, ActionNodeConcept> {
+export class MoveNodeSettings extends ViewSettings<MoveNodeProps, NodeView> {
     static settingsName = 'move-node-settings';
     getName() { return MoveNodeSettings.settingsName; }
-    view: ActionNodeConcept<MoveActionNode>;
+    view: NodeView<MoveNode>;
     private registry: Registry;
 
-    constructor(actionNodeConcept: ActionNodeConcept<MoveActionNode>, registry: Registry) {
+    constructor(actionNodeConcept: NodeView<MoveNode>, registry: Registry) {
         super();
         this.view = actionNodeConcept;
         this.registry = registry;

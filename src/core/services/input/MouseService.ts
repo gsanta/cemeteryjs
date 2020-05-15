@@ -1,6 +1,5 @@
 import { Registry } from "../../Registry";
 import { Point } from "../../geometry/shapes/Point";
-import { IControl } from "../../models/controls/IControl";
 import { IPointerEvent } from "./PointerService";
 import { Hoverable } from "../../models/Hoverable";
 

@@ -1,5 +1,5 @@
 import { ActionType } from "../../../stores/ActionStore";
-import { IActionNode } from "./IActionNode";
+import { INode } from "./INode";
 import { Keyboard } from "../../../services/input/KeyboardService";
 
 export function getAllKeys() {
@@ -14,7 +14,7 @@ export function getAllKeys() {
     return keys;
 }
 
-export class KeyboardActionNode implements IActionNode {
+export class KeyboardNode implements INode {
     type = ActionType.Keyboard;
     title = "Keyboard input";
     key: string;

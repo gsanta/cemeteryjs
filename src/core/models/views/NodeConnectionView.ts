@@ -1,9 +1,9 @@
-import { ConceptType } from "./Concept";
-import { VisualConcept } from "./VisualConcept";
+import { ConceptType } from "../concepts/Concept";
+import { VisualConcept } from "../concepts/VisualConcept";
 import { JoinPointControl } from "../controls/JoinPointControl";
 
 
-export class ActionNodeConnectionConcept implements VisualConcept {
+export class NodeConnectionView implements VisualConcept {
     readonly  type = ConceptType.ActionNodeConnectionConcept;
     readonly id: string;
 

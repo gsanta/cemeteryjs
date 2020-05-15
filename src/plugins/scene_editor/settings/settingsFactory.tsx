@@ -5,9 +5,9 @@ import * as React from 'react';
 import { Stores } from "../../../core/stores/Stores";
 import { Registry } from "../../../core/Registry";
 import { MeshConcept } from "../../../core/models/concepts/MeshConcept";
-import { PathConcept } from "../../../core/models/concepts/PathConcept";
 import { SceneEditorPlugin } from "../SceneEditorPlugin";
 import { Concept, ConceptType } from "../../../core/models/concepts/Concept";
+import { PathView } from "../../../core/models/views/PathView";
 
 export interface ViewFormProps<T extends Concept> {
     canvasController: SceneEditorPlugin;
@@ -30,6 +30,6 @@ export function settingsFactory(registry: Registry): JSX.Element {
         case ConceptType.MeshConcept:
             return <MeshSettingsComponent concept={selectedViews[0] as MeshConcept}/>;
         case ConceptType.PathConcept:
-            return <PathSettingsComponent concept={selectedViews[0] as PathConcept}/>;
+            return <PathSettingsComponent concept={selectedViews[0] as PathView}/>;
     }
 }

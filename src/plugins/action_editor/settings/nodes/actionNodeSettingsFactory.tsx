@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ActionNodeConcept } from "../../../../core/models/concepts/ActionNodeConcept";
+import { NodeView } from "../../../../core/models/views/NodeView";
 import { Registry } from "../../../../core/Registry";
 import { ActionType } from "../../../../core/stores/ActionStore";
 import { ViewSettings } from '../../../scene_editor/settings/AbstractSettings';
@@ -16,7 +16,7 @@ export interface ActionNodeProps {
     settings: ViewSettings<any, any>;
 }
 
-export function createActionNodeSettings(actionNodeConcept: ActionNodeConcept, registry: Registry): ViewSettings<any, any> {
+export function createActionNodeSettings(actionNodeConcept: NodeView, registry: Registry): ViewSettings<any, any> {
     switch(actionNodeConcept.data.type) {
         case ActionType.Keyboard:
             return new KeyboardInputNodeSettings(actionNodeConcept, registry);
@@ -29,7 +29,7 @@ export function createActionNodeSettings(actionNodeConcept: ActionNodeConcept, r
     }
 }
 
-export function createActionNodeSettingsComponent(actionNodeConcept: ActionNodeConcept, registry: Registry) {
+export function createActionNodeSettingsComponent(actionNodeConcept: NodeView, registry: Registry) {
     const settings = registry.stores.actionStore.getSettings(actionNodeConcept);
 
     switch(actionNodeConcept.data.type) {

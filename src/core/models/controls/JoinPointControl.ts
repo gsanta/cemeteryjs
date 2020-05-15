@@ -1,5 +1,5 @@
 import { Point } from "../../geometry/shapes/Point";
-import { ActionNodeConcept } from "../concepts/ActionNodeConcept";
+import { NodeView } from "../views/NodeView";
 import { FeedbackType, IControl } from "./IControl";
 import { Hoverable } from "../Hoverable";
 
@@ -7,14 +7,14 @@ export function isNodeConnectionControl(hoverable: Hoverable) {
     return hoverable && hoverable.type === FeedbackType.NodeConnectorFeedback;
 }
 
-export class JoinPointControl implements IControl<ActionNodeConcept> {
+export class JoinPointControl implements IControl<NodeView> {
     type = FeedbackType.NodeConnectorFeedback;
     id: string;
     point: Point;
-    parent: ActionNodeConcept;
-    other: ActionNodeConcept;
+    parent: NodeView;
+    other: NodeView;
 
-    constructor(parent: ActionNodeConcept, slotIndex: number, isInput: boolean) {
+    constructor(parent: NodeView, slotIndex: number, isInput: boolean) {
         this.parent = parent;
         this.initPosition(slotIndex, isInput);
     }

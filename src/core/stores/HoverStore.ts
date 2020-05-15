@@ -1,5 +1,5 @@
 import { without } from "../geometry/utils/Functions";
-import { PathConcept } from "../models/concepts/PathConcept";
+import { PathView } from "../models/views/PathView";
 import { VisualConcept } from "../models/concepts/VisualConcept";
 import { EditPoint } from "../models/feedbacks/EditPoint";
 import { IControl, FeedbackType } from "../models/controls/IControl";
@@ -58,8 +58,8 @@ export class HoverStore {
         return this.getPath() !== undefined;
     }
 
-    getPath(): PathConcept {
-        return <PathConcept> this.items.find(item => item.type === ConceptType.PathConcept);
+    getPath(): PathView {
+        return <PathView> this.items.find(item => item.type === ConceptType.PathConcept);
     }
 
     hasEditPointOf(conceptType: ConceptType) {

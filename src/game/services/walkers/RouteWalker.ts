@@ -3,7 +3,7 @@ import { Point } from "../../../core/geometry/shapes/Point";
 import { Segment } from "../../../core/geometry/shapes/Segment";
 import { PathCorner } from "../../models/objects/PathObject";
 import { RouteObject } from "../../models/objects/RouteObject";
-import { PathConcept } from "../../../core/models/concepts/PathConcept";
+import { PathView } from "../../../core/models/views/PathView";
 
 const defaultSpeed = 1000 / 4;
 
@@ -105,7 +105,7 @@ export class RouteWalker {
         meshObj.setRotation(direction);
     }
 
-    private createPathCorners(pathObject: PathConcept): PathCorner[] {
+    private createPathCorners(pathObject: PathView): PathCorner[] {
         const pathCorners: PathCorner[] = [];
         const points = pathObject.editPoints.map(p => p.point).map(p => p.negateY()).map(point => point.div(10));
 

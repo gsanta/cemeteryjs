@@ -1,5 +1,5 @@
 import { ActionType } from "../../../stores/ActionStore";
-import { IActionNode } from "./IActionNode";
+import { INode } from "./INode";
 
 export enum Movement {
     Left = 'Move Left',
@@ -20,7 +20,7 @@ export function getAllMovements() {
     return movements;
 }
 
-export class MoveActionNode implements IActionNode {
+export class MoveNode implements INode {
     type = ActionType.Move;
     title = "Move";
     movement: string;

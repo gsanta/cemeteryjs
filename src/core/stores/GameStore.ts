@@ -45,6 +45,7 @@ export class GameStore {
 
     deleteById(id: string) {
         const obj = this.objs.find(obj => obj.id === id);
+        if (!obj) { return; }
 
         switch(obj.type) {
             case ConceptType.MeshConcept:
