@@ -1,7 +1,7 @@
 import { Registry } from '../../core/Registry';
 import { Tool } from '../common/tools/Tool';
 import { UpdateService } from '../../core/services/UpdateServices';
-import { calcOffsetFromDom, AbstractPlugin } from '../../core/View';
+import { calcOffsetFromDom, AbstractPlugin } from '../../core/AbstractPlugin';
 import { HelperMeshes } from './HelperMeshes';
 import { ICamera } from '../common/camera/ICamera';
 import { Camera3D } from '../common/camera/Camera3D';

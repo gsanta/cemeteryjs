@@ -4,12 +4,12 @@ import styled from "styled-components";
 import * as React from 'react';
 import { Stores } from "../../../core/stores/Stores";
 import { Registry } from "../../../core/Registry";
-import { MeshConcept } from "../../../core/models/concepts/MeshConcept";
+import { MeshView } from "../../../core/models/views/MeshView";
 import { SceneEditorPlugin } from "../SceneEditorPlugin";
-import { Concept, ConceptType } from "../../../core/models/concepts/Concept";
+import { View, ConceptType } from "../../../core/models/views/View";
 import { PathView } from "../../../core/models/views/PathView";
 
-export interface ViewFormProps<T extends Concept> {
+export interface ViewFormProps<T extends View> {
     canvasController: SceneEditorPlugin;
     view: T;
     getStores: () => Stores;
@@ -28,7 +28,7 @@ export function settingsFactory(registry: Registry): JSX.Element {
 
     switch(selectedViews[0].type) {
         case ConceptType.MeshConcept:
-            return <MeshSettingsComponent concept={selectedViews[0] as MeshConcept}/>;
+            return <MeshSettingsComponent concept={selectedViews[0] as MeshView}/>;
         case ConceptType.PathConcept:
             return <PathSettingsComponent concept={selectedViews[0] as PathView}/>;
     }

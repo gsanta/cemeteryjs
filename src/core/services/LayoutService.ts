@@ -1,4 +1,4 @@
-import { AbstractPlugin } from '../View';
+import { AbstractPlugin } from '../AbstractPlugin';
 import { Registry } from '../Registry';
 import { SceneEditorPlugin } from '../../plugins/scene_editor/SceneEditorPlugin';
 import { GameViewerPlugin } from '../../plugins/game_viewer/GameViewerPlugin';

@@ -6,7 +6,7 @@ import { NodeView } from '../../../core/models/views/NodeView';
 import { Rectangle } from '../../../core/geometry/shapes/Rectangle';
 import { Point } from '../../../core/geometry/shapes/Point';
 import { createNode } from '../../../core/models/views/nodes/nodeFactory';
-import { ConceptType } from '../../../core/models/concepts/Concept';
+import { ConceptType } from '../../../core/models/views/View';
 import { createActionNodeSettings } from '../../action_editor/settings/nodes/actionNodeSettingsFactory';
 
 export class DragAndDropTool extends AbstractTool {

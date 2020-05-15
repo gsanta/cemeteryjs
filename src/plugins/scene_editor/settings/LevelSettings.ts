@@ -1,6 +1,6 @@
 import { AbstractSettings } from './AbstractSettings';
 import { UpdateTask } from '../../../core/services/UpdateServices';
-import { MeshConcept } from '../../../core/models/concepts/MeshConcept';
+import { MeshView } from '../../../core/models/views/MeshView';
 import { Services } from '../../../core/services/ServiceLocator';
 import { Stores } from '../../../core/stores/Stores';
 import { Registry } from '../../../core/Registry';
@@ -14,7 +14,7 @@ export enum LevelFormPropType {
 export class LevelSettings extends AbstractSettings<LevelFormPropType> {
     static type = 'level-settings';
     getName() { return LevelSettings.type; }
-    meshConcept: MeshConcept;
+    meshConcept: MeshView;
 
     private registry: Registry;
 

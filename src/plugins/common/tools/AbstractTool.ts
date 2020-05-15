@@ -1,8 +1,8 @@
 import { Registry } from '../../../core/Registry';
-import { IControl } from '../../../core/models/controls/IControl';
+import { IControl } from '../../../core/models/views/control/IControl';
 import { IKeyboardEvent } from '../../../core/services/input/KeyboardService';
 import { Tool, ToolType, Cursor } from './Tool';
-import { Concept } from '../../../core/models/concepts/Concept';
+import { View } from '../../../core/models/views/View';
 import { Hoverable } from '../../../core/models/Hoverable';
 import { IHotkeyEvent } from '../../../core/services/input/HotkeyService';
 

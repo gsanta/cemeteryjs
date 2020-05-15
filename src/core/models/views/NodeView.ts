@@ -1,8 +1,8 @@
 import { Point } from "../../geometry/shapes/Point";
 import { Rectangle } from "../../geometry/shapes/Rectangle";
-import { JoinPointControl } from "../controls/JoinPointControl";
+import { JoinPointView } from "./control/JoinPointView";
 import { INode } from "./nodes/INode";
-import { ConceptType } from "../concepts/Concept";
+import { ConceptType } from "./View";
 import { VisualConcept } from "../concepts/VisualConcept";
 import { createNode } from "./nodes/nodeFactory";
 
@@ -12,8 +12,8 @@ export class NodeView<T extends INode = any> implements VisualConcept {
     data: T;
 
     dimensions: Rectangle;
-    inputs: JoinPointControl[] = [];
-    outputs: JoinPointControl[] = [];
+    inputs: JoinPointView[] = [];
+    outputs: JoinPointView[] = [];
 
     constructor(id: string, nodeType: string, dimensions: Rectangle) {
         this.id = id;
@@ -36,7 +36,7 @@ export class NodeView<T extends INode = any> implements VisualConcept {
 
         for (let i = 0; i < this.data.inputSlots; i++) {
             const y = i * 20 + yStart; 
-            this.inputs.push(new JoinPointControl(this, i, true));
+            this.inputs.push(new JoinPointView(this, i, true));
         }
     }
 
@@ -46,7 +46,7 @@ export class NodeView<T extends INode = any> implements VisualConcept {
 
         for (let i = 0; i < this.data.outputSlots; i++) {
             const y = i * 20 + yStart; 
-            this.outputs.push(new JoinPointControl(this, i, false));
+            this.outputs.push(new JoinPointView(this, i, false));
         }
     } 
 

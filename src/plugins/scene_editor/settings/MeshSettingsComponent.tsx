@@ -11,13 +11,13 @@ import { ConnectedInputComponent } from '../../../core/gui/inputs/InputComponent
 import { AccordionComponent } from '../../../core/gui/misc/AccordionComponent';
 import { ConnectedGridComponent } from '../../../core/gui/misc/GridComponent';
 import { FieldColumnStyled, GroupedRowsStyled, LabelColumnStyled, MultiFieldColumnStyled, SettingsRowStyled } from './SettingsComponent';
-import { MeshConcept, AnimationState } from '../../../core/models/concepts/MeshConcept';
+import { MeshView, AnimationState } from '../../../core/models/views/MeshView';
 import { ElementalAnimation } from '../../../core/models/meta/AnimationConcept';
 import { SceneEditorPlugin } from '../SceneEditorPlugin';
 import { MeshSettings, MeshViewPropType } from './MeshSettings';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
 
-export class MeshSettingsComponent extends React.Component<{concept: MeshConcept}> {
+export class MeshSettingsComponent extends React.Component<{concept: MeshView}> {
     static contextType = AppContext;
     context: AppContextType;
 

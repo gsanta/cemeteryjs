@@ -1,6 +1,6 @@
 import { CanvasStore } from "../stores/CanvasStore";
 import { maxBy } from "../geometry/utils/Functions";
-import { ConceptType, Concept } from "../models/concepts/Concept";
+import { ConceptType, View } from "../models/views/View";
 
 export class Naming {
     private canvasStore: CanvasStore;
@@ -21,7 +21,7 @@ export class Naming {
         if (views.length === 0) {
             return 0;
         } else {
-            const max = maxBy<Concept>(views, (a, b) => parseInt(a.id.match(pattern)[1], 10) - parseInt(b.id.match(pattern)[1], 10));
+            const max = maxBy<View>(views, (a, b) => parseInt(a.id.match(pattern)[1], 10) - parseInt(b.id.match(pattern)[1], 10));
             return parseInt(max.id.match(pattern)[1], 10);
         }
 

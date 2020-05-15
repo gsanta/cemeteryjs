@@ -1,6 +1,6 @@
 import { Point } from "../../geometry/shapes/Point";
-import { EditPoint } from "../feedbacks/EditPoint";
-import { ConceptType } from "../concepts/Concept";
+import { EditPointView } from "../views/control/EditPointView";
+import { ConceptType } from "../views/View";
 import { MetaConcept } from "./MetaConcept";
 
 export enum AnimationCondition {
@@ -36,7 +36,7 @@ export class AnimationConcept implements MetaConcept {
         }
     }
     
-    editPoints: EditPoint[] = []
+    editPoints: EditPointView[] = []
     dimensions = undefined;
     move(delta: Point): void {}
 }

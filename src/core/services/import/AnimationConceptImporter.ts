@@ -3,7 +3,7 @@ import { Registry } from '../../Registry';
 import { AnimationConcept, AnimationCondition } from '../../models/meta/AnimationConcept';
 import { IConceptImporter } from './IConceptImporter';
 import { ConceptGroupJson } from './ImportService';
-import { ConceptType } from '../../models/concepts/Concept';
+import { ConceptType } from '../../models/views/View';
 
 export interface AnimationJson {
     _attributes: {

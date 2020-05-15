@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ConceptType } from '../../../core/models/concepts/Concept';
+import { ConceptType } from '../../../core/models/views/View';
 import { GroupProps } from '../../InstanceProps';
 import { NodeComponent } from './NodeComponent';
 

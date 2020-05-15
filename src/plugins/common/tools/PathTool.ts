@@ -1,8 +1,8 @@
 import { Point } from "../../../core/geometry/shapes/Point";
-import { ConceptType } from "../../../core/models/concepts/Concept";
+import { ConceptType } from "../../../core/models/views/View";
 import { PathView } from "../../../core/models/views/PathView";
-import { FeedbackType } from "../../../core/models/controls/IControl";
-import { EditPoint } from "../../../core/models/feedbacks/EditPoint";
+import { FeedbackType } from "../../../core/models/views/control/IControl";
+import { EditPointView } from "../../../core/models/views/control/EditPointView";
 import { Hoverable } from "../../../core/models/Hoverable";
 import { Registry } from "../../../core/Registry";
 import { HotkeyTrigger, IHotkeyEvent } from "../../../core/services/input/HotkeyService";
@@ -40,7 +40,7 @@ export class PathTool extends PointerTool {
         }
 
         if (item.type === FeedbackType.EditPointFeedback) {
-            if ((<EditPoint> item).parent.type === ConceptType.PathConcept) {
+            if ((<EditPointView> item).parent.type === ConceptType.PathConcept) {
                 hover = true;
             }
         }
@@ -68,7 +68,7 @@ export class PathTool extends PointerTool {
             const pointer = this.registry.services.pointer.pointer;
             const selectedEditPoint = this.registry.stores.selectionStore.getEditPoint();
             const newEditPointId = this.registry.views.getActiveView().getStore().generateUniqueName(FeedbackType.EditPointFeedback); 
-            const newEditPoint = new EditPoint(newEditPointId, new Point(pointer.down.x, pointer.down.y), path);
+            const newEditPoint = new EditPointView(newEditPointId, new Point(pointer.down.x, pointer.down.y), path);
             path.addEditPoint(newEditPoint, selectedEditPoint);
             this.registry.stores.selectionStore.removeItem(selectedEditPoint);
             this.registry.stores.selectionStore.addItem(newEditPoint);
@@ -87,7 +87,7 @@ export class PathTool extends PointerTool {
 
         const editPointId = this.registry.stores.canvasStore.generateUniqueName(FeedbackType.EditPointFeedback); 
         const path = new PathView();
-        const editPoint = new EditPoint(editPointId, pointer.down.clone(), path);
+        const editPoint = new EditPointView(editPointId, pointer.down.clone(), path);
         path.addEditPoint(editPoint)
         path.id = this.registry.stores.canvasStore.generateUniqueName(ConceptType.PathConcept);
         this.registry.stores.canvasStore.addConcept(path);

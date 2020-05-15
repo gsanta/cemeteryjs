@@ -3,7 +3,7 @@ import { Registry } from '../../../core/Registry';
 import { Point } from '../../../core/geometry/shapes/Point';
 import { Rectangle } from '../../../core/geometry/shapes/Rectangle';
 import { MaterialBuilder } from './MaterialFactory';
-import { MeshConcept } from '../../../core/models/concepts/MeshConcept';
+import { MeshView } from '../../../core/models/views/MeshView';
 
 export class RectangleFactory  {
     private height: number;
@@ -33,7 +33,7 @@ export class RectangleFactory  {
 
     }
 
-    createMesh(meshObject: MeshConcept, scene: Scene): Mesh {
+    createMesh(meshObject: MeshView, scene: Scene): Mesh {
         const rec = <Rectangle> meshObject.dimensions.div(10);
         const boundingInfo = rec.getBoundingInfo();
         const width = boundingInfo.max[0] - boundingInfo.min[0];

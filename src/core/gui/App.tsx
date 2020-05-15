@@ -5,7 +5,6 @@ import { AppContext, AppContextType } from './Context';
 import Split from 'split.js'
 import { SidebarComponent } from './SidebarComponent';
 import { SpinnerOverlayComponent } from './misc/SpinnerOverlayComponent';
-import { AbstractPlugin } from '../View';
 import { viewFactory } from '../ViewFactory';
 import { AnimationDialogComponent } from './dialogs/AnimationDialogComponent';
 import { ListActionsDialogComponent } from './dialogs/ListActionsDialogComponent';
@@ -13,6 +12,7 @@ import { DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
 import { GameViewerPlugin } from '../../plugins/game_viewer/GameViewerPlugin';
 import 'tippy.js/dist/tippy.css';
+import { AbstractPlugin } from '../AbstractPlugin';
 
 export interface AppState {
     isDialogOpen: boolean;
@@ -26,7 +26,6 @@ export class App extends React.Component<{}, AppState> {
     context: AppContextType;
 
     private split: any;
-    private currentVisibleCanvases: AbstractPlugin[] = [];
     
     constructor(props: {}) {
         super(props);

@@ -5,7 +5,7 @@ import { IViewExporter } from '../../core/services/export/IViewExporter';
 import { CanvasViewImporter } from '../../core/services/import/CanvasViewImporter';
 import { IViewImporter } from '../../core/services/import/IViewImporter';
 import { UpdateTask } from '../../core/services/UpdateServices';
-import { calcOffsetFromDom, AbstractPlugin } from '../../core/View';
+import { calcOffsetFromDom, AbstractPlugin } from '../../core/AbstractPlugin';
 import { Camera2D } from '../common/camera/Camera2D';
 import { LevelSettings } from './settings/LevelSettings';
 import { MeshSettings } from './settings/MeshSettings';

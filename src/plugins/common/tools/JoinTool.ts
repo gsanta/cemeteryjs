@@ -1,18 +1,18 @@
 import { Point } from "../../../core/geometry/shapes/Point";
-import { isNodeConnectionControl, JoinPointControl } from "../../../core/models/controls/JoinPointControl";
+import { isNodeConnectionControl, JoinPointView } from "../../../core/models/views/control/JoinPointView";
 import { Registry } from "../../../core/Registry";
 import { IHotkeyEvent } from "../../../core/services/input/HotkeyService";
 import { UpdateTask } from "../../../core/services/UpdateServices";
 import { AbstractTool } from "./AbstractTool";
 import { ToolType, Cursor } from './Tool';
 import { NodeConnectionView } from "../../../core/models/views/NodeConnectionView";
-import { ConceptType } from "../../../core/models/concepts/Concept";
+import { ConceptType } from "../../../core/models/views/View";
 
 export class JoinTool extends AbstractTool {
     start: Point;
     end: Point;
-    startItem: JoinPointControl;
-    endItem: JoinPointControl;
+    startItem: JoinPointView;
+    endItem: JoinPointView;
 
     constructor(registry: Registry) {
         super(ToolType.Join, registry);
@@ -20,7 +20,7 @@ export class JoinTool extends AbstractTool {
 
     down() {
         this.start = this.registry.services.pointer.pointer.curr;
-        this.startItem = <JoinPointControl> this.registry.services.pointer.hoveredItem;
+        this.startItem = <JoinPointView> this.registry.services.pointer.hoveredItem;
         this.end = this.registry.services.pointer.pointer.curr;
         this.registry.services.update.scheduleTasks(UpdateTask.RepaintActiveView);
     }
@@ -38,7 +38,7 @@ export class JoinTool extends AbstractTool {
         this.registry.services.layout.getHoveredView().removePriorityTool(this);
 
         if (isNodeConnectionControl(this.registry.services.pointer.hoveredItem)) {
-            const endItem = <JoinPointControl> this.registry.services.pointer.hoveredItem;
+            const endItem = <JoinPointView> this.registry.services.pointer.hoveredItem;
             const id = this.registry.stores.actionStore.generateUniqueName(ConceptType.ActionNodeConnectionConcept);
             const connection = new NodeConnectionView(id, this.startItem, endItem);
             this.registry.stores.actionStore.addConnection(connection);

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { colors } from '../../gui/styles';
 import { PathView } from '../../models/views/PathView';
-import { EditPoint } from '../../models/feedbacks/EditPoint';
+import { EditPointView } from '../../models/views/control/EditPointView';
 import { Stores } from '../../stores/Stores';
 import { Hoverable } from '../../models/Hoverable';
 
@@ -30,7 +30,7 @@ export class PathComponent extends React.Component<PathComponentProps> {
         )
     }
 
-    renderEditPoint(editPoint: EditPoint): JSX.Element {
+    renderEditPoint(editPoint: EditPointView): JSX.Element {
         const selected = this.props.stores.selectionStore.contains(editPoint);
         const hovered = this.props.stores.hoverStore.contains(editPoint);
         const color = selected || hovered ? colors.views.highlight : 'black';

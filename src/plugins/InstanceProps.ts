@@ -1,6 +1,6 @@
 import { Hoverable } from "../core/models/Hoverable";
 import { Registry } from "../core/Registry";
-import { IControl } from "../core/models/controls/IControl";
+import { IControl } from "../core/models/views/control/IControl";
 
 export interface InstanceProps<T extends Hoverable> {
     item: T;

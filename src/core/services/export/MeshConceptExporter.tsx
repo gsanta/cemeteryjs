@@ -2,11 +2,11 @@ import { Registry } from "../../Registry";
 import { sort } from "../../geometry/utils/Functions";
 import { toDegree } from "../../geometry/utils/Measurements";
 import { colors } from "../../gui/styles";
-import { MeshConcept } from "../../models/concepts/MeshConcept";
+import { MeshView } from "../../models/views/MeshView";
 import { IConceptExporter } from "./IConceptExporter";
 import React = require("react");
-import { ConceptType, Concept } from "../../models/concepts/Concept";
-import { IControl } from "../../models/controls/IControl";
+import { ConceptType, View } from "../../models/views/View";
+import { IControl } from "../../models/views/control/IControl";
 import { Hoverable } from "../../models/Hoverable";
 
 export class MeshConceptExporter implements IConceptExporter {
@@ -17,7 +17,7 @@ export class MeshConceptExporter implements IConceptExporter {
         this.registry = registry;
     }
 
-    export(hover?: (view: Concept) => void, unhover?: (view: Concept) => void): JSX.Element {
+    export(hover?: (view: View) => void, unhover?: (view: View) => void): JSX.Element {
         const meshGroups = this.getSortedMeshViews().map(item => this.renderGroup(item, hover, unhover));
 
         return meshGroups.length > 0 ? <g data-concept-type={ConceptType.MeshConcept} key={ConceptType.MeshConcept}>{meshGroups}</g> : null;
@@ -32,7 +32,7 @@ export class MeshConceptExporter implements IConceptExporter {
         return sort(items, (a, b) => a.layer - b.layer);
     }
 
-    private renderGroup(item: MeshConcept, hover?: (view: Concept) => void, unhover?: (view: Concept) => void) {
+    private renderGroup(item: MeshView, hover?: (view: View) => void, unhover?: (view: View) => void) {
         return (
             <g
                 key={`${item.id}-group`}
@@ -62,7 +62,7 @@ export class MeshConceptExporter implements IConceptExporter {
         )
     }
 
-    private renderRect(item: MeshConcept) {
+    private renderRect(item: MeshView) {
         const stroke = this.registry.stores.selectionStore.contains(item) || this.registry.stores.hoverStore.contains(item) ? colors.views.highlight : 'black';
 
         return (
@@ -78,7 +78,7 @@ export class MeshConceptExporter implements IConceptExporter {
         );
     }
 
-    private renderThumbnail(item: MeshConcept) {
+    private renderThumbnail(item: MeshView) {
         let thumbnail: JSX.Element = null;
 
         if (item.thumbnailPath) {

@@ -6,7 +6,7 @@ import { isConcept, isControl } from '../../../core/stores/CanvasStore';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './RectangleSelector';
 import { ToolType, Cursor } from './Tool';
-import { IControl } from '../../../core/models/controls/IControl';
+import { IControl } from '../../../core/models/views/control/IControl';
 
 export class DeleteTool extends AbstractTool {
     private rectSelector: RectangleSelector;

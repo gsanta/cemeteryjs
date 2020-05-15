@@ -1,5 +1,5 @@
 import { AbstractSettings } from './AbstractSettings';
-import { MeshConcept } from '../../../core/models/concepts/MeshConcept';
+import { MeshView } from '../../../core/models/views/MeshView';
 import { Registry } from '../../../core/Registry';
 import { UpdateTask } from '../../../core/services/UpdateServices';
 
@@ -10,7 +10,7 @@ export enum LayoutPropType {
 export class LayoutSettings extends AbstractSettings<LayoutPropType> {
     static type = 'layout-settings';
     getName() { return LayoutSettings.type; }
-    meshConcept: MeshConcept;
+    meshConcept: MeshView;
 
     private registry: Registry;
 

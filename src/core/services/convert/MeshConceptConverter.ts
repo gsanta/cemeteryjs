@@ -3,8 +3,8 @@ import { IGameObject } from "../../../game/models/objects/IGameObject";
 import { RouteObject } from "../../../game/models/objects/RouteObject";
 import { IConceptConverter } from "./IConceptConverter";
 import { Registry } from "../../Registry";
-import { MeshConcept } from "../../models/concepts/MeshConcept";
-import { ConceptType } from "../../models/concepts/Concept";
+import { MeshView } from "../../models/views/MeshView";
+import { ConceptType } from "../../models/views/View";
 
 export class MeshConceptConverter implements IConceptConverter {
     viewType = ConceptType.MeshConcept;
@@ -14,7 +14,7 @@ export class MeshConceptConverter implements IConceptConverter {
         this.registry = registry;
     }
 
-    convert(meshConcept: MeshConcept): IGameObject {
+    convert(meshConcept: MeshView): IGameObject {
         if (meshConcept.path) {
             const routeObject = new RouteObject(
                 () => this.registry.stores.gameStore.getByName(meshConcept.id),

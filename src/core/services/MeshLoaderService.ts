@@ -2,7 +2,7 @@ import { Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, StandardMaterial } 
 import { Point } from '../geometry/shapes/Point';
 import { Registry } from '../Registry';
 import { ModelConcept } from '../models/concepts/ModelConcept';
-import { MeshConcept } from '../models/concepts/MeshConcept';
+import { MeshView } from '../models/views/MeshView';
 
 export class MeshLoaderService {
     serviceName = 'mesh-loader-service'
@@ -50,7 +50,7 @@ export class MeshLoaderService {
         this.fileNameToMeshNameMap.set(fileName, mesh.name);
     }
 
-    loadAll(meshObjects: MeshConcept[]): Promise<Mesh[]> {
+    loadAll(meshObjects: MeshView[]): Promise<Mesh[]> {
         const modeledMeshObjets = meshObjects.filter(item => item.modelId);
 
         const promises: Promise<Mesh>[] = [];

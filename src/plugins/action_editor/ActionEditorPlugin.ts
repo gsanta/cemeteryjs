@@ -1,7 +1,7 @@
 import { Point } from '../../core/geometry/shapes/Point';
 import { Registry } from '../../core/Registry';
 import { UpdateTask } from '../../core/services/UpdateServices';
-import { calcOffsetFromDom, AbstractPlugin } from '../../core/View';
+import { calcOffsetFromDom, AbstractPlugin } from '../../core/AbstractPlugin';
 import { Camera2D } from '../common/camera/Camera2D';
 import { ActionEditorSettings } from './settings/ActionEditorSettings';
 import { ActionStore } from '../../core/stores/ActionStore';

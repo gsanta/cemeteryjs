@@ -1,4 +1,4 @@
-import { ConceptType } from "../../models/concepts/Concept";
+import { ConceptType } from "../../models/views/View";
 import { Hoverable } from "../../models/Hoverable";
 import { Registry } from "../../Registry";
 import { IConceptExporter } from "./IConceptExporter";

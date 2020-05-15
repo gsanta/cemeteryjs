@@ -2,16 +2,16 @@ import { Point } from "../geometry/shapes/Point";
 import { Polygon } from "../geometry/shapes/Polygon";
 import { Rectangle } from "../geometry/shapes/Rectangle";
 import { without } from "../geometry/utils/Functions";
-import { MeshConcept } from "../models/concepts/MeshConcept";
+import { MeshView } from "../models/views/MeshView";
 import { ModelConcept } from "../models/concepts/ModelConcept";
 import { PathView } from "../models/views/PathView";
 import { VisualConcept } from "../models/concepts/VisualConcept";
-import { IControl } from "../models/controls/IControl";
+import { IControl } from "../models/views/control/IControl";
 import { AnimationConcept } from "../models/meta/AnimationConcept";
 import { MetaConcept } from "../models/meta/MetaConcept";
 import { Registry } from "../Registry";
 import { AbstractStore } from './AbstractStore';
-import { ConceptType, Concept } from "../models/concepts/Concept";
+import { ConceptType, View } from "../models/views/View";
 
 export function isControl(type: string) {
     return type.endsWith('Feedback');
@@ -75,11 +75,11 @@ export class CanvasStore extends AbstractStore {
         return this.metas.indexOf(concept) !== -1;
     }
 
-    getAllConcepts(): Concept[] {
+    getAllConcepts(): View[] {
         return this.views;
     }
 
-    getItemsByType(type: string): Concept[] {
+    getItemsByType(type: string): View[] {
         if (isMeta(type)) {
             return this.metas.filter(v => v.type === type);
         } else if (isControl(type)) {
@@ -89,8 +89,8 @@ export class CanvasStore extends AbstractStore {
         }
     }
 
-    getMeshConcepts(): MeshConcept[] {
-        return <MeshConcept[]> this.views.filter(view => view.type === ConceptType.MeshConcept);
+    getMeshConcepts(): MeshView[] {
+        return <MeshView[]> this.views.filter(view => view.type === ConceptType.MeshConcept);
     }
 
     getPathConcepts(): PathView[] {

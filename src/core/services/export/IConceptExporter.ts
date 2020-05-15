@@ -1,5 +1,5 @@
-import { IControl } from "../../models/controls/IControl";
-import { ConceptType, Concept } from "../../models/concepts/Concept";
+import { IControl } from "../../models/views/control/IControl";
+import { ConceptType, View } from "../../models/views/View";
 import { Hoverable } from "../../models/Hoverable";
 
 export interface IConceptExporter {

@@ -1,6 +1,6 @@
-import { Concept } from "../concepts/Concept";
+import { View } from "../views/View";
 
 
-export interface MetaConcept extends Concept {
+export interface MetaConcept extends View {
     // id: string;
 }

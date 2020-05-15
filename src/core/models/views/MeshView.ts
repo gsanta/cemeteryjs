@@ -5,10 +5,10 @@ import { Point } from '../../geometry/shapes/Point';
 import { Rectangle } from '../../geometry/shapes/Rectangle';
 import { toVector3 } from '../../geometry/utils/GeomUtils';
 import { toDegree } from '../../geometry/utils/Measurements';
-import { EditPoint } from '../feedbacks/EditPoint';
+import { EditPointView } from './control/EditPointView';
 import { AnimationConcept, ElementalAnimation } from '../meta/AnimationConcept';
-import { ConceptType } from './Concept';
-import { VisualConcept } from './VisualConcept';
+import { ConceptType } from './View';
+import { VisualConcept } from '../concepts/VisualConcept';
 
 export enum WorldItemShape {
     RECTANGLE = 'rect',
@@ -33,7 +33,7 @@ export enum AnimationState {
 }
 
 
-export class MeshConcept implements VisualConcept, IGameObject {
+export class MeshView implements VisualConcept, IGameObject {
     type = ConceptType.MeshConcept;
     mesh: Mesh;
 
@@ -41,8 +41,8 @@ export class MeshConcept implements VisualConcept, IGameObject {
     id: string;
     dimensions: Rectangle;
     rotation: number;
-    children: MeshConcept[] = [];
-    parent: MeshConcept;
+    children: MeshView[] = [];
+    parent: MeshView;
     modelId: string;
     routeId: string;
     thumbnailPath: string;
@@ -69,11 +69,11 @@ export class MeshConcept implements VisualConcept, IGameObject {
         this.rotation = rotation;
     }
 
-    addChild(worldItem: MeshConcept) {
+    addChild(worldItem: MeshView) {
         this.children.push(worldItem);
     }
 
-    equalTo(worldItem: MeshConcept) {
+    equalTo(worldItem: MeshView) {
         return (
             this.id === worldItem.id &&
             this.dimensions.equalTo(worldItem.dimensions) &&

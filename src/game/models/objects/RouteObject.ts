@@ -1,14 +1,14 @@
 import { IGameObject } from "./IGameObject";
 import { PathCorner } from "./PathObject";
-import { MeshConcept } from "../../../core/models/concepts/MeshConcept";
+import { MeshView } from "../../../core/models/views/MeshView";
 import { PathView } from "../../../core/models/views/PathView";
-import { ConceptType } from "../../../core/models/concepts/Concept";
+import { ConceptType } from "../../../core/models/views/View";
 
 export class RouteObject implements IGameObject {
     readonly type = ConceptType.RouteConcept;
     private getPathObjectFunc: () => PathView;
-    private getMeshObjectFunc: () => MeshConcept;
-    constructor(getMeshObject: () => MeshConcept, getPathObject: () => PathView) {
+    private getMeshObjectFunc: () => MeshView;
+    constructor(getMeshObject: () => MeshView, getPathObject: () => PathView) {
         this.getMeshObjectFunc = getMeshObject;
         this.getPathObjectFunc = getPathObject;
     }

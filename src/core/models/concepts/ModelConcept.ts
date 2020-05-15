@@ -1,5 +1,5 @@
 import { MetaConcept } from "../meta/MetaConcept";
-import { ConceptType } from "./Concept";
+import { ConceptType } from "../views/View";
 
 
 export class ModelConcept implements MetaConcept {

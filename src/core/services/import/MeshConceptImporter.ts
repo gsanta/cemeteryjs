@@ -2,10 +2,10 @@
 import { Registry } from '../../Registry';
 import { Point } from '../../geometry/shapes/Point';
 import { Rectangle } from '../../geometry/shapes/Rectangle';
-import { MeshConcept } from '../../models/concepts/MeshConcept';
+import { MeshView } from '../../models/views/MeshView';
 import { IConceptImporter } from './IConceptImporter';
 import { ConceptGroupJson } from './ImportService';
-import { ConceptType } from '../../models/concepts/Concept';
+import { ConceptType } from '../../models/views/View';
 
 export interface RectJson {
     _attributes: {
@@ -49,7 +49,7 @@ export class MeshConceptImporter implements IConceptImporter {
 
             const rectangle = new Rectangle(new Point(x, y), new Point(x + width, y + height));
 
-            const meshConcept: MeshConcept = new MeshConcept(rectangle, name);
+            const meshConcept: MeshView = new MeshView(rectangle, name);
             meshConcept.type = <ConceptType> type;
             meshConcept.rotation = rotation;
             meshConcept.modelId = modelId;

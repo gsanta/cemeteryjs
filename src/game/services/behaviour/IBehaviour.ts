@@ -1,4 +1,4 @@
-import { MeshConcept } from "../../../core/models/concepts/MeshConcept";
+import { MeshView } from "../../../core/models/views/MeshView";
 
 export enum BehaviourType {
     Ramble = 'Ramble'
@@ -6,6 +6,6 @@ export enum BehaviourType {
 
 export interface IBehaviour {
     type: BehaviourType;
-    update(gameObject: MeshConcept);
-    canActivate(gameObject: MeshConcept): boolean;
+    update(gameObject: MeshView);
+    canActivate(gameObject: MeshView): boolean;
 }

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ActionNodeGroupComponent } from '../../../plugins/action_editor/components/ActionNodeGroupComponent';
 import { AllNodeConnectionsComponent } from '../../../plugins/action_editor/components/NodeConnectionComponent';
-import { Concept, ConceptType } from "../../models/concepts/Concept";
+import { View, ConceptType } from "../../models/views/View";
 import { Hoverable } from '../../models/Hoverable';
 import { Registry } from "../../Registry";
 import { IConceptExporter } from "./IConceptExporter";
@@ -14,7 +14,7 @@ export class ActionConceptExporter implements IConceptExporter {
         this.registry = registry;
     }
 
-    export(hover?: (view: Concept) => void, unhover?: (view: Concept) => void): JSX.Element {
+    export(hover?: (view: View) => void, unhover?: (view: View) => void): JSX.Element {
         return (
             <React.Fragment>
                 <ActionNodeGroupComponent registry={this.registry} renderWithSettings={true} hover={hover} unhover={unhover}/>

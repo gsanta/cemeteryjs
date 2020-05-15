@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { colors } from '../../../core/gui/styles';
-import { JoinPointControl } from '../../../core/models/controls/JoinPointControl';
+import { JoinPointView } from '../../../core/models/views/control/JoinPointView';
 import { ControlProps } from '../../InstanceProps';
 import styled from 'styled-components';
 
@@ -24,7 +24,7 @@ const HoverStyled = styled.circle`
     }
 `;
 
-export class JoinPointComponent extends React.Component<ControlProps<JoinPointControl>> {
+export class JoinPointComponent extends React.Component<ControlProps<JoinPointView>> {
     
     render() {
         return (

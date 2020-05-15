@@ -1,6 +1,6 @@
 import { maxBy } from '../geometry/utils/Functions';
-import { ConceptType, Concept } from '../models/concepts/Concept';
-import { FeedbackType } from '../models/controls/IControl';
+import { ConceptType, View } from '../models/views/View';
+import { FeedbackType } from '../models/views/control/IControl';
 import { Hoverable } from '../models/Hoverable';
 import { Rectangle } from '../geometry/shapes/Rectangle';
 import { VisualConcept } from '../models/concepts/VisualConcept';
@@ -35,7 +35,7 @@ export abstract class AbstractStore {
         if (views.length === 0) {
             return 0;
         } else {
-            const max = maxBy<Concept>(views, (a, b) => parseInt(a.id.match(pattern)[1], 10) - parseInt(b.id.match(pattern)[1], 10));
+            const max = maxBy<View>(views, (a, b) => parseInt(a.id.match(pattern)[1], 10) - parseInt(b.id.match(pattern)[1], 10));
             return parseInt(max.id.match(pattern)[1], 10);
         }
 

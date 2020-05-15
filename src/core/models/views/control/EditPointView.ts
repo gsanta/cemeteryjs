@@ -1,8 +1,8 @@
-import { Point } from "../../geometry/shapes/Point";
-import { IControl, FeedbackType } from "../controls/IControl";
-import { PathView } from "../views/PathView";
+import { Point } from "../../../geometry/shapes/Point";
+import { IControl, FeedbackType } from "./IControl";
+import { PathView } from "../PathView";
 
-export class EditPoint implements IControl<PathView> {
+export class EditPointView implements IControl<PathView> {
     id: string;
     type = FeedbackType.EditPointFeedback;
     point: Point;

@@ -2,8 +2,8 @@ import { Registry } from '../../Registry';
 import { AnimationConcept, ElementalAnimation } from "../../models/meta/AnimationConcept";
 import { IConceptExporter } from "./IConceptExporter";
 import React = require("react");
-import { ConceptType, Concept } from '../../models/concepts/Concept';
-import { IControl } from '../../models/controls/IControl';
+import { ConceptType, View } from '../../models/views/View';
+import { IControl } from '../../models/views/control/IControl';
 import { Hoverable } from '../../models/Hoverable';
 
 export class AnimationConceptExporter implements IConceptExporter {
@@ -15,7 +15,7 @@ export class AnimationConceptExporter implements IConceptExporter {
     }
 
 
-    export(hover?: (view: Concept) => void, unhover?: (view: Concept) => void): JSX.Element {
+    export(hover?: (view: View) => void, unhover?: (view: View) => void): JSX.Element {
         const animationConcepts = [...this.registry.stores.canvasStore.getAnimationConcepts()].map(animConcept => this.exportAnimationConcept(animConcept));
 
         return animationConcepts.length > 0 ? <g data-concept-type={ConceptType.AnimationConcept}>{animationConcepts}</g> : null;

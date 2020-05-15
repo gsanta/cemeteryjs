@@ -10,6 +10,6 @@ export enum ConceptType {
     ActionNodeConnectionConcept = 'ActionNodeConnectionConcept' 
 }
 
-export interface Concept extends Hoverable {
+export interface View extends Hoverable {
     id: string;
 }

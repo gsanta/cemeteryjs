@@ -1,6 +1,6 @@
-import { Concept } from "../concepts/Concept";
-import { Hoverable } from "../Hoverable";
-import { Point } from "../../geometry/shapes/Point";
+import { View } from "../View";
+import { Hoverable } from "../../Hoverable";
+import { Point } from "../../../geometry/shapes/Point";
 
 export enum FeedbackType {
     RectSelectFeedback = 'RectSelectFeedback',
@@ -8,7 +8,7 @@ export enum FeedbackType {
     NodeConnectorFeedback = 'NodeConnectorFeedback'
 }
 
-export interface IControl<T extends Concept> extends Hoverable {
+export interface IControl<T extends View> extends Hoverable {
     parent: T;
 
     delete();

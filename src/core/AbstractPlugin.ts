@@ -1,16 +1,12 @@
-import { Point } from './geometry/shapes/Point';
-import { Editor } from './Editor';
-import { IViewExporter } from './services/export/IViewExporter';
-import { GameService } from './services/GameService';
-import { IViewImporter } from './services/import/IViewImporter';
-import { Services } from './services/ServiceLocator';
+import { ICamera } from '../plugins/common/camera/ICamera';
 import { AbstractTool } from '../plugins/common/tools/AbstractTool';
 import { Tool } from '../plugins/common/tools/Tool';
-import { UpdateTask } from './services/UpdateServices';
-import { Stores } from './stores/Stores';
 import { AbstractSettings } from '../plugins/scene_editor/settings/AbstractSettings';
-import { ICamera } from '../plugins/common/camera/ICamera';
+import { Point } from './geometry/shapes/Point';
 import { Registry } from './Registry';
+import { IViewExporter } from './services/export/IViewExporter';
+import { IViewImporter } from './services/import/IViewImporter';
+import { UpdateTask } from './services/UpdateServices';
 import { AbstractStore } from './stores/AbstractStore';
 
 export interface CanvasViewSettings {

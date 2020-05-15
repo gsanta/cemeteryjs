@@ -3,7 +3,7 @@ import { Registry } from "../Registry";
 import { MeshConceptConverter } from "./convert/MeshConceptConverter";
 import { PathConceptConverter } from "./convert/PathConceptConverter";
 import { IConceptConverter } from "./convert/IConceptConverter";
-import { Concept } from "../models/concepts/Concept";
+import { View } from "../models/views/View";
 
 export class ConceptConvertService {
     serviceName = 'concept-convert-service';
@@ -17,11 +17,11 @@ export class ConceptConvertService {
         ];
     }
 
-    convert(concept: Concept): IGameObject {
+    convert(concept: View): IGameObject {
         return this.getConceptConverter(concept).convert(concept);
     }
 
-    private getConceptConverter(view: Concept): IConceptConverter {
+    private getConceptConverter(view: View): IConceptConverter {
         return this.conceptConverters.find(converter => converter.viewType === view.type);
     }
 }

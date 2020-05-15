@@ -1,5 +1,5 @@
 import { Rectangle } from "../../geometry/shapes/Rectangle";
-import { FeedbackType } from "../controls/IControl";
+import { FeedbackType } from "../views/control/IControl";
 
 export class RectSelectFeedback {
     type = FeedbackType.RectSelectFeedback;

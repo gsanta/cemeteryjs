@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { colors } from '../../../core/gui/styles';
-import { ConceptType } from '../../../core/models/concepts/Concept';
+import { ConceptType } from '../../../core/models/views/View';
 import { NodeView } from '../../../core/models/views/NodeView';
 import { CanvasComponent } from '../../common/CanvasComponent';
 import { GroupProps } from '../../InstanceProps';

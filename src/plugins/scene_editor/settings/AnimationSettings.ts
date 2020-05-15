@@ -1,9 +1,9 @@
 import { Registry } from '../../../core/Registry';
 import { UpdateTask } from '../../../core/services/UpdateServices';
-import { MeshConcept } from '../../../core/models/concepts/MeshConcept';
+import { MeshView } from '../../../core/models/views/MeshView';
 import { AnimationConcept, AnimationCondition } from '../../../core/models/meta/AnimationConcept';
 import { AbstractSettings } from './AbstractSettings';
-import { ConceptType } from '../../../core/models/concepts/Concept';
+import { ConceptType } from '../../../core/models/views/View';
 
 export enum AnimationSettingsProps {
     Name = 'Name',
@@ -16,7 +16,7 @@ export class AnimationSettings extends AbstractSettings<AnimationSettingsProps> 
     static settingsName = 'animation-settings';
     getName() { return AnimationSettings.settingsName; }
     animationConcept: AnimationConcept;
-    meshConcept: MeshConcept;
+    meshConcept: MeshView;
 
     private registry: Registry;
 
@@ -62,7 +62,7 @@ export class AnimationSettings extends AbstractSettings<AnimationSettingsProps> 
     }
 
     load() {
-        this.meshConcept = this.registry.stores.selectionStore.getConcept() as MeshConcept;
+        this.meshConcept = this.registry.stores.selectionStore.getConcept() as MeshView;
         if (this.meshConcept.animationId) {
             this.animationConcept = this.registry.stores.canvasStore.getAnimationConceptById(this.meshConcept.animationId);            
         }

@@ -5,7 +5,7 @@ import { MeshConceptImporter } from './MeshConceptImporter';
 import { ModelConceptImporter } from './ModelConceptImporter';
 import { Registry } from '../../Registry';
 import { PathConceptImporter } from './PathConceptImporter';
-import { ConceptType } from '../../models/concepts/Concept';
+import { ConceptType } from '../../models/views/View';
 
 export interface WgDefinition {
     _attributes: WgDefinitionAttributes;

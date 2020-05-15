@@ -1,11 +1,11 @@
 import { Registry } from '../../../core/Registry';
 import { UpdateTask } from '../../../core/services/UpdateServices';
-import { MeshConcept } from '../../../core/models/concepts/MeshConcept';
+import { MeshView } from '../../../core/models/views/MeshView';
 import { ModelConcept } from '../../../core/models/concepts/ModelConcept';
 import { AnimationConcept, AnimationCondition } from '../../../core/models/meta/AnimationConcept';
 import { AbstractSettings, PropertyType } from "./AbstractSettings";
 import { toDegree, toRadian } from '../../../core/geometry/utils/Measurements';
-import { ConceptType } from '../../../core/models/concepts/Concept';
+import { ConceptType } from '../../../core/models/views/View';
 
 export enum MeshViewPropType {
     Color = 'color',
@@ -31,7 +31,7 @@ const propertyTypes = {
 export class MeshSettings extends AbstractSettings<MeshViewPropType> {
     static type = 'mesh-settings';
     getName() { return MeshSettings.type; }
-    meshConcept: MeshConcept;
+    meshConcept: MeshView;
 
     isAnimationSectionOpen = false;
     private registry: Registry;

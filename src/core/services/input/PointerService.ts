@@ -1,8 +1,8 @@
 import { Registry } from "../../Registry";
 import { Point } from "../../geometry/shapes/Point";
-import { IControl } from "../../models/controls/IControl";
+import { IControl } from "../../models/views/control/IControl";
 import { MousePointer } from "./MouseService";
-import { Concept } from "../../models/concepts/Concept";
+import { View } from "../../models/views/View";
 import { Hoverable } from "../../models/Hoverable";
 
 export enum Wheel {

@@ -3,7 +3,7 @@ import { Rectangle } from '../geometry/shapes/Rectangle';
 import { MeshLoaderService } from '../services/MeshLoaderService';
 import { RectangleFactory } from '../../game/import/factories/RectangleFactory';
 import { Registry } from '../Registry';
-import { MeshConcept } from '../models/concepts/MeshConcept';
+import { MeshView } from '../models/views/MeshView';
 
 export class MeshStore {
     private basePath = 'assets/models/';
@@ -56,7 +56,7 @@ export class MeshStore {
         this.instances.delete(mesh);
     }
 
-    createInstance(meshObject: MeshConcept, scene: Scene): void {
+    createInstance(meshObject: MeshView, scene: Scene): void {
         if (!meshObject.modelId) {
             const mesh = this.rectangleFactory.createMesh(meshObject, scene);
             this.instances.add(mesh);
@@ -70,7 +70,7 @@ export class MeshStore {
             .then(() => this.setupInstance(meshObject, scene));
     }
 
-    private setupInstance(meshObject: MeshConcept, scene: Scene) {
+    private setupInstance(meshObject: MeshView, scene: Scene) {
         const modelConcept = this.registry.stores.canvasStore.getModelConceptById(meshObject.modelId);
 
         if (modelConcept.texturePath) {

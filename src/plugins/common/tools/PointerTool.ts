@@ -1,11 +1,11 @@
 import { Registry } from '../../../core/Registry';
 import { VisualConcept } from '../../../core/models/concepts/VisualConcept';
-import { IControl } from '../../../core/models/controls/IControl';
+import { IControl } from '../../../core/models/views/control/IControl';
 import { UpdateTask } from "../../../core/services/UpdateServices";
 import { isConcept, isControl } from '../../../core/stores/CanvasStore';
 import { AbstractTool } from "./AbstractTool";
 import { ToolType } from "./Tool";
-import { Concept } from '../../../core/models/concepts/Concept';
+import { View } from '../../../core/models/views/View';
 import { SceneEditorPlugin } from '../../scene_editor/SceneEditorPlugin';
 import { ActionEditorPlugin } from '../../action_editor/ActionEditorPlugin';
 import { Hoverable } from '../../../core/models/Hoverable';
@@ -116,7 +116,7 @@ export class PointerTool extends AbstractTool {
     }
 
     private updateSceneConcepts() {
-        let concepts: Concept[];
+        let concepts: View[];
 
         if (isControl(this.movingItem.type)) {
             concepts = [(<IControl<any>> this.movingItem).parent];

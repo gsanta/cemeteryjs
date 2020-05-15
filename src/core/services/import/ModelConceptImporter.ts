@@ -2,7 +2,7 @@ import { Registry } from "../../Registry";
 import { ModelConcept } from "../../models/concepts/ModelConcept";
 import { IConceptImporter } from "./IConceptImporter";
 import { ConceptGroupJson } from "./ImportService";
-import { ConceptType } from "../../models/concepts/Concept";
+import { ConceptType } from "../../models/views/View";
 
 export interface ModelJson {
     _attributes: {

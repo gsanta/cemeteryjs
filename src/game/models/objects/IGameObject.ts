@@ -1,4 +1,4 @@
-import { ConceptType } from "../../../core/models/concepts/Concept";
+import { ConceptType } from "../../../core/models/views/View";
 
 export interface IGameObject {
     type: ConceptType;

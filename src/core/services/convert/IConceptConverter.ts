@@ -1,7 +1,7 @@
 import { IGameObject } from "../../../game/models/objects/IGameObject";
-import { ConceptType, Concept } from "../../models/concepts/Concept";
+import { ConceptType, View } from "../../models/views/View";
 
 export interface IConceptConverter {
     viewType: ConceptType;
-    convert(view: Concept): IGameObject;
+    convert(view: View): IGameObject;
 }

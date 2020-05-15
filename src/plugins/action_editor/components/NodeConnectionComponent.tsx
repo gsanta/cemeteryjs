@@ -2,7 +2,7 @@ import * as React from 'react';
 import { colors } from '../../../core/gui/styles';
 import { NodeConnectionView } from '../../../core/models/views/NodeConnectionView';
 import { GroupProps } from '../../InstanceProps';
-import { FeedbackType } from '../../../core/models/controls/IControl';
+import { FeedbackType } from '../../../core/models/views/control/IControl';
 
 export interface NodeConnectionProps {
     actionNodeConnection: NodeConnectionView;

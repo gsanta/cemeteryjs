@@ -1,5 +1,5 @@
 import { ViewSettings } from '../../plugins/scene_editor/settings/AbstractSettings';
-import { ConceptType } from '../models/concepts/Concept';
+import { ConceptType } from '../models/views/View';
 import { NodeConnectionView } from '../models/views/NodeConnectionView';
 import { NodeType } from '../models/views/nodes/INode';
 import { NodeView } from '../models/views/NodeView';

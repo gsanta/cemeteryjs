@@ -1,9 +1,9 @@
 import { without } from "../geometry/utils/Functions";
 import { PathView } from "../models/views/PathView";
-import { IControl, FeedbackType } from "../models/controls/IControl";
-import { EditPoint } from "../models/feedbacks/EditPoint";
+import { IControl, FeedbackType } from "../models/views/control/IControl";
+import { EditPointView } from "../models/views/control/EditPointView";
 import { VisualConcept } from "../models/concepts/VisualConcept";
-import { Concept, ConceptType } from "../models/concepts/Concept";
+import { View, ConceptType } from "../models/views/View";
 import { Hoverable } from "../models/Hoverable";
 
 
@@ -46,16 +46,16 @@ export class SelectionStore {
         return this.items.length > 0;
     }
 
-    getConcept(): Concept {
-        return <Concept> this.items.find(item => item.type.endsWith('Concept'));
+    getConcept(): View {
+        return <View> this.items.find(item => item.type.endsWith('Concept'));
     }
 
     getFeedback(): IControl<any> {
         return <IControl<any>> this.items.find(item => item.type.endsWith('Feedback'));
     }
 
-    getEditPoint(): EditPoint {
-        return <EditPoint> this.items.find(item => item.type === FeedbackType.EditPointFeedback);
+    getEditPoint(): EditPointView {
+        return <EditPointView> this.items.find(item => item.type === FeedbackType.EditPointFeedback);
     }
 
     hasEditPoint() {

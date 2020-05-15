@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FullScreenIconComponent } from '../../../core/gui/icons/FullScreenIconComponent';
 import { FullScreenExitIconComponent } from '../../../core/gui/icons/FullScreenExitIconComponent';
 import { ToolType } from '../tools/Tool';
-import { AbstractPlugin } from '../../../core/View';
+import { AbstractPlugin } from '../../../core/AbstractPlugin';
 import { createToolIcon } from './toolIconFactory';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
 import styled from 'styled-components';

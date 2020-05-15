@@ -2,9 +2,9 @@ import { Registry } from "../../Registry";
 import { PathView } from "../../models/views/PathView";
 import { IConceptImporter } from "./IConceptImporter";
 import { ConceptGroupJson } from "./ImportService";
-import { ConceptType } from "../../models/concepts/Concept";
-import { EditPoint } from "../../models/feedbacks/EditPoint";
-import { FeedbackType } from '../../models/controls/IControl';
+import { ConceptType } from "../../models/views/View";
+import { EditPointView } from "../../models/views/control/EditPointView";
+import { FeedbackType } from '../../models/views/control/IControl';
 
 export interface PathJson {
     circle: {

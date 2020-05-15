@@ -4,7 +4,7 @@ import { ActionEditorComponent } from '../plugins/action_editor/ActionEditorComp
 import { SceneEditorComponent } from '../plugins/scene_editor/SceneEditorComponent';
 import { GameViewerComponent } from '../plugins/game_viewer/GameViewerComponent';
 import { GameViewerPlugin } from '../plugins/game_viewer/GameViewerPlugin';
-import { AbstractPlugin } from './View';
+import { AbstractPlugin } from './AbstractPlugin';
 import { ActionEditorPlugin } from '../plugins/action_editor/ActionEditorPlugin';
 import { SceneEditorPlugin } from '../plugins/scene_editor/SceneEditorPlugin';
 

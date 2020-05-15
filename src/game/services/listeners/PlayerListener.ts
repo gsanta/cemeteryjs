@@ -1,7 +1,7 @@
 import { Registry } from "../../../core/Registry";
 import { EventType, GamepadEvent } from "../GameEventManager";
 import { IGamepadListener } from "./IEventListener";
-import { MeshConcept } from "../../../core/models/concepts/MeshConcept";
+import { MeshView } from "../../../core/models/views/MeshView";
 
 export class PlayerListener implements IGamepadListener {
     eventType = EventType.Keyboard;
@@ -28,7 +28,7 @@ export class PlayerListener implements IGamepadListener {
         // }
     }
 
-    private doAction(action: (obj: MeshConcept) => void) {
+    private doAction(action: (obj: MeshView) => void) {
         const player = this.findPlayer();
         player && action(player);
     }

@@ -1,6 +1,6 @@
 import { GamepadEvent } from '../GameEventManager';
 import { Registry } from '../../../core/Registry';
-import { MeshConcept } from '../../../core/models/concepts/MeshConcept';
+import { MeshView } from '../../../core/models/views/MeshView';
 
 export class CharacterMovement {
     private registry: Registry;
@@ -31,21 +31,21 @@ export class CharacterMovement {
         });
     }
 
-    forward(character: MeshConcept) {
+    forward(character: MeshView) {
         character.moveBy(character.getDirection().mul(-1 * character.speed, -1 * character.speed));
         // character.activeElementalAnimation = character.animation.getAnimationByCond(AnimationCondition.Move);
     }
 
-    backward(character: MeshConcept) {
+    backward(character: MeshView) {
         character.moveBy(character.getDirection().mul(character.speed, character.speed));
         // character.activeElementalAnimation = character.animation.getAnimationByCond(AnimationCondition.Move);
     }
 
-    left(character: MeshConcept) {
+    left(character: MeshView) {
         character.rotateBy(-0.02);
     }
 
-    right(character: MeshConcept) {
+    right(character: MeshView) {
         character.rotateBy(0.02);
     }
 }

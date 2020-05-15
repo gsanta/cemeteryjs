@@ -11,9 +11,9 @@ import { Registry } from "../Registry";
 import { GameEngine } from "../../plugins/game_viewer/GameEngine";
 import { IConceptImporter } from "./import/IConceptImporter";
 import { ImportService } from "./import/ImportService";
-import { MeshConcept } from "../models/concepts/MeshConcept";
+import { MeshView } from "../models/views/MeshView";
 import { IConceptConverter } from "./convert/IConceptConverter";
-import { Concept, ConceptType } from "../models/concepts/Concept";
+import { View, ConceptType } from "../models/views/View";
 
 export class GameService {
     serviceName = 'game-service';
@@ -92,21 +92,21 @@ export class GameService {
             });
     }
 
-    deleteConcepts(concepts: Concept[]) {
+    deleteConcepts(concepts: View[]) {
         concepts.forEach(concept => this.registry.stores.gameStore.deleteById(concept.id));
     }
 
-    addConcept(concept: Concept) {
+    addConcept(concept: View) {
         const gameObject = this.registry.services.conceptConverter.convert(concept);
 
         switch(gameObject.type) {
             case ConceptType.MeshConcept:
-                this.registry.stores.meshStore.createInstance(<MeshConcept> gameObject, this.registry.services.game.getScene())
+                this.registry.stores.meshStore.createInstance(<MeshView> gameObject, this.registry.services.game.getScene())
             break;
         }
     }
 
-    updateConcepts(concepts: Concept[]) {
+    updateConcepts(concepts: View[]) {
         this.deleteConcepts(concepts);
 
         concepts.forEach(concept => this.addConcept(concept))

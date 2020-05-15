@@ -1,7 +1,7 @@
 import { SceneEditorPlugin } from '../SceneEditorPlugin';
 import { AbstractSettings } from './AbstractSettings';
 import { UpdateTask } from '../../../core/services/UpdateServices';
-import { MeshConcept } from '../../../core/models/concepts/MeshConcept';
+import { MeshView } from '../../../core/models/views/MeshView';
 import { Stores } from '../../../core/stores/Stores';
 import { Services } from '../../../core/services/ServiceLocator';
 import { Registry } from '../../../core/Registry';
@@ -14,7 +14,7 @@ export class GlobalSettings extends AbstractSettings<GlobalSettingsPropType> {
     static type = 'global-settings';
     getName() { return GlobalSettings.type; }
 
-    meshConcept: MeshConcept;
+    meshConcept: MeshView;
 
     private registry: Registry;
 

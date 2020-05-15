@@ -1,10 +1,10 @@
 import { without } from "../geometry/utils/Functions";
 import { PathView } from "../models/views/PathView";
 import { VisualConcept } from "../models/concepts/VisualConcept";
-import { EditPoint } from "../models/feedbacks/EditPoint";
-import { IControl, FeedbackType } from "../models/controls/IControl";
+import { EditPointView } from "../models/views/control/EditPointView";
+import { IControl, FeedbackType } from "../models/views/control/IControl";
 import { isControl } from "./CanvasStore";
-import { ConceptType } from "../models/concepts/Concept";
+import { ConceptType } from "../models/views/View";
 import { Hoverable } from "../models/Hoverable";
 
 export class HoverStore {
@@ -22,8 +22,8 @@ export class HoverStore {
         return this.items.includes(item);
     }
     
-    getEditPoint(): EditPoint {
-        return <EditPoint> this.items.find(item => item.type === FeedbackType.EditPointFeedback);
+    getEditPoint(): EditPointView {
+        return <EditPointView> this.items.find(item => item.type === FeedbackType.EditPointFeedback);
     }
 
     hasEditPoint() {

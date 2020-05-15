@@ -2,7 +2,7 @@ import { SceneEditorPlugin } from "./scene_editor/SceneEditorPlugin";
 import { GameViewerPlugin } from "./game_viewer/GameViewerPlugin";
 import { ActionEditorPlugin } from "./action_editor/ActionEditorPlugin";
 import { Registry } from "../core/Registry";
-import { AbstractPlugin } from "../core/View";
+import { AbstractPlugin } from "../core/AbstractPlugin";
 
 export class Views {
     sceneEditorView: SceneEditorPlugin;

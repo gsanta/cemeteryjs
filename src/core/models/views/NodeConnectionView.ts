@@ -1,17 +1,17 @@
-import { ConceptType } from "../concepts/Concept";
+import { ConceptType } from "./View";
 import { VisualConcept } from "../concepts/VisualConcept";
-import { JoinPointControl } from "../controls/JoinPointControl";
+import { JoinPointView } from "./control/JoinPointView";
 
 
 export class NodeConnectionView implements VisualConcept {
     readonly  type = ConceptType.ActionNodeConnectionConcept;
     readonly id: string;
 
-    readonly joinPoint1: JoinPointControl;
-    readonly joinPoint2: JoinPointControl;
+    readonly joinPoint1: JoinPointView;
+    readonly joinPoint2: JoinPointView;
     dimensions = undefined;
 
-    constructor(id: string, joinPoint1: JoinPointControl, joinPoint2: JoinPointControl) {
+    constructor(id: string, joinPoint1: JoinPointView, joinPoint2: JoinPointView) {
         this.id = id;
         this.joinPoint1 = joinPoint1;
         this.joinPoint2 = joinPoint2;
