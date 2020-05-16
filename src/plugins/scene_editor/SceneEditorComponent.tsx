@@ -11,6 +11,7 @@ import { UndoIconComponent } from '../common/toolbar/icons/UndoIconComponent';
 import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
 import { ToolType } from '../common/tools/Tool';
 import { SceneEditorPlugin } from './SceneEditorPlugin';
+import { CanvasComponent } from '../common/CanvasComponent';
 
 
 const EditorComponentStyled = styled.div`
@@ -31,12 +32,13 @@ const SelectionComponentStyled = styled.rect`
     fill: transparent;
 `;
 
-export class SceneEditorComponent extends React.Component {
+export class SceneEditorComponent extends CanvasComponent {
     static contextType = AppContext;
     context: AppContextType;
     private wheelListener: WheelListener;
 
     componentDidMount() {
+        super.componentDidMount();
         this.wheelListener = new WheelListener(this.context.registry);
         this.context.registry.services.update.setCanvasRepainter(() => this.forceUpdate());
         this.context.registry.services.layout.getViewById(SceneEditorPlugin.id).repainter = () => {this.forceUpdate()};
@@ -54,7 +56,7 @@ export class SceneEditorComponent extends React.Component {
         const history = this.context.registry.services.history;
 
         return (
-            <EditorComponentStyled id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>
+            <EditorComponentStyled ref={this.ref} id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>
                 <WindowToolbarStyled>
                     <ToolbarComponent
                         tools={[ToolType.Rectangle, ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Zoom, ToolType.Pan]}

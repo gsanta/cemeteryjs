@@ -1,17 +1,24 @@
 import * as React from 'react';
 import { Hoverable } from '../../core/models/Hoverable';
 import { InstanceProps } from '../InstanceProps';
-import { colors } from '../../core/gui/styles';
-import { ToolType } from './tools/Tool';
+import { AppContext, AppContextType } from '../../core/gui/Context';
 
+export class CanvasComponent extends React.Component {
+    static contextType = AppContext;
+    context: AppContextType;
+    protected ref: React.RefObject<HTMLDivElement>;
 
-export class CanvasComponent<T extends Hoverable> extends React.Component<InstanceProps<T>> {
-    
-    getStrokeColor(): string {
-        const selectionColor = this.props.registry.stores.selectionStore.contains(this.props.item) ? colors.views.highlight : undefined;
-        const activeTool = this.props.registry.views.getActiveView().getActiveTool();
-        const hoverColor = this.props.registry.services.pointer.hoveredItem === this.props.item ? activeTool.type === ToolType.Delete ? colors.views.delete : colors.views.highlight : undefined;
+    constructor(props: {}) {
+        super(props);
 
-        return hoverColor || selectionColor || 'black';
+        this.ref = React.createRef();
+    }
+
+    componentDidMount() {
+        this.context.registry.services.hotkey.registerInput(this.ref.current);
+    }
+
+    componentWillUnmount() {
+        this.context.registry.services.hotkey.unregisterInput(this.ref.current);
     }
 }

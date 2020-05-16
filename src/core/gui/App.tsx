@@ -1,18 +1,18 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as React from 'react';
-import './App.scss';
-import { AppContext, AppContextType } from './Context';
-import Split from 'split.js'
-import { SidebarComponent } from './SidebarComponent';
-import { SpinnerOverlayComponent } from './misc/SpinnerOverlayComponent';
-import { viewFactory } from '../ViewFactory';
-import { AnimationDialogComponent } from './dialogs/AnimationDialogComponent';
-import { ListActionsDialogComponent } from './dialogs/ListActionsDialogComponent';
 import { DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
-import { GameViewerPlugin } from '../../plugins/game_viewer/GameViewerPlugin';
+import Split from 'split.js';
 import 'tippy.js/dist/tippy.css';
-import { AbstractPlugin } from '../AbstractPlugin';
+import { GameViewerPlugin } from '../../plugins/game_viewer/GameViewerPlugin';
+import { viewFactory } from '../ViewFactory';
+import './App.scss';
+import { AppContext, AppContextType } from './Context';
+import { AnimationDialogComponent } from './dialogs/AnimationDialogComponent';
+import { ListActionsDialogComponent } from './dialogs/ListActionsDialogComponent';
+import { HotkeyInputComponent } from './HotkeyInputComponent';
+import { SpinnerOverlayComponent } from './misc/SpinnerOverlayComponent';
+import { SidebarComponent } from './SidebarComponent';
 
 export interface AppState {
     isDialogOpen: boolean;
@@ -76,6 +76,7 @@ export class App extends React.Component<{}, AppState> {
                     {this.context.controllers.isLoading ? <SpinnerOverlayComponent/> : null}
                     <AnimationDialogComponent settings={this.context.registry.services.settings.animationSettings}/>
                     <ListActionsDialogComponent/>
+                    <HotkeyInputComponent registry={this.context.registry}/>
                 </DndProvider>
             </div>
         );

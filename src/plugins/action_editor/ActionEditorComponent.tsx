@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useDrop } from 'react-dnd';
 import styled from 'styled-components';
 import { Point } from '../../core/geometry/shapes/Point';
-import { AppContext, AppContextType } from '../../core/gui/Context';
 import { colors } from '../../core/gui/styles';
 import { Hoverable } from '../../core/models/Hoverable';
 import { Registry } from '../../core/Registry';
@@ -11,6 +10,7 @@ import { WindowToolbarStyled } from '../../core/WindowToolbar';
 import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
 import { ToolType } from '../common/tools/Tool';
 import { ActionEditorPlugin } from './ActionEditorPlugin';
+import { CanvasComponent } from '../common/CanvasComponent';
 
 const EditorComponentStyled = styled.div`
     width: 100%;
@@ -41,12 +41,11 @@ const DropLayerStyled = styled.div`
     left: 0;
 `;
 
-export class ActionEditorComponent extends React.Component {
-    static contextType = AppContext;
-    context: AppContextType;
+export class ActionEditorComponent extends CanvasComponent {
     private wheelListener: WheelListener;
 
     componentDidMount() {
+        super.componentDidMount();
         this.wheelListener = new WheelListener(this.context.registry);
         this.context.registry.services.update.setCanvasRepainter(() => this.forceUpdate());
         this.context.registry.services.layout.getViewById(ActionEditorPlugin.id).repainter = () => {this.forceUpdate()};
@@ -62,7 +61,7 @@ export class ActionEditorComponent extends React.Component {
         
         const view = this.context.registry.services.layout.getViewById<ActionEditorPlugin>(ActionEditorPlugin.id);
         return (
-            <EditorComponentStyled id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>
+            <EditorComponentStyled ref={this.ref} id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>
                 <WindowToolbarStyled>
                     <ToolbarComponent
                             tools={[ToolType.Select, ToolType.Delete, ToolType.Pan, ToolType.Zoom]}

@@ -6,6 +6,7 @@ import { WindowToolbarStyled } from '../../core/WindowToolbar';
 import { WheelListener } from '../../core/services/WheelListener';
 import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
 import { ToolType } from '../common/tools/Tool';
+import { CanvasComponent } from '../common/CanvasComponent';
 
 const GameViewerStyled = styled.div`
     background: #33334C;
@@ -29,19 +30,11 @@ const CanvasStyled = styled.canvas`
     height: 100%;
 `;
 
-export class GameViewerComponent extends React.Component {
-    static contextType = AppContext;
-    private canvasRef: React.RefObject<HTMLCanvasElement>;
-    context: AppContextType;
+export class GameViewerComponent extends CanvasComponent {
     private wheelListener: WheelListener;
-
-    constructor(props: {}) {
-        super(props);
-        
-        this.canvasRef = React.createRef();
-    }
     
     componentDidMount() {
+        super.componentDidMount();
         this.wheelListener = new WheelListener(this.context.registry);
         this.context.registry.services.layout.getViewById<GameViewerPlugin>(GameViewerPlugin.id).setCanvasRenderer(() => this.forceUpdate());
         this.context.registry.services.layout.getViewById(GameViewerPlugin.id).repainter = () => {this.forceUpdate()};
@@ -62,7 +55,7 @@ export class GameViewerComponent extends React.Component {
         const view = this.context.registry.services.layout.getViewById<GameViewerPlugin>(GameViewerPlugin.id);
 
         return (
-                <GameViewerStyled id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>
+                <GameViewerStyled ref={this.ref} id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>
                     <WindowToolbarStyled>
                         <ToolbarComponent
                             tools={[ToolType.Zoom, ToolType.Pan]}
@@ -81,11 +74,7 @@ export class GameViewerComponent extends React.Component {
                         onKeyDown={e => this.context.registry.services.keyboard.onKeyDown(e.nativeEvent)}
                         onKeyUp={e => this.context.registry.services.keyboard.onKeyUp(e.nativeEvent)}    
                     />
-                    <CanvasStyled
-                        isEmpty={false}
-                        id={view.getId()}
-                        ref={this.canvasRef}
-                    />
+                    <CanvasStyled isEmpty={false} id={view.getId()}/>
                 </GameViewerStyled>
         );
     }

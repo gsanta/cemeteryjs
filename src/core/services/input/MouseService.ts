@@ -45,9 +45,11 @@ export class MouseService {
     }    
 
     onMouseUp(e: MouseEvent, droppedItemType?: string): void {
-        if (!this.isLeftButton(e)) { return }
+        if (this.isLeftButton(e)) {
+            this.registry.services.pointer.pointerUp(this.convertEvent(e, false, droppedItemType));
+        }
 
-        this.registry.services.pointer.pointerUp(this.convertEvent(e, false, droppedItemType));
+        this.registry.services.hotkey.focus();
     }
 
     onMouseOut(e: MouseEvent): void {

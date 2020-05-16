@@ -50,6 +50,8 @@ export class KeyboardService {
 
     constructor(registry: Registry) {
         this.registry = registry;
+        this.onKeyDown = this.onKeyDown.bind(this);
+        this.onKeyUp = this.onKeyUp.bind(this);
     }
     
     onKeyDown(e: KeyboardEvent): void {
@@ -57,11 +59,16 @@ export class KeyboardService {
         this.registry.services.layout.getHoveredView().getActiveTool()?.keydown(this.convertEvent(e));
         this.registry.services.update.runScheduledTasks();
 
+        e.preventDefault();
+        e.stopPropagation();
     }
 
     onKeyUp(e: KeyboardEvent): void {
         this.registry.services.layout.getHoveredView().getActiveTool()?.keyup(this.convertEvent(e));
         this.registry.services.update.runScheduledTasks();
+
+        e.preventDefault();
+        e.stopPropagation();
     }
 
     private convertEvent(event: KeyboardEvent): IKeyboardEvent {

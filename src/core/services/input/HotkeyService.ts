@@ -1,8 +1,7 @@
-import { Services } from '../ServiceLocator';
-import { IKeyboardEvent, isCtrlOrCommandDown } from './KeyboardService';
-import { IPointerEvent, PointerService, Wheel } from './PointerService';
 import { Point } from '../../geometry/shapes/Point';
 import { Registry } from '../../Registry';
+import { IKeyboardEvent, isCtrlOrCommandDown } from './KeyboardService';
+import { PointerService, Wheel } from './PointerService';
 
 export type IHotkeyAction = (hotkeyEvent: IHotkeyEvent, registry: Registry) => boolean;
 
@@ -23,12 +22,13 @@ export class HotkeyService {
             this.primaryInput = input;
         }
 
-        input.addEventListener('keydown', (e: KeyboardEvent) => {
-            this.registry.services.keyboard.onKeyDown(e);
-            e.preventDefault();
-            e.stopPropagation();
-            return false;
-        });
+        input.addEventListener('keydown',  this.registry.services.keyboard.onKeyDown);
+        input.addEventListener('keyup', this.registry.services.keyboard.onKeyUp);
+    }
+
+    unregisterInput(input: HTMLElement) {
+        input.removeEventListener('keydown',  this.registry.services.keyboard.onKeyDown);
+        input.removeEventListener('keyup', this.registry.services.keyboard.onKeyUp);
     }
 
     registerHotkey(hotKey: Hotkey): void {

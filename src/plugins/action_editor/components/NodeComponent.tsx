@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { colors } from '../../../core/gui/styles';
 import { ConceptType } from '../../../core/models/views/View';
 import { NodeView } from '../../../core/models/views/NodeView';
-import { CanvasComponent } from '../../common/CanvasComponent';
+import { ViewComponent } from '../../common/ViewComponent';
 import { GroupProps } from '../../InstanceProps';
 import { createActionNodeSettingsComponent } from '../settings/nodes/actionNodeSettingsFactory';
 import { JoinPointComponent } from './JoinPointComponent';
@@ -29,7 +29,7 @@ const NodeBodyStyled = styled.div`
     }
 `;
 
-export class NodeComponent extends CanvasComponent<NodeView> {
+export class NodeComponent extends ViewComponent<NodeView> {
     
     render() {
         return (
