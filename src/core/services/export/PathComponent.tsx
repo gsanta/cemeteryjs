@@ -3,16 +3,17 @@ import { colors } from '../../gui/styles';
 import { PathView } from '../../models/views/PathView';
 import { EditPointView } from '../../models/views/control/EditPointView';
 import { Stores } from '../../stores/Stores';
-import { Hoverable } from '../../models/Hoverable';
+import { VisualConcept } from '../../models/concepts/VisualConcept';
+import { Registry } from '../../Registry';
 
 export interface PathComponentProps {
     item: PathView;
-    onMouseOver(item: Hoverable): void;
-    onMouseOut(item: Hoverable): void;
+    onMouseOver(item: VisualConcept): void;
+    onMouseOut(item: VisualConcept): void;
     onlyData: boolean;
     isHovered: boolean;
     isSelected: boolean;
-    stores: Stores;
+    registry: Registry;
 }
 
 export class PathComponent extends React.Component<PathComponentProps> {
@@ -31,8 +32,8 @@ export class PathComponent extends React.Component<PathComponentProps> {
     }
 
     renderEditPoint(editPoint: EditPointView): JSX.Element {
-        const selected = this.props.stores.selectionStore.contains(editPoint);
-        const hovered = this.props.stores.hoverStore.contains(editPoint);
+        const selected = this.props.registry.stores.selectionStore.contains(editPoint);
+        const hovered = this.props.registry.services.pointer.hoveredItem === editPoint;
         const color = selected || hovered ? colors.views.highlight : 'black';
         return (
             <circle

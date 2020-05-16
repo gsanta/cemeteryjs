@@ -1,5 +1,4 @@
 import { VisualConcept } from '../../../core/models/concepts/VisualConcept';
-import { Hoverable } from '../../../core/models/Hoverable';
 import { Registry } from '../../../core/Registry';
 import { UpdateTask } from '../../../core/services/UpdateServices';
 import { isConcept, isControl } from '../../../core/stores/CanvasStore';
@@ -23,7 +22,6 @@ export class DeleteTool extends AbstractTool {
 
     click() {
         this.registry.tools.pointer.click();
-        const hoverStore = this.registry.stores.hoverStore;
         const hoveredItem = this.registry.services.pointer.hoveredItem;
 
         if (!hoveredItem) { return; }
@@ -31,11 +29,12 @@ export class DeleteTool extends AbstractTool {
         if (isControl(hoveredItem.type)) {
             (<IControl<any>> hoveredItem).delete();
         } else if (isConcept(hoveredItem.type)) {
-            this.registry.views.getActiveView().getStore().removeItemById(hoveredItem.id);
+            const deleteItems = hoveredItem.delete();
+            deleteItems.forEach(item => this.registry.views.getActiveView().getStore().removeItemById(item.id));
         }
         
         this.registry.services.level.updateCurrentLevel();
-        hoverStore.hasAny() && this.registry.services.update.scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
+        this.registry.services.pointer.hoveredItem && this.registry.services.update.scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
     }
 
     
@@ -57,11 +56,11 @@ export class DeleteTool extends AbstractTool {
         this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
-    over(item: Hoverable) {
+    over(item: VisualConcept) {
         this.registry.tools.pointer.over(item);
     }
 
-    out(item: Hoverable) {
+    out(item: VisualConcept) {
         this.registry.tools.pointer.out(item);
     }
 

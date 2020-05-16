@@ -13,13 +13,13 @@ export class SelectTool extends PointerTool {
     }
 
     down() {
-        if (this.registry.stores.selectionStore.contains(this.registry.stores.hoverStore.getAny())) {
+        if (this.registry.stores.selectionStore.contains(this.registry.services.pointer.hoveredItem)) {
             super.down();
         }
     }
 
     click() {
-        if (this.registry.stores.hoverStore.hasAny()) {
+        if (this.registry.services.pointer.hoveredItem) {
             super.click();
         } else if (this.registry.stores.selectionStore.getAll().length > 0) {
             this.registry.stores.selectionStore.clear();

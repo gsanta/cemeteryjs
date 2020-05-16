@@ -1,13 +1,12 @@
-import { Registry } from "../../Registry";
 import { sort } from "../../geometry/utils/Functions";
 import { toDegree } from "../../geometry/utils/Measurements";
 import { colors } from "../../gui/styles";
 import { MeshView } from "../../models/views/MeshView";
+import { ConceptType, View } from "../../models/views/View";
+import { Registry } from "../../Registry";
 import { IConceptExporter } from "./IConceptExporter";
 import React = require("react");
-import { ConceptType, View } from "../../models/views/View";
-import { IControl } from "../../models/views/control/IControl";
-import { Hoverable } from "../../models/Hoverable";
+import { VisualConcept } from "../../models/concepts/VisualConcept";
 
 export class MeshConceptExporter implements IConceptExporter {
     type = ConceptType.MeshConcept;
@@ -17,13 +16,13 @@ export class MeshConceptExporter implements IConceptExporter {
         this.registry = registry;
     }
 
-    export(hover?: (view: View) => void, unhover?: (view: View) => void): JSX.Element {
+    export(hover?: (view: VisualConcept) => void, unhover?: (view: VisualConcept) => void): JSX.Element {
         const meshGroups = this.getSortedMeshViews().map(item => this.renderGroup(item, hover, unhover));
 
         return meshGroups.length > 0 ? <g data-concept-type={ConceptType.MeshConcept} key={ConceptType.MeshConcept}>{meshGroups}</g> : null;
     }
 
-    exportToFile(hover?: (item: Hoverable) => void, unhover?: (item: Hoverable) => void): JSX.Element {
+    exportToFile(hover?: (item: VisualConcept) => void, unhover?: (item: VisualConcept) => void): JSX.Element {
         return this.export(hover, unhover);
     }
 
@@ -63,7 +62,7 @@ export class MeshConceptExporter implements IConceptExporter {
     }
 
     private renderRect(item: MeshView) {
-        const stroke = this.registry.stores.selectionStore.contains(item) || this.registry.stores.hoverStore.contains(item) ? colors.views.highlight : 'black';
+        const stroke = this.registry.stores.selectionStore.contains(item) || this.registry.services.pointer.hoveredItem === item ? colors.views.highlight : 'black';
 
         return (
             <rect

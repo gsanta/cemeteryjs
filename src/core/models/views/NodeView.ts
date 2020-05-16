@@ -2,11 +2,11 @@ import { Point } from "../../geometry/shapes/Point";
 import { Rectangle } from "../../geometry/shapes/Rectangle";
 import { JoinPointView } from "./control/JoinPointView";
 import { INode } from "./nodes/INode";
-import { ConceptType } from "./View";
+import { ConceptType, View } from "./View";
 import { VisualConcept } from "../concepts/VisualConcept";
 import { createNode } from "./nodes/nodeFactory";
 
-export class NodeView<T extends INode = any> implements VisualConcept {
+export class NodeView<T extends INode = any> extends VisualConcept {
     readonly  type = ConceptType.ActionConcept;
     readonly id: string;
     data: T;
@@ -16,6 +16,7 @@ export class NodeView<T extends INode = any> implements VisualConcept {
     outputs: JoinPointView[] = [];
 
     constructor(id: string, nodeType: string, dimensions: Rectangle) {
+        super();
         this.id = id;
         this.dimensions = dimensions;
         this.data = <T> createNode(nodeType);
@@ -28,6 +29,12 @@ export class NodeView<T extends INode = any> implements VisualConcept {
         this.inputs.forEach(input => input.move(point));
         
         this.outputs.forEach(output => output.move(point));
+    }
+
+    delete(): View[] {
+        const inputConnections = this.inputs.map(input => input.connection);
+        const outputConnections = this.outputs.map(input => input.connection);
+        return [this, ...this.inputs, ...this.outputs, ...inputConnections, ...outputConnections].filter(item => item !== undefined);
     }
 
     private initInputNodeConnectionControls() {

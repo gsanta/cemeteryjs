@@ -1,9 +1,8 @@
-import { IControl } from "../../models/views/control/IControl";
-import { ConceptType, View } from "../../models/views/View";
-import { Hoverable } from "../../models/Hoverable";
+import { ConceptType } from "../../models/views/View";
+import { VisualConcept } from "../../models/concepts/VisualConcept";
 
 export interface IConceptExporter {
     type: ConceptType;
-    export(hover?: (item: Hoverable) => void, unhover?: (item: Hoverable) => void): JSX.Element;
-    exportToFile(hover?: (item: Hoverable) => void, unhover?: (item: Hoverable) => void): JSX.Element;
+    export(hover?: (item: VisualConcept) => void, unhover?: (item: VisualConcept) => void): JSX.Element;
+    exportToFile(hover?: (item: VisualConcept) => void, unhover?: (item: VisualConcept) => void): JSX.Element;
 } 

@@ -10,15 +10,15 @@ import { Hoverable } from "../models/Hoverable";
 export class SelectionStore {
     items: Hoverable[] = [];
 
-    addItem(...item: Hoverable[]) {
+    addItem(...item: VisualConcept[]) {
         this.items.push(...item);
     }
 
-    removeItem(item: Hoverable) {
+    removeItem(item: VisualConcept) {
         this.items = without(this.items, item);
     }
 
-    contains(item: Hoverable): boolean {
+    contains(item: VisualConcept): boolean {
         return this.items.includes(item);
     }
 

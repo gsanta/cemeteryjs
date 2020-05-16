@@ -55,7 +55,6 @@ export class CanvasStore extends AbstractStore {
 
     removeConcept(concept: VisualConcept) {
         this.views = without(this.views, concept);
-        this.registry.stores.hoverStore.removeItem(concept);
         this.registry.stores.selectionStore.removeItem(concept);
         this.registry.services.game.deleteConcepts([concept]);
     }

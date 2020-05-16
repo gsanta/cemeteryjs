@@ -1,9 +1,9 @@
-import { ConceptType } from "./View";
+import { ConceptType, View } from "./View";
 import { VisualConcept } from "../concepts/VisualConcept";
 import { JoinPointView } from "./control/JoinPointView";
 
 
-export class NodeConnectionView implements VisualConcept {
+export class NodeConnectionView extends VisualConcept {
     readonly  type = ConceptType.ActionNodeConnectionConcept;
     readonly id: string;
 
@@ -12,6 +12,7 @@ export class NodeConnectionView implements VisualConcept {
     dimensions = undefined;
 
     constructor(id: string, joinPoint1: JoinPointView, joinPoint2: JoinPointView) {
+        super();
         this.id = id;
         this.joinPoint1 = joinPoint1;
         this.joinPoint2 = joinPoint2;

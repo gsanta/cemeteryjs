@@ -11,7 +11,7 @@ import { ActionEditorPlugin } from '../../action_editor/ActionEditorPlugin';
 import { Hoverable } from '../../../core/models/Hoverable';
 
 export class PointerTool extends AbstractTool {
-    protected movingItem: Hoverable = undefined;
+    protected movingItem: VisualConcept = undefined;
     private isDragStart = true;
 
     constructor(toolType: ToolType, registry: Registry) {
@@ -19,20 +19,19 @@ export class PointerTool extends AbstractTool {
     }
 
     click(): void {
-        const hoverStore = this.registry.stores.hoverStore;
+        const hoveredItem = this.registry.services.pointer.hoveredItem;
+        if (!hoveredItem) { return; }
 
-        const feedback = hoverStore.getFeedback();
-        let concept = hoverStore.getConcept(); 
-        if (feedback) {
-            const concept = hoverStore.getFeedback().parent;
+        if (isControl(hoveredItem.type)) {
+            const concept = (<IControl<any>> hoveredItem).parent;
             this.registry.stores.selectionStore.clear();
             this.registry.stores.selectionStore.addItem(concept);
-            this.registry.stores.selectionStore.addItem(feedback);
+            this.registry.stores.selectionStore.addItem(hoveredItem);
 
             this.registry.services.update.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas);
-        } else if (concept) {
+        } else if (isConcept(hoveredItem.type)) {
             this.registry.stores.selectionStore.clear();
-            this.registry.stores.selectionStore.addItem(concept);
+            this.registry.stores.selectionStore.addItem(hoveredItem);
 
             this.registry.services.update.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas);
 
@@ -73,18 +72,16 @@ export class PointerTool extends AbstractTool {
         this.movingItem = undefined;
     }
 
-    over(item: Hoverable) {
-        this.registry.stores.hoverStore.addItem(item);
+    over(item: VisualConcept) {
         this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
-    out(item: Hoverable) {
-        this.registry.stores.hoverStore.removeItem(item);
+    out(item: VisualConcept) {
         this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
     private initMove(): boolean {
-        const hovered = this.registry.stores.hoverStore.getAny();
+        const hovered = this.registry.services.pointer.hoveredItem;
         this.movingItem = hovered;
         this.moveItems();
         return true;

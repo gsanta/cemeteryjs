@@ -1,7 +1,5 @@
 import { LevelStore } from "./LevelStore";
-import { LayoutService } from '../services/LayoutService';
 import { CanvasStore } from "./CanvasStore";
-import { HoverStore } from "./HoverStore";
 import { SelectionStore } from "./SelectionStore";
 import { GameStore } from "./GameStore";
 import { MeshStore } from "./MeshStore";
@@ -15,7 +13,6 @@ export class Stores {
     constructor(registry: Registry) {
         this.registry = registry;
         this.canvasStore = new CanvasStore(this.registry);
-        this.hoverStore = new HoverStore();
         this.selectionStore = new SelectionStore();
         this.levelStore = new LevelStore();
         this.gameStore = new GameStore(this.registry);
@@ -25,7 +22,6 @@ export class Stores {
     }
 
     canvasStore: CanvasStore;
-    hoverStore: HoverStore;
     selectionStore: SelectionStore;
     levelStore: LevelStore;
     gameStore: GameStore;

@@ -1,6 +1,7 @@
 import { View } from "../View";
 import { Hoverable } from "../../Hoverable";
 import { Point } from "../../../geometry/shapes/Point";
+import { VisualConcept } from "../../concepts/VisualConcept";
 
 export enum FeedbackType {
     RectSelectFeedback = 'RectSelectFeedback',
@@ -8,9 +9,6 @@ export enum FeedbackType {
     NodeConnectorFeedback = 'NodeConnectorFeedback'
 }
 
-export interface IControl<T extends View> extends Hoverable {
+export abstract class IControl<T extends View> extends VisualConcept {
     parent: T;
-
-    delete();
-    move(delta: Point);
 }

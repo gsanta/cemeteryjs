@@ -5,6 +5,7 @@ import { Tool, ToolType, Cursor } from './Tool';
 import { View } from '../../../core/models/views/View';
 import { Hoverable } from '../../../core/models/Hoverable';
 import { IHotkeyEvent } from '../../../core/services/input/HotkeyService';
+import { VisualConcept } from '../../../core/models/concepts/VisualConcept';
 
 export class AbstractTool implements Tool {
     type: ToolType;
@@ -30,8 +31,8 @@ export class AbstractTool implements Tool {
     wheelEnd() {}
     keydown(e: IKeyboardEvent) { }
     keyup(e: IKeyboardEvent){ }
-    over(item: Hoverable) { }
-    out(item: Hoverable) { }
+    over(item: VisualConcept) { }
+    out(item: VisualConcept) { }
     
     /**
      * Called when the mouse leaves the canvas.

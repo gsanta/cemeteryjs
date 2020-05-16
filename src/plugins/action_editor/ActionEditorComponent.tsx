@@ -11,6 +11,7 @@ import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
 import { ToolType } from '../common/tools/Tool';
 import { ActionEditorPlugin } from './ActionEditorPlugin';
 import { CanvasComponent } from '../common/CanvasComponent';
+import { VisualConcept } from '../../core/models/concepts/VisualConcept';
 
 const EditorComponentStyled = styled.div`
     width: 100%;
@@ -56,8 +57,8 @@ export class ActionEditorComponent extends CanvasComponent {
     }
 
     render(): JSX.Element {
-        const hover = (item: Hoverable) => this.context.registry.services.mouse.hover(item);
-        const unhover = (canvasItem: Hoverable) => this.context.registry.services.mouse.unhover(canvasItem);
+        const hover = (item: VisualConcept) => this.context.registry.services.mouse.hover(item);
+        const unhover = (canvasItem: VisualConcept) => this.context.registry.services.mouse.unhover(canvasItem);
         
         const view = this.context.registry.services.layout.getViewById<ActionEditorPlugin>(ActionEditorPlugin.id);
         return (

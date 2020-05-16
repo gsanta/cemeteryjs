@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { ActionNodeGroupComponent } from '../../../plugins/action_editor/components/ActionNodeGroupComponent';
 import { AllNodeConnectionsComponent } from '../../../plugins/action_editor/components/NodeConnectionComponent';
-import { View, ConceptType } from "../../models/views/View";
-import { Hoverable } from '../../models/Hoverable';
+import { ConceptType, View } from "../../models/views/View";
 import { Registry } from "../../Registry";
 import { IConceptExporter } from "./IConceptExporter";
+import { VisualConcept } from '../../models/concepts/VisualConcept';
 
 export class ActionConceptExporter implements IConceptExporter {
     type = ConceptType.MeshConcept;
@@ -14,7 +14,7 @@ export class ActionConceptExporter implements IConceptExporter {
         this.registry = registry;
     }
 
-    export(hover?: (view: View) => void, unhover?: (view: View) => void): JSX.Element {
+    export(hover?: (view: VisualConcept) => void, unhover?: (view: VisualConcept) => void): JSX.Element {
         return (
             <React.Fragment>
                 <ActionNodeGroupComponent registry={this.registry} renderWithSettings={true} hover={hover} unhover={unhover}/>
@@ -23,7 +23,7 @@ export class ActionConceptExporter implements IConceptExporter {
         );
     }
 
-    exportToFile(hover?: (item: Hoverable) => void, unhover?: (item: Hoverable) => void): JSX.Element {
+    exportToFile(hover?: (item: VisualConcept) => void, unhover?: (item: VisualConcept) => void): JSX.Element {
         return (
             <React.Fragment>
                 <ActionNodeGroupComponent registry={this.registry} renderWithSettings={false} hover={hover} unhover={unhover}/>

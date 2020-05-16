@@ -2,7 +2,6 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { AppContext, AppContextType } from '../../core/gui/Context';
 import { colors } from '../../core/gui/styles';
-import { Hoverable } from '../../core/models/Hoverable';
 import { PathMarkersComponent } from '../../core/services/export/PathMarkersComponent';
 import { WheelListener } from '../../core/services/WheelListener';
 import { WindowToolbarStyled } from '../../core/WindowToolbar';
@@ -12,6 +11,7 @@ import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
 import { ToolType } from '../common/tools/Tool';
 import { SceneEditorPlugin } from './SceneEditorPlugin';
 import { CanvasComponent } from '../common/CanvasComponent';
+import { VisualConcept } from '../../core/models/concepts/VisualConcept';
 
 
 const EditorComponentStyled = styled.div`
@@ -49,8 +49,8 @@ export class SceneEditorComponent extends CanvasComponent {
     }
 
     render(): JSX.Element {
-        const hover = (item: Hoverable) => this.context.registry.services.mouse.hover(item);
-        const unhover = (canvasItem: Hoverable) => this.context.registry.services.mouse.unhover(canvasItem);
+        const hover = (item: VisualConcept) => this.context.registry.services.mouse.hover(item);
+        const unhover = (canvasItem: VisualConcept) => this.context.registry.services.mouse.unhover(canvasItem);
         
         const view = this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id);
         const history = this.context.registry.services.history;

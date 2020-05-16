@@ -12,7 +12,6 @@ export class JoinTool extends AbstractTool {
     start: Point;
     end: Point;
     startItem: JoinPointView;
-    endItem: JoinPointView;
 
     constructor(registry: Registry) {
         super(ToolType.Join, registry);
@@ -41,6 +40,8 @@ export class JoinTool extends AbstractTool {
             const endItem = <JoinPointView> this.registry.services.pointer.hoveredItem;
             const id = this.registry.stores.actionStore.generateUniqueName(ConceptType.ActionNodeConnectionConcept);
             const connection = new NodeConnectionView(id, this.startItem, endItem);
+            this.startItem.connection = connection;
+            endItem.connection = connection;
             this.registry.stores.actionStore.addConnection(connection);
             this.start = undefined;
             this.end = undefined;

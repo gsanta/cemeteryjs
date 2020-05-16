@@ -34,12 +34,11 @@ export class ActionStore extends AbstractStore {
 
     removeItemById(id: string) {
         const item = this.views.find(view => view.id === id);
+        if (!item) { return }
 
-        if (item) {
-            this.views = this.views.filter(v => v !== item);
-            if (this.settings.has(item.id)) {
-                this.settings.delete(item.id);
-            }
+        this.views = this.views.filter(v => v !== item);
+        if (this.settings.has(item.id)) {
+            this.settings.delete(item.id);
         }
     }
 

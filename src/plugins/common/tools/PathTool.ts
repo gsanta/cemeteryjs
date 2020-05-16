@@ -3,13 +3,13 @@ import { ConceptType } from "../../../core/models/views/View";
 import { PathView } from "../../../core/models/views/PathView";
 import { FeedbackType } from "../../../core/models/views/control/IControl";
 import { EditPointView } from "../../../core/models/views/control/EditPointView";
-import { Hoverable } from "../../../core/models/Hoverable";
 import { Registry } from "../../../core/Registry";
 import { HotkeyTrigger, IHotkeyEvent } from "../../../core/services/input/HotkeyService";
 import { IKeyboardEvent, Keyboard } from "../../../core/services/input/KeyboardService";
 import { UpdateTask } from "../../../core/services/UpdateServices";
 import { PointerTool } from "./PointerTool";
 import { ToolType } from "./Tool";
+import { VisualConcept } from "../../../core/models/concepts/VisualConcept";
 
 export class PathTool extends PointerTool {
     private hotkeyTrigger: Partial<HotkeyTrigger> = {keyCodes: [Keyboard.p]}
@@ -19,7 +19,8 @@ export class PathTool extends PointerTool {
     }
 
     click() {
-        if (this.registry.stores.hoverStore.hasPath() || this.registry.stores.hoverStore.hasEditPointOf(ConceptType.PathConcept)) {
+        const hoveredItem = this.registry.services.pointer.hoveredItem;
+        if (hoveredItem && (hoveredItem.type === ConceptType.PathConcept || hoveredItem.type === FeedbackType.EditPointFeedback)) {
             super.click();
         } else {
             this.createPath();
@@ -33,7 +34,7 @@ export class PathTool extends PointerTool {
         }
     }
 
-    over(item: Hoverable) {
+    over(item: VisualConcept) {
         let hover = false;
         if (item.type === ConceptType.PathConcept) {
             hover = true;
@@ -51,7 +52,7 @@ export class PathTool extends PointerTool {
         }
     }
 
-    out(item: Hoverable) {
+    out(item: VisualConcept) {
         super.out(item);
         this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
     }

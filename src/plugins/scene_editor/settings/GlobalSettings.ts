@@ -30,7 +30,6 @@ export class GlobalSettings extends AbstractSettings<GlobalSettingsPropType> {
         switch (prop) {
             case GlobalSettingsPropType.IMPORT_FILE:
                 this.registry.stores.canvasStore.clear();
-                this.registry.stores.hoverStore.clear();
                 this.registry.stores.selectionStore.clear();
                 this.registry.services.import.import(val.data)
         }

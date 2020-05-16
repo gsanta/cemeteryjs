@@ -4,6 +4,7 @@ import { Point } from "../../geometry/shapes/Point";
 import { minBy, maxBy } from "../../geometry/utils/Functions";
 import { EditPointView } from "./control/EditPointView";
 import { IGameObject } from "../../../game/models/objects/IGameObject";
+import { VisualConcept } from "../concepts/VisualConcept";
 
 const NULL_BOUNDING_BOX = new Rectangle(new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER), new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER));
 
@@ -16,7 +17,7 @@ export interface PathProps {
 }
 
 
-export class PathView implements View, IGameObject {
+export class PathView extends VisualConcept implements IGameObject {
     type = ConceptType.PathConcept;
     editPoints: EditPointView[] = [];
     childMap: Map<EditPointView, EditPointView[]> = new Map();
@@ -29,6 +30,7 @@ export class PathView implements View, IGameObject {
     private str: string;
 
     constructor() {
+        super();
         this.dimensions = this.calcBoundingBox();
     }
 

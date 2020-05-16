@@ -5,10 +5,9 @@ import { Point } from '../../geometry/shapes/Point';
 import { Rectangle } from '../../geometry/shapes/Rectangle';
 import { toVector3 } from '../../geometry/utils/GeomUtils';
 import { toDegree } from '../../geometry/utils/Measurements';
-import { EditPointView } from './control/EditPointView';
-import { AnimationConcept, ElementalAnimation } from '../meta/AnimationConcept';
-import { ConceptType } from './View';
 import { VisualConcept } from '../concepts/VisualConcept';
+import { AnimationConcept, ElementalAnimation } from '../meta/AnimationConcept';
+import { ConceptType, View } from './View';
 
 export enum WorldItemShape {
     RECTANGLE = 'rect',
@@ -33,7 +32,7 @@ export enum AnimationState {
 }
 
 
-export class MeshView implements VisualConcept, IGameObject {
+export class MeshView extends VisualConcept implements IGameObject {
     type = ConceptType.MeshConcept;
     mesh: Mesh;
 
@@ -64,6 +63,7 @@ export class MeshView implements VisualConcept, IGameObject {
     layer: number = 10;
 
     constructor(dimensions: Rectangle, name: string, rotation = 0) {
+        super();
         this.dimensions = dimensions;
         this.id = name;
         this.rotation = rotation;

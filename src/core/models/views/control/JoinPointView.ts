@@ -2,19 +2,21 @@ import { Point } from "../../../geometry/shapes/Point";
 import { NodeView } from "../NodeView";
 import { FeedbackType, IControl } from "./IControl";
 import { Hoverable } from "../../Hoverable";
+import { NodeConnectionView } from "../NodeConnectionView";
 
 export function isNodeConnectionControl(hoverable: Hoverable) {
     return hoverable && hoverable.type === FeedbackType.NodeConnectorFeedback;
 }
 
-export class JoinPointView implements IControl<NodeView> {
+export class JoinPointView extends IControl<NodeView> {
     type = FeedbackType.NodeConnectorFeedback;
     id: string;
     point: Point;
     parent: NodeView;
-    other: NodeView;
+    connection: NodeConnectionView;
 
     constructor(parent: NodeView, slotIndex: number, isInput: boolean) {
+        super();
         this.parent = parent;
         this.initPosition(slotIndex, isInput);
     }
@@ -27,7 +29,6 @@ export class JoinPointView implements IControl<NodeView> {
         this.point = new Point(x, y);
     }
 
-    delete() {}
     move(delta: Point) {
         this.point = this.point.add(delta);
     }

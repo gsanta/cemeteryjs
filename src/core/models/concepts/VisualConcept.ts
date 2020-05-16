@@ -4,7 +4,11 @@ import { Rectangle } from "../../geometry/shapes/Rectangle";
 import { Point } from "../../geometry/shapes/Point";
 
 
-export interface VisualConcept extends View {
+export abstract class VisualConcept implements View {
+    id: string;
+    type: string;
+
     dimensions: Rectangle;
-    move(delta: Point): void;
+    move(delta: Point): void {}
+    delete(): View[] { return [this] }
 }

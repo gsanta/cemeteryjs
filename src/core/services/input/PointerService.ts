@@ -4,6 +4,7 @@ import { IControl } from "../../models/views/control/IControl";
 import { MousePointer } from "./MouseService";
 import { View } from "../../models/views/View";
 import { Hoverable } from "../../models/Hoverable";
+import { VisualConcept } from "../../models/concepts/VisualConcept";
 
 export enum Wheel {
     IDLE = 'idle', UP = 'up', DOWN = 'down'
@@ -29,7 +30,7 @@ export class PointerService {
     wheelState: number = 0;
     prevWheelState: number = 0;
     wheelDiff: number = undefined;
-    hoveredItem: Hoverable;
+    hoveredItem: VisualConcept;
 
     pointer: MousePointer = new MousePointer();
 
@@ -112,7 +113,7 @@ export class PointerService {
         this.registry.services.layout.getHoveredView().getActiveTool().wheelEnd();
     }
 
-    hover(item: Hoverable): void {
+    hover(item: VisualConcept): void {
         console.log('hover: ' + item.type)
         this.hoveredItem = item;
         this.registry.services.hotkey.executeHotkey({
@@ -122,7 +123,7 @@ export class PointerService {
         this.registry.services.update.runScheduledTasks();
     }
 
-    unhover(item: Hoverable): void {
+    unhover(item: VisualConcept): void {
         console.log('unhover: ' + item.type)
         this.registry.services.hotkey.executeHotkey({
             isUnhover: true
