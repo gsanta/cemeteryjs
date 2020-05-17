@@ -3,10 +3,17 @@ import * as React from 'react';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { NodeProps } from './nodes/actionNodeSettingsFactory';
 import styled from 'styled-components';
+import { sizes } from '../../../core/gui/styles';
 
 const SlotRowStyled = styled.div`
+    height: ${sizes.nodes.slotHeight}px;
     display: flex;
     justify-content: space-between;
+    font-weight: bold;
+
+    > div {
+        height: ${sizes.nodes.slotHeight}px;
+    }
 `;
 
 export class AbstractNodeSettingsComponent extends React.Component<NodeProps> {

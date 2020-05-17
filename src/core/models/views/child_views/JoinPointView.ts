@@ -4,6 +4,7 @@ import { FeedbackType, ChildView } from "./ChildView";
 import { Hoverable } from "../../Hoverable";
 import { NodeConnectionView } from "../NodeConnectionView";
 import { ConnectionSlot } from "../nodes/AbstractNode";
+import { sizes } from "../../../gui/styles";
 
 export function isNodeConnectionControl(hoverable: Hoverable) {
     return hoverable && hoverable.type === FeedbackType.NodeConnectorFeedback;
@@ -23,16 +24,16 @@ export class JoinPointView extends ChildView<NodeView> {
     }
 
     private initPosition(slot: ConnectionSlot, isInput: boolean) {
-        const yStart = this.parent.dimensions.topLeft.y + 50;
+        const yStart = this.parent.dimensions.topLeft.y + sizes.nodes.headerHeight;
         const x = isInput ? this.parent.dimensions.topLeft.x : this.parent.dimensions.bottomRight.x;
         const slotIndex = isInput ? this.parent.data.inputSlots.indexOf(slot) : this.parent.data.outputSlots.indexOf(slot);
-        const y = slotIndex * 20 + yStart;
+        const y = slotIndex * sizes.nodes.slotHeight + sizes.nodes.slotHeight / 2 + yStart;
         this.point = new Point(x, y);
     }
 
     move(delta: Point) {
         this.point = this.point.add(delta);
-        this.connection.updateDimensions();
+        this.connection && this.connection.updateDimensions();
     }
 
     toString() {

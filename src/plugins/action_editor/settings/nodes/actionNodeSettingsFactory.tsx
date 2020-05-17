@@ -6,7 +6,7 @@ import { ActionNodeSettings } from "../ActionNodeSettings";
 import { AndActionNodeSettingsComponent } from "../AndActionNodeSettingsComponent";
 import { KeyboardNodeSettingsComponent } from "../KeyboardNodeSettingsComponent";
 import { MeshActionNodeSettingsComponent } from "../MeshActionNodeSettingsComponent";
-import { MoveActionNodeSettingsComponent } from "../MoveActionNodeSettingsComponent";
+import { MoveNodeSettingsComponent } from "../MoveNodeSettingsComponent";
 import { AnimationNodeSettingsComponent } from "../AnimationNodeSettingsComponent";
 import { KeyboardNodeSettings } from "./KeyboardNodeSettings";
 import { MeshNodeSettings } from './MeshNodeSettings';
@@ -40,7 +40,7 @@ export function createActionNodeSettingsComponent(actionNodeConcept: NodeView, r
         case NodeType.Keyboard:
             return <KeyboardNodeSettingsComponent settings={settings}/>;
         case NodeType.Move:
-            return <MoveActionNodeSettingsComponent settings={settings}/>;    
+            return <MoveNodeSettingsComponent settings={settings}/>;    
         case NodeType.Mesh:
             return <MeshActionNodeSettingsComponent settings={settings}/>;    
         case NodeType.And:

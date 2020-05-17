@@ -19,9 +19,14 @@ export const colors = {
         highlight: '#5e5ad1',
         stroke: 'black',
         delete: 'red'
-    }
+    },
 }
 
 export const sizes = {
-    inputHeight: '30px'
+    inputHeight: '30px',
+
+    nodes: {
+        headerHeight: 30,
+        slotHeight: 20
+    }
 }

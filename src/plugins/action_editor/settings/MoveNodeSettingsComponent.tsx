@@ -2,18 +2,15 @@ import * as React from 'react';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { ConnectedDropdownComponent } from '../../../core/gui/inputs/DropdownComponent';
 import { FieldColumnStyled, LabelColumnStyled, SettingsRowStyled } from '../../scene_editor/settings/SettingsComponent';
-import { NodeProps } from './nodes/actionNodeSettingsFactory';
+import { AbstractNodeSettingsComponent } from './AbstractNodeSettingsComponent';
 import { MoveNodeProps } from './nodes/MoveNodeSettings';
 
-export class MoveActionNodeSettingsComponent extends React.Component<NodeProps> {
-    static contextType = AppContext;
-    context: AppContextType;
-
-
+export class MoveNodeSettingsComponent extends  AbstractNodeSettingsComponent {
     render() {
         return (
             <div>
-                {this.renderMoveDirectionDropdown()}\
+                {this.renderSlots()}
+                {this.renderMoveDirectionDropdown()}
             </div>
         )
     }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { colors } from '../../../core/gui/styles';
+import { colors, sizes } from '../../../core/gui/styles';
 import { ConceptType } from '../../../core/models/views/View';
 import { NodeView } from '../../../core/models/views/NodeView';
 import { ViewComponent } from '../../common/ViewComponent';
@@ -18,6 +18,7 @@ const NodeHeaderStyled = styled.div`
     color: ${colors.textColor};
     background-color: ${colors.panelBackground};
     padding: 3px 5px;
+    height: ${sizes.nodes.headerHeight}px;
 `;
 
 const NodeBodyStyled = styled.div`

@@ -5,6 +5,7 @@ import { AbstractNode, ConnectionSlot } from "./nodes/AbstractNode";
 import { ConceptType, View } from "./View";
 import { VisualConcept } from "../concepts/VisualConcept";
 import { createNode } from "./nodes/nodeFactory";
+import { sizes } from "../../gui/styles";
 
 export class NodeView<T extends AbstractNode = AbstractNode> extends VisualConcept {
     readonly  type = ConceptType.ActionConcept;
@@ -37,21 +38,13 @@ export class NodeView<T extends AbstractNode = AbstractNode> extends VisualConce
     }
 
     private initInputNodeConnectionControls() {
-        const yStart = this.dimensions.topLeft.y + 50;
-        const x = this.dimensions.topLeft.x;
-
         for (let i = 0; i < this.data.inputSlots.length; i++) {
-            const y = i * 20 + yStart; 
             this.inputs.push(new JoinPointView(this, this.data.inputSlots[i], true));
         }
     }
 
     private initOutputNodeConnectionControls() {
-        const yStart = this.dimensions.topLeft.y + 50;
-        const x = this.dimensions.bottomRight.x;
-
         for (let i = 0; i < this.data.outputSlots.length; i++) {
-            const y = i * 20 + yStart; 
             this.outputs.push(new JoinPointView(this, this.data.outputSlots[i], false));
         }
     } 
