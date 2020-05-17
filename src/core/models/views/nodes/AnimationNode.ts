@@ -2,7 +2,7 @@ import { AbstractNode, NodeType } from "./AbstractNode";
 import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
 
 
-export class AnimationNode implements AbstractNode {
+export class AnimationNode extends AbstractNode {
     type = NodeType.Animation;
     group = NodeGroupName.Default;
     title = "Animation";
@@ -10,7 +10,7 @@ export class AnimationNode implements AbstractNode {
     color = '#89BD88';
     inputSlots = [
         {
-            name: 'trigger'
+            name: 'action'
         }
     ];
     outputSlots = [];

@@ -1,6 +1,6 @@
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { MeshNode } from "../../../../core/models/views/nodes/MeshNode";
-import { getAllMovements } from "../../../../core/models/views/nodes/MoveNode";
+import { getAllMovements } from "../../../../core/models/views/nodes/ActionNode";
 import { Registry } from "../../../../core/Registry";
 import { UpdateTask } from "../../../../core/services/UpdateServices";
 import { ViewSettings } from "../../../scene_editor/settings/AbstractSettings";

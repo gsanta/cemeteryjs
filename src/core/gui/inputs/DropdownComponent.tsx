@@ -42,6 +42,12 @@ export const DropdownComponent : React.SFC<DropdownProps> = (props: DropdownProp
             onChange={(e) => {
                 props.onChange(e.target.value);
             }}
+            onMouseDown={(e) => {
+                e.stopPropagation();
+            }}
+            onMouseUp={(e) => {
+                e.stopPropagation();
+            }}
             value={props.currentValue ? props.currentValue : ''}
         >
                 {props.currentValue ? options : [placeholder, ...options]}

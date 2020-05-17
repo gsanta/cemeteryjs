@@ -1,5 +1,5 @@
 import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
-
+import { JoinPointView } from "../child_views/JoinPointView";
 
 export enum NodeType {
     Keyboard = 'Keyboard',
@@ -11,9 +11,11 @@ export enum NodeType {
 
 export interface ConnectionSlot {
     name: string;
+    connectionPoint?: JoinPointView;
 }
 
-export interface AbstractNode {
+export abstract class AbstractNode {
+    isDirty = false;
     type: NodeType;
     group: NodeGroupName;
     title: string;

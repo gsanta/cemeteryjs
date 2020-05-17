@@ -1,7 +1,7 @@
 import { NodeView } from '../../../core/models/views/NodeView';
 import { getAllKeys } from '../../../core/models/views/nodes/KeyboardNode';
 import { AbstractSettings, ViewSettings } from '../../scene_editor/settings/AbstractSettings';
-import { getAllMovements } from '../../../core/models/views/nodes/MoveNode';
+import { getAllMovements } from '../../../core/models/views/nodes/ActionNode';
 
 export enum ActionNodeSettingsProps {
     AllKeyboardKeys = 'AllKeyboardKeys',
@@ -12,9 +12,9 @@ export enum ActionNodeSettingsProps {
     Mesh = 'Mesh'
 }
 
-export class ActionNodeSettings extends ViewSettings<ActionNodeSettingsProps, any> {
+export class NodeSettings extends ViewSettings<ActionNodeSettingsProps, any> {
     static settingsName = 'action-settings';
-    getName() { return ActionNodeSettings.settingsName; }
+    getName() { return NodeSettings.settingsName; }
     view: NodeView;
 
     constructor(actionNodeConcept: NodeView) {

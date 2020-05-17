@@ -69,11 +69,11 @@ export class NodeComponent extends ViewComponent<NodeView> {
     }
 
     private renderInputs(item: NodeView): JSX.Element[] {
-        return item.inputs.map(input => <JoinPointComponent  item={input} registry={this.props.registry} hover={this.props.hover} unhover={this.props.unhover}/>);
+        return item.data.inputSlots.map(input => <JoinPointComponent  item={input.connectionPoint} registry={this.props.registry} hover={this.props.hover} unhover={this.props.unhover}/>);
     }
 
     private renderOutputs(item: NodeView): JSX.Element[] {
-        return item.outputs.map(input => <JoinPointComponent  item={input} registry={this.props.registry} hover={this.props.hover} unhover={this.props.unhover}/>);
+        return item.data.outputSlots.map(input => <JoinPointComponent  item={input.connectionPoint} registry={this.props.registry} hover={this.props.hover} unhover={this.props.unhover}/>);
     }
 
     private renderNode(item: NodeView) {

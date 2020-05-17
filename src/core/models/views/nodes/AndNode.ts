@@ -1,7 +1,7 @@
 import { AbstractNode, NodeType } from "./AbstractNode";
 import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
 
-export class AndNode implements AbstractNode {
+export class AndNode extends AbstractNode {
     type = NodeType.And;
     group = NodeGroupName.Boolean;
     title = "And";

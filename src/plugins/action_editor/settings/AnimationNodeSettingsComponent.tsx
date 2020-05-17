@@ -1,20 +1,17 @@
 import * as React from 'react';
-import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { ConnectedDropdownComponent } from '../../../core/gui/inputs/DropdownComponent';
 import { FieldColumnStyled, LabelColumnStyled, SettingsRowStyled } from '../../scene_editor/settings/SettingsComponent';
-import { NodeProps } from './nodes/actionNodeSettingsFactory';
+import { AbstractNodeSettingsComponent } from './AbstractNodeSettingsComponent';
 import { MeshNodeProps } from './nodes/MeshNodeSettings';
 
-export class AnimationNodeSettingsComponent extends React.Component<NodeProps> {
-    static contextType = AppContext;
-    context: AppContextType;
-
+export class AnimationNodeSettingsComponent extends AbstractNodeSettingsComponent {
     render() {
         return (
             <div>
+                {this.renderSlots()}                
                 {this.renderMeshDropdown()}
             </div>
-        )
+        );
     }
 
     private renderMeshDropdown() {

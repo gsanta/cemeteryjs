@@ -4,14 +4,16 @@ import { ConnectedDropdownComponent } from '../../../core/gui/inputs/DropdownCom
 import { FieldColumnStyled, LabelColumnStyled, SettingsRowStyled } from '../../scene_editor/settings/SettingsComponent';
 import { NodeProps } from './nodes/actionNodeSettingsFactory';
 import { MeshNodeProps } from './nodes/MeshNodeSettings';
+import { AbstractNodeSettingsComponent } from './AbstractNodeSettingsComponent';
 
-export class MeshActionNodeSettingsComponent extends React.Component<NodeProps> {
+export class MeshNodeSettingsComponent extends AbstractNodeSettingsComponent {
     static contextType = AppContext;
     context: AppContextType;
 
     render() {
         return (
             <div>
+                {this.renderSlots()}
                 {this.renderMeshDropdown()}
             </div>
         )

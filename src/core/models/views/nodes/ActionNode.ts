@@ -20,21 +20,21 @@ export function getAllMovements() {
     return movements;
 }
 
-export class MoveNode implements AbstractNode {
+export class ActionNode extends AbstractNode {
     type = NodeType.Move;
     group = NodeGroupName.Default;
-    title = "Move";
+    title = "Action";
     movement: string;
     color = 'A194EC';
     inputSlots = [
         {
             name: 'input'
+        },
+        {
+            name: 'mesh'
         }
     ];
     outputSlots = [
-        {
-            name: 'mesh'
-        },
         {
             name: 'animation'
         }

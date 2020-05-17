@@ -3,7 +3,7 @@ import { ConceptType } from '../../../core/models/views/View';
 import { GroupProps } from '../../InstanceProps';
 import { NodeComponent } from './NodeComponent';
 
-export class ActionNodeGroupComponent extends React.Component<GroupProps> {
+export class NodeGroupComponent extends React.Component<GroupProps> {
 
     render() {
         const actionConcepts = this.props.registry.stores.actionStore.getNodes()

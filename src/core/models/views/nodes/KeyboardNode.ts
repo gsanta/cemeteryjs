@@ -14,7 +14,7 @@ export function getAllKeys() {
     return keys;
 }
 
-export class KeyboardNode implements AbstractNode {
+export class KeyboardNode extends AbstractNode {
     type = NodeType.Keyboard;
     group = NodeGroupName.Default;
     title = "Keyboard input";

@@ -1,13 +1,14 @@
 import { Mesh, Vector3 } from 'babylonjs';
 import { IGameObject } from '../../../game/models/objects/IGameObject';
 import { BehaviourType } from '../../../game/services/behaviour/IBehaviour';
+import { GamepadEvent } from '../../../game/services/GameEventManager';
 import { Point } from '../../geometry/shapes/Point';
 import { Rectangle } from '../../geometry/shapes/Rectangle';
 import { toVector3 } from '../../geometry/utils/GeomUtils';
 import { toDegree } from '../../geometry/utils/Measurements';
 import { VisualConcept } from '../concepts/VisualConcept';
 import { AnimationConcept, ElementalAnimation } from '../meta/AnimationConcept';
-import { ConceptType, View } from './View';
+import { ConceptType } from './View';
 
 export enum WorldItemShape {
     RECTANGLE = 'rect',
@@ -56,6 +57,12 @@ export class MeshView extends VisualConcept implements IGameObject {
 
     activeBehaviour: BehaviourType;
     activeElementalAnimation: ElementalAnimation;
+    actions: string[] = [
+        GamepadEvent.Forward,
+        GamepadEvent.Backward,
+        GamepadEvent.TurnLeft,
+        GamepadEvent.TurnRight
+    ];
     animation: AnimationConcept;
     animations: string[] = [];
     animationState = AnimationState.Playing;

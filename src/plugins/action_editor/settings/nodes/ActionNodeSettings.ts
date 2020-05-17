@@ -1,21 +1,21 @@
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { getAllKeys } from "../../../../core/models/views/nodes/KeyboardNode";
-import { MoveNode, getAllMovements } from "../../../../core/models/views/nodes/MoveNode";
+import { ActionNode, getAllMovements } from "../../../../core/models/views/nodes/ActionNode";
 import { Registry } from "../../../../core/Registry";
 import { UpdateTask } from "../../../../core/services/UpdateServices";
 import { ViewSettings } from "../../../scene_editor/settings/AbstractSettings";
 
 export enum MoveNodeProps {
-    AllMovements = 'AllMovements',
-    Movement = 'Movement',
+    AllActions = 'AllActions',
+    Action = 'Action',
 }
-export class MoveNodeSettings extends ViewSettings<MoveNodeProps, NodeView> {
-    static settingsName = 'move-node-settings';
-    getName() { return MoveNodeSettings.settingsName; }
-    view: NodeView<MoveNode>;
+export class ActionNodeSettings extends ViewSettings<MoveNodeProps, NodeView> {
+    static settingsName = 'action-node-settings';
+    getName() { return ActionNodeSettings.settingsName; }
+    view: NodeView<ActionNode>;
     private registry: Registry;
 
-    constructor(actionNodeConcept: NodeView<MoveNode>, registry: Registry) {
+    constructor(actionNodeConcept: NodeView<ActionNode>, registry: Registry) {
         super();
         this.view = actionNodeConcept;
         this.registry = registry;
@@ -23,16 +23,16 @@ export class MoveNodeSettings extends ViewSettings<MoveNodeProps, NodeView> {
 
     protected getProp(prop: MoveNodeProps) {
         switch (prop) {
-            case MoveNodeProps.AllMovements:
+            case MoveNodeProps.AllActions:
                 return getAllMovements();
-            case MoveNodeProps.Movement:
+            case MoveNodeProps.Action:
                 return this.view.data.movement;
         }
     }
 
     protected setProp(val: any, prop: MoveNodeProps) {
         switch (prop) {
-            case MoveNodeProps.Movement:
+            case MoveNodeProps.Action:
                 this.view.data.movement = val;
                 break;
             default:

@@ -2,15 +2,15 @@ import * as React from 'react';
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { Registry } from "../../../../core/Registry";
 import { ViewSettings } from '../../../scene_editor/settings/AbstractSettings';
-import { ActionNodeSettings } from "../ActionNodeSettings";
+import { NodeSettings } from "../NodeSettings";
 import { AndActionNodeSettingsComponent } from "../AndActionNodeSettingsComponent";
 import { KeyboardNodeSettingsComponent } from "../KeyboardNodeSettingsComponent";
-import { MeshActionNodeSettingsComponent } from "../MeshActionNodeSettingsComponent";
-import { MoveNodeSettingsComponent } from "../MoveNodeSettingsComponent";
+import { MeshNodeSettingsComponent } from "../MeshNodeSettingsComponent";
+import { ActionNodeSettingsComponent } from "../ActionNodeSettingsComponent";
 import { AnimationNodeSettingsComponent } from "../AnimationNodeSettingsComponent";
 import { KeyboardNodeSettings } from "./KeyboardNodeSettings";
 import { MeshNodeSettings } from './MeshNodeSettings';
-import { MoveNodeSettings } from './MoveNodeSettings';
+import { ActionNodeSettings } from './ActionNodeSettings';
 import { NodeType } from '../../../../core/models/views/nodes/AbstractNode';
 import { AnimationNodeSettings } from './AnimationNodeSettings';
 
@@ -23,13 +23,13 @@ export function createActionNodeSettings(nodeView: NodeView<any>, registry: Regi
         case NodeType.Keyboard:
             return new KeyboardNodeSettings(nodeView, registry);
         case NodeType.Move:
-            return new MoveNodeSettings(nodeView, registry);
+            return new ActionNodeSettings(nodeView, registry);
         case NodeType.Mesh:
             return new MeshNodeSettings(nodeView, registry);
         case NodeType.Animation:
             return new AnimationNodeSettings(nodeView, registry);
         default:
-            return new ActionNodeSettings(nodeView);
+            return new NodeSettings(nodeView);
     }
 }
 
@@ -40,9 +40,9 @@ export function createActionNodeSettingsComponent(actionNodeConcept: NodeView, r
         case NodeType.Keyboard:
             return <KeyboardNodeSettingsComponent settings={settings}/>;
         case NodeType.Move:
-            return <MoveNodeSettingsComponent settings={settings}/>;    
+            return <ActionNodeSettingsComponent settings={settings}/>;    
         case NodeType.Mesh:
-            return <MeshActionNodeSettingsComponent settings={settings}/>;    
+            return <MeshNodeSettingsComponent settings={settings}/>;    
         case NodeType.And:
             return <AndActionNodeSettingsComponent settings={settings}/>;          
         case NodeType.Animation:
