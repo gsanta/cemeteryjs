@@ -3,8 +3,8 @@ import { PathView } from "../../models/views/PathView";
 import { IConceptImporter } from "./IConceptImporter";
 import { ConceptGroupJson } from "./ImportService";
 import { ConceptType } from "../../models/views/View";
-import { EditPointView } from "../../models/views/control/EditPointView";
-import { FeedbackType } from '../../models/views/control/IControl';
+import { EditPointView } from "../../models/views/child_views/EditPointView";
+import { FeedbackType } from '../../models/views/child_views/ChildView';
 
 export interface PathJson {
     circle: {

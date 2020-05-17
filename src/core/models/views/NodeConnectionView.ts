@@ -1,6 +1,7 @@
 import { ConceptType, View } from "./View";
 import { VisualConcept } from "../concepts/VisualConcept";
-import { JoinPointView } from "./control/JoinPointView";
+import { JoinPointView } from "./child_views/JoinPointView";
+import { Rectangle } from "../../geometry/shapes/Rectangle";
 
 
 export class NodeConnectionView extends VisualConcept {
@@ -16,6 +17,11 @@ export class NodeConnectionView extends VisualConcept {
         this.id = id;
         this.joinPoint1 = joinPoint1;
         this.joinPoint2 = joinPoint2;
+        this.updateDimensions();
+    }
+
+    updateDimensions() {
+        this.dimensions = Rectangle.fromTwoPoints(this.joinPoint1.point, this.joinPoint2.point);
     }
 
     move() {

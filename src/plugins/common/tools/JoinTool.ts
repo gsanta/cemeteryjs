@@ -1,5 +1,5 @@
 import { Point } from "../../../core/geometry/shapes/Point";
-import { isNodeConnectionControl, JoinPointView } from "../../../core/models/views/control/JoinPointView";
+import { isNodeConnectionControl, JoinPointView } from "../../../core/models/views/child_views/JoinPointView";
 import { Registry } from "../../../core/Registry";
 import { IHotkeyEvent } from "../../../core/services/input/HotkeyService";
 import { UpdateTask } from "../../../core/services/UpdateServices";

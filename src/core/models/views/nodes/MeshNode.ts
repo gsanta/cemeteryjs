@@ -1,13 +1,17 @@
 import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
-import { INode, NodeType } from "./INode";
+import { AbstractNode, NodeType } from "./AbstractNode";
 
-export class MeshNode implements INode {
+export class MeshNode implements AbstractNode {
     type = NodeType.Mesh;
     group = NodeGroupName.Default;
     title = "Mesh";
     meshId: string;
     isActiveMesh: boolean;
     color = '#D39D9D';
-    inputSlots = 2;
-    outputSlots = 1;
+    inputSlots = [
+        {
+            name: 'input'
+        }
+    ];
+    outputSlots = []
 }

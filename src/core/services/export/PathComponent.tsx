@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { colors } from '../../gui/styles';
 import { PathView } from '../../models/views/PathView';
-import { EditPointView } from '../../models/views/control/EditPointView';
+import { EditPointView } from '../../models/views/child_views/EditPointView';
 import { Stores } from '../../stores/Stores';
 import { VisualConcept } from '../../models/concepts/VisualConcept';
 import { Registry } from '../../Registry';

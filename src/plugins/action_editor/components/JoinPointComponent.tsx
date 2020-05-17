@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { colors } from '../../../core/gui/styles';
-import { JoinPointView } from '../../../core/models/views/control/JoinPointView';
+import { JoinPointView } from '../../../core/models/views/child_views/JoinPointView';
 import { ControlProps } from '../../InstanceProps';
 import styled from 'styled-components';
 

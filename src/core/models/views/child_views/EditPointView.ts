@@ -1,9 +1,9 @@
 import { Point } from "../../../geometry/shapes/Point";
-import { IControl, FeedbackType } from "./IControl";
+import { ChildView, FeedbackType } from "./ChildView";
 import { PathView } from "../PathView";
 import { VisualConcept } from "../../concepts/VisualConcept";
 
-export class EditPointView extends IControl<PathView> {
+export class EditPointView extends ChildView<PathView> {
     id: string;
     type = FeedbackType.EditPointFeedback;
     point: Point;

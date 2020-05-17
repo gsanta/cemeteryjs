@@ -1,6 +1,6 @@
 import { maxBy } from '../geometry/utils/Functions';
 import { ConceptType, View } from '../models/views/View';
-import { FeedbackType } from '../models/views/control/IControl';
+import { FeedbackType } from '../models/views/child_views/ChildView';
 import { Hoverable } from '../models/Hoverable';
 import { Rectangle } from '../geometry/shapes/Rectangle';
 import { VisualConcept } from '../models/concepts/VisualConcept';

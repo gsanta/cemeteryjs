@@ -6,7 +6,7 @@ import { HelperMeshes } from './HelperMeshes';
 import { ICamera } from '../common/camera/ICamera';
 import { Camera3D } from '../common/camera/Camera3D';
 import { AbstractStore } from '../../core/stores/AbstractStore';
-import { ActionStore } from '../../core/stores/ActionStore';
+import { NodeStore } from '../../core/stores/NodeStore';
 (<any> window).earcut = require('earcut');
 
 export function cameraInitializer(registry: Registry) {

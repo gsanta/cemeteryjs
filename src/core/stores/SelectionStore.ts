@@ -1,7 +1,7 @@
 import { without } from "../geometry/utils/Functions";
 import { PathView } from "../models/views/PathView";
-import { IControl, FeedbackType } from "../models/views/control/IControl";
-import { EditPointView } from "../models/views/control/EditPointView";
+import { ChildView, FeedbackType } from "../models/views/child_views/ChildView";
+import { EditPointView } from "../models/views/child_views/EditPointView";
 import { VisualConcept } from "../models/concepts/VisualConcept";
 import { View, ConceptType } from "../models/views/View";
 import { Hoverable } from "../models/Hoverable";
@@ -50,8 +50,8 @@ export class SelectionStore {
         return <View> this.items.find(item => item.type.endsWith('Concept'));
     }
 
-    getFeedback(): IControl<any> {
-        return <IControl<any>> this.items.find(item => item.type.endsWith('Feedback'));
+    getFeedback(): ChildView<any> {
+        return <ChildView<any>> this.items.find(item => item.type.endsWith('Feedback'));
     }
 
     getEditPoint(): EditPointView {

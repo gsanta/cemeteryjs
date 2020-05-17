@@ -1,11 +1,12 @@
 import { VisualConcept } from '../../../core/models/concepts/VisualConcept';
 import { Registry } from '../../../core/Registry';
 import { UpdateTask } from '../../../core/services/UpdateServices';
-import { isConcept, isControl } from '../../../core/stores/CanvasStore';
+import { isConcept, isControl } from '../../../core/stores/SceneStore';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './RectangleSelector';
 import { ToolType, Cursor } from './Tool';
-import { IControl } from '../../../core/models/views/control/IControl';
+import { ChildView } from '../../../core/models/views/child_views/ChildView';
+import { View } from '../../../core/models/views/View';
 
 export class DeleteTool extends AbstractTool {
     private rectSelector: RectangleSelector;
@@ -27,10 +28,10 @@ export class DeleteTool extends AbstractTool {
         if (!hoveredItem) { return; }
 
         if (isControl(hoveredItem.type)) {
-            (<IControl<any>> hoveredItem).delete();
+            (<ChildView<any>> hoveredItem).delete();
         } else if (isConcept(hoveredItem.type)) {
             const deleteItems = hoveredItem.delete();
-            deleteItems.forEach(item => this.registry.views.getActiveView().getStore().removeItemById(item.id));
+            deleteItems.forEach(item => this.getStore().removeItemById(item.id));
         }
         
         this.registry.services.level.updateCurrentLevel();
@@ -39,10 +40,10 @@ export class DeleteTool extends AbstractTool {
 
     
     draggedUp() {
-        const store = this.registry.views.getActiveView().getStore();
-
-        const views = store.getIntersectingItemsInRect(this.registry.stores.feedback.rectSelectFeedback.rect);
-        views.forEach((item: VisualConcept) => store.removeItemById(item.id));
+        const views = this.getStore().getIntersectingItemsInRect(this.registry.stores.feedback.rectSelectFeedback.rect);
+        const deleteItems: View[] = [];
+        views.forEach(view => deleteItems.push(...view.delete()))
+        deleteItems.forEach((item: VisualConcept) => this.getStore().removeItemById(item.id));
 
         this.rectSelector.finish();
 

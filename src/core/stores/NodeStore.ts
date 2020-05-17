@@ -1,12 +1,12 @@
 import { ViewSettings } from '../../plugins/scene_editor/settings/AbstractSettings';
 import { ConceptType } from '../models/views/View';
 import { NodeConnectionView } from '../models/views/NodeConnectionView';
-import { NodeType } from '../models/views/nodes/INode';
+import { NodeType } from '../models/views/nodes/AbstractNode';
 import { NodeView } from '../models/views/NodeView';
 import { Registry } from '../Registry';
 import { AbstractStore } from './AbstractStore';
 
-export class ActionStore extends AbstractStore {
+export class NodeStore extends AbstractStore {
     settings: Map<string, ViewSettings<any, any>> = new Map();
     actionTypes: string[] = [];
 

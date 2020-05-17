@@ -1,5 +1,5 @@
 import { View } from "../views/View";
-import { EditPointView } from "../views/control/EditPointView";
+import { EditPointView } from "../views/child_views/EditPointView";
 import { Rectangle } from "../../geometry/shapes/Rectangle";
 import { Point } from "../../geometry/shapes/Point";
 

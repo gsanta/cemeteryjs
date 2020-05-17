@@ -1,6 +1,6 @@
 import { Hoverable } from "../core/models/Hoverable";
 import { Registry } from "../core/Registry";
-import { IControl } from "../core/models/views/control/IControl";
+import { ChildView } from "../core/models/views/child_views/ChildView";
 import { VisualConcept } from "../core/models/concepts/VisualConcept";
 
 export interface InstanceProps<T extends Hoverable> {
@@ -18,7 +18,7 @@ export interface GroupProps {
     unhover?: (item: VisualConcept) => void;
 }
 
-export interface ControlProps<T extends IControl<any>> {
+export interface ControlProps<T extends ChildView<any>> {
     item: T;
     hover?: (item: VisualConcept) => void;
     unhover?: (item: VisualConcept) => void;

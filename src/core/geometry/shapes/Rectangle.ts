@@ -95,6 +95,15 @@ export class Rectangle extends Polygon {
         return `${this.topLeft.toString()} ${this.bottomRight.toString()}`
     }
 
+    static fromTwoPoints(point1: Point, point2: Point) {
+        const left = point1.x <= point2.x ? point1.x : point2.x;
+        const right = point1.x > point2.x ? point1.x : point2.x;
+        const top = point1.y <= point2.y ? point1.y : point2.y;
+        const bottom = point1.y > point2.y ? point1.y : point2.y;
+
+        return new Rectangle(new Point(left, top), new Point(right, bottom));
+    }
+
     static fromString(str: string): Rectangle {
         const points = str.split(' ');
         return new Rectangle(Point.fromString(points[0]), Point.fromString(points[1]));

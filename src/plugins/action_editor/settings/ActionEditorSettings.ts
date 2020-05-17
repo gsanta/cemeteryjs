@@ -1,7 +1,7 @@
 import { NodeView } from '../../../core/models/views/NodeView';
 import { Registry } from '../../../core/Registry';
 import { AbstractSettings } from '../../scene_editor/settings/AbstractSettings';
-import { NodeType } from '../../../core/models/views/nodes/INode';
+import { NodeType } from '../../../core/models/views/nodes/AbstractNode';
 
 export enum ActionEditorSettingsProps {
     ActionTypes = 'ActionTypes',
@@ -31,7 +31,7 @@ export class ActionEditorSettings extends AbstractSettings<ActionEditorSettingsP
     private registry: Registry;
 
     nodeGroups: NodeGroup[] = [
-        {name: NodeGroupName.Default, color: 'blue', members: [NodeType.Keyboard, NodeType.Mesh, NodeType.Move]},
+        {name: NodeGroupName.Default, color: 'blue', members: [NodeType.Keyboard, NodeType.Mesh, NodeType.Move, NodeType.Animation]},
         {name: NodeGroupName.Boolean, color: 'green', members: [NodeType.And]},
     ]
 

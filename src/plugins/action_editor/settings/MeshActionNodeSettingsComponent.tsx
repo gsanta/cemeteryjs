@@ -2,10 +2,10 @@ import * as React from 'react';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { ConnectedDropdownComponent } from '../../../core/gui/inputs/DropdownComponent';
 import { FieldColumnStyled, LabelColumnStyled, SettingsRowStyled } from '../../scene_editor/settings/SettingsComponent';
-import { ActionNodeProps } from './nodes/actionNodeSettingsFactory';
+import { NodeProps } from './nodes/actionNodeSettingsFactory';
 import { MeshNodeProps } from './nodes/MeshNodeSettings';
 
-export class MeshActionNodeSettingsComponent extends React.Component<ActionNodeProps> {
+export class MeshActionNodeSettingsComponent extends React.Component<NodeProps> {
     static contextType = AppContext;
     context: AppContextType;
 

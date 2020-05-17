@@ -26,11 +26,11 @@ export class ViewComponent<T extends VisualConcept> extends React.Component<Inst
 
     }
     
-    getStrokeColor(): string {
+    getStrokeColor(defaultColor = 'black'): string {
         const selectionColor = this.props.registry.stores.selectionStore.contains(this.props.item) ? colors.views.highlight : undefined;
         const activeTool = this.props.registry.views.getActiveView().getActiveTool();
         const hoverColor = this.props.registry.services.pointer.hoveredItem === this.props.item ? activeTool.type === ToolType.Delete ? colors.views.delete : colors.views.highlight : undefined;
 
-        return hoverColor || selectionColor || 'black';
+        return hoverColor || selectionColor || defaultColor;
     }
 }

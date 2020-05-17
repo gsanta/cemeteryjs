@@ -1,11 +1,11 @@
-import { CanvasStore } from "../stores/CanvasStore";
+import { SceneStore } from "../stores/SceneStore";
 import { maxBy } from "../geometry/utils/Functions";
 import { ConceptType, View } from "../models/views/View";
 
 export class Naming {
-    private canvasStore: CanvasStore;
+    private canvasStore: SceneStore;
 
-    constructor(canvasStore: CanvasStore) {
+    constructor(canvasStore: SceneStore) {
         this.canvasStore = canvasStore;
     }
 

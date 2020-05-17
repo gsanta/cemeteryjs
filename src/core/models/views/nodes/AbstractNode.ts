@@ -5,14 +5,19 @@ export enum NodeType {
     Keyboard = 'Keyboard',
     Move = 'Move',
     And = 'And',
-    Mesh = 'Mesh'
+    Mesh = 'Mesh',
+    Animation = 'Animation'
 }
 
-export interface INode {
+export interface ConnectionSlot {
+    name: string;
+}
+
+export interface AbstractNode {
     type: NodeType;
     group: NodeGroupName;
     title: string;
     color: string;
-    inputSlots: number;
-    outputSlots: number;
+    inputSlots: ConnectionSlot[];
+    outputSlots: ConnectionSlot[];
 }

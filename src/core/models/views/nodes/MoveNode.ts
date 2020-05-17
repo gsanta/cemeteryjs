@@ -1,5 +1,5 @@
 import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
-import { INode, NodeType } from "./INode";
+import { AbstractNode, NodeType } from "./AbstractNode";
 
 export enum Movement {
     Left = 'Move Left',
@@ -20,12 +20,23 @@ export function getAllMovements() {
     return movements;
 }
 
-export class MoveNode implements INode {
+export class MoveNode implements AbstractNode {
     type = NodeType.Move;
     group = NodeGroupName.Default;
     title = "Move";
     movement: string;
     color = 'A194EC';
-    inputSlots = 2;
-    outputSlots = 1;
+    inputSlots = [
+        {
+            name: 'input'
+        }
+    ];
+    outputSlots = [
+        {
+            name: 'mesh'
+        },
+        {
+            name: 'animation'
+        }
+    ];
 }

@@ -4,7 +4,7 @@ import { UpdateTask } from '../../core/services/UpdateServices';
 import { calcOffsetFromDom, AbstractPlugin } from '../../core/AbstractPlugin';
 import { Camera2D } from '../common/camera/Camera2D';
 import { ActionEditorSettings } from './settings/ActionEditorSettings';
-import { ActionStore } from '../../core/stores/ActionStore';
+import { NodeStore } from '../../core/stores/NodeStore';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -50,7 +50,7 @@ export class ActionEditorPlugin extends AbstractPlugin {
         this.actionSettings = new ActionEditorSettings(registry);
     }
 
-    getStore(): ActionStore {
+    getStore(): NodeStore {
         return this.registry.stores.actionStore;
     }
 

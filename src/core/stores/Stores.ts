@@ -1,31 +1,31 @@
 import { LevelStore } from "./LevelStore";
-import { CanvasStore } from "./CanvasStore";
+import { SceneStore } from "./SceneStore";
 import { SelectionStore } from "./SelectionStore";
 import { GameStore } from "./GameStore";
 import { MeshStore } from "./MeshStore";
 import { FeedbackStore } from "./FeedbackStore";
 import { Registry } from "../Registry";
-import { ActionStore } from './ActionStore';
+import { NodeStore } from './NodeStore';
 
 export class Stores {
     private registry: Registry
 
     constructor(registry: Registry) {
         this.registry = registry;
-        this.canvasStore = new CanvasStore(this.registry);
+        this.canvasStore = new SceneStore(this.registry);
         this.selectionStore = new SelectionStore();
         this.levelStore = new LevelStore();
         this.gameStore = new GameStore(this.registry);
         this.meshStore = new MeshStore(this.registry);
         this.feedback = new FeedbackStore();
-        this.actionStore = new ActionStore(this.registry);
+        this.actionStore = new NodeStore(this.registry);
     }
 
-    canvasStore: CanvasStore;
+    canvasStore: SceneStore;
     selectionStore: SelectionStore;
     levelStore: LevelStore;
     gameStore: GameStore;
     meshStore: MeshStore;
     feedback: FeedbackStore;
-    actionStore: ActionStore;
+    actionStore: NodeStore;
 }

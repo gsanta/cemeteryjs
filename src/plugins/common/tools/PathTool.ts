@@ -1,8 +1,8 @@
 import { Point } from "../../../core/geometry/shapes/Point";
 import { ConceptType } from "../../../core/models/views/View";
 import { PathView } from "../../../core/models/views/PathView";
-import { FeedbackType } from "../../../core/models/views/control/IControl";
-import { EditPointView } from "../../../core/models/views/control/EditPointView";
+import { FeedbackType } from "../../../core/models/views/child_views/ChildView";
+import { EditPointView } from "../../../core/models/views/child_views/EditPointView";
 import { Registry } from "../../../core/Registry";
 import { HotkeyTrigger, IHotkeyEvent } from "../../../core/services/input/HotkeyService";
 import { IKeyboardEvent, Keyboard } from "../../../core/services/input/KeyboardService";
@@ -68,7 +68,7 @@ export class PathTool extends PointerTool {
         if (path && editPoint) {
             const pointer = this.registry.services.pointer.pointer;
             const selectedEditPoint = this.registry.stores.selectionStore.getEditPoint();
-            const newEditPointId = this.registry.views.getActiveView().getStore().generateUniqueName(FeedbackType.EditPointFeedback); 
+            const newEditPointId = this.getStore().generateUniqueName(FeedbackType.EditPointFeedback); 
             const newEditPoint = new EditPointView(newEditPointId, new Point(pointer.down.x, pointer.down.y), path);
             path.addEditPoint(newEditPoint, selectedEditPoint);
             this.registry.stores.selectionStore.removeItem(selectedEditPoint);

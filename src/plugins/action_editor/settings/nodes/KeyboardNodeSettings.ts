@@ -9,9 +9,9 @@ export enum KeyboardInputNodeProps {
     KeyboardKey = 'KeyboardKey',
 }
 
-export class KeyboardInputNodeSettings extends ViewSettings<KeyboardInputNodeProps, NodeView> {
+export class KeyboardNodeSettings extends ViewSettings<KeyboardInputNodeProps, NodeView> {
     static settingsName = 'keyboard-input-node-settings';
-    getName() { return KeyboardInputNodeSettings.settingsName; }
+    getName() { return KeyboardNodeSettings.settingsName; }
     view: NodeView<KeyboardNode>;
     private registry: Registry;
 

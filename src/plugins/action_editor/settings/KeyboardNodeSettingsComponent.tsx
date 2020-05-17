@@ -1,17 +1,15 @@
 import * as React from 'react';
-import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { ConnectedDropdownComponent } from '../../../core/gui/inputs/DropdownComponent';
 import { FieldColumnStyled, LabelColumnStyled, SettingsRowStyled } from '../../scene_editor/settings/SettingsComponent';
-import { ActionNodeProps } from './nodes/actionNodeSettingsFactory';
-import { KeyboardInputNodeProps } from './nodes/KeyboardInputNodeSettings';
+import { KeyboardInputNodeProps } from './nodes/KeyboardNodeSettings';
+import { AbstractNodeSettingsComponent } from './AbstractNodeSettingsComponent';
 
-export class KeyboardActionNodeSettingsComponent extends React.Component<ActionNodeProps> {
-    static contextType = AppContext;
-    context: AppContextType;
+export class KeyboardNodeSettingsComponent extends AbstractNodeSettingsComponent {
 
     render() {
         return (
             <div>
+                {this.renderSlots()}
                 {this.renderKeyboardKeysDropdown()}
             </div>
         )

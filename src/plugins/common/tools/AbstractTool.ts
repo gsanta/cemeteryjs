@@ -1,11 +1,12 @@
 import { Registry } from '../../../core/Registry';
-import { IControl } from '../../../core/models/views/control/IControl';
+import { ChildView } from '../../../core/models/views/child_views/ChildView';
 import { IKeyboardEvent } from '../../../core/services/input/KeyboardService';
 import { Tool, ToolType, Cursor } from './Tool';
 import { View } from '../../../core/models/views/View';
 import { Hoverable } from '../../../core/models/Hoverable';
 import { IHotkeyEvent } from '../../../core/services/input/HotkeyService';
 import { VisualConcept } from '../../../core/models/concepts/VisualConcept';
+import { AbstractStore } from '../../../core/stores/AbstractStore';
 
 export class AbstractTool implements Tool {
     type: ToolType;
@@ -52,4 +53,8 @@ export class AbstractTool implements Tool {
     setup(): void {};
     teardown(): void {};
     hotkey(hotkeyEvent: IHotkeyEvent): boolean { return false; }
+
+    protected getStore(): AbstractStore {
+        return this.registry.views.getActiveView().getStore();
+    }
 }

@@ -1,5 +1,5 @@
 import { Point } from "../../geometry/shapes/Point";
-import { EditPointView } from "../views/control/EditPointView";
+import { EditPointView } from "../views/child_views/EditPointView";
 import { ConceptType } from "../views/View";
 import { MetaConcept } from "./MetaConcept";
 

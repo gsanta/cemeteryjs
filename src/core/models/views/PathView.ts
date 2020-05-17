@@ -2,7 +2,7 @@ import { View, ConceptType } from "./View";
 import { Rectangle } from "../../geometry/shapes/Rectangle";
 import { Point } from "../../geometry/shapes/Point";
 import { minBy, maxBy } from "../../geometry/utils/Functions";
-import { EditPointView } from "./control/EditPointView";
+import { EditPointView } from "./child_views/EditPointView";
 import { IGameObject } from "../../../game/models/objects/IGameObject";
 import { VisualConcept } from "../concepts/VisualConcept";
 

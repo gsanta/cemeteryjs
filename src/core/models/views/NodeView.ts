@@ -1,12 +1,12 @@
 import { Point } from "../../geometry/shapes/Point";
 import { Rectangle } from "../../geometry/shapes/Rectangle";
-import { JoinPointView } from "./control/JoinPointView";
-import { INode } from "./nodes/INode";
+import { JoinPointView } from "./child_views/JoinPointView";
+import { AbstractNode, ConnectionSlot } from "./nodes/AbstractNode";
 import { ConceptType, View } from "./View";
 import { VisualConcept } from "../concepts/VisualConcept";
 import { createNode } from "./nodes/nodeFactory";
 
-export class NodeView<T extends INode = any> extends VisualConcept {
+export class NodeView<T extends AbstractNode = AbstractNode> extends VisualConcept {
     readonly  type = ConceptType.ActionConcept;
     readonly id: string;
     data: T;
@@ -27,7 +27,6 @@ export class NodeView<T extends INode = any> extends VisualConcept {
     move(point: Point) {
         this.dimensions = this.dimensions.translate(point);
         this.inputs.forEach(input => input.move(point));
-        
         this.outputs.forEach(output => output.move(point));
     }
 
@@ -41,9 +40,9 @@ export class NodeView<T extends INode = any> extends VisualConcept {
         const yStart = this.dimensions.topLeft.y + 50;
         const x = this.dimensions.topLeft.x;
 
-        for (let i = 0; i < this.data.inputSlots; i++) {
+        for (let i = 0; i < this.data.inputSlots.length; i++) {
             const y = i * 20 + yStart; 
-            this.inputs.push(new JoinPointView(this, i, true));
+            this.inputs.push(new JoinPointView(this, this.data.inputSlots[i], true));
         }
     }
 
@@ -51,9 +50,9 @@ export class NodeView<T extends INode = any> extends VisualConcept {
         const yStart = this.dimensions.topLeft.y + 50;
         const x = this.dimensions.bottomRight.x;
 
-        for (let i = 0; i < this.data.outputSlots; i++) {
+        for (let i = 0; i < this.data.outputSlots.length; i++) {
             const y = i * 20 + yStart; 
-            this.outputs.push(new JoinPointView(this, i, false));
+            this.outputs.push(new JoinPointView(this, this.data.outputSlots[i], false));
         }
     } 
 

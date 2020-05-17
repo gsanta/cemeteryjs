@@ -6,7 +6,7 @@ import { MeshView } from "../models/views/MeshView";
 import { ModelConcept } from "../models/concepts/ModelConcept";
 import { PathView } from "../models/views/PathView";
 import { VisualConcept } from "../models/concepts/VisualConcept";
-import { IControl } from "../models/views/control/IControl";
+import { ChildView } from "../models/views/child_views/ChildView";
 import { AnimationConcept } from "../models/meta/AnimationConcept";
 import { MetaConcept } from "../models/meta/MetaConcept";
 import { Registry } from "../Registry";
@@ -25,9 +25,9 @@ export function isMeta(type: string) {
     return type === ConceptType.ModelConcept;
 }
 
-export class CanvasStore extends AbstractStore {
+export class SceneStore extends AbstractStore {
     views: VisualConcept[] = [];
-    controls: IControl<any>[] = [];
+    controls: ChildView<any>[] = [];
     metas: MetaConcept[] = [];
 
     private registry: Registry;
@@ -41,7 +41,7 @@ export class CanvasStore extends AbstractStore {
         this.views.push(concept);
     }
 
-    addControl(control: IControl<any>) {
+    addControl(control: ChildView<any>) {
         this.controls.push(control);
     }
 

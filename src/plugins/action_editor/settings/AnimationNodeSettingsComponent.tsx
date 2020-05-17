@@ -3,38 +3,36 @@ import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { ConnectedDropdownComponent } from '../../../core/gui/inputs/DropdownComponent';
 import { FieldColumnStyled, LabelColumnStyled, SettingsRowStyled } from '../../scene_editor/settings/SettingsComponent';
 import { NodeProps } from './nodes/actionNodeSettingsFactory';
-import { MoveNodeProps } from './nodes/MoveNodeSettings';
+import { MeshNodeProps } from './nodes/MeshNodeSettings';
 
-export class MoveActionNodeSettingsComponent extends React.Component<NodeProps> {
+export class AnimationNodeSettingsComponent extends React.Component<NodeProps> {
     static contextType = AppContext;
     context: AppContextType;
-
 
     render() {
         return (
             <div>
-                {this.renderMoveDirectionDropdown()}\
+                {this.renderMeshDropdown()}
             </div>
         )
     }
 
-    private renderMoveDirectionDropdown() {
-        const movementTypes: string[] = this.props.settings.getVal(MoveNodeProps.AllMovements);
-        const val: string = this.props.settings.getVal(MoveNodeProps.Movement);
+    private renderMeshDropdown() {
+        const val: string = this.props.settings.getVal(MeshNodeProps.MeshId);
 
         return (
             <SettingsRowStyled>
-                <LabelColumnStyled className="input-label">Movement</LabelColumnStyled>
+                <LabelColumnStyled className="input-label">Animation</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedDropdownComponent
                         formController={this.props.settings}
-                        propertyName={MoveNodeProps.Movement}
-                        values={movementTypes}
+                        propertyName={MeshNodeProps.MeshId}
+                        values={[]}
                         currentValue={val}
-                        placeholder="Select Movement"
+                        placeholder="Select animation"
                     />
                 </FieldColumnStyled>
             </SettingsRowStyled>
-        );
+        )
     }
 }

@@ -91,7 +91,6 @@ export class NodeComponent extends ViewComponent<NodeView> {
                 >
                     {this.renderNodeHeader(item)}
                     {this.renderNodeBody(item)}
-                    {}
                 </NodeStyled>
             </foreignObject>
         )

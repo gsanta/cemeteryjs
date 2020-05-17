@@ -1,8 +1,8 @@
 import { Registry } from '../../../core/Registry';
 import { VisualConcept } from '../../../core/models/concepts/VisualConcept';
-import { IControl } from '../../../core/models/views/control/IControl';
+import { ChildView } from '../../../core/models/views/child_views/ChildView';
 import { UpdateTask } from "../../../core/services/UpdateServices";
-import { isConcept, isControl } from '../../../core/stores/CanvasStore';
+import { isConcept, isControl } from '../../../core/stores/SceneStore';
 import { AbstractTool } from "./AbstractTool";
 import { ToolType } from "./Tool";
 import { View } from '../../../core/models/views/View';
@@ -23,7 +23,7 @@ export class PointerTool extends AbstractTool {
         if (!hoveredItem) { return; }
 
         if (isControl(hoveredItem.type)) {
-            const concept = (<IControl<any>> hoveredItem).parent;
+            const concept = (<ChildView<any>> hoveredItem).parent;
             this.registry.stores.selectionStore.clear();
             this.registry.stores.selectionStore.addItem(concept);
             this.registry.stores.selectionStore.addItem(hoveredItem);
@@ -91,7 +91,7 @@ export class PointerTool extends AbstractTool {
         const concepts = this.registry.stores.selectionStore.getAllConcepts();
 
         if (isControl(this.movingItem.type)) {
-            (<IControl<any>> this.movingItem).move(this.registry.services.pointer.pointer.getDiff())
+            (<ChildView<any>> this.movingItem).move(this.registry.services.pointer.pointer.getDiff())
         } else if (isConcept(this.movingItem.type)) {
             concepts.forEach((item, index) => item.move(this.registry.services.pointer.pointer.getDiff()));
         }
@@ -116,7 +116,7 @@ export class PointerTool extends AbstractTool {
         let concepts: View[];
 
         if (isControl(this.movingItem.type)) {
-            concepts = [(<IControl<any>> this.movingItem).parent];
+            concepts = [(<ChildView<any>> this.movingItem).parent];
         } else {
             concepts = this.registry.stores.selectionStore.getAllConcepts();
         }

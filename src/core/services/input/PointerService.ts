@@ -1,6 +1,6 @@
 import { Registry } from "../../Registry";
 import { Point } from "../../geometry/shapes/Point";
-import { IControl } from "../../models/views/control/IControl";
+import { ChildView } from "../../models/views/child_views/ChildView";
 import { MousePointer } from "./MouseService";
 import { View } from "../../models/views/View";
 import { Hoverable } from "../../models/Hoverable";

@@ -1,4 +1,4 @@
-import { INode, NodeType } from "./INode";
+import { AbstractNode, NodeType } from "./AbstractNode";
 import { Keyboard } from "../../../services/input/KeyboardService";
 import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
 
@@ -14,12 +14,16 @@ export function getAllKeys() {
     return keys;
 }
 
-export class KeyboardNode implements INode {
+export class KeyboardNode implements AbstractNode {
     type = NodeType.Keyboard;
     group = NodeGroupName.Default;
     title = "Keyboard input";
     key: string;
     color = '#89BD88';
-    inputSlots = 2;
-    outputSlots = 1;
+    inputSlots = [];
+    outputSlots = [
+        {
+            name: 'output'
+        }
+    ];
 }
