@@ -64,7 +64,7 @@ export class MeshView extends VisualConcept implements IGameObject {
         GamepadEvent.TurnRight
     ];
     animation: AnimationConcept;
-    animations: string[] = [];
+    animations: string[] = ['animation1'];
     animationState = AnimationState.Playing;
     animationId: string;
     layer: number = 10;

@@ -1,5 +1,4 @@
 import { NodeView } from "../../../../core/models/views/NodeView";
-import { getAllKeys } from "../../../../core/models/views/nodes/KeyboardNode";
 import { ActionNode, getAllMovements } from "../../../../core/models/views/nodes/ActionNode";
 import { Registry } from "../../../../core/Registry";
 import { UpdateTask } from "../../../../core/services/UpdateServices";
@@ -24,16 +23,16 @@ export class ActionNodeSettings extends ViewSettings<MoveNodeProps, NodeView> {
     protected getProp(prop: MoveNodeProps) {
         switch (prop) {
             case MoveNodeProps.AllActions:
-                return getAllMovements();
+                return this.view.node.allActions;
             case MoveNodeProps.Action:
-                return this.view.data.movement;
+                return this.view.node.action;
         }
     }
 
     protected setProp(val: any, prop: MoveNodeProps) {
         switch (prop) {
             case MoveNodeProps.Action:
-                this.view.data.movement = val;
+                this.view.node.action = val;
                 break;
             default:
                 throw new Error(`${prop} is not a writeable property.`)

@@ -6,7 +6,7 @@ import { NodeComponent } from './NodeComponent';
 export class NodeGroupComponent extends React.Component<GroupProps> {
 
     render() {
-        const actionConcepts = this.props.registry.stores.actionStore.getNodes()
+        const actionConcepts = this.props.registry.stores.nodeStore.getNodes()
         const components = actionConcepts.map(actionConcept => (
                 <NodeComponent 
                     item={actionConcept}

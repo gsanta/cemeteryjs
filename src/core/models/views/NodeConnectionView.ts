@@ -27,4 +27,11 @@ export class NodeConnectionView extends VisualConcept {
     move() {
         // action nodes will move their join points, so this object is automatically moved
     }
+
+    delete() {
+        this.joinPoint1.connection = undefined;
+        this.joinPoint2.connection = undefined;
+
+        return [this];
+    }
 }

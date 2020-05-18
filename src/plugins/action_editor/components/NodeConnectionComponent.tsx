@@ -43,7 +43,7 @@ export class NodeConnectionComponent extends ViewComponent<NodeConnectionView> {
 
 export class AllNodeConnectionsComponent extends React.Component<GroupProps> {
     render() {
-        const connections = this.props.registry.stores.actionStore.getConnections();
+        const connections = this.props.registry.stores.nodeStore.getConnections();
         const components = connections.map(connection => (
                 <NodeConnectionComponent 
                     item={connection}

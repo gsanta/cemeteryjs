@@ -38,11 +38,11 @@ export class JoinTool extends AbstractTool {
 
         if (isNodeConnectionControl(this.registry.services.pointer.hoveredItem)) {
             const endItem = <JoinPointView> this.registry.services.pointer.hoveredItem;
-            const id = this.registry.stores.actionStore.generateUniqueName(ConceptType.ActionNodeConnectionConcept);
+            const id = this.registry.stores.nodeStore.generateUniqueName(ConceptType.ActionNodeConnectionConcept);
             const connection = new NodeConnectionView(id, this.startItem, endItem);
             this.startItem.connection = connection;
             endItem.connection = connection;
-            this.registry.stores.actionStore.addConnection(connection);
+            this.registry.stores.nodeStore.addConnection(connection);
             this.start = undefined;
             this.end = undefined;
         }

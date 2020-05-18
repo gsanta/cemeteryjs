@@ -18,7 +18,7 @@ export class Stores {
         this.gameStore = new GameStore(this.registry);
         this.meshStore = new MeshStore(this.registry);
         this.feedback = new FeedbackStore();
-        this.actionStore = new NodeStore(this.registry);
+        this.nodeStore = new NodeStore(this.registry);
     }
 
     canvasStore: SceneStore;
@@ -27,5 +27,5 @@ export class Stores {
     gameStore: GameStore;
     meshStore: MeshStore;
     feedback: FeedbackStore;
-    actionStore: NodeStore;
+    nodeStore: NodeStore;
 }

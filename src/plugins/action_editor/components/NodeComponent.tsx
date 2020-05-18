@@ -9,7 +9,7 @@ import { createActionNodeSettingsComponent } from '../settings/nodes/actionNodeS
 import { JoinPointComponent } from './JoinPointComponent';
 
 const NodeStyled = styled.div`
-    background-color: ${(props: {concept: NodeView}) => props.concept.data.color};
+    background-color: ${(props: {concept: NodeView}) => props.concept.node.color};
     width: 100%;
     height: 100%;
 `;
@@ -69,11 +69,11 @@ export class NodeComponent extends ViewComponent<NodeView> {
     }
 
     private renderInputs(item: NodeView): JSX.Element[] {
-        return item.data.inputSlots.map(input => <JoinPointComponent  item={input.connectionPoint} registry={this.props.registry} hover={this.props.hover} unhover={this.props.unhover}/>);
+        return item.node.inputSlots.map(input => <JoinPointComponent  item={input.connectionPoint} registry={this.props.registry} hover={this.props.hover} unhover={this.props.unhover}/>);
     }
 
     private renderOutputs(item: NodeView): JSX.Element[] {
-        return item.data.outputSlots.map(input => <JoinPointComponent  item={input.connectionPoint} registry={this.props.registry} hover={this.props.hover} unhover={this.props.unhover}/>);
+        return item.node.outputSlots.map(input => <JoinPointComponent  item={input.connectionPoint} registry={this.props.registry} hover={this.props.hover} unhover={this.props.unhover}/>);
     }
 
     private renderNode(item: NodeView) {
@@ -99,7 +99,7 @@ export class NodeComponent extends ViewComponent<NodeView> {
 
     private renderNodeHeader(item: NodeView): JSX.Element {
         return (
-            <NodeHeaderStyled>{item.data.title}</NodeHeaderStyled>
+            <NodeHeaderStyled>{item.node.title}</NodeHeaderStyled>
         );
     } 
 
@@ -111,7 +111,7 @@ export class NodeComponent extends ViewComponent<NodeView> {
 }
 
 export function AllActionNodesComponent(props: GroupProps) {
-    const actionConcepts = props.registry.stores.actionStore.getNodes();
+    const actionConcepts = props.registry.stores.nodeStore.getNodes();
     const components = actionConcepts.map(actionConcept => (
             <NodeComponent 
                 item={actionConcept}

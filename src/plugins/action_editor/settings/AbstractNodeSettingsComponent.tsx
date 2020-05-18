@@ -22,8 +22,8 @@ export class AbstractNodeSettingsComponent extends React.Component<NodeProps> {
 
 
     protected renderSlots(): JSX.Element[] {
-        const inputSlots = this.props.settings.view.data.inputSlots;
-        const outputSlots = this.props.settings.view.data.outputSlots;
+        const inputSlots = this.props.settings.view.node.inputSlots;
+        const outputSlots = this.props.settings.view.node.outputSlots;
     
         const rows = inputSlots.length > outputSlots.length ? inputSlots.length : outputSlots.length;
 

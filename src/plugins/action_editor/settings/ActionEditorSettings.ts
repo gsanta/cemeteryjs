@@ -43,7 +43,7 @@ export class ActionEditorSettings extends AbstractSettings<ActionEditorSettingsP
     protected getProp(prop: ActionEditorSettingsProps) {
         switch (prop) {
             case ActionEditorSettingsProps.ActionTypes:
-                return this.registry.stores.actionStore.actionTypes;
+                return this.registry.stores.nodeStore.actionTypes;
         }
     }
 

@@ -51,7 +51,7 @@ export class ActionEditorPlugin extends AbstractPlugin {
     }
 
     getStore(): NodeStore {
-        return this.registry.stores.actionStore;
+        return this.registry.stores.nodeStore;
     }
 
     getId() {

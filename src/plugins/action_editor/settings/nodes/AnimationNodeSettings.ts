@@ -6,6 +6,7 @@ import { ViewSettings } from "../../../scene_editor/settings/AbstractSettings";
 
 export enum AnimationNodeProps {
     Animation = 'Animation',
+    AllAnimations = 'AllAnimations'
 }
 
 export class AnimationNodeSettings extends ViewSettings<AnimationNodeProps, NodeView> {
@@ -22,15 +23,17 @@ export class AnimationNodeSettings extends ViewSettings<AnimationNodeProps, Node
 
     protected getProp(prop: AnimationNodeProps) {
         switch (prop) {
+            case AnimationNodeProps.AllAnimations:
+                return this.view.node.allAnimations;
             case AnimationNodeProps.Animation:
-                return this.view.data.animation;
+                return this.view.node.animation;
         }
     }
 
     protected setProp(val: any, prop: AnimationNodeProps) {
         switch (prop) {
             case AnimationNodeProps.Animation:
-                this.view.data.type = val;
+                this.view.node.animation = val;
                 break;
         }
         this.registry.services.update.runImmediately(UpdateTask.RepaintActiveView);

@@ -1,5 +1,7 @@
 import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
 import { AbstractNode, NodeType } from "./AbstractNode";
+import { NodeGraph } from '../../NodeGraph';
+import { MeshNode } from './MeshNode';
 
 export enum Movement {
     Left = 'Move Left',
@@ -24,7 +26,8 @@ export class ActionNode extends AbstractNode {
     type = NodeType.Move;
     group = NodeGroupName.Default;
     title = "Action";
-    movement: string;
+    action: string;
+    allActions: string[] = [];
     color = 'A194EC';
     inputSlots = [
         {
@@ -39,4 +42,17 @@ export class ActionNode extends AbstractNode {
             name: 'animation'
         }
     ];
+
+    private meshNode: string;
+
+    updateNode(graph: NodeGraph) {
+        this.allActions = [];
+        const meshSlot = this.findSlotByName('mesh');
+        if (!meshSlot.connectionPoint.getOtherNode()) { return; }
+
+        const meshView = (<MeshNode> meshSlot.connectionPoint.getOtherNode().node).meshView;
+        if (meshView) {
+            this.allActions = meshView.actions;
+        }
+    }
 }

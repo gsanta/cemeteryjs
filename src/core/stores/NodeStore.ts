@@ -5,16 +5,19 @@ import { NodeType } from '../models/views/nodes/AbstractNode';
 import { NodeView } from '../models/views/NodeView';
 import { Registry } from '../Registry';
 import { AbstractStore } from './AbstractStore';
+import { NodeGraph } from '../models/NodeGraph';
 
 export class NodeStore extends AbstractStore {
     settings: Map<string, ViewSettings<any, any>> = new Map();
     actionTypes: string[] = [];
+    graph: NodeGraph;
 
     private registry: Registry;
 
     constructor(registry: Registry) {
         super();
         this.registry = registry;
+        this.graph = new NodeGraph();
 
         for (let item in NodeType) {
             if (isNaN(Number(item))) {
@@ -23,18 +26,27 @@ export class NodeStore extends AbstractStore {
         }
     }
 
-    addAction(action: NodeView, settings: ViewSettings<any, any>) {
-        this.views.push(action);
-        this.settings.set(action.id, settings);
+    addAction(nodeView: NodeView, settings: ViewSettings<any, any>) {
+        this.graph.addNode(nodeView);
+        this.views.push(nodeView);
+        this.settings.set(nodeView.id, settings);
+        nodeView.node.updateNode(this.graph);
     }
 
     addConnection(connection: NodeConnectionView) {
+        this.graph.addConnection(connection);
         this.views.push(connection);
     }
 
     removeItemById(id: string) {
         const item = this.views.find(view => view.id === id);
         if (!item) { return }
+
+        switch(item.type) {
+            case ConceptType.ActionNodeConnectionConcept:
+                item.delete();
+                this.graph.deleteConnection(<NodeConnectionView> item);
+        }
 
         this.views = this.views.filter(v => v !== item);
         if (this.settings.has(item.id)) {

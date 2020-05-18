@@ -1,5 +1,7 @@
 import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
 import { JoinPointView } from "../child_views/JoinPointView";
+import { NodeGraph } from '../../NodeGraph';
+import { NodeView } from '../NodeView';
 
 export enum NodeType {
     Keyboard = 'Keyboard',
@@ -15,6 +17,11 @@ export interface ConnectionSlot {
 }
 
 export abstract class AbstractNode {
+    protected nodeView: NodeView;
+
+    constructor(nodeView: NodeView) {
+        this.nodeView = nodeView;
+    }
     isDirty = false;
     type: NodeType;
     group: NodeGroupName;
@@ -22,4 +29,9 @@ export abstract class AbstractNode {
     color: string;
     inputSlots: ConnectionSlot[];
     outputSlots: ConnectionSlot[];
+    updateNode(graph: NodeGraph): void {}
+
+    findSlotByName(name: string) {
+        return this.inputSlots.find(slot => slot.name === name) || this.outputSlots.find(slot => slot.name === name);
+    }
 }

@@ -92,6 +92,10 @@ export class SceneStore extends AbstractStore {
         return <MeshView[]> this.views.filter(view => view.type === ConceptType.MeshConcept);
     }
 
+    getMeshViewById(id: string): MeshView {
+        return <MeshView> this.views.find(view => view.id === id);
+    }
+
     getPathConcepts(): PathView[] {
         return <PathView[]> this.views.filter(view => view.type === ConceptType.PathConcept);
     }

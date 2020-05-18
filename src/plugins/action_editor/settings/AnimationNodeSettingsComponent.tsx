@@ -3,6 +3,7 @@ import { ConnectedDropdownComponent } from '../../../core/gui/inputs/DropdownCom
 import { FieldColumnStyled, LabelColumnStyled, SettingsRowStyled } from '../../scene_editor/settings/SettingsComponent';
 import { AbstractNodeSettingsComponent } from './AbstractNodeSettingsComponent';
 import { MeshNodeProps } from './nodes/MeshNodeSettings';
+import { AnimationNodeProps } from './nodes/AnimationNodeSettings';
 
 export class AnimationNodeSettingsComponent extends AbstractNodeSettingsComponent {
     render() {
@@ -15,7 +16,7 @@ export class AnimationNodeSettingsComponent extends AbstractNodeSettingsComponen
     }
 
     private renderMeshDropdown() {
-        const val: string = this.props.settings.getVal(MeshNodeProps.MeshId);
+        const val: string = this.props.settings.getVal(AnimationNodeProps.Animation);
 
         return (
             <SettingsRowStyled>
@@ -23,8 +24,8 @@ export class AnimationNodeSettingsComponent extends AbstractNodeSettingsComponen
                 <FieldColumnStyled>
                     <ConnectedDropdownComponent
                         formController={this.props.settings}
-                        propertyName={MeshNodeProps.MeshId}
-                        values={[]}
+                        propertyName={AnimationNodeProps.Animation}
+                        values={this.props.settings.getVal(AnimationNodeProps.AllAnimations)}
                         currentValue={val}
                         placeholder="Select animation"
                     />

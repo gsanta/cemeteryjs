@@ -23,10 +23,15 @@ export class JoinPointView extends ChildView<NodeView> {
         this.initPosition(slot, isInput);
     }
 
+    getOtherNode() {
+        if (!this.connection) { return; }
+        return this.connection.joinPoint1 === this ? this.connection.joinPoint2.parent : this.connection.joinPoint1.parent;
+    }
+
     private initPosition(slot: ConnectionSlot, isInput: boolean) {
         const yStart = this.parent.dimensions.topLeft.y + sizes.nodes.headerHeight;
         const x = isInput ? this.parent.dimensions.topLeft.x : this.parent.dimensions.bottomRight.x;
-        const slotIndex = isInput ? this.parent.data.inputSlots.indexOf(slot) : this.parent.data.outputSlots.indexOf(slot);
+        const slotIndex = isInput ? this.parent.node.inputSlots.indexOf(slot) : this.parent.node.outputSlots.indexOf(slot);
         const y = slotIndex * sizes.nodes.slotHeight + sizes.nodes.slotHeight / 2 + yStart;
         this.point = new Point(x, y);
     }

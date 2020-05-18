@@ -146,7 +146,7 @@ interface DropLayerProps {
 }
 
 const DropLayer = (props: DropLayerProps) => {
-    const actionTypes = props.registry.stores.actionStore.actionTypes;
+    const actionTypes = props.registry.stores.nodeStore.actionTypes;
 	const [{ isOver }, drop] = useDrop({
         accept: actionTypes,
         drop: (item, monitor) => props.onDrop(new Point(monitor.getClientOffset().x, monitor.getClientOffset().y), monitor.getItem().type), 

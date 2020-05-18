@@ -19,7 +19,7 @@ export interface NodeProps {
 }
 
 export function createActionNodeSettings(nodeView: NodeView<any>, registry: Registry): ViewSettings<any, any> {
-    switch(nodeView.data.type) {
+    switch(nodeView.node.type) {
         case NodeType.Keyboard:
             return new KeyboardNodeSettings(nodeView, registry);
         case NodeType.Move:
@@ -34,9 +34,9 @@ export function createActionNodeSettings(nodeView: NodeView<any>, registry: Regi
 }
 
 export function createActionNodeSettingsComponent(actionNodeConcept: NodeView, registry: Registry) {
-    const settings = registry.stores.actionStore.getSettings(actionNodeConcept);
+    const settings = registry.stores.nodeStore.getSettings(actionNodeConcept);
 
-    switch(actionNodeConcept.data.type) {
+    switch(actionNodeConcept.node.type) {
         case NodeType.Keyboard:
             return <KeyboardNodeSettingsComponent settings={settings}/>;
         case NodeType.Move:
