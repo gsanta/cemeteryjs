@@ -28,10 +28,9 @@ export class DeleteTool extends AbstractTool {
         if (!hoveredItem) { return; }
 
         if (isControl(hoveredItem.type)) {
-            (<ChildView<any>> hoveredItem).delete();
+            hoveredItem.delete();
         } else if (isConcept(hoveredItem.type)) {
-            const deleteItems = hoveredItem.delete();
-            deleteItems.forEach(item => this.getStore().removeItemById(item.id));
+            this.getStore().removeItemById(hoveredItem.id);
         }
         
         this.registry.services.level.updateCurrentLevel();
@@ -41,9 +40,7 @@ export class DeleteTool extends AbstractTool {
     
     draggedUp() {
         const views = this.getStore().getIntersectingItemsInRect(this.registry.stores.feedback.rectSelectFeedback.rect);
-        const deleteItems: View[] = [];
-        views.forEach(view => deleteItems.push(...view.delete()))
-        deleteItems.forEach((item: VisualConcept) => this.getStore().removeItemById(item.id));
+        views.forEach(view =>  this.getStore().removeItemById(view.id));
 
         this.rectSelector.finish();
 

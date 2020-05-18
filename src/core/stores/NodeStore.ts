@@ -41,17 +41,25 @@ export class NodeStore extends AbstractStore {
     removeItemById(id: string) {
         const item = this.views.find(view => view.id === id);
         if (!item) { return }
+        
+        const deleteViews = item.delete();
 
         switch(item.type) {
             case ConceptType.ActionNodeConnectionConcept:
-                item.delete();
                 this.graph.deleteConnection(<NodeConnectionView> item);
+                break;
+            case ConceptType.ActionConcept:
+                this.graph.deleteNode(<NodeView> item);
+                break;
         }
 
-        this.views = this.views.filter(v => v !== item);
-        if (this.settings.has(item.id)) {
-            this.settings.delete(item.id);
-        }
+        deleteViews.forEach(view => {
+            this.views = this.views.filter(v => v !== view);
+            if (this.settings.has(view.id)) {
+                this.settings.delete(view.id);
+            }
+        })
+
     }
 
     getNodes(): NodeView[] {

@@ -9,6 +9,17 @@ export class NodeGraph {
         this.nodeGroups.push(new Set([node]));
     }
 
+    deleteNode(node: NodeView) {
+        const group = this.findGroup(node);
+        group.delete(node);
+        const nodeViews = Array.from(group);
+        const splittedGroups = this.buildGroups(nodeViews);
+
+        this.nodeGroups = this.nodeGroups.filter(g => g !== group);
+        this.nodeGroups.push(...splittedGroups);
+        nodeViews.forEach(nodeView => nodeView.node.updateNode(this));
+    }
+
     findConnectedNodeWithType<T extends AbstractNode>(node: NodeView, expectedType: string): NodeView<T> {
         const group = this.findGroup(node);
 
@@ -33,13 +44,7 @@ export class NodeGraph {
     }
 
     deleteConnection(nodeConnection: NodeConnectionView) {
-        const group = this.findGroup(nodeConnection.joinPoint1.parent);
-        const nodeViews = Array.from(group);
-        const splittedGroups = this.buildGroups(nodeViews);
-
-        this.nodeGroups = this.nodeGroups.filter(g => g !== group);
-        this.nodeGroups.push(...splittedGroups);
-        nodeViews.forEach(nodeView => nodeView.node.updateNode(this));
+        this.deleteNode(nodeConnection.joinPoint1.parent);
     }
 
     updateGroup(node: NodeView) {

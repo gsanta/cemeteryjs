@@ -18,6 +18,7 @@ export class AnimationNode extends AbstractNode {
     outputSlots = [];
 
     updateNode(graph: NodeGraph) {
+        this.allAnimations = [];
         const nodeView = graph.findConnectedNodeWithType<MeshNode>(this.nodeView, NodeType.Mesh);
         if (nodeView && nodeView.node.meshView) {
             this.allAnimations = nodeView.node.meshView.animations;
