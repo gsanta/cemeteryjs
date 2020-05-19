@@ -5,7 +5,7 @@ import { NodeType } from '../models/views/nodes/AbstractNode';
 import { NodeView } from '../models/views/NodeView';
 import { Registry } from '../Registry';
 import { AbstractStore } from './AbstractStore';
-import { NodeGraph } from '../models/NodeGraph';
+import { NodeGraph } from '../services/node/NodeGraph';
 
 export class NodeStore extends AbstractStore {
     settings: Map<string, ViewSettings<any, any>> = new Map();

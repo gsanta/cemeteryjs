@@ -1,7 +1,7 @@
 import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
-import { JoinPointView } from "../child_views/JoinPointView";
-import { NodeGraph } from '../../NodeGraph';
+import { NodeGraph } from '../../../services/node/NodeGraph';
 import { NodeView } from '../NodeView';
+import { JoinPointView } from '../child_views/JoinPointView';
 
 export enum NodeType {
     Keyboard = 'Keyboard',
@@ -11,12 +11,12 @@ export enum NodeType {
     Animation = 'Animation'
 }
 
-export interface ConnectionSlot {
+export interface JoinPointSlot {
     name: string;
 }
 
 export abstract class AbstractNode {
-    protected nodeView: NodeView;
+    nodeView: NodeView;
 
     constructor(nodeView: NodeView) {
         this.nodeView = nodeView;
@@ -26,8 +26,8 @@ export abstract class AbstractNode {
     group: NodeGroupName;
     title: string;
     color: string;
-    inputSlots: ConnectionSlot[];
-    outputSlots: ConnectionSlot[];
+    inputSlots: JoinPointSlot[];
+    outputSlots: JoinPointSlot[];
     updateNode(graph: NodeGraph): void {}
 
     findSlotByName(name: string) {

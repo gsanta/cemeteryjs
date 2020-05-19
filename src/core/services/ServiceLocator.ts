@@ -15,6 +15,7 @@ import { MeshLoaderService } from "./MeshLoaderService";
 import { SettingsService } from "./SettingsService";
 import { UpdateService } from "./UpdateServices";
 import { LayoutService } from "./LayoutService";
+import { NodeService } from './node/NodeService';
 
 export class Services {
     hotkey: HotkeyService;
@@ -33,6 +34,7 @@ export class Services {
     conceptConverter: ConceptConvertService;
     game: GameService;
     layout: LayoutService;
+    node: NodeService;
 
     private registry: Registry;
 
@@ -57,5 +59,6 @@ export class Services {
         this.conceptConverter = new ConceptConvertService(this.registry);
         this.layout = new LayoutService(this.registry);
         this.game = new GameService(this.registry);
+        this.node = new NodeService();
     }
 }

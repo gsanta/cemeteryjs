@@ -1,6 +1,6 @@
 import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
 import { AbstractNode, NodeType } from "./AbstractNode";
-import { NodeGraph } from '../../NodeGraph';
+import { NodeGraph } from '../../../services/node/NodeGraph';
 import { MeshNode } from './MeshNode';
 
 export enum Movement {
@@ -47,7 +47,7 @@ export class ActionNode extends AbstractNode {
 
     updateNode(graph: NodeGraph) {
         this.allActions = [];
-        const joinPointView = this.nodeView.findJoinPointViewByName('mesh', true);
+        const joinPointView = this.nodeView.findJoinPointView('mesh', true);
         if (!joinPointView.getOtherNode()) { return; }
 
         const meshView = (<MeshNode> joinPointView.getOtherNode().node).meshView;

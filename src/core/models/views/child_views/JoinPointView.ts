@@ -15,13 +15,13 @@ export class JoinPointView extends ChildView<NodeView> {
     point: Point;
     parent: NodeView;
     connection: NodeConnectionView;
-    name: string;
+    slotName: string;
     isInput: boolean;
 
     constructor(parent: NodeView, slotName: string, isInput: boolean) {
         super();
         this.parent = parent;
-        this.name = slotName;
+        this.slotName = slotName;
         this.isInput = isInput;
         this.initPosition(slotName, isInput);
     }

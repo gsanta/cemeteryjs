@@ -5,7 +5,7 @@ import { JoinPointView } from "./child_views/JoinPointView";
 import { AbstractNode } from "./nodes/AbstractNode";
 import { createNode } from "./nodes/nodeFactory";
 import { ConceptType, View } from "./View";
-import { NodeGraph } from '../NodeGraph';
+import { NodeGraph } from '../../services/node/NodeGraph';
 
 export class NodeView<T extends AbstractNode = AbstractNode> extends VisualConcept {
     readonly  type = ConceptType.ActionConcept;
@@ -37,8 +37,8 @@ export class NodeView<T extends AbstractNode = AbstractNode> extends VisualConce
         return Array.from(new Set(deletingViews));
     }
 
-    findJoinPointViewByName(name: string, isInput: boolean) {
-        return this.joinPointViews.find(joinPointView => joinPointView.isInput === isInput && joinPointView.name === name);
+    findJoinPointView(name: string, isInput: boolean) {
+        return this.joinPointViews.find(joinPointView => joinPointView.isInput === isInput && joinPointView.slotName === name);
     }
 
     editPoints = [];

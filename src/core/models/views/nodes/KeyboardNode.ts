@@ -14,6 +14,10 @@ export function getAllKeys() {
     return keys;
 }
 
+export enum KeyboardNodeSlot {
+    Output = 'output'
+}
+
 export class KeyboardNode extends AbstractNode {
     type = NodeType.Keyboard;
     group = NodeGroupName.Default;
@@ -23,7 +27,11 @@ export class KeyboardNode extends AbstractNode {
     inputSlots = [];
     outputSlots = [
         {
-            name: 'output'
+            name: KeyboardNodeSlot.Output
         }
     ];
+
+    findSlotByName(name: KeyboardNodeSlot) {
+        return super.findSlotByName(name);
+    }
 }

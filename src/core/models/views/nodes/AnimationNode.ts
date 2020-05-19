@@ -1,6 +1,6 @@
 import { AbstractNode, NodeType } from './AbstractNode';
 import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
-import { NodeGraph } from "../../NodeGraph";
+import { NodeGraph } from "../../../services/node/NodeGraph";
 import { MeshNode } from "./MeshNode";
 
 export class AnimationNode extends AbstractNode {

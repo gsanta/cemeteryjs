@@ -1,4 +1,4 @@
-import { AbstractNode } from './views/nodes/AbstractNode';
+import { AbstractNode } from '../../models/views/nodes/AbstractNode';
 
 export class NodeGraph {
     nodeGroups: Set<AbstractNode>[] = [];
