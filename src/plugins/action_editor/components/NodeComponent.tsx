@@ -49,8 +49,7 @@ export class NodeComponent extends ViewComponent<NodeView> {
                     {this.renderRect(this.props.item)}
                     {this.props.renderWithSettings ? this.renderNode(this.props.item) : null}
                 </g>
-                {this.renderInputs(this.props.item)}
-                {this.renderOutputs(this.props.item)}
+                {this.renderJoinPointViews(this.props.item)}
             </g>
         )
     }
@@ -68,12 +67,8 @@ export class NodeComponent extends ViewComponent<NodeView> {
         );
     }
 
-    private renderInputs(item: NodeView): JSX.Element[] {
-        return item.node.inputSlots.map(input => <JoinPointComponent  item={input.connectionPoint} registry={this.props.registry} hover={this.props.hover} unhover={this.props.unhover}/>);
-    }
-
-    private renderOutputs(item: NodeView): JSX.Element[] {
-        return item.node.outputSlots.map(input => <JoinPointComponent  item={input.connectionPoint} registry={this.props.registry} hover={this.props.hover} unhover={this.props.unhover}/>);
+    private renderJoinPointViews(item: NodeView): JSX.Element[] {
+        return item.joinPointViews.map(joinPointView => <JoinPointComponent  item={joinPointView} registry={this.props.registry} hover={this.props.hover} unhover={this.props.unhover}/>)
     }
 
     private renderNode(item: NodeView) {

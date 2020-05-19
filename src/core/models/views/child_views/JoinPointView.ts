@@ -3,7 +3,6 @@ import { NodeView } from "../NodeView";
 import { FeedbackType, ChildView } from "./ChildView";
 import { Hoverable } from "../../Hoverable";
 import { NodeConnectionView } from "../NodeConnectionView";
-import { ConnectionSlot } from "../nodes/AbstractNode";
 import { sizes } from "../../../gui/styles";
 
 export function isNodeConnectionControl(hoverable: Hoverable) {
@@ -16,11 +15,15 @@ export class JoinPointView extends ChildView<NodeView> {
     point: Point;
     parent: NodeView;
     connection: NodeConnectionView;
+    name: string;
+    isInput: boolean;
 
-    constructor(parent: NodeView, slot: ConnectionSlot, isInput: boolean) {
+    constructor(parent: NodeView, slotName: string, isInput: boolean) {
         super();
         this.parent = parent;
-        this.initPosition(slot, isInput);
+        this.name = slotName;
+        this.isInput = isInput;
+        this.initPosition(slotName, isInput);
     }
 
     getOtherNode() {
@@ -28,10 +31,10 @@ export class JoinPointView extends ChildView<NodeView> {
         return this.connection.joinPoint1 === this ? this.connection.joinPoint2.parent : this.connection.joinPoint1.parent;
     }
 
-    private initPosition(slot: ConnectionSlot, isInput: boolean) {
+    private initPosition(slotName: string, isInput: boolean) {
         const yStart = this.parent.dimensions.topLeft.y + sizes.nodes.headerHeight;
         const x = isInput ? this.parent.dimensions.topLeft.x : this.parent.dimensions.bottomRight.x;
-        const slotIndex = isInput ? this.parent.node.inputSlots.indexOf(slot) : this.parent.node.outputSlots.indexOf(slot);
+        const slotIndex = isInput ? this.parent.node.inputSlots.findIndex(slot => slot.name === slotName) : this.parent.node.outputSlots.findIndex(slot => slot.name === slotName);
         const y = slotIndex * sizes.nodes.slotHeight + sizes.nodes.slotHeight / 2 + yStart;
         this.point = new Point(x, y);
     }
@@ -39,6 +42,16 @@ export class JoinPointView extends ChildView<NodeView> {
     move(delta: Point) {
         this.point = this.point.add(delta);
         this.connection && this.connection.updateDimensions();
+    }
+
+    delete() {
+        if (this.connection) {
+            const ret = [this, this.connection];
+            this.connection.delete();
+            return ret;
+        }
+
+        return [this];
     }
 
     toString() {

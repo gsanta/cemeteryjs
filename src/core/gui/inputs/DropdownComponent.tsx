@@ -32,9 +32,9 @@ const LabelStyled = styled.div`
 
 export const DropdownComponent : React.SFC<DropdownProps> = (props: DropdownProps) => {
     const options = props.values.map(val => {
-        return <option value={val}>{val}</option>
+        return <option key={val} value={val}>{val}</option>
     });
-    const placeholder = <option value="">{props.placeholder}</option>
+    const placeholder = <option key="placeholder" value="">{props.placeholder}</option>
 
     let select = (
         <select

@@ -1,14 +1,15 @@
 import { VisualConcept } from '../../../core/models/concepts/VisualConcept';
 import { Registry } from '../../../core/Registry';
+import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, IHotkeyEvent, HotkeyTrigger } from '../../../core/services/input/HotkeyService';
+import { Keyboard } from '../../../core/services/input/KeyboardService';
 import { UpdateTask } from '../../../core/services/UpdateServices';
 import { isConcept, isControl } from '../../../core/stores/SceneStore';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './RectangleSelector';
-import { ToolType, Cursor } from './Tool';
-import { ChildView } from '../../../core/models/views/child_views/ChildView';
-import { View } from '../../../core/models/views/View';
+import { Cursor, ToolType } from './Tool';
 
 export class DeleteTool extends AbstractTool {
+    private hotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, ...{keyCodes: [Keyboard.e], shift: true}}
     private rectSelector: RectangleSelector;
 
     constructor(registry: Registry) {
@@ -72,5 +73,14 @@ export class DeleteTool extends AbstractTool {
 
     getCursor() {
         return this.registry.services.pointer.hoveredItem ? Cursor.Pointer : Cursor.Default;
+    }
+
+    hotkey(hotkeyEvent: IHotkeyEvent) {
+        if (checkHotkeyAgainstTrigger(hotkeyEvent, this.hotkeyTrigger, this.registry)) {
+            this.getPlugin().setSelectedTool(this);
+            return true;
+        }
+
+        return false;
     }
 }

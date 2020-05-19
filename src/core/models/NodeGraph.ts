@@ -1,68 +1,72 @@
-import { NodeView } from './views/NodeView';
-import { NodeConnectionView } from './views/NodeConnectionView';
 import { AbstractNode } from './views/nodes/AbstractNode';
 
 export class NodeGraph {
-    nodeGroups: Set<NodeView>[] = [];
+    nodeGroups: Set<AbstractNode>[] = [];
 
-    addNode(node: NodeView) {
+    addNode(node: AbstractNode) {
         this.nodeGroups.push(new Set([node]));
     }
 
-    deleteNode(node: NodeView) {
+    deleteNode(node: AbstractNode) {
         const group = this.findGroup(node);
         group.delete(node);
-        const nodeViews = Array.from(group);
-        const splittedGroups = this.buildGroups(nodeViews);
+        const nodes = Array.from(group);
+        const splittedGroups = this.buildGroups(nodes);
 
         this.nodeGroups = this.nodeGroups.filter(g => g !== group);
         this.nodeGroups.push(...splittedGroups);
-        nodeViews.forEach(nodeView => nodeView.node.updateNode(this));
+        nodes.forEach(node => node.updateNode(this));
     }
 
-    findConnectedNodeWithType<T extends AbstractNode>(node: NodeView, expectedType: string): NodeView<T> {
+    findConnectedNodeWithType<T extends AbstractNode>(node: AbstractNode, expectedType: string): T {
         const group = this.findGroup(node);
 
         for (let element of group) {
-            if (element.node.type === expectedType) {
-                return <NodeView<T>> element;
+            if (element.type === expectedType) {
+                return <T> element;
             }
         }
     }
 
-    addConnection(nodeConnection: NodeConnectionView) {
-        const group1 = this.findGroup(nodeConnection.joinPoint1.parent);
-        const group2 = this.findGroup(nodeConnection.joinPoint2.parent);
+    addConnection(node1: AbstractNode, node2: AbstractNode) {
+        const group1 = this.findGroup(node1);
+        const group2 = this.findGroup(node2);
 
         if (group1 !== group2) {
             this.nodeGroups = this.nodeGroups.filter(group => group !== group1 && group !== group2);
 
-            const newGroup: Set<NodeView> = new Set([...group1, ...group2]);
+            const newGroup: Set<AbstractNode> = new Set([...group1, ...group2]);
             this.nodeGroups.push(newGroup);
-            this.updateGroup(nodeConnection.joinPoint1.parent);
+            this.updateGroup(node1);
         }
     }
 
-    deleteConnection(nodeConnection: NodeConnectionView) {
-        this.deleteNode(nodeConnection.joinPoint1.parent);
+    deleteConnection(node1: AbstractNode, node2: AbstractNode) {
+        const group = this.findGroup(node1);
+        const nodes = Array.from(group);
+        const splittedGroups = this.buildGroups(nodes);
+
+        this.nodeGroups = this.nodeGroups.filter(g => g !== group);
+        this.nodeGroups.push(...splittedGroups);
+        nodes.forEach(node => node.updateNode(this));
     }
 
-    updateGroup(node: NodeView) {
+    updateGroup(node: AbstractNode) {
         const group = this.findGroup(node);
         for (let element of group) {
-            element.node.updateNode(this);
+            element.updateNode(this);
         }
     }
 
-    buildGroups(nodes: NodeView[]): Set<NodeView>[] {
-        if (!nodes.length) { return; }
+    buildGroups(nodes: AbstractNode[]): Set<AbstractNode>[] {
+        if (!nodes.length) { return []; }
 
-        const nodeGroups: Set<NodeView>[] = [];
-        const visited: Map<string, boolean> = new Map();
+        const nodeGroups: Set<AbstractNode>[] = [];
+        const visited: Map<AbstractNode, boolean> = new Map();
         const remainingNodes = new Set(nodes);
-        nodes.forEach(node => visited.set(node.id, false));
+        nodes.forEach(node => visited.set(node, false));
         while(remainingNodes.size > 0) {
-            const nodeGroup: Set<NodeView> = new Set();
+            const nodeGroup: Set<AbstractNode> = new Set();
             nodeGroups.push(nodeGroup);
             this.traverseConnectedNodes(remainingNodes.values().next().value, remainingNodes, nodeGroup);
         }
@@ -70,11 +74,11 @@ export class NodeGraph {
         return nodeGroups;
     }
 
-    private findGroup(node: NodeView) {
+    private findGroup(node: AbstractNode) {
         return this.nodeGroups.find(group => group.has(node));
     }
 
-    private traverseConnectedNodes(node: NodeView, remainingNodes: Set<NodeView>, nodeGroup: Set<NodeView>) {
+    private traverseConnectedNodes(node: AbstractNode, remainingNodes: Set<AbstractNode>, nodeGroup: Set<AbstractNode>) {
         if (!remainingNodes.has(node)) { return; }
         remainingNodes.delete(node);
         nodeGroup.add(node);

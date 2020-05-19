@@ -128,37 +128,41 @@ export class Hotkey implements IHotkey {
     }
 
     hotkey(hotkeyEvent: IHotkeyEvent): boolean {
-        const b = (
-            this.keyCodesMatch(hotkeyEvent) &&
-            hotkeyEvent.isAltDown === this.trigger.alt &&
-            (this.trigger.shift === undefined || hotkeyEvent.isShiftDown === this.trigger.shift) &&
-            isCtrlOrCommandDown(<IKeyboardEvent> hotkeyEvent) === this.trigger.ctrlOrCommand &&
-            this.wheelMatch(this.registry.services.pointer) === this.trigger.wheel &&
-            this.mouseDownMatch(hotkeyEvent) &&
-            this.keyCodeFuncMatch(hotkeyEvent)
-        );
-
-        if (b) {
+        if (checkHotkeyAgainstTrigger(hotkeyEvent, this.trigger, this.registry)) {
             this.action(hotkeyEvent, this.registry);
+            return true;
         }
-        return b;
+        return false;
     }
+}
 
-    private wheelMatch(pointerService: PointerService): boolean {
-        return pointerService.wheel !== Wheel.IDLE;
-    }
+export function checkHotkeyAgainstTrigger(hotkeyEvent: IHotkeyEvent, hotkeyTrigger: HotkeyTrigger, registry: Registry) {
+    return (
+        keyCodesMatch(hotkeyEvent, hotkeyTrigger) &&
+        hotkeyEvent.isAltDown === hotkeyTrigger.alt &&
+        (hotkeyTrigger.shift === undefined || hotkeyEvent.isShiftDown === hotkeyTrigger.shift) &&
+        isCtrlOrCommandDown(<IKeyboardEvent> hotkeyEvent) === hotkeyTrigger.ctrlOrCommand &&
+        wheelMatch(registry.services.pointer) === hotkeyTrigger.wheel &&
+        mouseDownMatch(hotkeyEvent, hotkeyTrigger) &&
+        keyCodeFuncMatch(hotkeyEvent, hotkeyTrigger)
+    );
+}
 
-    private keyCodeFuncMatch(hotkeyEvent: IHotkeyEvent) {
-        if (!this.trigger.keyCodeFunc) { return true; }
 
-        return hotkeyEvent.keyCode !== undefined && this.trigger.keyCodeFunc(hotkeyEvent);
-    }
+function wheelMatch(pointerService: PointerService): boolean {
+    return pointerService.wheel !== Wheel.IDLE;
+}
 
-    private mouseDownMatch(hotkeyEvent: IHotkeyEvent) {
-        return this.trigger.mouseDown === false || this.trigger.mouseDown === hotkeyEvent.pointers[0].isDown
-    }
+function keyCodeFuncMatch(hotkeyEvent: IHotkeyEvent, hotkeyTrigger: HotkeyTrigger) {
+    if (!hotkeyTrigger.keyCodeFunc) { return true; }
 
-    private keyCodesMatch(hotkeyEvent: IHotkeyEvent): boolean {
-        return this.trigger.keyCodes.length === 0 || this.trigger.keyCodes.find(keyCode => keyCode === hotkeyEvent.keyCode) !== undefined;
-    }
+    return hotkeyEvent.keyCode !== undefined && hotkeyTrigger.keyCodeFunc(hotkeyEvent);
+}
+
+function mouseDownMatch(hotkeyEvent: IHotkeyEvent, hotkeyTrigger: HotkeyTrigger) {
+    return hotkeyTrigger.mouseDown === false || hotkeyTrigger.mouseDown === hotkeyEvent.pointers[0].isDown
+}
+
+function keyCodesMatch(hotkeyEvent: IHotkeyEvent, hotkeyTrigger: HotkeyTrigger): boolean {
+    return hotkeyTrigger.keyCodes.length === 0 || hotkeyTrigger.keyCodes.find(keyCode => keyCode === hotkeyEvent.keyCode) !== undefined;
 }

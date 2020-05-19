@@ -62,8 +62,8 @@ export class SceneEditorComponent extends CanvasComponent {
                         tools={[ToolType.Rectangle, ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Zoom, ToolType.Pan]}
                         view={view}
                     >
-                        <UndoIconComponent isActive={false} disabled={!history.hasUndoHistory()} onClick={() => history.undo()} format="short"/>
-                        <RedoIconComponent isActive={false} disabled={!history.hasRedoHistory()} onClick={() => history.redo()} format="short"/>
+                        <UndoIconComponent key={'undo-icon'} isActive={false} disabled={!history.hasUndoHistory()} onClick={() => history.undo()} format="short"/>
+                        <RedoIconComponent key={'redo-icon'} isActive={false} disabled={!history.hasRedoHistory()} onClick={() => history.redo()} format="short"/>
     
                     </ToolbarComponent>
                 </WindowToolbarStyled>

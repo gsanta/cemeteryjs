@@ -42,7 +42,6 @@ export class PointerService {
 
     pointerDown(e: IPointerEvent): void {
         if (e.button !== 'left') { return }
-        console.log('pointer down')
         this.isDown = true;
         this.pointer.down = this.getCanvasPoint(e.pointers[0].pos); 
         this.pointer.downScreen = this.getScreenPoint(e.pointers[0].pos); 

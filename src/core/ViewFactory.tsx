@@ -15,14 +15,14 @@ export interface ViewFactory {
     renderToolbarComponent(): JSX.Element;
 }
 
-export function viewFactory(controller: AbstractPlugin): JSX.Element {
-    switch(controller.getId()) {
+export function viewFactory(plugin: AbstractPlugin): JSX.Element {
+    switch(plugin.getId()) {
         case SceneEditorPlugin.id:
-            return <SceneEditorComponent/>;
+            return <SceneEditorComponent key={plugin.getId()}/>;
         case GameViewerPlugin.id:
-            return <GameViewerComponent/>;
+            return <GameViewerComponent key={plugin.getId()}/>;
         case ActionEditorPlugin.id:
-            return <ActionEditorComponent/>;    
+            return <ActionEditorComponent key={plugin.getId()}/>;    
     }
 
     return null;

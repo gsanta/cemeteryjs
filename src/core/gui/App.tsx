@@ -48,6 +48,10 @@ export class App extends React.Component<{}, AppState> {
 
         window.addEventListener('resize', () => this.context.registry.services.layout.getActiveViews().forEach(controller => controller.resize()));
         this.context.controllers.setup(document.querySelector(`#${GameViewerPlugin.id}`));
+
+        document.getElementsByTagName('body')[0].addEventListener('onfocus', () => {
+            console.log('body focus')
+        })
     }
 
     componentDidUpdate() {
@@ -69,14 +73,14 @@ export class App extends React.Component<{}, AppState> {
         return (
             <div className="style-nightshifs">
                 <DndProvider backend={Backend}>
-                    <div className="main-content">
+                    <div className="main-content" key="main-content">
                         {toolbar}
                         {fullScreen ? this.renderFullScreenCanvas() : this.renderViews()}
                     </div>
-                    {this.context.controllers.isLoading ? <SpinnerOverlayComponent/> : null}
-                    <AnimationDialogComponent settings={this.context.registry.services.settings.animationSettings}/>
-                    <ListActionsDialogComponent/>
-                    <HotkeyInputComponent registry={this.context.registry}/>
+                    {this.context.controllers.isLoading ? <SpinnerOverlayComponent key="spinner"/> : null}
+                    <AnimationDialogComponent key="animation-dialog" settings={this.context.registry.services.settings.animationSettings}/>
+                    <ListActionsDialogComponent key="list-actions-dialog"/>
+                    <HotkeyInputComponent key="hotkey-input" registry={this.context.registry}/>
                 </DndProvider>
             </div>
         );

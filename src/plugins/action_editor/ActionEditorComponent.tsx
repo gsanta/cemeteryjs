@@ -3,15 +3,14 @@ import { useDrop } from 'react-dnd';
 import styled from 'styled-components';
 import { Point } from '../../core/geometry/shapes/Point';
 import { colors } from '../../core/gui/styles';
-import { Hoverable } from '../../core/models/Hoverable';
+import { VisualConcept } from '../../core/models/concepts/VisualConcept';
 import { Registry } from '../../core/Registry';
 import { WheelListener } from '../../core/services/WheelListener';
 import { WindowToolbarStyled } from '../../core/WindowToolbar';
+import { CanvasComponent } from '../common/CanvasComponent';
 import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
 import { ToolType } from '../common/tools/Tool';
 import { ActionEditorPlugin } from './ActionEditorPlugin';
-import { CanvasComponent } from '../common/CanvasComponent';
-import { VisualConcept } from '../../core/models/concepts/VisualConcept';
 
 const EditorComponentStyled = styled.div`
     width: 100%;
@@ -160,6 +159,7 @@ const DropLayer = (props: DropLayerProps) => {
             onMouseMove={(e) => props.onMouseMove(e.nativeEvent)}
             onMouseOver={() => props.onMouseOver()}
             onMouseOut={() => props.onMouseOut()}
+            onMouseDown={() => props.registry.services.hotkey.focus()}
             ref={drop}
             className='drop-layer'
             isDragging={props.isDragging}

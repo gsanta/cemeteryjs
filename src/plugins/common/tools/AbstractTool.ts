@@ -7,6 +7,7 @@ import { Hoverable } from '../../../core/models/Hoverable';
 import { IHotkeyEvent } from '../../../core/services/input/HotkeyService';
 import { VisualConcept } from '../../../core/models/concepts/VisualConcept';
 import { AbstractStore } from '../../../core/stores/AbstractStore';
+import { AbstractPlugin } from '../../../core/AbstractPlugin';
 
 export class AbstractTool implements Tool {
     type: ToolType;
@@ -56,5 +57,9 @@ export class AbstractTool implements Tool {
 
     protected getStore(): AbstractStore {
         return this.registry.views.getActiveView().getStore();
+    }
+
+    protected getPlugin(): AbstractPlugin {
+        return this.registry.views.getActiveView();
     }
 }

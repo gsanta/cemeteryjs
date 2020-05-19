@@ -47,10 +47,10 @@ export class ActionNode extends AbstractNode {
 
     updateNode(graph: NodeGraph) {
         this.allActions = [];
-        const meshSlot = this.findSlotByName('mesh');
-        if (!meshSlot.connectionPoint.getOtherNode()) { return; }
+        const joinPointView = this.nodeView.findJoinPointViewByName('mesh', true);
+        if (!joinPointView.getOtherNode()) { return; }
 
-        const meshView = (<MeshNode> meshSlot.connectionPoint.getOtherNode().node).meshView;
+        const meshView = (<MeshNode> joinPointView.getOtherNode().node).meshView;
         if (meshView) {
             this.allActions = meshView.actions;
         }

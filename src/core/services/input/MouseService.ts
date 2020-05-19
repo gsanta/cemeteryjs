@@ -68,7 +68,6 @@ export class MouseService {
     }
 
     hover(item: VisualConcept) {
-        console.log(item.type)
         this.registry.services.pointer.hover(item);
     }
 

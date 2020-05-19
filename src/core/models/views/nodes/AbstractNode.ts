@@ -13,7 +13,6 @@ export enum NodeType {
 
 export interface ConnectionSlot {
     name: string;
-    connectionPoint?: JoinPointView;
 }
 
 export abstract class AbstractNode {
@@ -33,5 +32,11 @@ export abstract class AbstractNode {
 
     findSlotByName(name: string) {
         return this.inputSlots.find(slot => slot.name === name) || this.outputSlots.find(slot => slot.name === name);
+    }
+
+    getAllAdjacentNodes(): AbstractNode[] {
+        return this.nodeView.joinPointViews
+            .filter(joinPointView => joinPointView.getOtherNode() !== undefined)
+            .map(joinPointView => joinPointView.getOtherNode().node);
     }
 }

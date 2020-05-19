@@ -27,14 +27,14 @@ export class NodeStore extends AbstractStore {
     }
 
     addAction(nodeView: NodeView, settings: ViewSettings<any, any>) {
-        this.graph.addNode(nodeView);
+        this.graph.addNode(nodeView.node);
         this.views.push(nodeView);
         this.settings.set(nodeView.id, settings);
         nodeView.node.updateNode(this.graph);
     }
 
     addConnection(connection: NodeConnectionView) {
-        this.graph.addConnection(connection);
+        this.graph.addConnection(connection.joinPoint1.parent.node, connection.joinPoint2.parent.node);
         this.views.push(connection);
     }
 
@@ -46,10 +46,11 @@ export class NodeStore extends AbstractStore {
 
         switch(item.type) {
             case ConceptType.ActionNodeConnectionConcept:
-                this.graph.deleteConnection(<NodeConnectionView> item);
+                const connection = <NodeConnectionView> item;
+                this.graph.deleteConnection(connection.joinPoint1.parent.node, connection.joinPoint2.parent.node);
                 break;
             case ConceptType.ActionConcept:
-                this.graph.deleteNode(<NodeView> item);
+                this.graph.deleteNode((<NodeView> item).node);
                 break;
         }
 

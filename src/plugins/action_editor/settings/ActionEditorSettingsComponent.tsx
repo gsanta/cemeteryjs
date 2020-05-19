@@ -27,8 +27,8 @@ export class ActionEditorSettingsComponent extends React.Component<{settings: Ac
 
         return (
             <div 
-                onMouseOver={() => view.setPriorityTool(this.context.registry.tools.dragAndDrop)}
-                onMouseOut={() => view.removePriorityTool(this.context.registry.tools.dragAndDrop)}
+                // onMouseOver={() => view.setPriorityTool(this.context.registry.tools.dragAndDrop)}
+                // onMouseOut={() => view.removePriorityTool(this.context.registry.tools.dragAndDrop)}
             >
                 {this.renderActionGroups()}
             </div>
@@ -36,10 +36,15 @@ export class ActionEditorSettingsComponent extends React.Component<{settings: Ac
     }
 
     renderActionGroups() {
-        const nodeTypes = this.props.settings.getVal<string[]>(ActionEditorSettingsProps.ActionTypes);
+        const view = this.context.registry.services.layout.getViewById(ActionEditorPlugin.id);
+
         const groups: CanvasToolsProps[] = this.props.settings.nodeGroups.map(group => {
             const items = group.members.map((nodeType) => (
-                <NodeButton type={nodeType} />
+                <NodeButton 
+                    key={nodeType} type={nodeType} 
+                    onMouseDown={() => view.setPriorityTool(this.context.registry.tools.dragAndDrop)}
+                    onDrop={() => view.removePriorityTool(this.context.registry.tools.dragAndDrop)}
+                />
             ));
 
             return {
@@ -52,16 +57,17 @@ export class ActionEditorSettingsComponent extends React.Component<{settings: Ac
     }
 }
 
-const NodeButton = (props: {type: string}) => {
+const NodeButton = (props: {type: string, onMouseDown: () => void, onDrop: () => void}) => {
     const [{isDragging}, drag] = useDrag({
             item: { type: props.type },
             collect: monitor => ({
                 isDragging: !!monitor.isDragging(),
             }),
+            end: (item, monitor) => props.onDrop()
       })
     
     return (
-        <NodeButtonStyled ref={drag}>
+        <NodeButtonStyled ref={drag} onMouseDown={() => props.onMouseDown()}>
             {props.type}
         </NodeButtonStyled>
     )

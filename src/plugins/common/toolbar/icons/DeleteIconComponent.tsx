@@ -21,7 +21,7 @@ export class DeleteIconComponent extends AbstractIconComponent {
     constructor(props: IconProps) {
         super(props);
 
-        this.tooltipText = 'Eraser tool <b>(E)</b>';
+        this.tooltipText = 'Eraser tool <b>(Shift + E)</b>';
     }
 
     render() {

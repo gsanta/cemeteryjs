@@ -34,7 +34,7 @@ export class MeshNodeSettings extends ViewSettings<MeshNodeProps, NodeView> {
         switch (prop) {
             case MeshNodeProps.MeshId:
                 this.view.node.meshView = <MeshView> this.registry.stores.canvasStore.getMeshViewById(val);
-                this.registry.stores.nodeStore.graph.updateGroup(this.view);
+                this.registry.stores.nodeStore.graph.updateGroup(this.view.node);
                 break;
             default:
                 throw new Error(`${prop} is not a writeable property.`)
