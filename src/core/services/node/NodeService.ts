@@ -1,17 +1,17 @@
 import { NodeGraph } from './NodeGraph';
-import { AbstractNode } from '../../models/views/nodes/AbstractNode';
+import { NodeModel } from '../../models/views/nodes/NodeModel';
 import { AbstractNodeHandler } from './handlers/AbstractNodeHandler';
 
 export class NodeService {
     graph: NodeGraph;
-    nodesByType: Map<string, AbstractNode[]> = new Map();
+    nodesByType: Map<string, NodeModel[]> = new Map();
     handlersByType: Map<string, AbstractNodeHandler> = new Map();
 
-    getHandler(node: AbstractNode): AbstractNodeHandler {
+    getHandler(node: NodeModel): AbstractNodeHandler {
         return this.handlersByType.get(node.type);
     }
 
-    getNodesByType<T extends AbstractNode>(nodeType: string): T[] {
+    getNodesByType<T extends NodeModel>(nodeType: string): T[] {
         return <T[]> this.nodesByType.get(nodeType);
     }
 }

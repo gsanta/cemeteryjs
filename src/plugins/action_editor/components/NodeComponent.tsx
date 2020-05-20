@@ -9,7 +9,7 @@ import { createActionNodeSettingsComponent } from '../settings/nodes/actionNodeS
 import { JoinPointComponent } from './JoinPointComponent';
 
 const NodeStyled = styled.div`
-    background-color: ${(props: {concept: NodeView}) => props.concept.node.color};
+    background-color: ${(props: {concept: NodeView}) => props.concept.model.color};
     width: 100%;
     height: 100%;
 `;
@@ -94,7 +94,7 @@ export class NodeComponent extends ViewComponent<NodeView> {
 
     private renderNodeHeader(item: NodeView): JSX.Element {
         return (
-            <NodeHeaderStyled>{item.node.title}</NodeHeaderStyled>
+            <NodeHeaderStyled>{item.model.title}</NodeHeaderStyled>
         );
     } 
 

@@ -15,7 +15,7 @@ export interface JoinPointSlot {
     name: string;
 }
 
-export abstract class AbstractNode {
+export abstract class NodeModel {
     nodeView: NodeView;
 
     constructor(nodeView: NodeView) {
@@ -34,9 +34,9 @@ export abstract class AbstractNode {
         return this.inputSlots.find(slot => slot.name === name) || this.outputSlots.find(slot => slot.name === name);
     }
 
-    getAllAdjacentNodes(): AbstractNode[] {
+    getAllAdjacentNodes(): NodeModel[] {
         return this.nodeView.joinPointViews
             .filter(joinPointView => joinPointView.getOtherNode() !== undefined)
-            .map(joinPointView => joinPointView.getOtherNode().node);
+            .map(joinPointView => joinPointView.getOtherNode().model);
     }
 }

@@ -11,7 +11,7 @@ import { AnimationNodeSettingsComponent } from "../AnimationNodeSettingsComponen
 import { KeyboardNodeSettings } from "./KeyboardNodeSettings";
 import { MeshNodeSettings } from './MeshNodeSettings';
 import { ActionNodeSettings } from './ActionNodeSettings';
-import { NodeType } from '../../../../core/models/views/nodes/AbstractNode';
+import { NodeType } from '../../../../core/models/views/nodes/NodeModel';
 import { AnimationNodeSettings } from './AnimationNodeSettings';
 
 export interface NodeProps {
@@ -19,7 +19,7 @@ export interface NodeProps {
 }
 
 export function createActionNodeSettings(nodeView: NodeView<any>, registry: Registry): ViewSettings<any, any> {
-    switch(nodeView.node.type) {
+    switch(nodeView.model.type) {
         case NodeType.Keyboard:
             return new KeyboardNodeSettings(nodeView, registry);
         case NodeType.Action:
@@ -36,7 +36,7 @@ export function createActionNodeSettings(nodeView: NodeView<any>, registry: Regi
 export function createActionNodeSettingsComponent(actionNodeConcept: NodeView, registry: Registry) {
     const settings = registry.stores.nodeStore.getSettings(actionNodeConcept);
 
-    switch(actionNodeConcept.node.type) {
+    switch(actionNodeConcept.model.type) {
         case NodeType.Keyboard:
             return <KeyboardNodeSettingsComponent settings={settings}/>;
         case NodeType.Action:

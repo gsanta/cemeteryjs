@@ -16,6 +16,7 @@ import { SettingsService } from "./SettingsService";
 import { UpdateService } from "./UpdateServices";
 import { LayoutService } from "./LayoutService";
 import { NodeService } from './node/NodeService';
+import { GamepadService } from './GamepadService';
 
 export class Services {
     hotkey: HotkeyService;
@@ -35,6 +36,7 @@ export class Services {
     game: GameService;
     layout: LayoutService;
     node: NodeService;
+    gamepad: GamepadService;
 
     private registry: Registry;
 
@@ -60,5 +62,9 @@ export class Services {
         this.layout = new LayoutService(this.registry);
         this.game = new GameService(this.registry);
         this.node = new NodeService();
+        this.gamepad = new GamepadService(this.registry);
+
+        // TODO: find a better place to register general hotkeys
+        this.hotkey.registerHotkey(this.gamepad);
     }
 }

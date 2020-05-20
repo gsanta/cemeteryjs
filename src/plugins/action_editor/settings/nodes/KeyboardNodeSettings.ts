@@ -26,14 +26,14 @@ export class KeyboardNodeSettings extends ViewSettings<KeyboardInputNodeProps, N
             case KeyboardInputNodeProps.AllKeyboardKeys:
                 return getAllKeys();
             case KeyboardInputNodeProps.KeyboardKey:
-                return this.view.node.key;
+                return this.view.model.key;
         }
     }
 
     protected setProp(val: any, prop: KeyboardInputNodeProps) {
         switch (prop) {
             case KeyboardInputNodeProps.KeyboardKey:
-                this.view.node.key = val;
+                this.view.model.key = val;
                 break;
             default:
                 throw new Error(`${prop} is not a writeable property.`)

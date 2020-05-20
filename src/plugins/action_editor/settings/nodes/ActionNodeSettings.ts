@@ -23,16 +23,16 @@ export class ActionNodeSettings extends ViewSettings<MoveNodeProps, NodeView> {
     protected getProp(prop: MoveNodeProps) {
         switch (prop) {
             case MoveNodeProps.AllActions:
-                return this.view.node.allActions;
+                return this.view.model.allActions;
             case MoveNodeProps.Action:
-                return this.view.node.action;
+                return this.view.model.action;
         }
     }
 
     protected setProp(val: any, prop: MoveNodeProps) {
         switch (prop) {
             case MoveNodeProps.Action:
-                this.view.node.action = val;
+                this.view.model.action = val;
                 break;
             default:
                 throw new Error(`${prop} is not a writeable property.`)

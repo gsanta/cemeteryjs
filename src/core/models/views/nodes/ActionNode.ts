@@ -1,5 +1,5 @@
 import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
-import { AbstractNode, NodeType } from "./AbstractNode";
+import { NodeModel, NodeType } from "./NodeModel";
 import { NodeGraph } from '../../../services/node/NodeGraph';
 import { MeshNode } from './MeshNode';
 
@@ -22,7 +22,7 @@ export function getAllMovements() {
     return movements;
 }
 
-export class ActionNode extends AbstractNode {
+export class ActionNode extends NodeModel {
     type = NodeType.Action;
     group = NodeGroupName.Default;
     title = "Action";
@@ -50,9 +50,9 @@ export class ActionNode extends AbstractNode {
         const joinPointView = this.nodeView.findJoinPointView('mesh', true);
         if (!joinPointView.getOtherNode()) { return; }
 
-        const meshView = (<MeshNode> joinPointView.getOtherNode().node).meshView;
-        if (meshView) {
-            this.allActions = meshView.actions;
+        const meshModel = (<MeshNode> joinPointView.getOtherNode().model).meshModel;
+        if (meshModel) {
+            this.allActions = meshModel.getActions();
         }
     }
 }

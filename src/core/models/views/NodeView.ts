@@ -2,15 +2,15 @@ import { Point } from "../../geometry/shapes/Point";
 import { Rectangle } from "../../geometry/shapes/Rectangle";
 import { VisualConcept } from "../concepts/VisualConcept";
 import { JoinPointView } from "./child_views/JoinPointView";
-import { AbstractNode } from "./nodes/AbstractNode";
+import { NodeModel } from "./nodes/NodeModel";
 import { createNode } from "./nodes/nodeFactory";
 import { ConceptType, View } from "./View";
 import { NodeGraph } from '../../services/node/NodeGraph';
 
-export class NodeView<T extends AbstractNode = AbstractNode> extends VisualConcept {
+export class NodeView<T extends NodeModel = NodeModel> extends VisualConcept {
     readonly  type = ConceptType.ActionConcept;
     readonly id: string;
-    node: T;
+    model: T;
     dimensions: Rectangle;
     nodeGraph: NodeGraph;
 
@@ -21,9 +21,9 @@ export class NodeView<T extends AbstractNode = AbstractNode> extends VisualConce
         this.id = id;
         this.dimensions = dimensions;
         this.nodeGraph = nodeGraph;
-        this.node = <T> createNode(nodeType, this);
-        this.node.inputSlots.forEach(slot => this.joinPointViews.push(new JoinPointView(this, slot.name, true)));
-        this.node.outputSlots.forEach(slot => this.joinPointViews.push(new JoinPointView(this, slot.name, false)));
+        this.model = <T> createNode(nodeType, this);
+        this.model.inputSlots.forEach(slot => this.joinPointViews.push(new JoinPointView(this, slot.name, true)));
+        this.model.outputSlots.forEach(slot => this.joinPointViews.push(new JoinPointView(this, slot.name, false)));
     }
 
     move(point: Point) {

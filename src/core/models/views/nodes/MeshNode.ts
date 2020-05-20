@@ -1,12 +1,12 @@
 import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
-import { AbstractNode, NodeType } from "./AbstractNode";
-import { MeshView } from '../MeshView';
+import { NodeModel, NodeType } from "./NodeModel";
+import { MeshModel } from '../../models/MeshModel';
 
-export class MeshNode extends AbstractNode {
+export class MeshNode extends NodeModel {
     type = NodeType.Mesh;
     group = NodeGroupName.Default;
     title = "Mesh";
-    meshView: MeshView;
+    meshModel: MeshModel;
     isActiveMesh: boolean;
     color = '#D39D9D';
     inputSlots = [];

@@ -41,6 +41,7 @@ export interface IKeyboardEvent {
     isShiftDown: boolean;
     isCtrlDown: boolean;
     isMetaDown: boolean;
+    isKeyup: boolean;
 }
 
 export class KeyboardService {
@@ -55,8 +56,9 @@ export class KeyboardService {
     }
     
     onKeyDown(e: KeyboardEvent): void {
-        this.registry.services.hotkey.executeHotkey(this.convertEvent(e));
-        this.registry.services.layout.getHoveredView().getActiveTool()?.keydown(this.convertEvent(e));
+        const convertedEvent = this.convertEvent(e, false);
+        this.registry.services.hotkey.executeHotkey(convertedEvent);
+        this.registry.services.layout.getHoveredView().getActiveTool()?.keydown(convertedEvent);
         this.registry.services.update.runScheduledTasks();
 
         e.preventDefault();
@@ -64,20 +66,23 @@ export class KeyboardService {
     }
 
     onKeyUp(e: KeyboardEvent): void {
-        this.registry.services.layout.getHoveredView().getActiveTool()?.keyup(this.convertEvent(e));
+        const convertedEvent = this.convertEvent(e, true);
+        this.registry.services.hotkey.executeHotkey(convertedEvent);
+        this.registry.services.layout.getHoveredView().getActiveTool()?.keyup(convertedEvent);
         this.registry.services.update.runScheduledTasks();
 
         e.preventDefault();
         e.stopPropagation();
     }
 
-    private convertEvent(event: KeyboardEvent): IKeyboardEvent {
+    private convertEvent(event: KeyboardEvent, isKeyup: boolean): IKeyboardEvent {
         return {
             keyCode: event.keyCode,
             isAltDown: !!event.altKey,
             isShiftDown: !!event.shiftKey,
             isCtrlDown: !!event.ctrlKey,
-            isMetaDown: !!event.metaKey
+            isMetaDown: !!event.metaKey,
+            isKeyup
         }
     }
 }

@@ -1,4 +1,4 @@
-import { AbstractNode } from '../../../models/views/nodes/AbstractNode';
+import { NodeModel } from '../../../models/views/nodes/NodeModel';
 import { Registry } from '../../../Registry';
 
 
@@ -11,10 +11,10 @@ export abstract class AbstractNodeHandler {
         this.registry = registry;
     }
 
-    abstract handle(node: AbstractNode): void;
+    abstract handle(node: NodeModel): void;
 
-    protected chain(node: AbstractNode, slotName: string) {
+    protected chain(node: NodeModel, slotName: string) {
         const otherNode = node.nodeView.findJoinPointView(slotName, false).getOtherNode();
-        this.registry.services.node.getHandler(otherNode.node).handle(otherNode.node);
+        this.registry.services.node.getHandler(otherNode.model).handle(otherNode.model);
     }
 }

@@ -1,7 +1,7 @@
 import { ViewSettings } from '../../plugins/scene_editor/settings/AbstractSettings';
 import { ConceptType } from '../models/views/View';
 import { NodeConnectionView } from '../models/views/NodeConnectionView';
-import { NodeType } from '../models/views/nodes/AbstractNode';
+import { NodeType } from '../models/views/nodes/NodeModel';
 import { NodeView } from '../models/views/NodeView';
 import { Registry } from '../Registry';
 import { AbstractStore } from './AbstractStore';
@@ -27,14 +27,14 @@ export class NodeStore extends AbstractStore {
     }
 
     addAction(nodeView: NodeView, settings: ViewSettings<any, any>) {
-        this.graph.addNode(nodeView.node);
+        this.graph.addNode(nodeView.model);
         this.views.push(nodeView);
         this.settings.set(nodeView.id, settings);
-        nodeView.node.updateNode(this.graph);
+        nodeView.model.updateNode(this.graph);
     }
 
     addConnection(connection: NodeConnectionView) {
-        this.graph.addConnection(connection.joinPoint1.parent.node, connection.joinPoint2.parent.node);
+        this.graph.addConnection(connection.joinPoint1.parent.model, connection.joinPoint2.parent.model);
         this.views.push(connection);
     }
 
@@ -47,10 +47,10 @@ export class NodeStore extends AbstractStore {
         switch(item.type) {
             case ConceptType.ActionNodeConnectionConcept:
                 const connection = <NodeConnectionView> item;
-                this.graph.deleteConnection(connection.joinPoint1.parent.node, connection.joinPoint2.parent.node);
+                this.graph.deleteConnection(connection.joinPoint1.parent.model, connection.joinPoint2.parent.model);
                 break;
             case ConceptType.ActionConcept:
-                this.graph.deleteNode((<NodeView> item).node);
+                this.graph.deleteNode((<NodeView> item).model);
                 break;
         }
 

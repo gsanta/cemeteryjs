@@ -1,4 +1,4 @@
-import { AbstractNode, NodeType } from "./AbstractNode";
+import { NodeModel, NodeType } from "./NodeModel";
 import { Keyboard } from "../../../services/input/KeyboardService";
 import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
 
@@ -18,7 +18,7 @@ export enum KeyboardNodeSlot {
     Output = 'output'
 }
 
-export class KeyboardNode extends AbstractNode {
+export class KeyboardNode extends NodeModel {
     type = NodeType.Keyboard;
     group = NodeGroupName.Default;
     title = "Keyboard input";

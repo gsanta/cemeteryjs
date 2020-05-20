@@ -1,7 +1,7 @@
 import { NodeView } from '../../../core/models/views/NodeView';
 import { Registry } from '../../../core/Registry';
 import { AbstractSettings } from '../../scene_editor/settings/AbstractSettings';
-import { NodeType } from '../../../core/models/views/nodes/AbstractNode';
+import { NodeType } from '../../../core/models/views/nodes/NodeModel';
 
 export enum ActionEditorSettingsProps {
     ActionTypes = 'ActionTypes',

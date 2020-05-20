@@ -2,11 +2,11 @@ import { KeyboardNode } from "./KeyboardNode";
 import { ActionNode } from "./ActionNode";
 import { MeshNode } from "./MeshNode";
 import { AndNode } from "./AndNode";
-import { NodeType, AbstractNode } from "./AbstractNode";
+import { NodeType, NodeModel } from "./NodeModel";
 import { AnimationNode } from "./AnimationNode";
 import { NodeView } from '../NodeView';
 
-export function createNode(actionType: string, nodeView: NodeView): AbstractNode {
+export function createNode(actionType: string, nodeView: NodeView): NodeModel {
     switch(actionType) {
         case NodeType.Keyboard:
             return new KeyboardNode(nodeView);

@@ -7,7 +7,7 @@ import { RectangleTool } from "./common/tools/RectangleTool";
 import { SelectTool } from "./common/tools/SelectTool";
 import { CameraRotationTool } from "./common/tools/CameraRotationTool";
 import { Registry } from "../core/Registry";
-import { GamepadTool } from "./common/tools/GamepadTool";
+import { GamepadTool } from "../core/services/GamepadService";
 import { PanTool } from "./common/tools/PanTool";
 import { DragAndDropTool } from "./common/tools/DragAndDropTool";
 import { JoinTool } from "./common/tools/JoinTool";
@@ -20,7 +20,6 @@ export class Tools {
     rectangle: RectangleTool;
     select: SelectTool;
     cameraRotate: CameraRotationTool;
-    gamepad: GamepadTool;
     pan: PanTool;
     dragAndDrop: DragAndDropTool;
     join: JoinTool;
@@ -38,7 +37,6 @@ export class Tools {
         this.rectangle = new RectangleTool(this.registry);
         this.select = new SelectTool(this.registry);
         this.cameraRotate = new CameraRotationTool(this.registry);
-        this.gamepad = new GamepadTool(this.registry);
         this.pan = new PanTool(this.registry);
         this.dragAndDrop = new DragAndDropTool(this.registry);
         this.join = new JoinTool(this.registry);

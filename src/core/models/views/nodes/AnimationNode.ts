@@ -1,9 +1,9 @@
-import { AbstractNode, NodeType } from './AbstractNode';
+import { NodeModel, NodeType } from './NodeModel';
 import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
 import { NodeGraph } from "../../../services/node/NodeGraph";
 import { MeshNode } from "./MeshNode";
 
-export class AnimationNode extends AbstractNode {
+export class AnimationNode extends NodeModel {
     type = NodeType.Animation;
     group = NodeGroupName.Default;
     title = "Animation";
@@ -20,8 +20,8 @@ export class AnimationNode extends AbstractNode {
     updateNode(graph: NodeGraph) {
         this.allAnimations = [];
         const otherNode = graph.findConnectedNodeWithType<MeshNode>(this, NodeType.Mesh);
-        if (otherNode && otherNode.meshView) {
-            this.allAnimations = otherNode.meshView.animations;
+        if (otherNode && otherNode.meshModel) {
+            this.allAnimations = otherNode.meshModel.getAnimations();
         }
     }
 }

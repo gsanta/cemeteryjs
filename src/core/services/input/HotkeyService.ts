@@ -49,7 +49,7 @@ export class HotkeyService {
     }
 
     executeHotkey(hotkeyEvent: IHotkeyEvent): boolean {
-        const hotkey = [...this.hotkeys, ...this.registry.tools.tools].find(h => h.hotkey(hotkeyEvent));
+        const hotkey = [...this.hotkeys, ...this.registry.tools.tools].filter(h => h.hotkey(hotkeyEvent));
 
         if (hotkey) {
             this.focus();
@@ -92,6 +92,7 @@ export interface IHotkeyEvent {
     deltaY?: number;
     isHover?: boolean;
     isUnhover?: boolean;
+    isKeyup?: boolean;
 }
 
 export interface IHotkey {

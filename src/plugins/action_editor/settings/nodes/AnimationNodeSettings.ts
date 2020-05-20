@@ -24,16 +24,16 @@ export class AnimationNodeSettings extends ViewSettings<AnimationNodeProps, Node
     protected getProp(prop: AnimationNodeProps) {
         switch (prop) {
             case AnimationNodeProps.AllAnimations:
-                return this.view.node.allAnimations;
+                return this.view.model.allAnimations;
             case AnimationNodeProps.Animation:
-                return this.view.node.animation;
+                return this.view.model.animation;
         }
     }
 
     protected setProp(val: any, prop: AnimationNodeProps) {
         switch (prop) {
             case AnimationNodeProps.Animation:
-                this.view.node.animation = val;
+                this.view.model.animation = val;
                 break;
         }
         this.registry.services.update.runImmediately(UpdateTask.RepaintActiveView);

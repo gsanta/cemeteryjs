@@ -9,6 +9,7 @@ import { toDegree } from '../../geometry/utils/Measurements';
 import { VisualConcept } from '../concepts/VisualConcept';
 import { AnimationConcept, ElementalAnimation } from '../meta/AnimationConcept';
 import { ConceptType } from './View';
+import { MeshModel } from '../models/MeshModel';
 
 export enum WorldItemShape {
     RECTANGLE = 'rect',
@@ -36,6 +37,8 @@ export enum AnimationState {
 export class MeshView extends VisualConcept implements IGameObject {
     type = ConceptType.MeshConcept;
     mesh: Mesh;
+
+    model: MeshModel;
 
     meshName: string;
     id: string;
