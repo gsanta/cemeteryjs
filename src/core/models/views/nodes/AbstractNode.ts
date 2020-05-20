@@ -5,7 +5,7 @@ import { JoinPointView } from '../child_views/JoinPointView';
 
 export enum NodeType {
     Keyboard = 'Keyboard',
-    Move = 'Move',
+    Action = 'Move',
     And = 'And',
     Mesh = 'Mesh',
     Animation = 'Animation'

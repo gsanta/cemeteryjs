@@ -23,7 +23,7 @@ export function getAllMovements() {
 }
 
 export class ActionNode extends AbstractNode {
-    type = NodeType.Move;
+    type = NodeType.Action;
     group = NodeGroupName.Default;
     title = "Action";
     action: string;

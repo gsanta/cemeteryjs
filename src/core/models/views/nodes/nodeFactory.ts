@@ -10,7 +10,7 @@ export function createNode(actionType: string, nodeView: NodeView): AbstractNode
     switch(actionType) {
         case NodeType.Keyboard:
             return new KeyboardNode(nodeView);
-        case NodeType.Move:
+        case NodeType.Action:
             return new ActionNode(nodeView);
         case NodeType.Mesh:
             return new MeshNode(nodeView);

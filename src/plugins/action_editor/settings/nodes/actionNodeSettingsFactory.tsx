@@ -22,7 +22,7 @@ export function createActionNodeSettings(nodeView: NodeView<any>, registry: Regi
     switch(nodeView.node.type) {
         case NodeType.Keyboard:
             return new KeyboardNodeSettings(nodeView, registry);
-        case NodeType.Move:
+        case NodeType.Action:
             return new ActionNodeSettings(nodeView, registry);
         case NodeType.Mesh:
             return new MeshNodeSettings(nodeView, registry);
@@ -39,7 +39,7 @@ export function createActionNodeSettingsComponent(actionNodeConcept: NodeView, r
     switch(actionNodeConcept.node.type) {
         case NodeType.Keyboard:
             return <KeyboardNodeSettingsComponent settings={settings}/>;
-        case NodeType.Move:
+        case NodeType.Action:
             return <ActionNodeSettingsComponent settings={settings}/>;    
         case NodeType.Mesh:
             return <MeshNodeSettingsComponent settings={settings}/>;    

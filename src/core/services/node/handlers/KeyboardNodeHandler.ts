@@ -1,19 +1,11 @@
-import { NodeHandler } from './NodeHandler';
+import { AbstractNodeHandler } from './AbstractNodeHandler';
 import { KeyboardNode, KeyboardNodeSlot } from '../../../models/views/nodes/KeyboardNode';
-import { Registry } from '../../../Registry';
+import { NodeType } from '../../../models/views/nodes/AbstractNode';
 
-export class KeyboardNodeHandler implements NodeHandler {
-    private registry: Registry;
-
-    constructor(registry: Registry) {
-        this.registry = registry;
-    }
+export class KeyboardNodeHandler extends AbstractNodeHandler {
+    nodeType: NodeType.Keyboard;
 
     handle(node: KeyboardNode) {
-        const otherNode = node.nodeView.findJoinPointView(KeyboardNodeSlot.Output, false).getOtherNode();
-
-        if (otherNode) {
-            this.registry.services.node.getHandler(otherNode.node).handle(otherNode.node);
-        }
+        this.chain(node, KeyboardNodeSlot.Output);
     }
 }
