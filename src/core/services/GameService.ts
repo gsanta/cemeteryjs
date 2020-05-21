@@ -21,6 +21,7 @@ export class GameService {
     
     private keyboardTrigger: KeyboardTrigger;
     private afterRenderTrigger: AfterRenderTrigger;
+    private afterRenders: (() => void)[] = [];
     gameEventManager: GameEventManager;
     characterMovement: CharacterMovement;
     animationPlayer: AnimationPlayer;
@@ -49,6 +50,10 @@ export class GameService {
         this.gameEventManager.listeners.registerAfterRenderListener(() => animationPlayer.updateAnimations());
         this.keyboardTrigger = new KeyboardTrigger(this.registry);
         this.afterRenderTrigger = new AfterRenderTrigger(this.registry)
+
+        this.gameEngine.scene.registerAfterRender(() => {
+            this.afterRenders.forEach(callback => callback());
+        });
 
         this.walkers = new Walkers(this.registry);    
     }
@@ -122,5 +127,9 @@ export class GameService {
 
     getScene(): Scene {
         return this.gameEngine.scene;
+    }
+
+    registerAfterRender(callback: () => void) {
+        this.afterRenders.push(callback);
     }
 }

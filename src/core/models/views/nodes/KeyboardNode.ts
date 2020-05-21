@@ -22,7 +22,7 @@ export class KeyboardNode extends NodeModel {
     type = NodeType.Keyboard;
     group = NodeGroupName.Default;
     title = "Keyboard input";
-    key: string;
+    key: Keyboard;
     color = '#89BD88';
     inputSlots = [];
     outputSlots = [

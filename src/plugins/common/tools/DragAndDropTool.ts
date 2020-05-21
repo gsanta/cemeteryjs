@@ -4,7 +4,7 @@ import { NodeView } from '../../../core/models/views/NodeView';
 import { ConceptType } from '../../../core/models/views/View';
 import { Registry } from '../../../core/Registry';
 import { UpdateTask } from '../../../core/services/UpdateServices';
-import { createActionNodeSettings } from '../../action_editor/settings/nodes/actionNodeSettingsFactory';
+import { createNodeSettings } from '../../action_editor/settings/nodes/nodeSettingsFactory';
 import { AbstractTool } from './AbstractTool';
 import { Cursor, ToolType } from "./Tool";
 
@@ -33,7 +33,7 @@ export class DragAndDropTool extends AbstractTool {
         const id = this.registry.stores.nodeStore.generateUniqueName(ConceptType.ActionConcept);
         const nodeType = this.registry.services.pointer.pointer.droppedItemType;
         const action = new NodeView(id, nodeType, new Rectangle(topLeft, bottomRight), this.registry.stores.nodeStore.graph);
-        this.registry.stores.nodeStore.addAction(action, createActionNodeSettings(action, this.registry));
+        this.registry.stores.nodeStore.addNode(action, createNodeSettings(action, this.registry));
         // this.registry.services.view.getHoveredView().removePriorityTool(this);
         this.registry.services.update.scheduleTasks(UpdateTask.RepaintActiveView);
     }

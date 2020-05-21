@@ -61,7 +61,7 @@ export class Services {
         this.conceptConverter = new ConceptConvertService(this.registry);
         this.layout = new LayoutService(this.registry);
         this.game = new GameService(this.registry);
-        this.node = new NodeService();
+        this.node = new NodeService(this.registry);
         this.gamepad = new GamepadService(this.registry);
 
         // TODO: find a better place to register general hotkeys

@@ -11,7 +11,7 @@ export enum GamepadEvent {
 
 export class GamepadService extends Hotkey {
     private listeners: ((keys: Keyboard[]) => void)[] = [];
-    private downKeys: Set<number> = new Set();
+    downKeys: Set<number> = new Set();
 
     constructor(registry: Registry) {
         super('Gamepad',  { keyCodes: [Keyboard.w, Keyboard.s, Keyboard.a, Keyboard.e]}, (event: IHotkeyEvent) => this.hotKeyAction(event), registry);
@@ -32,7 +32,7 @@ export class GamepadService extends Hotkey {
             this.downKeys.add(event.keyCode);
         }
 
-        this.listeners.forEach(listener => listener(Array.from(this.downKeys));
+        this.listeners.forEach(listener => listener(Array.from(this.downKeys)));
 
         return true;
     }

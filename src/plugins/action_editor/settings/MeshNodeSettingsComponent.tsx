@@ -2,7 +2,7 @@ import * as React from 'react';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { ConnectedDropdownComponent } from '../../../core/gui/inputs/DropdownComponent';
 import { FieldColumnStyled, LabelColumnStyled, SettingsRowStyled } from '../../scene_editor/settings/SettingsComponent';
-import { NodeProps } from './nodes/actionNodeSettingsFactory';
+import { NodeProps } from './nodes/nodeSettingsFactory';
 import { MeshNodeProps } from './nodes/MeshNodeSettings';
 import { AbstractNodeSettingsComponent } from './AbstractNodeSettingsComponent';
 

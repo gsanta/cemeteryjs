@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
-import { NodeProps } from './nodes/actionNodeSettingsFactory';
+import { NodeProps } from './nodes/nodeSettingsFactory';
 
 export class AndActionNodeSettingsComponent extends React.Component<NodeProps> {
     static contextType = AppContext;

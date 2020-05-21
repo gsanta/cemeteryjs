@@ -1,5 +1,5 @@
 import { KeyboardNode } from "./KeyboardNode";
-import { ActionNode } from "./ActionNode";
+import { MoveNode } from "./MoveNode";
 import { MeshNode } from "./MeshNode";
 import { AndNode } from "./AndNode";
 import { NodeType, NodeModel } from "./NodeModel";
@@ -10,8 +10,8 @@ export function createNode(actionType: string, nodeView: NodeView): NodeModel {
     switch(actionType) {
         case NodeType.Keyboard:
             return new KeyboardNode(nodeView);
-        case NodeType.Action:
-            return new ActionNode(nodeView);
+        case NodeType.Move:
+            return new MoveNode(nodeView);
         case NodeType.Mesh:
             return new MeshNode(nodeView);
         case NodeType.And:

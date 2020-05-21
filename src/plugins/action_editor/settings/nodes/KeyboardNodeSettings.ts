@@ -3,6 +3,7 @@ import { getAllKeys, KeyboardNode } from "../../../../core/models/views/nodes/Ke
 import { ViewSettings } from "../../../scene_editor/settings/AbstractSettings";
 import { Registry } from "../../../../core/Registry";
 import { UpdateTask } from "../../../../core/services/UpdateServices";
+import { Keyboard } from "../../../../core/services/input/KeyboardService";
 
 export enum KeyboardInputNodeProps {
     AllKeyboardKeys = 'AllKeyboardKeys',
@@ -26,14 +27,14 @@ export class KeyboardNodeSettings extends ViewSettings<KeyboardInputNodeProps, N
             case KeyboardInputNodeProps.AllKeyboardKeys:
                 return getAllKeys();
             case KeyboardInputNodeProps.KeyboardKey:
-                return this.view.model.key;
+                return Keyboard[this.view.model.key];
         }
     }
 
     protected setProp(val: any, prop: KeyboardInputNodeProps) {
         switch (prop) {
             case KeyboardInputNodeProps.KeyboardKey:
-                this.view.model.key = val;
+                this.view.model.key = Keyboard[val as string];
                 break;
             default:
                 throw new Error(`${prop} is not a writeable property.`)

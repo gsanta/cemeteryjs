@@ -9,18 +9,29 @@ export class KeyboardNodeHandler extends AbstractNodeHandler {
     constructor(registry: Registry) {
         super(registry);
 
-        this.handleKeyboard = this.handleKeyboard.bind(this);
-        this.registry.services.gamepad.registerGamepadListener(this.handleKeyboard)
+        this.handleKeyEvent = this.handleKeyEvent.bind(this);
+        // this.registry.services.gamepad.registerGamepadListener(this.handleKeyEvent)
     }
 
     handle(node: KeyboardNode) {
-        this.chain(node, KeyboardNodeSlot.Output);
+        if (this.registry.services.gamepad.downKeys.has(node.key)) {
+            this.chain(node, KeyboardNodeSlot.Output);
+        }
 
         // this.registry.
     }
 
-    private handleKeyboard(downKeys: number[]) {
+    private handleKeyEvent(downKeys: number[]) {
+        // this.registry.services.node.getNodesByType<KeyboardNode>(NodeType.Keyboard)
+        //     .forEach(node => this.handle(node));
+    }
+
+    update() {
         this.registry.services.node.getNodesByType<KeyboardNode>(NodeType.Keyboard)
-            .forEach(node => this.handle(node));
+            .forEach((node) => {
+                if (this.registry.services.gamepad.downKeys.has(node.key)) {
+                    this.chain(node, KeyboardNodeSlot.Output);
+                }
+            });
     }
 }

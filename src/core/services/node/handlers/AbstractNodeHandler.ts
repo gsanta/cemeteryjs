@@ -17,4 +17,6 @@ export abstract class AbstractNodeHandler {
         const otherNode = node.nodeView.findJoinPointView(slotName, false).getOtherNode();
         this.registry.services.node.getHandler(otherNode.model).handle(otherNode.model);
     }
+
+    update(): void {};
 }

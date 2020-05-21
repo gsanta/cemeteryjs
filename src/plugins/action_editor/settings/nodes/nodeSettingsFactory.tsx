@@ -10,7 +10,7 @@ import { ActionNodeSettingsComponent } from "../ActionNodeSettingsComponent";
 import { AnimationNodeSettingsComponent } from "../AnimationNodeSettingsComponent";
 import { KeyboardNodeSettings } from "./KeyboardNodeSettings";
 import { MeshNodeSettings } from './MeshNodeSettings';
-import { ActionNodeSettings } from './ActionNodeSettings';
+import { MoveNodeSettings } from './MoveNodeSettings';
 import { NodeType } from '../../../../core/models/views/nodes/NodeModel';
 import { AnimationNodeSettings } from './AnimationNodeSettings';
 
@@ -18,12 +18,12 @@ export interface NodeProps {
     settings: ViewSettings<any, NodeView>;
 }
 
-export function createActionNodeSettings(nodeView: NodeView<any>, registry: Registry): ViewSettings<any, any> {
+export function createNodeSettings(nodeView: NodeView<any>, registry: Registry): ViewSettings<any, any> {
     switch(nodeView.model.type) {
         case NodeType.Keyboard:
             return new KeyboardNodeSettings(nodeView, registry);
-        case NodeType.Action:
-            return new ActionNodeSettings(nodeView, registry);
+        case NodeType.Move:
+            return new MoveNodeSettings(nodeView, registry);
         case NodeType.Mesh:
             return new MeshNodeSettings(nodeView, registry);
         case NodeType.Animation:
@@ -33,13 +33,13 @@ export function createActionNodeSettings(nodeView: NodeView<any>, registry: Regi
     }
 }
 
-export function createActionNodeSettingsComponent(actionNodeConcept: NodeView, registry: Registry) {
+export function createNodeSettingsComponent(actionNodeConcept: NodeView, registry: Registry) {
     const settings = registry.stores.nodeStore.getSettings(actionNodeConcept);
 
     switch(actionNodeConcept.model.type) {
         case NodeType.Keyboard:
             return <KeyboardNodeSettingsComponent settings={settings}/>;
-        case NodeType.Action:
+        case NodeType.Move:
             return <ActionNodeSettingsComponent settings={settings}/>;    
         case NodeType.Mesh:
             return <MeshNodeSettingsComponent settings={settings}/>;    

@@ -77,6 +77,7 @@ export class MeshView extends VisualConcept implements IGameObject {
         this.dimensions = dimensions;
         this.id = name;
         this.rotation = rotation;
+        this.model = new MeshModel(this);
     }
 
     addChild(worldItem: MeshView) {

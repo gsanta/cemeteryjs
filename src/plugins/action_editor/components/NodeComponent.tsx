@@ -5,7 +5,7 @@ import { ConceptType } from '../../../core/models/views/View';
 import { NodeView } from '../../../core/models/views/NodeView';
 import { ViewComponent } from '../../common/ViewComponent';
 import { GroupProps } from '../../InstanceProps';
-import { createActionNodeSettingsComponent } from '../settings/nodes/actionNodeSettingsFactory';
+import { createNodeSettingsComponent } from '../settings/nodes/nodeSettingsFactory';
 import { JoinPointComponent } from './JoinPointComponent';
 
 const NodeStyled = styled.div`
@@ -100,7 +100,7 @@ export class NodeComponent extends ViewComponent<NodeView> {
 
     private renderNodeBody(item: NodeView): JSX.Element {
         return (
-            <NodeBodyStyled>{createActionNodeSettingsComponent(item, this.props.registry)}</NodeBodyStyled>
+            <NodeBodyStyled>{createNodeSettingsComponent(item, this.props.registry)}</NodeBodyStyled>
         );
     }
 }

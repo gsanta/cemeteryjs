@@ -1,7 +1,7 @@
 import { ViewSettings } from '../../plugins/scene_editor/settings/AbstractSettings';
 import { ConceptType } from '../models/views/View';
 import { NodeConnectionView } from '../models/views/NodeConnectionView';
-import { NodeType } from '../models/views/nodes/NodeModel';
+import { NodeType, NodeModel } from '../models/views/nodes/NodeModel';
 import { NodeView } from '../models/views/NodeView';
 import { Registry } from '../Registry';
 import { AbstractStore } from './AbstractStore';
@@ -11,6 +11,7 @@ export class NodeStore extends AbstractStore {
     settings: Map<string, ViewSettings<any, any>> = new Map();
     actionTypes: string[] = [];
     graph: NodeGraph;
+    nodesByType: Map<string, NodeModel[]> = new Map();
 
     private registry: Registry;
 
@@ -26,10 +27,14 @@ export class NodeStore extends AbstractStore {
         }
     }
 
-    addAction(nodeView: NodeView, settings: ViewSettings<any, any>) {
+    addNode(nodeView: NodeView, settings: ViewSettings<any, any>) {
         this.graph.addNode(nodeView.model);
         this.views.push(nodeView);
         this.settings.set(nodeView.id, settings);
+        if (!this.nodesByType.has(nodeView.model.type)) {
+            this.nodesByType.set(nodeView.model.type, []);
+        }
+        this.nodesByType.get(nodeView.model.type).push(nodeView.model);
         nodeView.model.updateNode(this.graph);
     }
 

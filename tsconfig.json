@@ -19,7 +19,7 @@
     },
     "include": [
       "src/**/*.ts",
-      "test/**/*.ts", "src/plugins/action_editor/ActionEditorComponent.tsx", "src/plugins/action_editor/settings/nodes/actionNodeSettingsFactory.tsx",
+      "test/**/*.ts", "src/plugins/action_editor/ActionEditorComponent.tsx", "src/plugins/action_editor/settings/nodes/nodeSettingsFactory.tsx",
     ],
     "exclude": [
       "node_modules"

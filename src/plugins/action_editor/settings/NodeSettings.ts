@@ -1,11 +1,9 @@
-import { NodeView } from '../../../core/models/views/NodeView';
 import { getAllKeys } from '../../../core/models/views/nodes/KeyboardNode';
-import { AbstractSettings, ViewSettings } from '../../scene_editor/settings/AbstractSettings';
-import { getAllMovements } from '../../../core/models/views/nodes/ActionNode';
+import { NodeView } from '../../../core/models/views/NodeView';
+import { ViewSettings } from '../../scene_editor/settings/AbstractSettings';
 
 export enum ActionNodeSettingsProps {
     AllKeyboardKeys = 'AllKeyboardKeys',
-    AllMovements = 'AllMovements',
     KeyboardKey = 'KeyboardKey',
     Movement = 'Movement',
     AllMeshes = 'AllMeshes',
@@ -26,8 +24,6 @@ export class NodeSettings extends ViewSettings<ActionNodeSettingsProps, any> {
         switch (prop) {
             case ActionNodeSettingsProps.AllKeyboardKeys:
                 return getAllKeys();
-            case ActionNodeSettingsProps.AllMovements:
-                return getAllMovements();
         }
     }
 

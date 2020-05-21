@@ -2,7 +2,7 @@ import { MeshView } from '../views/MeshView';
 
 
 export class MeshModel {
-    private meshView: MeshView;
+    meshView: MeshView;
 
     constructor(meshView: MeshView) {
         this.meshView = meshView;
