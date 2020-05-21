@@ -52,7 +52,6 @@ export class HotkeyService {
         const hotkey = [...this.hotkeys, ...this.registry.tools.tools].filter(h => h.hotkey(hotkeyEvent));
 
         if (hotkey) {
-            this.focus();
             return true;
         }
         return false;

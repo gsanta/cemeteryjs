@@ -1,9 +1,10 @@
-import { NodeModel, SlotName } from '../../../models/views/nodes/NodeModel';
+import { NodeModel, SlotName, NodeType } from '../../../models/views/nodes/NodeModel';
 import { Registry } from '../../../Registry';
 
 
-export abstract class AbstractNodeHandler {
+export abstract class AbstractNodeHandler<T extends NodeModel> {
     nodeType: string;
+    instance: T;
 
     protected registry: Registry;
 
@@ -11,28 +12,26 @@ export abstract class AbstractNodeHandler {
         this.registry = registry;
     }
 
-    abstract handle(node: NodeModel): void;
+    abstract handle(): void;
 
-    protected chain(node: NodeModel, slotName: SlotName) {
-        const otherNode = node.nodeView.findJoinPointView(slotName, false).getOtherNode();
-        this.registry.services.node.getHandler(otherNode.model).handle(otherNode.model);
+    protected chain(slotName: SlotName) {
+        const joinedView = this.instance.nodeView.findJoinPointView(slotName, false).getOtherNode();
+        const handler = this.registry.services.node.getHandler(joinedView.model);
+        handler.instance = joinedView.model;
+        handler.handle();
     }
 
-    protected chainLeft(node: NodeModel, slotName: SlotName) {
-        const otherNode = node.nodeView.findJoinPointView(slotName, false).getOtherNode();
+    // protected getLeft(node: NodeModel, slotName: SlotName): AbstractNodeHandler {
+    //     const otherNode = node.nodeView.findJoinPointView(slotName, false).getOtherNode();
 
-        if (otherNode) {
-            this.registry.services.node.getHandler(otherNode.model).handle(otherNode.model);
-        }
-    }
+    //     if (otherNode) {
+    //         return this.registry.services.node.getHandler(otherNode.model);
+    //     }
+    // }
 
-    protected getLeft(node: NodeModel, slotName: SlotName): AbstractNodeHandler {
-        const otherNode = node.nodeView.findJoinPointView(slotName, false).getOtherNode();
-
-        if (otherNode) {
-            return this.registry.services.node.getHandler(otherNode.model);
-        }
-    }
+    searchFromRight<T extends NodeModel>(nodeType: NodeType): T {
+        return undefined;
+    } 
 
     protected rightToLeft() {
         

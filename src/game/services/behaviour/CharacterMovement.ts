@@ -32,12 +32,12 @@ export class CharacterMovement {
     }
 
     forward(character: MeshView) {
-        character.moveBy(character.getDirection().mul(-1 * character.speed, -1 * character.speed));
+        character.moveForward(character.getDirection().mul(-1 * character.speed, -1 * character.speed));
         // character.activeElementalAnimation = character.animation.getAnimationByCond(AnimationCondition.Move);
     }
 
     backward(character: MeshView) {
-        character.moveBy(character.getDirection().mul(character.speed, character.speed));
+        character.moveForward(character.getDirection().mul(character.speed, character.speed));
         // character.activeElementalAnimation = character.animation.getAnimationByCond(AnimationCondition.Move);
     }
 

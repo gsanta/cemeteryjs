@@ -7,7 +7,7 @@ import { SplitNodeHandler } from './handlers/SplitNodeHandler';
 import { TurnNodeHandler } from './handlers/TurnNodeHandler';
 
 export class NodeService {
-    handlersByType: Map<string, AbstractNodeHandler> = new Map();
+    handlersByType: Map<string, AbstractNodeHandler<NodeModel>> = new Map();
     private registry: Registry;
 
     constructor(registry: Registry) {
@@ -22,7 +22,7 @@ export class NodeService {
         });
     }
 
-    getHandler(node: NodeModel): AbstractNodeHandler {
+    getHandler(node: NodeModel): AbstractNodeHandler<NodeModel> {
         return this.handlersByType.get(node.type);
     }
 

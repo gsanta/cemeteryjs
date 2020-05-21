@@ -113,10 +113,16 @@ export class MeshView extends VisualConcept implements IGameObject {
         this.mesh && this.mesh.setAbsolutePosition(toVector3(point.negateY().div(10), this.yPos));
     }
 
-    moveBy(vector: Point): void {
+    moveForward(vector: Point): void {
         this.dimensions.translate(vector);
 
         this.mesh && this.mesh.translate(Axis.Z, 1, Space.LOCAL);
+    }
+
+    moveBackward(vector: Point): void {
+        this.dimensions.translate(vector);
+
+        this.mesh && this.mesh.translate(Axis.Z, -1, Space.LOCAL);
     }
 
     getRotation(): number {

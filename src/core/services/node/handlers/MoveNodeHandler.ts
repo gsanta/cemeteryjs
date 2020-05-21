@@ -2,23 +2,26 @@ import { NodeType } from "../../../models/views/nodes/NodeModel";
 import { MoveNode } from '../../../models/views/nodes/MoveNode';
 import { AbstractNodeHandler } from "./AbstractNodeHandler";
 import { MeshNode } from "../../../models/views/nodes/MeshNode";
+import { MeshModel } from "../../../models/models/MeshModel";
 
-export class MoveNodeHandler extends AbstractNodeHandler {
+export class MoveNodeHandler extends AbstractNodeHandler<MoveNode> {
     nodeType: NodeType.Move;
 
-    handle(node: MoveNode) {
-        const otherNode = node.nodeView.findJoinPointView('mesh', true).getOtherNode();
+    handle() {
+        const joinedView = this.instance.nodeView.findJoinPointView('mesh', true).getOtherNode();
 
-        if (otherNode) {
-            const meshModel = (<MeshNode> otherNode.model).meshModel;
-            if (meshModel) {
-                const direction = meshModel.meshView.getDirection();
-                const speed = meshModel.meshView.speed;
+        if (joinedView) {
+            const handler = this.registry.services.node.getHandler(joinedView.model);
+            handler.instance = joinedView.model;
+            const meshNode = handler.searchFromRight<MeshNode>(NodeType.Mesh);
+            if (meshNode) {
+                const direction = meshNode.meshModel.meshView.getDirection();
+                const speed = meshNode.meshModel.meshView.speed;
 
-                if (node.move === 'forward') {
-                    meshModel.meshView.moveBy(direction.mul(-1 * speed, -1 * speed));
+                if (this.instance.move === 'forward') {
+                    meshNode.meshModel.meshView.moveForward(direction.mul(-1 * speed, -1 * speed));
                 } else {
-                    meshModel.meshView.moveBy(direction.mul(speed, speed));
+                    meshNode.meshModel.meshView.moveBackward(direction.mul(speed, speed));
                 }
             }
         }

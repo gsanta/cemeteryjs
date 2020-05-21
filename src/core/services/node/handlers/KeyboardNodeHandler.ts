@@ -3,7 +3,7 @@ import { KeyboardNode, KeyboardNodeSlot } from '../../../models/views/nodes/Keyb
 import { NodeType } from '../../../models/views/nodes/NodeModel';
 import { Registry } from '../../../Registry';
 
-export class KeyboardNodeHandler extends AbstractNodeHandler {
+export class KeyboardNodeHandler extends AbstractNodeHandler<KeyboardNode> {
     nodeType: NodeType.Keyboard;
 
     constructor(registry: Registry) {
@@ -13,9 +13,9 @@ export class KeyboardNodeHandler extends AbstractNodeHandler {
         // this.registry.services.gamepad.registerGamepadListener(this.handleKeyEvent)
     }
 
-    handle(node: KeyboardNode) {
-        if (this.registry.services.gamepad.downKeys.has(node.key)) {
-            this.chain(node, KeyboardNodeSlot.Output);
+    handle() {
+        if (this.registry.services.gamepad.downKeys.has(this.instance.key)) {
+            this.chain(KeyboardNodeSlot.Output);
         }
 
         // this.registry.
@@ -29,8 +29,9 @@ export class KeyboardNodeHandler extends AbstractNodeHandler {
     update() {
         this.registry.services.node.getNodesByType<KeyboardNode>(NodeType.Keyboard)
             .forEach((node) => {
+                this.instance = node;
                 if (this.registry.services.gamepad.downKeys.has(node.key)) {
-                    this.chain(node, KeyboardNodeSlot.Output);
+                    this.chain(KeyboardNodeSlot.Output);
                 }
             });
     }
