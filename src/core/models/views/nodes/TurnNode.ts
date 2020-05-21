@@ -1,14 +1,12 @@
 import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
-import { NodeModel, NodeType, SlotName, JoinPointSlot } from './NodeModel';
+import { NodeModel, NodeType, JoinPointSlot } from './NodeModel';
 
-
-
-export class MoveNode extends NodeModel {
-    type = NodeType.Move;
+export class TurnNode extends NodeModel {
+    type = NodeType.Turn;
     group = NodeGroupName.Default;
-    title = "Move";
+    title = "Turn";
     move: string;
-    allMoves: string[] = ['forward', 'backward'];
+    allMoves: string[] = ['turn-left', 'turn-right'];
     color = 'A194EC';
     inputSlots: JoinPointSlot[] = [
         {

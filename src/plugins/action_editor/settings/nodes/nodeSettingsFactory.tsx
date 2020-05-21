@@ -6,13 +6,15 @@ import { NodeSettings } from "../NodeSettings";
 import { AndActionNodeSettingsComponent } from "../AndActionNodeSettingsComponent";
 import { KeyboardNodeSettingsComponent } from "../KeyboardNodeSettingsComponent";
 import { MeshNodeSettingsComponent } from "../MeshNodeSettingsComponent";
-import { ActionNodeSettingsComponent } from "../ActionNodeSettingsComponent";
+import { MoveNodeSettingsComponent } from "../MoveNodeSettingsComponent";
 import { AnimationNodeSettingsComponent } from "../AnimationNodeSettingsComponent";
 import { KeyboardNodeSettings } from "./KeyboardNodeSettings";
 import { MeshNodeSettings } from './MeshNodeSettings';
 import { MoveNodeSettings } from './MoveNodeSettings';
 import { NodeType } from '../../../../core/models/views/nodes/NodeModel';
 import { AnimationNodeSettings } from './AnimationNodeSettings';
+import { TurnNodeSettingsComponent } from '../TurnNodeSettingsComponent';
+import { TurnNodeSettings } from './TurnNodeSettings';
 
 export interface NodeProps {
     settings: ViewSettings<any, NodeView>;
@@ -28,6 +30,8 @@ export function createNodeSettings(nodeView: NodeView<any>, registry: Registry):
             return new MeshNodeSettings(nodeView, registry);
         case NodeType.Animation:
             return new AnimationNodeSettings(nodeView, registry);
+        case NodeType.Turn:
+            return new TurnNodeSettings(nodeView, registry);
         default:
             return new NodeSettings(nodeView);
     }
@@ -40,12 +44,14 @@ export function createNodeSettingsComponent(actionNodeConcept: NodeView, registr
         case NodeType.Keyboard:
             return <KeyboardNodeSettingsComponent settings={settings}/>;
         case NodeType.Move:
-            return <ActionNodeSettingsComponent settings={settings}/>;    
+            return <MoveNodeSettingsComponent settings={settings}/>;    
         case NodeType.Mesh:
             return <MeshNodeSettingsComponent settings={settings}/>;    
         case NodeType.And:
             return <AndActionNodeSettingsComponent settings={settings}/>;          
         case NodeType.Animation:
-            return <AnimationNodeSettingsComponent settings={settings}/>  
+            return <AnimationNodeSettingsComponent settings={settings}/>
+        case NodeType.Turn:
+            return <TurnNodeSettingsComponent settings={settings}/>
     }
 }

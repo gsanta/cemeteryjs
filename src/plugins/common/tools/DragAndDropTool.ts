@@ -32,10 +32,12 @@ export class DragAndDropTool extends AbstractTool {
         const bottomRight = topLeft.clone().add(new Point(200, 100));
         const id = this.registry.stores.nodeStore.generateUniqueName(ConceptType.ActionConcept);
         const nodeType = this.registry.services.pointer.pointer.droppedItemType;
-        const action = new NodeView(id, nodeType, new Rectangle(topLeft, bottomRight), this.registry.stores.nodeStore.graph);
-        this.registry.stores.nodeStore.addNode(action, createNodeSettings(action, this.registry));
-        // this.registry.services.view.getHoveredView().removePriorityTool(this);
-        this.registry.services.update.scheduleTasks(UpdateTask.RepaintActiveView);
+        if (nodeType !== undefined) {
+            const action = new NodeView(id, nodeType, new Rectangle(topLeft, bottomRight), this.registry.stores.nodeStore.graph);
+            this.registry.stores.nodeStore.addNode(action, createNodeSettings(action, this.registry));
+            // this.registry.services.view.getHoveredView().removePriorityTool(this);
+            this.registry.services.update.scheduleTasks(UpdateTask.RepaintActiveView);
+        }
     }
 
     getCursor() {

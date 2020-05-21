@@ -3,8 +3,9 @@ import { ConnectedDropdownComponent } from '../../../core/gui/inputs/DropdownCom
 import { FieldColumnStyled, LabelColumnStyled, SettingsRowStyled } from '../../scene_editor/settings/SettingsComponent';
 import { AbstractNodeSettingsComponent } from './AbstractNodeSettingsComponent';
 import { MoveNodeProps } from './nodes/MoveNodeSettings';
+import { TurnNodeProps } from './nodes/TurnNodeSettings';
 
-export class ActionNodeSettingsComponent extends  AbstractNodeSettingsComponent {
+export class TurnNodeSettingsComponent extends  AbstractNodeSettingsComponent {
     render() {
         return (
             <div>
@@ -15,8 +16,8 @@ export class ActionNodeSettingsComponent extends  AbstractNodeSettingsComponent 
     }
 
     private renderMoveDirectionDropdown() {
-        const movementTypes: string[] = this.props.settings.getVal(MoveNodeProps.AllMoves);
-        const val: string = this.props.settings.getVal(MoveNodeProps.Move);
+        const movementTypes: string[] = this.props.settings.getVal(TurnNodeProps.AllTurns);
+        const val: string = this.props.settings.getVal(TurnNodeProps.Turn);
 
         return (
             <SettingsRowStyled>
@@ -24,10 +25,10 @@ export class ActionNodeSettingsComponent extends  AbstractNodeSettingsComponent 
                 <FieldColumnStyled>
                     <ConnectedDropdownComponent
                         formController={this.props.settings}
-                        propertyName={MoveNodeProps.Move}
+                        propertyName={TurnNodeProps.Turn}
                         values={movementTypes}
                         currentValue={val}
-                        placeholder="Select Movement"
+                        placeholder="Select Turn"
                     />
                 </FieldColumnStyled>
             </SettingsRowStyled>

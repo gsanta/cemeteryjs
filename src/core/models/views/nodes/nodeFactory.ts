@@ -5,6 +5,7 @@ import { AndNode } from "./AndNode";
 import { NodeType, NodeModel } from "./NodeModel";
 import { AnimationNode } from "./AnimationNode";
 import { NodeView } from '../NodeView';
+import { TurnNode } from './TurnNode';
 
 export function createNode(actionType: string, nodeView: NodeView): NodeModel {
     switch(actionType) {
@@ -18,5 +19,7 @@ export function createNode(actionType: string, nodeView: NodeView): NodeModel {
             return new AndNode(nodeView);
         case NodeType.Animation:
             return new AnimationNode(nodeView);
+        case NodeType.Turn:
+            return new TurnNode(nodeView);
     }
 }

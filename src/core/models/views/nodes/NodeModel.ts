@@ -6,14 +6,17 @@ import { JoinPointView } from '../child_views/JoinPointView';
 export enum NodeType {
     Keyboard = 'Keyboard',
     Move = 'Move',
+    Turn = 'Turn',
     And = 'And',
     Mesh = 'Mesh',
     Animation = 'Animation'
 }
+export type SlotName = 'input' | 'output' | 'mesh' | 'animation' | 'action' | 'input1' | 'input2'
 
 export interface JoinPointSlot {
-    name: string;
+    name: SlotName;
 }
+
 
 export abstract class NodeModel {
     nodeView: NodeView;

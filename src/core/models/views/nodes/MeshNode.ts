@@ -1,5 +1,5 @@
 import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
-import { NodeModel, NodeType } from "./NodeModel";
+import { NodeModel, NodeType, JoinPointSlot } from './NodeModel';
 import { MeshModel } from '../../models/MeshModel';
 
 export class MeshNode extends NodeModel {
@@ -10,7 +10,7 @@ export class MeshNode extends NodeModel {
     isActiveMesh: boolean;
     color = '#D39D9D';
     inputSlots = [];
-    outputSlots = [
+    outputSlots: JoinPointSlot[] = [
         {
             name: 'action'
         }

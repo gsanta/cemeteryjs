@@ -1,4 +1,4 @@
-import { Mesh, Vector3 } from 'babylonjs';
+import { Mesh, Vector3, Axis, Space } from 'babylonjs';
 import { IGameObject } from '../../../game/models/objects/IGameObject';
 import { BehaviourType } from '../../../game/services/behaviour/IBehaviour';
 import { GamepadEvent } from '../../../game/services/GameEventManager';
@@ -116,7 +116,7 @@ export class MeshView extends VisualConcept implements IGameObject {
     moveBy(vector: Point): void {
         this.dimensions.translate(vector);
 
-        this.mesh && this.mesh.translate(toVector3(vector, 0), 1);
+        this.mesh && this.mesh.translate(Axis.Z, 1, Space.LOCAL);
     }
 
     getRotation(): number {

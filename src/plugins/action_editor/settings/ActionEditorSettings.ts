@@ -31,7 +31,7 @@ export class ActionEditorSettings extends AbstractSettings<ActionEditorSettingsP
     private registry: Registry;
 
     nodeGroups: NodeGroup[] = [
-        {name: NodeGroupName.Default, color: 'blue', members: [NodeType.Keyboard, NodeType.Mesh, NodeType.Move, NodeType.Animation]},
+        {name: NodeGroupName.Default, color: 'blue', members: [NodeType.Keyboard, NodeType.Mesh, NodeType.Move, NodeType.Animation, NodeType.Turn]},
         {name: NodeGroupName.Boolean, color: 'green', members: [NodeType.And]},
     ]
 

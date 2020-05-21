@@ -1,4 +1,4 @@
-import { NodeModel, NodeType } from './NodeModel';
+import { NodeModel, NodeType, JoinPointSlot } from './NodeModel';
 import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
 import { NodeGraph } from "../../../services/node/NodeGraph";
 import { MeshNode } from "./MeshNode";
@@ -10,7 +10,7 @@ export class AnimationNode extends NodeModel {
     animation: string;
     allAnimations: string[] = [];
     color = '#89BD88';
-    inputSlots = [
+    inputSlots: JoinPointSlot[] = [
         {
             name: 'action'
         }

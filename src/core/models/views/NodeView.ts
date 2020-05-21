@@ -2,7 +2,7 @@ import { Point } from "../../geometry/shapes/Point";
 import { Rectangle } from "../../geometry/shapes/Rectangle";
 import { VisualConcept } from "../concepts/VisualConcept";
 import { JoinPointView } from "./child_views/JoinPointView";
-import { NodeModel } from "./nodes/NodeModel";
+import { NodeModel, SlotName } from './nodes/NodeModel';
 import { createNode } from "./nodes/nodeFactory";
 import { ConceptType, View } from "./View";
 import { NodeGraph } from '../../services/node/NodeGraph';
@@ -37,7 +37,7 @@ export class NodeView<T extends NodeModel = NodeModel> extends VisualConcept {
         return Array.from(new Set(deletingViews));
     }
 
-    findJoinPointView(name: string, isInput: boolean) {
+    findJoinPointView(name: SlotName, isInput: boolean) {
         return this.joinPointViews.find(joinPointView => joinPointView.isInput === isInput && joinPointView.slotName === name);
     }
 
