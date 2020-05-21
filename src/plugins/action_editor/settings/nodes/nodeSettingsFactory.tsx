@@ -15,6 +15,8 @@ import { NodeType } from '../../../../core/models/views/nodes/NodeModel';
 import { AnimationNodeSettings } from './AnimationNodeSettings';
 import { TurnNodeSettingsComponent } from '../TurnNodeSettingsComponent';
 import { TurnNodeSettings } from './TurnNodeSettings';
+import { SplitNodeSettings } from './SplitNodeSettings';
+import { SplitNodeSettingsComponent } from '../SplitNodeSettingsComponent';
 
 export interface NodeProps {
     settings: ViewSettings<any, NodeView>;
@@ -32,6 +34,8 @@ export function createNodeSettings(nodeView: NodeView<any>, registry: Registry):
             return new AnimationNodeSettings(nodeView, registry);
         case NodeType.Turn:
             return new TurnNodeSettings(nodeView, registry);
+        case NodeType.Split:
+            return new SplitNodeSettings(nodeView, registry);
         default:
             return new NodeSettings(nodeView);
     }
@@ -53,5 +57,7 @@ export function createNodeSettingsComponent(actionNodeConcept: NodeView, registr
             return <AnimationNodeSettingsComponent settings={settings}/>
         case NodeType.Turn:
             return <TurnNodeSettingsComponent settings={settings}/>
+        case NodeType.Split:
+            return <SplitNodeSettingsComponent settings={settings}/>
     }
 }

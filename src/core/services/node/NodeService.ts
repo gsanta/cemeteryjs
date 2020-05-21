@@ -1,9 +1,9 @@
-import { NodeGraph } from './NodeGraph';
 import { NodeModel, NodeType } from '../../models/views/nodes/NodeModel';
+import { Registry } from '../../Registry';
 import { AbstractNodeHandler } from './handlers/AbstractNodeHandler';
 import { KeyboardNodeHandler } from './handlers/KeyboardNodeHandler';
-import { Registry } from '../../Registry';
 import { MoveNodeHandler } from './handlers/MoveNodeHandler';
+import { SplitNodeHandler } from './handlers/SplitNodeHandler';
 import { TurnNodeHandler } from './handlers/TurnNodeHandler';
 
 export class NodeService {
@@ -15,6 +15,7 @@ export class NodeService {
         this.handlersByType.set(NodeType.Keyboard, new KeyboardNodeHandler(registry));
         this.handlersByType.set(NodeType.Move, new MoveNodeHandler(registry));
         this.handlersByType.set(NodeType.Turn, new TurnNodeHandler(registry));
+        this.handlersByType.set(NodeType.Split, new SplitNodeHandler(registry));
 
         this.registry.services.game.registerAfterRender(() => {
             this.handlersByType.get(NodeType.Keyboard).update();

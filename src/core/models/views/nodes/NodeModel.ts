@@ -1,7 +1,6 @@
 import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
 import { NodeGraph } from '../../../services/node/NodeGraph';
 import { NodeView } from '../NodeView';
-import { JoinPointView } from '../child_views/JoinPointView';
 
 export enum NodeType {
     Keyboard = 'Keyboard',
@@ -9,9 +8,10 @@ export enum NodeType {
     Turn = 'Turn',
     And = 'And',
     Mesh = 'Mesh',
-    Animation = 'Animation'
+    Animation = 'Animation',
+    Split = 'Split'
 }
-export type SlotName = 'input' | 'output' | 'mesh' | 'animation' | 'action' | 'input1' | 'input2'
+export type SlotName = 'input' | 'output' | 'mesh' | 'animation' | 'action' | 'input1' | 'input2' | 'output1' | 'output2' | 'output3' | 'output4'
 
 export interface JoinPointSlot {
     name: SlotName;
