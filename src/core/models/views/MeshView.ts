@@ -56,7 +56,7 @@ export class MeshView extends VisualConcept implements IGameObject {
     scale: number;
     yPos: number = 0;
 
-    speed = 0.1;
+    speed = 0.5;
 
     activeBehaviour: BehaviourType;
     activeElementalAnimation: ElementalAnimation;
@@ -113,16 +113,16 @@ export class MeshView extends VisualConcept implements IGameObject {
         this.mesh && this.mesh.setAbsolutePosition(toVector3(point.negateY().div(10), this.yPos));
     }
 
-    moveForward(vector: Point): void {
-        this.dimensions.translate(vector);
+    moveForward(amount: number): void {
+        // this.dimensions.translate(vector);
 
-        this.mesh && this.mesh.translate(Axis.Z, 1, Space.LOCAL);
+        this.mesh && this.mesh.translate(Axis.Z, amount, Space.LOCAL);
     }
 
-    moveBackward(vector: Point): void {
-        this.dimensions.translate(vector);
+    moveBackward(amount: number): void {
+        // this.dimensions.translate(vector);
 
-        this.mesh && this.mesh.translate(Axis.Z, -1, Space.LOCAL);
+        this.mesh && this.mesh.translate(Axis.Z, amount, Space.LOCAL);
     }
 
     getRotation(): number {

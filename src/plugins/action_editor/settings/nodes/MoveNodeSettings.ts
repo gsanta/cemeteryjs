@@ -7,6 +7,9 @@ import { ViewSettings } from "../../../scene_editor/settings/AbstractSettings";
 export enum MoveNodeProps {
     AllMoves = 'AllMoves',
     Move = 'Move',
+    Speed = 'Speed',
+    SpeedMin = 'SpeedMin',
+    SpeedMax = 'SpeedMax'
 }
 export class MoveNodeSettings extends ViewSettings<MoveNodeProps, NodeView> {
     static settingsName = 'move-node-settings';
@@ -26,6 +29,12 @@ export class MoveNodeSettings extends ViewSettings<MoveNodeProps, NodeView> {
                 return this.view.model.allMoves;
             case MoveNodeProps.Move:
                 return this.view.model.move;
+            case MoveNodeProps.Speed:
+                return this.view.model.speed * 100;
+            case MoveNodeProps.SpeedMin:
+                return 0;
+            case MoveNodeProps.SpeedMax:
+                return 100;    
         }
     }
 
@@ -33,6 +42,9 @@ export class MoveNodeSettings extends ViewSettings<MoveNodeProps, NodeView> {
         switch (prop) {
             case MoveNodeProps.Move:
                 this.view.model.move = val;
+                break;
+            case MoveNodeProps.Speed:
+                this.view.model.speed = val / 100;
                 break;
             default:
                 throw new Error(`${prop} is not a writeable property.`)

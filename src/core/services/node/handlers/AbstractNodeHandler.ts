@@ -1,7 +1,6 @@
 import { NodeModel, SlotName, NodeType } from '../../../models/views/nodes/NodeModel';
 import { Registry } from '../../../Registry';
 
-
 export abstract class AbstractNodeHandler<T extends NodeModel> {
     nodeType: string;
     instance: T;

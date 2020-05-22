@@ -13,6 +13,8 @@ import { ListActionsDialogComponent } from './dialogs/ListActionsDialogComponent
 import { HotkeyInputComponent } from './HotkeyInputComponent';
 import { SpinnerOverlayComponent } from './misc/SpinnerOverlayComponent';
 import { SidebarComponent } from './SidebarComponent';
+import 'rc-slider/assets/index.css';
+import 'rc-tooltip/assets/bootstrap.css';
 
 export interface AppState {
     isDialogOpen: boolean;

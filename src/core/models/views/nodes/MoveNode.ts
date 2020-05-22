@@ -8,6 +8,7 @@ export class MoveNode extends NodeModel {
     group = NodeGroupName.Default;
     title = "Move";
     move: string;
+    speed = 0.5;
     allMoves: string[] = ['forward', 'backward'];
     color = 'A194EC';
     inputSlots: JoinPointSlot[] = [

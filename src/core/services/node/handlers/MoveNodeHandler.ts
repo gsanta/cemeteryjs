@@ -1,4 +1,4 @@
-import { NodeType } from "../../../models/views/nodes/NodeModel";
+import { NodeType, NodeModel } from "../../../models/views/nodes/NodeModel";
 import { MoveNode } from '../../../models/views/nodes/MoveNode';
 import { AbstractNodeHandler } from "./AbstractNodeHandler";
 import { MeshNode } from "../../../models/views/nodes/MeshNode";
@@ -8,22 +8,34 @@ export class MoveNodeHandler extends AbstractNodeHandler<MoveNode> {
     nodeType: NodeType.Move;
 
     handle() {
-        const joinedView = this.instance.nodeView.findJoinPointView('mesh', true).getOtherNode();
+        const meshNode = this.getInputMesh();
+        if (!meshNode) { return; }
+        
+        const speed = this.instance.speed;
+        const moveDelta = (this.registry.services.game.getDeltaTime() * speed) / 50;
 
-        if (joinedView) {
+        if (this.instance.move === 'forward') {
+            meshNode.meshModel.meshView.moveForward(moveDelta);
+        } else {
+            meshNode.meshModel.meshView.moveBackward(moveDelta);
+        }
+    }
+
+    private getInputMesh(): MeshNode {
+        const joinedView = this.instance.nodeView.findJoinPointView('mesh', true).getOtherNode();
+        
+        if (!joinedView) { return undefined; } 
+
+        let meshNode: MeshNode = undefined;
+
+        if (joinedView.model.type === NodeType.Mesh) {
+            meshNode = <MeshNode> joinedView.model;
+        } else {
             const handler = this.registry.services.node.getHandler(joinedView.model);
             handler.instance = joinedView.model;
-            const meshNode = handler.searchFromRight<MeshNode>(NodeType.Mesh);
-            if (meshNode) {
-                const direction = meshNode.meshModel.meshView.getDirection();
-                const speed = meshNode.meshModel.meshView.speed;
-
-                if (this.instance.move === 'forward') {
-                    meshNode.meshModel.meshView.moveForward(direction.mul(-1 * speed, -1 * speed));
-                } else {
-                    meshNode.meshModel.meshView.moveBackward(direction.mul(speed, speed));
-                }
-            }
+            meshNode = handler.searchFromRight<MeshNode>(NodeType.Mesh);
         }
+
+        return meshNode;
     }
 }

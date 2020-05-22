@@ -132,4 +132,8 @@ export class GameService {
     registerAfterRender(callback: () => void) {
         this.afterRenders.push(callback);
     }
+
+    getDeltaTime(): number {
+        return this.gameEngine.engine.getDeltaTime();
+    }
 }

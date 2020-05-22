@@ -29,7 +29,7 @@ export class DragAndDropTool extends AbstractTool {
     up() {
         this.isDragging = false;
         const topLeft = this.registry.services.pointer.pointer.curr.clone();
-        const bottomRight = topLeft.clone().add(new Point(200, 100));
+        const bottomRight = topLeft.clone().add(new Point(200, 150));
         const id = this.registry.stores.nodeStore.generateUniqueName(ConceptType.ActionConcept);
         const nodeType = this.registry.services.pointer.pointer.droppedItemType;
         if (nodeType !== undefined) {
