@@ -5,6 +5,8 @@ import { calcOffsetFromDom, AbstractPlugin } from '../../core/AbstractPlugin';
 import { Camera2D } from '../common/camera/Camera2D';
 import { ActionEditorSettings } from './settings/ActionEditorSettings';
 import { NodeStore } from '../../core/stores/NodeStore';
+import { NodePreset, NodePresetRecipe } from '../../core/models/nodes/NodePreset';
+import { NodeType } from '../../core/models/views/nodes/NodeModel';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -32,6 +34,22 @@ export enum CanvasTag {
     Hovered = 'hovered'
 }
 
+const recipes: NodePresetRecipe[] = [
+    {
+        presetName: 'Mesh navigation',
+        nodes: [
+            {
+                type: NodeType.Mesh,
+                relativeCoord: new Point(-100, -100)
+            },
+            {
+                type: NodeType.Move,
+                relativeCoord: new Point(0, 0)
+            }
+        ]
+    }
+]
+
 export class ActionEditorPlugin extends AbstractPlugin {
     static id = 'action-editor-plugin';
     
@@ -40,6 +58,7 @@ export class ActionEditorPlugin extends AbstractPlugin {
     private camera: Camera2D;
 
     actionSettings: ActionEditorSettings;
+    presets: NodePreset[];
 
     constructor(registry: Registry) {
         super(registry);
@@ -48,6 +67,9 @@ export class ActionEditorPlugin extends AbstractPlugin {
 
         this.selectedTool = this.registry.tools.pan;
         this.actionSettings = new ActionEditorSettings(registry);
+        this.presets = [
+            new NodePreset(this.registry, recipes[0])
+        ]
     }
 
     getStore(): NodeStore {

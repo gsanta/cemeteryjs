@@ -35,6 +35,28 @@ export class ActionEditorSettingsComponent extends React.Component<{settings: Ac
         );
     }
 
+    renderPresets() {
+        const view = this.context.registry.services.layout.getViewById(ActionEditorPlugin.id);
+        const presets: string[] = this.props.settings.getVal(ActionEditorSettingsProps.Presets);
+
+        const groups: CanvasToolsProps[] = presets.map(preset => {
+            return (
+                <NodeButton 
+                    key={preset} type={nodeType} 
+                    onMouseDown={() => view.setPriorityTool(this.context.registry.tools.dragAndDrop)}
+                    onDrop={() => view.removePriorityTool(this.context.registry.tools.dragAndDrop)}
+                />
+            );
+
+            return {
+                title: preset.name,
+                body: items
+            }
+        });
+
+        return <AccordionComponent elements={groups}/>;
+    }
+
     renderActionGroups() {
         const view = this.context.registry.services.layout.getViewById(ActionEditorPlugin.id);
 

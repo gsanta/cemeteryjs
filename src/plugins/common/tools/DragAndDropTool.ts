@@ -24,8 +24,7 @@ export class DragAndDropTool extends AbstractTool {
     deselect() {
         this.isDragging = false;
     }
-
-
+    
     up() {
         this.isDragging = false;
         const topLeft = this.registry.services.pointer.pointer.curr.clone();

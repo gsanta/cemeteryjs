@@ -5,6 +5,7 @@ import { NodeType } from '../../../core/models/views/nodes/NodeModel';
 
 export enum ActionEditorSettingsProps {
     ActionTypes = 'ActionTypes',
+    Presets = 'Presets'
 }
 
 export enum NodeGroupName {
@@ -44,6 +45,8 @@ export class ActionEditorSettings extends AbstractSettings<ActionEditorSettingsP
         switch (prop) {
             case ActionEditorSettingsProps.ActionTypes:
                 return this.registry.stores.nodeStore.actionTypes;
+            case ActionEditorSettingsProps.Presets:
+                return this.registry.views.actionEditorView.presets;
         }
     }
 
