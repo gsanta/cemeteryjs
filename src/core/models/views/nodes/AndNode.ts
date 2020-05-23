@@ -1,9 +1,8 @@
-import { NodeModel, NodeType, JoinPointSlot } from './NodeModel';
-import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
+import { NodeModel, NodeType, JoinPointSlot, NodeCategory } from './NodeModel';
 
 export class AndNode extends NodeModel {
     type = NodeType.And;
-    group = NodeGroupName.Boolean;
+    category = NodeCategory.Boolean;
     title = "And";
     color = '#A19F99';
     inputSlots: JoinPointSlot[] = [

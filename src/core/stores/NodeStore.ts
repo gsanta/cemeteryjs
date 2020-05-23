@@ -1,13 +1,21 @@
 import { ViewSettings } from '../../plugins/scene_editor/settings/AbstractSettings';
 import { ConceptType } from '../models/views/View';
 import { NodeConnectionView } from '../models/views/NodeConnectionView';
-import { NodeType, NodeModel } from '../models/views/nodes/NodeModel';
+import { NodeType, NodeModel, DroppableNode } from '../models/views/nodes/NodeModel';
 import { NodeView } from '../models/views/NodeView';
 import { Registry } from '../Registry';
 import { AbstractStore } from './AbstractStore';
 import { NodeGraph } from '../services/node/NodeGraph';
+import { NodePreset, DroppablePreset } from '../models/nodes/NodePreset';
+import { Point } from '../geometry/shapes/Point';
+import { Rectangle } from '../geometry/shapes/Rectangle';
+import { createNodeSettings } from '../../plugins/action_editor/settings/nodes/nodeSettingsFactory';
+import { DroppableItem } from '../../plugins/common/tools/DragAndDropTool';
 
 export class NodeStore extends AbstractStore {
+    templates: NodeModel[] = [];
+    presets: NodePreset[] = [];
+
     settings: Map<string, ViewSettings<any, any>> = new Map();
     actionTypes: string[] = [];
     graph: NodeGraph;
@@ -36,6 +44,24 @@ export class NodeStore extends AbstractStore {
         }
         this.nodesByType.get(nodeView.model.type).push(nodeView.model);
         nodeView.model.updateNode(this.graph);
+    }
+
+    addDroppable(droppable: DroppableItem, dropPosition: Point) {
+        const id = this.generateUniqueName(ConceptType.ActionConcept);
+        const topLeft = dropPosition;
+        const bottomRight = topLeft.clone().add(new Point(200, 150));
+
+        switch(droppable.itemType) {
+            case 'Node':
+                const nodeType = (<DroppableNode> droppable).nodeTemplate.type;
+                const action = new NodeView(id, nodeType , new Rectangle(topLeft, bottomRight), this.graph);
+                this.registry.stores.nodeStore.addNode(action, createNodeSettings(action, this.registry));
+            break;        
+            case 'Preset':
+                (<DroppablePreset> droppable).preset.createPreset(dropPosition);
+            break;
+        }
+
     }
 
     addConnection(connection: NodeConnectionView) {

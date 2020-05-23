@@ -5,6 +5,7 @@ import { NodeView } from "../views/NodeView";
 import { ConceptType } from "../views/View";
 import { Rectangle } from "../../geometry/shapes/Rectangle";
 import { createNodeSettings } from "../../../plugins/action_editor/settings/nodes/nodeSettingsFactory";
+import { DroppableItem } from "../../../plugins/common/tools/DragAndDropTool";
 
 export interface NodePresetRecipe {
     presetName: string;
@@ -15,12 +16,14 @@ export interface NodePresetRecipe {
 }
 
 export class NodePreset {
+    presetName: string;
     private registry: Registry;
     private recipe: NodePresetRecipe;
 
     constructor(registry: Registry, recipe: NodePresetRecipe) {
         this.registry = registry;
         this.recipe = recipe;
+        this.presetName = this.recipe.presetName;
     }
 
     createPreset(centerPoint: Point) {
@@ -31,5 +34,14 @@ export class NodePreset {
             const nodeView = new NodeView(id, node.type, new Rectangle(topLeft, bottomRight), this.registry.stores.nodeStore.graph);
             this.registry.stores.nodeStore.addNode(nodeView, createNodeSettings(nodeView, this.registry));
         });
+    }
+}
+
+export class DroppablePreset implements DroppableItem {
+    itemType = 'Preset'
+    preset: NodePreset;
+
+    constructor(preset: NodePreset) {
+        this.preset = preset;
     }
 }

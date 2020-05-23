@@ -1,4 +1,4 @@
-import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
+import { DroppableItem } from '../../../../plugins/common/tools/DragAndDropTool';
 import { NodeGraph } from '../../../services/node/NodeGraph';
 import { NodeView } from '../NodeView';
 
@@ -11,22 +11,40 @@ export enum NodeType {
     Animation = 'Animation',
     Split = 'Split'
 }
+
+export function getAllNodeTypes() {
+    const nodeTypes: string[] = [];
+
+    for (let item in NodeType) {
+        if (isNaN(Number(item))) {
+            nodeTypes.push(item);
+        }
+    }
+
+    return nodeTypes;
+}
+
+export enum NodeCategory {
+    Input = 'Input',
+    Boolean = 'Boolean',
+    Default = 'Default'
+}
+
 export type SlotName = 'input' | 'output' | 'mesh' | 'animation' | 'action' | 'input1' | 'input2' | 'output1' | 'output2' | 'output3' | 'output4'
 
 export interface JoinPointSlot {
     name: SlotName;
 }
 
-
 export abstract class NodeModel {
     nodeView: NodeView;
+    type: NodeType;
+    category: NodeCategory;
 
     constructor(nodeView: NodeView) {
         this.nodeView = nodeView;
     }
     isDirty = false;
-    type: NodeType;
-    group: NodeGroupName;
     title: string;
     color: string;
     inputSlots: JoinPointSlot[];
@@ -41,5 +59,14 @@ export abstract class NodeModel {
         return this.nodeView.joinPointViews
             .filter(joinPointView => joinPointView.getOtherNode() !== undefined)
             .map(joinPointView => joinPointView.getOtherNode().model);
+    }
+}
+
+export class DroppableNode implements DroppableItem {
+    itemType = 'Node'
+    nodeTemplate: NodeModel;
+
+    constructor(nodeTemplate: NodeModel) {
+        this.nodeTemplate = nodeTemplate;
     }
 }

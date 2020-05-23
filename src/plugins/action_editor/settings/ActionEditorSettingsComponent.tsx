@@ -6,17 +6,9 @@ import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { ActionEditorPlugin } from '../ActionEditorPlugin';
 import { ActionEditorSettingsProps, ActionEditorSettings } from './ActionEditorSettings';
 import { CanvasToolsProps } from '../../../core/ViewFactory';
-import { colors } from '../../../core/gui/styles';
-
-const NodeButtonStyled = styled.div`
-    border-bottom: 1px solid ${colors.textColor};
-    padding: 2px 3px;
-    cursor: pointer;
-
-    &:hover {
-        background: ${colors.hoverBackground};
-    }
-`;
+import { DroppableListItemComponent } from '../../../core/gui/inputs/DroppableListItemComponent';
+import { NodeType, getAllNodeTypes, NodeCategory, NodeModel, DroppableNode } from '../../../core/models/views/nodes/NodeModel';
+import { NodePreset, DroppablePreset } from '../../../core/models/nodes/NodePreset';
 
 export class ActionEditorSettingsComponent extends React.Component<{settings: ActionEditorSettings}> {
     static contextType = AppContext;
@@ -30,67 +22,55 @@ export class ActionEditorSettingsComponent extends React.Component<{settings: Ac
                 // onMouseOver={() => view.setPriorityTool(this.context.registry.tools.dragAndDrop)}
                 // onMouseOut={() => view.removePriorityTool(this.context.registry.tools.dragAndDrop)}
             >
-                {this.renderActionGroups()}
+                {this.renderNodesByCategory()}
+                {this.renderPresets()}
             </div>
         );
     }
 
-    renderPresets() {
-        const view = this.context.registry.services.layout.getViewById(ActionEditorPlugin.id);
-        const presets: string[] = this.props.settings.getVal(ActionEditorSettingsProps.Presets);
+    private renderPresets() {
+        const presets = this.context.registry.stores.nodeStore.presets;
 
-        const groups: CanvasToolsProps[] = presets.map(preset => {
+        const listItems: JSX.Element[] = presets.map((preset: NodePreset) => {
             return (
-                <NodeButton 
-                    key={preset} type={nodeType} 
-                    onMouseDown={() => view.setPriorityTool(this.context.registry.tools.dragAndDrop)}
-                    onDrop={() => view.removePriorityTool(this.context.registry.tools.dragAndDrop)}
+                <DroppableListItemComponent 
+                    key={preset.presetName}
+                    type={preset.presetName}
+                    onMouseDown={() => this.context.registry.services.mouse.onDragStart(new DroppablePreset(preset))}
+                    onDrop={() => this.context.registry.services.mouse.onDrop()}
                 />
             );
-
-            return {
-                title: preset.name,
-                body: items
-            }
         });
 
-        return <AccordionComponent elements={groups}/>;
+        return <AccordionComponent elements={[{title: 'Presets', body: listItems}]}/>;
     }
 
-    renderActionGroups() {
-        const view = this.context.registry.services.layout.getViewById(ActionEditorPlugin.id);
+    renderNodesByCategory() {
+        const nodeTypesByCategory: Map<NodeCategory, NodeModel[]> = new Map();
 
-        const groups: CanvasToolsProps[] = this.props.settings.nodeGroups.map(group => {
-            const items = group.members.map((nodeType) => (
-                <NodeButton 
-                    key={nodeType} type={nodeType} 
-                    onMouseDown={() => view.setPriorityTool(this.context.registry.tools.dragAndDrop)}
-                    onDrop={() => view.removePriorityTool(this.context.registry.tools.dragAndDrop)}
+        this.context.registry.stores.nodeStore.templates.forEach(node => {
+            if (!nodeTypesByCategory.get(node.category)) {
+                nodeTypesByCategory.set(node.category, []);
+            }
+            nodeTypesByCategory.get(node.category).push(node);
+        });
+
+        const groups: CanvasToolsProps[] = Array.from(nodeTypesByCategory.values()).map((nodes: NodeModel[]) => {
+            const items = nodes.map((node) => (
+                <DroppableListItemComponent 
+                    key={node.type}
+                    type={node.type}
+                    onMouseDown={() => this.context.registry.services.mouse.onDragStart(new DroppableNode(node))}
+                    onDrop={() => this.context.registry.services.mouse.onDrop()}
                 />
             ));
 
             return {
-                title: group.name,
+                title: nodes[0].category,
                 body: items
             }
         });
 
         return <AccordionComponent elements={groups}/>;
     }
-}
-
-const NodeButton = (props: {type: string, onMouseDown: () => void, onDrop: () => void}) => {
-    const [{isDragging}, drag] = useDrag({
-            item: { type: props.type },
-            collect: monitor => ({
-                isDragging: !!monitor.isDragging(),
-            }),
-            end: (item, monitor) => props.onDrop()
-      })
-    
-    return (
-        <NodeButtonStyled ref={drag} onMouseDown={() => props.onMouseDown()}>
-            {props.type}
-        </NodeButtonStyled>
-    )
 }

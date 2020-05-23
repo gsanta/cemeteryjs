@@ -1,11 +1,10 @@
-import { NodeModel, NodeType, JoinPointSlot } from './NodeModel';
-import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
+import { NodeModel, NodeType, JoinPointSlot, NodeCategory } from './NodeModel';
 import { NodeGraph } from "../../../services/node/NodeGraph";
 import { MeshNode } from "./MeshNode";
 
 export class AnimationNode extends NodeModel {
     type = NodeType.Animation;
-    group = NodeGroupName.Default;
+    category = NodeCategory.Default;
     title = "Animation";
     animation: string;
     allAnimations: string[] = [];

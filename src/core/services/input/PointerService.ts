@@ -1,10 +1,9 @@
-import { Registry } from "../../Registry";
+import { DroppableItem } from "../../../plugins/common/tools/DragAndDropTool";
 import { Point } from "../../geometry/shapes/Point";
-import { ChildView } from "../../models/views/child_views/ChildView";
-import { MousePointer } from "./MouseService";
-import { View } from "../../models/views/View";
-import { Hoverable } from "../../models/Hoverable";
 import { VisualConcept } from "../../models/concepts/VisualConcept";
+import { Registry } from "../../Registry";
+import { MousePointer } from "./MouseService";
+import { UpdateTask } from "../UpdateServices";
 
 export enum Wheel {
     IDLE = 'idle', UP = 'up', DOWN = 'down'
@@ -31,6 +30,7 @@ export class PointerService {
     prevWheelState: number = 0;
     wheelDiff: number = undefined;
     hoveredItem: VisualConcept;
+    droppableItem: DroppableItem;
 
     pointer: MousePointer = new MousePointer();
 
@@ -132,6 +132,18 @@ export class PointerService {
         }
         this.registry.services.layout.getHoveredView().getActiveTool().out(item);
         this.registry.services.update.runScheduledTasks();
+    }
+
+    pointerDragStart(item: DroppableItem) {
+        this.droppableItem = item;
+        this.registry.views.getActiveView().setPriorityTool(this.registry.tools.dragAndDrop);
+        this.registry.services.update.runImmediately(UpdateTask.RepaintActiveView, UpdateTask.RepaintSettings);
+    }
+
+    pointerDrop() {
+        this.droppableItem = null;
+        this.registry.views.getActiveView().removePriorityTool(this.registry.tools.dragAndDrop);
+        this.registry.services.update.runImmediately(UpdateTask.RepaintActiveView, UpdateTask.RepaintSettings);
     }
     
     private getScreenPoint(point: Point): Point {

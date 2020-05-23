@@ -84,7 +84,7 @@ export class RouteWalker {
             meshObj.setRotation(rotation);
         }
         
-        meshObj.moveForward(new Point(0, -1).mul(speed));
+        meshObj.moveForward(speed);
     }
 
     private initRoute(route: RouteObject) {

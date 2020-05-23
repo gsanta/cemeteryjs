@@ -1,9 +1,8 @@
-import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
-import { NodeModel, NodeType, JoinPointSlot } from './NodeModel';
+import { NodeModel, NodeType, JoinPointSlot, NodeCategory } from './NodeModel';
 
 export class TurnNode extends NodeModel {
     type = NodeType.Turn;
-    group = NodeGroupName.Default;
+    category = NodeCategory.Default;
     title = "Turn";
     move: string;
     allMoves: string[] = ['turn-left', 'turn-right'];

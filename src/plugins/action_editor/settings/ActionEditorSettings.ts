@@ -8,18 +8,6 @@ export enum ActionEditorSettingsProps {
     Presets = 'Presets'
 }
 
-export enum NodeGroupName {
-    Input = 'Input',
-    Boolean = 'Boolean',
-    Default = 'Default'
-}
-
-export interface NodeGroup {
-    name: NodeGroupName;
-    color: string;
-    members: NodeType[];
-}
-
 export class ActionEditorSettings extends AbstractSettings<ActionEditorSettingsProps> {
     static settingsName = 'action-settings';
     getName() { return ActionEditorSettings.settingsName; }
@@ -30,11 +18,6 @@ export class ActionEditorSettings extends AbstractSettings<ActionEditorSettingsP
     resultDoc: string = "Define what should happen when the action is activated.";
 
     private registry: Registry;
-
-    nodeGroups: NodeGroup[] = [
-        {name: NodeGroupName.Default, color: 'blue', members: [NodeType.Keyboard, NodeType.Mesh, NodeType.Move, NodeType.Animation, NodeType.Turn]},
-        {name: NodeGroupName.Boolean, color: 'green', members: [NodeType.And, NodeType.Split]},
-    ]
 
     constructor(registry: Registry) {
         super();

@@ -1,9 +1,8 @@
-import { NodeModel, NodeType, JoinPointSlot } from './NodeModel';
-import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
+import { NodeModel, NodeType, JoinPointSlot, NodeCategory } from './NodeModel';
 
 export class SplitNode extends NodeModel {
     type = NodeType.Split;
-    group = NodeGroupName.Boolean;
+    category = NodeCategory.Boolean;
     title = "Split";
     color = '#A19F99';
     inputSlots: JoinPointSlot[] = [

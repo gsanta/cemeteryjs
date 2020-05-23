@@ -1,6 +1,5 @@
-import { NodeModel, NodeType } from "./NodeModel";
+import { NodeModel, NodeType, NodeCategory } from "./NodeModel";
 import { Keyboard } from "../../../services/input/KeyboardService";
-import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
 
 export function getAllKeys() {
     const keys: string[] = [];
@@ -20,7 +19,7 @@ export enum KeyboardNodeSlot {
 
 export class KeyboardNode extends NodeModel {
     type = NodeType.Keyboard;
-    group = NodeGroupName.Default;
+    category = NodeCategory.Default;
     title = "Keyboard input";
     key: Keyboard;
     color = '#89BD88';

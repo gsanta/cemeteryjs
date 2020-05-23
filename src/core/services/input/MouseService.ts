@@ -3,6 +3,7 @@ import { Point } from "../../geometry/shapes/Point";
 import { IPointerEvent } from "./PointerService";
 import { Hoverable } from "../../models/Hoverable";
 import { VisualConcept } from "../../models/concepts/VisualConcept";
+import { DroppableItem } from "../../../plugins/common/tools/DragAndDropTool";
 
 export class MousePointer {
     down: Point;
@@ -73,6 +74,14 @@ export class MouseService {
 
     unhover(item: VisualConcept) {
         this.registry.services.pointer.unhover(item);
+    }
+
+    onDragStart(item: DroppableItem) {
+        this.registry.services.pointer.pointerDragStart(item);
+    }
+
+    onDrop() {
+        this.registry.services.pointer.pointerDrop();
     }
 
     private convertEvent(e: MouseEvent, isPointerDown: boolean, droppedItemId?: string): IPointerEvent {

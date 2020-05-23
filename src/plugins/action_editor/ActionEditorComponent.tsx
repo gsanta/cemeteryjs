@@ -69,7 +69,7 @@ export class ActionEditorComponent extends CanvasComponent {
                     />
                 </WindowToolbarStyled>
                 <DropLayer 
-                    isDragging={this.context.registry.tools.dragAndDrop.isDragging}
+                    isDragging={!!this.context.registry.services.pointer.droppableItem}
                     onDrop={(p, droppedItemType) => this.context.registry.services.mouse.onMouseUp({x: p.x, y: p.y, which: 1} as MouseEvent, droppedItemType)}
                     onMouseMove={(e) => this.context.registry.services.mouse.onMouseMove(e)}
                     onMouseOver={() => view.over()}
@@ -145,9 +145,10 @@ interface DropLayerProps {
 }
 
 const DropLayer = (props: DropLayerProps) => {
-    const actionTypes = props.registry.stores.nodeStore.actionTypes;
+    // TODO find a better solution
+    const types = [...props.registry.stores.nodeStore.templates.map(template => template.type), ...props.registry.stores.nodeStore.presets.map(preset => preset.presetName)];
 	const [{ isOver }, drop] = useDrop({
-        accept: actionTypes,
+        accept: types,
         drop: (item, monitor) => props.onDrop(new Point(monitor.getClientOffset().x, monitor.getClientOffset().y), monitor.getItem().type), 
 		collect: monitor => ({
 			isOver: !!monitor.isOver(),

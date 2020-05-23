@@ -8,6 +8,8 @@ import { NodeView } from '../NodeView';
 import { TurnNode } from './TurnNode';
 import { SplitNode } from './SplitNode';
 
+
+
 export function createNode(actionType: string, nodeView: NodeView): NodeModel {
     switch(actionType) {
         case NodeType.Keyboard:
@@ -24,6 +26,5 @@ export function createNode(actionType: string, nodeView: NodeView): NodeModel {
             return new TurnNode(nodeView);
         case NodeType.Split:
             return new SplitNode(nodeView);
-    
     }
 }

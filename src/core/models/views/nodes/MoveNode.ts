@@ -1,11 +1,8 @@
-import { NodeGroupName } from "../../../../plugins/action_editor/settings/ActionEditorSettings";
-import { NodeModel, NodeType, SlotName, JoinPointSlot } from './NodeModel';
-
-
+import { JoinPointSlot, NodeModel, NodeType, NodeCategory } from './NodeModel';
 
 export class MoveNode extends NodeModel {
     type = NodeType.Move;
-    group = NodeGroupName.Default;
+    category = NodeCategory.Default;
     title = "Move";
     move: string;
     speed = 0.5;
