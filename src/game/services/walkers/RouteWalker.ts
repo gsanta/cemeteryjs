@@ -1,9 +1,10 @@
 import { AnimationCondition } from "../../../core/models/meta/AnimationConcept";
 import { Point } from "../../../core/geometry/shapes/Point";
 import { Segment } from "../../../core/geometry/shapes/Segment";
-import { PathCorner } from "../../models/objects/PathObject";
+import { PathCorner } from "../../models/objects/PathCorner";
 import { RouteObject } from "../../models/objects/RouteObject";
 import { PathView } from "../../../core/models/views/PathView";
+import { toDegree } from "../../../core/geometry/utils/Measurements";
 
 const defaultSpeed = 1000 / 4;
 
@@ -49,42 +50,43 @@ export class RouteWalker {
 
         const meshObj = route.getMeshObject();
 
+        this.resetIfFianlPointReached(route);
+        this.turnRoute(route);
+        
+        meshObj.moveForward(-speed);
+    }
+
+    private turnRoute(route: RouteObject) {
+        // if (route.isTurning) {
+        //     const rotation = this.bezierRotator.getRotation(route.currentGoal, route.getMeshObject().getPosition());
+        //     route.getMeshObject().rotate(route.getMeshObject().getRotation() - rotation);
+
+        //     if (route.getMeshObject().animation) {
+        //         route.getMeshObject().activeElementalAnimation = route.getMeshObject().animation.getAnimationByCond(AnimationCondition.Move);
+        //     }
+        //     route.isTurning = false;
+        //     const currentGoalIndex = route.path.indexOf(route.currentGoal);
+        //     route.currentGoal = route.path[currentGoalIndex + 1];
+        // } else {
+        // }
+        const rotation = route.currentGoal.point1.subtract(route.currentGoal.getPrevCorner().point2).normalize().vectorAngle();
+        console.log(toDegree(rotation))
+        route.getMeshObject().setRotation(-rotation);
+    }
+
+    private resetIfFianlPointReached(route: RouteObject) {
         const reachedPoint = this.getPointWithinRange(route);
 
         if (reachedPoint === route.currentGoal.point1) {
             if (route.currentGoal.point2) {
                 route.isTurning = true;
-                if (meshObj.animation) {
-                    meshObj.activeElementalAnimation = meshObj.animation.getAnimationByCond(AnimationCondition.RotateLeft);
+                if (route.getMeshObject().animation) {
+                    route.getMeshObject().activeElementalAnimation = route.getMeshObject().animation.getAnimationByCond(AnimationCondition.RotateLeft);
                 }
             } else {
                 this.initRoute(route);
             }
         }
-
-        if (route.isTurning) {
-            const rotation = this.bezierRotator.getRotation(route.currentGoal, meshObj.getPosition());
-            const nextGoal = route.path[route.path.indexOf(route.currentGoal) + 1];
-            const finalRotation = nextGoal.point1.subtract(route.currentGoal.point2).normalize().vectorAngle();
-
-            if (Math.abs(rotation - finalRotation) < 0.1) {
-                meshObj.setRotation(finalRotation);
-                if (meshObj.animation) {
-                    meshObj.activeElementalAnimation = meshObj.animation.getAnimationByCond(AnimationCondition.Move);
-                }
-                route.isTurning = false;
-                const currentGoalIndex = route.path.indexOf(route.currentGoal);
-                route.currentGoal = route.path[currentGoalIndex + 1];
-            } else {
-                meshObj.setRotation(rotation);
-            }
-        } else {
-            const prevGoal = route.path[route.path.indexOf(route.currentGoal) - 1];
-            const rotation = route.currentGoal.point1.subtract(prevGoal.point2).normalize().vectorAngle();
-            meshObj.setRotation(rotation);
-        }
-        
-        meshObj.moveForward(speed);
     }
 
     private initRoute(route: RouteObject) {
@@ -99,29 +101,29 @@ export class RouteWalker {
         route.path = this.createPathCorners(pathObj);
 
         route.currentGoal = route.path[1];
-        const direction =  route.path[1].point1.subtract(route.path[0].point2).normalize().vectorAngle();
+        const rotation =  route.path[1].point1.subtract(route.path[0].point2).normalize().vectorAngle();
 
         meshObj.setPosition(pathObj.editPoints[0].point);
-        meshObj.setRotation(direction);
+        // meshObj.setRotation(rotation);
+        route.getMeshObject().setRotation(-rotation);
     }
 
     private createPathCorners(pathObject: PathView): PathCorner[] {
         const pathCorners: PathCorner[] = [];
         const points = pathObject.editPoints.map(p => p.point).map(p => p.negateY()).map(point => point.div(10));
 
-        const startCorner = new PathCorner();
+        const startCorner = new PathCorner(pathCorners);
         startCorner.point2 = points[0];
-        pathCorners.push(startCorner);
         for (let i = 1; i < points.length - 1; i++) {
-            const corner: PathCorner = new PathCorner()
+            const corner: PathCorner = new PathCorner(pathCorners);
             let vector = new Segment(points[i - 1], points[i]).toVector().mul(0.9);
             corner.point1 = points[i - 1].clone().add(vector);
             corner.controlPoint = points[i];
             vector = new Segment(points[i], points[i + 1]).toVector().mul(0.1);
             corner.point2 = points[i].clone().add(vector);
-            pathCorners.push(corner);
         }
-        pathCorners.push(new PathCorner(points[points.length - 1]));
+        const finalPoint = new PathCorner(pathCorners);
+        finalPoint.point1 = points[points.length - 1];
         return pathCorners;
     }
 }

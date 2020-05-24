@@ -1,4 +1,4 @@
-import { Mesh, Vector3, Axis, Space } from 'babylonjs';
+import { Mesh, Vector3, Axis, Space, Quaternion } from 'babylonjs';
 import { IGameObject } from '../../../game/models/objects/IGameObject';
 import { BehaviourType } from '../../../game/services/behaviour/IBehaviour';
 import { GamepadEvent } from '../../../game/services/GameEventManager';
@@ -126,9 +126,11 @@ export class MeshView extends VisualConcept implements IGameObject {
     }
 
     getRotation(): number {
-        const rotation = this.mesh ? this.mesh.rotation.y : this.rotation;
+        if (!this.mesh) {
+            return this.rotation;
+        }
 
-        return rotation;
+        return this.mesh.rotationQuaternion ? this.mesh.rotationQuaternion.toEulerAngles().y : this.mesh.rotation.y;
     }
 
     rotateBy(rad: number) {
@@ -141,10 +143,16 @@ export class MeshView extends VisualConcept implements IGameObject {
 
     setRotation(angle: number) {
         if (this.mesh) {
-            this.mesh.rotation.y = - angle;
+            this.mesh.rotationQuaternion = Quaternion.RotationAxis(new Vector3(0, 1, 0), angle);
+            this.mesh.rotation.y = angle;
         } else {
             this.rotation = angle;
         }
+    }
+
+    rotate(angle: number) {
+        this.mesh.rotation.y = 0;
+        this.mesh.rotate(Axis.Y, angle, Space.LOCAL);
     }
 
     selectHoveredSubview() {}

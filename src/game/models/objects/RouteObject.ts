@@ -1,5 +1,5 @@
 import { IGameObject } from "./IGameObject";
-import { PathCorner } from "./PathObject";
+import { PathCorner } from "./PathCorner";
 import { MeshView } from "../../../core/models/views/MeshView";
 import { PathView } from "../../../core/models/views/PathView";
 import { ConceptType } from "../../../core/models/views/View";
