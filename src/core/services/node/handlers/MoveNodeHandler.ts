@@ -22,7 +22,7 @@ export class MoveNodeHandler extends AbstractNodeHandler<MoveNode> {
     }
 
     private getInputMesh(): MeshNode {
-        const joinedView = this.instance.nodeView.findJoinPointView('mesh', true).getOtherNode();
+        const joinedView = this.instance.nodeView.findJoinPointView('mesh').getOtherNode();
         
         if (!joinedView) { return undefined; } 
 

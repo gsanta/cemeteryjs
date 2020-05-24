@@ -17,7 +17,7 @@ export class SplitNodeHandler extends AbstractNodeHandler<SplitNode> {
     }
 
     searchFromRight<T extends NodeModel>(type: NodeType): T {
-        const joinedView = this.instance.nodeView.findJoinPointView('input', true).getOtherNode();
+        const joinedView = this.instance.nodeView.findJoinPointView('input').getOtherNode();
         if (joinedView) {
             if (joinedView.model.type === type) {
                 return <T> joinedView.model;

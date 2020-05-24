@@ -2,7 +2,7 @@ import { ViewSettings } from '../../plugins/scene_editor/settings/AbstractSettin
 import { ConceptType } from '../models/views/View';
 import { NodeConnectionView } from '../models/views/NodeConnectionView';
 import { NodeType, NodeModel, DroppableNode } from '../models/views/nodes/NodeModel';
-import { NodeView } from '../models/views/NodeView';
+import { NodeView, defaultNodeViewConfig } from '../models/views/NodeView';
 import { Registry } from '../Registry';
 import { AbstractStore } from './AbstractStore';
 import { NodeGraph } from '../services/node/NodeGraph';
@@ -49,7 +49,7 @@ export class NodeStore extends AbstractStore {
     addDroppable(droppable: DroppableItem, dropPosition: Point) {
         const id = this.generateUniqueName(ConceptType.ActionConcept);
         const topLeft = dropPosition;
-        const bottomRight = topLeft.clone().add(new Point(200, 150));
+        const bottomRight = topLeft.clone().add(new Point(defaultNodeViewConfig.width, defaultNodeViewConfig.height));
 
         switch(droppable.itemType) {
             case 'Node':

@@ -12,7 +12,7 @@ export class NodeConnectionView extends VisualConcept {
     readonly joinPoint2: JoinPointView;
     dimensions = undefined;
 
-    constructor(id: string, joinPoint1: JoinPointView, joinPoint2: JoinPointView) {
+constructor(id: string, joinPoint1: JoinPointView, joinPoint2: JoinPointView) {
         super();
         this.id = id;
         this.joinPoint1 = joinPoint1;

@@ -14,7 +14,7 @@ export abstract class AbstractNodeHandler<T extends NodeModel> {
     abstract handle(): void;
 
     protected chain(slotName: SlotName) {
-        const joinedView = this.instance.nodeView.findJoinPointView(slotName, false).getOtherNode();
+        const joinedView = this.instance.nodeView.findJoinPointView(slotName).getOtherNode();
         const handler = this.registry.services.node.getHandler(joinedView.model);
         handler.instance = joinedView.model;
         handler.handle();

@@ -7,6 +7,11 @@ import { createNode } from "./nodes/nodeFactory";
 import { ConceptType, View } from "./View";
 import { NodeGraph } from '../../services/node/NodeGraph';
 
+export const defaultNodeViewConfig = {
+    width: 200,
+    height: 120
+}
+
 export class NodeView<T extends NodeModel = NodeModel> extends VisualConcept {
     readonly  type = ConceptType.ActionConcept;
     readonly id: string;
@@ -37,8 +42,8 @@ export class NodeView<T extends NodeModel = NodeModel> extends VisualConcept {
         return Array.from(new Set(deletingViews));
     }
 
-    findJoinPointView(name: SlotName, isInput: boolean) {
-        return this.joinPointViews.find(joinPointView => joinPointView.isInput === isInput && joinPointView.slotName === name);
+    findJoinPointView(name: SlotName) {
+        return this.joinPointViews.find(joinPointView => joinPointView.slotName === name);
     }
 
     editPoints = [];

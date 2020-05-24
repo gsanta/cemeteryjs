@@ -46,21 +46,101 @@ const recipes: NodePresetRecipe[] = [
         presetName: 'Mesh navigation',
         nodes: [
             {
+                type: NodeType.Keyboard,
+                relativeCoordInUnit: new Point(0, -2)
+            },
+            {
+                type: NodeType.Keyboard,
+                relativeCoordInUnit: new Point(0, -1)
+            },
+            {
+                type: NodeType.Keyboard,
+                relativeCoordInUnit: new Point(0, 0)
+            },
+            {
+                type: NodeType.Keyboard,
+                relativeCoordInUnit: new Point(0, 1)
+            },
+            {
+                type: NodeType.Move,
+                relativeCoordInUnit: new Point(1.5, -2)
+            },
+            {
+                type: NodeType.Move,
+                relativeCoordInUnit: new Point(1.5, -1)
+            },
+            {
+                type: NodeType.Move,
+                relativeCoordInUnit: new Point(1.5, 0)
+            },
+            {
+                type: NodeType.Move,
+                relativeCoordInUnit: new Point(1.5, 1)
+            },
+            {
                 type: NodeType.Mesh,
-                relativeCoord: new Point(-400, -100)
+                relativeCoordInUnit: new Point(-1, 2)
             },
             {
                 type: NodeType.Split,
-                relativeCoord: new Point(-200, -100)
+                relativeCoordInUnit: new Point(0, 2)
+            }
+        ],
+        connections: [
+            {
+                node1Index: 0,
+                node1SlotName: 'output',
+                node2Index: 4,
+                node2SlotName: 'input'
             },
             {
-                type: NodeType.Keyboard,
-                relativeCoord: new Point(-300, 100)
+                node1Index: 1,
+                node1SlotName: 'output',
+                node2Index: 5,
+                node2SlotName: 'input'
             },
             {
-                type: NodeType.Keyboard,
-                relativeCoord: new Point(-300, 300)
+                node1Index: 2,
+                node1SlotName: 'output',
+                node2Index: 6,
+                node2SlotName: 'input'
             },
+            {
+                node1Index: 3,
+                node1SlotName: 'output',
+                node2Index: 7,
+                node2SlotName: 'input'
+            },
+            {
+                node1Index: 8,
+                node1SlotName: 'action',
+                node2Index: 9,
+                node2SlotName: 'input'
+            },
+            {
+                node1Index: 4,
+                node1SlotName: 'mesh',
+                node2Index: 9,
+                node2SlotName: 'output1'
+            },
+            {
+                node1Index: 5,
+                node1SlotName: 'mesh',
+                node2Index: 9,
+                node2SlotName: 'output2'
+            },
+            {
+                node1Index: 6,
+                node1SlotName: 'mesh',
+                node2Index: 9,
+                node2SlotName: 'output3'
+            },
+            {
+                node1Index: 7,
+                node1SlotName: 'mesh',
+                node2Index: 9,
+                node2SlotName: 'output4'
+            }
         ]
     }
 ]

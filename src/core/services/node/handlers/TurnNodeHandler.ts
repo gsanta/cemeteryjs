@@ -7,7 +7,7 @@ export class TurnNodeHandler extends AbstractNodeHandler<TurnNode> {
     nodeType: NodeType.Turn;
 
     handle() {
-        const joinedView = this.instance.nodeView.findJoinPointView('mesh', true).getOtherNode();
+        const joinedView = this.instance.nodeView.findJoinPointView('mesh').getOtherNode();
 
         if (joinedView) {
             const handler = this.registry.services.node.getHandler(joinedView.model);
