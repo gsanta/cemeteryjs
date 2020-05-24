@@ -13,11 +13,11 @@ export enum ActionNodeSettingsProps {
 export class NodeSettings extends ViewSettings<ActionNodeSettingsProps, any> {
     static settingsName = 'action-settings';
     getName() { return NodeSettings.settingsName; }
-    view: NodeView;
+    nodeView: NodeView;
 
     constructor(actionNodeConcept: NodeView) {
         super();
-        this.view = actionNodeConcept;
+        this.nodeView = actionNodeConcept;
     }
 
     protected getProp(prop: ActionNodeSettingsProps) {

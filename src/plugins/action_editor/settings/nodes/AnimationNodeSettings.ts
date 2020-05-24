@@ -12,28 +12,28 @@ export enum AnimationNodeProps {
 export class AnimationNodeSettings extends ViewSettings<AnimationNodeProps, NodeView> {
     static settingsName = 'animation-node-settings';
     getName() { return AnimationNodeSettings.settingsName; }
-    view: NodeView<AnimationNode>;
+    nodeView: NodeView<AnimationNode>;
     private registry: Registry;
 
     constructor(actionNodeConcept: NodeView<AnimationNode>, registry: Registry) {
         super();
-        this.view = actionNodeConcept;
+        this.nodeView = actionNodeConcept;
         this.registry = registry;
     }
 
     protected getProp(prop: AnimationNodeProps) {
         switch (prop) {
             case AnimationNodeProps.AllAnimations:
-                return this.view.model.allAnimations;
+                return this.nodeView.model.allAnimations;
             case AnimationNodeProps.Animation:
-                return this.view.model.animation;
+                return this.nodeView.model.animation;
         }
     }
 
     protected setProp(val: any, prop: AnimationNodeProps) {
         switch (prop) {
             case AnimationNodeProps.Animation:
-                this.view.model.animation = val;
+                this.nodeView.model.animation = val;
                 break;
         }
         this.registry.services.update.runImmediately(UpdateTask.RepaintActiveView);

@@ -9,12 +9,12 @@ export enum SplitNodeProps {
 export class SplitNodeSettings extends ViewSettings<SplitNodeProps, NodeView> {
     static settingsName = 'turn-node-settings';
     getName() { return SplitNodeSettings.settingsName; }
-    view: NodeView<SplitNode>;
+    nodeView: NodeView<SplitNode>;
     private registry: Registry;
 
     constructor(actionNodeConcept: NodeView<SplitNode>, registry: Registry) {
         super();
-        this.view = actionNodeConcept;
+        this.nodeView = actionNodeConcept;
         this.registry = registry;
     }
 

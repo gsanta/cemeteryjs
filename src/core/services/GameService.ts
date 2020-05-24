@@ -14,6 +14,7 @@ import { ImportService } from "./import/ImportService";
 import { MeshView } from "../models/views/MeshView";
 import { IConceptConverter } from "./convert/IConceptConverter";
 import { View, ConceptType } from "../models/views/View";
+import { NodeType } from "../models/views/nodes/NodeModel";
 
 export class GameService {
     serviceName = 'game-service';
@@ -45,7 +46,9 @@ export class GameService {
 
         const playerListener = new PlayerListener(this.registry);
         this.gameEventManager.listeners.registerGamepadListener((gamepadEvent: GamepadEvent) => playerListener.gamepadEvent(gamepadEvent));
-        this.gameEventManager.listeners.registerAfterRenderListener(() => this.walkers.walk());
+        this.registry.services.node.getNodesByType(NodeType.Route).forEach(route => {
+            this.registry.services.node.getHandler(route).handle();
+        }); 
         const animationPlayer = new AnimationPlayer(this.registry);
         this.gameEventManager.listeners.registerAfterRenderListener(() => animationPlayer.updateAnimations());
         this.keyboardTrigger = new KeyboardTrigger(this.registry);

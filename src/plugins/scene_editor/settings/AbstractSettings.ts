@@ -80,5 +80,5 @@ export abstract class AbstractSettings<P> {
 }
 
 export abstract class ViewSettings<P, V extends View> extends AbstractSettings<P> {
-    view: V;
+    nodeView: V;
 }

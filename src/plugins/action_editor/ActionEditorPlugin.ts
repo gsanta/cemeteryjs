@@ -14,6 +14,8 @@ import { MeshNode } from '../../core/models/views/nodes/MeshNode';
 import { MoveNode } from '../../core/models/views/nodes/MoveNode';
 import { TurnNode } from '../../core/models/views/nodes/TurnNode';
 import { SplitNode } from '../../core/models/views/nodes/SplitNode';
+import { RouteNode } from '../../core/models/views/nodes/RouteNode';
+import { PathNode } from '../../core/models/views/nodes/PathNode';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -173,7 +175,9 @@ export class ActionEditorPlugin extends AbstractPlugin {
             new MeshNode(undefined),
             new MoveNode(undefined),
             new SplitNode(undefined),
-            new TurnNode(undefined)
+            new TurnNode(undefined),
+            new RouteNode(undefined),
+            new PathNode(undefined)
         ];
 
         templates.forEach(template => this.registerTemplate(template));

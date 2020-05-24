@@ -100,6 +100,10 @@ export class SceneStore extends AbstractStore {
         return <PathView[]> this.views.filter(view => view.type === ConceptType.PathConcept);
     }
 
+    getPathViewById(id: string): PathView {
+        return <PathView> this.views.find(view => view.id === id);
+    }
+
     getAnimationConcepts(): AnimationConcept[] {
         return <AnimationConcept[]> this.metas.filter(view => view.type === ConceptType.AnimationConcept);
     }

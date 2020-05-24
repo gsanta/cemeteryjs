@@ -17,6 +17,9 @@ import { TurnNodeSettingsComponent } from '../TurnNodeSettingsComponent';
 import { TurnNodeSettings } from './TurnNodeSettings';
 import { SplitNodeSettings } from './SplitNodeSettings';
 import { SplitNodeSettingsComponent } from '../SplitNodeSettingsComponent';
+import { RouteNodeSettingsComponent } from '../RouteNodeSettingsComponent';
+import { PathNodeSettingsComponent } from '../PathNodeSettingsComponent';
+import { PathNodeSettings } from './PathNodeSettings';
 
 export interface NodeProps {
     settings: ViewSettings<any, NodeView>;
@@ -30,6 +33,8 @@ export function createNodeSettings(nodeView: NodeView<any>, registry: Registry):
             return new MoveNodeSettings(nodeView, registry);
         case NodeType.Mesh:
             return new MeshNodeSettings(nodeView, registry);
+        case NodeType.Path:
+            return new PathNodeSettings(nodeView, registry);    
         case NodeType.Animation:
             return new AnimationNodeSettings(nodeView, registry);
         case NodeType.Turn:
@@ -59,5 +64,10 @@ export function createNodeSettingsComponent(actionNodeConcept: NodeView, registr
             return <TurnNodeSettingsComponent settings={settings}/>
         case NodeType.Split:
             return <SplitNodeSettingsComponent settings={settings}/>
+        case NodeType.Route:
+            return <RouteNodeSettingsComponent settings={settings}/>
+        case NodeType.Path:
+            return <PathNodeSettingsComponent settings={settings}/>    
+    
     }
 }

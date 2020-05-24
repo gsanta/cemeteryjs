@@ -30,7 +30,25 @@ export abstract class AbstractNodeHandler<T extends NodeModel> {
 
     searchFromRight<T extends NodeModel>(nodeType: NodeType): T {
         return undefined;
-    } 
+    }
+
+    protected findNodeAtInputSlot<T extends NodeModel>(slotName: SlotName, nodeType: NodeType): T {
+        const joinedView = this.instance.nodeView.findJoinPointView(slotName).getOtherNode();
+        
+        if (!joinedView) { return undefined; } 
+
+        let node: T = undefined;
+
+        if (joinedView.model.type === nodeType) {
+            node = <T> joinedView.model;
+        } else {
+            const handler = this.registry.services.node.getHandler(joinedView.model);
+            handler.instance = joinedView.model;
+            node = handler.searchFromRight<T>(nodeType);
+        }
+
+        return node;
+    }
 
     protected rightToLeft() {
         

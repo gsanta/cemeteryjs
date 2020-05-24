@@ -14,23 +14,23 @@ export enum MoveNodeProps {
 export class MoveNodeSettings extends ViewSettings<MoveNodeProps, NodeView> {
     static settingsName = 'move-node-settings';
     getName() { return MoveNodeSettings.settingsName; }
-    view: NodeView<MoveNode>;
+    nodeView: NodeView<MoveNode>;
     private registry: Registry;
 
     constructor(actionNodeConcept: NodeView<MoveNode>, registry: Registry) {
         super();
-        this.view = actionNodeConcept;
+        this.nodeView = actionNodeConcept;
         this.registry = registry;
     }
 
     protected getProp(prop: MoveNodeProps) {
         switch (prop) {
             case MoveNodeProps.AllMoves:
-                return this.view.model.allMoves;
+                return this.nodeView.model.allMoves;
             case MoveNodeProps.Move:
-                return this.view.model.move;
+                return this.nodeView.model.move;
             case MoveNodeProps.Speed:
-                return this.view.model.speed * 100;
+                return this.nodeView.model.speed * 100;
             case MoveNodeProps.SpeedMin:
                 return 0;
             case MoveNodeProps.SpeedMax:
@@ -41,10 +41,10 @@ export class MoveNodeSettings extends ViewSettings<MoveNodeProps, NodeView> {
     protected setProp(val: any, prop: MoveNodeProps) {
         switch (prop) {
             case MoveNodeProps.Move:
-                this.view.model.move = val;
+                this.nodeView.model.move = val;
                 break;
             case MoveNodeProps.Speed:
-                this.view.model.speed = val / 100;
+                this.nodeView.model.speed = val / 100;
                 break;
             default:
                 throw new Error(`${prop} is not a writeable property.`)

@@ -8,6 +8,8 @@ export enum NodeType {
     Turn = 'Turn',
     And = 'And',
     Mesh = 'Mesh',
+    Route = 'Route',
+    Path = 'Path',
     Animation = 'Animation',
     Split = 'Split'
 }
@@ -30,10 +32,10 @@ export enum NodeCategory {
     Default = 'Default'
 }
 
-export type SlotName = 'input' | 'output' | 'mesh' | 'animation' | 'action' | 'input1' | 'input2' | 'output1' | 'output2' | 'output3' | 'output4'
+export type SlotName = 'input' | 'output' | 'mesh' | 'animation' | 'action' | 'input1' | 'input2' | 'output1' | 'output2' | 'output3' | 'output4' | 'path'
 
 export interface JoinPointSlot {
-    name: SlotName;
+    name: string;
 }
 
 export abstract class NodeModel {
