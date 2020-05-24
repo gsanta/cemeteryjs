@@ -70,11 +70,11 @@ const recipes: NodePresetRecipe[] = [
                 relativeCoordInUnit: new Point(1.5, -1)
             },
             {
-                type: NodeType.Move,
+                type: NodeType.Turn,
                 relativeCoordInUnit: new Point(1.5, 0)
             },
             {
-                type: NodeType.Move,
+                type: NodeType.Turn,
                 relativeCoordInUnit: new Point(1.5, 1)
             },
             {

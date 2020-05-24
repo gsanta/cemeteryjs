@@ -17,7 +17,7 @@ export class MoveNodeHandler extends AbstractNodeHandler<MoveNode> {
         if (this.instance.move === 'forward') {
             meshNode.meshModel.meshView.moveForward(moveDelta);
         } else {
-            meshNode.meshModel.meshView.moveBackward(moveDelta);
+            meshNode.meshModel.meshView.moveForward(-moveDelta);
         }
     }
 
