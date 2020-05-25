@@ -11,6 +11,7 @@ export class RouteWalker {
     private prevTime: number;
     private bezierRotator = new BezierRotator();
     private isFinished = false;
+    isStarted = false;
 
     walk(route: RouteObject) {
         // if (route.currentGoal === undefined) {
@@ -41,7 +42,7 @@ export class RouteWalker {
         const meshObj = route.meshModel.meshView;
         const meshPos = meshObj.getPosition();
 
-        console.log(meshPos.distanceTo(route.currentGoal.point1))
+        console.log(meshPos + '  ' + route.currentGoal.point1)
 
         if (route.currentGoal.point1 && meshPos.distanceTo(route.currentGoal.point1) < 1) {
             return route.currentGoal.point1;
@@ -118,9 +119,9 @@ export class RouteWalker {
         route.currentGoal = route.path[1];
         const rotation =  route.path[1].point1.subtract(route.path[0].point2).normalize().vectorAngle();
 
-        meshObj.setPosition(pathObj.editPoints[0].point);
-        // meshObj.setRotation(rotation);
+        meshObj.setPosition(route.path[0].point2);
         meshObj.setRotation(-rotation);
+        this.isStarted = true;
     }
 
     private createPathCorners(pathObject: PathView): PathCorner[] {

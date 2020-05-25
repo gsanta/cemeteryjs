@@ -48,7 +48,7 @@ export class RouteObject implements IGameObject {
     reset() {
         this.currentGoal = undefined;
         this.isFinished = false;
-        this.meshModel.meshView.setPosition(this.pathModel.pathView.editPoints[0].point);
+        // this.meshModel.meshView.setPosition(this.pathModel.pathView.editPoints[0].point);
     }
 
     on(event: RouteEvent, handler: () => void) {

@@ -15,8 +15,6 @@ import { DroppableItem } from '../../plugins/common/tools/DragAndDropTool';
 export class NodeStore extends AbstractStore {
     templates: NodeModel[] = [];
     presets: NodePreset[] = [];
-
-    settings: Map<string, ViewSettings<any, any>> = new Map();
     actionTypes: string[] = [];
     graph: NodeGraph;
     nodesByType: Map<string, NodeModel[]> = new Map();
@@ -35,10 +33,11 @@ export class NodeStore extends AbstractStore {
         }
     }
 
-    addNode(nodeView: NodeView, settings: ViewSettings<any, any>) {
+    addNode(nodeView: NodeView) {
         this.graph.addNode(nodeView.model);
         this.views.push(nodeView);
-        this.settings.set(nodeView.id, settings);
+        nodeView.settings = createNodeSettings(nodeView, this.registry);
+
         if (!this.nodesByType.has(nodeView.model.type)) {
             this.nodesByType.set(nodeView.model.type, []);
         }
@@ -54,8 +53,8 @@ export class NodeStore extends AbstractStore {
         switch(droppable.itemType) {
             case 'Node':
                 const nodeType = (<DroppableNode> droppable).nodeTemplate.type;
-                const action = new NodeView(id, nodeType , new Rectangle(topLeft, bottomRight), this.graph);
-                this.registry.stores.nodeStore.addNode(action, createNodeSettings(action, this.registry));
+                const node = new NodeView(id, nodeType , new Rectangle(topLeft, bottomRight), this.graph);
+                this.registry.stores.nodeStore.addNode(node);
             break;        
             case 'Preset':
                 (<DroppablePreset> droppable).preset.createPreset(dropPosition);
@@ -87,9 +86,6 @@ export class NodeStore extends AbstractStore {
 
         deleteViews.forEach(view => {
             this.views = this.views.filter(v => v !== view);
-            if (this.settings.has(view.id)) {
-                this.settings.delete(view.id);
-            }
         })
 
     }
@@ -100,10 +96,6 @@ export class NodeStore extends AbstractStore {
 
     getConnections(): NodeConnectionView[] {
         return <NodeConnectionView[]> this.views.filter(v => v.type === ConceptType.ActionNodeConnectionConcept);
-    }
-
-    getSettings(action: NodeView): ViewSettings<any, any> {
-        return this.settings.get(action.id);
     }
 
     protected getItemsByType() {

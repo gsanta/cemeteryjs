@@ -15,9 +15,9 @@ export class NodeSettings extends ViewSettings<ActionNodeSettingsProps, any> {
     getName() { return NodeSettings.settingsName; }
     nodeView: NodeView;
 
-    constructor(actionNodeConcept: NodeView) {
+    constructor(nodeView: NodeView) {
         super();
-        this.nodeView = actionNodeConcept;
+        this.nodeView = nodeView;
     }
 
     protected getProp(prop: ActionNodeSettingsProps) {

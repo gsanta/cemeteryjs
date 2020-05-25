@@ -42,7 +42,6 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
                 </GroupedRowsStyled>
                 {this.renderMaterialSection()}
                 {this.renderTransformSection()}
-                {this.renderAnimationSection()}
             </div>
         );
     }
@@ -244,38 +243,6 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
                 ]}
             />
         );
-    }
-
-    private renderAnimationSection() {
-        const meshSettings = this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
-
-        const body = (
-            <React.Fragment>
-                <GroupedRowsStyled>
-                    {this.renderManualMovement()}
-                    {this.renderPath()}
-
-                </GroupedRowsStyled>
-                {this.renderAnimationTypes()}
-                {this.renderOpenCustomAnimationButton()}
-                {this.renderPlayAnimation()}
-            </React.Fragment>
-        );
-
-        return (
-            <AccordionComponent
-                key="animation"
-                level="secondary"
-                onClick={() => meshSettings.isAnimationSectionOpen = !meshSettings.isAnimationSectionOpen}
-                expanded={meshSettings.isAnimationSectionOpen}
-                elements={[
-                    {
-                        title: 'Movements',
-                        body
-                    }
-                ]}
-            />
-        )
     }
 
     private renderPath(): JSX.Element {

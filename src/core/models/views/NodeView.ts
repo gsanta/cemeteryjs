@@ -6,6 +6,8 @@ import { NodeModel, SlotName } from './nodes/NodeModel';
 import { createNode } from "./nodes/nodeFactory";
 import { ConceptType, View } from "./View";
 import { NodeGraph } from '../../services/node/NodeGraph';
+import { NodeSettings } from "../../../plugins/action_editor/settings/NodeSettings";
+import { ViewSettings } from "../../../plugins/scene_editor/settings/AbstractSettings";
 
 export const defaultNodeViewConfig = {
     width: 200,
@@ -18,6 +20,7 @@ export class NodeView<T extends NodeModel = NodeModel> extends VisualConcept {
     model: T;
     dimensions: Rectangle;
     nodeGraph: NodeGraph;
+    settings: ViewSettings<any, NodeView>;
 
     joinPointViews: JoinPointView[] = [];
 

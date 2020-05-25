@@ -25,7 +25,7 @@ export interface NodeProps {
     settings: ViewSettings<any, NodeView>;
 }
 
-export function createNodeSettings(nodeView: NodeView<any>, registry: Registry): ViewSettings<any, any> {
+export function createNodeSettings(nodeView: NodeView<any>, registry: Registry): ViewSettings<any, NodeView> {
     switch(nodeView.model.type) {
         case NodeType.Keyboard:
             return new KeyboardNodeSettings(nodeView, registry);
@@ -46,10 +46,10 @@ export function createNodeSettings(nodeView: NodeView<any>, registry: Registry):
     }
 }
 
-export function createNodeSettingsComponent(actionNodeConcept: NodeView, registry: Registry) {
-    const settings = registry.stores.nodeStore.getSettings(actionNodeConcept);
+export function createNodeSettingsComponent(nodeView: NodeView, registry: Registry) {
+    const settings = nodeView.settings;
 
-    switch(actionNodeConcept.model.type) {
+    switch(nodeView.model.type) {
         case NodeType.Keyboard:
             return <KeyboardNodeSettingsComponent settings={settings}/>;
         case NodeType.Move:

@@ -48,7 +48,7 @@ export class NodePreset {
             const topLeft = centerPoint.clone().add(delta);
             const bottomRight = topLeft.clone().add(new Point(defaultNodeViewConfig.width, defaultNodeViewConfig.height));
             const nodeView = new NodeView(id, node.type, new Rectangle(topLeft, bottomRight), this.registry.stores.nodeStore.graph);
-            this.registry.stores.nodeStore.addNode(nodeView, createNodeSettings(nodeView, this.registry));
+            this.registry.stores.nodeStore.addNode(nodeView);
             return nodeView;
         });
     }

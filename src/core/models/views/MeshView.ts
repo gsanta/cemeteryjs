@@ -110,7 +110,7 @@ export class MeshView extends VisualConcept implements IGameObject {
     }
 
     setPosition(point: Point) {
-        this.mesh && this.mesh.setAbsolutePosition(toVector3(point.negateY().div(10), this.yPos));
+        this.mesh && this.mesh.setAbsolutePosition(toVector3(point, this.yPos));
     }
 
     moveForward(amount: number): void {

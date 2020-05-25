@@ -46,9 +46,6 @@ export class GameService {
 
         const playerListener = new PlayerListener(this.registry);
         this.gameEventManager.listeners.registerGamepadListener((gamepadEvent: GamepadEvent) => playerListener.gamepadEvent(gamepadEvent));
-        this.registry.services.node.getNodesByType(NodeType.Route).forEach(routeNode => {
-            this.registry.services.node.getHandler(routeNode).execute(routeNode);
-        }); 
         const animationPlayer = new AnimationPlayer(this.registry);
         this.gameEventManager.listeners.registerAfterRenderListener(() => animationPlayer.updateAnimations());
         this.keyboardTrigger = new KeyboardTrigger(this.registry);
@@ -58,7 +55,7 @@ export class GameService {
             this.afterRenders.forEach(callback => callback());
         });
 
-        this.walkers = new Walkers(this.registry);    
+        // this.walkers = new Walkers(this.registry);    
     }
 
     resetPath(meshObjectName: string) {
