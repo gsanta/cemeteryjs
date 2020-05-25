@@ -20,7 +20,13 @@ export class NodeService {
         this.handlersByType.set(NodeType.Route, new RouteNodeHandler(registry));
 
         this.registry.services.game.registerAfterRender(() => {
-            this.handlersByType.get(NodeType.Keyboard).update();
+            this.registry.services.node.getNodesByType(NodeType.Route).forEach(node => {
+                this.registry.services.node.getHandler(node).update(node);
+            });
+
+            this.registry.services.node.getNodesByType(NodeType.Keyboard).forEach(node => {
+                this.registry.services.node.getHandler(node).update(node);
+            });
         });
     }
 

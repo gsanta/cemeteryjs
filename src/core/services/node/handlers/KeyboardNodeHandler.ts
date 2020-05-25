@@ -26,13 +26,10 @@ export class KeyboardNodeHandler extends AbstractNodeHandler<KeyboardNode> {
         //     .forEach(node => this.handle(node));
     }
 
-    update() {
-        this.registry.services.node.getNodesByType<KeyboardNode>(NodeType.Keyboard)
-            .forEach((node) => {
-                this.instance = node;
-                if (this.registry.services.gamepad.downKeys.has(node.key)) {
-                    this.chain(KeyboardNodeSlot.Output);
-                }
-            });
+    update(node: KeyboardNode) {
+        super.update(node);
+        if (this.registry.services.gamepad.downKeys.has(node.key)) {
+            this.chain(KeyboardNodeSlot.Output);
+        }
     }
 }

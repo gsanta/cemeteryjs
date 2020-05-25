@@ -46,8 +46,8 @@ export class GameService {
 
         const playerListener = new PlayerListener(this.registry);
         this.gameEventManager.listeners.registerGamepadListener((gamepadEvent: GamepadEvent) => playerListener.gamepadEvent(gamepadEvent));
-        this.registry.services.node.getNodesByType(NodeType.Route).forEach(route => {
-            this.registry.services.node.getHandler(route).handle();
+        this.registry.services.node.getNodesByType(NodeType.Route).forEach(routeNode => {
+            this.registry.services.node.getHandler(routeNode).execute(routeNode);
         }); 
         const animationPlayer = new AnimationPlayer(this.registry);
         this.gameEventManager.listeners.registerAfterRenderListener(() => animationPlayer.updateAnimations());

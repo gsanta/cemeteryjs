@@ -5,6 +5,7 @@ import { ConceptGroupJson } from "./ImportService";
 import { ConceptType } from "../../models/views/View";
 import { EditPointView } from "../../models/views/child_views/EditPointView";
 import { FeedbackType } from '../../models/views/child_views/ChildView';
+import { RouteObject } from "../../../game/models/objects/RouteObject";
 
 export interface PathJson {
     circle: {
@@ -42,8 +43,11 @@ export class PathConceptImporter implements IConceptImporter {
             const path = new PathView();
             path.id = json.path._attributes['data-name'];
             path.parseJson(json.path._attributes['data-json'], () => this.registry.stores.canvasStore.generateUniqueName(FeedbackType.EditPointFeedback));
-
+            
             this.registry.stores.canvasStore.addConcept(path);
+            
+            const route = new RouteObject(path.model)
+            this.registry.stores.gameStore.add(route);
         });
     }
 }

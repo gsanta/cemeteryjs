@@ -20,6 +20,10 @@ export abstract class AbstractNodeHandler<T extends NodeModel> {
         handler.handle();
     }
 
+    execute(node: T) {
+        this.instance = node;
+    }
+
     // protected getLeft(node: NodeModel, slotName: SlotName): AbstractNodeHandler {
     //     const otherNode = node.nodeView.findJoinPointView(slotName, false).getOtherNode();
 
@@ -54,5 +58,7 @@ export abstract class AbstractNodeHandler<T extends NodeModel> {
         
     }
 
-    update(): void {};
+    update(node: T): void {
+        this.instance = node;
+    };
 }

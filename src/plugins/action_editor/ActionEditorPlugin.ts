@@ -144,6 +144,67 @@ const recipes: NodePresetRecipe[] = [
                 node2SlotName: 'output4'
             }
         ]
+    },
+    {
+        presetName: 'Path walking',
+        nodes: [
+            {
+                type: NodeType.Path,
+                relativeCoordInUnit: new Point(-1, 0)
+            },
+            {
+                type: NodeType.Mesh,
+                relativeCoordInUnit: new Point(-1, -1)
+            },
+            {
+                type: NodeType.Route,
+                relativeCoordInUnit: new Point(0, 0)
+            },
+            {
+                type: NodeType.Animation,
+                relativeCoordInUnit: new Point(1, -1)
+            },
+            {
+                type: NodeType.Animation,
+                relativeCoordInUnit: new Point(1, 0)
+            },
+            {
+                type: NodeType.Animation,
+                relativeCoordInUnit: new Point(1, 1)
+            },
+        ],
+        connections: [
+            {
+                node1Index: 0,
+                node1SlotName: 'action',
+                node2Index: 2,
+                node2SlotName: 'path'
+            },
+            {
+                node1Index: 1,
+                node1SlotName: 'action',
+                node2Index: 2,
+                node2SlotName: 'mesh'
+            },
+            {
+                node1Index: 2,
+                node1SlotName: 'onStart',
+                node2Index: 3,
+                node2SlotName: 'action'
+            },
+            {
+                node1Index: 2,
+                node1SlotName: 'onTurnStart',
+                node2Index: 4,
+                node2SlotName: 'action'
+            },
+            {
+                node1Index: 2,
+                node1SlotName: 'onTurnEnd',
+                node2Index: 5,
+                node2SlotName: 'action'
+            }
+        ]
     }
 ]
 
@@ -164,9 +225,6 @@ export class ActionEditorPlugin extends AbstractPlugin {
 
         this.selectedTool = this.registry.tools.pan;
         this.actionSettings = new ActionEditorSettings(registry);
-        this.presets = [
-            new NodePreset(this.registry, recipes[0])
-        ];
 
         const templates: NodeModel[] = [
             new AndNode(undefined),
@@ -183,7 +241,8 @@ export class ActionEditorPlugin extends AbstractPlugin {
         templates.forEach(template => this.registerTemplate(template));
 
         const presets: NodePreset[] = [
-            new NodePreset(this.registry, recipes[0])
+            new NodePreset(this.registry, recipes[0]),
+            new NodePreset(this.registry, recipes[1])
         ];
 
         presets.forEach(preset => this.registerPreset(preset));

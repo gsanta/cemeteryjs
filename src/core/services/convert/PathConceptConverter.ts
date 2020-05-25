@@ -14,10 +14,6 @@ export class PathConceptConverter implements IConceptConverter {
 
 
     convert(pathConcept: PathView): IGameObject {
-
-        // pathObject.points = pathView.editPoints.map(p => p.point);
-
-        // pathObject.points = pathObject.points.map(p => p)//.map(p => p.div(10));
         this.registry.stores.gameStore.add(pathConcept);
 
         return pathConcept;

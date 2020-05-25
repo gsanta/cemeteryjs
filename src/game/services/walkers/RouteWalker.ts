@@ -2,21 +2,27 @@ import { AnimationCondition } from "../../../core/models/meta/AnimationConcept";
 import { Point } from "../../../core/geometry/shapes/Point";
 import { Segment } from "../../../core/geometry/shapes/Segment";
 import { PathCorner } from "../../models/objects/PathCorner";
-import { RouteObject } from "../../models/objects/RouteObject";
+import { RouteObject, RouteEvent } from "../../models/objects/RouteObject";
 import { PathView } from "../../../core/models/views/PathView";
-import { toDegree } from "../../../core/geometry/utils/Measurements";
 
 const defaultSpeed = 1000 / 4;
 
 export class RouteWalker {
     private prevTime: number;
     private bezierRotator = new BezierRotator();
+    private isFinished = false;
 
     walk(route: RouteObject) {
         // if (route.currentGoal === undefined) {
         //     this.initRoute(route);
         // } else {
-        this.moveRoute(route);
+        // TODO: instead of this introduce 'isStarted' field
+        if (!route.meshModel) {
+            return;
+        }
+        if (!this.isFinished) {
+            this.moveRoute(route);
+        }
         // }
     }
 
@@ -32,8 +38,10 @@ export class RouteWalker {
     }
 
     private getPointWithinRange(route: RouteObject): Point {
-        const meshObj = route.getMeshObject();
+        const meshObj = route.meshModel.meshView;
         const meshPos = meshObj.getPosition();
+
+        console.log(meshPos.distanceTo(route.currentGoal.point1))
 
         if (route.currentGoal.point1 && meshPos.distanceTo(route.currentGoal.point1) < 1) {
             return route.currentGoal.point1;
@@ -48,7 +56,7 @@ export class RouteWalker {
         const delta = this.computeDelta();
         const speed = delta / defaultSpeed;
 
-        const meshObj = route.getMeshObject();
+        const meshObj = route.meshModel.meshView;
 
         this.resetIfFianlPointReached(route);
         this.turnRoute(route);
@@ -57,25 +65,26 @@ export class RouteWalker {
     }
 
     private turnRoute(route: RouteObject) {
+        const meshObj = route.meshModel.meshView;
+        const pathObj = route.pathModel.pathView;
+
         if (route.isTurning) {
-            const rotation = this.bezierRotator.getRotation(route.currentGoal, route.getMeshObject().getPosition());
+            const rotation = this.bezierRotator.getRotation(route.currentGoal, meshObj.getPosition());
             const nextGoal = route.path[route.path.indexOf(route.currentGoal) + 1];
             const finalRotation = nextGoal.point1.subtract(route.currentGoal.point2).normalize().vectorAngle();
 
             if (Math.abs(rotation - finalRotation) < 0.1) {
-                route.getMeshObject().setRotation(-finalRotation);
-                if (route.getMeshObject().animation) {
-                    route.getMeshObject().activeElementalAnimation = route.getMeshObject().animation.getAnimationByCond(AnimationCondition.Move);
-                }
+                meshObj.setRotation(-finalRotation);
+                route.trigger(RouteEvent.TurnEnd);
                 route.isTurning = false;
                 const currentGoalIndex = route.path.indexOf(route.currentGoal);
                 route.currentGoal = route.path[currentGoalIndex + 1];
             } else {
-                route.getMeshObject().setRotation(-rotation);
+                meshObj.setRotation(-rotation);
             }
         } else {
             const rotation = route.currentGoal.point1.subtract(route.currentGoal.getPrevCorner().point2).normalize().vectorAngle();
-            route.getMeshObject().setRotation(-rotation);
+            meshObj.setRotation(-rotation);
         }
     }
 
@@ -85,18 +94,19 @@ export class RouteWalker {
         if (reachedPoint === route.currentGoal.point1) {
             if (route.currentGoal.point2) {
                 route.isTurning = true;
-                if (route.getMeshObject().animation) {
-                    route.getMeshObject().activeElementalAnimation = route.getMeshObject().animation.getAnimationByCond(AnimationCondition.RotateLeft);
-                }
+                route.trigger(RouteEvent.TurnStart);
             } else {
-                this.initRoute(route);
+                this.isFinished = true;
+                route.trigger(RouteEvent.Finish);
+                // this.initRoute(route);
             }
         }
     }
 
     initRoute(route: RouteObject) {
-        const meshObj = route.getMeshObject();
-        const pathObj = route.getPathObject();
+        const meshObj = route.meshModel.meshView;
+        const pathObj = route.pathModel.pathView;
+
         if (!meshObj.mesh) { return; }
         
         if (meshObj.animation) {
@@ -110,7 +120,7 @@ export class RouteWalker {
 
         meshObj.setPosition(pathObj.editPoints[0].point);
         // meshObj.setRotation(rotation);
-        route.getMeshObject().setRotation(-rotation);
+        meshObj.setRotation(-rotation);
     }
 
     private createPathCorners(pathObject: PathView): PathCorner[] {
