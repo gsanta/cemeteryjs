@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { AllNodeConnectionsComponent } from '../../../plugins/action_editor/components/NodeConnectionComponent';
-import { NodeGroupComponent } from '../../../plugins/action_editor/components/NodeGroupComponent';
+import { AllNodeConnectionsComponent } from '../../../plugins/node_editor/components/NodeConnectionComponent';
+import { NodeGroupComponent } from '../../../plugins/node_editor/components/NodeGroupComponent';
 import { ConceptType, View } from "../../models/views/View";
 import { Registry } from "../../Registry";
 import { IConceptExporter } from "./IConceptExporter";

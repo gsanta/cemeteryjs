@@ -9,7 +9,7 @@ import { WindowToolbarStyled } from '../../core/WindowToolbar';
 import { CanvasComponent } from '../common/CanvasComponent';
 import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
 import { ToolType } from '../common/tools/Tool';
-import { ActionEditorPlugin } from './ActionEditorPlugin';
+import { NodeEditorPlugin } from './NodeEditorPlugin';
 import { View } from '../../core/models/views/View';
 
 const EditorComponentStyled = styled.div`
@@ -41,17 +41,17 @@ const DropLayerStyled = styled.div`
     left: 0;
 `;
 
-export class ActionEditorComponent extends CanvasComponent {
+export class NodeEditorComponent extends CanvasComponent {
     private wheelListener: WheelListener;
 
     componentDidMount() {
         super.componentDidMount();
         this.wheelListener = new WheelListener(this.context.registry);
         this.context.registry.services.update.setCanvasRepainter(() => this.forceUpdate());
-        this.context.registry.services.layout.getViewById(ActionEditorPlugin.id).repainter = () => {this.forceUpdate()};
+        this.context.registry.services.layout.getViewById(NodeEditorPlugin.id).repainter = () => {this.forceUpdate()};
 
         setTimeout(() => {
-            this.context.registry.services.layout.getViewById<ActionEditorPlugin>(ActionEditorPlugin.id).resize();
+            this.context.registry.services.layout.getViewById<NodeEditorPlugin>(NodeEditorPlugin.id).resize();
         }, 0);
     }
 
@@ -59,7 +59,7 @@ export class ActionEditorComponent extends CanvasComponent {
         const hover = (item: View) => this.context.registry.services.mouse.hover(item);
         const unhover = (canvasItem: View) => this.context.registry.services.mouse.unhover(canvasItem);
         
-        const view = this.context.registry.services.layout.getViewById<ActionEditorPlugin>(ActionEditorPlugin.id);
+        const view = this.context.registry.services.layout.getViewById<NodeEditorPlugin>(NodeEditorPlugin.id);
         return (
             <EditorComponentStyled ref={this.ref} id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>
                 <WindowToolbarStyled>

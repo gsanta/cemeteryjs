@@ -1,4 +1,4 @@
-import { ConceptType } from "../views/View";
+import { ConceptType } from "./views/View";
 
 
 export class ModelConcept {

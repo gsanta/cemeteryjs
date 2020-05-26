@@ -1,8 +1,7 @@
 import { Registry } from '../../../core/Registry';
 import { UpdateTask } from '../../../core/services/UpdateServices';
 import { MeshView } from '../../../core/models/views/MeshView';
-import { ModelConcept } from '../../../core/models/concepts/ModelConcept';
-import { AnimationConcept, AnimationCondition } from '../../../core/models/meta/AnimationConcept';
+import { ModelConcept } from '../../../core/models/ModelConcept';
 import { AbstractSettings, PropertyType } from "./AbstractSettings";
 import { toDegree, toRadian } from '../../../core/geometry/utils/Measurements';
 import { ConceptType } from '../../../core/models/views/View';

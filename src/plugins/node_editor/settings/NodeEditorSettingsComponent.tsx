@@ -1,19 +1,19 @@
 import * as React from 'react';
-import { AccordionComponent } from '../../../core/gui//misc/AccordionComponent';
+import { AccordionComponent } from '../../../core/gui/misc/AccordionComponent';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { DroppableListItemComponent } from '../../../core/gui/inputs/DroppableListItemComponent';
 import { DroppablePreset, NodePreset } from '../../../core/models/nodes/NodePreset';
 import { CanvasToolsProps } from '../../../core/ViewFactory';
-import { ActionEditorPlugin } from '../ActionEditorPlugin';
-import { ActionEditorSettings } from './ActionEditorSettings';
+import { NodeEditorPlugin } from '../NodeEditorPlugin';
+import { NodeEditorSettings } from './NodeEditorSettings';
 import { NodeCategory, NodeModel, DroppableNode } from '../../../core/models/nodes/NodeModel';
 
-export class ActionEditorSettingsComponent extends React.Component<{settings: ActionEditorSettings}> {
+export class NodeEditorSettingsComponent extends React.Component<{settings: NodeEditorSettings}> {
     static contextType = AppContext;
     context: AppContextType;
 
     render() {
-        const view = this.context.registry.services.layout.getViewById(ActionEditorPlugin.id);
+        const view = this.context.registry.services.layout.getViewById(NodeEditorPlugin.id);
 
         return (
             <div>

@@ -1,7 +1,6 @@
 import { Point } from "../geometry/shapes/Point";
 import { without } from "../geometry/utils/Functions";
-import { ModelConcept } from "../models/concepts/ModelConcept";
-import { AnimationConcept } from "../models/meta/AnimationConcept";
+import { ModelConcept } from "../models/ModelConcept";
 import { ChildView } from "../models/views/child_views/ChildView";
 import { MeshView } from "../models/views/MeshView";
 import { PathView } from "../models/views/PathView";

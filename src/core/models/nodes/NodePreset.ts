@@ -1,4 +1,4 @@
-import { createNodeSettings } from "../../../plugins/action_editor/settings/nodes/nodeSettingsFactory";
+import { createNodeSettings } from "../../../plugins/node_editor/settings/nodes/nodeSettingsFactory";
 import { DroppableItem } from "../../../plugins/common/tools/DragAndDropTool";
 import { Point } from "../../geometry/shapes/Point";
 import { Rectangle } from "../../geometry/shapes/Rectangle";

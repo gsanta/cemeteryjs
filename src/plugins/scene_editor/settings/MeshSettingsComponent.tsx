@@ -12,7 +12,6 @@ import { AccordionComponent } from '../../../core/gui/misc/AccordionComponent';
 import { ConnectedGridComponent } from '../../../core/gui/misc/GridComponent';
 import { FieldColumnStyled, GroupedRowsStyled, LabelColumnStyled, MultiFieldColumnStyled, SettingsRowStyled } from './SettingsComponent';
 import { MeshView, AnimationState } from '../../../core/models/views/MeshView';
-import { ElementalAnimation } from '../../../core/models/meta/AnimationConcept';
 import { SceneEditorPlugin } from '../SceneEditorPlugin';
 import { MeshSettings, MeshViewPropType } from './MeshSettings';
 import { AppContext, AppContextType } from '../../../core/gui/Context';

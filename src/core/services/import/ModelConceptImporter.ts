@@ -1,5 +1,5 @@
 import { Registry } from "../../Registry";
-import { ModelConcept } from "../../models/concepts/ModelConcept";
+import { ModelConcept } from "../../models/ModelConcept";
 import { IConceptImporter } from "./IConceptImporter";
 import { ConceptGroupJson } from "./ImportService";
 import { ConceptType } from "../../models/views/View";

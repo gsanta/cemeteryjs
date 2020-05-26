@@ -2,7 +2,7 @@ import { Rectangle } from "../../../core/geometry/shapes/Rectangle";
 import { Point } from "../../../core/geometry/shapes/Point";
 import { MousePointer } from "../../../core/services/input/MouseService";
 import { SceneEditorPlugin } from "../../scene_editor/SceneEditorPlugin";
-import { RectSelectFeedback } from "../../../core/models/feedbacks/RectSelectFeedback";
+import { RectSelectFeedback } from "../../../core/models/RectSelectFeedback";
 import { Stores } from "../../../core/stores/Stores";
 import { Registry } from "../../../core/Registry";
 

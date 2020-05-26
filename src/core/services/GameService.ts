@@ -2,7 +2,6 @@ import { Engine } from "babylonjs";
 import { Scene } from "babylonjs/scene";
 import { CharacterMovement } from "../../game/services/behaviour/CharacterMovement";
 import { GameEventManager, GamepadEvent } from "../../game/services/GameEventManager";
-import { AnimationPlayer } from "../../game/services/listeners/AnimationPlayer";
 import { PlayerListener } from "../../game/services/listeners/PlayerListener";
 import { AfterRenderTrigger } from "../../game/services/triggers/AfterRenderTrigger";
 import { KeyboardTrigger } from "../../game/services/triggers/KeyboardTrigger";
@@ -25,7 +24,6 @@ export class GameService {
     private afterRenders: (() => void)[] = [];
     gameEventManager: GameEventManager;
     characterMovement: CharacterMovement;
-    animationPlayer: AnimationPlayer;
 
     importers: IConceptImporter[];
     viewImporter: ImportService;
@@ -46,8 +44,6 @@ export class GameService {
 
         const playerListener = new PlayerListener(this.registry);
         this.gameEventManager.listeners.registerGamepadListener((gamepadEvent: GamepadEvent) => playerListener.gamepadEvent(gamepadEvent));
-        const animationPlayer = new AnimationPlayer(this.registry);
-        this.gameEventManager.listeners.registerAfterRenderListener(() => animationPlayer.updateAnimations());
         this.keyboardTrigger = new KeyboardTrigger(this.registry);
         this.afterRenderTrigger = new AfterRenderTrigger(this.registry)
 

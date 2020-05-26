@@ -1,16 +1,15 @@
 import { NodeView } from '../../../core/models/views/NodeView';
 import { Registry } from '../../../core/Registry';
 import { AbstractSettings } from '../../scene_editor/settings/AbstractSettings';
-import { NodeType } from '../../../core/models/nodes/NodeModel';
 
-export enum ActionEditorSettingsProps {
+export enum NodeEditorSettingsProps {
     ActionTypes = 'ActionTypes',
     Presets = 'Presets'
 }
 
-export class ActionEditorSettings extends AbstractSettings<ActionEditorSettingsProps> {
+export class NodeEditorSettings extends AbstractSettings<NodeEditorSettingsProps> {
     static settingsName = 'action-settings';
-    getName() { return ActionEditorSettings.settingsName; }
+    getName() { return NodeEditorSettings.settingsName; }
     actionConcept: NodeView;
 
     triggerDoc: string = 'The type of Action to add';
@@ -24,16 +23,16 @@ export class ActionEditorSettings extends AbstractSettings<ActionEditorSettingsP
         this.registry = registry;
     }
 
-    protected getProp(prop: ActionEditorSettingsProps) {
+    protected getProp(prop: NodeEditorSettingsProps) {
         switch (prop) {
-            case ActionEditorSettingsProps.ActionTypes:
+            case NodeEditorSettingsProps.ActionTypes:
                 return this.registry.stores.nodeStore.actionTypes;
-            case ActionEditorSettingsProps.Presets:
-                return this.registry.views.actionEditorView.presets;
+            case NodeEditorSettingsProps.Presets:
+                return this.registry.views.nodeEditor.presets;
         }
     }
 
-    protected setProp(val: any, prop: ActionEditorSettingsProps) {
+    protected setProp(val: any, prop: NodeEditorSettingsProps) {
         switch (prop) {
             default:
                 throw new Error(`${prop} is not a writeable property.`)

@@ -19,7 +19,7 @@
     },
     "include": [
       "src/**/*.ts",
-      "test/**/*.ts", "src/plugins/action_editor/ActionEditorComponent.tsx", "src/plugins/action_editor/settings/nodes/nodeSettingsFactory.tsx", "src/plugins/action_editor/settings/PathNodeSettingsComponent.tsx",
+      "test/**/*.ts", "src/plugins/node_editor/NodeEditorComponent.tsx", "src/plugins/node_editor/settings/nodes/nodeSettingsFactory.tsx", "src/plugins/node_editor/settings/PathNodeSettingsComponent.tsx",
     ],
     "exclude": [
       "node_modules"

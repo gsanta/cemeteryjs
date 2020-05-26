@@ -9,7 +9,7 @@ import { GlobalSettingsComponent } from '../../plugins/scene_editor/settings/Glo
 import { LayoutSettingsComponent } from '../../plugins/scene_editor/settings/LayoutSettingsComponent';
 import { settingsFactory } from '../../plugins/scene_editor/settings/settingsFactory';
 import { FileSettingsComponent } from '../../plugins/scene_editor/settings/FileSettingsComponent';
-import { ActionEditorSettingsComponent } from '../../plugins/action_editor/settings/ActionEditorSettingsComponent';
+import { NodeEditorSettingsComponent } from '../../plugins/node_editor/settings/NodeEditorSettingsComponent';
 
 export interface SidebarComponentProps {
     isEditorOpen: boolean;
@@ -57,7 +57,7 @@ export class SidebarComponent extends React.Component<SidebarComponentProps> {
                 layoutSettings = [
                     {
                         title: 'Node types',
-                        body: <ActionEditorSettingsComponent settings={this.context.registry.views.actionEditorView.actionSettings}/>
+                        body: <NodeEditorSettingsComponent settings={this.context.registry.views.nodeEditor.actionSettings}/>
                     },
                 ]
                 break;

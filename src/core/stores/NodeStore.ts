@@ -9,7 +9,7 @@ import { NodeGraph } from '../services/node/NodeGraph';
 import { NodePreset, DroppablePreset } from '../models/nodes/NodePreset';
 import { Point } from '../geometry/shapes/Point';
 import { Rectangle } from '../geometry/shapes/Rectangle';
-import { createNodeSettings } from '../../plugins/action_editor/settings/nodes/nodeSettingsFactory';
+import { createNodeSettings } from '../../plugins/node_editor/settings/nodes/nodeSettingsFactory';
 import { DroppableItem } from '../../plugins/common/tools/DragAndDropTool';
 
 export class NodeStore extends AbstractStore {

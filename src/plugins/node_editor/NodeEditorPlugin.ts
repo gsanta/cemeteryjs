@@ -3,7 +3,6 @@ import { Registry } from '../../core/Registry';
 import { UpdateTask } from '../../core/services/UpdateServices';
 import { calcOffsetFromDom, AbstractPlugin } from '../../core/AbstractPlugin';
 import { Camera2D } from '../common/camera/Camera2D';
-import { ActionEditorSettings } from './settings/ActionEditorSettings';
 import { NodeStore } from '../../core/stores/NodeStore';
 import { NodePreset, NodePresetRecipe } from '../../core/models/nodes/NodePreset';
 import { NodeType, NodeModel } from '../../core/models/nodes/NodeModel';
@@ -16,6 +15,7 @@ import { TurnNode } from '../../core/models/nodes/TurnNode';
 import { SplitNode } from '../../core/models/nodes/SplitNode';
 import { RouteNode } from '../../core/models/nodes/RouteNode';
 import { PathNode } from '../../core/models/nodes/PathNode';
+import { NodeEditorSettings } from './settings/NodeEditorSettings';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -208,23 +208,23 @@ const recipes: NodePresetRecipe[] = [
     }
 ]
 
-export class ActionEditorPlugin extends AbstractPlugin {
+export class NodeEditorPlugin extends AbstractPlugin {
     static id = 'action-editor-plugin';
     
     visible = true;
     
     private camera: Camera2D;
 
-    actionSettings: ActionEditorSettings;
+    actionSettings: NodeEditorSettings;
     presets: NodePreset[];
 
     constructor(registry: Registry) {
         super(registry);
 
-        this.camera = cameraInitializer(ActionEditorPlugin.id, registry);
+        this.camera = cameraInitializer(NodeEditorPlugin.id, registry);
 
         this.selectedTool = this.registry.tools.pan;
-        this.actionSettings = new ActionEditorSettings(registry);
+        this.actionSettings = new NodeEditorSettings(registry);
 
         const templates: NodeModel[] = [
             new AndNode(undefined),
@@ -255,11 +255,11 @@ export class ActionEditorPlugin extends AbstractPlugin {
     }
 
     getId() {
-        return ActionEditorPlugin.id;
+        return NodeEditorPlugin.id;
     }
 
     resize(): void {
-        this.camera.resize(getScreenSize(ActionEditorPlugin.id));
+        this.camera.resize(getScreenSize(NodeEditorPlugin.id));
         this.registry.tools.zoom.resize();
         this.registry.services.update.runImmediately(UpdateTask.RepaintCanvas);
     };
@@ -295,7 +295,7 @@ export class ActionEditorPlugin extends AbstractPlugin {
     }
 
     updateCamera() {
-        this.camera = cameraInitializer(ActionEditorPlugin.id, this.registry);
+        this.camera = cameraInitializer(NodeEditorPlugin.id, this.registry);
         this.registry.services.update.runImmediately(UpdateTask.RepaintCanvas);
     }
 }

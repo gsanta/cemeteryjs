@@ -6,7 +6,6 @@ import { Point } from '../../geometry/shapes/Point';
 import { Rectangle } from '../../geometry/shapes/Rectangle';
 import { toVector3 } from '../../geometry/utils/GeomUtils';
 import { toDegree } from '../../geometry/utils/Measurements';
-import { AnimationConcept, ElementalAnimation } from '../meta/AnimationConcept';
 import { ConceptType, View } from './View';
 import { MeshModel } from '../game_objects/MeshModel';
 
@@ -58,14 +57,12 @@ export class MeshView extends View implements IGameObject {
     speed = 0.5;
 
     activeBehaviour: BehaviourType;
-    activeElementalAnimation: ElementalAnimation;
     actions: string[] = [
         GamepadEvent.Forward,
         GamepadEvent.Backward,
         GamepadEvent.TurnLeft,
         GamepadEvent.TurnRight
     ];
-    animation: AnimationConcept;
     animations: string[] = ['animation1'];
     animationState = AnimationState.Playing;
     layer: number = 10;

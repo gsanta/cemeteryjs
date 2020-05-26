@@ -1,4 +1,3 @@
-import { AnimationCondition } from "../../../core/models/meta/AnimationConcept";
 import { Point } from "../../../core/geometry/shapes/Point";
 import { Segment } from "../../../core/geometry/shapes/Segment";
 import { PathCorner } from "../../models/objects/PathCorner";
@@ -109,10 +108,6 @@ export class RouteWalker {
         const pathObj = route.pathModel.pathView;
 
         if (!meshObj.mesh) { return; }
-        
-        if (meshObj.animation) {
-            meshObj.activeElementalAnimation = meshObj.animation.getAnimationByCond(AnimationCondition.Move);
-        }
 
         route.path = this.createPathCorners(pathObj);
 

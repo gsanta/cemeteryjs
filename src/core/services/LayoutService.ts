@@ -2,7 +2,7 @@ import { AbstractPlugin } from '../AbstractPlugin';
 import { Registry } from '../Registry';
 import { SceneEditorPlugin } from '../../plugins/scene_editor/SceneEditorPlugin';
 import { GameViewerPlugin } from '../../plugins/game_viewer/GameViewerPlugin';
-import { ActionEditorPlugin } from '../../plugins/action_editor/ActionEditorPlugin';
+import { NodeEditorPlugin } from '../../plugins/node_editor/NodeEditorPlugin';
 
 export interface LayoutConfig {
     sizes: number[];
@@ -41,7 +41,7 @@ export class LayoutService {
             {
                 sizes: [12, 88],
                 minSize: [230, 500],
-                ids: ['toolbar', ActionEditorPlugin.id],
+                ids: ['toolbar', NodeEditorPlugin.id],
                 name: Layout.ActionEditor
             }
         ];

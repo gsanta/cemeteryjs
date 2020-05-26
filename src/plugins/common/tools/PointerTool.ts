@@ -3,7 +3,7 @@ import { View } from '../../../core/models/views/View';
 import { Registry } from '../../../core/Registry';
 import { UpdateTask } from "../../../core/services/UpdateServices";
 import { isConcept, isControl } from '../../../core/stores/SceneStore';
-import { ActionEditorPlugin } from '../../action_editor/ActionEditorPlugin';
+import { NodeEditorPlugin } from '../../node_editor/NodeEditorPlugin';
 import { SceneEditorPlugin } from '../../scene_editor/SceneEditorPlugin';
 import { AbstractTool } from "./AbstractTool";
 import { ToolType } from "./Tool";
@@ -104,7 +104,7 @@ export class PointerTool extends AbstractTool {
             case SceneEditorPlugin.id:
                 this.updateSceneConcepts();
                 break;
-            case ActionEditorPlugin.id:
+            case NodeEditorPlugin.id:
                 this.updateActionEditorConcepts();
                 break;
         }
