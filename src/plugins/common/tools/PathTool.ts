@@ -1,5 +1,5 @@
 import { Point } from "../../../core/geometry/shapes/Point";
-import { ConceptType } from "../../../core/models/views/View";
+import { ConceptType, View } from "../../../core/models/views/View";
 import { PathView } from "../../../core/models/views/PathView";
 import { FeedbackType } from "../../../core/models/views/child_views/ChildView";
 import { EditPointView } from "../../../core/models/views/child_views/EditPointView";
@@ -9,7 +9,6 @@ import { IKeyboardEvent, Keyboard } from "../../../core/services/input/KeyboardS
 import { UpdateTask } from "../../../core/services/UpdateServices";
 import { PointerTool } from "./PointerTool";
 import { ToolType } from "./Tool";
-import { VisualConcept } from "../../../core/models/concepts/VisualConcept";
 
 export class PathTool extends PointerTool {
     private hotkeyTrigger: Partial<HotkeyTrigger> = {keyCodes: [Keyboard.p]}
@@ -34,7 +33,7 @@ export class PathTool extends PointerTool {
         }
     }
 
-    over(item: VisualConcept) {
+    over(item: View) {
         let hover = false;
         if (item.type === ConceptType.PathConcept) {
             hover = true;
@@ -52,7 +51,7 @@ export class PathTool extends PointerTool {
         }
     }
 
-    out(item: VisualConcept) {
+    out(item: View) {
         super.out(item);
         this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
     }

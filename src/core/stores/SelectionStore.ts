@@ -2,21 +2,20 @@ import { without } from "../geometry/utils/Functions";
 import { PathView } from "../models/views/PathView";
 import { ChildView, FeedbackType } from "../models/views/child_views/ChildView";
 import { EditPointView } from "../models/views/child_views/EditPointView";
-import { VisualConcept } from "../models/concepts/VisualConcept";
 import { View, ConceptType } from "../models/views/View";
 
 export class SelectionStore {
     items: View[] = [];
 
-    addItem(...item: VisualConcept[]) {
+    addItem(...item: View[]) {
         this.items.push(...item);
     }
 
-    removeItem(item: VisualConcept) {
+    removeItem(item: View) {
         this.items = without(this.items, item);
     }
 
-    contains(item: VisualConcept): boolean {
+    contains(item: View): boolean {
         return this.items.includes(item);
     }
 
@@ -24,8 +23,8 @@ export class SelectionStore {
         return this.items;
     }
 
-    getAllConcepts(): VisualConcept[] {
-        return <VisualConcept[]> this.items.filter(item => item.type.endsWith('Concept'));
+    getAllConcepts(): View[] {
+        return <View[]> this.items.filter(item => item.type.endsWith('Concept'));
     }
 
     getPathConcepts(): PathView[] {

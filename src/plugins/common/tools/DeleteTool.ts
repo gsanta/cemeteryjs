@@ -1,4 +1,3 @@
-import { VisualConcept } from '../../../core/models/concepts/VisualConcept';
 import { Registry } from '../../../core/Registry';
 import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, IHotkeyEvent, HotkeyTrigger } from '../../../core/services/input/HotkeyService';
 import { Keyboard } from '../../../core/services/input/KeyboardService';
@@ -7,6 +6,7 @@ import { isConcept, isControl } from '../../../core/stores/SceneStore';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './RectangleSelector';
 import { Cursor, ToolType } from './Tool';
+import { View } from '../../../core/models/views/View';
 
 export class DeleteTool extends AbstractTool {
     private hotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, ...{keyCodes: [Keyboard.e], shift: true}}
@@ -55,11 +55,11 @@ export class DeleteTool extends AbstractTool {
         this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
-    over(item: VisualConcept) {
+    over(item: View) {
         this.registry.tools.pointer.over(item);
     }
 
-    out(item: VisualConcept) {
+    out(item: View) {
         this.registry.tools.pointer.out(item);
     }
 

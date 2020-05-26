@@ -1,7 +1,7 @@
 import { Point } from "../../../geometry/shapes/Point";
 import { ChildView, FeedbackType } from "./ChildView";
 import { PathView } from "../PathView";
-import { VisualConcept } from "../../concepts/VisualConcept";
+import { View } from "../View";
 
 export class EditPointView extends ChildView<PathView> {
     id: string;
@@ -16,7 +16,7 @@ export class EditPointView extends ChildView<PathView> {
         this.parent = parent;
     }
 
-    delete(): VisualConcept[] {
+    delete(): View[] {
         this.parent.deleteEditPoint(this);
         return [this];
     }

@@ -3,7 +3,6 @@ import { useDrop } from 'react-dnd';
 import styled from 'styled-components';
 import { Point } from '../../core/geometry/shapes/Point';
 import { colors } from '../../core/gui/styles';
-import { VisualConcept } from '../../core/models/concepts/VisualConcept';
 import { Registry } from '../../core/Registry';
 import { WheelListener } from '../../core/services/WheelListener';
 import { WindowToolbarStyled } from '../../core/WindowToolbar';
@@ -11,6 +10,7 @@ import { CanvasComponent } from '../common/CanvasComponent';
 import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
 import { ToolType } from '../common/tools/Tool';
 import { ActionEditorPlugin } from './ActionEditorPlugin';
+import { View } from '../../core/models/views/View';
 
 const EditorComponentStyled = styled.div`
     width: 100%;
@@ -56,8 +56,8 @@ export class ActionEditorComponent extends CanvasComponent {
     }
 
     render(): JSX.Element {
-        const hover = (item: VisualConcept) => this.context.registry.services.mouse.hover(item);
-        const unhover = (canvasItem: VisualConcept) => this.context.registry.services.mouse.unhover(canvasItem);
+        const hover = (item: View) => this.context.registry.services.mouse.hover(item);
+        const unhover = (canvasItem: View) => this.context.registry.services.mouse.unhover(canvasItem);
         
         const view = this.context.registry.services.layout.getViewById<ActionEditorPlugin>(ActionEditorPlugin.id);
         return (

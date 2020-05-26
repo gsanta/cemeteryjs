@@ -314,26 +314,4 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
             </SettingsRowStyled>
         )
     }
-
-    private renderAnimationTypes(): JSX.Element {
-        const meshSettings = this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
-
-        const val: ElementalAnimation = meshSettings.getVal(MeshViewPropType.DefaultAnimation);
-
-        return (
-            <SettingsRowStyled>
-                <LabelColumnStyled>Animation</LabelColumnStyled>
-                <MultiFieldColumnStyled>
-                    <ConnectedDropdownComponent
-                        formController={meshSettings}
-                        propertyName={MeshViewPropType.DefaultAnimation}
-                        values={this.props.concept.animations}
-                        currentValue={val ? val.name : undefined}
-                        placeholder="Select animation"
-                    />
-                    {val ? <ClearIconComponent onClick={() => meshSettings.updateProp(undefined, MeshViewPropType.DefaultAnimation)}/> : null}
-                </MultiFieldColumnStyled>
-            </SettingsRowStyled>
-        );
-    }
 }

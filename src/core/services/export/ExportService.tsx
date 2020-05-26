@@ -1,8 +1,7 @@
 import { Registry } from '../../Registry';
-import { AnimationConceptExporter } from './AnimationConceptExporter';
+import { ActionConceptExporter } from './ActionConceptExporter';
 import { IConceptExporter } from './IConceptExporter';
 import { MeshConceptExporter } from './MeshConceptExporter';
-import { ActionConceptExporter } from './ActionConceptExporter';
 import { ModelConceptExporter } from './ModelConceptExporter';
 import { PathConceptExporter } from './PathConceptExporter';
 import ReactDOMServer = require('react-dom/server');
@@ -32,7 +31,6 @@ export class ExportService {
             new ModelConceptExporter(registry),
             this.meshConceptExporter,
             this.pathConceptExporter,
-            new AnimationConceptExporter(registry),
             this.actionConceptExporter
         ];
     }

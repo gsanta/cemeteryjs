@@ -1,5 +1,4 @@
 import { Registry } from "../Registry";
-import { AnimationSettings } from "../../plugins/scene_editor/settings/AnimationSettings";
 import { UpdateTask } from "./UpdateServices";
 import { ActionEditorSettings } from '../../plugins/action_editor/settings/ActionEditorSettings';
 import { ListActionsSettings } from '../../plugins/scene_editor/settings/ListActionsSettings';
@@ -7,7 +6,6 @@ import { ListActionsSettings } from '../../plugins/scene_editor/settings/ListAct
 export class DialogService {
     serviceName = 'dialog-service';
     dialogs: string[] = [
-        AnimationSettings.settingsName,
         ActionEditorSettings.settingsName,
         ListActionsSettings.settingsName
     ];

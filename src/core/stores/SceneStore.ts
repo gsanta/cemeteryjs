@@ -1,9 +1,7 @@
 import { Point } from "../geometry/shapes/Point";
 import { without } from "../geometry/utils/Functions";
 import { ModelConcept } from "../models/concepts/ModelConcept";
-import { VisualConcept } from "../models/concepts/VisualConcept";
 import { AnimationConcept } from "../models/meta/AnimationConcept";
-import { MetaConcept } from "../models/meta/MetaConcept";
 import { ChildView } from "../models/views/child_views/ChildView";
 import { MeshView } from "../models/views/MeshView";
 import { PathView } from "../models/views/PathView";
@@ -24,9 +22,9 @@ export function isMeta(type: string) {
 }
 
 export class SceneStore extends AbstractStore {
-    views: VisualConcept[] = [];
+    views: View[] = [];
     controls: ChildView<any>[] = [];
-    metas: MetaConcept[] = [];
+    models: ModelConcept[] = [];
 
     private registry: Registry;
 
@@ -35,7 +33,7 @@ export class SceneStore extends AbstractStore {
         this.registry = registry;
     }
 
-    addConcept(concept: VisualConcept) {
+    addConcept(concept: View) {
         this.views.push(concept);
     }
 
@@ -43,15 +41,15 @@ export class SceneStore extends AbstractStore {
         this.controls.push(control);
     }
 
-    addMeta(metaConcept: MetaConcept) {
-        this.metas.push(metaConcept);
+    addModel(model: ModelConcept) {
+        this.models.push(model);
     }
 
-    removeMeta(metaConcept: MetaConcept) {
-        this.metas = without(this.metas, metaConcept);
+    removeModel(model: ModelConcept) {
+        this.models = without(this.models, model);
     }
 
-    removeConcept(concept: VisualConcept) {
+    removeConcept(concept: View) {
         this.views = without(this.views, concept);
         this.registry.stores.selectionStore.removeItem(concept);
         this.registry.services.game.deleteConcepts([concept]);
@@ -65,11 +63,11 @@ export class SceneStore extends AbstractStore {
     clear(): void {
         this.views = [];
         this.controls = [];
-        this.metas = [];
+        this.models = [];
     }
 
-    hasMeta(concept: MetaConcept) {
-        return this.metas.indexOf(concept) !== -1;
+    hasModel(model: ModelConcept) {
+        return this.models.indexOf(model) !== -1;
     }
 
     getAllConcepts(): View[] {
@@ -77,9 +75,7 @@ export class SceneStore extends AbstractStore {
     }
 
     getItemsByType(type: string): View[] {
-        if (isMeta(type)) {
-            return this.metas.filter(v => v.type === type);
-        } else if (isControl(type)) {
+        if (isControl(type)) {
             return this.controls.filter(c => c.type === type);
         } else if (isConcept(type)) {
             return this.views.filter(v => v.type === type);
@@ -102,23 +98,15 @@ export class SceneStore extends AbstractStore {
         return <PathView> this.views.find(view => view.id === id);
     }
 
-    getAnimationConcepts(): AnimationConcept[] {
-        return <AnimationConcept[]> this.metas.filter(view => view.type === ConceptType.AnimationConcept);
-    }
-
-    getAnimationConceptById(id: string): AnimationConcept {
-        return <AnimationConcept> this.metas.find(meta => meta.id === id);
-    }
-
     getModelConcepts(): ModelConcept[] {
-        return <ModelConcept[]> this.metas.filter(view => view.type === ConceptType.ModelConcept);
+        return <ModelConcept[]> this.models.filter(view => view.type === ConceptType.ModelConcept);
     }
 
     getModelConceptById(id: string): ModelConcept {
-        return <ModelConcept> this.metas.find(meta => meta.id === id);
+        return <ModelConcept> this.models.find(meta => meta.id === id);
     }
 
-    getIntersectingItemsAtPoint(point: Point): VisualConcept[] {
+    getIntersectingItemsAtPoint(point: Point): View[] {
         const gridPoint = new Point(point.x, point.y);
 
         return this.views.filter(item => item.dimensions.containsPoint(gridPoint));

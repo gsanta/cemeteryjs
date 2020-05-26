@@ -34,7 +34,7 @@ export class ModelConceptImporter implements IConceptImporter {
             modelConcept.modelPath = json._attributes['data-model-path'];
             modelConcept.texturePath = json._attributes['data-texture-path'];
 
-            this.registry.stores.canvasStore.addMeta(modelConcept);
+            this.registry.stores.canvasStore.addModel(modelConcept);
         });
     }
 }

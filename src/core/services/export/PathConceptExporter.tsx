@@ -1,5 +1,4 @@
-import { VisualConcept } from "../../models/concepts/VisualConcept";
-import { ConceptType } from "../../models/views/View";
+import { ConceptType, View } from "../../models/views/View";
 import { Registry } from "../../Registry";
 import { IConceptExporter } from "./IConceptExporter";
 import { PathComponent } from "./PathComponent";
@@ -13,7 +12,7 @@ export class PathConceptExporter implements IConceptExporter {
         this.registry = registry;
     }
 
-    export(hover?: (item: VisualConcept) => void, unhover?: (item: VisualConcept) => void): JSX.Element {
+    export(hover?: (item: View) => void, unhover?: (item: View) => void): JSX.Element {
         const pathes = this.registry.stores.canvasStore.getPathConcepts().map(path => {
             return <PathComponent
                 key={path.id}
@@ -21,8 +20,8 @@ export class PathConceptExporter implements IConceptExporter {
                 item={path}
                 isHovered={this.registry.services.pointer.hoveredItem === path}
                 isSelected={this.registry.stores.selectionStore.contains(path)}
-                onMouseOver={(item: VisualConcept) => hover ?  hover(item) : () => undefined}
-                onMouseOut={(item: VisualConcept) => unhover ? unhover(item) : () => undefined}
+                onMouseOver={(item: View) => hover ?  hover(item) : () => undefined}
+                onMouseOut={(item: View) => unhover ? unhover(item) : () => undefined}
                 registry={this.registry}
             />
         });
@@ -34,7 +33,7 @@ export class PathConceptExporter implements IConceptExporter {
             : null;
     }
 
-    exportToFile(hover?: (item: VisualConcept) => void, unhover?: (item: VisualConcept) => void): JSX.Element {
+    exportToFile(hover?: (item: View) => void, unhover?: (item: View) => void): JSX.Element {
         return this.export(hover, unhover);
     }
 }

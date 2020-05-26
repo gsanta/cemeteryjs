@@ -4,6 +4,7 @@ import { FeedbackType, ChildView } from "./ChildView";
 import { NodeConnectionView } from "../NodeConnectionView";
 import { sizes } from "../../../gui/styles";
 import { View } from "../View";
+import { Rectangle } from "../../../geometry/shapes/Rectangle";
 
 export function isJoinPointView(view: View) {
     return view && view.type === FeedbackType.NodeConnectorFeedback;
@@ -17,6 +18,7 @@ export class JoinPointView extends ChildView<NodeView> {
     connection: NodeConnectionView;
     slotName: string;
     isInput: boolean;
+    dimensions: Rectangle;
 
     constructor(parent: NodeView, slotName: string, isInput: boolean) {
         super();

@@ -16,10 +16,6 @@ export class MeshConceptConverter implements IConceptConverter {
     convert(meshConcept: MeshView): IGameObject {
         const meshObject = meshConcept;
 
-        if (meshConcept.animationId) {
-            meshObject.animation = this.registry.stores.canvasStore.getAnimationConceptById(meshConcept.animationId);
-        }
-
         this.registry.stores.gameStore.add(meshObject);
 
         return meshObject;

@@ -59,7 +59,6 @@ export class MeshConceptImporter implements IConceptImporter {
             meshConcept.thumbnailPath = rect._attributes["data-thumbnail"];
             meshConcept.path = rect._attributes["data-path"];
             meshConcept.isManualControl = isManualControl;
-            meshConcept.animationId = rect._attributes['data-animation-id'];
 
             this.registry.stores.canvasStore.addConcept(meshConcept);
         });

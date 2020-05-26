@@ -1,4 +1,3 @@
-import { VisualConcept } from '../../../core/models/concepts/VisualConcept';
 import { ChildView } from '../../../core/models/views/child_views/ChildView';
 import { View } from '../../../core/models/views/View';
 import { Registry } from '../../../core/Registry';
@@ -10,7 +9,7 @@ import { AbstractTool } from "./AbstractTool";
 import { ToolType } from "./Tool";
 
 export class PointerTool extends AbstractTool {
-    protected movingItem: VisualConcept = undefined;
+    protected movingItem: View = undefined;
     private isDragStart = true;
 
     constructor(toolType: ToolType, registry: Registry) {
@@ -71,11 +70,11 @@ export class PointerTool extends AbstractTool {
         this.movingItem = undefined;
     }
 
-    over(item: VisualConcept) {
+    over(item: View) {
         this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 
-    out(item: VisualConcept) {
+    out(item: View) {
         this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
     }
 

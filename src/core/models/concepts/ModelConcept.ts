@@ -1,8 +1,7 @@
-import { MetaConcept } from "../meta/MetaConcept";
 import { ConceptType } from "../views/View";
 
 
-export class ModelConcept implements MetaConcept {
+export class ModelConcept {
     type = ConceptType.ModelConcept;
     id: string;
 

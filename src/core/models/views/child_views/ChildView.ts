@@ -1,4 +1,3 @@
-import { VisualConcept } from "../../concepts/VisualConcept";
 import { View } from "../View";
 
 export enum FeedbackType {
@@ -7,6 +6,6 @@ export enum FeedbackType {
     NodeConnectorFeedback = 'NodeConnectorFeedback'
 }
 
-export abstract class ChildView<T extends View> extends VisualConcept {
+export abstract class ChildView<T extends View> extends View {
     parent: T;
 }

@@ -1,12 +1,11 @@
 import { Polygon } from '../geometry/shapes/Polygon';
 import { Rectangle } from '../geometry/shapes/Rectangle';
 import { maxBy } from '../geometry/utils/Functions';
-import { VisualConcept } from '../models/concepts/VisualConcept';
 import { View } from '../models/views/View';
 
 
 export abstract class AbstractStore {
-    protected views: VisualConcept[] = [];
+    protected views: View[] = [];
     protected abstract getItemsByType(type: string): View[];
     abstract removeItemById(id: string);
 
@@ -15,7 +14,7 @@ export abstract class AbstractStore {
         return name;
     }
 
-    getIntersectingItemsInRect(rectangle: Rectangle): VisualConcept[] {
+    getIntersectingItemsInRect(rectangle: Rectangle): View[] {
         const x = rectangle.topLeft.x;
         const y = rectangle.topLeft.y;
         const width = Math.floor(rectangle.bottomRight.x - rectangle.topLeft.x);

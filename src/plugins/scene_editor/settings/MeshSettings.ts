@@ -19,7 +19,6 @@ export enum MeshViewPropType {
     Name = 'name',
     Path = 'path',
     IsManualControl = 'is-manual-control',
-    DefaultAnimation = 'default-animation',
     AnimationState = 'animation-state'
 }
 
@@ -78,11 +77,6 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                 return this.meshConcept.path;
             case MeshViewPropType.IsManualControl:
                 return this.meshConcept.isManualControl;
-            case MeshViewPropType.DefaultAnimation:
-                if (this.meshConcept.animationId) {
-                    return this.registry.stores.canvasStore.getAnimationConceptById(this.meshConcept.animationId).getAnimationByCond(AnimationCondition.Default);
-                }
-                break;
             case MeshViewPropType.AnimationState:
                 return this.meshConcept.animationState;
     
@@ -154,29 +148,6 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                 this.meshConcept.isManualControl = val;
                 this.update();
                 break;
-            case MeshViewPropType.DefaultAnimation:
-                if (val === undefined) {
-                    if (this.meshConcept.animationId) {
-                        const animationConcept = this.registry.stores.canvasStore.getAnimationConceptById(this.meshConcept.animationId);
-                        this.registry.stores.canvasStore.removeMeta(animationConcept);
-                        this.meshConcept.animationId = undefined;
-                    }
-                } else {
-                    if (!this.meshConcept.animationId) {
-                        const animationConcept = new AnimationConcept();
-                        animationConcept.id = this.registry.stores.canvasStore.generateUniqueName(ConceptType.AnimationConcept);
-                        this.registry.stores.canvasStore.addMeta(animationConcept);
-                        this.meshConcept.animationId = animationConcept.id;
-                
-                    }
-    
-                    this.registry.stores.canvasStore.getAnimationConceptById(this.meshConcept.animationId).addAnimation({
-                        name: val,
-                        condition: AnimationCondition.Default
-                    })
-                }
-                this.update();
-                break;
             case MeshViewPropType.AnimationState:
                 this.meshConcept.animationState = val;
                 this.update();
@@ -189,7 +160,7 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
         if (!modelConcept) {
             modelConcept = new ModelConcept();
             modelConcept.id = this.registry.stores.canvasStore.generateUniqueName(ConceptType.ModelConcept);
-            this.registry.stores.canvasStore.addMeta(modelConcept);
+            this.registry.stores.canvasStore.addModel(modelConcept);
         }
         modelConcept.modelPath = path;
         this.meshConcept.modelId = modelConcept.id;
@@ -202,7 +173,7 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
         } else {
             modelConcept = new ModelConcept();
             modelConcept.id = this.registry.stores.canvasStore.generateUniqueName(ConceptType.ModelConcept);
-            this.registry.stores.canvasStore.addMeta(modelConcept);
+            this.registry.stores.canvasStore.addModel(modelConcept);
         }
         modelConcept.texturePath = path;
         this.meshConcept.modelId = modelConcept.id;   

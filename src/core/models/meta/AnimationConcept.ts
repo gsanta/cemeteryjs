@@ -1,7 +1,6 @@
 import { Point } from "../../geometry/shapes/Point";
 import { EditPointView } from "../views/child_views/EditPointView";
 import { ConceptType } from "../views/View";
-import { MetaConcept } from "./MetaConcept";
 
 export enum AnimationCondition {
     Default = 'Default',
@@ -16,7 +15,7 @@ export interface ElementalAnimation {
 }
 
 
-export class AnimationConcept implements MetaConcept {
+export class AnimationConcept {
     type = ConceptType.AnimationConcept;
     id: string;
 

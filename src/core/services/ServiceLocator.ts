@@ -12,7 +12,6 @@ import { PointerService } from './input/PointerService';
 import { LevelService } from "./LevelService";
 import { LocalStoreService } from "./LocalStroreService";
 import { MeshLoaderService } from "./MeshLoaderService";
-import { SettingsService } from "./SettingsService";
 import { UpdateService } from "./UpdateServices";
 import { LayoutService } from "./LayoutService";
 import { NodeService } from './node/NodeService';
@@ -30,7 +29,6 @@ export class Services {
     mouse: MouseService;
     keyboard: KeyboardService;
     dialog: DialogService;
-    settings: SettingsService;
     meshLoader: MeshLoaderService;
     conceptConverter: ConceptConvertService;
     game: GameService;
@@ -56,7 +54,6 @@ export class Services {
         this.mouse = new MouseService(this.registry);
         this.keyboard = new KeyboardService(this.registry);
         this.dialog = new DialogService(this.registry);
-        this.settings = new SettingsService(this.registry);
         this.meshLoader = new MeshLoaderService(this.registry);
         this.conceptConverter = new ConceptConvertService(this.registry);
         this.layout = new LayoutService(this.registry);

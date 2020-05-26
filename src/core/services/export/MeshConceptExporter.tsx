@@ -6,7 +6,6 @@ import { ConceptType, View } from "../../models/views/View";
 import { Registry } from "../../Registry";
 import { IConceptExporter } from "./IConceptExporter";
 import React = require("react");
-import { VisualConcept } from "../../models/concepts/VisualConcept";
 
 export class MeshConceptExporter implements IConceptExporter {
     type = ConceptType.MeshConcept;
@@ -16,13 +15,13 @@ export class MeshConceptExporter implements IConceptExporter {
         this.registry = registry;
     }
 
-    export(hover?: (view: VisualConcept) => void, unhover?: (view: VisualConcept) => void): JSX.Element {
+    export(hover?: (view: View) => void, unhover?: (view: View) => void): JSX.Element {
         const meshGroups = this.getSortedMeshViews().map(item => this.renderGroup(item, hover, unhover));
 
         return meshGroups.length > 0 ? <g data-concept-type={ConceptType.MeshConcept} key={ConceptType.MeshConcept}>{meshGroups}</g> : null;
     }
 
-    exportToFile(hover?: (item: VisualConcept) => void, unhover?: (item: VisualConcept) => void): JSX.Element {
+    exportToFile(hover?: (item: View) => void, unhover?: (item: View) => void): JSX.Element {
         return this.export(hover, unhover);
     }
 
@@ -53,7 +52,6 @@ export class MeshConceptExporter implements IConceptExporter {
                 data-thumbnail={item.thumbnailPath}
                 data-path={item.path}
                 data-is-manual-control={item.isManualControl ? 'true' : 'false'}
-                data-animation-id={item.animationId}
             >
                 {this.renderRect(item)}
                 {this.renderThumbnail(item)}

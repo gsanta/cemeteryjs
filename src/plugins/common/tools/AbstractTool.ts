@@ -1,10 +1,10 @@
 import { AbstractPlugin } from '../../../core/AbstractPlugin';
-import { VisualConcept } from '../../../core/models/concepts/VisualConcept';
 import { Registry } from '../../../core/Registry';
 import { IHotkeyEvent } from '../../../core/services/input/HotkeyService';
 import { IKeyboardEvent } from '../../../core/services/input/KeyboardService';
 import { AbstractStore } from '../../../core/stores/AbstractStore';
 import { Cursor, Tool, ToolType } from './Tool';
+import { View } from '../../../core/models/views/View';
 
 export class AbstractTool implements Tool {
     type: ToolType;
@@ -30,8 +30,8 @@ export class AbstractTool implements Tool {
     wheelEnd() {}
     keydown(e: IKeyboardEvent) { }
     keyup(e: IKeyboardEvent){ }
-    over(item: VisualConcept) { }
-    out(item: VisualConcept) { }
+    over(item: View) { }
+    out(item: View) { }
     
     /**
      * Called when the mouse leaves the canvas.

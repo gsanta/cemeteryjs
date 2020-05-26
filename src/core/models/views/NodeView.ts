@@ -1,20 +1,18 @@
+import { ViewSettings } from "../../../plugins/scene_editor/settings/AbstractSettings";
 import { Point } from "../../geometry/shapes/Point";
 import { Rectangle } from "../../geometry/shapes/Rectangle";
-import { VisualConcept } from "../concepts/VisualConcept";
-import { JoinPointView } from "./child_views/JoinPointView";
-import { NodeModel, SlotName } from '../nodes/NodeModel';
-import { createNode } from "../nodes/nodeFactory";
-import { ConceptType, View } from "./View";
 import { NodeGraph } from '../../services/node/NodeGraph';
-import { NodeSettings } from "../../../plugins/action_editor/settings/NodeSettings";
-import { ViewSettings } from "../../../plugins/scene_editor/settings/AbstractSettings";
+import { createNode } from "../nodes/nodeFactory";
+import { NodeModel, SlotName } from '../nodes/NodeModel';
+import { JoinPointView } from "./child_views/JoinPointView";
+import { ConceptType, View } from "./View";
 
 export const defaultNodeViewConfig = {
     width: 200,
     height: 120
 }
 
-export class NodeView<T extends NodeModel = NodeModel> extends VisualConcept {
+export class NodeView<T extends NodeModel = NodeModel> extends View {
     readonly  type = ConceptType.ActionConcept;
     readonly id: string;
     model: T;

@@ -1,6 +1,6 @@
-import { VisualConcept } from "../../../core/models/concepts/VisualConcept";
 import { IHotkey, IHotkeyEvent } from "../../../core/services/input/HotkeyService";
 import { IKeyboardEvent } from "../../../core/services/input/KeyboardService";
+import { View } from "../../../core/models/views/View";
 
 export enum ToolType {
     Rectangle = 'rectangle',
@@ -56,8 +56,8 @@ export interface Tool extends IHotkey {
     leave(): void;
     keydown(e: IKeyboardEvent): void;
     keyup(e: IKeyboardEvent): void;
-    over(item: VisualConcept): void;
-    out(item: VisualConcept): void;
+    over(item: View): void;
+    out(item: View): void;
     wheel(): void;
     wheelEnd(): void;
 

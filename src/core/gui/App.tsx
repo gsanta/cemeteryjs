@@ -8,8 +8,6 @@ import { GameViewerPlugin } from '../../plugins/game_viewer/GameViewerPlugin';
 import { viewFactory } from '../ViewFactory';
 import './App.scss';
 import { AppContext, AppContextType } from './Context';
-import { AnimationDialogComponent } from './dialogs/AnimationDialogComponent';
-import { ListActionsDialogComponent } from './dialogs/ListActionsDialogComponent';
 import { HotkeyInputComponent } from './HotkeyInputComponent';
 import { SpinnerOverlayComponent } from './misc/SpinnerOverlayComponent';
 import { SidebarComponent } from './SidebarComponent';
@@ -80,8 +78,6 @@ export class App extends React.Component<{}, AppState> {
                         {fullScreen ? this.renderFullScreenCanvas() : this.renderViews()}
                     </div>
                     {this.context.controllers.isLoading ? <SpinnerOverlayComponent key="spinner"/> : null}
-                    <AnimationDialogComponent key="animation-dialog" settings={this.context.registry.services.settings.animationSettings}/>
-                    <ListActionsDialogComponent key="list-actions-dialog"/>
                     <HotkeyInputComponent key="hotkey-input" registry={this.context.registry}/>
                 </DndProvider>
             </div>

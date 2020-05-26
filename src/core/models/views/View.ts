@@ -1,3 +1,6 @@
+import { Rectangle } from "../../geometry/shapes/Rectangle";
+import { Point } from "../../geometry/shapes/Point";
+
 export enum ConceptType {
     MeshConcept = 'MeshConcept',
     ModelConcept = 'ModelConcept',
@@ -8,7 +11,12 @@ export enum ConceptType {
     ActionNodeConnectionConcept = 'ActionNodeConnectionConcept' 
 }
 
-export interface View {
+export abstract class View {
     id: string;
     type: string;
+
+    
+    dimensions: Rectangle;
+    move(delta: Point): void {}
+    delete(): View[] { return [this] }
 }

@@ -1,8 +1,8 @@
 import { Registry } from "../../Registry";
 import { Point } from "../../geometry/shapes/Point";
 import { IPointerEvent } from "./PointerService";
-import { VisualConcept } from "../../models/concepts/VisualConcept";
 import { DroppableItem } from "../../../plugins/common/tools/DragAndDropTool";
+import { View } from "../../models/views/View";
 
 export class MousePointer {
     down: Point;
@@ -67,11 +67,11 @@ export class MouseService {
         this.registry.services.pointer.pointerWheelEnd();
     }
 
-    hover(item: VisualConcept) {
+    hover(item: View) {
         this.registry.services.pointer.hover(item);
     }
 
-    unhover(item: VisualConcept) {
+    unhover(item: View) {
         this.registry.services.pointer.unhover(item);
     }
 

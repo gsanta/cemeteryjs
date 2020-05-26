@@ -1,10 +1,9 @@
 import { ConceptType, View } from "./View";
-import { VisualConcept } from "../concepts/VisualConcept";
 import { JoinPointView } from "./child_views/JoinPointView";
 import { Rectangle } from "../../geometry/shapes/Rectangle";
 
 
-export class NodeConnectionView extends VisualConcept {
+export class NodeConnectionView extends View {
     readonly  type = ConceptType.ActionNodeConnectionConcept;
     readonly id: string;
 

@@ -2,14 +2,13 @@ import * as React from 'react';
 import { colors } from '../../gui/styles';
 import { PathView } from '../../models/views/PathView';
 import { EditPointView } from '../../models/views/child_views/EditPointView';
-import { Stores } from '../../stores/Stores';
-import { VisualConcept } from '../../models/concepts/VisualConcept';
 import { Registry } from '../../Registry';
+import { View } from '../../models/views/View';
 
 export interface PathComponentProps {
     item: PathView;
-    onMouseOver(item: VisualConcept): void;
-    onMouseOut(item: VisualConcept): void;
+    onMouseOver(item: View): void;
+    onMouseOut(item: View): void;
     onlyData: boolean;
     isHovered: boolean;
     isSelected: boolean;

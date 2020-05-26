@@ -1,5 +1,4 @@
 import * as convert from 'xml-js';
-import { AnimationConceptImporter } from '../../../core/services/import/AnimationConceptImporter';
 import { IConceptImporter } from '../../../core/services/import/IConceptImporter';
 import { MeshConceptImporter } from './MeshConceptImporter';
 import { ModelConceptImporter } from './ModelConceptImporter';
@@ -73,7 +72,6 @@ export class ImportService {
             new ModelConceptImporter(registry),
             new MeshConceptImporter(registry),
             new PathConceptImporter(registry),
-            new AnimationConceptImporter(registry)
         ];
     }
 

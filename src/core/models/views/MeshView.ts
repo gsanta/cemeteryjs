@@ -6,9 +6,8 @@ import { Point } from '../../geometry/shapes/Point';
 import { Rectangle } from '../../geometry/shapes/Rectangle';
 import { toVector3 } from '../../geometry/utils/GeomUtils';
 import { toDegree } from '../../geometry/utils/Measurements';
-import { VisualConcept } from '../concepts/VisualConcept';
 import { AnimationConcept, ElementalAnimation } from '../meta/AnimationConcept';
-import { ConceptType } from './View';
+import { ConceptType, View } from './View';
 import { MeshModel } from '../game_objects/MeshModel';
 
 export enum WorldItemShape {
@@ -34,7 +33,7 @@ export enum AnimationState {
 }
 
 
-export class MeshView extends VisualConcept implements IGameObject {
+export class MeshView extends View implements IGameObject {
     type = ConceptType.MeshConcept;
     mesh: Mesh;
 
@@ -69,7 +68,6 @@ export class MeshView extends VisualConcept implements IGameObject {
     animation: AnimationConcept;
     animations: string[] = ['animation1'];
     animationState = AnimationState.Playing;
-    animationId: string;
     layer: number = 10;
 
     constructor(dimensions: Rectangle, name: string, rotation = 0) {
