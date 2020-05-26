@@ -5,15 +5,13 @@ import { GameEventManager, GamepadEvent } from "../../game/services/GameEventMan
 import { PlayerListener } from "../../game/services/listeners/PlayerListener";
 import { AfterRenderTrigger } from "../../game/services/triggers/AfterRenderTrigger";
 import { KeyboardTrigger } from "../../game/services/triggers/KeyboardTrigger";
-import { Walkers } from "../../game/services/walkers/Walkers";
-import { Registry } from "../Registry";
 import { GameEngine } from "../../plugins/game_viewer/GameEngine";
+import { MeshView } from "../models/views/MeshView";
+import { ConceptType, View } from "../models/views/View";
+import { Registry } from "../Registry";
+import { IConceptConverter } from "./convert/IConceptConverter";
 import { IConceptImporter } from "./import/IConceptImporter";
 import { ImportService } from "./import/ImportService";
-import { MeshView } from "../models/views/MeshView";
-import { IConceptConverter } from "./convert/IConceptConverter";
-import { View, ConceptType } from "../models/views/View";
-import { NodeType } from "../models/nodes/NodeModel";
 
 export class GameService {
     serviceName = 'game-service';
@@ -29,7 +27,6 @@ export class GameService {
     viewImporter: ImportService;
     viewConverters: IConceptConverter[] = [];
 
-    private walkers: Walkers;
     private registry: Registry;
 
     constructor(registry: Registry) {
@@ -54,31 +51,13 @@ export class GameService {
         // this.walkers = new Walkers(this.registry);    
     }
 
+    destroy() {
+        this.getEngine().dispose();
+    }
+
     resetPath(meshObjectName: string) {
         const route = this.registry.stores.gameStore.getRouteById(meshObjectName);
         route.reset();
-    }
-
-    resetAllMovements() {
-        this.registry.stores.gameStore.getRouteObjects().forEach(route => route.reset());
-    }
-
-    pauseMovement(meshObjectName: string) {
-        const route = this.registry.stores.gameStore.getRouteById(meshObjectName);
-        route.isPaused = true;
-    }
-
-    pauseAllMovements() {
-        this.registry.stores.gameStore.getRouteObjects().forEach(route => route.isPaused = true);
-    }
-
-    playMovement(meshObjectName: string) {
-        const route = this.registry.stores.gameStore.getRouteById(meshObjectName);
-        route.isPaused = false;
-    }
-
-    playAllMovements() {
-        this.registry.stores.gameStore.getRouteObjects().forEach(route => route.isPaused = false);
     }
 
     importAllConcepts() {
@@ -94,7 +73,7 @@ export class GameService {
     }
 
     deleteConcepts(concepts: View[]) {
-        concepts.forEach(concept => this.registry.stores.gameStore.deleteById(concept.id));
+        concepts.forEach(concept => this.registry.stores.gameStore.removeItem(concept));
     }
 
     addConcept(concept: View) {

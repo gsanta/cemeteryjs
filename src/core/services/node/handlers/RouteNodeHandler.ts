@@ -1,31 +1,31 @@
-import { NodeType, NodeModel, SlotName } from "../../../models/nodes/NodeModel";
-import { MoveNode } from '../../../models/nodes/MoveNode';
-import { AbstractNodeHandler } from "./AbstractNodeHandler";
 import { MeshNode } from "../../../models/nodes/MeshNode";
-import { RouteWalker } from "../../../../game/services/walkers/RouteWalker";
+import { NodeType } from "../../../models/nodes/NodeModel";
 import { PathNode } from "../../../models/nodes/PathNode";
 import { RouteNode } from "../../../models/nodes/RouteNode";
+import { AbstractNodeHandler } from "./AbstractNodeHandler";
+import { RouteModel } from "../../../models/game_objects/RouteModel";
+import { ConceptType } from "../../../models/views/View";
 
 export class RouteNodeHandler extends AbstractNodeHandler<RouteNode> {
     nodeType: NodeType.Route;
-
-    private routeWalker: RouteWalker = new RouteWalker();;
 
     handle() {
 
     }
 
-    execute(node: RouteNode) {
-        // super.execute(node);
+    wake(node: RouteNode) {
+        super.wake(node);
+        const meshNode = this.findNodeAtInputSlot<MeshNode>('mesh', NodeType.Mesh);
+        const pathNode = this.findNodeAtInputSlot<PathNode>('path', NodeType.Path);
 
-        // const meshNode = this.findNodeAtInputSlot<MeshNode>('mesh', NodeType.Mesh);
-        // const pathNode = this.findNodeAtInputSlot<PathNode>('path', NodeType.Path);
-
-        // if (!meshNode || !meshNode.meshModel || !pathNode.pathModel || !pathNode) { return; }
-        
-        // const route = this.registry.stores.gameStore.getRouteById( `${pathNode.pathModel.getId()}-route`);
-        // route.meshModel = meshNode.meshModel;
-        // this.routeWalker.initRoute(route);
+        const route = new RouteModel();
+        route.id = this.registry.stores.gameStore.generateUniqueName(ConceptType.RouteConcept);
+        this.registry.stores.gameStore.addItem(route);
+        node.route = route;
+        node.route.meshModel = meshNode.meshModel;
+        node.route.pathModel = pathNode.pathModel;
+        node.route.reset();
+        node.route.play();
     }
     
     update(node: RouteNode) {
@@ -35,17 +35,10 @@ export class RouteNodeHandler extends AbstractNodeHandler<RouteNode> {
 
         if (!meshNode || !meshNode.meshModel || !pathNode.pathModel || !pathNode) { return; }
 
-        console.log('update')
-
-        const route = this.registry.stores.gameStore.getRouteById( `${pathNode.pathModel.getId()}-route`);
-        
-        
-        if (!this.routeWalker.isStarted) {
-            route.meshModel = meshNode.meshModel;
-            this.routeWalker.initRoute(route);
-        } else {
-            this.routeWalker.walk(route);
+        if (node.route) {
+            node.route.meshModel = meshNode.meshModel;
+            node.route.pathModel = pathNode.pathModel;
+            node.route.update();
         }
-
     }
 }

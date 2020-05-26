@@ -40,7 +40,7 @@ export class RectangleTool extends AbstractTool {
     drag() {
         super.drag()
         if (this.lastPreviewRect) {
-            this.registry.stores.canvasStore.removeConcept(this.lastPreviewRect);
+            this.registry.stores.canvasStore.removeItem(this.lastPreviewRect);
         }
         this.rectSelector.updateRect(this.registry.services.pointer.pointer);
         this.registry.stores.feedback.rectSelectFeedback.isVisible = false;

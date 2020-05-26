@@ -1,5 +1,5 @@
 import { IGameObject } from "../../../game/models/objects/IGameObject";
-import { RouteObject } from "../../../game/models/objects/RouteObject";
+import { RouteModel } from "../../models/game_objects/RouteModel";
 import { IConceptConverter } from "./IConceptConverter";
 import { Registry } from "../../Registry";
 import { MeshView } from "../../models/views/MeshView";

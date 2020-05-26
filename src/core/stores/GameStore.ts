@@ -1,16 +1,18 @@
 import { IGameObject } from '../../game/models/objects/IGameObject';
-import { RouteObject } from '../../game/models/objects/RouteObject';
+import { RouteModel } from '../models/game_objects/RouteModel';
 import { Registry } from '../Registry';
 import { MeshView } from '../models/views/MeshView';
-import { ConceptType } from '../models/views/View';
+import { ConceptType, View } from '../models/views/View';
+import { AbstractStore } from './AbstractStore';
 
-export class GameStore {
+export class GameStore extends AbstractStore {
     private nameToObjMap: Map<string, IGameObject> = new Map();
     private registry: Registry;
 
     objs: IGameObject[] = [];
 
     constructor(registry: Registry) {
+        super();
         this.registry = registry;
     }
 
@@ -19,6 +21,7 @@ export class GameStore {
     }
 
     add(gameObject: IGameObject) {
+        super.addItem(gameObject);
         this.objs.push(gameObject);
         this.nameToObjMap.set(gameObject.id, gameObject);
     }
@@ -35,17 +38,25 @@ export class GameStore {
         return this.getMeshObjects().find(obj => obj.isManualControl);
     }
 
-    getRouteById(id: string): RouteObject {
-        return <RouteObject> this.nameToObjMap.get(id);
+    getRouteById(id: string): RouteModel {
+        return <RouteModel> this.nameToObjMap.get(id);
     }
 
-    getRouteObjects(): RouteObject[] {
-        return <RouteObject[]> this.objs.filter(obj => obj.type === ConceptType.RouteConcept);
+    getRouteObjects(): RouteModel[] {
+        return <RouteModel[]> this.objs.filter(obj => obj.type === ConceptType.RouteConcept);
     }
 
-    deleteById(id: string) {
-        const obj = this.objs.find(obj => obj.id === id);
+    // getItemsByType(type: string): View[] {
+    //     if (isControl(type)) {
+    //         return this.controls.filter(c => c.type === type);
+    //     } else if (isConcept(type)) {
+    //         return this.views.filter(v => v.type === type);
+    //     }
+    // }
+
+    removeItem(obj: View) {
         if (!obj) { return; }
+        super.removeItem(obj);
 
         switch(obj.type) {
             case ConceptType.MeshConcept:
@@ -53,11 +64,12 @@ export class GameStore {
             break;
         }
 
-        this.nameToObjMap.delete(id);
-        this.objs = this.objs.filter(obj => obj.id !== id);
+        this.nameToObjMap.delete(obj.id);
+        this.objs = this.objs.filter(o => o.id !== obj.id);
     }
 
     clear(): void {
+        super.clear();
         this.objs = [];
         this.registry.stores.meshStore.clear();
     }

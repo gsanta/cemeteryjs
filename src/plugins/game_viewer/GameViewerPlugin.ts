@@ -7,6 +7,7 @@ import { ICamera } from '../common/camera/ICamera';
 import { Camera3D } from '../common/camera/Camera3D';
 import { AbstractStore } from '../../core/stores/AbstractStore';
 import { NodeStore } from '../../core/stores/NodeStore';
+import { NodeType } from '../../core/models/nodes/NodeModel';
 (<any> window).earcut = require('earcut');
 
 export function cameraInitializer(registry: Registry) {
@@ -64,12 +65,14 @@ export class GameViewerPlugin extends AbstractPlugin {
         this.camera = cameraInitializer(this.registry);
         this.registry.services.game.importAllConcepts();
 
+        this.registry.services.node.getNodesByType(NodeType.Route).forEach(node => this.registry.services.node.getHandler(node).wake(node));
+
         this.update();
     }
 
 
     destroy() {
-
+        this.registry.services.game.destroy();
     }
 
     update() {

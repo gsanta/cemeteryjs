@@ -32,34 +32,35 @@ export class SceneStore extends AbstractStore {
         this.registry = registry;
     }
 
-    addConcept(concept: View) {
-        this.views.push(concept);
+    addConcept(view: View) {
+        super.addItem(view);
+        this.views.push(view);
     }
 
     addControl(control: ChildView<any>) {
+        super.addItem(control);
         this.controls.push(control);
     }
 
     addModel(model: ModelConcept) {
+        super.addItem(model);
         this.models.push(model);
     }
 
     removeModel(model: ModelConcept) {
+        super.removeItem(model);
         this.models = without(this.models, model);
     }
 
-    removeConcept(concept: View) {
-        this.views = without(this.views, concept);
-        this.registry.stores.selectionStore.removeItem(concept);
-        this.registry.services.game.deleteConcepts([concept]);
-    }
-
-    removeItemById(id: string) {
-        const concept = this.views.find(concept => concept.id === id);
-        this.removeConcept(concept);
+    removeItem(view: View) {
+        super.removeItem(view);
+        this.views = without(this.views, view);
+        this.registry.stores.selectionStore.removeItem(view);
+        this.registry.services.game.deleteConcepts([view]);
     }
 
     clear(): void {
+        super.clear();
         this.views = [];
         this.controls = [];
         this.models = [];
@@ -71,14 +72,6 @@ export class SceneStore extends AbstractStore {
 
     getAllConcepts(): View[] {
         return this.views;
-    }
-
-    getItemsByType(type: string): View[] {
-        if (isControl(type)) {
-            return this.controls.filter(c => c.type === type);
-        } else if (isConcept(type)) {
-            return this.views.filter(v => v.type === type);
-        }
     }
 
     getMeshConcepts(): MeshView[] {

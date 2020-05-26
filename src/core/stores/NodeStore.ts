@@ -1,5 +1,5 @@
 import { ViewSettings } from '../../plugins/scene_editor/settings/AbstractSettings';
-import { ConceptType } from '../models/views/View';
+import { ConceptType, View } from '../models/views/View';
 import { NodeConnectionView } from '../models/views/NodeConnectionView';
 import { NodeType, NodeModel, DroppableNode } from '../models/nodes/NodeModel';
 import { NodeView, defaultNodeViewConfig } from '../models/views/NodeView';
@@ -34,6 +34,7 @@ export class NodeStore extends AbstractStore {
     }
 
     addNode(nodeView: NodeView) {
+        super.addItem(nodeView);
         this.graph.addNode(nodeView.model);
         this.views.push(nodeView);
         nodeView.settings = createNodeSettings(nodeView, this.registry);
@@ -54,7 +55,7 @@ export class NodeStore extends AbstractStore {
             case 'Node':
                 const nodeType = (<DroppableNode> droppable).nodeTemplate.type;
                 const node = new NodeView(id, nodeType , new Rectangle(topLeft, bottomRight), this.graph);
-                this.registry.stores.nodeStore.addNode(node);
+                this.addNode(node);
             break;        
             case 'Preset':
                 (<DroppablePreset> droppable).preset.createPreset(dropPosition);
@@ -64,13 +65,15 @@ export class NodeStore extends AbstractStore {
     }
 
     addConnection(connection: NodeConnectionView) {
+        super.addItem(connection);
         this.graph.addConnection(connection.joinPoint1.parent.model, connection.joinPoint2.parent.model);
         this.views.push(connection);
     }
 
-    removeItemById(id: string) {
-        const item = this.views.find(view => view.id === id);
+    removeItem(item: View) {
+        // const item = this.views.find(view => view.id === id);
         if (!item) { return }
+        super.removeItem(item);
         
         const deleteViews = item.delete();
 
@@ -98,7 +101,7 @@ export class NodeStore extends AbstractStore {
         return <NodeConnectionView[]> this.views.filter(v => v.type === ConceptType.ActionNodeConnectionConcept);
     }
 
-    protected getItemsByType() {
+    protected getMaxIndexForType() {
         return this.views;
     }
 }

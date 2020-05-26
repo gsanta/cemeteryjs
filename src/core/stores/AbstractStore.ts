@@ -1,16 +1,42 @@
 import { Polygon } from '../geometry/shapes/Polygon';
 import { Rectangle } from '../geometry/shapes/Rectangle';
-import { maxBy } from '../geometry/utils/Functions';
 import { View } from '../models/views/View';
 
 
 export abstract class AbstractStore {
+    protected maxIdForType: Map<string, number> = new Map();
     protected views: View[] = [];
-    protected abstract getItemsByType(type: string): View[];
-    abstract removeItemById(id: string);
+
+    addItem(item: {type: string, id: string}) {
+        const pattern = this.createPattern(item.type);
+        const num = parseInt(item.id.match(pattern)[1], 10);
+
+        if (!this.maxIdForType.has(item.type)) {
+            this.maxIdForType.set(item.type, num);
+        }
+
+        if (this.maxIdForType.get(item.type) < num) {
+            this.maxIdForType.set(item.type, num);
+        }
+    }
+
+    removeItem(item: {type: string, id: string}) {
+        const pattern = this.createPattern(item.type);
+        const num = parseInt(item.id.match(pattern)[1], 10);
+
+        const maxId = this.maxIdForType.get(item.type);
+        if (maxId > 0 && maxId === num) {
+            this.maxIdForType.set(item.type, maxId - 1);
+        }
+    }
+
+    clear() {
+        this.maxIdForType = new Map();
+    }
 
     generateUniqueName(type: string) {
-        const name = `${type}${this.getMaxIndex(type) + 1}`.toLocaleLowerCase();
+        const maxId = this.maxIdForType.get(type) || 0;
+        const name = `${type}${maxId + 1}`.toLocaleLowerCase();
         return name;
     }
 
@@ -23,19 +49,6 @@ export abstract class AbstractStore {
         const polygon = Polygon.createRectangle(x, y, width, height);
 
         return this.views.filter(item => polygon.contains(item.dimensions));
-    }
-
-    private getMaxIndex(type: string): number {
-        const pattern = this.createPattern(type);
-        const views = this.getItemsByType(type).filter(view => view.id.match(pattern));
-
-        if (views.length === 0) {
-            return 0;
-        } else {
-            const max = maxBy<View>(views, (a, b) => parseInt(a.id.match(pattern)[1], 10) - parseInt(b.id.match(pattern)[1], 10));
-            return parseInt(max.id.match(pattern)[1], 10);
-        }
-
     }
 
     private createPattern(type: string) {

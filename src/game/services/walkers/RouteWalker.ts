@@ -1,7 +1,7 @@
 import { Point } from "../../../core/geometry/shapes/Point";
 import { Segment } from "../../../core/geometry/shapes/Segment";
 import { PathCorner } from "../../models/objects/PathCorner";
-import { RouteObject, RouteEvent } from "../../models/objects/RouteObject";
+import { RouteModel, RouteEvent } from "../../../core/models/game_objects/RouteModel";
 import { PathView } from "../../../core/models/views/PathView";
 
 const defaultSpeed = 1000 / 4;
@@ -12,18 +12,40 @@ export class RouteWalker {
     private isFinished = false;
     isStarted = false;
 
-    walk(route: RouteObject) {
+    private route: RouteModel;
+
+    constructor(route: RouteModel) {
+        this.route = route;
+    }
+
+    nextStep() {
         // if (route.currentGoal === undefined) {
         //     this.initRoute(route);
         // } else {
         // TODO: instead of this introduce 'isStarted' field
-        if (!route.meshModel) {
+        if (!this.route.meshModel ) {
             return;
         }
         if (!this.isFinished) {
-            this.moveRoute(route);
+            this.moveRoute();
         }
         // }
+    }
+
+    reset() {
+        const meshObj = this.route.meshModel.meshView;
+        const pathObj = this.route.pathModel.pathView;
+
+        if (!meshObj.mesh) { return; }
+
+        this.route.path = this.createPathCorners(pathObj);
+
+        this.route.currentGoal = this.route.path[1];
+        const rotation =  this.route.path[1].point1.subtract(this.route.path[0].point2).normalize().vectorAngle();
+
+        meshObj.setPosition(this.route.path[0].point2);
+        meshObj.setRotation(-rotation);
+        this.isStarted = true;
     }
 
     private computeDelta(): number {
@@ -37,7 +59,7 @@ export class RouteWalker {
         return delta;
     }
 
-    private getPointWithinRange(route: RouteObject): Point {
+    private getPointWithinRange(route: RouteModel): Point {
         const meshObj = route.meshModel.meshView;
         const meshPos = meshObj.getPosition();
 
@@ -52,43 +74,43 @@ export class RouteWalker {
         return undefined;
     }
 
-    private moveRoute(route: RouteObject) {
+    private moveRoute() {
         const delta = this.computeDelta();
         const speed = delta / defaultSpeed;
 
-        const meshObj = route.meshModel.meshView;
+        const meshObj = this.route.meshModel.meshView;
 
-        this.resetIfFianlPointReached(route);
-        this.turnRoute(route);
+        this.resetIfFianlPointReached(this.route);
+        this.turnRoute();
         
         meshObj.moveForward(-speed);
     }
 
-    private turnRoute(route: RouteObject) {
-        const meshObj = route.meshModel.meshView;
-        const pathObj = route.pathModel.pathView;
+    private turnRoute() {
+        const meshObj = this.route.meshModel.meshView;
+        const pathObj = this.route.pathModel.pathView;
 
-        if (route.isTurning) {
-            const rotation = this.bezierRotator.getRotation(route.currentGoal, meshObj.getPosition());
-            const nextGoal = route.path[route.path.indexOf(route.currentGoal) + 1];
-            const finalRotation = nextGoal.point1.subtract(route.currentGoal.point2).normalize().vectorAngle();
+        if (this.route.isTurning) {
+            const rotation = this.bezierRotator.getRotation(this.route.currentGoal, meshObj.getPosition());
+            const nextGoal = this.route.path[this.route.path.indexOf(this.route.currentGoal) + 1];
+            const finalRotation = nextGoal.point1.subtract(this.route.currentGoal.point2).normalize().vectorAngle();
 
             if (Math.abs(rotation - finalRotation) < 0.1) {
                 meshObj.setRotation(-finalRotation);
-                route.trigger(RouteEvent.TurnEnd);
-                route.isTurning = false;
-                const currentGoalIndex = route.path.indexOf(route.currentGoal);
-                route.currentGoal = route.path[currentGoalIndex + 1];
+                this.route.trigger(RouteEvent.TurnEnd);
+                this.route.isTurning = false;
+                const currentGoalIndex = this.route.path.indexOf(this.route.currentGoal);
+                this.route.currentGoal = this.route.path[currentGoalIndex + 1];
             } else {
                 meshObj.setRotation(-rotation);
             }
         } else {
-            const rotation = route.currentGoal.point1.subtract(route.currentGoal.getPrevCorner().point2).normalize().vectorAngle();
+            const rotation = this.route.currentGoal.point1.subtract(this.route.currentGoal.getPrevCorner().point2).normalize().vectorAngle();
             meshObj.setRotation(-rotation);
         }
     }
 
-    private resetIfFianlPointReached(route: RouteObject) {
+    private resetIfFianlPointReached(route: RouteModel) {
         const reachedPoint = this.getPointWithinRange(route);
 
         if (reachedPoint === route.currentGoal.point1) {
@@ -101,22 +123,6 @@ export class RouteWalker {
                 // this.initRoute(route);
             }
         }
-    }
-
-    initRoute(route: RouteObject) {
-        const meshObj = route.meshModel.meshView;
-        const pathObj = route.pathModel.pathView;
-
-        if (!meshObj.mesh) { return; }
-
-        route.path = this.createPathCorners(pathObj);
-
-        route.currentGoal = route.path[1];
-        const rotation =  route.path[1].point1.subtract(route.path[0].point2).normalize().vectorAngle();
-
-        meshObj.setPosition(route.path[0].point2);
-        meshObj.setRotation(-rotation);
-        this.isStarted = true;
     }
 
     private createPathCorners(pathObject: PathView): PathCorner[] {

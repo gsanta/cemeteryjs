@@ -20,7 +20,11 @@ export abstract class AbstractNodeHandler<T extends NodeModel> {
         handler.handle();
     }
 
-    execute(node: T) {
+    wake(node: T) {
+        this.instance = node;
+    }
+
+    update(node: T): void {
         this.instance = node;
     }
 
@@ -57,8 +61,4 @@ export abstract class AbstractNodeHandler<T extends NodeModel> {
     protected rightToLeft() {
         
     }
-
-    update(node: T): void {
-        this.instance = node;
-    };
 }

@@ -1,14 +1,22 @@
-import { IGameObject } from "./IGameObject";
-import { PathCorner } from "./PathCorner";
-import { ConceptType } from "../../../core/models/views/View";
-import { MeshModel } from "../../../core/models/game_objects/MeshModel";
-import { PathModel } from "../../../core/models/game_objects/PathModel";
+import { IGameObject } from "../../../game/models/objects/IGameObject";
+import { PathCorner } from "../../../game/models/objects/PathCorner";
+import { ConceptType } from "../views/View";
+import { MeshModel } from "./MeshModel";
+import { PathModel } from "./PathModel";
+import { RouteWalker } from "../../../game/services/walkers/RouteWalker";
 
 export enum RouteEvent {
     Start = 'Start',
     TurnStart = 'TurnStart',
     TurnEnd = 'TurnEnd',
     Finish = 'Finish'
+}
+
+export enum RouteState {
+    Playing = 'Walking',
+    Finished = 'Finished',
+    Paused = 'Paused',
+    Reset = 'Reset'
 }
 
 export function getAllRouteEvents() {
@@ -23,32 +31,43 @@ export function getAllRouteEvents() {
     return routeEvents;
 }
 
-export class RouteObject implements IGameObject {
+export class RouteModel implements IGameObject {
     readonly type = ConceptType.RouteConcept;
     private readonly eventHandlers: Map<RouteEvent, (() => void)[]> = new Map();
+
+    walker: RouteWalker;
+    state: RouteState = RouteState.Reset;
     meshModel: MeshModel;
     pathModel: PathModel;
 
-    constructor(pathModel: PathModel) {
-        this.pathModel = pathModel;
-
-        //  TODO generate appropriate id for route
-        this.id = `${pathModel.getId()}-route`;
+    constructor() {
+        this.walker = new RouteWalker(this);
         getAllRouteEvents().forEach(event => this.eventHandlers.set(event, []));
     }
     id: string;
     currentGoal: PathCorner = undefined;
     isTurning = false;
     animation: string;
-    isFinished = false;
     repeat = true;
-    isPaused = false;
     path: PathCorner[] = [];
 
     reset() {
         this.currentGoal = undefined;
-        this.isFinished = false;
+        this.walker.reset();
+        this.state = RouteState.Reset;
         // this.meshModel.meshView.setPosition(this.pathModel.pathView.editPoints[0].point);
+    }
+
+    pause() {
+        this.state = RouteState.Paused;
+    }
+
+    play() {
+        this.state = RouteState.Playing;
+    }
+
+    update() {
+        this.state === RouteState.Playing && this.walker.nextStep();
     }
 
     on(event: RouteEvent, handler: () => void) {

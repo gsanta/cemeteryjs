@@ -44,7 +44,10 @@ export class GameViewerComponent extends CanvasComponent {
             this.context.registry.services.layout.getViewById(GameViewerPlugin.id).setup();
             this.context.registry.services.layout.getViewById(GameViewerPlugin.id).resize();
         }, 100);
+    }
 
+    componentWillUnmount() {
+        this.context.registry.services.layout.getViewById(GameViewerPlugin.id).destroy();
     }
 
     componentDidUpdate() {
