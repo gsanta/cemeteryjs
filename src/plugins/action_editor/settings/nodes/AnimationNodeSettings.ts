@@ -1,4 +1,4 @@
-import { AnimationNode } from "../../../../core/models/views/nodes/AnimationNode";
+import { AnimationNode } from "../../../../core/models/nodes/AnimationNode";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { Registry } from "../../../../core/Registry";
 import { UpdateTask } from "../../../../core/services/UpdateServices";

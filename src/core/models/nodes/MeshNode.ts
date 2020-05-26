@@ -1,5 +1,5 @@
 import { NodeModel, NodeType, JoinPointSlot, NodeCategory } from './NodeModel';
-import { MeshModel } from '../../models/MeshModel';
+import { MeshModel } from '../game_objects/MeshModel';
 
 export class MeshNode extends NodeModel {
     type = NodeType.Mesh;

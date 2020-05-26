@@ -4,7 +4,7 @@ import { MeshNode } from "./MeshNode";
 import { AndNode } from "./AndNode";
 import { NodeType, NodeModel } from "./NodeModel";
 import { AnimationNode } from "./AnimationNode";
-import { NodeView } from '../NodeView';
+import { NodeView } from '../views/NodeView';
 import { TurnNode } from './TurnNode';
 import { SplitNode } from './SplitNode';
 import { RouteNode } from './RouteNode';

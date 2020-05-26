@@ -1,12 +1,12 @@
 import { Point } from "../../../geometry/shapes/Point";
 import { NodeView } from "../NodeView";
 import { FeedbackType, ChildView } from "./ChildView";
-import { Hoverable } from "../../Hoverable";
 import { NodeConnectionView } from "../NodeConnectionView";
 import { sizes } from "../../../gui/styles";
+import { View } from "../View";
 
-export function isNodeConnectionControl(hoverable: Hoverable) {
-    return hoverable && hoverable.type === FeedbackType.NodeConnectorFeedback;
+export function isJoinPointView(view: View) {
+    return view && view.type === FeedbackType.NodeConnectorFeedback;
 }
 
 export class JoinPointView extends ChildView<NodeView> {

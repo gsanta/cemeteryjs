@@ -4,11 +4,9 @@ import { ChildView, FeedbackType } from "../models/views/child_views/ChildView";
 import { EditPointView } from "../models/views/child_views/EditPointView";
 import { VisualConcept } from "../models/concepts/VisualConcept";
 import { View, ConceptType } from "../models/views/View";
-import { Hoverable } from "../models/Hoverable";
-
 
 export class SelectionStore {
-    items: Hoverable[] = [];
+    items: View[] = [];
 
     addItem(...item: VisualConcept[]) {
         this.items.push(...item);
@@ -22,7 +20,7 @@ export class SelectionStore {
         return this.items.includes(item);
     }
 
-    getAll(): Hoverable[] {
+    getAll(): View[] {
         return this.items;
     }
 

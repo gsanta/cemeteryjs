@@ -6,16 +6,16 @@ import { Camera2D } from '../common/camera/Camera2D';
 import { ActionEditorSettings } from './settings/ActionEditorSettings';
 import { NodeStore } from '../../core/stores/NodeStore';
 import { NodePreset, NodePresetRecipe } from '../../core/models/nodes/NodePreset';
-import { NodeType, NodeModel } from '../../core/models/views/nodes/NodeModel';
-import { AndNode } from '../../core/models/views/nodes/AndNode';
-import { AnimationNode } from '../../core/models/views/nodes/AnimationNode';
-import { KeyboardNode } from '../../core/models/views/nodes/KeyboardNode';
-import { MeshNode } from '../../core/models/views/nodes/MeshNode';
-import { MoveNode } from '../../core/models/views/nodes/MoveNode';
-import { TurnNode } from '../../core/models/views/nodes/TurnNode';
-import { SplitNode } from '../../core/models/views/nodes/SplitNode';
-import { RouteNode } from '../../core/models/views/nodes/RouteNode';
-import { PathNode } from '../../core/models/views/nodes/PathNode';
+import { NodeType, NodeModel } from '../../core/models/nodes/NodeModel';
+import { AndNode } from '../../core/models/nodes/AndNode';
+import { AnimationNode } from '../../core/models/nodes/AnimationNode';
+import { KeyboardNode } from '../../core/models/nodes/KeyboardNode';
+import { MeshNode } from '../../core/models/nodes/MeshNode';
+import { MoveNode } from '../../core/models/nodes/MoveNode';
+import { TurnNode } from '../../core/models/nodes/TurnNode';
+import { SplitNode } from '../../core/models/nodes/SplitNode';
+import { RouteNode } from '../../core/models/nodes/RouteNode';
+import { PathNode } from '../../core/models/nodes/PathNode';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {

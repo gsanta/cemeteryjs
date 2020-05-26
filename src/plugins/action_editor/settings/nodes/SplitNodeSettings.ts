@@ -1,4 +1,4 @@
-import { SplitNode } from '../../../../core/models/views/nodes/SplitNode';
+import { SplitNode } from '../../../../core/models/nodes/SplitNode';
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { Registry } from "../../../../core/Registry";
 import { UpdateTask } from "../../../../core/services/UpdateServices";

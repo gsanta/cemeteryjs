@@ -1,4 +1,4 @@
-import { PathNode } from "../../../../core/models/views/nodes/PathNode";
+import { PathNode } from "../../../../core/models/nodes/PathNode";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { Registry } from "../../../../core/Registry";
 import { UpdateTask } from "../../../../core/services/UpdateServices";

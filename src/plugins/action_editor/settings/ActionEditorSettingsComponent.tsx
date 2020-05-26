@@ -1,14 +1,12 @@
 import * as React from 'react';
-import { useDrag } from 'react-dnd';
-import styled from 'styled-components';
 import { AccordionComponent } from '../../../core/gui//misc/AccordionComponent';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
-import { ActionEditorPlugin } from '../ActionEditorPlugin';
-import { ActionEditorSettingsProps, ActionEditorSettings } from './ActionEditorSettings';
-import { CanvasToolsProps } from '../../../core/ViewFactory';
 import { DroppableListItemComponent } from '../../../core/gui/inputs/DroppableListItemComponent';
-import { NodeType, getAllNodeTypes, NodeCategory, NodeModel, DroppableNode } from '../../../core/models/views/nodes/NodeModel';
-import { NodePreset, DroppablePreset } from '../../../core/models/nodes/NodePreset';
+import { DroppablePreset, NodePreset } from '../../../core/models/nodes/NodePreset';
+import { CanvasToolsProps } from '../../../core/ViewFactory';
+import { ActionEditorPlugin } from '../ActionEditorPlugin';
+import { ActionEditorSettings } from './ActionEditorSettings';
+import { NodeCategory, NodeModel, DroppableNode } from '../../../core/models/nodes/NodeModel';
 
 export class ActionEditorSettingsComponent extends React.Component<{settings: ActionEditorSettings}> {
     static contextType = AppContext;
@@ -18,10 +16,7 @@ export class ActionEditorSettingsComponent extends React.Component<{settings: Ac
         const view = this.context.registry.services.layout.getViewById(ActionEditorPlugin.id);
 
         return (
-            <div 
-                // onMouseOver={() => view.setPriorityTool(this.context.registry.tools.dragAndDrop)}
-                // onMouseOut={() => view.removePriorityTool(this.context.registry.tools.dragAndDrop)}
-            >
+            <div>
                 {this.renderNodesByCategory()}
                 {this.renderPresets()}
             </div>

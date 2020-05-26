@@ -1,4 +1,4 @@
-import { getAllKeys } from '../../../core/models/views/nodes/KeyboardNode';
+import { getAllKeys } from '../../../core/models/nodes/KeyboardNode';
 import { NodeView } from '../../../core/models/views/NodeView';
 import { ViewSettings } from '../../scene_editor/settings/AbstractSettings';
 

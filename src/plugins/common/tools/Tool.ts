@@ -1,7 +1,6 @@
-import { Hoverable } from "../../../core/models/Hoverable";
+import { VisualConcept } from "../../../core/models/concepts/VisualConcept";
 import { IHotkey, IHotkeyEvent } from "../../../core/services/input/HotkeyService";
 import { IKeyboardEvent } from "../../../core/services/input/KeyboardService";
-import { VisualConcept } from "../../../core/models/concepts/VisualConcept";
 
 export enum ToolType {
     Rectangle = 'rectangle',

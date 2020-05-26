@@ -1,5 +1,5 @@
 import { NodeModel, NodeType, NodeCategory } from "./NodeModel";
-import { Keyboard } from "../../../services/input/KeyboardService";
+import { Keyboard } from "../../services/input/KeyboardService";
 
 export function getAllKeys() {
     const keys: string[] = [];

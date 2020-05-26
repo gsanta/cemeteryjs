@@ -1,4 +1,4 @@
-import { NodeModel } from '../../models/views/nodes/NodeModel';
+import { NodeModel } from '../../models/nodes/NodeModel';
 
 export class NodeGraph {
     nodeGroups: Set<NodeModel>[] = [];

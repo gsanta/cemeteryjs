@@ -1,8 +1,8 @@
 import { IGameObject } from "./IGameObject";
 import { PathCorner } from "./PathCorner";
 import { ConceptType } from "../../../core/models/views/View";
-import { MeshModel } from "../../../core/models/models/MeshModel";
-import { PathModel } from "../../../core/models/models/PathModel";
+import { MeshModel } from "../../../core/models/game_objects/MeshModel";
+import { PathModel } from "../../../core/models/game_objects/PathModel";
 
 export enum RouteEvent {
     Start = 'Start',

@@ -1,4 +1,4 @@
-import { MeshNode } from "../../../../core/models/views/nodes/MeshNode";
+import { MeshNode } from "../../../../core/models/nodes/MeshNode";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { Registry } from "../../../../core/Registry";
 import { UpdateTask } from "../../../../core/services/UpdateServices";

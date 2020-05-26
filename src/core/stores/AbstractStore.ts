@@ -1,15 +1,13 @@
-import { maxBy } from '../geometry/utils/Functions';
-import { ConceptType, View } from '../models/views/View';
-import { FeedbackType } from '../models/views/child_views/ChildView';
-import { Hoverable } from '../models/Hoverable';
-import { Rectangle } from '../geometry/shapes/Rectangle';
-import { VisualConcept } from '../models/concepts/VisualConcept';
 import { Polygon } from '../geometry/shapes/Polygon';
+import { Rectangle } from '../geometry/shapes/Rectangle';
+import { maxBy } from '../geometry/utils/Functions';
+import { VisualConcept } from '../models/concepts/VisualConcept';
+import { View } from '../models/views/View';
 
 
 export abstract class AbstractStore {
     protected views: VisualConcept[] = [];
-    protected abstract getItemsByType(type: string): Hoverable[];
+    protected abstract getItemsByType(type: string): View[];
     abstract removeItemById(id: string);
 
     generateUniqueName(type: string) {

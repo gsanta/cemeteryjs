@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { Hoverable } from '../../core/models/Hoverable';
-import { InstanceProps } from '../InstanceProps';
 import { AppContext, AppContextType } from '../../core/gui/Context';
 
 export class CanvasComponent extends React.Component {

@@ -1,4 +1,4 @@
-import { MoveNode } from "../../../../core/models/views/nodes/MoveNode";
+import { MoveNode } from "../../../../core/models/nodes/MoveNode";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { Registry } from "../../../../core/Registry";
 import { UpdateTask } from "../../../../core/services/UpdateServices";

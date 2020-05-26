@@ -1,14 +1,13 @@
-import { Registry } from '../../../core/Registry';
 import { VisualConcept } from '../../../core/models/concepts/VisualConcept';
 import { ChildView } from '../../../core/models/views/child_views/ChildView';
+import { View } from '../../../core/models/views/View';
+import { Registry } from '../../../core/Registry';
 import { UpdateTask } from "../../../core/services/UpdateServices";
 import { isConcept, isControl } from '../../../core/stores/SceneStore';
+import { ActionEditorPlugin } from '../../action_editor/ActionEditorPlugin';
+import { SceneEditorPlugin } from '../../scene_editor/SceneEditorPlugin';
 import { AbstractTool } from "./AbstractTool";
 import { ToolType } from "./Tool";
-import { View } from '../../../core/models/views/View';
-import { SceneEditorPlugin } from '../../scene_editor/SceneEditorPlugin';
-import { ActionEditorPlugin } from '../../action_editor/ActionEditorPlugin';
-import { Hoverable } from '../../../core/models/Hoverable';
 
 export class PointerTool extends AbstractTool {
     protected movingItem: VisualConcept = undefined;

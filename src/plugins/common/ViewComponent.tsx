@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { Hoverable } from '../../core/models/Hoverable';
-import { InstanceProps } from '../InstanceProps';
+import { AppContext, AppContextType } from '../../core/gui/Context';
 import { colors } from '../../core/gui/styles';
-import { ToolType } from './tools/Tool';
-import { AppContextType, AppContext } from '../../core/gui/Context';
 import { VisualConcept } from '../../core/models/concepts/VisualConcept';
+import { InstanceProps } from '../InstanceProps';
+import { ToolType } from './tools/Tool';
 
 
 export class ViewComponent<T extends VisualConcept> extends React.Component<InstanceProps<T>> {

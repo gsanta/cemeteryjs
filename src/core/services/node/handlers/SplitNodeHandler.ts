@@ -1,6 +1,6 @@
-import { NodeModel, NodeType } from "../../../models/views/nodes/NodeModel";
+import { NodeModel, NodeType } from "../../../models/nodes/NodeModel";
 import { AbstractNodeHandler } from "./AbstractNodeHandler";
-import { SplitNode } from "../../../models/views/nodes/SplitNode";
+import { SplitNode } from "../../../models/nodes/SplitNode";
 
 export class SplitNodeHandler extends AbstractNodeHandler<SplitNode> {
     nodeType: NodeType.Split;

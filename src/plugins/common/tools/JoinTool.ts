@@ -1,5 +1,5 @@
 import { Point } from "../../../core/geometry/shapes/Point";
-import { isNodeConnectionControl, JoinPointView } from "../../../core/models/views/child_views/JoinPointView";
+import { isJoinPointView, JoinPointView } from "../../../core/models/views/child_views/JoinPointView";
 import { Registry } from "../../../core/Registry";
 import { IHotkeyEvent } from "../../../core/services/input/HotkeyService";
 import { UpdateTask } from "../../../core/services/UpdateServices";
@@ -36,7 +36,7 @@ export class JoinTool extends AbstractTool {
     draggedUp() {
         this.registry.services.layout.getHoveredView().removePriorityTool(this);
 
-        if (isNodeConnectionControl(this.registry.services.pointer.hoveredItem)) {
+        if (isJoinPointView(this.registry.services.pointer.hoveredItem)) {
             const endItem = <JoinPointView> this.registry.services.pointer.hoveredItem;
             const id = this.registry.stores.nodeStore.generateUniqueName(ConceptType.ActionNodeConnectionConcept);
             const connection = new NodeConnectionView(id, this.startItem, endItem);
@@ -55,7 +55,7 @@ export class JoinTool extends AbstractTool {
     }
 
     hotkey(event: IHotkeyEvent) {
-        if (event.isHover && isNodeConnectionControl(this.registry.services.pointer.hoveredItem)) {
+        if (event.isHover && isJoinPointView(this.registry.services.pointer.hoveredItem)) {
             this.registry.services.layout.getHoveredView().setPriorityTool(this);
             return true;
         }

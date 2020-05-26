@@ -11,7 +11,7 @@ import { AnimationNodeSettingsComponent } from "../AnimationNodeSettingsComponen
 import { KeyboardNodeSettings } from "./KeyboardNodeSettings";
 import { MeshNodeSettings } from './MeshNodeSettings';
 import { MoveNodeSettings } from './MoveNodeSettings';
-import { NodeType } from '../../../../core/models/views/nodes/NodeModel';
+import { NodeType } from '../../../../core/models/nodes/NodeModel';
 import { AnimationNodeSettings } from './AnimationNodeSettings';
 import { TurnNodeSettingsComponent } from '../TurnNodeSettingsComponent';
 import { TurnNodeSettings } from './TurnNodeSettings';

@@ -1,5 +1,5 @@
 import { NodeModel, NodeType, JoinPointSlot, NodeCategory } from './NodeModel';
-import { NodeGraph } from "../../../services/node/NodeGraph";
+import { NodeGraph } from "../../services/node/NodeGraph";
 import { MeshNode } from "./MeshNode";
 
 export class AnimationNode extends NodeModel {

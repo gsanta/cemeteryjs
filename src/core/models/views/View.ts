@@ -1,5 +1,3 @@
-import { Hoverable } from "../Hoverable";
-
 export enum ConceptType {
     MeshConcept = 'MeshConcept',
     ModelConcept = 'ModelConcept',
@@ -10,6 +8,7 @@ export enum ConceptType {
     ActionNodeConnectionConcept = 'ActionNodeConnectionConcept' 
 }
 
-export interface View extends Hoverable {
+export interface View {
     id: string;
+    type: string;
 }

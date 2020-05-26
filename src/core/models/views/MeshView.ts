@@ -9,7 +9,7 @@ import { toDegree } from '../../geometry/utils/Measurements';
 import { VisualConcept } from '../concepts/VisualConcept';
 import { AnimationConcept, ElementalAnimation } from '../meta/AnimationConcept';
 import { ConceptType } from './View';
-import { MeshModel } from '../models/MeshModel';
+import { MeshModel } from '../game_objects/MeshModel';
 
 export enum WorldItemShape {
     RECTANGLE = 'rect',

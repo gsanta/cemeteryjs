@@ -1,6 +1,6 @@
 import { AbstractNodeHandler } from './AbstractNodeHandler';
-import { KeyboardNode, KeyboardNodeSlot } from '../../../models/views/nodes/KeyboardNode';
-import { NodeType } from '../../../models/views/nodes/NodeModel';
+import { KeyboardNode, KeyboardNodeSlot } from '../../../models/nodes/KeyboardNode';
+import { NodeType } from '../../../models/nodes/NodeModel';
 import { Registry } from '../../../Registry';
 
 export class KeyboardNodeHandler extends AbstractNodeHandler<KeyboardNode> {

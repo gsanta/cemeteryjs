@@ -1,9 +1,9 @@
-import { Hoverable } from "../core/models/Hoverable";
 import { Registry } from "../core/Registry";
 import { ChildView } from "../core/models/views/child_views/ChildView";
 import { VisualConcept } from "../core/models/concepts/VisualConcept";
+import { View } from "../core/models/views/View";
 
-export interface InstanceProps<T extends Hoverable> {
+export interface InstanceProps<T extends View> {
     item: T;
     registry: Registry;
     renderWithSettings: boolean;

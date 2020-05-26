@@ -1,7 +1,7 @@
-import { DroppableItem } from '../../../../plugins/common/tools/DragAndDropTool';
-import { NodeGraph } from '../../../services/node/NodeGraph';
-import { NodeView } from '../NodeView';
-import { NodeSettings } from '../../../../plugins/action_editor/settings/NodeSettings';
+import { DroppableItem } from '../../../plugins/common/tools/DragAndDropTool';
+import { NodeGraph } from '../../services/node/NodeGraph';
+import { NodeView } from '../views/NodeView';
+import { NodeSettings } from '../../../plugins/action_editor/settings/NodeSettings';
 
 export enum NodeType {
     Keyboard = 'Keyboard',

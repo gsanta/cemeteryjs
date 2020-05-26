@@ -1,4 +1,4 @@
-import { PathModel } from '../../models/PathModel';
+import { PathModel } from '../game_objects/PathModel';
 import { JoinPointSlot, NodeCategory, NodeModel, NodeType } from './NodeModel';
 
 export class PathNode extends NodeModel {

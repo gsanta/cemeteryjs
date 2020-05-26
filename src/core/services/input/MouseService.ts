@@ -1,7 +1,6 @@
 import { Registry } from "../../Registry";
 import { Point } from "../../geometry/shapes/Point";
 import { IPointerEvent } from "./PointerService";
-import { Hoverable } from "../../models/Hoverable";
 import { VisualConcept } from "../../models/concepts/VisualConcept";
 import { DroppableItem } from "../../../plugins/common/tools/DragAndDropTool";
 

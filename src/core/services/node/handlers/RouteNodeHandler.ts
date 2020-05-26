@@ -1,10 +1,10 @@
-import { NodeType, NodeModel, SlotName } from "../../../models/views/nodes/NodeModel";
-import { MoveNode } from '../../../models/views/nodes/MoveNode';
+import { NodeType, NodeModel, SlotName } from "../../../models/nodes/NodeModel";
+import { MoveNode } from '../../../models/nodes/MoveNode';
 import { AbstractNodeHandler } from "./AbstractNodeHandler";
-import { MeshNode } from "../../../models/views/nodes/MeshNode";
+import { MeshNode } from "../../../models/nodes/MeshNode";
 import { RouteWalker } from "../../../../game/services/walkers/RouteWalker";
-import { PathNode } from "../../../models/views/nodes/PathNode";
-import { RouteNode } from "../../../models/views/nodes/RouteNode";
+import { PathNode } from "../../../models/nodes/PathNode";
+import { RouteNode } from "../../../models/nodes/RouteNode";
 
 export class RouteNodeHandler extends AbstractNodeHandler<RouteNode> {
     nodeType: NodeType.Route;

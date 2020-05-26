@@ -1,17 +1,15 @@
 import { Point } from "../geometry/shapes/Point";
-import { Polygon } from "../geometry/shapes/Polygon";
-import { Rectangle } from "../geometry/shapes/Rectangle";
 import { without } from "../geometry/utils/Functions";
-import { MeshView } from "../models/views/MeshView";
 import { ModelConcept } from "../models/concepts/ModelConcept";
-import { PathView } from "../models/views/PathView";
 import { VisualConcept } from "../models/concepts/VisualConcept";
-import { ChildView } from "../models/views/child_views/ChildView";
 import { AnimationConcept } from "../models/meta/AnimationConcept";
 import { MetaConcept } from "../models/meta/MetaConcept";
+import { ChildView } from "../models/views/child_views/ChildView";
+import { MeshView } from "../models/views/MeshView";
+import { PathView } from "../models/views/PathView";
+import { ConceptType, View } from "../models/views/View";
 import { Registry } from "../Registry";
 import { AbstractStore } from './AbstractStore';
-import { ConceptType, View } from "../models/views/View";
 
 export function isControl(type: string) {
     return type.endsWith('Feedback');

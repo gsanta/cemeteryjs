@@ -1,13 +1,10 @@
-import { Registry } from '../../../core/Registry';
-import { ChildView } from '../../../core/models/views/child_views/ChildView';
-import { IKeyboardEvent } from '../../../core/services/input/KeyboardService';
-import { Tool, ToolType, Cursor } from './Tool';
-import { View } from '../../../core/models/views/View';
-import { Hoverable } from '../../../core/models/Hoverable';
-import { IHotkeyEvent } from '../../../core/services/input/HotkeyService';
-import { VisualConcept } from '../../../core/models/concepts/VisualConcept';
-import { AbstractStore } from '../../../core/stores/AbstractStore';
 import { AbstractPlugin } from '../../../core/AbstractPlugin';
+import { VisualConcept } from '../../../core/models/concepts/VisualConcept';
+import { Registry } from '../../../core/Registry';
+import { IHotkeyEvent } from '../../../core/services/input/HotkeyService';
+import { IKeyboardEvent } from '../../../core/services/input/KeyboardService';
+import { AbstractStore } from '../../../core/stores/AbstractStore';
+import { Cursor, Tool, ToolType } from './Tool';
 
 export class AbstractTool implements Tool {
     type: ToolType;

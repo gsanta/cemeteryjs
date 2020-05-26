@@ -1,9 +1,9 @@
-import { MoveNode } from "../../../../core/models/views/nodes/MoveNode";
+import { MoveNode } from "../../../../core/models/nodes/MoveNode";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { Registry } from "../../../../core/Registry";
 import { UpdateTask } from "../../../../core/services/UpdateServices";
 import { ViewSettings } from "../../../scene_editor/settings/AbstractSettings";
-import { TurnNode } from '../../../../core/models/views/nodes/TurnNode';
+import { TurnNode } from '../../../../core/models/nodes/TurnNode';
 
 export enum TurnNodeProps {
     AllTurns = 'AllTurns',

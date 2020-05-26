@@ -3,7 +3,7 @@ import { DroppableItem } from "../../../plugins/common/tools/DragAndDropTool";
 import { Point } from "../../geometry/shapes/Point";
 import { Rectangle } from "../../geometry/shapes/Rectangle";
 import { Registry } from "../../Registry";
-import { NodeType, SlotName } from "../views/nodes/NodeModel";
+import { NodeType, SlotName } from "./NodeModel";
 import { NodeView, defaultNodeViewConfig } from "../views/NodeView";
 import { ConceptType } from "../views/View";
 import { NodeConnectionView } from "../views/NodeConnectionView";

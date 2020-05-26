@@ -1,4 +1,4 @@
-import { NodeModel, NodeType } from '../../models/views/nodes/NodeModel';
+import { NodeModel, NodeType } from '../../models/nodes/NodeModel';
 import { Registry } from '../../Registry';
 import { AbstractNodeHandler } from './handlers/AbstractNodeHandler';
 import { KeyboardNodeHandler } from './handlers/KeyboardNodeHandler';

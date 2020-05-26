@@ -14,7 +14,7 @@ import { ImportService } from "./import/ImportService";
 import { MeshView } from "../models/views/MeshView";
 import { IConceptConverter } from "./convert/IConceptConverter";
 import { View, ConceptType } from "../models/views/View";
-import { NodeType } from "../models/views/nodes/NodeModel";
+import { NodeType } from "../models/nodes/NodeModel";
 
 export class GameService {
     serviceName = 'game-service';
