@@ -36,8 +36,8 @@ export class SidebarComponent extends React.Component<SidebarComponentProps> {
         //TODO refactor this
         let layoutSettings: {title: string, body: JSX.Element}[];
         
-        switch(this.context.registry.services.layout.activeLayout.name) {
-            case Layout.SceneEditor:
+        switch(this.context.registry.services.layout.getCurrentPredefinedLayoutTitle()) {
+            case 'Scene Editor':
                 layoutSettings = [
                     {
                         title: 'Level Settings',
@@ -53,7 +53,7 @@ export class SidebarComponent extends React.Component<SidebarComponentProps> {
                     }
                 ]
                 break;
-            case Layout.ActionEditor:
+            case 'Node Editor':
                 layoutSettings = [
                     {
                         title: 'Node types',

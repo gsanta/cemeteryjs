@@ -36,7 +36,7 @@ export class ExportService {
     }
 
     export(): string {
-        const viewExporters = this.registry.services.layout.getAllViews().filter(v => v.exporter).map(v => v.exporter);
+        const viewExporters = this.registry.services.layout.plugins.filter(v => v.exporter).map(v => v.exporter);
 
         const views = viewExporters.map(exporter => ReactDOMServer.renderToStaticMarkup(exporter.export())).join('');
         const concepts = this.conceptExporters.map(exporter => ReactDOMServer.renderToStaticMarkup(exporter.exportToFile())).join('');

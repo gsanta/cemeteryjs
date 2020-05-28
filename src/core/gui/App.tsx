@@ -46,7 +46,7 @@ export class App extends React.Component<{}, AppState> {
             this.context.registry.services.layout.visibilityDirty = false;
         }
 
-        window.addEventListener('resize', () => this.context.registry.services.layout.getActiveViews().forEach(controller => controller.resize()));
+        window.addEventListener('resize', () => this.context.registry.services.layout.getCurrentLayout().configs.forEach(config => config.activePlugin.resize()));
         this.context.controllers.setup(document.querySelector(`#${GameViewerPlugin.id}`));
 
         document.getElementsByTagName('body')[0].addEventListener('onfocus', () => {
@@ -63,19 +63,14 @@ export class App extends React.Component<{}, AppState> {
     }e
     
     render() {
-        const fullScreen = this.context.registry.services.layout.getFullScreen();
-        const toolbar = !fullScreen ? (
-            <div id="toolbar" >
-                <SidebarComponent isEditorOpen={this.state.isEditorOpen} toggleEditorOpen={() => this.setState({isEditorOpen: !this.state.isEditorOpen})}/>
-            </div>
-        ) : null;
-
         return (
             <div className="style-nightshifs">
                 <DndProvider backend={Backend}>
                     <div className="main-content" key="main-content">
-                        {toolbar}
-                        {fullScreen ? this.renderFullScreenCanvas() : this.renderViews()}
+                        <div id="toolbar" >
+                            <SidebarComponent isEditorOpen={this.state.isEditorOpen} toggleEditorOpen={() => this.setState({isEditorOpen: !this.state.isEditorOpen})}/>
+                        </div>
+                        {this.renderPlugins()}
                     </div>
                     {this.context.controllers.isLoading ? <SpinnerOverlayComponent key="spinner"/> : null}
                     <HotkeyInputComponent key="hotkey-input" registry={this.context.registry}/>
@@ -84,26 +79,23 @@ export class App extends React.Component<{}, AppState> {
         );
     }
 
-    private renderFullScreenCanvas(): JSX.Element {
-        const fullScreen = this.context.registry.services.layout.getFullScreen();
-        return <div id={`${fullScreen.getId()}-split`}>{viewFactory(fullScreen)}</div>;
-    }
-
-    private renderViews(): JSX.Element[] {
-        return this.context.registry.services.layout.getActiveViews().map(canvas => viewFactory(canvas));
+    private renderPlugins(): JSX.Element[] {
+        return this.context.registry.services.layout.getCurrentLayout().configs.map(config => viewFactory(config.activePlugin));
     }
 
     private resize() {
-        this.context.registry.services.layout.getActiveViews().forEach(controller => controller.resize());
+        this.context.registry.services.layout.getCurrentLayout().configs.forEach(config => config.activePlugin.resize());
     }
 
     private updateCanvasVisibility() {
-        const config = this.context.registry.services.layout.activeLayout;
+        const sizes = [12 , ...this.context.registry.services.layout.getCurrentLayout().sizes()];
+        const minSizes = [230 , ...this.context.registry.services.layout.getCurrentLayout().minSizes()];
+        const ids = ['#toolbar' , ...this.context.registry.services.layout.getCurrentLayout().minSizes()];
 
-        this.split = Split(config.ids.map(id => `#${id}`),
+        this.split = Split(ids.map(id => `#${id}`),
             {
-                sizes: config.sizes,
-                minSize: config.minSize,
+                sizes: sizes,
+                minSize: minSizes,
                 elementStyle: (dimension, size, gutterSize) => ({
                     'flex-basis': `calc(${size}% - ${gutterSize}px)`,
                 }),

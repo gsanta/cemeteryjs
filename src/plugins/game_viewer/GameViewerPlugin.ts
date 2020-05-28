@@ -8,6 +8,7 @@ import { Camera3D } from '../common/camera/Camera3D';
 import { AbstractStore } from '../../core/stores/AbstractStore';
 import { NodeStore } from '../../core/stores/NodeStore';
 import { NodeType } from '../../core/models/nodes/NodeModel';
+import { LayoutType } from '../../core/services/LayoutService';
 (<any> window).earcut = require('earcut');
 
 export function cameraInitializer(registry: Registry) {
@@ -31,6 +32,7 @@ export class GameViewerPlugin extends AbstractPlugin {
     static id = 'game-viewer-plugin';
     visible = true;
     updateService: UpdateService;
+    allowedLayouts = new Set([LayoutType.Single, LayoutType.Double]);
 
     private helperMeshes: HelperMeshes;
 

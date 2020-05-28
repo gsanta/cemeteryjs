@@ -5,49 +5,117 @@ import { GameViewerPlugin } from '../../plugins/game_viewer/GameViewerPlugin';
 import { NodeEditorPlugin } from '../../plugins/node_editor/NodeEditorPlugin';
 
 export interface LayoutConfig {
-    sizes: number[];
-    ids: string[];
-    minSize: number[];
-    name?: string;
+    activePlugin: AbstractPlugin;
+    allowedPlugins: AbstractPlugin[];
 }
 
-export enum Layout {
-    SceneEditor = 'Scene Editor',
-    ActionEditor = 'Action Editor'
+export class Layout {
+    type: LayoutType;
+    configs: LayoutConfig[];
+
+    constructor(type: LayoutType, config: LayoutConfig[]) {
+        this.configs = config;
+        this.type = type;
+    }
+
+    sizes() {
+        return this.configs.map(() => 100 / this.configs.length);
+    }
+
+    minSizes() {
+        return this.configs.map(() => 300);
+    }
+
+    ids() {
+        this.configs.map(plugin => plugin.activePlugin.name);
+    }
+}
+
+export enum LayoutType {
+    Single = 'Single',
+    Double = 'Double'
 }
 
 export class LayoutService {
-    private hoveredView: AbstractPlugin;
-    private fullScreen: AbstractPlugin;
-    visibilityDirty = true;
+    sceneEditor: SceneEditorPlugin;
+    gameView: GameViewerPlugin;
+    nodeEditor: NodeEditorPlugin;
 
-    activeLayout: LayoutConfig;
-    layouts: LayoutConfig[];
+    plugins: AbstractPlugin[];
+
+    singleLayout: Layout;
+    doubleLayout: Layout;
+
+    predefinedLayouts: {title: string; activePluginNames: string[]}[];
+
+    private currentLayout: Layout;
+    private currentPredefinedLayoutTitle: string; 
+
+    visibilityDirty = false;
 
     private registry: Registry;
 
     constructor(registry: Registry) {
         this.registry = registry;
+        this.sceneEditor = new SceneEditorPlugin(registry);
+        this.gameView = new GameViewerPlugin(registry);
+        this.nodeEditor = new NodeEditorPlugin(registry);
 
-        this.hoveredView = this.registry.views.sceneEditorView;
-
-        this.layouts = [
-            {
-                sizes: [12, 44, 44],
-                minSize: [230, 300, 300],
-                ids: ['toolbar', SceneEditorPlugin.id, GameViewerPlugin.id],
-                name: Layout.SceneEditor
-            },
-            {
-                sizes: [12, 88],
-                minSize: [230, 500],
-                ids: ['toolbar', NodeEditorPlugin.id],
-                name: Layout.ActionEditor
-            }
+        this.plugins = [
+            this.sceneEditor,
+            this.gameView,
+            this.nodeEditor
         ];
 
-        this.activeLayout = this.layouts[0];
+        let allowedSinglePlugins = this.plugins.filter(plugin => plugin.allowedLayouts.has(LayoutType.Single));
+        this.singleLayout = new Layout(LayoutType.Single, [{activePlugin: allowedSinglePlugins[0], allowedPlugins: allowedSinglePlugins}]);
+        
+        let allowedDoubleLayoutPlugins = this.plugins.filter(plugin => plugin.allowedLayouts.has(LayoutType.Double));
+        allowedDoubleLayoutPlugins = allowedDoubleLayoutPlugins.filter(plugin => plugin !== this.gameView);
+        this.doubleLayout = new Layout(
+            LayoutType.Double,
+            [
+                {activePlugin: allowedDoubleLayoutPlugins[0], allowedPlugins: allowedDoubleLayoutPlugins},
+                {activePlugin: this.gameView, allowedPlugins: [this.gameView]}
+            ]
+        );
+
+        this.predefinedLayouts = [
+            {
+                title: 'Scene Editor',
+                activePluginNames: [this.sceneEditor.name, this.gameView.name]
+            },
+            {
+                title: 'Node Editor',
+                activePluginNames: [this.nodeEditor.name]
+            }
+        ];
     }
+
+    private hoveredView: AbstractPlugin;
+
+    // constructor(registry: Registry) {
+    //     this.registry = registry;
+
+    //     this.hoveredView = this.registry.views.sceneEditorView;
+
+    //     this.layouts = [
+    //         {
+    //             sizes: [12, 44, 44],
+    //             minSize: [230, 300, 300],
+    //             ids: ['toolbar', SceneEditorPlugin.id, GameViewerPlugin.id],
+    //             name: Layout.SceneEditor
+    //         },
+    //         {
+    //             sizes: [12, 88],
+    //             minSize: [230, 500],
+    //             ids: ['toolbar', NodeEditorPlugin.id],
+    //             name: Layout.ActionEditor
+    //         }
+    //     ];
+
+    //     this.activeLayout = this.layouts[0];
+    // }
     
     setHoveredView(view: AbstractPlugin) {
         this.hoveredView = view;
@@ -57,49 +125,33 @@ export class LayoutService {
         return this.hoveredView;
     }
 
-    setActiveLayout(layout: LayoutConfig) {
-        this.activeLayout = layout;
-        this.visibilityDirty = true;
-    }
+    selectPredefinedLayout(title: string) {
+        const predefinedLayout = this.predefinedLayouts.find(predef => predef.title === title);
 
-    getActiveViews(): AbstractPlugin[] {
-        return this.fullScreen ? [this.fullScreen] : this.registry.views.views.filter(view => this.activeLayout.ids.find(id => view.getId() === id));
-    }
+        const layout = predefinedLayout.activePluginNames.length === 1 ? this.singleLayout : this.doubleLayout;
 
-    setFullScreen(view: AbstractPlugin) {
-        this.visibilityDirty = true;
-        this.fullScreen = view;
-    }
-
-    getFullScreen(): AbstractPlugin {
-        return this.fullScreen;
-    }
-
-    getAllViews(): AbstractPlugin[] {
-        return this.registry.views.views;
+        layout.configs.forEach((config, index) => config.activePlugin = this.getViewById(predefinedLayout.activePluginNames[index]));
+        this.currentLayout = layout;
+        this.currentPredefinedLayoutTitle = title;
     }
 
     getViewById<T extends AbstractPlugin = AbstractPlugin>(id: string): T {
         return <T> this.registry.views.views.find(view => view.getId() === id);
     }
 
-    getViewConfigs() {
-        const fullScreen = this.getFullScreen();
-
-        if (fullScreen) {
-            return {
-                sizes: [100],
-                ids: [`#${fullScreen.getId()}-split`],
-                minSize: []
-            }
-        } else {
-            const viewIds = this.getActiveViews().map(view => `#${view.getId()}-split`);
-            
-            return {
-                sizes: [12, 44, 44],
-                minSize: [230, 300, 300],
-                ids: ['#toolbar', ...viewIds]
-            }
+    setLayout(layoutType: LayoutType, activePluginNames?: string[]) {
+        this.currentLayout = layoutType === LayoutType.Single ? this.singleLayout : this.doubleLayout;
+        if (activePluginNames) {
+            this.currentLayout.configs.forEach((config, index) => config.activePlugin = this.getViewById(activePluginNames[index]));
         }
+        this.visibilityDirty = true;
+    }
+
+    getCurrentLayout(): Layout {
+        return this.currentLayout;
+    }
+
+    getCurrentPredefinedLayoutTitle(): string {
+        return this.currentPredefinedLayoutTitle;
     }
 }

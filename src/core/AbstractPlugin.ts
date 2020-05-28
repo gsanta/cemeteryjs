@@ -8,6 +8,7 @@ import { IViewExporter } from './services/export/IViewExporter';
 import { IViewImporter } from './services/import/IViewImporter';
 import { UpdateTask } from './services/UpdateServices';
 import { AbstractStore } from './stores/AbstractStore';
+import { LayoutType } from './services/LayoutService';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;
@@ -28,6 +29,8 @@ export function calcOffsetFromDom(id: string): Point {
 
 export abstract class AbstractPlugin {
     name: string;
+
+    allowedLayouts: Set<LayoutType>;
 
     exporter: IViewExporter;
     importer: IViewImporter;
