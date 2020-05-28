@@ -12,7 +12,7 @@ export class LevelSettingsComponent extends React.Component {
     context: AppContextType;
 
     render() {
-        const levelSettings = this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<LevelSettings>(LevelSettings.type);
+        const levelSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<LevelSettings>(LevelSettings.type);
         
         const level = levelSettings.getVal(LevelFormPropType.Level);
         const levelIndexes = this.context.registry.stores.levelStore.levels.filter(level => !level.isEmpty).map(level => level.index);

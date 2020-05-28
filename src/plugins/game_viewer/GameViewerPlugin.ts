@@ -8,7 +8,7 @@ import { Camera3D } from '../common/camera/Camera3D';
 import { AbstractStore } from '../../core/stores/AbstractStore';
 import { NodeStore } from '../../core/stores/NodeStore';
 import { NodeType } from '../../core/models/nodes/NodeModel';
-import { LayoutType } from '../../core/services/LayoutService';
+import { LayoutType } from '../../core/services/PluginService';
 (<any> window).earcut = require('earcut');
 
 export function cameraInitializer(registry: Registry) {

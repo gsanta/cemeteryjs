@@ -22,11 +22,11 @@ export class CanvasViewImporter implements IViewImporter {
     }
 
     import(json: CanvasViewJson): void {
-        this.registry.services.layout.getViewById(SceneEditorPlugin.id);
+        this.registry.services.plugin.getViewById(SceneEditorPlugin.id);
 
         if (json._attributes['data-translate']) {
             const topLeft = Point.fromString(json._attributes['data-translate']);
-            const camera = <Camera2D> this.registry.services.layout.getViewById(SceneEditorPlugin.id).getCamera();
+            const camera = <Camera2D> this.registry.services.plugin.getViewById(SceneEditorPlugin.id).getCamera();
             // implement later
         }        
     }

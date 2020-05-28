@@ -27,7 +27,7 @@ export class Layout {
     }
 
     ids() {
-        this.configs.map(plugin => plugin.activePlugin.name);
+        return this.configs.map(plugin => plugin.activePlugin.getId());
     }
 }
 
@@ -36,7 +36,7 @@ export enum LayoutType {
     Double = 'Double'
 }
 
-export class LayoutService {
+export class PluginService {
     sceneEditor: SceneEditorPlugin;
     gameView: GameViewerPlugin;
     nodeEditor: NodeEditorPlugin;
@@ -51,7 +51,7 @@ export class LayoutService {
     private currentLayout: Layout;
     private currentPredefinedLayoutTitle: string; 
 
-    visibilityDirty = false;
+    visibilityDirty = true;
 
     private registry: Registry;
 
@@ -83,13 +83,15 @@ export class LayoutService {
         this.predefinedLayouts = [
             {
                 title: 'Scene Editor',
-                activePluginNames: [this.sceneEditor.name, this.gameView.name]
+                activePluginNames: [this.sceneEditor.getId(), this.gameView.getId()]
             },
             {
                 title: 'Node Editor',
-                activePluginNames: [this.nodeEditor.name]
+                activePluginNames: [this.nodeEditor.getId()]
             }
         ];
+
+        this.selectPredefinedLayout('Scene Editor');
     }
 
     private hoveredView: AbstractPlugin;
@@ -136,7 +138,7 @@ export class LayoutService {
     }
 
     getViewById<T extends AbstractPlugin = AbstractPlugin>(id: string): T {
-        return <T> this.registry.views.views.find(view => view.getId() === id);
+        return <T> this.plugins.find(view => view.getId() === id);
     }
 
     setLayout(layoutType: LayoutType, activePluginNames?: string[]) {

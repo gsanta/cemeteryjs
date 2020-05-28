@@ -53,10 +53,10 @@ export class AbstractTool implements Tool {
     hotkey(hotkeyEvent: IHotkeyEvent): boolean { return false; }
 
     protected getStore(): AbstractStore {
-        return this.registry.views.getActiveView().getStore();
+        return this.registry.services.plugin.getHoveredView().getStore();
     }
 
     protected getPlugin(): AbstractPlugin {
-        return this.registry.views.getActiveView();
+        return this.registry.services.plugin.getHoveredView();
     }
 }

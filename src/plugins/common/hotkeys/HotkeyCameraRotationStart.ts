@@ -7,8 +7,8 @@ export class HotkeyCameraRotationStart extends Hotkey {
     }
 
     private hotKeyAction(): boolean {
-        if (this.registry.services.layout.getHoveredView().getActiveTool() !== this.registry.tools.cameraRotate) {
-            this.registry.services.layout.getHoveredView().setPriorityTool(this.registry.tools.cameraRotate);
+        if (this.registry.services.plugin.getHoveredView().getActiveTool() !== this.registry.tools.cameraRotate) {
+            this.registry.services.plugin.getHoveredView().setPriorityTool(this.registry.tools.cameraRotate);
             return true;
         }
     }

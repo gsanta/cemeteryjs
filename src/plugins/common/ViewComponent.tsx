@@ -27,7 +27,7 @@ export class ViewComponent<T extends View> extends React.Component<InstanceProps
     
     getStrokeColor(defaultColor = 'black'): string {
         const selectionColor = this.props.registry.stores.selectionStore.contains(this.props.item) ? colors.views.highlight : undefined;
-        const activeTool = this.props.registry.views.getActiveView().getActiveTool();
+        const activeTool = this.props.registry.services.plugin.getHoveredView().getActiveTool();
         const hoverColor = this.props.registry.services.pointer.hoveredItem === this.props.item ? activeTool.type === ToolType.Delete ? colors.views.delete : colors.views.highlight : undefined;
 
         return hoverColor || selectionColor || defaultColor;

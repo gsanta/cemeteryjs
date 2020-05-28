@@ -8,7 +8,7 @@ import { AppContext, AppContextType } from '../../../core/gui/Context';
 import styled from 'styled-components';
 import { colors } from '../../../core/gui/styles';
 import { UpdateTask } from '../../../core/services/UpdateServices';
-import { LayoutType } from '../../../core/services/LayoutService';
+import { LayoutType } from '../../../core/services/PluginService';
 
 export interface ToolbarProps {
     view: AbstractPlugin;
@@ -50,7 +50,7 @@ export class ToolbarComponent extends React.Component<ToolbarProps> {
                     {this.props.children}
                 </ToolGroupStyled>
                 <ToolGroupStyled>
-                    {this.context.registry.services.layout.getCurrentLayout().type === LayoutType.Single ? this.renderEnterFullScreenIcon() : this.renderExitFullScreenIcon()}
+                    {this.context.registry.services.plugin.getCurrentLayout().type === LayoutType.Single ? this.renderEnterFullScreenIcon() : this.renderExitFullScreenIcon()}
                 </ToolGroupStyled>
             </ToolbarStyled>
         )
@@ -61,9 +61,9 @@ export class ToolbarComponent extends React.Component<ToolbarProps> {
             <FullScreenExitIconComponent 
                 isActive={false} 
                 onClick={() => {
-                    const view = this.context.registry.services.layout.getViewById(this.props.view.getId());
+                    const view = this.context.registry.services.plugin.getViewById(this.props.view.getId());
 
-                    this.context.registry.services.layout.setLayout(LayoutType.Single, [this.props.view.name]);
+                    this.context.registry.services.plugin.setLayout(LayoutType.Single, [this.props.view.name]);
                     this.context.registry.services.update.runImmediately(UpdateTask.Full);
                 }} 
                 format="short"
@@ -76,7 +76,7 @@ export class ToolbarComponent extends React.Component<ToolbarProps> {
             <FullScreenIconComponent
                 isActive={false}
                 onClick={() => {
-                    this.context.registry.services.layout.setLayout(LayoutType.Double);
+                    this.context.registry.services.plugin.setLayout(LayoutType.Double);
                     this.context.registry.services.update.runImmediately(UpdateTask.Full);            
                 }}
                 format="short"

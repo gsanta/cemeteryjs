@@ -13,7 +13,7 @@ import { LevelService } from "./LevelService";
 import { LocalStoreService } from "./LocalStroreService";
 import { MeshLoaderService } from "./MeshLoaderService";
 import { UpdateService } from "./UpdateServices";
-import { LayoutService } from "./LayoutService";
+import { PluginService } from "./PluginService";
 import { NodeService } from './node/NodeService';
 import { GamepadService } from './GamepadService';
 
@@ -32,7 +32,7 @@ export class Services {
     meshLoader: MeshLoaderService;
     conceptConverter: ConceptConvertService;
     game: GameService;
-    layout: LayoutService;
+    plugin: PluginService;
     node: NodeService;
     gamepad: GamepadService;
 
@@ -56,7 +56,7 @@ export class Services {
         this.dialog = new DialogService(this.registry);
         this.meshLoader = new MeshLoaderService(this.registry);
         this.conceptConverter = new ConceptConvertService(this.registry);
-        this.layout = new LayoutService(this.registry);
+        this.plugin = new PluginService(this.registry);
         this.game = new GameService(this.registry);
         this.node = new NodeService(this.registry);
         this.gamepad = new GamepadService(this.registry);

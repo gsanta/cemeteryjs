@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { AppContext, AppContextType } from './Context';
 import { AccordionComponent } from './misc/AccordionComponent';
 import { colors } from './styles';
-import { Layout } from '../services/LayoutService';
+import { Layout } from '../services/PluginService';
 import { LevelSettingsComponent } from '../../plugins/scene_editor/settings/LevelSettingsComponent';
 import { GlobalSettingsComponent } from '../../plugins/scene_editor/settings/GlobalSettingsComponent';
 import { LayoutSettingsComponent } from '../../plugins/scene_editor/settings/LayoutSettingsComponent';
@@ -36,7 +36,7 @@ export class SidebarComponent extends React.Component<SidebarComponentProps> {
         //TODO refactor this
         let layoutSettings: {title: string, body: JSX.Element}[];
         
-        switch(this.context.registry.services.layout.getCurrentPredefinedLayoutTitle()) {
+        switch(this.context.registry.services.plugin.getCurrentPredefinedLayoutTitle()) {
             case 'Scene Editor':
                 layoutSettings = [
                     {
@@ -57,7 +57,7 @@ export class SidebarComponent extends React.Component<SidebarComponentProps> {
                 layoutSettings = [
                     {
                         title: 'Node types',
-                        body: <NodeEditorSettingsComponent settings={this.context.registry.views.nodeEditor.actionSettings}/>
+                        body: <NodeEditorSettingsComponent settings={this.context.registry.services.plugin.nodeEditor.actionSettings}/>
                     },
                 ]
                 break;

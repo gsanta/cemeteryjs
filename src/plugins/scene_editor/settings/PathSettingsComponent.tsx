@@ -11,13 +11,13 @@ export class PathSettingsComponent extends React.Component<{concept: PathView}> 
     context: AppContextType;
 
     componentDidMount() {
-        const pathSettings = this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<PathSettings>(PathSettings.type);
+        const pathSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<PathSettings>(PathSettings.type);
 
         pathSettings.setRenderer(() => this.forceUpdate());
     }
 
     render() {
-        const pathSettings = this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<PathSettings>(PathSettings.type);
+        const pathSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<PathSettings>(PathSettings.type);
 
         pathSettings.path = this.props.concept;
 
@@ -29,7 +29,7 @@ export class PathSettingsComponent extends React.Component<{concept: PathView}> 
     }
 
     private renderName(): JSX.Element {
-        const pathSettings = this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<PathSettings>(PathSettings.type);
+        const pathSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<PathSettings>(PathSettings.type);
 
         return (
             <SettingsRowStyled>

@@ -19,16 +19,16 @@ export class CameraRotationTool extends AbstractTool {
     }
 
     wheel() {
-        this.registry.services.layout.getHoveredView().getCamera().zoomWheel();
+        this.registry.services.plugin.getHoveredView().getCamera().zoomWheel();
     }
 
     wheelEnd() {
-        this.registry.services.layout.getHoveredView().removePriorityTool(this.registry.tools.zoom);
+        this.registry.services.plugin.getHoveredView().removePriorityTool(this.registry.tools.zoom);
     }
 
     drag() {
         super.drag();
-        const camera = this.registry.services.layout.getHoveredView().getCamera();
+        const camera = this.registry.services.plugin.getHoveredView().getCamera();
         
         camera.rotate(this.registry.services.pointer.pointer);
 

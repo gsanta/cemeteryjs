@@ -46,7 +46,7 @@ export class UpdateService {
                     this.canvasRepainter();
                 break;
                 case UpdateTask.RepaintActiveView:
-                    this.registry.services.layout.getHoveredView().repainter();
+                    this.registry.services.plugin.getHoveredView().repainter();
                 break;
                 case UpdateTask.RepaintSettings:
                     this.settingsRepainters.forEach(repaint => repaint());
@@ -57,7 +57,7 @@ export class UpdateService {
                 case UpdateTask.All:
                     this.canvasRepainter();
                     this.settingsRepainters.forEach(repaint => repaint());
-                    this.registry.services.layout.getViewById(GameViewerPlugin.id).update();
+                    this.registry.services.plugin.getViewById(GameViewerPlugin.id).update();
                 break;
                 case UpdateTask.Full:
                     this.fullRepainter();

@@ -36,18 +36,18 @@ export class GameViewerComponent extends CanvasComponent {
     componentDidMount() {
         super.componentDidMount();
         this.wheelListener = new WheelListener(this.context.registry);
-        this.context.registry.services.layout.getViewById<GameViewerPlugin>(GameViewerPlugin.id).setCanvasRenderer(() => this.forceUpdate());
-        this.context.registry.services.layout.getViewById(GameViewerPlugin.id).repainter = () => {this.forceUpdate()};
+        this.context.registry.services.plugin.getViewById<GameViewerPlugin>(GameViewerPlugin.id).setCanvasRenderer(() => this.forceUpdate());
+        this.context.registry.services.plugin.getViewById(GameViewerPlugin.id).repainter = () => {this.forceUpdate()};
         
         setTimeout(() => {
             // this.context.controllers.getWindowControllerByName('renderer').update();
-            this.context.registry.services.layout.getViewById(GameViewerPlugin.id).setup();
-            this.context.registry.services.layout.getViewById(GameViewerPlugin.id).resize();
+            this.context.registry.services.plugin.getViewById(GameViewerPlugin.id).setup();
+            this.context.registry.services.plugin.getViewById(GameViewerPlugin.id).resize();
         }, 100);
     }
 
     componentWillUnmount() {
-        this.context.registry.services.layout.getViewById(GameViewerPlugin.id).destroy();
+        this.context.registry.services.plugin.getViewById(GameViewerPlugin.id).destroy();
     }
 
     componentDidUpdate() {
@@ -55,7 +55,7 @@ export class GameViewerComponent extends CanvasComponent {
     }
 
     render() {
-        const view = this.context.registry.services.layout.getViewById<GameViewerPlugin>(GameViewerPlugin.id);
+        const view = this.context.registry.services.plugin.getViewById<GameViewerPlugin>(GameViewerPlugin.id);
 
         return (
                 <GameViewerStyled ref={this.ref} id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>

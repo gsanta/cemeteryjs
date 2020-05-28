@@ -31,7 +31,7 @@ export class LayoutSettingsComponent extends React.Component<GeneralFormComponen
 
     private renderLayoutDropdown(): JSX.Element {
         const layoutSettings = this.context.controllers.layoutSettings
-        const viewService = this.context.registry.services.layout.predefinedLayouts;
+        const viewService = this.context.registry.services.plugin.predefinedLayouts;
 
         return (
             <SettingsRowStyled>
@@ -40,8 +40,8 @@ export class LayoutSettingsComponent extends React.Component<GeneralFormComponen
                     <ConnectedDropdownComponent
                         formController={this.context.controllers.layoutSettings}
                         propertyName={LayoutPropType.Layout}
-                        values={this.context.registry.services.layout.predefinedLayouts.map(layout => layout.title)}
-                        currentValue={this.context.registry.services.layout.getCurrentPredefinedLayoutTitle()}
+                        values={this.context.registry.services.plugin.predefinedLayouts.map(layout => layout.title)}
+                        currentValue={this.context.registry.services.plugin.getCurrentPredefinedLayoutTitle()}
                         placeholder="Select layout"
                     />
                 </MultiFieldColumnStyled>

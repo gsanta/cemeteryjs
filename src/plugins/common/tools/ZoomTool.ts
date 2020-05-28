@@ -21,12 +21,12 @@ export class ZoomTool extends AbstractTool {
 
     wheel() {
         this.cursor = Cursor.ZoomIn;
-        this.registry.services.layout.getHoveredView().getCamera().zoomWheel();
+        this.registry.services.plugin.getHoveredView().getCamera().zoomWheel();
     }
 
     wheelEnd() {
         this.cursor = Cursor.Default;
-        this.registry.services.layout.getHoveredView().removePriorityTool(this.registry.tools.zoom);
+        this.registry.services.plugin.getHoveredView().removePriorityTool(this.registry.tools.zoom);
     }
 
     getCursor() {

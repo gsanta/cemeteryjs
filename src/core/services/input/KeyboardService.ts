@@ -58,7 +58,7 @@ export class KeyboardService {
     onKeyDown(e: KeyboardEvent): void {
         const convertedEvent = this.convertEvent(e, false);
         this.registry.services.hotkey.executeHotkey(convertedEvent);
-        this.registry.services.layout.getHoveredView().getActiveTool()?.keydown(convertedEvent);
+        this.registry.services.plugin.getHoveredView().getActiveTool()?.keydown(convertedEvent);
         this.registry.services.update.runScheduledTasks();
 
         e.preventDefault();
@@ -68,7 +68,7 @@ export class KeyboardService {
     onKeyUp(e: KeyboardEvent): void {
         const convertedEvent = this.convertEvent(e, true);
         this.registry.services.hotkey.executeHotkey(convertedEvent);
-        this.registry.services.layout.getHoveredView().getActiveTool()?.keyup(convertedEvent);
+        this.registry.services.plugin.getHoveredView().getActiveTool()?.keyup(convertedEvent);
         this.registry.services.update.runScheduledTasks();
 
         e.preventDefault();

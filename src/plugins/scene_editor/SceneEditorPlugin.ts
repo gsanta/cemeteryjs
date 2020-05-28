@@ -10,7 +10,7 @@ import { Camera2D } from '../common/camera/Camera2D';
 import { LevelSettings } from './settings/LevelSettings';
 import { MeshSettings } from './settings/MeshSettings';
 import { PathSettings } from './settings/PathSettings';
-import { LayoutType } from '../../core/services/LayoutService';
+import { LayoutType } from '../../core/services/PluginService';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {

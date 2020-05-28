@@ -48,10 +48,10 @@ export class NodeEditorComponent extends CanvasComponent {
         super.componentDidMount();
         this.wheelListener = new WheelListener(this.context.registry);
         this.context.registry.services.update.setCanvasRepainter(() => this.forceUpdate());
-        this.context.registry.services.layout.getViewById(NodeEditorPlugin.id).repainter = () => {this.forceUpdate()};
+        this.context.registry.services.plugin.getViewById(NodeEditorPlugin.id).repainter = () => {this.forceUpdate()};
 
         setTimeout(() => {
-            this.context.registry.services.layout.getViewById<NodeEditorPlugin>(NodeEditorPlugin.id).resize();
+            this.context.registry.services.plugin.getViewById<NodeEditorPlugin>(NodeEditorPlugin.id).resize();
         }, 0);
     }
 
@@ -59,7 +59,7 @@ export class NodeEditorComponent extends CanvasComponent {
         const hover = (item: View) => this.context.registry.services.mouse.hover(item);
         const unhover = (canvasItem: View) => this.context.registry.services.mouse.unhover(canvasItem);
         
-        const view = this.context.registry.services.layout.getViewById<NodeEditorPlugin>(NodeEditorPlugin.id);
+        const view = this.context.registry.services.plugin.getViewById<NodeEditorPlugin>(NodeEditorPlugin.id);
         return (
             <EditorComponentStyled ref={this.ref} id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>
                 <WindowToolbarStyled>

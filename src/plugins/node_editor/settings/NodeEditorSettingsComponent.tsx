@@ -13,7 +13,7 @@ export class NodeEditorSettingsComponent extends React.Component<{settings: Node
     context: AppContextType;
 
     render() {
-        const view = this.context.registry.services.layout.getViewById(NodeEditorPlugin.id);
+        const view = this.context.registry.services.plugin.getViewById(NodeEditorPlugin.id);
 
         return (
             <div>

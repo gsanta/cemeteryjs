@@ -16,7 +16,7 @@ import { SplitNode } from '../../core/models/nodes/SplitNode';
 import { RouteNode } from '../../core/models/nodes/RouteNode';
 import { PathNode } from '../../core/models/nodes/PathNode';
 import { NodeEditorSettings } from './settings/NodeEditorSettings';
-import { LayoutType } from '../../core/services/LayoutService';
+import { LayoutType } from '../../core/services/PluginService';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {

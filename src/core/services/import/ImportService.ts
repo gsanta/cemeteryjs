@@ -86,8 +86,8 @@ export class ImportService {
 
         viewGroups.forEach(group => {
             const viewType = <ConceptType> group._attributes["data-view-type"];
-            if (this.registry.services.layout.getViewById(viewType)) {
-                this.registry.services.layout.getViewById(viewType).importer.import(group);
+            if (this.registry.services.plugin.getViewById(viewType)) {
+                this.registry.services.plugin.getViewById(viewType).importer.import(group);
             }
         });
 

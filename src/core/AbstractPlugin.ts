@@ -8,7 +8,7 @@ import { IViewExporter } from './services/export/IViewExporter';
 import { IViewImporter } from './services/import/IViewImporter';
 import { UpdateTask } from './services/UpdateServices';
 import { AbstractStore } from './stores/AbstractStore';
-import { LayoutType } from './services/LayoutService';
+import { LayoutType } from './services/PluginService';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;
@@ -56,7 +56,7 @@ export abstract class AbstractPlugin {
     destroy(): void {}
     abstract resize(): void;
     update(): void {}
-    over(): void { this.registry.services.layout.setHoveredView(this) }
+    over(): void { this.registry.services.plugin.setHoveredView(this) }
     out(): void {}
 
     setSelectedTool(tool: AbstractTool) {

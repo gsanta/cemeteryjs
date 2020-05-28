@@ -28,7 +28,7 @@ export class NodeEditorSettings extends AbstractSettings<NodeEditorSettingsProps
             case NodeEditorSettingsProps.ActionTypes:
                 return this.registry.stores.nodeStore.actionTypes;
             case NodeEditorSettingsProps.Presets:
-                return this.registry.views.nodeEditor.presets;
+                return this.registry.services.plugin.nodeEditor.presets;
         }
     }
 

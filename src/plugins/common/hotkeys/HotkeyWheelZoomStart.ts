@@ -9,8 +9,8 @@ export class HotkeyWheelZoomStart extends Hotkey {
     }
 
     private hotKeyAction(): boolean {
-        if (this.registry.services.layout.getHoveredView().getActiveTool() !== this.registry.tools.zoom) {
-            this.registry.services.layout.getHoveredView().setPriorityTool(this.registry.tools.zoom);
+        if (this.registry.services.plugin.getHoveredView().getActiveTool() !== this.registry.tools.zoom) {
+            this.registry.services.plugin.getHoveredView().setPriorityTool(this.registry.tools.zoom);
             return true;
         }
     }

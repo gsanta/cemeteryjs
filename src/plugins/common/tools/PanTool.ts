@@ -21,7 +21,7 @@ export class PanTool extends AbstractTool {
 
     drag() {
         super.drag();
-        const camera = this.registry.services.layout.getHoveredView().getCamera();
+        const camera = this.registry.services.plugin.getHoveredView().getCamera();
         
         camera.pan(this.registry.services.pointer.pointer);
 
@@ -29,8 +29,8 @@ export class PanTool extends AbstractTool {
     }
 
     keyup(e: IKeyboardEvent): void {
-        if (e.keyCode === Keyboard.Space && this.registry.services.layout.getHoveredView().getActiveTool() === this) {
-            this.registry.services.layout.getHoveredView().removePriorityTool(this);
+        if (e.keyCode === Keyboard.Space && this.registry.services.plugin.getHoveredView().getActiveTool() === this) {
+            this.registry.services.plugin.getHoveredView().removePriorityTool(this);
             this.registry.services.update.scheduleTasks(UpdateTask.RepaintActiveView);
         }
     }

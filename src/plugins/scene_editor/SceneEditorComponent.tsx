@@ -40,10 +40,10 @@ export class SceneEditorComponent extends CanvasComponent {
         super.componentDidMount();
         this.wheelListener = new WheelListener(this.context.registry);
         this.context.registry.services.update.setCanvasRepainter(() => this.forceUpdate());
-        this.context.registry.services.layout.getViewById(SceneEditorPlugin.id).repainter = () => {this.forceUpdate()};
+        this.context.registry.services.plugin.getViewById(SceneEditorPlugin.id).repainter = () => {this.forceUpdate()};
 
         setTimeout(() => {
-            this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).resize();
+            this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).resize();
         }, 0);
     }
 
@@ -51,7 +51,7 @@ export class SceneEditorComponent extends CanvasComponent {
         const hover = (item: View) => this.context.registry.services.mouse.hover(item);
         const unhover = (canvasItem: View) => this.context.registry.services.mouse.unhover(canvasItem);
         
-        const view = this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id);
+        const view = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id);
         const history = this.context.registry.services.history;
 
         return (

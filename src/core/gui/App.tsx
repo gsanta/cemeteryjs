@@ -41,12 +41,12 @@ export class App extends React.Component<{}, AppState> {
     componentDidMount() {
         this.context.registry.services.update.setFullRepainter(() => this.forceUpdate());
         this.context.controllers.setRenderer(() => this.forceUpdate());
-        if (this.context.registry.services.layout.visibilityDirty) {
+        if (this.context.registry.services.plugin.visibilityDirty) {
             this.updateCanvasVisibility();
-            this.context.registry.services.layout.visibilityDirty = false;
+            this.context.registry.services.plugin.visibilityDirty = false;
         }
 
-        window.addEventListener('resize', () => this.context.registry.services.layout.getCurrentLayout().configs.forEach(config => config.activePlugin.resize()));
+        window.addEventListener('resize', () => this.context.registry.services.plugin.getCurrentLayout().configs.forEach(config => config.activePlugin.resize()));
         this.context.controllers.setup(document.querySelector(`#${GameViewerPlugin.id}`));
 
         document.getElementsByTagName('body')[0].addEventListener('onfocus', () => {
@@ -55,10 +55,10 @@ export class App extends React.Component<{}, AppState> {
     }
 
     componentDidUpdate() {
-        if (this.context.registry.services.layout.visibilityDirty) {
+        if (this.context.registry.services.plugin.visibilityDirty) {
             this.split.destroy();
             this.updateCanvasVisibility();
-            this.context.registry.services.layout.visibilityDirty = false;
+            this.context.registry.services.plugin.visibilityDirty = false;
         }
     }e
     
@@ -80,17 +80,17 @@ export class App extends React.Component<{}, AppState> {
     }
 
     private renderPlugins(): JSX.Element[] {
-        return this.context.registry.services.layout.getCurrentLayout().configs.map(config => viewFactory(config.activePlugin));
+        return this.context.registry.services.plugin.getCurrentLayout().configs.map(config => viewFactory(config.activePlugin));
     }
 
     private resize() {
-        this.context.registry.services.layout.getCurrentLayout().configs.forEach(config => config.activePlugin.resize());
+        this.context.registry.services.plugin.getCurrentLayout().configs.forEach(config => config.activePlugin.resize());
     }
 
     private updateCanvasVisibility() {
-        const sizes = [12 , ...this.context.registry.services.layout.getCurrentLayout().sizes()];
-        const minSizes = [230 , ...this.context.registry.services.layout.getCurrentLayout().minSizes()];
-        const ids = ['#toolbar' , ...this.context.registry.services.layout.getCurrentLayout().minSizes()];
+        const sizes = [12 , ...this.context.registry.services.plugin.getCurrentLayout().sizes()];
+        const minSizes = [230 , ...this.context.registry.services.plugin.getCurrentLayout().minSizes()];
+        const ids = ['toolbar' , ...this.context.registry.services.plugin.getCurrentLayout().ids()];
 
         this.split = Split(ids.map(id => `#${id}`),
             {

@@ -21,13 +21,13 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
     context: AppContextType;
 
     componentDidMount() {
-        const meshSettings = this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         meshSettings.setRenderer(() => this.forceUpdate());
     }
     
     render() {
-        const meshSettings = this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         meshSettings.meshConcept = this.props.concept;
 
@@ -46,7 +46,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
     }
 
     private renderName(): JSX.Element {
-        const meshSettings = this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         return (
             <SettingsRowStyled>
@@ -65,7 +65,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
     }
 
     private renderModelFileChooser(): JSX.Element {
-        const meshSettings = this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         return (
             <SettingsRowStyled key="model-file">
@@ -86,7 +86,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
 
     
     private renderTextureFileChooser(): JSX.Element {
-        const meshSettings = this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         return (
             <SettingsRowStyled key="texture-file">
@@ -106,7 +106,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
     }
 
     private renderThumbnailFileChooser(): JSX.Element {
-        const meshSettings = this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         return (
             <SettingsRowStyled key="thumbnail-file">
@@ -126,7 +126,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
     }
 
     private renderLayerInput(): JSX.Element {
-        const meshSettings = this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         return (
             <SettingsRowStyled>
@@ -139,7 +139,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
     }
 
     private renderRotationInput(): JSX.Element {
-        const meshSettings = this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         return (
             <SettingsRowStyled>
@@ -159,7 +159,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
     }
 
     private renderScaleInput(): JSX.Element {
-        const meshSettings = this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         return (
             <SettingsRowStyled>
@@ -178,7 +178,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
     }
 
     private renderYPosInput(): JSX.Element {
-        const meshSettings = this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         return (
             <SettingsRowStyled>
@@ -245,7 +245,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
     }
 
     private renderPath(): JSX.Element {
-        const meshSettings = this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         const pathNames = this.context.registry.stores.canvasStore.getPathConcepts().map(p => p.id);
         const val: string = meshSettings.getVal(MeshViewPropType.Path);
@@ -269,7 +269,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
 
     
     private renderManualMovement(): JSX.Element {
-        const meshSettings = this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         return (
             <SettingsRowStyled verticalAlign='right'>
@@ -294,7 +294,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
     }
 
     private renderPlayAnimation() {
-        const meshSettings = this.context.registry.services.layout.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
         const updateAnimationState = (state: AnimationState) => meshSettings.updateProp(state, MeshViewPropType.AnimationState);
         const getState = (animationState: AnimationState): 'disabled' | 'active' | 'default' => {

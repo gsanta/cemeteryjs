@@ -22,15 +22,15 @@ export class LayoutSettings extends AbstractSettings<LayoutPropType> {
     protected getProp(prop: LayoutPropType) {
         switch (prop) {
             case LayoutPropType.Layout:
-                return this.registry.services.layout.predefinedLayouts;
+                return this.registry.services.plugin.predefinedLayouts;
         }
     }
 
     protected setProp(val: any, prop: LayoutPropType) {
         switch (prop) {
             case LayoutPropType.Layout:
-                const layout = this.registry.services.layout.predefinedLayouts.find(layout => layout.title === val);
-                this.registry.services.layout.selectPredefinedLayout(layout.title);
+                const layout = this.registry.services.plugin.predefinedLayouts.find(layout => layout.title === val);
+                this.registry.services.plugin.selectPredefinedLayout(layout.title);
                 this.registry.services.update.runImmediately(UpdateTask.Full);
                 break;
         }
