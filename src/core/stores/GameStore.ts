@@ -26,6 +26,11 @@ export class GameStore extends AbstractStore {
         this.nameToObjMap.set(gameObject.id, gameObject);
     }
 
+    addItem(model: IGameObject) {
+        super.addItem(model);
+        this.objs.push(model);
+    }
+
     getByName<T extends IGameObject>(name: string): T {
         return <T> this.nameToObjMap.get(name);
     }
@@ -42,7 +47,7 @@ export class GameStore extends AbstractStore {
         return <RouteModel> this.nameToObjMap.get(id);
     }
 
-    getRouteObjects(): RouteModel[] {
+    getRouteModels(): RouteModel[] {
         return <RouteModel[]> this.objs.filter(obj => obj.type === ConceptType.RouteConcept);
     }
 

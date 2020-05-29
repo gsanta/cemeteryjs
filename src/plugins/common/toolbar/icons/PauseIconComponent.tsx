@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import {IconForgroundStyled, IconBackgroundStyled, IconStyled, IconProps} from './Icon';
-import { colors } from '../styles';
+import {IconForgroundStyled, IconBackgroundStyled, IconStyled, IconProps} from '../../../../core/gui/icons/Icon';
+import { colors } from '../../../../core/gui/styles';
 
 export function PauseIconComponent(props: IconProps) {
     return (

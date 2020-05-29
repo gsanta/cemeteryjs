@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { IconStyled, IconForgroundStyled, IconBackgroundStyled, IconProps } from './Icon';
-import { colors } from '../styles';
+import { IconStyled, IconForgroundStyled, IconBackgroundStyled, IconProps } from '../../../../core/gui/icons/Icon';
+import { colors } from '../../../../core/gui/styles';
 
 
 export function StopIconComponent(props: IconProps) {

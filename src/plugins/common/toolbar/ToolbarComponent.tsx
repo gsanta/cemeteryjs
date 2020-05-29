@@ -1,19 +1,21 @@
 import * as React from 'react';
-import { FullScreenIconComponent } from '../../../core/gui/icons/FullScreenIconComponent';
-import { FullScreenExitIconComponent } from '../../../core/gui/icons/FullScreenExitIconComponent';
-import { ToolType } from '../tools/Tool';
-import { AbstractPlugin } from '../../../core/AbstractPlugin';
-import { createToolIcon } from './toolIconFactory';
-import { AppContext, AppContextType } from '../../../core/gui/Context';
 import styled from 'styled-components';
+import { AbstractPlugin } from '../../../core/AbstractPlugin';
+import { AppContext, AppContextType } from '../../../core/gui/Context';
+import { FullScreenExitIconComponent } from '../../../core/gui/icons/FullScreenExitIconComponent';
+import { FullScreenIconComponent } from '../../../core/gui/icons/FullScreenIconComponent';
 import { colors } from '../../../core/gui/styles';
-import { UpdateTask } from '../../../core/services/UpdateServices';
 import { LayoutType } from '../../../core/services/PluginService';
+import { UpdateTask } from '../../../core/services/UpdateServices';
+import { ToolType } from '../tools/Tool';
+import { createToolIcon } from './toolIconFactory';
 
 export interface ToolbarProps {
     view: AbstractPlugin;
     tools: ToolType[];
     children?: JSX.Element | JSX.Element[];
+    renderFullScreenIcon: boolean;
+    centerIcons?: JSX.Element[];
 }
 
 const ToolbarStyled = styled.div`
@@ -41,7 +43,18 @@ export class ToolbarComponent extends React.Component<ToolbarProps> {
     }
 
     render(): JSX.Element {
+        const pluginService = this.context.registry.services.plugin;
         const toolIcons = this.props.tools.map(toolType => createToolIcon(toolType, this.props.view, this.context.registry));
+
+        const rightIcons: JSX.Element[] = [];
+        
+        if (this.props.renderFullScreenIcon) {
+            const fullScreenIcon = pluginService.getCurrentLayout().type === LayoutType.Double ? this.renderEnterFullScreenIcon() : this.renderExitFullScreenIcon();
+            rightIcons.push(fullScreenIcon);
+        }
+
+        const centerSection = <ToolGroupStyled>{this.props.centerIcons}</ToolGroupStyled>
+        const rightSection =  <ToolGroupStyled>{rightIcons}</ToolGroupStyled>;
 
         return (
             <ToolbarStyled>
@@ -49,21 +62,20 @@ export class ToolbarComponent extends React.Component<ToolbarProps> {
                     {toolIcons}
                     {this.props.children}
                 </ToolGroupStyled>
-                <ToolGroupStyled>
-                    {this.context.registry.services.plugin.getCurrentLayout().type === LayoutType.Single ? this.renderEnterFullScreenIcon() : this.renderExitFullScreenIcon()}
-                </ToolGroupStyled>
+                {this.props.centerIcons ? centerSection : null}
+                {rightIcons.length > 0 ? rightSection : null}
             </ToolbarStyled>
         )
     }
 
     private renderEnterFullScreenIcon(): JSX.Element {
         return (
-            <FullScreenExitIconComponent 
+            <FullScreenIconComponent 
                 isActive={false} 
                 onClick={() => {
                     const view = this.context.registry.services.plugin.getViewById(this.props.view.getId());
 
-                    this.context.registry.services.plugin.setLayout(LayoutType.Single, [this.props.view.name]);
+                    this.context.registry.services.plugin.setLayout(LayoutType.Single, [this.props.view.getId()]);
                     this.context.registry.services.update.runImmediately(UpdateTask.Full);
                 }} 
                 format="short"
@@ -73,7 +85,7 @@ export class ToolbarComponent extends React.Component<ToolbarProps> {
 
     private renderExitFullScreenIcon(): JSX.Element {
         return (
-            <FullScreenIconComponent
+            <FullScreenExitIconComponent
                 isActive={false}
                 onClick={() => {
                     this.context.registry.services.plugin.setLayout(LayoutType.Double);

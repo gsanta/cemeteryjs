@@ -12,11 +12,10 @@ export enum RouteEvent {
     Finish = 'Finish'
 }
 
-export enum RouteState {
-    Playing = 'Walking',
-    Finished = 'Finished',
+export enum TimelineState {
+    Playing = 'Playing',
     Paused = 'Paused',
-    Reset = 'Reset'
+    Stopped = 'Stopped'
 }
 
 export function getAllRouteEvents() {
@@ -36,7 +35,7 @@ export class RouteModel implements IGameObject {
     private readonly eventHandlers: Map<RouteEvent, (() => void)[]> = new Map();
 
     walker: RouteWalker;
-    state: RouteState = RouteState.Reset;
+    state: TimelineState = TimelineState.Stopped;
     meshModel: MeshModel;
     pathModel: PathModel;
 
@@ -54,20 +53,20 @@ export class RouteModel implements IGameObject {
     reset() {
         this.currentGoal = undefined;
         this.walker.reset();
-        this.state = RouteState.Reset;
+        this.state = TimelineState.Stopped;
         // this.meshModel.meshView.setPosition(this.pathModel.pathView.editPoints[0].point);
     }
 
     pause() {
-        this.state = RouteState.Paused;
+        this.state = TimelineState.Paused;
     }
 
     play() {
-        this.state = RouteState.Playing;
+        this.state = TimelineState.Playing;
     }
 
     update() {
-        this.state === RouteState.Playing && this.walker.nextStep();
+        this.state === TimelineState.Playing && this.walker.nextStep();
     }
 
     on(event: RouteEvent, handler: () => void) {

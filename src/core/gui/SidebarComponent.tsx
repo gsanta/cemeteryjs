@@ -57,7 +57,7 @@ export class SidebarComponent extends React.Component<SidebarComponentProps> {
                 layoutSettings = [
                     {
                         title: 'Node types',
-                        body: <NodeEditorSettingsComponent settings={this.context.registry.services.plugin.nodeEditor.actionSettings}/>
+                        body: <NodeEditorSettingsComponent settings={this.context.registry.services.plugin.nodeEditor.nodeEditorSettings}/>
                     },
                 ]
                 break;

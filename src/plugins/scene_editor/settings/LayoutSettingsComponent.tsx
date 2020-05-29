@@ -20,8 +20,6 @@ export class LayoutSettingsComponent extends React.Component<GeneralFormComponen
     }
 
     render() {
-        const form = this.context.controllers.globalSettingsForm;
-
         return (
             <div>
                 {this.renderLayoutDropdown()}
@@ -30,9 +28,6 @@ export class LayoutSettingsComponent extends React.Component<GeneralFormComponen
     }
 
     private renderLayoutDropdown(): JSX.Element {
-        const layoutSettings = this.context.controllers.layoutSettings
-        const viewService = this.context.registry.services.plugin.predefinedLayouts;
-
         return (
             <SettingsRowStyled>
                 <LabelColumnStyled>Layout</LabelColumnStyled>

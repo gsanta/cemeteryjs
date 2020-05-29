@@ -49,14 +49,12 @@ export class PluginService {
     predefinedLayouts: {title: string; activePluginNames: string[]}[];
 
     private currentLayout: Layout;
+    
     private currentPredefinedLayoutTitle: string; 
 
     visibilityDirty = true;
 
-    private registry: Registry;
-
     constructor(registry: Registry) {
-        this.registry = registry;
         this.sceneEditor = new SceneEditorPlugin(registry);
         this.gameView = new GameViewerPlugin(registry);
         this.nodeEditor = new NodeEditorPlugin(registry);
@@ -95,29 +93,6 @@ export class PluginService {
     }
 
     private hoveredView: AbstractPlugin;
-
-    // constructor(registry: Registry) {
-    //     this.registry = registry;
-
-    //     this.hoveredView = this.registry.views.sceneEditorView;
-
-    //     this.layouts = [
-    //         {
-    //             sizes: [12, 44, 44],
-    //             minSize: [230, 300, 300],
-    //             ids: ['toolbar', SceneEditorPlugin.id, GameViewerPlugin.id],
-    //             name: Layout.SceneEditor
-    //         },
-    //         {
-    //             sizes: [12, 88],
-    //             minSize: [230, 500],
-    //             ids: ['toolbar', NodeEditorPlugin.id],
-    //             name: Layout.ActionEditor
-    //         }
-    //     ];
-
-    //     this.activeLayout = this.layouts[0];
-    // }
     
     setHoveredView(view: AbstractPlugin) {
         this.hoveredView = view;
@@ -134,6 +109,7 @@ export class PluginService {
 
         layout.configs.forEach((config, index) => config.activePlugin = this.getViewById(predefinedLayout.activePluginNames[index]));
         this.currentLayout = layout;
+        this.visibilityDirty = true;
         this.currentPredefinedLayoutTitle = title;
     }
 

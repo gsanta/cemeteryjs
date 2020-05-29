@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { ClearIconComponent } from '../../../core/gui/icons/ClearIconComponent';
-import { PauseIconComponent } from '../../../core/gui/icons/PauseIconComponent';
-import { PlayIconComponent } from '../../../core/gui/icons/PlayIconComponent';
-import { StopIconComponent } from '../../../core/gui/icons/StopIconComponent';
+import { PauseIconComponent } from '../../common/toolbar/icons/PauseIconComponent';
+import { PlayIconComponent } from '../../common/toolbar/icons/PlayIconComponent';
+import { StopIconComponent } from '../../common/toolbar/icons/StopIconComponent';
 import { ConnectedFileUploadComponent } from '../../common/toolbar/icons/ImportFileIconComponent';
 import { ButtonComponent } from '../../../core/gui/inputs/ButtonComponent';
 import { CheckboxComponent } from '../../../core/gui/inputs/CheckboxComponent';

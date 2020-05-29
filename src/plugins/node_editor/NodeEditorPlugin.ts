@@ -217,7 +217,7 @@ export class NodeEditorPlugin extends AbstractPlugin {
 
     private camera: Camera2D;
 
-    actionSettings: NodeEditorSettings;
+    nodeEditorSettings: NodeEditorSettings;
     presets: NodePreset[];
 
     constructor(registry: Registry) {
@@ -226,7 +226,7 @@ export class NodeEditorPlugin extends AbstractPlugin {
         this.camera = cameraInitializer(NodeEditorPlugin.id, registry);
 
         this.selectedTool = this.registry.tools.pan;
-        this.actionSettings = new NodeEditorSettings(registry);
+        this.nodeEditorSettings = new NodeEditorSettings(registry);
 
         const templates: NodeModel[] = [
             new AndNode(undefined),

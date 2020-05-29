@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { PauseIconComponent } from '../../../core/gui/icons/PauseIconComponent';
-import { PlayIconComponent } from '../../../core/gui/icons/PlayIconComponent';
-import { StopIconComponent } from '../../../core/gui/icons/StopIconComponent';
+import { PauseIconComponent } from '../../common/toolbar/icons/PauseIconComponent';
+import { PlayIconComponent } from '../../common/toolbar/icons/PlayIconComponent';
+import { StopIconComponent } from '../../common/toolbar/icons/StopIconComponent';
 import { AccordionComponent } from '../../../core/gui/misc/AccordionComponent';
 import { SettingsRowStyled } from './SettingsComponent';
 import { Editor } from '../../../core/Editor';
