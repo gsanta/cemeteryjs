@@ -11,6 +11,8 @@ import { CanvasComponent } from '../common/CanvasComponent';
 import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
 import { ToolType } from '../common/tools/Tool';
 import { NodeEditorPlugin } from './NodeEditorPlugin';
+import { AllNodeConnectionsComponent } from './components/NodeConnectionComponent';
+import { NodeGroupComponent } from './components/NodeGroupComponent';
 
 const EditorComponentStyled = styled.div`
     width: 100%;
@@ -91,7 +93,8 @@ export class NodeEditorComponent extends CanvasComponent {
                     onMouseOut={() => view.out()}
                     onWheel={(e) => this.wheelListener.onWheel(e.nativeEvent)}
                 >
-                    {this.context.registry.services.export.actionConceptExporter.export(hover, unhover)}
+                    <NodeGroupComponent registry={this.context.registry} renderWithSettings={false} hover={hover} unhover={unhover}/>
+                    <AllNodeConnectionsComponent registry={this.context.registry} renderWithSettings={false} hover={hover} unhover={unhover}/>
                     {this.renderFeedback()}
                     {this.renderFeedbacks()}
                 </CanvasComponentStyled>

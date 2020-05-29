@@ -19,7 +19,7 @@
     },
     "include": [
       "src/**/*.ts",
-      "test/**/*.ts", "src/plugins/node_editor/NodeEditorComponent.tsx", "src/plugins/node_editor/settings/nodes/nodeSettingsFactory.tsx", "src/plugins/node_editor/settings/PathNodeSettingsComponent.tsx",
+      "test/**/*.ts"
     ],
     "exclude": [
       "node_modules"
