@@ -9,6 +9,7 @@ import { UpdateTask } from './services/UpdateServices';
 import { AbstractStore } from './stores/AbstractStore';
 import { LayoutType } from './services/PluginService';
 import { IPluginExporter } from '../plugins/common/io/IPluginExporter';
+import { AbstractPluginImporter } from '../plugins/common/io/AbstractPluginImporter';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;
@@ -33,7 +34,7 @@ export abstract class AbstractPlugin {
     allowedLayouts: Set<LayoutType>;
 
     exporter: IPluginExporter;
-    importer: IViewImporter;
+    importer: AbstractPluginImporter;
     repainter: Function = () => undefined;
 
     protected settings: AbstractSettings<any>[] = [];

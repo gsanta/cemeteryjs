@@ -1,14 +1,14 @@
+import { AbstractPlugin, calcOffsetFromDom } from '../../core/AbstractPlugin';
 import { Point } from '../../core/geometry/shapes/Point';
 import { Registry } from '../../core/Registry';
-import { CanvasViewImporter } from '../../core/services/import/CanvasViewImporter';
-import { IViewImporter } from '../../core/services/import/IViewImporter';
+import { LayoutType } from '../../core/services/PluginService';
 import { UpdateTask } from '../../core/services/UpdateServices';
-import { calcOffsetFromDom, AbstractPlugin } from '../../core/AbstractPlugin';
 import { Camera2D } from '../common/camera/Camera2D';
+import { AbstractPluginImporter } from '../common/io/AbstractPluginImporter';
+import { SceneEditorImporter } from './io/import/SceneEditorImporter';
 import { LevelSettings } from './settings/LevelSettings';
 import { MeshSettings } from './settings/MeshSettings';
 import { PathSettings } from './settings/PathSettings';
-import { LayoutType } from '../../core/services/PluginService';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -42,7 +42,7 @@ export class SceneEditorPlugin extends AbstractPlugin {
     visible = true;
     allowedLayouts = new Set([LayoutType.Single, LayoutType.Double]);
 
-    importer: IViewImporter;
+    importer: AbstractPluginImporter;
     private camera: Camera2D;
 
     constructor(registry: Registry) {
@@ -58,7 +58,7 @@ export class SceneEditorPlugin extends AbstractPlugin {
             new LevelSettings(this.registry)
         ];
 
-        this.importer = new CanvasViewImporter(this.registry);
+        this.importer = new SceneEditorImporter(this.registry);
     }
 
     getStore() {

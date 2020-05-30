@@ -10,7 +10,7 @@ import { MeshView } from "../models/views/MeshView";
 import { ConceptType, View } from "../models/views/View";
 import { Registry } from "../Registry";
 import { IConceptConverter } from "./convert/IConceptConverter";
-import { IConceptImporter } from "./import/IConceptImporter";
+import { IViewImporter } from "./import/IViewImporter";
 import { ImportService } from "./import/ImportService";
 
 export class GameService {
@@ -23,7 +23,6 @@ export class GameService {
     gameEventManager: GameEventManager;
     characterMovement: CharacterMovement;
 
-    importers: IConceptImporter[];
     viewImporter: ImportService;
     viewConverters: IConceptConverter[] = [];
 

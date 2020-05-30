@@ -1,8 +1,8 @@
-import { Registry } from "../../Registry";
-import { ModelConcept } from "../../models/ModelConcept";
-import { IConceptImporter } from "./IConceptImporter";
-import { ConceptGroupJson } from "./ImportService";
-import { ConceptType } from "../../models/views/View";
+import { Registry } from "../../../../core/Registry";
+import { ModelConcept } from "../../../../core/models/ModelConcept";
+import { IViewImporter } from "../../../../core/services/import/IViewImporter";
+import { ConceptType } from "../../../../core/models/views/View";
+import { ViewContainerJson } from "../../../common/io/AbstractPluginImporter";
 
 export interface ModelJson {
     _attributes: {
@@ -12,11 +12,7 @@ export interface ModelJson {
     }
 }
 
-export interface ModelGroupJson extends ConceptGroupJson {
-    g: ModelJson[] | ModelJson;
-}
-
-export class ModelConceptImporter implements IConceptImporter {
+export class ModelViewImporter implements IViewImporter<ModelJson> {
     type = ConceptType.ModelConcept;
 
     private registry: Registry;
@@ -25,8 +21,8 @@ export class ModelConceptImporter implements IConceptImporter {
         this.registry = registry;
     }
 
-    import(group: ModelGroupJson): void {
-        const modelJsons =  (<ModelJson[]> group.g).length ? <ModelJson[]> group.g : [<ModelJson> group.g];
+    import(group: ViewContainerJson<ModelJson>): void {
+        const modelJsons =  group.g.length ? group.g : [<any> group.g];
         
         modelJsons.forEach(json => {
             const modelConcept = new ModelConcept();

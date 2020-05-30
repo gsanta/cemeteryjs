@@ -1,10 +1,11 @@
 import * as convert from 'xml-js';
-import { IConceptImporter } from '../../../core/services/import/IConceptImporter';
-import { MeshConceptImporter } from './MeshConceptImporter';
-import { ModelConceptImporter } from './ModelConceptImporter';
+import { IViewImporter } from './IViewImporter';
+import { MeshViewImporter } from '../../../plugins/scene_editor/io/import/MeshViewImporter';
+import { ModelViewImporter } from '../../../plugins/scene_editor/io/import/ModelViewImporter';
 import { Registry } from '../../Registry';
-import { PathConceptImporter } from './PathConceptImporter';
+import { PathViewImporter } from '../../../plugins/scene_editor/io/import/PathViewImporter';
 import { ConceptType } from '../../models/views/View';
+import { PluginJson } from '../../../plugins/common/io/AbstractPluginImporter';
 
 export interface WgDefinition {
     _attributes: WgDefinitionAttributes;
@@ -37,65 +38,25 @@ export interface RawWorldMapJson {
             "data-viewbox": string;
         };
 
-        g: ExportGroupJson[];
-    }
-}
-
-export interface ExportGroupJson {
-    _attributes: {
-        "data-export-group": string;
-    }
-
-    g: (ConceptGroupJson | ViewGroupJson)[];
-}
-
-export interface ConceptGroupJson {
-    _attributes: {
-        "data-concept-type": string
-    }
-}
-
-export interface ViewGroupJson {
-    _attributes: {
-        "data-view-type": string;
+        g: PluginJson[];
     }
 }
 
 export class ImportService {
     serviceName = 'import-service';
-    private conceptImporters: IConceptImporter[];
     private registry: Registry;
 
     constructor(registry: Registry) {
         this.registry = registry;
-        this.conceptImporters = [
-            new ModelConceptImporter(registry),
-            new MeshConceptImporter(registry),
-            new PathConceptImporter(registry),
-        ];
     }
 
     import(file: string): void {
+        
+        
         const rawJson: RawWorldMapJson = JSON.parse(convert.xml2json(file, {compact: true, spaces: 4}));
-        const viewGroups = <ViewGroupJson[]> (rawJson.svg.g[0].g as any)?.length ? rawJson.svg.g[0].g : [rawJson.svg.g[0].g];
+        const pluginJsons = <PluginJson[]> (rawJson.svg.g[0].g as any)?.length ? rawJson.svg.g[0].g : [rawJson.svg.g[0].g];
 
-        let conceptGroups: ConceptGroupJson[] = [];
-        if (rawJson.svg.g[1] && rawJson.svg.g[1].g) {
-            conceptGroups = <ConceptGroupJson[]> ((rawJson.svg.g[1].g as any)?.length ? rawJson.svg.g[1].g : [rawJson.svg.g[1].g]);
-        }
-
-        viewGroups.forEach(group => {
-            const viewType = <ConceptType> group._attributes["data-view-type"];
-            if (this.registry.services.plugin.getViewById(viewType)) {
-                this.registry.services.plugin.getViewById(viewType).importer.import(group);
-            }
-        });
-
-        conceptGroups
-        .forEach(group => {
-            const conceptType = <ConceptType> group._attributes["data-concept-type"];
-            this.findViewImporter(conceptType).import(group)
-        });
+        pluginJsons.forEach(pluginJson => this.findPluginImporter(pluginJson).importer?.import(pluginJson));
 
         this.registry.stores.canvasStore.getMeshConcepts().filter(item => item.modelId)
             .forEach(item => {
@@ -114,7 +75,7 @@ export class ImportService {
         this.registry.services.game.importAllConcepts();
     }
 
-    private findViewImporter(conceptType: ConceptType): IConceptImporter {
-        return this.conceptImporters.find(conceptImporter => conceptImporter.type === conceptType);
+    private findPluginImporter(pluginJson: PluginJson) {
+        return this.registry.services.plugin.plugins.find(plugin => plugin.getId() === pluginJson._attributes['data-plugin-id']);
     }
 }

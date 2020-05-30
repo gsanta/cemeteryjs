@@ -84,16 +84,16 @@ export class PathViewComponent extends React.Component<PathComponentProps> {
 }
 
 export function PathViewContainerComponent(props: GroupProps) {
-    const pathes = this.registry.stores.canvasStore.getPathConcepts().map(path => {
+    const pathes = props.registry.stores.canvasStore.getPathConcepts().map(path => {
         return <PathViewComponent
             key={path.id}
             onlyData={!props.hover}
             item={path}
-            isHovered={this.registry.services.pointer.hoveredItem === path}
-            isSelected={this.registry.stores.selectionStore.contains(path)}
+            isHovered={props.registry.services.pointer.hoveredItem === path}
+            isSelected={props.registry.stores.selectionStore.contains(path)}
             onMouseOver={(item: View) => props.hover ?  props.hover(item) : () => undefined}
             onMouseOut={(item: View) => props.unhover ? props.unhover(item) : () => undefined}
-            registry={this.registry}
+            registry={props.registry}
         />
     });
 

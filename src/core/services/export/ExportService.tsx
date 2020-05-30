@@ -9,8 +9,6 @@ export interface ViewExporter {
 
 export class ExportService {
     serviceName = 'export-service';
-    conceptExporters: IConceptExporter[] = [];
-
     private registry: Registry;
 
     constructor(registry: Registry) {

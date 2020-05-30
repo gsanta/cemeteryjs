@@ -1,9 +1,9 @@
-import { FeedbackType } from '../../models/views/child_views/ChildView';
-import { PathView } from "../../models/views/PathView";
-import { ConceptType } from "../../models/views/View";
-import { Registry } from "../../Registry";
-import { IConceptImporter } from "./IConceptImporter";
-import { ConceptGroupJson } from "./ImportService";
+import { FeedbackType } from '../../../../core/models/views/child_views/ChildView';
+import { PathView } from "../../../../core/models/views/PathView";
+import { ConceptType } from "../../../../core/models/views/View";
+import { Registry } from "../../../../core/Registry";
+import { IViewImporter } from "../../../../core/services/import/IViewImporter";
+import { ViewContainerJson } from '../../../common/io/AbstractPluginImporter';
 
 export interface PathJson {
     circle: {
@@ -22,11 +22,7 @@ export interface PathJson {
     }
 }
 
-export interface PathGroupJson extends ConceptGroupJson {
-    g: PathJson[] | PathJson;
-}
-
-export class PathConceptImporter implements IConceptImporter {
+export class PathViewImporter implements IViewImporter<PathJson> {
     type = ConceptType.PathConcept;
     private registry: Registry
 
@@ -34,8 +30,8 @@ export class PathConceptImporter implements IConceptImporter {
         this.registry = registry;
     }
 
-    import(group: PathGroupJson): void {
-        const pathJsons =  (<PathJson[]> group.g).length ? <PathJson[]> group.g : [<PathJson> group.g];
+    import(group: ViewContainerJson<PathJson>): void {
+        const pathJsons =  group.g.length ? group.g : [<any> group.g];
         
         pathJsons.forEach(json => {
             const path = new PathView();

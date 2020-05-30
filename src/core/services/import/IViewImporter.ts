@@ -1,5 +1,7 @@
+import { ViewContainerJson } from "../../../plugins/common/io/AbstractPluginImporter";
+import { ConceptType } from "../../models/views/View";
 
-export interface IViewImporter {
-    viewType: string;
-    import(json: any): void;
-}
+export interface IViewImporter<T> {
+    type: ConceptType;
+    import(group: ViewContainerJson<T>): void;
+} 

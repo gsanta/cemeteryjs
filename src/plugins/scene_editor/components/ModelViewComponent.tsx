@@ -17,7 +17,7 @@ export class ModelViewComponent extends ViewComponent<any> {
 }
 
 export function ModelViewContainerComponent(props: GroupProps) {
-    const models = this.registry.stores.canvasStore.getModelConcepts().map(item => {
+    const models = props.registry.stores.canvasStore.getModelConcepts().map(item => {
         return (
             <ModelViewComponent
                 item={item}

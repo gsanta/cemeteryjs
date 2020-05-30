@@ -1,11 +1,11 @@
 
-import { Registry } from '../../Registry';
-import { Point } from '../../geometry/shapes/Point';
-import { Rectangle } from '../../geometry/shapes/Rectangle';
-import { MeshView } from '../../models/views/MeshView';
-import { IConceptImporter } from './IConceptImporter';
-import { ConceptGroupJson } from './ImportService';
-import { ConceptType } from '../../models/views/View';
+import { Registry } from '../../../../core/Registry';
+import { Point } from '../../../../core/geometry/shapes/Point';
+import { Rectangle } from '../../../../core/geometry/shapes/Rectangle';
+import { MeshView } from '../../../../core/models/views/MeshView';
+import { IViewImporter } from '../../../../core/services/import/IViewImporter';
+import { ConceptType } from '../../../../core/models/views/View';
+import { ViewContainerJson } from '../../../common/io/AbstractPluginImporter';
 
 export interface RectJson {
     _attributes: {
@@ -20,11 +20,7 @@ export interface RectJson {
     }
 }
 
-export interface RectangleGroupJson extends ConceptGroupJson {
-    g: RectJson[];
-}
-
-export class MeshConceptImporter implements IConceptImporter {
+export class MeshViewImporter implements IViewImporter<RectJson> {
     type = ConceptType.MeshConcept;
     private registry: Registry;
 
@@ -32,8 +28,8 @@ export class MeshConceptImporter implements IConceptImporter {
         this.registry = registry;
     }
 
-    import(group: RectangleGroupJson): void {
-        const rectJsons =  group.g.length ? <RectJson[]> group.g : [<RectJson> <unknown> group.g];
+    import(group: ViewContainerJson<RectJson>): void {
+        const rectJsons =  group.g.length ?  group.g : [<any> group.g];
 
         rectJsons.forEach(rect => {
             const type = rect._attributes["data-wg-type"];
