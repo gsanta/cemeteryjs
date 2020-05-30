@@ -73,6 +73,7 @@
     "earcut": "^2.2.1",
     "file-saver": "^2.0.2",
     "linear-solve": "^1.2.1",
+    "monaco-editor": "^0.20.0",
     "polylabel": "^1.0.2",
     "rc-slider": "^9.2.4",
     "react": "^16.12.0",

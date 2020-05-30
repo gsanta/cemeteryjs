@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 module.exports = env => {
     return {
@@ -51,6 +52,7 @@ module.exports = env => {
             new webpack.DefinePlugin({
                 DEBUG: env === 'debug' ? true : false
             }),
+            new MonacoWebpackPlugin()
             // new BundleAnalyzerPlugin({
             //     analyzerPort: 8887
             // })

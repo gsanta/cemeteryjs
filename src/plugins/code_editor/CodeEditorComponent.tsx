@@ -1,11 +1,12 @@
 import * as React from 'react';
+import * as ReactDom from 'react-dom';
 import styled from 'styled-components';
-import { WheelListener } from '../../core/services/WheelListener';
 import { WindowToolbarStyled } from '../../core/WindowToolbar';
 import { CanvasComponent } from '../common/CanvasComponent';
 import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
 import { ToolType } from '../common/tools/Tool';
 import { CodeEditorPlugin } from './CodeEditorPlugin';
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
 const CodeEditorStyled = styled.div`
     background: #33334C;
@@ -14,12 +15,30 @@ const CodeEditorStyled = styled.div`
     position: relative;
 `;
 
+const EditorStyled = styled.div`
+    margin-top: 40px;
+    width: 100%;
+    height: calc(100% - 40px);
+`;
+
 export class CodeEditorComponent extends CanvasComponent {
     componentDidMount() {
         super.componentDidMount();
         this.context.registry.services.plugin.getViewById<CodeEditorPlugin>(CodeEditorPlugin.id).setCanvasRenderer(() => this.forceUpdate());
         this.context.registry.services.plugin.getViewById(CodeEditorPlugin.id).repainter = () => {this.forceUpdate()};
         
+        const view = this.context.registry.services.plugin.getViewById<CodeEditorPlugin>(CodeEditorPlugin.id);
+
+        setTimeout(() => {
+            const editorElement: HTMLElement = document.querySelector(`#${view.getId()} .editor`);
+            const editor = monaco.editor.create(editorElement, {
+                value: 'console.log("Hello, world")',
+                language: 'javascript',
+                automaticLayout: true
+            });
+
+            view.editor = editor;
+        }, 2000)
     }
 
     componentWillUnmount() {
@@ -42,8 +61,8 @@ export class CodeEditorComponent extends CanvasComponent {
                             renderFullScreenIcon={true}
                         />
                     </WindowToolbarStyled>
+                    <EditorStyled className="editor"/>
                 </CodeEditorStyled>
         );
     }
-
 }

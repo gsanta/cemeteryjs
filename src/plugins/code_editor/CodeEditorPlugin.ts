@@ -3,12 +3,14 @@ import { Registry } from "../../core/Registry";
 import { AbstractPlugin } from "../../core/AbstractPlugin";
 import { ICamera } from "../common/camera/ICamera";
 import { Tool } from "../common/tools/Tool";
-
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
 export class CodeEditorPlugin extends AbstractPlugin {
     static id = 'code-editor-plugin';
     visible = true;
     allowedLayouts = new Set([LayoutType.Single, LayoutType.Double]);
+
+    editor: monaco.editor.IStandaloneCodeEditor;
 
     private renderCanvasFunc: () => void;
 
@@ -41,7 +43,9 @@ export class CodeEditorPlugin extends AbstractPlugin {
         return null;
     }
 
-    resize() {}
+    resize() {
+        this.editor && this.editor.layout();
+    }
 
     setCanvasRenderer(renderFunc: () => void) {
         this.renderCanvasFunc = renderFunc;
