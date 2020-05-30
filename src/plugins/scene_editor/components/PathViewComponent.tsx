@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { colors } from '../../gui/styles';
-import { PathView } from '../../models/views/PathView';
-import { EditPointView } from '../../models/views/child_views/EditPointView';
-import { Registry } from '../../Registry';
-import { View } from '../../models/views/View';
+import { colors } from '../../../core/gui/styles';
+import { PathView } from '../../../core/models/views/PathView';
+import { EditPointView } from '../../../core/models/views/child_views/EditPointView';
+import { Registry } from '../../../core/Registry';
+import { View, ConceptType } from '../../../core/models/views/View';
+import { GroupProps } from '../../InstanceProps';
 
 export interface PathComponentProps {
     item: PathView;
@@ -15,7 +16,7 @@ export interface PathComponentProps {
     registry: Registry;
 }
 
-export class PathComponent extends React.Component<PathComponentProps> {
+export class PathViewComponent extends React.Component<PathComponentProps> {
 
     render(): JSX.Element {
         const points: JSX.Element[] = this.props.item.editPoints.map(p => this.renderEditPoint(p));
@@ -80,4 +81,25 @@ export class PathComponent extends React.Component<PathComponentProps> {
             </React.Fragment>
         );
     }
+}
+
+export function PathViewContainerComponent(props: GroupProps) {
+    const pathes = this.registry.stores.canvasStore.getPathConcepts().map(path => {
+        return <PathViewComponent
+            key={path.id}
+            onlyData={!props.hover}
+            item={path}
+            isHovered={this.registry.services.pointer.hoveredItem === path}
+            isSelected={this.registry.stores.selectionStore.contains(path)}
+            onMouseOver={(item: View) => props.hover ?  props.hover(item) : () => undefined}
+            onMouseOut={(item: View) => props.unhover ? props.unhover(item) : () => undefined}
+            registry={this.registry}
+        />
+    });
+
+    return pathes.length > 0 ? 
+        (
+            <g data-concept-type={ConceptType.PathConcept} key={ConceptType.PathConcept}>{pathes}</g> 
+        )
+        : null;
 }

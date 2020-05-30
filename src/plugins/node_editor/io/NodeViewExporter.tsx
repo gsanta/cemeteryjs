@@ -3,6 +3,7 @@ import { NodeGroupComponent } from "../components/NodeGroupComponent";
 import { Registry } from '../../../core/Registry';
 import { IViewExporter } from '../../common/io/IViewExporter';
 import { ConceptType } from '../../../core/models/views/View';
+import ReactDOMServer = require('react-dom/server');
 
 
 export class NodeViewExporter implements IViewExporter {
@@ -14,8 +15,6 @@ export class NodeViewExporter implements IViewExporter {
     }
 
     export() {
-        return (
-            <NodeGroupComponent registry={this.registry} renderWithSettings={true}/>
-        );
+        return ReactDOMServer.renderToStaticMarkup(<NodeGroupComponent registry={this.registry} renderWithSettings={true}/>);
     }
 }

@@ -12,6 +12,8 @@ import { ToolType } from '../common/tools/Tool';
 import { SceneEditorPlugin } from './SceneEditorPlugin';
 import { CanvasComponent } from '../common/CanvasComponent';
 import { View } from '../../core/models/views/View';
+import { MeshViewContainerComponent } from './components/MeshViewComponent';
+import { PathViewContainerComponent } from './components/PathViewComponent';
 
 const EditorComponentStyled = styled.div`
     width: 100%;
@@ -84,8 +86,8 @@ export class SceneEditorComponent extends CanvasComponent {
                     <defs>
                         <PathMarkersComponent/>
                     </defs>
-                    {this.context.registry.services.export.meshConceptExporter.export(hover, unhover)}
-                    {this.context.registry.services.export.pathConceptExporter.export(hover, unhover)}
+                    <MeshViewContainerComponent hover={hover} unhover={unhover} registry={this.context.registry} renderWithSettings={false}/>
+                    <PathViewContainerComponent hover={hover} unhover={unhover} registry={this.context.registry} renderWithSettings={false}/>
                     {this.renderFeedbacks()}
                 </SceneEditorComponentStyled>
             </EditorComponentStyled>

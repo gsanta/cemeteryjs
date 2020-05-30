@@ -1,7 +1,5 @@
 import { Point } from '../../core/geometry/shapes/Point';
 import { Registry } from '../../core/Registry';
-import { CanvasViewExporter } from '../../core/services/export/CanvasViewExporter';
-import { IViewExporter } from '../../core/services/export/IViewExporter';
 import { CanvasViewImporter } from '../../core/services/import/CanvasViewImporter';
 import { IViewImporter } from '../../core/services/import/IViewImporter';
 import { UpdateTask } from '../../core/services/UpdateServices';
@@ -44,7 +42,6 @@ export class SceneEditorPlugin extends AbstractPlugin {
     visible = true;
     allowedLayouts = new Set([LayoutType.Single, LayoutType.Double]);
 
-    exporter: IViewExporter;
     importer: IViewImporter;
     private camera: Camera2D;
 
@@ -61,7 +58,6 @@ export class SceneEditorPlugin extends AbstractPlugin {
             new LevelSettings(this.registry)
         ];
 
-        this.exporter = new CanvasViewExporter(this.registry);
         this.importer = new CanvasViewImporter(this.registry);
     }
 

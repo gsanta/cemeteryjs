@@ -4,11 +4,11 @@ import { Tool } from '../plugins/common/tools/Tool';
 import { AbstractSettings } from '../plugins/scene_editor/settings/AbstractSettings';
 import { Point } from './geometry/shapes/Point';
 import { Registry } from './Registry';
-import { IViewExporter } from './services/export/IViewExporter';
 import { IViewImporter } from './services/import/IViewImporter';
 import { UpdateTask } from './services/UpdateServices';
 import { AbstractStore } from './stores/AbstractStore';
 import { LayoutType } from './services/PluginService';
+import { IPluginExporter } from '../plugins/common/io/IPluginExporter';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;
@@ -32,7 +32,7 @@ export abstract class AbstractPlugin {
 
     allowedLayouts: Set<LayoutType>;
 
-    exporter: IViewExporter;
+    exporter: IPluginExporter;
     importer: IViewImporter;
     repainter: Function = () => undefined;
 

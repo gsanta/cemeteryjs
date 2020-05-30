@@ -105,7 +105,7 @@ export class NodeComponent extends ViewComponent<NodeView> {
     }
 }
 
-export function AllActionNodesComponent(props: GroupProps) {
+export function NodeViewContainerComponent(props: GroupProps) {
     const actionConcepts = props.registry.stores.nodeStore.getNodes();
     const components = actionConcepts.map(actionConcept => (
             <NodeComponent 

@@ -1,10 +1,7 @@
 import { Registry } from '../../Registry';
 import { ActionConceptExporter } from './ActionConceptExporter';
 import { IConceptExporter } from './IConceptExporter';
-import { MeshConceptExporter } from './MeshConceptExporter';
-import { ModelConceptExporter } from './ModelConceptExporter';
-import { PathConceptExporter } from './PathConceptExporter';
-import ReactDOMServer = require('react-dom/server');
+import { MeshViewExporter } from '../../../plugins/scene_editor/io/export/MeshViewExporter';
 
 export interface ViewExporter {
     export(): string;
@@ -16,37 +13,20 @@ export class ExportService {
 
     private registry: Registry;
 
-    meshConceptExporter: MeshConceptExporter;
-    pathConceptExporter: PathConceptExporter;
-    actionConceptExporter: ActionConceptExporter;
-
     constructor(registry: Registry) {
         this.registry = registry;
-
-        this.meshConceptExporter = new MeshConceptExporter(registry);
-        this.pathConceptExporter = new PathConceptExporter(registry);
-        this.actionConceptExporter = new ActionConceptExporter(registry);
-
-        this.conceptExporters = [
-            new ModelConceptExporter(registry),
-            this.meshConceptExporter,
-            this.pathConceptExporter,
-            this.actionConceptExporter
-        ];
     }
 
     export(): string {
-        const viewExporters = this.registry.services.plugin.plugins.filter(v => v.exporter).map(v => v.exporter);
-
-        const views = viewExporters.map(exporter => ReactDOMServer.renderToStaticMarkup(exporter.export())).join('');
-        const concepts = this.conceptExporters.map(exporter => ReactDOMServer.renderToStaticMarkup(exporter.exportToFile())).join('');
+        const serializedPlugins = this.registry.services.plugin.plugins.filter(plugin => plugin.exporter).map(plugin => plugin.exporter.export()); 
 
         const startTag = '<svg data-wg-width="3000" data-wg-height="3000" width="1000" height="1000">';
         const closeTag =  '</svg>';
         return (
             `${startTag}` +
-            `<g data-export-group="view">${views}</g>` +
-            `<g data-export-group="concept">${concepts}</g>` +
+                `<g data-export-group="plugins">
+                    ${serializedPlugins}
+                </g>` +
             `${closeTag}`
         );
     }
