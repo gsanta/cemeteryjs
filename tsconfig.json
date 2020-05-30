@@ -19,7 +19,7 @@
     },
     "include": [
       "src/**/*.ts",
-      "test/**/*.ts"
+      "test/**/*.ts", "src/plugins/code_editor/CodeEditorComponent.tsx"
     ],
     "exclude": [
       "node_modules"

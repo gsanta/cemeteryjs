@@ -36,6 +36,7 @@ export class SidebarComponent extends React.Component<SidebarComponentProps> {
         //TODO refactor this
         let layoutSettings: {title: string, body: JSX.Element}[];
         
+        // TODO: create sidebar components for each plugin
         switch(this.context.registry.services.plugin.getCurrentPredefinedLayoutTitle()) {
             case 'Scene Editor':
                 layoutSettings = [
@@ -60,6 +61,9 @@ export class SidebarComponent extends React.Component<SidebarComponentProps> {
                         body: <NodeEditorSettingsComponent settings={this.context.registry.services.plugin.nodeEditor.nodeEditorSettings}/>
                     },
                 ]
+                break;
+            case 'Code Editor':
+                layoutSettings = []
                 break;
         }
         

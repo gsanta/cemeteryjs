@@ -3,6 +3,7 @@ import { Registry } from '../Registry';
 import { SceneEditorPlugin } from '../../plugins/scene_editor/SceneEditorPlugin';
 import { GameViewerPlugin } from '../../plugins/game_viewer/GameViewerPlugin';
 import { NodeEditorPlugin } from '../../plugins/node_editor/NodeEditorPlugin';
+import { CodeEditorPlugin } from '../../plugins/code_editor/CodeEditorPlugin';
 
 export interface LayoutConfig {
     activePlugin: AbstractPlugin;
@@ -40,6 +41,7 @@ export class PluginService {
     sceneEditor: SceneEditorPlugin;
     gameView: GameViewerPlugin;
     nodeEditor: NodeEditorPlugin;
+    codeEditor: CodeEditorPlugin;
 
     plugins: AbstractPlugin[];
 
@@ -58,11 +60,13 @@ export class PluginService {
         this.sceneEditor = new SceneEditorPlugin(registry);
         this.gameView = new GameViewerPlugin(registry);
         this.nodeEditor = new NodeEditorPlugin(registry);
+        this.codeEditor = new CodeEditorPlugin(registry);
 
         this.plugins = [
             this.sceneEditor,
             this.gameView,
-            this.nodeEditor
+            this.nodeEditor,
+            this.codeEditor
         ];
 
         let allowedSinglePlugins = this.plugins.filter(plugin => plugin.allowedLayouts.has(LayoutType.Single));
@@ -86,6 +90,10 @@ export class PluginService {
             {
                 title: 'Node Editor',
                 activePluginNames: [this.nodeEditor.getId()]
+            },
+            {
+                title: 'Code Editor',
+                activePluginNames: [this.codeEditor.getId(), this.gameView.getId()]
             }
         ];
 
