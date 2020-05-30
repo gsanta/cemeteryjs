@@ -26,7 +26,7 @@ export class SceneEditorExporter implements IPluginExporter {
 
         return (
             `<g data-plugin-id="${this.plugin.getId()}">
-                ${views}
+                ${views.join('')}
             </g>`
         );
     }

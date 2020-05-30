@@ -1,11 +1,6 @@
 import * as convert from 'xml-js';
-import { IViewImporter } from './IViewImporter';
-import { MeshViewImporter } from '../../../plugins/scene_editor/io/import/MeshViewImporter';
-import { ModelViewImporter } from '../../../plugins/scene_editor/io/import/ModelViewImporter';
-import { Registry } from '../../Registry';
-import { PathViewImporter } from '../../../plugins/scene_editor/io/import/PathViewImporter';
-import { ConceptType } from '../../models/views/View';
 import { PluginJson } from '../../../plugins/common/io/AbstractPluginImporter';
+import { Registry } from '../../Registry';
 
 export interface WgDefinition {
     _attributes: WgDefinitionAttributes;
@@ -38,8 +33,16 @@ export interface RawWorldMapJson {
             "data-viewbox": string;
         };
 
-        g: PluginJson[];
+        g: SectionJson[];
     }
+}
+
+export interface SectionJson {
+    _attributes: {
+        "data-section": string; 
+    }
+
+    g: PluginJson[];
 }
 
 export class ImportService {
@@ -54,9 +57,12 @@ export class ImportService {
         
         
         const rawJson: RawWorldMapJson = JSON.parse(convert.xml2json(file, {compact: true, spaces: 4}));
-        const pluginJsons = <PluginJson[]> (rawJson.svg.g[0].g as any)?.length ? rawJson.svg.g[0].g : [rawJson.svg.g[0].g];
+        const sectionsJson: SectionJson[] = rawJson.svg.g.length ? rawJson.svg.g : [<any> rawJson.svg.g];
 
-        pluginJsons.forEach(pluginJson => this.findPluginImporter(pluginJson).importer?.import(pluginJson));
+        const pluginSection = this.findSectionById(sectionsJson, 'plugins');
+        const pluginsJson: PluginJson[] = pluginSection.g.length ? pluginSection.g : [<any> pluginSection.g];
+
+        pluginsJson.forEach(pluginJson => this.findPluginImporter(pluginJson)?.importer.import(pluginJson));
 
         this.registry.stores.canvasStore.getMeshConcepts().filter(item => item.modelId)
             .forEach(item => {
@@ -77,5 +83,9 @@ export class ImportService {
 
     private findPluginImporter(pluginJson: PluginJson) {
         return this.registry.services.plugin.plugins.find(plugin => plugin.getId() === pluginJson._attributes['data-plugin-id']);
+    }
+
+    private findSectionById(sectionsJson: SectionJson[], id: string) {
+        return sectionsJson.find(json => json._attributes['data-section'] === id);
     }
 }

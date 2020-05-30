@@ -25,7 +25,7 @@ export class SceneEditorImporter extends AbstractPluginImporter {
     }
 
     import(pluginJson: PluginJson): void {
-        let viewContainers: ViewContainerJson<RectJson>[] = pluginJson.g.length ? [pluginJson.g as any] : pluginJson.g;
+        let viewContainers: ViewContainerJson<RectJson>[] = pluginJson.g.length ? pluginJson.g : [<any> pluginJson.g];
 
         viewContainers.forEach((viewContainerJson: ViewContainerJson<RectJson>) => {
             const conceptType = <ConceptType> viewContainerJson._attributes["data-view-type"];

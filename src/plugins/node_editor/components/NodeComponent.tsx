@@ -118,6 +118,6 @@ export function NodeViewContainerComponent(props: GroupProps) {
         )
     );
 
-    return actionConcepts.length > 0 ? <g data-concept-type={ConceptType.ActionConcept} key={ConceptType.ActionConcept}>{components}</g> : null;
+    return actionConcepts.length > 0 ? <g data-view-type={ConceptType.ActionConcept} key={ConceptType.ActionConcept}>{components}</g> : null;
 
 }

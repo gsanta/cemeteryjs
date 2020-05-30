@@ -9,6 +9,7 @@ import { SceneEditorImporter } from './io/import/SceneEditorImporter';
 import { LevelSettings } from './settings/LevelSettings';
 import { MeshSettings } from './settings/MeshSettings';
 import { PathSettings } from './settings/PathSettings';
+import { SceneEditorExporter } from './io/export/SceneEditorExporter';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -42,7 +43,6 @@ export class SceneEditorPlugin extends AbstractPlugin {
     visible = true;
     allowedLayouts = new Set([LayoutType.Single, LayoutType.Double]);
 
-    importer: AbstractPluginImporter;
     private camera: Camera2D;
 
     constructor(registry: Registry) {
@@ -58,6 +58,7 @@ export class SceneEditorPlugin extends AbstractPlugin {
             new LevelSettings(this.registry)
         ];
 
+        this.exporter = new SceneEditorExporter(this, this.registry);
         this.importer = new SceneEditorImporter(this.registry);
     }
 

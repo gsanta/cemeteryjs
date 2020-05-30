@@ -3,7 +3,7 @@ import { Registry } from "../../../../core/Registry";
 import { IViewExporter } from "../../../common/io/IViewExporter";
 import React = require("react");
 import ReactDOMServer = require("react-dom/server");
-import { NodeViewContainerComponent } from "../../../node_editor/components/NodeComponent";
+import { MeshViewContainerComponent } from '../../components/MeshViewComponent';
 
 export class MeshViewExporter implements IViewExporter {
     viewType = ConceptType.MeshConcept;
@@ -14,6 +14,6 @@ export class MeshViewExporter implements IViewExporter {
     }
 
     export(): string {
-        return ReactDOMServer.renderToStaticMarkup(<NodeViewContainerComponent registry={this.registry} renderWithSettings={true}/>);
+        return ReactDOMServer.renderToStaticMarkup(<MeshViewContainerComponent registry={this.registry} renderWithSettings={true}/>);
     }
 }

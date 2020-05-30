@@ -31,7 +31,7 @@ export function ModelViewContainerComponent(props: GroupProps) {
 
     return models.length > 0 ? 
         (
-            <g data-concept-type={ConceptType.ModelConcept} key={ConceptType.ModelConcept}>{models}</g> 
+            <g data-view-type={ConceptType.ModelConcept} key={ConceptType.ModelConcept}>{models}</g> 
         )
         : null;
 }

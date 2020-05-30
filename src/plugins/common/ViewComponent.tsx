@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { AppContext, AppContextType } from '../../core/gui/Context';
 import { colors } from '../../core/gui/styles';
 import { InstanceProps } from '../InstanceProps';
 import { ToolType } from './tools/Tool';
@@ -7,8 +6,6 @@ import { View } from '../../core/models/views/View';
 
 
 export class ViewComponent<T extends View> extends React.Component<InstanceProps<T>> {
-    static contextType = AppContext;
-    context: AppContextType;
     protected ref: React.RefObject<HTMLDivElement>;
 
     constructor(props: InstanceProps<T>) {
@@ -18,7 +15,7 @@ export class ViewComponent<T extends View> extends React.Component<InstanceProps
     }
 
     componentDidMount() {
-        this.ref.current && this.context.registry.services.hotkey.registerInput(this.ref.current);
+        this.ref.current && this.props.registry.services.hotkey.registerInput(this.ref.current);
     }
 
     componentWillUnmount() {

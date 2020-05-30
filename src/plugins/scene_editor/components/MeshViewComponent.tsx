@@ -42,7 +42,7 @@ export class MeshViewComponent extends ViewComponent<MeshView> {
     }
 
     private renderRect(item: MeshView) {
-        const stroke = this.context.registry.stores.selectionStore.contains(item) || this.context.registry.services.pointer.hoveredItem === item ? colors.views.highlight : 'black';
+        const stroke = this.props.registry.stores.selectionStore.contains(item) || this.props.registry.services.pointer.hoveredItem === item ? colors.views.highlight : 'black';
 
         return (
             <rect
@@ -76,7 +76,7 @@ export class MeshViewComponent extends ViewComponent<MeshView> {
 
 export function MeshViewContainerComponent(props: GroupProps) {
     const views = getSortedMeshViews(props.registry).map(item => (
-        <MeshViewComponent  
+        <MeshViewComponent
             item={item}
             renderWithSettings={props.renderWithSettings}
             registry={props.registry}
@@ -85,7 +85,7 @@ export function MeshViewContainerComponent(props: GroupProps) {
         />
     ));
 
-    return views.length > 0 ? <g data-concept-type={ConceptType.MeshConcept} key={ConceptType.MeshConcept}>{views}</g> : null;
+    return views.length > 0 ? <g data-view-type={ConceptType.MeshConcept} key={ConceptType.MeshConcept}>{views}</g> : null;
 }
 
 function getSortedMeshViews(registry: Registry) {

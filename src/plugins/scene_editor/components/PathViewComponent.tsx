@@ -99,7 +99,7 @@ export function PathViewContainerComponent(props: GroupProps) {
 
     return pathes.length > 0 ? 
         (
-            <g data-concept-type={ConceptType.PathConcept} key={ConceptType.PathConcept}>{pathes}</g> 
+            <g data-view-type={ConceptType.PathConcept} key={ConceptType.PathConcept}>{pathes}</g> 
         )
         : null;
 }

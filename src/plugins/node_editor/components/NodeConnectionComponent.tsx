@@ -55,7 +55,7 @@ export class AllNodeConnectionsComponent extends React.Component<GroupProps> {
             )
         );
 
-        return connections.length > 0 ? <g data-concept-type={FeedbackType.NodeConnectorFeedback} key={FeedbackType.NodeConnectorFeedback}>{components}</g> : null;
+        return connections.length > 0 ? <g data-view-type={FeedbackType.NodeConnectorFeedback} key={FeedbackType.NodeConnectorFeedback}>{components}</g> : null;
 
     }
 }

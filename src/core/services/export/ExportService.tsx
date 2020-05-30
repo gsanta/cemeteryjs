@@ -22,7 +22,7 @@ export class ExportService {
         const closeTag =  '</svg>';
         return (
             `${startTag}` +
-                `<g data-export-group="plugins">
+                `<g data-section="plugins">
                     ${serializedPlugins}
                 </g>` +
             `${closeTag}`
