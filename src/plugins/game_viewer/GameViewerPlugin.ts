@@ -58,7 +58,7 @@ export class GameViewerPlugin extends AbstractPlugin {
     }
 
     resize() {
-        if (this.registry.services.game.gameEngine) {
+        if (this.registry.services.game && this.registry.services.game.gameEngine) {
             this.registry.services.game.gameEngine.engine.resize();
         }
     }

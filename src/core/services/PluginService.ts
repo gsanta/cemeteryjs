@@ -115,7 +115,10 @@ export class PluginService {
 
         const layout = predefinedLayout.activePluginNames.length === 1 ? this.singleLayout : this.doubleLayout;
 
-        layout.configs.forEach((config, index) => config.activePlugin = this.getViewById(predefinedLayout.activePluginNames[index]));
+        layout.configs.forEach((config, index) => {
+            config.activePlugin = this.getViewById(predefinedLayout.activePluginNames[index]);
+            config.activePlugin.resize();
+        });
         this.currentLayout = layout;
         this.visibilityDirty = true;
         this.currentPredefinedLayoutTitle = title;

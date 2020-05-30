@@ -13,6 +13,7 @@ const CodeEditorStyled = styled.div`
     height: 100%;
     color: white;
     position: relative;
+    overflow: hidden;
 `;
 
 const EditorStyled = styled.div`

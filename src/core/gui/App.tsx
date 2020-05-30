@@ -51,7 +51,10 @@ export class App extends React.Component<{}, AppState> {
 
         document.getElementsByTagName('body')[0].addEventListener('onfocus', () => {
             console.log('body focus')
-        })
+        });
+
+        // TODO: find a better place
+        this.context.registry.services.plugin.selectPredefinedLayout('Scene Editor');
     }
 
     componentDidUpdate() {
@@ -83,8 +86,8 @@ export class App extends React.Component<{}, AppState> {
         return this.context.registry.services.plugin.getCurrentLayout().configs.map(config => viewFactory(config.activePlugin));
     }
 
-    private resize() {
-        this.context.registry.services.plugin.getCurrentLayout().configs.forEach(config => config.activePlugin.resize());
+    private resize(sizes: number[]) {
+        this.context.registry.services.plugin.getCurrentLayout().configs.forEach(config => config.activePlugin.resize(sizes));
     }
 
     private updateCanvasVisibility() {
@@ -103,8 +106,8 @@ export class App extends React.Component<{}, AppState> {
                     'width': '2px',
                     'cursor': 'ew-resize'
                 }),
-                onDrag: () => {
-                    this.resize();
+                onDrag: (sizes) => {
+                    this.resize(sizes);
                 }
             }
         )

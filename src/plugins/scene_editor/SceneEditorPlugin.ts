@@ -71,7 +71,8 @@ export class SceneEditorPlugin extends AbstractPlugin {
     }
 
     resize(): void {
-        this.camera.resize(getScreenSize(SceneEditorPlugin.id));
+        const screenSize = getScreenSize(SceneEditorPlugin.id);
+        screenSize && this.camera.resize(screenSize);
         this.registry.tools.zoom.resize();
         this.registry.services.update.runImmediately(UpdateTask.RepaintCanvas);
     };
