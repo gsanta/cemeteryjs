@@ -3,7 +3,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { CanvasComponent } from '../common/CanvasComponent';
 import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
-import { ToolType } from '../common/tools/Tool';
+import { PlayIconComponent } from '../common/toolbar/icons/PlayIconComponent';
 import { CodeEditorPlugin, initCode } from './CodeEditorPlugin';
 
 const CodeEditorStyled = styled.div`
@@ -44,7 +44,7 @@ export class CodeEditorComponent extends CanvasComponent {
 
         setTimeout(() => {
             view.editors = [];
-            
+
             const editor1Element: HTMLElement = document.querySelector(`#${view.getId()} .editor1`);
             const editor1 = monaco.editor.create(editor1Element, {
                 value: initCode,
@@ -83,10 +83,18 @@ export class CodeEditorComponent extends CanvasComponent {
         return (
                 <CodeEditorStyled ref={this.ref} id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>
                     <ToolbarComponent
-                        tools={[ToolType.Zoom, ToolType.Pan]}
+                        tools={[]}
                         view={view}
                         renderFullScreenIcon={true}
                         backgroundColor="black"
+                        centerIcons={
+                            [
+                                <PlayIconComponent
+                                    state={'default'}
+                                    onClick={() => null} 
+                                />
+                            ]
+                        }
                     />
                     <EditorsStyled>
                         <EditorStyled className="editor1" height="100px"/>

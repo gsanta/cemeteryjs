@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { WheelListener } from '../../core/services/WheelListener';
-import { WindowToolbarStyled } from '../../core/WindowToolbar';
 import { CanvasComponent } from '../common/CanvasComponent';
 import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
 import { ToolType } from '../common/tools/Tool';

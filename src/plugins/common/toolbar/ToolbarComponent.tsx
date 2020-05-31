@@ -63,17 +63,21 @@ export class ToolbarComponent extends React.Component<ToolbarProps> {
             rightIcons.push(fullScreenIcon);
         }
 
+        const leftSection = <ToolGroupStyled>{toolIcons}{this.props.children}</ToolGroupStyled>
         const centerSection = <ToolGroupStyled>{this.props.centerIcons}</ToolGroupStyled>
         const rightSection =  <ToolGroupStyled>{rightIcons}</ToolGroupStyled>;
 
         return (
             <ToolbarStyled {...this.props}>
-                <ToolGroupStyled>
-                    {toolIcons}
-                    {this.props.children}
-                </ToolGroupStyled>
-                {this.props.centerIcons ? centerSection : null}
-                {rightIcons.length > 0 ? rightSection : null}
+                <div>
+                    {toolIcons.length || this.props.children ? leftSection : null}
+                </div>
+                <div>
+                    {this.props.centerIcons ? centerSection : null}
+                </div>
+                <div>
+                    {rightIcons.length > 0 ? rightSection : null}
+                </div>
             </ToolbarStyled>
         )
     }
