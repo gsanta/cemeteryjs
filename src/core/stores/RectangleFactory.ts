@@ -1,36 +1,28 @@
-import { Color3, Mesh, MeshBuilder, Scene, Space, StandardMaterial, Vector3 } from 'babylonjs';
-import { Registry } from '../../../core/Registry';
-import { Point } from '../../../core/geometry/shapes/Point';
-import { Rectangle } from '../../../core/geometry/shapes/Rectangle';
-import { MaterialBuilder } from './MaterialFactory';
-import { MeshView } from '../../../core/models/views/MeshView';
+import { Color3, Mesh, MeshBuilder, Scene, Space, StandardMaterial, Vector3, Texture } from 'babylonjs';
+import { Registry } from '../Registry';
+import { Point } from '../geometry/shapes/Point';
+import { Rectangle } from '../geometry/shapes/Rectangle';
+import { MeshView } from '../models/views/MeshView';
+
+export class MaterialBuilder {
+    static CreateMaterial(name: string, scene: Scene): StandardMaterial {
+        return new StandardMaterial(name, scene);
+    }
+
+    static CreateTexture(path: string, scene: Scene): Texture {
+        return new Texture(path, scene);
+    }
+}
 
 export class RectangleFactory  {
     private height: number;
 
-    private registry: Registry;
     private materialBuilder: typeof MaterialBuilder;
     private materialIndex = 0;
 
-    constructor(registry: Registry, height: number) {
-        this.registry = registry;
+    constructor(height: number) {
         this.height = height;
         this.materialBuilder = MaterialBuilder;
-    }
-
-    createMesh2(scene: Scene, point: Point) {
-        const mesh = MeshBuilder.CreateBox(
-            'abcd',
-            {
-                width: 1,
-                depth: 1,
-                height: 1
-            },
-            scene
-        );
-
-        mesh.translate(new Vector3(point.x, 0, point.y), 1, Space.WORLD);
-
     }
 
     createMesh(meshObject: MeshView, scene: Scene): Mesh {
@@ -69,5 +61,9 @@ export class RectangleFactory  {
         const mat =  this.materialBuilder.CreateMaterial(`${this.materialIndex++}`, scene);
         mat.diffuseColor = Color3.FromHexString(color);
         return mat;
+    }
+
+    createMaterial(meshObject: MeshView, scene: Scene): StandardMaterial {
+        return this.createSimpleMaterial(meshObject.color, scene);
     }
 }

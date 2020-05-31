@@ -1,5 +1,5 @@
 import { IConceptConverter } from "./IConceptConverter";
-import { IGameObject } from "../../../game/models/objects/IGameObject";
+import { IGameModel } from "../../models/game_objects/IGameModel";
 import { Registry } from "../../Registry";
 import { PathView } from "../../models/views/PathView";
 import { ConceptType } from "../../models/views/View";
@@ -13,7 +13,7 @@ export class PathConceptConverter implements IConceptConverter {
     }
 
 
-    convert(pathConcept: PathView): IGameObject {
+    convert(pathConcept: PathView): IGameModel {
         this.registry.stores.gameStore.add(pathConcept);
 
         return pathConcept;

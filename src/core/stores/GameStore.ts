@@ -1,4 +1,4 @@
-import { IGameObject } from '../../game/models/objects/IGameObject';
+import { IGameModel } from '../models/game_objects/IGameModel';
 import { RouteModel } from '../models/game_objects/RouteModel';
 import { Registry } from '../Registry';
 import { MeshView } from '../models/views/MeshView';
@@ -6,10 +6,10 @@ import { ConceptType, View } from '../models/views/View';
 import { AbstractStore } from './AbstractStore';
 
 export class GameStore extends AbstractStore {
-    private nameToObjMap: Map<string, IGameObject> = new Map();
+    private nameToObjMap: Map<string, IGameModel> = new Map();
     private registry: Registry;
 
-    objs: IGameObject[] = [];
+    objs: IGameModel[] = [];
 
     constructor(registry: Registry) {
         super();
@@ -20,18 +20,18 @@ export class GameStore extends AbstractStore {
         return <MeshView[]> this.objs.filter(gameObject => gameObject.id === 'enemy');
     }
 
-    add(gameObject: IGameObject) {
+    add(gameObject: IGameModel) {
         super.addItem(gameObject);
         this.objs.push(gameObject);
         this.nameToObjMap.set(gameObject.id, gameObject);
     }
 
-    addItem(model: IGameObject) {
+    addItem(model: IGameModel) {
         super.addItem(model);
         this.objs.push(model);
     }
 
-    getByName<T extends IGameObject>(name: string): T {
+    getByName<T extends IGameModel>(name: string): T {
         return <T> this.nameToObjMap.get(name);
     }
 

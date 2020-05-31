@@ -1,9 +1,9 @@
-import { IGameObject } from "../../../game/models/objects/IGameObject";
-import { PathCorner } from "../../../game/models/objects/PathCorner";
+import { IGameModel } from "./IGameModel";
+import { PathCorner } from "./PathCorner";
 import { ConceptType } from "../views/View";
 import { MeshModel } from "./MeshModel";
 import { PathModel } from "./PathModel";
-import { RouteWalker } from "../../../game/services/walkers/RouteWalker";
+import { RouteWalker } from "./RouteWalker";
 
 export enum RouteEvent {
     Start = 'Start',
@@ -30,7 +30,7 @@ export function getAllRouteEvents() {
     return routeEvents;
 }
 
-export class RouteModel implements IGameObject {
+export class RouteModel implements IGameModel {
     readonly type = ConceptType.RouteConcept;
     private readonly eventHandlers: Map<RouteEvent, (() => void)[]> = new Map();
 

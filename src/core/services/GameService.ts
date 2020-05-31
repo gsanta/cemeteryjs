@@ -1,27 +1,17 @@
 import { Engine } from "babylonjs";
 import { Scene } from "babylonjs/scene";
-import { CharacterMovement } from "../../game/services/behaviour/CharacterMovement";
-import { GameEventManager, GamepadEvent } from "../../game/services/GameEventManager";
-import { PlayerListener } from "../../game/services/listeners/PlayerListener";
-import { AfterRenderTrigger } from "../../game/services/triggers/AfterRenderTrigger";
-import { KeyboardTrigger } from "../../game/services/triggers/KeyboardTrigger";
 import { GameEngine } from "../../plugins/game_viewer/GameEngine";
 import { MeshView } from "../models/views/MeshView";
 import { ConceptType, View } from "../models/views/View";
 import { Registry } from "../Registry";
 import { IConceptConverter } from "./convert/IConceptConverter";
-import { IViewImporter } from "./import/IViewImporter";
 import { ImportService } from "./import/ImportService";
 
 export class GameService {
     serviceName = 'game-service';
     gameEngine: GameEngine;
     
-    private keyboardTrigger: KeyboardTrigger;
-    private afterRenderTrigger: AfterRenderTrigger;
     private afterRenders: (() => void)[] = [];
-    gameEventManager: GameEventManager;
-    characterMovement: CharacterMovement;
 
     viewImporter: ImportService;
     viewConverters: IConceptConverter[] = [];
@@ -35,13 +25,6 @@ export class GameService {
     init(canvas: HTMLCanvasElement) {
         this.gameEngine = new GameEngine();
         this.gameEngine.init(canvas);
-        this.gameEventManager = new GameEventManager();
-        this.characterMovement = new CharacterMovement(this.registry);
-
-        const playerListener = new PlayerListener(this.registry);
-        this.gameEventManager.listeners.registerGamepadListener((gamepadEvent: GamepadEvent) => playerListener.gamepadEvent(gamepadEvent));
-        this.keyboardTrigger = new KeyboardTrigger(this.registry);
-        this.afterRenderTrigger = new AfterRenderTrigger(this.registry)
 
         this.gameEngine.scene.registerAfterRender(() => {
             this.afterRenders.forEach(callback => callback());
@@ -89,10 +72,6 @@ export class GameService {
         this.deleteConcepts(concepts);
 
         concepts.forEach(concept => this.addConcept(concept))
-    }
-
-    playerAction(gamepadEvent: GamepadEvent[]) {
-        this.characterMovement.action(gamepadEvent);
     }
 
     getEngine(): Engine {

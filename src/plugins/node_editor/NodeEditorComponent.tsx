@@ -13,6 +13,7 @@ import { ToolType } from '../common/tools/Tool';
 import { NodeEditorPlugin } from './NodeEditorPlugin';
 import { AllNodeConnectionsComponent } from './components/NodeConnectionComponent';
 import { NodeGroupComponent } from './components/NodeGroupComponent';
+import { NodeViewContainerComponent } from './components/NodeComponent';
 
 const EditorComponentStyled = styled.div`
     width: 100%;
@@ -91,7 +92,7 @@ export class NodeEditorComponent extends CanvasComponent {
                     onMouseOut={() => view.out()}
                     onWheel={(e) => this.wheelListener.onWheel(e.nativeEvent)}
                 >
-                    <NodeGroupComponent registry={this.context.registry} renderWithSettings={false} hover={hover} unhover={unhover}/>
+                    <NodeViewContainerComponent registry={this.context.registry} renderWithSettings={false} hover={hover} unhover={unhover}/>
                     <AllNodeConnectionsComponent registry={this.context.registry} renderWithSettings={false} hover={hover} unhover={unhover}/>
                     {this.renderFeedback()}
                     {this.renderFeedbacks()}

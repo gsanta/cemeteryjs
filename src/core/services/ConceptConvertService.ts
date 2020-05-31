@@ -1,4 +1,4 @@
-import { IGameObject } from "../../game/models/objects/IGameObject";
+import { IGameModel } from "../models/game_objects/IGameModel";
 import { Registry } from "../Registry";
 import { MeshConceptConverter } from "./convert/MeshConceptConverter";
 import { PathConceptConverter } from "./convert/PathConceptConverter";
@@ -17,7 +17,7 @@ export class ConceptConvertService {
         ];
     }
 
-    convert(concept: View): IGameObject {
+    convert(concept: View): IGameModel {
         return this.getConceptConverter(concept).convert(concept);
     }
 

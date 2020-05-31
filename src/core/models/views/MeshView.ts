@@ -1,7 +1,5 @@
 import { Mesh, Vector3, Axis, Space, Quaternion } from 'babylonjs';
-import { IGameObject } from '../../../game/models/objects/IGameObject';
-import { BehaviourType } from '../../../game/services/behaviour/IBehaviour';
-import { GamepadEvent } from '../../../game/services/GameEventManager';
+import { IGameModel } from '../game_objects/IGameModel';
 import { Point } from '../../geometry/shapes/Point';
 import { Rectangle } from '../../geometry/shapes/Rectangle';
 import { toVector3 } from '../../geometry/utils/GeomUtils';
@@ -32,7 +30,7 @@ export enum AnimationState {
 }
 
 
-export class MeshView extends View implements IGameObject {
+export class MeshView extends View implements IGameModel {
     type = ConceptType.MeshConcept;
     mesh: Mesh;
 
@@ -55,14 +53,6 @@ export class MeshView extends View implements IGameObject {
     yPos: number = 0;
 
     speed = 0.5;
-
-    activeBehaviour: BehaviourType;
-    actions: string[] = [
-        GamepadEvent.Forward,
-        GamepadEvent.Backward,
-        GamepadEvent.TurnLeft,
-        GamepadEvent.TurnRight
-    ];
     animations: string[] = ['animation1'];
     animationState = AnimationState.Playing;
     layer: number = 10;

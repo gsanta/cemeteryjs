@@ -1,7 +1,7 @@
 import { Mesh, Vector3, Space, StandardMaterial, Texture, Scene } from 'babylonjs';
 import { Rectangle } from '../geometry/shapes/Rectangle';
 import { MeshLoaderService } from '../services/MeshLoaderService';
-import { RectangleFactory } from '../../game/import/factories/RectangleFactory';
+import { RectangleFactory } from './RectangleFactory';
 import { Registry } from '../Registry';
 import { MeshView } from '../models/views/MeshView';
 
@@ -21,7 +21,7 @@ export class MeshStore {
 
     constructor(registry: Registry) {
         this.registry = registry;
-        this.rectangleFactory = new RectangleFactory(registry, 0.1);
+        this.rectangleFactory = new RectangleFactory(0.1);
     }
     
     addTemplate(fileName: string, mesh: Mesh) {

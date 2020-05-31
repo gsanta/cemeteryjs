@@ -1,4 +1,4 @@
-import { IGameObject } from "../../../game/models/objects/IGameObject";
+import { IGameModel } from "../../models/game_objects/IGameModel";
 import { RouteModel } from "../../models/game_objects/RouteModel";
 import { IConceptConverter } from "./IConceptConverter";
 import { Registry } from "../../Registry";
@@ -13,7 +13,7 @@ export class MeshConceptConverter implements IConceptConverter {
         this.registry = registry;
     }
 
-    convert(meshConcept: MeshView): IGameObject {
+    convert(meshConcept: MeshView): IGameModel {
         const meshObject = meshConcept;
 
         this.registry.stores.gameStore.add(meshObject);

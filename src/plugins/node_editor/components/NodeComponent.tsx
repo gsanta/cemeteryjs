@@ -47,7 +47,7 @@ export class NodeComponent extends ViewComponent<NodeView> {
                     data-wg-name={this.props.item.id}
                 >
                     {this.renderRect(this.props.item)}
-                    {this.props.renderWithSettings ? this.renderNode(this.props.item) : null}
+                    {this.renderNode(this.props.item)}
                 </g>
                 {this.renderJoinPointViews(this.props.item)}
             </g>

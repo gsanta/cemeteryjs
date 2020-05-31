@@ -1,8 +1,8 @@
-import { Point } from "../../../core/geometry/shapes/Point";
-import { Segment } from "../../../core/geometry/shapes/Segment";
-import { PathCorner } from "../../models/objects/PathCorner";
-import { RouteModel, RouteEvent } from "../../../core/models/game_objects/RouteModel";
-import { PathView } from "../../../core/models/views/PathView";
+import { Point } from "../../geometry/shapes/Point";
+import { Segment } from "../../geometry/shapes/Segment";
+import { PathCorner } from "./PathCorner";
+import { RouteModel, RouteEvent } from "./RouteModel";
+import { PathView } from "../views/PathView";
 
 const defaultSpeed = 1000 / 4;
 

@@ -15,10 +15,4 @@ export class MeshModel {
     getAnimations(): string[] {
         return this.meshView.animations;
     }
-
-    getActions(): string[] {
-        return this.meshView.actions;
-    }
-
-    
 }
