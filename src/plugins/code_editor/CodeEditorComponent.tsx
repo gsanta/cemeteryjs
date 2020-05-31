@@ -1,15 +1,13 @@
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import * as React from 'react';
-import * as ReactDom from 'react-dom';
 import styled from 'styled-components';
-import { WindowToolbarStyled } from '../../core/WindowToolbar';
 import { CanvasComponent } from '../common/CanvasComponent';
 import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
 import { ToolType } from '../common/tools/Tool';
-import { CodeEditorPlugin } from './CodeEditorPlugin';
-import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import { CodeEditorPlugin, initCode } from './CodeEditorPlugin';
 
 const CodeEditorStyled = styled.div`
-    background: #33334C;
+    background: black;
     height: 100%;
     color: white;
     position: relative;
@@ -17,9 +15,17 @@ const CodeEditorStyled = styled.div`
 `;
 
 const EditorStyled = styled.div`
-    margin-top: 40px;
     width: 100%;
+    height: ${(props: {height: string}) => props.height};
+`;
+
+const EditorsStyled = styled.div`
+    margin-top: 40px;
     height: calc(100% - 40px);
+
+    .editor1 {
+        margin-bottom: 20px;
+    }
 `;
 
 export class CodeEditorComponent extends CanvasComponent {
@@ -37,15 +43,29 @@ export class CodeEditorComponent extends CanvasComponent {
         const view = this.context.registry.services.plugin.getViewById<CodeEditorPlugin>(CodeEditorPlugin.id);
 
         setTimeout(() => {
-            const editorElement: HTMLElement = document.querySelector(`#${view.getId()} .editor`);
-            const editor = monaco.editor.create(editorElement, {
+            view.editors = [];
+            
+            const editor1Element: HTMLElement = document.querySelector(`#${view.getId()} .editor1`);
+            const editor1 = monaco.editor.create(editor1Element, {
+                value: initCode,
+                language: 'javascript',
+                automaticLayout: true,
+                readOnly: true,
+                theme: "vs-dark",
+            });
+
+            view.editors.push(editor1);
+
+            const editor2Element: HTMLElement = document.querySelector(`#${view.getId()} .editor2`);
+            const editor2 = monaco.editor.create(editor2Element, {
+                value: initCode,
                 language: 'javascript',
                 automaticLayout: true,
                 readOnly: false,
                 theme: "vs-dark",
             });
 
-            view.editor = editor;
+            view.editors.push(editor2);;
         }, 0)
     }
 
@@ -68,7 +88,10 @@ export class CodeEditorComponent extends CanvasComponent {
                         renderFullScreenIcon={true}
                         backgroundColor="black"
                     />
-                    <EditorStyled className="editor"/>
+                    <EditorsStyled>
+                        <EditorStyled className="editor1" height="100px"/>
+                        <EditorStyled className="editor2" height="calc(100% - 120px)"/>
+                    </EditorsStyled>
                 </CodeEditorStyled>
         );
     }

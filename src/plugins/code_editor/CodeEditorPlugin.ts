@@ -5,12 +5,16 @@ import { ICamera } from "../common/camera/ICamera";
 import { Tool } from "../common/tools/Tool";
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
+export const initCode = `
+    const gameRegistry = cemetery.init(document.getElementById('canvas'));
+`;
+
 export class CodeEditorPlugin extends AbstractPlugin {
     static id = 'code-editor-plugin';
     visible = true;
     allowedLayouts = new Set([LayoutType.Single, LayoutType.Double]);
 
-    editor: monaco.editor.IStandaloneCodeEditor;
+    editors: monaco.editor.IStandaloneCodeEditor[] = [];
 
     private renderCanvasFunc: () => void;
 
@@ -44,9 +48,9 @@ export class CodeEditorPlugin extends AbstractPlugin {
     }
 
     resize() {
-        if (this.editor) {
+        if (this.editors.length > 0) {
             setTimeout(() => {
-                this.editor.layout();
+                this.editors.forEach(editor => editor.layout());
             }, 100);
         }
     }
