@@ -131,7 +131,10 @@ export class PluginService {
     setLayout(layoutType: LayoutType, activePluginNames?: string[]) {
         this.currentLayout = layoutType === LayoutType.Single ? this.singleLayout : this.doubleLayout;
         if (activePluginNames) {
-            this.currentLayout.configs.forEach((config, index) => config.activePlugin = this.getViewById(activePluginNames[index]));
+            this.currentLayout.configs.forEach((config, index) => {
+                config.activePlugin = this.getViewById(activePluginNames[index]);
+                config.activePlugin.resize();
+            });
         }
         this.visibilityDirty = true;
     }

@@ -64,13 +64,11 @@ export class NodeEditorComponent extends CanvasComponent {
         const view = this.context.registry.services.plugin.getViewById<NodeEditorPlugin>(NodeEditorPlugin.id);
         return (
             <EditorComponentStyled ref={this.ref} id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>
-                <WindowToolbarStyled>
-                    <ToolbarComponent
-                            tools={[ToolType.Select, ToolType.Delete, ToolType.Pan, ToolType.Zoom]}
-                            view={view}
-                            renderFullScreenIcon={false}
-                    />
-                </WindowToolbarStyled>
+                <ToolbarComponent
+                        tools={[ToolType.Select, ToolType.Delete, ToolType.Pan, ToolType.Zoom]}
+                        view={view}
+                        renderFullScreenIcon={false}
+                />
                 <DropLayer 
                     isDragging={!!this.context.registry.services.pointer.droppableItem}
                     onDrop={(p, droppedItemType) => this.context.registry.services.mouse.onMouseUp({x: p.x, y: p.y, which: 1} as MouseEvent, droppedItemType)}

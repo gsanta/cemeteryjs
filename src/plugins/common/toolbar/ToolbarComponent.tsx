@@ -16,13 +16,22 @@ export interface ToolbarProps {
     children?: JSX.Element | JSX.Element[];
     renderFullScreenIcon: boolean;
     centerIcons?: JSX.Element[];
+    backgroundColor?: string;
 }
 
 const ToolbarStyled = styled.div`
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: 40px;
+    padding: 5px 10px;
+    z-index: 100;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
     width: 100%;
+    background-color: ${(props: ToolbarProps) => props.backgroundColor ? props.backgroundColor : 'transparent'};
 
     > *:not(:last-child) {
         margin-right: 1px;
@@ -32,6 +41,7 @@ const ToolbarStyled = styled.div`
 const ToolGroupStyled = styled.div`
     display: flex;
     border: 1px solid ${colors.panelBackgroundLight};
+    height: 26px;
 `;
 
 export class ToolbarComponent extends React.Component<ToolbarProps> {
@@ -57,7 +67,7 @@ export class ToolbarComponent extends React.Component<ToolbarProps> {
         const rightSection =  <ToolGroupStyled>{rightIcons}</ToolGroupStyled>;
 
         return (
-            <ToolbarStyled>
+            <ToolbarStyled {...this.props}>
                 <ToolGroupStyled>
                     {toolIcons}
                     {this.props.children}

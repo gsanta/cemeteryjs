@@ -5,6 +5,7 @@ export class CanvasComponent extends React.Component {
     static contextType = AppContext;
     context: AppContextType;
     protected ref: React.RefObject<HTMLDivElement>;
+    protected noRegisterKeyEvents = false;
 
     constructor(props: {}) {
         super(props);
@@ -13,10 +14,12 @@ export class CanvasComponent extends React.Component {
     }
 
     componentDidMount() {
+        if (this.noRegisterKeyEvents) { return; }
         this.context.registry.services.hotkey.registerInput(this.ref.current);
     }
 
     componentWillUnmount() {
+        if (this.noRegisterKeyEvents) { return; }
         this.context.registry.services.hotkey.unregisterInput(this.ref.current);
     }
 }

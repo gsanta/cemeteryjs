@@ -58,11 +58,11 @@ export class HotkeyService {
     }
 
     focus(): void {
-        this.primaryInput && this.primaryInput.focus();
+        // this.primaryInput && this.primaryInput.focus();
     }
 
     blur(): void {
-        this.primaryInput && this.primaryInput.blur();
+        // this.primaryInput && this.primaryInput.blur();
     }
 }
 

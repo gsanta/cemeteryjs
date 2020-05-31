@@ -23,6 +23,12 @@ const EditorStyled = styled.div`
 `;
 
 export class CodeEditorComponent extends CanvasComponent {
+    
+    constructor(props: {}) {
+        super(props);
+        this.noRegisterKeyEvents = true;
+    }
+
     componentDidMount() {
         super.componentDidMount();
         this.context.registry.services.plugin.getViewById<CodeEditorPlugin>(CodeEditorPlugin.id).setCanvasRenderer(() => this.forceUpdate());
@@ -33,13 +39,14 @@ export class CodeEditorComponent extends CanvasComponent {
         setTimeout(() => {
             const editorElement: HTMLElement = document.querySelector(`#${view.getId()} .editor`);
             const editor = monaco.editor.create(editorElement, {
-                value: 'console.log("Hello, world")',
                 language: 'javascript',
-                automaticLayout: true
+                automaticLayout: true,
+                readOnly: false,
+                theme: "vs-dark",
             });
 
             view.editor = editor;
-        }, 2000)
+        }, 0)
     }
 
     componentWillUnmount() {
@@ -55,13 +62,12 @@ export class CodeEditorComponent extends CanvasComponent {
 
         return (
                 <CodeEditorStyled ref={this.ref} id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>
-                    <WindowToolbarStyled>
-                        <ToolbarComponent
-                            tools={[ToolType.Zoom, ToolType.Pan]}
-                            view={view}
-                            renderFullScreenIcon={true}
-                        />
-                    </WindowToolbarStyled>
+                    <ToolbarComponent
+                        tools={[ToolType.Zoom, ToolType.Pan]}
+                        view={view}
+                        renderFullScreenIcon={true}
+                        backgroundColor="black"
+                    />
                     <EditorStyled className="editor"/>
                 </CodeEditorStyled>
         );

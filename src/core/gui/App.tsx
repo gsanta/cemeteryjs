@@ -86,8 +86,8 @@ export class App extends React.Component<{}, AppState> {
         return this.context.registry.services.plugin.getCurrentLayout().configs.map(config => viewFactory(config.activePlugin));
     }
 
-    private resize(sizes: number[]) {
-        this.context.registry.services.plugin.getCurrentLayout().configs.forEach(config => config.activePlugin.resize(sizes));
+    private resize() {
+        this.context.registry.services.plugin.getCurrentLayout().configs.forEach(config => config.activePlugin.resize());
     }
 
     private updateCanvasVisibility() {
@@ -106,8 +106,8 @@ export class App extends React.Component<{}, AppState> {
                     'width': '2px',
                     'cursor': 'ew-resize'
                 }),
-                onDrag: (sizes) => {
-                    this.resize(sizes);
+                onDrag: () => {
+                    this.resize();
                 }
             }
         )

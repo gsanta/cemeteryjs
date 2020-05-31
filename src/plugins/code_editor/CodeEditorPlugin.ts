@@ -44,7 +44,11 @@ export class CodeEditorPlugin extends AbstractPlugin {
     }
 
     resize() {
-        this.editor && this.editor.layout();
+        if (this.editor) {
+            setTimeout(() => {
+                this.editor.layout();
+            }, 100);
+        }
     }
 
     setCanvasRenderer(renderFunc: () => void) {

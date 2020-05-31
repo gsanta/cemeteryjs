@@ -261,7 +261,8 @@ export class NodeEditorPlugin extends AbstractPlugin {
     }
 
     resize(): void {
-        this.camera.resize(getScreenSize(NodeEditorPlugin.id));
+        const screenSize = getScreenSize(NodeEditorPlugin.id);
+        screenSize && this.camera.resize(screenSize);
         this.registry.tools.zoom.resize();
         this.registry.services.update.runImmediately(UpdateTask.RepaintCanvas);
     };

@@ -66,29 +66,27 @@ export class GameViewerComponent extends CanvasComponent {
 
         return (
                 <GameViewerStyled ref={this.ref} id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>
-                    <WindowToolbarStyled>
-                        <ToolbarComponent
-                            tools={[ToolType.Zoom, ToolType.Pan]}
-                            view={view}
-                            renderFullScreenIcon={true}
-                            centerIcons={
-                                [
-                                    <PlayIconComponent 
-                                        state={timelineState === TimelineState.Playing ? 'active' : 'default'}
-                                        onClick={() => settings.updateProp(TimelineState.Playing, GameViewerSettingsProps.TimelineState)} 
-                                    />,
-                                    <PauseIconComponent
-                                        state={timelineState === TimelineState.Paused ? 'active' : 'default'}
-                                        onClick={() => settings.updateProp(TimelineState.Paused, GameViewerSettingsProps.TimelineState)} 
-                                    />,
-                                    <StopIconComponent
-                                        state={timelineState === TimelineState.Stopped ? 'active' : 'default'}
-                                        onClick={() => settings.updateProp(TimelineState.Stopped, GameViewerSettingsProps.TimelineState)} 
-                                    />
-                                ]
-                            }
-                        />
-                    </WindowToolbarStyled>
+                    <ToolbarComponent
+                        tools={[ToolType.Zoom, ToolType.Pan]}
+                        view={view}
+                        renderFullScreenIcon={true}
+                        centerIcons={
+                            [
+                                <PlayIconComponent 
+                                    state={timelineState === TimelineState.Playing ? 'active' : 'default'}
+                                    onClick={() => settings.updateProp(TimelineState.Playing, GameViewerSettingsProps.TimelineState)} 
+                                />,
+                                <PauseIconComponent
+                                    state={timelineState === TimelineState.Paused ? 'active' : 'default'}
+                                    onClick={() => settings.updateProp(TimelineState.Paused, GameViewerSettingsProps.TimelineState)} 
+                                />,
+                                <StopIconComponent
+                                    state={timelineState === TimelineState.Stopped ? 'active' : 'default'}
+                                    onClick={() => settings.updateProp(TimelineState.Stopped, GameViewerSettingsProps.TimelineState)} 
+                                />
+                            ]
+                        }
+                    />
                     <OverlayStyled
                         tabIndex={0}
                         onMouseDown={(e) => this.context.registry.services.mouse.onMouseDown(e.nativeEvent)}

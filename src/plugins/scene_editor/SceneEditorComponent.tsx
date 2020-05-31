@@ -58,17 +58,15 @@ export class SceneEditorComponent extends CanvasComponent {
 
         return (
             <EditorComponentStyled ref={this.ref} id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>
-                <WindowToolbarStyled>
-                    <ToolbarComponent
-                        tools={[ToolType.Rectangle, ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Zoom, ToolType.Pan]}
-                        view={view}
-                        renderFullScreenIcon={true}
-                    >
-                        <UndoIconComponent key={'undo-icon'} isActive={false} disabled={!history.hasUndoHistory()} onClick={() => history.undo()} format="short"/>
-                        <RedoIconComponent key={'redo-icon'} isActive={false} disabled={!history.hasRedoHistory()} onClick={() => history.redo()} format="short"/>
-    
-                    </ToolbarComponent>
-                </WindowToolbarStyled>
+                <ToolbarComponent
+                    tools={[ToolType.Rectangle, ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Zoom, ToolType.Pan]}
+                    view={view}
+                    renderFullScreenIcon={true}
+                >
+                    <UndoIconComponent key={'undo-icon'} isActive={false} disabled={!history.hasUndoHistory()} onClick={() => history.undo()} format="short"/>
+                    <RedoIconComponent key={'redo-icon'} isActive={false} disabled={!history.hasRedoHistory()} onClick={() => history.redo()} format="short"/>
+
+                </ToolbarComponent>
                 <SceneEditorComponentStyled
                     tabIndex={0}
                     viewBox={view.getCamera().getViewBoxAsString()}
