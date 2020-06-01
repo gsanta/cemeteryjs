@@ -2,8 +2,8 @@ import { Registry } from "../../../core/Registry";
 import { IPluginExporter } from "../../common/io/IPluginExporter";
 import { IViewExporter } from "../../common/io/IViewExporter";
 import { NodeEditorPlugin } from "../NodeEditorPlugin";
-import { NodeConnectionViewExporter } from './NodeConnectionViewExporter';
-import { NodeViewExporter } from './NodeViewExporter';
+import { NodeConnectionViewExporter } from './export/NodeConnectionViewExporter';
+import { NodeViewExporter } from './export/NodeViewExporter';
 
 export class NodeEditorExporter implements IPluginExporter {
     viewExporters: IViewExporter[];

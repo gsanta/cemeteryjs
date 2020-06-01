@@ -67,6 +67,7 @@ export class DeleteTool extends AbstractTool {
         const concepts = this.registry.stores.canvasStore.getAllConcepts();
         this.registry.services.game.deleteConcepts(concepts);
         this.registry.services.storage.clearAll();
+        this.registry.services.plugin.plugins.forEach(plugin => plugin.getStore()?.clear());
         this.registry.stores.canvasStore.clear();
         this.registry.services.update.runImmediately(UpdateTask.All);
     }

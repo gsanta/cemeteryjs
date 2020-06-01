@@ -17,6 +17,8 @@ import { RouteNode } from '../../core/models/nodes/RouteNode';
 import { PathNode } from '../../core/models/nodes/PathNode';
 import { NodeEditorSettings } from './settings/NodeEditorSettings';
 import { LayoutType } from '../../core/services/PluginService';
+import { NodeEditorExporter } from './io/NodeEditorExporter';
+import { NodeEditorImporter } from './io/NodeEditorImporter';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -227,6 +229,9 @@ export class NodeEditorPlugin extends AbstractPlugin {
 
         this.selectedTool = this.registry.tools.pan;
         this.nodeEditorSettings = new NodeEditorSettings(registry);
+
+        this.exporter = new NodeEditorExporter(this, this.registry);
+        this.importer = new NodeEditorImporter(this.registry);
 
         const templates: NodeModel[] = [
             new AndNode(undefined),

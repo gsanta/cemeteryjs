@@ -11,6 +11,11 @@ export enum ConceptType {
     ActionNodeConnectionConcept = 'ActionNodeConnectionConcept' 
 }
 
+export interface ViewJson {
+    type: string;
+    dimensions: string;
+}
+
 export abstract class View {
     id: string;
     type: string;
@@ -19,4 +24,16 @@ export abstract class View {
     dimensions: Rectangle;
     move(delta: Point): void {}
     delete(): View[] { return [this] }
+
+    toJson(): ViewJson {
+        return {
+            type: this.type,
+            dimensions: this.dimensions.toString()
+        };
+    }
+
+    fromJson(json: ViewJson) {
+        this.type = json.type;
+        this.dimensions = Rectangle.fromString(json.dimensions);
+    }
 }

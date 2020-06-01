@@ -34,10 +34,12 @@ export class NodeStore extends AbstractStore {
     }
 
     addNode(nodeView: NodeView) {
+        nodeView.id = this.generateUniqueName(ConceptType.ActionConcept);
         super.addItem(nodeView);
+        nodeView.settings = createNodeSettings(nodeView, this.registry);
+
         this.graph.addNode(nodeView.model);
         this.views.push(nodeView);
-        nodeView.settings = createNodeSettings(nodeView, this.registry);
 
         if (!this.nodesByType.has(nodeView.model.type)) {
             this.nodesByType.set(nodeView.model.type, []);
@@ -47,14 +49,13 @@ export class NodeStore extends AbstractStore {
     }
 
     addDroppable(droppable: DroppableItem, dropPosition: Point) {
-        const id = this.generateUniqueName(ConceptType.ActionConcept);
         const topLeft = dropPosition;
         const bottomRight = topLeft.clone().add(new Point(defaultNodeViewConfig.width, defaultNodeViewConfig.height));
 
         switch(droppable.itemType) {
             case 'Node':
                 const nodeType = (<DroppableNode> droppable).nodeTemplate.type;
-                const node = new NodeView(id, nodeType , new Rectangle(topLeft, bottomRight), this.graph);
+                const node = new NodeView(this.graph, {nodeType: nodeType, dimensions: new Rectangle(topLeft, bottomRight)});
                 this.addNode(node);
             break;        
             case 'Preset':
@@ -99,6 +100,13 @@ export class NodeStore extends AbstractStore {
 
     getConnections(): NodeConnectionView[] {
         return <NodeConnectionView[]> this.views.filter(v => v.type === ConceptType.ActionNodeConnectionConcept);
+    }
+
+    clear(): void {
+        super.clear();
+        this.views = [];
+        this.graph = new NodeGraph();
+        this.nodesByType = new Map();
     }
 
     protected getMaxIndexForType() {

@@ -40,14 +40,13 @@ export class NodePreset {
 
     private createNodes(centerPoint: Point): NodeView[] {
         return this.recipe.nodes.map(node => {
-            const id = this.registry.stores.nodeStore.generateUniqueName(ConceptType.ActionConcept);
             const offset = new Point(node.relativeCoordInUnit.x * 20, node.relativeCoordInUnit.y * 20); 
             const delta = node.relativeCoordInUnit
                 .mul(defaultNodeViewConfig.width, defaultNodeViewConfig.height)
                 .add(offset);
             const topLeft = centerPoint.clone().add(delta);
             const bottomRight = topLeft.clone().add(new Point(defaultNodeViewConfig.width, defaultNodeViewConfig.height));
-            const nodeView = new NodeView(id, node.type, new Rectangle(topLeft, bottomRight), this.registry.stores.nodeStore.graph);
+            const nodeView = new NodeView(this.registry.stores.nodeStore.graph, {nodeType: node.type, dimensions: new Rectangle(topLeft, bottomRight)});
             this.registry.stores.nodeStore.addNode(nodeView);
             return nodeView;
         });

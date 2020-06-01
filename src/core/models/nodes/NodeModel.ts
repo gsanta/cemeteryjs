@@ -39,6 +39,10 @@ export interface JoinPointSlot {
     name: string;
 }
 
+export interface NodeModelJson {
+    type: string;
+}
+
 export abstract class NodeModel {
     nodeView: NodeView;
     type: NodeType;
@@ -62,6 +66,16 @@ export abstract class NodeModel {
         return this.nodeView.joinPointViews
             .filter(joinPointView => joinPointView.getOtherNode() !== undefined)
             .map(joinPointView => joinPointView.getOtherNode().model);
+    }
+
+    toJson(): NodeModelJson {
+        return {
+            type: this.type
+        }
+    }
+
+    fromJson(json: NodeModelJson) {
+        this.type = <NodeType> json.type;
     }
 }
 

@@ -7,4 +7,6 @@ export class GameRegistry {
     constructor(registry: Registry) {
         this.registry = registry;
     }
+
+    
 }
