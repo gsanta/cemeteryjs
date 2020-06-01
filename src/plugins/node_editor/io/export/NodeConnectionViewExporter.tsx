@@ -2,7 +2,6 @@ import * as React from 'react';
 import { ConceptType } from '../../../../core/models/views/View';
 import { Registry } from '../../../../core/Registry';
 import { IViewExporter } from '../../../common/io/IViewExporter';
-import { AllNodeConnectionsComponent } from '../../components/NodeConnectionComponent';
 import ReactDOMServer = require('react-dom/server');
 
 export class NodeConnectionViewExporter implements IViewExporter {
@@ -14,6 +13,11 @@ export class NodeConnectionViewExporter implements IViewExporter {
     }
 
     export() {
-        return ReactDOMServer.renderToStaticMarkup(<AllNodeConnectionsComponent registry={this.registry} renderWithSettings={false}/>);
+        const connections = this.registry.stores.nodeStore.getConnections()
+
+        const connectionElements = connections.map(node => <g data-data={JSON.stringify(node.toJson())}></g>);
+        const groupElement = connections.length > 0 ? <g data-view-type={ConceptType.ActionNodeConnectionConcept} key={ConceptType.ActionNodeConnectionConcept}>{connectionElements}</g> : null;
+
+        return ReactDOMServer.renderToStaticMarkup(groupElement);
     }
 }

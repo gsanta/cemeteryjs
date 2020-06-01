@@ -54,10 +54,9 @@ export class NodePreset {
 
     private createConnections(nodes: NodeView[]) {
         this.recipe.connections.forEach(conn => {
-            const id = this.registry.stores.nodeStore.generateUniqueName(ConceptType.ActionNodeConnectionConcept);
             const joinPoint1 = nodes[conn.node1Index].findJoinPointView(<SlotName> conn.node1SlotName)
             const joinPoint2 = nodes[conn.node2Index].findJoinPointView(<SlotName> conn.node2SlotName)
-            const connection = new NodeConnectionView(id, joinPoint1, joinPoint2);
+            const connection = new NodeConnectionView({joinPoint1, joinPoint2});
             joinPoint1.connection = connection;
             joinPoint2.connection = connection;
             this.registry.stores.nodeStore.addConnection(connection);

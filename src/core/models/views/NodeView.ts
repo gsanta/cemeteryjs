@@ -38,8 +38,8 @@ export class NodeView<T extends NodeModel = NodeModel> extends View {
 
     private setup(nodeType: string) {
         this.model = <T> createNode(nodeType, this);
-        this.model.inputSlots.forEach(slot => this.joinPointViews.push(new JoinPointView(this, slot.name, true)));
-        this.model.outputSlots.forEach(slot => this.joinPointViews.push(new JoinPointView(this, slot.name, false)));
+        this.model.inputSlots.forEach(slot => this.joinPointViews.push(new JoinPointView(this, {slotName: slot.name, isInput: true})));
+        this.model.outputSlots.forEach(slot => this.joinPointViews.push(new JoinPointView(this, {slotName: slot.name, isInput: false})));
     }
 
     move(point: Point) {

@@ -12,6 +12,7 @@ export enum ConceptType {
 }
 
 export interface ViewJson {
+    id: string;
     type: string;
     dimensions: string;
 }
@@ -27,13 +28,15 @@ export abstract class View {
 
     toJson(): ViewJson {
         return {
+            id: this.id,
             type: this.type,
-            dimensions: this.dimensions.toString()
+            dimensions: this.dimensions ? this.dimensions.toString() : undefined
         };
     }
 
     fromJson(json: ViewJson) {
+        this.id = json.id;
         this.type = json.type;
-        this.dimensions = Rectangle.fromString(json.dimensions);
+        this.dimensions = json.dimensions && Rectangle.fromString(json.dimensions);
     }
 }

@@ -34,7 +34,7 @@ export class NodeStore extends AbstractStore {
     }
 
     addNode(nodeView: NodeView) {
-        nodeView.id = this.generateUniqueName(ConceptType.ActionConcept);
+        nodeView.id = nodeView.id === undefined ? this.generateUniqueName(ConceptType.ActionConcept) : nodeView.id;
         super.addItem(nodeView);
         nodeView.settings = createNodeSettings(nodeView, this.registry);
 
@@ -66,6 +66,7 @@ export class NodeStore extends AbstractStore {
     }
 
     addConnection(connection: NodeConnectionView) {
+        connection.id = connection.id === undefined ? this.generateUniqueName(ConceptType.ActionNodeConnectionConcept) : connection.id;
         super.addItem(connection);
         this.graph.addConnection(connection.joinPoint1.parent.model, connection.joinPoint2.parent.model);
         this.views.push(connection);

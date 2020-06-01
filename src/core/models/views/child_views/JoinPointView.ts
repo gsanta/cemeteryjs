@@ -3,11 +3,17 @@ import { NodeView } from "../NodeView";
 import { FeedbackType, ChildView } from "./ChildView";
 import { NodeConnectionView } from "../NodeConnectionView";
 import { sizes } from "../../../gui/styles";
-import { View } from "../View";
+import { View, ViewJson } from "../View";
 import { Rectangle } from "../../../geometry/shapes/Rectangle";
 
 export function isJoinPointView(view: View) {
     return view && view.type === FeedbackType.NodeConnectorFeedback;
+}
+
+export interface JoinPointViewJson extends ViewJson {
+    point: string;
+    slotName: string;
+    isInput: boolean;
 }
 
 export class JoinPointView extends ChildView<NodeView> {
@@ -20,12 +26,15 @@ export class JoinPointView extends ChildView<NodeView> {
     isInput: boolean;
     dimensions: Rectangle;
 
-    constructor(parent: NodeView, slotName: string, isInput: boolean) {
+    constructor(parent: NodeView, config?: {slotName: string, isInput: boolean}) {
         super();
         this.parent = parent;
-        this.slotName = slotName;
-        this.isInput = isInput;
-        this.initPosition(slotName, isInput);
+
+        if (config) {
+            this.slotName = config.slotName;
+            this.isInput = config.isInput;
+            this.initPosition();
+        }
     }
 
     getOtherNode() {
@@ -33,10 +42,10 @@ export class JoinPointView extends ChildView<NodeView> {
         return this.connection.joinPoint1 === this ? this.connection.joinPoint2.parent : this.connection.joinPoint1.parent;
     }
 
-    private initPosition(slotName: string, isInput: boolean) {
+    private initPosition() {
         const yStart = this.parent.dimensions.topLeft.y + sizes.nodes.headerHeight;
-        const x = isInput ? this.parent.dimensions.topLeft.x : this.parent.dimensions.bottomRight.x;
-        const slotIndex = isInput ? this.parent.model.inputSlots.findIndex(slot => slot.name === slotName) : this.parent.model.outputSlots.findIndex(slot => slot.name === slotName);
+        const x = this.isInput ? this.parent.dimensions.topLeft.x : this.parent.dimensions.bottomRight.x;
+        const slotIndex = this.isInput ? this.parent.model.inputSlots.findIndex(slot => slot.name === this.slotName) : this.parent.model.outputSlots.findIndex(slot => slot.name === this.slotName);
         const y = slotIndex * sizes.nodes.slotHeight + sizes.nodes.slotHeight / 2 + yStart;
         this.point = new Point(x, y);
     }
@@ -58,5 +67,22 @@ export class JoinPointView extends ChildView<NodeView> {
 
     toString() {
         return `${this.type}: ${this.parent.id} ${this.point.toString()}`;
+    }
+
+    toJson(): JoinPointViewJson {
+        return {
+            ...super.toJson(),
+            point: this.point.toString(),
+            slotName: this.slotName,
+            isInput: this.isInput
+        }
+    }
+
+    fromJson(json: JoinPointViewJson) {
+        super.fromJson(json);
+        this.point = Point.fromString(json.point);
+        this.slotName = json.slotName;
+        this.isInput = json.isInput;
+        this.initPosition();
     }
 }
