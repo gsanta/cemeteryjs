@@ -4,7 +4,7 @@ import { Point } from '../../geometry/shapes/Point';
 import { Rectangle } from '../../geometry/shapes/Rectangle';
 import { toVector3 } from '../../geometry/utils/GeomUtils';
 import { toDegree } from '../../geometry/utils/Measurements';
-import { ConceptType, View } from './View';
+import { ConceptType, View, ViewJson } from './View';
 import { MeshModel } from '../game_objects/MeshModel';
 
 export enum WorldItemShape {
@@ -29,6 +29,15 @@ export enum AnimationState {
     Stopped = 'stopped'
 }
 
+export interface MeshViewJson extends ViewJson {
+    rotation: number;
+    modelId: string;
+    scale: number;
+    yPos: number 
+    thumbnailPath: string;
+    path: string;
+    isManualControl: boolean;
+}
 
 export class MeshView extends View implements IGameModel {
     type = ConceptType.MeshConcept;
@@ -48,7 +57,7 @@ export class MeshView extends View implements IGameModel {
     path: string;
     isManualControl: boolean;
 
-    color: string;
+    color: string = 'grey';
     scale: number;
     yPos: number = 0;
 
@@ -57,11 +66,9 @@ export class MeshView extends View implements IGameModel {
     animationState = AnimationState.Playing;
     layer: number = 10;
 
-    constructor(dimensions: Rectangle, name: string, rotation = 0) {
+    constructor(config?: {dimensions?: Rectangle}) {
         super();
-        this.dimensions = dimensions;
-        this.id = name;
-        this.rotation = rotation;
+        this.dimensions = config && config.dimensions;
         this.model = new MeshModel(this);
     }
 
@@ -147,6 +154,30 @@ export class MeshView extends View implements IGameModel {
     }
 
     dispose() {}
+
+    toJson(): MeshViewJson {
+        return {
+            ...super.toJson(),
+            rotation: this.rotation,
+            modelId: this.modelId,
+            scale: this.scale,
+            yPos: this.yPos,
+            thumbnailPath: this.thumbnailPath,
+            path: this.path,
+            isManualControl: this.isManualControl,
+        }
+    }
+
+    fromJson(json: MeshViewJson, viewMap: Map<string, View>) {
+        super.fromJson(json, viewMap);
+        this.rotation = json.rotation;
+        this.modelId = this.modelId;
+        this.scale = this.scale;
+        this.yPos = this.yPos;
+        this.thumbnailPath = this.thumbnailPath;
+        this.path = this.path;
+        this.isManualControl = this.isManualControl;
+    }
 }
 
 function to2DPoint(vector3: Vector3): Point {

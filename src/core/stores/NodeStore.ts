@@ -1,4 +1,3 @@
-import { ViewSettings } from '../../plugins/scene_editor/settings/AbstractSettings';
 import { ConceptType, View } from '../models/views/View';
 import { NodeConnectionView } from '../models/views/NodeConnectionView';
 import { NodeType, NodeModel, DroppableNode } from '../models/nodes/NodeModel';

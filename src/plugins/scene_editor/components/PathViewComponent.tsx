@@ -69,7 +69,6 @@ export class PathViewComponent extends React.Component<PathComponentProps> {
                     key="path"
                     d={this.props.item.serializePath()}
                     data-name={this.props.item.id}
-                    data-json={this.props.item.serializeJson()}
                     fill="none"
                     stroke={colors.views.stroke}
                     strokeWidth="1"

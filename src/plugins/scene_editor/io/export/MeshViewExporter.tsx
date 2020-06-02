@@ -3,7 +3,6 @@ import { Registry } from "../../../../core/Registry";
 import { IViewExporter } from "../../../common/io/IViewExporter";
 import React = require("react");
 import ReactDOMServer = require("react-dom/server");
-import { MeshViewContainerComponent } from '../../components/MeshViewComponent';
 
 export class MeshViewExporter implements IViewExporter {
     viewType = ConceptType.MeshConcept;
@@ -14,6 +13,11 @@ export class MeshViewExporter implements IViewExporter {
     }
 
     export(): string {
-        return ReactDOMServer.renderToStaticMarkup(<MeshViewContainerComponent registry={this.registry} renderWithSettings={true}/>);
+        const nodes = this.registry.stores.canvasStore.getMeshConcepts();
+
+        const nodeElements = nodes.map(node => <g data-data={JSON.stringify(node.toJson())}></g>);
+        const groupElement = nodes.length > 0 ? <g data-view-type={this.viewType} key={this.viewType}>{nodeElements}</g> : null;
+
+        return ReactDOMServer.renderToStaticMarkup(groupElement);
     }
 }

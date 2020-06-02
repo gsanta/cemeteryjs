@@ -3,7 +3,6 @@ import { IViewExporter } from "../../../common/io/IViewExporter";
 import { SceneEditorPlugin } from "../../SceneEditorPlugin";
 import { Registry } from "../../../../core/Registry";
 import { MeshViewExporter } from "./MeshViewExporter";
-import { ModelViewExporter } from "./ModelViewExporter";
 import { PathViewExporter } from "./PathViewExporter";
 
 
@@ -16,7 +15,6 @@ export class SceneEditorExporter implements IPluginExporter {
 
         this.viewExporters = [
             new MeshViewExporter(registry),
-            new ModelViewExporter(registry),
             new PathViewExporter(registry)
         ];
     }

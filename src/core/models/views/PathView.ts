@@ -1,8 +1,8 @@
-import { View, ConceptType } from "./View";
+import { View, ConceptType, ViewJson } from "./View";
 import { Rectangle } from "../../geometry/shapes/Rectangle";
 import { Point } from "../../geometry/shapes/Point";
 import { minBy, maxBy } from "../../geometry/utils/Functions";
-import { EditPointView } from "./child_views/EditPointView";
+import { EditPointView, EditPointViewJson } from './child_views/EditPointView';
 import { IGameModel } from "../game_objects/IGameModel";
 import { PathModel } from "../game_objects/PathModel";
 
@@ -16,6 +16,9 @@ export interface PathProps {
     }[];
 }
 
+export interface PathViewJson extends ViewJson {
+    editPoints: EditPointViewJson[];
+}
 
 export class PathView extends View implements IGameModel {
     type = ConceptType.PathConcept;
@@ -26,7 +29,6 @@ export class PathView extends View implements IGameModel {
     childMap: Map<EditPointView, EditPointView[]> = new Map();
     parentMap: Map<EditPointView, EditPointView> = new Map();
     rootPoint: EditPointView;
-    pathId: number;
     dimensions: Rectangle;
     id: string;
     radius = 5;
@@ -107,39 +109,6 @@ export class PathView extends View implements IGameModel {
         return this.str;
     }
 
-    serializeJson(): string {
-        const json: PathProps = {
-            editPoints: []
-        }
-
-        const editPointIndexes: Map<EditPointView, number> = new Map();
-
-        this.iterateOverPoints((current, parent) => {
-            const index = json.editPoints.length;
-            editPointIndexes.set(current, index);
-            json.editPoints.push({
-                index,
-                parent: parent ? editPointIndexes.get(parent) : undefined,
-                point: current.toString()  
-            });
-        });
-
-        return JSON.stringify(json);
-    }
-
-    parseJson(json: string, generateEditPointId: () => string) {
-        const parsedJson: PathProps = JSON.parse(json);
-        const editpointIndexToEditPointMap: Map<number, EditPointView> = new Map();
-        
-        parsedJson.editPoints.forEach((ep) => {
-            const point = Point.fromString(ep.point);
-            const id = generateEditPointId();
-            const editPoint = new EditPointView(id, point, this);
-            editpointIndexToEditPointMap.set(ep.index, editPoint);
-            this.addEditPoint(editPoint, editpointIndexToEditPointMap.get(ep.parent));
-        })
-    }
-
     serializeParentRelations() {
         return this.editPoints.map(p => `${this.editPoints.indexOf(p)}:${this.editPoints.indexOf(this.parentMap.get(p))}`).join(' ');
     }
@@ -168,5 +137,23 @@ export class PathView extends View implements IGameModel {
         action(point, parent);
 
         this.childMap.get(point).forEach(child => this.iterateOverPointsRecursively(child, point, action));
+    }
+
+    toJson(): PathViewJson {
+        return {
+            ...super.toJson(),
+            editPoints: this.editPoints.map(ep => ep.toJson()),
+        }
+    }
+
+    fromJson(json: PathViewJson, viewMap: Map<string, View>) {
+        super.fromJson(json, viewMap);
+        json.editPoints.forEach((ep, index) => {
+            const epView = new EditPointView();
+            epView.fromJson(ep, viewMap);
+            this.addEditPoint(epView, index > 0 ? this.editPoints[index - 1] : undefined);
+        });
+
+        this.str = undefined;
     }
 }

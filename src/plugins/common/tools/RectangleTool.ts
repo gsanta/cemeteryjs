@@ -21,12 +21,10 @@ export class RectangleTool extends AbstractTool {
         const pointer = this.registry.services.pointer.pointer;
         const rect = Rectangle.squareFromCenterPointAndRadius(pointer.down, 50);
 
-        const meshConcept: MeshView = new MeshView(rect, name);
+        const meshConcept: MeshView = new MeshView({dimensions: rect});
         meshConcept.rotation = 0;
         meshConcept.scale = 1;
         meshConcept.color = 'grey';
-
-        meshConcept.id = this.registry.stores.canvasStore.generateUniqueName(ConceptType.MeshConcept);
 
         this.registry.stores.canvasStore.addConcept(meshConcept);
         this.registry.stores.selectionStore.clear()
@@ -48,11 +46,10 @@ export class RectangleTool extends AbstractTool {
 
         const dimensions = this.registry.stores.feedback.rectSelectFeedback.rect;
 
-        const meshConcept: MeshView = new MeshView(dimensions, name);
+        const meshConcept: MeshView = new MeshView({dimensions});
         meshConcept.rotation = 0;
         meshConcept.scale = 1;
         meshConcept.color = 'grey';
-        meshConcept.id = this.registry.stores.canvasStore.generateUniqueName(ConceptType.MeshConcept);
 
         if (positions.length > 0) {
             this.registry.stores.canvasStore.addConcept(meshConcept);

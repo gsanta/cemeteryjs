@@ -33,6 +33,7 @@ export class SceneStore extends AbstractStore {
     }
 
     addConcept(view: View) {
+        view.id = view.id === undefined ? this.generateUniqueName(view.type) : view.id;
         super.addItem(view);
         this.views.push(view);
     }
