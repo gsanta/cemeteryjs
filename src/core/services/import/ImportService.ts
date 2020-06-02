@@ -1,50 +1,7 @@
-import * as convert from 'xml-js';
-import { PluginJson } from '../../../plugins/common/io/AbstractPluginImporter';
 import { Registry } from '../../Registry';
 import { View } from '../../models/views/View';
-
-export interface WgDefinition {
-    _attributes: WgDefinitionAttributes;
-}
-
-export interface WgDefinitionAttributes {
-    color: string;
-    "roles": string;
-    "materials": string;
-    model: string;
-    scale: string;
-    "translate-y": string;
-    "type-name": string;
-}
-
-export interface RawWorldMapJson {
-    svg: {
-        metadata: {
-            "wg-type": WgDefinition[]
-        };
-
-        _attributes: {
-            "data-wg-width": string;
-            "data-wg-height": string;
-            "data-wg-pixel-size": string;
-            "data-wg-scale-x": string;
-            "data-wg-scale-y": string;
-            "data-y-pos": string;
-            "data-zoom": string;
-            "data-viewbox": string;
-        };
-
-        g: SectionJson[];
-    }
-}
-
-export interface SectionJson {
-    _attributes: {
-        "data-section": string; 
-    }
-
-    g: PluginJson[];
-}
+import { AppJson } from '../export/ExportService';
+import { IPluginJson } from '../../../plugins/common/io/IPluginExporter';
 
 export class ImportService {
     serviceName = 'import-service';
@@ -55,16 +12,10 @@ export class ImportService {
     }
 
     import(file: string): void {
+        const json = <AppJson> JSON.parse(file);
+
         const viewMap: Map<string, View> = new Map();
-        
-        
-        const rawJson: RawWorldMapJson = JSON.parse(convert.xml2json(file, {compact: true, spaces: 4}));
-        const sectionsJson: SectionJson[] = rawJson.svg.g.length ? rawJson.svg.g : [<any> rawJson.svg.g];
-
-        const pluginSection = this.findSectionById(sectionsJson, 'plugins');
-        const pluginsJson: PluginJson[] = pluginSection.g.length ? pluginSection.g : [<any> pluginSection.g];
-
-        pluginsJson.forEach(pluginJson => this.findPluginImporter(pluginJson)?.importer.import(pluginJson, viewMap));
+        json.plugins.forEach(pluginJson => this.findPluginImporter(pluginJson)?.importer.import(pluginJson, viewMap));
 
         this.registry.stores.canvasStore.getMeshConcepts().filter(item => item.modelId)
             .forEach(item => {
@@ -83,11 +34,7 @@ export class ImportService {
         this.registry.services.game.importAllConcepts();
     }
 
-    private findPluginImporter(pluginJson: PluginJson) {
-        return this.registry.services.plugin.plugins.find(plugin => plugin.getId() === pluginJson._attributes['data-plugin-id']);
-    }
-
-    private findSectionById(sectionsJson: SectionJson[], id: string) {
-        return sectionsJson.find(json => json._attributes['data-section'] === id);
+    private findPluginImporter(pluginJson: IPluginJson) {
+        return this.registry.services.plugin.plugins.find(plugin => plugin.getId() === pluginJson.pluginId);
     }
 }

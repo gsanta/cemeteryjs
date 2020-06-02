@@ -1,31 +1,35 @@
-import { AbstractPluginImporter, PluginJson, ViewContainerJson } from "../../common/io/AbstractPluginImporter";
-import { IViewImporter } from "../../../core/services/import/IViewImporter";
-import { Registry } from "../../../core/Registry";
+import { NodeConnectionView, NodeConnectionViewJson } from '../../../core/models/views/NodeConnectionView';
+import { NodeView, NodeViewJson } from '../../../core/models/views/NodeView';
 import { ConceptType, View } from "../../../core/models/views/View";
-import { NodeViewImporter } from "./import/NodeViewImporter";
-import { NodeConnectionViewImporter } from './import/NodeConnectionViewImporter';
+import { Registry } from "../../../core/Registry";
+import { AbstractPluginImporter } from "../../common/io/AbstractPluginImporter";
+import { IPluginJson } from "../../common/io/IPluginExporter";
 
 export class NodeEditorImporter extends AbstractPluginImporter {
-    viewImporters: IViewImporter<any>[];
-
     private registry: Registry;
 
     constructor(registry: Registry) {
         super();
         this.registry = registry;
-
-        this.viewImporters = [
-            new NodeViewImporter(this.registry),
-            new NodeConnectionViewImporter(this.registry)
-        ];
     }
 
-    import(pluginJson: PluginJson, viewMap: Map<string, View>): void {
-        let viewContainers: ViewContainerJson<any>[] = pluginJson.g.length ? pluginJson.g : [<any> pluginJson.g];
+    import(pluginJson: IPluginJson, viewMap: Map<string, View>): void {
+        const nodeJsons = pluginJson.viewGroups.find(viewGroup => viewGroup.viewType === ConceptType.ActionConcept);
 
-        viewContainers.forEach((viewContainerJson: ViewContainerJson<any>) => {
-            const conceptType = <ConceptType> viewContainerJson._attributes["data-view-type"];
-            this.findViewImporter(conceptType).import(viewContainerJson, viewMap)
+        nodeJsons.views.forEach((viewJson: NodeViewJson) => {
+            const nodeView: NodeView = new NodeView(this.registry.stores.nodeStore.graph);
+            nodeView.fromJson(viewJson, viewMap);
+
+            this.registry.stores.nodeStore.addNode(nodeView);
+        });
+
+        const connectionJsons = pluginJson.viewGroups.find(viewGroup => viewGroup.viewType === ConceptType.ActionNodeConnectionConcept);
+
+        connectionJsons.views.forEach((viewJson: NodeConnectionViewJson) => {
+            const connectionView: NodeConnectionView = new NodeConnectionView();
+            connectionView.fromJson(viewJson, viewMap);
+
+            this.registry.stores.nodeStore.addConnection(connectionView);
         });
     }
 }

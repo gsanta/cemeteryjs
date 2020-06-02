@@ -1,5 +1,5 @@
-import { ConceptType, View } from "../../../core/models/views/View";
-import { IViewImporter } from "../../../core/services/import/IViewImporter";
+import { View } from "../../../core/models/views/View";
+import { IPluginJson } from './IPluginExporter';
 
 export interface PluginJson {
     _attributes: {
@@ -18,11 +18,5 @@ export interface ViewContainerJson<T> {
 }
 
 export abstract class AbstractPluginImporter {
-    viewImporters: IViewImporter<any>[] = [];
-
-    abstract import(plugin: PluginJson, viewMap: Map<string, View>): void;
-
-    protected findViewImporter<T>(viewType: ConceptType): IViewImporter<T> {
-        return this.viewImporters.find(conceptImporter => conceptImporter.type === viewType);
-    }
+    abstract import(plugin: IPluginJson, viewMap: Map<string, View>): void;
 } 

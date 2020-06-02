@@ -1,7 +1,7 @@
-import { ConceptType } from '../../../../core/models/views/View';
-import { Registry } from "../../../../core/Registry";
-import { IPluginExporter, IPluginJson } from '../../../common/io/IPluginExporter';
-import { SceneEditorPlugin } from "../../SceneEditorPlugin";
+import { ConceptType } from '../../../core/models/views/View';
+import { Registry } from "../../../core/Registry";
+import { IPluginExporter, IPluginJson } from '../../common/io/IPluginExporter';
+import { SceneEditorPlugin } from "../SceneEditorPlugin";
 
 
 export class SceneEditorExporter implements IPluginExporter {

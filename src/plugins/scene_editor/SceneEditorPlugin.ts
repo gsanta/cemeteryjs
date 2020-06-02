@@ -5,11 +5,11 @@ import { LayoutType } from '../../core/services/PluginService';
 import { UpdateTask } from '../../core/services/UpdateServices';
 import { Camera2D } from '../common/camera/Camera2D';
 import { AbstractPluginImporter } from '../common/io/AbstractPluginImporter';
-import { SceneEditorImporter } from './io/import/SceneEditorImporter';
+import { SceneEditorImporter } from './io/SceneEditorImporter';
 import { LevelSettings } from './settings/LevelSettings';
 import { MeshSettings } from './settings/MeshSettings';
 import { PathSettings } from './settings/PathSettings';
-import { SceneEditorExporter } from './io/export/SceneEditorExporter';
+import { SceneEditorExporter } from './io/SceneEditorExporter';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
