@@ -1,10 +1,12 @@
+import { IPluginJson } from '../../../plugins/common/io/IPluginExporter';
 import { Registry } from '../../Registry';
-import { ActionConceptExporter } from './ActionConceptExporter';
-import { IConceptExporter } from './IConceptExporter';
-import { MeshViewExporter } from '../../../plugins/scene_editor/io/export/MeshViewExporter';
 
 export interface ViewExporter {
     export(): string;
+}
+
+export interface AppJson {
+    plugins: IPluginJson[];
 }
 
 export class ExportService {
@@ -16,16 +18,8 @@ export class ExportService {
     }
 
     export(): string {
-        const serializedPlugins = this.registry.services.plugin.plugins.filter(plugin => plugin.exporter).map(plugin => plugin.exporter.export()); 
+        const pluginJsons = this.registry.services.plugin.plugins.filter(plugin => plugin.exporter).map(plugin => plugin.exporter.export()); 
 
-        const startTag = '<svg data-wg-width="3000" data-wg-height="3000" width="1000" height="1000">';
-        const closeTag =  '</svg>';
-        return (
-            `${startTag}` +
-                `<g data-section="plugins">
-                    ${serializedPlugins}
-                </g>` +
-            `${closeTag}`
-        );
+        return JSON.stringify({ plugins: pluginJsons});
     }
 }

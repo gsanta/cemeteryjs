@@ -1,30 +1,33 @@
+import { ConceptType } from "../../../core/models/views/View";
 import { Registry } from "../../../core/Registry";
-import { IPluginExporter } from "../../common/io/IPluginExporter";
-import { IViewExporter } from "../../common/io/IViewExporter";
+import { IPluginExporter, IPluginJson } from '../../common/io/IPluginExporter';
 import { NodeEditorPlugin } from "../NodeEditorPlugin";
-import { NodeConnectionViewExporter } from './export/NodeConnectionViewExporter';
-import { NodeViewExporter } from './export/NodeViewExporter';
 
 export class NodeEditorExporter implements IPluginExporter {
-    viewExporters: IViewExporter[];
     private plugin: NodeEditorPlugin;
+    private registry: Registry;
 
     constructor(plugin: NodeEditorPlugin, registry: Registry) {
         this.plugin = plugin;
-
-        this.viewExporters = [
-            new NodeViewExporter(registry),
-            new NodeConnectionViewExporter(registry)
-        ];
+        this.registry = registry;
     }
 
-    export(): string {
-        const views = this.viewExporters.map(exporter => exporter.export());
+    export(): IPluginJson {
+        const nodeViews = this.registry.stores.nodeStore.getNodes();
+        const connections = this.registry.stores.nodeStore.getConnections();
 
-        return (
-            `<g data-plugin-id="${this.plugin.getId()}">
-                ${views}
-            </g>`
-        );
+        return {
+            pluginId: this.plugin.getId(),
+            viewGroups: [
+                {
+                    viewType: ConceptType.ActionConcept,
+                    views: nodeViews.map(meshView => meshView.toJson())
+                },
+                {
+                    viewType: ConceptType.ActionNodeConnectionConcept,
+                    views: connections.map(pathView => pathView.toJson())
+                }
+            ]
+        }
     }
 }

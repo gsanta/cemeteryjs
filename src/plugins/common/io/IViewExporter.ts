@@ -1,6 +1,11 @@
-import { ConceptType } from "../../../core/models/views/View";
+import { ConceptType, ViewJson } from "../../../core/models/views/View";
+
+export interface ViewGroupJson {
+    viewType: string;
+    views: ViewJson[];
+}
 
 export interface IViewExporter {
     viewType: ConceptType;
-    export(): string;
+    export(): ViewGroupJson;
 } 

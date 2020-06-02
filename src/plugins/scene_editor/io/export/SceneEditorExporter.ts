@@ -1,31 +1,34 @@
-import { IPluginExporter } from "../../../common/io/IPluginExporter";
-import { IViewExporter } from "../../../common/io/IViewExporter";
-import { SceneEditorPlugin } from "../../SceneEditorPlugin";
+import { ConceptType } from '../../../../core/models/views/View';
 import { Registry } from "../../../../core/Registry";
-import { MeshViewExporter } from "./MeshViewExporter";
-import { PathViewExporter } from "./PathViewExporter";
+import { IPluginExporter, IPluginJson } from '../../../common/io/IPluginExporter';
+import { SceneEditorPlugin } from "../../SceneEditorPlugin";
 
 
 export class SceneEditorExporter implements IPluginExporter {
-    viewExporters: IViewExporter[];
     private plugin: SceneEditorPlugin;
+    private registry: Registry;
 
     constructor(plugin: SceneEditorPlugin, registry: Registry) {
         this.plugin = plugin;
-
-        this.viewExporters = [
-            new MeshViewExporter(registry),
-            new PathViewExporter(registry)
-        ];
+        this.registry = registry;
     }
 
-    export(): string {
-        const views = this.viewExporters.map(exporter => exporter.export());
+    export(): IPluginJson {
+        const meshViews = this.registry.stores.canvasStore.getMeshConcepts();
+        const pathViews = this.registry.stores.canvasStore.getPathConcepts();
 
-        return (
-            `<g data-plugin-id="${this.plugin.getId()}">
-                ${views.join('')}
-            </g>`
-        );
+        return {
+            pluginId: this.plugin.getId(),
+            viewGroups: [
+                {
+                    viewType: ConceptType.MeshConcept,
+                    views: meshViews.map(meshView => meshView.toJson())
+                },
+                {
+                    viewType: ConceptType.PathConcept,
+                    views: pathViews.map(pathView => pathView.toJson())
+                }
+            ]
+        }
     }
 }
