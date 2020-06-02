@@ -4,9 +4,7 @@ import { IViewImporter } from "../../../../core/services/import/IViewImporter";
 import { ModelViewImporter } from "./ModelViewImporter";
 import { PathViewImporter } from "./PathViewImporter";
 import { MeshViewImporter, RectJson } from "./MeshViewImporter";
-import { ConceptType } from "../../../../core/models/views/View";
-
-
+import { ConceptType, View } from "../../../../core/models/views/View";
 
 export class SceneEditorImporter extends AbstractPluginImporter {
     viewImporters: IViewImporter<any>[];
@@ -24,12 +22,12 @@ export class SceneEditorImporter extends AbstractPluginImporter {
         ];
     }
 
-    import(pluginJson: PluginJson): void {
+    import(pluginJson: PluginJson, viewMap: Map<string, View>): void {
         let viewContainers: ViewContainerJson<RectJson>[] = pluginJson.g.length ? pluginJson.g : [<any> pluginJson.g];
 
         viewContainers.forEach((viewContainerJson: ViewContainerJson<RectJson>) => {
             const conceptType = <ConceptType> viewContainerJson._attributes["data-view-type"];
-            this.findViewImporter(conceptType).import(viewContainerJson)
+            this.findViewImporter(conceptType).import(viewContainerJson, viewMap);
         });
     }
 }

@@ -2,6 +2,7 @@ import { DroppableItem } from '../../../plugins/common/tools/DragAndDropTool';
 import { NodeGraph } from '../../services/node/NodeGraph';
 import { NodeView } from '../views/NodeView';
 import { NodeSettings } from '../../../plugins/node_editor/settings/NodeSettings';
+import { View } from '../views/View';
 
 export enum NodeType {
     Keyboard = 'Keyboard',
@@ -74,7 +75,7 @@ export abstract class NodeModel {
         }
     }
 
-    fromJson(json: NodeModelJson) {
+    fromJson(json: NodeModelJson, viewMap: Map<string, View>) {
         this.type = <NodeType> json.type;
     }
 }

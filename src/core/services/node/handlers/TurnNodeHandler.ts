@@ -14,7 +14,7 @@ export class TurnNodeHandler extends AbstractNodeHandler<TurnNode> {
             handler.instance = joinedView.model;
             const meshNode = handler.searchFromRight<MeshNode>(NodeType.Mesh);
             if (meshNode) {
-                if (this.instance.move === 'turn-left') {
+                if (this.instance.turn === 'turn-left') {
                     meshNode.meshModel.meshView.rotateBy(-0.02);
                 } else {
                     meshNode.meshModel.meshView.rotateBy(0.02);

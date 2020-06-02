@@ -24,16 +24,16 @@ export class TurnNodeSettings extends ViewSettings<TurnNodeProps, NodeView> {
     protected getProp(prop: TurnNodeProps) {
         switch (prop) {
             case TurnNodeProps.AllTurns:
-                return this.nodeView.model.allMoves;
+                return this.nodeView.model.allTurns;
             case TurnNodeProps.Turn:
-                return this.nodeView.model.move;
+                return this.nodeView.model.turn;
         }
     }
 
     protected setProp(val: any, prop: TurnNodeProps) {
         switch (prop) {
             case TurnNodeProps.Turn:
-                this.nodeView.model.move = val;
+                this.nodeView.model.turn = val;
                 break;
             default:
                 throw new Error(`${prop} is not a writeable property.`)

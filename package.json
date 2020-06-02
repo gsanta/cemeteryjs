@@ -61,7 +61,6 @@
     "@turf/boolean-contains": "^6.0.1",
     "@turf/boolean-overlap": "^6.0.1",
     "@types/file-saver": "^2.0.1",
-    "@types/rc-slider": "^8.6.5",
     "@types/react-color": "^3.0.1",
     "@types/react-dropzone": "^5.1.0",
     "@types/xml-js": "^1.0.0",

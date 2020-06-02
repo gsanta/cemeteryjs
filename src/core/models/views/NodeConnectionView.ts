@@ -1,6 +1,8 @@
 import { ConceptType, View, ViewJson } from "./View";
 import { JoinPointView } from "./child_views/JoinPointView";
 import { Rectangle } from "../../geometry/shapes/Rectangle";
+import { NodeView } from "./NodeView";
+import { SlotName } from '../nodes/NodeModel';
 
 export interface NodeConnectionViewJson extends ViewJson {
     joinPoint1: {
@@ -60,5 +62,16 @@ export class NodeConnectionView extends View {
                 slotName: this.joinPoint2.slotName
             }
         };
+    }
+
+    fromJson(json: NodeConnectionViewJson, viewMap: Map<string, View>) {
+        super.fromJson(json, viewMap);
+        const node1 = <NodeView> viewMap.get(json.joinPoint1.nodeId);
+        const joinPoint1 = node1.findJoinPointView(json.joinPoint1.slotName as SlotName);
+
+        const node2 = <NodeView> viewMap.get(json.joinPoint2.nodeId);
+        const joinPoint2 = node2.findJoinPointView(json.joinPoint1.slotName as SlotName);
+
+        this.setup(joinPoint1, joinPoint2);
     }
 }

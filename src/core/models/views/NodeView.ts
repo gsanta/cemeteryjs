@@ -64,10 +64,10 @@ export class NodeView<T extends NodeModel = NodeModel> extends View {
         }
     }
 
-    fromJson(json: NodeViewJson) {
-        super.fromJson(json);
+    fromJson(json: NodeViewJson, viewMap: Map<string, View>) {
+        super.fromJson(json, viewMap);
         this.setup(json.node.type);
-        this.model.fromJson(json.node);
+        this.model.fromJson(json.node, viewMap);
     }
 
     editPoints = [];

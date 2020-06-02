@@ -1,6 +1,7 @@
 import * as convert from 'xml-js';
 import { PluginJson } from '../../../plugins/common/io/AbstractPluginImporter';
 import { Registry } from '../../Registry';
+import { View } from '../../models/views/View';
 
 export interface WgDefinition {
     _attributes: WgDefinitionAttributes;
@@ -54,6 +55,7 @@ export class ImportService {
     }
 
     import(file: string): void {
+        const viewMap: Map<string, View> = new Map();
         
         
         const rawJson: RawWorldMapJson = JSON.parse(convert.xml2json(file, {compact: true, spaces: 4}));
@@ -62,7 +64,7 @@ export class ImportService {
         const pluginSection = this.findSectionById(sectionsJson, 'plugins');
         const pluginsJson: PluginJson[] = pluginSection.g.length ? pluginSection.g : [<any> pluginSection.g];
 
-        pluginsJson.forEach(pluginJson => this.findPluginImporter(pluginJson)?.importer.import(pluginJson));
+        pluginsJson.forEach(pluginJson => this.findPluginImporter(pluginJson)?.importer.import(pluginJson, viewMap));
 
         this.registry.stores.canvasStore.getMeshConcepts().filter(item => item.modelId)
             .forEach(item => {

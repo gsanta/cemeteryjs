@@ -1,5 +1,6 @@
-import { NodeModel, NodeType, NodeCategory } from "./NodeModel";
+import { NodeModel, NodeType, NodeCategory, NodeModelJson } from "./NodeModel";
 import { Keyboard } from "../../services/input/KeyboardService";
+import { View } from "../views/View";
 
 export function getAllKeys() {
     const keys: string[] = [];
@@ -17,6 +18,11 @@ export enum KeyboardNodeSlot {
     Output = 'output'
 }
 
+export interface KeyboardNodeJson extends NodeModelJson {
+    key: number;
+}
+
+
 export class KeyboardNode extends NodeModel {
     type = NodeType.Keyboard;
     category = NodeCategory.Default;
@@ -32,5 +38,17 @@ export class KeyboardNode extends NodeModel {
 
     findSlotByName(name: KeyboardNodeSlot) {
         return super.findSlotByName(name);
+    }
+
+    toJson(): KeyboardNodeJson {
+        return {
+            ...super.toJson(),
+            key: this.key
+        }
+    }
+
+    fromJson(json: KeyboardNodeJson, viewMap: Map<string, View>) {
+        super.fromJson(json, viewMap);
+        this.key = json.key;
     }
 }

@@ -39,6 +39,6 @@ export class KeyboardNodeSettings extends ViewSettings<KeyboardInputNodeProps, N
             default:
                 throw new Error(`${prop} is not a writeable property.`)
         }
-        this.registry.services.update.runImmediately(UpdateTask.RepaintActiveView);
+        this.registry.services.update.runImmediately(UpdateTask.RepaintActiveView, UpdateTask.SaveData);
     }
 }

@@ -2,6 +2,10 @@ import { NodeModel, NodeType, JoinPointSlot, NodeCategory } from './NodeModel';
 import { NodeGraph } from "../../services/node/NodeGraph";
 import { MeshNode } from "./MeshNode";
 
+// export interface NodeModelJson {
+
+// }
+
 export class AnimationNode extends NodeModel {
     type = NodeType.Animation;
     category = NodeCategory.Default;

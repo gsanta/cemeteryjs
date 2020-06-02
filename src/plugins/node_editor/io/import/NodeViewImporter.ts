@@ -1,6 +1,6 @@
 
 import { NodeView, NodeViewJson } from '../../../../core/models/views/NodeView';
-import { ConceptType } from '../../../../core/models/views/View';
+import { ConceptType, View } from '../../../../core/models/views/View';
 import { Registry } from '../../../../core/Registry';
 import { IViewImporter } from '../../../../core/services/import/IViewImporter';
 import { ViewContainerJson } from '../../../common/io/AbstractPluginImporter';
@@ -19,7 +19,7 @@ export class NodeViewImporter implements IViewImporter<DataJson> {
         this.registry = registry;
     }
 
-    import(group: ViewContainerJson<DataJson>): void {
+    import(group: ViewContainerJson<DataJson>, viewMap: Map<string, View>): void {
         const rectJsons =  group.g.length ?  group.g : [<any> group.g];
 
         rectJsons.forEach(rect => {
@@ -27,7 +27,7 @@ export class NodeViewImporter implements IViewImporter<DataJson> {
             const json: NodeViewJson =  JSON.parse(rect._attributes['data-data']);
 
             const nodeView = new NodeView(this.registry.stores.nodeStore.graph);
-            nodeView.fromJson(json);
+            nodeView.fromJson(json, viewMap);
 
             this.registry.stores.nodeStore.addNode(nodeView);
         });

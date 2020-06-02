@@ -34,9 +34,10 @@ export abstract class View {
         };
     }
 
-    fromJson(json: ViewJson) {
+    fromJson(json: ViewJson, viewMap: Map<string, View>) {
         this.id = json.id;
         this.type = json.type;
         this.dimensions = json.dimensions && Rectangle.fromString(json.dimensions);
+        viewMap.set(this.id, this);
     }
 }

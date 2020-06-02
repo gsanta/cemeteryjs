@@ -78,8 +78,8 @@ export class JoinPointView extends ChildView<NodeView> {
         }
     }
 
-    fromJson(json: JoinPointViewJson) {
-        super.fromJson(json);
+    fromJson(json: JoinPointViewJson, viewMap: Map<string, View>) {
+        super.fromJson(json, viewMap);
         this.point = Point.fromString(json.point);
         this.slotName = json.slotName;
         this.isInput = json.isInput;
