@@ -1,5 +1,5 @@
 import { Registry } from "../Registry";
-import { UpdateTask } from "./UpdateServices";
+import { RenderTask } from "./RenderServices";
 
 export class LevelService {
     serviceName = 'level-service';
@@ -13,26 +13,24 @@ export class LevelService {
         this.clearStores();
 
         if (this.registry.stores.levelStore.hasLevel(level)) {
-            return this.registry.services.storage.loadLevel(level)
+            return this.registry.services.localStore.loadLevel(level)
                 .finally(() => {
                     this.registry.stores.levelStore.setCurrentLevel(level)
-                    this.registry.services.update.runImmediately(UpdateTask.All);
+                    this.registry.services.update.runImmediately(RenderTask.All);
                 });
         } else {
             this.registry.stores.levelStore.setCurrentLevel(level);
-            this.registry.services.update.runImmediately(UpdateTask.All)
+            this.registry.services.update.runImmediately(RenderTask.All)
             return Promise.resolve();
         }
     }
 
     updateCurrentLevel() {
         this.registry.stores.levelStore.currentLevel.isEmpty = false;
-        const map = this.registry.services.export.export();
-        this.registry.services.storage.storeLevel(this.registry.stores.levelStore.currentLevel.index, map);
     }
 
     clearLevel() {
-        return this.registry.services.storage
+        return this.registry.services.localStore
             .removeLevel(this.registry.stores.levelStore.currentLevel.index)
             .then(() => {
                 this.clearStores();

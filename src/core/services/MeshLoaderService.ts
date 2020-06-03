@@ -70,7 +70,7 @@ export class MeshLoaderService {
 
         this.loadedFileNames.add(modelConcept.modelPath);
 
-        const promise = this.registry.services.storage.loadAsset(modelConcept.modelPath)
+        const promise = this.registry.services.localStore.loadAsset(modelConcept.modelPath)
             .then((data) => {
                 if (data) {
                     return this.loadMesh(modelConcept.modelPath, id, data);

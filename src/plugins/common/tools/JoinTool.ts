@@ -2,7 +2,7 @@ import { Point } from "../../../core/geometry/shapes/Point";
 import { isJoinPointView, JoinPointView } from "../../../core/models/views/child_views/JoinPointView";
 import { Registry } from "../../../core/Registry";
 import { IHotkeyEvent } from "../../../core/services/input/HotkeyService";
-import { UpdateTask } from "../../../core/services/UpdateServices";
+import { RenderTask } from "../../../core/services/RenderServices";
 import { AbstractTool } from "./AbstractTool";
 import { ToolType, Cursor } from './Tool';
 import { NodeConnectionView } from "../../../core/models/views/NodeConnectionView";
@@ -21,7 +21,7 @@ export class JoinTool extends AbstractTool {
         this.start = this.registry.services.pointer.pointer.curr;
         this.startItem = <JoinPointView> this.registry.services.pointer.hoveredItem;
         this.end = this.registry.services.pointer.pointer.curr;
-        this.registry.services.update.scheduleTasks(UpdateTask.RepaintActiveView);
+        this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
     }
 
     click() {
@@ -30,7 +30,7 @@ export class JoinTool extends AbstractTool {
 
     drag() {
         this.end = this.registry.services.pointer.pointer.curr;
-        this.registry.services.update.scheduleTasks(UpdateTask.RepaintActiveView);
+        this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
     }
 
     draggedUp() {

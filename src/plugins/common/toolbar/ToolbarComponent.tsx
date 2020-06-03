@@ -6,7 +6,7 @@ import { FullScreenExitIconComponent } from '../../../core/gui/icons/FullScreenE
 import { FullScreenIconComponent } from '../../../core/gui/icons/FullScreenIconComponent';
 import { colors } from '../../../core/gui/styles';
 import { LayoutType } from '../../../core/services/PluginService';
-import { UpdateTask } from '../../../core/services/UpdateServices';
+import { RenderTask } from '../../../core/services/RenderServices';
 import { ToolType } from '../tools/Tool';
 import { createToolIcon } from './toolIconFactory';
 
@@ -90,7 +90,7 @@ export class ToolbarComponent extends React.Component<ToolbarProps> {
                     const view = this.context.registry.services.plugin.getViewById(this.props.view.getId());
 
                     this.context.registry.services.plugin.setLayout(LayoutType.Single, [this.props.view.getId()]);
-                    this.context.registry.services.update.runImmediately(UpdateTask.Full);
+                    this.context.registry.services.update.runImmediately(RenderTask.RenderFull);
                 }} 
                 format="short"
             />
@@ -103,7 +103,7 @@ export class ToolbarComponent extends React.Component<ToolbarProps> {
                 isActive={false}
                 onClick={() => {
                     this.context.registry.services.plugin.setLayout(LayoutType.Double);
-                    this.context.registry.services.update.runImmediately(UpdateTask.Full);            
+                    this.context.registry.services.update.runImmediately(RenderTask.RenderFull);            
                 }}
                 format="short"
             />

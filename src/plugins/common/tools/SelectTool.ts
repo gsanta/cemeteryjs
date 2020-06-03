@@ -1,5 +1,5 @@
 import { Registry } from '../../../core/Registry';
-import { UpdateTask } from "../../../core/services/UpdateServices";
+import { RenderTask } from "../../../core/services/RenderServices";
 import { PointerTool } from './PointerTool';
 import { RectangleSelector } from "./RectangleSelector";
 import { ToolType, Cursor } from "./Tool";
@@ -23,7 +23,7 @@ export class SelectTool extends PointerTool {
             super.click();
         } else if (this.registry.stores.selectionStore.getAll().length > 0) {
             this.registry.stores.selectionStore.clear();
-            this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas, UpdateTask.RepaintSettings);
+            this.registry.services.update.scheduleTasks(RenderTask.RepaintCanvas, RenderTask.RepaintSettings);
         }
     }
 
@@ -32,7 +32,7 @@ export class SelectTool extends PointerTool {
             super.drag();
         } else {
             this.rectSelector.updateRect(this.registry.services.pointer.pointer);
-            this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
+            this.registry.services.update.scheduleTasks(RenderTask.RepaintCanvas);
         }
     }
 
@@ -49,7 +49,7 @@ export class SelectTool extends PointerTool {
             this.registry.stores.selectionStore.addItem(...canvasItems)
     
             this.rectSelector.finish();
-            this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas, UpdateTask.RepaintSettings);
+            this.registry.services.update.scheduleTasks(RenderTask.RepaintCanvas, RenderTask.RepaintSettings);
         }
     }
 

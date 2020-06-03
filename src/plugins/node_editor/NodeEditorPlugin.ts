@@ -1,6 +1,6 @@
 import { Point } from '../../core/geometry/shapes/Point';
 import { Registry } from '../../core/Registry';
-import { UpdateTask } from '../../core/services/UpdateServices';
+import { RenderTask } from '../../core/services/RenderServices';
 import { calcOffsetFromDom, AbstractPlugin } from '../../core/AbstractPlugin';
 import { Camera2D } from '../common/camera/Camera2D';
 import { NodeStore } from '../../core/stores/NodeStore';
@@ -269,7 +269,7 @@ export class NodeEditorPlugin extends AbstractPlugin {
         const screenSize = getScreenSize(NodeEditorPlugin.id);
         screenSize && this.camera.resize(screenSize);
         this.registry.tools.zoom.resize();
-        this.registry.services.update.runImmediately(UpdateTask.RepaintCanvas);
+        this.registry.services.update.runImmediately(RenderTask.RepaintCanvas);
     };
 
     isVisible(): boolean {
@@ -304,6 +304,6 @@ export class NodeEditorPlugin extends AbstractPlugin {
 
     updateCamera() {
         this.camera = cameraInitializer(NodeEditorPlugin.id, this.registry);
-        this.registry.services.update.runImmediately(UpdateTask.RepaintCanvas);
+        this.registry.services.update.runImmediately(RenderTask.RepaintCanvas);
     }
 }

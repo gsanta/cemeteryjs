@@ -1,19 +1,18 @@
 import { Registry } from '../Registry';
 import { GameViewerPlugin } from "../../plugins/game_viewer/GameViewerPlugin";
 
-export enum UpdateTask {
+export enum RenderTask {
     RepaintCanvas = 'RepaintCanvas',
-    RepaintActiveView = 'RepaintActiveView',
+    RenderFocusedView = 'RenderFocusedView',
     RepaintSettings = 'RepaintSettings',
     UpdateRenderer = 'UpdateRenderer',
-    SaveData = 'SaveData',
     All = 'All',
-    Full = 'Full',
+    RenderFull = 'RenderFull',
 }
 
-export class UpdateService {
+export class RenderService {
     serviceName = 'update-service';
-    updateTasks: UpdateTask[] = [];
+    updateTasks: RenderTask[] = [];
 
     private canvasRepainter: Function = () => undefined;
     private settingsRepainters: Function[] = [];
@@ -26,11 +25,11 @@ export class UpdateService {
     }
 
 
-    scheduleTasks(...tasks: UpdateTask[]) {
+    scheduleTasks(...tasks: RenderTask[]) {
         this.updateTasks = tasks;
     }
 
-    runImmediately(...tasks: UpdateTask[]) {
+    runImmediately(...tasks: RenderTask[]) {
         this.runTasks(tasks);
     }
 
@@ -39,27 +38,24 @@ export class UpdateService {
         this.updateTasks = [];
     }
 
-    private runTasks(tasks: UpdateTask[]) {
+    private runTasks(tasks: RenderTask[]) {
         tasks.forEach(task => {
             switch(task) {
-                case UpdateTask.RepaintCanvas:
+                case RenderTask.RepaintCanvas:
                     this.canvasRepainter();
                 break;
-                case UpdateTask.RepaintActiveView:
+                case RenderTask.RenderFocusedView:
                     this.registry.services.plugin.getHoveredView().repainter();
                 break;
-                case UpdateTask.RepaintSettings:
+                case RenderTask.RepaintSettings:
                     this.settingsRepainters.forEach(repaint => repaint());
                 break;
-                case UpdateTask.SaveData:
-                    this.saveData();
-                break;
-                case UpdateTask.All:
+                case RenderTask.All:
                     this.canvasRepainter();
                     this.settingsRepainters.forEach(repaint => repaint());
                     this.registry.services.plugin.getViewById(GameViewerPlugin.id).update();
                 break;
-                case UpdateTask.Full:
+                case RenderTask.RenderFull:
                     this.fullRepainter();
                 break;
             }
@@ -67,9 +63,7 @@ export class UpdateService {
     }
 
     private saveData() {
-        const map = this.registry.services.export.export();
-        this.registry.services.storage.storeLevel(this.registry.stores.levelStore.currentLevel.index, map);
-        this.registry.services.history.saveState(map);
+        this.registry.services.history.createSnapshot();
     }
 
     setCanvasRepainter(repaint: Function) {

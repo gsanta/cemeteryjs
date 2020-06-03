@@ -2,7 +2,7 @@ import { NodeView } from "../../../../core/models/views/NodeView";
 import { getAllKeys, KeyboardNode } from "../../../../core/models/nodes/KeyboardNode";
 import { ViewSettings } from "../../../scene_editor/settings/AbstractSettings";
 import { Registry } from "../../../../core/Registry";
-import { UpdateTask } from "../../../../core/services/UpdateServices";
+import { RenderTask } from "../../../../core/services/RenderServices";
 import { Keyboard } from "../../../../core/services/input/KeyboardService";
 
 export enum KeyboardInputNodeProps {
@@ -39,6 +39,8 @@ export class KeyboardNodeSettings extends ViewSettings<KeyboardInputNodeProps, N
             default:
                 throw new Error(`${prop} is not a writeable property.`)
         }
-        this.registry.services.update.runImmediately(UpdateTask.RepaintActiveView, UpdateTask.SaveData);
+
+        this.registry.services.history.createSnapshot();
+        this.registry.services.update.runImmediately(RenderTask.RenderFocusedView);
     }
 }

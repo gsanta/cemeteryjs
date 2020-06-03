@@ -1,5 +1,5 @@
 import { Registry } from '../../../core/Registry';
-import { UpdateTask } from '../../../core/services/UpdateServices';
+import { RenderTask } from '../../../core/services/RenderServices';
 import { AbstractTool } from './AbstractTool';
 import { Cursor, ToolType } from "./Tool";
 
@@ -16,7 +16,7 @@ export class DragAndDropTool extends AbstractTool {
 
     select() {
         this.isDragging = true;
-        this.registry.services.update.runImmediately(UpdateTask.RepaintActiveView);
+        this.registry.services.update.runImmediately(RenderTask.RenderFocusedView);
     }
 
     deselect() {
@@ -28,7 +28,8 @@ export class DragAndDropTool extends AbstractTool {
         const nodeType = this.registry.services.pointer.pointer.droppedItemType;
         if (nodeType !== undefined) {
             this.registry.stores.nodeStore.addDroppable(this.registry.services.pointer.droppableItem, this.registry.services.pointer.pointer.curr.clone());
-            this.registry.services.update.scheduleTasks(UpdateTask.RepaintActiveView, UpdateTask.SaveData);
+            this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
+            this.registry.services.history.createSnapshot();
         }
     }
 

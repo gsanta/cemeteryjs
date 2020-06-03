@@ -1,6 +1,6 @@
 import { Registry } from '../../../core/Registry';
 import { Hotkey } from "../../../core/services/input/HotkeyService";
-import { UpdateTask } from '../../../core/services/UpdateServices';
+import { RenderTask } from '../../../core/services/RenderServices';
 import { AbstractTool } from './AbstractTool';
 import { ToolType, Cursor } from "./Tool";
 import { HotkeyPanStart } from '../hotkeys/HotkeyPanStart';
@@ -25,13 +25,13 @@ export class PanTool extends AbstractTool {
         
         camera.pan(this.registry.services.pointer.pointer);
 
-        this.registry.services.update.scheduleTasks(UpdateTask.RepaintActiveView);
+        this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
     }
 
     keyup(e: IKeyboardEvent): void {
         if (e.keyCode === Keyboard.Space && this.registry.services.plugin.getHoveredView().getActiveTool() === this) {
             this.registry.services.plugin.getHoveredView().removePriorityTool(this);
-            this.registry.services.update.scheduleTasks(UpdateTask.RepaintActiveView);
+            this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
         }
     }
 

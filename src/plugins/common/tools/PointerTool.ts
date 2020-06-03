@@ -1,7 +1,7 @@
 import { ChildView } from '../../../core/models/views/child_views/ChildView';
 import { View } from '../../../core/models/views/View';
 import { Registry } from '../../../core/Registry';
-import { UpdateTask } from "../../../core/services/UpdateServices";
+import { RenderTask } from "../../../core/services/RenderServices";
 import { isConcept, isControl } from '../../../core/stores/SceneStore';
 import { NodeEditorPlugin } from '../../node_editor/NodeEditorPlugin';
 import { SceneEditorPlugin } from '../../scene_editor/SceneEditorPlugin';
@@ -26,18 +26,18 @@ export class PointerTool extends AbstractTool {
             this.registry.stores.selectionStore.addItem(concept);
             this.registry.stores.selectionStore.addItem(hoveredItem);
 
-            this.registry.services.update.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas);
+            this.registry.services.update.scheduleTasks(RenderTask.RepaintSettings, RenderTask.RepaintCanvas);
         } else if (isConcept(hoveredItem.type)) {
             this.registry.stores.selectionStore.clear();
             this.registry.stores.selectionStore.addItem(hoveredItem);
 
-            this.registry.services.update.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas);
+            this.registry.services.update.scheduleTasks(RenderTask.RepaintSettings, RenderTask.RepaintCanvas);
 
         }
     }
 
     down() {
-        this.initMove() && this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
+        this.initMove() && this.registry.services.update.scheduleTasks(RenderTask.RepaintCanvas);
     }
 
     drag() {
@@ -45,7 +45,7 @@ export class PointerTool extends AbstractTool {
 
         if (this.movingItem) {
             this.moveItems();
-            this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
+            this.registry.services.update.scheduleTasks(RenderTask.RepaintCanvas);
         }
         
         this.isDragStart = false;
@@ -55,7 +55,8 @@ export class PointerTool extends AbstractTool {
         super.draggedUp();
 
         if (!this.isDragStart) {
-            this.registry.services.update.scheduleTasks(UpdateTask.SaveData, UpdateTask.All);
+            this.registry.services.history.createSnapshot();
+            this.registry.services.update.scheduleTasks(RenderTask.All);
         }
 
         this.isDragStart = true;
@@ -71,11 +72,11 @@ export class PointerTool extends AbstractTool {
     }
 
     over(item: View) {
-        this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
+        this.registry.services.update.scheduleTasks(RenderTask.RepaintCanvas);
     }
 
     out(item: View) {
-        this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
+        this.registry.services.update.scheduleTasks(RenderTask.RepaintCanvas);
     }
 
     private initMove(): boolean {
@@ -94,7 +95,7 @@ export class PointerTool extends AbstractTool {
             concepts.forEach((item, index) => item.move(this.registry.services.pointer.pointer.getDiff()));
         }
 
-        this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
+        this.registry.services.update.scheduleTasks(RenderTask.RepaintCanvas);
     }
 
     private updateDraggedConcept() {

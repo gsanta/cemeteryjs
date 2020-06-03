@@ -1,6 +1,6 @@
 import { Registry } from '../../../core/Registry';
 import { Hotkey } from "../../../core/services/input/HotkeyService";
-import { UpdateTask } from '../../../core/services/UpdateServices';
+import { RenderTask } from '../../../core/services/RenderServices';
 import { AbstractTool } from './AbstractTool';
 import { ToolType, Cursor } from "./Tool";
 import { HotkeyWheelZoomStart } from '../hotkeys/HotkeyWheelZoomStart';

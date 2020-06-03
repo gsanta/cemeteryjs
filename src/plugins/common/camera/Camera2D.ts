@@ -2,7 +2,7 @@ import { Point } from "../../../core/geometry/shapes/Point";
 import { Rectangle } from "../../../core/geometry/shapes/Rectangle";
 import { MousePointer } from "../../../core/services/input/MouseService";
 import { Services } from "../../../core/services/ServiceLocator";
-import { UpdateTask } from "../../../core/services/UpdateServices";
+import { RenderTask } from "../../../core/services/RenderServices";
 import { ICamera } from './ICamera';
 import { Registry } from "../../../core/Registry";
 
@@ -104,7 +104,7 @@ export class Camera2D implements ICamera {
         if (nextZoomLevel) {
             this.zoomToPosition(canvasPos, nextZoomLevel);
 
-            this.registry.services.update.runImmediately(UpdateTask.RepaintActiveView);
+            this.registry.services.update.runImmediately(RenderTask.RenderFocusedView);
         }
     }
 
@@ -116,7 +116,7 @@ export class Camera2D implements ICamera {
         if (prevZoomLevel) {
             this.zoomToPosition(canvasPos, prevZoomLevel);
 
-            this.registry.services.update.runImmediately(UpdateTask.RepaintActiveView);
+            this.registry.services.update.runImmediately(RenderTask.RenderFocusedView);
         }
     }
 
@@ -128,7 +128,7 @@ export class Camera2D implements ICamera {
         if (prevZoomLevel) {
             this.zoomToPosition(canvasPos, prevZoomLevel);
 
-            this.registry.services.update.runImmediately(UpdateTask.RepaintActiveView);
+            this.registry.services.update.runImmediately(RenderTask.RenderFocusedView);
         }
     }
 

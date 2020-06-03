@@ -1,6 +1,6 @@
 import { Registry } from '../../../core/Registry';
 import { AbstractSettings } from '../../scene_editor/settings/AbstractSettings';
-import { UpdateTask } from '../../../core/services/UpdateServices';
+import { RenderTask } from '../../../core/services/RenderServices';
 import { TimelineState } from '../../../core/models/game_objects/RouteModel';
 
 export enum GameViewerSettingsProps {
@@ -49,6 +49,6 @@ export class GameViewerSettings extends AbstractSettings<GameViewerSettingsProps
                 throw new Error(`${prop} is not a writeable property.`)
         }
 
-        this.registry.services.update.runImmediately(UpdateTask.RepaintSettings, UpdateTask.RepaintActiveView);
+        this.registry.services.update.runImmediately(RenderTask.RepaintSettings, RenderTask.RenderFocusedView);
     }
 }

@@ -1,7 +1,7 @@
 import { AnimationNode } from "../../../../core/models/nodes/AnimationNode";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { Registry } from "../../../../core/Registry";
-import { UpdateTask } from "../../../../core/services/UpdateServices";
+import { RenderTask } from "../../../../core/services/RenderServices";
 import { ViewSettings } from "../../../scene_editor/settings/AbstractSettings";
 
 export enum AnimationNodeProps {
@@ -36,6 +36,6 @@ export class AnimationNodeSettings extends ViewSettings<AnimationNodeProps, Node
                 this.nodeView.model.animation = val;
                 break;
         }
-        this.registry.services.update.runImmediately(UpdateTask.RepaintActiveView);
+        this.registry.services.update.runImmediately(RenderTask.RenderFocusedView);
     }
 }

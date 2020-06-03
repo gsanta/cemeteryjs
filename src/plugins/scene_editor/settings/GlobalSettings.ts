@@ -1,6 +1,6 @@
 import { SceneEditorPlugin } from '../SceneEditorPlugin';
 import { AbstractSettings } from './AbstractSettings';
-import { UpdateTask } from '../../../core/services/UpdateServices';
+import { RenderTask } from '../../../core/services/RenderServices';
 import { MeshView } from '../../../core/models/views/MeshView';
 import { Stores } from '../../../core/stores/Stores';
 import { Services } from '../../../core/services/ServiceLocator';
@@ -33,6 +33,6 @@ export class GlobalSettings extends AbstractSettings<GlobalSettingsPropType> {
                 this.registry.stores.selectionStore.clear();
                 this.registry.services.import.import(val.data)
         }
-        this.registry.services.update.runImmediately(UpdateTask.RepaintCanvas, UpdateTask.UpdateRenderer);
+        this.registry.services.update.runImmediately(RenderTask.RepaintCanvas, RenderTask.UpdateRenderer);
     }
 }

@@ -12,16 +12,16 @@ import { PointerService } from './input/PointerService';
 import { LevelService } from "./LevelService";
 import { LocalStoreService } from "./LocalStroreService";
 import { MeshLoaderService } from "./MeshLoaderService";
-import { UpdateService } from "./UpdateServices";
+import { RenderService } from "./RenderServices";
 import { PluginService } from "./PluginService";
 import { NodeService } from './node/NodeService';
 import { GamepadService } from './GamepadService';
 
 export class Services {
     hotkey: HotkeyService;
-    storage: LocalStoreService;
+    localStore: LocalStoreService;
     level: LevelService;
-    update: UpdateService;
+    update: RenderService;
     import: ImportService;
     export: ExportService;
     history: HistoryService;
@@ -44,9 +44,9 @@ export class Services {
 
     setup() {
         this.hotkey = new HotkeyService(this.registry);
-        this.storage = new LocalStoreService(this.registry);
+        this.localStore = new LocalStoreService(this.registry);
         this.level = new LevelService(this.registry);
-        this.update = new UpdateService(this.registry);
+        this.update = new RenderService(this.registry);
         this.import = new ImportService(this.registry);
         this.export = new ExportService(this.registry);
         this.history = new HistoryService(this.registry);

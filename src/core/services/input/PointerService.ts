@@ -2,7 +2,7 @@ import { DroppableItem } from "../../../plugins/common/tools/DragAndDropTool";
 import { Point } from "../../geometry/shapes/Point";
 import { Registry } from "../../Registry";
 import { MousePointer } from "./MouseService";
-import { UpdateTask } from "../UpdateServices";
+import { RenderTask } from "../RenderServices";
 import { View } from "../../models/views/View";
 
 export enum Wheel {
@@ -137,13 +137,13 @@ export class PointerService {
     pointerDragStart(item: DroppableItem) {
         this.droppableItem = item;
         this.registry.services.plugin.getHoveredView().setPriorityTool(this.registry.tools.dragAndDrop);
-        this.registry.services.update.runImmediately(UpdateTask.RepaintActiveView, UpdateTask.RepaintSettings);
+        this.registry.services.update.runImmediately(RenderTask.RenderFocusedView, RenderTask.RepaintSettings);
     }
 
     pointerDrop() {
         this.droppableItem = null;
         this.registry.services.plugin.getHoveredView().removePriorityTool(this.registry.tools.dragAndDrop);
-        this.registry.services.update.runImmediately(UpdateTask.RepaintActiveView, UpdateTask.RepaintSettings);
+        this.registry.services.update.runImmediately(RenderTask.RenderFocusedView, RenderTask.RepaintSettings);
     }
     
     private getScreenPoint(point: Point): Point {

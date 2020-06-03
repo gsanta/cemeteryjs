@@ -4,8 +4,7 @@ import { Tool } from '../plugins/common/tools/Tool';
 import { AbstractSettings } from '../plugins/scene_editor/settings/AbstractSettings';
 import { Point } from './geometry/shapes/Point';
 import { Registry } from './Registry';
-import { IViewImporter } from './services/import/IViewImporter';
-import { UpdateTask } from './services/UpdateServices';
+import { RenderTask } from './services/RenderServices';
 import { AbstractStore } from './stores/AbstractStore';
 import { LayoutType } from './services/PluginService';
 import { IPluginExporter } from '../plugins/common/io/IPluginExporter';
@@ -64,7 +63,7 @@ export abstract class AbstractPlugin {
         this.selectedTool && this.selectedTool.deselect();
         this.selectedTool = tool;
         this.selectedTool.select();
-        this.registry.services.update.runImmediately(UpdateTask.RepaintSettings, UpdateTask.RepaintActiveView);
+        this.registry.services.update.runImmediately(RenderTask.RepaintSettings, RenderTask.RenderFocusedView);
     }
 
     getSelectedTool(): Tool {
@@ -80,7 +79,7 @@ export abstract class AbstractPlugin {
             this.getActiveTool().leave();
             this.priorityTool = priorityTool;
             this.priorityTool.select();
-            this.registry.services.update.runImmediately(UpdateTask.RepaintSettings, UpdateTask.RepaintActiveView);
+            this.registry.services.update.runImmediately(RenderTask.RepaintSettings, RenderTask.RenderFocusedView);
         }
     }
 
@@ -88,7 +87,7 @@ export abstract class AbstractPlugin {
         if (this.priorityTool === priorityTool) {
             this.priorityTool.deselect();
             this.priorityTool = null;
-            this.registry.services.update.runImmediately(UpdateTask.RepaintSettings, UpdateTask.RepaintActiveView);
+            this.registry.services.update.runImmediately(RenderTask.RepaintSettings, RenderTask.RenderFocusedView);
         }
     }
 

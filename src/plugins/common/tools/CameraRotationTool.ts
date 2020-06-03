@@ -1,6 +1,6 @@
 import { Registry } from '../../../core/Registry';
 import { Hotkey } from "../../../core/services/input/HotkeyService";
-import { UpdateTask } from '../../../core/services/UpdateServices';
+import { RenderTask } from '../../../core/services/RenderServices';
 import { AbstractTool } from './AbstractTool';
 import { ToolType } from "./Tool";
 import { HotkeyCameraRotationStart } from '../hotkeys/HotkeyCameraRotationStart';
@@ -32,7 +32,7 @@ export class CameraRotationTool extends AbstractTool {
         
         camera.rotate(this.registry.services.pointer.pointer);
 
-        this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
+        this.registry.services.update.scheduleTasks(RenderTask.RepaintCanvas);
     }
 
     draggedUp() {

@@ -1,5 +1,5 @@
 import { AbstractSettings } from './AbstractSettings';
-import { UpdateTask } from '../../../core/services/UpdateServices';
+import { RenderTask } from '../../../core/services/RenderServices';
 import { MeshView } from '../../../core/models/views/MeshView';
 import { Services } from '../../../core/services/ServiceLocator';
 import { Stores } from '../../../core/stores/Stores';
@@ -39,12 +39,14 @@ export class LevelSettings extends AbstractSettings<LevelFormPropType> {
                 break;
             case LevelFormPropType.LevelName:
                 this.registry.stores.levelStore.currentLevel.name = val;
-                this.registry.services.update.runImmediately(UpdateTask.RepaintSettings);
+                this.registry.services.update.runImmediately(RenderTask.RepaintSettings);
                 break;
             case LevelFormPropType.ClearLevel:
                 this.registry.services.level.clearLevel()
-                .then(() => this.registry.services.update.runImmediately(UpdateTask.All, UpdateTask.SaveData))
-                .catch(() => this.registry.services.update.runImmediately(UpdateTask.All, UpdateTask.SaveData))
+                .finally(() => {
+                    this.registry.services.history.createSnapshot();
+                    this.registry.services.update.runImmediately(RenderTask.All)
+                });
                 break;
         }
     }

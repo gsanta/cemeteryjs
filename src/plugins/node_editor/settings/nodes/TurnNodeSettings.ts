@@ -1,7 +1,7 @@
 import { MoveNode } from "../../../../core/models/nodes/MoveNode";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { Registry } from "../../../../core/Registry";
-import { UpdateTask } from "../../../../core/services/UpdateServices";
+import { RenderTask } from "../../../../core/services/RenderServices";
 import { ViewSettings } from "../../../scene_editor/settings/AbstractSettings";
 import { TurnNode } from '../../../../core/models/nodes/TurnNode';
 
@@ -38,6 +38,6 @@ export class TurnNodeSettings extends ViewSettings<TurnNodeProps, NodeView> {
             default:
                 throw new Error(`${prop} is not a writeable property.`)
         }
-        this.registry.services.update.runImmediately(UpdateTask.RepaintActiveView);
+        this.registry.services.update.runImmediately(RenderTask.RenderFocusedView);
     }
 }

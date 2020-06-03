@@ -21,7 +21,7 @@ export class Editor {
     }
 
     setup(canvas: HTMLCanvasElement) {        
-        this.registry.services.storage.loadLevelIndexes()
+        this.registry.services.localStore.loadLevelIndexes()
             .then((indexes: number[]) => {
                 if (indexes.length) {
                     this.registry.stores.levelStore.setLevels(indexes);
@@ -30,12 +30,12 @@ export class Editor {
             })
             .then(() => {
                 this.isLoading = false;
-                this.registry.services.history.saveState(this.registry.services.export.export());
+                this.registry.services.history.createSnapshot();
                 this.render();
             })
             .catch(() => {
                 this.isLoading = false;
-                this.registry.services.history.saveState(this.registry.services.export.export());
+                this.registry.services.history.createSnapshot();
                 this.render();
             });
     }

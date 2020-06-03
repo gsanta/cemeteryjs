@@ -1,7 +1,7 @@
 import { Registry } from '../../../core/Registry';
 import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, IHotkeyEvent, HotkeyTrigger } from '../../../core/services/input/HotkeyService';
 import { Keyboard } from '../../../core/services/input/KeyboardService';
-import { UpdateTask } from '../../../core/services/UpdateServices';
+import { RenderTask } from '../../../core/services/RenderServices';
 import { isConcept, isControl } from '../../../core/stores/SceneStore';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './RectangleSelector';
@@ -19,7 +19,7 @@ export class DeleteTool extends AbstractTool {
 
     drag() {
         this.rectSelector.updateRect(this.registry.services.pointer.pointer);
-        this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
+        this.registry.services.update.scheduleTasks(RenderTask.RepaintCanvas);
     }
 
     click() {
@@ -35,7 +35,10 @@ export class DeleteTool extends AbstractTool {
         }
         
         this.registry.services.level.updateCurrentLevel();
-        this.registry.services.pointer.hoveredItem && this.registry.services.update.scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
+        if (this.registry.services.pointer.hoveredItem) {
+            this.registry.services.history.createSnapshot();
+            this.registry.services.update.scheduleTasks(RenderTask.All);
+        }
     }
 
     
@@ -47,12 +50,13 @@ export class DeleteTool extends AbstractTool {
 
         this.registry.services.level.updateCurrentLevel();
         this.registry.services.game.deleteConcepts(views);
-        this.registry.services.update.scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
+        this.registry.services.history.createSnapshot();
+        this.registry.services.update.scheduleTasks(RenderTask.All);
     }
 
     leave() {
         this.rectSelector.finish();
-        this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
+        this.registry.services.update.scheduleTasks(RenderTask.RepaintCanvas);
     }
 
     over(item: View) {
@@ -66,10 +70,10 @@ export class DeleteTool extends AbstractTool {
     eraseAll() {
         const concepts = this.registry.stores.canvasStore.getAllConcepts();
         this.registry.services.game.deleteConcepts(concepts);
-        this.registry.services.storage.clearAll();
+        this.registry.services.localStore.clearAll();
         this.registry.services.plugin.plugins.forEach(plugin => plugin.getStore()?.clear());
         this.registry.stores.canvasStore.clear();
-        this.registry.services.update.runImmediately(UpdateTask.All);
+        this.registry.services.update.runImmediately(RenderTask.All);
     }
 
     getCursor() {

@@ -1,7 +1,7 @@
 import { Rectangle } from '../../../core/geometry/shapes/Rectangle';
 import { Registry } from '../../../core/Registry';
 import { MeshView } from '../../../core/models/views/MeshView';
-import { UpdateTask } from '../../../core/services/UpdateServices';
+import { RenderTask } from '../../../core/services/RenderServices';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './RectangleSelector';
 import { ToolType } from './Tool';
@@ -32,7 +32,8 @@ export class RectangleTool extends AbstractTool {
 
         this.registry.services.level.updateCurrentLevel();
         this.registry.services.game.addConcept(meshConcept);
-        this.registry.services.update.scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
+        this.registry.services.history.createSnapshot();
+        this.registry.services.update.scheduleTasks(RenderTask.All);
     }
 
     drag() {
@@ -55,7 +56,7 @@ export class RectangleTool extends AbstractTool {
             this.registry.stores.canvasStore.addConcept(meshConcept);
             this.lastPreviewRect = meshConcept;
     
-            this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
+            this.registry.services.update.scheduleTasks(RenderTask.RepaintCanvas);
         }
     }
 
@@ -68,7 +69,8 @@ export class RectangleTool extends AbstractTool {
             this.lastPreviewRect = null;
         }
 
-        this.registry.services.update.scheduleTasks(UpdateTask.All, UpdateTask.SaveData);
+        this.registry.services.history.createSnapshot();
+        this.registry.services.update.scheduleTasks(RenderTask.All);
     }
 
     leave() {

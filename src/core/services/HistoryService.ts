@@ -1,5 +1,5 @@
 import { Registry } from '../Registry';
-import { UpdateTask } from './UpdateServices';
+import { RenderTask } from './RenderServices';
 
 
 export class HistoryService {
@@ -21,7 +21,7 @@ export class HistoryService {
             this.registry.stores.selectionStore.clear();
             this.registry.services.import.import(this.history[this.index]);
             this.registry.services.level.updateCurrentLevel();
-            this.registry.services.update.runImmediately(UpdateTask.All);
+            this.registry.services.update.runImmediately(RenderTask.All);
         }
     }
 
@@ -32,7 +32,7 @@ export class HistoryService {
             this.registry.stores.selectionStore.clear();
             this.registry.services.import.import(this.history[this.index]);
             this.registry.services.level.updateCurrentLevel();
-            this.registry.services.update.runImmediately(UpdateTask.All);
+            this.registry.services.update.runImmediately(RenderTask.All);
         }
     }
 
@@ -44,10 +44,13 @@ export class HistoryService {
         return this.history.length > 0 && this.index !== 0;
     }
 
-    saveState(state: string) {
+    createSnapshot() {
+        const snapshot = this.registry.services.export.export();
+        this.registry.services.localStore.storeLevel(this.registry.stores.levelStore.currentLevel.index, snapshot);
+
         this.history = this.history.slice(0, this.index + 1);
         this.history = this.history.length > this.memoryLimit ? this.history.slice(this.history.length - this.memoryLimit) : this.history;
-        this.history.push(state);
+        this.history.push(snapshot);
 
         this.index = this.history.length - 1;
     }

@@ -1,5 +1,5 @@
 import { Registry } from "../Registry";
-import { UpdateTask } from "./UpdateServices";
+import { RenderTask } from "./RenderServices";
 import { ListActionsSettings } from '../../plugins/scene_editor/settings/ListActionsSettings';
 import { NodeEditorSettings } from "../../plugins/node_editor/settings/NodeEditorSettings";
 
@@ -19,7 +19,7 @@ export class DialogService {
 
     openDialog(dialogType: string) {
         this.activeDialog = dialogType;
-        this.registry.services.update.runImmediately(UpdateTask.All);
+        this.registry.services.update.runImmediately(RenderTask.All);
     }
 
     close(): boolean {
@@ -27,7 +27,7 @@ export class DialogService {
         if (this.activeDialog) { ret = true; }
 
         this.activeDialog = null;
-        this.registry.services.update.runImmediately(UpdateTask.All);
+        this.registry.services.update.runImmediately(RenderTask.All);
         return ret;
     }
 

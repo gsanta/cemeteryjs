@@ -6,7 +6,7 @@ import { EditPointView } from "../../../core/models/views/child_views/EditPointV
 import { Registry } from "../../../core/Registry";
 import { HotkeyTrigger, IHotkeyEvent } from "../../../core/services/input/HotkeyService";
 import { IKeyboardEvent, Keyboard } from "../../../core/services/input/KeyboardService";
-import { UpdateTask } from "../../../core/services/UpdateServices";
+import { RenderTask } from "../../../core/services/RenderServices";
 import { PointerTool } from "./PointerTool";
 import { ToolType } from "./Tool";
 
@@ -29,7 +29,8 @@ export class PathTool extends PointerTool {
     keydown(e: IKeyboardEvent) {
         if (e.keyCode === Keyboard.Enter) {
             this.registry.stores.selectionStore.clear();
-            this.registry.services.update.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
+            this.registry.services.update.scheduleTasks(RenderTask.RepaintSettings, RenderTask.RepaintCanvas);
+            this.registry.services.history.createSnapshot();
         }
     }
 
@@ -47,13 +48,13 @@ export class PathTool extends PointerTool {
 
         if (hover) {
             super.over(item);
-            this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
+            this.registry.services.update.scheduleTasks(RenderTask.RepaintCanvas);
         }
     }
 
     out(item: View) {
         super.out(item);
-        this.registry.services.update.scheduleTasks(UpdateTask.RepaintCanvas);
+        this.registry.services.update.scheduleTasks(RenderTask.RepaintCanvas);
     }
 
     private createPath() {
@@ -73,12 +74,12 @@ export class PathTool extends PointerTool {
             this.registry.stores.selectionStore.removeItem(selectedEditPoint);
             this.registry.stores.selectionStore.addItem(newEditPoint);
             this.registry.services.game.updateConcepts([path]);
-
-            this.registry.services.update.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         } else {
             this.startNewPath();
-            this.registry.services.update.scheduleTasks(UpdateTask.RepaintSettings, UpdateTask.RepaintCanvas, UpdateTask.SaveData);
         }
+
+        this.registry.services.history.createSnapshot();
+        this.registry.services.update.scheduleTasks(RenderTask.RepaintSettings, RenderTask.RepaintCanvas);
     }
 
     private startNewPath() {
