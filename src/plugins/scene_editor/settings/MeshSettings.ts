@@ -42,13 +42,13 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
     blurProp() {
         super.blurProp();
 
-        this.registry.services.update.runImmediately(RenderTask.RepaintCanvas);
+        this.registry.services.update.runImmediately(RenderTask.RenderFocusedView);
     }
 
     updateProp(value: any, propType: MeshViewPropType) {
         super.updateProp(value, propType);
 
-        this.registry.services.update.runImmediately(RenderTask.RepaintCanvas);
+        this.registry.services.update.runImmediately(RenderTask.RenderFocusedView);
     }
 
     protected getProp(prop: MeshViewPropType) {
@@ -108,7 +108,7 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                         const data = this.registry.services.export.export();
                         this.registry.services.game.updateConcepts([this.meshConcept]);
                         this.registry.services.history.createSnapshot();
-                        this.registry.services.update.runImmediately(RenderTask.UpdateRenderer, RenderTask.RepaintCanvas);
+                        this.registry.services.update.runImmediately(RenderTask.RenderFull);
                     });
                 break;
             case MeshViewPropType.Texture:
@@ -179,10 +179,9 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
     }
 
     private update() {
-        const data = this.registry.services.export.export();
         this.registry.services.game.updateConcepts([this.meshConcept]);
         this.registry.services.history.createSnapshot();
-        this.registry.services.update.runImmediately(RenderTask.UpdateRenderer);
+        this.registry.services.update.runImmediately(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
 
     }
 }

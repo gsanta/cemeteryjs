@@ -34,12 +34,11 @@ export abstract class AbstractPlugin {
 
     exporter: IPluginExporter;
     importer: AbstractPluginImporter;
-    repainter: Function = () => undefined;
-
-    protected settings: AbstractSettings<any>[] = [];
+    priorityTool: Tool;
     
     protected selectedTool: Tool;
-    priorityTool: Tool;
+    protected settings: AbstractSettings<any>[] = [];
+    protected renderFunc: () => void;
 
     protected registry: Registry;
     
@@ -55,15 +54,22 @@ export abstract class AbstractPlugin {
     setup(): void {}
     destroy(): void {}
     abstract resize(): void;
-    update(): void {}
     over(): void { this.registry.services.plugin.setHoveredView(this) }
     out(): void {}
+
+    setRenderer(renderFunc: () => void) {
+        this.renderFunc = renderFunc;
+    }
+
+    reRender() {
+        this.renderFunc && this.renderFunc();
+    }
 
     setSelectedTool(tool: AbstractTool) {
         this.selectedTool && this.selectedTool.deselect();
         this.selectedTool = tool;
         this.selectedTool.select();
-        this.registry.services.update.runImmediately(RenderTask.RepaintSettings, RenderTask.RenderFocusedView);
+        this.registry.services.update.runImmediately(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
     }
 
     getSelectedTool(): Tool {
@@ -79,7 +85,7 @@ export abstract class AbstractPlugin {
             this.getActiveTool().leave();
             this.priorityTool = priorityTool;
             this.priorityTool.select();
-            this.registry.services.update.runImmediately(RenderTask.RepaintSettings, RenderTask.RenderFocusedView);
+            this.registry.services.update.runImmediately(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
         }
     }
 
@@ -87,7 +93,7 @@ export abstract class AbstractPlugin {
         if (this.priorityTool === priorityTool) {
             this.priorityTool.deselect();
             this.priorityTool = null;
-            this.registry.services.update.runImmediately(RenderTask.RepaintSettings, RenderTask.RenderFocusedView);
+            this.registry.services.update.runImmediately(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
         }
     }
 

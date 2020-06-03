@@ -16,11 +16,11 @@ export class LevelService {
             return this.registry.services.localStore.loadLevel(level)
                 .finally(() => {
                     this.registry.stores.levelStore.setCurrentLevel(level)
-                    this.registry.services.update.runImmediately(RenderTask.All);
+                    this.registry.services.update.runImmediately(RenderTask.RenderFull);
                 });
         } else {
             this.registry.stores.levelStore.setCurrentLevel(level);
-            this.registry.services.update.runImmediately(RenderTask.All)
+            this.registry.services.update.runImmediately(RenderTask.RenderFull)
             return Promise.resolve();
         }
     }

@@ -33,6 +33,6 @@ export class GlobalSettings extends AbstractSettings<GlobalSettingsPropType> {
                 this.registry.stores.selectionStore.clear();
                 this.registry.services.import.import(val.data)
         }
-        this.registry.services.update.runImmediately(RenderTask.RepaintCanvas, RenderTask.UpdateRenderer);
+        this.registry.services.update.runImmediately(RenderTask.RenderFull);
     }
 }

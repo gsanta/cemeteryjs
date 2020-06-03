@@ -269,7 +269,8 @@ export class NodeEditorPlugin extends AbstractPlugin {
         const screenSize = getScreenSize(NodeEditorPlugin.id);
         screenSize && this.camera.resize(screenSize);
         this.registry.tools.zoom.resize();
-        this.registry.services.update.runImmediately(RenderTask.RepaintCanvas);
+
+        this.renderFunc && this.renderFunc();
     };
 
     isVisible(): boolean {
@@ -300,10 +301,5 @@ export class NodeEditorPlugin extends AbstractPlugin {
             throw new Error(`Node preset with name ${preset.presetName} already registered`);
         }
         this.registry.stores.nodeStore.presets.push(preset);
-    }
-
-    updateCamera() {
-        this.camera = cameraInitializer(NodeEditorPlugin.id, this.registry);
-        this.registry.services.update.runImmediately(RenderTask.RepaintCanvas);
     }
 }

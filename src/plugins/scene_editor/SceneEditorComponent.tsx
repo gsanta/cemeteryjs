@@ -2,18 +2,17 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { AppContext, AppContextType } from '../../core/gui/Context';
 import { colors } from '../../core/gui/styles';
+import { View } from '../../core/models/views/View';
 import { PathMarkersComponent } from '../../core/services/export/PathMarkersComponent';
 import { WheelListener } from '../../core/services/WheelListener';
-import { WindowToolbarStyled } from '../../core/WindowToolbar';
+import { CanvasComponent } from '../common/CanvasComponent';
 import { RedoIconComponent } from '../common/toolbar/icons/RedoIconComponent';
 import { UndoIconComponent } from '../common/toolbar/icons/UndoIconComponent';
 import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
 import { ToolType } from '../common/tools/Tool';
-import { SceneEditorPlugin } from './SceneEditorPlugin';
-import { CanvasComponent } from '../common/CanvasComponent';
-import { View } from '../../core/models/views/View';
 import { MeshViewContainerComponent } from './components/MeshViewComponent';
 import { PathViewContainerComponent } from './components/PathViewComponent';
+import { SceneEditorPlugin } from './SceneEditorPlugin';
 
 const EditorComponentStyled = styled.div`
     width: 100%;
@@ -41,8 +40,7 @@ export class SceneEditorComponent extends CanvasComponent {
     componentDidMount() {
         super.componentDidMount();
         this.wheelListener = new WheelListener(this.context.registry);
-        this.context.registry.services.update.setCanvasRepainter(() => this.forceUpdate());
-        this.context.registry.services.plugin.getViewById(SceneEditorPlugin.id).repainter = () => {this.forceUpdate()};
+        this.context.registry.services.plugin.sceneEditor.setRenderer(() => this.forceUpdate())
 
         setTimeout(() => {
             this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).resize();

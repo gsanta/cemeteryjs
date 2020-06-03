@@ -16,14 +16,10 @@ export class CodeEditorPlugin extends AbstractPlugin {
 
     editors: monaco.editor.IStandaloneCodeEditor[] = [];
 
-    private renderCanvasFunc: () => void;
-
     constructor(registry: Registry) {
         super(registry);
 
         this.selectedTool = this.registry.tools.pan;
-
-        this.update = this.update.bind(this);
     }
 
     getStore() {
@@ -33,11 +29,6 @@ export class CodeEditorPlugin extends AbstractPlugin {
     getCamera(): ICamera {
         return null;
     }
-
-    update() {
-        this.renderCanvasFunc();
-    }
-
 
     getId(): string {
         return CodeEditorPlugin.id;
@@ -53,10 +44,8 @@ export class CodeEditorPlugin extends AbstractPlugin {
                 this.editors.forEach(editor => editor.layout());
             }, 100);
         }
-    }
 
-    setCanvasRenderer(renderFunc: () => void) {
-        this.renderCanvasFunc = renderFunc;
+        this.renderFunc && this.renderFunc();
     }
 
     isVisible(): boolean {

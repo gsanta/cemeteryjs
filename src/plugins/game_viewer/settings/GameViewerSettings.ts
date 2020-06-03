@@ -49,6 +49,6 @@ export class GameViewerSettings extends AbstractSettings<GameViewerSettingsProps
                 throw new Error(`${prop} is not a writeable property.`)
         }
 
-        this.registry.services.update.runImmediately(RenderTask.RepaintSettings, RenderTask.RenderFocusedView);
+        this.registry.services.update.runImmediately(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
     }
 }

@@ -50,8 +50,7 @@ export class NodeEditorComponent extends CanvasComponent {
     componentDidMount() {
         super.componentDidMount();
         this.wheelListener = new WheelListener(this.context.registry);
-        this.context.registry.services.update.setCanvasRepainter(() => this.forceUpdate());
-        this.context.registry.services.plugin.getViewById(NodeEditorPlugin.id).repainter = () => {this.forceUpdate()};
+        this.context.registry.services.plugin.nodeEditor.setRenderer(() => this.forceUpdate());
 
         setTimeout(() => {
             this.context.registry.services.plugin.getViewById<NodeEditorPlugin>(NodeEditorPlugin.id).resize();

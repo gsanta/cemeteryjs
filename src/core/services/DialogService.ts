@@ -19,7 +19,7 @@ export class DialogService {
 
     openDialog(dialogType: string) {
         this.activeDialog = dialogType;
-        this.registry.services.update.runImmediately(RenderTask.All);
+        this.registry.services.update.runImmediately(RenderTask.RenderFull);
     }
 
     close(): boolean {
@@ -27,7 +27,7 @@ export class DialogService {
         if (this.activeDialog) { ret = true; }
 
         this.activeDialog = null;
-        this.registry.services.update.runImmediately(RenderTask.All);
+        this.registry.services.update.runImmediately(RenderTask.RenderFull);
         return ret;
     }
 

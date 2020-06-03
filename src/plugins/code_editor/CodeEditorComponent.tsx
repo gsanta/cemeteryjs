@@ -37,8 +37,7 @@ export class CodeEditorComponent extends CanvasComponent {
 
     componentDidMount() {
         super.componentDidMount();
-        this.context.registry.services.plugin.getViewById<CodeEditorPlugin>(CodeEditorPlugin.id).setCanvasRenderer(() => this.forceUpdate());
-        this.context.registry.services.plugin.getViewById(CodeEditorPlugin.id).repainter = () => {this.forceUpdate()};
+        this.context.registry.services.plugin.codeEditor.setRenderer(() => this.forceUpdate());
         
         const view = this.context.registry.services.plugin.getViewById<CodeEditorPlugin>(CodeEditorPlugin.id);
 

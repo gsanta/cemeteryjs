@@ -33,7 +33,7 @@ export class RectangleTool extends AbstractTool {
         this.registry.services.level.updateCurrentLevel();
         this.registry.services.game.addConcept(meshConcept);
         this.registry.services.history.createSnapshot();
-        this.registry.services.update.scheduleTasks(RenderTask.All);
+        this.registry.services.update.scheduleTasks(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
     }
 
     drag() {
@@ -56,7 +56,7 @@ export class RectangleTool extends AbstractTool {
             this.registry.stores.canvasStore.addConcept(meshConcept);
             this.lastPreviewRect = meshConcept;
     
-            this.registry.services.update.scheduleTasks(RenderTask.RepaintCanvas);
+            this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
         }
     }
 
@@ -70,7 +70,7 @@ export class RectangleTool extends AbstractTool {
         }
 
         this.registry.services.history.createSnapshot();
-        this.registry.services.update.scheduleTasks(RenderTask.All);
+        this.registry.services.update.scheduleTasks(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
     }
 
     leave() {

@@ -2,14 +2,12 @@ import { AbstractPlugin, calcOffsetFromDom } from '../../core/AbstractPlugin';
 import { Point } from '../../core/geometry/shapes/Point';
 import { Registry } from '../../core/Registry';
 import { LayoutType } from '../../core/services/PluginService';
-import { RenderTask } from '../../core/services/RenderServices';
 import { Camera2D } from '../common/camera/Camera2D';
-import { AbstractPluginImporter } from '../common/io/AbstractPluginImporter';
+import { SceneEditorExporter } from './io/SceneEditorExporter';
 import { SceneEditorImporter } from './io/SceneEditorImporter';
 import { LevelSettings } from './settings/LevelSettings';
 import { MeshSettings } from './settings/MeshSettings';
 import { PathSettings } from './settings/PathSettings';
-import { SceneEditorExporter } from './io/SceneEditorExporter';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -74,7 +72,8 @@ export class SceneEditorPlugin extends AbstractPlugin {
         const screenSize = getScreenSize(SceneEditorPlugin.id);
         screenSize && this.camera.resize(screenSize);
         this.registry.tools.zoom.resize();
-        this.registry.services.update.runImmediately(RenderTask.RepaintCanvas);
+
+        this.renderFunc && this.renderFunc();
     };
 
     isVisible(): boolean {
@@ -91,10 +90,5 @@ export class SceneEditorPlugin extends AbstractPlugin {
 
     getCamera() {
         return this.camera;
-    }
-
-    updateCamera() {
-        this.camera = cameraInitializer(SceneEditorPlugin.id, this.registry);
-        this.registry.services.update.runImmediately(RenderTask.RepaintCanvas);
     }
 }

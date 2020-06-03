@@ -32,7 +32,7 @@ export class CameraRotationTool extends AbstractTool {
         
         camera.rotate(this.registry.services.pointer.pointer);
 
-        this.registry.services.update.scheduleTasks(RenderTask.RepaintCanvas);
+        this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
     }
 
     draggedUp() {

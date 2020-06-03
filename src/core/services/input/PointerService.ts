@@ -137,13 +137,13 @@ export class PointerService {
     pointerDragStart(item: DroppableItem) {
         this.droppableItem = item;
         this.registry.services.plugin.getHoveredView().setPriorityTool(this.registry.tools.dragAndDrop);
-        this.registry.services.update.runImmediately(RenderTask.RenderFocusedView, RenderTask.RepaintSettings);
+        this.registry.services.update.runImmediately(RenderTask.RenderFocusedView, RenderTask.RenderSidebar);
     }
 
     pointerDrop() {
         this.droppableItem = null;
         this.registry.services.plugin.getHoveredView().removePriorityTool(this.registry.tools.dragAndDrop);
-        this.registry.services.update.runImmediately(RenderTask.RenderFocusedView, RenderTask.RepaintSettings);
+        this.registry.services.update.runImmediately(RenderTask.RenderFocusedView, RenderTask.RenderSidebar);
     }
     
     private getScreenPoint(point: Point): Point {

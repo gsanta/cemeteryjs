@@ -2,16 +2,14 @@ import { Registry } from '../Registry';
 import { GameViewerPlugin } from "../../plugins/game_viewer/GameViewerPlugin";
 
 export enum RenderTask {
-    RepaintCanvas = 'RepaintCanvas',
     RenderFocusedView = 'RenderFocusedView',
-    RepaintSettings = 'RepaintSettings',
-    UpdateRenderer = 'UpdateRenderer',
-    All = 'All',
-    RenderFull = 'RenderFull',
+    RenderVisibleViews = 'RenderVisibleViews', 
+    RenderSidebar = 'RenderSidebar',
+    RenderFull = 'RenderFull'
 }
 
 export class RenderService {
-    serviceName = 'update-service';
+    serviceName = 'render-service';
     updateTasks: RenderTask[] = [];
 
     private canvasRepainter: Function = () => undefined;
@@ -41,33 +39,20 @@ export class RenderService {
     private runTasks(tasks: RenderTask[]) {
         tasks.forEach(task => {
             switch(task) {
-                case RenderTask.RepaintCanvas:
-                    this.canvasRepainter();
-                break;
                 case RenderTask.RenderFocusedView:
-                    this.registry.services.plugin.getHoveredView().repainter();
+                    this.registry.services.plugin.getHoveredView().reRender();
                 break;
-                case RenderTask.RepaintSettings:
+                case RenderTask.RenderSidebar:
                     this.settingsRepainters.forEach(repaint => repaint());
                 break;
-                case RenderTask.All:
-                    this.canvasRepainter();
-                    this.settingsRepainters.forEach(repaint => repaint());
-                    this.registry.services.plugin.getViewById(GameViewerPlugin.id).update();
+                case RenderTask.RenderVisibleViews:
+                    this.registry.services.plugin.plugins.forEach(plugin => plugin.reRender());
                 break;
                 case RenderTask.RenderFull:
                     this.fullRepainter();
                 break;
             }
         });
-    }
-
-    private saveData() {
-        this.registry.services.history.createSnapshot();
-    }
-
-    setCanvasRepainter(repaint: Function) {
-        this.canvasRepainter = repaint;
     }
 
     setFullRepainter(repaint: Function) {

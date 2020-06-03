@@ -39,8 +39,7 @@ export class GameViewerComponent extends CanvasComponent {
     componentDidMount() {
         super.componentDidMount();
         this.wheelListener = new WheelListener(this.context.registry);
-        this.context.registry.services.plugin.getViewById<GameViewerPlugin>(GameViewerPlugin.id).setCanvasRenderer(() => this.forceUpdate());
-        this.context.registry.services.plugin.getViewById(GameViewerPlugin.id).repainter = () => {this.forceUpdate()};
+        this.context.registry.services.plugin.gameView.setRenderer(() => this.forceUpdate());
         
         setTimeout(() => {
             // this.context.controllers.getWindowControllerByName('renderer').update();

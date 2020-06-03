@@ -19,7 +19,7 @@ export class DeleteTool extends AbstractTool {
 
     drag() {
         this.rectSelector.updateRect(this.registry.services.pointer.pointer);
-        this.registry.services.update.scheduleTasks(RenderTask.RepaintCanvas);
+        this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
     }
 
     click() {
@@ -37,7 +37,7 @@ export class DeleteTool extends AbstractTool {
         this.registry.services.level.updateCurrentLevel();
         if (this.registry.services.pointer.hoveredItem) {
             this.registry.services.history.createSnapshot();
-            this.registry.services.update.scheduleTasks(RenderTask.All);
+            this.registry.services.update.scheduleTasks(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
         }
     }
 
@@ -51,12 +51,12 @@ export class DeleteTool extends AbstractTool {
         this.registry.services.level.updateCurrentLevel();
         this.registry.services.game.deleteConcepts(views);
         this.registry.services.history.createSnapshot();
-        this.registry.services.update.scheduleTasks(RenderTask.All);
+        this.registry.services.update.scheduleTasks(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
     }
 
     leave() {
         this.rectSelector.finish();
-        this.registry.services.update.scheduleTasks(RenderTask.RepaintCanvas);
+        this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
     }
 
     over(item: View) {
@@ -73,7 +73,7 @@ export class DeleteTool extends AbstractTool {
         this.registry.services.localStore.clearAll();
         this.registry.services.plugin.plugins.forEach(plugin => plugin.getStore()?.clear());
         this.registry.stores.canvasStore.clear();
-        this.registry.services.update.runImmediately(RenderTask.All);
+        this.registry.services.update.runImmediately(RenderTask.RenderFull);
     }
 
     getCursor() {

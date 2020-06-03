@@ -36,7 +36,6 @@ export class GameViewerPlugin extends AbstractPlugin {
 
     private helperMeshes: HelperMeshes;
 
-    private renderCanvasFunc: () => void;
     private camera: Camera3D;
 
     constructor(registry: Registry) {
@@ -46,7 +45,6 @@ export class GameViewerPlugin extends AbstractPlugin {
 
         this.updateService = new RenderService(registry);
         this.gameViewerSettings = new GameViewerSettings(registry);
-        this.update = this.update.bind(this);
     }
 
     getStore() {
@@ -70,7 +68,7 @@ export class GameViewerPlugin extends AbstractPlugin {
 
         this.registry.services.node.getNodesByType(NodeType.Route).forEach(node => this.registry.services.node.getHandler(node).wake(node));
 
-        this.update();
+        this.renderFunc && this.renderFunc();
     }
 
 
@@ -78,21 +76,12 @@ export class GameViewerPlugin extends AbstractPlugin {
         this.registry.services.game.destroy();
     }
 
-    update() {
-        this.renderCanvasFunc();
-    }
-
-
     getId(): string {
         return GameViewerPlugin.id;
     }
 
     getSelectedTool(): Tool {
         return this.selectedTool;
-    }
-
-    setCanvasRenderer(renderFunc: () => void) {
-        this.renderCanvasFunc = renderFunc;
     }
 
     isVisible(): boolean {
