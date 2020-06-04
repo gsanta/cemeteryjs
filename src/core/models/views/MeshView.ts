@@ -32,9 +32,10 @@ export enum AnimationState {
 export interface MeshViewJson extends ViewJson {
     rotation: number;
     modelId: string;
+    textureId: string;
+    thumbnailId: string;
     scale: number;
     yPos: number 
-    thumbnailPath: string;
     path: string;
     isManualControl: boolean;
 }
@@ -52,8 +53,9 @@ export class MeshView extends View implements IGameModel {
     children: MeshView[] = [];
     parent: MeshView;
     modelId: string;
+    textureId: string;
+    thumbnailId: string;
     routeId: string;
-    thumbnailPath: string;
     path: string;
     isManualControl: boolean;
 
@@ -160,9 +162,10 @@ export class MeshView extends View implements IGameModel {
             ...super.toJson(),
             rotation: this.rotation,
             modelId: this.modelId,
+            textureId: this.textureId,
+            thumbnailId: this.thumbnailId,
             scale: this.scale,
             yPos: this.yPos,
-            thumbnailPath: this.thumbnailPath,
             path: this.path,
             isManualControl: this.isManualControl,
         }
@@ -171,10 +174,11 @@ export class MeshView extends View implements IGameModel {
     fromJson(json: MeshViewJson, viewMap: Map<string, View>) {
         super.fromJson(json, viewMap);
         this.rotation = json.rotation;
-        this.modelId = this.modelId;
-        this.scale = this.scale;
-        this.yPos = this.yPos;
-        this.thumbnailPath = this.thumbnailPath;
+        this.modelId = json.modelId;
+        this.scale = json.scale;
+        this.yPos = json.yPos;
+        this.textureId = json.textureId;
+        this.thumbnailId = json.thumbnailId;
         this.path = this.path;
         this.isManualControl = this.isManualControl;
     }

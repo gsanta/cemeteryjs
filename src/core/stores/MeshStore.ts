@@ -64,24 +64,24 @@ export class MeshStore {
             return;
         }
 
-        const modelConcept = this.registry.stores.canvasStore.getModelConceptById(meshObject.modelId);
+        const modelConcept = this.registry.stores.assetStore.getAssetById(meshObject.modelId);
 
         this.registry.services.meshLoader.load(modelConcept, meshObject.id)
             .then(() => this.setupInstance(meshObject, scene));
     }
 
     private setupInstance(meshObject: MeshView, scene: Scene) {
-        const modelConcept = this.registry.stores.canvasStore.getModelConceptById(meshObject.modelId);
+        const texture = this.registry.stores.assetStore.getAssetById(meshObject.textureId);
+        const model = this.registry.stores.assetStore.getAssetById(meshObject.modelId);
 
-        if (modelConcept.texturePath) {
-            this.texturePathes.set(modelConcept.modelPath, modelConcept.texturePath);
+        if (model) {
+            this.texturePathes.set(model.path, texture ? texture.path : undefined);
         }
 
-        
-        const templateMesh = this.getTemplate(modelConcept.modelPath);
+        const templateMesh = this.getTemplate(model.path);
 
         let clone: Mesh;
-        const counter = this.instanceCounter.get(modelConcept.modelPath);
+        const counter = this.instanceCounter.get(model.path);
 
         if (!this.instances.has(templateMesh)) {
             clone = templateMesh;
@@ -92,12 +92,12 @@ export class MeshStore {
         this.instances.add(clone);
         clone.setAbsolutePosition(new Vector3(0, 0, 0));
         clone.rotation = new Vector3(0, 0, 0);
-        this.instanceCounter.set(modelConcept.modelPath, counter + 1);
+        this.instanceCounter.set(model.path, counter + 1);
         
         meshObject.meshName = clone.name;
 
-        if (this.texturePathes.get(modelConcept.modelPath)) {
-            const texturePath = `${this.basePath}${MeshLoaderService.getFolderNameFromFileName(modelConcept.modelPath)}/${this.texturePathes.get(modelConcept.modelPath)}`;
+        if (this.texturePathes.get(model.path)) {
+            const texturePath = `${this.basePath}${MeshLoaderService.getFolderNameFromFileName(model.path)}/${this.texturePathes.get(model.path)}`;
             (<StandardMaterial> clone.material).diffuseTexture  = new Texture(texturePath,  scene);
             (<StandardMaterial> clone.material).specularTexture  = new Texture(texturePath,  scene);
         }

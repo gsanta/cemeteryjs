@@ -6,6 +6,7 @@ import { MeshStore } from "./MeshStore";
 import { FeedbackStore } from "./FeedbackStore";
 import { Registry } from "../Registry";
 import { NodeStore } from './NodeStore';
+import { AssetStore } from "./AssetStore";
 
 export class Stores {
     private registry: Registry
@@ -19,6 +20,7 @@ export class Stores {
         this.meshStore = new MeshStore(this.registry);
         this.feedback = new FeedbackStore();
         this.nodeStore = new NodeStore(this.registry);
+        this.assetStore = new AssetStore();
     }
 
     canvasStore: SceneStore;
@@ -28,4 +30,5 @@ export class Stores {
     meshStore: MeshStore;
     feedback: FeedbackStore;
     nodeStore: NodeStore;
+    assetStore: AssetStore;
 }

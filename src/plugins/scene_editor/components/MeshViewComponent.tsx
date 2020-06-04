@@ -19,21 +19,6 @@ export class MeshViewComponent extends ViewComponent<MeshView> {
                 transform={`translate(${item.dimensions.topLeft.x} ${item.dimensions.topLeft.y}) rotate(${toDegree(item.rotation)} ${item.dimensions.getWidth() / 2} ${item.dimensions.getHeight() / 2})`}
                 onMouseOver={() => this.props.hover ? this.props.hover(item) : () => undefined}
                 onMouseOut={() => this.props.unhover ? this.props.unhover(item) : () => undefined}
-                data-wg-x={item.dimensions.topLeft.x}
-                data-wg-y={item.dimensions.topLeft.y}
-                data-wg-width={item.dimensions.getWidth()}
-                data-wg-height={item.dimensions.getHeight()}
-                data-wg-type={item.type}
-                data-wg-color={item.color}
-                data-wg-layer={item.layer}
-                data-rotation={item.rotation}
-                data-wg-scale={item.scale}
-                data-y-pos={item.yPos}
-                data-wg-name={item.id}
-                data-model-id={item.modelId}
-                data-thumbnail={item.thumbnailPath}
-                data-path={item.path}
-                data-is-manual-control={item.isManualControl ? 'true' : 'false'}
             >
                 {this.renderRect(item)}
                 {this.renderThumbnail(item)}
@@ -59,10 +44,11 @@ export class MeshViewComponent extends ViewComponent<MeshView> {
 
     private renderThumbnail(item: MeshView) {
         let thumbnail: JSX.Element = null;
+        const assetModel = this.props.registry.stores.assetStore.getAssetById(item.id);
 
-        if (item.thumbnailPath) {
+        if (assetModel) {
             thumbnail = (
-                <image xlinkHref={`assets/models/${this.getFolderNameFromFileName(item.thumbnailPath)}/${item.thumbnailPath}`} x="0" y="0" height={`${item.dimensions.getHeight()}px`} width={`${item.dimensions.getWidth()}px`} />
+                <image xlinkHref={`assets/models/${this.getFolderNameFromFileName(assetModel.path)}/${assetModel.path}`} x="0" y="0" height={`${item.dimensions.getHeight()}px`} width={`${item.dimensions.getWidth()}px`} />
             )
         }
 

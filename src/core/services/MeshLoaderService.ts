@@ -1,8 +1,8 @@
 import { Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, StandardMaterial } from 'babylonjs';
 import { Point } from '../geometry/shapes/Point';
 import { Registry } from '../Registry';
-import { ModelConcept } from '../models/ModelConcept';
 import { MeshView } from '../models/views/MeshView';
+import { AssetModel } from '../stores/AssetStore';
 
 export class MeshLoaderService {
     serviceName = 'mesh-loader-service'
@@ -19,9 +19,9 @@ export class MeshLoaderService {
         this.registry = registry;
     }
 
-    getDimensions(modelConcept: ModelConcept, id: string): Promise<Point> {
+    getDimensions(assetModel: AssetModel, id: string): Promise<Point> {
         return this
-            .load(modelConcept, id)
+            .load(assetModel, id)
             .then(mesh => {
                 mesh.computeWorldMatrix();
                 mesh.getBoundingInfo().update(mesh._worldMatrix);
@@ -37,9 +37,9 @@ export class MeshLoaderService {
             });
     }
 
-    getAnimations(modelConcept: ModelConcept, id: string): Promise<string[]> {
+    getAnimations(assetModel: AssetModel, id: string): Promise<string[]> {
         return this
-            .load(modelConcept, id)
+            .load(assetModel, id)
             .then(mesh => {
                 return mesh.skeleton ? mesh.skeleton.getAnimationRanges().map(range => range.name) : [];
             });
@@ -56,31 +56,31 @@ export class MeshLoaderService {
         const promises: Promise<Mesh>[] = [];
 
         for (let i = 0; i < modeledMeshObjets.length; i++) {
-            const modelConcept = this.registry.stores.canvasStore.getModelConceptById(modeledMeshObjets[i].modelId);
-            promises.push(this.load(modelConcept, modeledMeshObjets[i].id));
+            const assetModel = this.registry.stores.assetStore.getAssetById(modeledMeshObjets[i].modelId);
+            promises.push(this.load(assetModel, modeledMeshObjets[i].id));
         }
 
         return Promise.all(promises);
     }
 
-    load(modelConcept: ModelConcept, id: string): Promise<Mesh> {
-        if (this.pendingFileNames.has(modelConcept.modelPath)) {
-            return this.pendingFileNames.get(modelConcept.modelPath);
+    load(assetModel: AssetModel, id: string): Promise<Mesh> {
+        if (this.pendingFileNames.has(assetModel.path)) {
+            return this.pendingFileNames.get(assetModel.path);
         }
 
-        this.loadedFileNames.add(modelConcept.modelPath);
+        this.loadedFileNames.add(assetModel.path);
 
-        const promise = this.registry.services.localStore.loadAsset(modelConcept.modelPath)
+        const promise = this.registry.services.localStore.loadAsset(assetModel.path)
             .then((data) => {
                 if (data) {
-                    return this.loadMesh(modelConcept.modelPath, id, data);
+                    return this.loadMesh(assetModel.path, id, data);
                 } else {
-                    return this.loadMesh(modelConcept.modelPath, id);
+                    return this.loadMesh(assetModel.path, id);
                 }
             })
-            .catch(e => this.loadMesh(modelConcept.modelPath, id));
+            .catch(e => this.loadMesh(assetModel.path, id));
 
-        this.pendingFileNames.set(modelConcept.modelPath, promise);
+        this.pendingFileNames.set(assetModel.path, promise);
         return <Promise<Mesh>> promise;
     }
 

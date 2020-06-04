@@ -1,6 +1,5 @@
 import { Point } from "../geometry/shapes/Point";
 import { without } from "../geometry/utils/Functions";
-import { ModelConcept } from "../models/ModelConcept";
 import { ChildView } from "../models/views/child_views/ChildView";
 import { MeshView } from "../models/views/MeshView";
 import { PathView } from "../models/views/PathView";
@@ -23,7 +22,6 @@ export function isMeta(type: string) {
 export class SceneStore extends AbstractStore {
     views: View[] = [];
     controls: ChildView<any>[] = [];
-    models: ModelConcept[] = [];
 
     private registry: Registry;
 
@@ -43,16 +41,6 @@ export class SceneStore extends AbstractStore {
         this.controls.push(control);
     }
 
-    addModel(model: ModelConcept) {
-        super.addItem(model);
-        this.models.push(model);
-    }
-
-    removeModel(model: ModelConcept) {
-        super.removeItem(model);
-        this.models = without(this.models, model);
-    }
-
     removeItem(view: View) {
         super.removeItem(view);
         this.views = without(this.views, view);
@@ -64,13 +52,8 @@ export class SceneStore extends AbstractStore {
         super.clear();
         this.views = [];
         this.controls = [];
-        this.models = [];
     }
-
-    hasModel(model: ModelConcept) {
-        return this.models.indexOf(model) !== -1;
-    }
-
+    
     getAllConcepts(): View[] {
         return this.views;
     }
@@ -89,14 +72,6 @@ export class SceneStore extends AbstractStore {
 
     getPathViewById(id: string): PathView {
         return <PathView> this.views.find(view => view.id === id);
-    }
-
-    getModelConcepts(): ModelConcept[] {
-        return <ModelConcept[]> this.models.filter(view => view.type === ConceptType.ModelConcept);
-    }
-
-    getModelConceptById(id: string): ModelConcept {
-        return <ModelConcept> this.models.find(meta => meta.id === id);
     }
 
     getIntersectingItemsAtPoint(point: Point): View[] {

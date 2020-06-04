@@ -1,10 +1,10 @@
 import { Registry } from '../../../core/Registry';
 import { RenderTask } from '../../../core/services/RenderServices';
 import { MeshView } from '../../../core/models/views/MeshView';
-import { ModelConcept } from '../../../core/models/ModelConcept';
 import { AbstractSettings, PropertyType } from "./AbstractSettings";
 import { toDegree, toRadian } from '../../../core/geometry/utils/Measurements';
 import { ConceptType } from '../../../core/models/views/View';
+import { AssetModel } from '../../../core/stores/AssetStore';
 
 export enum MeshViewPropType {
     Color = 'color',
@@ -52,16 +52,15 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
     }
 
     protected getProp(prop: MeshViewPropType) {
-        let modelConcept = this.registry.stores.canvasStore.getModelConceptById(this.meshConcept.modelId);
         switch (prop) {
             case MeshViewPropType.Color:
                 return this.meshConcept.color;
             case MeshViewPropType.Model:
-                return modelConcept && modelConcept.modelPath;
+                return this.registry.stores.assetStore.getAssetById(this.meshConcept.modelId);
             case MeshViewPropType.Texture:
-                return modelConcept && modelConcept.texturePath;
+                return this.registry.stores.assetStore.getAssetById(this.meshConcept.textureId);
             case MeshViewPropType.Thumbnail:
-                return this.meshConcept.thumbnailPath;
+                return this.registry.stores.assetStore.getAssetById(this.meshConcept.thumbnailId);
             case MeshViewPropType.Layer:
                 return this.meshConcept.layer;
             case MeshViewPropType.Rotation:
@@ -89,18 +88,18 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                 this.update();
                 break;
             case MeshViewPropType.Model:
-                this.updateModelPath(val.path);
-                const modelConcept = this.registry.stores.canvasStore.getModelConceptById(this.meshConcept.modelId);
+                const assetModel = new AssetModel({path: val.path, data: val.data});
+                this.meshConcept.modelId = this.registry.stores.assetStore.addModel(assetModel);
 
                 this.registry.services.localStore.saveAsset(val.path, val.data)
                     .then(() => {
-                        return this.registry.services.meshLoader.getDimensions(modelConcept, this.meshConcept.id);
+                        return this.registry.services.meshLoader.getDimensions(assetModel, this.meshConcept.id);
                     })
                     .then(dim => {
                         this.meshConcept.dimensions.setWidth(dim.x);
                         this.meshConcept.dimensions.setHeight(dim.y);
                     })
-                    .then(() => this.registry.services.meshLoader.getAnimations(modelConcept, this.meshConcept.id))
+                    .then(() => this.registry.services.meshLoader.getAnimations(assetModel, this.meshConcept.id))
                     .then(animations => {
                         this.meshConcept.animations = animations;
                     })
@@ -112,11 +111,11 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                     });
                 break;
             case MeshViewPropType.Texture:
-                this.updateTexturePath(val.path);
+                this.meshConcept.textureId = this.registry.stores.assetStore.addTexture(new AssetModel({path: val.path}));
                 this.update();
                 break;
             case MeshViewPropType.Thumbnail:
-                this.meshConcept.thumbnailPath = val.path;
+                this.meshConcept.thumbnailId = this.registry.stores.assetStore.addThumbnail(new AssetModel({path: val.path}));
                 this.update();
                 break;
             case MeshViewPropType.Layer:
@@ -152,30 +151,6 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                 this.update();
                 break;
         }
-    }
-
-    private updateModelPath(path: string) {
-        let modelConcept = ModelConcept.getByModelPath(this.registry.stores.canvasStore.getModelConcepts(), path);
-        if (!modelConcept) {
-            modelConcept = new ModelConcept();
-            modelConcept.id = this.registry.stores.canvasStore.generateUniqueName(ConceptType.ModelConcept);
-            this.registry.stores.canvasStore.addModel(modelConcept);
-        }
-        modelConcept.modelPath = path;
-        this.meshConcept.modelId = modelConcept.id;
-    }
-
-    private updateTexturePath(path: string) {
-        let modelConcept: ModelConcept;
-        if (this.meshConcept.modelId) {
-            modelConcept = this.registry.stores.canvasStore.getModelConceptById(this.meshConcept.modelId);
-        } else {
-            modelConcept = new ModelConcept();
-            modelConcept.id = this.registry.stores.canvasStore.generateUniqueName(ConceptType.ModelConcept);
-            this.registry.stores.canvasStore.addModel(modelConcept);
-        }
-        modelConcept.texturePath = path;
-        this.meshConcept.modelId = modelConcept.id;   
     }
 
     private update() {
