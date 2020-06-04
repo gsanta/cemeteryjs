@@ -73,23 +73,23 @@ export class LocalStoreService {
         });
     }
     
-    async saveAsset(name: string, data: string) {
+    async saveAsset(id: string, data: string) {
         if (!this.isDbSupported()) { return }
 
         const db = await this.getDb();
 
         var objectStore = db.transaction(["assets"], "readwrite").objectStore("assets");
-        objectStore.add({name, data});
+        objectStore.add({id: id, data});
     }
 
-    async loadAsset(name: string): Promise<string> {
+    async loadAsset(id: string): Promise<string> {
         if (!this.isDbSupported()) { return }
 
         const db = await this.getDb();
 
         const objectStore = db.transaction(["assets"], "readwrite").objectStore("assets");
 
-        return await this.getData(objectStore.get(name));
+        return await this.getData(objectStore.get(id));
     }
 
     async clearAll() {
@@ -120,7 +120,7 @@ export class LocalStoreService {
     private upgradeDb(request: IDBOpenDBRequest) {
         const db = request.result;
 
-        db.createObjectStore("assets", { keyPath: "name" });
+        db.createObjectStore("assets", { keyPath: "id" });
         db.createObjectStore("xmls", { keyPath: "id" });
     }
 

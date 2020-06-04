@@ -4,7 +4,7 @@ import { MeshView } from '../../../core/models/views/MeshView';
 import { AbstractSettings, PropertyType } from "./AbstractSettings";
 import { toDegree, toRadian } from '../../../core/geometry/utils/Measurements';
 import { ConceptType } from '../../../core/models/views/View';
-import { AssetModel } from '../../../core/stores/AssetStore';
+import { AssetModel, AssetType } from '../../../core/stores/AssetStore';
 
 export enum MeshViewPropType {
     Color = 'color',
@@ -88,10 +88,10 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                 this.update();
                 break;
             case MeshViewPropType.Model:
-                const assetModel = new AssetModel({path: val.path, data: val.data});
+                const assetModel = new AssetModel({path: val.path, data: val.data, assetType: AssetType.Model});
                 this.meshConcept.modelId = this.registry.stores.assetStore.addModel(assetModel);
 
-                this.registry.services.localStore.saveAsset(val.path, val.data)
+                this.registry.services.localStore.saveAsset(assetModel.getId(), val.data)
                     .then(() => {
                         return this.registry.services.meshLoader.getDimensions(assetModel, this.meshConcept.id);
                     })
@@ -111,11 +111,11 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                     });
                 break;
             case MeshViewPropType.Texture:
-                this.meshConcept.textureId = this.registry.stores.assetStore.addTexture(new AssetModel({path: val.path}));
+                this.meshConcept.textureId = this.registry.stores.assetStore.addTexture(new AssetModel({path: val.path, assetType: AssetType.Texture}));
                 this.update();
                 break;
             case MeshViewPropType.Thumbnail:
-                this.meshConcept.thumbnailId = this.registry.stores.assetStore.addThumbnail(new AssetModel({path: val.path}));
+                this.meshConcept.thumbnailId = this.registry.stores.assetStore.addThumbnail(new AssetModel({path: val.path, assetType: AssetType.Thumbnail}));
                 this.update();
                 break;
             case MeshViewPropType.Layer:

@@ -1,13 +1,28 @@
 
 
+export enum AssetType {
+    Model = 'Model',
+    Texture = 'Texture',
+    Thumbnail = 'Thumbnail'
+}
+
+export interface AssetJson {
+    id: string;
+    assetType: string;
+    path: string;
+    data: string;
+}
+
 export class AssetModel {
     private id: string;
+    assetType: AssetType;
     path: string;
     data: string;
 
-    constructor(config?: {path: string, data?: string}) {
+    constructor(config?: {path: string, data?: string, assetType: AssetType}) {
         this.path = config.path;
         this.data = config.data;
+        this.assetType = config.assetType;
     }
 
     getId() {
@@ -16,6 +31,22 @@ export class AssetModel {
 
     setId(id: string) {
         this.id = id;
+    }
+
+    toJson(): AssetJson {
+        return {
+            id: this.id,
+            assetType: this.assetType,
+            path: this.path,
+            data: this.data
+        };
+    }
+
+    fromJson(json: AssetJson) {
+        this.id = json.id;
+        this.assetType = <AssetType> json.assetType;
+        this.path = json.path;
+        this.data = json.data;
     }
 }
 
@@ -60,6 +91,10 @@ export class AssetStore {
 
     getAssetById(id: string) {
         return this.assetsById.get(id);
+    }
+
+    getAssets(): AssetModel[] {
+        return Array.from(this.assetsById.values());
     }
 
     private generateId(assetPrefix: string) {

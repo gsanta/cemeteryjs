@@ -15,6 +15,7 @@ import { MeshView, AnimationState } from '../../../core/models/views/MeshView';
 import { SceneEditorPlugin } from '../SceneEditorPlugin';
 import { MeshSettings, MeshViewPropType } from './MeshSettings';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
+import { AssetModel } from '../../../core/stores/AssetStore';
 
 export class MeshSettingsComponent extends React.Component<{concept: MeshView}> {
     static contextType = AppContext;
@@ -67,6 +68,8 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
     private renderModelFileChooser(): JSX.Element {
         const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
+        const assetModel: AssetModel = meshSettings.getVal(MeshViewPropType.Model);
+
         return (
             <SettingsRowStyled key="model-file">
                 <LabelColumnStyled>Model</LabelColumnStyled>
@@ -76,7 +79,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
                         propertyName={MeshViewPropType.Model}
                         propertyType="string"
                         placeholder={`Upload`}
-                        value={meshSettings.getVal(MeshViewPropType.Model)}
+                        value={assetModel && assetModel.path}
                         readDataAs="dataUrl"
                     />
                 </FieldColumnStyled>
@@ -87,6 +90,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
     
     private renderTextureFileChooser(): JSX.Element {
         const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const assetModel: AssetModel = meshSettings.getVal(MeshViewPropType.Texture);
 
         return (
             <SettingsRowStyled key="texture-file">
@@ -97,7 +101,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
                         propertyName={MeshViewPropType.Texture}
                         propertyType="string"
                         placeholder={`Upload`}
-                        value={meshSettings.getVal(MeshViewPropType.Texture)}
+                        value={assetModel && assetModel.path}
                         readDataAs="dataUrl"
                     />
                 </FieldColumnStyled>
@@ -107,6 +111,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
 
     private renderThumbnailFileChooser(): JSX.Element {
         const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
+        const assetModel: AssetModel = meshSettings.getVal(MeshViewPropType.Thumbnail);
 
         return (
             <SettingsRowStyled key="thumbnail-file">
@@ -117,7 +122,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
                         propertyName={MeshViewPropType.Thumbnail}
                         propertyType="string"
                         placeholder={`Upload`}
-                        value={meshSettings.getVal(MeshViewPropType.Thumbnail)}
+                        value={assetModel && assetModel.path}
                         readDataAs="dataUrl"
                     />
                 </FieldColumnStyled>

@@ -1,5 +1,6 @@
 import { IPluginJson } from '../../../plugins/common/io/IPluginExporter';
 import { Registry } from '../../Registry';
+import { AssetJson } from '../../stores/AssetStore';
 
 export interface ViewExporter {
     export(): string;
@@ -7,6 +8,7 @@ export interface ViewExporter {
 
 export interface AppJson {
     plugins: IPluginJson[];
+    assets: AssetJson[];
 }
 
 export class ExportService {
@@ -18,8 +20,9 @@ export class ExportService {
     }
 
     export(): string {
-        const pluginJsons = this.registry.services.plugin.plugins.filter(plugin => plugin.exporter).map(plugin => plugin.exporter.export()); 
+        const pluginJsons = this.registry.services.plugin.plugins.filter(plugin => plugin.exporter).map(plugin => plugin.exporter.export());
+        const assetJsons = this.registry.stores.assetStore.getAssets().map(asset => asset.toJson());
 
-        return JSON.stringify({ plugins: pluginJsons});
+        return JSON.stringify({ plugins: pluginJsons, assets: assetJsons});
     }
 }
