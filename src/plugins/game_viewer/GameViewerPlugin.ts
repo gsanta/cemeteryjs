@@ -6,8 +6,9 @@ import { RenderService } from '../../core/services/RenderServices';
 import { Camera3D } from '../common/camera/Camera3D';
 import { ICamera } from '../common/camera/ICamera';
 import { Tool } from '../common/tools/Tool';
-import { AxisGizmo } from './HelperMeshes';
+import { AxisGizmo } from './AxisGizmo';
 import { GameViewerSettings } from './settings/GameViewerSettings';
+import { MeshBuilder } from 'babylonjs';
 (<any> window).earcut = require('earcut');
 
 export function cameraInitializer(registry: Registry) {
@@ -25,7 +26,6 @@ export function getCanvasElement(viewId: string): HTMLCanvasElement {
     }
 }
 
-
 export class GameViewerPlugin extends AbstractPlugin {
     static id = 'game-viewer-plugin';
     visible = true;
@@ -34,7 +34,7 @@ export class GameViewerPlugin extends AbstractPlugin {
 
     gameViewerSettings: GameViewerSettings;
 
-    private helperMeshes: AxisGizmo;
+    private axisGizmo: AxisGizmo;
 
     private camera: Camera3D;
 
@@ -45,6 +45,7 @@ export class GameViewerPlugin extends AbstractPlugin {
 
         this.updateService = new RenderService(registry);
         this.gameViewerSettings = new GameViewerSettings(registry);
+        this.axisGizmo = new AxisGizmo(this.registry, MeshBuilder);
     }
 
     getStore() {
@@ -67,6 +68,10 @@ export class GameViewerPlugin extends AbstractPlugin {
         this.registry.services.game.importAllConcepts();
 
         this.registry.services.node.getNodesByType(NodeType.Route).forEach(node => this.registry.services.node.getHandler(node).wake(node));
+
+        this.registry.services.game.registerAfterRender(() => {
+            this.axisGizmo.updateWorldAxis();
+        });
 
         this.renderFunc && this.renderFunc();
     }
