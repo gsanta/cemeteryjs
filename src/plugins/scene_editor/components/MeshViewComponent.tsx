@@ -44,11 +44,11 @@ export class MeshViewComponent extends ViewComponent<MeshView> {
 
     private renderThumbnail(item: MeshView) {
         let thumbnail: JSX.Element = null;
-        const assetModel = this.props.registry.stores.assetStore.getAssetById(item.id);
+        const thumbnailModel = this.props.registry.stores.assetStore.getAssetById(item.thumbnailId);
 
-        if (assetModel) {
+        if (thumbnailModel) {
             thumbnail = (
-                <image xlinkHref={`assets/models/${this.getFolderNameFromFileName(assetModel.path)}/${assetModel.path}`} x="0" y="0" height={`${item.dimensions.getHeight()}px`} width={`${item.dimensions.getWidth()}px`} />
+                <image xlinkHref={`assets/models/${this.getFolderNameFromFileName(thumbnailModel.path)}/${thumbnailModel.path}`} x="0" y="0" height={`${item.dimensions.getHeight()}px`} width={`${item.dimensions.getWidth()}px`} />
             )
         }
 

@@ -1,10 +1,10 @@
 import { Color3, HemisphericLight, MeshBuilder, Vector3, Engine, Scene, Camera, ArcRotateCamera } from "babylonjs";
-import { HelperMeshes } from "./HelperMeshes";
+import { AxisGizmo } from "./HelperMeshes";
 
 export class GameEngine {editor
     engine: Engine;
     scene: Scene;
-    private helperMeshes: HelperMeshes;
+    private helperMeshes: AxisGizmo;
     private canvas: HTMLCanvasElement;
 
     init(canvas: HTMLCanvasElement) {
@@ -18,7 +18,7 @@ export class GameEngine {editor
         const scene = new Scene(this.engine);
 
 
-        this.helperMeshes = new HelperMeshes(this.scene, MeshBuilder);
+        this.helperMeshes = new AxisGizmo(this.scene, MeshBuilder);
         const light = new HemisphericLight('light', new Vector3(0, 1, 0), scene);
         
         light.diffuse = new Color3(1, 1, 1);

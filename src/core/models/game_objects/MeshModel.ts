@@ -1,4 +1,5 @@
 import { MeshView } from '../views/MeshView';
+import { Point } from '../../geometry/shapes/Point';
 
 
 export class MeshModel {

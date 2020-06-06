@@ -1,7 +1,6 @@
 import { Point } from "../../../core/geometry/shapes/Point";
 import { Rectangle } from "../../../core/geometry/shapes/Rectangle";
 import { MousePointer } from "../../../core/services/input/MouseService";
-import { Services } from "../../../core/services/ServiceLocator";
 import { RenderTask } from "../../../core/services/RenderServices";
 import { ICamera } from './ICamera';
 import { Registry } from "../../../core/Registry";
@@ -27,8 +26,8 @@ export class Camera2D implements ICamera {
     resize(screenSize: Point) {
         const scale = this.getScale();
         this.screenSize = screenSize;
-        const topLeft = this.viewBox.topLeft;
-        this.setTopLeftCorner(topLeft, scale);
+        const centerPoint = this.viewBox.topLeft.add(new Point(this.viewBox.getWidth() / 2, this.viewBox.getHeight() / 2));
+        this.setCenter(centerPoint, scale);
     }
 
     pan(pointer: MousePointer) {
@@ -47,12 +46,23 @@ export class Camera2D implements ICamera {
 
     }
 
-    setTopLeftCorner(canvasPoint: Point, scale: number) {
+    private setTopLeftCorner(canvasPoint: Point, scale: number) {
         let width = this.screenSize.x / scale;
         let height = this.screenSize.y / scale;
 
         const topLeft = new Point(canvasPoint.x, canvasPoint.y);
         this.viewBox = new Rectangle(topLeft, new Point(topLeft.x + width, topLeft.y + height));
+    }
+
+    private setCenter(canvasPoint: Point, scale: number) {
+        let width = this.screenSize.x / scale;
+        let height = this.screenSize.y / scale;
+        const halfSize = new Point(width / 2, height / 2);
+
+        const centerPoint = new Point(canvasPoint.x, canvasPoint.y);
+
+        this.viewBox = new Rectangle(centerPoint.subtract(halfSize), centerPoint.add(halfSize));
+
     }
 
     screenToCanvasPoint(screenPoint: Point): Point {
@@ -77,6 +87,10 @@ export class Camera2D implements ICamera {
 
     getViewBoxAsString(): string {
         return `${this.viewBox.topLeft.x} ${this.viewBox.topLeft.y} ${this.viewBox.getWidth()} ${this.viewBox.getHeight()}`;
+    }
+
+    getViewBox(): Rectangle {
+        return this.viewBox;
     }
 
     setViewBox(newViewBox: Rectangle): void {

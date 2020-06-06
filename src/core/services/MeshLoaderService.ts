@@ -70,10 +70,10 @@ export class MeshLoaderService {
 
         this.loadedFileNames.add(assetModel.path);
 
-        const promise = this.registry.services.localStore.loadAsset(assetModel.getId())
-            .then((data) => {
-                if (data) {
-                    return this.loadMesh(assetModel.path, id, data);
+        const promise = this.registry.services.localStore.loadAsset(assetModel)
+        .then(() => {
+                if (assetModel.data) {
+                    return this.loadMesh(assetModel.path, id, assetModel.data);
                 } else {
                     return this.loadMesh(assetModel.path, id);
                 }

@@ -8,6 +8,7 @@ import { SceneEditorImporter } from './io/SceneEditorImporter';
 import { LevelSettings } from './settings/LevelSettings';
 import { MeshSettings } from './settings/MeshSettings';
 import { PathSettings } from './settings/PathSettings';
+import { Rectangle } from '../../core/geometry/shapes/Rectangle';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -21,12 +22,14 @@ function getScreenSize(canvasId: string): Point {
     return undefined;
 }
 
+export const DUMMY_CAMERA_SIZE = new Point(100, 100);
+
 function cameraInitializer(canvasId: string, registry: Registry) {
     const screenSize = getScreenSize(canvasId);
     if (screenSize) {
         return new Camera2D(registry, new Point(screenSize.x, screenSize.y));
     } else {
-        return new Camera2D(registry, new Point(100, 100));
+        return new Camera2D(registry, DUMMY_CAMERA_SIZE);
     }
 }
 
@@ -47,7 +50,6 @@ export class SceneEditorPlugin extends AbstractPlugin {
         super(registry);
 
         this.camera = cameraInitializer(SceneEditorPlugin.id, registry);
-
         this.selectedTool = this.registry.tools.rectangle;
 
         this.settings = [
@@ -71,8 +73,6 @@ export class SceneEditorPlugin extends AbstractPlugin {
     resize(): void {
         const screenSize = getScreenSize(SceneEditorPlugin.id);
         screenSize && this.camera.resize(screenSize);
-        this.registry.tools.zoom.resize();
-
         this.renderFunc && this.renderFunc();
     };
 

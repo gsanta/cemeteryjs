@@ -2,6 +2,7 @@ import { Registry } from '../../Registry';
 import { View } from '../../models/views/View';
 import { AppJson } from '../export/ExportService';
 import { IPluginJson } from '../../../plugins/common/io/IPluginExporter';
+import { AssetModel } from '../../stores/AssetStore';
 
 export class ImportService {
     serviceName = 'import-service';
@@ -16,6 +17,12 @@ export class ImportService {
 
         const viewMap: Map<string, View> = new Map();
         json.plugins.forEach(pluginJson => this.findPluginImporter(pluginJson)?.importer.import(pluginJson, viewMap));
+
+        json.assets.forEach(assetJson => {
+            const asset = new AssetModel();
+            asset.fromJson(assetJson);
+            const assetModel = this.registry.stores.assetStore.addAsset(asset);
+        });
 
         this.registry.stores.canvasStore.getMeshConcepts().filter(item => item.modelId)
             .forEach(item => {

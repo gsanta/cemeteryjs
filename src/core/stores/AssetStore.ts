@@ -10,7 +10,6 @@ export interface AssetJson {
     id: string;
     assetType: string;
     path: string;
-    data: string;
 }
 
 export class AssetModel {
@@ -20,9 +19,11 @@ export class AssetModel {
     data: string;
 
     constructor(config?: {path: string, data?: string, assetType: AssetType}) {
-        this.path = config.path;
-        this.data = config.data;
-        this.assetType = config.assetType;
+        if (config) {
+            this.path = config.path;
+            this.data = config.data;
+            this.assetType = config.assetType;
+        }
     }
 
     getId() {
@@ -37,8 +38,7 @@ export class AssetModel {
         return {
             id: this.id,
             assetType: this.assetType,
-            path: this.path,
-            data: this.data
+            path: this.path
         };
     }
 
@@ -46,7 +46,6 @@ export class AssetModel {
         this.id = json.id;
         this.assetType = <AssetType> json.assetType;
         this.path = json.path;
-        this.data = json.data;
     }
 }
 
@@ -60,6 +59,17 @@ export class AssetStore {
             ['texture', 0],
             ['thumbnail', 0],
         ]);
+    }
+
+    addAsset(assetModel: AssetModel): string {
+        switch(assetModel.assetType) {
+            case AssetType.Model:
+                return this.addModel(assetModel);
+            case AssetType.Texture:
+                return this.addTexture(assetModel);
+            case AssetType.Thumbnail:
+                return this.addThumbnail(assetModel);
+        }
     }
 
     addModel(assetModel: AssetModel): string {

@@ -6,7 +6,7 @@ import { RenderService } from '../../core/services/RenderServices';
 import { Camera3D } from '../common/camera/Camera3D';
 import { ICamera } from '../common/camera/ICamera';
 import { Tool } from '../common/tools/Tool';
-import { HelperMeshes } from './HelperMeshes';
+import { AxisGizmo } from './HelperMeshes';
 import { GameViewerSettings } from './settings/GameViewerSettings';
 (<any> window).earcut = require('earcut');
 
@@ -34,7 +34,7 @@ export class GameViewerPlugin extends AbstractPlugin {
 
     gameViewerSettings: GameViewerSettings;
 
-    private helperMeshes: HelperMeshes;
+    private helperMeshes: AxisGizmo;
 
     private camera: Camera3D;
 

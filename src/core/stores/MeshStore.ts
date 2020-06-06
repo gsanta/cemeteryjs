@@ -4,6 +4,7 @@ import { MeshLoaderService } from '../services/MeshLoaderService';
 import { RectangleFactory } from './RectangleFactory';
 import { Registry } from '../Registry';
 import { MeshView } from '../models/views/MeshView';
+import { MeshModel } from '../models/game_objects/MeshModel';
 
 export class MeshStore {
     private basePath = 'assets/models/';
@@ -56,23 +57,23 @@ export class MeshStore {
         this.instances.delete(mesh);
     }
 
-    createInstance(meshObject: MeshView, scene: Scene): void {
-        if (!meshObject.modelId) {
-            const mesh = this.rectangleFactory.createMesh(meshObject, scene);
+    createInstance(meshModel: MeshModel, scene: Scene): void {
+        if (!meshModel.meshView.modelId) {
+            const mesh = this.rectangleFactory.createMesh(meshModel.meshView, scene);
             this.instances.add(mesh);
-            meshObject.mesh = mesh;
+            meshModel.meshView.mesh = mesh;
             return;
         }
 
-        const modelConcept = this.registry.stores.assetStore.getAssetById(meshObject.modelId);
+        const modelConcept = this.registry.stores.assetStore.getAssetById(meshModel.meshView.modelId);
 
-        this.registry.services.meshLoader.load(modelConcept, meshObject.id)
-            .then(() => this.setupInstance(meshObject, scene));
+        this.registry.services.meshLoader.load(modelConcept, meshModel.meshView.id)
+            .then(() => this.setupInstance(meshModel, scene));
     }
 
-    private setupInstance(meshObject: MeshView, scene: Scene) {
-        const texture = this.registry.stores.assetStore.getAssetById(meshObject.textureId);
-        const model = this.registry.stores.assetStore.getAssetById(meshObject.modelId);
+    private setupInstance(meshModel: MeshModel, scene: Scene) {
+        const texture = this.registry.stores.assetStore.getAssetById(meshModel.meshView.textureId);
+        const model = this.registry.stores.assetStore.getAssetById(meshModel.meshView.modelId);
 
         if (model) {
             this.texturePathes.set(model.path, texture ? texture.path : undefined);
@@ -87,14 +88,14 @@ export class MeshStore {
             clone = templateMesh;
         } else {
             clone = <Mesh> templateMesh.instantiateHierarchy();
-            clone.name = meshObject.id;
+            clone.name = meshModel.meshView.id;
         }
         this.instances.add(clone);
         clone.setAbsolutePosition(new Vector3(0, 0, 0));
         clone.rotation = new Vector3(0, 0, 0);
         this.instanceCounter.set(model.path, counter + 1);
         
-        meshObject.meshName = clone.name;
+        meshModel.meshView.meshName = clone.name;
 
         if (this.texturePathes.get(model.path)) {
             const texturePath = `${this.basePath}${MeshLoaderService.getFolderNameFromFileName(model.path)}/${this.texturePathes.get(model.path)}`;
@@ -103,20 +104,20 @@ export class MeshStore {
         }
 
         clone.isVisible = true;
-        const scale = meshObject.scale;
+        const scale = meshModel.meshView.scale;
         clone.scaling = new Vector3(scale, scale, scale);
-        clone.position.y = meshObject.yPos;
+        clone.position.y = meshModel.meshView.yPos;
         clone.rotationQuaternion = undefined;
 
-        const rect = <Rectangle> meshObject.dimensions.div(10);
+        const rect = <Rectangle> meshModel.meshView.dimensions.div(10);
         const width = rect.getWidth();
         const depth = rect.getHeight();
 
         clone.translate(new Vector3(rect.topLeft.x + width / 2, 0, -rect.topLeft.y - depth / 2), 1, Space.WORLD);
 
-        clone.rotation.y = meshObject.rotation;
+        clone.rotation.y = meshModel.meshView.rotation;
 
-        meshObject.mesh = clone;
+        meshModel.meshView.mesh = clone;
     }
 
     clear(): void {

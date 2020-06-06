@@ -50,7 +50,7 @@ export class GameService {
 
         this.registry.services.meshLoader.loadAll(this.registry.stores.gameStore.getMeshObjects())
             .then(() => {
-                this.registry.stores.gameStore.getMeshObjects().forEach(meshObject => this.registry.stores.meshStore.createInstance(meshObject, this.registry.services.game.getScene()));
+                this.registry.stores.gameStore.getMeshObjects().forEach(meshObject => this.registry.stores.meshStore.createInstance(meshObject.model, this.registry.services.game.getScene()));
             });
     }
 
@@ -63,7 +63,7 @@ export class GameService {
 
         switch(gameObject.type) {
             case ConceptType.MeshConcept:
-                this.registry.stores.meshStore.createInstance(<MeshView> gameObject, this.registry.services.game.getScene())
+                this.registry.stores.meshStore.createInstance((<MeshView> gameObject).model, this.registry.services.game.getScene())
             break;
         }
     }

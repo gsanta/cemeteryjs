@@ -1,7 +1,7 @@
 import { MeshBuilder, Scene, Vector3, Mesh, Color3, StandardMaterial, DynamicTexture, Space } from 'babylonjs';
 import { Point } from '../../core/geometry/shapes/Point';
 
-export class HelperMeshes {
+export class AxisGizmo {
     private meshBuilder: typeof MeshBuilder;
     private scene: Scene;
     private axesPos = new Point(-50, -50);
@@ -9,22 +9,22 @@ export class HelperMeshes {
     constructor(scene: Scene, meshBuilder: typeof MeshBuilder) {
         this.scene = scene;
         this.meshBuilder = meshBuilder;
-        this.createCenterLine();
+        // this.createCenterLine();
         this.showWorldAxis(50);
     }
 
-    private createCenterLine() {
-        this.meshBuilder.CreateLines(
-            'helper-line-center',
-            {
-                points: [
-                    new Vector3(0, 0, 0),
-                    new Vector3(0, 100, 0)
-                ]
-            },
-            this.scene
-        );
-    }
+    // private createCenterLine() {
+    //     this.meshBuilder.CreateLines(
+    //         'helper-line-center',
+    //         {
+    //             points: [
+    //                 new Vector3(0, 0, 0),
+    //                 new Vector3(0, 100, 0)
+    //             ]
+    //         },
+    //         this.scene
+    //     );
+    // }
 
     private showWorldAxis(size) {
         const makeTextPlane = (text, color, size) => {

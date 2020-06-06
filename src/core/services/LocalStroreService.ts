@@ -1,4 +1,5 @@
 import { Registry } from "../Registry";
+import { AssetModel } from "../stores/AssetStore";
 
 export class LocalStoreService {
     serviceName = 'local-store'
@@ -82,14 +83,15 @@ export class LocalStoreService {
         objectStore.add({id: id, data});
     }
 
-    async loadAsset(id: string): Promise<string> {
+    async loadAsset(assetModel: AssetModel): Promise<string> {
         if (!this.isDbSupported()) { return }
 
         const db = await this.getDb();
 
         const objectStore = db.transaction(["assets"], "readwrite").objectStore("assets");
 
-        return await this.getData(objectStore.get(id));
+        const data = await this.getData(objectStore.get(assetModel.getId()));
+        assetModel.data = data;
     }
 
     async clearAll() {

@@ -33,6 +33,7 @@ export class Camera3D implements ICamera {
                 }
             }
         );
+
     }
 
     resize() {
