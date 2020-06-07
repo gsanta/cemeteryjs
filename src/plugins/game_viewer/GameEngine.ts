@@ -11,6 +11,7 @@ export class GameEngine {editor
 
         this.canvas = canvas;
         this.engine = new Engine(this.canvas, true, { preserveDrawingBuffer: true, stencil: true });
+        this.engine.getInputElement = () => this.canvas;
         
         let target = new Vector3(100, 0, 0);
         

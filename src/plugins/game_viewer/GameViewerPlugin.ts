@@ -9,6 +9,7 @@ import { Tool } from '../common/tools/Tool';
 import { AxisGizmo } from './AxisGizmo';
 import { GameViewerSettings } from './settings/GameViewerSettings';
 import { MeshBuilder } from 'babylonjs';
+import { Gizmos } from './Gizmos';
 (<any> window).earcut = require('earcut');
 
 export function cameraInitializer(registry: Registry) {
@@ -34,7 +35,8 @@ export class GameViewerPlugin extends AbstractPlugin {
 
     gameViewerSettings: GameViewerSettings;
 
-    private axisGizmo: AxisGizmo;
+    // private axisGizmo: AxisGizmo;
+    private gizmos: Gizmos;
 
     private camera: Camera3D;
 
@@ -45,7 +47,8 @@ export class GameViewerPlugin extends AbstractPlugin {
 
         this.updateService = new RenderService(registry);
         this.gameViewerSettings = new GameViewerSettings(registry);
-        this.axisGizmo = new AxisGizmo(this.registry, MeshBuilder);
+        // this.axisGizmo = new AxisGizmo(this.registry, MeshBuilder);
+        this.gizmos = new Gizmos(registry);
     }
 
     getStore() {
@@ -70,8 +73,13 @@ export class GameViewerPlugin extends AbstractPlugin {
         this.registry.services.node.getNodesByType(NodeType.Route).forEach(node => this.registry.services.node.getHandler(node).wake(node));
 
         this.registry.services.game.registerAfterRender(() => {
-            this.axisGizmo.updateWorldAxis();
+            // this.axisGizmo.updateWorldAxis();
+            this.gizmos.updateControls();
         });
+        
+        setTimeout(() => {
+            this.gizmos.createGizmos();
+        }, 2000)
 
         this.renderFunc && this.renderFunc();
     }
