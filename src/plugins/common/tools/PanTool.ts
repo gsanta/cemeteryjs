@@ -16,7 +16,7 @@ export class PanTool extends AbstractTool {
     }
 
     setup() {
-        this.hotkeys.forEach(hk => this.registry.services.hotkey.registerHotkey(hk));
+        // this.hotkeys.forEach(hk => this.registry.services.hotkey.registerHotkey(hk));
     }
 
     drag() {
@@ -29,10 +29,10 @@ export class PanTool extends AbstractTool {
     }
 
     keyup(e: IKeyboardEvent): void {
-        if (e.keyCode === Keyboard.Space && this.registry.services.plugin.getHoveredView().getActiveTool() === this) {
-            this.registry.services.plugin.getHoveredView().removePriorityTool(this);
-            this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
-        }
+        // if (e.keyCode === Keyboard.Space && this.registry.services.plugin.getHoveredView().getActiveTool() === this) {
+        //     this.registry.services.plugin.getHoveredView().removePriorityTool(this);
+        //     this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
+        // }
     }
 
     getCursor() {
