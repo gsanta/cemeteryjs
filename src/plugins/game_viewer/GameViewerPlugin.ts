@@ -74,13 +74,10 @@ export class GameViewerPlugin extends AbstractPlugin {
 
         this.registry.services.game.registerAfterRender(() => {
             // this.axisGizmo.updateWorldAxis();
-            this.gizmos.updateControls();
+            this.gizmos.update();
         });
         
-        setTimeout(() => {
-            this.gizmos.createGizmos();
-        }, 2000)
-
+        this.gizmos.awake();
         this.renderFunc && this.renderFunc();
     }
 

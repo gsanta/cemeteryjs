@@ -32,7 +32,11 @@ export enum Keyboard {
     s = 83,
     e = 69,
     p = 80,
-    Space = 32
+    Space = 32,
+    ArrowLeft = 37,
+    ArrowRight = 39,
+    ArrowDown = 40,
+    ArrowUp = 38
 }
 
 export interface IKeyboardEvent {
