@@ -20,13 +20,17 @@ export function createToolIcon(toolType: ToolType, view: AbstractPlugin, registr
             return [<DeleteIconComponent key={toolType} isActive={isToolActive(ToolType.Delete, view)} onClick={() => activateTool(toolType, view, registry)} format="short"/>]
         case ToolType.Select:
             return [<SelectIconComponent key={toolType} isActive={isToolActive(ToolType.Select, view)} onClick={() => activateTool(toolType, view, registry)} format="short"/>]
-        case ToolType.Pan:
-            return [<PanIconComponent key={toolType} isActive={isToolActive(ToolType.Pan, view)} onClick={() => activateTool(toolType, view, registry)} format="short"/>]
         case ToolType.Path:
         case ToolType.Join:
             return [<PathIconComponent key={toolType} isActive={isToolActive(toolType, view)} onClick={() => activateTool(toolType, view, registry)} format="short"/>]    
-        case ToolType.Zoom:
+        case ToolType.Camera:
             return [
+                <PanIconComponent 
+                    key={toolType}
+                    isActive={isToolActive(ToolType.Camera, view)}
+                    onClick={() => activateTool(toolType, view, registry)}
+                    format="short"
+                />,
                 <ZoomInIconComponent key={'zoom-in'} isActive={false} onClick={() => zoomIn(toolType, view, registry)} format="short"/>,
                 <ZoomOutIconComponent key={'zoom-out'} isActive={false} onClick={() => zoomOut(toolType, view, registry)} format="short"/>
             ];

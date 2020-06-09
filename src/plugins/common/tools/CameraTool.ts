@@ -6,17 +6,18 @@ import { RenderTask } from '../../../core/services/RenderServices';
 import { AbstractTool } from './AbstractTool';
 import { ToolType, Cursor } from "./Tool";
 
-export class CameraRotationTool extends AbstractTool {
+export class CameraTool extends AbstractTool {
     private panHotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, keyCodes: [Keyboard.Space], worksDuringMouseDown: true};
     private rotationHotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, mouseDown: true, worksDuringMouseDown: true, ctrlOrCommand: true};
     private zoomHotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, wheel: true, worksDuringMouseDown: true};
     
-    private activeCameraAction: 'zoom' | 'pan' | 'rotate' = undefined;
+    private defaultCameraAction: 'pan' = 'pan';
+    private activeCameraAction: 'zoom' | 'pan' | 'rotate' = this.defaultCameraAction;
     private hotkeys: Hotkey[] = [];
     private isSpaceDown: boolean;
 
     constructor(registry: Registry) {
-        super(ToolType.Zoom, registry);
+        super(ToolType.Camera, registry);
     }
     
     setup() {
@@ -28,7 +29,9 @@ export class CameraRotationTool extends AbstractTool {
     }
 
     wheelEnd() {
+        this.activeCameraAction = this.defaultCameraAction;
         this.registry.services.plugin.getHoveredView().removePriorityTool(this);
+        this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);3
     }
 
     drag(e: IPointerEvent) {
@@ -36,15 +39,24 @@ export class CameraRotationTool extends AbstractTool {
 
         const camera = this.registry.services.plugin.getHoveredView().getCamera();
 
-        if (e.isCtrlDown) {
-            camera.rotate(this.registry.services.pointer.pointer);
-            this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
-        } else if (this.isSpaceDown) {
-            camera.pan(this.registry.services.pointer.pointer);
-            this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
+        switch(this.activeCameraAction) {
+            case 'pan':
+                camera.pan(this.registry.services.pointer.pointer);
+                this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
+            break;
+            case 'rotate':
+                camera.rotate(this.registry.services.pointer.pointer);
+                this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
+            break;
         }
 
         this.cleanupIfToolFinished(this.isSpaceDown, e.isCtrlDown);
+    }
+
+    up(e: IPointerEvent) {
+        super.up(e);
+
+        this.cleanupIfToolFinished(this.isSpaceDown, false);
     }
 
     keyup(e: IKeyboardEvent) {
@@ -70,8 +82,9 @@ export class CameraRotationTool extends AbstractTool {
         return setAsPriorityTool;
     }
 
-    private cleanupIfToolFinished(isSpaceDown: boolean, isCtrlDown: boolean) {
-        if (!isSpaceDown && !isCtrlDown) {
+    private cleanupIfToolFinished(panFinished: boolean, rotateFinished: boolean) {
+        if (!panFinished && !rotateFinished) {
+            this.activeCameraAction = this.defaultCameraAction;
             this.registry.services.plugin.getHoveredView().removePriorityTool(this);
             this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
         }

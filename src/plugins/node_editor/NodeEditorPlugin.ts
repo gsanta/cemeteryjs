@@ -227,7 +227,7 @@ export class NodeEditorPlugin extends AbstractPlugin {
 
         this.camera = cameraInitializer(NodeEditorPlugin.id, registry);
 
-        this.selectedTool = this.registry.tools.pan;
+        this.selectedTool = this.registry.tools.cameraRotate;
         this.nodeEditorSettings = new NodeEditorSettings(registry);
 
         this.exporter = new NodeEditorExporter(this, this.registry);
@@ -268,7 +268,6 @@ export class NodeEditorPlugin extends AbstractPlugin {
     resize(): void {
         const screenSize = getScreenSize(NodeEditorPlugin.id);
         screenSize && this.camera.resize(screenSize);
-        this.registry.tools.zoom.resize();
 
         this.renderFunc && this.renderFunc();
     };

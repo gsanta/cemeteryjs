@@ -43,7 +43,7 @@ export class GameViewerPlugin extends AbstractPlugin {
     constructor(registry: Registry) {
         super(registry);
 
-        this.selectedTool = this.registry.tools.pan;
+        this.selectedTool = this.registry.tools.cameraRotate;
 
         this.updateService = new RenderService(registry);
         this.gameViewerSettings = new GameViewerSettings(registry);

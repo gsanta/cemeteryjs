@@ -24,7 +24,7 @@ export class AbstractTool implements Tool {
     drag(e: IPointerEvent) { }
     click() { }
     draggedUp() { }
-    up() { }
+    up(e: IPointerEvent) { }
     activate() { }
     resize() { }
     wheel() {}

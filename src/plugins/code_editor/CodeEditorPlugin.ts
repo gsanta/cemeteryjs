@@ -19,7 +19,7 @@ export class CodeEditorPlugin extends AbstractPlugin {
     constructor(registry: Registry) {
         super(registry);
 
-        this.selectedTool = this.registry.tools.pan;
+        this.selectedTool = this.registry.tools.cameraRotate;
     }
 
     getStore() {

@@ -77,7 +77,7 @@ export class PointerService {
             this.registry.services.plugin.getHoveredView().getActiveTool().click();
         }
         
-        this.registry.services.plugin.getHoveredView().getActiveTool().up();
+        this.registry.services.plugin.getHoveredView().getActiveTool().up(e);
         this.isDown = false;
         this.isDrag = false;
         this.pointer.down = undefined;

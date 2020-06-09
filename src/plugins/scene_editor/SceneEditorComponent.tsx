@@ -57,7 +57,7 @@ export class SceneEditorComponent extends CanvasComponent {
         return (
             <EditorComponentStyled ref={this.ref} id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>
                 <ToolbarComponent
-                    tools={[ToolType.Rectangle, ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Zoom, ToolType.Pan]}
+                    tools={[ToolType.Rectangle, ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Camera]}
                     view={view}
                     renderFullScreenIcon={true}
                 >

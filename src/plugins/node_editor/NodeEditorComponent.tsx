@@ -65,7 +65,7 @@ export class NodeEditorComponent extends CanvasComponent {
         return (
             <EditorComponentStyled ref={this.ref} id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>
                 <ToolbarComponent
-                        tools={[ToolType.Select, ToolType.Delete, ToolType.Pan, ToolType.Zoom]}
+                        tools={[ToolType.Select, ToolType.Delete, ToolType.Camera]}
                         view={view}
                         renderFullScreenIcon={false}
                 />

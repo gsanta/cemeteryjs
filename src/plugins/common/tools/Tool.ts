@@ -8,9 +8,8 @@ export enum ToolType {
     Delete = 'delete',
     Select = 'select',
     Move = 'move',
-    Pan = 'pan',
     DragAndDrop = 'drag-and-drop',
-    Zoom = 'zoom',
+    Camera = 'camera',
     Path = 'path',
     Pointer = 'pointer',
     Gamepad = 'gamepad',
@@ -52,7 +51,7 @@ export interface Tool extends IHotkey {
     drag(e: IPointerEvent): void;
     click(): void;
     draggedUp(): void;
-    up(): void;
+    up(e: IPointerEvent): void;
     activate(): void;
     leave(): void;
     keydown(e: IKeyboardEvent): void;

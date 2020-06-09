@@ -65,7 +65,7 @@ export class GameViewerComponent extends CanvasComponent {
         return (
                 <GameViewerStyled ref={this.ref} id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>
                     <ToolbarComponent
-                        tools={[ToolType.Zoom, ToolType.Pan]}
+                        tools={[ToolType.Camera]}
                         view={view}
                         renderFullScreenIcon={true}
                         centerIcons={
