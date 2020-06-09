@@ -1,5 +1,4 @@
-import { Color3, HemisphericLight, MeshBuilder, Vector3, Engine, Scene, Camera, ArcRotateCamera } from "babylonjs";
-import { AxisGizmo } from "./AxisGizmo";
+import { Color3, Engine, HemisphericLight, Scene, Vector3 } from "babylonjs";
 
 export class GameEngine {editor
     engine: Engine;
