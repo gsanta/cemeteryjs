@@ -8,7 +8,7 @@ import { colors } from '../../../core/gui/styles';
 import { LayoutType } from '../../../core/services/PluginService';
 import { RenderTask } from '../../../core/services/RenderServices';
 import { ToolType } from '../tools/Tool';
-import { createToolIcon } from './toolIconFactory';
+import { toolIconFactory } from './toolFactory';
 
 export interface ToolbarProps {
     view: AbstractPlugin;
@@ -54,7 +54,7 @@ export class ToolbarComponent extends React.Component<ToolbarProps> {
 
     render(): JSX.Element {
         const pluginService = this.context.registry.services.plugin;
-        const toolIcons = this.props.tools.map(toolType => createToolIcon(toolType, this.props.view, this.context.registry));
+        const toolIcons = this.props.tools.map(toolType => toolIconFactory(toolType, this.props.view, this.context.registry));
 
         const rightIcons: JSX.Element[] = [];
         

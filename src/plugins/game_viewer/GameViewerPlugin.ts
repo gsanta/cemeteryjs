@@ -8,7 +8,7 @@ import { ICamera } from '../common/camera/ICamera';
 import { Tool, ToolType } from '../common/tools/Tool';
 import { Gizmos } from './Gizmos';
 import { GameViewerSettings } from './settings/GameViewerSettings';
-import { toolFactory } from '../common/toolbar/toolIconFactory';
+import { toolFactory } from '../common/toolbar/toolFactory';
 import { Tools } from '../Tools';
 (<any> window).earcut = require('earcut');
 

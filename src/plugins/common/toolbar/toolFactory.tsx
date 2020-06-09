@@ -26,22 +26,21 @@ export function toolFactory(toolType: ToolType, plugin: AbstractPlugin, registry
         case ToolType.Pointer:
             return new PointerTool(ToolType.Pointer, plugin, registry);
         case ToolType.Path:
-            return new PathTool(plugin, this.registry);
+            return new PathTool(plugin, registry);
         case ToolType.Rectangle:
-            return new RectangleTool(plugin, this.registry);
+            return new RectangleTool(plugin, registry);
         case ToolType.Select:
-            return new SelectTool(plugin, this.registry);
+            return new SelectTool(plugin, registry);
         case ToolType.Camera:
-            return new CameraTool(plugin, this.registry);
+            return new CameraTool(plugin, registry);
         case ToolType.DragAndDrop:
-            return new DragAndDropTool(plugin, this.registry);
+            return new DragAndDropTool(plugin, registry);
         case ToolType.Join:
-            return new JoinTool(plugin, this.registry);
+            return new JoinTool(plugin, registry);
     }
 }
 
-export function createToolIcon(toolType: ToolType, plugin: AbstractPlugin, registry: Registry): JSX.Element[] {
-
+export function toolIconFactory(toolType: ToolType, plugin: AbstractPlugin, registry: Registry): JSX.Element[] {
     switch(toolType) {
         case ToolType.Rectangle:
             return [<RectangleIconComponent key={toolType} isActive={isToolActive(ToolType.Rectangle, plugin)} onClick={() => activateTool(toolType, plugin, registry)} format="short"/>]

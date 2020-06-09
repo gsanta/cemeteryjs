@@ -10,7 +10,7 @@ import { MeshSettings } from './settings/MeshSettings';
 import { PathSettings } from './settings/PathSettings';
 import { ToolType } from '../common/tools/Tool';
 import { Tools } from '../Tools';
-import { toolFactory } from '../common/toolbar/toolIconFactory';
+import { toolFactory } from '../common/toolbar/toolFactory';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
