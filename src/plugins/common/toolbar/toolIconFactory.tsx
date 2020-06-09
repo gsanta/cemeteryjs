@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ToolType } from "../tools/Tool";
+import { ToolType, Tool } from "../tools/Tool";
 import { RectangleIconComponent } from "./icons/RectangleIconComponent";
 import { DeleteIconComponent } from "./icons/DeleteIconComponent";
 import { SelectIconComponent } from "./icons/SelectIconComponent";
@@ -10,29 +10,58 @@ import { ZoomOutIconComponent } from "./icons/ZoomOutIconComponent";
 import { AbstractPlugin } from "../../../core/AbstractPlugin";
 import { Registry } from "../../../core/Registry";
 import { AbstractTool } from "../tools/AbstractTool";
+import { DeleteTool } from '../tools/DeleteTool';
+import { PointerTool } from '../tools/PointerTool';
+import { PathTool } from '../tools/PathTool';
+import { RectangleTool } from '../tools/RectangleTool';
+import { SelectTool } from '../tools/SelectTool';
+import { CameraTool } from '../tools/CameraTool';
+import { DragAndDropTool } from '../tools/DragAndDropTool';
+import { JoinTool } from '../tools/JoinTool';
 
-export function createToolIcon(toolType: ToolType, view: AbstractPlugin, registry: Registry): JSX.Element[] {
+export function toolFactory(toolType: ToolType, plugin: AbstractPlugin, registry: Registry): Tool {
+    switch(toolType) {
+        case ToolType.Delete:
+            return new DeleteTool(plugin, registry);
+        case ToolType.Pointer:
+            return new PointerTool(ToolType.Pointer, plugin, registry);
+        case ToolType.Path:
+            return new PathTool(plugin, this.registry);
+        case ToolType.Rectangle:
+            return new RectangleTool(plugin, this.registry);
+        case ToolType.Select:
+            return new SelectTool(plugin, this.registry);
+        case ToolType.Camera:
+            return new CameraTool(plugin, this.registry);
+        case ToolType.DragAndDrop:
+            return new DragAndDropTool(plugin, this.registry);
+        case ToolType.Join:
+            return new JoinTool(plugin, this.registry);
+    }
+}
+
+export function createToolIcon(toolType: ToolType, plugin: AbstractPlugin, registry: Registry): JSX.Element[] {
 
     switch(toolType) {
         case ToolType.Rectangle:
-            return [<RectangleIconComponent key={toolType} isActive={isToolActive(ToolType.Rectangle, view)} onClick={() => activateTool(toolType, view, registry)} format="short"/>]
+            return [<RectangleIconComponent key={toolType} isActive={isToolActive(ToolType.Rectangle, plugin)} onClick={() => activateTool(toolType, plugin, registry)} format="short"/>]
         case ToolType.Delete:
-            return [<DeleteIconComponent key={toolType} isActive={isToolActive(ToolType.Delete, view)} onClick={() => activateTool(toolType, view, registry)} format="short"/>]
+            return [<DeleteIconComponent key={toolType} isActive={isToolActive(ToolType.Delete, plugin)} onClick={() => activateTool(toolType, plugin, registry)} format="short"/>]
         case ToolType.Select:
-            return [<SelectIconComponent key={toolType} isActive={isToolActive(ToolType.Select, view)} onClick={() => activateTool(toolType, view, registry)} format="short"/>]
+            return [<SelectIconComponent key={toolType} isActive={isToolActive(ToolType.Select, plugin)} onClick={() => activateTool(toolType, plugin, registry)} format="short"/>]
         case ToolType.Path:
         case ToolType.Join:
-            return [<PathIconComponent key={toolType} isActive={isToolActive(toolType, view)} onClick={() => activateTool(toolType, view, registry)} format="short"/>]    
+            return [<PathIconComponent key={toolType} isActive={isToolActive(toolType, plugin)} onClick={() => activateTool(toolType, plugin, registry)} format="short"/>]    
         case ToolType.Camera:
             return [
                 <PanIconComponent 
                     key={toolType}
-                    isActive={isToolActive(ToolType.Camera, view)}
-                    onClick={() => activateTool(toolType, view, registry)}
+                    isActive={isToolActive(ToolType.Camera, plugin)}
+                    onClick={() => activateTool(toolType, plugin, registry)}
                     format="short"
                 />,
-                <ZoomInIconComponent key={'zoom-in'} isActive={false} onClick={() => zoomIn(toolType, view, registry)} format="short"/>,
-                <ZoomOutIconComponent key={'zoom-out'} isActive={false} onClick={() => zoomOut(toolType, view, registry)} format="short"/>
+                <ZoomInIconComponent key={'zoom-in'} isActive={false} onClick={() => zoomIn(toolType, plugin, registry)} format="short"/>,
+                <ZoomOutIconComponent key={'zoom-out'} isActive={false} onClick={() => zoomOut(toolType, plugin, registry)} format="short"/>
             ];
 
     }
@@ -53,7 +82,7 @@ function isToolActive(toolType: ToolType, view: AbstractPlugin) {
         return view.getSelectedTool() && view.getSelectedTool().type === toolType;
 }
 
-function activateTool(toolType: ToolType, view: AbstractPlugin, registry: Registry) {
-    view.setSelectedTool(registry.tools.getByType(toolType) as AbstractTool);
+function activateTool(toolType: ToolType, plugin: AbstractPlugin, registry: Registry) {
+    plugin.setSelectedTool(plugin.tools.byType(toolType) as AbstractTool);
     registry.services.hotkey.focus();
 }

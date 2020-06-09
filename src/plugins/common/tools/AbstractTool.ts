@@ -12,10 +12,12 @@ export class AbstractTool implements Tool {
 
     getCursor() { return Cursor.Default; }
     
+    protected plugin: AbstractPlugin;
     protected registry: Registry;
 
-    constructor(type: ToolType, registry: Registry) {
+    constructor(type: ToolType, plugin: AbstractPlugin, registry: Registry) {
         this.type = type;
+        this.plugin = plugin;
         this.registry = registry;
     }
 
@@ -49,7 +51,6 @@ export class AbstractTool implements Tool {
      */
     deselect(): void {}
 
-    setup(): void {};
     teardown(): void {};
     hotkey(hotkeyEvent: IHotkeyEvent): boolean { return false; }
 

@@ -6,14 +6,13 @@ import { colors } from '../../core/gui/styles';
 import { View } from '../../core/models/views/View';
 import { Registry } from '../../core/Registry';
 import { WheelListener } from '../../core/services/WheelListener';
-import { WindowToolbarStyled } from '../../core/WindowToolbar';
-import { CanvasComponent } from '../common/CanvasComponent';
+import { AbstractPluginComponent } from '../common/AbstractPluginComponent';
 import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
 import { ToolType } from '../common/tools/Tool';
-import { NodeEditorPlugin } from './NodeEditorPlugin';
-import { AllNodeConnectionsComponent } from './components/NodeConnectionComponent';
-import { NodeGroupComponent } from './components/NodeGroupComponent';
 import { NodeViewContainerComponent } from './components/NodeComponent';
+import { AllNodeConnectionsComponent } from './components/NodeConnectionComponent';
+import { NodeEditorPlugin } from './NodeEditorPlugin';
+import { JoinTool } from '../common/tools/JoinTool';
 
 const EditorComponentStyled = styled.div`
     width: 100%;
@@ -44,7 +43,7 @@ const DropLayerStyled = styled.div`
     left: 0;
 `;
 
-export class NodeEditorComponent extends CanvasComponent {
+export class NodeEditorComponent extends AbstractPluginComponent {
     private wheelListener: WheelListener;
 
     componentDidMount() {
@@ -101,7 +100,7 @@ export class NodeEditorComponent extends CanvasComponent {
     }
 
     private renderFeedback(): JSX.Element {
-        const joinTool = this.context.registry.tools.join;
+        const joinTool = this.props.plugin.tools.byType<JoinTool>(ToolType.Join);
         if (joinTool.start && joinTool.end) {
             return (
                 <line 

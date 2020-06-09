@@ -5,7 +5,7 @@ import { colors } from '../../core/gui/styles';
 import { View } from '../../core/models/views/View';
 import { PathMarkersComponent } from '../../core/services/export/PathMarkersComponent';
 import { WheelListener } from '../../core/services/WheelListener';
-import { CanvasComponent } from '../common/CanvasComponent';
+import { AbstractPluginComponent } from '../common/AbstractPluginComponent';
 import { RedoIconComponent } from '../common/toolbar/icons/RedoIconComponent';
 import { UndoIconComponent } from '../common/toolbar/icons/UndoIconComponent';
 import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
@@ -32,7 +32,7 @@ const SelectionComponentStyled = styled.rect`
     fill: transparent;
 `;
 
-export class SceneEditorComponent extends CanvasComponent {
+export class SceneEditorComponent extends AbstractPluginComponent {
     static contextType = AppContext;
     context: AppContextType;
     private wheelListener: WheelListener;

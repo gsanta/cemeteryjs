@@ -7,13 +7,14 @@ import { RectangleSelector } from './RectangleSelector';
 import { ToolType } from './Tool';
 import { ConceptType } from '../../../core/models/views/View';
 import { IPointerEvent } from '../../../core/services/input/PointerService';
+import { AbstractPlugin } from '../../../core/AbstractPlugin';
 
 export class RectangleTool extends AbstractTool {
     private lastPreviewRect: MeshView;
     private rectSelector: RectangleSelector;
 
-    constructor(registry: Registry) {
-        super(ToolType.Rectangle, registry);
+    constructor(plugin: AbstractPlugin, registry: Registry) {
+        super(ToolType.Rectangle, plugin, registry);
 
         this.rectSelector = new RectangleSelector(registry);
     }

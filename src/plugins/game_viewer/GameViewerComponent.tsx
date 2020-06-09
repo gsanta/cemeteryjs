@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { WheelListener } from '../../core/services/WheelListener';
-import { CanvasComponent } from '../common/CanvasComponent';
+import { AbstractPluginComponent } from '../common/AbstractPluginComponent';
 import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
 import { ToolType } from '../common/tools/Tool';
 import { GameViewerPlugin } from './GameViewerPlugin';
@@ -33,7 +33,7 @@ const CanvasStyled = styled.canvas`
     height: 100%;
 `;
 
-export class GameViewerComponent extends CanvasComponent {
+export class GameViewerComponent extends AbstractPluginComponent {
     private wheelListener: WheelListener;
     
     componentDidMount() {

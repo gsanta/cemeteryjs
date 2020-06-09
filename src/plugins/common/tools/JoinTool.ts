@@ -7,14 +7,15 @@ import { AbstractTool } from "./AbstractTool";
 import { ToolType, Cursor } from './Tool';
 import { NodeConnectionView } from "../../../core/models/views/NodeConnectionView";
 import { ConceptType } from "../../../core/models/views/View";
+import { AbstractPlugin } from "../../../core/AbstractPlugin";
 
 export class JoinTool extends AbstractTool {
     start: Point;
     end: Point;
     startItem: JoinPointView;
 
-    constructor(registry: Registry) {
-        super(ToolType.Join, registry);
+    constructor(plugin: AbstractPlugin, registry: Registry) {
+        super(ToolType.Join, plugin, registry);
     }
 
     down() {

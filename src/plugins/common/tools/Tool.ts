@@ -64,7 +64,6 @@ export interface Tool extends IHotkey {
     select(): void;
     deselect(): void;
 
-    setup(): void;
     teardown(): void;
     hotkey(hotkeyEvent: IHotkeyEvent);
 }

@@ -5,6 +5,7 @@ import { IPointerEvent } from '../../../core/services/input/PointerService';
 import { RenderTask } from '../../../core/services/RenderServices';
 import { AbstractTool } from './AbstractTool';
 import { ToolType, Cursor } from "./Tool";
+import { AbstractPlugin } from '../../../core/AbstractPlugin';
 
 export class CameraTool extends AbstractTool {
     private panHotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, keyCodes: [Keyboard.Space], worksDuringMouseDown: true};
@@ -13,15 +14,10 @@ export class CameraTool extends AbstractTool {
     
     private defaultCameraAction: 'pan' = 'pan';
     private activeCameraAction: 'zoom' | 'pan' | 'rotate' = this.defaultCameraAction;
-    private hotkeys: Hotkey[] = [];
     private isSpaceDown: boolean;
 
-    constructor(registry: Registry) {
-        super(ToolType.Camera, registry);
-    }
-    
-    setup() {
-        this.hotkeys.forEach(hk => this.registry.services.hotkey.registerHotkey(hk));
+    constructor(plugin: AbstractPlugin, registry: Registry) {
+        super(ToolType.Camera, plugin, registry);
     }
 
     wheel() {

@@ -4,12 +4,13 @@ import { PointerTool } from './PointerTool';
 import { RectangleSelector } from "./RectangleSelector";
 import { ToolType, Cursor } from "./Tool";
 import { IPointerEvent } from '../../../core/services/input/PointerService';
+import { AbstractPlugin } from '../../../core/AbstractPlugin';
 
 export class SelectTool extends PointerTool {
     private rectSelector: RectangleSelector;
 
-    constructor(registry: Registry) {
-        super(ToolType.Select, registry);
+    constructor(plugin: AbstractPlugin, registry: Registry) {
+        super(ToolType.Select, plugin, registry);
         this.rectSelector = new RectangleSelector(registry);
     }
 

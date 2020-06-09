@@ -1,10 +1,8 @@
-import { Rectangle } from "../../../core/geometry/shapes/Rectangle";
 import { Point } from "../../../core/geometry/shapes/Point";
-import { MousePointer } from "../../../core/services/input/MouseService";
-import { SceneEditorPlugin } from "../../scene_editor/SceneEditorPlugin";
+import { Rectangle } from "../../../core/geometry/shapes/Rectangle";
 import { RectSelectFeedback } from "../../../core/models/RectSelectFeedback";
-import { Stores } from "../../../core/stores/Stores";
 import { Registry } from "../../../core/Registry";
+import { MousePointer } from "../../../core/services/input/MouseService";
 
 export class RectangleSelector {
     private _displaySelectionRect: boolean;

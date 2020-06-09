@@ -1,14 +1,15 @@
 import { ICamera } from '../plugins/common/camera/ICamera';
+import { AbstractPluginImporter } from '../plugins/common/io/AbstractPluginImporter';
+import { IPluginExporter } from '../plugins/common/io/IPluginExporter';
 import { AbstractTool } from '../plugins/common/tools/AbstractTool';
 import { Tool } from '../plugins/common/tools/Tool';
 import { AbstractSettings } from '../plugins/scene_editor/settings/AbstractSettings';
+import { Tools } from '../plugins/Tools';
 import { Point } from './geometry/shapes/Point';
 import { Registry } from './Registry';
+import { LayoutType } from './services/PluginService';
 import { RenderTask } from './services/RenderServices';
 import { AbstractStore } from './stores/AbstractStore';
-import { LayoutType } from './services/PluginService';
-import { IPluginExporter } from '../plugins/common/io/IPluginExporter';
-import { AbstractPluginImporter } from '../plugins/common/io/AbstractPluginImporter';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;
@@ -34,6 +35,8 @@ export abstract class AbstractPlugin {
 
     exporter: IPluginExporter;
     importer: AbstractPluginImporter;
+
+    tools: Tools;
     priorityTool: Tool;
     
     protected selectedTool: Tool;

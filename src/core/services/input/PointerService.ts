@@ -4,6 +4,7 @@ import { Registry } from "../../Registry";
 import { MousePointer } from "./MouseService";
 import { RenderTask } from "../RenderServices";
 import { View } from "../../models/views/View";
+import { ToolType } from "../../../plugins/common/tools/Tool";
 
 export enum Wheel {
     IDLE = 'idle', UP = 'up', DOWN = 'down'
@@ -136,13 +137,15 @@ export class PointerService {
 
     pointerDragStart(item: DroppableItem) {
         this.droppableItem = item;
-        this.registry.services.plugin.getHoveredView().setPriorityTool(this.registry.tools.dragAndDrop);
+        const activePlugin = this.registry.services.plugin.getHoveredView();
+        this.registry.services.plugin.getHoveredView().setPriorityTool(activePlugin.tools.byType(ToolType.DragAndDrop));
         this.registry.services.update.runImmediately(RenderTask.RenderFocusedView, RenderTask.RenderSidebar);
     }
 
     pointerDrop() {
         this.droppableItem = null;
-        this.registry.services.plugin.getHoveredView().removePriorityTool(this.registry.tools.dragAndDrop);
+        const activePlugin = this.registry.services.plugin.getHoveredView();
+        this.registry.services.plugin.getHoveredView().removePriorityTool(activePlugin.tools.byType(ToolType.DragAndDrop));
         this.registry.services.update.runImmediately(RenderTask.RenderFocusedView, RenderTask.RenderSidebar);
     }
     

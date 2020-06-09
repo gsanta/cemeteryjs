@@ -1,7 +1,7 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import * as React from 'react';
 import styled from 'styled-components';
-import { CanvasComponent } from '../common/CanvasComponent';
+import { AbstractPluginComponent, PluginProps } from '../common/AbstractPluginComponent';
 import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
 import { PlayIconComponent } from '../common/toolbar/icons/PlayIconComponent';
 import { CodeEditorPlugin, initCode } from './CodeEditorPlugin';
@@ -28,9 +28,9 @@ const EditorsStyled = styled.div`
     }
 `;
 
-export class CodeEditorComponent extends CanvasComponent {
+export class CodeEditorComponent extends AbstractPluginComponent {
     
-    constructor(props: {}) {
+    constructor(props: PluginProps) {
         super(props);
         this.noRegisterKeyEvents = true;
     }

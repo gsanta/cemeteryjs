@@ -8,7 +8,9 @@ import { SceneEditorImporter } from './io/SceneEditorImporter';
 import { LevelSettings } from './settings/LevelSettings';
 import { MeshSettings } from './settings/MeshSettings';
 import { PathSettings } from './settings/PathSettings';
-import { Rectangle } from '../../core/geometry/shapes/Rectangle';
+import { ToolType } from '../common/tools/Tool';
+import { Tools } from '../Tools';
+import { toolFactory } from '../common/toolbar/toolIconFactory';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -48,9 +50,12 @@ export class SceneEditorPlugin extends AbstractPlugin {
 
     constructor(registry: Registry) {
         super(registry);
+        
+        const tools = [ToolType.Rectangle, ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Camera].map(toolType => toolFactory(toolType, this, registry));
+        this.tools = new Tools(tools);
 
         this.camera = cameraInitializer(SceneEditorPlugin.id, registry);
-        this.selectedTool = this.registry.tools.rectangle;
+        this.selectedTool = this.tools.byType(ToolType.Rectangle);
 
         this.settings = [
             new MeshSettings(this.registry),

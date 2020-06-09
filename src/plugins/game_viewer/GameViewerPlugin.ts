@@ -5,11 +5,11 @@ import { LayoutType } from '../../core/services/PluginService';
 import { RenderService } from '../../core/services/RenderServices';
 import { Camera3D } from '../common/camera/Camera3D';
 import { ICamera } from '../common/camera/ICamera';
-import { Tool } from '../common/tools/Tool';
-import { AxisGizmo } from './AxisGizmo';
-import { GameViewerSettings } from './settings/GameViewerSettings';
-import { MeshBuilder } from 'babylonjs';
+import { Tool, ToolType } from '../common/tools/Tool';
 import { Gizmos } from './Gizmos';
+import { GameViewerSettings } from './settings/GameViewerSettings';
+import { toolFactory } from '../common/toolbar/toolIconFactory';
+import { Tools } from '../Tools';
 (<any> window).earcut = require('earcut');
 
 export function cameraInitializer(registry: Registry) {
@@ -43,7 +43,10 @@ export class GameViewerPlugin extends AbstractPlugin {
     constructor(registry: Registry) {
         super(registry);
 
-        this.selectedTool = this.registry.tools.cameraRotate;
+        const tools = [ToolType.Camera].map(toolType => toolFactory(toolType, this, registry));
+        this.tools = new Tools(tools);
+
+        this.selectedTool = this.tools.byType(ToolType.Camera);
 
         this.updateService = new RenderService(registry);
         this.gameViewerSettings = new GameViewerSettings(registry);

@@ -8,13 +8,14 @@ import { SceneEditorPlugin } from '../../scene_editor/SceneEditorPlugin';
 import { AbstractTool } from "./AbstractTool";
 import { ToolType } from "./Tool";
 import { IPointerEvent } from '../../../core/services/input/PointerService';
+import { AbstractPlugin } from '../../../core/AbstractPlugin';
 
 export class PointerTool extends AbstractTool {
     protected movingItem: View = undefined;
     private isDragStart = true;
 
-    constructor(toolType: ToolType, registry: Registry) {
-        super(toolType, registry);
+    constructor(toolType: ToolType, plugin: AbstractPlugin, registry: Registry) {
+        super(toolType, plugin, registry);
     }
 
     click(): void {

@@ -4,6 +4,7 @@ import { AbstractPlugin } from "../../core/AbstractPlugin";
 import { ICamera } from "../common/camera/ICamera";
 import { Tool } from "../common/tools/Tool";
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import { Tools } from "../Tools";
 
 export const initCode = `
     const gameRegistry = cemetery.init(document.getElementById('canvas'));
@@ -19,7 +20,7 @@ export class CodeEditorPlugin extends AbstractPlugin {
     constructor(registry: Registry) {
         super(registry);
 
-        this.selectedTool = this.registry.tools.cameraRotate;
+        this.tools = new Tools([]);
     }
 
     getStore() {

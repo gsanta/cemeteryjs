@@ -7,6 +7,8 @@ import { ConnectedFileUploadComponent } from '../../common/toolbar/icons/ImportF
 import { GlobalSettingsPropType } from './GlobalSettings';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { colors } from '../../../core/gui/styles';
+import { DeleteTool } from '../../common/tools/DeleteTool';
+import { ToolType } from '../../common/tools/Tool';
 
 export interface GeneralFormComponentProps {
     isEditorOpen: boolean;
@@ -41,6 +43,7 @@ export class FileSettingsComponent extends React.Component<GeneralFormComponentP
     }
 
     private blank() {
-        this.context.registry.tools.delete.eraseAll();
+        // TODO eraseAll should not be on delete tool
+        this.context.registry.services.plugin.sceneEditor.tools.byType<DeleteTool>(ToolType.Delete).eraseAll();
     }
 }

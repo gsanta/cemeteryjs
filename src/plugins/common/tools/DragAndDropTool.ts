@@ -2,6 +2,7 @@ import { Registry } from '../../../core/Registry';
 import { RenderTask } from '../../../core/services/RenderServices';
 import { AbstractTool } from './AbstractTool';
 import { Cursor, ToolType } from "./Tool";
+import { AbstractPlugin } from '../../../core/AbstractPlugin';
 
 export interface DroppableItem {
     itemType: string;
@@ -10,8 +11,8 @@ export interface DroppableItem {
 export class DragAndDropTool extends AbstractTool {
     isDragging = false;
 
-    constructor(registry: Registry) {
-        super(ToolType.DragAndDrop, registry);
+    constructor(plugin: AbstractPlugin, registry: Registry) {
+        super(ToolType.DragAndDrop, plugin, registry);
     }
 
     select() {

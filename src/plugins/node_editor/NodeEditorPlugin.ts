@@ -19,6 +19,9 @@ import { NodeEditorSettings } from './settings/NodeEditorSettings';
 import { LayoutType } from '../../core/services/PluginService';
 import { NodeEditorExporter } from './io/NodeEditorExporter';
 import { NodeEditorImporter } from './io/NodeEditorImporter';
+import { ToolType } from '../common/tools/Tool';
+import { Tools } from '../Tools';
+import { toolFactory } from '../common/toolbar/toolIconFactory';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -225,9 +228,12 @@ export class NodeEditorPlugin extends AbstractPlugin {
     constructor(registry: Registry) {
         super(registry);
 
+        const tools = [ToolType.Select, ToolType.Delete, ToolType.Camera].map(toolType => toolFactory(toolType, this, registry));
+        this.tools = new Tools(tools);
+
         this.camera = cameraInitializer(NodeEditorPlugin.id, registry);
 
-        this.selectedTool = this.registry.tools.cameraRotate;
+        this.selectedTool = this.tools.byType(ToolType.Camera);
         this.nodeEditorSettings = new NodeEditorSettings(registry);
 
         this.exporter = new NodeEditorExporter(this, this.registry);

@@ -20,13 +20,13 @@ export interface ViewFactory {
 export function viewFactory(plugin: AbstractPlugin): JSX.Element {
     switch(plugin.getId()) {
         case SceneEditorPlugin.id:
-            return <SceneEditorComponent key={plugin.getId()}/>;
+            return <SceneEditorComponent plugin={plugin} key={plugin.getId()}/>;
         case GameViewerPlugin.id:
-            return <GameViewerComponent key={plugin.getId()}/>;
+            return <GameViewerComponent plugin={plugin} key={plugin.getId()}/>;
         case NodeEditorPlugin.id:
-            return <NodeEditorComponent key={plugin.getId()}/>;
+            return <NodeEditorComponent plugin={plugin} key={plugin.getId()}/>;
         case CodeEditorPlugin.id:
-            return <CodeEditorComponent key={plugin.getId()}/>
+            return <CodeEditorComponent plugin={plugin} key={plugin.getId()}/>
     }
 
     return null;

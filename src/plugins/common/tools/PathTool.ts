@@ -1,20 +1,20 @@
+import { AbstractPlugin } from "../../../core/AbstractPlugin";
 import { Point } from "../../../core/geometry/shapes/Point";
-import { ConceptType, View } from "../../../core/models/views/View";
-import { PathView } from "../../../core/models/views/PathView";
 import { FeedbackType } from "../../../core/models/views/child_views/ChildView";
 import { EditPointView } from "../../../core/models/views/child_views/EditPointView";
+import { PathView } from "../../../core/models/views/PathView";
+import { ConceptType, View } from "../../../core/models/views/View";
 import { Registry } from "../../../core/Registry";
-import { HotkeyTrigger, IHotkeyEvent } from "../../../core/services/input/HotkeyService";
+import { IHotkeyEvent } from "../../../core/services/input/HotkeyService";
 import { IKeyboardEvent, Keyboard } from "../../../core/services/input/KeyboardService";
 import { RenderTask } from "../../../core/services/RenderServices";
 import { PointerTool } from "./PointerTool";
 import { ToolType } from "./Tool";
 
 export class PathTool extends PointerTool {
-    private hotkeyTrigger: Partial<HotkeyTrigger> = {keyCodes: [Keyboard.p]}
-    
-    constructor(registry: Registry) {
-        super(ToolType.Path, registry);
+
+    constructor(plugin: AbstractPlugin, registry: Registry) {
+        super(ToolType.Path, plugin, registry);
     }
 
     click() {

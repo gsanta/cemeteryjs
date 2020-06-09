@@ -7,13 +7,14 @@ import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './RectangleSelector';
 import { Cursor, ToolType } from './Tool';
 import { View } from '../../../core/models/views/View';
+import { AbstractPlugin } from '../../../core/AbstractPlugin';
 
 export class DeleteTool extends AbstractTool {
     private hotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, ...{keyCodes: [Keyboard.e], shift: true}}
     private rectSelector: RectangleSelector;
 
-    constructor(registry: Registry) {
-        super(ToolType.Delete, registry);
+    constructor(plugin: AbstractPlugin, registry: Registry) {
+        super(ToolType.Delete, plugin, registry);
         this.rectSelector = new RectangleSelector(registry);
     }
 
@@ -23,7 +24,7 @@ export class DeleteTool extends AbstractTool {
     }
 
     click() {
-        this.registry.tools.pointer.click();
+        this.plugin.tools.byType(ToolType.Pointer).click();
         const hoveredItem = this.registry.services.pointer.hoveredItem;
 
         if (!hoveredItem) { return; }
@@ -60,11 +61,11 @@ export class DeleteTool extends AbstractTool {
     }
 
     over(item: View) {
-        this.registry.tools.pointer.over(item);
+        this.plugin.tools.byType(ToolType.Pointer).over(item);
     }
 
     out(item: View) {
-        this.registry.tools.pointer.out(item);
+        this.plugin.tools.byType(ToolType.Pointer).out(item);
     }
 
     eraseAll() {
