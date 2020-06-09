@@ -6,6 +6,7 @@ import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './RectangleSelector';
 import { ToolType } from './Tool';
 import { ConceptType } from '../../../core/models/views/View';
+import { IPointerEvent } from '../../../core/services/input/PointerService';
 
 export class RectangleTool extends AbstractTool {
     private lastPreviewRect: MeshView;
@@ -36,8 +37,8 @@ export class RectangleTool extends AbstractTool {
         this.registry.services.update.scheduleTasks(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
     }
 
-    drag() {
-        super.drag()
+    drag(e: IPointerEvent) {
+        super.drag(e)
         if (this.lastPreviewRect) {
             this.registry.stores.canvasStore.removeItem(this.lastPreviewRect);
         }

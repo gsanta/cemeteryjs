@@ -1,6 +1,7 @@
 import { IHotkey, IHotkeyEvent } from "../../../core/services/input/HotkeyService";
 import { IKeyboardEvent } from "../../../core/services/input/KeyboardService";
 import { View } from "../../../core/models/views/View";
+import { IPointerEvent } from "../../../core/services/input/PointerService";
 
 export enum ToolType {
     Rectangle = 'rectangle',
@@ -46,9 +47,9 @@ export enum Cursor {
 export interface Tool extends IHotkey {
     getCursor(): Cursor;
     type: ToolType;
-    down(): void;
+    down(e: IPointerEvent): void;
     move(): void;
-    drag(): void;
+    drag(e: IPointerEvent): void;
     click(): void;
     draggedUp(): void;
     up(): void;

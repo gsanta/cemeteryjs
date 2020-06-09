@@ -45,7 +45,7 @@ export class PointerService {
         this.isDown = true;
         this.pointer.down = this.getCanvasPoint(e.pointers[0].pos); 
         this.pointer.downScreen = this.getScreenPoint(e.pointers[0].pos); 
-        this.registry.services.plugin.getHoveredView().getActiveTool().down();
+        this.registry.services.plugin.getHoveredView().getActiveTool().down(e);
         this.registry.services.update.runScheduledTasks();
     }
 
@@ -56,7 +56,7 @@ export class PointerService {
         this.pointer.currScreen =  this.getScreenPoint(e.pointers[0].pos);
         if (this.isDown && this.pointer.getDownDiff().len() > 2) {
             this.isDrag = true;
-            this.registry.services.plugin.getHoveredView().getActiveTool().drag();
+            this.registry.services.plugin.getHoveredView().getActiveTool().drag(e);
         } else {
             this.registry.services.plugin.getHoveredView().getActiveTool().move();
         }

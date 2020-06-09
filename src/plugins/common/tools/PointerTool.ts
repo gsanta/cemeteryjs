@@ -7,6 +7,7 @@ import { NodeEditorPlugin } from '../../node_editor/NodeEditorPlugin';
 import { SceneEditorPlugin } from '../../scene_editor/SceneEditorPlugin';
 import { AbstractTool } from "./AbstractTool";
 import { ToolType } from "./Tool";
+import { IPointerEvent } from '../../../core/services/input/PointerService';
 
 export class PointerTool extends AbstractTool {
     protected movingItem: View = undefined;
@@ -40,8 +41,8 @@ export class PointerTool extends AbstractTool {
         this.initMove() && this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
     }
 
-    drag() {
-        super.drag();
+    drag(e: IPointerEvent) {
+        super.drag(e);
 
         if (this.movingItem) {
             this.moveItems();

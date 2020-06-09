@@ -1,19 +1,22 @@
 import { Registry } from '../../../core/Registry';
-import { Hotkey } from "../../../core/services/input/HotkeyService";
+import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, Hotkey, HotkeyTrigger, IHotkeyEvent } from "../../../core/services/input/HotkeyService";
+import { IKeyboardEvent, Keyboard } from '../../../core/services/input/KeyboardService';
+import { IPointerEvent } from '../../../core/services/input/PointerService';
 import { RenderTask } from '../../../core/services/RenderServices';
 import { AbstractTool } from './AbstractTool';
-import { ToolType } from "./Tool";
-import { HotkeyCameraRotationStart } from '../hotkeys/HotkeyCameraRotationStart';
-import { IKeyboardEvent, Keyboard } from '../../../core/services/input/KeyboardService';
+import { ToolType, Cursor } from "./Tool";
 
 export class CameraRotationTool extends AbstractTool {
+    private panHotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, keyCodes: [Keyboard.Space], worksDuringMouseDown: true};
+    private rotationHotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, mouseDown: true, worksDuringMouseDown: true, ctrlOrCommand: true};
+    private zoomHotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, wheel: true, worksDuringMouseDown: true};
+    
+    private activeCameraAction: 'zoom' | 'pan' | 'rotate' = undefined;
     private hotkeys: Hotkey[] = [];
-    private cameraAction: 'Rotate' | 'Pan';
+    private isSpaceDown: boolean;
 
     constructor(registry: Registry) {
         super(ToolType.Zoom, registry);
-
-        this.hotkeys = [new HotkeyCameraRotationStart(registry)];
     }
     
     setup() {
@@ -25,64 +28,64 @@ export class CameraRotationTool extends AbstractTool {
     }
 
     wheelEnd() {
-        this.registry.services.plugin.getHoveredView().removePriorityTool(this.registry.tools.zoom);
+        this.registry.services.plugin.getHoveredView().removePriorityTool(this);
     }
 
-    down() {
-        
-    }
-
-    drag() {
-        super.drag();
+    drag(e: IPointerEvent) {
+        super.drag(e);
 
         const camera = this.registry.services.plugin.getHoveredView().getCamera();
 
-        if (this.cameraAction === 'Rotate') {
-            camera.rotate(this.registry.services.pointer.pointer);
-        } else if (this.cameraAction === 'Pan') {
-            camera.pan(this.registry.services.pointer.pointer);
-        }
-        
-        this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
-    }
-
-    keydown(e: IKeyboardEvent) {
-        let enterTool = false;
         if (e.isCtrlDown) {
-            this.cameraAction = 'Rotate';
-            enterTool = true;
-        } else if (e.keyCode === Keyboard.Space) {
-            this.cameraAction = 'Pan';
-            enterTool = true;
-        }
-
-        if (enterTool) {
-            this.registry.services.plugin.getHoveredView().setPriorityTool(this);
+            camera.rotate(this.registry.services.pointer.pointer);
+            this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
+        } else if (this.isSpaceDown) {
+            camera.pan(this.registry.services.pointer.pointer);
             this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
         }
+
+        this.cleanupIfToolFinished(this.isSpaceDown, e.isCtrlDown);
     }
 
     keyup(e: IKeyboardEvent) {
-        let exitTool = false;
-        if (!e.isCtrlDown && this.cameraAction === 'Rotate') {
-            this.cameraAction = undefined;
-            exitTool = true;
-        } else if (e.keyCode === Keyboard.Space && this.cameraAction === 'Pan') {
-            this.cameraAction = undefined;
-            exitTool = true;
+        this.isSpaceDown = e.keyCode === Keyboard.Space ? true : false;
+        this.cleanupIfToolFinished(e.keyCode !== Keyboard.Space, e.isCtrlDown);
+    }
+
+    hotkey(event: IHotkeyEvent) {
+        let setAsPriorityTool = false;
+
+        if (checkHotkeyAgainstTrigger(event, this.panHotkeyTrigger, this.registry)) {
+            this.activeCameraAction = 'pan';
+            setAsPriorityTool = true;
+        } else if (checkHotkeyAgainstTrigger(event, this.rotationHotkeyTrigger, this.registry)) {
+            this.activeCameraAction = 'rotate';
+            setAsPriorityTool = true;
+        } else if (checkHotkeyAgainstTrigger(event, this.zoomHotkeyTrigger, this.registry)) {
+            this.activeCameraAction = 'zoom';
+            setAsPriorityTool = true;
         }
 
-        if (exitTool) {
+        setAsPriorityTool && this.registry.services.plugin.getHoveredView().setPriorityTool(this);
+        return setAsPriorityTool;
+    }
+
+    private cleanupIfToolFinished(isSpaceDown: boolean, isCtrlDown: boolean) {
+        if (!isSpaceDown && !isCtrlDown) {
             this.registry.services.plugin.getHoveredView().removePriorityTool(this);
             this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
         }
     }
 
-    draggedUp() {
-
-    }
-
-    leave() {
-
+    getCursor() {
+        switch(this.activeCameraAction) {
+            case 'rotate':
+                return Cursor.Grab;
+            case 'zoom':
+                return Cursor.ZoomIn;
+            case 'pan':
+            default:
+                return Cursor.Move;
+        }
     }
 }

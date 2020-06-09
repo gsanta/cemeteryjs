@@ -5,6 +5,7 @@ import { AbstractTool } from './AbstractTool';
 import { ToolType, Cursor } from "./Tool";
 import { HotkeyPanStart } from '../hotkeys/HotkeyPanStart';
 import { Keyboard, IKeyboardEvent } from '../../../core/services/input/KeyboardService';
+import { IPointerEvent } from '../../../core/services/input/PointerService';
 
 export class PanTool extends AbstractTool {
     private hotkeys: Hotkey[] = [];
@@ -19,8 +20,8 @@ export class PanTool extends AbstractTool {
         // this.hotkeys.forEach(hk => this.registry.services.hotkey.registerHotkey(hk));
     }
 
-    drag() {
-        super.drag();
+    drag(e: IPointerEvent) {
+        super.drag(e);
         const camera = this.registry.services.plugin.getHoveredView().getCamera();
         
         camera.pan(this.registry.services.pointer.pointer);

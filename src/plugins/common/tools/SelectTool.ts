@@ -3,6 +3,7 @@ import { RenderTask } from "../../../core/services/RenderServices";
 import { PointerTool } from './PointerTool';
 import { RectangleSelector } from "./RectangleSelector";
 import { ToolType, Cursor } from "./Tool";
+import { IPointerEvent } from '../../../core/services/input/PointerService';
 
 export class SelectTool extends PointerTool {
     private rectSelector: RectangleSelector;
@@ -27,9 +28,9 @@ export class SelectTool extends PointerTool {
         }
     }
 
-    drag() {
+    drag(e: IPointerEvent) {
         if (this.movingItem) {
-            super.drag();
+            super.drag(e);
         } else {
             this.rectSelector.updateRect(this.registry.services.pointer.pointer);
             this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);

@@ -5,6 +5,7 @@ import { IKeyboardEvent } from '../../../core/services/input/KeyboardService';
 import { AbstractStore } from '../../../core/stores/AbstractStore';
 import { Cursor, Tool, ToolType } from './Tool';
 import { View } from '../../../core/models/views/View';
+import { IPointerEvent } from '../../../core/services/input/PointerService';
 
 export class AbstractTool implements Tool {
     type: ToolType;
@@ -18,9 +19,9 @@ export class AbstractTool implements Tool {
         this.registry = registry;
     }
 
-    down() { }
+    down(e: IPointerEvent) { }
     move() { }
-    drag() { }
+    drag(e: IPointerEvent) { }
     click() { }
     draggedUp() { }
     up() { }

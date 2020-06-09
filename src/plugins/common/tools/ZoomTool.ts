@@ -11,7 +11,7 @@ export class ZoomTool extends AbstractTool {
     constructor(registry: Registry) {
         super(ToolType.Zoom, registry);
 
-        this.hotkeys = [new HotkeyWheelZoomStart(registry)];
+        // this.hotkeys = [new HotkeyWheelZoomStart(registry)];
     }
 
     setup() {
