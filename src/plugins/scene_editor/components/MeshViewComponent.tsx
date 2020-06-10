@@ -46,11 +46,17 @@ export class MeshViewComponent extends ViewComponent<MeshView> {
         let thumbnail: JSX.Element = null;
         const thumbnailModel = this.props.registry.stores.assetStore.getAssetById(item.thumbnailId);
 
-        if (thumbnailModel) {
+        const asset = this.props.registry.stores.assetStore.getAssetById(item.modelId);
+
+        if (asset) {
             thumbnail = (
-                <image xlinkHref={`assets/models/${this.getFolderNameFromFileName(thumbnailModel.path)}/${thumbnailModel.path}`} x="0" y="0" height={`${item.dimensions.getHeight()}px`} width={`${item.dimensions.getWidth()}px`} />
+                <image href={asset.thumbnailData} x="0" y="0" height={`${item.dimensions.getHeight()}px`} width={`${item.dimensions.getWidth()}px`}/>
+                // <image xlinkHref={`assets/models/${this.getFolderNameFromFileName(thumbnailModel.path)}/${thumbnailModel.path}`} x="0" y="0" height={`${item.dimensions.getHeight()}px`} width={`${item.dimensions.getWidth()}px`} />
             )
         }
+
+        // if (thumbnailModel) {
+        // }
 
         return thumbnail;
     }

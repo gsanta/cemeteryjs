@@ -62,7 +62,7 @@ export class Services {
         this.game = new GameService(this.registry);
         this.node = new NodeService(this.registry);
         this.gamepad = new GamepadService(this.registry);
-        this.thumbnailMaker = new ThumbnailMakerService();
+        this.thumbnailMaker = new ThumbnailMakerService(this.registry);
 
         // TODO: find a better place to register general hotkeys
         this.hotkey.registerHotkey(this.gamepad);

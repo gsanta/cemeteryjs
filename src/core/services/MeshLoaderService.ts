@@ -19,6 +19,10 @@ export class MeshLoaderService {
         this.registry = registry;
     }
 
+    protected getScene() {
+        return this.registry.services.game.gameEngine.scene;
+    }
+
     getDimensions(assetModel: AssetModel, id: string): Promise<Point> {
         return this
             .load(assetModel, id)
@@ -93,7 +97,7 @@ export class MeshLoaderService {
                 '',
                 data ? data : folder,
                 data ? undefined : file,
-                this.registry.services.game.gameEngine.scene,
+                this.getScene(),
                 (meshes: Mesh[], ps: ParticleSystem[], skeletons: Skeleton[]) => resolve(this.createModelData(file, id, meshes, skeletons)),
                 () => { },
                 (scene: Scene, message: string) => { throw new Error(message); }
@@ -110,15 +114,13 @@ export class MeshLoaderService {
         mesh.isPickable = true;
         mesh.checkCollisions = true;
         mesh.receiveShadows = true;
-        mesh.isVisible = false;
+        mesh.isVisible = true;
     }
 
     private createModelData(path: string, id: string, meshes: Mesh[], skeletons: Skeleton[]): Mesh {
         if (meshes.length === 0) { throw new Error('No mesh was loaded.') }
 
-        const scene = this.registry.services.game.gameEngine.scene;
-
-        meshes[0].material = new StandardMaterial(path, scene);
+        meshes[0].material = new StandardMaterial(path, this.getScene());
    
         meshes[0].name = id;
         this.configMesh(meshes[0]);

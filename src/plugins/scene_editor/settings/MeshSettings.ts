@@ -93,6 +93,7 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
 
                 this.registry.services.localStore.saveAsset(assetModel.getId(), val.data)
                     .then(() => {
+                        this.registry.services.thumbnailMaker.createThumbnail(assetModel);
                         return this.registry.services.meshLoader.getDimensions(assetModel, this.meshConcept.id);
                     })
                     .then(dim => {
@@ -104,7 +105,6 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                         this.meshConcept.animations = animations;
                     })
                     .finally(() => {
-                        const data = this.registry.services.export.export();
                         this.registry.services.game.updateConcepts([this.meshConcept]);
                         this.registry.services.history.createSnapshot();
                         this.registry.services.update.runImmediately(RenderTask.RenderFull);

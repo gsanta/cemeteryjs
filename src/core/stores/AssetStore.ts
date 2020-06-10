@@ -17,6 +17,7 @@ export class AssetModel {
     assetType: AssetType;
     path: string;
     data: string;
+    thumbnailData: string;
 
     constructor(config?: {path: string, data?: string, assetType: AssetType}) {
         if (config) {

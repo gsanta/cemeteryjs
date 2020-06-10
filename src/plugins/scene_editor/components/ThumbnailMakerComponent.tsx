@@ -4,13 +4,13 @@ import { AppContextType, AppContext } from '../../../core/gui/Context';
 
 const CanvasStyled = styled.canvas`
     position: absolute;
-    width: 1000px;
-    height: 600px;
+    width: 300px;
+    height: 150px;
     z-index: 1000;
-    /* display: none; */
+    display: none;
 
-    top: 100px;
-    left: 100px;
+    top: -500px;
+    left: -500px;
 `
 
 export class ThumbnailMakerComponent extends React.Component {
