@@ -13,7 +13,7 @@ export class MeshLoaderService {
 
     private fileNameToMeshNameMap: Map<string, string> = new Map();
     
-    private registry: Registry;
+    protected registry: Registry;
 
     constructor(registry: Registry) {
         this.registry = registry;

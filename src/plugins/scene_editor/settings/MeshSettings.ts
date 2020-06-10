@@ -1,10 +1,10 @@
+import { toDegree, toRadian } from '../../../core/geometry/utils/Measurements';
+import { MeshView } from '../../../core/models/views/MeshView';
 import { Registry } from '../../../core/Registry';
 import { RenderTask } from '../../../core/services/RenderServices';
-import { MeshView } from '../../../core/models/views/MeshView';
-import { AbstractSettings, PropertyType } from "./AbstractSettings";
-import { toDegree, toRadian } from '../../../core/geometry/utils/Measurements';
-import { ConceptType } from '../../../core/models/views/View';
 import { AssetModel, AssetType } from '../../../core/stores/AssetStore';
+import { AbstractSettings, PropertyType } from "./AbstractSettings";
+import { ImportSettings } from './ImportSettings';
 
 export enum MeshViewPropType {
     Color = 'color',
@@ -92,23 +92,24 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                 this.meshConcept.modelId = this.registry.stores.assetStore.addModel(assetModel);
 
                 this.registry.services.localStore.saveAsset(assetModel.getId(), val.data)
-                    .then(() => {
-                        this.registry.services.thumbnailMaker.createThumbnail(assetModel);
-                        return this.registry.services.meshLoader.getDimensions(assetModel, this.meshConcept.id);
-                    })
-                    .then(dim => {
-                        this.meshConcept.dimensions.setWidth(dim.x);
-                        this.meshConcept.dimensions.setHeight(dim.y);
-                    })
-                    .then(() => this.registry.services.meshLoader.getAnimations(assetModel, this.meshConcept.id))
-                    .then(animations => {
-                        this.meshConcept.animations = animations;
-                    })
+                    // .then(() => {
+                    //     this.registry.services.thumbnailMaker.createThumbnail(assetModel);
+                    //     return this.registry.services.meshLoader.getDimensions(assetModel, this.meshConcept.id);
+                    // })
+                    // .then(dim => {
+                    //     this.meshConcept.dimensions.setWidth(dim.x);
+                    //     this.meshConcept.dimensions.setHeight(dim.y);
+                    // })
+                    // .then(() => this.registry.services.meshLoader.getAnimations(assetModel, this.meshConcept.id))
+                    // .then(animations => {
+                    //     this.meshConcept.animations = animations;
+                    // })
                     .finally(() => {
                         this.registry.services.game.updateConcepts([this.meshConcept]);
                         this.registry.services.history.createSnapshot();
                         this.registry.services.update.runImmediately(RenderTask.RenderFull);
                     });
+                this.registry.services.dialog.openDialog(ImportSettings.settingsName)
                 break;
             case MeshViewPropType.Texture:
                 this.meshConcept.textureId = this.registry.stores.assetStore.addTexture(new AssetModel({path: val.path, assetType: AssetType.Texture}));

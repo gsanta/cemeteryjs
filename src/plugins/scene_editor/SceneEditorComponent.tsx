@@ -13,7 +13,7 @@ import { ToolType } from '../common/tools/Tool';
 import { MeshViewContainerComponent } from './components/MeshViewComponent';
 import { PathViewContainerComponent } from './components/PathViewComponent';
 import { SceneEditorPlugin } from './SceneEditorPlugin';
-import { ThumbnailMakerComponent } from './components/ThumbnailMakerComponent';
+import { ImportDialogComponent } from './components/ImportDialogComponent';
 
 const EditorComponentStyled = styled.div`
     width: 100%;
@@ -87,7 +87,7 @@ export class SceneEditorComponent extends AbstractPluginComponent {
                     <PathViewContainerComponent hover={hover} unhover={unhover} registry={this.context.registry} renderWithSettings={false}/>
                     {this.renderFeedbacks()}
                 </SceneEditorComponentStyled>
-                <ThumbnailMakerComponent/>
+                <ImportDialogComponent/>
             </EditorComponentStyled>
         );
     }

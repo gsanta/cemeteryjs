@@ -1,7 +1,8 @@
-import * as React from 'React';
-import { AppContext, AppContextType } from '../../../core/gui/Context';
-import { ImportSettings } from '../settings/ImportSettings';
+import * as React from 'react';
 import styled from 'styled-components';
+import { AppContextType, AppContext } from '../../../core/gui/Context';
+import { DialogComponent } from '../../../core/gui/dialogs/DialogComponent';
+import { ImportSettings } from '../settings/ImportSettings';
 
 const CanvasStyled = styled.canvas`
     /* position: absolute; */
@@ -12,9 +13,9 @@ const CanvasStyled = styled.canvas`
 
     /* top: -500px; */
     /* left: -500px; */
-`;
+`
 
-export class ThumbnailMakerComponent extends React.Component {
+export class ImportDialogComponent extends React.Component {
     static contextType = AppContext;
     context: AppContextType;
     private ref: React.RefObject<HTMLCanvasElement>;
@@ -23,19 +24,16 @@ export class ThumbnailMakerComponent extends React.Component {
         super(props);
 
         this.ref = React.createRef();
-    }
-    
-    componentDidMount() {
-        this.context.registry.services.thumbnailMaker.setup(this.ref.current);
-    }
 
-    componentWillUnmount() {
-        this.context.registry.services.thumbnailMaker.destroy();
     }
 
     render() {
         if (this.context.registry.services.dialog.activeDialog !== ImportSettings.settingsName) { return null; }
 
-        return <CanvasStyled ref={this.ref} id="thumbnail-maker"/>;
+        return (
+            <DialogComponent title={'Import model'} closeDialog={() => null}>
+                <CanvasStyled ref={this.ref} id="thumbnail-maker"/>
+            </DialogComponent>
+        );
     }
 }

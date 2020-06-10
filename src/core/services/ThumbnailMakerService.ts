@@ -2,14 +2,14 @@ import { Scene, Engine, ArcRotateCamera, Vector3, HemisphericLight, PointLight, 
 import { AssetModel } from "../stores/AssetStore";
 import { MeshLoaderService } from "./MeshLoaderService";
 import { Registry } from "../Registry";
-
+import { ImportSettings } from "../../plugins/scene_editor/settings/ImportSettings";
+import { MeshSettings } from "../../plugins/scene_editor/settings/MeshSettings";
 
 export class ThumbnailMakerService extends MeshLoaderService {
     private engine: Engine;
     private scene: Scene;
     private camera: Camera;
     private light: Light;
-
 
     getScene() {
         return this.scene;
@@ -20,12 +20,19 @@ export class ThumbnailMakerService extends MeshLoaderService {
         this.scene = new Scene(this.engine);
         this.camera = new ArcRotateCamera("Camera", Math.PI / 2, 0, 40, Vector3.Zero(), this.scene);
         this.light = new HemisphericLight("light1", new Vector3(1, 5, 0), this.scene);
+
+        const meshSettings = this.registry.services.plugin.sceneEditor.getSettingsByName<MeshSettings>(MeshSettings.type);
+        this.createThumbnail(this.registry.stores.assetStore.getAssetById(meshSettings.meshConcept.modelId));
         // var sphere = MeshBuilder.CreateSphere("sphere", {}, this.scene);
 
         // setTimeout(() => {
         //     this.scene.render()
         // }, 3000)
         // Tools.CreateScreenshotUsingRenderTarget(this.engine, this.camera, 300);
+    }
+
+    destroy() {
+        this.engine.dispose();
     }
 
     createThumbnail(assetModel: AssetModel) {
@@ -35,7 +42,6 @@ export class ThumbnailMakerService extends MeshLoaderService {
                     Tools.CreateScreenshotUsingRenderTarget(this.engine, this.camera, 1000, (data) => {
                         console.log(data);
                         assetModel.thumbnailData = data;
-
                     });
                 }
             );
