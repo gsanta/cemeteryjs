@@ -29,6 +29,7 @@ export class ThumbnailMakerService extends MeshLoaderService {
         //     this.scene.render()
         // }, 3000)
         // Tools.CreateScreenshotUsingRenderTarget(this.engine, this.camera, 300);
+        this.engine.runRenderLoop(() => this.scene.render());
     }
 
     destroy() {
@@ -39,10 +40,10 @@ export class ThumbnailMakerService extends MeshLoaderService {
         this.load(assetModel, '123')
             .then(mesh => {
                     this.scene.render()
-                    Tools.CreateScreenshotUsingRenderTarget(this.engine, this.camera, 1000, (data) => {
-                        console.log(data);
-                        assetModel.thumbnailData = data;
-                    });
+                    // Tools.CreateScreenshotUsingRenderTarget(this.engine, this.camera, 1000, (data) => {
+                    //     console.log(data);
+                    //     assetModel.thumbnailData = data;
+                    // });
                 }
             );
     }

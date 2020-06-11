@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { AppContextType, AppContext } from '../../../core/gui/Context';
 import { DialogComponent } from '../../../core/gui/dialogs/DialogComponent';
 import { ImportSettings } from '../settings/ImportSettings';
+import { ThumbnailMakerComponent } from './ThumbnailMakerComponent';
 
 const CanvasStyled = styled.canvas`
     /* position: absolute; */
@@ -32,7 +33,7 @@ export class ImportDialogComponent extends React.Component {
 
         return (
             <DialogComponent title={'Import model'} closeDialog={() => null}>
-                <CanvasStyled ref={this.ref} id="thumbnail-maker"/>
+                <ThumbnailMakerComponent/>
             </DialogComponent>
         );
     }

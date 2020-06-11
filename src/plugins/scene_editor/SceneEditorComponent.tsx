@@ -87,7 +87,6 @@ export class SceneEditorComponent extends AbstractPluginComponent {
                     <PathViewContainerComponent hover={hover} unhover={unhover} registry={this.context.registry} renderWithSettings={false}/>
                     {this.renderFeedbacks()}
                 </SceneEditorComponentStyled>
-                <ImportDialogComponent/>
             </EditorComponentStyled>
         );
     }

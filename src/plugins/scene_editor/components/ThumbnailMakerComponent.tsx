@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 const CanvasStyled = styled.canvas`
     /* position: absolute; */
-    width: 300px;
+    width: 500px;
     height: 150px;
     /* z-index: 1000; */
     /* display: none; */

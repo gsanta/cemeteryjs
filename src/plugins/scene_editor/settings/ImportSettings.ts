@@ -19,6 +19,11 @@ export class ImportSettings extends AbstractSettings<ImportSettingsProps> {
         this.registry = registry;
     }
 
+    activate(assetModel: AssetModel) {
+        this.assetModel = assetModel;
+        this.registry.services.dialog.openDialog(ImportSettings.settingsName);
+    }
+
     protected getProp(prop: ImportSettingsProps) {
         switch (prop) {
         }

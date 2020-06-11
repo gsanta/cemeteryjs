@@ -5,6 +5,7 @@ import { RenderTask } from '../../../core/services/RenderServices';
 import { AssetModel, AssetType } from '../../../core/stores/AssetStore';
 import { AbstractSettings, PropertyType } from "./AbstractSettings";
 import { ImportSettings } from './ImportSettings';
+import { SceneEditorPlugin } from '../SceneEditorPlugin';
 
 export enum MeshViewPropType {
     Color = 'color',
@@ -33,9 +34,11 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
 
     isAnimationSectionOpen = false;
     private registry: Registry;
+    private plugin: SceneEditorPlugin;
 
-    constructor(registry: Registry) {
+    constructor(plugin: SceneEditorPlugin, registry: Registry) {
         super(propertyTypes);
+        this.plugin = plugin;
         this.registry = registry;
     }
 
@@ -109,7 +112,8 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                         this.registry.services.history.createSnapshot();
                         this.registry.services.update.runImmediately(RenderTask.RenderFull);
                     });
-                this.registry.services.dialog.openDialog(ImportSettings.settingsName)
+                
+                this.plugin.getSettingsByName<ImportSettings>(ImportSettings.settingsName).activate(assetModel);
                 break;
             case MeshViewPropType.Texture:
                 this.meshConcept.textureId = this.registry.stores.assetStore.addTexture(new AssetModel({path: val.path, assetType: AssetType.Texture}));
