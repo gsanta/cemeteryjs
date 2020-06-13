@@ -3,6 +3,7 @@ import { ConceptType, View } from "../models/views/View";
 import { Registry } from "../Registry";
 import { IConceptConverter } from "./convert/IConceptConverter";
 import { ImportService } from "./import/ImportService";
+import { MeshLoaderService } from "./MeshLoaderService";
 
 export class GameService {
     serviceName = 'game-service';
@@ -25,11 +26,13 @@ export class GameService {
 
     importAllConcepts() {
         this.registry.stores.gameStore.clear();
-        this.registry.services.meshLoader.clear();
+        const meshLoaderService = this.registry.services.plugin.gameView.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName);
+
+        meshLoaderService.clear();
 
         this.registry.stores.canvasStore.getAllConcepts().forEach(concept => this.registry.services.conceptConverter.convert(concept));
 
-        this.registry.services.meshLoader.loadAll(this.registry.stores.gameStore.getMeshObjects())
+        meshLoaderService.loadAll(this.registry.stores.gameStore.getMeshObjects())
             .then(() => {
                 this.registry.stores.gameStore.getMeshObjects().forEach(meshObject => this.registry.stores.meshStore.createInstance(meshObject.model));
             });

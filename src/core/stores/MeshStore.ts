@@ -60,7 +60,9 @@ export class MeshStore {
     createInstance(meshModel: MeshModel): void {
         // TODO MeshStore should be instantiated by GameViewerPlugin and pass itself in constructor instead of directly accessing it here
         // so MeshStore later can be used for GamePlugin
-        const engineService = this.registry.services.plugin.gameView.pluginServices.byName<EngineService<any>>(EngineService.serviceName);
+        const engineService = this.registry.services.plugin.gameView.pluginServices.byName<EngineService>(EngineService.serviceName);
+         // TODO same as above
+        const meshLoaderService = this.registry.services.plugin.gameView.pluginServices.byName<MeshLoaderService>(EngineService.serviceName);
         if (!meshModel.meshView.modelId) {
             const mesh = this.rectangleFactory.createMesh(meshModel.meshView, engineService.getScene());
             this.instances.add(mesh);
@@ -70,7 +72,7 @@ export class MeshStore {
 
         const modelConcept = this.registry.stores.assetStore.getAssetById(meshModel.meshView.modelId);
 
-        this.registry.services.meshLoader.load(modelConcept, meshModel.meshView.id)
+        meshLoaderService.load(modelConcept, meshModel.meshView.id)
             .then(() => this.setupInstance(meshModel, engineService.getScene()));
     }
 

@@ -23,17 +23,20 @@ export class NodeService extends AbstractPluginService<AbstractPlugin> {
         this.handlersByType.set(NodeType.Turn, new TurnNodeHandler(plugin, registry));
         this.handlersByType.set(NodeType.Split, new SplitNodeHandler(plugin, registry));
         this.handlersByType.set(NodeType.Route, new RouteNodeHandler(plugin, registry));
-
-        const engineService = plugin.pluginServices.byName<EngineService<any>>(EngineService.serviceName);
+    }
+    
+    awake() {
+        const engineService = this.plugin.pluginServices.byName<EngineService<any>>(EngineService.serviceName);
         engineService.getScene().registerAfterRender(() => {
             this.getNodesByType(NodeType.Route).forEach(node => {
                 this.getHandler(node).update(node);
             });
-
+    
             this.getNodesByType(NodeType.Keyboard).forEach(node => {
                 this.getHandler(node).update(node);
             });
         });
+
     }
 
     getHandler(node: NodeModel): AbstractNodeHandler<NodeModel> {

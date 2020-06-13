@@ -30,7 +30,6 @@ export class Services {
     mouse: MouseService;
     keyboard: KeyboardService;
     dialog: DialogService;
-    meshLoader: MeshLoaderService;
     conceptConverter: ConceptConvertService;
     game: GameService;
     plugin: PluginService;

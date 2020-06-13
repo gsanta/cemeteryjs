@@ -7,7 +7,8 @@ import { AssetModel } from '../stores/AssetStore';
 import { EngineService } from './EngineService';
 
 export class MeshLoaderService extends AbstractPluginService<AbstractPlugin> {
-    serviceName = 'mesh-loader-service'
+    static serviceName = 'mesh-loader-service';
+    serviceName = MeshLoaderService.serviceName;
     private basePath = 'assets/models/';
 
     private loadedFileNames: Set<String> = new Set();

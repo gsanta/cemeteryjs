@@ -24,21 +24,6 @@ export class ImportService {
             asset.fromJson(assetJson);
             const assetModel = this.registry.stores.assetStore.addAsset(asset);
         });
-
-        this.registry.stores.canvasStore.getMeshConcepts().filter(item => item.modelId)
-            .forEach(item => {
-                const assetModel = this.registry.stores.assetStore.getAssetById(item.modelId);
-                this.registry.services.meshLoader.getDimensions(assetModel, item.id)
-                    .then(dim => {
-                        item.dimensions.setWidth(dim.x);
-                        item.dimensions.setHeight(dim.y);
-                    });
-
-                this.registry.services.meshLoader.getAnimations(assetModel, item.id)
-                    .then(animations => {
-                        item.animations = animations;
-                    })
-            });
     }
 
     private findPluginImporter(pluginJson: IPluginJson) {
