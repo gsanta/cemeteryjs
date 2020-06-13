@@ -2,15 +2,17 @@ import { AbstractPlugin, calcOffsetFromDom } from '../../core/AbstractPlugin';
 import { NodeType } from '../../core/models/nodes/NodeModel';
 import { Registry } from '../../core/Registry';
 import { LayoutType } from '../../core/services/PluginService';
-import { RenderService } from '../../core/services/RenderServices';
 import { Camera3D } from '../common/camera/Camera3D';
 import { ICamera } from '../common/camera/ICamera';
-import { Tool, ToolType } from '../common/tools/Tool';
-import { Gizmos } from './Gizmos';
-import { GameViewerSettings } from './settings/GameViewerSettings';
 import { toolFactory } from '../common/toolbar/toolFactory';
+import { Tool, ToolType } from '../common/tools/Tool';
 import { Tools } from '../Tools';
+import { Gizmos } from './Gizmos';
 import { GameViewerImporter } from './io/GameViewerImporter';
+import { GameViewerSettings } from './settings/GameViewerSettings';
+import { PluginServices } from '../common/PluginServices';
+import { EngineService } from '../../core/services/EngineService';
+import { MeshLoaderService } from '../../core/services/MeshLoaderService';
 (<any> window).earcut = require('earcut');
 
 export function cameraInitializer(registry: Registry) {
@@ -51,6 +53,13 @@ export class GameViewerPlugin extends AbstractPlugin {
         // this.axisGizmo = new AxisGizmo(this.registry, MeshBuilder);
         this.gizmos = new Gizmos(registry);
         this.importer = new GameViewerImporter(this, this.registry);
+
+        this.pluginServices = new PluginServices(
+            [
+                new EngineService(this, this.registry),
+                new MeshLoaderService(this, this.registry)
+            ]
+        );
     }
 
     getStore() {
@@ -67,8 +76,9 @@ export class GameViewerPlugin extends AbstractPlugin {
         }
     }
 
-    setup() {
-        this.registry.services.game.init(getCanvasElement(this.getId()));
+    setup(htmlElement: HTMLElement) {
+        super.setup(htmlElement);
+        // this.registry.services.game.init(this.htmlElement as HTMLCanvasElement);
         this.camera = cameraInitializer(this.registry);
         this.registry.services.game.importAllConcepts();
 

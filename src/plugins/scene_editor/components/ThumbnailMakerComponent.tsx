@@ -15,16 +15,21 @@ const CanvasStyled = styled.canvas`
     /* left: -500px; */
 `;
 
-export class ThumbnailMakerComponent extends React.Component {
+export interface ThumbnailMakerProps {
+    setRef(ref: React.RefObject<HTMLCanvasElement>): void;    
+}
+
+export class ThumbnailMakerComponent extends React.Component<ThumbnailMakerProps> {
     static contextType = AppContext;
     context: AppContextType;
     private ref: React.RefObject<HTMLCanvasElement>;
     private wheelListener: WheelListener;
 
-    constructor(props: {}) {
+    constructor(props: ThumbnailMakerProps) {
         super(props);
 
         this.ref = React.createRef();
+        this.props.setRef(this.ref);
     }
     
     componentDidMount() {
@@ -32,11 +37,11 @@ export class ThumbnailMakerComponent extends React.Component {
         this.ref.current && this.context.registry.services.hotkey.registerInput(this.ref.current);
         this.ref.current.focus();
 
-        this.context.registry.services.thumbnailMaker.setup(this.ref.current);
+        // this.context.registry.services.thumbnailMaker.setup(this.ref.current);
     }
 
     componentWillUnmount() {
-        this.context.registry.services.thumbnailMaker.destroy();
+        // this.context.registry.services.thumbnailMaker.destroy();
     }
 
     render() {

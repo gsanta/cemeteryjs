@@ -16,7 +16,7 @@ import { RenderService } from "./RenderServices";
 import { PluginService } from "./PluginService";
 import { NodeService } from './node/NodeService';
 import { GamepadService } from './GamepadService';
-import { EngineService } from "./ThumbnailMakerService";
+import { EngineService } from "./EngineService";
 
 export class Services {
     hotkey: HotkeyService;
@@ -36,7 +36,6 @@ export class Services {
     plugin: PluginService;
     node: NodeService;
     gamepad: GamepadService;
-    thumbnailMaker: EngineService;
 
     private registry: Registry;
 
@@ -56,13 +55,11 @@ export class Services {
         this.mouse = new MouseService(this.registry);
         this.keyboard = new KeyboardService(this.registry);
         this.dialog = new DialogService(this.registry);
-        this.meshLoader = new MeshLoaderService(this.registry);
         this.conceptConverter = new ConceptConvertService(this.registry);
         this.plugin = new PluginService(this.registry);
         this.game = new GameService(this.registry);
         this.node = new NodeService(this.registry);
         this.gamepad = new GamepadService(this.registry);
-        this.thumbnailMaker = new EngineService(this.registry);
 
         // TODO: find a better place to register general hotkeys
         this.hotkey.registerHotkey(this.gamepad);

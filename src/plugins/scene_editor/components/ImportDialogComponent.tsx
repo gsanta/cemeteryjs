@@ -19,21 +19,16 @@ const CanvasStyled = styled.canvas`
 export class ImportDialogComponent extends React.Component {
     static contextType = AppContext;
     context: AppContextType;
-    private ref: React.RefObject<HTMLCanvasElement>;
+    private canvasRef: React.RefObject<HTMLCanvasElement>;
 
-    constructor(props: {}) {
-        super(props);
 
-        this.ref = React.createRef();
-
-    }
-
+    
     render() {
         if (this.context.registry.services.dialog.activeDialog !== ImportSettings.settingsName) { return null; }
 
         return (
             <DialogComponent title={'Import model'} closeDialog={() => null}>
-                <ThumbnailMakerComponent/>
+                <ThumbnailMakerComponent setRef={refObject => this.canvasRef = refObject}/>
             </DialogComponent>
         );
     }

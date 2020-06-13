@@ -10,6 +10,7 @@ import { Registry } from './Registry';
 import { LayoutType } from './services/PluginService';
 import { RenderTask } from './services/RenderServices';
 import { AbstractStore } from './stores/AbstractStore';
+import { PluginServices } from '../plugins/common/PluginServices';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;
@@ -31,10 +32,14 @@ export function calcOffsetFromDom(id: string): Point {
 export abstract class AbstractPlugin {
     name: string;
 
+    htmlElement: HTMLElement;
+
     allowedLayouts: Set<LayoutType>;
 
     exporter: IPluginExporter;
     importer: AbstractPluginImporter;
+
+    pluginServices: PluginServices<this> = new PluginServices([]);
 
     tools: Tools;
     priorityTool: Tool;
@@ -54,7 +59,10 @@ export abstract class AbstractPlugin {
     abstract getId(): string;
     abstract getStore(): AbstractStore;
     
-    setup(): void {}
+    setup(htmlElement: HTMLElement): void {
+        this.htmlElement = htmlElement;
+        this.pluginServices.services.forEach(service => service.awake());
+    }
     destroy(): void {}
     abstract resize(): void;
     over(): void { this.registry.services.plugin.setHoveredView(this) }

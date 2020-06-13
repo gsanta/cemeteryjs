@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { WheelListener } from '../../core/services/WheelListener';
-import { AbstractPluginComponent } from '../common/AbstractPluginComponent';
+import { AbstractPluginComponent, PluginProps } from '../common/AbstractPluginComponent';
 import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
 import { ToolType } from '../common/tools/Tool';
 import { GameViewerPlugin } from './GameViewerPlugin';
@@ -35,16 +35,22 @@ const CanvasStyled = styled.canvas`
 
 export class GameViewerComponent extends AbstractPluginComponent {
     private wheelListener: WheelListener;
+    private canvasRef: React.RefObject<HTMLCanvasElement>;
+
+    constructor(props: PluginProps) {
+        super(props);
+        this.canvasRef = React.createRef();
+    }
     
     componentDidMount() {
         super.componentDidMount();
         this.wheelListener = new WheelListener(this.context.registry);
-        this.context.registry.services.plugin.gameView.setRenderer(() => this.forceUpdate());
+        this.props.plugin.setRenderer(() => this.forceUpdate());
         
         setTimeout(() => {
             // this.context.controllers.getWindowControllerByName('renderer').update();
-            this.context.registry.services.plugin.getViewById(GameViewerPlugin.id).setup();
-            this.context.registry.services.plugin.getViewById(GameViewerPlugin.id).resize();
+            this.props.plugin.setup(this.canvasRef.current);
+            this.props.plugin.resize();
         }, 100);
     }
 
@@ -97,7 +103,7 @@ export class GameViewerComponent extends AbstractPluginComponent {
                         onKeyDown={e => this.context.registry.services.keyboard.onKeyDown(e.nativeEvent)}
                         onKeyUp={e => this.context.registry.services.keyboard.onKeyUp(e.nativeEvent)}    
                     />
-                    <CanvasStyled isEmpty={false} id={view.getId()}/>
+                    <CanvasStyled ref={this.canvasRef} isEmpty={false} id={view.getId()}/>
                 </GameViewerStyled>
         );
     }

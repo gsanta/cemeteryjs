@@ -41,10 +41,11 @@ export class SceneEditorComponent extends AbstractPluginComponent {
     componentDidMount() {
         super.componentDidMount();
         this.wheelListener = new WheelListener(this.context.registry);
-        this.context.registry.services.plugin.sceneEditor.setRenderer(() => this.forceUpdate())
+        this.props.plugin.setRenderer(() => this.forceUpdate())
 
         setTimeout(() => {
-            this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).resize();
+            this.props.plugin.setup(this.ref.current);
+            this.props.plugin.resize();
         }, 0);
     }
 

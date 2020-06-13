@@ -1,22 +1,18 @@
 import { Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, StandardMaterial } from 'babylonjs';
+import { AbstractPluginService } from '../../plugins/common/AbstractPluginService';
+import { AbstractPlugin } from '../AbstractPlugin';
 import { Point } from '../geometry/shapes/Point';
-import { Registry } from '../Registry';
 import { MeshView } from '../models/views/MeshView';
 import { AssetModel } from '../stores/AssetStore';
-import { AbstractService } from '../AbstractService';
+import { EngineService } from './EngineService';
 
-export class MeshLoaderService extends AbstractService {
+export class MeshLoaderService extends AbstractPluginService<AbstractPlugin> {
     serviceName = 'mesh-loader-service'
     private basePath = 'assets/models/';
 
     private loadedFileNames: Set<String> = new Set();
     private pendingFileNames: Map<string, Promise<any>> = new Map();
-
     private fileNameToMeshNameMap: Map<string, string> = new Map();
-    
-    protected getScene() {
-        return this.registry.services.game.gameEngine.scene;
-    }
 
     getDimensions(assetModel: AssetModel, id: string): Promise<Point> {
         return this
@@ -86,13 +82,14 @@ export class MeshLoaderService extends AbstractService {
     private loadMesh(file: string, id: string, data?: string): Promise<Mesh> {
         let folder = MeshLoaderService.getFolderNameFromFileName(file);
         let path = `${this.basePath}${folder}/`;
+        const engineService = this.plugin.pluginServices.byName<EngineService<any>>(EngineService.serviceName);
 
         return new Promise(resolve => {
             SceneLoader.ImportMesh(
                 '',
                 data ? data : folder,
                 data ? undefined : file,
-                this.getScene(),
+                engineService.getScene(),
                 (meshes: Mesh[], ps: ParticleSystem[], skeletons: Skeleton[]) => resolve(this.createModelData(file, id, meshes, skeletons)),
                 () => { },
                 (scene: Scene, message: string) => { throw new Error(message); }
@@ -115,7 +112,9 @@ export class MeshLoaderService extends AbstractService {
     private createModelData(path: string, id: string, meshes: Mesh[], skeletons: Skeleton[]): Mesh {
         if (meshes.length === 0) { throw new Error('No mesh was loaded.') }
 
-        meshes[0].material = new StandardMaterial(path, this.getScene());
+        const engineService = this.plugin.pluginServices.byName<EngineService<any>>(EngineService.serviceName);
+
+        meshes[0].material = new StandardMaterial(path, engineService.getScene());
    
         meshes[0].name = id;
         this.configMesh(meshes[0]);

@@ -9,6 +9,8 @@ import { toolFactory } from '../common/toolbar/toolFactory';
 import { Tools } from '../Tools';
 import { ImportSettings } from '../scene_editor/settings/ImportSettings';
 import { PluginServices } from '../common/PluginServices';
+import { EngineService } from '../../core/services/EngineService';
+import { MeshLoaderService } from '../../core/services/MeshLoaderService';
 (<any> window).earcut = require('earcut');
 
 export function getCanvasElement(viewId: string): HTMLCanvasElement {
@@ -24,7 +26,6 @@ export class MeshImporterPlugin extends AbstractPlugin {
     allowedLayouts = new Set([LayoutType.Dialog]);
 
     importSettings: ImportSettings;
-    pluginServices: PluginServices<this>;
 
     private camera: Camera3D;
 
@@ -37,9 +38,12 @@ export class MeshImporterPlugin extends AbstractPlugin {
         this.selectedTool = this.tools.byType(ToolType.Camera);
 
         this.importSettings = new ImportSettings(registry);
-        // this.pluginServices = new PluginServices(
-        //     new ThumbnailMakerService()
-        // )
+        this.pluginServices = new PluginServices(
+            [
+                new EngineService(this, this.registry),
+                new MeshLoaderService(this, this.registry)
+            ]
+        );
     }
 
     getStore() {
@@ -56,15 +60,10 @@ export class MeshImporterPlugin extends AbstractPlugin {
         }
     }
 
-    setup() {
-        this.registry.services.game.init(getCanvasElement(this.getId()));
-        
-        this.camera = new Camera3D(this.registry, this.registry.services.game.getEngine(), this.registry.services.game.getScene());
+    setup(htmlElement: HTMLElement) {
+        super.setup(htmlElement);
 
-        this.registry.services.game.importAllConcepts();
 
-        this.registry.services.node.getNodesByType(NodeType.Route).forEach(node => this.registry.services.node.getHandler(node).wake(node));
-        this.renderFunc && this.renderFunc();
     }
 
 
