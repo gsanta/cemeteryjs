@@ -5,7 +5,7 @@ import { Rectangle } from "../../geometry/shapes/Rectangle";
 import { Registry } from "../../Registry";
 import { NodeType, SlotName } from "./NodeModel";
 import { NodeView, defaultNodeViewConfig } from "../views/NodeView";
-import { ConceptType } from "../views/View";
+import { ViewType } from "../views/View";
 import { NodeConnectionView } from "../views/NodeConnectionView";
 
 export interface NodePresetRecipe {

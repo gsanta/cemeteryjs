@@ -3,7 +3,7 @@ import { without } from "../geometry/utils/Functions";
 import { ChildView } from "../models/views/child_views/ChildView";
 import { MeshView } from "../models/views/MeshView";
 import { PathView } from "../models/views/PathView";
-import { ConceptType, View } from "../models/views/View";
+import { ViewType, View } from "../models/views/View";
 import { Registry } from "../Registry";
 import { AbstractStore } from './AbstractStore';
 
@@ -13,10 +13,6 @@ export function isControl(type: string) {
 
 export function isConcept(type: string) {
     return type.endsWith('Concept');
-}
-
-export function isMeta(type: string) {
-    return type === ConceptType.ModelConcept;
 }
 
 export class SceneStore extends AbstractStore {
@@ -31,7 +27,7 @@ export class SceneStore extends AbstractStore {
     }
 
     addConcept(view: View) {
-        view.id = view.id === undefined ? this.generateUniqueName(view.type) : view.id;
+        view.id = view.id === undefined ? this.generateUniqueName(view.viewType) : view.id;
         super.addItem(view);
         this.views.push(view);
     }
@@ -59,7 +55,7 @@ export class SceneStore extends AbstractStore {
     }
 
     getMeshConcepts(): MeshView[] {
-        return <MeshView[]> this.views.filter(view => view.type === ConceptType.MeshConcept);
+        return <MeshView[]> this.views.filter(view => view.viewType === ViewType.MeshView);
     }
 
     getMeshViewById(id: string): MeshView {
@@ -67,7 +63,7 @@ export class SceneStore extends AbstractStore {
     }
 
     getPathConcepts(): PathView[] {
-        return <PathView[]> this.views.filter(view => view.type === ConceptType.PathConcept);
+        return <PathView[]> this.views.filter(view => view.viewType === ViewType.PathView);
     }
 
     getPathViewById(id: string): PathView {

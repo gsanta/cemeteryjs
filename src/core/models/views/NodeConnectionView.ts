@@ -1,4 +1,4 @@
-import { ConceptType, View, ViewJson } from "./View";
+import { ViewType, View, ViewJson } from "./View";
 import { JoinPointView } from "./child_views/JoinPointView";
 import { Rectangle } from "../../geometry/shapes/Rectangle";
 import { NodeView } from "./NodeView";
@@ -16,7 +16,7 @@ export interface NodeConnectionViewJson extends ViewJson {
 }
 
 export class NodeConnectionView extends View {
-    readonly  type = ConceptType.ActionNodeConnectionConcept;
+    readonly  viewType = ViewType.NodeConnectionView;
 
     joinPoint1: JoinPointView;
     joinPoint2: JoinPointView;

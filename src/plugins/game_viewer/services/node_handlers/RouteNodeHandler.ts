@@ -4,7 +4,7 @@ import { PathNode } from "../../../../core/models/nodes/PathNode";
 import { RouteNode } from "../../../../core/models/nodes/RouteNode";
 import { AbstractNodeHandler } from "./AbstractNodeHandler";
 import { RouteModel } from "../../../../core/models/game_objects/RouteModel";
-import { ConceptType } from "../../../../core/models/views/View";
+import { ViewType } from "../../../../core/models/views/View";
 
 export class RouteNodeHandler extends AbstractNodeHandler<RouteNode> {
     nodeType: NodeType.Route;
@@ -19,7 +19,7 @@ export class RouteNodeHandler extends AbstractNodeHandler<RouteNode> {
         const pathNode = this.findNodeAtInputSlot<PathNode>('path', NodeType.Path);
 
         const route = new RouteModel();
-        route.id = this.registry.stores.gameStore.generateUniqueName(ConceptType.RouteConcept);
+        route.id = this.registry.stores.gameStore.generateUniqueName(ViewType.RouteView);
         this.registry.stores.gameStore.addItem(route);
         node.route = route;
         node.route.meshModel = meshNode.meshModel;

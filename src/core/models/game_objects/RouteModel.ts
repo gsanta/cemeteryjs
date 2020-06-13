@@ -1,6 +1,6 @@
 import { IGameModel } from "./IGameModel";
 import { PathCorner } from "./PathCorner";
-import { ConceptType } from "../views/View";
+import { ViewType } from "../views/View";
 import { MeshModel } from "./MeshModel";
 import { PathModel } from "./PathModel";
 import { RouteWalker } from "./RouteWalker";
@@ -31,7 +31,7 @@ export function getAllRouteEvents() {
 }
 
 export class RouteModel implements IGameModel {
-    readonly type = ConceptType.RouteConcept;
+    readonly viewType = ViewType.RouteView;
     private readonly eventHandlers: Map<RouteEvent, (() => void)[]> = new Map();
 
     walker: RouteWalker;

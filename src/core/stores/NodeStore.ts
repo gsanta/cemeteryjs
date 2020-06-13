@@ -1,4 +1,4 @@
-import { ConceptType, View } from '../models/views/View';
+import { ViewType, View } from '../models/views/View';
 import { NodeConnectionView } from '../models/views/NodeConnectionView';
 import { NodeType, NodeModel, DroppableNode } from '../models/nodes/NodeModel';
 import { NodeView, defaultNodeViewConfig } from '../models/views/NodeView';
@@ -33,7 +33,7 @@ export class NodeStore extends AbstractStore {
     }
 
     addNode(nodeView: NodeView) {
-        nodeView.id = nodeView.id === undefined ? this.generateUniqueName(ConceptType.ActionConcept) : nodeView.id;
+        nodeView.id = nodeView.id === undefined ? this.generateUniqueName(ViewType.NodeView) : nodeView.id;
         super.addItem(nodeView);
         nodeView.settings = createNodeSettings(nodeView, this.registry);
 
@@ -65,7 +65,7 @@ export class NodeStore extends AbstractStore {
     }
 
     addConnection(connection: NodeConnectionView) {
-        connection.id = connection.id === undefined ? this.generateUniqueName(ConceptType.ActionNodeConnectionConcept) : connection.id;
+        connection.id = connection.id === undefined ? this.generateUniqueName(ViewType.NodeConnectionView) : connection.id;
         super.addItem(connection);
         this.graph.addConnection(connection.joinPoint1.parent.model, connection.joinPoint2.parent.model);
         this.views.push(connection);
@@ -78,12 +78,12 @@ export class NodeStore extends AbstractStore {
         
         const deleteViews = item.delete();
 
-        switch(item.type) {
-            case ConceptType.ActionNodeConnectionConcept:
+        switch(item.viewType) {
+            case ViewType.NodeConnectionView:
                 const connection = <NodeConnectionView> item;
                 this.graph.deleteConnection(connection.joinPoint1.parent.model, connection.joinPoint2.parent.model);
                 break;
-            case ConceptType.ActionConcept:
+            case ViewType.NodeView:
                 this.graph.deleteNode((<NodeView> item).model);
                 break;
         }
@@ -95,11 +95,11 @@ export class NodeStore extends AbstractStore {
     }
 
     getNodes(): NodeView[] {
-        return <NodeView[]> this.views.filter(v => v.type === ConceptType.ActionConcept);
+        return <NodeView[]> this.views.filter(v => v.viewType === ViewType.NodeView);
     }
 
     getConnections(): NodeConnectionView[] {
-        return <NodeConnectionView[]> this.views.filter(v => v.type === ConceptType.ActionNodeConnectionConcept);
+        return <NodeConnectionView[]> this.views.filter(v => v.viewType === ViewType.NodeConnectionView);
     }
 
     clear(): void {

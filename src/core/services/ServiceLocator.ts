@@ -1,5 +1,4 @@
 import { Registry } from "../Registry";
-import { ConceptConvertService } from "./ConceptConvertService";
 import { DialogService } from "./DialogService";
 import { ExportService } from "./export/ExportService";
 import { GameService } from "./GameService";
@@ -30,7 +29,6 @@ export class Services {
     mouse: MouseService;
     keyboard: KeyboardService;
     dialog: DialogService;
-    conceptConverter: ConceptConvertService;
     game: GameService;
     plugin: PluginService;
     gamepad: GamepadService;
@@ -53,7 +51,6 @@ export class Services {
         this.mouse = new MouseService(this.registry);
         this.keyboard = new KeyboardService(this.registry);
         this.dialog = new DialogService(this.registry);
-        this.conceptConverter = new ConceptConvertService(this.registry);
         this.plugin = new PluginService(this.registry);
         this.game = new GameService(this.registry);
         this.gamepad = new GamepadService(this.registry);

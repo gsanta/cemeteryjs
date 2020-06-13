@@ -4,7 +4,7 @@ import { Point } from '../../geometry/shapes/Point';
 import { Rectangle } from '../../geometry/shapes/Rectangle';
 import { toVector3 } from '../../geometry/utils/GeomUtils';
 import { toDegree } from '../../geometry/utils/Measurements';
-import { ConceptType, View, ViewJson } from './View';
+import { ViewType, View, ViewJson } from './View';
 import { MeshModel } from '../game_objects/MeshModel';
 
 export enum WorldItemShape {
@@ -41,7 +41,7 @@ export interface MeshViewJson extends ViewJson {
 }
 
 export class MeshView extends View implements IGameModel {
-    type = ConceptType.MeshConcept;
+    viewType = ViewType.MeshView;
     mesh: Mesh;
 
     model: MeshModel;

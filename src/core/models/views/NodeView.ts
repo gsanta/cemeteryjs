@@ -5,7 +5,7 @@ import { NodeGraph } from '../../services/node/NodeGraph';
 import { createNode } from "../nodes/nodeFactory";
 import { NodeModel, SlotName, NodeModelJson } from '../nodes/NodeModel';
 import { JoinPointView } from "./child_views/JoinPointView";
-import { ConceptType, View, ViewJson } from "./View";
+import { ViewType, View, ViewJson } from "./View";
 
 export const defaultNodeViewConfig = {
     width: 200,
@@ -17,7 +17,7 @@ export interface NodeViewJson extends ViewJson {
 }
 
 export class NodeView<T extends NodeModel = NodeModel> extends View {
-    readonly  type = ConceptType.ActionConcept;
+    readonly  viewType = ViewType.NodeView;
     id: string;
     model: T;
     dimensions: Rectangle;

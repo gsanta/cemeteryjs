@@ -114,7 +114,7 @@ export class PointerService {
     }
 
     hover(item: View): void {
-        console.log('hover: ' + item.type)
+        console.log('hover: ' + item.viewType)
         this.hoveredItem = item;
         this.registry.services.hotkey.executeHotkey({
             isHover: true
@@ -124,7 +124,7 @@ export class PointerService {
     }
 
     unhover(item: View): void {
-        console.log('unhover: ' + item.type)
+        console.log('unhover: ' + item.viewType)
         this.registry.services.hotkey.executeHotkey({
             isUnhover: true
         });

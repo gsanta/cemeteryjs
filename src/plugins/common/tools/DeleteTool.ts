@@ -29,9 +29,9 @@ export class DeleteTool extends AbstractTool {
 
         if (!hoveredItem) { return; }
 
-        if (isControl(hoveredItem.type)) {
+        if (isControl(hoveredItem.viewType)) {
             hoveredItem.delete();
-        } else if (isConcept(hoveredItem.type)) {
+        } else if (isConcept(hoveredItem.viewType)) {
             this.getStore().removeItem(hoveredItem);
         }
         

@@ -2,7 +2,7 @@ import { without } from "../geometry/utils/Functions";
 import { PathView } from "../models/views/PathView";
 import { ChildView, FeedbackType } from "../models/views/child_views/ChildView";
 import { EditPointView } from "../models/views/child_views/EditPointView";
-import { View, ConceptType } from "../models/views/View";
+import { View, ViewType } from "../models/views/View";
 
 export class SelectionStore {
     items: View[] = [];
@@ -24,11 +24,11 @@ export class SelectionStore {
     }
 
     getAllConcepts(): View[] {
-        return <View[]> this.items.filter(item => item.type.endsWith('Concept'));
+        return <View[]> this.items.filter(item => item.viewType.endsWith('Concept'));
     }
 
     getPathConcepts(): PathView[] {
-        return <PathView[]> this.items.filter(view => view.type === ConceptType.PathConcept);
+        return <PathView[]> this.items.filter(view => view.viewType === ViewType.PathView);
     }
 
     hasConcept(): boolean {
@@ -44,15 +44,15 @@ export class SelectionStore {
     }
 
     getConcept(): View {
-        return <View> this.items.find(item => item.type.endsWith('Concept'));
+        return <View> this.items.find(item => item.viewType.endsWith('Concept'));
     }
 
     getFeedback(): ChildView<any> {
-        return <ChildView<any>> this.items.find(item => item.type.endsWith('Feedback'));
+        return <ChildView<any>> this.items.find(item => item.viewType.endsWith('Feedback'));
     }
 
     getEditPoint(): EditPointView {
-        return <EditPointView> this.items.find(item => item.type === FeedbackType.EditPointFeedback);
+        return <EditPointView> this.items.find(item => item.viewType === FeedbackType.EditPointFeedback);
     }
 
     hasEditPoint() {

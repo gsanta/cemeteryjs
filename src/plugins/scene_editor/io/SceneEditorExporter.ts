@@ -1,4 +1,4 @@
-import { ConceptType } from '../../../core/models/views/View';
+import { ViewType } from '../../../core/models/views/View';
 import { Registry } from "../../../core/Registry";
 import { IPluginExporter, IPluginJson } from '../../common/io/IPluginExporter';
 import { SceneEditorPlugin } from "../SceneEditorPlugin";
@@ -21,11 +21,11 @@ export class SceneEditorExporter implements IPluginExporter {
             pluginId: this.plugin.getId(),
             viewGroups: [
                 {
-                    viewType: ConceptType.MeshConcept,
+                    viewType: ViewType.MeshView,
                     views: meshViews.map(meshView => meshView.toJson())
                 },
                 {
-                    viewType: ConceptType.PathConcept,
+                    viewType: ViewType.PathView,
                     views: pathViews.map(pathView => pathView.toJson())
                 }
             ]

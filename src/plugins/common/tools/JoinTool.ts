@@ -6,7 +6,7 @@ import { RenderTask } from "../../../core/services/RenderServices";
 import { AbstractTool } from "./AbstractTool";
 import { ToolType, Cursor } from './Tool';
 import { NodeConnectionView } from "../../../core/models/views/NodeConnectionView";
-import { ConceptType } from "../../../core/models/views/View";
+import { ViewType } from "../../../core/models/views/View";
 import { AbstractPlugin } from "../../../core/AbstractPlugin";
 
 export class JoinTool extends AbstractTool {
@@ -39,7 +39,7 @@ export class JoinTool extends AbstractTool {
 
         if (isJoinPointView(this.registry.services.pointer.hoveredItem)) {
             const endItem = <JoinPointView> this.registry.services.pointer.hoveredItem;
-            const id = this.registry.stores.nodeStore.generateUniqueName(ConceptType.ActionNodeConnectionConcept);
+            const id = this.registry.stores.nodeStore.generateUniqueName(ViewType.NodeConnectionView);
             const connection = new NodeConnectionView({joinPoint1: this.startItem, joinPoint2: endItem});
             this.startItem.connection = connection;
             endItem.connection = connection;

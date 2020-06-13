@@ -2,7 +2,7 @@ import { IGameModel } from '../models/game_objects/IGameModel';
 import { RouteModel } from '../models/game_objects/RouteModel';
 import { Registry } from '../Registry';
 import { MeshView } from '../models/views/MeshView';
-import { ConceptType, View } from '../models/views/View';
+import { ViewType, View } from '../models/views/View';
 import { AbstractStore } from './AbstractStore';
 
 export class GameStore extends AbstractStore {
@@ -36,7 +36,7 @@ export class GameStore extends AbstractStore {
     }
 
     getMeshObjects(): MeshView[] {
-        return <MeshView[]> this.objs.filter(obj => obj.type === ConceptType.MeshConcept);
+        return <MeshView[]> this.objs.filter(obj => obj.viewType === ViewType.MeshView);
     }
 
     getPlayer(): MeshView {
@@ -48,7 +48,7 @@ export class GameStore extends AbstractStore {
     }
 
     getRouteModels(): RouteModel[] {
-        return <RouteModel[]> this.objs.filter(obj => obj.type === ConceptType.RouteConcept);
+        return <RouteModel[]> this.objs.filter(obj => obj.viewType === ViewType.RouteView);
     }
 
     // getItemsByType(type: string): View[] {
@@ -63,8 +63,8 @@ export class GameStore extends AbstractStore {
         if (!obj) { return; }
         super.removeItem(obj);
 
-        switch(obj.type) {
-            case ConceptType.MeshConcept:
+        switch(obj.viewType) {
+            case ViewType.MeshView:
                 this.registry.stores.meshStore.deleteInstance((<MeshView> obj).mesh);
             break;
         }

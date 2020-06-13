@@ -10,7 +10,7 @@ export interface EditPointViewJson extends ViewJson {
 
 export class EditPointView extends ChildView<PathView> {
     id: string;
-    type = FeedbackType.EditPointFeedback;
+    viewType = FeedbackType.EditPointFeedback;
     point: Point;
     parent: PathView;
 

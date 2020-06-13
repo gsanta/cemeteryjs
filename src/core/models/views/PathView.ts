@@ -1,4 +1,4 @@
-import { View, ConceptType, ViewJson } from "./View";
+import { View, ViewType, ViewJson } from "./View";
 import { Rectangle } from "../../geometry/shapes/Rectangle";
 import { Point } from "../../geometry/shapes/Point";
 import { minBy, maxBy } from "../../geometry/utils/Functions";
@@ -21,7 +21,7 @@ export interface PathViewJson extends ViewJson {
 }
 
 export class PathView extends View implements IGameModel {
-    type = ConceptType.PathConcept;
+    viewType = ViewType.PathView;
 
     model: PathModel;
 

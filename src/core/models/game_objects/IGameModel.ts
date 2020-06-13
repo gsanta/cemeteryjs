@@ -1,7 +1,7 @@
-import { ConceptType } from "../views/View";
+import { ViewType } from "../views/View";
 
 export interface IGameModel {
-    type: ConceptType;
+    viewType: ViewType;
     id: string;
     dispose(): void;
 }

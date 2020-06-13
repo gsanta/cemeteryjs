@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { colors, sizes } from '../../../core/gui/styles';
-import { ConceptType } from '../../../core/models/views/View';
+import { ViewType } from '../../../core/models/views/View';
 import { NodeView } from '../../../core/models/views/NodeView';
 import { ViewComponent } from '../../common/ViewComponent';
 import { GroupProps } from '../../InstanceProps';
@@ -43,7 +43,7 @@ export class NodeComponent extends ViewComponent<NodeView> {
                     data-wg-y={this.props.item.dimensions.topLeft.y}
                     data-wg-width={this.props.item.dimensions.getWidth()}
                     data-wg-height={this.props.item.dimensions.getHeight()}
-                    data-wg-type={this.props.item.type}
+                    data-wg-type={this.props.item.viewType}
                     data-wg-name={this.props.item.id}
                 >
                     {this.renderRect(this.props.item)}
@@ -118,6 +118,6 @@ export function NodeViewContainerComponent(props: GroupProps) {
         )
     );
 
-    return actionConcepts.length > 0 ? <g data-view-type={ConceptType.ActionConcept} key={ConceptType.ActionConcept}>{components}</g> : null;
+    return actionConcepts.length > 0 ? <g data-view-type={ViewType.NodeView} key={ViewType.NodeView}>{components}</g> : null;
 
 }

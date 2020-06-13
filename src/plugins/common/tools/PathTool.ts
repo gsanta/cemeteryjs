@@ -3,7 +3,7 @@ import { Point } from "../../../core/geometry/shapes/Point";
 import { FeedbackType } from "../../../core/models/views/child_views/ChildView";
 import { EditPointView } from "../../../core/models/views/child_views/EditPointView";
 import { PathView } from "../../../core/models/views/PathView";
-import { ConceptType, View } from "../../../core/models/views/View";
+import { ViewType, View } from "../../../core/models/views/View";
 import { Registry } from "../../../core/Registry";
 import { IHotkeyEvent } from "../../../core/services/input/HotkeyService";
 import { IKeyboardEvent, Keyboard } from "../../../core/services/input/KeyboardService";
@@ -19,7 +19,7 @@ export class PathTool extends PointerTool {
 
     click() {
         const hoveredItem = this.registry.services.pointer.hoveredItem;
-        if (hoveredItem && (hoveredItem.type === ConceptType.PathConcept || hoveredItem.type === FeedbackType.EditPointFeedback)) {
+        if (hoveredItem && (hoveredItem.viewType === ViewType.PathView || hoveredItem.viewType === FeedbackType.EditPointFeedback)) {
             super.click();
         } else {
             this.createPath();
@@ -36,12 +36,12 @@ export class PathTool extends PointerTool {
 
     over(item: View) {
         let hover = false;
-        if (item.type === ConceptType.PathConcept) {
+        if (item.viewType === ViewType.PathView) {
             hover = true;
         }
 
-        if (item.type === FeedbackType.EditPointFeedback) {
-            if ((<EditPointView> item).parent.type === ConceptType.PathConcept) {
+        if (item.viewType === FeedbackType.EditPointFeedback) {
+            if ((<EditPointView> item).parent.viewType === ViewType.PathView) {
                 hover = true;
             }
         }
@@ -90,7 +90,7 @@ export class PathTool extends PointerTool {
         const editPoint = new EditPointView({point: pointer.down.clone(), parent: path});
         editPoint.id = this.registry.stores.canvasStore.generateUniqueName(FeedbackType.EditPointFeedback); 
         path.addEditPoint(editPoint)
-        path.id = this.registry.stores.canvasStore.generateUniqueName(ConceptType.PathConcept);
+        path.id = this.registry.stores.canvasStore.generateUniqueName(ViewType.PathView);
         this.registry.stores.canvasStore.addConcept(path);
         this.registry.services.game.addConcept(path);
         this.registry.stores.selectionStore.addItem(path);

@@ -1,6 +1,6 @@
 import { MeshView } from '../../../core/models/views/MeshView';
 import { PathView } from '../../../core/models/views/PathView';
-import { ConceptType } from "../../../core/models/views/View";
+import { ViewType } from "../../../core/models/views/View";
 import { AbstractPluginImporter } from "../../common/io/AbstractPluginImporter";
 import { MeshLoaderService } from '../../../core/services/MeshLoaderService';
 
@@ -11,7 +11,7 @@ export class GameViewerImporter extends AbstractPluginImporter {
         meshLoaderService.clear();
 
         this.registry.stores.canvasStore.getAllConcepts().forEach(view => {
-            if (view.type === ConceptType.MeshConcept || view.type === ConceptType.PathConcept) {
+            if (view.viewType === ViewType.MeshView || view.viewType === ViewType.PathView) {
                 this.registry.stores.gameStore.add(view as MeshView | PathView);
             }
         });

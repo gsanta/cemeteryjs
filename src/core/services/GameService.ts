@@ -1,7 +1,6 @@
 import { MeshView } from "../models/views/MeshView";
-import { ConceptType, View } from "../models/views/View";
+import { ViewType, View } from "../models/views/View";
 import { Registry } from "../Registry";
-import { IConceptConverter } from "./convert/IConceptConverter";
 import { ImportService } from "./import/ImportService";
 import { MeshLoaderService } from "./MeshLoaderService";
 
@@ -11,7 +10,6 @@ export class GameService {
     private afterRenders: (() => void)[] = [];
 
     viewImporter: ImportService;
-    viewConverters: IConceptConverter[] = [];
 
     private registry: Registry;
 
@@ -30,8 +28,6 @@ export class GameService {
 
         meshLoaderService.clear();
 
-        this.registry.stores.canvasStore.getAllConcepts().forEach(concept => this.registry.services.conceptConverter.convert(concept));
-
         meshLoaderService.loadAll(this.registry.stores.gameStore.getMeshObjects())
             .then(() => {
                 this.registry.stores.gameStore.getMeshObjects().forEach(meshObject => this.registry.stores.meshStore.createInstance(meshObject.model));
@@ -42,12 +38,10 @@ export class GameService {
         concepts.forEach(concept => this.registry.stores.gameStore.removeItem(concept));
     }
 
-    addConcept(concept: View) {
-        const gameObject = this.registry.services.conceptConverter.convert(concept);
-
-        switch(gameObject.type) {
-            case ConceptType.MeshConcept:
-                this.registry.stores.meshStore.createInstance((<MeshView> gameObject).model)
+    addConcept(view: View) {
+        switch(view.viewType) {
+            case ViewType.MeshView:
+                this.registry.stores.meshStore.createInstance((<MeshView> view).model)
             break;
         }
     }

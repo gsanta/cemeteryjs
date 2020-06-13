@@ -3,7 +3,7 @@ import { sort } from '../../../core/geometry/utils/Functions';
 import { toDegree } from '../../../core/geometry/utils/Measurements';
 import { colors } from '../../../core/gui/styles';
 import { MeshView } from '../../../core/models/views/MeshView';
-import { ConceptType } from '../../../core/models/views/View';
+import { ViewType } from '../../../core/models/views/View';
 import { Registry } from '../../../core/Registry';
 import { ViewComponent } from '../../common/ViewComponent';
 import { GroupProps } from '../../InstanceProps';
@@ -77,7 +77,7 @@ export function MeshViewContainerComponent(props: GroupProps) {
         />
     ));
 
-    return views.length > 0 ? <g data-view-type={ConceptType.MeshConcept} key={ConceptType.MeshConcept}>{views}</g> : null;
+    return views.length > 0 ? <g data-view-type={ViewType.MeshView} key={ViewType.MeshView}>{views}</g> : null;
 }
 
 function getSortedMeshViews(registry: Registry) {

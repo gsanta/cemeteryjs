@@ -5,7 +5,7 @@ import { RenderTask } from '../../../core/services/RenderServices';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './RectangleSelector';
 import { ToolType } from './Tool';
-import { ConceptType } from '../../../core/models/views/View';
+import { ViewType } from '../../../core/models/views/View';
 import { IPointerEvent } from '../../../core/services/input/PointerService';
 import { AbstractPlugin } from '../../../core/AbstractPlugin';
 

@@ -1,4 +1,4 @@
-import { ConceptType } from "../../../core/models/views/View";
+import { ViewType } from "../../../core/models/views/View";
 import { Registry } from "../../../core/Registry";
 import { IPluginExporter, IPluginJson } from '../../common/io/IPluginExporter';
 import { NodeEditorPlugin } from "../NodeEditorPlugin";
@@ -20,11 +20,11 @@ export class NodeEditorExporter implements IPluginExporter {
             pluginId: this.plugin.getId(),
             viewGroups: [
                 {
-                    viewType: ConceptType.ActionConcept,
+                    viewType: ViewType.NodeView,
                     views: nodeViews.map(meshView => meshView.toJson())
                 },
                 {
-                    viewType: ConceptType.ActionNodeConnectionConcept,
+                    viewType: ViewType.NodeConnectionView,
                     views: connections.map(pathView => pathView.toJson())
                 }
             ]

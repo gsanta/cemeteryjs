@@ -22,14 +22,14 @@ export class PointerTool extends AbstractTool {
         const hoveredItem = this.registry.services.pointer.hoveredItem;
         if (!hoveredItem) { return; }
 
-        if (isControl(hoveredItem.type)) {
+        if (isControl(hoveredItem.viewType)) {
             const concept = (<ChildView<any>> hoveredItem).parent;
             this.registry.stores.selectionStore.clear();
             this.registry.stores.selectionStore.addItem(concept);
             this.registry.stores.selectionStore.addItem(hoveredItem);
 
             this.registry.services.update.scheduleTasks(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
-        } else if (isConcept(hoveredItem.type)) {
+        } else if (isConcept(hoveredItem.viewType)) {
             this.registry.stores.selectionStore.clear();
             this.registry.stores.selectionStore.addItem(hoveredItem);
 
@@ -91,9 +91,9 @@ export class PointerTool extends AbstractTool {
     private moveItems() {
         const concepts = this.registry.stores.selectionStore.getAllConcepts();
 
-        if (isControl(this.movingItem.type)) {
+        if (isControl(this.movingItem.viewType)) {
             (<ChildView<any>> this.movingItem).move(this.registry.services.pointer.pointer.getDiff())
-        } else if (isConcept(this.movingItem.type)) {
+        } else if (isConcept(this.movingItem.viewType)) {
             concepts.forEach((item, index) => item.move(this.registry.services.pointer.pointer.getDiff()));
         }
 
@@ -116,7 +116,7 @@ export class PointerTool extends AbstractTool {
     private updateSceneConcepts() {
         let concepts: View[];
 
-        if (isControl(this.movingItem.type)) {
+        if (isControl(this.movingItem.viewType)) {
             concepts = [(<ChildView<any>> this.movingItem).parent];
         } else {
             concepts = this.registry.stores.selectionStore.getAllConcepts();

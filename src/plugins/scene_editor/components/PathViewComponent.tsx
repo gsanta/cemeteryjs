@@ -3,7 +3,7 @@ import { colors } from '../../../core/gui/styles';
 import { PathView } from '../../../core/models/views/PathView';
 import { EditPointView } from '../../../core/models/views/child_views/EditPointView';
 import { Registry } from '../../../core/Registry';
-import { View, ConceptType } from '../../../core/models/views/View';
+import { View, ViewType } from '../../../core/models/views/View';
 import { GroupProps } from '../../InstanceProps';
 
 export interface PathComponentProps {
@@ -98,7 +98,7 @@ export function PathViewContainerComponent(props: GroupProps) {
 
     return pathes.length > 0 ? 
         (
-            <g data-view-type={ConceptType.PathConcept} key={ConceptType.PathConcept}>{pathes}</g> 
+            <g data-view-type={ViewType.PathView} key={ViewType.PathView}>{pathes}</g> 
         )
         : null;
 }

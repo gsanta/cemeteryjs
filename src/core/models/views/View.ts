@@ -1,14 +1,13 @@
 import { Rectangle } from "../../geometry/shapes/Rectangle";
 import { Point } from "../../geometry/shapes/Point";
 
-export enum ConceptType {
-    MeshConcept = 'MeshConcept',
-    ModelConcept = 'ModelConcept',
-    PathConcept = 'PathConcept',
-    AnimationConcept = 'AnimationConcept',
-    RouteConcept = 'RouteConcept',
-    ActionConcept = 'ActionConcept',
-    ActionNodeConnectionConcept = 'ActionNodeConnectionConcept' 
+export enum ViewType {
+    MeshView = 'MeshView',
+    PathView = 'PathView',
+    //TODO: remove it, Route is not a view
+    RouteView = 'RouteView',
+    NodeView = 'NodeView',
+    NodeConnectionView = 'NodeConnectionView' 
 }
 
 export interface ViewJson {
@@ -19,7 +18,7 @@ export interface ViewJson {
 
 export abstract class View {
     id: string;
-    type: string;
+    viewType: string;
 
     
     dimensions: Rectangle;
@@ -29,14 +28,14 @@ export abstract class View {
     toJson(): ViewJson {
         return {
             id: this.id,
-            type: this.type,
+            type: this.viewType,
             dimensions: this.dimensions ? this.dimensions.toString() : undefined
         };
     }
 
     fromJson(json: ViewJson, viewMap: Map<string, View>) {
         this.id = json.id;
-        this.type = json.type;
+        this.viewType = json.type;
         this.dimensions = json.dimensions && Rectangle.fromString(json.dimensions);
         viewMap.set(this.id, this);
     }

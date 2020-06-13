@@ -7,26 +7,26 @@ export abstract class AbstractStore {
     protected maxIdForType: Map<string, number> = new Map();
     protected views: View[] = [];
 
-    addItem(item: {type: string, id: string}) {
-        const pattern = this.createPattern(item.type);
+    addItem(item: {viewType: string, id: string}) {
+        const pattern = this.createPattern(item.viewType);
         const num = parseInt(item.id.match(pattern)[1], 10);
 
-        if (!this.maxIdForType.has(item.type)) {
-            this.maxIdForType.set(item.type, num);
+        if (!this.maxIdForType.has(item.viewType)) {
+            this.maxIdForType.set(item.viewType, num);
         }
 
-        if (this.maxIdForType.get(item.type) < num) {
-            this.maxIdForType.set(item.type, num);
+        if (this.maxIdForType.get(item.viewType) < num) {
+            this.maxIdForType.set(item.viewType, num);
         }
     }
 
-    removeItem(item: {type: string, id: string}) {
-        const pattern = this.createPattern(item.type);
+    removeItem(item: {viewType: string, id: string}) {
+        const pattern = this.createPattern(item.viewType);
         const num = parseInt(item.id.match(pattern)[1], 10);
 
-        const maxId = this.maxIdForType.get(item.type);
+        const maxId = this.maxIdForType.get(item.viewType);
         if (maxId > 0 && maxId === num) {
-            this.maxIdForType.set(item.type, maxId - 1);
+            this.maxIdForType.set(item.viewType, maxId - 1);
         }
     }
 

@@ -7,7 +7,7 @@ import { View, ViewJson } from "../View";
 import { Rectangle } from "../../../geometry/shapes/Rectangle";
 
 export function isJoinPointView(view: View) {
-    return view && view.type === FeedbackType.NodeConnectorFeedback;
+    return view && view.viewType === FeedbackType.NodeConnectorFeedback;
 }
 
 export interface JoinPointViewJson extends ViewJson {
@@ -17,7 +17,7 @@ export interface JoinPointViewJson extends ViewJson {
 }
 
 export class JoinPointView extends ChildView<NodeView> {
-    type = FeedbackType.NodeConnectorFeedback;
+    viewType = FeedbackType.NodeConnectorFeedback;
     id: string;
     point: Point;
     parent: NodeView;
@@ -66,7 +66,7 @@ export class JoinPointView extends ChildView<NodeView> {
     }
 
     toString() {
-        return `${this.type}: ${this.parent.id} ${this.point.toString()}`;
+        return `${this.viewType}: ${this.parent.id} ${this.point.toString()}`;
     }
 
     toJson(): JoinPointViewJson {

@@ -50,6 +50,7 @@ export class NodeEditorComponent extends AbstractPluginComponent {
         super.componentDidMount();
         this.wheelListener = new WheelListener(this.context.registry);
         this.context.registry.services.plugin.nodeEditor.setRenderer(() => this.forceUpdate());
+        this.props.plugin.componentMounted(this.ref.current);
 
         setTimeout(() => {
             this.context.registry.services.plugin.getViewById<NodeEditorPlugin>(NodeEditorPlugin.id).resize();
