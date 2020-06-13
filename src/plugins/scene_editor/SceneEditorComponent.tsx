@@ -13,7 +13,7 @@ import { ToolType } from '../common/tools/Tool';
 import { MeshViewContainerComponent } from './components/MeshViewComponent';
 import { PathViewContainerComponent } from './components/PathViewComponent';
 import { SceneEditorPlugin } from './SceneEditorPlugin';
-import { ImportDialogComponent } from './components/ImportDialogComponent';
+import { ImportDialogComponent } from '../mesh_importer/components/ImportDialogComponent';
 
 const EditorComponentStyled = styled.div`
     width: 100%;
@@ -44,7 +44,7 @@ export class SceneEditorComponent extends AbstractPluginComponent {
         this.props.plugin.setRenderer(() => this.forceUpdate())
 
         setTimeout(() => {
-            this.props.plugin.setup(this.ref.current);
+            this.props.plugin.componentMounted(this.ref.current);
             this.props.plugin.resize();
         }, 0);
     }
@@ -53,14 +53,14 @@ export class SceneEditorComponent extends AbstractPluginComponent {
         const hover = (item: View) => this.context.registry.services.mouse.hover(item);
         const unhover = (canvasItem: View) => this.context.registry.services.mouse.unhover(canvasItem);
         
-        const view = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id);
+        const plugin = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id);
         const history = this.context.registry.services.history;
 
         return (
-            <EditorComponentStyled ref={this.ref} id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>
+            <EditorComponentStyled ref={this.ref} id={plugin.getId()} style={{cursor: plugin.getActiveTool().getCursor()}}>
                 <ToolbarComponent
                     tools={[ToolType.Rectangle, ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Camera]}
-                    view={view}
+                    view={plugin}
                     renderFullScreenIcon={true}
                 >
                     <UndoIconComponent key={'undo-icon'} isActive={false} disabled={!history.hasUndoHistory()} onClick={() => history.undo()} format="short"/>
@@ -69,7 +69,7 @@ export class SceneEditorComponent extends AbstractPluginComponent {
                 </ToolbarComponent>
                 <SceneEditorComponentStyled
                     tabIndex={0}
-                    viewBox={view.getCamera().getViewBoxAsString()}
+                    viewBox={plugin.getCamera().getViewBoxAsString()}
                     id={this.context.controllers.svgCanvasId}
                     onMouseDown={(e) => this.context.registry.services.mouse.onMouseDown(e.nativeEvent)}
                     onMouseMove={(e) => this.context.registry.services.mouse.onMouseMove(e.nativeEvent)}
@@ -77,8 +77,8 @@ export class SceneEditorComponent extends AbstractPluginComponent {
                     onMouseLeave={(e) => this.context.registry.services.mouse.onMouseOut(e.nativeEvent)}
                     onKeyDown={e => this.context.registry.services.keyboard.onKeyDown(e.nativeEvent)}
                     onKeyUp={e => this.context.registry.services.keyboard.onKeyUp(e.nativeEvent)}
-                    onMouseOver={() => view.over()}
-                    onMouseOut={() => view.out()}
+                    onMouseOver={() => plugin.over()}
+                    onMouseOut={() => plugin.out()}
                     onWheel={(e) => this.wheelListener.onWheel(e.nativeEvent)}
                 >
                     <defs>

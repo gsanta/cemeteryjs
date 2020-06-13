@@ -49,7 +49,7 @@ export class GameViewerComponent extends AbstractPluginComponent {
         
         setTimeout(() => {
             // this.context.controllers.getWindowControllerByName('renderer').update();
-            this.props.plugin.setup(this.canvasRef.current);
+            this.props.plugin.componentMounted(this.canvasRef.current);
             this.props.plugin.resize();
         }, 100);
     }

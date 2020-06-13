@@ -19,6 +19,10 @@ export class EngineService<T extends AbstractPlugin = AbstractPlugin> extends Ab
         return this.engine;
     }
 
+    getCamera(): Camera3D {
+        return this.camera;
+    }
+
     awake() {
         // TODO get rid of this, and call destroy everywhere it is needed
         if (this.engine) { this.engine.dispose(); }

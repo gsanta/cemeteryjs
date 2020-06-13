@@ -92,7 +92,7 @@ export class SceneEditorPlugin extends AbstractPlugin {
     }
 
     getOffset() {
-        return calcOffsetFromDom(this.getId());
+        return calcOffsetFromDom(this.htmlElement);
     }
 
     getCamera() {

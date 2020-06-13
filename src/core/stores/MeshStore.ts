@@ -62,7 +62,7 @@ export class MeshStore {
         // so MeshStore later can be used for GamePlugin
         const engineService = this.registry.services.plugin.gameView.pluginServices.byName<EngineService>(EngineService.serviceName);
          // TODO same as above
-        const meshLoaderService = this.registry.services.plugin.gameView.pluginServices.byName<MeshLoaderService>(EngineService.serviceName);
+        const meshLoaderService = this.registry.services.plugin.gameView.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName);
         if (!meshModel.meshView.modelId) {
             const mesh = this.rectangleFactory.createMesh(meshModel.meshView, engineService.getScene());
             this.instances.add(mesh);

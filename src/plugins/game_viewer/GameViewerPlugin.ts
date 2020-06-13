@@ -32,8 +32,6 @@ export class GameViewerPlugin extends AbstractPlugin {
     // private axisGizmo: AxisGizmo;
     private gizmos: Gizmos;
 
-    private camera: Camera3D;
-
     constructor(registry: Registry) {
         super(registry);
 
@@ -61,7 +59,7 @@ export class GameViewerPlugin extends AbstractPlugin {
     }
 
     getCamera(): ICamera {
-        return this.camera;
+        return this.pluginServices.engineService().getCamera();
     }
 
     resize() {
@@ -69,11 +67,11 @@ export class GameViewerPlugin extends AbstractPlugin {
         engineService.getEngine() && engineService.getEngine().resize();
     }
 
-    setup(htmlElement: HTMLElement) {
-        super.setup(htmlElement);
+    componentMounted(htmlElement: HTMLElement) {
+        super.componentMounted(htmlElement);
         // this.registry.services.game.init(this.htmlElement as HTMLCanvasElement);
-        const engineService = this.pluginServices.byName<EngineService<this>>(EngineService.serviceName);
-        this.camera = new Camera3D(this.registry, engineService.getEngine(), engineService.getScene());
+        // const engineService = this.pluginServices.byName<EngineService<this>>(EngineService.serviceName);
+        // this.camera = new Camera3D(this.registry, engineService.getEngine(), engineService.getScene());
 
         this.registry.services.game.importAllConcepts();
 
@@ -106,6 +104,6 @@ export class GameViewerPlugin extends AbstractPlugin {
     }    
 
     getOffset() {
-        return calcOffsetFromDom(this.getId());
+        return calcOffsetFromDom(this.htmlElement);
     }
 }

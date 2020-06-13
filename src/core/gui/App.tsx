@@ -13,7 +13,8 @@ import { SpinnerOverlayComponent } from './misc/SpinnerOverlayComponent';
 import { SidebarComponent } from './SidebarComponent';
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
-import { ImportDialogComponent } from '../../plugins/scene_editor/components/ImportDialogComponent';
+import { ImportDialogComponent } from '../../plugins/mesh_importer/components/ImportDialogComponent';
+import { DialogManagerComponent } from './dialogs/DialogManagerComponent';
 
 export interface AppState {
     isDialogOpen: boolean;
@@ -77,7 +78,7 @@ export class App extends React.Component<{}, AppState> {
                         {this.renderPlugins()}
                     </div>
                     {this.context.controllers.isLoading ? <SpinnerOverlayComponent key="spinner"/> : null}
-                    <ImportDialogComponent/>
+                    <DialogManagerComponent/>
                     <HotkeyInputComponent key="hotkey-input" registry={this.context.registry}/>
                 </DndProvider>
             </div>

@@ -1,16 +1,17 @@
 import { AbstractPlugin, calcOffsetFromDom } from '../../core/AbstractPlugin';
-import { NodeType } from '../../core/models/nodes/NodeModel';
 import { Registry } from '../../core/Registry';
+import { EngineService } from '../../core/services/EngineService';
+import { MeshLoaderService } from '../../core/services/MeshLoaderService';
 import { LayoutType } from '../../core/services/PluginService';
 import { Camera3D } from '../common/camera/Camera3D';
 import { ICamera } from '../common/camera/ICamera';
-import { Tool, ToolType } from '../common/tools/Tool';
-import { toolFactory } from '../common/toolbar/toolFactory';
-import { Tools } from '../Tools';
-import { ImportSettings } from '../scene_editor/settings/ImportSettings';
 import { PluginServices } from '../common/PluginServices';
-import { EngineService } from '../../core/services/EngineService';
-import { MeshLoaderService } from '../../core/services/MeshLoaderService';
+import { toolFactory } from '../common/toolbar/toolFactory';
+import { Tool, ToolType } from '../common/tools/Tool';
+import { ImportSettings } from '../scene_editor/settings/ImportSettings';
+import { Tools } from '../Tools';
+import { ThumbnailMakerService } from './services/ThumbnailMakerService';
+import { Point } from '../../core/geometry/shapes/Point';
 (<any> window).earcut = require('earcut');
 
 export function getCanvasElement(viewId: string): HTMLCanvasElement {
@@ -27,8 +28,6 @@ export class MeshImporterPlugin extends AbstractPlugin {
 
     importSettings: ImportSettings;
 
-    private camera: Camera3D;
-
     constructor(registry: Registry) {
         super(registry);
 
@@ -41,7 +40,8 @@ export class MeshImporterPlugin extends AbstractPlugin {
         this.pluginServices = new PluginServices(
             [
                 new EngineService(this, this.registry),
-                new MeshLoaderService(this, this.registry)
+                new MeshLoaderService(this, this.registry),
+                new ThumbnailMakerService(this, this.registry)
             ]
         );
     }
@@ -51,15 +51,15 @@ export class MeshImporterPlugin extends AbstractPlugin {
     }
 
     getCamera(): ICamera {
-        return this.camera;
+        return this.pluginServices.engineService().getCamera();
     }
 
     resize() {
         this.pluginServices.engineService().getEngine() && this.pluginServices.engineService().getEngine().resize();
     }
 
-    setup(htmlElement: HTMLElement) {
-        super.setup(htmlElement);
+    componentMounted(htmlElement: HTMLElement) {
+        super.componentMounted(htmlElement);
     }
 
     getId(): string {
@@ -79,6 +79,10 @@ export class MeshImporterPlugin extends AbstractPlugin {
     }    
 
     getOffset() {
-        return calcOffsetFromDom(this.getId());
+        if (this.htmlElement) {
+            return calcOffsetFromDom(this.htmlElement);
+        }
+
+        return new Point(0, 0);
     }
 }

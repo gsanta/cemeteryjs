@@ -287,7 +287,7 @@ export class NodeEditorPlugin extends AbstractPlugin {
     }
 
     getOffset() {
-        return calcOffsetFromDom(this.getId());
+        return calcOffsetFromDom(this.htmlElement);
     }
 
     getCamera() {

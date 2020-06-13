@@ -17,13 +17,10 @@ export interface CanvasViewSettings {
     minSizePixel: number;
 }
 
-export function calcOffsetFromDom(id: string): Point {
+export function calcOffsetFromDom(element: HTMLElement): Point {
     if (typeof document !== 'undefined') {
-        const editorElement: HTMLElement = document.getElementById(id);
-        if (editorElement) {
-            const rect: ClientRect = editorElement.getBoundingClientRect();
-            return new Point(rect.left - editorElement.scrollLeft, rect.top - editorElement.scrollTop);
-        }
+        const rect: ClientRect = element.getBoundingClientRect();
+        return new Point(rect.left - element.scrollLeft, rect.top - element.scrollTop);
     }
 
     return new Point(0, 0);
@@ -59,10 +56,11 @@ export abstract class AbstractPlugin {
     abstract getId(): string;
     abstract getStore(): AbstractStore;
     
-    setup(htmlElement: HTMLElement): void {
+    componentMounted(htmlElement: HTMLElement): void {
         this.htmlElement = htmlElement;
         this.pluginServices.services.forEach(service => service.awake());
     }
+    
     destroy(): void {}
     abstract resize(): void;
     over(): void { this.registry.services.plugin.setHoveredView(this) }
