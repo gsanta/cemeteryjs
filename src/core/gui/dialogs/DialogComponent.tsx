@@ -55,7 +55,8 @@ const DialogBodyStyled = styled.div`
 
 const DialogFooterStyled = styled.div`
     display: flex;
-    justify-content: center;
+    justify-content: right;
+    margin-top: 15px;
 
     > button {
         margin-right: 10px;

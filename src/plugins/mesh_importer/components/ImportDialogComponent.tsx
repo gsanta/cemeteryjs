@@ -38,5 +38,7 @@ export class ImportDialogComponent extends AbstractPluginComponent {
         const selectedView = this.context.registry.stores.selectionStore.getConcept();
         const assetModel = (this.context.registry.stores.assetStore.getAssetById((selectedView as MeshView).modelId));
         this.props.plugin.pluginServices.byName<ThumbnailMakerService>(ThumbnailMakerService.serviceName).createThumbnail(assetModel)
+
+        this.context.registry.services.dialog.close();
     }
 }

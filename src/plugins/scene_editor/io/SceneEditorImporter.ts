@@ -26,25 +26,5 @@ export class SceneEditorImporter extends AbstractPluginImporter {
 
             this.registry.stores.canvasStore.addConcept(pathView);
         });
-
-        this.setMeshDimensions();
-    }
-
-    private setMeshDimensions() {
-        const meshLoaderService = this.plugin.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName);
-        this.registry.stores.canvasStore.getMeshConcepts().filter(item => item.modelId)
-            .forEach(item => {
-                const assetModel = this.registry.stores.assetStore.getAssetById(item.modelId);
-                meshLoaderService.getDimensions(assetModel, item.id)
-                    .then(dim => {
-                        item.dimensions.setWidth(dim.x);
-                        item.dimensions.setHeight(dim.y);
-                    });
-
-                meshLoaderService.getAnimations(assetModel, item.id)
-                    .then(animations => {
-                        item.animations = animations;
-                    })
-            });
     }
 }

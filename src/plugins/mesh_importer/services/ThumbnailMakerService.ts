@@ -14,7 +14,9 @@ export class ThumbnailMakerService extends AbstractPluginService<AbstractPlugin>
 
         // meshLoaderService.load(assetModel, '123')
         //     .then(mesh => {
-                    Tools.CreateScreenshotUsingRenderTarget(engineService.getEngine(), engineService.getCamera().camera, 1000);
+        Tools.CreateScreenshotUsingRenderTarget(engineService.getEngine(), engineService.getCamera().camera, 1000, (data) => {
+            assetModel.thumbnailData = data;
+        });
                 // }
             // );
     }
