@@ -2,24 +2,14 @@ import { AbstractPlugin, calcOffsetFromDom } from '../../core/AbstractPlugin';
 import { NodeType } from '../../core/models/nodes/NodeModel';
 import { Registry } from '../../core/Registry';
 import { LayoutType } from '../../core/services/PluginService';
-import { RenderService } from '../../core/services/RenderServices';
 import { Camera3D } from '../common/camera/Camera3D';
 import { ICamera } from '../common/camera/ICamera';
 import { Tool, ToolType } from '../common/tools/Tool';
-import { Gizmos } from './Gizmos';
-import { GameViewerSettings } from './settings/GameViewerSettings';
 import { toolFactory } from '../common/toolbar/toolFactory';
 import { Tools } from '../Tools';
-import { GameViewerImporter } from './io/GameViewerImporter';
+import { ImportSettings } from '../scene_editor/settings/ImportSettings';
+import { PluginServices } from '../common/PluginServices';
 (<any> window).earcut = require('earcut');
-
-export function cameraInitializer(registry: Registry) {
-    if (registry.services.game) {
-        return new Camera3D(registry, registry.services.game.getEngine(), registry.services.game.getScene());
-    }
-
-    return null;
-}
 
 export function getCanvasElement(viewId: string): HTMLCanvasElement {
     if (typeof document !== 'undefined') {
@@ -28,14 +18,13 @@ export function getCanvasElement(viewId: string): HTMLCanvasElement {
     }
 }
 
-export class GameViewerPlugin extends AbstractPlugin {
-    static id = 'game-viewer-plugin';
+export class MeshImporterPlugin extends AbstractPlugin {
+    static id = 'mesh-importer-plugin';
     visible = true;
-    allowedLayouts = new Set([LayoutType.Single, LayoutType.Double]);
-    gameViewerSettings: GameViewerSettings;
+    allowedLayouts = new Set([LayoutType.Dialog]);
 
-    // private axisGizmo: AxisGizmo;
-    private gizmos: Gizmos;
+    importSettings: ImportSettings;
+    pluginServices: PluginServices<this>;
 
     private camera: Camera3D;
 
@@ -47,14 +36,14 @@ export class GameViewerPlugin extends AbstractPlugin {
 
         this.selectedTool = this.tools.byType(ToolType.Camera);
 
-        this.gameViewerSettings = new GameViewerSettings(registry);
-        // this.axisGizmo = new AxisGizmo(this.registry, MeshBuilder);
-        this.gizmos = new Gizmos(registry);
-        this.importer = new GameViewerImporter(this, this.registry);
+        this.importSettings = new ImportSettings(registry);
+        // this.pluginServices = new PluginServices(
+        //     new ThumbnailMakerService()
+        // )
     }
 
     getStore() {
-        return this.registry.stores.canvasStore;
+        return null;
     }
 
     getCamera(): ICamera {
@@ -69,17 +58,12 @@ export class GameViewerPlugin extends AbstractPlugin {
 
     setup() {
         this.registry.services.game.init(getCanvasElement(this.getId()));
-        this.camera = cameraInitializer(this.registry);
+        
+        this.camera = new Camera3D(this.registry, this.registry.services.game.getEngine(), this.registry.services.game.getScene());
+
         this.registry.services.game.importAllConcepts();
 
         this.registry.services.node.getNodesByType(NodeType.Route).forEach(node => this.registry.services.node.getHandler(node).wake(node));
-
-        this.registry.services.game.registerAfterRender(() => {
-            // this.axisGizmo.updateWorldAxis();
-            this.gizmos.update();
-        });
-        
-        this.gizmos.awake();
         this.renderFunc && this.renderFunc();
     }
 
@@ -89,7 +73,7 @@ export class GameViewerPlugin extends AbstractPlugin {
     }
 
     getId(): string {
-        return GameViewerPlugin.id;
+        return MeshImporterPlugin.id;
     }
 
     getSelectedTool(): Tool {

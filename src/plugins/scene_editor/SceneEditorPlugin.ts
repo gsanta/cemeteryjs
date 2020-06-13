@@ -11,7 +11,7 @@ import { PathSettings } from './settings/PathSettings';
 import { ToolType } from '../common/tools/Tool';
 import { Tools } from '../Tools';
 import { toolFactory } from '../common/toolbar/toolFactory';
-import { ImportSettingsProps, ImportSettings } from './settings/ImportSettings';
+import { ImportSettings } from './settings/ImportSettings';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -66,7 +66,7 @@ export class SceneEditorPlugin extends AbstractPlugin {
         ];
 
         this.exporter = new SceneEditorExporter(this, this.registry);
-        this.importer = new SceneEditorImporter(this.registry);
+        this.importer = new SceneEditorImporter(this, this.registry);
     }
 
     getStore() {

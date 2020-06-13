@@ -1,4 +1,4 @@
-import { ArcRotateCamera, Axis, Epsilon, Matrix, Plane, Vector3 } from 'babylonjs';
+import { ArcRotateCamera, Axis, Epsilon, Matrix, Plane, Vector3, Scene, Engine } from 'babylonjs';
 import { Point } from '../../../core/geometry/shapes/Point';
 import { Rectangle } from '../../../core/geometry/shapes/Rectangle';
 import { MousePointer } from '../../../core/services/input/MouseService';
@@ -11,10 +11,13 @@ export class Camera3D implements ICamera {
     private plane = Plane.FromPositionAndNormal(Vector3.Zero(), Axis.Y);
     private inertialPanning = Vector3.Zero();
     private registry: Registry;
+    private engine: Engine;
+    private scene: Scene;
 
-    constructor(registry: Registry) {
+    constructor(registry: Registry, engine: Engine, scene: Scene) {
         this.registry = registry;
-        const scene = this.registry.services.game.getScene();
+        this.engine = engine;
+        this.scene = scene;
         this.camera = new ArcRotateCamera("Camera", -Math.PI / 2, 0, 150, Vector3.Zero(), scene);
 
         this.startY = this.camera.position.y;
@@ -96,9 +99,7 @@ export class Camera3D implements ICamera {
     }
 
     screenToCanvasPoint(screenPoint: Point): Point {
-        const scene = this.registry.services.game.getScene();
-
-        const ray = scene.createPickingRay(screenPoint.x, screenPoint.y, Matrix.Identity(), this.camera, false);
+        const ray = this.scene.createPickingRay(screenPoint.x, screenPoint.y, Matrix.Identity(), this.camera, false);
         const distance = ray.intersectsPlane(this.plane);
     
         const vector3 = distance !== null ? ray.origin.addInPlace(ray.direction.scaleInPlace(distance)) : null;
@@ -110,13 +111,11 @@ export class Camera3D implements ICamera {
     }
 
     private getScreenBox(): Rectangle {
-        const engine = this.registry.services.game.getEngine();
+        const engine = this.engine;
         return new Rectangle(new Point(0, 0), new Point(engine.getRenderWidth(), engine.getRenderHeight()));
     }
 
     rotate(pointer: MousePointer) {
-        const scene = this.registry.services.game.getScene();
-
         const offsetX = pointer.currScreen.x - pointer.prevScreen.x;
         const offsetY = pointer.currScreen.y - pointer.prevScreen.y;
         this.changeInertialAlphaBetaFromOffsets(offsetX, offsetY, this.camera);

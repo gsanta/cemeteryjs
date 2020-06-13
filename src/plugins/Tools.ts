@@ -1,4 +1,3 @@
-import { Registry } from "../core/Registry";
 import { Tool, ToolType } from "./common/tools/Tool";
 
 export class Tools {

@@ -3,8 +3,9 @@ import { Point } from '../geometry/shapes/Point';
 import { Registry } from '../Registry';
 import { MeshView } from '../models/views/MeshView';
 import { AssetModel } from '../stores/AssetStore';
+import { AbstractService } from '../AbstractService';
 
-export class MeshLoaderService {
+export class MeshLoaderService extends AbstractService {
     serviceName = 'mesh-loader-service'
     private basePath = 'assets/models/';
 
@@ -13,12 +14,6 @@ export class MeshLoaderService {
 
     private fileNameToMeshNameMap: Map<string, string> = new Map();
     
-    protected registry: Registry;
-
-    constructor(registry: Registry) {
-        this.registry = registry;
-    }
-
     protected getScene() {
         return this.registry.services.game.gameEngine.scene;
     }

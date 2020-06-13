@@ -16,7 +16,8 @@ export class ImportService {
         const json = <AppJson> JSON.parse(file);
 
         const viewMap: Map<string, View> = new Map();
-        json.plugins.forEach(pluginJson => this.findPluginImporter(pluginJson)?.importer.import(pluginJson, viewMap));
+
+        this.registry.services.plugin.plugins.forEach(plugin => plugin.importer?.import(json, viewMap));
 
         json.assets.forEach(assetJson => {
             const asset = new AssetModel();
@@ -38,7 +39,6 @@ export class ImportService {
                         item.animations = animations;
                     })
             });
-        this.registry.services.game.importAllConcepts();
     }
 
     private findPluginImporter(pluginJson: IPluginJson) {

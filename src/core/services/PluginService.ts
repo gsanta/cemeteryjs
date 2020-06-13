@@ -34,7 +34,8 @@ export class Layout {
 
 export enum LayoutType {
     Single = 'Single',
-    Double = 'Double'
+    Double = 'Double',
+    Dialog = 'Dialog'
 }
 
 export class PluginService {

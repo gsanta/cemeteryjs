@@ -4,11 +4,12 @@ import { MeshLoaderService } from "./MeshLoaderService";
 import { Registry } from "../Registry";
 import { ImportSettings } from "../../plugins/scene_editor/settings/ImportSettings";
 import { MeshSettings } from "../../plugins/scene_editor/settings/MeshSettings";
+import { Camera3D } from "../../plugins/common/camera/Camera3D";
 
-export class ThumbnailMakerService extends MeshLoaderService {
+export class EngineService extends MeshLoaderService {
     private engine: Engine;
     private scene: Scene;
-    private camera: Camera;
+    private camera: Camera3D;
     private light: Light;
 
     getScene() {
@@ -18,7 +19,7 @@ export class ThumbnailMakerService extends MeshLoaderService {
     setup(canvas: HTMLCanvasElement) {
         this.engine = new Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
         this.scene = new Scene(this.engine);
-        this.camera = new ArcRotateCamera("Camera", Math.PI / 2, 0, 40, Vector3.Zero(), this.scene);
+        this.camera = new Camera3D(this.registry, this.engine, this.scene);
         this.light = new HemisphericLight("light1", new Vector3(1, 5, 0), this.scene);
 
         const meshSettings = this.registry.services.plugin.sceneEditor.getSettingsByName<MeshSettings>(MeshSettings.type);

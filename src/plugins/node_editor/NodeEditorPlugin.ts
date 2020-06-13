@@ -237,7 +237,7 @@ export class NodeEditorPlugin extends AbstractPlugin {
         this.nodeEditorSettings = new NodeEditorSettings(registry);
 
         this.exporter = new NodeEditorExporter(this, this.registry);
-        this.importer = new NodeEditorImporter(this.registry);
+        this.importer = new NodeEditorImporter(this, this.registry);
 
         const templates: NodeModel[] = [
             new AndNode(undefined),

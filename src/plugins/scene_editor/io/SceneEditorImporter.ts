@@ -1,19 +1,13 @@
 import { MeshView, MeshViewJson } from '../../../core/models/views/MeshView';
 import { PathView, PathViewJson } from '../../../core/models/views/PathView';
 import { ConceptType, View } from "../../../core/models/views/View";
-import { Registry } from "../../../core/Registry";
+import { AppJson } from '../../../core/services/export/ExportService';
 import { AbstractPluginImporter } from "../../common/io/AbstractPluginImporter";
-import { IPluginJson } from "../../common/io/IPluginExporter";
 
 export class SceneEditorImporter extends AbstractPluginImporter {
-    private registry: Registry;
+    import(json: AppJson, viewMap: Map<string, View>): void {
+        const pluginJson = this.getPluginJson(json);
 
-    constructor(registry: Registry) {
-        super();
-        this.registry = registry;
-    }
-
-    import(pluginJson: IPluginJson, viewMap: Map<string, View>): void {
         const meshJsons = pluginJson.viewGroups.find(viewGroup => viewGroup.viewType === ConceptType.MeshConcept);
 
         meshJsons.views.forEach((viewJson: MeshViewJson) => {
