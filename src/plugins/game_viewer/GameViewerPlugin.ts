@@ -13,15 +13,8 @@ import { GameViewerSettings } from './settings/GameViewerSettings';
 import { PluginServices } from '../common/PluginServices';
 import { EngineService } from '../../core/services/EngineService';
 import { MeshLoaderService } from '../../core/services/MeshLoaderService';
+import { NodeService } from './services/NodeService';
 (<any> window).earcut = require('earcut');
-
-export function cameraInitializer(registry: Registry) {
-    if (registry.services.game) {
-        return new Camera3D(registry, registry.services.game.getEngine(), registry.services.game.getScene());
-    }
-
-    return null;
-}
 
 export function getCanvasElement(viewId: string): HTMLCanvasElement {
     if (typeof document !== 'undefined') {
@@ -51,13 +44,14 @@ export class GameViewerPlugin extends AbstractPlugin {
 
         this.gameViewerSettings = new GameViewerSettings(registry);
         // this.axisGizmo = new AxisGizmo(this.registry, MeshBuilder);
-        this.gizmos = new Gizmos(registry);
+        this.gizmos = new Gizmos(this, registry);
         this.importer = new GameViewerImporter(this, this.registry);
 
         this.pluginServices = new PluginServices(
             [
                 new EngineService(this, this.registry),
-                new MeshLoaderService(this, this.registry)
+                new MeshLoaderService(this, this.registry),
+                new NodeService(this, this.registry)
             ]
         );
     }
@@ -71,18 +65,20 @@ export class GameViewerPlugin extends AbstractPlugin {
     }
 
     resize() {
-        if (this.registry.services.game && this.registry.services.game.gameEngine) {
-            this.registry.services.game.gameEngine.engine.resize();
-        }
+        const engineService = this.pluginServices.byName<EngineService<this>>(EngineService.serviceName);
+        engineService.getEngine() && engineService.getEngine().resize();
     }
 
     setup(htmlElement: HTMLElement) {
         super.setup(htmlElement);
         // this.registry.services.game.init(this.htmlElement as HTMLCanvasElement);
-        this.camera = cameraInitializer(this.registry);
+        const engineService = this.pluginServices.byName<EngineService<this>>(EngineService.serviceName);
+        this.camera = new Camera3D(this.registry, engineService.getEngine(), engineService.getScene());
+
         this.registry.services.game.importAllConcepts();
 
-        this.registry.services.node.getNodesByType(NodeType.Route).forEach(node => this.registry.services.node.getHandler(node).wake(node));
+        const nodeService = this.pluginServices.byName<NodeService>(NodeService.serviceName);
+        nodeService.getNodesByType(NodeType.Route).forEach(node => nodeService.getHandler(node).wake(node));
 
         this.registry.services.game.registerAfterRender(() => {
             // this.axisGizmo.updateWorldAxis();
@@ -91,11 +87,6 @@ export class GameViewerPlugin extends AbstractPlugin {
         
         this.gizmos.awake();
         this.renderFunc && this.renderFunc();
-    }
-
-
-    destroy() {
-        this.registry.services.game.destroy();
     }
 
     getId(): string {

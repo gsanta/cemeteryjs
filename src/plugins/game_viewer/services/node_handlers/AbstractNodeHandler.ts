@@ -1,21 +1,25 @@
-import { NodeModel, SlotName, NodeType } from '../../../models/nodes/NodeModel';
-import { Registry } from '../../../Registry';
+import { AbstractPlugin } from '../../../../core/AbstractPlugin';
+import { NodeModel, NodeType, SlotName } from '../../../../core/models/nodes/NodeModel';
+import { Registry } from '../../../../core/Registry';
+import { NodeService } from '../NodeService';
 
 export abstract class AbstractNodeHandler<T extends NodeModel> {
     nodeType: string;
     instance: T;
 
     protected registry: Registry;
+    plugin: AbstractPlugin;
 
-    constructor(registry: Registry) {
+    constructor(plugin: AbstractPlugin, registry: Registry) {
         this.registry = registry;
+        this.plugin = plugin;
     }
 
     abstract handle(): void;
 
     protected chain(slotName: SlotName) {
         const joinedView = this.instance.nodeView.findJoinPointView(slotName).getOtherNode();
-        const handler = this.registry.services.node.getHandler(joinedView.model);
+        const handler = this.getNodeService().getHandler(joinedView.model);
         handler.instance = joinedView.model;
         handler.handle();
     }
@@ -50,7 +54,7 @@ export abstract class AbstractNodeHandler<T extends NodeModel> {
         if (joinedView.model.type === nodeType) {
             node = <T> joinedView.model;
         } else {
-            const handler = this.registry.services.node.getHandler(joinedView.model);
+            const handler = this.getNodeService().getHandler(joinedView.model);
             handler.instance = joinedView.model;
             node = handler.searchFromRight<T>(nodeType);
         }
@@ -60,5 +64,9 @@ export abstract class AbstractNodeHandler<T extends NodeModel> {
 
     protected rightToLeft() {
         
+    }
+
+    protected getNodeService() {
+        return this.plugin.pluginServices.byName<NodeService>(NodeService.serviceName);
     }
 }

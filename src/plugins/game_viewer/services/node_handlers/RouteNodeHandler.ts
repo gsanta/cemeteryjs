@@ -1,10 +1,10 @@
-import { MeshNode } from "../../../models/nodes/MeshNode";
-import { NodeType } from "../../../models/nodes/NodeModel";
-import { PathNode } from "../../../models/nodes/PathNode";
-import { RouteNode } from "../../../models/nodes/RouteNode";
+import { MeshNode } from "../../../../core/models/nodes/MeshNode";
+import { NodeType } from "../../../../core/models/nodes/NodeModel";
+import { PathNode } from "../../../../core/models/nodes/PathNode";
+import { RouteNode } from "../../../../core/models/nodes/RouteNode";
 import { AbstractNodeHandler } from "./AbstractNodeHandler";
-import { RouteModel } from "../../../models/game_objects/RouteModel";
-import { ConceptType } from "../../../models/views/View";
+import { RouteModel } from "../../../../core/models/game_objects/RouteModel";
+import { ConceptType } from "../../../../core/models/views/View";
 
 export class RouteNodeHandler extends AbstractNodeHandler<RouteNode> {
     nodeType: NodeType.Route;

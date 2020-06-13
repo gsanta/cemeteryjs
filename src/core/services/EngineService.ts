@@ -3,7 +3,7 @@ import { Camera3D } from "../../plugins/common/camera/Camera3D";
 import { AbstractPluginService } from "../../plugins/common/AbstractPluginService";
 import { AbstractPlugin } from "../AbstractPlugin";
 
-export class EngineService<T extends AbstractPlugin> extends AbstractPluginService<T> {
+export class EngineService<T extends AbstractPlugin = AbstractPlugin> extends AbstractPluginService<T> {
     static serviceName = 'engine-service';
     serviceName = EngineService.serviceName;
     private engine: Engine;
@@ -13,6 +13,10 @@ export class EngineService<T extends AbstractPlugin> extends AbstractPluginServi
 
     getScene() {
         return this.scene;
+    }
+
+    getEngine() {
+        return this.engine;
     }
 
     awake() {

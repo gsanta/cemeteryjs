@@ -16,7 +16,7 @@ export class GameViewerImporter extends AbstractPluginImporter {
 
         this.registry.services.meshLoader.loadAll(this.registry.stores.gameStore.getMeshObjects())
             .then(() => {
-                this.registry.stores.gameStore.getMeshObjects().forEach(meshObject => this.registry.stores.meshStore.createInstance(meshObject.model, this.registry.services.game.getScene()));
+                this.registry.stores.gameStore.getMeshObjects().forEach(meshObject => this.registry.stores.meshStore.createInstance(meshObject.model));
             });
     }
 }

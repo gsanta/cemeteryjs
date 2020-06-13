@@ -3,6 +3,8 @@ import { AdvancedDynamicTexture, Line, Button, Control } from 'babylonjs-gui';
 import { Point } from '../../core/geometry/shapes/Point';
 import { Registry } from '../../core/Registry';
 import { Camera3D } from '../common/camera/Camera3D';
+import { AbstractPlugin } from '../../core/AbstractPlugin';
+import { EngineService } from '../../core/services/EngineService';
 
 export class AxisGizmo {
     private registry: Registry;
@@ -16,9 +18,11 @@ export class AxisGizmo {
     private origin3D: Vector3;
     private origin2D = new Point(40, 60);
     private axisLen = 45;
+    private plugin: AbstractPlugin;
 
-    constructor(registry: Registry) {
+    constructor(plugin: AbstractPlugin, registry: Registry) {
         this.registry = registry;
+        this.plugin = plugin;
     }
     
     awake() {
@@ -95,8 +99,10 @@ export class AxisGizmo {
         if (!this.xLine) { 
             this.awake();    
         }
-        const scene = this.registry.services.game.gameEngine.scene;
-        const engine = this.registry.services.game.gameEngine.engine;
+
+        const gameEngine = this.plugin.pluginServices.byName<EngineService>(EngineService.serviceName);
+        const scene = gameEngine.getScene();
+        const engine = gameEngine.getEngine();
         const camera = (<Camera3D> this.registry.services.plugin.gameView.getCamera()).camera;
 
         this.updateOriginVector(scene, engine, camera);

@@ -14,7 +14,7 @@ import { LocalStoreService } from "./LocalStroreService";
 import { MeshLoaderService } from "./MeshLoaderService";
 import { RenderService } from "./RenderServices";
 import { PluginService } from "./PluginService";
-import { NodeService } from './node/NodeService';
+import { NodeService } from '../../plugins/game_viewer/services/NodeService';
 import { GamepadService } from './GamepadService';
 import { EngineService } from "./EngineService";
 
@@ -34,7 +34,6 @@ export class Services {
     conceptConverter: ConceptConvertService;
     game: GameService;
     plugin: PluginService;
-    node: NodeService;
     gamepad: GamepadService;
 
     private registry: Registry;
@@ -58,7 +57,6 @@ export class Services {
         this.conceptConverter = new ConceptConvertService(this.registry);
         this.plugin = new PluginService(this.registry);
         this.game = new GameService(this.registry);
-        this.node = new NodeService(this.registry);
         this.gamepad = new GamepadService(this.registry);
 
         // TODO: find a better place to register general hotkeys

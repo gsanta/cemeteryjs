@@ -1,13 +1,14 @@
 import { AbstractNodeHandler } from './AbstractNodeHandler';
-import { KeyboardNode, KeyboardNodeSlot } from '../../../models/nodes/KeyboardNode';
-import { NodeType } from '../../../models/nodes/NodeModel';
-import { Registry } from '../../../Registry';
+import { KeyboardNode, KeyboardNodeSlot } from '../../../../core/models/nodes/KeyboardNode';
+import { NodeType } from '../../../../core/models/nodes/NodeModel';
+import { Registry } from '../../../../core/Registry';
+import { AbstractPlugin } from '../../../../core/AbstractPlugin';
 
 export class KeyboardNodeHandler extends AbstractNodeHandler<KeyboardNode> {
     nodeType: NodeType.Keyboard;
 
-    constructor(registry: Registry) {
-        super(registry);
+    constructor(plugin: AbstractPlugin, registry: Registry) {
+        super(plugin, registry);
 
         this.handleKeyEvent = this.handleKeyEvent.bind(this);
         // this.registry.services.gamepad.registerGamepadListener(this.handleKeyEvent)

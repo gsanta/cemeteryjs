@@ -55,20 +55,11 @@ export class MeshImporterPlugin extends AbstractPlugin {
     }
 
     resize() {
-        if (this.registry.services.game && this.registry.services.game.gameEngine) {
-            this.registry.services.game.gameEngine.engine.resize();
-        }
+        this.pluginServices.engineService().getEngine() && this.pluginServices.engineService().getEngine().resize();
     }
 
     setup(htmlElement: HTMLElement) {
         super.setup(htmlElement);
-
-
-    }
-
-
-    destroy() {
-        this.registry.services.game.destroy();
     }
 
     getId(): string {

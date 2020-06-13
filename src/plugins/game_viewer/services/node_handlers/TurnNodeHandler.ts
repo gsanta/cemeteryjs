@@ -1,6 +1,6 @@
-import { MeshNode } from "../../../models/nodes/MeshNode";
-import { NodeType } from "../../../models/nodes/NodeModel";
-import { TurnNode } from "../../../models/nodes/TurnNode";
+import { MeshNode } from "../../../../core/models/nodes/MeshNode";
+import { NodeType } from "../../../../core/models/nodes/NodeModel";
+import { TurnNode } from "../../../../core/models/nodes/TurnNode";
 import { AbstractNodeHandler } from "./AbstractNodeHandler";
 
 export class TurnNodeHandler extends AbstractNodeHandler<TurnNode> {
@@ -10,7 +10,7 @@ export class TurnNodeHandler extends AbstractNodeHandler<TurnNode> {
         const joinedView = this.instance.nodeView.findJoinPointView('mesh').getOtherNode();
 
         if (joinedView) {
-            const handler = this.registry.services.node.getHandler(joinedView.model);
+            const handler = this.getNodeService().getHandler(joinedView.model);
             handler.instance = joinedView.model;
             const meshNode = handler.searchFromRight<MeshNode>(NodeType.Mesh);
             if (meshNode) {

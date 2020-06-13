@@ -1,6 +1,6 @@
-import { NodeModel, NodeType } from "../../../models/nodes/NodeModel";
+import { NodeModel, NodeType } from "../../../../core/models/nodes/NodeModel";
 import { AbstractNodeHandler } from "./AbstractNodeHandler";
-import { SplitNode } from "../../../models/nodes/SplitNode";
+import { SplitNode } from "../../../../core/models/nodes/SplitNode";
 
 export class SplitNodeHandler extends AbstractNodeHandler<SplitNode> {
     nodeType: NodeType.Split;
@@ -22,7 +22,7 @@ export class SplitNodeHandler extends AbstractNodeHandler<SplitNode> {
             if (joinedView.model.type === type) {
                 return <T> joinedView.model;
             } else {
-                const handler = this.registry.services.node.getHandler(joinedView.model);
+                const handler = this.getNodeService().getHandler(joinedView.model);
                 handler.instance = joinedView.model;
                 return handler.searchFromRight(type);
             }

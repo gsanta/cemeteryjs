@@ -3,8 +3,8 @@ import { Rectangle } from '../geometry/shapes/Rectangle';
 import { MeshLoaderService } from '../services/MeshLoaderService';
 import { RectangleFactory } from './RectangleFactory';
 import { Registry } from '../Registry';
-import { MeshView } from '../models/views/MeshView';
 import { MeshModel } from '../models/game_objects/MeshModel';
+import { EngineService } from '../services/EngineService';
 
 export class MeshStore {
     private basePath = 'assets/models/';
@@ -57,9 +57,12 @@ export class MeshStore {
         this.instances.delete(mesh);
     }
 
-    createInstance(meshModel: MeshModel, scene: Scene): void {
+    createInstance(meshModel: MeshModel): void {
+        // TODO MeshStore should be instantiated by GameViewerPlugin and pass itself in constructor instead of directly accessing it here
+        // so MeshStore later can be used for GamePlugin
+        const engineService = this.registry.services.plugin.gameView.pluginServices.byName<EngineService<any>>(EngineService.serviceName);
         if (!meshModel.meshView.modelId) {
-            const mesh = this.rectangleFactory.createMesh(meshModel.meshView, scene);
+            const mesh = this.rectangleFactory.createMesh(meshModel.meshView, engineService.getScene());
             this.instances.add(mesh);
             meshModel.meshView.mesh = mesh;
             return;
@@ -68,7 +71,7 @@ export class MeshStore {
         const modelConcept = this.registry.stores.assetStore.getAssetById(meshModel.meshView.modelId);
 
         this.registry.services.meshLoader.load(modelConcept, meshModel.meshView.id)
-            .then(() => this.setupInstance(meshModel, scene));
+            .then(() => this.setupInstance(meshModel, engineService.getScene()));
     }
 
     private setupInstance(meshModel: MeshModel, scene: Scene) {
