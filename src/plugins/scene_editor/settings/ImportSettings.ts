@@ -24,6 +24,12 @@ export class ImportSettings extends AbstractSettings<ImportSettingsProps> {
         this.registry.services.dialog.openDialog(ImportSettings.settingsName);
     }
 
+    close() {
+        this.registry.services.history.createSnapshot();
+        this.registry.services.dialog.close();
+        this.registry.services.update.runImmediately(RenderTask.RenderFull);
+    }
+
     protected getProp(prop: ImportSettingsProps) {
         switch (prop) {
         }

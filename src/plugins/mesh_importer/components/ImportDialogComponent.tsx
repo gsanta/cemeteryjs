@@ -7,6 +7,7 @@ import { ThumbnailMakerComponent } from '../../scene_editor/components/Thumbnail
 import { ThumbnailMakerService } from '../services/ThumbnailMakerService';
 import { ButtonComponent } from '../../../core/gui/inputs/ButtonComponent';
 import { MeshLoaderService } from '../../../core/services/MeshLoaderService';
+import { ImportSettings } from '../../scene_editor/settings/ImportSettings';
 
 const CanvasStyled = styled.canvas`
     width: 300px;
@@ -39,6 +40,6 @@ export class ImportDialogComponent extends AbstractPluginComponent {
         const assetModel = (this.context.registry.stores.assetStore.getAssetById((selectedView as MeshView).modelId));
         this.props.plugin.pluginServices.byName<ThumbnailMakerService>(ThumbnailMakerService.serviceName).createThumbnail(assetModel)
 
-        this.context.registry.services.dialog.close();
+        this.props.plugin.getSettingsByName<ImportSettings>(ImportSettings.settingsName).close();
     }
 }

@@ -26,8 +26,6 @@ export class MeshImporterPlugin extends AbstractPlugin {
     visible = true;
     allowedLayouts = new Set([LayoutType.Dialog]);
 
-    importSettings: ImportSettings;
-
     constructor(registry: Registry) {
         super(registry);
 
@@ -36,7 +34,6 @@ export class MeshImporterPlugin extends AbstractPlugin {
 
         this.selectedTool = this.tools.byType(ToolType.Camera);
 
-        this.importSettings = new ImportSettings(registry);
         this.pluginServices = new PluginServices(
             [
                 new EngineService(this, this.registry),
@@ -44,6 +41,10 @@ export class MeshImporterPlugin extends AbstractPlugin {
                 new ThumbnailMakerService(this, this.registry)
             ]
         );
+
+        this.settings = [
+            new ImportSettings(this.registry)
+        ];
     }
 
     getStore() {

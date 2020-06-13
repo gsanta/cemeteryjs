@@ -31,24 +31,12 @@ export class SelectionStore {
         return <PathView[]> this.items.filter(view => view.viewType === ViewType.PathView);
     }
 
-    hasConcept(): boolean {
-        return this.getConcept() !== undefined;
-    }
-
-    hasFeedback(): boolean {
-        return this.getFeedback() !== undefined;
-    }
-
     hasAny(): boolean {
         return this.items.length > 0;
     }
 
     getConcept(): View {
-        return <View> this.items.find(item => item.viewType.endsWith('Concept'));
-    }
-
-    getFeedback(): ChildView<any> {
-        return <ChildView<any>> this.items.find(item => item.viewType.endsWith('Feedback'));
+        return this.items.length > 0 && this.items[0];
     }
 
     getEditPoint(): EditPointView {

@@ -61,8 +61,7 @@ export class SceneEditorPlugin extends AbstractPlugin {
         this.settings = [
             new MeshSettings(this, this.registry),
             new PathSettings(),
-            new LevelSettings(this.registry),
-            new ImportSettings(this.registry)
+            new LevelSettings(this.registry)
         ];
 
         this.exporter = new SceneEditorExporter(this, this.registry);

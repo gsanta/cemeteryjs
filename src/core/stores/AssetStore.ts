@@ -10,6 +10,7 @@ export interface AssetJson {
     id: string;
     assetType: string;
     path: string;
+    thumbnailData: string;
 }
 
 export class AssetModel {
@@ -39,7 +40,8 @@ export class AssetModel {
         return {
             id: this.id,
             assetType: this.assetType,
-            path: this.path
+            path: this.path,
+            thumbnailData: this.thumbnailData
         };
     }
 
@@ -47,6 +49,7 @@ export class AssetModel {
         this.id = json.id;
         this.assetType = <AssetType> json.assetType;
         this.path = json.path;
+        this.thumbnailData = json.thumbnailData;
     }
 }
 

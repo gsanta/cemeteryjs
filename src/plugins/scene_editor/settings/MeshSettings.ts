@@ -109,11 +109,10 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                     // })
                     .finally(() => {
                         this.registry.services.game.updateConcepts([this.meshConcept]);
-                        this.registry.services.history.createSnapshot();
-                        this.registry.services.update.runImmediately(RenderTask.RenderFull);
                     });
                 
-                this.plugin.getSettingsByName<ImportSettings>(ImportSettings.settingsName).activate(assetModel);
+                // TODO should separate concerns
+                this.registry.services.plugin.meshImporter.getSettingsByName<ImportSettings>(ImportSettings.settingsName).activate(assetModel);
                 break;
             case MeshViewPropType.Texture:
                 this.meshConcept.textureId = this.registry.stores.assetStore.addTexture(new AssetModel({path: val.path, assetType: AssetType.Texture}));
