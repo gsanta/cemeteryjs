@@ -13,7 +13,7 @@ import { ToolType } from '../common/tools/Tool';
 import { MeshViewContainerComponent } from './components/MeshViewComponent';
 import { PathViewContainerComponent } from './components/PathViewComponent';
 import { SceneEditorPlugin } from './SceneEditorPlugin';
-import { ImportDialogComponent } from '../mesh_importer/components/ImportDialogComponent';
+import { MeshImporterDialog } from '../mesh_importer/components/MeshImporterDialog';
 
 const EditorComponentStyled = styled.div`
     width: 100%;

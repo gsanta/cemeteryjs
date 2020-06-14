@@ -1,27 +1,32 @@
 import { Registry } from '../../../core/Registry';
 import { RenderTask } from '../../../core/services/RenderServices';
-import { AssetModel } from '../../../core/stores/AssetStore';
-import { AbstractSettings } from "./AbstractSettings";
+import { AbstractSettings } from "../../scene_editor/settings/AbstractSettings";
+import { AssetModel } from '../../../core/models/game_objects/AssetModel';
+import { AbstractPlugin } from '../../../core/AbstractPlugin';
+import { ThumbnailMakerService } from '../services/ThumbnailMakerService';
 
 export enum ImportSettingsProps {
 
 }
 
-export class ImportSettings extends AbstractSettings<ImportSettingsProps> {
-    static settingsName = 'import-settings';
-    getName() { return ImportSettings.settingsName; }
+export class MeshImporterSettings extends AbstractSettings<ImportSettingsProps> {
+    static settingsName = 'mesh-importer-settings';
+    getName() { return MeshImporterSettings.settingsName; }
     assetModel: AssetModel;
 
     private registry: Registry;
+    private plugin: AbstractPlugin;
 
-    constructor(registry: Registry) {
+    constructor(plugin: AbstractPlugin, registry: Registry) {
         super();
+        this.plugin = plugin;
         this.registry = registry;
     }
 
     activate(assetModel: AssetModel) {
         this.assetModel = assetModel;
-        this.registry.services.dialog.openDialog(ImportSettings.settingsName);
+        this.registry.services.dialog.openDialog(MeshImporterSettings.settingsName);
+        this.plugin.pluginServices.byName<ThumbnailMakerService>(ThumbnailMakerService.serviceName).loadSelectedMeshView();
     }
 
     close() {

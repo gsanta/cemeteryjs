@@ -23,7 +23,7 @@ const SidebarStyled = styled.div`
 `;
 
 
-export class SidebarComponent extends React.Component<SidebarComponentProps> {
+export class SidePanelComponent extends React.Component<SidebarComponentProps> {
     static contextType = AppContext;
     context: AppContextType;
 

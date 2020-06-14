@@ -1,6 +1,6 @@
 import * as React from 'React';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
-import { ImportSettings } from '../settings/ImportSettings';
+import { MeshImporterSettings } from '../../mesh_importer/settings/MeshImporterSettings';
 import styled from 'styled-components';
 import { WheelListener } from '../../../core/services/WheelListener';
 import { AbstractPlugin } from '../../../core/AbstractPlugin';
@@ -60,7 +60,7 @@ export class ThumbnailMakerComponent extends React.Component<ThumbnailMakerProps
     }
 
     render() {
-        if (this.context.registry.services.dialog.activeDialog !== ImportSettings.settingsName) { return null; }
+        if (this.context.registry.services.dialog.activeDialog !== MeshImporterSettings.settingsName) { return null; }
 
         return (
             <ThumbnailMakerStyled

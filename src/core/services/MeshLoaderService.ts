@@ -3,8 +3,8 @@ import { AbstractPluginService } from '../../plugins/common/AbstractPluginServic
 import { AbstractPlugin } from '../AbstractPlugin';
 import { Point } from '../geometry/shapes/Point';
 import { MeshView } from '../models/views/MeshView';
-import { AssetModel } from '../stores/AssetStore';
 import { EngineService } from './EngineService';
+import { AssetModel } from '../models/game_objects/AssetModel';
 
 export class MeshLoaderService extends AbstractPluginService<AbstractPlugin> {
     static serviceName = 'mesh-loader-service';

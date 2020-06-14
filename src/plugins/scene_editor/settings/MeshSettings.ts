@@ -2,10 +2,10 @@ import { toDegree, toRadian } from '../../../core/geometry/utils/Measurements';
 import { MeshView } from '../../../core/models/views/MeshView';
 import { Registry } from '../../../core/Registry';
 import { RenderTask } from '../../../core/services/RenderServices';
-import { AssetModel, AssetType } from '../../../core/stores/AssetStore';
 import { AbstractSettings, PropertyType } from "./AbstractSettings";
-import { ImportSettings } from './ImportSettings';
+import { MeshImporterSettings } from '../../mesh_importer/settings/MeshImporterSettings';
 import { SceneEditorPlugin } from '../SceneEditorPlugin';
+import { AssetModel, AssetType } from '../../../core/models/game_objects/AssetModel';
 
 export enum MeshViewPropType {
     Color = 'color',
@@ -28,8 +28,8 @@ const propertyTypes = {
 };
 
 export class MeshSettings extends AbstractSettings<MeshViewPropType> {
-    static type = 'mesh-settings';
-    getName() { return MeshSettings.type; }
+    static settingsName = 'mesh-settings';
+    getName() { return MeshSettings.settingsName; }
     meshView: MeshView;
 
     isAnimationSectionOpen = false;
@@ -112,7 +112,7 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                     });
                 
                 // TODO should separate concerns
-                this.registry.services.plugin.meshImporter.getSettingsByName<ImportSettings>(ImportSettings.settingsName).activate(assetModel);
+                this.registry.services.plugin.assetImporter.getSettingsByName<MeshImporterSettings>(MeshImporterSettings.settingsName).activate(assetModel);
                 break;
             case MeshViewPropType.Texture:
                 this.meshView.textureId = this.registry.stores.assetStore.addTexture(new AssetModel({path: val.path, assetType: AssetType.Texture}));

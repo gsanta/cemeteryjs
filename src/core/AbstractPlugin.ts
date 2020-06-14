@@ -11,6 +11,7 @@ import { LayoutType } from './services/PluginService';
 import { RenderTask } from './services/RenderServices';
 import { AbstractStore } from './stores/AbstractStore';
 import { PluginServices } from '../plugins/common/PluginServices';
+import { PluginSettings } from '../plugins/common/PluginSettings';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;
@@ -37,14 +38,12 @@ export abstract class AbstractPlugin {
     importer: AbstractPluginImporter;
 
     pluginServices: PluginServices<this> = new PluginServices([]);
-
     tools: Tools;
-    priorityTool: Tool;
-    
-    protected selectedTool: Tool;
-    protected settings: AbstractSettings<any>[] = [];
-    protected renderFunc: () => void;
+    pluginSettings: PluginSettings;
 
+    protected priorityTool: Tool;
+    protected selectedTool: Tool;
+    protected renderFunc: () => void;
     protected registry: Registry;
     
     constructor(registry: Registry) {
@@ -104,10 +103,6 @@ export abstract class AbstractPlugin {
             this.priorityTool = null;
             this.registry.services.update.runImmediately(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
         }
-    }
-
-    getSettingsByName<T extends AbstractSettings<any> = AbstractSettings<any>>(name: string) {
-        return <T> this.settings.find(setting => setting.getName() === name);
     }
 
     getOffset(): Point { return new Point(0, 0) }

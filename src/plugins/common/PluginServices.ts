@@ -13,15 +13,14 @@ export class PluginServices<T extends AbstractPlugin> {
     }
 
     byName<U extends AbstractPluginService<T>>(serviceName: string): U {
-        return <U> this.services.find(service => service.serviceName === serviceName);
+        const service = this.services.find(service => service.serviceName === serviceName); 
+        if (!service) { this.throwServiceNotFoundError(serviceName); }
+
+        return <U> service;
     }
 
     engineService(): EngineService {
-        const service = this.services.find(service => service.serviceName === EngineService.serviceName);
-
-        if (!service) { throw new Error(service.serviceName); }
-
-        return <EngineService> service;
+        return this.byName<EngineService>(EngineService.serviceName);
     }
 
     private throwServiceNotFoundError(serviceName: string) {

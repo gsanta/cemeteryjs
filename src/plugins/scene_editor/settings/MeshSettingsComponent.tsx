@@ -15,22 +15,18 @@ import { MeshView, AnimationState } from '../../../core/models/views/MeshView';
 import { SceneEditorPlugin } from '../SceneEditorPlugin';
 import { MeshSettings, MeshViewPropType } from './MeshSettings';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
-import { AssetModel } from '../../../core/stores/AssetStore';
+import { AssetModel } from '../../../core/models/game_objects/AssetModel';
 
-export class MeshSettingsComponent extends React.Component<{concept: MeshView}> {
+export class MeshSettingsComponent extends React.Component<{concept: MeshView, settings: MeshSettings}> {
     static contextType = AppContext;
     context: AppContextType;
 
     componentDidMount() {
-        const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
-
-        meshSettings.setRenderer(() => this.forceUpdate());
+        this.props.settings.setRenderer(() => this.forceUpdate());
     }
     
     render() {
-        const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
-
-        meshSettings.meshView = this.props.concept;
+        this.props.settings.meshView = this.props.concept;
 
         return (
             <div>
@@ -47,18 +43,16 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
     }
 
     private renderName(): JSX.Element {
-        const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
-
         return (
             <SettingsRowStyled>
                 <LabelColumnStyled>Name</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedInputComponent
-                        formController={meshSettings}
+                        formController={this.props.settings}
                         propertyName={MeshViewPropType.Name}
                         propertyType="string"
                         type="text"
-                        value={meshSettings.getVal(MeshViewPropType.Name)}
+                        value={this.props.settings.getVal(MeshViewPropType.Name)}
                     />
                 </FieldColumnStyled>
             </SettingsRowStyled>
@@ -66,16 +60,14 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
     }
 
     private renderModelFileChooser(): JSX.Element {
-        const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
-
-        const assetModel: AssetModel = meshSettings.getVal(MeshViewPropType.Model);
+        const assetModel: AssetModel = this.props.settings.getVal(MeshViewPropType.Model);
 
         return (
             <SettingsRowStyled key="model-file">
                 <LabelColumnStyled>Model</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedFileUploadComponent
-                        formController={meshSettings}
+                        formController={this.props.settings}
                         propertyName={MeshViewPropType.Model}
                         propertyType="string"
                         placeholder={`Upload`}
@@ -89,15 +81,14 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
 
     
     private renderTextureFileChooser(): JSX.Element {
-        const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
-        const assetModel: AssetModel = meshSettings.getVal(MeshViewPropType.Texture);
+        const assetModel: AssetModel = this.props.settings.getVal(MeshViewPropType.Texture);
 
         return (
             <SettingsRowStyled key="texture-file">
                 <LabelColumnStyled>Texture</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedFileUploadComponent
-                        formController={meshSettings}
+                        formController={this.props.settings}
                         propertyName={MeshViewPropType.Texture}
                         propertyType="string"
                         placeholder={`Upload`}
@@ -110,15 +101,14 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
     }
 
     private renderThumbnailFileChooser(): JSX.Element {
-        const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
-        const assetModel: AssetModel = meshSettings.getVal(MeshViewPropType.Thumbnail);
+        const assetModel: AssetModel = this.props.settings.getVal(MeshViewPropType.Thumbnail);
 
         return (
             <SettingsRowStyled key="thumbnail-file">
                 <LabelColumnStyled>Thumbnail</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedFileUploadComponent
-                        formController={meshSettings}
+                        formController={this.props.settings}
                         propertyName={MeshViewPropType.Thumbnail}
                         propertyType="string"
                         placeholder={`Upload`}
@@ -131,31 +121,27 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
     }
 
     private renderLayerInput(): JSX.Element {
-        const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
-
         return (
             <SettingsRowStyled>
                 <LabelColumnStyled>Layer</LabelColumnStyled>
                 <FieldColumnStyled>
-                    <ConnectedGridComponent isReversed={true} markedValues={[]} formController={meshSettings} propertyName={MeshViewPropType.Layer} value={meshSettings.getVal(MeshViewPropType.Layer)}/>
+                    <ConnectedGridComponent isReversed={true} markedValues={[]} formController={this.props.settings} propertyName={MeshViewPropType.Layer} value={this.props.settings.getVal(MeshViewPropType.Layer)}/>
                 </FieldColumnStyled>
             </SettingsRowStyled>
         );
     }
 
     private renderRotationInput(): JSX.Element {
-        const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
-
         return (
             <SettingsRowStyled>
                 <LabelColumnStyled>Rotation</LabelColumnStyled>
                 <FieldColumnStyled>
                 <ConnectedInputComponent
-                    formController={meshSettings}
+                    formController={this.props.settings}
                     propertyName={MeshViewPropType.Rotation}
                     propertyType="number"
                     type="number"
-                    value={meshSettings.getVal(MeshViewPropType.Rotation)}
+                    value={this.props.settings.getVal(MeshViewPropType.Rotation)}
                     placeholder="0"
                 />
                 </FieldColumnStyled>
@@ -164,18 +150,16 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
     }
 
     private renderScaleInput(): JSX.Element {
-        const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
-
         return (
             <SettingsRowStyled>
                 <LabelColumnStyled>Scale</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedInputComponent
-                        formController={meshSettings}
+                        formController={this.props.settings}
                         propertyName={MeshViewPropType.Scale}
                         propertyType="number"
                         type="number"
-                        value={meshSettings.getVal(MeshViewPropType.Scale)}
+                        value={this.props.settings.getVal(MeshViewPropType.Scale)}
                     />
                 </FieldColumnStyled>
             </SettingsRowStyled>
@@ -183,18 +167,16 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
     }
 
     private renderYPosInput(): JSX.Element {
-        const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
-
         return (
             <SettingsRowStyled>
                 <LabelColumnStyled>Y Pos</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedInputComponent
-                        formController={meshSettings}
+                        formController={this.props.settings}
                         propertyName={MeshViewPropType.YPos}
                         propertyType="number"
                         type="number"
-                        value={meshSettings.getVal(MeshViewPropType.YPos)}
+                        value={this.props.settings.getVal(MeshViewPropType.YPos)}
                     />
                 </FieldColumnStyled>
             </SettingsRowStyled>
@@ -250,72 +232,23 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
     }
 
     private renderPath(): JSX.Element {
-        const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
-
         const pathNames = this.context.registry.stores.canvasStore.getPathViews().map(p => p.id);
-        const val: string = meshSettings.getVal(MeshViewPropType.Path);
+        const val: string = this.props.settings.getVal(MeshViewPropType.Path);
 
         return (
             <SettingsRowStyled>
                 <LabelColumnStyled>Path</LabelColumnStyled>
                 <MultiFieldColumnStyled>
                     <ConnectedDropdownComponent
-                        formController={meshSettings}
+                        formController={this.props.settings}
                         propertyName={MeshViewPropType.Path}
                         values={pathNames}
                         currentValue={val}
                         placeholder="Select path"
                     />
-                    {val ? <ClearIconComponent onClick={() => meshSettings.updateProp(undefined, MeshViewPropType.Path)}/> : null}
+                    {val ? <ClearIconComponent onClick={() => this.props.settings.updateProp(undefined, MeshViewPropType.Path)}/> : null}
                 </MultiFieldColumnStyled>
             </SettingsRowStyled>
         );
-    }
-
-    
-    private renderManualMovement(): JSX.Element {
-        const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
-
-        return (
-            <SettingsRowStyled verticalAlign='right'>
-                <LabelColumnStyled>Manual Control</LabelColumnStyled>
-                <CheckboxComponent
-                    isSelected={meshSettings.getVal(MeshViewPropType.IsManualControl)}
-                    onChange={(selected: boolean) => meshSettings.updateProp(selected, MeshViewPropType.IsManualControl)}
-                />
-            </SettingsRowStyled>
-        );
-    }
-
-    private renderOpenCustomAnimationButton(): JSX.Element {
-        return (
-            <SettingsRowStyled>
-              <LabelColumnStyled></LabelColumnStyled>
-                <FieldColumnStyled>
-                    <ButtonComponent text="Custom animation" type="info" onClick={() => this.context.registry.services.dialog.openDialog('animation-settings')}/>
-                </FieldColumnStyled>
-            </SettingsRowStyled>
-        );
-    }
-
-    private renderPlayAnimation() {
-        const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
-
-        const updateAnimationState = (state: AnimationState) => meshSettings.updateProp(state, MeshViewPropType.AnimationState);
-        const getState = (animationState: AnimationState): 'disabled' | 'active' | 'default' => {
-            if (!this.props.concept.path) {
-                return 'disabled';
-            } else if (this.props.concept.animationState === animationState) {
-                return 'active';
-            }
-            return 'default';
-        }
-        return (
-            <SettingsRowStyled verticalAlign='center'>
-                <PlayIconComponent onClick={() => updateAnimationState(AnimationState.Playing)} state={getState(AnimationState.Playing)}/>
-                <PauseIconComponent onClick={() => updateAnimationState(AnimationState.Paused)} state={getState(AnimationState.Paused)}/>
-                <StopIconComponent onClick={() => updateAnimationState(AnimationState.Stopped)} state={getState(AnimationState.Stopped)}/>
-            </SettingsRowStyled>
-        )
     }
 }

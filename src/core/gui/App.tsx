@@ -10,10 +10,10 @@ import './App.scss';
 import { AppContext, AppContextType } from './Context';
 import { HotkeyInputComponent } from './HotkeyInputComponent';
 import { SpinnerOverlayComponent } from './misc/SpinnerOverlayComponent';
-import { SidebarComponent } from './SidebarComponent';
+import { SidePanelComponent } from './SidePanelComponent';
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
-import { ImportDialogComponent } from '../../plugins/mesh_importer/components/ImportDialogComponent';
+import { MeshImporterDialog } from '../../plugins/mesh_importer/components/MeshImporterDialog';
 import { DialogManagerComponent } from './dialogs/DialogManagerComponent';
 
 export interface AppState {
@@ -49,7 +49,11 @@ export class App extends React.Component<{}, AppState> {
         }
 
         window.addEventListener('resize', () => this.context.registry.services.plugin.getCurrentLayout().configs.forEach(config => config.activePlugin.resize()));
-        this.context.controllers.setup(document.querySelector(`#${GameViewerPlugin.id}`));
+
+
+        setTimeout(() => {
+            this.context.controllers.setup(document.querySelector(`#${GameViewerPlugin.id}`));
+        }, 100);
 
         document.getElementsByTagName('body')[0].addEventListener('onfocus', () => {
             console.log('body focus')
@@ -73,7 +77,7 @@ export class App extends React.Component<{}, AppState> {
                 <DndProvider backend={Backend}>
                     <div className="main-content" key="main-content">
                         <div id="toolbar" >
-                            <SidebarComponent isEditorOpen={this.state.isEditorOpen} toggleEditorOpen={() => this.setState({isEditorOpen: !this.state.isEditorOpen})}/>
+                            <SidePanelComponent isEditorOpen={this.state.isEditorOpen} toggleEditorOpen={() => this.setState({isEditorOpen: !this.state.isEditorOpen})}/>
                         </div>
                         {this.renderPlugins()}
                     </div>

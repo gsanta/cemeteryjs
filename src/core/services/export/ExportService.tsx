@@ -1,6 +1,6 @@
 import { IPluginJson } from '../../../plugins/common/io/IPluginExporter';
 import { Registry } from '../../Registry';
-import { AssetJson } from '../../stores/AssetStore';
+import { AssetJson } from '../../models/game_objects/AssetModel';
 
 export interface ViewExporter {
     export(): string;

@@ -44,7 +44,7 @@ export class PluginService {
     gameView: GameViewerPlugin;
     nodeEditor: NodeEditorPlugin;
     codeEditor: CodeEditorPlugin;
-    meshImporter: MeshImporterPlugin;
+    assetImporter: MeshImporterPlugin;
 
     plugins: AbstractPlugin[];
 
@@ -64,14 +64,14 @@ export class PluginService {
         this.gameView = new GameViewerPlugin(registry);
         this.nodeEditor = new NodeEditorPlugin(registry);
         this.codeEditor = new CodeEditorPlugin(registry);
-        this.meshImporter = new MeshImporterPlugin(registry);
+        this.assetImporter = new MeshImporterPlugin(registry);
 
         this.plugins = [
             this.sceneEditor,
             this.gameView,
             this.nodeEditor,
             this.codeEditor,
-            this.meshImporter
+            this.assetImporter
         ];
 
         let allowedSinglePlugins = this.plugins.filter(plugin => plugin.allowedLayouts.has(LayoutType.Single));

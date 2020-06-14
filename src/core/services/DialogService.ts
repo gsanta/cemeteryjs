@@ -2,14 +2,14 @@ import { Registry } from "../Registry";
 import { RenderTask } from "./RenderServices";
 import { ListActionsSettings } from '../../plugins/scene_editor/settings/ListActionsSettings';
 import { NodeEditorSettings } from "../../plugins/node_editor/settings/NodeEditorSettings";
-import { ImportSettings } from "../../plugins/scene_editor/settings/ImportSettings";
+import { MeshImporterSettings } from "../../plugins/mesh_importer/settings/MeshImporterSettings";
 
 export class DialogService {
     serviceName = 'dialog-service';
     dialogs: string[] = [
         NodeEditorSettings.settingsName,
         ListActionsSettings.settingsName,
-        ImportSettings.settingsName
+        MeshImporterSettings.settingsName
     ];
     activeDialog: string;
 
