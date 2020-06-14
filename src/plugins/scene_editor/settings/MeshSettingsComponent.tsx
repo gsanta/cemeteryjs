@@ -30,7 +30,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
     render() {
         const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
-        meshSettings.meshConcept = this.props.concept;
+        meshSettings.meshView = this.props.concept;
 
         return (
             <div>
@@ -252,7 +252,7 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView}> 
     private renderPath(): JSX.Element {
         const meshSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<MeshSettings>(MeshSettings.type);
 
-        const pathNames = this.context.registry.stores.canvasStore.getPathConcepts().map(p => p.id);
+        const pathNames = this.context.registry.stores.canvasStore.getPathViews().map(p => p.id);
         const val: string = meshSettings.getVal(MeshViewPropType.Path);
 
         return (

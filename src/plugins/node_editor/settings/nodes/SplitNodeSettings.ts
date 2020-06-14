@@ -12,9 +12,9 @@ export class SplitNodeSettings extends ViewSettings<SplitNodeProps, NodeView> {
     nodeView: NodeView<SplitNode>;
     private registry: Registry;
 
-    constructor(actionNodeConcept: NodeView<SplitNode>, registry: Registry) {
+    constructor(nodeView: NodeView<SplitNode>, registry: Registry) {
         super();
-        this.nodeView = actionNodeConcept;
+        this.nodeView = nodeView;
         this.registry = registry;
     }
 

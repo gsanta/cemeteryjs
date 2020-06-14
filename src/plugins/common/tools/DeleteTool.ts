@@ -2,7 +2,7 @@ import { Registry } from '../../../core/Registry';
 import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, IHotkeyEvent, HotkeyTrigger } from '../../../core/services/input/HotkeyService';
 import { Keyboard } from '../../../core/services/input/KeyboardService';
 import { RenderTask } from '../../../core/services/RenderServices';
-import { isConcept, isControl } from '../../../core/stores/SceneStore';
+import { isView, isFeedback } from '../../../core/stores/SceneStore';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './RectangleSelector';
 import { Cursor, ToolType } from './Tool';
@@ -29,9 +29,9 @@ export class DeleteTool extends AbstractTool {
 
         if (!hoveredItem) { return; }
 
-        if (isControl(hoveredItem.viewType)) {
+        if (isFeedback(hoveredItem.viewType)) {
             hoveredItem.delete();
-        } else if (isConcept(hoveredItem.viewType)) {
+        } else if (isView(hoveredItem.viewType)) {
             this.getStore().removeItem(hoveredItem);
         }
         
@@ -69,7 +69,7 @@ export class DeleteTool extends AbstractTool {
     }
 
     eraseAll() {
-        const concepts = this.registry.stores.canvasStore.getAllConcepts();
+        const concepts = this.registry.stores.canvasStore.getAllViews();
         this.registry.services.game.deleteConcepts(concepts);
         this.registry.services.localStore.clearAll();
         this.registry.services.plugin.plugins.forEach(plugin => plugin.getStore()?.clear());

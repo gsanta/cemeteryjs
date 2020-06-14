@@ -7,12 +7,12 @@ import { ViewType, View } from "../models/views/View";
 import { Registry } from "../Registry";
 import { AbstractStore } from './AbstractStore';
 
-export function isControl(type: string) {
+export function isFeedback(type: string) {
     return type.endsWith('Feedback');
 }
 
-export function isConcept(type: string) {
-    return type.endsWith('Concept');
+export function isView(type: string) {
+    return type.endsWith('View');
 }
 
 export class SceneStore extends AbstractStore {
@@ -26,7 +26,7 @@ export class SceneStore extends AbstractStore {
         this.registry = registry;
     }
 
-    addConcept(view: View) {
+    addView(view: View) {
         view.id = view.id === undefined ? this.generateUniqueName(view.viewType) : view.id;
         super.addItem(view);
         this.views.push(view);
@@ -50,11 +50,11 @@ export class SceneStore extends AbstractStore {
         this.controls = [];
     }
     
-    getAllConcepts(): View[] {
+    getAllViews(): View[] {
         return this.views;
     }
 
-    getMeshConcepts(): MeshView[] {
+    getMeshViews(): MeshView[] {
         return <MeshView[]> this.views.filter(view => view.viewType === ViewType.MeshView);
     }
 
@@ -62,7 +62,7 @@ export class SceneStore extends AbstractStore {
         return <MeshView> this.views.find(view => view.id === id);
     }
 
-    getPathConcepts(): PathView[] {
+    getPathViews(): PathView[] {
         return <PathView[]> this.views.filter(view => view.viewType === ViewType.PathView);
     }
 

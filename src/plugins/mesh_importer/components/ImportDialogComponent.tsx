@@ -21,7 +21,7 @@ export class ImportDialogComponent extends AbstractPluginComponent {
         super.componentDidMount();
         this.props.plugin.componentMounted(this.ref.current);
         // TODO remove logic
-        const selectedView = this.context.registry.stores.selectionStore.getConcept();
+        const selectedView = this.context.registry.stores.selectionStore.getView();
         const assetModel = (this.context.registry.stores.assetStore.getAssetById((selectedView as MeshView).modelId));
         this.props.plugin.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName).load(assetModel, '123');
      }
@@ -36,7 +36,7 @@ export class ImportDialogComponent extends AbstractPluginComponent {
     }
 
     private createThumbnail() {
-        const selectedView = this.context.registry.stores.selectionStore.getConcept();
+        const selectedView = this.context.registry.stores.selectionStore.getView();
         const assetModel = (this.context.registry.stores.assetStore.getAssetById((selectedView as MeshView).modelId));
         this.props.plugin.pluginServices.byName<ThumbnailMakerService>(ThumbnailMakerService.serviceName).createThumbnail(assetModel)
 

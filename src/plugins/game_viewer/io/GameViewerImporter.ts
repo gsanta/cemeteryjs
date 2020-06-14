@@ -10,7 +10,7 @@ export class GameViewerImporter extends AbstractPluginImporter {
         const meshLoaderService = this.plugin.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName);
         meshLoaderService.clear();
 
-        this.registry.stores.canvasStore.getAllConcepts().forEach(view => {
+        this.registry.stores.canvasStore.getAllViews().forEach(view => {
             if (view.viewType === ViewType.MeshView || view.viewType === ViewType.PathView) {
                 this.registry.stores.gameStore.add(view as MeshView | PathView);
             }
@@ -26,7 +26,7 @@ export class GameViewerImporter extends AbstractPluginImporter {
 
     private setMeshDimensions() {
         const meshLoaderService = this.plugin.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName);
-        this.registry.stores.canvasStore.getMeshConcepts().filter(item => item.modelId)
+        this.registry.stores.canvasStore.getMeshViews().filter(item => item.modelId)
             .forEach(item => {
                 const assetModel = this.registry.stores.assetStore.getAssetById(item.modelId);
                 meshLoaderService.getDimensions(assetModel, item.id)

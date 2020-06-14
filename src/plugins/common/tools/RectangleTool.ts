@@ -23,17 +23,17 @@ export class RectangleTool extends AbstractTool {
         const pointer = this.registry.services.pointer.pointer;
         const rect = Rectangle.squareFromCenterPointAndRadius(pointer.down, 50);
 
-        const meshConcept: MeshView = new MeshView({dimensions: rect});
-        meshConcept.rotation = 0;
-        meshConcept.scale = 1;
-        meshConcept.color = 'grey';
+        const meshView: MeshView = new MeshView({dimensions: rect});
+        meshView.rotation = 0;
+        meshView.scale = 1;
+        meshView.color = 'grey';
 
-        this.registry.stores.canvasStore.addConcept(meshConcept);
+        this.registry.stores.canvasStore.addView(meshView);
         this.registry.stores.selectionStore.clear()
-        this.registry.stores.selectionStore.addItem(meshConcept);
+        this.registry.stores.selectionStore.addItem(meshView);
 
         this.registry.services.level.updateCurrentLevel();
-        this.registry.services.game.addConcept(meshConcept);
+        this.registry.services.game.addConcept(meshView);
         this.registry.services.history.createSnapshot();
         this.registry.services.update.scheduleTasks(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
     }
@@ -49,14 +49,14 @@ export class RectangleTool extends AbstractTool {
 
         const dimensions = this.registry.stores.feedback.rectSelectFeedback.rect;
 
-        const meshConcept: MeshView = new MeshView({dimensions});
-        meshConcept.rotation = 0;
-        meshConcept.scale = 1;
-        meshConcept.color = 'grey';
+        const meshView: MeshView = new MeshView({dimensions});
+        meshView.rotation = 0;
+        meshView.scale = 1;
+        meshView.color = 'grey';
 
         if (positions.length > 0) {
-            this.registry.stores.canvasStore.addConcept(meshConcept);
-            this.lastPreviewRect = meshConcept;
+            this.registry.stores.canvasStore.addView(meshView);
+            this.lastPreviewRect = meshView;
     
             this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
         }

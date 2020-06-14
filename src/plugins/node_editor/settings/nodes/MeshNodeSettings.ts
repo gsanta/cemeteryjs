@@ -23,7 +23,7 @@ export class MeshNodeSettings extends ViewSettings<MeshNodeProps, NodeView> {
     protected getProp(prop: MeshNodeProps) {
         switch (prop) {
             case MeshNodeProps.AllMeshes:
-                return this.registry.stores.canvasStore.getMeshConcepts().map(meshConcept => meshConcept.id);
+                return this.registry.stores.canvasStore.getMeshViews().map(meshConcept => meshConcept.id);
             case MeshNodeProps.MeshId:
                 return this.nodeView.model.meshModel && this.nodeView.model.meshModel.getId();
         }

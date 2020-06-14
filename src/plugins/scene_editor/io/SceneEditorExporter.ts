@@ -14,8 +14,8 @@ export class SceneEditorExporter implements IPluginExporter {
     }
 
     export(): IPluginJson {
-        const meshViews = this.registry.stores.canvasStore.getMeshConcepts();
-        const pathViews = this.registry.stores.canvasStore.getPathConcepts();
+        const meshViews = this.registry.stores.canvasStore.getMeshViews();
+        const pathViews = this.registry.stores.canvasStore.getPathViews();
 
         return {
             pluginId: this.plugin.getId(),

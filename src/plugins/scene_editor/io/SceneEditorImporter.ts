@@ -15,7 +15,7 @@ export class SceneEditorImporter extends AbstractPluginImporter {
             const meshView: MeshView = new MeshView();
             meshView.fromJson(viewJson, viewMap);
 
-            this.registry.stores.canvasStore.addConcept(meshView);
+            this.registry.stores.canvasStore.addView(meshView);
         });
 
         const pathJsons = pluginJson.viewGroups.find(viewGroup => viewGroup.viewType === ViewType.PathView);
@@ -24,7 +24,7 @@ export class SceneEditorImporter extends AbstractPluginImporter {
             const pathView: PathView = new PathView();
             pathView.fromJson(viewJson, viewMap);
 
-            this.registry.stores.canvasStore.addConcept(pathView);
+            this.registry.stores.canvasStore.addView(pathView);
         });
     }
 }

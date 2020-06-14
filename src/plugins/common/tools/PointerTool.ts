@@ -2,7 +2,7 @@ import { ChildView } from '../../../core/models/views/child_views/ChildView';
 import { View } from '../../../core/models/views/View';
 import { Registry } from '../../../core/Registry';
 import { RenderTask } from "../../../core/services/RenderServices";
-import { isConcept, isControl } from '../../../core/stores/SceneStore';
+import { isView, isFeedback } from '../../../core/stores/SceneStore';
 import { NodeEditorPlugin } from '../../node_editor/NodeEditorPlugin';
 import { SceneEditorPlugin } from '../../scene_editor/SceneEditorPlugin';
 import { AbstractTool } from "./AbstractTool";
@@ -22,14 +22,14 @@ export class PointerTool extends AbstractTool {
         const hoveredItem = this.registry.services.pointer.hoveredItem;
         if (!hoveredItem) { return; }
 
-        if (isControl(hoveredItem.viewType)) {
-            const concept = (<ChildView<any>> hoveredItem).parent;
+        if (isFeedback(hoveredItem.viewType)) {
+            const view = (<ChildView<any>> hoveredItem).parent;
             this.registry.stores.selectionStore.clear();
-            this.registry.stores.selectionStore.addItem(concept);
+            this.registry.stores.selectionStore.addItem(view);
             this.registry.stores.selectionStore.addItem(hoveredItem);
 
             this.registry.services.update.scheduleTasks(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
-        } else if (isConcept(hoveredItem.viewType)) {
+        } else if (isView(hoveredItem.viewType)) {
             this.registry.stores.selectionStore.clear();
             this.registry.stores.selectionStore.addItem(hoveredItem);
 
@@ -63,7 +63,7 @@ export class PointerTool extends AbstractTool {
 
         this.isDragStart = true;
         
-        this.updateDraggedConcept();
+        this.updateDraggedView();
         this.movingItem = undefined;
         this.registry.services.level.updateCurrentLevel();
     }
@@ -89,43 +89,43 @@ export class PointerTool extends AbstractTool {
     }
 
     private moveItems() {
-        const concepts = this.registry.stores.selectionStore.getAllConcepts();
+        const views = this.registry.stores.selectionStore.getAllViews();
 
-        if (isControl(this.movingItem.viewType)) {
+        if (isFeedback(this.movingItem.viewType)) {
             (<ChildView<any>> this.movingItem).move(this.registry.services.pointer.pointer.getDiff())
-        } else if (isConcept(this.movingItem.viewType)) {
-            concepts.forEach((item, index) => item.move(this.registry.services.pointer.pointer.getDiff()));
+        } else if (isView(this.movingItem.viewType)) {
+            views.forEach((item, index) => item.move(this.registry.services.pointer.pointer.getDiff()));
         }
 
         this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
     }
 
-    private updateDraggedConcept() {
+    private updateDraggedView() {
         const view = this.registry.services.plugin.getHoveredView();
 
         switch(view.getId()) {
             case SceneEditorPlugin.id:
-                this.updateSceneConcepts();
+                this.updateSceneViews();
                 break;
             case NodeEditorPlugin.id:
-                this.updateActionEditorConcepts();
+                this.updateNodeEditorViews();
                 break;
         }
     }
 
-    private updateSceneConcepts() {
-        let concepts: View[];
+    private updateSceneViews() {
+        let views: View[];
 
-        if (isControl(this.movingItem.viewType)) {
-            concepts = [(<ChildView<any>> this.movingItem).parent];
+        if (isFeedback(this.movingItem.viewType)) {
+            views = [(<ChildView<any>> this.movingItem).parent];
         } else {
-            concepts = this.registry.stores.selectionStore.getAllConcepts();
+            views = this.registry.stores.selectionStore.getAllViews();
         }
 
-        this.registry.services.game.updateConcepts(concepts);
+        this.registry.services.game.updateConcepts(views);
     }
 
-    private updateActionEditorConcepts() {
+    private updateNodeEditorViews() {
 
     }
 }

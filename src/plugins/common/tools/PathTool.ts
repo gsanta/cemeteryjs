@@ -58,7 +58,7 @@ export class PathTool extends PointerTool {
     }
 
     private createPath() {
-        const pathes = this.registry.stores.selectionStore.getPathConcepts();
+        const pathes = this.registry.stores.selectionStore.getPathViews();
 
         if (pathes.length > 1) { return }
 
@@ -91,7 +91,7 @@ export class PathTool extends PointerTool {
         editPoint.id = this.registry.stores.canvasStore.generateUniqueName(FeedbackType.EditPointFeedback); 
         path.addEditPoint(editPoint)
         path.id = this.registry.stores.canvasStore.generateUniqueName(ViewType.PathView);
-        this.registry.stores.canvasStore.addConcept(path);
+        this.registry.stores.canvasStore.addView(path);
         this.registry.services.game.addConcept(path);
         this.registry.stores.selectionStore.addItem(path);
         this.registry.stores.selectionStore.addItem(path.editPoints[0]);

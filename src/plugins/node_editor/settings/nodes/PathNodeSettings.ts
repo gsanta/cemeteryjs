@@ -23,7 +23,7 @@ export class PathNodeSettings extends ViewSettings<PathNodeProps, NodeView> {
     protected getProp(prop: PathNodeProps) {
         switch (prop) {
             case PathNodeProps.AllPathes:
-                return this.registry.stores.canvasStore.getPathConcepts().map(pathView => pathView.id);
+                return this.registry.stores.canvasStore.getPathViews().map(pathView => pathView.id);
             case PathNodeProps.PathId:
                 return this.nodeView.model.pathModel && this.nodeView.model.pathModel.getId();
         }

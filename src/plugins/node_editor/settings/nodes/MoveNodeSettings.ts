@@ -17,9 +17,9 @@ export class MoveNodeSettings extends ViewSettings<MoveNodeProps, NodeView> {
     nodeView: NodeView<MoveNode>;
     private registry: Registry;
 
-    constructor(actionNodeConcept: NodeView<MoveNode>, registry: Registry) {
+    constructor(nodeView: NodeView<MoveNode>, registry: Registry) {
         super();
-        this.nodeView = actionNodeConcept;
+        this.nodeView = nodeView;
         this.registry = registry;
     }
 

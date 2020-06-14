@@ -81,7 +81,7 @@ export function MeshViewContainerComponent(props: GroupProps) {
 }
 
 function getSortedMeshViews(registry: Registry) {
-    let items = [...registry.stores.canvasStore.getMeshConcepts()];
+    let items = [...registry.stores.canvasStore.getMeshViews()];
     return sort(items, (a, b) => a.layer - b.layer);
 }
 

@@ -39,7 +39,7 @@ export class LevelService {
     }
 
     private clearStores() {
-        this.registry.services.game.deleteConcepts(this.registry.stores.canvasStore.getAllConcepts());
+        this.registry.services.game.deleteConcepts(this.registry.stores.canvasStore.getAllViews());
         this.registry.stores.canvasStore.clear();
         this.registry.stores.selectionStore.clear();
     }

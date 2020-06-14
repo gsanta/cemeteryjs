@@ -30,7 +30,7 @@ const propertyTypes = {
 export class MeshSettings extends AbstractSettings<MeshViewPropType> {
     static type = 'mesh-settings';
     getName() { return MeshSettings.type; }
-    meshConcept: MeshView;
+    meshView: MeshView;
 
     isAnimationSectionOpen = false;
     private registry: Registry;
@@ -57,29 +57,29 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
     protected getProp(prop: MeshViewPropType) {
         switch (prop) {
             case MeshViewPropType.Color:
-                return this.meshConcept.color;
+                return this.meshView.color;
             case MeshViewPropType.Model:
-                return this.registry.stores.assetStore.getAssetById(this.meshConcept.modelId);
+                return this.registry.stores.assetStore.getAssetById(this.meshView.modelId);
             case MeshViewPropType.Texture:
-                return this.registry.stores.assetStore.getAssetById(this.meshConcept.textureId);
+                return this.registry.stores.assetStore.getAssetById(this.meshView.textureId);
             case MeshViewPropType.Thumbnail:
-                return this.registry.stores.assetStore.getAssetById(this.meshConcept.thumbnailId);
+                return this.registry.stores.assetStore.getAssetById(this.meshView.thumbnailId);
             case MeshViewPropType.Layer:
-                return this.meshConcept.layer;
+                return this.meshView.layer;
             case MeshViewPropType.Rotation:
-                return Math.round(toDegree(this.meshConcept.rotation));
+                return Math.round(toDegree(this.meshView.rotation));
             case MeshViewPropType.Scale:
-                return this.meshConcept.scale;
+                return this.meshView.scale;
             case MeshViewPropType.YPos:
-                return this.meshConcept.yPos;
+                return this.meshView.yPos;
             case MeshViewPropType.Name:
-                return this.meshConcept.id;
+                return this.meshView.id;
             case MeshViewPropType.Path:
-                return this.meshConcept.path;
+                return this.meshView.path;
             case MeshViewPropType.IsManualControl:
-                return this.meshConcept.isManualControl;
+                return this.meshView.isManualControl;
             case MeshViewPropType.AnimationState:
-                return this.meshConcept.animationState;
+                return this.meshView.animationState;
     
         }
     }
@@ -87,12 +87,12 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
     protected setProp(val: any, prop: MeshViewPropType) {
         switch (prop) {
             case MeshViewPropType.Color:
-                this.meshConcept.color = val;
+                this.meshView.color = val;
                 this.update();
                 break;
             case MeshViewPropType.Model:
                 const assetModel = new AssetModel({path: val.path, data: val.data, assetType: AssetType.Model});
-                this.meshConcept.modelId = this.registry.stores.assetStore.addModel(assetModel);
+                this.meshView.modelId = this.registry.stores.assetStore.addModel(assetModel);
 
                 this.registry.services.localStore.saveAsset(assetModel.getId(), val.data)
                     // .then(() => {
@@ -108,57 +108,57 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                     //     this.meshConcept.animations = animations;
                     // })
                     .finally(() => {
-                        this.registry.services.game.updateConcepts([this.meshConcept]);
+                        this.registry.services.game.updateConcepts([this.meshView]);
                     });
                 
                 // TODO should separate concerns
                 this.registry.services.plugin.meshImporter.getSettingsByName<ImportSettings>(ImportSettings.settingsName).activate(assetModel);
                 break;
             case MeshViewPropType.Texture:
-                this.meshConcept.textureId = this.registry.stores.assetStore.addTexture(new AssetModel({path: val.path, assetType: AssetType.Texture}));
+                this.meshView.textureId = this.registry.stores.assetStore.addTexture(new AssetModel({path: val.path, assetType: AssetType.Texture}));
                 this.update();
                 break;
             case MeshViewPropType.Thumbnail:
-                this.meshConcept.thumbnailId = this.registry.stores.assetStore.addThumbnail(new AssetModel({path: val.path, assetType: AssetType.Thumbnail}));
+                this.meshView.thumbnailId = this.registry.stores.assetStore.addThumbnail(new AssetModel({path: val.path, assetType: AssetType.Thumbnail}));
                 this.update();
                 break;
             case MeshViewPropType.Layer:
-                this.meshConcept.layer = val;
+                this.meshView.layer = val;
                 this.update();
                 break;
             case MeshViewPropType.Rotation:
-                this.meshConcept.rotation = toRadian(this.convertValue(val, prop, this.meshConcept.rotation));
+                this.meshView.rotation = toRadian(this.convertValue(val, prop, this.meshView.rotation));
                 this.update();
                 break;
             case MeshViewPropType.Scale:
-                this.meshConcept.scale = this.convertValue(val, prop, this.meshConcept.scale);
+                this.meshView.scale = this.convertValue(val, prop, this.meshView.scale);
                 this.update();
                 break;
             case MeshViewPropType.YPos:
-                this.meshConcept.yPos = this.convertValue(val, prop, this.meshConcept.yPos);
+                this.meshView.yPos = this.convertValue(val, prop, this.meshView.yPos);
                 this.update();
                 break;
             case MeshViewPropType.Name:
-                this.meshConcept.id = val;
+                this.meshView.id = val;
                 this.update();
                 break;
             case MeshViewPropType.Path:
-                this.meshConcept.path = val;
+                this.meshView.path = val;
                 this.update();
                 break;
             case MeshViewPropType.IsManualControl:
-                this.meshConcept.isManualControl = val;
+                this.meshView.isManualControl = val;
                 this.update();
                 break;
             case MeshViewPropType.AnimationState:
-                this.meshConcept.animationState = val;
+                this.meshView.animationState = val;
                 this.update();
                 break;
         }
     }
 
     private update() {
-        this.registry.services.game.updateConcepts([this.meshConcept]);
+        this.registry.services.game.updateConcepts([this.meshView]);
         this.registry.services.history.createSnapshot();
         this.registry.services.update.runImmediately(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
 

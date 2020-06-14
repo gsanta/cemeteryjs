@@ -3,6 +3,7 @@ import { PathView } from "../models/views/PathView";
 import { ChildView, FeedbackType } from "../models/views/child_views/ChildView";
 import { EditPointView } from "../models/views/child_views/EditPointView";
 import { View, ViewType } from "../models/views/View";
+import { isView } from "./SceneStore";
 
 export class SelectionStore {
     items: View[] = [];
@@ -23,11 +24,11 @@ export class SelectionStore {
         return this.items;
     }
 
-    getAllConcepts(): View[] {
-        return <View[]> this.items.filter(item => item.viewType.endsWith('Concept'));
+    getAllViews(): View[] {
+        return <View[]> this.items.filter(item => isView(item.viewType));
     }
 
-    getPathConcepts(): PathView[] {
+    getPathViews(): PathView[] {
         return <PathView[]> this.items.filter(view => view.viewType === ViewType.PathView);
     }
 
@@ -35,7 +36,7 @@ export class SelectionStore {
         return this.items.length > 0;
     }
 
-    getConcept(): View {
+    getView(): View {
         return this.items.length > 0 && this.items[0];
     }
 

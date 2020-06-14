@@ -83,7 +83,7 @@ export class PathViewComponent extends React.Component<PathComponentProps> {
 }
 
 export function PathViewContainerComponent(props: GroupProps) {
-    const pathes = props.registry.stores.canvasStore.getPathConcepts().map(path => {
+    const pathes = props.registry.stores.canvasStore.getPathViews().map(path => {
         return <PathViewComponent
             key={path.id}
             onlyData={!props.hover}
