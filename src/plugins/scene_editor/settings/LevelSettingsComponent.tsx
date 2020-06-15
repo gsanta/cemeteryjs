@@ -7,14 +7,13 @@ import { SceneEditorPlugin } from '../SceneEditorPlugin';
 import { LevelSettings, LevelFormPropType } from './LevelSettings';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
 
-export class LevelSettingsComponent extends React.Component {
+export class LevelSettingsComponent extends React.Component<{plugin: SceneEditorPlugin}> {
     static contextType = AppContext;
     context: AppContextType;
 
     render() {
-        const levelSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<LevelSettings>(LevelSettings.type);
-        
-        const level = levelSettings.getVal(LevelFormPropType.Level);
+        const levelSettings = this.props.plugin.pluginSettings.byName<LevelSettings>(LevelSettings.settingsName)
+        const level =  levelSettings.getVal(LevelFormPropType.Level);
         const levelIndexes = this.context.registry.stores.levelStore.levels.filter(level => !level.isEmpty).map(level => level.index);
         return (
             <div>

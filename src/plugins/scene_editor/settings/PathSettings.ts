@@ -6,8 +6,8 @@ export enum PathPropType {
 }
 
 export class PathSettings extends AbstractSettings<PathPropType> {
-    static type = 'path-settings';
-    getName() { return PathSettings.type; }
+    static settingsName = 'path-settings';
+    getName() { return PathSettings.settingsName; }
     path: PathView;
 
     protected getProp(prop: PathPropType) {

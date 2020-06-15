@@ -1,25 +1,20 @@
 import * as React from 'react';
-import { ConnectedInputComponent } from '../../../core/gui/inputs/InputComponent';
-import { SettingsRowStyled, FieldColumnStyled, LabelColumnStyled } from './SettingsComponent';
-import { PathView } from '../../../core/models/views/PathView';
-import { SceneEditorPlugin } from '../SceneEditorPlugin';
-import { PathSettings, PathPropType } from './PathSettings';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
+import { ConnectedInputComponent } from '../../../core/gui/inputs/InputComponent';
+import { PathView } from '../../../core/models/views/PathView';
+import { PathPropType, PathSettings } from './PathSettings';
+import { FieldColumnStyled, LabelColumnStyled, SettingsRowStyled } from './SettingsComponent';
 
-export class PathSettingsComponent extends React.Component<{concept: PathView}> {
+export class PathSettingsComponent extends React.Component<{settings: PathSettings, view: PathView}> {
     static contextType = AppContext;
     context: AppContextType;
 
     componentDidMount() {
-        const pathSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<PathSettings>(PathSettings.type);
-
-        pathSettings.setRenderer(() => this.forceUpdate());
+        this.props.settings.setRenderer(() => this.forceUpdate());
     }
 
     render() {
-        const pathSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<PathSettings>(PathSettings.type);
-
-        pathSettings.path = this.props.concept;
+        this.props.settings.path = this.props.view;
 
         return (
             <div>
@@ -29,18 +24,16 @@ export class PathSettingsComponent extends React.Component<{concept: PathView}> 
     }
 
     private renderName(): JSX.Element {
-        const pathSettings = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id).getSettingsByName<PathSettings>(PathSettings.type);
-
         return (
             <SettingsRowStyled>
                 <LabelColumnStyled>Name</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedInputComponent
-                        formController={pathSettings}
+                        formController={this.props.settings}
                         propertyName={PathPropType.NAME}
                         propertyType="string"
                         type="text"
-                        value={pathSettings.getVal(PathPropType.NAME)}
+                        value={this.props.settings.getVal(PathPropType.NAME)}
                     />
                 </FieldColumnStyled>
             </SettingsRowStyled>

@@ -13,8 +13,22 @@ export class NodeEditorSettingsComponent extends React.Component<{settings: Node
     context: AppContextType;
 
     render() {
-        const view = this.context.registry.services.plugin.getViewById(NodeEditorPlugin.id);
 
+        return (
+            <AccordionComponent
+                elements={
+                    [
+                        {
+                            title: 'Node Editor',
+                            body: this.renderBody()
+                        },
+                    ]
+                }
+            />
+        )
+    }
+
+    private renderBody() {
         return (
             <div>
                 {this.renderNodesByCategory()}

@@ -12,8 +12,8 @@ export enum LevelFormPropType {
 }
 
 export class LevelSettings extends AbstractSettings<LevelFormPropType> {
-    static type = 'level-settings';
-    getName() { return LevelSettings.type; }
+    static settingsName = 'level-settings';
+    getName() { return LevelSettings.settingsName; }
     meshConcept: MeshView;
 
     private registry: Registry;

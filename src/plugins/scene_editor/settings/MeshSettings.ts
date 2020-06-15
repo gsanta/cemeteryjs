@@ -112,7 +112,7 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                     });
                 
                 // TODO should separate concerns
-                this.registry.services.plugin.assetImporter.getSettingsByName<MeshImporterSettings>(MeshImporterSettings.settingsName).activate(assetModel);
+                // this.registry.services.plugin.assetImporter.getSettingsByName<MeshImporterSettings>(MeshImporterSettings.settingsName).activate(assetModel);
                 break;
             case MeshViewPropType.Texture:
                 this.meshView.textureId = this.registry.stores.assetStore.addTexture(new AssetModel({path: val.path, assetType: AssetType.Texture}));

@@ -21,18 +21,18 @@ const PlaceHolderTextStyled = styled.div`
     opacity: 0.6;
 `;
 
-export function settingsFactory(registry: Registry): JSX.Element {
-    const selectedViews = registry.stores.selectionStore.getAll();
-    if (selectedViews.length !== 1) {
-        return <PlaceHolderTextStyled>Select an object on canvas to change it's properties</PlaceHolderTextStyled>
-    }
+// export function settingsFactory(registry: Registry): JSX.Element {
+//     const selectedViews = registry.stores.selectionStore.getAll();
+//     if (selectedViews.length !== 1) {
+//         return <PlaceHolderTextStyled>Select an object on canvas to change it's properties</PlaceHolderTextStyled>
+//     }
 
-    const settings = registry.services.plugin.sceneEditor.pluginSettings.byName<MeshSettings>(MeshSettings.settingsName);
+//     const settings = registry.services.plugin.sceneEditor.pluginSettings.byName<MeshSettings>(MeshSettings.settingsName);
 
-    switch(selectedViews[0].viewType) {
-        case ViewType.MeshView:
-            return <MeshSettingsComponent concept={selectedViews[0] as MeshView} settings={settings}/>;
-        case ViewType.PathView:
-            return <PathSettingsComponent concept={selectedViews[0] as PathView}/>;
-    }
-}
+//     switch(selectedViews[0].viewType) {
+//         case ViewType.MeshView:
+//             return <MeshSettingsComponent concept={selectedViews[0] as MeshView} settings={settings}/>;
+//         case ViewType.PathView:
+//             return <PathSettingsComponent concept={selectedViews[0] as PathView}/>;
+//     }
+// }

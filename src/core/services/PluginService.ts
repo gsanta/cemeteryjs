@@ -1,10 +1,16 @@
 import { AbstractPlugin } from '../AbstractPlugin';
 import { Registry } from '../Registry';
 import { SceneEditorPlugin } from '../../plugins/scene_editor/SceneEditorPlugin';
+import { SceneEditorPluginComponentFactory } from '../../plugins/scene_editor/SceneEditorPluginComponentFactory';
 import { GameViewerPlugin } from '../../plugins/game_viewer/GameViewerPlugin';
+import { GameViewerPluginComponentFactory } from '../../plugins/game_viewer/GameViewerPluginComponentFactory';
 import { NodeEditorPlugin } from '../../plugins/node_editor/NodeEditorPlugin';
+import { NodeEditorPluginComponentFactory } from '../../plugins/node_editor/NodeEditorPluginComponentFactory';
 import { CodeEditorPlugin } from '../../plugins/code_editor/CodeEditorPlugin';
+import { CodeEditorPluginComponentFactory } from '../../plugins/code_editor/CodeEditorPluginComponentFactory';
 import { MeshImporterPlugin } from '../../plugins/mesh_importer/MeshImporterPlugin';
+import { MeshImporterPluginComponentFactory } from '../../plugins/mesh_importer/MeshImporterPluginComponentFactory';
+import { AbstractPluginComponentFactory } from '../../plugins/common/AbstractPluginComponentFactory';
 
 export interface LayoutConfig {
     activePlugin: AbstractPlugin;
@@ -46,7 +52,7 @@ export class PluginService {
     codeEditor: CodeEditorPlugin;
     assetImporter: MeshImporterPlugin;
 
-    plugins: AbstractPlugin[];
+    plugins: AbstractPlugin[] = [];
 
     singleLayout: Layout;
     doubleLayout: Layout;
@@ -57,6 +63,8 @@ export class PluginService {
     
     private currentPredefinedLayoutTitle: string; 
 
+    private pluginFactoryMap: Map<AbstractPlugin, AbstractPluginComponentFactory<any>> = new Map();
+    
     visibilityDirty = true;
 
     constructor(registry: Registry) {
@@ -66,13 +74,11 @@ export class PluginService {
         this.codeEditor = new CodeEditorPlugin(registry);
         this.assetImporter = new MeshImporterPlugin(registry);
 
-        this.plugins = [
-            this.sceneEditor,
-            this.gameView,
-            this.nodeEditor,
-            this.codeEditor,
-            this.assetImporter
-        ];
+        this.addPlugin(this.sceneEditor, new SceneEditorPluginComponentFactory(this.sceneEditor));
+        this.addPlugin(this.gameView, new GameViewerPluginComponentFactory(this.gameView));
+        this.addPlugin(this.nodeEditor, new NodeEditorPluginComponentFactory(this.nodeEditor));
+        this.addPlugin(this.codeEditor, new CodeEditorPluginComponentFactory(this.codeEditor));
+        this.addPlugin(this.assetImporter, new MeshImporterPluginComponentFactory(this.codeEditor));
 
         let allowedSinglePlugins = this.plugins.filter(plugin => plugin.allowedLayouts.has(LayoutType.Single));
         this.singleLayout = new Layout(LayoutType.Single, [{activePlugin: allowedSinglePlugins[0], allowedPlugins: allowedSinglePlugins}]);
@@ -105,6 +111,15 @@ export class PluginService {
         this.selectPredefinedLayout('Scene Editor');
     }
 
+    addPlugin(plugin: AbstractPlugin, componentFactory: AbstractPluginComponentFactory<AbstractPlugin>) {
+        this.plugins.push(plugin);
+        this.pluginFactoryMap.set(plugin, componentFactory);
+    }
+
+    getPluginFactory(plugin: AbstractPlugin): AbstractPluginComponentFactory<any> {
+        return this.pluginFactoryMap.get(plugin);
+    }
+
     private hoveredView: AbstractPlugin;
     
     setHoveredView(view: AbstractPlugin) {
@@ -113,6 +128,10 @@ export class PluginService {
 
     getHoveredView(): AbstractPlugin {
         return this.hoveredView;
+    }
+
+    getActivePlugins(): AbstractPlugin[] {
+        return this.currentLayout.configs.map(config => config.activePlugin);
     }
 
     selectPredefinedLayout(title: string) {

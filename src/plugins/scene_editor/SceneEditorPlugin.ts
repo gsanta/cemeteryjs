@@ -11,7 +11,6 @@ import { PathSettings } from './settings/PathSettings';
 import { ToolType } from '../common/tools/Tool';
 import { Tools } from '../Tools';
 import { toolFactory } from '../common/toolbar/toolFactory';
-import { MeshImporterSettings } from '../mesh_importer/settings/MeshImporterSettings';
 import { PluginSettings } from '../common/PluginSettings';
 
 function getScreenSize(canvasId: string): Point {

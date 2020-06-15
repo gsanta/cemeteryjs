@@ -22,6 +22,7 @@ import { NodeEditorImporter } from './io/NodeEditorImporter';
 import { ToolType } from '../common/tools/Tool';
 import { Tools } from '../Tools';
 import { toolFactory } from '../common/toolbar/toolFactory';
+import { PluginSettings } from '../common/PluginSettings';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -222,7 +223,6 @@ export class NodeEditorPlugin extends AbstractPlugin {
 
     private camera: Camera2D;
 
-    nodeEditorSettings: NodeEditorSettings;
     presets: NodePreset[];
 
     constructor(registry: Registry) {
@@ -234,10 +234,15 @@ export class NodeEditorPlugin extends AbstractPlugin {
         this.camera = cameraInitializer(NodeEditorPlugin.id, registry);
 
         this.selectedTool = this.tools.byType(ToolType.Camera);
-        this.nodeEditorSettings = new NodeEditorSettings(registry);
 
         this.exporter = new NodeEditorExporter(this, this.registry);
         this.importer = new NodeEditorImporter(this, this.registry);
+
+        this.pluginSettings = new PluginSettings(
+            [
+                new NodeEditorSettings(registry)
+            ]
+        )
 
         const templates: NodeModel[] = [
             new AndNode(undefined),

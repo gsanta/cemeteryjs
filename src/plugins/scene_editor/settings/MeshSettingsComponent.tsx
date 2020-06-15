@@ -1,23 +1,17 @@
 import * as React from 'react';
+import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { ClearIconComponent } from '../../../core/gui/icons/ClearIconComponent';
-import { PauseIconComponent } from '../../common/toolbar/icons/PauseIconComponent';
-import { PlayIconComponent } from '../../common/toolbar/icons/PlayIconComponent';
-import { StopIconComponent } from '../../common/toolbar/icons/StopIconComponent';
-import { ConnectedFileUploadComponent } from '../../common/toolbar/icons/ImportFileIconComponent';
-import { ButtonComponent } from '../../../core/gui/inputs/ButtonComponent';
-import { CheckboxComponent } from '../../../core/gui/inputs/CheckboxComponent';
 import { ConnectedDropdownComponent } from '../../../core/gui/inputs/DropdownComponent';
 import { ConnectedInputComponent } from '../../../core/gui/inputs/InputComponent';
 import { AccordionComponent } from '../../../core/gui/misc/AccordionComponent';
 import { ConnectedGridComponent } from '../../../core/gui/misc/GridComponent';
-import { FieldColumnStyled, GroupedRowsStyled, LabelColumnStyled, MultiFieldColumnStyled, SettingsRowStyled } from './SettingsComponent';
-import { MeshView, AnimationState } from '../../../core/models/views/MeshView';
-import { SceneEditorPlugin } from '../SceneEditorPlugin';
-import { MeshSettings, MeshViewPropType } from './MeshSettings';
-import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { AssetModel } from '../../../core/models/game_objects/AssetModel';
+import { ConnectedFileUploadComponent } from '../../common/toolbar/icons/ImportFileIconComponent';
+import { MeshSettings, MeshViewPropType } from './MeshSettings';
+import { FieldColumnStyled, GroupedRowsStyled, LabelColumnStyled, MultiFieldColumnStyled, SettingsRowStyled } from './SettingsComponent';
+import { MeshView } from '../../../core/models/views/MeshView';
 
-export class MeshSettingsComponent extends React.Component<{concept: MeshView, settings: MeshSettings}> {
+export class MeshSettingsComponent extends React.Component<{settings: MeshSettings, view: MeshView}> {
     static contextType = AppContext;
     context: AppContextType;
 
@@ -26,8 +20,8 @@ export class MeshSettingsComponent extends React.Component<{concept: MeshView, s
     }
     
     render() {
-        this.props.settings.meshView = this.props.concept;
 
+        this.props.settings.meshView = this.props.view;
         return (
             <div>
                 <GroupedRowsStyled key="name">

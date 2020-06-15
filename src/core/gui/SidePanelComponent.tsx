@@ -3,11 +3,9 @@ import styled from 'styled-components';
 import { AppContext, AppContextType } from './Context';
 import { AccordionComponent } from './misc/AccordionComponent';
 import { colors } from './styles';
-import { Layout } from '../services/PluginService';
 import { LevelSettingsComponent } from '../../plugins/scene_editor/settings/LevelSettingsComponent';
 import { GlobalSettingsComponent } from '../../plugins/scene_editor/settings/GlobalSettingsComponent';
 import { LayoutSettingsComponent } from '../../plugins/scene_editor/settings/LayoutSettingsComponent';
-import { settingsFactory } from '../../plugins/scene_editor/settings/settingsFactory';
 import { FileSettingsComponent } from '../../plugins/scene_editor/settings/FileSettingsComponent';
 import { NodeEditorSettingsComponent } from '../../plugins/node_editor/settings/NodeEditorSettingsComponent';
 
@@ -37,35 +35,38 @@ export class SidePanelComponent extends React.Component<SidebarComponentProps> {
         let layoutSettings: {title: string, body: JSX.Element}[];
         
         // TODO: create sidebar components for each plugin
-        switch(this.context.registry.services.plugin.getCurrentPredefinedLayoutTitle()) {
-            case 'Scene Editor':
-                layoutSettings = [
-                    {
-                        title: 'Level Settings',
-                        body: <LevelSettingsComponent/>
-                    },
-                    {
-                        title: 'Object Settings',
-                        body: settingsFactory(this.context.registry)
-                    },
-                    {
-                        title: 'Global Settings',
-                        body: <GlobalSettingsComponent editor={this.context.controllers}/>
-                    }
-                ]
-                break;
-            case 'Node Editor':
-                layoutSettings = [
-                    {
-                        title: 'Node types',
-                        body: <NodeEditorSettingsComponent settings={this.context.registry.services.plugin.nodeEditor.nodeEditorSettings}/>
-                    },
-                ]
-                break;
-            case 'Code Editor':
-                layoutSettings = []
-                break;
-        }
+        // switch(this.context.registry.services.plugin.getCurrentPredefinedLayoutTitle()) {
+        //     case 'Scene Editor':
+        //         layoutSettings = [
+        //             {
+        //                 title: 'Level Settings',
+        //                 body: <LevelSettingsComponent/>
+        //             },
+        //             {
+        //                 title: 'Object Settings',
+        //                 body: settingsFactory(this.context.registry)
+        //             },
+        //             {
+        //                 title: 'Global Settings',
+        //                 body: <GlobalSettingsComponent editor={this.context.controllers}/>
+        //             }
+        //         ]
+        //         break;
+        //     case 'Node Editor':
+        //         layoutSettings = [
+        //             {
+        //                 title: 'Node types',
+        //                 body: <NodeEditorSettingsComponent settings={this.context.registry.services.plugin.nodeEditor.nodeEditorSettings}/>
+        //             },
+        //         ]
+        //         break;
+        //     case 'Code Editor':
+        //         layoutSettings = []
+        //         break;
+        // }
+
+        const pluginService = this.context.registry.services.plugin;
+        const pluginSettingsComponents = pluginService.getActivePlugins().map(plugin => pluginService.getPluginFactory(plugin).renderSidePanelSettings());
         
         return (
             <SidebarStyled>
@@ -80,10 +81,10 @@ export class SidePanelComponent extends React.Component<SidebarComponentProps> {
                                 title: 'Layout Settings',
                                 body: <LayoutSettingsComponent editor={this.context.controllers} {...this.props}/>
                             },
-                            ...layoutSettings
                         ]
                     }
                 />
+                {pluginSettingsComponents}
             </SidebarStyled>
         );
     }
