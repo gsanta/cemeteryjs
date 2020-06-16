@@ -2,7 +2,11 @@ import { AbstractPluginComponentFactory } from "../common/AbstractPluginComponen
 import { MeshImporterPlugin } from "./MeshImporterPlugin";
 
 export class MeshImporterPluginComponentFactory extends AbstractPluginComponentFactory<MeshImporterPlugin> {
-    renderSidePanelSettings() {
+    renderSidePanelSettingsWhenPluginActive() {
+        return null;
+    }
+
+    renderSidePanelSettingsWhenPluginNotActive() {
         return null;
     }
 }

@@ -2,7 +2,11 @@ import { AbstractPluginComponentFactory } from "../common/AbstractPluginComponen
 import { GameViewerPlugin } from "./GameViewerPlugin";
 
 export class GameViewerPluginComponentFactory extends AbstractPluginComponentFactory<GameViewerPlugin> {
-    renderSidePanelSettings() {
+    renderSidePanelSettingsWhenPluginActive() {
+        return null;
+    }
+
+    renderSidePanelSettingsWhenPluginNotActive() {
         return null;
     }
 }

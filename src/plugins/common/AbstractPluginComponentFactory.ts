@@ -8,5 +8,6 @@ export abstract class AbstractPluginComponentFactory<T extends AbstractPlugin> {
         this.plugin = plugin;
     }
     
-    abstract renderSidePanelSettings(): JSX.Element; 
+    abstract renderSidePanelSettingsWhenPluginActive(): JSX.Element;
+    abstract renderSidePanelSettingsWhenPluginNotActive(): JSX.Element;
 }

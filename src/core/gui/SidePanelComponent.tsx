@@ -66,8 +66,11 @@ export class SidePanelComponent extends React.Component<SidebarComponentProps> {
         // }
 
         const pluginService = this.context.registry.services.plugin;
-        const pluginSettingsComponents = pluginService.getActivePlugins().map(plugin => pluginService.getPluginFactory(plugin).renderSidePanelSettings());
-        
+        const activePlugins = pluginService.getActivePlugins();
+        const notActivePlugins = pluginService.plugins.filter(plugin => activePlugins.indexOf(plugin) === -1);
+        const activePluginComponents = pluginService.getActivePlugins().map(plugin => pluginService.getPluginFactory(plugin).renderSidePanelSettingsWhenPluginActive());
+        const notActivePluginComponents = pluginService.getActivePlugins().map(plugin => pluginService.getPluginFactory(plugin).renderSidePanelSettingsWhenPluginActive());
+
         return (
             <SidebarStyled>
                 <AccordionComponent
@@ -84,7 +87,8 @@ export class SidePanelComponent extends React.Component<SidebarComponentProps> {
                         ]
                     }
                 />
-                {pluginSettingsComponents}
+                {activePluginComponents}
+                {notActivePluginComponents}
             </SidebarStyled>
         );
     }

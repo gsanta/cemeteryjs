@@ -5,7 +5,11 @@ import { NodeEditorSettings } from "./settings/NodeEditorSettings";
 import * as React from 'react';
 
 export class NodeEditorPluginComponentFactory extends AbstractPluginComponentFactory<NodeEditorPlugin> {
-    renderSidePanelSettings() {
+    renderSidePanelSettingsWhenPluginActive() {
         return <NodeEditorSettingsComponent settings={this.plugin.pluginSettings.byName<NodeEditorSettings>(NodeEditorSettings.settingsName)}/>
+    }
+
+    renderSidePanelSettingsWhenPluginNotActive() {
+        return null;
     }
 }

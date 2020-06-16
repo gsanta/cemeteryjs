@@ -2,7 +2,7 @@ import { AbstractPluginComponentFactory } from "../common/AbstractPluginComponen
 import { CodeEditorPlugin } from "./CodeEditorPlugin";
 
 export class CodeEditorPluginComponentFactory extends AbstractPluginComponentFactory<CodeEditorPlugin> {
-    renderSidePanelSettings() {
+    renderSidePanelSettingsWhenPluginActive() {
         return null;
     }
 }

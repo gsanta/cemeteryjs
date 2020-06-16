@@ -4,7 +4,11 @@ import { SceneEditorSettingsComponent } from './SceneEditorSettingsComponent';
 import * as React from 'react';
 
 export class SceneEditorPluginComponentFactory extends AbstractPluginComponentFactory<SceneEditorPlugin> {
-    renderSidePanelSettings() {
+    renderSidePanelSettingsWhenPluginActive() {
         return <SceneEditorSettingsComponent plugin={this.plugin}/>
+    }
+
+    renderSidePanelSettingsWhenPluginNotActive() {
+        return null;
     }
 }
