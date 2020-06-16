@@ -74,11 +74,11 @@ export class PluginService {
         this.codeEditor = new CodeEditorPlugin(registry);
         this.assetImporter = new MeshImporterPlugin(registry);
 
-        this.addPlugin(this.sceneEditor, new SceneEditorPluginComponentFactory(this.sceneEditor));
-        this.addPlugin(this.gameView, new GameViewerPluginComponentFactory(this.gameView));
-        this.addPlugin(this.nodeEditor, new NodeEditorPluginComponentFactory(this.nodeEditor));
-        this.addPlugin(this.codeEditor, new CodeEditorPluginComponentFactory(this.codeEditor));
-        this.addPlugin(this.assetImporter, new MeshImporterPluginComponentFactory(this.codeEditor));
+        this.addPlugin(this.sceneEditor, new SceneEditorPluginComponentFactory(registry, this.sceneEditor));
+        this.addPlugin(this.gameView, new GameViewerPluginComponentFactory(registry, this.gameView));
+        this.addPlugin(this.nodeEditor, new NodeEditorPluginComponentFactory(registry, this.nodeEditor));
+        this.addPlugin(this.codeEditor, new CodeEditorPluginComponentFactory(registry, this.codeEditor));
+        this.addPlugin(this.assetImporter, new MeshImporterPluginComponentFactory(registry, this.assetImporter));
 
         let allowedSinglePlugins = this.plugins.filter(plugin => plugin.allowedLayouts.has(LayoutType.Single));
         this.singleLayout = new Layout(LayoutType.Single, [{activePlugin: allowedSinglePlugins[0], allowedPlugins: allowedSinglePlugins}]);
@@ -120,7 +120,7 @@ export class PluginService {
         return this.pluginFactoryMap.get(plugin);
     }
 
-    private hoveredView: AbstractPlugin;
+    private hoveredView: AbstractPlugin;registry
     
     setHoveredView(view: AbstractPlugin) {
         this.hoveredView = view;
@@ -132,6 +132,10 @@ export class PluginService {
 
     getActivePlugins(): AbstractPlugin[] {
         return this.currentLayout.configs.map(config => config.activePlugin);
+    }
+
+    isPluginActive(plugin: AbstractPlugin) {
+        return this.currentLayout.configs.find(config => config.activePlugin === plugin);
     }
 
     selectPredefinedLayout(title: string) {

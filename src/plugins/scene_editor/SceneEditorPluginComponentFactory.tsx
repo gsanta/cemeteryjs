@@ -2,13 +2,18 @@ import { AbstractPluginComponentFactory } from '../common/AbstractPluginComponen
 import { SceneEditorPlugin } from './SceneEditorPlugin';
 import { SceneEditorSettingsComponent } from './SceneEditorSettingsComponent';
 import * as React from 'react';
+import { SceneEditorComponent } from './SceneEditorComponent';
 
 export class SceneEditorPluginComponentFactory extends AbstractPluginComponentFactory<SceneEditorPlugin> {
-    renderSidePanelSettingsWhenPluginActive() {
+    renderSidePanelComponent() {
+        if (!this.registry.services.plugin.isPluginActive(this.plugin)) {
+            return null;
+        }
+
         return <SceneEditorSettingsComponent plugin={this.plugin}/>
     }
 
-    renderSidePanelSettingsWhenPluginNotActive() {
-        return null;
+    renderMainComponent() {
+        return <SceneEditorComponent plugin={this.plugin} key={this.plugin.getId()}/>;
     }
 }

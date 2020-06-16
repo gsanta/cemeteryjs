@@ -1,13 +1,10 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { FileSettingsComponent } from '../../plugins/scene_editor/settings/FileSettingsComponent';
+import { LayoutSettingsComponent } from '../../plugins/scene_editor/settings/LayoutSettingsComponent';
 import { AppContext, AppContextType } from './Context';
 import { AccordionComponent } from './misc/AccordionComponent';
 import { colors } from './styles';
-import { LevelSettingsComponent } from '../../plugins/scene_editor/settings/LevelSettingsComponent';
-import { GlobalSettingsComponent } from '../../plugins/scene_editor/settings/GlobalSettingsComponent';
-import { LayoutSettingsComponent } from '../../plugins/scene_editor/settings/LayoutSettingsComponent';
-import { FileSettingsComponent } from '../../plugins/scene_editor/settings/FileSettingsComponent';
-import { NodeEditorSettingsComponent } from '../../plugins/node_editor/settings/NodeEditorSettingsComponent';
 
 export interface SidebarComponentProps {
     isEditorOpen: boolean;
@@ -66,10 +63,7 @@ export class SidePanelComponent extends React.Component<SidebarComponentProps> {
         // }
 
         const pluginService = this.context.registry.services.plugin;
-        const activePlugins = pluginService.getActivePlugins();
-        const notActivePlugins = pluginService.plugins.filter(plugin => activePlugins.indexOf(plugin) === -1);
-        const activePluginComponents = pluginService.getActivePlugins().map(plugin => pluginService.getPluginFactory(plugin).renderSidePanelSettingsWhenPluginActive());
-        const notActivePluginComponents = pluginService.getActivePlugins().map(plugin => pluginService.getPluginFactory(plugin).renderSidePanelSettingsWhenPluginActive());
+        const activePluginComponents = pluginService.plugins.map(plugin => pluginService.getPluginFactory(plugin).renderSidePanelComponent());
 
         return (
             <SidebarStyled>
@@ -88,7 +82,6 @@ export class SidePanelComponent extends React.Component<SidebarComponentProps> {
                     }
                 />
                 {activePluginComponents}
-                {notActivePluginComponents}
             </SidebarStyled>
         );
     }

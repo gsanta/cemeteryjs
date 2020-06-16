@@ -5,7 +5,6 @@ import Backend from 'react-dnd-html5-backend';
 import Split from 'split.js';
 import 'tippy.js/dist/tippy.css';
 import { GameViewerPlugin } from '../../plugins/game_viewer/GameViewerPlugin';
-import { viewFactory } from '../ViewFactory';
 import './App.scss';
 import { AppContext, AppContextType } from './Context';
 import { HotkeyInputComponent } from './HotkeyInputComponent';
@@ -90,7 +89,8 @@ export class App extends React.Component<{}, AppState> {
     }
 
     private renderPlugins(): JSX.Element[] {
-        return this.context.registry.services.plugin.getCurrentLayout().configs.map(config => viewFactory(config.activePlugin));
+        const pluginService = this.context.registry.services.plugin; 
+        return pluginService.getCurrentLayout().configs.map(config => pluginService.getPluginFactory(config.activePlugin).renderMainComponent());
     }
 
     private resize() {

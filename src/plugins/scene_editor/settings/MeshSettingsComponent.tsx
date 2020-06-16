@@ -5,11 +5,9 @@ import { ConnectedDropdownComponent } from '../../../core/gui/inputs/DropdownCom
 import { ConnectedInputComponent } from '../../../core/gui/inputs/InputComponent';
 import { AccordionComponent } from '../../../core/gui/misc/AccordionComponent';
 import { ConnectedGridComponent } from '../../../core/gui/misc/GridComponent';
-import { AssetModel } from '../../../core/models/game_objects/AssetModel';
-import { ConnectedFileUploadComponent } from '../../common/toolbar/icons/ImportFileIconComponent';
+import { MeshView } from '../../../core/models/views/MeshView';
 import { MeshSettings, MeshViewPropType } from './MeshSettings';
 import { FieldColumnStyled, GroupedRowsStyled, LabelColumnStyled, MultiFieldColumnStyled, SettingsRowStyled } from './SettingsComponent';
-import { MeshView } from '../../../core/models/views/MeshView';
 
 export class MeshSettingsComponent extends React.Component<{settings: MeshSettings, view: MeshView}> {
     static contextType = AppContext;
@@ -30,7 +28,6 @@ export class MeshSettingsComponent extends React.Component<{settings: MeshSettin
                 <GroupedRowsStyled key="layer">
                     {this.renderLayerInput()}
                 </GroupedRowsStyled>
-                {this.renderMaterialSection()}
                 {this.renderTransformSection()}
             </div>
         );
@@ -51,67 +48,6 @@ export class MeshSettingsComponent extends React.Component<{settings: MeshSettin
                 </FieldColumnStyled>
             </SettingsRowStyled>
         );        
-    }
-
-    private renderModelFileChooser(): JSX.Element {
-        const assetModel: AssetModel = this.props.settings.getVal(MeshViewPropType.Model);
-
-        return (
-            <SettingsRowStyled key="model-file">
-                <LabelColumnStyled>Model</LabelColumnStyled>
-                <FieldColumnStyled>
-                    <ConnectedFileUploadComponent
-                        formController={this.props.settings}
-                        propertyName={MeshViewPropType.Model}
-                        propertyType="string"
-                        placeholder={`Upload`}
-                        value={assetModel && assetModel.path}
-                        readDataAs="dataUrl"
-                    />
-                </FieldColumnStyled>
-            </SettingsRowStyled>
-        );
-    }
-
-    
-    private renderTextureFileChooser(): JSX.Element {
-        const assetModel: AssetModel = this.props.settings.getVal(MeshViewPropType.Texture);
-
-        return (
-            <SettingsRowStyled key="texture-file">
-                <LabelColumnStyled>Texture</LabelColumnStyled>
-                <FieldColumnStyled>
-                    <ConnectedFileUploadComponent
-                        formController={this.props.settings}
-                        propertyName={MeshViewPropType.Texture}
-                        propertyType="string"
-                        placeholder={`Upload`}
-                        value={assetModel && assetModel.path}
-                        readDataAs="dataUrl"
-                    />
-                </FieldColumnStyled>
-            </SettingsRowStyled>
-        );
-    }
-
-    private renderThumbnailFileChooser(): JSX.Element {
-        const assetModel: AssetModel = this.props.settings.getVal(MeshViewPropType.Thumbnail);
-
-        return (
-            <SettingsRowStyled key="thumbnail-file">
-                <LabelColumnStyled>Thumbnail</LabelColumnStyled>
-                <FieldColumnStyled>
-                    <ConnectedFileUploadComponent
-                        formController={this.props.settings}
-                        propertyName={MeshViewPropType.Thumbnail}
-                        propertyType="string"
-                        placeholder={`Upload`}
-                        value={assetModel && assetModel.path}
-                        readDataAs="dataUrl"
-                    />
-                </FieldColumnStyled>
-            </SettingsRowStyled>
-        );
     }
 
     private renderLayerInput(): JSX.Element {
@@ -175,31 +111,7 @@ export class MeshSettingsComponent extends React.Component<{settings: MeshSettin
                 </FieldColumnStyled>
             </SettingsRowStyled>
         );
-    }
-
-    private renderMaterialSection() {
-        const body = (
-            <React.Fragment>
-                {this.renderModelFileChooser()}
-                {this.renderTextureFileChooser()}
-                {this.renderThumbnailFileChooser()}
-            </React.Fragment>
-        )
-
-        return (
-            <AccordionComponent
-                key="material"
-                level="secondary"
-                expanded={true}
-                elements={[
-                    {
-                        title: 'Material',
-                        body
-                    }
-                ]}
-            />
-        );
-    }
+}
 
     private renderTransformSection() {
         const body = (

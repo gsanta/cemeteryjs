@@ -1,4 +1,4 @@
-import * as React from 'React';
+import * as React from 'react';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { MeshImporterSettings } from '../../mesh_importer/settings/MeshImporterSettings';
 import styled from 'styled-components';

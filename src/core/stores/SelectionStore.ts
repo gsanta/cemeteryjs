@@ -2,7 +2,7 @@ import { without } from "../geometry/utils/Functions";
 import { PathView } from "../models/views/PathView";
 import { ChildView, FeedbackType } from "../models/views/child_views/ChildView";
 import { EditPointView } from "../models/views/child_views/EditPointView";
-import { View, ViewType } from "../models/views/View";
+import { View, ViewType } from '../models/views/View';
 import { isView } from "./SceneStore";
 
 export class SelectionStore {
@@ -32,8 +32,16 @@ export class SelectionStore {
         return <PathView[]> this.items.filter(view => view.viewType === ViewType.PathView);
     }
 
+    hasOne(): boolean {
+        return this.items.length === 1;
+    }
+
     hasAny(): boolean {
         return this.items.length > 0;
+    }
+
+    getOneByType(viewType: ViewType): View {
+        return this.items.find(item => item.viewType === viewType);
     }
 
     getView(): View {

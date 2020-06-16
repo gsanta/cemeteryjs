@@ -52,7 +52,7 @@ export class SceneEditorPlugin extends AbstractPlugin {
     constructor(registry: Registry) {
         super(registry);
         
-        const tools = [ToolType.Rectangle, ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Camera].map(toolType => toolFactory(toolType, this, registry));
+        const tools = [ToolType.Rectangle, ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Pointer, ToolType.Camera].map(toolType => toolFactory(toolType, this, registry));
         this.tools = new Tools(tools);
 
         this.camera = cameraInitializer(SceneEditorPlugin.id, registry);
