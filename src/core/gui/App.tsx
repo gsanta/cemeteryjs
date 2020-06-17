@@ -46,7 +46,7 @@ export class App extends React.Component<{}, AppState> {
             this.context.registry.services.plugin.visibilityDirty = false;
         }
 
-        window.addEventListener('resize', () => this.context.registry.services.plugin.getCurrentLayout().configs.forEach(config => config.activePlugin.resize()));
+        window.addEventListener('resize', () => this.context.registry.services.plugin.getActivePlugins().forEach(plugin => plugin.resize()));
 
 
         setTimeout(() => this.context.controllers.setup(document.querySelector(`#${GameViewerPlugin.id}`)), 100);
@@ -87,11 +87,11 @@ export class App extends React.Component<{}, AppState> {
 
     private renderPlugins(): JSX.Element[] {
         const pluginService = this.context.registry.services.plugin; 
-        return pluginService.getCurrentLayout().configs.map(config => pluginService.getPluginFactory(config.activePlugin).renderMainComponent());
+        return pluginService.getActivePlugins().map(plugin => pluginService.getPluginFactory(plugin).renderMainComponent());
     }
 
     private resize() {
-        this.context.registry.services.plugin.getCurrentLayout().configs.forEach(config => config.activePlugin.resize());
+        this.context.registry.services.plugin.getActivePlugins().forEach(plugin => plugin.resize());
     }
 
     private updateCanvasVisibility() {

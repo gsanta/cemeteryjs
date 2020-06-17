@@ -218,8 +218,6 @@ const recipes: NodePresetRecipe[] = [
 export class NodeEditorPlugin extends AbstractPlugin {
     static id = 'action-editor-plugin';
     
-    allowedLayouts = new Set([LayoutType.Single]);
-
     private camera: Camera2D;
 
     presets: NodePreset[];

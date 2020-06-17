@@ -17,28 +17,6 @@ export interface LayoutConfig {
     allowedPlugins: AbstractPlugin[];
 }
 
-export class Layout {
-    type: LayoutType;
-    configs: LayoutConfig[];
-
-    constructor(type: LayoutType, config: LayoutConfig[]) {
-        this.configs = config;
-        this.type = type;
-    }
-
-    sizes() {
-        return this.configs.map(() => 100 / this.configs.length);
-    }
-
-    minSizes() {
-        return this.configs.map(() => 300);
-    }
-
-    ids() {
-        return this.configs.map(plugin => plugin.activePlugin.getId());
-    }
-}
-
 export enum LayoutType {
     Single = 'Single',
     Double = 'Double',
@@ -51,16 +29,11 @@ export class PluginService {
     nodeEditor: NodeEditorPlugin;
     codeEditor: CodeEditorPlugin;
     assetImporter: MeshImporterPlugin;
-
     plugins: AbstractPlugin[] = [];
+    activePlugins: AbstractPlugin[] = [];
 
-    singleLayout: Layout;
-    doubleLayout: Layout;
-
-    predefinedLayouts: {title: string; activePluginNames: string[]}[];
-
-    private currentLayout: Layout;
-    private currentPredefinedLayoutTitle: string; 
+    predefinedLayouts: {title: string; plugins: AbstractPlugin[]}[];
+    private currentPredefinedLayout: {title: string; plugins: AbstractPlugin[]}; 
     private pluginFactoryMap: Map<AbstractPlugin, AbstractPluginComponentFactory<any>> = new Map();
     
     visibilityDirty = true;
@@ -78,31 +51,18 @@ export class PluginService {
         this.addPlugin(this.codeEditor, new CodeEditorPluginComponentFactory(registry, this.codeEditor));
         this.addPlugin(this.assetImporter, new MeshImporterPluginComponentFactory(registry, this.assetImporter));
 
-        let allowedSinglePlugins = this.plugins.filter(plugin => plugin.allowedLayouts.has(LayoutType.Single));
-        this.singleLayout = new Layout(LayoutType.Single, [{activePlugin: allowedSinglePlugins[0], allowedPlugins: allowedSinglePlugins}]);
-        
-        let allowedDoubleLayoutPlugins = this.plugins.filter(plugin => plugin.allowedLayouts.has(LayoutType.Double));
-        allowedDoubleLayoutPlugins = allowedDoubleLayoutPlugins.filter(plugin => plugin !== this.gameView);
-        this.doubleLayout = new Layout(
-            LayoutType.Double,
-            [
-                {activePlugin: allowedDoubleLayoutPlugins[0], allowedPlugins: allowedDoubleLayoutPlugins},
-                {activePlugin: this.gameView, allowedPlugins: [this.gameView]}
-            ]
-        );
-
         this.predefinedLayouts = [
             {
                 title: 'Scene Editor',
-                activePluginNames: [this.sceneEditor.getId(), this.gameView.getId()]
+                plugins: [this.sceneEditor, this.gameView]
             },
             {
                 title: 'Node Editor',
-                activePluginNames: [this.nodeEditor.getId()]
+                plugins: [this.nodeEditor]
             },
             {
                 title: 'Code Editor',
-                activePluginNames: [this.codeEditor.getId(), this.gameView.getId()]
+                plugins: [this.codeEditor, this.gameView]
             }
         ];
 
@@ -129,53 +89,34 @@ export class PluginService {
     }
 
     getActivePlugins(): AbstractPlugin[] {
-        return this.currentLayout.configs.map(config => config.activePlugin);
-    }
-
-    isPluginActive(plugin: AbstractPlugin) {
-        return this.currentLayout.configs.find(config => config.activePlugin === plugin);
+        return this.activePlugins;
     }
 
     selectPredefinedLayout(title: string) {
-        const prevPlugins = this.currentLayout ? this.currentLayout.configs.map(config => config.activePlugin) : [];
-
         const predefinedLayout = this.predefinedLayouts.find(predef => predef.title === title);
-        const layout = predefinedLayout.activePluginNames.length === 1 ? this.singleLayout : this.doubleLayout;
+        this.currentPredefinedLayout = predefinedLayout;
 
-        layout.configs.forEach((config, index) => {
-            config.activePlugin = this.getViewById(predefinedLayout.activePluginNames[index]);
-            config.activePlugin.resize();
-        });
-        this.currentLayout = layout;
+        const activePlugins = predefinedLayout.plugins;
+        this.setActivePlugins(activePlugins);
+    }
+
+    setActivePlugins(activePlugins: AbstractPlugin[]) {
+        const prevActivePLugins = [...this.activePlugins];
         this.visibilityDirty = true;
-        this.currentPredefinedLayoutTitle = title;
 
-        const activePlugins = this.currentLayout.configs.map(config => config.activePlugin);
-        const destroyPlugins = prevPlugins.filter(plugin => activePlugins.indexOf(plugin) === -1);
+        this.activePlugins = activePlugins;
+        
+        const destroyPlugins = prevActivePLugins.filter(plugin => this.activePlugins.indexOf(plugin) === -1);
         destroyPlugins.forEach(plugin => plugin.destroy());
+
+        this.activePlugins.forEach(plugin => plugin.resize());
     }
 
     getViewById<T extends AbstractPlugin = AbstractPlugin>(id: string): T {
         return <T> this.plugins.find(view => view.getId() === id);
     }
 
-    setLayout(layoutType: LayoutType, activePluginNames?: string[]) {
-        this.currentLayout = layoutType === LayoutType.Single ? this.singleLayout : this.doubleLayout;
-        if (activePluginNames) {
-            this.currentLayout.configs.forEach((config, index) => {
-                config.activePlugin = this.getViewById(activePluginNames[index]);
-                config.activePlugin.resize();
-            });
-        }
-
-        this.visibilityDirty = true;
-    }
-
-    getCurrentLayout(): Layout {
-        return this.currentLayout;
-    }
-
-    getCurrentPredefinedLayoutTitle(): string {
-        return this.currentPredefinedLayoutTitle;
+    getCurrentPredefinedLayout(): {title: string; plugins: AbstractPlugin[]} {
+        return this.currentPredefinedLayout;
     }
 }

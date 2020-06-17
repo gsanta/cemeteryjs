@@ -23,7 +23,6 @@ export function getCanvasElement(viewId: string): HTMLCanvasElement {
 
 export class MeshImporterPlugin extends AbstractPlugin {
     static id = 'mesh-importer-plugin';
-    allowedLayouts = new Set([LayoutType.Dialog]);
 
     constructor(registry: Registry) {
         super(registry);

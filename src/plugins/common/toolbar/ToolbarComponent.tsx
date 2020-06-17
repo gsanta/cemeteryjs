@@ -59,7 +59,7 @@ export class ToolbarComponent extends React.Component<ToolbarProps> {
         const rightIcons: JSX.Element[] = [];
         
         if (this.props.renderFullScreenIcon) {
-            const fullScreenIcon = pluginService.getCurrentLayout().type === LayoutType.Double ? this.renderEnterFullScreenIcon() : this.renderExitFullScreenIcon();
+            const fullScreenIcon = pluginService.getActivePlugins().length === 2 ? this.renderEnterFullScreenIcon() : this.renderExitFullScreenIcon();
             rightIcons.push(fullScreenIcon);
         }
 
@@ -87,9 +87,7 @@ export class ToolbarComponent extends React.Component<ToolbarProps> {
             <FullScreenIconComponent 
                 isActive={false} 
                 onClick={() => {
-                    const view = this.context.registry.services.plugin.getViewById(this.props.view.getId());
-
-                    this.context.registry.services.plugin.setLayout(LayoutType.Single, [this.props.view.getId()]);
+                    this.context.registry.services.plugin.setActivePlugins([this.props.view]);
                     this.context.registry.services.update.runImmediately(RenderTask.RenderFull);
                 }} 
                 format="short"
@@ -102,7 +100,7 @@ export class ToolbarComponent extends React.Component<ToolbarProps> {
             <FullScreenExitIconComponent
                 isActive={false}
                 onClick={() => {
-                    this.context.registry.services.plugin.setLayout(LayoutType.Double);
+                    this.context.registry.services.plugin.selectPredefinedLayout(this.context.registry.services.plugin.getCurrentPredefinedLayout().title);
                     this.context.registry.services.update.runImmediately(RenderTask.RenderFull);            
                 }}
                 format="short"

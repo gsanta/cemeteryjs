@@ -25,7 +25,6 @@ export function getCanvasElement(viewId: string): HTMLCanvasElement {
 
 export class GameViewerPlugin extends AbstractPlugin {
     static id = 'game-viewer-plugin';
-    allowedLayouts = new Set([LayoutType.Single, LayoutType.Double]);
     gameViewerSettings: GameViewerSettings;
 
     // private axisGizmo: AxisGizmo;

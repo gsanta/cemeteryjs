@@ -33,8 +33,6 @@ export abstract class AbstractPlugin {
 
     htmlElement: HTMLElement;
 
-    allowedLayouts: Set<LayoutType>;
-
     exporter: IPluginExporter;
     importer: AbstractPluginImporter;
 

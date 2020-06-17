@@ -13,8 +13,6 @@ export const initCode = `
 export class CodeEditorPlugin extends AbstractPlugin {
     static id = 'code-editor-plugin';
     visible = true;
-    allowedLayouts = new Set([LayoutType.Single, LayoutType.Double]);
-
     editors: monaco.editor.IStandaloneCodeEditor[] = [];
 
     constructor(registry: Registry) {

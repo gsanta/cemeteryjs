@@ -36,7 +36,7 @@ export class LayoutSettingsComponent extends React.Component<GeneralFormComponen
                         formController={this.context.controllers.layoutSettings}
                         propertyName={LayoutPropType.Layout}
                         values={this.context.registry.services.plugin.predefinedLayouts.map(layout => layout.title)}
-                        currentValue={this.context.registry.services.plugin.getCurrentPredefinedLayoutTitle()}
+                        currentValue={this.context.registry.services.plugin.getCurrentPredefinedLayout().title}
                         placeholder="Select layout"
                     />
                 </MultiFieldColumnStyled>

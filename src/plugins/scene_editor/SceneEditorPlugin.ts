@@ -44,8 +44,6 @@ export enum CanvasTag {
 export class SceneEditorPlugin extends AbstractPlugin {
     static id = 'scene-editor-plugin';
     
-    allowedLayouts = new Set([LayoutType.Single, LayoutType.Double]);
-
     private camera: Camera2D;
 
     constructor(registry: Registry) {
