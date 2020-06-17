@@ -23,7 +23,6 @@ export function getCanvasElement(viewId: string): HTMLCanvasElement {
 
 export class MeshImporterPlugin extends AbstractPlugin {
     static id = 'mesh-importer-plugin';
-    visible = true;
     allowedLayouts = new Set([LayoutType.Dialog]);
 
     constructor(registry: Registry) {
@@ -71,15 +70,7 @@ export class MeshImporterPlugin extends AbstractPlugin {
 
     getSelectedTool(): Tool {
         return this.selectedTool;
-    }
-
-    isVisible(): boolean {
-        return this.visible;
-    }
-
-    setVisible(visible: boolean) {
-        this.visible = visible;
-    }    
+    } 
 
     getOffset() {
         if (this.htmlElement) {

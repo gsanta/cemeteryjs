@@ -218,7 +218,6 @@ const recipes: NodePresetRecipe[] = [
 export class NodeEditorPlugin extends AbstractPlugin {
     static id = 'action-editor-plugin';
     
-    visible = true;
     allowedLayouts = new Set([LayoutType.Single]);
 
     private camera: Camera2D;
@@ -228,7 +227,7 @@ export class NodeEditorPlugin extends AbstractPlugin {
     constructor(registry: Registry) {
         super(registry);
 
-        const tools = [ToolType.Select, ToolType.Delete, ToolType.Camera, ToolType.Join, ToolType.DragAndDrop].map(toolType => toolFactory(toolType, this, registry));
+        const tools = [ToolType.Select, ToolType.Delete, ToolType.Camera, ToolType.Pointer, ToolType.Join, ToolType.DragAndDrop].map(toolType => toolFactory(toolType, this, registry));
         this.tools = new Tools(tools);
 
         this.camera = cameraInitializer(NodeEditorPlugin.id, registry);
@@ -282,14 +281,6 @@ export class NodeEditorPlugin extends AbstractPlugin {
 
         this.renderFunc && this.renderFunc();
     };
-
-    isVisible(): boolean {
-        return this.visible;
-    }
-
-    setVisible(visible: boolean) {
-        this.visible = visible;
-    }
 
     getOffset() {
         return calcOffsetFromDom(this.htmlElement);

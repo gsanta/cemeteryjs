@@ -1,4 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'rc-slider/assets/index.css';
+import 'rc-tooltip/assets/bootstrap.css';
 import * as React from 'react';
 import { DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
@@ -7,13 +9,10 @@ import 'tippy.js/dist/tippy.css';
 import { GameViewerPlugin } from '../../plugins/game_viewer/GameViewerPlugin';
 import './App.scss';
 import { AppContext, AppContextType } from './Context';
+import { DialogManagerComponent } from './dialogs/DialogManagerComponent';
 import { HotkeyInputComponent } from './HotkeyInputComponent';
 import { SpinnerOverlayComponent } from './misc/SpinnerOverlayComponent';
 import { SidePanelComponent } from './SidePanelComponent';
-import 'rc-slider/assets/index.css';
-import 'rc-tooltip/assets/bootstrap.css';
-import { MeshImporterDialog } from '../../plugins/mesh_importer/components/MeshImporterDialog';
-import { DialogManagerComponent } from './dialogs/DialogManagerComponent';
 
 export interface AppState {
     isDialogOpen: boolean;
@@ -50,9 +49,7 @@ export class App extends React.Component<{}, AppState> {
         window.addEventListener('resize', () => this.context.registry.services.plugin.getCurrentLayout().configs.forEach(config => config.activePlugin.resize()));
 
 
-        setTimeout(() => {
-            this.context.controllers.setup(document.querySelector(`#${GameViewerPlugin.id}`));
-        }, 100);
+        setTimeout(() => this.context.controllers.setup(document.querySelector(`#${GameViewerPlugin.id}`)), 100);
 
         document.getElementsByTagName('body')[0].addEventListener('onfocus', () => {
             console.log('body focus')
@@ -98,14 +95,10 @@ export class App extends React.Component<{}, AppState> {
     }
 
     private updateCanvasVisibility() {
-        const sizes = [12 , ...this.context.registry.services.plugin.getCurrentLayout().sizes()];
-        const minSizes = [230 , ...this.context.registry.services.plugin.getCurrentLayout().minSizes()];
-        const ids = ['toolbar' , ...this.context.registry.services.plugin.getCurrentLayout().ids()];
-
-        this.split = Split(ids.map(id => `#${id}`),
+        this.split = Split(this.context.registry.services.layout.getPanelIds().map(id => `#${id}`),
             {
-                sizes: sizes,
-                minSize: minSizes,
+                sizes: this.context.registry.services.layout.getPanelWidthsInPercent(),
+                minSize: this.context.registry.services.layout.getMinWidthsInPixel(),
                 elementStyle: (dimension, size, gutterSize) => ({
                     'flex-basis': `calc(${size}% - ${gutterSize}px)`,
                 }),
@@ -113,10 +106,9 @@ export class App extends React.Component<{}, AppState> {
                     'width': '2px',
                     'cursor': 'ew-resize'
                 }),
-                onDrag: () => {
-                    this.resize();
-                }
+                onDrag: () => this.resize(),
+                onDragEnd: (sizes) => this.context.registry.services.layout.setSizesInPercent(sizes)
             }
-        )
+        );
     }
 }

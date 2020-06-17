@@ -37,6 +37,7 @@ export class ViewSettingsComponent extends React.Component<{plugin: SceneEditorP
                 return <PathSettingsComponent settings={settings as PathSettings} view={selectedViews[0] as PathView}/>;
         }
 
+        return null;
     }
 
 }

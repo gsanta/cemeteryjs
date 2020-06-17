@@ -16,6 +16,7 @@ import { PluginService } from "./PluginService";
 import { NodeService } from '../../plugins/game_viewer/services/NodeService';
 import { GamepadService } from './GamepadService';
 import { EngineService } from "./EngineService";
+import { LayoutService } from "./LayoutService";
 
 export class Services {
     hotkey: HotkeyService;
@@ -32,6 +33,7 @@ export class Services {
     game: GameService;
     plugin: PluginService;
     gamepad: GamepadService;
+    layout: LayoutService;
 
     private registry: Registry;
 
@@ -54,6 +56,7 @@ export class Services {
         this.plugin = new PluginService(this.registry);
         this.game = new GameService(this.registry);
         this.gamepad = new GamepadService(this.registry);
+        this.layout = new LayoutService(this.registry);
 
         // TODO: find a better place to register general hotkeys
         this.hotkey.registerHotkey(this.gamepad);

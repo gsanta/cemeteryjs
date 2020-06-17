@@ -47,13 +47,5 @@ export class CodeEditorPlugin extends AbstractPlugin {
         }
 
         this.renderFunc && this.renderFunc();
-    }
-
-    isVisible(): boolean {
-        return this.visible;
-    }
-
-    setVisible(visible: boolean) {
-        this.visible = visible;
-    }    
+    } 
 }

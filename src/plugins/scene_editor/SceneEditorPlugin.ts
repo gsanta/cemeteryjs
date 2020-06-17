@@ -44,7 +44,6 @@ export enum CanvasTag {
 export class SceneEditorPlugin extends AbstractPlugin {
     static id = 'scene-editor-plugin';
     
-    visible = true;
     allowedLayouts = new Set([LayoutType.Single, LayoutType.Double]);
 
     private camera: Camera2D;
@@ -82,14 +81,10 @@ export class SceneEditorPlugin extends AbstractPlugin {
         const screenSize = getScreenSize(SceneEditorPlugin.id);
         screenSize && this.camera.resize(screenSize);
         this.renderFunc && this.renderFunc();
-    };
-
-    isVisible(): boolean {
-        return this.visible;
     }
 
-    setVisible(visible: boolean) {
-        this.visible = visible;
+    destroy() {
+        this.registry.stores.selectionStore.clear();
     }
 
     getOffset() {

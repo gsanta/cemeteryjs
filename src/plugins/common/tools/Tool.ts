@@ -13,7 +13,7 @@ export enum ToolType {
     Path = 'path',
     Pointer = 'pointer',
     Gamepad = 'gamepad',
-    Join = 'join'
+    Join = 'join',
 }
 
 export class ToolReturnType {

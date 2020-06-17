@@ -60,9 +60,7 @@ export class PluginService {
     predefinedLayouts: {title: string; activePluginNames: string[]}[];
 
     private currentLayout: Layout;
-    
     private currentPredefinedLayoutTitle: string; 
-
     private pluginFactoryMap: Map<AbstractPlugin, AbstractPluginComponentFactory<any>> = new Map();
     
     visibilityDirty = true;
@@ -139,8 +137,9 @@ export class PluginService {
     }
 
     selectPredefinedLayout(title: string) {
-        const predefinedLayout = this.predefinedLayouts.find(predef => predef.title === title);
+        const prevPlugins = this.currentLayout ? this.currentLayout.configs.map(config => config.activePlugin) : [];
 
+        const predefinedLayout = this.predefinedLayouts.find(predef => predef.title === title);
         const layout = predefinedLayout.activePluginNames.length === 1 ? this.singleLayout : this.doubleLayout;
 
         layout.configs.forEach((config, index) => {
@@ -150,6 +149,10 @@ export class PluginService {
         this.currentLayout = layout;
         this.visibilityDirty = true;
         this.currentPredefinedLayoutTitle = title;
+
+        const activePlugins = this.currentLayout.configs.map(config => config.activePlugin);
+        const destroyPlugins = prevPlugins.filter(plugin => activePlugins.indexOf(plugin) === -1);
+        destroyPlugins.forEach(plugin => plugin.destroy());
     }
 
     getViewById<T extends AbstractPlugin = AbstractPlugin>(id: string): T {
@@ -164,6 +167,7 @@ export class PluginService {
                 config.activePlugin.resize();
             });
         }
+
         this.visibilityDirty = true;
     }
 

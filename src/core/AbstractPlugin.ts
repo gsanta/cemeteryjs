@@ -12,6 +12,7 @@ import { RenderTask } from './services/RenderServices';
 import { AbstractStore } from './stores/AbstractStore';
 import { PluginServices } from '../plugins/common/PluginServices';
 import { PluginSettings } from '../plugins/common/PluginSettings';
+import { NoopTool } from '../plugins/common/tools/NoopTool';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;
@@ -50,8 +51,6 @@ export abstract class AbstractPlugin {
         this.registry = registry;
     }
 
-    abstract isVisible(): boolean;
-    abstract setVisible(visible: boolean): void;
     abstract getId(): string;
     abstract getStore(): AbstractStore;
     

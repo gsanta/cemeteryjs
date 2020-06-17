@@ -25,7 +25,6 @@ export function getCanvasElement(viewId: string): HTMLCanvasElement {
 
 export class GameViewerPlugin extends AbstractPlugin {
     static id = 'game-viewer-plugin';
-    visible = true;
     allowedLayouts = new Set([LayoutType.Single, LayoutType.Double]);
     gameViewerSettings: GameViewerSettings;
 
@@ -93,14 +92,6 @@ export class GameViewerPlugin extends AbstractPlugin {
 
     getSelectedTool(): Tool {
         return this.selectedTool;
-    }
-
-    isVisible(): boolean {
-        return this.visible;
-    }
-
-    setVisible(visible: boolean) {
-        this.visible = visible;
     }    
 
     getOffset() {

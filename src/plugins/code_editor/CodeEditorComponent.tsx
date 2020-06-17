@@ -5,6 +5,7 @@ import { AbstractPluginComponent, PluginProps } from '../common/AbstractPluginCo
 import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
 import { PlayIconComponent } from '../common/toolbar/icons/PlayIconComponent';
 import { CodeEditorPlugin, initCode } from './CodeEditorPlugin';
+import { Cursor } from '../common/tools/Tool';
 
 const CodeEditorStyled = styled.div`
     background: black;
@@ -80,7 +81,7 @@ export class CodeEditorComponent extends AbstractPluginComponent {
         const view = this.context.registry.services.plugin.getViewById<CodeEditorPlugin>(CodeEditorPlugin.id);
 
         return (
-                <CodeEditorStyled ref={this.ref} id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>
+                <CodeEditorStyled ref={this.ref} id={view.getId()} style={{cursor: view.getActiveTool() ? view.getActiveTool().getCursor() : Cursor.Default}}>
                     <ToolbarComponent
                         tools={[]}
                         view={view}
