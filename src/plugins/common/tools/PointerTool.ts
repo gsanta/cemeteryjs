@@ -121,8 +121,6 @@ export class PointerTool extends AbstractTool {
         } else {
             views = this.registry.stores.selectionStore.getAllViews();
         }
-
-        this.registry.services.game.updateConcepts(views);
     }
 
     private updateNodeEditorViews() {

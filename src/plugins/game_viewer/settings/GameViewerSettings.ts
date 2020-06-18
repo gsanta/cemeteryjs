@@ -30,7 +30,7 @@ export class GameViewerSettings extends AbstractSettings<GameViewerSettingsProps
         switch (prop) {
             case GameViewerSettingsProps.TimelineState:
                 this.timeLineState = val;
-                this.registry.stores.gameStore.getRouteModels().forEach(model => {
+                this.registry.stores.gameStore.getRoutes().forEach(model => {
                     switch(this.timeLineState) {
                         case TimelineState.Stopped:
                             model.reset();

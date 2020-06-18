@@ -20,7 +20,7 @@ export class RouteNodeHandler extends AbstractNodeHandler<RouteNode> {
 
         const route = new RouteModel();
         route.id = this.registry.stores.gameStore.generateUniqueName(ViewType.RouteView);
-        this.registry.stores.gameStore.addItem(route);
+        this.registry.stores.gameStore.addRoute(route);
         node.route = route;
         node.route.meshModel = meshNode.meshModel;
         node.route.pathModel = pathNode.pathModel;

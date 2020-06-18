@@ -28,12 +28,13 @@ export class RectangleTool extends AbstractTool {
         meshView.scale = 1;
         meshView.color = 'grey';
 
-        this.registry.stores.canvasStore.addView(meshView);
+        this.registry.stores.canvasStore.addMeshView(meshView);
         this.registry.stores.selectionStore.clear()
         this.registry.stores.selectionStore.addItem(meshView);
 
         this.registry.services.level.updateCurrentLevel();
         this.registry.services.game.addConcept(meshView);
+
         this.registry.services.history.createSnapshot();
         this.registry.services.update.scheduleTasks(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
     }
@@ -55,7 +56,7 @@ export class RectangleTool extends AbstractTool {
         meshView.color = 'grey';
 
         if (positions.length > 0) {
-            this.registry.stores.canvasStore.addView(meshView);
+            this.registry.stores.canvasStore.addMeshView(meshView);
             this.lastPreviewRect = meshView;
     
             this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);

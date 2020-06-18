@@ -13,6 +13,7 @@ import { AbstractStore } from './stores/AbstractStore';
 import { PluginServices } from '../plugins/common/PluginServices';
 import { PluginSettings } from '../plugins/common/PluginSettings';
 import { NoopTool } from '../plugins/common/tools/NoopTool';
+import { AbstractViewStore } from './stores/AbstractViewStore';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;
@@ -50,7 +51,7 @@ export abstract class AbstractPlugin {
     }
 
     abstract getId(): string;
-    abstract getStore(): AbstractStore;
+    abstract getStore(): AbstractViewStore;
     
     componentMounted(htmlElement: HTMLElement): void {
         this.htmlElement = htmlElement;

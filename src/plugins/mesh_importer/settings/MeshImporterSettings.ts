@@ -70,16 +70,27 @@ export class MeshImporterSettings extends AbstractSettings<ImportSettingsProps> 
                     // .then(animations => {
                     //     this.meshConcept.animations = animations;
                     // })
-                    .finally(() => {
-                        this.registry.services.game.updateConcepts([meshView]);
-                    });
+                    // .finally(() => {
+                    //     this.registry.services.game.updateConcepts([meshView]);
+                    // });
 
-                    this.activate();
+                this.activate();
+                this.update(meshView);
+                break;
             case ImportSettingsProps.Texture:
-                return meshView && this.registry.stores.assetStore.getAssetById(meshView.textureId);
+                meshView.textureId = this.registry.stores.assetStore.addTexture(new AssetModel({path: val.path, assetType: AssetType.Texture}));
+                this.update(meshView);
+                break;
             case ImportSettingsProps.Thumbnail:
-                return meshView && this.registry.stores.assetStore.getAssetById(meshView.thumbnailId);
+                meshView.thumbnailId = this.registry.stores.assetStore.addThumbnail(new AssetModel({path: val.path, assetType: AssetType.Thumbnail}));
+                this.update(meshView);
+                break;
         }
-        this.registry.services.update.runImmediately(RenderTask.RenderFocusedView);
+    }
+
+    private update(meshView: MeshView) {
+        this.registry.services.history.createSnapshot();
+        this.registry.services.update.runImmediately(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
+
     }
 }

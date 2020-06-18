@@ -50,7 +50,6 @@ export class DeleteTool extends AbstractTool {
         this.rectSelector.finish();
 
         this.registry.services.level.updateCurrentLevel();
-        this.registry.services.game.deleteConcepts(views);
         this.registry.services.history.createSnapshot();
         this.registry.services.update.scheduleTasks(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
     }
@@ -70,7 +69,6 @@ export class DeleteTool extends AbstractTool {
 
     eraseAll() {
         const concepts = this.registry.stores.canvasStore.getAllViews();
-        this.registry.services.game.deleteConcepts(concepts);
         this.registry.services.localStore.clearAll();
         this.registry.services.plugin.plugins.forEach(plugin => plugin.getStore()?.clear());
         this.registry.stores.canvasStore.clear();

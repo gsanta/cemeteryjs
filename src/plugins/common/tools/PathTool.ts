@@ -73,7 +73,6 @@ export class PathTool extends PointerTool {
             path.addEditPoint(newEditPoint, selectedEditPoint);
             this.registry.stores.selectionStore.removeItem(selectedEditPoint);
             this.registry.stores.selectionStore.addItem(newEditPoint);
-            this.registry.services.game.updateConcepts([path]);
         } else {
             this.startNewPath();
         }

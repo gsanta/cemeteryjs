@@ -1,17 +1,17 @@
-import { ViewType, View } from '../models/views/View';
-import { NodeConnectionView } from '../models/views/NodeConnectionView';
-import { NodeType, NodeModel, DroppableNode } from '../models/nodes/NodeModel';
-import { NodeView, defaultNodeViewConfig } from '../models/views/NodeView';
-import { Registry } from '../Registry';
-import { AbstractStore } from './AbstractStore';
-import { NodeGraph } from '../services/node/NodeGraph';
-import { NodePreset, DroppablePreset } from '../models/nodes/NodePreset';
+import { DroppableItem } from '../../plugins/common/tools/DragAndDropTool';
+import { createNodeSettings } from '../../plugins/node_editor/settings/nodes/nodeSettingsFactory';
 import { Point } from '../geometry/shapes/Point';
 import { Rectangle } from '../geometry/shapes/Rectangle';
-import { createNodeSettings } from '../../plugins/node_editor/settings/nodes/nodeSettingsFactory';
-import { DroppableItem } from '../../plugins/common/tools/DragAndDropTool';
+import { DroppableNode, NodeModel, NodeType } from '../models/nodes/NodeModel';
+import { DroppablePreset, NodePreset } from '../models/nodes/NodePreset';
+import { NodeConnectionView } from '../models/views/NodeConnectionView';
+import { defaultNodeViewConfig, NodeView } from '../models/views/NodeView';
+import { View, ViewType } from '../models/views/View';
+import { Registry } from '../Registry';
+import { NodeGraph } from '../services/node/NodeGraph';
+import { AbstractViewStore } from './AbstractViewStore';
 
-export class NodeStore extends AbstractStore {
+export class NodeStore extends AbstractViewStore {
     templates: NodeModel[] = [];
     presets: NodePreset[] = [];
     actionTypes: string[] = [];

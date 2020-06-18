@@ -2,10 +2,10 @@ import { AbstractPlugin } from '../../../core/AbstractPlugin';
 import { Registry } from '../../../core/Registry';
 import { IHotkeyEvent } from '../../../core/services/input/HotkeyService';
 import { IKeyboardEvent } from '../../../core/services/input/KeyboardService';
-import { AbstractStore } from '../../../core/stores/AbstractStore';
 import { Cursor, Tool, ToolType } from './Tool';
 import { View } from '../../../core/models/views/View';
 import { IPointerEvent } from '../../../core/services/input/PointerService';
+import { AbstractViewStore } from '../../../core/stores/AbstractViewStore';
 
 export class AbstractTool implements Tool {
     type: ToolType;
@@ -54,7 +54,7 @@ export class AbstractTool implements Tool {
     teardown(): void {};
     hotkey(hotkeyEvent: IHotkeyEvent): boolean { return false; }
 
-    protected getStore(): AbstractStore {
+    protected getStore(): AbstractViewStore {
         return this.registry.services.plugin.getHoveredView().getStore();
     }
 

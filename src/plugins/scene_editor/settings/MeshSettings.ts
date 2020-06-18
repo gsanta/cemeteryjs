@@ -107,9 +107,7 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                     // .then(animations => {
                     //     this.meshConcept.animations = animations;
                     // })
-                    .finally(() => {
-                        this.registry.services.game.updateConcepts([this.meshView]);
-                    });
+  
                 
                 // TODO should separate concerns
                 // this.registry.services.plugin.assetImporter.getSettingsByName<MeshImporterSettings>(MeshImporterSettings.settingsName).activate(assetModel);
@@ -158,7 +156,6 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
     }
 
     private update() {
-        this.registry.services.game.updateConcepts([this.meshView]);
         this.registry.services.history.createSnapshot();
         this.registry.services.update.runImmediately(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
 

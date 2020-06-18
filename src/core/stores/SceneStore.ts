@@ -6,6 +6,7 @@ import { PathView } from "../models/views/PathView";
 import { ViewType, View } from "../models/views/View";
 import { Registry } from "../Registry";
 import { AbstractStore } from './AbstractStore';
+import { AbstractViewStore } from "./AbstractViewStore";
 
 export function isFeedback(type: string) {
     return type.endsWith('Feedback');
@@ -15,7 +16,7 @@ export function isView(type: string) {
     return type.endsWith('View');
 }
 
-export class SceneStore extends AbstractStore {
+export class SceneStore extends AbstractViewStore {
     views: View[] = [];
     controls: ChildView<any>[] = [];
 
@@ -26,6 +27,12 @@ export class SceneStore extends AbstractStore {
         this.registry = registry;
     }
 
+    addMeshView(meshView: MeshView) {
+        this.addView(meshView);
+        this.registry.stores.meshStore.createInstance((<MeshView> meshView).model);
+    }
+
+    //TODO make it protected
     addView(view: View) {
         view.id = view.id === undefined ? this.generateUniqueName(view.viewType) : view.id;
         super.addItem(view);
@@ -41,11 +48,11 @@ export class SceneStore extends AbstractStore {
         super.removeItem(view);
         this.views = without(this.views, view);
         this.registry.stores.selectionStore.removeItem(view);
-        this.registry.services.game.deleteConcepts([view]);
     }
 
     clear(): void {
         super.clear();
+        this.getMeshViews().forEach(meshView => meshView.mesh && this.registry.stores.meshStore.deleteInstance(meshView.mesh));
         this.views = [];
         this.controls = [];
     }

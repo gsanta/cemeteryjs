@@ -71,7 +71,7 @@ export class GameViewerPlugin extends AbstractPlugin {
         // const engineService = this.pluginServices.byName<EngineService<this>>(EngineService.serviceName);
         // this.camera = new Camera3D(this.registry, engineService.getEngine(), engineService.getScene());
 
-        this.registry.services.game.importAllConcepts();
+        // this.registry.services.game.importAllConcepts();
 
         const nodeService = this.pluginServices.byName<NodeService>(NodeService.serviceName);
         nodeService.getNodesByType(NodeType.Route).forEach(node => nodeService.getHandler(node).wake(node));

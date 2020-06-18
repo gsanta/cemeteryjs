@@ -153,6 +153,10 @@ export class MeshView extends View implements IGameModel {
 
     move(point: Point) {
         this.dimensions = this.dimensions.translate(point);
+        if (this.mesh) {
+            const rect = <Rectangle> this.dimensions.div(10);
+            this.mesh.setAbsolutePosition(new Vector3(rect.topLeft.x + rect.getWidth() / 2, 0, -rect.topLeft.y - rect.getHeight() / 2));
+        }
     }
 
     dispose() {}

@@ -118,7 +118,7 @@ export class MeshStore {
         const width = rect.getWidth();
         const depth = rect.getHeight();
 
-        clone.translate(new Vector3(rect.topLeft.x + width / 2, 0, -rect.topLeft.y - depth / 2), 1, Space.WORLD);
+        clone.setAbsolutePosition(new Vector3(rect.topLeft.x + width / 2, 0, -rect.topLeft.y - depth / 2));
 
         clone.rotation.y = meshModel.meshView.rotation;
 
