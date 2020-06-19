@@ -33,7 +33,6 @@ export class RectangleTool extends AbstractTool {
         this.registry.stores.selectionStore.addItem(meshView);
 
         this.registry.services.level.updateCurrentLevel();
-        this.registry.services.game.addConcept(meshView);
 
         this.registry.services.history.createSnapshot();
         this.registry.services.update.scheduleTasks(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);

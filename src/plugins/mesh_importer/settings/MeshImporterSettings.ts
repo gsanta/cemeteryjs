@@ -6,6 +6,7 @@ import { RenderTask } from '../../../core/services/RenderServices';
 import { AbstractSettings } from "../../scene_editor/settings/AbstractSettings";
 import { MeshImporterPlugin } from '../MeshImporterPlugin';
 import { ThumbnailMakerService } from '../services/ThumbnailMakerService';
+import { MeshLoaderService } from '../../../core/services/MeshLoaderService';
 
 export enum ImportSettingsProps {
     Model = 'model',
@@ -58,6 +59,18 @@ export class MeshImporterSettings extends AbstractSettings<ImportSettingsProps> 
                 const assetModel = new AssetModel({path: val.path, data: val.data, assetType: AssetType.Model});
                 meshView.modelId = this.registry.stores.assetStore.addModel(assetModel);
                 this.registry.services.localStore.saveAsset(assetModel.getId(), val.data)
+                this.registry.stores.meshStore.deleteInstance((<MeshView> meshView).mesh);
+                this.registry.stores.meshStore.createInstance(meshView.model);
+                const meshLoaderService = this.plugin.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName);
+
+                 meshLoaderService.getDimensions(assetModel, meshView.id)
+                .then(dim => {
+                    meshView.dimensions.setWidth(dim.x);
+                    meshView.dimensions.setHeight(dim.y);
+                    this.update(meshView);
+                });
+
+
                     // .then(() => {
                     //     this.registry.services.thumbnailMaker.createThumbnail(assetModel);
                     //     return this.registry.services.meshLoader.getDimensions(assetModel, this.meshConcept.id);
@@ -75,7 +88,6 @@ export class MeshImporterSettings extends AbstractSettings<ImportSettingsProps> 
                     // });
 
                 this.activate();
-                this.update(meshView);
                 break;
             case ImportSettingsProps.Texture:
                 meshView.textureId = this.registry.stores.assetStore.addTexture(new AssetModel({path: val.path, assetType: AssetType.Texture}));

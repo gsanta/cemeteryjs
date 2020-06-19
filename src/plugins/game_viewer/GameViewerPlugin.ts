@@ -73,6 +73,16 @@ export class GameViewerPlugin extends AbstractPlugin {
 
         // this.registry.services.game.importAllConcepts();
 
+        super.componentMounted(htmlElement);
+        const meshLoaderService = this.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName);
+        meshLoaderService.loadAll(this.registry.stores.canvasStore.getMeshViews())
+        .then(() => {
+            this.registry.stores.canvasStore.getMeshViews().forEach(meshView => this.registry.stores.meshStore.createInstance(meshView.model));
+        })
+        .catch(e => {
+            1;
+        });
+
         const nodeService = this.pluginServices.byName<NodeService>(NodeService.serviceName);
         nodeService.getNodesByType(NodeType.Route).forEach(node => nodeService.getHandler(node).wake(node));
 

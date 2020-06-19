@@ -14,6 +14,7 @@ import { PluginServices } from '../plugins/common/PluginServices';
 import { PluginSettings } from '../plugins/common/PluginSettings';
 import { NoopTool } from '../plugins/common/tools/NoopTool';
 import { AbstractViewStore } from './stores/AbstractViewStore';
+import { MeshLoaderService } from './services/MeshLoaderService';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;

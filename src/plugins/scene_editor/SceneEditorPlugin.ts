@@ -12,6 +12,7 @@ import { ToolType } from '../common/tools/Tool';
 import { Tools } from '../Tools';
 import { toolFactory } from '../common/toolbar/toolFactory';
 import { PluginSettings } from '../common/PluginSettings';
+import { MeshLoaderService } from '../../core/services/MeshLoaderService';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {

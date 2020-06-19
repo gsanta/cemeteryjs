@@ -48,6 +48,10 @@ export class SceneStore extends AbstractViewStore {
         super.removeItem(view);
         this.views = without(this.views, view);
         this.registry.stores.selectionStore.removeItem(view);
+
+        if (view.viewType === ViewType.MeshView) {
+            this.registry.stores.meshStore.deleteInstance((<MeshView> view).mesh);
+        }
     }
 
     clear(): void {
