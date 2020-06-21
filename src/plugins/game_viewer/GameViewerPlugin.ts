@@ -74,14 +74,16 @@ export class GameViewerPlugin extends AbstractPlugin {
         // this.registry.services.game.importAllConcepts();
 
         super.componentMounted(htmlElement);
-        const meshLoaderService = this.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName);
-        meshLoaderService.loadAll(this.registry.stores.canvasStore.getMeshViews())
-        .then(() => {
-            this.registry.stores.canvasStore.getMeshViews().forEach(meshView => this.registry.stores.meshStore.createInstance(meshView.model));
-        })
-        .catch(e => {
-            1;
-        });
+        // this.registry.stores.gameStore.clear();
+        // const meshLoaderService = this.registry.services.plugin.gameView.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName);
+
+        // meshLoaderService.clear();
+
+        // meshLoaderService.loadAll(this.registry.stores.canvasStore.getMeshViews())
+        //     .then(() => {
+        //         this.registry.stores.canvasStore.getMeshViews().forEach(meshObject => this.registry.stores.meshStore.createInstance(meshObject.model));
+        //     });
+        (<GameViewerImporter> this.importer).import();
 
         const nodeService = this.pluginServices.byName<NodeService>(NodeService.serviceName);
         nodeService.getNodesByType(NodeType.Route).forEach(node => nodeService.getHandler(node).wake(node));
@@ -93,6 +95,10 @@ export class GameViewerPlugin extends AbstractPlugin {
         
         this.gizmos.awake();
         this.renderFunc && this.renderFunc();
+    }
+
+    destroy() {
+        this.registry.stores.meshStore.clear();
     }
 
     getId(): string {

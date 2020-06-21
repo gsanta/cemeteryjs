@@ -48,7 +48,7 @@ export class LocalStoreService {
         const objectStore = db.transaction(["xmls"], "readwrite").objectStore("xmls");
 
         const data = await this.getData(objectStore.get(level));
-        this.registry.services.import.import(data);
+        this.registry.services.import.import(data.data);
     }
 
     async loadLevelIndexes(): Promise<number[]> {
@@ -74,13 +74,13 @@ export class LocalStoreService {
         });
     }
     
-    async saveAsset(id: string, data: string) {
+    async saveAsset(assetModel: AssetModel) {
         if (!this.isDbSupported()) { return }
 
         const db = await this.getDb();
 
         var objectStore = db.transaction(["assets"], "readwrite").objectStore("assets");
-        objectStore.add({id: id, data});
+        objectStore.add({id: assetModel.getId(), data: assetModel.data, path: assetModel.path});
     }
 
     async loadAsset(assetModel: AssetModel): Promise<string> {
@@ -91,7 +91,7 @@ export class LocalStoreService {
         const objectStore = db.transaction(["assets"], "readwrite").objectStore("assets");
 
         const data = await this.getData(objectStore.get(assetModel.getId()));
-        assetModel.data = data;
+        assetModel.fromJson(data);
     }
 
     async clearAll() {
@@ -115,7 +115,7 @@ export class LocalStoreService {
                 reject();
             };
 
-            request.onsuccess = () => request.result ? resolve(request.result.data) : resolve(null);
+            request.onsuccess = () => request.result ? resolve(request.result) : resolve(null);
         });
     }
 

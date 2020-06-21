@@ -57,23 +57,40 @@ export class MeshStore {
         this.instances.delete(mesh);
     }
 
-    createInstance(meshModel: MeshModel): void {
-        // TODO MeshStore should be instantiated by GameViewerPlugin and pass itself in constructor instead of directly accessing it here
-        // so MeshStore later can be used for GamePlugin
+    createInstance(meshModel: MeshModel): Promise<void> {
+
+        return new Promise(resolve => {
+            // TODO MeshStore should be instantiated by GameViewerPlugin and pass itself in constructor instead of directly accessing it here
+            // so MeshStore later can be used for GamePlugin
+            const engineService = this.registry.services.plugin.gameView.pluginServices.byName<EngineService>(EngineService.serviceName);
+             // TODO same as above
+            const meshLoaderService = this.registry.services.plugin.gameView.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName);
+            if (!meshModel.meshView.modelId) {
+                const mesh = this.rectangleFactory.createMesh(meshModel.meshView, engineService.getScene());
+                this.instances.add(mesh);
+                meshModel.meshView.mesh = mesh;
+                return;
+            }
+    
+            const modelModel = this.registry.stores.assetStore.getAssetById(meshModel.meshView.modelId);
+    
+            meshLoaderService.load(modelModel, meshModel.meshView.id)
+                .then(() => this.setupInstance(meshModel, engineService.getScene()))
+                .then(() => resolve());
+        })
+    }
+
+    createMaterial(meshModel: MeshModel) {
+        const model = this.registry.stores.assetStore.getAssetById(meshModel.meshView.modelId);
         const engineService = this.registry.services.plugin.gameView.pluginServices.byName<EngineService>(EngineService.serviceName);
-         // TODO same as above
-        const meshLoaderService = this.registry.services.plugin.gameView.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName);
-        if (!meshModel.meshView.modelId) {
-            const mesh = this.rectangleFactory.createMesh(meshModel.meshView, engineService.getScene());
-            this.instances.add(mesh);
-            meshModel.meshView.mesh = mesh;
+        const textureModel = this.registry.stores.assetStore.getAssetById(meshModel.meshView.textureId);
+
+        if (!meshModel.meshView.mesh) {
             return;
         }
 
-        const modelConcept = this.registry.stores.assetStore.getAssetById(meshModel.meshView.modelId);
-
-        meshLoaderService.load(modelConcept, meshModel.meshView.id)
-            .then(() => this.setupInstance(meshModel, engineService.getScene()));
+        (<StandardMaterial> meshModel.meshView.mesh.material).diffuseTexture  = new Texture(textureModel.data,  engineService.getScene());
+        (<StandardMaterial> meshModel.meshView.mesh.material).specularTexture  = new Texture(textureModel.data,  engineService.getScene());
     }
 
     private setupInstance(meshModel: MeshModel, scene: Scene) {
@@ -102,11 +119,6 @@ export class MeshStore {
         
         meshModel.meshView.meshName = clone.name;
 
-        if (this.texturePathes.get(model.path)) {
-            const texturePath = `${this.basePath}${MeshLoaderService.getFolderNameFromFileName(model.path)}/${this.texturePathes.get(model.path)}`;
-            (<StandardMaterial> clone.material).diffuseTexture  = new Texture(texturePath,  scene);
-            (<StandardMaterial> clone.material).specularTexture  = new Texture(texturePath,  scene);
-        }
 
         clone.isVisible = true;
         const scale = meshModel.meshView.scale;
@@ -128,7 +140,8 @@ export class MeshStore {
     clear(): void {
         this.templates.forEach(template => template.dispose());
         this.templates.clear();
-        this.instances.forEach(instance => instance.dispose());
+        this.instanceCounter = new Map();
+        this.instances.forEach(instance => this.deleteInstance(instance));
         this.instances.clear();
         this.templatesByFileName = new Map();
         this.templateFileNames = new Map();

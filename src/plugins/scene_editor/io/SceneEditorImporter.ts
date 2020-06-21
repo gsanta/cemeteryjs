@@ -3,7 +3,7 @@ import { PathView, PathViewJson } from '../../../core/models/views/PathView';
 import { ViewType, View } from "../../../core/models/views/View";
 import { AppJson } from '../../../core/services/export/ExportService';
 import { AbstractPluginImporter } from "../../common/io/AbstractPluginImporter";
-import { MeshLoaderService } from '../../../core/services/MeshLoaderService';
+import { AssetModel } from '../../../core/models/game_objects/AssetModel';
 
 export class SceneEditorImporter extends AbstractPluginImporter {
     import(json: AppJson, viewMap: Map<string, View>): void {
@@ -27,4 +27,10 @@ export class SceneEditorImporter extends AbstractPluginImporter {
             this.registry.stores.canvasStore.addView(pathView);
         });
     }
+
+    // private loadAssets(meshView: MeshView) {        
+    //     const assetModel = new AssetModel();
+    //     assetModel.fromJson(assetJson);
+    //     this.registry.stores.assetStore.addAsset(assetModel);
+    // }
 }

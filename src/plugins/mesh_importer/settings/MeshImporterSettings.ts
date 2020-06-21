@@ -54,11 +54,12 @@ export class MeshImporterSettings extends AbstractSettings<ImportSettingsProps> 
     protected setProp(val: any, prop: ImportSettingsProps) {
         const meshView = this.registry.stores.selectionStore.hasOne() && this.registry.stores.selectionStore.getOneByType(ViewType.MeshView) as MeshView;
 
+        let assetModel: AssetModel;
         switch (prop) {
             case ImportSettingsProps.Model:
-                const assetModel = new AssetModel({path: val.path, data: val.data, assetType: AssetType.Model});
+                assetModel = new AssetModel({path: val.path, data: val.data, assetType: AssetType.Model});
                 meshView.modelId = this.registry.stores.assetStore.addModel(assetModel);
-                this.registry.services.localStore.saveAsset(assetModel.getId(), val.data)
+                this.registry.services.localStore.saveAsset(assetModel);
                 this.registry.stores.meshStore.deleteInstance((<MeshView> meshView).mesh);
                 this.registry.stores.meshStore.createInstance(meshView.model);
                 const meshLoaderService = this.plugin.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName);
@@ -70,31 +71,13 @@ export class MeshImporterSettings extends AbstractSettings<ImportSettingsProps> 
                     this.update(meshView);
                 });
 
-
-                    // .then(() => {
-                    //     this.registry.services.thumbnailMaker.createThumbnail(assetModel);
-                    //     return this.registry.services.meshLoader.getDimensions(assetModel, this.meshConcept.id);
-                    // })
-                    // .then(dim => {
-                    //     this.meshConcept.dimensions.setWidth(dim.x);
-                    //     this.meshConcept.dimensions.setHeight(dim.y);
-                    // })
-                    // .then(() => this.registry.services.meshLoader.getAnimations(assetModel, this.meshConcept.id))
-                    // .then(animations => {
-                    //     this.meshConcept.animations = animations;
-                    // })
-                    // .finally(() => {
-                    //     this.registry.services.game.updateConcepts([meshView]);
-                    // });
-
                 this.activate();
                 break;
             case ImportSettingsProps.Texture:
-                meshView.textureId = this.registry.stores.assetStore.addTexture(new AssetModel({path: val.path, assetType: AssetType.Texture}));
-                this.update(meshView);
-                break;
-            case ImportSettingsProps.Thumbnail:
-                meshView.thumbnailId = this.registry.stores.assetStore.addThumbnail(new AssetModel({path: val.path, assetType: AssetType.Thumbnail}));
+                assetModel = new AssetModel({path: val.path, data: val.data, assetType: AssetType.Texture})
+                meshView.textureId = this.registry.stores.assetStore.addTexture(assetModel);
+                this.registry.services.localStore.saveAsset(assetModel);
+                this.registry.stores.meshStore.createMaterial(meshView.model);
                 this.update(meshView);
                 break;
         }

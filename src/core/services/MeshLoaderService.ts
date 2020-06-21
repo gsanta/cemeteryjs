@@ -67,7 +67,7 @@ export class MeshLoaderService extends AbstractPluginService<AbstractPlugin> {
         this.loadedFileNames.add(assetModel.path);
 
         const promise = this.registry.services.localStore.loadAsset(assetModel)
-        .then(() => {
+            .then(() => {
                 if (assetModel.data) {
                     return this.loadMesh(assetModel.path, id, assetModel.data);
                 } else {

@@ -5,10 +5,16 @@ export class GameViewerImporter extends AbstractPluginImporter {
     import(): void {
         const meshLoaderService = this.plugin.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName);
         meshLoaderService.clear();
+        this.registry.stores.gameStore.clear();
+        this.registry.stores.meshStore.clear();
 
         meshLoaderService.loadAll(this.registry.stores.canvasStore.getMeshViews())
             .then(() => {
-                this.registry.stores.canvasStore.getMeshViews().forEach(meshView => this.registry.stores.meshStore.createInstance(meshView.model));
+                const promises = this.registry.stores.canvasStore.getMeshViews().map(meshView => this.registry.stores.meshStore.createInstance(meshView.model));
+                return Promise.all(promises);
+            })
+            .then(() => {
+                this.registry.stores.canvasStore.getMeshViews().forEach(meshView => this.registry.stores.meshStore.createMaterial(meshView.model));
             });
         
         this.setMeshDimensions();

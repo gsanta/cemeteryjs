@@ -94,7 +94,7 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                 const assetModel = new AssetModel({path: val.path, data: val.data, assetType: AssetType.Model});
                 this.meshView.modelId = this.registry.stores.assetStore.addModel(assetModel);
 
-                this.registry.services.localStore.saveAsset(assetModel.getId(), val.data)
+                this.registry.services.localStore.saveAsset(assetModel);
                     // .then(() => {
                     //     this.registry.services.thumbnailMaker.createThumbnail(assetModel);
                     //     return this.registry.services.meshLoader.getDimensions(assetModel, this.meshConcept.id);
