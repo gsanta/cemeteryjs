@@ -4,7 +4,7 @@ import { MeshLoaderService } from "../../../core/services/MeshLoaderService";
 import { Tools } from "babylonjs";
 import { MeshView } from "../../../core/models/views/MeshView";
 import { Point } from "../../../core/geometry/shapes/Point";
-import { AssetModel } from "../../../core/models/game_objects/AssetModel";
+import { AssetModel, AssetType } from "../../../core/models/game_objects/AssetModel";
 
 export class ThumbnailMakerService extends AbstractPluginService<AbstractPlugin> {
     static serviceName = 'thumbnail-maker-service';
@@ -20,27 +20,15 @@ export class ThumbnailMakerService extends AbstractPluginService<AbstractPlugin>
             .then(() => this.meshView = meshView);
     }
 
-    createThumbnail(assetModel: AssetModel) {
+    createThumbnail(meshView: MeshView) {
         const engineService = this.plugin.pluginServices.engineService();
 
         Tools.CreateScreenshotUsingRenderTarget(engineService.getEngine(), engineService.getCamera().camera, 1000, (data) => {
-            assetModel.thumbnailData = data;
+            // assetModel.thumbnailData = data;
+            const assetModel = new AssetModel({data: data, assetType: AssetType.Thumbnail});
+            this.registry.stores.assetStore.addAsset(assetModel);
+            this.registry.services.localStore.saveAsset(assetModel);
+            meshView.thumbnailId = assetModel.getId();
         });
-    }
-
-    private getDimensions(): Point {
-        const mesh = this.meshView.mesh;
-
-        mesh.computeWorldMatrix();
-        mesh.getBoundingInfo().update(mesh._worldMatrix);
-
-        const boundingVectors = mesh.getHierarchyBoundingVectors();
-        const width = boundingVectors.max.x - boundingVectors.min.x;
-        const height = boundingVectors.max.z - boundingVectors.min.z;
-        let dimensions = new Point(width, height).mul(10);
-
-        dimensions.x  = dimensions.x < 10 ? 10 : dimensions.x;
-        dimensions.y  = dimensions.y < 10 ? 10 : dimensions.y;
-        return dimensions;
     }
 }

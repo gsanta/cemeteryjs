@@ -3,8 +3,8 @@
 export interface AssetJson {
     id: string;
     assetType: string;
-    path: string;
-    thumbnailData: string;
+    // path: string;
+    data: string;
 }
 
 export enum AssetType {
@@ -16,13 +16,11 @@ export enum AssetType {
 export class AssetModel {
     private id: string;
     assetType: AssetType;
-    path: string;
     data: string;
     thumbnailData: string;
 
-    constructor(config?: {path: string, data?: string, assetType: AssetType}) {
+    constructor(config?: {data?: string, assetType: AssetType}) {
         if (config) {
-            this.path = config.path;
             this.data = config.data;
             this.assetType = config.assetType;
         }
@@ -40,15 +38,15 @@ export class AssetModel {
         return {
             id: this.id,
             assetType: this.assetType,
-            path: this.path,
-            thumbnailData: this.thumbnailData
+            // path: this.path,
+            data: undefined // do not serialize, too expensive
         };
     }
 
     fromJson(json: AssetJson) {
         this.id = json.id;
         this.assetType = <AssetType> json.assetType;
-        this.path = json.path;
-        this.thumbnailData = json.thumbnailData;
+        // this.path = json.path;
+        this.data = json.data;
     }
 }

@@ -9,11 +9,9 @@ import { AssetModel } from '../models/game_objects/AssetModel';
 export class MeshLoaderService extends AbstractPluginService<AbstractPlugin> {
     static serviceName = 'mesh-loader-service';
     serviceName = MeshLoaderService.serviceName;
-    private basePath = 'assets/models/';
 
-    private loadedFileNames: Set<String> = new Set();
-    private pendingFileNames: Map<string, Promise<any>> = new Map();
-    private fileNameToMeshNameMap: Map<string, string> = new Map();
+    private loadedIds: Set<String> = new Set();
+    private pandingIds: Map<string, Promise<any>> = new Map();
 
     getDimensions(assetModel: AssetModel, id: string): Promise<Point> {
         return this
@@ -41,57 +39,48 @@ export class MeshLoaderService extends AbstractPluginService<AbstractPlugin> {
             });
     }
 
-    protected setModel(fileName: string, mesh: Mesh): void {
-        this.registry.stores.meshStore.addTemplate(fileName, mesh);
-        this.fileNameToMeshNameMap.set(fileName, mesh.name);
-    }
-
     loadAll(meshObjects: MeshView[]): Promise<Mesh[]> {
-        const modeledMeshObjets = meshObjects.filter(item => item.modelId);
-
-        const promises: Promise<Mesh>[] = [];
-
-        for (let i = 0; i < modeledMeshObjets.length; i++) {
-            const assetModel = this.registry.stores.assetStore.getAssetById(modeledMeshObjets[i].modelId);
-            promises.push(this.load(assetModel, modeledMeshObjets[i].id));
-        }
-
-        return Promise.all(promises);
+        return new Promise((resolve, reject) => {
+            const modeledMeshObjets = meshObjects.filter(item => item.modelId);
+    
+            const promises: Promise<Mesh>[] = [];
+    
+            for (let i = 0; i < modeledMeshObjets.length; i++) {
+                const assetModel = this.registry.stores.assetStore.getAssetById(modeledMeshObjets[i].modelId);
+                promises.push(this.load(assetModel, modeledMeshObjets[i].id));
+            }
+    
+            Promise.all(promises)
+                .then((meshes) => resolve(meshes))
+                .catch(() => reject());
+        });
     }
 
     load(assetModel: AssetModel, id: string): Promise<Mesh> {
-        if (this.pendingFileNames.has(assetModel.path)) {
-            return this.pendingFileNames.get(assetModel.path);
+        if (this.pandingIds.has(assetModel.getId())) {
+            return this.pandingIds.get(assetModel.getId());
         }
 
-        this.loadedFileNames.add(assetModel.path);
+        this.loadedIds.add(assetModel.getId());
 
         const promise = this.registry.services.localStore.loadAsset(assetModel)
-            .then(() => {
-                if (assetModel.data) {
-                    return this.loadMesh(assetModel.path, id, assetModel.data);
-                } else {
-                    return this.loadMesh(assetModel.path, id);
-                }
-            })
-            .catch(e => this.loadMesh(assetModel.path, id));
+            .then(() => this.loadMesh(assetModel))
+            .catch(e => this.loadMesh(assetModel));
 
-        this.pendingFileNames.set(assetModel.path, promise);
+        this.pandingIds.set(assetModel.getId(), promise);
         return <Promise<Mesh>> promise;
     }
 
-    private loadMesh(file: string, id: string, data?: string): Promise<Mesh> {
-        let folder = MeshLoaderService.getFolderNameFromFileName(file);
-        let path = `${this.basePath}${folder}/`;
+    private loadMesh(assetModel: AssetModel): Promise<Mesh> {
         const engineService = this.plugin.pluginServices.byName<EngineService<any>>(EngineService.serviceName);
 
         return new Promise(resolve => {
             SceneLoader.ImportMesh(
                 '',
-                data ? data : folder,
-                data ? undefined : file,
+                assetModel.data,
+                undefined,
                 engineService.getScene(),
-                (meshes: Mesh[], ps: ParticleSystem[], skeletons: Skeleton[]) => resolve(this.createModelData(file, id, meshes, skeletons)),
+                (meshes: Mesh[], ps: ParticleSystem[], skeletons: Skeleton[]) => resolve(this.createModelData(assetModel, meshes, skeletons)),
                 () => { },
                 (scene: Scene, message: string) => { throw new Error(message); }
             );
@@ -99,8 +88,8 @@ export class MeshLoaderService extends AbstractPluginService<AbstractPlugin> {
     }
 
     clear(): void {
-        this.loadedFileNames = new Set();
-        this.pendingFileNames = new Map();
+        this.loadedIds = new Set();
+        this.pandingIds = new Map();
     }
 
     private configMesh(mesh: Mesh) {        
@@ -110,16 +99,17 @@ export class MeshLoaderService extends AbstractPluginService<AbstractPlugin> {
         mesh.isVisible = true;
     }
 
-    private createModelData(path: string, id: string, meshes: Mesh[], skeletons: Skeleton[]): Mesh {
+    private createModelData(assetModel: AssetModel, meshes: Mesh[], skeletons: Skeleton[]): Mesh {
         if (meshes.length === 0) { throw new Error('No mesh was loaded.') }
 
         const engineService = this.plugin.pluginServices.byName<EngineService<any>>(EngineService.serviceName);
 
-        meshes[0].material = new StandardMaterial(path, engineService.getScene());
+        meshes[0].material = new StandardMaterial(assetModel.getId(), engineService.getScene());
    
-        meshes[0].name = id;
+        meshes[0].name = assetModel.getId();
         this.configMesh(meshes[0]);
-        this.setModel(path, meshes[0]);
+
+        this.registry.stores.meshStore.addTemplate(assetModel.getId(), meshes[0]);
 
         return meshes[0];
     }

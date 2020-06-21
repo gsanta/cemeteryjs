@@ -5,9 +5,9 @@ import { RectangleFactory } from './RectangleFactory';
 import { Registry } from '../Registry';
 import { MeshModel } from '../models/game_objects/MeshModel';
 import { EngineService } from '../services/EngineService';
+import { TextureLoaderService } from '../services/TextureLoaderService';
 
 export class MeshStore {
-    private basePath = 'assets/models/';
     private templates: Set<Mesh> = new Set();
     private templatesByFileName: Map<string, Mesh> = new Map();
     private templateFileNames: Map<Mesh, string> = new Map();
@@ -81,7 +81,6 @@ export class MeshStore {
     }
 
     createMaterial(meshModel: MeshModel) {
-        const model = this.registry.stores.assetStore.getAssetById(meshModel.meshView.modelId);
         const engineService = this.registry.services.plugin.gameView.pluginServices.byName<EngineService>(EngineService.serviceName);
         const textureModel = this.registry.stores.assetStore.getAssetById(meshModel.meshView.textureId);
 
@@ -89,8 +88,13 @@ export class MeshStore {
             return;
         }
 
-        (<StandardMaterial> meshModel.meshView.mesh.material).diffuseTexture  = new Texture(textureModel.data,  engineService.getScene());
-        (<StandardMaterial> meshModel.meshView.mesh.material).specularTexture  = new Texture(textureModel.data,  engineService.getScene());
+        const textureLoaderService = this.registry.services.plugin.gameView.pluginServices.byName<TextureLoaderService>(TextureLoaderService.serviceName);
+
+        textureLoaderService.load(textureModel)
+            .then(() => {
+                (<StandardMaterial> meshModel.meshView.mesh.material).diffuseTexture  = new Texture(textureModel.data,  engineService.getScene());
+                (<StandardMaterial> meshModel.meshView.mesh.material).specularTexture  = new Texture(textureModel.data,  engineService.getScene());
+            })
     }
 
     private setupInstance(meshModel: MeshModel, scene: Scene) {
@@ -98,13 +102,13 @@ export class MeshStore {
         const model = this.registry.stores.assetStore.getAssetById(meshModel.meshView.modelId);
 
         if (model) {
-            this.texturePathes.set(model.path, texture ? texture.path : undefined);
+            this.texturePathes.set(model.getId(), texture ? model.getId() : undefined);
         }
 
-        const templateMesh = this.getTemplate(model.path);
+        const templateMesh = this.getTemplate(model.getId());
 
         let clone: Mesh;
-        const counter = this.instanceCounter.get(model.path);
+        const counter = this.instanceCounter.get(model.getId());
 
         if (!this.instances.has(templateMesh)) {
             clone = templateMesh;
@@ -115,7 +119,7 @@ export class MeshStore {
         this.instances.add(clone);
         clone.setAbsolutePosition(new Vector3(0, 0, 0));
         clone.rotation = new Vector3(0, 0, 0);
-        this.instanceCounter.set(model.path, counter + 1);
+        this.instanceCounter.set(model.getId(), counter + 1);
         
         meshModel.meshView.meshName = clone.name;
 

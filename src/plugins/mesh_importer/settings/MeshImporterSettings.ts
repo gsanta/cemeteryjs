@@ -57,7 +57,7 @@ export class MeshImporterSettings extends AbstractSettings<ImportSettingsProps> 
         let assetModel: AssetModel;
         switch (prop) {
             case ImportSettingsProps.Model:
-                assetModel = new AssetModel({path: val.path, data: val.data, assetType: AssetType.Model});
+                assetModel = new AssetModel({data: val.data, assetType: AssetType.Model});
                 meshView.modelId = this.registry.stores.assetStore.addModel(assetModel);
                 this.registry.services.localStore.saveAsset(assetModel);
                 this.registry.stores.meshStore.deleteInstance((<MeshView> meshView).mesh);
@@ -74,7 +74,7 @@ export class MeshImporterSettings extends AbstractSettings<ImportSettingsProps> 
                 this.activate();
                 break;
             case ImportSettingsProps.Texture:
-                assetModel = new AssetModel({path: val.path, data: val.data, assetType: AssetType.Texture})
+                assetModel = new AssetModel({data: val.data, assetType: AssetType.Texture})
                 meshView.textureId = this.registry.stores.assetStore.addTexture(assetModel);
                 this.registry.services.localStore.saveAsset(assetModel);
                 this.registry.stores.meshStore.createMaterial(meshView.model);

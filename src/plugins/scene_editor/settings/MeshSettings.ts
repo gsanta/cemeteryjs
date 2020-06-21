@@ -91,7 +91,7 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                 this.update();
                 break;
             case MeshViewPropType.Model:
-                const assetModel = new AssetModel({path: val.path, data: val.data, assetType: AssetType.Model});
+                const assetModel = new AssetModel({data: val.data, assetType: AssetType.Model});
                 this.meshView.modelId = this.registry.stores.assetStore.addModel(assetModel);
 
                 this.registry.services.localStore.saveAsset(assetModel);
@@ -113,11 +113,11 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                 // this.registry.services.plugin.assetImporter.getSettingsByName<MeshImporterSettings>(MeshImporterSettings.settingsName).activate(assetModel);
                 break;
             case MeshViewPropType.Texture:
-                this.meshView.textureId = this.registry.stores.assetStore.addTexture(new AssetModel({path: val.path, assetType: AssetType.Texture}));
+                this.meshView.textureId = this.registry.stores.assetStore.addTexture(new AssetModel({assetType: AssetType.Texture}));
                 this.update();
                 break;
             case MeshViewPropType.Thumbnail:
-                this.meshView.thumbnailId = this.registry.stores.assetStore.addThumbnail(new AssetModel({path: val.path, assetType: AssetType.Thumbnail}));
+                this.meshView.thumbnailId = this.registry.stores.assetStore.addThumbnail(new AssetModel({assetType: AssetType.Thumbnail}));
                 this.update();
                 break;
             case MeshViewPropType.Layer:

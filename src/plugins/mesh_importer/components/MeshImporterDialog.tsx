@@ -38,7 +38,7 @@ export class MeshImporterDialog extends AbstractPluginComponent {
     private createThumbnail() {
         const selectedView = this.context.registry.stores.selectionStore.getView();
         const assetModel = (this.context.registry.stores.assetStore.getAssetById((selectedView as MeshView).modelId));
-        this.props.plugin.pluginServices.byName<ThumbnailMakerService>(ThumbnailMakerService.serviceName).createThumbnail(assetModel)
+        this.props.plugin.pluginServices.byName<ThumbnailMakerService>(ThumbnailMakerService.serviceName).createThumbnail(selectedView as MeshView);
 
         this.props.plugin.pluginSettings.byName<MeshImporterSettings>(MeshImporterSettings.settingsName).close();
     }

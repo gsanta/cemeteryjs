@@ -46,7 +46,7 @@ export class MeshImporterSidepanelComponent extends React.Component<{plugin: Mes
                         propertyName={MeshViewPropType.Model}
                         propertyType="string"
                         placeholder={`Upload`}
-                        value={assetModel && assetModel.path}
+                        value={assetModel && assetModel.getId()}
                         readDataAs="dataUrl"
                     />
                 </FieldColumnStyled>
@@ -68,7 +68,7 @@ export class MeshImporterSidepanelComponent extends React.Component<{plugin: Mes
                         propertyName={ImportSettingsProps.Texture}
                         propertyType="string"
                         placeholder={`Upload`}
-                        value={assetModel && assetModel.path}
+                        value={assetModel && assetModel.getId()}
                         readDataAs="dataUrl"
                     />
                 </FieldColumnStyled>
@@ -89,7 +89,7 @@ export class MeshImporterSidepanelComponent extends React.Component<{plugin: Mes
                         propertyName={ImportSettingsProps.Thumbnail}
                         propertyType="string"
                         placeholder={`Upload`}
-                        value={assetModel && assetModel.path}
+                        value={assetModel && assetModel.getId()}
                         readDataAs="dataUrl"
                     />
                 </FieldColumnStyled>

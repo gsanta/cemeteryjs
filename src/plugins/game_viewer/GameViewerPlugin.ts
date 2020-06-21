@@ -14,6 +14,7 @@ import { PluginServices } from '../common/PluginServices';
 import { EngineService } from '../../core/services/EngineService';
 import { MeshLoaderService } from '../../core/services/MeshLoaderService';
 import { NodeService } from './services/NodeService';
+import { TextureLoaderService } from '../../core/services/TextureLoaderService';
 (<any> window).earcut = require('earcut');
 
 export function getCanvasElement(viewId: string): HTMLCanvasElement {
@@ -47,7 +48,8 @@ export class GameViewerPlugin extends AbstractPlugin {
             [
                 new EngineService(this, this.registry),
                 new MeshLoaderService(this, this.registry),
-                new NodeService(this, this.registry)
+                new NodeService(this, this.registry),
+                new TextureLoaderService(this, this.registry)
             ]
         );
     }
@@ -67,29 +69,12 @@ export class GameViewerPlugin extends AbstractPlugin {
 
     componentMounted(htmlElement: HTMLElement) {
         super.componentMounted(htmlElement);
-        // this.registry.services.game.init(this.htmlElement as HTMLCanvasElement);
-        // const engineService = this.pluginServices.byName<EngineService<this>>(EngineService.serviceName);
-        // this.camera = new Camera3D(this.registry, engineService.getEngine(), engineService.getScene());
-
-        // this.registry.services.game.importAllConcepts();
-
-        super.componentMounted(htmlElement);
-        // this.registry.stores.gameStore.clear();
-        // const meshLoaderService = this.registry.services.plugin.gameView.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName);
-
-        // meshLoaderService.clear();
-
-        // meshLoaderService.loadAll(this.registry.stores.canvasStore.getMeshViews())
-        //     .then(() => {
-        //         this.registry.stores.canvasStore.getMeshViews().forEach(meshObject => this.registry.stores.meshStore.createInstance(meshObject.model));
-        //     });
         (<GameViewerImporter> this.importer).import();
 
         const nodeService = this.pluginServices.byName<NodeService>(NodeService.serviceName);
         nodeService.getNodesByType(NodeType.Route).forEach(node => nodeService.getHandler(node).wake(node));
 
         this.registry.services.game.registerAfterRender(() => {
-            // this.axisGizmo.updateWorldAxis();
             this.gizmos.update();
         });
         

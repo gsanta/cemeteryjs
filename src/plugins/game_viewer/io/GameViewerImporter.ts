@@ -15,7 +15,10 @@ export class GameViewerImporter extends AbstractPluginImporter {
             })
             .then(() => {
                 this.registry.stores.canvasStore.getMeshViews().forEach(meshView => this.registry.stores.meshStore.createMaterial(meshView.model));
-            });
+            })
+            .catch(e => {
+                console.log(e)
+            })
         
         this.setMeshDimensions();
     }

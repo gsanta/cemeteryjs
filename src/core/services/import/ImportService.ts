@@ -17,16 +17,6 @@ export class ImportService {
 
         const viewMap: Map<string, View> = new Map();
 
-        // json.assets.forEach(assetJson => {
-        //     const asset = new AssetModel();
-        //     asset.fromJson(assetJson);
-        //     const assetModel = this.registry.stores.assetStore.addAsset(asset);
-        // });
-        
         this.registry.services.plugin.plugins.forEach(plugin => plugin.importer?.import(json, viewMap));
-    }
-
-    private findPluginImporter(pluginJson: IPluginJson) {
-        return this.registry.services.plugin.plugins.find(plugin => plugin.getId() === pluginJson.pluginId);
     }
 }
