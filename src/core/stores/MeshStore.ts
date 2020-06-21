@@ -125,7 +125,7 @@ export class MeshStore {
 
 
         clone.isVisible = true;
-        const scale = meshModel.meshView.scale;
+        const scale = meshModel.meshView.getScale();
         clone.scaling = new Vector3(scale, scale, scale);
         clone.position.y = meshModel.meshView.yPos;
         clone.rotationQuaternion = undefined;
@@ -136,7 +136,7 @@ export class MeshStore {
 
         clone.setAbsolutePosition(new Vector3(rect.topLeft.x + width / 2, 0, -rect.topLeft.y - depth / 2));
 
-        clone.rotation.y = meshModel.meshView.rotation;
+        clone.rotation.y = meshModel.meshView.getRotation();
 
         meshModel.meshView.mesh = clone;
     }

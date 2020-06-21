@@ -64,6 +64,7 @@ export class App extends React.Component<{}, AppState> {
             this.split.destroy();
             this.updateCanvasVisibility();
             this.context.registry.services.plugin.visibilityDirty = false;
+            this.context.registry.services.plugin.getActivePlugins().forEach(plugin => plugin.resize());
         }
     }e
     

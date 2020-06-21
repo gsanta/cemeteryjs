@@ -1,13 +1,12 @@
+import { AbstractPlugin } from '../../../core/AbstractPlugin';
 import { Rectangle } from '../../../core/geometry/shapes/Rectangle';
-import { Registry } from '../../../core/Registry';
 import { MeshView } from '../../../core/models/views/MeshView';
+import { Registry } from '../../../core/Registry';
+import { IPointerEvent } from '../../../core/services/input/PointerService';
 import { RenderTask } from '../../../core/services/RenderServices';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './RectangleSelector';
 import { ToolType } from './Tool';
-import { ViewType } from '../../../core/models/views/View';
-import { IPointerEvent } from '../../../core/services/input/PointerService';
-import { AbstractPlugin } from '../../../core/AbstractPlugin';
 
 export class RectangleTool extends AbstractTool {
     private lastPreviewRect: MeshView;
@@ -24,8 +23,8 @@ export class RectangleTool extends AbstractTool {
         const rect = Rectangle.squareFromCenterPointAndRadius(pointer.down, 50);
 
         const meshView: MeshView = new MeshView({dimensions: rect});
-        meshView.rotation = 0;
-        meshView.scale = 1;
+        meshView.setRotation(0);
+        meshView.setScale(1);
         meshView.color = 'grey';
 
         this.registry.stores.canvasStore.addMeshView(meshView);
@@ -50,8 +49,8 @@ export class RectangleTool extends AbstractTool {
         const dimensions = this.registry.stores.feedback.rectSelectFeedback.rect;
 
         const meshView: MeshView = new MeshView({dimensions});
-        meshView.rotation = 0;
-        meshView.scale = 1;
+        meshView.setRotation(0);
+        meshView.setScale(1);
         meshView.color = 'grey';
 
         if (positions.length > 0) {

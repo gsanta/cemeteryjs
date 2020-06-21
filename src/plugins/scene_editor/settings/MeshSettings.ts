@@ -2,16 +2,11 @@ import { toDegree, toRadian } from '../../../core/geometry/utils/Measurements';
 import { MeshView } from '../../../core/models/views/MeshView';
 import { Registry } from '../../../core/Registry';
 import { RenderTask } from '../../../core/services/RenderServices';
-import { AbstractSettings, PropertyType } from "./AbstractSettings";
-import { MeshImporterSettings } from '../../mesh_importer/settings/MeshImporterSettings';
 import { SceneEditorPlugin } from '../SceneEditorPlugin';
-import { AssetModel, AssetType } from '../../../core/models/game_objects/AssetModel';
+import { AbstractSettings, PropertyType } from "./AbstractSettings";
 
 export enum MeshViewPropType {
     Color = 'color',
-    Model = 'model',
-    Texture = 'texture',
-    Thumbnail = 'thumbnail',
     Layer = 'layer',
     Rotation = 'rotation',
     Scale = 'scale',
@@ -58,18 +53,12 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
         switch (prop) {
             case MeshViewPropType.Color:
                 return this.meshView.color;
-            case MeshViewPropType.Model:
-                return this.registry.stores.assetStore.getAssetById(this.meshView.modelId);
-            case MeshViewPropType.Texture:
-                return this.registry.stores.assetStore.getAssetById(this.meshView.textureId);
-            case MeshViewPropType.Thumbnail:
-                return this.registry.stores.assetStore.getAssetById(this.meshView.thumbnailId);
             case MeshViewPropType.Layer:
                 return this.meshView.layer;
             case MeshViewPropType.Rotation:
-                return Math.round(toDegree(this.meshView.rotation));
+                return Math.round(toDegree(this.meshView.getRotation()));
             case MeshViewPropType.Scale:
-                return this.meshView.scale;
+                return this.meshView.getScale();
             case MeshViewPropType.YPos:
                 return this.meshView.yPos;
             case MeshViewPropType.Name:
@@ -90,46 +79,16 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
                 this.meshView.color = val;
                 this.update();
                 break;
-            case MeshViewPropType.Model:
-                const assetModel = new AssetModel({data: val.data, assetType: AssetType.Model});
-                this.meshView.modelId = this.registry.stores.assetStore.addModel(assetModel);
-
-                this.registry.services.localStore.saveAsset(assetModel);
-                    // .then(() => {
-                    //     this.registry.services.thumbnailMaker.createThumbnail(assetModel);
-                    //     return this.registry.services.meshLoader.getDimensions(assetModel, this.meshConcept.id);
-                    // })
-                    // .then(dim => {
-                    //     this.meshConcept.dimensions.setWidth(dim.x);
-                    //     this.meshConcept.dimensions.setHeight(dim.y);
-                    // })
-                    // .then(() => this.registry.services.meshLoader.getAnimations(assetModel, this.meshConcept.id))
-                    // .then(animations => {
-                    //     this.meshConcept.animations = animations;
-                    // })
-  
-                
-                // TODO should separate concerns
-                // this.registry.services.plugin.assetImporter.getSettingsByName<MeshImporterSettings>(MeshImporterSettings.settingsName).activate(assetModel);
-                break;
-            case MeshViewPropType.Texture:
-                this.meshView.textureId = this.registry.stores.assetStore.addTexture(new AssetModel({assetType: AssetType.Texture}));
-                this.update();
-                break;
-            case MeshViewPropType.Thumbnail:
-                this.meshView.thumbnailId = this.registry.stores.assetStore.addThumbnail(new AssetModel({assetType: AssetType.Thumbnail}));
-                this.update();
-                break;
             case MeshViewPropType.Layer:
                 this.meshView.layer = val;
                 this.update();
                 break;
             case MeshViewPropType.Rotation:
-                this.meshView.rotation = toRadian(this.convertValue(val, prop, this.meshView.rotation));
+                this.meshView.setRotation(toRadian(this.convertValue(val, prop, this.meshView.getRotation())));
                 this.update();
                 break;
             case MeshViewPropType.Scale:
-                this.meshView.scale = this.convertValue(val, prop, this.meshView.scale);
+                this.meshView.setScale(this.convertValue(val, prop, this.meshView.getScale()));
                 this.update();
                 break;
             case MeshViewPropType.YPos:
@@ -158,6 +117,5 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
     private update() {
         this.registry.services.history.createSnapshot();
         this.registry.services.update.runImmediately(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
-
     }
 }

@@ -16,7 +16,7 @@ export class MeshViewComponent extends ViewComponent<MeshView> {
         return (
             <g
                 key={`${item.id}-group`}
-                transform={`translate(${item.dimensions.topLeft.x} ${item.dimensions.topLeft.y}) rotate(${toDegree(item.rotation)} ${item.dimensions.getWidth() / 2} ${item.dimensions.getHeight() / 2})`}
+                transform={`translate(${item.dimensions.topLeft.x} ${item.dimensions.topLeft.y}) rotate(${toDegree(item.getRotation())} ${item.dimensions.getWidth() / 2} ${item.dimensions.getHeight() / 2})`}
                 onMouseOver={() => this.props.hover ? this.props.hover(item) : () => undefined}
                 onMouseOut={() => this.props.unhover ? this.props.unhover(item) : () => undefined}
             >

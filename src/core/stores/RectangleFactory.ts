@@ -45,7 +45,7 @@ export class RectangleFactory  {
 
         meshObject.meshName = mesh.name;
 
-        const scale = meshObject.scale;
+        const scale = meshObject.getScale();
         mesh.scaling = new Vector3(scale, scale, scale);
         mesh.translate(new Vector3(rec.topLeft.x + width / 2, 0, -rec.topLeft.y - depth / 2), 1, Space.WORLD);
 

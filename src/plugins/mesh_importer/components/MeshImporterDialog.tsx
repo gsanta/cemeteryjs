@@ -29,7 +29,11 @@ export class MeshImporterDialog extends AbstractPluginComponent {
     render() {
         const footer = <ButtonComponent text="Done" type="info" onClick={() => this.createThumbnail()}/>
         return (
-            <DialogComponent title={'Import model'} closeDialog={() => null} footer={footer}>
+            <DialogComponent 
+                title={'Import model'}
+                closeDialog={() => this.props.plugin.pluginSettings.byName<MeshImporterSettings>(MeshImporterSettings.settingsName).close()}
+                footer={footer}
+            >
                 <ThumbnailMakerComponent plugin={this.props.plugin} setRef={refObject => this.ref = (refObject as any)}/>
             </DialogComponent>
         );
@@ -37,7 +41,6 @@ export class MeshImporterDialog extends AbstractPluginComponent {
 
     private createThumbnail() {
         const selectedView = this.context.registry.stores.selectionStore.getView();
-        const assetModel = (this.context.registry.stores.assetStore.getAssetById((selectedView as MeshView).modelId));
         this.props.plugin.pluginServices.byName<ThumbnailMakerService>(ThumbnailMakerService.serviceName).createThumbnail(selectedView as MeshView);
 
         this.props.plugin.pluginSettings.byName<MeshImporterSettings>(MeshImporterSettings.settingsName).close();

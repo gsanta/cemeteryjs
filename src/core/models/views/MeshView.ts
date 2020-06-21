@@ -49,7 +49,9 @@ export class MeshView extends View implements IGameModel {
     meshName: string;
     id: string;
     dimensions: Rectangle;
-    rotation: number;
+    private rotation: number;
+    private scale: number;
+    
     children: MeshView[] = [];
     parent: MeshView;
     modelId: string;
@@ -60,7 +62,6 @@ export class MeshView extends View implements IGameModel {
     isManualControl: boolean;
 
     color: string = 'grey';
-    scale: number;
     yPos: number = 0;
 
     speed = 0.5;
@@ -120,11 +121,7 @@ export class MeshView extends View implements IGameModel {
     }
 
     getRotation(): number {
-        if (!this.mesh) {
-            return this.rotation;
-        }
-
-        return this.mesh.rotationQuaternion ? this.mesh.rotationQuaternion.toEulerAngles().y : this.mesh.rotation.y;
+        return this.rotation;
     }
 
     rotateBy(rad: number) {
@@ -136,17 +133,22 @@ export class MeshView extends View implements IGameModel {
     }
 
     setRotation(angle: number) {
-        if (this.mesh) {
-            this.mesh.rotationQuaternion = Quaternion.RotationAxis(new Vector3(0, 1, 0), angle);
-            this.mesh.rotation.y = angle;
-        } else {
-            this.rotation = angle;
-        }
+        this.rotation = angle;
+        this.model.setRotation(angle);
     }
 
     rotate(angle: number) {
         this.mesh.rotation.y = 0;
         this.mesh.rotate(Axis.Y, angle, Space.LOCAL);
+    }
+
+    setScale(scale: number) {
+        this.scale = scale;
+        this.model.setScale(scale);
+    }
+
+    getScale(): number {
+        return this.scale;
     }
 
     selectHoveredSubview() {}

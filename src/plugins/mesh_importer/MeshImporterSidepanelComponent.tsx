@@ -43,7 +43,7 @@ export class MeshImporterSidepanelComponent extends React.Component<{plugin: Mes
                 <FieldColumnStyled>
                     <ConnectedFileUploadComponent
                         formController={settings}
-                        propertyName={MeshViewPropType.Model}
+                        propertyName={ImportSettingsProps.Model}
                         propertyType="string"
                         placeholder={`Upload`}
                         value={assetModel && assetModel.getId()}

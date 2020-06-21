@@ -74,7 +74,8 @@ export class GameViewerPlugin extends AbstractPlugin {
         const nodeService = this.pluginServices.byName<NodeService>(NodeService.serviceName);
         nodeService.getNodesByType(NodeType.Route).forEach(node => nodeService.getHandler(node).wake(node));
 
-        this.registry.services.game.registerAfterRender(() => {
+        const engineService = this.pluginServices.byName<EngineService<any>>(EngineService.serviceName);
+        engineService.getScene().registerAfterRender(() => {
             this.gizmos.update();
         });
         
