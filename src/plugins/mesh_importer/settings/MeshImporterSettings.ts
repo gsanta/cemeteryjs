@@ -1,17 +1,16 @@
-import { AssetModel, AssetType } from '../../../core/models/game_objects/AssetModel';
+import { AssetModel } from '../../../core/models/game_objects/AssetModel';
 import { MeshView } from '../../../core/models/views/MeshView';
 import { ViewType } from '../../../core/models/views/View';
 import { Registry } from '../../../core/Registry';
 import { RenderTask } from '../../../core/services/RenderServices';
 import { AbstractSettings } from "../../scene_editor/settings/AbstractSettings";
 import { MeshImporterPlugin } from '../MeshImporterPlugin';
-import { ThumbnailMakerService } from '../services/ThumbnailMakerService';
-import { MeshLoaderService } from '../../../core/services/MeshLoaderService';
+import { ThumbnailMaker } from '../services/ThumbnailMaker';
 
 export enum ImportSettingsProps {
-    Model = 'model',
-    Texture = 'texture',
-    Thumbnail = 'thumbnail'
+    CreateThumbnail = 'CreateThumbnail',
+    Thumbnail = 'Thumbnail',
+    Model = 'Model',
 }
 
 export class MeshImporterSettings extends AbstractSettings<ImportSettingsProps> {
@@ -20,16 +19,30 @@ export class MeshImporterSettings extends AbstractSettings<ImportSettingsProps> 
 
     private registry: Registry;
     private plugin: MeshImporterPlugin;
+    private thumbnailMaker: ThumbnailMaker;
+    meshView: MeshView;
+    private thumbnailModel: AssetModel;
+    private modelModel: AssetModel;
 
     constructor(plugin: MeshImporterPlugin, registry: Registry) {
         super();
         this.plugin = plugin;
         this.registry = registry;
+        this.thumbnailMaker = new ThumbnailMaker();
     }
 
-    activate() {
+    open() {
+        this.meshView = this.registry.stores.selectionStore.getView() as MeshView;
+        
+        if (this.meshView.thumbnailId) {
+            this.thumbnailModel = this.registry.stores.assetStore.getAssetById(this.meshView.thumbnailId);
+        }
+        
+        if (this.meshView.modelId) {
+            this.modelModel = this.registry.stores.assetStore.getAssetById(this.meshView.modelId);
+        }
+
         this.registry.services.dialog.openDialog(MeshImporterSettings.settingsName);
-        this.plugin.pluginServices.byName<ThumbnailMakerService>(ThumbnailMakerService.serviceName).loadSelectedMeshView();
     }
 
     close() {
@@ -42,50 +55,30 @@ export class MeshImporterSettings extends AbstractSettings<ImportSettingsProps> 
         const meshView = this.registry.stores.selectionStore.hasOne() && this.registry.stores.selectionStore.getOneByType(ViewType.MeshView) as MeshView;
 
         switch (prop) {
-            case ImportSettingsProps.Model:
-                return meshView && this.registry.stores.assetStore.getAssetById(meshView.modelId);
-            case ImportSettingsProps.Texture:
-                return meshView && this.registry.stores.assetStore.getAssetById(meshView.textureId);
-            case ImportSettingsProps.Thumbnail:
+            case ImportSettingsProps.CreateThumbnail:
                 return meshView && this.registry.stores.assetStore.getAssetById(meshView.thumbnailId);
-        }
-    }
-
-    protected setProp(val: any, prop: ImportSettingsProps) {
-        const meshView = this.registry.stores.selectionStore.hasOne() && this.registry.stores.selectionStore.getOneByType(ViewType.MeshView) as MeshView;
-
-        let assetModel: AssetModel;
-        switch (prop) {
+            case ImportSettingsProps.Thumbnail:
+                return this.thumbnailModel;
             case ImportSettingsProps.Model:
-                assetModel = new AssetModel({data: val.data, assetType: AssetType.Model});
-                meshView.modelId = this.registry.stores.assetStore.addModel(assetModel);
-                this.registry.services.localStore.saveAsset(assetModel);
-                this.registry.stores.meshStore.deleteInstance((<MeshView> meshView).mesh);
-                this.registry.stores.meshStore.createInstance(meshView.model);
-                const meshLoaderService = this.plugin.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName);
+                return this.modelModel;    
+        }
+    }
 
-                 meshLoaderService.getDimensions(assetModel, meshView.id)
-                .then(dim => {
-                    meshView.dimensions.setWidth(dim.x);
-                    meshView.dimensions.setHeight(dim.y);
-                    this.update(meshView);
-                });
-
-                this.activate();
-                break;
-            case ImportSettingsProps.Texture:
-                assetModel = new AssetModel({data: val.data, assetType: AssetType.Texture})
-                meshView.textureId = this.registry.stores.assetStore.addTexture(assetModel);
+    protected async setProp(val: any, prop: ImportSettingsProps) {
+        switch (prop) {
+            case ImportSettingsProps.CreateThumbnail:
+                const assetModel = await this.thumbnailMaker.createThumbnail(this.meshView, this.plugin.pluginServices.engineService());                
+                this.registry.stores.assetStore.addAsset(assetModel);
                 this.registry.services.localStore.saveAsset(assetModel);
-                this.registry.stores.meshStore.createMaterial(meshView.model);
-                this.update(meshView);
+                this.meshView.thumbnailId = assetModel.getId();
+
+                this.update();
                 break;
         }
     }
 
-    private update(meshView: MeshView) {
+    private update() {
         this.registry.services.history.createSnapshot();
         this.registry.services.update.runImmediately(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
-
     }
 }

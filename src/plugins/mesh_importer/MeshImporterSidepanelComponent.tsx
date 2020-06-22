@@ -6,6 +6,8 @@ import { ConnectedFileUploadComponent } from '../common/toolbar/icons/ImportFile
 import { AccordionComponent } from '../../core/gui/misc/AccordionComponent';
 import { MeshImporterSettings, ImportSettingsProps } from './settings/MeshImporterSettings';
 import { MeshImporterPlugin } from './MeshImporterPlugin';
+import { ButtonComponent } from '../../core/gui/inputs/ButtonComponent';
+import { AssetLoaderSidepanelControllerProps, AssetLoaderSidepanelController } from './controllers/AssetLoaderSidepanelController';
 
 export class MeshImporterSidepanelComponent extends React.Component<{plugin: MeshImporterPlugin}> {
 
@@ -14,7 +16,7 @@ export class MeshImporterSidepanelComponent extends React.Component<{plugin: Mes
             <React.Fragment>
                 {this.renderModelFileChooser()}
                 {this.renderTextureFileChooser()}
-                {this.renderThumbnailFileChooser()}
+                {this.changeThumbnailButton()}
             </React.Fragment>
         )
 
@@ -34,8 +36,8 @@ export class MeshImporterSidepanelComponent extends React.Component<{plugin: Mes
     }
 
     private renderModelFileChooser(): JSX.Element {
-        const settings = this.props.plugin.pluginSettings.byName<MeshImporterSettings>(MeshImporterSettings.settingsName);
-        const assetModel: AssetModel = settings.getVal(ImportSettingsProps.Model);
+        const settings = this.props.plugin.pluginSettings.byName<AssetLoaderSidepanelController>(AssetLoaderSidepanelController.settingsName);
+        const assetModel: AssetModel = settings.getVal(AssetLoaderSidepanelControllerProps.Model);
 
         return (
             <SettingsRowStyled key="model-file">
@@ -43,7 +45,7 @@ export class MeshImporterSidepanelComponent extends React.Component<{plugin: Mes
                 <FieldColumnStyled>
                     <ConnectedFileUploadComponent
                         formController={settings}
-                        propertyName={ImportSettingsProps.Model}
+                        propertyName={AssetLoaderSidepanelControllerProps.Model}
                         propertyType="string"
                         placeholder={`Upload`}
                         value={assetModel && assetModel.getId()}
@@ -56,8 +58,8 @@ export class MeshImporterSidepanelComponent extends React.Component<{plugin: Mes
 
     
     private renderTextureFileChooser(): JSX.Element {
-        const settings = this.props.plugin.pluginSettings.byName<MeshImporterSettings>(MeshImporterSettings.settingsName);
-        const assetModel: AssetModel = settings.getVal(ImportSettingsProps.Texture);
+        const settings = this.props.plugin.pluginSettings.byName<AssetLoaderSidepanelController>(AssetLoaderSidepanelController.settingsName);
+        const assetModel: AssetModel = settings.getVal(AssetLoaderSidepanelControllerProps.Texture);
 
         return (
             <SettingsRowStyled key="texture-file">
@@ -65,7 +67,7 @@ export class MeshImporterSidepanelComponent extends React.Component<{plugin: Mes
                 <FieldColumnStyled>
                     <ConnectedFileUploadComponent
                         formController={settings}
-                        propertyName={ImportSettingsProps.Texture}
+                        propertyName={AssetLoaderSidepanelControllerProps.Texture}
                         propertyType="string"
                         placeholder={`Upload`}
                         value={assetModel && assetModel.getId()}
@@ -76,23 +78,13 @@ export class MeshImporterSidepanelComponent extends React.Component<{plugin: Mes
         );
     }
 
-    private renderThumbnailFileChooser(): JSX.Element {
+    private changeThumbnailButton(): JSX.Element {
         const settings = this.props.plugin.pluginSettings.byName<MeshImporterSettings>(MeshImporterSettings.settingsName);
-        const assetModel: AssetModel = settings.getVal(ImportSettingsProps.Thumbnail);
 
         return (
-            <SettingsRowStyled key="thumbnail-file">
-                <LabelColumnStyled>Thumbnail</LabelColumnStyled>
-                <FieldColumnStyled>
-                    <ConnectedFileUploadComponent
-                        formController={settings}
-                        propertyName={ImportSettingsProps.Thumbnail}
-                        propertyType="string"
-                        placeholder={`Upload`}
-                        value={assetModel && assetModel.getId()}
-                        readDataAs="dataUrl"
-                    />
-                </FieldColumnStyled>
+            <SettingsRowStyled key="thumbnail-file">                   
+                <LabelColumnStyled></LabelColumnStyled>
+                <ButtonComponent text="Change thumbnail" type="info" onClick={() => settings.open()}/>
             </SettingsRowStyled>
         );
     }

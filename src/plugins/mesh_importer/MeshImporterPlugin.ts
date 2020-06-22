@@ -9,9 +9,10 @@ import { PluginServices } from '../common/PluginServices';
 import { toolFactory } from '../common/toolbar/toolFactory';
 import { Tool, ToolType } from '../common/tools/Tool';
 import { Tools } from '../Tools';
-import { ThumbnailMakerService } from './services/ThumbnailMakerService';
+import { ThumbnailMaker } from './services/ThumbnailMaker';
 import { MeshImporterSettings } from './settings/MeshImporterSettings';
 import { PluginSettings } from '../common/PluginSettings';
+import { AssetLoaderSidepanelController } from './controllers/AssetLoaderSidepanelController';
 (<any> window).earcut = require('earcut');
 
 export function getCanvasElement(viewId: string): HTMLCanvasElement {
@@ -35,14 +36,14 @@ export class MeshImporterPlugin extends AbstractPlugin {
         this.pluginServices = new PluginServices(
             [
                 new EngineService(this, this.registry),
-                new MeshLoaderService(this, this.registry),
-                new ThumbnailMakerService(this, this.registry)
+                new MeshLoaderService(this, this.registry)
             ]
         );
 
         this.pluginSettings = new PluginSettings(
             [
-                new MeshImporterSettings(this, this.registry)
+                new MeshImporterSettings(this, this.registry),
+                new AssetLoaderSidepanelController(this, this.registry)
             ]
         );
     }

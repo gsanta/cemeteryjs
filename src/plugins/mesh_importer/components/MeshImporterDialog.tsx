@@ -4,10 +4,12 @@ import { DialogComponent } from '../../../core/gui/dialogs/DialogComponent';
 import { MeshView } from '../../../core/models/views/MeshView';
 import { AbstractPluginComponent } from '../../common/AbstractPluginComponent';
 import { ThumbnailMakerComponent } from '../../scene_editor/components/ThumbnailMakerComponent';
-import { ThumbnailMakerService } from '../services/ThumbnailMakerService';
 import { ButtonComponent } from '../../../core/gui/inputs/ButtonComponent';
 import { MeshLoaderService } from '../../../core/services/MeshLoaderService';
-import { MeshImporterSettings } from '../settings/MeshImporterSettings';
+import { MeshImporterSettings, ImportSettingsProps } from '../settings/MeshImporterSettings';
+import { AssetModel } from '../../../core/models/game_objects/AssetModel';
+import { SettingsRowStyled, LabelColumnStyled, FieldColumnStyled } from '../../scene_editor/settings/SettingsComponent';
+import { ConnectedFileUploadComponent } from '../../common/toolbar/icons/ImportFileIconComponent';
 
 const CanvasStyled = styled.canvas`
     width: 300px;
@@ -20,29 +22,54 @@ export class MeshImporterDialog extends AbstractPluginComponent {
     componentDidMount() {
         super.componentDidMount();
         this.props.plugin.componentMounted(this.ref.current);
+
         // TODO remove logic
-        const selectedView = this.context.registry.stores.selectionStore.getView();
-        const assetModel = (this.context.registry.stores.assetStore.getAssetById((selectedView as MeshView).modelId));
+        const controller = this.props.plugin.pluginSettings.byName<MeshImporterSettings>(MeshImporterSettings.settingsName);
+        const assetModel: AssetModel = controller.getVal(ImportSettingsProps.Model);
         this.props.plugin.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName).load(assetModel, '123');
      }
     
     render() {
-        const footer = <ButtonComponent text="Done" type="info" onClick={() => this.createThumbnail()}/>
+        const controller = this.props.plugin.pluginSettings.byName<MeshImporterSettings>(MeshImporterSettings.settingsName);
+
+        const footer = <ButtonComponent text="Done" type="info" onClick={() => this.done()}/>
         return (
             <DialogComponent 
                 title={'Import model'}
-                closeDialog={() => this.props.plugin.pluginSettings.byName<MeshImporterSettings>(MeshImporterSettings.settingsName).close()}
+                closeDialog={() => controller.close()}
                 footer={footer}
             >
                 <ThumbnailMakerComponent plugin={this.props.plugin} setRef={refObject => this.ref = (refObject as any)}/>
+                {this.renderThumbnailFileChooser()}
             </DialogComponent>
         );
     }
 
-    private createThumbnail() {
-        const selectedView = this.context.registry.stores.selectionStore.getView();
-        this.props.plugin.pluginServices.byName<ThumbnailMakerService>(ThumbnailMakerService.serviceName).createThumbnail(selectedView as MeshView);
+    private done() {
+        const controller = this.props.plugin.pluginSettings.byName<MeshImporterSettings>(MeshImporterSettings.settingsName);
 
-        this.props.plugin.pluginSettings.byName<MeshImporterSettings>(MeshImporterSettings.settingsName).close();
+        controller.updateProp(undefined, ImportSettingsProps.CreateThumbnail);
+        controller.close();
+    }
+
+    private renderThumbnailFileChooser(): JSX.Element {
+        const settings = this.props.plugin.pluginSettings.byName<MeshImporterSettings>(MeshImporterSettings.settingsName);
+        const assetModel: AssetModel = settings.getVal(ImportSettingsProps.CreateThumbnail);
+
+        return (
+            <SettingsRowStyled key="thumbnail-file">
+                <LabelColumnStyled>Thumbnail</LabelColumnStyled>
+                <FieldColumnStyled>
+                    <ConnectedFileUploadComponent
+                        formController={settings}
+                        propertyName={ImportSettingsProps.CreateThumbnail}
+                        propertyType="string"
+                        placeholder={`Upload`}
+                        value={assetModel && assetModel.getId()}
+                        readDataAs="dataUrl"
+                    />
+                </FieldColumnStyled>
+            </SettingsRowStyled>
+        );
     }
 }

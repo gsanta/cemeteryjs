@@ -80,7 +80,7 @@ export class LocalStoreService {
         const db = await this.getDb();
 
         var objectStore = db.transaction(["assets"], "readwrite").objectStore("assets");
-        objectStore.add({id: assetModel.getId(), data: assetModel.data});
+        objectStore.add({id: assetModel.getId(), data: assetModel.data, assetType: assetModel.assetType});
     }
 
     async loadAsset(assetModel: AssetModel): Promise<string> {
