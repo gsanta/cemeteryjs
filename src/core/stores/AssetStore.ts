@@ -52,6 +52,8 @@ export class AssetStore {
     }
 
     getAssetById(id: string): AssetModel {
+        if (!id) { return undefined; }
+        
         return this.assetsById.get(id);
     }
 

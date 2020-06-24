@@ -3,7 +3,7 @@
 export interface AssetJson {
     id: string;
     assetType: string;
-    // path: string;
+    path?: string;
     data: string;
 }
 
@@ -18,11 +18,13 @@ export class AssetModel {
     assetType: AssetType;
     data: string;
     thumbnailData: string;
+    path: string;
 
-    constructor(config?: {data?: string, assetType: AssetType}) {
+    constructor(config?: {data?: string, path?: string, assetType: AssetType}) {
         if (config) {
             this.data = config.data;
             this.assetType = config.assetType;
+            this.path = config.path;
         }
     }
 
@@ -38,7 +40,7 @@ export class AssetModel {
         return {
             id: this.id,
             assetType: this.assetType,
-            // path: this.path,
+            path: this.path,
             data: undefined // do not serialize, too expensive
         };
     }
@@ -46,7 +48,7 @@ export class AssetModel {
     fromJson(json: AssetJson) {
         this.id = json.id;
         this.assetType = <AssetType> json.assetType;
-        // this.path = json.path;
+        this.path = json.path;
         this.data = json.data;
     }
 }
