@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ConnectedDropdownComponent } from '../../../core/gui/inputs/DropdownComponent';
 import { ConnectedSliderComponent } from '../../../core/gui/inputs/SliderComponent';
-import { FieldColumnStyled, LabelColumnStyled, SettingsRowStyled } from '../../scene_editor/settings/SettingsComponent';
+import { FieldColumnStyled, LabelColumnStyled, LabeledField } from '../../scene_editor/settings/SettingsComponent';
 import { AbstractNodeSettingsComponent } from './AbstractNodeSettingsComponent';
 import { MoveNodeProps } from './nodes/MoveNodeSettings';
 import Slider, {Handle} from 'rc-slider';
@@ -29,7 +29,7 @@ export class MoveNodeSettingsComponent extends  AbstractNodeSettingsComponent {
         const val: string = this.props.settings.getVal(MoveNodeProps.Move);
 
         return (
-            <SettingsRowStyled>
+            <LabeledField>
                 <LabelColumnStyled className="input-label">Action</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedDropdownComponent
@@ -40,7 +40,7 @@ export class MoveNodeSettingsComponent extends  AbstractNodeSettingsComponent {
                         placeholder="Select Movement"
                     />
                 </FieldColumnStyled>
-            </SettingsRowStyled>
+            </LabeledField>
         );
     }
 
@@ -48,7 +48,7 @@ export class MoveNodeSettingsComponent extends  AbstractNodeSettingsComponent {
         const val: number = this.props.settings.getVal(MoveNodeProps.Speed);
 
         return (
-            <SettingsRowStyled>
+            <LabeledField>
                 <LabelColumnStyled className="input-label">Speed</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedSliderComponent
@@ -59,7 +59,7 @@ export class MoveNodeSettingsComponent extends  AbstractNodeSettingsComponent {
                         max={this.props.settings.getVal(MoveNodeProps.SpeedMax)}
                     />
                 </FieldColumnStyled>
-            </SettingsRowStyled>
+            </LabeledField>
         );
     }
 }

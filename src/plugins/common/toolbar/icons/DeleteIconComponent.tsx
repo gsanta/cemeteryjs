@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { colors } from '../../../../core/gui/styles';
-import { ToolStyled, ToolIconStyled, ToolNameStyled, IconProps } from './ToolIcon';
+import { ToolStyled, ToolIconStyled, ToolNameStyled, ToolIconProps } from './ToolIcon';
 import { AbstractIconComponent } from './AbstractIconComponent';
 
 const IconBackgroundComponent = styled.path`
@@ -18,7 +18,7 @@ const TrashHoleComponent = styled.path`
 
 export class DeleteIconComponent extends AbstractIconComponent {
 
-    constructor(props: IconProps) {
+    constructor(props: ToolIconProps) {
         super(props);
 
         this.tooltipText = 'Eraser tool <b>(Shift + E)</b>';

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ButtonComponent } from '../../../core/gui/inputs/ButtonComponent';
 import { ConnectedInputComponent } from '../../../core/gui/inputs/InputComponent';
-import { SettingsRowStyled, LabelColumnStyled, FieldColumnStyled } from './SettingsComponent';
+import { LabeledField, LabelColumnStyled, FieldColumnStyled } from './SettingsComponent';
 import { GridComponent } from '../../../core/gui/misc/GridComponent';
 import { SceneEditorPlugin } from '../SceneEditorPlugin';
 import { LevelSettings, LevelFormPropType } from './LevelSettings';
@@ -17,21 +17,21 @@ export class LevelSettingsComponent extends React.Component<{plugin: SceneEditor
         const levelIndexes = this.context.registry.stores.levelStore.levels.filter(level => !level.isEmpty).map(level => level.index);
         return (
             <div>
-                <SettingsRowStyled>
+                <LabeledField>
                     <LabelColumnStyled>Level</LabelColumnStyled>
                     <FieldColumnStyled>
                         <GridComponent isReversed={false} markedValues={levelIndexes} value={level as number} onChange={(val) => levelSettings.updateProp(val, LevelFormPropType.Level)}/>
                     </FieldColumnStyled>
-                </SettingsRowStyled>
+                </LabeledField>
 
-                <SettingsRowStyled>
+                <LabeledField>
                     <LabelColumnStyled></LabelColumnStyled>
                     <FieldColumnStyled>
                         <ButtonComponent text="Clear level" type="info" onClick={() => levelSettings.updateProp(level, LevelFormPropType.ClearLevel)}/>
                     </FieldColumnStyled>
-                </SettingsRowStyled>
+                </LabeledField>
 
-                <SettingsRowStyled>
+                <LabeledField>
                     <LabelColumnStyled>Level name</LabelColumnStyled>
                     <FieldColumnStyled>
                         <ConnectedInputComponent
@@ -42,7 +42,7 @@ export class LevelSettingsComponent extends React.Component<{plugin: SceneEditor
                             value={levelSettings.getVal(LevelFormPropType.LevelName)}
                         />
                     </FieldColumnStyled>
-                </SettingsRowStyled>
+                </LabeledField>
             </div>
         );
     }

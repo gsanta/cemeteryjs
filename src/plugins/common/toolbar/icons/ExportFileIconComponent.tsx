@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { ToolStyled, ToolIconStyled, ToolIconBackgroundStyled, ToolIconImageStyled, ToolNameStyled, IconProps } from './ToolIcon';
+import { ToolStyled, ToolIconStyled, ToolIconBackgroundStyled, ToolIconImageStyled, ToolNameStyled, ToolIconProps } from './ToolIcon';
 
-export class ExportFileIconComponent extends React.Component<IconProps> {
+export class ExportFileIconComponent extends React.Component<ToolIconProps> {
 
     render() {
         return (

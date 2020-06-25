@@ -4,10 +4,9 @@ import { ViewType } from '../../../core/models/views/View';
 import { Registry } from '../../../core/Registry';
 import { RenderTask } from '../../../core/services/RenderServices';
 import { AbstractSettings } from "../../scene_editor/settings/AbstractSettings";
-import { MeshImporterPlugin } from '../MeshImporterPlugin';
-import { ThumbnailMaker } from '../services/ThumbnailMaker';
+import { AssetLoaderPlugin } from '../AssetLoaderPlugin';
 import { MeshLoaderService } from '../../../core/services/MeshLoaderService';
-import { MeshImporterSettings } from '../settings/MeshImporterSettings';
+import { AssetLoaderDialogController } from './AssetLoaderDialogController';
 
 export enum AssetLoaderSidepanelControllerProps {
     Model = 'Model',
@@ -19,16 +18,16 @@ export class AssetLoaderSidepanelController extends AbstractSettings<AssetLoader
     getName() { return AssetLoaderSidepanelController.settingsName; }
 
     private registry: Registry;
-    private plugin: MeshImporterPlugin;
+    private plugin: AssetLoaderPlugin;
 
-    constructor(plugin: MeshImporterPlugin, registry: Registry) {
+    constructor(plugin: AssetLoaderPlugin, registry: Registry) {
         super();
         this.plugin = plugin;
         this.registry = registry;
     }
 
     activate() {
-        this.registry.services.dialog.openDialog(MeshImporterSettings.settingsName);
+        this.registry.services.dialog.openDialog(AssetLoaderDialogController.settingsName);
     }
 
     close() {
@@ -68,7 +67,7 @@ export class AssetLoaderSidepanelController extends AbstractSettings<AssetLoader
                     this.update();
                 });
 
-                this.plugin.pluginSettings.byName<MeshImporterSettings>(MeshImporterSettings.settingsName).open();
+                this.plugin.pluginSettings.byName<AssetLoaderDialogController>(AssetLoaderDialogController.settingsName).open();
                 break;
             case AssetLoaderSidepanelControllerProps.Texture:
                 assetModel = new AssetModel({data: val.data, assetType: AssetType.Texture})

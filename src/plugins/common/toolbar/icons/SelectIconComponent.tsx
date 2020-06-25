@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { ToolStyled, ToolIconStyled, ToolIconBackgroundStyled, ToolIconImageStyled, ToolNameStyled, IconProps } from './ToolIcon';
+import { ToolStyled, ToolIconStyled, ToolIconBackgroundStyled, ToolIconImageStyled, ToolNameStyled, ToolIconProps } from './ToolIcon';
 import { AbstractIconComponent } from './AbstractIconComponent';
 
 export class SelectIconComponent extends AbstractIconComponent {
 
-    constructor(props: IconProps) {
+    constructor(props: ToolIconProps) {
         super(props);
 
         this.tooltipText = 'Select tool <b>(Ctrl + Mouse drag)</b>';

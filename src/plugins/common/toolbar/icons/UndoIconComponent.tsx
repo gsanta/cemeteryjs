@@ -1,7 +1,7 @@
-import { IconProps, ToolIconStyled, ToolIconImageStyled, ToolIconBackgroundStyled, ToolStyled, ToolNameStyled } from "./ToolIcon";
+import { ToolIconProps, ToolIconStyled, ToolIconImageStyled, ToolIconBackgroundStyled, ToolStyled, ToolNameStyled } from "./ToolIcon";
 import * as React from 'react';
 
-export function UndoIconComponent(props: IconProps) {
+export function UndoIconComponent(props: ToolIconProps) {
     const toolName =  props.format === 'long' ? <ToolNameStyled>Zoom in</ToolNameStyled> : null;
 
     return (

@@ -1,15 +1,14 @@
 import * as React from 'react';
-import { AssetModel } from '../../core/models/game_objects/AssetModel';
-import { MeshViewPropType } from '../scene_editor/settings/MeshSettings';
-import { SettingsRowStyled, LabelColumnStyled, FieldColumnStyled } from '../scene_editor/settings/SettingsComponent';
-import { ConnectedFileUploadComponent } from '../common/toolbar/icons/ImportFileIconComponent';
-import { AccordionComponent } from '../../core/gui/misc/AccordionComponent';
-import { MeshImporterSettings, ImportSettingsProps } from './settings/MeshImporterSettings';
-import { MeshImporterPlugin } from './MeshImporterPlugin';
-import { ButtonComponent } from '../../core/gui/inputs/ButtonComponent';
-import { AssetLoaderSidepanelControllerProps, AssetLoaderSidepanelController } from './controllers/AssetLoaderSidepanelController';
+import { AssetModel } from '../../../core/models/game_objects/AssetModel';
+import { LabeledField, LabelColumnStyled, FieldColumnStyled } from '../../scene_editor/settings/SettingsComponent';
+import { ConnectedFileUploadComponent } from '../../common/toolbar/icons/ImportFileIconComponent';
+import { AccordionComponent } from '../../../core/gui/misc/AccordionComponent';
+import { AssetLoaderDialogController, ImportSettingsProps } from '../controllers/AssetLoaderDialogController';
+import { AssetLoaderPlugin } from '../AssetLoaderPlugin';
+import { ButtonComponent } from '../../../core/gui/inputs/ButtonComponent';
+import { AssetLoaderSidepanelControllerProps, AssetLoaderSidepanelController } from '../controllers/AssetLoaderSidepanelController';
 
-export class MeshImporterSidepanelComponent extends React.Component<{plugin: MeshImporterPlugin}> {
+export class AssetLoaderSidepanelWidget extends React.Component<{plugin: AssetLoaderPlugin}> {
 
     render() {
         const body = (
@@ -40,7 +39,7 @@ export class MeshImporterSidepanelComponent extends React.Component<{plugin: Mes
         const assetModel: AssetModel = settings.getVal(AssetLoaderSidepanelControllerProps.Model);
 
         return (
-            <SettingsRowStyled key="model-file">
+            <LabeledField key="model-file">
                 <LabelColumnStyled>Model</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedFileUploadComponent
@@ -52,7 +51,7 @@ export class MeshImporterSidepanelComponent extends React.Component<{plugin: Mes
                         readDataAs="dataUrl"
                     />
                 </FieldColumnStyled>
-            </SettingsRowStyled>
+            </LabeledField>
         );
     }
 
@@ -62,7 +61,7 @@ export class MeshImporterSidepanelComponent extends React.Component<{plugin: Mes
         const assetModel: AssetModel = settings.getVal(AssetLoaderSidepanelControllerProps.Texture);
 
         return (
-            <SettingsRowStyled key="texture-file">
+            <LabeledField key="texture-file">
                 <LabelColumnStyled>Texture</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedFileUploadComponent
@@ -74,18 +73,18 @@ export class MeshImporterSidepanelComponent extends React.Component<{plugin: Mes
                         readDataAs="dataUrl"
                     />
                 </FieldColumnStyled>
-            </SettingsRowStyled>
+            </LabeledField>
         );
     }
 
     private changeThumbnailButton(): JSX.Element {
-        const settings = this.props.plugin.pluginSettings.byName<MeshImporterSettings>(MeshImporterSettings.settingsName);
+        const settings = this.props.plugin.pluginSettings.byName<AssetLoaderDialogController>(AssetLoaderDialogController.settingsName);
 
         return (
-            <SettingsRowStyled key="thumbnail-file">                   
+            <LabeledField key="thumbnail-file">                   
                 <LabelColumnStyled></LabelColumnStyled>
                 <ButtonComponent text="Change thumbnail" type="info" onClick={() => settings.open()}/>
-            </SettingsRowStyled>
+            </LabeledField>
         );
     }
 }

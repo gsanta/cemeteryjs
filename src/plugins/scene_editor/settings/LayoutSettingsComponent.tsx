@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Editor } from '../../../core/Editor';
 import { ConnectedDropdownComponent } from '../../../core/gui/inputs/DropdownComponent';
-import { LabelColumnStyled, MultiFieldColumnStyled, SettingsRowStyled } from './SettingsComponent';
+import { LabelColumnStyled, MultiFieldColumnStyled, LabeledField } from './SettingsComponent';
 import { LayoutPropType } from './LayoutSettings';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
 
@@ -29,7 +29,7 @@ export class LayoutSettingsComponent extends React.Component<GeneralFormComponen
 
     private renderLayoutDropdown(): JSX.Element {
         return (
-            <SettingsRowStyled>
+            <LabeledField>
                 <LabelColumnStyled>Layout</LabelColumnStyled>
                 <MultiFieldColumnStyled>
                     <ConnectedDropdownComponent
@@ -40,7 +40,7 @@ export class LayoutSettingsComponent extends React.Component<GeneralFormComponen
                         placeholder="Select layout"
                     />
                 </MultiFieldColumnStyled>
-            </SettingsRowStyled>
+            </LabeledField>
         );
     }
 }

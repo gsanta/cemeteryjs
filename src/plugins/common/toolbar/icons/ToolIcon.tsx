@@ -1,21 +1,23 @@
 import styled from "styled-components";
 import { colors } from "../../../../core/gui/styles";
+import { IconState } from "../../../../core/gui/icons/Icon";
 
-export interface IconProps {
-    isActive: boolean;
+export interface ToolIconProps {
     onClick?(): void;
-    format: 'short' | 'long';
+    isActive?: boolean;
+    format?: 'short' | 'long';
     disabled?: boolean;
     color?: string;
     tooltipText?: string;
+    state?: IconState;
 }
 
 export const ToolStyled = styled.div`
     display: flex;
-    cursor: ${(props: IconProps) => props.disabled ? 'default' : 'pointer'};
-    padding: ${(props: IconProps) => props.format === 'long' ? '3px' : '0px'};
-    opacity: ${(props: IconProps) => props.disabled ? '0.4' : '1'};
-    color: ${(props: IconProps) => props.color ? props.color : colors.textColor};
+    cursor: ${(props: ToolIconProps) => props.disabled ? 'default' : 'pointer'};
+    padding: ${(props: ToolIconProps) => props.format === 'long' ? '3px' : '0px'};
+    opacity: ${(props: ToolIconProps) => props.disabled ? '0.4' : '1'};
+    color: ${(props: ToolIconProps) => props.color ? props.color : colors.textColor};
 
     &:hover {
         background: ${colors.hoverBackground};

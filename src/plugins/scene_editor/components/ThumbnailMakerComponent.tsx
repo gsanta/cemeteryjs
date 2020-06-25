@@ -1,19 +1,34 @@
 import * as React from 'react';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
-import { MeshImporterSettings } from '../../mesh_importer/settings/MeshImporterSettings';
+import { AssetLoaderDialogController, ImportSettingsProps } from '../../asset_loader/controllers/AssetLoaderDialogController';
 import styled from 'styled-components';
 import { WheelListener } from '../../../core/services/WheelListener';
 import { AbstractPlugin } from '../../../core/AbstractPlugin';
+import { AssetModel } from '../../../core/models/game_objects/AssetModel';
+import { CloseIconComponent } from '../../common/toolbar/icons/CloseIconComponent';
+
+const CustomThumbnailImageStyled = styled.div`
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: ${(props: {assetModel: AssetModel}) => `url(${props.assetModel.data}) no-repeat center center`};
+    background-size: contain;
+    background-color: white;
+
+    .icon-close {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        background: white;
+
+    }
+`;
 
 const CanvasStyled = styled.canvas`
-    /* position: absolute; */
     width: 300px;
     height: 300px;
-    /* z-index: 1000; */
-    /* display: none; */
-
-    /* top: -500px; */
-    /* left: -500px; */
 `;
 
 const OverlayStyled = styled.div`
@@ -30,6 +45,7 @@ const ThumbnailMakerStyled = styled.div`
 `
 
 export interface ThumbnailMakerProps {
+    controller: AssetLoaderDialogController;
     setRef(ref: React.RefObject<HTMLDivElement>): void;
     plugin: AbstractPlugin;
 }
@@ -51,16 +67,18 @@ export class ThumbnailMakerComponent extends React.Component<ThumbnailMakerProps
         this.wheelListener = new WheelListener(this.context.registry);
         this.ref.current && this.context.registry.services.hotkey.registerInput(this.ref.current);
         this.ref.current.focus();
-
-        // this.context.registry.services.thumbnailMaker.setup(this.ref.current);
-    }
-
-    componentWillUnmount() {
-        // this.context.registry.services.thumbnailMaker.destroy();
     }
 
     render() {
-        if (this.context.registry.services.dialog.activeDialog !== MeshImporterSettings.settingsName) { return null; }
+        if (this.context.registry.services.dialog.activeDialog !== AssetLoaderDialogController.settingsName) { return null; }
+
+        const controller = this.props.plugin.pluginSettings.byName<AssetLoaderDialogController>(AssetLoaderDialogController.settingsName);
+        const thumbnailModel: AssetModel = controller.getVal(ImportSettingsProps.Thumbnail);
+
+        let customThumbnailImg: JSX.Element = null;
+        if (thumbnailModel && thumbnailModel.path) {
+            customThumbnailImg = this.renderCustomImgIfDefined(thumbnailModel);
+        }
 
         return (
             <ThumbnailMakerStyled
@@ -78,7 +96,17 @@ export class ThumbnailMakerComponent extends React.Component<ThumbnailMakerProps
                     onMouseOver={() => this.props.plugin.over()}
                     onMouseOut={() => this.props.plugin.out()}
                 />
+                {customThumbnailImg}
             </ThumbnailMakerStyled>
+        );
+    }
+
+    
+    private renderCustomImgIfDefined(thumbnailModel: AssetModel) {
+        return (
+            <CustomThumbnailImageStyled assetModel={thumbnailModel}>
+                <CloseIconComponent onClick={() => this.props.controller.updateProp(undefined, ImportSettingsProps.Thumbnail)} />
+            </CustomThumbnailImageStyled>
         );
     }
 }

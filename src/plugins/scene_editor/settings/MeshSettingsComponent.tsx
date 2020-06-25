@@ -7,7 +7,7 @@ import { AccordionComponent } from '../../../core/gui/misc/AccordionComponent';
 import { ConnectedGridComponent } from '../../../core/gui/misc/GridComponent';
 import { MeshView } from '../../../core/models/views/MeshView';
 import { MeshSettings, MeshViewPropType } from './MeshSettings';
-import { FieldColumnStyled, GroupedRowsStyled, LabelColumnStyled, MultiFieldColumnStyled, SettingsRowStyled } from './SettingsComponent';
+import { FieldColumnStyled, GroupedRowsStyled, LabelColumnStyled, MultiFieldColumnStyled, LabeledField } from './SettingsComponent';
 
 export class MeshSettingsComponent extends React.Component<{settings: MeshSettings, view: MeshView}> {
     static contextType = AppContext;
@@ -35,7 +35,7 @@ export class MeshSettingsComponent extends React.Component<{settings: MeshSettin
 
     private renderName(): JSX.Element {
         return (
-            <SettingsRowStyled>
+            <LabeledField>
                 <LabelColumnStyled>Name</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedInputComponent
@@ -46,24 +46,24 @@ export class MeshSettingsComponent extends React.Component<{settings: MeshSettin
                         value={this.props.settings.getVal(MeshViewPropType.Name)}
                     />
                 </FieldColumnStyled>
-            </SettingsRowStyled>
+            </LabeledField>
         );        
     }
 
     private renderLayerInput(): JSX.Element {
         return (
-            <SettingsRowStyled>
+            <LabeledField>
                 <LabelColumnStyled>Layer</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedGridComponent isReversed={true} markedValues={[]} formController={this.props.settings} propertyName={MeshViewPropType.Layer} value={this.props.settings.getVal(MeshViewPropType.Layer)}/>
                 </FieldColumnStyled>
-            </SettingsRowStyled>
+            </LabeledField>
         );
     }
 
     private renderRotationInput(): JSX.Element {
         return (
-            <SettingsRowStyled>
+            <LabeledField>
                 <LabelColumnStyled>Rotation</LabelColumnStyled>
                 <FieldColumnStyled>
                 <ConnectedInputComponent
@@ -75,13 +75,13 @@ export class MeshSettingsComponent extends React.Component<{settings: MeshSettin
                     placeholder="0"
                 />
                 </FieldColumnStyled>
-            </SettingsRowStyled>
+            </LabeledField>
         );
     }
 
     private renderScaleInput(): JSX.Element {
         return (
-            <SettingsRowStyled>
+            <LabeledField>
                 <LabelColumnStyled>Scale</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedInputComponent
@@ -92,13 +92,13 @@ export class MeshSettingsComponent extends React.Component<{settings: MeshSettin
                         value={this.props.settings.getVal(MeshViewPropType.Scale)}
                     />
                 </FieldColumnStyled>
-            </SettingsRowStyled>
+            </LabeledField>
         );
     }
 
     private renderYPosInput(): JSX.Element {
         return (
-            <SettingsRowStyled>
+            <LabeledField>
                 <LabelColumnStyled>Y Pos</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedInputComponent
@@ -109,7 +109,7 @@ export class MeshSettingsComponent extends React.Component<{settings: MeshSettin
                         value={this.props.settings.getVal(MeshViewPropType.YPos)}
                     />
                 </FieldColumnStyled>
-            </SettingsRowStyled>
+            </LabeledField>
         );
 }
 
@@ -142,7 +142,7 @@ export class MeshSettingsComponent extends React.Component<{settings: MeshSettin
         const val: string = this.props.settings.getVal(MeshViewPropType.Path);
 
         return (
-            <SettingsRowStyled>
+            <LabeledField>
                 <LabelColumnStyled>Path</LabelColumnStyled>
                 <MultiFieldColumnStyled>
                     <ConnectedDropdownComponent
@@ -154,7 +154,7 @@ export class MeshSettingsComponent extends React.Component<{settings: MeshSettin
                     />
                     {val ? <ClearIconComponent onClick={() => this.props.settings.updateProp(undefined, MeshViewPropType.Path)}/> : null}
                 </MultiFieldColumnStyled>
-            </SettingsRowStyled>
+            </LabeledField>
         );
     }
 }

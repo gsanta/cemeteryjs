@@ -1,10 +1,10 @@
-import { IconProps, ToolIconStyled, ToolIconImageStyled, ToolIconBackgroundStyled, ToolStyled, ToolNameStyled } from "./ToolIcon";
+import { ToolIconProps, ToolIconStyled, ToolIconImageStyled, ToolIconBackgroundStyled, ToolStyled, ToolNameStyled } from "./ToolIcon";
 import * as React from 'react';
 import { AbstractIconComponent } from "./AbstractIconComponent";
 
 export class ZoomInIconComponent extends AbstractIconComponent {
 
-    constructor(props: IconProps) {
+    constructor(props: ToolIconProps) {
         super(props);
 
         this.tooltipText = 'Zoom in <b>(Scroll in)</b>';

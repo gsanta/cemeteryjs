@@ -3,7 +3,7 @@ import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { ConnectedInputComponent } from '../../../core/gui/inputs/InputComponent';
 import { PathView } from '../../../core/models/views/PathView';
 import { PathPropType, PathSettings } from './PathSettings';
-import { FieldColumnStyled, LabelColumnStyled, SettingsRowStyled } from './SettingsComponent';
+import { FieldColumnStyled, LabelColumnStyled, LabeledField } from './SettingsComponent';
 
 export class PathSettingsComponent extends React.Component<{settings: PathSettings, view: PathView}> {
     static contextType = AppContext;
@@ -25,7 +25,7 @@ export class PathSettingsComponent extends React.Component<{settings: PathSettin
 
     private renderName(): JSX.Element {
         return (
-            <SettingsRowStyled>
+            <LabeledField>
                 <LabelColumnStyled>Name</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedInputComponent
@@ -36,7 +36,7 @@ export class PathSettingsComponent extends React.Component<{settings: PathSettin
                         value={this.props.settings.getVal(PathPropType.NAME)}
                     />
                 </FieldColumnStyled>
-            </SettingsRowStyled>
+            </LabeledField>
         );        
     }
 

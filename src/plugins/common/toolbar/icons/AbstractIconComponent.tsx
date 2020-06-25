@@ -1,12 +1,12 @@
 import * as React from 'react';
 import tippy from 'tippy.js';
-import { IconProps } from './ToolIcon';
+import { ToolIconProps } from './ToolIcon';
 
-export class AbstractIconComponent extends React.Component<IconProps> {
+export class AbstractIconComponent extends React.Component<ToolIconProps> {
     protected ref: React.RefObject<HTMLDivElement>;
     protected tooltipText: string;
 
-    constructor(props: IconProps) {
+    constructor(props: ToolIconProps) {
         super(props);
 
         this.ref = React.createRef();

@@ -9,10 +9,10 @@ export const LabelColumnStyled = styled.div`
 `;
 
 export const FieldColumnStyled = styled.div`
-    width: calc(100% - 70px);
-    max-width: 250px;
     overflow: hidden;
-    display: inline-block;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 `;
 
 export const MultiFieldColumnStyled = styled.div`
@@ -30,7 +30,7 @@ export const GroupedRowsStyled = styled.div`
     margin-bottom: 5px;
 `;
 
-export const SettingsRowStyled = styled.div`
+export const LabeledField = styled.div`
     padding: 1px 1px;
     display: flex;
     flex-direction: row;
@@ -42,6 +42,16 @@ export const SettingsRowStyled = styled.div`
     }
 
     > div:first-child {
-        margin-right:  ${(props: SettingsRowProps) => props.verticalAlign ? '10px' : '0px'}
+        margin-right:  ${(props: SettingsRowProps) => props.verticalAlign ? '10px' : '0px'};
     }
+
+    > div:last-child {
+        width: calc(100% - 70px);
+        max-width: 250px;
+    }
+`;
+
+export const VerticalLabeledField = styled.div`
+    display: flex;
+    flex-direction: column;
 `;

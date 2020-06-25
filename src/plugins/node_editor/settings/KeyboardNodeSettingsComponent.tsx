@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ConnectedDropdownComponent } from '../../../core/gui/inputs/DropdownComponent';
-import { FieldColumnStyled, LabelColumnStyled, SettingsRowStyled } from '../../scene_editor/settings/SettingsComponent';
+import { FieldColumnStyled, LabelColumnStyled, LabeledField } from '../../scene_editor/settings/SettingsComponent';
 import { KeyboardInputNodeProps } from './nodes/KeyboardNodeSettings';
 import { AbstractNodeSettingsComponent } from './AbstractNodeSettingsComponent';
 
@@ -20,7 +20,7 @@ export class KeyboardNodeSettingsComponent extends AbstractNodeSettingsComponent
         const val: string = this.props.settings.getVal(KeyboardInputNodeProps.KeyboardKey);
 
         return (
-            <SettingsRowStyled>
+            <LabeledField>
                 <LabelColumnStyled className="input-label">Key</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedDropdownComponent
@@ -31,7 +31,7 @@ export class KeyboardNodeSettingsComponent extends AbstractNodeSettingsComponent
                         placeholder="Select key"
                     />
                 </FieldColumnStyled>
-            </SettingsRowStyled>
+            </LabeledField>
         )
     }
 }

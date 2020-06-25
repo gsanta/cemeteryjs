@@ -8,8 +8,8 @@ import { NodeEditorPlugin } from '../../plugins/node_editor/NodeEditorPlugin';
 import { NodeEditorPluginComponentFactory } from '../../plugins/node_editor/NodeEditorPluginComponentFactory';
 import { CodeEditorPlugin } from '../../plugins/code_editor/CodeEditorPlugin';
 import { CodeEditorPluginComponentFactory } from '../../plugins/code_editor/CodeEditorPluginComponentFactory';
-import { MeshImporterPlugin } from '../../plugins/mesh_importer/MeshImporterPlugin';
-import { MeshImporterPluginComponentFactory } from '../../plugins/mesh_importer/MeshImporterPluginComponentFactory';
+import { AssetLoaderPlugin } from '../../plugins/asset_loader/AssetLoaderPlugin';
+import { AssetLoaderPluginComponentFactory } from '../../plugins/asset_loader/AssetLoaderPluginComponentFactory';
 import { AbstractPluginComponentFactory } from '../../plugins/common/AbstractPluginComponentFactory';
 
 export interface LayoutConfig {
@@ -28,7 +28,7 @@ export class PluginService {
     gameView: GameViewerPlugin;
     nodeEditor: NodeEditorPlugin;
     codeEditor: CodeEditorPlugin;
-    assetImporter: MeshImporterPlugin;
+    assetImporter: AssetLoaderPlugin;
     plugins: AbstractPlugin[] = [];
     activePlugins: AbstractPlugin[] = [];
 
@@ -43,13 +43,13 @@ export class PluginService {
         this.gameView = new GameViewerPlugin(registry);
         this.nodeEditor = new NodeEditorPlugin(registry);
         this.codeEditor = new CodeEditorPlugin(registry);
-        this.assetImporter = new MeshImporterPlugin(registry);
+        this.assetImporter = new AssetLoaderPlugin(registry);
 
         this.addPlugin(this.sceneEditor, new SceneEditorPluginComponentFactory(registry, this.sceneEditor));
         this.addPlugin(this.gameView, new GameViewerPluginComponentFactory(registry, this.gameView));
         this.addPlugin(this.nodeEditor, new NodeEditorPluginComponentFactory(registry, this.nodeEditor));
         this.addPlugin(this.codeEditor, new CodeEditorPluginComponentFactory(registry, this.codeEditor));
-        this.addPlugin(this.assetImporter, new MeshImporterPluginComponentFactory(registry, this.assetImporter));
+        this.addPlugin(this.assetImporter, new AssetLoaderPluginComponentFactory(registry, this.assetImporter));
 
         this.predefinedLayouts = [
             {

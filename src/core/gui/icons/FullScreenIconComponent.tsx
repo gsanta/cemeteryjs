@@ -1,10 +1,10 @@
-import { IconProps, ToolIconStyled, ToolIconImageStyled, ToolIconBackgroundStyled, ToolStyled, ToolNameStyled } from "../../../plugins/common/toolbar/icons/ToolIcon";
+import { ToolIconProps, ToolIconStyled, ToolIconImageStyled, ToolIconBackgroundStyled, ToolStyled, ToolNameStyled } from "../../../plugins/common/toolbar/icons/ToolIcon";
 import * as React from 'react';
 import { AbstractIconComponent } from "../../../plugins/common/toolbar/icons/AbstractIconComponent";
 
 export class FullScreenIconComponent extends AbstractIconComponent {
 
-    constructor(props: IconProps) {
+    constructor(props: ToolIconProps) {
         super(props);
 
         this.tooltipText = 'Full screen';

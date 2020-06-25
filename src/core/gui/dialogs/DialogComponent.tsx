@@ -37,6 +37,7 @@ const DialogStyled = styled.div`
     left: 50%;
     transform: translate(-50%, 0);
     position: absolute;
+    color: ${colors.textColor};
 `;
 
 const DialogTitleStyled = styled.div`

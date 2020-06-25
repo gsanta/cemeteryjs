@@ -9,8 +9,8 @@ import { PluginServices } from '../common/PluginServices';
 import { toolFactory } from '../common/toolbar/toolFactory';
 import { Tool, ToolType } from '../common/tools/Tool';
 import { Tools } from '../Tools';
-import { ThumbnailMaker } from './services/ThumbnailMaker';
-import { MeshImporterSettings } from './settings/MeshImporterSettings';
+import { ThumbnailMaker } from './utils/ThumbnailMaker';
+import { AssetLoaderDialogController } from './controllers/AssetLoaderDialogController';
 import { PluginSettings } from '../common/PluginSettings';
 import { AssetLoaderSidepanelController } from './controllers/AssetLoaderSidepanelController';
 (<any> window).earcut = require('earcut');
@@ -22,8 +22,8 @@ export function getCanvasElement(viewId: string): HTMLCanvasElement {
     }
 }
 
-export class MeshImporterPlugin extends AbstractPlugin {
-    static id = 'mesh-importer-plugin';
+export class AssetLoaderPlugin extends AbstractPlugin {
+    static id = 'asset-loader-plugin';
 
     constructor(registry: Registry) {
         super(registry);
@@ -42,7 +42,7 @@ export class MeshImporterPlugin extends AbstractPlugin {
 
         this.pluginSettings = new PluginSettings(
             [
-                new MeshImporterSettings(this, this.registry),
+                new AssetLoaderDialogController(this, this.registry),
                 new AssetLoaderSidepanelController(this, this.registry)
             ]
         );
@@ -65,7 +65,7 @@ export class MeshImporterPlugin extends AbstractPlugin {
     }
 
     getId(): string {
-        return MeshImporterPlugin.id;
+        return AssetLoaderPlugin.id;
     }
 
     getSelectedTool(): Tool {

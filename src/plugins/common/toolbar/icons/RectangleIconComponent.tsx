@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { colors } from '../../../../core/gui/styles';
-import { ToolStyled, ToolIconStyled, ToolIconBackgroundStyled, ToolIconImageStyled, ToolNameStyled, IconProps } from './ToolIcon';
+import { ToolStyled, ToolIconStyled, ToolIconBackgroundStyled, ToolIconImageStyled, ToolNameStyled, ToolIconProps } from './ToolIcon';
 
 const BrushComponent = styled.path`
     fill: ${({isActive}: {isActive: boolean}) => isActive ? colors.grey3 : colors.textColor};
@@ -13,7 +13,7 @@ const BrushHoleComponent = styled.path`
     fill: ${({isActive}: {isActive: boolean}) => isActive ? colors.active : colors.grey3};
 `;
 
-export function RectangleIconComponent(props: IconProps) {
+export function RectangleIconComponent(props: ToolIconProps) {
     const toolName =  props.format === 'long' ? <ToolNameStyled>Rectangle</ToolNameStyled> : null;
 
     return (

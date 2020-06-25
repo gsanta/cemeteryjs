@@ -4,8 +4,8 @@ import { ViewType } from '../../../core/models/views/View';
 import { Registry } from '../../../core/Registry';
 import { RenderTask } from '../../../core/services/RenderServices';
 import { AbstractSettings } from "../../scene_editor/settings/AbstractSettings";
-import { MeshImporterPlugin } from '../MeshImporterPlugin';
-import { ThumbnailMaker } from '../services/ThumbnailMaker';
+import { AssetLoaderPlugin } from '../AssetLoaderPlugin';
+import { ThumbnailMaker } from '../utils/ThumbnailMaker';
 import { MeshLoaderService } from '../../../core/services/MeshLoaderService';
 
 export enum ImportSettingsProps {
@@ -14,18 +14,18 @@ export enum ImportSettingsProps {
     Model = 'Model',
 }
 
-export class MeshImporterSettings extends AbstractSettings<ImportSettingsProps> {
-    static settingsName = 'mesh-importer-settings';
-    getName() { return MeshImporterSettings.settingsName; }
+export class AssetLoaderDialogController extends AbstractSettings<ImportSettingsProps> {
+    static settingsName = 'asset-loader-dialog-controller';
+    getName() { return AssetLoaderDialogController.settingsName; }
 
     private registry: Registry;
-    private plugin: MeshImporterPlugin;
+    private plugin: AssetLoaderPlugin;
     private thumbnailMaker: ThumbnailMaker;
     meshView: MeshView;
     private thumbnailModel: AssetModel;
     private modelModel: AssetModel;
 
-    constructor(plugin: MeshImporterPlugin, registry: Registry) {
+    constructor(plugin: AssetLoaderPlugin, registry: Registry) {
         super();
         this.plugin = plugin;
         this.registry = registry;
@@ -43,7 +43,7 @@ export class MeshImporterSettings extends AbstractSettings<ImportSettingsProps> 
             this.modelModel = this.registry.stores.assetStore.getAssetById(this.meshView.modelId);
         }
 
-        this.registry.services.dialog.openDialog(MeshImporterSettings.settingsName);
+        this.registry.services.dialog.openDialog(AssetLoaderDialogController.settingsName);
     }
 
     close() {
@@ -78,10 +78,19 @@ export class MeshImporterSettings extends AbstractSettings<ImportSettingsProps> 
                 this.update();
                 break;
             case ImportSettingsProps.Thumbnail:
-                assetModel = new AssetModel({data: val.data, path: val.path, assetType: AssetType.Thumbnail});
-                this.registry.stores.assetStore.addAsset(assetModel);
-                this.registry.services.localStore.saveAsset(assetModel);
-                this.meshView.thumbnailId = assetModel.getId();
+                if (!val) {
+                    const assetModel = this.registry.stores.assetStore.getAssetById(this.meshView && this.meshView.thumbnailId);
+                    if (assetModel) {
+                        assetModel.path = undefined;
+                        assetModel.data = undefined;
+                    }
+                } else {
+                    assetModel = new AssetModel({data: val.data, path: val.path, assetType: AssetType.Thumbnail});
+                    this.registry.stores.assetStore.addAsset(assetModel);
+                    this.registry.services.localStore.saveAsset(assetModel);
+                    this.meshView.thumbnailId = assetModel.getId();
+                }
+
 
                 this.update();
                 break;
@@ -90,6 +99,6 @@ export class MeshImporterSettings extends AbstractSettings<ImportSettingsProps> 
 
     private update() {
         this.registry.services.history.createSnapshot();
-        this.registry.services.update.runImmediately(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
+        this.registry.services.update.runImmediately(RenderTask.RenderFull);
     }
 }

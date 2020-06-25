@@ -1,8 +1,8 @@
 
 
 import * as React from 'react';
-import { MeshImporterDialog } from '../../../plugins/mesh_importer/components/MeshImporterDialog';
-import { MeshImporterSettings } from '../../../plugins/mesh_importer/settings/MeshImporterSettings';
+import { AssetLoaderDialog } from '../../../plugins/asset_loader/components/AssetLoaderDialog';
+import { AssetLoaderDialogController } from '../../../plugins/asset_loader/controllers/AssetLoaderDialogController';
 import { AppContext, AppContextType } from '../Context';
 
 export class DialogManagerComponent extends React.Component {
@@ -13,7 +13,7 @@ export class DialogManagerComponent extends React.Component {
         if (!this.context.registry.services.dialog.activeDialog) { return null; }
 
         switch(this.context.registry.services.dialog.activeDialog) {
-            case MeshImporterSettings.settingsName: return <MeshImporterDialog plugin={this.context.registry.services.plugin.assetImporter}/>;
+            case AssetLoaderDialogController.settingsName: return <AssetLoaderDialog plugin={this.context.registry.services.plugin.assetImporter}/>;
             default: return null;
         }
     }

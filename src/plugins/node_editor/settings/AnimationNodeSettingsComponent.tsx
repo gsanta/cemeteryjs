@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ConnectedDropdownComponent } from '../../../core/gui/inputs/DropdownComponent';
-import { FieldColumnStyled, LabelColumnStyled, SettingsRowStyled } from '../../scene_editor/settings/SettingsComponent';
+import { FieldColumnStyled, LabelColumnStyled, LabeledField } from '../../scene_editor/settings/SettingsComponent';
 import { AbstractNodeSettingsComponent } from './AbstractNodeSettingsComponent';
 import { MeshNodeProps } from './nodes/MeshNodeSettings';
 import { AnimationNodeProps } from './nodes/AnimationNodeSettings';
@@ -19,7 +19,7 @@ export class AnimationNodeSettingsComponent extends AbstractNodeSettingsComponen
         const val: string = this.props.settings.getVal(AnimationNodeProps.Animation);
 
         return (
-            <SettingsRowStyled>
+            <LabeledField>
                 <LabelColumnStyled className="input-label">Animation</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedDropdownComponent
@@ -30,7 +30,7 @@ export class AnimationNodeSettingsComponent extends AbstractNodeSettingsComponen
                         placeholder="Select animation"
                     />
                 </FieldColumnStyled>
-            </SettingsRowStyled>
+            </LabeledField>
         )
     }
 }

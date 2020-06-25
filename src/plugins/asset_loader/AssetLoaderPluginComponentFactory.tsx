@@ -1,13 +1,13 @@
 import { AbstractPluginComponentFactory } from "../common/AbstractPluginComponentFactory";
-import { MeshImporterPlugin } from "./MeshImporterPlugin";
-import { MeshImporterSidepanelComponent } from './MeshImporterSidepanelComponent';
+import { AssetLoaderPlugin } from "./AssetLoaderPlugin";
+import { AssetLoaderSidepanelWidget } from './components/AssetLoaderSidePanelWidget';
 import * as React from 'react';
 import { ViewType } from "../../core/models/views/View";
 
-export class MeshImporterPluginComponentFactory extends AbstractPluginComponentFactory<MeshImporterPlugin> {
+export class AssetLoaderPluginComponentFactory extends AbstractPluginComponentFactory<AssetLoaderPlugin> {
     renderSidePanelComponent() {
         if (this.registry.stores.selectionStore.hasOne() && this.registry.stores.selectionStore.getOneByType(ViewType.MeshView)) {
-            return <MeshImporterSidepanelComponent plugin={this.plugin}/>;
+            return <AssetLoaderSidepanelWidget plugin={this.plugin}/>;
         }
 
         return null;

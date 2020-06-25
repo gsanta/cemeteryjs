@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ConnectedDropdownComponent } from '../../../core/gui/inputs/DropdownComponent';
-import { FieldColumnStyled, LabelColumnStyled, SettingsRowStyled } from '../../scene_editor/settings/SettingsComponent';
+import { FieldColumnStyled, LabelColumnStyled, LabeledField } from '../../scene_editor/settings/SettingsComponent';
 import { AbstractNodeSettingsComponent } from './AbstractNodeSettingsComponent';
 import { MoveNodeProps } from './nodes/MoveNodeSettings';
 import { TurnNodeProps } from './nodes/TurnNodeSettings';
@@ -20,7 +20,7 @@ export class TurnNodeSettingsComponent extends  AbstractNodeSettingsComponent {
         const val: string = this.props.settings.getVal(TurnNodeProps.Turn);
 
         return (
-            <SettingsRowStyled>
+            <LabeledField>
                 <LabelColumnStyled className="input-label">Action</LabelColumnStyled>
                 <FieldColumnStyled>
                     <ConnectedDropdownComponent
@@ -31,7 +31,7 @@ export class TurnNodeSettingsComponent extends  AbstractNodeSettingsComponent {
                         placeholder="Select Turn"
                     />
                 </FieldColumnStyled>
-            </SettingsRowStyled>
+            </LabeledField>
         );
     }
 }

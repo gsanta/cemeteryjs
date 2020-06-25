@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { ToolStyled, ToolIconStyled, ToolIconBackgroundStyled, ToolIconImageStyled, ToolNameStyled, IconProps } from './ToolIcon';
+import { ToolStyled, ToolIconStyled, ToolIconBackgroundStyled, ToolIconImageStyled, ToolNameStyled, ToolIconProps } from './ToolIcon';
 
-export function BlankIconComponent(props: IconProps) {
+export function BlankIconComponent(props: ToolIconProps) {
     const toolName =  props.format === 'long' ? <ToolNameStyled>New project</ToolNameStyled> : null;
 
     return (
