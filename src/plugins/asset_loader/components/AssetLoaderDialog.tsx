@@ -36,7 +36,7 @@ export class AssetLoaderDialog extends AbstractPluginComponent {
         const footer = <ButtonComponent text="Done" type="info" onClick={() => this.done()}/>
         return (
             <DialogComponent 
-                title={'Import model'}
+                title={'Thumbnail maker'}
                 closeDialog={() => controller.close()}
                 footer={footer}
             >
