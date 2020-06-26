@@ -2,16 +2,14 @@
   "name": "@nightshifts.inc/world-generator",
   "version": "0.2.57",
   "description": "A simple worldmap generator for 2d games, which generates the worldmap from a text file.",
-  "main": "build/src/index.js",
-  "types": "build/src/index.d.ts",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "scripts": {
     "test": "jest --coverage --coverageDirectory=build/coverage/json",
     "build": "./node_modules/.bin/webpack",
     "tsc": "tsc --declaration",
     "doc": "typedoc --out api-doc src --mode file --excludeNotExported",
-    "start": "./node_modules/.bin/webpack-dev-server --config webpack-gui.config",
-    "coverage": "npm t && npm run coverage:report",
-    "coverage:report": "nyc report --report-dir=build/coverage/html --temp-dir=build/coverage/json --reporter=html"
+    "start": "./node_modules/.bin/webpack-dev-server --config webpack-gui.config"
   },
   "publishConfig": {
     "access": "public"

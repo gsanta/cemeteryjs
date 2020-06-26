@@ -1,8 +1,8 @@
 import { AbstractPluginComponentFactory } from "../common/AbstractPluginComponentFactory";
 import { AssetLoaderPlugin } from "./AssetLoaderPlugin";
-import { AssetLoaderSidepanelWidget } from './components/AssetLoaderSidePanelWidget';
 import * as React from 'react';
 import { ViewType } from "../../core/models/views/View";
+import { AssetLoaderSidepanelWidget } from './components/AssetLoaderSidepanelWidget';
 
 export class AssetLoaderPluginComponentFactory extends AbstractPluginComponentFactory<AssetLoaderPlugin> {
     renderSidePanelComponent() {

@@ -108,7 +108,7 @@ export class App extends React.Component<{}, AppState> {
                     'cursor': 'ew-resize'
                 }),
                 onDrag: () => this.resize(),
-                onDragEnd: (sizes) => this.context.registry.services.layout.setSizesInPercent(sizes)
+                onDragEnd: ((sizes) => this.context.registry.services.layout.setSizesInPercent(sizes)) as any
             }
         );
     }

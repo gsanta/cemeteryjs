@@ -41,7 +41,11 @@ module.exports = env => {
                             options: {}
                         }
                     ]
-                }
+                },
+                {
+                    test: /\.ttf$/,
+                    use: ['file-loader']
+                  }
             ]
         },
         plugins: [
@@ -52,17 +56,20 @@ module.exports = env => {
             new webpack.DefinePlugin({
                 DEBUG: env === 'debug' ? true : false
             }),
-            new MonacoWebpackPlugin()
+            new MonacoWebpackPlugin(),
             // new BundleAnalyzerPlugin({
             //     analyzerPort: 8887
-            // })
+            // }),
+            new webpack.optimize.LimitChunkCountPlugin({
+                maxChunks: 1
+            })
         ],
         resolve: {
             extensions: [ '.tsx', '.ts', '.js', 'scss', '.css' ]
         },
         output: {
             filename: 'app.js',
-            path: path.resolve(__dirname, 'build'),
+            path: path.resolve(__dirname, 'dist'),
             library: 'worldGenerator',
             publicPath: 'assets',
         },
