@@ -6,7 +6,7 @@ import { AppContext } from './core/gui/Context';
 import { Editor } from './core/Editor';
 import { initCemetery } from './game/cemetery';
 
-export function renderApp(element: HTMLDivElement) {
+export function createEditor(element: HTMLDivElement) {
     const editor = new Editor();
     (window as any).cemetery = initCemetery(editor.registry);
     

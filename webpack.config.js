@@ -50,7 +50,7 @@ module.exports = env => {
         },
         plugins: [
             new MiniCssExtractPlugin({
-            filename: "app.css",
+            filename: "cemeteryjs-bundle.css",
                 allChunks: true
             }),
             new webpack.DefinePlugin({
@@ -68,17 +68,17 @@ module.exports = env => {
             extensions: [ '.tsx', '.ts', '.js', 'scss', '.css' ]
         },
         output: {
-            filename: 'app.js',
-            path: path.resolve(__dirname, 'dist'),
-            library: 'worldGenerator',
-            publicPath: 'assets',
+            filename: 'cemeteryjs-bundle.js',
+            libraryTarget: 'var',
+            library: 'cemetery'
         },
         externals: {
             "babylonjs": "BABYLON"
         },
         devtool: 'eval',
+        context: __dirname,
         devServer: {
-            contentBase: ['.', './test', './assets', './demo'],
+            contentBase: ['.', './test', './assets'],
             port: 8764
         }
     }
