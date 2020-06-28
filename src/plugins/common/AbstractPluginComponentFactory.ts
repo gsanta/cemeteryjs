@@ -16,4 +16,8 @@ export abstract class AbstractPluginComponentFactory<T extends AbstractPlugin> {
     renderMainComponent(): JSX.Element {
         throw new Error(`Plugin ${this.plugin.getId()} does not render a main component.`);
     }
+
+    renderDialogComponent(): JSX.Element {
+        return undefined;
+    }
 }

@@ -40,7 +40,7 @@ export class EngineService<T extends AbstractPlugin = AbstractPlugin> extends Ab
         this.light.diffuse = new Color3(1, 1, 1);
         this.light.specular = new Color3(0, 0, 0);
 
-        // const meshSettings = this.registry.services.plugin.sceneEditor.getSettingsByName<MeshSettings>(MeshSettings.type);
+        // const meshSettings = this.registry.plugins.sceneEditor.getSettingsByName<MeshSettings>(MeshSettings.type);
         // this.createThumbnail(this.registry.stores.assetStore.getAssetById(meshSettings.meshConcept.modelId));
         // var sphere = MeshBuilder.CreateSphere("sphere", {}, this.scene);
 

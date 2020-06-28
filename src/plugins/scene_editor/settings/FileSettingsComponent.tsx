@@ -44,6 +44,6 @@ export class FileSettingsComponent extends React.Component<GeneralFormComponentP
 
     private blank() {
         // TODO eraseAll should not be on delete tool
-        this.context.registry.services.plugin.sceneEditor.tools.byType<DeleteTool>(ToolType.Delete).eraseAll();
+        this.context.registry.plugins.sceneEditor.tools.byType<DeleteTool>(ToolType.Delete).eraseAll();
     }
 }

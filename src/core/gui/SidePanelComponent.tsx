@@ -32,7 +32,7 @@ export class SidePanelComponent extends React.Component<SidebarComponentProps> {
         let layoutSettings: {title: string, body: JSX.Element}[];
         
         // TODO: create sidebar components for each plugin
-        // switch(this.context.registry.services.plugin.getCurrentPredefinedLayoutTitle()) {
+        // switch(this.context.registry.plugins.getCurrentPredefinedLayoutTitle()) {
         //     case 'Scene Editor':
         //         layoutSettings = [
         //             {
@@ -53,7 +53,7 @@ export class SidePanelComponent extends React.Component<SidebarComponentProps> {
         //         layoutSettings = [
         //             {
         //                 title: 'Node types',
-        //                 body: <NodeEditorSettingsComponent settings={this.context.registry.services.plugin.nodeEditor.nodeEditorSettings}/>
+        //                 body: <NodeEditorSettingsComponent settings={this.context.registry.plugins.nodeEditor.nodeEditorSettings}/>
         //             },
         //         ]
         //         break;
@@ -62,7 +62,7 @@ export class SidePanelComponent extends React.Component<SidebarComponentProps> {
         //         break;
         // }
 
-        const pluginService = this.context.registry.services.plugin;
+        const pluginService = this.context.registry.plugins;
         const activePluginComponents = pluginService.plugins.map(plugin => pluginService.getPluginFactory(plugin).renderSidePanelComponent());
 
         return (

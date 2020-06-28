@@ -46,7 +46,7 @@ export class PointerService {
         this.isDown = true;
         this.pointer.down = this.getCanvasPoint(e.pointers[0].pos); 
         this.pointer.downScreen = this.getScreenPoint(e.pointers[0].pos); 
-        this.registry.services.plugin.getHoveredView().getActiveTool().down(e);
+        this.registry.plugins.getHoveredView().getActiveTool().down(e);
         this.registry.services.update.runScheduledTasks();
     }
 
@@ -57,9 +57,9 @@ export class PointerService {
         this.pointer.currScreen =  this.getScreenPoint(e.pointers[0].pos);
         if (this.isDown && this.pointer.getDownDiff().len() > 2) {
             this.isDrag = true;
-            this.registry.services.plugin.getHoveredView().getActiveTool().drag(e);
+            this.registry.plugins.getHoveredView().getActiveTool().drag(e);
         } else {
-            this.registry.services.plugin.getHoveredView().getActiveTool().move();
+            this.registry.plugins.getHoveredView().getActiveTool().move();
         }
         this.registry.services.hotkey.executeHotkey(e);
         this.registry.services.update.runScheduledTasks();
@@ -73,12 +73,12 @@ export class PointerService {
         this.pointer.currScreen =  this.getScreenPoint(e.pointers[0].pos);
 
         if (this.isDrag) {
-            this.registry.services.plugin.getHoveredView().getActiveTool().draggedUp();
+            this.registry.plugins.getHoveredView().getActiveTool().draggedUp();
         } else {
-            this.registry.services.plugin.getHoveredView().getActiveTool().click();
+            this.registry.plugins.getHoveredView().getActiveTool().click();
         }
         
-        this.registry.services.plugin.getHoveredView().getActiveTool().up(e);
+        this.registry.plugins.getHoveredView().getActiveTool().up(e);
         this.isDown = false;
         this.isDrag = false;
         this.pointer.down = undefined;
@@ -104,13 +104,13 @@ export class PointerService {
         }
 
         this.registry.services.hotkey.executeHotkey(e);
-        this.registry.services.plugin.getHoveredView().getActiveTool().wheel();
+        this.registry.plugins.getHoveredView().getActiveTool().wheel();
     }
 
     pointerWheelEnd() {
         this.wheel = Wheel.IDLE;
 
-        this.registry.services.plugin.getHoveredView().getActiveTool().wheelEnd();
+        this.registry.plugins.getHoveredView().getActiveTool().wheelEnd();
     }
 
     hover(item: View): void {
@@ -119,7 +119,7 @@ export class PointerService {
         this.registry.services.hotkey.executeHotkey({
             isHover: true
         });
-        this.registry.services.plugin.getHoveredView().getActiveTool().over(item);
+        this.registry.plugins.getHoveredView().getActiveTool().over(item);
         this.registry.services.update.runScheduledTasks();
     }
 
@@ -131,31 +131,31 @@ export class PointerService {
         if (this.hoveredItem === item) {
             this.hoveredItem = undefined;
         }
-        this.registry.services.plugin.getHoveredView().getActiveTool().out(item);
+        this.registry.plugins.getHoveredView().getActiveTool().out(item);
         this.registry.services.update.runScheduledTasks();
     }
 
     pointerDragStart(item: DroppableItem) {
         this.droppableItem = item;
-        const activePlugin = this.registry.services.plugin.getHoveredView();
-        this.registry.services.plugin.getHoveredView().setPriorityTool(activePlugin.tools.byType(ToolType.DragAndDrop));
+        const activePlugin = this.registry.plugins.getHoveredView();
+        this.registry.plugins.getHoveredView().setPriorityTool(activePlugin.tools.byType(ToolType.DragAndDrop));
         this.registry.services.update.runImmediately(RenderTask.RenderFocusedView, RenderTask.RenderSidebar);
     }
 
     pointerDrop() {
         this.droppableItem = null;
-        const activePlugin = this.registry.services.plugin.getHoveredView();
-        this.registry.services.plugin.getHoveredView().removePriorityTool(activePlugin.tools.byType(ToolType.DragAndDrop));
+        const activePlugin = this.registry.plugins.getHoveredView();
+        this.registry.plugins.getHoveredView().removePriorityTool(activePlugin.tools.byType(ToolType.DragAndDrop));
         this.registry.services.update.runImmediately(RenderTask.RenderFocusedView, RenderTask.RenderSidebar);
     }
     
     private getScreenPoint(point: Point): Point {
-        const offset = this.registry.services.plugin.getHoveredView().getOffset();
+        const offset = this.registry.plugins.getHoveredView().getOffset();
         return new Point(point.x - offset.x, point.y - offset.y);
     }
     
     private getCanvasPoint(point: Point): Point {
-        const offset = this.registry.services.plugin.getHoveredView().getOffset();
-        return this.registry.services.plugin.getHoveredView().getCamera().screenToCanvasPoint(new Point(point.x - offset.x, point.y - offset.y));
+        const offset = this.registry.plugins.getHoveredView().getOffset();
+        return this.registry.plugins.getHoveredView().getCamera().screenToCanvasPoint(new Point(point.x - offset.x, point.y - offset.y));
     }
 }

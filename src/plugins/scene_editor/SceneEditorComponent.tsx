@@ -53,7 +53,7 @@ export class SceneEditorComponent extends AbstractPluginComponent {
         const hover = (item: View) => this.context.registry.services.mouse.hover(item);
         const unhover = (canvasItem: View) => this.context.registry.services.mouse.unhover(canvasItem);
         
-        const plugin = this.context.registry.services.plugin.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id);
+        const plugin = this.context.registry.plugins.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id);
         const history = this.context.registry.services.history;
 
         return (

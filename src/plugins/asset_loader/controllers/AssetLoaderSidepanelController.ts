@@ -27,7 +27,7 @@ export class AssetLoaderSidepanelController extends AbstractSettings<AssetLoader
     }
 
     activate() {
-        this.registry.services.dialog.openDialog(AssetLoaderDialogController.settingsName);
+        this.registry.services.dialog.openDialog(this.plugin.pluginSettings.dialogController);
     }
 
     close() {

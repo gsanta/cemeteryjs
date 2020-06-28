@@ -1,7 +1,7 @@
 import { AbstractPlugin, calcOffsetFromDom } from '../../core/AbstractPlugin';
 import { NodeType } from '../../core/models/nodes/NodeModel';
 import { Registry } from '../../core/Registry';
-import { LayoutType } from '../../core/services/PluginService';
+import { LayoutType } from '../Plugins';
 import { Camera3D } from '../common/camera/Camera3D';
 import { ICamera } from '../common/camera/ICamera';
 import { toolFactory } from '../common/toolbar/toolFactory';

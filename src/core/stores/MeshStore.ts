@@ -62,9 +62,9 @@ export class MeshStore {
         return new Promise(resolve => {
             // TODO MeshStore should be instantiated by GameViewerPlugin and pass itself in constructor instead of directly accessing it here
             // so MeshStore later can be used for GamePlugin
-            const engineService = this.registry.services.plugin.gameView.pluginServices.byName<EngineService>(EngineService.serviceName);
+            const engineService = this.registry.plugins.gameView.pluginServices.byName<EngineService>(EngineService.serviceName);
              // TODO same as above
-            const meshLoaderService = this.registry.services.plugin.gameView.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName);
+            const meshLoaderService = this.registry.plugins.gameView.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName);
             if (!meshModel.meshView.modelId) {
                 const mesh = this.rectangleFactory.createMesh(meshModel.meshView, engineService.getScene());
                 this.instances.add(mesh);
@@ -81,14 +81,14 @@ export class MeshStore {
     }
 
     createMaterial(meshModel: MeshModel) {
-        const engineService = this.registry.services.plugin.gameView.pluginServices.byName<EngineService>(EngineService.serviceName);
+        const engineService = this.registry.plugins.gameView.pluginServices.byName<EngineService>(EngineService.serviceName);
         const textureModel = this.registry.stores.assetStore.getAssetById(meshModel.meshView.textureId);
 
         if (!meshModel.meshView.mesh) {
             return;
         }
 
-        const textureLoaderService = this.registry.services.plugin.gameView.pluginServices.byName<TextureLoaderService>(TextureLoaderService.serviceName);
+        const textureLoaderService = this.registry.plugins.gameView.pluginServices.byName<TextureLoaderService>(TextureLoaderService.serviceName);
 
         textureLoaderService.load(textureModel)
             .then(() => {

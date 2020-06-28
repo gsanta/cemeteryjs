@@ -70,8 +70,6 @@ export class ThumbnailMakerComponent extends React.Component<ThumbnailMakerProps
     }
 
     render() {
-        if (this.context.registry.services.dialog.activeDialog !== AssetLoaderDialogController.settingsName) { return null; }
-
         const controller = this.props.plugin.pluginSettings.byName<AssetLoaderDialogController>(AssetLoaderDialogController.settingsName);
         const thumbnailModel: AssetModel = controller.getVal(ImportSettingsProps.Thumbnail);
 

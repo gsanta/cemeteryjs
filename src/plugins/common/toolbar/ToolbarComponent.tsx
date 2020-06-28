@@ -5,7 +5,7 @@ import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { FullScreenExitIconComponent } from '../../../core/gui/icons/FullScreenExitIconComponent';
 import { FullScreenIconComponent } from '../../../core/gui/icons/FullScreenIconComponent';
 import { colors } from '../../../core/gui/styles';
-import { LayoutType } from '../../../core/services/PluginService';
+import { LayoutType } from '../../Plugins';
 import { RenderTask } from '../../../core/services/RenderServices';
 import { ToolType } from '../tools/Tool';
 import { toolIconFactory } from './toolFactory';
@@ -53,7 +53,7 @@ export class ToolbarComponent extends React.Component<ToolbarProps> {
     }
 
     render(): JSX.Element {
-        const pluginService = this.context.registry.services.plugin;
+        const pluginService = this.context.registry.plugins;
         const toolIcons = this.props.tools.map(toolType => toolIconFactory(toolType, this.props.view, this.context.registry));
 
         const rightIcons: JSX.Element[] = [];
@@ -87,7 +87,7 @@ export class ToolbarComponent extends React.Component<ToolbarProps> {
             <FullScreenIconComponent 
                 isActive={false} 
                 onClick={() => {
-                    this.context.registry.services.plugin.setActivePlugins([this.props.view]);
+                    this.context.registry.plugins.setActivePlugins([this.props.view]);
                     this.context.registry.services.update.runImmediately(RenderTask.RenderFull);
                 }} 
                 format="short"
@@ -100,7 +100,7 @@ export class ToolbarComponent extends React.Component<ToolbarProps> {
             <FullScreenExitIconComponent
                 isActive={false}
                 onClick={() => {
-                    this.context.registry.services.plugin.selectPredefinedLayout(this.context.registry.services.plugin.getCurrentPredefinedLayout().title);
+                    this.context.registry.plugins.selectPredefinedLayout(this.context.registry.plugins.getCurrentPredefinedLayout().title);
                     this.context.registry.services.update.runImmediately(RenderTask.RenderFull);            
                 }}
                 format="short"

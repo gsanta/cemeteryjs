@@ -103,7 +103,7 @@ export class AxisGizmo {
         const gameEngine = this.plugin.pluginServices.byName<EngineService>(EngineService.serviceName);
         const scene = gameEngine.getScene();
         const engine = gameEngine.getEngine();
-        const camera = (<Camera3D> this.registry.services.plugin.gameView.getCamera()).camera;
+        const camera = (<Camera3D> this.registry.plugins.gameView.getCamera()).camera;
 
         this.updateOriginVector(scene, engine, camera);
         this.updateXVector(scene, engine, camera);

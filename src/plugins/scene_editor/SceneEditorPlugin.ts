@@ -1,7 +1,7 @@
 import { AbstractPlugin, calcOffsetFromDom } from '../../core/AbstractPlugin';
 import { Point } from '../../core/geometry/shapes/Point';
 import { Registry } from '../../core/Registry';
-import { LayoutType } from '../../core/services/PluginService';
+import { LayoutType } from '../Plugins';
 import { Camera2D } from '../common/camera/Camera2D';
 import { SceneEditorExporter } from './io/SceneEditorExporter';
 import { SceneEditorImporter } from './io/SceneEditorImporter';

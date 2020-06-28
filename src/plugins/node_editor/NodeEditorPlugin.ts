@@ -16,7 +16,6 @@ import { SplitNode } from '../../core/models/nodes/SplitNode';
 import { RouteNode } from '../../core/models/nodes/RouteNode';
 import { PathNode } from '../../core/models/nodes/PathNode';
 import { NodeEditorSettings } from './settings/NodeEditorSettings';
-import { LayoutType } from '../../core/services/PluginService';
 import { NodeEditorExporter } from './io/NodeEditorExporter';
 import { NodeEditorImporter } from './io/NodeEditorImporter';
 import { ToolType } from '../common/tools/Tool';

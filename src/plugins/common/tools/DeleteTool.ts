@@ -70,7 +70,7 @@ export class DeleteTool extends AbstractTool {
     eraseAll() {
         const concepts = this.registry.stores.canvasStore.getAllViews();
         this.registry.services.localStore.clearAll();
-        this.registry.services.plugin.plugins.forEach(plugin => plugin.getStore()?.clear());
+        this.registry.plugins.plugins.forEach(plugin => plugin.getStore()?.clear());
         this.registry.stores.canvasStore.clear();
         this.registry.services.update.runImmediately(RenderTask.RenderFull);
     }

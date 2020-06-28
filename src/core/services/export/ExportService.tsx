@@ -20,7 +20,7 @@ export class ExportService {
     }
 
     export(): string {
-        const pluginJsons = this.registry.services.plugin.plugins.filter(plugin => plugin.exporter).map(plugin => plugin.exporter.export());
+        const pluginJsons = this.registry.plugins.plugins.filter(plugin => plugin.exporter).map(plugin => plugin.exporter.export());
         // const assetJsons = this.registry.stores.assetStore.getAssets().map(asset => asset.toJson());
 
         return JSON.stringify({ plugins: pluginJsons});

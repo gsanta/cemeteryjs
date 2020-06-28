@@ -6,7 +6,7 @@ import { SceneEditorComponent } from './SceneEditorComponent';
 
 export class SceneEditorPluginComponentFactory extends AbstractPluginComponentFactory<SceneEditorPlugin> {
     renderSidePanelComponent() {
-        if (this.registry.services.plugin.getActivePlugins().indexOf(this.plugin) === -1) {
+        if (this.registry.plugins.getActivePlugins().indexOf(this.plugin) === -1) {
             return null;
         }
 

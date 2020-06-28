@@ -55,7 +55,7 @@ export class GameViewerComponent extends AbstractPluginComponent {
     }
 
     componentWillUnmount() {
-        this.context.registry.services.plugin.getViewById(GameViewerPlugin.id).destroy();
+        this.context.registry.plugins.getViewById(GameViewerPlugin.id).destroy();
     }
 
     componentDidUpdate() {
@@ -63,7 +63,7 @@ export class GameViewerComponent extends AbstractPluginComponent {
     }
 
     render() {
-        const view = this.context.registry.services.plugin.getViewById<GameViewerPlugin>(GameViewerPlugin.id);
+        const view = this.context.registry.plugins.getViewById<GameViewerPlugin>(GameViewerPlugin.id);
         const settings = view.gameViewerSettings;
 
         const timelineState = settings.getVal(GameViewerSettingsProps.TimelineState)

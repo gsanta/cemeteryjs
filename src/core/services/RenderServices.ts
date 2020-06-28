@@ -40,13 +40,13 @@ export class RenderService {
         tasks.forEach(task => {
             switch(task) {
                 case RenderTask.RenderFocusedView:
-                    this.registry.services.plugin.getHoveredView().reRender();
+                    this.registry.plugins.getHoveredView().reRender();
                 break;
                 case RenderTask.RenderSidebar:
                     this.settingsRepainters.forEach(repaint => repaint());
                 break;
                 case RenderTask.RenderVisibleViews:
-                    this.registry.services.plugin.plugins.forEach(plugin => plugin.reRender());
+                    this.registry.plugins.plugins.forEach(plugin => plugin.reRender());
                 break;
                 case RenderTask.RenderFull:
                     this.fullRepainter();

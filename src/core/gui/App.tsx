@@ -41,12 +41,12 @@ export class App extends React.Component<{}, AppState> {
     componentDidMount() {
         this.context.registry.services.update.setFullRepainter(() => this.forceUpdate());
         this.context.controllers.setRenderer(() => this.forceUpdate());
-        if (this.context.registry.services.plugin.visibilityDirty) {
+        if (this.context.registry.plugins.visibilityDirty) {
             this.updateCanvasVisibility();
-            this.context.registry.services.plugin.visibilityDirty = false;
+            this.context.registry.plugins.visibilityDirty = false;
         }
 
-        window.addEventListener('resize', () => this.context.registry.services.plugin.getActivePlugins().forEach(plugin => plugin.resize()));
+        window.addEventListener('resize', () => this.context.registry.plugins.getActivePlugins().forEach(plugin => plugin.resize()));
 
 
         setTimeout(() => this.context.controllers.setup(document.querySelector(`#${GameViewerPlugin.id}`)), 100);
@@ -56,15 +56,15 @@ export class App extends React.Component<{}, AppState> {
         });
 
         // TODO: find a better place
-        this.context.registry.services.plugin.selectPredefinedLayout('Scene Editor');
+        this.context.registry.plugins.selectPredefinedLayout('Scene Editor');
     }
 
     componentDidUpdate() {
-        if (this.context.registry.services.plugin.visibilityDirty) {
+        if (this.context.registry.plugins.visibilityDirty) {
             this.split.destroy();
             this.updateCanvasVisibility();
-            this.context.registry.services.plugin.visibilityDirty = false;
-            this.context.registry.services.plugin.getActivePlugins().forEach(plugin => plugin.resize());
+            this.context.registry.plugins.visibilityDirty = false;
+            this.context.registry.plugins.getActivePlugins().forEach(plugin => plugin.resize());
         }
     }e
     
@@ -87,12 +87,12 @@ export class App extends React.Component<{}, AppState> {
     }
 
     private renderPlugins(): JSX.Element[] {
-        const pluginService = this.context.registry.services.plugin; 
+        const pluginService = this.context.registry.plugins; 
         return pluginService.getActivePlugins().map(plugin => pluginService.getPluginFactory(plugin).renderMainComponent());
     }
 
     private resize() {
-        this.context.registry.services.plugin.getActivePlugins().forEach(plugin => plugin.resize());
+        this.context.registry.plugins.getActivePlugins().forEach(plugin => plugin.resize());
     }
 
     private updateCanvasVisibility() {

@@ -101,7 +101,7 @@ export class PointerTool extends AbstractTool {
     }
 
     private updateDraggedView() {
-        const view = this.registry.services.plugin.getHoveredView();
+        const view = this.registry.plugins.getHoveredView();
 
         switch(view.getId()) {
             case SceneEditorPlugin.id:

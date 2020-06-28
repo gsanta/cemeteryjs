@@ -38,9 +38,9 @@ export class CodeEditorComponent extends AbstractPluginComponent {
 
     componentDidMount() {
         super.componentDidMount();
-        this.context.registry.services.plugin.codeEditor.setRenderer(() => this.forceUpdate());
+        this.context.registry.plugins.codeEditor.setRenderer(() => this.forceUpdate());
         
-        const view = this.context.registry.services.plugin.getViewById<CodeEditorPlugin>(CodeEditorPlugin.id);
+        const view = this.context.registry.plugins.getViewById<CodeEditorPlugin>(CodeEditorPlugin.id);
 
         setTimeout(() => {
             view.editors = [];
@@ -70,7 +70,7 @@ export class CodeEditorComponent extends AbstractPluginComponent {
     }
 
     componentWillUnmount() {
-        this.context.registry.services.plugin.getViewById(CodeEditorPlugin.id).destroy();
+        this.context.registry.plugins.getViewById(CodeEditorPlugin.id).destroy();
     }
 
     componentDidUpdate() {
@@ -78,7 +78,7 @@ export class CodeEditorComponent extends AbstractPluginComponent {
     }
 
     render() {
-        const view = this.context.registry.services.plugin.getViewById<CodeEditorPlugin>(CodeEditorPlugin.id);
+        const view = this.context.registry.plugins.getViewById<CodeEditorPlugin>(CodeEditorPlugin.id);
 
         return (
                 <CodeEditorStyled ref={this.ref} id={view.getId()} style={{cursor: view.getActiveTool() ? view.getActiveTool().getCursor() : Cursor.Default}}>

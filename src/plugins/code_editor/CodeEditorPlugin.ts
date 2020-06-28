@@ -1,4 +1,4 @@
-import { LayoutType } from "../../core/services/PluginService";
+import { LayoutType } from "../Plugins";
 import { Registry } from "../../core/Registry";
 import { AbstractPlugin } from "../../core/AbstractPlugin";
 import { ICamera } from "../common/camera/ICamera";

@@ -49,11 +49,11 @@ export class NodeEditorComponent extends AbstractPluginComponent {
     componentDidMount() {
         super.componentDidMount();
         this.wheelListener = new WheelListener(this.context.registry);
-        this.context.registry.services.plugin.nodeEditor.setRenderer(() => this.forceUpdate());
+        this.context.registry.plugins.nodeEditor.setRenderer(() => this.forceUpdate());
         this.props.plugin.componentMounted(this.ref.current);
 
         setTimeout(() => {
-            this.context.registry.services.plugin.getViewById<NodeEditorPlugin>(NodeEditorPlugin.id).resize();
+            this.context.registry.plugins.getViewById<NodeEditorPlugin>(NodeEditorPlugin.id).resize();
         }, 0);
     }
 
@@ -61,7 +61,7 @@ export class NodeEditorComponent extends AbstractPluginComponent {
         const hover = (item: View) => this.context.registry.services.mouse.hover(item);
         const unhover = (canvasItem: View) => this.context.registry.services.mouse.unhover(canvasItem);
         
-        const view = this.context.registry.services.plugin.getViewById<NodeEditorPlugin>(NodeEditorPlugin.id);
+        const view = this.context.registry.plugins.getViewById<NodeEditorPlugin>(NodeEditorPlugin.id);
         return (
             <EditorComponentStyled ref={this.ref} id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>
                 <ToolbarComponent

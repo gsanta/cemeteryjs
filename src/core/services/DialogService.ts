@@ -1,17 +1,12 @@
 import { Registry } from "../Registry";
 import { RenderTask } from "./RenderServices";
-import { ListActionsSettings } from '../../plugins/scene_editor/settings/ListActionsSettings';
-import { NodeEditorSettings } from "../../plugins/node_editor/settings/NodeEditorSettings";
-import { AssetLoaderDialogController } from "../../plugins/asset_loader/controllers/AssetLoaderDialogController";
+import { AbstractSettings } from "../../plugins/scene_editor/settings/AbstractSettings";
 
 export class DialogService {
     serviceName = 'dialog-service';
-    dialogs: string[] = [
-        NodeEditorSettings.settingsName,
-        ListActionsSettings.settingsName,
-        AssetLoaderDialogController.settingsName
-    ];
-    activeDialog: string;
+    dialogs: AbstractSettings[] = [];
+
+    dialogController: AbstractSettings;
 
     private registry: Registry;
 
@@ -19,43 +14,21 @@ export class DialogService {
         this.registry = registry;
     }
 
-    openDialog(dialogType: string) {
-        this.activeDialog = dialogType;
+    openDialog(dialogController: AbstractSettings) {
+        this.dialogController = dialogController;
         this.registry.services.update.runImmediately(RenderTask.RenderFull);
     }
 
     close(): boolean {
         let ret = false;
-        if (this.activeDialog) { ret = true; }
+        if (this.dialogController) { ret = true; }
 
-        this.activeDialog = null;
+        this.dialogController = null;
         this.registry.services.update.runImmediately(RenderTask.RenderFull);
         return ret;
     }
 
-    getDialogByName(dialogName: string): string {
-        return this.dialogs.find(dialog => dialog === dialogName);
-    }
-
-    isActiveDialog(dialogType: string): boolean {
-        return this.activeDialog === dialogType;
-    }
-
     isOpen(): boolean {
-        return !!this.activeDialog;
+        return !!this.dialogController;
     }
-
-    // private loadDialog() {
-    //     switch(this.activeDialog.getName()) {
-    //         case AnimationSettings.settingsName:
-    //             (<AnimationSettings> this.activeDialog).load();
-    //     }
-    // }
-
-    // private saveDialog() {
-    //     switch(this.activeDialog.getName()) {
-    //         case AnimationSettings.settingsName:
-    //             (<AnimationSettings> this.activeDialog).save();
-    //     }
-    // }
 }

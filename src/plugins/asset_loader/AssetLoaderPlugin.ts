@@ -3,15 +3,13 @@ import { Point } from '../../core/geometry/shapes/Point';
 import { Registry } from '../../core/Registry';
 import { EngineService } from '../../core/services/EngineService';
 import { MeshLoaderService } from '../../core/services/MeshLoaderService';
-import { LayoutType } from '../../core/services/PluginService';
 import { ICamera } from '../common/camera/ICamera';
 import { PluginServices } from '../common/PluginServices';
+import { PluginSettings } from '../common/PluginSettings';
 import { toolFactory } from '../common/toolbar/toolFactory';
 import { Tool, ToolType } from '../common/tools/Tool';
 import { Tools } from '../Tools';
-import { ThumbnailMaker } from './utils/ThumbnailMaker';
 import { AssetLoaderDialogController } from './controllers/AssetLoaderDialogController';
-import { PluginSettings } from '../common/PluginSettings';
 import { AssetLoaderSidepanelController } from './controllers/AssetLoaderSidepanelController';
 (<any> window).earcut = require('earcut');
 
@@ -46,6 +44,8 @@ export class AssetLoaderPlugin extends AbstractPlugin {
                 new AssetLoaderSidepanelController(this, this.registry)
             ]
         );
+
+        this.pluginSettings.dialogController = this.pluginSettings.byName<AssetLoaderDialogController>(AssetLoaderDialogController.settingsName);
     }
 
     getStore() {

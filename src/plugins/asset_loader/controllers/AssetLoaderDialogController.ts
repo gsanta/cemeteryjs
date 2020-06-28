@@ -43,7 +43,7 @@ export class AssetLoaderDialogController extends AbstractSettings<ImportSettings
             this.modelModel = this.registry.stores.assetStore.getAssetById(this.meshView.modelId);
         }
 
-        this.registry.services.dialog.openDialog(AssetLoaderDialogController.settingsName);
+        this.registry.services.dialog.openDialog(this);
     }
 
     close() {

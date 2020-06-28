@@ -21,19 +21,19 @@ export class CameraTool extends AbstractTool {
     }
 
     wheel() {
-        this.registry.services.plugin.getHoveredView().getCamera().zoomWheel();
+        this.registry.plugins.getHoveredView().getCamera().zoomWheel();
     }
 
     wheelEnd() {
         this.activeCameraAction = this.defaultCameraAction;
-        this.registry.services.plugin.getHoveredView().removePriorityTool(this);
+        this.registry.plugins.getHoveredView().removePriorityTool(this);
         this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);3
     }
 
     drag(e: IPointerEvent) {
         super.drag(e);
 
-        const camera = this.registry.services.plugin.getHoveredView().getCamera();
+        const camera = this.registry.plugins.getHoveredView().getCamera();
 
         switch(this.activeCameraAction) {
             case 'pan':
@@ -74,14 +74,14 @@ export class CameraTool extends AbstractTool {
             setAsPriorityTool = true;
         }
 
-        setAsPriorityTool && this.registry.services.plugin.getHoveredView().setPriorityTool(this);
+        setAsPriorityTool && this.registry.plugins.getHoveredView().setPriorityTool(this);
         return setAsPriorityTool;
     }
 
     private cleanupIfToolFinished(panFinished: boolean, rotateFinished: boolean) {
         if (!panFinished && !rotateFinished) {
             this.activeCameraAction = this.defaultCameraAction;
-            this.registry.services.plugin.getHoveredView().removePriorityTool(this);
+            this.registry.plugins.getHoveredView().removePriorityTool(this);
             this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
         }
     }

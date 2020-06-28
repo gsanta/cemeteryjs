@@ -1,16 +1,16 @@
-import { AbstractPlugin } from '../AbstractPlugin';
-import { Registry } from '../Registry';
-import { SceneEditorPlugin } from '../../plugins/scene_editor/SceneEditorPlugin';
-import { SceneEditorPluginComponentFactory } from '../../plugins/scene_editor/SceneEditorPluginComponentFactory';
-import { GameViewerPlugin } from '../../plugins/game_viewer/GameViewerPlugin';
-import { GameViewerPluginComponentFactory } from '../../plugins/game_viewer/GameViewerPluginComponentFactory';
-import { NodeEditorPlugin } from '../../plugins/node_editor/NodeEditorPlugin';
-import { NodeEditorPluginComponentFactory } from '../../plugins/node_editor/NodeEditorPluginComponentFactory';
-import { CodeEditorPlugin } from '../../plugins/code_editor/CodeEditorPlugin';
-import { CodeEditorPluginComponentFactory } from '../../plugins/code_editor/CodeEditorPluginComponentFactory';
-import { AssetLoaderPlugin } from '../../plugins/asset_loader/AssetLoaderPlugin';
-import { AssetLoaderPluginComponentFactory } from '../../plugins/asset_loader/AssetLoaderPluginComponentFactory';
-import { AbstractPluginComponentFactory } from '../../plugins/common/AbstractPluginComponentFactory';
+import { AbstractPlugin } from '../core/AbstractPlugin';
+import { Registry } from '../core/Registry';
+import { SceneEditorPlugin } from './scene_editor/SceneEditorPlugin';
+import { SceneEditorPluginComponentFactory } from './scene_editor/SceneEditorPluginComponentFactory';
+import { GameViewerPlugin } from './game_viewer/GameViewerPlugin';
+import { GameViewerPluginComponentFactory } from './game_viewer/GameViewerPluginComponentFactory';
+import { NodeEditorPlugin } from './node_editor/NodeEditorPlugin';
+import { NodeEditorPluginComponentFactory } from './node_editor/NodeEditorPluginComponentFactory';
+import { CodeEditorPlugin } from './code_editor/CodeEditorPlugin';
+import { CodeEditorPluginComponentFactory } from './code_editor/CodeEditorPluginComponentFactory';
+import { AssetLoaderPlugin } from './asset_loader/AssetLoaderPlugin';
+import { AssetLoaderPluginComponentFactory } from './asset_loader/AssetLoaderPluginComponentFactory';
+import { AbstractPluginComponentFactory } from './common/AbstractPluginComponentFactory';
 
 export interface LayoutConfig {
     activePlugin: AbstractPlugin;
@@ -23,7 +23,7 @@ export enum LayoutType {
     Dialog = 'Dialog'
 }
 
-export class PluginService {
+export class Plugins {
     sceneEditor: SceneEditorPlugin;
     gameView: GameViewerPlugin;
     nodeEditor: NodeEditorPlugin;
@@ -38,18 +38,21 @@ export class PluginService {
     
     visibilityDirty = true;
 
+    private registry: Registry;
+
     constructor(registry: Registry) {
+        this.registry = registry;
         this.sceneEditor = new SceneEditorPlugin(registry);
         this.gameView = new GameViewerPlugin(registry);
         this.nodeEditor = new NodeEditorPlugin(registry);
         this.codeEditor = new CodeEditorPlugin(registry);
         this.assetImporter = new AssetLoaderPlugin(registry);
 
-        this.addPlugin(this.sceneEditor, new SceneEditorPluginComponentFactory(registry, this.sceneEditor));
-        this.addPlugin(this.gameView, new GameViewerPluginComponentFactory(registry, this.gameView));
-        this.addPlugin(this.nodeEditor, new NodeEditorPluginComponentFactory(registry, this.nodeEditor));
-        this.addPlugin(this.codeEditor, new CodeEditorPluginComponentFactory(registry, this.codeEditor));
-        this.addPlugin(this.assetImporter, new AssetLoaderPluginComponentFactory(registry, this.assetImporter));
+        this.registerPlugin(this.sceneEditor, new SceneEditorPluginComponentFactory(registry, this.sceneEditor));
+        this.registerPlugin(this.gameView, new GameViewerPluginComponentFactory(registry, this.gameView));
+        this.registerPlugin(this.nodeEditor, new NodeEditorPluginComponentFactory(registry, this.nodeEditor));
+        this.registerPlugin(this.codeEditor, new CodeEditorPluginComponentFactory(registry, this.codeEditor));
+        this.registerPlugin(this.assetImporter, new AssetLoaderPluginComponentFactory(registry, this.assetImporter));
 
         this.predefinedLayouts = [
             {
@@ -69,16 +72,20 @@ export class PluginService {
         this.selectPredefinedLayout('Scene Editor');
     }
 
-    addPlugin(plugin: AbstractPlugin, componentFactory: AbstractPluginComponentFactory<AbstractPlugin>) {
+    registerPlugin(plugin: AbstractPlugin, componentFactory: AbstractPluginComponentFactory<AbstractPlugin>) {
         this.plugins.push(plugin);
         this.pluginFactoryMap.set(plugin, componentFactory);
+
+        if (plugin.pluginSettings.dialogController) {
+            this.registry.services.dialog.dialogs.push(plugin.pluginSettings.dialogController);
+        }
     }
 
     getPluginFactory(plugin: AbstractPlugin): AbstractPluginComponentFactory<any> {
         return this.pluginFactoryMap.get(plugin);
     }
 
-    private hoveredView: AbstractPlugin;registry
+    private hoveredView: AbstractPlugin;
     
     setHoveredView(view: AbstractPlugin) {
         this.hoveredView = view;

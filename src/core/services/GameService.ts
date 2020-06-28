@@ -25,7 +25,7 @@ export class GameService {
 
     // importAllConcepts() {
     //     this.registry.stores.gameStore.clear();
-    //     const meshLoaderService = this.registry.services.plugin.gameView.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName);
+    //     const meshLoaderService = this.registry.plugins.gameView.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName);
 
     //     meshLoaderService.clear();
 

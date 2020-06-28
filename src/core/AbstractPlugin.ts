@@ -7,7 +7,7 @@ import { AbstractSettings } from '../plugins/scene_editor/settings/AbstractSetti
 import { Tools } from '../plugins/Tools';
 import { Point } from './geometry/shapes/Point';
 import { Registry } from './Registry';
-import { LayoutType } from './services/PluginService';
+import { LayoutType } from '../plugins/Plugins';
 import { RenderTask } from './services/RenderServices';
 import { AbstractStore } from './stores/AbstractStore';
 import { PluginServices } from '../plugins/common/PluginServices';
@@ -40,7 +40,7 @@ export abstract class AbstractPlugin {
 
     pluginServices: PluginServices<this> = new PluginServices([]);
     tools: Tools;
-    pluginSettings: PluginSettings;
+    pluginSettings: PluginSettings = new PluginSettings([]);
 
     protected priorityTool: Tool;
     protected selectedTool: Tool;
@@ -60,8 +60,8 @@ export abstract class AbstractPlugin {
     }
     
     destroy(): void {}
-    abstract resize(): void;
-    over(): void { this.registry.services.plugin.setHoveredView(this) }
+    resize() {};
+    over(): void { this.registry.plugins.setHoveredView(this) }
     out(): void {}
 
     setRenderer(renderFunc: () => void) {
@@ -105,5 +105,7 @@ export abstract class AbstractPlugin {
     }
 
     getOffset(): Point { return new Point(0, 0) }
-    abstract getCamera(): ICamera;
+    getCamera(): ICamera { 
+        return undefined;
+    };
 }

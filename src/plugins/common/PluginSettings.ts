@@ -2,6 +2,8 @@ import { AbstractSettings } from "../scene_editor/settings/AbstractSettings";
 
 export class PluginSettings {
 
+    dialogController: AbstractSettings<any>;
+
     settings: AbstractSettings<any>[] = [];
     private settingsMap: Map<string, AbstractSettings> = new Map();
 

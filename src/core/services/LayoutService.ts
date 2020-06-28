@@ -11,7 +11,7 @@ export class LayoutService {
     }
 
     getPanelWidthsInPercent(): number[] {
-        const activePlugins = this.registry.services.plugin.getActivePlugins();
+        const activePlugins = this.registry.plugins.getActivePlugins();
         const pluginSizes = activePlugins.length === 1 ? this.singleLayoutSizes : this.doubleLayoutSizes;
 
         return pluginSizes;
@@ -22,7 +22,7 @@ export class LayoutService {
     }
 
     getPanelIds(): string[] {
-        const pluginIds = this.registry.services.plugin.getActivePlugins().map(plugin => plugin.getId());
+        const pluginIds = this.registry.plugins.getActivePlugins().map(plugin => plugin.getId());
         const ids = ['toolbar' , ...pluginIds];
 
         return ids;

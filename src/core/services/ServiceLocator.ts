@@ -12,7 +12,7 @@ import { LevelService } from "./LevelService";
 import { LocalStoreService } from "./LocalStroreService";
 import { MeshLoaderService } from "./MeshLoaderService";
 import { RenderService } from "./RenderServices";
-import { PluginService } from "./PluginService";
+import { Plugins } from "../../plugins/Plugins";
 import { NodeService } from '../../plugins/game_viewer/services/NodeService';
 import { GamepadService } from './GamepadService';
 import { EngineService } from "./EngineService";
@@ -31,7 +31,6 @@ export class Services {
     keyboard: KeyboardService;
     dialog: DialogService;
     game: GameService;
-    plugin: PluginService;
     gamepad: GamepadService;
     layout: LayoutService;
 
@@ -53,7 +52,6 @@ export class Services {
         this.mouse = new MouseService(this.registry);
         this.keyboard = new KeyboardService(this.registry);
         this.dialog = new DialogService(this.registry);
-        this.plugin = new PluginService(this.registry);
         this.game = new GameService(this.registry);
         this.gamepad = new GamepadService(this.registry);
         this.layout = new LayoutService(this.registry);
