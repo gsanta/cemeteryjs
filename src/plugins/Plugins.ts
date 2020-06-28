@@ -11,6 +11,8 @@ import { CodeEditorPluginComponentFactory } from './code_editor/CodeEditorPlugin
 import { AssetLoaderPlugin } from './asset_loader/AssetLoaderPlugin';
 import { AssetLoaderPluginComponentFactory } from './asset_loader/AssetLoaderPluginComponentFactory';
 import { AbstractPluginComponentFactory } from './common/AbstractPluginComponentFactory';
+import { AssetManagerPlugin } from './asset_manager/AssetManagerPlugin';
+import { AssetManagerPluginGuiFactory } from './asset_manager/AssetManagerPluginGuiFactory';
 
 export interface LayoutConfig {
     activePlugin: AbstractPlugin;
@@ -28,7 +30,8 @@ export class Plugins {
     gameView: GameViewerPlugin;
     nodeEditor: NodeEditorPlugin;
     codeEditor: CodeEditorPlugin;
-    assetImporter: AssetLoaderPlugin;
+    assetLoader: AssetLoaderPlugin;
+    assetManager: AssetManagerPlugin;
     plugins: AbstractPlugin[] = [];
     activePlugins: AbstractPlugin[] = [];
 
@@ -46,13 +49,15 @@ export class Plugins {
         this.gameView = new GameViewerPlugin(registry);
         this.nodeEditor = new NodeEditorPlugin(registry);
         this.codeEditor = new CodeEditorPlugin(registry);
-        this.assetImporter = new AssetLoaderPlugin(registry);
+        this.assetLoader = new AssetLoaderPlugin(registry);
+        this.assetManager = new AssetManagerPlugin(registry);
 
         this.registerPlugin(this.sceneEditor, new SceneEditorPluginComponentFactory(registry, this.sceneEditor));
         this.registerPlugin(this.gameView, new GameViewerPluginComponentFactory(registry, this.gameView));
         this.registerPlugin(this.nodeEditor, new NodeEditorPluginComponentFactory(registry, this.nodeEditor));
         this.registerPlugin(this.codeEditor, new CodeEditorPluginComponentFactory(registry, this.codeEditor));
-        this.registerPlugin(this.assetImporter, new AssetLoaderPluginComponentFactory(registry, this.assetImporter));
+        this.registerPlugin(this.assetLoader, new AssetLoaderPluginComponentFactory(registry, this.assetLoader));
+        this.registerPlugin(this.assetManager, new AssetManagerPluginGuiFactory(registry, this.assetManager));
 
         this.predefinedLayouts = [
             {
