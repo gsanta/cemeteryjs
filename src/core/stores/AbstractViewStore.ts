@@ -7,8 +7,7 @@ import { Polygon } from "../geometry/shapes/Polygon";
 export class AbstractViewStore extends AbstractStore {
     protected views: View[] = [];
 
-
-    addItem(item: {viewType: string, id: string}) {
+    addItem(item: View) {
         const pattern = this.createPattern(item.viewType);
         const num = parseInt(item.id.match(pattern)[1], 10);
 
@@ -21,7 +20,7 @@ export class AbstractViewStore extends AbstractStore {
         }
     }
 
-    removeItem(item: {viewType: string, id: string}) {
+    removeItem(item: View) {
         const pattern = this.createPattern(item.viewType);
         const num = parseInt(item.id.match(pattern)[1], 10);
 

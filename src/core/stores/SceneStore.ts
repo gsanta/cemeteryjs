@@ -17,6 +17,8 @@ export function isView(type: string) {
 }
 
 export class SceneStore extends AbstractViewStore {
+    static id = 'scene-store'; 
+    id = SceneStore.id;
     views: View[] = [];
     controls: ChildView<any>[] = [];
 

@@ -1,4 +1,4 @@
-import { Mesh, Vector3, Space, StandardMaterial, Texture, Scene } from 'babylonjs';
+import { Mesh, Vector3, StandardMaterial, Texture, Scene } from 'babylonjs';
 import { Rectangle } from '../geometry/shapes/Rectangle';
 import { MeshLoaderService } from '../services/MeshLoaderService';
 import { RectangleFactory } from './RectangleFactory';
@@ -6,8 +6,12 @@ import { Registry } from '../Registry';
 import { MeshModel } from '../models/game_objects/MeshModel';
 import { EngineService } from '../services/EngineService';
 import { TextureLoaderService } from '../services/TextureLoaderService';
+import { AbstractStore } from './AbstractStore';
 
-export class MeshStore {
+export class MeshStore extends AbstractStore {
+    static id = 'mesh-store'; 
+    id = MeshStore.id;
+
     private templates: Set<Mesh> = new Set();
     private templatesByFileName: Map<string, Mesh> = new Map();
     private templateFileNames: Map<Mesh, string> = new Map();
@@ -21,6 +25,7 @@ export class MeshStore {
     private registry: Registry;
 
     constructor(registry: Registry) {
+        super();
         this.registry = registry;
         this.rectangleFactory = new RectangleFactory(0.1);
     }

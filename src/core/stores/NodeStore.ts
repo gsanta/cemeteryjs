@@ -12,6 +12,9 @@ import { NodeGraph } from '../services/node/NodeGraph';
 import { AbstractViewStore } from './AbstractViewStore';
 
 export class NodeStore extends AbstractViewStore {
+    static id = 'node-store'; 
+    id = NodeStore.id;
+
     templates: NodeModel[] = [];
     presets: NodePreset[] = [];
     actionTypes: string[] = [];

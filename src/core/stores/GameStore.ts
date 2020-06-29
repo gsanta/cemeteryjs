@@ -4,6 +4,9 @@ import { AbstractStore } from "./AbstractStore";
 import { IGameModel } from "../models/game_objects/IGameModel";
 
 export class GameStore extends AbstractStore {
+    static id = 'game-store'; 
+    id = GameStore.id;
+
     private registry: Registry;
 
     private routes: RouteModel[] = [];

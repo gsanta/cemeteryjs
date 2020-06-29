@@ -1,11 +1,16 @@
 import { AssetModel, AssetType } from "../models/game_objects/AssetModel";
+import { AbstractStore } from "./AbstractStore";
 
 
-export class AssetStore {
+export class AssetStore extends AbstractStore {
+    static id = 'asset-store'; 
+    id = AssetStore.id;
+
     private maxIdForPrefix: Map<string, number> = new Map();
     private assetsById: Map<string, AssetModel> = new Map();
     
     constructor() {
+        super();
         this.maxIdForPrefix = new Map([
             ['model', 0],
             ['texture', 0],

@@ -7,9 +7,11 @@ import { Registry } from "../Registry";
 import { NodeStore } from './NodeStore';
 import { AssetStore } from "./AssetStore";
 import { GameStore } from "./GameStore";
+import { StoreChangeEvent, AbstractStore } from "./AbstractStore";
 
 export class Stores {
     private registry: Registry
+    private stores: AbstractStore[] = [];
 
     constructor(registry: Registry) {
         this.registry = registry;
@@ -21,6 +23,14 @@ export class Stores {
         this.nodeStore = new NodeStore(this.registry);
         this.assetStore = new AssetStore();
         this.gameStore = new GameStore(this.registry);
+
+        this.stores.push(
+            this.canvasStore,
+            this.meshStore,
+            this.nodeStore,
+            this.assetStore,
+            this.gameStore
+        )
     }
 
     canvasStore: SceneStore;
@@ -31,4 +41,12 @@ export class Stores {
     nodeStore: NodeStore;
     assetStore: AssetStore;
     gameStore: GameStore;
+
+    dispatch(changedStoreId: string, event: StoreChangeEvent, changedItems: any[]) {
+        this.stores.forEach(store => {
+            if (store.id !== changedStoreId) {
+                store.listen(changedStoreId, event, changedItems);
+            }
+        });
+    }
 }
