@@ -17,7 +17,7 @@ export class DragAndDropTool extends AbstractTool {
 
     select() {
         this.isDragging = true;
-        this.registry.services.update.runImmediately(RenderTask.RenderFocusedView);
+        this.registry.services.render.runImmediately(RenderTask.RenderFocusedView);
     }
 
     deselect() {
@@ -29,7 +29,7 @@ export class DragAndDropTool extends AbstractTool {
         const nodeType = this.registry.services.pointer.pointer.droppedItemType;
         if (nodeType !== undefined) {
             this.registry.stores.nodeStore.addDroppable(this.registry.services.pointer.droppableItem, this.registry.services.pointer.pointer.curr.clone());
-            this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
+            this.registry.services.render.scheduleTasks(RenderTask.RenderFocusedView);
             this.registry.services.history.createSnapshot();
         }
     }

@@ -4,7 +4,7 @@ import { AssetModel, AssetType } from "../models/game_objects/AssetModel";
 export class AssetStore {
     private maxIdForPrefix: Map<string, number> = new Map();
     private assetsById: Map<string, AssetModel> = new Map();
-
+    
     constructor() {
         this.maxIdForPrefix = new Map([
             ['model', 0],
@@ -55,6 +55,10 @@ export class AssetStore {
         if (!id) { return undefined; }
         
         return this.assetsById.get(id);
+    }
+
+    getByType(type: AssetType): AssetModel[] {
+        return this.getAssets().filter(asset => asset.assetType === type);
     }
 
     getAssets(): AssetModel[] {

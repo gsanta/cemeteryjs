@@ -36,6 +36,6 @@ export class AnimationNodeSettings extends ViewSettings<AnimationNodeProps, Node
                 this.nodeView.model.animation = val;
                 break;
         }
-        this.registry.services.update.runImmediately(RenderTask.RenderFocusedView);
+        this.registry.services.render.runImmediately(RenderTask.RenderFocusedView);
     }
 }

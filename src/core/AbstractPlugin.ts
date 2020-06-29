@@ -76,7 +76,7 @@ export abstract class AbstractPlugin {
         this.selectedTool && this.selectedTool.deselect();
         this.selectedTool = tool;
         this.selectedTool.select();
-        this.registry.services.update.runImmediately(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
+        this.registry.services.render.runImmediately(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
     }
 
     getSelectedTool(): Tool {
@@ -92,7 +92,7 @@ export abstract class AbstractPlugin {
             this.getActiveTool().leave();
             this.priorityTool = priorityTool;
             this.priorityTool.select();
-            this.registry.services.update.runImmediately(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
+            this.registry.services.render.runImmediately(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
         }
     }
 
@@ -100,7 +100,7 @@ export abstract class AbstractPlugin {
         if (this.priorityTool === priorityTool) {
             this.priorityTool.deselect();
             this.priorityTool = null;
-            this.registry.services.update.runImmediately(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
+            this.registry.services.render.runImmediately(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
         }
     }
 

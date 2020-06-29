@@ -23,7 +23,7 @@ export class SidePanelComponent extends React.Component<SidebarComponentProps> {
     context: AppContextType;
 
     componentDidMount() {
-        this.context.registry.services.update.addSettingsRepainter(() => this.forceUpdate());
+        this.context.registry.services.render.addSettingsRepainter(() => this.forceUpdate());
     }
 
     

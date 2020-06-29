@@ -22,7 +22,7 @@ export class Services {
     hotkey: HotkeyService;
     localStore: LocalStoreService;
     level: LevelService;
-    update: RenderService;
+    render: RenderService;
     import: ImportService;
     export: ExportService;
     history: HistoryService;
@@ -44,7 +44,7 @@ export class Services {
         this.hotkey = new HotkeyService(this.registry);
         this.localStore = new LocalStoreService(this.registry);
         this.level = new LevelService(this.registry);
-        this.update = new RenderService(this.registry);
+        this.render = new RenderService(this.registry);
         this.import = new ImportService(this.registry);
         this.export = new ExportService(this.registry);
         this.history = new HistoryService(this.registry);

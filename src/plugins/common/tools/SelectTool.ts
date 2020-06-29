@@ -25,7 +25,7 @@ export class SelectTool extends PointerTool {
             super.click();
         } else if (this.registry.stores.selectionStore.getAll().length > 0) {
             this.registry.stores.selectionStore.clear();
-            this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView, RenderTask.RenderSidebar);
+            this.registry.services.render.scheduleTasks(RenderTask.RenderFocusedView, RenderTask.RenderSidebar);
         }
     }
 
@@ -34,7 +34,7 @@ export class SelectTool extends PointerTool {
             super.drag(e);
         } else {
             this.rectSelector.updateRect(this.registry.services.pointer.pointer);
-            this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
+            this.registry.services.render.scheduleTasks(RenderTask.RenderFocusedView);
         }
     }
 
@@ -51,7 +51,7 @@ export class SelectTool extends PointerTool {
             this.registry.stores.selectionStore.addItem(...canvasItems)
     
             this.rectSelector.finish();
-            this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView, RenderTask.RenderSidebar);
+            this.registry.services.render.scheduleTasks(RenderTask.RenderFocusedView, RenderTask.RenderSidebar);
         }
     }
 

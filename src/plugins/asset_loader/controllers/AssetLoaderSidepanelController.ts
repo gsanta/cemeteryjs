@@ -33,7 +33,7 @@ export class AssetLoaderSidepanelController extends AbstractSettings<AssetLoader
     close() {
         this.registry.services.history.createSnapshot();
         this.registry.services.dialog.close();
-        this.registry.services.update.runImmediately(RenderTask.RenderFull);
+        this.registry.services.render.runImmediately(RenderTask.RenderFull);
     }
 
     protected getProp(prop: AssetLoaderSidepanelControllerProps) {
@@ -81,6 +81,6 @@ export class AssetLoaderSidepanelController extends AbstractSettings<AssetLoader
 
     private update() {
         this.registry.services.history.createSnapshot();
-        this.registry.services.update.runImmediately(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
+        this.registry.services.render.runImmediately(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
     }
 }

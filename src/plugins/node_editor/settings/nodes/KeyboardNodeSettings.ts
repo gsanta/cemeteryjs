@@ -41,6 +41,6 @@ export class KeyboardNodeSettings extends ViewSettings<KeyboardInputNodeProps, N
         }
 
         this.registry.services.history.createSnapshot();
-        this.registry.services.update.runImmediately(RenderTask.RenderFocusedView);
+        this.registry.services.render.runImmediately(RenderTask.RenderFocusedView);
     }
 }

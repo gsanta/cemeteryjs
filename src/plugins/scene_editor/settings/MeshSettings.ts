@@ -40,13 +40,13 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
     blurProp() {
         super.blurProp();
 
-        this.registry.services.update.runImmediately(RenderTask.RenderFocusedView);
+        this.registry.services.render.runImmediately(RenderTask.RenderFocusedView);
     }
 
     updateProp(value: any, propType: MeshViewPropType) {
         super.updateProp(value, propType);
 
-        this.registry.services.update.runImmediately(RenderTask.RenderFocusedView);
+        this.registry.services.render.runImmediately(RenderTask.RenderFocusedView);
     }
 
     protected getProp(prop: MeshViewPropType) {
@@ -116,6 +116,6 @@ export class MeshSettings extends AbstractSettings<MeshViewPropType> {
 
     private update() {
         this.registry.services.history.createSnapshot();
-        this.registry.services.update.runImmediately(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
+        this.registry.services.render.runImmediately(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
     }
 }

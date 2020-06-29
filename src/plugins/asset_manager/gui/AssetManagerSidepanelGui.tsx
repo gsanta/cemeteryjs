@@ -30,12 +30,18 @@ export class AssetLoaderSidepanelGui extends React.Component<{plugin: AssetManag
     }
 
     private changeThumbnailButton(): JSX.Element {
-        const settings = this.props.plugin.pluginSettings.dialogController as AssetManagerDialogController;
-
         return (
             <LabeledField key="thumbnail-file">                   
                 <LabelColumnStyled></LabelColumnStyled>
-                <ButtonComponent text="Manage assets" type="info" onClick={() => settings.open()}/>
+                <ButtonComponent 
+                    text="Manage assets"
+                    type="info"
+                    onClick={() => {
+                        const settings = this.props.plugin.pluginSettings.dialogController as AssetManagerDialogController;
+
+                        settings.open();
+                    }}
+                />
             </LabeledField>
         );
     }

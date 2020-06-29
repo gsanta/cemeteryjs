@@ -28,18 +28,18 @@ export class PointerTool extends AbstractTool {
             this.registry.stores.selectionStore.addItem(view);
             this.registry.stores.selectionStore.addItem(hoveredItem);
 
-            this.registry.services.update.scheduleTasks(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
+            this.registry.services.render.scheduleTasks(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
         } else if (isView(hoveredItem.viewType)) {
             this.registry.stores.selectionStore.clear();
             this.registry.stores.selectionStore.addItem(hoveredItem);
 
-            this.registry.services.update.scheduleTasks(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
+            this.registry.services.render.scheduleTasks(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
 
         }
     }
 
     down() {
-        this.initMove() && this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
+        this.initMove() && this.registry.services.render.scheduleTasks(RenderTask.RenderFocusedView);
     }
 
     drag(e: IPointerEvent) {
@@ -47,7 +47,7 @@ export class PointerTool extends AbstractTool {
 
         if (this.movingItem) {
             this.moveItems();
-            this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
+            this.registry.services.render.scheduleTasks(RenderTask.RenderFocusedView);
         }
         
         this.isDragStart = false;
@@ -58,7 +58,7 @@ export class PointerTool extends AbstractTool {
 
         if (!this.isDragStart) {
             this.registry.services.history.createSnapshot();
-            this.registry.services.update.scheduleTasks(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
+            this.registry.services.render.scheduleTasks(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
         }
 
         this.isDragStart = true;
@@ -74,11 +74,11 @@ export class PointerTool extends AbstractTool {
     }
 
     over(item: View) {
-        this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
+        this.registry.services.render.scheduleTasks(RenderTask.RenderFocusedView);
     }
 
     out(item: View) {
-        this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
+        this.registry.services.render.scheduleTasks(RenderTask.RenderFocusedView);
     }
 
     private initMove(): boolean {
@@ -97,7 +97,7 @@ export class PointerTool extends AbstractTool {
             views.forEach((item, index) => item.move(this.registry.services.pointer.pointer.getDiff()));
         }
 
-        this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
+        this.registry.services.render.scheduleTasks(RenderTask.RenderFocusedView);
     }
 
     private updateDraggedView() {

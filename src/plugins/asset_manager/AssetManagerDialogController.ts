@@ -2,19 +2,22 @@ import { Registry } from "../../core/Registry";
 import { AbstractSettings } from "../scene_editor/settings/AbstractSettings";
 import { AssetManagerPlugin } from "./AssetManagerPlugin";
 import { RenderTask } from "../../core/services/RenderServices";
+import { AssetModel } from "../../core/models/game_objects/AssetModel";
 
-export enum ImportSettingsProps {
-    CreateThumbnailFromModel = 'CreateThumbnailFromModel',
-    Thumbnail = 'Thumbnail',
-    Model = 'Model',
+export enum AssetManagerDialogProps {
+    EditedAssetId = 'EditedAssetId',
+    EditedAssetPath = 'EditedAssetPath',
+    Delete = 'Delete'
 }
 
-export class AssetManagerDialogController extends AbstractSettings<ImportSettingsProps> {
+export class AssetManagerDialogController extends AbstractSettings<AssetManagerDialogProps> {
     static settingsName = 'asset-manager-dialog-controller';
     getName() { return AssetManagerDialogController.settingsName; }
 
     private registry: Registry;
     private plugin: AssetManagerPlugin;
+
+    private editedAssetModel: AssetModel;
 
     constructor(plugin: AssetManagerPlugin, registry: Registry) {
         super();
@@ -28,21 +31,35 @@ export class AssetManagerDialogController extends AbstractSettings<ImportSetting
 
     close() {
         this.registry.services.dialog.close();
-        this.registry.services.update.runImmediately(RenderTask.RenderFull);
+        this.registry.services.render.runImmediately(RenderTask.RenderFull);
     }
 
-    protected getProp(prop: ImportSettingsProps) {
+    protected getProp(prop: AssetManagerDialogProps) {
         switch (prop) {
-
+            case AssetManagerDialogProps.EditedAssetId:
+                return this.editedAssetModel ? this.editedAssetModel.getId() : undefined;
+            case AssetManagerDialogProps.EditedAssetPath:
+                return this.editedAssetModel ? this.editedAssetModel.path : '';
         }
     }
 
-    protected async setProp(val: any, prop: ImportSettingsProps) {
+    protected async setProp(val: any, prop: AssetManagerDialogProps) {
+        switch(prop) {
+            case AssetManagerDialogProps.EditedAssetId:
+                this.editedAssetModel = this.registry.stores.assetStore.getAssetById(val);
+                this.update();
+            break;
+            case AssetManagerDialogProps.EditedAssetPath:
+                if (this.editedAssetModel) {
+                    this.editedAssetModel.path = val;
+                }
 
+                this.registry.services.render.runImmediately(RenderTask.RenderDialog);
+            break;
+        }
     }
 
     private update() {
-        this.registry.services.history.createSnapshot();
-        this.registry.services.update.runImmediately(RenderTask.RenderFull);
+        this.registry.services.render.runImmediately(RenderTask.RenderFull);
     }
 }

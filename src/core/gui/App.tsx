@@ -39,7 +39,7 @@ export class App extends React.Component<{}, AppState> {
     }
 
     componentDidMount() {
-        this.context.registry.services.update.setFullRepainter(() => this.forceUpdate());
+        this.context.registry.services.render.setFullRepainter(() => this.forceUpdate());
         this.context.controllers.setRenderer(() => this.forceUpdate());
         if (this.context.registry.plugins.visibilityDirty) {
             this.updateCanvasVisibility();

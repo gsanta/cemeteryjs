@@ -63,7 +63,7 @@ export class KeyboardService {
         const convertedEvent = this.convertEvent(e, false);
         this.registry.services.hotkey.executeHotkey(convertedEvent);
         this.registry.plugins.getHoveredView().getActiveTool()?.keydown(convertedEvent);
-        this.registry.services.update.runScheduledTasks();
+        this.registry.services.render.runScheduledTasks();
 
         e.preventDefault();
         e.stopPropagation();
@@ -73,7 +73,7 @@ export class KeyboardService {
         const convertedEvent = this.convertEvent(e, true);
         this.registry.services.hotkey.executeHotkey(convertedEvent);
         this.registry.plugins.getHoveredView().getActiveTool()?.keyup(convertedEvent);
-        this.registry.services.update.runScheduledTasks();
+        this.registry.services.render.runScheduledTasks();
 
         e.preventDefault();
         e.stopPropagation();

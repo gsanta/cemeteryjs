@@ -11,12 +11,16 @@ export class DialogManagerComponent extends React.Component {
     static contextType = AppContext;
     context: AppContextType;
 
+    componentDidMount() {
+        this.context.registry.services.render.setDialogRenderer(() => this.forceUpdate());
+    }
+
     render() {
         if (!this.context.registry.services.dialog.dialogController) { return null; }
 
         switch(this.context.registry.services.dialog.dialogController.getName()) {
             case AssetLoaderDialogController.settingsName: return <AssetLoaderDialog plugin={this.context.registry.plugins.assetLoader}/>;
-            case AssetManagerDialogController.settingsName: return <AssetManagerDialogGui plugin={this.context.registry.plugins.assetLoader}/>;
+            case AssetManagerDialogController.settingsName: return <AssetManagerDialogGui plugin={this.context.registry.plugins.assetManager}/>;
             default: return null;
         }
     }

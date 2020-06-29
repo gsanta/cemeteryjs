@@ -29,7 +29,7 @@ export class PathTool extends PointerTool {
     keydown(e: IKeyboardEvent) {
         if (e.keyCode === Keyboard.Enter) {
             this.registry.stores.selectionStore.clear();
-            this.registry.services.update.scheduleTasks(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
+            this.registry.services.render.scheduleTasks(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
             this.registry.services.history.createSnapshot();
         }
     }
@@ -48,13 +48,13 @@ export class PathTool extends PointerTool {
 
         if (hover) {
             super.over(item);
-            this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
+            this.registry.services.render.scheduleTasks(RenderTask.RenderFocusedView);
         }
     }
 
     out(item: View) {
         super.out(item);
-        this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
+        this.registry.services.render.scheduleTasks(RenderTask.RenderFocusedView);
     }
 
     private createPath() {
@@ -78,7 +78,7 @@ export class PathTool extends PointerTool {
         }
 
         this.registry.services.history.createSnapshot();
-        this.registry.services.update.scheduleTasks(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
+        this.registry.services.render.scheduleTasks(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
     }
 
     private startNewPath() {

@@ -31,7 +31,7 @@ export class LayoutSettings extends AbstractSettings<LayoutPropType> {
             case LayoutPropType.Layout:
                 const layout = this.registry.plugins.predefinedLayouts.find(layout => layout.title === val);
                 this.registry.plugins.selectPredefinedLayout(layout.title);
-                this.registry.services.update.runImmediately(RenderTask.RenderFull);
+                this.registry.services.render.runImmediately(RenderTask.RenderFull);
                 break;
         }
     }

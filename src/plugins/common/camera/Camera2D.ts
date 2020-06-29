@@ -118,7 +118,7 @@ export class Camera2D implements ICamera {
         if (nextZoomLevel) {
             this.zoomToPosition(canvasPos, nextZoomLevel);
 
-            this.registry.services.update.runImmediately(RenderTask.RenderFocusedView);
+            this.registry.services.render.runImmediately(RenderTask.RenderFocusedView);
         }
     }
 
@@ -130,7 +130,7 @@ export class Camera2D implements ICamera {
         if (prevZoomLevel) {
             this.zoomToPosition(canvasPos, prevZoomLevel);
 
-            this.registry.services.update.runImmediately(RenderTask.RenderFocusedView);
+            this.registry.services.render.runImmediately(RenderTask.RenderFocusedView);
         }
     }
 
@@ -142,7 +142,7 @@ export class Camera2D implements ICamera {
         if (prevZoomLevel) {
             this.zoomToPosition(canvasPos, prevZoomLevel);
 
-            this.registry.services.update.runImmediately(RenderTask.RenderFocusedView);
+            this.registry.services.render.runImmediately(RenderTask.RenderFocusedView);
         }
     }
 

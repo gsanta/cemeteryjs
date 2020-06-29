@@ -27,6 +27,6 @@ export class SplitNodeSettings extends ViewSettings<SplitNodeProps, NodeView> {
             default:
                 throw new Error(`${prop} is not a writeable property.`)
         }
-        this.registry.services.update.runImmediately(RenderTask.RenderFocusedView);
+        this.registry.services.render.runImmediately(RenderTask.RenderFocusedView);
     }
 }

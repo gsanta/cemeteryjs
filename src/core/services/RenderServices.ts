@@ -1,20 +1,20 @@
 import { Registry } from '../Registry';
-import { GameViewerPlugin } from "../../plugins/game_viewer/GameViewerPlugin";
 
 export enum RenderTask {
     RenderFocusedView = 'RenderFocusedView',
     RenderVisibleViews = 'RenderVisibleViews', 
     RenderSidebar = 'RenderSidebar',
-    RenderFull = 'RenderFull'
+    RenderDialog = 'RenderDialog',
+    RenderFull = 'RenderFull',
 }
 
 export class RenderService {
     serviceName = 'render-service';
     updateTasks: RenderTask[] = [];
 
-    private canvasRepainter: Function = () => undefined;
     private settingsRepainters: Function[] = [];
     private fullRepainter: Function;
+    private dialogRenderer: Function;
 
     private registry: Registry;
 
@@ -61,5 +61,9 @@ export class RenderService {
 
     addSettingsRepainter(repaint: Function) {
         this.settingsRepainters.push(repaint);
+    }
+
+    setDialogRenderer(dialogRenderer: Function) {
+        this.dialogRenderer = dialogRenderer;
     }
 }

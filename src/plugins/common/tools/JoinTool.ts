@@ -22,7 +22,7 @@ export class JoinTool extends AbstractTool {
         this.start = this.registry.services.pointer.pointer.curr;
         this.startItem = <JoinPointView> this.registry.services.pointer.hoveredItem;
         this.end = this.registry.services.pointer.pointer.curr;
-        this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
+        this.registry.services.render.scheduleTasks(RenderTask.RenderFocusedView);
     }
 
     click() {
@@ -31,7 +31,7 @@ export class JoinTool extends AbstractTool {
 
     drag() {
         this.end = this.registry.services.pointer.pointer.curr;
-        this.registry.services.update.scheduleTasks(RenderTask.RenderFocusedView);
+        this.registry.services.render.scheduleTasks(RenderTask.RenderFocusedView);
     }
 
     draggedUp() {

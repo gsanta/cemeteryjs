@@ -39,13 +39,13 @@ export class LevelSettings extends AbstractSettings<LevelFormPropType> {
                 break;
             case LevelFormPropType.LevelName:
                 this.registry.stores.levelStore.currentLevel.name = val;
-                this.registry.services.update.runImmediately(RenderTask.RenderSidebar);
+                this.registry.services.render.runImmediately(RenderTask.RenderSidebar);
                 break;
             case LevelFormPropType.ClearLevel:
                 this.registry.services.level.clearLevel()
                 .finally(() => {
                     this.registry.services.history.createSnapshot();
-                    this.registry.services.update.runImmediately(RenderTask.RenderFull)
+                    this.registry.services.render.runImmediately(RenderTask.RenderFull)
                 });
                 break;
         }

@@ -88,7 +88,7 @@ export class ToolbarComponent extends React.Component<ToolbarProps> {
                 isActive={false} 
                 onClick={() => {
                     this.context.registry.plugins.setActivePlugins([this.props.view]);
-                    this.context.registry.services.update.runImmediately(RenderTask.RenderFull);
+                    this.context.registry.services.render.runImmediately(RenderTask.RenderFull);
                 }} 
                 format="short"
             />
@@ -101,7 +101,7 @@ export class ToolbarComponent extends React.Component<ToolbarProps> {
                 isActive={false}
                 onClick={() => {
                     this.context.registry.plugins.selectPredefinedLayout(this.context.registry.plugins.getCurrentPredefinedLayout().title);
-                    this.context.registry.services.update.runImmediately(RenderTask.RenderFull);            
+                    this.context.registry.services.render.runImmediately(RenderTask.RenderFull);            
                 }}
                 format="short"
             />

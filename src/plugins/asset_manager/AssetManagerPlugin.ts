@@ -1,6 +1,7 @@
 import { AbstractPlugin } from '../../core/AbstractPlugin';
 import { Registry } from '../../core/Registry';
 import { Tools } from '../Tools';
+import { AssetManagerDialogController } from './AssetManagerDialogController';
 
 export class AssetManagerPlugin extends AbstractPlugin {
     static id = 'asset-manager-plugin';
@@ -9,6 +10,7 @@ export class AssetManagerPlugin extends AbstractPlugin {
         super(registry);
 
         this.tools = new Tools([]);
+        this.pluginSettings.dialogController = new AssetManagerDialogController(this, registry);
     }
 
     getStore() {

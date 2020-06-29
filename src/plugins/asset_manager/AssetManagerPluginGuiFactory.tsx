@@ -8,7 +8,7 @@ import { AssetManagerDialogGui } from "./gui/AssetManagerDialogGui";
 export class AssetManagerPluginGuiFactory extends AbstractPluginComponentFactory<AssetManagerPlugin> {
 
     renderDialogComponent() {
-        return <AssetManagerDialogGui/>
+        return <AssetManagerDialogGui plugin={this.plugin}/>
     }
 
     renderSidePanelComponent() {
