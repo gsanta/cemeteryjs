@@ -5,8 +5,9 @@ import { RenderTask } from "../../core/services/RenderServices";
 import { AssetModel } from "../../core/models/game_objects/AssetModel";
 
 export enum AssetManagerDialogProps {
-    Edit = 'EditedAssetId',
-    EditedAssetPath = 'EditedAssetPath',
+    EditedAsset = 'EditedAsset',
+    AssetPath = 'AssetPath',
+    AssetName = 'AssetName',
     Delete = 'Delete'
 }
 
@@ -19,6 +20,7 @@ export class AssetManagerDialogController extends AbstractSettings<AssetManagerD
 
     private editedAssetModel: AssetModel;
     private editedPath: string;
+    private editedName: string;
 
     constructor(plugin: AssetManagerPlugin, registry: Registry) {
         super();
@@ -39,9 +41,14 @@ export class AssetManagerDialogController extends AbstractSettings<AssetManagerD
 
     blurProp() {
         switch(this.focusedPropType) {
-            case AssetManagerDialogProps.EditedAssetPath:
+            case AssetManagerDialogProps.AssetPath:
                 this.editedAssetModel.path = this.editedPath;
                 this.editedPath = undefined;
+                this.registry.services.localStore.saveAsset(this.editedAssetModel);
+            break;
+            case AssetManagerDialogProps.AssetName:
+                this.editedAssetModel.name = this.editedName;
+                this.editedName = undefined;
                 this.registry.services.localStore.saveAsset(this.editedAssetModel);
             break;
         }
@@ -52,21 +59,24 @@ export class AssetManagerDialogController extends AbstractSettings<AssetManagerD
 
     protected getProp(prop: AssetManagerDialogProps) {
         switch (prop) {
-            case AssetManagerDialogProps.Edit:
-                return this.editedAssetModel ? this.editedAssetModel.id : undefined;
-            case AssetManagerDialogProps.EditedAssetPath:
+            case AssetManagerDialogProps.EditedAsset:
+                return this.editedAssetModel;
+            case AssetManagerDialogProps.AssetPath:
                 return this.editedPath ? this.editedPath : this.editedAssetModel ? this.editedAssetModel.path : '';
+            case AssetManagerDialogProps.AssetName:
+                return this.editedName ? this.editedName : this.editedAssetModel ? this.editedAssetModel.name : '';    
         }
     }
 
     protected async setProp(val: any, prop: AssetManagerDialogProps) {
         switch(prop) {
-            case AssetManagerDialogProps.Edit:
+            case AssetManagerDialogProps.EditedAsset:
                 this.editedAssetModel = this.registry.stores.assetStore.getAssetById(val);
                 this.editedPath = this.editedAssetModel.path;
+                this.editedName = this.editedAssetModel.name
                 this.update();
             break;
-            case AssetManagerDialogProps.EditedAssetPath:
+            case AssetManagerDialogProps.AssetPath:
                 this.editedPath = val;
                 this.registry.services.render.runImmediately(RenderTask.RenderDialog);
             break;
@@ -74,6 +84,11 @@ export class AssetManagerDialogController extends AbstractSettings<AssetManagerD
                 const assetModel = this.registry.stores.assetStore.getAssetById(val);
                 this.registry.stores.assetStore.deleteAsset(assetModel);
                 this.registry.services.render.runImmediately(RenderTask.RenderFull);
+            break;
+            case AssetManagerDialogProps.AssetName:
+                this.editedName = val;
+                this.registry.services.render.runImmediately(RenderTask.RenderDialog);
+
             break;
         }
     }

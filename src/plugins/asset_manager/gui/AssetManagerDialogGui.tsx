@@ -86,9 +86,10 @@ export class AssetManagerDialogGui extends AbstractPluginComponent {
             return (
                 <AssetRowStyled>
                     <div>{assetModel.id}</div>
+                    <div>{this.renderName(assetModel) || '-'}</div>
                     <div>{this.renderPath(assetModel) || '-'}</div>
                     <IconGroupStyled>
-                        <EditIconComponent width="20px" height="20px" onClick={() => controller.updateProp(assetModel.id, AssetManagerDialogProps.Edit)}/>
+                        <EditIconComponent width="20px" height="20px" onClick={() => controller.updateProp(assetModel.id, AssetManagerDialogProps.EditedAsset)}/>
                         <CloseIconComponent width="16px" height="16px" color={colors.danger} onClick={() => controller.updateProp(assetModel.id, AssetManagerDialogProps.Delete)}/>
                     </IconGroupStyled>
                 </AssetRowStyled>
@@ -109,19 +110,41 @@ export class AssetManagerDialogGui extends AbstractPluginComponent {
     private renderPath(assetModel: AssetModel): JSX.Element | string {
         const controller = this.props.plugin.pluginSettings.dialogController as AssetManagerDialogController;
 
-        const editedAssetId = controller.getVal(AssetManagerDialogProps.Edit);
+        const editedAssetModel = controller.getVal(AssetManagerDialogProps.EditedAsset);
+        const assetPath: string = controller.getVal(AssetManagerDialogProps.AssetPath);
 
-        if (!editedAssetId || editedAssetId !== assetModel.id) { return assetModel.path; }
+        if (editedAssetModel !== assetModel) { return assetModel.path; }
 
         return (
             <ConnectedInputComponent
                 formController={controller}
-                propertyName={AssetManagerDialogProps.EditedAssetPath}
+                propertyName={AssetManagerDialogProps.AssetPath}
                 propertyType="string"
                 type="text"
                 onBlur={() => controller.blurProp()}
-                onChange={val => controller.updateProp(val, AssetManagerDialogProps.EditedAssetPath)}
-                value={controller.getVal(AssetManagerDialogProps.EditedAssetPath)}
+                onChange={val => controller.updateProp(val, AssetManagerDialogProps.AssetPath)}
+                value={controller.getVal(AssetManagerDialogProps.AssetPath)}
+            />
+        )
+    }
+
+    private renderName(assetModel: AssetModel): JSX.Element | string {
+        const controller = this.props.plugin.pluginSettings.dialogController as AssetManagerDialogController;
+
+        const editedAssetModel = controller.getVal(AssetManagerDialogProps.EditedAsset);
+        const assetName: string = controller.getVal(AssetManagerDialogProps.AssetName);
+
+        if (editedAssetModel !== assetModel) { return assetModel.name; }
+
+        return (
+            <ConnectedInputComponent
+                formController={controller}
+                propertyName={AssetManagerDialogProps.AssetName}
+                propertyType="string"
+                type="text"
+                onBlur={() => controller.blurProp()}
+                onChange={val => controller.updateProp(val, AssetManagerDialogProps.AssetName)}
+                value={controller.getVal(AssetManagerDialogProps.AssetName)}
             />
         )
     }
