@@ -73,7 +73,7 @@ export class AssetLoaderDialogController extends AbstractSettings<ImportSettings
                 assetModel = await this.thumbnailMaker.createThumbnail(this.meshView, this.plugin.pluginServices.engineService());                
                 this.registry.stores.assetStore.addAsset(assetModel);
                 this.registry.services.localStore.saveAsset(assetModel);
-                this.meshView.thumbnailId = assetModel.getId();
+                this.meshView.thumbnailId = assetModel.id;
 
                 this.update();
                 break;
@@ -88,7 +88,7 @@ export class AssetLoaderDialogController extends AbstractSettings<ImportSettings
                     assetModel = new AssetModel({data: val.data, path: val.path, assetType: AssetType.Thumbnail});
                     this.registry.stores.assetStore.addAsset(assetModel);
                     this.registry.services.localStore.saveAsset(assetModel);
-                    this.meshView.thumbnailId = assetModel.getId();
+                    this.meshView.thumbnailId = assetModel.id;
                 }
 
 

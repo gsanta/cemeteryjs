@@ -9,7 +9,7 @@ export class ThumbnailMaker {
         const data = await Tools.CreateScreenshotUsingRenderTargetAsync(engineService.getEngine(), engineService.getCamera().camera, 1000)
                 
         const assetModel = new AssetModel({data: data, assetType: AssetType.Thumbnail});
-        meshView.thumbnailId = assetModel.getId();
+        meshView.thumbnailId = assetModel.id;
 
         return assetModel;
     }

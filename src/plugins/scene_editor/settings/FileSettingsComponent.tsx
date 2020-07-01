@@ -29,7 +29,13 @@ export class FileSettingsComponent extends React.Component<GeneralFormComponentP
 
         return (
             <div>
-                <ConnectedFileUploadComponent propertyName={GlobalSettingsPropType.IMPORT_FILE} formController={form} placeholder={'Import file'} readDataAs="text"/>
+                <ConnectedFileUploadComponent 
+                    propertyName={GlobalSettingsPropType.IMPORT_FILE}
+                    formController={form}
+                    placeholder={'Import file'}
+                    readDataAs="text"
+                    onChange={val => form.updateProp(val, GlobalSettingsPropType.IMPORT_FILE)}
+                />
                 <ExportFileIconComponent format="long" onClick={() => this.exportFile()} isActive={false}/>
                 <BlankIconComponent format="long" color={colors.danger} isActive={false} onClick={() => this.blank()}/>
             </div>

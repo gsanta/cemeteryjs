@@ -33,6 +33,7 @@ export class MeshNodeSettingsComponent extends AbstractNodeSettingsComponent {
                         values={meshes}
                         currentValue={val}
                         placeholder="Select mesh"
+                        onChange={val => this.props.settings.updateProp(val, MeshNodeProps.MeshId)}
                     />
                 </FieldColumnStyled>
             </LabeledField>

@@ -29,6 +29,7 @@ export class TurnNodeSettingsComponent extends  AbstractNodeSettingsComponent {
                         values={movementTypes}
                         currentValue={val}
                         placeholder="Select Turn"
+                        onChange={val => this.props.settings.updateProp(val, TurnNodeProps.Turn)}
                     />
                 </FieldColumnStyled>
             </LabeledField>

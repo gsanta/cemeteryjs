@@ -8,7 +8,7 @@ import { EngineService } from '../services/EngineService';
 import { TextureLoaderService } from '../services/TextureLoaderService';
 import { AbstractStore } from './AbstractStore';
 
-export class MeshStore extends AbstractStore {
+export class MeshStore extends AbstractStore<any> {
     static id = 'mesh-store'; 
     id = MeshStore.id;
 
@@ -107,13 +107,13 @@ export class MeshStore extends AbstractStore {
         const model = this.registry.stores.assetStore.getAssetById(meshModel.meshView.modelId);
 
         if (model) {
-            this.texturePathes.set(model.getId(), texture ? model.getId() : undefined);
+            this.texturePathes.set(model.id, texture ? model.id : undefined);
         }
 
-        const templateMesh = this.getTemplate(model.getId());
+        const templateMesh = this.getTemplate(model.id);
 
         let clone: Mesh;
-        const counter = this.instanceCounter.get(model.getId());
+        const counter = this.instanceCounter.get(model.id);
 
         if (!this.instances.has(templateMesh)) {
             clone = templateMesh;
@@ -124,7 +124,7 @@ export class MeshStore extends AbstractStore {
         this.instances.add(clone);
         clone.setAbsolutePosition(new Vector3(0, 0, 0));
         clone.rotation = new Vector3(0, 0, 0);
-        this.instanceCounter.set(model.getId(), counter + 1);
+        this.instanceCounter.set(model.id, counter + 1);
         
         meshModel.meshView.meshName = clone.name;
 

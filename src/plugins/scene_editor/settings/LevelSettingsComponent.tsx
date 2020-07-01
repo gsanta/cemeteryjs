@@ -39,6 +39,7 @@ export class LevelSettingsComponent extends React.Component<{plugin: SceneEditor
                             propertyName={LevelFormPropType.LevelName}
                             propertyType="string"
                             type="text"
+                            onChange={val => levelSettings.updateProp(val, LevelFormPropType.LevelName)}
                             value={levelSettings.getVal(LevelFormPropType.LevelName)}
                         />
                     </FieldColumnStyled>

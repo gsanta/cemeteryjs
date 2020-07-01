@@ -38,6 +38,7 @@ export class MoveNodeSettingsComponent extends  AbstractNodeSettingsComponent {
                         values={movementTypes}
                         currentValue={val}
                         placeholder="Select Movement"
+                        onChange={val => this.props.settings.updateProp(val, MoveNodeProps.Move)}
                     />
                 </FieldColumnStyled>
             </LabeledField>
@@ -57,6 +58,7 @@ export class MoveNodeSettingsComponent extends  AbstractNodeSettingsComponent {
                         value={val}
                         min={this.props.settings.getVal(MoveNodeProps.SpeedMin)}
                         max={this.props.settings.getVal(MoveNodeProps.SpeedMax)}
+                        onChange={val => this.props.settings.updateProp(val, MoveNodeProps.SpeedMin)}
                     />
                 </FieldColumnStyled>
             </LabeledField>

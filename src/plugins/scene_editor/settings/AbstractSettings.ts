@@ -40,7 +40,7 @@ export abstract class AbstractSettings<P = any> {
     updateProp(value: any, propType: P) {
         this.setProp(value, propType);
         this.tempVal = null;
-        this.focusedPropType = null;
+        // this.focusedPropType = null;
         this.renderFunc();
     }
 

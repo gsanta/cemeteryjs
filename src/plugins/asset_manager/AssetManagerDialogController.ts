@@ -5,7 +5,7 @@ import { RenderTask } from "../../core/services/RenderServices";
 import { AssetModel } from "../../core/models/game_objects/AssetModel";
 
 export enum AssetManagerDialogProps {
-    EditedAssetId = 'EditedAssetId',
+    Edit = 'EditedAssetId',
     EditedAssetPath = 'EditedAssetPath',
     Delete = 'Delete'
 }
@@ -18,6 +18,7 @@ export class AssetManagerDialogController extends AbstractSettings<AssetManagerD
     private plugin: AssetManagerPlugin;
 
     private editedAssetModel: AssetModel;
+    private editedPath: string;
 
     constructor(plugin: AssetManagerPlugin, registry: Registry) {
         super();
@@ -30,31 +31,49 @@ export class AssetManagerDialogController extends AbstractSettings<AssetManagerD
     }
 
     close() {
+        this.editedAssetModel = undefined;
+        this.editedPath = undefined;
         this.registry.services.dialog.close();
+        this.registry.services.render.runImmediately(RenderTask.RenderFull);
+    }
+
+    blurProp() {
+        switch(this.focusedPropType) {
+            case AssetManagerDialogProps.EditedAssetPath:
+                this.editedAssetModel.path = this.editedPath;
+                this.editedPath = undefined;
+                this.registry.services.localStore.saveAsset(this.editedAssetModel);
+            break;
+        }
+
+        this.focusedPropType = null;
         this.registry.services.render.runImmediately(RenderTask.RenderFull);
     }
 
     protected getProp(prop: AssetManagerDialogProps) {
         switch (prop) {
-            case AssetManagerDialogProps.EditedAssetId:
-                return this.editedAssetModel ? this.editedAssetModel.getId() : undefined;
+            case AssetManagerDialogProps.Edit:
+                return this.editedAssetModel ? this.editedAssetModel.id : undefined;
             case AssetManagerDialogProps.EditedAssetPath:
-                return this.editedAssetModel ? this.editedAssetModel.path : '';
+                return this.editedPath ? this.editedPath : this.editedAssetModel ? this.editedAssetModel.path : '';
         }
     }
 
     protected async setProp(val: any, prop: AssetManagerDialogProps) {
         switch(prop) {
-            case AssetManagerDialogProps.EditedAssetId:
+            case AssetManagerDialogProps.Edit:
                 this.editedAssetModel = this.registry.stores.assetStore.getAssetById(val);
+                this.editedPath = this.editedAssetModel.path;
                 this.update();
             break;
             case AssetManagerDialogProps.EditedAssetPath:
-                if (this.editedAssetModel) {
-                    this.editedAssetModel.path = val;
-                }
-
+                this.editedPath = val;
                 this.registry.services.render.runImmediately(RenderTask.RenderDialog);
+            break;
+            case AssetManagerDialogProps.Delete:
+                const assetModel = this.registry.stores.assetStore.getAssetById(val);
+                this.registry.stores.assetStore.deleteAsset(assetModel);
+                this.registry.services.render.runImmediately(RenderTask.RenderFull);
             break;
         }
     }

@@ -4,7 +4,7 @@ import { Rectangle } from "../geometry/shapes/Rectangle";
 import { Polygon } from "../geometry/shapes/Polygon";
 
 
-export class AbstractViewStore extends AbstractStore {
+export class AbstractViewStore extends AbstractStore<View> {
     protected views: View[] = [];
 
     addItem(item: View) {

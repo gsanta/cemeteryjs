@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { colors } from '../styles';
 import { withCommitOnBlur } from './withCommitOnBlur';
 import { Form } from 'react-bootstrap';
+import { withCommitOnChange } from './withCommitOnChange';
 
 export interface InputProps extends Focusable {
     onChange(text: string): void;
@@ -67,4 +68,4 @@ export function InputComponent(props: InputProps) {
     return input;
 }
 
-export const ConnectedInputComponent = withCommitOnBlur<InputProps>(InputComponent);
+export const ConnectedInputComponent = withCommitOnChange<InputProps>(InputComponent);

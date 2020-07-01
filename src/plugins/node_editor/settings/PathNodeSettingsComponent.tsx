@@ -32,6 +32,7 @@ export class PathNodeSettingsComponent extends AbstractNodeSettingsComponent {
                         values={meshes}
                         currentValue={val}
                         placeholder="Select path"
+                        onChange={val => this.props.settings.updateProp(val, PathNodeProps.PathId)}
                     />
                 </FieldColumnStyled>
             </LabeledField>

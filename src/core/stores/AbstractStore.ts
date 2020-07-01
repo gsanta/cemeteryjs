@@ -6,10 +6,10 @@ export enum StoreChangeEvent {
     Delete = 'Delete'
 }
 
-export abstract class AbstractStore {
+export abstract class AbstractStore<T extends {id: string}> {
     id: string;
     protected maxIdForType: Map<string, number> = new Map();
-    protected views: View[] = [];77
+    protected views: View[] = [];
 
     clear() {
         this.maxIdForType = new Map();
@@ -21,7 +21,7 @@ export abstract class AbstractStore {
         return name;
     }
 
-    listen(changedStore: string, event: StoreChangeEvent, changedItes: any[]) {
+    listen(action: string, changedItems: any[]) {}
 
-    }
+    // removeItem(item: )
 }

@@ -43,6 +43,7 @@ export class MeshSettingsComponent extends React.Component<{settings: MeshSettin
                         propertyName={MeshViewPropType.Name}
                         propertyType="string"
                         type="text"
+                        onChange={val => this.props.settings.updateProp(val, MeshViewPropType.Name)}
                         value={this.props.settings.getVal(MeshViewPropType.Name)}
                     />
                 </FieldColumnStyled>
@@ -55,7 +56,14 @@ export class MeshSettingsComponent extends React.Component<{settings: MeshSettin
             <LabeledField>
                 <LabelColumnStyled>Layer</LabelColumnStyled>
                 <FieldColumnStyled>
-                    <ConnectedGridComponent isReversed={true} markedValues={[]} formController={this.props.settings} propertyName={MeshViewPropType.Layer} value={this.props.settings.getVal(MeshViewPropType.Layer)}/>
+                    <ConnectedGridComponent
+                        isReversed={true}
+                        markedValues={[]}
+                        formController={this.props.settings}
+                        propertyName={MeshViewPropType.Layer}
+                        value={this.props.settings.getVal(MeshViewPropType.Layer)}
+                        onChange={val => this.props.settings.updateProp(val, MeshViewPropType.Layer)}
+                    />
                 </FieldColumnStyled>
             </LabeledField>
         );
@@ -71,6 +79,7 @@ export class MeshSettingsComponent extends React.Component<{settings: MeshSettin
                     propertyName={MeshViewPropType.Rotation}
                     propertyType="number"
                     type="number"
+                    onChange={val => this.props.settings.updateProp(parseInt(val, 10), MeshViewPropType.Rotation)}
                     value={this.props.settings.getVal(MeshViewPropType.Rotation)}
                     placeholder="0"
                 />
@@ -89,6 +98,7 @@ export class MeshSettingsComponent extends React.Component<{settings: MeshSettin
                         propertyName={MeshViewPropType.Scale}
                         propertyType="number"
                         type="number"
+                        onChange={val => this.props.settings.updateProp(parseInt(val, 10), MeshViewPropType.Scale)}
                         value={this.props.settings.getVal(MeshViewPropType.Scale)}
                     />
                 </FieldColumnStyled>
@@ -106,6 +116,7 @@ export class MeshSettingsComponent extends React.Component<{settings: MeshSettin
                         propertyName={MeshViewPropType.YPos}
                         propertyType="number"
                         type="number"
+                        onChange={val => this.props.settings.updateProp(parseInt(val, 10), MeshViewPropType.YPos)}
                         value={this.props.settings.getVal(MeshViewPropType.YPos)}
                     />
                 </FieldColumnStyled>
@@ -151,6 +162,7 @@ export class MeshSettingsComponent extends React.Component<{settings: MeshSettin
                         values={pathNames}
                         currentValue={val}
                         placeholder="Select path"
+                        onChange={val => this.props.settings.updateProp(val, MeshViewPropType.Path)}
                     />
                     {val ? <ClearIconComponent onClick={() => this.props.settings.updateProp(undefined, MeshViewPropType.Path)}/> : null}
                 </MultiFieldColumnStyled>

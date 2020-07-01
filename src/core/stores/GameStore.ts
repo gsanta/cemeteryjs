@@ -3,7 +3,7 @@ import { RouteModel } from "../models/game_objects/RouteModel";
 import { AbstractStore } from "./AbstractStore";
 import { IGameModel } from "../models/game_objects/IGameModel";
 
-export class GameStore extends AbstractStore {
+export class GameStore extends AbstractStore<RouteModel> {
     static id = 'game-store'; 
     id = GameStore.id;
 

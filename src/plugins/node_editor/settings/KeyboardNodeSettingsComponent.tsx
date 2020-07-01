@@ -29,6 +29,7 @@ export class KeyboardNodeSettingsComponent extends AbstractNodeSettingsComponent
                         values={keys}
                         currentValue={val}
                         placeholder="Select key"
+                        onChange={val => this.props.settings.updateProp(val, KeyboardInputNodeProps.KeyboardKey)}
                     />
                 </FieldColumnStyled>
             </LabeledField>

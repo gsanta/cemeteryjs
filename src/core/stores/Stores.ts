@@ -11,7 +11,7 @@ import { StoreChangeEvent, AbstractStore } from "./AbstractStore";
 
 export class Stores {
     private registry: Registry
-    private stores: AbstractStore[] = [];
+    private stores: AbstractStore<any>[] = [];
 
     constructor(registry: Registry) {
         this.registry = registry;
@@ -21,7 +21,7 @@ export class Stores {
         this.meshStore = new MeshStore(this.registry);
         this.feedback = new FeedbackStore();
         this.nodeStore = new NodeStore(this.registry);
-        this.assetStore = new AssetStore();
+        this.assetStore = new AssetStore(this.registry);
         this.gameStore = new GameStore(this.registry);
 
         this.stores.push(
@@ -42,11 +42,7 @@ export class Stores {
     assetStore: AssetStore;
     gameStore: GameStore;
 
-    dispatch(changedStoreId: string, event: StoreChangeEvent, changedItems: any[]) {
-        this.stores.forEach(store => {
-            if (store.id !== changedStoreId) {
-                store.listen(changedStoreId, event, changedItems);
-            }
-        });
+    dispatch(action: string, changedItems: any[]) {
+        this.stores.forEach(store => store.listen(action, changedItems));
     }
 }

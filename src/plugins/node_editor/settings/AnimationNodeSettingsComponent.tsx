@@ -28,6 +28,7 @@ export class AnimationNodeSettingsComponent extends AbstractNodeSettingsComponen
                         values={this.props.settings.getVal(AnimationNodeProps.AllAnimations)}
                         currentValue={val}
                         placeholder="Select animation"
+                        onChange={val => this.props.settings.updateProp(val, AnimationNodeProps.AllAnimations)}
                     />
                 </FieldColumnStyled>
             </LabeledField>

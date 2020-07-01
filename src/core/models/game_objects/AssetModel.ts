@@ -14,7 +14,7 @@ export enum AssetType {
 }
 
 export class AssetModel {
-    private id: string;
+    id: string;
     assetType: AssetType;
     data: string;
     thumbnailData: string;
@@ -26,14 +26,6 @@ export class AssetModel {
             this.assetType = config.assetType;
             this.path = config.path;
         }
-    }
-
-    getId() {
-        return this.id;
-    }
-
-    setId(id: string) {
-        this.id = id;
     }
 
     toJson(): AssetJson {

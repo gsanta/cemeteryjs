@@ -33,6 +33,7 @@ export class PathSettingsComponent extends React.Component<{settings: PathSettin
                         propertyName={PathPropType.NAME}
                         propertyType="string"
                         type="text"
+                        onChange={val => this.props.settings.updateProp(val, PathPropType.NAME)}
                         value={this.props.settings.getVal(PathPropType.NAME)}
                     />
                 </FieldColumnStyled>

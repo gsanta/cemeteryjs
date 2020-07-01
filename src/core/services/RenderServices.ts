@@ -51,6 +51,9 @@ export class RenderService {
                 case RenderTask.RenderFull:
                     this.fullRepainter();
                 break;
+                case RenderTask.RenderDialog:
+                    this.dialogRenderer();
+                break;
             }
         });
     }

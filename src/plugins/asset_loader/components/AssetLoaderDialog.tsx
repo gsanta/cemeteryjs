@@ -88,6 +88,7 @@ export class AssetLoaderDialog extends AbstractPluginComponent {
                         placeholder={`Upload`}
                         value={assetModel && assetModel.path}
                         readDataAs="dataUrl"
+                        onChange={val => settings.updateProp(val, ImportSettingsProps.Thumbnail)}
                     />
                     <CloseIconComponent onClick={() => settings.updateProp(undefined, ImportSettingsProps.Thumbnail)}/>
                 </FieldColumnStyled>

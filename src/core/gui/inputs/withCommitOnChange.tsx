@@ -1,16 +1,16 @@
 import * as React from "react";
 import { InputFieldCommands } from './InputFieldCommands';
+import { InputProps } from "./InputComponent";
 
 export function withCommitOnChange<T>(WrappedComponent: React.ComponentType<T>) {
-    return class extends React.Component<Omit<T & InputFieldCommands<any>, 'onChange'>> {
+    return class extends React.Component<T & InputFieldCommands<any>> {
 
         render(): JSX.Element {
             // it seems to be a react bug to have to cast props to any
             return <WrappedComponent 
                 {...this.props as any}
-                onChange={(val: any) => {
-                    this.updateProp(val);
-                }}
+                onChange={(val: any) => this.props.onChange(val)}
+                onFocus={() => this.props.formController.focusProp(this.props.propertyName)}
             />;
         }
 

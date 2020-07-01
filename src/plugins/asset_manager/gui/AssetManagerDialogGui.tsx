@@ -15,6 +15,13 @@ const AssetRowStyled = styled.div`
     justify-content: space-between;
 `;
 
+const AssetRowHeaderStyled = styled.div`
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin: 10px 0 5px 0;
+`;
+
 const DialogContentStyled = styled.div`
     width: 500px;
 `;
@@ -27,7 +34,7 @@ const IconGroupStyled = styled.div`
 
 export class AssetManagerDialogGui extends AbstractPluginComponent {
     noRegisterKeyEvents = true;
-    
+
     componentDidMount() {
         super.componentDidMount();
         this.props.plugin.componentMounted(this.ref.current);
@@ -44,38 +51,67 @@ export class AssetManagerDialogGui extends AbstractPluginComponent {
                 footer={footer}
             >
                 <DialogContentStyled ref={this.ref}>
+                    {this.renderAssetRowHeaders()}
                     {this.renderModelList()}
+                    {this.renderTextureList()}
                 </DialogContentStyled>
             </DialogComponent>
         );
     }
 
+    private renderAssetRowHeaders() {
+        return (
+            <AssetRowHeaderStyled style={{borderBottom: '1px solid white'}}>
+                <div>Model id</div>
+                <div>Relative path</div>
+                <div></div>
+            </AssetRowHeaderStyled>
+        );
+    }
+
     private renderModelList() {
-        const controller = this.props.plugin.pluginSettings.dialogController as AssetManagerDialogController;
         const models = this.context.registry.stores.assetStore.getByType(AssetType.Model);
-        const modelComponents = models.map(model => {
+        return this.renderAssetList('Models', models);
+    }
+
+    private renderTextureList() {
+        const textures = this.context.registry.stores.assetStore.getByType(AssetType.Texture);
+        return this.renderAssetList('Textures', textures);
+    }
+
+    private renderAssetList(headerTitle: string, assetModels: AssetModel[]) {
+        const controller = this.props.plugin.pluginSettings.dialogController as AssetManagerDialogController;
+
+        const modelComponents = assetModels.map(assetModel => {
             return (
                 <AssetRowStyled>
-                    <div>{model.getId()}</div>
-                    <div>{this.renderPath(model)}</div>
+                    <div>{assetModel.id}</div>
+                    <div>{this.renderPath(assetModel) || '-'}</div>
                     <IconGroupStyled>
-                        <EditIconComponent width="20px" height="20px" onClick={() => controller.updateProp(model.getId(), AssetManagerDialogProps.EditedAssetId)}/>
-                        <CloseIconComponent width="16px" height="16px" color={colors.danger} onClick={() => null}/>
+                        <EditIconComponent width="20px" height="20px" onClick={() => controller.updateProp(assetModel.id, AssetManagerDialogProps.Edit)}/>
+                        <CloseIconComponent width="16px" height="16px" color={colors.danger} onClick={() => controller.updateProp(assetModel.id, AssetManagerDialogProps.Delete)}/>
                     </IconGroupStyled>
                 </AssetRowStyled>
             );
         });
         return (
-            <div>{modelComponents}</div>
+            <div>
+                <AssetRowHeaderStyled>
+                    <div>{headerTitle}</div>
+                    <div></div>
+                    <div></div>
+                </AssetRowHeaderStyled>
+                {modelComponents}
+            </div>
         )
     }
 
     private renderPath(assetModel: AssetModel): JSX.Element | string {
         const controller = this.props.plugin.pluginSettings.dialogController as AssetManagerDialogController;
 
-        const editedAssetId = controller.getVal(AssetManagerDialogProps.EditedAssetId);
+        const editedAssetId = controller.getVal(AssetManagerDialogProps.Edit);
 
-        if (!editedAssetId || editedAssetId !== assetModel.getId()) { return assetModel.path; }
+        if (!editedAssetId || editedAssetId !== assetModel.id) { return assetModel.path; }
 
         return (
             <ConnectedInputComponent
@@ -83,6 +119,8 @@ export class AssetManagerDialogGui extends AbstractPluginComponent {
                 propertyName={AssetManagerDialogProps.EditedAssetPath}
                 propertyType="string"
                 type="text"
+                onBlur={() => controller.blurProp()}
+                onChange={val => controller.updateProp(val, AssetManagerDialogProps.EditedAssetPath)}
                 value={controller.getVal(AssetManagerDialogProps.EditedAssetPath)}
             />
         )

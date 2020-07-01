@@ -5,8 +5,10 @@ import { MeshView } from "../models/views/MeshView";
 import { PathView } from "../models/views/PathView";
 import { ViewType, View } from "../models/views/View";
 import { Registry } from "../Registry";
-import { AbstractStore } from './AbstractStore';
+import { AbstractStore, StoreChangeEvent } from './AbstractStore';
 import { AbstractViewStore } from "./AbstractViewStore";
+import { AssetStore } from "./AssetStore";
+import { AssetModel, AssetType } from "../models/game_objects/AssetModel";
 
 export function isFeedback(type: string) {
     return type.endsWith('Feedback');
@@ -87,5 +89,22 @@ export class SceneStore extends AbstractViewStore {
         const gridPoint = new Point(point.x, point.y);
 
         return this.views.filter(item => item.dimensions.containsPoint(gridPoint));
+    }
+
+    listen(action: string, changedItems: any[]) {
+        switch(action) {
+            case AssetStore.actions.ASSET_DELETE:
+                changedItems.forEach(item => this.removeAsset(<AssetModel> item));
+            break;
+        }
+    }
+
+    private removeAsset(assetModel: AssetModel) {
+        switch(assetModel.assetType) {
+            case AssetType.Model:
+                this.getMeshViews()
+                    .filter(v => v.modelId === assetModel.id)
+                    .forEach(view => this.removeItem(view));
+        }
     }
 }

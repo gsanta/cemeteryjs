@@ -57,17 +57,17 @@ export class MeshLoaderService extends AbstractPluginService<AbstractPlugin> {
     }
 
     load(assetModel: AssetModel, id: string): Promise<Mesh> {
-        if (this.pandingIds.has(assetModel.getId())) {
-            return this.pandingIds.get(assetModel.getId());
+        if (this.pandingIds.has(assetModel.id)) {
+            return this.pandingIds.get(assetModel.id);
         }
 
-        this.loadedIds.add(assetModel.getId());
+        this.loadedIds.add(assetModel.id);
 
         const promise = this.registry.services.localStore.loadAsset(assetModel)
             .then(() => this.loadMesh(assetModel))
             .catch(e => this.loadMesh(assetModel));
 
-        this.pandingIds.set(assetModel.getId(), promise);
+        this.pandingIds.set(assetModel.id, promise);
         return <Promise<Mesh>> promise;
     }
 
@@ -104,12 +104,12 @@ export class MeshLoaderService extends AbstractPluginService<AbstractPlugin> {
 
         const engineService = this.plugin.pluginServices.byName<EngineService<any>>(EngineService.serviceName);
 
-        meshes[0].material = new StandardMaterial(assetModel.getId(), engineService.getScene());
+        meshes[0].material = new StandardMaterial(assetModel.id, engineService.getScene());
    
-        meshes[0].name = assetModel.getId();
+        meshes[0].name = assetModel.id;
         this.configMesh(meshes[0]);
 
-        this.registry.stores.meshStore.addTemplate(assetModel.getId(), meshes[0]);
+        this.registry.stores.meshStore.addTemplate(assetModel.id, meshes[0]);
 
         return meshes[0];
     }

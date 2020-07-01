@@ -47,8 +47,9 @@ export class AssetLoaderSidepanelWidget extends React.Component<{plugin: AssetLo
                         propertyName={AssetLoaderSidepanelControllerProps.Model}
                         propertyType="string"
                         placeholder={`Upload`}
-                        value={assetModel && assetModel.getId()}
+                        value={assetModel && assetModel.id}
                         readDataAs="dataUrl"
+                        onChange={val => settings.updateProp(val, AssetLoaderSidepanelControllerProps.Model)}
                     />
                 </FieldColumnStyled>
             </LabeledField>
@@ -69,8 +70,9 @@ export class AssetLoaderSidepanelWidget extends React.Component<{plugin: AssetLo
                         propertyName={AssetLoaderSidepanelControllerProps.Texture}
                         propertyType="string"
                         placeholder={`Upload`}
-                        value={assetModel && assetModel.getId()}
+                        value={assetModel && assetModel.id}
                         readDataAs="dataUrl"
+                        onChange={val => this.context.controllers.layoutSettings.updateProp(val, AssetLoaderSidepanelControllerProps.Texture)}
                     />
                 </FieldColumnStyled>
             </LabeledField>

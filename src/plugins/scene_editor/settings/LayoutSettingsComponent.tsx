@@ -38,6 +38,7 @@ export class LayoutSettingsComponent extends React.Component<GeneralFormComponen
                         values={this.context.registry.plugins.predefinedLayouts.map(layout => layout.title)}
                         currentValue={this.context.registry.plugins.getCurrentPredefinedLayout().title}
                         placeholder="Select layout"
+                        onChange={val => this.context.controllers.layoutSettings.updateProp(val, LayoutPropType.Layout)}
                     />
                 </MultiFieldColumnStyled>
             </LabeledField>
