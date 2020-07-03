@@ -21,6 +21,17 @@ export class CodeEditorPlugin extends AbstractPlugin {
         this.tools = new Tools([]);
     }
 
+    componentMounted() {
+        const snapshot = this.registry.services.export.export();
+        
+        const json = JSON.stringify(JSON.parse(snapshot), null, 3);
+        const code = `
+const input = ${json}
+        `;
+
+        this.editors[0].setValue(code);
+    }
+
     getStore() {
         return null;
     }

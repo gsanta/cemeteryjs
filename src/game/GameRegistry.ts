@@ -8,5 +8,7 @@ export class GameRegistry {
         this.registry = registry;
     }
 
-    
+    loadJson() {
+        
+    }
 }

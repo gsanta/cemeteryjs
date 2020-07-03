@@ -65,7 +65,8 @@ export class CodeEditorComponent extends AbstractPluginComponent {
                 theme: "vs-dark",
             });
 
-            view.editors.push(editor2);;
+            view.editors.push(editor2);
+            this.props.plugin.componentMounted(this.ref.current);
         }, 0)
     }
 
@@ -97,8 +98,8 @@ export class CodeEditorComponent extends AbstractPluginComponent {
                         }
                     />
                     <EditorsStyled>
-                        <EditorStyled className="editor1" height="100px"/>
-                        <EditorStyled className="editor2" height="calc(100% - 120px)"/>
+                        <EditorStyled className="editor1" height="30%"/>
+                        <EditorStyled className="editor2" height="calc(70% - 120px)"/>
                     </EditorsStyled>
                 </CodeEditorStyled>
         );
