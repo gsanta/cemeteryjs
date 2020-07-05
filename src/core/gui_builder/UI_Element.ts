@@ -7,16 +7,8 @@ export enum UI_ElementType {
     Button = 'Button'
 }
 
-export interface Ce_guiElement {
-    type: UI_ElementType;
-    children: Ce_guiElement;
-}
-
-export interface Ce_Row extends Ce_guiElement {
-    type: UI_ElementType.Row;
-}
-
 export class UI_Element {
+    type: UI_ElementType;
     protected controller: AbstractSettings;
     prop: string;
 
@@ -29,17 +21,26 @@ export class UI_Element {
     }
 }
 
-export class UI_Layout extends UI_Element {
+export abstract class UI_Container extends UI_Element {
+    children: UI_Element[] = [];
+}
+
+export class UI_Layout extends UI_Container {
     type = UI_ElementType.Layout;
     
-    row() {
-        return new UI_Row(this.controller);
+    row(): UI_Row {
+        const row = new UI_Row(this.controller);
+        this.children.push(row);
+
+        return row;
     }
 
     button(label?: string, prop?: string) {
         const button = new UI_Button(this.controller);
         button.prop = prop;
         button.label = label;
+
+        this.children.push(button);
 
         return button;
     }
