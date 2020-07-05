@@ -1,11 +1,9 @@
 import * as React from 'react';
-import FormControl from 'react-bootstrap/FormControl';
-import { Focusable } from './Focusable';
-import './InputComponent.scss';
+import { Form } from 'react-bootstrap';
 import styled from 'styled-components';
 import { colors } from '../styles';
-import { withCommitOnBlur } from './withCommitOnBlur';
-import { Form } from 'react-bootstrap';
+import { Focusable } from './Focusable';
+import './InputComponent.scss';
 import { withCommitOnChange } from './withCommitOnChange';
 
 export interface InputProps extends Focusable {

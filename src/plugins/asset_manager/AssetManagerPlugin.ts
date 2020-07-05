@@ -2,6 +2,8 @@ import { AbstractPlugin } from '../../core/AbstractPlugin';
 import { Registry } from '../../core/Registry';
 import { Tools } from '../Tools';
 import { AssetManagerDialogController } from './AssetManagerDialogController';
+import { UI_Layout } from '../../core/gui_builder/UI_Element';
+import { UI_Region } from '../../core/services/UIService';
 
 export class AssetManagerPlugin extends AbstractPlugin {
     static id = 'asset-manager-plugin';
@@ -15,6 +17,22 @@ export class AssetManagerPlugin extends AbstractPlugin {
 
     getStore() {
         return null;
+    }
+
+    render(): void {
+        const layout = new UI_Layout(this.pluginSettings.dialogController);
+        const row = layout.row();
+        const table = row.table();
+        const tableRow = table.tableRow();
+        const column1 = tableRow.tableColumn();
+        const column2 = tableRow.tableColumn();
+
+
+        this.registry.services.ui.addUI(UI_Region.Dialog, layout);
+
+        // const row = layout.textField();
+        // row.button
+
     }
 
 

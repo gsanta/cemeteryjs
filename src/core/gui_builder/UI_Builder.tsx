@@ -1,9 +1,13 @@
-import { UI_Layout, UI_Container, UI_ElementType, UI_Element } from "./UI_Element";
+import { UI_Layout, UI_Container, UI_ElementType, UI_Element, UI_TextField, UI_Row } from "./UI_Element";
+import { RowGui, TextFieldGui } from './UI_ReactElements';
 import * as React from 'react';
+import { InputComponent } from "../gui/inputs/InputComponent";
+import { TextFileAssetTask } from "babylonjs";
 
 export class UI_Builder {
 
-    build(layout: UI_Layout) {
+    build(layout: UI_Layout): JSX.Element {
+        return this.buildContainer(layout);
         // layout
 
     }
@@ -33,13 +37,18 @@ export class UI_Builder {
 
         switch(container.type) {
             case UI_ElementType.Layout:
-                return <div>{children}</div>
+                return <div>{children}</div>;
             case UI_ElementType.Row:
-                
+                const row = container as UI_Row;
+                return <RowGui element={row}>{children}</RowGui>;
         }
     }
 
-    private buildLeaf(element: UI_Element) {
-
+    private buildLeaf(element: UI_Element): JSX.Element {
+        switch(element.type) {
+            case UI_ElementType.TextField:
+                const textField = element as UI_TextField;
+                return <TextFieldGui element={textField}/>;
+        }
     }
 }   
