@@ -17,7 +17,7 @@ export class NodeEditorExporter implements IPluginExporter {
         const connections = this.registry.stores.nodeStore.getConnections();
 
         return {
-            pluginId: this.plugin.getId(),
+            pluginId: this.plugin.id,
             viewGroups: [
                 {
                     viewType: ViewType.NodeView,

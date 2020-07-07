@@ -14,6 +14,6 @@ export class SceneEditorPluginComponentFactory extends AbstractPluginComponentFa
     }
 
     renderMainComponent() {
-        return <SceneEditorComponent plugin={this.plugin} key={this.plugin.getId()}/>;
+        return <SceneEditorComponent plugin={this.plugin} key={this.plugin.id}/>;
     }
 }

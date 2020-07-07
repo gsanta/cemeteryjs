@@ -42,8 +42,10 @@ export enum CanvasTag {
     Hovered = 'hovered'
 }
 
+export const SceneEditorPluginId = 'scene-editor-plugin'; 
+
 export class SceneEditorPlugin extends AbstractPlugin {
-    static id = 'scene-editor-plugin';
+    id = 'scene-editor-plugin';
     
     private camera: Camera2D;
 
@@ -53,7 +55,7 @@ export class SceneEditorPlugin extends AbstractPlugin {
         const tools = [ToolType.Rectangle, ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Pointer, ToolType.Camera].map(toolType => toolFactory(toolType, this, registry));
         this.tools = new Tools(tools);
 
-        this.camera = cameraInitializer(SceneEditorPlugin.id, registry);
+        this.camera = cameraInitializer(SceneEditorPluginId, registry);
         this.selectedTool = this.tools.byType(ToolType.Rectangle);
 
         this.pluginSettings = new PluginSettings(
@@ -72,12 +74,8 @@ export class SceneEditorPlugin extends AbstractPlugin {
         return this.registry.stores.canvasStore;
     }
 
-    getId() {
-        return SceneEditorPlugin.id;
-    }
-
     resize(): void {
-        const screenSize = getScreenSize(SceneEditorPlugin.id);
+        const screenSize = getScreenSize(SceneEditorPluginId);
         screenSize && this.camera.resize(screenSize);
         this.renderFunc && this.renderFunc();
     }

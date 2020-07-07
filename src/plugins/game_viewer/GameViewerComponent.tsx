@@ -4,7 +4,7 @@ import { WheelListener } from '../../core/services/WheelListener';
 import { AbstractPluginComponent, PluginProps } from '../common/AbstractPluginComponent';
 import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
 import { ToolType } from '../common/tools/Tool';
-import { GameViewerPlugin } from './GameViewerPlugin';
+import { GameViewerPlugin, GameViewerPluginId } from './GameViewerPlugin';
 import { PlayIconComponent } from '../common/toolbar/icons/PlayIconComponent';
 import { PauseIconComponent } from '../common/toolbar/icons/PauseIconComponent';
 import { StopIconComponent } from '../common/toolbar/icons/StopIconComponent';
@@ -55,7 +55,7 @@ export class GameViewerComponent extends AbstractPluginComponent {
     }
 
     componentWillUnmount() {
-        this.context.registry.plugins.getViewById(GameViewerPlugin.id).destroy();
+        this.context.registry.plugins.getViewById(GameViewerPluginId).destroy();
     }
 
     componentDidUpdate() {
@@ -63,13 +63,13 @@ export class GameViewerComponent extends AbstractPluginComponent {
     }
 
     render() {
-        const view = this.context.registry.plugins.getViewById<GameViewerPlugin>(GameViewerPlugin.id);
+        const view = this.context.registry.plugins.getViewById<GameViewerPlugin>(GameViewerPluginId);
         const settings = view.gameViewerSettings;
 
         const timelineState = settings.getVal(GameViewerSettingsProps.TimelineState)
 
         return (
-                <GameViewerStyled ref={this.ref} id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>
+                <GameViewerStyled ref={this.ref} id={view.id} style={{cursor: view.getActiveTool().getCursor()}}>
                     <ToolbarComponent
                         tools={[ToolType.Camera]}
                         view={view}
@@ -103,7 +103,7 @@ export class GameViewerComponent extends AbstractPluginComponent {
                         onKeyDown={e => this.context.registry.services.keyboard.onKeyDown(e.nativeEvent)}
                         onKeyUp={e => this.context.registry.services.keyboard.onKeyUp(e.nativeEvent)}    
                     />
-                    <CanvasStyled ref={this.canvasRef} isEmpty={false} id={view.getId()}/>
+                    <CanvasStyled ref={this.canvasRef} isEmpty={false} id={view.id}/>
                 </GameViewerStyled>
         );
     }

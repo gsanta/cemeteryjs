@@ -15,6 +15,7 @@ import { PluginSettings } from '../plugins/common/PluginSettings';
 import { NoopTool } from '../plugins/common/tools/NoopTool';
 import { AbstractViewStore } from './stores/AbstractViewStore';
 import { MeshLoaderService } from './services/MeshLoaderService';
+import { UI_Plugin } from './UI_Plugin';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;
@@ -30,9 +31,7 @@ export function calcOffsetFromDom(element: HTMLElement): Point {
     return new Point(0, 0);
 }
 
-export abstract class AbstractPlugin {
-    name: string;
-
+export abstract class AbstractPlugin extends UI_Plugin {
     htmlElement: HTMLElement;
 
     exporter: IPluginExporter;
@@ -45,13 +44,7 @@ export abstract class AbstractPlugin {
     protected priorityTool: Tool;
     protected selectedTool: Tool;
     protected renderFunc: () => void;
-    protected registry: Registry;
-    
-    constructor(registry: Registry) {
-        this.registry = registry;
-    }
 
-    abstract getId(): string;
     abstract getStore(): AbstractViewStore;
     
     componentMounted(htmlElement: HTMLElement): void {
@@ -108,4 +101,6 @@ export abstract class AbstractPlugin {
     getCamera(): ICamera { 
         return undefined;
     };
+
+    render() { return undefined }
 }

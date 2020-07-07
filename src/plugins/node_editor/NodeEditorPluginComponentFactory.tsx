@@ -15,6 +15,6 @@ export class NodeEditorPluginComponentFactory extends AbstractPluginComponentFac
     }
 
     renderMainComponent() {
-        return <NodeEditorComponent plugin={this.plugin} key={this.plugin.getId()}/>;
+        return <NodeEditorComponent plugin={this.plugin} key={this.plugin.id}/>;
     }
 }

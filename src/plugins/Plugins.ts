@@ -125,7 +125,7 @@ export class Plugins {
     }
 
     getViewById<T extends AbstractPlugin = AbstractPlugin>(id: string): T {
-        return <T> this.plugins.find(view => view.getId() === id);
+        return <T> this.plugins.find(view => view.id === id);
     }
 
     getCurrentPredefinedLayout(): {title: string; plugins: AbstractPlugin[]} {

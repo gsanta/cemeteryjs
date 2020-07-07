@@ -18,7 +18,7 @@ export class SceneEditorExporter implements IPluginExporter {
         const pathViews = this.registry.stores.canvasStore.getPathViews();
 
         return {
-            pluginId: this.plugin.getId(),
+            pluginId: this.plugin.id,
             viewGroups: [
                 {
                     viewType: ViewType.MeshView,

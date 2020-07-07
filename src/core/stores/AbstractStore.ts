@@ -1,12 +1,15 @@
 import { Polygon } from '../geometry/shapes/Polygon';
 import { Rectangle } from '../geometry/shapes/Rectangle';
 import { View } from '../models/views/View';
+import { IControlledObject, ObjectCapability } from '../IControlledObject';
 
 export enum StoreChangeEvent {
     Delete = 'Delete'
 }
 
-export abstract class AbstractStore<T extends {id: string}> {
+export abstract class AbstractStore implements IControlledObject {
+    objectCapabilities = [ObjectCapability.Listener];
+
     id: string;
     protected maxIdForType: Map<string, number> = new Map();
     protected views: View[] = [];

@@ -10,8 +10,10 @@ export const initCode = `
     const gameRegistry = cemetery.init(document.getElementById('canvas'));
 `;
 
+export const CodeEditorPluginId = 'code-editor-plugin'; 
+
 export class CodeEditorPlugin extends AbstractPlugin {
-    static id = 'code-editor-plugin';
+    id = 'code-editor-plugin';
     visible = true;
     editors: monaco.editor.IStandaloneCodeEditor[] = [];
 
@@ -38,10 +40,6 @@ const input = ${json}
 
     getCamera(): ICamera {
         return null;
-    }
-
-    getId(): string {
-        return CodeEditorPlugin.id;
     }
 
     getSelectedTool(): Tool {

@@ -3,8 +3,8 @@ import { View } from '../../../core/models/views/View';
 import { Registry } from '../../../core/Registry';
 import { RenderTask } from "../../../core/services/RenderServices";
 import { isView, isFeedback } from '../../../core/stores/SceneStore';
-import { NodeEditorPlugin } from '../../node_editor/NodeEditorPlugin';
-import { SceneEditorPlugin } from '../../scene_editor/SceneEditorPlugin';
+import { NodeEditorPlugin, NodeEditorPluginId } from '../../node_editor/NodeEditorPlugin';
+import { SceneEditorPlugin, SceneEditorPluginId } from '../../scene_editor/SceneEditorPlugin';
 import { AbstractTool } from "./AbstractTool";
 import { ToolType } from "./Tool";
 import { IPointerEvent } from '../../../core/services/input/PointerService';
@@ -103,11 +103,11 @@ export class PointerTool extends AbstractTool {
     private updateDraggedView() {
         const view = this.registry.plugins.getHoveredView();
 
-        switch(view.getId()) {
-            case SceneEditorPlugin.id:
+        switch(view.id) {
+            case SceneEditorPluginId:
                 this.updateSceneViews();
                 break;
-            case NodeEditorPlugin.id:
+            case NodeEditorPluginId:
                 this.updateNodeEditorViews();
                 break;
         }

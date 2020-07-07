@@ -1,14 +1,13 @@
 import { Point } from "../geometry/shapes/Point";
 import { without } from "../geometry/utils/Functions";
+import { AssetModel, AssetType } from "../models/game_objects/AssetModel";
 import { ChildView } from "../models/views/child_views/ChildView";
 import { MeshView } from "../models/views/MeshView";
 import { PathView } from "../models/views/PathView";
-import { ViewType, View } from "../models/views/View";
+import { View, ViewType } from "../models/views/View";
 import { Registry } from "../Registry";
-import { AbstractStore, StoreChangeEvent } from './AbstractStore';
 import { AbstractViewStore } from "./AbstractViewStore";
 import { AssetStore } from "./AssetStore";
-import { AssetModel, AssetType } from "../models/game_objects/AssetModel";
 
 export function isFeedback(type: string) {
     return type.endsWith('Feedback');

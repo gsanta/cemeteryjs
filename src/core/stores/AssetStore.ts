@@ -2,8 +2,7 @@ import { AssetModel, AssetType } from "../models/game_objects/AssetModel";
 import { AbstractStore } from "./AbstractStore";
 import { Registry } from "../Registry";
 
-
-export class AssetStore extends AbstractStore<AssetModel> {
+export class AssetStore extends AbstractStore {
     static actions = {
         ASSET_DELETE: 'ASSET_DELETE'
     }
@@ -29,7 +28,7 @@ export class AssetStore extends AbstractStore<AssetModel> {
     deleteAsset(assetModel: AssetModel) {
         this.assetsById.delete(assetModel.id);
 
-        this.registry.stores.dispatch(AssetStore.actions.ASSET_DELETE, [assetModel]);
+        this.registry.services.event.dispatch(AssetStore.actions.ASSET_DELETE, [assetModel]);
     }
 
     addAsset(assetModel: AssetModel): string {

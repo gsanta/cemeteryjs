@@ -3,12 +3,15 @@ import { AbstractSettings } from "../scene_editor/settings/AbstractSettings";
 import { AssetManagerPlugin } from "./AssetManagerPlugin";
 import { RenderTask } from "../../core/services/RenderServices";
 import { AssetModel } from "../../core/models/game_objects/AssetModel";
+import { AssetManagerDialogPluginId } from "./AssetManagerDialogPlugin";
+import { UI_Region } from "../../core/UI_Plugin";
 
 export enum AssetManagerDialogProps {
     EditedAsset = 'EditedAsset',
     AssetPath = 'AssetPath',
     AssetName = 'AssetName',
-    Delete = 'Delete'
+    Delete = 'Delete',
+    IsDialogOpen = 'IsDialogOpen'
 }
 
 export class AssetManagerDialogController extends AbstractSettings<AssetManagerDialogProps> {
@@ -64,7 +67,10 @@ export class AssetManagerDialogController extends AbstractSettings<AssetManagerD
             case AssetManagerDialogProps.AssetPath:
                 return this.editedPath ? this.editedPath : this.editedAssetModel ? this.editedAssetModel.path : '';
             case AssetManagerDialogProps.AssetName:
-                return this.editedName ? this.editedName : this.editedAssetModel ? this.editedAssetModel.name : '';    
+                return this.editedName ? this.editedName : this.editedAssetModel ? this.editedAssetModel.name : '';
+            case AssetManagerDialogProps.IsDialogOpen:
+                const settings = this.plugin.pluginSettings.dialogController as AssetManagerDialogController;
+
         }
     }
 
@@ -88,7 +94,14 @@ export class AssetManagerDialogController extends AbstractSettings<AssetManagerD
             case AssetManagerDialogProps.AssetName:
                 this.editedName = val;
                 this.registry.services.render.runImmediately(RenderTask.RenderDialog);
-
+            break;
+            case AssetManagerDialogProps.IsDialogOpen:
+                if (val) {
+                    this.registry.services.plugin.dialog = this.registry.services.plugin.find_ui_plugin(AssetManagerDialogPluginId);
+                } else {
+                    this.registry.services.plugin.dialog = null;
+                }
+                this.registry.services.ui.runUpdate(UI_Region.Dialog);
             break;
         }
     }

@@ -10,14 +10,12 @@ import { MouseService } from './input/MouseService';
 import { PointerService } from './input/PointerService';
 import { LevelService } from "./LevelService";
 import { LocalStoreService } from "./LocalStroreService";
-import { MeshLoaderService } from "./MeshLoaderService";
 import { RenderService } from "./RenderServices";
-import { Plugins } from "../../plugins/Plugins";
-import { NodeService } from '../../plugins/game_viewer/services/NodeService';
 import { GamepadService } from './GamepadService';
-import { EngineService } from "./EngineService";
 import { LayoutService } from "./LayoutService";
 import { UI_Service } from "./UI_Service";
+import { EventService } from './EventService';
+import { PluginService } from './PluginService';
 
 export class Services {
     hotkey: HotkeyService;
@@ -34,6 +32,8 @@ export class Services {
     game: GameService;
     gamepad: GamepadService;
     layout: LayoutService;
+    event: EventService;
+    plugin: PluginService;
 
     ui: UI_Service;
 
@@ -59,6 +59,8 @@ export class Services {
         this.gamepad = new GamepadService(this.registry);
         this.layout = new LayoutService(this.registry);
         this.ui = new UI_Service();
+        this.event = new EventService(this.registry);
+        this.plugin = new PluginService();
 
         // TODO: find a better place to register general hotkeys
         this.hotkey.registerHotkey(this.gamepad);

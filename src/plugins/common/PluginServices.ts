@@ -1,8 +1,10 @@
 import { AbstractPluginService } from "./AbstractPluginService";
 import { AbstractPlugin } from "../../core/AbstractPlugin";
 import { EngineService } from "../../core/services/EngineService";
+import { UI_Region, UI_Plugin } from '../../core/UI_Plugin';
 
 export class PluginServices<T extends AbstractPlugin> {
+    private registeredPlugins: Map<UI_Region, UI_Plugin[]> = new Map();
 
     services: AbstractPluginService<T>[] = [];
     private serviceMap: Map<string, AbstractPluginService<T>> = new Map();

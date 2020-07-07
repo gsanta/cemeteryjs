@@ -6,7 +6,7 @@ import { DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
 import Split from 'split.js';
 import 'tippy.js/dist/tippy.css';
-import { GameViewerPlugin } from '../../plugins/game_viewer/GameViewerPlugin';
+import { GameViewerPlugin, GameViewerPluginId } from '../../plugins/game_viewer/GameViewerPlugin';
 import './App.scss';
 import { AppContext, AppContextType } from './Context';
 import { DialogManagerComponent } from './dialogs/DialogManagerComponent';
@@ -49,7 +49,7 @@ export class App extends React.Component<{}, AppState> {
         window.addEventListener('resize', () => this.context.registry.plugins.getActivePlugins().forEach(plugin => plugin.resize()));
 
 
-        setTimeout(() => this.context.controllers.setup(document.querySelector(`#${GameViewerPlugin.id}`)), 100);
+        setTimeout(() => this.context.controllers.setup(document.querySelector(`#${GameViewerPluginId}`)), 100);
 
         document.getElementsByTagName('body')[0].addEventListener('onfocus', () => {
             console.log('body focus')

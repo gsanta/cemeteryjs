@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { AbstractPluginComponent, PluginProps } from '../common/AbstractPluginComponent';
 import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
 import { PlayIconComponent } from '../common/toolbar/icons/PlayIconComponent';
-import { CodeEditorPlugin, initCode } from './CodeEditorPlugin';
+import { CodeEditorPlugin, initCode, CodeEditorPluginId } from './CodeEditorPlugin';
 import { Cursor } from '../common/tools/Tool';
 
 const CodeEditorStyled = styled.div`
@@ -40,12 +40,12 @@ export class CodeEditorComponent extends AbstractPluginComponent {
         super.componentDidMount();
         this.context.registry.plugins.codeEditor.setRenderer(() => this.forceUpdate());
         
-        const view = this.context.registry.plugins.getViewById<CodeEditorPlugin>(CodeEditorPlugin.id);
+        const view = this.context.registry.plugins.getViewById<CodeEditorPlugin>(CodeEditorPluginId);
 
         setTimeout(() => {
             view.editors = [];
 
-            const editor1Element: HTMLElement = document.querySelector(`#${view.getId()} .editor1`);
+            const editor1Element: HTMLElement = document.querySelector(`#${view.id} .editor1`);
             const editor1 = monaco.editor.create(editor1Element, {
                 value: initCode,
                 language: 'javascript',
@@ -56,7 +56,7 @@ export class CodeEditorComponent extends AbstractPluginComponent {
 
             view.editors.push(editor1);
 
-            const editor2Element: HTMLElement = document.querySelector(`#${view.getId()} .editor2`);
+            const editor2Element: HTMLElement = document.querySelector(`#${view.id} .editor2`);
             const editor2 = monaco.editor.create(editor2Element, {
                 value: initCode,
                 language: 'javascript',
@@ -71,7 +71,7 @@ export class CodeEditorComponent extends AbstractPluginComponent {
     }
 
     componentWillUnmount() {
-        this.context.registry.plugins.getViewById(CodeEditorPlugin.id).destroy();
+        this.context.registry.plugins.getViewById(CodeEditorPluginId).destroy();
     }
 
     componentDidUpdate() {
@@ -79,10 +79,10 @@ export class CodeEditorComponent extends AbstractPluginComponent {
     }
 
     render() {
-        const view = this.context.registry.plugins.getViewById<CodeEditorPlugin>(CodeEditorPlugin.id);
+        const view = this.context.registry.plugins.getViewById<CodeEditorPlugin>(CodeEditorPluginId);
 
         return (
-                <CodeEditorStyled ref={this.ref} id={view.getId()} style={{cursor: view.getActiveTool() ? view.getActiveTool().getCursor() : Cursor.Default}}>
+                <CodeEditorStyled ref={this.ref} id={view.id} style={{cursor: view.getActiveTool() ? view.getActiveTool().getCursor() : Cursor.Default}}>
                     <ToolbarComponent
                         tools={[]}
                         view={view}

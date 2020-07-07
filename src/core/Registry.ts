@@ -1,6 +1,8 @@
 import { Services } from "./services/ServiceLocator";
 import { Stores } from "./stores/Stores";
 import { Plugins } from "../plugins/Plugins";
+import { IControlledObject, hasObjectCapability, ObjectCapability } from './IControlledObject';
+import { IListener } from './IListener';
 
 export class Registry {
     stores: Stores;
@@ -13,5 +15,17 @@ export class Registry {
         this.services.setup();
 
         this.plugins = new Plugins(this);
+    }
+
+    registerObject(object: IControlledObject) {
+        if (hasObjectCapability(object, ObjectCapability.Listener)) {
+            this.services.event.addListener(<IListener> <unknown> object)
+        }
+    }
+
+    unregisterObject(object: IControlledObject) {
+        if (hasObjectCapability(object, ObjectCapability.Listener)) {
+            this.services.event.removeListener(<IListener> <unknown> object)
+        }
     }
 }

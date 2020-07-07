@@ -6,7 +6,6 @@ import { AssetLoaderDialogController } from '../../../plugins/asset_loader/contr
 import { AppContext, AppContextType } from '../Context';
 import { AssetManagerDialogController } from '../../../plugins/asset_manager/AssetManagerDialogController';
 import { AssetManagerDialogGui } from '../../../plugins/asset_manager/gui/AssetManagerDialogGui';
-import { UI_Region } from '../../services/UIService';
 
 export class DialogManagerComponent extends React.Component {
     static contextType = AppContext;
@@ -17,10 +16,9 @@ export class DialogManagerComponent extends React.Component {
     }
 
     render() {
-        if (this.context.registry.services.ui.getUI(UI_Region.Dialog)) {
+        if (this.context.registry.services.plugin.dialog) {
 
         }
-
 
         if (!this.context.registry.services.dialog.dialogController) { return null; }
 

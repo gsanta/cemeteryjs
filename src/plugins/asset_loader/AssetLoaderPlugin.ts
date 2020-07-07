@@ -20,8 +20,10 @@ export function getCanvasElement(viewId: string): HTMLCanvasElement {
     }
 }
 
+export const AssetLoaderPluginId = 'asset-loader-plugin';
+
 export class AssetLoaderPlugin extends AbstractPlugin {
-    static id = 'asset-loader-plugin';
+    id = AssetLoaderPluginId;
 
     constructor(registry: Registry) {
         super(registry);
@@ -62,10 +64,6 @@ export class AssetLoaderPlugin extends AbstractPlugin {
 
     componentMounted(htmlElement: HTMLElement) {
         super.componentMounted(htmlElement);
-    }
-
-    getId(): string {
-        return AssetLoaderPlugin.id;
     }
 
     getSelectedTool(): Tool {

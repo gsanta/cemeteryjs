@@ -1,17 +1,17 @@
+import { Registry } from "../Registry";
+import { AbstractStore } from "./AbstractStore";
+import { AssetStore } from "./AssetStore";
+import { FeedbackStore } from "./FeedbackStore";
+import { GameStore } from "./GameStore";
 import { LevelStore } from "./LevelStore";
+import { MeshStore } from "./MeshStore";
+import { NodeStore } from './NodeStore';
 import { SceneStore } from "./SceneStore";
 import { SelectionStore } from "./SelectionStore";
-import { MeshStore } from "./MeshStore";
-import { FeedbackStore } from "./FeedbackStore";
-import { Registry } from "../Registry";
-import { NodeStore } from './NodeStore';
-import { AssetStore } from "./AssetStore";
-import { GameStore } from "./GameStore";
-import { StoreChangeEvent, AbstractStore } from "./AbstractStore";
 
 export class Stores {
     private registry: Registry
-    private stores: AbstractStore<any>[] = [];
+    private stores: AbstractStore[] = [];
 
     constructor(registry: Registry) {
         this.registry = registry;
@@ -41,8 +41,4 @@ export class Stores {
     nodeStore: NodeStore;
     assetStore: AssetStore;
     gameStore: GameStore;
-
-    dispatch(action: string, changedItems: any[]) {
-        this.stores.forEach(store => store.listen(action, changedItems));
-    }
 }

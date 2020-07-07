@@ -9,6 +9,6 @@ export class GameViewerPluginComponentFactory extends AbstractPluginComponentFac
     }
 
     renderMainComponent() {
-        return <GameViewerComponent plugin={this.plugin} key={this.plugin.getId()}/>;
+        return <GameViewerComponent plugin={this.plugin} key={this.plugin.id}/>;
     }
 }

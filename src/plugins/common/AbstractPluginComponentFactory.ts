@@ -14,7 +14,7 @@ export abstract class AbstractPluginComponentFactory<T extends AbstractPlugin> {
     abstract renderSidePanelComponent(): JSX.Element;
 
     renderMainComponent(): JSX.Element {
-        throw new Error(`Plugin ${this.plugin.getId()} does not render a main component.`);
+        throw new Error(`Plugin ${this.plugin.id} does not render a main component.`);
     }
 
     renderDialogComponent(): JSX.Element {

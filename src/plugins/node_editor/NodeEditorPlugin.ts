@@ -212,10 +212,12 @@ const recipes: NodePresetRecipe[] = [
             }
         ]
     }
-]
+];
+
+export const NodeEditorPluginId = 'action-editor-plugin'; 
 
 export class NodeEditorPlugin extends AbstractPlugin {
-    static id = 'action-editor-plugin';
+    id = 'action-editor-plugin';
     
     private camera: Camera2D;
 
@@ -227,7 +229,7 @@ export class NodeEditorPlugin extends AbstractPlugin {
         const tools = [ToolType.Select, ToolType.Delete, ToolType.Camera, ToolType.Pointer, ToolType.Join, ToolType.DragAndDrop].map(toolType => toolFactory(toolType, this, registry));
         this.tools = new Tools(tools);
 
-        this.camera = cameraInitializer(NodeEditorPlugin.id, registry);
+        this.camera = cameraInitializer(NodeEditorPluginId, registry);
 
         this.selectedTool = this.tools.byType(ToolType.Camera);
 
@@ -268,12 +270,8 @@ export class NodeEditorPlugin extends AbstractPlugin {
         return this.registry.stores.nodeStore;
     }
 
-    getId() {
-        return NodeEditorPlugin.id;
-    }
-
     resize(): void {
-        const screenSize = getScreenSize(NodeEditorPlugin.id);
+        const screenSize = getScreenSize(NodeEditorPluginId);
         screenSize && this.camera.resize(screenSize);
 
         this.renderFunc && this.renderFunc();

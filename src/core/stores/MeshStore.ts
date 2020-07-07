@@ -8,7 +8,7 @@ import { EngineService } from '../services/EngineService';
 import { TextureLoaderService } from '../services/TextureLoaderService';
 import { AbstractStore } from './AbstractStore';
 
-export class MeshStore extends AbstractStore<any> {
+export class MeshStore extends AbstractStore {
     static id = 'mesh-store'; 
     id = MeshStore.id;
 

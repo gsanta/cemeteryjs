@@ -22,7 +22,7 @@ export class LayoutService {
     }
 
     getPanelIds(): string[] {
-        const pluginIds = this.registry.plugins.getActivePlugins().map(plugin => plugin.getId());
+        const pluginIds = this.registry.plugins.getActivePlugins().map(plugin => plugin.id);
         const ids = ['toolbar' , ...pluginIds];
 
         return ids;

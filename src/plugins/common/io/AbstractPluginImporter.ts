@@ -33,6 +33,6 @@ export abstract class AbstractPluginImporter {
     abstract import(json: AppJson, viewMap: Map<string, View>): void;
 
     protected getPluginJson(json: AppJson): IPluginJson {
-        return json.plugins.find(plugin => plugin.pluginId === this.plugin.getId());
+        return json.plugins.find(plugin => plugin.pluginId === this.plugin.id);
     }
 } 

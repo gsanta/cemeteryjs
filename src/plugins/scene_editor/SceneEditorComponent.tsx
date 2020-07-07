@@ -12,7 +12,7 @@ import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
 import { ToolType } from '../common/tools/Tool';
 import { MeshViewContainerComponent } from './components/MeshViewComponent';
 import { PathViewContainerComponent } from './components/PathViewComponent';
-import { SceneEditorPlugin } from './SceneEditorPlugin';
+import { SceneEditorPlugin, SceneEditorPluginId } from './SceneEditorPlugin';
 import { AssetLoaderDialog } from '../asset_loader/components/AssetLoaderDialog';
 
 const EditorComponentStyled = styled.div`
@@ -53,11 +53,11 @@ export class SceneEditorComponent extends AbstractPluginComponent {
         const hover = (item: View) => this.context.registry.services.mouse.hover(item);
         const unhover = (canvasItem: View) => this.context.registry.services.mouse.unhover(canvasItem);
         
-        const plugin = this.context.registry.plugins.getViewById<SceneEditorPlugin>(SceneEditorPlugin.id);
+        const plugin = this.context.registry.plugins.getViewById<SceneEditorPlugin>(SceneEditorPluginId);
         const history = this.context.registry.services.history;
 
         return (
-            <EditorComponentStyled ref={this.ref} id={plugin.getId()} style={{cursor: plugin.getActiveTool().getCursor()}}>
+            <EditorComponentStyled ref={this.ref} id={plugin.id} style={{cursor: plugin.getActiveTool().getCursor()}}>
                 <ToolbarComponent
                     tools={[ToolType.Rectangle, ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Camera]}
                     view={plugin}

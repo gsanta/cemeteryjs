@@ -24,8 +24,10 @@ export function getCanvasElement(viewId: string): HTMLCanvasElement {
     }
 }
 
+export const GameViewerPluginId = 'game-viewer-plugin'; 
+
 export class GameViewerPlugin extends AbstractPlugin {
-    static id = 'game-viewer-plugin';
+    id = GameViewerPluginId;
     gameViewerSettings: GameViewerSettings;
 
     // private axisGizmo: AxisGizmo;
@@ -85,10 +87,6 @@ export class GameViewerPlugin extends AbstractPlugin {
 
     destroy() {
         this.registry.stores.meshStore.clear();
-    }
-
-    getId(): string {
-        return GameViewerPlugin.id;
     }
 
     getSelectedTool(): Tool {

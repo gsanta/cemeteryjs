@@ -9,6 +9,6 @@ export class CodeEditorPluginComponentFactory extends AbstractPluginComponentFac
     }
 
     renderMainComponent() {
-        return <CodeEditorComponent plugin={this.plugin} key={this.plugin.getId()}/>;
+        return <CodeEditorComponent plugin={this.plugin} key={this.plugin.id}/>;
     }
 }

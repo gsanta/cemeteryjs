@@ -11,7 +11,7 @@ import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
 import { ToolType } from '../common/tools/Tool';
 import { NodeViewContainerComponent } from './components/NodeComponent';
 import { AllNodeConnectionsComponent } from './components/NodeConnectionComponent';
-import { NodeEditorPlugin } from './NodeEditorPlugin';
+import { NodeEditorPlugin, NodeEditorPluginId } from './NodeEditorPlugin';
 import { JoinTool } from '../common/tools/JoinTool';
 
 const EditorComponentStyled = styled.div`
@@ -53,7 +53,7 @@ export class NodeEditorComponent extends AbstractPluginComponent {
         this.props.plugin.componentMounted(this.ref.current);
 
         setTimeout(() => {
-            this.context.registry.plugins.getViewById<NodeEditorPlugin>(NodeEditorPlugin.id).resize();
+            this.context.registry.plugins.getViewById<NodeEditorPlugin>(NodeEditorPluginId).resize();
         }, 0);
     }
 
@@ -61,9 +61,9 @@ export class NodeEditorComponent extends AbstractPluginComponent {
         const hover = (item: View) => this.context.registry.services.mouse.hover(item);
         const unhover = (canvasItem: View) => this.context.registry.services.mouse.unhover(canvasItem);
         
-        const view = this.context.registry.plugins.getViewById<NodeEditorPlugin>(NodeEditorPlugin.id);
+        const view = this.context.registry.plugins.getViewById<NodeEditorPlugin>(NodeEditorPluginId);
         return (
-            <EditorComponentStyled ref={this.ref} id={view.getId()} style={{cursor: view.getActiveTool().getCursor()}}>
+            <EditorComponentStyled ref={this.ref} id={view.id} style={{cursor: view.getActiveTool().getCursor()}}>
                 <ToolbarComponent
                         tools={[ToolType.Select, ToolType.Delete, ToolType.Camera]}
                         view={view}
