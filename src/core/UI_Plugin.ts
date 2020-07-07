@@ -1,4 +1,5 @@
-import { UI_Layout } from "../gui_builder/UI_Element";
+import { UI_Layout } from './gui_builder/UI_Element';
+import { AbstractSettings } from '../plugins/scene_editor/settings/AbstractSettings';
 
 export enum UI_Region {
     Sidepanel = 'SidePanel',
@@ -22,21 +23,14 @@ export namespace UI_Region {
     }
 }
 
+export abstract class UI_Plugin {
+    id: string;
+    region: UI_Region;
+    abstract render(): UI_Layout;
 
-export class UIService {
-    private regionMap: Map<UI_Region, UI_Layout[]> = new Map();
+    controller: AbstractSettings;
 
-    constructor() {
-        UI_Region.all().forEach(region => {
-            this.regionMap.set(region, []);
-        });
-    }
-
-    addUI(region: UI_Region, layout: UI_Layout) {
-        this.regionMap.get(region).push(layout);
-    }
-
-    getUI(region: UI_Region) {
-        return this.regionMap.get(region);
+    constructor(controller: AbstractSettings) {
+        this.controller = controller;
     }
 }
