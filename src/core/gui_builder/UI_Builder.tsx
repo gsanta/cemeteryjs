@@ -3,13 +3,23 @@ import { RowGui, TextFieldGui } from './UI_ReactElements';
 import * as React from 'react';
 import { InputComponent } from "../gui/inputs/InputComponent";
 import { TextFileAssetTask } from "babylonjs";
+import { Registry } from '../Registry';
+import { UI_Region } from '../UI_Plugin';
 
 export class UI_Builder {
 
-    build(layout: UI_Layout): JSX.Element {
-        return this.buildContainer(layout);
-        // layout
+    private registry: Registry;
 
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
+
+    build(region: UI_Region): JSX.Element | JSX.Element[] {
+        const plugins = this.registry.services.plugin.findPluginsAtRegion(region);
+
+        return plugins
+            .map(plugin => plugin.render())
+            .map(layout => this.buildContainer(layout));
     }
 
     // private buildRecuresively(container: UI_Container): JSX.Element {

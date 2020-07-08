@@ -40,6 +40,13 @@ export class AssetManagerDialogController extends AbstractSettings<AssetManagerD
         this.editedPath = undefined;
         this.registry.services.dialog.close();
         this.registry.services.render.runImmediately(RenderTask.RenderFull);
+
+        this.addPropSetter(AssetManagerDialogProps.EditedAsset, (val) => {
+            this.editedAssetModel = this.registry.stores.assetStore.getAssetById(val);
+            this.editedPath = this.editedAssetModel.path;
+            this.editedName = this.editedAssetModel.name
+            this.update();
+        });
     }
 
     blurProp() {
@@ -97,9 +104,9 @@ export class AssetManagerDialogController extends AbstractSettings<AssetManagerD
             break;
             case AssetManagerDialogProps.IsDialogOpen:
                 if (val) {
-                    this.registry.services.plugin.dialog = this.registry.services.plugin.find_ui_plugin(AssetManagerDialogPluginId);
+                    this.registry.services.plugin.showPlugin(AssetManagerDialogPluginId);
                 } else {
-                    this.registry.services.plugin.dialog = null;
+                    this.registry.services.plugin.hidePlugin(AssetManagerDialogPluginId);
                 }
                 this.registry.services.ui.runUpdate(UI_Region.Dialog);
             break;

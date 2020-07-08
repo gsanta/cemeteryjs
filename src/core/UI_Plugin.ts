@@ -25,6 +25,17 @@ export namespace UI_Region {
 
         return regions;
     }
+
+    export function isSinglePluginRegion(region: UI_Region) {
+        switch(region) {
+            case UI_Region.Canvas1:
+            case UI_Region.Canvas2:
+            case UI_Region.Dialog:
+                return true;
+            default:
+                return false;
+        }
+    }
 }
 
 export abstract class UI_Plugin implements IControlledObject {
@@ -39,6 +50,6 @@ export abstract class UI_Plugin implements IControlledObject {
     constructor(registry: Registry) {
         this.registry = registry;
 
-        this.registry.services.plugin.register_ui_plugin(this);
+        this.registry.services.plugin.registerPlugin(this);
     }
 }

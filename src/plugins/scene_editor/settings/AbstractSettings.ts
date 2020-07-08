@@ -77,6 +77,14 @@ export abstract class AbstractSettings<P = any> {
                 return val;
         }
     }
+
+    addPropSetter(prop: P, handler: Function) {
+
+    }
+
+    addPropGetter(prop: P, handler: Function) {
+
+    }
 }
 
 export abstract class ViewSettings<P, V extends View> extends AbstractSettings<P> {

@@ -1,26 +1,51 @@
-import { UI_Plugin } from '../UI_Plugin';
-
+import { UI_Plugin, UI_Region } from '../UI_Plugin';
+import { Registry } from '../Registry';
 
 export class PluginService {
-    private idCache: Map<string, UI_Plugin> = new Map();
+    private plugins: Map<string, UI_Plugin> = new Map();
 
-    registeredDialogs: UI_Plugin[] = [];
-    dialog: UI_Plugin;
+    private registeredPlugins: Map<UI_Region, UI_Plugin[]> = new Map();
+    private showedPlugins: Map<UI_Region, UI_Plugin[]> = new Map();
 
-    registeredSidepanelWidgets: UI_Plugin[] = [];
-    sidepanelWidgets: UI_Plugin[] = [];
+    private registry: Registry;
 
-    registeredCanvas1s: UI_Plugin[] = [];
-    canvas1: UI_Plugin;
+    constructor(registry: Registry) {
+        this.registry = registry;
 
-    registeredCanvas2s: UI_Plugin[] = [];
-    canvas2: UI_Plugin;
-
-    find_ui_plugin(pluginId: string): UI_Plugin {
-        return this.idCache.get(pluginId);
+        UI_Region.all().forEach(region => {
+            this.registeredPlugins.set(region, []);
+            this.showedPlugins.set(region, []);
+        });
     }
 
-    register_ui_plugin(plugin: UI_Plugin) {
-        this.idCache.set(plugin.id, plugin);
+    findPluginsAtRegion(region: UI_Region): UI_Plugin[] {
+        return this.showedPlugins.get(region);
+    }
+
+    findPlugin(pluginId: string): UI_Plugin {
+        return this.plugins.get(pluginId);
+    }
+
+    showPlugin(pluginId: string) {
+        const plugin = this.plugins.get(pluginId);
+        if (UI_Region.isSinglePluginRegion(plugin.region)) {
+            this.showedPlugins.get(plugin.region)[0] = plugin;
+        } else {
+            this.showedPlugins.get(plugin.region).push(plugin);
+        }
+        this.registry.services.ui.scheduleUpdate(UI_Region.Dialog);
+    }
+
+    hidePlugin(pluginId: string) {
+        const plugin = this.plugins.get(pluginId);
+        const index = this.showedPlugins.get(plugin.region).indexOf(plugin);
+        this.showedPlugins.get(plugin.region).splice(index, 1);
+
+        this.registry.services.ui.scheduleUpdate(UI_Region.Dialog);
+    }
+
+    registerPlugin(plugin: UI_Plugin) {
+        this.plugins.set(plugin.id, plugin);
+        this.registeredPlugins.get(plugin.region).push(plugin);
     }
 }

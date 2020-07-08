@@ -13,6 +13,7 @@ import { Tools } from '../Tools';
 import { toolFactory } from '../common/toolbar/toolFactory';
 import { PluginSettings } from '../common/PluginSettings';
 import { MeshLoaderService } from '../../core/services/MeshLoaderService';
+import { UI_Region } from '../../core/UI_Plugin';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -46,7 +47,7 @@ export const SceneEditorPluginId = 'scene-editor-plugin';
 
 export class SceneEditorPlugin extends AbstractPlugin {
     id = 'scene-editor-plugin';
-    
+    region: UI_Region.Canvas1;
     private camera: Camera2D;
 
     constructor(registry: Registry) {

@@ -60,7 +60,7 @@ export class Services {
         this.layout = new LayoutService(this.registry);
         this.ui = new UI_Service();
         this.event = new EventService(this.registry);
-        this.plugin = new PluginService();
+        this.plugin = new PluginService(this.registry);
 
         // TODO: find a better place to register general hotkeys
         this.hotkey.registerHotkey(this.gamepad);
