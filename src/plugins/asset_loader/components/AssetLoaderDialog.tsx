@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { DialogComponent } from '../../../core/gui/dialogs/DialogComponent';
 import { AbstractPluginComponent } from '../../common/AbstractPluginComponent';
 import { ThumbnailMakerComponent } from '../../scene_editor/components/ThumbnailMakerComponent';
-import { ButtonComponent } from '../../../core/gui/inputs/ButtonComponent';
+import { ButtonComponentLegacy } from '../../../core/gui/inputs/ButtonComponentLegacy';
 import { MeshLoaderService } from '../../../core/services/MeshLoaderService';
 import { AssetLoaderDialogController, ImportSettingsProps } from '../controllers/AssetLoaderDialogController';
 import { AssetModel } from '../../../core/models/game_objects/AssetModel';
@@ -33,7 +33,7 @@ export class AssetLoaderDialog extends AbstractPluginComponent {
     render() {
         const controller = this.props.plugin.pluginSettings.byName<AssetLoaderDialogController>(AssetLoaderDialogController.settingsName);
 
-        const footer = <ButtonComponent text="Done" type="info" onClick={() => this.done()}/>
+        const footer = <ButtonComponentLegacy text="Done" type="info" onClick={() => this.done()}/>
         return (
             <DialogComponent 
                 title={'Thumbnail maker'}

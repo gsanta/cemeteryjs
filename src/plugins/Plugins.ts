@@ -13,6 +13,7 @@ import { AssetLoaderPluginComponentFactory } from './asset_loader/AssetLoaderPlu
 import { AbstractPluginComponentFactory } from './common/AbstractPluginComponentFactory';
 import { AssetManagerPlugin } from './asset_manager/AssetManagerPlugin';
 import { AssetManagerPluginGuiFactory } from './asset_manager/AssetManagerPluginGuiFactory';
+import { FileSettingsPlugin } from './file_settings/FileSettingsPlugin';
 
 export interface LayoutConfig {
     activePlugin: AbstractPlugin;
@@ -58,6 +59,14 @@ export class Plugins {
         this.registerPlugin(this.codeEditor, new CodeEditorPluginComponentFactory(registry, this.codeEditor));
         this.registerPlugin(this.assetLoader, new AssetLoaderPluginComponentFactory(registry, this.assetLoader));
         this.registerPlugin(this.assetManager, new AssetManagerPluginGuiFactory(registry, this.assetManager));
+
+        this.registry.services.plugin.registerPlugin(this.sceneEditor);
+        this.registry.services.plugin.registerPlugin(this.gameView);
+        this.registry.services.plugin.registerPlugin(this.nodeEditor);
+        this.registry.services.plugin.registerPlugin(this.codeEditor);
+        this.registry.services.plugin.registerPlugin(this.assetLoader);
+        this.registry.services.plugin.registerPlugin(this.assetManager);
+        this.registry.services.plugin.registerPlugin(new FileSettingsPlugin(this.registry))
 
         this.predefinedLayouts = [
             {

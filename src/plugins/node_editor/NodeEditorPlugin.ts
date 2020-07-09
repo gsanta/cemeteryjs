@@ -22,6 +22,7 @@ import { ToolType } from '../common/tools/Tool';
 import { Tools } from '../Tools';
 import { toolFactory } from '../common/toolbar/toolFactory';
 import { PluginSettings } from '../common/PluginSettings';
+import { UI_Region } from '../../core/UI_Plugin';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -218,6 +219,7 @@ export const NodeEditorPluginId = 'action-editor-plugin';
 
 export class NodeEditorPlugin extends AbstractPlugin {
     id = 'action-editor-plugin';
+    region = UI_Region.Canvas1;
     
     private camera: Camera2D;
 

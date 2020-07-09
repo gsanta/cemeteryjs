@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ButtonComponent } from '../../../core/gui/inputs/ButtonComponent';
+import { ButtonComponentLegacy } from '../../../core/gui/inputs/ButtonComponentLegacy';
 import { ConnectedInputComponent } from '../../../core/gui/inputs/InputComponent';
 import { LabeledField, LabelColumnStyled, FieldColumnStyled } from './SettingsComponent';
 import { GridComponent } from '../../../core/gui/misc/GridComponent';
@@ -27,7 +27,7 @@ export class LevelSettingsComponent extends React.Component<{plugin: SceneEditor
                 <LabeledField>
                     <LabelColumnStyled></LabelColumnStyled>
                     <FieldColumnStyled>
-                        <ButtonComponent text="Clear level" type="info" onClick={() => levelSettings.updateProp(level, LevelFormPropType.ClearLevel)}/>
+                        <ButtonComponentLegacy text="Clear level" type="info" onClick={() => levelSettings.updateProp(level, LevelFormPropType.ClearLevel)}/>
                     </FieldColumnStyled>
                 </LabeledField>
 

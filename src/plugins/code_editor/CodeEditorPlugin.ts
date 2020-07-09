@@ -5,6 +5,7 @@ import { ICamera } from "../common/camera/ICamera";
 import { Tool } from "../common/tools/Tool";
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { Tools } from "../Tools";
+import { UI_Region } from "../../core/UI_Plugin";
 
 export const initCode = `
     const gameRegistry = cemetery.init(document.getElementById('canvas'));
@@ -14,6 +15,7 @@ export const CodeEditorPluginId = 'code-editor-plugin';
 
 export class CodeEditorPlugin extends AbstractPlugin {
     id = 'code-editor-plugin';
+    region = UI_Region.Canvas1;
     visible = true;
     editors: monaco.editor.IStandaloneCodeEditor[] = [];
 

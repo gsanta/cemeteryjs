@@ -1,4 +1,5 @@
 import { AbstractSettings } from "../../plugins/scene_editor/settings/AbstractSettings";
+import { AbstractController } from '../../plugins/scene_editor/settings/AbstractController';
 
 
 export enum UI_ElementType {
@@ -14,15 +15,15 @@ export enum UI_ElementType {
 
 export class UI_Element {
     type: UI_ElementType;
-    protected controller: AbstractSettings;
+    protected controller: AbstractController;
     prop: string;
     isBold: boolean;
 
-    constructor(controller: AbstractSettings) {
+    constructor(controller: AbstractController) {
         this.controller = controller;
     }
 
-    setController(controller: AbstractSettings) {
+    setController(controller: AbstractController) {
         this.controller = controller;
     }
 }
@@ -49,10 +50,9 @@ export class UI_Row extends UI_Layout {
         return new UI_Table(this.controller);
     }
 
-    button(label?: string, prop?: string) {
+    button(prop: string) {
         const button = new UI_Button(this.controller);
         button.prop = prop;
-        button.label = label;
 
         this.children.push(button);
 
@@ -71,6 +71,7 @@ export class UI_Row extends UI_Layout {
 
 export class UI_Button extends UI_Element {
     type = UI_ElementType.Button;
+    icon?: string;
     label: string;
 }
 
@@ -78,19 +79,11 @@ export class UI_TextField extends UI_Element {
     type = UI_ElementType.TextField;
 
     setVal(newVal: string): void {
-        this.controller.updateProp(this.prop, newVal);
+        this.controller.change(this.prop, newVal);
     }
 
     getVal(): any {
         return this.controller.getVal(this.prop);
-    }
-
-    blur() {
-        this.controller.blurProp();
-    }
-
-    focus() {
-        this.controller.focusProp(this.prop);
     }
 }
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DialogComponent } from '../../../core/gui/dialogs/DialogComponent';
-import { ButtonComponent } from '../../../core/gui/inputs/ButtonComponent';
+import { ButtonComponentLegacy } from '../../../core/gui/inputs/ButtonComponentLegacy';
 import { AbstractPluginComponent } from '../../common/AbstractPluginComponent';
 import { AssetManagerDialogController, AssetManagerDialogProps } from '../AssetManagerDialogController';
 import { AssetType, AssetModel } from '../../../core/models/game_objects/AssetModel';
@@ -43,7 +43,7 @@ export class AssetManagerDialogGui extends AbstractPluginComponent {
     render() {
         const controller = this.props.plugin.pluginSettings.dialogController as AssetManagerDialogController;
 
-        const footer = <ButtonComponent text="Done" type="info" onClick={() => this.done()}/>
+        const footer = <ButtonComponentLegacy text="Done" type="info" onClick={() => this.done()}/>
         return (
             <DialogComponent 
                 title={'Asset manager'}

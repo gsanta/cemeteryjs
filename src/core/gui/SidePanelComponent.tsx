@@ -29,8 +29,6 @@ export class SidePanelComponent extends React.Component<SidebarComponentProps> {
     
     render(): JSX.Element {
         //TODO refactor this
-        let layoutSettings: {title: string, body: JSX.Element}[];
-        
         // TODO: create sidebar components for each plugin
         // switch(this.context.registry.plugins.getCurrentPredefinedLayoutTitle()) {
         //     case 'Scene Editor':

@@ -11,6 +11,7 @@ import { Tool, ToolType } from '../common/tools/Tool';
 import { Tools } from '../Tools';
 import { AssetLoaderDialogController } from './controllers/AssetLoaderDialogController';
 import { AssetLoaderSidepanelController } from './controllers/AssetLoaderSidepanelController';
+import { UI_Region } from '../../core/UI_Plugin';
 (<any> window).earcut = require('earcut');
 
 export function getCanvasElement(viewId: string): HTMLCanvasElement {
@@ -24,6 +25,7 @@ export const AssetLoaderPluginId = 'asset-loader-plugin';
 
 export class AssetLoaderPlugin extends AbstractPlugin {
     id = AssetLoaderPluginId;
+    region = UI_Region.Dialog;
 
     constructor(registry: Registry) {
         super(registry);

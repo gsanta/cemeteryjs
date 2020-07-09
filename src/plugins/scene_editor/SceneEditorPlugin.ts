@@ -47,7 +47,7 @@ export const SceneEditorPluginId = 'scene-editor-plugin';
 
 export class SceneEditorPlugin extends AbstractPlugin {
     id = 'scene-editor-plugin';
-    region: UI_Region.Canvas1;
+    region = UI_Region.Canvas1;
     private camera: Camera2D;
 
     constructor(registry: Registry) {

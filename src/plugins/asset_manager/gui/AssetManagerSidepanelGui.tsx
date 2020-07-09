@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ButtonComponent } from '../../../core/gui/inputs/ButtonComponent';
+import { ButtonComponentLegacy } from '../../../core/gui/inputs/ButtonComponentLegacy';
 import { AccordionComponent } from '../../../core/gui/misc/AccordionComponent';
 import { LabelColumnStyled, LabeledField } from '../../scene_editor/settings/SettingsComponent';
 import { AssetManagerPlugin } from '../AssetManagerPlugin';
@@ -33,7 +33,7 @@ export class AssetLoaderSidepanelGui extends React.Component<{plugin: AssetManag
         return (
             <LabeledField key="thumbnail-file">                   
                 <LabelColumnStyled></LabelColumnStyled>
-                <ButtonComponent 
+                <ButtonComponentLegacy 
                     text="Manage assets"
                     type="info"
                     onClick={() => {

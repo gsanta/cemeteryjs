@@ -2,6 +2,7 @@ import { UI_Layout } from './gui_builder/UI_Element';
 import { AbstractSettings } from '../plugins/scene_editor/settings/AbstractSettings';
 import { IControlledObject } from './IControlledObject';
 import { Registry } from './Registry';
+import { AbstractController } from '../plugins/scene_editor/settings/AbstractController';
 
 export enum UI_Region {
     SidepanelWidget = 'SidePanelWidget',
@@ -44,12 +45,10 @@ export abstract class UI_Plugin implements IControlledObject {
     region: UI_Region;
     abstract render(): UI_Layout;
 
-    controller: AbstractSettings;
+    controller: AbstractController;
     protected registry: Registry;
 
     constructor(registry: Registry) {
         this.registry = registry;
-
-        this.registry.services.plugin.registerPlugin(this);
     }
 }

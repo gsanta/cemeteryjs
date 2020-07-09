@@ -15,6 +15,7 @@ import { EngineService } from '../../core/services/EngineService';
 import { MeshLoaderService } from '../../core/services/MeshLoaderService';
 import { NodeService } from './services/NodeService';
 import { TextureLoaderService } from '../../core/services/TextureLoaderService';
+import { UI_Region } from '../../core/UI_Plugin';
 (<any> window).earcut = require('earcut');
 
 export function getCanvasElement(viewId: string): HTMLCanvasElement {
@@ -28,6 +29,7 @@ export const GameViewerPluginId = 'game-viewer-plugin';
 
 export class GameViewerPlugin extends AbstractPlugin {
     id = GameViewerPluginId;
+    region = UI_Region.Canvas2;
     gameViewerSettings: GameViewerSettings;
 
     // private axisGizmo: AxisGizmo;

@@ -3,11 +3,11 @@ import { Registry } from '../../core/Registry';
 import { Tools } from '../Tools';
 import { AssetManagerDialogController } from './AssetManagerDialogController';
 import { AssetManagerDialogPlugin } from './AssetManagerDialogPlugin';
-
-
+import { UI_Region } from '../../core/UI_Plugin';
 
 export class AssetManagerPlugin extends AbstractPlugin {
     static id = 'asset-manager-plugin';
+    region = UI_Region.Dialog;
 
     constructor(registry: Registry) {
         super(registry);

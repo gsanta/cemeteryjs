@@ -35,7 +35,7 @@ export interface ButtonProps {
     type: 'success' | 'info'
 }
 
-export function ButtonComponent(props: ButtonProps) {
+export function ButtonComponentLegacy(props: ButtonProps) {
 
     return (
         <ButtonStyled variant="dark" className={`button override ${props.type}`} onClick={() => props.onClick()}>{props.text}</ButtonStyled>

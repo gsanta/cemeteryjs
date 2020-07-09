@@ -5,7 +5,7 @@ import { ConnectedFileUploadComponent } from '../../common/toolbar/icons/ImportF
 import { AccordionComponent } from '../../../core/gui/misc/AccordionComponent';
 import { AssetLoaderDialogController, ImportSettingsProps } from '../controllers/AssetLoaderDialogController';
 import { AssetLoaderPlugin } from '../AssetLoaderPlugin';
-import { ButtonComponent } from '../../../core/gui/inputs/ButtonComponent';
+import { ButtonComponentLegacy } from '../../../core/gui/inputs/ButtonComponentLegacy';
 import { AssetLoaderSidepanelControllerProps, AssetLoaderSidepanelController } from '../controllers/AssetLoaderSidepanelController';
 
 export class AssetLoaderSidepanelWidget extends React.Component<{plugin: AssetLoaderPlugin}> {
@@ -85,7 +85,7 @@ export class AssetLoaderSidepanelWidget extends React.Component<{plugin: AssetLo
         return (
             <LabeledField key="thumbnail-file">                   
                 <LabelColumnStyled></LabelColumnStyled>
-                <ButtonComponent text="Change thumbnail" type="info" onClick={() => settings.open()}/>
+                <ButtonComponentLegacy text="Change thumbnail" type="info" onClick={() => settings.open()}/>
             </LabeledField>
         );
     }

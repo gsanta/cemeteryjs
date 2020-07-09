@@ -1,10 +1,11 @@
-import { UI_Layout, UI_Container, UI_ElementType, UI_Element, UI_TextField, UI_Row } from "./UI_Element";
+import { UI_Layout, UI_Container, UI_ElementType, UI_Element, UI_TextField, UI_Row, UI_Button } from './UI_Element';
 import { RowGui, TextFieldGui } from './UI_ReactElements';
 import * as React from 'react';
 import { InputComponent } from "../gui/inputs/InputComponent";
 import { TextFileAssetTask } from "babylonjs";
 import { Registry } from '../Registry';
 import { UI_Region } from '../UI_Plugin';
+import { ButtonComp } from '../gui/inputs/ButtonComp';
 
 export class UI_Builder {
 
@@ -59,6 +60,9 @@ export class UI_Builder {
             case UI_ElementType.TextField:
                 const textField = element as UI_TextField;
                 return <TextFieldGui element={textField}/>;
+            case UI_ElementType.Button:
+                const button = element as UI_Button;
+                return <ButtonComp element={button}/>;
         }
     }
 }   
