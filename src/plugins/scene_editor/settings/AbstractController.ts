@@ -1,12 +1,16 @@
 import { Registry } from '../../../core/Registry';
 
+export interface PropHandlers {
+    onChange?(val: any, controller: AbstractController): void;
+    onClick?(controller: AbstractController): void;
+    onBlur?(controller: AbstractController): void;
+    onGet?(controller: AbstractController): void;
+}
 
 export abstract class AbstractController<P = any> {
     protected tempVal: any;
     focusedPropType: P;
-    private clickHandlers: Map<P, (controller: AbstractController) => void>;
-    private changeHandlers: Map<P, (val: any, controller: AbstractController) => void>;
-    private propGetters: Map<P, (controller: AbstractController) => any>;
+    private propHandlers: Map<P, PropHandlers> = new Map();
 
     protected registry: Registry;
 
@@ -15,22 +19,28 @@ export abstract class AbstractController<P = any> {
     }
 
     change(prop: P, val: any): void {
-        this.changeHandlers.get(prop)(this, val);
+        const propHandlers = this.propHandlers.get(prop);
+        propHandlers.onChange && propHandlers.onChange(val, this);
+
     }
 
     click(prop: P): void {
-        this.clickHandlers.get(prop)(this);
+        const propHandlers = this.propHandlers.get(prop);
+        propHandlers.onClick && propHandlers.onClick(this);
     }
 
-    onClick(prop: P, handler: (controller: AbstractController) => void) {
-        this.clickHandlers.set(prop, handler);
+    blur(prop: P): void {
+        const propHandlers = this.propHandlers.get(prop);
+        propHandlers.onBlur && propHandlers.onBlur(this);
+
     }
 
-    onChange(prop: P, handler: (val: any, controller: AbstractController) => void) {
-        this.changeHandlers.set(prop, handler);
+    val(prop: P): any {
+        const propHandlers = this.propHandlers.get(prop);
+        return propHandlers.onGet && propHandlers.onGet(this);
     }
 
-    onGetValue(prop: P, handler: (controller: AbstractController, ) => any) {
-        this.propGetters.set(prop, handler);
+    addPropHandlers(prop: P, propHandlers: PropHandlers) {
+        this.propHandlers.set(prop, propHandlers);
     }
 }

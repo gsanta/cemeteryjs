@@ -3,8 +3,9 @@ import { UI_Plugin, UI_Region } from '../../core/UI_Plugin';
 import { FileSettingsController, FileSettingsProps } from './FileSettingsController';
 import { Registry } from '../../core/Registry';
 
+export const FileSettingsPluginId = 'file-settings-plugin'; 
 export class FileSettingsPlugin extends UI_Plugin {
-    static id = 'file-settings-plugin';
+    id = FileSettingsPluginId;
     region = UI_Region.SidepanelWidget;
 
     constructor(registry: Registry) {

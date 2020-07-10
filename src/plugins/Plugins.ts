@@ -13,7 +13,7 @@ import { AssetLoaderPluginComponentFactory } from './asset_loader/AssetLoaderPlu
 import { AbstractPluginComponentFactory } from './common/AbstractPluginComponentFactory';
 import { AssetManagerPlugin } from './asset_manager/AssetManagerPlugin';
 import { AssetManagerPluginGuiFactory } from './asset_manager/AssetManagerPluginGuiFactory';
-import { FileSettingsPlugin } from './file_settings/FileSettingsPlugin';
+import { FileSettingsPlugin, FileSettingsPluginId } from './file_settings/FileSettingsPlugin';
 
 export interface LayoutConfig {
     activePlugin: AbstractPlugin;
@@ -66,7 +66,9 @@ export class Plugins {
         this.registry.services.plugin.registerPlugin(this.codeEditor);
         this.registry.services.plugin.registerPlugin(this.assetLoader);
         this.registry.services.plugin.registerPlugin(this.assetManager);
-        this.registry.services.plugin.registerPlugin(new FileSettingsPlugin(this.registry))
+
+        this.registry.services.plugin.registerPlugin(new FileSettingsPlugin(this.registry));
+        this.registry.services.plugin.showPlugin(FileSettingsPluginId)
 
         this.predefinedLayouts = [
             {

@@ -13,10 +13,15 @@ export class FileSettingsController extends AbstractController<FileSettingsProps
     constructor(registry: Registry) {
         super(registry);
 
-        this.onClick(FileSettingsProps.Export, () => {
-            const file = this.registry.services.export.export();
-            var blob = new Blob([file], { type: "text/plain;charset=utf-8" });
-            saveAs(blob, "dynamic.txt");
-        });
+        this.addPropHandlers(
+            FileSettingsProps.Export,
+            {
+                onClick: () => {
+                    const file = this.registry.services.export.export();
+                    var blob = new Blob([file], { type: "text/plain;charset=utf-8" });
+                    saveAs(blob, "dynamic.txt");
+                }    
+            }
+        );
     }
 }

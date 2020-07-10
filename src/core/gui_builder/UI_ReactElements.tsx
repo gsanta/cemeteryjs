@@ -32,9 +32,8 @@ export function TextFieldGui(props: {element: UI_TextField}) {
         <InputComponent
             type="text"
             onBlur={() => props.element.blur()}
-            onFocus={() => props.element.focus()}
-            onChange={val => props.element.setVal(val)}
-            value={props.element.getVal()}
+            onChange={val => props.element.change(val)}
+            value={props.element.val()}
         />
     );
 }

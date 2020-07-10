@@ -1,7 +1,6 @@
 import { Registry } from '../Registry';
 import { IListener } from '../IListener';
 
-
 export class EventService {
     private registry: Registry;
     private listeners: IListener[] = [];

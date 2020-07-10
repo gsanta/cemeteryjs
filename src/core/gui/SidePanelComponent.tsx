@@ -5,6 +5,8 @@ import { LayoutSettingsComponent } from '../../plugins/scene_editor/settings/Lay
 import { AppContext, AppContextType } from './Context';
 import { AccordionComponent } from './misc/AccordionComponent';
 import { colors } from './styles';
+import { UI_Builder } from '../gui_builder/UI_Builder';
+import { UI_Region } from '../UI_Plugin';
 
 export interface SidebarComponentProps {
     isEditorOpen: boolean;
@@ -60,11 +62,15 @@ export class SidePanelComponent extends React.Component<SidebarComponentProps> {
         //         break;
         // }
 
+        const components = new UI_Builder(this.context.registry).build(UI_Region.SidepanelWidget);
+
+
         const pluginService = this.context.registry.plugins;
         const activePluginComponents = pluginService.plugins.map(plugin => pluginService.getPluginFactory(plugin).renderSidePanelComponent());
 
         return (
             <SidebarStyled>
+                {components}
                 <AccordionComponent
                     elements={
                         [

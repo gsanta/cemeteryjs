@@ -1,5 +1,5 @@
 import { ExportFileIconComponent } from "../../../plugins/common/toolbar/icons/ExportFileIconComponent";
-
+import * as React from 'react';
 
 export function iconFactory(iconName: string): JSX.Element {
 

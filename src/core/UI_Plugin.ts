@@ -5,7 +5,7 @@ import { Registry } from './Registry';
 import { AbstractController } from '../plugins/scene_editor/settings/AbstractController';
 
 export enum UI_Region {
-    SidepanelWidget = 'SidePanelWidget',
+    SidepanelWidget = 'SidepanelWidget',
     Dialog = 'Dialog',
     Canvas1 = 'Canvas1',
     Canvas2 = 'Canvas2'

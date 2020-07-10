@@ -28,6 +28,25 @@ export class UI_Element {
     }
 }
 
+export abstract class UI_InputElement extends UI_Element {
+    change(newVal: string): void {
+        this.controller.change(this.prop, newVal);
+    }
+
+    blur(): void {
+        this.controller.blur(this.prop);
+    }
+
+    click(): void {
+        this.controller.click(this.prop)
+    }
+
+    val(): any {
+        return this.controller.val(this.prop);
+    }
+}
+
+
 export abstract class UI_Container extends UI_Element {
     children: UI_Element[] = [];
 }
@@ -75,16 +94,8 @@ export class UI_Button extends UI_Element {
     label: string;
 }
 
-export class UI_TextField extends UI_Element {
+export class UI_TextField extends UI_InputElement {
     type = UI_ElementType.TextField;
-
-    setVal(newVal: string): void {
-        this.controller.change(this.prop, newVal);
-    }
-
-    getVal(): any {
-        return this.controller.getVal(this.prop);
-    }
 }
 
 
