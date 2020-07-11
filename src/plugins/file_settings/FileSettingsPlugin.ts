@@ -1,11 +1,12 @@
-import { UI_Layout } from "../../core/gui_builder/UI_Element";
 import { UI_Plugin, UI_Region } from '../../core/UI_Plugin';
 import { FileSettingsController, FileSettingsProps } from './FileSettingsController';
 import { Registry } from '../../core/Registry';
+import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
 
 export const FileSettingsPluginId = 'file-settings-plugin'; 
 export class FileSettingsPlugin extends UI_Plugin {
     id = FileSettingsPluginId;
+    displayName = 'File Settings';
     region = UI_Region.SidepanelWidget;
 
     constructor(registry: Registry) {
@@ -14,11 +15,22 @@ export class FileSettingsPlugin extends UI_Plugin {
         this.controller = new FileSettingsController(registry)
     }
 
-    render(): UI_Layout {
-        const layout = new UI_Layout(this.controller);
-        const row = layout.row();
-        const button = row.button(FileSettingsProps.Export);
-        button.label = 'Export';
+    renderInto(layout: UI_Layout): UI_Layout {
+        let row = layout.row();
+
+        const exportButton = row.fileUpload(FileSettingsProps.Export);
+        exportButton.label = 'Export File';
+        exportButton.icon = 'export-icon';
+
+        row = layout.row();
+        const importButton = row.fileUpload(FileSettingsProps.Import);
+        importButton.label = 'Import File';
+        importButton.icon = 'import-icon';
+
+        row = layout.row();
+        const newProjectButton = row.button(FileSettingsProps.Import);
+        newProjectButton.label = 'New Project';
+        newProjectButton.icon = 'blank-icon';
 
         return layout;
     }

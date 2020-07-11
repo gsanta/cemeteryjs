@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { AssetModel } from '../../../core/models/game_objects/AssetModel';
 import { LabeledField, LabelColumnStyled, FieldColumnStyled } from '../../scene_editor/settings/SettingsComponent';
-import { ConnectedFileUploadComponent } from '../../common/toolbar/icons/ImportFileIconComponent';
 import { AccordionComponent } from '../../../core/gui/misc/AccordionComponent';
 import { AssetLoaderDialogController, ImportSettingsProps } from '../controllers/AssetLoaderDialogController';
 import { AssetLoaderPlugin } from '../AssetLoaderPlugin';
@@ -42,7 +41,7 @@ export class AssetLoaderSidepanelWidget extends React.Component<{plugin: AssetLo
             <LabeledField key="model-file">
                 <LabelColumnStyled>Model</LabelColumnStyled>
                 <FieldColumnStyled>
-                    <ConnectedFileUploadComponent
+                    {/* <ConnectedFileUploadComponent
                         formController={settings}
                         propertyName={AssetLoaderSidepanelControllerProps.Model}
                         propertyType="string"
@@ -50,7 +49,7 @@ export class AssetLoaderSidepanelWidget extends React.Component<{plugin: AssetLo
                         value={assetModel && assetModel.id}
                         readDataAs="dataUrl"
                         onChange={val => settings.updateProp(val, AssetLoaderSidepanelControllerProps.Model)}
-                    />
+                    /> */}
                 </FieldColumnStyled>
             </LabeledField>
         );
@@ -65,7 +64,7 @@ export class AssetLoaderSidepanelWidget extends React.Component<{plugin: AssetLo
             <LabeledField key="texture-file">
                 <LabelColumnStyled>Texture</LabelColumnStyled>
                 <FieldColumnStyled>
-                    <ConnectedFileUploadComponent
+                    {/* <ConnectedFileUploadComponent
                         formController={settings}
                         propertyName={AssetLoaderSidepanelControllerProps.Texture}
                         propertyType="string"
@@ -73,7 +72,7 @@ export class AssetLoaderSidepanelWidget extends React.Component<{plugin: AssetLo
                         value={assetModel && assetModel.id}
                         readDataAs="dataUrl"
                         onChange={val => this.context.controllers.layoutSettings.updateProp(val, AssetLoaderSidepanelControllerProps.Texture)}
-                    />
+                    /> */}
                 </FieldColumnStyled>
             </LabeledField>
         );

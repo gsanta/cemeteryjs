@@ -3,16 +3,18 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { ToolIconProps } from '../../../plugins/common/toolbar/icons/ToolIcon';
-import { UI_Button } from '../../gui_builder/UI_Element';
 import { iconFactory } from '../icons/iconFactory';
 import { colors } from '../styles';
+import { UI_Button } from '../../gui_builder/elements/UI_Button';
 
 export const Buttontyled = styled.div`
     display: flex;
+    align-items: center;
     cursor: ${(props: ToolIconProps) => props.disabled ? 'default' : 'pointer'};
     padding: ${(props: ToolIconProps) => props.format === 'long' ? '3px' : '0px'};
     opacity: ${(props: ToolIconProps) => props.disabled ? '0.4' : '1'};
     color: ${(props: ToolIconProps) => props.color ? props.color : colors.textColor};
+    width: 100%;
 
     &:hover {
         background: ${colors.hoverBackground};
@@ -36,7 +38,7 @@ export class ButtonComp extends React.Component<Button_UI_Props> {
         const icon = this.props.element.icon ? iconFactory(this.props.element.icon) : null;
 
         return (
-            <Buttontyled {...this.props}>
+            <Buttontyled {...this.props} onClick={() => this.props.element.click()}>
                 {icon}
                 
                 <div className="button-label">

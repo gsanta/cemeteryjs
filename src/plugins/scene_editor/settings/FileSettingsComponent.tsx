@@ -3,7 +3,6 @@ import * as React from 'react';
 import { Editor } from '../../../core/Editor';
 import { BlankIconComponent } from '../../common/toolbar/icons/BlankIconComponent';
 import { ExportFileIconComponent } from '../../common/toolbar/icons/ExportFileIconComponent';
-import { ConnectedFileUploadComponent } from '../../common/toolbar/icons/ImportFileIconComponent';
 import { GlobalSettingsPropType } from './GlobalSettings';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { colors } from '../../../core/gui/styles';
@@ -29,13 +28,13 @@ export class FileSettingsComponent extends React.Component<GeneralFormComponentP
 
         return (
             <div>
-                <ConnectedFileUploadComponent 
+                {/* <ConnectedFileUploadComponent 
                     propertyName={GlobalSettingsPropType.IMPORT_FILE}
                     formController={form}
                     placeholder={'Import file'}
                     readDataAs="text"
                     onChange={val => form.updateProp(val, GlobalSettingsPropType.IMPORT_FILE)}
-                />
+                /> */}
                 <ExportFileIconComponent format="long" onClick={() => this.exportFile()} isActive={false}/>
                 <BlankIconComponent format="long" color={colors.danger} isActive={false} onClick={() => this.blank()}/>
             </div>

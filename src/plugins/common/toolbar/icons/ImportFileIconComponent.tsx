@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useDropzone } from 'react-dropzone';
 import { withCommitOnChange } from '../../../../core/gui/inputs/withCommitOnChange';
-import { ToolStyled, ToolIconStyled, ToolIconBackgroundStyled, ToolIconImageStyled, ToolNameStyled } from './ToolIcon';
+import { ToolStyled, ToolIconStyled, ToolIconBackgroundStyled, ToolIconImageStyled, ToolNameStyled, ToolIconProps } from './ToolIcon';
 
 export interface ImportFileIconProps {
     onChange(file: {path: string, data: string}): void;
@@ -10,38 +10,38 @@ export interface ImportFileIconProps {
     readDataAs: 'text' | 'dataUrl'
 }
 
-export const ImportFileIconComponent = (props: ImportFileIconProps) => {
-    const onDrop = React.useCallback(acceptedFiles => {
-        const reader = new FileReader()
+export const ImportFileIconComponent = (props: ToolIconProps) => {
+    // const onDrop = React.useCallback(acceptedFiles => {
+    //     const reader = new FileReader()
     
-        reader.onabort = () => console.log('file reading was aborted')
-        reader.onerror = () => console.log('file reading has failed')
-        reader.onload = (e) => {
-            props.onChange({path: acceptedFiles[0].path, data: e.target.result as string});
-        }
-        if (props.readDataAs === 'text') {
-            reader.readAsText(acceptedFiles[0]);
-        } else {
-            reader.readAsDataURL(acceptedFiles[0]);
-        }
-    }, [])
-    const { getRootProps, getInputProps } = useDropzone({ onDrop })
+    //     reader.onabort = () => console.log('file reading was aborted')
+    //     reader.onerror = () => console.log('file reading has failed')
+    //     reader.onload = (e) => {
+    //         props.onChange({path: acceptedFiles[0].path, data: e.target.result as string});
+    //     }
+    //     if (props.readDataAs === 'text') {
+    //         reader.readAsText(acceptedFiles[0]);
+    //     } else {
+    //         reader.readAsDataURL(acceptedFiles[0]);
+    //     }
+    // }, [])
+    // const { getRootProps, getInputProps } = useDropzone({ onDrop })
 
     return (
-        <div {...getRootProps()}>
+        // <div {...getRootProps()}>
             <ToolStyled format="long" isActive={false}>
-                <input {...getInputProps()} />
+                {/* <input {...getInputProps()} /> */}
                 <ToolIconStyled viewBox="0 0 24 24" style={{overflow: 'visible'}}>
                     <ToolIconBackgroundStyled isActive={false} d="M0 0h24v24H0z" fill="none"/>
                     <ToolIconImageStyled isActive={false} d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
                 </ToolIconStyled>
 
-                <ToolNameStyled>
+                {/* <ToolNameStyled>
                     {props.value ? props.value : props.placeholder}
-                </ToolNameStyled>
+                </ToolNameStyled> */}
             </ToolStyled>
-        </div>
+        // </div>
     )
 }
 
-export const ConnectedFileUploadComponent = withCommitOnChange<ImportFileIconProps>(ImportFileIconComponent);
+// export const ConnectedFileUploadComponent = withCommitOnChange<ImportFileIconProps>(ImportFileIconComponent);

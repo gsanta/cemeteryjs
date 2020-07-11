@@ -1,8 +1,9 @@
-import { UI_Layout } from './gui_builder/UI_Element';
-import { AbstractSettings } from '../plugins/scene_editor/settings/AbstractSettings';
 import { IControlledObject } from './IControlledObject';
 import { Registry } from './Registry';
 import { AbstractController } from '../plugins/scene_editor/settings/AbstractController';
+import { UI_AccordionTab } from './gui_builder/elements/UI_Accordion';
+import { UI_Container } from './gui_builder/elements/UI_Container';
+import { UI_Layout } from './gui_builder/elements/UI_Layout';
 
 export enum UI_Region {
     SidepanelWidget = 'SidepanelWidget',
@@ -42,8 +43,19 @@ export namespace UI_Region {
 export abstract class UI_Plugin implements IControlledObject {
     objectCapabilities = [];
     id: string;
+    displayName: string;
     region: UI_Region;
-    abstract render(): UI_Layout;
+
+    render(): UI_Container {
+        if (this.region === UI_Region.SidepanelWidget) {
+            const accordionTab = new UI_AccordionTab(this.controller);
+            accordionTab.title = this.displayName;
+            this.renderInto(accordionTab);
+            return accordionTab;
+        }
+    }
+
+    protected abstract renderInto(layout: UI_Layout): void;
 
     controller: AbstractController;
     protected registry: Registry;

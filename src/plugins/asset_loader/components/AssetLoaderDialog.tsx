@@ -8,7 +8,6 @@ import { MeshLoaderService } from '../../../core/services/MeshLoaderService';
 import { AssetLoaderDialogController, ImportSettingsProps } from '../controllers/AssetLoaderDialogController';
 import { AssetModel } from '../../../core/models/game_objects/AssetModel';
 import { LabelColumnStyled, FieldColumnStyled, VerticalLabeledField } from '../../scene_editor/settings/SettingsComponent';
-import { ConnectedFileUploadComponent } from '../../common/toolbar/icons/ImportFileIconComponent';
 import { CloseIconComponent } from '../../common/toolbar/icons/CloseIconComponent';
 
 const DialogContentStyled = styled.div`
@@ -81,7 +80,7 @@ export class AssetLoaderDialog extends AbstractPluginComponent {
             <VerticalLabeledField key="thumbnail-file">
                 <LabelColumnStyled>Thumbnail from file</LabelColumnStyled>
                 <FieldColumnStyled>
-                    <ConnectedFileUploadComponent
+                    {/* <ConnectedFileUploadComponent
                         formController={settings}
                         propertyName={ImportSettingsProps.Thumbnail}
                         propertyType="string"
@@ -89,7 +88,7 @@ export class AssetLoaderDialog extends AbstractPluginComponent {
                         value={assetModel && assetModel.path}
                         readDataAs="dataUrl"
                         onChange={val => settings.updateProp(val, ImportSettingsProps.Thumbnail)}
-                    />
+                    /> */}
                     <CloseIconComponent onClick={() => settings.updateProp(undefined, ImportSettingsProps.Thumbnail)}/>
                 </FieldColumnStyled>
             </VerticalLabeledField>

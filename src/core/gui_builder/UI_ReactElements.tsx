@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import * as React from 'react';
-import { UI_TextField, UI_Row } from "./UI_Element";
 import { InputComponent } from "../gui/inputs/InputComponent";
+import { UI_Row } from "./elements/UI_Row";
+import { UI_TextField } from "./elements/UI_TextField";
 
 export function cssClassBuilder(...classes: string[]) {
     return classes.filter(c => c).join(' ');
@@ -21,7 +22,7 @@ export function RowGui(props: RowProps) {
     const classes = cssClassBuilder('ce-row', props.element.isBold ? 'ce-bold' : undefined);
 
     return (
-        <RowStyled className={classes}></RowStyled>
+        <RowStyled className={classes}>{props.children}</RowStyled>
     );
 }
 
