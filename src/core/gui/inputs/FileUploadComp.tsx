@@ -24,9 +24,8 @@ export const FileUploadComp = (props: UI_ComponentProps<UI_FileUpload>) => {
     const icon = props.element.icon ? iconFactory(props.element.icon) : null;
 
     return (
-        // <div {...getRootProps()}>
-            
-            <Buttontyled  {...getRootProps()} {...props} onClick={() => props.element.click()}>
+        <div {...getRootProps()}>
+            <Buttontyled  {...props} onClick={() => props.element.click()}>
                 <input {...getInputProps()} />
                 {icon}
                 
@@ -34,6 +33,6 @@ export const FileUploadComp = (props: UI_ComponentProps<UI_FileUpload>) => {
                     {props.element.label}
                 </div>
             </Buttontyled>  
-        // </div>
+        </div>
     )
 }

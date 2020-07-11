@@ -2,6 +2,8 @@ import { AbstractController } from '../scene_editor/settings/AbstractController'
 import { Registry } from '../../core/Registry';
 import { saveAs } from 'file-saver';
 import { RenderTask } from '../../core/services/RenderServices';
+import { ToolType } from '../common/tools/Tool';
+import { DeleteTool } from '../common/tools/DeleteTool';
 
 
 export enum FileSettingsProps {
@@ -36,6 +38,15 @@ export class FileSettingsController extends AbstractController<FileSettingsProps
                     this.registry.services.import.import(val.data);
 
                     this.registry.services.render.runImmediately(RenderTask.RenderFull);
+                }    
+            }
+        );
+
+        this.addPropHandlers(
+            FileSettingsProps.NewProject,
+            {
+                onClick: () => {
+                    this.registry.plugins.sceneEditor.tools.byType<DeleteTool>(ToolType.Delete).eraseAll();
                 }    
             }
         );

@@ -4,6 +4,7 @@ import { UI_Table } from "./UI_Table";
 import { UI_ElementType } from "./UI_ElementType";
 import { UI_TextField } from "./UI_TextField";
 import { UI_Container } from "./UI_Container";
+import { UI_Select } from "./UI_Select";
 
 export class UI_Row extends UI_Container {
     type = UI_ElementType.Row;
@@ -19,6 +20,16 @@ export class UI_Row extends UI_Container {
         this.children.push(button);
 
         return button;
+    }
+
+    select(valProp: string, listProp: string) {
+        const select = new UI_Select(this.controller);
+        select.prop = valProp;
+        select.listProp = listProp;
+
+        this.children.push(select);
+
+        return select;
     }
 
     fileUpload(prop: string) {

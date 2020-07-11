@@ -18,7 +18,7 @@ export class FileSettingsPlugin extends UI_Plugin {
     renderInto(layout: UI_Layout): UI_Layout {
         let row = layout.row();
 
-        const exportButton = row.fileUpload(FileSettingsProps.Export);
+        const exportButton = row.button(FileSettingsProps.Export);
         exportButton.label = 'Export File';
         exportButton.icon = 'export-icon';
 
@@ -28,7 +28,7 @@ export class FileSettingsPlugin extends UI_Plugin {
         importButton.icon = 'import-icon';
 
         row = layout.row();
-        const newProjectButton = row.button(FileSettingsProps.Import);
+        const newProjectButton = row.button(FileSettingsProps.NewProject);
         newProjectButton.label = 'New Project';
         newProjectButton.icon = 'blank-icon';
 

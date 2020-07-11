@@ -6,6 +6,7 @@ import { TextFileAssetTask } from "babylonjs";
 import { Registry } from '../Registry';
 import { UI_Region } from '../UI_Plugin';
 import { ButtonComp } from '../gui/inputs/ButtonComp';
+import { SelectComp } from '../gui/inputs/SelectComp';
 import { UI_AccordionTab } from './elements/UI_Accordion';
 import { AccordionTabComp } from '../gui/surfaces/AccordionTabComp';
 import { UI_FileUpload } from './elements/UI_FileUpload';
@@ -15,6 +16,7 @@ import { UI_Button } from './elements/UI_Button';
 import { UI_ElementType } from './elements/UI_ElementType';
 import { UI_TextField } from './elements/UI_TextField';
 import { UI_Container } from './elements/UI_Container';
+import { UI_Select } from './elements/UI_Select';
 
 export class UI_Builder {
 
@@ -75,6 +77,9 @@ export class UI_Builder {
             case UI_ElementType.Button:
                 const button = element as UI_Button;
                 return <ButtonComp element={button}/>;
+            case UI_ElementType.Button:
+                const select = element as UI_Select;
+                return <SelectComp element={select}/>;
             case UI_ElementType.FileUpload:
                 const fileUpload = element as UI_FileUpload;
                 return <FileUploadComp element={fileUpload}/>;
