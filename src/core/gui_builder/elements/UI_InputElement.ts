@@ -5,6 +5,10 @@ export abstract class UI_InputElement extends UI_Element {
         this.controller.change(this.prop, newVal);
     }
 
+    focus(): void {
+        this.controller.focus(this.prop);
+    }
+
     blur(): void {
         this.controller.blur(this.prop);
     }

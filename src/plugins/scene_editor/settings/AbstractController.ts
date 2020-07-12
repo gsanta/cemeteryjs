@@ -3,12 +3,12 @@ import { Registry } from '../../../core/Registry';
 export interface PropHandlers {
     onChange?(val: any, controller: AbstractController): void;
     onClick?(controller: AbstractController): void;
+    onFocus?(controller: AbstractController): void;
     onBlur?(controller: AbstractController): void;
     onGet?(controller: AbstractController): void;
 }
 
 export abstract class AbstractController<P = any> {
-    protected tempVal: any;
     focusedPropType: P;
     private propHandlers: Map<P, PropHandlers> = new Map();
 
@@ -27,6 +27,11 @@ export abstract class AbstractController<P = any> {
     click(prop: P): void {
         const propHandlers = this.propHandlers.get(prop);
         propHandlers.onClick && propHandlers.onClick(this);
+    }
+
+    focus(prop: P): void {
+        const propHandlers = this.propHandlers.get(prop);
+        propHandlers.onFocus && propHandlers.onFocus(this);
     }
 
     blur(prop: P): void {

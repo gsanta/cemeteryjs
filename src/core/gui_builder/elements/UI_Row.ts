@@ -5,6 +5,7 @@ import { UI_ElementType } from "./UI_ElementType";
 import { UI_TextField } from "./UI_TextField";
 import { UI_Container } from "./UI_Container";
 import { UI_Select } from "./UI_Select";
+import { UI_GridSelect } from "./UI_GridSelect";
 
 export class UI_Row extends UI_Container {
     type = UI_ElementType.Row;
@@ -49,5 +50,15 @@ export class UI_Row extends UI_Container {
         this.children.push(textField);
 
         return textField;
+    }
+
+    grid(prop?: string, filledIndexProp?: string) {
+        const gridSelect = new UI_GridSelect(this.controller);
+        gridSelect.prop = prop;
+        gridSelect.filledIndexProp = filledIndexProp;
+
+        this.children.push(gridSelect);
+
+        return gridSelect;
     }
 }

@@ -6,6 +6,7 @@ export enum UI_ElementType {
     Row = 'Row',
     Button = 'Button',
     Select = 'Select',
+    GridSelect = 'GridSelect',
     TextField = 'TextField',
 
     Table = 'Table',

@@ -63,7 +63,7 @@ export const SelectComp = (props: UI_ComponentProps<UI_Select>) => {
                 <LabelStyled>{props.element.label}</LabelStyled>
                 <SelectStyled>
                     {select}
-                    {props.element.val() ? <ClearIconComponent onClick={() => props.element.change(undefined)}/> : null}
+                    {props.element.clearable && props.element.val() ? <ClearIconComponent onClick={() => props.element.change(undefined)}/> : null}
                 </SelectStyled>
             </LabeledSelectStyled>
         )

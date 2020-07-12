@@ -1,6 +1,5 @@
 import { Registry } from './Registry';
 import { GlobalSettings } from '../plugins/scene_editor/settings/GlobalSettings';
-import { LayoutSettings } from '../plugins/scene_editor/settings/LayoutSettings';
 
 export class Editor {
     registry: Registry;
@@ -8,7 +7,6 @@ export class Editor {
     svgCanvasId: string;
     renderFunc: () => void;
     globalSettingsForm: GlobalSettings;
-    layoutSettings: LayoutSettings;
     isLoading = true;
 
     constructor() {
@@ -16,7 +14,6 @@ export class Editor {
         this.registry = new Registry();
 
         this.globalSettingsForm = new GlobalSettings(this.registry);
-        this.layoutSettings = new LayoutSettings(this.registry);
     }
 
     setup(canvas: HTMLCanvasElement) {        

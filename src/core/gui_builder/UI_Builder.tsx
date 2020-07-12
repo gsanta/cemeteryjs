@@ -17,6 +17,9 @@ import { UI_ElementType } from './elements/UI_ElementType';
 import { UI_TextField } from './elements/UI_TextField';
 import { UI_Container } from './elements/UI_Container';
 import { UI_Select } from './elements/UI_Select';
+import { UI_GridSelect } from './elements/UI_GridSelect';
+import { GridSelectComp } from '../gui/inputs/GridSelectComp';
+
 
 export class UI_Builder {
 
@@ -77,12 +80,15 @@ export class UI_Builder {
             case UI_ElementType.Button:
                 const button = element as UI_Button;
                 return <ButtonComp element={button}/>;
-            case UI_ElementType.Button:
+            case UI_ElementType.Select:
                 const select = element as UI_Select;
                 return <SelectComp element={select}/>;
             case UI_ElementType.FileUpload:
                 const fileUpload = element as UI_FileUpload;
                 return <FileUploadComp element={fileUpload}/>;
+            case UI_ElementType.GridSelect:
+                const gridSelect = element as UI_GridSelect;
+                return <GridSelectComp element={gridSelect}/>
         }
     }
 }   
