@@ -4,13 +4,13 @@ import { UI_Layout } from "./UI_Layout";
 import { UI_Container } from "./UI_Container";
 
 export class UI_Accordion extends UI_Container {
-    type = UI_ElementType.Accordion;
+    elementType = UI_ElementType.Accordion;
 
     children: UI_Element[] = [];
 }
 
 export class UI_AccordionTab extends UI_Layout {
-    type = UI_ElementType.AccordionTab;
+    elementType = UI_ElementType.AccordionTab;
 
     title: string;
 }

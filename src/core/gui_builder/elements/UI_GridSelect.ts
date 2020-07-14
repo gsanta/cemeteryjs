@@ -3,7 +3,7 @@ import { UI_ElementType } from "./UI_ElementType";
 
 
 export class UI_GridSelect extends UI_InputElement {
-    type = UI_ElementType.GridSelect;
+    elementType = UI_ElementType.GridSelect;
     filledIndexProp: string;
     size: number;
     label: string;

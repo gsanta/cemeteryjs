@@ -60,7 +60,7 @@ export class UI_Builder {
             }
         });
 
-        switch(element.type) {
+        switch(element.elementType) {
             case UI_ElementType.Layout:
                 return <div>{children}</div>;
             case UI_ElementType.Row:
@@ -73,7 +73,7 @@ export class UI_Builder {
     }
 
     private buildLeaf(element: UI_Element): JSX.Element {
-        switch(element.type) {
+        switch(element.elementType) {
             case UI_ElementType.TextField:
                 const textField = element as UI_TextField;
                 return <TextFieldGui element={textField}/>;

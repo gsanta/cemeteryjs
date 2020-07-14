@@ -3,7 +3,7 @@ import { UI_Row } from "./UI_Row";
 import { UI_Container } from "./UI_Container";
 
 export class UI_Layout extends UI_Container {
-    type = UI_ElementType.Layout;
+    elementType = UI_ElementType.Layout;
 
     row(): UI_Row {
         const row = new UI_Row(this.controller);

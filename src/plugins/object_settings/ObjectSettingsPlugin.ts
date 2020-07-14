@@ -42,5 +42,10 @@ export class ObjectSettingsPlugin extends UI_Plugin {
 
         row = layout.row();
         row.grid(MeshObjectSettingsProps.Layer);
+
+        row = layout.row();
+        const rotationTextField = row.textField(MeshObjectSettingsProps.Rotation);
+        rotationTextField.label = 'Rotation';
+        rotationTextField.type = 'number';
     }
 }

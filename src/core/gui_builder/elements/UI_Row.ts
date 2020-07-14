@@ -8,7 +8,7 @@ import { UI_Select } from "./UI_Select";
 import { UI_GridSelect } from "./UI_GridSelect";
 
 export class UI_Row extends UI_Container {
-    type = UI_ElementType.Row;
+    elementType = UI_ElementType.Row;
 
     table() {
         return new UI_Table(this.controller);
@@ -46,6 +46,7 @@ export class UI_Row extends UI_Container {
     textField(prop?: string) {
         const textField = new UI_TextField(this.controller);
         textField.prop = prop;
+        textField.type = 'text';
 
         this.children.push(textField);
 

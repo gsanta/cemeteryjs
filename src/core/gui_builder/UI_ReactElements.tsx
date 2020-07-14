@@ -31,7 +31,7 @@ export function RowGui(props: RowProps) {
 export function TextFieldGui(props: {element: UI_TextField}) {
     let textFieldComponent = (
         <InputComponent
-            type="text"
+            type={props.element.type}
             onBlur={() => props.element.blur()}
             onChange={val => props.element.change(val)}
             onFocus={() => props.element.focus()}

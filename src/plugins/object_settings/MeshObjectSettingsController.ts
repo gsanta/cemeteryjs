@@ -2,11 +2,14 @@ import { Registry } from '../../core/Registry';
 import { AbstractController } from '../scene_editor/settings/AbstractController';
 import { MeshView } from '../../core/models/views/MeshView';
 import { RenderTask } from '../../core/services/RenderServices';
+import { toRadian, toDegree } from '../../core/geometry/utils/Measurements';
 
 
 export enum MeshObjectSettingsProps {
     MeshId = 'MeshId',
-    Layer = 'Layer'
+    Layer = 'Layer',
+    Rotation = 'Rotation',
+    Scale = 'Scale',
 }
 
 export class MeshObjectSettingsController extends AbstractController<MeshObjectSettingsProps> {
@@ -47,5 +50,56 @@ export class MeshObjectSettingsController extends AbstractController<MeshObjectS
                 }
             }
         );
+
+        this.addPropHandlers(
+            MeshObjectSettingsProps.Rotation,
+            {
+                onChange: (val, context) => {
+                    context.tempVal = val;
+                    this.registry.services.render.runImmediately(RenderTask.RenderSidebar);
+                },
+                onBlur: (context) => {
+                    let rotation = this.meshView.getRotation();
+                    try {
+                        rotation = toRadian(parseFloat(context.tempVal));
+                    } catch (e) {
+                        console.log(e);
+                    }
+                    context.tempVal = undefined;
+                    this.meshView.setRotation(rotation);
+                    this.registry.services.render.runImmediately(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
+                },
+                onGet: (context) => {
+                    return context.tempVal ? context.tempVal : Math.round(toDegree(this.meshView.getRotation()));
+                }
+            }
+        );
+
+        this.addPropHandlers(
+            MeshObjectSettingsProps.Scale,
+            {
+                onChange: (val, context) => {
+                    context.tempVal = val;
+                    this.registry.services.render.runImmediately(RenderTask.RenderSidebar);
+                },
+                onBlur: (context) => {
+                    let rotation = this.meshView.getScale();
+                    try {
+                        rotation = toRadian(parseFloat(context.tempVal));
+                    } catch (e) {
+                        console.log(e);
+                    }
+                    context.tempVal = undefined;
+                    this.meshView.setScale(rotation);
+                    this.registry.services.render.runImmediately(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
+                },
+                onGet: (context) => {
+                    return context.tempVal ? context.tempVal : Math.round(toDegree(this.meshView.getScale()));
+                }
+            }
+        );
+
+        this.createPropHandler(MeshObjectSettingsProps.Scale)
+            .onChange()
     }
 }

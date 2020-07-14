@@ -2,7 +2,7 @@ import { AbstractController } from '../../../plugins/scene_editor/settings/Abstr
 import { UI_ElementType } from './UI_ElementType';
 
 export class UI_Element {
-    type: UI_ElementType;
+    elementType: UI_ElementType;
     protected controller: AbstractController;
     prop: string;
     isBold: boolean;
