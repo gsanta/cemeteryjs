@@ -18,37 +18,25 @@ export class FileSettingsController extends AbstractController<FileSettingsProps
     constructor(registry: Registry) {
         super(registry);
 
-        this.addPropHandlers(
-            FileSettingsProps.Export,
-            {
-                onClick: () => {
-                    const file = this.registry.services.export.export();
-                    var blob = new Blob([file], { type: "text/plain;charset=utf-8" });
-                    saveAs(blob, "dynamic.txt");
-                }    
-            }
-        );
+        this.createPropHandler(FileSettingsProps.Export)
+            .onClick(() => {
+                const file = this.registry.services.export.export();
+                var blob = new Blob([file], { type: "text/plain;charset=utf-8" });
+                saveAs(blob, "dynamic.txt");
+            });
 
-        this.addPropHandlers(
-            FileSettingsProps.Import,
-            {
-                onChange: (val) => {
-                    this.registry.stores.canvasStore.clear();
-                    this.registry.stores.selectionStore.clear();
-                    this.registry.services.import.import(val.data);
+        this.createPropHandler<{data: string}>(FileSettingsProps.Import)
+            .onChange((val) => {
+                this.registry.stores.canvasStore.clear();
+                this.registry.stores.selectionStore.clear();
+                this.registry.services.import.import(val.data);
+    
+                this.registry.services.render.runImmediately(RenderTask.RenderFull);
+            });
 
-                    this.registry.services.render.runImmediately(RenderTask.RenderFull);
-                }    
-            }
-        );
-
-        this.addPropHandlers(
-            FileSettingsProps.NewProject,
-            {
-                onClick: () => {
-                    this.registry.plugins.sceneEditor.tools.byType<DeleteTool>(ToolType.Delete).eraseAll();
-                }    
-            }
-        );
+        this.createPropHandler(FileSettingsProps.NewProject)
+            .onClick(() => {
+                this.registry.plugins.sceneEditor.tools.byType<DeleteTool>(ToolType.Delete).eraseAll();
+            });
     }
 }

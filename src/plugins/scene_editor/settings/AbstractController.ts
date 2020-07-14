@@ -1,24 +1,44 @@
 import { Registry } from '../../../core/Registry';
 
 export interface PropHandlers {
-    onChange?(val: any, context: PropContext,  controller: AbstractController): void;
-    onClick?(context: PropContext, controller: AbstractController): void;
-    onFocus?(context: PropContext, controller: AbstractController): void;
-    onBlur?(context: PropContext, controller: AbstractController): void;
-    onGet?(context: PropContext, controller: AbstractController): void;
+    onChange?(val: any, context: PropContext<any>,  controller: AbstractController): void;
+    onClick?(context: PropContext<any>, controller: AbstractController): void;
+    onFocus?(context: PropContext<any>, controller: AbstractController): void;
+    onBlur?(context: PropContext<any>, controller: AbstractController): void;
+    onGet?(context: PropContext<any>, controller: AbstractController): void;
 }
 
-
 export class PropHandler<T> {
-    private context: PropContext<T> = {tempVal: undefined};
+    context: PropContext<T> = {tempVal: undefined};
     changeHandler: (val:  T, context: PropContext<T>, controller: AbstractController) => void;
+    clickHandler: (context: PropContext<T>, controller: AbstractController) => void;
+    focusHandler: (context: PropContext<T>, controller: AbstractController) => void;
+    blurHandler: (context: PropContext<T>, controller: AbstractController) => void;
+    getHandler: (context: PropContext<T>, controller: AbstractController) => void;
 
-    constructor(controller: AbstractController) {
-
+    onChange(handler: (val: T, context: PropContext<any>,  controller: AbstractController) => void) {
+        this.changeHandler = handler;
+        return this;
     }
 
-    onChange(val: TemplateStringsArray) {
+    onClick(handler: (context: PropContext<T>, controller: AbstractController) => void) {
+        this.clickHandler = handler;
+        return this;
+    }
 
+    onFocus(handler: (context: PropContext<T>, controller: AbstractController) => void) {
+        this.focusHandler = handler;
+        return this;
+    }
+
+    onBlur(handler: (context: PropContext<T>, controller: AbstractController) => void) {
+        this.blurHandler = handler;
+        return this;
+    }
+
+    onGet(handler: (context: PropContext<T>, controller: AbstractController) => void) {
+        this.getHandler = handler;
+        return this;
     }
 }
 
@@ -27,10 +47,7 @@ export interface PropContext<T> {
 }
 
 export abstract class AbstractController<P = any> {
-    focusedPropType: P;
     private handlers: Map<P, PropHandler<any>> = new Map();
-    private propHandlers: Map<P, PropHandlers> = new Map();
-    private propContexts: Map<P, PropContext> = new Map();
 
     protected registry: Registry;
 
@@ -39,38 +56,33 @@ export abstract class AbstractController<P = any> {
     }
 
     change(prop: P, val: any): void {
-        const propHandlers = this.propHandlers.get(prop);
-        propHandlers.onChange && propHandlers.onChange(val, this.propContexts.get(prop), this);
-
+        const handler = this.handlers.get(prop);
+        handler.changeHandler(val, handler.context, this);
     }
 
     click(prop: P): void {
-        const propHandlers = this.propHandlers.get(prop);
-        propHandlers.onClick && propHandlers.onClick(this.propContexts.get(prop), this);
+        const handler = this.handlers.get(prop);
+        handler.clickHandler(handler.context, this);
     }
 
     focus(prop: P): void {
-        const propHandlers = this.propHandlers.get(prop);
-        propHandlers.onFocus && propHandlers.onFocus(this.propContexts.get(prop), this);
+        const handler = this.handlers.get(prop);
+        handler.focusHandler(handler.context, this);
     }
 
     blur(prop: P): void {
-        const propHandlers = this.propHandlers.get(prop);
-        propHandlers.onBlur && propHandlers.onBlur(this.propContexts.get(prop), this);
-
+        const handler = this.handlers.get(prop);
+        handler.blurHandler(handler.context, this);
     }
 
     val(prop: P): any {
-        const propHandlers = this.propHandlers.get(prop);
-        return propHandlers.onGet && propHandlers.onGet(this.propContexts.get(prop), this);
-    }
-
-    addPropHandlers<T>(prop: P, propHandlers: PropHandlers) {
-        this.propHandlers.set(prop, propHandlers);
-        this.propContexts.set(prop, { tempVal: '' })
+        const handler = this.handlers.get(prop);
+        return handler.getHandler(handler.context, this);
     }
 
     createPropHandler<T>(prop: P) {
-        this.handlers.set(prop, new PropHandler)
+        const propHandler = new PropHandler<T>();
+        this.handlers.set(prop, propHandler);
+        return propHandler;
     }
 }
