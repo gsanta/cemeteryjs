@@ -45,63 +45,60 @@ export class MeshObjectSettingsController extends AbstractController<MeshObjectS
 
         this.createPropHandler<string>(MeshObjectSettingsProps.Rotation)
             .onChange((val, context) => {
-                context.tempVal = val;
+                context.updateTempVal(val);
                 this.registry.services.render.runImmediately(RenderTask.RenderSidebar);
             })
             .onBlur((context) => {
                 let rotation = this.meshView.getRotation();
                 try {
-                    rotation = toRadian(parseFloat(context.tempVal));
+                    context.releaseTempVal((val) => rotation = toRadian(parseFloat(val)))
                 } catch (e) {
                     console.log(e);
                 }
-                context.tempVal = undefined;
                 this.meshView.setRotation(rotation);
                 this.registry.services.render.runImmediately(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
             })
             .onGet((context) => {
-                return context.tempVal ? context.tempVal : Math.round(toDegree(this.meshView.getRotation()));
+                return context.getTempVal(() => Math.round(toDegree(this.meshView.getRotation())).toString());
             });
 
         this.createPropHandler<string>(MeshObjectSettingsProps.Scale)
             .onChange((val, context) => {
-                context.tempVal = val;
+                context.updateTempVal(val);
                 this.registry.services.render.runImmediately(RenderTask.RenderSidebar);
             })
             .onBlur((context) => {
                 let rotation = this.meshView.getScale();
                 try {
-                    rotation = parseFloat(context.tempVal);
+                    context.releaseTempVal(val => rotation = parseFloat(val));
                 } catch (e) {
                     console.log(e);
                 }
-                context.tempVal = undefined;
                 this.meshView.setScale(rotation);
                 this.registry.services.render.runImmediately(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
             })
             .onGet((context) => {
-                return context.tempVal ? context.tempVal : Math.round(this.meshView.getScale());
+                return context.getTempVal(() => Math.round(this.meshView.getScale()).toString());
             });
 
         this.createPropHandler<string>(MeshObjectSettingsProps.YPos)
             .onChange((val, context) => {
-                context.tempVal = val;
+                context.updateTempVal(val);
                 this.registry.services.render.runImmediately(RenderTask.RenderSidebar);
             })
             .onBlur((context) => {
                 let yPos = this.meshView.yPos;
                 try {
-                    yPos = parseFloat(context.tempVal);
+                    context.releaseTempVal(val => parseFloat(val))
                 } catch(e) {
                     console.log(e);
                 }
 
-                context.tempVal = undefined;
                 this.meshView.yPos = yPos;
                 this.registry.services.render.runImmediately(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
             })
             .onGet((context) => {
-                return context.tempVal ? context.tempVal : this.meshView.yPos;
+                return context.getTempVal(() => this.meshView.yPos.toString());
             });
     }
 }

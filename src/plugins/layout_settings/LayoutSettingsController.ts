@@ -2,7 +2,6 @@ import { Registry } from '../../core/Registry';
 import { AbstractController } from '../scene_editor/settings/AbstractController';
 import { RenderTask } from '../../core/services/RenderServices';
 
-
 export enum LayoutSettingsProps {
     AllLayouts = 'AllLayouts',
     SelectedLayout = 'SelectedLayout'

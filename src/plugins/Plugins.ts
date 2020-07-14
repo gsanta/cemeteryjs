@@ -16,6 +16,7 @@ import { AssetManagerPluginGuiFactory } from './asset_manager/AssetManagerPlugin
 import { FileSettingsPlugin, FileSettingsPluginId } from './file_settings/FileSettingsPlugin';
 import { LayoutSettingsPlugin, LayoutSettingsPluginId } from './layout_settings/LayoutSettingsPlugin';
 import { ObjectSettingsPlugin, ObjectSettingsPluginId } from './object_settings/ObjectSettingsPlugin';
+import { LevelSettingsPlugin, LevelSettingsPluginId } from './level_settings/LevelSettingsPlugin';
 
 export interface LayoutConfig {
     activePlugin: AbstractPlugin;
@@ -77,6 +78,8 @@ export class Plugins {
         this.registry.services.plugin.registerPlugin(new ObjectSettingsPlugin(this.registry));
         this.registry.services.plugin.showPlugin(ObjectSettingsPluginId);
 
+        this.registry.services.plugin.registerPlugin(new LevelSettingsPlugin(this.registry));
+        this.registry.services.plugin.showPlugin(LevelSettingsPluginId);
 
         this.predefinedLayouts = [
             {

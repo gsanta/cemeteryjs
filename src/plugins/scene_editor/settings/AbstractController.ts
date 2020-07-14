@@ -9,7 +9,7 @@ export interface PropHandlers {
 }
 
 export class PropHandler<T> {
-    context: PropContext<T> = {tempVal: undefined};
+    context: PropContext<T> = new PropContext<T>();
     changeHandler: (val:  T, context: PropContext<T>, controller: AbstractController) => void;
     clickHandler: (context: PropContext<T>, controller: AbstractController) => void;
     focusHandler: (context: PropContext<T>, controller: AbstractController) => void;
@@ -42,8 +42,21 @@ export class PropHandler<T> {
     }
 }
 
-export interface PropContext<T> {
-    tempVal: T;
+export class PropContext<T> {
+    private tempVal: T;
+
+    updateTempVal(val: T) {
+        this.tempVal = val;
+    }
+
+    getTempVal(origVal: () => T): T {
+        return this.tempVal;
+    }
+
+    releaseTempVal(callback: (val: T) => void) {
+        callback(this.tempVal);
+        this.tempVal = undefined;
+    }
 }
 
 export abstract class AbstractController<P = any> {
