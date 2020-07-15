@@ -50,7 +50,7 @@ export class PropContext<T> {
     }
 
     getTempVal(origVal: () => T): T {
-        return this.tempVal;
+        return this.tempVal ? this.tempVal : origVal();
     }
 
     releaseTempVal(callback: (val: T) => void) {

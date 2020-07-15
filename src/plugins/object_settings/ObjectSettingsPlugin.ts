@@ -4,6 +4,8 @@ import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
 import { MeshObjectSettingsController, MeshObjectSettingsProps } from './MeshObjectSettingsController';
 import { ViewType } from '../../core/models/views/View';
 import { MeshView } from '../../core/models/views/MeshView';
+import { PathView } from '../../core/models/views/PathView';
+import { PathObjectSettingsController, PathObjectSettingsProps } from './PathObjectSettingsController';
 
 export const ObjectSettingsPluginId = 'object-settings-plugin';
 
@@ -13,11 +15,13 @@ export class ObjectSettingsPlugin extends UI_Plugin {
     region = UI_Region.SidepanelWidget;
 
     private meshObjectSettingsController: MeshObjectSettingsController;
+    private pathObjectSettingsController: PathObjectSettingsController;
 
     constructor(registry: Registry) {
         super(registry);
 
         this.meshObjectSettingsController = new MeshObjectSettingsController(registry);
+        this.pathObjectSettingsController = new PathObjectSettingsController(registry);
     }
 
     renderInto(layout: UI_Layout): void {
@@ -28,8 +32,20 @@ export class ObjectSettingsPlugin extends UI_Plugin {
                 case ViewType.MeshView:
                     this.renderMeshObjectSettings(layout, <MeshView> selectedViews[0]);
                 break;
+                case ViewType.PathView:
+                    this.renderPathObjectSettings(layout, <PathView> selectedViews[0]);
+                break;
             }
         }
+    }
+
+    private renderPathObjectSettings(layout: UI_Layout, pathView: PathView) {
+        this.pathObjectSettingsController.pathView = pathView;
+        layout.setController(this.pathObjectSettingsController)
+        let row = layout.row();
+
+        const textField = row.textField(PathObjectSettingsProps.PathId);
+        textField.label = 'Id';
     }
 
     private renderMeshObjectSettings(layout: UI_Layout, meshView: MeshView) {
@@ -41,7 +57,8 @@ export class ObjectSettingsPlugin extends UI_Plugin {
         textField.label = 'Id';
 
         row = layout.row();
-        row.grid(MeshObjectSettingsProps.Layer);
+        const grid = row.grid(MeshObjectSettingsProps.Layer);
+        grid.label = 'Layer';
 
         row = layout.row();
         const rotationTextField = row.textField(MeshObjectSettingsProps.Rotation);

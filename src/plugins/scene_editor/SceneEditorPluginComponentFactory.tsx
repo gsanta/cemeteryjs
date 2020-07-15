@@ -1,6 +1,5 @@
 import { AbstractPluginComponentFactory } from '../common/AbstractPluginComponentFactory';
-import { SceneEditorPlugin } from './SceneEditorPlugin';
-import { SceneEditorSettingsComponent } from './SceneEditorSettingsComponent';
+Paimport { SceneEditorPlugin } from './SceneEditorPlugin';
 import * as React from 'react';
 import { SceneEditorComponent } from './SceneEditorComponent';
 
@@ -9,8 +8,6 @@ export class SceneEditorPluginComponentFactory extends AbstractPluginComponentFa
         if (this.registry.plugins.getActivePlugins().indexOf(this.plugin) === -1) {
             return null;
         }
-
-        return <SceneEditorSettingsComponent plugin={this.plugin}/>
     }
 
     renderMainComponent() {
