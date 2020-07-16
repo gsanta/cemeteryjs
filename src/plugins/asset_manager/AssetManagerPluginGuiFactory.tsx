@@ -5,17 +5,17 @@ import { AssetManagerPlugin } from './AssetManagerPlugin';
 import { AssetLoaderSidepanelGui } from "./gui/AssetManagerSidepanelGui";
 import { AssetManagerDialogGui } from "./gui/AssetManagerDialogGui";
 
-export class AssetManagerPluginGuiFactory extends AbstractPluginComponentFactory<AssetManagerPlugin> {
+// export class AssetManagerPluginGuiFactory extends AbstractPluginComponentFactory<AssetManagerPlugin> {
 
-    renderDialogComponent() {
-        return <AssetManagerDialogGui plugin={this.plugin}/>
-    }
+//     renderDialogComponent() {
+//         return <AssetManagerDialogGui plugin={this.plugin}/>
+//     }
 
-    renderSidePanelComponent() {
-        if (this.registry.stores.selectionStore.hasOne() && this.registry.stores.selectionStore.getOneByType(ViewType.MeshView)) {
-            return <AssetLoaderSidepanelGui plugin={this.plugin}/>;
-        }
+//     renderSidePanelComponent() {
+//         if (this.registry.stores.selectionStore.hasOne() && this.registry.stores.selectionStore.getOneByType(ViewType.MeshView)) {
+//             return <AssetLoaderSidepanelGui plugin={this.plugin}/>;
+//         }
 
-        return null;
-    }
-}
+//         return null;
+//     }
+// }

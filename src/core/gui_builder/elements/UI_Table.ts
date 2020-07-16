@@ -1,5 +1,6 @@
-import { UI_ElementType } from "./UI_ElementType";
 import { UI_Container } from "./UI_Container";
+import { UI_ElementType } from "./UI_ElementType";
+import { UI_TableColumn } from "./UI_TableColumn";
 
 export class UI_Table extends UI_Container {
     elementType = UI_ElementType.Table;
@@ -20,7 +21,3 @@ export class UI_TableRow extends UI_Container {
     }
 }
 
-export class UI_TableColumn extends UI_Container {
-    elementType = UI_ElementType.TableColumn;
-    isHeader: boolean = false;
-}

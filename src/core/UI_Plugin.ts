@@ -52,6 +52,11 @@ export abstract class UI_Plugin implements IControlledObject {
             accordionTab.title = this.displayName;
             this.renderInto(accordionTab);
             return accordionTab;
+        } else if (this.region === UI_Region.Dialog) {
+            const layout = new UI_Layout(this.controller);
+
+            this.renderInto(layout);
+            return layout;
         }
     }
 

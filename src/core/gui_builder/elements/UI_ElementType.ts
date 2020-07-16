@@ -9,6 +9,8 @@ export enum UI_ElementType {
     GridSelect = 'GridSelect',
     TextField = 'TextField',
 
+    Text = 'Text',
+
     Table = 'Table',
     TableRow = 'TableRow',
     TableColumn = 'TableColumn',

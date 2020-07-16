@@ -18,7 +18,11 @@ import { UI_Container } from './elements/UI_Container';
 import { UI_Select } from './elements/UI_Select';
 import { UI_GridSelect } from './elements/UI_GridSelect';
 import { GridSelectComp } from '../gui/inputs/GridSelectComp';
-
+import { TableComp } from '../gui/table/TableComp';
+import { TableRowComp } from '../gui/table/TableRowComp';
+import { TableColumnComp } from '../gui/table/TableColumnComp';
+import { UI_Table, UI_TableRow } from './elements/UI_Table';
+import { UI_TableColumn } from './elements/UI_TableColumn';
 
 export class UI_Builder {
 
@@ -28,7 +32,7 @@ export class UI_Builder {
         this.registry = registry;
     }
 
-    build(region: UI_Region): JSX.Element | JSX.Element[] {
+    build(region: UI_Region): JSX.Element[] {
         const plugins = this.registry.services.plugin.findPluginsAtRegion(region);
 
         return plugins
@@ -68,11 +72,22 @@ export class UI_Builder {
             case UI_ElementType.AccordionTab:
                 const accordionTab = element as UI_AccordionTab;
                 return <AccordionTabComp element={accordionTab}>{children}</AccordionTabComp>;
+            case UI_ElementType.Table:
+                const table = element as UI_Table;
+                return <TableComp element={table}>{children}</TableComp>;
+            case UI_ElementType.TableRow:
+                const tableRow = element as UI_TableRow;
+                return <TableRowComp element={tableRow}>{children}</TableRowComp>;
+            case UI_ElementType.TableColumn:
+                const tableColumn = element as UI_TableColumn;
+                return <TableColumnComp element={tableColumn}>{children}</TableColumnComp>;
         }
     }
 
     private buildLeaf(element: UI_Element): JSX.Element {
         switch(element.elementType) {
+            case UI_ElementType.Text:
+
             case UI_ElementType.TextField:
                 const textField = element as UI_TextField;
                 return <TextFieldComp element={textField}/>;

@@ -3,30 +3,36 @@ import { Registry } from '../../core/Registry';
 import { Tools } from '../Tools';
 import { AssetManagerDialogController } from './AssetManagerDialogController';
 import { AssetManagerDialogPlugin } from './AssetManagerDialogPlugin';
-import { UI_Region } from '../../core/UI_Plugin';
+import { UI_Region, UI_Plugin } from '../../core/UI_Plugin';
+import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
 
-export class AssetManagerPlugin extends AbstractPlugin {
+export class AssetManagerPlugin extends UI_Plugin {
     static id = 'asset-manager-plugin';
-    region = UI_Region.Dialog;
-
-    constructor(registry: Registry) {
-        super(registry);
-
-        this.tools = new Tools([]);
-        this.pluginSettings.dialogController = new AssetManagerDialogController(this, registry);
-    }
+    region = UI_Region.SidepanelWidget;
 
     getStore() {
         return null;
-    }
-
-    componentMounted(htmlElement: HTMLElement) {
-        super.componentMounted(htmlElement);
     }
 
     getId(): string {
         return AssetManagerPlugin.id;
     }
 
-    render() { return undefined; }
+    renderInto(layout: UI_Layout): void {
+        let row = layout.row();
+
+        // const manageAssestButton = row.button();
+
+        // const grid = row.grid(LevelSettingsProps.Level);
+        // grid.label = 'Level'
+
+        // row = layout.row();
+        // const textField = row.textField(LevelSettingsProps.LevelName);
+        // textField.label = 'Name';
+
+        // row = layout.row();
+        // row.align = 'center';
+        // const clearLevelButton = row.button(LevelSettingsProps.ClearLevel);
+        // clearLevelButton.label = 'Clear level';
+    }
 }

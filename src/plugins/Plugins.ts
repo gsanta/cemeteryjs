@@ -12,11 +12,12 @@ import { AssetLoaderPlugin } from './asset_loader/AssetLoaderPlugin';
 import { AssetLoaderPluginComponentFactory } from './asset_loader/AssetLoaderPluginComponentFactory';
 import { AbstractPluginComponentFactory } from './common/AbstractPluginComponentFactory';
 import { AssetManagerPlugin } from './asset_manager/AssetManagerPlugin';
-import { AssetManagerPluginGuiFactory } from './asset_manager/AssetManagerPluginGuiFactory';
 import { FileSettingsPlugin, FileSettingsPluginId } from './file_settings/FileSettingsPlugin';
 import { LayoutSettingsPlugin, LayoutSettingsPluginId } from './layout_settings/LayoutSettingsPlugin';
 import { ObjectSettingsPlugin, ObjectSettingsPluginId } from './object_settings/ObjectSettingsPlugin';
 import { LevelSettingsPlugin, LevelSettingsPluginId } from './level_settings/LevelSettingsPlugin';
+import { AssetManagerSidepanelPlugin, AssetManagerSidepanelPluginId } from './asset_manager/AssetManagerSidepanelPlugin';
+import { AssetManagerDialogPlugin } from './asset_manager/AssetManagerDialogPlugin';
 
 export interface LayoutConfig {
     activePlugin: AbstractPlugin;
@@ -61,7 +62,7 @@ export class Plugins {
         this.registerPlugin(this.nodeEditor, new NodeEditorPluginComponentFactory(registry, this.nodeEditor));
         this.registerPlugin(this.codeEditor, new CodeEditorPluginComponentFactory(registry, this.codeEditor));
         this.registerPlugin(this.assetLoader, new AssetLoaderPluginComponentFactory(registry, this.assetLoader));
-        this.registerPlugin(this.assetManager, new AssetManagerPluginGuiFactory(registry, this.assetManager));
+        // this.registerPlugin(this.assetManager, new AssetManagerPluginGuiFactory(registry, this.assetManager));
 
         this.registry.services.plugin.registerPlugin(this.sceneEditor);
         this.registry.services.plugin.registerPlugin(this.gameView);
@@ -80,6 +81,11 @@ export class Plugins {
 
         this.registry.services.plugin.registerPlugin(new LevelSettingsPlugin(this.registry));
         this.registry.services.plugin.showPlugin(LevelSettingsPluginId);
+
+        this.registry.services.plugin.registerPlugin(new AssetManagerSidepanelPlugin(this.registry));
+        this.registry.services.plugin.showPlugin(AssetManagerSidepanelPluginId);
+
+        this.registry.services.plugin.registerPlugin(new AssetManagerDialogPlugin(this.registry));
 
         this.predefinedLayouts = [
             {

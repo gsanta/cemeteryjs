@@ -1,5 +1,6 @@
 import { UI_Plugin, UI_Region } from '../UI_Plugin';
 import { Registry } from '../Registry';
+import { RenderTask } from './RenderServices';
 
 export class PluginService {
     private plugins: Map<string, UI_Plugin> = new Map();
@@ -33,7 +34,14 @@ export class PluginService {
         } else {
             this.showedPlugins.get(plugin.region).push(plugin);
         }
-        this.registry.services.ui.scheduleUpdate(UI_Region.Dialog);
+        // this.registry.services.ui.runUpdate(UI_Region.Dialog);
+
+        switch(plugin.region) {
+            case UI_Region.Dialog:
+                this.registry.services.render.runImmediately(RenderTask.RenderDialog);
+            break;
+        }
+
     }
 
     hidePlugin(pluginId: string) {
@@ -41,7 +49,7 @@ export class PluginService {
         const index = this.showedPlugins.get(plugin.region).indexOf(plugin);
         this.showedPlugins.get(plugin.region).splice(index, 1);
 
-        this.registry.services.ui.scheduleUpdate(UI_Region.Dialog);
+        this.registry.services.ui.runUpdate(UI_Region.Dialog);
     }
 
     registerPlugin(plugin: UI_Plugin) {

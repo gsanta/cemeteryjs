@@ -75,8 +75,8 @@ export class AssetManagerDialogController extends AbstractSettings<AssetManagerD
                 return this.editedPath ? this.editedPath : this.editedAssetModel ? this.editedAssetModel.path : '';
             case AssetManagerDialogProps.AssetName:
                 return this.editedName ? this.editedName : this.editedAssetModel ? this.editedAssetModel.name : '';
-            case AssetManagerDialogProps.IsDialogOpen:
-                const settings = this.plugin.pluginSettings.dialogController as AssetManagerDialogController;
+            // case AssetManagerDialogProps.IsDialogOpen:
+                // const settings = this.plugin.pluginSettings.dialogController as AssetManagerDialogController;
 
         }
     }

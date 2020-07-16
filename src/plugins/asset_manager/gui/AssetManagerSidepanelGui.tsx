@@ -37,9 +37,9 @@ export class AssetLoaderSidepanelGui extends React.Component<{plugin: AssetManag
                     text="Manage assets"
                     type="info"
                     onClick={() => {
-                        const settings = this.props.plugin.pluginSettings.dialogController as AssetManagerDialogController;
+                        // const settings = this.props.plugin.pluginSettings.dialogController as AssetManagerDialogController;
 
-                        settings.open();
+                        // settings.open();
                     }}
                 />
             </LabeledField>

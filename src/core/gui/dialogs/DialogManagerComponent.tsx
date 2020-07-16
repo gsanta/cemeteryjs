@@ -8,6 +8,7 @@ import { AssetManagerDialogController } from '../../../plugins/asset_manager/Ass
 import { AssetManagerDialogGui } from '../../../plugins/asset_manager/gui/AssetManagerDialogGui';
 import { UI_Builder } from '../../gui_builder/UI_Builder';
 import { UI_Region } from '../../UI_Plugin';
+import { DialogComponent } from './DialogComponent';
 
 export class DialogManagerComponent extends React.Component {
     static contextType = AppContext;
@@ -18,7 +19,22 @@ export class DialogManagerComponent extends React.Component {
     }
 
     render() {
-        return new UI_Builder(this.context.registry).build(UI_Region.Dialog);
+        const dialog = new UI_Builder(this.context.registry).build(UI_Region.Dialog);
+
+        if (dialog.length) {
+            return (
+                <DialogComponent 
+                    title={'Asset manager'}
+                    closeDialog={() => {}}
+                    // footer={footer}
+                >
+                    {dialog}
+                </DialogComponent>
+            );
+        }
+
+        return null;
+        
         // if (this.context.registry.services.plugin.) {
 
         // }
