@@ -1,9 +1,47 @@
 import React from "react"
-import { Buttontyled } from "./ButtonComp"
+import { ButtonStyled } from "./ButtonComp"
 import { iconFactory } from "../icons/iconFactory"
 import { UI_ComponentProps } from "../UI_ComponentProps"
 import { UI_FileUpload } from "../../gui_builder/elements/UI_FileUpload"
 import { useDropzone } from "react-dropzone"
+import styled from "styled-components";
+import { cssClassBuilder } from "../../gui_builder/UI_ReactElements"
+import { colors } from "../styles"
+
+const FileUploadStyled = styled.div`
+
+    &.file-upload {
+        display: flex;
+
+        &.full-width {
+            width: 100%;
+        }
+
+        & > div {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            cursor: pointer;
+    
+            &.normal-width {
+                padding: 0px 5px;
+            }
+    
+            .button-label {
+                padding-left: 5px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            border: 1px solid ${colors.grey3};
+            &:hover {
+                background: ${colors.hoverBackground};
+            }
+        };
+
+    }
+`;
 
 export const FileUploadComp = (props: UI_ComponentProps<UI_FileUpload>) => {
     const onDrop = React.useCallback(acceptedFiles => {
@@ -23,16 +61,21 @@ export const FileUploadComp = (props: UI_ComponentProps<UI_FileUpload>) => {
     const { getRootProps, getInputProps } = useDropzone({ onDrop })
     const icon = props.element.icon ? iconFactory(props.element.icon) : null;
 
+    const classes = cssClassBuilder(
+        'file-upload',
+        props.element.width ? props.element.width : 'normal-width'
+    );
+
     return (
-        <div {...getRootProps()}>
-            <Buttontyled  {...props} onClick={() => props.element.click()}>
+        <FileUploadStyled className={classes} {...getRootProps()}>
+            <div className={classes} onClick={() => props.element.click()}>
                 <input {...getInputProps()} />
                 {icon}
                 
                 <div className="button-label">
                     {props.element.label}
                 </div>
-            </Buttontyled>  
-        </div>
+            </div>  
+        </FileUploadStyled>
     )
 }

@@ -7,15 +7,22 @@ import { iconFactory } from '../icons/iconFactory';
 import { colors } from '../styles';
 import { UI_Button } from '../../gui_builder/elements/UI_Button';
 
-export const Buttontyled = styled.div`
+/* cursor: ${(props: Button_UI_Props) => props.disabled ? 'default' : 'pointer'};
+opacity: ${(props: Button_UI_Props) => props.disabled ? '0.4' : '1'}; */
+export const ButtonStyled = styled.div`
     display: flex;
     align-items: center;
-    cursor: ${(props: ToolIconProps) => props.disabled ? 'default' : 'pointer'};
-    padding: ${(props: ToolIconProps) => props.format === 'long' ? '3px' : '0px'};
-    opacity: ${(props: ToolIconProps) => props.disabled ? '0.4' : '1'};
-    color: ${(props: ToolIconProps) => props.color ? props.color : colors.textColor};
-    width: 100%;
+    cursor: pointer;
 
+    &.full-width {
+        width: 100%;
+    }
+
+    &.normal-width {
+        padding: 0px 5px;
+    }
+
+    border: 1px solid ${colors.grey3};
     &:hover {
         background: ${colors.hoverBackground};
     }
@@ -32,19 +39,17 @@ export interface Button_UI_Props {
     element: UI_Button;
 }
 
-export class ButtonComp extends React.Component<Button_UI_Props> {
-
-    render() {
-        const icon = this.props.element.icon ? iconFactory(this.props.element.icon) : null;
-
-        return (
-            <Buttontyled {...this.props} onClick={() => this.props.element.click()}>
-                {icon}
-                
-                <div className="button-label">
-                    {this.props.element.label}
-                </div>
-            </Buttontyled>   
-        )
-    }
+export const ButtonComp = (props: Button_UI_Props) => {
+    const classes = `${props.element.width ? props.element.width : 'normal-width'}`;
+    const icon = props.element.icon ? iconFactory(props.element.icon) : null;
+    
+    return (
+        <ButtonStyled className={classes} {...props} onClick={() => props.element.click()}>
+            {icon}
+            
+            <div className="button-label">
+                {props.element.label}
+            </div>
+        </ButtonStyled>   
+    )
 }

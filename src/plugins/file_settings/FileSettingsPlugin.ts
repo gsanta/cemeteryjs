@@ -21,16 +21,19 @@ export class FileSettingsPlugin extends UI_Plugin {
         const exportButton = row.button(FileSettingsProps.Export);
         exportButton.label = 'Export File';
         exportButton.icon = 'export-icon';
+        exportButton.width = 'full-width';
 
         row = layout.row();
         const importButton = row.fileUpload(FileSettingsProps.Import);
         importButton.label = 'Import File';
         importButton.icon = 'import-icon';
+        importButton.width = 'full-width';
 
         row = layout.row();
         const newProjectButton = row.button(FileSettingsProps.NewProject);
         newProjectButton.label = 'New Project';
         newProjectButton.icon = 'blank-icon';
+        newProjectButton.width = 'full-width';
 
         return layout;
     }

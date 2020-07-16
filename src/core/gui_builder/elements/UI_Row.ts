@@ -9,12 +9,13 @@ import { UI_GridSelect } from "./UI_GridSelect";
 
 export class UI_Row extends UI_Container {
     elementType = UI_ElementType.Row;
+    align: 'left' | 'center';
 
     table() {
         return new UI_Table(this.controller);
     }
 
-    button(prop: string) {
+    button(prop: string): UI_Button {
         const button = new UI_Button(this.controller);
         button.prop = prop;
 

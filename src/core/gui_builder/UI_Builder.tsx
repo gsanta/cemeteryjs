@@ -1,12 +1,11 @@
 import { UI_Element } from './elements/UI_Element';
-import { RowGui, TextFieldGui } from './UI_ReactElements';
+import { RowGui } from './UI_ReactElements';
 import * as React from 'react';
-import { InputComponent } from "../gui/inputs/InputComponent";
-import { TextFileAssetTask } from "babylonjs";
 import { Registry } from '../Registry';
 import { UI_Region } from '../UI_Plugin';
 import { ButtonComp } from '../gui/inputs/ButtonComp';
 import { SelectComp } from '../gui/inputs/SelectComp';
+import { TextFieldComp } from '../gui/inputs/TextFieldComp';
 import { UI_AccordionTab } from './elements/UI_Accordion';
 import { AccordionTabComp } from '../gui/surfaces/AccordionTabComp';
 import { UI_FileUpload } from './elements/UI_FileUpload';
@@ -76,7 +75,7 @@ export class UI_Builder {
         switch(element.elementType) {
             case UI_ElementType.TextField:
                 const textField = element as UI_TextField;
-                return <TextFieldGui element={textField}/>;
+                return <TextFieldComp element={textField}/>;
             case UI_ElementType.Button:
                 const button = element as UI_Button;
                 return <ButtonComp element={button}/>;

@@ -18,37 +18,21 @@ export interface RowProps {
 const RowStyled = styled.div`
     display: flex;
     justify-content: space-between;
+    margin-top: 4px;
+
+    &.align-center {
+        justify-content: center;
+    }
 `;
 
 export function RowGui(props: RowProps) {
-    const classes = cssClassBuilder('ce-row', props.element.isBold ? 'ce-bold' : undefined);
+    const classes = cssClassBuilder(
+        'ce-row',
+        props.element.isBold ? 'ce-bold' : undefined,
+        props.element.align ? `align-${props.element.align}` : 'align-left' 
+    );
 
     return (
         <RowStyled className={classes}>{props.children}</RowStyled>
     );
-}
-
-export function TextFieldGui(props: {element: UI_TextField}) {
-    let textFieldComponent = (
-        <InputComponent
-            type={props.element.type}
-            onBlur={() => props.element.blur()}
-            onChange={val => props.element.change(val)}
-            onFocus={() => props.element.focus()}
-            value={props.element.val()}
-        />
-    );
-
-    if (props.element.label) {
-        return (
-            <LabeledField>
-                <LabelColumnStyled>{props.element.label}</LabelColumnStyled>
-                <FieldColumnStyled>
-                    {textFieldComponent}
-                </FieldColumnStyled>
-            </LabeledField>
-        )
-    } else {
-        return textFieldComponent;
-    }
 }

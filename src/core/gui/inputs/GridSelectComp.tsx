@@ -2,7 +2,7 @@ import * as React from 'react';
 import { UI_GridSelect } from '../../gui_builder/elements/UI_GridSelect';
 import { GridComponent } from '../misc/GridComponent';
 import { UI_ComponentProps } from '../UI_ComponentProps';
-import { LabeledComponent } from './LabeledComponent';
+import { LabeledInputComp } from './LabeledInputComp';
 import './DropdownComponent.scss';
 
 export const GridSelectComp = (props: UI_ComponentProps<UI_GridSelect>) => {
@@ -18,9 +18,9 @@ export const GridSelectComp = (props: UI_ComponentProps<UI_GridSelect>) => {
 
     if (props.element.label) {
         component = (
-            <LabeledComponent label={props.element.label} direction="horizontal">
+            <LabeledInputComp label={props.element.label} direction="horizontal">
                 {component}
-            </LabeledComponent>
+            </LabeledInputComp>
         );
     }
 

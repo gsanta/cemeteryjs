@@ -1,5 +1,5 @@
 import { AbstractPluginComponentFactory } from '../common/AbstractPluginComponentFactory';
-Paimport { SceneEditorPlugin } from './SceneEditorPlugin';
+import { SceneEditorPlugin } from './SceneEditorPlugin';
 import * as React from 'react';
 import { SceneEditorComponent } from './SceneEditorComponent';
 
