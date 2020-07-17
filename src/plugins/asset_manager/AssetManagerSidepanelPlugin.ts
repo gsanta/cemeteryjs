@@ -15,8 +15,7 @@ export class AssetManagerSidepanelPlugin extends UI_Plugin {
     }
 
     renderInto(layout: UI_Layout): void {
-        const row = layout.row();
-        
+        let row = layout.row();
         const manageAssetsButton = row.button(AssetManagerSidepanelControllerProps.IsAssetManagerDialogOpen);
         manageAssetsButton.label = 'Manage assets';
     }

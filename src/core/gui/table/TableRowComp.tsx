@@ -10,6 +10,6 @@ export interface TableRowCompProps {
 
 export const TableRowComp = (props: TableRowCompProps) => {    
     return (
-        <div>{props.children}</div>
+        <div className="ce-table-row">{props.children}</div>
     );
 }

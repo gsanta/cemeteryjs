@@ -8,8 +8,14 @@ export interface TableColumnCompProps {
     children?: JSX.Element[];
 }
 
-export const TableColumnComp = (props: TableColumnCompProps) => {    
+export const TableColumnComp = (props: TableColumnCompProps) => {
+    const style: any = {}
+    
+    if (props.element.width) {
+        style.width = props.element.width;
+    }
+
     return (
-        <div>{props.children}</div>
+        <div style={style} className="ce-table-column">{props.children}</div>
     );
 }

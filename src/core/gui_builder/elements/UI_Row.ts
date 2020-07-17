@@ -7,6 +7,10 @@ export class UI_Row extends UI_GenericContainer {
     align: 'left' | 'center';
 
     table() {
-        return new UI_Table(this.controller);
+        const table = new UI_Table(this.controller);
+
+        this.children.push(table);
+
+        return table;
     }
 }

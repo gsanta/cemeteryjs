@@ -18,6 +18,7 @@ import { ObjectSettingsPlugin, ObjectSettingsPluginId } from './object_settings/
 import { LevelSettingsPlugin, LevelSettingsPluginId } from './level_settings/LevelSettingsPlugin';
 import { AssetManagerSidepanelPlugin, AssetManagerSidepanelPluginId } from './asset_manager/AssetManagerSidepanelPlugin';
 import { AssetManagerDialogPlugin } from './asset_manager/AssetManagerDialogPlugin';
+import { ThumbnailManagerDialogPluginId, ThumbnailManagerDialogPlugin } from './object_settings/ThumbnailManagerDialogPlugin';
 
 export interface LayoutConfig {
     activePlugin: AbstractPlugin;
@@ -86,6 +87,9 @@ export class Plugins {
         this.registry.services.plugin.showPlugin(AssetManagerSidepanelPluginId);
 
         this.registry.services.plugin.registerPlugin(new AssetManagerDialogPlugin(this.registry));
+
+        this.registry.services.plugin.registerPlugin(new ThumbnailManagerDialogPlugin(this.registry));
+
 
         this.predefinedLayouts = [
             {

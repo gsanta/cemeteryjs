@@ -74,5 +74,21 @@ export class ObjectSettingsPlugin extends UI_Plugin {
         const yPosTextField = row.textField(MeshObjectSettingsProps.YPos);
         yPosTextField.label = 'YPos';
         yPosTextField.type = 'number';
+
+        row = layout.row();
+        const importModelButton = row.fileUpload(MeshObjectSettingsProps.Model);
+        importModelButton.label = 'Import Model';
+        importModelButton.icon = 'import-icon';
+        importModelButton.width = 'full-width';
+
+        row = layout.row();
+        const importTextureButton = row.fileUpload(MeshObjectSettingsProps.Texture);
+        importTextureButton.label = 'Import Texture';
+        importTextureButton.icon = 'import-icon';
+        importTextureButton.width = 'full-width';
+
+        row = layout.row();
+        const changeThumbnailButton = row.button(MeshObjectSettingsProps.Thumbnail);
+        changeThumbnailButton.label = 'Change thumbnail';
     }
 }

@@ -3,13 +3,17 @@ import { MeshView } from '../../core/models/views/MeshView';
 import { Registry } from '../../core/Registry';
 import { RenderTask } from '../../core/services/RenderServices';
 import { AbstractController } from '../scene_editor/settings/AbstractController';
+import { ThumbnailManagerDialogPluginId } from './ThumbnailManagerDialogPlugin';
 
 export enum MeshObjectSettingsProps {
     MeshId = 'MeshId',
     Layer = 'Layer',
     Rotation = 'Rotation',
     Scale = 'Scale',
-    YPos = 'YPos'
+    YPos = 'YPos',
+    Model = 'Model',
+    Texture = 'Texture',
+    Thumbnail = 'Thumbnail'
 }
 
 export class MeshObjectSettingsController extends AbstractController<MeshObjectSettingsProps> {
@@ -99,6 +103,19 @@ export class MeshObjectSettingsController extends AbstractController<MeshObjectS
             })
             .onGet((context) => {
                 return context.getTempVal(() => this.meshView.yPos.toString());
+            });
+
+        this.createPropHandler<number>(MeshObjectSettingsProps.Model)
+            .onClick((val) => {
+            });
+
+        this.createPropHandler<number>(MeshObjectSettingsProps.Texture)
+            .onClick((val) => {
+            });
+
+        this.createPropHandler<number>(MeshObjectSettingsProps.Thumbnail)
+            .onClick((val) => {
+                this.registry.services.plugin.showPlugin(ThumbnailManagerDialogPluginId);
             });
     }
 }

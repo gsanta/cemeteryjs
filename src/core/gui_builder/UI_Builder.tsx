@@ -19,10 +19,12 @@ import { UI_Select } from './elements/UI_Select';
 import { UI_GridSelect } from './elements/UI_GridSelect';
 import { GridSelectComp } from '../gui/inputs/GridSelectComp';
 import { TableComp } from '../gui/table/TableComp';
+import { TextComp } from '../gui/text/TextComp';
 import { TableRowComp } from '../gui/table/TableRowComp';
 import { TableColumnComp } from '../gui/table/TableColumnComp';
 import { UI_Table, UI_TableRow } from './elements/UI_Table';
 import { UI_TableColumn } from './elements/UI_TableColumn';
+import { UI_Text } from './elements/UI_Text';
 
 export class UI_Builder {
 
@@ -87,7 +89,8 @@ export class UI_Builder {
     private buildLeaf(element: UI_Element): JSX.Element {
         switch(element.elementType) {
             case UI_ElementType.Text:
-
+                const text = element as UI_Text;
+                return <TextComp element={text}/>;
             case UI_ElementType.TextField:
                 const textField = element as UI_TextField;
                 return <TextFieldComp element={textField}/>;
