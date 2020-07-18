@@ -1,14 +1,11 @@
 
 
 import * as React from 'react';
-import { AssetLoaderDialog } from '../../../plugins/asset_loader/components/AssetLoaderDialog';
-import { AssetLoaderDialogController } from '../../../plugins/asset_loader/controllers/AssetLoaderDialogController';
-import { AppContext, AppContextType } from '../Context';
-import { AssetManagerDialogController } from '../../../plugins/asset_manager/AssetManagerDialogController';
-import { AssetManagerDialogGui } from '../../../plugins/asset_manager/gui/AssetManagerDialogGui';
 import { UI_Builder } from '../../gui_builder/UI_Builder';
-import { UI_Region } from '../../UI_Plugin';
+import { UI_Plugin, UI_Region } from '../../UI_Plugin';
+import { AppContext, AppContextType } from '../Context';
 import { DialogComponent } from './DialogComponent';
+import { RenderTask } from '../../services/RenderServices';
 
 export class DialogManagerComponent extends React.Component {
     static contextType = AppContext;
@@ -19,32 +16,25 @@ export class DialogManagerComponent extends React.Component {
     }
 
     render() {
-        const dialog = new UI_Builder(this.context.registry).build(UI_Region.Dialog);
+        const plugins = this.context.registry.services.plugin.findPluginsAtRegion(UI_Region.Dialog);
 
-        if (dialog.length) {
-            return (
-                <DialogComponent 
-                    title={'Asset manager'}
-                    closeDialog={() => {}}
-                    // footer={footer}
-                >
-                    {dialog}
-                </DialogComponent>
-            );
-        }
+        if (!plugins.length) { return null; }
 
-        return null;
-        
-        // if (this.context.registry.services.plugin.) {
+        const dialogPlugin = plugins[0];
+        const dialog = new UI_Builder(this.context.registry).build(dialogPlugin);
 
-        // }
+        return (
+            <DialogComponent 
+                title={dialogPlugin.displayName}
+                closeDialog={() => this.closeDialog(dialogPlugin)}
+            >
+                {dialog}
+            </DialogComponent>
+        );
+    }
 
-        // if (!this.context.registry.services.dialog.dialogController) { return null; }
-
-        // switch(this.context.registry.services.dialog.dialogController.getName()) {
-        //     case AssetLoaderDialogController.settingsName: return <AssetLoaderDialog plugin={this.context.registry.plugins.assetLoader}/>;
-        //     case AssetManagerDialogController.settingsName: return <AssetManagerDialogGui plugin={this.context.registry.plugins.assetManager}/>;
-        //     default: return null;
-        // }
+    private closeDialog(plugin: UI_Plugin) {
+        this.context.registry.services.plugin.hidePlugin(plugin.id);
+        this.context.registry.services.render.runImmediately(RenderTask.RenderFull);
     }
 }

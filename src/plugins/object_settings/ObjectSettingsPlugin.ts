@@ -6,6 +6,7 @@ import { ViewType } from '../../core/models/views/View';
 import { MeshView } from '../../core/models/views/MeshView';
 import { PathView } from '../../core/models/views/PathView';
 import { PathObjectSettingsController, PathObjectSettingsProps } from './PathObjectSettingsController';
+import { EngineService } from '../../core/services/EngineService';
 
 export const ObjectSettingsPluginId = 'object-settings-plugin';
 
@@ -17,10 +18,13 @@ export class ObjectSettingsPlugin extends UI_Plugin {
     private meshObjectSettingsController: MeshObjectSettingsController;
     private pathObjectSettingsController: PathObjectSettingsController;
 
+    private engine: EngineService;
+
     constructor(registry: Registry) {
         super(registry);
 
-        this.meshObjectSettingsController = new MeshObjectSettingsController(registry);
+        // this.engine = new EngineService(this.registry)
+        this.meshObjectSettingsController = new MeshObjectSettingsController(this, registry);
         this.pathObjectSettingsController = new PathObjectSettingsController(registry);
     }
 

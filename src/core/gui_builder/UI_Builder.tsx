@@ -2,7 +2,7 @@ import { UI_Element } from './elements/UI_Element';
 import { RowGui } from './UI_ReactElements';
 import * as React from 'react';
 import { Registry } from '../Registry';
-import { UI_Region } from '../UI_Plugin';
+import { UI_Region, UI_Plugin } from '../UI_Plugin';
 import { ButtonComp } from '../gui/inputs/ButtonComp';
 import { SelectComp } from '../gui/inputs/SelectComp';
 import { TextFieldComp } from '../gui/inputs/TextFieldComp';
@@ -34,12 +34,8 @@ export class UI_Builder {
         this.registry = registry;
     }
 
-    build(region: UI_Region): JSX.Element[] {
-        const plugins = this.registry.services.plugin.findPluginsAtRegion(region);
-
-        return plugins
-            .map(plugin => plugin.render())
-            .map(layout => this.buildContainer(layout));
+    build(plugin: UI_Plugin): JSX.Element {
+        return this.buildContainer(plugin.render());
     }
 
     // private buildRecuresively(container: UI_Container): JSX.Element {

@@ -7,6 +7,7 @@ export const AssetManagerDialogPluginId = 'asset-manager-dialog-plugin';
 export class AssetManagerDialogPlugin extends UI_Plugin {
     id = AssetManagerDialogPluginId;
     region = UI_Region.Dialog;
+    displayName = 'Asset manager';
 
     // constructor() {
 

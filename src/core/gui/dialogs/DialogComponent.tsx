@@ -2,6 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { colors } from '../styles';
 import { CloseIconComponent } from '../../../plugins/common/toolbar/icons/CloseIconComponent';
+import { UI_Plugin } from '../../UI_Plugin';
 
 export interface DialogProps {
     title: string;
@@ -68,7 +69,7 @@ export function DialogComponent(props: DialogProps) {
     const dialogClassName = `dialog ${props.className ? props.className : ''}`.trim();
 
     const footer = props.footer ? <DialogFooterStyled>{props.footer}</DialogFooterStyled> : null;
-
+    
     return (
         <div onClick={e => e.stopPropagation()}>
             <DialogOverlayStyled onClick={props.closeDialog}></DialogOverlayStyled>

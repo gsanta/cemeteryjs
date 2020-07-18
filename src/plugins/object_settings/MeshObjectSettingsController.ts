@@ -4,6 +4,10 @@ import { Registry } from '../../core/Registry';
 import { RenderTask } from '../../core/services/RenderServices';
 import { AbstractController } from '../scene_editor/settings/AbstractController';
 import { ThumbnailManagerDialogPluginId } from './ThumbnailManagerDialogPlugin';
+import { AssetModel, AssetType } from '../../core/models/game_objects/AssetModel';
+import { MeshLoaderService } from '../../core/services/MeshLoaderService';
+import { AssetLoaderDialogController } from '../asset_loader/controllers/AssetLoaderDialogController';
+import { ObjectSettingsPlugin } from './ObjectSettingsPlugin';
 
 export enum MeshObjectSettingsProps {
     MeshId = 'MeshId',
@@ -17,11 +21,13 @@ export enum MeshObjectSettingsProps {
 }
 
 export class MeshObjectSettingsController extends AbstractController<MeshObjectSettingsProps> {
+    private plugin: ObjectSettingsPlugin;
     private tempVal: any;
     meshView: MeshView;
 
-    constructor(registry: Registry) {
+    constructor(plugin: ObjectSettingsPlugin,registry: Registry) {
         super(registry);
+        this.plugin = plugin;
 
         this.createPropHandler<number>(MeshObjectSettingsProps.MeshId)
             .onChange((val, context) => {
@@ -105,9 +111,27 @@ export class MeshObjectSettingsController extends AbstractController<MeshObjectS
                 return context.getTempVal(() => this.meshView.yPos.toString());
             });
 
-        this.createPropHandler<number>(MeshObjectSettingsProps.Model)
-            .onClick((val) => {
-            });
+        this.createPropHandler<{data: string}>(MeshObjectSettingsProps.Model)
+            .onChange((val) => {
+                const assetModel = new AssetModel({data: val.data, assetType: AssetType.Model});
+                this.meshView.modelId = this.registry.stores.assetStore.addModel(assetModel);
+                this.registry.services.localStore.saveAsset(assetModel);
+                this.registry.stores.meshStore.deleteInstance((<MeshView> this.meshView).mesh);
+                this.registry.stores.meshStore.createInstance(this.meshView.model);
+                // const meshLoaderService = this.plugin.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName);
+
+                //  meshLoaderService.getDimensions(assetModel, meshView.id)
+                // .then(dim => {
+                //     meshView.dimensions.setWidth(dim.x);
+                //     meshView.dimensions.setHeight(dim.y);
+                //     this.update();
+                // });
+
+                // this.plugin.pluginSettings.byName<AssetLoaderDialogController>(AssetLoaderDialogController.settingsName).open();
+            })
+            .onClick(() => {
+                1;
+            })
 
         this.createPropHandler<number>(MeshObjectSettingsProps.Texture)
             .onClick((val) => {

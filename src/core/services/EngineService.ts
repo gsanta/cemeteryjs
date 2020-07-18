@@ -10,6 +10,11 @@ export class EngineService<T extends AbstractPlugin = AbstractPlugin> extends Ab
     private scene: Scene;
     private camera: Camera3D;
     private light: Light;
+    private htmlElement: HTMLElement;
+
+    setup(htmlElement: HTMLElement) {
+        this.htmlElement = htmlElement;
+    }
 
     getScene() {
         return this.scene;
