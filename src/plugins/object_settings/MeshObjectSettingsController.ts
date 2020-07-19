@@ -3,7 +3,7 @@ import { MeshView } from '../../core/models/views/MeshView';
 import { Registry } from '../../core/Registry';
 import { RenderTask } from '../../core/services/RenderServices';
 import { AbstractController } from '../scene_editor/settings/AbstractController';
-import { ThumbnailManagerDialogPluginId } from './ThumbnailManagerDialogPlugin';
+import { ThumbnailDialogPluginId } from './ThumbnailDialogPlugin';
 import { AssetModel, AssetType } from '../../core/models/game_objects/AssetModel';
 import { MeshLoaderService } from '../../core/services/MeshLoaderService';
 import { AssetLoaderDialogController } from '../asset_loader/controllers/AssetLoaderDialogController';
@@ -118,6 +118,8 @@ export class MeshObjectSettingsController extends AbstractController<MeshObjectS
                 this.registry.services.localStore.saveAsset(assetModel);
                 this.registry.stores.meshStore.deleteInstance((<MeshView> this.meshView).mesh);
                 this.registry.stores.meshStore.createInstance(this.meshView.model);
+
+
                 // const meshLoaderService = this.plugin.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName);
 
                 //  meshLoaderService.getDimensions(assetModel, meshView.id)
@@ -139,7 +141,7 @@ export class MeshObjectSettingsController extends AbstractController<MeshObjectS
 
         this.createPropHandler<number>(MeshObjectSettingsProps.Thumbnail)
             .onClick((val) => {
-                this.registry.services.plugin.showPlugin(ThumbnailManagerDialogPluginId);
+                this.registry.services.plugin.showPlugin(ThumbnailDialogPluginId);
             });
     }
 }

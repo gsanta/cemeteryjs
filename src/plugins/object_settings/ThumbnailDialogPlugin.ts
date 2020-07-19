@@ -1,11 +1,11 @@
 import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
 import { UI_Plugin, UI_Region } from '../../core/UI_Plugin';
 
-export const ThumbnailManagerDialogPluginId = 'thumbnail-manager-dialog-plugin'; 
-export class ThumbnailManagerDialogPlugin extends UI_Plugin {
-    id = ThumbnailManagerDialogPluginId;
+export const ThumbnailDialogPluginId = 'thumbnail-dialog-plugin'; 
+export class ThumbnailDialogPlugin extends UI_Plugin {
+    id = ThumbnailDialogPluginId;
     region = UI_Region.Dialog;
-    displayName = 'Thumbnail manager';
+    displayName = 'Thumbnail';
 
     // constructor() {
 
