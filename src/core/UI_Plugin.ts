@@ -57,6 +57,11 @@ export abstract class UI_Plugin implements IControlledObject {
 
             this.renderInto(layout);
             return layout;
+        } else if (this.region === UI_Region.Canvas1) {
+            const layout = new UI_Layout(this.controller);
+
+            this.renderInto(layout);
+            return layout;
         }
     }
 

@@ -97,5 +97,5 @@ export abstract class AbstractPlugin extends UI_Plugin {
         return undefined;
     };
 
-    renderInto(layout: UI_Layout) { }
+    protected renderInto(layout: UI_Layout) { }
 }

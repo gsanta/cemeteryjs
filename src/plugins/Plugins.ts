@@ -1,6 +1,6 @@
 import { AbstractPlugin } from '../core/AbstractPlugin';
 import { Registry } from '../core/Registry';
-import { SceneEditorPlugin } from './scene_editor/SceneEditorPlugin';
+import { SceneEditorPlugin, SceneEditorPluginId } from './scene_editor/SceneEditorPlugin';
 import { SceneEditorPluginComponentFactory } from './scene_editor/SceneEditorPluginComponentFactory';
 import { GameViewerPlugin } from './game_viewer/GameViewerPlugin';
 import { GameViewerPluginComponentFactory } from './game_viewer/GameViewerPluginComponentFactory';
@@ -66,6 +66,8 @@ export class Plugins {
         // this.registerPlugin(this.assetManager, new AssetManagerPluginGuiFactory(registry, this.assetManager));
 
         this.registry.services.plugin.registerPlugin(this.sceneEditor);
+        this.registry.services.plugin.showPlugin(SceneEditorPluginId);
+    
         this.registry.services.plugin.registerPlugin(this.gameView);
         this.registry.services.plugin.registerPlugin(this.nodeEditor);
         this.registry.services.plugin.registerPlugin(this.codeEditor);

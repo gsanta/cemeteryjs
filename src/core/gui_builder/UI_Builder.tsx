@@ -29,6 +29,9 @@ import { UI_SvgRect } from './elements/svg/UI_SvgRect';
 import { SvgRectComp } from '../gui/svg/SvgRectComp';
 import { UI_SvgGroup } from './elements/svg/UI_SvgGroup';
 import { SvgGroupComp } from '../gui/svg/SvgGroupComp';
+import { SvgCanvasComp } from '../gui/surfaces/SvgCanvasComp';
+import { UI_SvgCanvas } from './elements/UI_SvgCanvas';
+import { AbstractPlugin } from '../AbstractPlugin';
 
 export class UI_Builder {
 
@@ -39,7 +42,7 @@ export class UI_Builder {
     }
 
     build(plugin: UI_Plugin): JSX.Element {
-        return this.buildContainer(plugin.render());
+        return this.buildContainer(plugin.render(), plugin);
     }
 
     // private buildRecuresively(container: UI_Container): JSX.Element {
@@ -56,10 +59,10 @@ export class UI_Builder {
 
     // }
 
-    private buildContainer(element: UI_Container): JSX.Element {
+    private buildContainer(element: UI_Container, plugin: UI_Plugin): JSX.Element {
         const children = element.children.map(child => {
             if ((child as UI_Container).children !== undefined) {
-                return this.buildContainer(child as UI_Container);
+                return this.buildContainer(child as UI_Container, plugin);
             } else {
                 return this.buildLeaf(child);
             }
@@ -86,6 +89,9 @@ export class UI_Builder {
             case UI_ElementType.SvgGroup:
                 const group = element as UI_SvgGroup;
                 return <SvgGroupComp element={group}>{children}</SvgGroupComp>
+            case UI_ElementType.SvgCanvas:
+                const svgCanvas = element as UI_SvgCanvas;
+                return <SvgCanvasComp plugin={plugin as AbstractPlugin}>{children}</SvgCanvasComp>
         }
     }
 

@@ -14,6 +14,7 @@ import { toolFactory } from '../common/toolbar/toolFactory';
 import { PluginSettings } from '../common/PluginSettings';
 import { MeshLoaderService } from '../../core/services/MeshLoaderService';
 import { UI_Region } from '../../core/UI_Plugin';
+import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -46,7 +47,7 @@ export enum CanvasTag {
 export const SceneEditorPluginId = 'scene-editor-plugin'; 
 
 export class SceneEditorPlugin extends AbstractPlugin {
-    id = 'scene-editor-plugin';
+    id = SceneEditorPluginId;
     region = UI_Region.Canvas1;
     private camera: Camera2D;
 
@@ -91,5 +92,12 @@ export class SceneEditorPlugin extends AbstractPlugin {
 
     getCamera() {
         return this.camera;
+    }
+
+    protected renderInto(layout: UI_Layout): void {
+        const canvas = layout.svgCanvas();
+        const rect = canvas.rect();
+        rect.width = 100;
+        rect.height = 200;
     }
 }

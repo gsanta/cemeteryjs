@@ -1,18 +1,18 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { AppContext, AppContextType } from '../Context';
-import { colors } from '../styles';
-import { AbstractPluginComponent } from '../../../plugins/common/AbstractPluginComponent';
-import { WheelListener } from '../../services/WheelListener';
-import { View } from '../../models/views/View';
-import { SceneEditorPlugin, SceneEditorPluginId } from '../../../plugins/scene_editor/SceneEditorPlugin';
+import { RedoIconComponent } from '../../../plugins/common/toolbar/icons/RedoIconComponent';
+import { UndoIconComponent } from '../../../plugins/common/toolbar/icons/UndoIconComponent';
 import { ToolbarComponent } from '../../../plugins/common/toolbar/ToolbarComponent';
 import { ToolType } from '../../../plugins/common/tools/Tool';
-import { UndoIconComponent } from '../../../plugins/common/toolbar/icons/UndoIconComponent';
-import { RedoIconComponent } from '../../../plugins/common/toolbar/icons/RedoIconComponent';
-import { PathMarkersComponent } from '../../services/export/PathMarkersComponent';
 import { MeshViewContainerComponent } from '../../../plugins/scene_editor/components/MeshViewComponent';
 import { PathViewContainerComponent } from '../../../plugins/scene_editor/components/PathViewComponent';
+import { SceneEditorPlugin, SceneEditorPluginId } from '../../../plugins/scene_editor/SceneEditorPlugin';
+import { AbstractPlugin } from '../../AbstractPlugin';
+import { View } from '../../models/views/View';
+import { PathMarkersComponent } from '../../services/export/PathMarkersComponent';
+import { WheelListener } from '../../services/WheelListener';
+import { AppContext, AppContextType } from '../Context';
+import { colors } from '../styles';
 
 const EditorComponentStyled = styled.div`
     width: 100%;
@@ -32,7 +32,7 @@ const SelectionComponentStyled = styled.rect`
     fill: transparent;
 `;
 
-export class SvgCanvasComp {
+export class SvgCanvasComp extends React.Component<{plugin: AbstractPlugin}> {
     static contextType = AppContext;
     context: AppContextType;
     protected ref: React.RefObject<HTMLDivElement>;
@@ -40,9 +40,7 @@ export class SvgCanvasComp {
     private wheelListener: WheelListener;
 
     componentDidMount() {
-        super.componentDidMount();
         this.wheelListener = new WheelListener(this.context.registry);
-        this.props.plugin.setRenderer(() => this.forceUpdate())
 
         setTimeout(() => {
             this.props.plugin.componentMounted(this.ref.current);
@@ -85,6 +83,7 @@ export class SvgCanvasComp {
                     <defs>
                         <PathMarkersComponent/>
                     </defs>
+                    {this.props.children}
                     <MeshViewContainerComponent hover={hover} unhover={unhover} registry={this.context.registry} renderWithSettings={false}/>
                     <PathViewContainerComponent hover={hover} unhover={unhover} registry={this.context.registry} renderWithSettings={false}/>
                     {this.renderFeedbacks()}
