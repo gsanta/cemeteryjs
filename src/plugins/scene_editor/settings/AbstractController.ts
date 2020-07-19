@@ -16,6 +16,9 @@ export class PropHandler<T> {
     blurHandler: (context: PropContext<T>, controller: AbstractController) => void;
     getHandler: (context: PropContext<T>, controller: AbstractController) => void;
 
+    mouseOverHandler: (context: PropContext<T>, controller: AbstractController) => void;
+    mouseOutHandler: (context: PropContext<T>, controller: AbstractController) => void;
+
     onChange(handler: (val: T, context: PropContext<any>,  controller: AbstractController) => void) {
         this.changeHandler = handler;
         return this;
@@ -38,6 +41,16 @@ export class PropHandler<T> {
 
     onGet(handler: (context: PropContext<T>, controller: AbstractController) => void) {
         this.getHandler = handler;
+        return this;
+    }
+
+    onMouseOver(handler: (context: PropContext<T>, controller: AbstractController) => void) {
+        this.mouseOverHandler = handler;
+        return this;
+    }
+
+    onMouseOut(handler: (context: PropContext<T>, controller: AbstractController) => void) {
+        this.mouseOutHandler = handler;
         return this;
     }
 }
@@ -84,6 +97,16 @@ export abstract class AbstractController<P = any> {
     }
 
     blur(prop: P): void {
+        const handler = this.handlers.get(prop);
+        handler.blurHandler(handler.context, this);
+    }
+
+    mouseOver(prop: P): void {
+        const handler = this.handlers.get(prop);
+        handler.blurHandler(handler.context, this);
+    }
+
+    mouseOut(prop: P): void {
         const handler = this.handlers.get(prop);
         handler.blurHandler(handler.context, this);
     }

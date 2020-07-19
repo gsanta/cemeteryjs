@@ -15,6 +15,8 @@ export class RenderService {
     private settingsRepainters: Function[] = [];
     private fullRepainter: Function;
     private dialogRenderer: Function;
+    private primaryPanelRenderer: Function;
+    private secondaryPanelRenderer: Function;
 
     private registry: Registry;
 
@@ -68,5 +70,13 @@ export class RenderService {
 
     setDialogRenderer(dialogRenderer: Function) {
         this.dialogRenderer = dialogRenderer;
+    }
+
+    setPrimaryPanelRenderer(renderer: Function) {
+        this.primaryPanelRenderer = renderer;
+    }
+
+    setSecondaryPanelRenderer(renderer: Function) {
+        this.secondaryPanelRenderer = renderer;
     }
 }

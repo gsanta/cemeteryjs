@@ -25,6 +25,10 @@ import { TableColumnComp } from '../gui/table/TableColumnComp';
 import { UI_Table, UI_TableRow } from './elements/UI_Table';
 import { UI_TableColumn } from './elements/UI_TableColumn';
 import { UI_Text } from './elements/UI_Text';
+import { UI_SvgRect } from './elements/svg/UI_SvgRect';
+import { SvgRectComp } from '../gui/svg/SvgRectComp';
+import { UI_SvgGroup } from './elements/svg/UI_SvgGroup';
+import { SvgGroupComp } from '../gui/svg/SvgGroupComp';
 
 export class UI_Builder {
 
@@ -79,6 +83,9 @@ export class UI_Builder {
             case UI_ElementType.TableColumn:
                 const tableColumn = element as UI_TableColumn;
                 return <TableColumnComp element={tableColumn}>{children}</TableColumnComp>;
+            case UI_ElementType.SvgGroup:
+                const group = element as UI_SvgGroup;
+                return <SvgGroupComp element={group}>{children}</SvgGroupComp>
         }
     }
 
@@ -102,6 +109,9 @@ export class UI_Builder {
             case UI_ElementType.GridSelect:
                 const gridSelect = element as UI_GridSelect;
                 return <GridSelectComp element={gridSelect}/>
+            case UI_ElementType.SvgRect:
+                const rect = element as UI_SvgRect;
+                return <SvgRectComp element={rect}/>; 
         }
     }
 }   

@@ -3,6 +3,7 @@ import { UI_ElementType } from './UI_ElementType';
 
 export class UI_Element {
     elementType: UI_ElementType;
+    id: string;
     protected controller: AbstractController;
     prop: string;
     isBold: boolean;
@@ -13,6 +14,14 @@ export class UI_Element {
 
     setController(controller: AbstractController) {
         this.controller = controller;
+    }
+
+    mouseOver() {
+        this.controller.mouseOver(this.prop);
+    }
+
+    mouseOut() {
+        this.controller.mouseOut(this.prop);
     }
 }
 

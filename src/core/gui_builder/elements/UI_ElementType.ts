@@ -9,6 +9,10 @@ export enum UI_ElementType {
     GridSelect = 'GridSelect',
     TextField = 'TextField',
 
+    SvgCanvas = 'SvgCanvas',
+    SvgGroup = 'SvgGroup',
+    SvgRect = 'SvgRect',
+
     Text = 'Text',
 
     Table = 'Table',

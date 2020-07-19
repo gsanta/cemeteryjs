@@ -22,10 +22,17 @@ export class LayoutService {
     }
 
     getPanelIds(): string[] {
-        const pluginIds = this.registry.plugins.getActivePlugins().map(plugin => plugin.id);
-        const ids = ['toolbar' , ...pluginIds];
+        // const pluginIds = this.registry.plugins.getActivePlugins().map(plugin => plugin.id);
+        const activePlugins = this.registry.plugins.getActivePlugins();
 
-        return ids;
+        if (activePlugins.length === 2) {
+            return ['toolbar', 'primary-panel', 'secondary-panel'];
+        } else {
+            return ['toolbar', 'primary-panel'];
+        }
+        // const ids = ['toolbar' , ...pluginIds];
+
+        // return ids;
     }
 
     setSizesInPercent(sizes: number[]) {

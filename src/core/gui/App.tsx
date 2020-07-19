@@ -6,13 +6,14 @@ import { DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
 import Split from 'split.js';
 import 'tippy.js/dist/tippy.css';
-import { GameViewerPlugin, GameViewerPluginId } from '../../plugins/game_viewer/GameViewerPlugin';
+import { GameViewerPluginId } from '../../plugins/game_viewer/GameViewerPlugin';
 import './App.scss';
 import { AppContext, AppContextType } from './Context';
 import { DialogManagerComponent } from './dialogs/DialogManagerComponent';
 import { HotkeyInputComponent } from './HotkeyInputComponent';
 import { SpinnerOverlayComponent } from './misc/SpinnerOverlayComponent';
 import { SidePanelComponent } from './SidePanelComponent';
+import { MainPanelComp } from './regions/MainPanelComp';
 
 export interface AppState {
     isDialogOpen: boolean;
@@ -76,7 +77,9 @@ export class App extends React.Component<{}, AppState> {
                         <div id="toolbar" >
                             <SidePanelComponent isEditorOpen={this.state.isEditorOpen} toggleEditorOpen={() => this.setState({isEditorOpen: !this.state.isEditorOpen})}/>
                         </div>
-                        {this.renderPlugins()}
+                        <MainPanelComp region='primary'/>
+                        <MainPanelComp region='secondary'/>
+                        {/* {this.renderPlugins()} */}
                     </div>
                     {this.context.controllers.isLoading ? <SpinnerOverlayComponent key="spinner"/> : null}
                     <DialogManagerComponent/>

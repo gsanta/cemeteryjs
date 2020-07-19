@@ -1,5 +1,18 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { AppContext, AppContextType } from '../Context';
+import { colors } from '../styles';
+import { AbstractPluginComponent } from '../../../plugins/common/AbstractPluginComponent';
+import { WheelListener } from '../../services/WheelListener';
+import { View } from '../../models/views/View';
+import { SceneEditorPlugin, SceneEditorPluginId } from '../../../plugins/scene_editor/SceneEditorPlugin';
+import { ToolbarComponent } from '../../../plugins/common/toolbar/ToolbarComponent';
+import { ToolType } from '../../../plugins/common/tools/Tool';
+import { UndoIconComponent } from '../../../plugins/common/toolbar/icons/UndoIconComponent';
+import { RedoIconComponent } from '../../../plugins/common/toolbar/icons/RedoIconComponent';
+import { PathMarkersComponent } from '../../services/export/PathMarkersComponent';
+import { MeshViewContainerComponent } from '../../../plugins/scene_editor/components/MeshViewComponent';
+import { PathViewContainerComponent } from '../../../plugins/scene_editor/components/PathViewComponent';
 
 const EditorComponentStyled = styled.div`
     width: 100%;
@@ -19,7 +32,7 @@ const SelectionComponentStyled = styled.rect`
     fill: transparent;
 `;
 
-export class SvgCanvasComp extends AbstractPluginComponent {
+export class SvgCanvasComp {
     static contextType = AppContext;
     context: AppContextType;
     protected ref: React.RefObject<HTMLDivElement>;
