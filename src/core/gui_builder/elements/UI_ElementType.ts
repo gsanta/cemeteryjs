@@ -24,5 +24,8 @@ export enum UI_ElementType {
 
     Accordion = 'Accordion',
     AccordionTab = 'AccordionTab',
-    FileUpload = 'FileUpload'
+    FileUpload = 'FileUpload',
+
+    Toolbar = 'Toolbar',
+    Tool = 'Tool'
 }

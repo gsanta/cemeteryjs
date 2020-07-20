@@ -6,17 +6,9 @@ import { FullScreenExitIconComponent } from '../../../core/gui/icons/FullScreenE
 import { FullScreenIconComponent } from '../../../core/gui/icons/FullScreenIconComponent';
 import { colors } from '../../../core/gui/styles';
 import { RenderTask } from '../../../core/services/RenderServices';
-import { ToolType } from '../tools/Tool';
-import { toolIconFactory } from './toolFactory';
-
-export interface ToolbarProps {
-    view: AbstractPlugin;
-    tools: ToolType[];
-    children?: JSX.Element | JSX.Element[];
-    renderFullScreenIcon: boolean;
-    centerIcons?: JSX.Element[];
-    backgroundColor?: string;
-}
+import { UI_Toolbar } from '../../gui_builder/elements/toolbar/UI_Toolbar';
+import { UI_ComponentProps } from '../UI_ComponentProps';
+import { UI_Tool } from '../../gui_builder/elements/toolbar/UI_Tool';
 
 const ToolbarStyled = styled.div`
     position: absolute;
@@ -43,28 +35,21 @@ const ToolGroupStyled = styled.div`
     height: 26px;
 `;
 
-export class ToolbarComponent extends React.Component<ToolbarProps> {
+export class ToolbarComp extends React.Component<UI_ComponentProps<UI_Toolbar>> {
     static contextType = AppContext;
     context: AppContextType;
 
-    constructor(props: ToolbarProps) {
-        super(props);
-    }
-
     render(): JSX.Element {
         const pluginService = this.context.registry.plugins;
-        const toolIcons = this.props.tools.map(toolType => toolIconFactory(toolType, this.props.view, this.context.registry));
+
+
+        this.props.
 
         const rightIcons: JSX.Element[] = [];
-        
-        if (this.props.renderFullScreenIcon) {
-            const fullScreenIcon = pluginService.getActivePlugins().length === 2 ? this.renderEnterFullScreenIcon() : this.renderExitFullScreenIcon();
-            rightIcons.push(fullScreenIcon);
-        }
 
-        const leftSection = <ToolGroupStyled>{toolIcons}{this.props.children}</ToolGroupStyled>
-        const centerSection = <ToolGroupStyled>{this.props.centerIcons}</ToolGroupStyled>
-        const rightSection =  <ToolGroupStyled>{rightIcons}</ToolGroupStyled>;
+        const leftSection = <ToolGroupStyled></ToolGroupStyled>
+        const centerSection = <ToolGroupStyled></ToolGroupStyled>
+        const rightSection =  <ToolGroupStyled></ToolGroupStyled>;
 
         return (
             <ToolbarStyled {...this.props}>

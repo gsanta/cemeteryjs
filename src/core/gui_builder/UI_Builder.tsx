@@ -38,6 +38,9 @@ import { UI_SvgImage } from './elements/svg/UI_SvgImage';
 import { SvgImageComp } from '../gui/svg/SvgImageComp';
 import { UI_SvgPath } from './elements/svg/UI_SvgPath';
 import { SvgPathComp } from '../gui/svg/SvgPathComp';
+import { UI_Toolbar } from './elements/toolbar/UI_Toolbar';
+import { UI_Tool } from './elements/toolbar/UI_Tool';
+import { ToolbarComp } from '../gui/surfaces/ToolbarComp';
 
 export class UI_Builder {
 
@@ -97,8 +100,29 @@ export class UI_Builder {
                 return <SvgGroupComp element={group}>{children}</SvgGroupComp>
             case UI_ElementType.SvgCanvas:
                 const svgCanvas = element as UI_SvgCanvas;
-                return <SvgCanvasComp plugin={plugin as AbstractPlugin}>{children}</SvgCanvasComp>
+                return <SvgCanvasComp plugin={plugin as AbstractPlugin}>{children}</SvgCanvasComp>;
         }
+    }
+
+    private buildToolbar(uiToolbar: UI_Toolbar) {
+        const toolsLeft: JSX.Element[] = [];
+        const toolsMiddle: JSX.Element[] = [];
+        const toolsRight: JSX.Element[] = [];
+
+        uiToolbar.children.forEach(child => {
+            switch(child.placement) {
+                case 'left':
+                default:
+                    toolsLeft.push(this.buildLeaf(child));
+                break;
+                case 'middle':
+                    toolsMiddle.push(this.buildLeaf(child));
+                break;
+                case 'right':
+                    toolsRight.push(this.buildLeaf(child));
+                break;
+            }
+        });
     }
 
     private buildLeaf(element: UI_Element): JSX.Element {
@@ -133,6 +157,9 @@ export class UI_Builder {
             case UI_ElementType.SvgPath:
                 const path = element as UI_SvgPath
                 return <SvgPathComp element={path}/>; 
+            case UI_ElementType.Toolbar:
+                const toolbar = element as UI_Toolbar;
+                return <ToolbarComp/>
         }
     }
 }   
