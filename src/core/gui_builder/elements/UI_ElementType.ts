@@ -12,6 +12,9 @@ export enum UI_ElementType {
     SvgCanvas = 'SvgCanvas',
     SvgGroup = 'SvgGroup',
     SvgRect = 'SvgRect',
+    SvgCircle = 'SvgCircle',
+    SvgImage = 'SvgImage',
+    SvgPath = 'SvgPath',
 
     Text = 'Text',
 

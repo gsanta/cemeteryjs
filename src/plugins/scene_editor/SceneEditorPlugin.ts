@@ -15,6 +15,9 @@ import { PluginSettings } from '../common/PluginSettings';
 import { MeshLoaderService } from '../../core/services/MeshLoaderService';
 import { UI_Region } from '../../core/UI_Plugin';
 import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
+import { sort } from '../../core/geometry/utils/Functions';
+import { toDegree } from '../../core/geometry/utils/Measurements';
+import { UI_SvgCanvas } from '../../core/gui_builder/elements/UI_SvgCanvas';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -96,8 +99,38 @@ export class SceneEditorPlugin extends AbstractPlugin {
 
     protected renderInto(layout: UI_Layout): void {
         const canvas = layout.svgCanvas();
-        const rect = canvas.rect();
-        rect.width = 100;
-        rect.height = 200;
+        this.renderMeshViews(canvas);
+        this.renderPathViews(canvas);
     }
+
+    private renderMeshViews(canvas: UI_SvgCanvas) {
+        const views = getSortedMeshViews(this.registry).map(item => {
+            const group = canvas.group();
+            group.transform = `translate(${item.dimensions.topLeft.x} ${item.dimensions.topLeft.y}) rotate(${toDegree(item.getRotation())} ${item.dimensions.getWidth() / 2} ${item.dimensions.getHeight() / 2})`;
+            const rect = group.rect();
+            rect.width = item.dimensions.getWidth();
+            rect.height = item.dimensions.getHeight();
+
+            let thumbnail: JSX.Element = null;
+            const thumbnailModel = this.registry.stores.assetStore.getAssetById(item.thumbnailId);
+    
+            if (thumbnailModel && thumbnailModel.data) {
+                const image = group.image();
+                image.href = thumbnailModel.data;
+                image.width = item.dimensions.getWidth();
+                image.height = item.dimensions.getHeight();
+            }
+    
+            return thumbnail;
+        });
+    }
+
+    private renderPathViews(canvas: UI_SvgCanvas) {
+
+    }
+}
+
+function getSortedMeshViews(registry: Registry) {
+    let items = [...registry.stores.canvasStore.getMeshViews()];
+    return sort(items, (a, b) => a.layer - b.layer);
 }

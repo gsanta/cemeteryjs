@@ -32,6 +32,12 @@ import { SvgGroupComp } from '../gui/svg/SvgGroupComp';
 import { SvgCanvasComp } from '../gui/surfaces/SvgCanvasComp';
 import { UI_SvgCanvas } from './elements/UI_SvgCanvas';
 import { AbstractPlugin } from '../AbstractPlugin';
+import { UI_SvgCircle } from './elements/svg/UI_SvgCircle';
+import { SvgCircleComp } from '../gui/svg/SvgCircleComp';
+import { UI_SvgImage } from './elements/svg/UI_SvgImage';
+import { SvgImageComp } from '../gui/svg/SvgImageComp';
+import { UI_SvgPath } from './elements/svg/UI_SvgPath';
+import { SvgPathComp } from '../gui/svg/SvgPathComp';
 
 export class UI_Builder {
 
@@ -117,7 +123,16 @@ export class UI_Builder {
                 return <GridSelectComp element={gridSelect}/>
             case UI_ElementType.SvgRect:
                 const rect = element as UI_SvgRect;
-                return <SvgRectComp element={rect}/>; 
+                return <SvgRectComp element={rect}/>;
+            case UI_ElementType.SvgCircle:
+                const circle = element as UI_SvgCircle;
+                return <SvgCircleComp element={circle}/>;
+            case UI_ElementType.SvgImage:
+                const image = element as UI_SvgImage;
+                return <SvgImageComp element={image}/>; 
+            case UI_ElementType.SvgPath:
+                const path = element as UI_SvgPath
+                return <SvgPathComp element={path}/>; 
         }
     }
 }   

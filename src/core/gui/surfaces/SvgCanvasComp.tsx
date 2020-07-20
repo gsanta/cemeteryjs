@@ -84,7 +84,7 @@ export class SvgCanvasComp extends React.Component<{plugin: AbstractPlugin}> {
                         <PathMarkersComponent/>
                     </defs>
                     {this.props.children}
-                    <MeshViewContainerComponent hover={hover} unhover={unhover} registry={this.context.registry} renderWithSettings={false}/>
+                    {/* <MeshViewContainerComponent hover={hover} unhover={unhover} registry={this.context.registry} renderWithSettings={false}/> */}
                     <PathViewContainerComponent hover={hover} unhover={unhover} registry={this.context.registry} renderWithSettings={false}/>
                     {this.renderFeedbacks()}
                 </SceneEditorComponentStyled>
