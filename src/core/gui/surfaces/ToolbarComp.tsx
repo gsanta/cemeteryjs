@@ -1,14 +1,12 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { AbstractPlugin } from '../../../core/AbstractPlugin';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
-import { FullScreenExitIconComponent } from '../../../core/gui/icons/FullScreenExitIconComponent';
-import { FullScreenIconComponent } from '../../../core/gui/icons/FullScreenIconComponent';
 import { colors } from '../../../core/gui/styles';
-import { RenderTask } from '../../../core/services/RenderServices';
 import { UI_Toolbar } from '../../gui_builder/elements/toolbar/UI_Toolbar';
 import { UI_ComponentProps } from '../UI_ComponentProps';
+import { cssClassBuilder } from '../../gui_builder/UI_ReactElements';
 import { UI_Tool } from '../../gui_builder/elements/toolbar/UI_Tool';
+const undoIcon = require('../../../../assets/images/icons/undo.svg');
 
 const ToolbarStyled = styled.div`
     position: absolute;
@@ -22,10 +20,19 @@ const ToolbarStyled = styled.div`
     justify-content: space-between;
     flex-wrap: wrap;
     width: 100%;
-    background-color: ${(props: ToolbarProps) => props.backgroundColor ? props.backgroundColor : 'transparent'};
+    background-color: transparent;
 
     > *:not(:last-child) {
         margin-right: 1px;
+    }
+
+    .ce-tool {
+        width: 24px;
+        height: 24px;
+
+        &.undo {
+            background-image: url(${undoIcon});
+        }
     }
 `;
 
@@ -35,60 +42,38 @@ const ToolGroupStyled = styled.div`
     height: 26px;
 `;
 
+export interface ToolbarCompProps extends UI_ComponentProps<UI_Toolbar> {
+    toolsLeft: JSX.Element[];
+    toolsMiddle: JSX.Element[];
+    toolsRight: JSX.Element[];
+}
+
 export class ToolbarComp extends React.Component<UI_ComponentProps<UI_Toolbar>> {
     static contextType = AppContext;
     context: AppContextType;
 
     render(): JSX.Element {
-        const pluginService = this.context.registry.plugins;
-
-
-        this.props.
-
-        const rightIcons: JSX.Element[] = [];
-
         const leftSection = <ToolGroupStyled></ToolGroupStyled>
-        const centerSection = <ToolGroupStyled></ToolGroupStyled>
+        const middleSection = <ToolGroupStyled></ToolGroupStyled>
         const rightSection =  <ToolGroupStyled></ToolGroupStyled>;
 
         return (
             <ToolbarStyled {...this.props}>
                 <div>
-                    {toolIcons.length || this.props.children ? leftSection : null}
+                    {leftSection}                    
                 </div>
                 <div>
-                    {this.props.centerIcons ? centerSection : null}
+                    {middleSection}
                 </div>
                 <div>
-                    {rightIcons.length > 0 ? rightSection : null}
+                    {rightSection}
                 </div>
             </ToolbarStyled>
         )
     }
+}
 
-    private renderEnterFullScreenIcon(): JSX.Element {
-        return (
-            <FullScreenIconComponent 
-                isActive={false} 
-                onClick={() => {
-                    this.context.registry.plugins.setActivePlugins([this.props.view]);
-                    this.context.registry.services.render.runImmediately(RenderTask.RenderFull);
-                }} 
-                format="short"
-            />
-        )
-    }
-
-    private renderExitFullScreenIcon(): JSX.Element {
-        return (
-            <FullScreenExitIconComponent
-                isActive={false}
-                onClick={() => {
-                    this.context.registry.plugins.selectPredefinedLayout(this.context.registry.plugins.getCurrentPredefinedLayout().title);
-                    this.context.registry.services.render.runImmediately(RenderTask.RenderFull);            
-                }}
-                format="short"
-            />
-        )
-    }
+export const ToolComp = (props: UI_ComponentProps<UI_Tool>) => {
+    const classes = cssClassBuilder('ce-tool', props.element.icon);
+    return <div className={classes}></div>;
 }

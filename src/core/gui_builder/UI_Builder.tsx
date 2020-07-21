@@ -54,20 +54,6 @@ export class UI_Builder {
         return this.buildContainer(plugin.render(), plugin);
     }
 
-    // private buildRecuresively(container: UI_Container): JSX.Element {
-    //     switch(container.type) {
-    //         case UI_ElementType.Layout:
-    //             const children = container.children.map(child => {
-    //                 if ((child as UI_Container).children !== undefined) {
-
-    //                 }
-    //             }
-
-    //             // return <div>${this.buildRecuresively()}</div>
-    //     }
-
-    // }
-
     private buildContainer(element: UI_Container, plugin: UI_Plugin): JSX.Element {
         const children = element.children.map(child => {
             if ((child as UI_Container).children !== undefined) {
@@ -109,7 +95,7 @@ export class UI_Builder {
         const toolsMiddle: JSX.Element[] = [];
         const toolsRight: JSX.Element[] = [];
 
-        uiToolbar.children.forEach(child => {
+        uiToolbar.get_UI_Tools().forEach(child => {
             switch(child.placement) {
                 case 'left':
                 default:
@@ -123,6 +109,8 @@ export class UI_Builder {
                 break;
             }
         });
+
+        return <ToolbarComp element={uiToolbar}></ToolbarComp>;
     }
 
     private buildLeaf(element: UI_Element): JSX.Element {
@@ -159,7 +147,7 @@ export class UI_Builder {
                 return <SvgPathComp element={path}/>; 
             case UI_ElementType.Toolbar:
                 const toolbar = element as UI_Toolbar;
-                return <ToolbarComp/>
+                return this.buildToolbar(toolbar);
         }
     }
 }   
