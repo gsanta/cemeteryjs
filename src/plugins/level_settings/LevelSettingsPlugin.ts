@@ -13,7 +13,7 @@ export class LevelSettingsPlugin extends UI_Plugin {
     constructor(registry: Registry) {
         super(registry);
 
-        this.controller = new LevelSettingsController(this.registry);
+        this.controller = new LevelSettingsController(this, this.registry);
     }
 
     renderInto(layout: UI_Layout): void {

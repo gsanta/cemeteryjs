@@ -21,12 +21,11 @@ export enum MeshObjectSettingsProps {
 }
 
 export class MeshObjectSettingsController extends AbstractController<MeshObjectSettingsProps> {
-    private plugin: ObjectSettingsPlugin;
     private tempVal: any;
     meshView: MeshView;
 
     constructor(plugin: ObjectSettingsPlugin,registry: Registry) {
-        super(registry);
+        super(plugin, registry);
         this.plugin = plugin;
 
         this.createPropHandler<number>(MeshObjectSettingsProps.MeshId)

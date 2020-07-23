@@ -13,7 +13,7 @@ export class LayoutSettingsPlugin extends UI_Plugin {
     constructor(registry: Registry) {
         super(registry);
 
-        this.controller = new LayoutSettingsController(registry)
+        this.controller = new LayoutSettingsController(this, registry)
     }
 
     renderInto(layout: UI_Layout): UI_Layout {

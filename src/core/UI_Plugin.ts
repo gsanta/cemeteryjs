@@ -48,17 +48,17 @@ export abstract class UI_Plugin implements IControlledObject {
 
     render(): UI_Container {
         if (this.region === UI_Region.SidepanelWidget) {
-            const accordionTab = new UI_AccordionTab(this.controller);
+            const accordionTab = new UI_AccordionTab(this.controller, this.region);
             accordionTab.title = this.displayName;
             this.renderInto(accordionTab);
             return accordionTab;
         } else if (this.region === UI_Region.Dialog) {
-            const layout = new UI_Layout(this.controller);
+            const layout = new UI_Layout(this.controller, this.region);
 
             this.renderInto(layout);
             return layout;
         } else if (this.region === UI_Region.Canvas1) {
-            const layout = new UI_Layout(this.controller);
+            const layout = new UI_Layout(this.controller, this.region);
 
             this.renderInto(layout);
             return layout;

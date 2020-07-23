@@ -4,13 +4,19 @@ import { UI_Container } from '../UI_Container';
 import { UI_SvgImage } from './UI_SvgImage';
 import { UI_SvgCircle } from './UI_SvgCircle';
 import { UI_SvgPath } from './UI_SvgPath';
+import { AbstractController } from '../../../../plugins/scene_editor/settings/AbstractController';
+import { UI_Element } from '../UI_Element';
 
 export class UI_SvgGroup extends UI_Container {
     elementType = UI_ElementType.SvgGroup;
 
     transform: string;
 
-    rect(prop?: string) {
+    generateId(parent: UI_Element): void {
+        this.id = `${parent.id}_${this.elementType}-${this.prop}`;
+    }
+
+    rect(key: string, prop?: string) {
         const rect = new UI_SvgRect(this.controller);
         rect.prop = prop;
     
@@ -19,7 +25,7 @@ export class UI_SvgGroup extends UI_Container {
         return rect;
     }
 
-    circle(prop?: string) {
+    circle(key: string, prop?: string) {
         const circle = new UI_SvgCircle(this.controller);
         circle.prop = prop;
     
@@ -28,7 +34,7 @@ export class UI_SvgGroup extends UI_Container {
         return circle;
     }
 
-    path(prop?: string) {
+    path(key: string, prop?: string) {
         const path = new UI_SvgPath(this.controller);
         path.prop = prop;
     
@@ -37,7 +43,7 @@ export class UI_SvgGroup extends UI_Container {
         return path;
     }
 
-    image(prop?: string) {
+    image(key: string, prop?: string) {
         const image = new UI_SvgImage(this.controller);
         image.prop = prop;
     
@@ -46,7 +52,7 @@ export class UI_SvgGroup extends UI_Container {
         return image;
     }
 
-    group(prop?: string) {
+    group(prop: string) {
         const group = new UI_SvgGroup(this.controller);
         group.prop = prop;
         

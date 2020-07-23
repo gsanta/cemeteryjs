@@ -1,6 +1,7 @@
 import { AbstractController } from "../scene_editor/settings/AbstractController";
 import { Registry } from "../../core/Registry";
 import { RenderTask } from "../../core/services/RenderServices";
+import { UI_Plugin } from "../../core/UI_Plugin";
 
 export enum LevelSettingsProps {
     Level = 'Level',
@@ -10,8 +11,8 @@ export enum LevelSettingsProps {
 
 export class LevelSettingsController extends AbstractController<LevelSettingsProps> {
     
-    constructor(registry: Registry) {
-        super(registry);
+    constructor(plugin: UI_Plugin, registry: Registry) {
+        super(plugin, registry);
 
         this.createPropHandler<number>(LevelSettingsProps.Level)
             .onChange((val) => {

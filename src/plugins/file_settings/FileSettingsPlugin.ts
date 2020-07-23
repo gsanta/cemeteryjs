@@ -12,7 +12,7 @@ export class FileSettingsPlugin extends UI_Plugin {
     constructor(registry: Registry) {
         super(registry);
 
-        this.controller = new FileSettingsController(registry)
+        this.controller = new FileSettingsController(this, registry)
     }
 
     renderInto(layout: UI_Layout): UI_Layout {

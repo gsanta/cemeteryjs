@@ -10,6 +10,10 @@ export class UI_Tool extends UI_Element {
 
     placement: 'left' | 'middle' | 'right';
 
+    generateId(parent: UI_Element): void {
+        this.id = `${parent.id}_${this.elementType}-${this.prop}`;
+    }
+
     tooltip() {
         this._tooltip = new UI_Tooltip(this.controller);
 

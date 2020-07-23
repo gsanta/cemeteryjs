@@ -11,12 +11,17 @@ export class UI_Toolbar extends UI_Element {
         return this.tools;
     }
 
+    generateId(parent: UI_Element): void {
+        this.id = `${parent.id}_${this.elementType}`;
+    }
+
     tool(prop?: string): UI_Tool {
         const tool = new UI_Tool(this.controller);
         tool.prop = prop;
 
         this.tools.push(tool);
 
+        tool.generateId(this);
         return tool;
 
     }

@@ -11,7 +11,7 @@ export class AssetManagerSidepanelPlugin extends UI_Plugin {
     constructor(registry: Registry) {
         super(registry);
 
-        this.controller = new AssetManagerSidepanelController(registry);
+        this.controller = new AssetManagerSidepanelController(this, registry);
     }
 
     renderInto(layout: UI_Layout): void {

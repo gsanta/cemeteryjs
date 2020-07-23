@@ -4,6 +4,7 @@ import { Registry } from '../../core/Registry';
 import { RenderTask } from '../../core/services/RenderServices';
 import { AbstractController } from '../scene_editor/settings/AbstractController';
 import { PathView } from '../../core/models/views/PathView';
+import { UI_Plugin } from '../../core/UI_Plugin';
 
 export enum PathObjectSettingsProps {
     PathId = 'PathId',
@@ -12,8 +13,8 @@ export enum PathObjectSettingsProps {
 export class PathObjectSettingsController extends AbstractController<PathObjectSettingsProps> {
     pathView: PathView;
 
-    constructor(registry: Registry) {
-        super(registry);
+    constructor(plugin: UI_Plugin, registry: Registry) {
+        super(plugin, registry);
 
         this.createPropHandler<string>(PathObjectSettingsProps.PathId)
             .onChange((val, context) => {

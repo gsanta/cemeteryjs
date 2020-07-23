@@ -144,10 +144,10 @@ export class ToolComp extends React.Component<ToolCompProps> {
         const tooltipHtml = `Eraser tool <b>(Shift + E)</b>`
 
         if (this.props.element.tooltip) {
-            tippy(this.ref.current as any, {
-                content: this.props.element.tooltip,
-                allowHTML: true
-            });
+            // tippy(this.ref.current as any, {
+            //     content: this.props.element.tooltip,
+            //     allowHTML: true
+            // });
         }
     }
     

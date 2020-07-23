@@ -4,6 +4,7 @@ import { saveAs } from 'file-saver';
 import { RenderTask } from '../../core/services/RenderServices';
 import { ToolType } from '../common/tools/Tool';
 import { DeleteTool } from '../common/tools/DeleteTool';
+import { UI_Plugin } from '../../core/UI_Plugin';
 
 
 export enum FileSettingsProps {
@@ -15,8 +16,8 @@ export enum FileSettingsProps {
 export class FileSettingsController extends AbstractController<FileSettingsProps> {
 
 
-    constructor(registry: Registry) {
-        super(registry);
+    constructor(plugin: UI_Plugin, registry: Registry) {
+        super(plugin, registry);
 
         this.createPropHandler(FileSettingsProps.Export)
             .onClick(() => {

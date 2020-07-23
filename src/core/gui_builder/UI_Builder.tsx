@@ -127,9 +127,9 @@ export class UI_Builder {
         return <ToolbarComp toolsLeft={toolsLeft} toolsMiddle={toolsMiddle} toolsRight={toolsRight} element={uiToolbar}></ToolbarComp>;
     }
 
-    private buildTool(uiTool: UI_Tool) {
-        return <ToolComp element={uiTool}/>; 
-    }
+    // private buildTool(uiTool: UI_Tool) {
+    //     return <ToolComp element={uiTool}/>; 
+    // }
 
     private buildLeaf(element: UI_Element): JSX.Element {
         switch(element.elementType) {

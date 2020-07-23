@@ -1,6 +1,7 @@
 import { Registry } from '../../core/Registry';
 import { AbstractController } from '../scene_editor/settings/AbstractController';
 import { RenderTask } from '../../core/services/RenderServices';
+import { UI_Plugin } from '../../core/UI_Plugin';
 
 export enum LayoutSettingsProps {
     AllLayouts = 'AllLayouts',
@@ -8,8 +9,8 @@ export enum LayoutSettingsProps {
 }
 
 export class LayoutSettingsController extends AbstractController<LayoutSettingsProps> {
-    constructor(registry: Registry) {
-        super(registry);
+    constructor(plugin: UI_Plugin, registry: Registry) {
+        super(plugin, registry);
 
         this.createPropHandler(LayoutSettingsProps.AllLayouts)
             .onGet(() => {

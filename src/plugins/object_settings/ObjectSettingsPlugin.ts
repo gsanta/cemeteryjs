@@ -25,7 +25,7 @@ export class ObjectSettingsPlugin extends UI_Plugin {
 
         // this.engine = new EngineService(this.registry)
         this.meshObjectSettingsController = new MeshObjectSettingsController(this, registry);
-        this.pathObjectSettingsController = new PathObjectSettingsController(registry);
+        this.pathObjectSettingsController = new PathObjectSettingsController(this, registry);
     }
 
     renderInto(layout: UI_Layout): void {

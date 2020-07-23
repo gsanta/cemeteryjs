@@ -1,4 +1,5 @@
 import { Registry } from '../../../core/Registry';
+import { UI_Plugin } from '../../../core/UI_Plugin';
 
 export interface PropHandlers {
     onChange?(val: any, context: PropContext<any>,  controller: AbstractController): void;
@@ -76,8 +77,10 @@ export abstract class AbstractController<P = any> {
     private handlers: Map<P, PropHandler<any>> = new Map();
 
     protected registry: Registry;
+    plugin: UI_Plugin;
 
-    constructor(registry: Registry) {
+    constructor(plugin: UI_Plugin, registry: Registry) {
+        this.plugin = plugin;
         this.registry = registry;
     }
 
