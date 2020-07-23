@@ -17,6 +17,7 @@ export enum UI_ElementType {
     SvgPath = 'SvgPath',
 
     Text = 'Text',
+    Tooltip = 'Tooltip',
 
     Table = 'Table',
     TableRow = 'TableRow',

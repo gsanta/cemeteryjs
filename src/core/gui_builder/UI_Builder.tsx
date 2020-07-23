@@ -39,8 +39,8 @@ import { SvgImageComp } from '../gui/svg/SvgImageComp';
 import { UI_SvgPath } from './elements/svg/UI_SvgPath';
 import { SvgPathComp } from '../gui/svg/SvgPathComp';
 import { UI_Toolbar } from './elements/toolbar/UI_Toolbar';
+import { ToolbarComp, ToolComp } from '../gui/surfaces/ToolbarComp';
 import { UI_Tool } from './elements/toolbar/UI_Tool';
-import { ToolbarComp } from '../gui/surfaces/ToolbarComp';
 
 export class UI_Builder {
 
@@ -55,39 +55,53 @@ export class UI_Builder {
     }
 
     private buildContainer(element: UI_Container, plugin: UI_Plugin): JSX.Element {
-        const children = element.children.map(child => {
+        switch(element.elementType) {
+            case UI_ElementType.Layout:
+                return <div>{this.buildChildren(element, plugin)}</div>;
+            case UI_ElementType.Row:
+                const row = element as UI_Row;
+                return <RowGui element={row}>{this.buildChildren(element, plugin)}</RowGui>;
+            case UI_ElementType.AccordionTab:
+                const accordionTab = element as UI_AccordionTab;
+                return <AccordionTabComp element={accordionTab}>{this.buildChildren(element, plugin)}</AccordionTabComp>;
+            case UI_ElementType.Table:
+                const table = element as UI_Table;
+                return <TableComp element={table}>{this.buildChildren(element, plugin)}</TableComp>;
+            case UI_ElementType.TableRow:
+                const tableRow = element as UI_TableRow;
+                return <TableRowComp element={tableRow}>{this.buildChildren(element, plugin)}</TableRowComp>;
+            case UI_ElementType.TableColumn:
+                const tableColumn = element as UI_TableColumn;
+                return <TableColumnComp element={tableColumn}>{this.buildChildren(element, plugin)}</TableColumnComp>;
+            case UI_ElementType.SvgGroup:
+                const group = element as UI_SvgGroup;
+                return <SvgGroupComp element={group}>{this.buildChildren(element, plugin)}</SvgGroupComp>
+            case UI_ElementType.SvgCanvas:
+                return this.buildSvgCanvas(element as UI_SvgCanvas, plugin);
+        }
+    }
+
+    private buildChildren(element: UI_Container, plugin: UI_Plugin): JSX.Element[] {
+        return element.children.map(child => {
             if ((child as UI_Container).children !== undefined) {
                 return this.buildContainer(child as UI_Container, plugin);
             } else {
                 return this.buildLeaf(child);
             }
         });
+    }
 
-        switch(element.elementType) {
-            case UI_ElementType.Layout:
-                return <div>{children}</div>;
-            case UI_ElementType.Row:
-                const row = element as UI_Row;
-                return <RowGui element={row}>{children}</RowGui>;
-            case UI_ElementType.AccordionTab:
-                const accordionTab = element as UI_AccordionTab;
-                return <AccordionTabComp element={accordionTab}>{children}</AccordionTabComp>;
-            case UI_ElementType.Table:
-                const table = element as UI_Table;
-                return <TableComp element={table}>{children}</TableComp>;
-            case UI_ElementType.TableRow:
-                const tableRow = element as UI_TableRow;
-                return <TableRowComp element={tableRow}>{children}</TableRowComp>;
-            case UI_ElementType.TableColumn:
-                const tableColumn = element as UI_TableColumn;
-                return <TableColumnComp element={tableColumn}>{children}</TableColumnComp>;
-            case UI_ElementType.SvgGroup:
-                const group = element as UI_SvgGroup;
-                return <SvgGroupComp element={group}>{children}</SvgGroupComp>
-            case UI_ElementType.SvgCanvas:
-                const svgCanvas = element as UI_SvgCanvas;
-                return <SvgCanvasComp plugin={plugin as AbstractPlugin}>{children}</SvgCanvasComp>;
+    private buildSvgCanvas(uiSvgCanvas: UI_SvgCanvas, plugin: UI_Plugin) {
+        let toolbar: JSX.Element = null;
+
+        if (uiSvgCanvas.getToolbar()) {
+            toolbar = this.buildToolbar(uiSvgCanvas.getToolbar());
         }
+
+        const children = this.buildChildren(uiSvgCanvas, plugin);
+
+        return <SvgCanvasComp toolbar={toolbar} element={uiSvgCanvas} plugin={plugin as AbstractPlugin}>{children}</SvgCanvasComp>;
+
     }
 
     private buildToolbar(uiToolbar: UI_Toolbar) {
@@ -110,7 +124,11 @@ export class UI_Builder {
             }
         });
 
-        return <ToolbarComp element={uiToolbar}></ToolbarComp>;
+        return <ToolbarComp toolsLeft={toolsLeft} toolsMiddle={toolsMiddle} toolsRight={toolsRight} element={uiToolbar}></ToolbarComp>;
+    }
+
+    private buildTool(uiTool: UI_Tool) {
+        return <ToolComp element={uiTool}/>; 
     }
 
     private buildLeaf(element: UI_Element): JSX.Element {
@@ -148,6 +166,8 @@ export class UI_Builder {
             case UI_ElementType.Toolbar:
                 const toolbar = element as UI_Toolbar;
                 return this.buildToolbar(toolbar);
+            case UI_ElementType.Tool:
+
         }
     }
 }   

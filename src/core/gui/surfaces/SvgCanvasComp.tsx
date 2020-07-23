@@ -4,15 +4,16 @@ import { RedoIconComponent } from '../../../plugins/common/toolbar/icons/RedoIco
 import { UndoIconComponent } from '../../../plugins/common/toolbar/icons/UndoIconComponent';
 import { ToolbarComponent } from '../../../plugins/common/toolbar/ToolbarComponent';
 import { ToolType } from '../../../plugins/common/tools/Tool';
-import { MeshViewContainerComponent } from '../../../plugins/scene_editor/components/MeshViewComponent';
 import { PathViewContainerComponent } from '../../../plugins/scene_editor/components/PathViewComponent';
 import { SceneEditorPlugin, SceneEditorPluginId } from '../../../plugins/scene_editor/SceneEditorPlugin';
 import { AbstractPlugin } from '../../AbstractPlugin';
+import { UI_SvgCanvas } from '../../gui_builder/elements/UI_SvgCanvas';
 import { View } from '../../models/views/View';
 import { PathMarkersComponent } from '../../services/export/PathMarkersComponent';
 import { WheelListener } from '../../services/WheelListener';
 import { AppContext, AppContextType } from '../Context';
 import { colors } from '../styles';
+import { UI_ComponentProps } from '../UI_ComponentProps';
 
 const EditorComponentStyled = styled.div`
     width: 100%;
@@ -32,7 +33,12 @@ const SelectionComponentStyled = styled.rect`
     fill: transparent;
 `;
 
-export class SvgCanvasComp extends React.Component<{plugin: AbstractPlugin}> {
+export interface SvgCanvasCompProps extends UI_ComponentProps<UI_SvgCanvas> {
+    toolbar: JSX.Element;
+    plugin: AbstractPlugin;
+}
+
+export class SvgCanvasComp extends React.Component<SvgCanvasCompProps> {
     static contextType = AppContext;
     context: AppContextType;
     protected ref: React.RefObject<HTMLDivElement>;
@@ -66,6 +72,7 @@ export class SvgCanvasComp extends React.Component<{plugin: AbstractPlugin}> {
                     <RedoIconComponent key={'redo-icon'} isActive={false} disabled={!history.hasRedoHistory()} onClick={() => history.redo()} format="short"/>
 
                 </ToolbarComponent>
+                {/* {this.props.toolbar} */}
                 <SceneEditorComponentStyled
                     tabIndex={0}
                     viewBox={plugin.getCamera().getViewBoxAsString()}

@@ -13,7 +13,7 @@ export const colors = {
     panelBackground: '#333333',
     panelBackgroundLight: '#5f5b60',
     panelBackgroundMedium: '#4b484d',
-    hoverBackground: '#337ab7',
+    hoverBackground: '#6188E4',
 
     views: {
         highlight: '#5e5ad1',

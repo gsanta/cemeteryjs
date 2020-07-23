@@ -99,6 +99,52 @@ export class SceneEditorPlugin extends AbstractPlugin {
 
     protected renderInto(layout: UI_Layout): void {
         const canvas = layout.svgCanvas();
+
+        const toolbar = canvas.toolbar();
+        
+        let tool = toolbar.tool();
+        tool.icon = 'brush';
+
+        tool = toolbar.tool();
+        tool.icon = 'path';
+        let tooltip = tool.tooltip();
+        tooltip.label = 'Path tool';
+
+        tool = toolbar.tool();
+        tool.icon = 'select';
+        tooltip = tool.tooltip();
+        tooltip.label = 'Select tool';
+
+        tool = toolbar.tool();
+        tool.icon = 'delete';
+        tooltip = tool.tooltip();
+        tooltip.label = 'Delete tool';
+
+        tool = toolbar.tool();
+        tool.icon = 'pan';
+        tooltip = tool.tooltip();
+        tooltip.label = 'Pan tool';
+
+        tool = toolbar.tool();
+        tool.icon = 'zoom-in';
+        tooltip = tool.tooltip();
+        tooltip.label = 'Zoom in';
+
+        tool = toolbar.tool();
+        tool.icon = 'zoom-out';
+        tooltip = tool.tooltip();
+        tooltip.label = 'Zoom out';
+
+        tool = toolbar.tool();
+        tool.icon = 'undo';
+        tooltip = tool.tooltip();
+        tooltip.label = 'Undo';
+
+        tool = toolbar.tool();
+        tool.icon = 'redo';
+        tooltip = tool.tooltip();
+        tooltip.label = 'Redo';
+
         this.renderMeshViews(canvas);
         this.renderPathViews(canvas);
     }
