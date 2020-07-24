@@ -151,7 +151,7 @@ export class SceneEditorPlugin extends AbstractPlugin {
 
     private renderMeshViews(canvas: UI_SvgCanvas) {
         const views = getSortedMeshViews(this.registry).map(item => {
-            const group = canvas.group();
+            const group = canvas.group(item.id);
             group.transform = `translate(${item.dimensions.topLeft.x} ${item.dimensions.topLeft.y}) rotate(${toDegree(item.getRotation())} ${item.dimensions.getWidth() / 2} ${item.dimensions.getHeight() / 2})`;
             const rect = group.rect();
             rect.width = item.dimensions.getWidth();

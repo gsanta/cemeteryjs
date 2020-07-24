@@ -78,7 +78,7 @@ function zoomOut(toolType: ToolType, view: AbstractPlugin, registry: Registry) {
 
 
 function isToolActive(toolType: ToolType, view: AbstractPlugin) {
-        return view.getSelectedTool() && view.getSelectedTool().type === toolType;
+        return view.getSelectedTool() && view.getSelectedTool().id === toolType;
 }
 
 function activateTool(toolType: ToolType, plugin: AbstractPlugin, registry: Registry) {

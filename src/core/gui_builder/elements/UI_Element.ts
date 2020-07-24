@@ -1,23 +1,22 @@
 import { AbstractController } from '../../../plugins/scene_editor/settings/AbstractController';
 import { UI_ElementType } from './UI_ElementType';
+import { UI_Plugin } from '../../UI_Plugin';
 
 export abstract class UI_Element {
     elementType: UI_ElementType;
     id: string;
-    protected controller: AbstractController;
+    readonly plugin: UI_Plugin;
+    controllerId: string;
     prop: string;
+    key: string;
     isBold: boolean;
 
-    constructor(controller: AbstractController) {
-        this.controller = controller;
+    constructor(plugin: UI_Plugin) {
+        this.plugin = plugin;
     }
 
     generateId(parent: UI_Element): void {
-        this.id = `${parent.id}_${this.elementType}-${this.prop}`;
-    }
-
-    setController(controller: AbstractController) {
-        this.controller = controller;
+        this.id = `${parent.id}_${this.elementType}-${this.prop ? this.prop : this.key}`;
     }
 
     mouseOver() {

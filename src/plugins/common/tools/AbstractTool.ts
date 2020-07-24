@@ -8,7 +8,7 @@ import { IPointerEvent } from '../../../core/services/input/PointerService';
 import { AbstractViewStore } from '../../../core/stores/AbstractViewStore';
 
 export class AbstractTool implements Tool {
-    type: ToolType;
+    id: ToolType;
 
     getCursor() { return Cursor.Default; }
     
@@ -16,7 +16,7 @@ export class AbstractTool implements Tool {
     protected registry: Registry;
 
     constructor(type: ToolType, plugin: AbstractPlugin, registry: Registry) {
-        this.type = type;
+        this.id = type;
         this.plugin = plugin;
         this.registry = registry;
     }

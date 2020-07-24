@@ -27,7 +27,7 @@ export class ViewComponent<T extends View> extends React.Component<InstanceProps
         let hoverColor: string = undefined;
         if (this.props.registry.plugins.getHoveredView()) {
             const activeTool = this.props.registry.plugins.getHoveredView().getActiveTool();
-            hoverColor = this.props.registry.services.pointer.hoveredItem === this.props.item ? activeTool.type === ToolType.Delete ? colors.views.delete : colors.views.highlight : undefined;
+            hoverColor = this.props.registry.services.pointer.hoveredItem === this.props.item ? activeTool.id === ToolType.Delete ? colors.views.delete : colors.views.highlight : undefined;
         }
 
         return hoverColor || selectionColor || defaultColor;

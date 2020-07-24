@@ -1,7 +1,7 @@
 import { UI_Element } from '../UI_Element';
 import { UI_Tool } from './UI_Tool';
 import { UI_ElementType } from '../UI_ElementType';
-
+import { Tool } from '../../../../plugins/common/tools/Tool';
 
 export class UI_Toolbar extends UI_Element {
     elementType = UI_ElementType.Toolbar;
@@ -15,14 +15,13 @@ export class UI_Toolbar extends UI_Element {
         this.id = `${parent.id}_${this.elementType}`;
     }
 
-    tool(prop?: string): UI_Tool {
-        const tool = new UI_Tool(this.controller);
-        tool.prop = prop;
+    tool(tool: Tool): UI_Tool {
+        const uiTool = new UI_Tool(tool);
 
-        this.tools.push(tool);
+        this.tools.push(uiTool);
 
-        tool.generateId(this);
-        return tool;
+        uiTool.generateId(this);
+        return uiTool;
 
     }
 }

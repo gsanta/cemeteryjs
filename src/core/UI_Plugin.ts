@@ -46,6 +46,8 @@ export abstract class UI_Plugin implements IControlledObject {
     displayName: string;
     region: UI_Region;
 
+    controllers: {id: string}[];
+
     render(): UI_Container {
         if (this.region === UI_Region.SidepanelWidget) {
             const accordionTab = new UI_AccordionTab(this.controller, this.region);
@@ -72,5 +74,9 @@ export abstract class UI_Plugin implements IControlledObject {
 
     constructor(registry: Registry) {
         this.registry = registry;
+    }
+
+    getControllerById() {
+        
     }
 }
