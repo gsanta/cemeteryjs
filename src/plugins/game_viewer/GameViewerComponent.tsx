@@ -44,7 +44,11 @@ export class GameViewerComponent extends AbstractPluginComponent {
     
     componentDidMount() {
         super.componentDidMount();
-        this.wheelListener = new WheelListener(this.context.registry);
+        this.wheelListener = new WheelListener(
+            this.context.registry,
+            (e: WheelEvent) => {},
+            () => {}
+        );
         this.props.plugin.setRenderer(() => this.forceUpdate());
         
         setTimeout(() => {
@@ -96,7 +100,7 @@ export class GameViewerComponent extends AbstractPluginComponent {
                         onMouseDown={(e) => this.context.registry.services.mouse.onMouseDown(e.nativeEvent)}
                         onMouseMove={(e) => this.context.registry.services.mouse.onMouseMove(e.nativeEvent)}
                         onMouseUp={(e) => this.context.registry.services.mouse.onMouseUp(e.nativeEvent)}
-                        onMouseLeave={(e) => this.context.registry.services.mouse.onMouseOut(e.nativeEvent)}
+                        onMouseLeave={(e) => this.context.registry.services.mouse.onMouseLeave(e.nativeEvent)}
                         onMouseOver={() => view.over()}
                         onMouseOut={() => view.out()}
                         onWheel={(e) => this.wheelListener.onWheel(e.nativeEvent)}

@@ -74,7 +74,7 @@ export class SceneEditorComponent extends AbstractPluginComponent {
                     onMouseDown={(e) => this.context.registry.services.mouse.onMouseDown(e.nativeEvent)}
                     onMouseMove={(e) => this.context.registry.services.mouse.onMouseMove(e.nativeEvent)}
                     onMouseUp={(e) => this.context.registry.services.mouse.onMouseUp(e.nativeEvent)}
-                    onMouseLeave={(e) => this.context.registry.services.mouse.onMouseOut(e.nativeEvent)}
+                    onMouseLeave={(e) => this.context.registry.services.mouse.onMouseLeave(e.nativeEvent)}
                     onKeyDown={e => this.context.registry.services.keyboard.onKeyDown(e.nativeEvent)}
                     onKeyUp={e => this.context.registry.services.keyboard.onKeyUp(e.nativeEvent)}
                     onMouseOver={() => plugin.over()}

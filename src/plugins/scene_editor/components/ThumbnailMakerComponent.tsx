@@ -64,7 +64,11 @@ export class ThumbnailMakerComponent extends React.Component<ThumbnailMakerProps
     }
     
     componentDidMount() {
-        this.wheelListener = new WheelListener(this.context.registry);
+        this.wheelListener = new WheelListener(
+            this.context.registry,
+            (e: WheelEvent) => {},
+            () => {}
+        );
         this.ref.current && this.context.registry.services.hotkey.registerInput(this.ref.current);
         this.ref.current.focus();
     }
@@ -87,7 +91,7 @@ export class ThumbnailMakerComponent extends React.Component<ThumbnailMakerProps
                     onMouseDown={(e) => this.context.registry.services.mouse.onMouseDown(e.nativeEvent)}
                     onMouseMove={(e) => this.context.registry.services.mouse.onMouseMove(e.nativeEvent)}
                     onMouseUp={(e) => this.context.registry.services.mouse.onMouseUp(e.nativeEvent)}
-                    onMouseLeave={(e) => this.context.registry.services.mouse.onMouseOut(e.nativeEvent)}
+                    onMouseLeave={(e) => this.context.registry.services.mouse.onMouseLeave(e.nativeEvent)}
                     onWheel={(e) => this.wheelListener.onWheel(e.nativeEvent)}
                     onKeyDown={e => this.context.registry.services.keyboard.onKeyDown(e.nativeEvent)}
                     onKeyUp={e => this.context.registry.services.keyboard.onKeyUp(e.nativeEvent)}

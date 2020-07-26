@@ -45,7 +45,11 @@ export class SvgCanvasComp extends React.Component<SvgCanvasCompProps> {
     private wheelListener: WheelListener;
 
     componentDidMount() {
-        this.wheelListener = new WheelListener(this.context.registry);
+        this.wheelListener = new WheelListener(
+            this.context.registry,
+            (e: WheelEvent) => this.props.element.mouseWheel(e),
+            () => this.props.element.mouseWheelEnd()
+        );
 
         setTimeout(() => {
             (this.props.element.plugin as AbstractPlugin).componentMounted(this.ref.current);
@@ -76,14 +80,24 @@ export class SvgCanvasComp extends React.Component<SvgCanvasCompProps> {
                     tabIndex={0}
                     viewBox={plugin.getCamera().getViewBoxAsString()}
                     id={this.context.controllers.svgCanvasId}
-                    onMouseDown={(e) => this.context.registry.services.mouse.onMouseDown(e.nativeEvent)}
-                    onMouseMove={(e) => this.context.registry.services.mouse.onMouseMove(e.nativeEvent)}
-                    onMouseUp={(e) => this.context.registry.services.mouse.onMouseUp(e.nativeEvent)}
-                    onMouseLeave={(e) => this.context.registry.services.mouse.onMouseOut(e.nativeEvent)}
-                    onKeyDown={e => this.context.registry.services.keyboard.onKeyDown(e.nativeEvent)}
-                    onKeyUp={e => this.context.registry.services.keyboard.onKeyUp(e.nativeEvent)}
-                    onMouseOver={() => plugin.over()}
-                    onMouseOut={() => plugin.out()}
+                    // onMouseDown={(e) => this.context.registry.services.mouse.onMouseDown(e.nativeEvent)}
+                    // onMouseMove={(e) => this.context.registry.services.mouse.onMouseMove(e.nativeEvent)}
+                    // onMouseUp={(e) => this.context.registry.services.mouse.onMouseUp(e.nativeEvent)}
+                    // onMouseLeave={(e) => this.context.registry.services.mouse.onMouseLeave(e.nativeEvent)}
+                    // onKeyDown={e => this.context.registry.services.keyboard.onKeyDown(e.nativeEvent)}
+                    // onKeyUp={e => this.context.registry.services.keyboard.onKeyUp(e.nativeEvent)}
+                    // onMouseOver={() => plugin.over()}
+                    // onMouseOut={() => plugin.out()}
+                    // onWheel={(e) => this.wheelListener.onWheel(e.nativeEvent)}
+
+                    onMouseDown={(e) => this.props.element.mouseDown(e.nativeEvent)}
+                    onMouseMove={(e) => this.props.element.mouseMove(e.nativeEvent)}
+                    onMouseUp={(e) => this.props.element.mouseUp(e.nativeEvent)}
+                    onMouseLeave={(e) => this.props.element.mouseLeave(e.nativeEvent)}
+                    onKeyDown={e => this.props.element.keyDown(e.nativeEvent)}
+                    onKeyUp={e => this.props.element.keyUp(e.nativeEvent)}
+                    onMouseOver={(e) => this.props.element.mouseOver(e.nativeEvent)}
+                    onMouseOut={(e) => this.props.element.mouseOut(e.nativeEvent)}
                     onWheel={(e) => this.wheelListener.onWheel(e.nativeEvent)}
                 >
                     <defs>

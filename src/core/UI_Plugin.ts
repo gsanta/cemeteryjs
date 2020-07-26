@@ -50,6 +50,15 @@ export abstract class UI_Plugin implements IControlledObject {
     protected controllers: Map<string, AbstractController> = new Map();
     protected tools: Map<string, Tool> = new Map();
 
+    protected abstract renderInto(layout: UI_Layout): void;
+
+    // TODO make it protected later
+    public registry: Registry;
+
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
+
     render(): UI_Container {
         if (this.region === UI_Region.SidepanelWidget) {
             const accordionTab = new UI_AccordionTab(this, this.region);
@@ -69,14 +78,6 @@ export abstract class UI_Plugin implements IControlledObject {
         }
     }
 
-    protected abstract renderInto(layout: UI_Layout): void;
-
-    protected registry: Registry;
-
-    constructor(registry: Registry) {
-        this.registry = registry;
-    }
-
     getControllerById(id: string) {
         return this.controllers.get(id);
     }
@@ -85,5 +86,8 @@ export abstract class UI_Plugin implements IControlledObject {
         return this.tools.get(id);
     }
 
+    // TODO should be temporary, port it to PointerService somehow
+    over() {
 
+    }
 }

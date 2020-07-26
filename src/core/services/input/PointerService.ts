@@ -90,6 +90,10 @@ export class PointerService {
         this.isDrag = false;
     }
 
+    pointerOver() {
+        
+    }
+
     pointerWheel(e: IPointerEvent): void {
         this.prevWheelState = this.wheelState;
         this.wheelState += e.deltaY;

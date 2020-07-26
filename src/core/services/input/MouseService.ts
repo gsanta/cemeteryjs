@@ -53,7 +53,7 @@ export class MouseService {
         this.registry.services.hotkey.focus();
     }
 
-    onMouseOut(e: MouseEvent): void {
+    onMouseLeave(e: MouseEvent): void {
         this.registry.services.pointer.pointerOut(this.convertEvent(e, false));
     }
 

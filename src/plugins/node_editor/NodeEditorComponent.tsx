@@ -48,7 +48,11 @@ export class NodeEditorComponent extends AbstractPluginComponent {
 
     componentDidMount() {
         super.componentDidMount();
-        this.wheelListener = new WheelListener(this.context.registry);
+        this.wheelListener = new WheelListener(
+            this.context.registry,
+            (e: WheelEvent) => {},
+            () => {}
+        );
         this.context.registry.plugins.nodeEditor.setRenderer(() => this.forceUpdate());
         this.props.plugin.componentMounted(this.ref.current);
 
@@ -84,7 +88,7 @@ export class NodeEditorComponent extends AbstractPluginComponent {
                     onMouseDown={(e) => this.context.registry.services.mouse.onMouseDown(e.nativeEvent)}
                     onMouseMove={(e) => this.context.registry.services.mouse.onMouseMove(e.nativeEvent)}
                     onMouseUp={(e) => this.context.registry.services.mouse.onMouseUp(e.nativeEvent)}
-                    onMouseLeave={(e) => this.context.registry.services.mouse.onMouseOut(e.nativeEvent)}
+                    onMouseLeave={(e) => this.context.registry.services.mouse.onMouseLeave(e.nativeEvent)}
                     onKeyDown={e => this.context.registry.services.keyboard.onKeyDown(e.nativeEvent)}
                     onKeyUp={e => this.context.registry.services.keyboard.onKeyUp(e.nativeEvent)}
                     onMouseOver={() => view.over()}

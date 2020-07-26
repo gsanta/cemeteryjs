@@ -11,9 +11,19 @@ export class WheelListener {
     
     private timeout: (callback: Function) => void;
 
-    constructor(registry: Registry, timeout: (callback: Function) => void = defaultTimeout) {
+    private wheelCallback: (e: WheelEvent) => void;
+    private wheelEndCallback: () => void
+
+    constructor(
+        registry: Registry,
+        wheelCallback: (e: WheelEvent) => void,
+        wheelEndCallback: () => void,
+        timeout: (callback: Function) => void = defaultTimeout,
+    ) {
         this.registry = registry;
         this.timeout = timeout;
+        this.wheelCallback = wheelCallback;
+        this.wheelEndCallback = wheelEndCallback;
     }
 
     onWheel(e: WheelEvent) {
@@ -26,7 +36,7 @@ export class WheelListener {
             this.wheelCounter++;
         }
 
-        this.registry.services.mouse.onMouseWheel(e);
+        this.wheelCallback(e);
     }
 
     private listenToWheelEnd() {
@@ -35,7 +45,7 @@ export class WheelListener {
         this.timeout(() => {
             if (actCounter === this.wheelCounter) {
                 this.wheelInProgress = false;
-                this.registry.services.mouse.onMouseWheelEnd();
+                this.wheelEndCallback();
             } else {
                 this.listenToWheelEnd();
             }
