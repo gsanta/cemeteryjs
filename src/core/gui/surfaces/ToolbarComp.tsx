@@ -153,7 +153,7 @@ export class ToolComp extends React.Component<ToolCompProps> {
     
     render() {
         const classes = cssClassBuilder('ce-tool', `${this.props.element.icon}-icon`);
-        return <div ref={this.ref} className={classes}></div>;
+        return <div id={this.props.element.id} ref={this.ref} className={classes}>{this.props.tooltip}</div>;
     }
 }
 

@@ -101,35 +101,35 @@ export class SceneEditorPlugin extends AbstractPlugin {
 
         const toolbar = canvas.toolbar();
         
-        let tool = toolbar.tool({toolId: ToolType.Rectangle});
+        let tool = toolbar.tool({controllerId: ToolType.Rectangle});
         tool.icon = 'brush';
 
-        tool = toolbar.tool({toolId: ToolType.Path});
+        tool = toolbar.tool({controllerId: ToolType.Path});
         tool.icon = 'path';
         let tooltip = tool.tooltip();
         tooltip.label = 'Path tool';
 
-        tool = toolbar.tool({toolId: ToolType.Select});
+        tool = toolbar.tool({controllerId: ToolType.Select});
         tool.icon = 'select';
         tooltip = tool.tooltip();
         tooltip.label = 'Select tool';
 
-        tool = toolbar.tool({toolId: ToolType.Delete});
+        tool = toolbar.tool({controllerId: ToolType.Delete});
         tool.icon = 'delete';
         tooltip = tool.tooltip();
         tooltip.label = 'Delete tool';
 
-        tool = toolbar.tool({toolId: ToolType.Move});
+        tool = toolbar.tool({controllerId: ToolType.Move});
         tool.icon = 'pan';
         tooltip = tool.tooltip();
         tooltip.label = 'Pan tool';
 
-        tool = toolbar.tool({toolId: ToolType.Camera});
+        tool = toolbar.tool({controllerId: ToolType.Camera});
         tool.icon = 'zoom-in';
         tooltip = tool.tooltip();
         tooltip.label = 'Zoom in';
 
-        tool = toolbar.tool({toolId: ToolType.Camera});
+        tool = toolbar.tool({controllerId: ToolType.Camera});
         tool.icon = 'zoom-out';
         tooltip = tool.tooltip();
         tooltip.label = 'Zoom out';

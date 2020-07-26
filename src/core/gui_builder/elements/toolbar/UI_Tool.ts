@@ -19,11 +19,11 @@ export class UI_Tool extends UI_Element {
     }
 
     generateId(parent: UI_Element): void {
-        this.id = `${parent.id}_${this.elementType}_tool-${this.toolId}`;
+        this.id = `${parent.id}_${this.elementType}:${this.controllerId}`;
     }
 
     tooltip(): UI_Tooltip {
-        return UI_Factory.tooltip(this);
+        return UI_Factory.tooltip(this, { anchorId: this.id });
     }
 
     getTooltip(): UI_Tooltip {

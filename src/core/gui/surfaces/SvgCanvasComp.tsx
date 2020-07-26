@@ -62,7 +62,7 @@ export class SvgCanvasComp extends React.Component<SvgCanvasCompProps> {
 
         return (
             <EditorComponentStyled ref={this.ref} id={plugin.id} style={{cursor: plugin.getActiveTool().getCursor()}}>
-                <ToolbarComponent
+                {/* <ToolbarComponent
                     tools={[ToolType.Rectangle, ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Camera]}
                     view={plugin}
                     renderFullScreenIcon={true}
@@ -70,8 +70,8 @@ export class SvgCanvasComp extends React.Component<SvgCanvasCompProps> {
                     <UndoIconComponent key={'undo-icon'} isActive={false} disabled={!history.hasUndoHistory()} onClick={() => history.undo()} format="short"/>
                     <RedoIconComponent key={'redo-icon'} isActive={false} disabled={!history.hasRedoHistory()} onClick={() => history.redo()} format="short"/>
 
-                </ToolbarComponent>
-                {/* {this.props.toolbar} */}
+                </ToolbarComponent> */}
+                {this.props.toolbar}
                 <SceneEditorComponentStyled
                     tabIndex={0}
                     viewBox={plugin.getCamera().getViewBoxAsString()}

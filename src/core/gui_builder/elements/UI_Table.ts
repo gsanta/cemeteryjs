@@ -6,7 +6,7 @@ export class UI_Table extends UI_Container {
     elementType = UI_ElementType.Table;
     width: number;
 
-    tableRow(config: { isHeader?: boolean }) {
+    tableRow(config: { isHeader?: boolean, controllerId?: string }) {
         return UI_Factory.tableRow(this, config);
     }
 }
@@ -14,8 +14,8 @@ export class UI_Table extends UI_Container {
 export class UI_TableRow extends UI_Container {
     elementType = UI_ElementType.TableRow;
     isHeader: boolean = false;
-    tableColumn() {
-        return UI_Factory.tableColumn(this);
+    tableColumn(config: { controllerId?: string }) {
+        return UI_Factory.tableColumn(this, config);
     }
 }
 

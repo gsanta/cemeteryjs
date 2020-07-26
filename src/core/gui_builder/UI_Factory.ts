@@ -22,6 +22,8 @@ import { UI_Row } from './elements/UI_Row';
 export class UI_Factory {
     static row(parent: UI_Container, config: { controllerId?: string}): UI_Row {
         const row = new UI_Row(parent.plugin);
+
+        row.generateId(parent);
         parent.children.push(row);
 
         this.setController(parent, row, config);
@@ -33,6 +35,7 @@ export class UI_Factory {
         const svgCanvas = new UI_SvgCanvas(parent.plugin);
         parent.children.push(svgCanvas);
 
+        svgCanvas.generateId(parent);
         this.setController(parent, svgCanvas, config);
 
         return svgCanvas;
@@ -41,6 +44,7 @@ export class UI_Factory {
     static text(parent: UI_Container): UI_Text {
         const text = new UI_Text(parent.plugin);
 
+        text.generateId(parent);
         parent.children.push(text);
 
         return text;
@@ -50,6 +54,7 @@ export class UI_Factory {
         const button = new UI_Button(parent.plugin);
         button.prop = config.prop;
 
+        button.generateId(parent);
         this.setController(parent, button, config);
 
         parent.children.push(button);
@@ -62,6 +67,7 @@ export class UI_Factory {
         select.prop = config.valProp;
         select.listProp = config.listProp;
 
+        select.generateId(parent);
         this.setController(parent, select, config);
 
         parent.children.push(select);
@@ -70,14 +76,15 @@ export class UI_Factory {
     }
 
     static fileUpload(parent: UI_Container, config: { controllerId?: string, prop: string}): UI_FileUpload {
-        const button = new UI_FileUpload(parent.plugin);
-        button.prop = config.prop;
+        const fileUpload = new UI_FileUpload(parent.plugin);
+        fileUpload.prop = config.prop;
 
-        this.setController(parent, button, config);
+        fileUpload.generateId(parent);
+        this.setController(parent, fileUpload, config);
 
-        parent.children.push(button);
+        parent.children.push(fileUpload);
 
-        return button;
+        return fileUpload;
     }
 
 
@@ -86,6 +93,7 @@ export class UI_Factory {
         textField.prop = config.prop;
         textField.type = 'text';
 
+        textField.generateId(parent);
         this.setController(parent, textField, config);
 
         parent.children.push(textField);
@@ -98,6 +106,7 @@ export class UI_Factory {
         gridSelect.prop = config.prop;
         gridSelect.filledIndexProp = config.filledIndexProp;
 
+        gridSelect.generateId(parent);
         this.setController(parent, gridSelect, config);
 
         parent.children.push(gridSelect);
@@ -113,6 +122,9 @@ export class UI_Factory {
         const rect = new UI_SvgRect(parent.plugin);
         rect.prop = config.prop;
 
+        rect.generateId(parent);
+        this.setController(parent, rect, config);
+
         config.controllerId && (rect.controllerId = config.controllerId);
     
         parent.children.push(rect);
@@ -124,7 +136,8 @@ export class UI_Factory {
         const circle = new UI_SvgCircle(parent.plugin);
         circle.prop = config.prop;
 
-        config.controllerId && (circle.controllerId = config.controllerId);
+        circle.generateId(parent);
+        this.setController(parent, circle, config);
     
         parent.children.push(circle);
     
@@ -135,7 +148,8 @@ export class UI_Factory {
         const path = new UI_SvgPath(parent.plugin);
         path.prop = config.prop;
 
-        config.controllerId && (path.controllerId = config.controllerId);
+        path.generateId(parent);
+        this.setController(parent, path, config);
     
         parent.children.push(path);
     
@@ -146,6 +160,9 @@ export class UI_Factory {
         const image = new UI_SvgImage(parent.plugin);
         image.prop = config.prop;
     
+        image.generateId(parent);
+        this.setController(parent, image, config);
+
         parent.children.push(image);
     
         return image;
@@ -155,6 +172,9 @@ export class UI_Factory {
         const group = new UI_SvgGroup(parent.plugin);
         group.key = config.key;
         
+        group.generateId(parent);
+        this.setController(parent, group, config);
+
         parent.children.push(group);
         
         return group;
@@ -164,12 +184,21 @@ export class UI_Factory {
 
     static toolbar(parent: UI_SvgCanvas): UI_Toolbar {
         const toolbar = new UI_Toolbar(parent.plugin);
+
+        toolbar.generateId(parent);
+
+        parent._toolbar = toolbar;
+
         return toolbar;
     }
 
-    static tool(parent: UI_Toolbar, config: { toolId: string }): UI_Tool {
+    static tool(parent: UI_Toolbar, config: { controllerId: string }): UI_Tool {
         const tool = new UI_Tool(parent.plugin);
-        tool.toolId = config.toolId;
+
+        this.setController(parent, tool, config);
+        tool.generateId(parent);
+
+        parent.tools.push(tool);
 
         return tool;
     }
@@ -179,30 +208,41 @@ export class UI_Factory {
     static table(parent: UI_Container, config: { controllerId?: string}): UI_Table {
         const table = new UI_Table(parent.plugin);
 
-        (config && config.controllerId) && (table.controllerId = config.controllerId);
+        table.generateId(parent);
+        this.setController(parent, table, config);
 
         parent.children.push(table);
 
         return table;
     }
 
-    static tooltip(parent: UI_Element): UI_Tooltip {
+    static tooltip(parent: UI_Tool, config: { anchorId?: string }): UI_Tooltip {
         const tooltip = new UI_Tooltip(parent.plugin);
+        
+        (config && config.anchorId) && (tooltip.anchorId = config.anchorId);
+
+        parent._tooltip = tooltip;
 
         return tooltip;
     }
 
-    static tableColumn(parent: UI_Container) {
+    static tableColumn(parent: UI_Container, config: { controllerId?: string}) {
         const column = new UI_TableColumn(parent.plugin);
+
+        column.generateId(parent);
+        this.setController(parent, column, config);
 
         parent.children.push(column);
 
         return column;
     }
 
-    static tableRow(parent: UI_Table, config: {isHeader?: boolean}) {
+    static tableRow(parent: UI_Table, config: {isHeader?: boolean, controllerId?: string}) {
         const row = new UI_TableRow(parent.plugin);
         row.isHeader = config.isHeader;
+
+        this.setController(parent, row, config);
+        row.generateId(parent);
 
         parent.children.push(row);
 

@@ -31,56 +31,56 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
         const tableRow = table.tableRow({isHeader: true});
         tableRow.isHeader = true;
         
-        let header = tableRow.tableColumn();
+        let header = tableRow.tableColumn(null);
         let text = header.text();
         text.text = 'Model id';
 
-        header = tableRow.tableColumn();
+        header = tableRow.tableColumn(null);
         text = header.text();
         text.text = 'Name';
 
-        header = tableRow.tableColumn();
+        header = tableRow.tableColumn(null);
         text = header.text();
         text.text = 'Relative path';
 
-        header = tableRow.tableColumn();
+        header = tableRow.tableColumn(null);
         header.width = 100;
     }
 
     private renderModelRows(table: UI_Table) {
         let tableRow = table.tableRow({isHeader: true});
 
-        let header = tableRow.tableColumn();
+        let header = tableRow.tableColumn(null);
         let text = header.text();
         text.text = 'Models';
 
-        header = tableRow.tableColumn();
+        header = tableRow.tableColumn(null);
         text = header.text();
         text.text = '';
 
-        header = tableRow.tableColumn();
+        header = tableRow.tableColumn(null);
         text = header.text();
         text.text = '';
 
-        header = tableRow.tableColumn();
+        header = tableRow.tableColumn(null);
         header.width = 100;
 
         this.registry.stores.assetStore.getByType(AssetType.Model).forEach(assetModel => {
             tableRow = table.tableRow({isHeader: true});
 
-            let column = tableRow.tableColumn();
+            let column = tableRow.tableColumn(null);
             let text = column.text();
             text.text = assetModel.id;
     
-            column = tableRow.tableColumn();
+            column = tableRow.tableColumn(null);
             text = column.text();
             text.text = assetModel.name;
     
-            column = tableRow.tableColumn();
+            column = tableRow.tableColumn(null);
             text = column.text();
             text.text = assetModel.path;
 
-            column = tableRow.tableColumn();
+            column = tableRow.tableColumn(null);
             column.width = 100;
         });
 

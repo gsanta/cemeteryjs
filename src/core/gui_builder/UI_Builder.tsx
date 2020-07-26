@@ -20,6 +20,7 @@ import { UI_GridSelect } from './elements/UI_GridSelect';
 import { GridSelectComp } from '../gui/inputs/GridSelectComp';
 import { TableComp } from '../gui/table/TableComp';
 import { TextComp } from '../gui/text/TextComp';
+import { TooltipComp } from '../gui/text/TooltipComp';
 import { TableRowComp } from '../gui/table/TableRowComp';
 import { TableColumnComp } from '../gui/table/TableColumnComp';
 import { UI_Table, UI_TableRow } from './elements/UI_Table';
@@ -41,6 +42,7 @@ import { SvgPathComp } from '../gui/svg/SvgPathComp';
 import { UI_Toolbar } from './elements/toolbar/UI_Toolbar';
 import { ToolbarComp, ToolComp } from '../gui/surfaces/ToolbarComp';
 import { UI_Tool } from './elements/toolbar/UI_Tool';
+import { UI_Tooltip } from './elements/UI_Tooltip';
 
 export class UI_Builder {
 
@@ -109,7 +111,7 @@ export class UI_Builder {
         const toolsMiddle: JSX.Element[] = [];
         const toolsRight: JSX.Element[] = [];
 
-        uiToolbar.get_UI_Tools().forEach(child => {
+        uiToolbar.tools.forEach(child => {
             switch(child.placement) {
                 case 'left':
                 default:
@@ -127,9 +129,11 @@ export class UI_Builder {
         return <ToolbarComp toolsLeft={toolsLeft} toolsMiddle={toolsMiddle} toolsRight={toolsRight} element={uiToolbar}></ToolbarComp>;
     }
 
-    // private buildTool(uiTool: UI_Tool) {
-    //     return <ToolComp element={uiTool}/>; 
-    // }
+    private buildTool(uiTool: UI_Tool) {
+        const tooltip = uiTool._tooltip ? this.buildLeaf(uiTool._tooltip) : null;
+
+        return <ToolComp tooltip={tooltip} element={uiTool}/>; 
+    }
 
     private buildLeaf(element: UI_Element): JSX.Element {
         switch(element.elementType) {
@@ -167,7 +171,11 @@ export class UI_Builder {
                 const toolbar = element as UI_Toolbar;
                 return this.buildToolbar(toolbar);
             case UI_ElementType.Tool:
-
+                const tool = element as UI_Tool;
+                return this.buildTool(tool);
+            case UI_ElementType.Tooltip:
+                const tooltip = element as UI_Tooltip;
+                return <TooltipComp element={tooltip}/>;
         }
     }
 }   

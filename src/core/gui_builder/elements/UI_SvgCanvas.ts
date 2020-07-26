@@ -4,7 +4,7 @@ import { UI_Toolbar } from './toolbar/UI_Toolbar';
 import { UI_Factory } from '../UI_Factory';
 
 export class UI_SvgCanvas extends UI_SvgGroup {
-    private _toolbar: UI_Toolbar;
+    _toolbar: UI_Toolbar;
 
     elementType = UI_ElementType.SvgCanvas;
 
