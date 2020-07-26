@@ -47,7 +47,7 @@ export abstract class UI_Plugin implements IControlledObject {
     displayName: string;
     region: UI_Region;
 
-    private controllers: Map<string, AbstractController> = new Map();
+    protected controllers: Map<string, AbstractController> = new Map();
     protected tools: Map<string, Tool> = new Map();
 
     render(): UI_Container {
@@ -71,7 +71,6 @@ export abstract class UI_Plugin implements IControlledObject {
 
     protected abstract renderInto(layout: UI_Layout): void;
 
-    controller: AbstractController;
     protected registry: Registry;
 
     constructor(registry: Registry) {
@@ -85,4 +84,6 @@ export abstract class UI_Plugin implements IControlledObject {
     getToolById(id: string) {
         return this.tools.get(id);
     }
+
+
 }

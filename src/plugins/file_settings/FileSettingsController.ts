@@ -13,8 +13,9 @@ export enum FileSettingsProps {
     NewProject = 'NewProject'
 }
 
+export const FileSettingsControllerId = 'file-settings-controller';
 export class FileSettingsController extends AbstractController<FileSettingsProps> {
-
+    id = FileSettingsControllerId;
 
     constructor(plugin: UI_Plugin, registry: Registry) {
         super(plugin, registry);
@@ -37,7 +38,7 @@ export class FileSettingsController extends AbstractController<FileSettingsProps
 
         this.createPropHandler(FileSettingsProps.NewProject)
             .onClick(() => {
-                this.registry.plugins.sceneEditor.tools.byType<DeleteTool>(ToolType.Delete).eraseAll();
+                (this.registry.plugins.sceneEditor.getToolById(ToolType.Delete) as DeleteTool).eraseAll();
             });
     }
 }

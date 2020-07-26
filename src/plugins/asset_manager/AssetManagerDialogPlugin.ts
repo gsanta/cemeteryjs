@@ -14,9 +14,9 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
     // }
 
     renderInto(layout: UI_Layout): UI_Layout {
-        const row = layout.row();
+        const row = layout.row(null);
 
-        const table = row.table();
+        const table = row.table(null);
         table.width = 500;
 
         this.renderTableHeader(table);
@@ -28,7 +28,7 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
     }
 
     private renderTableHeader(table: UI_Table) {
-        const tableRow = table.tableRow();
+        const tableRow = table.tableRow({isHeader: true});
         tableRow.isHeader = true;
         
         let header = tableRow.tableColumn();
@@ -48,8 +48,7 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
     }
 
     private renderModelRows(table: UI_Table) {
-        let tableRow = table.tableRow();
-        tableRow.isHeader = true;
+        let tableRow = table.tableRow({isHeader: true});
 
         let header = tableRow.tableColumn();
         let text = header.text();
@@ -67,7 +66,7 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
         header.width = 100;
 
         this.registry.stores.assetStore.getByType(AssetType.Model).forEach(assetModel => {
-            tableRow = table.tableRow();
+            tableRow = table.tableRow({isHeader: true});
 
             let column = tableRow.tableColumn();
             let text = column.text();

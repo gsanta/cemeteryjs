@@ -101,7 +101,7 @@ export class NodeEditorComponent extends AbstractPluginComponent {
     }
 
     private renderFeedback(): JSX.Element {
-        const joinTool = this.props.plugin.tools.byType<JoinTool>(ToolType.Join);
+        const joinTool = this.props.plugin.getToolById(ToolType.Join) as JoinTool;
         if (joinTool.start && joinTool.end) {
             return (
                 <line 

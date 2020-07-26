@@ -1,11 +1,10 @@
 import { saveAs } from 'file-saver';
 import * as React from 'react';
 import { Editor } from '../../../core/Editor';
-import { BlankIconComponent } from '../../common/toolbar/icons/BlankIconComponent';
-import { ExportFileIconComponent } from '../../common/toolbar/icons/ExportFileIconComponent';
-import { GlobalSettingsPropType } from './GlobalSettings';
 import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { colors } from '../../../core/gui/styles';
+import { BlankIconComponent } from '../../common/toolbar/icons/BlankIconComponent';
+import { ExportFileIconComponent } from '../../common/toolbar/icons/ExportFileIconComponent';
 import { DeleteTool } from '../../common/tools/DeleteTool';
 import { ToolType } from '../../common/tools/Tool';
 
@@ -49,6 +48,6 @@ export class FileSettingsComponent extends React.Component<GeneralFormComponentP
 
     private blank() {
         // TODO eraseAll should not be on delete tool
-        this.context.registry.plugins.sceneEditor.tools.byType<DeleteTool>(ToolType.Delete).eraseAll();
+        (this.context.registry.plugins.sceneEditor.getToolById(ToolType.Delete) as DeleteTool).eraseAll();
     }
 }

@@ -49,7 +49,10 @@ export class HotkeyService {
     }
 
     executeHotkey(hotkeyEvent: IHotkeyEvent): boolean {
-        const hotkey = [...this.hotkeys, ...this.registry.plugins.getHoveredView().tools.tools].filter(h => h.hotkey(hotkeyEvent));
+        const hotkey = [...this.hotkeys, 
+            // TODO solve hotkey registration differently
+            // ...this.registry.plugins.getHoveredView().tools.tools].filter(h => h.hotkey(hotkeyEvent));
+        ]
 
         if (hotkey) {
             return true;

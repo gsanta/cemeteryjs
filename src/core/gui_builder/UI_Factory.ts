@@ -1,4 +1,4 @@
-import { UI_Table } from "./elements/UI_Table";
+import { UI_Table, UI_TableRow } from './elements/UI_Table';
 import { UI_Container } from './elements/UI_Container';
 import { UI_Text } from "./elements/UI_Text";
 import { UI_Button } from "./elements/UI_Button";
@@ -16,16 +16,26 @@ import { UI_Tooltip } from './elements/UI_Tooltip';
 import { UI_Element } from './elements/UI_Element';
 import { UI_Toolbar } from './elements/toolbar/UI_Toolbar';
 import { UI_SvgCanvas } from './elements/UI_SvgCanvas';
+import { UI_TableColumn } from "./elements/UI_TableColumn";
+import { UI_Row } from './elements/UI_Row';
 
 export class UI_Factory {
-    static table(parent: UI_Container, config: { controllerId?: string}): UI_Table {
-        const table = new UI_Table(parent.plugin);
+    static row(parent: UI_Container, config: { controllerId?: string}): UI_Row {
+        const row = new UI_Row(parent.plugin);
+        parent.children.push(row);
 
-        config.controllerId && (table.controllerId = config.controllerId);
+        this.setController(parent, row, config);
 
-        parent.children.push(table);
+        return row;
+    }
 
-        return table;
+    static svgCanvas(parent: UI_Container, config: { controllerId?: string}): UI_SvgCanvas {
+        const svgCanvas = new UI_SvgCanvas(parent.plugin);
+        parent.children.push(svgCanvas);
+
+        this.setController(parent, svgCanvas, config);
+
+        return svgCanvas;
     }
 
     static text(parent: UI_Container): UI_Text {
@@ -40,7 +50,7 @@ export class UI_Factory {
         const button = new UI_Button(parent.plugin);
         button.prop = config.prop;
 
-        config.controllerId && (button.controllerId = config.controllerId);
+        this.setController(parent, button, config);
 
         parent.children.push(button);
 
@@ -52,7 +62,7 @@ export class UI_Factory {
         select.prop = config.valProp;
         select.listProp = config.listProp;
 
-        config.controllerId && (select.controllerId = config.controllerId);
+        this.setController(parent, select, config);
 
         parent.children.push(select);
 
@@ -63,7 +73,7 @@ export class UI_Factory {
         const button = new UI_FileUpload(parent.plugin);
         button.prop = config.prop;
 
-        config.controllerId && (button.controllerId = config.controllerId);
+        this.setController(parent, button, config);
 
         parent.children.push(button);
 
@@ -76,7 +86,7 @@ export class UI_Factory {
         textField.prop = config.prop;
         textField.type = 'text';
 
-        config.controllerId && (textField.controllerId = config.controllerId);
+        this.setController(parent, textField, config);
 
         parent.children.push(textField);
 
@@ -88,7 +98,7 @@ export class UI_Factory {
         gridSelect.prop = config.prop;
         gridSelect.filledIndexProp = config.filledIndexProp;
 
-        config.controllerId && (gridSelect.controllerId = config.controllerId);
+        this.setController(parent, gridSelect, config);
 
         parent.children.push(gridSelect);
 
@@ -164,9 +174,46 @@ export class UI_Factory {
         return tool;
     }
 
+    ///////////////////////////////////////////// Table /////////////////////////////////////////////
+
+    static table(parent: UI_Container, config: { controllerId?: string}): UI_Table {
+        const table = new UI_Table(parent.plugin);
+
+        (config && config.controllerId) && (table.controllerId = config.controllerId);
+
+        parent.children.push(table);
+
+        return table;
+    }
+
     static tooltip(parent: UI_Element): UI_Tooltip {
         const tooltip = new UI_Tooltip(parent.plugin);
 
         return tooltip;
+    }
+
+    static tableColumn(parent: UI_Container) {
+        const column = new UI_TableColumn(parent.plugin);
+
+        parent.children.push(column);
+
+        return column;
+    }
+
+    static tableRow(parent: UI_Table, config: {isHeader?: boolean}) {
+        const row = new UI_TableRow(parent.plugin);
+        row.isHeader = config.isHeader;
+
+        parent.children.push(row);
+
+        return row;
+    }
+
+    private static setController(parent: UI_Element, current: UI_Element, config: {controllerId?: string}) {
+        if (config && config.controllerId) {
+            current.controllerId = config.controllerId;
+        } else {
+            current.controllerId = parent.controllerId;
+        }
     }
 }

@@ -10,7 +10,6 @@ import { Camera2D } from '../common/camera/Camera2D';
 import { PluginSettings } from '../common/PluginSettings';
 import { toolFactory } from '../common/toolbar/toolFactory';
 import { ToolType } from '../common/tools/Tool';
-import { Tools } from '../Tools';
 import { SceneEditorExporter } from './io/SceneEditorExporter';
 import { SceneEditorImporter } from './io/SceneEditorImporter';
 import { LevelSettings } from './settings/LevelSettings';
@@ -55,7 +54,7 @@ export class SceneEditorPlugin extends AbstractPlugin {
     constructor(registry: Registry) {
         super(registry);
         
-        const tools = [ToolType.Rectangle, ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Pointer, ToolType.Camera]
+        [ToolType.Rectangle, ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Pointer, ToolType.Camera]
             .map(toolType => {
                 this.tools.set(toolType, toolFactory(toolType, this, registry));
             });
@@ -98,7 +97,7 @@ export class SceneEditorPlugin extends AbstractPlugin {
     }
 
     protected renderInto(layout: UI_Layout): void {
-        const canvas = layout.svgCanvas();
+        const canvas = layout.svgCanvas(null);
 
         const toolbar = canvas.toolbar();
         

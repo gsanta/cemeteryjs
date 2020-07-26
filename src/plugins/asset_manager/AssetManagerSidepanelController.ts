@@ -7,7 +7,9 @@ export enum AssetManagerSidepanelControllerProps {
     IsAssetManagerDialogOpen = 'IsAssetManagerDialogOpen'
 }
 
+export const AssetManagerSidepanelControllerId = 'asset_manager_sidepanel_controller'
 export class AssetManagerSidepanelController extends AbstractController<AssetManagerSidepanelControllerProps> {
+    id = AssetManagerSidepanelControllerId;
     
     constructor(plugin: UI_Plugin, registry: Registry) {
         super(plugin, registry);

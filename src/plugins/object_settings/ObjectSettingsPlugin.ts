@@ -46,7 +46,7 @@ export class ObjectSettingsPlugin extends UI_Plugin {
     private renderPathObjectSettings(layout: UI_Layout, pathView: PathView) {
         this.pathObjectSettingsController.pathView = pathView;
         layout.controllerId = PathObjectSettingsControllerId;
-        let row = layout.row();
+        let row = layout.row(null);
 
         const textField = row.textField(PathObjectSettingsProps.PathId);
         textField.label = 'Id';
@@ -55,43 +55,43 @@ export class ObjectSettingsPlugin extends UI_Plugin {
     private renderMeshObjectSettings(layout: UI_Layout, meshView: MeshView) {
         this.meshObjectSettingsController.meshView = meshView;
         layout.controllerId = MeshObjectSettingsControllerId;
-        let row = layout.row();
+        let row = layout.row(null);
 
         const textField = row.textField(MeshObjectSettingsProps.MeshId);
         textField.label = 'Id';
 
-        row = layout.row();
+        row = layout.row(null);
         const grid = row.grid({prop: MeshObjectSettingsProps.Layer});
         grid.label = 'Layer';
 
-        row = layout.row();
+        row = layout.row(null);
         const rotationTextField = row.textField(MeshObjectSettingsProps.Rotation);
         rotationTextField.label = 'Rotation';
         rotationTextField.type = 'number';
 
-        row = layout.row();
+        row = layout.row(null);
         const scaleTextField = row.textField(MeshObjectSettingsProps.Scale);
         scaleTextField.label = 'Scale';
         scaleTextField.type = 'number';
 
-        row = layout.row();
+        row = layout.row(null);
         const yPosTextField = row.textField(MeshObjectSettingsProps.YPos);
         yPosTextField.label = 'YPos';
         yPosTextField.type = 'number';
 
-        row = layout.row();
+        row = layout.row(null);
         const importModelButton = row.fileUpload(MeshObjectSettingsProps.Model);
         importModelButton.label = 'Import Model';
         importModelButton.icon = 'import-icon';
         importModelButton.width = 'full-width';
 
-        row = layout.row();
+        row = layout.row(null);
         const importTextureButton = row.fileUpload(MeshObjectSettingsProps.Texture);
         importTextureButton.label = 'Import Texture';
         importTextureButton.icon = 'import-icon';
         importTextureButton.width = 'full-width';
 
-        row = layout.row();
+        row = layout.row(null);
         const changeThumbnailButton = row.button(MeshObjectSettingsProps.Thumbnail);
         changeThumbnailButton.label = 'Change thumbnail';
     }

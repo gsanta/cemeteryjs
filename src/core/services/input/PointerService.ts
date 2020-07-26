@@ -138,14 +138,14 @@ export class PointerService {
     pointerDragStart(item: DroppableItem) {
         this.droppableItem = item;
         const activePlugin = this.registry.plugins.getHoveredView();
-        this.registry.plugins.getHoveredView().setPriorityTool(activePlugin.tools.byType(ToolType.DragAndDrop));
+        this.registry.plugins.getHoveredView().setPriorityTool(activePlugin.getToolById(ToolType.DragAndDrop));
         this.registry.services.render.runImmediately(RenderTask.RenderFocusedView, RenderTask.RenderSidebar);
     }
 
     pointerDrop() {
         this.droppableItem = null;
         const activePlugin = this.registry.plugins.getHoveredView();
-        this.registry.plugins.getHoveredView().removePriorityTool(activePlugin.tools.byType(ToolType.DragAndDrop));
+        this.registry.plugins.getHoveredView().removePriorityTool(activePlugin.getToolById(ToolType.DragAndDrop));
         this.registry.services.render.runImmediately(RenderTask.RenderFocusedView, RenderTask.RenderSidebar);
     }
     

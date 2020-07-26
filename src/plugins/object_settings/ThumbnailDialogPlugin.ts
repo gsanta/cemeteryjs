@@ -12,7 +12,7 @@ export class ThumbnailDialogPlugin extends UI_Plugin {
     // }
 
     renderInto(layout: UI_Layout): UI_Layout {
-        const row = layout.row();
+        const row = layout.row(null);
 
         // const column2 = tableRow.tableColumn();
 

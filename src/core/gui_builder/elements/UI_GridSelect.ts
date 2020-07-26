@@ -9,6 +9,6 @@ export class UI_GridSelect extends UI_InputElement {
     label: string;
 
     filledIndexes(): number[] {
-        return this.filledIndexProp ? this.controller.val(this.filledIndexProp) : [];
+        return this.filledIndexProp ? this.plugin.getControllerById(this.controllerId).val(this.filledIndexProp) : [];
     }
 }

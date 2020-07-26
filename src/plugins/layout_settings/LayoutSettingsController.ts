@@ -8,7 +8,9 @@ export enum LayoutSettingsProps {
     SelectedLayout = 'SelectedLayout'
 }
 
+export const LayoutSettingsControllerId = 'layout-settings-controller';
 export class LayoutSettingsController extends AbstractController<LayoutSettingsProps> {
+    id = LayoutSettingsControllerId;
     constructor(plugin: UI_Plugin, registry: Registry) {
         super(plugin, registry);
 

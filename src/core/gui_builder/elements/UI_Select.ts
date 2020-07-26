@@ -10,6 +10,6 @@ export class UI_Select extends UI_InputElement {
     placeholder: string;
 
     listVal(): any[] {
-        return this.controller.val(this.listProp);
+        return this.plugin.getControllerById(this.controllerId).val(this.listProp);
     }
 }

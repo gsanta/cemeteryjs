@@ -30,10 +30,12 @@ export class AssetLoaderPlugin extends AbstractPlugin {
     constructor(registry: Registry) {
         super(registry);
 
-        const tools = [ToolType.Camera].map(toolType => toolFactory(toolType, this, registry));
-        this.tools = new Tools(tools);
 
-        this.selectedTool = this.tools.byType(ToolType.Camera);
+        [ToolType.Camera].map(toolType => {
+            this.tools.set(toolType, toolFactory(toolType, this, registry));
+        });
+
+        this.selectedTool = this.getToolById(ToolType.Camera);
 
         this.pluginServices = new PluginServices(
             [

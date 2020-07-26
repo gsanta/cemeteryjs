@@ -1,10 +1,5 @@
-import { AbstractPlugin } from '../../core/AbstractPlugin';
-import { Registry } from '../../core/Registry';
-import { Tools } from '../Tools';
-import { AssetManagerDialogController } from './AssetManagerDialogController';
-import { AssetManagerDialogPlugin } from './AssetManagerDialogPlugin';
-import { UI_Region, UI_Plugin } from '../../core/UI_Plugin';
 import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
+import { UI_Plugin, UI_Region } from '../../core/UI_Plugin';
 
 export class AssetManagerPlugin extends UI_Plugin {
     static id = 'asset-manager-plugin';
@@ -19,7 +14,7 @@ export class AssetManagerPlugin extends UI_Plugin {
     }
 
     renderInto(layout: UI_Layout): void {
-        let row = layout.row();
+        let row = layout.row(null);
 
         // const manageAssestButton = row.button();
 
