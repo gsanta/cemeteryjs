@@ -10,7 +10,9 @@ export enum PathObjectSettingsProps {
     PathId = 'PathId',
 }
 
+export const PathObjectSettingsControllerId = 'path-object-settings-controller';
 export class PathObjectSettingsController extends AbstractController<PathObjectSettingsProps> {
+    id = PathObjectSettingsControllerId;
     pathView: PathView;
 
     constructor(plugin: UI_Plugin, registry: Registry) {

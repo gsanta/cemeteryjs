@@ -33,7 +33,7 @@ export abstract class AbstractPlugin extends UI_Plugin {
     importer: AbstractPluginImporter;
 
     pluginServices: PluginServices<this> = new PluginServices([]);
-    tools: Tools;
+    // tools: Tools;
     pluginSettings: PluginSettings = new PluginSettings([]);
 
     protected priorityTool: Tool;

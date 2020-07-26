@@ -1,23 +1,21 @@
 import { AbstractPlugin, calcOffsetFromDom } from '../../core/AbstractPlugin';
 import { Point } from '../../core/geometry/shapes/Point';
+import { sort } from '../../core/geometry/utils/Functions';
+import { toDegree } from '../../core/geometry/utils/Measurements';
+import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
+import { UI_SvgCanvas } from '../../core/gui_builder/elements/UI_SvgCanvas';
 import { Registry } from '../../core/Registry';
-import { LayoutType } from '../Plugins';
+import { UI_Region } from '../../core/UI_Plugin';
 import { Camera2D } from '../common/camera/Camera2D';
+import { PluginSettings } from '../common/PluginSettings';
+import { toolFactory } from '../common/toolbar/toolFactory';
+import { ToolType } from '../common/tools/Tool';
+import { Tools } from '../Tools';
 import { SceneEditorExporter } from './io/SceneEditorExporter';
 import { SceneEditorImporter } from './io/SceneEditorImporter';
 import { LevelSettings } from './settings/LevelSettings';
 import { MeshSettings } from './settings/MeshSettings';
 import { PathSettings } from './settings/PathSettings';
-import { ToolType } from '../common/tools/Tool';
-import { Tools } from '../Tools';
-import { toolFactory } from '../common/toolbar/toolFactory';
-import { PluginSettings } from '../common/PluginSettings';
-import { MeshLoaderService } from '../../core/services/MeshLoaderService';
-import { UI_Region } from '../../core/UI_Plugin';
-import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
-import { sort } from '../../core/geometry/utils/Functions';
-import { toDegree } from '../../core/geometry/utils/Measurements';
-import { UI_SvgCanvas } from '../../core/gui_builder/elements/UI_SvgCanvas';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -57,11 +55,13 @@ export class SceneEditorPlugin extends AbstractPlugin {
     constructor(registry: Registry) {
         super(registry);
         
-        const tools = [ToolType.Rectangle, ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Pointer, ToolType.Camera].map(toolType => toolFactory(toolType, this, registry));
-        this.tools = new Tools(tools);
+        const tools = [ToolType.Rectangle, ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Pointer, ToolType.Camera]
+            .map(toolType => {
+                this.tools.set(toolType, toolFactory(toolType, this, registry));
+            });
 
         this.camera = cameraInitializer(SceneEditorPluginId, registry);
-        this.selectedTool = this.tools.byType(ToolType.Rectangle);
+        this.selectedTool = this.getToolById(ToolType.Rectangle);
 
         this.pluginSettings = new PluginSettings(
             [
@@ -102,48 +102,48 @@ export class SceneEditorPlugin extends AbstractPlugin {
 
         const toolbar = canvas.toolbar();
         
-        let tool = toolbar.tool();
+        let tool = toolbar.tool({toolId: ToolType.Rectangle});
         tool.icon = 'brush';
 
-        tool = toolbar.tool();
+        tool = toolbar.tool({toolId: ToolType.Path});
         tool.icon = 'path';
         let tooltip = tool.tooltip();
         tooltip.label = 'Path tool';
 
-        tool = toolbar.tool();
+        tool = toolbar.tool({toolId: ToolType.Select});
         tool.icon = 'select';
         tooltip = tool.tooltip();
         tooltip.label = 'Select tool';
 
-        tool = toolbar.tool();
+        tool = toolbar.tool({toolId: ToolType.Delete});
         tool.icon = 'delete';
         tooltip = tool.tooltip();
         tooltip.label = 'Delete tool';
 
-        tool = toolbar.tool();
+        tool = toolbar.tool({toolId: ToolType.Move});
         tool.icon = 'pan';
         tooltip = tool.tooltip();
         tooltip.label = 'Pan tool';
 
-        tool = toolbar.tool();
+        tool = toolbar.tool({toolId: ToolType.Camera});
         tool.icon = 'zoom-in';
         tooltip = tool.tooltip();
         tooltip.label = 'Zoom in';
 
-        tool = toolbar.tool();
+        tool = toolbar.tool({toolId: ToolType.Camera});
         tool.icon = 'zoom-out';
         tooltip = tool.tooltip();
         tooltip.label = 'Zoom out';
 
-        tool = toolbar.tool();
-        tool.icon = 'undo';
-        tooltip = tool.tooltip();
-        tooltip.label = 'Undo';
+        // tool = toolbar.tool({toolId: ToolType.});
+        // tool.icon = 'undo';
+        // tooltip = tool.tooltip();
+        // tooltip.label = 'Undo';
 
-        tool = toolbar.tool();
-        tool.icon = 'redo';
-        tooltip = tool.tooltip();
-        tooltip.label = 'Redo';
+        // tool = toolbar.tool();
+        // tool.icon = 'redo';
+        // tooltip = tool.tooltip();
+        // tooltip.label = 'Redo';
 
         this.renderMeshViews(canvas);
         this.renderPathViews(canvas);

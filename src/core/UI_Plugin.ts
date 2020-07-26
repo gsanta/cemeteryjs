@@ -4,6 +4,7 @@ import { AbstractController } from '../plugins/scene_editor/settings/AbstractCon
 import { UI_AccordionTab } from './gui_builder/elements/UI_Accordion';
 import { UI_Container } from './gui_builder/elements/UI_Container';
 import { UI_Layout } from './gui_builder/elements/UI_Layout';
+import { Tool } from '../plugins/common/tools/Tool';
 
 export enum UI_Region {
     SidepanelWidget = 'SidepanelWidget',
@@ -46,21 +47,22 @@ export abstract class UI_Plugin implements IControlledObject {
     displayName: string;
     region: UI_Region;
 
-    controllers: {id: string}[];
+    private controllers: Map<string, AbstractController> = new Map();
+    protected tools: Map<string, Tool> = new Map();
 
     render(): UI_Container {
         if (this.region === UI_Region.SidepanelWidget) {
-            const accordionTab = new UI_AccordionTab(this.controller, this.region);
+            const accordionTab = new UI_AccordionTab(this, this.region);
             accordionTab.title = this.displayName;
             this.renderInto(accordionTab);
             return accordionTab;
         } else if (this.region === UI_Region.Dialog) {
-            const layout = new UI_Layout(this.controller, this.region);
+            const layout = new UI_Layout(this, this.region);
 
             this.renderInto(layout);
             return layout;
         } else if (this.region === UI_Region.Canvas1) {
-            const layout = new UI_Layout(this.controller, this.region);
+            const layout = new UI_Layout(this, this.region);
 
             this.renderInto(layout);
             return layout;
@@ -76,7 +78,11 @@ export abstract class UI_Plugin implements IControlledObject {
         this.registry = registry;
     }
 
-    getControllerById() {
-        
+    getControllerById(id: string) {
+        return this.controllers.get(id);
+    }
+
+    getToolById(id: string) {
+        return this.tools.get(id);
     }
 }

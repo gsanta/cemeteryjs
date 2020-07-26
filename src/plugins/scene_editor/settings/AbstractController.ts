@@ -74,6 +74,7 @@ export class PropContext<T> {
 }
 
 export abstract class AbstractController<P = any> {
+    id: string;
     private handlers: Map<P, PropHandler<any>> = new Map();
 
     protected registry: Registry;

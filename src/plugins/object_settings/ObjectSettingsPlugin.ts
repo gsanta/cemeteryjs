@@ -1,11 +1,11 @@
 import { UI_Plugin, UI_Region } from '../../core/UI_Plugin';
 import { Registry } from '../../core/Registry';
 import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
-import { MeshObjectSettingsController, MeshObjectSettingsProps } from './MeshObjectSettingsController';
+import { MeshObjectSettingsController, MeshObjectSettingsProps, MeshObjectSettingsControllerId } from './MeshObjectSettingsController';
 import { ViewType } from '../../core/models/views/View';
 import { MeshView } from '../../core/models/views/MeshView';
 import { PathView } from '../../core/models/views/PathView';
-import { PathObjectSettingsController, PathObjectSettingsProps } from './PathObjectSettingsController';
+import { PathObjectSettingsController, PathObjectSettingsProps, PathObjectSettingsControllerId } from './PathObjectSettingsController';
 import { EngineService } from '../../core/services/EngineService';
 
 export const ObjectSettingsPluginId = 'object-settings-plugin';
@@ -45,7 +45,7 @@ export class ObjectSettingsPlugin extends UI_Plugin {
 
     private renderPathObjectSettings(layout: UI_Layout, pathView: PathView) {
         this.pathObjectSettingsController.pathView = pathView;
-        layout.setController(this.pathObjectSettingsController)
+        layout.controllerId = PathObjectSettingsControllerId;
         let row = layout.row();
 
         const textField = row.textField(PathObjectSettingsProps.PathId);
@@ -54,14 +54,14 @@ export class ObjectSettingsPlugin extends UI_Plugin {
 
     private renderMeshObjectSettings(layout: UI_Layout, meshView: MeshView) {
         this.meshObjectSettingsController.meshView = meshView;
-        layout.setController(this.meshObjectSettingsController)
+        layout.controllerId = MeshObjectSettingsControllerId;
         let row = layout.row();
 
         const textField = row.textField(MeshObjectSettingsProps.MeshId);
         textField.label = 'Id';
 
         row = layout.row();
-        const grid = row.grid(MeshObjectSettingsProps.Layer);
+        const grid = row.grid({prop: MeshObjectSettingsProps.Layer});
         grid.label = 'Layer';
 
         row = layout.row();

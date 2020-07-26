@@ -82,6 +82,6 @@ function isToolActive(toolType: ToolType, view: AbstractPlugin) {
 }
 
 function activateTool(toolType: ToolType, plugin: AbstractPlugin, registry: Registry) {
-    plugin.setSelectedTool(plugin.tools.byType(toolType) as AbstractTool);
+    plugin.setSelectedTool(plugin.getToolById(toolType) as AbstractTool);
     registry.services.hotkey.focus();
 }

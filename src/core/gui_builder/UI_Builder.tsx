@@ -100,7 +100,7 @@ export class UI_Builder {
 
         const children = this.buildChildren(uiSvgCanvas, plugin);
 
-        return <SvgCanvasComp toolbar={toolbar} element={uiSvgCanvas} plugin={plugin as AbstractPlugin}>{children}</SvgCanvasComp>;
+        return <SvgCanvasComp toolbar={toolbar} element={uiSvgCanvas}>{children}</SvgCanvasComp>;
 
     }
 

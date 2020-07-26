@@ -24,7 +24,7 @@ export class UI_GenericContainer extends UI_Container {
         return UI_Factory.textField(this, {prop});
     }
 
-    grid(prop: string, filledIndexProp: string) {
-        return UI_Factory.grid(this, {prop, filledIndexProp});
+    grid(config: {prop: string, filledIndexProp?: string}) {
+        return UI_Factory.grid(this, config);
     }
 }

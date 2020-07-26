@@ -228,12 +228,15 @@ export class NodeEditorPlugin extends AbstractPlugin {
     constructor(registry: Registry) {
         super(registry);
 
-        const tools = [ToolType.Select, ToolType.Delete, ToolType.Camera, ToolType.Pointer, ToolType.Join, ToolType.DragAndDrop].map(toolType => toolFactory(toolType, this, registry));
-        this.tools = new Tools(tools);
+        const tools = [ToolType.Select, ToolType.Delete, ToolType.Camera, ToolType.Pointer, ToolType.Join, ToolType.DragAndDrop]
+            .map(toolType => {
+                this.tools.set(toolType, toolFactory(toolType, this, registry));
+            });
+
+        this.selectedTool = this.getToolById(ToolType.Camera);
 
         this.camera = cameraInitializer(NodeEditorPluginId, registry);
 
-        this.selectedTool = this.tools.byType(ToolType.Camera);
 
         this.exporter = new NodeEditorExporter(this, this.registry);
         this.importer = new NodeEditorImporter(this, this.registry);

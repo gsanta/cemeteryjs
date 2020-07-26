@@ -20,7 +20,10 @@ export enum MeshObjectSettingsProps {
     Thumbnail = 'Thumbnail'
 }
 
+export const MeshObjectSettingsControllerId = 'mesh-object-settings-controller';
+
 export class MeshObjectSettingsController extends AbstractController<MeshObjectSettingsProps> {
+    id = MeshObjectSettingsControllerId;
     private tempVal: any;
     meshView: MeshView;
 

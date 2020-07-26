@@ -33,12 +33,7 @@ const SelectionComponentStyled = styled.rect`
     fill: transparent;
 `;
 
-export interface SvgCanvasCompProps extends UI_ComponentProps<UI_SvgCanvas> {
-    toolbar: JSX.Element;
-    plugin: AbstractPlugin;
-}
-
-export class SvgCanvasComp extends React.Component<SvgCanvasCompProps> {
+export class SvgCanvasComp extends React.Component<UI_ComponentProps<UI_SvgCanvas>> {
     static contextType = AppContext;
     context: AppContextType;
     protected ref: React.RefObject<HTMLDivElement>;
@@ -49,8 +44,8 @@ export class SvgCanvasComp extends React.Component<SvgCanvasCompProps> {
         this.wheelListener = new WheelListener(this.context.registry);
 
         setTimeout(() => {
-            this.props.plugin.componentMounted(this.ref.current);
-            this.props.plugin.resize();
+            (this.props.element.plugin as AbstractPlugin).componentMounted(this.ref.current);
+            (this.props.element.plugin as AbstractPlugin).resize();
         }, 0);
     }
 

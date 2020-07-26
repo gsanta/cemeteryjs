@@ -1,6 +1,5 @@
-import { AbstractController } from '../../../plugins/scene_editor/settings/AbstractController';
-import { UI_ElementType } from './UI_ElementType';
 import { UI_Plugin } from '../../UI_Plugin';
+import { UI_ElementType } from './UI_ElementType';
 
 export abstract class UI_Element {
     elementType: UI_ElementType;
@@ -20,11 +19,11 @@ export abstract class UI_Element {
     }
 
     mouseOver() {
-        this.controller.mouseOver(this.prop);
+        this.plugin.getControllerById(this.controllerId).mouseOver(this.prop);
     }
 
     mouseOut() {
-        this.controller.mouseOut(this.prop);
+        this.plugin.getControllerById(this.controllerId).mouseOut(this.prop);
     }
 }
 

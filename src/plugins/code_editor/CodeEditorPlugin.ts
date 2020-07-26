@@ -19,12 +19,6 @@ export class CodeEditorPlugin extends AbstractPlugin {
     visible = true;
     editors: monaco.editor.IStandaloneCodeEditor[] = [];
 
-    constructor(registry: Registry) {
-        super(registry);
-
-        this.tools = new Tools([]);
-    }
-
     componentMounted() {
         const snapshot = this.registry.services.export.export();
         

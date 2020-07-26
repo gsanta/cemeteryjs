@@ -10,7 +10,12 @@ import { UI_SvgRect } from './elements/svg/UI_SvgRect';
 import { UI_SvgCircle } from './elements/svg/UI_SvgCircle';
 import { UI_SvgPath } from './elements/svg/UI_SvgPath';
 import { UI_SvgImage } from './elements/svg/UI_SvgImage';
-import { UI_SvgGroup } from "./elements/svg/UI_SvgGroup";
+import { UI_SvgGroup } from './elements/svg/UI_SvgGroup';
+import { UI_Tool } from './elements/toolbar/UI_Tool';
+import { UI_Tooltip } from './elements/UI_Tooltip';
+import { UI_Element } from './elements/UI_Element';
+import { UI_Toolbar } from './elements/toolbar/UI_Toolbar';
+import { UI_SvgCanvas } from './elements/UI_SvgCanvas';
 
 export class UI_Factory {
     static table(parent: UI_Container, config: { controllerId?: string}): UI_Table {
@@ -78,7 +83,7 @@ export class UI_Factory {
         return textField;
     }
 
-    static grid(parent: UI_Container, config: { controllerId?: string, prop: string, filledIndexProp: string}): UI_GridSelect {
+    static grid(parent: UI_Container, config: { controllerId?: string, prop: string, filledIndexProp?: string}): UI_GridSelect {
         const gridSelect = new UI_GridSelect(parent.plugin);
         gridSelect.prop = config.prop;
         gridSelect.filledIndexProp = config.filledIndexProp;
@@ -136,12 +141,32 @@ export class UI_Factory {
         return image;
     }
 
-    static svgGroup(parent: UI_Container, config: { controllerId?: string, key: string}) {
+    static svgGroup(parent: UI_Container, config: { controllerId?: string, key: string}): UI_SvgGroup {
         const group = new UI_SvgGroup(parent.plugin);
         group.key = config.key;
         
         parent.children.push(group);
         
         return group;
+    }
+
+    ///////////////////////////////////////////// Toolbar /////////////////////////////////////////////
+
+    static toolbar(parent: UI_SvgCanvas): UI_Toolbar {
+        const toolbar = new UI_Toolbar(parent.plugin);
+        return toolbar;
+    }
+
+    static tool(parent: UI_Toolbar, config: { toolId: string }): UI_Tool {
+        const tool = new UI_Tool(parent.plugin);
+        tool.toolId = config.toolId;
+
+        return tool;
+    }
+
+    static tooltip(parent: UI_Element): UI_Tooltip {
+        const tooltip = new UI_Tooltip(parent.plugin);
+
+        return tooltip;
     }
 }

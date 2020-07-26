@@ -24,7 +24,7 @@ export class DeleteTool extends AbstractTool {
     }
 
     click() {
-        this.plugin.tools.byType(ToolType.Pointer).click();
+        this.plugin.getToolById(ToolType.Pointer).click();
         const hoveredItem = this.registry.services.pointer.hoveredItem;
 
         if (!hoveredItem) { return; }
@@ -60,11 +60,11 @@ export class DeleteTool extends AbstractTool {
     }
 
     over(item: View) {
-        this.plugin.tools.byType(ToolType.Pointer).over(item);
+        this.plugin.getToolById(ToolType.Pointer).over(item);
     }
 
     out(item: View) {
-        this.plugin.tools.byType(ToolType.Pointer).out(item);
+        this.plugin.getToolById(ToolType.Pointer).over(item);
     }
 
     eraseAll() {
