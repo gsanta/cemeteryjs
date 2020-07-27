@@ -35,17 +35,17 @@ export class MouseService {
         this.registry = registry;
     }
 
-    onMouseDown(e: MouseEvent): void {
+    mouseDown(e: MouseEvent): void {
         if (!this.isLeftButton(e)) { return }
 
         this.registry.services.pointer.pointerDown(this.convertEvent(e, true));
     }
     
-    onMouseMove(e: MouseEvent): void {
+    mouseMove(e: MouseEvent): void {
         this.registry.services.pointer.pointerMove(this.convertEvent(e, this.registry.services.pointer.isDown));
     }    
 
-    onMouseUp(e: MouseEvent, droppedItemType?: string): void {
+    mouseUp(e: MouseEvent, droppedItemType?: string): void {
         if (this.isLeftButton(e)) {
             this.registry.services.pointer.pointerUp(this.convertEvent(e, false, droppedItemType));
         }
@@ -53,17 +53,17 @@ export class MouseService {
         this.registry.services.hotkey.focus();
     }
 
-    onMouseLeave(e: MouseEvent): void {
+    mouseLeave(e: MouseEvent): void {
         this.registry.services.pointer.pointerOut(this.convertEvent(e, false));
     }
 
-    onMouseWheel(e: WheelEvent): void {
+    mouseWheel(e: WheelEvent): void {
         const pointerEvent = this.convertEvent(e, false);
         pointerEvent.deltaY = e.deltaY;
         this.registry.services.pointer.pointerWheel(pointerEvent);
     }
 
-    onMouseWheelEnd(): void {
+    mouseWheelEnd(): void {
         this.registry.services.pointer.pointerWheelEnd();
     }
 
@@ -75,11 +75,11 @@ export class MouseService {
         this.registry.services.pointer.unhover(item);
     }
 
-    onDragStart(item: DroppableItem) {
+    dragStart(item: DroppableItem) {
         this.registry.services.pointer.pointerDragStart(item);
     }
 
-    onDrop() {
+    drop() {
         this.registry.services.pointer.pointerDrop();
     }
 

@@ -65,34 +65,34 @@ export class NodeEditorComponent extends AbstractPluginComponent {
         const hover = (item: View) => this.context.registry.services.mouse.hover(item);
         const unhover = (canvasItem: View) => this.context.registry.services.mouse.unhover(canvasItem);
         
-        const view = this.context.registry.plugins.getViewById<NodeEditorPlugin>(NodeEditorPluginId);
+        const plugin = this.context.registry.plugins.getViewById<NodeEditorPlugin>(NodeEditorPluginId);
         return (
-            <EditorComponentStyled ref={this.ref} id={view.id} style={{cursor: view.getActiveTool().getCursor()}}>
+            <EditorComponentStyled ref={this.ref} id={plugin.id} style={{cursor: plugin.getActiveTool().getCursor()}}>
                 <ToolbarComponent
                         tools={[ToolType.Select, ToolType.Delete, ToolType.Camera]}
-                        view={view}
+                        view={plugin}
                         renderFullScreenIcon={false}
                 />
                 <DropLayer 
                     isDragging={!!this.context.registry.services.pointer.droppableItem}
-                    onDrop={(p, droppedItemType) => this.context.registry.services.mouse.onMouseUp({x: p.x, y: p.y, which: 1} as MouseEvent, droppedItemType)}
-                    onMouseMove={(e) => this.context.registry.services.mouse.onMouseMove(e)}
-                    onMouseOver={() => view.over()}
-                    onMouseOut={() => view.out()}
+                    onDrop={(p, droppedItemType) => this.context.registry.services.mouse.mouseUp({x: p.x, y: p.y, which: 1} as MouseEvent, droppedItemType)}
+                    onMouseMove={(e) => this.context.registry.services.mouse.mouseMove(e)}
+                    onMouseOver={() => plugin.over()}
+                    onMouseOut={() => plugin.out()}
                     registry={this.context.registry}
                 />
                 <CanvasComponentStyled
                     tabIndex={0}
-                    viewBox={view.getCamera().getViewBoxAsString()}
+                    viewBox={plugin.getCamera().getViewBoxAsString()}
                     id={this.context.controllers.svgCanvasId}
-                    onMouseDown={(e) => this.context.registry.services.mouse.onMouseDown(e.nativeEvent)}
-                    onMouseMove={(e) => this.context.registry.services.mouse.onMouseMove(e.nativeEvent)}
-                    onMouseUp={(e) => this.context.registry.services.mouse.onMouseUp(e.nativeEvent)}
-                    onMouseLeave={(e) => this.context.registry.services.mouse.onMouseLeave(e.nativeEvent)}
+                    onMouseDown={(e) => this.context.registry.services.mouse.mouseDown(e.nativeEvent)}
+                    onMouseMove={(e) => this.context.registry.services.mouse.mouseMove(e.nativeEvent)}
+                    onMouseUp={(e) => this.context.registry.services.mouse.mouseUp(e.nativeEvent)}
+                    onMouseLeave={(e) => this.context.registry.services.mouse.mouseLeave(e.nativeEvent)}
                     onKeyDown={e => this.context.registry.services.keyboard.onKeyDown(e.nativeEvent)}
                     onKeyUp={e => this.context.registry.services.keyboard.onKeyUp(e.nativeEvent)}
-                    onMouseOver={() => view.over()}
-                    onMouseOut={() => view.out()}
+                    onMouseOver={() => plugin.over()}
+                    onMouseOut={() => plugin.out()}
                     onWheel={(e) => this.wheelListener.onWheel(e.nativeEvent)}
                 >
                     <NodeViewContainerComponent registry={this.context.registry} renderWithSettings={false} hover={hover} unhover={unhover}/>

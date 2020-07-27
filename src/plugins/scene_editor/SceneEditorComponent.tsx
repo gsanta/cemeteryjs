@@ -13,7 +13,6 @@ import { ToolType } from '../common/tools/Tool';
 import { MeshViewContainerComponent } from './components/MeshViewComponent';
 import { PathViewContainerComponent } from './components/PathViewComponent';
 import { SceneEditorPlugin, SceneEditorPluginId } from './SceneEditorPlugin';
-import { AssetLoaderDialog } from '../asset_loader/components/AssetLoaderDialog';
 
 const EditorComponentStyled = styled.div`
     width: 100%;
@@ -40,7 +39,11 @@ export class SceneEditorComponent extends AbstractPluginComponent {
 
     componentDidMount() {
         super.componentDidMount();
-        this.wheelListener = new WheelListener(this.context.registry);
+        this.wheelListener = new WheelListener(
+            this.context.registry,
+            (e: WheelEvent) => {},
+            () => {}
+        );
         this.props.plugin.setRenderer(() => this.forceUpdate())
 
         setTimeout(() => {
@@ -71,10 +74,10 @@ export class SceneEditorComponent extends AbstractPluginComponent {
                     tabIndex={0}
                     viewBox={plugin.getCamera().getViewBoxAsString()}
                     id={this.context.controllers.svgCanvasId}
-                    onMouseDown={(e) => this.context.registry.services.mouse.onMouseDown(e.nativeEvent)}
-                    onMouseMove={(e) => this.context.registry.services.mouse.onMouseMove(e.nativeEvent)}
-                    onMouseUp={(e) => this.context.registry.services.mouse.onMouseUp(e.nativeEvent)}
-                    onMouseLeave={(e) => this.context.registry.services.mouse.onMouseLeave(e.nativeEvent)}
+                    onMouseDown={(e) => this.context.registry.services.mouse.mouseDown(e.nativeEvent)}
+                    onMouseMove={(e) => this.context.registry.services.mouse.mouseMove(e.nativeEvent)}
+                    onMouseUp={(e) => this.context.registry.services.mouse.mouseUp(e.nativeEvent)}
+                    onMouseLeave={(e) => this.context.registry.services.mouse.mouseLeave(e.nativeEvent)}
                     onKeyDown={e => this.context.registry.services.keyboard.onKeyDown(e.nativeEvent)}
                     onKeyUp={e => this.context.registry.services.keyboard.onKeyUp(e.nativeEvent)}
                     onMouseOver={() => plugin.over()}

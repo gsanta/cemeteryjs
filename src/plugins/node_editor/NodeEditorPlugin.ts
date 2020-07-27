@@ -23,6 +23,7 @@ import { Tools } from '../Tools';
 import { toolFactory } from '../common/toolbar/toolFactory';
 import { PluginSettings } from '../common/PluginSettings';
 import { UI_Region } from '../../core/UI_Plugin';
+import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -302,5 +303,36 @@ export class NodeEditorPlugin extends AbstractPlugin {
             throw new Error(`Node preset with name ${preset.presetName} already registered`);
         }
         this.registry.stores.nodeStore.presets.push(preset);
+    }
+
+    protected renderInto(layout: UI_Layout): void {
+        const canvas = layout.svgCanvas(null);
+
+        const toolbar = canvas.toolbar();
+
+        let tool = toolbar.tool({controllerId: ToolType.Select});
+        tool.icon = 'select';
+        let tooltip = tool.tooltip();
+        tooltip.label = 'Select tool';
+
+        tool = toolbar.tool({controllerId: ToolType.Delete});
+        tool.icon = 'delete';
+        tooltip = tool.tooltip();
+        tooltip.label = 'Delete tool';
+
+        tool = toolbar.tool({controllerId: ToolType.Move});
+        tool.icon = 'pan';
+        tooltip = tool.tooltip();
+        tooltip.label = 'Pan tool';
+
+        tool = toolbar.tool({controllerId: ToolType.Camera});
+        tool.icon = 'zoom-in';
+        tooltip = tool.tooltip();
+        tooltip.label = 'Zoom in';
+
+        tool = toolbar.tool({controllerId: ToolType.Camera});
+        tool.icon = 'zoom-out';
+        tooltip = tool.tooltip();
+        tooltip.label = 'Zoom out';
     }
 }

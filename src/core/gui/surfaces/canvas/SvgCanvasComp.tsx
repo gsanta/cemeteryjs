@@ -1,19 +1,16 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { RedoIconComponent } from '../../../plugins/common/toolbar/icons/RedoIconComponent';
-import { UndoIconComponent } from '../../../plugins/common/toolbar/icons/UndoIconComponent';
-import { ToolbarComponent } from '../../../plugins/common/toolbar/ToolbarComponent';
-import { ToolType } from '../../../plugins/common/tools/Tool';
-import { PathViewContainerComponent } from '../../../plugins/scene_editor/components/PathViewComponent';
-import { SceneEditorPlugin, SceneEditorPluginId } from '../../../plugins/scene_editor/SceneEditorPlugin';
-import { AbstractPlugin } from '../../AbstractPlugin';
-import { UI_SvgCanvas } from '../../gui_builder/elements/UI_SvgCanvas';
-import { View } from '../../models/views/View';
-import { PathMarkersComponent } from '../../services/export/PathMarkersComponent';
-import { WheelListener } from '../../services/WheelListener';
-import { AppContext, AppContextType } from '../Context';
-import { colors } from '../styles';
-import { UI_ComponentProps } from '../UI_ComponentProps';
+import { PathViewContainerComponent } from '../../../../plugins/scene_editor/components/PathViewComponent';
+import { SceneEditorPlugin, SceneEditorPluginId } from '../../../../plugins/scene_editor/SceneEditorPlugin';
+import { AbstractPlugin } from '../../../AbstractPlugin';
+import { UI_SvgCanvas } from '../../../gui_builder/elements/UI_SvgCanvas';
+import { View } from '../../../models/views/View';
+import { PathMarkersComponent } from '../../../services/export/PathMarkersComponent';
+import { WheelListener } from '../../../services/WheelListener';
+import { AppContext, AppContextType } from '../../Context';
+import { colors } from '../../styles';
+import { UI_ComponentProps } from '../../UI_ComponentProps';
+import { DropLayerComp } from './DropLayerComp';
 
 const EditorComponentStyled = styled.div`
     width: 100%;
@@ -62,34 +59,22 @@ export class SvgCanvasComp extends React.Component<SvgCanvasCompProps> {
         const unhover = (canvasItem: View) => this.context.registry.services.mouse.unhover(canvasItem);
         
         const plugin = this.context.registry.plugins.getViewById<SceneEditorPlugin>(SceneEditorPluginId);
-        const history = this.context.registry.services.history;
 
         return (
             <EditorComponentStyled ref={this.ref} id={plugin.id} style={{cursor: plugin.getActiveTool().getCursor()}}>
-                {/* <ToolbarComponent
-                    tools={[ToolType.Rectangle, ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Camera]}
-                    view={plugin}
-                    renderFullScreenIcon={true}
-                >
-                    <UndoIconComponent key={'undo-icon'} isActive={false} disabled={!history.hasUndoHistory()} onClick={() => history.undo()} format="short"/>
-                    <RedoIconComponent key={'redo-icon'} isActive={false} disabled={!history.hasRedoHistory()} onClick={() => history.redo()} format="short"/>
-
-                </ToolbarComponent> */}
                 {this.props.toolbar}
+                <DropLayerComp
+                    isDragging={!!this.context.registry.services.pointer.droppableItem}
+                    onDrop={(p, droppedItemType) => this.context.registry.services.mouse.mouseUp({x: p.x, y: p.y, which: 1} as MouseEvent, droppedItemType)}
+                    onMouseMove={(e) => this.context.registry.services.mouse.mouseMove(e)}
+                    onMouseOver={() => plugin.over()}
+                    onMouseOut={() => plugin.out()}
+                    registry={this.context.registry}
+                />
                 <SceneEditorComponentStyled
                     tabIndex={0}
                     viewBox={plugin.getCamera().getViewBoxAsString()}
                     id={this.context.controllers.svgCanvasId}
-                    // onMouseDown={(e) => this.context.registry.services.mouse.onMouseDown(e.nativeEvent)}
-                    // onMouseMove={(e) => this.context.registry.services.mouse.onMouseMove(e.nativeEvent)}
-                    // onMouseUp={(e) => this.context.registry.services.mouse.onMouseUp(e.nativeEvent)}
-                    // onMouseLeave={(e) => this.context.registry.services.mouse.onMouseLeave(e.nativeEvent)}
-                    // onKeyDown={e => this.context.registry.services.keyboard.onKeyDown(e.nativeEvent)}
-                    // onKeyUp={e => this.context.registry.services.keyboard.onKeyUp(e.nativeEvent)}
-                    // onMouseOver={() => plugin.over()}
-                    // onMouseOut={() => plugin.out()}
-                    // onWheel={(e) => this.wheelListener.onWheel(e.nativeEvent)}
-
                     onMouseDown={(e) => this.props.element.mouseDown(e.nativeEvent)}
                     onMouseMove={(e) => this.props.element.mouseMove(e.nativeEvent)}
                     onMouseUp={(e) => this.props.element.mouseUp(e.nativeEvent)}

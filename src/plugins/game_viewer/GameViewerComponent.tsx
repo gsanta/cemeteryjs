@@ -97,10 +97,10 @@ export class GameViewerComponent extends AbstractPluginComponent {
                     />
                     <OverlayStyled
                         tabIndex={0}
-                        onMouseDown={(e) => this.context.registry.services.mouse.onMouseDown(e.nativeEvent)}
-                        onMouseMove={(e) => this.context.registry.services.mouse.onMouseMove(e.nativeEvent)}
-                        onMouseUp={(e) => this.context.registry.services.mouse.onMouseUp(e.nativeEvent)}
-                        onMouseLeave={(e) => this.context.registry.services.mouse.onMouseLeave(e.nativeEvent)}
+                        onMouseDown={(e) => this.context.registry.services.mouse.mouseDown(e.nativeEvent)}
+                        onMouseMove={(e) => this.context.registry.services.mouse.mouseMove(e.nativeEvent)}
+                        onMouseUp={(e) => this.context.registry.services.mouse.mouseUp(e.nativeEvent)}
+                        onMouseLeave={(e) => this.context.registry.services.mouse.mouseLeave(e.nativeEvent)}
                         onMouseOver={() => view.over()}
                         onMouseOut={() => view.out()}
                         onWheel={(e) => this.wheelListener.onWheel(e.nativeEvent)}

@@ -45,8 +45,8 @@ export class NodeEditorSettingsComponent extends React.Component<{settings: Node
                 <DroppableListItemComponent 
                     key={preset.presetName}
                     type={preset.presetName}
-                    onMouseDown={() => this.context.registry.services.mouse.onDragStart(new DroppablePreset(preset))}
-                    onDrop={() => this.context.registry.services.mouse.onDrop()}
+                    onMouseDown={() => this.context.registry.services.mouse.dragStart(new DroppablePreset(preset))}
+                    onDrop={() => this.context.registry.services.mouse.drop()}
                 />
             );
         });
@@ -69,8 +69,8 @@ export class NodeEditorSettingsComponent extends React.Component<{settings: Node
                 <DroppableListItemComponent 
                     key={node.type}
                     type={node.type}
-                    onMouseDown={() => this.context.registry.services.mouse.onDragStart(new DroppableNode(node))}
-                    onDrop={() => this.context.registry.services.mouse.onDrop()}
+                    onMouseDown={() => this.context.registry.services.mouse.dragStart(new DroppableNode(node))}
+                    onDrop={() => this.context.registry.services.mouse.drop()}
                 />
             ));
 

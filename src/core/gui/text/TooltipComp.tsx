@@ -1,4 +1,4 @@
-import * as escapeHtml from 'escape-html';
+import escapeHtml from 'escape-html';
 import * as React from 'react';
 import tippy from 'tippy.js';
 import { UI_Tooltip } from '../../gui_builder/elements/UI_Tooltip';

@@ -52,8 +52,7 @@ export abstract class UI_Plugin implements IControlledObject {
 
     protected abstract renderInto(layout: UI_Layout): void;
 
-    // TODO make it protected later
-    public registry: Registry;
+    protected registry: Registry;
 
     constructor(registry: Registry) {
         this.registry = registry;

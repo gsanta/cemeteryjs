@@ -11,6 +11,10 @@ import { RenderTask } from './services/RenderServices';
 import { AbstractViewStore } from './stores/AbstractViewStore';
 import { UI_Plugin } from './UI_Plugin';
 import { UI_Layout } from './gui_builder/elements/UI_Layout';
+import { MouseService } from './services/input/MouseService';
+import { PointerService } from './services/input/PointerService';
+import { KeyboardService } from './services/input/KeyboardService';
+import { Registry } from './Registry';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;
@@ -33,12 +37,21 @@ export abstract class AbstractPlugin extends UI_Plugin {
     importer: AbstractPluginImporter;
 
     pluginServices: PluginServices<this> = new PluginServices([]);
-    // tools: Tools;
     pluginSettings: PluginSettings = new PluginSettings([]);
+
+    readonly mouse: MouseService;
+    readonly keyboard: KeyboardService;
 
     protected priorityTool: Tool;
     protected selectedTool: Tool;
     protected renderFunc: () => void;
+
+    constructor(registry: Registry) {
+        super(registry);
+
+        this.mouse = new MouseService(registry);
+        this.keyboard = new KeyboardService(registry);
+    }
 
     abstract getStore(): AbstractViewStore;
     

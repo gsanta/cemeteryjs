@@ -30,7 +30,7 @@ import { UI_SvgRect } from './elements/svg/UI_SvgRect';
 import { SvgRectComp } from '../gui/svg/SvgRectComp';
 import { UI_SvgGroup } from './elements/svg/UI_SvgGroup';
 import { SvgGroupComp } from '../gui/svg/SvgGroupComp';
-import { SvgCanvasComp } from '../gui/surfaces/SvgCanvasComp';
+import { SvgCanvasComp } from '../gui/surfaces/canvas/SvgCanvasComp';
 import { UI_SvgCanvas } from './elements/UI_SvgCanvas';
 import { AbstractPlugin } from '../AbstractPlugin';
 import { UI_SvgCircle } from './elements/svg/UI_SvgCircle';

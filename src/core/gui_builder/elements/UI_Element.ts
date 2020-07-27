@@ -1,5 +1,6 @@
 import { UI_Plugin } from '../../UI_Plugin';
 import { UI_ElementType } from './UI_ElementType';
+import { AbstractPlugin } from '../../AbstractPlugin';
 
 export const activeToolId = '__activeTool__'
 
@@ -22,7 +23,7 @@ export abstract class UI_Element {
 
     mouseOver(e: MouseEvent) {
         if (this.controllerId === activeToolId) {
-            this.plugin.over()
+            (this.plugin as AbstractPlugin).over()
         } else {
             this.plugin.getControllerById(this.controllerId).mouseOver(this.prop);
         }
@@ -35,49 +36,49 @@ export abstract class UI_Element {
 
     mouseDown(e: MouseEvent) {
         if (this.controllerId === activeToolId) {
-            this.plugin.registry.services.mouse.onMouseDown(e);
+            (this.plugin as AbstractPlugin).mouse.mouseDown(e);
         }
     }
 
     mouseMove(e: MouseEvent) {
         if (this.controllerId === activeToolId) {
-            this.plugin.registry.services.mouse.onMouseMove(e);
+            (this.plugin as AbstractPlugin).mouse.mouseMove(e);
         }
     }
 
     mouseUp(e: MouseEvent) {
         if (this.controllerId === activeToolId) {
-            this.plugin.registry.services.mouse.onMouseUp(e);
+            (this.plugin as AbstractPlugin).mouse.mouseUp(e);
         }
     }
 
     mouseLeave(e: MouseEvent) {
         if (this.controllerId === activeToolId) {
-            this.plugin.registry.services.mouse.onMouseLeave(e);
+            (this.plugin as AbstractPlugin).mouse.mouseLeave(e);
         }
     }
 
     mouseWheel(e: WheelEvent) {
         if (this.controllerId === activeToolId) {
-            this.plugin.registry.services.mouse.onMouseWheel(e);
+            (this.plugin as AbstractPlugin).mouse.mouseWheel(e);
         }
     }
 
     mouseWheelEnd() {
         if (this.controllerId === activeToolId) {
-            this.plugin.registry.services.mouse.onMouseWheelEnd();
+            (this.plugin as AbstractPlugin).mouse.mouseWheelEnd();
         }
     }
 
     keyDown(e: KeyboardEvent) {
         if (this.controllerId === activeToolId) {
-            this.plugin.registry.services.keyboard.onKeyDown(e);
+            (this.plugin as AbstractPlugin).keyboard.onKeyDown(e);
         }
     }
 
     keyUp(e: KeyboardEvent) {
         if (this.controllerId === activeToolId) {
-            this.plugin.registry.services.keyboard.onKeyUp(e);
+            (this.plugin as AbstractPlugin).keyboard.onKeyUp(e);
         }
     }
 }
