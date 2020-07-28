@@ -5,7 +5,7 @@ import { calcOffsetFromDom, AbstractPlugin } from '../../core/AbstractPlugin';
 import { Camera2D } from '../common/camera/Camera2D';
 import { NodeStore } from '../../core/stores/NodeStore';
 import { NodePreset, NodePresetRecipe } from '../../core/models/nodes/NodePreset';
-import { NodeType, NodeModel } from '../../core/models/nodes/NodeModel';
+import { NodeType, NodeModel, NodeCategory } from '../../core/models/nodes/NodeModel';
 import { AndNode } from '../../core/models/nodes/AndNode';
 import { AnimationNode } from '../../core/models/nodes/AnimationNode';
 import { KeyboardNode } from '../../core/models/nodes/KeyboardNode';
@@ -24,6 +24,8 @@ import { toolFactory } from '../common/toolbar/toolFactory';
 import { PluginSettings } from '../common/PluginSettings';
 import { UI_Region } from '../../core/UI_Plugin';
 import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
+import { CanvasToolsProps } from '../../core/ViewFactory';
+import { UI_Accordion } from '../../core/gui_builder/elements/surfaces/UI_Accordion';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {

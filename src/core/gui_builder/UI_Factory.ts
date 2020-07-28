@@ -18,6 +18,8 @@ import { UI_Toolbar } from './elements/toolbar/UI_Toolbar';
 import { UI_SvgCanvas } from './elements/UI_SvgCanvas';
 import { UI_TableColumn } from "./elements/UI_TableColumn";
 import { UI_Row } from './elements/UI_Row';
+import { UI_Accordion } from './elements/surfaces/UI_Accordion';
+import { UI_ListItem } from './elements/UI_ListItem';
 
 export class UI_Factory {
     static row(parent: UI_Container, config: { controllerId?: string}): UI_Row {
@@ -41,6 +43,16 @@ export class UI_Factory {
         return svgCanvas;
     }
 
+    static accordion(parent: UI_Container, config: { controllerId?: string}): UI_Accordion {
+        const accordion = new UI_Accordion(parent.plugin);
+
+        accordion.generateId(parent);
+        this.setController(parent, accordion, config);
+        parent.children.push(accordion);
+
+        return accordion;
+    }
+
     static text(parent: UI_Container): UI_Text {
         const text = new UI_Text(parent.plugin);
 
@@ -48,6 +60,18 @@ export class UI_Factory {
         parent.children.push(text);
 
         return text;
+    }
+
+    static listItem(parent: UI_Container, config: { controllerId?: string, prop: string}): UI_ListItem {
+        const listItem = new UI_ListItem(parent.plugin);
+
+        listItem.prop = config.prop;
+        listItem.generateId(parent);
+        this.setController(parent, listItem, config);
+
+        parent.children.push(listItem);
+
+        return listItem;
     }
 
     static button(parent: UI_Container, config: { controllerId?: string, prop: string}): UI_Button {

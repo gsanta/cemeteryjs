@@ -20,6 +20,10 @@ export class UI_Layout extends UI_Container {
         return UI_Factory.row(this, config);
     }
 
+    accordion(config: {controllerId?: string}) {
+        return UI_Factory.accordion(this, config);
+    }
+
     svgCanvas(config: {controllerId?: string}): UI_SvgCanvas {
         return UI_Factory.svgCanvas(this, config);
     }

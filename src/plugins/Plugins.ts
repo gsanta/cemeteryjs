@@ -19,6 +19,7 @@ import { LevelSettingsPlugin, LevelSettingsPluginId } from './level_settings/Lev
 import { AssetManagerSidepanelPlugin, AssetManagerSidepanelPluginId } from './asset_manager/AssetManagerSidepanelPlugin';
 import { AssetManagerDialogPlugin } from './asset_manager/AssetManagerDialogPlugin';
 import { ThumbnailDialogPluginId, ThumbnailDialogPlugin } from './object_settings/ThumbnailDialogPlugin';
+import { NodeEditorSettingsPlugin, NodeEditorSettingsPluginId } from './node_editor/NodeEditorSettingsPlugin';
 
 export interface LayoutConfig {
     activePlugin: AbstractPlugin;
@@ -92,6 +93,8 @@ export class Plugins {
 
         this.registry.services.plugin.registerPlugin(new ThumbnailDialogPlugin(this.registry));
 
+        this.registry.services.plugin.registerPlugin(new NodeEditorSettingsPlugin(this.registry));
+        this.registry.services.plugin.showPlugin(NodeEditorSettingsPluginId);
 
         this.predefinedLayouts = [
             {

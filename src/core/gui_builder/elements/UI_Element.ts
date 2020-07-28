@@ -81,5 +81,13 @@ export abstract class UI_Element {
             (this.plugin as AbstractPlugin).keyboard.onKeyUp(e);
         }
     }
+
+    dndStart() {
+
+    }
+
+    dndEnd() {
+        
+    }
 }
 

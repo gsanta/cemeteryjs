@@ -1,7 +1,7 @@
 import { IControlledObject } from './IControlledObject';
 import { Registry } from './Registry';
 import { AbstractController } from '../plugins/scene_editor/settings/AbstractController';
-import { UI_AccordionTab } from './gui_builder/elements/UI_Accordion';
+import { UI_Accordion } from './gui_builder/elements/surfaces/UI_Accordion';
 import { UI_Container } from './gui_builder/elements/UI_Container';
 import { UI_Layout } from './gui_builder/elements/UI_Layout';
 import { Tool } from '../plugins/common/tools/Tool';
@@ -50,7 +50,7 @@ export abstract class UI_Plugin implements IControlledObject {
     protected controllers: Map<string, AbstractController> = new Map();
     protected tools: Map<string, Tool> = new Map();
 
-    protected abstract renderInto(layout: UI_Layout): void;
+    protected abstract renderInto(layout: UI_Container): void;
 
     protected registry: Registry;
 
@@ -60,10 +60,11 @@ export abstract class UI_Plugin implements IControlledObject {
 
     render(): UI_Container {
         if (this.region === UI_Region.SidepanelWidget) {
-            const accordionTab = new UI_AccordionTab(this, this.region);
-            accordionTab.title = this.displayName;
-            this.renderInto(accordionTab);
-            return accordionTab;
+            const layout = new UI_Layout(this, this.region);
+            const accordion = layout.accordion(null);
+            accordion.title = this.displayName;
+            this.renderInto(accordion);
+            return layout;
         } else if (this.region === UI_Region.Dialog) {
             const layout = new UI_Layout(this, this.region);
 

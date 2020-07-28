@@ -15,12 +15,12 @@ const NodeButtonStyled = styled.div`
 
 export const DroppableListItemComponent = (props: {type: string, onMouseDown: () => void, onDrop: () => void}) => {
     const [{isDragging}, drag] = useDrag({
-            item: { type: props.type },
-            collect: monitor => ({
-                isDragging: !!monitor.isDragging(),
-            }),
-            end: (item, monitor) => props.onDrop()
-      })
+        item: { type: props.type },
+        collect: monitor => ({
+            isDragging: !!monitor.isDragging(),
+        }),
+        end: (item, monitor) => props.onDrop()
+    });
     
     return (
         <NodeButtonStyled ref={drag} onMouseDown={() => props.onMouseDown()}>

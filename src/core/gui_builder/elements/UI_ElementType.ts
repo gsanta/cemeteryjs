@@ -8,6 +8,7 @@ export enum UI_ElementType {
     Select = 'Select',
     GridSelect = 'GridSelect',
     TextField = 'TextField',
+    ListItem = 'ListItem',
 
     SvgCanvas = 'SvgCanvas',
     SvgGroup = 'SvgGroup',
@@ -24,7 +25,6 @@ export enum UI_ElementType {
     TableColumn = 'TableColumn',
 
     Accordion = 'Accordion',
-    AccordionTab = 'AccordionTab',
     FileUpload = 'FileUpload',
 
     Toolbar = 'Toolbar',

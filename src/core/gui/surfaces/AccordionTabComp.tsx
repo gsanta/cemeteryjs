@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { UI_ComponentProps } from '../UI_ComponentProps';
-import { UI_AccordionTab } from '../../gui_builder/elements/UI_Accordion';
+import { UI_Accordion } from '../../gui_builder/elements/surfaces/UI_Accordion';
 import { Accordion, Card, Button } from 'react-bootstrap';
 import { ArrowDownIconComponent } from '../icons/ArrowDownIconComponent';
 import { colors } from '../styles';
@@ -38,7 +38,7 @@ const CardStyled = styled(Card)`
     border-bottom: 1px solid ${colors.panelBackgroundLight};
 `;
 
-export class AccordionTabComp extends React.Component<UI_ComponentProps<UI_AccordionTab>> {
+export class AccordionTabComp extends React.Component<UI_ComponentProps<UI_Accordion>> {
     render() {
         const level: 'primary' = 'primary';
 

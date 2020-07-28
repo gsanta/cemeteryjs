@@ -6,7 +6,7 @@ import { UI_Region, UI_Plugin } from '../UI_Plugin';
 import { ButtonComp } from '../gui/inputs/ButtonComp';
 import { SelectComp } from '../gui/inputs/SelectComp';
 import { TextFieldComp } from '../gui/inputs/TextFieldComp';
-import { UI_AccordionTab } from './elements/UI_Accordion';
+import { UI_Accordion } from './elements/surfaces/UI_Accordion';
 import { AccordionTabComp } from '../gui/surfaces/AccordionTabComp';
 import { UI_FileUpload } from './elements/UI_FileUpload';
 import { FileUploadComp } from '../gui/inputs/FileUploadComp';
@@ -43,6 +43,8 @@ import { UI_Toolbar } from './elements/toolbar/UI_Toolbar';
 import { ToolbarComp, ToolComp } from '../gui/surfaces/ToolbarComp';
 import { UI_Tool } from './elements/toolbar/UI_Tool';
 import { UI_Tooltip } from './elements/UI_Tooltip';
+import { ListItemComp } from '../gui/data_display/ListItemComp';
+import { UI_ListItem } from './elements/UI_ListItem';
 
 export class UI_Builder {
 
@@ -63,8 +65,8 @@ export class UI_Builder {
             case UI_ElementType.Row:
                 const row = element as UI_Row;
                 return <RowGui element={row}>{this.buildChildren(element, plugin)}</RowGui>;
-            case UI_ElementType.AccordionTab:
-                const accordionTab = element as UI_AccordionTab;
+            case UI_ElementType.Accordion:
+                const accordionTab = element as UI_Accordion;
                 return <AccordionTabComp element={accordionTab}>{this.buildChildren(element, plugin)}</AccordionTabComp>;
             case UI_ElementType.Table:
                 const table = element as UI_Table;
@@ -176,6 +178,9 @@ export class UI_Builder {
             case UI_ElementType.Tooltip:
                 const tooltip = element as UI_Tooltip;
                 return <TooltipComp element={tooltip}/>;
+            case UI_ElementType.ListItem:
+                const listItem = element as UI_ListItem;
+                return <ListItemComp element={listItem}/>;
         }
     }
 }   
