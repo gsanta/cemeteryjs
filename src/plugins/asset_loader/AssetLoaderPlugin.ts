@@ -32,7 +32,7 @@ export class AssetLoaderPlugin extends AbstractPlugin {
 
 
         [ToolType.Camera].map(toolType => {
-            this.tools.set(toolType, toolFactory(toolType, this, registry));
+            this.addTool(toolFactory(toolType, this, registry));
         });
 
         this.selectedTool = this.getToolById(ToolType.Camera);

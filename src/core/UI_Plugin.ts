@@ -48,7 +48,10 @@ export abstract class UI_Plugin implements IControlledObject {
     region: UI_Region;
 
     protected controllers: Map<string, AbstractController> = new Map();
-    protected tools: Map<string, Tool> = new Map();
+
+    protected toolMap: Map<string, Tool> = new Map();
+    // TODO put into AbstractPlugin
+    protected tools: Tool[] = [];
 
     protected abstract renderInto(layout: UI_Container): void;
 
@@ -83,7 +86,16 @@ export abstract class UI_Plugin implements IControlledObject {
     }
 
     getToolById(id: string) {
-        return this.tools.get(id);
+        return this.toolMap.get(id);
+    }
+
+    getTools(): Tool[] {
+        return this.tools;
+    }
+
+    addTool(tool: Tool) {
+        this.tools.push(tool);
+        this.toolMap.set(tool.id, tool);
     }
 
     // TODO should be temporary, port it to PointerService somehow

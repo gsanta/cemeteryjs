@@ -233,7 +233,7 @@ export class NodeEditorPlugin extends AbstractPlugin {
 
         const tools = [ToolType.Select, ToolType.Delete, ToolType.Camera, ToolType.Pointer, ToolType.Join, ToolType.DragAndDrop]
             .map(toolType => {
-                this.tools.set(toolType, toolFactory(toolType, this, registry));
+                this.addTool(toolFactory(toolType, this, registry));
             });
 
         this.selectedTool = this.getToolById(ToolType.Camera);

@@ -15,6 +15,7 @@ import { MouseService } from './services/input/MouseService';
 import { PointerService } from './services/input/PointerService';
 import { KeyboardService } from './services/input/KeyboardService';
 import { Registry } from './Registry';
+import { ToolController, ToolControllerId } from './plugin/ToolController';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;
@@ -51,6 +52,8 @@ export abstract class AbstractPlugin extends UI_Plugin {
 
         this.mouse = new MouseService(registry);
         this.keyboard = new KeyboardService(registry);
+        
+        this.controllers.set(ToolControllerId, new ToolController(this, this.registry));
     }
 
     abstract getStore(): AbstractViewStore;
@@ -73,7 +76,7 @@ export abstract class AbstractPlugin extends UI_Plugin {
         this.renderFunc && this.renderFunc();
     }
 
-    setSelectedTool(tool: AbstractTool) {
+    setSelectedTool(tool: Tool) {
         this.selectedTool && this.selectedTool.deselect();
         this.selectedTool = tool;
         this.selectedTool.select();

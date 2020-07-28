@@ -56,7 +56,7 @@ export class SceneEditorPlugin extends AbstractPlugin {
         
         [ToolType.Rectangle, ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Pointer, ToolType.Camera]
             .map(toolType => {
-                this.tools.set(toolType, toolFactory(toolType, this, registry));
+                this.addTool(toolFactory(toolType, this, registry));
             });
 
         this.camera = cameraInitializer(SceneEditorPluginId, registry);

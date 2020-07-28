@@ -38,7 +38,7 @@ export class GameViewerPlugin extends AbstractPlugin {
     constructor(registry: Registry) {
         super(registry);
 
-        this.tools.set(ToolType.Camera, toolFactory(ToolType.Camera, this, registry));
+        this.addTool(toolFactory(ToolType.Camera, this, registry))
         this.selectedTool = this.getToolById(ToolType.Camera);
 
         this.gameViewerSettings = new GameViewerSettings(registry);
