@@ -1,5 +1,5 @@
 import { UI_Element } from './elements/UI_Element';
-import { RowGui } from './UI_ReactElements';
+import { RowComp } from '../gui/layout/RowComp';
 import * as React from 'react';
 import { Registry } from '../Registry';
 import { UI_Region, UI_Plugin } from '../UI_Plugin';
@@ -45,6 +45,10 @@ import { UI_Tool } from './elements/toolbar/UI_Tool';
 import { UI_Tooltip } from './elements/UI_Tooltip';
 import { ListItemComp } from '../gui/data_display/ListItemComp';
 import { UI_ListItem } from './elements/UI_ListItem';
+import { UI_SvgForeignObject } from './elements/svg/UI_SvgForeignObject';
+import { ForeignObjectComp } from '../gui/svg/ForeignObjectComp';
+import { BoxComp } from '../gui/layout/BoxComp';
+import { UI_Box } from './elements/UI_Box';
 
 export class UI_Builder {
 
@@ -64,7 +68,7 @@ export class UI_Builder {
                 return <div>{this.buildChildren(element, plugin)}</div>;
             case UI_ElementType.Row:
                 const row = element as UI_Row;
-                return <RowGui element={row}>{this.buildChildren(element, plugin)}</RowGui>;
+                return <RowComp element={row}>{this.buildChildren(element, plugin)}</RowComp>;
             case UI_ElementType.Accordion:
                 const accordionTab = element as UI_Accordion;
                 return <AccordionTabComp element={accordionTab}>{this.buildChildren(element, plugin)}</AccordionTabComp>;
@@ -82,6 +86,9 @@ export class UI_Builder {
                 return <SvgGroupComp element={group}>{this.buildChildren(element, plugin)}</SvgGroupComp>
             case UI_ElementType.SvgCanvas:
                 return this.buildSvgCanvas(element as UI_SvgCanvas, plugin);
+            case UI_ElementType.Box:
+                const box = element as UI_Box;
+                return <BoxComp element={box}>{this.buildChildren(element, plugin)}</BoxComp>;
         }
     }
 
@@ -169,6 +176,9 @@ export class UI_Builder {
             case UI_ElementType.SvgPath:
                 const path = element as UI_SvgPath
                 return <SvgPathComp element={path}/>; 
+            case UI_ElementType.SvgForeignObject:
+                const foreignObject = element as UI_SvgForeignObject;
+                return <ForeignObjectComp element={foreignObject}/>; 
             case UI_ElementType.Toolbar:
                 const toolbar = element as UI_Toolbar;
                 return this.buildToolbar(toolbar);

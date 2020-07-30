@@ -5,7 +5,7 @@ import { UI_ComponentProps } from "../UI_ComponentProps"
 import { UI_FileUpload } from "../../gui_builder/elements/UI_FileUpload"
 import { useDropzone } from "react-dropzone"
 import styled from "styled-components";
-import { cssClassBuilder } from "../../gui_builder/UI_ReactElements"
+import { cssClassBuilder } from "../layout/RowComp"
 import { colors } from "../styles"
 
 const FileUploadStyled = styled.div`

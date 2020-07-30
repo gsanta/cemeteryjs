@@ -4,7 +4,7 @@ import { AppContext, AppContextType } from '../../../core/gui/Context';
 import { colors } from '../../../core/gui/styles';
 import { UI_Toolbar } from '../../gui_builder/elements/toolbar/UI_Toolbar';
 import { UI_ComponentProps } from '../UI_ComponentProps';
-import { cssClassBuilder } from '../../gui_builder/UI_ReactElements';
+import { cssClassBuilder } from '../layout/RowComp';
 import { UI_Tool } from '../../gui_builder/elements/toolbar/UI_Tool';
 import { ToolIconProps } from '../../../plugins/common/toolbar/icons/ToolIcon';
 import tippy from 'tippy.js';

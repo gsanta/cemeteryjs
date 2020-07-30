@@ -20,6 +20,7 @@ import { UI_TableColumn } from "./elements/UI_TableColumn";
 import { UI_Row } from './elements/UI_Row';
 import { UI_Accordion } from './elements/surfaces/UI_Accordion';
 import { UI_ListItem } from './elements/UI_ListItem';
+import { UI_SvgForeignObject } from './elements/svg/UI_SvgForeignObject';
 
 export class UI_Factory {
     static row(parent: UI_Container, config: { controllerId?: string}): UI_Row {
@@ -202,6 +203,18 @@ export class UI_Factory {
         parent.children.push(group);
         
         return group;
+    }
+
+    static svgForeignObject(parent: UI_Container, config: { controllerId?: string, key: string}): UI_SvgForeignObject {
+        const foreignObject = new UI_SvgForeignObject(parent.plugin);
+        foreignObject.key = config.key;
+        
+        foreignObject.generateId(parent);
+        this.setController(parent, foreignObject, config);
+
+        parent.children.push(foreignObject);
+        
+        return foreignObject;
     }
 
     ///////////////////////////////////////////// Toolbar /////////////////////////////////////////////

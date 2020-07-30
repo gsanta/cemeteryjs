@@ -4,6 +4,7 @@
 export enum UI_ElementType {
     Layout = 'Layout',
     Row = 'Row',
+    Box = 'Box',
     Button = 'Button',
     Select = 'Select',
     GridSelect = 'GridSelect',
@@ -16,6 +17,8 @@ export enum UI_ElementType {
     SvgCircle = 'SvgCircle',
     SvgImage = 'SvgImage',
     SvgPath = 'SvgPath',
+    SvgForeignObject = 'ForeignObject',
+
 
     Text = 'Text',
     Tooltip = 'Tooltip',

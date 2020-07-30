@@ -1,10 +1,6 @@
-import styled from "styled-components";
 import * as React from 'react';
-import { InputComponent, ConnectedInputComponent } from "../gui/inputs/InputComponent";
-import { UI_Row } from "./elements/UI_Row";
-import { UI_TextField } from "./elements/UI_TextField";
-import { LabeledField, LabelColumnStyled, FieldColumnStyled } from "../../plugins/scene_editor/settings/SettingsComponent";
-import { MeshViewPropType } from "../../plugins/scene_editor/settings/MeshSettings";
+import styled from "styled-components";
+import { UI_Row } from "../../gui_builder/elements/UI_Row";
 
 export function cssClassBuilder(...classes: string[]) {
     return classes.filter(c => c).join(' ');
@@ -25,7 +21,7 @@ const RowStyled = styled.div`
     }
 `;
 
-export function RowGui(props: RowProps) {
+export function RowComp(props: RowProps) {
     const classes = cssClassBuilder(
         'ce-row',
         props.element.isBold ? 'ce-bold' : undefined,
