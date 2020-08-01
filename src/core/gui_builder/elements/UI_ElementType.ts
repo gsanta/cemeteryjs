@@ -18,6 +18,7 @@ export enum UI_ElementType {
     SvgImage = 'SvgImage',
     SvgPath = 'SvgPath',
     SvgForeignObject = 'ForeignObject',
+    SvgText = 'SvgText',
 
 
     Text = 'Text',

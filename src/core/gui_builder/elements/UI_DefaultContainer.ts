@@ -4,14 +4,19 @@ import { UI_Text } from './UI_Text';
 import { UI_Button } from './UI_Button';
 import { UI_Row } from './UI_Row';
 import { UI_ListItem } from './UI_ListItem';
+import { UI_Box } from './UI_Box';
 
 export class UI_DefaultContainer extends UI_Container {
     listItem(config: {controllerId?: string, prop: string}): UI_ListItem {
         return UI_Factory.listItem(this, config);
     }
 
-    row(config: {controllerId?: string}): UI_Row {
+    row(config: {controllerId?: string, key: string}): UI_Row {
         return UI_Factory.row(this, config);
+    }
+
+    box(config: {controllerId?: string, key: string}): UI_Box {
+        return UI_Factory.box(this, config);
     }
 
     table(config: {controllerId?: string}) {

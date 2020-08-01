@@ -49,6 +49,7 @@ import { UI_SvgForeignObject } from './elements/svg/UI_SvgForeignObject';
 import { ForeignObjectComp } from '../gui/svg/ForeignObjectComp';
 import { BoxComp } from '../gui/layout/BoxComp';
 import { UI_Box } from './elements/UI_Box';
+import { UI_SvgText } from './elements/svg/UI_SvgText';
 
 export class UI_Builder {
 
@@ -178,6 +179,9 @@ export class UI_Builder {
                 return <SvgPathComp element={path}/>; 
             case UI_ElementType.SvgForeignObject:
                 const foreignObject = element as UI_SvgForeignObject;
+                return <ForeignObjectComp element={foreignObject}/>;
+            case UI_ElementType.SvgText:
+                const svgText = element as UI_SvgText;
                 return <ForeignObjectComp element={foreignObject}/>; 
             case UI_ElementType.Toolbar:
                 const toolbar = element as UI_Toolbar;

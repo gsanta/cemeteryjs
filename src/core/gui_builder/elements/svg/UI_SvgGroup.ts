@@ -30,4 +30,8 @@ export class UI_SvgGroup extends UI_Container {
     foreignObject(config: { controllerId?: string, key: string}) {
         return UI_Factory.svgForeignObject(this, config);
     }
+
+    svgText(config: {key: string}) {
+        return UI_Factory.svgText(this, config);
+    }
 }

@@ -21,10 +21,13 @@ import { UI_Row } from './elements/UI_Row';
 import { UI_Accordion } from './elements/surfaces/UI_Accordion';
 import { UI_ListItem } from './elements/UI_ListItem';
 import { UI_SvgForeignObject } from './elements/svg/UI_SvgForeignObject';
+import { UI_Box } from './elements/UI_Box';
+import { UI_SvgText } from './elements/svg/UI_SvgText';
 
 export class UI_Factory {
-    static row(parent: UI_Container, config: { controllerId?: string}): UI_Row {
+    static row(parent: UI_Container, config: { controllerId?: string, key: string}): UI_Row {
         const row = new UI_Row(parent.plugin);
+        row.key = config.key;
 
         row.generateId(parent);
         parent.children.push(row);
@@ -32,6 +35,18 @@ export class UI_Factory {
         this.setController(parent, row, config);
 
         return row;
+    }
+
+    static box(parent: UI_Container, config: { controllerId?: string, key: string}): UI_Box {
+        const box = new UI_Box(parent.plugin);
+        box.key = config.key;
+        
+        box.generateId(parent);
+        parent.children.push(box);
+
+        this.setController(parent, box, config);
+
+        return box;
     }
 
     static svgCanvas(parent: UI_Container, config: { controllerId?: string}): UI_SvgCanvas {
@@ -142,6 +157,16 @@ export class UI_Factory {
 
     ///////////////////////////////////////////// Svg /////////////////////////////////////////////
 
+    static svgText(parent: UI_Container, config: { key: string}): UI_SvgText {
+        const text = new UI_SvgText(parent.plugin);
+        text.key = config.key;
+
+        text.generateId(parent);
+
+        parent.children.push(text);
+    
+        return text;
+    }
 
     static svgRect(parent: UI_Container, config: { controllerId?: string, prop?: string}): UI_SvgRect {
         const rect = new UI_SvgRect(parent.plugin);
