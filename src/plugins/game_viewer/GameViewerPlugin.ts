@@ -1,21 +1,18 @@
 import { AbstractPlugin, calcOffsetFromDom } from '../../core/AbstractPlugin';
 import { NodeType } from '../../core/models/nodes/NodeModel';
 import { Registry } from '../../core/Registry';
-import { LayoutType } from '../Plugins';
-import { Camera3D } from '../common/camera/Camera3D';
-import { ICamera } from '../common/camera/ICamera';
-import { toolFactory } from '../common/toolbar/toolFactory';
-import { Tool, ToolType } from '../common/tools/Tool';
-import { Tools } from '../Tools';
-import { Gizmos } from './Gizmos';
-import { GameViewerImporter } from './io/GameViewerImporter';
-import { GameViewerSettings } from './settings/GameViewerSettings';
-import { PluginServices } from '../common/PluginServices';
 import { EngineService } from '../../core/services/EngineService';
 import { MeshLoaderService } from '../../core/services/MeshLoaderService';
-import { NodeService } from './services/NodeService';
 import { TextureLoaderService } from '../../core/services/TextureLoaderService';
 import { UI_Region } from '../../core/UI_Plugin';
+import { ICamera } from '../common/camera/ICamera';
+import { PluginServices } from '../common/PluginServices';
+import { toolFactory } from '../common/toolbar/toolFactory';
+import { Tool, ToolType } from '../common/tools/Tool';
+import { Gizmos } from './Gizmos';
+import { GameViewerImporter } from './io/GameViewerImporter';
+import { NodeService } from './services/NodeService';
+import { GameViewerSettings } from './settings/GameViewerSettings';
 (<any> window).earcut = require('earcut');
 
 export function getCanvasElement(viewId: string): HTMLCanvasElement {

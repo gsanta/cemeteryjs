@@ -1,39 +1,38 @@
 import { UI_Plugin, UI_Region } from '../UI_Plugin';
 import { Registry } from '../Registry';
 import { RenderTask } from './RenderServices';
+import { AbstractSidepanelPlugin } from '../AbstractSidepanelPlugin';
 
 export class PluginService {
-    private plugins: Map<string, UI_Plugin> = new Map();
+    private plugins: UI_Plugin[] = [];
+    private activePlugins: UI_Plugin[] = [];
 
-    private registeredPlugins: Map<UI_Region, UI_Plugin[]> = new Map();
-    private showedPlugins: Map<UI_Region, UI_Plugin[]> = new Map();
+    // private showedPlugins: Map<UI_Region, UI_Plugin[]> = new Map();
 
     private registry: Registry;
 
     constructor(registry: Registry) {
         this.registry = registry;
-
-        UI_Region.all().forEach(region => {
-            this.registeredPlugins.set(region, []);
-            this.showedPlugins.set(region, []);
-        });
     }
 
-    findPluginsAtRegion(region: UI_Region): UI_Plugin[] {
-        return this.showedPlugins.get(region);
+    getActivePlugins(region?: UI_Region): UI_Plugin[] {
+        if (region) {
+            return this.activePlugins.filter(activePlugin => activePlugin.region === region);
+        }
+        return this.activePlugins;
     }
 
     findPlugin(pluginId: string): UI_Plugin {
-        return this.plugins.get(pluginId);
-    }
+        return this.plugins.find(plugin => plugin.id === pluginId);
+    } 
 
-    showPlugin(pluginId: string) {
-        const plugin = this.plugins.get(pluginId);
+    activatePlugin(pluginId: string) {
+        const plugin = this.findPlugin(pluginId);
         if (UI_Region.isSinglePluginRegion(plugin.region)) {
-            this.showedPlugins.get(plugin.region)[0] = plugin;
-        } else {
-            this.showedPlugins.get(plugin.region).push(plugin);
+            this.activePlugins = this.activePlugins.filter(activePlugin => activePlugin.region !== plugin.region);
         }
+        
+        this.activePlugins.push(plugin);
         // this.registry.services.ui.runUpdate(UI_Region.Dialog);
 
         switch(plugin.region) {
@@ -44,16 +43,18 @@ export class PluginService {
 
     }
 
-    hidePlugin(pluginId: string) {
-        const plugin = this.plugins.get(pluginId);
-        const index = this.showedPlugins.get(plugin.region).indexOf(plugin);
-        this.showedPlugins.get(plugin.region).splice(index, 1);
+    deactivatePlugin(pluginId: string) {
+        const plugin = this.findPlugin(pluginId);
+        this.activePlugins = this.activePlugins.filter(plugin => plugin.id)
 
         this.registry.services.ui.runUpdate(UI_Region.Dialog);
     }
 
     registerPlugin(plugin: UI_Plugin) {
-        this.plugins.set(plugin.id, plugin);
-        this.registeredPlugins.get(plugin.region).push(plugin);
+        this.plugins.push(plugin);
+
+        if (plugin.region === UI_Region.SidepanelWidget) {
+            (<AbstractSidepanelPlugin> plugin).isGlobalPlugin && this.activatePlugin(plugin.id);
+        }
     }
 }

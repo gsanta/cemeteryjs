@@ -1,6 +1,8 @@
 import { Registry } from "../Registry";
 import { DialogService } from "./DialogService";
+import { EventService } from './EventService';
 import { ExportService } from "./export/ExportService";
+import { GamepadService } from './GamepadService';
 import { GameService } from "./GameService";
 import { HistoryService } from "./HistoryService";
 import { ImportService } from './import/ImportService';
@@ -10,12 +12,10 @@ import { MouseService } from './input/MouseService';
 import { PointerService } from './input/PointerService';
 import { LevelService } from "./LevelService";
 import { LocalStoreService } from "./LocalStroreService";
-import { RenderService } from "./RenderServices";
-import { GamepadService } from './GamepadService';
-import { LayoutService } from "./LayoutService";
-import { UI_Service } from "./UI_Service";
-import { EventService } from './EventService';
 import { PluginService } from './PluginService';
+import { RenderService } from "./RenderServices";
+import { UI_Service } from "./UI_Service";
+import { UI_PerspectiveService } from './UI_PerspectiveService';
 
 export class Services {
     hotkey: HotkeyService;
@@ -31,9 +31,9 @@ export class Services {
     dialog: DialogService;
     game: GameService;
     gamepad: GamepadService;
-    layout: LayoutService;
     event: EventService;
     plugin: PluginService;
+    uiPerspective: UI_PerspectiveService;
 
     ui: UI_Service;
 
@@ -57,10 +57,10 @@ export class Services {
         this.dialog = new DialogService(this.registry);
         this.game = new GameService(this.registry);
         this.gamepad = new GamepadService(this.registry);
-        this.layout = new LayoutService(this.registry);
         this.ui = new UI_Service();
         this.event = new EventService(this.registry);
         this.plugin = new PluginService(this.registry);
+        this.uiPerspective = new UI_PerspectiveService(this.registry);
 
         // TODO: find a better place to register general hotkeys
         this.hotkey.registerHotkey(this.gamepad);

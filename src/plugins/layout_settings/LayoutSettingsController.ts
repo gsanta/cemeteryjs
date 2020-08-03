@@ -16,17 +16,16 @@ export class LayoutSettingsController extends AbstractController<LayoutSettingsP
 
         this.createPropHandler(LayoutSettingsProps.AllLayouts)
             .onGet(() => {
-                return this.registry.plugins.predefinedLayouts.map(layout => layout.title);
+                return this.registry.services.uiPerspective.perspectives.map(perspective => perspective.name);
             });
 
-        this.createPropHandler(LayoutSettingsProps.SelectedLayout)
+        this.createPropHandler<string>(LayoutSettingsProps.SelectedLayout)
             .onChange((val) => {
-                const layout = this.registry.plugins.predefinedLayouts.find(layout => layout.title === val);
-                this.registry.plugins.selectPredefinedLayout(layout.title);
+                this.registry.services.uiPerspective.activatePerspective(val);
                 this.registry.services.render.runImmediately(RenderTask.RenderFull);
             })
             .onGet(() => {
-                return this.registry.plugins.getCurrentPredefinedLayout().title;
+                return this.registry.services.uiPerspective.activePerspective.name;
             })
     }
 }

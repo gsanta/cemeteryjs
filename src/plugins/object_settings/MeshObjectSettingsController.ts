@@ -143,7 +143,7 @@ export class MeshObjectSettingsController extends AbstractController<MeshObjectS
 
         this.createPropHandler<number>(MeshObjectSettingsProps.Thumbnail)
             .onClick((val) => {
-                this.registry.services.plugin.showPlugin(ThumbnailDialogPluginId);
+                this.registry.services.plugin.activatePlugin(ThumbnailDialogPluginId);
             });
     }
 }

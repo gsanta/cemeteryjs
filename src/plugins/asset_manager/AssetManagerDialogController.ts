@@ -104,9 +104,9 @@ export class AssetManagerDialogController extends AbstractSettings<AssetManagerD
             break;
             case AssetManagerDialogProps.IsDialogOpen:
                 if (val) {
-                    this.registry.services.plugin.showPlugin(AssetManagerDialogPluginId);
+                    this.registry.services.plugin.activatePlugin(AssetManagerDialogPluginId);
                 } else {
-                    this.registry.services.plugin.hidePlugin(AssetManagerDialogPluginId);
+                    this.registry.services.plugin.deactivatePlugin(AssetManagerDialogPluginId);
                 }
                 this.registry.services.ui.runUpdate(UI_Region.Dialog);
             break;

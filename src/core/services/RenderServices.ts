@@ -48,7 +48,7 @@ export class RenderService {
                     this.settingsRepainters.forEach(repaint => repaint());
                 break;
                 case RenderTask.RenderVisibleViews:
-                    this.registry.plugins.plugins.forEach(plugin => plugin.reRender());
+                    this.registry.plugins.getActivePlugins().forEach(plugin => plugin.render());
                 break;
                 case RenderTask.RenderFull:
                     this.fullRepainter();

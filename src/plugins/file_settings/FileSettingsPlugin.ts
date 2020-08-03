@@ -2,12 +2,14 @@ import { UI_Plugin, UI_Region } from '../../core/UI_Plugin';
 import { FileSettingsController, FileSettingsProps, FileSettingsControllerId } from './FileSettingsController';
 import { Registry } from '../../core/Registry';
 import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
+import { AbstractSidepanelPlugin } from '../../core/AbstractSidepanelPlugin';
 
 export const FileSettingsPluginId = 'file-settings-plugin'; 
-export class FileSettingsPlugin extends UI_Plugin {
+export class FileSettingsPlugin extends AbstractSidepanelPlugin {
     id = FileSettingsPluginId;
     displayName = 'File Settings';
     region = UI_Region.SidepanelWidget;
+    isGlobalPlugin = true;
 
     constructor(registry: Registry) {
         super(registry);

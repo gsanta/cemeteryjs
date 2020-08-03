@@ -2,13 +2,15 @@ import { UI_Plugin, UI_Region } from '../../core/UI_Plugin';
 import { Registry } from '../../core/Registry';
 import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
 import { LayoutSettingsController, LayoutSettingsProps, LayoutSettingsControllerId } from './LayoutSettingsController';
+import { AbstractSidepanelPlugin } from '../../core/AbstractSidepanelPlugin';
 
 export const LayoutSettingsPluginId = 'layout-settings-plugin';
 
-export class LayoutSettingsPlugin extends UI_Plugin {
+export class LayoutSettingsPlugin extends AbstractSidepanelPlugin {
     id = LayoutSettingsPluginId;
     displayName = 'Layout Settings';
     region = UI_Region.SidepanelWidget;
+    isGlobalPlugin = true;
 
     constructor(registry: Registry) {
         super(registry);

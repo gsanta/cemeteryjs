@@ -1,49 +1,40 @@
 import { AbstractPlugin } from '../core/AbstractPlugin';
+import { AbstractSidepanelPlugin } from '../core/AbstractSidepanelPlugin';
 import { Registry } from '../core/Registry';
-import { SceneEditorPlugin, SceneEditorPluginId } from './scene_editor/SceneEditorPlugin';
-import { SceneEditorPluginComponentFactory } from './scene_editor/SceneEditorPluginComponentFactory';
-import { GameViewerPlugin } from './game_viewer/GameViewerPlugin';
-import { GameViewerPluginComponentFactory } from './game_viewer/GameViewerPluginComponentFactory';
-import { NodeEditorPlugin } from './node_editor/NodeEditorPlugin';
-import { NodeEditorPluginComponentFactory } from './node_editor/NodeEditorPluginComponentFactory';
-import { CodeEditorPlugin } from './code_editor/CodeEditorPlugin';
-import { CodeEditorPluginComponentFactory } from './code_editor/CodeEditorPluginComponentFactory';
+import { RenderTask } from '../core/services/RenderServices';
+import { UI_Plugin, UI_Region } from '../core/UI_Plugin';
 import { AssetLoaderPlugin } from './asset_loader/AssetLoaderPlugin';
-import { AssetLoaderPluginComponentFactory } from './asset_loader/AssetLoaderPluginComponentFactory';
-import { AbstractPluginComponentFactory } from './common/AbstractPluginComponentFactory';
-import { AssetManagerPlugin } from './asset_manager/AssetManagerPlugin';
-import { FileSettingsPlugin, FileSettingsPluginId } from './file_settings/FileSettingsPlugin';
-import { LayoutSettingsPlugin, LayoutSettingsPluginId } from './layout_settings/LayoutSettingsPlugin';
-import { ObjectSettingsPlugin, ObjectSettingsPluginId } from './object_settings/ObjectSettingsPlugin';
-import { LevelSettingsPlugin, LevelSettingsPluginId } from './level_settings/LevelSettingsPlugin';
-import { AssetManagerSidepanelPlugin, AssetManagerSidepanelPluginId } from './asset_manager/AssetManagerSidepanelPlugin';
 import { AssetManagerDialogPlugin } from './asset_manager/AssetManagerDialogPlugin';
-import { ThumbnailDialogPluginId, ThumbnailDialogPlugin } from './object_settings/ThumbnailDialogPlugin';
+import { AssetManagerPlugin } from './asset_manager/AssetManagerPlugin';
+import { AssetManagerSidepanelPlugin, AssetManagerSidepanelPluginId } from './asset_manager/AssetManagerSidepanelPlugin';
+import { CodeEditorPlugin } from './code_editor/CodeEditorPlugin';
+import { AbstractPluginComponentFactory } from './common/AbstractPluginComponentFactory';
+import { FileSettingsPlugin, FileSettingsPluginId } from './file_settings/FileSettingsPlugin';
+import { GameViewerPlugin } from './game_viewer/GameViewerPlugin';
+import { LayoutSettingsPlugin, LayoutSettingsPluginId } from './layout_settings/LayoutSettingsPlugin';
+import { LevelSettingsPlugin, LevelSettingsPluginId } from './level_settings/LevelSettingsPlugin';
+import { NodeEditorPlugin } from './node_editor/NodeEditorPlugin';
 import { NodeEditorSettingsPlugin, NodeEditorSettingsPluginId } from './node_editor/NodeEditorSettingsPlugin';
-
-export interface LayoutConfig {
-    activePlugin: AbstractPlugin;
-    allowedPlugins: AbstractPlugin[];
-}
-
-export enum LayoutType {
-    Single = 'Single',
-    Double = 'Double',
-    Dialog = 'Dialog'
-}
+import { ObjectSettingsPlugin, ObjectSettingsPluginId } from './object_settings/ObjectSettingsPlugin';
+import { ThumbnailDialogPlugin } from './object_settings/ThumbnailDialogPlugin';
+import { SceneEditorPlugin, SceneEditorPluginId } from './scene_editor/SceneEditorPlugin';
 
 export class Plugins {
+    // private plugins: Map<string, UI_Plugin> = new Map();
+
+    // private registeredPlugins: Map<UI_Region, UI_Plugin[]> = new Map();
+    // private showedPlugins: Map<UI_Region, UI_Plugin[]> = new Map();
+
     sceneEditor: SceneEditorPlugin;
     gameView: GameViewerPlugin;
     nodeEditor: NodeEditorPlugin;
     codeEditor: CodeEditorPlugin;
     assetLoader: AssetLoaderPlugin;
     assetManager: AssetManagerPlugin;
-    plugins: AbstractPlugin[] = [];
-    activePlugins: AbstractPlugin[] = [];
 
-    predefinedLayouts: {title: string; plugins: AbstractPlugin[]}[];
-    private currentPredefinedLayout: {title: string; plugins: AbstractPlugin[]}; 
+    private plugins: UI_Plugin[] = [];
+    private activePlugins: UI_Plugin[] = [];
+
     private pluginFactoryMap: Map<AbstractPlugin, AbstractPluginComponentFactory<any>> = new Map();
     
     visibilityDirty = true;
@@ -59,15 +50,8 @@ export class Plugins {
         this.assetLoader = new AssetLoaderPlugin(registry);
         this.assetManager = new AssetManagerPlugin(registry);
 
-        this.registerPlugin(this.sceneEditor, new SceneEditorPluginComponentFactory(registry, this.sceneEditor));
-        this.registerPlugin(this.gameView, new GameViewerPluginComponentFactory(registry, this.gameView));
-        this.registerPlugin(this.nodeEditor, new NodeEditorPluginComponentFactory(registry, this.nodeEditor));
-        this.registerPlugin(this.codeEditor, new CodeEditorPluginComponentFactory(registry, this.codeEditor));
-        this.registerPlugin(this.assetLoader, new AssetLoaderPluginComponentFactory(registry, this.assetLoader));
-        // this.registerPlugin(this.assetManager, new AssetManagerPluginGuiFactory(registry, this.assetManager));
-
         this.registry.services.plugin.registerPlugin(this.sceneEditor);
-        this.registry.services.plugin.showPlugin(SceneEditorPluginId);
+        this.registry.services.plugin.activatePlugin(SceneEditorPluginId);
     
         this.registry.services.plugin.registerPlugin(this.gameView);
         this.registry.services.plugin.registerPlugin(this.nodeEditor);
@@ -76,51 +60,25 @@ export class Plugins {
         this.registry.services.plugin.registerPlugin(this.assetManager);
 
         this.registry.services.plugin.registerPlugin(new FileSettingsPlugin(this.registry));
-        this.registry.services.plugin.showPlugin(FileSettingsPluginId);
+        this.registry.services.plugin.activatePlugin(FileSettingsPluginId);
         this.registry.services.plugin.registerPlugin(new LayoutSettingsPlugin(this.registry));
-        this.registry.services.plugin.showPlugin(LayoutSettingsPluginId);
+        this.registry.services.plugin.activatePlugin(LayoutSettingsPluginId);
 
         this.registry.services.plugin.registerPlugin(new ObjectSettingsPlugin(this.registry));
-        this.registry.services.plugin.showPlugin(ObjectSettingsPluginId);
+        this.registry.services.plugin.activatePlugin(ObjectSettingsPluginId);
 
         this.registry.services.plugin.registerPlugin(new LevelSettingsPlugin(this.registry));
-        this.registry.services.plugin.showPlugin(LevelSettingsPluginId);
+        this.registry.services.plugin.activatePlugin(LevelSettingsPluginId);
 
         this.registry.services.plugin.registerPlugin(new AssetManagerSidepanelPlugin(this.registry));
-        this.registry.services.plugin.showPlugin(AssetManagerSidepanelPluginId);
+        this.registry.services.plugin.activatePlugin(AssetManagerSidepanelPluginId);
 
         this.registry.services.plugin.registerPlugin(new AssetManagerDialogPlugin(this.registry));
 
         this.registry.services.plugin.registerPlugin(new ThumbnailDialogPlugin(this.registry));
 
         this.registry.services.plugin.registerPlugin(new NodeEditorSettingsPlugin(this.registry));
-        this.registry.services.plugin.showPlugin(NodeEditorSettingsPluginId);
-
-        this.predefinedLayouts = [
-            {
-                title: 'Scene Editor',
-                plugins: [this.sceneEditor, this.gameView]
-            },
-            {
-                title: 'Node Editor',
-                plugins: [this.nodeEditor]
-            },
-            {
-                title: 'Code Editor',
-                plugins: [this.codeEditor, this.gameView]
-            }
-        ];
-
-        this.selectPredefinedLayout('Scene Editor');
-    }
-
-    registerPlugin(plugin: AbstractPlugin, componentFactory: AbstractPluginComponentFactory<AbstractPlugin>) {
-        this.plugins.push(plugin);
-        this.pluginFactoryMap.set(plugin, componentFactory);
-
-        if (plugin.pluginSettings.dialogController) {
-            this.registry.services.dialog.dialogs.push(plugin.pluginSettings.dialogController);
-        }
+        this.registry.services.plugin.activatePlugin(NodeEditorSettingsPluginId);
     }
 
     getPluginFactory(plugin: AbstractPlugin): AbstractPluginComponentFactory<any> {
@@ -137,36 +95,50 @@ export class Plugins {
         return this.hoveredView;
     }
 
-    getActivePlugins(): AbstractPlugin[] {
-        return this.activePlugins;
-    }
-
-    selectPredefinedLayout(title: string) {
-        const predefinedLayout = this.predefinedLayouts.find(predef => predef.title === title);
-        this.currentPredefinedLayout = predefinedLayout;
-
-        const activePlugins = predefinedLayout.plugins;
-        this.setActivePlugins(activePlugins);
-    }
-
-    setActivePlugins(activePlugins: AbstractPlugin[]) {
-        const prevActivePLugins = [...this.activePlugins];
-        this.visibilityDirty = true;
-
-        this.activePlugins = activePlugins;
-        
-        const destroyPlugins = prevActivePLugins.filter(plugin => this.activePlugins.indexOf(plugin) === -1);
-        destroyPlugins.forEach(plugin => plugin.destroy());
-
-        this.activePlugins.forEach(plugin => this.registry.services.plugin.showPlugin(plugin.id));
-        this.activePlugins.forEach(plugin => plugin.resize());
-    }
-
     getViewById<T extends AbstractPlugin = AbstractPlugin>(id: string): T {
         return <T> this.plugins.find(view => view.id === id);
     }
+    
+    getActivePlugins(region?: UI_Region): UI_Plugin[] {
+        if (region) {
+            return this.activePlugins.filter(activePlugin => activePlugin.region === region);
+        }
+        return this.activePlugins;
+    }
 
-    getCurrentPredefinedLayout(): {title: string; plugins: AbstractPlugin[]} {
-        return this.currentPredefinedLayout;
+    findPlugin(pluginId: string): UI_Plugin {
+        return this.plugins.find(plugin => plugin.id === pluginId);
+    } 
+
+    activatePlugin(pluginId: string) {
+        const plugin = this.findPlugin(pluginId);
+        if (UI_Region.isSinglePluginRegion(plugin.region)) {
+            this.activePlugins = this.activePlugins.filter(activePlugin => activePlugin.region !== plugin.region);
+        }
+        
+        this.activePlugins.push(plugin);
+        // this.registry.services.ui.runUpdate(UI_Region.Dialog);
+
+        switch(plugin.region) {
+            case UI_Region.Dialog:
+                this.registry.services.render.runImmediately(RenderTask.RenderDialog);
+            break;
+        }
+
+    }
+
+    deactivatePlugin(pluginId: string) {
+        const plugin = this.findPlugin(pluginId);
+        this.activePlugins = this.activePlugins.filter(plugin => plugin.id)
+
+        this.registry.services.ui.runUpdate(UI_Region.Dialog);
+    }
+
+    registerPlugin(plugin: UI_Plugin) {
+        this.plugins.push(plugin);
+
+        if (plugin.region === UI_Region.SidepanelWidget) {
+            (<AbstractSidepanelPlugin> plugin).isGlobalPlugin && this.activatePlugin(plugin.id);
+        }
     }
 }
