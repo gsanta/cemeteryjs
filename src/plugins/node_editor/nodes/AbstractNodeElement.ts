@@ -33,7 +33,7 @@ export abstract class AbstractNodeElement {
         return hoverColor || selectionColor || defaultColor;
     }
 
-    protected renderFrameInto(svgCanvas: UI_SvgCanvas, nodeView: NodeView): void {
+    renderInto(svgCanvas: UI_SvgCanvas, nodeView: NodeView): void {
         const group = svgCanvas.group(nodeView.id);
         group.transform = `translate(${nodeView.dimensions.topLeft.x} ${nodeView.dimensions.topLeft.y})`;
 

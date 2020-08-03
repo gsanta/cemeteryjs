@@ -27,7 +27,7 @@ import { UI_SvgText } from './elements/svg/UI_SvgText';
 export class UI_Factory {
     static row(parent: UI_Container, config: { controllerId?: string, key: string}): UI_Row {
         const row = new UI_Row(parent.plugin);
-        row.key = config.key;
+        row.key = config && config.key;
 
         row.generateId(parent);
         parent.children.push(row);

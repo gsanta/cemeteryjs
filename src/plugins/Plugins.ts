@@ -158,6 +158,7 @@ export class Plugins {
         const destroyPlugins = prevActivePLugins.filter(plugin => this.activePlugins.indexOf(plugin) === -1);
         destroyPlugins.forEach(plugin => plugin.destroy());
 
+        this.activePlugins.forEach(plugin => this.registry.services.plugin.showPlugin(plugin.id));
         this.activePlugins.forEach(plugin => plugin.resize());
     }
 

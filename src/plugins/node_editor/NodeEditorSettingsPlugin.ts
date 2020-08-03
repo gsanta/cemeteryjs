@@ -8,7 +8,7 @@ import { NodeEditorSettingsController, NodeEditorSettingsControllerId } from './
 export const NodeEditorSettingsPluginId = 'node_editor_settings_plugin'; 
 export class NodeEditorSettingsPlugin extends UI_Plugin {
     id = NodeEditorSettingsPluginId;
-    displayName = 'File Settings';
+    displayName = 'Node Editor';
     region = UI_Region.SidepanelWidget;
 
     constructor(registry: Registry) {

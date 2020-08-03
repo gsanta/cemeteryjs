@@ -20,7 +20,8 @@ export const ListItemStyled = styled.div`
 export const ListItemComp = (props: UI_ComponentProps<UI_ListItem>) => {
     let drag: DragElementWrapper<DragSourceOptions>; 
     if (props.element.droppable) {
-        useDrag({
+        let isDragging: any;
+        [isDragging, drag] = useDrag({
             item: { type: props.element.prop },
             collect: monitor => ({
                 isDragging: !!monitor.isDragging(),

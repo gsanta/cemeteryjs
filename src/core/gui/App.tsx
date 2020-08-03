@@ -79,7 +79,6 @@ export class App extends React.Component<{}, AppState> {
                         </div>
                         <MainPanelComp region='primary'/>
                         <MainPanelComp region='secondary'/>
-                        {/* {this.renderPlugins()} */}
                     </div>
                     {this.context.controllers.isLoading ? <SpinnerOverlayComponent key="spinner"/> : null}
                     <DialogManagerComponent/>
@@ -87,11 +86,6 @@ export class App extends React.Component<{}, AppState> {
                 </DndProvider>
             </div>
         );
-    }
-
-    private renderPlugins(): JSX.Element[] {
-        const pluginService = this.context.registry.plugins; 
-        return pluginService.getActivePlugins().map(plugin => pluginService.getPluginFactory(plugin).renderMainComponent());
     }
 
     private resize() {

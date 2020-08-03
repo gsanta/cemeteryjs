@@ -16,7 +16,7 @@ export class UI_Layout extends UI_Container {
         this.id = `${plugin.id}_region-${region}_${elementType}`;
     }
 
-    row(config: {controllerId?: string}): UI_Row {
+    row(config: {controllerId?: string, key: string}): UI_Row {
         return UI_Factory.row(this, config);
     }
 

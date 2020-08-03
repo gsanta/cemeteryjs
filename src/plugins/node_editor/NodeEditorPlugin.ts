@@ -26,6 +26,8 @@ import { UI_Region } from '../../core/UI_Plugin';
 import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
 import { CanvasToolsProps } from '../../core/ViewFactory';
 import { UI_Accordion } from '../../core/gui_builder/elements/surfaces/UI_Accordion';
+import { UI_SvgCanvas } from '../../core/gui_builder/elements/UI_SvgCanvas';
+import { PathNodeElement } from './nodes/PathNodeElement';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -336,5 +338,16 @@ export class NodeEditorPlugin extends AbstractPlugin {
         tool.icon = 'zoom-out';
         tooltip = tool.tooltip();
         tooltip.label = 'Zoom out';
+
+        this.renderNodesInto(canvas);
+    }
+
+    private renderNodesInto(canvas: UI_SvgCanvas) {
+        this.registry.stores.nodeStore.getNodes()
+            .forEach(node => {
+                if (node.model.type === NodeType.Path) {
+                    new PathNodeElement(this, this.registry).renderInto(canvas, node);
+                }
+            })
     }
 }

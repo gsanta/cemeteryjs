@@ -64,6 +64,8 @@ export class UI_Builder {
     }
 
     private buildContainer(element: UI_Container, plugin: UI_Plugin): JSX.Element {
+        if (!element) { return null; }
+
         switch(element.elementType) {
             case UI_ElementType.Layout:
                 return <div>{this.buildChildren(element, plugin)}</div>;
@@ -113,7 +115,6 @@ export class UI_Builder {
         const children = this.buildChildren(uiSvgCanvas, plugin);
 
         return <SvgCanvasComp toolbar={toolbar} element={uiSvgCanvas}>{children}</SvgCanvasComp>;
-
     }
 
     private buildToolbar(uiToolbar: UI_Toolbar) {
