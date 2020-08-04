@@ -14,6 +14,9 @@ import { HotkeyInputComponent } from './HotkeyInputComponent';
 import { SpinnerOverlayComponent } from './misc/SpinnerOverlayComponent';
 import { SidePanelComponent } from './SidePanelComponent';
 import { MainPanelComp } from './regions/MainPanelComp';
+import { SceneEditorPerspectiveName } from '../services/UI_PerspectiveService';
+import { UI_Region } from '../UI_Plugin';
+import { AbstractPlugin } from '../AbstractPlugin';
 
 export interface AppState {
     isDialogOpen: boolean;
@@ -47,7 +50,10 @@ export class App extends React.Component<{}, AppState> {
             this.context.registry.plugins.visibilityDirty = false;
         }
 
-        window.addEventListener('resize', () => this.context.registry.plugins.getActivePlugins().forEach(plugin => plugin.resize()));
+        // TODO: find a better place
+        window.addEventListener('resize', () => {
+            this.resizePlugins();
+        });
 
 
         setTimeout(() => this.context.controllers.setup(document.querySelector(`#${GameViewerPluginId}`)), 100);
@@ -57,7 +63,7 @@ export class App extends React.Component<{}, AppState> {
         });
 
         // TODO: find a better place
-        this.context.registry.plugins.selectPredefinedLayout('Scene Editor');
+        this.context.registry.services.uiPerspective.activatePerspective(SceneEditorPerspectiveName);
     }
 
     componentDidUpdate() {
@@ -65,16 +71,26 @@ export class App extends React.Component<{}, AppState> {
             this.split.destroy();
             this.updateCanvasVisibility();
             this.context.registry.plugins.visibilityDirty = false;
-            this.context.registry.plugins.getActivePlugins().forEach(plugin => plugin.resize());
+            this.resizePlugins();
         }
-    }e
+    }
+
+    private resizePlugins() {
+        if (this.context.registry.preferences.fullScreenPluginId) {
+            const fullScreenPlugin = this.context.registry.plugins.getById(this.context.registry.preferences.fullScreenPluginId);
+            (fullScreenPlugin as AbstractPlugin).resize();
+        } else {
+            (this.context.registry.plugins.getByRegion(UI_Region.Canvas1)[0] as AbstractPlugin).resize();
+            (this.context.registry.plugins.getByRegion(UI_Region.Canvas2)[0] as AbstractPlugin).resize();
+        }
+    }
     
     render() {
         return (
             <div className="style-nightshifs">
                 <DndProvider backend={Backend}>
                     <div className="main-content" key="main-content">
-                        <div id="toolbar" >
+                        <div id="sidepanel" >
                             <SidePanelComponent isEditorOpen={this.state.isEditorOpen} toggleEditorOpen={() => this.setState({isEditorOpen: !this.state.isEditorOpen})}/>
                         </div>
                         <MainPanelComp region='primary'/>
@@ -86,10 +102,6 @@ export class App extends React.Component<{}, AppState> {
                 </DndProvider>
             </div>
         );
-    }
-
-    private resize() {
-        this.context.registry.plugins.getActivePlugins().forEach(plugin => plugin.resize());
     }
 
     private updateCanvasVisibility() {
@@ -104,7 +116,7 @@ export class App extends React.Component<{}, AppState> {
                     'width': '2px',
                     'cursor': 'ew-resize'
                 }),
-                onDrag: () => this.resize(),
+                onDrag: () => this.resizePlugins(),
                 onDragEnd: ((sizes) => this.context.registry.services.layout.setSizesInPercent(sizes)) as any
             }
         );

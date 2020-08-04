@@ -1,4 +1,5 @@
 import { Registry } from '../Registry';
+import { UI_Region } from '../UI_Plugin';
 
 export enum RenderTask {
     RenderFocusedView = 'RenderFocusedView',
@@ -25,6 +26,10 @@ export class RenderService {
     }
 
 
+    reRender(...regions: UI_Region[]) {
+        
+    }
+
     scheduleTasks(...tasks: RenderTask[]) {
         this.updateTasks = tasks;
     }
@@ -37,6 +42,7 @@ export class RenderService {
         this.runTasks(this.updateTasks);
         this.updateTasks = [];
     }
+
 
     private runTasks(tasks: RenderTask[]) {
         tasks.forEach(task => {

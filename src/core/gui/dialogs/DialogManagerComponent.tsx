@@ -16,7 +16,7 @@ export class DialogManagerComponent extends React.Component {
     }
 
     render() {
-        const plugins = this.context.registry.services.plugin.findPluginsAtRegion(UI_Region.Dialog);
+        const plugins = this.context.registry.plugins.getByRegion(UI_Region.Dialog);
 
         if (!plugins.length) { return null; }
 
@@ -34,7 +34,7 @@ export class DialogManagerComponent extends React.Component {
     }
 
     private closeDialog(plugin: UI_Plugin) {
-        this.context.registry.services.plugin.hidePlugin(plugin.id);
+        this.context.registry.plugins.deactivatePlugin(plugin.id);
         this.context.registry.services.render.runImmediately(RenderTask.RenderFull);
     }
 }

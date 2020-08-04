@@ -1,10 +1,11 @@
 import { IControlledObject } from './IControlledObject';
 import { Registry } from './Registry';
 import { AbstractController } from '../plugins/scene_editor/settings/AbstractController';
-import { UI_Accordion } from './gui_builder/elements/surfaces/UI_Accordion';
 import { UI_Container } from './gui_builder/elements/UI_Container';
 import { UI_Layout } from './gui_builder/elements/UI_Layout';
 import { Tool } from '../plugins/common/tools/Tool';
+import { AbstractPluginImporter } from '../plugins/common/io/AbstractPluginImporter';
+import { IPluginExporter } from '../plugins/common/io/IPluginExporter';
 
 export enum UI_Region {
     SidepanelWidget = 'SidepanelWidget',
@@ -46,6 +47,9 @@ export abstract class UI_Plugin implements IControlledObject {
     id: string;
     displayName: string;
     region: UI_Region;
+
+    importer: AbstractPluginImporter;
+    exporter: IPluginExporter;
 
     protected controllers: Map<string, AbstractController> = new Map();
 

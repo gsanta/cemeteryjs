@@ -31,7 +31,7 @@ export class MainPanelComp extends React.Component<MainPanelProps> {
         }
 
         return (
-            <div id={this.props.region === 'primary' ? 'primary-panel' : 'secondary-panel'}>
+            <div id={this.props.region === 'primary' ? 'canvas1' : 'canvas2'}>
                 {component}
             </div>
         )

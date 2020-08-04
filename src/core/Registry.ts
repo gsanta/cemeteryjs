@@ -3,11 +3,13 @@ import { Stores } from "./stores/Stores";
 import { Plugins } from "../plugins/Plugins";
 import { IControlledObject, ObjectCapability } from './IControlledObject';
 import { IListener } from './IListener';
+import { Preferences } from './preferences/Preferences';
 
 export class Registry {
     stores: Stores;
     services: Services;
     plugins: Plugins;
+    preferences: Preferences;
 
     constructor() {
         this.stores = new Stores(this);

@@ -1,21 +1,16 @@
 import { ICamera } from '../plugins/common/camera/ICamera';
-import { AbstractPluginImporter } from '../plugins/common/io/AbstractPluginImporter';
-import { IPluginExporter } from '../plugins/common/io/IPluginExporter';
 import { PluginServices } from '../plugins/common/PluginServices';
 import { PluginSettings } from '../plugins/common/PluginSettings';
-import { AbstractTool } from '../plugins/common/tools/AbstractTool';
 import { Tool } from '../plugins/common/tools/Tool';
-import { Tools } from '../plugins/Tools';
 import { Point } from './geometry/shapes/Point';
+import { UI_Layout } from './gui_builder/elements/UI_Layout';
+import { ToolController, ToolControllerId } from './plugin/ToolController';
+import { Registry } from './Registry';
+import { KeyboardService } from './services/input/KeyboardService';
+import { MouseService } from './services/input/MouseService';
 import { RenderTask } from './services/RenderServices';
 import { AbstractViewStore } from './stores/AbstractViewStore';
 import { UI_Plugin } from './UI_Plugin';
-import { UI_Layout } from './gui_builder/elements/UI_Layout';
-import { MouseService } from './services/input/MouseService';
-import { PointerService } from './services/input/PointerService';
-import { KeyboardService } from './services/input/KeyboardService';
-import { Registry } from './Registry';
-import { ToolController, ToolControllerId } from './plugin/ToolController';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;
@@ -34,8 +29,7 @@ export function calcOffsetFromDom(element: HTMLElement): Point {
 export abstract class AbstractPlugin extends UI_Plugin {
     htmlElement: HTMLElement;
 
-    exporter: IPluginExporter;
-    importer: AbstractPluginImporter;
+    isFullScreen: boolean = false;
 
     pluginServices: PluginServices<this> = new PluginServices([]);
     pluginSettings: PluginSettings = new PluginSettings([]);

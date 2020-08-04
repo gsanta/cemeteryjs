@@ -17,6 +17,6 @@ export class ImportService {
 
         const viewMap: Map<string, View> = new Map();
 
-        this.registry.plugins.plugins.forEach(plugin => plugin.importer?.import(json, viewMap));
+        this.registry.plugins.getAll().forEach(plugin => plugin.importer?.import(json, viewMap));
     }
 }

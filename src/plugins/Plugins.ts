@@ -106,12 +106,28 @@ export class Plugins {
         return this.activePlugins;
     }
 
-    findPlugin(pluginId: string): UI_Plugin {
+    getByRegion(region: UI_Region): UI_Plugin[] {
+        return this.activePlugins.filter(plugin => plugin.region === region);
+    }
+
+    getById(pluginId: string): UI_Plugin {
         return this.plugins.find(plugin => plugin.id === pluginId);
     } 
 
+    getAll(): UI_Plugin[] {
+        return this.plugins;
+    }
+
+    registerPlugin(plugin: UI_Plugin) {
+        this.plugins.push(plugin);
+
+        if (plugin.region === UI_Region.SidepanelWidget) {
+            (<AbstractSidepanelPlugin> plugin).isGlobalPlugin && this.activatePlugin(plugin.id);
+        }
+    }
+
     activatePlugin(pluginId: string) {
-        const plugin = this.findPlugin(pluginId);
+        const plugin = this.getById(pluginId);
         if (UI_Region.isSinglePluginRegion(plugin.region)) {
             this.activePlugins = this.activePlugins.filter(activePlugin => activePlugin.region !== plugin.region);
         }
@@ -124,21 +140,12 @@ export class Plugins {
                 this.registry.services.render.runImmediately(RenderTask.RenderDialog);
             break;
         }
-
     }
 
     deactivatePlugin(pluginId: string) {
-        const plugin = this.findPlugin(pluginId);
+        const plugin = this.getById(pluginId);
         this.activePlugins = this.activePlugins.filter(plugin => plugin.id)
 
         this.registry.services.ui.runUpdate(UI_Region.Dialog);
-    }
-
-    registerPlugin(plugin: UI_Plugin) {
-        this.plugins.push(plugin);
-
-        if (plugin.region === UI_Region.SidepanelWidget) {
-            (<AbstractSidepanelPlugin> plugin).isGlobalPlugin && this.activatePlugin(plugin.id);
-        }
     }
 }
