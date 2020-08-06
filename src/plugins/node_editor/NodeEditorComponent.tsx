@@ -7,7 +7,6 @@ import { View } from '../../core/models/views/View';
 import { Registry } from '../../core/Registry';
 import { WheelListener } from '../../core/services/WheelListener';
 import { AbstractPluginComponent } from '../common/AbstractPluginComponent';
-import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
 import { ToolType } from '../common/tools/Tool';
 import { NodeViewContainerComponent } from './components/NodeComponent';
 import { AllNodeConnectionsComponent } from './components/NodeConnectionComponent';
@@ -68,11 +67,6 @@ export class NodeEditorComponent extends AbstractPluginComponent {
         const plugin = this.context.registry.plugins.getViewById<NodeEditorPlugin>(NodeEditorPluginId);
         return (
             <EditorComponentStyled ref={this.ref} id={plugin.id} style={{cursor: plugin.getActiveTool().getCursor()}}>
-                <ToolbarComponent
-                        tools={[ToolType.Select, ToolType.Delete, ToolType.Camera]}
-                        view={plugin}
-                        renderFullScreenIcon={false}
-                />
                 <DropLayer 
                     isDragging={!!this.context.registry.services.pointer.droppableItem}
                     onDrop={(p, droppedItemType) => this.context.registry.services.mouse.mouseUp({x: p.x, y: p.y, which: 1} as MouseEvent, droppedItemType)}

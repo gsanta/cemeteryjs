@@ -50,35 +50,35 @@ export class Plugins {
         this.assetLoader = new AssetLoaderPlugin(registry);
         this.assetManager = new AssetManagerPlugin(registry);
 
-        this.registry.services.plugin.registerPlugin(this.sceneEditor);
-        this.registry.services.plugin.activatePlugin(SceneEditorPluginId);
+        this.registerPlugin(this.sceneEditor);
+        this.activatePlugin(SceneEditorPluginId);
     
-        this.registry.services.plugin.registerPlugin(this.gameView);
-        this.registry.services.plugin.registerPlugin(this.nodeEditor);
-        this.registry.services.plugin.registerPlugin(this.codeEditor);
-        this.registry.services.plugin.registerPlugin(this.assetLoader);
-        this.registry.services.plugin.registerPlugin(this.assetManager);
+        this.registerPlugin(this.gameView);
+        this.registerPlugin(this.nodeEditor);
+        this.registerPlugin(this.codeEditor);
+        this.registerPlugin(this.assetLoader);
+        this.registerPlugin(this.assetManager);
 
-        this.registry.services.plugin.registerPlugin(new FileSettingsPlugin(this.registry));
-        this.registry.services.plugin.activatePlugin(FileSettingsPluginId);
-        this.registry.services.plugin.registerPlugin(new LayoutSettingsPlugin(this.registry));
-        this.registry.services.plugin.activatePlugin(LayoutSettingsPluginId);
+        this.registerPlugin(new FileSettingsPlugin(this.registry));
+        this.activatePlugin(FileSettingsPluginId);
+        this.registerPlugin(new LayoutSettingsPlugin(this.registry));
+        this.activatePlugin(LayoutSettingsPluginId);
 
-        this.registry.services.plugin.registerPlugin(new ObjectSettingsPlugin(this.registry));
-        this.registry.services.plugin.activatePlugin(ObjectSettingsPluginId);
+        this.registerPlugin(new ObjectSettingsPlugin(this.registry));
+        this.activatePlugin(ObjectSettingsPluginId);
 
-        this.registry.services.plugin.registerPlugin(new LevelSettingsPlugin(this.registry));
-        this.registry.services.plugin.activatePlugin(LevelSettingsPluginId);
+        this.registerPlugin(new LevelSettingsPlugin(this.registry));
+        this.activatePlugin(LevelSettingsPluginId);
 
-        this.registry.services.plugin.registerPlugin(new AssetManagerSidepanelPlugin(this.registry));
-        this.registry.services.plugin.activatePlugin(AssetManagerSidepanelPluginId);
+        this.registerPlugin(new AssetManagerSidepanelPlugin(this.registry));
+        this.activatePlugin(AssetManagerSidepanelPluginId);
 
-        this.registry.services.plugin.registerPlugin(new AssetManagerDialogPlugin(this.registry));
+        this.registerPlugin(new AssetManagerDialogPlugin(this.registry));
 
-        this.registry.services.plugin.registerPlugin(new ThumbnailDialogPlugin(this.registry));
+        this.registerPlugin(new ThumbnailDialogPlugin(this.registry));
 
-        this.registry.services.plugin.registerPlugin(new NodeEditorSettingsPlugin(this.registry));
-        this.registry.services.plugin.activatePlugin(NodeEditorSettingsPluginId);
+        this.registerPlugin(new NodeEditorSettingsPlugin(this.registry));
+        this.activatePlugin(NodeEditorSettingsPluginId);
     }
 
     getPluginFactory(plugin: AbstractPlugin): AbstractPluginComponentFactory<any> {

@@ -10,15 +10,18 @@ export interface Preferences {
     panelSizes: {
         sidepanel: {
             minPixel: number,
-            currRatio: number
+            twoColumnRatio: number,
+            threeColumnRatio: number,
         },
         canvas1: {
             minPixel: number,
-            currRatio: number
+            twoColumnRatio: number,
+            threeColumnRatio: number
         },
         canvas2: {
             minPixel: number,
-            currRatio: number
+            twoColumnRatio: number,
+            threeColumnRatio: number
         }
     }
 }
@@ -30,15 +33,18 @@ export const defaultPreferences: Preferences = {
     panelSizes: {
         sidepanel: {
             minPixel: 230,
-            currRatio: 12
+            twoColumnRatio: 12,
+            threeColumnRatio: 12
         },
         canvas1: {
             minPixel: 500,
-            currRatio: 44
+            twoColumnRatio: 44,
+            threeColumnRatio: 88
         },
         canvas2: {
             minPixel: 500,
-            currRatio: 44
+            twoColumnRatio: 44,
+            threeColumnRatio: 88
         }
     }
 }

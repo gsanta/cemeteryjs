@@ -15,21 +15,30 @@ export class LayoutHandler {
 
     private panelIds = ['sidepanel', 'canvas1', 'canvas2'];
 
+    private split: any;
+
     constructor(registry: Registry) {
         this.registry = registry;
     }
 
     buildLayout() {
-        let panelIds = this.panelIds;
-
-        if (this.registry.preferences.fullscreenRegion) {
-            panelIds = ['sidepanel', this.registry.preferences.fullscreenRegion]
+        if (this.split) {
+            this.split.destroy();
         }
 
-        let sizes = panelIds.map(panelId => this.registry.preferences.panelSizes[panelId as 'sidepanel' | 'canvas1' | 'canvas2'].currRatio);
+        let panelIds = this.panelIds;
+        let sizes: number[] = [];
+
+        if (this.registry.preferences.fullscreenRegion) {
+            panelIds = ['sidepanel', this.registry.preferences.fullscreenRegion];
+            sizes = panelIds.map(panelId => this.registry.preferences.panelSizes[panelId as 'sidepanel' | 'canvas1' | 'canvas2'].twoColumnRatio);
+        } else {
+            sizes = panelIds.map(panelId => this.registry.preferences.panelSizes[panelId as 'sidepanel' | 'canvas1' | 'canvas2'].threeColumnRatio);
+        }
+
         let minSize = panelIds.map(panelId => this.registry.preferences.panelSizes[panelId as 'sidepanel' | 'canvas1' | 'canvas2'].minPixel);
 
-        Split(panelIds.map(id => `#${id}`),
+        this.split = Split(panelIds.map(id => `#${id}`),
             {
                 sizes: sizes,
                 minSize: minSize,
@@ -41,12 +50,12 @@ export class LayoutHandler {
                     'cursor': 'ew-resize'
                 }),
                 onDrag: () => this.resizePlugins(),
-                onDragEnd: ((sizes) => this.registry.services.layout.setSizesInPercent(sizes)) as any
+                onDragEnd: ((sizes) => this.setSizesInPercent(sizes)) as any
             }
         );
     }
 
-    private resizePlugins() {
+    resizePlugins() {
         if (this.registry.preferences.fullscreenRegion) {
             (this.registry.plugins.getByRegion(this.registry.preferences.fullscreenRegion)[0] as AbstractPlugin).resize()
         } else {
@@ -55,33 +64,49 @@ export class LayoutHandler {
         }
     }
 
-    // setSizesInPercent(sizes: number[]) {
-    //     const [sidepanelWidth, ...rest] = sizes;
+    setSizesInPercent(sizes: number[]) {
 
-    //     if (sizes.length === 2) {
-    //         this.singleLayoutSizes = [...sizes];
+        const [sidepanelWidth] = sizes;
 
-    //         let [currentSidepanelWidth, panel1, panel2] = this.doubleLayoutSizes;
-    //         panel1 = panel1 - (sidepanelWidth - currentSidepanelWidth) / 2;
-    //         panel2 = panel2 - (sidepanelWidth - currentSidepanelWidth) / 2;
-    //         this.doubleLayoutSizes = [sidepanelWidth, panel1, panel2];
-    //     } else {
-    //         this.doubleLayoutSizes = [...sizes];
+        if (this.registry.preferences.fullscreenRegion) {
+            const prevSidepanelWidth = this.registry.preferences.panelSizes.sidepanel.twoColumnRatio;
+            const prevCanvasWidth = this.registry.preferences.panelSizes[this.registry.preferences.fullscreenRegion].twoColumnRatio;
 
-    //         let [currentSidepanelWidth, panel1] = this.singleLayoutSizes;
-    //         this.singleLayoutSizes = [sidepanelWidth, panel1 - (sidepanelWidth - currentSidepanelWidth)];
-    //     }
+            const canvasWidth = prevCanvasWidth - (sidepanelWidth - prevSidepanelWidth);
 
-    //     // make sure added sizes don't diverge from 100% in the long term
-    //     let sum = this.doubleLayoutSizes.reduce((sum, currSize) => sum + currSize, 0);
-    //     if (sum < 100) {
-    //         this.doubleLayoutSizes[0] += 100 - sum;
-    //     }
-    //     sum = this.singleLayoutSizes.reduce((sum, currSize) => sum + currSize, 0);
-    //     if (sum < 100) {
-    //         this.singleLayoutSizes[0] += 100 - sum;
-    //     }
-    // }
+            const widths: number[] = [sidepanelWidth, canvasWidth]
+
+            // make sure added sizes don't diverge from 100% in the long term
+            let sum = widths.reduce((sum, currSize) => sum + currSize, 0);
+            if (sum < 100) {
+                widths[0] += 100 - sum;
+            }
+
+            this.registry.preferences.panelSizes.sidepanel.twoColumnRatio = widths[0];
+            this.registry.preferences.panelSizes[this.registry.preferences.fullscreenRegion].twoColumnRatio = widths[1];
+
+
+        } else {
+            const prevSidepanelWidth = this.registry.preferences.panelSizes.sidepanel.twoColumnRatio;
+            const prevCanvas1Width = this.registry.preferences.panelSizes.canvas1.twoColumnRatio;
+            const prevCanvas2Width = this.registry.preferences.panelSizes.canvas2.twoColumnRatio;
+
+            const canvas1Width = prevCanvas1Width - (sidepanelWidth - prevSidepanelWidth) / 2;
+            const canvas2Width = prevCanvas2Width - (sidepanelWidth - prevSidepanelWidth) / 2;
+
+            const widths: number[] = [sidepanelWidth, canvas1Width, canvas2Width];
+
+            // make sure added sizes don't diverge from 100% in the long term
+            let sum = widths.reduce((sum, currSize) => sum + currSize, 0);
+            if (sum < 100) {
+                widths[0] += 100 - sum;
+            }
+
+            this.registry.preferences.panelSizes.sidepanel.threeColumnRatio = widths[0];
+            this.registry.preferences.panelSizes[UI_Region.Canvas1 as string as 'sidepanel' | 'canvas1' | 'canvas2'].threeColumnRatio = widths[1];
+            this.registry.preferences.panelSizes[UI_Region.Canvas2 as string as 'sidepanel' | 'canvas1' | 'canvas2'].threeColumnRatio = widths[2];
+        }
+    }
 }
 
 export interface UI_Perspective {
@@ -99,10 +124,14 @@ export class UI_PerspectiveService {
     perspectives: UI_Perspective[] = [];
     activePerspective: UI_Perspective;
 
+    layoutHandler: LayoutHandler;
+
     private registry: Registry;
 
     constructor(registry: Registry) {
         this.registry = registry;
+
+        this.layoutHandler = new LayoutHandler(registry);
 
         this.perspectives.push({
             name: SceneEditorPerspectiveName,
@@ -131,7 +160,7 @@ export class UI_PerspectiveService {
     }
 
     activatePerspective(name: string) {
-        this.deactivatePerspective(this.activePerspective);
+        this.activePerspective && this.deactivatePerspective(this.activePerspective);
 
         const perspective = this.perspectives.find(perspective => perspective.name === name);
         this.activePerspective = perspective;

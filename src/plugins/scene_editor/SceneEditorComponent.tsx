@@ -6,10 +6,6 @@ import { View } from '../../core/models/views/View';
 import { PathMarkersComponent } from '../../core/services/export/PathMarkersComponent';
 import { WheelListener } from '../../core/services/WheelListener';
 import { AbstractPluginComponent } from '../common/AbstractPluginComponent';
-import { RedoIconComponent } from '../common/toolbar/icons/RedoIconComponent';
-import { UndoIconComponent } from '../common/toolbar/icons/UndoIconComponent';
-import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
-import { ToolType } from '../common/tools/Tool';
 import { MeshViewContainerComponent } from './components/MeshViewComponent';
 import { PathViewContainerComponent } from './components/PathViewComponent';
 import { SceneEditorPlugin, SceneEditorPluginId } from './SceneEditorPlugin';
@@ -61,15 +57,6 @@ export class SceneEditorComponent extends AbstractPluginComponent {
 
         return (
             <EditorComponentStyled ref={this.ref} id={plugin.id} style={{cursor: plugin.getActiveTool().getCursor()}}>
-                <ToolbarComponent
-                    tools={[ToolType.Rectangle, ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Camera]}
-                    view={plugin}
-                    renderFullScreenIcon={true}
-                >
-                    <UndoIconComponent key={'undo-icon'} isActive={false} disabled={!history.hasUndoHistory()} onClick={() => history.undo()} format="short"/>
-                    <RedoIconComponent key={'redo-icon'} isActive={false} disabled={!history.hasRedoHistory()} onClick={() => history.redo()} format="short"/>
-
-                </ToolbarComponent>
                 <SceneEditorComponentStyled
                     tabIndex={0}
                     viewBox={plugin.getCamera().getViewBoxAsString()}

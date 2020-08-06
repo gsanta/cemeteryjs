@@ -2,10 +2,8 @@ import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import * as React from 'react';
 import styled from 'styled-components';
 import { AbstractPluginComponent, PluginProps } from '../common/AbstractPluginComponent';
-import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
-import { PlayIconComponent } from '../common/toolbar/icons/PlayIconComponent';
-import { CodeEditorPlugin, initCode, CodeEditorPluginId } from './CodeEditorPlugin';
 import { Cursor } from '../common/tools/Tool';
+import { CodeEditorPlugin, CodeEditorPluginId, initCode } from './CodeEditorPlugin';
 
 const CodeEditorStyled = styled.div`
     background: black;
@@ -83,20 +81,6 @@ export class CodeEditorComponent extends AbstractPluginComponent {
 
         return (
                 <CodeEditorStyled ref={this.ref} id={view.id} style={{cursor: view.getActiveTool() ? view.getActiveTool().getCursor() : Cursor.Default}}>
-                    <ToolbarComponent
-                        tools={[]}
-                        view={view}
-                        renderFullScreenIcon={true}
-                        backgroundColor="black"
-                        centerIcons={
-                            [
-                                <PlayIconComponent
-                                    state={'default'}
-                                    onClick={() => null} 
-                                />
-                            ]
-                        }
-                    />
                     <EditorsStyled>
                         <EditorStyled className="editor1" height="30%"/>
                         <EditorStyled className="editor2" height="calc(70% - 120px)"/>

@@ -2,7 +2,6 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { WheelListener } from '../../core/services/WheelListener';
 import { AbstractPluginComponent, PluginProps } from '../common/AbstractPluginComponent';
-import { ToolbarComponent } from '../common/toolbar/ToolbarComponent';
 import { ToolType } from '../common/tools/Tool';
 import { GameViewerPlugin, GameViewerPluginId } from './GameViewerPlugin';
 import { PlayIconComponent } from '../common/toolbar/icons/PlayIconComponent';
@@ -74,27 +73,6 @@ export class GameViewerComponent extends AbstractPluginComponent {
 
         return (
                 <GameViewerStyled ref={this.ref} id={view.id} style={{cursor: view.getActiveTool().getCursor()}}>
-                    <ToolbarComponent
-                        tools={[ToolType.Camera]}
-                        view={view}
-                        renderFullScreenIcon={true}
-                        centerIcons={
-                            [
-                                <PlayIconComponent 
-                                    state={timelineState === TimelineState.Playing ? 'active' : 'default'}
-                                    onClick={() => settings.updateProp(TimelineState.Playing, GameViewerSettingsProps.TimelineState)} 
-                                />,
-                                <PauseIconComponent
-                                    state={timelineState === TimelineState.Paused ? 'active' : 'default'}
-                                    onClick={() => settings.updateProp(TimelineState.Paused, GameViewerSettingsProps.TimelineState)} 
-                                />,
-                                <StopIconComponent
-                                    state={timelineState === TimelineState.Stopped ? 'active' : 'default'}
-                                    onClick={() => settings.updateProp(TimelineState.Stopped, GameViewerSettingsProps.TimelineState)} 
-                                />
-                            ]
-                        }
-                    />
                     <OverlayStyled
                         tabIndex={0}
                         onMouseDown={(e) => this.context.registry.services.mouse.mouseDown(e.nativeEvent)}

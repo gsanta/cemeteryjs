@@ -29,8 +29,6 @@ export class App extends React.Component<{}, AppState> {
     static contextType = AppContext;
     context: AppContextType;
 
-    private split: any;
-    
     constructor(props: {}) {
         super(props);
 
@@ -46,13 +44,13 @@ export class App extends React.Component<{}, AppState> {
         this.context.registry.services.render.setFullRepainter(() => this.forceUpdate());
         this.context.controllers.setRenderer(() => this.forceUpdate());
         if (this.context.registry.plugins.visibilityDirty) {
-            this.updateCanvasVisibility();
+            this.context.registry.services.uiPerspective.layoutHandler.buildLayout();
             this.context.registry.plugins.visibilityDirty = false;
         }
 
         // TODO: find a better place
         window.addEventListener('resize', () => {
-            this.resizePlugins();
+            this.context.registry.services.uiPerspective.layoutHandler.resizePlugins();
         });
 
 
@@ -68,20 +66,9 @@ export class App extends React.Component<{}, AppState> {
 
     componentDidUpdate() {
         if (this.context.registry.plugins.visibilityDirty) {
-            this.split.destroy();
-            this.updateCanvasVisibility();
+            this.context.registry.services.uiPerspective.layoutHandler.buildLayout();
+            this.context.registry.services.uiPerspective.layoutHandler.resizePlugins();
             this.context.registry.plugins.visibilityDirty = false;
-            this.resizePlugins();
-        }
-    }
-
-    private resizePlugins() {
-        if (this.context.registry.preferences.fullScreenPluginId) {
-            const fullScreenPlugin = this.context.registry.plugins.getById(this.context.registry.preferences.fullScreenPluginId);
-            (fullScreenPlugin as AbstractPlugin).resize();
-        } else {
-            (this.context.registry.plugins.getByRegion(UI_Region.Canvas1)[0] as AbstractPlugin).resize();
-            (this.context.registry.plugins.getByRegion(UI_Region.Canvas2)[0] as AbstractPlugin).resize();
         }
     }
     
@@ -101,24 +88,6 @@ export class App extends React.Component<{}, AppState> {
                     <HotkeyInputComponent key="hotkey-input" registry={this.context.registry}/>
                 </DndProvider>
             </div>
-        );
-    }
-
-    private updateCanvasVisibility() {
-        this.split = Split(this.context.registry.services.layout.getPanelIds().map(id => `#${id}`),
-            {
-                sizes: this.context.registry.services.layout.getPanelWidthsInPercent(),
-                minSize: this.context.registry.services.layout.getMinWidthsInPixel(),
-                elementStyle: (dimension, size, gutterSize) => ({
-                    'flex-basis': `calc(${size}% - ${gutterSize}px)`,
-                }),
-                gutterStyle: (dimension, gutterSize) => ({
-                    'width': '2px',
-                    'cursor': 'ew-resize'
-                }),
-                onDrag: () => this.resizePlugins(),
-                onDragEnd: ((sizes) => this.context.registry.services.layout.setSizesInPercent(sizes)) as any
-            }
         );
     }
 }

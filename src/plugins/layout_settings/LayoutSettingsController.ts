@@ -25,7 +25,7 @@ export class LayoutSettingsController extends AbstractController<LayoutSettingsP
                 this.registry.services.render.runImmediately(RenderTask.RenderFull);
             })
             .onGet(() => {
-                return this.registry.services.uiPerspective.activePerspective.name;
+                return this.registry.services.uiPerspective.activePerspective ? this.registry.services.uiPerspective.activePerspective.name : '';
             })
     }
 }

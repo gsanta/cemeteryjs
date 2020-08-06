@@ -12,7 +12,6 @@ import { MouseService } from './input/MouseService';
 import { PointerService } from './input/PointerService';
 import { LevelService } from "./LevelService";
 import { LocalStoreService } from "./LocalStroreService";
-import { PluginService } from './PluginService';
 import { RenderService } from "./RenderServices";
 import { UI_Service } from "./UI_Service";
 import { UI_PerspectiveService } from './UI_PerspectiveService';
@@ -32,7 +31,6 @@ export class Services {
     game: GameService;
     gamepad: GamepadService;
     event: EventService;
-    plugin: PluginService;
     uiPerspective: UI_PerspectiveService;
 
     ui: UI_Service;
@@ -59,7 +57,6 @@ export class Services {
         this.gamepad = new GamepadService(this.registry);
         this.ui = new UI_Service();
         this.event = new EventService(this.registry);
-        this.plugin = new PluginService(this.registry);
         this.uiPerspective = new UI_PerspectiveService(this.registry);
 
         // TODO: find a better place to register general hotkeys

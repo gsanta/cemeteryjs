@@ -28,16 +28,12 @@ export class SidePanelComponent extends React.Component<SidebarComponentProps> {
 
     
     render(): JSX.Element {
-        const plugins = this.context.registry.services.plugin.findPluginsAtRegion(UI_Region.SidepanelWidget);
+        const plugins = this.context.registry.plugins.getByRegion(UI_Region.SidepanelWidget);
         const components = plugins.map(plugin => new UI_Builder(this.context.registry).build(plugin));
-
-        const pluginService = this.context.registry.plugins;
-        const activePluginComponents = pluginService.plugins.map(plugin => pluginService.getPluginFactory(plugin).renderSidePanelComponent());
 
         return (
             <SidebarStyled>
                 {components}
-                {activePluginComponents}
             </SidebarStyled>
         );
     }

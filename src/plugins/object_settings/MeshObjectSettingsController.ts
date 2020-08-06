@@ -5,8 +5,6 @@ import { RenderTask } from '../../core/services/RenderServices';
 import { AbstractController } from '../scene_editor/settings/AbstractController';
 import { ThumbnailDialogPluginId } from './ThumbnailDialogPlugin';
 import { AssetModel, AssetType } from '../../core/models/game_objects/AssetModel';
-import { MeshLoaderService } from '../../core/services/MeshLoaderService';
-import { AssetLoaderDialogController } from '../asset_loader/controllers/AssetLoaderDialogController';
 import { ObjectSettingsPlugin } from './ObjectSettingsPlugin';
 
 export enum MeshObjectSettingsProps {
@@ -143,7 +141,7 @@ export class MeshObjectSettingsController extends AbstractController<MeshObjectS
 
         this.createPropHandler<number>(MeshObjectSettingsProps.Thumbnail)
             .onClick((val) => {
-                this.registry.services.plugin.activatePlugin(ThumbnailDialogPluginId);
+                this.registry.plugins.activatePlugin(ThumbnailDialogPluginId);
             });
     }
 }

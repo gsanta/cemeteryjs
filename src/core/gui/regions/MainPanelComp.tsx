@@ -21,7 +21,7 @@ export class MainPanelComp extends React.Component<MainPanelProps> {
 
     render() {
         const region = this.props.region === 'primary' ? UI_Region.Canvas1 : UI_Region.Canvas2;
-        const plugins = this.context.registry.services.plugin.findPluginsAtRegion(region);
+        const plugins = this.context.registry.plugins.getByRegion(region);
 
         let component: JSX.Element = null;
 
