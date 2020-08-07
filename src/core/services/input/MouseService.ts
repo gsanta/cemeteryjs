@@ -3,6 +3,7 @@ import { Point } from "../../geometry/shapes/Point";
 import { IPointerEvent } from "./PointerService";
 import { DroppableItem } from "../../../plugins/common/tools/DragAndDropTool";
 import { View } from "../../models/views/View";
+import { AbstractPlugin } from '../../AbstractPlugin';
 
 export class MousePointer {
     down: Point;
@@ -53,8 +54,12 @@ export class MouseService {
         this.registry.services.hotkey.focus();
     }
 
-    mouseLeave(e: MouseEvent): void {
-        this.registry.services.pointer.pointerOut(this.convertEvent(e, false));
+    mouseLeave(e: MouseEvent, plugin: AbstractPlugin): void {
+        this.registry.services.pointer.pointerLeave(this.convertEvent(e, false), plugin);
+    }
+
+    mouseEnter(e: MouseEvent, plugin: AbstractPlugin): void {
+        this.registry.services.pointer.pointerEnter(this.convertEvent(e, false), plugin);
     }
 
     mouseWheel(e: WheelEvent): void {

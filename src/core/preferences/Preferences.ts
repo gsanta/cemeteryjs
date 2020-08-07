@@ -8,17 +8,17 @@ export interface Preferences {
     perspective: string;
 
     panelSizes: {
-        sidepanel: {
+        Sidepanel: {
             minPixel: number,
             twoColumnRatio: number,
             threeColumnRatio: number,
         },
-        canvas1: {
+        Canvas1: {
             minPixel: number,
             twoColumnRatio: number,
             threeColumnRatio: number
         },
-        canvas2: {
+        Canvas2: {
             minPixel: number,
             twoColumnRatio: number,
             threeColumnRatio: number
@@ -31,20 +31,20 @@ export const defaultPreferences: Preferences = {
     perspective: SceneEditorPerspectiveName,
 
     panelSizes: {
-        sidepanel: {
+        Sidepanel: {
             minPixel: 230,
             twoColumnRatio: 12,
             threeColumnRatio: 12
         },
-        canvas1: {
+        Canvas1: {
             minPixel: 500,
-            twoColumnRatio: 44,
-            threeColumnRatio: 88
+            twoColumnRatio: 88,
+            threeColumnRatio: 44
         },
-        canvas2: {
+        Canvas2: {
             minPixel: 500,
-            twoColumnRatio: 44,
-            threeColumnRatio: 88
+            twoColumnRatio: 88,
+            threeColumnRatio: 44
         }
     }
 }

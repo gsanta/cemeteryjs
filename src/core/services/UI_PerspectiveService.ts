@@ -10,11 +10,11 @@ import Split from 'split.js';
 import { UI_Region } from '../UI_Plugin';
 import { AbstractPlugin } from '../AbstractPlugin';
 
+
 export class LayoutHandler {
     private registry: Registry;
 
-    private panelIds = ['sidepanel', 'canvas1', 'canvas2'];
-
+    private panelIds = [UI_Region.Sidepanel, UI_Region.Canvas1, UI_Region.Canvas2];
     private split: any;
 
     constructor(registry: Registry) {
@@ -30,13 +30,13 @@ export class LayoutHandler {
         let sizes: number[] = [];
 
         if (this.registry.preferences.fullscreenRegion) {
-            panelIds = ['sidepanel', this.registry.preferences.fullscreenRegion];
-            sizes = panelIds.map(panelId => this.registry.preferences.panelSizes[panelId as 'sidepanel' | 'canvas1' | 'canvas2'].twoColumnRatio);
+            panelIds = [UI_Region.Sidepanel, this.registry.preferences.fullscreenRegion];
+            sizes = panelIds.map(panelId => this.registry.preferences.panelSizes[panelId as 'Sidepanel' | 'Canvas1' | 'Canvas2'].twoColumnRatio);
         } else {
-            sizes = panelIds.map(panelId => this.registry.preferences.panelSizes[panelId as 'sidepanel' | 'canvas1' | 'canvas2'].threeColumnRatio);
+            sizes = panelIds.map(panelId => this.registry.preferences.panelSizes[panelId as 'Sidepanel' | 'Canvas1' | 'Canvas2'].threeColumnRatio);
         }
 
-        let minSize = panelIds.map(panelId => this.registry.preferences.panelSizes[panelId as 'sidepanel' | 'canvas1' | 'canvas2'].minPixel);
+        let minSize = panelIds.map(panelId => this.registry.preferences.panelSizes[panelId as 'Sidepanel' | 'Canvas1' | 'Canvas2'].minPixel);
 
         this.split = Split(panelIds.map(id => `#${id}`),
             {
@@ -69,7 +69,7 @@ export class LayoutHandler {
         const [sidepanelWidth] = sizes;
 
         if (this.registry.preferences.fullscreenRegion) {
-            const prevSidepanelWidth = this.registry.preferences.panelSizes.sidepanel.twoColumnRatio;
+            const prevSidepanelWidth = this.registry.preferences.panelSizes.Sidepanel.twoColumnRatio;
             const prevCanvasWidth = this.registry.preferences.panelSizes[this.registry.preferences.fullscreenRegion].twoColumnRatio;
 
             const canvasWidth = prevCanvasWidth - (sidepanelWidth - prevSidepanelWidth);
@@ -82,14 +82,14 @@ export class LayoutHandler {
                 widths[0] += 100 - sum;
             }
 
-            this.registry.preferences.panelSizes.sidepanel.twoColumnRatio = widths[0];
+            this.registry.preferences.panelSizes.Sidepanel.twoColumnRatio = widths[0];
             this.registry.preferences.panelSizes[this.registry.preferences.fullscreenRegion].twoColumnRatio = widths[1];
 
 
         } else {
-            const prevSidepanelWidth = this.registry.preferences.panelSizes.sidepanel.twoColumnRatio;
-            const prevCanvas1Width = this.registry.preferences.panelSizes.canvas1.twoColumnRatio;
-            const prevCanvas2Width = this.registry.preferences.panelSizes.canvas2.twoColumnRatio;
+            const prevSidepanelWidth = this.registry.preferences.panelSizes.Sidepanel.twoColumnRatio;
+            const prevCanvas1Width = this.registry.preferences.panelSizes.Canvas1.twoColumnRatio;
+            const prevCanvas2Width = this.registry.preferences.panelSizes.Canvas2.twoColumnRatio;
 
             const canvas1Width = prevCanvas1Width - (sidepanelWidth - prevSidepanelWidth) / 2;
             const canvas2Width = prevCanvas2Width - (sidepanelWidth - prevSidepanelWidth) / 2;
@@ -102,7 +102,7 @@ export class LayoutHandler {
                 widths[0] += 100 - sum;
             }
 
-            this.registry.preferences.panelSizes.sidepanel.threeColumnRatio = widths[0];
+            this.registry.preferences.panelSizes.Sidepanel.threeColumnRatio = widths[0];
             this.registry.preferences.panelSizes[UI_Region.Canvas1 as string as 'sidepanel' | 'canvas1' | 'canvas2'].threeColumnRatio = widths[1];
             this.registry.preferences.panelSizes[UI_Region.Canvas2 as string as 'sidepanel' | 'canvas1' | 'canvas2'].threeColumnRatio = widths[2];
         }

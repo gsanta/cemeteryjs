@@ -4,7 +4,7 @@ import { UI_Region } from '../../UI_Plugin';
 import { UI_Builder } from '../../gui_builder/UI_Builder';
 
 export interface MainPanelProps {
-    region: 'primary' | 'secondary';
+    region: UI_Region.Canvas1 | UI_Region.Canvas2;
 }
 
 export class MainPanelComp extends React.Component<MainPanelProps> {
@@ -12,15 +12,11 @@ export class MainPanelComp extends React.Component<MainPanelProps> {
     context: AppContextType;
 
     componentDidMount() {
-        if (this.props.region === 'primary') {
-            this.context.registry.services.render.setPrimaryPanelRenderer(() => this.forceUpdate());
-        } else {
-            this.context.registry.services.render.setSecondaryPanelRenderer(() => this.forceUpdate());
-        }
+        this.context.registry.services.render.setRenderer(this.props.region, () => this.forceUpdate());
     }
 
     render() {
-        const region = this.props.region === 'primary' ? UI_Region.Canvas1 : UI_Region.Canvas2;
+        const region = this.props.region === UI_Region.Canvas1 ? UI_Region.Canvas1 : UI_Region.Canvas2;
         const plugins = this.context.registry.plugins.getByRegion(region);
 
         let component: JSX.Element = null;
@@ -31,7 +27,7 @@ export class MainPanelComp extends React.Component<MainPanelProps> {
         }
 
         return (
-            <div id={this.props.region === 'primary' ? 'canvas1' : 'canvas2'}>
+            <div id={this.props.region === UI_Region.Canvas1 ? 'canvas1' : 'canvas2'}>
                 {component}
             </div>
         )

@@ -13,6 +13,9 @@ export class RenderService {
     serviceName = 'render-service';
     updateTasks: RenderTask[] = [];
 
+    private renderers: Map<UI_Region, Function> = new Map();
+    private scheduledRenderers: Set<UI_Region> = new Set();
+
     private settingsRepainters: Function[] = [];
     private fullRepainter: Function;
     private dialogRenderer: Function;
@@ -27,7 +30,22 @@ export class RenderService {
 
 
     reRender(...regions: UI_Region[]) {
-        
+        regions.filter(region => region).forEach(region => this.renderers.get(region)());
+    }
+
+    reRenderScheduled() {
+        if (this.scheduledRenderers.size) {
+            this.reRender(...Array.from(this.scheduledRenderers));
+            this.scheduledRenderers = new Set();
+        }
+    }
+
+    scheduleRendering(...regions: UI_Region[]) {
+        regions.forEach(region => this.scheduledRenderers.add(region));
+    }
+
+    setRenderer(region: UI_Region, renderer: Function) {
+        this.renderers.set(region, renderer);
     }
 
     scheduleTasks(...tasks: RenderTask[]) {
@@ -48,7 +66,7 @@ export class RenderService {
         tasks.forEach(task => {
             switch(task) {
                 case RenderTask.RenderFocusedView:
-                    this.registry.plugins.getHoveredView().reRender();
+                    this.registry.plugins.getHoveredView() && this.registry.plugins.getHoveredView().reRender();
                 break;
                 case RenderTask.RenderSidebar:
                     this.settingsRepainters.forEach(repaint => repaint());

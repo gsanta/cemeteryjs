@@ -13,7 +13,7 @@ export const ObjectSettingsPluginId = 'object-settings-plugin';
 export class ObjectSettingsPlugin extends UI_Plugin {
     id = ObjectSettingsPluginId;
     displayName = 'Object Settings';
-    region = UI_Region.SidepanelWidget;
+    region = UI_Region.Sidepanel;
 
     private meshObjectSettingsController: MeshObjectSettingsController;
     private pathObjectSettingsController: PathObjectSettingsController;

@@ -8,6 +8,7 @@ import { cssClassBuilder } from '../layout/RowComp';
 import { UI_Tool } from '../../gui_builder/elements/toolbar/UI_Tool';
 import { ToolIconProps } from '../../../plugins/common/toolbar/icons/ToolIcon';
 import tippy from 'tippy.js';
+import { AbstractPlugin } from '../../AbstractPlugin';
 const undoIcon = require('../../../../assets/images/icons/undo.svg');
 const redoIcon = require('../../../../assets/images/icons/redo.svg');
 const brushIcon = require('../../../../assets/images/icons/brush.svg');
@@ -46,7 +47,7 @@ const ToolbarStyled = styled.div`
         color: ${(props: ToolIconProps) => props.color ? props.color : colors.textColor};
 
         background: ${colors.grey3};
-        &:hover {
+        &:hover, &.ce-tool-active {
             background: ${colors.hoverBackground};
         }
 
@@ -152,8 +153,23 @@ export class ToolComp extends React.Component<ToolCompProps> {
     }
     
     render() {
-        const classes = cssClassBuilder('ce-tool', `${this.props.element.icon}-icon`);
-        return <div id={this.props.element.id} ref={this.ref} className={classes}>{this.props.tooltip}</div>;
+        const selectedTool = (this.props.element.plugin as AbstractPlugin).toolHandler.getSelectedTool();
+        const classes = cssClassBuilder(
+            'ce-tool',
+            `${this.props.element.icon}-icon`,
+            selectedTool && (selectedTool.id === this.props.element.controllerId) ? 'ce-tool-active' : undefined
+        );
+        
+        return (
+            <div
+                id={this.props.element.id}
+                ref={this.ref}
+                className={classes}
+                onClick={() => (this.props.element.plugin as AbstractPlugin).toolHandler.setSelectedTool(this.props.element.controllerId)}
+            >
+                {this.props.tooltip}
+            </div>
+        );
     }
 }
 

@@ -1,11 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { FileSettingsComponent } from '../../plugins/scene_editor/settings/FileSettingsComponent';
-import { AppContext, AppContextType } from './Context';
-import { AccordionComponent } from './misc/AccordionComponent';
-import { colors } from './styles';
 import { UI_Builder } from '../gui_builder/UI_Builder';
 import { UI_Region } from '../UI_Plugin';
+import { AppContext, AppContextType } from './Context';
+import { colors } from './styles';
 
 export interface SidebarComponentProps {
     isEditorOpen: boolean;
@@ -23,12 +21,12 @@ export class SidePanelComponent extends React.Component<SidebarComponentProps> {
     context: AppContextType;
 
     componentDidMount() {
-        this.context.registry.services.render.addSettingsRepainter(() => this.forceUpdate());
+        this.context.registry.services.render.setRenderer(UI_Region.Sidepanel, () => this.forceUpdate());
     }
 
     
     render(): JSX.Element {
-        const plugins = this.context.registry.plugins.getByRegion(UI_Region.SidepanelWidget);
+        const plugins = this.context.registry.plugins.getByRegion(UI_Region.Sidepanel);
         const components = plugins.map(plugin => new UI_Builder(this.context.registry).build(plugin));
 
         return (

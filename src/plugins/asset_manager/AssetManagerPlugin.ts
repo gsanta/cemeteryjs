@@ -3,7 +3,7 @@ import { UI_Plugin, UI_Region } from '../../core/UI_Plugin';
 
 export class AssetManagerPlugin extends UI_Plugin {
     static id = 'asset-manager-plugin';
-    region = UI_Region.SidepanelWidget;
+    region = UI_Region.Sidepanel;
 
     getStore() {
         return null;

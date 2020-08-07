@@ -8,7 +8,7 @@ export const LevelSettingsPluginId = 'level-settings-plugin';
 export class LevelSettingsPlugin extends UI_Plugin {
     id = LevelSettingsPluginId;
     displayName = 'Level Settings';
-    region = UI_Region.SidepanelWidget;
+    region = UI_Region.Sidepanel;
 
     constructor(registry: Registry) {
         super(registry);

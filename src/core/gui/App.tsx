@@ -80,8 +80,8 @@ export class App extends React.Component<{}, AppState> {
                         <div id="sidepanel" >
                             <SidePanelComponent isEditorOpen={this.state.isEditorOpen} toggleEditorOpen={() => this.setState({isEditorOpen: !this.state.isEditorOpen})}/>
                         </div>
-                        <MainPanelComp region='primary'/>
-                        <MainPanelComp region='secondary'/>
+                        <MainPanelComp region={UI_Region.Canvas1}/>
+                        <MainPanelComp region={UI_Region.Canvas2}/>
                     </div>
                     {this.context.controllers.isLoading ? <SpinnerOverlayComponent key="spinner"/> : null}
                     <DialogManagerComponent/>

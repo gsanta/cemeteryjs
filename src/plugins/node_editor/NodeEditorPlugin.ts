@@ -1,33 +1,29 @@
+import { AbstractPlugin, calcOffsetFromDom } from '../../core/AbstractPlugin';
 import { Point } from '../../core/geometry/shapes/Point';
-import { Registry } from '../../core/Registry';
-import { RenderTask } from '../../core/services/RenderServices';
-import { calcOffsetFromDom, AbstractPlugin } from '../../core/AbstractPlugin';
-import { Camera2D } from '../common/camera/Camera2D';
-import { NodeStore } from '../../core/stores/NodeStore';
-import { NodePreset, NodePresetRecipe } from '../../core/models/nodes/NodePreset';
-import { NodeType, NodeModel, NodeCategory } from '../../core/models/nodes/NodeModel';
+import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
+import { UI_SvgCanvas } from '../../core/gui_builder/elements/UI_SvgCanvas';
 import { AndNode } from '../../core/models/nodes/AndNode';
 import { AnimationNode } from '../../core/models/nodes/AnimationNode';
 import { KeyboardNode } from '../../core/models/nodes/KeyboardNode';
 import { MeshNode } from '../../core/models/nodes/MeshNode';
 import { MoveNode } from '../../core/models/nodes/MoveNode';
-import { TurnNode } from '../../core/models/nodes/TurnNode';
-import { SplitNode } from '../../core/models/nodes/SplitNode';
-import { RouteNode } from '../../core/models/nodes/RouteNode';
+import { NodeModel, NodeType } from '../../core/models/nodes/NodeModel';
+import { NodePreset, NodePresetRecipe } from '../../core/models/nodes/NodePreset';
 import { PathNode } from '../../core/models/nodes/PathNode';
-import { NodeEditorSettings } from './settings/NodeEditorSettings';
+import { RouteNode } from '../../core/models/nodes/RouteNode';
+import { SplitNode } from '../../core/models/nodes/SplitNode';
+import { TurnNode } from '../../core/models/nodes/TurnNode';
+import { Registry } from '../../core/Registry';
+import { NodeStore } from '../../core/stores/NodeStore';
+import { UI_Region } from '../../core/UI_Plugin';
+import { Camera2D } from '../common/camera/Camera2D';
+import { PluginSettings } from '../common/PluginSettings';
+import { toolFactory } from '../common/toolbar/toolFactory';
+import { ToolType } from '../common/tools/Tool';
 import { NodeEditorExporter } from './io/NodeEditorExporter';
 import { NodeEditorImporter } from './io/NodeEditorImporter';
-import { ToolType } from '../common/tools/Tool';
-import { Tools } from '../Tools';
-import { toolFactory } from '../common/toolbar/toolFactory';
-import { PluginSettings } from '../common/PluginSettings';
-import { UI_Region } from '../../core/UI_Plugin';
-import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
-import { CanvasToolsProps } from '../../core/ViewFactory';
-import { UI_Accordion } from '../../core/gui_builder/elements/surfaces/UI_Accordion';
-import { UI_SvgCanvas } from '../../core/gui_builder/elements/UI_SvgCanvas';
 import { PathNodeElement } from './nodes/PathNodeElement';
+import { NodeEditorSettings } from './settings/NodeEditorSettings';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -235,10 +231,9 @@ export class NodeEditorPlugin extends AbstractPlugin {
 
         const tools = [ToolType.Select, ToolType.Delete, ToolType.Camera, ToolType.Pointer, ToolType.Join, ToolType.DragAndDrop]
             .map(toolType => {
-                this.addTool(toolFactory(toolType, this, registry));
+                this.toolHandler.registerTool(toolFactory(toolType, this, registry));
             });
 
-        this.selectedTool = this.getToolById(ToolType.Camera);
 
         this.camera = cameraInitializer(NodeEditorPluginId, registry);
 

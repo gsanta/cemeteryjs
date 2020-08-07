@@ -80,7 +80,7 @@ export class CodeEditorComponent extends AbstractPluginComponent {
         const view = this.context.registry.plugins.getViewById<CodeEditorPlugin>(CodeEditorPluginId);
 
         return (
-                <CodeEditorStyled ref={this.ref} id={view.id} style={{cursor: view.getActiveTool() ? view.getActiveTool().getCursor() : Cursor.Default}}>
+                <CodeEditorStyled ref={this.ref} id={view.id} style={{cursor: view.toolHandler.getActiveTool() ? view.toolHandler.getActiveTool().getCursor() : Cursor.Default}}>
                     <EditorsStyled>
                         <EditorStyled className="editor1" height="30%"/>
                         <EditorStyled className="editor2" height="calc(70% - 120px)"/>

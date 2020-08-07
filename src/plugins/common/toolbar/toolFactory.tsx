@@ -78,10 +78,10 @@ function zoomOut(toolType: ToolType, view: AbstractPlugin, registry: Registry) {
 
 
 function isToolActive(toolType: ToolType, view: AbstractPlugin) {
-        return view.getSelectedTool() && view.getSelectedTool().id === toolType;
+        return view.toolHandler.getSelectedTool() && view.toolHandler.getSelectedTool().id === toolType;
 }
 
 function activateTool(toolType: ToolType, plugin: AbstractPlugin, registry: Registry) {
-    plugin.setSelectedTool(plugin.getToolById(toolType) as AbstractTool);
+    plugin.toolHandler.setSelectedTool(toolType);
     registry.services.hotkey.focus();
 }

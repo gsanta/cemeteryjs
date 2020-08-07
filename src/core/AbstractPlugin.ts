@@ -1,14 +1,13 @@
 import { ICamera } from '../plugins/common/camera/ICamera';
 import { PluginServices } from '../plugins/common/PluginServices';
 import { PluginSettings } from '../plugins/common/PluginSettings';
-import { Tool } from '../plugins/common/tools/Tool';
 import { Point } from './geometry/shapes/Point';
 import { UI_Layout } from './gui_builder/elements/UI_Layout';
 import { ToolController, ToolControllerId } from './plugin/ToolController';
 import { Registry } from './Registry';
 import { KeyboardService } from './services/input/KeyboardService';
 import { MouseService } from './services/input/MouseService';
-import { RenderTask } from './services/RenderServices';
+import { ToolHandler } from './services/input/ToolHandler';
 import { AbstractViewStore } from './stores/AbstractViewStore';
 import { UI_Plugin } from './UI_Plugin';
 
@@ -36,9 +35,8 @@ export abstract class AbstractPlugin extends UI_Plugin {
 
     readonly mouse: MouseService;
     readonly keyboard: KeyboardService;
+    readonly toolHandler: ToolHandler;
 
-    protected priorityTool: Tool;
-    protected selectedTool: Tool;
     protected renderFunc: () => void;
 
     constructor(registry: Registry) {
@@ -46,6 +44,7 @@ export abstract class AbstractPlugin extends UI_Plugin {
 
         this.mouse = new MouseService(registry);
         this.keyboard = new KeyboardService(registry);
+        this.toolHandler = new ToolHandler(this, this.registry);
         
         this.controllers.set(ToolControllerId, new ToolController(this, this.registry));
     }
@@ -70,42 +69,14 @@ export abstract class AbstractPlugin extends UI_Plugin {
         this.renderFunc && this.renderFunc();
     }
 
-    setSelectedTool(tool: Tool) {
-        this.selectedTool && this.selectedTool.deselect();
-        this.selectedTool = tool;
-        this.selectedTool.select();
-        this.registry.services.render.runImmediately(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
-    }
-
-    getSelectedTool(): Tool {
-        return this.selectedTool;
-    }
-
-    getActiveTool(): Tool {
-        return this.priorityTool ? this.priorityTool : this.selectedTool;
-    }
-
-    setPriorityTool(priorityTool: Tool) {
-        if (this.priorityTool !== priorityTool) {
-            this.getActiveTool().leave();
-            this.priorityTool = priorityTool;
-            this.priorityTool.select();
-            this.registry.services.render.runImmediately(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
-        }
-    }
-
-    removePriorityTool(priorityTool: Tool) {
-        if (this.priorityTool === priorityTool) {
-            this.priorityTool.deselect();
-            this.priorityTool = null;
-            this.registry.services.render.runImmediately(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
-        }
-    }
-
     getOffset(): Point { return new Point(0, 0) }
     getCamera(): ICamera { 
         return undefined;
     };
+
+    mounted(htmlElement: HTMLElement) {
+        this.htmlElement = htmlElement;
+    }
 
     protected renderInto(layout: UI_Layout) { }
 }

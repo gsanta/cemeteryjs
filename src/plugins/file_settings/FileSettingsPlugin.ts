@@ -8,7 +8,7 @@ export const FileSettingsPluginId = 'file-settings-plugin';
 export class FileSettingsPlugin extends AbstractSidepanelPlugin {
     id = FileSettingsPluginId;
     displayName = 'File Settings';
-    region = UI_Region.SidepanelWidget;
+    region = UI_Region.Sidepanel;
     isGlobalPlugin = true;
 
     constructor(registry: Registry) {

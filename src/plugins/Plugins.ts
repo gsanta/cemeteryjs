@@ -51,8 +51,6 @@ export class Plugins {
         this.assetManager = new AssetManagerPlugin(registry);
 
         this.registerPlugin(this.sceneEditor);
-        this.activatePlugin(SceneEditorPluginId);
-    
         this.registerPlugin(this.gameView);
         this.registerPlugin(this.nodeEditor);
         this.registerPlugin(this.codeEditor);
@@ -62,23 +60,13 @@ export class Plugins {
         this.registerPlugin(new FileSettingsPlugin(this.registry));
         this.activatePlugin(FileSettingsPluginId);
         this.registerPlugin(new LayoutSettingsPlugin(this.registry));
-        this.activatePlugin(LayoutSettingsPluginId);
 
         this.registerPlugin(new ObjectSettingsPlugin(this.registry));
-        this.activatePlugin(ObjectSettingsPluginId);
-
         this.registerPlugin(new LevelSettingsPlugin(this.registry));
-        this.activatePlugin(LevelSettingsPluginId);
-
         this.registerPlugin(new AssetManagerSidepanelPlugin(this.registry));
-        this.activatePlugin(AssetManagerSidepanelPluginId);
-
         this.registerPlugin(new AssetManagerDialogPlugin(this.registry));
-
         this.registerPlugin(new ThumbnailDialogPlugin(this.registry));
-
         this.registerPlugin(new NodeEditorSettingsPlugin(this.registry));
-        this.activatePlugin(NodeEditorSettingsPluginId);
     }
 
     getPluginFactory(plugin: AbstractPlugin): AbstractPluginComponentFactory<any> {
@@ -121,7 +109,7 @@ export class Plugins {
     registerPlugin(plugin: UI_Plugin) {
         this.plugins.push(plugin);
 
-        if (plugin.region === UI_Region.SidepanelWidget) {
+        if (plugin.region === UI_Region.Sidepanel) {
             (<AbstractSidepanelPlugin> plugin).isGlobalPlugin && this.activatePlugin(plugin.id);
         }
     }
@@ -133,6 +121,7 @@ export class Plugins {
         }
         
         this.activePlugins.push(plugin);
+        plugin.activated();
         // this.registry.services.ui.runUpdate(UI_Region.Dialog);
 
         switch(plugin.region) {

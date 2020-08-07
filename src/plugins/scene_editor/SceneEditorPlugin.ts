@@ -15,6 +15,7 @@ import { SceneEditorImporter } from './io/SceneEditorImporter';
 import { LevelSettings } from './settings/LevelSettings';
 import { MeshSettings } from './settings/MeshSettings';
 import { PathSettings } from './settings/PathSettings';
+import { activeToolId } from '../../core/gui_builder/elements/UI_Element';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -56,11 +57,10 @@ export class SceneEditorPlugin extends AbstractPlugin {
         
         [ToolType.Rectangle, ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Pointer, ToolType.Camera]
             .map(toolType => {
-                this.addTool(toolFactory(toolType, this, registry));
+                this.toolHandler.registerTool(toolFactory(toolType, this, registry));
             });
 
         this.camera = cameraInitializer(SceneEditorPluginId, registry);
-        this.selectedTool = this.getToolById(ToolType.Rectangle);
 
         this.pluginSettings = new PluginSettings(
             [
@@ -97,7 +97,7 @@ export class SceneEditorPlugin extends AbstractPlugin {
     }
 
     protected renderInto(layout: UI_Layout): void {
-        const canvas = layout.svgCanvas(null);
+        const canvas = layout.svgCanvas({controllerId: activeToolId});
 
         const toolbar = canvas.toolbar();
         
@@ -168,6 +168,12 @@ export class SceneEditorPlugin extends AbstractPlugin {
     
             return thumbnail;
         });
+    }
+
+    activated() {
+        if (!this.toolHandler.getSelectedTool()) {
+            this.toolHandler.setSelectedTool(ToolType.Rectangle);
+        }
     }
 
     private renderPathViews(canvas: UI_SvgCanvas) {

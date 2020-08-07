@@ -54,7 +54,13 @@ export abstract class UI_Element {
 
     mouseLeave(e: MouseEvent) {
         if (this.controllerId === activeToolId) {
-            (this.plugin as AbstractPlugin).mouse.mouseLeave(e);
+            (this.plugin as AbstractPlugin).mouse.mouseLeave(e, this.plugin as AbstractPlugin);
+        }
+    }
+
+    mouseEnter(e: MouseEvent) {
+        if (this.controllerId === activeToolId) {
+            (this.plugin as AbstractPlugin).mouse.mouseEnter(e, this.plugin as AbstractPlugin);
         }
     }
 

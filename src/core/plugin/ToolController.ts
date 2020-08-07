@@ -11,9 +11,9 @@ export class ToolController extends AbstractController<string> {
     constructor(plugin: AbstractPlugin, registry: Registry) {
         super(plugin, registry);
 
-        plugin.getTools().forEach(tool => {
+        plugin.toolHandler.getAll().forEach(tool => {
             this.createPropHandler(tool.id)
-                .onClick(() => plugin.setSelectedTool(tool));
+                .onClick(() => plugin.toolHandler.setSelectedTool(tool.id));
         });
     }
 }

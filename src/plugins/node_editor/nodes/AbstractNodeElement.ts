@@ -26,7 +26,7 @@ export abstract class AbstractNodeElement {
         const selectionColor = this.registry.stores.selectionStore.contains(nodeView) ? colors.views.highlight : undefined;
         let hoverColor: string = undefined
         if (this.registry.plugins.getHoveredView()) {
-            const activeTool = this.registry.plugins.getHoveredView().getActiveTool();
+            const activeTool = this.registry.plugins.getHoveredView().toolHandler.getActiveTool();
             hoverColor = this.registry.services.pointer.hoveredItem === nodeView ? activeTool.id === ToolType.Delete ? colors.views.delete : colors.views.highlight : undefined;
         }
 

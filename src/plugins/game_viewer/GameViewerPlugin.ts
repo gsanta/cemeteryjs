@@ -35,8 +35,7 @@ export class GameViewerPlugin extends AbstractPlugin {
     constructor(registry: Registry) {
         super(registry);
 
-        this.addTool(toolFactory(ToolType.Camera, this, registry))
-        this.selectedTool = this.getToolById(ToolType.Camera);
+        this.toolHandler.registerTool(toolFactory(ToolType.Camera, this, registry))
 
         this.gameViewerSettings = new GameViewerSettings(registry);
         // this.axisGizmo = new AxisGizmo(this.registry, MeshBuilder);
@@ -87,10 +86,16 @@ export class GameViewerPlugin extends AbstractPlugin {
     }
 
     getSelectedTool(): Tool {
-        return this.selectedTool;
+        return this.toolHandler.getSelectedTool();
     }    
 
     getOffset() {
         return calcOffsetFromDom(this.htmlElement);
+    }
+
+    activated() {
+        if (!this.toolHandler.getSelectedTool()) {
+            this.toolHandler.setSelectedTool(ToolType.Camera);
+        }
     }
 }

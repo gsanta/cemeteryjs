@@ -32,10 +32,8 @@ export class AssetLoaderPlugin extends AbstractPlugin {
 
 
         [ToolType.Camera].map(toolType => {
-            this.addTool(toolFactory(toolType, this, registry));
+            this.toolHandler.registerTool(toolFactory(toolType, this, registry));
         });
-
-        this.selectedTool = this.getToolById(ToolType.Camera);
 
         this.pluginServices = new PluginServices(
             [
@@ -69,10 +67,6 @@ export class AssetLoaderPlugin extends AbstractPlugin {
     componentMounted(htmlElement: HTMLElement) {
         super.componentMounted(htmlElement);
     }
-
-    getSelectedTool(): Tool {
-        return this.selectedTool;
-    } 
 
     getOffset() {
         if (this.htmlElement) {

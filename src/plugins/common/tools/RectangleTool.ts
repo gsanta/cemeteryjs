@@ -7,6 +7,7 @@ import { RenderTask } from '../../../core/services/RenderServices';
 import { AbstractTool } from './AbstractTool';
 import { RectangleSelector } from './RectangleSelector';
 import { ToolType } from './Tool';
+import { UI_Region } from '../../../core/UI_Plugin';
 
 export class RectangleTool extends AbstractTool {
     private lastPreviewRect: MeshView;
@@ -34,11 +35,13 @@ export class RectangleTool extends AbstractTool {
         this.registry.services.level.updateCurrentLevel();
 
         this.registry.services.history.createSnapshot();
-        this.registry.services.render.scheduleTasks(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
+        
+        this.registry.services.render.scheduleRendering(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
 
     drag(e: IPointerEvent) {
         super.drag(e)
+
         if (this.lastPreviewRect) {
             this.registry.stores.canvasStore.removeItem(this.lastPreviewRect);
         }
@@ -58,6 +61,7 @@ export class RectangleTool extends AbstractTool {
             this.lastPreviewRect = meshView;
     
             this.registry.services.render.scheduleTasks(RenderTask.RenderFocusedView);
+            this.registry.services.render.scheduleRendering(this.registry.services.pointer.hoveredPlugin.region);
         }
     }
 
@@ -71,7 +75,7 @@ export class RectangleTool extends AbstractTool {
         }
 
         this.registry.services.history.createSnapshot();
-        this.registry.services.render.scheduleTasks(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
+        this.registry.services.render.scheduleRendering(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
 
     leave() {

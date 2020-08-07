@@ -37,7 +37,7 @@ export interface SvgCanvasCompProps extends UI_ComponentProps<UI_SvgCanvas> {
 export class SvgCanvasComp extends React.Component<SvgCanvasCompProps> {
     static contextType = AppContext;
     context: AppContextType;
-    protected ref: React.RefObject<HTMLDivElement>;
+    protected ref: React.RefObject<HTMLDivElement> = React.createRef();
     protected noRegisterKeyEvents = false;
     private wheelListener: WheelListener;
 
@@ -49,10 +49,12 @@ export class SvgCanvasComp extends React.Component<SvgCanvasCompProps> {
         );
 
         setTimeout(() => {
-            (this.props.element.plugin as AbstractPlugin).componentMounted(this.ref.current);
+            (this.props.element.plugin as AbstractPlugin).mounted(this.ref.current);
             (this.props.element.plugin as AbstractPlugin).resize();
         }, 0);
     }
+
+    
 
     render(): JSX.Element {
         const hover = (item: View) => this.context.registry.services.mouse.hover(item);
@@ -61,7 +63,7 @@ export class SvgCanvasComp extends React.Component<SvgCanvasCompProps> {
         const plugin = this.context.registry.plugins.getViewById<SceneEditorPlugin>(SceneEditorPluginId);
 
         return (
-            <EditorComponentStyled ref={this.ref} id={plugin.id} style={{cursor: plugin.getActiveTool().getCursor()}}>
+            <EditorComponentStyled ref={this.ref} id={plugin.id} style={{cursor: plugin.toolHandler.getActiveTool().getCursor()}}>
                 {this.props.toolbar}
                 <DropLayerComp
                     isDragging={!!this.context.registry.services.pointer.droppableItem}
@@ -79,6 +81,7 @@ export class SvgCanvasComp extends React.Component<SvgCanvasCompProps> {
                     onMouseMove={(e) => this.props.element.mouseMove(e.nativeEvent)}
                     onMouseUp={(e) => this.props.element.mouseUp(e.nativeEvent)}
                     onMouseLeave={(e) => this.props.element.mouseLeave(e.nativeEvent)}
+                    onMouseEnter={(e) => this.props.element.mouseEnter(e.nativeEvent)}
                     onKeyDown={e => this.props.element.keyDown(e.nativeEvent)}
                     onKeyUp={e => this.props.element.keyUp(e.nativeEvent)}
                     onMouseOver={(e) => this.props.element.mouseOver(e.nativeEvent)}

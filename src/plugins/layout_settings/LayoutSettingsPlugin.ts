@@ -9,7 +9,7 @@ export const LayoutSettingsPluginId = 'layout-settings-plugin';
 export class LayoutSettingsPlugin extends AbstractSidepanelPlugin {
     id = LayoutSettingsPluginId;
     displayName = 'Layout Settings';
-    region = UI_Region.SidepanelWidget;
+    region = UI_Region.Sidepanel;
     isGlobalPlugin = true;
 
     constructor(registry: Registry) {

@@ -38,7 +38,7 @@ export class FileSettingsController extends AbstractController<FileSettingsProps
 
         this.createPropHandler(FileSettingsProps.NewProject)
             .onClick(() => {
-                (this.registry.plugins.sceneEditor.getToolById(ToolType.Delete) as DeleteTool).eraseAll();
+                (this.registry.plugins.sceneEditor.toolHandler.getById(ToolType.Delete) as DeleteTool).eraseAll();
             });
     }
 }

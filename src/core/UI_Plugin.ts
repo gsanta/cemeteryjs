@@ -8,7 +8,7 @@ import { AbstractPluginImporter } from '../plugins/common/io/AbstractPluginImpor
 import { IPluginExporter } from '../plugins/common/io/IPluginExporter';
 
 export enum UI_Region {
-    SidepanelWidget = 'SidepanelWidget',
+    Sidepanel = 'Sidepanel',
     Dialog = 'Dialog',
     Canvas1 = 'Canvas1',
     Canvas2 = 'Canvas2'
@@ -53,10 +53,6 @@ export abstract class UI_Plugin implements IControlledObject {
 
     protected controllers: Map<string, AbstractController> = new Map();
 
-    protected toolMap: Map<string, Tool> = new Map();
-    // TODO put into AbstractPlugin
-    protected tools: Tool[] = [];
-
     protected abstract renderInto(layout: UI_Container): void;
 
     protected registry: Registry;
@@ -66,7 +62,7 @@ export abstract class UI_Plugin implements IControlledObject {
     }
 
     render(): UI_Container {
-        if (this.region === UI_Region.SidepanelWidget) {
+        if (this.region === UI_Region.Sidepanel) {
             const layout = new UI_Layout(this, this.region);
             const accordion = layout.accordion(null);
             accordion.title = this.displayName;
@@ -89,18 +85,8 @@ export abstract class UI_Plugin implements IControlledObject {
         return this.controllers.get(id);
     }
 
-    getToolById(id: string) {
-        return this.toolMap.get(id);
-    }
-
-    getTools(): Tool[] {
-        return this.tools;
-    }
-
-    addTool(tool: Tool) {
-        this.tools.push(tool);
-        this.toolMap.set(tool.id, tool);
-    }
+    activated() {}
+    mounted(htmlElement: HTMLElement) {}
 
     // TODO should be temporary, port it to PointerService somehow
     over() {

@@ -9,7 +9,7 @@ export const NodeEditorSettingsPluginId = 'node_editor_settings_plugin';
 export class NodeEditorSettingsPlugin extends UI_Plugin {
     id = NodeEditorSettingsPluginId;
     displayName = 'Node Editor';
-    region = UI_Region.SidepanelWidget;
+    region = UI_Region.Sidepanel;
 
     constructor(registry: Registry) {
         super(registry);
