@@ -20,6 +20,7 @@ export enum UI_ElementType {
     SvgForeignObject = 'ForeignObject',
     SvgText = 'SvgText',
 
+    HtmlCanvas = 'HtmlCanvas',
 
     Text = 'Text',
     Tooltip = 'Tooltip',

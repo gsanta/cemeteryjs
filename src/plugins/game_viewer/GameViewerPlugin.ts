@@ -13,6 +13,8 @@ import { Gizmos } from './Gizmos';
 import { GameViewerImporter } from './io/GameViewerImporter';
 import { NodeService } from './services/NodeService';
 import { GameViewerSettings } from './settings/GameViewerSettings';
+import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
+import { activeToolId } from '../../core/gui_builder/elements/UI_Element';
 (<any> window).earcut = require('earcut');
 
 export function getCanvasElement(viewId: string): HTMLCanvasElement {
@@ -97,5 +99,11 @@ export class GameViewerPlugin extends AbstractPlugin {
         if (!this.toolHandler.getSelectedTool()) {
             this.toolHandler.setSelectedTool(ToolType.Camera);
         }
+    }
+
+    protected renderInto(layout: UI_Layout): void {
+        const canvas = layout.htmlCanvas({controllerId: activeToolId});
+
+        const toolbar = canvas.toolbar();
     }
 }

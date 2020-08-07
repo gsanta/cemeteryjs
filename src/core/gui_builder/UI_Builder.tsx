@@ -50,6 +50,7 @@ import { ForeignObjectComp } from '../gui/svg/ForeignObjectComp';
 import { BoxComp } from '../gui/layout/BoxComp';
 import { UI_Box } from './elements/UI_Box';
 import { UI_SvgText } from './elements/svg/UI_SvgText';
+import { UI_HtmlCanvas } from './elements/UI_HtmlCanvas';
 
 export class UI_Builder {
 
@@ -88,7 +89,8 @@ export class UI_Builder {
                 const group = element as UI_SvgGroup;
                 return <SvgGroupComp element={group}>{this.buildChildren(element, plugin)}</SvgGroupComp>
             case UI_ElementType.SvgCanvas:
-                return this.buildSvgCanvas(element as UI_SvgCanvas, plugin);
+            case UI_ElementType.HtmlCanvas:
+                return this.buildSvgCanvas(element as UI_SvgCanvas | UI_HtmlCanvas, plugin);
             case UI_ElementType.Box:
                 const box = element as UI_Box;
                 return <BoxComp element={box}>{this.buildChildren(element, plugin)}</BoxComp>;
@@ -105,16 +107,19 @@ export class UI_Builder {
         });
     }
 
-    private buildSvgCanvas(uiSvgCanvas: UI_SvgCanvas, plugin: UI_Plugin) {
+    private buildSvgCanvas(canvas: UI_SvgCanvas | UI_HtmlCanvas, plugin: UI_Plugin) {
         let toolbar: JSX.Element = null;
 
-        if (uiSvgCanvas.getToolbar()) {
-            toolbar = this.buildToolbar(uiSvgCanvas.getToolbar());
+        if (canvas.getToolbar()) {
+            toolbar = this.buildToolbar(canvas.getToolbar());
+        }
+        
+        let children: JSX.Element[] = [];
+        if (canvas.elementType === UI_ElementType.SvgCanvas) {
+            const children = this.buildChildren(canvas as UI_SvgCanvas, plugin);
         }
 
-        const children = this.buildChildren(uiSvgCanvas, plugin);
-
-        return <SvgCanvasComp toolbar={toolbar} element={uiSvgCanvas}>{children}</SvgCanvasComp>;
+        return <SvgCanvasComp toolbar={toolbar} element={canvas}>{children}</SvgCanvasComp>;
     }
 
     private buildToolbar(uiToolbar: UI_Toolbar) {

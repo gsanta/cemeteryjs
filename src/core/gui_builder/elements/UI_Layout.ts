@@ -4,6 +4,7 @@ import { UI_Container } from "./UI_Container";
 import { UI_SvgCanvas } from './UI_SvgCanvas';
 import { UI_Region, UI_Plugin } from '../../UI_Plugin';
 import { UI_Factory } from '../UI_Factory';
+import { UI_HtmlCanvas } from './UI_HtmlCanvas';
 
 const elementType = UI_ElementType.Layout;
 
@@ -26,5 +27,9 @@ export class UI_Layout extends UI_Container {
 
     svgCanvas(config: {controllerId?: string}): UI_SvgCanvas {
         return UI_Factory.svgCanvas(this, config);
+    }
+
+    htmlCanvas(config: {controllerId?: string}): UI_HtmlCanvas {
+        return UI_Factory.htmlCanvas(this, config);
     }
 }

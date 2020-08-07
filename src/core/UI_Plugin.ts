@@ -68,12 +68,7 @@ export abstract class UI_Plugin implements IControlledObject {
             accordion.title = this.displayName;
             this.renderInto(accordion);
             return layout;
-        } else if (this.region === UI_Region.Dialog) {
-            const layout = new UI_Layout(this, this.region);
-
-            this.renderInto(layout);
-            return layout;
-        } else if (this.region === UI_Region.Canvas1) {
+        } else {
             const layout = new UI_Layout(this, this.region);
 
             this.renderInto(layout);

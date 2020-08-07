@@ -23,6 +23,7 @@ import { UI_ListItem } from './elements/UI_ListItem';
 import { UI_SvgForeignObject } from './elements/svg/UI_SvgForeignObject';
 import { UI_Box } from './elements/UI_Box';
 import { UI_SvgText } from './elements/svg/UI_SvgText';
+import { UI_HtmlCanvas } from './elements/UI_HtmlCanvas';
 
 export class UI_Factory {
     static row(parent: UI_Container, config: { controllerId?: string, key: string}): UI_Row {
@@ -47,6 +48,16 @@ export class UI_Factory {
         this.setController(parent, box, config);
 
         return box;
+    }
+
+    static htmlCanvas(parent: UI_Container, config: { controllerId?: string}): UI_HtmlCanvas {
+        const htmlCanvas = new UI_HtmlCanvas(parent.plugin);
+        parent.children.push(htmlCanvas);
+
+        htmlCanvas.generateId(parent);
+        this.setController(parent, htmlCanvas, config);
+
+        return htmlCanvas;
     }
 
     static svgCanvas(parent: UI_Container, config: { controllerId?: string}): UI_SvgCanvas {
@@ -244,7 +255,7 @@ export class UI_Factory {
 
     ///////////////////////////////////////////// Toolbar /////////////////////////////////////////////
 
-    static toolbar(parent: UI_SvgCanvas): UI_Toolbar {
+    static toolbar(parent: UI_SvgCanvas | UI_HtmlCanvas): UI_Toolbar {
         const toolbar = new UI_Toolbar(parent.plugin);
 
         toolbar.generateId(parent);

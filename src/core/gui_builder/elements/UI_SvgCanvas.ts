@@ -8,7 +8,6 @@ export class UI_SvgCanvas extends UI_SvgGroup {
 
     elementType = UI_ElementType.SvgCanvas;
 
-
     toolbar(): UI_Toolbar {
         return UI_Factory.toolbar(this);
     }
