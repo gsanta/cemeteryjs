@@ -51,7 +51,7 @@ export class PointerService {
         this.pointer.down = this.getCanvasPoint(e.pointers[0].pos); 
         this.pointer.downScreen = this.getScreenPoint(e.pointers[0].pos); 
         this.registry.plugins.getHoveredView().toolHandler.getActiveTool().down(e);
-        this.registry.services.render.runScheduledTasks();
+        this.registry.services.render.reRenderScheduled();
     }
 
     pointerMove(e: IPointerEvent): void {
@@ -66,7 +66,7 @@ export class PointerService {
             this.registry.plugins.getHoveredView().toolHandler.getActiveTool().move();
         }
         this.registry.services.hotkey.executeHotkey(e);
-        this.registry.services.render.runScheduledTasks();
+        this.registry.services.render.reRenderScheduled();
     }
 
     pointerUp(e: IPointerEvent): void {
@@ -86,7 +86,7 @@ export class PointerService {
         this.isDown = false;
         this.isDrag = false;
         this.pointer.down = undefined;
-        this.registry.services.render.runScheduledTasks();
+        this.registry.services.render.reRenderScheduled();
     }
 
     pointerLeave(e: IPointerEvent, plugin: AbstractPlugin): void {

@@ -30,7 +30,7 @@ import { UI_SvgRect } from './elements/svg/UI_SvgRect';
 import { SvgRectComp } from '../gui/svg/SvgRectComp';
 import { UI_SvgGroup } from './elements/svg/UI_SvgGroup';
 import { SvgGroupComp } from '../gui/svg/SvgGroupComp';
-import { SvgCanvasComp } from '../gui/surfaces/canvas/SvgCanvasComp';
+import { CanvasComp } from '../gui/surfaces/canvas/CanvasComp';
 import { UI_SvgCanvas } from './elements/UI_SvgCanvas';
 import { AbstractPlugin } from '../AbstractPlugin';
 import { UI_SvgCircle } from './elements/svg/UI_SvgCircle';
@@ -89,7 +89,6 @@ export class UI_Builder {
                 const group = element as UI_SvgGroup;
                 return <SvgGroupComp element={group}>{this.buildChildren(element, plugin)}</SvgGroupComp>
             case UI_ElementType.SvgCanvas:
-            case UI_ElementType.HtmlCanvas:
                 return this.buildSvgCanvas(element as UI_SvgCanvas | UI_HtmlCanvas, plugin);
             case UI_ElementType.Box:
                 const box = element as UI_Box;
@@ -116,10 +115,10 @@ export class UI_Builder {
         
         let children: JSX.Element[] = [];
         if (canvas.elementType === UI_ElementType.SvgCanvas) {
-            const children = this.buildChildren(canvas as UI_SvgCanvas, plugin);
+            children = this.buildChildren(canvas as UI_SvgCanvas, plugin);
         }
 
-        return <SvgCanvasComp toolbar={toolbar} element={canvas}>{children}</SvgCanvasComp>;
+        return <CanvasComp toolbar={toolbar} element={canvas}>{children}</CanvasComp>;
     }
 
     private buildToolbar(uiToolbar: UI_Toolbar) {
@@ -201,6 +200,9 @@ export class UI_Builder {
             case UI_ElementType.ListItem:
                 const listItem = element as UI_ListItem;
                 return <ListItemComp element={listItem}/>;
+            case UI_ElementType.HtmlCanvas:
+                return this.buildSvgCanvas(element as UI_SvgCanvas | UI_HtmlCanvas, element.plugin);
+    
         }
     }
 }   

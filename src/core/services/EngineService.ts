@@ -32,7 +32,7 @@ export class EngineService<T extends AbstractPlugin = AbstractPlugin> extends Ab
         // TODO get rid of this, and call destroy everywhere it is needed
         if (this.engine) { this.engine.dispose(); }
 
-        const canvasElement = this.plugin.htmlElement as HTMLCanvasElement;
+        const canvasElement = this.plugin.htmlElement.querySelector('canvas');
 
         this.engine = new Engine(canvasElement, true, { preserveDrawingBuffer: true, stencil: true });
         // TODO check if needed, there was some weird bug in babylon why this was needed 

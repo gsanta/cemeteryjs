@@ -21,7 +21,7 @@ export class HistoryService {
             this.registry.stores.selectionStore.clear();
             this.registry.services.import.import(this.history[this.index]);
             this.registry.services.level.updateCurrentLevel();
-            this.registry.services.render.runImmediately(RenderTask.RenderFull);
+            this.registry.services.render.reRenderAll;
         }
     }
 
@@ -32,7 +32,7 @@ export class HistoryService {
             this.registry.stores.selectionStore.clear();
             this.registry.services.import.import(this.history[this.index]);
             this.registry.services.level.updateCurrentLevel();
-            this.registry.services.render.runImmediately(RenderTask.RenderFull);
+            this.registry.services.render.reRenderAll;
         }
     }
 

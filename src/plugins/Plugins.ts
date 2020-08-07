@@ -126,7 +126,7 @@ export class Plugins {
 
         switch(plugin.region) {
             case UI_Region.Dialog:
-                this.registry.services.render.runImmediately(RenderTask.RenderDialog);
+                this.registry.services.render.reRender(UI_Region.Dialog);
             break;
         }
     }

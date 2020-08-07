@@ -64,7 +64,7 @@ export class CodeEditorComponent extends AbstractPluginComponent {
             });
 
             view.editors.push(editor2);
-            this.props.plugin.componentMounted(this.ref.current);
+            this.props.plugin.mounted(this.ref.current);
         }, 0)
     }
 

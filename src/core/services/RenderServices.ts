@@ -14,18 +14,17 @@ export class RenderService {
     updateTasks: RenderTask[] = [];
 
     private renderers: Map<UI_Region, Function> = new Map();
+    private rootRenderer: Function;
     private scheduledRenderers: Set<UI_Region> = new Set();
-
-    private settingsRepainters: Function[] = [];
-    private fullRepainter: Function;
-    private dialogRenderer: Function;
-    private primaryPanelRenderer: Function;
-    private secondaryPanelRenderer: Function;
 
     private registry: Registry;
 
     constructor(registry: Registry) {
         this.registry = registry;
+    }
+
+    reRenderAll() {
+        this.rootRenderer();
     }
 
 
@@ -48,59 +47,7 @@ export class RenderService {
         this.renderers.set(region, renderer);
     }
 
-    scheduleTasks(...tasks: RenderTask[]) {
-        this.updateTasks = tasks;
-    }
-
-    runImmediately(...tasks: RenderTask[]) {
-        this.runTasks(tasks);
-    }
-
-    runScheduledTasks() {
-        this.runTasks(this.updateTasks);
-        this.updateTasks = [];
-    }
-
-
-    private runTasks(tasks: RenderTask[]) {
-        tasks.forEach(task => {
-            switch(task) {
-                case RenderTask.RenderFocusedView:
-                    this.registry.plugins.getHoveredView() && this.registry.plugins.getHoveredView().reRender();
-                break;
-                case RenderTask.RenderSidebar:
-                    this.settingsRepainters.forEach(repaint => repaint());
-                break;
-                case RenderTask.RenderVisibleViews:
-                    this.registry.plugins.getActivePlugins().forEach(plugin => plugin.render());
-                break;
-                case RenderTask.RenderFull:
-                    this.fullRepainter();
-                break;
-                case RenderTask.RenderDialog:
-                    this.dialogRenderer();
-                break;
-            }
-        });
-    }
-
-    setFullRepainter(repaint: Function) {
-        this.fullRepainter = repaint;
-    }
-
-    addSettingsRepainter(repaint: Function) {
-        this.settingsRepainters.push(repaint);
-    }
-
-    setDialogRenderer(dialogRenderer: Function) {
-        this.dialogRenderer = dialogRenderer;
-    }
-
-    setPrimaryPanelRenderer(renderer: Function) {
-        this.primaryPanelRenderer = renderer;
-    }
-
-    setSecondaryPanelRenderer(renderer: Function) {
-        this.secondaryPanelRenderer = renderer;
+    setRootRenderer(renderer: Function) {
+        this.rootRenderer = renderer;
     }
 }

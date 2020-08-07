@@ -12,7 +12,7 @@ export class DialogManagerComponent extends React.Component {
     context: AppContextType;
 
     componentDidMount() {
-        this.context.registry.services.render.setDialogRenderer(() => this.forceUpdate());
+        this.context.registry.services.render.setRenderer(UI_Region.Dialog, () => this.forceUpdate());
     }
 
     render() {
@@ -35,6 +35,6 @@ export class DialogManagerComponent extends React.Component {
 
     private closeDialog(plugin: UI_Plugin) {
         this.context.registry.plugins.deactivatePlugin(plugin.id);
-        this.context.registry.services.render.runImmediately(RenderTask.RenderFull);
+        this.context.registry.services.render.reRenderAll;
     }
 }

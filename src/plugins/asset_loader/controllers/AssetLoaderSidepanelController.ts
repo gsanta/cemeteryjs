@@ -7,6 +7,7 @@ import { AbstractSettings } from "../../scene_editor/settings/AbstractSettings";
 import { AssetLoaderPlugin } from '../AssetLoaderPlugin';
 import { MeshLoaderService } from '../../../core/services/MeshLoaderService';
 import { AssetLoaderDialogController } from './AssetLoaderDialogController';
+import { UI_Region } from '../../../core/UI_Plugin';
 
 export enum AssetLoaderSidepanelControllerProps {
     Model = 'Model',
@@ -33,7 +34,7 @@ export class AssetLoaderSidepanelController extends AbstractSettings<AssetLoader
     close() {
         this.registry.services.history.createSnapshot();
         this.registry.services.dialog.close();
-        this.registry.services.render.runImmediately(RenderTask.RenderFull);
+        this.registry.services.render.reRenderAll;
     }
 
     protected getProp(prop: AssetLoaderSidepanelControllerProps) {
@@ -81,6 +82,6 @@ export class AssetLoaderSidepanelController extends AbstractSettings<AssetLoader
 
     private update() {
         this.registry.services.history.createSnapshot();
-        this.registry.services.render.runImmediately(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
+        this.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
 }

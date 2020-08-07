@@ -3,15 +3,14 @@ import { Point } from '../../core/geometry/shapes/Point';
 import { Registry } from '../../core/Registry';
 import { EngineService } from '../../core/services/EngineService';
 import { MeshLoaderService } from '../../core/services/MeshLoaderService';
+import { UI_Region } from '../../core/UI_Plugin';
 import { ICamera } from '../common/camera/ICamera';
 import { PluginServices } from '../common/PluginServices';
 import { PluginSettings } from '../common/PluginSettings';
 import { toolFactory } from '../common/toolbar/toolFactory';
-import { Tool, ToolType } from '../common/tools/Tool';
-import { Tools } from '../Tools';
+import { ToolType } from '../common/tools/Tool';
 import { AssetLoaderDialogController } from './controllers/AssetLoaderDialogController';
 import { AssetLoaderSidepanelController } from './controllers/AssetLoaderSidepanelController';
-import { UI_Region } from '../../core/UI_Plugin';
 (<any> window).earcut = require('earcut');
 
 export function getCanvasElement(viewId: string): HTMLCanvasElement {
@@ -64,8 +63,8 @@ export class AssetLoaderPlugin extends AbstractPlugin {
         this.pluginServices.engineService().getEngine() && this.pluginServices.engineService().getEngine().resize();
     }
 
-    componentMounted(htmlElement: HTMLElement) {
-        super.componentMounted(htmlElement);
+    mounted(htmlElement: HTMLElement) {
+        super.mounted(htmlElement);
     }
 
     getOffset() {

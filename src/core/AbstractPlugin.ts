@@ -50,12 +50,7 @@ export abstract class AbstractPlugin extends UI_Plugin {
     }
 
     abstract getStore(): AbstractViewStore;
-    
-    componentMounted(htmlElement: HTMLElement): void {
-        this.htmlElement = htmlElement;
-        this.pluginServices.services.forEach(service => service.awake());
-    }
-    
+        
     destroy(): void {}
     resize() {};
     over(): void { this.registry.plugins.setHoveredView(this) }
@@ -76,6 +71,7 @@ export abstract class AbstractPlugin extends UI_Plugin {
 
     mounted(htmlElement: HTMLElement) {
         this.htmlElement = htmlElement;
+        this.pluginServices.services.forEach(service => service.awake());
     }
 
     protected renderInto(layout: UI_Layout) { }

@@ -41,7 +41,7 @@ export class App extends React.Component<{}, AppState> {
     }
 
     componentDidMount() {
-        this.context.registry.services.render.setFullRepainter(() => this.forceUpdate());
+        this.context.registry.services.render.setRootRenderer(() => this.forceUpdate());
         this.context.controllers.setRenderer(() => this.forceUpdate());
         if (this.context.registry.plugins.visibilityDirty) {
             this.context.registry.services.uiPerspective.layoutHandler.buildLayout();

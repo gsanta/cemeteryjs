@@ -22,7 +22,7 @@ export class LayoutSettingsController extends AbstractController<LayoutSettingsP
         this.createPropHandler<string>(LayoutSettingsProps.SelectedLayout)
             .onChange((val) => {
                 this.registry.services.uiPerspective.activatePerspective(val);
-                this.registry.services.render.runImmediately(RenderTask.RenderFull);
+                this.registry.services.render.reRenderAll;
             })
             .onGet(() => {
                 return this.registry.services.uiPerspective.activePerspective ? this.registry.services.uiPerspective.activePerspective.name : '';

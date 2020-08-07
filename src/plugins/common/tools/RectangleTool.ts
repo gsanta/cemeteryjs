@@ -60,8 +60,7 @@ export class RectangleTool extends AbstractTool {
             this.registry.stores.canvasStore.addMeshView(meshView);
             this.lastPreviewRect = meshView;
     
-            this.registry.services.render.scheduleTasks(RenderTask.RenderFocusedView);
-            this.registry.services.render.scheduleRendering(this.registry.services.pointer.hoveredPlugin.region);
+            this.registry.services.render.scheduleRendering(this.plugin.region);
         }
     }
 

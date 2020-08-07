@@ -50,7 +50,7 @@ export class AssetLoaderDialogController extends AbstractSettings<ImportSettings
         this.plugin.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName).clear();
         this.registry.services.history.createSnapshot();
         this.registry.services.dialog.close();
-        this.registry.services.render.runImmediately(RenderTask.RenderFull);
+        this.registry.services.render.reRenderAll;
     }
 
     protected getProp(prop: ImportSettingsProps) {
@@ -99,6 +99,6 @@ export class AssetLoaderDialogController extends AbstractSettings<ImportSettings
 
     private update() {
         this.registry.services.history.createSnapshot();
-        this.registry.services.render.runImmediately(RenderTask.RenderFull);
+        this.registry.services.render.reRenderAll;
     }
 }

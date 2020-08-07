@@ -9,6 +9,7 @@ import { AbstractTool } from "./AbstractTool";
 import { ToolType } from "./Tool";
 import { IPointerEvent } from '../../../core/services/input/PointerService';
 import { AbstractPlugin } from '../../../core/AbstractPlugin';
+import { UI_Region } from '../../../core/UI_Plugin';
 
 export class PointerTool extends AbstractTool {
     protected movingItem: View = undefined;
@@ -27,19 +28,17 @@ export class PointerTool extends AbstractTool {
             this.registry.stores.selectionStore.clear();
             this.registry.stores.selectionStore.addItem(view);
             this.registry.stores.selectionStore.addItem(hoveredItem);
-
-            this.registry.services.render.scheduleTasks(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
+            this.registry.services.render.scheduleRendering(this.plugin.region, UI_Region.Sidepanel);
         } else if (isView(hoveredItem.viewType)) {
             this.registry.stores.selectionStore.clear();
             this.registry.stores.selectionStore.addItem(hoveredItem);
-
-            this.registry.services.render.scheduleTasks(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
-
+            this.registry.services.render.scheduleRendering(this.plugin.region, UI_Region.Sidepanel);
         }
     }
 
     down() {
-        this.initMove() && this.registry.services.render.scheduleTasks(RenderTask.RenderFocusedView);
+
+        this.initMove() &&  this.registry.services.render.scheduleRendering(this.plugin.region);
     }
 
     drag(e: IPointerEvent) {
@@ -47,7 +46,7 @@ export class PointerTool extends AbstractTool {
 
         if (this.movingItem) {
             this.moveItems();
-            this.registry.services.render.scheduleTasks(RenderTask.RenderFocusedView);
+            this.registry.services.render.scheduleRendering(this.plugin.region);
         }
         
         this.isDragStart = false;
@@ -58,7 +57,7 @@ export class PointerTool extends AbstractTool {
 
         if (!this.isDragStart) {
             this.registry.services.history.createSnapshot();
-            this.registry.services.render.scheduleTasks(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
+            this.registry.services.render.scheduleRendering(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
         }
 
         this.isDragStart = true;
@@ -74,11 +73,11 @@ export class PointerTool extends AbstractTool {
     }
 
     over(item: View) {
-        this.registry.services.render.scheduleTasks(RenderTask.RenderFocusedView);
+        this.registry.services.render.scheduleRendering(this.plugin.region);
     }
 
     out(item: View) {
-        this.registry.services.render.scheduleTasks(RenderTask.RenderFocusedView);
+        this.registry.services.render.scheduleRendering(this.plugin.region);
     }
 
     private initMove(): boolean {
@@ -96,8 +95,7 @@ export class PointerTool extends AbstractTool {
         } else if (isView(this.movingItem.viewType)) {
             views.forEach((item, index) => item.move(this.registry.services.pointer.pointer.getDiff()));
         }
-
-        this.registry.services.render.scheduleTasks(RenderTask.RenderFocusedView);
+        this.registry.services.render.scheduleRendering(this.plugin.region);
     }
 
     private updateDraggedView() {

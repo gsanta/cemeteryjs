@@ -6,6 +6,7 @@ import { AbstractController } from '../scene_editor/settings/AbstractController'
 import { ThumbnailDialogPluginId } from './ThumbnailDialogPlugin';
 import { AssetModel, AssetType } from '../../core/models/game_objects/AssetModel';
 import { ObjectSettingsPlugin } from './ObjectSettingsPlugin';
+import { UI_Region } from '../../core/UI_Plugin';
 
 export enum MeshObjectSettingsProps {
     MeshId = 'MeshId',
@@ -32,13 +33,13 @@ export class MeshObjectSettingsController extends AbstractController<MeshObjectS
         this.createPropHandler<number>(MeshObjectSettingsProps.MeshId)
             .onChange((val, context) => {
                 this.tempVal = val;
-                this.registry.services.render.runImmediately(RenderTask.RenderSidebar);
+                this.registry.services.render.reRender(UI_Region.Sidepanel);
             })
             .onBlur((context) => {
                 (<MeshView> this.registry.stores.selectionStore.getView()).id = this.tempVal;
                 this.tempVal = undefined;
                 this.registry.services.history.createSnapshot();
-                this.registry.services.render.runImmediately(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
+                this.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
             })
             .onGet((context) => {
                 return this.tempVal || (<MeshView> this.registry.stores.selectionStore.getView()).id;
@@ -47,7 +48,7 @@ export class MeshObjectSettingsController extends AbstractController<MeshObjectS
         this.createPropHandler<number>(MeshObjectSettingsProps.Layer)
             .onChange((val, context) => {
                 this.meshView.layer = val;
-                this.registry.services.render.runImmediately(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
+                this.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
             })
             .onGet((context) => {
                 return this.meshView.layer;
@@ -56,7 +57,7 @@ export class MeshObjectSettingsController extends AbstractController<MeshObjectS
         this.createPropHandler<string>(MeshObjectSettingsProps.Rotation)
             .onChange((val, context) => {
                 context.updateTempVal(val);
-                this.registry.services.render.runImmediately(RenderTask.RenderSidebar);
+                this.registry.services.render.reRender(UI_Region.Sidepanel);
             })
             .onBlur((context) => {
                 let rotation = this.meshView.getRotation();
@@ -66,7 +67,7 @@ export class MeshObjectSettingsController extends AbstractController<MeshObjectS
                     console.log(e);
                 }
                 this.meshView.setRotation(rotation);
-                this.registry.services.render.runImmediately(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
+                this.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
             })
             .onGet((context) => {
                 return context.getTempVal(() => Math.round(toDegree(this.meshView.getRotation())).toString());
@@ -75,7 +76,7 @@ export class MeshObjectSettingsController extends AbstractController<MeshObjectS
         this.createPropHandler<string>(MeshObjectSettingsProps.Scale)
             .onChange((val, context) => {
                 context.updateTempVal(val);
-                this.registry.services.render.runImmediately(RenderTask.RenderSidebar);
+                this.registry.services.render.reRender(UI_Region.Sidepanel);
             })
             .onBlur((context) => {
                 let rotation = this.meshView.getScale();
@@ -85,7 +86,7 @@ export class MeshObjectSettingsController extends AbstractController<MeshObjectS
                     console.log(e);
                 }
                 this.meshView.setScale(rotation);
-                this.registry.services.render.runImmediately(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
+                this.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
             })
             .onGet((context) => {
                 return context.getTempVal(() => Math.round(this.meshView.getScale()).toString());
@@ -94,7 +95,7 @@ export class MeshObjectSettingsController extends AbstractController<MeshObjectS
         this.createPropHandler<string>(MeshObjectSettingsProps.YPos)
             .onChange((val, context) => {
                 context.updateTempVal(val);
-                this.registry.services.render.runImmediately(RenderTask.RenderSidebar);
+                this.registry.services.render.reRender(UI_Region.Sidepanel);
             })
             .onBlur((context) => {
                 let yPos = this.meshView.yPos;
@@ -105,7 +106,7 @@ export class MeshObjectSettingsController extends AbstractController<MeshObjectS
                 }
 
                 this.meshView.yPos = yPos;
-                this.registry.services.render.runImmediately(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
+                this.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
             })
             .onGet((context) => {
                 return context.getTempVal(() => this.meshView.yPos.toString());

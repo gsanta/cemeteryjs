@@ -67,8 +67,8 @@ export class GameViewerPlugin extends AbstractPlugin {
         engineService.getEngine() && engineService.getEngine().resize();
     }
 
-    componentMounted(htmlElement: HTMLElement) {
-        super.componentMounted(htmlElement);
+    mounted(htmlElement: HTMLElement) {
+        super.mounted(htmlElement);
         (<GameViewerImporter> this.importer).import();
 
         const nodeService = this.pluginServices.byName<NodeService>(NodeService.serviceName);

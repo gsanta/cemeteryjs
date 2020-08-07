@@ -1,19 +1,15 @@
 import { Registry } from './Registry';
-import { GlobalSettings } from '../plugins/scene_editor/settings/GlobalSettings';
 
 export class Editor {
     registry: Registry;
     
     svgCanvasId: string;
     renderFunc: () => void;
-    globalSettingsForm: GlobalSettings;
     isLoading = true;
 
     constructor() {
         this.svgCanvasId = 'svg-editor';
         this.registry = new Registry();
-
-        this.globalSettingsForm = new GlobalSettings(this.registry);
     }
 
     setup(canvas: HTMLCanvasElement) {        
@@ -29,6 +25,7 @@ export class Editor {
                 this.registry.services.history.createSnapshot();
                 this.render();
             })
+
             .catch(() => {
                 this.isLoading = false;
                 this.registry.services.history.createSnapshot();

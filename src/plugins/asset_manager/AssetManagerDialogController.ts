@@ -1,7 +1,6 @@
 import { Registry } from "../../core/Registry";
 import { AbstractSettings } from "../scene_editor/settings/AbstractSettings";
 import { AssetManagerPlugin } from "./AssetManagerPlugin";
-import { RenderTask } from "../../core/services/RenderServices";
 import { AssetModel } from "../../core/models/game_objects/AssetModel";
 import { AssetManagerDialogPluginId } from "./AssetManagerDialogPlugin";
 import { UI_Region } from "../../core/UI_Plugin";
@@ -39,7 +38,7 @@ export class AssetManagerDialogController extends AbstractSettings<AssetManagerD
         this.editedAssetModel = undefined;
         this.editedPath = undefined;
         this.registry.services.dialog.close();
-        this.registry.services.render.runImmediately(RenderTask.RenderFull);
+        this.registry.services.render.reRenderAll;
 
         this.addPropSetter(AssetManagerDialogProps.EditedAsset, (val) => {
             this.editedAssetModel = this.registry.stores.assetStore.getAssetById(val);
@@ -64,7 +63,7 @@ export class AssetManagerDialogController extends AbstractSettings<AssetManagerD
         }
 
         this.focusedPropType = null;
-        this.registry.services.render.runImmediately(RenderTask.RenderFull);
+        this.registry.services.render.reRenderAll;
     }
 
     protected getProp(prop: AssetManagerDialogProps) {
@@ -91,16 +90,16 @@ export class AssetManagerDialogController extends AbstractSettings<AssetManagerD
             break;
             case AssetManagerDialogProps.AssetPath:
                 this.editedPath = val;
-                this.registry.services.render.runImmediately(RenderTask.RenderDialog);
+                this.registry.services.render.reRender(UI_Region.Dialog);
             break;
             case AssetManagerDialogProps.Delete:
                 const assetModel = this.registry.stores.assetStore.getAssetById(val);
                 this.registry.stores.assetStore.deleteAsset(assetModel);
-                this.registry.services.render.runImmediately(RenderTask.RenderFull);
+                this.registry.services.render.reRenderAll;
             break;
             case AssetManagerDialogProps.AssetName:
                 this.editedName = val;
-                this.registry.services.render.runImmediately(RenderTask.RenderDialog);
+                this.registry.services.render.reRender(UI_Region.Dialog);
             break;
             case AssetManagerDialogProps.IsDialogOpen:
                 if (val) {
@@ -114,6 +113,6 @@ export class AssetManagerDialogController extends AbstractSettings<AssetManagerD
     }
 
     private update() {
-        this.registry.services.render.runImmediately(RenderTask.RenderFull);
+        this.registry.services.render.reRenderAll();
     }
 }

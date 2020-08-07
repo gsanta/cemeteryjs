@@ -1,7 +1,6 @@
 import { SplitNode } from '../../../../core/models/nodes/SplitNode';
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { Registry } from "../../../../core/Registry";
-import { RenderTask } from "../../../../core/services/RenderServices";
 import { ViewSettings } from "../../../scene_editor/settings/AbstractSettings";
 
 export enum SplitNodeProps {
@@ -27,6 +26,5 @@ export class SplitNodeSettings extends ViewSettings<SplitNodeProps, NodeView> {
             default:
                 throw new Error(`${prop} is not a writeable property.`)
         }
-        this.registry.services.render.runImmediately(RenderTask.RenderFocusedView);
     }
 }

@@ -33,7 +33,7 @@ export class FileSettingsController extends AbstractController<FileSettingsProps
                 this.registry.stores.selectionStore.clear();
                 this.registry.services.import.import(val.data);
     
-                this.registry.services.render.runImmediately(RenderTask.RenderFull);
+                this.registry.services.render.reRenderAll;
             });
 
         this.createPropHandler(FileSettingsProps.NewProject)

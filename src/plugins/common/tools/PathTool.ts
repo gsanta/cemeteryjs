@@ -10,6 +10,7 @@ import { IKeyboardEvent, Keyboard } from "../../../core/services/input/KeyboardS
 import { RenderTask } from "../../../core/services/RenderServices";
 import { PointerTool } from "./PointerTool";
 import { ToolType } from "./Tool";
+import { UI_Region } from "../../../core/UI_Plugin";
 
 export class PathTool extends PointerTool {
 
@@ -29,7 +30,8 @@ export class PathTool extends PointerTool {
     keydown(e: IKeyboardEvent) {
         if (e.keyCode === Keyboard.Enter) {
             this.registry.stores.selectionStore.clear();
-            this.registry.services.render.scheduleTasks(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
+            this.registry.services.render.scheduleRendering(this.plugin.region, UI_Region.Sidepanel);
+
             this.registry.services.history.createSnapshot();
         }
     }
@@ -48,13 +50,13 @@ export class PathTool extends PointerTool {
 
         if (hover) {
             super.over(item);
-            this.registry.services.render.scheduleTasks(RenderTask.RenderFocusedView);
+            this.registry.services.render.scheduleRendering(this.plugin.region);
         }
     }
 
     out(item: View) {
         super.out(item);
-        this.registry.services.render.scheduleTasks(RenderTask.RenderFocusedView);
+        this.registry.services.render.scheduleRendering(this.plugin.region);
     }
 
     private createPath() {
@@ -78,7 +80,7 @@ export class PathTool extends PointerTool {
         }
 
         this.registry.services.history.createSnapshot();
-        this.registry.services.render.scheduleTasks(RenderTask.RenderSidebar, RenderTask.RenderFocusedView);
+        this.registry.services.render.scheduleRendering(this.plugin.region, UI_Region.Sidepanel);
     }
 
     private startNewPath() {

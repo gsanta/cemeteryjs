@@ -16,7 +16,7 @@ export class DialogService {
 
     openDialog(dialogController: AbstractSettings) {
         this.dialogController = dialogController;
-        this.registry.services.render.runImmediately(RenderTask.RenderFull);
+        this.registry.services.render.reRenderAll;
     }
 
     close(): boolean {
@@ -24,7 +24,7 @@ export class DialogService {
         if (this.dialogController) { ret = true; }
 
         this.dialogController = null;
-        this.registry.services.render.runImmediately(RenderTask.RenderFull);
+        this.registry.services.render.reRenderAll;
         return ret;
     }
 

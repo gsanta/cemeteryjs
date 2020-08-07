@@ -49,6 +49,6 @@ export class MoveNodeSettings extends ViewSettings<MoveNodeProps, NodeView> {
             default:
                 throw new Error(`${prop} is not a writeable property.`)
         }
-        this.registry.services.render.runImmediately(RenderTask.RenderFocusedView);
+        this.registry.services.render.reRender(this.registry.services.pointer.hoveredPlugin.region);
     }
 }

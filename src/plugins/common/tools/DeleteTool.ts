@@ -8,6 +8,7 @@ import { RectangleSelector } from './RectangleSelector';
 import { Cursor, ToolType } from './Tool';
 import { View } from '../../../core/models/views/View';
 import { AbstractPlugin } from '../../../core/AbstractPlugin';
+import { UI_Region } from '../../../core/UI_Plugin';
 
 export class DeleteTool extends AbstractTool {
     private hotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, ...{keyCodes: [Keyboard.e], shift: true}}
@@ -20,7 +21,7 @@ export class DeleteTool extends AbstractTool {
 
     drag() {
         this.rectSelector.updateRect(this.registry.services.pointer.pointer);
-        this.registry.services.render.scheduleTasks(RenderTask.RenderFocusedView);
+        this.registry.services.render.scheduleRendering(this.registry.services.pointer.hoveredPlugin.region);
     }
 
     click() {
@@ -38,7 +39,7 @@ export class DeleteTool extends AbstractTool {
         this.registry.services.level.updateCurrentLevel();
         if (this.registry.services.pointer.hoveredItem) {
             this.registry.services.history.createSnapshot();
-            this.registry.services.render.scheduleTasks(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
+            this.registry.services.render.scheduleRendering(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
         }
     }
 
@@ -51,12 +52,12 @@ export class DeleteTool extends AbstractTool {
 
         this.registry.services.level.updateCurrentLevel();
         this.registry.services.history.createSnapshot();
-        this.registry.services.render.scheduleTasks(RenderTask.RenderVisibleViews, RenderTask.RenderSidebar);
+        this.registry.services.render.scheduleRendering(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
 
     leave() {
         this.rectSelector.finish();
-        this.registry.services.render.scheduleTasks(RenderTask.RenderFocusedView);
+        this.registry.services.render.scheduleRendering(this.registry.services.pointer.hoveredPlugin.region);
     }
 
     over(item: View) {
@@ -73,7 +74,7 @@ export class DeleteTool extends AbstractTool {
         // TODO: erase all differently
         // this.registry.plugins.plugins.forEach(plugin => plugin.getStore()?.clear());
         this.registry.stores.canvasStore.clear();
-        this.registry.services.render.runImmediately(RenderTask.RenderFull);
+        this.registry.services.render.reRenderAll;
     }
 
     getCursor() {

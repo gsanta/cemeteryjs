@@ -27,11 +27,11 @@ const SelectionComponentStyled = styled.rect`
     fill: transparent;
 `;
 
-export interface SvgCanvasCompProps extends UI_ComponentProps<UI_SvgCanvas | UI_HtmlCanvas> {
+export interface CanvasCompProps extends UI_ComponentProps<UI_SvgCanvas | UI_HtmlCanvas> {
     toolbar: JSX.Element;
 }
 
-export class SvgCanvasComp extends React.Component<SvgCanvasCompProps> {
+export class CanvasComp extends React.Component<CanvasCompProps> {
     static contextType = AppContext;
     context: AppContextType;
     protected ref: React.RefObject<HTMLDivElement> = React.createRef();

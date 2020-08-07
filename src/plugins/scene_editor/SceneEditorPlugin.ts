@@ -12,9 +12,6 @@ import { toolFactory } from '../common/toolbar/toolFactory';
 import { ToolType } from '../common/tools/Tool';
 import { SceneEditorExporter } from './io/SceneEditorExporter';
 import { SceneEditorImporter } from './io/SceneEditorImporter';
-import { LevelSettings } from './settings/LevelSettings';
-import { MeshSettings } from './settings/MeshSettings';
-import { PathSettings } from './settings/PathSettings';
 import { activeToolId } from '../../core/gui_builder/elements/UI_Element';
 
 function getScreenSize(canvasId: string): Point {
@@ -61,14 +58,6 @@ export class SceneEditorPlugin extends AbstractPlugin {
             });
 
         this.camera = cameraInitializer(SceneEditorPluginId, registry);
-
-        this.pluginSettings = new PluginSettings(
-            [
-                new MeshSettings(this, this.registry),
-                new PathSettings(),
-                new LevelSettings(this.registry)
-            ]
-        );
 
         this.exporter = new SceneEditorExporter(this, this.registry);
         this.importer = new SceneEditorImporter(this, this.registry);
