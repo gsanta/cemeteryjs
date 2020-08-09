@@ -1,4 +1,4 @@
-import { AbstractController } from "../scene_editor/settings/AbstractController";
+import { AbstractController } from "../../core/controllers/AbstractController";
 import { Registry } from "../../core/Registry";
 import { RenderTask } from "../../core/services/RenderServices";
 import { UI_Plugin, UI_Region } from "../../core/UI_Plugin";
@@ -40,7 +40,7 @@ export class LevelSettingsController extends AbstractController<LevelSettingsPro
                 this.registry.services.level.clearLevel()
                 .finally(() => {
                     this.registry.services.history.createSnapshot();
-                    this.registry.services.render.reRenderAll;
+                    this.registry.services.render.reRenderAll();
                 });
             });
     }

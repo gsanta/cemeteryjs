@@ -32,7 +32,6 @@ import { UI_SvgGroup } from './elements/svg/UI_SvgGroup';
 import { SvgGroupComp } from '../gui/svg/SvgGroupComp';
 import { CanvasComp } from '../gui/surfaces/canvas/CanvasComp';
 import { UI_SvgCanvas } from './elements/UI_SvgCanvas';
-import { AbstractPlugin } from '../AbstractPlugin';
 import { UI_SvgCircle } from './elements/svg/UI_SvgCircle';
 import { SvgCircleComp } from '../gui/svg/SvgCircleComp';
 import { UI_SvgImage } from './elements/svg/UI_SvgImage';
@@ -40,7 +39,7 @@ import { SvgImageComp } from '../gui/svg/SvgImageComp';
 import { UI_SvgPath } from './elements/svg/UI_SvgPath';
 import { SvgPathComp } from '../gui/svg/SvgPathComp';
 import { UI_Toolbar } from './elements/toolbar/UI_Toolbar';
-import { ToolbarComp, ToolComp } from '../gui/surfaces/ToolbarComp';
+import { ToolbarComp } from '../gui/surfaces/toolbar/ToolbarComp';
 import { UI_Tool } from './elements/toolbar/UI_Tool';
 import { UI_Tooltip } from './elements/UI_Tooltip';
 import { ListItemComp } from '../gui/data_display/ListItemComp';
@@ -51,6 +50,9 @@ import { BoxComp } from '../gui/layout/BoxComp';
 import { UI_Box } from './elements/UI_Box';
 import { UI_SvgText } from './elements/svg/UI_SvgText';
 import { UI_HtmlCanvas } from './elements/UI_HtmlCanvas';
+import { UI_ActionIcon } from './elements/toolbar/UI_ActionIcon';
+import { ActionIconComp } from '../gui/surfaces/toolbar/ActionIconComp';
+import { ToolComp } from '../gui/surfaces/toolbar/ToolComp';
 
 export class UI_Builder {
 
@@ -150,6 +152,12 @@ export class UI_Builder {
         return <ToolComp key={uiTool.id} tooltip={tooltip} element={uiTool}/>; 
     }
 
+    private buildActionIcon(uiActionIcon: UI_ActionIcon) {
+        const tooltip = uiActionIcon._tooltip ? this.buildLeaf(uiActionIcon._tooltip) : null;
+
+        return <ActionIconComp key={uiActionIcon.id} tooltip={tooltip} element={uiActionIcon}/>; 
+    }
+
     private buildLeaf(element: UI_Element): JSX.Element {
         switch(element.elementType) {
             case UI_ElementType.Text:
@@ -194,6 +202,9 @@ export class UI_Builder {
             case UI_ElementType.Tool:
                 const tool = element as UI_Tool;
                 return this.buildTool(tool);
+            case UI_ElementType.ActionIcon:
+                const actionIcon = element as UI_ActionIcon;
+                return this.buildActionIcon(actionIcon);
             case UI_ElementType.Tooltip:
                 const tooltip = element as UI_Tooltip;
                 return <TooltipComp element={tooltip}/>;

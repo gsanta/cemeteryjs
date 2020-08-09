@@ -2,8 +2,8 @@ import { Point } from "../../../core/geometry/shapes/Point";
 import { MousePointer } from "../../../core/services/input/MouseService";
 
 export interface ICamera {
-    zoomIn(): void;
-    zoomOut(): void;
+    zoomIn(): boolean;
+    zoomOut(): boolean;
     zoomWheel(): void;
     screenToCanvasPoint(screenPoint: Point): Point;
     getCenterPoint(): Point;

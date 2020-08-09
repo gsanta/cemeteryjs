@@ -57,10 +57,12 @@ export class Camera3D implements ICamera {
 
     zoomIn() {
         this.zoom(2);
+        return true;
     }
 
     zoomOut() {
         this.zoom(-2);
+        return true;
     }
 
     zoom(delta: number) {

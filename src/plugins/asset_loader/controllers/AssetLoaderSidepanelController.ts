@@ -34,7 +34,7 @@ export class AssetLoaderSidepanelController extends AbstractSettings<AssetLoader
     close() {
         this.registry.services.history.createSnapshot();
         this.registry.services.dialog.close();
-        this.registry.services.render.reRenderAll;
+        this.registry.services.render.reRenderAll();
     }
 
     protected getProp(prop: AssetLoaderSidepanelControllerProps) {

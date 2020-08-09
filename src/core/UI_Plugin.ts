@@ -1,6 +1,6 @@
 import { IControlledObject } from './IControlledObject';
 import { Registry } from './Registry';
-import { AbstractController } from '../plugins/scene_editor/settings/AbstractController';
+import { AbstractController } from './controllers/AbstractController';
 import { UI_Container } from './gui_builder/elements/UI_Container';
 import { UI_Layout } from './gui_builder/elements/UI_Layout';
 import { Tool } from '../plugins/common/tools/Tool';

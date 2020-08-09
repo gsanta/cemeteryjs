@@ -1,6 +1,6 @@
 import { Registry } from "../../../core/Registry";
 import { UI_Plugin } from "../../../core/UI_Plugin";
-import { AbstractController } from "../../scene_editor/settings/AbstractController";
+import { AbstractController } from "../../../core/controllers/AbstractController";
 
 export enum PathNodeProps {
     AllPathIds = 'AllPathIds',

@@ -1,5 +1,5 @@
-import { Registry } from '../../../core/Registry';
-import { UI_Plugin } from '../../../core/UI_Plugin';
+import { Registry } from '../Registry';
+import { UI_Plugin } from '../UI_Plugin';
 
 export interface PropHandlers {
     onChange?(val: any, context: PropContext<any>,  controller: AbstractController): void;

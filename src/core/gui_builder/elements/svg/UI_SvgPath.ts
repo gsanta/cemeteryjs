@@ -1,6 +1,6 @@
 import { UI_ElementType } from '../UI_ElementType';
 import { UI_Element } from '../UI_Element';
-import { AbstractController } from '../../../../plugins/scene_editor/settings/AbstractController';
+import { AbstractController } from '../../../controllers/AbstractController';
 
 export class UI_SvgPath extends UI_Element {
     elementType = UI_ElementType.SvgPath;

@@ -33,5 +33,6 @@ export enum UI_ElementType {
     FileUpload = 'FileUpload',
 
     Toolbar = 'Toolbar',
-    Tool = 'Tool'
+    Tool = 'Tool',
+    ActionIcon = 'ActionIcon'
 }

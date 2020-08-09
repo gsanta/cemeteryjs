@@ -2,7 +2,6 @@ import { Registry } from '../../../core/Registry';
 import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, Hotkey, HotkeyTrigger, IHotkeyEvent } from "../../../core/services/input/HotkeyService";
 import { IKeyboardEvent, Keyboard } from '../../../core/services/input/KeyboardService';
 import { IPointerEvent } from '../../../core/services/input/PointerService';
-import { RenderTask } from '../../../core/services/RenderServices';
 import { AbstractTool } from './AbstractTool';
 import { ToolType, Cursor } from "./Tool";
 import { AbstractPlugin } from '../../../core/AbstractPlugin';
@@ -21,7 +20,7 @@ export class CameraTool extends AbstractTool {
     }
 
     wheel() {
-        this.registry.plugins.getHoveredView().getCamera().zoomWheel();
+        this.plugin.getCamera().zoomWheel();
     }
 
     wheelEnd() {
@@ -33,7 +32,7 @@ export class CameraTool extends AbstractTool {
     drag(e: IPointerEvent) {
         super.drag(e);
 
-        const camera = this.registry.plugins.getHoveredView().getCamera();
+        const camera = this.plugin.getCamera();
 
         switch(this.activeCameraAction) {
             case 'pan':
@@ -47,6 +46,18 @@ export class CameraTool extends AbstractTool {
         }
 
         this.cleanupIfToolFinished(this.isSpaceDown, e.isCtrlDown);
+    }
+
+    zoomIn() {
+        if (this.plugin.getCamera().zoomIn()) {
+            this.registry.services.render.reRender(this.plugin.region);
+        }
+    }
+
+    zoomOut() {
+        if (this.plugin.getCamera().zoomOut()) {
+            this.registry.services.render.reRender(this.plugin.region);
+        }
     }
 
     up(e: IPointerEvent) {

@@ -35,6 +35,6 @@ export class DialogManagerComponent extends React.Component {
 
     private closeDialog(plugin: UI_Plugin) {
         this.context.registry.plugins.deactivatePlugin(plugin.id);
-        this.context.registry.services.render.reRenderAll;
+        this.context.registry.services.render.reRenderAll();
     }
 }

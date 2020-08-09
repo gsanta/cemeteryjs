@@ -1,4 +1,4 @@
-import { AbstractController } from "../scene_editor/settings/AbstractController";
+import { AbstractController } from "../../core/controllers/AbstractController";
 import { Registry } from "../../core/Registry";
 import { AssetManagerDialogPluginId } from "./AssetManagerDialogPlugin";
 import { UI_Plugin } from "../../core/UI_Plugin";

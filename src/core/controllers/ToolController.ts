@@ -1,7 +1,7 @@
 
 
-import { Registry } from '../../core/Registry';
-import { AbstractController } from '../../plugins/scene_editor/settings/AbstractController';
+import { Registry } from '../Registry';
+import { AbstractController } from './AbstractController';
 import { AbstractPlugin } from '../AbstractPlugin';
 
 export const ToolControllerId = 'tool_controller';

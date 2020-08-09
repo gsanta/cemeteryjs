@@ -3,7 +3,7 @@ import { PluginServices } from '../plugins/common/PluginServices';
 import { PluginSettings } from '../plugins/common/PluginSettings';
 import { Point } from './geometry/shapes/Point';
 import { UI_Layout } from './gui_builder/elements/UI_Layout';
-import { ToolController, ToolControllerId } from './plugin/ToolController';
+import { ToolController, ToolControllerId } from './controllers/ToolController';
 import { Registry } from './Registry';
 import { KeyboardService } from './services/input/KeyboardService';
 import { MouseService } from './services/input/MouseService';

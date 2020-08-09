@@ -71,7 +71,7 @@ export class DeleteTool extends AbstractTool {
         // TODO: erase all differently
         // this.registry.plugins.plugins.forEach(plugin => plugin.getStore()?.clear());
         this.registry.stores.canvasStore.clear();
-        this.registry.services.render.reRenderAll;
+        this.registry.services.render.reRenderAll();
     }
 
     getCursor() {

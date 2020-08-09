@@ -1,5 +1,5 @@
 import { Registry } from '../../core/Registry';
-import { AbstractController } from '../scene_editor/settings/AbstractController';
+import { AbstractController } from '../../core/controllers/AbstractController';
 import { RenderTask } from '../../core/services/RenderServices';
 import { UI_Plugin } from '../../core/UI_Plugin';
 
@@ -22,7 +22,7 @@ export class LayoutSettingsController extends AbstractController<LayoutSettingsP
         this.createPropHandler<string>(LayoutSettingsProps.SelectedLayout)
             .onChange((val) => {
                 this.registry.services.uiPerspective.activatePerspective(val);
-                this.registry.services.render.reRenderAll;
+                this.registry.services.render.reRenderAll();
             })
             .onGet(() => {
                 return this.registry.services.uiPerspective.activePerspective ? this.registry.services.uiPerspective.activePerspective.name : '';

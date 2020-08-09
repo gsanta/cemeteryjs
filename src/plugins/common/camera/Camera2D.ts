@@ -122,16 +122,17 @@ export class Camera2D implements ICamera {
         }
     }
 
-    zoomIn() {
+    zoomIn(): boolean {
         const canvasPos = this.screenToCanvasPoint(this.getCenterPoint());
 
         const prevZoomLevel = this.getNextManualZoomStep();
         
         if (prevZoomLevel) {
             this.zoomToPosition(canvasPos, prevZoomLevel);
-
-            this.registry.services.render.reRender(this.registry.services.pointer.hoveredPlugin.region);
+            return true;
         }
+
+        return false;
     }
 
     zoomOut() {
@@ -141,9 +142,10 @@ export class Camera2D implements ICamera {
         
         if (prevZoomLevel) {
             this.zoomToPosition(canvasPos, prevZoomLevel);
-
-            this.registry.services.render.reRender(this.registry.services.pointer.hoveredPlugin.region);
+            return true;
         }
+
+        return false;
     }
 
     rotate(pointer: MousePointer): void { throw new Error("Rotation is for 3d cameras, this camera does not support it."); }

@@ -24,6 +24,7 @@ import { UI_SvgForeignObject } from './elements/svg/UI_SvgForeignObject';
 import { UI_Box } from './elements/UI_Box';
 import { UI_SvgText } from './elements/svg/UI_SvgText';
 import { UI_HtmlCanvas } from './elements/UI_HtmlCanvas';
+import { UI_ActionIcon } from './elements/toolbar/UI_ActionIcon';
 
 export class UI_Factory {
     static row(parent: UI_Container, config: { controllerId?: string, key: string}): UI_Row {
@@ -265,9 +266,10 @@ export class UI_Factory {
         return toolbar;
     }
 
-    static tool(parent: UI_Toolbar, config: { controllerId: string, key?: string }): UI_Tool {
+    static tool(parent: UI_Toolbar, config: { controllerId: string, key?: string, prop?: string }): UI_Tool {
         const tool = new UI_Tool(parent.plugin);
         tool.key = config.key;
+        tool.prop = config.prop;
 
         this.setController(parent, tool, config);
         tool.generateId(parent);
@@ -276,6 +278,19 @@ export class UI_Factory {
 
         return tool;
     }
+
+    static actionIcon(parent: UI_Toolbar, config: { controllerId: string, prop: string }): UI_ActionIcon {
+        const actionIcon = new UI_ActionIcon(parent.plugin);
+        actionIcon.prop = config.prop;
+
+        this.setController(parent, actionIcon, config);
+        actionIcon.generateId(parent);
+
+        parent.tools.push(actionIcon);
+
+        return actionIcon;
+    }
+
 
     ///////////////////////////////////////////// Table /////////////////////////////////////////////
 
@@ -290,7 +305,7 @@ export class UI_Factory {
         return table;
     }
 
-    static tooltip(parent: UI_Tool, config: { anchorId?: string }): UI_Tooltip {
+    static tooltip(parent: UI_Tool | UI_ActionIcon, config: { anchorId?: string }): UI_Tooltip {
         const tooltip = new UI_Tooltip(parent.plugin);
         
         (config && config.anchorId) && (tooltip.anchorId = config.anchorId);

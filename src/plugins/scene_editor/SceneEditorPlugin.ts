@@ -1,20 +1,20 @@
 import { AbstractPlugin, calcOffsetFromDom } from '../../core/AbstractPlugin';
+import { CanvasController, CanvasControllerId, CanvasControllerProps } from '../../core/controllers/CanvasController';
 import { Point } from '../../core/geometry/shapes/Point';
 import { sort } from '../../core/geometry/utils/Functions';
 import { toDegree } from '../../core/geometry/utils/Measurements';
+import { colors } from '../../core/gui/styles';
+import { activeToolId } from '../../core/gui_builder/elements/UI_Element';
 import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
 import { UI_SvgCanvas } from '../../core/gui_builder/elements/UI_SvgCanvas';
+import { ViewTag } from '../../core/models/views/View';
 import { Registry } from '../../core/Registry';
 import { UI_Region } from '../../core/UI_Plugin';
 import { Camera2D } from '../common/camera/Camera2D';
-import { PluginSettings } from '../common/PluginSettings';
 import { toolFactory } from '../common/toolbar/toolFactory';
 import { ToolType } from '../common/tools/Tool';
 import { SceneEditorExporter } from './io/SceneEditorExporter';
 import { SceneEditorImporter } from './io/SceneEditorImporter';
-import { activeToolId } from '../../core/gui_builder/elements/UI_Element';
-import { colors } from '../../core/gui/styles';
-import { ViewTag } from '../../core/models/views/View';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -58,6 +58,8 @@ export class SceneEditorPlugin extends AbstractPlugin {
             .map(toolType => {
                 this.toolHandler.registerTool(toolFactory(toolType, this, registry));
             });
+
+        this.controllers.set(CanvasControllerId, new CanvasController(this, this.registry));
 
         this.camera = cameraInitializer(SceneEditorPluginId, registry);
 
@@ -110,30 +112,30 @@ export class SceneEditorPlugin extends AbstractPlugin {
         tooltip = tool.tooltip();
         tooltip.label = 'Delete tool';
 
-        tool = toolbar.tool({controllerId: ToolType.Move, key: ToolType.Move});
+        tool = toolbar.tool({controllerId: ToolType.Camera, key: ToolType.Move});
         tool.icon = 'pan';
         tooltip = tool.tooltip();
         tooltip.label = 'Pan tool';
 
-        tool = toolbar.tool({controllerId: ToolType.Camera, key: 'zoom-in'});
-        tool.icon = 'zoom-in';
-        tooltip = tool.tooltip();
+        let actionIcon = toolbar.actionIcon({controllerId: CanvasControllerId, prop: CanvasControllerProps.ZoomIn});
+        actionIcon.icon = 'zoom-in';
+        tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom in';
 
-        tool = toolbar.tool({controllerId: ToolType.Camera, key: 'zoom-out'});
-        tool.icon = 'zoom-out';
-        tooltip = tool.tooltip();
+        actionIcon = toolbar.actionIcon({controllerId: CanvasControllerId, prop: CanvasControllerProps.ZoomOut});
+        actionIcon.icon = 'zoom-out';
+        tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom out';
 
-        // tool = toolbar.tool({toolId: ToolType.});
-        // tool.icon = 'undo';
-        // tooltip = tool.tooltip();
-        // tooltip.label = 'Undo';
+        actionIcon = toolbar.actionIcon({controllerId: CanvasControllerId, prop: CanvasControllerProps.Undo});
+        actionIcon.icon = 'undo';
+        tooltip = actionIcon.tooltip();
+        tooltip.label = 'Undo';
 
-        // tool = toolbar.tool();
-        // tool.icon = 'redo';
-        // tooltip = tool.tooltip();
-        // tooltip.label = 'Redo';
+        actionIcon = toolbar.actionIcon({controllerId: CanvasControllerId, prop: CanvasControllerProps.Redo});
+        actionIcon.icon = 'redo';
+        tooltip = actionIcon.tooltip();
+        tooltip.label = 'Redo';
 
         this.renderMeshViews(canvas);
         this.renderPathViews(canvas);

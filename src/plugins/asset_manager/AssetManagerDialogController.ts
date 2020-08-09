@@ -38,7 +38,7 @@ export class AssetManagerDialogController extends AbstractSettings<AssetManagerD
         this.editedAssetModel = undefined;
         this.editedPath = undefined;
         this.registry.services.dialog.close();
-        this.registry.services.render.reRenderAll;
+        this.registry.services.render.reRenderAll();
 
         this.addPropSetter(AssetManagerDialogProps.EditedAsset, (val) => {
             this.editedAssetModel = this.registry.stores.assetStore.getAssetById(val);
@@ -63,7 +63,7 @@ export class AssetManagerDialogController extends AbstractSettings<AssetManagerD
         }
 
         this.focusedPropType = null;
-        this.registry.services.render.reRenderAll;
+        this.registry.services.render.reRenderAll();
     }
 
     protected getProp(prop: AssetManagerDialogProps) {
@@ -95,7 +95,7 @@ export class AssetManagerDialogController extends AbstractSettings<AssetManagerD
             case AssetManagerDialogProps.Delete:
                 const assetModel = this.registry.stores.assetStore.getAssetById(val);
                 this.registry.stores.assetStore.deleteAsset(assetModel);
-                this.registry.services.render.reRenderAll;
+                this.registry.services.render.reRenderAll();
             break;
             case AssetManagerDialogProps.AssetName:
                 this.editedName = val;

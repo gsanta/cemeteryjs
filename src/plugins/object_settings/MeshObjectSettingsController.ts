@@ -1,7 +1,7 @@
 import { toDegree, toRadian } from '../../core/geometry/utils/Measurements';
 import { MeshView } from '../../core/models/views/MeshView';
 import { Registry } from '../../core/Registry';
-import { AbstractController } from '../scene_editor/settings/AbstractController';
+import { AbstractController } from '../../core/controllers/AbstractController';
 import { ThumbnailDialogPluginId } from './ThumbnailDialogPlugin';
 import { AssetModel, AssetType } from '../../core/models/game_objects/AssetModel';
 import { ObjectSettingsPlugin } from './ObjectSettingsPlugin';
