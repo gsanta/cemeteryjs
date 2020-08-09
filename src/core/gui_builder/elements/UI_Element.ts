@@ -12,6 +12,7 @@ export abstract class UI_Element {
     prop: string;
     key: string;
     isBold: boolean;
+    data: any;
 
     constructor(plugin: UI_Plugin) {
         this.plugin = plugin;
@@ -52,15 +53,15 @@ export abstract class UI_Element {
         }
     }
 
-    mouseLeave(e: MouseEvent) {
+    mouseLeave(e: MouseEvent, data?: any) {
         if (this.controllerId === activeToolId) {
-            (this.plugin as AbstractPlugin).mouse.mouseLeave(e, this.plugin as AbstractPlugin);
+            (this.plugin as AbstractPlugin).mouse.mouseLeave(e, data ? data : this.plugin as AbstractPlugin);
         }
     }
 
-    mouseEnter(e: MouseEvent) {
+    mouseEnter(e: MouseEvent, data?: any) {
         if (this.controllerId === activeToolId) {
-            (this.plugin as AbstractPlugin).mouse.mouseEnter(e, this.plugin as AbstractPlugin);
+            (this.plugin as AbstractPlugin).mouse.mouseEnter(e, data ? data : this.plugin as AbstractPlugin);
         }
     }
 

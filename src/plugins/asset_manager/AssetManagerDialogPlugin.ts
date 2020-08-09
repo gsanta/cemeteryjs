@@ -14,7 +14,7 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
     // }
 
     renderInto(layout: UI_Layout): UI_Layout {
-        const row = layout.row(null);
+        const row = layout.row({ key: '1' });
 
         const table = row.table(null);
         table.width = 500;

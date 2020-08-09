@@ -54,12 +54,12 @@ export class MouseService {
         this.registry.services.hotkey.focus();
     }
 
-    mouseLeave(e: MouseEvent, plugin: AbstractPlugin): void {
-        this.registry.services.pointer.pointerLeave(this.convertEvent(e, false), plugin);
+    mouseLeave(e: MouseEvent, data: any): void {
+        this.registry.services.pointer.pointerLeave(this.convertEvent(e, false), data);
     }
 
-    mouseEnter(e: MouseEvent, plugin: AbstractPlugin): void {
-        this.registry.services.pointer.pointerEnter(this.convertEvent(e, false), plugin);
+    mouseEnter(e: MouseEvent, data: any): void {
+        this.registry.services.pointer.pointerEnter(this.convertEvent(e, false), data);
     }
 
     mouseWheel(e: WheelEvent): void {

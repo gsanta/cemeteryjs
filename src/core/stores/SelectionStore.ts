@@ -1,18 +1,20 @@
 import { without } from "../geometry/utils/Functions";
 import { PathView } from "../models/views/PathView";
-import { ChildView, FeedbackType } from "../models/views/child_views/ChildView";
+import { FeedbackType } from "../models/views/child_views/ChildView";
 import { EditPointView } from "../models/views/child_views/EditPointView";
-import { View, ViewType } from '../models/views/View';
+import { View, ViewType, ViewTag } from '../models/views/View';
 import { isView } from "./SceneStore";
 
 export class SelectionStore {
     items: View[] = [];
 
-    addItem(...item: View[]) {
-        this.items.push(...item);
+    addItem(...items: View[]) {
+        items.forEach(item => item.tags.add(ViewTag.Selected));
+        this.items.push(...items);
     }
 
     removeItem(item: View) {
+        item.tags.delete(ViewTag.Selected)
         this.items = without(this.items, item);
     }
 
@@ -57,6 +59,7 @@ export class SelectionStore {
     }
 
     clear() {
+        this.items.forEach(item => item.tags.delete(ViewTag.Selected));
         this.items = [];
     }
 }

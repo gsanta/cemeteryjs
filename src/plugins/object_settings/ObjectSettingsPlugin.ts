@@ -15,7 +15,6 @@ export class ObjectSettingsPlugin extends UI_Plugin {
     displayName = 'Object Settings';
     region = UI_Region.Sidepanel;
 
-    private meshObjectSettingsController: MeshObjectSettingsController;
     private pathObjectSettingsController: PathObjectSettingsController;
 
     private engine: EngineService;
@@ -23,8 +22,9 @@ export class ObjectSettingsPlugin extends UI_Plugin {
     constructor(registry: Registry) {
         super(registry);
 
+        this.controllers.set(MeshObjectSettingsControllerId, new MeshObjectSettingsController(this, this.registry));
+
         // this.engine = new EngineService(this.registry)
-        this.meshObjectSettingsController = new MeshObjectSettingsController(this, registry);
         this.pathObjectSettingsController = new PathObjectSettingsController(this, registry);
     }
 
@@ -46,52 +46,52 @@ export class ObjectSettingsPlugin extends UI_Plugin {
     private renderPathObjectSettings(layout: UI_Layout, pathView: PathView) {
         this.pathObjectSettingsController.pathView = pathView;
         layout.controllerId = PathObjectSettingsControllerId;
-        let row = layout.row(null);
+        let row = layout.row({ key: PathObjectSettingsProps.PathId });
 
         const textField = row.textField(PathObjectSettingsProps.PathId);
         textField.label = 'Id';
     }
 
     private renderMeshObjectSettings(layout: UI_Layout, meshView: MeshView) {
-        this.meshObjectSettingsController.meshView = meshView;
+        (this.getControllerById(MeshObjectSettingsControllerId) as MeshObjectSettingsController).meshView = meshView;
         layout.controllerId = MeshObjectSettingsControllerId;
-        let row = layout.row(null);
+        let row = layout.row({ key: MeshObjectSettingsProps.MeshId });
 
         const textField = row.textField(MeshObjectSettingsProps.MeshId);
         textField.label = 'Id';
 
-        row = layout.row(null);
+        row = layout.row({ key: MeshObjectSettingsProps.Layer });
         const grid = row.grid({prop: MeshObjectSettingsProps.Layer});
         grid.label = 'Layer';
 
-        row = layout.row(null);
+        row = layout.row({ key: MeshObjectSettingsProps.Rotation });
         const rotationTextField = row.textField(MeshObjectSettingsProps.Rotation);
         rotationTextField.label = 'Rotation';
         rotationTextField.type = 'number';
 
-        row = layout.row(null);
+        row = layout.row({ key: MeshObjectSettingsProps.Scale });
         const scaleTextField = row.textField(MeshObjectSettingsProps.Scale);
         scaleTextField.label = 'Scale';
         scaleTextField.type = 'number';
 
-        row = layout.row(null);
+        row = layout.row({ key: MeshObjectSettingsProps.YPos });
         const yPosTextField = row.textField(MeshObjectSettingsProps.YPos);
         yPosTextField.label = 'YPos';
         yPosTextField.type = 'number';
 
-        row = layout.row(null);
+        row = layout.row({ key: MeshObjectSettingsProps.Model });
         const importModelButton = row.fileUpload(MeshObjectSettingsProps.Model);
         importModelButton.label = 'Import Model';
         importModelButton.icon = 'import-icon';
         importModelButton.width = 'full-width';
 
-        row = layout.row(null);
+        row = layout.row({ key: MeshObjectSettingsProps.Texture });
         const importTextureButton = row.fileUpload(MeshObjectSettingsProps.Texture);
         importTextureButton.label = 'Import Texture';
         importTextureButton.icon = 'import-icon';
         importTextureButton.width = 'full-width';
 
-        row = layout.row(null);
+        row = layout.row({ key: MeshObjectSettingsProps.Thumbnail });
         const changeThumbnailButton = row.button(MeshObjectSettingsProps.Thumbnail);
         changeThumbnailButton.label = 'Change thumbnail';
     }

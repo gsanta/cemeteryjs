@@ -18,16 +18,16 @@ export class LevelSettingsPlugin extends UI_Plugin {
 
     renderInto(layout: UI_Layout): void {
         layout.controllerId = LevelSettingsControllerId;
-        let row = layout.row(null);
+        let row = layout.row({ key: LevelSettingsProps.Level });
 
         const grid = row.grid({prop: LevelSettingsProps.Level});
         grid.label = 'Level'
 
-        row = layout.row(null);
+        row = layout.row({ key: LevelSettingsProps.LevelName });
         const textField = row.textField(LevelSettingsProps.LevelName);
         textField.label = 'Name';
 
-        row = layout.row(null);
+        row = layout.row({ key: LevelSettingsProps.ClearLevel });
         row.align = 'center';
         const clearLevelButton = row.button(LevelSettingsProps.ClearLevel);
         clearLevelButton.label = 'Clear level';

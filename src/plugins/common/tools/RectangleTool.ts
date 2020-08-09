@@ -3,20 +3,17 @@ import { Rectangle } from '../../../core/geometry/shapes/Rectangle';
 import { MeshView } from '../../../core/models/views/MeshView';
 import { Registry } from '../../../core/Registry';
 import { IPointerEvent } from '../../../core/services/input/PointerService';
-import { RenderTask } from '../../../core/services/RenderServices';
-import { AbstractTool } from './AbstractTool';
-import { RectangleSelector } from './RectangleSelector';
+import { AbstractTool, createRectFromMousePointer } from './AbstractTool';
 import { ToolType } from './Tool';
 import { UI_Region } from '../../../core/UI_Plugin';
+import { Point } from '../../../core/geometry/shapes/Point';
 
 export class RectangleTool extends AbstractTool {
+    rectangleFeedback: Rectangle;
     private lastPreviewRect: MeshView;
-    private rectSelector: RectangleSelector;
 
     constructor(plugin: AbstractPlugin, registry: Registry) {
         super(ToolType.Rectangle, plugin, registry);
-
-        this.rectSelector = new RectangleSelector(registry);
     }
 
     click() {
@@ -45,13 +42,11 @@ export class RectangleTool extends AbstractTool {
         if (this.lastPreviewRect) {
             this.registry.stores.canvasStore.removeItem(this.lastPreviewRect);
         }
-        this.rectSelector.updateRect(this.registry.services.pointer.pointer);
-        this.registry.stores.feedback.rectSelectFeedback.isVisible = false;
-        const positions = this.rectSelector.getPositionsInSelection();
 
-        const dimensions = this.registry.stores.feedback.rectSelectFeedback.rect;
+        this.rectangleFeedback = createRectFromMousePointer(this.registry.services.pointer.pointer);
+        const positions = this.getPositionsInSelection();
 
-        const meshView: MeshView = new MeshView({dimensions});
+        const meshView: MeshView = new MeshView({dimensions: this.rectangleFeedback});
         meshView.setRotation(0);
         meshView.setScale(1);
         meshView.color = 'grey';
@@ -67,7 +62,7 @@ export class RectangleTool extends AbstractTool {
     draggedUp() {
         super.draggedUp();
 
-        this.rectSelector.finish();
+        this.rectangleFeedback = undefined;
         this.registry.services.game.addConcept(this.lastPreviewRect);
         if (this.lastPreviewRect) {
             this.lastPreviewRect = null;
@@ -78,7 +73,23 @@ export class RectangleTool extends AbstractTool {
     }
 
     leave() {
-        this.rectSelector.finish();
+        this.rectangleFeedback = undefined;
         return true;
+    }
+
+    private getPositionsInSelection(): Point[] {
+        const rect = this.rectangleFeedback;
+        const xStart = rect.topLeft.x; 
+        const yStart = rect.topLeft.y;
+        const xEnd = rect.bottomRight.x;
+        const yEnd = rect.bottomRight.y;
+
+        const positions: Point[] = [];
+        for (let i = xStart; i < xEnd; i++) {
+            for (let j = yStart; j < yEnd; j++) {
+                positions.push(new Point(i, j));
+            }
+        }
+        return positions;
     }
 }

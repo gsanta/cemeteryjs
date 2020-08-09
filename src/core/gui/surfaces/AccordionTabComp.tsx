@@ -43,7 +43,7 @@ export class AccordionTabComp extends React.Component<UI_ComponentProps<UI_Accor
         const level: 'primary' = 'primary';
 
         return (
-            <Accordion key={this.props.element.title} defaultActiveKey={this.props.element.title}>
+            <Accordion defaultActiveKey={this.props.element.title}>
                 <CardStyled>
                     <CardHeaderStyled level={level}>
                         <Accordion.Toggle as={Button} variant="link" eventKey={this.props.element.title} style={{ width: '100%', display: 'flex', justifyContent: 'space-between'}}>

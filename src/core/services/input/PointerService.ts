@@ -89,18 +89,27 @@ export class PointerService {
         this.registry.services.render.reRenderScheduled();
     }
 
-    pointerLeave(e: IPointerEvent, plugin: AbstractPlugin): void {
-        this.isDown = false;
-        this.isDrag = false;
+    pointerLeave(e: IPointerEvent, data: any): void {
+        
+        if (data instanceof AbstractPlugin) {
+            this.hoveredPlugin = undefined;
+            this.isDown = false;
+            this.isDrag = false;
+        } else {
+            this.hoveredItem = undefined;
+        }
 
-        this.hoveredPlugin = undefined;
     }
 
     pointerOver() {
     }
 
-    pointerEnter(e: IPointerEvent, plugin: AbstractPlugin) {
-        this.hoveredPlugin = plugin;
+    pointerEnter(e: IPointerEvent, data: any) {
+        if (data instanceof AbstractPlugin) {
+            this.hoveredPlugin = data;
+        } else {
+            this.hoveredItem = data;
+        }
     }
 
     pointerWheel(e: IPointerEvent): void {

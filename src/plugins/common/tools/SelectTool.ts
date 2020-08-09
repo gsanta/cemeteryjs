@@ -1,18 +1,14 @@
 import { Registry } from '../../../core/Registry';
-import { RenderTask } from "../../../core/services/RenderServices";
 import { PointerTool } from './PointerTool';
-import { RectangleSelector } from "./RectangleSelector";
 import { ToolType, Cursor } from "./Tool";
 import { IPointerEvent } from '../../../core/services/input/PointerService';
 import { AbstractPlugin } from '../../../core/AbstractPlugin';
 import { UI_Region } from '../../../core/UI_Plugin';
+import { createRectFromMousePointer } from './AbstractTool';
 
 export class SelectTool extends PointerTool {
-    private rectSelector: RectangleSelector;
-
     constructor(plugin: AbstractPlugin, registry: Registry) {
         super(ToolType.Select, plugin, registry);
-        this.rectSelector = new RectangleSelector(registry);
     }
 
     down() {
@@ -35,7 +31,7 @@ export class SelectTool extends PointerTool {
         if (this.movingItem) {
             super.drag(e);
         } else {
-            this.rectSelector.updateRect(this.registry.services.pointer.pointer);
+            this.rectangleSelection = createRectFromMousePointer(this.registry.services.pointer.pointer);
             this.registry.services.render.scheduleRendering(this.plugin.region);
         }
     }
@@ -44,15 +40,14 @@ export class SelectTool extends PointerTool {
         if (this.movingItem) {
             super.draggedUp();
         } else {
-            const feedback = this.registry.stores.feedback.rectSelectFeedback;
-            if (!feedback) { return }
+            if (!this.rectangleSelection) { return }
     
-            const canvasItems = this.registry.stores.canvasStore.getIntersectingItemsInRect(feedback.rect);
+            const canvasItems = this.registry.stores.canvasStore.getIntersectingItemsInRect(this.rectangleSelection);
             
             this.registry.stores.selectionStore.clear();
             this.registry.stores.selectionStore.addItem(...canvasItems)
     
-            this.rectSelector.finish();
+            this.rectangleSelection = undefined;
             this.registry.services.render.scheduleRendering(this.plugin.region, UI_Region.Sidepanel);
         }
     }

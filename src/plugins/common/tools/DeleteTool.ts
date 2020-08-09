@@ -1,9 +1,8 @@
 import { Registry } from '../../../core/Registry';
 import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, IHotkeyEvent, HotkeyTrigger } from '../../../core/services/input/HotkeyService';
 import { Keyboard } from '../../../core/services/input/KeyboardService';
-import { RenderTask } from '../../../core/services/RenderServices';
 import { isView, isFeedback } from '../../../core/stores/SceneStore';
-import { AbstractTool } from './AbstractTool';
+import { AbstractTool, createRectFromMousePointer } from './AbstractTool';
 import { RectangleSelector } from './RectangleSelector';
 import { Cursor, ToolType } from './Tool';
 import { View } from '../../../core/models/views/View';
@@ -12,15 +11,13 @@ import { UI_Region } from '../../../core/UI_Plugin';
 
 export class DeleteTool extends AbstractTool {
     private hotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, ...{keyCodes: [Keyboard.e], shift: true}}
-    private rectSelector: RectangleSelector;
 
     constructor(plugin: AbstractPlugin, registry: Registry) {
         super(ToolType.Delete, plugin, registry);
-        this.rectSelector = new RectangleSelector(registry);
     }
 
     drag() {
-        this.rectSelector.updateRect(this.registry.services.pointer.pointer);
+        this.rectangleSelection = createRectFromMousePointer(this.registry.services.pointer.pointer);
         this.registry.services.render.scheduleRendering(this.registry.services.pointer.hoveredPlugin.region);
     }
 
@@ -45,10 +42,10 @@ export class DeleteTool extends AbstractTool {
 
     
     draggedUp() {
-        const views = this.getStore().getIntersectingItemsInRect(this.registry.stores.feedback.rectSelectFeedback.rect);
+        const views = this.getStore().getIntersectingItemsInRect(this.rectangleSelection);
         views.forEach(view =>  this.getStore().removeItem(view));
 
-        this.rectSelector.finish();
+        this.rectangleSelection = undefined;
 
         this.registry.services.level.updateCurrentLevel();
         this.registry.services.history.createSnapshot();
@@ -56,7 +53,7 @@ export class DeleteTool extends AbstractTool {
     }
 
     leave() {
-        this.rectSelector.finish();
+        this.rectangleSelection = undefined;
         this.registry.services.render.scheduleRendering(this.registry.services.pointer.hoveredPlugin.region);
     }
 

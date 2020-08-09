@@ -31,7 +31,7 @@ const LabelStyled = styled.div`
     font-size: 12px;
 `;
 
-export const SelectComp = (props: UI_ComponentProps<UI_Select>) => {
+export function SelectComp(props: UI_ComponentProps<UI_Select>) {
     const values: string[] = props.element.listVal();
 
     const options = values.map(val => {
@@ -60,8 +60,8 @@ export const SelectComp = (props: UI_ComponentProps<UI_Select>) => {
     if (props.element.label) {
         select = (
             <LabeledSelectStyled>
-                <LabelStyled>{props.element.label}</LabelStyled>
-                <SelectStyled>
+                <LabelStyled key={'label'}>{props.element.label}</LabelStyled>
+                <SelectStyled key="select">
                     {select}
                     {props.element.clearable && props.element.val() ? <ClearIconComponent onClick={() => props.element.change(undefined)}/> : null}
                 </SelectStyled>
@@ -71,3 +71,5 @@ export const SelectComp = (props: UI_ComponentProps<UI_Select>) => {
 
     return select;
 }
+
+SelectComp.displayName = 'SelectComp';

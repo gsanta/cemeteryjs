@@ -19,20 +19,20 @@ export class FileSettingsPlugin extends AbstractSidepanelPlugin {
 
     renderInto(layout: UI_Layout): UI_Layout {
         layout.controllerId = FileSettingsControllerId;
-        let row = layout.row(null);
+        let row = layout.row({ key: FileSettingsProps.Export });
 
         const exportButton = row.button(FileSettingsProps.Export);
         exportButton.label = 'Export File';
         exportButton.icon = 'export-icon';
         exportButton.width = 'full-width';
 
-        row = layout.row(null);
+        row = layout.row({ key: FileSettingsProps.Import });
         const importButton = row.fileUpload(FileSettingsProps.Import);
         importButton.label = 'Import File';
         importButton.icon = 'import-icon';
         importButton.width = 'full-width';
 
-        row = layout.row(null);
+        row = layout.row({ key: FileSettingsProps.NewProject });
         const newProjectButton = row.button(FileSettingsProps.NewProject);
         newProjectButton.label = 'New Project';
         newProjectButton.icon = 'blank-icon';

@@ -88,8 +88,10 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
                 viewBox={((this.props.element.plugin as AbstractPlugin).getCamera() as Camera2D).getViewBoxAsString()}
                 id={this.context.controllers.svgCanvasId}
                 onMouseDown={(e) => this.props.element.mouseDown(e.nativeEvent)}
-                onMouseMove={(e) => this.props.element.mouseMove(e.nativeEvent)}
-                onMouseUp={(e) => this.props.element.mouseUp(e.nativeEvent)}
+                onMouseMove={(e) => {
+                    console.log('mouse move')
+                    this.props.element.mouseMove(e.nativeEvent)
+                }}                onMouseUp={(e) => this.props.element.mouseUp(e.nativeEvent)}
                 onMouseLeave={(e) => this.props.element.mouseLeave(e.nativeEvent)}
                 onMouseEnter={(e) => this.props.element.mouseEnter(e.nativeEvent)}
                 onKeyDown={e => this.props.element.keyDown(e.nativeEvent)}
@@ -123,7 +125,10 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
                     }}
                     tabIndex={0}
                     onMouseDown={(e) => this.props.element.mouseDown(e.nativeEvent)}
-                    onMouseMove={(e) => this.props.element.mouseMove(e.nativeEvent)}
+                    onMouseMove={(e) => {
+                        console.log('mouse move')
+                        this.props.element.mouseMove(e.nativeEvent)
+                    }}
                     onMouseUp={(e) => this.props.element.mouseUp(e.nativeEvent)}
                     onMouseLeave={(e) => this.props.element.mouseLeave(e.nativeEvent)}
                     onMouseEnter={(e) => this.props.element.mouseEnter(e.nativeEvent)}
@@ -142,16 +147,14 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
     }
 
     private renderFeedbacks(): JSX.Element {
-        const feedback = this.context.registry.stores.feedback.rectSelectFeedback;
-
-        if (feedback && feedback.isVisible) {
-            const rect = this.context.registry.stores.feedback.rectSelectFeedback.rect;
+        const activeTool = (this.props.element.plugin as AbstractPlugin).toolHandler.getActiveTool();
+        if (activeTool.rectangleSelection) {
             return (
                 <SelectionComponentStyled 
-                    x={rect.topLeft.x}
-                    y={rect.topLeft.y}
-                    width={rect.getWidth()}
-                    height={rect.getHeight()}
+                    x={activeTool.rectangleSelection.topLeft.x}
+                    y={activeTool.rectangleSelection.topLeft.y}
+                    width={activeTool.rectangleSelection.getWidth()}
+                    height={activeTool.rectangleSelection.getHeight()}
                 />
             );
         }

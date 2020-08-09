@@ -104,7 +104,7 @@ const ToolGroupStyled = styled.div`
 `;
 
 export interface ToolbarCompProps extends UI_ComponentProps<UI_Toolbar> {
-    toolsLeft: JSX.Element[];
+     toolsLeft: JSX.Element[];
     toolsMiddle: JSX.Element[];
     toolsRight: JSX.Element[];
 }
@@ -120,13 +120,13 @@ export class ToolbarComp extends React.Component<ToolbarCompProps> {
 
         return (
             <ToolbarStyled {...this.props}>
-                <div>
+                <div key="left-section">
                     {leftSection}                    
                 </div>
-                <div>
+                <div key="middle-section">
                     {middleSection}
                 </div>
-                <div>
+                <div key="right-section">
                     {rightSection}
                 </div>
             </ToolbarStyled>

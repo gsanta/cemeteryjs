@@ -69,13 +69,13 @@ export class UI_Builder {
 
         switch(element.elementType) {
             case UI_ElementType.Layout:
-                return <div>{this.buildChildren(element, plugin)}</div>;
+                return <div key={element.id}>{this.buildChildren(element, plugin)}</div>;
             case UI_ElementType.Row:
                 const row = element as UI_Row;
-                return <RowComp element={row}>{this.buildChildren(element, plugin)}</RowComp>;
+                return <RowComp key={row.id} element={row}>{this.buildChildren(element, plugin)}</RowComp>;
             case UI_ElementType.Accordion:
                 const accordionTab = element as UI_Accordion;
-                return <AccordionTabComp element={accordionTab}>{this.buildChildren(element, plugin)}</AccordionTabComp>;
+                return <AccordionTabComp key={accordionTab.id} element={accordionTab}>{this.buildChildren(element, plugin)}</AccordionTabComp>;
             case UI_ElementType.Table:
                 const table = element as UI_Table;
                 return <TableComp element={table}>{this.buildChildren(element, plugin)}</TableComp>;
@@ -147,7 +147,7 @@ export class UI_Builder {
     private buildTool(uiTool: UI_Tool) {
         const tooltip = uiTool._tooltip ? this.buildLeaf(uiTool._tooltip) : null;
 
-        return <ToolComp tooltip={tooltip} element={uiTool}/>; 
+        return <ToolComp key={uiTool.id} tooltip={tooltip} element={uiTool}/>; 
     }
 
     private buildLeaf(element: UI_Element): JSX.Element {

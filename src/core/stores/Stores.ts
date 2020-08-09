@@ -1,7 +1,6 @@
 import { Registry } from "../Registry";
 import { AbstractStore } from "./AbstractStore";
 import { AssetStore } from "./AssetStore";
-import { FeedbackStore } from "./FeedbackStore";
 import { GameStore } from "./GameStore";
 import { LevelStore } from "./LevelStore";
 import { MeshStore } from "./MeshStore";
@@ -19,7 +18,6 @@ export class Stores {
         this.selectionStore = new SelectionStore();
         this.levelStore = new LevelStore();
         this.meshStore = new MeshStore(this.registry);
-        this.feedback = new FeedbackStore();
         this.nodeStore = new NodeStore(this.registry);
         this.assetStore = new AssetStore(this.registry);
         this.gameStore = new GameStore(this.registry);
@@ -37,7 +35,6 @@ export class Stores {
     selectionStore: SelectionStore;
     levelStore: LevelStore;
     meshStore: MeshStore;
-    feedback: FeedbackStore;
     nodeStore: NodeStore;
     assetStore: AssetStore;
     gameStore: GameStore;

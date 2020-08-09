@@ -7,8 +7,8 @@ export const SvgGroupComp = (props: UI_ContainerProps<UI_SvgGroup>) => {
         <g
             key={`${props.element.id}-group`}
             transform={props.element.transform}
-            onMouseOver={(e) => props.element.mouseOver(e.nativeEvent)}
-            onMouseOut={e =>props. element.mouseOut}
+            onMouseEnter={(e) => props.element.mouseEnter(e.nativeEvent, props.element.data)}
+            onMouseLeave={e =>props.element.mouseLeave(e.nativeEvent, props.element.data)}
         >
             {props.children}
         </g>

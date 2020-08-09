@@ -13,6 +13,8 @@ import { ToolType } from '../common/tools/Tool';
 import { SceneEditorExporter } from './io/SceneEditorExporter';
 import { SceneEditorImporter } from './io/SceneEditorImporter';
 import { activeToolId } from '../../core/gui_builder/elements/UI_Element';
+import { colors } from '../../core/gui/styles';
+import { ViewTag } from '../../core/models/views/View';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -90,35 +92,35 @@ export class SceneEditorPlugin extends AbstractPlugin {
 
         const toolbar = canvas.toolbar();
         
-        let tool = toolbar.tool({controllerId: ToolType.Rectangle});
+        let tool = toolbar.tool({controllerId: ToolType.Rectangle, key: ToolType.Rectangle});
         tool.icon = 'brush';
 
-        tool = toolbar.tool({controllerId: ToolType.Path});
+        tool = toolbar.tool({controllerId: ToolType.Path, key: ToolType.Path});
         tool.icon = 'path';
         let tooltip = tool.tooltip();
         tooltip.label = 'Path tool';
 
-        tool = toolbar.tool({controllerId: ToolType.Select});
+        tool = toolbar.tool({controllerId: ToolType.Select, key: ToolType.Select});
         tool.icon = 'select';
         tooltip = tool.tooltip();
         tooltip.label = 'Select tool';
 
-        tool = toolbar.tool({controllerId: ToolType.Delete});
+        tool = toolbar.tool({controllerId: ToolType.Delete, key: ToolType.Delete});
         tool.icon = 'delete';
         tooltip = tool.tooltip();
         tooltip.label = 'Delete tool';
 
-        tool = toolbar.tool({controllerId: ToolType.Move});
+        tool = toolbar.tool({controllerId: ToolType.Move, key: ToolType.Move});
         tool.icon = 'pan';
         tooltip = tool.tooltip();
         tooltip.label = 'Pan tool';
 
-        tool = toolbar.tool({controllerId: ToolType.Camera});
+        tool = toolbar.tool({controllerId: ToolType.Camera, key: 'zoom-in'});
         tool.icon = 'zoom-in';
         tooltip = tool.tooltip();
         tooltip.label = 'Zoom in';
 
-        tool = toolbar.tool({controllerId: ToolType.Camera});
+        tool = toolbar.tool({controllerId: ToolType.Camera, key: 'zoom-out'});
         tool.icon = 'zoom-out';
         tooltip = tool.tooltip();
         tooltip.label = 'Zoom out';
@@ -140,10 +142,13 @@ export class SceneEditorPlugin extends AbstractPlugin {
     private renderMeshViews(canvas: UI_SvgCanvas) {
         const views = getSortedMeshViews(this.registry).map(item => {
             const group = canvas.group(item.id);
+            group.data = item;
             group.transform = `translate(${item.dimensions.topLeft.x} ${item.dimensions.topLeft.y}) rotate(${toDegree(item.getRotation())} ${item.dimensions.getWidth() / 2} ${item.dimensions.getHeight() / 2})`;
             const rect = group.rect();
             rect.width = item.dimensions.getWidth();
             rect.height = item.dimensions.getHeight();
+
+            rect.strokeColor = item.tags.has(ViewTag.Selected) ? colors.views.highlight : 'black';
 
             let thumbnail: JSX.Element = null;
             const thumbnailModel = this.registry.stores.assetStore.getAssetById(item.thumbnailId);

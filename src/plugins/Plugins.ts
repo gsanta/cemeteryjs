@@ -58,7 +58,6 @@ export class Plugins {
         this.registerPlugin(this.assetManager);
 
         this.registerPlugin(new FileSettingsPlugin(this.registry));
-        this.activatePlugin(FileSettingsPluginId);
         this.registerPlugin(new LayoutSettingsPlugin(this.registry));
 
         this.registerPlugin(new ObjectSettingsPlugin(this.registry));

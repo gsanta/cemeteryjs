@@ -32,3 +32,5 @@ export function RowComp(props: RowProps) {
         <RowStyled className={classes}>{props.children}</RowStyled>
     );
 }
+
+RowComp.displayName = 'RowComp';

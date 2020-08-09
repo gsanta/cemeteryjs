@@ -14,7 +14,7 @@ export class AssetManagerPlugin extends UI_Plugin {
     }
 
     renderInto(layout: UI_Layout): void {
-        let row = layout.row(null);
+        let row = layout.row({ key: '1' });
 
         // const manageAssestButton = row.button();
 

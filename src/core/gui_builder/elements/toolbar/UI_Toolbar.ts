@@ -12,7 +12,7 @@ export class UI_Toolbar extends UI_Element {
         this.id = `${parent.id}_${this.elementType}`;
     }
 
-    tool(config: { controllerId: string }): UI_Tool {
+    tool(config: { controllerId: string, key?: string }): UI_Tool {
         config.controllerId = config.controllerId ? config.controllerId : ToolControllerId;
         return UI_Factory.tool(this, config);
     }

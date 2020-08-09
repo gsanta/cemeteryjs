@@ -309,27 +309,27 @@ export class NodeEditorPlugin extends AbstractPlugin {
 
         const toolbar = canvas.toolbar();
 
-        let tool = toolbar.tool({controllerId: ToolType.Select});
+        let tool = toolbar.tool({controllerId: ToolType.Select, key: ToolType.Select});
         tool.icon = 'select';
         let tooltip = tool.tooltip();
         tooltip.label = 'Select tool';
 
-        tool = toolbar.tool({controllerId: ToolType.Delete});
+        tool = toolbar.tool({controllerId: ToolType.Delete, key: ToolType.Delete});
         tool.icon = 'delete';
         tooltip = tool.tooltip();
         tooltip.label = 'Delete tool';
 
-        tool = toolbar.tool({controllerId: ToolType.Move});
+        tool = toolbar.tool({controllerId: ToolType.Move, key: ToolType.Move});
         tool.icon = 'pan';
         tooltip = tool.tooltip();
         tooltip.label = 'Pan tool';
 
-        tool = toolbar.tool({controllerId: ToolType.Camera});
+        tool = toolbar.tool({controllerId: ToolType.Camera, key: `zoom-in`});
         tool.icon = 'zoom-in';
         tooltip = tool.tooltip();
         tooltip.label = 'Zoom in';
 
-        tool = toolbar.tool({controllerId: ToolType.Camera});
+        tool = toolbar.tool({controllerId: ToolType.Camera, key: `zoom-out`});
         tool.icon = 'zoom-out';
         tooltip = tool.tooltip();
         tooltip.label = 'Zoom out';

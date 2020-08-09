@@ -6,8 +6,22 @@ import { Cursor, Tool, ToolType } from './Tool';
 import { View } from '../../../core/models/views/View';
 import { IPointerEvent } from '../../../core/services/input/PointerService';
 import { AbstractViewStore } from '../../../core/stores/AbstractViewStore';
+import { Rectangle } from '../../../core/geometry/shapes/Rectangle';
+import { MousePointer } from '../../../core/services/input/MouseService';
+import { Point } from '../../../core/geometry/shapes/Point';
+
+export function createRectFromMousePointer(pointer: MousePointer): Rectangle {
+    const minX = pointer.down.x < pointer.curr.x ? pointer.down.x : pointer.curr.x;
+    const minY = pointer.down.y < pointer.curr.y ? pointer.down.y : pointer.curr.y;
+    const maxX = pointer.down.x >= pointer.curr.x ? pointer.down.x : pointer.curr.x;
+    const maxY = pointer.down.y >= pointer.curr.y ? pointer.down.y : pointer.curr.y;
+    const rect = new Rectangle(new Point(minX, minY), new Point(maxX, maxY));
+
+    return rect;
+}
 
 export class AbstractTool implements Tool {
+    rectangleSelection: Rectangle;
     id: ToolType;
 
     getCursor() { return Cursor.Default; }

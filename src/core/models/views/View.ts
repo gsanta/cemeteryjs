@@ -16,11 +16,15 @@ export interface ViewJson {
     dimensions: string;
 }
 
+export enum ViewTag {
+    Selected = 'Selected'
+}
+
 export abstract class View {
     id: string;
     viewType: string;
+    tags: Set<ViewTag> = new Set();
 
-    
     dimensions: Rectangle;
     move(delta: Point): void {}
     delete(): View[] { return [this] }

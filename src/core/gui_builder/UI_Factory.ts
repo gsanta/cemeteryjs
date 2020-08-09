@@ -265,8 +265,9 @@ export class UI_Factory {
         return toolbar;
     }
 
-    static tool(parent: UI_Toolbar, config: { controllerId: string }): UI_Tool {
+    static tool(parent: UI_Toolbar, config: { controllerId: string, key?: string }): UI_Tool {
         const tool = new UI_Tool(parent.plugin);
+        tool.key = config.key;
 
         this.setController(parent, tool, config);
         tool.generateId(parent);
