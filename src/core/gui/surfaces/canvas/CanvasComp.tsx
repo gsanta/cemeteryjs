@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Camera2D } from '../../../../plugins/common/camera/Camera2D';
 import { PathViewContainerComponent } from '../../../../plugins/scene_editor/components/PathViewComponent';
-import { AbstractPlugin } from '../../../AbstractPlugin';
+import { AbstractCanvasPlugin } from '../../../plugin_core/AbstractCanvasPlugin';
 import { UI_ElementType } from '../../../gui_builder/elements/UI_ElementType';
 import { UI_SvgCanvas } from '../../../gui_builder/elements/UI_SvgCanvas';
 import { View } from '../../../models/views/View';
@@ -39,6 +39,7 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
     private wheelListener: WheelListener;
 
     componentDidMount() {
+        debugger;
         this.wheelListener = new WheelListener(
             this.context.registry,
             (e: WheelEvent) => this.props.element.mouseWheel(e),
@@ -46,15 +47,15 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
         );
 
         setTimeout(() => {
-            (this.props.element.plugin as AbstractPlugin).mounted(this.ref.current);
-            (this.props.element.plugin as AbstractPlugin).resize();
+            (this.props.element.plugin as AbstractCanvasPlugin).mounted(this.ref.current);
+            (this.props.element.plugin as AbstractCanvasPlugin).resize();
         }, 0);
     }
 
     
 
     render(): JSX.Element {
-        const plugin = this.props.element.plugin as AbstractPlugin;
+        const plugin = this.props.element.plugin as AbstractCanvasPlugin;
         
         return (
             <EditorComponentStyled ref={this.ref} id={plugin.id} style={{cursor: plugin.toolHandler.getActiveTool().getCursor()}}>
@@ -85,7 +86,7 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
                     background: colors.panelBackgroundMedium
                 }}
                 tabIndex={0}
-                viewBox={((this.props.element.plugin as AbstractPlugin).getCamera() as Camera2D).getViewBoxAsString()}
+                viewBox={((this.props.element.plugin as AbstractCanvasPlugin).getCamera() as Camera2D).getViewBoxAsString()}
                 id={this.context.controllers.svgCanvasId}
                 onMouseDown={(e) => this.props.element.mouseDown(e.nativeEvent)}
                 onMouseMove={(e) => {
@@ -147,7 +148,7 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
     }
 
     private renderFeedbacks(): JSX.Element {
-        const activeTool = (this.props.element.plugin as AbstractPlugin).toolHandler.getActiveTool();
+        const activeTool = (this.props.element.plugin as AbstractCanvasPlugin).toolHandler.getActiveTool();
         if (activeTool.rectangleSelection) {
             return (
                 <SelectionComponentStyled 

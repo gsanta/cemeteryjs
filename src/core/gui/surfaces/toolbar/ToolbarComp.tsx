@@ -35,6 +35,11 @@ const ToolbarStyled = styled.div`
         margin-right: 1px;
     }
 
+    .ce-icon-separator {
+        height: 100%;
+        width: 10px;
+    }
+
     .ce-tool-section {
         display: flex;
         height: 26px;
@@ -108,7 +113,7 @@ const ToolGroupStyled = styled.div`
 `;
 
 export interface ToolbarCompProps extends UI_ComponentProps<UI_Toolbar> {
-     toolsLeft: JSX.Element[];
+    toolsLeft: JSX.Element[];
     toolsMiddle: JSX.Element[];
     toolsRight: JSX.Element[];
 }

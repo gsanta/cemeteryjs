@@ -1,6 +1,6 @@
 import { UI_Plugin } from '../../UI_Plugin';
 import { UI_ElementType } from './UI_ElementType';
-import { AbstractPlugin } from '../../AbstractPlugin';
+import { AbstractCanvasPlugin } from '../../plugin_core/AbstractCanvasPlugin';
 
 export const activeToolId = '__activeTool__'
 
@@ -24,7 +24,7 @@ export abstract class UI_Element {
 
     mouseOver(e: MouseEvent) {
         if (this.controllerId === activeToolId) {
-            (this.plugin as AbstractPlugin).over()
+            (this.plugin as AbstractCanvasPlugin).over()
         } else {
             this.plugin.getControllerById(this.controllerId).mouseOver(this.prop);
         }
@@ -37,55 +37,55 @@ export abstract class UI_Element {
 
     mouseDown(e: MouseEvent) {
         if (this.controllerId === activeToolId) {
-            (this.plugin as AbstractPlugin).mouse.mouseDown(e);
+            (this.plugin as AbstractCanvasPlugin).mouse.mouseDown(e);
         }
     }
 
     mouseMove(e: MouseEvent) {
         if (this.controllerId === activeToolId) {
-            (this.plugin as AbstractPlugin).mouse.mouseMove(e);
+            (this.plugin as AbstractCanvasPlugin).mouse.mouseMove(e);
         }
     }
 
     mouseUp(e: MouseEvent) {
         if (this.controllerId === activeToolId) {
-            (this.plugin as AbstractPlugin).mouse.mouseUp(e);
+            (this.plugin as AbstractCanvasPlugin).mouse.mouseUp(e);
         }
     }
 
     mouseLeave(e: MouseEvent, data?: any) {
         if (this.controllerId === activeToolId) {
-            (this.plugin as AbstractPlugin).mouse.mouseLeave(e, data ? data : this.plugin as AbstractPlugin);
+            (this.plugin as AbstractCanvasPlugin).mouse.mouseLeave(e, data ? data : this.plugin as AbstractCanvasPlugin);
         }
     }
 
     mouseEnter(e: MouseEvent, data?: any) {
         if (this.controllerId === activeToolId) {
-            (this.plugin as AbstractPlugin).mouse.mouseEnter(e, data ? data : this.plugin as AbstractPlugin);
+            (this.plugin as AbstractCanvasPlugin).mouse.mouseEnter(e, data ? data : this.plugin as AbstractCanvasPlugin);
         }
     }
 
     mouseWheel(e: WheelEvent) {
         if (this.controllerId === activeToolId) {
-            (this.plugin as AbstractPlugin).mouse.mouseWheel(e);
+            (this.plugin as AbstractCanvasPlugin).mouse.mouseWheel(e);
         }
     }
 
     mouseWheelEnd() {
         if (this.controllerId === activeToolId) {
-            (this.plugin as AbstractPlugin).mouse.mouseWheelEnd();
+            (this.plugin as AbstractCanvasPlugin).mouse.mouseWheelEnd();
         }
     }
 
     keyDown(e: KeyboardEvent) {
         if (this.controllerId === activeToolId) {
-            (this.plugin as AbstractPlugin).keyboard.onKeyDown(e);
+            (this.plugin as AbstractCanvasPlugin).keyboard.onKeyDown(e);
         }
     }
 
     keyUp(e: KeyboardEvent) {
         if (this.controllerId === activeToolId) {
-            (this.plugin as AbstractPlugin).keyboard.onKeyUp(e);
+            (this.plugin as AbstractCanvasPlugin).keyboard.onKeyUp(e);
         }
     }
 

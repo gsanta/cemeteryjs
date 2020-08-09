@@ -11,7 +11,7 @@ import { UI_SvgCircle } from './elements/svg/UI_SvgCircle';
 import { UI_SvgPath } from './elements/svg/UI_SvgPath';
 import { UI_SvgImage } from './elements/svg/UI_SvgImage';
 import { UI_SvgGroup } from './elements/svg/UI_SvgGroup';
-import { UI_Tool } from './elements/toolbar/UI_Tool';
+import { UI_Tool } from './elements/toolbar/UI_ToolIcon';
 import { UI_Tooltip } from './elements/UI_Tooltip';
 import { UI_Element } from './elements/UI_Element';
 import { UI_Toolbar } from './elements/toolbar/UI_Toolbar';
@@ -25,6 +25,7 @@ import { UI_Box } from './elements/UI_Box';
 import { UI_SvgText } from './elements/svg/UI_SvgText';
 import { UI_HtmlCanvas } from './elements/UI_HtmlCanvas';
 import { UI_ActionIcon } from './elements/toolbar/UI_ActionIcon';
+import { UI_IconSeparator } from './elements/toolbar/UI_IconSeparator';
 
 export class UI_Factory {
     static row(parent: UI_Container, config: { controllerId?: string, key: string}): UI_Row {
@@ -289,6 +290,14 @@ export class UI_Factory {
         parent.tools.push(actionIcon);
 
         return actionIcon;
+    }
+
+    static iconSeparator(parent: UI_Toolbar): UI_IconSeparator {
+        const iconSeparator = new UI_IconSeparator(parent.plugin);
+
+        parent.tools.push(iconSeparator);
+
+        return iconSeparator;
     }
 
 

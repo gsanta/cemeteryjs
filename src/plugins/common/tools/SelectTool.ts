@@ -2,12 +2,12 @@ import { Registry } from '../../../core/Registry';
 import { PointerTool } from './PointerTool';
 import { ToolType, Cursor } from "./Tool";
 import { IPointerEvent } from '../../../core/services/input/PointerService';
-import { AbstractPlugin } from '../../../core/AbstractPlugin';
+import { AbstractCanvasPlugin } from '../../../core/plugin_core/AbstractCanvasPlugin';
 import { UI_Region } from '../../../core/UI_Plugin';
 import { createRectFromMousePointer } from './AbstractTool';
 
 export class SelectTool extends PointerTool {
-    constructor(plugin: AbstractPlugin, registry: Registry) {
+    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         super(ToolType.Select, plugin, registry);
     }
 

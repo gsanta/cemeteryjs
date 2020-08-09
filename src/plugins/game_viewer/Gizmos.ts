@@ -1,11 +1,11 @@
 import { Registry } from "../../core/Registry";
 import { AxisGizmo } from "./AxisGizmo";
-import { AbstractPlugin } from "../../core/AbstractPlugin";
+import { AbstractCanvasPlugin } from "../../core/plugin_core/AbstractCanvasPlugin";
 
 export class Gizmos {
     private axisGizmo: AxisGizmo;
 
-    constructor(plugin: AbstractPlugin, registry: Registry) {
+    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         this.axisGizmo = new AxisGizmo(plugin, registry);
     }
 

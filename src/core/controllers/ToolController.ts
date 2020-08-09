@@ -2,13 +2,13 @@
 
 import { Registry } from '../Registry';
 import { AbstractController } from './AbstractController';
-import { AbstractPlugin } from '../AbstractPlugin';
+import { AbstractCanvasPlugin } from '../plugin_core/AbstractCanvasPlugin';
 
 export const ToolControllerId = 'tool_controller';
 export class ToolController extends AbstractController<string> {
     id = ToolControllerId;
 
-    constructor(plugin: AbstractPlugin, registry: Registry) {
+    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         super(plugin, registry);
 
         plugin.toolHandler.getAll().forEach(tool => {

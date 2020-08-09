@@ -2,7 +2,7 @@ import { View } from "../../../core/models/views/View";
 import { IPluginJson } from './IPluginExporter';
 import { AppJson } from "../../../core/services/export/ExportService";
 import { Registry } from "../../../core/Registry";
-import { AbstractPlugin } from "../../../core/AbstractPlugin";
+import { AbstractCanvasPlugin } from "../../../core/plugin_core/AbstractCanvasPlugin";
 
 export interface PluginJson {
     _attributes: {
@@ -23,9 +23,9 @@ export interface ViewContainerJson<T> {
 export abstract class AbstractPluginImporter {
 
     protected registry: Registry;
-    protected plugin: AbstractPlugin;
+    protected plugin: AbstractCanvasPlugin;
 
-    constructor(plugin: AbstractPlugin, registry: Registry) {
+    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         this.registry = registry;
         this.plugin = plugin;
     }

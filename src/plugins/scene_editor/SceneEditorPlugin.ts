@@ -1,6 +1,4 @@
-import { AbstractPlugin, calcOffsetFromDom } from '../../core/AbstractPlugin';
-import { CanvasController, CanvasControllerId, CanvasControllerProps } from '../../core/controllers/CanvasController';
-import { Point } from '../../core/geometry/shapes/Point';
+import { CanvasControllerId, CanvasControllerProps } from '../../core/controllers/CanvasController';
 import { sort } from '../../core/geometry/utils/Functions';
 import { toDegree } from '../../core/geometry/utils/Measurements';
 import { colors } from '../../core/gui/styles';
@@ -8,60 +6,22 @@ import { activeToolId } from '../../core/gui_builder/elements/UI_Element';
 import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
 import { UI_SvgCanvas } from '../../core/gui_builder/elements/UI_SvgCanvas';
 import { ViewTag } from '../../core/models/views/View';
+import { Canvas_2d_Plugin } from '../../core/plugin_core/Canvas_2d_Plugin';
 import { Registry } from '../../core/Registry';
-import { UI_Region } from '../../core/UI_Plugin';
-import { Camera2D } from '../common/camera/Camera2D';
 import { toolFactory } from '../common/toolbar/toolFactory';
 import { ToolType } from '../common/tools/Tool';
 import { SceneEditorExporter } from './io/SceneEditorExporter';
 import { SceneEditorImporter } from './io/SceneEditorImporter';
 
-function getScreenSize(canvasId: string): Point {
-    if (typeof document !== 'undefined') {
-        const svg: HTMLElement = document.getElementById(canvasId);
-
-        if (svg) {
-            const rect: ClientRect = svg.getBoundingClientRect();
-            return new Point(rect.width, rect.height);
-        }
-    }
-    return undefined;
-}
-
-export const DUMMY_CAMERA_SIZE = new Point(100, 100);
-
-function cameraInitializer(canvasId: string, registry: Registry) {
-    const screenSize = getScreenSize(canvasId);
-    if (screenSize) {
-        return new Camera2D(registry, new Point(screenSize.x, screenSize.y));
-    } else {
-        return new Camera2D(registry, DUMMY_CAMERA_SIZE);
-    }
-}
-
-export enum CanvasTag {
-    Selected = 'selected',
-    Hovered = 'hovered'
-}
-
 export const SceneEditorPluginId = 'scene-editor-plugin'; 
-
-export class SceneEditorPlugin extends AbstractPlugin {
-    id = SceneEditorPluginId;
-    region = UI_Region.Canvas1;
-    private camera: Camera2D;
-
+export class SceneEditorPlugin extends Canvas_2d_Plugin {
     constructor(registry: Registry) {
-        super(registry);
+        super(SceneEditorPluginId, registry);
         
         [ToolType.Rectangle, ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Pointer, ToolType.Camera]
             .map(toolType => {
                 this.toolHandler.registerTool(toolFactory(toolType, this, registry));
             });
-
-        this.controllers.set(CanvasControllerId, new CanvasController(this, this.registry));
-
-        this.camera = cameraInitializer(SceneEditorPluginId, registry);
 
         this.exporter = new SceneEditorExporter(this, this.registry);
         this.importer = new SceneEditorImporter(this, this.registry);
@@ -71,22 +31,8 @@ export class SceneEditorPlugin extends AbstractPlugin {
         return this.registry.stores.canvasStore;
     }
 
-    resize(): void {
-        const screenSize = getScreenSize(SceneEditorPluginId);
-        screenSize && this.camera.resize(screenSize);
-        this.renderFunc && this.renderFunc();
-    }
-
     destroy() {
         this.registry.stores.selectionStore.clear();
-    }
-
-    getOffset() {
-        return calcOffsetFromDom(this.htmlElement);
-    }
-
-    getCamera() {
-        return this.camera;
     }
 
     protected renderInto(layout: UI_Layout): void {
@@ -117,6 +63,9 @@ export class SceneEditorPlugin extends AbstractPlugin {
         tooltip = tool.tooltip();
         tooltip.label = 'Pan tool';
 
+        let separator = toolbar.iconSeparator();
+        separator.placement = 'left';
+
         let actionIcon = toolbar.actionIcon({controllerId: CanvasControllerId, prop: CanvasControllerProps.ZoomIn});
         actionIcon.icon = 'zoom-in';
         tooltip = actionIcon.tooltip();
@@ -126,6 +75,9 @@ export class SceneEditorPlugin extends AbstractPlugin {
         actionIcon.icon = 'zoom-out';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom out';
+
+        separator = toolbar.iconSeparator();
+        separator.placement = 'left';
 
         actionIcon = toolbar.actionIcon({controllerId: CanvasControllerId, prop: CanvasControllerProps.Undo});
         actionIcon.icon = 'undo';

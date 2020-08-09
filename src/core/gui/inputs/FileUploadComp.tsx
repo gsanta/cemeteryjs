@@ -53,9 +53,9 @@ export const FileUploadComp = (props: UI_ComponentProps<UI_FileUpload>) => {
             props.element.change({path: acceptedFiles[0].path, data: e.target.result as string});
         }
         // if (props.readDataAs === 'text') {
-            reader.readAsText(acceptedFiles[0]);
+            // reader.readAsText(acceptedFiles[0]);
         // } else {
-        //     reader.readAsDataURL(acceptedFiles[0]);
+            reader.readAsDataURL(acceptedFiles[0]);
         // }
     }, [])
     const { getRootProps, getInputProps } = useDropzone({ onDrop })

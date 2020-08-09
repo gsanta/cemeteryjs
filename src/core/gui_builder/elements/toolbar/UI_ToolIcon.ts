@@ -5,7 +5,7 @@ import { UI_ElementType } from '../UI_ElementType';
 import { UI_Tooltip } from '../UI_Tooltip';
 
 export class UI_Tool extends UI_Element {
-    elementType = UI_ElementType.Tool;
+    elementType = UI_ElementType.ToolIcon;
 
     icon: string;
     _tooltip: UI_Tooltip;

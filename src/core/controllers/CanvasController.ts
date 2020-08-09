@@ -1,6 +1,6 @@
 import { Registry } from "../Registry";
 import { AbstractController } from './AbstractController';
-import { AbstractPlugin } from '../AbstractPlugin';
+import { AbstractCanvasPlugin } from '../plugin_core/AbstractCanvasPlugin';
 import { ToolType } from '../../plugins/common/tools/Tool';
 import { CameraTool } from '../../plugins/common/tools/CameraTool';
 
@@ -15,9 +15,9 @@ export const CanvasControllerId = 'canvas_controller_id';
 
 export class CanvasController extends AbstractController {
     id = CanvasControllerId;
-    plugin: AbstractPlugin;
+    plugin: AbstractCanvasPlugin;
 
-    constructor(plugin: AbstractPlugin, registry: Registry) {
+    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         super(plugin, registry);
 
         this.createPropHandler(CanvasControllerProps.ZoomIn)

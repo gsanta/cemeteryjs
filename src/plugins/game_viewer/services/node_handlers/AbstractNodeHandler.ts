@@ -1,4 +1,4 @@
-import { AbstractPlugin } from '../../../../core/AbstractPlugin';
+import { AbstractCanvasPlugin } from '../../../../core/plugin_core/AbstractCanvasPlugin';
 import { NodeModel, NodeType, SlotName } from '../../../../core/models/nodes/NodeModel';
 import { Registry } from '../../../../core/Registry';
 import { NodeService } from '../NodeService';
@@ -8,9 +8,9 @@ export abstract class AbstractNodeHandler<T extends NodeModel> {
     instance: T;
 
     protected registry: Registry;
-    plugin: AbstractPlugin;
+    plugin: AbstractCanvasPlugin;
 
-    constructor(plugin: AbstractPlugin, registry: Registry) {
+    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         this.registry = registry;
         this.plugin = plugin;
     }

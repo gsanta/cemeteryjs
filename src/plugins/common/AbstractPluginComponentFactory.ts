@@ -1,8 +1,8 @@
-import { AbstractPlugin } from "../../core/AbstractPlugin";
+import { AbstractCanvasPlugin } from "../../core/plugin_core/AbstractCanvasPlugin";
 import { Registry } from "../../core/Registry";
 
 
-export abstract class AbstractPluginComponentFactory<T extends AbstractPlugin> {
+export abstract class AbstractPluginComponentFactory<T extends AbstractCanvasPlugin> {
     protected plugin: T;
     protected registry: Registry;
 

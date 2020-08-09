@@ -1,8 +1,8 @@
 import { AbstractPluginService } from '../../plugins/common/AbstractPluginService';
-import { AbstractPlugin } from '../AbstractPlugin';
+import { AbstractCanvasPlugin } from '../plugin_core/AbstractCanvasPlugin';
 import { AssetModel } from '../models/game_objects/AssetModel';
 
-export class TextureLoaderService extends AbstractPluginService<AbstractPlugin> {
+export class TextureLoaderService extends AbstractPluginService<AbstractCanvasPlugin> {
     static serviceName = 'texture-loader-service';
     serviceName = TextureLoaderService.serviceName;
 

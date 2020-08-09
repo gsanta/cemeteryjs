@@ -1,4 +1,4 @@
-import { AbstractPlugin } from "../../../core/AbstractPlugin";
+import { AbstractCanvasPlugin } from "../../../core/plugin_core/AbstractCanvasPlugin";
 import { Point } from "../../../core/geometry/shapes/Point";
 import { isJoinPointView, JoinPointView } from "../../../core/models/views/child_views/JoinPointView";
 import { NodeConnectionView } from "../../../core/models/views/NodeConnectionView";
@@ -13,7 +13,7 @@ export class JoinTool extends AbstractTool {
     end: Point;
     startItem: JoinPointView;
 
-    constructor(plugin: AbstractPlugin, registry: Registry) {
+    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         super(ToolType.Join, plugin, registry);
     }
 

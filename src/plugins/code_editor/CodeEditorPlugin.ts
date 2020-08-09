@@ -1,5 +1,5 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import { AbstractPlugin } from "../../core/AbstractPlugin";
+import { AbstractCanvasPlugin } from "../../core/plugin_core/AbstractCanvasPlugin";
 import { UI_Region } from "../../core/UI_Plugin";
 import { ICamera } from "../common/camera/ICamera";
 import { Tool } from "../common/tools/Tool";
@@ -10,7 +10,7 @@ export const initCode = `
 
 export const CodeEditorPluginId = 'code-editor-plugin'; 
 
-export class CodeEditorPlugin extends AbstractPlugin {
+export class CodeEditorPlugin extends AbstractCanvasPlugin {
     id = 'code-editor-plugin';
     region = UI_Region.Canvas1;
     visible = true;

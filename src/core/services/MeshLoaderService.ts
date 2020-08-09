@@ -1,12 +1,12 @@
 import { Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, StandardMaterial } from 'babylonjs';
 import { AbstractPluginService } from '../../plugins/common/AbstractPluginService';
-import { AbstractPlugin } from '../AbstractPlugin';
+import { AbstractCanvasPlugin } from '../plugin_core/AbstractCanvasPlugin';
 import { Point } from '../geometry/shapes/Point';
 import { MeshView } from '../models/views/MeshView';
 import { EngineService } from './EngineService';
 import { AssetModel } from '../models/game_objects/AssetModel';
 
-export class MeshLoaderService extends AbstractPluginService<AbstractPlugin> {
+export class MeshLoaderService extends AbstractPluginService<AbstractCanvasPlugin> {
     static serviceName = 'mesh-loader-service';
     serviceName = MeshLoaderService.serviceName;
 

@@ -7,7 +7,7 @@ import { PanIconComponent } from "./icons/PanIconComponent";
 import { PathIconComponent } from "./icons/PathIconComponent";
 import { ZoomInIconComponent } from "./icons/ZoomInIconComponent";
 import { ZoomOutIconComponent } from "./icons/ZoomOutIconComponent";
-import { AbstractPlugin } from "../../../core/AbstractPlugin";
+import { AbstractCanvasPlugin } from "../../../core/plugin_core/AbstractCanvasPlugin";
 import { Registry } from "../../../core/Registry";
 import { AbstractTool } from "../tools/AbstractTool";
 import { DeleteTool } from '../tools/DeleteTool';
@@ -19,7 +19,7 @@ import { CameraTool } from '../tools/CameraTool';
 import { DragAndDropTool } from '../tools/DragAndDropTool';
 import { JoinTool } from '../tools/JoinTool';
 
-export function toolFactory(toolType: ToolType, plugin: AbstractPlugin, registry: Registry): Tool {
+export function toolFactory(toolType: ToolType, plugin: AbstractCanvasPlugin, registry: Registry): Tool {
     switch(toolType) {
         case ToolType.Delete:
             return new DeleteTool(plugin, registry);
@@ -40,7 +40,7 @@ export function toolFactory(toolType: ToolType, plugin: AbstractPlugin, registry
     }
 }
 
-export function toolIconFactory(toolType: ToolType, plugin: AbstractPlugin, registry: Registry): JSX.Element[] {
+export function toolIconFactory(toolType: ToolType, plugin: AbstractCanvasPlugin, registry: Registry): JSX.Element[] {
     switch(toolType) {
         case ToolType.Rectangle:
             return [<RectangleIconComponent key={toolType} isActive={isToolActive(ToolType.Rectangle, plugin)} onClick={() => activateTool(toolType, plugin, registry)} format="short"/>]
@@ -66,22 +66,22 @@ export function toolIconFactory(toolType: ToolType, plugin: AbstractPlugin, regi
     }
 }
 
-function zoomIn(toolType: ToolType, view: AbstractPlugin, registry: Registry) {
+function zoomIn(toolType: ToolType, view: AbstractCanvasPlugin, registry: Registry) {
     view.getCamera().zoomIn();
     registry.services.hotkey.focus();
 }
 
-function zoomOut(toolType: ToolType, view: AbstractPlugin, registry: Registry) {
+function zoomOut(toolType: ToolType, view: AbstractCanvasPlugin, registry: Registry) {
     view.getCamera().zoomOut();
     registry.services.hotkey.focus();
 }
 
 
-function isToolActive(toolType: ToolType, view: AbstractPlugin) {
+function isToolActive(toolType: ToolType, view: AbstractCanvasPlugin) {
         return view.toolHandler.getSelectedTool() && view.toolHandler.getSelectedTool().id === toolType;
 }
 
-function activateTool(toolType: ToolType, plugin: AbstractPlugin, registry: Registry) {
+function activateTool(toolType: ToolType, plugin: AbstractCanvasPlugin, registry: Registry) {
     plugin.toolHandler.setSelectedTool(toolType);
     registry.services.hotkey.focus();
 }

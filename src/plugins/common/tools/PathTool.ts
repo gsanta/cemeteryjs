@@ -1,4 +1,4 @@
-import { AbstractPlugin } from "../../../core/AbstractPlugin";
+import { AbstractCanvasPlugin } from "../../../core/plugin_core/AbstractCanvasPlugin";
 import { Point } from "../../../core/geometry/shapes/Point";
 import { FeedbackType } from "../../../core/models/views/child_views/ChildView";
 import { EditPointView } from "../../../core/models/views/child_views/EditPointView";
@@ -14,7 +14,7 @@ import { UI_Region } from "../../../core/UI_Plugin";
 
 export class PathTool extends PointerTool {
 
-    constructor(plugin: AbstractPlugin, registry: Registry) {
+    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         super(ToolType.Path, plugin, registry);
     }
 

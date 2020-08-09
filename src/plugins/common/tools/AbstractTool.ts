@@ -1,4 +1,4 @@
-import { AbstractPlugin } from '../../../core/AbstractPlugin';
+import { AbstractCanvasPlugin } from '../../../core/plugin_core/AbstractCanvasPlugin';
 import { Registry } from '../../../core/Registry';
 import { IHotkeyEvent } from '../../../core/services/input/HotkeyService';
 import { IKeyboardEvent } from '../../../core/services/input/KeyboardService';
@@ -26,10 +26,10 @@ export class AbstractTool implements Tool {
 
     getCursor() { return Cursor.Default; }
     
-    protected plugin: AbstractPlugin;
+    protected plugin: AbstractCanvasPlugin;
     protected registry: Registry;
 
-    constructor(type: ToolType, plugin: AbstractPlugin, registry: Registry) {
+    constructor(type: ToolType, plugin: AbstractCanvasPlugin, registry: Registry) {
         this.id = type;
         this.plugin = plugin;
         this.registry = registry;
@@ -72,7 +72,7 @@ export class AbstractTool implements Tool {
         return this.registry.plugins.getHoveredView().getStore();
     }
 
-    protected getPlugin(): AbstractPlugin {
+    protected getPlugin(): AbstractCanvasPlugin {
         return this.registry.plugins.getHoveredView();
     }
 }

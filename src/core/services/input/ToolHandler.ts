@@ -2,7 +2,7 @@ import { Tool } from '../../../plugins/common/tools/Tool';
 import { Registry } from '../../Registry';
 import { RenderTask } from '../RenderServices';
 import { UI_Region } from '../../UI_Plugin';
-import { AbstractPlugin } from '../../AbstractPlugin';
+import { AbstractCanvasPlugin } from '../../plugin_core/AbstractCanvasPlugin';
 
 export class ToolHandler {
     private toolMap: Map<string, Tool> = new Map();
@@ -12,9 +12,9 @@ export class ToolHandler {
     protected selectedTool: Tool;
 
     private registry: Registry;
-    private plugin: AbstractPlugin;
+    private plugin: AbstractCanvasPlugin;
 
-    constructor(plugin: AbstractPlugin, registry: Registry) {
+    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         this.plugin = plugin;
         this.registry = registry;
     }

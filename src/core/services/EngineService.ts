@@ -1,9 +1,9 @@
 import { Color3, Engine, HemisphericLight, Light, Scene, Vector3 } from "babylonjs";
 import { Camera3D } from "../../plugins/common/camera/Camera3D";
 import { AbstractPluginService } from "../../plugins/common/AbstractPluginService";
-import { AbstractPlugin } from "../AbstractPlugin";
+import { AbstractCanvasPlugin } from "../plugin_core/AbstractCanvasPlugin";
 
-export class EngineService<T extends AbstractPlugin = AbstractPlugin> extends AbstractPluginService<T> {
+export class EngineService<T extends AbstractCanvasPlugin = AbstractCanvasPlugin> extends AbstractPluginService<T> {
     static serviceName = 'engine-service';
     serviceName = EngineService.serviceName;
     private engine: Engine;

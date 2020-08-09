@@ -2,12 +2,12 @@ import { AbstractNodeHandler } from './AbstractNodeHandler';
 import { KeyboardNode, KeyboardNodeSlot } from '../../../../core/models/nodes/KeyboardNode';
 import { NodeType } from '../../../../core/models/nodes/NodeModel';
 import { Registry } from '../../../../core/Registry';
-import { AbstractPlugin } from '../../../../core/AbstractPlugin';
+import { AbstractCanvasPlugin } from '../../../../core/plugin_core/AbstractCanvasPlugin';
 
 export class KeyboardNodeHandler extends AbstractNodeHandler<KeyboardNode> {
     nodeType: NodeType.Keyboard;
 
-    constructor(plugin: AbstractPlugin, registry: Registry) {
+    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         super(plugin, registry);
 
         this.handleKeyEvent = this.handleKeyEvent.bind(this);

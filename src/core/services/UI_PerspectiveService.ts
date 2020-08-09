@@ -8,7 +8,7 @@ import { LevelSettingsPluginId } from '../../plugins/level_settings/LevelSetting
 import { Registry } from '../Registry';
 import Split from 'split.js';
 import { UI_Region } from '../UI_Plugin';
-import { AbstractPlugin } from '../AbstractPlugin';
+import { AbstractCanvasPlugin } from '../plugin_core/AbstractCanvasPlugin';
 
 
 export class LayoutHandler {
@@ -57,10 +57,10 @@ export class LayoutHandler {
 
     resizePlugins() {
         if (this.registry.preferences.fullscreenRegion) {
-            (this.registry.plugins.getByRegion(this.registry.preferences.fullscreenRegion)[0] as AbstractPlugin).resize()
+            (this.registry.plugins.getByRegion(this.registry.preferences.fullscreenRegion)[0] as AbstractCanvasPlugin).resize()
         } else {
-            (this.registry.plugins.getByRegion(UI_Region.Canvas1)[0] as AbstractPlugin).resize();
-            (this.registry.plugins.getByRegion(UI_Region.Canvas2)[0] as AbstractPlugin).resize();
+            (this.registry.plugins.getByRegion(UI_Region.Canvas1)[0] as AbstractCanvasPlugin).resize();
+            (this.registry.plugins.getByRegion(UI_Region.Canvas2)[0] as AbstractCanvasPlugin).resize();
         }
     }
 

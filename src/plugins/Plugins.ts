@@ -1,4 +1,4 @@
-import { AbstractPlugin } from '../core/AbstractPlugin';
+import { AbstractCanvasPlugin } from '../core/plugin_core/AbstractCanvasPlugin';
 import { AbstractSidepanelPlugin } from '../core/AbstractSidepanelPlugin';
 import { Registry } from '../core/Registry';
 import { RenderTask } from '../core/services/RenderServices';
@@ -35,7 +35,7 @@ export class Plugins {
     private plugins: UI_Plugin[] = [];
     private activePlugins: UI_Plugin[] = [];
 
-    private pluginFactoryMap: Map<AbstractPlugin, AbstractPluginComponentFactory<any>> = new Map();
+    private pluginFactoryMap: Map<AbstractCanvasPlugin, AbstractPluginComponentFactory<any>> = new Map();
     
     visibilityDirty = true;
 
@@ -68,21 +68,21 @@ export class Plugins {
         this.registerPlugin(new NodeEditorSettingsPlugin(this.registry));
     }
 
-    getPluginFactory(plugin: AbstractPlugin): AbstractPluginComponentFactory<any> {
+    getPluginFactory(plugin: AbstractCanvasPlugin): AbstractPluginComponentFactory<any> {
         return this.pluginFactoryMap.get(plugin);
     }
 
-    private hoveredView: AbstractPlugin;
+    private hoveredView: AbstractCanvasPlugin;
     
-    setHoveredView(view: AbstractPlugin) {
+    setHoveredView(view: AbstractCanvasPlugin) {
         this.hoveredView = view;
     }
 
-    getHoveredView(): AbstractPlugin {
+    getHoveredView(): AbstractCanvasPlugin {
         return this.hoveredView;
     }
 
-    getViewById<T extends AbstractPlugin = AbstractPlugin>(id: string): T {
+    getViewById<T extends AbstractCanvasPlugin = AbstractCanvasPlugin>(id: string): T {
         return <T> this.plugins.find(view => view.id === id);
     }
     

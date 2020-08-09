@@ -6,13 +6,13 @@ import { AbstractTool, createRectFromMousePointer } from './AbstractTool';
 import { RectangleSelector } from './RectangleSelector';
 import { Cursor, ToolType } from './Tool';
 import { View } from '../../../core/models/views/View';
-import { AbstractPlugin } from '../../../core/AbstractPlugin';
+import { AbstractCanvasPlugin } from '../../../core/plugin_core/AbstractCanvasPlugin';
 import { UI_Region } from '../../../core/UI_Plugin';
 
 export class DeleteTool extends AbstractTool {
     private hotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, ...{keyCodes: [Keyboard.e], shift: true}}
 
-    constructor(plugin: AbstractPlugin, registry: Registry) {
+    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         super(ToolType.Delete, plugin, registry);
     }
 

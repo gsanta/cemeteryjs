@@ -3,7 +3,7 @@ import { AdvancedDynamicTexture, Line, Button, Control } from 'babylonjs-gui';
 import { Point } from '../../core/geometry/shapes/Point';
 import { Registry } from '../../core/Registry';
 import { Camera3D } from '../common/camera/Camera3D';
-import { AbstractPlugin } from '../../core/AbstractPlugin';
+import { AbstractCanvasPlugin } from '../../core/plugin_core/AbstractCanvasPlugin';
 import { EngineService } from '../../core/services/EngineService';
 
 export class AxisGizmo {
@@ -18,9 +18,9 @@ export class AxisGizmo {
     private origin3D: Vector3;
     private origin2D = new Point(40, 60);
     private axisLen = 45;
-    private plugin: AbstractPlugin;
+    private plugin: AbstractCanvasPlugin;
 
-    constructor(plugin: AbstractPlugin, registry: Registry) {
+    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         this.registry = registry;
         this.plugin = plugin;
     }

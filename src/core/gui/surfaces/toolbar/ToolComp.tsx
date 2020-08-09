@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { UI_ComponentProps } from '../../UI_ComponentProps';
-import { UI_Tool } from '../../../gui_builder/elements/toolbar/UI_Tool';
-import { AbstractPlugin } from '../../../AbstractPlugin';
+import { UI_Tool } from '../../../gui_builder/elements/toolbar/UI_ToolIcon';
+import { AbstractCanvasPlugin } from '../../../plugin_core/AbstractCanvasPlugin';
 import { cssClassBuilder } from '../../layout/BoxComp';
 
 export interface ToolCompProps extends UI_ComponentProps<UI_Tool> {
@@ -12,7 +12,7 @@ export class ToolComp extends React.Component<ToolCompProps> {
     private ref: React.RefObject<HTMLDivElement> = React.createRef();
     
     render() {
-        const selectedTool = (this.props.element.plugin as AbstractPlugin).toolHandler.getSelectedTool();
+        const selectedTool = (this.props.element.plugin as AbstractCanvasPlugin).toolHandler.getSelectedTool();
         const classes = cssClassBuilder(
             'ce-tool',
             `${this.props.element.icon}-icon`,
@@ -24,7 +24,7 @@ export class ToolComp extends React.Component<ToolCompProps> {
                 id={this.props.element.id}
                 ref={this.ref}
                 className={classes}
-                onClick={() => (this.props.element.plugin as AbstractPlugin).toolHandler.setSelectedTool(this.props.element.controllerId)}
+                onClick={() => (this.props.element.plugin as AbstractCanvasPlugin).toolHandler.setSelectedTool(this.props.element.controllerId)}
             >
                 {this.props.tooltip}
             </div>

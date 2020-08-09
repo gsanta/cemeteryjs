@@ -3,7 +3,7 @@ import { Point } from "../../geometry/shapes/Point";
 import { IPointerEvent } from "./PointerService";
 import { DroppableItem } from "../../../plugins/common/tools/DragAndDropTool";
 import { View } from "../../models/views/View";
-import { AbstractPlugin } from '../../AbstractPlugin';
+import { AbstractCanvasPlugin } from '../../plugin_core/AbstractCanvasPlugin';
 
 export class MousePointer {
     down: Point;

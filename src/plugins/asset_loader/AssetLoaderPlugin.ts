@@ -1,4 +1,4 @@
-import { AbstractPlugin, calcOffsetFromDom } from '../../core/AbstractPlugin';
+import { AbstractCanvasPlugin, calcOffsetFromDom } from '../../core/plugin_core/AbstractCanvasPlugin';
 import { Point } from '../../core/geometry/shapes/Point';
 import { Registry } from '../../core/Registry';
 import { EngineService } from '../../core/services/EngineService';
@@ -22,7 +22,7 @@ export function getCanvasElement(viewId: string): HTMLCanvasElement {
 
 export const AssetLoaderPluginId = 'asset-loader-plugin';
 
-export class AssetLoaderPlugin extends AbstractPlugin {
+export class AssetLoaderPlugin extends AbstractCanvasPlugin {
     id = AssetLoaderPluginId;
     region = UI_Region.Dialog;
 
@@ -73,5 +73,9 @@ export class AssetLoaderPlugin extends AbstractPlugin {
         }
 
         return new Point(0, 0);
+    }
+
+    renderInto() {
+
     }
 }

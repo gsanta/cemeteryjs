@@ -1,4 +1,4 @@
-import { AbstractPlugin, calcOffsetFromDom } from '../../core/AbstractPlugin';
+import { AbstractCanvasPlugin, calcOffsetFromDom } from '../../core/plugin_core/AbstractCanvasPlugin';
 import { Point } from '../../core/geometry/shapes/Point';
 import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
 import { UI_SvgCanvas } from '../../core/gui_builder/elements/UI_SvgCanvas';
@@ -218,7 +218,7 @@ const recipes: NodePresetRecipe[] = [
 
 export const NodeEditorPluginId = 'action-editor-plugin'; 
 
-export class NodeEditorPlugin extends AbstractPlugin {
+export class NodeEditorPlugin extends AbstractCanvasPlugin {
     id = 'action-editor-plugin';
     region = UI_Region.Canvas1;
     

@@ -6,7 +6,7 @@ import { RenderTask } from "../RenderServices";
 import { View } from "../../models/views/View";
 import { ToolType } from "../../../plugins/common/tools/Tool";
 import { UI_Region } from "../../UI_Plugin";
-import { AbstractPlugin } from '../../AbstractPlugin';
+import { AbstractCanvasPlugin } from '../../plugin_core/AbstractCanvasPlugin';
 
 export enum Wheel {
     IDLE = 'idle', UP = 'up', DOWN = 'down'
@@ -35,7 +35,7 @@ export class PointerService {
     hoveredItem: View;
     droppableItem: DroppableItem;
 
-    hoveredPlugin: AbstractPlugin;
+    hoveredPlugin: AbstractCanvasPlugin;
 
     pointer: MousePointer = new MousePointer();
 
@@ -91,7 +91,7 @@ export class PointerService {
 
     pointerLeave(e: IPointerEvent, data: any): void {
         
-        if (data instanceof AbstractPlugin) {
+        if (data instanceof AbstractCanvasPlugin) {
             this.hoveredPlugin = undefined;
             this.isDown = false;
             this.isDrag = false;
@@ -105,7 +105,7 @@ export class PointerService {
     }
 
     pointerEnter(e: IPointerEvent, data: any) {
-        if (data instanceof AbstractPlugin) {
+        if (data instanceof AbstractCanvasPlugin) {
             this.hoveredPlugin = data;
         } else {
             this.hoveredItem = data;

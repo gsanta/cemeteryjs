@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { UI_ComponentProps } from '../../UI_ComponentProps';
 import { cssClassBuilder } from '../../layout/BoxComp';
-import { AbstractPlugin } from '../../../AbstractPlugin';
+import { AbstractCanvasPlugin } from '../../../plugin_core/AbstractCanvasPlugin';
 import { UI_ActionIcon } from '../../../gui_builder/elements/toolbar/UI_ActionIcon';
 
 export interface ActionIconCompProps extends UI_ComponentProps<UI_ActionIcon> {
@@ -23,7 +23,7 @@ export class ActionIconComp extends React.Component<ActionIconCompProps> {
     }
     
     render() {
-        const selectedTool = (this.props.element.plugin as AbstractPlugin).toolHandler.getSelectedTool();
+        const selectedTool = (this.props.element.plugin as AbstractCanvasPlugin).toolHandler.getSelectedTool();
         const classes = cssClassBuilder(
             'ce-tool',
             `${this.props.element.icon}-icon`,

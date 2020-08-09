@@ -40,7 +40,7 @@ import { UI_SvgPath } from './elements/svg/UI_SvgPath';
 import { SvgPathComp } from '../gui/svg/SvgPathComp';
 import { UI_Toolbar } from './elements/toolbar/UI_Toolbar';
 import { ToolbarComp } from '../gui/surfaces/toolbar/ToolbarComp';
-import { UI_Tool } from './elements/toolbar/UI_Tool';
+import { UI_Tool } from './elements/toolbar/UI_ToolIcon';
 import { UI_Tooltip } from './elements/UI_Tooltip';
 import { ListItemComp } from '../gui/data_display/ListItemComp';
 import { UI_ListItem } from './elements/UI_ListItem';
@@ -53,6 +53,7 @@ import { UI_HtmlCanvas } from './elements/UI_HtmlCanvas';
 import { UI_ActionIcon } from './elements/toolbar/UI_ActionIcon';
 import { ActionIconComp } from '../gui/surfaces/toolbar/ActionIconComp';
 import { ToolComp } from '../gui/surfaces/toolbar/ToolComp';
+import { IconSeparatorComp } from '../gui/surfaces/toolbar/IconSeparatorComp';
 
 export class UI_Builder {
 
@@ -199,12 +200,15 @@ export class UI_Builder {
             case UI_ElementType.Toolbar:
                 const toolbar = element as UI_Toolbar;
                 return this.buildToolbar(toolbar);
-            case UI_ElementType.Tool:
+            case UI_ElementType.ToolIcon:
                 const tool = element as UI_Tool;
                 return this.buildTool(tool);
             case UI_ElementType.ActionIcon:
                 const actionIcon = element as UI_ActionIcon;
                 return this.buildActionIcon(actionIcon);
+            case UI_ElementType.IconSeparator:
+                const iconSeparator = element as UI_ActionIcon;
+                return <IconSeparatorComp element={iconSeparator}/>;
             case UI_ElementType.Tooltip:
                 const tooltip = element as UI_Tooltip;
                 return <TooltipComp element={tooltip}/>;

@@ -1,4 +1,4 @@
-import { AbstractPlugin } from '../../../core/AbstractPlugin';
+import { AbstractCanvasPlugin } from '../../../core/plugin_core/AbstractCanvasPlugin';
 import { Rectangle } from '../../../core/geometry/shapes/Rectangle';
 import { MeshView } from '../../../core/models/views/MeshView';
 import { Registry } from '../../../core/Registry';
@@ -12,7 +12,7 @@ export class RectangleTool extends AbstractTool {
     rectangleFeedback: Rectangle;
     private lastPreviewRect: MeshView;
 
-    constructor(plugin: AbstractPlugin, registry: Registry) {
+    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         super(ToolType.Rectangle, plugin, registry);
     }
 

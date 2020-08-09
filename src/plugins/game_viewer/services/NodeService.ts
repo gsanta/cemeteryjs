@@ -8,15 +8,15 @@ import { TurnNodeHandler } from './node_handlers/TurnNodeHandler';
 import { RouteNodeHandler } from './node_handlers/RouteNodeHandler';
 import { AbstractPluginService } from '../../common/AbstractPluginService';
 import { GameViewerPlugin } from '../GameViewerPlugin';
-import { AbstractPlugin } from '../../../core/AbstractPlugin';
+import { AbstractCanvasPlugin } from '../../../core/plugin_core/AbstractCanvasPlugin';
 import { EngineService } from '../../../core/services/EngineService';
 
-export class NodeService extends AbstractPluginService<AbstractPlugin> {
+export class NodeService extends AbstractPluginService<AbstractCanvasPlugin> {
     static serviceName = 'node-service';
     serviceName = NodeService.serviceName;
     handlersByType: Map<string, AbstractNodeHandler<NodeModel>> = new Map();
 
-    constructor(plugin: AbstractPlugin, registry: Registry) {
+    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         super(plugin, registry);
         this.handlersByType.set(NodeType.Keyboard, new KeyboardNodeHandler(plugin, registry));
         this.handlersByType.set(NodeType.Move, new MoveNodeHandler(plugin, registry));

@@ -1,32 +1,21 @@
-import { AbstractPlugin, calcOffsetFromDom } from '../../core/AbstractPlugin';
+import { activeToolId } from '../../core/gui_builder/elements/UI_Element';
+import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
 import { NodeType } from '../../core/models/nodes/NodeModel';
+import { Canvas_3d_Plugin } from '../../core/plugin_core/Canvas_3d_Plugin';
 import { Registry } from '../../core/Registry';
 import { EngineService } from '../../core/services/EngineService';
 import { MeshLoaderService } from '../../core/services/MeshLoaderService';
 import { TextureLoaderService } from '../../core/services/TextureLoaderService';
 import { UI_Region } from '../../core/UI_Plugin';
-import { ICamera } from '../common/camera/ICamera';
 import { PluginServices } from '../common/PluginServices';
-import { toolFactory } from '../common/toolbar/toolFactory';
-import { Tool, ToolType } from '../common/tools/Tool';
 import { Gizmos } from './Gizmos';
 import { GameViewerImporter } from './io/GameViewerImporter';
 import { NodeService } from './services/NodeService';
 import { GameViewerSettings } from './settings/GameViewerSettings';
-import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
-import { activeToolId } from '../../core/gui_builder/elements/UI_Element';
 (<any> window).earcut = require('earcut');
 
-export function getCanvasElement(viewId: string): HTMLCanvasElement {
-    if (typeof document !== 'undefined') {
-        const canvas: HTMLCanvasElement = document.querySelector(`#${viewId} canvas`);
-        return canvas;
-    }
-}
-
 export const GameViewerPluginId = 'game-viewer-plugin'; 
-
-export class GameViewerPlugin extends AbstractPlugin {
+export class GameViewerPlugin extends Canvas_3d_Plugin {
     id = GameViewerPluginId;
     region = UI_Region.Canvas2;
     gameViewerSettings: GameViewerSettings;
@@ -35,9 +24,7 @@ export class GameViewerPlugin extends AbstractPlugin {
     private gizmos: Gizmos;
 
     constructor(registry: Registry) {
-        super(registry);
-
-        this.toolHandler.registerTool(toolFactory(ToolType.Camera, this, registry))
+        super(GameViewerPluginId, registry);
 
         this.gameViewerSettings = new GameViewerSettings(registry);
         // this.axisGizmo = new AxisGizmo(this.registry, MeshBuilder);
@@ -58,15 +45,6 @@ export class GameViewerPlugin extends AbstractPlugin {
         return this.registry.stores.canvasStore;
     }
 
-    getCamera(): ICamera {
-        return this.pluginServices.engineService().getCamera();
-    }
-
-    resize() {
-        const engineService = this.pluginServices.byName<EngineService<this>>(EngineService.serviceName);
-        engineService.getEngine() && engineService.getEngine().resize();
-    }
-
     mounted(htmlElement: HTMLElement) {
         super.mounted(htmlElement);
         (<GameViewerImporter> this.importer).import();
@@ -85,20 +63,6 @@ export class GameViewerPlugin extends AbstractPlugin {
 
     destroy() {
         this.registry.stores.meshStore.clear();
-    }
-
-    getSelectedTool(): Tool {
-        return this.toolHandler.getSelectedTool();
-    }    
-
-    getOffset() {
-        return calcOffsetFromDom(this.htmlElement);
-    }
-
-    activated() {
-        if (!this.toolHandler.getSelectedTool()) {
-            this.toolHandler.setSelectedTool(ToolType.Camera);
-        }
     }
 
     protected renderInto(layout: UI_Layout): void {

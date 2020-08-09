@@ -16,7 +16,6 @@ import { SidePanelComponent } from './SidePanelComponent';
 import { MainPanelComp } from './regions/MainPanelComp';
 import { SceneEditorPerspectiveName } from '../services/UI_PerspectiveService';
 import { UI_Region } from '../UI_Plugin';
-import { AbstractPlugin } from '../AbstractPlugin';
 
 export interface AppState {
     isDialogOpen: boolean;

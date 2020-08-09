@@ -2,7 +2,7 @@ import { UI_ElementType } from './UI_ElementType';
 import { UI_SvgGroup } from './svg/UI_SvgGroup';
 import { UI_Toolbar } from './toolbar/UI_Toolbar';
 import { UI_Factory } from '../UI_Factory';
-import { AbstractPlugin } from '../../AbstractPlugin';
+import { AbstractCanvasPlugin } from '../../plugin_core/AbstractCanvasPlugin';
 
 export class UI_SvgCanvas extends UI_SvgGroup {
     _toolbar: UI_Toolbar;
@@ -11,7 +11,7 @@ export class UI_SvgCanvas extends UI_SvgGroup {
 
     mouseOver(e: MouseEvent) {
         super.mouseOver(e);
-        (this.plugin as AbstractPlugin).over()
+        (this.plugin as AbstractCanvasPlugin).over()
     }
 
     toolbar(): UI_Toolbar {
