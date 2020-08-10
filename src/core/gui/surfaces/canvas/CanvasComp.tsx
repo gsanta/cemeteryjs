@@ -39,7 +39,6 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
     private wheelListener: WheelListener;
 
     componentDidMount() {
-        debugger;
         this.wheelListener = new WheelListener(
             this.context.registry,
             (e: WheelEvent) => this.props.element.mouseWheel(e),
@@ -81,8 +80,8 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
         return (
             <svg
                 style={{
-                    width: '100%',
-                    height: '100%',
+                    width: this.props.element.width ? this.props.element.width :'100%',
+                    height: this.props.element.height ? this.props.element.height :'100%',
                     background: colors.panelBackgroundMedium
                 }}
                 tabIndex={0}
@@ -120,8 +119,8 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
                         position: 'absolute',
                         top: 0,
                         left: 0,
-                        width: '100%',
-                        height: '100%',
+                        width: this.props.element.width ? this.props.element.width :'100%',
+                        height: this.props.element.height ? this.props.element.height :'100%',    
                         backgroundColor: 'transparent'
                     }}
                     tabIndex={0}
@@ -139,8 +138,9 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
                 />
                 <canvas
                     style={{
-                        width: '100%',
-                        height: '100%'
+                        width: this.props.element.width ? this.props.element.width :'100%',
+                        height: this.props.element.height ? this.props.element.height :'100%',
+    
                     }}
                 />
             </React.Fragment>

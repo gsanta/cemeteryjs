@@ -3,9 +3,9 @@ import { Registry } from './Registry';
 import { AbstractController } from './controllers/AbstractController';
 import { UI_Container } from './gui_builder/elements/UI_Container';
 import { UI_Layout } from './gui_builder/elements/UI_Layout';
-import { Tool } from '../plugins/common/tools/Tool';
 import { AbstractPluginImporter } from '../plugins/common/io/AbstractPluginImporter';
 import { IPluginExporter } from '../plugins/common/io/IPluginExporter';
+import { UI_Factory } from './gui_builder/UI_Factory';
 
 export enum UI_Region {
     Sidepanel = 'Sidepanel',
@@ -63,13 +63,20 @@ export abstract class UI_Plugin implements IControlledObject {
 
     render(): UI_Container {
         if (this.region === UI_Region.Sidepanel) {
-            const layout = new UI_Layout(this, this.region);
+            const layout = UI_Factory.layout(this);
             const accordion = layout.accordion(null);
             accordion.title = this.displayName;
             this.renderInto(accordion);
             return layout;
+        } else if (this.region === UI_Region.Dialog) {
+            const dialog = UI_Factory.dialog(this, {});
+            dialog.title = this.displayName;
+            this.renderInto(dialog);
+            return dialog;
+
         } else {
-            const layout = new UI_Layout(this, this.region);
+            const layout = UI_Factory.layout(this);
+
 
             this.renderInto(layout);
             return layout;

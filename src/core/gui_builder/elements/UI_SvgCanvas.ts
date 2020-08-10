@@ -8,6 +8,8 @@ export class UI_SvgCanvas extends UI_SvgGroup {
     _toolbar: UI_Toolbar;
 
     elementType = UI_ElementType.SvgCanvas;
+    width: string;
+    height: string;
 
     mouseOver(e: MouseEvent) {
         super.mouseOver(e);

@@ -54,6 +54,9 @@ import { UI_ActionIcon } from './elements/toolbar/UI_ActionIcon';
 import { ActionIconComp } from '../gui/surfaces/toolbar/ActionIconComp';
 import { ToolComp } from '../gui/surfaces/toolbar/ToolComp';
 import { IconSeparatorComp } from '../gui/surfaces/toolbar/IconSeparatorComp';
+import { UI_Dialog } from './elements/surfaces/UI_Dialog';
+import { DialogComp } from '../gui/dialogs/DialogComp';
+
 
 export class UI_Builder {
 
@@ -96,6 +99,9 @@ export class UI_Builder {
             case UI_ElementType.Box:
                 const box = element as UI_Box;
                 return <BoxComp element={box}>{this.buildChildren(element, plugin)}</BoxComp>;
+            case UI_ElementType.Dialog:
+                const dialog = element as UI_Dialog;
+                return <DialogComp element={dialog}>{this.buildChildren(element, plugin)}</DialogComp>;
         }
     }
 

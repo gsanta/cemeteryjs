@@ -1,16 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { colors } from '../styles';
 import { CloseIconComponent } from '../../../plugins/common/toolbar/icons/CloseIconComponent';
-import { UI_Plugin } from '../../UI_Plugin';
-
-export interface DialogProps {
-    title: string;
-    children: JSX.Element | JSX.Element[];
-    footer?: JSX.Element | JSX.Element[] | string;
-    closeDialog(): void;
-    className?: string;
-}
+import { colors } from '../styles';
+import { UI_ContainerProps } from '../UI_ComponentProps';
+import { UI_Dialog } from '../../gui_builder/elements/surfaces/UI_Dialog';
 
 const DialogOverlayStyled = styled.div`
     position: absolute;
@@ -65,21 +58,16 @@ const DialogFooterStyled = styled.div`
     }
 `;
 
-export function DialogComponent(props: DialogProps) {
-    const dialogClassName = `dialog ${props.className ? props.className : ''}`.trim();
-
-    const footer = props.footer ? <DialogFooterStyled>{props.footer}</DialogFooterStyled> : null;
-    
+export function DialogComp(props: UI_ContainerProps<UI_Dialog> ) {
     return (
         <div onClick={e => e.stopPropagation()}>
-            <DialogOverlayStyled onClick={props.closeDialog}></DialogOverlayStyled>
-            <DialogStyled className={dialogClassName}>
+            <DialogOverlayStyled onClick={() => props.element.close()}></DialogOverlayStyled>
+            <DialogStyled className='dialog'>
                 <DialogTitleStyled>
-                    <div>{props.title}</div>
-                    <div><CloseIconComponent onClick={props.closeDialog} /></div>
+                    <div>{props.element.title}</div>
+                    <div><CloseIconComponent onClick={() => props.element.close()} /></div>
                 </DialogTitleStyled>
                 <DialogBodyStyled>{props.children}</DialogBodyStyled>
-                {footer}
             </DialogStyled>
         </div>
     );

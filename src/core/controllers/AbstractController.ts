@@ -1,6 +1,10 @@
 import { Registry } from '../Registry';
 import { UI_Plugin } from '../UI_Plugin';
 
+export enum GlobalControllerProps {
+    CloseDialog = 'CloseDialog'
+}
+
 export interface PropHandlers {
     onChange?(val: any, context: PropContext<any>,  controller: AbstractController): void;
     onClick?(context: PropContext<any>, controller: AbstractController): void;
@@ -89,7 +93,7 @@ export class PropContext<T> {
 
 export abstract class AbstractController<P = any> {
     id: string;
-    private handlers: Map<P, PropHandler<any>> = new Map();
+    private handlers: Map<P | GlobalControllerProps, PropHandler<any>> = new Map();
 
     protected registry: Registry;
     plugin: UI_Plugin;
@@ -97,6 +101,12 @@ export abstract class AbstractController<P = any> {
     constructor(plugin: UI_Plugin, registry: Registry) {
         this.plugin = plugin;
         this.registry = registry;
+
+        this.createPropHandler(GlobalControllerProps.CloseDialog)
+            .onClick(() => {
+                registry.plugins.deactivatePlugin(plugin.id);
+                registry.services.render.reRenderAll();
+            });
     }
 
     change(prop: P, val: any): void {
@@ -144,7 +154,7 @@ export abstract class AbstractController<P = any> {
         return handler.getHandler(handler.context, this);
     }
 
-    createPropHandler<T>(prop: P) {
+    createPropHandler<T>(prop: P | GlobalControllerProps) {
         const propHandler = new PropHandler<T>();
         this.handlers.set(prop, propHandler);
         return propHandler;

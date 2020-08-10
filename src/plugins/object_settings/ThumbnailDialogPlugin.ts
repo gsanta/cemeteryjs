@@ -8,11 +8,15 @@ import { ToolType } from '../common/tools/Tool';
 import { PluginServices } from '../common/PluginServices';
 import { EngineService } from '../../core/services/EngineService';
 import { MeshLoaderService } from '../../core/services/MeshLoaderService';
+import { MeshView } from '../../core/models/views/MeshView';
+import { ThumbnailMakerController, ThumbnailMakerControllerId } from './ThumbnailMakerController';
 
 export const ThumbnailDialogPluginId = 'thumbnail-dialog-plugin'; 
 export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
     region = UI_Region.Dialog;
     displayName = 'Thumbnail';
+
+    meshView: MeshView;
 
     constructor(registry: Registry) {
         super(ThumbnailDialogPluginId, registry);
@@ -23,6 +27,9 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
             this.toolHandler.registerTool(toolFactory(toolType, this, registry));
         });
 
+        this.controllers.set(ThumbnailMakerControllerId, new ThumbnailMakerController(this, registry));
+
+
         this.pluginServices = new PluginServices(
             [
                 new EngineService(this, this.registry),
@@ -32,9 +39,11 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
     }
 
     renderInto(layout: UI_Layout): UI_Layout {
+        layout.controllerId = ThumbnailMakerControllerId;
         const canvas = layout.htmlCanvas({controllerId: activeToolId});
-
-
+        canvas.width = '300px';
+        canvas.height = '300px';
+    
         // const column2 = tableRow.tableColumn();
 
         return layout;
@@ -44,6 +53,14 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
         if (!this.toolHandler.getSelectedTool()) {
             this.toolHandler.setSelectedTool(ToolType.Camera);
         }
+    }
+
+    mounted(htmlElement: HTMLElement) {
+        super.mounted(htmlElement);
+        this.meshView = this.registry.stores.selectionStore.getView() as MeshView;
+        const modelModel = this.registry.stores.assetStore.getAssetById(this.meshView.modelId);
+
+        this.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName).load(modelModel, '123');
     }
 
     getStore() {

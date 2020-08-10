@@ -31,7 +31,7 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
         return this.registry.stores.canvasStore;
     }
 
-    destroy() {
+    destroy() { 
         this.registry.stores.selectionStore.clear();
     }
 

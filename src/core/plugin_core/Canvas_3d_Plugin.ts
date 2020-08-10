@@ -16,7 +16,6 @@ export function getCanvasElement(viewId: string): HTMLCanvasElement {
 
 export class Canvas_3d_Plugin extends AbstractCanvasPlugin {
     region = UI_Region.Canvas2;
-    private camera: Camera2D;
 
     constructor(id: string, registry: Registry) {
         super(registry);

@@ -132,7 +132,7 @@ export class Plugins {
 
     deactivatePlugin(pluginId: string) {
         const plugin = this.getById(pluginId);
-        this.activePlugins = this.activePlugins.filter(plugin => plugin.id)
+        this.activePlugins = this.activePlugins.filter(plugin => plugin.id !== pluginId);
 
         this.registry.services.ui.runUpdate(UI_Region.Dialog);
     }

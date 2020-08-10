@@ -8,6 +8,8 @@ export class UI_HtmlCanvas extends UI_Element {
     _toolbar: UI_Toolbar;
 
     elementType = UI_ElementType.HtmlCanvas;
+    width: string;
+    height: string;
 
     toolbar(): UI_Toolbar {
         return UI_Factory.toolbar(this);

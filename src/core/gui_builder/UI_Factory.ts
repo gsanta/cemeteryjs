@@ -26,8 +26,24 @@ import { UI_SvgText } from './elements/svg/UI_SvgText';
 import { UI_HtmlCanvas } from './elements/UI_HtmlCanvas';
 import { UI_ActionIcon } from './elements/toolbar/UI_ActionIcon';
 import { UI_IconSeparator } from './elements/toolbar/UI_IconSeparator';
+import { UI_Dialog } from './elements/surfaces/UI_Dialog';
+import { UI_Plugin } from '../UI_Plugin';
+import { UI_Layout } from './elements/UI_Layout';
 
 export class UI_Factory {
+    static layout(plugin: UI_Plugin): UI_Layout {
+        const layout = new UI_Layout(plugin, plugin.region);
+
+        return layout;
+    }
+
+    static dialog(plugin: UI_Plugin, config: { controllerId?: string }): UI_Dialog {
+        const dialog = new UI_Dialog(plugin);
+
+        return dialog;
+    }
+
+
     static row(parent: UI_Container, config: { controllerId?: string, key: string}): UI_Row {
         const row = new UI_Row(parent.plugin);
         row.key = config && config.key;
