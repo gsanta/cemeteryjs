@@ -29,6 +29,7 @@ import { UI_IconSeparator } from './elements/toolbar/UI_IconSeparator';
 import { UI_Dialog } from './elements/surfaces/UI_Dialog';
 import { UI_Plugin } from '../UI_Plugin';
 import { UI_Layout } from './elements/UI_Layout';
+import { UI_Image } from './elements/UI_Image';
 
 export class UI_Factory {
     static layout(plugin: UI_Plugin): UI_Layout {
@@ -105,6 +106,16 @@ export class UI_Factory {
         parent.children.push(text);
 
         return text;
+    }
+
+    static image(parent: UI_Container, config: { key: string}): UI_Image {
+        const image = new UI_Image(parent.plugin);
+        image.key = config.key;
+
+        image.generateId(parent);
+        parent.children.push(image);
+
+        return image;
     }
 
     static listItem(parent: UI_Container, config: { controllerId?: string, prop: string}): UI_ListItem {

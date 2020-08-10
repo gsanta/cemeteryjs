@@ -16,6 +16,7 @@ const zoomOutIcon = require('../../../../../assets/images/icons/zoom_out.svg');
 const zoomInIcon = require('../../../../../assets/images/icons/zoom_in.svg');
 const fullScreenIcon = require('../../../../../assets/images/icons/fullscreen.svg');
 const fullScreenExitIcon = require('../../../../../assets/images/icons/fullscreen_exit.svg');
+const insertPhotoIcon = require('../../../../../assets/images/icons/insert_photo.svg');
 
 const ToolbarStyled = styled.div`
     position: absolute;
@@ -104,6 +105,10 @@ const ToolbarStyled = styled.div`
 
         &.fullscreen-exit-icon {
             background-image: url(${fullScreenExitIcon});
+        }
+
+        &.insert-photo-icon {
+            background-image: url(${insertPhotoIcon});
         }
     }
 `;

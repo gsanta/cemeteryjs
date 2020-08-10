@@ -20,6 +20,7 @@ import { UI_GridSelect } from './elements/UI_GridSelect';
 import { GridSelectComp } from '../gui/inputs/GridSelectComp';
 import { TableComp } from '../gui/table/TableComp';
 import { TextComp } from '../gui/text/TextComp';
+import { ImageComp } from '../gui/text/ImageComp';
 import { TooltipComp } from '../gui/text/TooltipComp';
 import { TableRowComp } from '../gui/table/TableRowComp';
 import { TableColumnComp } from '../gui/table/TableColumnComp';
@@ -56,6 +57,7 @@ import { ToolComp } from '../gui/surfaces/toolbar/ToolComp';
 import { IconSeparatorComp } from '../gui/surfaces/toolbar/IconSeparatorComp';
 import { UI_Dialog } from './elements/surfaces/UI_Dialog';
 import { DialogComp } from '../gui/dialogs/DialogComp';
+import { UI_Image } from './elements/UI_Image';
 
 
 export class UI_Builder {
@@ -192,8 +194,8 @@ export class UI_Builder {
                 const circle = element as UI_SvgCircle;
                 return <SvgCircleComp element={circle}/>;
             case UI_ElementType.SvgImage:
-                const image = element as UI_SvgImage;
-                return <SvgImageComp element={image}/>; 
+                const svgImage = element as UI_SvgImage;
+                return <SvgImageComp element={svgImage}/>; 
             case UI_ElementType.SvgPath:
                 const path = element as UI_SvgPath
                 return <SvgPathComp element={path}/>; 
@@ -223,7 +225,9 @@ export class UI_Builder {
                 return <ListItemComp element={listItem}/>;
             case UI_ElementType.HtmlCanvas:
                 return this.buildSvgCanvas(element as UI_SvgCanvas | UI_HtmlCanvas, element.plugin);
-    
+            case UI_ElementType.Image:
+                const image = element as UI_Image;
+                return <ImageComp element={image}/>;
         }
     }
 }   

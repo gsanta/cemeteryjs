@@ -25,6 +25,7 @@ export enum UI_ElementType {
 
     Text = 'Text',
     Tooltip = 'Tooltip',
+    Image = 'Image',
 
     Table = 'Table',
     TableRow = 'TableRow',

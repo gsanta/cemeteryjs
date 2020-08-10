@@ -3,6 +3,9 @@ import { UI_Container } from './UI_Container';
 import { UI_ElementType } from "./UI_ElementType";
 import { UI_Text } from "./UI_Text";
 import { UI_Button } from './UI_Button';
+import { UI_SvgCanvas } from './UI_SvgCanvas';
+import { UI_HtmlCanvas } from './UI_HtmlCanvas';
+import { UI_Image } from './UI_Image';
 
 export class UI_Row extends UI_Container {
     elementType = UI_ElementType.Row;
@@ -36,5 +39,17 @@ export class UI_Row extends UI_Container {
 
     grid(config: {prop: string, filledIndexProp?: string}) {
         return UI_Factory.grid(this, config);
+    }
+
+    svgCanvas(config: {controllerId?: string}): UI_SvgCanvas {
+        return UI_Factory.svgCanvas(this, config);
+    }
+
+    htmlCanvas(config: {controllerId?: string}): UI_HtmlCanvas {
+        return UI_Factory.htmlCanvas(this, config);
+    }
+
+    image(config: {key: string}): UI_Image {
+        return UI_Factory.image(this, config);
     }
 }

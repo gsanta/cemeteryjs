@@ -48,21 +48,17 @@ const DialogBodyStyled = styled.div`
     justify-content: space-between;
 `;
 
-const DialogFooterStyled = styled.div`
-    display: flex;
-    justify-content: center;
-    margin-top: 15px;
-
-    > button {
-        margin-right: 10px;
-    }
-`;
-
 export function DialogComp(props: UI_ContainerProps<UI_Dialog> ) {
     return (
         <div onClick={e => e.stopPropagation()}>
             <DialogOverlayStyled onClick={() => props.element.close()}></DialogOverlayStyled>
-            <DialogStyled className='dialog'>
+            <DialogStyled 
+                className='dialog'
+                style={{
+                    width: props.element.width ? props.element.width : '500px',
+                    height: props.element.height ? props.element.height : 'auto',
+                }}
+            >
                 <DialogTitleStyled>
                     <div>{props.element.title}</div>
                     <div><CloseIconComponent onClick={() => props.element.close()} /></div>

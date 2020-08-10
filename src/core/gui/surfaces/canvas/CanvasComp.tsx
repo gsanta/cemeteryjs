@@ -15,8 +15,6 @@ import { DropLayerComp } from './DropLayerComp';
 import { UI_HtmlCanvas } from '../../../gui_builder/elements/UI_HtmlCanvas';
 
 const EditorComponentStyled = styled.div`
-    width: 100%;
-    height: 100%;
     position: relative;
 `;
 
@@ -51,13 +49,18 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
         }, 0);
     }
 
-    
-
     render(): JSX.Element {
         const plugin = this.props.element.plugin as AbstractCanvasPlugin;
         
         return (
-            <EditorComponentStyled ref={this.ref} id={plugin.id} style={{cursor: plugin.toolHandler.getActiveTool().getCursor()}}>
+            <EditorComponentStyled 
+                ref={this.ref} id={plugin.id}
+                style={{
+                    cursor: plugin.toolHandler.getActiveTool().getCursor(),
+                    width: this.props.element.width ? this.props.element.width :'100%',
+                    height: this.props.element.height ? this.props.element.height :'100%'
+                }}
+            >
                 {this.props.toolbar}
                 <DropLayerComp
                     isDragging={!!this.context.registry.services.pointer.droppableItem}

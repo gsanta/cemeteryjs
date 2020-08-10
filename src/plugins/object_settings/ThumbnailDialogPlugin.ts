@@ -9,7 +9,8 @@ import { PluginServices } from '../common/PluginServices';
 import { EngineService } from '../../core/services/EngineService';
 import { MeshLoaderService } from '../../core/services/MeshLoaderService';
 import { MeshView } from '../../core/models/views/MeshView';
-import { ThumbnailMakerController, ThumbnailMakerControllerId } from './ThumbnailMakerController';
+import { ThumbnailMakerController, ThumbnailMakerControllerId, ThumbnailMakerControllerProps } from './ThumbnailMakerController';
+import { UI_Dialog } from '../../core/gui_builder/elements/surfaces/UI_Dialog';
 
 export const ThumbnailDialogPluginId = 'thumbnail-dialog-plugin'; 
 export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
@@ -39,12 +40,43 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
     }
 
     renderInto(layout: UI_Layout): UI_Layout {
+        const dialog: UI_Dialog = <UI_Dialog> layout;
+        dialog.width = '600px';
         layout.controllerId = ThumbnailMakerControllerId;
-        const canvas = layout.htmlCanvas({controllerId: activeToolId});
+
+        let row = dialog.row({key: '1'});
+        let text = row.text();
+        text.text = 'Thumbnail from model';
+        
+        row = dialog.row({key: '2'});
+
+        const canvas = row.htmlCanvas({controllerId: activeToolId});
         canvas.width = '300px';
         canvas.height = '300px';
+
+        const image = row.image({key: '1'});
+        image.width = '200px';
+        image.height = '200px';
     
         // const column2 = tableRow.tableColumn();
+
+        const toolbar = canvas.toolbar();
+        
+        let actionIcon = toolbar.actionIcon({controllerId: ThumbnailMakerControllerId, prop: ThumbnailMakerControllerProps.ThumbnailFromModel});
+        actionIcon.icon = 'insert-photo';
+        let tooltip = actionIcon.tooltip();
+        tooltip.label = 'Create thumbnail';
+
+        row = dialog.row({key: '3'});
+        text = row.text();
+        text.text = 'Thumbnail from file';
+
+        row = dialog.row({key: '4'});
+
+        const importModelButton = row.fileUpload(ThumbnailMakerControllerProps.ThumbnailFromFile);
+        importModelButton.label = 'Import Thumbnail';
+        importModelButton.icon = 'import-icon';
+        importModelButton.width = 'full-width';
 
         return layout;
     }
