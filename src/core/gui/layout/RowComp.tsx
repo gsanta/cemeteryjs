@@ -16,8 +16,8 @@ const RowStyled = styled.div`
     justify-content: space-between;
     margin-top: 4px;
 
-    &.align-center {
-        justify-content: center;
+    &.ce-v_align-center {
+        align-items: center;
     }
 `;
 
@@ -25,7 +25,7 @@ export function RowComp(props: RowProps) {
     const classes = cssClassBuilder(
         'ce-row',
         props.element.isBold ? 'ce-bold' : undefined,
-        props.element.align ? `align-${props.element.align}` : 'align-left' 
+        props.element.vAlign ? `ce-v_align-${props.element.vAlign}` : 'ce-v_align-start' 
     );
 
     return (

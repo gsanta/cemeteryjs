@@ -18,7 +18,7 @@ export const ImageComp = (props: UI_ComponentProps<UI_Image>) => {
                 style={{ 
                     width: props.element.width ? props.element.width : '100px',
                     height: props.element.height ? props.element.height : '100px',
-                    background: 'white'
+                    background: 'black'
                 }}
             ></div>
         )

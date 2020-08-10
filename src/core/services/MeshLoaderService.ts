@@ -57,9 +57,9 @@ export class MeshLoaderService extends AbstractPluginService<AbstractCanvasPlugi
     }
 
     load(assetModel: AssetModel, id: string): Promise<Mesh> {
-        if (this.pandingIds.has(assetModel.id)) {
-            return this.pandingIds.get(assetModel.id);
-        }
+        // if (this.pandingIds.has(assetModel.id)) {
+        //     return this.pandingIds.get(assetModel.id);
+        // }
 
         this.loadedIds.add(assetModel.id);
 

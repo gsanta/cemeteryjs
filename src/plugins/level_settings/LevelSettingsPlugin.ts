@@ -28,7 +28,7 @@ export class LevelSettingsPlugin extends UI_Plugin {
         textField.label = 'Name';
 
         row = layout.row({ key: LevelSettingsProps.ClearLevel });
-        row.align = 'center';
+        row.vAlign = 'center';
         const clearLevelButton = row.button(LevelSettingsProps.ClearLevel);
         clearLevelButton.label = 'Clear level';
     }

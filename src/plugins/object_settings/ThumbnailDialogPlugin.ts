@@ -41,7 +41,7 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
 
     renderInto(layout: UI_Layout): UI_Layout {
         const dialog: UI_Dialog = <UI_Dialog> layout;
-        dialog.width = '600px';
+        dialog.width = '560px';
         layout.controllerId = ThumbnailMakerControllerId;
 
         let row = dialog.row({key: '1'});
@@ -49,6 +49,7 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
         text.text = 'Thumbnail from model';
         
         row = dialog.row({key: '2'});
+        row.vAlign = 'center';
 
         const canvas = row.htmlCanvas({controllerId: activeToolId});
         canvas.width = '300px';
@@ -57,6 +58,11 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
         const image = row.image({key: '1'});
         image.width = '200px';
         image.height = '200px';
+
+        if (this.meshView && this.meshView.thumbnailId) {
+            image.src = this.registry.stores.assetStore.getAssetById(this.meshView.thumbnailId).data;
+        }
+        
     
         // const column2 = tableRow.tableColumn();
 

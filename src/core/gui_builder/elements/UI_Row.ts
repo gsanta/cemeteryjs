@@ -9,8 +9,8 @@ import { UI_Image } from './UI_Image';
 
 export class UI_Row extends UI_Container {
     elementType = UI_ElementType.Row;
-    align: 'left' | 'center';
-    justifyContent: 'space-between' | 'space-around';
+    vAlign: 'start' | 'center';
+    hAlign: 'space-between' | 'space-around';
     height: string;
 
     table(config: {controllerId?: string}) {
