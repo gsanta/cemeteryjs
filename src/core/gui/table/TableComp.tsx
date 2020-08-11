@@ -1,7 +1,7 @@
 
 
 import * as React from 'react';
-import { UI_Table } from '../../gui_builder/elements/UI_Table';
+import { UI_Table } from '../../ui_regions/elements/UI_Table';
 import styled from 'styled-components';
 
 const TableCompStyled = styled.div`

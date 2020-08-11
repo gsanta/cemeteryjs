@@ -1,5 +1,5 @@
 import { UI_ComponentProps } from "../UI_ComponentProps";
-import { UI_SvgRect } from '../../gui_builder/elements/svg/UI_SvgRect';
+import { UI_SvgRect } from '../../ui_regions/elements/svg/UI_SvgRect';
 import * as React from 'react';
 
 export const SvgRectComp = (props: UI_ComponentProps<UI_SvgRect>) => {

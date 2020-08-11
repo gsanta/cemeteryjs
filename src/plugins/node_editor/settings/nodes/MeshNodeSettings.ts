@@ -1,5 +1,5 @@
-import { MeshNode } from "../../../../core/models/nodes/MeshNode";
-import { NodeView } from "../../../../core/models/views/NodeView";
+import { MeshNode } from "../../../../core/stores/nodes/MeshNode";
+import { NodeView } from "../../../../core/stores/views/NodeView";
 import { Registry } from "../../../../core/Registry";
 import { RenderTask } from "../../../../core/services/RenderServices";
 import { ViewSettings } from "../../../scene_editor/settings/AbstractSettings";

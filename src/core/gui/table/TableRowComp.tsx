@@ -1,7 +1,7 @@
 
 
 import * as React from 'react';
-import { UI_TableRow } from '../../gui_builder/elements/UI_Table';
+import { UI_TableRow } from '../../ui_regions/elements/UI_Table';
 
 export interface TableRowCompProps {
     element: UI_TableRow;

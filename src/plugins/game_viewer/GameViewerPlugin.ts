@@ -1,7 +1,7 @@
-import { activeToolId } from '../../core/gui_builder/elements/UI_Element';
-import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
-import { NodeType } from '../../core/models/nodes/NodeModel';
-import { Canvas_3d_Plugin } from '../../core/plugin_core/Canvas_3d_Plugin';
+import { activeToolId } from '../../core/ui_regions/elements/UI_Element';
+import { UI_Layout } from '../../core/ui_regions/elements/UI_Layout';
+import { NodeType } from '../../core/stores/game_objects/NodeModel';
+import { Canvas_3d_Plugin } from '../../core/plugins/Canvas_3d_Plugin';
 import { Registry } from '../../core/Registry';
 import { EngineService } from '../../core/services/EngineService';
 import { MeshLoaderService } from '../../core/services/MeshLoaderService';

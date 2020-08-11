@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { UI_SvgCircle } from '../../gui_builder/elements/svg/UI_SvgCircle';
+import { UI_SvgCircle } from '../../ui_regions/elements/svg/UI_SvgCircle';
 import { UI_ComponentProps } from "../UI_ComponentProps";
 
 export const SvgCircleComp = (props: UI_ComponentProps<UI_SvgCircle>) => {

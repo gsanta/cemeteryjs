@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { UI_ComponentProps } from '../../UI_ComponentProps';
-import { UI_Tool } from '../../../gui_builder/elements/toolbar/UI_ToolIcon';
-import { AbstractCanvasPlugin } from '../../../plugin_core/AbstractCanvasPlugin';
+import { UI_Tool } from '../../../ui_regions/elements/toolbar/UI_ToolIcon';
+import { AbstractCanvasPlugin } from '../../../plugins/AbstractCanvasPlugin';
 import { cssClassBuilder } from '../../layout/BoxComp';
 
 export interface ToolCompProps extends UI_ComponentProps<UI_Tool> {

@@ -1,9 +1,9 @@
 import { toDegree, toRadian } from '../../core/geometry/utils/Measurements';
-import { MeshView } from '../../core/models/views/MeshView';
+import { MeshView } from '../../core/stores/views/MeshView';
 import { Registry } from '../../core/Registry';
 import { RenderTask } from '../../core/services/RenderServices';
-import { AbstractController } from '../../core/controllers/AbstractController';
-import { PathView } from '../../core/models/views/PathView';
+import { AbstractController } from '../../core/plugins/controllers/AbstractController';
+import { PathView } from '../../core/stores/views/PathView';
 import { UI_Plugin, UI_Region } from '../../core/UI_Plugin';
 
 export enum PathObjectSettingsProps {

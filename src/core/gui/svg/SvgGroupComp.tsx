@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { UI_SvgGroup } from '../../gui_builder/elements/svg/UI_SvgGroup';
+import { UI_SvgGroup } from '../../ui_regions/elements/svg/UI_SvgGroup';
 import { UI_ContainerProps } from "../UI_ComponentProps";
 
 export const SvgGroupComp = (props: UI_ContainerProps<UI_SvgGroup>) => {

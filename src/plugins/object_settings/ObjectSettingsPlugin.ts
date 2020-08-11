@@ -1,10 +1,10 @@
 import { UI_Plugin, UI_Region } from '../../core/UI_Plugin';
 import { Registry } from '../../core/Registry';
-import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
+import { UI_Layout } from '../../core/ui_regions/elements/UI_Layout';
 import { MeshObjectSettingsController, MeshObjectSettingsProps, MeshObjectSettingsControllerId } from './MeshObjectSettingsController';
-import { ViewType } from '../../core/models/views/View';
-import { MeshView } from '../../core/models/views/MeshView';
-import { PathView } from '../../core/models/views/PathView';
+import { ViewType } from '../../core/stores/views/View';
+import { MeshView } from '../../core/stores/views/MeshView';
+import { PathView } from '../../core/stores/views/PathView';
 import { PathObjectSettingsController, PathObjectSettingsProps, PathObjectSettingsControllerId } from './PathObjectSettingsController';
 import { EngineService } from '../../core/services/EngineService';
 

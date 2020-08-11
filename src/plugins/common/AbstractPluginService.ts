@@ -1,5 +1,5 @@
 import { Registry } from "../../core/Registry";
-import { AbstractCanvasPlugin } from "../../core/plugin_core/AbstractCanvasPlugin";
+import { AbstractCanvasPlugin } from "../../core/plugins/AbstractCanvasPlugin";
 import { AbstractService } from "../../core/AbstractService";
 
 export class AbstractPluginService<T extends AbstractCanvasPlugin> extends AbstractService {

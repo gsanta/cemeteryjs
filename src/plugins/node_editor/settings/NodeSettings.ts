@@ -1,5 +1,5 @@
-import { getAllKeys } from '../../../core/models/nodes/KeyboardNode';
-import { NodeView } from '../../../core/models/views/NodeView';
+import { getAllKeys } from '../../../core/stores/nodes/KeyboardNode';
+import { NodeView } from '../../../core/stores/views/NodeView';
 import { ViewSettings } from '../../scene_editor/settings/AbstractSettings';
 
 export enum ActionNodeSettingsProps {

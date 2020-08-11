@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { ToolIconProps } from '../../../../plugins/common/toolbar/icons/ToolIcon';
-import { UI_Toolbar } from '../../../gui_builder/elements/toolbar/UI_Toolbar';
+import { UI_Toolbar } from '../../../ui_regions/elements/toolbar/UI_Toolbar';
 import { AppContext, AppContextType } from '../../Context';
 import { colors } from '../../styles';
 import { UI_ComponentProps } from '../../UI_ComponentProps';

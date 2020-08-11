@@ -1,4 +1,4 @@
-import { NodeView } from '../../../core/models/views/NodeView';
+import { NodeView } from '../../../core/stores/views/NodeView';
 import { Registry } from '../../../core/Registry';
 import { AbstractSettings } from '../../scene_editor/settings/AbstractSettings';
 

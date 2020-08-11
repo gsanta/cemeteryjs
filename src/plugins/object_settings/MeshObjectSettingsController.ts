@@ -1,9 +1,9 @@
 import { toDegree, toRadian } from '../../core/geometry/utils/Measurements';
-import { MeshView } from '../../core/models/views/MeshView';
+import { MeshView } from '../../core/stores/views/MeshView';
 import { Registry } from '../../core/Registry';
-import { AbstractController } from '../../core/controllers/AbstractController';
+import { AbstractController } from '../../core/plugins/controllers/AbstractController';
 import { ThumbnailDialogPluginId } from './ThumbnailDialogPlugin';
-import { AssetModel, AssetType } from '../../core/models/game_objects/AssetModel';
+import { AssetModel, AssetType } from '../../core/stores/game_objects/AssetModel';
 import { ObjectSettingsPlugin } from './ObjectSettingsPlugin';
 import { UI_Region } from '../../core/UI_Plugin';
 

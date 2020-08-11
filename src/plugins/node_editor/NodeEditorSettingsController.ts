@@ -1,7 +1,7 @@
-import { AbstractController } from "../../core/controllers/AbstractController";
+import { AbstractController } from "../../core/plugins/controllers/AbstractController";
 import { UI_Plugin } from "../../core/UI_Plugin";
 import { Registry } from "../../core/Registry";
-import { DroppableNode } from "../../core/models/nodes/NodeModel";
+import { DroppableNode } from "../../core/stores/game_objects/NodeModel";
 
 
 export const NodeEditorSettingsControllerId = 'node_editor_settings_controller';

@@ -1,6 +1,6 @@
-import { MeshNode } from "../../../../core/models/nodes/MeshNode";
-import { NodeType } from "../../../../core/models/nodes/NodeModel";
-import { TurnNode } from "../../../../core/models/nodes/TurnNode";
+import { MeshNode } from "../../../../core/stores/nodes/MeshNode";
+import { NodeType } from "../../../../core/stores/game_objects/NodeModel";
+import { TurnNode } from "../../../../core/stores/nodes/TurnNode";
 import { AbstractNodeHandler } from "./AbstractNodeHandler";
 
 export class TurnNodeHandler extends AbstractNodeHandler<TurnNode> {

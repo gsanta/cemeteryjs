@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { ToolIconProps } from '../../../plugins/common/toolbar/icons/ToolIcon';
 import { iconFactory } from '../icons/iconFactory';
 import { colors } from '../styles';
-import { UI_Button } from '../../gui_builder/elements/UI_Button';
+import { UI_Button } from '../../ui_regions/elements/UI_Button';
 
 /* cursor: ${(props: Button_UI_Props) => props.disabled ? 'default' : 'pointer'};
 opacity: ${(props: Button_UI_Props) => props.disabled ? '0.4' : '1'}; */

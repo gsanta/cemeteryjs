@@ -1,7 +1,7 @@
 import { Registry } from '../../../core/Registry';
 import { AbstractSettings } from '../../scene_editor/settings/AbstractSettings';
 import { RenderTask } from '../../../core/services/RenderServices';
-import { TimelineState } from '../../../core/models/game_objects/RouteModel';
+import { TimelineState } from '../../../core/stores/game_objects/RouteModel';
 import { UI_Region } from '../../../core/UI_Plugin';
 
 export enum GameViewerSettingsProps {

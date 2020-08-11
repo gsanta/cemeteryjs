@@ -1,7 +1,7 @@
 import { UI_Plugin, UI_Region } from '../../core/UI_Plugin';
-import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
-import { UI_Table } from '../../core/gui_builder/elements/UI_Table';
-import { AssetType } from '../../core/models/game_objects/AssetModel';
+import { UI_Layout } from '../../core/ui_regions/elements/UI_Layout';
+import { UI_Table } from '../../core/ui_regions/elements/UI_Table';
+import { AssetType } from '../../core/stores/game_objects/AssetModel';
 
 export const AssetManagerDialogPluginId = 'asset-manager-dialog-plugin'; 
 export class AssetManagerDialogPlugin extends UI_Plugin {

@@ -1,4 +1,4 @@
-import { NodeModel, NodeType } from '../../../core/models/nodes/NodeModel';
+import { NodeModel, NodeType } from '../../../core/stores/game_objects/NodeModel';
 import { Registry } from '../../../core/Registry';
 import { AbstractNodeHandler } from './node_handlers/AbstractNodeHandler';
 import { KeyboardNodeHandler } from './node_handlers/KeyboardNodeHandler';
@@ -8,7 +8,7 @@ import { TurnNodeHandler } from './node_handlers/TurnNodeHandler';
 import { RouteNodeHandler } from './node_handlers/RouteNodeHandler';
 import { AbstractPluginService } from '../../common/AbstractPluginService';
 import { GameViewerPlugin } from '../GameViewerPlugin';
-import { AbstractCanvasPlugin } from '../../../core/plugin_core/AbstractCanvasPlugin';
+import { AbstractCanvasPlugin } from '../../../core/plugins/AbstractCanvasPlugin';
 import { EngineService } from '../../../core/services/EngineService';
 
 export class NodeService extends AbstractPluginService<AbstractCanvasPlugin> {

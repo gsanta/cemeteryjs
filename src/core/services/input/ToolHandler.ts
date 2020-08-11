@@ -2,7 +2,7 @@ import { Tool } from '../../../plugins/common/tools/Tool';
 import { Registry } from '../../Registry';
 import { RenderTask } from '../RenderServices';
 import { UI_Region } from '../../UI_Plugin';
-import { AbstractCanvasPlugin } from '../../plugin_core/AbstractCanvasPlugin';
+import { AbstractCanvasPlugin } from '../../plugins/AbstractCanvasPlugin';
 
 export class ToolHandler {
     private toolMap: Map<string, Tool> = new Map();

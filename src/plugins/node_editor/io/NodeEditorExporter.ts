@@ -1,4 +1,4 @@
-import { ViewType } from "../../../core/models/views/View";
+import { ViewType } from "../../../core/stores/views/View";
 import { Registry } from "../../../core/Registry";
 import { IPluginExporter, IPluginJson } from '../../common/io/IPluginExporter';
 import { NodeEditorPlugin } from "../NodeEditorPlugin";

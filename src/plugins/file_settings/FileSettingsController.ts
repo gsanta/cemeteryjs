@@ -1,4 +1,4 @@
-import { AbstractController } from '../../core/controllers/AbstractController';
+import { AbstractController } from '../../core/plugins/controllers/AbstractController';
 import { Registry } from '../../core/Registry';
 import { saveAs } from 'file-saver';
 import { RenderTask } from '../../core/services/RenderServices';

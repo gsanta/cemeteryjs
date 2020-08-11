@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { UI_TextField } from '../../gui_builder/elements/UI_TextField';
+import { UI_TextField } from '../../ui_regions/elements/UI_TextField';
 import { InputComponent } from './InputComponent';
 import { LabeledInputComp } from './LabeledInputComp';
 

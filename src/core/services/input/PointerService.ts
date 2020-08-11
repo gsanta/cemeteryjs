@@ -3,10 +3,10 @@ import { Point } from "../../geometry/shapes/Point";
 import { Registry } from "../../Registry";
 import { MousePointer } from "./MouseService";
 import { RenderTask } from "../RenderServices";
-import { View } from "../../models/views/View";
+import { View } from "../../stores/views/View";
 import { ToolType } from "../../../plugins/common/tools/Tool";
 import { UI_Region } from "../../UI_Plugin";
-import { AbstractCanvasPlugin } from '../../plugin_core/AbstractCanvasPlugin';
+import { AbstractCanvasPlugin } from '../../plugins/AbstractCanvasPlugin';
 
 export enum Wheel {
     IDLE = 'idle', UP = 'up', DOWN = 'down'

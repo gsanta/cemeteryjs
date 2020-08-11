@@ -1,15 +1,15 @@
 import { Registry } from '../../../core/Registry';
-import { NodeView } from '../../../core/models/views/NodeView';
+import { NodeView } from '../../../core/stores/views/NodeView';
 import { colors } from '../../../core/gui/styles';
 import { ToolType } from '../../common/tools/Tool';
 import { UI_Plugin } from '../../../core/UI_Plugin';
-import { UI_SvgCanvas } from '../../../core/gui_builder/elements/UI_SvgCanvas';
-import { UI_Box } from '../../../core/gui_builder/elements/UI_Box';
-import { UI_SvgGroup } from '../../../core/gui_builder/elements/svg/UI_SvgGroup';
-import { JoinPointSlot } from '../../../core/models/nodes/NodeModel';
+import { UI_SvgCanvas } from '../../../core/ui_regions/elements/UI_SvgCanvas';
+import { UI_Box } from '../../../core/ui_regions/elements/UI_Box';
+import { UI_SvgGroup } from '../../../core/ui_regions/elements/svg/UI_SvgGroup';
+import { JoinPointSlot } from '../../../core/stores/game_objects/NodeModel';
 import { join } from 'path';
-import { JoinPointView } from '../../../core/models/views/child_views/JoinPointView';
-import { UI_SvgForeignObject } from '../../../core/gui_builder/elements/svg/UI_SvgForeignObject';
+import { JoinPointView } from '../../../core/stores/views/child_views/JoinPointView';
+import { UI_SvgForeignObject } from '../../../core/ui_regions/elements/svg/UI_SvgForeignObject';
 
 
 export abstract class AbstractNodeElement {

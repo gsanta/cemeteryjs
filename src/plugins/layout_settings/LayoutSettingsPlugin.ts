@@ -1,6 +1,6 @@
 import { UI_Plugin, UI_Region } from '../../core/UI_Plugin';
 import { Registry } from '../../core/Registry';
-import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
+import { UI_Layout } from '../../core/ui_regions/elements/UI_Layout';
 import { LayoutSettingsController, LayoutSettingsProps, LayoutSettingsControllerId } from './LayoutSettingsController';
 import { AbstractSidepanelPlugin } from '../../core/AbstractSidepanelPlugin';
 

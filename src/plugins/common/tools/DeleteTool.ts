@@ -5,8 +5,8 @@ import { isView, isFeedback } from '../../../core/stores/SceneStore';
 import { AbstractTool, createRectFromMousePointer } from './AbstractTool';
 import { RectangleSelector } from './RectangleSelector';
 import { Cursor, ToolType } from './Tool';
-import { View } from '../../../core/models/views/View';
-import { AbstractCanvasPlugin } from '../../../core/plugin_core/AbstractCanvasPlugin';
+import { View } from '../../../core/stores/views/View';
+import { AbstractCanvasPlugin } from '../../../core/plugins/AbstractCanvasPlugin';
 import { UI_Region } from '../../../core/UI_Plugin';
 
 export class DeleteTool extends AbstractTool {

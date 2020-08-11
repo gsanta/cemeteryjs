@@ -1,6 +1,6 @@
 import { Point } from "../../../core/geometry/shapes/Point";
 import { Rectangle } from '../../../core/geometry/shapes/Rectangle';
-import { RectSelectFeedback } from "../../../core/models/RectSelectFeedback";
+import { RectSelectFeedback } from "../../../core/stores/views/RectSelectFeedback";
 import { Registry } from "../../../core/Registry";
 import { MousePointer } from "../../../core/services/input/MouseService";
 import { Tool } from './Tool';

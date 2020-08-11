@@ -1,9 +1,9 @@
-import { MeshView, MeshViewJson } from '../../../core/models/views/MeshView';
-import { PathView, PathViewJson } from '../../../core/models/views/PathView';
-import { ViewType, View } from "../../../core/models/views/View";
+import { MeshView, MeshViewJson } from '../../../core/stores/views/MeshView';
+import { PathView, PathViewJson } from '../../../core/stores/views/PathView';
+import { ViewType, View } from "../../../core/stores/views/View";
 import { AppJson } from '../../../core/services/export/ExportService';
 import { AbstractPluginImporter } from "../../common/io/AbstractPluginImporter";
-import { AssetModel, AssetType } from '../../../core/models/game_objects/AssetModel';
+import { AssetModel, AssetType } from '../../../core/stores/game_objects/AssetModel';
 
 export class SceneEditorImporter extends AbstractPluginImporter {
     import(json: AppJson, viewMap: Map<string, View>): void {

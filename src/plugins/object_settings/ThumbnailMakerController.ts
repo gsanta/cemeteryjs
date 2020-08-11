@@ -1,7 +1,7 @@
 import { Tools } from 'babylonjs';
-import { AbstractController } from '../../core/controllers/AbstractController';
-import { AssetModel, AssetType } from '../../core/models/game_objects/AssetModel';
-import { MeshView } from '../../core/models/views/MeshView';
+import { AbstractController } from '../../core/plugins/controllers/AbstractController';
+import { AssetModel, AssetType } from '../../core/stores/game_objects/AssetModel';
+import { MeshView } from '../../core/stores/views/MeshView';
 import { Registry } from '../../core/Registry';
 import { EngineService } from '../../core/services/EngineService';
 import { ThumbnailDialogPlugin } from './ThumbnailDialogPlugin';

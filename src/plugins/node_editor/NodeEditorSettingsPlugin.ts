@@ -1,6 +1,6 @@
-import { UI_Accordion } from '../../core/gui_builder/elements/surfaces/UI_Accordion';
-import { UI_Container } from '../../core/gui_builder/elements/UI_Container';
-import { NodeCategory, NodeModel } from '../../core/models/nodes/NodeModel';
+import { UI_Accordion } from '../../core/ui_regions/elements/surfaces/UI_Accordion';
+import { UI_Container } from '../../core/ui_regions/elements/UI_Container';
+import { NodeCategory, NodeModel } from '../../core/stores/game_objects/NodeModel';
 import { Registry } from '../../core/Registry';
 import { UI_Plugin, UI_Region } from '../../core/UI_Plugin';
 import { NodeEditorSettingsController, NodeEditorSettingsControllerId } from './NodeEditorSettingsController';

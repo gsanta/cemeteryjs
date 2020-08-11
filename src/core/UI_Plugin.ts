@@ -1,11 +1,11 @@
 import { IControlledObject } from './IControlledObject';
 import { Registry } from './Registry';
-import { AbstractController } from './controllers/AbstractController';
-import { UI_Container } from './gui_builder/elements/UI_Container';
-import { UI_Layout } from './gui_builder/elements/UI_Layout';
+import { AbstractController } from './plugins/controllers/AbstractController';
+import { UI_Container } from './ui_regions/elements/UI_Container';
+import { UI_Layout } from './ui_regions/elements/UI_Layout';
 import { AbstractPluginImporter } from '../plugins/common/io/AbstractPluginImporter';
 import { IPluginExporter } from '../plugins/common/io/IPluginExporter';
-import { UI_Factory } from './gui_builder/UI_Factory';
+import { UI_Factory } from './ui_regions/UI_Factory';
 
 export enum UI_Region {
     Sidepanel = 'Sidepanel',
@@ -82,6 +82,8 @@ export abstract class UI_Plugin implements IControlledObject {
             return layout;
         }
     }
+
+    NodeVis
 
     getControllerById(id: string) {
         return this.controllers.get(id);

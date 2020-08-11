@@ -1,6 +1,6 @@
-import { NodeConnectionView, NodeConnectionViewJson } from '../../../core/models/views/NodeConnectionView';
-import { NodeView, NodeViewJson } from '../../../core/models/views/NodeView';
-import { ViewType, View } from "../../../core/models/views/View";
+import { NodeConnectionView, NodeConnectionViewJson } from '../../../core/stores/views/NodeConnectionView';
+import { NodeView, NodeViewJson } from '../../../core/stores/views/NodeView';
+import { ViewType, View } from "../../../core/stores/views/View";
 import { AppJson } from '../../../core/services/export/ExportService';
 import { AbstractPluginImporter } from "../../common/io/AbstractPluginImporter";
 

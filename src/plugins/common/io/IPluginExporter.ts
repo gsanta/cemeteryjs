@@ -1,4 +1,4 @@
-import { ViewJson } from "../../../core/models/views/View";
+import { ViewJson } from "../../../core/stores/views/View";
 
 export interface ViewGroupJson {
     viewType: string;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { UI_GridSelect } from '../../gui_builder/elements/UI_GridSelect';
+import { UI_GridSelect } from '../../ui_regions/elements/UI_GridSelect';
 import { GridComponent } from '../misc/GridComponent';
 import { UI_ComponentProps } from '../UI_ComponentProps';
 import { LabeledInputComp } from './LabeledInputComp';

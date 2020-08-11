@@ -1,4 +1,4 @@
-import { AbstractController } from "../../core/controllers/AbstractController";
+import { AbstractController } from "../../core/plugins/controllers/AbstractController";
 import { Registry } from "../../core/Registry";
 import { UI_Plugin, UI_Region } from "../../core/UI_Plugin";
 

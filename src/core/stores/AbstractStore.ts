@@ -1,6 +1,6 @@
 import { Polygon } from '../geometry/shapes/Polygon';
 import { Rectangle } from '../geometry/shapes/Rectangle';
-import { View } from '../models/views/View';
+import { View } from './views/View';
 import { IControlledObject, ObjectCapability } from '../IControlledObject';
 
 export enum StoreChangeEvent {

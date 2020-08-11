@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { colors } from '../../../core/gui/styles';
-import { PathView } from '../../../core/models/views/PathView';
-import { EditPointView } from '../../../core/models/views/child_views/EditPointView';
+import { PathView } from '../../../core/stores/views/PathView';
+import { EditPointView } from '../../../core/stores/views/child_views/EditPointView';
 import { Registry } from '../../../core/Registry';
-import { View, ViewType } from '../../../core/models/views/View';
+import { View, ViewType } from '../../../core/stores/views/View';
 import { GroupProps } from '../../InstanceProps';
 
 export interface PathComponentProps {

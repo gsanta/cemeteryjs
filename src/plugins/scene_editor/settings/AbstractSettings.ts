@@ -1,4 +1,4 @@
-import { View } from "../../../core/models/views/View";
+import { View } from "../../../core/stores/views/View";
 
 
 export enum PropertyType {

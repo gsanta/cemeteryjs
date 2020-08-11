@@ -1,8 +1,8 @@
 import { without } from "../geometry/utils/Functions";
-import { PathView } from "../models/views/PathView";
-import { FeedbackType } from "../models/views/child_views/ChildView";
-import { EditPointView } from "../models/views/child_views/EditPointView";
-import { View, ViewType, ViewTag } from '../models/views/View';
+import { PathView } from "./views/PathView";
+import { FeedbackType } from "./views/child_views/ChildView";
+import { EditPointView } from "./views/child_views/EditPointView";
+import { View, ViewType, ViewTag } from './views/View';
 import { isView } from "./SceneStore";
 
 export class SelectionStore {

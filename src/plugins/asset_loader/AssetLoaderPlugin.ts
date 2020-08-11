@@ -1,4 +1,4 @@
-import { AbstractCanvasPlugin, calcOffsetFromDom } from '../../core/plugin_core/AbstractCanvasPlugin';
+import { AbstractCanvasPlugin, calcOffsetFromDom } from '../../core/plugins/AbstractCanvasPlugin';
 import { Point } from '../../core/geometry/shapes/Point';
 import { Registry } from '../../core/Registry';
 import { EngineService } from '../../core/services/EngineService';

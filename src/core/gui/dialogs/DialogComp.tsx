@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { CloseIconComponent } from '../../../plugins/common/toolbar/icons/CloseIconComponent';
 import { colors } from '../styles';
 import { UI_ContainerProps } from '../UI_ComponentProps';
-import { UI_Dialog } from '../../gui_builder/elements/surfaces/UI_Dialog';
+import { UI_Dialog } from '../../ui_regions/elements/surfaces/UI_Dialog';
 
 const DialogOverlayStyled = styled.div`
     position: absolute;

@@ -2,7 +2,7 @@ import { Color3, Mesh, MeshBuilder, Scene, Space, StandardMaterial, Vector3, Tex
 import { Registry } from '../Registry';
 import { Point } from '../geometry/shapes/Point';
 import { Rectangle } from '../geometry/shapes/Rectangle';
-import { MeshView } from '../models/views/MeshView';
+import { MeshView } from './views/MeshView';
 
 export class MaterialBuilder {
     static CreateMaterial(name: string, scene: Scene): StandardMaterial {

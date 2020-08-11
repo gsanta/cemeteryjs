@@ -1,6 +1,6 @@
-import { AbstractCanvasPlugin } from '../../../core/plugin_core/AbstractCanvasPlugin';
+import { AbstractCanvasPlugin } from '../../../core/plugins/AbstractCanvasPlugin';
 import { Rectangle } from '../../../core/geometry/shapes/Rectangle';
-import { MeshView } from '../../../core/models/views/MeshView';
+import { MeshView } from '../../../core/stores/views/MeshView';
 import { Registry } from '../../../core/Registry';
 import { IPointerEvent } from '../../../core/services/input/PointerService';
 import { AbstractTool, createRectFromMousePointer } from './AbstractTool';

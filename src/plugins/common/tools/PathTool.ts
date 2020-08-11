@@ -1,9 +1,9 @@
-import { AbstractCanvasPlugin } from "../../../core/plugin_core/AbstractCanvasPlugin";
+import { AbstractCanvasPlugin } from "../../../core/plugins/AbstractCanvasPlugin";
 import { Point } from "../../../core/geometry/shapes/Point";
-import { FeedbackType } from "../../../core/models/views/child_views/ChildView";
-import { EditPointView } from "../../../core/models/views/child_views/EditPointView";
-import { PathView } from "../../../core/models/views/PathView";
-import { ViewType, View } from "../../../core/models/views/View";
+import { FeedbackType } from "../../../core/stores/views/child_views/ChildView";
+import { EditPointView } from "../../../core/stores/views/child_views/EditPointView";
+import { PathView } from "../../../core/stores/views/PathView";
+import { ViewType, View } from "../../../core/stores/views/View";
 import { Registry } from "../../../core/Registry";
 import { IHotkeyEvent } from "../../../core/services/input/HotkeyService";
 import { IKeyboardEvent, Keyboard } from "../../../core/services/input/KeyboardService";

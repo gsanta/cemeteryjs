@@ -2,17 +2,17 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Camera2D } from '../../../../plugins/common/camera/Camera2D';
 import { PathViewContainerComponent } from '../../../../plugins/scene_editor/components/PathViewComponent';
-import { AbstractCanvasPlugin } from '../../../plugin_core/AbstractCanvasPlugin';
-import { UI_ElementType } from '../../../gui_builder/elements/UI_ElementType';
-import { UI_SvgCanvas } from '../../../gui_builder/elements/UI_SvgCanvas';
-import { View } from '../../../models/views/View';
+import { AbstractCanvasPlugin } from '../../../plugins/AbstractCanvasPlugin';
+import { UI_ElementType } from '../../../ui_regions/elements/UI_ElementType';
+import { UI_SvgCanvas } from '../../../ui_regions/elements/UI_SvgCanvas';
+import { View } from '../../../stores/views/View';
 import { PathMarkersComponent } from '../../../services/export/PathMarkersComponent';
 import { WheelListener } from '../../../services/WheelListener';
 import { AppContext, AppContextType } from '../../Context';
 import { colors } from '../../styles';
 import { UI_ComponentProps } from '../../UI_ComponentProps';
 import { DropLayerComp } from './DropLayerComp';
-import { UI_HtmlCanvas } from '../../../gui_builder/elements/UI_HtmlCanvas';
+import { UI_HtmlCanvas } from '../../../ui_regions/elements/UI_HtmlCanvas';
 
 const EditorComponentStyled = styled.div`
     position: relative;

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { UI_Select } from '../../gui_builder/elements/UI_Select';
+import { UI_Select } from '../../ui_regions/elements/UI_Select';
 import { ClearIconComponent } from '../icons/ClearIconComponent';
 import { UI_ComponentProps } from '../UI_ComponentProps';
 import './DropdownComponent.scss';

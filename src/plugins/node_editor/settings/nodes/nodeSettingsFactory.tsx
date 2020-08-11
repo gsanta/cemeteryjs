@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { NodeView } from "../../../../core/models/views/NodeView";
+import { NodeView } from "../../../../core/stores/views/NodeView";
 import { Registry } from "../../../../core/Registry";
 import { ViewSettings } from '../../../scene_editor/settings/AbstractSettings';
 import { NodeSettings } from "../NodeSettings";
@@ -11,7 +11,7 @@ import { AnimationNodeSettingsComponent } from "../AnimationNodeSettingsComponen
 import { KeyboardNodeSettings } from "./KeyboardNodeSettings";
 import { MeshNodeSettings } from './MeshNodeSettings';
 import { MoveNodeSettings } from './MoveNodeSettings';
-import { NodeType } from '../../../../core/models/nodes/NodeModel';
+import { NodeType } from '../../../../core/stores/game_objects/NodeModel';
 import { AnimationNodeSettings } from './AnimationNodeSettings';
 import { TurnNodeSettingsComponent } from '../TurnNodeSettingsComponent';
 import { TurnNodeSettings } from './TurnNodeSettings';

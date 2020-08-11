@@ -1,6 +1,6 @@
-import { NodeModel, NodeType } from "../../../../core/models/nodes/NodeModel";
+import { NodeModel, NodeType } from "../../../../core/stores/game_objects/NodeModel";
 import { AbstractNodeHandler } from "./AbstractNodeHandler";
-import { SplitNode } from "../../../../core/models/nodes/SplitNode";
+import { SplitNode } from "../../../../core/stores/nodes/SplitNode";
 
 export class SplitNodeHandler extends AbstractNodeHandler<SplitNode> {
     nodeType: NodeType.Split;

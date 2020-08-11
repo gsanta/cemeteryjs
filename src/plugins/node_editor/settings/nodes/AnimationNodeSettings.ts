@@ -1,5 +1,5 @@
-import { AnimationNode } from "../../../../core/models/nodes/AnimationNode";
-import { NodeView } from "../../../../core/models/views/NodeView";
+import { AnimationNode } from "../../../../core/stores/nodes/AnimationNode";
+import { NodeView } from "../../../../core/stores/views/NodeView";
 import { Registry } from "../../../../core/Registry";
 import { RenderTask } from "../../../../core/services/RenderServices";
 import { ViewSettings } from "../../../scene_editor/settings/AbstractSettings";

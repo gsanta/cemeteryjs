@@ -1,6 +1,6 @@
 import { Tools } from "babylonjs";
-import { AssetModel, AssetType } from "../../../core/models/game_objects/AssetModel";
-import { MeshView } from "../../../core/models/views/MeshView";
+import { AssetModel, AssetType } from "../../../core/stores/game_objects/AssetModel";
+import { MeshView } from "../../../core/stores/views/MeshView";
 import { EngineService } from "../../../core/services/EngineService";
 
 export class ThumbnailMaker {

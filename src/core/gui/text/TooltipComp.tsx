@@ -1,7 +1,7 @@
 import escapeHtml from 'escape-html';
 import * as React from 'react';
 import tippy from 'tippy.js';
-import { UI_Tooltip } from '../../gui_builder/elements/UI_Tooltip';
+import { UI_Tooltip } from '../../ui_regions/elements/UI_Tooltip';
 import { UI_ComponentProps } from '../UI_ComponentProps';
 
 export class TooltipComp extends React.Component<UI_ComponentProps<UI_Tooltip>> {

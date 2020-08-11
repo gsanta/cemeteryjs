@@ -3,7 +3,7 @@ import { Rectangle } from '../geometry/shapes/Rectangle';
 import { MeshLoaderService } from '../services/MeshLoaderService';
 import { RectangleFactory } from './RectangleFactory';
 import { Registry } from '../Registry';
-import { MeshModel } from '../models/game_objects/MeshModel';
+import { MeshModel } from './game_objects/MeshModel';
 import { EngineService } from '../services/EngineService';
 import { TextureLoaderService } from '../services/TextureLoaderService';
 import { AbstractStore } from './AbstractStore';

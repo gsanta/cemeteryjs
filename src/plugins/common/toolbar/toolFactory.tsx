@@ -7,7 +7,7 @@ import { PanIconComponent } from "./icons/PanIconComponent";
 import { PathIconComponent } from "./icons/PathIconComponent";
 import { ZoomInIconComponent } from "./icons/ZoomInIconComponent";
 import { ZoomOutIconComponent } from "./icons/ZoomOutIconComponent";
-import { AbstractCanvasPlugin } from "../../../core/plugin_core/AbstractCanvasPlugin";
+import { AbstractCanvasPlugin } from "../../../core/plugins/AbstractCanvasPlugin";
 import { Registry } from "../../../core/Registry";
 import { AbstractTool } from "../tools/AbstractTool";
 import { DeleteTool } from '../tools/DeleteTool';

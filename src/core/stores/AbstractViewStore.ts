@@ -1,5 +1,5 @@
 import { AbstractStore } from "./AbstractStore";
-import { View } from "../models/views/View";
+import { View } from "./views/View";
 import { Rectangle } from "../geometry/shapes/Rectangle";
 import { Polygon } from "../geometry/shapes/Polygon";
 

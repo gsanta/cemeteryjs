@@ -1,6 +1,6 @@
-import { activeToolId } from '../../core/gui_builder/elements/UI_Element';
-import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
-import { Canvas_3d_Plugin } from '../../core/plugin_core/Canvas_3d_Plugin';
+import { activeToolId } from '../../core/ui_regions/elements/UI_Element';
+import { UI_Layout } from '../../core/ui_regions/elements/UI_Layout';
+import { Canvas_3d_Plugin } from '../../core/plugins/Canvas_3d_Plugin';
 import { Registry } from '../../core/Registry';
 import { UI_Region } from '../../core/UI_Plugin';
 import { toolFactory } from '../common/toolbar/toolFactory';
@@ -8,9 +8,9 @@ import { ToolType } from '../common/tools/Tool';
 import { PluginServices } from '../common/PluginServices';
 import { EngineService } from '../../core/services/EngineService';
 import { MeshLoaderService } from '../../core/services/MeshLoaderService';
-import { MeshView } from '../../core/models/views/MeshView';
+import { MeshView } from '../../core/stores/views/MeshView';
 import { ThumbnailMakerController, ThumbnailMakerControllerId, ThumbnailMakerControllerProps } from './ThumbnailMakerController';
-import { UI_Dialog } from '../../core/gui_builder/elements/surfaces/UI_Dialog';
+import { UI_Dialog } from '../../core/ui_regions/elements/surfaces/UI_Dialog';
 
 export const ThumbnailDialogPluginId = 'thumbnail-dialog-plugin'; 
 export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {

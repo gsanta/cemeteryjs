@@ -1,5 +1,5 @@
 import { AbstractPluginService } from "./AbstractPluginService";
-import { AbstractCanvasPlugin } from "../../core/plugin_core/AbstractCanvasPlugin";
+import { AbstractCanvasPlugin } from "../../core/plugins/AbstractCanvasPlugin";
 import { EngineService } from "../../core/services/EngineService";
 import { UI_Region, UI_Plugin } from '../../core/UI_Plugin';
 

@@ -1,4 +1,4 @@
-import { AbstractCanvasPlugin } from "../../core/plugin_core/AbstractCanvasPlugin";
+import { AbstractCanvasPlugin } from "../../core/plugins/AbstractCanvasPlugin";
 import { Registry } from "../../core/Registry";
 
 

@@ -1,5 +1,5 @@
-import { ChildView } from '../../../core/models/views/child_views/ChildView';
-import { View } from '../../../core/models/views/View';
+import { ChildView } from '../../../core/stores/views/child_views/ChildView';
+import { View } from '../../../core/stores/views/View';
 import { Registry } from '../../../core/Registry';
 import { RenderTask } from "../../../core/services/RenderServices";
 import { isView, isFeedback } from '../../../core/stores/SceneStore';
@@ -8,7 +8,7 @@ import { SceneEditorPlugin, SceneEditorPluginId } from '../../scene_editor/Scene
 import { AbstractTool } from "./AbstractTool";
 import { ToolType } from "./Tool";
 import { IPointerEvent } from '../../../core/services/input/PointerService';
-import { AbstractCanvasPlugin } from '../../../core/plugin_core/AbstractCanvasPlugin';
+import { AbstractCanvasPlugin } from '../../../core/plugins/AbstractCanvasPlugin';
 import { UI_Region } from '../../../core/UI_Plugin';
 
 export class PointerTool extends AbstractTool {

@@ -2,8 +2,8 @@ import { Registry } from "../../Registry";
 import { Point } from "../../geometry/shapes/Point";
 import { IPointerEvent } from "./PointerService";
 import { DroppableItem } from "../../../plugins/common/tools/DragAndDropTool";
-import { View } from "../../models/views/View";
-import { AbstractCanvasPlugin } from '../../plugin_core/AbstractCanvasPlugin';
+import { View } from "../../stores/views/View";
+import { AbstractCanvasPlugin } from '../../plugins/AbstractCanvasPlugin';
 
 export class MousePointer {
     down: Point;

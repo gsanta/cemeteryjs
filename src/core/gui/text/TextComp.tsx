@@ -1,7 +1,7 @@
 
 
 import * as React from 'react';
-import { UI_Text } from '../../gui_builder/elements/UI_Text';
+import { UI_Text } from '../../ui_regions/elements/UI_Text';
 import { sizes } from '../styles';
 
 export interface TextCompProps {

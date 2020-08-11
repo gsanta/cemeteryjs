@@ -1,5 +1,5 @@
-import { NodeView } from "../../../../core/models/views/NodeView";
-import { getAllKeys, KeyboardNode } from "../../../../core/models/nodes/KeyboardNode";
+import { NodeView } from "../../../../core/stores/views/NodeView";
+import { getAllKeys, KeyboardNode } from "../../../../core/stores/nodes/KeyboardNode";
 import { ViewSettings } from "../../../scene_editor/settings/AbstractSettings";
 import { Registry } from "../../../../core/Registry";
 import { RenderTask } from "../../../../core/services/RenderServices";

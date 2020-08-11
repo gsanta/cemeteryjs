@@ -1,7 +1,7 @@
 import { Registry } from "../Registry";
-import { RouteModel } from "../models/game_objects/RouteModel";
+import { RouteModel } from "./game_objects/RouteModel";
 import { AbstractStore } from "./AbstractStore";
-import { IGameModel } from "../models/game_objects/IGameModel";
+import { IGameModel } from "./game_objects/IGameModel";
 
 export class GameStore extends AbstractStore {
     static id = 'game-store'; 

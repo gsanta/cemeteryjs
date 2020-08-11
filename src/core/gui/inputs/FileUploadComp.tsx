@@ -2,7 +2,7 @@ import React from "react"
 import { ButtonStyled } from "./ButtonComp"
 import { iconFactory } from "../icons/iconFactory"
 import { UI_ComponentProps } from "../UI_ComponentProps"
-import { UI_FileUpload } from "../../gui_builder/elements/UI_FileUpload"
+import { UI_FileUpload } from "../../ui_regions/elements/UI_FileUpload"
 import { useDropzone } from "react-dropzone"
 import styled from "styled-components";
 import { cssClassBuilder } from "../layout/RowComp"

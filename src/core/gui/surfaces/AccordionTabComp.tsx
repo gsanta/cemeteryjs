@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { UI_ComponentProps } from '../UI_ComponentProps';
-import { UI_Accordion } from '../../gui_builder/elements/surfaces/UI_Accordion';
+import { UI_Accordion } from '../../ui_regions/elements/surfaces/UI_Accordion';
 import { Accordion, Card, Button } from 'react-bootstrap';
 import { ArrowDownIconComponent } from '../icons/ArrowDownIconComponent';
 import { colors } from '../styles';

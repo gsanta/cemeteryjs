@@ -1,7 +1,7 @@
 import { Registry } from "../../core/Registry";
 import { AbstractSettings } from "../scene_editor/settings/AbstractSettings";
 import { AssetManagerPlugin } from "./AssetManagerPlugin";
-import { AssetModel } from "../../core/models/game_objects/AssetModel";
+import { AssetModel } from "../../core/stores/game_objects/AssetModel";
 import { AssetManagerDialogPluginId } from "./AssetManagerDialogPlugin";
 import { UI_Region } from "../../core/UI_Plugin";
 

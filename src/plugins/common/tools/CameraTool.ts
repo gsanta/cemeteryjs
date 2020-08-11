@@ -4,7 +4,7 @@ import { IKeyboardEvent, Keyboard } from '../../../core/services/input/KeyboardS
 import { IPointerEvent } from '../../../core/services/input/PointerService';
 import { AbstractTool } from './AbstractTool';
 import { ToolType, Cursor } from "./Tool";
-import { AbstractCanvasPlugin } from '../../../core/plugin_core/AbstractCanvasPlugin';
+import { AbstractCanvasPlugin } from '../../../core/plugins/AbstractCanvasPlugin';
 
 export class CameraTool extends AbstractTool {
     private panHotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, keyCodes: [Keyboard.Space], worksDuringMouseDown: true};

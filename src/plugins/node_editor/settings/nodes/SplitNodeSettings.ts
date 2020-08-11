@@ -1,5 +1,5 @@
-import { SplitNode } from '../../../../core/models/nodes/SplitNode';
-import { NodeView } from "../../../../core/models/views/NodeView";
+import { SplitNode } from '../../../../core/stores/nodes/SplitNode';
+import { NodeView } from "../../../../core/stores/views/NodeView";
 import { Registry } from "../../../../core/Registry";
 import { ViewSettings } from "../../../scene_editor/settings/AbstractSettings";
 

@@ -1,9 +1,9 @@
-import { MeshView } from "../models/views/MeshView";
-import { ViewType, View } from "../models/views/View";
+import { MeshView } from "../stores/views/MeshView";
+import { ViewType, View } from "../stores/views/View";
 import { Registry } from "../Registry";
 import { ImportService } from "./import/ImportService";
 import { MeshLoaderService } from "./MeshLoaderService";
-import { RouteModel } from "../models/game_objects/RouteModel";
+import { RouteModel } from "../stores/game_objects/RouteModel";
 
 export class GameService {
     serviceName = 'game-service';

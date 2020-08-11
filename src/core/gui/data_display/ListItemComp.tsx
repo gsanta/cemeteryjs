@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useDrag, DragElementWrapper, DragSourceOptions } from 'react-dnd';
 import styled from 'styled-components';
-import { UI_ListItem } from '../../gui_builder/elements/UI_ListItem';
+import { UI_ListItem } from '../../ui_regions/elements/UI_ListItem';
 import { colors } from '../styles';
 import { UI_ComponentProps } from '../UI_ComponentProps';
 

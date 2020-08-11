@@ -1,4 +1,4 @@
-import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
+import { UI_Layout } from '../../core/ui_regions/elements/UI_Layout';
 import { Registry } from '../../core/Registry';
 import { UI_Plugin, UI_Region } from '../../core/UI_Plugin';
 import { AssetManagerSidepanelController, AssetManagerSidepanelControllerProps, AssetManagerSidepanelControllerId } from './AssetManagerSidepanelController';

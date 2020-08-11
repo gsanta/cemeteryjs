@@ -1,8 +1,8 @@
-import { View } from "../../../core/models/views/View";
+import { View } from "../../../core/stores/views/View";
 import { IPluginJson } from './IPluginExporter';
 import { AppJson } from "../../../core/services/export/ExportService";
 import { Registry } from "../../../core/Registry";
-import { AbstractCanvasPlugin } from "../../../core/plugin_core/AbstractCanvasPlugin";
+import { AbstractCanvasPlugin } from "../../../core/plugins/AbstractCanvasPlugin";
 
 export interface PluginJson {
     _attributes: {

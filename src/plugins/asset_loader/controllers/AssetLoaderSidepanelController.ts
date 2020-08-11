@@ -1,6 +1,6 @@
-import { AssetModel, AssetType } from '../../../core/models/game_objects/AssetModel';
-import { MeshView } from '../../../core/models/views/MeshView';
-import { ViewType } from '../../../core/models/views/View';
+import { AssetModel, AssetType } from '../../../core/stores/game_objects/AssetModel';
+import { MeshView } from '../../../core/stores/views/MeshView';
+import { ViewType } from '../../../core/stores/views/View';
 import { Registry } from '../../../core/Registry';
 import { RenderTask } from '../../../core/services/RenderServices';
 import { AbstractSettings } from "../../scene_editor/settings/AbstractSettings";

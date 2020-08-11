@@ -1,12 +1,12 @@
-import { CanvasControllerId, CanvasControllerProps } from '../../core/controllers/CanvasController';
+import { CanvasControllerId, CanvasControllerProps } from '../../core/plugins/controllers/CanvasController';
 import { sort } from '../../core/geometry/utils/Functions';
 import { toDegree } from '../../core/geometry/utils/Measurements';
 import { colors } from '../../core/gui/styles';
-import { activeToolId } from '../../core/gui_builder/elements/UI_Element';
-import { UI_Layout } from '../../core/gui_builder/elements/UI_Layout';
-import { UI_SvgCanvas } from '../../core/gui_builder/elements/UI_SvgCanvas';
-import { ViewTag } from '../../core/models/views/View';
-import { Canvas_2d_Plugin } from '../../core/plugin_core/Canvas_2d_Plugin';
+import { activeToolId } from '../../core/ui_regions/elements/UI_Element';
+import { UI_Layout } from '../../core/ui_regions/elements/UI_Layout';
+import { UI_SvgCanvas } from '../../core/ui_regions/elements/UI_SvgCanvas';
+import { ViewTag } from '../../core/stores/views/View';
+import { Canvas_2d_Plugin } from '../../core/plugins/Canvas_2d_Plugin';
 import { Registry } from '../../core/Registry';
 import { toolFactory } from '../common/toolbar/toolFactory';
 import { ToolType } from '../common/tools/Tool';

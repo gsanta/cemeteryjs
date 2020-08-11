@@ -1,7 +1,6 @@
-import { AbstractCanvasPlugin } from '../core/plugin_core/AbstractCanvasPlugin';
+import { AbstractCanvasPlugin } from '../core/plugins/AbstractCanvasPlugin';
 import { AbstractSidepanelPlugin } from '../core/AbstractSidepanelPlugin';
 import { Registry } from '../core/Registry';
-import { RenderTask } from '../core/services/RenderServices';
 import { UI_Plugin, UI_Region } from '../core/UI_Plugin';
 import { AssetLoaderPlugin } from './asset_loader/AssetLoaderPlugin';
 import { AssetManagerDialogPlugin } from './asset_manager/AssetManagerDialogPlugin';

@@ -1,5 +1,5 @@
 import { Registry } from '../../core/Registry';
-import { AbstractController } from '../../core/controllers/AbstractController';
+import { AbstractController } from '../../core/plugins/controllers/AbstractController';
 import { RenderTask } from '../../core/services/RenderServices';
 import { UI_Plugin } from '../../core/UI_Plugin';
 

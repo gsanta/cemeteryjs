@@ -2,7 +2,7 @@ import { Registry } from '../../../core/Registry';
 import { RenderTask } from '../../../core/services/RenderServices';
 import { AbstractTool } from './AbstractTool';
 import { Cursor, ToolType } from "./Tool";
-import { AbstractCanvasPlugin } from '../../../core/plugin_core/AbstractCanvasPlugin';
+import { AbstractCanvasPlugin } from '../../../core/plugins/AbstractCanvasPlugin';
 
 export interface DroppableItem {
     itemType: string;

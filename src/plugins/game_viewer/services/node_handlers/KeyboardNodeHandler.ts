@@ -1,8 +1,8 @@
 import { AbstractNodeHandler } from './AbstractNodeHandler';
-import { KeyboardNode, KeyboardNodeSlot } from '../../../../core/models/nodes/KeyboardNode';
-import { NodeType } from '../../../../core/models/nodes/NodeModel';
+import { KeyboardNode, KeyboardNodeSlot } from '../../../../core/stores/nodes/KeyboardNode';
+import { NodeType } from '../../../../core/stores/game_objects/NodeModel';
 import { Registry } from '../../../../core/Registry';
-import { AbstractCanvasPlugin } from '../../../../core/plugin_core/AbstractCanvasPlugin';
+import { AbstractCanvasPlugin } from '../../../../core/plugins/AbstractCanvasPlugin';
 
 export class KeyboardNodeHandler extends AbstractNodeHandler<KeyboardNode> {
     nodeType: NodeType.Keyboard;

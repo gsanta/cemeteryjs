@@ -20,7 +20,7 @@
     },
     "include": [
       "src/**/*.ts",
-      "test/**/*.ts", "src/plugins/code_editor/CodeEditorComponent.tsx", "src/core/gui_builder/UI_Builder.tsx", "src/core/gui/svg/SvgRectComp.tsx"
+      "test/**/*.ts", "src/plugins/code_editor/CodeEditorComponent.tsx", "src/core/ui_regions/UI_Builder.tsx", "src/core/gui/svg/SvgRectComp.tsx"
     ],
     "exclude": [
       "node_modules"

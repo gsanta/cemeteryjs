@@ -8,7 +8,8 @@ import { Preferences, defaultPreferences } from './preferences/Preferences';
 export class Registry {
     stores: Stores;
     services: Services;
-    plugins: Plugins;
+    plugins: Plugins;    
+    ui_regions: UI_Regions;
     preferences: Preferences = defaultPreferences;
 
     constructor() {

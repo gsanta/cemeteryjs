@@ -1,6 +1,6 @@
 import { Registry } from "../../core/Registry";
 import { AxisGizmo } from "./AxisGizmo";
-import { AbstractCanvasPlugin } from "../../core/plugin_core/AbstractCanvasPlugin";
+import { AbstractCanvasPlugin } from "../../core/plugins/AbstractCanvasPlugin";
 
 export class Gizmos {
     private axisGizmo: AxisGizmo;

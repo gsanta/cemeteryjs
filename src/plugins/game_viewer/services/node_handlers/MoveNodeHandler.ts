@@ -1,8 +1,8 @@
-import { NodeType, NodeModel } from "../../../../core/models/nodes/NodeModel";
-import { MoveNode } from '../../../../core/models/nodes/MoveNode';
+import { NodeType, NodeModel } from "../../../../core/stores/game_objects/NodeModel";
+import { MoveNode } from '../../../../core/stores/nodes/MoveNode';
 import { AbstractNodeHandler } from "./AbstractNodeHandler";
-import { MeshNode } from "../../../../core/models/nodes/MeshNode";
-import { MeshModel } from "../../../../core/models/game_objects/MeshModel";
+import { MeshNode } from "../../../../core/stores/nodes/MeshNode";
+import { MeshModel } from "../../../../core/stores/game_objects/MeshModel";
 
 export class MoveNodeHandler extends AbstractNodeHandler<MoveNode> {
     nodeType: NodeType.Move;

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from "styled-components";
-import { UI_Box } from "../../gui_builder/elements/UI_Box";
+import { UI_Box } from "../../ui_regions/elements/UI_Box";
 import { UI_ContainerProps } from '../UI_ComponentProps';
 
 export function cssClassBuilder(...classes: string[]) {

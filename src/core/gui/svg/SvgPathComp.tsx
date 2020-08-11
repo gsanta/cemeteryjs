@@ -1,5 +1,5 @@
 import { UI_ComponentProps } from "../UI_ComponentProps";
-import { UI_SvgPath } from '../../gui_builder/elements/svg/UI_SvgPath';
+import { UI_SvgPath } from '../../ui_regions/elements/svg/UI_SvgPath';
 import * as React from 'react';
 
 export const SvgPathComp = (props: UI_ComponentProps<UI_SvgPath>) => {

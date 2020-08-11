@@ -1,5 +1,5 @@
-import { AbstractCanvasPlugin } from '../../../../core/plugin_core/AbstractCanvasPlugin';
-import { NodeModel, NodeType, SlotName } from '../../../../core/models/nodes/NodeModel';
+import { AbstractCanvasPlugin } from '../../../../core/plugins/AbstractCanvasPlugin';
+import { NodeModel, NodeType, SlotName } from '../../../../core/stores/game_objects/NodeModel';
 import { Registry } from '../../../../core/Registry';
 import { NodeService } from '../NodeService';
 

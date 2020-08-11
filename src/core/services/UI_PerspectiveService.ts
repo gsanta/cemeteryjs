@@ -8,7 +8,7 @@ import { LevelSettingsPluginId } from '../../plugins/level_settings/LevelSetting
 import { Registry } from '../Registry';
 import Split from 'split.js';
 import { UI_Region } from '../UI_Plugin';
-import { AbstractCanvasPlugin } from '../plugin_core/AbstractCanvasPlugin';
+import { AbstractCanvasPlugin } from '../plugins/AbstractCanvasPlugin';
 
 
 export class LayoutHandler {

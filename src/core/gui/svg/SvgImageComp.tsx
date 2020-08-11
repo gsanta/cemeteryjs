@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { UI_SvgImage } from '../../gui_builder/elements/svg/UI_SvgImage';
+import { UI_SvgImage } from '../../ui_regions/elements/svg/UI_SvgImage';
 import { UI_ComponentProps } from "../UI_ComponentProps";
 
 export const SvgImageComp = (props: UI_ComponentProps<UI_SvgImage>) => {

@@ -1,9 +1,9 @@
-import { AbstractCanvasPlugin } from '../../../core/plugin_core/AbstractCanvasPlugin';
+import { AbstractCanvasPlugin } from '../../../core/plugins/AbstractCanvasPlugin';
 import { Registry } from '../../../core/Registry';
 import { IHotkeyEvent } from '../../../core/services/input/HotkeyService';
 import { IKeyboardEvent } from '../../../core/services/input/KeyboardService';
 import { Cursor, Tool, ToolType } from './Tool';
-import { View } from '../../../core/models/views/View';
+import { View } from '../../../core/stores/views/View';
 import { IPointerEvent } from '../../../core/services/input/PointerService';
 import { AbstractViewStore } from '../../../core/stores/AbstractViewStore';
 import { Rectangle } from '../../../core/geometry/shapes/Rectangle';

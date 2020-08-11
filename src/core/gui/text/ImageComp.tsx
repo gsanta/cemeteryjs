@@ -1,7 +1,7 @@
 
 
 import * as React from 'react';
-import { UI_Image } from '../../gui_builder/elements/UI_Image';
+import { UI_Image } from '../../ui_regions/elements/UI_Image';
 import { UI_ComponentProps } from '../UI_ComponentProps';
 
 export const ImageComp = (props: UI_ComponentProps<UI_Image>) => {
