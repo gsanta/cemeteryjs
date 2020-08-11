@@ -5,7 +5,7 @@ import { MeshView } from '../../core/stores/views/MeshView';
 import { Registry } from '../../core/Registry';
 import { EngineService } from '../../core/services/EngineService';
 import { ThumbnailDialogPlugin } from './ThumbnailDialogPlugin';
-import { UI_Region } from '../../core/UI_Plugin';
+import { UI_Region } from '../../core/plugins/UI_Plugin';
 
 export enum ThumbnailMakerControllerProps {
     ThumbnailFromModel = 'ThumbnailFromModel',

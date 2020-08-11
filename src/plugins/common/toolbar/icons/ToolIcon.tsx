@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { colors } from "../../../../core/gui/styles";
-import { IconState } from "../../../../core/gui/icons/Icon";
+import { colors } from "../../../../core/ui_regions/components/styles";
+import { IconState } from "../../../../core/ui_regions/components/icons/Icon";
 
 export interface ToolIconProps {
     onClick?(): void;

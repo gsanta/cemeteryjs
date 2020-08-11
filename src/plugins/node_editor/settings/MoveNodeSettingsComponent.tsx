@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { ConnectedDropdownComponent } from '../../../core/gui/inputs/DropdownComponent';
-import { ConnectedSliderComponent } from '../../../core/gui/inputs/SliderComponent';
+import { ConnectedDropdownComponent } from '../../../core/ui_regions/components/inputs/DropdownComponent';
+import { ConnectedSliderComponent } from '../../../core/ui_regions/components/inputs/SliderComponent';
 import { FieldColumnStyled, LabelColumnStyled, LabeledField } from '../../scene_editor/settings/SettingsComponent';
 import { AbstractNodeSettingsComponent } from './AbstractNodeSettingsComponent';
 import { MoveNodeProps } from './nodes/MoveNodeSettings';

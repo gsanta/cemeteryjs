@@ -1,10 +1,10 @@
-import { Point } from "../../../geometry/shapes/Point";
+import { Point } from "../../../../utils/geometry/shapes/Point";
 import { NodeView } from "../NodeView";
 import { FeedbackType, ChildView } from "./ChildView";
 import { NodeConnectionView } from "../NodeConnectionView";
-import { sizes } from "../../../gui/styles";
+import { sizes } from "../../../ui_regions/components/styles";
 import { View, ViewJson } from "../View";
-import { Rectangle } from "../../../geometry/shapes/Rectangle";
+import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 
 export function isJoinPointView(view: View) {
     return view && view.viewType === FeedbackType.NodeConnectorFeedback;

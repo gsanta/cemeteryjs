@@ -1,7 +1,6 @@
 import { CanvasControllerId, CanvasControllerProps } from '../../core/plugins/controllers/CanvasController';
-import { sort } from '../../core/geometry/utils/Functions';
-import { toDegree } from '../../core/geometry/utils/Measurements';
-import { colors } from '../../core/gui/styles';
+import { toDegree } from '../../utils/geometry/Measurements';
+import { colors } from '../../core/ui_regions/components/styles';
 import { activeToolId } from '../../core/ui_regions/elements/UI_Element';
 import { UI_Layout } from '../../core/ui_regions/elements/UI_Layout';
 import { UI_SvgCanvas } from '../../core/ui_regions/elements/UI_SvgCanvas';
@@ -9,9 +8,10 @@ import { ViewTag } from '../../core/stores/views/View';
 import { Canvas_2d_Plugin } from '../../core/plugins/Canvas_2d_Plugin';
 import { Registry } from '../../core/Registry';
 import { toolFactory } from '../common/toolbar/toolFactory';
-import { ToolType } from '../common/tools/Tool';
+import { ToolType } from '../../core/plugins/tools/Tool';
 import { SceneEditorExporter } from './io/SceneEditorExporter';
 import { SceneEditorImporter } from './io/SceneEditorImporter';
+import { sort } from '../../utils/geometry/Functions';
 
 export const SceneEditorPluginId = 'scene-editor-plugin'; 
 export class SceneEditorPlugin extends Canvas_2d_Plugin {

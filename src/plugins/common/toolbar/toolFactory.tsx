@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ToolType, Tool } from "../tools/Tool";
+import { ToolType, Tool } from "../../../core/plugins/tools/Tool";
 import { RectangleIconComponent } from "./icons/RectangleIconComponent";
 import { DeleteIconComponent } from "./icons/DeleteIconComponent";
 import { SelectIconComponent } from "./icons/SelectIconComponent";
@@ -9,15 +9,15 @@ import { ZoomInIconComponent } from "./icons/ZoomInIconComponent";
 import { ZoomOutIconComponent } from "./icons/ZoomOutIconComponent";
 import { AbstractCanvasPlugin } from "../../../core/plugins/AbstractCanvasPlugin";
 import { Registry } from "../../../core/Registry";
-import { AbstractTool } from "../tools/AbstractTool";
-import { DeleteTool } from '../tools/DeleteTool';
-import { PointerTool } from '../tools/PointerTool';
-import { PathTool } from '../tools/PathTool';
-import { RectangleTool } from '../tools/RectangleTool';
-import { SelectTool } from '../tools/SelectTool';
-import { CameraTool } from '../tools/CameraTool';
-import { DragAndDropTool } from '../tools/DragAndDropTool';
-import { JoinTool } from '../tools/JoinTool';
+import { AbstractTool } from "../../../core/plugins/tools/AbstractTool";
+import { DeleteTool } from '../../../core/plugins/tools/DeleteTool';
+import { PointerTool } from '../../../core/plugins/tools/PointerTool';
+import { PathTool } from '../../../core/plugins/tools/PathTool';
+import { RectangleTool } from '../../../core/plugins/tools/RectangleTool';
+import { SelectTool } from '../../../core/plugins/tools/SelectTool';
+import { CameraTool } from '../../../core/plugins/tools/CameraTool';
+import { DragAndDropTool } from '../../../core/plugins/tools/DragAndDropTool';
+import { JoinTool } from '../../../core/plugins/tools/JoinTool';
 
 export function toolFactory(toolType: ToolType, plugin: AbstractCanvasPlugin, registry: Registry): Tool {
     switch(toolType) {

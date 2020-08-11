@@ -1,7 +1,7 @@
 import { Registry } from "../../Registry";
-import { Point } from "../../geometry/shapes/Point";
+import { Point } from "../../../utils/geometry/shapes/Point";
 import { IPointerEvent } from "./PointerService";
-import { DroppableItem } from "../../../plugins/common/tools/DragAndDropTool";
+import { DroppableItem } from "../../plugins/tools/DragAndDropTool";
 import { View } from "../../stores/views/View";
 import { AbstractCanvasPlugin } from '../../plugins/AbstractCanvasPlugin';
 

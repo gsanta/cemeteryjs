@@ -1,7 +1,7 @@
 import { Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, StandardMaterial } from 'babylonjs';
 import { AbstractPluginService } from '../../plugins/common/AbstractPluginService';
 import { AbstractCanvasPlugin } from '../plugins/AbstractCanvasPlugin';
-import { Point } from '../geometry/shapes/Point';
+import { Point } from '../../utils/geometry/shapes/Point';
 import { MeshView } from '../stores/views/MeshView';
 import { EngineService } from './EngineService';
 import { AssetModel } from '../stores/game_objects/AssetModel';

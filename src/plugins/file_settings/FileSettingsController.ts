@@ -2,9 +2,9 @@ import { AbstractController } from '../../core/plugins/controllers/AbstractContr
 import { Registry } from '../../core/Registry';
 import { saveAs } from 'file-saver';
 import { RenderTask } from '../../core/services/RenderServices';
-import { ToolType } from '../common/tools/Tool';
-import { DeleteTool } from '../common/tools/DeleteTool';
-import { UI_Plugin } from '../../core/UI_Plugin';
+import { ToolType } from '../../core/plugins/tools/Tool';
+import { DeleteTool } from '../../core/plugins/tools/DeleteTool';
+import { UI_Plugin } from '../../core/plugins/UI_Plugin';
 
 
 export enum FileSettingsProps {

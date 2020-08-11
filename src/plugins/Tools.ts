@@ -1,4 +1,4 @@
-import { Tool, ToolType } from "./common/tools/Tool";
+import { Tool, ToolType } from "../core/plugins/tools/Tool";
 
 export class Tools {
     tools: Tool[] = [];

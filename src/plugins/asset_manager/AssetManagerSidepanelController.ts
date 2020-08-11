@@ -1,7 +1,7 @@
 import { AbstractController } from "../../core/plugins/controllers/AbstractController";
 import { Registry } from "../../core/Registry";
 import { AssetManagerDialogPluginId } from "./AssetManagerDialogPlugin";
-import { UI_Plugin } from "../../core/UI_Plugin";
+import { UI_Plugin } from "../../core/plugins/UI_Plugin";
 
 export enum AssetManagerSidepanelControllerProps {
     IsAssetManagerDialogOpen = 'IsAssetManagerDialogOpen'

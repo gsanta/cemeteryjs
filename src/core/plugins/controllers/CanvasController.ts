@@ -1,8 +1,8 @@
 import { Registry } from "../../Registry";
 import { AbstractController } from './AbstractController';
 import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
-import { ToolType } from '../../../plugins/common/tools/Tool';
-import { CameraTool } from '../../../plugins/common/tools/CameraTool';
+import { ToolType } from '../tools/Tool';
+import { CameraTool } from '../tools/CameraTool';
 
 export enum CanvasControllerProps {
     ZoomIn = 'zoomIn',

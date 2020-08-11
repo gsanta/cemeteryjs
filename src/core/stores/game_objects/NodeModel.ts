@@ -1,4 +1,4 @@
-import { DroppableItem } from '../../../plugins/common/tools/DragAndDropTool';
+import { DroppableItem } from '../../plugins/tools/DragAndDropTool';
 import { NodeGraph } from '../../services/node/NodeGraph';
 import { NodeView } from '../views/NodeView';
 import { NodeSettings } from '../../../plugins/node_editor/settings/NodeSettings';

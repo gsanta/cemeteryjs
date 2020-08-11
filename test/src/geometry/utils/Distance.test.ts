@@ -1,6 +1,6 @@
-import { Distance } from "../../../../src/core/geometry/utils/Distance";
-import { Point } from "../../../../src/core/geometry/shapes/Point";
-import { Segment } from "../../../../src/core/geometry/shapes/Segment";
+import { Distance } from "../../../../src/utils/geometry/Distance";
+import { Point } from "../../../../src/utils/geometry/shapes/Point";
+import { Segment } from "../../../../src/utils/geometry/shapes/Segment";
 
 
 

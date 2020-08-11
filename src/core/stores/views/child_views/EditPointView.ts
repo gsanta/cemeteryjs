@@ -1,4 +1,4 @@
-import { Point } from "../../../geometry/shapes/Point";
+import { Point } from "../../../../utils/geometry/shapes/Point";
 import { ChildView, FeedbackType } from "./ChildView";
 import { PathView } from "../PathView";
 import { View, ViewJson } from "../View";

@@ -1,6 +1,6 @@
 import { AbstractController } from "../../core/plugins/controllers/AbstractController";
 import { Registry } from "../../core/Registry";
-import { UI_Plugin, UI_Region } from "../../core/UI_Plugin";
+import { UI_Plugin, UI_Region } from "../../core/plugins/UI_Plugin";
 
 export enum LevelSettingsProps {
     Level = 'Level',

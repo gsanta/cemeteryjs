@@ -1,8 +1,8 @@
-import { Point } from "../geometry/shapes/Point";
+import { Point } from "../../utils/geometry/shapes/Point";
 import { Camera2D } from "../../plugins/common/camera/Camera2D";
 import { Registry } from "../Registry";
 import { AbstractCanvasPlugin, calcOffsetFromDom } from "./AbstractCanvasPlugin";
-import { UI_Region } from "../UI_Plugin";
+import { UI_Region } from "./UI_Plugin";
 import { CanvasControllerId, CanvasController } from './controllers/CanvasController';
 
 function getScreenSize(canvasId: string): Point {

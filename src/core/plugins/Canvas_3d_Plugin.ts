@@ -1,9 +1,9 @@
 import { Camera2D } from "../../plugins/common/camera/Camera2D";
 import { toolFactory } from "../../plugins/common/toolbar/toolFactory";
-import { ToolType } from "../../plugins/common/tools/Tool";
+import { ToolType } from "./tools/Tool";
 import { Registry } from "../Registry";
 import { EngineService } from "../services/EngineService";
-import { UI_Region } from "../UI_Plugin";
+import { UI_Region } from "./UI_Plugin";
 import { AbstractCanvasPlugin, calcOffsetFromDom } from "./AbstractCanvasPlugin";
 import { ICamera } from "../../plugins/common/camera/ICamera";
 

@@ -1,10 +1,10 @@
-import { toDegree, toRadian } from '../../core/geometry/utils/Measurements';
+import { toDegree, toRadian } from '../../utils/geometry/Measurements';
 import { MeshView } from '../../core/stores/views/MeshView';
 import { Registry } from '../../core/Registry';
 import { RenderTask } from '../../core/services/RenderServices';
 import { AbstractController } from '../../core/plugins/controllers/AbstractController';
 import { PathView } from '../../core/stores/views/PathView';
-import { UI_Plugin, UI_Region } from '../../core/UI_Plugin';
+import { UI_Plugin, UI_Region } from '../../core/plugins/UI_Plugin';
 
 export enum PathObjectSettingsProps {
     PathId = 'PathId',

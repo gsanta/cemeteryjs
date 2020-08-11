@@ -7,7 +7,7 @@ import { AbstractSettings } from "../../scene_editor/settings/AbstractSettings";
 import { AssetLoaderPlugin } from '../AssetLoaderPlugin';
 import { MeshLoaderService } from '../../../core/services/MeshLoaderService';
 import { AssetLoaderDialogController } from './AssetLoaderDialogController';
-import { UI_Region } from '../../../core/UI_Plugin';
+import { UI_Region } from '../../../core/plugins/UI_Plugin';
 
 export enum AssetLoaderSidepanelControllerProps {
     Model = 'Model',

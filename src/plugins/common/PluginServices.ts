@@ -1,7 +1,7 @@
 import { AbstractPluginService } from "./AbstractPluginService";
 import { AbstractCanvasPlugin } from "../../core/plugins/AbstractCanvasPlugin";
 import { EngineService } from "../../core/services/EngineService";
-import { UI_Region, UI_Plugin } from '../../core/UI_Plugin';
+import { UI_Region, UI_Plugin } from '../../core/plugins/UI_Plugin';
 
 export class PluginServices<T extends AbstractCanvasPlugin> {
     private registeredPlugins: Map<UI_Region, UI_Plugin[]> = new Map();

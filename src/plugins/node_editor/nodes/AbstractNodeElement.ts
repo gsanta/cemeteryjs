@@ -1,8 +1,8 @@
 import { Registry } from '../../../core/Registry';
 import { NodeView } from '../../../core/stores/views/NodeView';
-import { colors } from '../../../core/gui/styles';
-import { ToolType } from '../../common/tools/Tool';
-import { UI_Plugin } from '../../../core/UI_Plugin';
+import { colors } from '../../../core/ui_regions/components/styles';
+import { ToolType } from '../../../core/plugins/tools/Tool';
+import { UI_Plugin } from '../../../core/plugins/UI_Plugin';
 import { UI_SvgCanvas } from '../../../core/ui_regions/elements/UI_SvgCanvas';
 import { UI_Box } from '../../../core/ui_regions/elements/UI_Box';
 import { UI_SvgGroup } from '../../../core/ui_regions/elements/svg/UI_SvgGroup';

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ConnectedDropdownComponent } from '../../../core/gui/inputs/DropdownComponent';
+import { ConnectedDropdownComponent } from '../../../core/ui_regions/components/inputs/DropdownComponent';
 import { FieldColumnStyled, LabelColumnStyled, LabeledField } from '../../scene_editor/settings/SettingsComponent';
 import { KeyboardInputNodeProps } from './nodes/KeyboardNodeSettings';
 import { AbstractNodeSettingsComponent } from './AbstractNodeSettingsComponent';

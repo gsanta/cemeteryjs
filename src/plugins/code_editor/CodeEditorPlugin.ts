@@ -1,8 +1,8 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { AbstractCanvasPlugin } from "../../core/plugins/AbstractCanvasPlugin";
-import { UI_Region } from "../../core/UI_Plugin";
+import { UI_Region } from "../../core/plugins/UI_Plugin";
 import { ICamera } from "../common/camera/ICamera";
-import { Tool } from "../common/tools/Tool";
+import { Tool } from "../../core/plugins/tools/Tool";
 
 export const initCode = `
     const gameRegistry = cemetery.init(document.getElementById('canvas'));

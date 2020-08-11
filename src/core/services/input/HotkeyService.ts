@@ -1,4 +1,4 @@
-import { Point } from '../../geometry/shapes/Point';
+import { Point } from '../../../utils/geometry/shapes/Point';
 import { Registry } from '../../Registry';
 import { IKeyboardEvent, isCtrlOrCommandDown } from './KeyboardService';
 import { PointerService, Wheel } from './PointerService';

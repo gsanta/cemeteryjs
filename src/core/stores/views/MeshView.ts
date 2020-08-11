@@ -1,9 +1,9 @@
 import { Mesh, Vector3, Axis, Space, Quaternion } from 'babylonjs';
 import { IGameModel } from '../game_objects/IGameModel';
-import { Point } from '../../geometry/shapes/Point';
-import { Rectangle } from '../../geometry/shapes/Rectangle';
-import { toVector3 } from '../../geometry/utils/GeomUtils';
-import { toDegree } from '../../geometry/utils/Measurements';
+import { Point } from '../../../utils/geometry/shapes/Point';
+import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
+import { toVector3 } from '../../../utils/geometry/GeomUtils';
+import { toDegree } from '../../../utils/geometry/Measurements';
 import { ViewType, View, ViewJson } from './View';
 import { MeshModel } from '../game_objects/MeshModel';
 

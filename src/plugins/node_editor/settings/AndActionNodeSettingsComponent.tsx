@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AppContext, AppContextType } from '../../../core/gui/Context';
+import { AppContext, AppContextType } from '../../../core/ui_regions/components/Context';
 import { NodeProps } from './nodes/nodeSettingsFactory';
 
 export class AndActionNodeSettingsComponent extends React.Component<NodeProps> {

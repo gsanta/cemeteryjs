@@ -1,7 +1,7 @@
 import { AbstractStore } from "./AbstractStore";
 import { View } from "./views/View";
-import { Rectangle } from "../geometry/shapes/Rectangle";
-import { Polygon } from "../geometry/shapes/Polygon";
+import { Rectangle } from "../../utils/geometry/shapes/Rectangle";
+import { Polygon } from "../../utils/geometry/shapes/Polygon";
 
 
 export class AbstractViewStore extends AbstractStore {

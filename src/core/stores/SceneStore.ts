@@ -1,5 +1,4 @@
-import { Point } from "../geometry/shapes/Point";
-import { without } from "../geometry/utils/Functions";
+import { Point } from "../../utils/geometry/shapes/Point";
 import { AssetModel, AssetType } from "./game_objects/AssetModel";
 import { ChildView } from "./views/child_views/ChildView";
 import { MeshView } from "./views/MeshView";
@@ -8,6 +7,7 @@ import { View, ViewType } from "./views/View";
 import { Registry } from "../Registry";
 import { AbstractViewStore } from "./AbstractViewStore";
 import { AssetStore } from "./AssetStore";
+import { without } from "../../utils/geometry/Functions";
 
 export function isFeedback(type: string) {
     return type.endsWith('Feedback');

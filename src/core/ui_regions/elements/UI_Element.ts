@@ -1,4 +1,4 @@
-import { UI_Plugin } from '../../UI_Plugin';
+import { UI_Plugin } from '../../plugins/UI_Plugin';
 import { UI_ElementType } from './UI_ElementType';
 import { AbstractCanvasPlugin } from '../../plugins/AbstractCanvasPlugin';
 

@@ -1,10 +1,10 @@
 import { View, ViewType, ViewJson } from "./View";
-import { Rectangle } from "../../geometry/shapes/Rectangle";
-import { Point } from "../../geometry/shapes/Point";
-import { minBy, maxBy } from "../../geometry/utils/Functions";
+import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
+import { Point } from "../../../utils/geometry/shapes/Point";
 import { EditPointView, EditPointViewJson } from './child_views/EditPointView';
 import { IGameModel } from "../game_objects/IGameModel";
 import { PathModel } from "../game_objects/PathModel";
+import { minBy, maxBy } from "../../../utils/geometry/Functions";
 
 const NULL_BOUNDING_BOX = new Rectangle(new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER), new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER));
 

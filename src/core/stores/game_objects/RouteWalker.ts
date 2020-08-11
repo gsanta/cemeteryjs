@@ -1,5 +1,5 @@
-import { Point } from "../../geometry/shapes/Point";
-import { Segment } from "../../geometry/shapes/Segment";
+import { Point } from "../../../utils/geometry/shapes/Point";
+import { Segment } from "../../../utils/geometry/shapes/Segment";
 import { PathCorner } from "./PathCorner";
 import { RouteModel, RouteEvent } from "./RouteModel";
 import { PathView } from "../views/PathView";

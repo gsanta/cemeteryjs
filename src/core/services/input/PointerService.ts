@@ -1,11 +1,11 @@
-import { DroppableItem } from "../../../plugins/common/tools/DragAndDropTool";
-import { Point } from "../../geometry/shapes/Point";
+import { DroppableItem } from "../../plugins/tools/DragAndDropTool";
+import { Point } from "../../../utils/geometry/shapes/Point";
 import { Registry } from "../../Registry";
 import { MousePointer } from "./MouseService";
 import { RenderTask } from "../RenderServices";
 import { View } from "../../stores/views/View";
-import { ToolType } from "../../../plugins/common/tools/Tool";
-import { UI_Region } from "../../UI_Plugin";
+import { ToolType } from "../../plugins/tools/Tool";
+import { UI_Region } from "../../plugins/UI_Plugin";
 import { AbstractCanvasPlugin } from '../../plugins/AbstractCanvasPlugin';
 
 export enum Wheel {

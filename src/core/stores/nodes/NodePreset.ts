@@ -1,7 +1,7 @@
 import { createNodeSettings } from "../../../plugins/node_editor/settings/nodes/nodeSettingsFactory";
-import { DroppableItem } from "../../../plugins/common/tools/DragAndDropTool";
-import { Point } from "../../geometry/shapes/Point";
-import { Rectangle } from "../../geometry/shapes/Rectangle";
+import { DroppableItem } from "../../plugins/tools/DragAndDropTool";
+import { Point } from "../../../utils/geometry/shapes/Point";
+import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { Registry } from "../../Registry";
 import { NodeType, SlotName } from "../game_objects/NodeModel";
 import { NodeView, defaultNodeViewConfig } from "../views/NodeView";

@@ -1,6 +1,6 @@
 import { Camera, Engine, Matrix, Scene, Vector3, Vector2 } from 'babylonjs';
 import { AdvancedDynamicTexture, Line, Button, Control } from 'babylonjs-gui';
-import { Point } from '../../core/geometry/shapes/Point';
+import { Point } from '../../utils/geometry/shapes/Point';
 import { Registry } from '../../core/Registry';
 import { Camera3D } from '../common/camera/Camera3D';
 import { AbstractCanvasPlugin } from '../../core/plugins/AbstractCanvasPlugin';

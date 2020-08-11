@@ -1,4 +1,4 @@
-import { Rectangle } from "../../geometry/shapes/Rectangle";
+import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { FeedbackType } from "./child_views/ChildView";
 
 export class RectSelectFeedback {

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { AppContext, AppContextType } from '../../../core/gui/Context';
-import { ConnectedDropdownComponent } from '../../../core/gui/inputs/DropdownComponent';
+import { AppContext, AppContextType } from '../../../core/ui_regions/components/Context';
+import { ConnectedDropdownComponent } from '../../../core/ui_regions/components/inputs/DropdownComponent';
 import { FieldColumnStyled, LabelColumnStyled, LabeledField } from '../../scene_editor/settings/SettingsComponent';
 import { NodeProps } from './nodes/nodeSettingsFactory';
 import { MeshNodeProps } from './nodes/MeshNodeSettings';

@@ -27,7 +27,7 @@ import { UI_HtmlCanvas } from './elements/UI_HtmlCanvas';
 import { UI_ActionIcon } from './elements/toolbar/UI_ActionIcon';
 import { UI_IconSeparator } from './elements/toolbar/UI_IconSeparator';
 import { UI_Dialog } from './elements/surfaces/UI_Dialog';
-import { UI_Plugin } from '../UI_Plugin';
+import { UI_Plugin } from '../plugins/UI_Plugin';
 import { UI_Layout } from './elements/UI_Layout';
 import { UI_Image } from './elements/UI_Image';
 

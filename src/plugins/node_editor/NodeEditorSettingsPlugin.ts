@@ -2,7 +2,7 @@ import { UI_Accordion } from '../../core/ui_regions/elements/surfaces/UI_Accordi
 import { UI_Container } from '../../core/ui_regions/elements/UI_Container';
 import { NodeCategory, NodeModel } from '../../core/stores/game_objects/NodeModel';
 import { Registry } from '../../core/Registry';
-import { UI_Plugin, UI_Region } from '../../core/UI_Plugin';
+import { UI_Plugin, UI_Region } from '../../core/plugins/UI_Plugin';
 import { NodeEditorSettingsController, NodeEditorSettingsControllerId } from './NodeEditorSettingsController';
 
 export const NodeEditorSettingsPluginId = 'node_editor_settings_plugin'; 

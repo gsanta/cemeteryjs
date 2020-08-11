@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { colors } from '../../../core/gui/styles';
+import { colors } from '../../../core/ui_regions/components/styles';
 import { PathView } from '../../../core/stores/views/PathView';
 import { EditPointView } from '../../../core/stores/views/child_views/EditPointView';
 import { Registry } from '../../../core/Registry';

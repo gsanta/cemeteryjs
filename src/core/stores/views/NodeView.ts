@@ -1,6 +1,6 @@
 import { ViewSettings } from "../../../plugins/scene_editor/settings/AbstractSettings";
-import { Point } from "../../geometry/shapes/Point";
-import { Rectangle } from "../../geometry/shapes/Rectangle";
+import { Point } from "../../../utils/geometry/shapes/Point";
+import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { NodeGraph } from '../../services/node/NodeGraph';
 import { createNode } from "../nodes/nodeFactory";
 import { NodeModel, SlotName, NodeModelJson } from '../game_objects/NodeModel';

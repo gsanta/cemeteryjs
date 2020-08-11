@@ -1,7 +1,7 @@
 import { Registry } from '../../core/Registry';
 import { AbstractController } from '../../core/plugins/controllers/AbstractController';
 import { RenderTask } from '../../core/services/RenderServices';
-import { UI_Plugin } from '../../core/UI_Plugin';
+import { UI_Plugin } from '../../core/plugins/UI_Plugin';
 
 export enum LayoutSettingsProps {
     AllLayouts = 'AllLayouts',

@@ -1,6 +1,6 @@
 import { ViewType, View, ViewJson } from "./View";
 import { JoinPointView } from "./child_views/JoinPointView";
-import { Rectangle } from "../../geometry/shapes/Rectangle";
+import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { NodeView } from "./NodeView";
 import { SlotName } from '../game_objects/NodeModel';
 

@@ -1,7 +1,7 @@
-import { Rectangle } from "../../../../src/core/geometry/shapes/Rectangle";
-import { Point } from "../../../../src/core/geometry/shapes/Point";
-import { Polygon } from "../../../../src/core/geometry/shapes/Polygon";
-import { Segment } from "../../../../src/core/geometry/shapes/Segment";
+import { Rectangle } from "../../../../src/utils/geometry/shapes/Rectangle";
+import { Point } from "../../../../src/utils/geometry/shapes/Point";
+import { Polygon } from "../../../../src/utils/geometry/shapes/Polygon";
+import { Segment } from "../../../../src/utils/geometry/shapes/Segment";
 
 describe('Polygon', () => {
     describe(`setPoint`, () => {

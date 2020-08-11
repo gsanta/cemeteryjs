@@ -1,14 +1,14 @@
 import { AbstractCanvasPlugin, calcOffsetFromDom } from '../../core/plugins/AbstractCanvasPlugin';
-import { Point } from '../../core/geometry/shapes/Point';
+import { Point } from '../../utils/geometry/shapes/Point';
 import { Registry } from '../../core/Registry';
 import { EngineService } from '../../core/services/EngineService';
 import { MeshLoaderService } from '../../core/services/MeshLoaderService';
-import { UI_Region } from '../../core/UI_Plugin';
+import { UI_Region } from '../../core/plugins/UI_Plugin';
 import { ICamera } from '../common/camera/ICamera';
 import { PluginServices } from '../common/PluginServices';
 import { PluginSettings } from '../common/PluginSettings';
 import { toolFactory } from '../common/toolbar/toolFactory';
-import { ToolType } from '../common/tools/Tool';
+import { ToolType } from '../../core/plugins/tools/Tool';
 import { AssetLoaderDialogController } from './controllers/AssetLoaderDialogController';
 import { AssetLoaderSidepanelController } from './controllers/AssetLoaderSidepanelController';
 (<any> window).earcut = require('earcut');

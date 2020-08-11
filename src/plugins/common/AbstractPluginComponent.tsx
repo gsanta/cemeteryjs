@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AppContext, AppContextType } from '../../core/gui/Context';
+import { AppContext, AppContextType } from '../../core/ui_regions/components/Context';
 import { AbstractCanvasPlugin } from '../../core/plugins/AbstractCanvasPlugin';
 
 export interface PluginProps {

@@ -1,5 +1,5 @@
-import { Rectangle } from "../../geometry/shapes/Rectangle";
-import { Point } from "../../geometry/shapes/Point";
+import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
+import { Point } from "../../../utils/geometry/shapes/Point";
 
 export enum ViewType {
     MeshView = 'MeshView',

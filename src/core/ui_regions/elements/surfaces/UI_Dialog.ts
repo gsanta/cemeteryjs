@@ -2,7 +2,7 @@
 
 import { UI_ElementType } from "../UI_ElementType";
 import { UI_Layout } from '../UI_Layout';
-import { UI_Region, UI_Plugin } from "../../../UI_Plugin";
+import { UI_Region, UI_Plugin } from "../../../plugins/UI_Plugin";
 import { GlobalControllerProps } from '../../../plugins/controllers/AbstractController';
 
 export class UI_Dialog extends UI_Layout {

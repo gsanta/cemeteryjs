@@ -1,7 +1,7 @@
-import { DroppableItem } from '../../plugins/common/tools/DragAndDropTool';
+import { DroppableItem } from '../plugins/tools/DragAndDropTool';
 import { createNodeSettings } from '../../plugins/node_editor/settings/nodes/nodeSettingsFactory';
-import { Point } from '../geometry/shapes/Point';
-import { Rectangle } from '../geometry/shapes/Rectangle';
+import { Point } from '../../utils/geometry/shapes/Point';
+import { Rectangle } from '../../utils/geometry/shapes/Rectangle';
 import { DroppableNode, NodeModel, NodeType } from './game_objects/NodeModel';
 import { DroppablePreset, NodePreset } from './nodes/NodePreset';
 import { NodeConnectionView } from './views/NodeConnectionView';

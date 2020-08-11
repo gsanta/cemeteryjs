@@ -1,7 +1,7 @@
-import { Tool } from '../../../plugins/common/tools/Tool';
+import { Tool } from '../../plugins/tools/Tool';
 import { Registry } from '../../Registry';
 import { RenderTask } from '../RenderServices';
-import { UI_Region } from '../../UI_Plugin';
+import { UI_Region } from '../../plugins/UI_Plugin';
 import { AbstractCanvasPlugin } from '../../plugins/AbstractCanvasPlugin';
 
 export class ToolHandler {

@@ -1,11 +1,11 @@
-import { toDegree, toRadian } from '../../core/geometry/utils/Measurements';
+import { toDegree, toRadian } from '../../utils/geometry/Measurements';
 import { MeshView } from '../../core/stores/views/MeshView';
 import { Registry } from '../../core/Registry';
 import { AbstractController } from '../../core/plugins/controllers/AbstractController';
 import { ThumbnailDialogPluginId } from './ThumbnailDialogPlugin';
 import { AssetModel, AssetType } from '../../core/stores/game_objects/AssetModel';
 import { ObjectSettingsPlugin } from './ObjectSettingsPlugin';
-import { UI_Region } from '../../core/UI_Plugin';
+import { UI_Region } from '../../core/plugins/UI_Plugin';
 
 export enum MeshObjectSettingsProps {
     MeshId = 'MeshId',

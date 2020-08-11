@@ -1,9 +1,9 @@
 
 import * as React from 'react';
-import { AppContext, AppContextType } from '../../../core/gui/Context';
+import { AppContext, AppContextType } from '../../../core/ui_regions/components/Context';
 import { NodeProps } from './nodes/nodeSettingsFactory';
 import styled from 'styled-components';
-import { sizes } from '../../../core/gui/styles';
+import { sizes } from '../../../core/ui_regions/components/styles';
 
 const SlotRowStyled = styled.div`
     height: ${sizes.nodes.slotHeight}px;

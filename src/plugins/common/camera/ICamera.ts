@@ -1,4 +1,4 @@
-import { Point } from "../../../core/geometry/shapes/Point";
+import { Point } from "../../../utils/geometry/shapes/Point";
 import { MousePointer } from "../../../core/services/input/MouseService";
 
 export interface ICamera {

@@ -1,5 +1,5 @@
 import { Registry } from '../../Registry';
-import { UI_Plugin } from '../../UI_Plugin';
+import { UI_Plugin } from '../UI_Plugin';
 
 export enum GlobalControllerProps {
     CloseDialog = 'CloseDialog'

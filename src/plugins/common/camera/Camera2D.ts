@@ -1,5 +1,5 @@
-import { Point } from "../../../core/geometry/shapes/Point";
-import { Rectangle } from "../../../core/geometry/shapes/Rectangle";
+import { Point } from "../../../utils/geometry/shapes/Point";
+import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { MousePointer } from "../../../core/services/input/MouseService";
 import { RenderTask } from "../../../core/services/RenderServices";
 import { ICamera } from './ICamera';

@@ -1,5 +1,5 @@
 import { AbstractController } from "../../core/plugins/controllers/AbstractController";
-import { UI_Plugin } from "../../core/UI_Plugin";
+import { UI_Plugin } from "../../core/plugins/UI_Plugin";
 import { Registry } from "../../core/Registry";
 import { DroppableNode } from "../../core/stores/game_objects/NodeModel";
 

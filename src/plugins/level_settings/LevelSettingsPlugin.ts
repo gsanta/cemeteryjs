@@ -1,4 +1,4 @@
-import { UI_Plugin, UI_Region } from "../../core/UI_Plugin";
+import { UI_Plugin, UI_Region } from "../../core/plugins/UI_Plugin";
 import { Registry } from "../../core/Registry";
 import { UI_Layout } from "../../core/ui_regions/elements/UI_Layout";
 import { LevelSettingsController, LevelSettingsProps, LevelSettingsControllerId } from './LevelSettingsController';
