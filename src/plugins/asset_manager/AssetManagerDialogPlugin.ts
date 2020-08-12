@@ -2,6 +2,9 @@ import { UI_Plugin, UI_Region } from '../../core/plugins/UI_Plugin';
 import { UI_Layout } from '../../core/ui_regions/elements/UI_Layout';
 import { UI_Table } from '../../core/ui_regions/elements/UI_Table';
 import { AssetType } from '../../core/stores/game_objects/AssetModel';
+import { Registry } from '../../core/Registry';
+import { AssetManagerSidepanelPluginId } from './AssetManagerSidepanelPlugin';
+import { AssetManagerDialogControllerId, AssetManagerDialogController } from './AssetManagerDialogController';
 
 export const AssetManagerDialogPluginId = 'asset-manager-dialog-plugin'; 
 export class AssetManagerDialogPlugin extends UI_Plugin {
@@ -9,11 +12,19 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
     region = UI_Region.Dialog;
     displayName = 'Asset manager';
 
-    // constructor() {
 
-    // }
+    constructor(registry: Registry) {
+        super(registry);
+
+        
+        this.controllers.set(AssetManagerDialogControllerId, new AssetManagerDialogController(this, registry));
+    }
+
 
     renderInto(layout: UI_Layout): UI_Layout {
+        layout.controllerId = AssetManagerDialogControllerId;
+        // layout.controllerId = AssetManagere;
+
         const row = layout.row({ key: '1' });
 
         const table = row.table(null);

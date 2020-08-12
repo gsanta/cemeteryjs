@@ -1,22 +1,22 @@
 import { AbstractCanvasPlugin } from '../core/plugins/AbstractCanvasPlugin';
 import { AbstractSidepanelPlugin } from '../core/plugins/AbstractSidepanelPlugin';
-import { Registry } from '../core/Registry';
 import { UI_Plugin, UI_Region } from '../core/plugins/UI_Plugin';
+import { Registry } from '../core/Registry';
 import { AssetLoaderPlugin } from './asset_loader/AssetLoaderPlugin';
 import { AssetManagerDialogPlugin } from './asset_manager/AssetManagerDialogPlugin';
 import { AssetManagerPlugin } from './asset_manager/AssetManagerPlugin';
-import { AssetManagerSidepanelPlugin, AssetManagerSidepanelPluginId } from './asset_manager/AssetManagerSidepanelPlugin';
+import { AssetManagerSidepanelPlugin } from './asset_manager/AssetManagerSidepanelPlugin';
 import { CodeEditorPlugin } from './code_editor/CodeEditorPlugin';
 import { AbstractPluginComponentFactory } from './common/AbstractPluginComponentFactory';
-import { FileSettingsPlugin, FileSettingsPluginId } from './file_settings/FileSettingsPlugin';
+import { FileSettingsPlugin } from './file_settings/FileSettingsPlugin';
 import { GameViewerPlugin } from './game_viewer/GameViewerPlugin';
-import { LayoutSettingsPlugin, LayoutSettingsPluginId } from './layout_settings/LayoutSettingsPlugin';
-import { LevelSettingsPlugin, LevelSettingsPluginId } from './level_settings/LevelSettingsPlugin';
+import { LayoutSettingsPlugin } from './layout_settings/LayoutSettingsPlugin';
+import { LevelSettingsPlugin } from './level_settings/LevelSettingsPlugin';
 import { NodeEditorPlugin } from './node_editor/NodeEditorPlugin';
-import { NodeEditorSettingsPlugin, NodeEditorSettingsPluginId } from './node_editor/NodeEditorSettingsPlugin';
-import { ObjectSettingsPlugin, ObjectSettingsPluginId } from './object_settings/ObjectSettingsPlugin';
+import { NodeEditorSettingsPlugin } from './node_editor/NodeEditorSettingsPlugin';
+import { ObjectSettingsPlugin } from './object_settings/ObjectSettingsPlugin';
 import { ThumbnailDialogPlugin } from './object_settings/ThumbnailDialogPlugin';
-import { SceneEditorPlugin, SceneEditorPluginId } from './scene_editor/SceneEditorPlugin';
+import { SceneEditorPlugin } from './scene_editor/SceneEditorPlugin';
 
 export class Plugins {
     // private plugins: Map<string, UI_Plugin> = new Map();
@@ -58,10 +58,10 @@ export class Plugins {
 
         this.registerPlugin(new FileSettingsPlugin(this.registry));
         this.registerPlugin(new LayoutSettingsPlugin(this.registry));
+        this.registerPlugin(new AssetManagerSidepanelPlugin(this.registry));
 
         this.registerPlugin(new ObjectSettingsPlugin(this.registry));
         this.registerPlugin(new LevelSettingsPlugin(this.registry));
-        this.registerPlugin(new AssetManagerSidepanelPlugin(this.registry));
         this.registerPlugin(new AssetManagerDialogPlugin(this.registry));
         this.registerPlugin(new ThumbnailDialogPlugin(this.registry));
         this.registerPlugin(new NodeEditorSettingsPlugin(this.registry));

@@ -1,8 +1,8 @@
-import { UI_Plugin, UI_Region } from '../../core/plugins/UI_Plugin';
-import { FileSettingsController, FileSettingsProps, FileSettingsControllerId } from './FileSettingsController';
+import { AbstractSidepanelPlugin } from '../../core/plugins/AbstractSidepanelPlugin';
+import { UI_Region } from '../../core/plugins/UI_Plugin';
 import { Registry } from '../../core/Registry';
 import { UI_Layout } from '../../core/ui_regions/elements/UI_Layout';
-import { AbstractSidepanelPlugin } from '../../core/plugins/AbstractSidepanelPlugin';
+import { FileSettingsController, FileSettingsControllerId, FileSettingsProps } from './FileSettingsController';
 
 export const FileSettingsPluginId = 'file-settings-plugin'; 
 export class FileSettingsPlugin extends AbstractSidepanelPlugin {

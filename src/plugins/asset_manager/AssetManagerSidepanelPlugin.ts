@@ -6,7 +6,9 @@ import { AssetManagerSidepanelController, AssetManagerSidepanelControllerProps, 
 export const AssetManagerSidepanelPluginId = 'asset-manager-sidepanel-plugin' 
 export class AssetManagerSidepanelPlugin extends UI_Plugin {
     id = 'asset-manager-sidepanel-plugin';
+    displayName = 'Asset manager';
     region = UI_Region.Sidepanel;
+    isGlobalPlugin = true;
 
     constructor(registry: Registry) {
         super(registry);

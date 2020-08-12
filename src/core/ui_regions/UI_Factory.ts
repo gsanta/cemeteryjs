@@ -30,6 +30,7 @@ import { UI_Dialog } from './elements/surfaces/UI_Dialog';
 import { UI_Plugin } from '../plugins/UI_Plugin';
 import { UI_Layout } from './elements/UI_Layout';
 import { UI_Image } from './elements/UI_Image';
+import { UI_Column } from './elements/UI_Column';
 
 export class UI_Factory {
     static layout(plugin: UI_Plugin): UI_Layout {
@@ -55,6 +56,18 @@ export class UI_Factory {
         this.setController(parent, row, config);
 
         return row;
+    }
+
+    static column(parent: UI_Container, config: { controllerId?: string, key: string}): UI_Column {
+        const column = new UI_Column(parent.plugin);
+        column.key = config && config.key;
+
+        column.generateId(parent);
+        parent.children.push(column);
+
+        this.setController(parent, column, config);
+
+        return column;
     }
 
     static box(parent: UI_Container, config: { controllerId?: string, key: string}): UI_Box {

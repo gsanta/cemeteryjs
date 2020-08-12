@@ -9,6 +9,7 @@ import { Registry } from '../Registry';
 import Split from 'split.js';
 import { UI_Region } from '../plugins/UI_Plugin';
 import { AbstractCanvasPlugin } from '../plugins/AbstractCanvasPlugin';
+import { AssetManagerSidepanelPluginId } from '../../plugins/asset_manager/AssetManagerSidepanelPlugin';
 
 
 export class LayoutHandler {

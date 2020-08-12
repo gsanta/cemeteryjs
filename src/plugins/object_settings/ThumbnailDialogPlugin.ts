@@ -55,7 +55,11 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
         canvas.width = '300px';
         canvas.height = '300px';
 
-        const image = row.image({key: '1'});
+        const column = row.column({ key: 'column1' });
+        const button = column.button(ThumbnailMakerControllerProps.ClearThumbnail);
+        button.label = 'Clear thumbnail';
+
+        const image = column.image({key: '1'});
         image.width = '200px';
         image.height = '200px';
 

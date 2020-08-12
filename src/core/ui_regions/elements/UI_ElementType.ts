@@ -5,6 +5,7 @@ export enum UI_ElementType {
     Layout = 'Layout',
     Dialog = 'Dialog',
     Row = 'Row',
+    Column = 'Column',
     Box = 'Box',
     Button = 'Button',
     Select = 'Select',

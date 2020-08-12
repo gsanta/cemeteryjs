@@ -58,6 +58,8 @@ import { IconSeparatorComp } from './components/surfaces/toolbar/IconSeparatorCo
 import { UI_Dialog } from './elements/surfaces/UI_Dialog';
 import { DialogComp } from './components/dialogs/DialogComp';
 import { UI_Image } from './elements/UI_Image';
+import { UI_Column } from './elements/UI_Column';
+import { ColumnComp } from './components/layout/ColumnComp';
 
 
 export class UI_Builder {
@@ -81,6 +83,9 @@ export class UI_Builder {
             case UI_ElementType.Row:
                 const row = element as UI_Row;
                 return <RowComp key={row.id} element={row}>{this.buildChildren(element, plugin)}</RowComp>;
+            case UI_ElementType.Column:
+                const column = element as UI_Column;
+                return <ColumnComp key={column.id} element={column}>{this.buildChildren(element, plugin)}</ColumnComp>;
             case UI_ElementType.Accordion:
                 const accordionTab = element as UI_Accordion;
                 return <AccordionTabComp key={accordionTab.id} element={accordionTab}>{this.buildChildren(element, plugin)}</AccordionTabComp>;

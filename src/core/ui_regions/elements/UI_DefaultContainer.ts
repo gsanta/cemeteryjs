@@ -5,6 +5,9 @@ import { UI_Button } from './UI_Button';
 import { UI_Row } from './UI_Row';
 import { UI_ListItem } from './UI_ListItem';
 import { UI_Box } from './UI_Box';
+import { UI_Column } from './UI_Column';
+import { UI_HtmlCanvas } from './UI_HtmlCanvas';
+import { UI_Image } from './UI_Image';
 
 export class UI_DefaultContainer extends UI_Container {
     listItem(config: {controllerId?: string, prop: string}): UI_ListItem {
@@ -13,6 +16,10 @@ export class UI_DefaultContainer extends UI_Container {
 
     row(config: {controllerId?: string, key: string}): UI_Row {
         return UI_Factory.row(this, config);
+    }
+
+    column(config: {controllerId?: string, key: string}): UI_Column {
+        return UI_Factory.column(this, config);
     }
 
     box(config: {controllerId?: string, key: string}): UI_Box {
@@ -49,5 +56,13 @@ export class UI_DefaultContainer extends UI_Container {
 
     accordion(config: {controllerId?: string}) {
         return UI_Factory.accordion(this, config);
+    }
+
+    htmlCanvas(config: {controllerId?: string}): UI_HtmlCanvas {
+        return UI_Factory.htmlCanvas(this, config);
+    }
+
+    image(config: {key: string}): UI_Image {
+        return UI_Factory.image(this, config);
     }
 }

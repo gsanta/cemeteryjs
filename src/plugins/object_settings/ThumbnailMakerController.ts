@@ -9,7 +9,8 @@ import { UI_Region } from '../../core/plugins/UI_Plugin';
 
 export enum ThumbnailMakerControllerProps {
     ThumbnailFromModel = 'ThumbnailFromModel',
-    ThumbnailFromFile = 'ThumbnailFromFile'
+    ThumbnailFromFile = 'ThumbnailFromFile',
+    ClearThumbnail = 'ClearThumbnail'
 }
 
 export const ThumbnailMakerControllerId = 'thumbnail_maker_controller_id';
@@ -28,6 +29,30 @@ export class ThumbnailMakerController extends AbstractController<ThumbnailMakerC
                 plugin.meshView.thumbnailId = assetModel.id;
 
                 this.registry.services.render.reRender(UI_Region.Dialog);
+            });
+
+        this.createPropHandler<{data: string, path: string}>(ThumbnailMakerControllerProps.ThumbnailFromFile)
+            .onChange((val) => {
+                const assetModel = new AssetModel({data: val.data, path: val.path, assetType: AssetType.Thumbnail});
+                this.registry.stores.assetStore.addAsset(assetModel);
+                this.registry.services.localStore.saveAsset(assetModel);
+                plugin.meshView.thumbnailId = assetModel.id;
+
+                this.registry.services.render.reRender(UI_Region.Dialog);
+            });
+
+        
+        this.createPropHandler(ThumbnailMakerControllerProps.ClearThumbnail)
+            .onClick(() => {
+                const thumbnailId = plugin.meshView.thumbnailId;
+                
+                if (thumbnailId) {
+                    const assetModel = this.registry.stores.assetStore.getAssetById(thumbnailId);
+                    this.registry.stores.assetStore.deleteAsset(assetModel);
+
+                    plugin.meshView.thumbnailId = undefined;
+                    this.registry.services.render.reRender(UI_Region.Dialog);
+                }
             });
     }
 
