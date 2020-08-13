@@ -2,7 +2,6 @@ import { AbstractCanvasPlugin } from '../core/plugins/AbstractCanvasPlugin';
 import { AbstractSidepanelPlugin } from '../core/plugins/AbstractSidepanelPlugin';
 import { UI_Plugin, UI_Region } from '../core/plugins/UI_Plugin';
 import { Registry } from '../core/Registry';
-import { AssetLoaderPlugin } from './asset_loader/AssetLoaderPlugin';
 import { AssetManagerDialogPlugin } from './asset_manager/AssetManagerDialogPlugin';
 import { AssetManagerSidepanelPlugin } from './asset_manager/AssetManagerSidepanelPlugin';
 import { CodeEditorPlugin } from './code_editor/CodeEditorPlugin';
@@ -27,7 +26,6 @@ export class Plugins {
     gameView: GameViewerPlugin;
     nodeEditor: NodeEditorPlugin;
     codeEditor: CodeEditorPlugin;
-    assetLoader: AssetLoaderPlugin;
 
     private plugins: UI_Plugin[] = [];
     private activePlugins: UI_Plugin[] = [];
@@ -44,13 +42,11 @@ export class Plugins {
         this.gameView = new GameViewerPlugin(registry);
         this.nodeEditor = new NodeEditorPlugin(registry);
         this.codeEditor = new CodeEditorPlugin(registry);
-        this.assetLoader = new AssetLoaderPlugin(registry);
 
         this.registerPlugin(this.sceneEditor);
         this.registerPlugin(this.gameView);
         this.registerPlugin(this.nodeEditor);
         this.registerPlugin(this.codeEditor);
-        this.registerPlugin(this.assetLoader);
 
         this.registerPlugin(new FileSettingsPlugin(this.registry));
         this.registerPlugin(new LayoutSettingsPlugin(this.registry));

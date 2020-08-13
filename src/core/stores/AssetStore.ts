@@ -1,4 +1,4 @@
-import { AssetModel, AssetType } from "./game_objects/AssetModel";
+import { AssetObject, AssetType } from "./game_objects/AssetObject";
 import { AbstractStore } from "./AbstractStore";
 import { Registry } from "../Registry";
 
@@ -11,7 +11,7 @@ export class AssetStore extends AbstractStore {
     id = AssetStore.id;
 
     private maxIdForPrefix: Map<string, number> = new Map();
-    private assetsById: Map<string, AssetModel> = new Map();
+    private assetsById: Map<string, AssetObject> = new Map();
     private registry: Registry;
 
     constructor(registry: Registry) {
@@ -25,61 +25,61 @@ export class AssetStore extends AbstractStore {
         ]);
     }
 
-    deleteAsset(assetModel: AssetModel) {
-        this.assetsById.delete(assetModel.id);
+    deleteAsset(asset: AssetObject) {
+        this.assetsById.delete(asset.id);
 
-        this.registry.services.event.dispatch(AssetStore.actions.ASSET_DELETE, [assetModel]);
+        this.registry.services.event.dispatch(AssetStore.actions.ASSET_DELETE, [asset]);
     }
 
-    addAsset(assetModel: AssetModel): string {
-        switch(assetModel.assetType) {
+    addAsset(asset: AssetObject): string {
+        switch(asset.assetType) {
             case AssetType.Model:
-                return this.addModel(assetModel);
+                return this.addModel(asset);
             case AssetType.Texture:
-                return this.addTexture(assetModel);
+                return this.addTexture(asset);
             case AssetType.Thumbnail:
-                return this.addThumbnail(assetModel);
+                return this.addThumbnail(asset);
         }
     }
 
-    addModel(assetModel: AssetModel): string {
-        if (!assetModel.id) {
-            assetModel.id = this.generateId('model');
+    addModel(asset: AssetObject): string {
+        if (!asset.id) {
+            asset.id = this.generateId('model');
         }
 
-        this.assetsById.set(assetModel.id, assetModel);
-        return assetModel.id;
+        this.assetsById.set(asset.id, asset);
+        return asset.id;
     }
 
-    addThumbnail(assetModel: AssetModel): string {
-        if (!assetModel.id) {
-            assetModel.id = this.generateId('thumbnail');
+    addThumbnail(asset: AssetObject): string {
+        if (!asset.id) {
+            asset.id = this.generateId('thumbnail');
         }
 
-        this.assetsById.set(assetModel.id, assetModel);
-        return assetModel.id;
+        this.assetsById.set(asset.id, asset);
+        return asset.id;
     }
 
-    addTexture(assetModel: AssetModel): string {
-        if (!assetModel.id) {
-            assetModel.id = this.generateId('texture');
+    addTexture(asset: AssetObject): string {
+        if (!asset.id) {
+            asset.id = this.generateId('texture');
         }
 
-        this.assetsById.set(assetModel.id, assetModel);
-        return assetModel.id;
+        this.assetsById.set(asset.id, asset);
+        return asset.id;
     }
 
-    getAssetById(id: string): AssetModel {
+    getAssetById(id: string): AssetObject {
         if (!id) { return undefined; }
         
         return this.assetsById.get(id);
     }
 
-    getByType(type: AssetType): AssetModel[] {
+    getByType(type: AssetType): AssetObject[] {
         return this.getAssets().filter(asset => asset.assetType === type);
     }
 
-    getAssets(): AssetModel[] {
+    getAssets(): AssetObject[] {
         return Array.from(this.assetsById.values());
     }
 

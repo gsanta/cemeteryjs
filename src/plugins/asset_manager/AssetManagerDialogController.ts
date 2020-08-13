@@ -19,8 +19,8 @@ export class AssetManagerDialogController extends AbstractController<{}> {
 
         this.createPropHandler<void>(AssetManagerDialogProps.DeleteAsset)
             .onClick((context: PropContext<void>) => {
-                const assetModel = this.registry.stores.assetStore.getAssetById(( <UI_InputElement> context.element).listItemId);
-                this.registry.stores.assetStore.deleteAsset(assetModel);
+                const asset = this.registry.stores.assetStore.getAssetById(( <UI_InputElement> context.element).listItemId);
+                this.registry.stores.assetStore.deleteAsset(asset);
                 this.registry.services.render.reRender(UI_Region.Dialog);
             });
     }

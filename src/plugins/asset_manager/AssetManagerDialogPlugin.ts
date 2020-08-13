@@ -1,7 +1,7 @@
 import { UI_Plugin, UI_Region } from '../../core/plugins/UI_Plugin';
 import { UI_Layout } from '../../core/ui_regions/elements/UI_Layout';
 import { UI_Table } from '../../core/ui_regions/elements/UI_Table';
-import { AssetType } from '../../core/stores/game_objects/AssetModel';
+import { AssetType } from '../../core/stores/game_objects/AssetObject';
 import { Registry } from '../../core/Registry';
 import { AssetManagerDialogControllerId, AssetManagerDialogController, AssetManagerDialogProps } from './AssetManagerDialogController';
 import { UI_Dialog } from '../../core/ui_regions/elements/surfaces/UI_Dialog';
@@ -64,20 +64,20 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
         let tableRowGroup = table.tableRowGroup({key: 'model'});
         tableRowGroup.text = 'Model';
 
-        this.registry.stores.assetStore.getByType(AssetType.Model).forEach(assetModel => {
+        this.registry.stores.assetStore.getByType(AssetType.Model).forEach(asset => {
             const tableRow = table.tableRow({ isHeader: false });
 
             let column = tableRow.tableColumn(null);
             let text = column.text();
-            text.text = assetModel.id;
+            text.text = asset.id;
     
             column = tableRow.tableColumn(null);
             text = column.text();
-            text.text = assetModel.name ? assetModel.name : '-';
+            text.text = asset.name ? asset.name : '-';
     
             column = tableRow.tableColumn(null);
             text = column.text();
-            text.text = assetModel.path ? assetModel.path : '-';
+            text.text = asset.path ? asset.path : '-';
 
             column = tableRow.tableColumn(null);
             column.width = 100;
@@ -86,11 +86,11 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
 
             let icon = iconRow.icon({ prop: null });
             icon.iconName = 'brush';
-            icon.listItemId = assetModel.id;
+            icon.listItemId = asset.id;
 
             icon = iconRow.icon({ prop: AssetManagerDialogProps.DeleteAsset });
             icon.iconName = 'remove';
-            icon.listItemId = assetModel.id;
+            icon.listItemId = asset.id;
         });
     }
 }

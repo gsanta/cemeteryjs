@@ -59,16 +59,4 @@ export class EngineService<T extends AbstractCanvasPlugin = AbstractCanvasPlugin
     destroy() {
         this.engine.dispose();
     }
-
-    // createThumbnail(assetModel: AssetModel) {
-    //     this.load(assetModel, '123')
-    //         .then(mesh => {
-    //                 this.scene.render()
-    //                 // Tools.CreateScreenshotUsingRenderTarget(this.engine, this.camera, 1000, (data) => {
-    //                 //     console.log(data);
-    //                 //     assetModel.thumbnailData = data;
-    //                 // });
-    //             }
-    //         );
-    // }
 }

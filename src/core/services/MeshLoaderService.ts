@@ -4,7 +4,7 @@ import { AbstractCanvasPlugin } from '../plugins/AbstractCanvasPlugin';
 import { Point } from '../../utils/geometry/shapes/Point';
 import { MeshView } from '../stores/views/MeshView';
 import { EngineService } from './EngineService';
-import { AssetModel } from '../stores/game_objects/AssetModel';
+import { AssetObject } from '../stores/game_objects/AssetObject';
 
 export class MeshLoaderService extends AbstractPluginService<AbstractCanvasPlugin> {
     static serviceName = 'mesh-loader-service';
@@ -13,9 +13,9 @@ export class MeshLoaderService extends AbstractPluginService<AbstractCanvasPlugi
     private loadedIds: Set<String> = new Set();
     private pandingIds: Map<string, Promise<any>> = new Map();
 
-    getDimensions(assetModel: AssetModel, id: string): Promise<Point> {
+    getDimensions(asset: AssetObject, id: string): Promise<Point> {
         return this
-            .load(assetModel, id)
+            .load(asset, id)
             .then(mesh => {
                 mesh.computeWorldMatrix();
                 mesh.getBoundingInfo().update(mesh._worldMatrix);
@@ -31,9 +31,9 @@ export class MeshLoaderService extends AbstractPluginService<AbstractCanvasPlugi
             });
     }
 
-    getAnimations(assetModel: AssetModel, id: string): Promise<string[]> {
+    getAnimations(asset: AssetObject, id: string): Promise<string[]> {
         return this
-            .load(assetModel, id)
+            .load(asset, id)
             .then(mesh => {
                 return mesh.skeleton ? mesh.skeleton.getAnimationRanges().map(range => range.name) : [];
             });
@@ -46,8 +46,8 @@ export class MeshLoaderService extends AbstractPluginService<AbstractCanvasPlugi
             const promises: Promise<Mesh>[] = [];
     
             for (let i = 0; i < modeledMeshObjets.length; i++) {
-                const assetModel = this.registry.stores.assetStore.getAssetById(modeledMeshObjets[i].modelId);
-                promises.push(this.load(assetModel, modeledMeshObjets[i].id));
+                const asset = this.registry.stores.assetStore.getAssetById(modeledMeshObjets[i].modelId);
+                promises.push(this.load(asset, modeledMeshObjets[i].id));
             }
     
             Promise.all(promises)
@@ -56,31 +56,27 @@ export class MeshLoaderService extends AbstractPluginService<AbstractCanvasPlugi
         });
     }
 
-    load(assetModel: AssetModel, id: string): Promise<Mesh> {
-        // if (this.pandingIds.has(assetModel.id)) {
-        //     return this.pandingIds.get(assetModel.id);
-        // }
+    load(asset: AssetObject, id: string): Promise<Mesh> {
+        this.loadedIds.add(asset.id);
 
-        this.loadedIds.add(assetModel.id);
+        const promise = this.registry.services.localStore.loadAsset(asset)
+            .then(() => this.loadMesh(asset))
+            .catch(e => this.loadMesh(asset));
 
-        const promise = this.registry.services.localStore.loadAsset(assetModel)
-            .then(() => this.loadMesh(assetModel))
-            .catch(e => this.loadMesh(assetModel));
-
-        this.pandingIds.set(assetModel.id, promise);
+        this.pandingIds.set(asset.id, promise);
         return <Promise<Mesh>> promise;
     }
 
-    private loadMesh(assetModel: AssetModel): Promise<Mesh> {
+    private loadMesh(asset: AssetObject): Promise<Mesh> {
         const engineService = this.plugin.pluginServices.byName<EngineService<any>>(EngineService.serviceName);
 
         return new Promise(resolve => {
             SceneLoader.ImportMesh(
                 '',
-                assetModel.data,
+                asset.data,
                 undefined,
                 engineService.getScene(),
-                (meshes: Mesh[], ps: ParticleSystem[], skeletons: Skeleton[]) => resolve(this.createModelData(assetModel, meshes, skeletons)),
+                (meshes: Mesh[], ps: ParticleSystem[], skeletons: Skeleton[]) => resolve(this.createModelData(asset, meshes, skeletons)),
                 () => { },
                 (scene: Scene, message: string) => { throw new Error(message); }
             );
@@ -99,17 +95,17 @@ export class MeshLoaderService extends AbstractPluginService<AbstractCanvasPlugi
         mesh.isVisible = true;
     }
 
-    private createModelData(assetModel: AssetModel, meshes: Mesh[], skeletons: Skeleton[]): Mesh {
+    private createModelData(asset: AssetObject, meshes: Mesh[], skeletons: Skeleton[]): Mesh {
         if (meshes.length === 0) { throw new Error('No mesh was loaded.') }
 
         const engineService = this.plugin.pluginServices.byName<EngineService<any>>(EngineService.serviceName);
 
-        meshes[0].material = new StandardMaterial(assetModel.id, engineService.getScene());
+        meshes[0].material = new StandardMaterial(asset.id, engineService.getScene());
    
-        meshes[0].name = assetModel.id;
+        meshes[0].name = asset.id;
         this.configMesh(meshes[0]);
 
-        this.registry.stores.meshStore.addTemplate(assetModel.id, meshes[0]);
+        this.registry.stores.meshStore.addTemplate(asset.id, meshes[0]);
 
         return meshes[0];
     }

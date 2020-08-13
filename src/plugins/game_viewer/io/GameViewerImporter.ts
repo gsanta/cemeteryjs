@@ -27,14 +27,14 @@ export class GameViewerImporter extends AbstractPluginImporter {
         const meshLoaderService = this.plugin.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName);
         this.registry.stores.canvasStore.getMeshViews().filter(item => item.modelId)
             .forEach(item => {
-                const assetModel = this.registry.stores.assetStore.getAssetById(item.modelId);
-                meshLoaderService.getDimensions(assetModel, item.id)
+                const asset = this.registry.stores.assetStore.getAssetById(item.modelId);
+                meshLoaderService.getDimensions(asset, item.id)
                     .then(dim => {
                         item.dimensions.setWidth(dim.x);
                         item.dimensions.setHeight(dim.y);
                     });
 
-                meshLoaderService.getAnimations(assetModel, item.id)
+                meshLoaderService.getAnimations(asset, item.id)
                     .then(animations => {
                         item.animations = animations;
                     })

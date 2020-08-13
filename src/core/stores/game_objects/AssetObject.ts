@@ -14,7 +14,7 @@ export enum AssetType {
     Thumbnail = 'Thumbnail'
 }
 
-export class AssetModel {
+export class AssetObject {
     id: string;
     assetType: AssetType;
     data: string;

@@ -3,7 +3,7 @@ import { PathView, PathViewJson } from '../../../core/stores/views/PathView';
 import { ViewType, View } from "../../../core/stores/views/View";
 import { AppJson } from '../../../core/services/export/ExportService';
 import { AbstractPluginImporter } from "../../common/io/AbstractPluginImporter";
-import { AssetModel, AssetType } from '../../../core/stores/game_objects/AssetModel';
+import { AssetObject, AssetType } from '../../../core/stores/game_objects/AssetObject';
 
 export class SceneEditorImporter extends AbstractPluginImporter {
     import(json: AppJson, viewMap: Map<string, View>): void {
@@ -39,21 +39,21 @@ export class SceneEditorImporter extends AbstractPluginImporter {
 
     private initAssets(meshView: MeshView) {
         if (meshView.modelId) {
-            const assetModel = new AssetModel({assetType: AssetType.Model});
-            assetModel.id = meshView.modelId;
-            this.registry.stores.assetStore.addAsset(assetModel);
+            const asset = new AssetObject({assetType: AssetType.Model});
+            asset.id = meshView.modelId;
+            this.registry.stores.assetStore.addAsset(asset);
         }
         
         if (meshView.textureId) {
-            const assetModel = new AssetModel({assetType: AssetType.Texture});
-            assetModel.id = meshView.textureId;
-            this.registry.stores.assetStore.addAsset(assetModel);
+            const asset = new AssetObject({assetType: AssetType.Texture});
+            asset.id = meshView.textureId;
+            this.registry.stores.assetStore.addAsset(asset);
         }
 
         if (meshView.thumbnailId) {
-            const assetModel = new AssetModel({assetType: AssetType.Thumbnail});
-            assetModel.id = meshView.thumbnailId;
-            this.registry.stores.assetStore.addAsset(assetModel);
+            const asset = new AssetObject({assetType: AssetType.Thumbnail});
+            asset.id = meshView.thumbnailId;
+            this.registry.stores.assetStore.addAsset(asset);
         }    
     }
 }

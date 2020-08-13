@@ -3,7 +3,7 @@ import { MeshView } from '../../core/stores/views/MeshView';
 import { Registry } from '../../core/Registry';
 import { AbstractController } from '../../core/plugins/controllers/AbstractController';
 import { ThumbnailDialogPluginId } from './ThumbnailDialogPlugin';
-import { AssetModel, AssetType } from '../../core/stores/game_objects/AssetModel';
+import { AssetObject, AssetType } from '../../core/stores/game_objects/AssetObject';
 import { ObjectSettingsPlugin } from './ObjectSettingsPlugin';
 import { UI_Region } from '../../core/plugins/UI_Plugin';
 
@@ -113,23 +113,11 @@ export class MeshObjectSettingsController extends AbstractController<MeshObjectS
 
         this.createPropHandler<{data: string}>(MeshObjectSettingsProps.Model)
             .onChange((val) => {
-                const assetModel = new AssetModel({data: val.data, assetType: AssetType.Model});
-                this.meshView.modelId = this.registry.stores.assetStore.addModel(assetModel);
-                this.registry.services.localStore.saveAsset(assetModel);
+                const asset = new AssetObject({data: val.data, assetType: AssetType.Model});
+                this.meshView.modelId = this.registry.stores.assetStore.addModel(asset);
+                this.registry.services.localStore.saveAsset(asset);
                 this.registry.stores.meshStore.deleteInstance((<MeshView> this.meshView).mesh);
                 this.registry.stores.meshStore.createInstance(this.meshView.model);
-
-
-                // const meshLoaderService = this.plugin.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName);
-
-                //  meshLoaderService.getDimensions(assetModel, meshView.id)
-                // .then(dim => {
-                //     meshView.dimensions.setWidth(dim.x);
-                //     meshView.dimensions.setHeight(dim.y);
-                //     this.update();
-                // });
-
-                // this.plugin.pluginSettings.byName<AssetLoaderDialogController>(AssetLoaderDialogController.settingsName).open();
             })
             .onClick(() => {
                 1;
