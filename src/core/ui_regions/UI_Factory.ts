@@ -31,6 +31,8 @@ import { UI_Plugin } from '../plugins/UI_Plugin';
 import { UI_Layout } from './elements/UI_Layout';
 import { UI_Image } from './elements/UI_Image';
 import { UI_Column } from './elements/UI_Column';
+import { UI_TableRowGroup } from './elements/surfaces/table/UI_TableRowGroup';
+import { UI_Icon } from './elements/UI_Icon';
 
 export class UI_Factory {
     static layout(plugin: UI_Plugin): UI_Layout {
@@ -129,6 +131,17 @@ export class UI_Factory {
         parent.children.push(image);
 
         return image;
+    }
+
+    static icon(parent: UI_Container, config: { prop: string}): UI_Icon {
+        const icon = new UI_Icon(parent.plugin);
+        icon.prop = config.prop;
+
+        icon.generateId(parent);
+        this.setController(parent, icon);
+        parent.children.push(icon);
+
+        return icon;
     }
 
     static listItem(parent: UI_Container, config: { controllerId?: string, prop: string}): UI_ListItem {
@@ -387,7 +400,17 @@ export class UI_Factory {
         return row;
     }
 
-    private static setController(parent: UI_Element, current: UI_Element, config: {controllerId?: string}) {
+    static tableRowGroup(parent: UI_Table, config: {key: string}) {
+        const row = new UI_TableRowGroup(parent.plugin);
+
+        row.generateId(parent);
+
+        parent.children.push(row);
+
+        return row;
+    }
+
+    private static setController(parent: UI_Element, current: UI_Element, config?: {controllerId?: string}) {
         if (config && config.controllerId) {
             current.controllerId = config.controllerId;
         } else {

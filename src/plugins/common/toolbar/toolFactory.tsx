@@ -9,7 +9,6 @@ import { ZoomInIconComponent } from "./icons/ZoomInIconComponent";
 import { ZoomOutIconComponent } from "./icons/ZoomOutIconComponent";
 import { AbstractCanvasPlugin } from "../../../core/plugins/AbstractCanvasPlugin";
 import { Registry } from "../../../core/Registry";
-import { AbstractTool } from "../../../core/plugins/tools/AbstractTool";
 import { DeleteTool } from '../../../core/plugins/tools/DeleteTool';
 import { PointerTool } from '../../../core/plugins/tools/PointerTool';
 import { PathTool } from '../../../core/plugins/tools/PathTool';

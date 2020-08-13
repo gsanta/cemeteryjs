@@ -3,8 +3,8 @@ import { UI_Layout } from '../../core/ui_regions/elements/UI_Layout';
 import { UI_Table } from '../../core/ui_regions/elements/UI_Table';
 import { AssetType } from '../../core/stores/game_objects/AssetModel';
 import { Registry } from '../../core/Registry';
-import { AssetManagerSidepanelPluginId } from './AssetManagerSidepanelPlugin';
-import { AssetManagerDialogControllerId, AssetManagerDialogController } from './AssetManagerDialogController';
+import { AssetManagerDialogControllerId, AssetManagerDialogController, AssetManagerDialogProps } from './AssetManagerDialogController';
+import { UI_Dialog } from '../../core/ui_regions/elements/surfaces/UI_Dialog';
 
 export const AssetManagerDialogPluginId = 'asset-manager-dialog-plugin'; 
 export class AssetManagerDialogPlugin extends UI_Plugin {
@@ -21,13 +21,15 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
     }
 
 
-    renderInto(layout: UI_Layout): UI_Layout {
+    renderInto(layout: UI_Dialog): UI_Layout {
         layout.controllerId = AssetManagerDialogControllerId;
+        layout.width = '530px';
         // layout.controllerId = AssetManagere;
 
         const row = layout.row({ key: '1' });
 
         const table = row.table(null);
+        table.columnWidths = [150, 150, 150, 50];
         table.width = 500;
 
         this.renderTableHeader(table);
@@ -59,25 +61,11 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
     }
 
     private renderModelRows(table: UI_Table) {
-        let tableRow = table.tableRow({isHeader: true});
-
-        let header = tableRow.tableColumn(null);
-        let text = header.text();
-        text.text = 'Models';
-
-        header = tableRow.tableColumn(null);
-        text = header.text();
-        text.text = '';
-
-        header = tableRow.tableColumn(null);
-        text = header.text();
-        text.text = '';
-
-        header = tableRow.tableColumn(null);
-        header.width = 100;
+        let tableRowGroup = table.tableRowGroup({key: 'model'});
+        tableRowGroup.text = 'Model';
 
         this.registry.stores.assetStore.getByType(AssetType.Model).forEach(assetModel => {
-            tableRow = table.tableRow({isHeader: true});
+            const tableRow = table.tableRow({ isHeader: false });
 
             let column = tableRow.tableColumn(null);
             let text = column.text();
@@ -85,38 +73,24 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
     
             column = tableRow.tableColumn(null);
             text = column.text();
-            text.text = assetModel.name;
+            text.text = assetModel.name ? assetModel.name : '-';
     
             column = tableRow.tableColumn(null);
             text = column.text();
-            text.text = assetModel.path;
+            text.text = assetModel.path ? assetModel.path : '-';
 
             column = tableRow.tableColumn(null);
             column.width = 100;
-        });
 
-        // const modelComponents = assetModels.map(assetModel => {
-        //     return (
-        //         <AssetRowStyled>
-        //             <div>{assetModel.id}</div>
-        //             <div>{this.renderName(assetModel) || '-'}</div>
-        //             <div>{this.renderPath(assetModel) || '-'}</div>
-        //             <IconGroupStyled>
-        //                 <EditIconComponent width="20px" height="20px" onClick={() => controller.updateProp(assetModel.id, AssetManagerDialogProps.EditedAsset)}/>
-        //                 <CloseIconComponent width="16px" height="16px" color={colors.danger} onClick={() => controller.updateProp(assetModel.id, AssetManagerDialogProps.Delete)}/>
-        //             </IconGroupStyled>
-        //         </AssetRowStyled>
-        //     );
-        // });
-        // return (
-        //     <div>
-        //         <AssetRowHeaderStyled>
-        //             <div>{headerTitle}</div>
-        //             <div></div>
-        //             <div></div>
-        //         </AssetRowHeaderStyled>
-        //         {modelComponents}
-        //     </div>
-        // )
+            const iconRow = column.row({ key: 'icons' });
+
+            let icon = iconRow.icon({ prop: null });
+            icon.iconName = 'brush';
+            icon.listItemId = assetModel.id;
+
+            icon = iconRow.icon({ prop: AssetManagerDialogProps.DeleteAsset });
+            icon.iconName = 'remove';
+            icon.listItemId = assetModel.id;
+        });
     }
 }

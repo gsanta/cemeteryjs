@@ -27,9 +27,11 @@ export enum UI_ElementType {
     Text = 'Text',
     Tooltip = 'Tooltip',
     Image = 'Image',
+    Icon = 'Icon',
 
     Table = 'Table',
     TableRow = 'TableRow',
+    TableRowGroup = 'TableRowGroup',
     TableColumn = 'TableColumn',
 
     Accordion = 'Accordion',

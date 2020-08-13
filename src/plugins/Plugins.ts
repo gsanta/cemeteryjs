@@ -4,7 +4,6 @@ import { UI_Plugin, UI_Region } from '../core/plugins/UI_Plugin';
 import { Registry } from '../core/Registry';
 import { AssetLoaderPlugin } from './asset_loader/AssetLoaderPlugin';
 import { AssetManagerDialogPlugin } from './asset_manager/AssetManagerDialogPlugin';
-import { AssetManagerPlugin } from './asset_manager/AssetManagerPlugin';
 import { AssetManagerSidepanelPlugin } from './asset_manager/AssetManagerSidepanelPlugin';
 import { CodeEditorPlugin } from './code_editor/CodeEditorPlugin';
 import { AbstractPluginComponentFactory } from './common/AbstractPluginComponentFactory';
@@ -29,7 +28,6 @@ export class Plugins {
     nodeEditor: NodeEditorPlugin;
     codeEditor: CodeEditorPlugin;
     assetLoader: AssetLoaderPlugin;
-    assetManager: AssetManagerPlugin;
 
     private plugins: UI_Plugin[] = [];
     private activePlugins: UI_Plugin[] = [];
@@ -47,14 +45,12 @@ export class Plugins {
         this.nodeEditor = new NodeEditorPlugin(registry);
         this.codeEditor = new CodeEditorPlugin(registry);
         this.assetLoader = new AssetLoaderPlugin(registry);
-        this.assetManager = new AssetManagerPlugin(registry);
 
         this.registerPlugin(this.sceneEditor);
         this.registerPlugin(this.gameView);
         this.registerPlugin(this.nodeEditor);
         this.registerPlugin(this.codeEditor);
         this.registerPlugin(this.assetLoader);
-        this.registerPlugin(this.assetManager);
 
         this.registerPlugin(new FileSettingsPlugin(this.registry));
         this.registerPlugin(new LayoutSettingsPlugin(this.registry));

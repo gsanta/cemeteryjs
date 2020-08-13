@@ -8,6 +8,7 @@ import { UI_Box } from './UI_Box';
 import { UI_Column } from './UI_Column';
 import { UI_HtmlCanvas } from './UI_HtmlCanvas';
 import { UI_Image } from './UI_Image';
+import { UI_Icon } from './UI_Icon';
 
 export class UI_DefaultContainer extends UI_Container {
     listItem(config: {controllerId?: string, prop: string}): UI_ListItem {
@@ -64,5 +65,9 @@ export class UI_DefaultContainer extends UI_Container {
 
     image(config: {key: string}): UI_Image {
         return UI_Factory.image(this, config);
+    }
+
+    icon(config: {prop: string}): UI_Icon {
+        return UI_Factory.icon(this, config);
     }
 }

@@ -1,5 +1,6 @@
 import { Registry } from '../../Registry';
 import { UI_Plugin } from '../UI_Plugin';
+import { UI_Element } from '../../ui_regions/elements/UI_Element';
 
 export enum GlobalControllerProps {
     CloseDialog = 'CloseDialog'
@@ -76,6 +77,7 @@ export class PropHandler<T> {
 
 export class PropContext<T> {
     private tempVal: T;
+    element: UI_Element;
 
     updateTempVal(val: T) {
         this.tempVal = val;
@@ -114,8 +116,9 @@ export abstract class AbstractController<P = any> {
         handler.changeHandler(val, handler.context, this);
     }
 
-    click(prop: P): void {
+    click(prop: P, element: UI_Element): void {
         const handler = this.handlers.get(prop);
+        handler.context.element = element;
         handler.clickHandler(handler.context, this);
     }
 

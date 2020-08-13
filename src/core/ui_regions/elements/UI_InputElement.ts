@@ -1,6 +1,9 @@
 import { UI_Element } from "./UI_Element";
 
 export abstract class UI_InputElement extends UI_Element {
+
+    listItemId: string;
+
     change(newVal: any): void {
         this.plugin.getControllerById(this.controllerId).change(this.prop, newVal);
     }
@@ -14,7 +17,7 @@ export abstract class UI_InputElement extends UI_Element {
     }
 
     click(): void {
-        this.plugin.getControllerById(this.controllerId).click(this.prop)
+        this.plugin.getControllerById(this.controllerId).click(this.prop, this)
     }
 
     val(): any {

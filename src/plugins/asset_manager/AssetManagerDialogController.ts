@@ -1,10 +1,15 @@
-import { AbstractController } from '../../core/plugins/controllers/AbstractController';
+import { AbstractController, PropContext } from '../../core/plugins/controllers/AbstractController';
 import { Registry } from '../../core/Registry';
-import { AssetManagerSidepanelPlugin } from './AssetManagerSidepanelPlugin';
 import { AssetManagerDialogPlugin } from './AssetManagerDialogPlugin';
+import { UI_Region } from '../../core/plugins/UI_Plugin';
+import { UI_InputElement } from '../../core/ui_regions/elements/UI_InputElement';
 
 
 export const AssetManagerDialogControllerId = 'asset_manager_dialog_controller_id';
+
+export enum AssetManagerDialogProps {
+    DeleteAsset = 'DeleteAsset'
+}
 
 export class AssetManagerDialogController extends AbstractController<{}> {
     id = AssetManagerDialogControllerId;
@@ -12,6 +17,11 @@ export class AssetManagerDialogController extends AbstractController<{}> {
     constructor(plugin: AssetManagerDialogPlugin, registry: Registry) {
         super(plugin, registry);
 
-        
+        this.createPropHandler<void>(AssetManagerDialogProps.DeleteAsset)
+            .onClick((context: PropContext<void>) => {
+                const assetModel = this.registry.stores.assetStore.getAssetById(( <UI_InputElement> context.element).listItemId);
+                this.registry.stores.assetStore.deleteAsset(assetModel);
+                this.registry.services.render.reRender(UI_Region.Dialog);
+            });
     }
 }

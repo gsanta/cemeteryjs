@@ -11,9 +11,7 @@ export interface TableColumnCompProps {
 export const TableColumnComp = (props: TableColumnCompProps) => {
     const style: any = {}
     
-    if (props.element.width) {
-        style.width = props.element.width;
-    }
+    style.width = props.element._derivedWidth ? props.element._derivedWidth : props.element.width ? props.element.width : '100%';
 
     return (
         <div style={style} className="ce-table-column">{props.children}</div>

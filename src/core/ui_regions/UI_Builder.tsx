@@ -60,6 +60,10 @@ import { DialogComp } from './components/dialogs/DialogComp';
 import { UI_Image } from './elements/UI_Image';
 import { UI_Column } from './elements/UI_Column';
 import { ColumnComp } from './components/layout/ColumnComp';
+import { UI_TableRowGroup } from './elements/surfaces/table/UI_TableRowGroup';
+import { TableRowGroupComp } from './components/table/TableRowGroupComp';
+import { UI_Icon } from './elements/UI_Icon';
+import { IconComp } from './components/text/IconComp';
 
 
 export class UI_Builder {
@@ -233,6 +237,12 @@ export class UI_Builder {
             case UI_ElementType.Image:
                 const image = element as UI_Image;
                 return <ImageComp element={image}/>;
+            case UI_ElementType.Icon:
+                const icon = element as UI_Icon;
+                return <IconComp element={icon}/>;
+            case UI_ElementType.TableRowGroup:
+                const tableRowGroup = element as UI_TableRowGroup;
+                return <TableRowGroupComp element={tableRowGroup}></TableRowGroupComp>;
         }
     }
 }   
