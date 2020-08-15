@@ -27,6 +27,7 @@ const SelectionComponentStyled = styled.rect`
 
 export interface CanvasCompProps extends UI_ComponentProps<UI_SvgCanvas | UI_HtmlCanvas> {
     toolbar: JSX.Element;
+    dropLayer: JSX.Element;
 }
 
 export class CanvasComp extends React.Component<CanvasCompProps> {
@@ -62,14 +63,7 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
                 }}
             >
                 {this.props.toolbar}
-                <DropLayerComp
-                    isDragging={!!this.context.registry.services.pointer.droppableItem}
-                    onDrop={(p, droppedItemType) => this.context.registry.services.mouse.mouseUp({x: p.x, y: p.y, which: 1} as MouseEvent, droppedItemType)}
-                    onMouseMove={(e) => this.context.registry.services.mouse.mouseMove(e)}
-                    onMouseOver={() => plugin.over()}
-                    onMouseOut={() => plugin.out()}
-                    registry={this.context.registry}
-                />
+                {this.props.dropLayer ? this.props.dropLayer : null}
                 {this.props.element.elementType === UI_ElementType.SvgCanvas ? this.renderSvgCanvas() : this.renderHtmlCanvas()}
 
             </EditorComponentStyled>

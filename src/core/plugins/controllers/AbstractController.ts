@@ -25,7 +25,7 @@ export class PropHandler<T> {
     mouseOverHandler: (context: PropContext<T>, controller: AbstractController) => void;
     mouseOutHandler: (context: PropContext<T>, controller: AbstractController) => void;
 
-    dndStartHandler: (context: PropContext<T>, controller: AbstractController) => void;
+    dndStartHandler: (val: T, context: PropContext<T>, controller: AbstractController) => void;
     dndEndHandler: (context: PropContext<T>, controller: AbstractController) => void;
 
     onChange(handler: (val: T, context: PropContext<any>,  controller: AbstractController) => void) {
@@ -64,7 +64,7 @@ export class PropHandler<T> {
     }
 
 
-    onDndStart(handler: (context: PropContext<T>, controller: AbstractController) => void) {
+    onDndStart(handler: (val: T, context: PropContext<T>, controller: AbstractController) => void) {
         this.dndStartHandler = handler;
         return this;
     }
@@ -148,9 +148,9 @@ export abstract class AbstractController<P = any> {
         handler.blurHandler(handler.context, this);
     }
 
-    dndStart(prop: P): void {
+    dndStart(prop: P, listItem: string): void {
         const handler = this.handlers.get(prop);
-        handler.dndStartHandler(handler.context, this);
+        handler.dndStartHandler(listItem, handler.context, this);
     }
 
     dndEnd(prop: P): void {

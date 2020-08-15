@@ -3,6 +3,9 @@ import styled from "styled-components";
 import { Point } from '../../../../../utils/geometry/shapes/Point';
 import { Registry } from '../../../../Registry';
 import { useDrop } from 'react-dnd';
+import { nodeConfigs } from '../../../../stores/nodes/NodeFactory';
+import { UI_ComponentProps } from '../../UI_ComponentProps';
+import { UI_DropLayer } from '../../../elements/surfaces/canvas/UI_DropLayer';
 
 const DropLayerStyled = styled.div`
     width: 100%;
@@ -24,12 +27,14 @@ interface DropLayerProps {
     registry: Registry;
 }
 
-export const DropLayerComp = (props: DropLayerProps) => {
+export const DropLayerComp = (props: UI_ComponentProps<UI_DropLayer>) => {
     // TODO find a better solution
-    const types = [...props.registry.stores.nodeStore.templates.map(template => template.type), ...props.registry.stores.nodeStore.presets.map(preset => preset.presetName)];
+    const types = nodeConfigs.map(config => config.type);
 	const [{ isOver }, drop] = useDrop({
         accept: types,
-        drop: (item, monitor) => props.onDrop(new Point(monitor.getClientOffset().x, monitor.getClientOffset().y), monitor.getItem().type), 
+        drop: (item, monitor) => {
+            props.element.dndEnd();
+        }, 
 		collect: monitor => ({
 			isOver: !!monitor.isOver(),
 		}),
@@ -37,13 +42,9 @@ export const DropLayerComp = (props: DropLayerProps) => {
 
     return  (
         <DropLayerStyled
-            onMouseMove={(e) => props.onMouseMove(e.nativeEvent)}
-            onMouseOver={() => props.onMouseOver()}
-            onMouseOut={() => props.onMouseOut()}
-            onMouseDown={() => props.registry.services.hotkey.focus()}
             ref={drop}
             className='drop-layer'
-            isDragging={props.isDragging}
+            isDragging={props.element.isDragging}
         />
     );
 }

@@ -1,21 +1,26 @@
 import { AbstractController } from "../../core/plugins/controllers/AbstractController";
-import { UI_Plugin } from "../../core/plugins/UI_Plugin";
+import { UI_Plugin, UI_Region } from "../../core/plugins/UI_Plugin";
 import { Registry } from "../../core/Registry";
-import { DroppableNode } from "../../core/stores/game_objects/NodeModel";
+import { NodeEditorControllerId } from "./NodeEditorController";
+import { NodeEditorPlugin, NodeEditorPluginId } from './NodeEditorPlugin';
 
+export enum NodeEditorSettingsProps {
+    DragNode = 'DragNode'
+}
 
-export const NodeEditorSettingsControllerId = 'node_editor_settings_controller';
+export const NodeEditorSettingsControllerId = 'node_editor_settings_controller_id';
 export class NodeEditorSettingsController extends AbstractController<string> {
-    id = NodeEditorSettingsControllerId;
+    id = NodeEditorControllerId;
+
+    droppableId: string; 
 
     constructor(plugin: UI_Plugin, registry: Registry) {
         super(plugin, registry);
 
-        this.registry.stores.nodeStore.templates.forEach(node => {
-            this.createPropHandler(node.type)
-                .onDndStart(() => this.registry.services.mouse.dragStart(new DroppableNode(node)))
-                // .onDndEnd(() => )
-        });
-
+        this.createPropHandler<string>(NodeEditorSettingsProps.DragNode)
+            .onDndStart((dropType) => {
+                (<NodeEditorPlugin> this.registry.plugins.getById(NodeEditorPluginId)).droppableId = dropType;
+                this.registry.services.render.reRender(UI_Region.Sidepanel, UI_Region.Canvas1);
+            });
     }
 }

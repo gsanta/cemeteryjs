@@ -1,9 +1,9 @@
-import { NodeModel, NodeType, JoinPointSlot, NodeCategory } from '../game_objects/NodeModel';
+import { NodeModel, BuiltinNodeType, JoinPointSlot, NodeCategory } from '../game_objects/NodeModel';
 
 export class SplitNode extends NodeModel {
-    type = NodeType.Split;
+    type = BuiltinNodeType.Split;
     category = NodeCategory.Boolean;
-    title = "Split";
+    label = "Split";
     color = '#A19F99';
     inputSlots: JoinPointSlot[] = [
         {

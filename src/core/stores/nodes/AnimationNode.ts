@@ -1,4 +1,4 @@
-import { NodeModel, NodeType, JoinPointSlot, NodeCategory } from '../game_objects/NodeModel';
+import { NodeModel, BuiltinNodeType, JoinPointSlot, NodeCategory } from '../game_objects/NodeModel';
 import { NodeGraph } from "../../services/node/NodeGraph";
 import { MeshNode } from "./MeshNode";
 
@@ -7,9 +7,9 @@ import { MeshNode } from "./MeshNode";
 // }
 
 export class AnimationNode extends NodeModel {
-    type = NodeType.Animation;
+    type = BuiltinNodeType.Animation;
     category = NodeCategory.Default;
-    title = "Animation";
+    label = "Animation";
     animation: string;
     allAnimations: string[] = [];
     color = '#89BD88';
@@ -22,7 +22,7 @@ export class AnimationNode extends NodeModel {
 
     updateNode(graph: NodeGraph) {
         this.allAnimations = [];
-        const otherNode = graph.findConnectedNodeWithType<MeshNode>(this, NodeType.Mesh);
+        const otherNode = graph.findConnectedNodeWithType<MeshNode>(this, BuiltinNodeType.Mesh);
         if (otherNode && otherNode.meshModel) {
             this.allAnimations = otherNode.meshModel.getAnimations();
         }

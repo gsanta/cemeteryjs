@@ -1,4 +1,4 @@
-import { NodeModel, NodeType, JoinPointSlot, NodeCategory, NodeModelJson } from '../game_objects/NodeModel';
+import { NodeModel, BuiltinNodeType, JoinPointSlot, NodeCategory, NodeModelJson } from '../game_objects/NodeModel';
 import { MeshModel } from '../game_objects/MeshModel';
 import { View } from '../views/View';
 import { MeshView } from '../views/MeshView';
@@ -8,9 +8,9 @@ export interface MeshNodeJson extends NodeModelJson {
 }
 
 export class MeshNode extends NodeModel {
-    type = NodeType.Mesh;
+    type = BuiltinNodeType.Mesh;
     category = NodeCategory.Default;
-    title = "Mesh";
+    label = "Mesh";
     meshModel: MeshModel;
     isActiveMesh: boolean;
     color = '#D39D9D';

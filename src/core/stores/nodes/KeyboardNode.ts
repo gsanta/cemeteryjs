@@ -1,4 +1,4 @@
-import { NodeModel, NodeType, NodeCategory, NodeModelJson } from "../game_objects/NodeModel";
+import { NodeModel, BuiltinNodeType, NodeCategory, NodeModelJson } from "../game_objects/NodeModel";
 import { Keyboard } from "../../services/input/KeyboardService";
 import { View } from "../views/View";
 
@@ -24,9 +24,9 @@ export interface KeyboardNodeJson extends NodeModelJson {
 
 
 export class KeyboardNode extends NodeModel {
-    type = NodeType.Keyboard;
+    type = BuiltinNodeType.Keyboard;
     category = NodeCategory.Default;
-    title = "Keyboard input";
+    label = "Keyboard input";
     key: Keyboard;
     color = '#89BD88';
     inputSlots = [];

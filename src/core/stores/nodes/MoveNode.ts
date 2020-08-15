@@ -1,4 +1,4 @@
-import { JoinPointSlot, NodeModel, NodeType, NodeCategory, NodeModelJson } from '../game_objects/NodeModel';
+import { JoinPointSlot, NodeModel, BuiltinNodeType, NodeCategory, NodeModelJson } from '../game_objects/NodeModel';
 import { View } from '../views/View';
 
 export interface MoveNodeJson extends NodeModelJson {
@@ -7,9 +7,9 @@ export interface MoveNodeJson extends NodeModelJson {
 }
 
 export class MoveNode extends NodeModel {
-    type = NodeType.Move;
+    type = BuiltinNodeType.Move;
     category = NodeCategory.Default;
-    title = "Move";
+    label = "Move";
     move: string;
     speed = 0.5;
     allMoves: string[] = ['forward', 'backward'];

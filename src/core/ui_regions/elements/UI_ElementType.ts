@@ -24,6 +24,8 @@ export enum UI_ElementType {
 
     HtmlCanvas = 'HtmlCanvas',
 
+    DropLayer = 'DropLayer',
+
     Text = 'Text',
     Tooltip = 'Tooltip',
     Image = 'Image',

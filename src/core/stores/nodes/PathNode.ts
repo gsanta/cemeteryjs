@@ -1,5 +1,5 @@
 import { PathModel } from '../game_objects/PathModel';
-import { JoinPointSlot, NodeCategory, NodeModel, NodeType, NodeModelJson } from '../game_objects/NodeModel';
+import { JoinPointSlot, NodeCategory, NodeModel, BuiltinNodeType, NodeModelJson } from '../game_objects/NodeModel';
 import { View } from '../views/View';
 import { PathView } from '../views/PathView';
 
@@ -8,9 +8,9 @@ export interface PathNodeJson extends NodeModelJson {
 }
 
 export class PathNode extends NodeModel {
-    type = NodeType.Path;
+    type = BuiltinNodeType.Path;
     category = NodeCategory.Default;
-    title = "Path";
+    label = "Path";
     pathModel: PathModel;
     color = '#D39D9D';
     inputSlots = [];

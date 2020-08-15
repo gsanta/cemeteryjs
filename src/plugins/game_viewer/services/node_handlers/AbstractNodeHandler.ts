@@ -1,5 +1,5 @@
 import { AbstractCanvasPlugin } from '../../../../core/plugins/AbstractCanvasPlugin';
-import { NodeModel, NodeType, SlotName } from '../../../../core/stores/game_objects/NodeModel';
+import { NodeModel, BuiltinNodeType, SlotName } from '../../../../core/stores/game_objects/NodeModel';
 import { Registry } from '../../../../core/Registry';
 import { NodeService } from '../NodeService';
 
@@ -40,11 +40,11 @@ export abstract class AbstractNodeHandler<T extends NodeModel> {
     //     }
     // }
 
-    searchFromRight<T extends NodeModel>(nodeType: NodeType): T {
+    searchFromRight<T extends NodeModel>(nodeType: BuiltinNodeType): T {
         return undefined;
     }
 
-    protected findNodeAtInputSlot<T extends NodeModel>(slotName: SlotName, nodeType: NodeType): T {
+    protected findNodeAtInputSlot<T extends NodeModel>(slotName: SlotName, nodeType: BuiltinNodeType): T {
         const joinedView = this.instance.nodeView.findJoinPointView(slotName).getOtherNode();
         
         if (!joinedView) { return undefined; } 

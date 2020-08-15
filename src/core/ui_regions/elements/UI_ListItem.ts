@@ -5,4 +5,9 @@ export class UI_ListItem extends UI_Element {
     elementType = UI_ElementType.ListItem;
     label: string;
     droppable: boolean;
+    listItemId: string;
+
+    dndStart() {
+        this.plugin.getControllerById(this.controllerId).dndStart(this.prop, this.listItemId);
+    }
 }

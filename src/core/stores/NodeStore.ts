@@ -2,21 +2,21 @@ import { DroppableItem } from '../plugins/tools/DragAndDropTool';
 import { createNodeSettings } from '../../plugins/node_editor/settings/nodes/nodeSettingsFactory';
 import { Point } from '../../utils/geometry/shapes/Point';
 import { Rectangle } from '../../utils/geometry/shapes/Rectangle';
-import { DroppableNode, NodeModel, NodeType } from './game_objects/NodeModel';
-import { DroppablePreset, NodePreset } from './nodes/NodePreset';
+import { DroppableNode, NodeModel, BuiltinNodeType } from './game_objects/NodeModel';
 import { NodeConnectionView } from './views/NodeConnectionView';
 import { defaultNodeViewConfig, NodeView } from './views/NodeView';
 import { View, ViewType } from './views/View';
 import { Registry } from '../Registry';
 import { NodeGraph } from '../services/node/NodeGraph';
 import { AbstractViewStore } from './AbstractViewStore';
+import { NodeFactory, DroppablePreset } from './nodes/NodeFactory';
 
 export class NodeStore extends AbstractViewStore {
     static id = 'node-store'; 
     id = NodeStore.id;
 
     templates: NodeModel[] = [];
-    presets: NodePreset[] = [];
+    presets: NodeFactory[] = [];
     actionTypes: string[] = [];
     graph: NodeGraph;
     nodesByType: Map<string, NodeModel[]> = new Map();
@@ -28,7 +28,7 @@ export class NodeStore extends AbstractViewStore {
         this.registry = registry;
         this.graph = new NodeGraph();
 
-        for (let item in NodeType) {
+        for (let item in BuiltinNodeType) {
             if (isNaN(Number(item))) {
                 this.actionTypes.push(item);
             }
@@ -48,23 +48,6 @@ export class NodeStore extends AbstractViewStore {
         }
         this.nodesByType.get(nodeView.model.type).push(nodeView.model);
         nodeView.model.updateNode(this.graph);
-    }
-
-    addDroppable(droppable: DroppableItem, dropPosition: Point) {
-        const topLeft = dropPosition;
-        const bottomRight = topLeft.clone().add(new Point(defaultNodeViewConfig.width, defaultNodeViewConfig.height));
-
-        switch(droppable.itemType) {
-            case 'Node':
-                const nodeType = (<DroppableNode> droppable).nodeTemplate.type;
-                const node = new NodeView(this.graph, {nodeType: nodeType, dimensions: new Rectangle(topLeft, bottomRight)});
-                this.addNode(node);
-            break;        
-            case 'Preset':
-                (<DroppablePreset> droppable).preset.createPreset(dropPosition);
-            break;
-        }
-
     }
 
     addConnection(connection: NodeConnectionView) {

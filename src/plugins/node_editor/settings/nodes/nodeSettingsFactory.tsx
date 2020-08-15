@@ -11,7 +11,7 @@ import { AnimationNodeSettingsComponent } from "../AnimationNodeSettingsComponen
 import { KeyboardNodeSettings } from "./KeyboardNodeSettings";
 import { MeshNodeSettings } from './MeshNodeSettings';
 import { MoveNodeSettings } from './MoveNodeSettings';
-import { NodeType } from '../../../../core/stores/game_objects/NodeModel';
+import { BuiltinNodeType } from '../../../../core/stores/game_objects/NodeModel';
 import { AnimationNodeSettings } from './AnimationNodeSettings';
 import { TurnNodeSettingsComponent } from '../TurnNodeSettingsComponent';
 import { TurnNodeSettings } from './TurnNodeSettings';
@@ -27,19 +27,19 @@ export interface NodeProps {
 
 export function createNodeSettings(nodeView: NodeView<any>, registry: Registry): ViewSettings<any, NodeView> {
     switch(nodeView.model.type) {
-        case NodeType.Keyboard:
+        case BuiltinNodeType.Keyboard:
             return new KeyboardNodeSettings(nodeView, registry);
-        case NodeType.Move:
+        case BuiltinNodeType.Move:
             return new MoveNodeSettings(nodeView, registry);
-        case NodeType.Mesh:
+        case BuiltinNodeType.Mesh:
             return new MeshNodeSettings(nodeView, registry);
-        case NodeType.Path:
+        case BuiltinNodeType.Path:
             return new PathNodeSettings(nodeView, registry);    
-        case NodeType.Animation:
+        case BuiltinNodeType.Animation:
             return new AnimationNodeSettings(nodeView, registry);
-        case NodeType.Turn:
+        case BuiltinNodeType.Turn:
             return new TurnNodeSettings(nodeView, registry);
-        case NodeType.Split:
+        case BuiltinNodeType.Split:
             return new SplitNodeSettings(nodeView, registry);
         default:
             return new NodeSettings(nodeView);
@@ -50,23 +50,23 @@ export function createNodeSettingsComponent(nodeView: NodeView, registry: Regist
     const settings = nodeView.settings;
 
     switch(nodeView.model.type) {
-        case NodeType.Keyboard:
+        case BuiltinNodeType.Keyboard:
             return <KeyboardNodeSettingsComponent settings={settings}/>;
-        case NodeType.Move:
+        case BuiltinNodeType.Move:
             return <MoveNodeSettingsComponent settings={settings}/>;    
-        case NodeType.Mesh:
+        case BuiltinNodeType.Mesh:
             return <MeshNodeSettingsComponent settings={settings}/>;    
-        case NodeType.And:
+        case BuiltinNodeType.And:
             return <AndActionNodeSettingsComponent settings={settings}/>;          
-        case NodeType.Animation:
+        case BuiltinNodeType.Animation:
             return <AnimationNodeSettingsComponent settings={settings}/>
-        case NodeType.Turn:
+        case BuiltinNodeType.Turn:
             return <TurnNodeSettingsComponent settings={settings}/>
-        case NodeType.Split:
+        case BuiltinNodeType.Split:
             return <SplitNodeSettingsComponent settings={settings}/>
-        case NodeType.Route:
+        case BuiltinNodeType.Route:
             return <RouteNodeSettingsComponent settings={settings}/>
-        case NodeType.Path:
+        case BuiltinNodeType.Path:
             return <PathNodeSettingsComponent settings={settings}/>    
     
     }

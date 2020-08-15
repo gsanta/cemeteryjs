@@ -22,11 +22,14 @@ export const ListItemComp = (props: UI_ComponentProps<UI_ListItem>) => {
     if (props.element.droppable) {
         let isDragging: any;
         [isDragging, drag] = useDrag({
-            item: { type: props.element.prop },
+            item: { type: props.element.listItemId },
+            begin: () => {
+                props.element.dndStart();
+            },
             collect: monitor => ({
                 isDragging: !!monitor.isDragging(),
             }),
-            end: () => props.element.dndEnd()
+            // end: () => props.element.dndEnd()
       });
     }
 

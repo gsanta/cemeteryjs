@@ -2,7 +2,6 @@ import { ViewSettings } from "../../../plugins/scene_editor/settings/AbstractSet
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { NodeGraph } from '../../services/node/NodeGraph';
-import { createNode } from "../nodes/nodeFactory";
 import { NodeModel, SlotName, NodeModelJson } from '../game_objects/NodeModel';
 import { JoinPointView } from "./child_views/JoinPointView";
 import { ViewType, View, ViewJson } from "./View";
@@ -26,18 +25,19 @@ export class NodeView<T extends NodeModel = NodeModel> extends View {
 
     joinPointViews: JoinPointView[] = [];
 
-    constructor(nodeGraph: NodeGraph, config?: {nodeType: string, dimensions?: Rectangle}) {
+    constructor(nodeGraph: NodeGraph, config?: {nodeType: string, dimensions?: Rectangle, node: NodeModel}) {
         super();
         this.nodeGraph = nodeGraph;
+        this.model = <T> config.node;
+        this.model.nodeView = this;
         
         if (config) {
             this.dimensions = config.dimensions;
-            this.setup(config.nodeType);
+            this.setup();
         }
     }
 
-    private setup(nodeType: string) {
-        this.model = <T> createNode(nodeType, this);
+    private setup() {
         this.model.inputSlots.forEach(slot => this.joinPointViews.push(new JoinPointView(this, {slotName: slot.name, isInput: true})));
         this.model.outputSlots.forEach(slot => this.joinPointViews.push(new JoinPointView(this, {slotName: slot.name, isInput: false})));
     }
@@ -66,7 +66,7 @@ export class NodeView<T extends NodeModel = NodeModel> extends View {
 
     fromJson(json: NodeViewJson, viewMap: Map<string, View>) {
         super.fromJson(json, viewMap);
-        this.setup(json.node.type);
+        this.setup();
         this.model.fromJson(json.node, viewMap);
     }
 

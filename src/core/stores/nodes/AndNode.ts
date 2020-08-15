@@ -1,9 +1,9 @@
-import { NodeModel, NodeType, JoinPointSlot, NodeCategory } from '../game_objects/NodeModel';
+import { NodeModel, BuiltinNodeType, JoinPointSlot, NodeCategory } from '../game_objects/NodeModel';
 
 export class AndNode extends NodeModel {
-    type = NodeType.And;
+    type = BuiltinNodeType.And;
     category = NodeCategory.Boolean;
-    title = "And";
+    label = "And";
     color = '#A19F99';
     inputSlots: JoinPointSlot[] = [
         {

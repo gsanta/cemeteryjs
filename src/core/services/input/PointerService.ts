@@ -33,7 +33,7 @@ export class PointerService {
     prevWheelState: number = 0;
     wheelDiff: number = undefined;
     hoveredItem: View;
-    droppableItem: DroppableItem;
+    dropType: string;
 
     hoveredPlugin: AbstractCanvasPlugin;
 
@@ -156,20 +156,20 @@ export class PointerService {
         this.registry.services.render.reRenderScheduled();
     }
 
-    pointerDragStart(item: DroppableItem) {
-        this.droppableItem = item;
-        const activePlugin = this.registry.plugins.getHoveredView();
-        this.registry.plugins.getHoveredView().toolHandler.setPriorityTool(ToolType.DragAndDrop);
-        this.registry.services.render.reRender(UI_Region.Sidepanel, this.hoveredPlugin ? this.hoveredPlugin.region : undefined)
-    }
+    // pointerDragStart(item: DroppableItem) {
+    //     this.dropType = item;
+    //     const activePlugin = this.registry.plugins.getHoveredView();
+    //     this.registry.plugins.getHoveredView().toolHandler.setPriorityTool(ToolType.DragAndDrop);
+    //     this.registry.services.render.reRender(UI_Region.Sidepanel, this.hoveredPlugin ? this.hoveredPlugin.region : undefined)
+    // }
 
-    pointerDrop() {
-        this.droppableItem = null;
-        const activePlugin = this.registry.plugins.getHoveredView();
-        this.registry.plugins.getHoveredView().toolHandler.removePriorityTool(ToolType.DragAndDrop);
+    // pointerDrop() {
+    //     this.dropType = null;
+    //     const activePlugin = this.registry.plugins.getHoveredView();
+    //     this.registry.plugins.getHoveredView().toolHandler.removePriorityTool(ToolType.DragAndDrop);
 
-        this.registry.services.render.reRender(UI_Region.Sidepanel, this.hoveredPlugin ? this.hoveredPlugin.region : undefined)
-    }
+    //     this.registry.services.render.reRender(UI_Region.Sidepanel, this.hoveredPlugin ? this.hoveredPlugin.region : undefined)
+    // }
     
     private getScreenPoint(point: Point): Point {
         const offset = this.registry.plugins.getHoveredView().getOffset();

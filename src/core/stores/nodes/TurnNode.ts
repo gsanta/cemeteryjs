@@ -1,4 +1,4 @@
-import { NodeModel, NodeType, JoinPointSlot, NodeCategory, NodeModelJson } from '../game_objects/NodeModel';
+import { NodeModel, BuiltinNodeType, JoinPointSlot, NodeCategory, NodeModelJson } from '../game_objects/NodeModel';
 import { View } from '../views/View';
 
 export interface TurnNodeJson extends NodeModelJson {
@@ -6,9 +6,9 @@ export interface TurnNodeJson extends NodeModelJson {
 }
 
 export class TurnNode extends NodeModel {
-    type = NodeType.Turn;
+    type = BuiltinNodeType.Turn;
     category = NodeCategory.Default;
-    title = "Turn";
+    label = "Turn";
     turn: string;
     allTurns: string[] = ['turn-left', 'turn-right'];
     color = 'A194EC';

@@ -1,9 +1,9 @@
-import { NodeModel, NodeType } from "../../../../core/stores/game_objects/NodeModel";
+import { NodeModel, BuiltinNodeType } from "../../../../core/stores/game_objects/NodeModel";
 import { AbstractNodeHandler } from "./AbstractNodeHandler";
 import { SplitNode } from "../../../../core/stores/nodes/SplitNode";
 
 export class SplitNodeHandler extends AbstractNodeHandler<SplitNode> {
-    nodeType: NodeType.Split;
+    nodeType: BuiltinNodeType.Split;
 
     setInstance(node: NodeModel) {
         if (node.type !== this.nodeType) {
@@ -16,7 +16,7 @@ export class SplitNodeHandler extends AbstractNodeHandler<SplitNode> {
     handle() {
     }
 
-    searchFromRight<T extends NodeModel>(type: NodeType): T {
+    searchFromRight<T extends NodeModel>(type: BuiltinNodeType): T {
         const joinedView = this.instance.nodeView.findJoinPointView('input').getOtherNode();
         if (joinedView) {
             if (joinedView.model.type === type) {

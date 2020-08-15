@@ -1,5 +1,4 @@
 import { Registry } from '../../Registry';
-import { RenderTask } from '../../services/RenderServices';
 import { AbstractTool } from './AbstractTool';
 import { Cursor, ToolType } from "./Tool";
 import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
@@ -25,13 +24,13 @@ export class DragAndDropTool extends AbstractTool {
     }
     
     up() {
-        this.isDragging = false;
-        const nodeType = this.registry.services.pointer.pointer.droppedItemType;
-        if (nodeType !== undefined) {
-            this.registry.stores.nodeStore.addDroppable(this.registry.services.pointer.droppableItem, this.registry.services.pointer.pointer.curr.clone());
-            this.registry.services.render.scheduleRendering(this.plugin.region);
-            this.registry.services.history.createSnapshot();
-        }
+        // this.isDragging = false;
+        // const nodeType = this.registry.services.pointer.pointer.droppedItemType;
+        // if (nodeType !== undefined) {
+        //     this.registry.stores.nodeStore.addDroppable(this.registry.services.pointer.dropType, this.registry.services.pointer.pointer.curr.clone());
+        //     this.registry.services.render.scheduleRendering(this.plugin.region);
+        //     this.registry.services.history.createSnapshot();
+        // }
     }
 
     getCursor() {

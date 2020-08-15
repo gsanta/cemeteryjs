@@ -1,4 +1,4 @@
-import { NodeModel, NodeType } from '../../../core/stores/game_objects/NodeModel';
+import { NodeModel, BuiltinNodeType } from '../../../core/stores/game_objects/NodeModel';
 import { Registry } from '../../../core/Registry';
 import { AbstractNodeHandler } from './node_handlers/AbstractNodeHandler';
 import { KeyboardNodeHandler } from './node_handlers/KeyboardNodeHandler';
@@ -18,21 +18,21 @@ export class NodeService extends AbstractPluginService<AbstractCanvasPlugin> {
 
     constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         super(plugin, registry);
-        this.handlersByType.set(NodeType.Keyboard, new KeyboardNodeHandler(plugin, registry));
-        this.handlersByType.set(NodeType.Move, new MoveNodeHandler(plugin, registry));
-        this.handlersByType.set(NodeType.Turn, new TurnNodeHandler(plugin, registry));
-        this.handlersByType.set(NodeType.Split, new SplitNodeHandler(plugin, registry));
-        this.handlersByType.set(NodeType.Route, new RouteNodeHandler(plugin, registry));
+        this.handlersByType.set(BuiltinNodeType.Keyboard, new KeyboardNodeHandler(plugin, registry));
+        this.handlersByType.set(BuiltinNodeType.Move, new MoveNodeHandler(plugin, registry));
+        this.handlersByType.set(BuiltinNodeType.Turn, new TurnNodeHandler(plugin, registry));
+        this.handlersByType.set(BuiltinNodeType.Split, new SplitNodeHandler(plugin, registry));
+        this.handlersByType.set(BuiltinNodeType.Route, new RouteNodeHandler(plugin, registry));
     }
     
     awake() {
         const engineService = this.plugin.pluginServices.byName<EngineService<any>>(EngineService.serviceName);
         engineService.getScene().registerAfterRender(() => {
-            this.getNodesByType(NodeType.Route).forEach(node => {
+            this.getNodesByType(BuiltinNodeType.Route).forEach(node => {
                 this.getHandler(node).update(node);
             });
     
-            this.getNodesByType(NodeType.Keyboard).forEach(node => {
+            this.getNodesByType(BuiltinNodeType.Keyboard).forEach(node => {
                 this.getHandler(node).update(node);
             });
         });

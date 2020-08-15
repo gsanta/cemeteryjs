@@ -1,11 +1,11 @@
-import { NodeType, NodeModel } from "../../../../core/stores/game_objects/NodeModel";
+import { BuiltinNodeType, NodeModel } from "../../../../core/stores/game_objects/NodeModel";
 import { MoveNode } from '../../../../core/stores/nodes/MoveNode';
 import { AbstractNodeHandler } from "./AbstractNodeHandler";
 import { MeshNode } from "../../../../core/stores/nodes/MeshNode";
 import { MeshModel } from "../../../../core/stores/game_objects/MeshModel";
 
 export class MoveNodeHandler extends AbstractNodeHandler<MoveNode> {
-    nodeType: NodeType.Move;
+    nodeType: BuiltinNodeType.Move;
 
     handle() {
         const meshNode = this.getInputMesh();
@@ -28,12 +28,12 @@ export class MoveNodeHandler extends AbstractNodeHandler<MoveNode> {
 
         let meshNode: MeshNode = undefined;
 
-        if (joinedView.model.type === NodeType.Mesh) {
+        if (joinedView.model.type === BuiltinNodeType.Mesh) {
             meshNode = <MeshNode> joinedView.model;
         } else {
             const handler = this.getNodeService().getHandler(joinedView.model);
             handler.instance = joinedView.model;
-            meshNode = handler.searchFromRight<MeshNode>(NodeType.Mesh);
+            meshNode = handler.searchFromRight<MeshNode>(BuiltinNodeType.Mesh);
         }
 
         return meshNode;

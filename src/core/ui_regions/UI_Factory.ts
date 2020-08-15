@@ -33,6 +33,7 @@ import { UI_Image } from './elements/UI_Image';
 import { UI_Column } from './elements/UI_Column';
 import { UI_TableRowGroup } from './elements/surfaces/table/UI_TableRowGroup';
 import { UI_Icon } from './elements/UI_Icon';
+import { UI_DropLayer } from './elements/surfaces/canvas/UI_DropLayer';
 
 export class UI_Factory {
     static layout(plugin: UI_Plugin): UI_Layout {
@@ -102,6 +103,18 @@ export class UI_Factory {
         this.setController(parent, svgCanvas, config);
 
         return svgCanvas;
+    }
+
+    static dropLayer(parent: UI_HtmlCanvas | UI_SvgCanvas, config: { controllerId?: string, prop: string}): UI_DropLayer {
+        const dropLayer = new UI_DropLayer(parent.plugin);
+        dropLayer.prop = config.prop;
+
+        parent._dropLayer = dropLayer;
+
+        dropLayer.generateId(parent);
+        this.setController(parent, dropLayer, config);
+
+        return dropLayer;
     }
 
     static accordion(parent: UI_Container, config: { controllerId?: string}): UI_Accordion {

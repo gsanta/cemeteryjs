@@ -89,12 +89,8 @@ export abstract class UI_Element {
         }
     }
 
-    dndStart() {
-
-    }
-
     dndEnd() {
-        
+        this.plugin.getControllerById(this.controllerId).dndEnd(this.prop);
     }
 }
 

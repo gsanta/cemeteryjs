@@ -64,6 +64,9 @@ import { UI_TableRowGroup } from './elements/surfaces/table/UI_TableRowGroup';
 import { TableRowGroupComp } from './components/table/TableRowGroupComp';
 import { UI_Icon } from './elements/UI_Icon';
 import { IconComp } from './components/text/IconComp';
+import { UI_DropLayer } from './elements/surfaces/canvas/UI_DropLayer';
+import { DropLayerComp } from './components/surfaces/canvas/DropLayerComp';
+import { drop } from 'lodash';
 
 
 export class UI_Builder {
@@ -129,8 +132,14 @@ export class UI_Builder {
     private buildSvgCanvas(canvas: UI_SvgCanvas | UI_HtmlCanvas, plugin: UI_Plugin) {
         let toolbar: JSX.Element = null;
 
-        if (canvas.getToolbar()) {
-            toolbar = this.buildToolbar(canvas.getToolbar());
+        if (canvas._toolbar) {
+            toolbar = this.buildToolbar(canvas._toolbar);
+        }
+
+        let dropLayer: JSX.Element = null;
+
+        if (canvas._dropLayer) {
+            dropLayer = this.buildLeaf(canvas._dropLayer);
         }
         
         let children: JSX.Element[] = [];
@@ -138,7 +147,7 @@ export class UI_Builder {
             children = this.buildChildren(canvas as UI_SvgCanvas, plugin);
         }
 
-        return <CanvasComp toolbar={toolbar} element={canvas}>{children}</CanvasComp>;
+        return <CanvasComp toolbar={toolbar} dropLayer={dropLayer} element={canvas}>{children}</CanvasComp>;
     }
 
     private buildToolbar(uiToolbar: UI_Toolbar) {
@@ -249,6 +258,10 @@ export class UI_Builder {
             case UI_ElementType.TableRowGroup:
                 const tableRowGroup = element as UI_TableRowGroup;
                 return <TableRowGroupComp element={tableRowGroup}></TableRowGroupComp>;
+            case UI_ElementType.DropLayer:
+                const dropLayer = element as UI_DropLayer;
+                return <DropLayerComp element={dropLayer}></DropLayerComp>;
+            
         }
     }
 }   

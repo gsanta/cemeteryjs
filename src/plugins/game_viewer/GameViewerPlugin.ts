@@ -1,6 +1,6 @@
 import { activeToolId } from '../../core/ui_regions/elements/UI_Element';
 import { UI_Layout } from '../../core/ui_regions/elements/UI_Layout';
-import { NodeType } from '../../core/stores/game_objects/NodeModel';
+import { BuiltinNodeType } from '../../core/stores/game_objects/NodeModel';
 import { Canvas_3d_Plugin } from '../../core/plugins/Canvas_3d_Plugin';
 import { Registry } from '../../core/Registry';
 import { EngineService } from '../../core/services/EngineService';
@@ -50,7 +50,7 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
         (<GameViewerImporter> this.importer).import();
 
         const nodeService = this.pluginServices.byName<NodeService>(NodeService.serviceName);
-        nodeService.getNodesByType(NodeType.Route).forEach(node => nodeService.getHandler(node).wake(node));
+        nodeService.getNodesByType(BuiltinNodeType.Route).forEach(node => nodeService.getHandler(node).wake(node));
 
         const engineService = this.pluginServices.byName<EngineService<any>>(EngineService.serviceName);
         engineService.getScene().registerAfterRender(() => {

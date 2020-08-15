@@ -80,13 +80,13 @@ export class MouseService {
         this.registry.services.pointer.unhover(item);
     }
 
-    dragStart(item: DroppableItem) {
-        this.registry.services.pointer.pointerDragStart(item);
-    }
+    // dragStart(item: DroppableItem) {
+    //     this.registry.services.pointer.pointerDragStart(item);
+    // }
 
-    drop() {
-        this.registry.services.pointer.pointerDrop();
-    }
+    // drop() {
+    //     this.registry.services.pointer.pointerDrop();
+    // }
 
     private convertEvent(e: MouseEvent, isPointerDown: boolean, droppedItemId?: string): IPointerEvent {
         return {

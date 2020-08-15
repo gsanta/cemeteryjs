@@ -1,9 +1,10 @@
+import { UI_Plugin, UI_Region } from '../../core/plugins/UI_Plugin';
+import { Registry } from '../../core/Registry';
+import { NodeModel } from '../../core/stores/game_objects/NodeModel';
+import { nodeConfigs } from '../../core/stores/nodes/NodeFactory';
 import { UI_Accordion } from '../../core/ui_regions/elements/surfaces/UI_Accordion';
 import { UI_Container } from '../../core/ui_regions/elements/UI_Container';
-import { NodeCategory, NodeModel } from '../../core/stores/game_objects/NodeModel';
-import { Registry } from '../../core/Registry';
-import { UI_Plugin, UI_Region } from '../../core/plugins/UI_Plugin';
-import { NodeEditorSettingsController, NodeEditorSettingsControllerId } from './NodeEditorSettingsController';
+import { NodeEditorSettingsController, NodeEditorSettingsControllerId, NodeEditorSettingsProps } from './NodeEditorSettingsController';
 
 export const NodeEditorSettingsPluginId = 'node_editor_settings_plugin'; 
 export class NodeEditorSettingsPlugin extends UI_Plugin {
@@ -14,7 +15,7 @@ export class NodeEditorSettingsPlugin extends UI_Plugin {
     constructor(registry: Registry) {
         super(registry);
 
-        this.controllers.set(NodeEditorSettingsPluginId, new NodeEditorSettingsController(this, registry));
+        this.controllers.set(NodeEditorSettingsControllerId, new NodeEditorSettingsController(this, this.registry));
     }
 
     renderInto(rootContainer: UI_Accordion): UI_Container {
@@ -26,9 +27,9 @@ export class NodeEditorSettingsPlugin extends UI_Plugin {
     }
 
     private renderNodesList(rootContainer: UI_Accordion) {
-        const nodeTypesByCategory: Map<NodeCategory, NodeModel[]> = new Map();
+        const nodeTypesByCategory: Map<string, NodeConfig[]> = new Map();
 
-        this.registry.stores.nodeStore.templates.forEach(node => {
+        nodeConfigs.forEach(node => {
             if (!nodeTypesByCategory.get(node.category)) {
                 nodeTypesByCategory.set(node.category, []);
             }
@@ -40,9 +41,10 @@ export class NodeEditorSettingsPlugin extends UI_Plugin {
             accordion.title = nodes[0].category;
 
             nodes.forEach((node) => {
-                const listItem = accordion.listItem({prop: node.type})
+                const listItem = accordion.listItem({prop: NodeEditorSettingsProps.DragNode})
                 listItem.label = node.type;
                 listItem.droppable = true; 
+                listItem.listItemId = node.type;
             });
         });
     }

@@ -4,7 +4,7 @@ import { NodeView } from '../views/NodeView';
 import { NodeSettings } from '../../../plugins/node_editor/settings/NodeSettings';
 import { View } from '../views/View';
 
-export enum NodeType {
+export enum BuiltinNodeType {
     Keyboard = 'Keyboard',
     Move = 'Move',
     Turn = 'Turn',
@@ -19,7 +19,7 @@ export enum NodeType {
 export function getAllNodeTypes() {
     const nodeTypes: string[] = [];
 
-    for (let item in NodeType) {
+    for (let item in BuiltinNodeType) {
         if (isNaN(Number(item))) {
             nodeTypes.push(item);
         }
@@ -46,14 +46,11 @@ export interface NodeModelJson {
 
 export abstract class NodeModel {
     nodeView: NodeView;
-    type: NodeType;
+    type: BuiltinNodeType | string;
     category: NodeCategory;
 
-    constructor(nodeView: NodeView) {
-        this.nodeView = nodeView;
-    }
     isDirty = false;
-    title: string;
+    label: string;
     color: string;
     inputSlots: JoinPointSlot[];
     outputSlots: JoinPointSlot[];
@@ -76,7 +73,7 @@ export abstract class NodeModel {
     }
 
     fromJson(json: NodeModelJson, viewMap: Map<string, View>) {
-        this.type = <NodeType> json.type;
+        this.type = <BuiltinNodeType> json.type;
     }
 }
 

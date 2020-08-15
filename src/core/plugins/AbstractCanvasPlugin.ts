@@ -30,6 +30,8 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
 
     isFullScreen: boolean = false;
 
+    droppableId: string;
+
     pluginServices: PluginServices<this> = new PluginServices([]);
     pluginSettings: PluginSettings = new PluginSettings([]);
 
