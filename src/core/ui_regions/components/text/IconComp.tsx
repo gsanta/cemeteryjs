@@ -5,6 +5,7 @@ import { UI_ComponentProps } from '../UI_ComponentProps';
 import { UI_Icon } from '../../elements/UI_Icon';
 import styled from 'styled-components';
 import { cssClassBuilder } from '../layout/RowComp';
+import { colors } from '../styles';
 const undoIcon = require('../../../../../assets/images/icons/undo.svg');
 const redoIcon = require('../../../../../assets/images/icons/redo.svg');
 const brushIcon = require('../../../../../assets/images/icons/brush.svg');
@@ -18,16 +19,26 @@ const fullScreenIcon = require('../../../../../assets/images/icons/fullscreen.sv
 const fullScreenExitIcon = require('../../../../../assets/images/icons/fullscreen_exit.svg');
 const insertPhotoIcon = require('../../../../../assets/images/icons/insert_photo.svg');
 const removeIcon = require('../../../../../assets/images/icons/remove.svg');
+const doneIcon = require('../../../../../assets/images/icons/done.svg');
 
 const IconStyled = styled.div`
     &.ce-icon {
         width: 24px;
         height: 24px;
+        margin: 1px;
         cursor: pointer;
 
         background-size: cover;
         background-repeat: no-repeat;
         background-color: white;
+
+        &.ce-icon-success {
+            background-color: lightgreen;
+        }
+
+        &.ce-icon-danger {
+            background-color: ${colors.danger};
+        }
 
         &.undo-icon {
             background-image: url(${undoIcon});
@@ -80,31 +91,43 @@ const IconStyled = styled.div`
         &.remove-icon {
             background-image: url(${removeIcon});
         }
-    }
-`
 
-export const IconComp = (props: UI_ComponentProps<UI_Icon>) => {
-    const classes = cssClassBuilder(
-        'ce-icon',
-        `${props.element.iconName}-icon`
-    );
-
-    if (props.element.iconName) {
-        return (
-            <IconStyled className={classes} onClick={() => props.element.click()}/>
-        )
-    } else {
-        return (
-            <div 
-                style={{ 
-                    width: props.element.width ? props.element.width : '100px',
-                    height: props.element.height ? props.element.height : '100px',
-                    background: 'black'
-                }}
-                onClick={() => props.element.click()}
-            ></div>
-        )
+        &.done-icon {
+            background-image: url(${doneIcon});
+        }
     }
+`;
+
+export interface IconCompProps extends UI_ComponentProps<UI_Icon> {
+    tooltip: JSX.Element;
 }
 
-IconComp.displayName = 'IconComp';
+export class IconComp extends React.Component<IconCompProps> {
+    private ref: React.RefObject<HTMLDivElement> = React.createRef();
+
+    render() {
+        const classes = cssClassBuilder(
+            'ce-icon',
+            this.props.element.variant ? `ce-icon-${this.props.element.variant}` : undefined,
+            `${this.props.element.iconName}-icon`
+        );
+    
+        if (this.props.element.iconName) {
+            return (
+                <IconStyled ref={this.ref} className={classes} id={this.props.element.id} onClick={() => this.props.element.click()}>{this.props.tooltip}</IconStyled>
+            )
+        } else {
+            return (
+                <div 
+                    style={{ 
+                        width: this.props.element.width ? this.props.element.width : '100px',
+                        height: this.props.element.height ? this.props.element.height : '100px',
+                        background: 'black'
+                    }}
+                    id={this.props.element.id}
+                    onClick={() => this.props.element.click()}
+                ></div>
+            )
+        }
+    }
+}

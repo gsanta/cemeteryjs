@@ -14,7 +14,7 @@ export interface RowProps {
 const RowStyled = styled.div`
     display: flex;
     justify-content: space-between;
-    margin-top: 4px;
+    /* margin-top: 4px; */
 
     &.ce-v_align-center {
         align-items: center;

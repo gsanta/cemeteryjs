@@ -1,7 +1,7 @@
 import { UI_Plugin, UI_Region } from '../../core/plugins/UI_Plugin';
 import { UI_Layout } from '../../core/ui_regions/elements/UI_Layout';
 import { UI_Table } from '../../core/ui_regions/elements/UI_Table';
-import { AssetType } from '../../core/stores/game_objects/AssetObject';
+import { AssetType, AssetObject } from '../../core/stores/game_objects/AssetObject';
 import { Registry } from '../../core/Registry';
 import { AssetManagerDialogControllerId, AssetManagerDialogController, AssetManagerDialogProps } from './AssetManagerDialogController';
 import { UI_Dialog } from '../../core/ui_regions/elements/surfaces/UI_Dialog';
@@ -12,6 +12,7 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
     region = UI_Region.Dialog;
     displayName = 'Asset manager';
 
+    editedAsset: AssetObject;
 
     constructor(registry: Registry) {
         super(registry);
@@ -29,7 +30,7 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
         const row = layout.row({ key: '1' });
 
         const table = row.table(null);
-        table.columnWidths = [150, 150, 150, 50];
+        table.columnWidths = [150, 150, 150, 54];
         table.width = 500;
 
         this.renderTableHeader(table);
@@ -65,32 +66,78 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
         tableRowGroup.text = 'Model';
 
         this.registry.stores.assetStore.getByType(AssetType.Model).forEach(asset => {
-            const tableRow = table.tableRow({ isHeader: false });
-
-            let column = tableRow.tableColumn(null);
-            let text = column.text();
-            text.text = asset.id;
-    
-            column = tableRow.tableColumn(null);
-            text = column.text();
-            text.text = asset.name ? asset.name : '-';
-    
-            column = tableRow.tableColumn(null);
-            text = column.text();
-            text.text = asset.path ? asset.path : '-';
-
-            column = tableRow.tableColumn(null);
-            column.width = 100;
-
-            const iconRow = column.row({ key: 'icons' });
-
-            let icon = iconRow.icon({ prop: null });
-            icon.iconName = 'brush';
-            icon.listItemId = asset.id;
-
-            icon = iconRow.icon({ prop: AssetManagerDialogProps.DeleteAsset });
-            icon.iconName = 'remove';
-            icon.listItemId = asset.id;
+            if (asset === this.editedAsset) {
+                this.renderEditableModel(table, asset);
+            } else {
+                this.renderReadOnlyModel(table, asset);
+            }
         });
+    }
+
+    private renderReadOnlyModel(table: UI_Table, asset: AssetObject) {
+        const tableRow = table.tableRow({ isHeader: false });
+
+        let column = tableRow.tableColumn(null);
+        let text = column.text();
+        text.text = asset.id;
+
+        column = tableRow.tableColumn(null);
+        text = column.text();
+        text.text = asset.name ? asset.name : '-';
+
+        column = tableRow.tableColumn(null);
+        text = column.text();
+        text.text = asset.path ? asset.path : '-';
+
+        column = tableRow.tableColumn(null);
+        column.width = 100;
+
+        const iconRow = column.row({ key: 'icons' });
+
+        let icon = iconRow.icon({ prop: AssetManagerDialogProps.EnterEditMode });
+        icon.iconName = 'brush';
+        icon.listItemId = asset.id;
+        let tooltip = icon.tooltip();
+        tooltip.label = 'Edit';
+
+        icon = iconRow.icon({ prop: AssetManagerDialogProps.DeleteAsset });
+        icon.iconName = 'delete';
+        icon.listItemId = asset.id;
+        icon.variant = 'danger';
+        tooltip = icon.tooltip();
+        tooltip.label = 'Delete';
+    }
+
+    private renderEditableModel(table: UI_Table, asset: AssetObject) {
+        const tableRow = table.tableRow({ isHeader: false });
+
+        let column = tableRow.tableColumn(null);
+        let text = column.text();
+        text.text = asset.id;
+
+        column = tableRow.tableColumn(null);
+        let textField = column.textField(AssetManagerDialogProps.AssetName);
+
+        column = tableRow.tableColumn(null);
+        textField = column.textField(AssetManagerDialogProps.AssetPath);
+
+        column = tableRow.tableColumn(null);
+        column.width = 100;
+
+        const iconRow = column.row({ key: 'icons' });
+
+        let icon = iconRow.icon({ prop: AssetManagerDialogProps.SaveEdit });
+        icon.iconName = 'done';
+        icon.listItemId = asset.id;
+        icon.variant = 'success';
+        let tooltip = icon.tooltip();
+        tooltip.label = 'Done';
+
+        icon = iconRow.icon({ prop: AssetManagerDialogProps.CancelEdit });
+        icon.iconName = 'remove';
+        icon.listItemId = asset.id;
+        icon.variant = 'danger';
+        tooltip = icon.tooltip();
+        tooltip.label = 'Cancel';
     }
 }

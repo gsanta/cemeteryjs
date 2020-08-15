@@ -137,7 +137,8 @@ export class UI_Factory {
         const icon = new UI_Icon(parent.plugin);
         icon.prop = config.prop;
 
-        icon.generateId(parent);
+        icon.id = `${parent.id}_${icon.elementType}-${icon.prop ? icon.prop : icon.key}`;
+
         this.setController(parent, icon);
         parent.children.push(icon);
 
@@ -367,7 +368,7 @@ export class UI_Factory {
         return table;
     }
 
-    static tooltip(parent: UI_Tool | UI_ActionIcon, config: { anchorId?: string }): UI_Tooltip {
+    static tooltip(parent: UI_Tool | UI_ActionIcon | UI_Icon, config: { anchorId?: string }): UI_Tooltip {
         const tooltip = new UI_Tooltip(parent.plugin);
         
         (config && config.anchorId) && (tooltip.anchorId = config.anchorId);

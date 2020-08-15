@@ -176,6 +176,12 @@ export class UI_Builder {
         return <ActionIconComp key={uiActionIcon.id} tooltip={tooltip} element={uiActionIcon}/>; 
     }
 
+    private buildIcon(uiIcon: UI_Icon) {
+        const tooltip = uiIcon._tooltip ? this.buildLeaf(uiIcon._tooltip) : null;
+
+        return <IconComp key={uiIcon.id} tooltip={tooltip} element={uiIcon}/>; 
+    }
+
     private buildLeaf(element: UI_Element): JSX.Element {
         switch(element.elementType) {
             case UI_ElementType.Text:
@@ -239,7 +245,7 @@ export class UI_Builder {
                 return <ImageComp element={image}/>;
             case UI_ElementType.Icon:
                 const icon = element as UI_Icon;
-                return <IconComp element={icon}/>;
+                return this.buildIcon(icon);
             case UI_ElementType.TableRowGroup:
                 const tableRowGroup = element as UI_TableRowGroup;
                 return <TableRowGroupComp element={tableRowGroup}></TableRowGroupComp>;

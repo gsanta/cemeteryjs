@@ -91,6 +91,10 @@ export class PropContext<T> {
         callback(this.tempVal);
         this.tempVal = undefined;
     }
+
+    clearTempVal() {
+        this.tempVal = undefined;
+    }
 }
 
 export abstract class AbstractController<P = any> {
@@ -108,6 +112,8 @@ export abstract class AbstractController<P = any> {
             .onClick(() => {
                 registry.plugins.deactivatePlugin(plugin.id);
                 registry.services.render.reRenderAll();
+
+                Array.from(this.handlers).forEach((val => val[1].context.clearTempVal()));
             });
     }
 
@@ -161,5 +167,9 @@ export abstract class AbstractController<P = any> {
         const propHandler = new PropHandler<T>();
         this.handlers.set(prop, propHandler);
         return propHandler;
+    }
+
+    getPropHandler<T>(prop: P | GlobalControllerProps): PropHandler<T> {
+        return this.handlers.get(prop);
     }
 }

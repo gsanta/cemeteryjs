@@ -21,6 +21,10 @@ const TableCompStyled = styled.div`
         }
     }
 
+    .ce-table-column {
+        padding: 2px;
+    }
+
     .ce-table-row-group {
         font-weight: bold;
         margin: 1px;
