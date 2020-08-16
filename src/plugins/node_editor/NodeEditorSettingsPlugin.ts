@@ -1,7 +1,6 @@
 import { UI_Plugin, UI_Region } from '../../core/plugins/UI_Plugin';
 import { Registry } from '../../core/Registry';
 import { NodeModel } from '../../core/stores/game_objects/NodeModel';
-import { nodeConfigs } from '../../core/stores/nodes/NodeFactory';
 import { UI_Accordion } from '../../core/ui_regions/elements/surfaces/UI_Accordion';
 import { UI_Container } from '../../core/ui_regions/elements/UI_Container';
 import { NodeEditorSettingsController, NodeEditorSettingsControllerId, NodeEditorSettingsProps } from './NodeEditorSettingsController';
@@ -27,13 +26,13 @@ export class NodeEditorSettingsPlugin extends UI_Plugin {
     }
 
     private renderNodesList(rootContainer: UI_Accordion) {
-        const nodeTypesByCategory: Map<string, NodeConfig[]> = new Map();
+        const nodeTypesByCategory: Map<string, NodeModel[]> = new Map();
 
-        nodeConfigs.forEach(node => {
-            if (!nodeTypesByCategory.get(node.category)) {
-                nodeTypesByCategory.set(node.category, []);
+        this.registry.services.node.nodeTypes.forEach(type => {
+            if (!nodeTypesByCategory.get(type)) {
+                nodeTypesByCategory.set(type, []);
             }
-            nodeTypesByCategory.get(node.category).push(node);
+            nodeTypesByCategory.get(type).push(this.registry.services.node.nodeTemplates.get(type));
         });
 
         Array.from(nodeTypesByCategory.values()).forEach((nodes: NodeModel[]) => {

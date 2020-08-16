@@ -10,7 +10,7 @@ export class SplitNodeHandler extends AbstractNodeHandler<SplitNode> {
             throw new Error(`This handler accepts type ${this.nodeType}, but called with ${node.type}`);
         }
 
-        this.instance = node;
+        this.instance = <SplitNode> node;
     }
 
     handle() {

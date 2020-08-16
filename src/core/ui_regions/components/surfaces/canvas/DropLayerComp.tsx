@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { Point } from '../../../../../utils/geometry/shapes/Point';
 import { Registry } from '../../../../Registry';
 import { useDrop } from 'react-dnd';
-import { nodeConfigs } from '../../../../stores/nodes/NodeFactory';
 import { UI_ComponentProps } from '../../UI_ComponentProps';
 import { UI_DropLayer } from '../../../elements/surfaces/canvas/UI_DropLayer';
 
@@ -28,8 +27,7 @@ interface DropLayerProps {
 }
 
 export const DropLayerComp = (props: UI_ComponentProps<UI_DropLayer>) => {
-    // TODO find a better solution
-    const types = nodeConfigs.map(config => config.type);
+    const types = props.element.acceptedDropIds;
 	const [{ isOver }, drop] = useDrop({
         accept: types,
         drop: (item, monitor) => {

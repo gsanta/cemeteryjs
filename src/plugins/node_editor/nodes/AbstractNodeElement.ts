@@ -4,10 +4,7 @@ import { colors } from '../../../core/ui_regions/components/styles';
 import { ToolType } from '../../../core/plugins/tools/Tool';
 import { UI_Plugin } from '../../../core/plugins/UI_Plugin';
 import { UI_SvgCanvas } from '../../../core/ui_regions/elements/UI_SvgCanvas';
-import { UI_Box } from '../../../core/ui_regions/elements/UI_Box';
 import { UI_SvgGroup } from '../../../core/ui_regions/elements/svg/UI_SvgGroup';
-import { JoinPointSlot } from '../../../core/stores/game_objects/NodeModel';
-import { join } from 'path';
 import { JoinPointView } from '../../../core/stores/views/child_views/JoinPointView';
 import { UI_SvgForeignObject } from '../../../core/ui_regions/elements/svg/UI_SvgForeignObject';
 

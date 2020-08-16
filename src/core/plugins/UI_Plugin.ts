@@ -83,8 +83,6 @@ export abstract class UI_Plugin implements IControlledObject {
         }
     }
 
-    NodeVis
-
     getControllerById(id: string) {
         return this.controllers.get(id);
     }

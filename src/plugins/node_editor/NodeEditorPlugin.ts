@@ -14,11 +14,6 @@ import { NodeEditorExporter } from './io/NodeEditorExporter';
 import { NodeEditorImporter } from './io/NodeEditorImporter';
 import { NodeEditorController, NodeEditorControllerId, NodeEditorProps } from './NodeEditorController';
 import { PathNodeElement } from './nodes/PathNodeElement';
-import { NodeEditorSettings } from './settings/NodeEditorSettings';
-import { NodeFactory, nodeConfigs } from '../../core/stores/nodes/NodeFactory';
-import { NodeConfig } from './NodeConfig';
-import { NodeGroupConfig } from './NodeGroupConfig';
-import { registerPredefinedNodes } from '../../core/stores/nodes/registerPredefinedNodes';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -52,11 +47,10 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
     id = 'action-editor-plugin';
     region = UI_Region.Canvas1;
 
-    nodeFactory: NodeFactory;
+    nodeObjects: NodeModel;
 
     private camera: Camera2D;
 
-    presets: NodeFactory[];
     nodeTypes: string[] = [
         BuiltinNodeType.And,
         BuiltinNodeType.Animation,
@@ -85,16 +79,6 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
         this.exporter = new NodeEditorExporter(this, this.registry);
         this.importer = new NodeEditorImporter(this, this.registry);
 
-        this.pluginSettings = new PluginSettings(
-            [
-                new NodeEditorSettings(registry)
-            ]
-        )
-
-        this.nodeFactory = new NodeFactory(registry);
-        
-        registerPredefinedNodes(this);
-
         this.registry.stores.nodeStore.presets
     }
 
@@ -117,25 +101,11 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
         return this.camera;
     }
 
-    registerNodeCreator(nodeType: string, creator: () => NodeModel) {
-        this.nodeFactory.nodeCreators.set(nodeType, creator);
-    }
-
-    registerNodeGroup(nodeGroupConfig: NodeGroupConfig) {
-        this.nodeFactory.nodeGroups.set(nodeGroupConfig.type, nodeGroupConfig);
-    }
-
-    registerPreset(preset: NodeFactory) {
-        if (this.registry.stores.nodeStore.templates.find(n => n.type === preset.presetName)) {
-            throw new Error(`Node preset with name ${preset.presetName} already registered`);
-        }
-        this.registry.stores.nodeStore.presets.push(preset);
-    }
-
     protected renderInto(layout: UI_Layout): void {
         const canvas = layout.svgCanvas(null);
 
         const dropLayer = canvas.dropLayer({controllerId: NodeEditorControllerId, prop: NodeEditorProps.DropNode });
+        dropLayer.acceptedDropIds = this.registry.services.node.nodeTypes
         dropLayer.isDragging = !!this.droppableId;
 
         const toolbar = canvas.toolbar();

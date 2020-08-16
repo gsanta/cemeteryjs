@@ -34,6 +34,7 @@ import { UI_Column } from './elements/UI_Column';
 import { UI_TableRowGroup } from './elements/surfaces/table/UI_TableRowGroup';
 import { UI_Icon } from './elements/UI_Icon';
 import { UI_DropLayer } from './elements/surfaces/canvas/UI_DropLayer';
+import { UI_Node } from './elements/views/UI_Node';
 
 export class UI_Factory {
     static layout(plugin: UI_Plugin): UI_Layout {
@@ -424,6 +425,20 @@ export class UI_Factory {
         return row;
     }
 
+    ///////////////////////////////////////////// View /////////////////////////////////////////////
+
+    static node(parent: UI_SvgCanvas, config: {controllerId: string, key: string}) {
+        const node = new UI_Node(parent.plugin);
+
+        this.setController(parent, node, config);
+        node.generateId(parent);
+
+        parent.children.push(node);
+
+        return node;
+    }
+
+
     private static setController(parent: UI_Element, current: UI_Element, config?: {controllerId?: string}) {
         if (config && config.controllerId) {
             current.controllerId = config.controllerId;
@@ -431,4 +446,5 @@ export class UI_Factory {
             current.controllerId = parent.controllerId;
         }
     }
+
 }

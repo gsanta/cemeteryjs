@@ -42,5 +42,8 @@ export enum UI_ElementType {
     Toolbar = 'Toolbar',
     ToolIcon = 'ToolIcon',
     ActionIcon = 'ActionIcon',
-    IconSeparator = 'IconSeparator'
+    IconSeparator = 'IconSeparator',
+
+    // views
+    Node = 'Node'
 }

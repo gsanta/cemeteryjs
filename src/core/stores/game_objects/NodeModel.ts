@@ -1,8 +1,8 @@
 import { DroppableItem } from '../../plugins/tools/DragAndDropTool';
 import { NodeGraph } from '../../services/node/NodeGraph';
-import { NodeView } from '../views/NodeView';
-import { NodeSettings } from '../../../plugins/node_editor/settings/NodeSettings';
+import { NodeView, defaultNodeViewConfig } from '../views/NodeView';
 import { View } from '../views/View';
+import { Point } from '../../../utils/geometry/shapes/Point';
 
 export enum BuiltinNodeType {
     Keyboard = 'Keyboard',
@@ -52,8 +52,14 @@ export abstract class NodeModel {
     isDirty = false;
     label: string;
     color: string;
+    size: Point;
     inputSlots: JoinPointSlot[];
     outputSlots: JoinPointSlot[];
+
+    constructor(size: Point = new Point(defaultNodeViewConfig.width, defaultNodeViewConfig.height)) {
+        this.size = size;
+    }
+
     updateNode(graph: NodeGraph): void {}
 
     findSlotByName(name: string) {
