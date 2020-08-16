@@ -1,6 +1,6 @@
 import { UI_ComponentProps } from "../UI_ComponentProps";
 import * as React from 'react';
-import { UI_SvgText } from '../../gui_builder/elements/svg/UI_SvgText';
+import { UI_SvgText } from "../../elements/svg/UI_SvgText";
 
 export const SvgTextComp = (props: UI_ComponentProps<UI_SvgText>) => {
     return (

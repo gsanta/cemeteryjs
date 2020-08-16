@@ -57,7 +57,7 @@ export class NodeService {
         
         const nodeView = new NodeView(this.registry.stores.nodeStore.graph, {nodeType: nodeObject.type, dimensions: new Rectangle(topLeft, bottomRight), node: nodeObject});
         
-        this.registry.stores.nodeStore.addItem(nodeView);
+        this.registry.stores.nodeStore.addNode(nodeView);
 
         return nodeView;
     }

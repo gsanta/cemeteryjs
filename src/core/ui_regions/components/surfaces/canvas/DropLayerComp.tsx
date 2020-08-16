@@ -43,6 +43,9 @@ export const DropLayerComp = (props: UI_ComponentProps<UI_DropLayer>) => {
             ref={drop}
             className='drop-layer'
             isDragging={props.element.isDragging}
+            onMouseDown={(e) => this.props.element.mouseDown(e.nativeEvent)}
+            onMouseMove={(e) => this.props.element.mouseMove(e.nativeEvent)}                
+            onMouseUp={(e) => this.props.element.mouseUp(e.nativeEvent)}
         />
     );
 }

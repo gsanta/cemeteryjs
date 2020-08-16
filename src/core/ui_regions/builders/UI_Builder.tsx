@@ -67,6 +67,7 @@ import { IconComp } from '../components/text/IconComp';
 import { UI_DropLayer } from '../elements/surfaces/canvas/UI_DropLayer';
 import { DropLayerComp } from '../components/surfaces/canvas/DropLayerComp';
 import { drop } from 'lodash';
+import { SvgTextComp } from '../components/svg/SvgTextComp';
 
 
 export class UI_Builder {
@@ -228,7 +229,7 @@ export class UI_Builder {
                 return <ForeignObjectComp element={foreignObject}/>;
             case UI_ElementType.SvgText:
                 const svgText = element as UI_SvgText;
-                return <ForeignObjectComp element={foreignObject}/>; 
+                return <SvgTextComp element={svgText}/>;
             case UI_ElementType.Toolbar:
                 const toolbar = element as UI_Toolbar;
                 return this.buildToolbar(toolbar);

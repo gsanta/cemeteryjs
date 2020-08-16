@@ -139,12 +139,7 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
     }
 
     private renderNodesInto(canvas: UI_SvgCanvas) {
-        this.registry.stores.nodeStore.getNodes()
-            .forEach(node => {
-                if (node.model.type === BuiltinNodeType.Path) {
-                    new PathNodeElement(this, this.registry).renderInto(canvas, node);
-                }
-            })
+        this.registry.stores.nodeStore.getNodes().forEach(node => this.registry.services.node.renderNodeInto(node, canvas))
     }
 
     activated() {

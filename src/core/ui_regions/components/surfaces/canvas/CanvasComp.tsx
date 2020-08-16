@@ -85,10 +85,8 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
                 viewBox={((this.props.element.plugin as AbstractCanvasPlugin).getCamera() as Camera2D).getViewBoxAsString()}
                 id={this.context.controllers.svgCanvasId}
                 onMouseDown={(e) => this.props.element.mouseDown(e.nativeEvent)}
-                onMouseMove={(e) => {
-                    console.log('mouse move')
-                    this.props.element.mouseMove(e.nativeEvent)
-                }}                onMouseUp={(e) => this.props.element.mouseUp(e.nativeEvent)}
+                onMouseMove={(e) => this.props.element.mouseMove(e.nativeEvent)}                
+                onMouseUp={(e) => this.props.element.mouseUp(e.nativeEvent)}
                 onMouseLeave={(e) => this.props.element.mouseLeave(e.nativeEvent)}
                 onMouseEnter={(e) => this.props.element.mouseEnter(e.nativeEvent)}
                 onKeyDown={e => this.props.element.keyDown(e.nativeEvent)}

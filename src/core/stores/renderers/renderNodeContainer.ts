@@ -3,7 +3,8 @@ import { UI_SvgGroup } from '../../ui_regions/elements/svg/UI_SvgGroup';
 import { UI_SvgCanvas } from "../../ui_regions/elements/UI_SvgCanvas";
 import { JoinPointView } from "../views/child_views/JoinPointView";
 import { NodeView } from "../views/NodeView";
-
+import { colors } from '../../ui_regions/components/styles';
+import { ToolType } from '../../plugins/tools/Tool';
 
 export const renderNodeContainer = (nodeView: NodeView, svgCanvas: UI_SvgCanvas): UI_SvgForeignObject => {
     const group = svgCanvas.group(nodeView.id);
@@ -14,7 +15,7 @@ export const renderNodeContainer = (nodeView: NodeView, svgCanvas: UI_SvgCanvas)
     rect.y = 0;
     rect.width = nodeView.dimensions.getWidth();
     rect.height = nodeView.dimensions.getHeight();
-    rect.strokeColor = this.getStrokeColor(nodeView);
+    rect.strokeColor = getStrokeColor(nodeView);
 
     renderConnectionSectionInto(nodeView, group);
 
@@ -61,4 +62,16 @@ const renderLabeledConnectionInto = (svgGroup: UI_SvgGroup, nodeView: NodeView, 
     text.x = joinPointView.isInput ? inputX + 10 : outputX - 10;
     text.y = yPos;
     joinPointView.isInput === false && (text.anchor === 'end');
+}
+
+const getStrokeColor = (nodeView: NodeView, defaultColor = 'black'): string => {
+    // const selectionColor = this.registry.stores.selectionStore.contains(nodeView) ? colors.views.highlight : undefined;
+    // let hoverColor: string = undefined
+    // if (this.registry.plugins.getHoveredView()) {
+    //     const activeTool = this.registry.plugins.getHoveredView().toolHandler.getActiveTool();
+    //     hoverColor = this.registry.services.pointer.hoveredItem === nodeView ? activeTool.id === ToolType.Delete ? colors.views.delete : colors.views.highlight : undefined;
+    // }
+
+    // return hoverColor || selectionColor || defaultColor;
+    return defaultColor;
 }
