@@ -3,8 +3,7 @@ import { UI_SvgGroup } from '../../ui_regions/elements/svg/UI_SvgGroup';
 import { UI_SvgCanvas } from "../../ui_regions/elements/UI_SvgCanvas";
 import { JoinPointView } from "../views/child_views/JoinPointView";
 import { NodeView } from "../views/NodeView";
-import { colors } from '../../ui_regions/components/styles';
-import { ToolType } from '../../plugins/tools/Tool';
+import { join } from 'path';
 
 export const renderNodeContainer = (nodeView: NodeView, svgCanvas: UI_SvgCanvas): UI_SvgForeignObject => {
     const group = svgCanvas.group(nodeView.id);
@@ -16,6 +15,7 @@ export const renderNodeContainer = (nodeView: NodeView, svgCanvas: UI_SvgCanvas)
     rect.width = nodeView.dimensions.getWidth();
     rect.height = nodeView.dimensions.getHeight();
     rect.strokeColor = getStrokeColor(nodeView);
+    rect.fillColor = 'white';
 
     renderConnectionSectionInto(nodeView, group);
 
@@ -38,13 +38,13 @@ const renderConnectionSectionInto = (nodeView: NodeView, svgGroup: UI_SvgGroup) 
 
 
     let rowHeight = 10;
-    for (let i = 0; i < rows; i++) {
+    // for (let i = 0; i < rows; i++) {
 
         nodeView.joinPointViews.forEach(joinPointView => {
             joinPointView.isInput ? (inputs++) : (outputs++);
             renderLabeledConnectionInto(svgGroup, nodeView, joinPointView, joinPointView.isInput ? inputs * rowHeight : outputs * rowHeight);
         });
-    }
+    // }
 }
 
 const renderLabeledConnectionInto = (svgGroup: UI_SvgGroup, nodeView: NodeView, joinPointView: JoinPointView, yPos: number): void => {
@@ -52,16 +52,16 @@ const renderLabeledConnectionInto = (svgGroup: UI_SvgGroup, nodeView: NodeView, 
     const inputX = 5;
     const outputX = nodeView.dimensions.getWidth() - 5;
 
-    circle.cx = joinPointView.isInput ? inputX : outputX;
-    circle.cy = yPos;
+    circle.cx = joinPointView.point.x; //joinPointView.isInput ? inputX : outputX;
+    circle.cy = joinPointView.point.y;
     circle.r = 5;
     circle.fillColor = 'red';
 
     const text = svgGroup.svgText({key: joinPointView.slotName});
     text.text = joinPointView.slotName;
-    text.x = joinPointView.isInput ? inputX + 10 : outputX - 10;
-    text.y = yPos;
-    joinPointView.isInput === false && (text.anchor === 'end');
+    text.x = joinPointView.point.x;// joinPointView.isInput ? inputX + 10 : outputX - 10;
+    text.y = joinPointView.point.y;
+    joinPointView.isInput === false && (text.anchor = 'end');
 }
 
 const getStrokeColor = (nodeView: NodeView, defaultColor = 'black'): string => {

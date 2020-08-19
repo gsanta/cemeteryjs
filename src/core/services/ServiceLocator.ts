@@ -53,7 +53,7 @@ export class Services {
         this.export = new ExportService(this.registry);
         this.history = new HistoryService(this.registry);
         this.pointer = new PointerService(this.registry);
-        this.mouse = new MouseService(this.registry);
+        this.mouse = new MouseService(null, this.registry);
         this.keyboard = new KeyboardService(this.registry);
         this.dialog = new DialogService(this.registry);
         this.game = new GameService(this.registry);

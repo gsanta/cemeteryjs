@@ -14,6 +14,8 @@ import { NodeEditorExporter } from './io/NodeEditorExporter';
 import { NodeEditorImporter } from './io/NodeEditorImporter';
 import { NodeEditorController, NodeEditorControllerId, NodeEditorProps } from './NodeEditorController';
 import { PathNodeElement } from './nodes/PathNodeElement';
+import { CanvasControllerId, CanvasControllerProps } from '../../core/plugins/controllers/CanvasController';
+import { activeToolId } from '../../core/ui_regions/elements/UI_Element';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -102,11 +104,11 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
     }
 
     protected renderInto(layout: UI_Layout): void {
-        const canvas = layout.svgCanvas(null);
+        const canvas = layout.svgCanvas({ controllerId: activeToolId });
 
         const dropLayer = canvas.dropLayer({controllerId: NodeEditorControllerId, prop: NodeEditorProps.DropNode });
         dropLayer.acceptedDropIds = this.registry.services.node.nodeTypes
-        dropLayer.isDragging = !!this.droppableId;
+        dropLayer.isDragging = !!this.dropItem;
 
         const toolbar = canvas.toolbar();
 
@@ -120,19 +122,19 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
         tooltip = tool.tooltip();
         tooltip.label = 'Delete tool';
 
-        tool = toolbar.tool({controllerId: ToolType.Move, key: ToolType.Move});
+        tool = toolbar.tool({controllerId: ToolType.Camera, key: ToolType.Move});
         tool.icon = 'pan';
         tooltip = tool.tooltip();
         tooltip.label = 'Pan tool';
-
-        tool = toolbar.tool({controllerId: ToolType.Camera, key: `zoom-in`});
-        tool.icon = 'zoom-in';
-        tooltip = tool.tooltip();
+        
+        let actionIcon = toolbar.actionIcon({controllerId: CanvasControllerId, prop: CanvasControllerProps.ZoomIn});
+        actionIcon.icon = 'zoom-in';
+        tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom in';
 
-        tool = toolbar.tool({controllerId: ToolType.Camera, key: `zoom-out`});
-        tool.icon = 'zoom-out';
-        tooltip = tool.tooltip();
+        actionIcon = toolbar.actionIcon({controllerId: CanvasControllerId, prop: CanvasControllerProps.ZoomOut});
+        actionIcon.icon = 'zoom-out';
+        tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom out';
 
         this.renderNodesInto(canvas);
@@ -141,6 +143,13 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
     private renderNodesInto(canvas: UI_SvgCanvas) {
         this.registry.stores.nodeStore.getNodes().forEach(node => this.registry.services.node.renderNodeInto(node, canvas))
     }
+
+    // dropItem(droppedItemId: string) {
+    //     const dropItemId = (<NodeEditorPlugin> this.plugin).droppableId;
+    //     this.registry.services.node.createNodeView(dropItemId, this.registry.services.pointer.pointer.curr);
+    //     (<NodeEditorPlugin> this.plugin).droppableId = undefined;
+    //     this.registry.services.render.reRender(UI_Region.Canvas1);
+    // }
 
     activated() {
         if (!this.toolHandler.getSelectedTool()) {

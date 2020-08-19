@@ -18,9 +18,10 @@ export class NodeEditorController extends AbstractController<string> {
 
         this.createPropHandler<string>(NodeEditorProps.DropNode)
             .onDndEnd(() => {
-                const dropItemId = (<NodeEditorPlugin> this.plugin).droppableId;
-                this.registry.services.node.createNodeView(dropItemId, this.registry.services.pointer.pointer.curr);
-                this.registry.services.render.reRender(UI_Region.Canvas1);
+                // const dropItemId = (<NodeEditorPlugin> this.plugin).droppableId;
+                // this.registry.services.node.createNodeView(dropItemId, this.registry.services.pointer.pointer.curr);
+                // (<NodeEditorPlugin> this.plugin).droppableId = undefined;
+                // this.registry.services.render.reRender(UI_Region.Canvas1);
             });
     }
 }

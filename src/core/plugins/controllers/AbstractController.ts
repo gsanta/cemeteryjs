@@ -1,6 +1,7 @@
 import { Registry } from '../../Registry';
 import { UI_Plugin } from '../UI_Plugin';
 import { UI_Element } from '../../ui_regions/elements/UI_Element';
+import { UI_ListItem } from '../../ui_regions/elements/UI_ListItem';
 
 export enum GlobalControllerProps {
     CloseDialog = 'CloseDialog'
@@ -153,8 +154,9 @@ export abstract class AbstractController<P = any> {
         handler.dndStartHandler(listItem, handler.context, this);
     }
 
-    dndEnd(prop: P): void {
+    dndEnd(prop: P, uiListItem: UI_ListItem): void {
         const handler = this.handlers.get(prop);
+        handler.context.element = uiListItem;
         handler.dndEndHandler(handler.context, this);
     }
 

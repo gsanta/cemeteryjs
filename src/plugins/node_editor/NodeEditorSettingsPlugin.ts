@@ -4,6 +4,8 @@ import { NodeModel } from '../../core/stores/game_objects/NodeModel';
 import { UI_Accordion } from '../../core/ui_regions/elements/surfaces/UI_Accordion';
 import { UI_Container } from '../../core/ui_regions/elements/UI_Container';
 import { NodeEditorSettingsController, NodeEditorSettingsControllerId, NodeEditorSettingsProps } from './NodeEditorSettingsController';
+import { NodeEditorPluginId } from './NodeEditorPlugin';
+import { AbstractCanvasPlugin } from '../../core/plugins/AbstractCanvasPlugin';
 
 export const NodeEditorSettingsPluginId = 'node_editor_settings_plugin'; 
 export class NodeEditorSettingsPlugin extends UI_Plugin {
@@ -18,7 +20,7 @@ export class NodeEditorSettingsPlugin extends UI_Plugin {
     }
 
     renderInto(rootContainer: UI_Accordion): UI_Container {
-        rootContainer.controllerId = NodeEditorSettingsControllerId;
+        rootContainer.controller = this.getControllerById(NodeEditorSettingsControllerId);
 
         this.renderNodesList(rootContainer);
 
@@ -35,12 +37,14 @@ export class NodeEditorSettingsPlugin extends UI_Plugin {
             nodeTypesByCategory.get(type).push(this.registry.services.node.nodeTemplates.get(type));
         });
 
+        const nodeEditorPlugin = <AbstractCanvasPlugin> this.registry.plugins.getById(NodeEditorPluginId);
+
         Array.from(nodeTypesByCategory.values()).forEach((nodes: NodeModel[]) => {
             const accordion = rootContainer.accordion(null);
             accordion.title = nodes[0].category;
 
             nodes.forEach((node) => {
-                const listItem = accordion.listItem({prop: NodeEditorSettingsProps.DragNode})
+                const listItem = accordion.listItem({prop: NodeEditorSettingsProps.DragNode, dropTargetPlugin: nodeEditorPlugin, dropId: node.type})
                 listItem.label = node.type;
                 listItem.droppable = true; 
                 listItem.listItemId = node.type;

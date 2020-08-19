@@ -35,6 +35,8 @@ import { UI_TableRowGroup } from './elements/surfaces/table/UI_TableRowGroup';
 import { UI_Icon } from './elements/UI_Icon';
 import { UI_DropLayer } from './elements/surfaces/canvas/UI_DropLayer';
 import { UI_Node } from './elements/views/UI_Node';
+import { AbstractController } from '../plugins/controllers/AbstractController';
+import { AbstractCanvasPlugin } from '../plugins/AbstractCanvasPlugin';
 
 export class UI_Factory {
     static layout(plugin: UI_Plugin): UI_Layout {
@@ -159,12 +161,17 @@ export class UI_Factory {
         return icon;
     }
 
-    static listItem(parent: UI_Container, config: { controllerId?: string, prop: string}): UI_ListItem {
+    static listItem(parent: UI_Container, config: { controller?: AbstractController, prop: string, dropTargetPlugin: AbstractCanvasPlugin, dropId: string}): UI_ListItem {
         const listItem = new UI_ListItem(parent.plugin);
 
-        listItem.prop = config.prop;
-        listItem.generateId(parent);
-        this.setController(parent, listItem, config);
+        if (config) {
+            listItem.prop = config.prop;
+            listItem.listItemId = config.dropId;
+            listItem.dropTargetPlugin = config.dropTargetPlugin;
+            listItem.generateId(parent);
+
+        }
+        this.setController2(parent, listItem, config);
 
         parent.children.push(listItem);
 
@@ -442,6 +449,18 @@ export class UI_Factory {
     private static setController(parent: UI_Element, current: UI_Element, config?: {controllerId?: string}) {
         if (config && config.controllerId) {
             current.controllerId = config.controllerId;
+        } else if (parent.controller) {
+            current.controller = parent.controller;
+        } else {
+            current.controllerId = parent.controllerId;
+        }
+    }
+
+    private static setController2(parent: UI_Element, current: UI_Element, config?: {controller?: AbstractController}) {
+        if (config && config.controller) {
+            current.controller = config.controller;
+        } else if (parent.controller) {
+            current.controller = parent.controller;
         } else {
             current.controllerId = parent.controllerId;
         }

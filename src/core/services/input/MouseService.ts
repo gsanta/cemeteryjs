@@ -31,9 +31,11 @@ export class MousePointer {
 export class MouseService {
     serviceName = 'mouse-service';
     private registry: Registry;
+    private plugin: AbstractCanvasPlugin;
 
-    constructor(registry: Registry) {
+    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         this.registry = registry;
+        this.plugin = plugin;
     }
 
     mouseDown(e: MouseEvent): void {
@@ -52,6 +54,13 @@ export class MouseService {
         }
 
         this.registry.services.hotkey.focus();
+    }
+
+    dndEnd() {
+        if (this.plugin.dropItem) {
+            this.plugin.dropItem.controller.dndEnd(this.plugin.dropItem.prop, this.plugin.dropItem);
+            this.plugin.dropItem = undefined;
+        }
     }
 
     mouseLeave(e: MouseEvent, data: any): void {

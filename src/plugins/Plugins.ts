@@ -28,6 +28,7 @@ export class Plugins {
     codeEditor: CodeEditorPlugin;
 
     private plugins: UI_Plugin[] = [];
+    private canvasPlugins: AbstractCanvasPlugin[] = [];
     private activePlugins: UI_Plugin[] = [];
 
     private pluginFactoryMap: Map<AbstractCanvasPlugin, AbstractPluginComponentFactory<any>> = new Map();

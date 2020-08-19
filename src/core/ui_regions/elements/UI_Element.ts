@@ -1,6 +1,7 @@
 import { UI_Plugin } from '../../plugins/UI_Plugin';
 import { UI_ElementType } from './UI_ElementType';
 import { AbstractCanvasPlugin } from '../../plugins/AbstractCanvasPlugin';
+import { AbstractController } from '../../plugins/controllers/AbstractController';
 
 export const activeToolId = '__activeTool__'
 
@@ -8,6 +9,7 @@ export abstract class UI_Element {
     elementType: UI_ElementType;
     id: string;
     readonly plugin: UI_Plugin;
+    controller: AbstractController;
     controllerId: string;
     prop: string;
     key: string;
@@ -32,7 +34,7 @@ export abstract class UI_Element {
 
     mouseOut(e: MouseEvent) {
         if (this.controllerId !== activeToolId)
-        this.plugin.getControllerById(this.controllerId).mouseOut(this.prop);
+            this.plugin.getControllerById(this.controllerId).mouseOut(this.prop);
     }
 
     mouseDown(e: MouseEvent) {
@@ -90,7 +92,8 @@ export abstract class UI_Element {
     }
 
     dndEnd() {
-        this.plugin.getControllerById(this.controllerId).dndEnd(this.prop);
+        (this.plugin as AbstractCanvasPlugin).mouse.dndEnd();
+        // this.plugin.getControllerById(this.controllerId).d/ndEnd(this.prop);
     }
 }
 

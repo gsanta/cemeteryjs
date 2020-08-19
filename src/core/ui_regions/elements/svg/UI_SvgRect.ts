@@ -14,4 +14,5 @@ export class UI_SvgRect extends UI_Element {
     x: number;
     y: number;
     strokeColor: string;
+    fillColor: string;
 }

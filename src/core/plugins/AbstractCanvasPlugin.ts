@@ -10,6 +10,8 @@ import { MouseService } from '../services/input/MouseService';
 import { ToolHandler } from '../services/input/ToolHandler';
 import { AbstractViewStore } from '../stores/AbstractViewStore';
 import { UI_Plugin } from './UI_Plugin';
+import { AbstractController } from './controllers/AbstractController';
+import { UI_ListItem } from '../ui_regions/elements/UI_ListItem';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;
@@ -30,10 +32,10 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
 
     isFullScreen: boolean = false;
 
-    droppableId: string;
-
     pluginServices: PluginServices<this> = new PluginServices([]);
     pluginSettings: PluginSettings = new PluginSettings([]);
+
+    dropItem: UI_ListItem;
 
     readonly mouse: MouseService;
     readonly keyboard: KeyboardService;
@@ -44,7 +46,7 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
     constructor(registry: Registry) {
         super(registry);
 
-        this.mouse = new MouseService(registry);
+        this.mouse = new MouseService(this, registry);
         this.keyboard = new KeyboardService(registry);
         this.toolHandler = new ToolHandler(this, this.registry);
         
