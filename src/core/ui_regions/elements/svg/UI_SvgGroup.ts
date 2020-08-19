@@ -11,6 +11,10 @@ export class UI_SvgGroup extends UI_Container {
         return UI_Factory.svgRect(this, {prop});
     }
 
+    line(prop?: string) {
+        return UI_Factory.svgLine(this, {prop});
+    }
+
     circle(prop?: string) {
         return UI_Factory.svgCircle(this, {prop});
     }

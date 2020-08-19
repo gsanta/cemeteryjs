@@ -10,6 +10,8 @@ export const SvgCircleComp = (props: UI_ComponentProps<UI_SvgCircle>) => {
             cy={props.element.cy}
             r={props.element.r}
             fill={props.element.fillColor}
+            onMouseEnter={(e) => props.element.mouseEnter(e.nativeEvent, props.element.data)}
+            onMouseLeave={e =>props.element.mouseLeave(e.nativeEvent, props.element.data)}
         />
     );
 }

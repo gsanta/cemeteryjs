@@ -56,7 +56,7 @@ export class MouseService {
         this.registry.services.hotkey.focus();
     }
 
-    dndEnd(point: Point) {
+    dndDrop(point: Point) {
         const e = <MouseEvent> {x: point.x, y: point.y};
         this.registry.services.pointer.pointerUp(this.convertEvent(e, false));
 
@@ -64,7 +64,20 @@ export class MouseService {
             this.plugin.dropItem.controller.dndEnd(this.plugin.dropItem.prop, this.plugin.dropItem);
             this.plugin.dropItem = undefined;
         }
+
+        this.registry.services.render.reRenderAll();
     }
+
+    // dndDrop is not always called only if the item was dropped to the 'droppable area', but this method
+    // runs even if the drop happens at an illegal position, so it can be used for some cleanup work
+    // not nice but react dnd is not easy to work with
+    dndEnd() {
+        if (this.plugin.dropItem) {
+            this.plugin.dropItem = undefined;
+            this.registry.services.render.reRenderAll();
+        }
+    }
+
 
     mouseLeave(e: MouseEvent, data: any): void {
         this.registry.services.pointer.pointerLeave(this.convertEvent(e, false), data);

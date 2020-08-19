@@ -109,6 +109,10 @@ export class PointerService {
             this.hoveredPlugin = data;
         } else {
             this.hoveredItem = data;
+
+            this.registry.services.hotkey.executeHotkey({
+                isHover: true
+            });
         }
     }
 

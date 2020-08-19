@@ -49,19 +49,19 @@ const renderConnectionSectionInto = (nodeView: NodeView, svgGroup: UI_SvgGroup) 
 
 const renderLabeledConnectionInto = (svgGroup: UI_SvgGroup, nodeView: NodeView, joinPointView: JoinPointView, yPos: number): void => {
     const circle = svgGroup.circle();
-    const inputX = 5;
-    const outputX = nodeView.dimensions.getWidth() - 5;
+    svgGroup.data = nodeView;
 
     circle.cx = joinPointView.point.x; //joinPointView.isInput ? inputX : outputX;
     circle.cy = joinPointView.point.y;
     circle.r = 5;
     circle.fillColor = 'red';
+    circle.data = joinPointView;
 
-    const text = svgGroup.svgText({key: joinPointView.slotName});
-    text.text = joinPointView.slotName;
-    text.x = joinPointView.point.x;// joinPointView.isInput ? inputX + 10 : outputX - 10;
-    text.y = joinPointView.point.y;
-    joinPointView.isInput === false && (text.anchor = 'end');
+    // const text = svgGroup.svgText({key: joinPointView.slotName});
+    // text.text = joinPointView.slotName;
+    // text.x = joinPointView.point.x;// joinPointView.isInput ? inputX + 10 : outputX - 10;
+    // text.y = joinPointView.point.y;
+    // joinPointView.isInput === false && (text.anchor = 'end');
 }
 
 const getStrokeColor = (nodeView: NodeView, defaultColor = 'black'): string => {

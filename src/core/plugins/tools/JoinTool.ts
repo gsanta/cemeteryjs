@@ -30,6 +30,7 @@ export class JoinTool extends AbstractTool {
 
     drag() {
         this.end = this.registry.services.pointer.pointer.curr;
+        console.log(this.end)
         this.registry.services.render.scheduleRendering(this.plugin.region);
     }
 

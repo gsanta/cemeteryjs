@@ -1,5 +1,5 @@
 import { AbstractCanvasPlugin, calcOffsetFromDom } from '../../core/plugins/AbstractCanvasPlugin';
-import { ToolType } from '../../core/plugins/tools/Tool';
+import { ToolType, Tool } from '../../core/plugins/tools/Tool';
 import { UI_Region } from '../../core/plugins/UI_Plugin';
 import { Registry } from '../../core/Registry';
 import { BuiltinNodeType, NodeModel } from '../../core/stores/game_objects/NodeModel';
@@ -16,6 +16,8 @@ import { NodeEditorController, NodeEditorControllerId, NodeEditorProps } from '.
 import { PathNodeElement } from './nodes/PathNodeElement';
 import { CanvasControllerId, CanvasControllerProps } from '../../core/plugins/controllers/CanvasController';
 import { activeToolId } from '../../core/ui_regions/elements/UI_Element';
+import { JoinTool } from '../../core/plugins/tools/JoinTool';
+import { join } from 'path';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -136,6 +138,16 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
         actionIcon.icon = 'zoom-out';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom out';
+
+        const joinTool = <JoinTool> this.toolHandler.getById(ToolType.Join);
+
+        if (joinTool.start && joinTool.end) {
+            const line = canvas.line()
+            line.x1 = joinTool.start.x;
+            line.y1 = joinTool.start.y;
+            line.x2 = joinTool.end.x;
+            line.y2 = joinTool.end.y;
+        }
 
         this.renderNodesInto(canvas);
     }

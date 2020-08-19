@@ -68,6 +68,8 @@ import { UI_DropLayer } from '../elements/surfaces/canvas/UI_DropLayer';
 import { DropLayerComp } from '../components/surfaces/canvas/DropLayerComp';
 import { drop } from 'lodash';
 import { SvgTextComp } from '../components/svg/SvgTextComp';
+import { UI_SvgLine } from '../elements/svg/UI_SvgLine';
+import { SvgLineComp } from '../components/svg/SvgLineComp';
 
 
 export class UI_Builder {
@@ -218,6 +220,9 @@ export class UI_Builder {
             case UI_ElementType.SvgCircle:
                 const circle = element as UI_SvgCircle;
                 return <SvgCircleComp element={circle}/>;
+            case UI_ElementType.SvgLine:
+                const line = element as UI_SvgLine;
+                return <SvgLineComp element={line}/>;
             case UI_ElementType.SvgImage:
                 const svgImage = element as UI_SvgImage;
                 return <SvgImageComp element={svgImage}/>; 

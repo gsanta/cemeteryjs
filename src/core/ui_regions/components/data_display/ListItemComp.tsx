@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { UI_ListItem } from '../../elements/UI_ListItem';
 import { colors } from '../styles';
 import { UI_ComponentProps } from '../UI_ComponentProps';
+import { Point } from '../../../../utils/geometry/shapes/Point';
 
 export const ListItemStyled = styled.div`
     &.ce-list-item {
@@ -29,7 +30,7 @@ export const ListItemComp = (props: UI_ComponentProps<UI_ListItem>) => {
             collect: monitor => ({
                 isDragging: !!monitor.isDragging(),
             }),
-            end: () => console.log('end drag')
+            end: (dropResult, monitor) => props.element.dndEnd()
       });
     }
 

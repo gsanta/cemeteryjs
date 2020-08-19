@@ -26,7 +26,7 @@ export class CameraTool extends AbstractTool {
     wheelEnd() {
         this.activeCameraAction = this.defaultCameraAction;
         this.registry.plugins.getHoveredView().toolHandler.removePriorityTool(this.id);
-        this.registry.services.render.scheduleRendering(this.registry.services.pointer.hoveredPlugin.region);
+        this.registry.services.render.scheduleRendering(this.plugin.region);
     }
 
     drag(e: IPointerEvent) {
@@ -37,11 +37,11 @@ export class CameraTool extends AbstractTool {
         switch(this.activeCameraAction) {
             case 'pan':
                 camera.pan(this.registry.services.pointer.pointer);
-                this.registry.services.render.scheduleRendering(this.registry.services.pointer.hoveredPlugin.region);
+                this.registry.services.render.scheduleRendering(this.plugin.region);
                 break;
             case 'rotate':
                 camera.rotate(this.registry.services.pointer.pointer);
-                this.registry.services.render.scheduleRendering(this.registry.services.pointer.hoveredPlugin.region);
+                this.registry.services.render.scheduleRendering(this.plugin.region);
                 break;
         }
 

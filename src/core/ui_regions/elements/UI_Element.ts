@@ -93,7 +93,7 @@ export abstract class UI_Element {
     }
 
     dndEnd(point: Point) {
-        (this.plugin as AbstractCanvasPlugin).mouse.dndEnd(point);
+        (this.plugin as AbstractCanvasPlugin).mouse.dndDrop(point);
         // this.plugin.getControllerById(this.controllerId).d/ndEnd(this.prop);
     }
 }
