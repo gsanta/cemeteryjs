@@ -2,6 +2,7 @@ import { UI_Plugin } from '../../plugins/UI_Plugin';
 import { UI_ElementType } from './UI_ElementType';
 import { AbstractCanvasPlugin } from '../../plugins/AbstractCanvasPlugin';
 import { AbstractController } from '../../plugins/controllers/AbstractController';
+import { Point } from '../../../utils/geometry/shapes/Point';
 
 export const activeToolId = '__activeTool__'
 
@@ -91,8 +92,8 @@ export abstract class UI_Element {
         }
     }
 
-    dndEnd() {
-        (this.plugin as AbstractCanvasPlugin).mouse.dndEnd();
+    dndEnd(point: Point) {
+        (this.plugin as AbstractCanvasPlugin).mouse.dndEnd(point);
         // this.plugin.getControllerById(this.controllerId).d/ndEnd(this.prop);
     }
 }

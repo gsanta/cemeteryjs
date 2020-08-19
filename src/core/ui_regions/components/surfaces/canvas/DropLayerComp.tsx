@@ -30,8 +30,11 @@ export const DropLayerComp = (props: UI_ComponentProps<UI_DropLayer>) => {
     const types = props.element.acceptedDropIds;
 	const [{ isOver }, drop] = useDrop({
         accept: types,
+        hover: (item, monitor) => {
+
+        },
         drop: (item, monitor) => {
-            props.element.dndEnd();
+            props.element.dndEnd(new Point(monitor.getClientOffset().x, monitor.getClientOffset().y));
         }, 
 		collect: monitor => ({
 			isOver: !!monitor.isOver(),
@@ -43,12 +46,6 @@ export const DropLayerComp = (props: UI_ComponentProps<UI_DropLayer>) => {
             ref={drop}
             className='drop-layer'
             isDragging={props.element.isDragging}
-            onMouseDown={(e) => props.element.mouseDown(e.nativeEvent)}
-            onMouseMove={(e) => props.element.mouseMove(e.nativeEvent)}                
-            onMouseUp={(e) => {
-                console.log('drop end')
-                props.element.mouseUp(e.nativeEvent)
-            }}
         />
     );
 }

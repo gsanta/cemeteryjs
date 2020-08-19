@@ -1,5 +1,5 @@
 import { Registry } from "../../Registry";
-import { Point } from "../../../utils/geometry/shapes/Point";
+import { Point } from '../../../utils/geometry/shapes/Point';
 import { IPointerEvent } from "./PointerService";
 import { DroppableItem } from "../../plugins/tools/DragAndDropTool";
 import { View } from "../../stores/views/View";
@@ -56,7 +56,10 @@ export class MouseService {
         this.registry.services.hotkey.focus();
     }
 
-    dndEnd() {
+    dndEnd(point: Point) {
+        const e = <MouseEvent> {x: point.x, y: point.y};
+        this.registry.services.pointer.pointerUp(this.convertEvent(e, false));
+
         if (this.plugin.dropItem) {
             this.plugin.dropItem.controller.dndEnd(this.plugin.dropItem.prop, this.plugin.dropItem);
             this.plugin.dropItem = undefined;
