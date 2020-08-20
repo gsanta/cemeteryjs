@@ -3,7 +3,7 @@ import { UI_Element } from "./UI_Element";
 export abstract class UI_InputElement extends UI_Element {
 
     listItemId: string;
-    layout: 'row' | 'column' = 'column';
+    layout: 'horizontal' | 'vertical' = 'vertical';
 
     change(newVal: any): void {
         this.plugin.getControllerById(this.controllerId).change(this.prop, newVal);

@@ -16,7 +16,6 @@ export interface DropdownProps extends Focusable {
 }
 
 const SelectStyled = styled.div`
-    height: 30px;
     display: flex;
     justify-content: space-between;
 `;
@@ -36,7 +35,7 @@ export function SelectComp(props: UI_ComponentProps<UI_Select>) {
     let select = (
         <select
             className="dropdown-component"
-            style={{minWidth: '100px'}}
+            style={{minWidth: '100px', height: '25px', borderRadius: 0}}
             onChange={(e) => {
                 props.element.change(e.target.value);
             }}
@@ -53,8 +52,21 @@ export function SelectComp(props: UI_ComponentProps<UI_Select>) {
     );
 
     if (props.element.label) {
+        const style: React.CSSProperties = {
+            display: 'flex',
+            width: '100%'
+        };
+        
+        if (props.element.layout === 'horizontal') {
+            style.flexDirection = 'row';
+            style.justifyContent = 'space-between';
+            style.alignItems = 'center';
+        } else {
+            style.flexDirection = 'column';
+        }
+
         select = (
-            <div style={{display: 'flex', flexDirection: props.element.layout, width: '100%'}}>
+            <div style={style}>
                 <LabelStyled key={'label'}>{props.element.label}</LabelStyled>
                 <SelectStyled key="select">
                     {select}

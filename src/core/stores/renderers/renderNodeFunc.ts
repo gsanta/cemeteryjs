@@ -1,6 +1,6 @@
 import { NodeView } from '../views/NodeView';
-import { UI_SvgForeignObject } from '../../ui_regions/elements/svg/UI_SvgForeignObject';
+import { UI_Row } from '../../ui_regions/elements/UI_Row';
 
 export interface renderNodeFunc {
-    (nodeView: NodeView, parent_UI: UI_SvgForeignObject): void;
+    (nodeView: NodeView, row: UI_Row): void;
 }

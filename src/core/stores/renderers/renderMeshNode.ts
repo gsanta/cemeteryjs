@@ -1,16 +1,12 @@
-import { renderNodeFunc } from "./renderNodeFunc";
-import { NodeView } from "../views/NodeView";
-import { UI_SvgForeignObject } from "../../ui_regions/elements/svg/UI_SvgForeignObject";
+import { UI_Row } from "../../ui_regions/elements/UI_Row";
 import { MeshNodeProps } from "../nodes/controllers/MeshNodeController";
+import { NodeView } from "../views/NodeView";
+import { renderNodeFunc } from "./renderNodeFunc";
 
 
-export const renderMeshNode: renderNodeFunc = (nodeView: NodeView, foreignObject: UI_SvgForeignObject) => {
-    let row = foreignObject.row({ key: 'data-row' });
-
+export const renderMeshNode: renderNodeFunc = (nodeView: NodeView, row: UI_Row) => {
     const layoutSelect = row.select(MeshNodeProps.SelectMesh);
-    row.margin = '30px 0 0 0';
-    row.hAlign = 'space-between';
-    layoutSelect.layout = 'row';
-    layoutSelect.label = 'Layouts';
-    layoutSelect.placeholder = 'Select Layout';
+    layoutSelect.layout = 'horizontal';
+    layoutSelect.label = 'Mesh';
+    layoutSelect.placeholder = 'Select Mesh';
 }

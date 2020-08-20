@@ -4,7 +4,6 @@ import { Registry } from '../Registry';
 import { NodeModel } from '../stores/game_objects/NodeModel';
 import { AndNode } from '../stores/nodes/AndNode';
 import { AnimationNode } from '../stores/nodes/AnimationNode';
-import { renderAndNode } from '../stores/renderers/renderAndNode';
 import { renderAnimationNode } from '../stores/renderers/renderAnimationNode';
 import { renderNodeContainer } from '../stores/renderers/renderNodeContainer';
 import { renderNodeFunc } from '../stores/renderers/renderNodeFunc';
@@ -15,6 +14,21 @@ import { renderMeshNode } from '../stores/renderers/renderMeshNode';
 import { AbstractController } from '../plugins/controllers/AbstractController';
 import { MeshNodeController } from '../stores/nodes/controllers/MeshNodeController';
 import { NodeEditorPluginId } from '../../plugins/node_editor/NodeEditorPlugin';
+import { SplitNode } from '../stores/nodes/SplitNode';
+import { AnimationNodeController } from '../stores/nodes/controllers/AnimationNodeController';
+import { KeyboardNode } from '../stores/nodes/KeyboardNode';
+import { renderKeyboardNode } from '../stores/renderers/renderKeyboardNode';
+import { KeyboardNodeController } from '../stores/nodes/controllers/KeyboardNodeController';
+import { PathNode } from '../stores/nodes/PathNode';
+import { renderPathNode } from '../stores/renderers/renderPathNode';
+import { PathNodeController } from '../stores/nodes/controllers/PathNodeController';
+import { TurnNode } from '../stores/nodes/TurnNode';
+import { renderTurnNode } from '../stores/renderers/renderTurnNode';
+import { TurnNodeController } from '../stores/nodes/controllers/TurnNodeController';
+import { RouteNode } from '../stores/nodes/RouteNode';
+import { MoveNode } from '../stores/nodes/MoveNode';
+import { MoveNodeController } from '../stores/nodes/controllers/MoveNodeController';
+import { renderMoveNode } from '../stores/renderers/renderMoveNode';
 
 export class NodeService {
     nodeTemplates: Map<string, NodeModel> = new Map();
@@ -32,9 +46,16 @@ export class NodeService {
         // TODO register default nodes somewhere else where registry is alredy setup correctly, to get rid of settimeout
         setTimeout(() => {
             const plugin = registry.plugins.getById(NodeEditorPluginId);
-            this.registerNode(() => new AndNode(), renderAndNode, null);
+            this.registerNode(() => new AndNode(), () => {}, null);
             this.registerNode(() => new AnimationNode(), renderAnimationNode, null);
             this.registerNode(() => new MeshNode(), renderMeshNode, new MeshNodeController(plugin, this.registry));
+            this.registerNode(() => new SplitNode(), () => {}, null);
+            this.registerNode(() => new AnimationNode(), renderAnimationNode, new AnimationNodeController(plugin, this.registry));
+            this.registerNode(() => new KeyboardNode(), renderKeyboardNode, new KeyboardNodeController(plugin, this.registry));
+            this.registerNode(() => new PathNode(), renderPathNode, new PathNodeController(plugin, this.registry));
+            this.registerNode(() => new TurnNode(), renderTurnNode, new TurnNodeController(plugin, this.registry));
+            this.registerNode(() => new RouteNode(), () => {}, null);
+            this.registerNode(() => new MoveNode(), renderMoveNode, new MoveNodeController(plugin, this.registry));
         });
     }
 
@@ -52,9 +73,9 @@ export class NodeService {
             throw new Error(`Node renderer registered for node type ${nodeView.model.type}`);
         }
 
-        const foreignObject = renderNodeContainer(nodeView, ui_svgCanvas, this.nodeControllers.get(nodeView.model.type));
+        const row = renderNodeContainer(nodeView, ui_svgCanvas, this.nodeControllers.get(nodeView.model.type));
 
-        this.nodeRenderers.get(nodeView.model.type)(nodeView, foreignObject);
+        this.nodeRenderers.get(nodeView.model.type)(nodeView, row);
     }
 
     createNodeView(nodeType: string, position: Point): NodeView {

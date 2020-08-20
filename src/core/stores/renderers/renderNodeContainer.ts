@@ -1,13 +1,13 @@
+import { AbstractController } from '../../plugins/controllers/AbstractController';
+import { colors, sizes } from '../../ui_regions/components/styles';
 import { UI_SvgForeignObject } from '../../ui_regions/elements/svg/UI_SvgForeignObject';
 import { UI_SvgGroup } from '../../ui_regions/elements/svg/UI_SvgGroup';
+import { UI_Row } from '../../ui_regions/elements/UI_Row';
 import { UI_SvgCanvas } from "../../ui_regions/elements/UI_SvgCanvas";
 import { JoinPointView } from "../views/child_views/JoinPointView";
 import { NodeView } from "../views/NodeView";
-import { join } from 'path';
-import { colors, sizes } from '../../ui_regions/components/styles';
-import { AbstractController } from '../../plugins/controllers/AbstractController';
 
-export const renderNodeContainer = (nodeView: NodeView, svgCanvas: UI_SvgCanvas, controller: AbstractController): UI_SvgForeignObject => {
+export const renderNodeContainer = (nodeView: NodeView, svgCanvas: UI_SvgCanvas, controller: AbstractController): UI_Row => {
     const group = svgCanvas.group(nodeView.id);
     group.transform = `translate(${nodeView.dimensions.topLeft.x} ${nodeView.dimensions.topLeft.y})`;
 
@@ -27,7 +27,12 @@ export const renderNodeContainer = (nodeView: NodeView, svgCanvas: UI_SvgCanvas,
     renderConnectionSectionInto(nodeView, group);
     foreignObject.controller = controller;
 
-    return foreignObject;
+    let row = foreignObject.row({ key: 'data-row' });
+    row.margin = '30px 0 0 0';
+    row.hAlign = 'space-between';
+    row.padding = '10px';
+
+    return row;
 }
 
 const renderTitleInto = (nodeView: NodeView, foreignObject: UI_SvgForeignObject) => {

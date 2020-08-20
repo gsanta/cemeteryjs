@@ -30,11 +30,11 @@ export class NodeEditorSettingsPlugin extends UI_Plugin {
     private renderNodesList(rootContainer: UI_Accordion) {
         const nodeTypesByCategory: Map<string, NodeModel[]> = new Map();
 
-        this.registry.services.node.nodeTypes.forEach(type => {
-            if (!nodeTypesByCategory.get(type)) {
-                nodeTypesByCategory.set(type, []);
+        this.registry.services.node.nodeTemplates.forEach(node => {
+            if (!nodeTypesByCategory.get(node.category)) {
+                nodeTypesByCategory.set(node.category, []);
             }
-            nodeTypesByCategory.get(type).push(this.registry.services.node.nodeTemplates.get(type));
+            nodeTypesByCategory.get(node.category).push(node);
         });
 
         const nodeEditorPlugin = <AbstractCanvasPlugin> this.registry.plugins.getById(NodeEditorPluginId);

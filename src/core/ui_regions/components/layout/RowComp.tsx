@@ -25,7 +25,7 @@ export function RowComp(props: RowProps) {
     const classes = cssClassBuilder(
         'ce-row',
         props.element.isBold ? 'ce-bold' : undefined,
-        props.element.vAlign ? `ce-v_align-${props.element.vAlign}` : 'ce-v_align-start' 
+        props.element.vAlign ? `ce-v_align-${props.element.vAlign}` : 'ce-v_align-start'
     );
 
     const style: React.CSSProperties = {};
@@ -33,6 +33,7 @@ export function RowComp(props: RowProps) {
     props.element.padding && (style.padding = props.element.padding);
     props.element.margin && (style.margin = props.element.margin);
     props.element.backgroundColor && (style.backgroundColor = props.element.backgroundColor);
+    props.element.hAlign && (style.justifyContent = props.element.hAlign);
 
     return (
         <RowStyled style={style} className={classes}>{props.children}</RowStyled>
