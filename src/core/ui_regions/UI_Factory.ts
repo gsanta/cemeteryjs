@@ -191,10 +191,9 @@ export class UI_Factory {
         return button;
     }
 
-    static select(parent: UI_Container, config: { controllerId?: string, valProp: string, listProp: string}) {
+    static select(parent: UI_Container, config: { controllerId?: string, valProp: string}) {
         const select = new UI_Select(parent.plugin);
         select.prop = config.valProp;
-        select.listProp = config.listProp;
 
         select.generateId(parent);
         this.setController(parent, select, config);
@@ -248,7 +247,7 @@ export class UI_Factory {
 
     static svgText(parent: UI_Container, config: { key: string}): UI_SvgText {
         const text = new UI_SvgText(parent.plugin);
-        text.key = config.key;
+        text.key = config && config.key;
 
         text.generateId(parent);
 

@@ -6,4 +6,7 @@ export class UI_Row extends UI_DefaultContainer {
     vAlign: 'start' | 'center';
     hAlign: 'space-between' | 'space-around';
     height: string;
+    padding: string;
+    margin: string;
+    backgroundColor: string;
 }

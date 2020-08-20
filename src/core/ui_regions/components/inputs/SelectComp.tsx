@@ -21,18 +21,12 @@ const SelectStyled = styled.div`
     justify-content: space-between;
 `;
 
-const LabeledSelectStyled = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-`;
-
 const LabelStyled = styled.div`
     font-size: 12px;
 `;
 
 export function SelectComp(props: UI_ComponentProps<UI_Select>) {
-    const values: string[] = props.element.listVal();
+    const values: string[] = props.element.values || [];
 
     const options = values.map(val => {
         return <option key={val} value={val}>{val}</option>
@@ -42,6 +36,7 @@ export function SelectComp(props: UI_ComponentProps<UI_Select>) {
     let select = (
         <select
             className="dropdown-component"
+            style={{minWidth: '100px'}}
             onChange={(e) => {
                 props.element.change(e.target.value);
             }}
@@ -59,13 +54,13 @@ export function SelectComp(props: UI_ComponentProps<UI_Select>) {
 
     if (props.element.label) {
         select = (
-            <LabeledSelectStyled>
+            <div style={{display: 'flex', flexDirection: props.element.layout, width: '100%'}}>
                 <LabelStyled key={'label'}>{props.element.label}</LabelStyled>
                 <SelectStyled key="select">
                     {select}
                     {props.element.clearable && props.element.val() ? <ClearIconComponent onClick={() => props.element.change(undefined)}/> : null}
                 </SelectStyled>
-            </LabeledSelectStyled>
+            </div>
         )
     }
 

@@ -1,8 +1,8 @@
-import { UI_ComponentProps } from "../UI_ComponentProps";
 import * as React from 'react';
 import { UI_SvgForeignObject } from '../../elements/svg/UI_SvgForeignObject';
+import { UI_ContainerProps } from '../UI_ComponentProps';
 
-export const ForeignObjectComp = (props: UI_ComponentProps<UI_SvgForeignObject>) => {
+export const ForeignObjectComp = (props: UI_ContainerProps<UI_SvgForeignObject>) => {
     return (
         <foreignObject
             key={props.element.id}
@@ -10,6 +10,8 @@ export const ForeignObjectComp = (props: UI_ComponentProps<UI_SvgForeignObject>)
             y={props.element.y}
             width={`${props.element.width}px`}
             height={`${props.element.height}px`}
-        />
+        >
+            {props.children}
+        </foreignObject>
     );
 }

@@ -119,6 +119,9 @@ export class UI_Builder {
             case UI_ElementType.Dialog:
                 const dialog = element as UI_Dialog;
                 return <DialogComp element={dialog}>{this.buildChildren(element, plugin)}</DialogComp>;
+            case UI_ElementType.SvgForeignObject:
+                const foreignObject = element as UI_SvgForeignObject;
+                return <ForeignObjectComp element={foreignObject}>{this.buildChildren(element, plugin)}</ForeignObjectComp>;
         }
     }
 
@@ -229,9 +232,6 @@ export class UI_Builder {
             case UI_ElementType.SvgPath:
                 const path = element as UI_SvgPath
                 return <SvgPathComp element={path}/>; 
-            case UI_ElementType.SvgForeignObject:
-                const foreignObject = element as UI_SvgForeignObject;
-                return <ForeignObjectComp element={foreignObject}/>;
             case UI_ElementType.SvgText:
                 const svgText = element as UI_SvgText;
                 return <SvgTextComp element={svgText}/>;

@@ -10,6 +10,11 @@ import { renderNodeContainer } from '../stores/renderers/renderNodeContainer';
 import { renderNodeFunc } from '../stores/renderers/renderNodeFunc';
 import { defaultNodeViewConfig, NodeView } from '../stores/views/NodeView';
 import { UI_SvgCanvas } from '../ui_regions/elements/UI_SvgCanvas';
+import { MeshNode } from '../stores/nodes/MeshNode';
+import { renderMeshNode } from '../stores/renderers/renderMeshNode';
+import { AbstractController } from '../plugins/controllers/AbstractController';
+import { MeshNodeController } from '../stores/nodes/controllers/MeshNodeController';
+import { NodeEditorPluginId } from '../../plugins/node_editor/NodeEditorPlugin';
 
 export class NodeService {
     nodeTemplates: Map<string, NodeModel> = new Map();
@@ -17,19 +22,26 @@ export class NodeService {
 
     private nodeCreators: Map<string, () => NodeModel> = new Map();
     private nodeRenderers: Map<string, renderNodeFunc> = new Map();
+    private nodeControllers: Map<string, AbstractController> = new Map();
 
     private registry: Registry;
 
     constructor(registry: Registry) {
         this.registry = registry;
 
-        this.registerNode(() => new AndNode(), renderAndNode);
-        this.registerNode(() => new AnimationNode(), renderAnimationNode);
+        // TODO register default nodes somewhere else where registry is alredy setup correctly, to get rid of settimeout
+        setTimeout(() => {
+            const plugin = registry.plugins.getById(NodeEditorPluginId);
+            this.registerNode(() => new AndNode(), renderAndNode, null);
+            this.registerNode(() => new AnimationNode(), renderAnimationNode, null);
+            this.registerNode(() => new MeshNode(), renderMeshNode, new MeshNodeController(plugin, this.registry));
+        });
     }
 
-    registerNode(createNode: () => NodeModel, renderNode: renderNodeFunc) {
+    registerNode(createNode: () => NodeModel, renderNode: renderNodeFunc, controller: AbstractController) {
         const node = createNode();
         this.nodeTypes.push(node.type);
+        this.nodeControllers.set(node.type, controller);
         this.nodeCreators.set(node.type, createNode);
         this.nodeRenderers.set(node.type, renderNode);
         this.nodeTemplates.set(node.type, node);
@@ -40,7 +52,7 @@ export class NodeService {
             throw new Error(`Node renderer registered for node type ${nodeView.model.type}`);
         }
 
-        const foreignObject = renderNodeContainer(nodeView, ui_svgCanvas);
+        const foreignObject = renderNodeContainer(nodeView, ui_svgCanvas, this.nodeControllers.get(nodeView.model.type));
 
         this.nodeRenderers.get(nodeView.model.type)(nodeView, foreignObject);
     }

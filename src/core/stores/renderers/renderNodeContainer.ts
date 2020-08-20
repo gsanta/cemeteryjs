@@ -4,8 +4,10 @@ import { UI_SvgCanvas } from "../../ui_regions/elements/UI_SvgCanvas";
 import { JoinPointView } from "../views/child_views/JoinPointView";
 import { NodeView } from "../views/NodeView";
 import { join } from 'path';
+import { colors, sizes } from '../../ui_regions/components/styles';
+import { AbstractController } from '../../plugins/controllers/AbstractController';
 
-export const renderNodeContainer = (nodeView: NodeView, svgCanvas: UI_SvgCanvas): UI_SvgForeignObject => {
+export const renderNodeContainer = (nodeView: NodeView, svgCanvas: UI_SvgCanvas, controller: AbstractController): UI_SvgForeignObject => {
     const group = svgCanvas.group(nodeView.id);
     group.transform = `translate(${nodeView.dimensions.topLeft.x} ${nodeView.dimensions.topLeft.y})`;
 
@@ -16,12 +18,39 @@ export const renderNodeContainer = (nodeView: NodeView, svgCanvas: UI_SvgCanvas)
     rect.height = nodeView.dimensions.getHeight();
     rect.strokeColor = getStrokeColor(nodeView);
     rect.fillColor = 'white';
-
-    renderConnectionSectionInto(nodeView, group);
-
+    
     const foreignObject = group.foreignObject({key: nodeView.id});
+    foreignObject.width = nodeView.dimensions.getWidth();
+    foreignObject.height = nodeView.dimensions.getHeight();
+
+    renderTitleInto(nodeView, foreignObject);
+    renderConnectionSectionInto(nodeView, group);
+    foreignObject.controller = controller;
 
     return foreignObject;
+}
+
+const renderTitleInto = (nodeView: NodeView, foreignObject: UI_SvgForeignObject) => {
+    const header = foreignObject.row({key: 'header-row'});
+    header.height = sizes.nodes.headerHeight + 'px';
+    header.padding = '2px 5px';
+    header.backgroundColor = colors.panelBackground;
+    
+    const title = header.text();
+    title.text = nodeView.model.type;
+    title.isBold = true;
+    title.color = colors.textColor;
+    // const rect = foreignObject.rect();
+
+    // rect.width = nodeView.dimensions.getWidth();
+    // rect.height = sizes.nodes.headerHeight;
+    // rect.fillColor = colors.panelBackground;
+
+    // const text = foreignObject.svgText(null);
+    // text.text = nodeView.model.type;
+    // text.x = 5;
+    // text.y = sizes.nodes.headerHeight - 5;
+    // text.color = colors.textColor;
 }
 
 const renderConnectionSectionInto = (nodeView: NodeView, svgGroup: UI_SvgGroup) => {
@@ -54,14 +83,16 @@ const renderLabeledConnectionInto = (svgGroup: UI_SvgGroup, nodeView: NodeView, 
     circle.cx = joinPointView.point.x; //joinPointView.isInput ? inputX : outputX;
     circle.cy = joinPointView.point.y;
     circle.r = 5;
-    circle.fillColor = 'red';
+    circle.fillColor = colors.grey4
     circle.data = joinPointView;
+    circle.strokeColor = colors.panelBackground;
 
-    // const text = svgGroup.svgText({key: joinPointView.slotName});
-    // text.text = joinPointView.slotName;
-    // text.x = joinPointView.point.x;// joinPointView.isInput ? inputX + 10 : outputX - 10;
-    // text.y = joinPointView.point.y;
-    // joinPointView.isInput === false && (text.anchor = 'end');
+    const text = svgGroup.svgText({key: joinPointView.slotName});
+    text.text = joinPointView.slotName;
+    const textOffsetX = joinPointView.isInput ? 10 : -10;
+    text.x = joinPointView.point.x + textOffsetX;
+    text.y = joinPointView.point.y + 5;
+    joinPointView.isInput === false && (text.anchor = 'end');
 }
 
 const getStrokeColor = (nodeView: NodeView, defaultColor = 'black'): string => {

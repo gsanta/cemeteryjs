@@ -1,6 +1,5 @@
 import { UI_ElementType } from '../UI_ElementType';
 import { UI_Element } from '../UI_Element';
-import { AbstractController } from '../../../plugins/controllers/AbstractController';
 
 export class UI_SvgCircle extends UI_Element {
     elementType = UI_ElementType.SvgCircle;
@@ -14,4 +13,5 @@ export class UI_SvgCircle extends UI_Element {
     cy: number;
     r: number;
     fillColor: string;
+    strokeColor: string;
 }

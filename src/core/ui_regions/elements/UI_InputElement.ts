@@ -3,6 +3,7 @@ import { UI_Element } from "./UI_Element";
 export abstract class UI_InputElement extends UI_Element {
 
     listItemId: string;
+    layout: 'row' | 'column' = 'column';
 
     change(newVal: any): void {
         this.plugin.getControllerById(this.controllerId).change(this.prop, newVal);
@@ -21,6 +22,8 @@ export abstract class UI_InputElement extends UI_Element {
     }
 
     val(): any {
-        return this.plugin.getControllerById(this.controllerId).val(this.prop);
+        // TODO controllerId is deprecated
+        const controller = this.controller || this.plugin.getControllerById(this.controllerId);
+        return controller.val(this.prop);
     }
 }

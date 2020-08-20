@@ -28,8 +28,14 @@ export function RowComp(props: RowProps) {
         props.element.vAlign ? `ce-v_align-${props.element.vAlign}` : 'ce-v_align-start' 
     );
 
+    const style: React.CSSProperties = {};
+
+    props.element.padding && (style.padding = props.element.padding);
+    props.element.margin && (style.margin = props.element.margin);
+    props.element.backgroundColor && (style.backgroundColor = props.element.backgroundColor);
+
     return (
-        <RowStyled className={classes}>{props.children}</RowStyled>
+        <RowStyled style={style} className={classes}>{props.children}</RowStyled>
     );
 }
 

@@ -41,8 +41,8 @@ export class UI_DefaultContainer extends UI_Container {
         return UI_Factory.button(this, {prop});
     }
 
-    select(valProp: string, listProp: string) {
-        return UI_Factory.select(this, {valProp, listProp});
+    select(valProp: string) {
+        return UI_Factory.select(this, {valProp});
     }
 
     fileUpload(prop: string) {

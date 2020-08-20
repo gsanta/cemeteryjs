@@ -1,8 +1,8 @@
-import { UI_Plugin, UI_Region } from '../../core/plugins/UI_Plugin';
+import { AbstractSidepanelPlugin } from '../../core/plugins/AbstractSidepanelPlugin';
+import { UI_Region } from '../../core/plugins/UI_Plugin';
 import { Registry } from '../../core/Registry';
 import { UI_Layout } from '../../core/ui_regions/elements/UI_Layout';
-import { LayoutSettingsController, LayoutSettingsProps, LayoutSettingsControllerId } from './LayoutSettingsController';
-import { AbstractSidepanelPlugin } from '../../core/plugins/AbstractSidepanelPlugin';
+import { LayoutSettingsController, LayoutSettingsControllerId, LayoutSettingsProps } from './LayoutSettingsController';
 
 export const LayoutSettingsPluginId = 'layout-settings-plugin';
 
@@ -22,7 +22,8 @@ export class LayoutSettingsPlugin extends AbstractSidepanelPlugin {
         layout.controllerId = LayoutSettingsControllerId;
         let row = layout.row({ key: LayoutSettingsProps.SelectedLayout });
 
-        const layoutSelect = row.select(LayoutSettingsProps.SelectedLayout, LayoutSettingsProps.AllLayouts);
+        const layoutSelect = row.select(LayoutSettingsProps.SelectedLayout);
+        layoutSelect.values = this.registry.services.uiPerspective.perspectives.map(perspective => perspective.name);
         layoutSelect.label = 'Layouts';
         layoutSelect.placeholder = 'Select Layout';
 

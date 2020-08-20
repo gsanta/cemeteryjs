@@ -150,10 +150,21 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
         }
 
         this.renderNodesInto(canvas);
+        this.renderConnectionsInto(canvas);
     }
 
     private renderNodesInto(canvas: UI_SvgCanvas) {
         this.registry.stores.nodeStore.getNodes().forEach(node => this.registry.services.node.renderNodeInto(node, canvas))
+    }
+
+    private renderConnectionsInto(canvas: UI_SvgCanvas) {
+        this.registry.stores.nodeStore.getConnections().forEach(connection => {
+            const line = canvas.line()
+            line.x1 = connection.joinPoint1.getAbsolutePosition().x;
+            line.y1 = connection.joinPoint1.getAbsolutePosition().y;
+            line.x2 = connection.joinPoint2.getAbsolutePosition().x;
+            line.y2 = connection.joinPoint2.getAbsolutePosition().y;
+        });
     }
 
     // dropItem(droppedItemId: string) {
