@@ -4,6 +4,7 @@ export abstract class UI_InputElement extends UI_Element {
 
     listItemId: string;
     layout: 'horizontal' | 'vertical' = 'vertical';
+    inputWidth: string;
 
     change(newVal: any): void {
         this.plugin.getControllerById(this.controllerId).change(this.prop, newVal);

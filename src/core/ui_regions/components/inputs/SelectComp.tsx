@@ -32,10 +32,18 @@ export function SelectComp(props: UI_ComponentProps<UI_Select>) {
     });
     const placeholder = <option key="placeholder" value="">{props.element.placeholder}</option>
 
+    const selectStyle: React.CSSProperties = {
+        minWidth: '100px',
+        height: '25px',
+        borderRadius: 0
+    };
+
+    props.element.inputWidth && (selectStyle.width = props.element.inputWidth);
+
     let select = (
         <select
             className="dropdown-component"
-            style={{minWidth: '100px', height: '25px', borderRadius: 0}}
+            style={selectStyle}
             onChange={(e) => {
                 props.element.change(e.target.value);
             }}
@@ -66,12 +74,12 @@ export function SelectComp(props: UI_ComponentProps<UI_Select>) {
         }
 
         select = (
-            <div style={style}>
-                <LabelStyled key={'label'}>{props.element.label}</LabelStyled>
-                <SelectStyled key="select">
+            <div style={style} className={`labeled-input ${props.element.layout}`}>
+                <div className="label">{props.element.label}</div>
+                <div className="input">
                     {select}
                     {props.element.clearable && props.element.val() ? <ClearIconComponent onClick={() => props.element.change(undefined)}/> : null}
-                </SelectStyled>
+                </div>
             </div>
         )
     }

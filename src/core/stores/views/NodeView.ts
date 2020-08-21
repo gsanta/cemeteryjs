@@ -15,6 +15,11 @@ export interface NodeViewJson extends ViewJson {
     node: NodeModelJson;
 }
 
+const HEADER_HIGHT = 30;
+const SLOT_HEIGHT = 20;
+const INPUT_HEIGHT = 30;
+const NODE_PADDING = 10;
+
 export class NodeView<T extends NodeModel = NodeModel> extends View {
     readonly  viewType = ViewType.NodeView;
     id: string;
@@ -40,6 +45,10 @@ export class NodeView<T extends NodeModel = NodeModel> extends View {
     private setup() {
         this.model.inputSlots.forEach(slot => this.joinPointViews.push(new JoinPointView(this, {slotName: slot.name, isInput: true})));
         this.model.outputSlots.forEach(slot => this.joinPointViews.push(new JoinPointView(this, {slotName: slot.name, isInput: false})));
+
+        const SLOTS_HEIGHT = this.model.inputSlots.length > this.model.outputSlots.length ? this.model.inputSlots.length * SLOT_HEIGHT : this.model.outputSlots.length * SLOT_HEIGHT;
+        const height = HEADER_HIGHT + SLOTS_HEIGHT + INPUT_HEIGHT * (this.model.params.length ? this.model.params.length : 1) + NODE_PADDING * 2;
+        this.dimensions.setHeight(height);
     }
 
     move(point: Point) {

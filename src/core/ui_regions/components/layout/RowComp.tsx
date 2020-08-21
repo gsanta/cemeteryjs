@@ -34,6 +34,7 @@ export function RowComp(props: RowProps) {
     props.element.margin && (style.margin = props.element.margin);
     props.element.backgroundColor && (style.backgroundColor = props.element.backgroundColor);
     props.element.hAlign && (style.justifyContent = props.element.hAlign);
+    props.element.height && (style.height = props.element.height);
 
     return (
         <RowStyled style={style} className={classes}>{props.children}</RowStyled>

@@ -44,10 +44,17 @@ export interface NodeModelJson {
     type: string;
 }
 
+export interface NodeParam {
+    name: string;
+    val: any;
+}
+
 export abstract class NodeModel {
     nodeView: NodeView;
     type: BuiltinNodeType | string;
     category: NodeCategory;
+
+    params: NodeParam[] = [];
 
     isDirty = false;
     label: string;

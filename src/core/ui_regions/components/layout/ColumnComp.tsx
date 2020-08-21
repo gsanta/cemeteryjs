@@ -22,8 +22,15 @@ export function ColumnComp(props: UI_ContainerProps<UI_Column>) {
         props.element.vAlign ? `ce-h_align-${props.element.vAlign}` : 'ce-h_align-start' 
     );
 
+    const style: React.CSSProperties = {};
+
+    props.element.padding && (style.padding = props.element.padding);
+    props.element.margin && (style.margin = props.element.margin);
+    props.element.backgroundColor && (style.backgroundColor = props.element.backgroundColor);
+    props.element.hAlign && (style.justifyContent = props.element.hAlign);
+
     return (
-        <ColumntStyled className={classes}>{props.children}</ColumntStyled>
+        <ColumntStyled style={style} className={classes}>{props.children}</ColumntStyled>
     );
 }
 

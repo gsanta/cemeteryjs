@@ -5,13 +5,13 @@ export interface LabeledProps {
     label: string
     children: JSX.Element;
     direction: 'horizontal' | 'vertical'
+    style?: React.CSSProperties;
 }
 
 const LabeledComponentStyled = styled.div`
     margin-bottom: 5px;
     width: 100%;
 
-    &.horizontal {
         align-items: center;
     }
 
@@ -30,7 +30,7 @@ const LabeledComponentStyled = styled.div`
 
 export function LabeledInputComp(props: LabeledProps) {
     return (
-        <LabeledComponentStyled className={`labeled-component ${props.direction}`}>
+        <LabeledComponentStyled style={props.style} className={`labeled-component ${props.direction}`}>
             <div className="label">{props.label}</div>
             <div className="input">{props.children}</div>
         </LabeledComponentStyled>

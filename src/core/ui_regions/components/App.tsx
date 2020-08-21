@@ -16,6 +16,7 @@ import { SidePanelComponent } from './SidePanelComponent';
 import { MainPanelComp } from './regions/MainPanelComp';
 import { SceneEditorPerspectiveName } from '../../services/UI_PerspectiveService';
 import { UI_Region } from '../../plugins/UI_Plugin';
+import styled from 'styled-components';
 
 export interface AppState {
     isDialogOpen: boolean;
@@ -23,6 +24,28 @@ export interface AppState {
     isAboutDialogOpen: boolean;
     isEditorOpen: boolean;
 }
+
+const StyledApp = styled.div`
+    .labeled-input {
+        margin-bottom: 5px;
+        width: 100%;
+
+            align-items: center;
+        }
+
+        .label {
+            font-size: 12px;
+            width: 30%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .input {
+            width: 70%;
+        }
+    }
+`;
 
 export class App extends React.Component<{}, AppState> {
     static contextType = AppContext;
@@ -73,7 +96,7 @@ export class App extends React.Component<{}, AppState> {
     
     render() {
         return (
-            <div className="style-nightshifs">
+            <StyledApp className="style-nightshifs">
                 <DndProvider backend={Backend}>
                     <div className="main-content" key="main-content">
                         <div id="sidepanel" >
@@ -86,7 +109,7 @@ export class App extends React.Component<{}, AppState> {
                     <DialogManagerComponent/>
                     <HotkeyInputComponent key="hotkey-input" registry={this.context.registry}/>
                 </DndProvider>
-            </div>
+            </StyledApp>
         );
     }
 }

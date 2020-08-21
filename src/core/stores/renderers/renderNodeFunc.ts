@@ -1,6 +1,6 @@
 import { NodeView } from '../views/NodeView';
-import { UI_Row } from '../../ui_regions/elements/UI_Row';
+import { UI_Column } from '../../ui_regions/elements/UI_Column';
 
 export interface renderNodeFunc {
-    (nodeView: NodeView, row: UI_Row): void;
+    (nodeView: NodeView, columnt: UI_Column): void;
 }

@@ -14,4 +14,5 @@ export class UI_SvgText extends UI_Element {
     y: number;
     color: string;
     anchor: 'start' | 'middle' | 'end';
+    fontSize: string;
 }

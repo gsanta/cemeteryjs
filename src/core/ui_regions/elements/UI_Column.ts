@@ -6,4 +6,7 @@ export class UI_Column extends UI_DefaultContainer {
     hAlign: 'start' | 'center';
     vAlign: 'space-between' | 'space-around';
     height: string;
+    padding: string;
+    margin: string;
+    backgroundColor: string;
 }

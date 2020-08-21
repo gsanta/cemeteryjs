@@ -2,12 +2,12 @@ import { AbstractController } from '../../plugins/controllers/AbstractController
 import { colors, sizes } from '../../ui_regions/components/styles';
 import { UI_SvgForeignObject } from '../../ui_regions/elements/svg/UI_SvgForeignObject';
 import { UI_SvgGroup } from '../../ui_regions/elements/svg/UI_SvgGroup';
-import { UI_Row } from '../../ui_regions/elements/UI_Row';
 import { UI_SvgCanvas } from "../../ui_regions/elements/UI_SvgCanvas";
 import { JoinPointView } from "../views/child_views/JoinPointView";
 import { NodeView } from "../views/NodeView";
+import { UI_Column } from '../../ui_regions/elements/UI_Column';
 
-export const renderNodeContainer = (nodeView: NodeView, svgCanvas: UI_SvgCanvas, controller: AbstractController): UI_Row => {
+export const renderNodeContainer = (nodeView: NodeView, svgCanvas: UI_SvgCanvas, controller: AbstractController): UI_Column => {
     const group = svgCanvas.group(nodeView.id);
     group.transform = `translate(${nodeView.dimensions.topLeft.x} ${nodeView.dimensions.topLeft.y})`;
 
@@ -17,22 +17,22 @@ export const renderNodeContainer = (nodeView: NodeView, svgCanvas: UI_SvgCanvas,
     rect.width = nodeView.dimensions.getWidth();
     rect.height = nodeView.dimensions.getHeight();
     rect.strokeColor = getStrokeColor(nodeView);
-    rect.fillColor = 'white';
+    rect.fillColor = nodeView.model.color || 'white';
     
     const foreignObject = group.foreignObject({key: nodeView.id});
     foreignObject.width = nodeView.dimensions.getWidth();
     foreignObject.height = nodeView.dimensions.getHeight();
 
     renderTitleInto(nodeView, foreignObject);
-    renderConnectionSectionInto(nodeView, group);
+    const joinPointsHeight = renderJoinPointsInto(nodeView, group);
     foreignObject.controller = controller;
 
-    let row = foreignObject.row({ key: 'data-row' });
-    row.margin = '30px 0 0 0';
-    row.hAlign = 'space-between';
-    row.padding = '10px';
+    let column = foreignObject.column({ key: 'data-row' });
+    column.margin = `${joinPointsHeight}px 0 0 0`;
+    column.vAlign = 'space-between';
+    column.padding = '10px';
 
-    return row;
+    return column;
 }
 
 const renderTitleInto = (nodeView: NodeView, foreignObject: UI_SvgForeignObject) => {
@@ -58,7 +58,7 @@ const renderTitleInto = (nodeView: NodeView, foreignObject: UI_SvgForeignObject)
     // text.color = colors.textColor;
 }
 
-const renderConnectionSectionInto = (nodeView: NodeView, svgGroup: UI_SvgGroup) => {
+const renderJoinPointsInto = (nodeView: NodeView, svgGroup: UI_SvgGroup): number => {
     const inputSlots = nodeView.model.inputSlots;
     const outputSlots = nodeView.model.outputSlots;
 
@@ -70,22 +70,20 @@ const renderConnectionSectionInto = (nodeView: NodeView, svgGroup: UI_SvgGroup) 
     let inputs: number = 0;
     let outputs: number = 0;
 
+    let rowHeight = 20;
+    nodeView.joinPointViews.forEach(joinPointView => {
+        joinPointView.isInput ? (inputs++) : (outputs++);
+        renderLabeledJoinPointInto(svgGroup, nodeView, joinPointView, joinPointView.isInput ? inputs * rowHeight : outputs * rowHeight);
+    });
 
-    let rowHeight = 10;
-    // for (let i = 0; i < rows; i++) {
-
-        nodeView.joinPointViews.forEach(joinPointView => {
-            joinPointView.isInput ? (inputs++) : (outputs++);
-            renderLabeledConnectionInto(svgGroup, nodeView, joinPointView, joinPointView.isInput ? inputs * rowHeight : outputs * rowHeight);
-        });
-    // }
+    return inputs > outputs ? inputs * rowHeight : outputs * rowHeight;
 }
 
-const renderLabeledConnectionInto = (svgGroup: UI_SvgGroup, nodeView: NodeView, joinPointView: JoinPointView, yPos: number): void => {
+const renderLabeledJoinPointInto = (svgGroup: UI_SvgGroup, nodeView: NodeView, joinPointView: JoinPointView, yPos: number): void => {
     const circle = svgGroup.circle();
     svgGroup.data = nodeView;
 
-    circle.cx = joinPointView.point.x; //joinPointView.isInput ? inputX : outputX;
+    circle.cx = joinPointView.point.x;
     circle.cy = joinPointView.point.y;
     circle.r = 5;
     circle.fillColor = colors.grey4
@@ -97,6 +95,8 @@ const renderLabeledConnectionInto = (svgGroup: UI_SvgGroup, nodeView: NodeView, 
     const textOffsetX = joinPointView.isInput ? 10 : -10;
     text.x = joinPointView.point.x + textOffsetX;
     text.y = joinPointView.point.y + 5;
+    text.fontSize = '12px';
+    text.isBold = true;
     joinPointView.isInput === false && (text.anchor = 'end');
 }
 

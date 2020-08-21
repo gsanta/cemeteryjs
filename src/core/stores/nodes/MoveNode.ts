@@ -6,14 +6,28 @@ export interface MoveNodeJson extends NodeModelJson {
     speed: number;
 }
 
+
+
 export class MoveNode extends NodeModel {
     type = BuiltinNodeType.Move;
     category = NodeCategory.Default;
+
+    params = [
+        {
+            name: 'move',
+            val: ''
+        },
+        {
+            name: 'speed',
+            val: 0.5
+        }
+    ];
+    
     label = "Move";
     move: string;
     speed = 0.5;
     allMoves: string[] = ['forward', 'backward'];
-    color = 'A194EC';
+    color = '#A194EC';
     inputSlots: JoinPointSlot[] = [
         {
             name: 'input'
