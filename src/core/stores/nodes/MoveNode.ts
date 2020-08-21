@@ -2,8 +2,7 @@ import { JoinPointSlot, NodeModel, BuiltinNodeType, NodeCategory, NodeModelJson 
 import { View } from '../views/View';
 
 export interface MoveNodeJson extends NodeModelJson {
-    move: string;
-    speed: number;
+    params: string;
 }
 
 
@@ -24,8 +23,6 @@ export class MoveNode extends NodeModel {
     ];
     
     label = "Move";
-    move: string;
-    speed = 0.5;
     allMoves: string[] = ['forward', 'backward'];
     color = '#A194EC';
     inputSlots: JoinPointSlot[] = [
@@ -43,16 +40,18 @@ export class MoveNode extends NodeModel {
     ];
 
     toJson(): MoveNodeJson {
+        this.params.forEach(param => {
+
+        });
+
         return {
             ...super.toJson(),
-            move: this.move,
-            speed: this.speed
+            params: JSON.stringify(this.params)
         }
     }
 
     fromJson(json: MoveNodeJson, viewMap: Map<string, View>) {
         super.fromJson(json, viewMap);
-        this.move = json.move;
-        this.speed = json.speed;
+        this.params = JSON.parse(json.params);
     }
 }

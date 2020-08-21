@@ -29,6 +29,7 @@ import { RouteNode } from '../stores/nodes/RouteNode';
 import { MoveNode } from '../stores/nodes/MoveNode';
 import { MoveNodeController } from '../stores/nodes/controllers/MoveNodeController';
 import { renderMoveNode } from '../stores/renderers/renderMoveNode';
+import { createNodeController } from '../plugins/controllers/NodeController';
 
 export class NodeService {
     nodeTemplates: Map<string, NodeModel> = new Map();
@@ -60,6 +61,15 @@ export class NodeService {
     }
 
     registerNode(createNode: () => NodeModel, renderNode: renderNodeFunc, controller: AbstractController) {
+        const node = createNode();
+        this.nodeTypes.push(node.type);
+        this.nodeControllers.set(node.type, controller);
+        this.nodeCreators.set(node.type, createNode);
+        this.nodeRenderers.set(node.type, renderNode);
+        this.nodeTemplates.set(node.type, node);
+    }
+
+    registerNode2<P>(createNode: () => NodeModel, createNodeController: createNodeController) {
         const node = createNode();
         this.nodeTypes.push(node.type);
         this.nodeControllers.set(node.type, controller);

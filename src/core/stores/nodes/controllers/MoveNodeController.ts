@@ -12,12 +12,15 @@ export class MoveNodeController extends AbstractController {
     constructor(plugin: UI_Plugin, registry: Registry) {
         super(plugin, registry);
 
-        this.createPropHandler(MoveNodeProps.SelectMove)
-            .onChange(() => {
+        this.createPropHandler<number>(MoveNodeProps.SelectMove)
+            .onChange((val, context) => {
+                context.updateTempVal(val)
+            })
+            .onBlur(context => {
 
             })
             .onGet((context) => {
-                return []
+                return context.getTempVal(() => )
             });
 
         this.createPropHandler(MoveNodeProps.Speed)
