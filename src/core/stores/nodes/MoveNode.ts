@@ -1,4 +1,4 @@
-import { JoinPointSlot, NodeModel, BuiltinNodeType, NodeCategory, NodeModelJson } from '../game_objects/NodeModel';
+import { JoinPointSlot, NodeModel, BuiltinNodeType, NodeCategory, NodeModelJson, NodeParam } from '../game_objects/NodeModel';
 import { View } from '../views/View';
 
 export interface MoveNodeJson extends NodeModelJson {
@@ -11,14 +11,18 @@ export class MoveNode extends NodeModel {
     type = BuiltinNodeType.Move;
     category = NodeCategory.Default;
 
-    params = [
+    params: NodeParam[] = [
         {
             name: 'move',
-            val: ''
+            val: '',
+            inputType: 'list',
+            valueType: 'string'
         },
         {
             name: 'speed',
-            val: 0.5
+            val: 0.5,
+            inputType: 'textField',
+            valueType: 'number'
         }
     ];
     

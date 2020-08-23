@@ -20,7 +20,7 @@ export class MoveNodeController extends AbstractController {
 
             })
             .onGet((context) => {
-                return context.getTempVal(() => )
+                return context.getTempVal(() => null)
             });
 
         this.createPropHandler(MoveNodeProps.Speed)

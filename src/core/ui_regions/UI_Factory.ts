@@ -468,6 +468,10 @@ export class UI_Factory {
         } else {
             current.controllerId = parent.controllerId;
         }
+
+        if (!current.data) {
+            current.data = parent.data;
+        }
     }
 
     private static setController2(parent: UI_Element, current: UI_Element, config?: {controller?: AbstractController}) {
@@ -477,6 +481,10 @@ export class UI_Factory {
             current.controller = parent.controller;
         } else {
             current.controllerId = parent.controllerId;
+        }
+
+        if (!current.data) {
+            current.data = parent.data;
         }
     }
 

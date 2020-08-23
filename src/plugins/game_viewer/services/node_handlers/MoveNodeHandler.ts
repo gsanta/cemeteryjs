@@ -11,10 +11,10 @@ export class MoveNodeHandler extends AbstractNodeHandler<MoveNode> {
         const meshNode = this.getInputMesh();
         if (!meshNode) { return; }
         
-        const speed = this.instance.speed;
+        const speed = <number> this.instance.getParam('speed').val;
         const moveDelta = this.plugin.pluginServices.engineService().getEngine().getDeltaTime() * speed / 50;
 
-        if (this.instance.move === 'forward') {
+        if (this.instance.getParam('move').val === 'forward') {
             meshNode.meshModel.meshView.moveForward(moveDelta);
         } else {
             meshNode.meshModel.meshView.moveForward(-moveDelta);

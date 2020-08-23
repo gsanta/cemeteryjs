@@ -1,44 +1,71 @@
 import { AbstractController } from './AbstractController';
-import { NodeView } from '../../stores/views/NodeView';
 import { UI_SvgCanvas } from '../../ui_regions/elements/UI_SvgCanvas';
 import { UI_SvgGroup } from '../../ui_regions/elements/svg/UI_SvgGroup';
 import { UI_SvgForeignObject } from '../../ui_regions/elements/svg/UI_SvgForeignObject';
 import { sizes, colors } from '../../ui_regions/components/styles';
 import { JoinPointView } from '../../stores/views/child_views/JoinPointView';
 import { UI_Column } from '../../ui_regions/elements/UI_Column';
+import { NodeView } from '../../stores/views/NodeView';
+import { NodeController } from './NodeController';
 
-export class NodeRendererAndController extends AbstractController {
-    nodeView: NodeView;
+export class NodeRenderer extends AbstractController {
     controller: AbstractController;
 
     private joinPointsHeight: number;
 
-    renderInto(svgCanvas: UI_SvgCanvas) {
-        const group = svgCanvas.group(this.nodeView.id);
-        group.transform = `translate(${this.nodeView.dimensions.topLeft.x} ${this.nodeView.dimensions.topLeft.y})`;
+    render(svgCanvas: UI_SvgCanvas, nodeView: NodeView, controller: NodeController) {
+        const group = svgCanvas.group(nodeView.id);
+        group.transform = `translate(${nodeView.dimensions.topLeft.x} ${nodeView.dimensions.topLeft.y})`;
 
-        this.renderRect(group);
-        return this.renderContent(group);
+        this.renderRect(group, nodeView);
+        const column = this.renderContent(group, nodeView);
+        column.controller = controller;
+        column.data = nodeView;
+        this.renderInputsInto(column, nodeView);
     }
 
-    private renderRect(group: UI_SvgGroup) {
+    private renderInputsInto(column: UI_Column, nodeView: NodeView) {
+        nodeView.model.params.map(param => {
+            let row = column.row({key: param.name});
+            row.height = '35px';
+
+            switch(param.inputType) {
+                case 'textField':
+                    const textField = row.textField(param.name);
+                    textField.layout = 'horizontal';
+                    textField.type = 'number';
+                    textField.label = param.name;
+                    textField.isBold = true;
+                break;
+                case 'list':
+                    const select = row.select(param.name);
+                    select.layout = 'horizontal';
+                    select.label = 'Move';
+                    select.placeholder = param.name;
+                    select.isBold = true;
+                break;
+            }
+        });
+    }
+
+    private renderRect(group: UI_SvgGroup, nodeView: NodeView) {
         const rect = group.rect();
         rect.x = 0;
         rect.y = 0;
-        rect.width = this.nodeView.dimensions.getWidth();
-        rect.height = this.nodeView.dimensions.getHeight();
+        rect.width = nodeView.dimensions.getWidth();
+        rect.height = nodeView.dimensions.getHeight();
         rect.strokeColor = this.getStrokeColor();
-        rect.fillColor = this.nodeView.model.color || 'white';
+        rect.fillColor = nodeView.model.color || 'white';
     }
 
-    private renderContent(group: UI_SvgGroup): UI_Column {
-        const foreignObject = group.foreignObject({key: this.nodeView.id});
-        foreignObject.width = this.nodeView.dimensions.getWidth();
-        foreignObject.height = this.nodeView.dimensions.getHeight();
+    private renderContent(group: UI_SvgGroup, nodeView: NodeView): UI_Column {
+        const foreignObject = group.foreignObject({key: nodeView.id});
+        foreignObject.width = nodeView.dimensions.getWidth();
+        foreignObject.height = nodeView.dimensions.getHeight();
         foreignObject.controller = this.controller;
     
-        this.renderTitle(foreignObject);
-        this.renderJoinPoints(group);
+        this.renderTitle(foreignObject, nodeView);
+        this.renderJoinPoints(group, nodeView);
     
         let column = foreignObject.column({ key: 'data-row' });
         column.margin = `${this.joinPointsHeight}px 0 0 0`;
@@ -48,21 +75,21 @@ export class NodeRendererAndController extends AbstractController {
         return column;
     }
     
-    private renderTitle(foreignObject: UI_SvgForeignObject) {
+    private renderTitle(foreignObject: UI_SvgForeignObject, nodeView: NodeView) {
         const header = foreignObject.row({key: 'header-row'});
         header.height = sizes.nodes.headerHeight + 'px';
         header.padding = '2px 5px';
         header.backgroundColor = colors.panelBackground;
         
         const title = header.text();
-        title.text = this.nodeView.model.type;
+        title.text = nodeView.model.type;
         title.isBold = true;
         title.color = colors.textColor;
     }
     
-    private renderJoinPoints(svgGroup: UI_SvgGroup) {
-        const inputSlots = this.nodeView.model.inputSlots;
-        const outputSlots = this.nodeView.model.outputSlots;
+    private renderJoinPoints(svgGroup: UI_SvgGroup, nodeView: NodeView) {
+        const inputSlots = nodeView.model.inputSlots;
+        const outputSlots = nodeView.model.outputSlots;
     
         inputSlots.forEach(inputSlot => {
             inputSlot
@@ -73,17 +100,17 @@ export class NodeRendererAndController extends AbstractController {
         let outputs: number = 0;
     
         let rowHeight = 20;
-        this.nodeView.joinPointViews.forEach(joinPointView => {
+        nodeView.joinPointViews.forEach(joinPointView => {
             joinPointView.isInput ? (inputs++) : (outputs++);
-            this.renderLabeledJoinPointInto(svgGroup, joinPointView);
+            this.renderLabeledJoinPointInto(svgGroup, nodeView, joinPointView);
         });
     
         this.joinPointsHeight = inputs > outputs ? inputs * rowHeight : outputs * rowHeight;
     }
     
-    private renderLabeledJoinPointInto(svgGroup: UI_SvgGroup, joinPointView: JoinPointView) {
+    private renderLabeledJoinPointInto(svgGroup: UI_SvgGroup, nodeView: NodeView, joinPointView: JoinPointView) {
         const circle = svgGroup.circle();
-        svgGroup.data = this.nodeView;
+        svgGroup.data = nodeView;
     
         circle.cx = joinPointView.point.x;
         circle.cy = joinPointView.point.y;

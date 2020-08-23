@@ -6,11 +6,9 @@ import { NodeSettings } from "../NodeSettings";
 import { AndActionNodeSettingsComponent } from "../AndActionNodeSettingsComponent";
 import { KeyboardNodeSettingsComponent } from "../KeyboardNodeSettingsComponent";
 import { MeshNodeSettingsComponent } from "../MeshNodeSettingsComponent";
-import { MoveNodeSettingsComponent } from "../MoveNodeSettingsComponent";
 import { AnimationNodeSettingsComponent } from "../AnimationNodeSettingsComponent";
 import { KeyboardNodeSettings } from "./KeyboardNodeSettings";
 import { MeshNodeSettings } from './MeshNodeSettings';
-import { MoveNodeSettings } from './MoveNodeSettings';
 import { BuiltinNodeType } from '../../../../core/stores/game_objects/NodeModel';
 import { AnimationNodeSettings } from './AnimationNodeSettings';
 import { TurnNodeSettingsComponent } from '../TurnNodeSettingsComponent';
@@ -29,8 +27,6 @@ export function createNodeSettings(nodeView: NodeView<any>, registry: Registry):
     switch(nodeView.model.type) {
         case BuiltinNodeType.Keyboard:
             return new KeyboardNodeSettings(nodeView, registry);
-        case BuiltinNodeType.Move:
-            return new MoveNodeSettings(nodeView, registry);
         case BuiltinNodeType.Mesh:
             return new MeshNodeSettings(nodeView, registry);
         case BuiltinNodeType.Path:
@@ -52,8 +48,6 @@ export function createNodeSettingsComponent(nodeView: NodeView, registry: Regist
     switch(nodeView.model.type) {
         case BuiltinNodeType.Keyboard:
             return <KeyboardNodeSettingsComponent settings={settings}/>;
-        case BuiltinNodeType.Move:
-            return <MoveNodeSettingsComponent settings={settings}/>;    
         case BuiltinNodeType.Mesh:
             return <MeshNodeSettingsComponent settings={settings}/>;    
         case BuiltinNodeType.And:

@@ -47,14 +47,17 @@ export interface NodeModelJson {
 export interface NodeParam {
     name: string;
     val: any;
+    inputType: 'textField' | 'list';
+    valueType: 'string' | 'number';
 }
 
-export abstract class NodeModel {
+export class NodeModel {
     nodeView: NodeView;
     type: BuiltinNodeType | string;
     category: NodeCategory;
 
-    params: NodeParam[] = [];
+    private cachedParams: Map<string, NodeParam> = new Map();
+    readonly params: NodeParam[] = [];
 
     isDirty = false;
     label: string;
@@ -63,8 +66,15 @@ export abstract class NodeModel {
     inputSlots: JoinPointSlot[];
     outputSlots: JoinPointSlot[];
 
-    constructor(size: Point = new Point(defaultNodeViewConfig.width, defaultNodeViewConfig.height)) {
+    constructor(size: Point = new Point(defaultNodeViewConfig.width, defaultNodeViewConfig.height), params: NodeParam[] = []) {
         this.size = size;
+
+        this.params = params;
+        this.params.forEach(param => this.cachedParams.set(param.name, param));
+    }
+
+    getParam(name: string): NodeParam {
+        return this.cachedParams.get(name);
     }
 
     updateNode(graph: NodeGraph): void {}

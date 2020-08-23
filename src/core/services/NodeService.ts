@@ -29,24 +29,31 @@ import { RouteNode } from '../stores/nodes/RouteNode';
 import { MoveNode } from '../stores/nodes/MoveNode';
 import { MoveNodeController } from '../stores/nodes/controllers/MoveNodeController';
 import { renderMoveNode } from '../stores/renderers/renderMoveNode';
-import { createNodeController } from '../plugins/controllers/NodeController';
+import { NodeRenderer } from '../plugins/controllers/NodeRenderer';
+import { NodeController } from '../plugins/controllers/NodeController';
+import { NodePLugin } from '../plugins/NodePlugin';
+import { MoveNodePlugin } from '../../plugins/node_plugins/MoveNodePlugin';
 
 export class NodeService {
     nodeTemplates: Map<string, NodeModel> = new Map();
     nodeTypes: string[] = [];
 
+    private nodePlugins: Map<string, NodePLugin> = new Map();
     private nodeCreators: Map<string, () => NodeModel> = new Map();
     private nodeRenderers: Map<string, renderNodeFunc> = new Map();
+    private nodeRenderers2: Map<string, NodeRenderer> = new Map();
     private nodeControllers: Map<string, AbstractController> = new Map();
+    private defaultNodeRenderer: NodeRenderer;
 
     private registry: Registry;
 
     constructor(registry: Registry) {
         this.registry = registry;
-
+        
         // TODO register default nodes somewhere else where registry is alredy setup correctly, to get rid of settimeout
         setTimeout(() => {
             const plugin = registry.plugins.getById(NodeEditorPluginId);
+            this.defaultNodeRenderer = new NodeRenderer(plugin, this.registry);
             this.registerNode(() => new AndNode(), () => {}, null);
             this.registerNode(() => new AnimationNode(), renderAnimationNode, null);
             this.registerNode(() => new MeshNode(), renderMeshNode, new MeshNodeController(plugin, this.registry));
@@ -56,7 +63,8 @@ export class NodeService {
             this.registerNode(() => new PathNode(), renderPathNode, new PathNodeController(plugin, this.registry));
             this.registerNode(() => new TurnNode(), renderTurnNode, new TurnNodeController(plugin, this.registry));
             this.registerNode(() => new RouteNode(), () => {}, null);
-            this.registerNode(() => new MoveNode(), renderMoveNode, new MoveNodeController(plugin, this.registry));
+
+            this.registerNode2(new MoveNodePlugin(this.registry));
         });
     }
 
@@ -69,23 +77,26 @@ export class NodeService {
         this.nodeTemplates.set(node.type, node);
     }
 
-    registerNode2<P>(createNode: () => NodeModel, createNodeController: createNodeController) {
-        const node = createNode();
-        this.nodeTypes.push(node.type);
-        this.nodeControllers.set(node.type, controller);
-        this.nodeCreators.set(node.type, createNode);
-        this.nodeRenderers.set(node.type, renderNode);
-        this.nodeTemplates.set(node.type, node);
+    registerNode2(nodePlugin: NodePLugin) {
+        const templateNode = nodePlugin.createNodeObject();
+        this.nodePlugins.set(templateNode.type, nodePlugin);
+        this.nodeTemplates.set(templateNode.type, templateNode);
     }
 
     renderNodeInto(nodeView: NodeView, ui_svgCanvas: UI_SvgCanvas): void {
-        if (!this.nodeRenderers.has(nodeView.model.type)) {
-            throw new Error(`Node renderer registered for node type ${nodeView.model.type}`);
+        //TODO temporarily disabled until registerNode2 exists
+        // if (!this.nodeRenderers.has(nodeView.model.type)) {
+        //     throw new Error(`Node renderer registered for node type ${nodeView.model.type}`);
+        // }
+
+        if (this.nodeRenderers.has(nodeView.model.type)) {
+            const row = renderNodeContainer(nodeView, ui_svgCanvas, this.nodeControllers.get(nodeView.model.type));
+            this.nodeRenderers.get(nodeView.model.type)(nodeView, row);
+        } else {
+
         }
 
-        const row = renderNodeContainer(nodeView, ui_svgCanvas, this.nodeControllers.get(nodeView.model.type));
 
-        this.nodeRenderers.get(nodeView.model.type)(nodeView, row);
     }
 
     createNodeView(nodeType: string, position: Point): NodeView {

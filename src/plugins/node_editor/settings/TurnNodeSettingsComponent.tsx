@@ -2,7 +2,6 @@ import * as React from 'react';
 import { ConnectedDropdownComponent } from '../../../core/ui_regions/components/inputs/DropdownComponent';
 import { FieldColumnStyled, LabelColumnStyled, LabeledField } from '../../scene_editor/settings/SettingsComponent';
 import { AbstractNodeSettingsComponent } from './AbstractNodeSettingsComponent';
-import { MoveNodeProps } from './nodes/MoveNodeSettings';
 import { TurnNodeProps } from './nodes/TurnNodeSettings';
 
 export class TurnNodeSettingsComponent extends  AbstractNodeSettingsComponent {
