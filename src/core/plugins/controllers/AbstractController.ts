@@ -13,64 +13,71 @@ export interface PropHandlers {
     onFocus?(context: PropContext<any>, controller: AbstractController): void;
     onBlur?(context: PropContext<any>, controller: AbstractController): void;
     onGet?(context: PropContext<any>, controller: AbstractController): void;
+    onGetValues?(context: PropContext<any>, controller: AbstractController): void;
 }
 
 export class PropHandler<T> {
     context: PropContext<T> = new PropContext<T>();
-    changeHandler: (val:  T, context: PropContext<T>, controller: AbstractController) => void;
-    clickHandler: (context: PropContext<T>, controller: AbstractController) => void;
-    focusHandler: (context: PropContext<T>, controller: AbstractController) => void;
-    blurHandler: (context: PropContext<T>, controller: AbstractController) => void;
-    getHandler: (context: PropContext<T>, controller: AbstractController) => void;
+    changeHandler: (val:  T, context: PropContext<T>, element: UI_Element, controller: AbstractController) => void;
+    clickHandler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void;
+    focusHandler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void;
+    blurHandler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void;
+    getHandler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void;
+    getValuesHandler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => any[];
 
-    mouseOverHandler: (context: PropContext<T>, controller: AbstractController) => void;
-    mouseOutHandler: (context: PropContext<T>, controller: AbstractController) => void;
+    mouseOverHandler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void;
+    mouseOutHandler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void;
 
-    dndStartHandler: (val: T, context: PropContext<T>, controller: AbstractController) => void;
-    dndEndHandler: (context: PropContext<T>, controller: AbstractController) => void;
+    dndStartHandler: (val: T, context: PropContext<T>, element: UI_Element, controller: AbstractController) => void;
+    dndEndHandler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void;
 
-    onChange(handler: (val: T, context: PropContext<any>,  controller: AbstractController) => void) {
+    onChange(handler: (val: T, context: PropContext<any>, element: UI_Element, controller: AbstractController) => void) {
         this.changeHandler = handler;
         return this;
     }
 
-    onClick(handler: (context: PropContext<T>, controller: AbstractController) => void) {
+    onClick(handler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void) {
         this.clickHandler = handler;
         return this;
     }
 
-    onFocus(handler: (context: PropContext<T>, controller: AbstractController) => void) {
+    onFocus(handler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void) {
         this.focusHandler = handler;
         return this;
     }
 
-    onBlur(handler: (context: PropContext<T>, controller: AbstractController) => void) {
+    onBlur(handler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void) {
         this.blurHandler = handler;
         return this;
     }
 
-    onGet(handler: (context: PropContext<T>, controller: AbstractController) => void) {
+    onGet(handler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void) {
         this.getHandler = handler;
         return this;
     }
 
-    onMouseOver(handler: (context: PropContext<T>, controller: AbstractController) => void) {
+    onGetValues(handler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => any[]) {
+        this.getValuesHandler = handler;
+        return this;
+    }
+
+    onMouseOver(handler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void) {
         this.mouseOverHandler = handler;
         return this;
     }
 
-    onMouseOut(handler: (context: PropContext<T>, controller: AbstractController) => void) {
+    onMouseOut(handler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void) {
         this.mouseOutHandler = handler;
         return this;
     }
 
 
-    onDndStart(handler: (val: T, context: PropContext<T>, controller: AbstractController) => void) {
+    onDndStart(handler: (val: T, context: PropContext<T>, element: UI_Element, controller: AbstractController) => void) {
         this.dndStartHandler = handler;
         return this;
     }
 
-    onDndEnd(handler: (context: PropContext<T>, controller: AbstractController) => void) {
+    onDndEnd(handler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void) {
         this.dndEndHandler = handler;
         return this;
     }
@@ -84,16 +91,18 @@ export class PropContext<T> {
         this.tempVal = val;
     }
 
-    getTempVal(origVal: () => T): T {
-        return this.tempVal ? this.tempVal : origVal();
+    getTempVal(): T {
+        return this.tempVal;
+    }
+
+    clearTempVal(): T {
+        const tmpVal = this.tempVal;
+        this.tempVal = undefined;
+        return tmpVal;
     }
 
     releaseTempVal(callback: (val: T) => void) {
         callback(this.tempVal);
-        this.tempVal = undefined;
-    }
-
-    clearTempVal() {
         this.tempVal = undefined;
     }
 }
@@ -118,52 +127,56 @@ export abstract class AbstractController<P = any> {
             });
     }
 
-    change(prop: P, val: any): void {
+    change(prop: P, val: any, element: UI_Element): void {
         const handler = this.handlers.get(prop);
-        handler.changeHandler(val, handler.context, this);
+        handler.changeHandler(val, handler.context, element, this);
     }
 
     click(prop: P, element: UI_Element): void {
         const handler = this.handlers.get(prop);
-        handler.context.element = element;
-        handler.clickHandler(handler.context, this);
+        handler.clickHandler(handler.context, element, this);
     }
 
-    focus(prop: P): void {
+    focus(prop: P, element: UI_Element): void {
         const handler = this.handlers.get(prop);
-        handler.focusHandler(handler.context, this);
+        handler.focusHandler(handler.context, element, this);
     }
 
-    blur(prop: P): void {
+    blur(prop: P, element: UI_Element): void {
         const handler = this.handlers.get(prop);
-        handler.blurHandler(handler.context, this);
+        handler.blurHandler(handler.context, element, this);
     }
 
-    mouseOver(prop: P): void {
+    mouseOver(prop: P, element: UI_Element): void {
         const handler = this.handlers.get(prop);
-        handler.blurHandler(handler.context, this);
+        handler.blurHandler(handler.context, element, this);
     }
 
-    mouseOut(prop: P): void {
+    mouseOut(prop: P, element: UI_Element): void {
         const handler = this.handlers.get(prop);
-        handler.blurHandler(handler.context, this);
+        handler.blurHandler(handler.context, element, this);
     }
 
-    dndStart(prop: P, listItem: string): void {
+    dndStart(prop: P, element: UI_Element, listItem: string): void {
         const handler = this.handlers.get(prop);
-        handler.dndStartHandler(listItem, handler.context, this);
+        handler.dndStartHandler(listItem, handler.context, element, this);
     }
 
     dndEnd(prop: P, uiListItem: UI_ListItem): void {
         const handler = this.handlers.get(prop);
-        handler.context.element = uiListItem;
-        handler.dndEndHandler(handler.context, this);
+        handler.dndEndHandler(handler.context, uiListItem, this);
     }
 
-    val(prop: P): any {
+    val(prop: P, element: UI_Element): any {
         const handler = this.handlers.get(prop);
-        return handler.getHandler(handler.context, this);
+        return handler.context.getTempVal() !== undefined ? handler.context.getTempVal() : handler.getHandler(handler.context, element, this);
     }
+
+    values(prop: P, element: UI_Element): any[] {
+        const handler = this.handlers.get(prop);
+        return handler.getValuesHandler(handler.context, element, this);
+    }
+
 
     createPropHandler<T>(prop: P | GlobalControllerProps) {
         const propHandler = new PropHandler<T>();

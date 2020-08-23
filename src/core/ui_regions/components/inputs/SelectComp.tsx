@@ -25,7 +25,7 @@ const LabelStyled = styled.div`
 `;
 
 export function SelectComp(props: UI_ComponentProps<UI_Select>) {
-    const values: string[] = props.element.values || [];
+    const values: string[] = props.element.values() || [];
 
     const options = values.map(val => {
         return <option key={val} value={val}>{val}</option>

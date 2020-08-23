@@ -54,7 +54,7 @@ export interface NodeParam {
 export class NodeModel {
     nodeView: NodeView;
     type: BuiltinNodeType | string;
-    category: NodeCategory;
+    category: string;
 
     private cachedParams: Map<string, NodeParam> = new Map();
     readonly params: NodeParam[] = [];
@@ -77,6 +77,10 @@ export class NodeModel {
         return this.cachedParams.get(name);
     }
 
+    setParam(name: string, value: any) {
+        this.getParam(name).val = value;
+    }
+
     updateNode(graph: NodeGraph): void {}
 
     findSlotByName(name: string) {
@@ -97,6 +101,24 @@ export class NodeModel {
 
     fromJson(json: NodeModelJson, viewMap: Map<string, View>) {
         this.type = <BuiltinNodeType> json.type;
+    }
+}
+
+export interface NodeConfig {
+    type: string;
+    params: NodeParam[];
+    connections: { direction: 'input' | 'output', name: string }[];
+    category: string; 
+}
+
+export class GeneralNodeModel extends NodeModel {
+    constructor(config: NodeConfig) {
+        super(new Point(defaultNodeViewConfig.width, defaultNodeViewConfig.height), config.params);
+
+        this.type = config.type;
+        this.inputSlots = config.connections.filter(conn => conn.direction === 'input').map(conn => ({ name: conn.name }));
+        this.outputSlots = config.connections.filter(conn => conn.direction === 'output').map(conn => ({ name: conn.name }));
+        this.category = config.category;
     }
 }
 

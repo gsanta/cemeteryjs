@@ -22,36 +22,28 @@ export class AssetManagerDialogController extends AbstractController<{}> {
         super(plugin, registry);
 
         this.createPropHandler<void>(AssetManagerDialogProps.DeleteAsset)
-            .onClick((context: PropContext<void>) => {
-                const asset = this.registry.stores.assetStore.getAssetById(( <UI_InputElement> context.element).listItemId);
+            .onClick((context: PropContext<void>, element) => {
+                const asset = this.registry.stores.assetStore.getAssetById(( <UI_InputElement> element).listItemId);
                 this.registry.stores.assetStore.deleteAsset(asset);
                 this.registry.services.render.reRender(UI_Region.Dialog);
             });
 
         this.createPropHandler<void>(AssetManagerDialogProps.EnterEditMode)
-            .onClick((context: PropContext<void>) => {
-                const asset = this.registry.stores.assetStore.getAssetById(( <UI_InputElement> context.element).listItemId);
+            .onClick((context: PropContext<void>, element) => {
+                const asset = this.registry.stores.assetStore.getAssetById(( <UI_InputElement> element).listItemId);
                 (<AssetManagerDialogPlugin> this.plugin).editedAsset = asset;
                 this.registry.services.render.reRender(UI_Region.Dialog);
             });
 
         this.createPropHandler<void>(AssetManagerDialogProps.AssetName)
-            .onGet((context) => {
-                const editedAsset = (<AssetManagerDialogPlugin> this.plugin).editedAsset;
-
-                context.getTempVal(() => editedAsset ? editedAsset.name : '');
-            })
+            .onGet((context) => (<AssetManagerDialogPlugin> this.plugin).editedAsset.name || '')
             .onChange((val, context) => {
                 context.updateTempVal(val);
                 this.registry.services.render.reRender(UI_Region.Dialog);
             })
 
         this.createPropHandler<void>(AssetManagerDialogProps.AssetPath)
-            .onGet((context) => {
-                const editedAsset = (<AssetManagerDialogPlugin> this.plugin).editedAsset;
-
-                context.getTempVal(() => editedAsset ? editedAsset.path : '');
-            })            
+            .onGet((context) => (<AssetManagerDialogPlugin> this.plugin).editedAsset.path || '')
             .onChange((val, context) => {
                 context.updateTempVal(val);
                 this.registry.services.render.reRender(UI_Region.Dialog);

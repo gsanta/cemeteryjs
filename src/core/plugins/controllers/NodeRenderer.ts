@@ -40,7 +40,7 @@ export class NodeRenderer extends AbstractController {
                 case 'list':
                     const select = row.select(param.name);
                     select.layout = 'horizontal';
-                    select.label = 'Move';
+                    select.label = param.name;
                     select.placeholder = param.name;
                     select.isBold = true;
                 break;

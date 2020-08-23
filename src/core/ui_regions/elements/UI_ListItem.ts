@@ -16,7 +16,7 @@ export class UI_ListItem extends UI_Element {
     dndStart() {
         (<AbstractCanvasPlugin> this.dropTargetPlugin).dropItem = this;
 
-        this.controller && this.controller.dndStart(this.prop, this.listItemId);
+        this.controller && this.controller.dndStart(this.prop, this, this.listItemId);
     }
 
     dndEnd() {

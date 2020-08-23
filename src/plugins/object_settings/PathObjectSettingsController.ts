@@ -28,8 +28,6 @@ export class PathObjectSettingsController extends AbstractController<PathObjectS
                 this.registry.services.history.createSnapshot();
                 this.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
             })
-            .onGet((context) => {
-                return context.getTempVal(() => (<PathView> this.registry.stores.selectionStore.getView()).id);
-            });
+            .onGet((context) => (<PathView> this.registry.stores.selectionStore.getView()).id);
     }
 }

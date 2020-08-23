@@ -20,5 +20,8 @@ export class LayoutSettingsController extends AbstractController<LayoutSettingsP
             .onGet(() => {
                 return this.registry.services.uiPerspective.activePerspective ? this.registry.services.uiPerspective.activePerspective.name : '';
             })
+            .onGetValues(() => {
+                return this.registry.services.uiPerspective.perspectives.map(perspective => perspective.name);
+            });
     }
 }

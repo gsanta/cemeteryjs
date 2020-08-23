@@ -5,23 +5,18 @@ import { BuiltinNodeType, GeneralNodeModel, NodeCategory, NodeParam } from '../.
 import { NodeEditorPluginId } from '../node_editor/NodeEditorPlugin';
 import { UI_Region } from '../../core/plugins/UI_Plugin';
 
-export class MoveNodePlugin extends NodePLugin {
+export class TurnNodePlugin extends NodePLugin {
     private readonly controller: NodeController;
 
-    private movementTypes: string[] = ['forward', 'backward'];
+    readonly turns: string[] = ['turn-left', 'turn-right'];
+
 
     private readonly params: NodeParam[] = [
         {
-            name: 'move',
+            name: 'turn',
             val: '',
             inputType: 'list',
             valueType: 'string'
-        },
-        {
-            name: 'speed',
-            val: 0.5,
-            inputType: 'textField',
-            valueType: 'number'
         }
     ]
 
@@ -30,33 +25,22 @@ export class MoveNodePlugin extends NodePLugin {
 
         this.controller = new NodeController(registry.plugins.getById(NodeEditorPluginId), registry);
     
-        this.controller.createPropHandler<number>('move')
-            .onChange((val, context) => {
-                context.updateTempVal(val);
-                this.registry.services.render.reRender(UI_Region.Canvas1);
-            })
-            .onBlur(context => {
-
-            })
-            .onGet((context, element) => element.data.model.getParam('move'))
-            .onGetValues(() => this.movementTypes);
-
-        this.controller.createPropHandler('speed')
+        this.controller.createPropHandler<number>('turn')
             .onChange((val, context) => {
                 context.updateTempVal(val);
                 this.registry.services.render.reRender(UI_Region.Canvas1);
             })
             .onBlur((context, element) => {
-                element.data.model.setParam('speed', context.clearTempVal());
+                element.data.model.setParam('turn', context.clearTempVal());
                 this.registry.services.render.reRenderAll();
             })
-            .onGet((context, element) => element.data.model.getParam('speed'));
-            
+            .onGet((context, element) => element.data.model.getParam('turn'))
+            .onGetValues(() => this.turns);            
     }
 
     createNodeObject(): GeneralNodeModel {
         return new GeneralNodeModel({
-            type: BuiltinNodeType.Move,
+            type: BuiltinNodeType.Turn,
             params: this.params,
             connections: [
                 {

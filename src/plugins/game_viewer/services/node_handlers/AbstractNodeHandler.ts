@@ -3,7 +3,7 @@ import { NodeModel, BuiltinNodeType, SlotName } from '../../../../core/stores/ga
 import { Registry } from '../../../../core/Registry';
 import { NodeService } from '../NodeService';
 
-export abstract class AbstractNodeHandler<T extends NodeModel> {
+export abstract class AbstractNodeHandler<T extends NodeModel = NodeModel> {
     nodeType: string;
     instance: T;
 

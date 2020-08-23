@@ -1,14 +1,12 @@
-import { NodeEditorPlugin } from '../../../plugins/node_editor/NodeEditorPlugin';
+import { NodeGroupConfig } from '../../../plugins/node_editor/NodeGroupConfig';
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { DroppableItem } from "../../plugins/tools/DragAndDropTool";
+import { UI_Region } from '../../plugins/UI_Plugin';
 import { Registry } from "../../Registry";
-import { BuiltinNodeType, SlotName, NodeModel } from '../game_objects/NodeModel';
+import { NodeModel, SlotName } from '../game_objects/NodeModel';
 import { NodeConnectionView } from "../views/NodeConnectionView";
 import { defaultNodeViewConfig, NodeView } from "../views/NodeView";
-import { UI_Region } from '../../plugins/UI_Plugin';
-import { NodeConfig } from '../../../plugins/node_editor/NodeConfig';
-import { NodeGroupConfig } from '../../../plugins/node_editor/NodeGroupConfig';
 
 // export const nodeConfigs: NodeConfig[] = [
 //     {

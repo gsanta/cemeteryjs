@@ -68,9 +68,7 @@ export class MeshObjectSettingsController extends AbstractController<MeshObjectS
                 this.meshView.setRotation(rotation);
                 this.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
             })
-            .onGet((context) => {
-                return context.getTempVal(() => Math.round(toDegree(this.meshView.getRotation())).toString());
-            });
+            .onGet((context) => Math.round(toDegree(this.meshView.getRotation())).toString());
 
         this.createPropHandler<string>(MeshObjectSettingsProps.Scale)
             .onChange((val, context) => {
@@ -87,9 +85,7 @@ export class MeshObjectSettingsController extends AbstractController<MeshObjectS
                 this.meshView.setScale(rotation);
                 this.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
             })
-            .onGet((context) => {
-                return context.getTempVal(() => Math.round(this.meshView.getScale()).toString());
-            });
+            .onGet((context) => Math.round(this.meshView.getScale()).toString());
 
         this.createPropHandler<string>(MeshObjectSettingsProps.YPos)
             .onChange((val, context) => {
@@ -107,9 +103,7 @@ export class MeshObjectSettingsController extends AbstractController<MeshObjectS
                 this.meshView.yPos = yPos;
                 this.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
             })
-            .onGet((context) => {
-                return context.getTempVal(() => this.meshView.yPos.toString());
-            });
+            .onGet((context) => this.meshView.yPos.toString());
 
         this.createPropHandler<{data: string}>(MeshObjectSettingsProps.Model)
             .onChange((val) => {

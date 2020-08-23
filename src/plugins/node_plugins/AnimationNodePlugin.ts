@@ -5,23 +5,18 @@ import { BuiltinNodeType, GeneralNodeModel, NodeCategory, NodeParam } from '../.
 import { NodeEditorPluginId } from '../node_editor/NodeEditorPlugin';
 import { UI_Region } from '../../core/plugins/UI_Plugin';
 
-export class MoveNodePlugin extends NodePLugin {
+export class AnimationNodePlugin extends NodePLugin {
     private readonly controller: NodeController;
 
-    private movementTypes: string[] = ['forward', 'backward'];
+    readonly animations: string[] = ['animation1', 'animation2'];
+
 
     private readonly params: NodeParam[] = [
         {
-            name: 'move',
+            name: 'animation',
             val: '',
             inputType: 'list',
             valueType: 'string'
-        },
-        {
-            name: 'speed',
-            val: 0.5,
-            inputType: 'textField',
-            valueType: 'number'
         }
     ]
 
@@ -30,46 +25,27 @@ export class MoveNodePlugin extends NodePLugin {
 
         this.controller = new NodeController(registry.plugins.getById(NodeEditorPluginId), registry);
     
-        this.controller.createPropHandler<number>('move')
-            .onChange((val, context) => {
-                context.updateTempVal(val);
-                this.registry.services.render.reRender(UI_Region.Canvas1);
-            })
-            .onBlur(context => {
-
-            })
-            .onGet((context, element) => element.data.model.getParam('move'))
-            .onGetValues(() => this.movementTypes);
-
-        this.controller.createPropHandler('speed')
+        this.controller.createPropHandler<number>('animation')
             .onChange((val, context) => {
                 context.updateTempVal(val);
                 this.registry.services.render.reRender(UI_Region.Canvas1);
             })
             .onBlur((context, element) => {
-                element.data.model.setParam('speed', context.clearTempVal());
+                element.data.model.setParam('animation', context.clearTempVal());
                 this.registry.services.render.reRenderAll();
             })
-            .onGet((context, element) => element.data.model.getParam('speed'));
-            
+            .onGet((context, element) => element.data.model.getParam('animation'))
+            .onGetValues(() => this.animations);            
     }
 
     createNodeObject(): GeneralNodeModel {
         return new GeneralNodeModel({
-            type: BuiltinNodeType.Move,
+            type: BuiltinNodeType.Animation,
             params: this.params,
             connections: [
                 {
                     direction: 'input',
-                    name: 'input'
-                },
-                {
-                    direction: 'input',
-                    name: 'mesh'
-                },
-                {
-                    direction: 'output',
-                    name: 'animation'
+                    name: 'action'
                 }
             ],
             category: NodeCategory.Default

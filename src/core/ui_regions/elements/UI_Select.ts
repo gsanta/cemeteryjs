@@ -7,5 +7,4 @@ export class UI_Select extends UI_InputElement {
 
     label: string;
     placeholder: string;
-    values: string[];
 }

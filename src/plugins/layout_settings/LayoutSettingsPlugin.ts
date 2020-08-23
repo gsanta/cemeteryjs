@@ -23,7 +23,6 @@ export class LayoutSettingsPlugin extends AbstractSidepanelPlugin {
         let row = layout.row({ key: LayoutSettingsProps.SelectedLayout });
 
         const layoutSelect = row.select(LayoutSettingsProps.SelectedLayout);
-        layoutSelect.values = this.registry.services.uiPerspective.perspectives.map(perspective => perspective.name);
         layoutSelect.label = 'Layouts';
         layoutSelect.placeholder = 'Select Layout';
 

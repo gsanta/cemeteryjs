@@ -1,10 +1,7 @@
-import { BuiltinNodeType, NodeModel } from "../../../../core/stores/game_objects/NodeModel";
-import { MoveNode } from '../../../../core/stores/nodes/MoveNode';
+import { BuiltinNodeType, NodeModel } from '../../../../core/stores/game_objects/NodeModel';
 import { AbstractNodeHandler } from "./AbstractNodeHandler";
-import { MeshNode } from "../../../../core/stores/nodes/MeshNode";
-import { MeshModel } from "../../../../core/stores/game_objects/MeshModel";
 
-export class MoveNodeHandler extends AbstractNodeHandler<MoveNode> {
+export class MoveNodeHandler extends AbstractNodeHandler {
     nodeType: BuiltinNodeType.Move;
 
     handle() {
@@ -14,26 +11,26 @@ export class MoveNodeHandler extends AbstractNodeHandler<MoveNode> {
         const speed = <number> this.instance.getParam('speed').val;
         const moveDelta = this.plugin.pluginServices.engineService().getEngine().getDeltaTime() * speed / 50;
 
-        if (this.instance.getParam('move').val === 'forward') {
-            meshNode.meshModel.meshView.moveForward(moveDelta);
-        } else {
-            meshNode.meshModel.meshView.moveForward(-moveDelta);
-        }
+        // if (this.instance.getParam('move').val === 'forward') {
+        //     meshNode.meshModel.meshView.moveForward(moveDelta);
+        // } else {
+        //     meshNode.meshModel.meshView.moveForward(-moveDelta);
+        // }
     }
 
-    private getInputMesh(): MeshNode {
+    private getInputMesh(): NodeModel {
         const joinedView = this.instance.nodeView.findJoinPointView('mesh').getOtherNode();
         
         if (!joinedView) { return undefined; } 
 
-        let meshNode: MeshNode = undefined;
+        let meshNode: NodeModel = undefined;
 
         if (joinedView.model.type === BuiltinNodeType.Mesh) {
-            meshNode = <MeshNode> joinedView.model;
+            meshNode = joinedView.model;
         } else {
             const handler = this.getNodeService().getHandler(joinedView.model);
             handler.instance = joinedView.model;
-            meshNode = handler.searchFromRight<MeshNode>(BuiltinNodeType.Mesh);
+            meshNode = handler.searchFromRight(BuiltinNodeType.Mesh);
         }
 
         return meshNode;

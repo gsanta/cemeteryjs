@@ -7,24 +7,34 @@ export abstract class UI_InputElement extends UI_Element {
     inputWidth: string;
 
     change(newVal: any): void {
-        this.plugin.getControllerById(this.controllerId).change(this.prop, newVal);
+        const controller = this.controller || this.plugin.getControllerById(this.controllerId);
+        controller.change(this.prop, newVal, this);
     }
 
     focus(): void {
-        this.plugin.getControllerById(this.controllerId).focus(this.prop);
+        const controller = this.controller || this.plugin.getControllerById(this.controllerId);
+        controller.focus(this.prop, this);
     }
 
     blur(): void {
-        this.plugin.getControllerById(this.controllerId).blur(this.prop);
+        const controller = this.controller || this.plugin.getControllerById(this.controllerId);
+        controller.blur(this.prop, this);
     }
 
     click(): void {
-        this.plugin.getControllerById(this.controllerId).click(this.prop, this)
+        const controller = this.controller || this.plugin.getControllerById(this.controllerId);
+        controller.click(this.prop, this)
     }
 
     val(): any {
         // TODO controllerId is deprecated
         const controller = this.controller || this.plugin.getControllerById(this.controllerId);
-        return controller.val(this.prop);
+        return controller.val(this.prop, this);
+    }
+
+    values(): any[] {
+        // TODO controllerId is deprecated
+        const controller = this.controller || this.plugin.getControllerById(this.controllerId);
+        return controller.values(this.prop, this);
     }
 }
