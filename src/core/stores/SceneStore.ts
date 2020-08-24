@@ -1,9 +1,9 @@
 import { Point } from "../../utils/geometry/shapes/Point";
-import { AssetObject, AssetType } from "./game_objects/AssetObject";
-import { ChildView } from "./views/child_views/ChildView";
-import { MeshView } from "./views/MeshView";
-import { PathView } from "./views/PathView";
-import { View, ViewType } from "./views/View";
+import { AssetObject, AssetType } from "../models/game_objects/AssetObject";
+import { ChildView } from "../models/views/child_views/ChildView";
+import { MeshView } from "../models/views/MeshView";
+import { PathView } from "../models/views/PathView";
+import { View, ViewType } from "../models/views/View";
 import { Registry } from "../Registry";
 import { AbstractViewStore } from "./AbstractViewStore";
 import { AssetStore } from "./AssetStore";

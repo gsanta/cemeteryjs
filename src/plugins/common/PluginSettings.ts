@@ -1,4 +1,4 @@
-import { AbstractSettings } from "../scene_editor/settings/AbstractSettings";
+import { AbstractSettings } from "../ui_plugins/AbstractSettings";
 
 export class PluginSettings {
 

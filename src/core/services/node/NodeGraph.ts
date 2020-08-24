@@ -1,4 +1,4 @@
-import { NodeModel } from '../../stores/game_objects/NodeModel';
+import { NodeModel } from '../../models/game_objects/NodeModel';
 
 export class NodeGraph {
     nodeGroups: Set<NodeModel>[] = [];

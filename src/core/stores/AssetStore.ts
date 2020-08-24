@@ -1,4 +1,4 @@
-import { AssetObject, AssetType } from "./game_objects/AssetObject";
+import { AssetObject, AssetType } from "../models/game_objects/AssetObject";
 import { AbstractStore } from "./AbstractStore";
 import { Registry } from "../Registry";
 

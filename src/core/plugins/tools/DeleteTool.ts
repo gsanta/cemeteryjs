@@ -3,9 +3,8 @@ import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, IHotkeyEvent, HotkeyTr
 import { Keyboard } from '../../services/input/KeyboardService';
 import { isView, isFeedback } from '../../stores/SceneStore';
 import { AbstractTool, createRectFromMousePointer } from './AbstractTool';
-import { RectangleSelector } from './RectangleSelector';
 import { Cursor, ToolType } from './Tool';
-import { View } from '../../stores/views/View';
+import { View } from '../../models/views/View';
 import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
 import { UI_Region } from '../UI_Plugin';
 

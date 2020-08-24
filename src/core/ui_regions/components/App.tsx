@@ -6,7 +6,6 @@ import { DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
 import Split from 'split.js';
 import 'tippy.js/dist/tippy.css';
-import { GameViewerPluginId } from '../../../plugins/game_viewer/GameViewerPlugin';
 import './App.scss';
 import { AppContext, AppContextType } from './Context';
 import { DialogManagerComponent } from './dialogs/DialogManagerComponent';
@@ -17,6 +16,7 @@ import { MainPanelComp } from './regions/MainPanelComp';
 import { SceneEditorPerspectiveName } from '../../services/UI_PerspectiveService';
 import { UI_Region } from '../../plugins/UI_Plugin';
 import styled from 'styled-components';
+import { GameViewerPluginId } from '../../../plugins/ui_plugins/game_viewer/GameViewerPlugin';
 
 export interface AppState {
     isDialogOpen: boolean;

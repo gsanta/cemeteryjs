@@ -3,7 +3,7 @@ import { Point } from "../../../utils/geometry/shapes/Point";
 import { Registry } from "../../Registry";
 import { MousePointer } from "./MouseService";
 import { RenderTask } from "../RenderServices";
-import { View } from "../../stores/views/View";
+import { View } from "../../models/views/View";
 import { ToolType } from "../../plugins/tools/Tool";
 import { UI_Region } from "../../plugins/UI_Plugin";
 import { AbstractCanvasPlugin } from '../../plugins/AbstractCanvasPlugin';

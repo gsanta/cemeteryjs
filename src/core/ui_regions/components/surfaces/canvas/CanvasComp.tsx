@@ -1,11 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { Camera2D } from '../../../../../plugins/common/camera/Camera2D';
-import { PathViewContainerComponent } from '../../../../../plugins/scene_editor/components/PathViewComponent';
 import { AbstractCanvasPlugin } from '../../../../plugins/AbstractCanvasPlugin';
 import { UI_ElementType } from '../../../elements/UI_ElementType';
 import { UI_SvgCanvas } from '../../../elements/UI_SvgCanvas';
-import { View } from '../../../../stores/views/View';
 import { PathMarkersComponent } from '../../../../services/export/PathMarkersComponent';
 import { WheelListener } from '../../../../services/WheelListener';
 import { AppContext, AppContextType } from '../../Context';
@@ -13,6 +11,7 @@ import { colors } from '../../styles';
 import { UI_ComponentProps } from '../../UI_ComponentProps';
 import { DropLayerComp } from './DropLayerComp';
 import { UI_HtmlCanvas } from '../../../elements/UI_HtmlCanvas';
+import { View } from '../../../../models/views/View';
 
 const EditorComponentStyled = styled.div`
     position: relative;
@@ -100,7 +99,7 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
                 </defs>
                 {this.props.children}
                 {/* <MeshViewContainerComponent hover={hover} unhover={unhover} registry={this.context.registry} renderWithSettings={false}/> */}
-                <PathViewContainerComponent hover={hover} unhover={unhover} registry={this.context.registry} renderWithSettings={false}/>
+                {/* <PathViewContainerComponent hover={hover} unhover={unhover} registry={this.context.registry} renderWithSettings={false}/> */}
                 {this.renderFeedbacks()}
             </svg>
         );

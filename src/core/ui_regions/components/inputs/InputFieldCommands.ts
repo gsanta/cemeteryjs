@@ -1,4 +1,4 @@
-import { AbstractSettings } from "../../../../plugins/scene_editor/settings/AbstractSettings";
+import { AbstractSettings } from "../../../../plugins/ui_plugins/AbstractSettings";
 
 export interface InputFieldCommands<P> {
     propertyName: P;

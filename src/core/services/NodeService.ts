@@ -1,4 +1,4 @@
-import { NodeEditorPluginId } from '../../plugins/node_editor/NodeEditorPlugin';
+import { NodeEditorPluginId } from '../../plugins/ui_plugins/node_editor/NodeEditorPlugin';
 import { AndNodePlugin } from '../../plugins/node_plugins/AndNodePlugin';
 import { AnimationNodePlugin } from '../../plugins/node_plugins/AnimationNodePlugin';
 import { KeyboardNodePlugin } from '../../plugins/node_plugins/KeyboardNodePlugin';
@@ -13,8 +13,8 @@ import { Rectangle } from '../../utils/geometry/shapes/Rectangle';
 import { NodeRenderer } from '../plugins/controllers/NodeRenderer';
 import { NodePLugin } from '../plugins/NodePlugin';
 import { Registry } from '../Registry';
-import { NodeModel } from '../stores/game_objects/NodeModel';
-import { defaultNodeViewConfig, NodeView } from '../stores/views/NodeView';
+import { NodeModel } from '../models/game_objects/NodeModel';
+import { defaultNodeViewConfig, NodeView } from '../models/views/NodeView';
 import { UI_SvgCanvas } from '../ui_regions/elements/UI_SvgCanvas';
 
 export class NodeService {

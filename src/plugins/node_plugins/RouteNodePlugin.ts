@@ -1,6 +1,6 @@
 import { NodeController } from '../../core/plugins/controllers/NodeController';
 import { NodePLugin } from '../../core/plugins/NodePlugin';
-import { BuiltinNodeType, GeneralNodeModel, NodeCategory, NodeParam } from '../../core/stores/game_objects/NodeModel';
+import { BuiltinNodeType, GeneralNodeModel, NodeCategory, NodeParam } from '../../core/models/game_objects/NodeModel';
 
 export class RouteNodePlugin extends NodePLugin {
     private readonly controller: NodeController;
@@ -12,7 +12,7 @@ export class RouteNodePlugin extends NodePLugin {
             inputType: 'textField',
             valueType: 'string'
         }
-    ]
+    ];
 
     createNodeObject(): GeneralNodeModel {
         return new GeneralNodeModel({

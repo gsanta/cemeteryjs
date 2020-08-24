@@ -1,4 +1,4 @@
-import { View } from "../../../core/stores/views/View";
+import { View } from "../../../core/models/views/View";
 import { IPluginJson } from './IPluginExporter';
 import { AppJson } from "../../../core/services/export/ExportService";
 import { Registry } from "../../../core/Registry";

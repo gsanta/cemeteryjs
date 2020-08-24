@@ -1,10 +1,10 @@
 import { NodeController } from '../../core/plugins/controllers/NodeController';
 import { NodePLugin } from '../../core/plugins/NodePlugin';
 import { Registry } from '../../core/Registry';
-import { BuiltinNodeType, GeneralNodeModel, NodeCategory, NodeParam } from '../../core/stores/game_objects/NodeModel';
-import { NodeEditorPluginId } from '../node_editor/NodeEditorPlugin';
+import { BuiltinNodeType, GeneralNodeModel, NodeCategory, NodeParam } from '../../core/models/game_objects/NodeModel';
+import { NodeEditorPluginId } from '../ui_plugins/node_editor/NodeEditorPlugin';
 import { UI_Region } from '../../core/plugins/UI_Plugin';
-import { getAllKeys } from '../../core/stores/nodes/KeyboardNode';
+import { getAllKeys } from '../../core/services/input/KeyboardService';
 
 export class KeyboardNodePlugin extends NodePLugin {
     private readonly controller: NodeController;

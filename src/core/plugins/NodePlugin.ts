@@ -1,4 +1,4 @@
-import { NodeModel } from '../stores/game_objects/NodeModel';
+import { NodeModel } from '../models/game_objects/NodeModel';
 import { NodeController } from './controllers/NodeController';
 import { Registry } from '../Registry';
 

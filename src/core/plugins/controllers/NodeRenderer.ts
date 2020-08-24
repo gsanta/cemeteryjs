@@ -3,9 +3,9 @@ import { UI_SvgCanvas } from '../../ui_regions/elements/UI_SvgCanvas';
 import { UI_SvgGroup } from '../../ui_regions/elements/svg/UI_SvgGroup';
 import { UI_SvgForeignObject } from '../../ui_regions/elements/svg/UI_SvgForeignObject';
 import { sizes, colors } from '../../ui_regions/components/styles';
-import { JoinPointView } from '../../stores/views/child_views/JoinPointView';
+import { JoinPointView } from '../../models/views/child_views/JoinPointView';
 import { UI_Column } from '../../ui_regions/elements/UI_Column';
-import { NodeView } from '../../stores/views/NodeView';
+import { NodeView } from '../../models/views/NodeView';
 import { NodeController } from './NodeController';
 
 export class NodeRenderer extends AbstractController {

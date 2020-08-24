@@ -7,6 +7,19 @@ export enum Platform {
     UNKNOWN = 'Unknown'
 }
 
+export function getAllKeys() {
+    const keys: string[] = [];
+
+    for (let item in Keyboard) {
+        if (isNaN(Number(item))) {
+            keys.push(item);
+        }
+    }
+
+    return keys;
+}
+
+
 function getPlatform(): Platform {
     if (!navigator || !navigator.appVersion) {
         return Platform.UNKNOWN;

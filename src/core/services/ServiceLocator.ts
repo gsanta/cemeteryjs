@@ -1,5 +1,4 @@
 import { Registry } from "../Registry";
-import { DialogService } from "./DialogService";
 import { EventService } from './EventService';
 import { ExportService } from "./export/ExportService";
 import { GamepadService } from './GamepadService';
@@ -28,7 +27,6 @@ export class Services {
     pointer: PointerService;
     mouse: MouseService;
     keyboard: KeyboardService;
-    dialog: DialogService;
     game: GameService;
     gamepad: GamepadService;
     event: EventService;
@@ -55,7 +53,6 @@ export class Services {
         this.pointer = new PointerService(this.registry);
         this.mouse = new MouseService(null, this.registry);
         this.keyboard = new KeyboardService(this.registry);
-        this.dialog = new DialogService(this.registry);
         this.game = new GameService(this.registry);
         this.gamepad = new GamepadService(this.registry);
         this.ui = new UI_Service();

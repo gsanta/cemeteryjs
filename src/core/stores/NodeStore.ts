@@ -1,22 +1,16 @@
-import { DroppableItem } from '../plugins/tools/DragAndDropTool';
-import { createNodeSettings } from '../../plugins/node_editor/settings/nodes/nodeSettingsFactory';
-import { Point } from '../../utils/geometry/shapes/Point';
-import { Rectangle } from '../../utils/geometry/shapes/Rectangle';
-import { DroppableNode, NodeModel, BuiltinNodeType } from './game_objects/NodeModel';
-import { NodeConnectionView } from './views/NodeConnectionView';
-import { defaultNodeViewConfig, NodeView } from './views/NodeView';
-import { View, ViewType } from './views/View';
 import { Registry } from '../Registry';
 import { NodeGraph } from '../services/node/NodeGraph';
 import { AbstractViewStore } from './AbstractViewStore';
-import { NodeFactory, DroppablePreset } from './nodes/NodeFactory';
+import { BuiltinNodeType, NodeModel } from '../models/game_objects/NodeModel';
+import { NodeConnectionView } from '../models/views/NodeConnectionView';
+import { NodeView } from '../models/views/NodeView';
+import { View, ViewType } from '../models/views/View';
 
 export class NodeStore extends AbstractViewStore {
     static id = 'node-store'; 
     id = NodeStore.id;
 
     templates: NodeModel[] = [];
-    presets: NodeFactory[] = [];
     actionTypes: string[] = [];
     graph: NodeGraph;
     nodesByType: Map<string, NodeModel[]> = new Map();
@@ -38,7 +32,6 @@ export class NodeStore extends AbstractViewStore {
     addNode(nodeView: NodeView) {
         nodeView.id = nodeView.id === undefined ? this.generateUniqueName(ViewType.NodeView) : nodeView.id;
         super.addItem(nodeView);
-        nodeView.settings = createNodeSettings(nodeView, this.registry);
 
         this.graph.addNode(nodeView.model);
         this.views.push(nodeView);

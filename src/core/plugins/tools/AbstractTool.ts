@@ -3,7 +3,7 @@ import { Registry } from '../../Registry';
 import { IHotkeyEvent } from '../../services/input/HotkeyService';
 import { IKeyboardEvent } from '../../services/input/KeyboardService';
 import { Cursor, Tool, ToolType } from './Tool';
-import { View } from '../../stores/views/View';
+import { View } from '../../models/views/View';
 import { IPointerEvent } from '../../services/input/PointerService';
 import { AbstractViewStore } from '../../stores/AbstractViewStore';
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';

@@ -2,9 +2,9 @@ import { Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, StandardMaterial } 
 import { AbstractPluginService } from '../../plugins/common/AbstractPluginService';
 import { AbstractCanvasPlugin } from '../plugins/AbstractCanvasPlugin';
 import { Point } from '../../utils/geometry/shapes/Point';
-import { MeshView } from '../stores/views/MeshView';
+import { MeshView } from '../models/views/MeshView';
 import { EngineService } from './EngineService';
-import { AssetObject } from '../stores/game_objects/AssetObject';
+import { AssetObject } from '../models/game_objects/AssetObject';
 
 export class MeshLoaderService extends AbstractPluginService<AbstractCanvasPlugin> {
     static serviceName = 'mesh-loader-service';

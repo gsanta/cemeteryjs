@@ -1,8 +1,8 @@
 import { AbstractCanvasPlugin } from "../AbstractCanvasPlugin";
 import { Point } from "../../../utils/geometry/shapes/Point";
-import { isJoinPointView, JoinPointView } from "../../stores/views/child_views/JoinPointView";
-import { NodeConnectionView } from "../../stores/views/NodeConnectionView";
-import { ViewType } from "../../stores/views/View";
+import { isJoinPointView, JoinPointView } from "../../models/views/child_views/JoinPointView";
+import { NodeConnectionView } from "../../models/views/NodeConnectionView";
+import { ViewType } from "../../models/views/View";
 import { Registry } from "../../Registry";
 import { IHotkeyEvent } from "../../services/input/HotkeyService";
 import { AbstractTool } from "./AbstractTool";

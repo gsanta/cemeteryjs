@@ -1,6 +1,6 @@
 import { Registry } from "../core/Registry";
-import { ChildView } from "../core/stores/views/child_views/ChildView";
-import { View } from "../core/stores/views/View";
+import { ChildView } from "../core/models/views/child_views/ChildView";
+import { View } from "../core/models/views/View";
 
 export interface InstanceProps<T extends View> {
     item: T;

@@ -1,10 +1,10 @@
-import { ChildView } from '../../stores/views/child_views/ChildView';
-import { View } from '../../stores/views/View';
+import { ChildView } from '../../models/views/child_views/ChildView';
+import { View } from '../../models/views/View';
 import { Registry } from '../../Registry';
 import { RenderTask } from "../../services/RenderServices";
 import { isView, isFeedback } from '../../stores/SceneStore';
-import { NodeEditorPlugin, NodeEditorPluginId } from '../../../plugins/node_editor/NodeEditorPlugin';
-import { SceneEditorPlugin, SceneEditorPluginId } from '../../../plugins/scene_editor/SceneEditorPlugin';
+import { NodeEditorPlugin, NodeEditorPluginId } from '../../../plugins/ui_plugins/node_editor/NodeEditorPlugin';
+import { SceneEditorPlugin, SceneEditorPluginId } from '../../../plugins/ui_plugins/scene_editor/SceneEditorPlugin';
 import { AbstractTool } from "./AbstractTool";
 import { ToolType } from "./Tool";
 import { IPointerEvent } from '../../services/input/PointerService';
