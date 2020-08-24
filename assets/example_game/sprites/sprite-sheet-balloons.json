@@ -1,0 +1,52 @@
+{
+    "frames": {
+
+        "platform_01":
+        {
+            "frame": {"x":42,"y":35,"w":278,"h":155},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":0,"y":0,"w":64,"h":256},
+            "sourceSize": {"w":64,"h":256}
+        },
+        "platform_02":
+        {
+            "frame": {"x":372,"y":35,"w":142,"h":147},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":0,"y":0,"w":64,"h":256},
+            "sourceSize": {"w":64,"h":256}
+        },
+        "platform_03":
+        {
+            "frame": {"x":536,"y":35,"w":281,"h":157},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":0,"y":0,"w":64,"h":256},
+            "sourceSize": {"w":64,"h":256}
+        },
+        "player":
+        {
+            "frame": {"x":63,"y":192,"w":84,"h":245},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":0,"y":0,"w":64,"h":256},
+            "sourceSize": {"w":64,"h":256}
+        },
+        "balloon_01":
+        {
+            "frame": {"x":63,"y":500,"w":67,"h":394},
+            "rotated": false,
+            "trimmed": false
+        }
+    },
+    "meta": {
+        "app": "http://www.codeandweb.com/texturepacker ",
+        "version": "1.0",
+        "image": "./sprite-sheet.png",
+        "format": "RGBA8888",
+        "size": {"w":1000,"h":1000},
+        "scale": "1",
+        "smartupdate": "$TexturePacker:SmartUpdate:68947b15bb7efc40be030c076d92ff6a:7a7176ee4a47114ab8e7e8ecb8c361fc:fac4f515bf266e4f4ed746fa4fe7351a$"
+    }
+}
