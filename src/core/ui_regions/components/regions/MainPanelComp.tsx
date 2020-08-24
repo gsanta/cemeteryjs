@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { AppContext, AppContextType } from '../Context';
+import { AppContext, AppContextType } from '../../../ui_components/react/Context';
 import { UI_Region } from '../../../plugins/UI_Plugin';
-import { UI_Builder } from '../../builders/UI_Builder';
+import { UI_Builder } from '../../../ui_components/UI_Builder';
 
 export interface MainPanelProps {
     region: UI_Region.Canvas1 | UI_Region.Canvas2;

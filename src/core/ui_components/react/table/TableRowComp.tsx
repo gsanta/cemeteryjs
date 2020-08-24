@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { UI_TableRow } from '../../elements/UI_Table';
-import { cssClassBuilder } from '../layout/RowComp';
+import { cssClassBuilder } from '../../../ui_regions/components/layout/RowComp';
 
 export interface TableRowCompProps {
     element: UI_TableRow;

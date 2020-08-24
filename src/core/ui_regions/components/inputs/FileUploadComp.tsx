@@ -1,12 +1,12 @@
 import React from "react"
 import { ButtonStyled } from "./ButtonComp"
 import { iconFactory } from "../icons/iconFactory"
-import { UI_ComponentProps } from "../UI_ComponentProps"
-import { UI_FileUpload } from "../../elements/UI_FileUpload"
+import { UI_ComponentProps } from "../../../ui_components/react/UI_ComponentProps"
+import { UI_FileUpload } from "../../../ui_components/elements/UI_FileUpload"
 import { useDropzone } from "react-dropzone"
 import styled from "styled-components";
 import { cssClassBuilder } from "../layout/RowComp"
-import { colors } from "../styles"
+import { colors } from "../../../ui_components/react/styles"
 
 const FileUploadStyled = styled.div`
 

@@ -1,11 +1,11 @@
 import { IControlledObject } from '../IControlledObject';
 import { Registry } from '../Registry';
 import { AbstractController } from './controllers/AbstractController';
-import { UI_Container } from '../ui_regions/elements/UI_Container';
-import { UI_Layout } from '../ui_regions/elements/UI_Layout';
+import { UI_Container } from '../ui_components/elements/UI_Container';
+import { UI_Layout } from '../ui_components/elements/UI_Layout';
 import { AbstractPluginImporter } from '../../plugins/common/io/AbstractPluginImporter';
 import { IPluginExporter } from '../../plugins/common/io/IPluginExporter';
-import { UI_Factory } from '../ui_regions/UI_Factory';
+import { UI_Factory } from '../ui_components/UI_Factory';
 
 export enum UI_Region {
     Sidepanel = 'Sidepanel',

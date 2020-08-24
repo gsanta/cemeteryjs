@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { UI_Select } from '../../elements/UI_Select';
+import { UI_Select } from '../../../ui_components/elements/UI_Select';
 import { ClearIconComponent } from '../icons/ClearIconComponent';
-import { UI_ComponentProps } from '../UI_ComponentProps';
+import { UI_ComponentProps } from '../../../ui_components/react/UI_ComponentProps';
 import './DropdownComponent.scss';
 import { Focusable } from "./Focusable";
 

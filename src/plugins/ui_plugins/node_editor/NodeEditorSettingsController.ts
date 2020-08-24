@@ -3,7 +3,7 @@ import { UI_Plugin, UI_Region } from "../../../core/plugins/UI_Plugin";
 import { Registry } from "../../../core/Registry";
 import { NodeEditorControllerId } from "./NodeEditorController";
 import { NodeEditorPlugin, NodeEditorPluginId } from './NodeEditorPlugin';
-import { UI_ListItem } from '../../../core/ui_regions/elements/UI_ListItem';
+import { UI_ListItem } from '../../../core/ui_components/elements/UI_ListItem';
 
 export enum NodeEditorSettingsProps {
     DragNode = 'DragNode'

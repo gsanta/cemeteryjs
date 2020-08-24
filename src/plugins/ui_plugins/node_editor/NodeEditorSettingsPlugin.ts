@@ -1,8 +1,8 @@
 import { UI_Plugin, UI_Region } from '../../../core/plugins/UI_Plugin';
 import { Registry } from '../../../core/Registry';
 import { NodeModel } from '../../../core/models/game_objects/NodeModel';
-import { UI_Accordion } from '../../../core/ui_regions/elements/surfaces/UI_Accordion';
-import { UI_Container } from '../../../core/ui_regions/elements/UI_Container';
+import { UI_Accordion } from '../../../core/ui_components/elements/surfaces/UI_Accordion';
+import { UI_Container } from '../../../core/ui_components/elements/UI_Container';
 import { NodeEditorSettingsController, NodeEditorSettingsControllerId, NodeEditorSettingsProps } from './NodeEditorSettingsController';
 import { NodeEditorPluginId } from './NodeEditorPlugin';
 import { AbstractCanvasPlugin } from '../../../core/plugins/AbstractCanvasPlugin';

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { CloseIconComponent } from '../../../../plugins/common/toolbar/icons/CloseIconComponent';
-import { colors } from '../styles';
-import { UI_ContainerProps } from '../UI_ComponentProps';
-import { UI_Dialog } from '../../elements/surfaces/UI_Dialog';
+import { colors } from '../../../ui_components/react/styles';
+import { UI_ContainerProps } from '../../../ui_components/react/UI_ComponentProps';
+import { UI_Dialog } from '../../../ui_components/elements/surfaces/UI_Dialog';
 
 const DialogOverlayStyled = styled.div`
     position: absolute;

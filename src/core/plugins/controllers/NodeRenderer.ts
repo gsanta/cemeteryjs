@@ -1,10 +1,10 @@
 import { AbstractController } from './AbstractController';
-import { UI_SvgCanvas } from '../../ui_regions/elements/UI_SvgCanvas';
-import { UI_SvgGroup } from '../../ui_regions/elements/svg/UI_SvgGroup';
-import { UI_SvgForeignObject } from '../../ui_regions/elements/svg/UI_SvgForeignObject';
-import { sizes, colors } from '../../ui_regions/components/styles';
+import { UI_SvgCanvas } from '../../ui_components/elements/UI_SvgCanvas';
+import { UI_SvgGroup } from '../../ui_components/elements/svg/UI_SvgGroup';
+import { UI_SvgForeignObject } from '../../ui_components/elements/svg/UI_SvgForeignObject';
+import { sizes, colors } from '../../ui_components/react/styles';
 import { JoinPointView } from '../../models/views/child_views/JoinPointView';
-import { UI_Column } from '../../ui_regions/elements/UI_Column';
+import { UI_Column } from '../../ui_components/elements/UI_Column';
 import { NodeView } from '../../models/views/NodeView';
 import { NodeController } from './NodeController';
 

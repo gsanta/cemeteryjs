@@ -33,8 +33,7 @@ import { UI_Image } from './elements/UI_Image';
 import { UI_Column } from './elements/UI_Column';
 import { UI_TableRowGroup } from './elements/surfaces/table/UI_TableRowGroup';
 import { UI_Icon } from './elements/UI_Icon';
-import { UI_DropLayer } from './elements/surfaces/canvas/UI_DropLayer';
-import { UI_Node } from './elements/views/UI_Node';
+import { UI_DropLayer } from './elements/surfaces/canvases/UI_DropLayer';
 import { AbstractController } from '../plugins/controllers/AbstractController';
 import { AbstractCanvasPlugin } from '../plugins/AbstractCanvasPlugin';
 import { UI_SvgLine } from './elements/svg/UI_SvgLine';
@@ -445,20 +444,6 @@ export class UI_Factory {
 
         return row;
     }
-
-    ///////////////////////////////////////////// View /////////////////////////////////////////////
-
-    static node(parent: UI_SvgCanvas, config: {controllerId: string, key: string}) {
-        const node = new UI_Node(parent.plugin);
-
-        this.setController(parent, node, config);
-        node.generateId(parent);
-
-        parent.children.push(node);
-
-        return node;
-    }
-
 
     private static setController(parent: UI_Element, current: UI_Element, config?: {controllerId?: string}) {
         if (config && config.controllerId) {

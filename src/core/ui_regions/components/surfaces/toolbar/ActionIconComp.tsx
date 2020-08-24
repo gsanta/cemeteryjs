@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { UI_ComponentProps } from '../../UI_ComponentProps';
+import { UI_ComponentProps } from '../../../../ui_components/react/UI_ComponentProps';
 import { cssClassBuilder } from '../../layout/BoxComp';
 import { AbstractCanvasPlugin } from '../../../../plugins/AbstractCanvasPlugin';
-import { UI_ActionIcon } from '../../../elements/toolbar/UI_ActionIcon';
+import { UI_ActionIcon } from '../../../../ui_components/elements/toolbar/UI_ActionIcon';
 
 export interface ActionIconCompProps extends UI_ComponentProps<UI_ActionIcon> {
     tooltip: JSX.Element;

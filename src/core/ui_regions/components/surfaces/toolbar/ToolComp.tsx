@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { UI_ComponentProps } from '../../UI_ComponentProps';
-import { UI_Tool } from '../../../elements/toolbar/UI_ToolIcon';
+import { UI_ComponentProps } from '../../../../ui_components/react/UI_ComponentProps';
+import { UI_Tool } from '../../../../ui_components/elements/toolbar/UI_ToolIcon';
 import { AbstractCanvasPlugin } from '../../../../plugins/AbstractCanvasPlugin';
 import { cssClassBuilder } from '../../layout/BoxComp';
 

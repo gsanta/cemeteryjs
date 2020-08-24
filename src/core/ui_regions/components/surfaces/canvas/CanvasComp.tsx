@@ -2,15 +2,15 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Camera2D } from '../../../../../plugins/common/camera/Camera2D';
 import { AbstractCanvasPlugin } from '../../../../plugins/AbstractCanvasPlugin';
-import { UI_ElementType } from '../../../elements/UI_ElementType';
-import { UI_SvgCanvas } from '../../../elements/UI_SvgCanvas';
+import { UI_ElementType } from '../../../../ui_components/elements/UI_ElementType';
+import { UI_SvgCanvas } from '../../../../ui_components/elements/UI_SvgCanvas';
 import { PathMarkersComponent } from '../../../../services/export/PathMarkersComponent';
 import { WheelListener } from '../../../../services/WheelListener';
-import { AppContext, AppContextType } from '../../Context';
-import { colors } from '../../styles';
-import { UI_ComponentProps } from '../../UI_ComponentProps';
+import { AppContext, AppContextType } from '../../../../ui_components/react/Context';
+import { colors } from '../../../../ui_components/react/styles';
+import { UI_ComponentProps } from '../../../../ui_components/react/UI_ComponentProps';
 import { DropLayerComp } from './DropLayerComp';
-import { UI_HtmlCanvas } from '../../../elements/UI_HtmlCanvas';
+import { UI_HtmlCanvas } from '../../../../ui_components/elements/UI_HtmlCanvas';
 import { View } from '../../../../models/views/View';
 
 const EditorComponentStyled = styled.div`

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { colors } from '../../../../core/ui_regions/components/styles';
+import { colors } from '../../../../core/ui_components/react/styles';
 import { ToolStyled, ToolIconStyled, ToolNameStyled, ToolIconProps } from './ToolIcon';
 import { AbstractIconComponent } from './AbstractIconComponent';
 

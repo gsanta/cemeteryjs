@@ -1,9 +1,9 @@
 import { CanvasControllerId, CanvasControllerProps } from '../../../core/plugins/controllers/CanvasController';
 import { toDegree } from '../../../utils/geometry/Measurements';
-import { colors } from '../../../core/ui_regions/components/styles';
-import { activeToolId } from '../../../core/ui_regions/elements/UI_Element';
-import { UI_Layout } from '../../../core/ui_regions/elements/UI_Layout';
-import { UI_SvgCanvas } from '../../../core/ui_regions/elements/UI_SvgCanvas';
+import { colors } from '../../../core/ui_components/react/styles';
+import { activeToolId } from '../../../core/ui_components/elements/UI_Element';
+import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
+import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas';
 import { ViewTag } from '../../../core/models/views/View';
 import { Canvas_2d_Plugin } from '../../../core/plugins/Canvas_2d_Plugin';
 import { Registry } from '../../../core/Registry';

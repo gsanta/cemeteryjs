@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { UI_TextField } from '../../elements/UI_TextField';
+import { UI_TextField } from '../../../ui_components/elements/UI_TextField';
 import styled from 'styled-components';
 import { Form } from 'react-bootstrap';
-import { colors } from '../styles';
+import { colors } from '../../../ui_components/react/styles';
 
 const FormControlStyled = styled(Form.Control)`
     background-color: ${colors.active};

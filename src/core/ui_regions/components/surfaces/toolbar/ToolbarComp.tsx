@@ -1,10 +1,10 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { ToolIconProps } from '../../../../../plugins/common/toolbar/icons/ToolIcon';
-import { UI_Toolbar } from '../../../elements/toolbar/UI_Toolbar';
-import { AppContext, AppContextType } from '../../Context';
-import { colors } from '../../styles';
-import { UI_ComponentProps } from '../../UI_ComponentProps';
+import { UI_Toolbar } from '../../../../ui_components/elements/toolbar/UI_Toolbar';
+import { AppContext, AppContextType } from '../../../../ui_components/react/Context';
+import { colors } from '../../../../ui_components/react/styles';
+import { UI_ComponentProps } from '../../../../ui_components/react/UI_ComponentProps';
 const undoIcon = require('../../../../../../assets/images/icons/undo.svg');
 const redoIcon = require('../../../../../../assets/images/icons/redo.svg');
 const brushIcon = require('../../../../../../assets/images/icons/brush.svg');

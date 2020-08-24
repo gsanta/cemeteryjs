@@ -1,10 +1,10 @@
 import { UI_Plugin, UI_Region } from '../../../core/plugins/UI_Plugin';
-import { UI_Layout } from '../../../core/ui_regions/elements/UI_Layout';
-import { UI_Table } from '../../../core/ui_regions/elements/UI_Table';
+import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
+import { UI_Table } from '../../../core/ui_components/elements/UI_Table';
 import { AssetType, AssetObject } from '../../../core/models/game_objects/AssetObject';
 import { Registry } from '../../../core/Registry';
 import { AssetManagerDialogControllerId, AssetManagerDialogController, AssetManagerDialogProps } from './AssetManagerDialogController';
-import { UI_Dialog } from '../../../core/ui_regions/elements/surfaces/UI_Dialog';
+import { UI_Dialog } from '../../../core/ui_components/elements/surfaces/UI_Dialog';
 
 export const AssetManagerDialogPluginId = 'asset-manager-dialog-plugin'; 
 export class AssetManagerDialogPlugin extends UI_Plugin {

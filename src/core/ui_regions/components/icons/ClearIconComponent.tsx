@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { colors } from '../styles';
+import { colors } from '../../../ui_components/react/styles';
 import { IconStyled, IconForgroundStyled, IconBackgroundStyled, IconProps } from './Icon';
 
 export function ClearIconComponent(props: IconProps) {

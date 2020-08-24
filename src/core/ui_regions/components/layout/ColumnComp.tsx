@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from "styled-components";
-import { UI_ContainerProps } from '../UI_ComponentProps';
-import { UI_Column } from '../../elements/UI_Column';
+import { UI_ContainerProps } from '../../../ui_components/react/UI_ComponentProps';
+import { UI_Column } from '../../../ui_components/elements/UI_Column';
 import { cssClassBuilder } from './RowComp';
 
 const ColumntStyled = styled.div`

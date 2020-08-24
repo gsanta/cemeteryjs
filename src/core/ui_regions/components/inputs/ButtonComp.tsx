@@ -4,8 +4,8 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { ToolIconProps } from '../../../../plugins/common/toolbar/icons/ToolIcon';
 import { iconFactory } from '../icons/iconFactory';
-import { colors } from '../styles';
-import { UI_Button } from '../../elements/UI_Button';
+import { colors } from '../../../ui_components/react/styles';
+import { UI_Button } from '../../../ui_components/elements/UI_Button';
 
 /* cursor: ${(props: Button_UI_Props) => props.disabled ? 'default' : 'pointer'};
 opacity: ${(props: Button_UI_Props) => props.disabled ? '0.4' : '1'}; */

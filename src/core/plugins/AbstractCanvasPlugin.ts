@@ -2,7 +2,7 @@ import { ICamera } from '../../plugins/common/camera/ICamera';
 import { PluginServices } from '../../plugins/common/PluginServices';
 import { PluginSettings } from '../../plugins/common/PluginSettings';
 import { Point } from '../../utils/geometry/shapes/Point';
-import { UI_Layout } from '../ui_regions/elements/UI_Layout';
+import { UI_Layout } from '../ui_components/elements/UI_Layout';
 import { ToolController, ToolControllerId } from './controllers/ToolController';
 import { Registry } from '../Registry';
 import { KeyboardService } from '../services/input/KeyboardService';
@@ -11,7 +11,7 @@ import { ToolHandler } from '../services/input/ToolHandler';
 import { AbstractViewStore } from '../stores/AbstractViewStore';
 import { UI_Plugin } from './UI_Plugin';
 import { AbstractController } from './controllers/AbstractController';
-import { UI_ListItem } from '../ui_regions/elements/UI_ListItem';
+import { UI_ListItem } from '../ui_components/elements/UI_ListItem';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;

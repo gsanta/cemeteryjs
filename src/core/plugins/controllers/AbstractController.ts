@@ -1,7 +1,7 @@
 import { Registry } from '../../Registry';
 import { UI_Plugin } from '../UI_Plugin';
-import { UI_Element } from '../../ui_regions/elements/UI_Element';
-import { UI_ListItem } from '../../ui_regions/elements/UI_ListItem';
+import { UI_Element } from '../../ui_components/elements/UI_Element';
+import { UI_ListItem } from '../../ui_components/elements/UI_ListItem';
 
 export enum GlobalControllerProps {
     CloseDialog = 'CloseDialog'

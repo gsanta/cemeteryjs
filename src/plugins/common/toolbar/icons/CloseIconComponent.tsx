@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IconProps, IconStyled, IconForgroundStyled } from '../../../../core/ui_regions/components/icons/Icon';
-import { colors } from '../../../../core/ui_regions/components/styles';
+import { colors } from '../../../../core/ui_components/react/styles';
 
 export class CloseIconComponent extends React.Component<IconProps> {
 

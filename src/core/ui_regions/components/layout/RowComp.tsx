@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from "styled-components";
-import { UI_Row } from "../../elements/UI_Row";
+import { UI_Row } from "../../../ui_components/elements/UI_Row";
 
 export function cssClassBuilder(...classes: string[]) {
     return classes.filter(c => c).join(' ');

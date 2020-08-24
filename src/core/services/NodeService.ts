@@ -15,7 +15,7 @@ import { NodePLugin } from '../plugins/NodePlugin';
 import { Registry } from '../Registry';
 import { NodeModel } from '../models/game_objects/NodeModel';
 import { defaultNodeViewConfig, NodeView } from '../models/views/NodeView';
-import { UI_SvgCanvas } from '../ui_regions/elements/UI_SvgCanvas';
+import { UI_SvgCanvas } from '../ui_components/elements/UI_SvgCanvas';
 
 export class NodeService {
     nodeTemplates: Map<string, NodeModel> = new Map();

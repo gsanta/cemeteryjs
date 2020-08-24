@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { Point } from '../../../../../utils/geometry/shapes/Point';
 import { Registry } from '../../../../Registry';
 import { useDrop } from 'react-dnd';
-import { UI_ComponentProps } from '../../UI_ComponentProps';
-import { UI_DropLayer } from '../../../elements/surfaces/canvas/UI_DropLayer';
+import { UI_ComponentProps } from '../../../../ui_components/react/UI_ComponentProps';
+import { UI_DropLayer } from '../../../../ui_components/elements/surfaces/canvases/UI_DropLayer';
 
 const DropLayerStyled = styled.div`
     width: 100%;

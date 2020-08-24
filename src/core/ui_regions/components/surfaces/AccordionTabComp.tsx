@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { UI_ComponentProps } from '../UI_ComponentProps';
-import { UI_Accordion } from '../../elements/surfaces/UI_Accordion';
+import { UI_ComponentProps } from '../../../ui_components/react/UI_ComponentProps';
+import { UI_Accordion } from '../../../ui_components/elements/surfaces/UI_Accordion';
 import { Accordion, Card, Button } from 'react-bootstrap';
 import { ArrowDownIconComponent } from '../icons/ArrowDownIconComponent';
-import { colors } from '../styles';
+import { colors } from '../../../ui_components/react/styles';
 import styled from 'styled-components';
 
 const CardBodyStyled = styled(Card.Body)`

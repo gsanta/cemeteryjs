@@ -1,7 +1,5 @@
 import * as React from 'react';
-import { useDropzone } from 'react-dropzone';
-import { withCommitOnChange } from '../../../../core/ui_regions/components/inputs/withCommitOnChange';
-import { ToolStyled, ToolIconStyled, ToolIconBackgroundStyled, ToolIconImageStyled, ToolNameStyled, ToolIconProps } from './ToolIcon';
+import { ToolIconBackgroundStyled, ToolIconImageStyled, ToolIconProps, ToolIconStyled, ToolStyled } from './ToolIcon';
 
 export interface ImportFileIconProps {
     onChange(file: {path: string, data: string}): void;

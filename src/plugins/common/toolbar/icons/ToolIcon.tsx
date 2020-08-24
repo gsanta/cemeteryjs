@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors } from "../../../../core/ui_regions/components/styles";
+import { colors } from "../../../../core/ui_components/react/styles";
 import { IconState } from "../../../../core/ui_regions/components/icons/Icon";
 
 export interface ToolIconProps {

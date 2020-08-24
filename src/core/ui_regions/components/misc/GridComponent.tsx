@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { withCommitOnChange } from '../inputs/withCommitOnChange';
-import { colors } from '../styles';
+import { colors } from '../../../ui_components/react/styles';
 
 const GridStyled = styled.div`
     display: flex;
@@ -56,7 +55,3 @@ function GridItem(props: GridItemProps) {
         <GridItemStyled draggable="true" {...props} onClick={() => props.onClick(props.index)}/>
     );
 }
-
-export const ConnectedGridComponent = withCommitOnChange<GridProps>(GridComponent);
-
-

@@ -1,7 +1,7 @@
 import { LevelSettingsController, LevelSettingsProps, LevelSettingsControllerId } from './LevelSettingsController';
 import { UI_Plugin, UI_Region } from '../../../core/plugins/UI_Plugin';
 import { Registry } from '../../../core/Registry';
-import { UI_Layout } from '../../../core/ui_regions/elements/UI_Layout';
+import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 
 export const LevelSettingsPluginId = 'level-settings-plugin';
 

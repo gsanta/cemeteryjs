@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { useDrag, DragElementWrapper, DragSourceOptions } from 'react-dnd';
 import styled from 'styled-components';
-import { UI_ListItem } from '../../elements/UI_ListItem';
-import { colors } from '../styles';
-import { UI_ComponentProps } from '../UI_ComponentProps';
+import { UI_ListItem } from '../../../ui_components/elements/UI_ListItem';
+import { colors } from '../../../ui_components/react/styles';
+import { UI_ComponentProps } from '../../../ui_components/react/UI_ComponentProps';
 import { Point } from '../../../../utils/geometry/shapes/Point';
 
 export const ListItemStyled = styled.div`

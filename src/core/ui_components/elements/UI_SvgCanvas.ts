@@ -3,8 +3,7 @@ import { UI_SvgGroup } from './svg/UI_SvgGroup';
 import { UI_Toolbar } from './toolbar/UI_Toolbar';
 import { UI_Factory } from '../UI_Factory';
 import { AbstractCanvasPlugin } from '../../plugins/AbstractCanvasPlugin';
-import { UI_DropLayer } from './surfaces/canvas/UI_DropLayer';
-import { UI_Node } from './views/UI_Node';
+import { UI_DropLayer } from './surfaces/canvases/UI_DropLayer';
 
 export class UI_SvgCanvas extends UI_SvgGroup {
     _toolbar: UI_Toolbar;
@@ -25,9 +24,5 @@ export class UI_SvgCanvas extends UI_SvgGroup {
 
     dropLayer(config: { controllerId: string, prop: string}): UI_DropLayer {
         return UI_Factory.dropLayer(this, config);
-    }
-
-    node(config: { controllerId: string, key: string}): UI_Node {
-        return UI_Factory.node(this, config);
     }
 }

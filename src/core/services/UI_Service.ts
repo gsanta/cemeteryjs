@@ -1,5 +1,5 @@
 import { UI_Region } from '../plugins/UI_Plugin';
-import { UI_Layout } from '../ui_regions/elements/UI_Layout';
+import { UI_Layout } from '../ui_components/elements/UI_Layout';
 
 export class UI_Service {
     private ui_layouts: Map<UI_Region, UI_Layout[]> = new Map();

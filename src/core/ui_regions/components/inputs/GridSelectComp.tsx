@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { UI_GridSelect } from '../../elements/UI_GridSelect';
+import { UI_GridSelect } from '../../../ui_components/elements/UI_GridSelect';
 import { GridComponent } from '../misc/GridComponent';
-import { UI_ComponentProps } from '../UI_ComponentProps';
+import { UI_ComponentProps } from '../../../ui_components/react/UI_ComponentProps';
 import { LabeledInputComp } from './LabeledInputComp';
 import './DropdownComponent.scss';
 

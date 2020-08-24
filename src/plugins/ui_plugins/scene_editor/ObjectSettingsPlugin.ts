@@ -1,6 +1,6 @@
 import { UI_Plugin, UI_Region } from '../../../core/plugins/UI_Plugin';
 import { Registry } from '../../../core/Registry';
-import { UI_Layout } from '../../../core/ui_regions/elements/UI_Layout';
+import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { MeshObjectSettingsController, MeshObjectSettingsProps, MeshObjectSettingsControllerId } from './MeshObjectSettingsController';
 import { ViewType } from '../../../core/models/views/View';
 import { MeshView } from '../../../core/models/views/MeshView';
