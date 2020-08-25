@@ -1,7 +1,7 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { AbstractCanvasPlugin } from "../../../core/plugins/AbstractCanvasPlugin";
 import { UI_Region } from "../../../core/plugins/UI_Plugin";
-import { ICamera } from "../../common/camera/ICamera";
+import { ICamera } from "../../../core/models/misc/camera/ICamera";
 import { Tool } from "../../../core/plugins/tools/Tool";
 
 export const initCode = `

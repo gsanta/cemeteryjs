@@ -4,19 +4,18 @@ import 'rc-tooltip/assets/bootstrap.css';
 import * as React from 'react';
 import { DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
-import Split from 'split.js';
 import 'tippy.js/dist/tippy.css';
 import './App.scss';
 import { AppContext, AppContextType } from './Context';
-import { DialogManagerComponent } from '../../ui_regions/components/dialogs/DialogManagerComponent';
 import { HotkeyInputComponent } from './HotkeyInputComponent';
-import { SpinnerOverlayComponent } from '../../ui_regions/components/misc/SpinnerOverlayComponent';
+import { SpinnerOverlayComponent } from './misc/SpinnerOverlayComponent';
 import { SidePanelComponent } from './SidePanelComponent';
-import { MainPanelComp } from '../../ui_regions/components/regions/MainPanelComp';
+import { MainPanelComp } from './regions/MainPanelComp';
 import { SceneEditorPerspectiveName } from '../../services/UI_PerspectiveService';
 import { UI_Region } from '../../plugins/UI_Plugin';
 import styled from 'styled-components';
 import { GameViewerPluginId } from '../../../plugins/ui_plugins/game_viewer/GameViewerPlugin';
+import { DialogManagerComponent } from './dialogs/DialogManagerComponent';
 
 export interface AppState {
     isDialogOpen: boolean;

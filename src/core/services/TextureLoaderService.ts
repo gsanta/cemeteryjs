@@ -1,4 +1,4 @@
-import { AbstractPluginService } from '../../plugins/common/AbstractPluginService';
+import { AbstractPluginService } from '../plugins/AbstractPluginService';
 import { AbstractCanvasPlugin } from '../plugins/AbstractCanvasPlugin';
 import { AssetObject } from '../models/game_objects/AssetObject';
 

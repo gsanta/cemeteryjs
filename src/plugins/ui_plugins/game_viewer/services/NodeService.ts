@@ -6,7 +6,7 @@ import { MoveNodeHandler } from './node_handlers/MoveNodeHandler';
 import { SplitNodeHandler } from './node_handlers/SplitNodeHandler';
 import { TurnNodeHandler } from './node_handlers/TurnNodeHandler';
 import { RouteNodeHandler } from './node_handlers/RouteNodeHandler';
-import { AbstractPluginService } from '../../../common/AbstractPluginService';
+import { AbstractPluginService } from '../../../../core/plugins/AbstractPluginService';
 import { GameViewerPlugin } from '../GameViewerPlugin';
 import { AbstractCanvasPlugin } from '../../../../core/plugins/AbstractCanvasPlugin';
 import { EngineService } from '../../../../core/services/EngineService';

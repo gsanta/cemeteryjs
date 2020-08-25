@@ -7,7 +7,7 @@ import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas'
 import { ViewTag } from '../../../core/models/views/View';
 import { Canvas_2d_Plugin } from '../../../core/plugins/Canvas_2d_Plugin';
 import { Registry } from '../../../core/Registry';
-import { toolFactory } from '../../common/toolbar/toolFactory';
+import { toolFactory } from '../../../core/plugins/tools/toolFactory';
 import { ToolType } from '../../../core/plugins/tools/Tool';
 import { sort } from '../../../utils/geometry/Functions';
 import { SceneEditorExporter } from './io/SceneEditorExporter';

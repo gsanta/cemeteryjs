@@ -7,7 +7,7 @@ import { EngineService } from '../../../core/services/EngineService';
 import { MeshLoaderService } from '../../../core/services/MeshLoaderService';
 import { TextureLoaderService } from '../../../core/services/TextureLoaderService';
 import { UI_Region } from '../../../core/plugins/UI_Plugin';
-import { PluginServices } from '../../common/PluginServices';
+import { PluginServices } from '../../../core/plugins/PluginServices';
 import { Gizmos } from './Gizmos';
 import { GameViewerImporter } from './io/GameViewerImporter';
 import { NodeService } from './services/NodeService';

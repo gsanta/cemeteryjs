@@ -1,6 +1,6 @@
 import { ViewType } from "../../../../core/models/views/View";
 import { Registry } from "../../../../core/Registry";
-import { IPluginExporter, IPluginJson } from '../../../common/io/IPluginExporter';
+import { IPluginExporter, IPluginJson } from '../../../../core/plugins/IPluginExporter';
 import { NodeEditorPlugin } from "../NodeEditorPlugin";
 
 export class NodeEditorExporter implements IPluginExporter {

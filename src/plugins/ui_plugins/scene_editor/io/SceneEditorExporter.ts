@@ -1,4 +1,4 @@
-import { IPluginExporter, IPluginJson } from "../../../common/io/IPluginExporter";
+import { IPluginExporter, IPluginJson } from "../../../../core/plugins/IPluginExporter";
 import { SceneEditorPlugin } from "../SceneEditorPlugin";
 import { Registry } from "../../../../core/Registry";
 import { ViewType } from "../../../../core/models/views/View";

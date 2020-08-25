@@ -1,11 +1,11 @@
-import { Camera2D } from "../../plugins/common/camera/Camera2D";
-import { toolFactory } from "../../plugins/common/toolbar/toolFactory";
+import { Camera2D } from "../models/misc/camera/Camera2D";
+import { toolFactory } from "./tools/toolFactory";
 import { ToolType } from "./tools/Tool";
 import { Registry } from "../Registry";
 import { EngineService } from "../services/EngineService";
 import { UI_Region } from "./UI_Plugin";
 import { AbstractCanvasPlugin, calcOffsetFromDom } from "./AbstractCanvasPlugin";
-import { ICamera } from "../../plugins/common/camera/ICamera";
+import { ICamera } from "../models/misc/camera/ICamera";
 
 export function getCanvasElement(viewId: string): HTMLCanvasElement {
     if (typeof document !== 'undefined') {

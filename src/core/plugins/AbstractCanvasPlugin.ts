@@ -1,6 +1,5 @@
-import { ICamera } from '../../plugins/common/camera/ICamera';
-import { PluginServices } from '../../plugins/common/PluginServices';
-import { PluginSettings } from '../../plugins/common/PluginSettings';
+import { ICamera } from '../models/misc/camera/ICamera';
+import { PluginServices } from './PluginServices';
 import { Point } from '../../utils/geometry/shapes/Point';
 import { UI_Layout } from '../ui_components/elements/UI_Layout';
 import { ToolController, ToolControllerId } from './controllers/ToolController';
@@ -10,7 +9,6 @@ import { MouseService } from '../services/input/MouseService';
 import { ToolHandler } from '../services/input/ToolHandler';
 import { AbstractViewStore } from '../stores/AbstractViewStore';
 import { UI_Plugin } from './UI_Plugin';
-import { AbstractController } from './controllers/AbstractController';
 import { UI_ListItem } from '../ui_components/elements/UI_ListItem';
 
 export interface CanvasViewSettings {
@@ -33,7 +31,6 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
     isFullScreen: boolean = false;
 
     pluginServices: PluginServices<this> = new PluginServices([]);
-    pluginSettings: PluginSettings = new PluginSettings([]);
 
     dropItem: UI_ListItem;
 

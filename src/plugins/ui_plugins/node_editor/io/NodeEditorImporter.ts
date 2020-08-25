@@ -2,7 +2,7 @@ import { NodeConnectionView, NodeConnectionViewJson } from '../../../../core/mod
 import { NodeView, NodeViewJson } from '../../../../core/models/views/NodeView';
 import { ViewType, View } from "../../../../core/models/views/View";
 import { AppJson } from '../../../../core/services/export/ExportService';
-import { AbstractPluginImporter } from "../../../common/io/AbstractPluginImporter";
+import { AbstractPluginImporter } from "../../../../core/plugins/AbstractPluginImporter";
 
 export class NodeEditorImporter extends AbstractPluginImporter {
     import(appJson: AppJson, viewMap: Map<string, View>): void {

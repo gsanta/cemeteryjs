@@ -1,4 +1,4 @@
-import { AbstractPluginImporter } from "../../../common/io/AbstractPluginImporter";
+import { AbstractPluginImporter } from "../../../../core/plugins/AbstractPluginImporter";
 import { AppJson } from "../../../../core/services/export/ExportService";
 import { View, ViewType } from "../../../../core/models/views/View";
 import { MeshViewJson, MeshView } from "../../../../core/models/views/MeshView";

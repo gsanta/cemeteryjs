@@ -4,7 +4,7 @@ import * as React from 'react';
 import { UI_ComponentProps } from '../UI_ComponentProps';
 import { UI_Icon } from '../../elements/UI_Icon';
 import styled from 'styled-components';
-import { cssClassBuilder } from '../../../ui_regions/components/layout/RowComp';
+import { cssClassBuilder } from '../layout/RowComp';
 import { colors } from '../styles';
 const undoIcon = require('../../../../../assets/images/icons/undo.svg');
 const redoIcon = require('../../../../../assets/images/icons/redo.svg');

@@ -1,5 +1,5 @@
 import { Point } from "../../utils/geometry/shapes/Point";
-import { Camera2D } from "../../plugins/common/camera/Camera2D";
+import { Camera2D } from "../models/misc/camera/Camera2D";
 import { Registry } from "../Registry";
 import { AbstractCanvasPlugin, calcOffsetFromDom } from "./AbstractCanvasPlugin";
 import { UI_Region } from "./UI_Plugin";

@@ -1,5 +1,5 @@
 import { MeshLoaderService } from '../../../../core/services/MeshLoaderService';
-import { AbstractPluginImporter } from "../../../common/io/AbstractPluginImporter";
+import { AbstractPluginImporter } from "../../../../core/plugins/AbstractPluginImporter";
 
 export class GameViewerImporter extends AbstractPluginImporter {
     import(): void {

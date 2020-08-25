@@ -1,4 +1,4 @@
-import { IPluginJson } from '../../../plugins/common/io/IPluginExporter';
+import { IPluginJson } from '../../plugins/IPluginExporter';
 import { Registry } from '../../Registry';
 import { AssetJson } from '../../models/game_objects/AssetObject';
 
