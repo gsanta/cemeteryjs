@@ -7,7 +7,7 @@ import { MeshStore } from "./MeshStore";
 import { NodeStore } from './NodeStore';
 import { SceneStore } from "./SceneStore";
 import { SelectionStore } from "./SelectionStore";
-import { SpriteStore } from "../../game/example/SpriteStore";
+import { SpriteStore } from "./SpriteStore";
 import { ObjStore } from "./ObjStore";
 
 export class Stores {
@@ -31,7 +31,7 @@ export class Stores {
         this.selectionStore = new SelectionStore();
         this.levelStore = new LevelStore();
         this.meshStore = new MeshStore(this.registry);
-        this.spriteStore = new SpriteStore();
+        this.spriteStore = new SpriteStore(this.registry);
         this.nodeStore = new NodeStore(this.registry);
         this.assetStore = new AssetStore(this.registry);
         this.gameStore = new GameStore(this.registry);

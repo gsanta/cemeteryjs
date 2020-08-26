@@ -11,6 +11,7 @@ export class Registry {
     plugins: Plugins;    
     // ui_regions: UI_Regions;
     preferences: Preferences = defaultPreferences;
+    engine: IEngineFacade
 
     constructor() {
         this.stores = new Stores(this);

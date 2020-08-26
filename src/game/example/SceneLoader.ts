@@ -44,6 +44,7 @@ export class SceneLoader {
             spriteView.obj.startPos = new Point(sprite.x, sprite.y);
 
             this.registry.stores.spriteStore.addItem(spriteView);
+            this.registry.services.spriteLoader.load(spriteView.obj);
         });
     }
 }

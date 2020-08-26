@@ -1,5 +1,5 @@
-import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, MeshBuilder, PointLight } from 'babylonjs';
-import { SpriteLoader } from './SpriteLoader';
+import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, MeshBuilder, PointLight, SceneLoader } from 'babylonjs';
+import { SpriteLoaderService } from '../../core/services/SpriteLoaderService';
 import { SpriteObj } from '../../core/models/game_objects/SpriteObj';
 
 
@@ -43,9 +43,11 @@ export function createScene(canvas: HTMLCanvasElement) {
         scene.render();
     });
 
+    const sceneLoader = new SceneLoader();
+
     const spriteObj = new SpriteObj('1234');
     spriteObj.frameName = 'tree3';
-    const spriteLoader = new SpriteLoader(scene);
+    const spriteLoader = new SpriteLoaderService(scene);
     spriteLoader.load(spriteObj);
     spriteObj.sprite.width = 0.43;
     spriteObj.sprite.height = 1;

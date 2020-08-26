@@ -1,0 +1,21 @@
+import { AbstractViewStore } from './AbstractViewStore';
+import { Registry } from '../Registry';
+import { SpriteView, SpriteViewType } from '../models/views/SpriteView';
+
+export class SpriteStore extends AbstractViewStore {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        super();
+        this.registry = registry;
+    }
+
+    addItem(spriteView: SpriteView) {
+        spriteView.id = this.generateUniqueName(SpriteViewType);
+        spriteView.obj.id = spriteView.id;
+        super.addItem(spriteView);
+
+        this.views.push(spriteView);
+        this.registry.stores.objStore.addObj(spriteView.obj);
+    }
+}
