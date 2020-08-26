@@ -4,7 +4,7 @@ import { AbstractCanvasPlugin } from '../plugins/AbstractCanvasPlugin';
 import { Point } from '../../utils/geometry/shapes/Point';
 import { MeshView } from '../models/views/MeshView';
 import { EngineService } from './EngineService';
-import { AssetObject } from '../models/game_objects/AssetObject';
+import { AssetObj } from '../models/game_objects/AssetObj';
 
 export class MeshLoaderService extends AbstractPluginService<AbstractCanvasPlugin> {
     static serviceName = 'mesh-loader-service';
@@ -13,7 +13,7 @@ export class MeshLoaderService extends AbstractPluginService<AbstractCanvasPlugi
     private loadedIds: Set<String> = new Set();
     private pandingIds: Map<string, Promise<any>> = new Map();
 
-    getDimensions(asset: AssetObject, id: string): Promise<Point> {
+    getDimensions(asset: AssetObj, id: string): Promise<Point> {
         return this
             .load(asset, id)
             .then(mesh => {
@@ -31,7 +31,7 @@ export class MeshLoaderService extends AbstractPluginService<AbstractCanvasPlugi
             });
     }
 
-    getAnimations(asset: AssetObject, id: string): Promise<string[]> {
+    getAnimations(asset: AssetObj, id: string): Promise<string[]> {
         return this
             .load(asset, id)
             .then(mesh => {
@@ -56,7 +56,7 @@ export class MeshLoaderService extends AbstractPluginService<AbstractCanvasPlugi
         });
     }
 
-    load(asset: AssetObject, id: string): Promise<Mesh> {
+    load(asset: AssetObj, id: string): Promise<Mesh> {
         this.loadedIds.add(asset.id);
 
         const promise = this.registry.services.localStore.loadAsset(asset)
@@ -67,7 +67,7 @@ export class MeshLoaderService extends AbstractPluginService<AbstractCanvasPlugi
         return <Promise<Mesh>> promise;
     }
 
-    private loadMesh(asset: AssetObject): Promise<Mesh> {
+    private loadMesh(asset: AssetObj): Promise<Mesh> {
         const engineService = this.plugin.pluginServices.byName<EngineService<any>>(EngineService.serviceName);
 
         return new Promise(resolve => {
@@ -95,7 +95,7 @@ export class MeshLoaderService extends AbstractPluginService<AbstractCanvasPlugi
         mesh.isVisible = true;
     }
 
-    private createModelData(asset: AssetObject, meshes: Mesh[], skeletons: Skeleton[]): Mesh {
+    private createModelData(asset: AssetObj, meshes: Mesh[], skeletons: Skeleton[]): Mesh {
         if (meshes.length === 0) { throw new Error('No mesh was loaded.') }
 
         const engineService = this.plugin.pluginServices.byName<EngineService<any>>(EngineService.serviceName);

@@ -3,7 +3,7 @@ import { AppJson } from "../../../../core/services/export/ExportService";
 import { View, ViewType } from "../../../../core/models/views/View";
 import { MeshViewJson, MeshView } from "../../../../core/models/views/MeshView";
 import { PathViewJson, PathView } from "../../../../core/models/views/PathView";
-import { AssetObject, AssetType } from "../../../../core/models/game_objects/AssetObject";
+import { AssetObj, AssetType } from "../../../../core/models/game_objects/AssetObj";
 
 export class SceneEditorImporter extends AbstractPluginImporter {
     import(json: AppJson, viewMap: Map<string, View>): void {
@@ -39,21 +39,21 @@ export class SceneEditorImporter extends AbstractPluginImporter {
 
     private initAssets(meshView: MeshView) {
         if (meshView.modelId) {
-            const asset = new AssetObject({assetType: AssetType.Model});
+            const asset = new AssetObj({assetType: AssetType.Model});
             asset.id = meshView.modelId;
-            this.registry.stores.assetStore.addAsset(asset);
+            this.registry.stores.assetStore.addObj(asset);
         }
         
         if (meshView.textureId) {
-            const asset = new AssetObject({assetType: AssetType.Texture});
+            const asset = new AssetObj({assetType: AssetType.Texture});
             asset.id = meshView.textureId;
-            this.registry.stores.assetStore.addAsset(asset);
+            this.registry.stores.assetStore.addObj(asset);
         }
 
         if (meshView.thumbnailId) {
-            const asset = new AssetObject({assetType: AssetType.Thumbnail});
+            const asset = new AssetObj({assetType: AssetType.Thumbnail});
             asset.id = meshView.thumbnailId;
-            this.registry.stores.assetStore.addAsset(asset);
+            this.registry.stores.assetStore.addObj(asset);
         }    
     }
 }

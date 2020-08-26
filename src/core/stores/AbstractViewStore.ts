@@ -3,7 +3,6 @@ import { View } from "../models/views/View";
 import { Rectangle } from "../../utils/geometry/shapes/Rectangle";
 import { Polygon } from "../../utils/geometry/shapes/Polygon";
 
-
 export class AbstractViewStore extends AbstractStore {
     protected views: View[] = [];
 

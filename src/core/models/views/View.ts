@@ -1,5 +1,6 @@
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { Point } from "../../../utils/geometry/shapes/Point";
+import { IGameObj } from "../game_objects/IGameObj";
 
 export enum ViewType {
     MeshView = 'MeshView',
@@ -24,6 +25,8 @@ export abstract class View {
     id: string;
     viewType: string;
     tags: Set<ViewTag> = new Set();
+
+    obj: IGameObj;
 
     dimensions: Rectangle;
     move(delta: Point): void {}

@@ -1,5 +1,5 @@
 import { Registry } from "../Registry";
-import { AssetObject } from "../models/game_objects/AssetObject";
+import { AssetObj } from "../models/game_objects/AssetObj";
 
 export class LocalStoreService {
     serviceName = 'local-store'
@@ -74,7 +74,7 @@ export class LocalStoreService {
         });
     }
     
-    async saveAsset(asset: AssetObject) {
+    async saveAsset(asset: AssetObj) {
         if (!this.isDbSupported()) { return }
 
         const db = await this.getDb();
@@ -83,7 +83,7 @@ export class LocalStoreService {
         objectStore.put({id: asset.id, data: asset.data, assetType: asset.assetType, path: asset.path, name: asset.name});
     }
 
-    async loadAsset(asset: AssetObject): Promise<string> {
+    async loadAsset(asset: AssetObj): Promise<string> {
         if (!this.isDbSupported()) { return }
 
         const db = await this.getDb();

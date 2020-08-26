@@ -1,6 +1,6 @@
 import { Tools } from 'babylonjs';
 import { AbstractController } from '../../../core/plugins/controllers/AbstractController';
-import { AssetObject, AssetType } from '../../../core/models/game_objects/AssetObject';
+import { AssetObj, AssetType } from '../../../core/models/game_objects/AssetObj';
 import { MeshView } from '../../../core/models/views/MeshView';
 import { Registry } from '../../../core/Registry';
 import { EngineService } from '../../../core/services/EngineService';
@@ -24,7 +24,7 @@ export class ThumbnailMakerController extends AbstractController<ThumbnailMakerC
         this.createPropHandler(ThumbnailMakerControllerProps.ThumbnailFromModel)
             .onClick(async () => {
                 const asset = await this.createThumbnail(plugin.meshView, plugin.pluginServices.engineService());                
-                this.registry.stores.assetStore.addAsset(asset);
+                this.registry.stores.assetStore.addObj(asset);
                 this.registry.services.localStore.saveAsset(asset);
                 plugin.meshView.thumbnailId = asset.id;
 
@@ -33,8 +33,8 @@ export class ThumbnailMakerController extends AbstractController<ThumbnailMakerC
 
         this.createPropHandler<{data: string, path: string}>(ThumbnailMakerControllerProps.ThumbnailFromFile)
             .onChange((val) => {
-                const asset = new AssetObject({data: val.data, path: val.path, assetType: AssetType.Thumbnail});
-                this.registry.stores.assetStore.addAsset(asset);
+                const asset = new AssetObj({data: val.data, path: val.path, assetType: AssetType.Thumbnail});
+                this.registry.stores.assetStore.addObj(asset);
                 this.registry.services.localStore.saveAsset(asset);
                 plugin.meshView.thumbnailId = asset.id;
 
@@ -56,10 +56,10 @@ export class ThumbnailMakerController extends AbstractController<ThumbnailMakerC
             });
     }
 
-    async createThumbnail(meshView: MeshView, engineService: EngineService): Promise<AssetObject> {
+    async createThumbnail(meshView: MeshView, engineService: EngineService): Promise<AssetObj> {
         const data = await Tools.CreateScreenshotUsingRenderTargetAsync(engineService.getEngine(), engineService.getCamera().camera, 1000)
                 
-        const asset = new AssetObject({data: data, assetType: AssetType.Thumbnail});
+        const asset = new AssetObj({data: data, assetType: AssetType.Thumbnail});
         meshView.thumbnailId = asset.id;
 
         return asset;

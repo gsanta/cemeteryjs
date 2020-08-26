@@ -2,7 +2,7 @@ import { Registry } from '../../Registry';
 import { View } from '../../models/views/View';
 import { AppJson } from '../export/ExportService';
 import { IPluginJson } from '../../plugins/IPluginExporter';
-import { AssetObject } from '../../models/game_objects/AssetObject';
+import { AssetObj } from '../../models/game_objects/AssetObj';
 
 export class ImportService {
     serviceName = 'import-service';

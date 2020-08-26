@@ -1,6 +1,5 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { ToolIconProps } from '../../../../../plugins/common/toolbar/icons/ToolIcon';
 import { UI_Toolbar } from '../../../elements/toolbar/UI_Toolbar';
 import { AppContext, AppContextType } from '../../Context';
 import { colors } from '../../styles';
@@ -50,8 +49,6 @@ const ToolbarStyled = styled.div`
         width: 24px;
         height: 24px;
         cursor: pointer;
-
-        color: ${(props: ToolIconProps) => props.color ? props.color : colors.textColor};
 
         background: ${colors.grey3};
         background-size: cover;

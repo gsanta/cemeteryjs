@@ -1,0 +1,38 @@
+{
+    "frames": {
+
+        "tree1":
+        {
+            "frame": {"x":46,"y":19,"w":223,"h":257},
+            "rotated": false,
+            "trimmed": false
+        },
+        "tree2":
+        {
+            "frame": {"x":75,"y":319,"w":165,"h":310},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":0,"y":0,"w":165,"h":310},
+            "sourceSize": {"w":165,"h":310}
+        },
+        "tree3":
+        {
+            "frame": {"x":75,"y":672,"w":145,"h":331},
+            "rotated": false,
+            "trimmed": false
+        },
+        "tree4":
+        {
+            "frame": {"x":45,"y":1003,"w":205,"h":233},
+            "rotated": false,
+            "trimmed": false
+        }
+    },
+    "meta": {
+        "version": "1.0",
+        "image": "./tree-sprite-sheet.png",
+        "format": "RGBA8888",
+        "size": {"w":1000,"h":1000},
+        "scale": "1"
+    }
+}

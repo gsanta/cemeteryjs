@@ -3,7 +3,7 @@ import { MeshView } from '../../../core/models/views/MeshView';
 import { Registry } from '../../../core/Registry';
 import { AbstractController } from '../../../core/plugins/controllers/AbstractController';
 import { ThumbnailDialogPluginId } from './ThumbnailDialogPlugin';
-import { AssetObject, AssetType } from '../../../core/models/game_objects/AssetObject';
+import { AssetObj, AssetType } from '../../../core/models/game_objects/AssetObj';
 import { ObjectSettingsPlugin } from './ObjectSettingsPlugin';
 import { UI_Region } from '../../../core/plugins/UI_Plugin';
 
@@ -107,8 +107,8 @@ export class MeshObjectSettingsController extends AbstractController<MeshObjectS
 
         this.createPropHandler<{data: string}>(MeshObjectSettingsProps.Model)
             .onChange((val) => {
-                const asset = new AssetObject({data: val.data, assetType: AssetType.Model});
-                this.meshView.modelId = this.registry.stores.assetStore.addModel(asset);
+                const asset = new AssetObj({data: val.data, assetType: AssetType.Model});
+                this.meshView.modelId = this.registry.stores.assetStore.addObj(asset);
                 this.registry.services.localStore.saveAsset(asset);
                 this.registry.stores.meshStore.deleteInstance((<MeshView> this.meshView).mesh);
                 this.registry.stores.meshStore.createInstance(this.meshView.model);

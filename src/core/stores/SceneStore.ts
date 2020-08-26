@@ -1,5 +1,5 @@
 import { Point } from "../../utils/geometry/shapes/Point";
-import { AssetObject, AssetType } from "../models/game_objects/AssetObject";
+import { AssetObj, AssetType } from "../models/game_objects/AssetObj";
 import { ChildView } from "../models/views/child_views/ChildView";
 import { MeshView } from "../models/views/MeshView";
 import { PathView } from "../models/views/PathView";
@@ -93,12 +93,12 @@ export class SceneStore extends AbstractViewStore {
     listen(action: string, changedItems: any[]) {
         switch(action) {
             case AssetStore.actions.ASSET_DELETE:
-                changedItems.forEach(item => this.removeAsset(<AssetObject> item));
+                changedItems.forEach(item => this.removeAsset(<AssetObj> item));
             break;
         }
     }
 
-    private removeAsset(asset: AssetObject) {
+    private removeAsset(asset: AssetObj) {
         switch(asset.assetType) {
             case AssetType.Model:
                 this.getMeshViews()

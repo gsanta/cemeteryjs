@@ -1,6 +1,5 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Camera2D } from '../../../../../plugins/common/camera/Camera2D';
 import { AbstractCanvasPlugin } from '../../../../plugins/AbstractCanvasPlugin';
 import { UI_ElementType } from '../../../elements/UI_ElementType';
 import { UI_SvgCanvas } from '../../../elements/UI_SvgCanvas';
@@ -9,9 +8,9 @@ import { WheelListener } from '../../../../services/WheelListener';
 import { AppContext, AppContextType } from '../../Context';
 import { colors } from '../../styles';
 import { UI_ComponentProps } from '../../UI_ComponentProps';
-import { DropLayerComp } from './DropLayerComp';
 import { UI_HtmlCanvas } from '../../../elements/UI_HtmlCanvas';
 import { View } from '../../../../models/views/View';
+import { Camera2D } from '../../../../models/misc/camera/Camera2D';
 
 const EditorComponentStyled = styled.div`
     position: relative;

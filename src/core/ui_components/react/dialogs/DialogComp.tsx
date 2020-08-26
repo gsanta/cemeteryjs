@@ -1,6 +1,5 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { CloseIconComponent } from '../../../../plugins/common/toolbar/icons/CloseIconComponent';
 import { colors } from '../styles';
 import { UI_ContainerProps } from '../UI_ComponentProps';
 import { UI_Dialog } from '../../elements/surfaces/UI_Dialog';
@@ -61,7 +60,7 @@ export function DialogComp(props: UI_ContainerProps<UI_Dialog> ) {
             >
                 <DialogTitleStyled>
                     <div>{props.element.title}</div>
-                    <div><CloseIconComponent onClick={() => props.element.close()} /></div>
+                    {/* <div><CloseIconComponent onClick={() => props.element.close()} /></div> */}
                 </DialogTitleStyled>
                 <DialogBodyStyled>{props.children}</DialogBodyStyled>
             </DialogStyled>

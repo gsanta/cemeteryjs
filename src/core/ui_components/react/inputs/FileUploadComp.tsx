@@ -1,6 +1,4 @@
 import React from "react"
-import { ButtonStyled } from "./ButtonComp"
-import { iconFactory } from "../icons/iconFactory"
 import { UI_ComponentProps } from "../UI_ComponentProps"
 import { UI_FileUpload } from "../../elements/UI_FileUpload"
 import { useDropzone } from "react-dropzone"
@@ -59,7 +57,6 @@ export const FileUploadComp = (props: UI_ComponentProps<UI_FileUpload>) => {
         // }
     }, [])
     const { getRootProps, getInputProps } = useDropzone({ onDrop })
-    const icon = props.element.icon ? iconFactory(props.element.icon) : null;
 
     const classes = cssClassBuilder(
         'file-upload',
@@ -70,7 +67,6 @@ export const FileUploadComp = (props: UI_ComponentProps<UI_FileUpload>) => {
         <FileUploadStyled className={classes} {...getRootProps()}>
             <div className={classes} onClick={() => props.element.click()}>
                 <input {...getInputProps()} />
-                {icon}
                 
                 <div className="button-label">
                     {props.element.label}

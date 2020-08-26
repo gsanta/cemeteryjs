@@ -2,8 +2,6 @@
 
 import * as React from 'react';
 import styled from 'styled-components';
-import { ToolIconProps } from '../../../../plugins/common/toolbar/icons/ToolIcon';
-import { iconFactory } from '../icons/iconFactory';
 import { colors } from '../styles';
 import { UI_Button } from '../../elements/UI_Button';
 
@@ -41,11 +39,9 @@ export interface Button_UI_Props {
 
 export const ButtonComp = (props: Button_UI_Props) => {
     const classes = `${props.element.width ? props.element.width : 'normal-width'}`;
-    const icon = props.element.icon ? iconFactory(props.element.icon) : null;
     
     return (
         <ButtonStyled className={classes} {...props} onClick={() => props.element.click()}>
-            {icon}
             
             <div className="button-label">
                 {props.element.label}

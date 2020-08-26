@@ -44,10 +44,11 @@ export function createScene(canvas: HTMLCanvasElement) {
     });
 
     const spriteObj = new SpriteObj('1234');
-    spriteObj.cellRef = 'platform_03';
+    spriteObj.frameName = 'tree3';
     const spriteLoader = new SpriteLoader(scene);
     spriteLoader.load(spriteObj);
-    spriteObj.sprite.size = 0.2;
+    spriteObj.sprite.width = 0.43;
+    spriteObj.sprite.height = 1;
 
     return scene;
 }

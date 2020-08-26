@@ -1,7 +1,7 @@
 import { UI_Plugin, UI_Region } from '../../../core/plugins/UI_Plugin';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { UI_Table } from '../../../core/ui_components/elements/UI_Table';
-import { AssetType, AssetObject } from '../../../core/models/game_objects/AssetObject';
+import { AssetType, AssetObj } from '../../../core/models/game_objects/AssetObj';
 import { Registry } from '../../../core/Registry';
 import { AssetManagerDialogControllerId, AssetManagerDialogController, AssetManagerDialogProps } from './AssetManagerDialogController';
 import { UI_Dialog } from '../../../core/ui_components/elements/surfaces/UI_Dialog';
@@ -12,7 +12,7 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
     region = UI_Region.Dialog;
     displayName = 'Asset manager';
 
-    editedAsset: AssetObject;
+    editedAsset: AssetObj;
 
     constructor(registry: Registry) {
         super(registry);
@@ -74,7 +74,7 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
         });
     }
 
-    private renderReadOnlyModel(table: UI_Table, asset: AssetObject) {
+    private renderReadOnlyModel(table: UI_Table, asset: AssetObj) {
         const tableRow = table.tableRow({ isHeader: false });
 
         let column = tableRow.tableColumn(null);
@@ -108,7 +108,7 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
         tooltip.label = 'Delete';
     }
 
-    private renderEditableModel(table: UI_Table, asset: AssetObject) {
+    private renderEditableModel(table: UI_Table, asset: AssetObj) {
         const tableRow = table.tableRow({ isHeader: false });
 
         let column = tableRow.tableColumn(null);

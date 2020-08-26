@@ -1,4 +1,4 @@
-import { AssetObject, AssetType } from "../models/game_objects/AssetObject";
+import { AssetObj, AssetType } from "../models/game_objects/AssetObj";
 import { AbstractStore } from "./AbstractStore";
 import { Registry } from "../Registry";
 
@@ -11,7 +11,7 @@ export class AssetStore extends AbstractStore {
     id = AssetStore.id;
 
     private maxIdForPrefix: Map<string, number> = new Map();
-    private assetsById: Map<string, AssetObject> = new Map();
+    private assetsById: Map<string, AssetObj> = new Map();
     private registry: Registry;
 
     constructor(registry: Registry) {
@@ -25,13 +25,13 @@ export class AssetStore extends AbstractStore {
         ]);
     }
 
-    deleteAsset(asset: AssetObject) {
+    deleteAsset(asset: AssetObj) {
         this.assetsById.delete(asset.id);
 
         this.registry.services.event.dispatch(AssetStore.actions.ASSET_DELETE, [asset]);
     }
 
-    addAsset(asset: AssetObject): string {
+    addObj(asset: AssetObj): string {
         switch(asset.assetType) {
             case AssetType.Model:
                 return this.addModel(asset);
@@ -42,7 +42,7 @@ export class AssetStore extends AbstractStore {
         }
     }
 
-    addModel(asset: AssetObject): string {
+    private addModel(asset: AssetObj): string {
         if (!asset.id) {
             asset.id = this.generateId('model');
         }
@@ -51,7 +51,7 @@ export class AssetStore extends AbstractStore {
         return asset.id;
     }
 
-    addThumbnail(asset: AssetObject): string {
+    private addThumbnail(asset: AssetObj): string {
         if (!asset.id) {
             asset.id = this.generateId('thumbnail');
         }
@@ -60,7 +60,7 @@ export class AssetStore extends AbstractStore {
         return asset.id;
     }
 
-    addTexture(asset: AssetObject): string {
+    private addTexture(asset: AssetObj): string {
         if (!asset.id) {
             asset.id = this.generateId('texture');
         }
@@ -69,17 +69,17 @@ export class AssetStore extends AbstractStore {
         return asset.id;
     }
 
-    getAssetById(id: string): AssetObject {
+    getAssetById(id: string): AssetObj {
         if (!id) { return undefined; }
         
         return this.assetsById.get(id);
     }
 
-    getByType(type: AssetType): AssetObject[] {
+    getByType(type: AssetType): AssetObj[] {
         return this.getAssets().filter(asset => asset.assetType === type);
     }
 
-    getAssets(): AssetObject[] {
+    getAssets(): AssetObj[] {
         return Array.from(this.assetsById.values());
     }
 

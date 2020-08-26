@@ -1,0 +1,11 @@
+
+{
+    "sprites": [
+        {
+            "x": 10,
+            "y": 10,
+            "frameName":  "tree1",
+            "texture": "tree-sprite-sheet.png"
+        }
+    ]
+}

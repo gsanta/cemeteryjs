@@ -11,14 +11,14 @@ export interface AssetJson {
 export enum AssetType {
     Model = 'Model',
     Texture = 'Texture',
-    Thumbnail = 'Thumbnail'
+    Thumbnail = 'Thumbnail',
+    SpriteSheet = 'SpriteSheet'
 }
 
-export class AssetObject {
+export class AssetObj {
     id: string;
     assetType: AssetType;
     data: string;
-    thumbnailData: string;
     path: string;
     name: string;
 
