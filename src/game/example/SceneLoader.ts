@@ -21,30 +21,28 @@ export class SceneLoader {
     }
 
     load(sceneJson: SceneJson) {
-        this.addSpriteSheets(sceneJson);
-        this.addSprites(sceneJson);
+        sceneJson.sprites.forEach(sprite => this.addSprite(sprite));
     }
 
-    private addSpriteSheets(sceneJson: SceneJson) {
-        const spriteSheets: Set<string> = new Set();
+    private addSprite(spriteJson: { x: number; y: number; frameName: string; spriteSheetPath: string; }) {
+        let asset = this.registry.stores.assetStore.lookupByProp('path', spriteJson.spriteSheetPath) || this.addSpriteSheet(spriteJson);
 
-        sceneJson.sprites.forEach(sprite => spriteSheets.add(sprite.spriteSheetPath));
+        const spriteView = new SpriteView();
+        spriteView.obj = new SpriteObj();
 
-        Array.from(spriteSheets)
-            .map(path => new AssetObj({path, assetType: AssetType.SpriteSheet}))
-            .forEach(assetObj => this.registry.stores.assetStore.addObj(assetObj));
+        spriteView.obj.frameName = spriteJson.frameName;
+        spriteView.obj.startPos = new Point(spriteJson.x, spriteJson.y);
+        spriteView.obj.spriteAssetId = asset.id;
+
+        this.registry.stores.spriteStore.addItem(spriteView);
+        this.registry.engine.spriteLoader.load(spriteView.obj);
+        this.registry.engine.sprites.setPosition(spriteView.obj, new Point(spriteJson.x, spriteJson.y));
     }
 
-    private addSprites(sceneJson: SceneJson) {
-        sceneJson.sprites.forEach(sprite => {
-            const spriteView = new SpriteView();
-            spriteView.obj = new SpriteObj();
+    private addSpriteSheet(spriteJson: { x: number; y: number; frameName: string; spriteSheetPath: string; }): AssetObj {
+        const assetObj = new AssetObj({path: spriteJson.spriteSheetPath, assetType: AssetType.SpriteSheet});
+        this.registry.stores.assetStore.addObj(assetObj);
 
-            spriteView.obj.frameName = sprite.frameName;
-            spriteView.obj.startPos = new Point(sprite.x, sprite.y);
-
-            this.registry.stores.spriteStore.addItem(spriteView);
-            this.registry.services.spriteLoader.load(spriteView.obj);
-        });
+        return assetObj;
     }
 }

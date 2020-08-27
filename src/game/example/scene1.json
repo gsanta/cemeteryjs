@@ -2,10 +2,16 @@
 {
     "sprites": [
         {
-            "x": 10,
-            "y": 10,
+            "x": -5,
+            "y": -5,
             "frameName":  "tree1",
-            "texture": "tree-sprite-sheet.png"
+            "spriteSheetPath": "assets/example_game/sprites/tree-sprite-sheet.png"
+        },
+        {
+            "x": 0,
+            "y": 0,
+            "frameName":  "tree1",
+            "spriteSheetPath": "assets/example_game/sprites/tree-sprite-sheet.png"
         }
     ]
 }

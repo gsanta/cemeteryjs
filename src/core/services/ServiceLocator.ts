@@ -1,3 +1,4 @@
+import { ISpriteLoaderAdapter } from "../adapters/ISpriteLoaderAdapter";
 import { Registry } from "../Registry";
 import { EventService } from './EventService';
 import { ExportService } from "./export/ExportService";
@@ -11,11 +12,10 @@ import { MouseService } from './input/MouseService';
 import { PointerService } from './input/PointerService';
 import { LevelService } from "./LevelService";
 import { LocalStoreService } from "./LocalStroreService";
-import { RenderService } from "./RenderServices";
-import { UI_Service } from "./UI_Service";
-import { UI_PerspectiveService } from './UI_PerspectiveService';
 import { NodeService } from './NodeService';
-import { SpriteLoaderAdapter } from "../adapters/babylonjs/BabylonSpriteLoader";
+import { RenderService } from "./RenderServices";
+import { UI_PerspectiveService } from './UI_PerspectiveService';
+import { UI_Service } from "./UI_Service";
 
 export class Services {
     hotkey: HotkeyService;
@@ -32,7 +32,6 @@ export class Services {
     gamepad: GamepadService;
     event: EventService;
     uiPerspective: UI_PerspectiveService;
-    spriteLoader: SpriteLoaderAdapter;
 
     node: NodeService;
 
@@ -60,7 +59,6 @@ export class Services {
         this.ui = new UI_Service();
         this.event = new EventService(this.registry);
         this.uiPerspective = new UI_PerspectiveService(this.registry);
-        this.spriteLoader = new SpriteLoaderAdapter();
 
         this.node = new NodeService(this.registry);
 

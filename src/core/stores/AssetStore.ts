@@ -10,8 +10,11 @@ export class AssetStore extends AbstractStore {
     static id = 'asset-store'; 
     id = AssetStore.id;
 
+    private objs: AssetObj[] = [];
+
     private maxIdForPrefix: Map<string, number> = new Map();
     private assetsById: Map<string, AssetObj> = new Map();
+    private assetsByPath: Map<string, AssetObj> = new Map();
     private registry: Registry;
 
     constructor(registry: Registry) {
@@ -34,12 +37,27 @@ export class AssetStore extends AbstractStore {
     addObj(asset: AssetObj): string {
         switch(asset.assetType) {
             case AssetType.Model:
-                return this.addModel(asset);
+                this.addModel(asset);
+                break;
             case AssetType.Texture:
-                return this.addTexture(asset);
+                this.addTexture(asset);
+                break;
             case AssetType.Thumbnail:
-                return this.addThumbnail(asset);
+                this.addThumbnail(asset);
+                break;
+            default:
+                if (!asset.id) {
+                    asset.id = this.generateId(asset.assetType);
+                }
+        
+                this.assetsById.set(asset.id, asset);
+                break;
         }
+
+        this.assetsByPath.set(asset.path, asset);
+        this.objs.push(asset);
+
+        return asset.id;
     }
 
     private addModel(asset: AssetObj): string {
@@ -69,6 +87,12 @@ export class AssetStore extends AbstractStore {
         return asset.id;
     }
 
+    lookupByProp(key: keyof AssetObj, val: any) {
+        if (key === 'path') {
+            return this.assetsByPath.get(val);
+        }
+    }
+
     getAssetById(id: string): AssetObj {
         if (!id) { return undefined; }
         
@@ -84,6 +108,10 @@ export class AssetStore extends AbstractStore {
     }
 
     private generateId(assetPrefix: string) {
+        if (this.maxIdForPrefix.get(assetPrefix) === undefined) {
+            this.maxIdForPrefix.set(assetPrefix, 0);
+        }
+
         const idIndex = this.maxIdForPrefix.get(assetPrefix);
         this.maxIdForPrefix.set(assetPrefix, idIndex + 1);
         return `${assetPrefix}-${idIndex + 1}`.toLocaleLowerCase();

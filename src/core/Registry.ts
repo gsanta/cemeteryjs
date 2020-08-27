@@ -4,6 +4,7 @@ import { Plugins } from "./plugins/Plugins";
 import { IControlledObject, ObjectCapability } from './IControlledObject';
 import { IListener } from './IListener';
 import { Preferences, defaultPreferences } from './preferences/Preferences';
+import { IEngineFacade } from "./adapters/IEngineFacade";
 
 export class Registry {
     stores: Stores;
@@ -11,7 +12,7 @@ export class Registry {
     plugins: Plugins;    
     // ui_regions: UI_Regions;
     preferences: Preferences = defaultPreferences;
-    engine: IEngineFacade
+    engine: IEngineFacade;
 
     constructor() {
         this.stores = new Stores(this);
