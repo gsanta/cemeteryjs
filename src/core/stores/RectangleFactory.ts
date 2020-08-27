@@ -41,7 +41,7 @@ export class RectangleFactory  {
             scene
         );
 
-        meshObject.mesh = mesh;
+        meshObject.obj.mesh = mesh;
 
         meshObject.meshName = mesh.name;
 

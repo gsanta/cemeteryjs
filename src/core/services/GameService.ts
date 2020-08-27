@@ -42,7 +42,7 @@ export class GameService {
     addConcept(view: View) {
         switch(view.viewType) {
             case ViewType.MeshView:
-                this.registry.stores.meshStore.createInstance((<MeshView> view).model)
+                this.registry.stores.meshStore.createInstance((<MeshView> view).obj)
             break;
         }
     }

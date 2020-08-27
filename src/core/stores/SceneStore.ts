@@ -32,7 +32,7 @@ export class SceneStore extends AbstractViewStore {
 
     addMeshView(meshView: MeshView) {
         this.addView(meshView);
-        this.registry.stores.meshStore.createInstance((<MeshView> meshView).model);
+        this.registry.stores.meshStore.createInstance((<MeshView> meshView).obj);
     }
 
     //TODO make it protected
@@ -53,13 +53,13 @@ export class SceneStore extends AbstractViewStore {
         this.registry.stores.selectionStore.removeItem(view);
 
         if (view.viewType === ViewType.MeshView) {
-            this.registry.stores.meshStore.deleteInstance((<MeshView> view).mesh);
+            this.registry.stores.meshStore.deleteInstance((<MeshView> view).obj.mesh);
         }
     }
 
     clear(): void {
         super.clear();
-        this.getMeshViews().forEach(meshView => meshView.mesh && this.registry.stores.meshStore.deleteInstance(meshView.mesh));
+        this.getMeshViews().forEach(meshView => meshView.obj.mesh && this.registry.stores.meshStore.deleteInstance(meshView.obj.mesh));
         this.views = [];
         this.controls = [];
     }
@@ -102,7 +102,7 @@ export class SceneStore extends AbstractViewStore {
         switch(asset.assetType) {
             case AssetType.Model:
                 this.getMeshViews()
-                    .filter(v => v.modelId === asset.id)
+                    .filter(v => v.obj.modelId === asset.id)
                     .forEach(view => this.removeItem(view));
         }
     }

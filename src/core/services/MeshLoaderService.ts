@@ -31,22 +31,14 @@ export class MeshLoaderService extends AbstractPluginService<AbstractCanvasPlugi
             });
     }
 
-    getAnimations(asset: AssetObj, id: string): Promise<string[]> {
-        return this
-            .load(asset, id)
-            .then(mesh => {
-                return mesh.skeleton ? mesh.skeleton.getAnimationRanges().map(range => range.name) : [];
-            });
-    }
-
     loadAll(meshObjects: MeshView[]): Promise<Mesh[]> {
         return new Promise((resolve, reject) => {
-            const modeledMeshObjets = meshObjects.filter(item => item.modelId);
+            const modeledMeshObjets = meshObjects.filter(item => item.obj.modelId);
     
             const promises: Promise<Mesh>[] = [];
     
             for (let i = 0; i < modeledMeshObjets.length; i++) {
-                const asset = this.registry.stores.assetStore.getAssetById(modeledMeshObjets[i].modelId);
+                const asset = this.registry.stores.assetStore.getAssetById(modeledMeshObjets[i].obj.modelId);
                 promises.push(this.load(asset, modeledMeshObjets[i].id));
             }
     

@@ -100,7 +100,7 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
     mounted(htmlElement: HTMLElement) {
         super.mounted(htmlElement);
         this.meshView = this.registry.stores.selectionStore.getView() as MeshView;
-        const modelModel = this.registry.stores.assetStore.getAssetById(this.meshView.modelId);
+        const modelModel = this.registry.stores.assetStore.getAssetById(this.meshView.obj.modelId);
 
         this.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName).load(modelModel, '123');
     }

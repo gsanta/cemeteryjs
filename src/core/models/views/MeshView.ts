@@ -5,7 +5,7 @@ import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
 import { toVector3 } from '../../../utils/geometry/GeomUtils';
 import { toDegree } from '../../../utils/geometry/Measurements';
 import { ViewType, View, ViewJson } from './View';
-import { MeshModel } from '../game_objects/MeshModel';
+import { MeshObj } from '../game_objects/MeshObj';
 
 export enum WorldItemShape {
     RECTANGLE = 'rect',
@@ -36,15 +36,12 @@ export interface MeshViewJson extends ViewJson {
     thumbnailId: string;
     scale: number;
     yPos: number 
-    path: string;
-    isManualControl: boolean;
 }
 
 export class MeshView extends View implements IGameModel {
     viewType = ViewType.MeshView;
-    mesh: Mesh;
 
-    model: MeshModel;
+    obj: MeshObj;
 
     meshName: string;
     id: string;
@@ -52,18 +49,10 @@ export class MeshView extends View implements IGameModel {
     private rotation: number;
     private scale: number;
     
-    children: MeshView[] = [];
-    parent: MeshView;
-    modelId: string;
-    textureId: string;
     thumbnailId: string;
-    routeId: string;
-    path: string;
-    isManualControl: boolean;
 
     color: string = 'grey';
     yPos: number = 0;
-
     speed = 0.5;
     animations: string[] = ['animation1'];
     animationState = AnimationState.Playing;
@@ -72,11 +61,7 @@ export class MeshView extends View implements IGameModel {
     constructor(config?: {dimensions?: Rectangle}) {
         super();
         this.dimensions = config && config.dimensions;
-        this.model = new MeshModel(this);
-    }
-
-    addChild(worldItem: MeshView) {
-        this.children.push(worldItem);
+        this.obj = new MeshObj(this);
     }
 
     equalTo(worldItem: MeshView) {
@@ -101,23 +86,23 @@ export class MeshView extends View implements IGameModel {
     }
 
     getPosition(): Point {
-        return this.mesh ? to2DPoint(this.mesh.getAbsolutePosition()) : this.dimensions.getBoundingCenter();
+        return this.obj.mesh ? to2DPoint(this.obj.mesh.getAbsolutePosition()) : this.dimensions.getBoundingCenter();
     }
 
     setPosition(point: Point) {
-        this.mesh && this.mesh.setAbsolutePosition(toVector3(point, this.yPos));
+        this.obj.mesh && this.obj.mesh.setAbsolutePosition(toVector3(point, this.yPos));
     }
 
     moveForward(amount: number): void {
         // this.dimensions.translate(vector);
 
-        this.mesh && this.mesh.translate(Axis.Z, amount, Space.LOCAL);
+        this.obj.mesh && this.obj.mesh.translate(Axis.Z, amount, Space.LOCAL);
     }
 
     moveBackward(amount: number): void {
         // this.dimensions.translate(vector);
 
-        this.mesh && this.mesh.translate(Axis.Z, amount, Space.LOCAL);
+        this.obj.mesh && this.obj.mesh.translate(Axis.Z, amount, Space.LOCAL);
     }
 
     getRotation(): number {
@@ -125,8 +110,8 @@ export class MeshView extends View implements IGameModel {
     }
 
     rotateBy(rad: number) {
-        if (this.mesh) {
-            this.mesh.rotation.y += rad;
+        if (this.obj.mesh) {
+            this.obj.mesh.rotation.y += rad;
         } else {
             this.rotation += rad;
         }
@@ -134,17 +119,17 @@ export class MeshView extends View implements IGameModel {
 
     setRotation(angle: number) {
         this.rotation = angle;
-        this.model.setRotation(angle);
+        this.obj.setRotation(angle);
     }
 
     rotate(angle: number) {
-        this.mesh.rotation.y = 0;
-        this.mesh.rotate(Axis.Y, angle, Space.LOCAL);
+        this.obj.mesh.rotation.y = 0;
+        this.obj.mesh.rotate(Axis.Y, angle, Space.LOCAL);
     }
 
     setScale(scale: number) {
         this.scale = scale;
-        this.model.setScale(scale);
+        this.obj.setScale(scale);
     }
 
     getScale(): number {
@@ -155,9 +140,9 @@ export class MeshView extends View implements IGameModel {
 
     move(point: Point) {
         this.dimensions = this.dimensions.translate(point);
-        if (this.mesh) {
+        if (this.obj.mesh) {
             const rect = <Rectangle> this.dimensions.div(10);
-            this.mesh.setAbsolutePosition(new Vector3(rect.topLeft.x + rect.getWidth() / 2, 0, -rect.topLeft.y - rect.getHeight() / 2));
+            this.obj.mesh.setAbsolutePosition(new Vector3(rect.topLeft.x + rect.getWidth() / 2, 0, -rect.topLeft.y - rect.getHeight() / 2));
         }
     }
 
@@ -167,26 +152,22 @@ export class MeshView extends View implements IGameModel {
         return {
             ...super.toJson(),
             rotation: this.rotation,
-            modelId: this.modelId,
-            textureId: this.textureId,
+            modelId: this.obj.modelId,
+            textureId: this.obj.textureId,
             thumbnailId: this.thumbnailId,
             scale: this.scale,
             yPos: this.yPos,
-            path: this.path,
-            isManualControl: this.isManualControl,
         }
     }
 
     fromJson(json: MeshViewJson, viewMap: Map<string, View>) {
         super.fromJson(json, viewMap);
         this.rotation = json.rotation;
-        this.modelId = json.modelId;
+        this.obj.modelId = json.modelId;
         this.scale = json.scale;
         this.yPos = json.yPos;
-        this.textureId = json.textureId;
+        this.obj.textureId = json.textureId;
         this.thumbnailId = json.thumbnailId;
-        this.path = this.path;
-        this.isManualControl = this.isManualControl;
     }
 }
 

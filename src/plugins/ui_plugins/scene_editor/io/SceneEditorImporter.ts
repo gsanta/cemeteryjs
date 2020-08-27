@@ -38,15 +38,15 @@ export class SceneEditorImporter extends AbstractPluginImporter {
     }
 
     private initAssets(meshView: MeshView) {
-        if (meshView.modelId) {
+        if (meshView.obj.modelId) {
             const asset = new AssetObj({assetType: AssetType.Model});
-            asset.id = meshView.modelId;
+            asset.id = meshView.obj.modelId;
             this.registry.stores.assetStore.addObj(asset);
         }
         
-        if (meshView.textureId) {
+        if (meshView.obj.textureId) {
             const asset = new AssetObj({assetType: AssetType.Texture});
-            asset.id = meshView.textureId;
+            asset.id = meshView.obj.textureId;
             this.registry.stores.assetStore.addObj(asset);
         }
 

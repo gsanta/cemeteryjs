@@ -36,7 +36,7 @@ export class RouteWalker {
         const meshObj = this.route.meshModel.meshView;
         const pathObj = this.route.pathModel.pathView;
 
-        if (!meshObj.mesh) { return; }
+        if (!meshObj.obj.mesh) { return; }
 
         this.route.path = this.createPathCorners(pathObj);
 
