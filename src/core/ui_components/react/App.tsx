@@ -26,7 +26,6 @@ export interface AppState {
 
 const StyledApp = styled.div`
     .labeled-input {
-        margin-bottom: 5px;
         width: 100%;
 
             align-items: center;

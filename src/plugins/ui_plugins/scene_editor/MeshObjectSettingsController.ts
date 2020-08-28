@@ -114,12 +114,21 @@ export class MeshObjectSettingsController extends AbstractController<MeshObjectS
                 this.registry.engine.meshLoader.createInstance(this.meshView.obj);
                 this.registry.services.history.createSnapshot();
             })
-            .onClick(() => {
-                1;
-            })
-
-        this.createPropHandler<number>(MeshObjectSettingsProps.Texture)
             .onClick((val) => {
+                1
+            });
+
+        this.createPropHandler<{data: string}>(MeshObjectSettingsProps.Texture)
+            .onChange((val) => {
+                const asset = new AssetObj({data: val.data, assetType: AssetType.Texture});
+                this.meshView.obj.textureId = this.registry.stores.assetStore.addObj(asset);
+                this.registry.services.localStore.saveAsset(asset);
+
+                this.registry.engine.meshLoader.createMaterial(this.meshView.obj);
+                this.registry.services.history.createSnapshot();
+            })
+            .onClick((val) => {
+                1
             });
 
         this.createPropHandler<number>(MeshObjectSettingsProps.Thumbnail)

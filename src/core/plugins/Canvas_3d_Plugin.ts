@@ -1,11 +1,10 @@
-import { Camera2D } from "../models/misc/camera/Camera2D";
-import { toolFactory } from "./tools/toolFactory";
-import { ToolType } from "./tools/Tool";
-import { Registry } from "../Registry";
-import { EngineService } from "../services/EngineService";
-import { UI_Region } from "./UI_Plugin";
-import { AbstractCanvasPlugin, calcOffsetFromDom } from "./AbstractCanvasPlugin";
+import { IEngineFacade } from "../adapters/IEngineFacade";
 import { ICamera } from "../models/misc/camera/ICamera";
+import { Registry } from "../Registry";
+import { AbstractCanvasPlugin, calcOffsetFromDom } from "./AbstractCanvasPlugin";
+import { ToolType } from "./tools/Tool";
+import { toolFactory } from "./tools/toolFactory";
+import { UI_Region } from "./UI_Plugin";
 
 export function getCanvasElement(viewId: string): HTMLCanvasElement {
     if (typeof document !== 'undefined') {
@@ -16,6 +15,7 @@ export function getCanvasElement(viewId: string): HTMLCanvasElement {
 
 export class Canvas_3d_Plugin extends AbstractCanvasPlugin {
     region = UI_Region.Canvas2;
+    engine: IEngineFacade;
 
     constructor(id: string, registry: Registry) {
         super(registry);
@@ -30,8 +30,7 @@ export class Canvas_3d_Plugin extends AbstractCanvasPlugin {
     }
 
     resize() {
-        const engineService = this.pluginServices.byName<EngineService<this>>(EngineService.serviceName);
-        engineService.getEngine() && engineService.getEngine().resize();
+        (this.engine || this.registry.engine).resize();
     }
     
     getOffset() {
@@ -46,6 +45,6 @@ export class Canvas_3d_Plugin extends AbstractCanvasPlugin {
     }
 
     getCamera(): ICamera {
-        return this.pluginServices.engineService().getCamera();
+        return (this.engine || this.registry.engine).getCamera();
     }
 }

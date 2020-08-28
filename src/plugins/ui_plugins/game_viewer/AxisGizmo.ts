@@ -5,6 +5,7 @@ import { Registry } from '../../../core/Registry';
 import { Camera3D } from '../../../core/models/misc/camera/Camera3D';
 import { AbstractCanvasPlugin } from '../../../core/plugins/AbstractCanvasPlugin';
 import { EngineService } from '../../../core/services/EngineService';
+import { BabylonEngineFacade } from '../../../core/adapters/babylonjs/BabylonEngineFacade';
 
 export class AxisGizmo {
     private registry: Registry;
@@ -26,7 +27,7 @@ export class AxisGizmo {
     }
     
     awake() {
-        this.advancedTexture = AdvancedDynamicTexture.CreateFullscreenUI("UI");
+        this.advancedTexture = AdvancedDynamicTexture.CreateFullscreenUI("UI", true);
     
         this.createButtons();
         this.createXLine();
@@ -100,15 +101,16 @@ export class AxisGizmo {
             this.awake();    
         }
 
-        const gameEngine = this.plugin.pluginServices.byName<EngineService>(EngineService.serviceName);
-        const scene = gameEngine.getScene();
-        const engine = gameEngine.getEngine();
+        // const gameEngine =  this.plugin.pluginServices.byName<EngineService>(EngineService.serviceName);
+        // const scene = gameEngine.getScene();
+        // const engine = gameEngine.getEngine();
+        const engine = this.registry.engine as BabylonEngineFacade;
         const camera = (<Camera3D> this.registry.plugins.gameView.getCamera()).camera;
 
-        this.updateOriginVector(scene, engine, camera);
-        this.updateXVector(scene, engine, camera);
-        this.updateYVector(scene, engine, camera);
-        this.updateZVector(scene, engine, camera);
+        this.updateOriginVector(engine.scene, engine.engine, camera);
+        this.updateXVector(engine.scene, engine.engine, camera);
+        this.updateYVector(engine.scene, engine.engine, camera);
+        this.updateZVector(engine.scene, engine.engine, camera);
         
         this.updateXLine();
         this.updateYLine();

@@ -11,6 +11,7 @@ import { Gizmos } from './Gizmos';
 import { GameViewerImporter } from './io/GameViewerImporter';
 import { NodeService } from './services/NodeService';
 import { GameViewerSettings } from './settings/GameViewerSettings';
+import { BabylonEngineFacade } from '../../../core/adapters/babylonjs/BabylonEngineFacade';
 (<any> window).earcut = require('earcut');
 
 export const GameViewerPluginId = 'game-viewer-plugin'; 
@@ -32,7 +33,6 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
 
         this.pluginServices = new PluginServices(
             [
-                new EngineService(this, this.registry),
                 new NodeService(this, this.registry),
                 new TextureLoaderService(this, this.registry)
             ]
@@ -45,15 +45,15 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
 
     mounted(htmlElement: HTMLElement) {
         super.mounted(htmlElement);
-        (<GameViewerImporter> this.importer).import();
+
+        this.registry.engine.setup(htmlElement.getElementsByTagName('canvas')[0]);
+        (this.registry.engine as BabylonEngineFacade).engine.resize();
+        // (this.registry.engine as BabylonEngineFacade).scene.registerAfterRender(() => {
+        //     this.gizmos.update();
+        // });
 
         const nodeService = this.pluginServices.byName<NodeService>(NodeService.serviceName);
         nodeService.getNodesByType(BuiltinNodeType.Route).forEach(node => nodeService.getHandler(node).wake(node));
-
-        const engineService = this.pluginServices.byName<EngineService<any>>(EngineService.serviceName);
-        engineService.getScene().registerAfterRender(() => {
-            this.gizmos.update();
-        });
         
         this.gizmos.awake();
         this.renderFunc && this.renderFunc();

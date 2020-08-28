@@ -26,16 +26,16 @@ export class NodeService extends AbstractPluginService<AbstractCanvasPlugin> {
     }
     
     awake() {
-        const engineService = this.plugin.pluginServices.byName<EngineService<any>>(EngineService.serviceName);
-        engineService.getScene().registerAfterRender(() => {
-            this.getNodesByType(BuiltinNodeType.Route).forEach(node => {
-                this.getHandler(node).update(node);
-            });
+        // const engineService = this.plugin.pluginServices.byName<EngineService<any>>(EngineService.serviceName);
+        // engineService.getScene().registerAfterRender(() => {
+        //     this.getNodesByType(BuiltinNodeType.Route).forEach(node => {
+        //         this.getHandler(node).update(node);
+        //     });
     
-            this.getNodesByType(BuiltinNodeType.Keyboard).forEach(node => {
-                this.getHandler(node).update(node);
-            });
-        });
+        //     this.getNodesByType(BuiltinNodeType.Keyboard).forEach(node => {
+        //         this.getHandler(node).update(node);
+        //     });
+        // });
 
     }
 

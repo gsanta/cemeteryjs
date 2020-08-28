@@ -108,7 +108,6 @@ export  class Bab_MeshLoader implements IMeshAdapter {
 
     private setupInstance(meshObj: MeshObj) {
         const model = this.registry.stores.assetStore.getAssetById(meshObj.meshView.obj.modelId);
-
         const templateMesh = this.templatesById.get(model.id);
 
         let clone: Mesh;
@@ -141,6 +140,7 @@ export  class Bab_MeshLoader implements IMeshAdapter {
         clone.rotation.y = meshObj.meshView.getRotation();
 
         meshObj.meshView.obj.mesh = clone;
+        this.createMaterial(meshObj);
     }
 
     private loadMesh(asset: AssetObj): Promise<Mesh> {

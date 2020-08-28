@@ -23,6 +23,7 @@ export class LayoutSettingsPlugin extends AbstractSidepanelPlugin {
         let row = layout.row({ key: LayoutSettingsProps.SelectedLayout });
 
         const layoutSelect = row.select(LayoutSettingsProps.SelectedLayout);
+        layoutSelect.layout = 'horizontal';
         layoutSelect.label = 'Layouts';
         layoutSelect.placeholder = 'Select Layout';
 

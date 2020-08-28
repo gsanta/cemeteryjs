@@ -21,10 +21,6 @@ export class PluginServices<T extends AbstractCanvasPlugin> {
         return <U> service;
     }
 
-    engineService(): EngineService {
-        return this.byName<EngineService>(EngineService.serviceName);
-    }
-
     private throwServiceNotFoundError(serviceName: string) {
         throw new Error(`Service '${serviceName}' not found.`);
     }

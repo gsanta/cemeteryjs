@@ -15,6 +15,7 @@ export enum ToolType {
     Pointer = 'pointer',
     Gamepad = 'gamepad',
     Join = 'join',
+    Sprite = 'Sprite'
 }
 
 export class ToolReturnType {

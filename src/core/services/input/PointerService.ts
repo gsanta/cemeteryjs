@@ -50,7 +50,7 @@ export class PointerService {
         this.isDown = true;
         this.pointer.down = this.getCanvasPoint(e.pointers[0].pos); 
         this.pointer.downScreen = this.getScreenPoint(e.pointers[0].pos); 
-        this.registry.plugins.getHoveredView().toolHandler.getActiveTool().down(e);
+        this.hoveredPlugin.toolHandler.getActiveTool().down(e);
         this.registry.services.render.reRenderScheduled();
     }
 
@@ -61,9 +61,9 @@ export class PointerService {
         this.pointer.currScreen =  this.getScreenPoint(e.pointers[0].pos);
         if (this.isDown && this.pointer.getDownDiff().len() > 2) {
             this.isDrag = true;
-            this.registry.plugins.getHoveredView().toolHandler.getActiveTool().drag(e);
+            this.hoveredPlugin.toolHandler.getActiveTool().drag(e);
         } else {
-            this.registry.plugins.getHoveredView().toolHandler.getActiveTool().move();
+            this.hoveredPlugin.toolHandler.getActiveTool().move();
         }
         this.registry.services.hotkey.executeHotkey(e);
         this.registry.services.render.reRenderScheduled();
@@ -77,12 +77,12 @@ export class PointerService {
         this.pointer.currScreen =  this.getScreenPoint(e.pointers[0].pos);
 
         if (this.isDrag) {
-            this.registry.plugins.getHoveredView().toolHandler.getActiveTool().draggedUp();
+            this.hoveredPlugin.toolHandler.getActiveTool().draggedUp();
         } else {
-            this.registry.plugins.getHoveredView().toolHandler.getActiveTool().click();
+            this.hoveredPlugin.toolHandler.getActiveTool().click();
         }
         
-        this.registry.plugins.getHoveredView().toolHandler.getActiveTool().up(e);
+        this.hoveredPlugin.toolHandler.getActiveTool().up(e);
         this.isDown = false;
         this.isDrag = false;
         this.pointer.down = undefined;
@@ -117,6 +117,7 @@ export class PointerService {
     }
 
     pointerWheel(e: IPointerEvent): void {
+        console.log(this.hoveredPlugin.id);
         this.prevWheelState = this.wheelState;
         this.wheelState += e.deltaY;
         this.wheelDiff = this.wheelState - this.prevWheelState;
@@ -130,13 +131,13 @@ export class PointerService {
         }
 
         this.registry.services.hotkey.executeHotkey(e);
-        this.registry.plugins.getHoveredView().toolHandler.getActiveTool().wheel();
+        this.hoveredPlugin.toolHandler.getActiveTool().wheel();
     }
 
     pointerWheelEnd() {
         this.wheel = Wheel.IDLE;
 
-        this.registry.plugins.getHoveredView().toolHandler.getActiveTool().wheelEnd();
+        this.hoveredPlugin.toolHandler.getActiveTool().wheelEnd();
     }
 
     hover(item: View): void {
@@ -144,7 +145,7 @@ export class PointerService {
         this.registry.services.hotkey.executeHotkey({
             isHover: true
         });
-        this.registry.plugins.getHoveredView().toolHandler.getActiveTool().over(item);
+        this.hoveredPlugin.toolHandler.getActiveTool().over(item);
         this.registry.services.render.reRenderScheduled();
     }
 
@@ -156,32 +157,17 @@ export class PointerService {
         if (this.hoveredItem === item) {
             this.hoveredItem = undefined;
         }
-        this.registry.plugins.getHoveredView().toolHandler.getActiveTool().out(item);
+        this.hoveredPlugin.toolHandler.getActiveTool().out(item);
         this.registry.services.render.reRenderScheduled();
     }
-
-    // pointerDragStart(item: DroppableItem) {
-    //     this.dropType = item;
-    //     const activePlugin = this.registry.plugins.getHoveredView();
-    //     this.registry.plugins.getHoveredView().toolHandler.setPriorityTool(ToolType.DragAndDrop);
-    //     this.registry.services.render.reRender(UI_Region.Sidepanel, this.hoveredPlugin ? this.hoveredPlugin.region : undefined)
-    // }
-
-    // pointerDrop() {
-    //     this.dropType = null;
-    //     const activePlugin = this.registry.plugins.getHoveredView();
-    //     this.registry.plugins.getHoveredView().toolHandler.removePriorityTool(ToolType.DragAndDrop);
-
-    //     this.registry.services.render.reRender(UI_Region.Sidepanel, this.hoveredPlugin ? this.hoveredPlugin.region : undefined)
-    // }
     
     private getScreenPoint(point: Point): Point {
-        const offset = this.registry.plugins.getHoveredView().getOffset();
+        const offset = this.hoveredPlugin.getOffset();
         return new Point(point.x - offset.x, point.y - offset.y);
     }
     
     private getCanvasPoint(point: Point): Point {
-        const offset = this.registry.plugins.getHoveredView().getOffset();
-        return this.registry.plugins.getHoveredView().getCamera().screenToCanvasPoint(new Point(point.x - offset.x, point.y - offset.y));
+        const offset = this.hoveredPlugin.getOffset();
+        return this.hoveredPlugin.getCamera().screenToCanvasPoint(new Point(point.x - offset.x, point.y - offset.y));
     }
 }

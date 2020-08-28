@@ -33,7 +33,7 @@ export interface MeshViewJson extends ViewJson {
     rotation: number;
     modelId: string;
     textureId: string;
-    thumbnailId: string;
+    thumbnailData: string;
     scale: number;
     yPos: number 
 }
@@ -49,7 +49,7 @@ export class MeshView extends View implements IGameModel {
     private rotation: number;
     private scale: number;
     
-    thumbnailId: string;
+    thumbnailData: string;
 
     color: string = 'grey';
     yPos: number = 0;
@@ -154,7 +154,7 @@ export class MeshView extends View implements IGameModel {
             rotation: this.rotation,
             modelId: this.obj.modelId,
             textureId: this.obj.textureId,
-            thumbnailId: this.thumbnailId,
+            thumbnailData: this.thumbnailData,
             scale: this.scale,
             yPos: this.yPos,
         }
@@ -167,7 +167,7 @@ export class MeshView extends View implements IGameModel {
         this.scale = json.scale;
         this.yPos = json.yPos;
         this.obj.textureId = json.textureId;
-        this.thumbnailId = json.thumbnailId;
+        this.thumbnailData = json.thumbnailData;
     }
 }
 

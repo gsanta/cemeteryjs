@@ -24,7 +24,7 @@ export class SceneEditorImporter extends AbstractPluginImporter {
         });
     }
 
-    private importMeshViews(viewGroup: ViewGroupJson, viewMap: Map<string, View>) {
+    private async importMeshViews(viewGroup: ViewGroupJson, viewMap: Map<string, View>) {
         const promises = viewGroup.views.map((viewJson: MeshViewJson) => {
             const meshView: MeshView = new MeshView();
             meshView.fromJson(viewJson, viewMap);
@@ -33,9 +33,7 @@ export class SceneEditorImporter extends AbstractPluginImporter {
             this.registry.stores.canvasStore.addMeshView(meshView);
 
             return meshView;
-        })
-        .filter((meshView: MeshView) => meshView.thumbnailId)
-        .map((meshView: MeshView) => this.registry.services.localStore.loadAsset(this.registry.stores.assetStore.getAssetById(meshView.thumbnailId)));
+        });
 
         Promise.all(promises)
             .catch(e => console.error(e))
@@ -66,12 +64,6 @@ export class SceneEditorImporter extends AbstractPluginImporter {
             asset.id = meshView.obj.textureId;
             this.registry.stores.assetStore.addObj(asset);
         }
-
-        if (meshView.thumbnailId) {
-            const asset = new AssetObj({assetType: AssetType.Thumbnail});
-            asset.id = meshView.thumbnailId;
-            this.registry.stores.assetStore.addObj(asset);
-        }    
     }
 
     // private loadAllMeshes(meshViews: MeshView[]): Promise<Mesh[]> {

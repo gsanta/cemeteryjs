@@ -6,21 +6,20 @@ import { UI_Region } from '../../../core/plugins/UI_Plugin';
 import { toolFactory } from '../../../core/plugins/tools/toolFactory';
 import { ToolType } from '../../../core/plugins/tools/Tool';
 import { PluginServices } from '../../../core/plugins/PluginServices';
-import { EngineService } from '../../../core/services/EngineService';
 import { MeshView } from '../../../core/models/views/MeshView';
 import { ThumbnailMakerController, ThumbnailMakerControllerId, ThumbnailMakerControllerProps } from './ThumbnailMakerController';
 import { UI_Dialog } from '../../../core/ui_components/elements/surfaces/UI_Dialog';
+import { BabylonEngineFacade } from '../../../core/adapters/babylonjs/BabylonEngineFacade';
 
 export const ThumbnailDialogPluginId = 'thumbnail-dialog-plugin'; 
 export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
     region = UI_Region.Dialog;
     displayName = 'Thumbnail';
 
-    meshView: MeshView;
-
     constructor(registry: Registry) {
         super(ThumbnailDialogPluginId, registry);
 
+        this.engine = new BabylonEngineFacade(this.registry);
         
         [ToolType.Camera]
         .map(toolType => {
@@ -32,12 +31,12 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
 
         this.pluginServices = new PluginServices(
             [
-                new EngineService(this, this.registry),
             ]
         );
     }
 
     renderInto(layout: UI_Layout): UI_Layout {
+        const meshView = this.registry.stores.selectionStore.getView() as MeshView;
         const dialog: UI_Dialog = <UI_Dialog> layout;
         dialog.width = '560px';
         layout.controllerId = ThumbnailMakerControllerId;
@@ -61,10 +60,7 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
         image.width = '200px';
         image.height = '200px';
 
-        if (this.meshView && this.meshView.thumbnailId) {
-            image.src = this.registry.stores.assetStore.getAssetById(this.meshView.thumbnailId).data;
-        }
-        
+        image.src = meshView.thumbnailData;
     
         // const column2 = tableRow.tableColumn();
 
@@ -97,8 +93,17 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
 
     mounted(htmlElement: HTMLElement) {
         super.mounted(htmlElement);
-        this.meshView = this.registry.stores.selectionStore.getView() as MeshView;
-        const modelModel = this.registry.stores.assetStore.getAssetById(this.meshView.obj.modelId);
+        const meshView = this.registry.stores.selectionStore.getView() as MeshView;
+
+        this.engine.setup(htmlElement.getElementsByTagName('canvas')[0]);
+
+        setTimeout(() => {
+            this.engine.meshLoader.createInstance(meshView.obj);
+        }, 500);
+    }
+
+    unmounted() {
+        (this.engine as BabylonEngineFacade).engine.dispose();
     }
 
     getStore() {

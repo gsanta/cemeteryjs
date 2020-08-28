@@ -58,6 +58,7 @@ export class ObjectSettingsPlugin extends UI_Plugin {
         let row = layout.row({ key: MeshObjectSettingsProps.MeshId });
 
         const textField = row.textField(MeshObjectSettingsProps.MeshId);
+        textField.layout = 'horizontal';
         textField.label = 'Id';
 
         row = layout.row({ key: MeshObjectSettingsProps.Layer });
@@ -66,16 +67,19 @@ export class ObjectSettingsPlugin extends UI_Plugin {
 
         row = layout.row({ key: MeshObjectSettingsProps.Rotation });
         const rotationTextField = row.textField(MeshObjectSettingsProps.Rotation);
+        rotationTextField.layout = 'horizontal';
         rotationTextField.label = 'Rotation';
         rotationTextField.type = 'number';
 
         row = layout.row({ key: MeshObjectSettingsProps.Scale });
         const scaleTextField = row.textField(MeshObjectSettingsProps.Scale);
+        scaleTextField.layout = 'horizontal';
         scaleTextField.label = 'Scale';
         scaleTextField.type = 'number';
 
         row = layout.row({ key: MeshObjectSettingsProps.YPos });
         const yPosTextField = row.textField(MeshObjectSettingsProps.YPos);
+        yPosTextField.layout = 'horizontal';
         yPosTextField.label = 'YPos';
         yPosTextField.type = 'number';
 

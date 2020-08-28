@@ -16,6 +16,9 @@ const zoomInIcon = require('../../../../../../assets/images/icons/zoom_in.svg');
 const fullScreenIcon = require('../../../../../../assets/images/icons/fullscreen.svg');
 const fullScreenExitIcon = require('../../../../../../assets/images/icons/fullscreen_exit.svg');
 const insertPhotoIcon = require('../../../../../../assets/images/icons/insert_photo.svg');
+const videogameAssetIcon = require('../../../../../../assets/images/icons/videogame_asset.svg');
+const meshIcon = require('../../../../../../assets/images/icons/mesh.svg');
+const spriteIcon = require('../../../../../../assets/images/icons/sprite.svg');
 
 const ToolbarStyled = styled.div`
     position: absolute;
@@ -107,11 +110,19 @@ const ToolbarStyled = styled.div`
         &.insert-photo-icon {
             background-image: url(${insertPhotoIcon});
         }
+
+        &.videogame-asset-icon {
+            background-image: url(${videogameAssetIcon});
+        }
+        
+        &.mesh-icon {
+            background-image: url(${meshIcon});
+        }
+
+        &.sprite-icon {
+            background-image: url(${spriteIcon});
+        }
     }
-`;
-
-const ToolGroupStyled = styled.div`
-
 `;
 
 export interface ToolbarCompProps extends UI_ComponentProps<UI_Toolbar> {

@@ -34,7 +34,7 @@ export class EngineService<T extends AbstractCanvasPlugin = AbstractCanvasPlugin
 
         const canvasElement = this.plugin.htmlElement.querySelector('canvas');
 
-        this.engine = new Engine(canvasElement, true, { preserveDrawingBuffer: true, stencil: true });
+        // this.engine = new Engine(canvasElement, true, { preserveDrawingBuffer: true, stencil: true });
         // TODO check if needed, there was some weird bug in babylon why this was needed 
         this.engine.getInputElement = () => canvasElement;
         

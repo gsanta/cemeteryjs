@@ -66,7 +66,7 @@
     "@types/react-dropzone": "^5.1.0",
     "@types/xml-js": "^1.0.0",
     "arraybuffer-to-string": "^1.0.2",
-    "babylonjs": "^4.2.0-alpha.9",
+    "babylonjs": "^4.2.0-alpha.33",
     "babylonjs-gui": "^4.1.0",
     "babylonjs-loaders": "^4.0.3",
     "bootstrap": "^4.4.1",

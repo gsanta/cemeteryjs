@@ -16,7 +16,8 @@ export class ToolComp extends React.Component<ToolCompProps> {
         const classes = cssClassBuilder(
             'ce-tool',
             `${this.props.element.icon}-icon`,
-            selectedTool && (selectedTool.id === this.props.element.controllerId) ? 'ce-tool-active' : undefined
+            selectedTool && (selectedTool.id === this.props.element.controllerId) ? 'ce-tool-active' : undefined,
+            this.props.element.color ? `ce-bg-${this.props.element.color}` : undefined
         );
         
         return (

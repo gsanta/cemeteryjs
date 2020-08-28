@@ -15,6 +15,8 @@ export const colors = {
     panelBackgroundMedium: '#4b484d',
     hoverBackground: '#6188E4',
 
+    green: '#86C35E',
+
     views: {
         highlight: '#5e5ad1',
         stroke: 'black',

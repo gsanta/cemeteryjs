@@ -14,6 +14,10 @@ const SidebarStyled = styled.div`
     height: 100%;
     background: ${colors.panelBackground};
     color: ${colors.textColor};
+
+    .ce-row {
+        margin: 3px;
+    }
 `;
 
 export class SidePanelComponent extends React.Component<SidebarComponentProps> {

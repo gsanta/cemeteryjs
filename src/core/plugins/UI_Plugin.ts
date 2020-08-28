@@ -89,6 +89,7 @@ export abstract class UI_Plugin implements IControlledObject {
 
     activated() {}
     mounted(htmlElement: HTMLElement) {}
+    unmounted() {}
 
     // TODO should be temporary, port it to PointerService somehow
     over() {

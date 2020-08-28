@@ -41,11 +41,21 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
         const toolbar = canvas.toolbar();
         
         let tool = toolbar.tool({controllerId: ToolType.Rectangle, key: ToolType.Rectangle});
-        tool.icon = 'brush';
+        tool.icon = 'mesh';
+        let tooltip = tool.tooltip();
+        tooltip.label = 'Add Mesh';
+
+        tool = toolbar.tool({controllerId: ToolType.Sprite, key: ToolType.Sprite});
+        tool.icon = 'sprite';
+        tooltip = tool.tooltip();
+        tooltip.label = 'Add Sprite';
+
+        let separator = toolbar.iconSeparator();
+        separator.placement = 'left';
 
         tool = toolbar.tool({controllerId: ToolType.Path, key: ToolType.Path});
         tool.icon = 'path';
-        let tooltip = tool.tooltip();
+        tooltip = tool.tooltip();
         tooltip.label = 'Path tool';
 
         tool = toolbar.tool({controllerId: ToolType.Select, key: ToolType.Select});
@@ -63,7 +73,7 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
         tooltip = tool.tooltip();
         tooltip.label = 'Pan tool';
 
-        let separator = toolbar.iconSeparator();
+        separator = toolbar.iconSeparator();
         separator.placement = 'left';
 
         let actionIcon = toolbar.actionIcon({controllerId: CanvasControllerId, prop: CanvasControllerProps.ZoomIn});
@@ -94,24 +104,23 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
     }
 
     private renderMeshViews(canvas: UI_SvgCanvas) {
-        const views = getSortedMeshViews(this.registry).map(item => {
-            const group = canvas.group(item.id);
-            group.data = item;
-            group.transform = `translate(${item.dimensions.topLeft.x} ${item.dimensions.topLeft.y}) rotate(${toDegree(item.getRotation())} ${item.dimensions.getWidth() / 2} ${item.dimensions.getHeight() / 2})`;
+        const views = getSortedMeshViews(this.registry).map(meshView => {
+            const group = canvas.group(meshView.id);
+            group.data = meshView;
+            group.transform = `translate(${meshView.dimensions.topLeft.x} ${meshView.dimensions.topLeft.y}) rotate(${toDegree(meshView.getRotation())} ${meshView.dimensions.getWidth() / 2} ${meshView.dimensions.getHeight() / 2})`;
             const rect = group.rect();
-            rect.width = item.dimensions.getWidth();
-            rect.height = item.dimensions.getHeight();
+            rect.width = meshView.dimensions.getWidth();
+            rect.height = meshView.dimensions.getHeight();
 
-            rect.strokeColor = item.tags.has(ViewTag.Selected) ? colors.views.highlight : 'black';
+            rect.strokeColor = meshView.tags.has(ViewTag.Selected) ? colors.views.highlight : 'black';
 
             let thumbnail: JSX.Element = null;
-            const thumbnailModel = this.registry.stores.assetStore.getAssetById(item.thumbnailId);
     
-            if (thumbnailModel && thumbnailModel.data) {
+            if (meshView.thumbnailData) {
                 const image = group.image();
-                image.href = thumbnailModel.data;
-                image.width = item.dimensions.getWidth();
-                image.height = item.dimensions.getHeight();
+                image.href = meshView.thumbnailData;
+                image.width = meshView.dimensions.getWidth();
+                image.height = meshView.dimensions.getHeight();
             }
     
             return thumbnail;
