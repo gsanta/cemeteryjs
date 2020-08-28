@@ -9,6 +9,7 @@ import { AbstractViewStore } from "./AbstractViewStore";
 import { AssetStore } from "./AssetStore";
 import { without } from "../../utils/geometry/Functions";
 import { MeshObj } from "../models/game_objects/MeshObj";
+import { UI_Region } from "../plugins/UI_Plugin";
 
 export function isFeedback(type: string) {
     return type.endsWith('Feedback');
@@ -34,12 +35,19 @@ export class SceneStore extends AbstractViewStore {
     addMeshView(meshView: MeshView) {
         this.addView(meshView);
 
-        this.registry.engine.meshLoader.createInstance((<MeshView> meshView).obj);
+        this.registry.engine.meshLoader.createInstance((<MeshView> meshView).obj)
+            .finally(() => {
+                const size = this.registry.engine.meshLoader.getDimensions(meshView.obj);
+                meshView.dimensions.setWidth(size.x);
+                meshView.dimensions.setHeight(size.y);
+                this.registry.services.render.reRender(UI_Region.Canvas1);
+            })
     }
 
     //TODO make it protected
     addView(view: View) {
         view.id = view.id === undefined ? this.generateUniqueName(view.viewType) : view.id;
+        view.obj.id = view.id;
         super.addItem(view);
         this.views.push(view);
     }

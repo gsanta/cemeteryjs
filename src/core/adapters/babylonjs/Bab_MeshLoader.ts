@@ -44,22 +44,19 @@ export  class Bab_MeshLoader implements IMeshAdapter {
         return <Promise<Mesh>> promise;
     }
 
-    getDimensions(meshObj: MeshObj): Promise<Point> {
-        return this
-            .load(meshObj)
-            .then(mesh => {
-                mesh.computeWorldMatrix();
-                mesh.getBoundingInfo().update(mesh._worldMatrix);
-        
-                const boundingVectors = mesh.getHierarchyBoundingVectors();
-                const width = boundingVectors.max.x - boundingVectors.min.x;
-                const height = boundingVectors.max.z - boundingVectors.min.z;
-                let dimensions = new Point(width, height).mul(10);
-        
-                dimensions.x  = dimensions.x < 10 ? 10 : dimensions.x;
-                dimensions.y  = dimensions.y < 10 ? 10 : dimensions.y;
-                return dimensions;
-            });
+    getDimensions(meshObj: MeshObj): Point {
+        const mesh = this.meshes.get(meshObj.id);
+        mesh.computeWorldMatrix();
+        mesh.getBoundingInfo().update(mesh._worldMatrix);
+
+        const boundingVectors = mesh.getHierarchyBoundingVectors();
+        const width = boundingVectors.max.x - boundingVectors.min.x;
+        const height = boundingVectors.max.z - boundingVectors.min.z;
+        let dimensions = new Point(width, height).mul(10);
+
+        dimensions.x  = dimensions.x < 10 ? 10 : dimensions.x;
+        dimensions.y  = dimensions.y < 10 ? 10 : dimensions.y;
+        return dimensions;
     }
 
     createInstance(meshObj: MeshObj): Promise<void> {
@@ -70,8 +67,6 @@ export  class Bab_MeshLoader implements IMeshAdapter {
                 meshObj.meshView.obj.mesh = mesh;
                 return;
             }
-    
-            const modelModel = this.registry.stores.assetStore.getAssetById(meshObj.meshView.obj.modelId);
     
             this.load(meshObj)
                 .then(() => this.setupInstance(meshObj))

@@ -4,22 +4,22 @@ import { MeshView } from '../../../../core/models/views/MeshView';
 
 export class GameViewerImporter extends AbstractPluginImporter {
     import(): void {
-        this.registry.stores.gameStore.clear();
-        this.registry.engine.meshLoader.clear();
+        // this.registry.stores.gameStore.clear();
+        // this.registry.engine.meshLoader.clear();
 
-        this.loadAllMeshes(this.registry.stores.canvasStore.getMeshViews())
-            .then(() => {
-                const promises = this.registry.stores.canvasStore.getMeshViews().map(meshView => this.registry.engine.meshLoader.createInstance(meshView.obj));
-                return Promise.all(promises);
-            })
-            .then(() => {
-                this.registry.stores.canvasStore.getMeshViews().forEach(meshView => this.registry.engine.meshLoader.createMaterial(meshView.obj));
-            })
-            .catch(e => {
-                console.log(e)
-            })
+        // this.loadAllMeshes(this.registry.stores.canvasStore.getMeshViews())
+        //     .then(() => {
+        //         const promises = this.registry.stores.canvasStore.getMeshViews().map(meshView => this.registry.engine.meshLoader.createInstance(meshView.obj));
+        //         return Promise.all(promises);
+        //     })
+        //     .then(() => {
+        //         this.registry.stores.canvasStore.getMeshViews().forEach(meshView => this.registry.engine.meshLoader.createMaterial(meshView.obj));
+        //     })
+        //     .catch(e => {
+        //         console.log(e)
+        //     })
         
-        this.setMeshDimensions();
+        // this.setMeshDimensions();
     }
 
     private loadAllMeshes(meshViews: MeshView[]): Promise<Mesh[]> {
@@ -41,15 +41,15 @@ export class GameViewerImporter extends AbstractPluginImporter {
         });
     }
 
-    private setMeshDimensions() {
-        this.registry.stores.canvasStore.getMeshViews()
-            .filter(item => item.obj.modelId)
-            .forEach(meshView => {
-                this.registry.engine.meshLoader.getDimensions(meshView.obj)
-                    .then(dim => {
-                        meshView.dimensions.setWidth(dim.x);
-                        meshView.dimensions.setHeight(dim.y);
-                    });
-            });
-    }
+    // private setMeshDimensions() {
+    //     this.registry.stores.canvasStore.getMeshViews()
+    //         .filter(item => item.obj.modelId)
+    //         .forEach(meshView => {
+    //             this.registry.engine.meshLoader.getDimensions(meshView.obj)
+    //                 .then(dim => {
+    //                     meshView.dimensions.setWidth(dim.x);
+    //                     meshView.dimensions.setHeight(dim.y);
+    //                 });
+    //         });
+    // }
 }
