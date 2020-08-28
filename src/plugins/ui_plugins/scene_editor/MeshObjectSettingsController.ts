@@ -110,8 +110,9 @@ export class MeshObjectSettingsController extends AbstractController<MeshObjectS
                 const asset = new AssetObj({data: val.data, assetType: AssetType.Model});
                 this.meshView.obj.modelId = this.registry.stores.assetStore.addObj(asset);
                 this.registry.services.localStore.saveAsset(asset);
-                this.registry.stores.meshStore.deleteInstance((<MeshView> this.meshView).obj.mesh);
-                this.registry.stores.meshStore.createInstance(this.meshView.obj);
+                this.registry.engine.meshLoader.deleteInstance(this.meshView.obj);
+
+                this.registry.engine.meshLoader.createInstance(this.meshView.obj);
             })
             .onClick(() => {
                 1;

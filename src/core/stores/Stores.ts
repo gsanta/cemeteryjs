@@ -3,7 +3,6 @@ import { AbstractStore } from "./AbstractStore";
 import { AssetStore } from "./AssetStore";
 import { GameStore } from "./GameStore";
 import { LevelStore } from "./LevelStore";
-import { MeshStore } from "./MeshStore";
 import { NodeStore } from './NodeStore';
 import { SceneStore } from "./SceneStore";
 import { SelectionStore } from "./SelectionStore";
@@ -17,7 +16,6 @@ export class Stores {
     canvasStore: SceneStore;
     selectionStore: SelectionStore;
     levelStore: LevelStore;
-    meshStore: MeshStore;
     spriteStore: SpriteStore;
     nodeStore: NodeStore;
     assetStore: AssetStore;
@@ -30,7 +28,6 @@ export class Stores {
         this.canvasStore = new SceneStore(this.registry);
         this.selectionStore = new SelectionStore();
         this.levelStore = new LevelStore();
-        this.meshStore = new MeshStore(this.registry);
         this.spriteStore = new SpriteStore(this.registry);
         this.nodeStore = new NodeStore(this.registry);
         this.assetStore = new AssetStore(this.registry);
@@ -39,7 +36,6 @@ export class Stores {
 
         this.stores.push(
             this.canvasStore,
-            this.meshStore,
             this.nodeStore,
             this.assetStore,
             this.gameStore,

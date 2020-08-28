@@ -8,6 +8,7 @@ import { Registry } from "../Registry";
 import { AbstractViewStore } from "./AbstractViewStore";
 import { AssetStore } from "./AssetStore";
 import { without } from "../../utils/geometry/Functions";
+import { MeshObj } from "../models/game_objects/MeshObj";
 
 export function isFeedback(type: string) {
     return type.endsWith('Feedback');
@@ -32,7 +33,8 @@ export class SceneStore extends AbstractViewStore {
 
     addMeshView(meshView: MeshView) {
         this.addView(meshView);
-        this.registry.stores.meshStore.createInstance((<MeshView> meshView).obj);
+
+        this.registry.engine.meshLoader.createInstance((<MeshView> meshView).obj);
     }
 
     //TODO make it protected
@@ -53,13 +55,13 @@ export class SceneStore extends AbstractViewStore {
         this.registry.stores.selectionStore.removeItem(view);
 
         if (view.viewType === ViewType.MeshView) {
-            this.registry.stores.meshStore.deleteInstance((<MeshView> view).obj.mesh);
+            this.registry.engine.meshLoader.deleteInstance(view.obj as MeshObj);
         }
     }
 
     clear(): void {
         super.clear();
-        this.getMeshViews().forEach(meshView => meshView.obj.mesh && this.registry.stores.meshStore.deleteInstance(meshView.obj.mesh));
+        this.getMeshViews().forEach(meshView => this.registry.engine.meshLoader.deleteInstance(meshView.obj));
         this.views = [];
         this.controls = [];
     }

@@ -93,7 +93,6 @@ export class PathTool extends PointerTool {
         path.addEditPoint(editPoint)
         path.id = this.registry.stores.canvasStore.generateUniqueName(ViewType.PathView);
         this.registry.stores.canvasStore.addView(path);
-        this.registry.services.game.addConcept(path);
         this.registry.stores.selectionStore.addItem(path);
         this.registry.stores.selectionStore.addItem(path.editPoints[0]);
     }

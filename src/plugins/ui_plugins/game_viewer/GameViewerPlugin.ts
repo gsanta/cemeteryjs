@@ -4,7 +4,6 @@ import { BuiltinNodeType } from '../../../core/models/game_objects/NodeModel';
 import { Canvas_3d_Plugin } from '../../../core/plugins/Canvas_3d_Plugin';
 import { Registry } from '../../../core/Registry';
 import { EngineService } from '../../../core/services/EngineService';
-import { MeshLoaderService } from '../../../core/services/MeshLoaderService';
 import { TextureLoaderService } from '../../../core/services/TextureLoaderService';
 import { UI_Region } from '../../../core/plugins/UI_Plugin';
 import { PluginServices } from '../../../core/plugins/PluginServices';
@@ -34,7 +33,6 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
         this.pluginServices = new PluginServices(
             [
                 new EngineService(this, this.registry),
-                new MeshLoaderService(this, this.registry),
                 new NodeService(this, this.registry),
                 new TextureLoaderService(this, this.registry)
             ]
@@ -62,7 +60,7 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
     }
 
     destroy() {
-        this.registry.stores.meshStore.clear();
+        this.registry.engine.meshLoader.clear();
     }
 
     protected renderInto(layout: UI_Layout): void {

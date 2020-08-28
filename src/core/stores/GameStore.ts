@@ -34,6 +34,6 @@ export class GameStore extends AbstractStore {
     clear() {
         this.routes = [];
         this.routeMap = new Map();
-        this.registry.stores.meshStore.clear();
+        this.registry.engine.meshLoader.clear();
     }
 }

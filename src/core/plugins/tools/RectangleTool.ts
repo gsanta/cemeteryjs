@@ -63,13 +63,9 @@ export class RectangleTool extends AbstractTool {
         super.draggedUp();
 
         this.rectangleFeedback = undefined;
-        this.registry.services.game.addConcept(this.lastPreviewRect);
         if (this.lastPreviewRect) {
             this.lastPreviewRect = null;
         }
-
-        this.registry.services.history.createSnapshot();
-        this.registry.services.render.scheduleRendering(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
 
     leave() {

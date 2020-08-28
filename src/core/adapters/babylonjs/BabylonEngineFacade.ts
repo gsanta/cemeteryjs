@@ -3,6 +3,7 @@ import { Registry } from "../../Registry";
 import { ArcRotateCamera, Vector3, HemisphericLight, PointLight, Scene, Engine } from "babylonjs";
 import { BabylonSpriteLoader } from "./BabylonSpriteLoader";
 import { Babylon_SpriteAdapter } from "./Babylon_SpriteAdapter";
+import { Bab_MeshLoader } from "./Bab_MeshLoader";
 
 export class BabylonEngineFacade implements IEngineFacade {
     scene: Scene;
@@ -11,12 +12,14 @@ export class BabylonEngineFacade implements IEngineFacade {
 
     spriteLoader: BabylonSpriteLoader;
     sprites: Babylon_SpriteAdapter;
+    meshLoader: Bab_MeshLoader;
 
     constructor(registry: Registry) {
         this.registry = registry;
 
         this.spriteLoader = new BabylonSpriteLoader(this.registry);
         this.sprites = new Babylon_SpriteAdapter(this.registry);
+        this.meshLoader = new Bab_MeshLoader(this.registry, this);
     }
 
     setup(canvas: HTMLCanvasElement) {

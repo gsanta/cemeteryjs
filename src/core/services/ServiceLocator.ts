@@ -1,4 +1,3 @@
-import { ISpriteLoaderAdapter } from "../adapters/ISpriteLoaderAdapter";
 import { Registry } from "../Registry";
 import { EventService } from './EventService';
 import { ExportService } from "./export/ExportService";

@@ -7,7 +7,6 @@ import { toolFactory } from '../../../core/plugins/tools/toolFactory';
 import { ToolType } from '../../../core/plugins/tools/Tool';
 import { PluginServices } from '../../../core/plugins/PluginServices';
 import { EngineService } from '../../../core/services/EngineService';
-import { MeshLoaderService } from '../../../core/services/MeshLoaderService';
 import { MeshView } from '../../../core/models/views/MeshView';
 import { ThumbnailMakerController, ThumbnailMakerControllerId, ThumbnailMakerControllerProps } from './ThumbnailMakerController';
 import { UI_Dialog } from '../../../core/ui_components/elements/surfaces/UI_Dialog';
@@ -34,7 +33,6 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
         this.pluginServices = new PluginServices(
             [
                 new EngineService(this, this.registry),
-                new MeshLoaderService(this, this.registry)
             ]
         );
     }
@@ -101,8 +99,6 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
         super.mounted(htmlElement);
         this.meshView = this.registry.stores.selectionStore.getView() as MeshView;
         const modelModel = this.registry.stores.assetStore.getAssetById(this.meshView.obj.modelId);
-
-        this.pluginServices.byName<MeshLoaderService>(MeshLoaderService.serviceName).load(modelModel, '123');
     }
 
     getStore() {
