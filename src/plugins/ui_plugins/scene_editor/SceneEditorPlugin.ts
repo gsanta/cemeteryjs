@@ -4,7 +4,7 @@ import { colors } from '../../../core/ui_components/react/styles';
 import { activeToolId } from '../../../core/ui_components/elements/UI_Element';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas';
-import { ViewTag } from '../../../core/models/views/View';
+import { ViewTag, ViewType } from '../../../core/models/views/View';
 import { Canvas_2d_Plugin } from '../../../core/plugins/Canvas_2d_Plugin';
 import { Registry } from '../../../core/Registry';
 import { toolFactory } from '../../../core/plugins/tools/toolFactory';
@@ -12,13 +12,21 @@ import { ToolType } from '../../../core/plugins/tools/Tool';
 import { sort } from '../../../utils/geometry/Functions';
 import { SceneEditorExporter } from './io/SceneEditorExporter';
 import { SceneEditorImporter } from './io/SceneEditorImporter';
+import { MeshAddTool } from './tools/MeshAddTool';
+import { SpriteAddTool } from './tools/SpriteAddTool';
+import { SpriteViewType } from '../../../core/models/views/SpriteView';
 
 export const SceneEditorPluginId = 'scene-editor-plugin'; 
 export class SceneEditorPlugin extends Canvas_2d_Plugin {
+    viewTypes: string[] = [ViewType.MeshView, ViewType.PathView, SpriteViewType];
+
     constructor(registry: Registry) {
         super(SceneEditorPluginId, registry);
+
+        this.toolHandler.registerTool(new MeshAddTool(this, this.registry));
+        this.toolHandler.registerTool(new SpriteAddTool(this, this.registry));
         
-        [ToolType.Rectangle, ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Pointer, ToolType.Camera]
+        [ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Pointer, ToolType.Camera]
             .map(toolType => {
                 this.toolHandler.registerTool(toolFactory(toolType, this, registry));
             });
@@ -100,6 +108,7 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
         tooltip.label = 'Redo';
 
         this.renderMeshViews(canvas);
+        this.renderSpriteViews(canvas);
         this.renderPathViews(canvas);
     }
 
@@ -125,6 +134,23 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
     
             return thumbnail;
         });
+    }
+
+    private renderSpriteViews(canvas: UI_SvgCanvas) {
+        this.registry.stores.canvasStore
+            .getViewsByType(SpriteViewType)
+            .forEach(spriteView => {
+                const group = canvas.group(spriteView.id);
+                group.data = spriteView;
+                group.transform = `translate(${spriteView.dimensions.topLeft.x} ${spriteView.dimensions.topLeft.y})`;
+                const rect = group.rect();
+                rect.width = spriteView.dimensions.getWidth();
+                rect.height = spriteView.dimensions.getHeight();
+                rect.fillColor = 'green';
+
+                rect.strokeColor = spriteView.tags.has(ViewTag.Selected) ? colors.views.highlight : 'black';
+    
+            });
     }
 
     activated() {

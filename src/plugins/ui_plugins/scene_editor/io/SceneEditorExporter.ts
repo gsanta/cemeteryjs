@@ -1,7 +1,6 @@
-import { IPluginExporter, IPluginJson } from "../../../../core/plugins/IPluginExporter";
-import { SceneEditorPlugin } from "../SceneEditorPlugin";
+import { IPluginExporter, IPluginJson, ViewGroupJson } from "../../../../core/plugins/IPluginExporter";
 import { Registry } from "../../../../core/Registry";
-import { ViewType } from "../../../../core/models/views/View";
+import { SceneEditorPlugin } from "../SceneEditorPlugin";
 
 
 export class SceneEditorExporter implements IPluginExporter {
@@ -14,21 +13,16 @@ export class SceneEditorExporter implements IPluginExporter {
     }
 
     export(): IPluginJson {
-        const meshViews = this.registry.stores.canvasStore.getMeshViews();
-        const pathViews = this.registry.stores.canvasStore.getPathViews();
+        const viewGroups: ViewGroupJson[] = this.plugin.viewTypes.map(viewType => {
+            return {
+                viewType,
+                views: this.registry.stores.canvasStore.getViewsByType(viewType).map(view => view.toJson())
+            }
+        });
 
         return {
             pluginId: this.plugin.id,
-            viewGroups: [
-                {
-                    viewType: ViewType.MeshView,
-                    views: meshViews.map(meshView => meshView.toJson())
-                },
-                {
-                    viewType: ViewType.PathView,
-                    views: pathViews.map(pathView => pathView.toJson())
-                }
-            ]
+            viewGroups: viewGroups
         }
     }
 }

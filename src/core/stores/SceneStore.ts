@@ -32,29 +32,28 @@ export class SceneStore extends AbstractViewStore {
         this.registry = registry;
     }
 
-    addMeshView(meshView: MeshView) {
-        this.addView(meshView);
-
+    private addMeshView(meshView: MeshView) {
         this.registry.engine.meshLoader.createInstance((<MeshView> meshView).obj)
             .finally(() => {
                 const size = this.registry.engine.meshLoader.getDimensions(meshView.obj);
                 meshView.dimensions.setWidth(size.x);
                 meshView.dimensions.setHeight(size.y);
                 this.registry.services.render.reRender(UI_Region.Canvas1);
-            })
+            });
     }
 
-    //TODO make it protected
     addView(view: View) {
         view.id = view.id === undefined ? this.generateUniqueName(view.viewType) : view.id;
         view.obj.id = view.id;
         super.addItem(view);
         this.views.push(view);
-    }
 
-    addControl(control: ChildView<any>) {
-        super.addItem(control);
-        this.controls.push(control);
+
+        switch(view.viewType) {
+            case ViewType.MeshView:
+                this.addMeshView(view as MeshView);
+            break;
+        }
     }
 
     removeItem(view: View) {

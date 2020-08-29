@@ -1,7 +1,6 @@
 import { AbstractController } from '../../../core/plugins/controllers/AbstractController';
 import { Registry } from '../../../core/Registry';
 import { saveAs } from 'file-saver';
-import { RenderTask } from '../../../core/services/RenderServices';
 import { ToolType } from '../../../core/plugins/tools/Tool';
 import { DeleteTool } from '../../../core/plugins/tools/DeleteTool';
 import { UI_Plugin } from '../../../core/plugins/UI_Plugin';
@@ -38,7 +37,10 @@ export class FileSettingsController extends AbstractController<FileSettingsProps
 
         this.createPropHandler(FileSettingsProps.NewProject)
             .onClick(() => {
-                (this.registry.plugins.sceneEditor.toolHandler.getById(ToolType.Delete) as DeleteTool).eraseAll();
+                this.registry.stores.selectionStore.clear();
+                this.registry.stores.canvasStore.clear();
+                this.registry.services.history.createSnapshot();
+                this.registry.services.render.reRenderAll();
             });
     }
 }

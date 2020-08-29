@@ -5,7 +5,6 @@ import { DragAndDropTool } from './DragAndDropTool';
 import { JoinTool } from './JoinTool';
 import { PathTool } from './PathTool';
 import { PointerTool } from './PointerTool';
-import { RectangleTool } from './RectangleTool';
 import { SelectTool } from './SelectTool';
 import { Tool, ToolType } from "./Tool";
 import { Registry } from "../../Registry";
@@ -18,8 +17,6 @@ export function toolFactory(toolType: ToolType, plugin: AbstractCanvasPlugin, re
             return new PointerTool(ToolType.Pointer, plugin, registry);
         case ToolType.Path:
             return new PathTool(plugin, registry);
-        case ToolType.Rectangle:
-            return new RectangleTool(plugin, registry);
         case ToolType.Select:
             return new SelectTool(plugin, registry);
         case ToolType.Camera:

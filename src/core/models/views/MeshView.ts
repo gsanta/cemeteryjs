@@ -64,14 +64,6 @@ export class MeshView extends View implements IGameModel {
         this.obj = new MeshObj(this);
     }
 
-    equalTo(worldItem: MeshView) {
-        return (
-            this.id === worldItem.id &&
-            this.dimensions.equalTo(worldItem.dimensions) &&
-            this.rotation === worldItem.rotation
-        );
-    }
-
     getDirection(): Point {
         return new Point(Math.sin(this.getRotation()), Math.cos(this.getRotation()));
     }
