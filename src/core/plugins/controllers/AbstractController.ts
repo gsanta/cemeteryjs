@@ -169,12 +169,19 @@ export abstract class AbstractController<P = any> {
 
     val(prop: P, element: UI_Element): any {
         const handler = this.handlers.get(prop);
-        return handler.context.getTempVal() !== undefined ? handler.context.getTempVal() : handler.getHandler(handler.context, element, this);
+
+        if (!handler) {
+            return undefined;
+        } else if (handler.context.getTempVal()) {
+            return handler.context.getTempVal();
+        } else {
+            return handler.getHandler(handler.context, element, this);
+        }
     }
 
     values(prop: P, element: UI_Element): any[] {
         const handler = this.handlers.get(prop);
-        return handler.getValuesHandler(handler.context, element, this);
+        return handler ? handler.getValuesHandler(handler.context, element, this) : [];
     }
 
 

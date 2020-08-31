@@ -12,7 +12,8 @@ export enum AssetType {
     Model = 'Model',
     Texture = 'Texture',
     Thumbnail = 'Thumbnail',
-    SpriteSheet = 'SpriteSheet'
+    SpriteSheet = 'SpriteSheet',
+    SpriteSheetJson = 'SpriteSheetJson'
 }
 
 export class AssetObj {

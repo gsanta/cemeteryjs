@@ -14,6 +14,7 @@ import { AssetManagerSidepanelPlugin } from '../../plugins/ui_plugins/sidepanel/
 import { FileSettingsPlugin } from '../../plugins/ui_plugins/sidepanel/FileSettingsPlugin';
 import { LayoutSettingsPlugin } from '../../plugins/ui_plugins/sidepanel/LayoutSettingsPlugin';
 import { LevelSettingsPlugin } from '../../plugins/ui_plugins/sidepanel/LevelSettingsPlugin';
+import { SpriteSheetManagerDialogPlugin } from '../../plugins/ui_plugins/dialogs/SpritesheetManagerDialogPlugin';
 
 export class Plugins {
     sceneEditor: SceneEditorPlugin;
@@ -48,6 +49,7 @@ export class Plugins {
         this.registerPlugin(new LevelSettingsPlugin(this.registry));
         this.registerPlugin(new AssetManagerDialogPlugin(this.registry));
         this.registerPlugin(new ThumbnailDialogPlugin(this.registry));
+        this.registerPlugin(new SpriteSheetManagerDialogPlugin(this.registry));
         this.registerPlugin(new NodeEditorSettingsPlugin(this.registry));
     }
 

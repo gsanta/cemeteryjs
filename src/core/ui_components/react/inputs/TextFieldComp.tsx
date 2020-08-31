@@ -34,8 +34,8 @@ export function TextFieldComp(props: {element: UI_TextField}) {
             onKeyDown={e => e.stopPropagation()}
             onKeyUp={e => e.stopPropagation()}
             onFocus={() => props.element.focus()}
-            // value={props.element.val()}
-            // onChange={e => props.element.change(e.target.value)}
+            value={props.element.val()}
+            onChange={e => props.element.change(e.target.value)}
             onBlur={() => props.element.blur()}
         />
     );

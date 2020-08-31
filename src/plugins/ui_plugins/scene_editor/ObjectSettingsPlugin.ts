@@ -7,6 +7,9 @@ import { MeshView } from '../../../core/models/views/MeshView';
 import { PathView } from '../../../core/models/views/PathView';
 import { PathObjectSettingsController, PathObjectSettingsProps, PathObjectSettingsControllerId } from './PathObjectSettingsController';
 import { EngineService } from '../../../core/services/EngineService';
+import { SpriteSettingsController, SpriteSettingsProps } from './SpriteSettingsController';
+import { SpriteViewType, SpriteView } from '../../../core/models/views/SpriteView';
+import { ThumbnailMakerControllerProps } from './ThumbnailMakerController';
 
 export const ObjectSettingsPluginId = 'object-settings-plugin';
 
@@ -16,6 +19,7 @@ export class ObjectSettingsPlugin extends UI_Plugin {
     region = UI_Region.Sidepanel;
 
     private pathObjectSettingsController: PathObjectSettingsController;
+    private spriteSettingsController: SpriteSettingsController;
 
     private engine: EngineService;
 
@@ -26,6 +30,7 @@ export class ObjectSettingsPlugin extends UI_Plugin {
 
         // this.engine = new EngineService(this.registry)
         this.pathObjectSettingsController = new PathObjectSettingsController(this, registry);
+        this.spriteSettingsController = new SpriteSettingsController(this, registry);
     }
 
     renderInto(layout: UI_Layout): void {
@@ -39,6 +44,8 @@ export class ObjectSettingsPlugin extends UI_Plugin {
                 case ViewType.PathView:
                     this.renderPathObjectSettings(layout, <PathView> selectedViews[0]);
                 break;
+                case SpriteViewType:
+                    this.renderSpriteObjectSettings(layout);
             }
         }
     }
@@ -98,5 +105,25 @@ export class ObjectSettingsPlugin extends UI_Plugin {
         row = layout.row({ key: MeshObjectSettingsProps.Thumbnail });
         const changeThumbnailButton = row.button(MeshObjectSettingsProps.Thumbnail);
         changeThumbnailButton.label = 'Change thumbnail';
+    }
+
+    private renderSpriteObjectSettings(layout: UI_Layout) {
+        layout.controller = this.spriteSettingsController;
+        let row = layout.row({ key: SpriteSettingsProps.FrameName });
+
+        const textField = row.textField(SpriteSettingsProps.FrameName);
+        textField.layout = 'horizontal';
+        textField.label = 'FrameName';
+
+        row = layout.row({ key: SpriteSettingsProps.SpriteSheet });
+
+        const layoutSelect = row.select(SpriteSettingsProps.SpriteSheet);
+        layoutSelect.layout = 'horizontal';
+        layoutSelect.label = 'SpriteSheet';
+        layoutSelect.placeholder = 'Select SpriteSheet';
+
+        row = layout.row({ key: SpriteSettingsProps.EditSpriteSheets });
+        const button = row.button(SpriteSettingsProps.EditSpriteSheets);
+        button.label = 'Manage spritesheets';
     }
 }

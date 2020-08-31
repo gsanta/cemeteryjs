@@ -3,6 +3,7 @@ import { ISpriteLoaderAdapter } from "../ISpriteLoaderAdapter";
 import { Registry } from "../../Registry";
 import { SpritePackedManager, Sprite } from "babylonjs";
 import { BabylonEngineFacade } from "./BabylonEngineFacade";
+import { AssetObj, AssetType } from "../../models/game_objects/AssetObj";
 
 export class BabylonSpriteLoader implements ISpriteLoaderAdapter {
     private registry: Registry;
@@ -13,13 +14,19 @@ export class BabylonSpriteLoader implements ISpriteLoaderAdapter {
         this.registry = registry;
     }
 
-    load(spriteObj: SpriteObj) {
-        const scene = (<BabylonEngineFacade> this.registry.engine).scene;
-        const assetObj = this.registry.stores.assetStore.getAssetById(spriteObj.spriteAssetId);
+    loadSpriteSheet(assetObj: AssetObj) {
+        // if (assetObj.assetType !== AssetType.SpriteSheet) {
+        //     throw new Error(`Can not load spritesheet, because asset type is not ${AssetType.SpriteSheet} but ${assetObj.assetType}`);
+        // }
 
-        if (!this.managers.has(assetObj.path)) {
-            this.managers.set(assetObj.path, new SpritePackedManager(assetObj.path, assetObj.path, 10, scene));
-        }
+        // if (!this.managers.has(assetObj.path)) {
+        //     const scene = (<BabylonEngineFacade> this.registry.engine).scene;
+        //     this.managers.set(assetObj.path, new SpritePackedManager(assetObj.path, assetObj.path, 10, scene));
+        // }
+    }
+
+    load(spriteObj: SpriteObj) {
+        const assetObj = this.registry.stores.assetStore.getAssetById(spriteObj.spriteAssetId);
 
         const sprite = new Sprite("sprite", this.managers.get(assetObj.path));
         sprite.cellRef = spriteObj.frameName;
