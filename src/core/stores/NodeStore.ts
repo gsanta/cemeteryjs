@@ -6,7 +6,7 @@ import { NodeConnectionView } from '../models/views/NodeConnectionView';
 import { NodeView } from '../models/views/NodeView';
 import { View, ViewType } from '../models/views/View';
 
-export class NodeStore extends AbstractViewStore {
+export class NodeStore extends AbstractViewStore<NodeView> {
     static id = 'node-store'; 
     id = NodeStore.id;
 
@@ -30,7 +30,7 @@ export class NodeStore extends AbstractViewStore {
     }
 
     addNode(nodeView: NodeView) {
-        nodeView.id = nodeView.id === undefined ? this.generateUniqueName(ViewType.NodeView) : nodeView.id;
+        nodeView.id = nodeView.id === undefined ? this.generateId(ViewType.NodeView) : nodeView.id;
         super.addItem(nodeView);
 
         this.graph.addNode(nodeView.model);
@@ -44,7 +44,7 @@ export class NodeStore extends AbstractViewStore {
     }
 
     addConnection(connection: NodeConnectionView) {
-        connection.id = connection.id === undefined ? this.generateUniqueName(ViewType.NodeConnectionView) : connection.id;
+        connection.id = connection.id === undefined ? this.generateId(ViewType.NodeConnectionView) : connection.id;
         super.addItem(connection);
         this.graph.addConnection(connection.joinPoint1.parent.model, connection.joinPoint2.parent.model);
         this.views.push(connection);

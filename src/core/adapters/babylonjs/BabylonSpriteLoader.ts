@@ -15,14 +15,14 @@ export class BabylonSpriteLoader implements ISpriteLoaderAdapter {
     }
 
     loadSpriteSheet(assetObj: AssetObj) {
-        // if (assetObj.assetType !== AssetType.SpriteSheet) {
-        //     throw new Error(`Can not load spritesheet, because asset type is not ${AssetType.SpriteSheet} but ${assetObj.assetType}`);
-        // }
+        if (assetObj.assetType !== AssetType.SpriteSheet) {
+            throw new Error(`Can not load spritesheet, because asset type is not ${AssetType.SpriteSheet} but ${assetObj.assetType}`);
+        }
 
-        // if (!this.managers.has(assetObj.path)) {
-        //     const scene = (<BabylonEngineFacade> this.registry.engine).scene;
-        //     this.managers.set(assetObj.path, new SpritePackedManager(assetObj.path, assetObj.path, 10, scene));
-        // }
+        if (!this.managers.has(assetObj.path)) {
+            const scene = (<BabylonEngineFacade> this.registry.engine).scene;
+            this.managers.set(assetObj.path, new SpritePackedManager(assetObj.path, assetObj.path, 10, scene));
+        }
     }
 
     load(spriteObj: SpriteObj) {

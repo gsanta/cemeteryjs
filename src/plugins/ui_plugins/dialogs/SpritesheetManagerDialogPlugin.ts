@@ -59,7 +59,10 @@ export class SpriteSheetManagerDialogPlugin extends UI_Plugin {
     }
 
     private renderTableRows(table: UI_Table) {
-        this.registry.stores.assetStore.getByType(AssetType.SpriteSheet).forEach(asset => {
+        this.registry.stores.spriteSheetObjStore.getAll().forEach(spriteSheet => {
+            const jsonAsset = this.registry.stores.assetStore.getAssetById(spriteSheet.jsonAssetId);
+            const spriteSheetAsset = this.registry.stores.assetStore.getAssetById(spriteSheet.spriteAssetId);
+
             const tableRow = table.tableRow({isHeader: false});
             tableRow.isHeader = false;
             
@@ -69,19 +72,11 @@ export class SpriteSheetManagerDialogPlugin extends UI_Plugin {
     
             column = tableRow.tableColumn(null);
             text = column.text();
-            text.text = asset.path;
+            text.text = spriteSheetAsset.path;
 
             column = tableRow.tableColumn(null);
-            const fileNameRegex = /([^/\\]+)(\.[^/\\]+?)?/;
-            const fileName = asset.path.substr(0, asset.path.lastIndexOf('.'));
-            const spriteSheetJson = this.registry.stores.assetStore.lookupByProp('path', `${fileName}.json`);
-            if (spriteSheetJson) {
-                text = column.text();
-                text.text = spriteSheetJson.path;    
-            } else {
-                let fileUpload = column.fileUpload(SpritesheetManagerDialogProps.UploadSpritesheetJson);
-                fileUpload.label = 'Add json';
-            }
+            text = column.text();
+            text.text = jsonAsset.path;    
     
             column = tableRow.tableColumn(null);
             column.width = 100;
@@ -94,7 +89,13 @@ export class SpriteSheetManagerDialogPlugin extends UI_Plugin {
 
         row.hAlign = 'space-around';
 
-        let button = row.fileUpload(SpritesheetManagerDialogProps.UploadSpritesheet);
-        button.label = 'Add spritesheet image';
+        let fileUploadButton = row.fileUpload(SpritesheetManagerDialogProps.UploadSpritesheetImg);
+        fileUploadButton.label = this.controller.tmpImgAsset ? this.controller.tmpImgAsset.path : 'Upload spritesheet';
+
+        fileUploadButton = row.fileUpload(SpritesheetManagerDialogProps.UploadSpritesheetJson);
+        fileUploadButton.label = 'Upload json';
+
+        const addButton = row.button(SpritesheetManagerDialogProps.AddSpriteSheet);
+        addButton.label = 'Add';
     }
 }

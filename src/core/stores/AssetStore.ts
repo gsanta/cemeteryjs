@@ -2,17 +2,12 @@ import { AssetObj, AssetType } from "../models/game_objects/AssetObj";
 import { AbstractStore } from "./AbstractStore";
 import { Registry } from "../Registry";
 
-export class AssetStore extends AbstractStore {
-    static actions = {
-        ASSET_DELETE: 'ASSET_DELETE'
-    }
-
+export class AssetStore extends AbstractStore<AssetObj> {
     static id = 'asset-store'; 
     id = AssetStore.id;
 
     private objs: AssetObj[] = [];
 
-    private maxIdForPrefix: Map<string, number> = new Map();
     private assetsById: Map<string, AssetObj> = new Map();
     private assetsByPath: Map<string, AssetObj> = new Map();
     private registry: Registry;
@@ -21,7 +16,7 @@ export class AssetStore extends AbstractStore {
         super();
 
         this.registry = registry;
-        this.maxIdForPrefix = new Map([
+        this.prefixIndexCounter = new Map([
             ['model', 0],
             ['texture', 0],
             ['thumbnail', 0],
@@ -30,8 +25,6 @@ export class AssetStore extends AbstractStore {
 
     deleteAsset(asset: AssetObj) {
         this.assetsById.delete(asset.id);
-
-        this.registry.services.event.dispatch(AssetStore.actions.ASSET_DELETE, [asset]);
     }
 
     addObj(asset: AssetObj): string {
@@ -107,13 +100,13 @@ export class AssetStore extends AbstractStore {
         return Array.from(this.assetsById.values());
     }
 
-    private generateId(assetPrefix: string) {
-        if (this.maxIdForPrefix.get(assetPrefix) === undefined) {
-            this.maxIdForPrefix.set(assetPrefix, 0);
-        }
+    // private generateId(assetPrefix: string) {
+    //     if (this.maxIdForPrefix.get(assetPrefix) === undefined) {
+    //         this.maxIdForPrefix.set(assetPrefix, 0);
+    //     }
 
-        const idIndex = this.maxIdForPrefix.get(assetPrefix);
-        this.maxIdForPrefix.set(assetPrefix, idIndex + 1);
-        return `${assetPrefix}-${idIndex + 1}`.toLocaleLowerCase();
-    }
+    //     const idIndex = this.maxIdForPrefix.get(assetPrefix);
+    //     this.maxIdForPrefix.set(assetPrefix, idIndex + 1);
+    //     return `${assetPrefix}-${idIndex + 1}`.toLocaleLowerCase();
+    // }
 }

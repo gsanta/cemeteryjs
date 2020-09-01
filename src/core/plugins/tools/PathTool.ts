@@ -71,7 +71,7 @@ export class PathTool extends PointerTool {
             const pointer = this.registry.services.pointer.pointer;
             const selectedEditPoint = this.registry.stores.selectionStore.getEditPoint();
             const newEditPoint = new EditPointView({point: new Point(pointer.down.x, pointer.down.y), parent: path});
-            newEditPoint.id = this.getStore().generateUniqueName(FeedbackType.EditPointFeedback); 
+            newEditPoint.id = this.getStore().generateId(FeedbackType.EditPointFeedback); 
             path.addEditPoint(newEditPoint, selectedEditPoint);
             this.registry.stores.selectionStore.removeItem(selectedEditPoint);
             this.registry.stores.selectionStore.addItem(newEditPoint);
@@ -89,9 +89,9 @@ export class PathTool extends PointerTool {
 
         const path = new PathView();
         const editPoint = new EditPointView({point: pointer.down.clone(), parent: path});
-        editPoint.id = this.registry.stores.canvasStore.generateUniqueName(FeedbackType.EditPointFeedback); 
+        editPoint.id = this.registry.stores.canvasStore.generateId(FeedbackType.EditPointFeedback); 
         path.addEditPoint(editPoint)
-        path.id = this.registry.stores.canvasStore.generateUniqueName(ViewType.PathView);
+        path.id = this.registry.stores.canvasStore.generateId(ViewType.PathView);
         this.registry.stores.canvasStore.addView(path);
         this.registry.stores.selectionStore.addItem(path);
         this.registry.stores.selectionStore.addItem(path.editPoints[0]);

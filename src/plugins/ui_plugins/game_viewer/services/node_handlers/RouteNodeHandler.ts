@@ -16,7 +16,7 @@ export class RouteNodeHandler extends AbstractNodeHandler {
         const pathNode = this.findNodeAtInputSlot('path', BuiltinNodeType.Path);
 
         const route = new RouteModel();
-        route.id = this.registry.stores.gameStore.generateUniqueName(ViewType.RouteView);
+        route.id = this.registry.stores.gameStore.generateId(ViewType.RouteView);
         
         this.registry.stores.gameStore.addRoute(route);
 

@@ -10,6 +10,7 @@ import { AssetStore } from "./AssetStore";
 import { without } from "../../utils/geometry/Functions";
 import { MeshObj } from "../models/game_objects/MeshObj";
 import { UI_Region } from "../plugins/UI_Plugin";
+import { SpriteView } from "../models/views/SpriteView";
 
 export function isFeedback(type: string) {
     return type.endsWith('Feedback');
@@ -19,7 +20,7 @@ export function isView(type: string) {
     return type.endsWith('View');
 }
 
-export class SceneStore extends AbstractViewStore {
+export class SceneStore extends AbstractViewStore<MeshView | SpriteView | PathView> {
     static id = 'scene-store'; 
     id = SceneStore.id;
     views: View[] = [];
@@ -43,7 +44,7 @@ export class SceneStore extends AbstractViewStore {
     }
 
     addView(view: View) {
-        view.id = view.id === undefined ? this.generateUniqueName(view.viewType) : view.id;
+        view.id = view.id === undefined ? this.generateId(view.viewType) : view.id;
         view.obj.id = view.id;
         super.addItem(view);
         this.views.push(view);
@@ -97,22 +98,5 @@ export class SceneStore extends AbstractViewStore {
         const gridPoint = new Point(point.x, point.y);
 
         return this.views.filter(item => item.dimensions.containsPoint(gridPoint));
-    }
-
-    listen(action: string, changedItems: any[]) {
-        switch(action) {
-            case AssetStore.actions.ASSET_DELETE:
-                changedItems.forEach(item => this.removeAsset(<AssetObj> item));
-            break;
-        }
-    }
-
-    private removeAsset(asset: AssetObj) {
-        switch(asset.assetType) {
-            case AssetType.Model:
-                this.getMeshViews()
-                    .filter(v => v.obj.modelId === asset.id)
-                    .forEach(view => this.removeItem(view));
-        }
     }
 }

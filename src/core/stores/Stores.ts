@@ -8,10 +8,11 @@ import { SceneStore } from "./SceneStore";
 import { SelectionStore } from "./SelectionStore";
 import { SpriteStore } from "./SpriteStore";
 import { ObjStore } from "./ObjStore";
+import { SpriteSheetObjStore } from "./SpriteSheetObjStore";
 
 export class Stores {
     private registry: Registry
-    private stores: AbstractStore[] = [];
+    private stores: AbstractStore<any>[] = [];
 
     canvasStore: SceneStore;
     selectionStore: SelectionStore;
@@ -20,6 +21,8 @@ export class Stores {
     nodeStore: NodeStore;
     assetStore: AssetStore;
     gameStore: GameStore;
+
+    spriteSheetObjStore: SpriteSheetObjStore;
 
     objStore: ObjStore;
 
@@ -33,6 +36,7 @@ export class Stores {
         this.assetStore = new AssetStore(this.registry);
         this.gameStore = new GameStore(this.registry);
         this.objStore = new ObjStore();
+        this.spriteSheetObjStore = new SpriteSheetObjStore();
 
         this.stores.push(
             this.canvasStore,
@@ -40,7 +44,8 @@ export class Stores {
             this.assetStore,
             this.gameStore,
             this.spriteStore,
-            this.objStore
+            this.objStore,
+            this.spriteSheetObjStore
         )
     }
 }

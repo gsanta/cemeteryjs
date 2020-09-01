@@ -3,7 +3,7 @@ import { RouteModel } from "../models/game_objects/RouteModel";
 import { AbstractStore } from "./AbstractStore";
 import { IGameModel } from "../models/game_objects/IGameModel";
 
-export class GameStore extends AbstractStore {
+export class GameStore extends AbstractStore<any> {
     static id = 'game-store'; 
     id = GameStore.id;
 
@@ -18,7 +18,7 @@ export class GameStore extends AbstractStore {
     }
 
     addRoute(routeModel: RouteModel) {
-        routeModel.id = routeModel.id === undefined ? this.generateUniqueName(routeModel.viewType) : routeModel.id;
+        routeModel.id = routeModel.id === undefined ? this.generateId(routeModel.viewType) : routeModel.id;
         this.routes.push(routeModel);
         this.routeMap.set(routeModel.id, routeModel);
     }

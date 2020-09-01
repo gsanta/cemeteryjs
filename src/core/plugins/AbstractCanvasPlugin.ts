@@ -50,7 +50,7 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
         this.controllers.set(ToolControllerId, new ToolController(this, this.registry));
     }
 
-    abstract getStore(): AbstractViewStore;
+    abstract getStore(): AbstractViewStore<any>;
         
     destroy(): void {}
     resize() {};
