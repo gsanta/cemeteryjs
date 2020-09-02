@@ -1,6 +1,7 @@
 import { Sprite, Vector3 } from "babylonjs";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { IGameObj } from "./IGameObj";
+import { ISpriteAdapter } from "../../adapters/ISpriteAdapter";
 
 export interface SpriteObjJson {
     frameName: string;
@@ -12,8 +13,11 @@ export interface SpriteObjJson {
  export class SpriteObj implements IGameObj {
     id: string;
 
+    spriteAdapter: ISpriteAdapter;
+
     sprite: Sprite;
     startPos: Point;
+    startScale: Point;
 
     spriteSheetId: string;
     frameName: string;
@@ -24,6 +28,14 @@ export interface SpriteObjJson {
             x: this.sprite.position.x,
             y: this.sprite.position.z,
             id: this.id
+        }
+    }
+
+    move(point: Point) {
+        this.startPos.add(point);
+
+        if (this.spriteAdapter) {
+            this.spriteAdapter.setPosition(this, this.spriteAdapter.getPosition(this).add(point));
         }
     }
 

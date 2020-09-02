@@ -1,4 +1,4 @@
-import { Sprite, SpritePackedManager } from "babylonjs";
+import { Sprite, SpritePackedManager, Vector3 } from "babylonjs";
 import { SpriteObj } from "../../models/game_objects/SpriteObj";
 import { SpriteSheetObj } from "../../models/game_objects/SpriteSheetObj";
 import { Registry } from "../../Registry";
@@ -26,10 +26,14 @@ export class BabylonSpriteLoader implements ISpriteLoaderAdapter {
     }
 
     load(spriteObj: SpriteObj) {
-        const assetObj = this.registry.stores.spriteSheetObjStore. getAssetById(spriteObj.spriteAssetId);
+        const spriteSheetObj = this.registry.stores.spriteSheetObjStore.getById(spriteObj.spriteSheetId);
 
-        const sprite = new Sprite("sprite", this.managers.get(assetObj.path));
+        const sprite = new Sprite("sprite", this.managers.get(spriteSheetObj.id));
+        sprite.width = spriteObj.startScale.x;
+        sprite.height = spriteObj.startScale.y;
         sprite.cellRef = spriteObj.frameName;
+
+        sprite.position = new Vector3(spriteObj.startPos.x, 0, spriteObj.startPos.y);
         
         spriteObj.sprite = sprite;
         this.sprites.set(spriteObj.id, sprite);

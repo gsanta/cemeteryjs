@@ -24,6 +24,7 @@ export class SpriteView extends View {
 
     move(point: Point) {
         this.dimensions = this.dimensions.translate(point);
+        this.obj.move(point.div(10).negateY());
     }
 
     toJson(): SpriteViewJson {

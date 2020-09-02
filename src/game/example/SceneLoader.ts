@@ -29,10 +29,10 @@ export class SceneLoader {
 
         const spriteView = new SpriteView();
         spriteView.obj = new SpriteObj();
+        spriteView.obj.spriteAdapter = this.registry.engine.sprites;
 
         spriteView.obj.frameName = spriteJson.frameName;
         spriteView.obj.startPos = new Point(spriteJson.x, spriteJson.y);
-        spriteView.obj.spriteAssetId = asset.id;
 
         this.registry.stores.spriteStore.addItem(spriteView);
         this.registry.engine.spriteLoader.load(spriteView.obj);

@@ -5,6 +5,7 @@ import { ToolType } from "../../../../core/plugins/tools/Tool";
 import { View } from "../../../../core/models/views/View";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 import { SpriteView } from "../../../../core/models/views/SpriteView";
+import { Point } from "../../../../utils/geometry/shapes/Point";
 
 
 export class SpriteAddTool extends RectangleTool {
@@ -15,7 +16,10 @@ export class SpriteAddTool extends RectangleTool {
 
     protected createView(rect: Rectangle): View {
         const spriteView: SpriteView = new SpriteView({dimensions: rect});
-    
+        spriteView.obj.spriteAdapter = this.registry.engine.sprites;
+        spriteView.obj.startScale = new Point(3, 3);
+        spriteView.obj.startPos = new Point(spriteView.dimensions.div(10).getBoundingCenter().x, -spriteView.dimensions.div(10).getBoundingCenter().y); 
+
         this.registry.stores.canvasStore.addView(spriteView);
     
         return spriteView;

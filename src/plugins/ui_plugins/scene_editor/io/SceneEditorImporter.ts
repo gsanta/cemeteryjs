@@ -39,7 +39,9 @@ export class SceneEditorImporter extends AbstractPluginImporter {
             case ViewType.PathView:
                 return new PathView();
             case SpriteViewType:
-                return new SpriteView();
+                const spriteView = new SpriteView();
+                spriteView.obj.spriteAdapter = this.registry.engine.sprites;
+                return spriteView;
         }
     }
 

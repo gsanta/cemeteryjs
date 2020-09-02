@@ -17,4 +17,10 @@ export class Babylon_SpriteAdapter implements ISpriteAdapter {
         const sprite = (this.registry.engine.spriteLoader as BabylonSpriteLoader).sprites.get(spriteObj.id);
         sprite.position = new Vector3(pos.x, 0, pos.y);
     }
+
+    getPosition(spriteObj: SpriteObj): Point {
+        const sprite = (this.registry.engine.spriteLoader as BabylonSpriteLoader).sprites.get(spriteObj.id);
+
+        return  new Point(sprite.position.x, sprite.position.z);
+    }
 }
