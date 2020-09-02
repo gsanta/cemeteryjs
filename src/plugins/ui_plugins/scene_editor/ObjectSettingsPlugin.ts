@@ -94,13 +94,11 @@ export class ObjectSettingsPlugin extends UI_Plugin {
         const importModelButton = row.fileUpload(MeshObjectSettingsProps.Model);
         importModelButton.label = 'Import Model';
         importModelButton.icon = 'import-icon';
-        importModelButton.width = 'full-width';
 
         row = layout.row({ key: MeshObjectSettingsProps.Texture });
         const importTextureButton = row.fileUpload(MeshObjectSettingsProps.Texture);
         importTextureButton.label = 'Import Texture';
         importTextureButton.icon = 'import-icon';
-        importTextureButton.width = 'full-width';
 
         row = layout.row({ key: MeshObjectSettingsProps.Thumbnail });
         const changeThumbnailButton = row.button(MeshObjectSettingsProps.Thumbnail);
@@ -125,5 +123,6 @@ export class ObjectSettingsPlugin extends UI_Plugin {
         row = layout.row({ key: SpriteSettingsProps.EditSpriteSheets });
         const button = row.button(SpriteSettingsProps.EditSpriteSheets);
         button.label = 'Manage spritesheets';
+        button.width = '200px';
     }
 }

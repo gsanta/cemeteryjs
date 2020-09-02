@@ -85,15 +85,18 @@ export class SpriteSheetManagerDialogPlugin extends UI_Plugin {
     
     private renderAddNewButton(layout: UI_Dialog) {
         const row = layout.row({ key: '1' });
+        row.separator = 'top';
         row.margin = '10px 0px';
 
         row.hAlign = 'space-around';
 
         let fileUploadButton = row.fileUpload(SpritesheetManagerDialogProps.UploadSpritesheetImg);
         fileUploadButton.label = this.controller.tmpImgAsset ? this.controller.tmpImgAsset.path : 'Upload spritesheet';
+        fileUploadButton.width = '170px';
 
         fileUploadButton = row.fileUpload(SpritesheetManagerDialogProps.UploadSpritesheetJson);
-        fileUploadButton.label = 'Upload json';
+        fileUploadButton.label = this.controller.tmpJsonAsset ? this.controller.tmpJsonAsset.path : 'Upload json';
+        fileUploadButton.width = '170px';
 
         const addButton = row.button(SpritesheetManagerDialogProps.AddSpriteSheet);
         addButton.label = 'Add';

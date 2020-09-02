@@ -24,19 +24,19 @@ export class FileSettingsPlugin extends AbstractSidepanelPlugin {
         const exportButton = row.button(FileSettingsProps.Export);
         exportButton.label = 'Export File';
         exportButton.icon = 'export-icon';
-        exportButton.width = 'full-width';
+        exportButton.width = '200px';
 
         row = layout.row({ key: FileSettingsProps.Import });
         const importButton = row.fileUpload(FileSettingsProps.Import);
         importButton.label = 'Import File';
         importButton.icon = 'import-icon';
-        importButton.width = 'full-width';
+        importButton.width = '200px';
 
         row = layout.row({ key: FileSettingsProps.NewProject });
         const newProjectButton = row.button(FileSettingsProps.NewProject);
         newProjectButton.label = 'New Project';
         newProjectButton.icon = 'blank-icon';
-        newProjectButton.width = 'full-width';
+        newProjectButton.width = '200px';
 
         return layout;
     }

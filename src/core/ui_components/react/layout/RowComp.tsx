@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from "styled-components";
 import { UI_Row } from "../../elements/UI_Row";
+import { colors } from '../styles';
 
 export function cssClassBuilder(...classes: string[]) {
     return classes.filter(c => c).join(' ');
@@ -19,13 +20,19 @@ const RowStyled = styled.div`
     &.ce-v_align-center {
         align-items: center;
     }
+
+    &.ce-separator-top {
+        border-top: 2px dashed ${colors.grey3};
+        padding-top: 10px;
+    }
 `;
 
 export function RowComp(props: RowProps) {
     const classes = cssClassBuilder(
         'ce-row',
         props.element.isBold ? 'ce-bold' : undefined,
-        props.element.vAlign ? `ce-v_align-${props.element.vAlign}` : 'ce-v_align-start'
+        props.element.vAlign ? `ce-v_align-${props.element.vAlign}` : 'ce-v_align-start',
+        props.element.separator ? `ce-separator-${props.element.separator}` : undefined
     );
 
     const style: React.CSSProperties = {};
@@ -35,7 +42,7 @@ export function RowComp(props: RowProps) {
     props.element.backgroundColor && (style.backgroundColor = props.element.backgroundColor);
     props.element.hAlign && (style.justifyContent = props.element.hAlign);
     props.element.height && (style.height = props.element.height);
-
+    
     return (
         <RowStyled style={style} className={classes}>{props.children}</RowStyled>
     );

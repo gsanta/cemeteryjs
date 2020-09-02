@@ -1,8 +1,8 @@
 import { SpriteObj } from "../models/game_objects/SpriteObj";
-import { AssetObj } from "../models/game_objects/AssetObj";
+import { SpriteSheetObj } from "../models/game_objects/SpriteSheetObj";
 
 export interface ISpriteLoaderAdapter {
 
-    loadSpriteSheet(assetObj: AssetObj);
+    loadSpriteSheet(spriteSheetObj: SpriteSheetObj);
     load(spriteObj: SpriteObj);
 }

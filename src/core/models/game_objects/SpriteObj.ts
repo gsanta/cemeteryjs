@@ -15,9 +15,8 @@ export interface SpriteObjJson {
     sprite: Sprite;
     startPos: Point;
 
-    spriteAssetId: string;
+    spriteSheetId: string;
     frameName: string;
-    jsonFileName: string;
 
     toJson(): SpriteObjJson {
         return {

@@ -1,9 +1,9 @@
+import { Sprite, SpritePackedManager } from "babylonjs";
 import { SpriteObj } from "../../models/game_objects/SpriteObj";
-import { ISpriteLoaderAdapter } from "../ISpriteLoaderAdapter";
+import { SpriteSheetObj } from "../../models/game_objects/SpriteSheetObj";
 import { Registry } from "../../Registry";
-import { SpritePackedManager, Sprite } from "babylonjs";
+import { ISpriteLoaderAdapter } from "../ISpriteLoaderAdapter";
 import { BabylonEngineFacade } from "./BabylonEngineFacade";
-import { AssetObj, AssetType } from "../../models/game_objects/AssetObj";
 
 export class BabylonSpriteLoader implements ISpriteLoaderAdapter {
     private registry: Registry;
@@ -14,19 +14,19 @@ export class BabylonSpriteLoader implements ISpriteLoaderAdapter {
         this.registry = registry;
     }
 
-    loadSpriteSheet(assetObj: AssetObj) {
-        if (assetObj.assetType !== AssetType.SpriteSheet) {
-            throw new Error(`Can not load spritesheet, because asset type is not ${AssetType.SpriteSheet} but ${assetObj.assetType}`);
-        }
+    loadSpriteSheet(spriteSheetObj: SpriteSheetObj) {
+        const imgAsset = this.registry.stores.assetStore.getAssetById(spriteSheetObj.spriteAssetId);
+        const jsonAsset = this.registry.stores.assetStore.getAssetById(spriteSheetObj.jsonAssetId);
 
-        if (!this.managers.has(assetObj.path)) {
+        if (!this.managers.has(spriteSheetObj.id)) {
             const scene = (<BabylonEngineFacade> this.registry.engine).scene;
-            this.managers.set(assetObj.path, new SpritePackedManager(assetObj.path, assetObj.path, 10, scene));
+            const json = atob(jsonAsset.data.split(',')[1]);
+            this.managers.set(spriteSheetObj.id, new SpritePackedManager(imgAsset.data, imgAsset.data, 10, scene, json));
         }
     }
 
     load(spriteObj: SpriteObj) {
-        const assetObj = this.registry.stores.assetStore.getAssetById(spriteObj.spriteAssetId);
+        const assetObj = this.registry.stores.spriteSheetObjStore. getAssetById(spriteObj.spriteAssetId);
 
         const sprite = new Sprite("sprite", this.managers.get(assetObj.path));
         sprite.cellRef = spriteObj.frameName;

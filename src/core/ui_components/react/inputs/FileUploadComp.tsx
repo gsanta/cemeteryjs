@@ -3,13 +3,16 @@ import { UI_ComponentProps } from "../UI_ComponentProps"
 import { UI_FileUpload } from "../../elements/UI_FileUpload"
 import { useDropzone } from "react-dropzone"
 import styled from "styled-components";
-import { cssClassBuilder } from "../layout/RowComp"
 import { colors } from "../styles"
 
 const FileUploadStyled = styled.div`
 
     &.file-upload {
         display: flex;
+
+        &:focus {
+            outline: none;
+        }
 
         &.full-width {
             width: 100%;
@@ -32,10 +35,7 @@ const FileUploadStyled = styled.div`
                 text-overflow: ellipsis;
             }
 
-            border: 1px solid ${colors.grey3};
-            &:hover {
-                background: ${colors.hoverBackground};
-            }
+            border: 2px dashed ${colors.grey3};
         };
 
     }
@@ -58,17 +58,15 @@ export const FileUploadComp = (props: UI_ComponentProps<UI_FileUpload>) => {
     }, [])
     const { getRootProps, getInputProps } = useDropzone({ onDrop })
 
-    const classes = cssClassBuilder(
-        'file-upload',
-        props.element.width ? props.element.width : 'normal-width'
-    );
+    const style: React.CSSProperties = {}
+    props.element.width && (style.width = props.element.width);
 
     return (
-        <FileUploadStyled className={classes} {...getRootProps()}>
-            <div className={classes} onClick={() => props.element.click()}>
+        <FileUploadStyled style={style} className='file-upload' {...getRootProps()}>
+            <div className='file-upload' onClick={() => props.element.click()}>
                 <input {...getInputProps()} />
                 
-                <div className="button-label">
+                <div className="button-label" style={{width: props.element.width ? props.element.width : 'auto'}}>
                     {props.element.label}
                 </div>
             </div>  

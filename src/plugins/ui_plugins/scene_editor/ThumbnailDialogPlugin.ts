@@ -80,7 +80,6 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
         const importModelButton = row.fileUpload(ThumbnailMakerControllerProps.ThumbnailFromFile);
         importModelButton.label = 'Import Thumbnail';
         importModelButton.icon = 'import-icon';
-        importModelButton.width = 'full-width';
 
         return layout;
     }

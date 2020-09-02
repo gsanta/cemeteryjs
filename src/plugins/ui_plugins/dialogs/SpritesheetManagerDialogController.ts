@@ -51,7 +51,7 @@ export class SpritesheetManagerDialogController extends AbstractController<{}> {
             // this.tmpJsonAsset = asset;
             // this.registry.stores.assetStore.addObj(asset);
             // this.registry.services.localStore.saveAsset(asset);
-            // this.registry.engine.spriteLoader.loadSpriteSheet(asset);
+            this.registry.engine.spriteLoader.loadSpriteSheet(spriteSheetObj);
             // this.registry.services.history.createSnapshot();
             this.registry.services.render.reRender(UI_Region.Dialog);
         });

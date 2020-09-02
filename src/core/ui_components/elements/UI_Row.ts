@@ -8,5 +8,6 @@ export class UI_Row extends UI_DefaultContainer {
     height: string;
     padding: string;
     margin: string;
+    separator?: 'top';
     backgroundColor: string;
 }

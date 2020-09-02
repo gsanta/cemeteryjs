@@ -5,5 +5,5 @@ export class UI_Button extends UI_InputElement {
     elementType = UI_ElementType.Button;
     icon?: string;
     label: string;
-    width?: 'full-width' | 'normal' | 'string';
+    width?: string;
 }

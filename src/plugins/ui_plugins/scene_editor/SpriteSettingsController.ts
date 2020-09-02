@@ -32,23 +32,23 @@ export class SpriteSettingsController extends AbstractController<SpriteSettingsP
                 const spriteView = (<SpriteView> this.registry.stores.selectionStore.getView());
                 context.releaseTempVal((val) => spriteView.obj.frameName = val);
                 this.registry.services.history.createSnapshot();
+                this.registry.engine.spriteLoader.load(spriteView.obj);
                 this.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
             })
             .onGet((context) => (<SpriteView> this.registry.stores.selectionStore.getView()).obj.frameName);
 
         this.createPropHandler<string>(SpriteSettingsProps.SpriteSheet)
             .onChange((val, context) => {
-                const spriteAsset = this.registry.stores.assetStore.lookupByProp('path', val);
-                (<SpriteView> this.registry.stores.selectionStore.getView()).obj.spriteAssetId = spriteAsset.id;
+                (<SpriteView> this.registry.stores.selectionStore.getView()).obj.spriteSheetId = val;
                 this.registry.services.render.reRender(UI_Region.Sidepanel);
             })
             .onGet(() => {
-                const spriteAssetId = (<SpriteView> this.registry.stores.selectionStore.getView()).obj.spriteAssetId;
+                const spriteAssetId = (<SpriteView> this.registry.stores.selectionStore.getView()).obj.spriteSheetId;
                 if (spriteAssetId) {
                     return this.registry.stores.assetStore.getAssetById(spriteAssetId).path;
                 }
             })
-            .onGetValues(() => this.registry.stores.assetStore.getByType(AssetType.SpriteSheet).map(asset => asset.path));
+            .onGetValues(() => this.registry.stores.spriteSheetObjStore.getAll().map(asset => asset.id));
 
         this.createPropHandler<string>(SpriteSettingsProps.EditSpriteSheets)
             .onClick((val, context) => {

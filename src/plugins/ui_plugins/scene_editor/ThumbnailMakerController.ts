@@ -1,13 +1,10 @@
 import { Tools } from 'babylonjs';
-import { AbstractController } from '../../../core/plugins/controllers/AbstractController';
-import { AssetObj, AssetType } from '../../../core/models/game_objects/AssetObj';
-import { MeshView } from '../../../core/models/views/MeshView';
-import { Registry } from '../../../core/Registry';
-import { EngineService } from '../../../core/services/EngineService';
-import { ThumbnailDialogPlugin } from './ThumbnailDialogPlugin';
-import { UI_Region } from '../../../core/plugins/UI_Plugin';
-import { IEngineFacade } from '../../../core/adapters/IEngineFacade';
 import { BabylonEngineFacade } from '../../../core/adapters/babylonjs/BabylonEngineFacade';
+import { MeshView } from '../../../core/models/views/MeshView';
+import { AbstractController } from '../../../core/plugins/controllers/AbstractController';
+import { UI_Region } from '../../../core/plugins/UI_Plugin';
+import { Registry } from '../../../core/Registry';
+import { ThumbnailDialogPlugin } from './ThumbnailDialogPlugin';
 
 export enum ThumbnailMakerControllerProps {
     ThumbnailFromModel = 'ThumbnailFromModel',
