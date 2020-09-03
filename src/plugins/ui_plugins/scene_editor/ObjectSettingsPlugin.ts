@@ -45,6 +45,7 @@ export class ObjectSettingsPlugin extends UI_Plugin {
                     this.renderPathObjectSettings(layout, <PathView> selectedViews[0]);
                 break;
                 case SpriteViewType:
+                    this.spriteSettingsController.spriteView = <SpriteView> selectedViews[0];
                     this.renderSpriteObjectSettings(layout);
             }
         }
@@ -109,7 +110,7 @@ export class ObjectSettingsPlugin extends UI_Plugin {
         layout.controller = this.spriteSettingsController;
         let row = layout.row({ key: SpriteSettingsProps.FrameName });
 
-        const textField = row.textField(SpriteSettingsProps.FrameName);
+        let textField = row.textField(SpriteSettingsProps.FrameName);
         textField.layout = 'horizontal';
         textField.label = 'FrameName';
 
@@ -119,6 +120,18 @@ export class ObjectSettingsPlugin extends UI_Plugin {
         layoutSelect.layout = 'horizontal';
         layoutSelect.label = 'SpriteSheet';
         layoutSelect.placeholder = 'Select SpriteSheet';
+
+        row = layout.row({ key: SpriteSettingsProps.ScaleX });
+
+        textField = row.textField(SpriteSettingsProps.ScaleX);
+        textField.layout = 'horizontal';
+        textField.label = 'Scale X';
+
+        row = layout.row({ key: SpriteSettingsProps.ScaleY });
+
+        textField = row.textField(SpriteSettingsProps.ScaleY);
+        textField.layout = 'horizontal';
+        textField.label = 'Scale Y';
 
         row = layout.row({ key: SpriteSettingsProps.EditSpriteSheets });
         const button = row.button(SpriteSettingsProps.EditSpriteSheets);

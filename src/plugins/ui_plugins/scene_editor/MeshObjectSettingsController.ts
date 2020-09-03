@@ -76,13 +76,13 @@ export class MeshObjectSettingsController extends AbstractController<MeshObjectS
                 this.registry.services.render.reRender(UI_Region.Sidepanel);
             })
             .onBlur((context) => {
-                let rotation = this.meshView.getScale();
+                let scale = this.meshView.getScale();
                 try {
-                    context.releaseTempVal(val => rotation = parseFloat(val));
+                    context.releaseTempVal(val => scale = parseFloat(val));
                 } catch (e) {
                     console.log(e);
                 }
-                this.meshView.setScale(rotation);
+                this.meshView.setScale(scale);
                 this.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
             })
             .onGet((context) => Math.round(this.meshView.getScale()).toString());

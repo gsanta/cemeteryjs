@@ -17,7 +17,7 @@ export class SpriteAddTool extends RectangleTool {
     protected createView(rect: Rectangle): View {
         const spriteView: SpriteView = new SpriteView({dimensions: rect});
         spriteView.obj.spriteAdapter = this.registry.engine.sprites;
-        spriteView.obj.startScale = new Point(3, 3);
+        spriteView.obj.setScale(new Point(3, 3));
         spriteView.obj.startPos = new Point(spriteView.dimensions.div(10).getBoundingCenter().x, -spriteView.dimensions.div(10).getBoundingCenter().y); 
 
         this.registry.stores.canvasStore.addView(spriteView);

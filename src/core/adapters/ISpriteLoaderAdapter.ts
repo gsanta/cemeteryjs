@@ -4,5 +4,4 @@ import { SpriteSheetObj } from "../models/game_objects/SpriteSheetObj";
 export interface ISpriteLoaderAdapter {
 
     loadSpriteSheet(spriteSheetObj: SpriteSheetObj);
-    load(spriteObj: SpriteObj);
 }

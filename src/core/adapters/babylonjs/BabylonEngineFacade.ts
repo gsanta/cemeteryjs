@@ -21,7 +21,7 @@ export class BabylonEngineFacade implements IEngineFacade {
         this.registry = registry;
 
         this.spriteLoader = new BabylonSpriteLoader(this.registry);
-        this.sprites = new Babylon_SpriteAdapter(this.registry);
+        this.sprites = new Babylon_SpriteAdapter(this.registry, this);
         this.meshLoader = new Bab_MeshLoader(this.registry, this);
     }
 

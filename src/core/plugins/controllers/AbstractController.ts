@@ -83,9 +83,26 @@ export class PropHandler<T> {
     }
 }
 
+export interface PropControl<T> {
+    change?(val: T, context: PropContext<any>, element: UI_Element, controller: AbstractController);
+    click?(context: PropContext<T>, element: UI_Element, controller: AbstractController);
+    focus?(context: PropContext<T>, element: UI_Element, controller: AbstractController);
+    blur?(context: PropContext<T>, element: UI_Element, controller: AbstractController);
+    defaultVal?(context: PropContext<T>, element: UI_Element, controller: AbstractController);
+}
+
+const defaultPropControl: PropControl<any> = {
+    change(val: any, context: PropContext<any>, element: UI_Element, controller: AbstractController) {},
+    click(context: PropContext<any>, element: UI_Element, controller: AbstractController) {},
+    focus(context: PropContext<any>, element: UI_Element, controller: AbstractController) {},
+    blur(context: PropContext<any>, element: UI_Element, controller: AbstractController) {},
+    defaultVal(context: PropContext<any>, element: UI_Element, controller: AbstractController) {}
+}
+
 export class PropContext<T> {
     private tempVal: T;
     element: UI_Element;
+    registry: Registry;
 
     updateTempVal(val: T) {
         this.tempVal = val;
@@ -110,6 +127,8 @@ export class PropContext<T> {
 export abstract class AbstractController<P = any> {
     id: string;
     private handlers: Map<P | GlobalControllerProps, PropHandler<any>> = new Map();
+    private propControls: Map<P, PropControl<any>> = new Map();
+    private propContexts: Map<P, PropContext<any>> = new Map();
 
     protected registry: Registry;
     plugin: UI_Plugin;
@@ -129,22 +148,46 @@ export abstract class AbstractController<P = any> {
 
     change(prop: P, val: any, element: UI_Element): void {
         const handler = this.handlers.get(prop);
-        handler.changeHandler(val, handler.context, element, this);
+
+        if (handler) {
+            handler.changeHandler(val, handler.context, element, this);
+        } else {
+            const context = this.propContexts.get(prop);
+            this.propControls.get(prop)?.change(val, context, element, this);
+        }
     }
 
     click(prop: P, element: UI_Element): void {
         const handler = this.handlers.get(prop);
-        handler.clickHandler(handler.context, element, this);
+
+        if (handler) {
+            handler.clickHandler(handler.context, element, this);
+        } else {
+            const context = this.propContexts.get(prop);
+            this.propControls.get(prop)?.click(context, element, this);
+        }
     }
 
     focus(prop: P, element: UI_Element): void {
         const handler = this.handlers.get(prop);
-        handler.focusHandler(handler.context, element, this);
+
+        if (handler) {
+            handler.focusHandler(handler.context, element, this);
+        } else {
+            const context = this.propContexts.get(prop);
+            this.propControls.get(prop)?.focus(context, element, this);
+        }
     }
 
     blur(prop: P, element: UI_Element): void {
         const handler = this.handlers.get(prop);
-        handler.blurHandler(handler.context, element, this);
+
+        if (handler) {
+            handler.blurHandler(handler.context, element, this);
+        } else {
+            const context = this.propContexts.get(prop);
+            this.propControls.get(prop)?.blur(context, element, this);
+        }
     }
 
     mouseOver(prop: P, element: UI_Element): void {
@@ -170,12 +213,17 @@ export abstract class AbstractController<P = any> {
     val(prop: P, element: UI_Element): any {
         const handler = this.handlers.get(prop);
 
-        if (!handler) {
-            return undefined;
-        } else if (handler.context.getTempVal()) {
-            return handler.context.getTempVal();
+        if (handler) {
+            if (handler.context.getTempVal() !== undefined) {
+                return handler.context.getTempVal();
+            } else {
+                return handler.getHandler(handler.context, element, this);
+            }
         } else {
-            return handler.getHandler(handler.context, element, this);
+            const tmpVal = this.propContexts.get(prop)?.getTempVal();
+            const context = this.propContexts.get(prop);
+
+            return tmpVal !== undefined ? tmpVal :  this.propControls.get(prop)?.defaultVal(context, element, this);
         }
     }
 
@@ -189,6 +237,13 @@ export abstract class AbstractController<P = any> {
         const propHandler = new PropHandler<T>();
         this.handlers.set(prop, propHandler);
         return propHandler;
+    }
+
+    registerPropControl(prop: P, propControl: PropControl<any>) {
+        const context = new PropContext();
+        context.registry = this.registry;
+        this.propContexts.set(prop, context);
+        this.propControls.set(prop, {...defaultPropControl, ...propControl});
     }
 
     getPropHandler<T>(prop: P | GlobalControllerProps): PropHandler<T> {
