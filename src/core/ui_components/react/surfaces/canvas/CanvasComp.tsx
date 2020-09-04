@@ -128,6 +128,8 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
                     onWheel={(e) => this.wheelListener.onWheel(e.nativeEvent)}
                     onKeyDown={e => this.props.element.keyDown(e.nativeEvent)}
                     onKeyUp={e => this.props.element.keyUp(e.nativeEvent)}
+                    onMouseOver={(e) => this.props.element.mouseOver(e.nativeEvent)}
+                    onMouseOut={(e) => this.props.element.mouseOut(e.nativeEvent)}
                 />
                 <canvas
                     style={{

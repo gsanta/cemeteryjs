@@ -1,9 +1,9 @@
-import { SpriteView } from '../../../core/models/views/SpriteView';
-import { AbstractController, PropControl } from '../../../core/plugins/controllers/AbstractController';
-import { UI_Plugin, UI_Region } from '../../../core/plugins/UI_Plugin';
-import { Registry } from '../../../core/Registry';
-import { SpriteSheetManagerDialogPluginId } from '../dialogs/SpritesheetManagerDialogPlugin';
-import { Point } from '../../../utils/geometry/shapes/Point';
+import { SpriteView } from '../../../../core/models/views/SpriteView';
+import { AbstractController, PropControl } from '../../../../core/plugins/controllers/AbstractController';
+import { UI_Plugin, UI_Region } from '../../../../core/plugins/UI_Plugin';
+import { Registry } from '../../../../core/Registry';
+import { SpriteSheetManagerDialogPluginId } from '../../dialogs/SpritesheetManagerDialogPlugin';
+import { Point } from '../../../../utils/geometry/shapes/Point';
 
 export enum SpriteSettingsProps {
     FrameName = 'FrameName',

@@ -79,7 +79,7 @@ module.exports = env => {
         context: __dirname,
         devServer: {
             contentBase: ['.', './test', './assets'],
-            port: 8764
+            port: 8763
         }
     }
 };

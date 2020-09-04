@@ -1,6 +1,6 @@
 import { SceneEditorPluginId } from '../../plugins/ui_plugins/scene_editor/SceneEditorPlugin';
 import { GameViewerPluginId } from '../../plugins/ui_plugins/game_viewer/GameViewerPlugin';
-import { ObjectSettingsPluginId } from '../../plugins/ui_plugins/scene_editor/ObjectSettingsPlugin';
+import { ObjectSettingsPluginId } from '../../plugins/ui_plugins/scene_editor/controllers/ObjectSettingsPlugin';
 import { NodeEditorPluginId } from '../../plugins/ui_plugins/node_editor/NodeEditorPlugin';
 import { NodeEditorSettingsPluginId } from '../../plugins/ui_plugins/node_editor/NodeEditorSettingsPlugin';
 import { CodeEditorPluginId } from '../../plugins/ui_plugins/code_editor/CodeEditorPlugin';

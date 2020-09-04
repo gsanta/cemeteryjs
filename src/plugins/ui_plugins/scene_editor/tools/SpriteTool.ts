@@ -7,8 +7,7 @@ import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 import { SpriteView } from "../../../../core/models/views/SpriteView";
 import { Point } from "../../../../utils/geometry/shapes/Point";
 
-
-export class SpriteAddTool extends RectangleTool {
+export class SpriteTool extends RectangleTool {
 
     constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         super(ToolType.Sprite, plugin, registry);

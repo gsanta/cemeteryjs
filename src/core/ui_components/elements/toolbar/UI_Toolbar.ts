@@ -2,7 +2,6 @@ import { UI_Element } from '../UI_Element';
 import { UI_Tool } from './UI_ToolIcon';
 import { UI_ElementType } from '../UI_ElementType';
 import { UI_Factory } from '../../UI_Factory';
-import { ToolControllerId } from '../../../plugins/controllers/ToolController';
 import { UI_ActionIcon } from './UI_ActionIcon';
 import { UI_IconSeparator } from './UI_IconSeparator';
 
@@ -14,13 +13,11 @@ export class UI_Toolbar extends UI_Element {
         this.id = `${parent.id}_${this.elementType}`;
     }
 
-    tool(config: { controllerId: string, key?: string, prop?: string }): UI_Tool {
-        config.controllerId = config.controllerId ? config.controllerId : ToolControllerId;
+    tool(config: { controllerId?: string, key?: string, prop?: string }): UI_Tool {
         return UI_Factory.tool(this, config);
     }
 
-    actionIcon(config: { controllerId: string, prop: string }): UI_ActionIcon {
-        config.controllerId = config.controllerId ? config.controllerId : ToolControllerId;
+    actionIcon(config: { controllerId?: string, prop: string }): UI_ActionIcon {
         return UI_Factory.actionIcon(this, config);
     }
 

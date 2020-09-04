@@ -1,13 +1,13 @@
-import { toDegree, toRadian } from '../../../utils/geometry/Measurements';
-import { MeshView } from '../../../core/models/views/MeshView';
-import { Registry } from '../../../core/Registry';
-import { AbstractController, PropControl } from '../../../core/plugins/controllers/AbstractController';
-import { ThumbnailDialogPluginId } from './ThumbnailDialogPlugin';
-import { AssetObj, AssetType } from '../../../core/models/game_objects/AssetObj';
+import { toDegree, toRadian } from '../../../../utils/geometry/Measurements';
+import { MeshView } from '../../../../core/models/views/MeshView';
+import { Registry } from '../../../../core/Registry';
+import { AbstractController, PropControl } from '../../../../core/plugins/controllers/AbstractController';
+import { ThumbnailDialogPluginId } from '../ThumbnailDialogPlugin';
+import { AssetObj, AssetType } from '../../../../core/models/game_objects/AssetObj';
 import { ObjectSettingsPlugin } from './ObjectSettingsPlugin';
-import { UI_Region } from '../../../core/plugins/UI_Plugin';
+import { UI_Region } from '../../../../core/plugins/UI_Plugin';
 
-export enum MeshObjectSettingsProps {
+export enum MeshSettingsProps {
     MeshId = 'MeshId',
     Layer = 'Layer',
     Rotation = 'Rotation',
@@ -18,10 +18,10 @@ export enum MeshObjectSettingsProps {
     Thumbnail = 'Thumbnail'
 }
 
-export const MeshObjectSettingsControllerId = 'mesh-object-settings-controller';
+export const MeshSettingsControllerId = 'mesh-settings-controller';
 
-export class MeshObjectSettingsController extends AbstractController<MeshObjectSettingsProps> {
-    id = MeshObjectSettingsControllerId;
+export class MeshSettingsController extends AbstractController<MeshSettingsProps> {
+    id = MeshSettingsControllerId;
     // TODO user context instead of tempval
     tempVal: any;
     meshView: MeshView;
@@ -30,19 +30,19 @@ export class MeshObjectSettingsController extends AbstractController<MeshObjectS
         super(plugin, registry);
         this.plugin = plugin;
 
-        this.registerPropControl(MeshObjectSettingsProps.MeshId, IdControl)
-        this.registerPropControl(MeshObjectSettingsProps.Layer, LayerControl);
-        this.registerPropControl(MeshObjectSettingsProps.Rotation, RotationControl);
-        this.registerPropControl(MeshObjectSettingsProps.Scale, ScaleControl);
-        this.registerPropControl(MeshObjectSettingsProps.YPos, YPosControl);
-        this.registerPropControl(MeshObjectSettingsProps.Model, ModelControl);
-        this.registerPropControl(MeshObjectSettingsProps.Texture, TextureControl);
-        this.registerPropControl(MeshObjectSettingsProps.Thumbnail, ThumbnailControl);
+        this.registerPropControl(MeshSettingsProps.MeshId, IdControl)
+        this.registerPropControl(MeshSettingsProps.Layer, LayerControl);
+        this.registerPropControl(MeshSettingsProps.Rotation, RotationControl);
+        this.registerPropControl(MeshSettingsProps.Scale, ScaleControl);
+        this.registerPropControl(MeshSettingsProps.YPos, YPosControl);
+        this.registerPropControl(MeshSettingsProps.Model, ModelControl);
+        this.registerPropControl(MeshSettingsProps.Texture, TextureControl);
+        this.registerPropControl(MeshSettingsProps.Thumbnail, ThumbnailControl);
     }
 }
 
 const IdControl: PropControl<string> = {
-    defaultVal(context, element, controller: MeshObjectSettingsController) {
+    defaultVal(context, element, controller: MeshSettingsController) {
         return (<MeshView> context.registry.stores.selectionStore.getView()).id;
     },
     
@@ -51,7 +51,7 @@ const IdControl: PropControl<string> = {
         context.registry.services.render.reRender(UI_Region.Sidepanel);
     },
 
-    blur(context, element, controller: MeshObjectSettingsController) {
+    blur(context, element, controller: MeshSettingsController) {
         context.releaseTempVal((val) => (<MeshView> context.registry.stores.selectionStore.getView()).id = val);
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
@@ -59,18 +59,18 @@ const IdControl: PropControl<string> = {
 }
 
 const LayerControl: PropControl<number> = {
-    defaultVal(context, element, controller: MeshObjectSettingsController) {
+    defaultVal(context, element, controller: MeshSettingsController) {
         return controller.meshView.layer;
     },
 
-    change(val, context, element, controller: MeshObjectSettingsController) {
+    change(val, context, element, controller: MeshSettingsController) {
         controller.meshView.layer = val;
         context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
 }
 
 const RotationControl: PropControl<string> = {
-    defaultVal(context, element, controller: MeshObjectSettingsController) {
+    defaultVal(context, element, controller: MeshSettingsController) {
         return Math.round(toDegree(controller.meshView.getRotation())).toString();
     },
     
@@ -79,7 +79,7 @@ const RotationControl: PropControl<string> = {
         context.registry.services.render.reRender(UI_Region.Sidepanel);
     },
 
-    blur(context, element, controller: MeshObjectSettingsController) {
+    blur(context, element, controller: MeshSettingsController) {
         let rotation = controller.meshView.getRotation();
         try {
             context.releaseTempVal((val) => rotation = toRadian(parseFloat(val)))
@@ -93,7 +93,7 @@ const RotationControl: PropControl<string> = {
 
 
 const ScaleControl: PropControl<string> = {
-    defaultVal(context, element, controller: MeshObjectSettingsController) {
+    defaultVal(context, element, controller: MeshSettingsController) {
         return Math.round(controller.meshView.getScale()).toString();
     },
 
@@ -102,7 +102,7 @@ const ScaleControl: PropControl<string> = {
         context.registry.services.render.reRender(UI_Region.Sidepanel);
     },
 
-    blur(context, element, controller: MeshObjectSettingsController) {
+    blur(context, element, controller: MeshSettingsController) {
         let scale = controller.meshView.getScale();
         try {
             context.releaseTempVal(val => scale = parseFloat(val));
@@ -115,7 +115,7 @@ const ScaleControl: PropControl<string> = {
 }
 
 const YPosControl: PropControl<string> = {
-    defaultVal(context, element, controller: MeshObjectSettingsController) {
+    defaultVal(context, element, controller: MeshSettingsController) {
         return controller.meshView.yPos.toString();
     },
 
@@ -124,7 +124,7 @@ const YPosControl: PropControl<string> = {
         context.registry.services.render.reRender(UI_Region.Sidepanel);
     },
 
-    blur(context, element, controller: MeshObjectSettingsController) {
+    blur(context, element, controller: MeshSettingsController) {
         let yPos = controller.meshView.yPos;
         try {
             context.releaseTempVal(val => parseFloat(val))
@@ -138,7 +138,7 @@ const YPosControl: PropControl<string> = {
 }
 
 const TextureControl: PropControl<{data: string}> = {
-    change(val, context, element, controller: MeshObjectSettingsController) {
+    change(val, context, element, controller: MeshSettingsController) {
         const asset = new AssetObj({data: val.data, assetType: AssetType.Texture});
         controller.meshView.obj.textureId = context.registry.stores.assetStore.addObj(asset);
         context.registry.services.localStore.saveAsset(asset);
@@ -155,7 +155,7 @@ const ThumbnailControl: PropControl<any> = {
 }
 
 const ModelControl: PropControl<{data: string}> = {
-    async change(val, context, element, controller: MeshObjectSettingsController) {
+    async change(val, context, element, controller: MeshSettingsController) {
         const asset = new AssetObj({data: val.data, assetType: AssetType.Model});
         controller.meshView.obj.modelId = context.registry.stores.assetStore.addObj(asset);
         context.registry.services.localStore.saveAsset(asset);

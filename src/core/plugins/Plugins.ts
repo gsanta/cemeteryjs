@@ -7,7 +7,7 @@ import { AssetManagerDialogPlugin } from '../../plugins/ui_plugins/dialogs/Asset
 import { GameViewerPlugin } from '../../plugins/ui_plugins/game_viewer/GameViewerPlugin';
 import { NodeEditorPlugin } from '../../plugins/ui_plugins/node_editor/NodeEditorPlugin';
 import { NodeEditorSettingsPlugin } from '../../plugins/ui_plugins/node_editor/NodeEditorSettingsPlugin';
-import { ObjectSettingsPlugin } from '../../plugins/ui_plugins/scene_editor/ObjectSettingsPlugin';
+import { ObjectSettingsPlugin } from '../../plugins/ui_plugins/scene_editor/controllers/ObjectSettingsPlugin';
 import { SceneEditorPlugin } from '../../plugins/ui_plugins/scene_editor/SceneEditorPlugin';
 import { ThumbnailDialogPlugin } from '../../plugins/ui_plugins/scene_editor/ThumbnailDialogPlugin';
 import { AssetManagerSidepanelPlugin } from '../../plugins/ui_plugins/sidepanel/AssetManagerSidepanelPlugin';

@@ -7,7 +7,7 @@ import { Registry } from "../../../../core/Registry";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 
 
-export class MeshAddTool extends RectangleTool {
+export class MeshTool extends RectangleTool {
 
     constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         super(ToolType.Rectangle, plugin, registry);

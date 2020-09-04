@@ -27,7 +27,7 @@ export class AxisGizmo {
     }
     
     awake() {
-        this.advancedTexture = AdvancedDynamicTexture.CreateFullscreenUI("UI", true);
+        this.advancedTexture = AdvancedDynamicTexture.CreateFullscreenUI("UI");
     
         this.createButtons();
         this.createXLine();

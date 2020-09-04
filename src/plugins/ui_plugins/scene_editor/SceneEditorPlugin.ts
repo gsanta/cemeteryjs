@@ -12,8 +12,8 @@ import { ToolType } from '../../../core/plugins/tools/Tool';
 import { sort } from '../../../utils/geometry/Functions';
 import { SceneEditorExporter } from './io/SceneEditorExporter';
 import { SceneEditorImporter } from './io/SceneEditorImporter';
-import { MeshAddTool } from './tools/MeshAddTool';
-import { SpriteAddTool } from './tools/SpriteAddTool';
+import { MeshTool } from './tools/MeshTool';
+import { SpriteTool } from './tools/SpriteTool';
 import { SpriteViewType } from '../../../core/models/views/SpriteView';
 
 export const SceneEditorPluginId = 'scene-editor-plugin'; 
@@ -23,8 +23,8 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
     constructor(registry: Registry) {
         super(SceneEditorPluginId, registry);
 
-        this.toolHandler.registerTool(new MeshAddTool(this, this.registry));
-        this.toolHandler.registerTool(new SpriteAddTool(this, this.registry));
+        this.toolHandler.registerTool(new MeshTool(this, this.registry));
+        this.toolHandler.registerTool(new SpriteTool(this, this.registry));
         
         [ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Pointer, ToolType.Camera]
             .map(toolType => {

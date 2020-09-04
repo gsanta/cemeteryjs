@@ -38,7 +38,7 @@ export class EngineService<T extends AbstractCanvasPlugin = AbstractCanvasPlugin
         // TODO check if needed, there was some weird bug in babylon why this was needed 
         this.engine.getInputElement = () => canvasElement;
         
-        this.scene = new Scene(this.engine);
+        // this.scene = new Scene(this.engine);
         this.camera = new Camera3D(this.registry, this.engine, this.scene);
         this.light = new HemisphericLight("light1", new Vector3(0, 1, 0), this.scene);
 

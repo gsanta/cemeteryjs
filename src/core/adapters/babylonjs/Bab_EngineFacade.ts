@@ -1,11 +1,11 @@
-import { IEngineFacade } from "../IEngineFacade";
+import { Color3, Engine, HemisphericLight, Light, Scene, Vector3 } from "babylonjs";
+import { Camera3D } from "../../models/misc/camera/Camera3D";
 import { Registry } from "../../Registry";
-import { ArcRotateCamera, Vector3, HemisphericLight, PointLight, Scene, Engine, Light, Color3 } from "babylonjs";
+import { IEngineFacade } from "../IEngineFacade";
+import { Bab_Meshes } from "./Bab_Meshes";
+import { Bab_MeshLoader } from "./Bab_MeshLoader";
 import { Bab_SpriteLoader } from "./Bab_SpriteLoader";
 import { Bab_Sprites } from "./Bab_Sprites";
-import { Bab_MeshLoader } from "./Bab_MeshLoader";
-import { Camera3D } from "../../models/misc/camera/Camera3D";
-import { Bab_Meshes } from "./Bab_Meshes";
 
 export class Bab_EngineFacade implements IEngineFacade {
     scene: Scene;
@@ -33,8 +33,9 @@ export class Bab_EngineFacade implements IEngineFacade {
     }
 
     setup(canvas: HTMLCanvasElement) {
-        this.engine = new Engine(canvas, true);
+        this.engine = new Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
         this.scene = new Scene(this.engine);
+        this.engine.getInputElement = () => canvas;
 
 
         this.camera = new Camera3D(this.registry, this.engine, this.scene);

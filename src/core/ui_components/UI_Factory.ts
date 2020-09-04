@@ -355,7 +355,7 @@ export class UI_Factory {
         return toolbar;
     }
 
-    static tool(parent: UI_Toolbar, config: { controllerId: string, key?: string, prop?: string }): UI_Tool {
+    static tool(parent: UI_Toolbar, config: { controllerId?: string, key?: string, prop?: string }): UI_Tool {
         const tool = new UI_Tool(parent.plugin);
         tool.key = config.key;
         tool.prop = config.prop;
@@ -368,7 +368,7 @@ export class UI_Factory {
         return tool;
     }
 
-    static actionIcon(parent: UI_Toolbar, config: { controllerId: string, prop: string }): UI_ActionIcon {
+    static actionIcon(parent: UI_Toolbar, config: { controllerId?: string, prop: string }): UI_ActionIcon {
         const actionIcon = new UI_ActionIcon(parent.plugin);
         actionIcon.prop = config.prop;
 
