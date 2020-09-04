@@ -55,6 +55,7 @@ const SelectSpriteSheet: PropControl<string> = {
 
     change(val, context) {
         (<SpriteView> context.registry.stores.selectionStore.getView()).obj.spriteSheetId = val;
+        context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Sidepanel);
     },
 
@@ -89,6 +90,8 @@ const ScaleX: PropControl<string> = {
             console.log(e);
         }
         controller.spriteView.obj.setScale(new Point(scaleX, currScale.y));
+        context.registry.engine.sprites.updateInstance(controller.spriteView.obj);
+        context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
 }
@@ -114,6 +117,7 @@ const ScaleY: PropControl<string> = {
         }
         controller.spriteView.obj.setScale(new Point(currScale.x, scaleY));
         context.registry.engine.sprites.updateInstance(controller.spriteView.obj);
+        context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
 }

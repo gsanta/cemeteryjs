@@ -37,13 +37,14 @@ export class SceneEditorImporter extends AbstractPluginImporter {
             // TODO why do we have to cast to any?
             view.fromJson(viewJson as any, viewMap);
 
-            // switch(viewJson.type) {
-            //     case ViewType.MeshView:
-            //         this.initAssets(view as MeshView);
-            //         break;
-            // }
-
             this.registry.stores.canvasStore.addView(view);
+            
+            switch(viewJson.type) {
+                case SpriteViewType:
+                    this.registry.engine.sprites.createInstance((view as SpriteView).obj);
+                break;
+            }
+
 
             return view;
         });

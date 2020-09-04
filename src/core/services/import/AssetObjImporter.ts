@@ -25,6 +25,6 @@ export class AssetObjImporter implements IDataImporter {
             promises.push(this.registry.services.localStore.loadAsset(assetObj));
         });
 
-        await promises;
+        await Promise.all(promises);
     }
 }

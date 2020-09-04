@@ -1,5 +1,5 @@
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
-import { SpriteObj } from "../game_objects/SpriteObj";
+import { SpriteObj, SpriteObjJson } from "../game_objects/SpriteObj";
 import { View, ViewJson } from "./View";
 import { Point } from "../../../utils/geometry/shapes/Point";
 export const SpriteViewType = 'SpriteView';
@@ -7,6 +7,8 @@ export const SpriteViewType = 'SpriteView';
 export interface SpriteViewJson extends ViewJson {
     frameName: string;
     thumbnailData: string;
+    spriteSheetId: string;
+    obj: SpriteObjJson;
 }
 
 export class SpriteView extends View {
@@ -32,6 +34,8 @@ export class SpriteView extends View {
             ...super.toJson(),
             frameName: this.obj.frameName,
             thumbnailData: this.thumbnailData,
+            spriteSheetId: this.obj.spriteSheetId,
+            obj: this.obj.toJson()
         }
     }
 
@@ -39,5 +43,7 @@ export class SpriteView extends View {
         super.fromJson(json, viewMap);
         this.thumbnailData = json.thumbnailData;
         this.obj.frameName = json.frameName;
+        this.obj.spriteSheetId = json.spriteSheetId;
+        this.obj.fromJson(json.obj);
     }
 }

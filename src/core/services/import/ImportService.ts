@@ -35,5 +35,6 @@ export class ImportService {
         });
 
         await Promise.all(promises);
+        this.registry.services.render.reRenderAll();
     }
 }

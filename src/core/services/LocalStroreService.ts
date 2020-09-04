@@ -48,7 +48,7 @@ export class LocalStoreService {
         const objectStore = db.transaction(["xmls"], "readwrite").objectStore("xmls");
 
         const data = await this.getData(objectStore.get(level));
-        this.registry.services.import.import(data.data);
+        await this.registry.services.import.import(data.data);
     }
 
     async loadLevelIndexes(): Promise<number[]> {

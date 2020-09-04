@@ -1,12 +1,14 @@
-import { Sprite, Vector3 } from "babylonjs";
+import { Sprite } from "babylonjs";
 import { Point } from "../../../utils/geometry/shapes/Point";
-import { IGameObj } from "./IGameObj";
 import { ISpriteAdapter } from "../../adapters/ISpriteAdapter";
+import { IGameObj } from "./IGameObj";
 
 export interface SpriteObjJson {
     frameName: string;
     x: number;
     y: number;
+    scaleX: number;
+    scaleY: number;
     id: string;
 }
 
@@ -30,6 +32,13 @@ export interface SpriteObjJson {
         }
     }
 
+    setPosition(pos: Point) {
+        this.startPos = pos;
+
+        this.spriteAdapter && this.spriteAdapter.setScale(this, pos);
+
+    }
+
     setScale(scale: Point) {
         this.startScale = scale;
 
@@ -42,15 +51,20 @@ export interface SpriteObjJson {
 
     toJson(): SpriteObjJson {
         return {
+            id: this.id,
             frameName: this.frameName,
-            x: this.sprite.position.x,
-            y: this.sprite.position.z,
-            id: this.id
+            x: this.startPos && this.startPos.x,
+            y: this.startPos && this.startPos.y,
+            scaleX: this.getScale().x,
+            scaleY: this.getScale().y
         }
     }
 
     fromJson(json: SpriteObjJson) {
         this.frameName = json.frameName;
-        this.sprite.position = new Vector3(json.x, this.sprite.position.y, json.y);
+        if (json.x !== undefined && json.y !== undefined) {
+            this.setPosition(new Point(json.x, json.y));
+        }
+        this.setScale(new Point(json.scaleX, json.scaleY));
     }
 }

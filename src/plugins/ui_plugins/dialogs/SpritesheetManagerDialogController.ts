@@ -46,6 +46,10 @@ const AddSpriteSheet: PropControl<string> = {
         const spriteSheetObj = new SpriteSheetObj();
         context.registry.stores.assetStore.addObj(controller.tmpImgAsset);
         context.registry.stores.assetStore.addObj(controller.tmpJsonAsset);
+
+        context.registry.services.localStore.saveAsset(controller.tmpImgAsset);
+        context.registry.services.localStore.saveAsset(controller.tmpJsonAsset);
+
         spriteSheetObj.jsonAssetId = controller.tmpJsonAsset.id;
         spriteSheetObj.spriteAssetId = controller.tmpImgAsset.id;
         context.registry.stores.spriteSheetObjStore.addObj(spriteSheetObj);

@@ -44,9 +44,9 @@ export class HistoryService {
         return this.history.length > 0 && this.index !== 0;
     }
 
-    createSnapshot() {
+    async createSnapshot() {
         const snapshot = this.registry.services.export.export();
-        this.registry.services.localStore.storeLevel(this.registry.stores.levelStore.currentLevel.index, snapshot);
+        await this.registry.services.localStore.storeLevel(this.registry.stores.levelStore.currentLevel.index, snapshot);
 
         this.history = this.history.slice(0, this.index + 1);
         this.history = this.history.length > this.memoryLimit ? this.history.slice(this.history.length - this.memoryLimit) : this.history;

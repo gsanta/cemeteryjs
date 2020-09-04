@@ -49,7 +49,6 @@ export class AssetStore extends AbstractStore<AssetObj> {
 
         this.assetsByPath.set(asset.path, asset);
         this.objs.push(asset);
-        this.registry.services.localStore.saveAsset(asset);
 
         return asset.id;
     }

@@ -22,13 +22,11 @@ export class Editor {
             })
             .then(() => {
                 this.isLoading = false;
-                this.registry.services.history.createSnapshot();
                 this.render();
             })
 
             .catch(() => {
                 this.isLoading = false;
-                this.registry.services.history.createSnapshot();
                 this.render();
             });
     }
