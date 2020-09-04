@@ -1,6 +1,10 @@
 import { IPluginJson } from '../../plugins/IPluginExporter';
 import { Registry } from '../../Registry';
-import { AssetJson } from '../../models/game_objects/AssetObj';
+import { AssetObjJson } from '../../models/game_objects/AssetObj';
+import { ObjJson } from '../../models/game_objects/IGameObj';
+import { IDataExporter } from './IDataExporter';
+import { SpriteSheetExporter } from './SpriteSheetExporter';
+import { AssetObjExporter } from './AssetObjExporter';
 
 export interface ViewExporter {
     export(): string;
@@ -8,21 +12,34 @@ export interface ViewExporter {
 
 export interface AppJson {
     plugins: IPluginJson[];
-    assets: AssetJson[];
+    assets: AssetObjJson[];
+
+    objs: {
+        objType: string;
+        objs: ObjJson[];
+    }[];
 }
 
 export class ExportService {
     serviceName = 'export-service';
     private registry: Registry;
+    private exporters: IDataExporter[] = []
 
     constructor(registry: Registry) {
         this.registry = registry;
+
+        this.exporters.push(new AssetObjExporter(registry));
+        this.exporters.push(new SpriteSheetExporter(registry));
     }
 
     export(): string {
+        const appJson: Partial<AppJson> = {};
+
+        this.exporters.forEach(exporter => exporter.export(appJson));
+
         const pluginJsons = this.registry.plugins.getAll().filter(plugin => plugin.exporter).map(plugin => plugin.exporter.export());
         // const assetJsons = this.registry.stores.assetStore.getAssets().map(asset => asset.toJson());
-
-        return JSON.stringify({ plugins: pluginJsons});
+        appJson.plugins = pluginJsons;
+        return JSON.stringify(appJson);
     }
 }

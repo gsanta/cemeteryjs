@@ -83,7 +83,7 @@ export class LocalStoreService {
         objectStore.put({id: asset.id, data: asset.data, assetType: asset.assetType, path: asset.path, name: asset.name});
     }
 
-    async loadAsset(asset: AssetObj): Promise<string> {
+    async loadAsset(asset: AssetObj): Promise<void> {
         if (!this.isDbSupported()) { return }
 
         const db = await this.getDb();

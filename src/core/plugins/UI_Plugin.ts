@@ -3,7 +3,7 @@ import { Registry } from '../Registry';
 import { AbstractController } from './controllers/AbstractController';
 import { UI_Container } from '../ui_components/elements/UI_Container';
 import { UI_Layout } from '../ui_components/elements/UI_Layout';
-import { AbstractPluginImporter } from './AbstractPluginImporter';
+import { AbstractPluginImporter } from '../services/import/AbstractPluginImporter';
 import { IPluginExporter } from './IPluginExporter';
 import { UI_Factory } from '../ui_components/UI_Factory';
 

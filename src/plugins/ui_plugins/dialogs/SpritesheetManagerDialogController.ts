@@ -1,4 +1,4 @@
-import { AbstractController } from '../../../core/plugins/controllers/AbstractController';
+import { AbstractController, PropControl } from '../../../core/plugins/controllers/AbstractController';
 import { Registry } from '../../../core/Registry';
 import { UI_Region } from '../../../core/plugins/UI_Plugin';
 import { SpriteSheetManagerDialogPlugin } from './SpritesheetManagerDialogPlugin';
@@ -36,24 +36,29 @@ export class SpritesheetManagerDialogController extends AbstractController<{}> {
             this.registry.services.render.reRender(UI_Region.Dialog);
         });
 
-        this.createPropHandler(SpritesheetManagerDialogProps.AddSpriteSheet)
-        .onClick((val, context) => {
-            const spriteSheetObj = new SpriteSheetObj();
-            this.registry.stores.assetStore.addObj(this.tmpImgAsset);
-            this.registry.stores.assetStore.addObj(this.tmpJsonAsset);
-            spriteSheetObj.jsonAssetId = this.tmpJsonAsset.id;
-            spriteSheetObj.spriteAssetId = this.tmpImgAsset.id;
-            this.registry.stores.spriteSheetObjStore.addObj(spriteSheetObj);
+        this.registerPropControl(SpritesheetManagerDialogProps.AddSpriteSheet, AddSpriteSheet);
+    }
+}
 
-            this.tmpImgAsset = undefined;
-            this.tmpJsonAsset = undefined;
-            // const asset = new AssetObj({data: val.data, path: val.path, assetType: AssetType.SpriteSheetJson});
-            // this.tmpJsonAsset = asset;
-            // this.registry.stores.assetStore.addObj(asset);
-            // this.registry.services.localStore.saveAsset(asset);
-            this.registry.engine.spriteLoader.loadSpriteSheet(spriteSheetObj);
-            // this.registry.services.history.createSnapshot();
-            this.registry.services.render.reRender(UI_Region.Dialog);
-        });
+const AddSpriteSheet: PropControl<string> = {
+
+    click(context, element, controller: SpritesheetManagerDialogController) {
+        const spriteSheetObj = new SpriteSheetObj();
+        context.registry.stores.assetStore.addObj(controller.tmpImgAsset);
+        context.registry.stores.assetStore.addObj(controller.tmpJsonAsset);
+        spriteSheetObj.jsonAssetId = controller.tmpJsonAsset.id;
+        spriteSheetObj.spriteAssetId = controller.tmpImgAsset.id;
+        context.registry.stores.spriteSheetObjStore.addObj(spriteSheetObj);
+
+        // this.registry.services.localStore.saveAsset(asset);
+
+        controller.tmpImgAsset = undefined;
+        controller.tmpJsonAsset = undefined;
+        // const asset = new AssetObj({data: val.data, path: val.path, assetType: AssetType.SpriteSheetJson});
+        // this.tmpJsonAsset = asset;
+        // this.registry.stores.assetStore.addObj(asset);
+        context.registry.engine.spriteLoader.loadSpriteSheet(spriteSheetObj);
+        context.registry.services.history.createSnapshot();
+        context.registry.services.render.reRender(UI_Region.Dialog);
     }
 }

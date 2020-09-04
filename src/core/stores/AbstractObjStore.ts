@@ -20,5 +20,9 @@ export abstract class AbstractObjStore<T extends IGameObj> extends AbstractStore
         return this.objs;
     }
 
+    size() {
+        return this.objs.length;
+    }
+
     protected abstract createPrefix(obj: IGameObj): string;
 }

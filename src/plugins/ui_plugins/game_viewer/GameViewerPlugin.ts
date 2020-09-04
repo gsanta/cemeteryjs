@@ -3,8 +3,6 @@ import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { BuiltinNodeType } from '../../../core/models/game_objects/NodeModel';
 import { Canvas_3d_Plugin } from '../../../core/plugins/Canvas_3d_Plugin';
 import { Registry } from '../../../core/Registry';
-import { EngineService } from '../../../core/services/EngineService';
-import { TextureLoaderService } from '../../../core/services/TextureLoaderService';
 import { UI_Region } from '../../../core/plugins/UI_Plugin';
 import { PluginServices } from '../../../core/plugins/PluginServices';
 import { Gizmos } from './Gizmos';
@@ -33,8 +31,7 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
 
         this.pluginServices = new PluginServices(
             [
-                new NodeService(this, this.registry),
-                new TextureLoaderService(this, this.registry)
+                new NodeService(this, this.registry)
             ]
         );
     }

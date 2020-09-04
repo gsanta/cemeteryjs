@@ -1,6 +1,6 @@
 
 
-export interface AssetJson {
+export interface AssetObjJson {
     id: string;
     assetType: string;
     path?: string;
@@ -16,6 +16,7 @@ export enum AssetType {
     SpriteSheetJson = 'SpriteSheetJson'
 }
 
+export const AssetObjType = 'asset-obj';
 export class AssetObj {
     id: string;
     assetType: AssetType;
@@ -32,7 +33,7 @@ export class AssetObj {
         }
     }
 
-    toJson(): AssetJson {
+    toJson(): AssetObjJson {
         return {
             id: this.id,
             assetType: this.assetType,
@@ -42,7 +43,7 @@ export class AssetObj {
         };
     }
 
-    fromJson(json: AssetJson) {
+    fromJson(json: AssetObjJson) {
         this.id = json.id;
         this.assetType = <AssetType> json.assetType;
         this.path = json.path;

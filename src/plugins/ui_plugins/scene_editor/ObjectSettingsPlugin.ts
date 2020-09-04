@@ -114,9 +114,9 @@ export class ObjectSettingsPlugin extends UI_Plugin {
         textField.layout = 'horizontal';
         textField.label = 'FrameName';
 
-        row = layout.row({ key: SpriteSettingsProps.SpriteSheet });
+        row = layout.row({ key: SpriteSettingsProps.SelectSpriteSheet });
 
-        const layoutSelect = row.select(SpriteSettingsProps.SpriteSheet);
+        const layoutSelect = row.select(SpriteSettingsProps.SelectSpriteSheet);
         layoutSelect.layout = 'horizontal';
         layoutSelect.label = 'SpriteSheet';
         layoutSelect.placeholder = 'Select SpriteSheet';
@@ -133,8 +133,8 @@ export class ObjectSettingsPlugin extends UI_Plugin {
         textField.layout = 'horizontal';
         textField.label = 'Scale Y';
 
-        row = layout.row({ key: SpriteSettingsProps.EditSpriteSheets });
-        const button = row.button(SpriteSettingsProps.EditSpriteSheets);
+        row = layout.row({ key: SpriteSettingsProps.ManageSpriteSheets });
+        const button = row.button(SpriteSettingsProps.ManageSpriteSheets);
         button.label = 'Manage spritesheets';
         button.width = '200px';
     }

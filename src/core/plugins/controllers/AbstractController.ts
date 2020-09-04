@@ -89,6 +89,7 @@ export interface PropControl<T> {
     focus?(context: PropContext<T>, element: UI_Element, controller: AbstractController);
     blur?(context: PropContext<T>, element: UI_Element, controller: AbstractController);
     defaultVal?(context: PropContext<T>, element: UI_Element, controller: AbstractController);
+    values?(context: PropContext<T>, element: UI_Element, controller: AbstractController);
 }
 
 const defaultPropControl: PropControl<any> = {
@@ -229,7 +230,15 @@ export abstract class AbstractController<P = any> {
 
     values(prop: P, element: UI_Element): any[] {
         const handler = this.handlers.get(prop);
-        return handler ? handler.getValuesHandler(handler.context, element, this) : [];
+
+        if (handler) {
+            return handler.getValuesHandler(handler.context, element, this);
+        } else if (this.propControls.get(prop)) {
+            const context = this.propContexts.get(prop);
+            return this.propControls.get(prop)?.values(context, element, this);
+        }
+
+        return [];
     }
 
 

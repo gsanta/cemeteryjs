@@ -1,9 +1,9 @@
-import { AbstractPluginImporter } from "../../../../core/plugins/AbstractPluginImporter";
+import { AbstractPluginImporter } from "../../../../core/services/import/AbstractPluginImporter";
 import { Mesh } from 'babylonjs';
 import { MeshView } from '../../../../core/models/views/MeshView';
 
 export class GameViewerImporter extends AbstractPluginImporter {
-    import(): void {
+    async import(): Promise<void> {
         // this.registry.stores.gameStore.clear();
         // this.registry.engine.meshLoader.clear();
 

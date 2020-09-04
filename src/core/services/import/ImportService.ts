@@ -1,22 +1,39 @@
-import { Registry } from '../../Registry';
 import { View } from '../../models/views/View';
+import { Registry } from '../../Registry';
 import { AppJson } from '../export/ExportService';
-import { IPluginJson } from '../../plugins/IPluginExporter';
-import { AssetObj } from '../../models/game_objects/AssetObj';
+import { IDataImporter } from './IDataImporter';
+import { SpriteSheetImporter } from './SpriteSheetImporter';
+import { AssetObjImporter } from './AssetObjImporter';
 
 export class ImportService {
     serviceName = 'import-service';
     private registry: Registry;
+    private importers: IDataImporter[] = [];
 
     constructor(registry: Registry) {
         this.registry = registry;
+
+        this.importers.push(new AssetObjImporter(registry));
+        this.importers.push(new SpriteSheetImporter(registry));
     }
 
-    import(file: string): void {
+    async import(file: string): Promise<void> {
         const json = <AppJson> JSON.parse(file);
+
+        for (let i = 0; i < this.importers.length; i++) {
+            await this.importers[i].import(json);
+        }
 
         const viewMap: Map<string, View> = new Map();
 
-        this.registry.plugins.getAll().forEach(plugin => plugin.importer?.import(json, viewMap));
+        const promises: Promise<void>[] = [];
+
+        this.registry.plugins.getAll().forEach(plugin => {
+            if (plugin.importer) {
+                promises.push(plugin.importer.import(json, viewMap));
+            }
+        });
+
+        await Promise.all(promises);
     }
 }

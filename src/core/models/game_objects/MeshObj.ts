@@ -1,6 +1,6 @@
 import { MeshView } from '../views/MeshView';
 import { Quaternion, Vector3, Mesh } from 'babylonjs';
-import { IGameObj } from './IGameObj';
+import { IGameObj, ObjJson } from './IGameObj';
 
 
 export class MeshObj implements IGameObj {
@@ -37,4 +37,13 @@ export class MeshObj implements IGameObj {
             this.meshView.obj.mesh.scaling = new Vector3(scale, scale, scale);
         }
     }
+
+    toJson(): ObjJson {
+        throw new Error("Method not implemented.");
+    }
+    
+    fromJson(json: ObjJson) {
+        throw new Error("Method not implemented.");
+    }
+
 }
